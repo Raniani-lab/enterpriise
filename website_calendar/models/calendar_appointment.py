@@ -171,15 +171,15 @@ class CalendarAppointmentType(models.Model):
             """
             start_dt_string = slot['UTC'][0]
             end_dt_string = slot['UTC'][1]
-            employee_tz = pytz.timezone(employee.user_id.tz or self.sudo().env.user.tz or slot['slot'].appointment_type_id.appointment_tz or 'UTC')
 
             for ev in events.filtered(lambda ev: ev.start < end_dt_string and ev.stop > start_dt_string):
                 if ev.allday:
                     # allday events are considered to take the whole day in the related employee's timezone
+                    event_tz = pytz.timezone(ev.event_tz or employee.user_id.tz or self.env.user.tz or slot['slot'].appointment_type_id.appointment_tz or 'UTC')
                     ev_start_dt = datetime.combine(fields.Date.from_string(ev.start_date), time.min)
                     ev_stop_dt = datetime.combine(fields.Date.from_string(ev.stop_date), time.max)
-                    ev_start_dt = employee_tz.localize(ev_start_dt).astimezone(pytz.UTC).replace(tzinfo=None)
-                    ev_stop_dt = employee_tz.localize(ev_stop_dt).astimezone(pytz.UTC).replace(tzinfo=None)
+                    ev_start_dt = event_tz.localize(ev_start_dt).astimezone(pytz.UTC).replace(tzinfo=None)
+                    ev_stop_dt = event_tz.localize(ev_stop_dt).astimezone(pytz.UTC).replace(tzinfo=None)
                     if ev_start_dt < slot['UTC'][1] and ev_stop_dt > slot['UTC'][0]:
                         return False
                 elif ev.start_datetime < end_dt_string and ev.stop_datetime > start_dt_string:

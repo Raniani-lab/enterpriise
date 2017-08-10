@@ -337,3 +337,36 @@ class TestSubscription(TestSubscriptionCommon):
         sub_form.partner_id = partner
         sub = sub_form.save()
         self.assertEqual(sub.user_id, self.user_portal)
+
+    def test_next_invoice_date_last_date_of_month(self):
+        """ This testcase will check the next invoice dates for monthly subscription. """
+        self.subscription_tmpl.recurring_interval = 1
+        # Created subscription with `date_start` set to last day of December and `recurring_next_date` as last day of January.
+        sub = self.subscription.copy({'date_start': '2017-12-31', 'recurring_next_date': '2018-01-31'})
+        self.assertEqual(sub.recurring_invoice_day, 31, 'Next Invoice Day should be 31.')
+        # Since the monthly subscription starts on the 31st day of December, the next invoice should be generated on the same day of next month
+        # except for the months which does not have the same day, in such cases, it should be generated on last day of that particular month
+        sub.recurring_invoice()
+        self.assertEqual(sub.recurring_next_date, datetime.date(2018, 2, 28), '`Date of Next Invoice` should be the last day of February 2018.')
+        sub.recurring_invoice()
+        self.assertEqual(sub.recurring_next_date, datetime.date(2018, 3, 31), '`Date of Next Invoice` should be the last day of March 2018.')
+        sub.recurring_invoice()
+        self.assertEqual(sub.recurring_next_date, datetime.date(2018, 4, 30), '`Date of Next Invoice` should be the last day of April 2018.')
+
+    def test_changed_next_invoice_date(self):
+        """This testcase will check next invoice dates if user change next invoice date manually"""
+        self.subscription_tmpl.recurring_interval = 1
+        # Created subscription with `date_start` and `recurring_next_date` to 5th of February and March respectively.
+        sub = self.subscription.copy({'date_start': '2018-02-05', 'recurring_next_date': '2018-03-05'})
+        # Since the monthly subscription's `recurring_next_date` is set to 5th March(ie. it is not the last day of month), `recurring_next_date` should be set to the same day of next month
+        sub.recurring_invoice()
+        self.assertEqual(sub.recurring_next_date, datetime.date(2018, 4, 5), '`Date of Next Invoice` should be 5th April 2018.')
+        # Manually changing `recurring_next_date` to the last day of April 2018.
+        sub.recurring_next_date = '2018-04-30'
+        # `recurring_invoice_day` should be set to 30 as `recurring_next_date` was modified manually(and not by cron)
+        self.assertEqual(sub.recurring_invoice_day, 30, 'Next Invoice Day should be 30.')
+        # We have changed next invoice date to 30th of April, the next invoice should be generated on 30th of next month
+        sub.recurring_invoice()
+        self.assertEqual(sub.recurring_next_date, datetime.date(2018, 5, 30), '`Date of Next Invoice` should be 30th May 2018.')
+        sub.recurring_invoice()
+        self.assertEqual(sub.recurring_next_date, datetime.date(2018, 6, 30), '`Date of Next Invoice` should be 30th June 2018.')

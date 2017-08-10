@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-import datetime
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models, _
@@ -41,6 +40,12 @@ class SaleOrder(models.Model):
     def _prepare_subscription_data(self, template):
         """Prepare a dictionnary of values to create a subscription from a template."""
         self.ensure_one()
+        date_today = fields.Date.context_today(self)
+        recurring_invoice_day = date_today.day
+        recurring_next_date = self.env['sale.subscription']._get_recurring_next_date(
+            template.recurring_rule_type, template.recurring_interval,
+            date_today, recurring_invoice_day
+        )
         values = {
             'name': template.name,
             'template_id': template.id,
@@ -52,17 +57,13 @@ class SaleOrder(models.Model):
             'pricelist_id': self.pricelist_id.id,
             'company_id': self.company_id.id,
             'analytic_account_id': self.analytic_account_id.id,
+            'recurring_next_date': recurring_next_date,
+            'recurring_invoice_day': recurring_invoice_day,
             'payment_token_id': self.transaction_ids.get_last_transaction().payment_token_id.id if template.payment_mode in ['validate_send_payment', 'success_payment'] else False
         }
         default_stage = self.env['sale.subscription.stage'].search([('in_progress', '=', True)], limit=1)
         if default_stage:
             values['stage_id'] = default_stage.id
-        # compute the next date
-        today = datetime.date.today()
-        periods = {'daily': 'days', 'weekly': 'weeks', 'monthly': 'months', 'yearly': 'years'}
-        invoicing_period = relativedelta(**{periods[template.recurring_rule_type]: template.recurring_interval})
-        recurring_next_date = today + invoicing_period
-        values['recurring_next_date'] = fields.Date.to_string(recurring_next_date)
         return values
 
     def update_existing_subscriptions(self):

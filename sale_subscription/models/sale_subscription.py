@@ -44,6 +44,7 @@ class SaleSubscription(models.Model):
     recurring_rule_type = fields.Selection(string='Recurrence', help="Invoice automatically repeat at specified interval", related="template_id.recurring_rule_type", readonly=1)
     recurring_interval = fields.Integer(string='Repeat Every', help="Repeat every (Days/Week/Month/Year)", related="template_id.recurring_interval", readonly=1)
     recurring_next_date = fields.Date(string='Date of Next Invoice', default=fields.Date.today, help="The next invoice will be created on this date then the period will be extended.")
+    recurring_invoice_day = fields.Integer('Recurring Invoice Day', copy=False, default=lambda e: fields.Date.today().day)
     recurring_total = fields.Float(compute='_compute_recurring_total', string="Recurring Price", store=True, tracking=True)
     recurring_monthly = fields.Float(compute='_compute_recurring_monthly', string="Monthly Recurring Revenue", store=True)
     close_reason_id = fields.Many2one("sale.subscription.close.reason", string="Close Reason", tracking=True)
@@ -271,6 +272,12 @@ class SaleSubscription(models.Model):
         )
         if vals.get('name', 'New') == 'New':
             vals['name'] = vals['code']
+        if not vals.get('recurring_invoice_day'):
+            sub_date = vals.get('recurring_next_date') or vals.get('date_start') or fields.date.today()
+            if isinstance(sub_date, datetime.date):
+                vals['recurring_invoice_day'] = sub_date.day
+            else:
+                vals['recurring_invoice_day'] = fields.Date.from_string(sub_date).day
         subscription = super(SaleSubscription, self).create(vals)
         if vals.get('stage_id'):
             subscription._send_subscription_rating_mail(force_send=True)
@@ -279,6 +286,12 @@ class SaleSubscription(models.Model):
         return subscription
 
     def write(self, vals):
+        recurring_next_date = vals.get('recurring_next_date')
+        if recurring_next_date and not self.env.context.get('skip_update_recurring_invoice_day'):
+            if isinstance(recurring_next_date, datetime.date):
+                vals['recurring_invoice_day'] = recurring_next_date.day
+            else:
+                vals['recurring_invoice_day'] = fields.Date.from_string(recurring_next_date).day
         if vals.get('partner_id'):
             self.message_subscribe([vals['partner_id']])
         result = super(SaleSubscription, self).write(vals)
@@ -455,12 +468,11 @@ class SaleSubscription(models.Model):
         if not journal:
             raise UserError(_('Please define a sale journal for the company "%s".') % (company.name or '', ))
 
-        next_date = fields.Date.from_string(self.recurring_next_date)
+        next_date = self.recurring_next_date
         if not next_date:
             raise UserError(_('Please define Date of Next Invoice of "%s".') % (self.display_name,))
-        periods = {'daily': 'days', 'weekly': 'weeks', 'monthly': 'months', 'yearly': 'years'}
-        end_date = next_date + relativedelta(**{periods[self.recurring_rule_type]: self.recurring_interval})
-        end_date = end_date - relativedelta(days=1)     # remove 1 day as normal people thinks in term of inclusive ranges.
+        recurring_next_date = self._get_recurring_next_date(self.recurring_rule_type, self.recurring_interval, next_date, self.recurring_invoice_day)
+        end_date = fields.Date.from_string(recurring_next_date) - relativedelta(days=1)     # remove 1 day as normal people thinks in term of inclusive ranges.
         addr = self.partner_id.address_get(['delivery', 'invoice'])
 
         sale_order = self.env['sale.order'].search([('order_line.subscription_id', 'in', self.ids)], order="id desc", limit=1)
@@ -478,6 +490,31 @@ class SaleSubscription(models.Model):
             'comment': _("This invoice covers the following period: %s - %s") % (format_date(self.env, next_date), format_date(self.env, end_date)),
             'user_id': self.user_id.id,
         }
+
+    @api.model
+    def _get_recurring_next_date(self, interval_type, interval, current_date, recurring_invoice_day):
+        """
+        This method is used for calculating next invoice date for a subscription
+        :params interval_type: type of interval i.e. yearly, monthly, weekly etc.
+        :params interval: number of interval i.e. 2 week, 1 month, 6 month, 1 year etc.
+        :params current_date: date from which next invoice date is to be calculated
+        :params recurring_invoice_day: day on which next invoice is to be generated in future
+        :returns: date on which invoice will be generated
+        """
+        periods = {'daily': 'days', 'weekly': 'weeks', 'monthly': 'months', 'yearly': 'years'}
+        interval_type = periods[interval_type]
+        recurring_next_date = fields.Date.from_string(current_date) + relativedelta(**{interval_type: interval})
+        if interval_type == 'months':
+            last_day_of_month = recurring_next_date + relativedelta(day=31)
+            if last_day_of_month.day >= recurring_invoice_day:
+                # In cases where the next month does not have same day as of previous recurrent invoice date, we set the last date of next month
+                # Example: current_date is 31st January then next date will be 28/29th February
+                return recurring_next_date.replace(day=recurring_invoice_day)
+            # In cases where the subscription was created on the last day of a particular month then it should stick to last day for all recurrent monthly invoices
+            # Example: 31st January, 28th February, 31st March, 30 April and so on.
+            return last_day_of_month
+        # Return the next day after adding interval
+        return recurring_next_date
 
     def _prepare_invoice_line(self, line, fiscal_position):
         if 'force_company' in self.env.context:
@@ -570,8 +607,7 @@ class SaleSubscription(models.Model):
     def increment_period(self):
         for subscription in self:
             current_date = subscription.recurring_next_date or self.default_get(['recurring_next_date'])['recurring_next_date']
-            periods = {'daily': 'days', 'weekly': 'weeks', 'monthly': 'months', 'yearly': 'years'}
-            new_date = fields.Date.from_string(current_date) + relativedelta(**{periods[subscription.recurring_rule_type]: subscription.recurring_interval})
+            new_date = subscription._get_recurring_next_date(subscription.recurring_rule_type, subscription.recurring_interval, current_date, subscription.recurring_invoice_day)
             subscription.write({'recurring_next_date': new_date})
 
     @api.model
@@ -768,10 +804,11 @@ class SaleSubscription(models.Model):
                             new_invoice.with_context(context_company).compute_taxes()
                             invoices += new_invoice
                             next_date = subscription.recurring_next_date or current_date
-                            periods = {'daily': 'days', 'weekly': 'weeks', 'monthly': 'months', 'yearly': 'years'}
-                            invoicing_period = relativedelta(**{periods[subscription.recurring_rule_type]: subscription.recurring_interval})
-                            new_date = next_date + invoicing_period
-                            subscription.write({'recurring_next_date': new_date.strftime('%Y-%m-%d')})
+                            rule, interval = subscription.recurring_rule_type, subscription.recurring_interval
+                            new_date = subscription._get_recurring_next_date(rule, interval, next_date, subscription.recurring_invoice_day)
+                            # When `recurring_next_date` is updated by cron or by `Generate Invoice` action button,
+                            # write() will skip resetting `recurring_invoice_day` value based on this context value
+                            subscription.with_context(skip_update_recurring_invoice_day=True).write({'recurring_next_date': new_date})
                             if subscription.template_id.payment_mode == 'validate_send':
                                 subscription.validate_and_send_invoice(new_invoice)
                             if automatic and auto_commit:

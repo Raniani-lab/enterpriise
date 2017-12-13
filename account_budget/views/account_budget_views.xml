@@ -254,6 +254,7 @@ Budgets
             <p>
                 Use budgets to compare actual with expected revenues and costs
             </p>
+            <div id="msg_account_budget" class="content-group" attrs="{'invisible': [('module_account_budget', '=', False)]}"/>  
         </field>
     </record>
     <menuitem parent="account.menu_finance_entries_management"

@@ -15,7 +15,7 @@
                     <div class="o_setting_right_pane">
                         <span class="o_form_label">Fiscal Year</span>
                         <div class="text-muted">
-                            Last day of your fiscal year, for automatic opening entries
+                            Last day of your fiscal year
                         </div>
                          <div class="content-group">
                             <div class="row mt16">

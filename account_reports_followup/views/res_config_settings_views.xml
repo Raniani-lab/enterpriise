@@ -6,9 +6,9 @@
         <field name="model">res.config.settings</field>
         <field name="inherit_id" ref="account.res_config_settings_view_form"/>
         <field name="arch" type="xml">
-            <div id="account_reports_followup" position="replace">
-                <div class="content-group" attrs="{'invisible': [('module_account_reports_followup', '=', False)]}">
-                    <div>
+            <div id="account_reports_followup" position="inside">
+                <div class="mt16" >
+                    <div class="content-group" attrs="{'invisible': [('module_account_reports_followup', '=', False)]}">
                         <button type="object" icon="fa-arrow-right" name="open_followup_level_form" string="Follow-up Levels" class="oe_link"/>
                     </div>
                 </div>

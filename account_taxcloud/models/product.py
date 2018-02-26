@@ -41,6 +41,8 @@ class ProductTemplate(models.Model):
 class ResCompany(models.Model):
     _inherit = 'res.company'
 
+    taxcloud_api_id = fields.Char(string='TaxCloud API ID')
+    taxcloud_api_key = fields.Char(string='TaxCloud API KEY')
     tic_category_id = fields.Many2one('product.tic.category', string='Default TIC Code', help="Default TICs(Taxability information codes) code to get sales tax from TaxCloud by product category.")
 
 class ProductCategory(models.Model):

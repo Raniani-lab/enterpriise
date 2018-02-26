@@ -6,11 +6,12 @@ from odoo.exceptions import ValidationError
 
 from .taxcloud_request import TaxCloudRequest
 
+
 class ResConfigSettings(models.TransientModel):
     _inherit = 'res.config.settings'
 
-    taxcloud_api_id = fields.Char(string='TaxCloud API ID', default='', config_parameter='account_taxcloud.taxcloud_api_id')
-    taxcloud_api_key = fields.Char(string='TaxCloud API KEY', default='', config_parameter='account_taxcloud.taxcloud_api_key')
+    taxcloud_api_id = fields.Char(related='company_id.taxcloud_api_id', string='TaxCloud API ID', readonly=False)
+    taxcloud_api_key = fields.Char(related='company_id.taxcloud_api_key', string='TaxCloud API KEY', readonly=False)
     tic_category_id = fields.Many2one(related='company_id.tic_category_id', string="Default TIC Code", readonly=False)
 
     @api.multi
@@ -20,7 +21,11 @@ class ResConfigSettings(models.TransientModel):
         res = request.get_tic_category()
 
         if res.get('error_message'):
-            raise ValidationError(_('Unable to retrieve taxes from TaxCloud: ')+'\n'+res['error_message']+'\n\n'+_('The configuration of TaxCloud is in the Accounting app, Settings menu.'))
+            raise ValidationError(
+                _('Unable to retrieve taxes from TaxCloud: ') + '\n' +
+                res['error_message'] + '\n\n' +
+                _('The configuration of TaxCloud is in the Accounting app, Settings menu.')
+            )
 
         for category in res['data']:
             if not Category.search([('code', '=', category['TICID'])], limit=1):

@@ -11,6 +11,7 @@ from .taxcloud_request import TaxCloudRequest
 
 _logger = logging.getLogger(__name__)
 
+
 class AccountInvoice(models.Model):
     _inherit = 'account.invoice'
 
@@ -27,12 +28,11 @@ class AccountInvoice(models.Model):
     @api.multi
     def validate_taxes_on_invoice(self):
         company = self.company_id
-        Param = self.env['ir.config_parameter']
-        api_id = Param.sudo().get_param('account_taxcloud.taxcloud_api_id_{}'.format(company.id)) or Param.sudo().get_param('account_taxcloud.taxcloud_api_id')
-        api_key = Param.sudo().get_param('account_taxcloud.taxcloud_api_key_{}'.format(company.id)) or Param.sudo().get_param('account_taxcloud.taxcloud_api_key')
+        shipper = company or self.env.user.company_id
+        api_id = shipper.taxcloud_api_id
+        api_key = shipper.taxcloud_api_key
         request = TaxCloudRequest(api_id, api_key)
 
-        shipper = self.company_id or self.env.user.company_id
         request.set_location_origin_detail(shipper)
         request.set_location_destination_detail(self._get_partner())
 
@@ -41,7 +41,11 @@ class AccountInvoice(models.Model):
         response = request.get_all_taxes_values()
 
         if response.get('error_message'):
-            raise ValidationError(_('Unable to retrieve taxes from TaxCloud: ')+'\n'+response['error_message']+'\n\n'+_('The configuration of TaxCloud is in the Accounting app, Settings menu.'))
+            raise ValidationError(
+                _('Unable to retrieve taxes from TaxCloud: ') + '\n' +
+                response['error_message'] + '\n\n' +
+                _('The configuration of TaxCloud is in the Accounting app, Settings menu.')
+            )
 
         tax_values = response['values']
 
@@ -112,9 +116,8 @@ class AccountInvoice(models.Model):
         for invoice in self:
             company = invoice.company_id
             if invoice.fiscal_position_id.is_taxcloud:
-                Param = self.env['ir.config_parameter']
-                api_id = Param.sudo().get_param('account_taxcloud.taxcloud_api_id_{}'.format(company.id)) or Param.sudo().get_param('account_taxcloud.taxcloud_api_id')
-                api_key = Param.sudo().get_param('account_taxcloud.taxcloud_api_key_{}'.format(company.id)) or Param.sudo().get_param('account_taxcloud.taxcloud_api_key')
+                api_id = company.taxcloud_api_id
+                api_key = company.taxcloud_api_key
                 request = TaxCloudRequest(api_id, api_key)
                 if invoice.type == 'out_invoice':
                     request.client.service.Captured(

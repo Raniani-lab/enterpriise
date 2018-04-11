@@ -173,9 +173,9 @@
                             <separator colspan="2" string="Target" class="mt32"/>
                             <field name="stage_id" string="Reach Stage" domain="[('team_ids', '=', team_id)]"/>
                             <label for="time_days" string="Reach In"/>
-                            <div>
-                                <field name="time_days" class="oe_inline"/> days<br/>
-                                <field name="time_hours" class="oe_inline"/> hours<br/>
+                            <div class="o_row">
+                                <field name="time_days"/> days<br/>
+                                <field name="time_hours"/> hours<br/>
                             </div>
                         </group>
                     </group>

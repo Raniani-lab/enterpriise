@@ -420,7 +420,6 @@
             <form>
                 <field name="user_can_approve" invisible="1"/>
                 <field name="user_can_reject" invisible="1"/>
-                <field name="kanban_state" invisible="1"/>
                 <field name="allow_apply_change" invisible="1"/>
                 <header>
                     <field name="stage_id" widget="statusbar" options="{'clickable': '1'}" attrs="{'invisible': [('active', '=', False)]}"/>
@@ -463,6 +462,7 @@
                             <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
                         </button>
                     </div>
+                    <field name="kanban_state" widget="state_selection"/>
                     <div class="oe_title">
                         <label for="name" string="Short Summary" class="oe_edit_only"/>
                         <h2><field name="name" attrs="{'readonly': [('state', '=', 'done')]}"/></h2>
@@ -537,13 +537,18 @@
                         </page>
                         <page string="Approvals">
                             <field name="approval_ids" nolabel="1" readonly="1" help="ECO approvals">
-                                <tree decoration-info="template_stage_id==eco_stage_id">
+                                <tree decoration-danger="template_stage_id == eco_stage_id and status == 'rejected' and not is_closed"
+                                  decoration-info="template_stage_id == eco_stage_id and status == 'none' and not is_closed"
+                                  decoration-success="template_stage_id == eco_stage_id and status in ('approved', 'commented') and not is_closed"
+                                  decoration-muted="template_stage_id != eco_stage_id">
                                     <field name="name"/>
                                     <field name="user_id"/>
                                     <field name="status"/>
+                                    <field name="approval_date"/>
                                     <field name="template_stage_id"/>
                                     <field name="required_user_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                                     <field name="eco_stage_id" invisible="1"/>
+                                    <field name="is_closed" invisible="1"/>
                                 </tree>
                                 <form>
                                     <group>
@@ -890,7 +895,6 @@
         name="ECO Stages"
         action="mrp_eco_stage_action"
         parent="menu_mrp_plm_configuration"
-        groups="base.group_no_one"
         sequence="5"/>
     <menuitem
         id="menu_mrp_plm_eco_types"
@@ -903,7 +907,6 @@
         id="menu_mrp_plm_eco_tag"
         name="ECO Tags"
         action="mrp_eco_tag_action"
-        groups="base.group_no_one"
         parent="menu_mrp_plm_configuration"
         sequence="11"/>
 

@@ -8,4 +8,9 @@
             <link rel="stylesheet" type="text/scss" href="/mrp_plm/static/src/scss/mrp_plm_dashboard.scss"/>
         </xpath>
     </template>
+    <template id="message_approval">
+        Approval: <t t-esc="approval.name"/>
+        was <t t-esc="approval.status"/>
+        by <t t-esc="approval.user_id.name"/>
+    </template>
 </odoo>

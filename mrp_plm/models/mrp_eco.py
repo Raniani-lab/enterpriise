@@ -60,6 +60,7 @@ class MrpEcoApprovalTemplate(models.Model):
 class MrpEcoApproval(models.Model):
     _name = "mrp.eco.approval"
     _description = 'ECO Approval'
+    _order = 'approval_date desc'
 
     eco_id = fields.Many2one(
         'mrp.eco', 'ECO',
@@ -84,6 +85,8 @@ class MrpEcoApproval(models.Model):
         ('approved', 'Approved'),
         ('rejected', 'Rejected')], string='Status',
         default='none', required=True)
+    approval_date = fields.Datetime('Approval Date')
+    is_closed = fields.Boolean()
     is_approved = fields.Boolean(
         compute='_compute_is_approved', store=True)
     is_rejected = fields.Boolean(
@@ -184,10 +187,10 @@ class MrpEco(models.Model):
         ('done', 'Done')], string='Status',
         copy=False, default='confirmed', readonly=True, required=True)
     user_can_approve = fields.Boolean(
-        'Can Approve', compute='_compute_user_can_approve',
+        'Can Approve', compute='_compute_user_approval',
         help='Technical field to check if approval by current user is required')
     user_can_reject = fields.Boolean(
-        'Can Reject', compute='_compute_user_can_reject',
+        'Can Reject', compute='_compute_user_approval',
         help='Technical field to check if reject by current user is possible')
     kanban_state = fields.Selection([
         ('normal', 'In Progress'),
@@ -393,37 +396,19 @@ class MrpEco(models.Model):
                 })]
         self.routing_change_ids = new_routing_commands
 
-    @api.multi
-    @api.depends('approval_ids')
-    def _compute_user_can_approve(self):
-        approvals = self.env['mrp.eco.approval'].search([
-            ('eco_id', 'in', self.ids),
-            ('status', 'not in', ['approved']),
-            ('template_stage_id', 'in', self.mapped('stage_id').ids),
-            ('approval_template_id.approval_type', 'in', ('mandatory', 'optional')),
-            ('required_user_ids', 'in', self.env.uid)])
-        to_approve_eco_ids = approvals.mapped('eco_id').ids
+    def _compute_user_approval(self):
         for eco in self:
-            eco.user_can_approve = eco.id in to_approve_eco_ids
-
-    @api.multi
-    @api.depends('approval_ids')
-    def _compute_user_can_reject(self):
-        approvals = self.env['mrp.eco.approval'].search([
-            ('eco_id', 'in', self.ids),
-            ('status', 'not in', ['rejected']),
-            ('template_stage_id', 'in', self.mapped('stage_id').ids),
-            ('approval_template_id.approval_type', 'in', ('mandatory', 'optional')),
-            ('required_user_ids', 'in', self.env.uid)])
-        to_reject_eco_ids = approvals.mapped('eco_id').ids
-        for eco in self:
-            self.user_can_reject = eco.id in to_reject_eco_ids
+            is_required_approval = eco.stage_id.approval_template_ids.filtered(lambda x: x.approval_type in ('mandatory', 'optional') and self.env.user in x.user_ids)
+            user_approvals = eco.approval_ids.filtered(lambda x: x.template_stage_id == eco.stage_id and x.user_id == self.env.user and not x.is_closed)
+            last_approval = user_approvals.sorted(lambda a : a.create_date, reverse=True)[:1]
+            eco.user_can_approve = is_required_approval and not last_approval.is_approved
+            eco.user_can_reject = is_required_approval and not last_approval.is_rejected
 
     @api.one
-    @api.depends('stage_id','approval_ids.is_approved', 'approval_ids.is_rejected')
+    @api.depends('stage_id', 'approval_ids.is_approved', 'approval_ids.is_rejected')
     def _compute_kanban_state(self):
         """ State of ECO is based on the state of approvals for the current stage. """
-        approvals = self.approval_ids.filtered(lambda app: app.template_stage_id == self.stage_id)
+        approvals = self.approval_ids.filtered(lambda app: app.template_stage_id == self.stage_id and not app.is_closed)
         if not approvals:
             self.kanban_state = 'normal'
         elif all(approval.is_approved for approval in approvals):
@@ -474,19 +459,21 @@ class MrpEco(models.Model):
         if vals.get('stage_id'):
             newstage = self.env['mrp.eco.stage'].browse(vals['stage_id'])
             # raise exception only if we increase the stage, not on decrease
-            if self.stage_id and ((newstage.sequence, newstage.id) > (self.stage_id.sequence, self.stage_id.id)):
-                if any(not eco.allow_change_stage for eco in self):
-                    raise UserError(_('You cannot change the stage, as approvals are still required.'))
-                new_stage = self.env['mrp.eco.stage'].browse(vals['stage_id'])
-                minimal_sequence = min(self.mapped('stage_id').mapped('sequence'))
-                has_blocking_stages = self.env['mrp.eco.stage'].search_count([
-                    ('sequence', '>=', minimal_sequence),
-                    ('sequence', '<=', new_stage.sequence),
-                    ('type_id', 'in', self.mapped('type_id').ids),
-                    ('id', 'not in', self.mapped('stage_id').ids + [vals['stage_id']]),
-                    ('is_blocking', '=', True)])
-                if has_blocking_stages:
-                    raise UserError(_('You cannot change the stage, as approvals are required in the process.'))
+            for eco in self:
+                if eco.stage_id and ((newstage.sequence, newstage.id) > (eco.stage_id.sequence, eco.stage_id.id)):
+                    if not eco.allow_change_stage:
+                        raise UserError(_('You cannot change the stage, as approvals are still required.'))
+                    has_blocking_stages = self.env['mrp.eco.stage'].search_count([
+                        ('sequence', '>=', eco.stage_id.sequence),
+                        ('sequence', '<=', newstage.sequence),
+                        ('type_id', '=', eco.type_id.id),
+                        ('id', 'not in', [eco.stage_id.id] + [vals['stage_id']]),
+                        ('is_blocking', '=', True)])
+                    if has_blocking_stages:
+                        raise UserError(_('You cannot change the stage, as approvals are required in the process.'))
+                if eco.stage_id != newstage:
+                    eco.approval_ids.filtered(lambda x: x.status != 'none').write({'is_closed': True})
+                    eco.approval_ids.filtered(lambda x: x.status == 'none').unlink()
         res = super(MrpEco, self).write(vals)
         if vals.get('stage_id'):
             self._create_approvals()
@@ -522,44 +509,41 @@ class MrpEco(models.Model):
     def _create_approvals(self):
         for eco in self:
             for approval_template in eco.stage_id.approval_template_ids:
-                approval = eco.approval_ids.filtered(lambda app: app.approval_template_id == approval_template)
+                approval = eco.approval_ids.filtered(lambda app: app.approval_template_id == approval_template and not app.is_closed)
                 if not approval:
                     self.env['mrp.eco.approval'].create({
                         'eco_id': eco.id,
                         'approval_template_id': approval_template.id,
                     })
-                # If approval already exists update it
+
+    def _create_or_update_approval(self, status):
+        for eco in self:
+            for approval_template in eco.stage_id.approval_template_ids.filtered(lambda a: self.env.user in a.user_ids):
+                approvals = eco.approval_ids.filtered(lambda x: x.approval_template_id == approval_template and not x.is_closed)
+                none_approvals = approvals.filtered(lambda a: a.status =='none')
+                confirmed_approvals = approvals - none_approvals
+                if none_approvals:
+                    none_approvals.write({'status': status, 'user_id': self.env.uid, 'approval_date': fields.Datetime.now()})
+                    confirmed_approvals.write({'is_closed': True})
+                    approval = none_approvals[:1]
                 else:
-                    if approval.status != 'none':
-                        msg = 'Approval: ' + approval.name + ' was ' + approval.status
-                        if (approval.user_id):
-                            msg = msg + ' by ' + approval.user_id.name
-                        msg = msg + '.'
-                        self.message_post(body=msg)
-                        approval.write({
-                            'status': 'none',
-                            'user_id': False,
-                        })
+                    approvals.write({'is_closed': True})
+                    approval = self.env['mrp.eco.approval'].create({
+                        'eco_id': eco.id,
+                        'approval_template_id': approval_template.id,
+                        'status': status,
+                        'user_id': self.env.uid,
+                        'approval_date': fields.Datetime.now(),
+                    })
+                eco.message_post_with_view('mrp_plm.message_approval', values={'approval': approval})
 
     @api.multi
     def approve(self):
-        for eco in self:
-            for approval in eco.approval_ids.filtered(lambda app: app.template_stage_id == self.stage_id and app.approval_template_id.approval_type in ('mandatory', 'optional')):
-                if self.env.user in approval.approval_template_id.user_ids:
-                    approval.write({
-                        'status': 'approved',
-                        'user_id': self.env.uid
-                    })
+        self._create_or_update_approval(status='approved')
 
     @api.multi
     def reject(self):
-        for eco in self:
-            for approval in eco.approval_ids.filtered(lambda app: app.template_stage_id == self.stage_id and app.approval_template_id.approval_type in ('mandatory', 'optional')):
-                if self.env.user in approval.approval_template_id.user_ids:
-                    approval.write({
-                        'status': 'rejected',
-                        'user_id': self.env.uid
-                    })
+        self._create_or_update_approval(status='rejected')
 
     @api.multi
     def conflict_resolve(self):

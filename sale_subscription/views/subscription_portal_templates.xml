@@ -35,7 +35,7 @@
                                 </div>
                             </li>
                             <li t-if="display_close" class="list-group-item flex-grow-1">
-                                <a role="button" class="mt8 btn btn-secondary" data-toggle="modal" data-target="#wc-modal-close" href="#">Close your subscription</a>
+                                <a role="button" class="mt8 btn btn-secondary" data-toggle="modal" data-target="#wc-modal-close" href="#">Close subscription</a>
                             </li>
                         </ul>
                     </t>
@@ -213,7 +213,7 @@
 
                             <!-- ======  Manage Payment methods ====== -->
                             <t t-if="request.env['payment.acquirer'].search([('website_published', '=', True), ('registration_view_template_id', '!=', False)])">
-                                <div class='manage_payment_method mt16'><a href="/my/payment_method">Manage your payment methods</a></div>
+                                <div class='manage_payment_method mt16'><a href="/my/payment_method">Manage payment methods</a></div>
                             </t>
                         </div>
                     </div>
@@ -233,12 +233,12 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <header class="modal-header">
-                                <h4 class="modal-title">Close your subscription</h4>
+                                <h4 class="modal-title">Close subscription</h4>
                             </header>
                             <form method="post" t-attf-action="/my/subscription/#{account.id}/close/?uuid=#{account.uuid}">
                                 <input class="d-none" name="csrf_token" t-att-value="request.csrf_token()"/>
                                 <main class="modal-body">
-                                    <p>If you confirm, you subscription will be closed right away. Your current invoicing period is valid until <span t-field="account.recurring_next_date"/>.</p>
+                                    <p>If you confirm, your subscription will be closed right away. Your current invoicing period is valid until <span t-field="account.recurring_next_date"/>.</p>
                                     <p>We always listen to our customer. Could you specify the reason for cancelling your subscription?</p>
                                     <div class="form-group">
                                         <select class="form-control" name="close_reason_id">

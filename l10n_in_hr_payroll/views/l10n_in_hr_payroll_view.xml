@@ -208,7 +208,7 @@
         <act_window name="Payslips"
             domain="[('advice_id', '=', active_id)]"
             res_model="hr.payslip"
-            src_model="hr.payroll.advice"
+            binding_model="hr.payroll.advice" binding_views="form"
             view_id ="hr_payroll.view_hr_payslip_tree"
             id="act_hr_emp_payslip_list"
          />

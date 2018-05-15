@@ -51,6 +51,6 @@
         <field name="view_mode">form</field>
         <field name="target">new</field>
         <field name="binding_model_id" ref="hr.model_hr_employee"/>
-        <field name="binding_type">action_form_only</field>
+        <field name="binding_view_types">form</field>
     </record>
 </odoo>

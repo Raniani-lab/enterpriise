@@ -38,17 +38,18 @@ FIELDS_TO_EXPORT = {
         'trg_date_range_type', 'trigger'
     ],
     'ir.actions.act_window': [
-        'auto_search', 'binding_model_id', 'binding_type', 'context', 'domain', 'filter',
-        'groups_id', 'help', 'limit', 'multi', 'name', 'res_model', 'search_view_id', 'src_model',
+        'binding_model_id', 'binding_type', 'binding_view_types',
+        'context', 'domain', 'filter',
+        'groups_id', 'help', 'limit', 'name', 'res_model', 'search_view_id',
         'target', 'type', 'usage', 'view_id', 'view_mode', 'view_type'
     ],
     'ir.actions.act_window.view': ['act_window_id', 'multi', 'sequence', 'view_id', 'view_mode'],
     'ir.actions.report': [
-        'attachment', 'attachment_use', 'binding_model_id', 'binding_type', 'groups_id', 'model',
+        'attachment', 'attachment_use', 'binding_model_id', 'binding_type', 'binding_view_types', 'groups_id', 'model',
         'multi', 'name', 'paperformat_id', 'report_name', 'report_type'
     ],
     'ir.actions.server': [
-        'binding_model_id', 'binding_type', 'child_ids', 'code', 'crud_model_id', 'help',
+        'binding_model_id', 'binding_type', 'binding_view_types', 'child_ids', 'code', 'crud_model_id', 'help',
         'link_field_id', 'model_id', 'name', 'sequence', 'state'
     ],
     'ir.filters': [
@@ -257,11 +258,11 @@ def get_relations(record, field):
             # but it refers to another field that must be defined beforehand
             return record.search([('model', '=', record.relation), ('name', '=', record.relation_field)])
 
-    # Fields 'res_model' and 'src_model' on 'ir.actions.act_window' and 'model'
+    # Fields 'res_model' and 'binding_model' on 'ir.actions.act_window' and 'model'
     # on 'ir.actions.report' are of type char but refer to models that may
     # be defined in other modules and those modules need to be listed as
     # dependencies of the exported module
-    if field.model_name == 'ir.actions.act_window' and field.name in ('res_model', 'src_model'):
+    if field.model_name == 'ir.actions.act_window' and field.name in ('res_model', 'binding_model'):
         return record.env['ir.model'].search([('model', '=', record[field.name])])
     if field.model_name == 'ir.actions.report' and field.name == 'model':
         return record.env['ir.model'].search([('model', '=', record.model)])

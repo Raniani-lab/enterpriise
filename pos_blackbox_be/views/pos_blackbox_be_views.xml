@@ -627,7 +627,8 @@
             name="Pro forma orders (PS)"
             context="{'search_default_partner_id': [active_id]}"
             res_model="pos.order_pro_forma"
-            src_model="res.partner"/>
+            binding_model="res.partner"
+            binding_views="form"/>
 
         <template id="fdm_source">
 SIGNATURES:

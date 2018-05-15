@@ -51,10 +51,9 @@
        <act_window
             name="Send By Post"
             id="followup_send"
-            multi="True"
-            key2="client_action_multi"
             res_model="followup.send"
-            src_model="res.partner"
+            binding_model="res.partner"
+            binding_views="list"
             view_mode="form"
             target="new"
             view_type="form"

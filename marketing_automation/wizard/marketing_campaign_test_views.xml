@@ -28,7 +28,8 @@
     <record id="marketing_campaign_test_action" model="ir.actions.act_window">
         <field name="name">Launch a test</field>
         <field name="res_model">marketing.campaign.test</field>
-        <field name="src_model">marketing.campaign.test</field>
+        <field name="binding_model_id" ref="model_marketing_campaign_test"/>
+        <field name="binding_view_types">form</field>
         <field name="view_type">form</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>

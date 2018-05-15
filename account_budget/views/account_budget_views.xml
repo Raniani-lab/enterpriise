@@ -254,7 +254,7 @@ Budgets
             <p>
                 Use budgets to compare actual with expected revenues and costs
             </p>
-            <div id="msg_account_budget" class="content-group" attrs="{'invisible': [('module_account_budget', '=', False)]}"/>  
+            <div id="msg_account_budget" class="content-group" attrs="{'invisible': [('module_account_budget', '=', False)]}"/>
         </field>
     </record>
     <menuitem parent="account.menu_finance_entries_management"
@@ -368,7 +368,8 @@ Budgets
     <act_window name="Budget Items"
                 context="{'search_default_analytic_account_id': [active_id], 'default_analytic_account_id': active_id}"
                 res_model="crossovered.budget.lines"
-                src_model="account.analytic.account"
+                binding_model="account.analytic.account"
+                binding_views="form"
                 id="act_account_analytic_account_cb_lines"/>
 
 </odoo>

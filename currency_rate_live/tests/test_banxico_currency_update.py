@@ -7,7 +7,7 @@ try:
     from unittest.mock import patch
 except ImportError:
     from mock import patch
-from suds.client import Client
+from zeep import Client
 
 
 class AlwaysCallable(object):
@@ -35,7 +35,7 @@ class AlwaysCallable(object):
 
 class ClientMock(Client):
     """
-    Abstract mock suds client.
+    Abstract mock zeep client.
     """
 
     def __init__(self, url, **kwargs):
@@ -174,7 +174,7 @@ class BanxicoTest(TransactionCase):
         self.assertEqual(self.usd.rate, 1.0)
         self.set_rate(self.mxn, 10.0)
         self.assertEqual(self.mxn.rate, 10.0)
-        with patch('suds.client.Client', new=serviceClientMock):
+        with patch('zeep.Client', new=serviceClientMock):
             self.company.update_currency_rates()
         self.assertNotEqual(self.usd.rate, 1.0)
         self.assertNotEqual(self.mxn.rate, 10.0)
@@ -186,7 +186,7 @@ class BanxicoTest(TransactionCase):
         self.assertEqual(self.mxn.rate, 1.0)
         self.set_rate(self.usd, 0.1)
         self.assertEqual(self.usd.compare_amounts(self.usd.rate, 0.1), 0)
-        with patch('suds.client.Client', new=serviceClientMock):
+        with patch('zeep.Client', new=serviceClientMock):
             self.company.update_currency_rates()
         self.assertEqual(self.mxn.rate, 1.0)
         self.assertNotEqual(self.usd.rate, 1.0 / 10.0)
@@ -206,7 +206,7 @@ class BanxicoTest(TransactionCase):
         self.set_rate(self.mxn, 1)
         self.assertEqual(self.mxn.rate, 1)
         self.cad.rate_ids.unlink()
-        with patch('suds.client.Client', new=serviceClientMock2):
+        with patch('zeep.Client', new=serviceClientMock2):
             self.company.update_currency_rates()
         self.assertFalse(self.cad.rate_ids)
 
@@ -231,7 +231,7 @@ class BanxicoTest(TransactionCase):
         self.assertFalse(self.usd.rate_ids.filtered(lambda r: r.company_id.id == self.company_1.id))
 
         # Let us fetch the newest USD rates for company_2 & company_1
-        with patch('suds.client.Client', new=serviceClientMock):
+        with patch('zeep.Client', new=serviceClientMock):
             companies.update_currency_rates()
         self.assertEqual(len(self.usd.rate_ids.filtered(lambda r: r.company_id.id == self.company_2.id)), 1)
         self.assertEqual(len(self.usd.rate_ids.filtered(lambda r: r.company_id.id == self.company_1.id)), 1)
@@ -247,7 +247,7 @@ class BanxicoTest(TransactionCase):
 
         # Update the currency rates, as banxico is only set in company_2 then
         # company_1 is left without currency rates
-        with patch('suds.client.Client', new=serviceClientMock):
+        with patch('zeep.Client', new=serviceClientMock):
             companies.update_currency_rates()
 
         self.assertEqual(len(self.usd.rate_ids.filtered(lambda r: r.company_id.id == self.company_2.id)), 1)

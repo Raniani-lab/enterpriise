@@ -12,7 +12,8 @@ from pytz import timezone
 
 from lxml import etree
 from lxml.objectify import fromstring
-from suds.client import Client
+from zeep import Client
+from zeep.transports import Transport
 
 from odoo import _, api, fields, models, tools
 from odoo.tools.xml_utils import _check_with_xsd
@@ -336,7 +337,8 @@ class AccountInvoice(models.Model):
         for inv in self:
             cfdi = inv.l10n_mx_edi_cfdi.decode('UTF-8')
             try:
-                client = Client(url, timeout=20)
+                transport = Transport(timeout=20)
+                client = Client(url, transport=transport)
                 response = client.service.timbrar(username, password, cfdi, False)
             except Exception as e:
                 inv.l10n_mx_edi_log_error(str(e))
@@ -364,7 +366,8 @@ class AccountInvoice(models.Model):
                 certificate_id.key, certificate_id.password)).decode('UTF-8')
             key_password = certificate_id.password
             try:
-                client = Client(url, timeout=20)
+                transport = Transport(timeout=20)
+                client = Client(url, transport=transport)
                 response = client.service.cancelar(username, password, uuids, cer_pem.replace(
                     '\n', ''), key_pem, key_password)
             except Exception as e:
@@ -406,7 +409,8 @@ class AccountInvoice(models.Model):
         for inv in self:
             cfdi = [inv.l10n_mx_edi_cfdi.decode('UTF-8')]
             try:
-                client = Client(url, timeout=20)
+                transport = Transport(timeout=20)
+                client = Client(url, transport=transport)
                 response = client.service.stamp(cfdi, username, password)
             except Exception as e:
                 inv.l10n_mx_edi_log_error(str(e))
@@ -439,8 +443,9 @@ class AccountInvoice(models.Model):
             cancelled = False
             code = False
             try:
-                client = Client(url, timeout=20)
-                invoices_list = client.factory.create("UUIDS")
+                transport = Transport(timeout=20)
+                client = Client(url, transport=transport)
+                invoices_list = client.get_type("ns0:UUIDS")()
                 invoices_list.uuids.string = [uuid]
                 response = client.service.cancel(invoices_list, username, password, company_id.vat, cer_pem.replace(
                     '\n', ''), key_pem)

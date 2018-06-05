@@ -7,7 +7,7 @@ import re
 import logging
 
 import requests
-import suds.client
+import zeep
 
 from odoo import api, fields, models
 from odoo.addons.web.controllers.main import xml2json_from_elementtree
@@ -262,7 +262,7 @@ class ResCompany(models.Model):
         Source: http://www.banxico.org.mx/portal-mercado-cambiario/
         """
         try:
-            client = suds.client.Client('http://www.banxico.org.mx/DgieWSWeb/DgieWS?WSDL', cache=None)
+            client = zeep.Client('http://www.banxico.org.mx/DgieWSWeb/DgieWS?WSDL')
             xml_str = client.service.tiposDeCambioBanxico().encode('utf-8')
         except:
             return False

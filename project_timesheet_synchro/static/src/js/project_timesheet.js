@@ -966,6 +966,9 @@ odoo.define('project_timeshee.ui', function (require ) {
             var self = this;
             self.timer_on = true;
             self.start_timer_time = new Date();
+            if(window.chrome && window.chrome.storage) {
+                window.chrome.storage.local.set({ "isTimerOn": true }, function () {});
+            }
             local_storage.setItem("pt_start_timer_time", JSON.stringify(self.start_timer_time));
             this.timer_start = setInterval(function() {self.refresh_timer(self.start_timer_time, 0);},500);
             core.bus.trigger('change_screen', {
@@ -1496,6 +1499,9 @@ odoo.define('project_timeshee.ui', function (require ) {
         // The only required field is "project_id".
         save_changes: function() {
             this.clear_timer();
+            if(window.chrome && window.chrome.storage) {
+                window.chrome.storage.local.set({ "isTimerOn": false }, function () {});
+            }
             var self = this;
             // Validation step
             if (_.isUndefined(this.activity.project_id)) {
@@ -1541,6 +1547,9 @@ odoo.define('project_timeshee.ui', function (require ) {
         },
         discard_changes: function() {
             this.clear_timer();
+            if(window.chrome && window.chrome.storage) {
+                window.chrome.storage.local.set({ "isTimerOn": false }, function () {});
+            }
             core.bus.trigger('change_screen', {
                 id : 'activities',
             });
@@ -1563,6 +1572,9 @@ odoo.define('project_timeshee.ui', function (require ) {
         delete_activity: function() {
             var self = this;
             this.clear_timer();
+            if(window.chrome && window.chrome.storage) {
+                window.chrome.storage.local.set({ "isTimerOn": false }, function () {});
+            }
             if (!_.isUndefined(this.activity.id)) {
                 var aal_to_remove = _.findWhere(this.getParent().data.account_analytic_lines, {id : this.activity.id});
                 aal_to_remove.to_remove = true;

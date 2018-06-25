@@ -2,7 +2,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models, _
-from odoo.addons import decimal_precision as dp
 
 
 class TestType(models.Model):
@@ -88,7 +87,7 @@ class QualityCheck(models.Model):
     component_id = fields.Many2one('product.product', 'Component')
     component_uom_id = fields.Many2one(related='workorder_line_id.product_uom_id', readonly=True)
     workorder_line_id = fields.Many2one('mrp.workorder.line', 'Workorder Line', oldname='move_line_id')
-    qty_done = fields.Float('Done', default=1.0, digits=dp.get_precision('Product Unit of Measure'))
+    qty_done = fields.Float('Done', default=1.0, digits='Product Unit of Measure')
     finished_lot_id = fields.Many2one('stock.production.lot', 'Finished Product Lot')
 
     # Computed fields

@@ -3,7 +3,6 @@
 
 import math
 from odoo import fields, models
-from odoo.addons import decimal_precision as dp
 
 PERIOD_RATIO = {
     'hour': 1,
@@ -24,7 +23,7 @@ class RentalPricing(models.Model):
         help="Minimum duration before this rule is applied. If set to 0, it represents a fixed rental price.")
     unit = fields.Selection([("hour", "Hour(s)"), ("day", "Day(s)"), ("week", "Week(s)")], string="Unit", required=True, default='day')
 
-    price = fields.Monetary(string="Price", required=True, digits=dp.get_precision('Product Price'), default=1.0)
+    price = fields.Monetary(string="Price", required=True, digits='Product Price', default=1.0)
     currency_id = fields.Many2one(
         'res.currency', 'Currency',
         default=lambda self: self.env.company.currency_id.id,

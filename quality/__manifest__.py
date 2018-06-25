@@ -8,7 +8,7 @@
     'category': 'Manufacturing/Quality',
     'sequence': 50,
     'summary': 'Basic Feature for Quality',
-    'depends': ['stock', 'decimal_precision'],
+    'depends': ['stock'],
     'description': """
 Quality Base
 ===============

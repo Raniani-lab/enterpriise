@@ -2,15 +2,14 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import fields, models
-from odoo.addons import decimal_precision as dp
 
 
 class ResCompany(models.Model):
     _inherit = 'res.company'
 
-    plafond_secu = fields.Float(string='Plafond de la Securite Sociale', digits=dp.get_precision('Payroll'))
+    plafond_secu = fields.Float(string='Plafond de la Securite Sociale', digits='Payroll')
     nombre_employes = fields.Integer(string='Nombre d\'employes')
-    cotisation_prevoyance = fields.Float(string='Cotisation Patronale Prevoyance', digits=dp.get_precision('Payroll'))
+    cotisation_prevoyance = fields.Float(string='Cotisation Patronale Prevoyance', digits='Payroll')
     org_ss = fields.Char(string='Organisme de securite sociale')
     conv_coll = fields.Char(string='Convention collective')
 

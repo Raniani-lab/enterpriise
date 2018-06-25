@@ -5,7 +5,6 @@ from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 from datetime import datetime
 from odoo.tools import float_compare, float_round
-from odoo.addons import decimal_precision as dp
 
 
 class MrpProductionWorkorder(models.Model):
@@ -39,7 +38,7 @@ class MrpProductionWorkcenterLine(models.Model):
     allow_producing_quantity_change = fields.Boolean('Allow Changes to Producing Quantity', default=True)
     component_id = fields.Many2one('product.product', related='current_quality_check_id.component_id')
     component_tracking = fields.Selection(related='component_id.tracking', string="Is Component Tracked", readonly=False)
-    component_remaining_qty = fields.Float('Remaining Quantity for Component', compute='_compute_component_data', digits=dp.get_precision('Product Unit of Measure'))
+    component_remaining_qty = fields.Float('Remaining Quantity for Component', compute='_compute_component_data', digits='Product Unit of Measure')
     component_uom_id = fields.Many2one('uom.uom', compute='_compute_component_data', string="Component UoM")
     control_date = fields.Datetime(related='current_quality_check_id.control_date', readonly=False)
     is_first_step = fields.Boolean('Is First Step')

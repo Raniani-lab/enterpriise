@@ -7,7 +7,6 @@ import random
 
 from odoo import api, models, fields, _, SUPERUSER_ID
 from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT
-from odoo.addons import decimal_precision as dp
 
 
 class QualityPoint(models.Model):
@@ -25,9 +24,9 @@ class QualityPoint(models.Model):
         ('day', 'Day(s)'),
         ('week', 'Week(s)'),
         ('month', 'Month(s)')], default="day")  # TDE RENAME ?
-    norm = fields.Float('Norm', digits=dp.get_precision('Quality Tests'))  # TDE RENAME ?
-    tolerance_min = fields.Float('Min Tolerance', digits=dp.get_precision('Quality Tests'))
-    tolerance_max = fields.Float('Max Tolerance', digits=dp.get_precision('Quality Tests'))
+    norm = fields.Float('Norm', digits='Quality Tests')  # TDE RENAME ?
+    tolerance_min = fields.Float('Min Tolerance', digits='Quality Tests')
+    tolerance_max = fields.Float('Max Tolerance', digits='Quality Tests')
     norm_unit = fields.Char('Norm Unit', default=lambda self: 'mm')  # TDE RENAME ?
     average = fields.Float(compute="_compute_standard_deviation_and_average")
     standard_deviation = fields.Float(compute="_compute_standard_deviation_and_average")
@@ -123,7 +122,7 @@ class QualityCheck(models.Model):
     _inherit = "quality.check"
 
     failure_message = fields.Html(related='point_id.failure_message', readonly=True)
-    measure = fields.Float('Measure', default=0.0, digits=dp.get_precision('Quality Tests'), tracking=True)
+    measure = fields.Float('Measure', default=0.0, digits='Quality Tests', tracking=True)
     measure_success = fields.Selection([
         ('none', 'No measure'),
         ('pass', 'Pass'),

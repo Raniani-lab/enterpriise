@@ -5,7 +5,6 @@ from datetime import date, datetime
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models, _
-from odoo.addons import decimal_precision as dp
 from odoo.addons.hr_payroll.models.browsable_object import BrowsableObject, InputLine, WorkedDays, Payslips
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools import float_round, date_utils
@@ -339,10 +338,10 @@ class HrPayslipLine(models.Model):
     salary_rule_id = fields.Many2one('hr.salary.rule', string='Rule', required=True)
     contract_id = fields.Many2one('hr.contract', string='Contract', required=True, index=True)
     employee_id = fields.Many2one('hr.employee', string='Employee', required=True)
-    rate = fields.Float(string='Rate (%)', digits=dp.get_precision('Payroll Rate'), default=100.0)
-    amount = fields.Float(digits=dp.get_precision('Payroll'))
-    quantity = fields.Float(digits=dp.get_precision('Payroll'), default=1.0)
-    total = fields.Float(compute='_compute_total', string='Total', digits=dp.get_precision('Payroll'), store=True)
+    rate = fields.Float(string='Rate (%)', digits='Payroll Rate', default=100.0)
+    amount = fields.Float(digits='Payroll')
+    quantity = fields.Float(digits='Payroll', default=1.0)
+    total = fields.Float(compute='_compute_total', string='Total', digits='Payroll', store=True)
 
     amount_select = fields.Selection(related='salary_rule_id.amount_select', readonly=True)
     amount_fix = fields.Float(related='salary_rule_id.amount_fix', readonly=True)
@@ -384,7 +383,7 @@ class HrPayslipWorkedDays(models.Model):
     work_entry_type_id = fields.Many2one('hr.work.entry.type', string='Type', required=True, help="The code that can be used in the salary rules")
     number_of_days = fields.Float(string='Number of Days')
     number_of_hours = fields.Float(string='Number of Hours')
-    amount = fields.Monetary(string='Amount', digits=dp.get_precision('Payroll'), default=0.0)
+    amount = fields.Monetary(string='Amount', digits='Payroll', default=0.0)
     contract_id = fields.Many2one(related='payslip_id.contract_id', string='Contract', required=True,
         help="The contract for which applied this worked days")
     currency_id = fields.Many2one('res.currency', related='payslip_id.currency_id')

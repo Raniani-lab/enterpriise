@@ -14,7 +14,6 @@ from odoo.osv import expression
 from odoo.tools import format_date
 from odoo.tools.safe_eval import safe_eval
 
-from odoo.addons import decimal_precision as dp
 
 _logger = logging.getLogger(__name__)
 
@@ -870,9 +869,9 @@ class SaleSubscriptionLine(models.Model):
     name = fields.Text(string='Description', required=True)
     quantity = fields.Float(string='Quantity', help="Quantity that will be invoiced.", default=1.0)
     uom_id = fields.Many2one('uom.uom', default=_get_default_uom_id, string='Unit of Measure', required=True)
-    price_unit = fields.Float(string='Unit Price', required=True, digits=dp.get_precision('Product Price'))
-    discount = fields.Float(string='Discount (%)', digits=dp.get_precision('Discount'))
-    price_subtotal = fields.Float(compute='_compute_price_subtotal', string='Subtotal', digits=dp.get_precision('Account'), store=True)
+    price_unit = fields.Float(string='Unit Price', required=True, digits='Product Price')
+    discount = fields.Float(string='Discount (%)', digits='Discount')
+    price_subtotal = fields.Float(compute='_compute_price_subtotal', string='Subtotal', digits='Account', store=True)
 
     @api.depends('price_unit', 'quantity', 'discount', 'analytic_account_id.pricelist_id')
     def _compute_price_subtotal(self):

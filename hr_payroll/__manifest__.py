@@ -12,7 +12,6 @@
     'depends': [
         'hr_contract',
         'hr_holidays',
-        'decimal_precision',
         'web_dashboard',
     ],
     'data': [

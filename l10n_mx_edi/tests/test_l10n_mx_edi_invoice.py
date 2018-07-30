@@ -1,6 +1,7 @@
 # coding: utf-8
 
 import base64
+from datetime import timedelta
 import os
 
 from lxml import etree, objectify
@@ -32,6 +33,8 @@ class TestL10nMxEdiInvoice(common.InvoiceTransactionCase):
         isr_tag = self.env['account.account.tag'].search(
             [('name', '=', 'ISR')])
         self.tax_negative.tag_ids |= isr_tag
+        self.payment_method_manual_out = self.env.ref(
+            "account.account_payment_method_manual_out")
 
     def l10n_mx_edi_basic_configuration(self):
         self.company.write({
@@ -266,3 +269,28 @@ class TestL10nMxEdiInvoice(common.InvoiceTransactionCase):
         attachment = payment.l10n_mx_edi_retrieve_attachments()
         self.assertEqual(len(attachment), 2,
                          'Documents not attached correctly')
+
+    def test_l10n_mx_edi_payment(self):
+        journal = self.env['account.journal'].search(
+            [('type', '=', 'bank')], limit=1)
+        self.company.partner_id.property_account_position_id = self.fiscal_position.id
+        invoice = self.create_invoice()
+        invoice.move_name = 'INV/2017/999'
+        today = self.env['l10n_mx_edi.certificate'].sudo().get_mx_current_datetime()
+        invoice.action_invoice_open()
+        self.assertEqual(invoice.l10n_mx_edi_pac_status, "signed",
+                         invoice.message_ids.mapped("body"))
+        ctx = {'active_model': 'account.invoice', 'active_ids': [invoice.id]}
+        register_payments = self.env['account.register.payments'].with_context(ctx).create({
+            'payment_date': today - timedelta(days=5),
+            'l10n_mx_edi_payment_method_id': self.payment_method_cash.id,
+            'payment_method_id': self.payment_method_manual_out.id,
+            'journal_id': journal.id,
+            'communication': invoice.number,
+            'amount': invoice.amount_total,
+        })
+        register_payments.create_payments()
+        payment = invoice.payment_ids
+        self.assertEqual(
+            payment.l10n_mx_edi_pac_status, 'signed',
+            payment.message_ids.mapped('body'))

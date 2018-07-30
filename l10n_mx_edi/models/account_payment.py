@@ -81,14 +81,28 @@ class AccountPayment(models.Model):
         'In that cases is necessary this field filled, the format is: '
         '\n04|UUID1, UUID2, ...., UUIDn.\n'
         'Example:\n"04|89966ACC-0F5C-447D-AEF3-3EED22E711EE,89966ACC-0F5C-447D-AEF3-3EED22E711EE"')
+    l10n_mx_edi_expedition_date = fields.Date(
+        string='Expedition Date', copy=False,
+        help='Save the expedition date of the CFDI that according to the SAT '
+        'documentation must be the date when the CFDI is issued.')
+    l10n_mx_edi_time_payment = fields.Char(
+        string='Time payment', readonly=True, copy=False,
+        states={'draft': [('readonly', False)]},
+        help="Keep empty to use the current Mexico central time")
 
     @api.multi
     def post(self):
         """Generate CFDI to payment after that invoice is paid"""
+        date_mx = self.env['l10n_mx_edi.certificate'].sudo().get_mx_current_datetime()
         res = super(AccountPayment, self).post()
         for record in self.filtered(lambda r: r.l10n_mx_edi_is_required()):
-            record.l10n_mx_edi_cfdi_name = ('%s-%s-MX-Payment-10.xml' % (
-                record.journal_id.code, record.name))
+            record.write({
+                'l10n_mx_edi_expedition_date': date_mx,
+                'l10n_mx_edi_time_payment': date_mx.strftime(
+                    DEFAULT_SERVER_TIME_FORMAT),
+                'l10n_mx_edi_cfdi_name': ('%s-%s-MX-Payment-10.xml' % (
+                    record.journal_id.code, record.name)),
+            })
             record._l10n_mx_edi_retry()
         return res
 
@@ -316,7 +330,13 @@ class AccountPayment(models.Model):
 
         # -Compute date and time of the invoice
         date_mx = self.env['l10n_mx_edi.certificate'].sudo().get_mx_current_datetime()
-        time_invoice = date_mx.strftime(DEFAULT_SERVER_TIME_FORMAT)
+        if not self.l10n_mx_edi_expedition_date:
+            self.l10n_mx_edi_expedition_date = date_mx
+        if not self.l10n_mx_edi_time_payment:
+            self.l10n_mx_edi_time_payment = date_mx.strftime(
+                DEFAULT_SERVER_TIME_FORMAT)
+        time_invoice = datetime.strptime(self.l10n_mx_edi_time_payment,
+                                         DEFAULT_SERVER_TIME_FORMAT).time()
 
         # -----------------------
         # Create the EDI document
@@ -324,8 +344,8 @@ class AccountPayment(models.Model):
 
         # -Compute certificate data
         values['date'] = datetime.combine(
-            fields.Datetime.from_string(self.payment_date),
-            datetime.strptime(time_invoice, '%H:%M:%S').time()).strftime('%Y-%m-%dT%H:%M:%S')
+            fields.Datetime.from_string(self.l10n_mx_edi_expedition_date),
+            time_invoice).strftime('%Y-%m-%dT%H:%M:%S')
         values['certificate_number'] = certificate_id.serial_number
         values['certificate'] = certificate_id.sudo().get_data()[0]
 
@@ -679,7 +699,12 @@ class AccountPayment(models.Model):
     @api.multi
     def action_draft(self):
         for record in self.filtered('l10n_mx_edi_cfdi_uuid'):
-            record.l10n_mx_edi_origin = self._set_cfdi_origin(record.l10n_mx_edi_cfdi_uuid)
+            record.write({
+                'l10n_mx_edi_expedition_date': False,
+                'l10n_mx_edi_time_payment': False,
+                'l10n_mx_edi_origin': self._set_cfdi_origin(
+                    record.l10n_mx_edi_cfdi_uuid),
+            })
         return super(AccountPayment, self).action_draft()
 
 

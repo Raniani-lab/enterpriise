@@ -15,7 +15,7 @@
                                         <t t-if="product[0].apply_active">
                                             <button role="button" class="btn btn-sm btn-primary float-right o_mps_apply" t-att-data-product="product[0].id">Apply</button>
                                         </t>
-                                        <strong class="btn btn-sm btn-link o_mps_product_name" t-att-data-product="product[0].id" t-esc="product[0].name_get()[0][1]"/>
+                                        <strong class="btn btn-sm btn-link o_mps_product_name" t-att-data-product="product[0].id" t-esc="product[0].display_name"/>
                                         <span class="text-muted"> by</span> <i t-esc="product[0].uom_id.name"/>
                                     </td>
                                     <td t-foreach="product[1]" t-as="period" class="text-center">

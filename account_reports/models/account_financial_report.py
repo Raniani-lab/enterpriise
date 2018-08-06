@@ -44,7 +44,7 @@ class ReportAccountFinancialReport(models.Model):
         if not comodel_name:
             return field_content
         grouping_record = self.env[comodel_name].browse(field_content)
-        return grouping_record.name_get()[0][1] if grouping_record and grouping_record.exists() else _('Undefined')
+        return grouping_record.display_name if grouping_record and grouping_record.exists() else _('Undefined')
 
     def _get_columns_name_hierarchy(self, options):
         '''Calculates a hierarchy of column headers meant to be easily used in QWeb.
@@ -904,7 +904,7 @@ class AccountFinancialReportLine(models.Model):
         if self.groupby and self.env['account.move.line']._fields[self.groupby].relational:
             relation = self.env['account.move.line']._fields[self.groupby].comodel_name
             gb = self.env[relation].browse(gb_id)
-            return gb.name_get()[0][1] if gb and gb.exists() else _('Undefined')
+            return gb.display_name if gb and gb.exists() else _('Undefined')
         return gb_id
 
     def _build_cmp(self, balance, comp):

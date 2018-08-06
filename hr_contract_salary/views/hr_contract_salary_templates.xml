@@ -78,7 +78,7 @@
                                                         </t>
                                                         <t t-if="new_car or contract.available_cars_amount &lt; max_unused_cars">
                                                             <t t-foreach="can_be_requested_models" t-as="model">
-                                                                <option t-att-value="'new-'+str(model.id)" t-att-selected="contract.new_car and contract.new_car_model_id.id == model.id"><t t-esc="model.name_get()[0][1] + u' \u2022 ' + str(round(model.default_total_depreciated_cost, 2)) + u' €  \u2022 New Car'"/></option>
+                                                                <option t-att-value="'new-'+str(model.id)" t-att-selected="contract.new_car and contract.new_car_model_id.id == model.id"><t t-esc="model.display_name + u' \u2022 ' + str(round(model.default_total_depreciated_cost, 2)) + u' €  \u2022 New Car'"/></option>
                                                             </t>
                                                         </t>
                                                     </select>
@@ -101,7 +101,7 @@
                                                         </label>
                                                         <select name="select_waiting_list_model" class="form-control form-control-primary mt16 mb8 d-none">
                                                             <t t-foreach="can_be_requested_models" t-as="model">
-                                                                <option t-att-value="model.id"><t t-esc="model.name_get()[0][1] + u' \u2022 ' + str(round(model.default_total_depreciated_cost, 2)) + u' €  \u2022 New Car'"/></option>
+                                                                <option t-att-value="model.id"><t t-esc="model.display_name + u' \u2022 ' + str(round(model.default_total_depreciated_cost, 2)) + u' €  \u2022 New Car'"/></option>
                                                             </t>
                                                         </select>
                                                     </div>

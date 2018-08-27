@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from datetime import datetime
-
-from odoo import models, api
+from odoo import fields, models, api
 
 class AccountJournal(models.Model):
     _inherit = 'account.journal'
@@ -29,5 +27,5 @@ class AccountJournal(models.Model):
                    WHERE journal_id = %(journal_id)s
                    AND (release_to_pay = 'yes' OR date_due < %(today)s)
                    AND state = 'open';""",
-                   {'journal_id':self.id, 'today':datetime.today()})
+                   {'journal_id': self.id, 'today': fields.Date.today()})
         return super(AccountJournal, self)._get_open_bills_to_pay_query()

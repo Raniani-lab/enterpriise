@@ -39,7 +39,7 @@ class HrContract(models.Model):
     contract_update_template_id = fields.Many2one('sign.template', string="Contract Update Document Template",
         help="Default document that the employee will have to sign to update his contract.")
     signatures_count = fields.Integer(compute='_compute_signatures_count', string='# Signatures',
-        help="The number of signatures on the mostly signed pdf contract.")
+        help="The number of signatures on the pdf contract with the most signatures.")
 
     @api.depends('sign_request_ids.nb_closed')
     def _compute_signatures_count(self):

@@ -70,8 +70,10 @@ tour.register('web_studio_new_app_tour', {
     trigger: '.o_web_studio_sidebar_content.o_display_field input[name="string"]',
     content: _t('Here, you can <b>name</b> your field (e.g. Book reference, ISBN, Internal Note, etc.).'),
     position: 'bottom',
-    run: 'text ' + utils.randomString(6),
+    run: 'text My Field',
 }, {
+    // wait for the field to be renamed
+    extra_trigger: '.o_web_studio_form_view_editor td.o_td_label:contains(My Field)',
     trigger: '.o_web_studio_sidebar .o_web_studio_new',
     content: _t('Good job! To add more <b>fields</b>, come back to the <i>Add tab</i>.'),
     position: 'bottom',

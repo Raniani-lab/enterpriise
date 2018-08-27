@@ -1,0 +1,284 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# * crm_enterprise
+# 
+# Translators:
+# Martin Trigaux, 2018
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-08-24 11:28+0000\n"
+"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"Last-Translator: Martin Trigaux, 2018\n"
+"Language-Team: Romanian (https://www.transifex.com/odoo/teams/41243/ro/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: ro\n"
+"Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1));\n"
+
+#. module: crm_enterprise
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
+msgid "Archived"
+msgstr "Arhivat"
+
+#. module: crm_enterprise
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_dashboard
+msgid "At A Glance"
+msgstr ""
+
+#. module: crm_enterprise
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_dashboard
+msgid "Average Expected Revenue"
+msgstr ""
+
+#. module: crm_enterprise
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
+msgid "Campaign"
+msgstr "Campanie"
+
+#. module: crm_enterprise
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
+msgid "City"
+msgstr "Oraș"
+
+#. module: crm_enterprise
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
+msgid "Company"
+msgstr "Companie"
+
+#. module: crm_enterprise
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
+msgid "Conversion Date"
+msgstr ""
+
+#. module: crm_enterprise
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
+msgid "Country"
+msgstr "Țară"
+
+#. module: crm_enterprise
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
+msgid "Creation Date"
+msgstr "Data creării"
+
+#. module: crm_enterprise
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
+msgid "Current"
+msgstr "Curent(ă)"
+
+#. module: crm_enterprise
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
+msgid "Customer"
+msgstr "Client"
+
+#. module: crm_enterprise
+#: model:ir.model.fields,field_description:crm_enterprise.field_crm_lead__days_to_convert
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
+msgid "Days To Convert"
+msgstr ""
+
+#. module: crm_enterprise
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_dashboard
+msgid "Days to Assign"
+msgstr "Zilele de atribuire"
+
+#. module: crm_enterprise
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_dashboard
+msgid "Days to Close"
+msgstr "Zile până la închidere"
+
+#. module: crm_enterprise
+#: model:ir.model.fields,field_description:crm_enterprise.field_crm_lead__days_exceeding_closing
+msgid "Exceeded Closing Days"
+msgstr ""
+
+#. module: crm_enterprise
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
+msgid "Expected Closing Date"
+msgstr "Data de închidere estimată"
+
+#. module: crm_enterprise
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_dashboard
+msgid "Expected Revenue"
+msgstr "Venit estimate"
+
+#. module: crm_enterprise
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
+msgid "Extended Filters"
+msgstr "Filtre extinse"
+
+#. module: crm_enterprise
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
+msgid "Group By"
+msgstr "Grupează după"
+
+#. module: crm_enterprise
+#: model:ir.model.fields,field_description:crm_enterprise.field_crm_lead__lost
+msgid "Is Lost"
+msgstr ""
+
+#. module: crm_enterprise
+#: model:ir.model.fields,field_description:crm_enterprise.field_crm_lead__won
+msgid "Is Won"
+msgstr ""
+
+#. module: crm_enterprise
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
+msgid "Last Month"
+msgstr "Ultima lună"
+
+#. module: crm_enterprise
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
+msgid "Lead / Customer"
+msgstr "Pistă / Client"
+
+#. module: crm_enterprise
+#: model:ir.model,name:crm_enterprise.model_crm_lead
+msgid "Lead/Opportunity"
+msgstr "Pista/Oportunitate"
+
+#. module: crm_enterprise
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
+msgid "Leads"
+msgstr "Piste"
+
+#. module: crm_enterprise
+#: model:ir.actions.act_window,name:crm_enterprise.crm_lead_action_dashboard
+msgid "Leads Analysis"
+msgstr "Analiză piste"
+
+#. module: crm_enterprise
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
+msgid "Leads that are assigned to me"
+msgstr "Piste care îmi sunt atribuite mie"
+
+#. module: crm_enterprise
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
+msgid "Lost"
+msgstr "Pierdut(ă)"
+
+#. module: crm_enterprise
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
+msgid "Lost Reason"
+msgstr "Motivul pierderii"
+
+#. module: crm_enterprise
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
+msgid "Medium"
+msgstr "Mediu"
+
+#. module: crm_enterprise
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
+msgid "My Leads"
+msgstr "Pistele mele"
+
+#. module: crm_enterprise
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
+msgid "My Pipeline"
+msgstr "Oportunitățile mele"
+
+#. module: crm_enterprise
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_cohort
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_dashboard
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_graph
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
+msgid "Opportunities"
+msgstr "Oportunități"
+
+#. module: crm_enterprise
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
+msgid "Opportunities Analysis"
+msgstr "Analiza Oportunitatilor"
+
+#. module: crm_enterprise
+#: model:ir.actions.act_window,name:crm_enterprise.crm_opportunity_action_dashboard
+msgid "Pipeline Analysis"
+msgstr "Analize prospect"
+
+#. module: crm_enterprise
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
+msgid "Sales Channel"
+msgstr "Canal de vânzare"
+
+#. module: crm_enterprise
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
+msgid "Salesperson"
+msgstr "Agent de vânzări"
+
+#. module: crm_enterprise
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
+msgid "Search Leads"
+msgstr "Caută piste"
+
+#. module: crm_enterprise
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
+msgid "Show only lead"
+msgstr "Afișează doar pista"
+
+#. module: crm_enterprise
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
+msgid "Show only opportunity"
+msgstr "Afișează doar oportunitatea"
+
+#. module: crm_enterprise
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
+msgid "Source"
+msgstr "Sursa"
+
+#. module: crm_enterprise
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
+msgid "Stage"
+msgstr "Etapă"
+
+#. module: crm_enterprise
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
+msgid "Tag"
+msgstr "Etichetă"
+
+#. module: crm_enterprise
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
+msgid "This Month"
+msgstr "Luna aceasta"
+
+#. module: crm_enterprise
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_dashboard
+msgid "Win/Loss ratio"
+msgstr ""
+
+#. module: crm_enterprise
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
+msgid "Won"
+msgstr "Câștigat(ă)"
+
+#. module: crm_enterprise
+#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_graph
+msgid "leads"
+msgstr "piste"

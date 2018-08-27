@@ -743,7 +743,14 @@
                 <field name="name"/>
                 <field name="title"/>
                 <field name="product_tmpl_id"/>
+                <field name="picking_type_id"/>
+                <field name="test_type_id"/>
                 <filter string="Archived" name="inactive" domain="[('active','=',False)]"/>
+                <group expand="1" string="Group By">
+                    <filter string="Product" name="groupby_product_template" context="{'group_by':'product_tmpl_id'}"/>
+                    <filter string="Operation Type" name="groupby_operation" context="{'group_by':'picking_type_id'}"/>
+                    <filter string="Test Type" name="groupby_test_type" context="{'group_by':'test_type_id'}"/>
+                </group>
             </search>
         </field>
     </record>
@@ -842,6 +849,7 @@
         <field name="view_type">form</field>
         <field name="view_mode">tree,kanban,form</field>
         <field name="search_view_id" ref="quality_point_view_search"/>
+        <field name="context">{'search_default_groupby_product_template': 1}</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
               Create a new quality control point

@@ -3,17 +3,14 @@
 # * quality_control
 # 
 # Translators:
-# Marius Stedjan <marius@stedjan.com>, 2018
 # Martin Trigaux, 2018
-# Viktor Basso <viktor@voit.no>, 2018
-# Jorunn D. Newth, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.3+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 08:34+0000\n"
-"PO-Revision-Date: 2018-06-25 08:34+0000\n"
-"Last-Translator: Jorunn D. Newth, 2018\n"
+"POT-Creation-Date: 2018-08-24 11:28+0000\n"
+"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: Norwegian Bokmål (https://www.transifex.com/odoo/teams/41243/nb/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -28,8 +25,10 @@ msgstr "% av operasjonen"
 
 #. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.quality_alert_team_dashboard_view_kanban
-msgid "<i class=\"fa fa-envelope-o\"/>&amp;nbsp;"
-msgstr "<i class=\"fa fa-envelope-o\"/>&amp;nbsp;"
+msgid ""
+"<i class=\"fa fa-envelope-o\" role=\"img\" aria-label=\"Domain alias\" "
+"title=\"Domain alias\"/>&amp;nbsp;"
+msgstr ""
 
 #. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.quality_point_view_form_inherit_quality_control
@@ -288,6 +287,11 @@ msgid "Group By"
 msgstr "Grupper etter"
 
 #. module: quality_control
+#: model:ir.ui.view,arch_db:quality_control.quality_alert_team_dashboard_view_kanban
+msgid "In #{kanban_getcolorname(record.color.raw_value)}"
+msgstr ""
+
+#. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.quality_check_view_search
 msgid "In Progress"
 msgstr "Under arbeid"
@@ -355,7 +359,7 @@ msgid "Name"
 msgstr "Navn"
 
 #. module: quality_control
-#: code:addons/quality_control/models/quality.py:284
+#: code:addons/quality_control/models/quality.py:283
 #, python-format
 msgid "New"
 msgstr "Ny"
@@ -432,12 +436,7 @@ msgid "Periodically"
 msgstr "Periodisk"
 
 #. module: quality_control
-#: model:ir.model.fields,field_description:quality_control.field_quality_check__picture
-msgid "Picture"
-msgstr "Bilde"
-
-#. module: quality_control
-#: code:addons/quality_control/models/quality.py:164
+#: code:addons/quality_control/models/quality.py:163
 #, python-format
 msgid "Picture Uploaded"
 msgstr "Bilde lastet opp"
@@ -458,8 +457,8 @@ msgid "Quality"
 msgstr "Kvalitet"
 
 #. module: quality_control
-#: code:addons/quality_control/models/quality.py:209
-#: code:addons/quality_control/models/quality.py:221
+#: code:addons/quality_control/models/quality.py:208
+#: code:addons/quality_control/models/quality.py:220
 #: model:ir.model,name:quality_control.model_quality_alert
 #: model:ir.ui.view,arch_db:quality_control.quality_alert_view_calendar
 #: model:ir.ui.view,arch_db:quality_control.stock_picking_view_form_inherit_quality
@@ -512,7 +511,7 @@ msgid "Quality Alerts"
 msgstr "Kvalitetsvarsler"
 
 #. module: quality_control
-#: code:addons/quality_control/models/quality.py:252
+#: code:addons/quality_control/models/quality.py:251
 #: model:ir.model,name:quality_control.model_quality_check
 #, python-format
 msgid "Quality Check"
@@ -530,14 +529,14 @@ msgid "Quality Check Fail"
 msgstr "Kvalitetskontroll ikke bestått"
 
 #. module: quality_control
-#: code:addons/quality_control/models/quality.py:172
+#: code:addons/quality_control/models/quality.py:171
 #: model:ir.ui.view,arch_db:quality_control.quality_check_view_form_failure
 #, python-format
 msgid "Quality Check Failed"
 msgstr "Kvalitetskontroll ikke bestått"
 
 #. module: quality_control
-#: code:addons/quality_control/models/quality.py:187
+#: code:addons/quality_control/models/quality.py:186
 #: model:ir.actions.act_window,name:quality_control.quality_check_action_main
 #: model:ir.actions.act_window,name:quality_control.quality_check_action_picking
 #: model:ir.actions.act_window,name:quality_control.quality_check_action_report
@@ -698,7 +697,7 @@ msgid "Week(s)"
 msgstr "Uke(r)"
 
 #. module: quality_control
-#: code:addons/quality_control/models/quality.py:141
+#: code:addons/quality_control/models/quality.py:140
 #, python-format
 msgid "You measured %.2f %s and it should be between %.2f and %.2f %s."
 msgstr ""

@@ -3,16 +3,14 @@
 # * project_timesheet_synchro
 # 
 # Translators:
-# Jeffery CHEN Fan <jeffery9@gmail.com>, 2016
-# e2f <projects@e2f.com>, 2018
-# e2f_cn c5 <jarvisn@ecinnovations.com>, 2018
+# Martin Trigaux, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.3+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 08:34+0000\n"
-"PO-Revision-Date: 2018-06-25 08:34+0000\n"
-"Last-Translator: e2f_cn c5 <jarvisn@ecinnovations.com>, 2018\n"
+"POT-Creation-Date: 2018-08-24 11:28+0000\n"
+"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -37,10 +35,17 @@ msgstr "&emsp;结束"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:442
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:446
 #, python-format
 msgid "(Last sync was unsuccessful)"
 msgstr "（最新的 sync 并未成功）"
+
+#. module: project_timesheet_synchro
+#. openerp-web
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:55
+#, python-format
+msgid "Action"
+msgstr "动作"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -48,6 +53,13 @@ msgstr "（最新的 sync 并未成功）"
 #, python-format
 msgid "Activity created"
 msgstr "已创建活动"
+
+#. module: project_timesheet_synchro
+#. openerp-web
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:120
+#, python-format
+msgid "Add"
+msgstr "添加"
 
 #. module: project_timesheet_synchro
 #: model:ir.model,name:project_timesheet_synchro.model_account_analytic_line
@@ -63,14 +75,14 @@ msgstr "苹果应用商店"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:411
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:415
 #, python-format
 msgid "Are you sure that you want to delete this activity?"
 msgstr "你确定要删除这项活动？"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:469
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:473
 #, python-format
 msgid "Are you sure that you want to reset the app?"
 msgstr "你确定要移除此过滤器吗？"
@@ -92,15 +104,15 @@ msgstr "快速燃烧"
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:157
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:415
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:473
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:419
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:477
 #, python-format
 msgid "Cancel"
 msgstr "取消"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:457
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:461
 #, python-format
 msgid ""
 "Connect Timesheets to Odoo to synchronize your activities across all "
@@ -109,7 +121,14 @@ msgstr "在不同的设备之间输入活动的记工单然后同步到Odoo中"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:538
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:104
+#, python-format
+msgid "Current activity"
+msgstr ""
+
+#. module: project_timesheet_synchro
+#. openerp-web
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:542
 #, python-format
 msgid "Database"
 msgstr "数据库"
@@ -124,28 +143,29 @@ msgstr "初始项目"
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:158
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:416
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:420
 #, python-format
 msgid "Delete"
 msgstr "刪除"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:404
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:408
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:409
 #, python-format
 msgid "Discard"
 msgstr "舍弃"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:486
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:490
 #, python-format
 msgid "Discard data"
 msgstr "无用数据"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:563
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:567
 #, python-format
 msgid ""
 "Either you or the Odoo server is offline at the moment. Make sure you do "
@@ -175,53 +195,60 @@ msgstr "谷歌游戏商店"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:487
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:491
 #, python-format
 msgid "Keep data"
 msgstr "保留数据"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:439
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:443
 #, python-format
 msgid "Last sync :"
 msgstr "最终同步"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:433
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:136
+#, python-format
+msgid "Locked"
+msgstr "已锁定"
+
+#. module: project_timesheet_synchro
+#. openerp-web
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:437
 #, python-format
 msgid "Logged in as"
 msgstr "以。。身份登录"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:503
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:510
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:547
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:555
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:507
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:514
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:551
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:559
 #, python-format
 msgid "Login"
 msgstr "登录"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:515
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:536
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:519
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:540
 #, python-format
 msgid "Login to an on premise Odoo instance"
 msgstr "登录一个预先的Odoo环境"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:501
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:505
 #, python-format
 msgid "Login with Odoo"
 msgstr "登录Odoo"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:435
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:439
 #, python-format
 msgid "Logout"
 msgstr "注销"
@@ -242,7 +269,14 @@ msgstr "更多信息"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:268
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:145
+#, python-format
+msgid "Motivation Text"
+msgstr ""
+
+#. module: project_timesheet_synchro
+#. openerp-web
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:272
 #, python-format
 msgid "Multiple to round up all durations"
 msgstr "加倍持续时间"
@@ -256,10 +290,24 @@ msgstr "永远不要偏离你所需要去做的"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:531
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:535
 #, python-format
 msgid "Next"
 msgstr "下一个"
+
+#. module: project_timesheet_synchro
+#. openerp-web
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:300
+#, python-format
+msgid "Next week"
+msgstr ""
+
+#. module: project_timesheet_synchro
+#. openerp-web
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:303
+#, python-format
+msgid "Next week unavailable"
+msgstr ""
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -270,7 +318,7 @@ msgstr "没有任务"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:483
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:487
 #, python-format
 msgid ""
 "Note that this will create new projects and tasks on your Odoo instance"
@@ -285,7 +333,7 @@ msgstr "线下支持"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:434
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:438
 #, python-format
 msgid "On server"
 msgstr "在服务器上"
@@ -308,8 +356,8 @@ msgstr "打开程序"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:507
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:551
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:511
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:555
 #, python-format
 msgid "Password"
 msgstr "密码"
@@ -323,7 +371,7 @@ msgstr "做计划，集中精力在重要的任务上"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:527
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:531
 #, python-format
 msgid "Please enter a database name:"
 msgstr "请输入数据库的名称："
@@ -337,49 +385,70 @@ msgstr "键入有效持续时间"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:352
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:356
 #, python-format
 msgid "Please select a project first"
 msgstr "请选选择一个项目"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:334
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:338
 #, python-format
 msgid "Please select a project."
 msgstr "请选择一个项目"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:342
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:288
+#, python-format
+msgid "Previous week"
+msgstr ""
+
+#. module: project_timesheet_synchro
+#. openerp-web
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:291
+#, python-format
+msgid "Previous week unavailable"
+msgstr ""
+
+#. module: project_timesheet_synchro
+#. openerp-web
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:346
 #, python-format
 msgid "Project"
 msgstr "项目"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:474
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:478
 #, python-format
 msgid "RESET"
 msgstr "重置"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:495
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:499
 #, python-format
 msgid "Reset"
 msgstr "重置"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:403
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:116
+#, python-format
+msgid "Run"
+msgstr "执行"
+
+#. module: project_timesheet_synchro
+#. openerp-web
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:407
 #, python-format
 msgid "Save"
 msgstr "保存"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:571
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:575
 #, python-format
 msgid "Select your Odoo instance from the list below :"
 msgstr "从下列菜单里选择你的Odoo用例"
@@ -393,14 +462,21 @@ msgstr "设置"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:461
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:557
+#, python-format
+msgid "Show password"
+msgstr ""
+
+#. module: project_timesheet_synchro
+#. openerp-web
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:465
 #, python-format
 msgid "Sign In"
 msgstr "登录"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:462
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:466
 #, python-format
 msgid "Sign Up"
 msgstr "注册"
@@ -415,7 +491,14 @@ msgstr "统计信息"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:437
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:98
+#, python-format
+msgid "Subtract"
+msgstr ""
+
+#. module: project_timesheet_synchro
+#. openerp-web
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:441
 #, python-format
 msgid "Sync Now"
 msgstr "现在同步"
@@ -436,21 +519,21 @@ msgstr "同步"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:581
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:585
 #, python-format
 msgid "Syncing data, this shouldn't take long"
 msgstr "同步数据，不会花费很长时间"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:347
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:351
 #, python-format
 msgid "Task"
 msgstr "任务"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:449
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:453
 #, python-format
 msgid ""
 "The server you connected to does not support timesheet synchronization. You "
@@ -468,21 +551,21 @@ msgstr "本周"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:380
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:384
 #, python-format
 msgid "Time spent (hh:mm)"
 msgstr "时间花费 (hh:mm)"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:357
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:361
 #, python-format
 msgid "Time spent (hhmm)"
 msgstr "花费时间 （ (hhmm)）"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:263
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:265
 #, python-format
 msgid "Time unit"
 msgstr "时间单元"
@@ -510,14 +593,21 @@ msgstr "今天的计划"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:316
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:49
+#, python-format
+msgid "Toggle action"
+msgstr ""
+
+#. module: project_timesheet_synchro
+#. openerp-web
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:320
 #, python-format
 msgid "Total :"
 msgstr "合计:"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:458
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:462
 #, python-format
 msgid ""
 "Use Odoo to organize projects and tasks, forecast resources and invoice time"
@@ -526,7 +616,7 @@ msgstr "使用 Odoo 组织项目和任务、预测资源以及用于任务的发
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:494
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:498
 #, python-format
 msgid "Use an Odoo.com account"
 msgstr "使用 Odoo.com 的账户"
@@ -540,14 +630,14 @@ msgstr ""
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:291
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:295
 #, python-format
 msgid "Week"
 msgstr "周"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:392
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:396
 #, python-format
 msgid "Work Summary"
 msgstr "工作摘要"
@@ -568,7 +658,7 @@ msgstr "在非连接状态下工作，同步背景"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:482
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:486
 #, python-format
 msgid ""
 "Would you like the activities, projects and tasks that you created as a "
@@ -584,7 +674,7 @@ msgstr "你想要删除这些活动吗"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:580
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:584
 #, python-format
 msgid "You are logged in !"
 msgstr "你已经登录"
@@ -598,7 +688,7 @@ msgstr "你可以在新窗口下尝试这个程序"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:567
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:571
 #, python-format
 msgid ""
 "You should have received an email with a link to activate your account. Once"
@@ -607,14 +697,14 @@ msgstr "您应该收到带有链接的电子邮件，以便激活您的账户。
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:517
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:521
 #, python-format
 msgid "Your Odoo Server Address"
 msgstr "你的Odoo服务器地址"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:566
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:570
 #, python-format
 msgid "Your database and account have been created !"
 msgstr "你的数据库及账号已被建立！"
@@ -628,37 +718,37 @@ msgstr "你的个人工单"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:548
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:552
 #, python-format
 msgid "ex: admin@example.com"
 msgstr "例如：admin@example.com"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:519
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:523
 #, python-format
 msgid "http://"
 msgstr "http://"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:520
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:521
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:524
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:525
 #, python-format
 msgid "https://"
 msgstr "https://"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:259
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:266
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:260
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:269
 #, python-format
 msgid "minutes"
 msgstr "分钟"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:567
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:571
 #, python-format
 msgid "sign in"
 msgstr "登录"

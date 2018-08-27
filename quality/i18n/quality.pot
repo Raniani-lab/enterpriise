@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.4+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-02 11:20+0000\n"
-"PO-Revision-Date: 2018-08-02 11:20+0000\n"
+"POT-Creation-Date: 2018-08-24 11:28+0000\n"
+"PO-Revision-Date: 2018-08-24 11:28+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -37,6 +37,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_check__message_needaction
 #: model:ir.model.fields,field_description:quality.field_quality_point__message_needaction
 msgid "Action Needed"
+msgstr ""
+
+#. module: quality
+#: model:quality.alert.stage,name:quality.quality_alert_stage_2
+msgid "Action Proposed"
 msgstr ""
 
 #. module: quality
@@ -111,6 +116,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_check__company_id
 #: model:ir.model.fields,field_description:quality.field_quality_point__company_id
 msgid "Company"
+msgstr ""
+
+#. module: quality
+#: model:quality.alert.stage,name:quality.quality_alert_stage_1
+msgid "Confirmed"
 msgstr ""
 
 #. module: quality
@@ -381,11 +391,12 @@ msgstr ""
 #: code:addons/quality/models/quality.py:69
 #: code:addons/quality/models/quality.py:70
 #: code:addons/quality/models/quality.py:144
-#: code:addons/quality/models/quality.py:180
 #: code:addons/quality/models/quality.py:181
-#: code:addons/quality/models/quality.py:208
-#: code:addons/quality/models/quality.py:243
+#: code:addons/quality/models/quality.py:182
+#: code:addons/quality/models/quality.py:209
 #: code:addons/quality/models/quality.py:244
+#: code:addons/quality/models/quality.py:245
+#: model:quality.alert.stage,name:quality.quality_alert_stage_0
 #, python-format
 msgid "New"
 msgstr ""
@@ -469,6 +480,11 @@ msgid "Optional ID of a thread (record) to which all incoming messages will be a
 msgstr ""
 
 #. module: quality
+#: model:quality.reason,name:quality.reason_other
+msgid "Others"
+msgstr ""
+
+#. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_user_id
 msgid "Owner"
 msgstr ""
@@ -489,6 +505,11 @@ msgid "Parent model holding the alias. The model holding the alias reference is 
 msgstr ""
 
 #. module: quality
+#: model:quality.reason,name:quality.reason_parts
+msgid "Parts Quality"
+msgstr ""
+
+#. module: quality
 #: selection:quality.check,quality_state:0
 msgid "Passed"
 msgstr ""
@@ -497,6 +518,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_alert__picking_id
 #: model:ir.model.fields,field_description:quality.field_quality_check__picking_id
 msgid "Picking"
+msgstr ""
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_check__picture
+msgid "Picture"
 msgstr ""
 
 #. module: quality
@@ -599,6 +625,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__sequence
 #: model:ir.model.fields,field_description:quality.field_quality_point__sequence
 msgid "Sequence"
+msgstr ""
+
+#. module: quality
+#: model:quality.alert.stage,name:quality.quality_alert_stage_3
+msgid "Solved"
 msgstr ""
 
 #. module: quality
@@ -731,5 +762,15 @@ msgstr ""
 #: model:ir.model.fields,help:quality.field_quality_check__website_message_ids
 #: model:ir.model.fields,help:quality.field_quality_point__website_message_ids
 msgid "Website communication history"
+msgstr ""
+
+#. module: quality
+#: model:quality.reason,name:quality.reason_wo
+msgid "Work Operation"
+msgstr ""
+
+#. module: quality
+#: model:quality.reason,name:quality.reason_workcenter
+msgid "Workcenter Failure"
 msgstr ""
 

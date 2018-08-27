@@ -3,18 +3,14 @@
 # * sale_coupon
 # 
 # Translators:
-# Yenthe Van Ginneken <yenthespam@gmail.com>, 2017
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2017
-# Martin Trigaux, 2017
-# Cas Vissers <casvissers@brahoo.nl>, 2017
-# Melroy van den Berg <webmaster1989@gmail.com>, 2018
+# Martin Trigaux, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.4+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-02 11:20+0000\n"
-"PO-Revision-Date: 2018-08-02 11:20+0000\n"
-"Last-Translator: Melroy van den Berg <webmaster1989@gmail.com>, 2018\n"
+"POT-Creation-Date: 2018-08-24 11:28+0000\n"
+"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,33 +19,40 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: sale_coupon
-#: code:addons/sale_coupon/models/sale_coupon_reward.py:70
-#, python-format
-msgid "%s %% discount on %s"
-msgstr "%s %% korting op %s"
-
-#. module: sale_coupon
-#: code:addons/sale_coupon/models/sale_coupon_reward.py:72
-#, python-format
-msgid "%s %% discount on cheapest product"
-msgstr "%s %% korting op goedkoopste product"
-
-#. module: sale_coupon
-#: code:addons/sale_coupon/models/sale_coupon_reward.py:68
-#, python-format
-msgid "%s %% discount on total amount"
-msgstr "%s %% korting op totale bedrag"
-
-#. module: sale_coupon
 #: code:addons/sale_coupon/models/sale_coupon_reward.py:75
 #, python-format
 msgid "%s %s discount on total amount"
 msgstr "%s %s korting op totaalbedrag"
 
 #. module: sale_coupon
+#: code:addons/sale_coupon/models/sale_coupon_reward.py:70
+#, python-format
+msgid "%s%% discount on %s"
+msgstr ""
+
+#. module: sale_coupon
+#: code:addons/sale_coupon/models/sale_coupon_reward.py:72
+#, python-format
+msgid "%s%% discount on cheapest product"
+msgstr ""
+
+#. module: sale_coupon
+#: code:addons/sale_coupon/models/sale_coupon_reward.py:68
+#, python-format
+msgid "%s%% discount on total amount"
+msgstr ""
+
+#. module: sale_coupon
 #: model:ir.ui.view,arch_db:sale_coupon.report_coupon
 msgid "<em>CODE :</em>"
 msgstr "<em>CODE :</em>"
+
+#. module: sale_coupon
+#: model:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_form
+msgid ""
+"<span class=\"o_form_label oe_inline\"> Days</span> <span "
+"class=\"oe_grey\">if 0, infinite use</span>"
+msgstr ""
 
 #. module: sale_coupon
 #: model:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_promo_program_form
@@ -63,11 +66,6 @@ msgstr ""
 "                        <b>Toepassen op huidige order -</b> Beloning wordt toegepast op huidige order.<br/>\n"
 "                        <b>Toepassen op volgende order -</b> Genereer een kortingsbon voor de volgende order.\n"
 "                    </span>"
-
-#. module: sale_coupon
-#: model:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_form
-msgid "<span class=\"oe_grey\">if 0, infinite use</span>"
-msgstr "<span class=\"oe_grey\">indien0, eindeloos gebruik</span>"
 
 #. module: sale_coupon
 #: model:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_form_common
@@ -314,6 +312,11 @@ msgstr ""
 "Gebruik een code - als aan de programmaregels is voldaan, is een geldige code verplicht om de beloning te ontvangen.\n"
 
 #. module: sale_coupon
+#: model:ir.ui.view,arch_db:sale_coupon.report_coupon
+msgid "Barcode"
+msgstr "Barcode"
+
+#. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_program__rule_partners_domain
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_rule__rule_partners_domain
 msgid "Based on Customers"
@@ -495,11 +498,6 @@ msgstr "Valuta"
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_generate__partners_domain
 msgid "Customer"
 msgstr "Klant"
-
-#. module: sale_coupon
-#: model:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_form
-msgid "Days"
-msgstr "Dagen"
 
 #. module: sale_coupon
 #: model:ir.model.fields,help:sale_coupon.field_sale_coupon_program__reward_product_uom_id
@@ -723,6 +721,11 @@ msgstr "Laatst bijgewerkt door"
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_rule__write_date
 msgid "Last Updated on"
 msgstr "Laatst bijgewerkt op"
+
+#. module: sale_coupon
+#: model:ir.ui.view,arch_db:sale_coupon.report_coupon
+msgid "Logo"
+msgstr "Logo"
 
 #. module: sale_coupon
 #: model:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_form_common

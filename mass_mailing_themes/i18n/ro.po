@@ -3,15 +3,14 @@
 # * mass_mailing_themes
 # 
 # Translators:
-# Dorin Hongu <dhongu@gmail.com>, 2018
-# Cozmin Candea <office@terrabit.ro>, 2018
+# Martin Trigaux, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.3+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 08:34+0000\n"
-"PO-Revision-Date: 2018-06-25 08:34+0000\n"
-"Last-Translator: Cozmin Candea <office@terrabit.ro>, 2018\n"
+"POT-Creation-Date: 2018-08-24 11:29+0000\n"
+"PO-Revision-Date: 2018-08-24 11:29+0000\n"
+"Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: Romanian (https://www.transifex.com/odoo/teams/41243/ro/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -56,11 +55,6 @@ msgid "<i>Web Designer, ES</i>"
 msgstr ""
 
 #. module: mass_mailing_themes
-#: model:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
-msgid "<small>CODE</small>:   <strong class=\"o_code h3\">45A9E77DGW8455</strong>"
-msgstr ""
-
-#. module: mass_mailing_themes
 #: model:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template
 msgid "<small>Step 1:</small>"
 msgstr "<small>Pas 1:</small>"
@@ -74,6 +68,13 @@ msgstr "<small>Pas 2:</small>"
 #: model:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template
 msgid "<small>Step 3:</small>"
 msgstr "<small>Pasul 3:</small>"
+
+#. module: mass_mailing_themes
+#: model:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
+msgid ""
+"<span style=\"line-height: 30px;\"><small>CODE: </small></span><strong "
+"class=\"o_code h3\">45A9E77DGW8455</strong>"
+msgstr ""
 
 #. module: mass_mailing_themes
 #: model:ir.ui.view,arch_db:mass_mailing_themes.theme_bold_template
@@ -194,7 +195,24 @@ msgstr ""
 
 #. module: mass_mailing_themes
 #: model:ir.ui.view,arch_db:mass_mailing_themes.theme_airmail_template
+#: model:ir.ui.view,arch_db:mass_mailing_themes.theme_newsletter_template
+#: model:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template
+#: model:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
+#: model:ir.ui.view,arch_db:mass_mailing_themes.theme_tech_template
+msgid "Facebook"
+msgstr ""
+
+#. module: mass_mailing_themes
+#: model:ir.ui.view,arch_db:mass_mailing_themes.theme_airmail_template
 msgid "Gibson Les Paul Junior"
+msgstr ""
+
+#. module: mass_mailing_themes
+#: model:ir.ui.view,arch_db:mass_mailing_themes.theme_airmail_template
+#: model:ir.ui.view,arch_db:mass_mailing_themes.theme_newsletter_template
+#: model:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
+#: model:ir.ui.view,arch_db:mass_mailing_themes.theme_tech_template
+msgid "Google Plus"
 msgstr ""
 
 #. module: mass_mailing_themes
@@ -215,6 +233,15 @@ msgstr "Bună!"
 #. module: mass_mailing_themes
 #: model:ir.ui.view,arch_db:mass_mailing_themes.theme_expo_template
 msgid "KEYNOTE SPEAKERS"
+msgstr ""
+
+#. module: mass_mailing_themes
+#: model:ir.ui.view,arch_db:mass_mailing_themes.theme_airmail_template
+#: model:ir.ui.view,arch_db:mass_mailing_themes.theme_newsletter_template
+#: model:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template
+#: model:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
+#: model:ir.ui.view,arch_db:mass_mailing_themes.theme_tech_template
+msgid "LinkedIn"
 msgstr ""
 
 #. module: mass_mailing_themes
@@ -398,6 +425,15 @@ msgstr ""
 #. module: mass_mailing_themes
 #: model:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template
 msgid "Tomato Soup"
+msgstr ""
+
+#. module: mass_mailing_themes
+#: model:ir.ui.view,arch_db:mass_mailing_themes.theme_airmail_template
+#: model:ir.ui.view,arch_db:mass_mailing_themes.theme_newsletter_template
+#: model:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template
+#: model:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
+#: model:ir.ui.view,arch_db:mass_mailing_themes.theme_tech_template
+msgid "Twitter"
 msgstr ""
 
 #. module: mass_mailing_themes

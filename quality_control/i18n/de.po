@@ -3,31 +3,14 @@
 # * quality_control
 # 
 # Translators:
-# DE T1 <e2f8846@yahoo.com>, 2017
-# Katharina Moritz <kmo@e2f.com>, 2017
-# Wolfgang Taferner, 2017
-# Renzo Meister, 2017
-# Stefan Hartenfels <stefan.hartenfels@camptocamp.com>, 2017
-# Martin Trigaux, 2017
-# Henry Mineehen <info@mineehen.de>, 2017
-# JackTheHunter <Maximilian.N98@gmail.com>, 2017
-# Andi, 2017
-# darenkster <inactive+darenkster@transifex.com>, 2017
-# Christian Oechsner <carinachristian@gmail.com>, 2017
-# Rudolf Schnapka <rs@techno-flex.de>, 2017
-# AppleMentalist <felix.schnatbaum@gmail.com>, 2017
-# Niki Waibel, 2017
-# Ermin Trevisan <trevi@twanda.com>, 2017
-# Christian Körner <fipes.de@gmail.com>, 2017
-# DE R1 <e2fes1@hotmail.com>, 2017
-# Tina Rittmüller <tr@ife.de>, 2017
+# Martin Trigaux, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.3+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 08:34+0000\n"
-"PO-Revision-Date: 2018-06-25 08:34+0000\n"
-"Last-Translator: Tina Rittmüller <tr@ife.de>, 2017\n"
+"POT-Creation-Date: 2018-08-24 11:28+0000\n"
+"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -42,8 +25,10 @@ msgstr "% des Vorgangs"
 
 #. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.quality_alert_team_dashboard_view_kanban
-msgid "<i class=\"fa fa-envelope-o\"/>&amp;nbsp;"
-msgstr "<i class=\"fa fa-envelope-o\"/>&amp;nbsp;"
+msgid ""
+"<i class=\"fa fa-envelope-o\" role=\"img\" aria-label=\"Domain alias\" "
+"title=\"Domain alias\"/>&amp;nbsp;"
+msgstr ""
 
 #. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.quality_point_view_form_inherit_quality_control
@@ -302,6 +287,11 @@ msgid "Group By"
 msgstr "Gruppieren nach"
 
 #. module: quality_control
+#: model:ir.ui.view,arch_db:quality_control.quality_alert_team_dashboard_view_kanban
+msgid "In #{kanban_getcolorname(record.color.raw_value)}"
+msgstr ""
+
+#. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.quality_check_view_search
 msgid "In Progress"
 msgstr "In Arbeit"
@@ -369,7 +359,7 @@ msgid "Name"
 msgstr "Name"
 
 #. module: quality_control
-#: code:addons/quality_control/models/quality.py:284
+#: code:addons/quality_control/models/quality.py:283
 #, python-format
 msgid "New"
 msgstr "Neu"
@@ -446,12 +436,7 @@ msgid "Periodically"
 msgstr "Regelmäßig"
 
 #. module: quality_control
-#: model:ir.model.fields,field_description:quality_control.field_quality_check__picture
-msgid "Picture"
-msgstr "Bild"
-
-#. module: quality_control
-#: code:addons/quality_control/models/quality.py:164
+#: code:addons/quality_control/models/quality.py:163
 #, python-format
 msgid "Picture Uploaded"
 msgstr "Bild hochgeladen"
@@ -472,8 +457,8 @@ msgid "Quality"
 msgstr "Qualität"
 
 #. module: quality_control
-#: code:addons/quality_control/models/quality.py:209
-#: code:addons/quality_control/models/quality.py:221
+#: code:addons/quality_control/models/quality.py:208
+#: code:addons/quality_control/models/quality.py:220
 #: model:ir.model,name:quality_control.model_quality_alert
 #: model:ir.ui.view,arch_db:quality_control.quality_alert_view_calendar
 #: model:ir.ui.view,arch_db:quality_control.stock_picking_view_form_inherit_quality
@@ -528,7 +513,7 @@ msgid "Quality Alerts"
 msgstr "Qualitätsalarme"
 
 #. module: quality_control
-#: code:addons/quality_control/models/quality.py:252
+#: code:addons/quality_control/models/quality.py:251
 #: model:ir.model,name:quality_control.model_quality_check
 #, python-format
 msgid "Quality Check"
@@ -546,14 +531,14 @@ msgid "Quality Check Fail"
 msgstr "Fehlgeschlagene Qualitätsprüfung"
 
 #. module: quality_control
-#: code:addons/quality_control/models/quality.py:172
+#: code:addons/quality_control/models/quality.py:171
 #: model:ir.ui.view,arch_db:quality_control.quality_check_view_form_failure
 #, python-format
 msgid "Quality Check Failed"
 msgstr "Qualitätsprüfung fehlgeschlagen"
 
 #. module: quality_control
-#: code:addons/quality_control/models/quality.py:187
+#: code:addons/quality_control/models/quality.py:186
 #: model:ir.actions.act_window,name:quality_control.quality_check_action_main
 #: model:ir.actions.act_window,name:quality_control.quality_check_action_picking
 #: model:ir.actions.act_window,name:quality_control.quality_check_action_report
@@ -714,7 +699,7 @@ msgid "Week(s)"
 msgstr "Woche(n)"
 
 #. module: quality_control
-#: code:addons/quality_control/models/quality.py:141
+#: code:addons/quality_control/models/quality.py:140
 #, python-format
 msgid "You measured %.2f %s and it should be between %.2f and %.2f %s."
 msgstr ""

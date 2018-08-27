@@ -4,18 +4,13 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
-# Otgonbayar.A <gobi.mn@gmail.com>, 2018
-# nasaaskii <nasaaskii@gmail.com>, 2018
-# Ganbold BATKHUYAG <gbatkhuyag@gmail.com>, 2018
-# Onii Onii <onii0223@yahoo.com>, 2018
-# Khishigbat Ganbold <khishigbat@asterisk-tech.mn>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.4+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-02 11:20+0000\n"
-"PO-Revision-Date: 2018-08-02 11:20+0000\n"
-"Last-Translator: Khishigbat Ganbold <khishigbat@asterisk-tech.mn>, 2018\n"
+"POT-Creation-Date: 2018-08-24 11:29+0000\n"
+"PO-Revision-Date: 2018-08-24 11:29+0000\n"
+"Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: Mongolian (https://www.transifex.com/odoo/teams/41243/mn/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -94,10 +89,24 @@ msgid "Kanban"
 msgstr "Канбан"
 
 #. module: web_grid
+#. openerp-web
+#: code:addons/web_grid/static/src/xml/grid_view.xml:24
+#, python-format
+msgid "Next"
+msgstr "Дараах"
+
+#. module: web_grid
 #: selection:ir.actions.act_window.view,view_mode:0
 #: selection:ir.ui.view,type:0
 msgid "Pivot"
 msgstr "Пивот"
+
+#. module: web_grid
+#. openerp-web
+#: code:addons/web_grid/static/src/xml/grid_view.xml:17
+#, python-format
+msgid "Previous"
+msgstr ""
 
 #. module: web_grid
 #: selection:ir.ui.view,type:0
@@ -111,14 +120,14 @@ msgstr "Хайх"
 
 #. module: web_grid
 #. openerp-web
-#: code:addons/web_grid/static/src/js/grid_renderer.js:215
+#: code:addons/web_grid/static/src/js/grid_renderer.js:244
 #, python-format
 msgid "See all the records aggregated in this cell"
 msgstr "Энэ нүдэнд нэгтгэгдсэн бүх бичлэгийг үзэх"
 
 #. module: web_grid
 #. openerp-web
-#: code:addons/web_grid/static/src/js/grid_renderer.js:153
+#: code:addons/web_grid/static/src/js/grid_renderer.js:183
 #, python-format
 msgid ""
 "The sectioned grid view can't handle groups with different columns sets"
@@ -133,11 +142,17 @@ msgstr "Өнөөдөр"
 
 #. module: web_grid
 #. openerp-web
-#: code:addons/web_grid/static/src/js/grid_renderer.js:353
-#: code:addons/web_grid/static/src/js/grid_renderer.js:358
+#: code:addons/web_grid/static/src/js/grid_renderer.js:395
 #, python-format
 msgid "Total"
 msgstr "Нийт"
+
+#. module: web_grid
+#. openerp-web
+#: code:addons/web_grid/static/src/js/grid_renderer.js:393
+#, python-format
+msgid "Total (%s)"
+msgstr ""
 
 #. module: web_grid
 #: selection:ir.actions.act_window.view,view_mode:0
@@ -154,9 +169,9 @@ msgstr "Тодорхойлогдоогүй"
 
 #. module: web_grid
 #. openerp-web
-#: code:addons/web_grid/static/src/js/grid_renderer.js:130
-#: code:addons/web_grid/static/src/js/grid_renderer.js:275
-#: code:addons/web_grid/static/src/js/grid_renderer.js:310
+#: code:addons/web_grid/static/src/js/grid_renderer.js:160
+#: code:addons/web_grid/static/src/js/grid_renderer.js:323
+#: code:addons/web_grid/static/src/js/grid_renderer.js:358
 #, python-format
 msgid "Unknown"
 msgstr "Үл мэдэгдэх"

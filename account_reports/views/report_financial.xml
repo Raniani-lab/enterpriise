@@ -260,7 +260,7 @@
             <div class="o_account_reports_summary">
                 <i class="fa fa-fw fa-pencil o_account_reports_edit_summary_pencil" role="img" aria-label="Edit Summary" title="Edit Summary"></i>
                 <div class="o_account_report_summary" role="alert">
-                    <span style="white-space: pre; white-space: pre-wrap;" t-if="report.get('summary')"><t t-esc="report['summary']"/></span>
+                    <span t-if="report.get('summary')"><t t-esc="report['summary']" t-options="{'widget': 'text'}"/></span>
                     <input t-if="not report.get('summary')" type='text' class="o_input" name='summary' placeholder='Add a note'/>
                 </div>
             </div>

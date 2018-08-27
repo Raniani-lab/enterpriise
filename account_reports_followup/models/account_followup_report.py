@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from odoo.tools.mail import html2plaintext
 import time
 from datetime import datetime, timedelta
 from odoo import api, models, fields
@@ -71,7 +72,7 @@ class AccountFollowupReport(models.AbstractModel):
             try:
                 summary = summary % {'partner_name': partner.name,
                                      'date': time.strftime(DEFAULT_SERVER_DATE_FORMAT),
-                                     'user_signature': self.env.user.signature or '',
+                                     'user_signature': html2plaintext(self.env.user.signature or ''),
                                      'company_name': self.env.user.company_id.name}
             except ValueError as exception:
                 message = "An error has occurred while formatting your followup letter/email. (Lang: %s, Followup Level: #%s) \n\nFull error description: %s" \

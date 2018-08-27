@@ -3,28 +3,15 @@
 # * website_crm_score
 # 
 # Translators:
-# Tina Rittmüller <tr@ife.de>, 2017
-# Martin Trigaux, 2017
-# Anja Funk <anja.funk@afimage.de>, 2017
-# Thorsten Vocks <thorsten.vocks@openbig.org>, 2017
-# Ermin Trevisan <trevi@twanda.com>, 2017
-# Henry Mineehen <info@mineehen.de>, 2017
-# Niki Waibel, 2017
-# darenkster <inactive+darenkster@transifex.com>, 2017
-# Renzo Meister, 2017
-# Fabian Liesch <fabian.liesch@gmail.com>, 2017
-# Wolfgang Taferner, 2017
-# Andi, 2017
-# Malte Jansen <work@maltejansen.de>, 2017
-# e2f <projects@e2f.com>, 2018
-# Katharina Moritz <kmo@e2f.com>, 2018
+# Martin Trigaux, 2018
+# JackTheHunter <Maximilian.N98@gmail.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.4+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-02 11:20+0000\n"
-"PO-Revision-Date: 2018-08-02 11:20+0000\n"
-"Last-Translator: Katharina Moritz <kmo@e2f.com>, 2018\n"
+"POT-Creation-Date: 2018-08-24 11:29+0000\n"
+"PO-Revision-Date: 2018-08-24 11:29+0000\n"
+"Last-Translator: JackTheHunter <Maximilian.N98@gmail.com>, 2018\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -61,11 +48,6 @@ msgid "Archive"
 msgstr "Archiv"
 
 #. module: website_crm_score
-#: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__assign_date
-msgid "Assign Date"
-msgstr "Datum festlegen"
-
-#. module: website_crm_score
 #: model:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
 msgid "Assignation"
 msgstr "Zuweisung"
@@ -84,6 +66,22 @@ msgstr "Anzahl zugewiesener Leads"
 #: model:ir.model.fields,help:website_crm_score.field_team_user__leads_count
 msgid "Assigned Leads this last month"
 msgstr "Zugewiesene Leads im letzten Monat"
+
+#. module: website_crm_score
+#: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__assign_date
+msgid "Auto Assign Date"
+msgstr ""
+
+#. module: website_crm_score
+#: model:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
+#: model:ir.ui.view,arch_db:website_crm_score.team_user_kanban
+msgid "Avatar"
+msgstr "Avatar"
+
+#. module: website_crm_score
+#: model:ir.ui.view,arch_db:website_crm_score.crm_lead_view_dashboard
+msgid "Average Score"
+msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_team__capacity
@@ -434,21 +432,6 @@ msgid "Saleman"
 msgstr "Verkäufer"
 
 #. module: website_crm_score
-#: model:ir.model,name:website_crm_score.model_crm_team
-msgid "Sales Channel"
-msgstr "Vertriebskanal"
-
-#. module: website_crm_score
-#: model:ir.model.fields,help:website_crm_score.field_res_users__sale_team_id
-msgid ""
-"Sales Channel the user is member of. Used to compute the members of a sales "
-"channel through the inverse one2many"
-msgstr ""
-"Vertriebskanal, dessen Mitglied der Benutzer ist. Wird benutzt, um die "
-"Mitglieder eines Vertriebskanals durch die Umkehrung von One2many zu "
-"berechnen"
-
-#. module: website_crm_score
 #: model:ir.actions.act_window,name:website_crm_score.team_action
 msgid "Sales Channels"
 msgstr "Vertriebskänale"
@@ -464,6 +447,18 @@ msgstr "Verkäufer"
 #: model:ir.model.fields,field_description:website_crm_score.field_res_users__team_user_ids
 msgid "Sales Records"
 msgstr "Verkaufsdaten"
+
+#. module: website_crm_score
+#: model:ir.model,name:website_crm_score.model_crm_team
+msgid "Sales Team"
+msgstr "Verkaufsteam"
+
+#. module: website_crm_score
+#: model:ir.model.fields,help:website_crm_score.field_res_users__sale_team_id
+msgid ""
+"Sales Team the user is member of. Used to compute the members of a Sales "
+"Team through the inverse one2many"
+msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_team__team_user_ids

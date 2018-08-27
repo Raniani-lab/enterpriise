@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "mrp_workorder_zebra",
+    'name': "Zebra printers integration for MRP",
 
     'summary': """
         Zebra printers integration for mrp module""",

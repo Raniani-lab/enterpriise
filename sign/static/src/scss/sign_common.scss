@@ -49,7 +49,7 @@
     }
 
     .o_sign_signer_status > img {
-        height: 64px;
+        height: 32px;
     }
 }
 
@@ -96,8 +96,11 @@
     }
 }
 
-.o_sign_sign_draw .o_sign_signature {
+.o_sign_signature_draw .o_sign_signature {
     padding: 0;
+    > canvas.jSignature {
+        outline: #ced4da 1px solid;
+    }
 }
 
 .o_sign_validate_banner {
@@ -112,4 +115,65 @@
     color: white;
     font-size: 1.25em;
     text-align: center;
+}
+
+.modal.o_sign_thank_you_dialog {
+    border: none;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.6), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
+
+    .btn {
+        border-radius: 0;
+        border: none;
+    }
+    .btn-primary {
+        background-color: $o-brand-primary;
+        color: white;
+    }
+
+    .modal-header {
+        border-top-left-radius: 0.26rem;
+        border-top-right-radius: 0.26rem;
+        background-color: $o-brand-odoo;
+        color: #fff;
+        .modal-title {
+            line-height: 1;
+            color: #fff;
+        }
+        .text-muted {
+            color: #fff !important;
+        }
+        .close {
+            color: #fff;
+            opacity: 1;
+            text-shadow: none;
+        }
+    }
+
+    .modal-body {
+        color: $o-main-text-color;
+        .o_thankyou_message {
+            margin-top: 14px;
+        }
+        .o_thankyou_link {
+            margin-top: 25px;
+            > img {
+                width: 30px;
+            }
+            a {
+                color: $o-main-text-color;
+                &:hover {
+                    text-decoration: none;
+                    color: $o-brand-primary;
+                }
+            }
+        }
+    }
+
+    .modal-footer {
+        border-top: none;
+        text-align: left;
+        &:empty {
+            padding: 0px;
+        }
+    }
 }

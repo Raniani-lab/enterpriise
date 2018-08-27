@@ -4,15 +4,13 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
-# Dorin Hongu <dhongu@gmail.com>, 2018
-# Cozmin Candea <office@terrabit.ro>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.4+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-02 11:20+0000\n"
-"PO-Revision-Date: 2018-08-02 11:20+0000\n"
-"Last-Translator: Cozmin Candea <office@terrabit.ro>, 2018\n"
+"POT-Creation-Date: 2018-08-24 11:28+0000\n"
+"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: Romanian (https://www.transifex.com/odoo/teams/41243/ro/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,16 +20,13 @@ msgstr ""
 
 #. module: website_helpdesk
 #: model:ir.ui.view,arch_db:website_helpdesk.team
-msgid ""
-"<span class=\"sr-only\">Toggle navigation</span>\n"
-"                            <span class=\"icon-bar\"/>\n"
-"                            <span class=\"icon-bar\"/>"
-msgstr ""
+msgid "Description"
+msgstr "Descriere"
 
 #. module: website_helpdesk
 #: model:ir.ui.view,arch_db:website_helpdesk.team
-msgid "Description"
-msgstr "Descriere"
+msgid "Dropdown menu"
+msgstr ""
 
 #. module: website_helpdesk
 #: model:website.menu,name:website_helpdesk.website_menu_helpdesk
@@ -52,6 +47,11 @@ msgstr ""
 #: model:ir.model,name:website_helpdesk.model_helpdesk_team
 #: model:ir.ui.view,arch_db:website_helpdesk.team
 msgid "Helpdesk Team"
+msgstr ""
+
+#. module: website_helpdesk
+#: model:ir.model.fields,field_description:website_helpdesk.field_helpdesk_team__is_published
+msgid "Is published"
 msgstr ""
 
 #. module: website_helpdesk
@@ -81,8 +81,8 @@ msgstr ""
 
 #. module: website_helpdesk
 #: model:ir.model.fields,field_description:website_helpdesk.field_helpdesk_team__website_published
-msgid "Visible in Website"
-msgstr "Vizibil în portal/pagină web"
+msgid "Visible on current website"
+msgstr ""
 
 #. module: website_helpdesk
 #: model:ir.model.fields,field_description:website_helpdesk.field_helpdesk_team__website_url

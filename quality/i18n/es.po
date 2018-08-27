@@ -3,31 +3,15 @@
 # * quality
 # 
 # Translators:
-# José Vicente <txusev@gmail.com>, 2016
-# Antonio Trueba, 2016
-# Leonardo Chianea <noamixcontenidos@gmail.com>, 2016
-# Martin Trigaux, 2016
-# Ana Juaristi <ajuaristio@gmail.com>, 2016
-# oihane <oihanecruce@gmail.com>, 2016
-# Carles Antoli <carlesantoli@hotmail.com>, 2016
-# Luis M. Triana <luis.triana@jarsa.com.mx>, 2016
-# Pedro M. Baeza <pedro.baeza@gmail.com>, 2016
-# Alejandro Die Sanchis <marketing@domatix.com>, 2016
-# Ivan Nieto <ivan.n.s@tuta.io>, 2016
-# Mateo Tibaquirá Palacios <nestormateo@gmail.com>, 2016
-# Miguel Orueta <mo@landoo.es>, 2016
-# Christopher Ormaza <chris.ormaza@gmail.com>, 2017
-# e2f <projects@e2f.com>, 2018
-# Nicolás Broggi <rnbroggi@gmail.com>, 2018
-# Javier Ramirez <elbomba887@gmail.com>, 2018
-# RGB Consulting <odoo@rgbconsulting.com>, 2018
+# Martin Trigaux, 2018
+# Katerina Katapodi <katerinakatapodi@gmail.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.4+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-02 11:20+0000\n"
-"PO-Revision-Date: 2018-08-02 11:20+0000\n"
-"Last-Translator: RGB Consulting <odoo@rgbconsulting.com>, 2018\n"
+"POT-Creation-Date: 2018-08-24 11:28+0000\n"
+"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"Last-Translator: Katerina Katapodi <katerinakatapodi@gmail.com>, 2018\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -62,6 +46,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_point__message_needaction
 msgid "Action Needed"
 msgstr "Acción requerida"
+
+#. module: quality
+#: model:quality.alert.stage,name:quality.quality_alert_stage_2
+msgid "Action Proposed"
+msgstr ""
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_point__active
@@ -136,6 +125,11 @@ msgstr "Índice de Colores"
 #: model:ir.model.fields,field_description:quality.field_quality_point__company_id
 msgid "Company"
 msgstr "Compañía"
+
+#. module: quality
+#: model:quality.alert.stage,name:quality.quality_alert_stage_1
+msgid "Confirmed"
+msgstr "Confirmado"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_check__control_date
@@ -410,11 +404,12 @@ msgstr "Nombre"
 #: code:addons/quality/models/quality.py:69
 #: code:addons/quality/models/quality.py:70
 #: code:addons/quality/models/quality.py:144
-#: code:addons/quality/models/quality.py:180
 #: code:addons/quality/models/quality.py:181
-#: code:addons/quality/models/quality.py:208
-#: code:addons/quality/models/quality.py:243
+#: code:addons/quality/models/quality.py:182
+#: code:addons/quality/models/quality.py:209
 #: code:addons/quality/models/quality.py:244
+#: code:addons/quality/models/quality.py:245
+#: model:quality.alert.stage,name:quality.quality_alert_stage_0
 #, python-format
 msgid "New"
 msgstr "Nuevo"
@@ -505,6 +500,16 @@ msgstr ""
 "deshabilitará completamente la creación de nuevos registros."
 
 #. module: quality
+#: model:quality.reason,name:quality.reason_other
+msgid "Others"
+msgstr ""
+"Otros\n"
+"Retirar dinero\n"
+"Tomar dinero es utilizado para tomar su cash manualmente despues el fin de todas transacciones. De los windows Register Transactios, ir al menuselection. Mas-Retirar dinero\n"
+"Las transacciones seran agregado al registro del pago cash.\n"
+"Auditor "
+
+#. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_user_id
 msgid "Owner"
 msgstr "Propietario"
@@ -531,6 +536,11 @@ msgstr ""
 "project (parent_model) and task (model))"
 
 #. module: quality
+#: model:quality.reason,name:quality.reason_parts
+msgid "Parts Quality"
+msgstr ""
+
+#. module: quality
 #: selection:quality.check,quality_state:0
 msgid "Passed"
 msgstr "Aprobado"
@@ -540,6 +550,11 @@ msgstr "Aprobado"
 #: model:ir.model.fields,field_description:quality.field_quality_check__picking_id
 msgid "Picking"
 msgstr "Recolección"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_check__picture
+msgid "Picture"
+msgstr "Foto"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert_team__alias_contact
@@ -646,6 +661,11 @@ msgstr "Causa principal"
 #: model:ir.model.fields,field_description:quality.field_quality_point__sequence
 msgid "Sequence"
 msgstr "Secuencia"
+
+#. module: quality
+#: model:quality.alert.stage,name:quality.quality_alert_stage_3
+msgid "Solved"
+msgstr "Resuelto"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__stage_id
@@ -799,3 +819,13 @@ msgstr "Mensajes del sitio web"
 #: model:ir.model.fields,help:quality.field_quality_point__website_message_ids
 msgid "Website communication history"
 msgstr "Historial de comunicaciones del sitio web"
+
+#. module: quality
+#: model:quality.reason,name:quality.reason_wo
+msgid "Work Operation"
+msgstr ""
+
+#. module: quality
+#: model:quality.reason,name:quality.reason_workcenter
+msgid "Workcenter Failure"
+msgstr ""

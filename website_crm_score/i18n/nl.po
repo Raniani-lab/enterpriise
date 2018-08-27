@@ -3,18 +3,15 @@
 # * website_crm_score
 # 
 # Translators:
-# Yenthe Van Ginneken <yenthespam@gmail.com>, 2016
-# Eric Geens <ericgeens@yahoo.com>, 2016
-# Martin Trigaux, 2016
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2016
-# Cas Vissers <casvissers@brahoo.nl>, 2016
+# Martin Trigaux, 2018
+# Yenthe Van Ginneken <yenthespam@gmail.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.4+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-02 11:20+0000\n"
-"PO-Revision-Date: 2018-08-02 11:20+0000\n"
-"Last-Translator: Cas Vissers <casvissers@brahoo.nl>, 2016\n"
+"POT-Creation-Date: 2018-08-24 11:29+0000\n"
+"PO-Revision-Date: 2018-08-24 11:29+0000\n"
+"Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2018\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -52,11 +49,6 @@ msgid "Archive"
 msgstr "Archief"
 
 #. module: website_crm_score
-#: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__assign_date
-msgid "Assign Date"
-msgstr "Wijs datum toe"
-
-#. module: website_crm_score
 #: model:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
 msgid "Assignation"
 msgstr "Toewijzing"
@@ -75,6 +67,22 @@ msgstr "Toegewezen leads teller"
 #: model:ir.model.fields,help:website_crm_score.field_team_user__leads_count
 msgid "Assigned Leads this last month"
 msgstr "Toegewezen leads deze laatste maand"
+
+#. module: website_crm_score
+#: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__assign_date
+msgid "Auto Assign Date"
+msgstr ""
+
+#. module: website_crm_score
+#: model:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
+#: model:ir.ui.view,arch_db:website_crm_score.team_user_kanban
+msgid "Avatar"
+msgstr "Avatar"
+
+#. module: website_crm_score
+#: model:ir.ui.view,arch_db:website_crm_score.crm_lead_view_dashboard
+msgid "Average Score"
+msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_team__capacity
@@ -422,20 +430,6 @@ msgid "Saleman"
 msgstr "Verkoper"
 
 #. module: website_crm_score
-#: model:ir.model,name:website_crm_score.model_crm_team
-msgid "Sales Channel"
-msgstr "Verkoopkanaal"
-
-#. module: website_crm_score
-#: model:ir.model.fields,help:website_crm_score.field_res_users__sale_team_id
-msgid ""
-"Sales Channel the user is member of. Used to compute the members of a sales "
-"channel through the inverse one2many"
-msgstr ""
-"Verkoopkanaal waarvan de gebruiker lid is. Gebruikt om de leden te berekenen"
-" van een verkoopkanaal via het one2many veld"
-
-#. module: website_crm_score
 #: model:ir.actions.act_window,name:website_crm_score.team_action
 msgid "Sales Channels"
 msgstr "Verkoopkanalen"
@@ -451,6 +445,18 @@ msgstr "Verkoper"
 #: model:ir.model.fields,field_description:website_crm_score.field_res_users__team_user_ids
 msgid "Sales Records"
 msgstr "Verkoop records"
+
+#. module: website_crm_score
+#: model:ir.model,name:website_crm_score.model_crm_team
+msgid "Sales Team"
+msgstr "Verkoopteam"
+
+#. module: website_crm_score
+#: model:ir.model.fields,help:website_crm_score.field_res_users__sale_team_id
+msgid ""
+"Sales Team the user is member of. Used to compute the members of a Sales "
+"Team through the inverse one2many"
+msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_team__team_user_ids

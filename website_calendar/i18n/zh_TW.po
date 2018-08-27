@@ -3,16 +3,14 @@
 # * website_calendar
 # 
 # Translators:
-# 敬雲 林 <chingyun@yuanchih-consult.com>, 2018
 # Martin Trigaux, 2018
-# Michael Yeung, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.4+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-02 11:21+0000\n"
-"PO-Revision-Date: 2018-08-02 11:21+0000\n"
-"Last-Translator: Michael Yeung, 2018\n"
+"POT-Creation-Date: 2018-08-24 11:29+0000\n"
+"PO-Revision-Date: 2018-08-24 11:29+0000\n"
+"Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/odoo/teams/41243/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -29,6 +27,11 @@ msgstr " (副本)"
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__appointment_count
 msgid "# Appointments"
+msgstr ""
+
+#. module: website_calendar
+#: model:ir.ui.view,arch_db:website_calendar.appointment_calendar
+msgid "#{day['today_cls'] and 'Today' or ''}"
 msgstr ""
 
 #. module: website_calendar
@@ -186,6 +189,7 @@ msgstr "答案"
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.appointment
 #: model:ir.ui.view,arch_db:website_calendar.appointment_form
+#: model:ir.ui.view,arch_db:website_calendar.index
 #: model:website.menu,name:website_calendar.menu_appointment
 msgid "Appointment"
 msgstr ""
@@ -222,7 +226,6 @@ msgstr ""
 
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.appointment_validated
-#: model:ir.ui.view,arch_db:website_calendar.index
 msgid "Appointment:"
 msgstr ""
 
@@ -475,6 +478,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_is_follower
 msgid "Is Follower"
 msgstr "是訂閱者"
+
+#. module: website_calendar
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__is_published
+msgid "Is published"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__country_ids
@@ -816,8 +824,8 @@ msgstr ""
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__website_published
-msgid "Visible in Website"
-msgstr "在網站可見"
+msgid "Visible on current website"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__website_message_ids
@@ -848,6 +856,11 @@ msgstr "網站元關鍵詞"
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__website_meta_title
 msgid "Website meta title"
 msgstr "網站元標題"
+
+#. module: website_calendar
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__website_meta_og_img
+msgid "Website opengraph image"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.appointment_calendar

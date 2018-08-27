@@ -3,16 +3,14 @@
 # * web_gantt
 # 
 # Translators:
-# Martin Trigaux, 2016
-# Pedro M. Baeza <pedro.baeza@gmail.com>, 2016
-# Luis M. Ontalba <luis.martinez@tecnativa.com>, 2017
+# Martin Trigaux, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.3+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 08:34+0000\n"
-"PO-Revision-Date: 2018-06-25 08:34+0000\n"
-"Last-Translator: Luis M. Ontalba <luis.martinez@tecnativa.com>, 2017\n"
+"POT-Creation-Date: 2018-08-24 11:29+0000\n"
+"PO-Revision-Date: 2018-08-24 11:29+0000\n"
+"Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,11 +20,18 @@ msgstr ""
 
 #. module: web_gantt
 #. openerp-web
-#: code:addons/web_gantt/static/src/xml/web_gantt.xml:25
-#: code:addons/web_gantt/static/src/xml/web_gantt.xml:39
+#: code:addons/web_gantt/static/src/xml/web_gantt.xml:24
+#: code:addons/web_gantt/static/src/xml/web_gantt.xml:31
 #, python-format
 msgid "Day"
 msgstr "Día"
+
+#. module: web_gantt
+#. openerp-web
+#: code:addons/web_gantt/static/src/xml/web_gantt.xml:22
+#, python-format
+msgid "Dropdown menu"
+msgstr ""
 
 #. module: web_gantt
 #. openerp-web
@@ -46,11 +51,25 @@ msgstr "Vista Gantt"
 #. module: web_gantt
 #. openerp-web
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:22
-#: code:addons/web_gantt/static/src/xml/web_gantt.xml:31
-#: code:addons/web_gantt/static/src/xml/web_gantt.xml:41
+#: code:addons/web_gantt/static/src/xml/web_gantt.xml:26
+#: code:addons/web_gantt/static/src/xml/web_gantt.xml:33
 #, python-format
 msgid "Month"
 msgstr "Mes"
+
+#. module: web_gantt
+#. openerp-web
+#: code:addons/web_gantt/static/src/xml/web_gantt.xml:17
+#, python-format
+msgid "Next"
+msgstr "Siguiente"
+
+#. module: web_gantt
+#. openerp-web
+#: code:addons/web_gantt/static/src/xml/web_gantt.xml:11
+#, python-format
+msgid "Previous"
+msgstr "Anterior"
 
 #. module: web_gantt
 #. openerp-web
@@ -61,16 +80,16 @@ msgstr "Hoy"
 
 #. module: web_gantt
 #. openerp-web
-#: code:addons/web_gantt/static/src/xml/web_gantt.xml:28
-#: code:addons/web_gantt/static/src/xml/web_gantt.xml:40
+#: code:addons/web_gantt/static/src/xml/web_gantt.xml:25
+#: code:addons/web_gantt/static/src/xml/web_gantt.xml:32
 #, python-format
 msgid "Week"
 msgstr "Semana"
 
 #. module: web_gantt
 #. openerp-web
+#: code:addons/web_gantt/static/src/xml/web_gantt.xml:27
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:34
-#: code:addons/web_gantt/static/src/xml/web_gantt.xml:42
 #, python-format
 msgid "Year"
 msgstr "Año"

@@ -3,21 +3,15 @@
 # * account_online_sync
 # 
 # Translators:
-# Yenthe Van Ginneken <yenthespam@gmail.com>, 2016
-# Cas Vissers <casvissers@brahoo.nl>, 2017
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2017
-# Martin Trigaux, 2017
-# Stephan Van Dyck <stephan.vandyck@vanroey.be>, 2017
-# Xavier Symons <xsy@openerp.com>, 2017
-# e2f_nl_c4 <e2f_nl_c4@hotmail.com>, 2018
-# Eric Geens <ericgeens@yahoo.com>, 2018
+# Martin Trigaux, 2018
+# Yenthe Van Ginneken <yenthespam@gmail.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.4+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-02 11:20+0000\n"
-"PO-Revision-Date: 2018-08-02 11:20+0000\n"
-"Last-Translator: Eric Geens <ericgeens@yahoo.com>, 2018\n"
+"POT-Creation-Date: 2018-08-24 11:28+0000\n"
+"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2018\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -112,7 +106,7 @@ msgid "Action Required"
 msgstr "Actie vereist"
 
 #. module: account_online_sync
-#: code:addons/account_online_sync/models/online_sync.py:322
+#: code:addons/account_online_sync/models/online_sync.py:360
 #, python-format
 msgid "Add a Bank Account"
 msgstr "Voeg een bankrekening toe"
@@ -129,7 +123,7 @@ msgid "An error occurred during online synchronization"
 msgstr "Een fout is opgetreden tijdens de online synchronisatie"
 
 #. module: account_online_sync
-#: code:addons/account_online_sync/models/online_sync.py:279
+#: code:addons/account_online_sync/models/online_sync.py:317
 #, python-format
 msgid "Automated Bank Synchronization"
 msgstr "Automatische bank synchronisatie"
@@ -185,6 +179,11 @@ msgstr "Bedrijf"
 #: model:ir.ui.view,arch_db:account_online_sync.account_journal_form_inherit_online_sync
 msgid "Configure"
 msgstr "Configureren"
+
+#. module: account_online_sync
+#: model:ir.model,name:account_online_sync.model_res_partner
+msgid "Contact"
+msgstr "Contact"
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:161
@@ -491,7 +490,21 @@ msgid "Online Institution Accounts"
 msgstr "Online instellingen accounts"
 
 #. module: account_online_sync
-#: code:addons/account_online_sync/models/online_sync.py:337
+#: model:ir.model.fields,field_description:account_online_sync.field_account_bank_statement_line__online_partner_bank_account
+#: model:ir.model.fields,field_description:account_online_sync.field_res_partner__online_partner_bank_account
+#: model:ir.model.fields,field_description:account_online_sync.field_res_users__online_partner_bank_account
+msgid "Online Partner Bank Account"
+msgstr ""
+
+#. module: account_online_sync
+#: model:ir.model.fields,field_description:account_online_sync.field_account_bank_statement_line__online_partner_vendor_name
+#: model:ir.model.fields,field_description:account_online_sync.field_res_partner__online_partner_vendor_name
+#: model:ir.model.fields,field_description:account_online_sync.field_res_users__online_partner_vendor_name
+msgid "Online Partner Vendor Name"
+msgstr ""
+
+#. module: account_online_sync
+#: code:addons/account_online_sync/models/online_sync.py:375
 #: model:ir.ui.menu,name:account_online_sync.menu_action_online_provider_account
 #: model:ir.ui.view,arch_db:account_online_sync.account_journal_dashboard_inherit_online_sync
 #: model:ir.ui.view,arch_db:account_online_sync.account_journal_form_inherit_online_sync
@@ -501,7 +514,7 @@ msgid "Online Synchronization"
 msgstr "Online synchronisatie"
 
 #. module: account_online_sync
-#: code:addons/account_online_sync/models/online_sync.py:410
+#: code:addons/account_online_sync/models/online_sync.py:461
 #, python-format
 msgid "Opening statement: first synchronization"
 msgstr "Initieel afschrift: eerste synchronisatie"
@@ -518,7 +531,7 @@ msgid "Please enter at least a character for the search"
 msgstr "Gelieve minimaal één karakter in te geven voor het zoeken"
 
 #. module: account_online_sync
-#: code:addons/account_online_sync/models/online_sync.py:247
+#: code:addons/account_online_sync/models/online_sync.py:285
 #, python-format
 msgid ""
 "Please link your accounts to a journal or select \"do not link\" as action "
@@ -610,6 +623,23 @@ msgstr "Technisch bericht van externe provider die kan helpen met debuggen"
 #: model:ir.model.fields,help:account_online_sync.field_account_online_wizard__hide_table
 msgid "Technical field to hide table in view"
 msgstr "Technische veld om tabel te verbergen in weergave"
+
+#. module: account_online_sync
+#: model:ir.model.fields,help:account_online_sync.field_account_bank_statement_line__online_partner_bank_account
+#: model:ir.model.fields,help:account_online_sync.field_res_partner__online_partner_bank_account
+#: model:ir.model.fields,help:account_online_sync.field_res_users__online_partner_bank_account
+msgid ""
+"Technical field used to store information from plaid/yodlee to match partner"
+msgstr ""
+
+#. module: account_online_sync
+#: model:ir.model.fields,help:account_online_sync.field_account_bank_statement_line__online_partner_vendor_name
+#: model:ir.model.fields,help:account_online_sync.field_res_partner__online_partner_vendor_name
+#: model:ir.model.fields,help:account_online_sync.field_res_users__online_partner_vendor_name
+msgid ""
+"Technical field used to store information from plaid/yodlee to match partner"
+" (used when a purchase is made)"
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
@@ -713,7 +743,7 @@ msgid ""
 msgstr ""
 
 #. module: account_online_sync
-#: code:addons/account_online_sync/models/online_sync.py:249
+#: code:addons/account_online_sync/models/online_sync.py:287
 #, python-format
 msgid "You can not link two accounts to the same journal"
 msgstr "U kan geen twee rekeningen koppelen aan hetzelfde dagboek"
@@ -746,7 +776,7 @@ msgid "name of the banking institution"
 msgstr "naam van de bank"
 
 #. module: account_online_sync
-#: code:addons/account_online_sync/models/online_sync.py:456
+#: code:addons/account_online_sync/models/online_sync.py:507
 #, python-format
 msgid "online sync"
 msgstr "online sync"

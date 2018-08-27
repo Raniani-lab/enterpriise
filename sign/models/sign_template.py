@@ -29,6 +29,8 @@ class SignTemplate(models.Model):
     tag_ids = fields.Many2many('sign.template.tag', string='Tags')
     color = fields.Integer()
     extension = fields.Char(compute='_compute_extension')
+    redirect_url = fields.Char(string="Optional Link",
+        help="Optional link for redirection after signature instead of https://www.odoo.com/page/sign")
 
     @api.depends('attachment_id.datas_fname')
     def _compute_extension(self):

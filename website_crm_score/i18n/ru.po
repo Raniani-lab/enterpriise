@@ -3,22 +3,16 @@
 # * website_crm_score
 # 
 # Translators:
-# Collex100, 2017
-# Max Belyanin <maxbelyanin@gmail.com>, 2017
-# Максим Дронь <dronmax@gmail.com>, 2017
-# Martin Trigaux, 2017
-# Sergey Vilizhanin, 2017
-# Denis Trepalin <zekarious@gmail.com>, 2017
-# Dmitry sky <d.v.selitsky@gmail.com>, 2017
-# sergeiruzkiicode <sergei.ruzki@icode.by>, 2018
-# Viktor Pogrebniak <vp@aifil.ru>, 2018
+# Martin Trigaux, 2018
+# Максим Дронь <dronmax@gmail.com>, 2018
+# Collex100, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.4+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-02 11:20+0000\n"
-"PO-Revision-Date: 2018-08-02 11:20+0000\n"
-"Last-Translator: Viktor Pogrebniak <vp@aifil.ru>, 2018\n"
+"POT-Creation-Date: 2018-08-24 11:29+0000\n"
+"PO-Revision-Date: 2018-08-24 11:29+0000\n"
+"Last-Translator: Collex100, 2018\n"
 "Language-Team: Russian (https://www.transifex.com/odoo/teams/41243/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -55,11 +49,6 @@ msgid "Archive"
 msgstr "Архивировать"
 
 #. module: website_crm_score
-#: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__assign_date
-msgid "Assign Date"
-msgstr "Дата назначения"
-
-#. module: website_crm_score
 #: model:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
 msgid "Assignation"
 msgstr "Назначение"
@@ -78,6 +67,22 @@ msgstr ""
 #: model:ir.model.fields,help:website_crm_score.field_team_user__leads_count
 msgid "Assigned Leads this last month"
 msgstr "Назначенный инициативы за последний месяц"
+
+#. module: website_crm_score
+#: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__assign_date
+msgid "Auto Assign Date"
+msgstr ""
+
+#. module: website_crm_score
+#: model:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
+#: model:ir.ui.view,arch_db:website_crm_score.team_user_kanban
+msgid "Avatar"
+msgstr "Аватар"
+
+#. module: website_crm_score
+#: model:ir.ui.view,arch_db:website_crm_score.crm_lead_view_dashboard
+msgid "Average Score"
+msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_team__capacity
@@ -425,18 +430,6 @@ msgid "Saleman"
 msgstr "Продавец"
 
 #. module: website_crm_score
-#: model:ir.model,name:website_crm_score.model_crm_team
-msgid "Sales Channel"
-msgstr "Канал продаж"
-
-#. module: website_crm_score
-#: model:ir.model.fields,help:website_crm_score.field_res_users__sale_team_id
-msgid ""
-"Sales Channel the user is member of. Used to compute the members of a sales "
-"channel through the inverse one2many"
-msgstr ""
-
-#. module: website_crm_score
 #: model:ir.actions.act_window,name:website_crm_score.team_action
 msgid "Sales Channels"
 msgstr "Каналы продаж"
@@ -452,6 +445,18 @@ msgstr "Продавец"
 #: model:ir.model.fields,field_description:website_crm_score.field_res_users__team_user_ids
 msgid "Sales Records"
 msgstr "Записи продаж"
+
+#. module: website_crm_score
+#: model:ir.model,name:website_crm_score.model_crm_team
+msgid "Sales Team"
+msgstr "Команда продаж"
+
+#. module: website_crm_score
+#: model:ir.model.fields,help:website_crm_score.field_res_users__sale_team_id
+msgid ""
+"Sales Team the user is member of. Used to compute the members of a Sales "
+"Team through the inverse one2many"
+msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_team__team_user_ids

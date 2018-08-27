@@ -73,6 +73,10 @@ var ViewEditorManager = AbstractEditorManager.extend({
         // do not take it from the fields_view as it directly comes from the
         // server and might be `tree` sometimes
         this.view_type = params.viewType;
+        if (this.view_type == 'list') {
+            // reset the group by so lists are not grouped in studio.
+            this.env.groupBy = [];
+        }
 
         this.renamingAllowedFields = []; // those fields can be renamed
 

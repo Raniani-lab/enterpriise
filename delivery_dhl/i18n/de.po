@@ -3,23 +3,14 @@
 # * delivery_dhl
 # 
 # Translators:
-# aNj <anj2j@yahoo.de>, 2017
-# Martin Trigaux, 2017
-# Thomas Neu <t.neu@runbox.com>, 2017
-# darenkster <inactive+darenkster@transifex.com>, 2017
-# AppleMentalist <felix.schnatbaum@gmail.com>, 2017
-# e2f <projects@e2f.com>, 2018
-# Thorsten Vocks <thorsten.vocks@openbig.org>, 2018
-# Renzo Meister, 2018
-# Katharina Moritz <kmo@e2f.com>, 2018
-# Malte Jansen <work@maltejansen.de>, 2018
+# Martin Trigaux, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.4+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-02 11:20+0000\n"
-"PO-Revision-Date: 2018-08-02 11:20+0000\n"
-"Last-Translator: Malte Jansen <work@maltejansen.de>, 2018\n"
+"POT-Creation-Date: 2018-08-24 11:28+0000\n"
+"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -500,6 +491,14 @@ msgstr "UPS"
 #: selection:delivery.carrier,delivery_type:0
 msgid "USPS"
 msgstr "USPS"
+
+#. module: delivery_dhl
+#: model:product.product,uom_name:delivery_dhl.product_product_delivery_dhl_intl
+#: model:product.product,uom_name:delivery_dhl.product_product_delivery_dhl_usa
+#: model:product.template,uom_name:delivery_dhl.product_product_delivery_dhl_intl_product_template
+#: model:product.template,uom_name:delivery_dhl.product_product_delivery_dhl_usa_product_template
+msgid "Unit(s)"
+msgstr "Einheit(en)"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0

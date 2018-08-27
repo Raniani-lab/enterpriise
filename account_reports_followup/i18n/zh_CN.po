@@ -3,19 +3,14 @@
 # * account_reports_followup
 # 
 # Translators:
-# Jeffery CHEN Fan <jeffery9@gmail.com>, 2016
-# YINGLI WANG <zzlilycn@gmail.com>, 2016
-# hman tsao <herman.tsao@gmail.com>, 2017
-# fausthuang, 2017
-# 老窦 北京 <2662059195@qq.com>, 2017
-# e2f <projects@e2f.com>, 2018
+# Martin Trigaux, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.3+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 08:34+0000\n"
-"PO-Revision-Date: 2018-06-25 08:34+0000\n"
-"Last-Translator: e2f <projects@e2f.com>, 2018\n"
+"POT-Creation-Date: 2018-08-24 11:28+0000\n"
+"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -314,20 +309,10 @@ msgid "Manual Action Type"
 msgstr ""
 
 #. module: account_reports_followup
-#: code:addons/account_reports_followup/models/account_followup_report.py:82
+#: code:addons/account_reports_followup/models/account_followup_report.py:85
 #, python-format
 msgid "Manual action done"
 msgstr "手动操作已完成"
-
-#. module: account_reports_followup
-#: code:addons/account_reports_followup/models/account_followup.py:81
-#, python-format
-msgid ""
-"No follow-up is defined for the company \"%s\".\n"
-" Please define one."
-msgstr ""
-"没有后续行动被公司定义\n"
-"请重新确定一下"
 
 #. module: account_reports_followup
 #. openerp-web
@@ -362,6 +347,11 @@ msgid "Payment Follow-ups"
 msgstr "付款催收"
 
 #. module: account_reports_followup
+#: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__print_letter
+msgid "Print a Letter"
+msgstr ""
+
+#. module: account_reports_followup
 #. openerp-web
 #: code:addons/account_reports_followup/static/src/xml/account_reports_followup_template.xml:7
 #, python-format
@@ -389,11 +379,6 @@ msgstr "搜索催款"
 #: model:account_followup.followup.line,name:account_reports_followup.demo_followup_line2
 msgid "Second reminder letter and email"
 msgstr "第二次提醒信和电子邮件"
-
-#. module: account_reports_followup
-#: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__send_letter
-msgid "Send a Letter"
-msgstr "发送信函"
 
 #. module: account_reports_followup
 #: model:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
@@ -460,9 +445,9 @@ msgid "Total debit"
 msgstr "借方总计"
 
 #. module: account_reports_followup
-#: model:ir.model.fields,help:account_reports_followup.field_account_followup_followup_line__send_letter
-msgid "When processing, it will print a letter"
-msgstr "当进行时，会打印一封信"
+#: model:ir.model.fields,help:account_reports_followup.field_account_followup_followup_line__print_letter
+msgid "When processing, it will print a PDF"
+msgstr ""
 
 #. module: account_reports_followup
 #: model:ir.model.fields,help:account_reports_followup.field_account_followup_followup_line__send_email
@@ -492,7 +477,7 @@ msgstr ""
 "                            翻译成各种语言 ."
 
 #. module: account_reports_followup
-#: code:addons/account_reports_followup/models/account_followup.py:58
+#: code:addons/account_reports_followup/models/account_followup.py:57
 #, python-format
 msgid ""
 "Your description is invalid, use the right legend or %% if you want to use "

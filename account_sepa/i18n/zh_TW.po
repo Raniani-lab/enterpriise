@@ -3,17 +3,14 @@
 # * account_sepa
 # 
 # Translators:
-# 敬雲 林 <chingyun@yuanchih-consult.com>, 2018
 # Martin Trigaux, 2018
-# Michael Yeung, 2018
-# Bill Hsu <hcm86@icloud.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.3+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 08:34+0000\n"
-"PO-Revision-Date: 2018-06-25 08:34+0000\n"
-"Last-Translator: Bill Hsu <hcm86@icloud.com>, 2018\n"
+"POT-Creation-Date: 2018-08-24 11:28+0000\n"
+"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/odoo/teams/41243/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,31 +19,8 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_payment.py:42
-#, python-format
-msgid "A SEPA communication cannot exceed 140 characters"
-msgstr ""
-
-#. module: account_sepa
-#: model:ir.model.fields,field_description:account_sepa.field_account_sepa_credit_transfer__bank_account_id
-msgid "Bank Account"
-msgstr "銀行帳戶"
-
-#. module: account_sepa
-#: model:ir.model,name:account_sepa.model_account_bank_statement_line
-msgid "Bank Statement Line"
-msgstr "銀行對帳單行"
-
-#. module: account_sepa
-#: model:ir.ui.view,arch_db:account_sepa.view_sepa_credit_transfer_download
-msgid "Cancel"
-msgstr "取消"
-
-#. module: account_sepa
-#: model:ir.ui.view,arch_db:account_sepa.view_sepa_credit_transfer_download
-msgid ""
-"Click on the file to save it somewhere on your computer. Then upload that "
-"file on your bank's homebanking website to order the credit transfer."
+#: model:ir.model,name:account_sepa.model_account_batch_payment
+msgid "Batch Payment"
 msgstr ""
 
 #. module: account_sepa
@@ -55,45 +29,16 @@ msgid "Companies"
 msgstr "公司"
 
 #. module: account_sepa
-#: model:ir.model,name:account_sepa.model_account_sepa_credit_transfer
-msgid "Create SEPA credit transfer files"
-msgstr ""
-
-#. module: account_sepa
-#: model:ir.model.fields,field_description:account_sepa.field_account_sepa_credit_transfer__create_uid
-msgid "Created by"
-msgstr "創建者"
-
-#. module: account_sepa
-#: model:ir.model.fields,field_description:account_sepa.field_account_sepa_credit_transfer__create_date
-msgid "Created on"
-msgstr "創建時間"
-
-#. module: account_sepa
-#: model:ir.model.fields,field_description:account_sepa.field_account_sepa_credit_transfer__display_name
-msgid "Display Name"
-msgstr "顯示名稱"
-
-#. module: account_sepa
-#: model:ir.ui.view,arch_db:account_sepa.view_sepa_credit_transfer_download
-msgid "Download SEPA Credit Transfer File"
-msgstr ""
+#: model:ir.model,name:account_sepa.model_account_abstract_payment
+msgid ""
+"Contains the logic shared between models which allows to register payments"
+msgstr "包含在允許登記付款的模型之間的共享邏輯"
 
 #. module: account_sepa
 #: model:ir.model.fields,help:account_sepa.field_res_company__sepa_orgid_issr
 msgid ""
 "Entity that assigns the identification (eg. KBE-BCO or Finanzamt Muenchen "
 "IV)."
-msgstr ""
-
-#. module: account_sepa
-#: model:ir.model.fields,field_description:account_sepa.field_account_sepa_credit_transfer__filename
-msgid "Filename"
-msgstr "文件名"
-
-#. module: account_sepa
-#: model:ir.actions.server,name:account_sepa.action_account_download_sepa_sct_file
-msgid "Generate SEPA Credit Transfer XML"
 msgstr ""
 
 #. module: account_sepa
@@ -105,11 +50,6 @@ msgstr "通用的"
 #: selection:res.company,sepa_pain_version:0
 msgid "German Version"
 msgstr ""
-
-#. module: account_sepa
-#: model:ir.model.fields,field_description:account_sepa.field_account_sepa_credit_transfer__id
-msgid "ID"
-msgstr "ID"
 
 #. module: account_sepa
 #: model:ir.model.fields,field_description:account_sepa.field_res_company__sepa_orgid_id
@@ -124,16 +64,12 @@ msgid "Identification assigned by an institution (eg. VAT number)."
 msgstr ""
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/sepa_credit_transfer.py:70
+#: code:addons/account_sepa/models/account_batch_payment.py:44
+#: code:addons/account_sepa/models/account_batch_payment.py:51
 #, python-format
 msgid ""
-"In order to export a SEPA Credit Transfer file, please only select payments "
-"belonging to the same bank journal."
-msgstr ""
-
-#. module: account_sepa
-#: model:ir.model.fields,field_description:account_sepa.field_account_sepa_credit_transfer__is_generic
-msgid "Is Generic"
+"In result, the file might not be accepted by all bank as a valid SEPA Credit"
+" Transfer file"
 msgstr ""
 
 #. module: account_sepa
@@ -144,24 +80,8 @@ msgstr ""
 
 #. module: account_sepa
 #: model:ir.model,name:account_sepa.model_account_journal
-#: model:ir.model.fields,field_description:account_sepa.field_account_sepa_credit_transfer__journal_id
 msgid "Journal"
 msgstr "日記帳"
-
-#. module: account_sepa
-#: model:ir.model.fields,field_description:account_sepa.field_account_sepa_credit_transfer____last_update
-msgid "Last Modified on"
-msgstr "最後修改時間"
-
-#. module: account_sepa
-#: model:ir.model.fields,field_description:account_sepa.field_account_sepa_credit_transfer__write_uid
-msgid "Last Updated by"
-msgstr "最後更新人"
-
-#. module: account_sepa
-#: model:ir.model.fields,field_description:account_sepa.field_account_sepa_credit_transfer__write_date
-msgid "Last Updated on"
-msgstr "最後更新時間"
 
 #. module: account_sepa
 #: model:ir.model.fields,help:account_sepa.field_res_config_settings__sepa_initiating_party_name
@@ -169,11 +89,6 @@ msgid ""
 "Name of the Creditor Reference Party. Usage Rule: Limited to 70 characters "
 "in length."
 msgstr ""
-
-#. module: account_sepa
-#: model:ir.ui.view,arch_db:account_sepa.view_sepa_credit_transfer_download
-msgid "Ok"
-msgstr "確定"
 
 #. module: account_sepa
 #: model:ir.ui.view,arch_db:account_sepa.account_journal_dashboard_kanban_view_inherited
@@ -186,16 +101,20 @@ msgid "Payments"
 msgstr "收付款"
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/sepa_credit_transfer.py:68
-#, python-format
-msgid ""
-"Payments to export as SEPA Credit Transfer must have 'SEPA Credit Transfer' "
-"selected as payment method and be posted"
+#: model:ir.ui.view,arch_db:account_sepa.account_journal_dashboard_kanban_view_inherited
+msgid "Payments to send via SEPA"
 msgstr ""
 
 #. module: account_sepa
-#: model:ir.ui.view,arch_db:account_sepa.account_journal_dashboard_kanban_view_inherited
-msgid "Payments to send via SEPA"
+#: code:addons/account_sepa/models/account_batch_payment.py:42
+#, python-format
+msgid "Please note that the following warning has been raised:"
+msgstr ""
+
+#. module: account_sepa
+#: code:addons/account_sepa/models/account_batch_payment.py:46
+#, python-format
+msgid "Please note that the following warnings have been raised:"
 msgstr ""
 
 #. module: account_sepa
@@ -232,11 +151,6 @@ msgid "SEPA Pain Version"
 msgstr ""
 
 #. module: account_sepa
-#: model:ir.model.fields,field_description:account_sepa.field_account_sepa_credit_transfer__file
-msgid "SEPA XML File"
-msgstr ""
-
-#. module: account_sepa
 #: model:ir.model.fields,help:account_sepa.field_res_company__sepa_pain_version
 #: model:ir.model.fields,help:account_sepa.field_res_config_settings__sepa_pain_version
 msgid ""
@@ -246,12 +160,22 @@ msgid ""
 msgstr ""
 
 #. module: account_sepa
+#: model:ir.model.fields,field_description:account_sepa.field_account_batch_payment__sct_generic
+msgid "Sct Generic"
+msgstr ""
+
+#. module: account_sepa
+#: model:ir.model.fields,field_description:account_sepa.field_account_batch_payment__sct_warning
+msgid "Sct Warning"
+msgstr ""
+
+#. module: account_sepa
 #: selection:res.company,sepa_pain_version:0
 msgid "Swiss Version"
 msgstr ""
 
 #. module: account_sepa
-#: model:ir.model.fields,help:account_sepa.field_account_sepa_credit_transfer__is_generic
+#: model:ir.model.fields,help:account_sepa.field_account_batch_payment__sct_generic
 msgid ""
 "Technical feature used during the file creation. A SEPA message is said to "
 "be 'generic' if it cannot be considered as a standard european credit "
@@ -260,7 +184,7 @@ msgid ""
 msgstr ""
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/sepa_credit_transfer.py:343
+#: code:addons/account_sepa/models/account_batch_payment.py:338
 #, python-format
 msgid ""
 "The account %s, linked to partner '%s', is not of type IBAN.\n"
@@ -268,7 +192,7 @@ msgid ""
 msgstr ""
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/sepa_credit_transfer.py:75
+#: code:addons/account_sepa/models/account_batch_payment.py:83
 #, python-format
 msgid ""
 "The account %s, of journal '%s', is not of type IBAN.\n"
@@ -276,7 +200,7 @@ msgid ""
 msgstr ""
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_payment.py:52
+#: code:addons/account_sepa/models/account_payment.py:47
 #, python-format
 msgid ""
 "The account '%s' (journal %s) requires a Bank Identification Code (BIC) to "
@@ -284,38 +208,44 @@ msgid ""
 msgstr ""
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/sepa_credit_transfer.py:305
+#: code:addons/account_sepa/models/account_batch_payment.py:302
 #, python-format
 msgid ""
 "The amount of the payment '%s' is too high. The maximum permitted is %s."
 msgstr ""
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/sepa_credit_transfer.py:123
+#: code:addons/account_sepa/models/account_batch_payment.py:70
 #, python-format
 msgid ""
 "The creditor bank account %s used in payment %s is not identified by a BIC"
 msgstr ""
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/sepa_credit_transfer.py:125
+#: code:addons/account_sepa/models/account_batch_payment.py:72
 #, python-format
 msgid ""
 "The creditor bank account %s used in payment %s is not identified by an IBAN"
 msgstr ""
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/sepa_credit_transfer.py:48
+#: code:addons/account_sepa/models/account_batch_payment.py:93
 #, python-format
 msgid ""
-"The generated payment file is not a generic SEPA credit transfer. Be aware that some banks may reject it because it is not implemented on their side.\n"
+"The following payments have no recipient bank account set: %s. \n"
 "\n"
-"In particular, the reason why this payment file is not generic is the following:\n"
-"   "
 msgstr ""
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_payment.py:50
+#: code:addons/account_sepa/models/account_batch_payment.py:94
+#, python-format
+msgid ""
+"The following payments' communications are not SEPA compliant: %s.\n"
+"                                         To be SEPA compliant, a communication must be made of only latin characters, be maximum 140 characters long, and cannot contain '//' sequence, nor start or end with a / character."
+msgstr ""
+
+#. module: account_sepa
+#: code:addons/account_sepa/models/account_payment.py:45
 #, python-format
 msgid ""
 "The journal '%s' requires a proper IBAN account to pay via SEPA. Please "
@@ -323,7 +253,7 @@ msgid ""
 msgstr ""
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_payment.py:61
+#: code:addons/account_sepa/models/account_payment.py:56
 #, python-format
 msgid ""
 "The partner account '%s' requires a Bank Identification Code (BIC) to pay "
@@ -331,7 +261,7 @@ msgid ""
 msgstr ""
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/sepa_credit_transfer.py:17
+#: code:addons/account_sepa/models/account_batch_payment.py:18
 #, python-format
 msgid ""
 "The text used in SEPA files can only contain the following characters :\n"
@@ -343,19 +273,19 @@ msgid ""
 msgstr ""
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/sepa_credit_transfer.py:121
+#: code:addons/account_sepa/models/account_batch_payment.py:68
 #, python-format
 msgid "The transaction %s is instructed in another currency than EUR"
 msgstr ""
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/sepa_credit_transfer.py:337
+#: code:addons/account_sepa/models/account_batch_payment.py:332
 #, python-format
 msgid "There is no Bank Identifier Code recorded for bank account '%s'"
 msgstr ""
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/sepa_credit_transfer.py:180
+#: code:addons/account_sepa/models/account_batch_payment.py:176
 #, python-format
 msgid ""
 "There is no Bank Identifier Code recorded for bank account '%s' of journal "
@@ -363,21 +293,10 @@ msgid ""
 msgstr ""
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/sepa_credit_transfer.py:78
-#, python-format
-msgid "There is no bank account selected for payment '%s'"
-msgstr ""
-
-#. module: account_sepa
-#: code:addons/account_sepa/models/sepa_credit_transfer.py:178
+#: code:addons/account_sepa/models/account_batch_payment.py:174
 #, python-format
 msgid "Too many transactions for a single file."
 msgstr ""
-
-#. module: account_sepa
-#: model:ir.model.fields,field_description:account_sepa.field_account_sepa_credit_transfer__warning_message
-msgid "Warning"
-msgstr "警告"
 
 #. module: account_sepa
 #: model:ir.model.fields,help:account_sepa.field_res_company__sepa_initiating_party_name
@@ -394,7 +313,7 @@ msgid "Your Company Name"
 msgstr ""
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/sepa_credit_transfer.py:117
+#: code:addons/account_sepa/models/account_batch_payment.py:64
 #, python-format
 msgid "Your bank account is not labelled in EUR"
 msgstr ""

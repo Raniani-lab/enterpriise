@@ -274,6 +274,7 @@ odoo.define('sign.Document', function (require) {
             this.accessToken = this.$('#o_sign_input_access_token').val();
             this.signerName = this.$('#o_sign_signer_name_input_info').val();
             this.signerPhone = this.$('#o_sign_signer_phone_input_info').val();
+            this.RedirectURL = this.$('#o_sign_input_optional_redirect_url').val();
             this.types = this.$('.o_sign_field_type_input_info');
             this.items = this.$('.o_sign_item_input_info');
 
@@ -731,7 +732,7 @@ odoo.define('sign.document_signing', function(require) {
     var PublicSignerDialog = Dialog.extend({
         template: "sign.public_signer_dialog",
 
-        init: function(parent, requestID, requestToken, options) {
+        init: function(parent, requestID, requestToken, RedirectURL, options) {
             var self = this;
             options = (options || {});
 
@@ -822,7 +823,8 @@ odoo.define('sign.document_signing', function(require) {
                     });
                 }
                 if (response === true) {
-                    (new (self.get_thankyoudialog_class())(self)).open();
+                    (new (self.get_thankyoudialog_class())(self, self.RedirectURL, self.requestID)).open();
+                    self.do_hide();
                 }
                 if (typeof response === 'object') {
                     if (response.url) {
@@ -836,7 +838,7 @@ odoo.define('sign.document_signing', function(require) {
             return ThankYouDialog;
         },
 
-        init: function(parent, requestID, requestToken, signature, signerPhone, options) {
+        init: function(parent, requestID, requestToken, signature, signerPhone, RedirectURL, options) {
             options = (options || {});
             options.title = options.title || _t("Final Validation");
             options.size = options.size || "medium";
@@ -852,24 +854,37 @@ odoo.define('sign.document_signing', function(require) {
             this.requestToken = requestToken;
             this.signature = signature;
             this.signerPhone = signerPhone;
+            this.RedirectURL = RedirectURL;
             this.sent = $.Deferred();
         },
     });
 
     var ThankYouDialog = Dialog.extend({
         template: "sign.thank_you_dialog",
+        events: {
+            'click .o_go_to_document': 'on_closed',
+        },
 
-        init: function(parent, options) {
+        init: function(parent, RedirectURL, requestID, options) {
             options = (options || {});
             options.title = options.title || _t("Thank You !") + "<br/>";
             options.subtitle = options.subtitle || _t("Your signature has been saved.");
             options.size = options.size || "medium";
             options.technical = false;
             options.buttons = [];
-
+            this.RedirectURL = RedirectURL;
+            this.requestID = requestID;
             this._super(parent, options);
 
             this.on('closed', this, this.on_closed);
+        },
+
+        /**
+         * @override
+         */
+        renderElement: function () {
+            this._super.apply(this, arguments);
+            this.$modal.addClass('o_sign_thank_you_dialog');
         },
 
         on_closed: function () {
@@ -1034,7 +1049,7 @@ odoo.define('sign.document_signing', function(require) {
             });
 
             if(this.$('#o_sign_is_public_user').length > 0) {
-                (new PublicSignerDialog(this, this.requestID, this.requestToken))
+                (new PublicSignerDialog(this, this.requestID, this.requestToken, this.RedirectURL))
                     .open(this.signerName, mail).sent.then(_.bind(_sign, this));
             } else {
                 _sign.call(this);
@@ -1088,11 +1103,11 @@ odoo.define('sign.document_signing', function(require) {
                     }
                     if (response === true) {
                         self.iframeWidget.disableItems();
-                        (new (self.get_thankyoudialog_class())(self)).open();
+                        (new (self.get_thankyoudialog_class())(self, self.RedirectURL, self.requestID)).open();
                     }
                     if (typeof response === 'object') {
                         if (response.sms) {
-                            (new SMSSignerDialog(self, self.requestID, self.accessToken, signatureValues, self.signerPhone))
+                            (new SMSSignerDialog(self, self.requestID, self.accessToken, signatureValues, self.signerPhone, self.RedirectURL))
                                 .open();
                         }
                         if (response.credit_error) {
@@ -1128,7 +1143,7 @@ odoo.define('sign.document_signing', function(require) {
                 signDialog.close();
 
                 if(self.$('#o_sign_is_public_user').length > 0) {
-                    (new PublicSignerDialog(self, self.requestID, self.requestToken))
+                    (new PublicSignerDialog(self, self.requestID, self.requestToken, this.RedirectURL))
                         .open(name, "").sent.then(_sign);
                 } else {
                     _sign();
@@ -1149,7 +1164,7 @@ odoo.define('sign.document_signing', function(require) {
                             }, 500);
                         }
                     });
-                    (new (self.get_thankyoudialog_class())(self)).open();
+                    (new (self.get_thankyoudialog_class())(self, self.RedirectURL, self.requestID)).open();
                 }
             });
         },

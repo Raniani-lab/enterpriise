@@ -1,22 +1,16 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * account_batch_deposit
+# * account_batch_payment
 # 
 # Translators:
-# Sergey Vilizhanin <sv@grimmette.ru>, 2017
-# Collex100, 2017
-# Viktor Pogrebniak <vp@aifil.ru>, 2017
-# Максим Дронь <dronmax@gmail.com>, 2017
-# Martin Trigaux, 2017
-# Max Belyanin <maxbelyanin@gmail.com>, 2017
-# Masha Koc <mariya.kos.ua@gmail.com>, 2017
+# Martin Trigaux, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.3+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 08:34+0000\n"
-"PO-Revision-Date: 2018-06-25 08:34+0000\n"
-"Last-Translator: Masha Koc <mariya.kos.ua@gmail.com>, 2017\n"
+"POT-Creation-Date: 2018-08-24 11:28+0000\n"
+"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: Russian (https://www.transifex.com/odoo/teams/41243/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,281 +18,443 @@ msgstr ""
 "Language: ru\n"
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
 
-#. module: account_batch_deposit
-#: code:addons/account_batch_deposit/models/account_payment.py:42
+#. module: account_batch_payment
+#: code:addons/account_batch_payment/models/account_batch_payment.py:75
 #, python-format
-msgid ""
-"All payments to print as a deposit slip must belong to the same journal."
+msgid "All payments in the batch must belong to the same company."
 msgstr ""
-"Все платежи, чтобы напечатать как бланк о взносе депозита должны "
-"принадлежать одному журналу."
 
-#. module: account_batch_deposit
-#: model:ir.model.fields,field_description:account_batch_deposit.field_account_batch_deposit__amount
-#: model:ir.ui.view,arch_db:account_batch_deposit.print_batch_deposit
+#. module: account_batch_payment
+#: code:addons/account_batch_payment/models/account_batch_payment.py:86
+#, python-format
+msgid "All payments in the batch must share the same payment method."
+msgstr ""
+
+#. module: account_batch_payment
+#: code:addons/account_batch_payment/models/account_batch_payment.py:81
+#, python-format
+msgid "All payments in the batch must share the same type."
+msgstr ""
+
+#. module: account_batch_payment
+#: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__amount
+#: model:ir.ui.view,arch_db:account_batch_payment.print_batch_payment
 msgid "Amount"
 msgstr "Сумма"
 
-#. module: account_batch_deposit
-#: model:ir.model.fields,help:account_batch_deposit.field_account_journal__batch_deposit_sequence_id
-msgid "Automatically generates references for batch deposits."
-msgstr "Автоматически генерирует ссылки для пакетных депозитов."
+#. module: account_batch_payment
+#: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__available_payment_method_ids
+msgid "Available Payment Method"
+msgstr ""
 
-#. module: account_batch_deposit
-#: model:ir.model.fields,field_description:account_batch_deposit.field_account_batch_deposit__journal_id
+#. module: account_batch_payment
+#: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__journal_id
 msgid "Bank"
 msgstr "Банк"
 
-#. module: account_batch_deposit
-#: model:ir.ui.view,arch_db:account_batch_deposit.view_batch_deposit_search
+#. module: account_batch_payment
+#: model:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_search
 msgid "Bank Journal"
 msgstr "Журнал Банка"
 
-#. module: account_batch_deposit
-#: model:account.payment.method,name:account_batch_deposit.account_payment_method_batch_deposit
-#: model:ir.model,name:account_batch_deposit.model_account_batch_deposit
-#: model:ir.model.fields,field_description:account_batch_deposit.field_account_payment__batch_deposit_id
-#: model:ir.ui.view,arch_db:account_batch_deposit.account_journal_dashboard_kanban_view_inherited
-#: model:ir.ui.view,arch_db:account_batch_deposit.view_batch_deposit_form
-#: model:ir.ui.view,arch_db:account_batch_deposit.view_batch_deposit_search
+#. module: account_batch_payment
+#: model:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
+msgid "Batch Content"
+msgstr ""
+
+#. module: account_batch_payment
+#: model:account.payment.method,name:account_batch_payment.account_payment_method_batch_deposit
+#: model:ir.ui.view,arch_db:account_batch_payment.account_journal_dashboard_kanban_view_inherited
 msgid "Batch Deposit"
 msgstr "Пакетный депозит"
 
-#. module: account_batch_deposit
-#: model:ir.model.fields,field_description:account_batch_deposit.field_account_journal__batch_deposit_payment_method_selected
-msgid "Batch Deposit Payment Method Selected"
+#. module: account_batch_payment
+#: model:ir.model,name:account_batch_payment.model_account_batch_payment
+#: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_download_wizard__batch_payment_id
+#: model:ir.model.fields,field_description:account_batch_payment.field_account_payment__batch_payment_id
+#: model:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
+#: model:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_search
+msgid "Batch Payment"
 msgstr ""
 
-#. module: account_batch_deposit
-#: model:ir.model.fields,field_description:account_batch_deposit.field_account_journal__batch_deposit_sequence_id
-msgid "Batch Deposit Sequence"
-msgstr "Последовательность Пакетного Депозита"
-
-#. module: account_batch_deposit
-#: model:ir.actions.act_window,name:account_batch_deposit.action_batch_deposit
-#: model:ir.ui.menu,name:account_batch_deposit.menu_batch_deposit
-msgid "Batch Deposits"
+#. module: account_batch_payment
+#: model:ir.actions.act_window,name:account_batch_payment.action_batch_payment_in
+#: model:ir.actions.act_window,name:account_batch_payment.action_batch_payment_out
+#: model:ir.ui.menu,name:account_batch_payment.menu_batch_payment_purchases
+#: model:ir.ui.menu,name:account_batch_payment.menu_batch_payment_sales
+msgid "Batch Payments"
 msgstr ""
 
-#. module: account_batch_deposit
-#: code:addons/account_batch_deposit/models/account_journal.py:44
-#, python-format
-msgid "Batch Deposits Sequence"
-msgstr "Последовательность Пакетных Депозитов"
+#. module: account_batch_payment
+#: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__batch_type
+msgid "Batch Type"
+msgstr ""
 
-#. module: account_batch_deposit
-#: model:ir.actions.act_window,help:account_batch_deposit.action_batch_deposit
+#. module: account_batch_payment
+#: model:ir.model.fields,help:account_batch_payment.field_account_batch_download_wizard__batch_payment_id
+msgid "Batch payment from which the file has been generated."
+msgstr ""
+
+#. module: account_batch_payment
+#: model:ir.actions.act_window,help:account_batch_payment.action_batch_payment_in
+#: model:ir.actions.act_window,help:account_batch_payment.action_batch_payment_out
 msgid ""
-"Batch deposits allows you to group received checks before you deposit them to the bank.\n"
-"                    The amount deposited to your bank will then appear as a single transaction on your bank statement.\n"
-"                    When you proceed with the reconciliation, simply select the corresponding batch deposit to reconcile the payments."
+"Batch payments allow you grouping different payments to ease\n"
+"                    reconciliation. They are also useful when depositing checks\n"
+"                    to the bank."
 msgstr ""
-"Пакетные депозиты позволяют группировать полученные чеки, прежде чем внести их в банк.\n"
-"Сумма зачисленная на ваш банк будет затем отображаться в виде одной транзакции по банковской выписке. \n"
-"Когда вы приступите к примирению, просто выберите соответствующий пакетный депозит для сверки платежей."
 
-#. module: account_batch_deposit
-#: code:addons/account_batch_deposit/models/account_journal.py:69
-#: model:ir.actions.server,name:account_batch_deposit.action_account_create_batch_deposit
+#. module: account_batch_payment
+#: model:ir.ui.view,arch_db:account_batch_payment.download_xml_form
+msgid "Click here to download the generated file:"
+msgstr ""
+
+#. module: account_batch_payment
+#: model:ir.ui.view,arch_db:account_batch_payment.download_xml_form
+msgid "Close"
+msgstr "Закрыть"
+
+#. module: account_batch_payment
+#: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__payment_method_code
+msgid "Code"
+msgstr "Код"
+
+#. module: account_batch_payment
+#: code:addons/account_batch_payment/models/account_journal.py:57
+#: model:ir.actions.server,name:account_batch_payment.action_account_create_batch_payment
 #, python-format
-msgid "Create Batch Deposit"
-msgstr "Создать Пакетный Депозит"
-
-#. module: account_batch_deposit
-#: model:ir.actions.act_window,help:account_batch_deposit.action_batch_deposit
-msgid "Create a new batch deposit"
+msgid "Create Batch Payment"
 msgstr ""
 
-#. module: account_batch_deposit
-#: model:ir.model.fields,field_description:account_batch_deposit.field_account_batch_deposit__create_uid
+#. module: account_batch_payment
+#: model:ir.actions.act_window,help:account_batch_payment.action_batch_payment_in
+msgid "Create a new customer batch payment"
+msgstr ""
+
+#. module: account_batch_payment
+#: model:ir.actions.act_window,help:account_batch_payment.action_batch_payment_out
+msgid "Create a new vendor batch payment"
+msgstr ""
+
+#. module: account_batch_payment
+#: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_download_wizard__create_uid
+#: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__create_uid
 msgid "Created by"
 msgstr "Создано"
 
-#. module: account_batch_deposit
-#: model:ir.model.fields,field_description:account_batch_deposit.field_account_batch_deposit__create_date
+#. module: account_batch_payment
+#: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_download_wizard__create_date
+#: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__create_date
 msgid "Created on"
 msgstr "Создан"
 
-#. module: account_batch_deposit
-#: model:ir.model.fields,field_description:account_batch_deposit.field_account_batch_deposit__currency_id
+#. module: account_batch_payment
+#: model:ir.model.fields,help:account_batch_payment.field_account_batch_payment__export_file_create_date
+msgid "Creation date of the related export file."
+msgstr ""
+
+#. module: account_batch_payment
+#: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__currency_id
 msgid "Currency"
 msgstr "Валюта"
 
-#. module: account_batch_deposit
-#: model:ir.ui.view,arch_db:account_batch_deposit.print_batch_deposit
-#: model:ir.ui.view,arch_db:account_batch_deposit.view_batch_deposit_form
+#. module: account_batch_payment
+#: model:ir.ui.view,arch_db:account_batch_payment.print_batch_payment
 msgid "Customer"
 msgstr "Заказчик"
 
-#. module: account_batch_deposit
-#: model:ir.model.fields,field_description:account_batch_deposit.field_account_batch_deposit__date
-#: model:ir.ui.view,arch_db:account_batch_deposit.print_batch_deposit
+#. module: account_batch_payment
+#: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__date
+#: model:ir.ui.view,arch_db:account_batch_payment.print_batch_payment
 msgid "Date"
 msgstr "Дата"
 
-#. module: account_batch_deposit
-#: model:ir.model.fields,field_description:account_batch_deposit.field_account_batch_deposit__display_name
-#: model:ir.model.fields,field_description:account_batch_deposit.field_report_account_batch_deposit_print_batch_deposit__display_name
+#. module: account_batch_payment
+#: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_download_wizard__display_name
+#: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__display_name
+#: model:ir.model.fields,field_description:account_batch_payment.field_report_account_batch_payment_print_batch_payment__display_name
 msgid "Display Name"
 msgstr "Отображаемое Имя"
 
-#. module: account_batch_deposit
-#: model:ir.ui.view,arch_db:account_batch_deposit.view_batch_deposit_search
+#. module: account_batch_payment
+#: model:ir.ui.view,arch_db:account_batch_payment.download_xml_form
+msgid "Download export file"
+msgstr ""
+
+#. module: account_batch_payment
+#: model:ir.model.fields,help:account_batch_payment.field_account_batch_payment__export_file
+msgid "Export file related to this batch"
+msgstr ""
+
+#. module: account_batch_payment
+#: model:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
+msgid "Exported File"
+msgstr ""
+
+#. module: account_batch_payment
+#: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_download_wizard__export_file
+#: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__export_file
+msgid "File"
+msgstr "Файл"
+
+#. module: account_batch_payment
+#: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__file_generation_enabled
+msgid "File Generation Enabled"
+msgstr ""
+
+#. module: account_batch_payment
+#: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__export_filename
+msgid "File Name"
+msgstr "Имя файла"
+
+#. module: account_batch_payment
+#: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_download_wizard__export_filename
+msgid "File name"
+msgstr ""
+
+#. module: account_batch_payment
+#: model:ir.model.fields,help:account_batch_payment.field_account_batch_download_wizard__export_file
+msgid "Generated XML file"
+msgstr ""
+
+#. module: account_batch_payment
+#: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__export_file_create_date
+msgid "Generation Date"
+msgstr ""
+
+#. module: account_batch_payment
+#: model:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_search
 msgid "Group By"
 msgstr "Группировать"
 
-#. module: account_batch_deposit
-#: model:ir.model.fields,field_description:account_batch_deposit.field_account_batch_deposit__id
-#: model:ir.model.fields,field_description:account_batch_deposit.field_report_account_batch_deposit_print_batch_deposit__id
+#. module: account_batch_payment
+#: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_download_wizard__id
+#: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__id
+#: model:ir.model.fields,field_description:account_batch_payment.field_report_account_batch_payment_print_batch_payment__id
 msgid "ID"
 msgstr "Номер"
 
-#. module: account_batch_deposit
+#. module: account_batch_payment
+#: selection:account.batch.payment,batch_type:0
+msgid "Inbound"
+msgstr "Входящие"
+
+#. module: account_batch_payment
+#: code:addons/account_batch_payment/models/account_journal.py:31
+#, python-format
+msgid "Inbound Batch Payments Sequence"
+msgstr ""
+
+#. module: account_batch_payment
 #. openerp-web
-#: code:addons/account_batch_deposit/static/src/js/account_batch_deposit_reconciliation.js:135
+#: code:addons/account_batch_payment/static/src/js/account_batch_payment_reconciliation.js:135
 #, python-format
 msgid "Incorrect Operation"
 msgstr "Некорректная Операция"
 
-#. module: account_batch_deposit
-#: model:ir.model,name:account_batch_deposit.model_account_journal
+#. module: account_batch_payment
+#: model:ir.model,name:account_batch_payment.model_account_journal
 msgid "Journal"
 msgstr "Журнал"
 
-#. module: account_batch_deposit
-#: model:ir.model.fields,field_description:account_batch_deposit.field_account_batch_deposit____last_update
-#: model:ir.model.fields,field_description:account_batch_deposit.field_report_account_batch_deposit_print_batch_deposit____last_update
+#. module: account_batch_payment
+#: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_download_wizard____last_update
+#: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment____last_update
+#: model:ir.model.fields,field_description:account_batch_payment.field_report_account_batch_payment_print_batch_payment____last_update
 msgid "Last Modified on"
 msgstr "Последнее изменение"
 
-#. module: account_batch_deposit
-#: model:ir.model.fields,field_description:account_batch_deposit.field_account_batch_deposit__write_uid
+#. module: account_batch_payment
+#: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_download_wizard__write_uid
+#: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__write_uid
 msgid "Last Updated by"
 msgstr "Последний раз обновил"
 
-#. module: account_batch_deposit
-#: model:ir.model.fields,field_description:account_batch_deposit.field_account_batch_deposit__write_date
+#. module: account_batch_payment
+#: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_download_wizard__write_date
+#: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__write_date
 msgid "Last Updated on"
 msgstr "Последнее обновление"
 
-#. module: account_batch_deposit
-#: model:ir.ui.view,arch_db:account_batch_deposit.print_batch_deposit
+#. module: account_batch_payment
+#: model:ir.ui.view,arch_db:account_batch_payment.print_batch_payment
 msgid "Memo"
 msgstr "Памятка"
 
-#. module: account_batch_deposit
-#: selection:account.batch.deposit,state:0
+#. module: account_batch_payment
+#: model:ir.model.fields,help:account_batch_payment.field_account_batch_payment__export_filename
+msgid "Name of the export file generated for this batch"
+msgstr ""
+
+#. module: account_batch_payment
+#: model:ir.model.fields,help:account_batch_payment.field_account_batch_download_wizard__export_filename
+msgid "Name of the generated XML file"
+msgstr ""
+
+#. module: account_batch_payment
+#: selection:account.batch.payment,state:0
 msgid "New"
 msgstr "Новый"
 
-#. module: account_batch_deposit
-#: model:ir.model,name:account_batch_deposit.model_account_payment
-#: model:ir.model.fields,field_description:account_batch_deposit.field_account_batch_deposit__payment_ids
-#: model:ir.ui.view,arch_db:account_batch_deposit.view_batch_deposit_form
+#. module: account_batch_payment
+#: selection:account.batch.payment,batch_type:0
+msgid "Outbound"
+msgstr "Исходящий"
+
+#. module: account_batch_payment
+#: code:addons/account_batch_payment/models/account_journal.py:17
+#, python-format
+msgid "Outbound Batch Payments Sequence"
+msgstr ""
+
+#. module: account_batch_payment
+#: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__payment_method_id
+msgid "Payment Method"
+msgstr "Метод Оплаты"
+
+#. module: account_batch_payment
+#: model:ir.model,name:account_batch_payment.model_account_payment
+#: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__payment_ids
+#: model:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
 msgid "Payments"
 msgstr "Платежи"
 
-#. module: account_batch_deposit
-#: code:addons/account_batch_deposit/models/account_payment.py:38
-#, python-format
-msgid ""
-"Payments to print as a deposit slip must have 'Batch Deposit' selected as "
-"payment method, not be part of an existing batch deposit and not have "
-"already been reconciled"
-msgstr ""
-"Платежи, чтобы напечатать как бланк о взносе депозита, должны иметь "
-"выбранный  'Пакетный Депозит' как способ оплаты, не быть частью "
-"существующего пакетного депозита и не быть уже выверены"
-
-#. module: account_batch_deposit
-#: model:ir.ui.view,arch_db:account_batch_deposit.view_batch_deposit_form
+#. module: account_batch_payment
+#: model:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
 msgid "Print"
 msgstr "Печать"
 
-#. module: account_batch_deposit
-#: model:ir.actions.report,name:account_batch_deposit.action_print_batch_deposit
-msgid "Print Batch Deposit"
-msgstr "Печать Пакетного Депозита"
+#. module: account_batch_payment
+#: model:ir.actions.report,name:account_batch_payment.action_print_batch_payment
+msgid "Print Batch Payment"
+msgstr ""
 
-#. module: account_batch_deposit
-#: model:ir.actions.server,name:account_batch_deposit.action_account_print_batch_deposit
-msgid "Print Batch Deposits"
-msgstr "Печать Пакетных Депозитов"
+#. module: account_batch_payment
+#: model:ir.actions.server,name:account_batch_payment.action_account_print_batch_payment
+msgid "Print Batch Payments"
+msgstr ""
 
-#. module: account_batch_deposit
-#: selection:account.batch.deposit,state:0
-msgid "Printed"
-msgstr "Напечатан"
-
-#. module: account_batch_deposit
-#: selection:account.batch.deposit,state:0
+#. module: account_batch_payment
+#: selection:account.batch.payment,state:0
 msgid "Reconciled"
 msgstr "Сверено"
 
-#. module: account_batch_deposit
-#: model:ir.model.fields,field_description:account_batch_deposit.field_account_batch_deposit__name
+#. module: account_batch_payment
+#: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__name
 msgid "Reference"
 msgstr "Ссылка"
 
-#. module: account_batch_deposit
-#: model:ir.ui.view,arch_db:account_batch_deposit.view_batch_deposit_form
+#. module: account_batch_payment
+#: model:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
 msgid "Register Payment"
 msgstr "Регистрация Платежа"
 
-#. module: account_batch_deposit
+#. module: account_batch_payment
 #. openerp-web
-#: code:addons/account_batch_deposit/static/src/xml/account_reconciliation.xml:8
+#: code:addons/account_batch_payment/static/src/xml/account_reconciliation.xml:8
 #, python-format
-msgid "Select a Batch Deposit"
-msgstr "Выбирите Пакетный Депозит"
+msgid "Select a Batch Payment"
+msgstr ""
 
-#. module: account_batch_deposit
+#. module: account_batch_payment
+#: selection:account.batch.payment,state:0
+msgid "Sent"
+msgstr "Отправлено"
+
+#. module: account_batch_payment
 #. openerp-web
-#: code:addons/account_batch_deposit/static/src/js/account_batch_deposit_reconciliation.js:133
+#: code:addons/account_batch_payment/static/src/js/account_batch_payment_reconciliation.js:133
 #, python-format
 msgid ""
-"Some journal items from the selected batch deposit are already selected in "
+"Some journal items from the selected batch payment are already selected in "
 "another reconciliation : "
 msgstr ""
-"Некоторые пункты журнал из выбранного пакетного депозита уже выбраны в "
-"другом согласовании :"
 
-#. module: account_batch_deposit
-#: model:ir.model.fields,field_description:account_batch_deposit.field_account_batch_deposit__state
-#: model:ir.ui.view,arch_db:account_batch_deposit.view_batch_deposit_search
+#. module: account_batch_payment
+#: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__state
+#: model:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_search
 msgid "State"
 msgstr "Регион"
 
-#. module: account_batch_deposit
-#: model:ir.model.fields,help:account_batch_deposit.field_account_journal__batch_deposit_payment_method_selected
+#. module: account_batch_payment
+#: code:addons/account_batch_payment/models/account_batch_payment.py:88
+#, python-format
 msgid ""
-"Technical feature used to know whether batch deposit was enabled as payment "
-"method."
+"The batch must have the same payment method as the payments it contains."
 msgstr ""
-"Техническая характеристика используется, чтобы узнать, был ли пакетный "
-"депозит включен в качестве метода оплаты."
 
-#. module: account_batch_deposit
-#: model:ir.ui.view,arch_db:account_batch_deposit.view_batch_deposit_form
+#. module: account_batch_payment
+#: code:addons/account_batch_payment/models/account_batch_payment.py:83
+#, python-format
+msgid "The batch must have the same type as the payments it contains."
+msgstr ""
+
+#. module: account_batch_payment
+#: code:addons/account_batch_payment/models/account_batch_payment.py:78
+#, python-format
+msgid ""
+"The journal of the batch payment and of the payments it contains must be the"
+" same."
+msgstr ""
+
+#. module: account_batch_payment
+#: model:ir.model.fields,help:account_batch_payment.field_account_batch_payment__payment_method_id
+msgid "The payment method used by the payments in this batch."
+msgstr ""
+
+#. module: account_batch_payment
+#: model:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
 msgid "Total"
 msgstr "Всего"
 
-#. module: account_batch_deposit
-#: model:ir.ui.view,arch_db:account_batch_deposit.view_batch_deposit_search
+#. module: account_batch_payment
+#: model:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_search
 msgid "Unreconciled"
 msgstr "Не сверенные"
 
-#. module: account_batch_deposit
-#: model:ir.model,name:account_batch_deposit.model_account_reconciliation_widget
+#. module: account_batch_payment
+#: model:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
+msgid "Validate"
+msgstr "Проверить"
+
+#. module: account_batch_payment
+#: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_download_wizard__warning_message
+msgid "Warning"
+msgstr "Предупреждение"
+
+#. module: account_batch_payment
+#: model:ir.model.fields,help:account_batch_payment.field_account_batch_download_wizard__warning_message
+msgid "Warning message to display about the content of the downloadable file."
+msgstr ""
+
+#. module: account_batch_payment
+#: model:ir.model.fields,help:account_batch_payment.field_account_batch_payment__file_generation_enabled
+msgid ""
+"Whether or not this batch payment should display the 'Generate File' button "
+"instead of 'Print' in form view."
+msgstr ""
+
+#. module: account_batch_payment
+#: model:ir.model,name:account_batch_payment.model_account_batch_download_wizard
+msgid "account.batch.download.wizard"
+msgstr ""
+
+#. module: account_batch_payment
+#: model:ir.model,name:account_batch_payment.model_account_reconciliation_widget
 msgid "account.reconciliation.widget"
 msgstr ""
 
-#. module: account_batch_deposit
-#: model:ir.ui.view,arch_db:account_batch_deposit.view_batch_deposit_form
+#. module: account_batch_payment
+#: model:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
 msgid "auto ..."
 msgstr "авто ..."
 
-#. module: account_batch_deposit
-#: model:ir.model,name:account_batch_deposit.model_report_account_batch_deposit_print_batch_deposit
-msgid "report.account_batch_deposit.print_batch_deposit"
-msgstr "report.account_batch_deposit.print_batch_deposit"
+#. module: account_batch_payment
+#: model:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
+msgid "re-Generate Export File"
+msgstr ""
+
+#. module: account_batch_payment
+#: model:ir.model,name:account_batch_payment.model_report_account_batch_payment_print_batch_payment
+msgid "report.account_batch_payment.print_batch_payment"
+msgstr ""

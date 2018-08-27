@@ -4,15 +4,13 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
-# Jorunn D. Newth, 2018
-# Viktor Basso <viktor@voit.no>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.4+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-02 11:21+0000\n"
-"PO-Revision-Date: 2018-08-02 11:21+0000\n"
-"Last-Translator: Viktor Basso <viktor@voit.no>, 2018\n"
+"POT-Creation-Date: 2018-08-24 11:29+0000\n"
+"PO-Revision-Date: 2018-08-24 11:29+0000\n"
+"Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: Norwegian Bokmål (https://www.transifex.com/odoo/teams/41243/nb/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -30,6 +28,11 @@ msgstr " (kopi)"
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__appointment_count
 msgid "# Appointments"
 msgstr "# avtaler"
+
+#. module: website_calendar
+#: model:ir.ui.view,arch_db:website_calendar.appointment_calendar
+msgid "#{day['today_cls'] and 'Today' or ''}"
+msgstr ""
 
 #. module: website_calendar
 #: code:addons/website_calendar/controllers/main.py:138
@@ -199,6 +202,7 @@ msgstr "Svar"
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.appointment
 #: model:ir.ui.view,arch_db:website_calendar.appointment_form
+#: model:ir.ui.view,arch_db:website_calendar.index
 #: model:website.menu,name:website_calendar.menu_appointment
 msgid "Appointment"
 msgstr "Avtale"
@@ -235,7 +239,6 @@ msgstr "Avtaletype"
 
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.appointment_validated
-#: model:ir.ui.view,arch_db:website_calendar.index
 msgid "Appointment:"
 msgstr "Avtale:"
 
@@ -491,6 +494,11 @@ msgstr "Introduksjonsmelding"
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_is_follower
 msgid "Is Follower"
 msgstr "Er følger"
+
+#. module: website_calendar
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__is_published
+msgid "Is published"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__country_ids
@@ -832,8 +840,8 @@ msgstr "Se tilgjengelighet <span class=\"fa fa-arrow-right\"/>"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__website_published
-msgid "Visible in Website"
-msgstr "Synlig på nettsted"
+msgid "Visible on current website"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__website_message_ids
@@ -864,6 +872,11 @@ msgstr "Meta-nøkkelord for nettsted"
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__website_meta_title
 msgid "Website meta title"
 msgstr "Meta-tittel for nettsted"
+
+#. module: website_calendar
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__website_meta_og_img
+msgid "Website opengraph image"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.appointment_calendar

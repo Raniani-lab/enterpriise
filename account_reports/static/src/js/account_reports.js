@@ -352,10 +352,14 @@ var accountReportsWidget = AbstractAction.extend(ControlPanelMixin, {
                 self.$el.find('.o_account_reports_summary_edit').hide();
                 self.$el.find('.o_account_reports_summary').show();
                 if (!text) {
-                    text = "<input type='text' class='o_input' name='summary' placeholder='Add a note' />";
-                } else
-                    text = '<span style="white-space: pre-wrap;">' + text + '</span>'
-                return $(e.target).parent().siblings('.o_account_reports_summary').find('> .o_account_report_summary').html(text);
+                    var $content = $("<input type='text' class='o_input' name='summary'/>");
+                    $content.attr('placeholder', _t('Add a note'));
+                } else {
+                    var $content = $('<span />').text(text).html(function (i, value) {
+                        return value.replace(/\n/g, '<br>\n');
+                    });
+                }
+                return $(e.target).parent().siblings('.o_account_reports_summary').find('> .o_account_report_summary').html($content);
             });
     },
     render_footnotes: function() {

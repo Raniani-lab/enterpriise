@@ -3,29 +3,15 @@
 # * quality
 # 
 # Translators:
-# Martin Trigaux, 2017
-# Renzo Meister, 2017
-# JackTheHunter <Maximilian.N98@gmail.com>, 2017
-# Ermin Trevisan <trevi@twanda.com>, 2017
-# Tina Rittmüller <tr@ife.de>, 2017
-# Wolfgang Taferner, 2017
-# Niki Waibel, 2017
-# Stefan Hartenfels <stefan.hartenfels@camptocamp.com>, 2017
-# Rudolf Schnapka <rs@techno-flex.de>, 2017
-# Krakataua Katarajtu <shlok@hotmail.de>, 2017
-# darenkster <inactive+darenkster@transifex.com>, 2017
-# Henry Mineehen <info@mineehen.de>, 2017
-# Thorsten Vocks <thorsten.vocks@openbig.org>, 2017
-# Constantin Ehrenstein <transifex@skiller.eu>, 2017
-# DE T1 <e2f8846@yahoo.com>, 2017
-# Katharina Moritz <kmo@e2f.com>, 2017
+# Martin Trigaux, 2018
+# Jan Meyer, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.4+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-02 11:20+0000\n"
-"PO-Revision-Date: 2018-08-02 11:20+0000\n"
-"Last-Translator: Katharina Moritz <kmo@e2f.com>, 2017\n"
+"POT-Creation-Date: 2018-08-24 11:28+0000\n"
+"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"Last-Translator: Jan Meyer, 2018\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -60,6 +46,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_point__message_needaction
 msgid "Action Needed"
 msgstr "Aktion notwendig"
+
+#. module: quality
+#: model:quality.alert.stage,name:quality.quality_alert_stage_2
+msgid "Action Proposed"
+msgstr "vorgeschlagene Aktion"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_point__active
@@ -134,6 +125,11 @@ msgstr "Farbkennzeichnung"
 #: model:ir.model.fields,field_description:quality.field_quality_point__company_id
 msgid "Company"
 msgstr "Unternehmen"
+
+#. module: quality
+#: model:quality.alert.stage,name:quality.quality_alert_stage_1
+msgid "Confirmed"
+msgstr "Bestätigt"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_check__control_date
@@ -407,11 +403,12 @@ msgstr "Name"
 #: code:addons/quality/models/quality.py:69
 #: code:addons/quality/models/quality.py:70
 #: code:addons/quality/models/quality.py:144
-#: code:addons/quality/models/quality.py:180
 #: code:addons/quality/models/quality.py:181
-#: code:addons/quality/models/quality.py:208
-#: code:addons/quality/models/quality.py:243
+#: code:addons/quality/models/quality.py:182
+#: code:addons/quality/models/quality.py:209
 #: code:addons/quality/models/quality.py:244
+#: code:addons/quality/models/quality.py:245
+#: model:quality.alert.stage,name:quality.quality_alert_stage_0
 #, python-format
 msgid "New"
 msgstr "Neu"
@@ -502,6 +499,11 @@ msgstr ""
 "dies die Anlage neuer Datensätze vollständig."
 
 #. module: quality
+#: model:quality.reason,name:quality.reason_other
+msgid "Others"
+msgstr "Andere"
+
+#. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_user_id
 msgid "Owner"
 msgstr "Besitzer"
@@ -528,6 +530,11 @@ msgstr ""
 "alias_model_id (Beispiel: project (parent_model) und task (model))"
 
 #. module: quality
+#: model:quality.reason,name:quality.reason_parts
+msgid "Parts Quality"
+msgstr "Teilequalität"
+
+#. module: quality
 #: selection:quality.check,quality_state:0
 msgid "Passed"
 msgstr "Bestanden"
@@ -537,6 +544,11 @@ msgstr "Bestanden"
 #: model:ir.model.fields,field_description:quality.field_quality_check__picking_id
 msgid "Picking"
 msgstr "Liefervorgang"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_check__picture
+msgid "Picture"
+msgstr "Bild"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert_team__alias_contact
@@ -643,6 +655,11 @@ msgstr "Hauptursache"
 #: model:ir.model.fields,field_description:quality.field_quality_point__sequence
 msgid "Sequence"
 msgstr "Reihenfolge"
+
+#. module: quality
+#: model:quality.alert.stage,name:quality.quality_alert_stage_3
+msgid "Solved"
+msgstr "Gelöst"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__stage_id
@@ -794,3 +811,13 @@ msgstr "Website-Nachrichten"
 #: model:ir.model.fields,help:quality.field_quality_point__website_message_ids
 msgid "Website communication history"
 msgstr "Website-Kommunikationshistorie"
+
+#. module: quality
+#: model:quality.reason,name:quality.reason_wo
+msgid "Work Operation"
+msgstr "Arbeitsgang"
+
+#. module: quality
+#: model:quality.reason,name:quality.reason_workcenter
+msgid "Workcenter Failure"
+msgstr "Arbeitsplatzausfall"

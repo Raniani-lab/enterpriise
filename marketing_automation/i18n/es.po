@@ -3,31 +3,14 @@
 # * marketing_automation
 # 
 # Translators:
-# e2f_es_ t6 <e2f_es_t6@outlook.com>, 2017
-# Raquel Iciarte <ric@odoo.com>, 2017
-# e2f_EPV Translator <e2f_EPV@outlook.com>, 2017
-# Martin Trigaux, 2017
-# RGB Consulting <odoo@rgbconsulting.com>, 2017
-# Pedro M. Baeza <pedro.baeza@gmail.com>, 2017
-# José Matias Zuazo <jose.zuazo@tpsistemas.com.ar>, 2017
-# Ana Juaristi <ajuaristio@gmail.com>, 2017
-# Luis M. Ontalba <luis.martinez@tecnativa.com>, 2017
-# Ivan Nieto <ivan.n.s@tuta.io>, 2017
-# Antonio Trueba, 2017
-# José Vicente <txusev@gmail.com>, 2017
-# Jesús Alan Ramos Rodríguez <alan.ramos@jarsa.com.mx>, 2017
-# Inigo Zuluaga <inigo_zuluaga@yahoo.es>, 2017
-# Jesus Zapata <jesus@vauxoo.com>, 2017
-# Sergio Flores <vitavitae1@gmail.com>, 2017
-# e2f <projects@e2f.com>, 2018
-# ES R1 <e2fes@hotmail.com>, 2018
+# Martin Trigaux, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.4+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-02 11:20+0000\n"
-"PO-Revision-Date: 2018-08-02 11:20+0000\n"
-"Last-Translator: ES R1 <e2fes@hotmail.com>, 2018\n"
+"POT-Creation-Date: 2018-08-24 11:28+0000\n"
+"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -129,6 +112,21 @@ msgstr ""
 #: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "<span class=\"ml8\">after</span>"
 msgstr "<span class=\"ml8\">después</span>"
+
+#. module: marketing_automation
+#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+msgid "<span class=\"o_form_label\" invisible=\"1\">Warning</span>"
+msgstr ""
+
+#. module: marketing_automation
+#: model:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
+msgid "<span class=\"o_form_label\">Record</span>"
+msgstr ""
+
+#. module: marketing_automation
+#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+msgid "<span class=\"oe_edit_only\">Name</span>"
+msgstr ""
 
 #. module: marketing_automation
 #: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_kanban
@@ -400,6 +398,8 @@ msgid "Edit"
 msgstr "Editar"
 
 #. module: marketing_automation
+#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
 #: selection:marketing.activity,activity_type:0
 msgid "Email"
 msgstr "Correo electrónico"
@@ -731,6 +731,12 @@ msgid "No activity added"
 msgstr "No se ha añadido ninguna actividad"
 
 #. module: marketing_automation
+#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
+msgid "Non email activity"
+msgstr ""
+
+#. module: marketing_automation
 #: model:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
 msgid "Not clicked yet"
 msgstr "Todavía no se ha seleccionado"
@@ -840,7 +846,6 @@ msgstr "Destinatarios"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant__resource_ref
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
 msgid "Record"
 msgstr "Registro"
 
@@ -1011,6 +1016,11 @@ msgid "State"
 msgstr "Estado"
 
 #. module: marketing_automation
+#: model:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
+msgid "State: #{record.state.raw_value}"
+msgstr ""
+
+#. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__statistics_graph_data
 msgid "Statistics Graph Data"
 msgstr "Datos del gráfico de estadísticas"
@@ -1159,11 +1169,6 @@ msgstr "Periodo de validez"
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__validity_duration_type
 msgid "Validity Duration Type"
 msgstr "Tipo de duración de la validez"
-
-#. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
-msgid "Warning"
-msgstr "Alerta"
 
 #. module: marketing_automation
 #: selection:marketing.activity,interval_type:0

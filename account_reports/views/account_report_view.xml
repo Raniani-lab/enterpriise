@@ -11,25 +11,33 @@
                         <div class="oe_title">
                             <label for="name" class="oe_edit_only"/>
                             <h1><field name="name"/></h1>
+                            <field name="company_id" groups="base.group_multi_company"/>
                         </div>
-                        <group>
+                        <group string="Report Definition">
                             <group>
                                 <field name="date_range"/>
+                                <field name="tax_report"/>
+                            </group>
+                            <group>
+                                <field name="debit_credit"/>
+                                <field name="generated_menu_id"/>
+                            </group>
+                        </group>
+                        <group string="Available Filters &amp; Options">
+                            <group>
                                 <field name="comparison"/>
                                 <field name="cash_basis"/>
-                                <field name="analytic"/>
-                                <field name="show_journal_filter"/>
                                 <field name="unfold_all_filter"/>
                                 <field name="hierarchy_option"/>
                             </group>
                             <group>
-                                <field name="debit_credit"/>
-                                <field name="tax_report"/>
+                                <field name="show_journal_filter"/>
+                                <field name="analytic" groups="analytic.group_analytic_accounting"/>
                                 <field name="applicable_filters_ids" widget="many2many_tags" context="{'default_model_id': 'account.move.line'}"/>
-                                <field name="generated_menu_id"/>
-                                <field name="company_id" groups="base.group_multi_company"/>
                             </group>
-                            <field colspan="4" name="line_ids"/>
+                        </group>
+                        <group string="Report Lines">
+                            <field name="line_ids" nolabel="1"/>
                         </group>
                     </sheet>
                 </form>

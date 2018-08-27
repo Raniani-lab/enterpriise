@@ -45,7 +45,7 @@
             <div id="dynamic_report" position="attributes">
                 <attribute name="invisible">0</attribute>
             </div>
-            <div id="dynamic_report" position="after">
+            <div id="setup" position="inside">
                 <div class="col-12 col-lg-6 o_setting_box" groups="base.group_no_one">
                     <div class="o_setting_left_pane">
                         <field name="use_anglo_saxon"/>

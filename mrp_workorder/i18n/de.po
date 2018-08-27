@@ -3,29 +3,14 @@
 # * mrp_workorder
 # 
 # Translators:
-# Martin Trigaux, 2017
-# Wolfgang Taferner, 2017
-# darenkster <inactive+darenkster@transifex.com>, 2017
-# Ermin Trevisan <trevi@twanda.com>, 2017
-# Constantin Ehrenstein <transifex@skiller.eu>, 2017
-# Katharina Moritz <kmo@e2f.com>, 2017
-# DE T1 <e2f8846@yahoo.com>, 2017
-# Tina Rittmüller <tr@ife.de>, 2017
-# JackTheHunter <Maximilian.N98@gmail.com>, 2017
-# Stefan Hartenfels <stefan.hartenfels@camptocamp.com>, 2017
-# Gab_Odoo <gab@odoo.com>, 2017
-# Renzo Meister, 2017
-# Bülent Tiknas <btiknas@googlemail.com>, 2017
-# e2f <projects@e2f.com>, 2018
-# Anja Funk <anja.funk@afimage.de>, 2018
-# Rudolf Schnapka <rs@techno-flex.de>, 2018
+# Martin Trigaux, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.4+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-02 11:20+0000\n"
-"PO-Revision-Date: 2018-08-02 11:20+0000\n"
-"Last-Translator: Rudolf Schnapka <rs@techno-flex.de>, 2018\n"
+"POT-Creation-Date: 2018-08-24 11:28+0000\n"
+"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -115,13 +100,18 @@ msgid "Do not update page"
 msgstr "Seite nicht aktualisieren"
 
 #. module: mrp_workorder
-#: code:addons/mrp_workorder/models/quality.py:93
+#: code:addons/mrp_workorder/models/quality.py:110
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__qty_done
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__qty_done
 #: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_inherit_workorder
 #, python-format
 msgid "Done"
 msgstr "Erledigt"
+
+#. module: mrp_workorder
+#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+msgid "Dropdown menu"
+msgstr ""
 
 #. module: mrp_workorder
 #. openerp-web
@@ -208,7 +198,7 @@ msgid "Mark as Done and Close MO"
 msgstr ""
 
 #. module: mrp_workorder
-#: code:addons/mrp_workorder/models/mrp_workorder.py:301
+#: code:addons/mrp_workorder/models/mrp_workorder.py:305
 #, python-format
 msgid "Menu"
 msgstr "Menü"
@@ -267,6 +257,11 @@ msgid "Pause"
 msgstr "Pause"
 
 #. module: mrp_workorder
+#: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__picture
+msgid "Picture"
+msgstr "Bild"
+
+#. module: mrp_workorder
 #: model:ir.ui.view,arch_db:mrp_workorder.mrp_production_view_form_inherit_planning
 msgid "Plan"
 msgstr "Planung"
@@ -287,8 +282,8 @@ msgid "Planning by Workcenter"
 msgstr "Planung nach Arbeitsplatz"
 
 #. module: mrp_workorder
-#: code:addons/mrp_workorder/models/mrp_workorder.py:178
-#: code:addons/mrp_workorder/models/mrp_workorder.py:202
+#: code:addons/mrp_workorder/models/mrp_workorder.py:179
+#: code:addons/mrp_workorder/models/mrp_workorder.py:206
 #, python-format
 msgid ""
 "Please ensure the quantity to produce is nonnegative and does not exceed the"
@@ -298,16 +293,22 @@ msgstr ""
 "enthält und nicht die verbleibende Menge übersteigt."
 
 #. module: mrp_workorder
-#: code:addons/mrp_workorder/models/mrp_workorder.py:182
+#: code:addons/mrp_workorder/models/mrp_workorder.py:183
 #, python-format
 msgid "Please enter a Lot/SN."
 msgstr "Bitte geben Sie ein Fertigungslos bzw. eine SN ein."
 
 #. module: mrp_workorder
-#: code:addons/mrp_workorder/models/mrp_workorder.py:184
+#: code:addons/mrp_workorder/models/mrp_workorder.py:185
 #, python-format
 msgid "Please enter a positive quantity."
 msgstr "Bitte geben Sie einen positiven Wert für die Menge ein."
+
+#. module: mrp_workorder
+#: code:addons/mrp_workorder/models/mrp_workorder.py:192
+#, python-format
+msgid "Please upload a picture."
+msgstr "Bitte laden Sie ein Bild hoch."
 
 #. module: mrp_workorder
 #: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
@@ -369,6 +370,11 @@ msgid "Quality Point"
 msgstr "Qualitätspunkt"
 
 #. module: mrp_workorder
+#: model:ir.ui.view,arch_db:mrp_workorder.view_routing_steps_search
+msgid "Quality Point Steps"
+msgstr ""
+
+#. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__quality_state
 msgid "Quality State"
 msgstr ""
@@ -390,7 +396,7 @@ msgid "Register a by product"
 msgstr ""
 
 #. module: mrp_workorder
-#: code:addons/mrp_workorder/models/quality.py:87
+#: code:addons/mrp_workorder/models/quality.py:104
 #, python-format
 msgid "Register component(s)"
 msgstr "Komponente(n) registrieren"
@@ -409,6 +415,16 @@ msgstr "Verantwortlich"
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__result
 msgid "Result"
 msgstr "Ergebnis"
+
+#. module: mrp_workorder
+#: model:ir.ui.view,arch_db:mrp_workorder.view_routing_steps_search
+msgid "Routing"
+msgstr "Arbeitsplan"
+
+#. module: mrp_workorder
+#: model:ir.model,name:mrp_workorder.model_mrp_routing
+msgid "Routings"
+msgstr "Arbeitspläne"
 
 #. module: mrp_workorder
 #: model:ir.ui.view,arch_db:mrp_workorder.mrp_production_view_form_inherit_planning
@@ -517,7 +533,7 @@ msgid "Title"
 msgstr "Titel"
 
 #. module: mrp_workorder
-#: code:addons/mrp_workorder/models/quality.py:93
+#: code:addons/mrp_workorder/models/quality.py:110
 #, python-format
 msgid "To Do"
 msgstr "Zu erledigen"
@@ -572,7 +588,7 @@ msgid "Waiting for Material Availability"
 msgstr "Auf Materialverfügbarkeit warten"
 
 #. module: mrp_workorder
-#: code:addons/mrp_workorder/models/mrp_workorder.py:478
+#: code:addons/mrp_workorder/models/mrp_workorder.py:482
 #, python-format
 msgid "Warning"
 msgstr "Warnung"
@@ -600,6 +616,11 @@ msgid "Work Orders"
 msgstr "Arbeitsaufträge"
 
 #. module: mrp_workorder
+#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workcenter_view_kanban_inherit_workorder
+msgid "Work orders"
+msgstr ""
+
+#. module: mrp_workorder
 #: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet_menu
 msgid "Workorder Actions"
 msgstr "Aktionen der Arbeitsaufträge"
@@ -620,7 +641,7 @@ msgid "Worksheet page"
 msgstr "Arbeitsblattseite"
 
 #. module: mrp_workorder
-#: code:addons/mrp_workorder/models/mrp_workorder.py:479
+#: code:addons/mrp_workorder/models/mrp_workorder.py:483
 #, python-format
 msgid ""
 "You are using components from another lot. \n"
@@ -628,13 +649,13 @@ msgid ""
 msgstr ""
 
 #. module: mrp_workorder
-#: code:addons/mrp_workorder/models/mrp_workorder.py:412
+#: code:addons/mrp_workorder/models/mrp_workorder.py:416
 #, python-format
 msgid "You should provide a lot for the final product"
 msgstr "Sie sollten für das fertige Produkt ein Fertigungslos angeben."
 
 #. module: mrp_workorder
-#: code:addons/mrp_workorder/models/mrp_workorder.py:410
+#: code:addons/mrp_workorder/models/mrp_workorder.py:414
 #, python-format
 msgid "You still need to do the quality checks!"
 msgstr "Sie müssen noch die Qualitätskontrolle durchführen!"

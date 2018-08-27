@@ -3,22 +3,14 @@
 # * web_cohort
 # 
 # Translators:
-# e2f <projects@e2f.com>, 2018
-# Cristian Salamea <ovnicraft@gmail.com>, 2018
 # Martin Trigaux, 2018
-# Pedro M. Baeza <pedro.baeza@gmail.com>, 2018
-# Jesús Alan Ramos Rodríguez <alan.ramos@jarsa.com.mx>, 2018
-# Luis M. Ontalba <luis.martinez@tecnativa.com>, 2018
-# Sergio Flores <vitavitae1@gmail.com>, 2018
-# Antonio Trueba, 2018
-# RGB Consulting <odoo@rgbconsulting.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.4+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-02 11:20+0000\n"
-"PO-Revision-Date: 2018-08-02 11:20+0000\n"
-"Last-Translator: RGB Consulting <odoo@rgbconsulting.com>, 2018\n"
+"POT-Creation-Date: 2018-08-24 11:29+0000\n"
+"PO-Revision-Date: 2018-08-24 11:29+0000\n"
+"Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -28,10 +20,20 @@ msgstr ""
 
 #. module: web_cohort
 #. openerp-web
-#: code:addons/web_cohort/static/src/xml/web_cohort.xml:37
+#: code:addons/web_cohort/static/src/xml/web_cohort.xml:76
+#: code:addons/web_cohort/static/src/xml/web_cohort.xml:155
 #, python-format
 msgid "- By"
 msgstr ""
+
+#. module: web_cohort
+#. openerp-web
+#: code:addons/web_cohort/controllers/main.py:59
+#: code:addons/web_cohort/static/src/xml/web_cohort.xml:113
+#: code:addons/web_cohort/static/src/xml/web_cohort.xml:186
+#, python-format
+msgid "Average"
+msgstr "Promedio"
 
 #. module: web_cohort
 #: selection:ir.actions.act_window.view,view_mode:0
@@ -50,22 +52,23 @@ msgstr "Cohorte"
 
 #. module: web_cohort
 #. openerp-web
-#: code:addons/web_cohort/static/src/js/cohort_view.js:41
+#: code:addons/web_cohort/static/src/js/cohort_view.js:42
 #, python-format
 msgid "Cohort view has not defined \"date_start\" attribute."
 msgstr ""
 
 #. module: web_cohort
 #. openerp-web
-#: code:addons/web_cohort/static/src/js/cohort_view.js:44
+#: code:addons/web_cohort/static/src/js/cohort_view.js:45
 #, python-format
 msgid "Cohort view has not defined \"date_stop\" attribute."
 msgstr ""
 
 #. module: web_cohort
 #. openerp-web
-#: code:addons/web_cohort/static/src/js/cohort_view.js:60
-#: code:addons/web_cohort/static/src/xml/web_cohort.xml:14
+#: code:addons/web_cohort/static/src/js/cohort_controller.js:96
+#: code:addons/web_cohort/static/src/js/cohort_view.js:63
+#: code:addons/web_cohort/static/src/xml/web_cohort.xml:17
 #, python-format
 msgid "Count"
 msgstr "Cuenta"
@@ -90,7 +93,7 @@ msgstr "Diagrama"
 
 #. module: web_cohort
 #. openerp-web
-#: code:addons/web_cohort/static/src/xml/web_cohort.xml:23
+#: code:addons/web_cohort/static/src/xml/web_cohort.xml:36
 #, python-format
 msgid "Download in Excel file"
 msgstr ""
@@ -141,10 +144,25 @@ msgstr "Mes"
 
 #. module: web_cohort
 #. openerp-web
-#: code:addons/web_cohort/static/src/xml/web_cohort.xml:83
+#: code:addons/web_cohort/static/src/xml/web_cohort.xml:206
 #, python-format
 msgid "No data available for cohort."
 msgstr ""
+
+#. module: web_cohort
+#. openerp-web
+#: code:addons/web_cohort/static/src/xml/web_cohort.xml:129
+#: code:addons/web_cohort/static/src/xml/web_cohort.xml:203
+#, python-format
+msgid "No data available."
+msgstr ""
+
+#. module: web_cohort
+#. openerp-web
+#: code:addons/web_cohort/static/src/xml/web_cohort.xml:43
+#, python-format
+msgid "Period:"
+msgstr "Período:"
 
 #. module: web_cohort
 #: selection:ir.actions.act_window.view,view_mode:0
@@ -163,13 +181,6 @@ msgid "Search"
 msgstr "Búsqueda"
 
 #. module: web_cohort
-#. openerp-web
-#: code:addons/web_cohort/static/src/xml/web_cohort.xml:67
-#, python-format
-msgid "Total"
-msgstr "Total"
-
-#. module: web_cohort
 #: selection:ir.actions.act_window.view,view_mode:0
 #: selection:ir.ui.view,type:0
 msgid "Tree"
@@ -177,7 +188,7 @@ msgstr "Árbol"
 
 #. module: web_cohort
 #. openerp-web
-#: code:addons/web_cohort/static/src/js/cohort_view.js:69
+#: code:addons/web_cohort/static/src/js/cohort_view.js:74
 #, python-format
 msgid "Untitled"
 msgstr "Sin título"

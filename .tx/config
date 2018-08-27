@@ -32,14 +32,24 @@ file_filter = account_bank_statement_import_qif/i18n/<lang>.po
 source_file = account_bank_statement_import_qif/i18n/account_bank_statement_import_qif.pot
 source_lang = en
 
-[odoo-master.account_batch_deposit]
-file_filter = account_batch_deposit/i18n/<lang>.po
-source_file = account_batch_deposit/i18n/account_batch_deposit.pot
+[odoo-master.account_batch_payment]
+file_filter = account_batch_payment/i18n/<lang>.po
+source_file = account_batch_payment/i18n/account_batch_payment.pot
 source_lang = en
 
 [odoo-master.account_deferred_revenue]
 file_filter = account_deferred_revenue/i18n/<lang>.po
 source_file = account_deferred_revenue/i18n/account_deferred_revenue.pot
+source_lang = en
+
+[odoo-master.account_intrastat]
+file_filter = account_intrastat/i18n/<lang>.po
+source_file = account_intrastat/i18n/account_intrastat.pot
+source_lang = en
+
+[odoo-master.account_invoice_extract]
+file_filter = account_invoice_extract/i18n/<lang>.po
+source_file = account_invoice_extract/i18n/account_invoice_extract.pot
 source_lang = en
 
 [odoo-master.account_online_sync]
@@ -92,6 +102,11 @@ file_filter = base_automation_hr_contract/i18n/<lang>.po
 source_file = base_automation_hr_contract/i18n/base_automation_hr_contract.pot
 source_lang = en
 
+[odoo-master.crm_enterprise]
+file_filter = crm_enterprise/i18n/<lang>.po
+source_file = crm_enterprise/i18n/crm_enterprise.pot
+source_lang = en
+
 [odoo-master.currency_rate_live]
 file_filter = currency_rate_live/i18n/<lang>.po
 source_file = currency_rate_live/i18n/currency_rate_live.pot
@@ -132,6 +147,26 @@ file_filter = delivery_usps/i18n/<lang>.po
 source_file = delivery_usps/i18n/delivery_usps.pot
 source_lang = en
 
+[odoo-master.documents]
+file_filter = documents/i18n/<lang>.po
+source_file = documents/i18n/documents.pot
+source_lang = en
+
+[odoo-master.documents_account]
+file_filter = documents_account/i18n/<lang>.po
+source_file = documents_account/i18n/documents_account.pot
+source_lang = en
+
+[odoo-master.documents_project]
+file_filter = documents_project/i18n/<lang>.po
+source_file = documents_project/i18n/documents_project.pot
+source_lang = en
+
+[odoo-master.documents_sign]
+file_filter = documents_sign/i18n/<lang>.po
+source_file = documents_sign/i18n/documents_sign.pot
+source_lang = en
+
 [odoo-master.event_barcode]
 file_filter = event_barcode/i18n/<lang>.po
 source_file = event_barcode/i18n/event_barcode.pot
@@ -140,6 +175,11 @@ source_lang = en
 [odoo-master.event_barcode_mobile]
 file_filter = event_barcode_mobile/i18n/<lang>.po
 source_file = event_barcode_mobile/i18n/event_barcode_mobile.pot
+source_lang = en
+
+[odoo-master.event_enterprise]
+file_filter = event_enterprise/i18n/<lang>.po
+source_file = event_enterprise/i18n/event_enterprise.pot
 source_lang = en
 
 [odoo-master.helpdesk]
@@ -167,11 +207,6 @@ file_filter = hr_contract_salary/i18n/<lang>.po
 source_file = hr_contract_salary/i18n/hr_contract_salary.pot
 source_lang = en
 
-[odoo-master.hr_expense_sepa]
-file_filter = hr_expense_sepa/i18n/<lang>.po
-source_file = hr_expense_sepa/i18n/hr_expense_sepa.pot
-source_lang = en
-
 [odoo-master.hr_holidays_gantt]
 file_filter = hr_holidays_gantt/i18n/<lang>.po
 source_file = hr_holidays_gantt/i18n/hr_holidays_gantt.pot
@@ -190,11 +225,6 @@ source_lang = en
 [odoo-master.mail_github]
 file_filter = mail_github/i18n/<lang>.po
 source_file = mail_github/i18n/mail_github.pot
-source_lang = en
-
-[odoo-master.mail_push]
-file_filter = mail_push/i18n/<lang>.po
-source_file = mail_push/i18n/mail_push.pot
 source_lang = en
 
 [odoo-master.marketing_automation]
@@ -232,24 +262,19 @@ file_filter = mrp_workorder/i18n/<lang>.po
 source_file = mrp_workorder/i18n/mrp_workorder.pot
 source_lang = en
 
+[odoo-master.mrp_zebra]
+file_filter = mrp_zebra/i18n/<lang>.po
+source_file = mrp_zebra/i18n/mrp_zebra.pot
+source_lang = en
+
+[odoo-master.ocn_client]
+file_filter = ocn_client/i18n/<lang>.po
+source_file = ocn_client/i18n/ocn_client.pot
+source_lang = en
+
 [odoo-master.pos_loyalty]
 file_filter = pos_loyalty/i18n/<lang>.po
 source_file = pos_loyalty/i18n/pos_loyalty.pot
-source_lang = en
-
-[odoo-master.print]
-file_filter = print/i18n/<lang>.po
-source_file = print/i18n/print.pot
-source_lang = en
-
-[odoo-master.print_docsaway]
-file_filter = print_docsaway/i18n/<lang>.po
-source_file = print_docsaway/i18n/print_docsaway.pot
-source_lang = en
-
-[odoo-master.print_sale]
-file_filter = print_sale/i18n/<lang>.po
-source_file = print_sale/i18n/print_sale.pot
 source_lang = en
 
 [odoo-master.project_forecast]
@@ -282,9 +307,19 @@ file_filter = quality_control/i18n/<lang>.po
 source_file = quality_control/i18n/quality_control.pot
 source_lang = en
 
+[odoo-master.quality_iot]
+file_filter = quality_iot/i18n/<lang>.po
+source_file = quality_iot/i18n/quality_iot.pot
+source_lang = en
+
 [odoo-master.quality_mrp]
 file_filter = quality_mrp/i18n/<lang>.po
 source_file = quality_mrp/i18n/quality_mrp.pot
+source_lang = en
+
+[odoo-master.quality_mrp_iot]
+file_filter = quality_mrp_iot/i18n/<lang>.po
+source_file = quality_mrp_iot/i18n/quality_mrp_iot.pot
 source_lang = en
 
 [odoo-master.quality_mrp_workorder]
@@ -312,6 +347,11 @@ file_filter = sale_ebay/i18n/<lang>.po
 source_file = sale_ebay/i18n/sale_ebay.pot
 source_lang = en
 
+[odoo-master.sale_enterprise]
+file_filter = sale_enterprise/i18n/<lang>.po
+source_file = sale_enterprise/i18n/sale_enterprise.pot
+source_lang = en
+
 [odoo-master.sale_subscription]
 file_filter = sale_subscription/i18n/<lang>.po
 source_file = sale_subscription/i18n/sale_subscription.pot
@@ -327,6 +367,21 @@ file_filter = sale_subscription_dashboard/i18n/<lang>.po
 source_file = sale_subscription_dashboard/i18n/sale_subscription_dashboard.pot
 source_lang = en
 
+[odoo-master.sign]
+file_filter = sign/i18n/<lang>.po
+source_file = sign/i18n/sign.pot
+source_lang = en
+
+[odoo-master.snailmail_account_reports_followup]
+file_filter = snailmail_account_reports_followup/i18n/<lang>.po
+source_file = snailmail_account_reports_followup/i18n/snailmail_account_reports_followup.pot
+source_lang = en
+
+[odoo-master.stock_account_enterprise]
+file_filter = stock_account_enterprise/i18n/<lang>.po
+source_file = stock_account_enterprise/i18n/stock_account_enterprise.pot
+source_lang = en
+
 [odoo-master.stock_barcode]
 file_filter = stock_barcode/i18n/<lang>.po
 source_file = stock_barcode/i18n/stock_barcode.pot
@@ -335,6 +390,16 @@ source_lang = en
 [odoo-master.stock_barcode_mobile]
 file_filter = stock_barcode_mobile/i18n/<lang>.po
 source_file = stock_barcode_mobile/i18n/stock_barcode_mobile.pot
+source_lang = en
+
+[odoo-master.stock_enterprise]
+file_filter = stock_enterprise/i18n/<lang>.po
+source_file = stock_enterprise/i18n/stock_enterprise.pot
+source_lang = en
+
+[odoo-master.stock_intrastat]
+file_filter = stock_intrastat/i18n/<lang>.po
+source_file = stock_intrastat/i18n/stock_intrastat.pot
 source_lang = en
 
 [odoo-master.timesheet_grid]
@@ -442,11 +507,6 @@ file_filter = website_helpdesk_slides/i18n/<lang>.po
 source_file = website_helpdesk_slides/i18n/website_helpdesk_slides.pot
 source_lang = en
 
-[odoo-master.website_quote_subscription]
-file_filter = website_quote_subscription/i18n/<lang>.po
-source_file = website_quote_subscription/i18n/website_quote_subscription.pot
-source_lang = en
-
 [odoo-master.website_sale_account_taxcloud]
 file_filter = website_sale_account_taxcloud/i18n/<lang>.po
 source_file = website_sale_account_taxcloud/i18n/website_sale_account_taxcloud.pot
@@ -467,18 +527,13 @@ file_filter = website_sale_dashboard_with_margin/i18n/<lang>.po
 source_file = website_sale_dashboard_with_margin/i18n/website_sale_dashboard_with_margin.pot
 source_lang = en
 
-[odoo-master.website_sign]
-file_filter = website_sign/i18n/<lang>.po
-source_file = website_sign/i18n/website_sign.pot
-source_lang = en
-
 [odoo-master.website_studio]
 file_filter = website_studio/i18n/<lang>.po
 source_file = website_studio/i18n/website_studio.pot
 source_lang = en
 
-[odoo-master.website_version]
-file_filter = website_version/i18n/<lang>.po
-source_file = website_version/i18n/website_version.pot
+[odoo-master.website_twitter_wall]
+file_filter = website_twitter_wall/i18n/<lang>.po
+source_file = website_twitter_wall/i18n/website_twitter_wall.pot
 source_lang = en
 

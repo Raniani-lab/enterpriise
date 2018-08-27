@@ -69,6 +69,10 @@ var SalaryPackageWidget = Widget.extend({
         $('.select2-arrow').append('<i class="fa fa-chevron-down"></i>');
         this.update_gross = _.debounce(this.update_gross, 1000);
         this.onchange_ip();
+        if ($("input[name='freeze']").val()) {
+            $('input.advantage_input').attr('disabled', 'disabled');
+            $('section#hr_cs_personal_information input.advantage_input').removeAttr('disabled');
+        }
     },
 
     willStart: function() {

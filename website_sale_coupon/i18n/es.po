@@ -3,15 +3,13 @@
 # * website_sale_coupon
 # 
 # Translators:
-# Christopher Ormaza <chris.ormaza@gmail.com>, 2017
-# Luis M. Ontalba <luis.martinez@tecnativa.com>, 2017
 # Martin Trigaux, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.3+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 08:34+0000\n"
-"PO-Revision-Date: 2018-06-25 08:34+0000\n"
+"POT-Creation-Date: 2018-08-24 11:29+0000\n"
+"PO-Revision-Date: 2018-08-24 11:29+0000\n"
 "Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
 "MIME-Version: 1.0\n"
@@ -22,8 +20,8 @@ msgstr ""
 
 #. module: website_sale_coupon
 #: model:ir.ui.view,arch_db:website_sale_coupon.sale_coupon_result
-msgid "<span class=\"pull-left\">Invalid or expired promo code</span>"
-msgstr "<span class=\"pull-left\">Código Promocional expirado o inválido</span>"
+msgid "<span class=\"float-left\">Invalid or expired promo code</span>"
+msgstr ""
 
 #. module: website_sale_coupon
 #: model:ir.ui.menu,name:website_sale_coupon.menu_coupon_type_config

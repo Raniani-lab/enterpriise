@@ -3,21 +3,14 @@
 # * mrp_account
 # 
 # Translators:
-# Xavier Belmere <Info@cartmeleon.com>, 2016
-# Martin Trigaux, 2016
-# Maxime Chambreuil <mchambreuil@ursainfosystems.com>, 2016
-# Guilhaume Bordiau <github@guilhaume.fr>, 2016
-# Sébastien Le Ray <sebastien-github@orniz.org>, 2017
-# Eloïse Stilmant <est@odoo.com>, 2017
-# e2f <projects@e2f.com>, 2018
-# Nancy Bolognesi <nb@microcom.ca>, 2018
+# Martin Trigaux, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.3+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 08:34+0000\n"
-"PO-Revision-Date: 2018-06-25 08:34+0000\n"
-"Last-Translator: Nancy Bolognesi <nb@microcom.ca>, 2018\n"
+"POT-Creation-Date: 2018-08-24 11:28+0000\n"
+"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -29,6 +22,56 @@ msgstr ""
 #: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid ", from"
 msgstr ", de"
+
+#. module: mrp_account
+#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+msgid "<span>Code</span>"
+msgstr ""
+
+#. module: mrp_account
+#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+msgid "<span>Cost/hour</span>"
+msgstr ""
+
+#. module: mrp_account
+#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+msgid "<span>Operation</span>"
+msgstr ""
+
+#. module: mrp_account
+#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+msgid "<span>Operator</span>"
+msgstr ""
+
+#. module: mrp_account
+#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+msgid "<span>Quantity</span>"
+msgstr ""
+
+#. module: mrp_account
+#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+msgid "<span>Raw Materials</span>"
+msgstr ""
+
+#. module: mrp_account
+#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+msgid "<span>Scraps</span>"
+msgstr ""
+
+#. module: mrp_account
+#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+msgid "<span>Total Cost</span>"
+msgstr ""
+
+#. module: mrp_account
+#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+msgid "<span>Unit Cost</span>"
+msgstr ""
+
+#. module: mrp_account
+#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+msgid "<span>Working Time</span>"
+msgstr ""
 
 #. module: mrp_account
 #: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
@@ -57,8 +100,8 @@ msgstr "Compte analytique"
 
 #. module: mrp_account
 #: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
-msgid "Code"
-msgstr "Code"
+msgid "By product(s)"
+msgstr ""
 
 #. module: mrp_account
 #: model:ir.actions.report,name:mrp_account.action_cost_struct_mrp_production
@@ -98,11 +141,6 @@ msgid "Cost of Scraps"
 msgstr "Coût des rebuts"
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
-msgid "Cost/hour"
-msgstr "Coût/heure"
-
-#. module: mrp_account
 #: model:ir.model.fields,field_description:mrp_account.field_report_mrp_account_mrp_cost_structure__display_name
 #: model:ir.model.fields,field_description:mrp_account.field_report_mrp_account_product_template_cost_structure__display_name
 msgid "Display Name"
@@ -135,16 +173,6 @@ msgid "Manufacturing Order"
 msgstr "Ordre de fabrication"
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
-msgid "Operation"
-msgstr "Opération"
-
-#. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
-msgid "Operator"
-msgstr "Opérateur"
-
-#. module: mrp_account
 #: model:ir.model,name:mrp_account.model_product_product
 msgid "Product"
 msgstr "Article"
@@ -153,21 +181,6 @@ msgstr "Article"
 #: model:ir.model,name:mrp_account.model_product_template
 msgid "Product Template"
 msgstr "Modèle d'article"
-
-#. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
-msgid "Quantity"
-msgstr "Quantité"
-
-#. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
-msgid "Raw Materials"
-msgstr "Matières premières"
-
-#. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
-msgid "Scraps"
-msgstr "Rebut"
 
 #. module: mrp_account
 #: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
@@ -191,16 +204,6 @@ msgstr ""
 "charge."
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
-msgid "Total Cost"
-msgstr "Coût total"
-
-#. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
-msgid "Unit Cost"
-msgstr "Coût unitaire"
-
-#. module: mrp_account
 #: model:ir.model,name:mrp_account.model_mrp_workcenter
 msgid "Work Center"
 msgstr "Poste de charge"
@@ -209,11 +212,6 @@ msgstr "Poste de charge"
 #: model:ir.model,name:mrp_account.model_mrp_workcenter_productivity
 msgid "Workcenter Productivity Log"
 msgstr "Registre de productivité du poste de travail"
-
-#. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
-msgid "Working Time"
-msgstr "Temps de travail"
 
 #. module: mrp_account
 #: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure

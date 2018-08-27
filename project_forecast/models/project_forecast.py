@@ -82,7 +82,7 @@ class ProjectForecast(models.Model):
 
     # resource
     resource_hours = fields.Float(string="Planned hours", default=0)
-    resource_time = fields.Float("Allocated Time", compute='_compute_resource_time', inverse='_inverse_resource_time', store=True, help="Expressed in the Unit of Measure of the project company")
+    resource_time = fields.Float("Allocated Time", compute='_compute_resource_time', inverse='_inverse_resource_time', compute_sudo=True, store=True, help="Expressed in the Unit of Measure of the project company")
     forecast_uom = fields.Selection(related='company_id.forecast_uom')
 
     _sql_constraints = [

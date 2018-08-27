@@ -2,20 +2,12 @@
 # This file contains the translation of the following modules:
 # * website_delivery_ups
 # 
-# Translators:
-# Ghaith Gammar <g.gammar@saharaifs.net>, 2017
-# Martin Trigaux <mat@odoo.com>, 2017
-# Sadig Adam <sadig41@gmail.com>, 2017
-# amrnegm <amrnegm.01@gmail.com>, 2017
-# AMAAL RU <Fabu1410@yahoo.com>, 2017
-# Mustafa Rawi <mustafa@cubexco.com>, 2017
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 10.saas~18+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-02 11:50+0000\n"
-"PO-Revision-Date: 2017-10-02 11:50+0000\n"
-"Last-Translator: Mustafa Rawi <mustafa@cubexco.com>, 2017\n"
+"POT-Creation-Date: 2018-08-24 11:29+0000\n"
+"PO-Revision-Date: 2018-08-24 11:29+0000\n"
 "Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,7 +16,7 @@ msgstr ""
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
 #. module: website_delivery_ups
-#: model:ir.ui.view,arch_db:website_delivery_ups.payment_delivery_inherit_website_sale_delivery
+#: model:ir.ui.view,arch_db:website_delivery_ups.payment_delivery_methods_inherit_website_sale_delivery
 msgid "(Bill My Account)"
 msgstr ""
 
@@ -38,14 +30,14 @@ msgstr ""
 #. module: website_delivery_ups
 #: model:payment.acquirer,cancel_msg:website_delivery_ups.payment_acquirer_ups_cod
 msgid "<span><i>Cancel,</i> Your payment has been cancelled.</span>"
-msgstr "تم الغاء عملية الدفع"
+msgstr ""
 
 #. module: website_delivery_ups
 #: model:payment.acquirer,done_msg:website_delivery_ups.payment_acquirer_ups_cod
 msgid ""
 "<span><i>Done,</i> Your online payment has been successfully processed. "
 "Thank you for your order.</span>"
-msgstr "<span><i>تم,</i> اجراء دفعيتك الشبكية بنجاح. شكرا لطلبك.</span>"
+msgstr ""
 
 #. module: website_delivery_ups
 #: model:payment.acquirer,error_msg:website_delivery_ups.payment_acquirer_ups_cod
@@ -59,12 +51,12 @@ msgstr ""
 #. module: website_delivery_ups
 #: model:ir.ui.view,arch_db:website_delivery_ups.ups_bill_my_account_dialog
 msgid "Apply"
-msgstr "تطبيق"
+msgstr ""
 
 #. module: website_delivery_ups
 #: model:payment.acquirer,post_msg:website_delivery_ups.payment_acquirer_ups_cod
 msgid "Bank Account"
-msgstr "الحساب البنكي"
+msgstr ""
 
 #. module: website_delivery_ups
 #: model:payment.acquirer,name:website_delivery_ups.payment_acquirer_ups_cod
@@ -74,12 +66,17 @@ msgstr ""
 #. module: website_delivery_ups
 #: model:ir.ui.view,arch_db:website_delivery_ups.ups_bill_my_account_dialog
 msgid "Cancel"
-msgstr "إلغاء"
+msgstr ""
+
+#. module: website_delivery_ups
+#: model:ir.ui.view,arch_db:website_delivery_ups.ups_bill_my_account_dialog
+msgid "Close"
+msgstr ""
 
 #. module: website_delivery_ups
 #: model:payment.acquirer,post_msg:website_delivery_ups.payment_acquirer_ups_cod
 msgid "Communication"
-msgstr "إتصالات"
+msgstr ""
 
 #. module: website_delivery_ups
 #: model:ir.ui.view,arch_db:website_delivery_ups.ups_bill_my_account_dialog
@@ -99,7 +96,7 @@ msgstr ""
 #. module: website_delivery_ups
 #: model:ir.model,name:website_delivery_ups.model_sale_order
 msgid "Quotation"
-msgstr "التسعيرة"
+msgstr ""
 
 #. module: website_delivery_ups
 #: model:ir.ui.view,arch_db:website_delivery_ups.ups_bill_my_account_dialog
@@ -117,6 +114,6 @@ msgid "UPS Delivery Methods"
 msgstr ""
 
 #. module: website_delivery_ups
-#: model:ir.ui.view,arch_db:website_delivery_ups.payment_delivery_inherit_website_sale_delivery
+#: model:ir.ui.view,arch_db:website_delivery_ups.payment_delivery_methods_inherit_website_sale_delivery
 msgid "Using Account"
 msgstr ""

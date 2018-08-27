@@ -3,25 +3,14 @@
 # * website_helpdesk_slides
 # 
 # Translators:
-# Martin Trigaux, 2017
-# Ermin Trevisan <trevi@twanda.com>, 2017
-# Tina Rittmüller <tr@ife.de>, 2017
-# JackTheHunter <Maximilian.N98@gmail.com>, 2017
-# Niki Waibel, 2017
-# Henry Mineehen <info@mineehen.de>, 2017
-# Thomas Lengyel <lexustec_fn@yahoo.de>, 2017
-# darenkster <inactive+darenkster@transifex.com>, 2017
-# Renzo Meister, 2017
-# Ralf Hilgenstock <rh@dialoge.info>, 2017
-# Andi, 2017
-# e2f <projects@e2f.com>, 2018
+# Martin Trigaux, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.3+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 08:34+0000\n"
-"PO-Revision-Date: 2018-06-25 08:34+0000\n"
-"Last-Translator: e2f <projects@e2f.com>, 2018\n"
+"POT-Creation-Date: 2018-08-24 11:28+0000\n"
+"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -208,6 +197,11 @@ msgstr "Folie"
 #: model:ir.actions.act_window,name:website_helpdesk_slides.slide_upload_action
 msgid "Slide Upload"
 msgstr "Hochladen von Folien"
+
+#. module: website_helpdesk_slides
+#: model:ir.ui.view,arch_db:website_helpdesk_slides.slides_page
+msgid "Slide image"
+msgstr ""
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__tag_ids

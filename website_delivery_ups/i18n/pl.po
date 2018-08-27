@@ -107,7 +107,7 @@ msgstr ""
 #. module: website_delivery_ups
 #: model:ir.ui.view,arch_db:website_delivery_ups.ups_bill_my_account_dialog
 msgid "Select Freight Collect Method"
-msgstr ""
+msgstr "Wybierz metodę gromadzenia towarów"
 
 #. module: website_delivery_ups
 #: model:ir.ui.view,arch_db:website_delivery_ups.ups_bill_my_account_dialog
@@ -117,9 +117,9 @@ msgstr "UPS Wystaw rachunek na moje konto"
 #. module: website_delivery_ups
 #: model:ir.ui.view,arch_db:website_delivery_ups.res_config_settings_view_form_inherit_website_delivery_ups
 msgid "UPS Delivery Methods"
-msgstr ""
+msgstr "Metody dostawy UPS"
 
 #. module: website_delivery_ups
 #: model:ir.ui.view,arch_db:website_delivery_ups.payment_delivery_inherit_website_sale_delivery
 msgid "Using Account"
-msgstr ""
+msgstr "Korzystanie z konta"

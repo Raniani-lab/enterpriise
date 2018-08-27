@@ -3,35 +3,14 @@
 # * voip
 # 
 # Translators:
-# Rudolf Schnapka <rs@techno-flex.de>, 2017
-# Ralf Hilgenstock <rh@dialoge.info>, 2017
-# Tina Rittmüller <tr@ife.de>, 2017
-# Niki Waibel, 2017
-# Andi, 2017
-# darenkster <inactive+darenkster@transifex.com>, 2017
-# aNj <anj2j@yahoo.de>, 2017
-# Henry Mineehen <info@mineehen.de>, 2017
-# Wolfgang Taferner, 2017
-# Martin Trigaux, 2017
-# JackTheHunter <Maximilian.N98@gmail.com>, 2017
-# Leon Fischer <leon.fischer621@gmail.com>, 2017
-# Anja Funk <anja.funk@afimage.de>, 2017
-# Renzo Meister, 2017
-# Dejan Dinic, 2017
-# key six <mobile.umts@gmail.com>, 2017
-# Katharina Moritz <kmo@e2f.com>, 2017
-# Gab_Odoo <gab@odoo.com>, 2017
-# Ermin Trevisan <trevi@twanda.com>, 2017
-# AppleMentalist <felix.schnatbaum@gmail.com>, 2017
-# Martin K <martinkuenz@gmail.com>, 2017
-# e2f <projects@e2f.com>, 2018
+# Martin Trigaux, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.4+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-02 11:20+0000\n"
-"PO-Revision-Date: 2018-08-02 11:20+0000\n"
-"Last-Translator: e2f <projects@e2f.com>, 2018\n"
+"POT-Creation-Date: 2018-08-24 11:29+0000\n"
+"PO-Revision-Date: 2018-08-24 11:29+0000\n"
+"Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -52,7 +31,10 @@ msgid "# of Cases"
 msgstr "Fälle"
 
 #. module: voip
+#. openerp-web
+#: code:addons/voip/static/src/xml/voip_phonecall.xml:131
 #: model:ir.model,name:voip.model_mail_activity
+#, python-format
 msgid "Activity"
 msgstr "Aktivität"
 
@@ -68,6 +50,16 @@ msgstr "Immer zu Handset weiterleiten"
 
 #. module: voip
 #. openerp-web
+#: code:addons/voip/static/src/xml/voip_phonecall.xml:12
+#: code:addons/voip/static/src/xml/voip_phonecall.xml:17
+#: code:addons/voip/static/src/xml/voip_phonecall.xml:73
+#: code:addons/voip/static/src/xml/voip_phonecall.xml:78
+#, python-format
+msgid "Avatar"
+msgstr "Avatar"
+
+#. module: voip
+#. openerp-web
 #: code:addons/voip/static/src/xml/dialing_panel.xml:49
 #, python-format
 msgid "Backspace"
@@ -79,6 +71,13 @@ msgstr "zurück"
 #, python-format
 msgid "CONTACTS"
 msgstr "KONTAKTE"
+
+#. module: voip
+#. openerp-web
+#: code:addons/voip/static/src/xml/dialing_panel.xml:68
+#, python-format
+msgid "Call"
+msgstr "Anrufen"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__call_date
@@ -155,6 +154,13 @@ msgid "Click to unblock"
 msgstr "Klicken, um Sperre aufzuheben"
 
 #. module: voip
+#. openerp-web
+#: code:addons/voip/static/src/xml/dialing_panel.xml:16
+#, python-format
+msgid "Close"
+msgstr "Schließen"
+
+#. module: voip
 #: model:ir.model,name:voip.model_res_partner
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__partner_id
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_report__partner_id
@@ -209,7 +215,7 @@ msgstr "Demo"
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/xml/dialing_panel.xml:5
+#: code:addons/voip/static/src/xml/dialing_panel.xml:6
 #, python-format
 msgid "Display Dialing Panel"
 msgstr "Wahl-Übersicht anzeigen"
@@ -322,6 +328,13 @@ msgid "Incoming call from "
 msgstr "Eingehendes Gespräch von"
 
 #. module: voip
+#. openerp-web
+#: code:addons/voip/static/src/xml/dialing_panel.xml:67
+#, python-format
+msgid "Keypad"
+msgstr ""
+
+#. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_configurator____last_update
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall____last_update
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_log_wizard____last_update
@@ -404,6 +417,13 @@ msgid "Mobile number sanitized"
 msgstr "Mobile Nummer bereinigt"
 
 #. module: voip
+#. openerp-web
+#: code:addons/voip/static/src/xml/voip_phonecall.xml:164
+#, python-format
+msgid "Mute"
+msgstr ""
+
+#. module: voip
 #: model:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 msgid "My Phonecalls"
 msgstr "Meine Anrufe"
@@ -473,6 +493,13 @@ msgid "PBX Server IP"
 msgstr "PBX-Server-IP"
 
 #. module: voip
+#. openerp-web
+#: code:addons/voip/static/src/xml/voip_phonecall.xml:32
+#, python-format
+msgid "Pending"
+msgstr "Anstehend"
+
+#. module: voip
 #: model:ir.model.fields,field_description:voip.field_mail_activity__phone
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__phone
 msgid "Phone"
@@ -487,6 +514,13 @@ msgstr "Telefonnummer bereinigt"
 #. module: voip
 #: selection:mail.activity.type,category:0
 msgid "Phonecall"
+msgstr ""
+
+#. module: voip
+#. openerp-web
+#: code:addons/voip/static/src/xml/voip_phonecall.xml:66
+#, python-format
+msgid "Phonecall details"
 msgstr ""
 
 #. module: voip
@@ -719,6 +753,13 @@ msgid "Tomorrow"
 msgstr "Morgen"
 
 #. module: voip
+#. openerp-web
+#: code:addons/voip/static/src/xml/voip_phonecall.xml:159
+#, python-format
+msgid "Transfer"
+msgstr "Lieferung vornehmen"
+
+#. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_transfer_wizard__transfer_choice
 msgid "Transfer Choice"
 msgstr "Weiterleitungs-Auswahl"
@@ -732,6 +773,13 @@ msgstr "Typ"
 #: model:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 msgid "Unassigned"
 msgstr "Nicht zugewiesen"
+
+#. module: voip
+#. openerp-web
+#: code:addons/voip/static/src/xml/dialing_panel.xml:18
+#, python-format
+msgid "Unfold"
+msgstr "Öffnen"
 
 #. module: voip
 #. openerp-web

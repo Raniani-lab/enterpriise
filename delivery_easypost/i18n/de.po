@@ -3,30 +3,14 @@
 # * delivery_easypost
 # 
 # Translators:
-# e2f <projects@e2f.com>, 2018
-# aNj <anj2j@yahoo.de>, 2018
-# AppleMentalist <felix.schnatbaum@gmail.com>, 2018
-# DE T2 <e2f48d4s5vd1s2@outlook.com>, 2018
 # Martin Trigaux, 2018
-# Thorsten Vocks <thorsten.vocks@openbig.org>, 2018
-# Ermin Trevisan <trevi@twanda.com>, 2018
-# Renzo Meister, 2018
-# Henry Mineehen <info@mineehen.de>, 2018
-# Tina Rittmüller <tr@ife.de>, 2018
-# Fabian Liesch <fabian.liesch@gmail.com>, 2018
-# darenkster <inactive+darenkster@transifex.com>, 2018
-# Katharina Moritz <kmo@e2f.com>, 2018
-# Niki Waibel, 2018
-# Thomas Neu <t.neu@runbox.com>, 2018
-# Stefan Hartenfels <stefan.hartenfels@camptocamp.com>, 2018
-# Malte Jansen <work@maltejansen.de>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.4+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-02 11:20+0000\n"
-"PO-Revision-Date: 2018-08-02 11:20+0000\n"
-"Last-Translator: Malte Jansen <work@maltejansen.de>, 2018\n"
+"POT-Creation-Date: 2018-08-24 11:28+0000\n"
+"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -47,6 +31,11 @@ msgid ""
 "<b>Once your account is created, go to your Dashboard and click on the arrow next to your username to configure your carrier accounts. </b>\n"
 "                <b>You can add new carrier accounts on the right side of the same page.</b>\n"
 "                <br/>"
+msgstr ""
+
+#. module: delivery_easypost
+#: model:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
+msgid "API keys"
 msgstr ""
 
 #. module: delivery_easypost
@@ -76,6 +65,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:delivery_easypost.field_delivery_carrier_easypost__carrier_type
 #: model:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
 msgid "Carrier Type"
+msgstr ""
+
+#. module: delivery_easypost
+#: model:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
+msgid "Carrier accounts"
 msgstr ""
 
 #. module: delivery_easypost
@@ -334,6 +328,11 @@ msgstr ""
 #, python-format
 msgid "Shipping label for packages"
 msgstr "Versandlabel für Pakete"
+
+#. module: delivery_easypost
+#: model:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
+msgid "Sign up"
+msgstr "Registrieren"
 
 #. module: delivery_easypost
 #: model:ir.model.fields,field_description:delivery_easypost.field_delivery_carrier__easypost_test_api_key

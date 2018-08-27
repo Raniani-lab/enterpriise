@@ -21,7 +21,13 @@ class SignContract(Sign):
         request_item = request.env['sign.request.item'].sudo().search([('access_token', '=', token)])
         contract = request.env['hr.contract'].sudo().with_context(active_test=False).search([
             ('sign_request_ids', 'in', request_item.sign_request_id.ids)])
-        if contract:
+        request_template_id = request_item.signature_request_id.template_id.id
+        # Only if the signed document is the document to sign from the salary package
+        contract_documents = [
+            contract.signature_request_template_id.id,
+            contract.contract_update_template_id.id,
+        ]
+        if contract and request_template_id in contract_documents:
             # Only the applicant/employee has signed
             if request_item.sign_request_id.nb_closed == 1:
                 contract.active = True
@@ -116,6 +122,7 @@ class website_hr_contract_salary(http.Controller):
         contract_type = False
         employee_contract_id = False
         job_title = False
+        freeze = False
 
         final_yearly_costs = contract.final_yearly_costs
 
@@ -147,6 +154,8 @@ class website_hr_contract_salary(http.Controller):
                 contract_type = value
             elif field_name == 'job_title':
                 job_title = value
+            elif field_name == 'freeze':
+                freeze = value
             elif field_name == 'debug':
                 pass
             elif field_name in old_value:
@@ -177,6 +186,7 @@ class website_hr_contract_salary(http.Controller):
             'new_car': new_car,
             'contract_type': contract_type,
             'job_title': job_title,
+            'freeze': freeze,
             'original_link': get_current_url(request.httprequest.environ)})
 
         response = request.render("hr_contract_salary.salary_package", values)
@@ -218,7 +228,7 @@ class website_hr_contract_salary(http.Controller):
                 'active': False
             })
         if personal_info:
-            employee.update_personal_info(personal_info, no_name_write=bool(kw.get('employee')))
+            employee.with_context(lang=None).update_personal_info(personal_info, no_name_write=bool(kw.get('employee')))
         new_contract = request.env['hr.contract'].sudo().new({
             'active': False,
             'name': contract.name if contract.state == 'draft' else "Package Simulation",

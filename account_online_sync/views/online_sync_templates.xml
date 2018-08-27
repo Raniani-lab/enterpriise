@@ -85,7 +85,7 @@
       <div class="sync_error d-none">
       </div>
 
-      <div class="institution_search d-none">
+      <div class="institution_search">
         <div class="row">
           <div class="col-lg-8">
             <form id="search_form" target="#" method="post">
@@ -123,7 +123,7 @@
             <div class="col-12 text-center no_result">
               <span><i class="fa fa-search fa-2" role="img" aria-label="No result" title="No result"></i></span>
               <h4>No result found!</h4>
-              <h6>Automated synchronization is not available yet</h6>
+              <h6>Automated synchronization is not available yet for this bank</h6>
               You can import your bank statements using various <br/>formats such as CSV, CAMT, OFX, QIF, CODA, <br/>or encode manually.<br/>
               <button class="btn-link js_configure_manually">Create your Bank Account</button>
             </div>

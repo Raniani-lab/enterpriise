@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.3+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 08:34+0000\n"
-"PO-Revision-Date: 2018-06-25 08:34+0000\n"
+"POT-Creation-Date: 2018-08-24 11:28+0000\n"
+"PO-Revision-Date: 2018-08-24 11:28+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -40,7 +40,11 @@ msgid "Attendee"
 msgstr ""
 
 #. module: event_barcode
+#. openerp-web
+#: code:addons/event_barcode/static/src/xml/event_barcode.xml:33
 #: model:ir.model.fields,field_description:event_barcode.field_event_registration__barcode
+#: model:ir.ui.view,arch_db:event_barcode.report_registration_badge
+#, python-format
 msgid "Barcode"
 msgstr ""
 
@@ -94,6 +98,13 @@ msgstr ""
 #: code:addons/event_barcode/static/src/js/event_barcode.js:96
 #, python-format
 msgid "Print"
+msgstr ""
+
+#. module: event_barcode
+#. openerp-web
+#: code:addons/event_barcode/static/src/xml/event_barcode.xml:42
+#, python-format
+msgid "Registration"
 msgstr ""
 
 #. module: event_barcode

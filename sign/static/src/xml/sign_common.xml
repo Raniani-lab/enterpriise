@@ -34,10 +34,10 @@
             <div class="card-header">
                 <a role="button" class="o_sign_select_style float-right btn btn-link">Select Signature Style</a>
                 <a role="button" class="o_sign_clean float-right btn btn-link">Clear Signature</a>
-                <input type="file" name="files[]" class="o_sign_load float-right btn btn-link" role="button"/>
                 <a data-mode="draw" class="o_sign_mode btn btn-primary" role="button">Draw</a>
                 <a data-mode="auto" class="o_sign_mode btn" role="button">Auto</a>
                 <a data-mode="load" class="o_sign_mode btn" role="button">Load</a>
+                <input type="file" name="files[]" class="o_sign_load btn btn-link" role="button"/>
             </div>
             <div class="o_sign_signature card-body"/>
         </div>
@@ -85,13 +85,13 @@
             <span>A SMS will be sent to the following phone number. Please update it if it's not relevant.</span>
             <div>
                 <input type="text" id="o_sign_phone_number_input" placeholder="Phone number..." class="form-control" t-att-value="widget.signerPhone"/>
+                <button class='btn-link o_sign_resend_sms'>Send SMS</button>
             </div>
         </div>
         <div class="form-group">
             <span>Please enter the code received through SMS to complete your signature</span>
             <div>
                 <input type="text" id="o_sign_public_signer_sms_input" placeholder="SMS Code" class="form-control"/>
-                <button class='btn-link o_sign_resend_sms'>Send SMS</button>
             </div>
         </div>
     </div>
@@ -99,10 +99,21 @@
     <div t-name="sign.thank_you_dialog">
         <div class="o_thankyou_message">We will let you know by email once everyone has signed.<br/>
         You can close the window and come back later.</div>
-
-        <div class="o_promote_esign">
+        <t t-if="!widget.RedirectURL">
+            <div class="o_promote_esign o_thankyou_link">
+                <img src="/sign/static/description/icon.png" alt="Document Sign" class="img img-fluid d-inline-block"/>
+                <a class="pl-3" target="_blank" href="https://www.odoo.com/page/sign">Made with Odoo Sign</a>
+            </div>
+        </t>
+        <t t-if="widget.RedirectURL">
+            <div class="o_promote_esign o_thankyou_link">
+                <img src="/sign/static/description/icon.png" alt="Document Sign" class="img img-fluid d-inline-block"/>
+                <a class="pl-3" target="_blank" t-att-href="widget.RedirectURL">View External Document</a>
+            </div>
+        </t>
+        <div class="o_go_to_document o_thankyou_link">
             <img src="/sign/static/description/icon.png" alt="Document Sign" class="img img-fluid d-inline-block"/>
-            <a class="pl-3" target="_blank" href="https://www.odoo.com/page/sign">Made with Odoo Sign</a>
+            <a class="pl-3" href="#">View Signed document</a>
         </div>
     </div>
 

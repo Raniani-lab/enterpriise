@@ -38,7 +38,7 @@ var mrp_mps_report = AbstractAction.extend(ControlPanelMixin, {
     render_search_view: function(){
         var self = this;
         var defs = [];
-        this._rpc({
+        return this._rpc({
                 model: 'ir.model.data',
                 method: 'get_object_reference',
                 args: ['product', 'product_template_search_view'],

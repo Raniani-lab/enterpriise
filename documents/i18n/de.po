@@ -1,0 +1,1147 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# * documents
+# 
+# Translators:
+# Ralf Hilgenstock <rh@dialoge.info>, 2018
+# Martin Trigaux, 2018
+# Martin K <martinkuenz@gmail.com>, 2018
+# darenkster <inactive+darenkster@transifex.com>, 2018
+# Katharina Moritz <kmo@e2f.com>, 2018
+# Jan Meyer, 2018
+# Andreas Perhab <a.perhab@wtioit.at>, 2018
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-08-24 11:28+0000\n"
+"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"Last-Translator: Andreas Perhab <a.perhab@wtioit.at>, 2018\n"
+"Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: de\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: documents
+#: model:ir.ui.view,arch_db:documents.documents_view_kanban
+msgid "#{record.lock_uid.value}"
+msgstr ""
+
+#. module: documents
+#: model:ir.ui.view,arch_db:documents.public_page_layout
+msgid ", expired on"
+msgstr ""
+
+#. module: documents
+#: model:ir.ui.view,arch_db:documents.format_file_size
+msgid "<b>Bytes</b>"
+msgstr ""
+
+#. module: documents
+#: model:ir.ui.view,arch_db:documents.format_file_size
+msgid "<b>Gb</b>"
+msgstr ""
+
+#. module: documents
+#: model:ir.ui.view,arch_db:documents.format_file_size
+msgid "<b>Kb</b>"
+msgstr ""
+
+#. module: documents
+#: model:ir.ui.view,arch_db:documents.format_file_size
+msgid "<b>Mb</b>"
+msgstr ""
+
+#. module: documents
+#: model:ir.ui.view,arch_db:documents.public_page_layout
+msgid "<br/>Powered by"
+msgstr ""
+
+#. module: documents
+#: model:ir.ui.view,arch_db:documents.share_page
+msgid "<i class=\"fa fa-download\"/>  Download All"
+msgstr ""
+
+#. module: documents
+#: model:ir.ui.view,arch_db:documents.share_single
+msgid "<i class=\"fa fa-download\"/> Download"
+msgstr "Download"
+
+#. module: documents
+#: model:ir.ui.view,arch_db:documents.share_view_form
+#: model:ir.ui.view,arch_db:documents.share_view_form_popup
+msgid ""
+"<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/> Configure Email Servers"
+msgstr ""
+
+#. module: documents
+#: model:ir.ui.view,arch_db:documents.share_page
+msgid "<i class=\"fa fa-upload\"/>  Upload"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,help:documents.field_documents_share__alias_defaults
+msgid ""
+"A Python dictionary that will be evaluated to provide default values when "
+"creating new records for this alias."
+msgstr ""
+"Ein Python Dictionary, das ausgewertet wird, wenn neue Datensätze für diesen"
+" Alias angelegt werden."
+
+#. module: documents
+#: model:ir.model,name:documents.model_documents_workflow_rule
+msgid ""
+"A set of condition and actions which will be available to all attachments "
+"matching the conditions"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_share__access_token
+msgid "Access Token"
+msgstr "Zugriffs-Token"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_folder__group_ids
+msgid "Access groups"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_action__action
+msgid "Action"
+msgstr "Aktion"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_share__message_needaction
+#: model:ir.model.fields,field_description:documents.field_ir_attachment__message_needaction
+msgid "Action Needed"
+msgstr "Aktion notwendig"
+
+#. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/xml/documents_inspector.xml:96
+#: model:ir.ui.menu,name:documents.WorkflowRules_menu
+#: model:ir.ui.view,arch_db:documents.documents_view_form
+#: model:ir.ui.view,arch_db:documents.workflow_rule_form_view
+#, python-format
+msgid "Actions"
+msgstr "Aktionen"
+
+#. module: documents
+#: selection:documents.workflow.action,action:0
+msgid "Add"
+msgstr "Hinzufügen"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_share__alias_id
+msgid "Alias"
+msgstr "Alias"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_share__alias_contact
+msgid "Alias Contact Security"
+msgstr "Aliaskontakt-Sicherheit"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_share__alias_name
+msgid "Alias Name"
+msgstr "Alias-Name"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_share__alias_domain
+msgid "Alias domain"
+msgstr "Alias-Domäne"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_share__alias_model_id
+msgid "Aliased Model"
+msgstr "Alias-Modell"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_share__action
+msgid "Allows to"
+msgstr ""
+
+#. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/xml/documents_inspector.xml:152
+#, python-format
+msgid "Archive"
+msgstr "Archiv"
+
+#. module: documents
+#: model:ir.ui.view,arch_db:documents.documents_view_search_inherit
+msgid "Archived"
+msgstr "Archiviert"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__create_model
+msgid "Attach to"
+msgstr ""
+
+#. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/xml/documents_selector.xml:50
+#, python-format
+msgid "Attached To"
+msgstr "Zuweisung an:"
+
+#. module: documents
+#: model:ir.ui.menu,name:documents.attachment_list_view_temp
+msgid "Attachments"
+msgstr "Dateianhänge"
+
+#. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/js/documents_kanban_view.js:27
+#, python-format
+msgid "Attachments Kanban"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_ir_attachment__available_rule_ids
+msgid "Available Rules"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_action__facet_id
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__facet_id
+msgid "Category"
+msgstr "Kategorie"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_folder__company_id
+msgid "Company"
+msgstr "Unternehmen"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__condition_type
+msgid "Condition type"
+msgstr ""
+
+#. module: documents
+#: model:ir.ui.view,arch_db:documents.workflow_rule_form_view
+msgid "Conditions"
+msgstr "Bedingungen"
+
+#. module: documents
+#: model:ir.ui.menu,name:documents.Config
+msgid "Configuration"
+msgstr "Konfiguration"
+
+#. module: documents
+#: selection:documents.workflow.tag.criteria,operator:0
+msgid "Contains"
+msgstr "Beinhaltet"
+
+#. module: documents
+#: model:ir.ui.view,arch_db:documents.tag_view_tree
+msgid "Create a tag"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_facet__create_uid
+#: model:ir.model.fields,field_description:documents.field_documents_folder__create_uid
+#: model:ir.model.fields,field_description:documents.field_documents_share__create_uid
+#: model:ir.model.fields,field_description:documents.field_documents_tag__create_uid
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_action__create_uid
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__create_uid
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__create_uid
+msgid "Created by"
+msgstr "Erstellt von"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_facet__create_date
+#: model:ir.model.fields,field_description:documents.field_documents_folder__create_date
+#: model:ir.model.fields,field_description:documents.field_documents_share__create_date
+#: model:ir.model.fields,field_description:documents.field_documents_tag__create_date
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_action__create_date
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__create_date
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__create_date
+msgid "Created on"
+msgstr "Erstellt am"
+
+#. module: documents
+#: selection:documents.workflow.rule,create_model:0
+msgid "Credit note"
+msgstr ""
+
+#. module: documents
+#: selection:documents.workflow.rule,condition_type:0
+msgid "Criteria"
+msgstr ""
+
+#. module: documents
+#: model:ir.ui.view,arch_db:documents.public_page_layout
+msgid "DMS"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_share__tag_ids
+msgid "Default Tags"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_share__alias_defaults
+msgid "Default Values"
+msgstr "Standardeinstellungen"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_share__partner_id
+msgid "Default contact"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_share__owner_id
+msgid "Default owner"
+msgstr ""
+
+#. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/xml/documents_inspector.xml:154
+#, python-format
+msgid "Delete"
+msgstr "Löschen"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_facet__display_name
+#: model:ir.model.fields,field_description:documents.field_documents_folder__display_name
+#: model:ir.model.fields,field_description:documents.field_documents_share__display_name
+#: model:ir.model.fields,field_description:documents.field_documents_tag__display_name
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_action__display_name
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__display_name
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__display_name
+msgid "Display Name"
+msgstr "Anzeigename"
+
+#. module: documents
+#: model:ir.ui.view,arch_db:documents.documents_view_kanban
+msgid "Document"
+msgstr "Dokument"
+
+#. module: documents
+#: selection:documents.share,type:0
+msgid "Document list"
+msgstr ""
+
+#. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/xml/documents_inspector.xml:57
+#: model:ir.actions.act_window,name:documents.document_action
+#: model:ir.model.fields,field_description:documents.field_documents_folder__attachment_ids
+#: model:ir.ui.menu,name:documents.dashboard
+#: model:ir.ui.menu,name:documents.menu_root
+#: model:ir.ui.view,arch_db:documents.res_config_settings_view_form
+#, python-format
+msgid "Documents"
+msgstr "Dokumente"
+
+#. module: documents
+#: selection:documents.workflow.tag.criteria,operator:0
+msgid "Does not contain"
+msgstr ""
+
+#. module: documents
+#: selection:documents.share,type:0
+#: selection:documents.workflow.rule,condition_type:0
+#: model:ir.model.fields,field_description:documents.field_documents_share__domain
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__domain
+#: model:ir.ui.view,arch_db:documents.workflow_rule_form_view
+msgid "Domain"
+msgstr "Domain"
+
+#. module: documents
+#: model:ir.ui.view,arch_db:documents.share_view_form_popup
+msgid "Done"
+msgstr "Erledigt"
+
+#. module: documents
+#: model:ir.ui.view,arch_db:documents.share_page
+msgid "Downlaod all files"
+msgstr ""
+
+#. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/xml/documents_inspector.xml:142
+#: selection:documents.share,action:0
+#, python-format
+msgid "Download"
+msgstr "Herunterladen"
+
+#. module: documents
+#: selection:documents.share,action:0
+msgid "Download and Upload"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_share__date_deadline
+msgid "Expiration date"
+msgstr ""
+
+#. module: documents
+#: selection:documents.share,state:0
+msgid "Expired"
+msgstr "Abgelaufen"
+
+#. module: documents
+#: model:ir.model,name:documents.model_documents_facet
+#: model:ir.model.fields,field_description:documents.field_documents_tag__facet_id
+msgid "Facet"
+msgstr ""
+
+#. module: documents
+#: sql_constraint:documents.facet:0
+msgid "Facet already exists in this folder"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_ir_attachment__favorited_ids
+msgid "Favorite of"
+msgstr "Favorit von"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_facet__folder_id
+#: model:ir.model.fields,field_description:documents.field_documents_share__folder_id
+#: model:ir.model.fields,field_description:documents.field_documents_tag__folder_id
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__domain_folder_id
+#: model:ir.model.fields,field_description:documents.field_ir_attachment__folder_id
+msgid "Folder"
+msgstr ""
+
+#. module: documents
+#: model:ir.ui.view,arch_db:documents.res_config_settings_view_form
+msgid "Folder Settings"
+msgstr ""
+
+#. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/xml/documents_selector.xml:9
+#: model:ir.actions.act_window,name:documents.folder_action
+#: model:ir.ui.menu,name:documents.folder_menu
+#, python-format
+msgid "Folders"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_share__message_follower_ids
+#: model:ir.model.fields,field_description:documents.field_ir_attachment__message_follower_ids
+msgid "Followers"
+msgstr "Abonnenten"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_share__message_channel_ids
+#: model:ir.model.fields,field_description:documents.field_ir_attachment__message_channel_ids
+msgid "Followers (Channels)"
+msgstr "Abonnenten (Kanäle)"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_share__message_partner_ids
+#: model:ir.model.fields,field_description:documents.field_ir_attachment__message_partner_ids
+msgid "Followers (Partners)"
+msgstr "Abonnenten (Partner)"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__has_business_option
+msgid "Has Business Option"
+msgstr ""
+
+#. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/js/tour.js:14
+#, python-format
+msgid "Here is the place to manage your documents."
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_facet__id
+#: model:ir.model.fields,field_description:documents.field_documents_folder__id
+#: model:ir.model.fields,field_description:documents.field_documents_share__id
+#: model:ir.model.fields,field_description:documents.field_documents_tag__id
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_action__id
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__id
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__id
+msgid "ID"
+msgstr "ID"
+
+#. module: documents
+#: model:ir.model.fields,help:documents.field_documents_share__alias_parent_thread_id
+msgid ""
+"ID of the parent record holding the alias (example: project holding the task"
+" creation alias)"
+msgstr ""
+"ID des übergeordneten Alias Datensatz (Beispiel: Projekt welches den Alias "
+"für die Erstellung von Aufgaben beinhaltet)."
+
+#. module: documents
+#: model:ir.model.fields,help:documents.field_documents_share__message_unread
+#: model:ir.model.fields,help:documents.field_ir_attachment__message_unread
+msgid "If checked new messages require your attention."
+msgstr "Falls markiert, benötigen neue Nachrichten Ihre Kenntnisnahme."
+
+#. module: documents
+#: model:ir.model.fields,help:documents.field_documents_share__message_needaction
+#: model:ir.model.fields,help:documents.field_ir_attachment__message_needaction
+msgid "If checked, new messages require your attention."
+msgstr "Falls markiert, benötigen neue Nachrichten Ihre Kenntnisnahme."
+
+#. module: documents
+#: model:ir.model.fields,help:documents.field_documents_share__message_has_error
+#: model:ir.model.fields,help:documents.field_ir_attachment__message_has_error
+msgid "If checked, some messages have a delivery error."
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_share__message_is_follower
+#: model:ir.model.fields,field_description:documents.field_ir_attachment__message_is_follower
+msgid "Is Follower"
+msgstr "Ist ein Abonnent"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_facet____last_update
+#: model:ir.model.fields,field_description:documents.field_documents_folder____last_update
+#: model:ir.model.fields,field_description:documents.field_documents_share____last_update
+#: model:ir.model.fields,field_description:documents.field_documents_tag____last_update
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_action____last_update
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_rule____last_update
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria____last_update
+msgid "Last Modified on"
+msgstr "Zuletzt geändert am"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_facet__write_uid
+#: model:ir.model.fields,field_description:documents.field_documents_folder__write_uid
+#: model:ir.model.fields,field_description:documents.field_documents_share__write_uid
+#: model:ir.model.fields,field_description:documents.field_documents_tag__write_uid
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_action__write_uid
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__write_uid
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__write_uid
+msgid "Last Updated by"
+msgstr "Zuletzt aktualisiert durch"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_facet__write_date
+#: model:ir.model.fields,field_description:documents.field_documents_folder__write_date
+#: model:ir.model.fields,field_description:documents.field_documents_share__write_date
+#: model:ir.model.fields,field_description:documents.field_documents_tag__write_date
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_action__write_date
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__write_date
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__write_date
+msgid "Last Updated on"
+msgstr "Zuletzt aktualisiert am"
+
+#. module: documents
+#: selection:documents.share,state:0
+msgid "Live"
+msgstr ""
+
+#. module: documents
+#: model:ir.ui.view,arch_db:documents.share_single
+msgid "Loading"
+msgstr "Ladevorgang"
+
+#. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/xml/documents_inspector.xml:147
+#, python-format
+msgid "Lock"
+msgstr "Sperre"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_ir_attachment__lock_uid
+msgid "Locked by"
+msgstr ""
+
+#. module: documents
+#: model:ir.ui.view,arch_db:documents.public_page_layout
+msgid "Login"
+msgstr "Login"
+
+#. module: documents
+#: model:ir.ui.view,arch_db:documents.public_page_layout
+msgid "Logout"
+msgstr "Abmelden"
+
+#. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/xml/documents_inspector.xml:62
+#, python-format
+msgid "MB"
+msgstr ""
+
+#. module: documents
+#: model:res.groups,name:documents.group_document_manager
+msgid "Manage Documents"
+msgstr ""
+
+#. module: documents
+#: model:ir.actions.act_window,name:documents.tag_action
+#: model:ir.actions.act_window,name:documents.tree_tag_action
+msgid "Manage document tags"
+msgstr ""
+
+#. module: documents
+#: model:ir.actions.act_window,name:documents.facet_action
+msgid "Manage tag categories"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_share__message_has_error
+#: model:ir.model.fields,field_description:documents.field_ir_attachment__message_has_error
+msgid "Message Delivery error"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_share__message_ids
+#: model:ir.model.fields,field_description:documents.field_ir_attachment__message_ids
+msgid "Messages"
+msgstr "Nachrichten"
+
+#. module: documents
+#: model:ir.ui.view,arch_db:documents.documents_view_search_inherit
+msgid "Model"
+msgstr "Modell"
+
+#. module: documents
+#: model:ir.ui.view,arch_db:documents.res_config_settings_view_form
+msgid "More DMS settings"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__folder_id
+msgid "Move to"
+msgstr ""
+
+#. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/js/documents_inspector.js:142
+#, python-format
+msgid "Multiple values"
+msgstr ""
+
+#. module: documents
+#: model:ir.ui.view,arch_db:documents.documents_view_search_inherit
+msgid "My Favorites"
+msgstr "Meine Favoriten"
+
+#. module: documents
+#: model:ir.ui.view,arch_db:documents.documents_view_search_inherit
+msgid "My documents"
+msgstr "Meine Dokumente"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_facet__name
+#: model:ir.model.fields,field_description:documents.field_documents_folder__name
+#: model:ir.model.fields,field_description:documents.field_documents_share__name
+#: model:ir.model.fields,field_description:documents.field_documents_tag__name
+msgid "Name"
+msgstr "Name"
+
+#. module: documents
+#: model:ir.ui.view,arch_db:documents.share_view_form
+#: model:ir.ui.view,arch_db:documents.share_view_form_popup
+msgid "Name of the share link"
+msgstr ""
+
+#. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/js/documents_kanban_model.js:218
+#, python-format
+msgid "No Source"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__note
+msgid "Note"
+msgstr "Notiz"
+
+#. module: documents
+#: model:ir.ui.view,arch_db:documents.workflow_rule_form_view
+msgid "Notes"
+msgstr "Notizen"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_share__message_needaction_counter
+#: model:ir.model.fields,field_description:documents.field_ir_attachment__message_needaction_counter
+msgid "Number of Actions"
+msgstr "Anzahl der Aktionen"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_share__message_has_error_counter
+#: model:ir.model.fields,field_description:documents.field_ir_attachment__message_has_error_counter
+msgid "Number of error"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,help:documents.field_documents_share__message_needaction_counter
+#: model:ir.model.fields,help:documents.field_ir_attachment__message_needaction_counter
+msgid "Number of messages which requires an action"
+msgstr "Anzahl der Nachrichten, die eine Aktion erfordern"
+
+#. module: documents
+#: model:ir.model.fields,help:documents.field_documents_share__message_has_error_counter
+#: model:ir.model.fields,help:documents.field_ir_attachment__message_has_error_counter
+msgid "Number of messages with delivery error"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,help:documents.field_documents_share__message_unread_counter
+#: model:ir.model.fields,help:documents.field_ir_attachment__message_unread_counter
+msgid "Number of unread messages"
+msgstr "Anzahl ungelesener Nachrichten"
+
+#. module: documents
+#: model:ir.ui.view,arch_db:documents.public_page_layout
+msgid "Odoo Logo"
+msgstr "Odoo-Logo"
+
+#. module: documents
+#: model:ir.ui.view,arch_db:documents.public_page_layout
+msgid "Odoo Website"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__operator
+msgid "Operator"
+msgstr "Ausführender"
+
+#. module: documents
+#: model:ir.model.fields,help:documents.field_documents_share__alias_force_thread_id
+msgid ""
+"Optional ID of a thread (record) to which all incoming messages will be "
+"attached, even if they did not reply to it. If set, this will disable the "
+"creation of new records completely."
+msgstr ""
+"Optionale ID eines Themenstrangs dem alle eingehenden Nachrichten zugeordnet"
+" werden, auch wenn auf sie nicht geantwortet wird. Wenn gesetzt, verhindert "
+"dies die Anlage neuer Datensätze vollständig."
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_share__alias_user_id
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__criteria_owner_id
+#: model:ir.model.fields,field_description:documents.field_ir_attachment__owner_id
+msgid "Owner"
+msgstr "Besitzer"
+
+#. module: documents
+#: model:ir.ui.view,arch_db:documents.share_page
+msgid "Owner: #{attachment.create_uid.name}"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_share__alias_parent_model_id
+msgid "Parent Model"
+msgstr "Hauptvorlage"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_share__alias_parent_thread_id
+msgid "Parent Record Thread ID"
+msgstr "Zugehörige Diskussion"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_folder__parent_folder_id
+msgid "Parent folder"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,help:documents.field_documents_share__alias_parent_model_id
+msgid ""
+"Parent model holding the alias. The model holding the alias reference is not"
+" necessarily the model given by alias_model_id (example: project "
+"(parent_model) and task (model))"
+msgstr ""
+"Das übergeordnete Datenmodell des Alias. Dieses Modell, welches die EMail "
+"Alias Referenz enthält, gehört nicht zwangsläufig zum Modell unterhalb von "
+"alias_model_id (Beispiel: project (parent_model) und task (model))"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__criteria_partner_id
+#: model:ir.model.fields,field_description:documents.field_ir_attachment__partner_id
+msgid "Partner"
+msgstr "Partner"
+
+#. module: documents
+#: model:ir.model.fields,help:documents.field_documents_share__alias_contact
+msgid ""
+"Policy to post a message on the document using the mailgateway.\n"
+"- everyone: everyone can post\n"
+"- partners: only authenticated partners\n"
+"- followers: only followers of the related document or members of following channels\n"
+msgstr ""
+"Richtlinie zum Posten einer Dokument-Nachricht über das E-Mail-Gateway.\n"
+"- Jeder: jeder kann posten\n"
+"- Partner: nur bestätigte Partner\n"
+"- Follower: nur die Personen, die dem betreffenden Dokument folgen oder Mitglieder von Kanälen sind, die dem Dokument folgen\n"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_share__alias_force_thread_id
+msgid "Record Thread ID"
+msgstr "Aufzeichnung Diskussion ID"
+
+#. module: documents
+#: selection:documents.workflow.action,action:0
+msgid "Remove"
+msgstr "Löschen"
+
+#. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/xml/documents_inspector.xml:146
+#, python-format
+msgid "Replace"
+msgstr ""
+
+#. module: documents
+#: selection:documents.workflow.action,action:0
+msgid "Replace by"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__name
+msgid "Rule name"
+msgstr ""
+
+#. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/xml/documents_kanban.xml:11
+#, python-format
+msgid "Save URL"
+msgstr ""
+
+#. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/xml/documents_inspector.xml:9
+#, python-format
+msgid "Select a document"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_facet__sequence
+#: model:ir.model.fields,field_description:documents.field_documents_folder__sequence
+#: model:ir.model.fields,field_description:documents.field_documents_tag__sequence
+msgid "Sequence"
+msgstr "Nummernfolge"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__partner_id
+msgid "Set Contact"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__user_id
+msgid "Set Owner"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__tag_action_ids
+msgid "Set Tags"
+msgstr ""
+
+#. module: documents
+#: model:ir.actions.act_window,name:documents.configuration
+#: model:ir.actions.act_window,name:documents.documents_settings_action
+#: model:ir.ui.menu,name:documents.Settings_menu
+msgid "Settings"
+msgstr "Einstellungen"
+
+#. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/xml/documents_inspector.xml:144
+#: code:addons/documents/static/src/xml/documents_kanban.xml:14
+#, python-format
+msgid "Share"
+msgstr "Teilen"
+
+#. module: documents
+#: model:ir.actions.act_window,name:documents.share_action
+#: model:ir.model.fields,field_description:documents.field_documents_folder__share_link_ids
+msgid "Share links"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_share__type
+msgid "Share type"
+msgstr ""
+
+#. module: documents
+#: model:ir.ui.menu,name:documents.share_menu
+msgid "Shared"
+msgstr "Freigegeben"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_share__attachment_ids
+msgid "Shared attachments"
+msgstr ""
+
+#. module: documents
+#: selection:documents.workflow.rule,create_model:0
+msgid "Signature template"
+msgstr ""
+
+#. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/xml/documents_inspector.xml:61
+#, python-format
+msgid "Size"
+msgstr "Größe"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_share__state
+msgid "Status"
+msgstr "Status"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_folder__children_folder_ids
+msgid "Sub folders"
+msgstr ""
+
+#. module: documents
+#: model:ir.model,name:documents.model_documents_tag
+#: model:ir.model.fields,field_description:documents.field_documents_facet__tag_ids
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_action__tag_id
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__tag_id
+#: model:ir.ui.view,arch_db:documents.tag_view_search
+msgid "Tag"
+msgstr "Stichwort"
+
+#. module: documents
+#: sql_constraint:documents.tag:0
+msgid "Tag already exists for this facet"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_folder__facet_ids
+msgid "Tag categories"
+msgstr ""
+
+#. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/xml/documents_inspector.xml:86
+#: code:addons/documents/static/src/xml/documents_selector.xml:16
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__criteria_tag_ids
+#: model:ir.model.fields,field_description:documents.field_ir_attachment__tag_ids
+#: model:ir.ui.menu,name:documents.Category_menu
+#: model:ir.ui.view,arch_db:documents.documents_view_form
+#, python-format
+msgid "Tags"
+msgstr "Stichwörter"
+
+#. module: documents
+#: selection:documents.workflow.rule,create_model:0
+msgid "Task"
+msgstr "Aufgabe"
+
+#. module: documents
+#: model:ir.ui.view,arch_db:documents.documents_view_form
+msgid "Technical"
+msgstr "Technisch"
+
+#. module: documents
+#: model:ir.model.fields,help:documents.field_documents_share__alias_model_id
+msgid ""
+"The model (Odoo Document Kind) to which this alias corresponds. Any incoming"
+" email that does not reply to an existing record will cause the creation of "
+"a new record of this model (e.g. a Project Task)"
+msgstr ""
+"Das Odoo Datenmodell auf das sich der Alias bezieht. Jeglicher E-Mail "
+"Posteingang ohne Bezug zu einer bereits vorhandenen E-Mail  führt "
+"üblicherweise zur Erstellung eines neuen Datensatz (z.B. Projektaufgabe)."
+
+#. module: documents
+#: model:ir.model.fields,help:documents.field_documents_share__alias_name
+msgid ""
+"The name of the email alias, e.g. 'jobs' if you want to catch emails for "
+"<jobs@example.odoo.com>"
+msgstr ""
+"Die Bezeichnung des E-Mail-Alias, z.B. 'jobs', falls Sie E-Mails an z.B. "
+"<jobs@example.odoo.com> erhalten möchten"
+
+#. module: documents
+#: model:ir.model.fields,help:documents.field_documents_share__alias_user_id
+msgid ""
+"The owner of records created upon receiving emails on this alias. If this "
+"field is not set the system will attempt to find the right owner based on "
+"the sender (From) address, or will use the Administrator account if no "
+"system user is found for that address."
+msgstr ""
+"Besitzer, der als Folge des Empfangs einer E-Mails an diesen Alias "
+"​​erstellt wurde. Wenn dieses Feld nicht ausgefüllt wird, wird das System "
+"versuchen, den richtigen Besitzer auf der Basis des Absenders zu finden oder"
+" das Administrator-Konto verwenden, wenn kein System-Benutzer für diese "
+"Adresse gefunden wird."
+
+#. module: documents
+#: sql_constraint:documents.share:0
+msgid "This access token already exists"
+msgstr ""
+
+#. module: documents
+#: model:ir.ui.view,arch_db:documents.not_available
+msgid "This link has expired"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_facet__tooltip
+msgid "Tooltip"
+msgstr "Tooltip"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_share__full_url
+msgid "URL"
+msgstr "URL"
+
+#. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/xml/documents_inspector.xml:155
+#, python-format
+msgid "Un-archive"
+msgstr ""
+
+#. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/xml/documents_inspector.xml:155
+#, python-format
+msgid "Unarchive"
+msgstr "Archivierung aufheben"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_share__message_unread
+#: model:ir.model.fields,field_description:documents.field_ir_attachment__message_unread
+msgid "Unread Messages"
+msgstr "Ungelesene Nachrichten"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_share__message_unread_counter
+#: model:ir.model.fields,field_description:documents.field_ir_attachment__message_unread_counter
+msgid "Unread Messages Counter"
+msgstr "Zähler der ungelesenen Nachrichten"
+
+#. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/xml/documents_kanban.xml:6
+#: selection:documents.share,action:0
+#: model:ir.ui.view,arch_db:documents.documents_upload_url_view
+#: model:ir.ui.view,arch_db:documents.share_page
+#, python-format
+msgid "Upload"
+msgstr ""
+
+#. module: documents
+#: model:ir.actions.act_window,help:documents.document_action
+msgid "Upload <small>a file or</small> drag <small>it here.</small>"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_share__email_drop
+msgid "Upload by Email"
+msgstr ""
+
+#. module: documents
+#: selection:documents.workflow.rule,create_model:0
+msgid "Vendor bill"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_share__website_message_ids
+#: model:ir.model.fields,field_description:documents.field_ir_attachment__website_message_ids
+msgid "Website Messages"
+msgstr "Website-Nachrichten"
+
+#. module: documents
+#: model:ir.model.fields,help:documents.field_documents_share__website_message_ids
+#: model:ir.model.fields,help:documents.field_ir_attachment__website_message_ids
+msgid "Website communication history"
+msgstr "Website-Kommunikationshistorie"
+
+#. module: documents
+#: model:ir.actions.act_window,name:documents.workflow_rule_action
+msgid "Workflow Actions"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_action__workflow_rule_id
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__workflow_rule_id
+msgid "Workflow Rule"
+msgstr ""
+
+#. module: documents
+#: model:ir.actions.act_window,name:documents.document_debug_action
+msgid "[debug] Document list view"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_facet__color
+#: model:ir.model.fields,field_description:documents.field_documents_tag__color
+msgid "color index"
+msgstr ""
+
+#. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/xml/documents_inspector.xml:47
+#, python-format
+msgid "documents selected"
+msgstr ""
+
+#. module: documents
+#: model:ir.ui.view,arch_db:documents.share_page
+msgid "documents shared by"
+msgstr ""
+
+#. module: documents
+#: model:ir.model,name:documents.model_documents_folder
+msgid "documents.folder"
+msgstr ""
+
+#. module: documents
+#: model:ir.model,name:documents.model_documents_share
+msgid "documents.share"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,help:documents.field_documents_facet__tooltip
+msgid "hover text description"
+msgstr ""
+
+#. module: documents
+#: model:ir.ui.view,arch_db:documents.folder_view_form
+msgid "i.e Finance"
+msgstr ""
+
+#. module: documents
+#: model:ir.ui.view,arch_db:documents.workflow_rule_form_view
+msgid "i.e. Validate document"
+msgstr ""
+
+#. module: documents
+#: model:ir.model,name:documents.model_ir_attachment
+msgid "ir.attachment"
+msgstr "ir.attachment"
+
+#. module: documents
+#: model:ir.ui.view,arch_db:documents.folder_view_search
+msgid "parent"
+msgstr ""
+
+#. module: documents
+#: model:ir.ui.view,arch_db:documents.public_page_layout
+msgid "shared by"
+msgstr ""
+
+#. module: documents
+#: model:mail.message.subtype,name:documents.documents_share_changed
+msgid "shares changed"
+msgstr ""
+
+#. module: documents
+#: model:ir.model,name:documents.model_documents_workflow_action
+msgid "tag and facet manipulation"
+msgstr ""
+
+#. module: documents
+#: model:ir.model,name:documents.model_documents_workflow_tag_criteria
+msgid "tag based condition"
+msgstr ""
+
+#. module: documents
+#: model:mail.message.subtype,name:documents.documents_tags_changed
+msgid "tags changed"
+msgstr ""

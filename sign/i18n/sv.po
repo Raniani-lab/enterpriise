@@ -811,7 +811,7 @@ msgstr "Antal olästa meddelanden"
 #. module: website_sign
 #: model:res.groups,name:website_sign.group_website_sign_user
 msgid "Officer"
-msgstr ""
+msgstr "Tjänsteman"
 
 #. module: website_sign
 #. openerp-web

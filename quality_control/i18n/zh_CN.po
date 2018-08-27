@@ -3,26 +3,14 @@
 # * quality_control
 # 
 # Translators:
-# Jeffery CHEN Fan <jeffery9@gmail.com>, 2017
-# 苏州远鼎 <tiexinliu@126.com>, 2017
-# 杜哥 <liangjia@qq.com>, 2017
-# 老窦 北京 <2662059195@qq.com>, 2017
-# Martin Trigaux, 2017
-# Xia Fajin <xia.fajin@elico-corp.com>, 2017
-# liulixia <liu.lixia@elico-corp.com>, 2017
-# Ted Wang <feiyuwang2012@gmail.com>, 2017
-# Talway <9010446@qq.com>, 2017
-# 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2018
-# e2f <projects@e2f.com>, 2018
-# Maie <m@maie.name>, 2018
-# e2f_cn c5 <jarvisn@ecinnovations.com>, 2018
+# Martin Trigaux, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.3+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 08:34+0000\n"
-"PO-Revision-Date: 2018-06-25 08:34+0000\n"
-"Last-Translator: e2f_cn c5 <jarvisn@ecinnovations.com>, 2018\n"
+"POT-Creation-Date: 2018-08-24 11:28+0000\n"
+"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -37,8 +25,10 @@ msgstr "% 作业"
 
 #. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.quality_alert_team_dashboard_view_kanban
-msgid "<i class=\"fa fa-envelope-o\"/>&amp;nbsp;"
-msgstr "<i class=\"fa fa-envelope-o\"/>&amp;nbsp;"
+msgid ""
+"<i class=\"fa fa-envelope-o\" role=\"img\" aria-label=\"Domain alias\" "
+"title=\"Domain alias\"/>&amp;nbsp;"
+msgstr ""
 
 #. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.quality_point_view_form_inherit_quality_control
@@ -297,6 +287,11 @@ msgid "Group By"
 msgstr "分组"
 
 #. module: quality_control
+#: model:ir.ui.view,arch_db:quality_control.quality_alert_team_dashboard_view_kanban
+msgid "In #{kanban_getcolorname(record.color.raw_value)}"
+msgstr ""
+
+#. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.quality_check_view_search
 msgid "In Progress"
 msgstr "进行中"
@@ -364,7 +359,7 @@ msgid "Name"
 msgstr "名称"
 
 #. module: quality_control
-#: code:addons/quality_control/models/quality.py:284
+#: code:addons/quality_control/models/quality.py:283
 #, python-format
 msgid "New"
 msgstr "新建"
@@ -441,12 +436,7 @@ msgid "Periodically"
 msgstr "周期性"
 
 #. module: quality_control
-#: model:ir.model.fields,field_description:quality_control.field_quality_check__picture
-msgid "Picture"
-msgstr "图片"
-
-#. module: quality_control
-#: code:addons/quality_control/models/quality.py:164
+#: code:addons/quality_control/models/quality.py:163
 #, python-format
 msgid "Picture Uploaded"
 msgstr "图片已上传"
@@ -467,8 +457,8 @@ msgid "Quality"
 msgstr "质量"
 
 #. module: quality_control
-#: code:addons/quality_control/models/quality.py:209
-#: code:addons/quality_control/models/quality.py:221
+#: code:addons/quality_control/models/quality.py:208
+#: code:addons/quality_control/models/quality.py:220
 #: model:ir.model,name:quality_control.model_quality_alert
 #: model:ir.ui.view,arch_db:quality_control.quality_alert_view_calendar
 #: model:ir.ui.view,arch_db:quality_control.stock_picking_view_form_inherit_quality
@@ -521,7 +511,7 @@ msgid "Quality Alerts"
 msgstr "质量警报"
 
 #. module: quality_control
-#: code:addons/quality_control/models/quality.py:252
+#: code:addons/quality_control/models/quality.py:251
 #: model:ir.model,name:quality_control.model_quality_check
 #, python-format
 msgid "Quality Check"
@@ -539,14 +529,14 @@ msgid "Quality Check Fail"
 msgstr "质检未通过"
 
 #. module: quality_control
-#: code:addons/quality_control/models/quality.py:172
+#: code:addons/quality_control/models/quality.py:171
 #: model:ir.ui.view,arch_db:quality_control.quality_check_view_form_failure
 #, python-format
 msgid "Quality Check Failed"
 msgstr "质量检查失败"
 
 #. module: quality_control
-#: code:addons/quality_control/models/quality.py:187
+#: code:addons/quality_control/models/quality.py:186
 #: model:ir.actions.act_window,name:quality_control.quality_check_action_main
 #: model:ir.actions.act_window,name:quality_control.quality_check_action_picking
 #: model:ir.actions.act_window,name:quality_control.quality_check_action_report
@@ -707,7 +697,7 @@ msgid "Week(s)"
 msgstr "周"
 
 #. module: quality_control
-#: code:addons/quality_control/models/quality.py:141
+#: code:addons/quality_control/models/quality.py:140
 #, python-format
 msgid "You measured %.2f %s and it should be between %.2f and %.2f %s."
 msgstr "您的测量值为 %.2f %s，且该值应在 %.2f 和 %.2f %s 之间。"

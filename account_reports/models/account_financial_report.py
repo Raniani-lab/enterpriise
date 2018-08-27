@@ -22,7 +22,7 @@ class ReportAccountFinancialReport(models.Model):
     line_ids = fields.One2many('account.financial.html.report.line', 'financial_report_id', string='Lines')
     date_range = fields.Boolean('Based on date ranges', default=True, help='specify if the report use date_range or single date')
     comparison = fields.Boolean('Allow comparison', default=True, help='display the comparison filter')
-    cash_basis = fields.Boolean('Use cash basis', help='if true, report will always use cash basis, if false, user can choose from filter inside the report')
+    cash_basis = fields.Boolean('Allow cash basis mode', help='display the option to switch to cash basis mode')
     analytic = fields.Boolean('Allow analytic filters', help='display the analytic filters')
     hierarchy_option = fields.Boolean('Enable the hierarchy option', help='Display the hierarchy choice in the report options')
     show_journal_filter = fields.Boolean('Allow filtering by journals', help='display the journal filter in the report')
@@ -192,9 +192,7 @@ class ReportAccountFinancialReport(models.Model):
             self.filter_date = {'date': '', 'filter': 'today'}
             if self.comparison:
                 self.filter_comparison = {'date': '', 'filter': 'no_comparison', 'number_period': 1}
-        self.filter_cash_basis = False
-        if self.cash_basis:
-            self.filter_cash_basis = None
+        self.filter_cash_basis = False if self.cash_basis else None
         if self.unfold_all_filter:
             self.filter_unfold_all = False
         if self.show_journal_filter:
@@ -338,7 +336,7 @@ class ReportAccountFinancialReport(models.Model):
         linesDicts = [[{} for _ in range(0, amount_of_group_ids)] for _ in range(0, amount_of_periods)]
 
         res = line_obj.with_context(
-            cash_basis=options.get('cash_basis') or self.cash_basis,
+            cash_basis=options.get('cash_basis'),
             filter_domain=domain,
         )._get_lines(self, currency_table, options, linesDicts)
         return res
@@ -522,14 +520,108 @@ class AccountFinancialReportLine(models.Model):
         sql = ''
         params = []
 
-        #Cash basis option
-        #-----------------
-        #In cash basis, we need to show amount on income/expense accounts, but only when they're paid AND under the payment date in the reporting, so
-        #we have to make a complex query to join aml from the invoice (for the account), aml from the payments (for the date) and partial reconciliation
-        #(for the reconciled amount). This is True also for the cash flow statement except for lines 'CASHSTART' and 'CASHEND' because those have to be
-        #computed on the normal account_move_line table).
-        if self.code not in ('CASHSTART', 'CASHEND') \
-          and (financial_report == self.env.ref('account_reports.account_financial_report_cashsummary0') or self.env.context.get('cash_basis')):
+        #Cashflow Statement
+        #------------------
+        #The cash flow statement has a dedicated query because because we want to make a complex selection of account.move.line,
+        #but keep simple to configure the financial report lines.
+        #So we have the following query, aliasing the account.move.line table to consider only the journal entries where, at
+        #least, one line is touching a liquidity account. Counterparts are either shown directly if they're not reconciled (or
+        #not reconciliable), either replaced by the accounts of the entries they're reconciled with.
+        if financial_report == self.env.ref('account_reports.account_financial_report_cashsummary0'):
+            bank_journals = self.env['account.journal'].search([('type', 'in', ('bank', 'cash'))])
+            bank_accounts = bank_journals.mapped('default_debit_account_id') + bank_journals.mapped('default_credit_account_id')
+
+            # Get moves having a line using a bank account.
+            self._cr.execute('SELECT DISTINCT(move_id) FROM account_move_line WHERE account_id IN %s', [tuple(bank_accounts.ids)])
+            bank_move_ids = tuple([r[0] for r in self.env.cr.fetchall()])
+
+            # Get available fields.
+            replace_columns = {
+                'date': 'ref.date',
+                'debit_cash_basis': 'CASE WHEN \"account_move_line\".debit > 0 THEN ref.matched_percentage * \"account_move_line\".debit ELSE 0 END AS debit_cash_basis',
+                'credit_cash_basis': 'CASE WHEN \"account_move_line\".credit > 0 THEN ref.matched_percentage * \"account_move_line\".credit ELSE 0 END AS credit_cash_basis',
+                'balance_cash_basis': 'ref.matched_percentage * \"account_move_line\".balance AS balance_cash_basis'
+            }
+            columns = []
+            columns_2 = []
+            for name, field in self.env['account.move.line']._fields.items():
+                if not(field.store and field.type not in ('one2many', 'many2many')):
+                    continue
+                columns.append('\"account_move_line\".%s' % name)
+                if name in replace_columns:
+                    columns_2.append(replace_columns.get(name))
+                else:
+                    columns_2.append('\"account_move_line\".%s' % name)
+            select_clause_1 = ', '.join(columns)
+            select_clause_2 = ', '.join(columns_2)
+
+            # Fake domain to always get the join to the account_move_line__move_id table.
+            fake_domain = [('move_id.id', '!=', None)]
+            sub_tables, sub_where_clause, sub_where_params = self.env['account.move.line']._query_get(domain=fake_domain)
+            tables, where_clause, where_params = self.env['account.move.line']._query_get(domain=fake_domain + safe_eval(self.domain))
+
+            sql = '''
+                WITH account_move_line AS (
+                    WITH payment_table AS (
+                        SELECT
+                            aml.id,
+                            "account_move_line".move_id,
+                            "account_move_line".date,
+                            CASE WHEN aml.balance = 0 THEN
+                                0 ELSE part.amount / ABS("account_move_line__move_id".amount)
+                            END AS matched_percentage
+                        FROM account_partial_reconcile part
+                        LEFT JOIN account_move_line aml ON aml.id = part.debit_move_id
+                        LEFT JOIN account_account acc ON aml.account_id = acc.id
+                        LEFT JOIN account_move am ON aml.move_id = am.id, ''' + sub_tables + '''
+                        WHERE part.credit_move_id = "account_move_line".id
+                        AND acc.reconcile
+                        AND aml.move_id IN %s
+                        AND ''' + sub_where_clause + '''
+
+                        UNION ALL
+
+                        SELECT
+                            aml.id,
+                            "account_move_line".move_id,
+                            "account_move_line".date,
+                            CASE WHEN aml.balance = 0 THEN
+                                0 ELSE part.amount / ABS("account_move_line__move_id".amount)
+                            END AS matched_percentage
+                        FROM account_partial_reconcile part
+                        LEFT JOIN account_move_line aml ON aml.id = part.credit_move_id
+                        LEFT JOIN account_account acc ON aml.account_id = acc.id
+                        LEFT JOIN account_move am ON aml.move_id = am.id, ''' + sub_tables + '''
+                        WHERE part.debit_move_id = "account_move_line".id
+                        AND acc.reconcile
+                        AND aml.move_id IN %s
+                        AND ''' + sub_where_clause + '''
+                    )
+
+                    SELECT ''' + select_clause_2 + '''
+                    FROM ''' + tables + '''
+                    RIGHT JOIN payment_table ref ON ("account_move_line".move_id = ref.move_id)
+                    LEFT JOIN account_account acc ON "account_move_line".account_id = acc.id
+                    WHERE acc.internal_type = 'other'
+                    AND "account_move_line".move_id NOT IN %s
+                    AND ''' + where_clause + '''
+
+                    UNION ALL
+
+                    SELECT ''' + select_clause_1 + '''
+                    FROM ''' + tables + '''
+                    WHERE "account_move_line".move_id IN %s
+                    AND ''' + where_clause + '''
+                )
+            '''
+            params = [tuple(bank_move_ids)] + sub_where_params + [tuple(bank_move_ids)] + sub_where_params\
+                     + [tuple(bank_move_ids)] + where_params + [tuple(bank_move_ids)] + where_params
+        elif self.env.context.get('cash_basis'):
+            #Cash basis option
+            #-----------------
+            #In cash basis, we need to show amount on income/expense accounts, but only when they're paid AND under the payment date in the reporting, so
+            #we have to make a complex query to join aml from the invoice (for the account), aml from the payments (for the date) and partial reconciliation
+            #(for the reconciled amount).
             user_types = self.env['account.account.type'].search([('type', 'in', ('receivable', 'payable'))])
             if not user_types:
                 return sql, params
@@ -546,11 +638,11 @@ class AccountFinancialReportLine(models.Model):
                                 'balance_cash_basis': 'ref.matched_percentage * aml.balance AS balance_cash_basis'}
             for field in self.env.cr.fetchall():
                 field = field[0]
-                columns.append("\"account_move_line\".%s" % (field,))
+                columns.append("\"account_move_line\".\"%s\"" % (field,))
                 if field in replace_columns:
                     columns_2.append(replace_columns.get(field))
                 else:
-                    columns_2.append('aml.%s' % (field,))
+                    columns_2.append('aml.\"%s\"' % (field,))
             select_clause_1 = ', '.join(columns)
             select_clause_2 = ', '.join(columns_2)
 

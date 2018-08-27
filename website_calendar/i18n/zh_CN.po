@@ -3,27 +3,14 @@
 # * website_calendar
 # 
 # Translators:
-# Martin Trigaux, 2017
-# Jeffery CHEN Fan <jeffery9@gmail.com>, 2017
-# 老窦 北京 <2662059195@qq.com>, 2017
-# fausthuang, 2017
-# Rona Lin <ssauapw@qq.com>, 2017
-# Siyuan Gu <siyuancn@hotmail.com>, 2017
-# Talway <9010446@qq.com>, 2017
-# liAnGjiA <liangjia@qq.com>, 2017
-# Eddie Lim <bhweelim@yahoo.com>, 2017
-# e2f <projects@e2f.com>, 2018
-# e2f_cn c5 <jarvisn@ecinnovations.com>, 2018
-# liulixia <liu.lixia@elico-corp.com>, 2018
-# e2f_cn c7 <e2f_cn_c7@outlook.com>, 2018
-# Xu Lei <xulei8@qq.com>, 2018
+# Martin Trigaux, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.4+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-02 11:21+0000\n"
-"PO-Revision-Date: 2018-08-02 11:21+0000\n"
-"Last-Translator: Xu Lei <xulei8@qq.com>, 2018\n"
+"POT-Creation-Date: 2018-08-24 11:29+0000\n"
+"PO-Revision-Date: 2018-08-24 11:29+0000\n"
+"Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -41,6 +28,11 @@ msgstr " (副本)"
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__appointment_count
 msgid "# Appointments"
 msgstr "# 约会"
+
+#. module: website_calendar
+#: model:ir.ui.view,arch_db:website_calendar.appointment_calendar
+msgid "#{day['today_cls'] and 'Today' or ''}"
+msgstr ""
 
 #. module: website_calendar
 #: code:addons/website_calendar/controllers/main.py:138
@@ -199,6 +191,7 @@ msgstr "答案"
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.appointment
 #: model:ir.ui.view,arch_db:website_calendar.appointment_form
+#: model:ir.ui.view,arch_db:website_calendar.index
 #: model:website.menu,name:website_calendar.menu_appointment
 msgid "Appointment"
 msgstr "约会"
@@ -235,7 +228,6 @@ msgstr "约会类型"
 
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.appointment_validated
-#: model:ir.ui.view,arch_db:website_calendar.index
 msgid "Appointment:"
 msgstr "约会："
 
@@ -491,6 +483,11 @@ msgstr "介绍消息"
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_is_follower
 msgid "Is Follower"
 msgstr "是关注者"
+
+#. module: website_calendar
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__is_published
+msgid "Is published"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__country_ids
@@ -832,8 +829,8 @@ msgstr "<span class=\"fa fa-arrow-right\"/>"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__website_published
-msgid "Visible in Website"
-msgstr "在网站可见"
+msgid "Visible on current website"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__website_message_ids
@@ -864,6 +861,11 @@ msgstr "网站meta关键词"
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__website_meta_title
 msgid "Website meta title"
 msgstr "网站meta标题"
+
+#. module: website_calendar
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__website_meta_og_img
+msgid "Website opengraph image"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.appointment_calendar

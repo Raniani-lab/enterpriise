@@ -3,15 +3,14 @@
 # * website_form_editor
 # 
 # Translators:
-# Viktor Basso <viktor@voit.no>, 2018
-# Jorunn D. Newth, 2018
+# Martin Trigaux, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.3+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 08:34+0000\n"
-"PO-Revision-Date: 2018-06-25 08:34+0000\n"
-"Last-Translator: Jorunn D. Newth, 2018\n"
+"POT-Creation-Date: 2018-08-24 11:29+0000\n"
+"PO-Revision-Date: 2018-08-24 11:29+0000\n"
+"Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: Norwegian Bokmål (https://www.transifex.com/odoo/teams/41243/nb/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,19 +20,10 @@ msgstr ""
 
 #. module: website_form_editor
 #. openerp-web
-#: code:addons/website_form_editor/static/src/xml/website_form_editor.xml:11
+#: code:addons/website_form_editor/static/src/xml/website_form_editor.xml:12
 #, python-format
 msgid "&times;"
 msgstr "&times;"
-
-#. module: website_form_editor
-#: model:ir.ui.view,arch_db:website_form_editor.s_website_form
-msgid ""
-"<span class=\"btn btn-primary btn-lg o_website_form_send\">Send</span>\n"
-"                        <span id=\"o_website_form_result\"/>"
-msgstr ""
-"<span class=\"btn btn-primary btn-lg o_website_form_send\">Send</span>\n"
-"                        <span id=\"o_website_form_result\"/>"
 
 #. module: website_form_editor
 #: model:ir.ui.view,arch_db:website_form_editor.snippet_options
@@ -130,6 +120,11 @@ msgstr "Lagre"
 #: model:ir.ui.view,arch_db:website_form_editor.snippet_options
 msgid "Selection"
 msgstr "Valg"
+
+#. module: website_form_editor
+#: model:ir.ui.view,arch_db:website_form_editor.s_website_form
+msgid "Send"
+msgstr "Send"
 
 #. module: website_form_editor
 #: model:ir.ui.view,arch_db:website_form_editor.snippet_options

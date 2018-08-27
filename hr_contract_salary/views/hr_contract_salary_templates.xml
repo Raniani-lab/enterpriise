@@ -30,6 +30,7 @@
                                 <input type="hidden" name="employee_contract_id" t-att-value="employee_contract_id"/>
                                 <input type="hidden" name="original_link" t-att-value="original_link"/>
                                 <input type="hidden" name="contract_type" t-att-value="contract_type"/>
+                                <input type="hidden" name="freeze" t-att-value="freeze"/>
                                 <input type="hidden" name="job_title" t-att-value="job_title"/>
 
                                 <div class="col-md-12">
@@ -366,7 +367,7 @@
                                                     <i class="fa fa-1x fa-crosshairs fa-fw fa-lg"/> Commissions
                                                 </label>
                                                 <div class="col-md-7">
-                                                    <span class="form-text">This commission is only effective if the target is reached. The commissions are paid using warrants that you receive every three months. This results to a net warrant value of <t t-esc="round(contract.warrant_value_employee / 12.0, 2)"/></span>
+                                                    <span class="form-text">This commission is only effective if the target is reached. This results to a net commission value of <t t-esc="round(contract.warrant_value_employee / 12.0, 2)"/></span>
                                                 </div>
                                                 <div class="col-md-2 text-right">
                                                     <div class="input-group">

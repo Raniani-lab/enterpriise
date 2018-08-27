@@ -90,7 +90,8 @@
                                     <div class="o_kanban_record_bottom">
                                         <time class="oe_kanban_bottom_left">
                                             <field name="create_date" widget="date"/>
-                                            <i t-attf-class="fa #{(record.lock_uid.raw_value == user_context.uid || !record.lock_uid.raw_value)? '' : ' fa-lock'} #{(record.lock_uid.raw_value == user_context.uid)? ' fa-unlock-alt' : ''}" t-attf-title="#{record.lock_uid.value}"/>
+                                            <i t-attf-class="fa #{(record.lock_uid.raw_value == user_context.uid || !record.lock_uid.raw_value)? '' : ' fa-lock'} #{(record.lock_uid.raw_value == user_context.uid)? ' fa-unlock-alt' : ''}"
+                                               t-att-title="record.lock_uid.value"/>
                                         </time>
                                         <div class="oe_kanban_bottom_right">
                                             <a type="object" name="toggle_favorited"

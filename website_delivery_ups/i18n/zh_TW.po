@@ -4,14 +4,13 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
-# 敬雲 林 <chingyun@yuanchih-consult.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.3+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 08:34+0000\n"
-"PO-Revision-Date: 2018-06-25 08:34+0000\n"
-"Last-Translator: 敬雲 林 <chingyun@yuanchih-consult.com>, 2018\n"
+"POT-Creation-Date: 2018-08-24 11:29+0000\n"
+"PO-Revision-Date: 2018-08-24 11:29+0000\n"
+"Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/odoo/teams/41243/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,7 +19,7 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: website_delivery_ups
-#: model:ir.ui.view,arch_db:website_delivery_ups.payment_delivery_inherit_website_sale_delivery
+#: model:ir.ui.view,arch_db:website_delivery_ups.payment_delivery_methods_inherit_website_sale_delivery
 msgid "(Bill My Account)"
 msgstr ""
 
@@ -74,6 +73,11 @@ msgid "Cancel"
 msgstr "取消"
 
 #. module: website_delivery_ups
+#: model:ir.ui.view,arch_db:website_delivery_ups.ups_bill_my_account_dialog
+msgid "Close"
+msgstr "關閉"
+
+#. module: website_delivery_ups
 #: model:payment.acquirer,post_msg:website_delivery_ups.payment_acquirer_ups_cod
 msgid "Communication"
 msgstr "溝通"
@@ -114,6 +118,6 @@ msgid "UPS Delivery Methods"
 msgstr ""
 
 #. module: website_delivery_ups
-#: model:ir.ui.view,arch_db:website_delivery_ups.payment_delivery_inherit_website_sale_delivery
+#: model:ir.ui.view,arch_db:website_delivery_ups.payment_delivery_methods_inherit_website_sale_delivery
 msgid "Using Account"
 msgstr ""

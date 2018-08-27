@@ -3,23 +3,15 @@
 # * hr_contract_salary
 # 
 # Translators:
-# Sergey Vilizhanin, 2017
-# Collex100, 2017
-# Martin Trigaux, 2017
-# OstapYakovenko <Ostap.Yakovenko@gmail.com>, 2017
-# Максим Дронь <dronmax@gmail.com>, 2017
-# Masha Koc <mariya.kos.ua@gmail.com>, 2017
-# Gennady Marchenko <gennadym@gmail.com>, 2017
-# sergeiruzkiicode <sergei.ruzki@icode.by>, 2018
-# Denis Trepalin <zekarious@gmail.com>, 2018
-# Русский «kolobok2048» Ивашка <kolobok2048@gmail.com>, 2018
+# Martin Trigaux, 2018
+# Sergey Vilizhanin, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.4+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-02 11:20+0000\n"
-"PO-Revision-Date: 2018-08-02 11:20+0000\n"
-"Last-Translator: Русский «kolobok2048» Ивашка <kolobok2048@gmail.com>, 2018\n"
+"POT-Creation-Date: 2018-08-24 11:28+0000\n"
+"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"Last-Translator: Sergey Vilizhanin, 2018\n"
 "Language-Team: Russian (https://www.transifex.com/odoo/teams/41243/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -57,11 +49,6 @@ msgstr ""
 #: model:mail.template,subject:hr_contract_salary.mail_template_send_offer_applicant
 msgid "${object.company_id.name} : Job Offer - ${object.name}"
 msgstr ""
-
-#. module: hr_contract_salary
-#: model:mail.template,subject:hr_contract_salary.mail_template_data_notification_email_send_offer
-msgid "${object.subject}"
-msgstr "${object.subject}"
 
 #. module: hr_contract_salary
 #: model:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -102,101 +89,14 @@ msgstr ""
 #: model:mail.template,body_html:hr_contract_salary.mail_template_send_offer
 #: model:mail.template,body_html:hr_contract_salary.mail_template_send_offer_applicant
 msgid ""
-"<?xml version=\"1.0\"?>\n"
-"<div>\n"
-"                <h2>Congratulations!</h2>\n"
-"                <p>You can configure your salary package by clicking on the link below.</p>\n"
-"                <br/><br/>\n"
-"                <center>\n"
-"                    <a href=\"${ctx.get('salary_package_url')}\" target=\"_blank\" style=\"background-color: #1abc9c; padding: 20px; text-decoration: none; color: #fff; border-radius: 5px; font-size: 16px;\" class=\"o_default_snippet_text\">Configure your package</a>\n"
-"                    <br/><br/><br/>\n"
-"                </center>\n"
-"\n"
-"            </div>\n"
+"<div style=\"margin: 0px; padding: 0px;\">\n"
+"    <h2>Congratulations!</h2>\n"
+"    You can configure your salary package by clicking on the link below.\n"
+"    <div style=\"margin: 16px 0px 16px 0px;\">\n"
+"        <a href=\"${ctx.get('salary_package_url')}\" target=\"_blank\" style=\"background-color: #875a7b; text-decoration: none; color: #fff; padding: 8px 16px 8px 16px; border-radius: 5px;\">Configure your package</a>\n"
+"    </div>\n"
+"</div>\n"
 "        "
-msgstr ""
-
-#. module: hr_contract_salary
-#: model:mail.template,body_html:hr_contract_salary.mail_template_data_notification_email_send_offer
-msgid ""
-"<?xml version=\"1.0\"?>\n"
-"<html>\n"
-"            <head/>\n"
-"            % set record = ctx.get('record')\n"
-"            % set company = record and record.company_id or user.company_id\n"
-"            <body style=\"margin: 0; padding: 0;\">\n"
-"            <table border=\"0\" width=\"100%\" cellpadding=\"0\" bgcolor=\"#ededed\" style=\"padding: 20px; background-color: #ededed\" summary=\"o_mail_notification\">\n"
-"                <tbody>\n"
-"\n"
-"                  <!-- HEADER -->\n"
-"                  <tr>\n"
-"                    <td align=\"center\" style=\"min-width: 590px;\">\n"
-"                      <table width=\"590\" border=\"0\" cellpadding=\"0\" bgcolor=\"#875A7B\" style=\"min-width: 590px; background-color: rgb(135,90,123); padding: 20px;\">\n"
-"                        <tr>\n"
-"                          <td valign=\"middle\">\n"
-"                              <span style=\"font-size:20px; color:white; font-weight: bold;\">\n"
-"                                  ${object.record_name}\n"
-"                              </span>\n"
-"                          </td>\n"
-"                          <td valign=\"middle\" align=\"right\">\n"
-"                              <img src=\"/logo.png?company=${company.id}\" style=\"padding: 0px; margin: 0px; height: auto; width: 80px;\" alt=\"${company.name}\"/>\n"
-"                          </td>\n"
-"                        </tr>\n"
-"                      </table>\n"
-"                    </td>\n"
-"                  </tr>\n"
-"\n"
-"                  <!-- CONTENT -->\n"
-"                  <tr>\n"
-"                    <td align=\"center\" style=\"min-width: 590px;\">\n"
-"                      <table width=\"590\" border=\"0\" cellpadding=\"0\" bgcolor=\"#ffffff\" style=\"min-width: 590px; background-color: rgb(255, 255, 255); padding: 20px;\">\n"
-"                        <tbody>\n"
-"                          <td valign=\"top\" style=\"font-family:Arial,Helvetica,sans-serif; color: #555; font-size: 14px;\">\n"
-"                            ${object.body | safe}\n"
-"                          </td>\n"
-"                        </tbody>\n"
-"                      </table>\n"
-"                    </td>\n"
-"                  </tr>\n"
-"\n"
-"                  <!-- FOOTER -->\n"
-"                  <tr>\n"
-"                    <td align=\"center\" style=\"min-width: 590px;\">\n"
-"                      <table width=\"590\" border=\"0\" cellpadding=\"0\" bgcolor=\"#875A7B\" style=\"min-width: 590px; background-color: rgb(135,90,123); padding: 20px;\">\n"
-"                        <tr>\n"
-"                          <td valign=\"middle\" align=\"left\" style=\"color: #fff; padding-top: 10px; padding-bottom: 10px; font-size: 12px;\">\n"
-"                            ${company.name}<br/>\n"
-"                            ${company.phone or ''}\n"
-"                          </td>\n"
-"                          <td valign=\"middle\" align=\"right\" style=\"color: #fff; padding-top: 10px; padding-bottom: 10px; font-size: 12px;\">\n"
-"                            % if company.email:\n"
-"                            <a href=\"mailto:${company.email}\" style=\"text-decoration:none; color: white;\">${company.email}</a><br/>\n"
-"                            % endif\n"
-"                            % if company.website:\n"
-"                                <a href=\"${company.website}\" style=\"text-decoration:none; color: white;\">\n"
-"                                    ${company.website}\n"
-"                                </a>\n"
-"                            % endif\n"
-"                          </td>\n"
-"                        </tr>\n"
-"                      </table>\n"
-"                    </td>\n"
-"                  </tr>\n"
-"                  <tr>\n"
-"                    <td align=\"center\">\n"
-"                        Powered by <a target=\"_blank\" href=\"https://www.odoo.com\">Odoo</a>.\n"
-"                    </td>\n"
-"                  </tr>\n"
-"                </tbody>\n"
-"            </table>\n"
-"            </body>\n"
-"            </html>\n"
-"        "
-msgstr ""
-
-#. module: hr_contract_salary
-#: model:ir.ui.view,arch_db:hr_contract_salary.salary_package
-msgid "<i class=\"fa fa-1x fa-car fa-fw\"/> Transport"
 msgstr ""
 
 #. module: hr_contract_salary
@@ -222,11 +122,6 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "<i class=\"fa fa-1x fa-leaf fa-fw\"/> Eco Vouchers"
-msgstr ""
-
-#. module: hr_contract_salary
-#: model:ir.ui.view,arch_db:hr_contract_salary.salary_package
-msgid "<i class=\"fa fa-1x fa-male fa-fw fa-lg\"/> Representation Fees"
 msgstr ""
 
 #. module: hr_contract_salary
@@ -279,11 +174,6 @@ msgstr ""
 
 #. module: hr_contract_salary
 #: model:ir.ui.view,arch_db:hr_contract_salary.salary_package
-msgid "<i class=\"fa fa-1x fa-mobile fa-fw fa-lg\"/> Phone Subscription"
-msgstr ""
-
-#. module: hr_contract_salary
-#: model:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "<i class=\"fa fa-1x fa-plus fa-fw\"/> Benefit in Kind (Company Car)"
 msgstr ""
 
@@ -319,11 +209,6 @@ msgstr ""
 
 #. module: hr_contract_salary
 #: model:ir.ui.view,arch_db:hr_contract_salary.salary_package
-msgid "<i class=\"fa fa-1x fa-puzzle-piece fa-fw fa-lg\"/> Intellectual Property"
-msgstr ""
-
-#. module: hr_contract_salary
-#: model:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "<i class=\"fa fa-1x fa-suitcase fa-fw\"/> Holiday Bonus"
 msgstr ""
 
@@ -345,7 +230,39 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid ""
-"<span class=\"help-block mt8\" id=\"internet_tooltip\">Enter the amount of "
+"<span class=\"col-md-3 o_form_label col-form-label\">\n"
+"                                                    <i class=\"fa fa-1x fa-male fa-fw fa-lg\"/> Representation Fees\n"
+"                                                </span>"
+msgstr ""
+
+#. module: hr_contract_salary
+#: model:ir.ui.view,arch_db:hr_contract_salary.salary_package
+msgid ""
+"<span class=\"col-md-3 o_form_label col-form-label\">\n"
+"                                                    <i class=\"fa fa-1x fa-puzzle-piece fa-fw fa-lg\"/> Intellectual Property\n"
+"                                                </span>"
+msgstr ""
+
+#. module: hr_contract_salary
+#: model:ir.ui.view,arch_db:hr_contract_salary.salary_package
+msgid ""
+"<span class=\"col-md-3 o_form_label col-form-label\">\n"
+"                                                <i class=\"fa fa-1x fa-car fa-fw\"/> Transport\n"
+"                                            </span>"
+msgstr ""
+
+#. module: hr_contract_salary
+#: model:ir.ui.view,arch_db:hr_contract_salary.salary_package
+msgid ""
+"<span class=\"col-md-3 o_form_label col-form-label\">\n"
+"                                                <i class=\"fa fa-1x fa-mobile fa-fw fa-lg\"/> Phone Subscription\n"
+"                                            </span>"
+msgstr ""
+
+#. module: hr_contract_salary
+#: model:ir.ui.view,arch_db:hr_contract_salary.salary_package
+msgid ""
+"<span class=\"form-text mt8\" id=\"internet_tooltip\">Enter the amount of "
 "your internet subscription invoice. If you have a pack only the internet "
 "part of your operator subscription will be paid by the employer.</span>"
 msgstr ""
@@ -353,8 +270,8 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid ""
-"<span class=\"help-block mt8\" id=\"ip_tooltip\">As Odoo invests massively "
-"in developing and writing Intellectual Property content, we benefit from "
+"<span class=\"form-text mt8\" id=\"ip_tooltip\">As Odoo invests massively in"
+" developing and writing Intellectual Property content, we benefit from "
 "fiscal ruling allowing us to pay a part of employee's salary as an "
 "intellectual property income instead of a regular salary. This amount will "
 "be paid in cash every month and is less taxed.</span>"
@@ -363,24 +280,24 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid ""
-"<span class=\"help-block mt8\" id=\"mobile_tooltip\">Your mobile phone "
+"<span class=\"form-text mt8\" id=\"mobile_tooltip\">Your mobile phone "
 "subscription will be paid up to this amount.</span>"
 msgstr ""
 
 #. module: hr_contract_salary
 #: model:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid ""
-"<span class=\"help-block mt8\" name=\"holidays_20_days\" style=\"display: inline;\"> You will receive 20 days of paid leaves. However, if you only use </span>\n"
-"                                                        <span class=\"help-block\" style=\"display: inline;\" name=\"holidays_amount\">X</span>\n"
-"                                                        <span class=\"help-block\" style=\"display: inline;\"> days by the end of the year, you will receive a compensation of approximately </span>\n"
-"                                                        <span class=\"help-block\" style=\"display: inline;\" name=\"compensation_amount\">x</span>\n"
-"                                                        <span class=\"help-block\" style=\"display: inline;\"> €.</span><br/>"
+"<span class=\"form-text mt8\" name=\"holidays_20_days\" style=\"display: inline;\"> You will receive 20 days of paid leaves. However, if you only use </span>\n"
+"                                                        <span class=\"form-text\" style=\"display: inline;\" name=\"holidays_amount\">X</span>\n"
+"                                                        <span class=\"form-text\" style=\"display: inline;\"> days by the end of the year, you will receive a compensation of approximately </span>\n"
+"                                                        <span class=\"form-text\" style=\"display: inline;\" name=\"compensation_amount\">x</span>\n"
+"                                                        <span class=\"form-text\" style=\"display: inline;\"> €.</span><br/>"
 msgstr ""
 
 #. module: hr_contract_salary
 #: model:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid ""
-"<span class=\"help-block mt8\">Enter the monthly amount that should be "
+"<span class=\"form-text mt8\">Enter the monthly amount that should be "
 "reimbursed by your employer on transportation (other than public) to go to "
 "work.</span>"
 msgstr ""
@@ -388,7 +305,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid ""
-"<span class=\"help-block mt8\">Enter the monthly amount you spend on public "
+"<span class=\"form-text mt8\">Enter the monthly amount you spend on public "
 "transportation to go to work. The approximative amount reimbursed by the "
 "employer is calculated accordingly.</span>"
 msgstr ""
@@ -396,7 +313,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid ""
-"<span class=\"help-block mt8\">The cost of a car is depreciated by 8% per "
+"<span class=\"form-text mt8\">The cost of a car is depreciated by 8% per "
 "year, for 7 years. So, your gross salary increases automatically to keep the"
 " same employee budget. Once a car has 7 years, the car is fully depreciated "
 "and the only remaining costs are the maintenance, insurances and "
@@ -406,21 +323,21 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid ""
-"<span class=\"help-block\">Every month, you'll get 7.45€ per worked day on your meal voucher card.\n"
+"<span class=\"form-text\">Every month, you'll get 7.45€ per worked day on your meal voucher card.\n"
 "</span>"
 msgstr ""
 
 #. module: hr_contract_salary
 #: model:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid ""
-"<span class=\"help-block\">This is a monthly net amount, taken into account "
+"<span class=\"form-text\">This is a monthly net amount, taken into account "
 "in your payslip.</span>"
 msgstr ""
 
 #. module: hr_contract_salary
 #: model:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid ""
-"<span class=\"help-block\">You'll receive this amount around December. This "
+"<span class=\"form-text\">You'll receive this amount around December. This "
 "amount may be different based on your working schedule and the number of "
 "worked days during the year.</span>"
 msgstr ""
@@ -428,7 +345,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid ""
-"<span class=\"help-block\">You'll receive this amount around June. This "
+"<span class=\"form-text\">You'll receive this amount around June. This "
 "amount may be different based on your working schedule and the number of "
 "worked days during the year.</span>"
 msgstr ""
@@ -436,9 +353,14 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid ""
-"<span class=\"help-block\">You'll receive this amount in the form of Eco "
+"<span class=\"form-text\">You'll receive this amount in the form of Eco "
 "Vouchers around June. This amount may be different based on your working "
 "schedule and the number of worked days during the year. </span>"
+msgstr ""
+
+#. module: hr_contract_salary
+#: model:ir.ui.view,arch_db:hr_contract_salary.res_config_settings_view_form
+msgid "<span class=\"o_form_label\">Salary Package Configurator</span>"
 msgstr ""
 
 #. module: hr_contract_salary
@@ -728,7 +650,7 @@ msgid "Default contract used when making an offer to an applicant."
 msgstr ""
 
 #. module: hr_contract_salary
-#: model:ir.model.fields,help:hr_contract_salary.field_hr_contract__signature_request_template_id
+#: model:ir.model.fields,help:hr_contract_salary.field_hr_contract__sign_template_id
 msgid ""
 "Default document that the applicant will have to sign to accept a contract "
 "offer."
@@ -772,12 +694,12 @@ msgstr ""
 
 #. module: hr_contract_salary
 #: model:ir.ui.view,arch_db:hr_contract_salary.salary_package
-msgid "Disabled people <span class=\"help-block\">&amp;le; 65 years old</span>"
+msgid "Disabled people <span class=\"form-text\">&amp;le; 65 years old</span>"
 msgstr ""
 
 #. module: hr_contract_salary
 #: model:ir.ui.view,arch_db:hr_contract_salary.salary_package
-msgid "Disabled seniors <span class=\"help-block\">&amp;ge; 65 years old</span>"
+msgid "Disabled seniors <span class=\"form-text\">&amp;ge; 65 years old</span>"
 msgstr ""
 
 #. module: hr_contract_salary
@@ -931,7 +853,7 @@ msgstr ""
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__hr_responsible_id
-#: model:signature.item.party,name:hr_contract_salary.signature_item_party_job_responsible
+#: model:sign.item.role,name:hr_contract_salary.sign_item_role_job_responsible
 msgid "HR Responsible"
 msgstr ""
 
@@ -1219,7 +1141,7 @@ msgid "Net calculation"
 msgstr ""
 
 #. module: hr_contract_salary
-#: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__signature_request_template_id
+#: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__sign_template_id
 msgid "New Contract Document Template"
 msgstr ""
 
@@ -1229,7 +1151,7 @@ msgid "No"
 msgstr "Нет"
 
 #. module: hr_contract_salary
-#: code:addons/hr_contract_salary/controllers/main.py:561
+#: code:addons/hr_contract_salary/controllers/main.py:564
 #, python-format
 msgid ""
 "No HR responsible defined on the job position. Please contact an "
@@ -1244,7 +1166,7 @@ msgid "No home address defined on the employee!"
 msgstr ""
 
 #. module: hr_contract_salary
-#: code:addons/hr_contract_salary/controllers/main.py:558
+#: code:addons/hr_contract_salary/controllers/main.py:561
 #, python-format
 msgid ""
 "No signature template defined on the contract. Please contact the HR "
@@ -1304,7 +1226,7 @@ msgstr ""
 
 #. module: hr_contract_salary
 #: model:ir.ui.view,arch_db:hr_contract_salary.salary_package
-msgid "People <span class=\"help-block\">&amp;le; 65 years old</span>"
+msgid "People <span class=\"form-text\">&amp;le; 65 years old</span>"
 msgstr ""
 
 #. module: hr_contract_salary
@@ -1368,6 +1290,11 @@ msgid "Public Transportation"
 msgstr ""
 
 #. module: hr_contract_salary
+#: model:ir.ui.view,arch_db:hr_contract_salary.salary_package
+msgid "Recompute"
+msgstr "Повторно вычислить"
+
+#. module: hr_contract_salary
 #: model:ir.ui.view,arch_db:hr_contract_salary.hr_contract_view_form
 msgid "Refuse Request"
 msgstr ""
@@ -1383,18 +1310,13 @@ msgid "Representation Fees:"
 msgstr ""
 
 #. module: hr_contract_salary
-#: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__signature_request_ids
+#: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__sign_request_ids
 msgid "Requested Signatures"
 msgstr ""
 
 #. module: hr_contract_salary
 #: model:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Review Contract &amp; Sign"
-msgstr ""
-
-#. module: hr_contract_salary
-#: model:ir.ui.view,arch_db:hr_contract_salary.res_config_settings_view_form
-msgid "Salary Package Configurator"
 msgstr ""
 
 #. module: hr_contract_salary
@@ -1424,7 +1346,7 @@ msgstr ""
 
 #. module: hr_contract_salary
 #: model:ir.ui.view,arch_db:hr_contract_salary.salary_package
-msgid "Seniors <span class=\"help-block\">&amp;ge; 65 years old</span>"
+msgid "Seniors <span class=\"form-text\">&amp;ge; 65 years old</span>"
 msgstr ""
 
 #. module: hr_contract_salary
@@ -1433,8 +1355,8 @@ msgid "Show <i class=\"fa fa-chevron-down\"/>"
 msgstr ""
 
 #. module: hr_contract_salary
-#: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__signature_request_count
-msgid "Signature Request Count"
+#: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__sign_request_count
+msgid "Sign Request Count"
 msgstr ""
 
 #. module: hr_contract_salary
@@ -1571,7 +1493,7 @@ msgstr ""
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract__signatures_count
-msgid "The number of signatures on the mostly signed pdf contract."
+msgid "The number of signatures on the pdf contract with the most signatures."
 msgstr ""
 
 #. module: hr_contract_salary
@@ -1698,6 +1620,11 @@ msgstr ""
 #: model:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "add me to the waiting list for a new car"
 msgstr ""
+
+#. module: hr_contract_salary
+#: model:ir.ui.view,arch_db:hr_contract_salary.salary_package
+msgid "close"
+msgstr "закрыть"
 
 #. module: hr_contract_salary
 #: model:ir.ui.view,arch_db:hr_contract_salary.salary_package

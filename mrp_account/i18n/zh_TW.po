@@ -4,14 +4,13 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
-# 敬雲 林 <chingyun@yuanchih-consult.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.3+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 08:34+0000\n"
-"PO-Revision-Date: 2018-06-25 08:34+0000\n"
-"Last-Translator: 敬雲 林 <chingyun@yuanchih-consult.com>, 2018\n"
+"POT-Creation-Date: 2018-08-24 11:28+0000\n"
+"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/odoo/teams/41243/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,6 +21,56 @@ msgstr ""
 #. module: mrp_account
 #: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid ", from"
+msgstr ""
+
+#. module: mrp_account
+#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+msgid "<span>Code</span>"
+msgstr ""
+
+#. module: mrp_account
+#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+msgid "<span>Cost/hour</span>"
+msgstr ""
+
+#. module: mrp_account
+#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+msgid "<span>Operation</span>"
+msgstr ""
+
+#. module: mrp_account
+#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+msgid "<span>Operator</span>"
+msgstr ""
+
+#. module: mrp_account
+#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+msgid "<span>Quantity</span>"
+msgstr ""
+
+#. module: mrp_account
+#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+msgid "<span>Raw Materials</span>"
+msgstr ""
+
+#. module: mrp_account
+#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+msgid "<span>Scraps</span>"
+msgstr ""
+
+#. module: mrp_account
+#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+msgid "<span>Total Cost</span>"
+msgstr ""
+
+#. module: mrp_account
+#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+msgid "<span>Unit Cost</span>"
+msgstr ""
+
+#. module: mrp_account
+#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+msgid "<span>Working Time</span>"
 msgstr ""
 
 #. module: mrp_account
@@ -51,8 +100,8 @@ msgstr "分析帳戶"
 
 #. module: mrp_account
 #: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
-msgid "Code"
-msgstr "代碼"
+msgid "By product(s)"
+msgstr ""
 
 #. module: mrp_account
 #: model:ir.actions.report,name:mrp_account.action_cost_struct_mrp_production
@@ -92,11 +141,6 @@ msgid "Cost of Scraps"
 msgstr ""
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
-msgid "Cost/hour"
-msgstr ""
-
-#. module: mrp_account
 #: model:ir.model.fields,field_description:mrp_account.field_report_mrp_account_mrp_cost_structure__display_name
 #: model:ir.model.fields,field_description:mrp_account.field_report_mrp_account_product_template_cost_structure__display_name
 msgid "Display Name"
@@ -127,16 +171,6 @@ msgid "Manufacturing Order"
 msgstr "製造訂單"
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
-msgid "Operation"
-msgstr "作業"
-
-#. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
-msgid "Operator"
-msgstr "操作員"
-
-#. module: mrp_account
 #: model:ir.model,name:mrp_account.model_product_product
 msgid "Product"
 msgstr "產品"
@@ -145,21 +179,6 @@ msgstr "產品"
 #: model:ir.model,name:mrp_account.model_product_template
 msgid "Product Template"
 msgstr "產品模板"
-
-#. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
-msgid "Quantity"
-msgstr "數量"
-
-#. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
-msgid "Raw Materials"
-msgstr "原材料"
-
-#. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
-msgid "Scraps"
-msgstr "報廢"
 
 #. module: mrp_account
 #: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
@@ -176,16 +195,6 @@ msgid ""
 msgstr ""
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
-msgid "Total Cost"
-msgstr "總成本"
-
-#. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
-msgid "Unit Cost"
-msgstr "單位成本"
-
-#. module: mrp_account
 #: model:ir.model,name:mrp_account.model_mrp_workcenter
 msgid "Work Center"
 msgstr "工作中心"
@@ -194,11 +203,6 @@ msgstr "工作中心"
 #: model:ir.model,name:mrp_account.model_mrp_workcenter_productivity
 msgid "Workcenter Productivity Log"
 msgstr "工作中心生產力日誌"
-
-#. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
-msgid "Working Time"
-msgstr "工作時間"
 
 #. module: mrp_account
 #: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure

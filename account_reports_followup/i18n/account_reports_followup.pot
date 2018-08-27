@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.3+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 08:34+0000\n"
-"PO-Revision-Date: 2018-06-25 08:34+0000\n"
+"POT-Creation-Date: 2018-08-24 11:28+0000\n"
+"PO-Revision-Date: 2018-08-24 11:28+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -274,16 +274,9 @@ msgid "Manual Action Type"
 msgstr ""
 
 #. module: account_reports_followup
-#: code:addons/account_reports_followup/models/account_followup_report.py:82
+#: code:addons/account_reports_followup/models/account_followup_report.py:85
 #, python-format
 msgid "Manual action done"
-msgstr ""
-
-#. module: account_reports_followup
-#: code:addons/account_reports_followup/models/account_followup.py:81
-#, python-format
-msgid "No follow-up is defined for the company \"%s\".\n"
-" Please define one."
 msgstr ""
 
 #. module: account_reports_followup
@@ -315,6 +308,11 @@ msgid "Payment Follow-ups"
 msgstr ""
 
 #. module: account_reports_followup
+#: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__print_letter
+msgid "Print a Letter"
+msgstr ""
+
+#. module: account_reports_followup
 #. openerp-web
 #: code:addons/account_reports_followup/static/src/xml/account_reports_followup_template.xml:7
 #, python-format
@@ -341,11 +339,6 @@ msgstr ""
 #. module: account_reports_followup
 #: model:account_followup.followup.line,name:account_reports_followup.demo_followup_line2
 msgid "Second reminder letter and email"
-msgstr ""
-
-#. module: account_reports_followup
-#: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__send_letter
-msgid "Send a Letter"
 msgstr ""
 
 #. module: account_reports_followup
@@ -403,8 +396,8 @@ msgid "Total debit"
 msgstr ""
 
 #. module: account_reports_followup
-#: model:ir.model.fields,help:account_reports_followup.field_account_followup_followup_line__send_letter
-msgid "When processing, it will print a letter"
+#: model:ir.model.fields,help:account_reports_followup.field_account_followup_followup_line__print_letter
+msgid "When processing, it will print a PDF"
 msgstr ""
 
 #. module: account_reports_followup
@@ -427,7 +420,7 @@ msgid "Write here the introduction in the letter,\n"
 msgstr ""
 
 #. module: account_reports_followup
-#: code:addons/account_reports_followup/models/account_followup.py:58
+#: code:addons/account_reports_followup/models/account_followup.py:57
 #, python-format
 msgid "Your description is invalid, use the right legend or %% if you want to use the percent character."
 msgstr ""

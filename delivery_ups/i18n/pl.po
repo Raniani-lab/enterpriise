@@ -2,12 +2,15 @@
 # This file contains the translation of the following modules:
 # * delivery_ups
 # 
+# Translators:
+# Paweł Wodyński <pw@myodoo.pl>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.4+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-08-02 11:20+0000\n"
 "PO-Revision-Date: 2018-08-02 11:20+0000\n"
+"Last-Translator: Paweł Wodyński <pw@myodoo.pl>, 2018\n"
 "Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -267,7 +270,7 @@ msgstr ""
 #: model:ir.ui.view,arch_db:delivery_ups.res_config_settings_view_form_sale
 #: model:ir.ui.view,arch_db:delivery_ups.res_config_settings_view_form_stock
 msgid "UPS Delivery Methods"
-msgstr ""
+msgstr "Metody dostawy UPS"
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_label_file_type

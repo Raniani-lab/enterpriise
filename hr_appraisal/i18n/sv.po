@@ -641,7 +641,7 @@ msgstr "Antal olästa meddelanden"
 #. module: hr_appraisal
 #: model:res.groups,name:hr_appraisal.group_hr_appraisal_user
 msgid "Officer"
-msgstr ""
+msgstr "Tjänsteman"
 
 #. module: hr_appraisal
 #: selection:hr.appraisal,activity_state:0

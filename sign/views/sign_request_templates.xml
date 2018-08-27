@@ -97,6 +97,7 @@
         <input id="o_sign_input_access_token" type="hidden" t-att-value="token"/>
         <input id="o_sign_signer_name_input_info" type="hidden" t-att-value="current_request_item.partner_id.name if current_request_item and current_request_item.partner_id else None"/>
         <input id="o_sign_signer_phone_input_info" type="hidden" t-att-value="current_request_item.partner_id.mobile if current_request_item and current_request_item.partner_id else None"/>
+        <input id="o_sign_input_optional_redirect_url" type="hidden" t-att-value="sign_request.template_id.redirect_url"/>
         <input t-if="current_request_item and current_request_item.state == 'sent'" id="o_sign_ask_location_input" type="hidden"/>
         <t t-if="len(sign_request.request_item_ids) == 1 and not sign_request.request_item_ids[0].partner_id">
             <input id="o_sign_is_public_user" type="hidden"/>

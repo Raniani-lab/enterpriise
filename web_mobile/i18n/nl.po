@@ -3,22 +3,27 @@
 # * web_mobile
 # 
 # Translators:
-# Mario Gielissen <mario@openworx.nl>, 2017
-# Eric Geens <ericgeens@yahoo.com>, 2017
-# Yenthe Van Ginneken <yenthespam@gmail.com>, 2017
+# Martin Trigaux, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.2+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-22 14:21+0000\n"
-"PO-Revision-Date: 2018-03-22 14:21+0000\n"
-"Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2017\n"
+"POT-Creation-Date: 2018-08-24 11:29+0000\n"
+"PO-Revision-Date: 2018-08-24 11:29+0000\n"
+"Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Language: nl\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: web_mobile
+#. openerp-web
+#: code:addons/web_mobile/static/src/xml/contact_sync.xml:7
+#, python-format
+msgid "Add"
+msgstr "Toevoegen"
 
 #. module: web_mobile
 #. openerp-web
@@ -29,7 +34,7 @@ msgstr "Toevoegen aan"
 
 #. module: web_mobile
 #. openerp-web
-#: code:addons/web_mobile/static/src/xml/user_menu.xml:7
+#: code:addons/web_mobile/static/src/xml/user_menu.xml:6
 #, python-format
 msgid "Add to Home Screen"
 msgstr "Toevoegen aan home scherm"
@@ -50,7 +55,21 @@ msgstr "Geen snelkoppeling voor Home menu"
 
 #. module: web_mobile
 #. openerp-web
-#: code:addons/web_mobile/static/src/xml/user_menu.xml:10
+#: code:addons/web_mobile/static/src/xml/settings_dashboard.xml:14
+#, python-format
+msgid "On Apple Store"
+msgstr ""
+
+#. module: web_mobile
+#. openerp-web
+#: code:addons/web_mobile/static/src/xml/settings_dashboard.xml:9
+#, python-format
+msgid "On Google Play"
+msgstr ""
+
+#. module: web_mobile
+#. openerp-web
+#: code:addons/web_mobile/static/src/xml/user_menu.xml:7
 #, python-format
 msgid "Switch/Add Account"
 msgstr "Wisselen/toevoegen account"

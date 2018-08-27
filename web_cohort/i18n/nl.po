@@ -3,17 +3,15 @@
 # * web_cohort
 # 
 # Translators:
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
+# Martin Trigaux, 2018
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2018
-# Eric Geens <ericgeens@yahoo.com>, 2018
-# Cas Vissers <casvissers@brahoo.nl>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.4+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-02 11:20+0000\n"
-"PO-Revision-Date: 2018-08-02 11:20+0000\n"
-"Last-Translator: Cas Vissers <casvissers@brahoo.nl>, 2018\n"
+"POT-Creation-Date: 2018-08-24 11:29+0000\n"
+"PO-Revision-Date: 2018-08-24 11:29+0000\n"
+"Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2018\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,10 +21,20 @@ msgstr ""
 
 #. module: web_cohort
 #. openerp-web
-#: code:addons/web_cohort/static/src/xml/web_cohort.xml:37
+#: code:addons/web_cohort/static/src/xml/web_cohort.xml:76
+#: code:addons/web_cohort/static/src/xml/web_cohort.xml:155
 #, python-format
 msgid "- By"
 msgstr "- Door"
+
+#. module: web_cohort
+#. openerp-web
+#: code:addons/web_cohort/controllers/main.py:59
+#: code:addons/web_cohort/static/src/xml/web_cohort.xml:113
+#: code:addons/web_cohort/static/src/xml/web_cohort.xml:186
+#, python-format
+msgid "Average"
+msgstr "Gemiddelde"
 
 #. module: web_cohort
 #: selection:ir.actions.act_window.view,view_mode:0
@@ -45,22 +53,23 @@ msgstr "Cohort"
 
 #. module: web_cohort
 #. openerp-web
-#: code:addons/web_cohort/static/src/js/cohort_view.js:41
+#: code:addons/web_cohort/static/src/js/cohort_view.js:42
 #, python-format
 msgid "Cohort view has not defined \"date_start\" attribute."
 msgstr "Cohort weergave heeft geen \"date_start\" attribuut gedefinieerd."
 
 #. module: web_cohort
 #. openerp-web
-#: code:addons/web_cohort/static/src/js/cohort_view.js:44
+#: code:addons/web_cohort/static/src/js/cohort_view.js:45
 #, python-format
 msgid "Cohort view has not defined \"date_stop\" attribute."
 msgstr "Cohort weergave heeft geen \"date_stop\" attribuut gedefinieerd."
 
 #. module: web_cohort
 #. openerp-web
-#: code:addons/web_cohort/static/src/js/cohort_view.js:60
-#: code:addons/web_cohort/static/src/xml/web_cohort.xml:14
+#: code:addons/web_cohort/static/src/js/cohort_controller.js:96
+#: code:addons/web_cohort/static/src/js/cohort_view.js:63
+#: code:addons/web_cohort/static/src/xml/web_cohort.xml:17
 #, python-format
 msgid "Count"
 msgstr "Aantal"
@@ -85,7 +94,7 @@ msgstr "Diagram"
 
 #. module: web_cohort
 #. openerp-web
-#: code:addons/web_cohort/static/src/xml/web_cohort.xml:23
+#: code:addons/web_cohort/static/src/xml/web_cohort.xml:36
 #, python-format
 msgid "Download in Excel file"
 msgstr "Download in Excel bestand"
@@ -136,10 +145,25 @@ msgstr "Maand"
 
 #. module: web_cohort
 #. openerp-web
-#: code:addons/web_cohort/static/src/xml/web_cohort.xml:83
+#: code:addons/web_cohort/static/src/xml/web_cohort.xml:206
 #, python-format
 msgid "No data available for cohort."
 msgstr "Geen data beschikbaar voor cohort."
+
+#. module: web_cohort
+#. openerp-web
+#: code:addons/web_cohort/static/src/xml/web_cohort.xml:129
+#: code:addons/web_cohort/static/src/xml/web_cohort.xml:203
+#, python-format
+msgid "No data available."
+msgstr "Geen data beschikbaar."
+
+#. module: web_cohort
+#. openerp-web
+#: code:addons/web_cohort/static/src/xml/web_cohort.xml:43
+#, python-format
+msgid "Period:"
+msgstr "Periode:"
 
 #. module: web_cohort
 #: selection:ir.actions.act_window.view,view_mode:0
@@ -158,13 +182,6 @@ msgid "Search"
 msgstr "Zoek"
 
 #. module: web_cohort
-#. openerp-web
-#: code:addons/web_cohort/static/src/xml/web_cohort.xml:67
-#, python-format
-msgid "Total"
-msgstr "Totaal"
-
-#. module: web_cohort
 #: selection:ir.actions.act_window.view,view_mode:0
 #: selection:ir.ui.view,type:0
 msgid "Tree"
@@ -172,7 +189,7 @@ msgstr "Lijst"
 
 #. module: web_cohort
 #. openerp-web
-#: code:addons/web_cohort/static/src/js/cohort_view.js:69
+#: code:addons/web_cohort/static/src/js/cohort_view.js:74
 #, python-format
 msgid "Untitled"
 msgstr "Geen titel"

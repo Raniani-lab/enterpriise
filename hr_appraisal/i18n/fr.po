@@ -3,82 +3,20 @@
 # * hr_appraisal
 # 
 # Translators:
-# Xavier Belmere <Info@cartmeleon.com>, 2016
-# Martin Trigaux, 2016
-# Melanie Bernard <mbe@odoo.com>, 2016
-# Agathe Mollé <molleagathe@gmail.com>, 2016
-# Xavier Symons <xsy@openerp.com>, 2016
-# Maxime Chambreuil <mchambreuil@ursainfosystems.com>, 2016
-# Olivier Lenoir <olivier.lenoir@free.fr>, 2016
-# Leo Schmitt <inactive+lschmitt@transifex.com>, 2016
-# Fabien Pinckaers <fp@openerp.com>, 2016
-# Nancy Bolognesi <nb@microcom.ca>, 2016
-# Clo <clo@odoo.com>, 2016
-# Tony Galmiche <tony.galmiche@infosaone.com>, 2016
-# Adriana Ierfino <adriana.ierfino@savoirfairelinux.com>, 2016
-# Miguel Vidali <mvidali129@gmail.com>, 2016
-# Frédéric LIETART <stuff@tifred.fr>, 2016
-# Lucas Deliege <lud@odoo.com>, 2017
-# Henri Cornuau <hcornuau@gmail.com>, 2017
-# Richard Mathot <rim@odoo.com>, 2017
-# Lucas Deliege <lud@openerp.com>, 2017
-# fr rev <e2ffr02@hotmail.com>, 2017
-# fr rev <e2ffr04@hotmail.com>, 2017
-# e2f <projects@e2f.com>, 2018
-# fr trans <e2ftrans1@yahoo.com>, 2018
-# Olivier Dony <odo@odoo.com>, 2018
-# Hubert TETARD <htetard@apik-conseils.com>, 2018
-# Micky Jault <micky037@hotmail.fr>, 2018
-# Jérémy Donas <LeDistordu@users.noreply.github.com>, 2018
-# Eloïse Stilmant <est@odoo.com>, 2018
+# Martin Trigaux, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.4+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-02 11:20+0000\n"
-"PO-Revision-Date: 2018-08-02 11:20+0000\n"
-"Last-Translator: Eloïse Stilmant <est@odoo.com>, 2018\n"
+"POT-Creation-Date: 2018-08-24 11:28+0000\n"
+"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Language: fr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-
-#. module: hr_appraisal
-#: model:mail.template,body_html:hr_appraisal.send_appraisal_template
-msgid ""
-"\n"
-"                \n"
-"                <div style=\"font-family: 'Lucida Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); \">\n"
-"                    <p>Dear ${ctx.get('employee').name},</p>\n"
-"                    % if ctx.get('employee').id == object.employee_id.id:\n"
-"                        <p>Please fill out the following survey related to your appraisal.</p>\n"
-"                    % else:\n"
-"                        <p>Please fill out the following survey related to ${object.employee_id.name}'s appraisal.</p>\n"
-"                    % endif\n"
-"                    <p><a href=\"__URL__\">Click here to access the survey.</a></p>\n"
-"                    <p>Post your response for the appraisal till : ${object.date_close}</p>\n"
-"                    <p>Thank you for your participation.</p>\n"
-"                </div>\n"
-"                \n"
-"            "
-msgstr ""
-"\n"
-"                \n"
-"                <div style=\"font-family: 'Lucida Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); \">\n"
-"                    <p>Cher ${ctx.get('employee').name},</p>\n"
-"                    % if ctx.get('employee').id == object.employee_id.id:\n"
-"                        <p>Veuillez remplir ce formulaire relatif à votre évaluation</p>\n"
-"                    % else:\n"
-"                        <p>Veuillez remplir ce formulaire relatif à l'évaluation de ${object.employee_id.name}.</p>\n"
-"                    % endif\n"
-"                    <p><a href=\"__URL__\">Cliquez ici pour accéder au formulaire</a></p>\n"
-"                    <p>Postez vos réponses avant le ${object.date_close}</p>\n"
-"                    <p>Merci pour votre participation.</p>\n"
-"                </div>\n"
-"                \n"
-"            "
 
 #. module: hr_appraisal
 #: model:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
@@ -96,6 +34,29 @@ msgstr ") Envoyer l'évaluation"
 msgid ""
 "<a href=\"#\" data-oe-model=\"%s\" data-oe-id=\"%s\">Meeting</a> for <a "
 "href=\"#\" data-oe-model=\"%s\" data-oe-id=\"%s\">%s's</a> appraisal"
+msgstr ""
+
+#. module: hr_appraisal
+#: model:mail.template,body_html:hr_appraisal.send_appraisal_template
+msgid ""
+"<div style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
+"    <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
+"        Hello ${ctx.get('employee').name}<br/><br/>\n"
+"        % if ctx.get('employee').id == object.employee_id.id:\n"
+"            Please fill out the following survey related to your appraisal.\n"
+"        % else:\n"
+"            Please fill out the following survey related to ${object.employee_id.name}'s appraisal.\n"
+"        % endif\n"
+"        <div style=\"margin: 16px 0px 16px 0px;\">\n"
+"            <a href=\"__URL__\" style=\"background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;\">\n"
+"                Start Survey\n"
+"            </a>\n"
+"        </div>\n"
+"        Please answer the appraisal for ${format_date(object.date_close)}.<br/>\n"
+"        Thank you for your participation.\n"
+"    </p>\n"
+"</div>\n"
+"            "
 msgstr ""
 
 #. module: hr_appraisal
@@ -398,6 +359,11 @@ msgstr "Fait"
 
 #. module: hr_appraisal
 #: model:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
+msgid "Dropdown menu"
+msgstr ""
+
+#. module: hr_appraisal
+#: model:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
 msgid "Edit"
 msgstr "Modifier"
 
@@ -535,6 +501,11 @@ msgid ""
 msgstr ""
 "Si l'évaluation ne rencontre pas les attentes, vous pouvez proposer un plan "
 "d'action"
+
+#. module: hr_appraisal
+#: model:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
+msgid "In #{kanban_getcolorname(record.color.raw_value)}"
+msgstr ""
 
 #. module: hr_appraisal
 #: model:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search

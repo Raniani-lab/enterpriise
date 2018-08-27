@@ -47,7 +47,7 @@
             <field name="code">aeat_mod_303_03</field>
             <field name="parent_id" ref="mod_303_title_2"/>
             <field name="domain" eval="[('tax_line_id.tag_ids','=',ref('l10n_es.mod_303_01_03')), ('invoice_id.type','not in',['out_refund','in_refund'])]"/>
-            <field name="formulas">balance = -sum.credit</field>
+            <field name="formulas">balance = -sum.balance</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="4"/>
             <field name="level" eval="4"/>
@@ -71,7 +71,7 @@
             <field name="code">aeat_mod_303_06</field>
             <field name="parent_id" ref="mod_303_title_2"/>
             <field name="domain" eval="[('tax_line_id.tag_ids','=',ref('l10n_es.mod_303_04_06')), ('invoice_id.type','not in',['out_refund','in_refund'])]"/>
-            <field name="formulas">balance = -sum.credit</field>
+            <field name="formulas">balance = -sum.balance</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="6"/>
             <field name="level" eval="4"/>
@@ -95,7 +95,7 @@
             <field name="code">aeat_mod_303_09</field>
             <field name="parent_id" ref="mod_303_title_2"/>
             <field name="domain" eval="[('tax_line_id.tag_ids','=',ref('l10n_es.mod_303_07_09')), ('invoice_id.type','not in',['out_refund','in_refund'])]"/>
-            <field name="formulas">balance = -sum.credit</field>
+            <field name="formulas">balance = -sum.balance</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="8"/>
             <field name="level" eval="4"/>
@@ -127,7 +127,7 @@
             <field name="code">aeat_mod_303_11</field>
             <field name="parent_id" ref="mod_303_title_2"/>
             <field name="domain" eval="[('tax_line_id.tag_ids','=',ref('l10n_es.mod_303_10_11')), ('invoice_id.type','not in',['out_refund','in_refund'])]"/>
-            <field name="formulas">balance = -sum.credit</field>
+            <field name="formulas">balance = sum.balance</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="11"/>
             <field name="level" eval="5"/>
@@ -159,7 +159,7 @@
             <field name="code">aeat_mod_303_13</field>
             <field name="parent_id" ref="mod_303_title_4"/>
             <field name="domain" eval="[('tax_ids.tag_ids','=',ref('l10n_es.mod_303_12_13')), ('invoice_id.type','not in',['out_refund','in_refund'])]"/>
-            <field name="formulas">balance = -sum.credit</field>
+            <field name="formulas">balance = sum.balance</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="14"/>
             <field name="level" eval="5"/>
@@ -212,7 +212,7 @@
             <field name="name">[15] Cuota - SALE</field>
             <field name="code">aeat_mod_303_15_sale</field>
             <field name="domain" eval="[('tax_line_id.tag_ids','=',ref('l10n_es.mod_303_14_15_sale')), ('invoice_id.type','in',['out_refund','in_refund'])]"/>
-            <field name="formulas">balance = -sum.debit</field>
+            <field name="formulas">balance = sum.balance</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="19"/>
             <field name="level" eval="5"/>
@@ -224,7 +224,7 @@
             <field name="name">[15] Cuota - PURCHASE</field>
             <field name="code">aeat_mod_303_15_purchase</field>
             <field name="domain" eval="[('tax_line_id.tag_ids','=',ref('l10n_es.mod_303_14_15_purchase')), ('invoice_id.type','in',['out_refund','in_refund'])]"/>
-            <field name="formulas">balance = -sum.debit</field>
+            <field name="formulas">balance = sum.balance</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="20"/>
             <field name="level" eval="5"/>
@@ -265,7 +265,7 @@
             <field name="code">aeat_mod_303_18</field>
             <field name="parent_id" ref="mod_303_title_6"/>
             <field name="domain" eval="[('tax_line_id.tag_ids','=',ref('l10n_es.mod_303_16_18')), ('invoice_id.type','not in',['out_refund','in_refund'])]"/>
-            <field name="formulas">balance = -sum.credit</field>
+            <field name="formulas">balance = -sum.balance</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="23"/>
             <field name="level" eval="5"/>
@@ -289,7 +289,7 @@
             <field name="code">aeat_mod_303_21</field>
             <field name="parent_id" ref="mod_303_title_6"/>
             <field name="domain" eval="[('tax_line_id.tag_ids','=',ref('l10n_es.mod_303_19_21')), ('invoice_id.type','not in',['out_refund','in_refund'])]"/>
-            <field name="formulas">balance = -sum.credit</field>
+            <field name="formulas">balance = -sum.balance</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="25"/>
             <field name="level" eval="5"/>
@@ -313,7 +313,7 @@
             <field name="code">aeat_mod_303_24</field>
             <field name="parent_id" ref="mod_303_title_6"/>
             <field name="domain" eval="[('tax_line_id.tag_ids','=',ref('l10n_es.mod_303_22_24')), ('invoice_id.type','not in',['out_refund','in_refund'])]"/>
-            <field name="formulas">balance = -sum.credit</field>
+            <field name="formulas">balance = -sum.balance</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="27"/>
             <field name="level" eval="5"/>
@@ -395,7 +395,7 @@
             <field name="code">aeat_mod_303_29</field>
             <field name="parent_id" ref="mod_303_title_9"/>
             <field name="domain" eval="[('tax_line_id.tag_ids','=',ref('l10n_es.mod_303_28_29')), ('invoice_id.type','not in',['out_refund','in_refund'])]"/>
-            <field name="formulas">balance = -sum.debit</field>
+            <field name="formulas">balance = sum.balance</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="35"/>
             <field name="level" eval="5"/>
@@ -427,7 +427,7 @@
             <field name="code">aeat_mod_303_31</field>
             <field name="parent_id" ref="mod_303_title_10"/>
             <field name="domain" eval="[('tax_line_id.tag_ids','=',ref('l10n_es.mod_303_30_31')), ('invoice_id.type','not in',['out_refund','in_refund'])]"/>
-            <field name="formulas">balance = -sum.debit</field>
+            <field name="formulas">balance = sum.balance</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="38"/>
             <field name="level" eval="5"/>
@@ -459,7 +459,7 @@
             <field name="code">aeat_mod_303_33</field>
             <field name="parent_id" ref="mod_303_title_11"/>
             <field name="domain" eval="[('tax_line_id.tag_ids','=',ref('l10n_es.mod_303_32_33')), ('invoice_id.type','not in',['out_refund','in_refund'])]"/>
-            <field name="formulas">balance = -sum.debit</field>
+            <field name="formulas">balance = sum.debit</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="41"/>
             <field name="level" eval="5"/>
@@ -491,7 +491,7 @@
             <field name="code">aeat_mod_303_35</field>
             <field name="parent_id" ref="mod_303_title_12"/>
             <field name="domain" eval="[('tax_line_id.tag_ids','=',ref('l10n_es.mod_303_34_35')), ('invoice_id.type','not in',['out_refund','in_refund'])]"/>
-            <field name="formulas">balance = -sum.debit</field>
+            <field name="formulas">balance = sum.balance</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="44"/>
             <field name="level" eval="5"/>
@@ -523,7 +523,7 @@
             <field name="code">aeat_mod_303_37</field>
             <field name="parent_id" ref="mod_303_title_13"/>
             <field name="domain" eval="[('tax_line_id.tag_ids','=',ref('l10n_es.mod_303_36_37')), ('invoice_id.type','not in',['out_refund','in_refund'])]"/>
-            <field name="formulas">balance = -sum.debit</field>
+            <field name="formulas">balance = sum.balance</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="47"/>
             <field name="level" eval="5"/>
@@ -555,7 +555,7 @@
             <field name="code">aeat_mod_303_39</field>
             <field name="parent_id" ref="mod_303_title_14"/>
             <field name="domain" eval="[('tax_line_id.tag_ids','=',ref('l10n_es.mod_303_38_39')), ('invoice_id.type','not in',['out_refund','in_refund'])]"/>
-            <field name="formulas">balance = -sum.debit</field>
+            <field name="formulas">balance = sum.balance</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="50"/>
             <field name="level" eval="5"/>
@@ -587,7 +587,7 @@
             <field name="code">aeat_mod_303_41</field>
             <field name="parent_id" ref="mod_303_title_15"/>
             <field name="domain" eval="[('tax_line_id.tag_ids','=',ref('l10n_es.mod_303_40_41')), ('invoice_id.type','in',['out_refund','in_refund'])]"/>
-            <field name="formulas">balance = sum.credit</field>
+            <field name="formulas">balance = sum.balance</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="53"/>
             <field name="level" eval="5"/>

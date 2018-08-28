@@ -101,7 +101,7 @@ class IntrastatReport(models.AbstractModel):
                 company_country.code AS comp_country_code,
                 CASE WHEN inv_line.intrastat_transaction_id IS NULL THEN '1' ELSE transaction.code END AS transaction_code,
                 company_region.code AS region_code,
-                code.name AS commodity_code,
+                code.code AS commodity_code,
                 inv_line.id AS id,
                 prodt.id AS template_id,
                 inv.id AS invoice_id,
@@ -128,7 +128,7 @@ class IntrastatReport(models.AbstractModel):
                 LEFT JOIN account_invoice inv ON inv_line.invoice_id = inv.id
                 LEFT JOIN account_intrastat_code transaction ON inv_line.intrastat_transaction_id = transaction.id
                 LEFT JOIN res_company company ON inv.company_id = company.id
-                LEFT JOIN account_intrastat_code company_region ON company.region_id = company_region.id
+                LEFT JOIN account_intrastat_code company_region ON company.intrastat_region_id = company_region.id
                 LEFT JOIN res_partner partner ON inv_line.partner_id = partner.id
                 LEFT JOIN res_partner comp_partner ON company.partner_id = comp_partner.id
                 LEFT JOIN res_country country ON inv.intrastat_country_id = country.id
@@ -163,7 +163,7 @@ class IntrastatReport(models.AbstractModel):
 
     @api.model
     def _fill_missing_values(self, vals):
-        ''' Some values are to complex to be retrieved in the SQL query.
+        ''' Some values are too complex to be retrieved in the SQL query.
         Then, this method is used to compute the missing values fetched from the database.
 
         :param vals:    A dictionary created by the dictfetchall method.

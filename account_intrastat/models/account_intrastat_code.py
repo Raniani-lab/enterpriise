@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import fields, models, api
 
@@ -15,7 +16,7 @@ class AccountIntrastatCode(models.Model):
 
     name = fields.Char(string='Name')
     code = fields.Char(string='Code', required=True)
-    country_id = fields.Many2one('res.country', string='Country', help='Restrict the applicability of code to a country.')
+    country_id = fields.Many2one('res.country', string='Country', help='Restrict the applicability of code to a country.', domain="[('intrastat', '=', True)]")
     description = fields.Char(string='Description')
     type = fields.Selection(string='Type', required=True,
         selection=[('commodity', 'Commodity'), ('transport', 'Transport'), ('transaction', 'Transaction'), ('region', 'Region')],
@@ -29,7 +30,18 @@ class AccountIntrastatCode(models.Model):
 
     @api.multi
     def name_get(self):
-        return [(r.id, r.name and '%s %s' % (r.code, r.name) or r.code) for r in self]
+        result = []
+        for r in self:
+            text = r.name or r.description
+            result.append((r.id, text and '%s %s' % (r.code, text) or r.code))
+        return result
+
+    @api.model
+    def _name_search(self, name='', args=None, operator='ilike', limit=100):
+        if args is None:
+            args = []
+        domain = args + ['|', '|', ('code', operator, name), ('name', operator, name), ('description', operator, name)]
+        return super(AccountIntrastatCode, self).search(domain, limit=limit).name_get()
 
     _sql_constraints = [
         ('intrastat_region_code_unique', 'UNIQUE (code, type, country_id)', 'Triplet code/type/country_id must be unique.'),

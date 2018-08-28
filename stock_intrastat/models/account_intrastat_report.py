@@ -18,9 +18,9 @@ class IntrastatReport(models.AbstractModel):
             if stock_moves:
                 warehouse = stock_moves[0].warehouse_id or stock_moves[0].picking_id.picking_type_id.warehouse_id
                 cache_key = 'warehouse_region_%d' % warehouse.id
-                if not cache.get(cache_key) and warehouse.region_id.code:
+                if not cache.get(cache_key) and warehouse.intrastat_region_id.code:
                     # Cache the computed value to avoid performance loss.
-                    cache[cache_key] = warehouse.region_id.code
+                    cache[cache_key] = warehouse.intrastat_region_id.code
                 if cache.get(cache_key):
                     vals[index]['region_code'] = cache[cache_key]
         return vals

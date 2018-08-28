@@ -13,6 +13,7 @@ Based on invoices.
         'data/code_region_data.xml',
         'data/intrastat_export.xml',
         'views/res_users_views.xml',
+        'views/res_config_settings.xml',
     ],
     'auto_install': True,
 }

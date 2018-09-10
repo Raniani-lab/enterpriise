@@ -95,6 +95,41 @@ QUnit.module('Views', {
         cohort.destroy();
     });
 
+    QUnit.test('no content helper', async function (assert) {
+        assert.expect(1);
+        this.data.subscription.records = [];
+
+        var cohort = await createView({
+            View: CohortView,
+            model: "subscription",
+            data: this.data,
+            arch: '<cohort string="Subscription" date_start="start" date_stop="stop" />',
+        });
+
+        assert.containsOnce(cohort, 'div.o_view_nocontent');
+
+        cohort.destroy();
+    });
+
+    QUnit.test('no content helper after update', async function (assert) {
+        assert.expect(2);
+
+        var cohort = await createView({
+            View: CohortView,
+            model: "subscription",
+            data: this.data,
+            arch: '<cohort string="Subscription" date_start="start" date_stop="stop" measure="recurring"/>',
+        });
+
+        assert.containsNone(cohort, 'div.o_view_nocontent');
+
+        await cohort.update({domain: [['recurring', '>', 25]]});
+
+        assert.containsOnce(cohort, 'div.o_view_nocontent');
+
+        cohort.destroy();
+    });
+
     QUnit.test('correctly set by default measure and interval', async function (assert) {
         assert.expect(4);
 
@@ -359,7 +394,7 @@ QUnit.module('Views', {
     });
 
     QUnit.test('rendering of a cohort view with comparison', async function (assert) {
-        assert.expect(27);
+        assert.expect(29);
 
         var unpatchDate = patchDate(2017, 7, 25, 1, 0, 0);
 
@@ -383,19 +418,17 @@ QUnit.module('Views', {
             views: [[false, 'cohort']],
         });
 
-        function verifyContents (results) {
+        function verifyContents(results) {
             var $tables = actionManager.$('table');
-            assert.strictEqual($tables.length, results.length, 'There should be' + results.length + 'tables');
-            var i=0;
+            assert.strictEqual($tables.length, results.length, 'There should be ' + results.length + ' tables');
             var result;
             $tables.each(function () {
-                i++;
                 result = results.shift();
                 var $table = $(this);
                 var rowCount = $table.find('.o_cohort_row_clickable').length;
 
                 if (rowCount) {
-                    assert.strictEqual(rowCount, result, 'the table should contain' + result + 'rows');
+                    assert.strictEqual(rowCount, result, 'the table should contain ' + result + ' rows');
                 } else {
                     assert.strictEqual($table.find('th:first').text().trim(), result,
                     'the table should contain the time range description' + result);
@@ -403,29 +436,19 @@ QUnit.module('Views', {
             });
         }
 
-        function verifyNoContentHelper (text) {
-            if (text) {
-                assert.containsOnce(actionManager, 'div.o_cohort_no_data', "there should be a no content helper");
-                assert.strictEqual(actionManager.$('div.o_cohort_no_data').text().trim(), text);
-            } else {
-                assert.containsNone(actionManager, 'div.o_cohort_no_data', "there should be no no content helper");
-            }
-        }
-
         // with no comparison, with data (no filter)
-
         verifyContents([3]);
-        verifyNoContentHelper();
+        assert.containsNone(actionManager, '.o_cohort_no_data');
+        assert.containsNone(actionManager, 'div.o_view_nocontent');
 
         // with no comparison with no data (filter on 'last_year')
-
         await testUtils.dom.click($('.o_time_range_menu_button'));
         $('.o_time_range_selector').val('last_year');
         await testUtils.dom.click($('.o_time_range_menu .o_apply_range'));
 
         verifyContents([]);
-        verifyNoContentHelper("No data available for cohort.");
-
+        assert.containsNone(actionManager, '.o_cohort_no_data');
+        assert.containsOnce(actionManager, 'div.o_view_nocontent');
 
         // with comparison active, data and comparisonData (filter on 'this_month' + 'previous_period')
         await testUtils.dom.click($('.o_time_range_menu_button'));
@@ -434,35 +457,35 @@ QUnit.module('Views', {
         await testUtils.dom.click($('.o_time_range_menu .o_apply_range'));
 
         verifyContents(['This Month', 2, 'Previous Period', 1]);
-        verifyNoContentHelper();
-
+        assert.containsNone(actionManager, '.o_cohort_no_data');
+        assert.containsNone(actionManager, 'div.o_view_nocontent');
 
         // with comparison active, data, no comparisonData (filter on 'this_year' + 'previous_period')
-
         await testUtils.dom.click($('.o_time_range_menu_button'));
         $('.o_time_range_selector').val('this_year');
         await testUtils.dom.click($('.o_time_range_menu .o_apply_range'));
 
         verifyContents(['This Year', 3, 'Previous Period']);
-        verifyNoContentHelper("No data available.");
+        assert.containsOnce(actionManager, '.o_cohort_no_data');
+        assert.containsNone(actionManager, 'div.o_view_nocontent');
 
         // with comparison active, no data, comparisonData (filter on 'today' + 'previous_period')
-
         await testUtils.dom.click($('.o_time_range_menu_button'));
         $('.o_time_range_selector').val('today');
         await testUtils.dom.click($('.o_time_range_menu .o_apply_range'));
 
         verifyContents(['Today', 'Previous Period', 1]);
-        verifyNoContentHelper("No data available.");
+        assert.containsOnce(actionManager, '.o_cohort_no_data');
+        assert.containsNone(actionManager, 'div.o_view_nocontent');
 
         // with comparison active, no data, no comparisonData (filter on 'last_year' + 'previous_period')
-
         await testUtils.dom.click($('.o_time_range_menu_button'));
         $('.o_time_range_selector').val('last_year');
         await testUtils.dom.click($('.o_time_range_menu .o_apply_range'));
 
         verifyContents([]);
-        verifyNoContentHelper("No data available for cohort.");
+        assert.containsNone(actionManager, '.o_cohort_no_data');
+        assert.containsOnce(actionManager, 'div.o_view_nocontent');
 
         unpatchDate();
         actionManager.destroy();

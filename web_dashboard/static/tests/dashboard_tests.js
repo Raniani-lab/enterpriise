@@ -2332,7 +2332,7 @@ QUnit.module('Views', {
         await testUtils.dom.click($('.o_time_range_menu .o_apply_range'));
 
         // The test should be modified and extended.
-        assert.strictEqual($('.o_cohort_view div.o_cohort_no_data').length, 1);
+        assert.strictEqual($('.o_cohort_view div.o_view_nocontent').length, 1);
 
         unpatchDate();
         actionManager.destroy();

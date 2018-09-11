@@ -337,6 +337,10 @@ var LinesWidget = Widget.extend({
     _toggleScanMessage: function (message) {
         this.$('.o_scan_message').toggleClass('o_hidden', true);
         this.$('.o_scan_message_' + message).toggleClass('o_hidden', false);
+        this.$('.o_barcode_pic').toggleClass(
+            'o_js_has_warning_msg',
+            _.indexOf([ "picking_already_done", "picking_already_cancelled", "inv_already_done"], message) > -1
+        );
     },
 
     _isReservationProcessedLine: function ($line) {

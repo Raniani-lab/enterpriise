@@ -28,6 +28,10 @@
 
     <t t-name="stock_barcode_lines_widget">
         <div class="o_barcode_message d-flex flex-column justify-content-center align-items-center bg-800">
+            <div class="o_barcode_pic position-relative text-center mt-4 mb-1">
+                <span class="o_stock_barcode_laser"/>
+                <i class="fa fa-5x mx-auto fa-exclamation-triangle text-white"/>
+            </div>
             <span class="o_hidden o_scan_message o_scan_message_scan_products">Scan products</span>
             <span class="o_hidden o_scan_message o_scan_message_scan_more_dest">Scan more products, or scan the destination location</span>
             <span class="o_hidden o_scan_message o_scan_message_scan_more_src">Scan more products, or scan a new source location</span>

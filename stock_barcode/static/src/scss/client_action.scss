@@ -28,8 +28,46 @@
     // Top Block
     // =====================================
     .o_barcode_message {
-        flex: 0 0 30px;
+        min-height: 150px;
         box-shadow: inset 0 0 20px $gray-900;
+
+        .o_barcode_pic, .o_scan_message {
+            display: flex;
+            align-items: center;
+        }
+
+        .o_barcode_pic {
+            flex: 1 1 60%;
+            width: 50%;
+            max-width: 200px;
+            background: url("../../img/barcode_white.png") center/contain no-repeat;
+            background-size: 100% 100%;
+            &.o_js_has_warning_msg {
+                background: none;
+                span, .o_stock_mobile_barcode {
+                    display: none;
+                }
+                .fa {
+                    display: block;
+                }
+            }
+            .fa-exclamation-triangle {
+                display: none;
+                opacity: 0.8;
+            }
+
+            span {
+                @include o-position-absolute(50%, -5px, auto, -5px);
+                height: 5px;
+                background: rgba(red, 0.6);
+                box-shadow: 0 1px 10px 1px rgba(red, 0.8);
+            }
+        }
+
+        .o_scan_message {
+            flex: 1 0 30%;
+            max-height: 40px;
+        }
     }
 
     // Summary

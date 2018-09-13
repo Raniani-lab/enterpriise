@@ -2,7 +2,7 @@
     <data noupdate="0">
 
         <record id="module_category_documents_management" model="ir.module.category">
-            <field name="name">Documents management</field>
+            <field name="name">Documents</field>
             <field name="description">Allows you to manage your documents.</field>
             <field name="sequence">1</field>
         </record>

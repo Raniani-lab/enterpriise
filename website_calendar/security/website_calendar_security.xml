@@ -2,7 +2,7 @@
 <odoo>
 
     <record id="module_category_calendar" model="ir.module.category">
-        <field name="name">Appointments</field>
+        <field name="name">Online Appointments</field>
         <field name="sequence">19</field>
     </record>
 

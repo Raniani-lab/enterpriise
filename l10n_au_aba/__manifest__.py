@@ -105,7 +105,7 @@ Use
     file from which you can click on the file to download locally.  This
     file can then be uploaded to the bank.
 """,
-    'category': 'Accounting &amp; Finance',
+    'category': 'Accounting',
     'version': '1.0',
     'depends': ['account_batch_payment', 'l10n_au'],
     'data': [

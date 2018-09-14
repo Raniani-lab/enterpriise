@@ -7,7 +7,7 @@ from odoo.exceptions import UserError
 class Project(models.Model):
     _inherit = 'project.project'
 
-    allow_forecast = fields.Boolean("Allow forecast", default=False, help="This feature shows the Forecast link in the kanban view")
+    allow_forecast = fields.Boolean("Allow forecast", default=False, help="Enable forecasting on the project.")
 
     @api.multi
     def write(self, vals):

@@ -445,6 +445,8 @@ msgid ""
 "Error! You can't define a child activity with a trigger of type \"beginning "
 "of campaign\"."
 msgstr ""
+"Fout! U kan geen onderliggende activiteit definiëren met een een trigger van"
+" de soort 'begin van campagne\"."
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__exception

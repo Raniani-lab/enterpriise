@@ -7,7 +7,7 @@ from lxml import etree
 from odoo import http, _
 from odoo.http import request
 from odoo.addons.web_studio.controllers import main
-# from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError
 
 
 class WebStudioReportController(main.WebStudioController):
@@ -165,6 +165,8 @@ class WebStudioReportController(main.WebStudioController):
         parser = etree.XMLParser(remove_blank_text=True)
         for group_view_id in groups:
             view = request.env['ir.ui.view'].browse(int(group_view_id))
+            if view.key in request.env['ir.ui.view'].TEMPLATE_VIEWS_BLACKLIST:
+                raise ValidationError(_("You cannot modify this view, it is part of the generic layout"))
             arch = etree.fromstring(report_views[group_view_id]['studio_arch'], parser=parser)
 
             for op in groups[group_view_id]:
@@ -248,4 +250,7 @@ class WebStudioReportController(main.WebStudioController):
         except Exception as err:
             # the report could not be rendered which probably means the last
             # operation was incorrect
-            return [{"error": err, "stack": err.stack}]
+            return [{
+                "error": err,
+                "message": err.message,
+            }]

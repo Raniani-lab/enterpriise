@@ -153,7 +153,7 @@ QUnit.module('Views', {
     });
 
     QUnit.test('when clicked on cell redirects to the correct list/form view ', function(assert) {
-        assert.expect(4);
+        assert.expect(6);
 
         var actionManager = createActionManager({
             data: this.data,
@@ -190,6 +190,13 @@ QUnit.module('Views', {
             type: 'ir.actions.act_window',
             views: [[false, 'cohort'], ['my_list_view', 'list'], ['my_form_view', 'form']],
         });
+
+        // Going to the list view, while clicking Period / Count cell
+        actionManager.$('td.o_cohort_value:first').click();
+        assert.strictEqual(actionManager.$('.o_list_view th:nth(1)').text(), 'Start',
+                "First field in the list view should be start");
+        assert.strictEqual(actionManager.$('.o_list_view th:nth(2)').text(), 'Stop',
+                "Second field in the list view should be stop");
 
         // Going to the list view
         actionManager.$('td div.o_cohort_value:first').click();
@@ -258,7 +265,7 @@ QUnit.module('Views', {
     });
 
     QUnit.test('when clicked on cell redirects to the action list/form view passed in context', function(assert) {
-        assert.expect(4);
+        assert.expect(6);
 
         var actionManager = createActionManager({
             data: this.data,
@@ -296,6 +303,13 @@ QUnit.module('Views', {
             views: [[false, 'cohort']],
             context: {list_view_id: 'my_list_view', form_view_id: 'my_form_view'},
         });
+
+        // Going to the list view, while clicking Period / Count cell
+        actionManager.$('td.o_cohort_value:first').click();
+        assert.strictEqual(actionManager.$('.o_list_view th:nth(1)').text(), 'Start',
+                "First field in the list view should be start");
+        assert.strictEqual(actionManager.$('.o_list_view th:nth(2)').text(), 'Stop',
+                "Second field in the list view should be stop");
 
         // Going to the list view
         actionManager.$('td div.o_cohort_value:first').click();

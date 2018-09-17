@@ -4,17 +4,13 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
-# Fabien Pinckaers <fp@openerp.com>, 2018
-# Olivier Lenoir <olivier.lenoir@free.fr>, 2018
-# Xavier Symons <xsy@openerp.com>, 2018
-# Xavier Belmere <Info@cartmeleon.com>, 2018
 # Eloïse Stilmant <est@odoo.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.4+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-02 11:20+0000\n"
-"PO-Revision-Date: 2018-08-02 11:20+0000\n"
+"POT-Creation-Date: 2018-09-05 09:12+0000\n"
+"PO-Revision-Date: 2018-09-05 09:12+0000\n"
 "Last-Translator: Eloïse Stilmant <est@odoo.com>, 2018\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -33,6 +29,12 @@ msgstr ""
 #. module: web_dashboard
 #: selection:ir.actions.act_window.view,view_mode:0
 #: selection:ir.ui.view,type:0
+msgid "Activity"
+msgstr "Activité"
+
+#. module: web_dashboard
+#: selection:ir.actions.act_window.view,view_mode:0
+#: selection:ir.ui.view,type:0
 msgid "Calendar"
 msgstr "Calendrier"
 
@@ -47,7 +49,7 @@ msgstr "Cohorte"
 #: code:addons/web_dashboard/static/src/xml/dashboard.xml:61
 #, python-format
 msgid "Column:"
-msgstr ""
+msgstr "Colonne:"
 
 #. module: web_dashboard
 #. openerp-web
@@ -68,7 +70,7 @@ msgstr "Diagramme"
 #: code:addons/web_dashboard/static/src/xml/dashboard.xml:40
 #, python-format
 msgid "Domain Label:"
-msgstr ""
+msgstr "Label du domaine:"
 
 #. module: web_dashboard
 #. openerp-web
@@ -125,7 +127,7 @@ msgstr "Routage HTTP"
 #: code:addons/web_dashboard/static/src/xml/dashboard.xml:57
 #, python-format
 msgid "Help:"
-msgstr ""
+msgstr "Aide:"
 
 #. module: web_dashboard
 #: selection:ir.actions.act_window.view,view_mode:0
@@ -169,7 +171,7 @@ msgstr "Rechercher"
 #: code:addons/web_dashboard/static/src/xml/dashboard.xml:22
 #, python-format
 msgid "String:"
-msgstr ""
+msgstr "Chaine:"
 
 #. module: web_dashboard
 #: selection:ir.actions.act_window.view,view_mode:0
@@ -182,7 +184,7 @@ msgstr "Arborescence"
 #: code:addons/web_dashboard/static/src/xml/dashboard.xml:30
 #, python-format
 msgid "Value:"
-msgstr ""
+msgstr "Valeur:"
 
 #. module: web_dashboard
 #: model:ir.model.fields,field_description:web_dashboard.field_ir_actions_act_window_view__view_mode

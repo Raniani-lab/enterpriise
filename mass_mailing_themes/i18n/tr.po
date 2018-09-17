@@ -3,14 +3,18 @@
 # * mass_mailing_themes
 # 
 # Translators:
-# Murat Kaplan <muratk@projetgrup.com>, 2017
+# Ediz Duman <neps1192@gmail.com>, 2018
+# Martin Trigaux, 2018
+# Levent Karakaş <levent@mektup.at>, 2018
+# Murat Kaplan <muratk@projetgrup.com>, 2018
+# Gökhan Erdoğdu <gokhan.erdogdu@mechsoft.com.tr>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.3+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 08:34+0000\n"
-"PO-Revision-Date: 2018-06-25 08:34+0000\n"
-"Last-Translator: Murat Kaplan <muratk@projetgrup.com>, 2017\n"
+"POT-Creation-Date: 2018-08-24 11:29+0000\n"
+"PO-Revision-Date: 2018-08-24 11:29+0000\n"
+"Last-Translator: Gökhan Erdoğdu <gokhan.erdogdu@mechsoft.com.tr>, 2018\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -55,13 +59,6 @@ msgid "<i>Web Designer, ES</i>"
 msgstr "<I> Web Tasarımcısı, ES </ i>"
 
 #. module: mass_mailing_themes
-#: model:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
-msgid "<small>CODE</small>:   <strong class=\"o_code h3\">45A9E77DGW8455</strong>"
-msgstr ""
-"<Small> CODE </ small>: <strong class = \\ \"o_code h3 \"> 45A9E77DGW8455 </"
-" strong>"
-
-#. module: mass_mailing_themes
 #: model:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template
 msgid "<small>Step 1:</small>"
 msgstr "<Small> 1. Adım: </ small>"
@@ -75,6 +72,13 @@ msgstr "<Small> 2. Adım: </ small>"
 #: model:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template
 msgid "<small>Step 3:</small>"
 msgstr "<Small> 3. Adım: </ small>"
+
+#. module: mass_mailing_themes
+#: model:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
+msgid ""
+"<span style=\"line-height: 30px;\"><small>CODE: </small></span><strong "
+"class=\"o_code h3\">45A9E77DGW8455</strong>"
+msgstr ""
 
 #. module: mass_mailing_themes
 #: model:ir.ui.view,arch_db:mass_mailing_themes.theme_bold_template
@@ -162,8 +166,8 @@ msgid ""
 "Cyber-threats continue to increase.<br/>\n"
 "                                    The discussion will examine how to develop new norms and integrate them into EU"
 msgstr ""
-"Siber tehditler artmaya devam ediyor. <br/> \\ n Tartışmada yeni normların "
-"nasıl geliştirileceği ve AB'ye entegre edileceği incelenecek"
+"Siber tehditler artmaya devam ediyor. <br/>\n"
+"Tartışmada yeni normların nasıl geliştirileceği ve AB'ye entegre edileceği incelenecek"
 
 #. module: mass_mailing_themes
 #: model:ir.ui.view,arch_db:mass_mailing_themes.theme_expo_template
@@ -201,8 +205,25 @@ msgstr "SİZİN SİPARİŞİNİZDEN!"
 
 #. module: mass_mailing_themes
 #: model:ir.ui.view,arch_db:mass_mailing_themes.theme_airmail_template
+#: model:ir.ui.view,arch_db:mass_mailing_themes.theme_newsletter_template
+#: model:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template
+#: model:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
+#: model:ir.ui.view,arch_db:mass_mailing_themes.theme_tech_template
+msgid "Facebook"
+msgstr "Facebook"
+
+#. module: mass_mailing_themes
+#: model:ir.ui.view,arch_db:mass_mailing_themes.theme_airmail_template
 msgid "Gibson Les Paul Junior"
 msgstr "Gibson Les Paul Junior"
+
+#. module: mass_mailing_themes
+#: model:ir.ui.view,arch_db:mass_mailing_themes.theme_airmail_template
+#: model:ir.ui.view,arch_db:mass_mailing_themes.theme_newsletter_template
+#: model:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
+#: model:ir.ui.view,arch_db:mass_mailing_themes.theme_tech_template
+msgid "Google Plus"
+msgstr ""
 
 #. module: mass_mailing_themes
 #: model:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
@@ -226,6 +247,15 @@ msgstr "AÇILIŞ KONUŞMACILARI"
 
 #. module: mass_mailing_themes
 #: model:ir.ui.view,arch_db:mass_mailing_themes.theme_airmail_template
+#: model:ir.ui.view,arch_db:mass_mailing_themes.theme_newsletter_template
+#: model:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template
+#: model:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
+#: model:ir.ui.view,arch_db:mass_mailing_themes.theme_tech_template
+msgid "LinkedIn"
+msgstr "LinkedIn"
+
+#. module: mass_mailing_themes
+#: model:ir.ui.view,arch_db:mass_mailing_themes.theme_airmail_template
 #: model:ir.ui.view,arch_db:mass_mailing_themes.theme_bold_template
 #: model:ir.ui.view,arch_db:mass_mailing_themes.theme_newsletter_template
 #: model:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template
@@ -242,9 +272,10 @@ msgid ""
 "                                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut\n"
 "                                aliquip ex ea commodo consequat."
 msgstr ""
-"Lorem ipsum dolor sit amet, consectetur adipisising elit, sed do eiusmod yok"
-" \\ n zamanla incididunt ut labore et dolore magna aliqua. \\ N En basit "
-"reklam, envanterli alıştırma, el emek commisyonu eski."
+"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod no\n"
+"                                tempor incididunt ut labore et dolore magna aliqua.\n"
+"                                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut\n"
+"                                aliquip ex ea commodo consequat."
 
 #. module: mass_mailing_themes
 #: model:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template
@@ -294,7 +325,7 @@ msgstr "Odoo Experience, uzmanlığınızı sergilemek için yer."
 #. module: mass_mailing_themes
 #: model:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template
 msgid "Order"
-msgstr "Sıra"
+msgstr "Sipariş"
 
 #. module: mass_mailing_themes
 #: model:ir.ui.view,arch_db:mass_mailing_themes.theme_airmail_template
@@ -304,7 +335,7 @@ msgstr "Sıra"
 #: model:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
 #: model:ir.ui.view,arch_db:mass_mailing_themes.theme_tech_template
 msgid "Photo"
-msgstr "Fotograf "
+msgstr "Fotoğraf "
 
 #. module: mass_mailing_themes
 #: model:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
@@ -388,9 +419,8 @@ msgid ""
 "The next edition of Odoo Experience looks very promising. More than 150 talks are scheduled during those 3 days!\n"
 "                                    Find below some stand-out talks for the Business tracks."
 msgstr ""
-"Odoo Experience'ın bir sonraki baskısı çok umutlu görünüyor. Bu 3 gün "
-"boyunca 150'den fazla görüşme planlandı! \\ N İşletme izleri için öne çıkan "
-"bazı görüşmeler aşağıda bulabilirsiniz."
+"Odoo Experience'ın bir sonraki baskısı çok umutlu görünüyor. Bu 3 gün boyunca 150'den fazla görüşme planlandı!\n"
+" İşletme izleri için öne çıkan bazı görüşmeler aşağıda bulabilirsiniz."
 
 #. module: mass_mailing_themes
 #: model:ir.ui.view,arch_db:mass_mailing_themes.theme_tech_template
@@ -422,6 +452,15 @@ msgid "Tomato Soup"
 msgstr "Domates çorbası"
 
 #. module: mass_mailing_themes
+#: model:ir.ui.view,arch_db:mass_mailing_themes.theme_airmail_template
+#: model:ir.ui.view,arch_db:mass_mailing_themes.theme_newsletter_template
+#: model:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template
+#: model:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
+#: model:ir.ui.view,arch_db:mass_mailing_themes.theme_tech_template
+msgid "Twitter"
+msgstr "Twitter"
+
+#. module: mass_mailing_themes
 #: model:ir.ui.view,arch_db:mass_mailing_themes.theme_tech_template
 msgid "Two-lens phone cameras"
 msgstr "İki lensli telefon kameraları"
@@ -449,12 +488,12 @@ msgid ""
 " you back please accept this 20% discount on you next purchase by clicking "
 "the button."
 msgstr ""
-"Büyümeye devam ediyoruz ve sizi bir parçası olduğunuzu görmeyi özlüyoruz! "
-"Mağaza saatlerinizi arttırdık ve çok sayıda yeni marka sunabildik. <br/> "
-"Sizi tekrar ağırlamaktan lütfen, düğmeyi tıklatarak bir sonraki "
-"alışverişinizde% 20 indirim kazanın."
+"Büyümeye devam ediyoruz ve sizin bunun bir parçası olduğunuzu görmeyi "
+"özlüyoruz! Mağaza saatlerinizi arttırdık ve çok sayıda yeni marka "
+"sunabildik. <br/> Sizi tekrar ağırlamaktan mutluluk duyarız. Lütfen düğmeyi "
+"tıklatarak bir sonraki alışverişinizde % 20 indirim kazanın."
 
 #. module: mass_mailing_themes
 #: model:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
 msgid "and save $20 on your next order!"
-msgstr "Ve bir sonraki siparişinizde20 TL tasarruf edin!"
+msgstr "Ve bir sonraki siparişinizde 20 TL tasarruf edin!"

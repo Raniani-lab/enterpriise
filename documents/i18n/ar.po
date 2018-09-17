@@ -2,23 +2,33 @@
 # This file contains the translation of the following modules:
 # * documents
 # 
+# Translators:
+# Mustafa Rawi <mustafa@cubexco.com>, 2018
+# Mustafa J. Kadhem <safi2266@gmail.com>, 2018
+# Sadig Adam <sadig41@gmail.com>, 2018
+# Akram Alfusayal <akram_ma@hotmail.com>, 2018
+# amrnegm <amrnegm.01@gmail.com>, 2018
+# Martin Trigaux, 2018
+# Ali zuaby <ali@zuaby.net>, 2018
+# Osoul <baruni@osoul.ly>, 2018
+# Ghaith Gammar <g.gammar@saharaifs.net>, 2018
+# Osama Ahmaro <osamaahmaro@gmail.com>, 2018
+# amal ahmed <amalalhashemy88@hotmail.com>, 2018
+# Zuhair Hammadi <zuhair12@gmail.com>, 2018
+# Shaima Safar <shaima.safar@open-inside.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-08-24 11:28+0000\n"
 "PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"Last-Translator: Shaima Safar <shaima.safar@open-inside.com>, 2018\n"
 "Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Language: ar\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
-
-#. module: documents
-#: model:ir.ui.view,arch_db:documents.documents_view_kanban
-msgid "#{record.lock_uid.value}"
-msgstr ""
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.public_page_layout
@@ -58,14 +68,14 @@ msgstr ""
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.share_single
 msgid "<i class=\"fa fa-download\"/> Download"
-msgstr ""
+msgstr "تحميل"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.share_view_form
 #: model:ir.ui.view,arch_db:documents.share_view_form_popup
 msgid ""
 "<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/> Configure Email Servers"
-msgstr ""
+msgstr "ضبط سيرفرات البريد الإلكتروني"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.share_page
@@ -89,7 +99,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__access_token
 msgid "Access Token"
-msgstr ""
+msgstr "رمز الوصول"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__group_ids
@@ -99,13 +109,13 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_action__action
 msgid "Action"
-msgstr ""
+msgstr "الإجراء"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_needaction
 #: model:ir.model.fields,field_description:documents.field_ir_attachment__message_needaction
 msgid "Action Needed"
-msgstr ""
+msgstr "الإجراء المطلوب"
 
 #. module: documents
 #. openerp-web
@@ -115,17 +125,17 @@ msgstr ""
 #: model:ir.ui.view,arch_db:documents.workflow_rule_form_view
 #, python-format
 msgid "Actions"
-msgstr ""
+msgstr "الإجراءات"
 
 #. module: documents
 #: selection:documents.workflow.action,action:0
 msgid "Add"
-msgstr ""
+msgstr "إضافة"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_id
 msgid "Alias"
-msgstr ""
+msgstr "الكنية"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_contact
@@ -135,17 +145,17 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_name
 msgid "Alias Name"
-msgstr ""
+msgstr "اسم اللقب"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_domain
 msgid "Alias domain"
-msgstr ""
+msgstr "لقب النطاق"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_model_id
 msgid "Aliased Model"
-msgstr ""
+msgstr "الكائن الملقب"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__action
@@ -157,12 +167,12 @@ msgstr ""
 #: code:addons/documents/static/src/xml/documents_inspector.xml:152
 #, python-format
 msgid "Archive"
-msgstr ""
+msgstr "أرشفة"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.documents_view_search_inherit
 msgid "Archived"
-msgstr ""
+msgstr "مؤرشف"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__create_model
@@ -174,12 +184,12 @@ msgstr ""
 #: code:addons/documents/static/src/xml/documents_selector.xml:50
 #, python-format
 msgid "Attached To"
-msgstr ""
+msgstr "مرفق لـ"
 
 #. module: documents
 #: model:ir.ui.menu,name:documents.attachment_list_view_temp
 msgid "Attachments"
-msgstr ""
+msgstr "المُرفقات"
 
 #. module: documents
 #. openerp-web
@@ -197,12 +207,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_action__facet_id
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__facet_id
 msgid "Category"
-msgstr ""
+msgstr "الفئة"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__company_id
 msgid "Company"
-msgstr ""
+msgstr "المؤسسة"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__condition_type
@@ -212,17 +222,17 @@ msgstr ""
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.workflow_rule_form_view
 msgid "Conditions"
-msgstr ""
+msgstr "الشروط"
 
 #. module: documents
 #: model:ir.ui.menu,name:documents.Config
 msgid "Configuration"
-msgstr ""
+msgstr "الإعدادات"
 
 #. module: documents
 #: selection:documents.workflow.tag.criteria,operator:0
 msgid "Contains"
-msgstr ""
+msgstr "يحتوي"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.tag_view_tree
@@ -238,7 +248,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__create_uid
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "أنشئ بواسطة"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_facet__create_date
@@ -249,7 +259,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__create_date
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__create_date
 msgid "Created on"
-msgstr ""
+msgstr "أنشئ في"
 
 #. module: documents
 #: selection:documents.workflow.rule,create_model:0
@@ -274,7 +284,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_defaults
 msgid "Default Values"
-msgstr ""
+msgstr "القيم الافتراضية"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__partner_id
@@ -291,7 +301,7 @@ msgstr ""
 #: code:addons/documents/static/src/xml/documents_inspector.xml:154
 #, python-format
 msgid "Delete"
-msgstr ""
+msgstr "حذف"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_facet__display_name
@@ -302,12 +312,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__display_name
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "اسم العرض"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.documents_view_kanban
 msgid "Document"
-msgstr ""
+msgstr "مستند"
 
 #. module: documents
 #: selection:documents.share,type:0
@@ -324,7 +334,7 @@ msgstr ""
 #: model:ir.ui.view,arch_db:documents.res_config_settings_view_form
 #, python-format
 msgid "Documents"
-msgstr ""
+msgstr "الوثائق"
 
 #. module: documents
 #: selection:documents.workflow.tag.criteria,operator:0
@@ -338,12 +348,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__domain
 #: model:ir.ui.view,arch_db:documents.workflow_rule_form_view
 msgid "Domain"
-msgstr ""
+msgstr "النطاق"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.share_view_form_popup
 msgid "Done"
-msgstr ""
+msgstr "تم"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.share_page
@@ -356,7 +366,7 @@ msgstr ""
 #: selection:documents.share,action:0
 #, python-format
 msgid "Download"
-msgstr ""
+msgstr "تنزيل"
 
 #. module: documents
 #: selection:documents.share,action:0
@@ -371,7 +381,7 @@ msgstr ""
 #. module: documents
 #: selection:documents.share,state:0
 msgid "Expired"
-msgstr ""
+msgstr "منتهي"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_facet
@@ -416,19 +426,19 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_follower_ids
 #: model:ir.model.fields,field_description:documents.field_ir_attachment__message_follower_ids
 msgid "Followers"
-msgstr ""
+msgstr "المتابعون"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_channel_ids
 #: model:ir.model.fields,field_description:documents.field_ir_attachment__message_channel_ids
 msgid "Followers (Channels)"
-msgstr ""
+msgstr "المتابعون (القنوات)"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_partner_ids
 #: model:ir.model.fields,field_description:documents.field_ir_attachment__message_partner_ids
 msgid "Followers (Partners)"
-msgstr ""
+msgstr "المتابعون (الشركاء)"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__has_business_option
@@ -451,7 +461,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__id
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__id
 msgid "ID"
-msgstr ""
+msgstr "المعرف"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_parent_thread_id
@@ -464,13 +474,13 @@ msgstr ""
 #: model:ir.model.fields,help:documents.field_documents_share__message_unread
 #: model:ir.model.fields,help:documents.field_ir_attachment__message_unread
 msgid "If checked new messages require your attention."
-msgstr ""
+msgstr "إذا حددته، سيتم إخطارك بالرسائل الجديدة."
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__message_needaction
 #: model:ir.model.fields,help:documents.field_ir_attachment__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr ""
+msgstr "إذا حددته، سيتم إخطارك بالرسائل الجديدة."
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__message_has_error
@@ -482,7 +492,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_is_follower
 #: model:ir.model.fields,field_description:documents.field_ir_attachment__message_is_follower
 msgid "Is Follower"
-msgstr ""
+msgstr "متابع"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_facet____last_update
@@ -493,7 +503,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule____last_update
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "آخر تعديل في"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_facet__write_uid
@@ -504,7 +514,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__write_uid
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "آخر تحديث بواسطة"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_facet__write_date
@@ -515,7 +525,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__write_date
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "آخر تحديث في"
 
 #. module: documents
 #: selection:documents.share,state:0
@@ -525,14 +535,14 @@ msgstr ""
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.share_single
 msgid "Loading"
-msgstr ""
+msgstr "جاري التحميل"
 
 #. module: documents
 #. openerp-web
 #: code:addons/documents/static/src/xml/documents_inspector.xml:147
 #, python-format
 msgid "Lock"
-msgstr ""
+msgstr "اغلاق"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_ir_attachment__lock_uid
@@ -542,12 +552,12 @@ msgstr ""
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.public_page_layout
 msgid "Login"
-msgstr ""
+msgstr "تسجيل الدخول"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.public_page_layout
 msgid "Logout"
-msgstr ""
+msgstr "تسجيل الخروج"
 
 #. module: documents
 #. openerp-web
@@ -582,12 +592,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_ids
 #: model:ir.model.fields,field_description:documents.field_ir_attachment__message_ids
 msgid "Messages"
-msgstr ""
+msgstr "الرسائل"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.documents_view_search_inherit
 msgid "Model"
-msgstr ""
+msgstr "النموذج"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.res_config_settings_view_form
@@ -609,7 +619,7 @@ msgstr ""
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.documents_view_search_inherit
 msgid "My Favorites"
-msgstr ""
+msgstr "مفضلاتي"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.documents_view_search_inherit
@@ -622,7 +632,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_share__name
 #: model:ir.model.fields,field_description:documents.field_documents_tag__name
 msgid "Name"
-msgstr ""
+msgstr "الاسم"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.share_view_form
@@ -640,18 +650,18 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__note
 msgid "Note"
-msgstr ""
+msgstr "ملاحظة"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.workflow_rule_form_view
 msgid "Notes"
-msgstr ""
+msgstr "ملاحظات"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_needaction_counter
 #: model:ir.model.fields,field_description:documents.field_ir_attachment__message_needaction_counter
 msgid "Number of Actions"
-msgstr ""
+msgstr "عدد الإجراءات"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_has_error_counter
@@ -663,7 +673,7 @@ msgstr ""
 #: model:ir.model.fields,help:documents.field_documents_share__message_needaction_counter
 #: model:ir.model.fields,help:documents.field_ir_attachment__message_needaction_counter
 msgid "Number of messages which requires an action"
-msgstr ""
+msgstr "عدد الرسائل التي تتطلب اجراء"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__message_has_error_counter
@@ -675,7 +685,7 @@ msgstr ""
 #: model:ir.model.fields,help:documents.field_documents_share__message_unread_counter
 #: model:ir.model.fields,help:documents.field_ir_attachment__message_unread_counter
 msgid "Number of unread messages"
-msgstr ""
+msgstr "عدد الرسائل الجديدة"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.public_page_layout
@@ -690,7 +700,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__operator
 msgid "Operator"
-msgstr ""
+msgstr "المعامل"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_force_thread_id
@@ -705,7 +715,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__criteria_owner_id
 #: model:ir.model.fields,field_description:documents.field_ir_attachment__owner_id
 msgid "Owner"
-msgstr ""
+msgstr "المالِك"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.share_page
@@ -715,7 +725,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_parent_model_id
 msgid "Parent Model"
-msgstr ""
+msgstr "موديل الشريك"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_parent_thread_id
@@ -739,7 +749,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__criteria_partner_id
 #: model:ir.model.fields,field_description:documents.field_ir_attachment__partner_id
 msgid "Partner"
-msgstr ""
+msgstr "الشريك"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_contact
@@ -758,7 +768,7 @@ msgstr ""
 #. module: documents
 #: selection:documents.workflow.action,action:0
 msgid "Remove"
-msgstr ""
+msgstr "إزالة"
 
 #. module: documents
 #. openerp-web
@@ -796,7 +806,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_folder__sequence
 #: model:ir.model.fields,field_description:documents.field_documents_tag__sequence
 msgid "Sequence"
-msgstr ""
+msgstr "التسلسل"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__partner_id
@@ -818,7 +828,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:documents.documents_settings_action
 #: model:ir.ui.menu,name:documents.Settings_menu
 msgid "Settings"
-msgstr ""
+msgstr "الإعدادات"
 
 #. module: documents
 #. openerp-web
@@ -826,7 +836,7 @@ msgstr ""
 #: code:addons/documents/static/src/xml/documents_kanban.xml:14
 #, python-format
 msgid "Share"
-msgstr ""
+msgstr "مشاركة"
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.share_action
@@ -842,7 +852,7 @@ msgstr ""
 #. module: documents
 #: model:ir.ui.menu,name:documents.share_menu
 msgid "Shared"
-msgstr ""
+msgstr "مشارك"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__attachment_ids
@@ -859,12 +869,12 @@ msgstr ""
 #: code:addons/documents/static/src/xml/documents_inspector.xml:61
 #, python-format
 msgid "Size"
-msgstr ""
+msgstr "الحجم"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__state
 msgid "Status"
-msgstr ""
+msgstr "الحالة"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__children_folder_ids
@@ -878,7 +888,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__tag_id
 #: model:ir.ui.view,arch_db:documents.tag_view_search
 msgid "Tag"
-msgstr ""
+msgstr "الوسم"
 
 #. module: documents
 #: sql_constraint:documents.tag:0
@@ -900,17 +910,17 @@ msgstr ""
 #: model:ir.ui.view,arch_db:documents.documents_view_form
 #, python-format
 msgid "Tags"
-msgstr ""
+msgstr "الوسوم"
 
 #. module: documents
 #: selection:documents.workflow.rule,create_model:0
 msgid "Task"
-msgstr ""
+msgstr "المهمة"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.documents_view_form
 msgid "Technical"
-msgstr ""
+msgstr "تقني"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_model_id
@@ -954,7 +964,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__full_url
 msgid "URL"
-msgstr ""
+msgstr "رابط ويب"
 
 #. module: documents
 #. openerp-web
@@ -968,19 +978,19 @@ msgstr ""
 #: code:addons/documents/static/src/xml/documents_inspector.xml:155
 #, python-format
 msgid "Unarchive"
-msgstr ""
+msgstr "تفعيل"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_unread
 #: model:ir.model.fields,field_description:documents.field_ir_attachment__message_unread
 msgid "Unread Messages"
-msgstr ""
+msgstr "الرسائل الجديدة"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_unread_counter
 #: model:ir.model.fields,field_description:documents.field_ir_attachment__message_unread_counter
 msgid "Unread Messages Counter"
-msgstr ""
+msgstr "عدد الرسائل الجديدة"
 
 #. module: documents
 #. openerp-web
@@ -1011,13 +1021,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_share__website_message_ids
 #: model:ir.model.fields,field_description:documents.field_ir_attachment__website_message_ids
 msgid "Website Messages"
-msgstr ""
+msgstr "رسائل الموقع"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__website_message_ids
 #: model:ir.model.fields,help:documents.field_ir_attachment__website_message_ids
 msgid "Website communication history"
-msgstr ""
+msgstr "سجل تواصل الموقع"
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.workflow_rule_action
@@ -1081,7 +1091,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model,name:documents.model_ir_attachment
 msgid "ir.attachment"
-msgstr ""
+msgstr "ir.attachment"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.folder_view_search

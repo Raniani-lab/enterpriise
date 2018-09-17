@@ -220,7 +220,7 @@ msgstr "Gibson Les Paul Junior"
 #: model:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
 #: model:ir.ui.view,arch_db:mass_mailing_themes.theme_tech_template
 msgid "Google Plus"
-msgstr ""
+msgstr "Google Plus"
 
 #. module: mass_mailing_themes
 #: model:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template

@@ -3,17 +3,17 @@
 # * web_grid
 # 
 # Translators:
-# Rodrigo de Almeida Sottomaior Macedo <rmsolucoeseminformatic4@gmail.com>, 2017
-# Martin Trigaux, 2017
-# grazziano <gra.negocia@gmail.com>, 2017
-# Mateus Lopes <mateus1@gmail.com>, 2017
+# Rodrigo de Almeida Sottomaior Macedo <rmsolucoeseminformatic4@gmail.com>, 2018
+# Martin Trigaux, 2018
+# Mateus Lopes <mateus1@gmail.com>, 2018
+# grazziano <gra.negocia@gmail.com>, 2018
 # Walter Tambeuhien Frey <cwegroup@gmail.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.4+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-02 11:20+0000\n"
-"PO-Revision-Date: 2018-08-02 11:20+0000\n"
+"POT-Creation-Date: 2018-09-05 09:12+0000\n"
+"PO-Revision-Date: 2018-09-05 09:12+0000\n"
 "Last-Translator: Walter Tambeuhien Frey <cwegroup@gmail.com>, 2018\n"
 "Language-Team: Portuguese (Brazil) (https://www.transifex.com/odoo/teams/41243/pt_BR/)\n"
 "MIME-Version: 1.0\n"
@@ -21,6 +21,12 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Language: pt_BR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#. module: web_grid
+#: selection:ir.actions.act_window.view,view_mode:0
+#: selection:ir.ui.view,type:0
+msgid "Activity"
+msgstr "Atividade"
 
 #. module: web_grid
 #. openerp-web
@@ -93,10 +99,24 @@ msgid "Kanban"
 msgstr "Kanban"
 
 #. module: web_grid
+#. openerp-web
+#: code:addons/web_grid/static/src/xml/grid_view.xml:24
+#, python-format
+msgid "Next"
+msgstr "Próximo"
+
+#. module: web_grid
 #: selection:ir.actions.act_window.view,view_mode:0
 #: selection:ir.ui.view,type:0
 msgid "Pivot"
 msgstr "Pivô"
+
+#. module: web_grid
+#. openerp-web
+#: code:addons/web_grid/static/src/xml/grid_view.xml:17
+#, python-format
+msgid "Previous"
+msgstr ""
 
 #. module: web_grid
 #: selection:ir.ui.view,type:0
@@ -110,14 +130,14 @@ msgstr "Pesquisar"
 
 #. module: web_grid
 #. openerp-web
-#: code:addons/web_grid/static/src/js/grid_renderer.js:215
+#: code:addons/web_grid/static/src/js/grid_renderer.js:244
 #, python-format
 msgid "See all the records aggregated in this cell"
 msgstr ""
 
 #. module: web_grid
 #. openerp-web
-#: code:addons/web_grid/static/src/js/grid_renderer.js:153
+#: code:addons/web_grid/static/src/js/grid_renderer.js:183
 #, python-format
 msgid ""
 "The sectioned grid view can't handle groups with different columns sets"
@@ -134,11 +154,17 @@ msgstr "Hoje"
 
 #. module: web_grid
 #. openerp-web
-#: code:addons/web_grid/static/src/js/grid_renderer.js:353
-#: code:addons/web_grid/static/src/js/grid_renderer.js:358
+#: code:addons/web_grid/static/src/js/grid_renderer.js:395
 #, python-format
 msgid "Total"
 msgstr "Total"
+
+#. module: web_grid
+#. openerp-web
+#: code:addons/web_grid/static/src/js/grid_renderer.js:393
+#, python-format
+msgid "Total (%s)"
+msgstr ""
 
 #. module: web_grid
 #: selection:ir.actions.act_window.view,view_mode:0
@@ -155,9 +181,9 @@ msgstr "Indefinido"
 
 #. module: web_grid
 #. openerp-web
-#: code:addons/web_grid/static/src/js/grid_renderer.js:130
-#: code:addons/web_grid/static/src/js/grid_renderer.js:275
-#: code:addons/web_grid/static/src/js/grid_renderer.js:310
+#: code:addons/web_grid/static/src/js/grid_renderer.js:160
+#: code:addons/web_grid/static/src/js/grid_renderer.js:323
+#: code:addons/web_grid/static/src/js/grid_renderer.js:358
 #, python-format
 msgid "Unknown"
 msgstr "Desconhecido(a)"

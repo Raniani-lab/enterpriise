@@ -31,7 +31,6 @@ No modified version is certified and supported by Odoo SA.
         'security/ir.model.access.csv',
         'views/pos_blackbox_be_views.xml',
         'views/pos_blackbox_be_assets.xml',
-        'views/res_users_views.xml',
         'data/pos_blackbox_be_data.xml'
     ],
     'demo': [

@@ -2,12 +2,22 @@
 # This file contains the translation of the following modules:
 # * web_dashboard
 # 
+# Translators:
+# Mustafa Rawi <mustafa@cubexco.com>, 2018
+# Akram Alfusayal <akram_ma@hotmail.com>, 2018
+# amrnegm <amrnegm.01@gmail.com>, 2018
+# Martin Trigaux, 2018
+# Osoul <baruni@osoul.ly>, 2018
+# Osama Ahmaro <osamaahmaro@gmail.com>, 2018
+# Shaima Safar <shaima.safar@open-inside.com>, 2018
+# Islam Eldeeb <islameldeb@gmail.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.4+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-02 11:20+0000\n"
-"PO-Revision-Date: 2018-08-02 11:20+0000\n"
+"POT-Creation-Date: 2018-09-05 09:12+0000\n"
+"PO-Revision-Date: 2018-09-05 09:12+0000\n"
+"Last-Translator: Islam Eldeeb <islameldeb@gmail.com>, 2018\n"
 "Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -25,14 +35,20 @@ msgstr ""
 #. module: web_dashboard
 #: selection:ir.actions.act_window.view,view_mode:0
 #: selection:ir.ui.view,type:0
+msgid "Activity"
+msgstr "النشاط"
+
+#. module: web_dashboard
+#: selection:ir.actions.act_window.view,view_mode:0
+#: selection:ir.ui.view,type:0
 msgid "Calendar"
-msgstr ""
+msgstr "التقويم"
 
 #. module: web_dashboard
 #: selection:ir.actions.act_window.view,view_mode:0
 #: selection:ir.ui.view,type:0
 msgid "Cohort"
-msgstr ""
+msgstr "مجموعة"
 
 #. module: web_dashboard
 #. openerp-web
@@ -48,12 +64,12 @@ msgstr ""
 #: selection:ir.ui.view,type:0
 #, python-format
 msgid "Dashboard"
-msgstr ""
+msgstr "لوحة المعلومات"
 
 #. module: web_dashboard
 #: selection:ir.ui.view,type:0
 msgid "Diagram"
-msgstr ""
+msgstr "الرسم التخطيطي"
 
 #. module: web_dashboard
 #. openerp-web
@@ -67,38 +83,38 @@ msgstr ""
 #: code:addons/web_dashboard/static/src/xml/dashboard.xml:35
 #, python-format
 msgid "Domain:"
-msgstr ""
+msgstr "النطاق:"
 
 #. module: web_dashboard
 #. openerp-web
 #: code:addons/web_dashboard/static/src/xml/dashboard.xml:26
 #, python-format
 msgid "Field:"
-msgstr ""
+msgstr "الحقل:"
 
 #. module: web_dashboard
 #: selection:ir.actions.act_window.view,view_mode:0
 #: selection:ir.ui.view,type:0
 msgid "Form"
-msgstr ""
+msgstr "النموذج"
 
 #. module: web_dashboard
 #: selection:ir.actions.act_window.view,view_mode:0
 #: selection:ir.ui.view,type:0
 msgid "Gantt"
-msgstr ""
+msgstr "جانت"
 
 #. module: web_dashboard
 #: selection:ir.actions.act_window.view,view_mode:0
 #: selection:ir.ui.view,type:0
 msgid "Graph"
-msgstr ""
+msgstr "الرسم البياني"
 
 #. module: web_dashboard
 #: selection:ir.actions.act_window.view,view_mode:0
 #: selection:ir.ui.view,type:0
 msgid "Grid"
-msgstr ""
+msgstr "الشبكة"
 
 #. module: web_dashboard
 #. openerp-web
@@ -110,7 +126,7 @@ msgstr ""
 #. module: web_dashboard
 #: model:ir.model,name:web_dashboard.model_ir_http
 msgid "HTTP routing"
-msgstr ""
+msgstr "HTTP routing"
 
 #. module: web_dashboard
 #. openerp-web
@@ -123,14 +139,14 @@ msgstr ""
 #: selection:ir.actions.act_window.view,view_mode:0
 #: selection:ir.ui.view,type:0
 msgid "Kanban"
-msgstr ""
+msgstr "نظام رقابة المخزون"
 
 #. module: web_dashboard
 #. openerp-web
 #: code:addons/web_dashboard/static/src/xml/dashboard.xml:53
 #, python-format
 msgid "Modifiers:"
-msgstr ""
+msgstr "المُعدِّلات:"
 
 #. module: web_dashboard
 #. openerp-web
@@ -138,23 +154,23 @@ msgstr ""
 #: code:addons/web_dashboard/static/src/xml/dashboard.xml:18
 #, python-format
 msgid "Name:"
-msgstr ""
+msgstr "الاسم:"
 
 #. module: web_dashboard
 #: selection:ir.actions.act_window.view,view_mode:0
 #: selection:ir.ui.view,type:0
 msgid "Pivot"
-msgstr ""
+msgstr "محور"
 
 #. module: web_dashboard
 #: selection:ir.ui.view,type:0
 msgid "QWeb"
-msgstr ""
+msgstr "QWeb"
 
 #. module: web_dashboard
 #: selection:ir.ui.view,type:0
 msgid "Search"
-msgstr ""
+msgstr "بحث"
 
 #. module: web_dashboard
 #. openerp-web
@@ -167,7 +183,7 @@ msgstr ""
 #: selection:ir.actions.act_window.view,view_mode:0
 #: selection:ir.ui.view,type:0
 msgid "Tree"
-msgstr ""
+msgstr "الشجرة"
 
 #. module: web_dashboard
 #. openerp-web
@@ -180,14 +196,14 @@ msgstr ""
 #: model:ir.model.fields,field_description:web_dashboard.field_ir_actions_act_window_view__view_mode
 #: model:ir.model.fields,field_description:web_dashboard.field_ir_ui_view__type
 msgid "View Type"
-msgstr ""
+msgstr "نوع واجهة العرض"
 
 #. module: web_dashboard
 #. openerp-web
 #: code:addons/web_dashboard/static/src/xml/dashboard.xml:49
 #, python-format
 msgid "Widget:"
-msgstr ""
+msgstr "الأداة:"
 
 #. module: web_dashboard
 #: model:ir.model,name:web_dashboard.model_base
@@ -202,4 +218,4 @@ msgstr ""
 #. module: web_dashboard
 #: model:ir.model,name:web_dashboard.model_ir_ui_view
 msgid "ir.ui.view"
-msgstr ""
+msgstr "ir.ui.view"

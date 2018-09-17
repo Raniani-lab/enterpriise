@@ -11,7 +11,6 @@
     'depends': [
         'stock_landed_costs',
         'sale_management',
-        'account_accountant',
         'l10n_mx_edi_customs',
     ],
     'data': [

@@ -5,4 +5,3 @@ from . import marketing_campaign
 from . import marketing_participant
 from . import mass_mailing
 from . import mass_mailing_stats
-from . import res_users

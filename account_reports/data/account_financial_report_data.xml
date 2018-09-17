@@ -503,7 +503,7 @@
             <field name="code">UNC_IN</field>
             <field name="sequence" eval="1"/>
             <field name="parent_id" ref='account_financial_report_cashsummary_unclassified0'/>
-            <field name="domain" eval="[('credit', '>', 0), ('account_id.internal_type', '=', 'other'), ('account_id.tag_ids', 'not in', [ref('account.account_tag_financing'), ref('account.account_tag_investing'), ref('account.account_tag_operating')])]" />
+            <field name="domain" eval="[('credit', '>', 0), ('account_id.internal_type', 'not in', ('receivable', 'payable')), ('account_id.tag_ids', 'not in', [ref('account.account_tag_financing'), ref('account.account_tag_investing'), ref('account.account_tag_operating')])]" />
             <field name="formulas">balance = -sum.balance</field>
             <field name="groupby">account_id</field>
             <field name="level" eval="2" />
@@ -514,30 +514,24 @@
             <field name="code">UNC_OUT</field>
             <field name="sequence" eval="2"/>
             <field name="parent_id" ref='account_financial_report_cashsummary_unclassified0'/>
-            <field name="domain" eval="[('debit', '>', 0), ('account_id.internal_type', '=', 'other'), ('account_id.tag_ids', 'not in', [ref('account.account_tag_financing'), ref('account.account_tag_investing'), ref('account.account_tag_operating')])]" />
+            <field name="domain" eval="[('debit', '>', 0), ('account_id.internal_type', 'not in', ('receivable', 'payable')), ('account_id.tag_ids', 'not in', [ref('account.account_tag_financing'), ref('account.account_tag_investing'), ref('account.account_tag_operating')])]" />
             <field name="formulas">balance = -sum.balance</field>
             <field name="groupby">account_id</field>
             <field name="level" eval="2" />
             <field name="special_date_changer">strict_range</field>
         </record>
-        <!-- When you register 'Advance payments', you record fluctuations on the bank/cash accounts and let open amounts
-        in payable/receivable accounts. Those are displayed in PRECUS and PRESUP but, as they are reconciled with the
-        invoices later on, the counterpart income/expense accounts will only appear in the cashflow statement at the invoice's
-        date. To avoid counting them again in the 'Net Cash increase' while they are already in the starting balance, we must
-        manually subtract them in the REGUL line.
 
-        Unfortunately, there is no way of filtering them currently so we have to compute them as the difference between the
-        'Net cash increase' and the difference between the starting and ending cash balance).
-        -->
+        <!-- Computation Error: this line should never be displayed and serves as a control check for developpers -->
         <record id="account_financial_report_cashsummary_regulator0" model="account.financial.html.report.line">
-            <field name="name">Minus previously recorded advance payments (already in the starting balance)</field>
+            <field name="name">Computation Error: unexplained difference</field>
             <field name="code">REGUL</field>
-            <field name="sequence" eval="4"/>
+            <field name="sequence" eval="5"/>
             <field name="parent_id" ref='account_financial_report_cashsummary_net_increase0'/>
             <field name="formulas">balance = (CASHEND.balance - CASHSTART.balance) - (OP.balance + FI.balance + IN.balance + UNC.balance)</field>
             <field name="level" eval="1" />
             <field name="hide_if_zero" eval="True" />
         </record>
+
         <record id="account_financial_report_cashsummary_opening_balance0" model="account.financial.html.report.line">
             <field name="name">Cash and cash equivalents, beginning of period</field>
             <field name="code">CASHSTART</field>

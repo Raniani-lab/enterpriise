@@ -94,10 +94,20 @@ def compute_arr(start_date, end_date, filters):
 
 
 def compute_ltv(start_date, end_date, filters):
-    # LTV = Average Monthly Recurring Revenue Per Customer / User Churn Rate
-    mrr = compute_mrr(start_date, end_date, filters)
-    nb_contracts = compute_nb_contracts(start_date, end_date, filters)
-    avg_mrr_per_customer = 0 if nb_contracts == 0 else mrr / float(nb_contracts)
+    fields = ['CASE WHEN COUNT(DISTINCT account_invoice_line.subscription_id)!=0 THEN SUM(account_invoice_line.asset_mrr)/COUNT(DISTINCT account_invoice_line.subscription_id) ELSE 0 END AS sum']
+    tables = ['account_invoice_line', 'account_invoice']
+    conditions = [
+        "date %(date)s BETWEEN account_invoice_line.asset_start_date AND account_invoice_line.asset_end_date",
+        "account_invoice.id = account_invoice_line.invoice_id",
+        "account_invoice.type IN ('out_invoice', 'out_refund')",
+        "account_invoice.state NOT IN ('draft', 'cancel')"
+    ]
+
+    sql_results = _execute_sql_query(fields, tables, conditions, {
+        'date': end_date,
+    }, filters)
+
+    avg_mrr_per_customer = 0 if not sql_results or not sql_results[0]['sum'] else sql_results[0]['sum']
     logo_churn = compute_logo_churn(start_date, end_date, filters)
     result = 0 if logo_churn == 0 else avg_mrr_per_customer/float(logo_churn)
     return int(result)
@@ -130,7 +140,7 @@ def compute_nb_contracts(start_date, end_date, filters):
         "account_invoice.id = account_invoice_line.invoice_id",
         "account_invoice.type IN ('out_invoice', 'out_refund')",
         "account_invoice.state NOT IN ('draft', 'cancel')",
-        "account_invoice_line.subscription_id IS NOT NULL"
+        #"account_invoice_line.subscription_id IS NOT NULL"
     ]
 
     sql_results = _execute_sql_query(fields, tables, conditions, {

@@ -16,7 +16,7 @@ class SaleReport(models.Model):
         ], string="Invoice Status", readonly=True)
 
     def _query(self, with_clause='', fields={}, groupby='', from_clause=''):
-        fields['is_abandoned_cart'] = """, s.date_order <= (timezone('utc', now()) - ((COALESCE(config.value, '1.0') || ' hour')::INTERVAL))
+        fields['is_abandoned_cart'] = """, s.date_order <= (timezone('utc', now()) - ((COALESCE(w.cart_abandoned_delay, '1.0') || ' hour')::INTERVAL))
         AND team.team_type = 'website'
         AND s.state = 'draft'
         AND s.partner_id != %s
@@ -25,11 +25,11 @@ class SaleReport(models.Model):
 
         from_clause += """
             left join crm_team team on team.id = s.team_id
-            left join ir_config_parameter config on config.key = 'website_sale.cart_abandoned_delay'
+            left join website w on w.id = s.website_id
         """
 
         groupby += """
-            , config.value
+            , w.cart_abandoned_delay
             , team.team_type
             , s.invoice_status
             """

@@ -16,6 +16,22 @@ from random import randint
 from odoo import api, fields, models, _
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
 
+def _fix_image_transparency(image):
+    """ Modify image transparency to minimize issue of grey bar artefact.
+
+    When an image has a transparent pixel zone next to white pixel zone on a
+    white background, this may cause on some renderer grey line artefacts at
+    the edge between white and transparent.
+
+    This method sets transparent pixel to white transparent pixel which solves
+    the issue for the most probable case. With this the issue happen for a
+    black zone on black background but this is less likely to happen.
+    """
+    pixels = image.load()
+    for x in range(image.size[0]):
+        for y in range(image.size[1]):
+            if pixels[x, y] == (0, 0, 0, 0):
+                pixels[x, y] = (255, 255, 255, 0)
 
 class SignRequest(models.Model):
     _name = "sign.request"
@@ -358,8 +374,9 @@ class SignRequest(models.Model):
                     can.drawString(width*item.posX, height*(1-item.posY-item.height*0.9), value)
 
                 elif item.type_id.type == "signature" or item.type_id.type == "initial":
-                    img = base64.b64decode(value[value.find(',')+1:])
-                    can.drawImage(ImageReader(io.BytesIO(img)), width*item.posX, height*(1-item.posY-item.height), width*item.width, height*item.height, 'auto', True)
+                    image_reader = ImageReader(io.BytesIO(base64.b64decode(value[value.find(',')+1:])))
+                    _fix_image_transparency(image_reader._image)
+                    can.drawImage(image_reader, width*item.posX, height*(1-item.posY-item.height), width*item.width, height*item.height, 'auto', True)
 
             can.showPage()
 
@@ -496,7 +513,7 @@ class SignRequestItem(models.Model):
                 'record': signer,
                 'link': url_join(base_url, "sign/document/%(request_id)s/%(access_token)s" % {'request_id': signer.sign_request_id.id, 'access_token': signer.access_token}),
                 'subject': subject,
-                'body': message,
+                'body': message if message != '<p><br></p>' else False,
             }, engine='ir.qweb', minimal_qcontext=True)
 
             self.env['sign.request']._message_send_mail(

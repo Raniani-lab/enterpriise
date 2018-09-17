@@ -1,71 +1,76 @@
 odoo.define('website_crm_score.set_score', function (require) {
 "use strict";
 
-var ajax = require('web.ajax');
+var CustomizeMenu = require('website.customizeMenu');
 var rpc = require('web.rpc');
-var websiteSeo = require('website.seo');
 var weContext = require("web_editor.context");
-var core = require('web.core');
+var Widget = require('web.Widget');
 
-var qweb = core.qweb;
-
-ajax.loadXML('/website_crm_score/static/src/xml/track_page.xml', qweb);
-
-websiteSeo.SeoConfigurator.include({
+var TrackPage = Widget.extend({
+    template: 'website_crm_score.track_page',
+    xmlDependencies: ['/website_crm_score/static/src/xml/track_page.xml'],
+    events: {
+        'change #switch-track-page': '_onTrackChange',
+    },
     track: null,
     start: function () {
-        var def = this._super.apply(this, arguments);
         var self = this;
-        this.is_tracked().then(function (data) {
-            var add = $('<input type="checkbox" required="required"/>');
+        this.$input = this.$('#switch-track-page');
+        this._is_tracked().then(function (data) {
             if (data[0]['track']) {
-                add.attr('checked','checked');
                 self.track = true;
-            }
-            else {
+                self.$input.attr('checked','checked');
+            } else {
                 self.track = false;
             }
-            self.$('h4[class="track-page"]').append(add);
         });
-        return def;
     },
-    is_tracked: function (val) {
+    _is_tracked: function (val) {
         var viewid = $('html').data('viewid');
         if (!viewid) {
             return $.Deferred().reject();
         } else {
             return rpc.query({
-                    model: 'ir.ui.view',
-                    method: 'read',
-                    args: [[viewid], ['track'], weContext.get()],
-                });
-        }
-    },
-    update: function () {
-        var self = this;
-        var mysuper = this._super;
-        var checkbox_value = this.$('input[type="checkbox"]').is(':checked');
-        if (checkbox_value !== self.track) {
-            this.trackPage(checkbox_value).then(function () {
-                mysuper.call(self);
+                model: 'ir.ui.view',
+                method: 'read',
+                args: [[viewid], ['track'], weContext.get()],
             });
         }
-        else {
-            mysuper.call(self);
+    },
+    _onTrackChange: function (ev) {
+        var checkbox_value = this.$input.is(':checked');
+        if (checkbox_value !== this.track) {
+            this.track = checkbox_value;
+            this._trackPage(checkbox_value);
         }
     },
-    trackPage: function (val) {
+    _trackPage: function (val) {
         var viewid = $('html').data('viewid');
         if (!viewid) {
             return $.Deferred().reject();
         } else {
             return rpc.query({
-                    model: 'ir.ui.view',
-                    method: 'write',
-                    args: [[viewid], { track: val }, weContext.get()],
-                });
+                model: 'ir.ui.view',
+                method: 'write',
+                args: [[viewid], { track: val }, weContext.get()],
+            });
         }
     },
 });
 
+CustomizeMenu.include({
+    _loadCustomizeOptions: function () {
+        var self = this;
+        var def = this._super.apply(this, arguments);
+        return def.then(function () {
+            if (!self.__trackpageLoaded) {
+                self.__trackpageLoaded = true;
+                self.trackPage = new TrackPage(self);
+                self.trackPage.appendTo(self.$el.children('.dropdown-menu'));
+            }
+        });
+    },
 });
+
+});
+

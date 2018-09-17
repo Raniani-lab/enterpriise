@@ -134,23 +134,23 @@ var NewReportDialog = Dialog.extend({
     init: function (parent, modelName) {
         this.modelName = modelName;
         var options = {
-            title: _t("Which layout do you want?"),
+            title: _t("Which type of report do you want to create?"),
             size: 'medium',
             buttons: [],
         };
 
         this.layouts = [{
             name: 'web.basic_layout',
-            label: _t("Basic Layout"),
-            description: _t("(TODO: description)"),
+            label: _t("Blank"),
+            description: _t("No header/footer"),
         }, {
             name: 'web.internal_layout',
-            label: _t("Internal Layout"),
-            description: _t("(TODO: description)"),
+            label: _t("Internal"),
+            description: _t("Minimal header/footer"),
         }, {
             name: 'web.external_layout',
-            label: _t("External Layout"),
-            description: _t("(TODO: description)"),
+            label: _t("External"),
+            description: _t("Business header/footer"),
         }];
 
         this._super(parent, options);

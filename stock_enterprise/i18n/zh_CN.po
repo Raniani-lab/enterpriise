@@ -233,7 +233,7 @@ msgstr ""
 #. module: stock_enterprise
 #: model:ir.model,name:stock_enterprise.model_stock_report
 msgid "Stock Report"
-msgstr ""
+msgstr "库存报告"
 
 #. module: stock_enterprise
 #: model:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view

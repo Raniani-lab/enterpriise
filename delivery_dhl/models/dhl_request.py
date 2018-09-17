@@ -17,9 +17,9 @@ class DHLProvider():
     def __init__(self, prod_environment, debug_logger):
         self.debug_logger = debug_logger
         if not prod_environment:
-            self.url = 'https://xmlpitest-ea.dhl.com/XMLShippingServlet'
+            self.url = 'https://xmlpitest-ea.dhl.com/XMLShippingServlet?isUTF8Support=true'
         else:
-            self.url = 'https://xmlpi-ea.dhl.com/XMLShippingServlet'
+            self.url = 'https://xmlpi-ea.dhl.com/XMLShippingServlet?isUTF8Support=true'
 
     def _get_rate_param(self, order, carrier):
         res = {}
@@ -197,7 +197,7 @@ class DHLProvider():
             self.debug_logger(response_text, 'dhl_response')
         except IOError:
             raise UserError("DHL Server not found. Check your connectivity.")
-        root = etree.fromstring(response_text)
+        root = etree.fromstring(response_text.decode(encoding="utf-8"))
         return root
 
     def _create_rate_xml(self, param):
@@ -300,9 +300,9 @@ class DHLProvider():
             etree.SubElement(billing_node, "DutyPaymentType").text = "S"
 
         consignee_node = etree.SubElement(root, "Consignee")
-        etree.SubElement(consignee_node, "CompanyName").text = self._remove_accents(param["recipient_partner"].name)
-        etree.SubElement(consignee_node, "AddressLine").text = self._remove_accents(param["recipient_streetLines"])
-        etree.SubElement(consignee_node, "City").text = self._remove_accents(param["recipient_partner"].city)
+        etree.SubElement(consignee_node, "CompanyName").text = param["recipient_partner"].name
+        etree.SubElement(consignee_node, "AddressLine").text = param["recipient_streetLines"]
+        etree.SubElement(consignee_node, "City").text = param["recipient_partner"].city
 
         if param["recipient_partner"].state_id:
             etree.SubElement(consignee_node, "Division").text = param["recipient_partner"].state_id.name
@@ -311,7 +311,7 @@ class DHLProvider():
         etree.SubElement(consignee_node, "CountryCode").text = param["recipient_partner"].country_id.code
         etree.SubElement(consignee_node, "CountryName").text = param["recipient_partner"].country_id.name
         contact_node = etree.SubElement(consignee_node, "Contact")
-        etree.SubElement(contact_node, "PersonName").text = self._remove_accents(param["recipient_partner"].name)
+        etree.SubElement(contact_node, "PersonName").text = param["recipient_partner"].name
         etree.SubElement(contact_node, "PhoneNumber").text = param["recipient_partner"].phone
         etree.SubElement(contact_node, "Email").text = param["recipient_partner"].email
         if param["is_dutiable"]:
@@ -351,23 +351,22 @@ class DHLProvider():
 
         shipper_node = etree.SubElement(root, "Shipper")
         etree.SubElement(shipper_node, "ShipperID").text = carrier.dhl_account_number
-        etree.SubElement(shipper_node, "CompanyName").text = self._remove_accents(param["shipper_company"].name)
-        etree.SubElement(shipper_node, "AddressLine").text = self._remove_accents(param["shipper_streetLines"])
-        etree.SubElement(shipper_node, "City").text = self._remove_accents(param["shipper_partner"].city)
-        etree.SubElement(shipper_node, "PostalCode").text = self._remove_accents(param["shipper_partner"].zip)
+        etree.SubElement(shipper_node, "CompanyName").text = param["shipper_company"].name
+        etree.SubElement(shipper_node, "AddressLine").text = param["shipper_streetLines"]
+        etree.SubElement(shipper_node, "City").text = param["shipper_partner"].city
+        etree.SubElement(shipper_node, "PostalCode").text = param["shipper_partner"].zip
         etree.SubElement(shipper_node, "CountryCode").text = param["shipper_partner"].country_id.code
         etree.SubElement(shipper_node, "CountryName").text = param["shipper_partner"].country_id.name
 
         contact_node = etree.SubElement(shipper_node, "Contact")
-        etree.SubElement(contact_node, "PersonName").text = self._remove_accents(param["shipper_partner"].name)
+        etree.SubElement(contact_node, "PersonName").text = param["shipper_partner"].name
         etree.SubElement(contact_node, "PhoneNumber").text = param["shipper_partner"].phone
 
         etree.SubElement(root, "LabelImageFormat").text = param["LabelImageFormat"]
 
         label_node = etree.SubElement(root, "Label")
         etree.SubElement(label_node, "LabelTemplate").text = param["LabelTemplate"]
-
-        return etree.tostring(root)
+        return etree.tostring(root, encoding='utf-8')
 
     def check_required_value(self, carrier, recipient, shipper, order=False, picking=False):
         carrier = carrier.sudo()
@@ -399,14 +398,3 @@ class DHLProvider():
             for line in order.order_line.filtered(lambda line: not line.product_id.weight and not line.is_delivery and line.product_id.type not in ['service', 'digital']):
                 return _('The estimated price cannot be computed because the weight of your product is missing.')
         return False
-
-    def _remove_accents(self, input_str):
-        ''' Remove all the accented characters from a string
-        :param input_str str(P3)/unicode(P2): A text that may contain accents.
-        :return: The same text with the accented characters mapped to their
-                 "unaccented" counterpart.
-        :rtype: str (P3) or unicode (P2)
-        '''
-        nfkd_form = unicodedata.normalize('NFKD', input_str)
-        only_ascii = nfkd_form.encode('ASCII', 'ignore').decode('utf-8')
-        return only_ascii

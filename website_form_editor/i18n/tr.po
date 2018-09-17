@@ -3,18 +3,17 @@
 # * website_form_editor
 # 
 # Translators:
-# Martin Trigaux, 2017
-# Ayhan KIZILTAN <akiziltan76@hotmail.com>, 2017
-# Ramiz Deniz Öner <deniz@denizoner.com>, 2017
-# Murat Kaplan <muratk@projetgrup.com>, 2017
-# Ediz Duman <neps1192@gmail.com>, 2017
+# Ayhan KIZILTAN <akiziltan76@hotmail.com>, 2018
+# Martin Trigaux, 2018
+# Murat Kaplan <muratk@projetgrup.com>, 2018
+# Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2018
 # Umur Akın <umura@projetgrup.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.3+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 08:34+0000\n"
-"PO-Revision-Date: 2018-06-25 08:34+0000\n"
+"POT-Creation-Date: 2018-08-24 11:29+0000\n"
+"PO-Revision-Date: 2018-08-24 11:29+0000\n"
 "Last-Translator: Umur Akın <umura@projetgrup.com>, 2018\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
@@ -25,17 +24,10 @@ msgstr ""
 
 #. module: website_form_editor
 #. openerp-web
-#: code:addons/website_form_editor/static/src/xml/website_form_editor.xml:11
+#: code:addons/website_form_editor/static/src/xml/website_form_editor.xml:12
 #, python-format
 msgid "&times;"
-msgstr "&zaman;"
-
-#. module: website_form_editor
-#: model:ir.ui.view,arch_db:website_form_editor.s_website_form
-msgid ""
-"<span class=\"btn btn-primary btn-lg o_website_form_send\">Send</span>\n"
-"                        <span id=\"o_website_form_result\"/>"
-msgstr ""
+msgstr "&times;"
 
 #. module: website_form_editor
 #: model:ir.ui.view,arch_db:website_form_editor.snippet_options
@@ -114,7 +106,7 @@ msgstr "Numara"
 #. module: website_form_editor
 #: model:ir.ui.view,arch_db:website_form_editor.snippet_options
 msgid "Radio Buttons"
-msgstr "Radyo Düğmesi"
+msgstr "Radyo Düğmeleri"
 
 #. module: website_form_editor
 #: model:ir.ui.view,arch_db:website_form_editor.snippet_options
@@ -132,6 +124,11 @@ msgstr "Kaydet"
 #: model:ir.ui.view,arch_db:website_form_editor.snippet_options
 msgid "Selection"
 msgstr "Seçim"
+
+#. module: website_form_editor
+#: model:ir.ui.view,arch_db:website_form_editor.s_website_form
+msgid "Send"
+msgstr "Gönder"
 
 #. module: website_form_editor
 #: model:ir.ui.view,arch_db:website_form_editor.snippet_options

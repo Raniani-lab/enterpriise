@@ -3,9 +3,8 @@
 # * sale_account_taxcloud
 # 
 # Translators:
-# Murat Kaplan <muratk@projetgrup.com>, 2017
-# Martin Trigaux, 2017
-# Umur Akın <umura@projetgrup.com>, 2018
+# Martin Trigaux, 2018
+# Murat Kaplan <muratk@projetgrup.com>, 2018
 # Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2018
 msgid ""
 msgstr ""
@@ -36,7 +35,7 @@ msgstr "Teklif"
 #, python-format
 msgid "The configuration of TaxCloud is in the Accounting app, Settings menu."
 msgstr ""
-"TaxCloud konfigürasyonu Ayarlar menüsü, Muhasebe uygulamasının içinde."
+"TaxCloud konfigürasyonu Muhasebe uygulamasının içinde, Ayarlar menüsünde."
 
 #. module: sale_account_taxcloud
 #: code:addons/sale_account_taxcloud/models/sale_order.py:34

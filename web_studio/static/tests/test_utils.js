@@ -112,14 +112,7 @@ function createSidebar (params) {
         },
     });
     var parent = new Parent();
-    var selector = params.debug ? 'body' : '#qunit-fixture';
-    if (params.debug) {
-        $('body').addClass('debug');
-    }
-    parent.appendTo(selector);
-    testUtils.addMockEnvironment(parent, _.extend(params, {
-        // TODO
-    }));
+    testUtils.addMockEnvironment(parent, params);
 
     var sidebar = new ReportEditorSidebar(parent, params);
     sidebar.destroy = function () {
@@ -128,7 +121,17 @@ function createSidebar (params) {
         delete sidebar.destroy;
         parent.destroy();
     };
-    sidebar.appendTo(parent.$('.o_web_studio_editor_manager'));
+
+    var selector = params.debug ? 'body' : '#qunit-fixture';
+    if (params.debug) {
+        $('body').addClass('debug');
+    }
+    parent.appendTo(selector);
+
+    var fragment = document.createDocumentFragment();
+    sidebar.appendTo(fragment).then(function () {
+        sidebar.$el.appendTo(parent.$('.o_web_studio_editor_manager'));
+    });
     return sidebar;
 }
 

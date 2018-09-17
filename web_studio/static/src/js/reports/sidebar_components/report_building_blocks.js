@@ -234,7 +234,7 @@ var AbstractNewComponent = Abstract.extend({
             return _.map(this.targets, function (target) {
                 var isCol = (target.node.attrs.class || '').match(/(^|\s)(col(-[0-9]+)?)(\s|$)/);
                 return {
-                    content: isCol ? options.contentInStructure : options.content,
+                    content: isCol ? options.contentInStructure || options.content : options.content,
                     position: target.position,
                     xpath: target.node.attrs['data-oe-xpath'],
                     view_id: +target.node.attrs['data-oe-id'],
@@ -258,16 +258,15 @@ var AbstractNewComponent = Abstract.extend({
         var stack = [parent];
         parent = stack.shift();
         while (parent) {
-            if (!parent.children) {
-                continue;
-            }
-            for (var k = 0; k < parent.children.length; k++) {
-                var node = parent.children[k];
-                if (fn(node)) {
-                    children.push(node);
+            if (parent.children) {
+                for (var k = 0; k < parent.children.length; k++) {
+                    var node = parent.children[k];
+                    if (fn(node)) {
+                        children.push(node);
+                    }
                 }
+                stack = parent.children.concat(stack);
             }
-            stack = parent.children.concat(stack);
             parent = stack.shift();
         }
         return children;
@@ -277,7 +276,7 @@ var AbstractNewComponent = Abstract.extend({
 var BuildingTextComponent = AbstractNewComponent.extend({
     type: 'text',
     label: _lt('Text'),
-    dropIn: 'div[class*=col-], td, th, p',
+    dropIn: '.row > div, td, th, p',
     className: 'o_web_studio_field_char',
     hookClass: 'o_web_studio_hook_inline',
     hookAutoHeight: true,
@@ -323,8 +322,8 @@ var BuildingFieldComponent = AbstractNewComponent.extend({
             var availableKeys = _.filter(self._getContextKeys(target.node), function (field) {return !!field.relation;});
             var dialog = new NewFieldDialog(self, 'record_fake_model', field, availableKeys).open();
             dialog.on('field_default_values_saved', self, function (values) {
-                if (values.related.split('.').length < 2) {
-                    Dialog.alert(self, _t('The record field name is missing'));
+                if (!_.contains(values.related, '.')) {
+                    Dialog.alert(self, _t('Please specify a field name for the selected model.'));
                     return;
                 }
                 def.resolve({
@@ -339,16 +338,20 @@ var BuildingFieldComponent = AbstractNewComponent.extend({
         });
     },
     _dataInheritance: function (values) {
-        var field = $('<span/>').attr('t-field', values.related).prop('outerHTML');
+        var $field = $('<span/>').attr('t-field', values.related);
+        if (values.type === 'binary') {
+             $field.attr('t-options-widget', '"image"');
+        }
+        var fieldHTML = $field.prop('outerHTML');
         if (this.node.tag === 'td' || this.node.tag === 'th') {
             return  this._createReportTableColumn({
                 head: $('<span/>').text(values.string).prop('outerHTML'),
-                bodyLoop: field,
+                bodyLoop: fieldHTML,
             });
         } else {
             return this._createContent({
-                contentInStructure: '<span><strong>' + values.string + ':</strong><br/></span>' + field,
-                content: field,
+                contentInStructure: '<span><strong>' + values.string + ':</strong><br/></span>' + fieldHTML,
+                content: fieldHTML,
             });
         }
     },
@@ -378,7 +381,7 @@ var BuildingImageComponent = AbstractNewComponent.extend({
                 if (value) {
                     def.resolve({
                         inheritance: self._createContent({
-                            content: '<img src="' + value + '"/>',
+                            content: '<img class="img-fluid" src="' + value + '"/>',
                         })
                     });
                 } else {
@@ -401,7 +404,7 @@ var BuildingBlockTitle = AbstractNewComponent.extend({
         return this._super.apply(this, arguments).then(function () {
             return $.when({
                 inheritance: [{
-                    content: '<h2>New Title</h2>',
+                    content: '<div class="row"><div class="col h2"><span>New Title</span></div></div>',
                     position: self.position,
                     xpath: self.node.attrs['data-oe-xpath'],
                     view_id: +self.node.attrs['data-oe-id'],
@@ -438,6 +441,10 @@ var BuildingBlockAddress = AbstractNewComponent.extend({
             // TODO: maybe filter keys to only get many2one fields to res.partner?
             var dialog = new NewFieldDialog(self, 'record_fake_model', field, availableKeys).open();
             dialog.on('field_default_values_saved', self, function (values) {
+                if (!_.contains(values.related, '.')) {
+                    Dialog.alert(self, _t('Please specify a field name for the selected model.'));
+                    return;
+                }
                 if (values.relation === 'res.partner') {
                     def.resolve({
                         inheritance: self._createContent({

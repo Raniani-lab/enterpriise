@@ -2,12 +2,21 @@
 # This file contains the translation of the following modules:
 # * delivery_ups
 # 
+# Translators:
+# Amer Hazaa <eng.amer.it@gmail.com>, 2018
+# Mustafa Rawi <mustafa@cubexco.com>, 2018
+# Martin Trigaux, 2018
+# Osoul <baruni@osoul.ly>, 2018
+# Mohammed Ibrahim <m.ibrahim@mussder.com>, 2018
+# Osama Ahmaro <osamaahmaro@gmail.com>, 2018
+# Shaima Safar <shaima.safar@open-inside.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-08-24 11:28+0000\n"
 "PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"Last-Translator: Shaima Safar <shaima.safar@open-inside.com>, 2018\n"
 "Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,7 +27,7 @@ msgstr ""
 #. module: delivery_ups
 #: selection:delivery.carrier,delivery_type:0
 msgid "Based on Rules"
-msgstr ""
+msgstr "بناء على تعليمات"
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_bill_my_account
@@ -35,7 +44,7 @@ msgstr ""
 #: model:ir.model,name:delivery_ups.model_delivery_carrier
 #: model:ir.model.fields,field_description:delivery_ups.field_product_packaging__package_carrier_type
 msgid "Carrier"
-msgstr ""
+msgstr "شركة الشحن"
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_sale_order__ups_carrier_account
@@ -51,7 +60,7 @@ msgstr ""
 #. module: delivery_ups
 #: selection:delivery.carrier,ups_package_dimension_unit:0
 msgid "Centimeters"
-msgstr ""
+msgstr "سنتيمترات"
 
 #. module: delivery_ups
 #: selection:delivery.carrier,ups_cod_funds_code:0
@@ -92,12 +101,12 @@ msgstr ""
 #: selection:delivery.carrier,delivery_type:0
 #: selection:product.packaging,package_carrier_type:0
 msgid "FedEx"
-msgstr ""
+msgstr "فيدكس"
 
 #. module: delivery_ups
 #: selection:delivery.carrier,delivery_type:0
 msgid "Fixed Price"
-msgstr ""
+msgstr "الاسعار الثابته"
 
 #. module: delivery_ups
 #: model:ir.model.fields,help:delivery_ups.field_delivery_carrier__ups_bill_my_account
@@ -110,12 +119,12 @@ msgstr ""
 #. module: delivery_ups
 #: selection:delivery.carrier,ups_package_dimension_unit:0
 msgid "Inches"
-msgstr ""
+msgstr "إنشات"
 
 #. module: delivery_ups
 #: selection:delivery.carrier,ups_package_weight_unit:0
 msgid "Kilograms"
-msgstr ""
+msgstr "كيلوغرامات"
 
 #. module: delivery_ups
 #: selection:product.packaging,package_carrier_type:0
@@ -125,33 +134,33 @@ msgstr ""
 #. module: delivery_ups
 #: selection:delivery.carrier,ups_label_file_type:0
 msgid "PDF"
-msgstr ""
+msgstr "PDF"
 
 #. module: delivery_ups
 #: model:ir.model,name:delivery_ups.model_product_packaging
 msgid "Packaging"
-msgstr ""
+msgstr "التعبئة"
 
 #. module: delivery_ups
 #: code:addons/delivery_ups/models/ups_request.py:209
 #, python-format
 msgid "Please provide at least one item to ship."
-msgstr ""
+msgstr "يرجى تقديم عنصر واحد على الأقل لشحن."
 
 #. module: delivery_ups
 #: selection:delivery.carrier,ups_package_weight_unit:0
 msgid "Pounds"
-msgstr ""
+msgstr "رطل"
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__delivery_type
 msgid "Provider"
-msgstr ""
+msgstr "المزود"
 
 #. module: delivery_ups
 #: model:ir.model,name:delivery_ups.model_sale_order
 msgid "Quotation"
-msgstr ""
+msgstr "عرض مبدئي"
 
 #. module: delivery_ups
 #: selection:delivery.carrier,ups_label_file_type:0
@@ -167,7 +176,7 @@ msgstr ""
 #: code:addons/delivery_ups/models/delivery_ups.py:231
 #, python-format
 msgid "Shipment N° %s has been cancelled"
-msgstr ""
+msgstr "تم إلغاء الشحنة N° %s"
 
 #. module: delivery_ups
 #: code:addons/delivery_ups/models/delivery_ups.py:202
@@ -184,6 +193,8 @@ msgid ""
 "The address of your company is missing or wrong.\n"
 "(Missing field(s) : %s)"
 msgstr ""
+"عنوان شركة مفقود أو خاطئ.\n"
+"(الحقل المفقود(s) : %s)"
 
 #. module: delivery_ups
 #: code:addons/delivery_ups/models/ups_request.py:197
@@ -192,13 +203,15 @@ msgid ""
 "The address of your warehouse is missing or wrong.\n"
 "(Missing field(s) : %s)"
 msgstr ""
+"عنوان المستودع الخاص بك مفقود أو خاطئ.\n"
+"(حقل مفقود(s) : %s)"
 
 #. module: delivery_ups
 #: code:addons/delivery_ups/models/ups_request.py:215
 #, python-format
 msgid ""
 "The delivery cannot be done because the weight of your product is missing."
-msgstr ""
+msgstr "لا يمكن أن يتم تسليم لأن وزن المنتج الخاص بك مفقود."
 
 #. module: delivery_ups
 #: code:addons/delivery_ups/models/ups_request.py:211
@@ -206,7 +219,7 @@ msgstr ""
 msgid ""
 "The estimated price cannot be computed because the weight of your product is"
 " missing."
-msgstr ""
+msgstr "لا يمكن أن تحسب السعر التقديري للمنتج الخاص بك لأنه الوزن مفقود"
 
 #. module: delivery_ups
 #: code:addons/delivery_ups/models/ups_request.py:219
@@ -215,6 +228,8 @@ msgid ""
 "The recipient address is missing or wrong.\n"
 "(Missing field(s) : %s)"
 msgstr ""
+"عنوان المستلم مفقود أو خاطئ.\n"
+"(حقل مفقود(s) : %s)"
 
 #. module: delivery_ups
 #: model:ir.model.fields,help:delivery_ups.field_delivery_carrier__ups_cod
@@ -233,13 +248,13 @@ msgstr ""
 #. module: delivery_ups
 #: model:ir.model,name:delivery_ups.model_stock_picking
 msgid "Transfer"
-msgstr ""
+msgstr "نقل"
 
 #. module: delivery_ups
 #: selection:delivery.carrier,delivery_type:0
 #: selection:product.packaging,package_carrier_type:0
 msgid "UPS"
-msgstr ""
+msgstr "UPS"
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_access_number
@@ -311,7 +326,7 @@ msgstr ""
 #. module: delivery_ups
 #: selection:delivery.carrier,delivery_type:0
 msgid "USPS"
-msgstr ""
+msgstr "USPS"
 
 #. module: delivery_ups
 #: model:product.product,uom_name:delivery_ups.product_product_delivery_ups_be
@@ -319,7 +334,7 @@ msgstr ""
 #: model:product.template,uom_name:delivery_ups.product_product_delivery_ups_be_product_template
 #: model:product.template,uom_name:delivery_ups.product_product_delivery_ups_us_product_template
 msgid "Unit(s)"
-msgstr ""
+msgstr "وحدة(ات)"
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_package_dimension_unit
@@ -345,7 +360,7 @@ msgstr ""
 #: selection:delivery.carrier,delivery_type:0
 #: selection:product.packaging,package_carrier_type:0
 msgid "bpost"
-msgstr ""
+msgstr "bpost"
 
 #. module: delivery_ups
 #: model:product.product,weight_uom_name:delivery_ups.product_product_delivery_ups_be
@@ -353,4 +368,4 @@ msgstr ""
 #: model:product.template,weight_uom_name:delivery_ups.product_product_delivery_ups_be_product_template
 #: model:product.template,weight_uom_name:delivery_ups.product_product_delivery_ups_us_product_template
 msgid "kg"
-msgstr ""
+msgstr "كجم"

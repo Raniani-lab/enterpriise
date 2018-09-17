@@ -2,12 +2,18 @@
 # This file contains the translation of the following modules:
 # * account_reports
 # 
+# Translators:
+# Martin Trigaux, 2018
+# Turkesh Patel <turkesh4friends@gmail.com>, 2018
+# Dharmraj Jhala <dja@openerp.com>, 2018
+# Ranjit Pillai <rpi@odoo.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"POT-Creation-Date: 2018-09-05 09:11+0000\n"
+"PO-Revision-Date: 2018-09-05 09:11+0000\n"
+"Last-Translator: Ranjit Pillai <rpi@odoo.com>, 2018\n"
 "Language-Team: Gujarati (https://www.transifex.com/odoo/teams/41243/gu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -40,8 +46,8 @@ msgid "(No Group)"
 msgstr ""
 
 #. module: account_reports
+#: code:addons/account_reports/models/account_financial_report.py:355
 #: code:addons/account_reports/models/account_financial_report.py:357
-#: code:addons/account_reports/models/account_financial_report.py:359
 #, python-format
 msgid "(copy)"
 msgstr ""
@@ -204,7 +210,7 @@ msgstr ""
 #: code:addons/account_reports/models/account_partner_ledger.py:31
 #, python-format
 msgid "Account"
-msgstr ""
+msgstr "ખાતું"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_financial_html_report
@@ -240,7 +246,10 @@ msgid "Action"
 msgstr ""
 
 #. module: account_reports
+#. openerp-web
+#: code:addons/account_reports/static/src/js/account_reports.js:356
 #: model:ir.ui.view,arch_db:account_reports.main_template
+#, python-format
 msgid "Add a note"
 msgstr ""
 
@@ -297,11 +306,16 @@ msgstr ""
 #: model:ir.ui.view,arch_db:account_reports.search_template_journals
 #: model:ir.ui.view,arch_db:account_reports.search_template_multi_company
 msgid "All"
-msgstr ""
+msgstr "બધા"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_financial_html_report__analytic
 msgid "Allow analytic filters"
+msgstr ""
+
+#. module: account_reports
+#: model:ir.model.fields,field_description:account_reports.field_account_financial_html_report__cash_basis
+msgid "Allow cash basis mode"
 msgstr ""
 
 #. module: account_reports
@@ -323,7 +337,7 @@ msgstr ""
 #: code:addons/account_reports/models/account_bank_reconciliation_report.py:24
 #, python-format
 msgid "Amount"
-msgstr ""
+msgstr "કિંમત"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_partner_ledger.py:40
@@ -394,6 +408,11 @@ msgstr ""
 #. module: account_reports
 #: model:ir.ui.view,arch_db:account_reports.template_followup_report
 msgid "Auto"
+msgstr ""
+
+#. module: account_reports
+#: model:ir.ui.view,arch_db:account_reports.view_account_financial_report_form
+msgid "Available Filters & Options"
 msgstr ""
 
 #. module: account_reports
@@ -528,7 +547,7 @@ msgstr ""
 
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_cashsummary_cash_spent0
-msgid "Cash paid for"
+msgid "Cash paid for operating activities"
 msgstr ""
 
 #. module: account_reports
@@ -538,7 +557,7 @@ msgstr ""
 
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_cashsummary_cash_received0
-msgid "Cash received from customers"
+msgid "Cash received from operating activities"
 msgstr ""
 
 #. module: account_reports
@@ -579,7 +598,7 @@ msgstr ""
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_financial_html_report_line__code
 msgid "Code"
-msgstr ""
+msgstr "કોડ"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_followup_report.py:32
@@ -591,7 +610,7 @@ msgstr ""
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_res_company
 msgid "Companies"
-msgstr ""
+msgstr "કંપનીઓ"
 
 #. module: account_reports
 #: model:ir.ui.view,arch_db:account_reports.filter_info_template
@@ -603,7 +622,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_reports.field_account_financial_html_report__company_id
 #: model:ir.model.fields,field_description:account_reports.field_account_report_manager__company_id
 msgid "Company"
-msgstr ""
+msgstr "કંપની"
 
 #. module: account_reports
 #: model:ir.ui.view,arch_db:account_reports.view_account_financial_report_line_form
@@ -626,7 +645,7 @@ msgstr ""
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_res_partner
 msgid "Contact"
-msgstr ""
+msgstr "સંપર્ક"
 
 #. module: account_reports
 #: model:ir.ui.view,arch_db:account_reports.view_account_financial_report_line_form
@@ -653,7 +672,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_reports.field_account_report_footnote__create_uid
 #: model:ir.model.fields,field_description:account_reports.field_account_report_manager__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "બનાવનાર"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_financial_html_report__create_date
@@ -674,13 +693,13 @@ msgstr ""
 #: code:addons/account_reports/models/account_report_coa.py:43
 #, python-format
 msgid "Credit"
-msgstr ""
+msgstr "જમા"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_general_ledger.py:32
 #, python-format
 msgid "Currency"
-msgstr ""
+msgstr "ચલણ"
 
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_current_assets0
@@ -754,7 +773,7 @@ msgstr ""
 #: code:addons/account_reports/models/account_general_ledger.py:29
 #, python-format
 msgid "Date"
-msgstr ""
+msgstr "તારીખ"
 
 #. module: account_reports
 #: model:ir.ui.view,arch_db:account_reports.search_template_comparison
@@ -789,7 +808,7 @@ msgstr ""
 #: model:ir.ui.view,arch_db:account_reports.search_template_comparison
 #: model:ir.ui.view,arch_db:account_reports.search_template_date_filter
 msgid "Date:"
-msgstr ""
+msgstr "તારીખ:"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_res_config_settings__days_between_two_followups
@@ -821,7 +840,7 @@ msgstr ""
 #: code:addons/account_reports/models/account_report_coa.py:42
 #, python-format
 msgid "Debit"
-msgstr ""
+msgstr "ઉધાર"
 
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_depreciation0
@@ -873,7 +892,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_reports.field_account_report_footnote__display_name
 #: model:ir.model.fields,field_description:account_reports.field_account_report_manager__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "પ્રદર્શન નામ"
 
 #. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_account_financial_html_report__hierarchy_option
@@ -883,14 +902,14 @@ msgstr ""
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_financial_html_report_line__domain
 msgid "Domain"
-msgstr ""
+msgstr "શરતી અવકાશ"
 
 #. module: account_reports
 #. openerp-web
 #: code:addons/account_reports/static/src/xml/account_report_template.xml:16
 #, python-format
 msgid "Done"
-msgstr ""
+msgstr "પુર્ણ થયુ"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_followup_report.py:30
@@ -1014,7 +1033,7 @@ msgstr ""
 #. module: account_reports
 #: selection:account.financial.html.report.line,figure_type:0
 msgid "Float"
-msgstr ""
+msgstr "ફ્લોટ"
 
 #. module: account_reports
 #: selection:account.financial.html.report.line,show_domain:0
@@ -1168,15 +1187,15 @@ msgid "Group by"
 msgstr ""
 
 #. module: account_reports
-#: code:addons/account_reports/models/account_financial_report.py:293
-#: code:addons/account_reports/models/account_financial_report.py:727
-#: code:addons/account_reports/models/account_financial_report.py:840
+#: code:addons/account_reports/models/account_financial_report.py:291
+#: code:addons/account_reports/models/account_financial_report.py:830
+#: code:addons/account_reports/models/account_financial_report.py:943
 #, python-format
 msgid "Groupby should be a field from account.move.line"
 msgstr ""
 
 #. module: account_reports
-#: code:addons/account_reports/models/account_financial_report.py:691
+#: code:addons/account_reports/models/account_financial_report.py:794
 #, python-format
 msgid "Groupby should be a journal item field"
 msgstr ""
@@ -1214,7 +1233,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_reports.field_account_report_footnote__id
 #: model:ir.model.fields,field_description:account_reports.field_account_report_manager__id
 msgid "ID"
-msgstr ""
+msgstr "ઓળખ"
 
 #. module: account_reports
 #: model:ir.ui.view,arch_db:account_reports.followup_search_template
@@ -1222,6 +1241,7 @@ msgid "In Need of Action"
 msgstr ""
 
 #. module: account_reports
+#: model:ir.ui.view,arch_db:account_reports.customer_statements_search_view
 #: selection:res.partner,followup_status:0
 msgid "In need of action"
 msgstr ""
@@ -1273,7 +1293,7 @@ msgstr ""
 #: code:addons/account_reports/models/account_partner_ledger.py:30
 #, python-format
 msgid "JRNL"
-msgstr ""
+msgstr "રોજનામું"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_move_line
@@ -1387,7 +1407,7 @@ msgstr ""
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_financial_html_report__line_ids
 msgid "Lines"
-msgstr ""
+msgstr "લીટીઓ"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_general_ledger.py:384
@@ -1404,12 +1424,12 @@ msgstr ""
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report_footnote__manager_id
 msgid "Manager"
-msgstr ""
+msgstr "વ્યવસ્થાપક"
 
 #. module: account_reports
 #: model:ir.ui.view,arch_db:account_reports.template_followup_report
 msgid "Manual"
-msgstr ""
+msgstr "માર્ગદર્શિકા"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_partner_ledger.py:34
@@ -1436,7 +1456,7 @@ msgstr ""
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_ir_module_module
 msgid "Module"
-msgstr ""
+msgstr "મોડ્યુલ"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_generic_tax_report.py:18
@@ -1450,7 +1470,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_reports.field_account_financial_html_report__name
 #, python-format
 msgid "Name"
-msgstr ""
+msgstr "નામ"
 
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_net_assets0
@@ -1488,7 +1508,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_reports.field_res_partner__payment_next_action_date
 #: model:ir.model.fields,field_description:account_reports.field_res_users__payment_next_action_date
 msgid "Next Action Date"
-msgstr ""
+msgstr "આગળ ની ક્રિયા તારીખ"
 
 #. module: account_reports
 #: code:addons/account_reports/models/res_partner.py:154
@@ -1607,7 +1627,7 @@ msgstr ""
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_financial_html_report_line__parent_id
 msgid "Parent"
-msgstr ""
+msgstr "પિતૃ"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_financial_html_report__parent_id
@@ -1625,7 +1645,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_reports.field_account_report_manager__partner_id
 #, python-format
 msgid "Partner"
-msgstr ""
+msgstr "ભાગીદાર"
 
 #. module: account_reports
 #: model:ir.ui.view,arch_db:account_reports.filter_info_template
@@ -1699,7 +1719,7 @@ msgstr ""
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_executivesummary_position0
 msgid "Position"
-msgstr ""
+msgstr "સ્થાન"
 
 #. module: account_reports
 #: model:ir.ui.view,arch_db:account_reports.filter_info_template
@@ -1792,7 +1812,7 @@ msgstr ""
 #: code:addons/account_reports/models/account_partner_ledger.py:32
 #, python-format
 msgid "Ref"
-msgstr ""
+msgstr "સંદર્ભ"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_aged_partner_balance.py:21
@@ -1800,7 +1820,7 @@ msgstr ""
 #: code:addons/account_reports/models/account_bank_reconciliation_report.py:23
 #, python-format
 msgid "Reference"
-msgstr ""
+msgstr "સંદર્ભ"
 
 #. module: account_reports
 #. openerp-web
@@ -1810,11 +1830,17 @@ msgid "Remind me later"
 msgstr ""
 
 #. module: account_reports
+#: model:ir.ui.view,arch_db:account_reports.view_account_financial_report_form
+msgid "Report Definition"
+msgstr ""
+
+#. module: account_reports
 #: model:ir.ui.view,arch_db:account_reports.view_account_financial_report_line_form
 msgid "Report Line"
 msgstr ""
 
 #. module: account_reports
+#: model:ir.ui.view,arch_db:account_reports.view_account_financial_report_form
 #: model:ir.ui.view,arch_db:account_reports.view_account_financial_report_line_tree
 msgid "Report Lines"
 msgstr ""
@@ -1827,7 +1853,7 @@ msgstr ""
 #. module: account_reports
 #: model:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
 msgid "Reporting"
-msgstr ""
+msgstr "અહેવાલીકરણ"
 
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_retained_earnings0
@@ -1848,7 +1874,7 @@ msgstr ""
 #: model:ir.ui.view,arch_db:account_reports.main_template
 #: model:ir.ui.view,arch_db:account_reports.template_followup_report
 msgid "Save"
-msgstr ""
+msgstr "સંગ્રહો"
 
 #. module: account_reports
 #: model:ir.ui.view,arch_db:account_reports.main_template
@@ -1881,7 +1907,7 @@ msgstr ""
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_financial_html_report_line__sequence
 msgid "Sequence"
-msgstr ""
+msgstr "ક્રમ"
 
 #. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_account_financial_html_report__tax_report
@@ -1930,7 +1956,7 @@ msgstr ""
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report_manager__summary
 msgid "Summary"
-msgstr ""
+msgstr "સાર"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_generic_tax_report.py:18
@@ -1943,7 +1969,7 @@ msgstr ""
 #: code:addons/account_reports/models/account_general_ledger.py:432
 #, python-format
 msgid "Tax Amount"
-msgstr ""
+msgstr "જકાતી રકમ"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_general_ledger.py:423
@@ -1967,7 +1993,7 @@ msgstr ""
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report_footnote__text
 msgid "Text"
-msgstr ""
+msgstr "લેખન"
 
 #. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_res_partner__payment_next_action_date
@@ -2007,7 +2033,7 @@ msgstr ""
 #. module: account_reports
 #: model:ir.ui.view,arch_db:account_reports.search_template_date_filter
 msgid "This Month"
-msgstr ""
+msgstr "આ મહિને"
 
 #. module: account_reports
 #: model:ir.ui.view,arch_db:account_reports.search_template_date_filter
@@ -2023,15 +2049,15 @@ msgstr ""
 #. module: account_reports
 #: model:ir.ui.view,arch_db:account_reports.search_template_date_filter
 msgid "Today"
-msgstr ""
+msgstr "આજે"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_aged_partner_balance.py:22
 #: code:addons/account_reports/models/account_aged_partner_balance.py:78
 #: code:addons/account_reports/models/account_consolidated_journals.py:41
 #: code:addons/account_reports/models/account_consolidated_journals.py:73
-#: code:addons/account_reports/models/account_financial_report.py:917
-#: code:addons/account_reports/models/account_financial_report.py:999
+#: code:addons/account_reports/models/account_financial_report.py:1020
+#: code:addons/account_reports/models/account_financial_report.py:1102
 #: code:addons/account_reports/models/account_general_ledger.py:403
 #: code:addons/account_reports/models/account_general_ledger.py:415
 #: code:addons/account_reports/models/account_partner_ledger.py:219
@@ -2041,7 +2067,7 @@ msgstr ""
 #: model:ir.ui.view,arch_db:account_reports.template_coa_table_header
 #, python-format
 msgid "Total"
-msgstr ""
+msgstr "કુલ"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_general_ledger.py:394
@@ -2083,7 +2109,7 @@ msgstr ""
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_financial_html_report_line__figure_type
 msgid "Type"
-msgstr ""
+msgstr "પ્રકાર"
 
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_unaffected_earnings0
@@ -2092,10 +2118,10 @@ msgstr ""
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_financial_report.py:45
-#: code:addons/account_reports/models/account_financial_report.py:764
+#: code:addons/account_reports/models/account_financial_report.py:867
 #, python-format
 msgid "Undefined"
-msgstr ""
+msgstr "અવ્યાખ્યાયિત"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_bank_reconciliation_report.py:189
@@ -2133,11 +2159,6 @@ msgstr ""
 #: code:addons/account_reports/models/account_bank_reconciliation_report.py:166
 #, python-format
 msgid "Unreconciled Bank Statement Lines"
-msgstr ""
-
-#. module: account_reports
-#: model:ir.model.fields,field_description:account_reports.field_account_financial_html_report__cash_basis
-msgid "Use cash basis"
 msgstr ""
 
 #. module: account_reports
@@ -2231,7 +2252,7 @@ msgstr ""
 
 #. module: account_reports
 #. openerp-web
-#: code:addons/account_reports/static/src/js/followup_form/followup_form_controller.js:67
+#: code:addons/account_reports/static/src/js/followup_form/followup_form_controller.js:69
 #, python-format
 msgid "You are done with the follow-ups!<br/>You have skipped %s partner(s)."
 msgstr ""
@@ -2278,15 +2299,13 @@ msgid "display the journal filter in the report"
 msgstr ""
 
 #. module: account_reports
-#: model:ir.model.fields,help:account_reports.field_account_financial_html_report__unfold_all_filter
-msgid "display the unfold all options in report"
+#: model:ir.model.fields,help:account_reports.field_account_financial_html_report__cash_basis
+msgid "display the option to switch to cash basis mode"
 msgstr ""
 
 #. module: account_reports
-#: model:ir.model.fields,help:account_reports.field_account_financial_html_report__cash_basis
-msgid ""
-"if true, report will always use cash basis, if false, user can choose from "
-"filter inside the report"
+#: model:ir.model.fields,help:account_reports.field_account_financial_html_report__unfold_all_filter
+msgid "display the unfold all options in report"
 msgstr ""
 
 #. module: account_reports
@@ -2295,7 +2314,7 @@ msgid "manage summary and footnotes of reports"
 msgstr ""
 
 #. module: account_reports
-#: code:addons/account_reports/models/account_financial_report.py:782
+#: code:addons/account_reports/models/account_financial_report.py:885
 #, python-format
 msgid "n/a"
 msgstr ""

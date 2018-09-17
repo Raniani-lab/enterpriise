@@ -3,9 +3,9 @@
 # * website_helpdesk_form
 # 
 # Translators:
-# Murat Kaplan <muratk@projetgrup.com>, 2017
-# Martin Trigaux, 2017
-# Gökhan Erdoğdu <gokhan.erdogdu@mechsoft.com.tr>, 2017
+# Martin Trigaux, 2018
+# Murat Kaplan <muratk@projetgrup.com>, 2018
+# Gökhan Erdoğdu <gokhan.erdogdu@mechsoft.com.tr>, 2018
 # Umur Akın <umura@projetgrup.com>, 2018
 msgid ""
 msgstr ""
@@ -34,7 +34,7 @@ msgstr "Açıklama"
 #. module: website_helpdesk_form
 #: model:ir.model,name:website_helpdesk_form.model_helpdesk_team
 msgid "Helpdesk Team"
-msgstr "Yardım Masası Ekibi"
+msgstr "Destek Ekibi"
 
 #. module: website_helpdesk_form
 #: model:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit

@@ -2,12 +2,15 @@
 # This file contains the translation of the following modules:
 # * stock_intrastat
 # 
+# Translators:
+# trendspotter, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-08-24 11:28+0000\n"
 "PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"Last-Translator: trendspotter, 2018\n"
 "Language-Team: Czech (https://www.transifex.com/odoo/teams/41243/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,7 +21,7 @@ msgstr ""
 #. module: stock_intrastat
 #: model:ir.model.fields,field_description:stock_intrastat.field_stock_warehouse__company_country_id
 msgid "Country"
-msgstr ""
+msgstr "Stát"
 
 #. module: stock_intrastat
 #: model:ir.model,name:stock_intrastat.model_account_intrastat_report
@@ -33,4 +36,4 @@ msgstr ""
 #. module: stock_intrastat
 #: model:ir.model,name:stock_intrastat.model_stock_warehouse
 msgid "Warehouse"
-msgstr ""
+msgstr "Sklad"

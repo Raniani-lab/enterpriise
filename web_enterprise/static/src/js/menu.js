@@ -198,8 +198,10 @@ var Menu = Widget.extend({
      * When clicking on app name, opens the first action of the app
      *
      * @private
+     * @param {MouseEvent} ev
      */
-    _onAppNameClicked: function () {
+    _onAppNameClicked: function (ev) {
+        ev.preventDefault();
         var actionID = this.menu_id_to_action_id(this.current_primary_menu);
         this._trigger_menu_clicked(this.current_primary_menu, actionID);
     },

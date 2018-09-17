@@ -3,11 +3,19 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 
-import json
 
-class stockInventoryLine(models.Model):
+class StockInventoryLine(models.Model):
     _inherit = "stock.inventory.line"
+
     product_barcode = fields.Char(related='product_id.barcode')
+    dummy_id = fields.Char(compute='_compute_dummy_id', inverse='_inverse_dummy_id')
+
+    def _compute_dummy_id(self):
+        pass
+
+    def _inverse_dummy_id(self):
+        pass
+
 
 class StockInventory(models.Model):
     _name = 'stock.inventory'
@@ -47,6 +55,8 @@ class StockInventory(models.Model):
                 'product_qty',
                 'theoretical_qty',
                 'product_uom_id',
+                'prod_lot_id',
+                'dummy_id',
             ])
             for line_id in inventory['line_ids']:
                 line_id['product_id'] = self.env['product.product'].browse(line_id.pop('product_id')[0]).read([
@@ -70,6 +80,8 @@ class StockInventory(models.Model):
             inventory['group_production_lot'] = self.env.user.has_group('stock.group_production_lot')
             inventory['group_uom'] = self.env.user.has_group('uom.group_uom')
             inventory['actionReportInventory'] = self.env.ref('stock.action_report_inventory').id
+            if self.env.user.company_id.nomenclature_id:
+                inventory['nomenclature_id'] = [self.env.user.company_id.nomenclature_id.id]
         return inventories
 
     @api.model

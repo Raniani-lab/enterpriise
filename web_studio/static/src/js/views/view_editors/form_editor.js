@@ -551,7 +551,7 @@ var FormEditor =  FormRenderer.extend(EditorMixin, {
         var self = this;
         var $result = this._super.apply(this, arguments);
 
-        var $addTag = $('<li>').append('<a href="#"><i class="fa fa-plus-square" aria-hidden="true"></a></i>');
+        var $addTag = $('<li>', {class: 'nav-item'}).append('<a href="#" class="nav-link"><i class="fa fa-plus-square"/></a>');
         $addTag.click(function (event) {
             event.preventDefault();
             event.stopPropagation();

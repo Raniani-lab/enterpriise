@@ -474,7 +474,7 @@
                             <field name="bom_id" context="{'default_product_tmpl_id': product_tmpl_id}" attrs="{'readonly': [('state', '!=', 'confirmed')], 'invisible': [('type', 'in', ('routing', 'product'))], 'required': [('type', 'in', ('bom', 'both'))]}"/>
                             <field name="new_bom_id" invisible="1"/>
                             <field name="new_routing_id" invisible="1"/>
-                            <field name="routing_id" attrs="{'readonly': [('state', '!=', 'confirmed')], 'invisible': [('type', 'in', ('bom','product'))], 'required': [('type', 'in', ('routing', 'both'))]}" group="mrp.group_mrp_routings"/>
+                            <field name="routing_id" attrs="{'readonly': [('state', '!=', 'confirmed')], 'invisible': [('type', 'in', ('bom','product'))], 'required': [('type', 'in', ('routing', 'both'))]}" groups="mrp.group_mrp_routings"/>
                             <field name="company_id" groups="base.group_multi_company"/>
                         </group>
                         <group>

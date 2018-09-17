@@ -3,50 +3,44 @@
 # * website_form_editor
 # 
 # Translators:
-# Martin Trigaux <mat@odoo.com>, 2017
-# Hamid Darabi <hamid.darabi@gmail.com>, 2017
+# Martin Trigaux, 2018
+# Hamid Darabi, 2018
+# Hamed Mohammadi <hamed@dehongi.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 10.saas~18+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-20 11:33+0000\n"
-"PO-Revision-Date: 2017-09-20 11:33+0000\n"
-"Last-Translator: Hamid Darabi <hamid.darabi@gmail.com>, 2017\n"
+"POT-Creation-Date: 2018-08-24 11:29+0000\n"
+"PO-Revision-Date: 2018-08-24 11:29+0000\n"
+"Last-Translator: Hamed Mohammadi <hamed@dehongi.com>, 2018\n"
 "Language-Team: Persian (https://www.transifex.com/odoo/teams/41243/fa/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Language: fa\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #. module: website_form_editor
 #. openerp-web
-#: code:addons/website_form_editor/static/src/xml/website_form_editor.xml:11
+#: code:addons/website_form_editor/static/src/xml/website_form_editor.xml:12
 #, python-format
 msgid "&times;"
-msgstr ""
-
-#. module: website_form_editor
-#: model:ir.ui.view,arch_db:website_form_editor.s_website_form
-msgid ""
-"<span class=\"btn btn-primary btn-lg o_website_form_send\">Send</span>\n"
-"                        <span id=\"o_website_form_result\"/>"
-msgstr ""
+msgstr "&times;"
 
 #. module: website_form_editor
 #: model:ir.ui.view,arch_db:website_form_editor.snippet_options
 msgid "Add a custom field"
-msgstr ""
+msgstr "افزودن فیلد دلخواه"
 
 #. module: website_form_editor
 #: model:ir.ui.view,arch_db:website_form_editor.snippet_options
 msgid "Add an existing field"
-msgstr ""
+msgstr "افزودن فیلد موجود"
 
 #. module: website_form_editor
 #: model:ir.ui.view,arch_db:website_form_editor.snippet_options
 msgid "Change Form Parameters"
-msgstr ""
+msgstr "تغییر پارامترهای فرم"
 
 #. module: website_form_editor
 #: model:ir.ui.view,arch_db:website_form_editor.snippet_options
@@ -68,12 +62,12 @@ msgstr "تاریخ"
 #. module: website_form_editor
 #: model:ir.ui.view,arch_db:website_form_editor.snippet_options
 msgid "Date &amp; Time"
-msgstr ""
+msgstr "تاریخ و زمان"
 
 #. module: website_form_editor
 #: model:ir.ui.view,arch_db:website_form_editor.snippet_options
 msgid "Decimal Number"
-msgstr ""
+msgstr "عدد اعشاری"
 
 #. module: website_form_editor
 #: model:ir.ui.view,arch_db:website_form_editor.snippet_options
@@ -88,7 +82,7 @@ msgstr "پنهان"
 #. module: website_form_editor
 #: model:ir.ui.view,arch_db:website_form_editor.snippet_options
 msgid "Long Text"
-msgstr ""
+msgstr "متن بلند"
 
 #. module: website_form_editor
 #: model:ir.ui.view,arch_db:website_form_editor.snippet_options
@@ -130,6 +124,11 @@ msgid "Selection"
 msgstr "انتخاب"
 
 #. module: website_form_editor
+#: model:ir.ui.view,arch_db:website_form_editor.s_website_form
+msgid "Send"
+msgstr "ارسال"
+
+#. module: website_form_editor
 #: model:ir.ui.view,arch_db:website_form_editor.snippet_options
 msgid "Text"
 msgstr "متن"
@@ -137,4 +136,4 @@ msgstr "متن"
 #. module: website_form_editor
 #: model:ir.ui.view,arch_db:website_form_editor.ir_model_view
 msgid "Website Forms"
-msgstr ""
+msgstr "فرم‌های وبسایت"

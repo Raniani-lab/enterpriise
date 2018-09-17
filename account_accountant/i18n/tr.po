@@ -3,14 +3,16 @@
 # * account_accountant
 # 
 # Translators:
-# Murat Kaplan <muratk@projetgrup.com>, 2017
+# Levent Karakaş <levent@mektup.at>, 2018
+# Murat Kaplan <muratk@projetgrup.com>, 2018
+# Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.4+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-02 11:20+0000\n"
-"PO-Revision-Date: 2018-08-02 11:20+0000\n"
-"Last-Translator: Murat Kaplan <muratk@projetgrup.com>, 2017\n"
+"POT-Creation-Date: 2018-08-24 11:28+0000\n"
+"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"Last-Translator: Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2018\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,9 +21,24 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #. module: account_accountant
+#: model:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
+msgid "<span class=\"o_form_label\">Fiscal Year</span>"
+msgstr ""
+
+#. module: account_accountant
+#: model:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
+msgid "<span class=\"o_form_label\">Inter-Banks Transfers</span>"
+msgstr ""
+
+#. module: account_accountant
 #: model:ir.ui.menu,name:account_accountant.menu_account_group
 msgid "Account Groups"
 msgstr "Hesap Grupları"
+
+#. module: account_accountant
+#: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__module_account_predictive_account
+msgid "Account Predictive Account"
+msgstr ""
 
 #. module: account_accountant
 #: model:ir.ui.menu,name:account_accountant.account_tag_menu
@@ -42,6 +59,11 @@ msgstr "Muhasebe"
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__use_anglo_saxon
 msgid "Anglo-Saxon Accounting"
 msgstr "Anglo-Saxon Muhasebe"
+
+#. module: account_accountant
+#: model:ir.model.fields,field_description:account_accountant.field_digest_digest__kpi_account_bank_cash
+msgid "Bank & Cash Moves"
+msgstr ""
 
 #. module: account_accountant
 #: model:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
@@ -69,9 +91,20 @@ msgid "Define fiscal years of more or less than a year"
 msgstr ""
 
 #. module: account_accountant
+#: model:ir.model,name:account_accountant.model_digest_digest
+msgid "Digest"
+msgstr ""
+
+#. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__display_name
 msgid "Display Name"
 msgstr "Görünüm Adı"
+
+#. module: account_accountant
+#: code:addons/account_accountant/models/digest.py:16
+#, python-format
+msgid "Do not have access, skip this data for user's digest email"
+msgstr ""
 
 #. module: account_accountant
 #: model:ir.ui.menu,name:account_accountant.menu_account_fiscal_year
@@ -95,11 +128,6 @@ msgid "ID"
 msgstr "ID"
 
 #. module: account_accountant
-#: model:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
-msgid "Inter-Banks Transfers"
-msgstr "Bankalararası Transferler"
-
-#. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_res_config_settings__transfer_account_id
 msgid ""
 "Intermediary account used when moving money from a liquidity account to "
@@ -107,6 +135,11 @@ msgid ""
 msgstr ""
 "Bir likidite hesabından diğerine para aktarma işlemi sırasında kullanılan "
 "aracı hesap"
+
+#. module: account_accountant
+#: model:ir.model.fields,field_description:account_accountant.field_digest_digest__kpi_account_bank_cash_value
+msgid "Kpi Account Bank Cash Value"
+msgstr ""
 
 #. module: account_accountant
 #: model:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
@@ -151,7 +184,7 @@ msgstr "Tüm Kullanıcılar İçin Kilit Tarihi"
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__period_lock_date
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__period_lock_date
 msgid "Lock Date for Non-Advisers"
-msgstr "Kullanıcılar İçin Kilit Tarihi"
+msgstr "Müşavir olmayanlar için Kilit Tarihi"
 
 #. module: account_accountant
 #: model:ir.ui.menu,name:account_accountant.menu_action_change_lock_date
@@ -196,6 +229,11 @@ msgstr ""
 "kilitlemesi için kullanın."
 
 #. module: account_accountant
+#: model:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
+msgid "Predict vendor bill accounts"
+msgstr ""
+
+#. module: account_accountant
 #: model:ir.ui.menu,name:account_accountant.menu_product_product_categories
 msgid "Product Categories"
 msgstr "Ürün Kategorileri"
@@ -222,11 +260,11 @@ msgid "Save"
 msgstr "Kaydet"
 
 #. module: account_accountant
-#: model:ir.model.fields,help:account_accountant.field_res_config_settings__fiscalyear_last_day
-#: model:ir.model.fields,help:account_accountant.field_res_config_settings__fiscalyear_last_month
+#: model:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid ""
-"The last day of the month will be taken if the chosen day doesn't exist."
-msgstr "Seçilen gün yoksa ayın son günü alınır."
+"The system will try to predict vendor bill accounts based on history of "
+"previous bills."
+msgstr ""
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__transfer_account_id

@@ -100,10 +100,10 @@ var CohortRenderer = AbstractRenderer.extend({
         if (!$(event.target).hasClass('o_cohort_value')) {
             return;
         }
-        var rowIndex = $(event.currentTarget).data().row;
+        var rowData = $(event.currentTarget).data();
+        var rowIndex = rowData.row;
         var colIndex = $(event.target).data().col;
-        var dataType = $(event.target).data().type;
-        var row = (dataType === 'data') ?
+        var row = (rowData.type === 'data') ?
                     this.state.report.rows[rowIndex] :
                     this.state.comparisonReport.rows[rowIndex];
         var rowDomain = row ? row.domain : [];

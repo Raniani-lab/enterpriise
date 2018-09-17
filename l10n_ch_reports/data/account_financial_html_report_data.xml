@@ -21,7 +21,7 @@
         <field name="code">CHTAX_200</field>
         <field name="sequence" eval="1"/>
         <field name="level" eval="2"/>
-        <field name="formulas">balance = CHTAX_302a.balance + CHTAX_311a.balance + CHTAX_342a.balance + CHTAX_381a.balance</field>
+        <field name="formulas">balance = CHTAX_301a.balance + CHTAX_302a.balance + CHTAX_311a.balance + CHTAX_341a.balance + CHTAX_342a.balance + CHTAX_381a.balance + CHTAX_382a.balance + CHTAX_220_200.balance + CHTAX_230_200.balance + CHTAX_381a_200.balance + CHTAX_382a_200.balance</field>
         <field name="parent_id" ref="financial_report_line_chtax_299"/>
         <field name="special_date_changer">strict_range</field>
     </record>
@@ -93,7 +93,7 @@
     </record>
     <record id="financial_report_line_chtax_230_200" model="account.financial.html.report.line">
         <field name="name">230 Chiffre d'affaires non-imposable a 0% (exclu)</field>
-        <field name="code">CHTAX_230</field>
+        <field name="code">CHTAX_230_200</field>
         <field name="sequence" eval="13"/>
         <field name="level" eval="3"/>
         <field name="domain" eval="[('tax_ids.tag_ids', 'in', [ref('l10n_ch.vat_tag_230')])]"/>
@@ -104,7 +104,7 @@
     </record>
     <record id="financial_report_line_chtax_220_200" model="account.financial.html.report.line">
         <field name="name">220 Chiffre d'affaires imposable a 0% (export)</field>
-        <field name="code">CHTAX_220</field>
+        <field name="code">CHTAX_220_200</field>
         <field name="sequence" eval="12"/>
         <field name="level" eval="3"/>
         <field name="domain" eval="[('tax_ids.tag_ids', 'in', [ref('l10n_ch.vat_tag_220')])]"/>
@@ -141,13 +141,13 @@
         <field name="code">CHTAX_289</field>
         <field name="sequence" eval="2"/>
         <field name="level" eval="2"/>
-        <field name="formulas">balance = CHTAX_220.balance + CHTAX_221.balance + CHTAX_225.balance + CHTAX_230.balance + CHTAX_235.balance + CHTAX_280.balance</field>
+        <field name="formulas">balance = CHTAX_220_289.balance + CHTAX_221.balance + CHTAX_225.balance + CHTAX_230_289.balance + CHTAX_235.balance + CHTAX_280.balance</field>
         <field name="parent_id" ref="financial_report_line_chtax_299"/>
         <field name="special_date_changer">strict_range</field>
     </record>
     <record id="financial_report_line_chtax_220_289" model="account.financial.html.report.line">
         <field name="name">220 Chiffre d'affaires imposable a 0% (export)</field>
-        <field name="code">CHTAX_220</field>
+        <field name="code">CHTAX_220_289</field>
         <field name="sequence" eval="0"/>
         <field name="level" eval="3"/>
         <field name="domain" eval="[('tax_ids.tag_ids', 'in', [ref('l10n_ch.vat_tag_220')])]"/>
@@ -180,7 +180,7 @@
     </record>
     <record id="financial_report_line_chtax_230_289" model="account.financial.html.report.line">
         <field name="name">230 Chiffre d'affaires non-imposable a 0% (exclu)</field>
-        <field name="code">CHTAX_230</field>
+        <field name="code">CHTAX_230_289</field>
         <field name="sequence" eval="3"/>
         <field name="level" eval="3"/>
         <field name="domain" eval="[('tax_ids.tag_ids', 'in', [ref('l10n_ch.vat_tag_230')])]"/>

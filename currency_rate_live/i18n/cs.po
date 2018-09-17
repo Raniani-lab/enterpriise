@@ -2,12 +2,17 @@
 # This file contains the translation of the following modules:
 # * currency_rate_live
 # 
+# Translators:
+# Martin Trigaux, 2018
+# Jaroslav Helemik Nemec <nemec@helemik.cz>, 2018
+# trendspotter, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-08-24 11:28+0000\n"
 "PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"Last-Translator: trendspotter, 2018\n"
 "Language-Team: Czech (https://www.transifex.com/odoo/teams/41243/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,89 +23,89 @@ msgstr ""
 #. module: currency_rate_live
 #: selection:res.company,currency_provider:0
 msgid "Bank Of Canada"
-msgstr ""
+msgstr "Bank Of Canada"
 
 #. module: currency_rate_live
 #: model:ir.model,name:currency_rate_live.model_res_company
 msgid "Companies"
-msgstr ""
+msgstr "Firmy v systému"
 
 #. module: currency_rate_live
 #: model:ir.actions.server,name:currency_rate_live.ir_cron_currency_update_ir_actions_server
 #: model:ir.cron,cron_name:currency_rate_live.ir_cron_currency_update
 #: model:ir.cron,name:currency_rate_live.ir_cron_currency_update
 msgid "Currency: rate update"
-msgstr ""
+msgstr "Měna: aktualizace kurzu"
 
 #. module: currency_rate_live
 #: selection:res.company,currency_interval_unit:0
 msgid "Daily"
-msgstr ""
+msgstr "Denně"
 
 #. module: currency_rate_live
 #: selection:res.company,currency_provider:0
 msgid "European Central Bank"
-msgstr ""
+msgstr "Evropská centrální banka"
 
 #. module: currency_rate_live
 #: selection:res.company,currency_provider:0
 msgid "Federal Tax Administration (Switzerland)"
-msgstr ""
+msgstr "Federální daňová správa (Švýcarsko)"
 
 #. module: currency_rate_live
 #: model:ir.ui.view,arch_db:currency_rate_live.res_config_settings_view_form
 msgid "Interval"
-msgstr ""
+msgstr "Rozmezí"
 
 #. module: currency_rate_live
 #: model:ir.model.fields,field_description:currency_rate_live.field_res_company__currency_interval_unit
 #: model:ir.model.fields,field_description:currency_rate_live.field_res_config_settings__currency_interval_unit
 msgid "Interval Unit"
-msgstr ""
+msgstr "Intervalová jednotka"
 
 #. module: currency_rate_live
 #: model:ir.model.fields,field_description:currency_rate_live.field_res_company__last_currency_sync_date
 #: model:ir.model.fields,field_description:currency_rate_live.field_res_config_settings__last_currency_sync_date
 #: model:ir.ui.view,arch_db:currency_rate_live.res_config_settings_view_form
 msgid "Last Sync Date"
-msgstr ""
+msgstr "Poslední datum synchronizace"
 
 #. module: currency_rate_live
 #: selection:res.company,currency_interval_unit:0
 msgid "Manually"
-msgstr ""
+msgstr "Ručně"
 
 #. module: currency_rate_live
 #: selection:res.company,currency_provider:0
 msgid "Mexican Bank"
-msgstr ""
+msgstr "Mexická banka"
 
 #. module: currency_rate_live
 #: selection:res.company,currency_interval_unit:0
 msgid "Monthly"
-msgstr ""
+msgstr "Měsíčně"
 
 #. module: currency_rate_live
 #: model:ir.model.fields,field_description:currency_rate_live.field_res_company__currency_next_execution_date
 #: model:ir.model.fields,field_description:currency_rate_live.field_res_config_settings__currency_next_execution_date
 msgid "Next Execution Date"
-msgstr ""
+msgstr "Další datum provedení"
 
 #. module: currency_rate_live
 #: model:ir.ui.view,arch_db:currency_rate_live.res_config_settings_view_form
 msgid "Next Run"
-msgstr ""
+msgstr "Další kolo"
 
 #. module: currency_rate_live
 #: model:ir.ui.view,arch_db:currency_rate_live.res_config_settings_view_form
 msgid "Service"
-msgstr ""
+msgstr "Služba"
 
 #. module: currency_rate_live
 #: model:ir.model.fields,field_description:currency_rate_live.field_res_company__currency_provider
 #: model:ir.model.fields,field_description:currency_rate_live.field_res_config_settings__currency_provider
 msgid "Service Provider"
-msgstr ""
+msgstr "Poskytovatel služeb"
 
 #. module: currency_rate_live
 #: code:addons/currency_rate_live/models/res_config_settings.py:387
@@ -109,6 +114,8 @@ msgid ""
 "The Yahoo currency rate web service has been discontinued. Please select "
 "another currency rate provider."
 msgstr ""
+"Webová služba měnového kurzu Yahoo byla přerušena. Vyberte prosím jiného "
+"poskytovatele měnového kurzu."
 
 #. module: currency_rate_live
 #: code:addons/currency_rate_live/models/res_config_settings.py:103
@@ -125,16 +132,18 @@ msgid ""
 "Unable to connect to the online exchange rate platform. The web service may "
 "be temporary down. Please try again in a moment."
 msgstr ""
+"Nelze se připojit k online platformě směnných kurzů. Webová služba může být "
+"dočasně nefunkční. Zkuste to prosím znovu."
 
 #. module: currency_rate_live
 #: selection:res.company,currency_interval_unit:0
 msgid "Weekly"
-msgstr ""
+msgstr "Týdně"
 
 #. module: currency_rate_live
 #: selection:res.company,currency_provider:0
 msgid "Yahoo (DISCONTINUED)"
-msgstr ""
+msgstr "Yahoo (DISCONTINUED)"
 
 #. module: currency_rate_live
 #: code:addons/currency_rate_live/models/res_config_settings.py:143
@@ -147,7 +156,7 @@ msgstr ""
 #. module: currency_rate_live
 #: model:ir.model,name:currency_rate_live.model_res_config_settings
 msgid "res.config.settings"
-msgstr ""
+msgstr "res.config.settings"
 
 #. module: currency_rate_live
 #: selection:res.company,currency_provider:0

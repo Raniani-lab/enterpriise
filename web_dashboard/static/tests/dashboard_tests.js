@@ -2133,6 +2133,7 @@ QUnit.module('Views', {
 
         // Apply time range with today
         $('button.o_time_range_menu_button').click();
+        $('.o_time_range_selector').val('today');
         $('.o_apply_range').click();
         assert.strictEqual(actionManager.$('.o_aggregate .o_value').length, 1);
 

@@ -2,12 +2,20 @@
 # This file contains the translation of the following modules:
 # * sign
 # 
+# Translators:
+# Martin Trigaux, 2018
+# Jaroslav Helemik Nemec <nemec@helemik.cz>, 2018
+# Jan Horzinka <jan.horzinka@centrum.cz>, 2018
+# Michal Veselý <michal@veselyberanek.net>, 2018
+# trendspotter, 2018
+# Jakub Lohnisky <jakub@lepremier.cz>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"POT-Creation-Date: 2018-09-05 09:12+0000\n"
+"PO-Revision-Date: 2018-09-05 09:12+0000\n"
+"Last-Translator: Jakub Lohnisky <jakub@lepremier.cz>, 2018\n"
 "Language-Team: Czech (https://www.transifex.com/odoo/teams/41243/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,7 +27,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_res_partner__signature_count
 #: model:ir.model.fields,field_description:sign.field_res_users__signature_count
 msgid "# Signatures"
-msgstr ""
+msgstr "# Podpisy"
 
 #. module: sign
 #: code:addons/sign/models/sign_request.py:233
@@ -123,7 +131,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_needaction
 msgid "Action Needed"
-msgstr ""
+msgstr "Vyžaduje akci"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__active
@@ -131,76 +139,76 @@ msgstr ""
 #: model:ir.ui.view,arch_db:sign.sign_request_view_search
 #: model:ir.ui.view,arch_db:sign.sign_template_view_search
 msgid "Active"
-msgstr ""
+msgstr "Aktivní"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__activity_ids
 msgid "Activities"
-msgstr ""
+msgstr "Aktivity"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__activity_state
 msgid "Activity State"
-msgstr ""
+msgstr "Stav činností"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_backend.js:237
+#: code:addons/sign/static/src/js/sign_backend.js:238
 #, python-format
 msgid "Add Initials"
-msgstr ""
+msgstr "Přidat iniciály"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_backend.js:246
+#: code:addons/sign/static/src/js/sign_backend.js:247
 #, python-format
 msgid "Add on all pages"
-msgstr ""
+msgstr "Přidat na všechny stránky"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_backend.js:242
+#: code:addons/sign/static/src/js/sign_backend.js:243
 #, python-format
 msgid "Add once"
-msgstr ""
+msgstr "Přidat jednou"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:496
+#: code:addons/sign/static/src/js/sign_common.js:495
 #, python-format
 msgid "Adopt Your Signature"
-msgstr ""
+msgstr "Přijmout svůj podpis"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:502
+#: code:addons/sign/static/src/js/sign_common.js:501
 #, python-format
 msgid "Adopt and Sign"
-msgstr ""
+msgstr "Přijmout a podepsat"
 
 #. module: sign
 #: model:ir.ui.view,arch_db:sign.sign_request_view_kanban
 #: model:ir.ui.view,arch_db:sign.sign_template_view_kanban
 msgid "Archive"
-msgstr ""
+msgstr "Archivovat"
 
 #. module: sign
 #: model:ir.ui.view,arch_db:sign.sign_request_view_search
 #: model:ir.ui.view,arch_db:sign.sign_template_view_search
 msgid "Archived"
-msgstr ""
+msgstr "Archivováno"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__attachment_id
 msgid "Attachment"
-msgstr ""
+msgstr "Příloha"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/xml/sign_common.xml:39
+#: code:addons/sign/static/src/xml/sign_common.xml:38
 #, python-format
 msgid "Auto"
-msgstr ""
+msgstr "Automaticky"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item_type__auto_field
@@ -210,7 +218,7 @@ msgstr ""
 #. module: sign
 #: model:ir.ui.view,arch_db:sign.sign_request_view_kanban
 msgid "Avatar"
-msgstr ""
+msgstr "Avatar"
 
 #. module: sign
 #. openerp-web
@@ -222,106 +230,110 @@ msgid ""
 "for all purposes when it is used on documents, including legally binding "
 "contracts."
 msgstr ""
+"Kliknutím na položku Přijmout a podepsat souhlasím s tím, že vybrané podpisy"
+" / iniciály budou platné elektronické zastoupení mých ručně psaných podpisů "
+"/ iniciál pro všechny účely, pokud jsou používány v dokumentech včetně "
+"právně závazných smluv."
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:505
-#: code:addons/sign/static/src/js/sign_common.js:761
+#: code:addons/sign/static/src/js/sign_common.js:504
+#: code:addons/sign/static/src/js/sign_common.js:760
 #: model:ir.ui.view,arch_db:sign.sign_request_view_form
 #: model:ir.ui.view,arch_db:sign.sign_send_request_view_form
 #, python-format
 msgid "Cancel"
-msgstr ""
+msgstr "Zrušit"
 
 #. module: sign
 #: selection:sign.request,state:0
 msgid "Canceled"
-msgstr ""
+msgstr "Zrušeno"
 
 #. module: sign
 #: model:sign.item.type,name:sign.sign_item_type_checkbox
 #: selection:sign.item.type,type:0
 msgid "Checkbox"
-msgstr ""
+msgstr "Zaškrtávací pole"
 
 #. module: sign
 #: model:ir.actions.act_window,name:sign.sign_template_action
 #: model:ir.actions.act_window,name:sign.sign_template_with_archived_action
 msgid "Choose a Template"
-msgstr ""
+msgstr "Vybrat šablonu"
 
 #. module: sign
 #. openerp-web
 #: code:addons/sign/static/src/xml/sign_common.xml:36
 #, python-format
 msgid "Clear Signature"
-msgstr ""
+msgstr "Vymazat podpis"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:645
+#: code:addons/sign/static/src/js/sign_common.js:644
 #, python-format
 msgid "Click to start"
-msgstr ""
+msgstr "Klepnutím spustit"
 
 #. module: sign
 #: model:ir.ui.view,arch_db:sign.sign_template_share_view_form
 msgid "Close"
-msgstr ""
+msgstr "Zavřít"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__color
 #: model:ir.model.fields,field_description:sign.field_sign_template__color
 msgid "Color"
-msgstr ""
+msgstr "Barva"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template_tag__color
 msgid "Color Index"
-msgstr ""
+msgstr "Barevný index"
 
 #. module: sign
 #: model:sign.item.role,name:sign.sign_item_role_company
 #: model:sign.item.type,name:sign.sign_item_type_company
 msgid "Company"
-msgstr ""
+msgstr "Firma"
 
 #. module: sign
 #: selection:sign.request.item,state:0
 msgid "Completed"
-msgstr ""
+msgstr "Dokončeno"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__completed_document
 msgid "Completed Document"
-msgstr ""
+msgstr "Dokončený dokument"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__nb_closed
 msgid "Completed Signatures"
-msgstr ""
+msgstr "Dokončené podpisy"
 
 #. module: sign
 #: model:ir.ui.menu,name:sign.menu_sign_configuration
 msgid "Configuration"
-msgstr ""
+msgstr "Konfigurace"
 
 #. module: sign
 #: model:ir.model,name:sign.model_res_partner
 msgid "Contact"
-msgstr ""
+msgstr "Kontakt"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__follower_ids
 msgid "Copy to"
-msgstr ""
+msgstr "Kopírovat do"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:327
+#: code:addons/sign/static/src/js/sign_common.js:326
 #, python-format
 msgid "Create: \""
-msgstr ""
+msgstr "Vytvořit: \""
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__create_uid
@@ -337,7 +349,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_template_share__create_uid
 #: model:ir.model.fields,field_description:sign.field_sign_template_tag__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Vytvořil(a)"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__create_date
@@ -353,24 +365,24 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_template_share__create_date
 #: model:ir.model.fields,field_description:sign.field_sign_template_tag__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Vytvořeno"
 
 #. module: sign
 #: model:sign.item.role,name:sign.sign_item_role_customer
 msgid "Customer"
-msgstr ""
+msgstr "Zákazník"
 
 #. module: sign
 #. openerp-web
 #: code:addons/sign/static/src/js/sign_backend.js:179
 #, python-format
 msgid "Customize Field"
-msgstr ""
+msgstr "Přizpůsobit pole"
 
 #. module: sign
 #: model:sign.item.type,name:sign.sign_item_type_date
 msgid "Date"
-msgstr ""
+msgstr "Datum"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item_type__default_height
@@ -386,12 +398,12 @@ msgstr ""
 #: model:ir.ui.view,arch_db:sign.sign_request_view_kanban
 #: model:ir.ui.view,arch_db:sign.sign_template_view_kanban
 msgid "Delete"
-msgstr ""
+msgstr "Smazat"
 
 #. module: sign
 #: model:ir.ui.view,arch_db:sign.sign_request_view_kanban
 msgid "Details"
-msgstr ""
+msgstr "Podrobnosti"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_res_users__sign_signature
@@ -411,12 +423,12 @@ msgstr ""
 #. module: sign
 #: model:ir.ui.view,arch_db:sign.sign_request_send_copy_view_form
 msgid "Discard"
-msgstr ""
+msgstr "Zrušit"
 
 #. module: sign
 #: model:ir.ui.view,arch_db:sign.sign_item_view_form
 msgid "Display"
-msgstr ""
+msgstr "Zobrazit"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__display_name
@@ -432,22 +444,23 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_template_share__display_name
 #: model:ir.model.fields,field_description:sign.field_sign_template_tag__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Zobrazovaný název"
 
 #. module: sign
 #: model:ir.ui.view,arch_db:sign.sign_template_view_form
 msgid "Document"
-msgstr ""
+msgstr "Dokument"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__page
 msgid "Document Page"
-msgstr ""
+msgstr "Stránka dokumentu"
 
 #. module: sign
 #. openerp-web
 #: code:addons/sign/static/src/xml/sign_common.xml:104
-#: code:addons/sign/static/src/xml/sign_common.xml:109
+#: code:addons/sign/static/src/xml/sign_common.xml:110
+#: code:addons/sign/static/src/xml/sign_common.xml:115
 #, python-format
 msgid "Document Sign"
 msgstr ""
@@ -460,7 +473,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__template_id
 msgid "Document Template"
-msgstr ""
+msgstr "Šablona dokumentu"
 
 #. module: sign
 #: model:ir.model,name:sign.model_sign_request
@@ -469,7 +482,7 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_backend.js:874
+#: code:addons/sign/static/src/js/sign_backend.js:884
 #: model:ir.ui.view,arch_db:sign._doc_sign
 #, python-format
 msgid "Download Document"
@@ -485,7 +498,7 @@ msgstr ""
 #. module: sign
 #: selection:sign.request.item,state:0
 msgid "Draft"
-msgstr ""
+msgstr "Návrh"
 
 #. module: sign
 #. openerp-web
@@ -496,7 +509,7 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/xml/sign_common.xml:38
+#: code:addons/sign/static/src/xml/sign_common.xml:37
 #, python-format
 msgid "Draw"
 msgstr ""
@@ -505,18 +518,18 @@ msgstr ""
 #: model:ir.ui.view,arch_db:sign.sign_request_view_kanban
 #: model:ir.ui.view,arch_db:sign.sign_template_view_kanban
 msgid "Dropdown menu"
-msgstr ""
+msgstr "Rozbalovací nabídka"
 
 #. module: sign
 #. openerp-web
 #: code:addons/sign/static/src/xml/sign_backend.xml:45
 #, python-format
 msgid "Duplicate"
-msgstr ""
+msgstr "Duplikovat"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_backend.js:825
+#: code:addons/sign/static/src/js/sign_backend.js:835
 #, python-format
 msgid "Duplicated Template"
 msgstr ""
@@ -524,7 +537,7 @@ msgstr ""
 #. module: sign
 #: model:ir.ui.view,arch_db:sign.sign_template_view_kanban
 msgid "Edit"
-msgstr ""
+msgstr "Upravit"
 
 #. module: sign
 #: model:ir.ui.view,arch_db:sign.sign_template_view_kanban
@@ -547,23 +560,23 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__signer_email
 #: model:sign.item.type,name:sign.sign_item_type_email
 msgid "Email"
-msgstr ""
+msgstr "Email"
 
 #. module: sign
 #: model:sign.item.role,name:sign.sign_item_role_employee
 msgid "Employee"
-msgstr ""
+msgstr "Zaměstnanec"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:791
-#: code:addons/sign/static/src/js/sign_common.js:818
-#: code:addons/sign/static/src/js/sign_common.js:1086
-#: code:addons/sign/static/src/js/sign_common.js:1103
-#: code:addons/sign/static/src/js/sign_common.js:1147
+#: code:addons/sign/static/src/js/sign_common.js:790
+#: code:addons/sign/static/src/js/sign_common.js:817
+#: code:addons/sign/static/src/js/sign_common.js:1093
+#: code:addons/sign/static/src/js/sign_common.js:1110
+#: code:addons/sign/static/src/js/sign_common.js:1154
 #, python-format
 msgid "Error"
-msgstr ""
+msgstr "Chyba"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__extension
@@ -581,7 +594,7 @@ msgstr ""
 #: model:ir.ui.view,arch_db:sign.sign_request_view_search
 #: model:ir.ui.view,arch_db:sign.sign_template_view_search
 msgid "Favorites"
-msgstr ""
+msgstr "Oblíbené"
 
 #. module: sign
 #. openerp-web
@@ -590,7 +603,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_item_type__name
 #, python-format
 msgid "Field Name"
-msgstr ""
+msgstr "Pole Název"
 
 #. module: sign
 #: model:ir.ui.menu,name:sign.sign_item_type_menu
@@ -600,18 +613,18 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__datas
 msgid "File Content"
-msgstr ""
+msgstr "Obsah souboru"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__reference
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__filename
 msgid "Filename"
-msgstr ""
+msgstr "Název souboru"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:738
-#: code:addons/sign/static/src/js/sign_common.js:841
+#: code:addons/sign/static/src/js/sign_common.js:737
+#: code:addons/sign/static/src/js/sign_common.js:838
 #, python-format
 msgid "Final Validation"
 msgstr ""
@@ -619,7 +632,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_follower_ids
 msgid "Followers"
-msgstr ""
+msgstr "Sledující"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_channel_ids
@@ -641,7 +654,7 @@ msgstr ""
 #: code:addons/sign/static/src/xml/sign_common.xml:28
 #, python-format
 msgid "Full Name"
-msgstr ""
+msgstr "Celé jméno"
 
 #. module: sign
 #: selection:sign.request,state:0
@@ -651,7 +664,7 @@ msgstr ""
 #. module: sign
 #: model:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "Future Activities"
-msgstr ""
+msgstr "Budoucí činnosti"
 
 #. module: sign
 #: model:ir.ui.view,arch_db:sign.sign_request_view_form
@@ -659,21 +672,14 @@ msgid "Get Completed Document"
 msgstr ""
 
 #. module: sign
-#. openerp-web
-#: code:addons/sign/static/src/xml/sign_common.xml:110
-#, python-format
-msgid "Go to Document"
-msgstr ""
-
-#. module: sign
 #: model:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "Group By"
-msgstr ""
+msgstr "Seskupit podle"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__height
 msgid "Height"
-msgstr ""
+msgstr "Výška"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__id
@@ -689,12 +695,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_template_share__id
 #: model:ir.model.fields,field_description:sign.field_sign_template_tag__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__message_unread
 msgid "If checked new messages require your attention."
-msgstr ""
+msgstr "Pokud je zaškrtnuto, nové zprávy vyžadují vaši pozornost."
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__message_needaction
@@ -715,7 +721,7 @@ msgstr ""
 #. module: sign
 #: model:ir.ui.view,arch_db:sign.sign_item_view_form
 msgid "Information"
-msgstr ""
+msgstr "Informace"
 
 #. module: sign
 #: selection:sign.item.type,type:0
@@ -761,7 +767,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_template_share____last_update
 #: model:ir.model.fields,field_description:sign.field_sign_template_tag____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Naposled změněno"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__write_uid
@@ -777,7 +783,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_template_share__write_uid
 #: model:ir.model.fields,field_description:sign.field_sign_template_tag__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Naposledy upraveno od"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__write_date
@@ -793,12 +799,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_template_share__write_date
 #: model:ir.model.fields,field_description:sign.field_sign_template_tag__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Naposled upraveno"
 
 #. module: sign
 #: model:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "Late Activities"
-msgstr ""
+msgstr "Zpožděné činnosti"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__latitude
@@ -812,15 +818,15 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/xml/sign_common.xml:40
+#: code:addons/sign/static/src/xml/sign_common.xml:39
 #, python-format
 msgid "Load"
-msgstr ""
+msgstr "Načíst"
 
 #. module: sign
 #: model:ir.ui.view,arch_db:sign.doc_sign
 msgid "Logo"
-msgstr ""
+msgstr "Logo"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__longitude
@@ -837,7 +843,7 @@ msgstr ""
 #. module: sign
 #: model:res.groups,name:sign.group_sign_manager
 msgid "Manager"
-msgstr ""
+msgstr "Manažer"
 
 #. module: sign
 #. openerp-web
@@ -849,7 +855,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__message
 msgid "Message"
-msgstr ""
+msgstr "Zpráva"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_has_error
@@ -859,7 +865,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_ids
 msgid "Messages"
-msgstr ""
+msgstr "Zprávy"
 
 #. module: sign
 #: model:ir.ui.view,arch_db:sign.deleted_sign_request
@@ -869,7 +875,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__sms_number
 msgid "Mobile"
-msgstr ""
+msgstr "mobilní"
 
 #. module: sign
 #: selection:sign.item.type,type:0
@@ -902,7 +908,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_template__name
 #: model:sign.item.type,name:sign.sign_item_type_name
 msgid "Name"
-msgstr ""
+msgstr "Název"
 
 #. module: sign
 #: model:ir.ui.view,arch_db:sign.sign_send_request_view_form
@@ -968,7 +974,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_needaction_counter
 msgid "Number of Actions"
-msgstr ""
+msgstr "Počet akcí"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_has_error_counter
@@ -978,12 +984,12 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__message_needaction_counter
 msgid "Number of messages which requires an action"
-msgstr ""
+msgstr "Počet zpráv, které vyžadují akci"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr ""
+msgstr "Počet zpráv s chybou při doručení"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__message_unread_counter
@@ -993,23 +999,35 @@ msgstr ""
 #. module: sign
 #: model:res.groups,name:sign.group_sign_user
 msgid "Officer"
-msgstr ""
+msgstr "úředník"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_backend.js:1018
+#: code:addons/sign/static/src/js/sign_backend.js:1027
 #, python-format
 msgid "Ok"
-msgstr ""
+msgstr "Ok"
 
 #. module: sign
 #: model:ir.ui.view,arch_db:sign.sign_template_share_view_form
 msgid "Open"
+msgstr "Otevřít"
+
+#. module: sign
+#: model:ir.model.fields,field_description:sign.field_sign_template__redirect_url
+msgid "Optional Link"
 msgstr ""
 
 #. module: sign
 #: model:ir.ui.view,arch_db:sign.sign_send_request_view_form
 msgid "Optional Message..."
+msgstr ""
+
+#. module: sign
+#: model:ir.model.fields,help:sign.field_sign_template__redirect_url
+msgid ""
+"Optional link for redirection after signature instead of "
+"https://www.odoo.com/page/sign"
 msgstr ""
 
 #. module: sign
@@ -1026,7 +1044,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__partner_id
 #: model:ir.model.fields,field_description:sign.field_sign_send_request_signer__partner_id
 msgid "Partner"
-msgstr ""
+msgstr "Kontakt"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_item_type__auto_field
@@ -1036,7 +1054,7 @@ msgstr ""
 #. module: sign
 #: model:sign.item.type,name:sign.sign_item_type_phone
 msgid "Phone"
-msgstr ""
+msgstr "Telefon"
 
 #. module: sign
 #. openerp-web
@@ -1048,7 +1066,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item_type__placeholder
 msgid "Placeholder"
-msgstr ""
+msgstr "Zástupce"
 
 #. module: sign
 #: selection:sign.request,activity_state:0
@@ -1062,7 +1080,7 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/xml/sign_common.xml:91
+#: code:addons/sign/static/src/xml/sign_common.xml:92
 #, python-format
 msgid "Please enter the code received through SMS to complete your signature"
 msgstr ""
@@ -1080,7 +1098,7 @@ msgstr ""
 #. module: sign
 #: model:ir.ui.view,arch_db:sign.sign_request_view_form
 msgid "Preview"
-msgstr ""
+msgstr "Náhled"
 
 #. module: sign
 #. openerp-web
@@ -1092,12 +1110,12 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__progress
 msgid "Progress"
-msgstr ""
+msgstr "Průběh"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_send_copy__request_id
 msgid "Request"
-msgstr ""
+msgstr "Požadavek"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__request_item_infos
@@ -1126,11 +1144,11 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__required
 msgid "Required"
-msgstr ""
+msgstr "Povinné"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_backend.js:990
+#: code:addons/sign/static/src/js/sign_backend.js:999
 #: model:ir.ui.view,arch_db:sign.sign_request_view_form
 #, python-format
 msgid "Resend"
@@ -1138,14 +1156,14 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_backend.js:989
+#: code:addons/sign/static/src/js/sign_backend.js:998
 #, python-format
 msgid "Resend the invitation"
 msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_backend.js:952
+#: code:addons/sign/static/src/js/sign_backend.js:962
 #, python-format
 msgid "Resent !"
 msgstr ""
@@ -1157,7 +1175,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_item__responsible_id
 #, python-format
 msgid "Responsible"
-msgstr ""
+msgstr "Odpovědný"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__responsible_count
@@ -1167,7 +1185,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__activity_user_id
 msgid "Responsible User"
-msgstr ""
+msgstr "Zodpovědný uživatel"
 
 #. module: sign
 #: model:ir.ui.view,arch_db:sign.sign_request_view_kanban
@@ -1179,7 +1197,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__role_id
 #: model:ir.model.fields,field_description:sign.field_sign_send_request_signer__role_id
 msgid "Role"
-msgstr ""
+msgstr "Role"
 
 #. module: sign
 #: model:ir.ui.view,arch_db:sign.sign_item_role_view_tree
@@ -1198,7 +1216,7 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/xml/sign_common.xml:93
+#: code:addons/sign/static/src/xml/sign_common.xml:94
 #, python-format
 msgid "SMS Code"
 msgstr ""
@@ -1230,28 +1248,28 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:320
+#: code:addons/sign/static/src/js/sign_common.js:319
 #, python-format
 msgid "Select the responsible"
 msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_backend.js:616
+#: code:addons/sign/static/src/js/sign_backend.js:617
 #: model:ir.ui.view,arch_db:sign.sign_request_send_copy_view_form
 #: model:ir.ui.view,arch_db:sign.sign_send_request_view_form
 #: model:ir.ui.view,arch_db:sign.sign_template_view_form
 #: model:ir.ui.view,arch_db:sign.sign_template_view_kanban
 #, python-format
 msgid "Send"
-msgstr ""
+msgstr "Odeslat"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/xml/sign_common.xml:94
+#: code:addons/sign/static/src/xml/sign_common.xml:88
 #, python-format
 msgid "Send SMS"
-msgstr ""
+msgstr "Odeslat SMS"
 
 #. module: sign
 #: model:ir.actions.act_window,name:sign.action_sign_send_request
@@ -1294,12 +1312,12 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_backend.js:629
+#: code:addons/sign/static/src/js/sign_backend.js:630
 #: model:ir.ui.view,arch_db:sign.sign_template_view_form
 #: model:ir.ui.view,arch_db:sign.sign_template_view_kanban
 #, python-format
 msgid "Share"
-msgstr ""
+msgstr "Sdílet"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__share_link
@@ -1310,10 +1328,11 @@ msgstr ""
 #: model:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "Show all records which has next action date is before today"
 msgstr ""
+"Zobrazit všechny záznamy, které mají následující datum akce před dneškem"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_backend.js:970
+#: code:addons/sign/static/src/js/sign_backend.js:980
 #: code:addons/sign/wizard/sign_send_request.py:81
 #: code:addons/sign/wizard/sign_template_share.py:32
 #: model:ir.ui.menu,name:sign.menu_document
@@ -1328,7 +1347,7 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_backend.js:965
+#: code:addons/sign/static/src/js/sign_backend.js:975
 #: model:ir.ui.view,arch_db:sign._doc_sign
 #, python-format
 msgid "Sign Document"
@@ -1359,7 +1378,7 @@ msgstr ""
 #: selection:sign.item.type,type:0
 #, python-format
 msgid "Signature"
-msgstr ""
+msgstr "Podpis"
 
 #. module: sign
 #: model:ir.model,name:sign.model_sign_item
@@ -1482,23 +1501,23 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:1069
+#: code:addons/sign/static/src/js/sign_common.js:1076
 #, python-format
 msgid "Some fields have still to be completed !"
 msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_backend.js:814
+#: code:addons/sign/static/src/js/sign_backend.js:824
 #, python-format
 msgid "Somebody is already filling a document which uses this template"
 msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:817
-#: code:addons/sign/static/src/js/sign_common.js:1085
-#: code:addons/sign/static/src/js/sign_common.js:1146
+#: code:addons/sign/static/src/js/sign_common.js:816
+#: code:addons/sign/static/src/js/sign_common.js:1092
+#: code:addons/sign/static/src/js/sign_common.js:1153
 #, python-format
 msgid "Sorry, an error occured, please try to fill the document again."
 msgstr ""
@@ -1512,7 +1531,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_request__state
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__state
 msgid "State"
-msgstr ""
+msgstr "Stát"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__activity_state
@@ -1533,7 +1552,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__subject
 msgid "Subject"
-msgstr ""
+msgstr "Předmět"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template_tag__name
@@ -1549,7 +1568,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_template__tag_ids
 #: model:ir.ui.view,arch_db:sign.sign_template_view_form
 msgid "Tags"
-msgstr ""
+msgstr "Štítky"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__template_id
@@ -1557,7 +1576,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_template_share__template_id
 #: model:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "Template"
-msgstr ""
+msgstr "Předloha"
 
 #. module: sign
 #: model:ir.ui.view,arch_db:sign.sign_request_view_search
@@ -1567,17 +1586,17 @@ msgstr ""
 #. module: sign
 #: model:ir.ui.menu,name:sign.sign_template_menu
 msgid "Templates"
-msgstr ""
+msgstr "Šablony"
 
 #. module: sign
 #: model:sign.item.type,name:sign.sign_item_type_text
 #: selection:sign.item.type,type:0
 msgid "Text"
-msgstr ""
+msgstr "Text"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:867
+#: code:addons/sign/static/src/js/sign_common.js:865
 #, python-format
 msgid "Thank You !"
 msgstr ""
@@ -1614,18 +1633,18 @@ msgstr ""
 #. module: sign
 #: selection:sign.request,activity_state:0
 msgid "Today"
-msgstr ""
+msgstr "Dnes"
 
 #. module: sign
 #: model:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "Today Activities"
-msgstr ""
+msgstr "Dnešní činnosti"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__type_id
 #: model:ir.model.fields,field_description:sign.field_sign_item_type__type
 msgid "Type"
-msgstr ""
+msgstr "Typ"
 
 #. module: sign
 #: model:ir.model,name:sign.model_sign_item_role
@@ -1634,8 +1653,8 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:790
-#: code:addons/sign/static/src/js/sign_common.js:1102
+#: code:addons/sign/static/src/js/sign_common.js:789
+#: code:addons/sign/static/src/js/sign_common.js:1109
 #, python-format
 msgid "Unable to send the SMS, please contact the sender of the document."
 msgstr ""
@@ -1643,12 +1662,12 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_unread
 msgid "Unread Messages"
-msgstr ""
+msgstr "Nepřečtené zprávy"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_unread_counter
 msgid "Unread Messages Counter"
-msgstr ""
+msgstr "Počítadlo nepřečtených zpráv"
 
 #. module: sign
 #: model:ir.actions.act_window,help:sign.sign_template_action
@@ -1666,18 +1685,18 @@ msgstr ""
 #. module: sign
 #: model:ir.model,name:sign.model_res_users
 msgid "Users"
-msgstr ""
+msgstr "Uživatelé"
 
 #. module: sign
 #. openerp-web
 #: code:addons/sign/static/src/xml/sign_backend.xml:27
 #, python-format
 msgid "Validate"
-msgstr ""
+msgstr "Schválit"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:744
+#: code:addons/sign/static/src/js/sign_common.js:743
 #, python-format
 msgid "Validate & Send"
 msgstr ""
@@ -1690,13 +1709,27 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item_value__value
 msgid "Value"
+msgstr "Hodnota"
+
+#. module: sign
+#. openerp-web
+#: code:addons/sign/static/src/js/sign_common.js:842
+#, python-format
+msgid "Verify"
 msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:845
+#: code:addons/sign/static/src/xml/sign_common.xml:111
 #, python-format
-msgid "Verify"
+msgid "View External Document"
+msgstr ""
+
+#. module: sign
+#. openerp-web
+#: code:addons/sign/static/src/xml/sign_common.xml:116
+#, python-format
+msgid "View Signed document"
 msgstr ""
 
 #. module: sign
@@ -1716,10 +1749,10 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:1069
+#: code:addons/sign/static/src/js/sign_common.js:1076
 #, python-format
 msgid "Warning"
-msgstr ""
+msgstr "Varování"
 
 #. module: sign
 #. openerp-web
@@ -1731,17 +1764,17 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__website_message_ids
 msgid "Website Messages"
-msgstr ""
+msgstr "Zprávy Webové stránky"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__website_message_ids
 msgid "Website communication history"
-msgstr ""
+msgstr "Historie komunikace Webové stránky"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__width
 msgid "Width"
-msgstr ""
+msgstr "Šířka"
 
 #. module: sign
 #: model:ir.ui.view,arch_db:sign.sign_send_request_view_form
@@ -1756,7 +1789,7 @@ msgid "You can close the window and come back later."
 msgstr ""
 
 #. module: sign
-#: code:addons/sign/models/sign_template.py:63
+#: code:addons/sign/models/sign_template.py:65
 #, python-format
 msgid ""
 "You can't delete a template for which signature requests exist but you can "
@@ -1798,7 +1831,7 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:868
+#: code:addons/sign/static/src/js/sign_common.js:866
 #, python-format
 msgid "Your signature has been saved."
 msgstr ""

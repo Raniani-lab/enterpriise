@@ -3,23 +3,23 @@
 # * website_delivery_ups
 # 
 # Translators:
-# Martin Trigaux <mat@odoo.com>, 2017
+# Martin Trigaux, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 10.saas~18+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-02 11:50+0000\n"
-"PO-Revision-Date: 2017-10-02 11:50+0000\n"
-"Last-Translator: Martin Trigaux <mat@odoo.com>, 2017\n"
+"POT-Creation-Date: 2018-08-24 11:29+0000\n"
+"PO-Revision-Date: 2018-08-24 11:29+0000\n"
+"Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: Persian (https://www.transifex.com/odoo/teams/41243/fa/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Language: fa\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #. module: website_delivery_ups
-#: model:ir.ui.view,arch_db:website_delivery_ups.payment_delivery_inherit_website_sale_delivery
+#: model:ir.ui.view,arch_db:website_delivery_ups.payment_delivery_methods_inherit_website_sale_delivery
 msgid "(Bill My Account)"
 msgstr ""
 
@@ -72,6 +72,11 @@ msgid "Cancel"
 msgstr "لغو"
 
 #. module: website_delivery_ups
+#: model:ir.ui.view,arch_db:website_delivery_ups.ups_bill_my_account_dialog
+msgid "Close"
+msgstr "بستن"
+
+#. module: website_delivery_ups
 #: model:payment.acquirer,post_msg:website_delivery_ups.payment_acquirer_ups_cod
 msgid "Communication"
 msgstr "رسانگرش"
@@ -112,6 +117,6 @@ msgid "UPS Delivery Methods"
 msgstr ""
 
 #. module: website_delivery_ups
-#: model:ir.ui.view,arch_db:website_delivery_ups.payment_delivery_inherit_website_sale_delivery
+#: model:ir.ui.view,arch_db:website_delivery_ups.payment_delivery_methods_inherit_website_sale_delivery
 msgid "Using Account"
 msgstr ""

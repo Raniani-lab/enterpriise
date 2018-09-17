@@ -43,6 +43,9 @@
                     <filter string="With overdue invoices" 
                             name="filter_with_overdue_invoices"
                             domain="[('followup_status', '=', 'with_overdue_invoices')]"/>
+                    <filter string="In need of action"
+                            name="filter_in_need_of_action"
+                            domain="[('followup_status', '=', 'in_need_of_action')]"/>
                     <separator/>
                 </filter>
             </field>

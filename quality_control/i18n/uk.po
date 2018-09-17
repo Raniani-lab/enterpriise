@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"POT-Creation-Date: 2018-09-05 09:11+0000\n"
+"PO-Revision-Date: 2018-09-05 09:11+0000\n"
 "Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
@@ -283,6 +283,7 @@ msgstr ""
 #. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.quality_alert_view_search
 #: model:ir.ui.view,arch_db:quality_control.quality_check_view_search
+#: model:ir.ui.view,arch_db:quality_control.quality_point_view_search
 msgid "Group By"
 msgstr "Групувати за"
 
@@ -409,6 +410,11 @@ msgid "OK"
 msgstr "Ок"
 
 #. module: quality_control
+#: model:ir.ui.view,arch_db:quality_control.quality_point_view_search
+msgid "Operation Type"
+msgstr "Тип операції"
+
+#. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.quality_check_view_form
 #: model:ir.ui.view,arch_db:quality_control.quality_check_view_form_small
 #: selection:quality.check,measure_success:0
@@ -445,6 +451,11 @@ msgstr "Зображення завантажено"
 #: model:ir.ui.view,arch_db:quality_control.quality_alert_view_form
 msgid "Preventive Actions"
 msgstr "Профілактики"
+
+#. module: quality_control
+#: model:ir.ui.view,arch_db:quality_control.quality_point_view_search
+msgid "Product"
+msgstr "Товар"
 
 #. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.quality_alert_team_view_form
@@ -656,6 +667,11 @@ msgstr "Мітки"
 #: model:ir.ui.view,arch_db:quality_control.quality_alert_team_view_tree
 msgid "Teams"
 msgstr "Команди"
+
+#. module: quality_control
+#: model:ir.ui.view,arch_db:quality_control.quality_point_view_search
+msgid "Test Type"
+msgstr "Тип тесту"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_alert__title

@@ -15,6 +15,7 @@
         name="Activity Types"
         action="mail_activity_type_action_config_subscription"
         parent="sale_subscription.menu_sale_subscription_config"
-        sequence="10"/>
+        sequence="10"
+        groups="sale_subscription.group_sale_subscription_manager"/>
 
 </odoo>

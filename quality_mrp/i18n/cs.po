@@ -2,12 +2,15 @@
 # This file contains the translation of the following modules:
 # * quality_mrp
 # 
+# Translators:
+# Martin Trigaux, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.3+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-25 08:34+0000\n"
 "PO-Revision-Date: 2018-06-25 08:34+0000\n"
+"Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: Czech (https://www.transifex.com/odoo/teams/41243/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -40,13 +43,13 @@ msgstr ""
 #. module: quality_mrp
 #: model:ir.model,name:quality_mrp.model_mrp_production
 msgid "Manufacturing Order"
-msgstr ""
+msgstr "Výrobní příkaz"
 
 #. module: quality_mrp
 #: model:ir.model.fields,field_description:quality_mrp.field_quality_alert__production_id
 #: model:ir.model.fields,field_description:quality_mrp.field_quality_check__production_id
 msgid "Production Order"
-msgstr ""
+msgstr "Výrobní příkaz"
 
 #. module: quality_mrp
 #: model:ir.model,name:quality_mrp.model_quality_alert

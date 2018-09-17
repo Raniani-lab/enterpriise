@@ -159,16 +159,22 @@
                     color: $o-brand-primary;
                 }
             }
-            .o_dial_keypad_button_small {
-                padding: 0;
+            .o_row {
+                display: flex;
+                flex: 1 1 auto;
+                justify-content: space-around;
 
-                .feature {
-                    @include o-text-overflow;
-                    width: auto;
-                    font-size: 10px;
-                }
-                .o_dial_unmute_button {
-                    display: none;
+                .o_dial_keypad_button_small {
+                    padding: 0;
+
+                    .feature {
+                        @include o-text-overflow;
+                        width: auto;
+                        font-size: 10px;
+                    }
+                    .o_dial_unmute_button {
+                        display: none;
+                    }
                 }
             }
         }

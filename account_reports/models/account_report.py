@@ -19,7 +19,7 @@ from odoo import models, fields, api, _
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT, pycompat, config, date_utils
 from odoo.osv import expression
 from babel.dates import get_quarter_names
-from odoo.tools.misc import formatLang, format_date
+from odoo.tools.misc import formatLang, format_date, get_user_companies
 from odoo.addons.web.controllers.main import clean_action
 from odoo.tools.safe_eval import safe_eval
 from odoo.exceptions import UserError
@@ -81,10 +81,10 @@ class AccountReport(models.AbstractModel):
             filter_name = element[7:]
             options[filter_name] = getattr(self, element)
 
-        group_multi_company = self.env['ir.model.data'].xmlid_to_object('base.group_multi_company')
-        if self.env.user.id in group_multi_company.users.ids and 'multi_company' not in options:
-            # We have a user with multi-company
-            options['multi_company'] = [{'id': c.id, 'name': c.name, 'selected': True if c.id == self.env.user.company_id.id else False} for c in self.env.user.company_ids]
+        company_ids = get_user_companies(self._cr, self.env.user.id)
+        if len(company_ids) > 1:
+            companies = self.env['res.company'].browse(company_ids)
+            options['multi_company'] = [{'id': c.id, 'name': c.name, 'selected': True if c.id == self.env.user.company_id.id else False} for c in companies]
         if options.get('journals'):
             options['journals'] = self._get_journals()
 
@@ -432,13 +432,14 @@ class AccountReport(models.AbstractModel):
             searchview_dict['analytic_tags'] = self.env.user.id in self.env.ref('analytic.group_analytic_tags').users.ids and [(t.id, t.name) for t in self.env['account.analytic.tag'].search([])] or False
             options['selected_analytic_tag_names'] = [self.env['account.analytic.tag'].browse(int(tag)).name for tag in options['analytic_tags']]
         if options.get('partner'):
-            searchview_dict['res_partners'] = [(partner.id, partner.name) for partner in self.env['res.partner'].search([])] or False
+            partners = self.env['account.move.line'].read_group([('partner_id', '!=', False)], ['partner_id'], ['partner_id'])
+            searchview_dict['res_partners'] = [partner['partner_id'] for partner in partners] or False # list of tuple(id, name)
             searchview_dict['res_partner_categories'] = [(category.id, category.name) for category in self.env['res.partner.category'].search([])] or False
             options['selected_partner_ids'] = [self.env['res.partner'].browse(int(partner)).name for partner in options['partner_ids']]
             options['selected_partner_categories'] = [self.env['res.partner.category'].browse(int(category)).name for category in options['partner_categories']]
 
-        # Check whether there are unposted entries for the selected period or not
-        if options.get('date'):
+        # Check whether there are unposted entries for the selected period or not (if the report allows it)
+        if options.get('date') and options.get('all_entries') is not None:
             date_to = options['date'].get('date_to') or options['date'].get('date') or fields.Date.today()
             period_domain = [('state', '=', 'draft'), ('date', '<=', date_to)]
             options['unposted_in_period'] = bool(self.env['account.move'].search_count(period_domain))
@@ -669,6 +670,11 @@ class AccountReport(models.AbstractModel):
                 }
         if additional_context and type(additional_context) == dict:
             rcontext.update(additional_context)
+        if self.env.context.get('analytic_account_ids'):
+            rcontext['options']['analytic_account_ids'] = [
+                {'id': acc.id, 'name': acc.name} for acc in self.env.context['analytic_account_ids']
+            ]
+
         render_template = templates.get('main_template', 'account_reports.main_template')
         if line_id is not None:
             render_template = templates.get('line_template', 'account_reports.line_template')

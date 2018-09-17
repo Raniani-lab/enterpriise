@@ -2,12 +2,26 @@
 # This file contains the translation of the following modules:
 # * sale_subscription_dashboard
 # 
+# Translators:
+# Mustafa Rawi <mustafa@cubexco.com>, 2018
+# Akram Alfusayal <akram_ma@hotmail.com>, 2018
+# Martin Trigaux, 2018
+# jahzar <jahzar@gmail.com>, 2018
+# Osoul <baruni@osoul.ly>, 2018
+# Ghaith Gammar <g.gammar@saharaifs.net>, 2018
+# Eng.Walid Ramadan <tdatasa@gmail.com>, 2018
+# Osama Ahmaro <osamaahmaro@gmail.com>, 2018
+# Abd El-Rahman Ali <abdelrahman.ali.242@gmail.com>, 2018
+# Shaima Safar <shaima.safar@open-inside.com>, 2018
+# Islam Eldeeb <islameldeb@gmail.com>, 2018
+# Yihya Hugirat <hugirat@gmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-08-24 11:28+0000\n"
 "PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"Last-Translator: Yihya Hugirat <hugirat@gmail.com>, 2018\n"
 "Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,56 +41,56 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:323
 #, python-format
 msgid "% Complete (success)"
-msgstr ""
+msgstr "% تم (بنجاح)"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:338
 #, python-format
 msgid "1 month ago"
-msgstr ""
+msgstr "منذ 1 شهر"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:354
 #, python-format
 msgid "12 months ago"
-msgstr ""
+msgstr "منذ 12 شهر"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:346
 #, python-format
 msgid "3 months ago"
-msgstr ""
+msgstr "منذ 3 شهور"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:370
 #, python-format
 msgid "30 Days Ago"
-msgstr ""
+msgstr "منذ 30 يوم"
 
 #. module: sale_subscription_dashboard
 #: model:ir.ui.view,arch_db:sale_subscription_dashboard.invoice_line_entries_report_search
 msgid "Active invoices"
-msgstr ""
+msgstr "الفواتير المفعلة"
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:372
 #, python-format
 msgid "Annual Run-Rate"
-msgstr ""
+msgstr "معدل التشغيل السنوي"
 
 #. module: sale_subscription_dashboard
 #: model:ir.ui.view,arch_db:sale_subscription_dashboard.invoice_line_entries_report_search
 msgid "Asset End Date"
-msgstr ""
+msgstr "تاريخ إستهلاك الأصل"
 
 #. module: sale_subscription_dashboard
 #: model:ir.ui.view,arch_db:sale_subscription_dashboard.invoice_line_entries_report_search
 msgid "Asset Start Date"
-msgstr ""
+msgstr "تاريخ بدء الأصل"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -84,28 +98,28 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:1105
 #, python-format
 msgid "Churned MRR"
-msgstr ""
+msgstr "حركة MRR"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:24
 #, python-format
 msgid "Create a Template"
-msgstr ""
+msgstr "انشأ قالب"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:333
 #, python-format
 msgid "Current"
-msgstr ""
+msgstr "الحالي"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:421
 #, python-format
 msgid "Current MRR"
-msgstr ""
+msgstr "الحالي MRR"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -113,24 +127,24 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:961
 #, python-format
 msgid "Current Value: "
-msgstr ""
+msgstr "القيمة الحالية:"
 
 #. module: sale_subscription_dashboard
 #: model:ir.ui.menu,name:sale_subscription_dashboard.menu_sale_subscription_dashboard
 msgid "Dashboard"
-msgstr ""
+msgstr "لوحة المعلومات"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:49
 #, python-format
 msgid "Detailed Analysis"
-msgstr ""
+msgstr "تحليل بالتفصيل"
 
 #. module: sale_subscription_dashboard
 #: model:ir.actions.client,name:sale_subscription_dashboard.action_subscription_dashboard_report_detailed
 msgid "Detailed KPI"
-msgstr ""
+msgstr "تفاصيل المؤشر الرئيسي"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -145,7 +159,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:18
 #, python-format
 msgid "Edit your Templates"
-msgstr ""
+msgstr "تحرير القالب الخاص بك"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -153,7 +167,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:1109
 #, python-format
 msgid "Expansion MRR"
-msgstr ""
+msgstr "توسيع MRR"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -161,7 +175,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:147
 #, python-format
 msgid "Exponential"
-msgstr ""
+msgstr "الأسي"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -175,7 +189,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:287
 #, python-format
 msgid "Filter on companies"
-msgstr ""
+msgstr "تصفية على الشركات"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -195,7 +209,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:420
 #, python-format
 msgid "Forecasted Annual MRR Growth"
-msgstr ""
+msgstr "توقعات نمو الإيرادات الشهرية المتكررة السنوية"
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:426
@@ -206,18 +220,18 @@ msgstr ""
 #. module: sale_subscription_dashboard
 #: model:ir.actions.client,name:sale_subscription_dashboard.action_subscription_dashboard_report_forecast
 msgid "Forecasted KPIs"
-msgstr ""
+msgstr "مؤشرات الأداء الرئيسية المتوقعة"
 
 #. module: sale_subscription_dashboard
 #: model:ir.actions.act_window,help:sale_subscription_dashboard.action_invoice_line_entries_report
 msgid ""
 "From this view, have an analysis of your different invoice line entries."
-msgstr ""
+msgstr "من هذا العرض، لديك تحليل مختلف لقيود بند الفاتورة."
 
 #. module: sale_subscription_dashboard
 #: model:ir.ui.view,arch_db:sale_subscription_dashboard.invoice_line_entries_report_search
 msgid "Group By"
-msgstr ""
+msgstr "تجميع حسب"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -225,7 +239,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:143
 #, python-format
 msgid "Growth Type:"
-msgstr ""
+msgstr "نوع الزيادة:"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -233,7 +247,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:22
 #, python-format
 msgid "Hi there!"
-msgstr ""
+msgstr "أهلا بك!"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -241,14 +255,14 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:216
 #, python-format
 msgid "In"
-msgstr ""
+msgstr "في"
 
 #. module: sale_subscription_dashboard
 #: model:ir.actions.act_window,name:sale_subscription_dashboard.action_invoice_line_entries_report
 #: model:ir.ui.view,arch_db:sale_subscription_dashboard.invoice_line_entries_report_pivot
 #: model:ir.ui.view,arch_db:sale_subscription_dashboard.invoice_line_entries_report_search
 msgid "Invoice Line Entries Analysis"
-msgstr ""
+msgstr "بند فاتورة تحليل القيود"
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/revenue_kpis_dashboard.py:63
@@ -257,12 +271,14 @@ msgid ""
 "It makes no sense to sum MRR of different currencies. Please select "
 "companies with the same currency."
 msgstr ""
+"ليس من المنطقي جمع الإيرادات الشهرية المتكررة لعملات مختلفة. الرجاء إختيار "
+"شركات ذات نفس العملة."
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:381
 #, python-format
 msgid "Lifetime Value"
-msgstr ""
+msgstr "العمر"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -270,14 +286,14 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:145
 #, python-format
 msgid "Linear"
-msgstr ""
+msgstr "خطي"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:242
 #, python-format
 msgid "List of NRR invoices"
-msgstr ""
+msgstr "قائمة فواتير NRR"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -292,40 +308,40 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:40
 #, python-format
 msgid "Loading..."
-msgstr ""
+msgstr "جاري التحميل..."
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:390
 #, python-format
 msgid "Logo Churn"
-msgstr ""
+msgstr "شعار الحركة"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:400
 #, python-format
 msgid "MRR :"
-msgstr ""
+msgstr "إيرادات شهرية متكررة:"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:1098
 #, python-format
 msgid "MRR Growth"
-msgstr ""
+msgstr "نمو الإيرادات الشهرية المتكررة"
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:336
 #, python-format
 msgid "Monthly Recurring Revenue"
-msgstr ""
+msgstr "الايرادات الشهرية المتكررة"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:62
 #, python-format
 msgid "Monthly Recurring Revenue Growth"
-msgstr ""
+msgstr "نمو الإيرادات الشهرية المتكررة"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -333,7 +349,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:194
 #, python-format
 msgid "Months"
-msgstr ""
+msgstr "أشهر"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -356,13 +372,13 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:1117
 #, python-format
 msgid "Net New MRR"
-msgstr ""
+msgstr "صافي الايرادات الشهرية المتكررة الجديدة"
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:345
 #, python-format
 msgid "Net Revenue"
-msgstr ""
+msgstr "صافي الأرباح"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -370,19 +386,19 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:1101
 #, python-format
 msgid "New MRR"
-msgstr ""
+msgstr "ايرادات شهرية متكررة جديدة"
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/revenue_kpis_dashboard.py:61
 #, python-format
 msgid "No company selected."
-msgstr ""
+msgstr "لم يتم اختيار شركة"
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:354
 #, python-format
 msgid "Non-Recurring Revenue"
-msgstr ""
+msgstr "ايرادات غير متكررة"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -390,12 +406,12 @@ msgstr ""
 #, python-format
 msgid ""
 "Now that you have defined a subscription template and your revenues types,"
-msgstr ""
+msgstr "الآن بعد أن قمت بتحديد قالب الاشتراك وأنواع الإيرادات الخاصة بك،"
 
 #. module: sale_subscription_dashboard
 #: model:ir.ui.view,arch_db:sale_subscription_dashboard.invoice_line_entries_report_search
 msgid "OUT invoices"
-msgstr ""
+msgstr "خارج الفواتير"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -403,28 +419,28 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:443
 #, python-format
 msgid "Partner"
-msgstr ""
+msgstr "الشريك"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:230
 #, python-format
 msgid "Pick a salesman and a period"
-msgstr ""
+msgstr "اختر بائع وفترة"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:311
 #, python-format
 msgid "Plan"
-msgstr ""
+msgstr "خطّة"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:420
 #, python-format
 msgid "Previous MRR"
-msgstr ""
+msgstr "الإيرادات الشهرية المتكررة السابقة"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -432,40 +448,40 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:189
 #, python-format
 msgid "Projection Time:"
-msgstr ""
+msgstr "وقت العرض:"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:231
 #, python-format
 msgid "Recurring Revenue Dashboard for"
-msgstr ""
+msgstr "لوحة تحكم الايرادات المتكررة لـ"
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:399
 #, python-format
 msgid "Revenue Churn"
-msgstr ""
+msgstr "إزاحة الإيرادات"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:111
 #, python-format
 msgid "Revenue Churn:"
-msgstr ""
+msgstr "إزاحة الإيرادات:"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:94
 #, python-format
 msgid "Revenue Growth:"
-msgstr ""
+msgstr "نمو الايرادات:"
 
 #. module: sale_subscription_dashboard
 #: model:ir.actions.client,name:sale_subscription_dashboard.action_subscription_dashboard_report_main
 #: model:ir.ui.menu,name:sale_subscription_dashboard.menu_action_subscription_dashboard_report_main
 msgid "Revenue KPIs"
-msgstr ""
+msgstr "مؤشرات الأداء الرئيسية للإيرادات"
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:363
@@ -477,7 +493,7 @@ msgstr ""
 #: model:ir.actions.client,name:sale_subscription_dashboard.action_subscription_dashboard_report_salesman
 #: model:ir.ui.menu,name:sale_subscription_dashboard.menu_action_subscription_dashboard_report_salesman
 msgid "Salesperson Dashboard"
-msgstr ""
+msgstr "لوحة تحكم مسئول المبيعات"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -485,21 +501,21 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:394
 #, python-format
 msgid "Sample data"
-msgstr ""
+msgstr "نموذج المعلومات "
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:87
 #, python-format
 msgid "Select at least one company."
-msgstr ""
+msgstr "حدد على الاقل شركة واحدة"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:83
 #, python-format
 msgid "Starting MRR:"
-msgstr ""
+msgstr "بدء الإيرادات الشهرية المتكررة:"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -514,7 +530,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:444
 #, python-format
 msgid "Subscription"
-msgstr ""
+msgstr "الإشتراك"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -523,7 +539,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:166
 #, python-format
 msgid "Subscriptions"
-msgstr ""
+msgstr "الاشتراكات"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -545,14 +561,14 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:445
 #, python-format
 msgid "Template"
-msgstr ""
+msgstr "قالب"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:437
 #, python-format
 msgid "There is no NRR invoice during this period."
-msgstr ""
+msgstr "لا توجد فاتورة NRR خلال هذه الفترة."
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -564,7 +580,7 @@ msgstr ""
 #. module: sale_subscription_dashboard
 #: model:ir.ui.view,arch_db:sale_subscription_dashboard.sale_subscription_view_search_inherit_sale_subscription_dashboard
 msgid "This Year"
-msgstr ""
+msgstr "هذه السنة"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -573,12 +589,13 @@ msgstr ""
 msgid ""
 "This is a sample dashboard. Your actual dashboard will be activated after"
 msgstr ""
+"هذا هو النموذج للوحة التحكم . لوحة التحكم الفعلية الخاصة بك سيتم تفعيلها بعد"
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/revenue_kpis_dashboard.py:65
 #, python-format
 msgid "Unknown error"
-msgstr ""
+msgstr "خطأ غير معروف"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -586,7 +603,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:262
 #, python-format
 msgid "Update"
-msgstr ""
+msgstr "تحديث"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -594,7 +611,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:107
 #, python-format
 msgid "Warning"
-msgstr ""
+msgstr "تحذير"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -611,13 +628,14 @@ msgid ""
 "You're just missing some Deferred Revenue Types to ensure your dashboard "
 "works correctly."
 msgstr ""
+"لقد فاتك فقط بعض أنواع الإيرادات المؤجلة لضمان عمل لوحة التحكم بشكل صحيح."
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:14
 #, python-format
 msgid "Your Subscriptions"
-msgstr ""
+msgstr "الاشتراك الخاص بك"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -638,7 +656,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:209
 #, python-format
 msgid "growth and"
-msgstr ""
+msgstr "النمو و"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -648,13 +666,14 @@ msgid ""
 "having defined your subscription templates and deferred revenue categories "
 "and invoiced your first subscription."
 msgstr ""
+"بعد تعريف نماذج الاشتراك وفئات الإيرادات المؤجلة وفوترة اشتراكك الأول."
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:13
 #, python-format
 msgid "invoice your first subscription to activate your dashboard."
-msgstr ""
+msgstr "فوتر اول اشتراك لتنشيط لوحة التحكم الخاصة بك"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -662,14 +681,14 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:218
 #, python-format
 msgid "months with"
-msgstr ""
+msgstr "أشهر لدى"
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/revenue_kpis_dashboard.py:23
 #: code:addons/sale_subscription_dashboard/controllers/revenue_kpis_dashboard.py:33
 #, python-format
 msgid "name"
-msgstr ""
+msgstr "إسم"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -684,4 +703,4 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:262
 #, python-format
 msgid "to"
-msgstr ""
+msgstr "إلى"

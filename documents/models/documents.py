@@ -12,13 +12,18 @@ class IrAttachment(models.Model):
 
     favorited_ids = fields.Many2many('res.users', string="Favorite of")
     tag_ids = fields.Many2many('documents.tag', 'document_tag_rel', string="Tags")
-    partner_id = fields.Many2one('res.partner', string="Partner", track_visibility='onchange')
+    partner_id = fields.Many2one('res.partner', string="Contact", track_visibility='onchange')
     owner_id = fields.Many2one('res.users', default=lambda self: self.env.user.id, string="Owner",
                                track_visibility='onchange')
     available_rule_ids = fields.Many2many('documents.workflow.rule', compute='_compute_available_rules',
                                           string='Available Rules')
     folder_id = fields.Many2one('documents.folder', ondelete="restrict", track_visibility="onchange")
     lock_uid = fields.Many2one('res.users', string="Locked by")
+
+    @api.onchange('url')
+    def _on_url_change(self):
+        if self.url:
+            self.name = self.url[self.url.rfind('/')+1:]
 
     @api.multi
     def _compute_available_rules(self, folder_id=None):
@@ -125,21 +130,8 @@ class IrAttachment(models.Model):
             self.lock_uid = self.env.uid
 
     @api.multi
-    def write(self, vals):
-        self.check('write', values=vals)
-        if len(self) == 1 and vals.get('datas'):
-            if re.match('image.*(gif|jpeg|jpg|png)', self[0].mimetype):
-                try:
-                    temp_image = crop_image(vals['datas'], type='center', size=(100, 100), ratio=(1, 1))
-                    thumbnail = image_resize_image(base64_source=temp_image, size=(100, 100),
-                                                   encoding='base64', filetype='PNG')
-                except Exception:
-                    thumbnail = False
-                vals.update(thumbnail=thumbnail)
-        return super(IrAttachment, self).write(vals)
-
-    @api.model
-    def create_multi(self, attachments):
-        # TODO remove
-        # AL: to remove and swap to the new built in multi create (added by metastorm in v12).
-        return [self.create(attachment) for attachment in attachments]
+    def refresh_write(self):
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }

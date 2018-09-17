@@ -4,6 +4,7 @@
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 import pytz
+from babel.dates import format_datetime, format_date
 
 from werkzeug.urls import url_encode
 
@@ -77,10 +78,13 @@ class WebsiteCalendar(http.Controller):
         partner_data = {}
         if request.env.user.partner_id != request.env.ref('base.public_partner'):
             partner_data = request.env.user.partner_id.read(fields=['name', 'mobile', 'country_id', 'email'])[0]
+        day_name = format_datetime(datetime.strptime(date_time, dtf), 'EEE', locale=request.env.context.get('lang', 'en_US'))
+        date_formated = format_datetime(datetime.strptime(date_time, dtf), locale=request.env.context.get('lang', 'en_US'))
         return request.render("website_calendar.appointment_form", {
             'partner_data': partner_data,
             'appointment_type': appointment_type,
             'datetime': date_time,
+            'datetime_locale': day_name + ' ' + date_formated,
             'datetime_str': date_time,
             'employee_id': employee_id,
             'countries': request.env['res.country'].search([]),
@@ -145,6 +149,7 @@ class WebsiteCalendar(http.Controller):
             'start_date': date_start.strftime(dtf),
             'start_datetime': date_start.strftime(dtf),
             'stop': date_end.strftime(dtf),
+            'stop_datetime': date_end.strftime(dtf),
             'allday': False,
             'duration': appointment_type.appointment_duration,
             'description': description,
@@ -168,13 +173,21 @@ class WebsiteCalendar(http.Controller):
             request.session['timezone'] = timezone
         tz_session = pytz.timezone(timezone)
 
+        date_start_suffix = ""
+        format_func = format_datetime
         if not event.allday:
             url_date_start = fields.Datetime.from_string(event.start_datetime).strftime('%Y%m%dT%H%M%SZ')
             url_date_stop = fields.Datetime.from_string(event.stop_datetime).strftime('%Y%m%dT%H%M%SZ')
-            date_start = fields.Datetime.from_string(event.start_datetime).replace(tzinfo=pytz.utc).astimezone(tz_session).strftime('%A, %x %X')
+            date_start = fields.Datetime.from_string(event.start_datetime).replace(tzinfo=pytz.utc).astimezone(tz_session)
         else:
             url_date_start = url_date_stop = fields.Date.from_string(event.start_date).strftime('%Y%m%d')
-            date_start = fields.Date.from_string(event.start_date).strftime('%A, %x') + _(', All Day')
+            date_start = fields.Date.from_string(event.start_date)
+            format_func = format_date
+            date_start_suffix = _(', All Day')
+
+        locale = request.env.context.get('lang', 'en_US')
+        day_name = format_func(date_start, 'EEE', locale=locale)
+        date_start = day_name + ' ' + format_func(date_start, locale=locale) + date_start_suffix
         details = event.appointment_type_id and event.appointment_type_id.message_confirmation or event.description or ''
         params = url_encode({
             'action': 'TEMPLATE',

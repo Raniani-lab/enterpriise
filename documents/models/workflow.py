@@ -28,7 +28,7 @@ class WorkflowActionRule(models.Model):
     partner_id = fields.Many2one('res.partner', string="Set Contact")
     user_id = fields.Many2one('res.users', string="Set Owner")
     tag_action_ids = fields.One2many('documents.workflow.action', 'workflow_rule_id', string='Set Tags')
-    folder_id = fields.Many2one('documents.folder', string="Move to")
+    folder_id = fields.Many2one('documents.folder', string="Move to Folder")
     has_business_option = fields.Boolean(compute='_get_business')
     create_model = fields.Selection([], string="Attach to")
 
@@ -92,7 +92,7 @@ class WorkflowTagCriteria(models.Model):
     operator = fields.Selection([
         ('contains', "Contains"),
         ('notcontains', "Does not contain"),
-    ], default='contains')
+    ], default='contains', required=True)
 
     facet_id = fields.Many2one('documents.facet', string="Category")
     tag_id = fields.Many2one('documents.tag', string="Tag", required=True)
@@ -108,24 +108,24 @@ class WorkflowAction(models.Model):
         ('add', "Add"),
         ('replace', "Replace by"),
         ('remove', "Remove"),
-    ], default='add')
+    ], default='add', required=True)
 
     facet_id = fields.Many2one('documents.facet', string="Category")
     tag_id = fields.Many2one('documents.tag', string="Tag")
 
     def execute_action(self, attachment):
         if self.action == 'add' and self.tag_id.id:
-            attachment.write({'tag_ids': [(4, self.tag_id.id, False)]})
+            return attachment.write({'tag_ids': [(4, self.tag_id.id, False)]})
         elif self.action == 'replace' and self.facet_id.id:
             faceted_tags = self.env['documents.tag'].search([('facet_id', '=', self.facet_id.id)])
             if faceted_tags.ids:
                 for tag in faceted_tags:
-                    attachment.write({'tag_ids': [(3, tag.id, False)]})
-            attachment.write({'tag_ids': [(4, self.tag_id.id, False)]})
+                    return attachment.write({'tag_ids': [(3, tag.id, False)]})
+            return attachment.write({'tag_ids': [(4, self.tag_id.id, False)]})
         elif self.action == 'remove':
             if self.tag_id.id:
-                attachment.write({'tag_ids': [(3, self.tag_id.id, False)]})
-            elif self.facet_id.id and self.facet_id.id:
+                return attachment.write({'tag_ids': [(3, self.tag_id.id, False)]})
+            elif self.facet_id:
                 faceted_tags = self.env['documents.tag'].search([('facet_id', '=', self.facet_id.id)])
                 for tag in faceted_tags:
-                    attachment.write({'tag_ids': [(3, tag.id, False)]})
+                    return attachment.write({'tag_ids': [(3, tag.id, False)]})

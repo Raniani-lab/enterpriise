@@ -2,12 +2,15 @@
 # This file contains the translation of the following modules:
 # * event_barcode
 # 
+# Translators:
+# Martin Trigaux, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-08-24 11:28+0000\n"
 "PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: Gujarati (https://www.transifex.com/odoo/teams/41243/gu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -77,14 +80,14 @@ msgstr ""
 #: code:addons/event_barcode/static/src/js/event_barcode.js:95
 #, python-format
 msgid "Close"
-msgstr ""
+msgstr "બંધ કરો"
 
 #. module: event_barcode
 #. openerp-web
 #: code:addons/event_barcode/static/src/js/event_barcode.js:66
 #, python-format
 msgid "Error"
-msgstr ""
+msgstr "ભૂલ"
 
 #. module: event_barcode
 #. openerp-web
@@ -98,7 +101,7 @@ msgstr ""
 #: code:addons/event_barcode/static/src/js/event_barcode.js:96
 #, python-format
 msgid "Print"
-msgstr ""
+msgstr "છાપો"
 
 #. module: event_barcode
 #. openerp-web
@@ -125,7 +128,7 @@ msgstr ""
 #: code:addons/event_barcode/static/src/js/event_barcode.js:104
 #, python-format
 msgid "View"
-msgstr ""
+msgstr "દેખાવ"
 
 #. module: event_barcode
 #. openerp-web
@@ -139,4 +142,4 @@ msgstr ""
 #: code:addons/event_barcode/static/src/js/event_barcode.js:117
 #, python-format
 msgid "Warning"
-msgstr ""
+msgstr "ચેતવણી"

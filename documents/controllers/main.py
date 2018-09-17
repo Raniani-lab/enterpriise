@@ -25,14 +25,14 @@ class ShareRoute(http.Controller):
 
     # util methods #################################################################################
 
-    def _get_file_response(self, id, filename=None, field='datas', share_id=None, share_token=None, force_ext=True):
+    def _get_file_response(self, id, filename=None, field='datas', share_id=None, share_token=None):
         """
         returns the http response to download one file.
 
         """
         status, headers, content = request.registry['ir.http'].binary_content(
             id=id, field=field, filename=filename, share_id=share_id,
-            share_token=share_token, download=True, force_ext=force_ext)
+            share_token=share_token, download=True)
 
         if status == 304:
             response = werkzeug.wrappers.Response(status=status, headers=headers)
@@ -61,13 +61,6 @@ class ShareRoute(http.Controller):
                     if attachment.type == 'url':
                         continue
                     filename = attachment.datas_fname
-                    mimetype = attachment.mimetype
-                    dot_index = filename.rfind('.')
-                    if dot_index > -1:
-                        if mimetypes.guess_extension(mimetype) != filename[dot_index:]:
-                            filename = filename[:dot_index] + mimetypes.guess_extension(mimetype)
-                    else:
-                        filename = filename + mimetypes.guess_extension(mimetype)
                     doc_zip.writestr(filename, base64.b64decode(attachment['datas']),
                                      compress_type=zipfile.ZIP_DEFLATED)
         except zipfile.BadZipfile:
@@ -117,7 +110,7 @@ class ShareRoute(http.Controller):
                         attachments = http.request.env['ir.attachment'].sudo().search(domain)
                     elif share.type == 'ids':
                         attachments = share.attachment_ids
-                    return self._make_zip(share.name or 'unnamed-link' + '.zip', attachments)
+                    return self._make_zip((share.name or 'unnamed-link') + '.zip', attachments)
         except Exception:
             logger.exception("Failed to zip share link id: %s" % share_id)
         return request.not_found()
@@ -259,6 +252,7 @@ class ShareRoute(http.Controller):
             options = {
                 'base_url': http.request.env["ir.config_parameter"].sudo().get_param("web.base.url"),
                 'token': str(token),
+                'upload': share.action == 'downloadupload',
                 'share_id': str(share.id),
                 'author': share.create_uid.name,
             }
@@ -266,9 +260,8 @@ class ShareRoute(http.Controller):
                 options.update(attachment=attachments[0])
                 return request.render('documents.share_single', options)
             else:
-                if share.action == 'upload':
-                    attachments = []
-                options.update(upload='upload' in share.action, attachment_ids=attachments)
+                options.update(all_button='binary' in [attachment.type for attachment in attachments],
+                               attachment_ids=attachments)
                 return request.render('documents.share_page', options)
         except Exception:
             logger.exception("Failed to generate the multi file share portal")

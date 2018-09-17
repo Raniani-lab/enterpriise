@@ -12,7 +12,7 @@ QUnit.module('Studio', {}, function () {
 
 QUnit.module('ReportComponents', {
     beforeEach: function () {
-        this.widgets = {
+        this.widgetsOptions = {
             monetary: {
                 company_id: {
                     type: "model",
@@ -204,6 +204,7 @@ QUnit.module('ReportComponents', {
             'model.test': {
                 fields: {
                     name: {string: "Name", type: "char"},
+                    image: {string: "Image", type: "binary"},
                     child: {string: "Child", type: 'many2one', relation: 'model.test.child', searchable: true},
                     child_bis: {string: "Child Bis", type: 'many2one', relation: 'model.test.child', searchable: true},
                     children: {string: "Children", type: 'many2many', relation: 'model.test.child', searchable: true},
@@ -267,13 +268,58 @@ QUnit.module('ReportComponents', {
         $('.o_web_studio_field_modal .o_field_selector_close').trigger('click');
         $('.o_web_studio_field_modal .btn-primary').trigger('click');
 
-        assert.strictEqual($('.modal main[role="alert"]').text(),
-            'The record field name is missing',
+        assert.strictEqual($('.modal main[role="alert"]').length, 1,
             "Should display an alert because the field name of the record is wrong");
         $('.modal:has(main[role="alert"]) .btn-primary').trigger('click');
 
         $('.o_web_studio_field_modal .o_field_selector').trigger('focusin');
         $('.o_web_studio_field_modal .o_field_selector_item[data-name="child"]').trigger('click');
+        $('.o_web_studio_field_modal .btn-primary').trigger('click');
+
+        parent.destroy();
+    });
+
+    QUnit.test('add a binary field', function (assert) {
+        assert.expect(1);
+        var parent = new Widget();
+        testUtils.addMockEnvironment(parent, {
+            data: this.data,
+        });
+        parent.appendTo($('#qunit-fixture'));
+
+        var tOptions = new (reportNewComponentsRegistry.get('field'))(parent, {
+            models: {
+                'model.test': 'Kikou',
+            },
+        });
+
+        tOptions.add({
+            targets: [{
+                data: {},
+                node: {
+                    attrs: {
+                        'data-oe-id': 99,
+                        'data-oe-xpath': '/my/node/path/',
+                    },
+                    contextOrder: ['toto'],
+                    context: {
+                        toto: 'model.test',
+                    },
+                    parent: {
+                        children: [],
+                        attrs: {},
+                    }
+                },
+            }]
+        }).then(function (res) {
+            assert.deepEqual(res.inheritance,
+                [{content: '<span t-field="toto.image" t-options-widget="&quot;image&quot;"></span>', xpath: '/my/node/path/', view_id: 99, position: undefined}],
+                "image widget should be set");
+        });
+
+        $('.o_web_studio_field_modal .o_field_selector').trigger('focusin');
+        $('.o_web_studio_field_modal .o_field_selector_item[data-name="toto"]').trigger('click');
+        $('.o_web_studio_field_modal .o_field_selector_item[data-name="image"]').trigger('click');
         $('.o_web_studio_field_modal .btn-primary').trigger('click');
 
         parent.destroy();
@@ -286,7 +332,6 @@ QUnit.module('ReportComponents', {
         var parent = new Widget();
         parent.appendTo($('#qunit-fixture'));
         var column = new (editComponentsRegistry.get('column'))(parent, {
-            widgets: this.widgets,
             node: {
                 attrs: {
                     class: 'col-5 offset-3',
@@ -308,7 +353,6 @@ QUnit.module('ReportComponents', {
         var parent = new Widget();
         parent.appendTo($('#qunit-fixture'));
         var column = new (editComponentsRegistry.get('column'))(parent, {
-            widgets: this.widgets,
             node: {
                 attrs: {
                     class: 'col- offset-kikou',
@@ -326,11 +370,11 @@ QUnit.module('ReportComponents', {
     });
 
     QUnit.test('tOptions component', function (assert) {
-        assert.expect(2);
+        assert.expect(3);
         var parent = new Widget();
         parent.appendTo($('#qunit-fixture'));
         var tOptions = new (editComponentsRegistry.get('tOptions'))(parent, {
-            widgets: this.widgets,
+            widgetsOptions: this.widgetsOptions,
             node: {
                 attrs: {
                     't-options': '{"widget": "text"}',
@@ -349,6 +393,18 @@ QUnit.module('ReportComponents', {
             "Should select the image widget");
         assert.strictEqual(tOptions.$('.o_studio_option_show').length, 0,
             "'Show Options' should not be displayed because there is no option");
+
+        // unset the `widget`
+        testUtils.addMockEnvironment(parent, {
+            intercepts: {
+                view_change: function (ev) {
+                    assert.deepEqual(ev.data.operation.new_attrs, {'t-options-widget': '""'},
+                        "should correctly delete the group");
+                },
+            },
+        });
+        tOptions.$('select').val('').trigger('change');
+
         parent.destroy();
     });
 
@@ -366,7 +422,7 @@ QUnit.module('ReportComponents', {
         });
 
         var tOptions = new (editComponentsRegistry.get('tOptions'))(parent, {
-            widgets: this.widgets,
+            widgetsOptions: this.widgetsOptions,
             node: {
                 attrs: {
                     't-options': 'dict(from_currency=o.child.currency_id, date=o.child.date)',
@@ -413,7 +469,6 @@ QUnit.module('ReportComponents', {
         });
 
         var tOptions = new (editComponentsRegistry.get('tEsc'))(parent, {
-            widgets: this.widgets,
             node: {
                 attrs: {
                     't-esc': 'o.child.company_id',
@@ -445,7 +500,6 @@ QUnit.module('ReportComponents', {
         });
 
         var tOptions = new (editComponentsRegistry.get('tEsc'))(parent, {
-            widgets: this.widgets,
             node: {
                 attrs: {
                     't-esc': 'o.child.getCompany()',
@@ -485,7 +539,7 @@ QUnit.module('ReportComponents', {
         parent.appendTo($('#qunit-fixture'));
 
         var params = {
-            widgets: this.widgets,
+            widgetsOptions: this.widgetsOptions,
             node: {
                 attrs: {
                     't-options': '{"widget": "contact"}',

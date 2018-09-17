@@ -33,7 +33,7 @@
                         <li class="text-muted">Time<span class="chevron"></span></li>
                         <li class="text-muted">Confirmation<span class="chevron"></span></li>
                     </ul>
-                    <h1 class="page-header mt32 ">
+                    <h1 class="o_page_header mt32">
                         Schedule an Appointment
                     </h1>
                     <div t-if="message=='cancel'" class="alert alert-danger mt16" role="alert">
@@ -153,7 +153,7 @@
                         <li class="text-primary">Time<span class="chevron"></span></li>
                         <li class="text-muted">Confirmation<span class="chevron"></span></li>
                     </ul>
-                    <h1 class="page-header mt32">Appointment Time</h1>
+                    <h1 class="o_page_header mt32">Appointment Time</h1>
                     <div t-if="failed=='employee'" class="alert alert-danger mt16" role="alert">
                         <p>
                             <strong>Appointment failed!</strong>
@@ -196,9 +196,9 @@
                         <li><a t-attf-href="/website/calendar/#{ slug(appointment_type) }/appointment" class="text-success">Time</a><span class="chevron"></span></li>
                         <li class="text-primary">Confirmation<span class="chevron"></span></li>
                     </ul>
-                    <h2 class="page-header mt32">Confirm your details</h2>
+                    <h2 class="o_page_header mt32">Confirm your details</h2>
                     <p>
-                        <span t-field="appointment_type.name"/> on <strong t-esc="datetime.strftime('%c')"/>
+                        <span t-field="appointment_type.name"/> on <strong t-esc="datetime_locale"/>
                     </p>
 
                     <form class="mt32 appointment_submit_form" t-attf-action="/website/calendar/#{ appointment_type.id }/submit" method="POST">
@@ -303,7 +303,7 @@
         <t t-call="website.layout">
             <div id="wrap" class="o_website_calendar">
                 <div class="oe_structure container mb128">
-                    <h1 class="page-header">Appointment: <span t-esc="event.name"/></h1>
+                    <h1 class="o_page_header">Appointment: <span t-esc="event.name"/></h1>
                     <div class="alert alert-info" t-if="message=='new'" role="status">
                         <p>
                             <strong>Your appointment has been successfully booked!</strong>
@@ -395,7 +395,7 @@
         <t t-call="website.layout">
             <div id="wrap" class="o_website_calendar">
                 <div class="oe_structure container mb128">
-                    <h1 class="page-header">No appointments available!</h1>
+                    <h1 class="o_page_header">No appointments available!</h1>
                     <p groups="base.group_user">
                         In order to configure your first appointment, go
                         to the "Calendar" application in Odoo and create

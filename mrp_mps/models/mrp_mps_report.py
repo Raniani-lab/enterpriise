@@ -152,7 +152,10 @@ class MrpMpsReport(models.TransientModel):
                 name = babel.dates.format_date(format="MMM YY", date=date, locale=self._context.get('lang') or 'en_US')
             elif self.period == 'week':
                 date_to = date + relativedelta.relativedelta(days=7)
-                name = _('Week %s') % date.strftime('%U')
+                name = _('Week %s') % babel.dates.format_datetime(
+                    date, format="w",
+                    locale=self._context.get('lang') or 'en_US'
+                )
             else:
                 date_to = date + relativedelta.relativedelta(days=1)
                 name = babel.dates.format_date(

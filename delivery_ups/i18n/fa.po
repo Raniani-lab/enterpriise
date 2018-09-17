@@ -3,42 +3,50 @@
 # * delivery_ups
 # 
 # Translators:
-# Sahand Hashemi <sahand.twastica@gmail.com>, 2017
-# Martin Trigaux <mat@odoo.com>, 2017
-# Hamid Darabi <hamid.darabi@gmail.com>, 2017
+# Martin Trigaux, 2018
+# Hamid Darabi, 2018
+# Sahand Hashemi <sahand.twastica@gmail.com>, 2018
+# Hamed Mohammadi <hamed@dehongi.com>, 2018
+# Arash Sardari <arashss77@gmail.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 10.saas~18+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-02 11:50+0000\n"
-"PO-Revision-Date: 2017-10-02 11:50+0000\n"
-"Last-Translator: Hamid Darabi <hamid.darabi@gmail.com>, 2017\n"
+"POT-Creation-Date: 2018-08-24 11:28+0000\n"
+"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"Last-Translator: Arash Sardari <arashss77@gmail.com>, 2018\n"
 "Language-Team: Persian (https://www.transifex.com/odoo/teams/41243/fa/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Language: fa\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #. module: delivery_ups
-#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier_ups_bill_my_account
-#: model:ir.model.fields,field_description:delivery_ups.field_sale_order_ups_bill_my_account
+#: selection:delivery.carrier,delivery_type:0
+msgid "Based on Rules"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_bill_my_account
+#: model:ir.model.fields,field_description:delivery_ups.field_sale_order__ups_bill_my_account
 msgid "Bill My Account"
 msgstr ""
 
 #. module: delivery_ups
-#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier_ups_cod_funds_code
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_cod_funds_code
 msgid "COD Funding Option"
 msgstr ""
 
 #. module: delivery_ups
 #: model:ir.model,name:delivery_ups.model_delivery_carrier
+#: model:ir.model.fields,field_description:delivery_ups.field_product_packaging__package_carrier_type
 msgid "Carrier"
 msgstr "پیک"
 
 #. module: delivery_ups
-#: model:ir.model.fields,field_description:delivery_ups.field_sale_order_ups_carrier_account
-#: model:ir.model.fields,field_description:delivery_ups.field_stock_picking_ups_carrier_account
+#: model:ir.model.fields,field_description:delivery_ups.field_sale_order__ups_carrier_account
+#: model:ir.model.fields,field_description:delivery_ups.field_stock_picking__ups_carrier_account
 msgid "Carrier Account"
 msgstr ""
 
@@ -58,13 +66,25 @@ msgid "Check, Cashier's Check or MoneyOrder"
 msgstr ""
 
 #. module: delivery_ups
-#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier_ups_cod
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_cod
 msgid "Collect on Delivery"
 msgstr ""
 
 #. module: delivery_ups
+#: selection:delivery.carrier,delivery_type:0
+#: selection:product.packaging,package_carrier_type:0
+msgid "DHL"
+msgstr "دی اچ ال"
+
+#. module: delivery_ups
 #: selection:delivery.carrier,ups_label_file_type:0
 msgid "EPL"
+msgstr ""
+
+#. module: delivery_ups
+#: selection:delivery.carrier,delivery_type:0
+#: selection:product.packaging,package_carrier_type:0
+msgid "Easypost"
 msgstr ""
 
 #. module: delivery_ups
@@ -76,8 +96,19 @@ msgid ""
 msgstr ""
 
 #. module: delivery_ups
-#: model:ir.model.fields,help:delivery_ups.field_delivery_carrier_ups_bill_my_account
-#: model:ir.model.fields,help:delivery_ups.field_sale_order_ups_bill_my_account
+#: selection:delivery.carrier,delivery_type:0
+#: selection:product.packaging,package_carrier_type:0
+msgid "FedEx"
+msgstr ""
+
+#. module: delivery_ups
+#: selection:delivery.carrier,delivery_type:0
+msgid "Fixed Price"
+msgstr "قیمت مقطوع"
+
+#. module: delivery_ups
+#: model:ir.model.fields,help:delivery_ups.field_delivery_carrier__ups_bill_my_account
+#: model:ir.model.fields,help:delivery_ups.field_sale_order__ups_bill_my_account
 msgid ""
 "If checked, ecommerce users will be prompted their UPS account number\n"
 "and delivery fees will be charged on it."
@@ -94,6 +125,11 @@ msgid "Kilograms"
 msgstr ""
 
 #. module: delivery_ups
+#: selection:product.packaging,package_carrier_type:0
+msgid "No carrier integration"
+msgstr ""
+
+#. module: delivery_ups
 #: selection:delivery.carrier,ups_label_file_type:0
 msgid "PDF"
 msgstr "PDF"
@@ -104,7 +140,7 @@ msgid "Packaging"
 msgstr "بسته‌بندی"
 
 #. module: delivery_ups
-#: code:addons/delivery_ups/models/ups_request.py:221
+#: code:addons/delivery_ups/models/ups_request.py:209
 #, python-format
 msgid "Please provide at least one item to ship."
 msgstr ""
@@ -113,6 +149,11 @@ msgstr ""
 #: selection:delivery.carrier,ups_package_weight_unit:0
 msgid "Pounds"
 msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__delivery_type
+msgid "Provider"
+msgstr "فراهم‌کننده"
 
 #. module: delivery_ups
 #: model:ir.model,name:delivery_ups.model_sale_order
@@ -125,18 +166,18 @@ msgid "SPL"
 msgstr ""
 
 #. module: delivery_ups
-#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier_ups_saturday_delivery
+#: model:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form_with_provider_ups
 msgid "Saturday Delivery"
 msgstr ""
 
 #. module: delivery_ups
-#: code:addons/delivery_ups/models/delivery_ups.py:226
+#: code:addons/delivery_ups/models/delivery_ups.py:231
 #, python-format
 msgid "Shipment N° %s has been cancelled"
 msgstr ""
 
 #. module: delivery_ups
-#: code:addons/delivery_ups/models/delivery_ups.py:197
+#: code:addons/delivery_ups/models/delivery_ups.py:202
 #, python-format
 msgid ""
 "Shipment created into UPS<br/><b>Tracking Numbers:</b> "
@@ -144,7 +185,7 @@ msgid ""
 msgstr ""
 
 #. module: delivery_ups
-#: code:addons/delivery_ups/models/ups_request.py:196
+#: code:addons/delivery_ups/models/ups_request.py:187
 #, python-format
 msgid ""
 "The address of your company is missing or wrong.\n"
@@ -152,7 +193,7 @@ msgid ""
 msgstr ""
 
 #. module: delivery_ups
-#: code:addons/delivery_ups/models/ups_request.py:206
+#: code:addons/delivery_ups/models/ups_request.py:197
 #, python-format
 msgid ""
 "The address of your warehouse is missing or wrong.\n"
@@ -160,14 +201,14 @@ msgid ""
 msgstr ""
 
 #. module: delivery_ups
-#: code:addons/delivery_ups/models/ups_request.py:226
+#: code:addons/delivery_ups/models/ups_request.py:215
 #, python-format
 msgid ""
 "The delivery cannot be done because the weight of your product is missing."
 msgstr ""
 
 #. module: delivery_ups
-#: code:addons/delivery_ups/models/ups_request.py:223
+#: code:addons/delivery_ups/models/ups_request.py:211
 #, python-format
 msgid ""
 "The estimated price cannot be computed because the weight of your product is"
@@ -175,7 +216,7 @@ msgid ""
 msgstr ""
 
 #. module: delivery_ups
-#: code:addons/delivery_ups/models/ups_request.py:216
+#: code:addons/delivery_ups/models/ups_request.py:219
 #, python-format
 msgid ""
 "The recipient address is missing or wrong.\n"
@@ -183,14 +224,14 @@ msgid ""
 msgstr ""
 
 #. module: delivery_ups
-#: model:ir.model.fields,help:delivery_ups.field_delivery_carrier_ups_cod
+#: model:ir.model.fields,help:delivery_ups.field_delivery_carrier__ups_cod
 msgid ""
 "This value added service enables UPS to collect the payment of the shipment "
 "from your customer."
 msgstr ""
 
 #. module: delivery_ups
-#: model:ir.model.fields,help:delivery_ups.field_delivery_carrier_ups_saturday_delivery
+#: model:ir.model.fields,help:delivery_ups.field_delivery_carrier__ups_saturday_delivery
 msgid ""
 "This value added service will allow you to ship the package on saturday "
 "also."
@@ -202,11 +243,18 @@ msgid "Transfer"
 msgstr "انتقال"
 
 #. module: delivery_ups
-#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier_ups_access_number
+#: selection:delivery.carrier,delivery_type:0
+#: selection:product.packaging,package_carrier_type:0
+msgid "UPS"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_access_number
 msgid "UPS AccessLicenseNumber"
 msgstr ""
 
 #. module: delivery_ups
+#: model:delivery.carrier,name:delivery_ups.delivery_carrier_ups_be
 #: model:product.product,name:delivery_ups.product_product_delivery_ups_be
 #: model:product.template,name:delivery_ups.product_product_delivery_ups_be_product_template
 msgid "UPS BE"
@@ -218,7 +266,7 @@ msgid "UPS Configuration"
 msgstr ""
 
 #. module: delivery_ups
-#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier_ups_default_packaging_id
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_default_packaging_id
 msgid "UPS Default Packaging Type"
 msgstr ""
 
@@ -229,45 +277,64 @@ msgid "UPS Delivery Methods"
 msgstr ""
 
 #. module: delivery_ups
-#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier_ups_label_file_type
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_label_file_type
 msgid "UPS Label File Type"
 msgstr ""
 
 #. module: delivery_ups
-#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier_ups_passwd
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_passwd
 msgid "UPS Password"
 msgstr ""
 
 #. module: delivery_ups
-#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier_ups_default_service_type
-#: model:ir.model.fields,field_description:delivery_ups.field_sale_order_ups_service_type
-#: model:ir.model.fields,field_description:delivery_ups.field_stock_picking_ups_service_type
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_saturday_delivery
+msgid "UPS Saturday Delivery"
+msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_default_service_type
+#: model:ir.model.fields,field_description:delivery_ups.field_sale_order__ups_service_type
+#: model:ir.model.fields,field_description:delivery_ups.field_stock_picking__ups_service_type
 msgid "UPS Service Type"
 msgstr ""
 
 #. module: delivery_ups
-#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier_ups_shipper_number
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_shipper_number
 msgid "UPS Shipper Number"
 msgstr ""
 
 #. module: delivery_ups
+#: model:delivery.carrier,name:delivery_ups.delivery_carrier_ups_us
 #: model:product.product,name:delivery_ups.product_product_delivery_ups_us
 #: model:product.template,name:delivery_ups.product_product_delivery_ups_us_product_template
 msgid "UPS US"
 msgstr ""
 
 #. module: delivery_ups
-#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier_ups_username
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_username
 msgid "UPS Username"
 msgstr ""
 
 #. module: delivery_ups
-#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier_ups_package_dimension_unit
+#: selection:delivery.carrier,delivery_type:0
+msgid "USPS"
+msgstr ""
+
+#. module: delivery_ups
+#: model:product.product,uom_name:delivery_ups.product_product_delivery_ups_be
+#: model:product.product,uom_name:delivery_ups.product_product_delivery_ups_us
+#: model:product.template,uom_name:delivery_ups.product_product_delivery_ups_be_product_template
+#: model:product.template,uom_name:delivery_ups.product_product_delivery_ups_us_product_template
+msgid "Unit(s)"
+msgstr "عدد"
+
+#. module: delivery_ups
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_package_dimension_unit
 msgid "Units for UPS Package Size"
 msgstr ""
 
 #. module: delivery_ups
-#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier_ups_package_weight_unit
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_package_weight_unit
 msgid "Ups Package Weight Unit"
 msgstr ""
 
@@ -280,3 +347,17 @@ msgstr ""
 #: selection:delivery.carrier,ups_label_file_type:0
 msgid "ZPL"
 msgstr ""
+
+#. module: delivery_ups
+#: selection:delivery.carrier,delivery_type:0
+#: selection:product.packaging,package_carrier_type:0
+msgid "bpost"
+msgstr ""
+
+#. module: delivery_ups
+#: model:product.product,weight_uom_name:delivery_ups.product_product_delivery_ups_be
+#: model:product.product,weight_uom_name:delivery_ups.product_product_delivery_ups_us
+#: model:product.template,weight_uom_name:delivery_ups.product_product_delivery_ups_be_product_template
+#: model:product.template,weight_uom_name:delivery_ups.product_product_delivery_ups_us_product_template
+msgid "kg"
+msgstr "کیلوگرم"

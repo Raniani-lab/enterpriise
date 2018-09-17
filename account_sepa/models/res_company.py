@@ -34,7 +34,7 @@ class ResCompany(models.Model):
         help="Identification assigned by an institution (eg. VAT number).")
     sepa_orgid_issr = fields.Char('Issuer', size=35, copy=False,
         help="Entity that assigns the identification (eg. KBE-BCO or Finanzamt Muenchen IV).")
-    sepa_initiating_party_name = fields.Char('Your Company Name', size=70, copy=False, default=lambda self: self.env['account.payment']._sanitize_communication(self.env.user.company_id.name),
+    sepa_initiating_party_name = fields.Char('Your Company Name', size=70, copy=False, default=lambda self: self.env['account.batch.payment']._sanitize_communication(self.env.user.company_id.name),
         help="Will appear in SEPA payments as the name of the party initiating the payment. Limited to 70 characters.")
     sepa_pain_version = fields.Selection([('pain.001.001.03', 'Generic'), ('pain.001.001.03.ch.02', 'Swiss Version'), ('pain.001.003.03', 'German Version')], string='SEPA Pain Version', help='SEPA may be a generic format, some countries differ from the SEPA recommandations made by the EPC (European Payment Councile) and thus the XML created need some tweakenings.', required=True, default=_default_sepa_pain_version)
 

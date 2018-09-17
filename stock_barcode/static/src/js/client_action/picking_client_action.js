@@ -3,7 +3,7 @@ odoo.define('stock_barcode.picking_client_action', function (require) {
 
 var core = require('web.core');
 var ClientAction = require('stock_barcode.ClientAction');
-var FormWidget = require('stock_barcode.FormWidget');
+var ViewsWidget = require('stock_barcode.ViewsWidget');
 
 var _t = core._t;
 
@@ -15,14 +15,18 @@ var PickingClientAction = ClientAction.extend({
         'validate': '_onValidate',
         'cancel': '_onCancel',
         'put_in_pack': '_onPutInPack',
+        'open_package': '_onOpenPackage',
     }),
 
     init: function (parent, action) {
         this._super.apply(this, arguments);
+        this.context = action.context;
         this.commands['O-BTN.scrap'] = this._scrap.bind(this);
         this.commands['O-BTN.validate'] = this._validate.bind(this);
         this.commands['O-BTN.cancel'] = this._cancel.bind(this);
         this.commands['O-BTN.pack'] = this._putInPack.bind(this);
+        this.commands['O-BTN.print-slip'] = this._printDeliverySlip.bind(this);
+        this.commands['O-BTN.print-op'] = this._printPicking.bind(this);
         if (! this.actionParams.pickingId) {
             this.actionParams.pickingId = action.context.active_id;
             this.actionParams.model = 'stock.picking';
@@ -66,6 +70,21 @@ var PickingClientAction = ClientAction.extend({
      */
     _getLines: function (state) {
         return state.move_line_ids;
+    },
+
+    /**
+     * @override
+     */
+    _lot_name_used: function (product, lot_name) {
+        var lines = this._getLines(this.currentState);
+        for (var i = 0; i < lines.length; i++) {
+            var line = lines[i];
+            if (line.product_id.id === product.id &&
+                line.lot_name && line.lot_name === lot_name) {
+                return true;
+            }
+        }
+        return false;
     },
 
     /**
@@ -125,37 +144,43 @@ var PickingClientAction = ClientAction.extend({
 
     /**
      * Makes the rpc to `button_validate`.
+     * This method could open a wizard so it takes care of removing/adding the "barcode_scanned"
+     * event listener.
      *
      * @private
      * @returns {Deferred}
      */
     _validate: function () {
         var self = this;
-        return self._save().then(function () {
-            return self._rpc({
-                'model': self.actionParams.model,
-                'method': 'button_validate',
-                'args': [[self.actionParams.pickingId]],
-            }).then(function (res) {
-                var def = $.when();
-                var exitCallback = function (infos) {
-                    if (infos !== 'special') {
-                        self.do_notify(_t("Success"), _t("The transfer has been validated"));
-                        self.trigger_up('exit');
-                    }
-                };
-                if (_.isObject(res)) {
-                    var options = {
-                        on_close: exitCallback,
+        this.mutex.exec(function () {
+            return self._save().then(function () {
+                return self._rpc({
+                    'model': self.actionParams.model,
+                    'method': 'button_validate',
+                    'args': [[self.actionParams.pickingId]],
+                }).then(function (res) {
+                    var def = $.when();
+                    var exitCallback = function (infos) {
+                        if (infos !== 'special') {
+                            self.do_notify(_t("Success"), _t("The transfer has been validated"));
+                            self.trigger_up('exit');
+                        }
+                        core.bus.on('barcode_scanned', self, self._onBarcodeScannedHandler);
                     };
-                    def.then(function () {
-                        return self.do_action(res, options);
-                    });
-                } else {
-                    return def.then(function () {
-                        return exitCallback();
-                    });
-                }
+                    if (_.isObject(res)) {
+                        var options = {
+                            on_close: exitCallback,
+                        };
+                        def.then(function () {
+                            core.bus.off('barcode_scanned', self, self._onBarcodeScannedHandler);
+                            return self.do_action(res, options);
+                        });
+                    } else {
+                        return def.then(function () {
+                            return exitCallback();
+                        });
+                    }
+                });
             });
         });
     },
@@ -167,32 +192,45 @@ var PickingClientAction = ClientAction.extend({
      */
     _cancel: function () {
         var self = this;
-        return self._save().then(function () {
-            return self._rpc({
-                'model': self.actionParams.model,
-                'method': 'action_cancel',
-                'args': [[self.actionParams.pickingId]],
-            }).then(function () {
-                self.do_notify(_t("Cancel"), _t("The transfer has been cancelled"));
-                self.trigger_up('exit');
+        this.mutex.exec(function () {
+            return self._save().then(function () {
+                return self._rpc({
+                    'model': self.actionParams.model,
+                    'method': 'action_cancel',
+                    'args': [[self.actionParams.pickingId]],
+                }).then(function () {
+                    self.do_notify(_t("Cancel"), _t("The transfer has been cancelled"));
+                    self.trigger_up('exit');
+                });
             });
         });
     },
 
     /**
      * Makes the rpc to `button_scrap`.
+     * This method opens a wizard so it takes care of removing/adding the "barcode_scanned" event
+     * listener.
      *
      * @private
      */
     _scrap: function () {
         var self = this;
-        return self._save().then(function () {
-            return self._rpc({
-                'model': 'stock.picking',
-                'method': 'button_scrap',
-                'args': [[self.actionParams.pickingId]],
-            }).then(function(res) {
-                return self.do_action(res);
+        this.mutex.exec(function () {
+            return self._save().then(function () {
+                return self._rpc({
+                    'model': 'stock.picking',
+                    'method': 'button_scrap',
+                    'args': [[self.actionParams.pickingId]],
+                }).then(function(res) {
+                    var exitCallback = function () {
+                        core.bus.on('barcode_scanned', self, self._onBarcodeScannedHandler);
+                    };
+                    var options = {
+                        on_close: exitCallback,
+                    };
+                    core.bus.off('barcode_scanned', self, self._onBarcodeScannedHandler);
+                    return self.do_action(res, options);
+                });
             });
         });
     },
@@ -231,17 +269,22 @@ var PickingClientAction = ClientAction.extend({
                     'state': 'assigned',
                     'package_id': line.package_id ? line.package_id[0] : false,
                     'result_package_id': line.result_package_id ? line.result_package_id[0] : false,
+                    'dummy_id': line.virtual_id,
                 }];
                 formattedCommands.push(cmd);
             }
         }
         if (formattedCommands.length > 0){
+            var params = {
+                'mode': 'write',
+                'model_name': this.actionParams.model,
+                'record_id': this.currentState.id,
+                'write_vals': formattedCommands,
+                'write_field': 'move_line_ids',
+            };
             return this._rpc({
-                'model': this.actionParams.model,
-                'method': 'write',
-                'args': [[this.currentState.id], {
-                    'move_line_ids': formattedCommands,
-                }],
+                'route': '/stock_barcode/get_set_barcode_view_state',
+                'params': params,
             });
         } else {
             return $.Deferred().reject();
@@ -258,15 +301,15 @@ var PickingClientAction = ClientAction.extend({
                 self.formWidget.destroy();
             }
             self.linesWidget.destroy();
-            self.formWidget = new FormWidget(
+            self.ViewsWidget = new ViewsWidget(
                 self,
                 'stock.picking',
                 'stock_barcode.stock_picking_barcode',
                 {},
-                self.currentState.id,
+                {currentId: self.currentState.id},
                 'readonly'
             );
-            self.formWidget.appendTo(self.$el);
+            self.ViewsWidget.appendTo(self.$el);
         });
     },
 
@@ -275,34 +318,95 @@ var PickingClientAction = ClientAction.extend({
      */
     _putInPack: function () {
         var self = this;
-        if (! this.scannedLines) {
-            this.do_warn(_t('Warning'), _t('You are expected to scan one or more products before moving them to a package.'));
-            return $.when();
-        } else {
-            // First, we create a new stock.quant.package and get back its id.
-            return this._rpc({
-                'model': 'stock.quant.package',
-                'method': 'create',
-                'args': [[]],
-            }).then(function (package_id) {
+        this.mutex.exec(function () {
+            return self._save().then(function () {
                 return self._rpc({
-                    'model': 'stock.quant.package',
-                    'method': 'read',
-                    args: [[package_id], ['name']],
-                }).then(function (package_name) {
-                    // Write `package_id` as `result_package_id` on the scanned lines.
-                    _.each(_.uniq(self.scannedLines), function (idOrVirtualId) {
-                        var currentStateLine = _.find(self._getLines(self.currentState), function (line) {
-                            return line.virtual_id &&
-                                   line.virtual_id.toString() === idOrVirtualId ||
-                                   line.id  === idOrVirtualId;
+                    'model': 'stock.picking',
+                    'method': 'put_in_pack',
+                    'args': [[self.actionParams.pickingId]],
+                    kwargs: {context: self.context},
+                }).then(function (res) {
+                    self._endBarcodeFlow();
+                    if (res.type && res.type === 'ir.actions.act_window') {
+                        core.bus.off('barcode_scanned', self, self._onBarcodeScannedHandler);
+                        return self.do_action(res).then(function() {
+                            core.bus.on('barcode_scanned', self, self._onBarcodeScannedHandler);
+                            self.trigger_up('reload');
                         });
-                        currentStateLine.result_package_id = [package_id, package_name];
-                    });
-                    self.trigger_up('reload');
+                    } else {
+                        return self.trigger_up('reload');
+                    }
                 });
             });
-        }
+        });
+    },
+
+    /**
+     * Handles the `open_package` OdooEvent. It hides the main widget and
+     * display a standard kanban view with all quants inside the package.
+     *
+     * @private
+     * @param {OdooEvent} ev
+     */
+    _onOpenPackage: function (ev) {
+        var self = this;
+
+        ev.stopPropagation();
+        this.linesWidget.destroy();
+        this.headerWidget.toggleDisplayContext('specialized');
+
+        var virtual_id = _.isString(ev.data.id) ? ev.data.id : false;
+        this.mutex.exec(function () {
+            return self._save().then(function () {
+                var currentPage = self.pages[self.currentPageIndex];
+                var id = ev.data.id;
+                if (virtual_id) {
+                    var rec = _.find(currentPage.lines, function (line) {
+                        return line.dummy_id === virtual_id;
+                    });
+                    id = rec.id;
+                }
+                var package_id = _.find(currentPage.lines, function (line) {
+                    return line.id === id;
+                });
+                package_id = package_id.package_id[0];
+
+                var params = {domain: [['package_id', '=', package_id]]};
+                self.ViewsWidget = new ViewsWidget(self, 'stock.quant', 'stock_barcode.stock_quant_barcode_kanban', {}, params, false, 'kanban');
+                return self.ViewsWidget.appendTo(self.$el);
+            });
+        });
+    },
+
+
+    _printPicking: function () {
+        var self = this;
+        this.mutex.exec(function () {
+            return self._save().then(function () {
+                return this._rpc({
+                    'model': 'stock.picking',
+                    'method': 'do_print_picking',
+                    'args': [[this.actionParams.pickingId]],
+                }).then(function(res) {
+                    return self.do_action(res);
+                });
+            });
+        });
+    },
+
+    _printDeliverySlip: function () {
+        var self = this;
+        this.mutex.exec(function () {
+            return self._save().then(function () {
+                return self.do_action(self.currentState.actionReportDeliverySlipId, {
+                    'additional_context': {
+                        'active_id': self.actionParams.pickingId,
+                        'active_ids': [self.actionParams.pickingId],
+                        'active_model': 'stock.picking',
+                    }
+                });
+            });
+        });
     },
 
     //--------------------------------------------------------------------------
@@ -318,12 +422,7 @@ var PickingClientAction = ClientAction.extend({
      */
     _onValidate: function (ev) {
         ev.stopPropagation();
-        var self = this;
-        this.mutex.exec(function () {
-            return self._save().then(function () {
-                return self._validate();
-            });
-        });
+        this._validate();
     },
 
     /**
@@ -335,12 +434,7 @@ var PickingClientAction = ClientAction.extend({
      */
     _onCancel: function (ev) {
         ev.stopPropagation();
-        var self = this;
-        this.mutex.exec(function () {
-            return self._save().then(function () {
-                return self._cancel();
-            });
-        });
+        this._cancel();
     },
 
     /**
@@ -352,18 +446,7 @@ var PickingClientAction = ClientAction.extend({
      */
     _onPrintPicking: function (ev) {
         ev.stopPropagation();
-        var self = this;
-        this.mutex.exec(function () {
-            return self._save().then(function () {
-                return self._rpc({
-                    'model': 'stock.picking',
-                    'method': 'do_print_picking',
-                    'args': [[self.actionParams.pickingId]],
-                }).then(function(res) {
-                    return self.do_action(res);
-                });
-            });
-        });
+        this._printPicking();
     },
 
     /**
@@ -376,18 +459,7 @@ var PickingClientAction = ClientAction.extend({
      */
     _onPrintDeliverySlip: function (ev) {
         ev.stopPropagation();
-        var self = this;
-        this.mutex.exec(function () {
-            return self._save().then(function () {
-                return self.do_action(self.currentState.actionReportDeliverySlipId, {
-                    'additional_context': {
-                        'active_id': self.actionParams.pickingId,
-                        'active_ids': [self.actionParams.pickingId],
-                        'active_model': 'stock.picking',
-                    }
-                });
-            });
-        });
+        this._printDeliverySlip();
     },
 
     /**
@@ -399,20 +471,19 @@ var PickingClientAction = ClientAction.extend({
      */
     _onScrap: function (ev) {
         ev.stopPropagation();
-        var self = this;
-        this.mutex.exec(function () {
-            return self._save().then(function () {
-                return self._scrap();
-            });
-        });
+        this._scrap();
     },
 
+    /**
+     * Handles the `Put in pack` OdooEvent. It makes an RPC call
+     * to the method 'put_in_pack' to create a pack and link move lines to it.
+     *
+     * @private
+     * @param {OdooEvent} ev
+     */
     _onPutInPack: function (ev) {
         ev.stopPropagation();
-        var self = this;
-        this.mutex.exec(function () {
-            return self._putInPack();
-        });
+        this._putInPack();
     },
 });
 

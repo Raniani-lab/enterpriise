@@ -9,13 +9,15 @@
 # Lucas Deliege <lud@odoo.com>, 2018
 # Xavier Belmere <Info@cartmeleon.com>, 2018
 # Eloïse Stilmant <est@odoo.com>, 2018
+# Laura Piraux <lap@odoo.com>, 2018
+# Elise Carton <eca@odoo.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-08-24 11:28+0000\n"
 "PO-Revision-Date: 2018-08-24 11:28+0000\n"
-"Last-Translator: Eloïse Stilmant <est@odoo.com>, 2018\n"
+"Last-Translator: Elise Carton <eca@odoo.com>, 2018\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,49 +26,44 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #. module: documents
-#: model:ir.ui.view,arch_db:documents.documents_view_kanban
-msgid "#{record.lock_uid.value}"
-msgstr ""
-
-#. module: documents
 #: model:ir.ui.view,arch_db:documents.public_page_layout
 msgid ", expired on"
-msgstr ""
+msgstr ", a expiré le"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.format_file_size
 msgid "<b>Bytes</b>"
-msgstr ""
+msgstr "<b>Bytes</b>"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.format_file_size
 msgid "<b>Gb</b>"
-msgstr ""
+msgstr "<b>Gb</b>"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.format_file_size
 msgid "<b>Kb</b>"
-msgstr ""
+msgstr "<b>Kb</b>"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.format_file_size
 msgid "<b>Mb</b>"
-msgstr ""
+msgstr "<b>Mb</b>"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.public_page_layout
 msgid "<br/>Powered by"
-msgstr ""
+msgstr "<br/>Powered by"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.share_page
 msgid "<i class=\"fa fa-download\"/>  Download All"
-msgstr ""
+msgstr "<i class=\"fa fa-download\"/>  Tout télécharger"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.share_single
 msgid "<i class=\"fa fa-download\"/> Download"
-msgstr ""
+msgstr "<i class=\"fa fa-download\"/> Télécharger"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.share_view_form
@@ -97,6 +94,8 @@ msgid ""
 "A set of condition and actions which will be available to all attachments "
 "matching the conditions"
 msgstr ""
+"Un ensemble de conditions et d'actions qui seront disponibles pour toutes "
+"les pièces jointes correspondant aux conditions"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__access_token
@@ -106,7 +105,7 @@ msgstr "Jeton d'accès"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__group_ids
 msgid "Access groups"
-msgstr ""
+msgstr "Groupes d'accès"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_action__action
@@ -179,7 +178,7 @@ msgstr "Archivé"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__create_model
 msgid "Attach to"
-msgstr ""
+msgstr "Attacher à"
 
 #. module: documents
 #. openerp-web
@@ -203,7 +202,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_ir_attachment__available_rule_ids
 msgid "Available Rules"
-msgstr ""
+msgstr "Règles Disponibles"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_action__facet_id
@@ -219,7 +218,7 @@ msgstr "Société"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__condition_type
 msgid "Condition type"
-msgstr ""
+msgstr "Type de condition"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.workflow_rule_form_view
@@ -239,7 +238,7 @@ msgstr "Contient"
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.tag_view_tree
 msgid "Create a tag"
-msgstr ""
+msgstr "Créer une étiquette"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_facet__create_uid
@@ -266,7 +265,7 @@ msgstr "Créé le"
 #. module: documents
 #: selection:documents.workflow.rule,create_model:0
 msgid "Credit note"
-msgstr ""
+msgstr "Avoir"
 
 #. module: documents
 #: selection:documents.workflow.rule,condition_type:0
@@ -360,7 +359,7 @@ msgstr "Fait"
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.share_page
 msgid "Downlaod all files"
-msgstr ""
+msgstr "Télécharger tous les fichiers"
 
 #. module: documents
 #. openerp-web
@@ -378,7 +377,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__date_deadline
 msgid "Expiration date"
-msgstr ""
+msgstr "Date d'Expiration"
 
 #. module: documents
 #: selection:documents.share,state:0
@@ -408,12 +407,12 @@ msgstr "Favori de "
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__domain_folder_id
 #: model:ir.model.fields,field_description:documents.field_ir_attachment__folder_id
 msgid "Folder"
-msgstr ""
+msgstr "Fichier"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.res_config_settings_view_form
 msgid "Folder Settings"
-msgstr ""
+msgstr "Paramètres du fichier"
 
 #. module: documents
 #. openerp-web
@@ -422,7 +421,7 @@ msgstr ""
 #: model:ir.ui.menu,name:documents.folder_menu
 #, python-format
 msgid "Folders"
-msgstr ""
+msgstr "Fichiers"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_follower_ids
@@ -452,7 +451,7 @@ msgstr ""
 #: code:addons/documents/static/src/js/tour.js:14
 #, python-format
 msgid "Here is the place to manage your documents."
-msgstr ""
+msgstr "Voici l'espace où gérer vos documents."
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_facet__id
@@ -490,7 +489,7 @@ msgstr "Si coché, de nouveaux messages demandent votre attention."
 #: model:ir.model.fields,help:documents.field_documents_share__message_has_error
 #: model:ir.model.fields,help:documents.field_ir_attachment__message_has_error
 msgid "If checked, some messages have a delivery error."
-msgstr ""
+msgstr "Si actif, certains messages ont une erreur de livraison."
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_is_follower
@@ -534,7 +533,7 @@ msgstr "Dernière mise à jour le"
 #. module: documents
 #: selection:documents.share,state:0
 msgid "Live"
-msgstr ""
+msgstr "Live"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.share_single
@@ -568,12 +567,12 @@ msgstr "Déconnexion"
 #: code:addons/documents/static/src/xml/documents_inspector.xml:62
 #, python-format
 msgid "MB"
-msgstr ""
+msgstr "MB"
 
 #. module: documents
 #: model:res.groups,name:documents.group_document_manager
 msgid "Manage Documents"
-msgstr ""
+msgstr "Gérez vos Documents"
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.tag_action
@@ -590,7 +589,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_has_error
 #: model:ir.model.fields,field_description:documents.field_ir_attachment__message_has_error
 msgid "Message Delivery error"
-msgstr ""
+msgstr "Erreur d'envoi du message"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_ids
@@ -618,7 +617,7 @@ msgstr ""
 #: code:addons/documents/static/src/js/documents_inspector.js:142
 #, python-format
 msgid "Multiple values"
-msgstr ""
+msgstr "Valeurs Multiples"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.documents_view_search_inherit
@@ -671,7 +670,7 @@ msgstr "Nombre d'actions"
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_has_error_counter
 #: model:ir.model.fields,field_description:documents.field_ir_attachment__message_has_error_counter
 msgid "Number of error"
-msgstr ""
+msgstr "Nombre d'erreurs"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__message_needaction_counter
@@ -683,7 +682,7 @@ msgstr "Nombre de messages exigeant une action"
 #: model:ir.model.fields,help:documents.field_documents_share__message_has_error_counter
 #: model:ir.model.fields,help:documents.field_ir_attachment__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr ""
+msgstr "Nombre de messages avec des erreurs d'envoi"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__message_unread_counter
@@ -699,7 +698,7 @@ msgstr "Logo Odoo"
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.public_page_layout
 msgid "Odoo Website"
-msgstr ""
+msgstr "Site Web Odoo"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__operator
@@ -727,7 +726,7 @@ msgstr "Propriétaire"
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.share_page
 msgid "Owner: #{attachment.create_uid.name}"
-msgstr ""
+msgstr "Propriétaire: #{attachment.create_uid.name}"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_parent_model_id
@@ -794,7 +793,7 @@ msgstr ""
 #. module: documents
 #: selection:documents.workflow.action,action:0
 msgid "Replace by"
-msgstr ""
+msgstr "Remplacer par"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__name
@@ -856,12 +855,12 @@ msgstr "Partager"
 #: model:ir.actions.act_window,name:documents.share_action
 #: model:ir.model.fields,field_description:documents.field_documents_folder__share_link_ids
 msgid "Share links"
-msgstr ""
+msgstr "Partager les liens"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__type
 msgid "Share type"
-msgstr ""
+msgstr "Type de partage"
 
 #. module: documents
 #: model:ir.ui.menu,name:documents.share_menu
@@ -876,7 +875,7 @@ msgstr ""
 #. module: documents
 #: selection:documents.workflow.rule,create_model:0
 msgid "Signature template"
-msgstr ""
+msgstr "Modèle de signature"
 
 #. module: documents
 #. openerp-web
@@ -893,7 +892,7 @@ msgstr "État"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__children_folder_ids
 msgid "Sub folders"
-msgstr ""
+msgstr "Sous-dossiers"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_tag
@@ -974,12 +973,12 @@ msgstr ""
 #. module: documents
 #: sql_constraint:documents.share:0
 msgid "This access token already exists"
-msgstr ""
+msgstr "Ce token d'accès existe déjà"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.not_available
 msgid "This link has expired"
-msgstr ""
+msgstr "Ce lien a expiré"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_facet__tooltip
@@ -996,7 +995,7 @@ msgstr "URL"
 #: code:addons/documents/static/src/xml/documents_inspector.xml:155
 #, python-format
 msgid "Un-archive"
-msgstr ""
+msgstr "Dés-archiver"
 
 #. module: documents
 #. openerp-web
@@ -1025,12 +1024,13 @@ msgstr "Compteur de messages non lus"
 #: model:ir.ui.view,arch_db:documents.share_page
 #, python-format
 msgid "Upload"
-msgstr ""
+msgstr "Télécharger"
 
 #. module: documents
 #: model:ir.actions.act_window,help:documents.document_action
 msgid "Upload <small>a file or</small> drag <small>it here.</small>"
 msgstr ""
+"Télécharger <small>un fichier ou</small> glissez-le <small>ici.</small>"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__email_drop
@@ -1040,7 +1040,7 @@ msgstr ""
 #. module: documents
 #: selection:documents.workflow.rule,create_model:0
 msgid "Vendor bill"
-msgstr ""
+msgstr "Facture fournisseur"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__website_message_ids
@@ -1074,7 +1074,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_facet__color
 #: model:ir.model.fields,field_description:documents.field_documents_tag__color
 msgid "color index"
-msgstr ""
+msgstr "Indice de couleur"
 
 #. module: documents
 #. openerp-web
@@ -1086,32 +1086,32 @@ msgstr ""
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.share_page
 msgid "documents shared by"
-msgstr ""
+msgstr "documents partagés par"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_folder
 msgid "documents.folder"
-msgstr ""
+msgstr "documents.folder"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_share
 msgid "documents.share"
-msgstr ""
+msgstr "documents.share"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_facet__tooltip
 msgid "hover text description"
-msgstr ""
+msgstr "texte de description au survol"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.folder_view_form
 msgid "i.e Finance"
-msgstr ""
+msgstr "e.g. Finance"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.workflow_rule_form_view
 msgid "i.e. Validate document"
-msgstr ""
+msgstr "e.g. Valider document"
 
 #. module: documents
 #: model:ir.model,name:documents.model_ir_attachment
@@ -1121,12 +1121,12 @@ msgstr "ir.attachment"
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.folder_view_search
 msgid "parent"
-msgstr ""
+msgstr "parent"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.public_page_layout
 msgid "shared by"
-msgstr ""
+msgstr "partagé par"
 
 #. module: documents
 #: model:mail.message.subtype,name:documents.documents_share_changed

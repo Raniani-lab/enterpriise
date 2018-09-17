@@ -19,13 +19,13 @@
         </div>
         <div class="btn-group" t-if="isMobile">
             <a class="btn btn-link dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">
-                <span class="dropdown_cohort_content mr4"></span><i class="fa fa-caret-down"></i>
+                <span class="dropdown_cohort_content mr4"></span>
             </a>
-            <ul class="dropdown-menu" role="menu">
-                <li t-foreach="intervals" t-as="interval" class="btn btn-secondary o_cohort_interval_button" t-att-data-interval="interval" style="display:block;">
+            <div class="dropdown-menu" role="menu">
+                <button t-foreach="intervals" t-as="interval" class="btn btn-secondary o_cohort_interval_button dropdown-item" t-att-data-interval="interval" style="display:block;">
                     <t t-esc="intervals[interval]" />
-                </li>
-            </ul>
+                </button>
+            </div>
         </div>
         <div class="btn-group" t-else="">
             <button t-foreach="intervals" t-as="interval" class="btn btn-secondary o_cohort_interval_button" t-att-data-interval="interval">
@@ -88,7 +88,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr t-foreach="report.rows" t-as="row" t-att-data-row="row_index" class="o_cohort_row_clickable">
+                    <tr t-foreach="report.rows" t-as="row" data-type="data" t-att-data-row="row_index" class="o_cohort_row_clickable">
                         <td class="o_cohort_value">
                             <t t-esc="row.date" />
                         </td>
@@ -99,7 +99,6 @@
                             <div
                                 t-attf-style="background-color: rgba(0, 160, 157, #{col.percentage/100.0}); color: #{col.percentage gt 50 and '#FFFFFF' or 'inherit'}"
                                 t-att-data-col="col_index"
-                                t-att-data-type="'data'"
                                 t-att-class="'o_cohort_highlight' + (col.value === '-' ? '' : ' o_cohort_value')"
                                 t-att-data-period="col.period"
                                 t-att-data-count="mode === 'churn' ? (col.churn_value === '-' ? '' : col.churn_value) : (col.value === '-' ? '' : col.value)">
@@ -162,7 +161,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr t-foreach="comparisonReport.rows" t-as="row" t-att-data-row="row_index" class="o_cohort_row_clickable">
+                    <tr t-foreach="comparisonReport.rows" t-as="row" data-type="comparisonData" t-att-data-row="row_index" class="o_cohort_row_clickable">
                         <td class="o_cohort_value">
                             <t t-esc="row.date" />
                         </td>
@@ -173,7 +172,6 @@
                             <div
                                 t-attf-style="background-color: rgba(0, 160, 157, #{col.percentage/100.0}); color: #{col.percentage gt 50 and '#FFFFFF' or 'inherit'}"
                                 t-att-data-col="col_index"
-                                t-att-data-type="'comparisonData'"
                                 t-att-class="'o_cohort_highlight' + (col.value === '-' ? '' : ' o_cohort_value')"
                                 t-att-data-original-title="mode === 'churn' ? (col.churn_value === '-' ? '' : col.churn_value) : (col.value === '-' ? '' : col.value)">
                                 <t t-esc="col.percentage" /><t t-if="col.percentage !== ''">%</t>

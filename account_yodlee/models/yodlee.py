@@ -6,8 +6,8 @@ import logging
 import uuid
 import re
 
-from odoo import models, api, fields
-from odoo.exceptions import UserError
+from odoo import models, api, fields, SUPERUSER_ID
+from odoo.exceptions import AccessError, UserError
 from odoo.tools.translate import _
 
 _logger = logging.getLogger(__name__)

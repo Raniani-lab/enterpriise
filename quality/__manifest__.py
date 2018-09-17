@@ -23,7 +23,6 @@ Quality Base
         'security/ir.model.access.csv',
         'data/quality_data.xml',
         'views/quality_views.xml',
-        'views/res_users_views.xml',
     ],
     'demo': [],
     'application': False,

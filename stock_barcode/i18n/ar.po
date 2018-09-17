@@ -2,12 +2,27 @@
 # This file contains the translation of the following modules:
 # * stock_barcode
 # 
+# Translators:
+# Mustafa Rawi <mustafa@cubexco.com>, 2018
+# Akram Alfusayal <akram_ma@hotmail.com>, 2018
+# amrnegm <amrnegm.01@gmail.com>, 2018
+# Martin Trigaux, 2018
+# Osoul <baruni@osoul.ly>, 2018
+# Mohammed Albasha <m.albasha.ma@gmail.com>, 2018
+# Mohammed Ibrahim <m.ibrahim@mussder.com>, 2018
+# Ghaith Gammar <g.gammar@saharaifs.net>, 2018
+# Osama Ahmaro <osamaahmaro@gmail.com>, 2018
+# Shaima Safar <shaima.safar@open-inside.com>, 2018
+# zahi chemaly <zahi@sercotex.net>, 2018
+# Yihya Hugirat <hugirat@gmail.com>, 2018
+# Waleed Mohsen <mohsen.waleed@gmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"POT-Creation-Date: 2018-09-05 09:12+0000\n"
+"PO-Revision-Date: 2018-09-05 09:12+0000\n"
+"Last-Translator: Waleed Mohsen <mohsen.waleed@gmail.com>, 2018\n"
 "Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -28,7 +43,7 @@ msgstr ""
 #: model:ir.ui.view,arch_db:stock_barcode.stock_inventory_form_view_inherit
 #, python-format
 msgid "Barcode"
-msgstr ""
+msgstr "باركود"
 
 #. module: stock_barcode
 #: model:ir.actions.client,name:stock_barcode.stock_barcode_inventory_client_action
@@ -47,14 +62,14 @@ msgstr ""
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_picking___barcode_scanned
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_scrap___barcode_scanned
 msgid "Barcode Scanned"
-msgstr ""
+msgstr "الباركود الممسوحة ضوئيا"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/xml/stock_barcode.xml:9
 #, python-format
 msgid "Barcode Scanning"
-msgstr ""
+msgstr "الباركود الضوئي "
 
 #. module: stock_barcode
 #. openerp-web
@@ -64,38 +79,38 @@ msgstr ""
 #: model:ir.ui.view,arch_db:stock_barcode.view_barcode_lot_form
 #, python-format
 msgid "Cancel"
-msgstr ""
+msgstr "إلغاء"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/xml/stock_barcode.xml:11
 #, python-format
 msgid "Close"
-msgstr ""
+msgstr "إقفال"
 
 #. module: stock_barcode
 #: model:ir.ui.view,arch_db:stock_barcode.res_config_settings_view_form
 msgid "Configure Product Barcodes"
-msgstr ""
+msgstr "تهيئة باركود المنتج"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:115
 #, python-format
 msgid "Confirm"
-msgstr ""
+msgstr "تأكيد"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot__create_uid
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot_line__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "أنشئ بواسطة"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot__create_date
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot_line__create_date
 msgid "Created on"
-msgstr ""
+msgstr "أنشئ في"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot__default_move_id
@@ -107,13 +122,13 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:114
 #, python-format
 msgid "Discard"
-msgstr ""
+msgstr "تجاهل"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot__display_name
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot_line__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "اسم العرض"
 
 #. module: stock_barcode
 #. openerp-web
@@ -123,20 +138,22 @@ msgid ""
 "Do you want to permanently remove this message ?\n"
 "                It won't appear anymore, so make sure you don't need the barcodes sheet or you have a copy."
 msgstr ""
+"هل أنت متأكد من أنك تريد إلغاء هذه الرسالة ?\n"
+"                فإنها لن تظهر مجدد, لذلك تأكد أنك لا تحتاج صفحة الباركود أو انك تملك نسخة منها."
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/js/stock_barcode.js:64
 #, python-format
 msgid "Don't show this message again"
-msgstr ""
+msgstr "لا تظهر هذه الرسالة بعد الان"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/xml/stock_barcode.xml:22
 #, python-format
 msgid "Download"
-msgstr ""
+msgstr "تنزيل"
 
 #. module: stock_barcode
 #. openerp-web
@@ -144,13 +161,13 @@ msgstr ""
 #: model:ir.ui.view,arch_db:stock_barcode.stock_inventory_barcode2
 #, python-format
 msgid "From"
-msgstr ""
+msgstr "مِن"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot__id
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot_line__id
 msgid "ID"
-msgstr ""
+msgstr "المعرف"
 
 #. module: stock_barcode
 #: model:ir.ui.view,arch_db:stock_barcode.stock_picking_type_kanban
@@ -162,12 +179,12 @@ msgstr ""
 #: model:ir.model.fields,help:stock_barcode.field_stock_move_line__product_barcode
 #: model:ir.model.fields,help:stock_barcode.field_stock_scrap__product_barcode
 msgid "International Article Number used for product identification."
-msgstr ""
+msgstr "رقم المادة الدولي المستخدم لتحديد المنتج."
 
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_inventory
 msgid "Inventory"
-msgstr ""
+msgstr "مخزون"
 
 #. module: stock_barcode
 #. openerp-web
@@ -175,40 +192,40 @@ msgstr ""
 #: model:ir.ui.view,arch_db:stock_barcode.stock_inventory_barcode2
 #, python-format
 msgid "Inventory Adjustments"
-msgstr ""
+msgstr "تسويات الجرد"
 
 #. module: stock_barcode
 #: model:ir.ui.view,arch_db:stock_barcode.stock_inventory_barcode2
 msgid "Inventory Details"
-msgstr ""
+msgstr "تفاصيل الجرد"
 
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_inventory_line
 msgid "Inventory Line"
-msgstr ""
+msgstr "بند الجرد"
 
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_location
 msgid "Inventory Locations"
-msgstr ""
+msgstr "مكان الجرد"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot____last_update
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot_line____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "آخر تعديل في"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot__write_uid
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot_line__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "آخر تحديث بواسطة"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot__write_date
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot_line__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "آخر تحديث في"
 
 #. module: stock_barcode
 #. openerp-web
@@ -230,7 +247,7 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot_line__lot_name
 msgid "Lot"
-msgstr ""
+msgstr "دفعة"
 
 #. module: stock_barcode
 #: code:addons/stock_barcode/models/stock_picking.py:100
@@ -241,19 +258,19 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot_line__move_line_id
 msgid "Move Line"
-msgstr ""
+msgstr "بند الحركة"
 
 #. module: stock_barcode
 #: model:ir.actions.act_window,name:stock_barcode.stock_inventory_action_new_inventory
 msgid "New Inventory"
-msgstr ""
+msgstr "المخزون الجديد"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:44
 #, python-format
 msgid "Next"
-msgstr ""
+msgstr "التالي"
 
 #. module: stock_barcode
 #: code:addons/stock_barcode/controllers/main.py:94
@@ -294,18 +311,18 @@ msgstr ""
 #: model:ir.actions.act_window,name:stock_barcode.stock_picking_type_action_kanban
 #, python-format
 msgid "Operations"
-msgstr ""
+msgstr "العمليات"
 
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_move_line
 msgid "Packing Operation"
-msgstr ""
+msgstr "عمليه الالتقاط "
 
 #. module: stock_barcode
 #: model:ir.actions.act_window,name:stock_barcode.stock_picking_action_form
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot__picking_id
 msgid "Picking"
-msgstr ""
+msgstr "اختيار"
 
 #. module: stock_barcode
 #. openerp-web
@@ -358,13 +375,13 @@ msgstr ""
 #: model:ir.model,name:stock_barcode.model_product_product
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot__product_id
 msgid "Product"
-msgstr ""
+msgstr "المنتج"
 
 #. module: stock_barcode
 #: model:ir.actions.act_window,name:stock_barcode.product_action_barcodes
 #: model:ir.ui.view,arch_db:stock_barcode.product_view_list_barcodes
 msgid "Product Barcodes"
-msgstr ""
+msgstr "باركود المنتجات"
 
 #. module: stock_barcode
 #. openerp-web
@@ -386,23 +403,23 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
 msgid "Quantity"
-msgstr ""
+msgstr "الكمية"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot_line__qty_done
 #: model:ir.ui.view,arch_db:stock_barcode.view_barcode_lot_form
 msgid "Quantity Done"
-msgstr ""
+msgstr "كمية منجزة"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot_line__qty_reserved
 msgid "Quantity Reserved"
-msgstr ""
+msgstr "الكمية محجوزه "
 
 #. module: stock_barcode
 #: model:ir.ui.view,arch_db:stock_barcode.stock_inventory_line_barcode
 msgid "Real Quantity"
-msgstr ""
+msgstr "الكمية الفعلية"
 
 #. module: stock_barcode
 #. openerp-web
@@ -416,7 +433,7 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/xml/stock_barcode.xml:20
 #, python-format
 msgid "Scan a document to open it."
-msgstr ""
+msgstr "مسح مستند لفتحه."
 
 #. module: stock_barcode
 #. openerp-web
@@ -470,7 +487,7 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_inventory__scan_location_id
 msgid "Scanned Location"
-msgstr ""
+msgstr "موقع الماسح الضوئي"
 
 #. module: stock_barcode
 #. openerp-web
@@ -484,7 +501,7 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:18
 #, python-format
 msgid "Scrap"
-msgstr ""
+msgstr "البقايا"
 
 #. module: stock_barcode
 #: model:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
@@ -507,7 +524,7 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/js/client_action/picking_client_action.js:143
 #, python-format
 msgid "Success"
-msgstr ""
+msgstr "بنجاح"
 
 #. module: stock_barcode
 #: code:addons/stock_barcode/models/stock_picking.py:294
@@ -599,27 +616,17 @@ msgstr ""
 #: model:ir.ui.view,arch_db:stock_barcode.stock_inventory_barcode2
 #, python-format
 msgid "To"
-msgstr ""
+msgstr "إلى"
 
 #. module: stock_barcode
 #: model:ir.ui.view,arch_db:stock_barcode.stock_picking_type_kanban
-msgid "To Do"
-msgstr ""
-
-#. module: stock_barcode
-#: model:ir.ui.view,arch_db:stock_barcode.stock_picking_type_kanban
-msgid "To Receive"
+msgid "To Process"
 msgstr ""
 
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_picking
 msgid "Transfer"
-msgstr ""
-
-#. module: stock_barcode
-#: model:ir.ui.view,arch_db:stock_barcode.stock_picking_type_kanban
-msgid "Transfers"
-msgstr ""
+msgstr "نقل"
 
 #. module: stock_barcode
 #. openerp-web
@@ -627,7 +634,7 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:45
 #, python-format
 msgid "Validate"
-msgstr ""
+msgstr "اعتماد"
 
 #. module: stock_barcode
 #: model:ir.ui.view,arch_db:stock_barcode.view_barcode_lot_form
@@ -641,7 +648,7 @@ msgstr ""
 #: model:ir.model.fields,help:stock_barcode.field_stock_picking___barcode_scanned
 #: model:ir.model.fields,help:stock_barcode.field_stock_scrap___barcode_scanned
 msgid "Value of the last barcode scanned."
-msgstr ""
+msgstr "قيمة من الماضي الباركود الممسوحة ضوئيا."
 
 #. module: stock_barcode
 #. openerp-web
@@ -650,7 +657,7 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/js/client_action/picking_client_action.js:279
 #, python-format
 msgid "Warning"
-msgstr ""
+msgstr "تحذير"
 
 #. module: stock_barcode
 #. openerp-web
@@ -670,7 +677,7 @@ msgstr ""
 #: code:addons/stock_barcode/models/stock_picking.py:293
 #, python-format
 msgid "Wrong barcode"
-msgstr ""
+msgstr "الباركود الخاطئ"
 
 #. module: stock_barcode
 #. openerp-web
@@ -723,7 +730,7 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/xml/stock_barcode.xml:15
 #, python-format
 msgid "stock barcodes sheet"
-msgstr ""
+msgstr "صفحة باركود السلع"
 
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_scrap

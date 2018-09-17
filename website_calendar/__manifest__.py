@@ -20,7 +20,6 @@ Allow clients to Schedule Appointments through your Website
         'views/calendar_views.xml',
         'views/calendar_appointment_views.xml',
         'views/website_calendar_templates.xml',
-        'views/res_users_views.xml',
         'security/website_calendar_security.xml',
         'security/ir.model.access.csv',
     ],

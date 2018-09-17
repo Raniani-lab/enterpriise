@@ -193,12 +193,12 @@ var sale_subscription_dashboard_abstract = AbstractAction.extend(ControlPanelMix
         return $.when(def1, def2).then(function() {
             self.start_picker.on('datetime_changed', self, function() {
                 if (this.start_picker.getValue()) {
-                    this.end_picker.picker.minDate(moment(this.start_picker.getValue()));
+                    this.end_picker.minDate(moment(this.start_picker.getValue()));
                 }
             });
             self.end_picker.on('datetime_changed', self, function() {
                 if (this.end_picker.getValue()) {
-                    this.start_picker.picker.maxDate(moment(this.end_picker.getValue()).add(1, 'M'));
+                    this.start_picker.maxDate(moment(this.end_picker.getValue()).add(1, 'M'));
                 }
             });
 

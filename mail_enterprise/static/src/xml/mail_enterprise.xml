@@ -1,13 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates>
 
-    <div t-name="AttachmentPreview" class="o_attachment_preview_container">
-        <div t-if="attachment.type == 'image'" class="o_attachment_preview_img">
-            <a role="button" class="btn btn-link float-right" t-att-href="attachment.url"><i class="fa fa-download"/> Download</a>
-            <h3 class="mt0 mb16 text-muted o_attachment_filename"> <t t-esc="attachment.filename"/> </h3>
-            <img alt="Attachment" class="img img-fluid" t-attf-src="/web/image/#{attachment.id}?unique=1"/>
+    <t t-name="mail_enterprise.AttachmentPreview">
+      <t t-if="widget.activeAttachment">
+        <t t-set="activeAttachment" t-value="widget.activeAttachment"/>
+        <a class="btn btn-link pull-right" t-att-href="activeAttachment.url"><i class="fa fa-download"/> Download</a>
+        <h3 class="mt0 mb8 pl-2 text-muted"> <t t-esc="activeAttachment.filename"/> </h3>
+        <div t-if="activeAttachment.type == 'image'" class="o_attachment_preview_img">
+            <img class="img img-fluid d-block" t-attf-src="/web/image/#{activeAttachment.id}?unique=1"/>
         </div>
-        <iframe t-if="attachment.type == 'pdf'" class="mb48" t-attf-src="/web/static/lib/pdfjs/web/viewer.html?file=/web/content/#{attachment.id}"/>
-    </div>
+        <iframe t-if="activeAttachment.type == 'pdf'" class="mb48" t-attf-src="/web/static/lib/pdfjs/web/viewer.html?file=/web/content/#{activeAttachment.id}"/>
+        <t t-if="widget.attachments.length !== 1">
+            <a class="arrow o_move_previous text-center" href="#">
+                <span class="fa fa-chevron-left"/>
+            </a>
+            <a class="arrow o_move_next text-center" href="#">
+                <span class="fa fa-chevron-right"/>
+            </a>
+        </t>
+      </t>
+    </t>
 
 </templates>

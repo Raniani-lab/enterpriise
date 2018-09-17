@@ -6,6 +6,7 @@ var GridView = require('web_grid.GridView');
 var testUtils = require('web.test_utils');
 
 var createView = testUtils.createView;
+var createActionManager = testUtils.createActionManager;
 
 QUnit.module('Views', {
     beforeEach: function () {
@@ -724,6 +725,54 @@ QUnit.module('Views', {
         });
     });
 
+    QUnit.test('grid_anchor stays when navigating', function (assert) {
+        assert.expect(3);
+
+        // create an action manager to test the interactions with the search view
+        var actionManager = createActionManager({
+            data: this.data,
+            archs: {
+                'analytic.line,false,grid': '<grid string="Timesheet" adjustment="object" adjust_name="adjust_grid">' +
+                    '<field name="project_id" type="row"/>' +
+                    '<field name="task_id" type="row"/>' +
+                    '<field name="date" type="col">' +
+                        '<range name="week" string="Week" span="week" step="day"/>' +
+                        '<range name="month" string="Month" span="month" step="day"/>' +
+                        '<range name="year" string="Year" span="year" step="month"/>' +
+                    '</field>'+
+                    '<field name="unit_amount" type="measure" widget="float_time"/>' +
+                '</grid>',
+                'analytic.line,false,search': '<search>' +
+                        '<filter name="filter_test" help="Project 31" domain="[(\'project_id\', \'=\', 31)]"/>' +
+                '</search>',
+            },
+        });
+
+        actionManager.doAction({
+            res_model: 'analytic.line',
+            type: 'ir.actions.act_window',
+            views: [[false, 'grid']],
+            context: {
+                'search_default_filter_test': 1,
+                'grid_anchor': '2017-01-31',
+            },
+        });
+
+        // check first column header
+        assert.strictEqual(actionManager.$('.o_view_grid th:eq(2)').text(), "Tue,Jan 31", "The first day of the span should be the 31st of January");
+
+        // move to previous week, and check first column header
+        actionManager.controlPanel.$('.grid_arrow_previous').click();
+        assert.strictEqual(actionManager.$('.o_view_grid th:eq(2)').text(), "Tue,Jan 24", "The first day of the span should be the 24st of January, as we check the previous week");
+
+        // remove the filter in the searchview
+        $('.o_control_panel .o_searchview .o_facet_remove').click();
+
+        // recheck first column header
+        assert.strictEqual(actionManager.$('.o_view_grid th:eq(2)').text(), "Tue,Jan 24", "The first day of the span should STILL be the 24st of January, even we resetting search");
+
+        actionManager.destroy();
+    });
 
     QUnit.module('GridViewWidgets');
 

@@ -2,15 +2,12 @@
 <templates xml:space="preserve">
 
 <div t-name="DocumentsKanbanView.buttons">
-    <div class="btn-group" role="group">
-        <button type="button" t-attf-class="btn btn-primary o_documents_kanban_upload">
-            Upload
-        </button>
-        <button class="dropdown-toggle btn btn-primary" data-toggle="dropdown"/>
-        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-            <li><a class="dropdown-item o_documents_kanban_url" href="#">Save URL</a></li>
-        </ul>
-    </div>
+    <button type="button" t-attf-class="btn btn-primary o_documents_kanban_upload">
+        Upload
+    </button>
+    <button type="button" t-attf-class="btn btn-primary o_documents_kanban_url">
+        Add URL
+    </button>
     <button type="button" t-attf-class="btn btn-secondary o_documents_kanban_share">
         Share
     </button>

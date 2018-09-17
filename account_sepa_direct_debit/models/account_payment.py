@@ -14,6 +14,8 @@ from odoo.tools.xml_utils import create_xml_node, create_xml_node_chain
 
 from lxml import etree
 
+import re
+
 
 class AccountPayment(models.Model):
     _inherit = 'account.payment'
@@ -33,6 +35,26 @@ class AccountPayment(models.Model):
         """
         for payment in self:
             payment.sdd_mandate_usable = bool(payment.get_usable_mandate())
+
+    @api.model
+    def _sanitize_communication(self, communication):
+        """ Returns a sanitized version of the communication given in parameter,
+            so that:
+                - it contains only latin characters
+                - it does not contain any //
+                - it does not start or end with /
+                - it is maximum 140 characters long
+            (these are the SEPA compliance criteria)
+        """
+        communication = communication[:140]
+        while '//' in communication:
+            communication = communication.replace('//', '/')
+        if communication.startswith('/'):
+            communication = communication[1:]
+        if communication.endswith('/'):
+            communication = communication[:-1]
+        communication = re.sub('[^-A-Za-z0-9/?:().,\'+ ]', '', communication)
+        return communication
 
     def post(self):
         """ Overridden to register SDD payments on mandates.
@@ -160,7 +182,7 @@ class AccountPayment(models.Model):
         create_xml_node_chain(DrctDbtTxInf, ['DbtrAcct','Id','IBAN'], self.sdd_mandate_id.partner_bank_id.sanitized_acc_number)
 
         if self.communication:
-            create_xml_node_chain(DrctDbtTxInf, ['RmtInf', 'Ustrd'], self.communication)
+            create_xml_node_chain(DrctDbtTxInf, ['RmtInf', 'Ustrd'], self._sanitize_communication(self.communication))
 
     def _group_payments_per_mandate(self):
         """ Groups the payments of this recordset per associated mandate, in a dictionnary of recordsets.

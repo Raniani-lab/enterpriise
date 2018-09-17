@@ -9,7 +9,7 @@ from dateutil.relativedelta import relativedelta
 from uuid import uuid4
 
 from odoo import api, fields, models, _
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 from odoo.osv import expression
 from odoo.tools import format_date
 from odoo.tools.safe_eval import safe_eval
@@ -96,7 +96,7 @@ class SaleSubscription(models.Model):
             subscription.percentage_satisfaction = activities['great'] * 100 / total_activity_values if total_activity_values else -1
 
     def _compute_sale_order_count(self):
-        raw_data = self.env['sale.order.line'].read_group(
+        raw_data = self.env['sale.order.line'].sudo().read_group(
             [('subscription_id', 'in', self.ids)],
             ['subscription_id', 'order_id'],
             ['subscription_id', 'order_id'],
@@ -194,7 +194,7 @@ class SaleSubscription(models.Model):
     def _compute_invoice_count(self):
         Invoice = self.env['account.invoice']
         for subscription in self:
-            subscription.invoice_count = Invoice.search_count([('invoice_line_ids.subscription_id', '=', subscription.id)])
+            subscription.invoice_count = Invoice.sudo().search_count([('invoice_line_ids.subscription_id', '=', subscription.id)])
 
     @api.depends('recurring_invoice_line_ids', 'recurring_invoice_line_ids.quantity', 'recurring_invoice_line_ids.price_subtotal')
     def _compute_recurring_total(self):
@@ -241,7 +241,7 @@ class SaleSubscription(models.Model):
 
     @api.onchange('date_start', 'template_id')
     def onchange_date_start(self):
-        if self.recurring_rule_boundary == 'time_bounding':
+        if self.recurring_rule_boundary == 'limited':
             periods = {'daily': 'days', 'weekly': 'weeks', 'monthly': 'months', 'yearly': 'years'}
             self.date = fields.Datetime.from_string(self.date_start) + relativedelta(**{
                 periods[self.recurring_rule_type]: self.template_id.recurring_rule_count * self.template_id.recurring_interval})
@@ -926,11 +926,17 @@ class SaleSubscriptionTemplate(models.Model):
                                            help="Invoice automatically repeat at specified interval",
                                            default='monthly', track_visibility='onchange')
     recurring_interval = fields.Integer(string="Repeat Every", help="Repeat every (Days/Week/Month/Year)", default=1, track_visibility='onchange')
-    recurring_rule_boundary = fields.Selection([
-        ('unlimited', 'Unlimited'),
-        ('time_bounding', 'Time bounding')
-    ], string='Period', default='unlimited')
+    recurring_rule_boundary = fields.Selection(
+        [('unlimited', 'Unlimited'),
+         ('limited', 'Limited')],
+        string='Recurrence Limit', default='unlimited')
     recurring_rule_count = fields.Integer(string="End After", default=1)
+
+    # Read-only copy of recurring_rule_type for proper readability of recurrence limitation:
+    recurring_rule_type_readonly = fields.Selection(
+        string="Recurrence Unit",
+        related='recurring_rule_type', readonly=True, track_visibility=False)
+
     user_closable = fields.Boolean(string="Closable by customer", help="If checked, the user will be able to close his account from the frontend")
     payment_mode = fields.Selection([
         ('manual', 'Manual Invoicing'),
@@ -954,6 +960,11 @@ class SaleSubscriptionTemplate(models.Model):
     bad_health_domain = fields.Char(string='Bad Health', default='[]',
         help="Domain used to change subscription's Kanban state with a 'Bad' rating")
     invoice_mail_template_id = fields.Many2one('mail.template', string='Invoice Email Template', domain=[('model', '=', 'account.invoice')])
+
+    @api.constrains('recurring_interval')
+    def _check_recurring_interval(self):
+        if self.recurring_interval <= 0:
+            raise ValidationError(_("The recurring interval must be positive"))
 
     def _compute_subscription_count(self):
         subscription_data = self.env['sale.subscription'].read_group(domain=[('template_id', 'in', self.ids), ('stage_id', '!=', False)],

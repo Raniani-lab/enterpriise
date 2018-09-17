@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from odoo import fields, models, api, _
+from odoo import fields, models, api
 import odoo.addons.decimal_precision as dp
-from odoo.addons.l10n_mx_edi.models.account_invoice import create_list_html
 
 
 class AccountInvoice(models.Model):
@@ -58,17 +57,6 @@ class AccountInvoice(models.Model):
         # invoice is created from the sales order or from the picking
         self.invoice_line_ids.onchange_quantity()
         self.invoice_line_ids._set_price_unit_umt()
-
-        bad_line = self.invoice_line_ids.filtered(
-            lambda l: not l.l10n_mx_edi_qty_umt or not l.l10n_mx_edi_umt_aduana_id or
-            not l.l10n_mx_edi_tariff_fraction_id)
-        if bad_line:
-            line_name = bad_line.mapped('product_id.name')
-            return {'error': _(
-                'Please verify that Qty UMT has a value in the line, '
-                'and that the product has set a value in Tariff Fraction and '
-                'in UMT Aduana.<br/><br/>This for the products:'
-            ) + create_list_html(line_name)}
         return super(AccountInvoice, self)._l10n_mx_edi_create_cfdi()
 
     @api.multi

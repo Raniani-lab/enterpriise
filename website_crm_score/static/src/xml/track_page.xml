@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates id="template" xml:space="preserve">
-    
 
-     <t t-extend="website.seo_configuration">
-        <t t-jquery="section:last" t-operation="after">
-            <section class="set_score">
-                <h4 class="track-page">Track Page <small>to better score your leads: </small>
-                    <!-- checkbox is added in js in set_score.js -->
-                </h4>
-            </section>
-        </t>
-    </t>
+	<t t-name="website_crm_score.track_page">
+		<div role="separator" class="dropdown-divider"/>
+		<a href="#" name="switch-track-page" class="dropdown-item" role="menuitem">
+			<label class="o_switch" for="switch-track-page">
+				<input id="switch-track-page" type="checkbox"/>
+				<span/>
+				Log visits on leads
+			</label>
+		</a>
+	</t>
 
 </templates>
-

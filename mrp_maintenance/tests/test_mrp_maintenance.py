@@ -48,7 +48,7 @@ class TestMrpMaintenance(common.TransactionCase):
         values = {
             'name': name,
             'request_date': request_date,
-            'technician_user_id': self.user.id,
+            'user_id': self.user.id,
             'owner_user_id': self.user.id,
             'equipment_id': equipment_id.id,
             'maintenance_type': maintenance_type,

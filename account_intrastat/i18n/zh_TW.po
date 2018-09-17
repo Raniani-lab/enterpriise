@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"POT-Creation-Date: 2018-09-05 09:11+0000\n"
+"PO-Revision-Date: 2018-09-05 09:11+0000\n"
 "Last-Translator: 敬雲 林 <chingyun@yuanchih-consult.com>, 2018\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/odoo/teams/41243/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -38,6 +38,26 @@ msgid "Arrival"
 msgstr ""
 
 #. module: account_intrastat
+#: model:ir.ui.view,arch_db:account_intrastat.invoice_form_inherit_account_intrastat
+msgid "Arrival country"
+msgstr ""
+
+#. module: account_intrastat
+#: model:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
+msgid "By country"
+msgstr ""
+
+#. module: account_intrastat
+#: model:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
+msgid "By type"
+msgstr ""
+
+#. module: account_intrastat
+#: model:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
+msgid "Commodity"
+msgstr ""
+
+#. module: account_intrastat
 #: code:addons/account_intrastat/models/account_intrastat_report.py:33
 #: model:ir.model.fields,field_description:account_intrastat.field_product_category__intrastat_id
 #: model:ir.model.fields,field_description:account_intrastat.field_product_product__intrastat_id
@@ -50,6 +70,11 @@ msgstr ""
 #: model:ir.model,name:account_intrastat.model_res_company
 msgid "Companies"
 msgstr "公司"
+
+#. module: account_intrastat
+#: model:ir.model.fields,field_description:account_intrastat.field_res_config_settings__company_country_id
+msgid "Company country"
+msgstr ""
 
 #. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_res_country
@@ -76,6 +101,7 @@ msgstr ""
 
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_res_company__incoterm_id
+#: model:ir.model.fields,field_description:account_intrastat.field_res_config_settings__incoterm_id
 msgid "Default incoterm for Intrastat"
 msgstr ""
 
@@ -83,6 +109,11 @@ msgstr ""
 #: code:addons/account_intrastat/models/account_intrastat_report.py:17
 #, python-format
 msgid "Dispatch"
+msgstr ""
+
+#. module: account_intrastat
+#: model:ir.ui.view,arch_db:account_intrastat.invoice_supplier_form_inherit_account_intrastat
+msgid "Dispatch country"
 msgstr ""
 
 #. module: account_intrastat
@@ -129,12 +160,15 @@ msgstr ""
 
 #. module: account_intrastat
 #: model:ir.model.fields,help:account_intrastat.field_res_company__incoterm_id
+#: model:ir.model.fields,help:account_intrastat.field_res_config_settings__incoterm_id
 msgid ""
 "International Commercial Terms are a series of predefined commercial terms "
 "used in international transactions."
 msgstr "國際商業條款是一系列用於國際交易的商業條款。"
 
 #. module: account_intrastat
+#: model:ir.model.fields,field_description:account_intrastat.field_account_invoice_line__intrastat_transaction_id
+#: model:ir.ui.view,arch_db:account_intrastat.invoice_form_inherit_account_intrastat
 #: model:ir.ui.view,arch_db:account_intrastat.product_category_form_view_inherit_account_intrastat
 #: model:ir.ui.view,arch_db:account_intrastat.product_template_form_view_inherit_account_intrastat
 msgid "Intrastat"
@@ -162,11 +196,6 @@ msgid "Intrastat Report"
 msgstr ""
 
 #. module: account_intrastat
-#: model:ir.model.fields,field_description:account_intrastat.field_account_invoice_line__intrastat_transaction_id
-msgid "Intrastat Transaction Type"
-msgstr ""
-
-#. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_account_invoice__intrastat_transport_mode_id
 msgid "Intrastat Transport Mode"
 msgstr ""
@@ -178,7 +207,7 @@ msgstr "國際間組織代碼"
 
 #. module: account_intrastat
 #: model:ir.model.fields,help:account_intrastat.field_account_invoice__intrastat_country_id
-msgid "Intrastat country, delivery for sales, origin for purchases"
+msgid "Intrastat country, arrival for sales, dispatch for purchases"
 msgstr ""
 
 #. module: account_intrastat
@@ -187,7 +216,7 @@ msgid "Intrastat member"
 msgstr "國際間組織成員"
 
 #. module: account_intrastat
-#: model:ir.model.fields,field_description:account_intrastat.field_res_company__region_id
+#: model:ir.model.fields,field_description:account_intrastat.field_res_company__intrastat_region_id
 msgid "Intrastat region"
 msgstr ""
 
@@ -224,6 +253,11 @@ msgid "Quantity"
 msgstr "數量"
 
 #. module: account_intrastat
+#: model:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
+msgid "Region"
+msgstr ""
+
+#. module: account_intrastat
 #: code:addons/account_intrastat/models/account_intrastat_report.py:32
 #, python-format
 msgid "Region Code"
@@ -248,9 +282,19 @@ msgid "Total"
 msgstr "合計"
 
 #. module: account_intrastat
+#: model:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
+msgid "Transaction"
+msgstr "交易"
+
+#. module: account_intrastat
 #: code:addons/account_intrastat/models/account_intrastat_report.py:31
 #, python-format
 msgid "Transaction Code"
+msgstr ""
+
+#. module: account_intrastat
+#: model:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
+msgid "Transport"
 msgstr ""
 
 #. module: account_intrastat
@@ -293,3 +337,8 @@ msgstr "重量"
 #: model:ir.model,name:account_intrastat.model_account_intrastat_code
 msgid "account.intrastat.code"
 msgstr ""
+
+#. module: account_intrastat
+#: model:ir.model,name:account_intrastat.model_res_config_settings
+msgid "res.config.settings"
+msgstr "res.config.settings"

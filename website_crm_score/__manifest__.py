@@ -20,6 +20,7 @@ This module allows you to...
         'views/marketing.xml',
         'views/crm_lead_views.xml',
         'security/ir.model.access.csv',
+        'data/website_crm_score_data.xml',
     ],
     'demo': [
         'demo/website_crm_score_demo.xml',

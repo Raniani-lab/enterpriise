@@ -4,10 +4,10 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.3+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 08:34+0000\n"
-"PO-Revision-Date: 2018-06-25 08:34+0000\n"
+"POT-Creation-Date: 2018-09-05 09:11+0000\n"
+"PO-Revision-Date: 2018-09-05 09:11+0000\n"
 "Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,7 +22,9 @@ msgstr ""
 
 #. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.quality_alert_team_dashboard_view_kanban
-msgid "<i class=\"fa fa-envelope-o\"/>&amp;nbsp;"
+msgid ""
+"<i class=\"fa fa-envelope-o\" role=\"img\" aria-label=\"Domain alias\" "
+"title=\"Domain alias\"/>&amp;nbsp;"
 msgstr ""
 
 #. module: quality_control
@@ -274,7 +276,13 @@ msgstr ""
 #. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.quality_alert_view_search
 #: model:ir.ui.view,arch_db:quality_control.quality_check_view_search
+#: model:ir.ui.view,arch_db:quality_control.quality_point_view_search
 msgid "Group By"
+msgstr ""
+
+#. module: quality_control
+#: model:ir.ui.view,arch_db:quality_control.quality_alert_team_dashboard_view_kanban
+msgid "In #{kanban_getcolorname(record.color.raw_value)}"
 msgstr ""
 
 #. module: quality_control
@@ -345,7 +353,7 @@ msgid "Name"
 msgstr ""
 
 #. module: quality_control
-#: code:addons/quality_control/models/quality.py:284
+#: code:addons/quality_control/models/quality.py:283
 #, python-format
 msgid "New"
 msgstr ""
@@ -395,6 +403,11 @@ msgid "OK"
 msgstr ""
 
 #. module: quality_control
+#: model:ir.ui.view,arch_db:quality_control.quality_point_view_search
+msgid "Operation Type"
+msgstr ""
+
+#. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.quality_check_view_form
 #: model:ir.ui.view,arch_db:quality_control.quality_check_view_form_small
 #: selection:quality.check,measure_success:0
@@ -422,12 +435,7 @@ msgid "Periodically"
 msgstr ""
 
 #. module: quality_control
-#: model:ir.model.fields,field_description:quality_control.field_quality_check__picture
-msgid "Picture"
-msgstr ""
-
-#. module: quality_control
-#: code:addons/quality_control/models/quality.py:164
+#: code:addons/quality_control/models/quality.py:163
 #, python-format
 msgid "Picture Uploaded"
 msgstr ""
@@ -435,6 +443,11 @@ msgstr ""
 #. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.quality_alert_view_form
 msgid "Preventive Actions"
+msgstr ""
+
+#. module: quality_control
+#: model:ir.ui.view,arch_db:quality_control.quality_point_view_search
+msgid "Product"
 msgstr ""
 
 #. module: quality_control
@@ -448,8 +461,8 @@ msgid "Quality"
 msgstr ""
 
 #. module: quality_control
-#: code:addons/quality_control/models/quality.py:209
-#: code:addons/quality_control/models/quality.py:221
+#: code:addons/quality_control/models/quality.py:208
+#: code:addons/quality_control/models/quality.py:220
 #: model:ir.model,name:quality_control.model_quality_alert
 #: model:ir.ui.view,arch_db:quality_control.quality_alert_view_calendar
 #: model:ir.ui.view,arch_db:quality_control.stock_picking_view_form_inherit_quality
@@ -502,7 +515,7 @@ msgid "Quality Alerts"
 msgstr ""
 
 #. module: quality_control
-#: code:addons/quality_control/models/quality.py:252
+#: code:addons/quality_control/models/quality.py:251
 #: model:ir.model,name:quality_control.model_quality_check
 #, python-format
 msgid "Quality Check"
@@ -520,14 +533,14 @@ msgid "Quality Check Fail"
 msgstr ""
 
 #. module: quality_control
-#: code:addons/quality_control/models/quality.py:172
+#: code:addons/quality_control/models/quality.py:171
 #: model:ir.ui.view,arch_db:quality_control.quality_check_view_form_failure
 #, python-format
 msgid "Quality Check Failed"
 msgstr ""
 
 #. module: quality_control
-#: code:addons/quality_control/models/quality.py:187
+#: code:addons/quality_control/models/quality.py:186
 #: model:ir.actions.act_window,name:quality_control.quality_check_action_main
 #: model:ir.actions.act_window,name:quality_control.quality_check_action_picking
 #: model:ir.actions.act_window,name:quality_control.quality_check_action_report
@@ -647,6 +660,11 @@ msgid "Teams"
 msgstr ""
 
 #. module: quality_control
+#: model:ir.ui.view,arch_db:quality_control.quality_point_view_search
+msgid "Test Type"
+msgstr ""
+
+#. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_alert__title
 msgid "Title"
 msgstr ""
@@ -688,7 +706,7 @@ msgid "Week(s)"
 msgstr ""
 
 #. module: quality_control
-#: code:addons/quality_control/models/quality.py:141
+#: code:addons/quality_control/models/quality.py:140
 #, python-format
 msgid "You measured %.2f %s and it should be between %.2f and %.2f %s."
 msgstr ""

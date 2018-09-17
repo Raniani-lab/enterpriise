@@ -6,7 +6,7 @@ from dateutil.relativedelta import relativedelta
 from lxml import etree
 
 from odoo import models, fields, api, _
-from odoo.addons.web_grid.models import END_OF, STEP_BY, START_OF
+from odoo.addons.web_grid.models.models import END_OF, STEP_BY, START_OF
 from odoo.exceptions import UserError, AccessError
 from odoo.osv import expression
 

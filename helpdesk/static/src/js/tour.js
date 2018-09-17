@@ -16,7 +16,7 @@ tour.register('helpdesk_tour', {
     trigger: '.oe_kanban_action_button',
     extra_trigger: '.o_kanban_primary_left',
     content: _t('Click here to view this team\'s tickets.'),
-    position: 'right',
+    position: 'bottom',
     width: 200,
 }, {
     trigger: '.o-kanban-button-new',

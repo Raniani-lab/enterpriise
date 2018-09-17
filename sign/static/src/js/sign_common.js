@@ -106,8 +106,6 @@ odoo.define('sign.PDFIframe', function (require) {
             // use Node.appendChild to add resources and not jQuery that load script in top frame
             this.$('head')[0].appendChild($cssLink[0]);
             this.$('head')[0].appendChild($faLink[0]);
-            this.$('head')[0].appendChild($jqueryLink[0]);
-            this.$('head')[0].appendChild($jqueryScript[0]);
             this.$('head')[0].appendChild($select2Css[0]);
 
             var waitFor = [];
@@ -607,7 +605,10 @@ odoo.define('sign.document_signing', function(require) {
                 }
 
                 setTimeout(function() {
+                    var ignoredContext = _.pick(context, ['shadowOffsetX', 'shadowOffsetY']);
+                    _.extend(context, {shadowOffsetX: 0, shadowOffsetY: 0});
                     context.drawImage(image, 0, 0, image.width, image.height, ($canvas[0].width - width)/2, ($canvas[0].height - height)/2, width, height);
+                    _.extend(context, ignoredContext);
                 }, 0);
             };
             image.src = imgSrc;
@@ -817,9 +818,6 @@ odoo.define('sign.document_signing', function(require) {
                 if (!response) {
                     Dialog.alert(self, _t("Sorry, an error occured, please try to fill the document again."), {
                         title: _t("Error"),
-                        confirm_callback: function() {
-                            window.location.reload();
-                        },
                     });
                 }
                 if (response === true) {
@@ -1119,7 +1117,7 @@ odoo.define('sign.document_signing', function(require) {
                             });
                         }
                         if (response.url) {
-                            document.location.pathname = success['url'];
+                            document.location.pathname = response['url'];
                         }
                     }
                 });

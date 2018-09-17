@@ -2,12 +2,20 @@
 # This file contains the translation of the following modules:
 # * documents
 # 
+# Translators:
+# Martin Trigaux, 2018
+# Jaroslav Helemik Nemec <nemec@helemik.cz>, 2018
+# Jakub Lohnisky <jakub@lepremier.cz>, 2018
+# Jan Horzinka <jan.horzinka@centrum.cz>, 2018
+# Michal Veselý <michal@veselyberanek.net>, 2018
+# trendspotter, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-08-24 11:28+0000\n"
 "PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"Last-Translator: trendspotter, 2018\n"
 "Language-Team: Czech (https://www.transifex.com/odoo/teams/41243/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -16,14 +24,9 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
 
 #. module: documents
-#: model:ir.ui.view,arch_db:documents.documents_view_kanban
-msgid "#{record.lock_uid.value}"
-msgstr ""
-
-#. module: documents
 #: model:ir.ui.view,arch_db:documents.public_page_layout
 msgid ", expired on"
-msgstr ""
+msgstr ", vypršelo"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.format_file_size
@@ -58,7 +61,7 @@ msgstr ""
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.share_single
 msgid "<i class=\"fa fa-download\"/> Download"
-msgstr ""
+msgstr "<i class=\"fa fa-download\"/>Stáhnout "
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.share_view_form
@@ -66,6 +69,8 @@ msgstr ""
 msgid ""
 "<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/> Configure Email Servers"
 msgstr ""
+"<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/> Konfigurovat poštovní "
+"servery"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.share_page
@@ -78,6 +83,8 @@ msgid ""
 "A Python dictionary that will be evaluated to provide default values when "
 "creating new records for this alias."
 msgstr ""
+"Slovník Pythonu, který bude vyhodnocen tak, aby poskytoval výchozí hodnoty "
+"při vytváření nových záznamů pro tento alias."
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_workflow_rule
@@ -85,11 +92,13 @@ msgid ""
 "A set of condition and actions which will be available to all attachments "
 "matching the conditions"
 msgstr ""
+"Soubor podmínek a akcí, které budou k dispozici všem přílohám odpovídajícím "
+"podmínkám"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__access_token
 msgid "Access Token"
-msgstr ""
+msgstr "Přístupový token"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__group_ids
@@ -99,13 +108,13 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_action__action
 msgid "Action"
-msgstr ""
+msgstr "Akce"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_needaction
 #: model:ir.model.fields,field_description:documents.field_ir_attachment__message_needaction
 msgid "Action Needed"
-msgstr ""
+msgstr "Vyžaduje akci"
 
 #. module: documents
 #. openerp-web
@@ -115,37 +124,37 @@ msgstr ""
 #: model:ir.ui.view,arch_db:documents.workflow_rule_form_view
 #, python-format
 msgid "Actions"
-msgstr ""
+msgstr "Akce"
 
 #. module: documents
 #: selection:documents.workflow.action,action:0
 msgid "Add"
-msgstr ""
+msgstr "Přidat"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_id
 msgid "Alias"
-msgstr ""
+msgstr "Zástupce"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_contact
 msgid "Alias Contact Security"
-msgstr ""
+msgstr "Zabezpečení aliasu kontaktu"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_name
 msgid "Alias Name"
-msgstr ""
+msgstr "Název zástupce"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_domain
 msgid "Alias domain"
-msgstr ""
+msgstr "Alias domény"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_model_id
 msgid "Aliased Model"
-msgstr ""
+msgstr "Model s aliasem"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__action
@@ -157,12 +166,12 @@ msgstr ""
 #: code:addons/documents/static/src/xml/documents_inspector.xml:152
 #, python-format
 msgid "Archive"
-msgstr ""
+msgstr "Archivovat"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.documents_view_search_inherit
 msgid "Archived"
-msgstr ""
+msgstr "Archivováno"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__create_model
@@ -174,12 +183,12 @@ msgstr ""
 #: code:addons/documents/static/src/xml/documents_selector.xml:50
 #, python-format
 msgid "Attached To"
-msgstr ""
+msgstr "Připojený k"
 
 #. module: documents
 #: model:ir.ui.menu,name:documents.attachment_list_view_temp
 msgid "Attachments"
-msgstr ""
+msgstr "Přílohy"
 
 #. module: documents
 #. openerp-web
@@ -197,12 +206,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_action__facet_id
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__facet_id
 msgid "Category"
-msgstr ""
+msgstr "Kategorie"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__company_id
 msgid "Company"
-msgstr ""
+msgstr "Firma"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__condition_type
@@ -212,17 +221,17 @@ msgstr ""
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.workflow_rule_form_view
 msgid "Conditions"
-msgstr ""
+msgstr "Podmínky"
 
 #. module: documents
 #: model:ir.ui.menu,name:documents.Config
 msgid "Configuration"
-msgstr ""
+msgstr "Konfigurace"
 
 #. module: documents
 #: selection:documents.workflow.tag.criteria,operator:0
 msgid "Contains"
-msgstr ""
+msgstr "Obsahuje"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.tag_view_tree
@@ -238,7 +247,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__create_uid
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Vytvořil(a)"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_facet__create_date
@@ -249,7 +258,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__create_date
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Vytvořeno"
 
 #. module: documents
 #: selection:documents.workflow.rule,create_model:0
@@ -274,7 +283,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_defaults
 msgid "Default Values"
-msgstr ""
+msgstr "Výchozí hodnoty"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__partner_id
@@ -291,7 +300,7 @@ msgstr ""
 #: code:addons/documents/static/src/xml/documents_inspector.xml:154
 #, python-format
 msgid "Delete"
-msgstr ""
+msgstr "Smazat"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_facet__display_name
@@ -302,12 +311,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__display_name
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Zobrazovaný název"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.documents_view_kanban
 msgid "Document"
-msgstr ""
+msgstr "Dokument"
 
 #. module: documents
 #: selection:documents.share,type:0
@@ -324,7 +333,7 @@ msgstr ""
 #: model:ir.ui.view,arch_db:documents.res_config_settings_view_form
 #, python-format
 msgid "Documents"
-msgstr ""
+msgstr "Dokumenty"
 
 #. module: documents
 #: selection:documents.workflow.tag.criteria,operator:0
@@ -338,12 +347,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__domain
 #: model:ir.ui.view,arch_db:documents.workflow_rule_form_view
 msgid "Domain"
-msgstr ""
+msgstr "Doména"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.share_view_form_popup
 msgid "Done"
-msgstr ""
+msgstr "Hotovo"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.share_page
@@ -356,7 +365,7 @@ msgstr ""
 #: selection:documents.share,action:0
 #, python-format
 msgid "Download"
-msgstr ""
+msgstr "Stáhnout"
 
 #. module: documents
 #: selection:documents.share,action:0
@@ -416,7 +425,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_follower_ids
 #: model:ir.model.fields,field_description:documents.field_ir_attachment__message_follower_ids
 msgid "Followers"
-msgstr ""
+msgstr "Sledující"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_channel_ids
@@ -451,7 +460,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__id
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_parent_thread_id
@@ -459,12 +468,14 @@ msgid ""
 "ID of the parent record holding the alias (example: project holding the task"
 " creation alias)"
 msgstr ""
+"ID rodičovského záznamu obsahující alias (například: Projekt obsahující "
+"alias pro vytváření úkolů)"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__message_unread
 #: model:ir.model.fields,help:documents.field_ir_attachment__message_unread
 msgid "If checked new messages require your attention."
-msgstr ""
+msgstr "Pokud je zaškrtnuto, nové zprávy vyžadují vaši pozornost."
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__message_needaction
@@ -493,7 +504,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule____last_update
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Naposled změněno"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_facet__write_uid
@@ -504,7 +515,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__write_uid
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Naposledy upraveno od"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_facet__write_date
@@ -515,7 +526,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__write_date
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Naposled upraveno"
 
 #. module: documents
 #: selection:documents.share,state:0
@@ -525,7 +536,7 @@ msgstr ""
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.share_single
 msgid "Loading"
-msgstr ""
+msgstr "načítání"
 
 #. module: documents
 #. openerp-web
@@ -542,7 +553,7 @@ msgstr ""
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.public_page_layout
 msgid "Login"
-msgstr ""
+msgstr "Přihlašovací jméno"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.public_page_layout
@@ -582,12 +593,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_ids
 #: model:ir.model.fields,field_description:documents.field_ir_attachment__message_ids
 msgid "Messages"
-msgstr ""
+msgstr "Zprávy"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.documents_view_search_inherit
 msgid "Model"
-msgstr ""
+msgstr "Model"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.res_config_settings_view_form
@@ -622,7 +633,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_share__name
 #: model:ir.model.fields,field_description:documents.field_documents_tag__name
 msgid "Name"
-msgstr ""
+msgstr "Název"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.share_view_form
@@ -640,18 +651,18 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__note
 msgid "Note"
-msgstr ""
+msgstr "Poznámka"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.workflow_rule_form_view
 msgid "Notes"
-msgstr ""
+msgstr "Poznámky"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_needaction_counter
 #: model:ir.model.fields,field_description:documents.field_ir_attachment__message_needaction_counter
 msgid "Number of Actions"
-msgstr ""
+msgstr "Počet akcí"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_has_error_counter
@@ -663,13 +674,13 @@ msgstr ""
 #: model:ir.model.fields,help:documents.field_documents_share__message_needaction_counter
 #: model:ir.model.fields,help:documents.field_ir_attachment__message_needaction_counter
 msgid "Number of messages which requires an action"
-msgstr ""
+msgstr "Počet zpráv, které vyžadují akci"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__message_has_error_counter
 #: model:ir.model.fields,help:documents.field_ir_attachment__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr ""
+msgstr "Počet zpráv s chybou při doručení"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__message_unread_counter
@@ -680,7 +691,7 @@ msgstr ""
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.public_page_layout
 msgid "Odoo Logo"
-msgstr ""
+msgstr "Odoo Logo"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.public_page_layout
@@ -690,7 +701,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__operator
 msgid "Operator"
-msgstr ""
+msgstr "Operátor"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_force_thread_id
@@ -699,13 +710,16 @@ msgid ""
 "attached, even if they did not reply to it. If set, this will disable the "
 "creation of new records completely."
 msgstr ""
+"Volitelné ID vlákna (záznamu), ke kterému budou připojeny všechny příchozí "
+"zprávy, i když na něj neodpověděly. Je-li nastaveno, zakáže se úplné "
+"vytvoření nových záznamů."
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_user_id
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__criteria_owner_id
 #: model:ir.model.fields,field_description:documents.field_ir_attachment__owner_id
 msgid "Owner"
-msgstr ""
+msgstr "Majitel"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.share_page
@@ -715,12 +729,12 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_parent_model_id
 msgid "Parent Model"
-msgstr ""
+msgstr "Nadřízený Model"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_parent_thread_id
 msgid "Parent Record Thread ID"
-msgstr ""
+msgstr "ID vlákna nadřízeného záznamu"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__parent_folder_id
@@ -739,7 +753,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__criteria_partner_id
 #: model:ir.model.fields,field_description:documents.field_ir_attachment__partner_id
 msgid "Partner"
-msgstr ""
+msgstr "Kontakt"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_contact
@@ -753,12 +767,12 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_force_thread_id
 msgid "Record Thread ID"
-msgstr ""
+msgstr "ID vlákna záznamu"
 
 #. module: documents
 #: selection:documents.workflow.action,action:0
 msgid "Remove"
-msgstr ""
+msgstr "Odebrat"
 
 #. module: documents
 #. openerp-web
@@ -796,7 +810,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_folder__sequence
 #: model:ir.model.fields,field_description:documents.field_documents_tag__sequence
 msgid "Sequence"
-msgstr ""
+msgstr "Číselná řada"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__partner_id
@@ -818,7 +832,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:documents.documents_settings_action
 #: model:ir.ui.menu,name:documents.Settings_menu
 msgid "Settings"
-msgstr ""
+msgstr "Nastavení"
 
 #. module: documents
 #. openerp-web
@@ -826,7 +840,7 @@ msgstr ""
 #: code:addons/documents/static/src/xml/documents_kanban.xml:14
 #, python-format
 msgid "Share"
-msgstr ""
+msgstr "Sdílet"
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.share_action
@@ -842,7 +856,7 @@ msgstr ""
 #. module: documents
 #: model:ir.ui.menu,name:documents.share_menu
 msgid "Shared"
-msgstr ""
+msgstr "Sdílený"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__attachment_ids
@@ -859,12 +873,12 @@ msgstr ""
 #: code:addons/documents/static/src/xml/documents_inspector.xml:61
 #, python-format
 msgid "Size"
-msgstr ""
+msgstr "Velikost"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__state
 msgid "Status"
-msgstr ""
+msgstr "Stav"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__children_folder_ids
@@ -878,7 +892,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__tag_id
 #: model:ir.ui.view,arch_db:documents.tag_view_search
 msgid "Tag"
-msgstr ""
+msgstr "Štítek"
 
 #. module: documents
 #: sql_constraint:documents.tag:0
@@ -900,17 +914,17 @@ msgstr ""
 #: model:ir.ui.view,arch_db:documents.documents_view_form
 #, python-format
 msgid "Tags"
-msgstr ""
+msgstr "Štítky"
 
 #. module: documents
 #: selection:documents.workflow.rule,create_model:0
 msgid "Task"
-msgstr ""
+msgstr "Úloha"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.documents_view_form
 msgid "Technical"
-msgstr ""
+msgstr "Technický"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_model_id
@@ -919,6 +933,9 @@ msgid ""
 " email that does not reply to an existing record will cause the creation of "
 "a new record of this model (e.g. a Project Task)"
 msgstr ""
+"Model (Odoo Document Kind), ke kterému odpovídá tento alias. Jakýkoli "
+"příchozí e-mail, který neodpovídá stávajícímu záznamu, způsobí vytvoření "
+"nového záznamu tohoto modelu (například projektové úlohy)"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_name
@@ -926,6 +943,8 @@ msgid ""
 "The name of the email alias, e.g. 'jobs' if you want to catch emails for "
 "<jobs@example.odoo.com>"
 msgstr ""
+"Název aliasu e-mailu, např. 'jobs', pokud chcete zachytit e-maily pro "
+"<jobs@example.odoo.com>"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_user_id
@@ -935,6 +954,10 @@ msgid ""
 "the sender (From) address, or will use the Administrator account if no "
 "system user is found for that address."
 msgstr ""
+"Majitel záznamů vytvořených při příjmu e-mailů o tomto aliasu. Není-li toto "
+"pole nastaveno, systém se pokusí najít správného vlastníka na základě adresy"
+" odesílatele (Od) nebo použije účet správce, pokud pro danou adresu nebyl "
+"nalezen žádný uživatel systému."
 
 #. module: documents
 #: sql_constraint:documents.share:0
@@ -954,7 +977,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__full_url
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #. module: documents
 #. openerp-web
@@ -974,13 +997,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_unread
 #: model:ir.model.fields,field_description:documents.field_ir_attachment__message_unread
 msgid "Unread Messages"
-msgstr ""
+msgstr "Nepřečtené zprávy"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_unread_counter
 #: model:ir.model.fields,field_description:documents.field_ir_attachment__message_unread_counter
 msgid "Unread Messages Counter"
-msgstr ""
+msgstr "Počítadlo nepřečtených zpráv"
 
 #. module: documents
 #. openerp-web
@@ -1011,13 +1034,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_share__website_message_ids
 #: model:ir.model.fields,field_description:documents.field_ir_attachment__website_message_ids
 msgid "Website Messages"
-msgstr ""
+msgstr "Zprávy Webové stránky"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__website_message_ids
 #: model:ir.model.fields,help:documents.field_ir_attachment__website_message_ids
 msgid "Website communication history"
-msgstr ""
+msgstr "Historie komunikace Webové stránky"
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.workflow_rule_action
@@ -1081,7 +1104,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model,name:documents.model_ir_attachment
 msgid "ir.attachment"
-msgstr ""
+msgstr "ir.attachment"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.folder_view_search

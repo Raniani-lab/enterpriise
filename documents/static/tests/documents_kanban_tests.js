@@ -19,23 +19,26 @@ QUnit.module('DocumentsKanbanView', {
             'ir.attachment': {
                 fields: {
                     active: {string: "Active", type: 'boolean', default: true},
+                    available_rule_ids: {string: "Rules", type: 'many2many', relation: 'documents.workflow.rule'},
                     datas_fname: {string: "Foo", type: 'char'},
                     file_size: {string: "Size", type: 'integer'},
+                    folder_id: {string: "Folders", type: 'many2one', relation: 'documents.folder'},
+                    lock_uid: {string: "Locked by", type: "many2one", relation: 'user'},
                     message_follower_ids: {string: "Followers", type: 'one2many', relation: 'mail.followers'},
                     message_ids: {string: "Messages", type: 'one2many', relation: 'mail.message'},
+                    mimetype: {string: "Mimetype", type: 'char', default: ''},
+                    name: {string: "Name", type: 'char', default: ' '},
                     owner_id: {string: "Owner", type: "many2one", relation: 'user'},
-                    lock_uid: {string: "Locked by", type: "many2one", relation: 'user'},
                     partner_id: {string: "Related partner", type: 'many2one', relation: 'user'},
                     public: {string: "Is public", type: 'boolean'},
                     res_id: {string: "Resource id", type: 'integer'},
                     res_model: {string: "Model (technical)", type: 'char'},
                     res_model_name: {string: "Resource model", type: 'char'},
                     res_name: {string: "Resource name", type: 'char'},
-                    folder_id: {string: "Folders", type: 'many2one', relation: 'documents.folder'},
-                    tag_ids: {string: "Tags", type: 'many2many', relation: 'documents.tag'},
-                    available_rule_ids: {string: "Rules", type: 'many2many', relation: 'documents.workflow.rule'},
                     share_ids: {string: "Shares", type: "many2many", relation: 'documents.share'},
-                    mimetype: {string: "Mimetype", type: 'char', default: ''},
+                    tag_ids: {string: "Tags", type: 'many2many', relation: 'documents.tag'},
+                    type: {string: "Type", type: 'selection', selection: [['url', "URL"], ['binary', "File"]], default: 1},
+                    url: {string: "Url", type: 'char'},
                 },
                 records: [
                     {id: 1, datas_fname: 'yop', file_size: 30000, owner_id: 1, partner_id: 2,
@@ -98,22 +101,28 @@ QUnit.module('DocumentsKanbanView', {
                 fields: {},
                 group_by_documents: function () {
                     return $.when([{
-                      facet_id: 1,
-                      facet_name: 'Status',
-                      tag_id: 1,
-                      tag_name: 'New',
-                      __count: 0,
-                    }, {
-                      facet_id: 1,
-                      facet_name: 'Status',
-                      tag_id: 2,
-                      tag_name: 'Draft',
-                      __count: 0,
-                    }, {
                       facet_id: 2,
                       facet_name: 'Priority',
+                      facet_sequence: 10,
                       tag_id: 5,
                       tag_name: 'No stress',
+                      tag_sequence: 10,
+                      __count: 0,
+                    }, {
+                      facet_id: 1,
+                      facet_name: 'Status',
+                      facet_sequence: 11,
+                      tag_id: 2,
+                      tag_name: 'Draft',
+                      tag_sequence: 10,
+                      __count: 0,
+                    }, {
+                      facet_id: 1,
+                      facet_name: 'Status',
+                      facet_sequence: 11,
+                      tag_id: 1,
+                      tag_name: 'New',
+                      tag_sequence: 11,
                       __count: 0,
                     }]);
                 },
@@ -191,7 +200,7 @@ QUnit.module('DocumentsKanbanView', {
             "should have two primary buttons");
         assert.strictEqual(kanban.$buttons.find('.btn-primary:first').text().trim(), 'Upload',
             "should have a primary 'Upload' button");
-        assert.strictEqual(kanban.$buttons.find('a.o_documents_kanban_url').length, 1,
+        assert.strictEqual(kanban.$buttons.find('button.o_documents_kanban_url').length, 1,
             "should allow to save a URL");
         assert.strictEqual(kanban.$buttons.find('.btn-secondary').text().trim(), 'Share',
             "should have a secondary 'Share' button");
@@ -391,7 +400,7 @@ QUnit.module('DocumentsKanbanView', {
         kanban.destroy();
     });
 
-    QUnit.test('selected records are kept after a reload', function (assert) {
+    QUnit.test('only visible selected records are kept after a reload', function (assert) {
         assert.expect(6);
 
         var kanban = createView({
@@ -424,10 +433,10 @@ QUnit.module('DocumentsKanbanView', {
 
         kanban.reload({domain: []});
 
-        assert.strictEqual(kanban.$('.o_record_selected').length, 3,
-            "should have 3 selected records");
-        assert.strictEqual(kanban.$('.o_documents_inspector_preview .o_document_preview').length, 3,
-            "should show 3 document previews in the DocumentsInspector");
+        assert.strictEqual(kanban.$('.o_record_selected').length, 1,
+            "should have 1 selected records");
+        assert.strictEqual(kanban.$('.o_documents_inspector_preview .o_document_preview').length, 1,
+            "should show 1 document previews in the DocumentsInspector");
 
         kanban.destroy();
     });
@@ -538,22 +547,12 @@ QUnit.module('DocumentsKanbanView', {
                 '</t></templates></kanban>',
             intercepts: {
                 do_action: function (ev) {
-                    assert.deepEqual(ev.data.action, {
-                        res_model: 'ir.attachment',
-                        type: 'ir.actions.act_window',
-                        context: {
-                            default_type: 'url',
-                            default_name: 'url',
-                            default_folder_id: 1,
-                        },
-                        views: [[false, 'form']],
-                        target: 'new',
-                    }, "should open the URL form");
+                    assert.deepEqual(ev.data.action, "documents.action_url_form", "should open the URL form");
                 },
             },
         });
 
-        kanban.$buttons.find('a.o_documents_kanban_url').click();
+        kanban.$buttons.find('button.o_documents_kanban_url').click();
 
         kanban.destroy();
     });
@@ -697,10 +696,10 @@ QUnit.module('DocumentsKanbanView', {
 
         kanban.pager.$('.o_pager_previous').click();
 
-        assert.strictEqual(kanban.$('.o_record_selected').length, 1,
-            "should have 1 selected record");
-        assert.strictEqual(kanban.$('.o_documents_inspector_preview .o_document_preview').length, 1,
-            "should show 1 document preview in the DocumentsInspector");
+        assert.strictEqual(kanban.$('.o_record_selected').length, 0,
+            "should have no selected record");
+        assert.strictEqual(kanban.$('.o_documents_inspector_preview .o_document_preview').length, 0,
+            "should show no document preview in the DocumentsInspector");
 
         kanban.destroy();
     });
@@ -720,21 +719,28 @@ QUnit.module('DocumentsKanbanView', {
         });
 
         kanban.$('.o_kanban_record:contains(yop)').click();
-        assert.strictEqual(kanban.$('.o_click_image').length, 0,
+
+        assert.strictEqual(kanban.$('.o_document_preview img').length, 0,
             "should not have a clickable image");
+
         kanban.$('.o_kanban_record:contains(burp)').click();
+
         assert.strictEqual(kanban.$('.o_viewer_content').length, 0,
             "should not have a document preview");
         assert.strictEqual(kanban.$('.o_document_preview img').length, 1,
             "should have a clickable image");
+
         kanban.$('.o_document_preview img').click();
+
         assert.strictEqual(kanban.$('.o_viewer_content').length, 1,
             "should have a document preview");
         assert.strictEqual(kanban.$('.o_close_btn').length, 1,
             "should have a close button");
+
         kanban.$('.o_close_btn').click();
+
         assert.strictEqual(kanban.$('.o_viewer_content').length, 0,
-            "should not have a document preview");
+            "should not have a document preview after pdf exit");
 
         kanban.destroy();
     });
@@ -780,7 +786,7 @@ QUnit.module('DocumentsKanbanView', {
     });
 
     QUnit.test('document inspector: can archive records', function (assert) {
-        assert.expect(5);
+        assert.expect(6);
 
         var kanban = createView({
             View: DocumentsKanbanView,
@@ -813,7 +819,12 @@ QUnit.module('DocumentsKanbanView', {
         assert.strictEqual(kanban.$('.o_record_selected').length, 0,
             "should have no selected record");
         assert.strictEqual(kanban.$('.o_documents_inspector_preview .o_document_preview').length, 0,
-            "should show 0 document preview in the DocumentsInspector");
+            "should show no document preview in the DocumentsInspector");
+
+        kanban.reload({active: false});
+
+        assert.strictEqual(kanban.$('.o_kanban_view .o_record_selected').length, 0,
+            "should have no selected archived record");
 
         kanban.destroy();
     });
@@ -1839,7 +1850,7 @@ QUnit.module('DocumentsKanbanView', {
     QUnit.module('DocumentsSelector');
 
     QUnit.test('document selector: basic rendering', function (assert) {
-        assert.expect(11);
+        assert.expect(15);
 
         var kanban = createView({
             View: DocumentsKanbanView,
@@ -1865,8 +1876,19 @@ QUnit.module('DocumentsKanbanView', {
             'Tags', "should have a 'tags' section");
         assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_facet').length, 2,
             "should have 2 facets");
-        assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_facet:first .o_documents_selector_tag').length, 2,
-            "should have 2 tags in the first facet");
+
+        assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_facet:first > header').text().trim(),
+            'Priority', "the first facet should be 'Priority'");
+        assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_facet:last > header').text().trim(),
+            'Status', "the last facet should be 'Status'");
+
+        assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_facet:last .o_documents_selector_tag').length, 2,
+            "should have 2 tags in the last facet");
+
+        assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_facet:last .o_documents_selector_tag:first header').text().trim(),
+            'Draft', "the first tag in the last facet should be 'Draft'");
+        assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_facet:last .o_documents_selector_tag:last header').text().trim(),
+            'New', "the last tag in the last facet should be 'New'");
 
         assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_models .o_documents_selector_header').text().trim(),
             'Attached To', "should have an 'attached to' section");

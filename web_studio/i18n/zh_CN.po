@@ -10,13 +10,15 @@
 # Gary Wei <Gary.wei@elico-corp.com>, 2018
 # Xu Lei <xulei8@qq.com>, 2018
 # fausthuang, 2018
+# 老窦 北京 <2662059195@qq.com>, 2018
+# Lisa Zhang <lzh@odoo.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-08-24 11:29+0000\n"
 "PO-Revision-Date: 2018-08-24 11:29+0000\n"
-"Last-Translator: fausthuang, 2018\n"
+"Last-Translator: Lisa Zhang <lzh@odoo.com>, 2018\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -155,7 +157,7 @@ msgstr "活动"
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_ir_cron__activity_user_type
 msgid "Activity User Type"
-msgstr ""
+msgstr "活动用户类型"
 
 #. module: web_studio
 #. openerp-web
@@ -511,7 +513,7 @@ msgstr "颜色"
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:229
 #, python-format
 msgid "Colors"
-msgstr ""
+msgstr "颜色"
 
 #. module: web_studio
 #. openerp-web
@@ -792,7 +794,7 @@ msgstr "向右拖动菜单创建子菜单"
 #: model:ir.ui.view,arch_db:web_studio.act_report_xml_view_kanban
 #, python-format
 msgid "Dropdown menu"
-msgstr ""
+msgstr "下拉菜单"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_ir_cron__activity_date_deadline_range

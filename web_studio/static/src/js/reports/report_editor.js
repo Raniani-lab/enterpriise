@@ -1,10 +1,12 @@
 odoo.define('web_studio.ReportEditor', function (require) {
 "use strict";
 
+var core = require('web.core');
 var Widget = require('web.Widget');
 
 var EditorMixin = require('web_studio.EditorMixin');
 
+var _t = core._t;
 
 var ReportEditor = Widget.extend(EditorMixin, {
     template: 'web_studio.ReportEditor',
@@ -28,6 +30,7 @@ var ReportEditor = Widget.extend(EditorMixin, {
         this.paperFormat = params.paperFormat || {};
 
         this.$content = $();
+        this.$noContentHelper = $();
 
         this.selectedNode = null;
         this.$targetHighlight = $();
@@ -67,7 +70,10 @@ var ReportEditor = Widget.extend(EditorMixin, {
      */
     beginDragComponent: function (component) {
         var self = this;
+
         this.$dropZone.remove();
+        this.$noContentHelper.remove();
+
         var dropIn = component.dropIn;
         if (component.dropColumns) {
             dropIn = (dropIn ? dropIn + ',' : '') + '.page > .row > div:empty';
@@ -76,13 +82,15 @@ var ReportEditor = Widget.extend(EditorMixin, {
             var inSelectors = dropIn.split(',');
             _.each(inSelectors, function (selector) {
                 var $target = self.$content.find(selector + "[data-oe-xpath]");
-                if (!$target.data('node')) {
-                    // this is probably a template not present in reportViews
-                    // TODO: should the corresponding view be branded
-                    // (server-side) in this case?
-                    return;
-                }
                 _.each($target, function (node) {
+                    if (!$(node).data('node')) {
+                        // this is probably a template not present in
+                        // reportViews so no hook should be attached to it
+                        // TODO: should the corresponding view be branded
+                        // (server-side) in this case (there won't be any
+                        // data-oe-xpath then)?
+                        return;
+                    }
                     self._createHookOnNodeAndChildren($(node), component);
                 });
             });
@@ -128,7 +136,7 @@ var ReportEditor = Widget.extend(EditorMixin, {
         });
 
         // compute the size box with the nearest rendering
-        self._computeNearestHookAndShowIt();
+        this._computeNearestHookAndShowIt();
 
         // association for td and colspan
         this.$dropZone.filter('th, td').each(function (_, item) {
@@ -241,21 +249,8 @@ var ReportEditor = Widget.extend(EditorMixin, {
      * @param {Component} component
      */
     dropComponent: function (component) {
-        var self = this;
-        var clean = function () {
-            self.$dropZone.filter('th, td').each(function () {
-                var $node = $(this).data('oe-node');
-                var colspan = $node.data('colspan');
-                if (colspan) {
-                    $node.attr('colspan', colspan);
-                }
-            });
-            self.$content.find('.o_web_studio_hook').remove();
-            self.$content.find('.o_web_studio_structure_hook').remove();
-        };
-
-        var $dropZone = this.$dropZone.filter('.o_web_studio_nearest_hook');
-        var targets = $dropZone.map(function () {
+        var $nearestHooks = this.$dropZone.filter('.o_web_studio_nearest_hook');
+        var targets = $nearestHooks.map(function () {
             var $active = $(this);
             return {
                 node: $active.data('oe-node').data('node'),
@@ -267,15 +262,15 @@ var ReportEditor = Widget.extend(EditorMixin, {
         if (targets.length) {
             this.trigger_up('view_change', {
                 component: component,
-                fail: clean,
+                fail: this._cleanHooks.bind(this),
                 targets: targets,
                 operation: {
                     type: 'add',
-                    position: $dropZone.first().data('oe-position'),
+                    position: $nearestHooks.first().data('oe-position'),
                 },
             });
         } else {
-            clean();
+            this._cleanHooks();
         }
     },
     /**
@@ -359,6 +354,7 @@ var ReportEditor = Widget.extend(EditorMixin, {
         this.nodesArchs = nodesArchs;
         this.reportHTML = reportHTML;
 
+        this.$dropZone = $();
         this._resizeIframe();
 
         return this._updateContent().then(function () {
@@ -368,6 +364,9 @@ var ReportEditor = Widget.extend(EditorMixin, {
                     $nodes.first().click();
                 } else {
                     self.selectedNode = null;
+                    self.trigger_up('sidebar_tab_changed', {
+                        mode: 'new',
+                    });
                 }
             }
         });
@@ -376,14 +375,34 @@ var ReportEditor = Widget.extend(EditorMixin, {
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------
+
     /**
-     * create hook on target and compute its size
-     * @param {JQElem} $node  the node from the dom of the report that should be hooked onto
-     * @param {Object} component the component from the sidebar currently being dragged
+     * Clean displayed hooks and reset colspan on modified nodes.
+     *
+     * @private
+     */
+    _cleanHooks: function () {
+        this.$dropZone.filter('th, td').each(function () {
+            var $node = $(this).data('oe-node');
+            var colspan = $node.data('colspan');
+            if (colspan) {
+                $node.attr('colspan', colspan);
+            }
+        });
+        this.$content.find('.o_web_studio_hook').remove();
+        this.$content.find('.o_web_studio_structure_hook').remove();
+
+        this._setNoContentHelper();
+    },
+    /**
+     * Create hook on target and compute its size.
+     *
+     * @private
+     * @param {jQuery} $node report dom node that should be hooked onto
+     * @param {Object} sidebar component currently being dragged
      */
     _createHookOnNodeAndChildren: function ($node, component) {
-        var self = this;
-        var $hook = self._createHook($(this), component);
+        var $hook = this._createHook($node, component);
         var $newHook = $hook.clone();
         var $children = $node.children().not('.o_web_studio_hook');
         // display the hook with max height of this sibling
@@ -546,7 +565,6 @@ var ReportEditor = Widget.extend(EditorMixin, {
         this._resizeIframe();
 
         // association for td and colspan
-
         this.$content.find('tr').each(function () {
             var $tr = $(this);
             var $tds = $tr.children();
@@ -560,6 +578,8 @@ var ReportEditor = Widget.extend(EditorMixin, {
                 $td.data('td-position-after', lineMax);
             });
         });
+
+        this._setNoContentHelper();
     },
     /**
      * @private
@@ -587,6 +607,19 @@ var ReportEditor = Widget.extend(EditorMixin, {
         });
     },
     /**
+     * @private
+     */
+    _setNoContentHelper: function () {
+        var $page = this.$content.find('.page');
+        if ($page.length && !$page.children().length) {
+            this.$noContentHelper = $('<div/>', {
+                class: 'o_no_content_helper',
+                text: _t('Drag building block here'),
+            });
+            $page.append(this.$noContentHelper);
+        }
+    },
+    /**
      * Update the iframe content.
      *
      * @private
@@ -596,19 +629,6 @@ var ReportEditor = Widget.extend(EditorMixin, {
         var self = this;
         this.$content = this.$iframe.contents();
         var reportHTML = this.reportHTML;
-
-        if (reportHTML.error) {
-            var stack = reportHTML.stack
-                 .replace(/&/g, "&amp;")
-                 .replace(/</g, "&lt;")
-                 .replace(/>/g, "&gt;")
-                 .replace(/"/g, "&quot;")
-                 .replace(/'/g, "&#039;");
-            reportHTML = '<h1>' + reportHTML.error + '</h1><pre>' + stack + '</pre>';
-            this.$content.find('body').html(reportHTML);
-            this._processReportPreviewContent();
-            return $.when();
-        }
 
         var $main = this.$content.find('main:first');
         if ($main.length) {

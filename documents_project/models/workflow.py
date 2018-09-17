@@ -10,7 +10,7 @@ class WorkflowActionRuleTask(models.Model):
     def create_record(self, attachments):
         rv = super(WorkflowActionRuleTask, self).create_record(attachments=attachments)
         if self.create_model == 'project.task':
-            new_obj = self.env[self.create_model].create({'name': "task for multiple attachments"})
+            new_obj = self.env[self.create_model].create({'name': "new task from document management"})
             task_action = {
                 'type': 'ir.actions.act_window',
                 'res_model': self.create_model,

@@ -2,12 +2,22 @@
 # This file contains the translation of the following modules:
 # * crm_enterprise
 # 
+# Translators:
+# Mustafa Rawi <mustafa@cubexco.com>, 2018
+# amrnegm <amrnegm.01@gmail.com>, 2018
+# Martin Trigaux, 2018
+# hoxhe Aits <hoxhe0@gmail.com>, 2018
+# aymen rahmani <aymen.isims@gmail.com>, 2018
+# Osoul <baruni@osoul.ly>, 2018
+# Mohammed Ibrahim <m.ibrahim@mussder.com>, 2018
+# Shaima Safar <shaima.safar@open-inside.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-08-24 11:28+0000\n"
 "PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"Last-Translator: Shaima Safar <shaima.safar@open-inside.com>, 2018\n"
 "Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,7 +29,7 @@ msgstr ""
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Archived"
-msgstr ""
+msgstr "مؤرشف"
 
 #. module: crm_enterprise
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
@@ -36,19 +46,19 @@ msgstr ""
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Campaign"
-msgstr ""
+msgstr "الحملة"
 
 #. module: crm_enterprise
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "City"
-msgstr ""
+msgstr "المدينة"
 
 #. module: crm_enterprise
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Company"
-msgstr ""
+msgstr "المؤسسة"
 
 #. module: crm_enterprise
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
@@ -59,24 +69,24 @@ msgstr ""
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Country"
-msgstr ""
+msgstr "دولة"
 
 #. module: crm_enterprise
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Creation Date"
-msgstr ""
+msgstr "تاريخ الإنشاء"
 
 #. module: crm_enterprise
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Current"
-msgstr ""
+msgstr "الحالي"
 
 #. module: crm_enterprise
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
 msgid "Customer"
-msgstr ""
+msgstr "العميل"
 
 #. module: crm_enterprise
 #: model:ir.model.fields,field_description:crm_enterprise.field_crm_lead__days_to_convert
@@ -88,13 +98,13 @@ msgstr ""
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_dashboard
 msgid "Days to Assign"
-msgstr ""
+msgstr "أيام حتى الإسناد"
 
 #. module: crm_enterprise
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_dashboard
 msgid "Days to Close"
-msgstr ""
+msgstr "أيام حتى الإقفال"
 
 #. module: crm_enterprise
 #: model:ir.model.fields,field_description:crm_enterprise.field_crm_lead__days_exceeding_closing
@@ -110,18 +120,18 @@ msgstr ""
 #. module: crm_enterprise
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_dashboard
 msgid "Expected Revenue"
-msgstr ""
+msgstr "الربح المتوقع"
 
 #. module: crm_enterprise
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Extended Filters"
-msgstr ""
+msgstr "الفلاتر التفصيلية"
 
 #. module: crm_enterprise
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Group By"
-msgstr ""
+msgstr "تجميع حسب"
 
 #. module: crm_enterprise
 #: model:ir.model.fields,field_description:crm_enterprise.field_crm_lead__lost
@@ -137,57 +147,57 @@ msgstr ""
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Last Month"
-msgstr ""
+msgstr "الشهر الماضي"
 
 #. module: crm_enterprise
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
 msgid "Lead / Customer"
-msgstr ""
+msgstr "عرض / عميل"
 
 #. module: crm_enterprise
 #: model:ir.model,name:crm_enterprise.model_crm_lead
 msgid "Lead/Opportunity"
-msgstr ""
+msgstr "عرض/فرصة"
 
 #. module: crm_enterprise
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Leads"
-msgstr ""
+msgstr "المرشحيين "
 
 #. module: crm_enterprise
 #: model:ir.actions.act_window,name:crm_enterprise.crm_lead_action_dashboard
 msgid "Leads Analysis"
-msgstr ""
+msgstr "تحليل المصادر"
 
 #. module: crm_enterprise
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
 msgid "Leads that are assigned to me"
-msgstr ""
+msgstr "الترشيدات المسندة إلي"
 
 #. module: crm_enterprise
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Lost"
-msgstr ""
+msgstr "خسارة"
 
 #. module: crm_enterprise
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Lost Reason"
-msgstr ""
+msgstr "سبب الخسارة"
 
 #. module: crm_enterprise
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Medium"
-msgstr ""
+msgstr "متوسط"
 
 #. module: crm_enterprise
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
 msgid "My Leads"
-msgstr ""
+msgstr "ترشيحاتي"
 
 #. module: crm_enterprise
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
@@ -201,12 +211,12 @@ msgstr ""
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_graph
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Opportunities"
-msgstr ""
+msgstr "الفرص "
 
 #. module: crm_enterprise
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Opportunities Analysis"
-msgstr ""
+msgstr "تحليل الفرص"
 
 #. module: crm_enterprise
 #: model:ir.actions.act_window,name:crm_enterprise.crm_opportunity_action_dashboard
@@ -217,51 +227,51 @@ msgstr ""
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Sales Channel"
-msgstr ""
+msgstr "قناة البيع"
 
 #. module: crm_enterprise
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Salesperson"
-msgstr ""
+msgstr "موظف المبيعات"
 
 #. module: crm_enterprise
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
 msgid "Search Leads"
-msgstr ""
+msgstr "بحث عن عروض"
 
 #. module: crm_enterprise
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Show only lead"
-msgstr ""
+msgstr "إظهار العروض فقط"
 
 #. module: crm_enterprise
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Show only opportunity"
-msgstr ""
+msgstr "مشاهدة الفرص فقط"
 
 #. module: crm_enterprise
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Source"
-msgstr ""
+msgstr "المصدر"
 
 #. module: crm_enterprise
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Stage"
-msgstr ""
+msgstr "المرحلة"
 
 #. module: crm_enterprise
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
 msgid "Tag"
-msgstr ""
+msgstr "الوسم"
 
 #. module: crm_enterprise
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "This Month"
-msgstr ""
+msgstr "هذا الشهر"
 
 #. module: crm_enterprise
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
@@ -273,9 +283,9 @@ msgstr ""
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Won"
-msgstr ""
+msgstr "فوز"
 
 #. module: crm_enterprise
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_graph
 msgid "leads"
-msgstr ""
+msgstr "ترشيحات"

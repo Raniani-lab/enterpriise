@@ -12,7 +12,7 @@
             <field name="user_id" position="after">
                 <field name="worksheet" widget="radio" attrs="{'invisible': ['|', ('code', '!=', 'mrp_operation'), ('operation_id', '=', False)]}"/>
                 <field name="worksheet_page" attrs="{'invisible': ['|', '|', ('code', '!=', 'mrp_operation'), ('operation_id', '=', False), ('worksheet', '!=', 'scroll')]}"/>
-                <field name="component_id" attrs="{'required': [('test_type', '=', 'register_consumed_materials')], 'invisible': ['|', '|', ('code', '!=', 'mrp_operation'), ('operation_id', '=', False), ('test_type', '!=', 'register_consumed_materials')]}"/>
+                <field name="component_id" attrs="{'required': [('test_type', '=', 'record_lotserial_numbers')], 'invisible': ['|', '|', ('code', '!=', 'mrp_operation'), ('operation_id', '=', False), ('test_type', '!=', 'record_lotserial_numbers')]}"/>
             </field>
         </field>
     </record>

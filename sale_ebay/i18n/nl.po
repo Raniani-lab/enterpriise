@@ -82,7 +82,7 @@ msgstr "7 dagen"
 #. module: sale_ebay
 #: model:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "<span class=\"o_form_label\">Sales Channel</span>"
-msgstr ""
+msgstr "<span class=\"o_form_label\">Verkoopkanaal</span>"
 
 #. module: sale_ebay
 #: model:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
@@ -697,7 +697,7 @@ msgstr "Sync nu"
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_crm_team__team_type
 msgid "Team Type"
-msgstr ""
+msgstr "Soort team"
 
 #. module: sale_ebay
 #: code:addons/sale_ebay/models/product.py:719

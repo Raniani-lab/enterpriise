@@ -2,12 +2,15 @@
 # This file contains the translation of the following modules:
 # * account_plaid
 # 
+# Translators:
+# trendspotter, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.3+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-25 08:34+0000\n"
 "PO-Revision-Date: 2018-06-25 08:34+0000\n"
+"Last-Translator: trendspotter, 2018\n"
 "Language-Team: Czech (https://www.transifex.com/odoo/teams/41243/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,18 +21,18 @@ msgstr ""
 #. module: account_plaid
 #: model:ir.model.fields,help:account_plaid.field_account_online_provider__plaid_error_type
 msgid "Additional information on error"
-msgstr ""
+msgstr "Další informace o chybě"
 
 #. module: account_plaid
 #: code:addons/account_plaid/models/plaid.py:55
 #, python-format
 msgid "Get %s status code for call to %s. Content message: %s"
-msgstr ""
+msgstr "Získat %s kód stavu pro volání %s. Zpráva o obsahu: %s"
 
 #. module: account_plaid
 #: model:ir.model,name:account_plaid.model_account_online_journal
 msgid "Interface for online account journal"
-msgstr ""
+msgstr "Rozhraní pro online účetní deník"
 
 #. module: account_plaid
 #: selection:account.online.provider,provider_type:0
@@ -54,7 +57,7 @@ msgstr ""
 #. module: account_plaid
 #: model:ir.model,name:account_plaid.model_account_online_provider
 msgid "Provider for online account synchronization"
-msgstr ""
+msgstr "Poskytovatel pro synchronizaci online účtů"
 
 #. module: account_plaid
 #: code:addons/account_plaid/models/plaid.py:41
@@ -76,7 +79,7 @@ msgstr ""
 #. module: account_plaid
 #: selection:account.online.provider,provider_type:0
 msgid "Yodlee"
-msgstr ""
+msgstr "Yodlee"
 
 #. module: account_plaid
 #: model:ir.model.fields,help:account_plaid.field_account_online_provider__plaid_item_id

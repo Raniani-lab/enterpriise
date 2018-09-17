@@ -5,6 +5,7 @@
         <xpath expr="." position="inside">
             <link rel="stylesheet" type="text/scss" href="/mail_enterprise/static/src/scss/mail_enterprise.scss"/>
             <script type="text/javascript" src="/mail_enterprise/static/src/js/form_renderer.js" />
+            <script type="text/javascript" src="/mail_enterprise/static/src/js/attachment_viewer.js" />
             <script type="text/javascript" src="/mail_enterprise/static/src/js/thread_field.js" />
         </xpath>
     </template>

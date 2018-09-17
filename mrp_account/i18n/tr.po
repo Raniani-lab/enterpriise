@@ -3,19 +3,16 @@
 # * mrp_account
 # 
 # Translators:
-# Gökhan Erdoğdu <gokhan.erdogdu@mechsoft.com.tr>, 2017
-# Martin Trigaux, 2017
-# Murat Kaplan <muratk@projetgrup.com>, 2017
-# Ediz Duman <neps1192@gmail.com>, 2017
-# gezgin biri <gezginbiri@hotmail.com>, 2017
-# Güven YILMAZ <guvenyilmaz@outlook.com.tr>, 2017
+# Levent Karakaş <levent@mektup.at>, 2018
+# Murat Kaplan <muratk@projetgrup.com>, 2018
+# Ediz Duman <neps1192@gmail.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.3+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 08:34+0000\n"
-"PO-Revision-Date: 2018-06-25 08:34+0000\n"
-"Last-Translator: Güven YILMAZ <guvenyilmaz@outlook.com.tr>, 2017\n"
+"POT-Creation-Date: 2018-08-24 11:28+0000\n"
+"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"Last-Translator: Ediz Duman <neps1192@gmail.com>, 2018\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,6 +24,56 @@ msgstr ""
 #: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid ", from"
 msgstr ", itibaren"
+
+#. module: mrp_account
+#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+msgid "<span>Code</span>"
+msgstr ""
+
+#. module: mrp_account
+#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+msgid "<span>Cost/hour</span>"
+msgstr ""
+
+#. module: mrp_account
+#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+msgid "<span>Operation</span>"
+msgstr ""
+
+#. module: mrp_account
+#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+msgid "<span>Operator</span>"
+msgstr ""
+
+#. module: mrp_account
+#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+msgid "<span>Quantity</span>"
+msgstr "<span>Miktar</span>"
+
+#. module: mrp_account
+#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+msgid "<span>Raw Materials</span>"
+msgstr ""
+
+#. module: mrp_account
+#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+msgid "<span>Scraps</span>"
+msgstr ""
+
+#. module: mrp_account
+#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+msgid "<span>Total Cost</span>"
+msgstr ""
+
+#. module: mrp_account
+#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+msgid "<span>Unit Cost</span>"
+msgstr ""
+
+#. module: mrp_account
+#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+msgid "<span>Working Time</span>"
+msgstr ""
 
 #. module: mrp_account
 #: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
@@ -55,8 +102,8 @@ msgstr "Analitik Hesap"
 
 #. module: mrp_account
 #: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
-msgid "Code"
-msgstr "Kod"
+msgid "By product(s)"
+msgstr ""
 
 #. module: mrp_account
 #: model:ir.actions.report,name:mrp_account.action_cost_struct_mrp_production
@@ -96,11 +143,6 @@ msgid "Cost of Scraps"
 msgstr "Hurda Maliyeti"
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
-msgid "Cost/hour"
-msgstr "Maliyet/Saat"
-
-#. module: mrp_account
 #: model:ir.model.fields,field_description:mrp_account.field_report_mrp_account_mrp_cost_structure__display_name
 #: model:ir.model.fields,field_description:mrp_account.field_report_mrp_account_product_template_cost_structure__display_name
 msgid "Display Name"
@@ -133,16 +175,6 @@ msgid "Manufacturing Order"
 msgstr "Üretim Emri"
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
-msgid "Operation"
-msgstr "Operasyon"
-
-#. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
-msgid "Operator"
-msgstr "Operatör"
-
-#. module: mrp_account
 #: model:ir.model,name:mrp_account.model_product_product
 msgid "Product"
 msgstr "Ürün"
@@ -151,21 +183,6 @@ msgstr "Ürün"
 #: model:ir.model,name:mrp_account.model_product_template
 msgid "Product Template"
 msgstr "Ürün Şablonu"
-
-#. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
-msgid "Quantity"
-msgstr "Adet"
-
-#. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
-msgid "Raw Materials"
-msgstr "Hammaddeler"
-
-#. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
-msgid "Scraps"
-msgstr "Hurda"
 
 #. module: mrp_account
 #: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
@@ -186,16 +203,6 @@ msgstr ""
 "girdiler düşünebiliriz."
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
-msgid "Total Cost"
-msgstr "Toplam Maliyet"
-
-#. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
-msgid "Unit Cost"
-msgstr "Birim Maliyeti"
-
-#. module: mrp_account
 #: model:ir.model,name:mrp_account.model_mrp_workcenter
 msgid "Work Center"
 msgstr "İş Merkezi"
@@ -204,11 +211,6 @@ msgstr "İş Merkezi"
 #: model:ir.model,name:mrp_account.model_mrp_workcenter_productivity
 msgid "Workcenter Productivity Log"
 msgstr "İş Merkezi Verimlilik Günlüğü"
-
-#. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
-msgid "Working Time"
-msgstr "Çalışma Süresi"
 
 #. module: mrp_account
 #: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure

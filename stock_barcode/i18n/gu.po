@@ -2,12 +2,18 @@
 # This file contains the translation of the following modules:
 # * stock_barcode
 # 
+# Translators:
+# Martin Trigaux, 2018
+# Turkesh Patel <turkesh4friends@gmail.com>, 2018
+# Dharmraj Jhala <dja@openerp.com>, 2018
+# Divya Pandya <dia@odoo.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"POT-Creation-Date: 2018-09-05 09:12+0000\n"
+"PO-Revision-Date: 2018-09-05 09:12+0000\n"
+"Last-Translator: Divya Pandya <dia@odoo.com>, 2018\n"
 "Language-Team: Gujarati (https://www.transifex.com/odoo/teams/41243/gu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -64,14 +70,14 @@ msgstr ""
 #: model:ir.ui.view,arch_db:stock_barcode.view_barcode_lot_form
 #, python-format
 msgid "Cancel"
-msgstr ""
+msgstr "રદ કરો"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/xml/stock_barcode.xml:11
 #, python-format
 msgid "Close"
-msgstr ""
+msgstr "બંધ કરો"
 
 #. module: stock_barcode
 #: model:ir.ui.view,arch_db:stock_barcode.res_config_settings_view_form
@@ -83,13 +89,13 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:115
 #, python-format
 msgid "Confirm"
-msgstr ""
+msgstr "ખાતરી"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot__create_uid
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot_line__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "બનાવનાર"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot__create_date
@@ -113,7 +119,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot__display_name
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot_line__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "પ્રદર્શન નામ"
 
 #. module: stock_barcode
 #. openerp-web
@@ -136,7 +142,7 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/xml/stock_barcode.xml:22
 #, python-format
 msgid "Download"
-msgstr ""
+msgstr "ડાઉનલોડ"
 
 #. module: stock_barcode
 #. openerp-web
@@ -144,13 +150,13 @@ msgstr ""
 #: model:ir.ui.view,arch_db:stock_barcode.stock_inventory_barcode2
 #, python-format
 msgid "From"
-msgstr ""
+msgstr "તરફથી"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot__id
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot_line__id
 msgid "ID"
-msgstr ""
+msgstr "ઓળખ"
 
 #. module: stock_barcode
 #: model:ir.ui.view,arch_db:stock_barcode.stock_picking_type_kanban
@@ -253,7 +259,7 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:44
 #, python-format
 msgid "Next"
-msgstr ""
+msgstr "આગલું"
 
 #. module: stock_barcode
 #: code:addons/stock_barcode/controllers/main.py:94
@@ -358,7 +364,7 @@ msgstr ""
 #: model:ir.model,name:stock_barcode.model_product_product
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot__product_id
 msgid "Product"
-msgstr ""
+msgstr "ઉત્પાદન"
 
 #. module: stock_barcode
 #: model:ir.actions.act_window,name:stock_barcode.product_action_barcodes
@@ -386,7 +392,7 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
 msgid "Quantity"
-msgstr ""
+msgstr "જથ્થો"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot_line__qty_done
@@ -599,26 +605,16 @@ msgstr ""
 #: model:ir.ui.view,arch_db:stock_barcode.stock_inventory_barcode2
 #, python-format
 msgid "To"
-msgstr ""
+msgstr "પ્રતિ"
 
 #. module: stock_barcode
 #: model:ir.ui.view,arch_db:stock_barcode.stock_picking_type_kanban
-msgid "To Do"
-msgstr ""
-
-#. module: stock_barcode
-#: model:ir.ui.view,arch_db:stock_barcode.stock_picking_type_kanban
-msgid "To Receive"
+msgid "To Process"
 msgstr ""
 
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_picking
 msgid "Transfer"
-msgstr ""
-
-#. module: stock_barcode
-#: model:ir.ui.view,arch_db:stock_barcode.stock_picking_type_kanban
-msgid "Transfers"
 msgstr ""
 
 #. module: stock_barcode
@@ -650,7 +646,7 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/js/client_action/picking_client_action.js:279
 #, python-format
 msgid "Warning"
-msgstr ""
+msgstr "ચેતવણી"
 
 #. module: stock_barcode
 #. openerp-web

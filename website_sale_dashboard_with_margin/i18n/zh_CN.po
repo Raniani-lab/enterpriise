@@ -2,12 +2,15 @@
 # This file contains the translation of the following modules:
 # * website_sale_dashboard_with_margin
 # 
+# Translators:
+# Maie <m@maie.name>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.3+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-25 08:34+0000\n"
 "PO-Revision-Date: 2018-06-25 08:34+0000\n"
+"Last-Translator: Maie <m@maie.name>, 2018\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,4 +21,4 @@ msgstr ""
 #. module: website_sale_dashboard_with_margin
 #: model:ir.ui.view,arch_db:website_sale_dashboard_with_margin.dashboard_view_with_margin
 msgid "Average Margin"
-msgstr ""
+msgstr "平均利润率"

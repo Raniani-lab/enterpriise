@@ -13,11 +13,12 @@ def clean_access_rights(env):
     given as parameter"""
     grp_lot = env.ref('stock.group_production_lot')
     grp_multi_loc = env.ref('stock.group_stock_multi_locations')
+    grp_pack = env.ref('stock.group_tracking_lot')
     env.user.write({'groups_id': [(3, grp_lot.id)]})
     env.user.write({'groups_id': [(3, grp_multi_loc.id)]})
+    env.user.write({'groups_id': [(3, grp_pack.id)]})
 
 
-@tagged('post_install', '-at_install')
 class TestBarcodeClientAction(HttpCase):
     def setUp(self):
         super(TestBarcodeClientAction, self).setUp()
@@ -83,6 +84,9 @@ class TestBarcodeClientAction(HttpCase):
     def _get_client_action_url(self, picking_id):
         return '/web#model=stock.picking&picking_id=%s&action=stock_barcode_picking_client_action' % picking_id
 
+
+@tagged('post_install', '-at_install')
+class TestPickingBarcodeClientAction(TestBarcodeClientAction):
     def test_internal_picking_from_scratch_1(self):
         """ Open an empty internal picking
           - move 2 `self.product1` from shelf1 to shelf2
@@ -657,6 +661,309 @@ class TestBarcodeClientAction(HttpCase):
         self.assertEqual(lines[1].location_dest_id.name, 'Shelf 2')
         self.assertEqual(lines[2].location_dest_id.name, 'Shelf 1')
 
+    def test_pack_multiple_scan(self):
+        """ Simulate a picking where a package is scanned two times.
+        scan the receipt picking type barcode
+        scan two products
+        scan put in pack
+        scan validate
+        scan the delivery picking type
+        scan the pack
+        scan the pack again, check the warning
+        validate
+        check that the package is in customer location"""
+        clean_access_rights(self.env)
+        grp_pack = self.env.ref('stock.group_tracking_lot')
+        self.env.user.write({'groups_id': [(4, grp_pack.id, 0)]})
+
+        action_id = self.env.ref('stock_barcode.stock_barcode_action_main_menu')
+        url = "/web#action=" + str(action_id.id)
+
+        # set sequence packages to 1000 to find it easily in the tour
+        sequence = self.env['ir.sequence'].search([(
+            'code', '=', 'stock.quant.package',
+        )], limit=1)
+        sequence.write({'number_next_actual': 1000})
+
+        self.picking_type_out.show_entire_packs = True
+
+        self.phantom_js(
+            url,
+            "odoo.__DEBUG__.services['web_tour.tour'].run('test_pack_multiple_scan')",
+            "odoo.__DEBUG__.services['web_tour.tour'].tours.test_pack_multiple_scan.ready",
+            login='admin',
+            timeout=180,
+        )
+
+        # Check the new package is well delivered
+        package = self.env['stock.quant.package'].search([
+            ('name', '=', 'PACK0001000')
+        ])
+        self.assertEqual(package.location_id, self.customer_location)
+
+    def test_pack_multiple_location(self):
+        """ Simulate a picking where a package is scanned two times.
+        The client action should trigger a warning
+        Make a reception a two products
+        put in pack
+        make a delivery of this pack"""
+        clean_access_rights(self.env)
+        grp_pack = self.env.ref('stock.group_tracking_lot')
+        grp_multi_loc = self.env.ref('stock.group_stock_multi_locations')
+        self.env.user.write({'groups_id': [(4, grp_pack.id, 0)]})
+        self.env.user.write({'groups_id': [(4, grp_multi_loc.id, 0)]})
+        self.picking_type_internal.active = True
+
+        action_id = self.env.ref('stock_barcode.stock_barcode_action_main_menu')
+        url = "/web#action=" + str(action_id.id)
+
+        # Create a pack and 2 quants in this pack
+        pack1 = self.env['stock.quant.package'].create({
+            'name': 'PACK0000666',
+        })
+
+        self.env['stock.quant']._update_available_quantity(
+            product_id=self.product1,
+            location_id=self.shelf1,
+            quantity=5,
+            package_id=pack1,
+        )
+        self.env['stock.quant']._update_available_quantity(
+            product_id=self.product2,
+            location_id=self.shelf1,
+            quantity=5,
+            package_id=pack1,
+        )
+
+        self.picking_type_internal.show_entire_packs = True
+        self.phantom_js(
+            url,
+            "odoo.__DEBUG__.services['web_tour.tour'].run('test_pack_multiple_location')",
+            "odoo.__DEBUG__.services['web_tour.tour'].tours.test_pack_multiple_location.ready",
+            login='admin',
+            timeout=180,
+        )
+
+        # Check the new package is well transfered
+        self.assertEqual(pack1.location_id, self.shelf2)
+
+    def test_put_in_pack_from_multiple_pages(self):
+        """ In an internal picking where prod1 and prod2 are reserved in shelf1 and shelf2, processing
+        all these products and then hitting put in pack should move them all in the new pack.
+        """
+        clean_access_rights(self.env)
+        self.env['stock.picking.type'].search([('active', '=', False)]).write({'active': True})
+        grp_pack = self.env.ref('stock.group_tracking_lot')
+        grp_multi_loc = self.env.ref('stock.group_stock_multi_locations')
+        self.env.user.write({'groups_id': [(4, grp_pack.id, 0)]})
+        self.env.user.write({'groups_id': [(4, grp_multi_loc.id, 0)]})
+
+        self.env['stock.quant']._update_available_quantity(self.product1, self.shelf1, 1)
+        self.env['stock.quant']._update_available_quantity(self.product2, self.shelf1, 1)
+        self.env['stock.quant']._update_available_quantity(self.product1, self.shelf2, 1)
+        self.env['stock.quant']._update_available_quantity(self.product2, self.shelf2, 1)
+
+        self.env['stock.picking.type'].search([('active', '=', False)]).write({'active': True})
+
+        internal_picking = self.env['stock.picking'].create({
+            'location_id': self.stock_location.id,
+            'location_dest_id': self.stock_location.id,
+            'picking_type_id': self.picking_type_internal.id,
+        })
+        move1 = self.env['stock.move'].create({
+            'name': 'test_put_in_pack_from_multiple_pages',
+            'location_id': self.stock_location.id,
+            'location_dest_id': self.stock_location.id,
+            'product_id': self.product1.id,
+            'product_uom': self.uom_unit.id,
+            'product_uom_qty': 2,
+            'picking_id': internal_picking.id,
+        })
+        move2 = self.env['stock.move'].create({
+            'name': 'test_put_in_pack_from_multiple_pages',
+            'location_id': self.stock_location.id,
+            'location_dest_id': self.stock_location.id,
+            'product_id': self.product2.id,
+            'product_uom': self.uom_unit.id,
+            'product_uom_qty': 2,
+            'picking_id': internal_picking.id,
+        })
+
+        url = self._get_client_action_url(internal_picking.id)
+        internal_picking.action_confirm()
+        internal_picking.action_assign()
+
+        self.phantom_js(
+            url,
+            "odoo.__DEBUG__.services['web_tour.tour'].run('test_put_in_pack_from_multiple_pages')",
+            "odoo.__DEBUG__.services['web_tour.tour'].tours.test_put_in_pack_from_multiple_pages.ready",
+            login='admin',
+            timeout=180,
+        )
+
+        pack = self.env['stock.quant.package'].search([])[-1]
+        self.assertEqual(len(pack.quant_ids), 2)
+        self.assertEqual(sum(pack.quant_ids.mapped('quantity')), 4)
+
+    def test_reload_flow(self):
+        clean_access_rights(self.env)
+        grp_multi_loc = self.env.ref('stock.group_stock_multi_locations')
+        self.env.user.write({'groups_id': [(4, grp_multi_loc.id, 0)]})
+
+        action_id = self.env.ref('stock_barcode.stock_barcode_action_main_menu')
+        url = "/web#action=" + str(action_id.id)
+
+        self.phantom_js(
+            url,
+            "odoo.__DEBUG__.services['web_tour.tour'].run('test_reload_flow')",
+            "odoo.__DEBUG__.services['web_tour.tour'].tours.test_reload_flow.ready",
+            login='admin',
+            timeout=180,
+        )
+
+        move_line1 = self.env['stock.move.line'].search_count([
+            ('product_id', '=', self.product1.id),
+            ('location_dest_id', '=', self.shelf1.id),
+            ('location_id', '=', self.supplier_location.id),
+            ('qty_done', '=', 2),
+        ])
+        move_line2 = self.env['stock.move.line'].search_count([
+            ('product_id', '=', self.product2.id),
+            ('location_dest_id', '=', self.shelf1.id),
+            ('location_id', '=', self.supplier_location.id),
+            ('qty_done', '=', 1),
+        ])
+        self.assertEqual(move_line1, 1)
+        self.assertEqual(move_line2, 1)
+
+    def test_duplicate_serial_number(self):
+        """ Simulate a receipt and a delivery with a product tracked by serial
+        number. It will try to break the ClientAction by using twice the same
+        serial number.
+        """
+        clean_access_rights(self.env)
+        grp_lot = self.env.ref('stock.group_production_lot')
+        grp_multi_loc = self.env.ref('stock.group_stock_multi_locations')
+        self.env.user.write({'groups_id': [(4, grp_multi_loc.id, 0)]})
+        self.env.user.write({'groups_id': [(4, grp_lot.id, 0)]})
+
+        action_id = self.env.ref('stock_barcode.stock_barcode_action_main_menu')
+        url = "/web#action=" + str(action_id.id)
+
+        self.phantom_js(
+            url,
+            "odoo.__DEBUG__.services['web_tour.tour'].run('test_receipt_duplicate_serial_number')",
+            "odoo.__DEBUG__.services['web_tour.tour'].tours.test_receipt_duplicate_serial_number.ready",
+            login='admin',
+            timeout=180,
+        )
+
+        self.phantom_js(
+            url,
+            "odoo.__DEBUG__.services['web_tour.tour'].run('test_delivery_duplicate_serial_number')",
+            "odoo.__DEBUG__.services['web_tour.tour'].tours.test_delivery_duplicate_serial_number.ready",
+            login='admin',
+            timeout=180,
+        )
+
+    def test_put_in_pack_from_different_location(self):
+        clean_access_rights(self.env)
+        grp_multi_loc = self.env.ref('stock.group_stock_multi_locations')
+        self.env.user.write({'groups_id': [(4, grp_multi_loc.id, 0)]})
+        grp_pack = self.env.ref('stock.group_tracking_lot')
+        self.env.user.write({'groups_id': [(4, grp_pack.id, 0)]})
+        self.picking_type_internal.active = True
+        self.env['stock.quant']._update_available_quantity(self.product1, self.shelf1, 1)
+        self.env['stock.quant']._update_available_quantity(self.product2, self.shelf3, 1)
+
+        internal_picking = self.env['stock.picking'].create({
+            'location_id': self.stock_location.id,
+            'location_dest_id': self.stock_location.id,
+            'picking_type_id': self.picking_type_internal.id,
+        })
+        move1 = self.env['stock.move'].create({
+            'name': 'test_put_in_pack_from_different_location',
+            'location_id': self.shelf1.id,
+            'location_dest_id': self.shelf2.id,
+            'product_id': self.product1.id,
+            'product_uom': self.uom_unit.id,
+            'product_uom_qty': 1,
+            'picking_id': internal_picking.id,
+        })
+        move2 = self.env['stock.move'].create({
+            'name': 'test_put_in_pack_from_different_location2',
+            'location_id': self.shelf3.id,
+            'location_dest_id': self.shelf2.id,
+            'product_id': self.product2.id,
+            'product_uom': self.uom_unit.id,
+            'product_uom_qty': 1,
+            'picking_id': internal_picking.id,
+        })
+
+        url = self._get_client_action_url(internal_picking.id)
+        internal_picking.action_confirm()
+        internal_picking.action_assign()
+
+        self.phantom_js(
+            url,
+            "odoo.__DEBUG__.services['web_tour.tour'].run('test_put_in_pack_from_different_location')",
+            "odoo.__DEBUG__.services['web_tour.tour'].tours.test_put_in_pack_from_different_location.ready",
+            login='admin',
+            timeout=180,
+        )
+        pack = self.env['stock.quant.package'].search([])[-1]
+        self.assertEqual(len(pack.quant_ids), 2)
+        self.assertEqual(pack.location_id, self.shelf2)
+
+    def test_put_in_pack_before_dest(self):
+        clean_access_rights(self.env)
+        grp_multi_loc = self.env.ref('stock.group_stock_multi_locations')
+        self.env.user.write({'groups_id': [(4, grp_multi_loc.id, 0)]})
+        grp_pack = self.env.ref('stock.group_tracking_lot')
+        self.env.user.write({'groups_id': [(4, grp_pack.id, 0)]})
+        self.picking_type_internal.active = True
+
+        self.env['stock.quant']._update_available_quantity(self.product1, self.shelf1, 1)
+        self.env['stock.quant']._update_available_quantity(self.product2, self.shelf3, 1)
+
+        internal_picking = self.env['stock.picking'].create({
+            'location_id': self.stock_location.id,
+            'location_dest_id': self.stock_location.id,
+            'picking_type_id': self.picking_type_internal.id,
+        })
+        move1 = self.env['stock.move'].create({
+            'name': 'test_put_in_pack_before_dest',
+            'location_id': self.shelf1.id,
+            'location_dest_id': self.shelf2.id,
+            'product_id': self.product1.id,
+            'product_uom': self.uom_unit.id,
+            'product_uom_qty': 1,
+            'picking_id': internal_picking.id,
+        })
+        move2 = self.env['stock.move'].create({
+            'name': 'test_put_in_pack_before_dest',
+            'location_id': self.shelf3.id,
+            'location_dest_id': self.shelf4.id,
+            'product_id': self.product2.id,
+            'product_uom': self.uom_unit.id,
+            'product_uom_qty': 1,
+            'picking_id': internal_picking.id,
+        })
+
+        url = self._get_client_action_url(internal_picking.id)
+        internal_picking.action_confirm()
+        internal_picking.action_assign()
+
+        self.phantom_js(
+            url,
+            "odoo.__DEBUG__.services['web_tour.tour'].run('test_put_in_pack_before_dest')",
+            "odoo.__DEBUG__.services['web_tour.tour'].tours.test_put_in_pack_before_dest.ready",
+            login='admin',
+            timeout=180,
+        )
+
+@tagged('post_install', '-at_install')
+class TestInventoryAdjustmentBarcodeClientAction(TestBarcodeClientAction):
     def test_inventory_adjustment(self):
         """ Simulate the following actions:
         - Open the inventory from the barcode app.
@@ -761,3 +1068,34 @@ class TestBarcodeClientAction(HttpCase):
         self.assertEqual(lines_with_lot.prod_lot_id.name, 'lot1')
         self.assertEqual(lines_with_lot.product_qty, 3)
         self.assertEqual(set(lines_with_sn.mapped('prod_lot_id.name')), set(['serial1', 'serial2', 'serial3']))
+
+    def test_inventory_nomenclature(self):
+        """ Simulate scanning a product and its weight
+        thanks to the barcode nomenclature """
+        clean_access_rights(self.env)
+        self.env.user.company_id.nomenclature_id = self.env.ref('barcodes.default_barcode_nomenclature')
+
+        product_weight = self.env['product.product'].create({
+            'name': 'product_weight',
+            'type': 'product',
+            'categ_id': self.env.ref('product.product_category_all').id,
+            'barcode': '2145631000000',
+        })
+
+        action_id = self.env.ref('stock_barcode.stock_barcode_action_main_menu')
+        url = "/web#action=" + str(action_id.id)
+
+        self.phantom_js(
+            url,
+            "odoo.__DEBUG__.services['web_tour.tour'].run('test_inventory_nomenclature')",
+            "odoo.__DEBUG__.services['web_tour.tour'].tours.test_inventory_nomenclature.ready",
+            login='admin',
+            timeout=180,
+        )
+        quantity = self.env['stock.move.line'].search([
+            ('product_id', '=', product_weight.id),
+            ('state', '=', 'done'),
+            ('location_id', '=', self.env.ref('stock.location_inventory').id),
+        ])
+
+        self.assertEqual(quantity.qty_done, 12.345)

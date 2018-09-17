@@ -36,7 +36,7 @@
                         </t>
                         <form class="form-inline ml-auto" role="search" t-attf-action="#" method="get">
                             <t t-call="website.website_search_box"/>
-                            <span class="dropdown" groups="helpdesk.group_helpdesk_manager">
+                            <span class="dropdown ml-2" groups="helpdesk.group_helpdesk_manager">
                                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuSupport" data-toggle="dropdown" aria-label="Dropdown menu" title="Dropdown menu">
                                     <i class="fa fa-cog"/>
                                 </button>
@@ -52,7 +52,7 @@
                 <div class="row mb16">
                     <div class="oe_structure"/>
                     <div class="col-md-9">
-                        <h2 class="page-header mt0 d-none" id="team-page"/>
+                        <h2 class="o_page_header mt0 d-none" id="team-page"/>
                     </div>
                     <div class="col-md-3" id="right-column">
                         <div id="website_published_button" groups="helpdesk.group_helpdesk_manager">
@@ -66,14 +66,14 @@
                         <t t-if="team.use_website_helpdesk_form">
                             <div class="btn-group btn-block mb16" style="margin-top: 2em">
                                 <a id="submit-ticket" t-attf-href="/helpdesk/#{team.id}/submit">
-                                 <button t-attf-class="btn btn-primary btn-lg #{'col-md-10' if multi_type else 'col-md-12'}">Submit a Ticket</button>
+                                 <button t-attf-class="btn btn-primary #{'col-md-10' if multi_type else 'col-md-12'}">Submit a Ticket</button>
                                 </a>
                             </div>
                         </t>
                         <t t-if="team.use_website_helpdesk_form">
                             <div class="btn-group btn-block mb16">
                                 <a id="submit-ticket" t-attf-href="/my/tickets">
-                                 <button t-attf-class="btn btn-primary btn-lg #{'col-md-10' if multi_type else 'col-md-12'}">View my Tickets</button>
+                                 <button t-attf-class="btn btn-primary #{'col-md-10' if multi_type else 'col-md-12'}">View my Tickets</button>
                                 </a>
                             </div>
                         </t>

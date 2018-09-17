@@ -3,16 +3,17 @@
 # * website_delivery_ups
 # 
 # Translators:
-# Murat Kaplan <muratk@projetgrup.com>, 2017
-# Ahmet Altinisik <aaltinisik@altinkaya.com.tr>, 2017
-# Martin Trigaux, 2017
+# Martin Trigaux, 2018
+# Murat Kaplan <muratk@projetgrup.com>, 2018
+# Ahmet Altinisik <aaltinisik@altinkaya.com.tr>, 2018
+# Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2018
 # Umur Akın <umura@projetgrup.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.2+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-22 14:21+0000\n"
-"PO-Revision-Date: 2018-03-22 14:21+0000\n"
+"POT-Creation-Date: 2018-08-24 11:29+0000\n"
+"PO-Revision-Date: 2018-08-24 11:29+0000\n"
 "Last-Translator: Umur Akın <umura@projetgrup.com>, 2018\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
@@ -22,7 +23,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #. module: website_delivery_ups
-#: model:ir.ui.view,arch_db:website_delivery_ups.payment_delivery_inherit_website_sale_delivery
+#: model:ir.ui.view,arch_db:website_delivery_ups.payment_delivery_methods_inherit_website_sale_delivery
 msgid "(Bill My Account)"
 msgstr ""
 
@@ -77,6 +78,11 @@ msgid "Cancel"
 msgstr "İptal"
 
 #. module: website_delivery_ups
+#: model:ir.ui.view,arch_db:website_delivery_ups.ups_bill_my_account_dialog
+msgid "Close"
+msgstr "Kapat"
+
+#. module: website_delivery_ups
 #: model:payment.acquirer,post_msg:website_delivery_ups.payment_acquirer_ups_cod
 msgid "Communication"
 msgstr "İletişim"
@@ -84,7 +90,7 @@ msgstr "İletişim"
 #. module: website_delivery_ups
 #: model:ir.ui.view,arch_db:website_delivery_ups.ups_bill_my_account_dialog
 msgid "Enter your Carrier Account #"
-msgstr "Kariyer Hesaplarınızı Girin #"
+msgstr "Nakliyeci Hesaplarınızı Girin #"
 
 #. module: website_delivery_ups
 #: model:payment.acquirer,post_msg:website_delivery_ups.payment_acquirer_ups_cod
@@ -117,6 +123,6 @@ msgid "UPS Delivery Methods"
 msgstr "UPS Teslimat Yöntemleri"
 
 #. module: website_delivery_ups
-#: model:ir.ui.view,arch_db:website_delivery_ups.payment_delivery_inherit_website_sale_delivery
+#: model:ir.ui.view,arch_db:website_delivery_ups.payment_delivery_methods_inherit_website_sale_delivery
 msgid "Using Account"
 msgstr "Hesap Kullanımı"

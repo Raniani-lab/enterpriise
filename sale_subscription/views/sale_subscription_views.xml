@@ -135,7 +135,12 @@
         <field name="res_model">sale.subscription</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form,pivot,graph,kanban,cohort</field>
-        <field name="context">{'search_default_user_id':uid, 'search_default_pending':1, 'search_default_renew':1}</field>
+        <field name="context">{
+            'group_by': 'stage_id',
+            'search_default_user_id':uid,
+            'search_default_pending':1,
+            'search_default_renew':1
+        }</field>
         <field name="domain">[]</field>
         <field name="search_view_id" eval='False'/>
         <field name="help" type="html">
@@ -181,7 +186,7 @@
         <field name="arch" type="xml">
             <form string="Subscription" class="o_subscription_form">
                 <header>
-                    <button string="Create A Renewal Quotation" help="Create a sale order that will overwrite this subscription when confirmed (renewal quotation)" name="prepare_renewal_order" type="object" attrs="{'invisible': [('recurring_rule_boundary','=','unlimited')]}"/>
+                    <button string="Create A Renewal Quotation" help="Create a sale order that will overwrite this subscription when confirmed (renewal quotation)" name="prepare_renewal_order" type="object"/>
                     <button string="Upsell" help="Add options to the subscription directly or through a quotation" name="%(sale_subscription.wizard_action)d" type="action"/>
                     <field name="stage_id" widget="statusbar" options="{'clickable': '1'}"/>
                 </header>
@@ -431,14 +436,14 @@
                         <group  name="invoicing" string="Invoicing">
                             <label for="recurring_interval" string="Recurrence"/>
                             <div class="o_row">
-                                <field name="recurring_interval"/>
-                                <field name="recurring_rule_type" class="field_rule_type"/>
+                                <field name="recurring_interval" required="1"/>
+                                <field name="recurring_rule_type" class="field_rule_type" required="1"/>
                             </div>
                             <field name="recurring_rule_boundary" widget="radio" options="{'horizontal':true}"/>
                             <label string="End After" attrs="{'invisible': [('recurring_rule_boundary','=','unlimited')]}" for="recurring_rule_count"/>
                             <div class="o_row" attrs="{'invisible': [('recurring_rule_boundary','=','unlimited')]}">
                                 <field name="recurring_rule_count"/>
-                                <span class="ml8"><strong>repeats</strong></span>
+                                <field name="recurring_rule_type_readonly"/>
                             </div>
                             <field name="payment_mode"/>
                             <field name="invoice_mail_template_id"
@@ -758,7 +763,7 @@
     <menuitem action="product_action_subscription" id="menu_sale_subscription_product" sequence="3" parent="menu_sale_subscription"/>
 
     <menuitem id="menu_sale_subscription_config" name="Configuration" sequence="10" parent="menu_sale_subscription_root"/>
-    <menuitem action="sale_subscription_close_reason_action" id="menu_sale_subscription_lost_reason_action" parent="menu_sale_subscription_config" sequence="10"/>
+    <menuitem action="sale_subscription_close_reason_action" id="menu_sale_subscription_close_reason_action" parent="menu_sale_subscription_config" sequence="10" groups="sale_subscription.group_sale_subscription_manager"/>
     <menuitem action="sale_subscription_template_action" id="menu_template_of_subscription" parent="menu_sale_subscription_config" sequence="4" groups="sale_subscription.group_sale_subscription_manager"/>
     <menuitem id="menu_sale_subscription_alert" name="Alerts" parent="menu_sale_subscription_config" action="sale_subscription_alert_action" sequence="8"/>
 </odoo>

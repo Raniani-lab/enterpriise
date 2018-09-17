@@ -2,12 +2,20 @@
 # This file contains the translation of the following modules:
 # * delivery_dhl
 # 
+# Translators:
+# Amer Hazaa <eng.amer.it@gmail.com>, 2018
+# Mustafa Rawi <mustafa@cubexco.com>, 2018
+# Martin Trigaux, 2018
+# Mohammed Ibrahim <m.ibrahim@mussder.com>, 2018
+# Osama Ahmaro <osamaahmaro@gmail.com>, 2018
+# Shaima Safar <shaima.safar@open-inside.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-08-24 11:28+0000\n"
 "PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"Last-Translator: Shaima Safar <shaima.safar@open-inside.com>, 2018\n"
 "Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -123,12 +131,12 @@ msgstr ""
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_region_code:0
 msgid "America"
-msgstr ""
+msgstr "أمريكا"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_region_code:0
 msgid "Asia Pacific"
-msgstr ""
+msgstr "المحيط الآسيوي"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
@@ -138,7 +146,7 @@ msgstr ""
 #. module: delivery_dhl
 #: selection:delivery.carrier,delivery_type:0
 msgid "Based on Rules"
-msgstr ""
+msgstr "بناء على تعليمات"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
@@ -149,17 +157,17 @@ msgstr ""
 #: model:ir.model,name:delivery_dhl.model_delivery_carrier
 #: model:ir.model.fields,field_description:delivery_dhl.field_product_packaging__package_carrier_type
 msgid "Carrier"
-msgstr ""
+msgstr "شركة الشحن"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_package_dimension_unit:0
 msgid "Centimeters"
-msgstr ""
+msgstr "سنتيمترات"
 
 #. module: delivery_dhl
 #: model:ir.model.fields,help:delivery_dhl.field_delivery_carrier__dhl_dutiable
 msgid "Check this if your package is dutiable."
-msgstr ""
+msgstr "حدد هذه اذا كان الطرد الخاص بك خاضع للرسوم الجمركية"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
@@ -175,12 +183,12 @@ msgstr ""
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_account_number
 msgid "DHL Account Number"
-msgstr ""
+msgstr "رقم حساب DHL"
 
 #. module: delivery_dhl
 #: model:ir.ui.view,arch_db:delivery_dhl.view_delivery_carrier_form_with_provider_dhl
 msgid "DHL Configuration"
-msgstr ""
+msgstr "اعدادات DHL"
 
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_default_packaging_id
@@ -196,7 +204,7 @@ msgstr ""
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_password
 msgid "DHL Password"
-msgstr ""
+msgstr "كلمة مرور DHL"
 
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_product_code
@@ -244,7 +252,7 @@ msgstr ""
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_dutiable
 msgid "Dutiable Material"
-msgstr ""
+msgstr "مواد خاضعة للرسوم الجمركية"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
@@ -265,7 +273,7 @@ msgstr ""
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_region_code:0
 msgid "Europe"
-msgstr ""
+msgstr "أوروبا"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
@@ -276,12 +284,12 @@ msgstr ""
 #: selection:delivery.carrier,delivery_type:0
 #: selection:product.packaging,package_carrier_type:0
 msgid "FedEx"
-msgstr ""
+msgstr "فيدكس"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,delivery_type:0
 msgid "Fixed Price"
-msgstr ""
+msgstr "الاسعار الثابته"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
@@ -301,7 +309,7 @@ msgstr ""
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_package_dimension_unit:0
 msgid "Inches"
-msgstr ""
+msgstr "إنشات"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
@@ -316,7 +324,7 @@ msgstr ""
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_package_weight_unit:0
 msgid "Kilograms"
-msgstr ""
+msgstr "كيلوغرامات"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
@@ -373,38 +381,38 @@ msgstr ""
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_label_image_format:0
 msgid "PDF"
-msgstr ""
+msgstr "PDF"
 
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_package_dimension_unit
 msgid "Package Dimension Unit"
-msgstr ""
+msgstr "وحدة ابعاد الطرد"
 
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_package_weight_unit
 msgid "Package Weight Unit"
-msgstr ""
+msgstr "وحدة وزن الطرد"
 
 #. module: delivery_dhl
 #: model:ir.model,name:delivery_dhl.model_product_packaging
 msgid "Packaging"
-msgstr ""
+msgstr "التعبئة"
 
 #. module: delivery_dhl
 #: code:addons/delivery_dhl/models/dhl_request.py:398
 #, python-format
 msgid "Please provide at least one item to ship."
-msgstr ""
+msgstr "يرجى تقديم عنصر واحد على الأقل لشحن."
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_package_weight_unit:0
 msgid "Pounds"
-msgstr ""
+msgstr "رطل"
 
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__delivery_type
 msgid "Provider"
-msgstr ""
+msgstr "المزود"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
@@ -419,7 +427,7 @@ msgstr ""
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_region_code
 msgid "Region"
-msgstr ""
+msgstr "منطقة"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
@@ -459,7 +467,7 @@ msgstr ""
 msgid ""
 "The estimated price cannot be computed because the weight of your product is"
 " missing."
-msgstr ""
+msgstr "لا يمكن أن تحسب السعر التقديري للمنتج الخاص بك لأنه الوزن مفقود"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
@@ -470,12 +478,12 @@ msgstr ""
 #: selection:delivery.carrier,delivery_type:0
 #: selection:product.packaging,package_carrier_type:0
 msgid "UPS"
-msgstr ""
+msgstr "UPS"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,delivery_type:0
 msgid "USPS"
-msgstr ""
+msgstr "USPS"
 
 #. module: delivery_dhl
 #: model:product.product,uom_name:delivery_dhl.product_product_delivery_dhl_intl
@@ -483,7 +491,7 @@ msgstr ""
 #: model:product.template,uom_name:delivery_dhl.product_product_delivery_dhl_intl_product_template
 #: model:product.template,uom_name:delivery_dhl.product_product_delivery_dhl_usa_product_template
 msgid "Unit(s)"
-msgstr ""
+msgstr "وحدة(ات)"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
@@ -509,7 +517,7 @@ msgstr ""
 #: code:addons/delivery_dhl/models/delivery_dhl.py:146
 #, python-format
 msgid "You can't cancel DHL shipping without pickup date."
-msgstr ""
+msgstr "لا يمكنك الغاء شحن DHL بدون تاريخ استلام."
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
@@ -525,7 +533,7 @@ msgstr ""
 #: selection:delivery.carrier,delivery_type:0
 #: selection:product.packaging,package_carrier_type:0
 msgid "bpost"
-msgstr ""
+msgstr "bpost"
 
 #. module: delivery_dhl
 #: model:product.product,weight_uom_name:delivery_dhl.product_product_delivery_dhl_intl
@@ -533,4 +541,4 @@ msgstr ""
 #: model:product.template,weight_uom_name:delivery_dhl.product_product_delivery_dhl_intl_product_template
 #: model:product.template,weight_uom_name:delivery_dhl.product_product_delivery_dhl_usa_product_template
 msgid "kg"
-msgstr ""
+msgstr "كجم"

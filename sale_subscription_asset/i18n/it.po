@@ -3,15 +3,17 @@
 # * sale_subscription_asset
 # 
 # Translators:
-# Martin Trigaux <mat@odoo.com>, 2017
-# Paolo Valier <paolo.valier@hotmail.it>, 2017
+# Martin Trigaux, 2018
+# Simone Bernini <simone@aperturelabs.it>, 2018
+# Luca Tralli, 2018
+# Paolo Valier, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 10.saas~18+e\n"
+"Project-Id-Version: Odoo Server saas~11.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-02 11:50+0000\n"
-"PO-Revision-Date: 2017-10-02 11:50+0000\n"
-"Last-Translator: Paolo Valier <paolo.valier@hotmail.it>, 2017\n"
+"POT-Creation-Date: 2018-08-02 11:20+0000\n"
+"PO-Revision-Date: 2018-08-02 11:20+0000\n"
+"Last-Translator: Paolo Valier, 2018\n"
 "Language-Team: Italian (https://www.transifex.com/odoo/teams/41243/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,8 +22,8 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: sale_subscription_asset
-#: model:ir.model.fields,field_description:sale_subscription_asset.field_sale_subscription_asset_category_id
-#: model:ir.model.fields,field_description:sale_subscription_asset.field_sale_subscription_template_template_asset_category_id
+#: model:ir.model.fields,field_description:sale_subscription_asset.field_sale_subscription__asset_category_id
+#: model:ir.model.fields,field_description:sale_subscription_asset.field_sale_subscription_template__template_asset_category_id
 msgid "Deferred Revenue Category"
 msgstr "Categoria di Ricavi Differiti"
 
@@ -29,7 +31,7 @@ msgstr "Categoria di Ricavi Differiti"
 #: model:ir.ui.view,arch_db:sale_subscription_asset.sale_subscription_template_view_form_inherit_sale_subscription_asset
 #: model:ir.ui.view,arch_db:sale_subscription_asset.sale_subscription_view_form_inherit_sale_subscription_asset
 msgid "Deferred Revenue Type"
-msgstr ""
+msgstr "Tipo Ricavi Differiti"
 
 #. module: sale_subscription_asset
 #: model:ir.model,name:sale_subscription_asset.model_sale_order
@@ -42,29 +44,29 @@ msgid "Revenue Types"
 msgstr ""
 
 #. module: sale_subscription_asset
+#: model:ir.model,name:sale_subscription_asset.model_sale_order_line
+msgid "Sales Order Line"
+msgstr "Riga Ordine di Vendita"
+
+#. module: sale_subscription_asset
 #: model:ir.model,name:sale_subscription_asset.model_sale_subscription
-msgid "Sale Subscription"
-msgstr ""
+msgid "Subscription"
+msgstr "Abbonamento"
 
 #. module: sale_subscription_asset
 #: model:ir.model,name:sale_subscription_asset.model_sale_subscription_template
-msgid "Sale Subscription Template"
-msgstr ""
+msgid "Subscription Template"
+msgstr "Template di Abbonamento"
 
 #. module: sale_subscription_asset
-#: model:ir.model,name:sale_subscription_asset.model_sale_order_line
-msgid "Sales Order Line"
-msgstr "Linea ordine di vendita"
-
-#. module: sale_subscription_asset
-#: model:ir.model.fields,help:sale_subscription_asset.field_sale_subscription_asset_category_id
+#: model:ir.model.fields,help:sale_subscription_asset.field_sale_subscription__asset_category_id
 msgid ""
 "This asset category will be applied to the lines of the subscription's "
 "invoices."
 msgstr ""
 
 #. module: sale_subscription_asset
-#: model:ir.model.fields,help:sale_subscription_asset.field_sale_subscription_template_template_asset_category_id
+#: model:ir.model.fields,help:sale_subscription_asset.field_sale_subscription_template__template_asset_category_id
 msgid ""
 "This asset category will be set on the subscriptions that have this "
 "template."

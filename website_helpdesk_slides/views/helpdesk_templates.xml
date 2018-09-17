@@ -6,10 +6,10 @@
             <p class="question-block" t-foreach="slides" t-as="slide" >
                 <div class="media">
                     <a t-attf-href="/slides/slide/#{slug(slide)}">
-                        <img class="oe_slides_apart_small" t-attf-src="/web/image/slide.slide/#{slide.id}/image_thumb" alt="Slide image"/>
+                        <img class="mr-3 oe_slides_apart_small" t-attf-src="/web/image/slide.slide/#{slide.id}/image_thumb" alt="Slide image"/>
                     </a>
-                    <div class="media-body pt-1">
-                        <a t-attf-href="/slides/slide/#{slug(slide)}"><h5 t-esc="slide.name"/></a>
+                    <div class="media-body">
+                        <a t-attf-href="/slides/slide/#{slug(slide)}"><h5 class="mt-0" t-esc="slide.name"/></a>
                         <small class="text-muted">
                             <t t-esc="slide.total_views"/> Views . <timeago class="timeago" t-att-datetime="slide.create_date"></timeago>
                         </small>

@@ -3,9 +3,8 @@
 # * website_helpdesk_livechat
 # 
 # Translators:
-# Gökhan Erdoğdu <gokhan.erdogdu@mechsoft.com.tr>, 2017
-# Murat Kaplan <muratk@projetgrup.com>, 2017
-# Ramiz Deniz Öner <deniz@denizoner.com>, 2017
+# Murat Kaplan <muratk@projetgrup.com>, 2018
+# Gökhan Erdoğdu <gokhan.erdogdu@mechsoft.com.tr>, 2018
 # Umur Akın <umura@projetgrup.com>, 2018
 msgid ""
 msgstr ""
@@ -66,12 +65,12 @@ msgstr "Yeni bir destek talebi oluşturuldu: %s"
 #. module: website_helpdesk_livechat
 #: model:ir.model,name:website_helpdesk_livechat.model_mail_channel
 msgid "Discussion channel"
-msgstr "Tartışma kanalı"
+msgstr "Tartışma Kanalı"
 
 #. module: website_helpdesk_livechat
 #: model:ir.model,name:website_helpdesk_livechat.model_helpdesk_team
 msgid "Helpdesk Team"
-msgstr "Yardım Masası Ekibi"
+msgstr "Destek Ekibi"
 
 #. module: website_helpdesk_livechat
 #: model:ir.model.fields,field_description:website_helpdesk_livechat.field_helpdesk_team__is_canned_response
@@ -112,7 +111,8 @@ msgid ""
 "get selectable canned reponses."
 msgstr ""
 "Önceden tanımlanmış cevaplara kısa yollar ayarlayın. Bu hem mail kısmında "
-"hem de websitedeki canlı yardım kısmında çalışır."
+"hem de websitedeki canlı yardım kısmında çalışır. Seçilebilir korunmuş "
+"yanıtlar almak için ':' ve ardından kısayol etiketini yazmanız yeterlidir."
 
 #. module: website_helpdesk_livechat
 #: model:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat

@@ -20,6 +20,7 @@
 
     <record id="group_use_sla" model="res.groups">
         <field name="name">Show SLA Policies</field>
+        <field name="category_id" ref="base.module_category_hidden"/>
     </record>
 
     <record id="base.default_user" model="res.users">

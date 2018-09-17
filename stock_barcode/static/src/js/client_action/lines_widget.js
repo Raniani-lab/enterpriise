@@ -47,8 +47,8 @@ var LinesWidget = Widget.extend({
         var $line = this.$("[data-id='" + id_or_virtual_id + "']");
         this._highlightLine($line);
         var incrementClass = model === 'stock.picking' ? '.qty-done' : '.product_qty';
-        var qtyDone = parseInt($line.children().children(incrementClass).html(), 10);
-        $line.children().children(incrementClass).text(qtyDone + qty);
+        var qtyDone = parseInt($line.find(incrementClass).text(), 10);
+        $line.find(incrementClass).text(qtyDone + qty);
 
         this._handleControlButtons();
 
@@ -75,7 +75,7 @@ var LinesWidget = Widget.extend({
      *                 line's template, including the qty to add.
      */
     addProduct: function (lineDescription, model) {
-        var $body = this.$el.filter('.barcode_lines');
+        var $body = this.$el.filter('.o_barcode_lines');
         var $line = $(QWeb.render('stock_barcode_lines_template', {
             lines: [lineDescription],
             groups: this.groups,
@@ -83,6 +83,7 @@ var LinesWidget = Widget.extend({
         }));
         $body.prepend($line);
         $line.on('click', '.o_edit', this._onClickEditLine.bind(this));
+        $line.on('click', '.o_package_content', this._onClickTruckLine.bind(this));
         this._highlightLine($line);
 
         this._handleControlButtons();
@@ -108,6 +109,7 @@ var LinesWidget = Widget.extend({
      */
     highlightLocation: function (toggle) {
         this.$('.o_barcode_summary_location_src').toggleClass('o_strong', toggle);
+        this.$('.o_barcode_summary_location_dest').toggleClass('o_barcode_summary_location_highlight', toggle);
         this._toggleScanMessage('scan_products');
     },
 
@@ -134,7 +136,7 @@ var LinesWidget = Widget.extend({
      * Removes the highlight on the lines.
      */
     clearLineHighlight: function () {
-        var $body = this.$el.filter('.barcode_lines');
+        var $body = this.$el.filter('.o_barcode_lines');
         // Remove the highlight from the other line.
         $body.find('.o_highlight').removeClass('o_highlight');
     },
@@ -185,10 +187,6 @@ var LinesWidget = Widget.extend({
         return packageLines;
     },
 
-    reload: function () {
-        this.trigger_up('reload');
-    },
-
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------
@@ -205,7 +203,7 @@ var LinesWidget = Widget.extend({
      * @param {Number} pageIndex: the index of the current page
      * @param {Number} nbPages: the total number of pages
      */
-     _renderLines: function() {
+     _renderLines: function () {
          if (this.mode === 'done') {
              if (this.model === 'stock.picking') {
                  this._toggleScanMessage('picking_already_done');
@@ -219,7 +217,7 @@ var LinesWidget = Widget.extend({
          }
 
         // Render and append the page summary.
-        var $header = this.$el.filter('.barcode_lines_header');
+        var $header = this.$el.filter('.o_barcode_lines_header');
         var $pageSummary = $(QWeb.render('stock_barcode_summary_template', {
             locationName: this.page.location_name,
             locationDestName: this.page.location_dest_name,
@@ -231,7 +229,7 @@ var LinesWidget = Widget.extend({
         $header.append($pageSummary);
 
         // Render and append the lines, if any.
-        var $body = this.$el.filter('.barcode_lines');
+        var $body = this.$el.filter('.o_barcode_lines');
         if (this.page.lines.length) {
             var $lines = $(QWeb.render('stock_barcode_lines_template', {
                 lines: this.getProductLines(this.page.lines),
@@ -241,6 +239,7 @@ var LinesWidget = Widget.extend({
             }));
             $body.prepend($lines);
             $lines.on('click', '.o_edit', this._onClickEditLine.bind(this));
+            $lines.on('click', '.o_package_content', this._onClickTruckLine.bind(this));
         }
         // Toggle and/or enable the control buttons. At first, they're all displayed and enabled.
         var $next = this.$('.o_next_page');
@@ -272,7 +271,16 @@ var LinesWidget = Widget.extend({
         } else if (this.mode === 'no_multi_locations') {
             this._toggleScanMessage('scan_products');
         }
-    },
+
+         var $summary_src = this.$('.o_barcode_summary_location_src');
+         var $summary_dest = this.$('.o_barcode_summary_location_dest');
+
+         if (this.mode === 'receipt') {
+             $summary_dest.toggleClass('o_barcode_summary_location_highlight', true);
+         } else if (this.mode === 'delivery' || this.mode === 'internal') {
+             $summary_src.toggleClass('o_barcode_summary_location_highlight', true);
+         }
+     },
 
     /**
      * Highlight and enable the control buttons according to the reservation processed on the page.
@@ -306,6 +314,15 @@ var LinesWidget = Widget.extend({
         this.$('.o_scan_message_' + message).toggleClass('o_hidden', false);
     },
 
+    _isReservationProcessedLine: function ($line) {
+        var qties = $line.find('.o_barcode_scanner_qty').text();
+        qties = qties.split('/');
+        if (parseInt(qties[0], 10) < parseInt(qties[1], 10)) {
+            return false;
+        }
+        return true;
+    },
+
     /**
      * Helper checking if the reservaton is processed on the page or not.
      *
@@ -313,17 +330,16 @@ var LinesWidget = Widget.extend({
      * @returns {boolean} whether the reservation is processed on the page or not
      */
     _isReservationProcessed: function () {
-        var $lines = this.$('.line');
+        var self = this;
+        var $lines = this.$('.o_barcode_line');
         if (! $lines.length) {
             return false;
         } else {
             var reservationProcessed = true;
             $lines.each(function () {
                 var $line = $(this);
-                var qties = $line.find('p:eq(2)').text();
-                qties = qties.split('/');
-                if (parseInt(qties[0], 10) < parseInt(qties[1], 10)) {
-                    reservationProcessed = false;
+                reservationProcessed = self._isReservationProcessedLine($line);
+                if (!reservationProcessed) {
                     return;
                 }
             });
@@ -346,12 +362,11 @@ var LinesWidget = Widget.extend({
         }
         if (shouldHighlight) {
             $next.prop('disabled', false);
-            $next.toggleClass('o_button_barcode_standard', false);
-            $next.toggleClass('o_button_barcode_standard', false);
-            $next.toggleClass('o_button_barcode_highlight', true);
+            $next.toggleClass('btn-secondary', false);
+            $next.toggleClass('btn-primary', true);
         } else {
-            $next.toggleClass('o_button_barcode_standard', true);
-            $next.toggleClass('o_button_barcode_highlight', false);
+            $next.toggleClass('btn-secondary', true);
+            $next.toggleClass('btn-primary', false);
         }
         return shouldHighlight;
     },
@@ -372,11 +387,11 @@ var LinesWidget = Widget.extend({
         if (shouldHighlight) {
             // FIXME: is it my job?
             $validate.prop('disabled', false);
-            $validate.toggleClass('o_button_barcode_standard', false);
-            $validate.toggleClass('o_button_barcode_highlight', true);
+            $validate.toggleClass('btn-secondary', false);
+            $validate.toggleClass('btn-success', true);
         } else {
-            $validate.toggleClass('o_button_barcode_standard', true);
-            $validate.toggleClass('o_button_barcode_highlight', false);
+            $validate.toggleClass('btn-secondary', true);
+            $validate.toggleClass('btn-success', false);
         }
         return shouldHighlight;
     },
@@ -389,10 +404,26 @@ var LinesWidget = Widget.extend({
      * @param {Jquery} $line
      */
     _highlightLine: function ($line) {
-        var $body = this.$el.filter('.barcode_lines');
+        var $body = this.$el.filter('.o_barcode_lines');
         this.clearLineHighlight();
         // Highlight `$line`.
         $line.toggleClass('o_highlight', true);
+        $line.parents('.o_barcode_lines').toggleClass('o_js_has_highlight', true);
+
+        var isReservationProcessed;
+        if ($line.find('.o_barcode_scanner_qty').text().trim().split('/')[1].trim() === '0') {
+            isReservationProcessed = false;
+        } else {
+            isReservationProcessed = this._isReservationProcessedLine($line);
+        }
+        if (isReservationProcessed) {
+            $line.toggleClass('o_highlight_green', false);
+            $line.toggleClass('o_highlight_red', true);
+        } else {
+            $line.toggleClass('o_highlight_green', true);
+            $line.toggleClass('o_highlight_red', false);
+        }
+
         // Scroll to `$line`.
         $body.animate({
             scrollTop: $body.scrollTop() + $line.position().top - $body.height()/2 + $line.height()/2
@@ -426,16 +457,16 @@ var LinesWidget = Widget.extend({
         this.trigger_up('add_line');
     },
 
-     /**
-      * Handles the click on the `edit button` on a line.
-      *
-      * @private
-      * @param {jQuery.Event} ev
-      */
-     _onClickEditLine: function (ev) {
+    /**
+     * Handles the click on the `edit button` on a line.
+     *
+     * @private
+     * @param {jQuery.Event} ev
+     */
+    _onClickEditLine: function (ev) {
         ev.preventDefault();
         ev.stopPropagation();
-        var id = $(ev.target).parent().parent().data('id');
+        var id = $(ev.target).parents('.o_barcode_line').data('id');
         this.trigger_up('edit_line', {id: id});
     },
 
@@ -459,6 +490,18 @@ var LinesWidget = Widget.extend({
     _onClickPreviousPage: function (ev) {
         ev.stopPropagation();
         this.trigger_up('previous_page');
+    },
+
+    /**
+     * Handles the click on the `package content button`.
+     *
+     * @private
+     * @param {MouseEvent} ev
+     */
+    _onClickTruckLine: function (ev) {
+        ev.stopPropagation();
+        var id = $(ev.target).parents('.o_barcode_line').data('id');
+        this.trigger_up('open_package', {id: id});
     },
 
     /**

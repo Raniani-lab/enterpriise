@@ -524,18 +524,8 @@ class AccountFinancialReportLine(models.Model):
         #------------------
         #The cash flow statement has a dedicated query because because we want to make a complex selection of account.move.line,
         #but keep simple to configure the financial report lines.
-        #So we have the following query, aliasing the account.move.line table to consider only the journal entries where, at
-        #least, one line is touching a liquidity account. Counterparts are either shown directly if they're not reconciled (or
-        #not reconciliable), either replaced by the accounts of the entries they're reconciled with.
         if financial_report == self.env.ref('account_reports.account_financial_report_cashsummary0'):
-            bank_journals = self.env['account.journal'].search([('type', 'in', ('bank', 'cash'))])
-            bank_accounts = bank_journals.mapped('default_debit_account_id') + bank_journals.mapped('default_credit_account_id')
-
-            # Get moves having a line using a bank account.
-            self._cr.execute('SELECT DISTINCT(move_id) FROM account_move_line WHERE account_id IN %s', [tuple(bank_accounts.ids)])
-            bank_move_ids = tuple([r[0] for r in self.env.cr.fetchall()])
-
-            # Get available fields.
+            # Get all available fields from account_move_line, to build the 'select' part of the query
             replace_columns = {
                 'date': 'ref.date',
                 'debit_cash_basis': 'CASE WHEN \"account_move_line\".debit > 0 THEN ref.matched_percentage * \"account_move_line\".debit ELSE 0 END AS debit_cash_basis',
@@ -555,67 +545,125 @@ class AccountFinancialReportLine(models.Model):
             select_clause_1 = ', '.join(columns)
             select_clause_2 = ', '.join(columns_2)
 
+            # Get moves having a line using a bank account in one of the selected journals.
+            if self.env.context.get('journal_ids'):
+                bank_journals = self.env['account.journal'].browse(self.env.context.get('journal_ids'))
+            else:
+                bank_journals = self.env['account.journal'].search([('type', 'in', ('bank', 'cash'))])
+            bank_accounts = bank_journals.mapped('default_debit_account_id') + bank_journals.mapped('default_credit_account_id')
+
+            self._cr.execute('SELECT DISTINCT(move_id) FROM account_move_line WHERE account_id IN %s', [tuple(bank_accounts.ids)])
+            bank_move_ids = tuple([r[0] for r in self.env.cr.fetchall()])
+
+            # Avoid crash if there's no bank moves to consider
+            if not bank_move_ids:
+                return '''
+                WITH account_move_line AS (
+                    SELECT ''' + select_clause_1 + '''
+                    FROM account_move_line
+                    WHERE False)''', []
+
             # Fake domain to always get the join to the account_move_line__move_id table.
             fake_domain = [('move_id.id', '!=', None)]
             sub_tables, sub_where_clause, sub_where_params = self.env['account.move.line']._query_get(domain=fake_domain)
             tables, where_clause, where_params = self.env['account.move.line']._query_get(domain=fake_domain + safe_eval(self.domain))
 
+            # Get moves having a line using a bank account.
+            bank_journals = self.env['account.journal'].search([('type', 'in', ('bank', 'cash'))])
+            bank_accounts = bank_journals.mapped('default_debit_account_id') + bank_journals.mapped('default_credit_account_id')
+            q = '''SELECT DISTINCT(\"account_move_line\".move_id)
+                    FROM ''' + tables + '''
+                    WHERE account_id IN %s
+                    AND ''' + sub_where_clause
+            p = [tuple(bank_accounts.ids)] + sub_where_params
+            self._cr.execute(q, p)
+            bank_move_ids = tuple([r[0] for r in self.env.cr.fetchall()])
+
+            # Only consider accounts related to a bank/cash journal, not all liquidity accounts
+            if self.code in ('CASHEND', 'CASHSTART'):
+                return '''
+                WITH account_move_line AS (
+                    SELECT ''' + select_clause_1 + '''
+                    FROM account_move_line
+                    WHERE account_id in %s)''', [tuple(bank_accounts.ids)]
+
+            # Avoid crash if there's no bank moves to consider
+            if not bank_move_ids:
+                return '''
+                WITH account_move_line AS (
+                    SELECT ''' + select_clause_1 + '''
+                    FROM account_move_line
+                    WHERE False)''', []
+
+            # The following query is aliasing the account.move.line table to consider only the journal entries where, at least,
+            # one line is touching a liquidity account. Counterparts are either shown directly if they're not reconciled (or
+            # not reconciliable), either replaced by the accounts of the entries they're reconciled with.
             sql = '''
                 WITH account_move_line AS (
+
+                    -- Part for the reconciled journal items
+                    -- payment_table will give the reconciliation rate per account per move to consider
+                    -- (so that an invoice with multiple payment terms would correctly display the income
+                    -- accounts at the prorata of what hass really been paid)
                     WITH payment_table AS (
                         SELECT
-                            aml.id,
-                            "account_move_line".move_id,
-                            "account_move_line".date,
-                            CASE WHEN aml.balance = 0 THEN
-                                0 ELSE part.amount / ABS("account_move_line__move_id".amount)
-                            END AS matched_percentage
+                            aml2.move_id AS matching_move_id,
+                            aml2.account_id,
+                            aml.date AS date,
+                            SUM(CASE WHEN (aml.balance = 0 OR sub.total_per_account = 0)
+                                THEN 0
+                                ELSE part.amount / sub.total_per_account
+                            END) AS matched_percentage
                         FROM account_partial_reconcile part
                         LEFT JOIN account_move_line aml ON aml.id = part.debit_move_id
+                        LEFT JOIN account_move_line aml2 ON aml2.id = part.credit_move_id
+                        RIGHT JOIN (SELECT move_id, account_id, ABS(SUM(balance)) AS total_per_account FROM account_move_line GROUP BY move_id, account_id) sub ON (aml2.account_id = sub.account_id AND sub.move_id=aml2.move_id)
                         LEFT JOIN account_account acc ON aml.account_id = acc.id
-                        LEFT JOIN account_move am ON aml.move_id = am.id, ''' + sub_tables + '''
-                        WHERE part.credit_move_id = "account_move_line".id
+                        WHERE part.credit_move_id = aml2.id
                         AND acc.reconcile
                         AND aml.move_id IN %s
-                        AND ''' + sub_where_clause + '''
+                        GROUP BY aml2.move_id, aml2.account_id, aml.date
 
                         UNION ALL
 
                         SELECT
-                            aml.id,
-                            "account_move_line".move_id,
-                            "account_move_line".date,
-                            CASE WHEN aml.balance = 0 THEN
-                                0 ELSE part.amount / ABS("account_move_line__move_id".amount)
-                            END AS matched_percentage
+                            aml2.move_id AS matching_move_id,
+                            aml2.account_id,
+                            aml.date AS date,
+                            SUM(CASE WHEN (aml.balance = 0 OR sub.total_per_account = 0)
+                                THEN 0
+                                ELSE part.amount / sub.total_per_account
+                            END) AS matched_percentage
                         FROM account_partial_reconcile part
                         LEFT JOIN account_move_line aml ON aml.id = part.credit_move_id
+                        LEFT JOIN account_move_line aml2 ON aml2.id = part.debit_move_id
+                        RIGHT JOIN (SELECT move_id, account_id, ABS(SUM(balance)) AS total_per_account FROM account_move_line GROUP BY move_id, account_id) sub ON (aml2.account_id = sub.account_id AND sub.move_id=aml2.move_id)
                         LEFT JOIN account_account acc ON aml.account_id = acc.id
-                        LEFT JOIN account_move am ON aml.move_id = am.id, ''' + sub_tables + '''
-                        WHERE part.debit_move_id = "account_move_line".id
+                        WHERE part.debit_move_id = aml2.id
                         AND acc.reconcile
                         AND aml.move_id IN %s
-                        AND ''' + sub_where_clause + '''
+                        GROUP BY aml2.move_id, aml2.account_id, aml.date
                     )
 
                     SELECT ''' + select_clause_2 + '''
-                    FROM ''' + tables + '''
-                    RIGHT JOIN payment_table ref ON ("account_move_line".move_id = ref.move_id)
-                    LEFT JOIN account_account acc ON "account_move_line".account_id = acc.id
-                    WHERE acc.internal_type = 'other'
+                    FROM account_move_line "account_move_line"
+                    RIGHT JOIN payment_table ref ON ("account_move_line".move_id = ref.matching_move_id)
+                    WHERE "account_move_line".account_id NOT IN (SELECT account_id FROM payment_table)
                     AND "account_move_line".move_id NOT IN %s
-                    AND ''' + where_clause + '''
 
                     UNION ALL
 
-                    SELECT ''' + select_clause_1 + '''
-                    FROM ''' + tables + '''
+                    -- Part for the unreconciled journal items.
+                    -- Using amount_residual if the account is reconciliable is needed in case of partial reconciliation
+
+                    SELECT ''' + select_clause_1.replace('"account_move_line".balance_cash_basis', 'CASE WHEN acc.reconcile THEN  "account_move_line".amount_residual ELSE "account_move_line".balance END AS balance_cash_basis') + '''
+                    FROM account_move_line "account_move_line"
+                    LEFT JOIN account_account acc ON "account_move_line".account_id = acc.id
                     WHERE "account_move_line".move_id IN %s
-                    AND ''' + where_clause + '''
+                    AND "account_move_line".account_id NOT IN %s
                 )
             '''
-            params = [tuple(bank_move_ids)] + sub_where_params + [tuple(bank_move_ids)] + sub_where_params\
-                     + [tuple(bank_move_ids)] + where_params + [tuple(bank_move_ids)] + where_params
+            params = [tuple(bank_move_ids)] + [tuple(bank_move_ids)] + [tuple(bank_move_ids)] + [tuple(bank_move_ids)] + [tuple(bank_accounts.ids)]
         elif self.env.context.get('cash_basis'):
             #Cash basis option
             #-----------------
@@ -1046,6 +1094,7 @@ class AccountFinancialReportLine(models.Model):
                 k += 1
 
             res = line._put_columns_together(res, domain_ids)
+
             if line.hide_if_zero and all([float_is_zero(k, precision_rounding=currency_precision) for k in res['line']]):
                 continue
 

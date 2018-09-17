@@ -3,9 +3,10 @@
 # * account_3way_match
 # 
 # Translators:
-# Murat Kaplan <muratk@projetgrup.com>, 2017
-# Martin Trigaux, 2017
-# Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2017
+# Martin Trigaux, 2018
+# Murat Kaplan <muratk@projetgrup.com>, 2018
+# Ahmet Altinisik <aaltinisik@altinkaya.com.tr>, 2018
+# Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2018
 # Umur Akın <umura@projetgrup.com>, 2018
 msgid ""
 msgstr ""
@@ -52,7 +53,7 @@ msgstr "İstisna"
 #. module: account_3way_match
 #: model:ir.model.fields,field_description:account_3way_match.field_account_invoice__force_release_to_pay
 msgid "Force status"
-msgstr "Güç durumu"
+msgstr "Zorla Ayarla"
 
 #. module: account_3way_match
 #: model:ir.model.fields,help:account_3way_match.field_account_invoice__force_release_to_pay
@@ -88,18 +89,18 @@ msgstr "Hayır"
 #. module: account_3way_match
 #: model:ir.model.fields,field_description:account_3way_match.field_account_invoice_line__can_be_paid
 msgid "Release to Pay"
-msgstr "Ödemeyi Borçtan Kurtarma"
+msgstr "Ödeme Yap"
 
 #. module: account_3way_match
 #: model:ir.model.fields,field_description:account_3way_match.field_account_invoice__release_to_pay
 #: model:ir.ui.view,arch_db:account_3way_match.account_invoice_form_inherit
 msgid "Should be paid"
-msgstr "Ödenmelidir."
+msgstr "Ödenmeli"
 
 #. module: account_3way_match
 #: model:ir.model.fields,field_description:account_3way_match.field_account_invoice__release_to_pay_manual
 msgid "Should be paid Manual"
-msgstr ""
+msgstr "Elle ödenmeli"
 
 #. module: account_3way_match
 #: model:ir.model.fields,help:account_3way_match.field_account_invoice__release_to_pay
@@ -110,11 +111,11 @@ msgid ""
 "  * Exception, there is a difference between received and billed quantities\n"
 "This status is defined automatically, but you can force it by ticking the 'Force Status' checkbox."
 msgstr ""
-"Bu alan devam eden önerilerden birini alabilir.\n"
-"*Evet: faturayı ödemelisiniz, ürünler elinize ulaştı\n"
-"*Hayır, faturayı ödememelisiniz, ürünler elinize ulaşmadı.\n"
-"*Nadiren, faturalanmış miktar ile ulaşan miktar arasındaki fark vardır. \n"
-"Bu durum otomatik olarak tanımlanmıştır, ancak siz kontrol kutusundan 'Güç Durumu'nu işaretleyebilirsiniz."
+"Bu alana uygun girişler.\n"
+"*Evet: Ürünler elinize ulaştı, fatura ödenmeli,\n"
+"*Hayır: Ürünler elinize ulaşmadı, Ödeme yapma\n"
+"*İstisna, faturalanmış miktar ile gelen miktar arasındaki fark vardır. \n"
+"Bu durum otomatik olarak tanımlanmıştır, ancak siz kontrol kutusundan 'Zorla ayarla'yı işaretleyebilirsiniz."
 
 #. module: account_3way_match
 #: selection:account.invoice,release_to_pay:0

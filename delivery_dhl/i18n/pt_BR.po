@@ -3,19 +3,18 @@
 # * delivery_dhl
 # 
 # Translators:
-# Ricardo Freitas Rodrigues <ricardo.freitasgr@gmail.com>, 2016
-# grazziano <gra.negocia@gmail.com>, 2016
-# danimaribeiro <danimaribeiro@gmail.com>, 2016
-# Mateus Lopes <mateus1@gmail.com>, 2016
-# Martin Trigaux, 2016
 # Hildeberto Abreu Magalhães <hildeberto@gmail.com>, 2018
+# Martin Trigaux, 2018
+# Ricardo Freitas Rodrigues <ricardo.freitasgr@gmail.com>, 2018
+# Mateus Lopes <mateus1@gmail.com>, 2018
+# grazziano <gra.negocia@gmail.com>, 2018
 # Diego Bittencourt <diegomb86@gmail.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.4+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-02 11:20+0000\n"
-"PO-Revision-Date: 2018-08-02 11:20+0000\n"
+"POT-Creation-Date: 2018-08-24 11:28+0000\n"
+"PO-Revision-Date: 2018-08-24 11:28+0000\n"
 "Last-Translator: Diego Bittencourt <diegomb86@gmail.com>, 2018\n"
 "Language-Team: Portuguese (Brazil) (https://www.transifex.com/odoo/teams/41243/pt_BR/)\n"
 "MIME-Version: 1.0\n"
@@ -403,7 +402,7 @@ msgstr "Empacotamento"
 #: code:addons/delivery_dhl/models/dhl_request.py:398
 #, python-format
 msgid "Please provide at least one item to ship."
-msgstr "Por favor, forneça pelo menos  um item para o ship."
+msgstr "Por favor, forneça pelo menos  um item para entrega."
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_package_weight_unit:0
@@ -453,7 +452,7 @@ msgid ""
 "The address of the customer is missing or wrong (Missing field(s) :\n"
 " %s)"
 msgstr ""
-"O endereço do cliente está ausente ou errado (Campo(s) ausente(s) :\n"
+"O endereço do cliente está ausente ou errado (Ausente(s) :\n"
 " %s)"
 
 #. module: delivery_dhl
@@ -473,7 +472,7 @@ msgid ""
 "The estimated price cannot be computed because the weight of your product is"
 " missing."
 msgstr ""
-"O preço estimado não podem ser computado porque falta o peso no seu produto."
+"O preço estimado não pode ser calculado porque falta o peso no seu produto."
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
@@ -490,6 +489,14 @@ msgstr ""
 #: selection:delivery.carrier,delivery_type:0
 msgid "USPS"
 msgstr ""
+
+#. module: delivery_dhl
+#: model:product.product,uom_name:delivery_dhl.product_product_delivery_dhl_intl
+#: model:product.product,uom_name:delivery_dhl.product_product_delivery_dhl_usa
+#: model:product.template,uom_name:delivery_dhl.product_product_delivery_dhl_intl_product_template
+#: model:product.template,uom_name:delivery_dhl.product_product_delivery_dhl_usa_product_template
+msgid "Unit(s)"
+msgstr "UN"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0

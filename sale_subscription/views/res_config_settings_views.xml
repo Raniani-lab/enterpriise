@@ -49,5 +49,5 @@
         <field name="context">{'module' : 'sale_subscription'}</field>
     </record>
 
-    <menuitem id="sale_subscription_config_settings_menu" name="Settings" parent="sale_subscription.menu_sale_subscription_config" action="sale_subscription_config_settings_action" sequence="1"/>
+    <menuitem id="sale_subscription_config_settings_menu" name="Settings" parent="sale_subscription.menu_sale_subscription_config" action="sale_subscription_config_settings_action" sequence="1" groups="base.group_system"/>
 </odoo>

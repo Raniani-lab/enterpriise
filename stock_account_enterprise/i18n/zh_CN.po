@@ -28,12 +28,12 @@ msgstr ""
 #. module: stock_account_enterprise
 #: model:ir.ui.view,arch_db:stock_account_enterprise.stock_report_dashboard_view_inherit
 msgid "Incoming Inventory Value"
-msgstr ""
+msgstr "入向库存价值"
 
 #. module: stock_account_enterprise
 #: model:ir.ui.view,arch_db:stock_account_enterprise.stock_report_dashboard_view_inherit
 msgid "Inventory Turnover"
-msgstr ""
+msgstr "库存周转"
 
 #. module: stock_account_enterprise
 #: model:ir.ui.view,arch_db:stock_account_enterprise.stock_report_dashboard_view_inherit
@@ -62,7 +62,7 @@ msgstr ""
 #. module: stock_account_enterprise
 #: model:ir.model,name:stock_account_enterprise.model_stock_report
 msgid "Stock Report"
-msgstr ""
+msgstr "库存报告"
 
 #. module: stock_account_enterprise
 #: model:ir.ui.view,arch_db:stock_account_enterprise.stock_report_dashboard_view_inherit

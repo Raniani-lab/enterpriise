@@ -23,6 +23,8 @@ var FollowupFormController = FormController.extend({
      */
     init: function () {
         this._super.apply(this, arguments);
+        // force refresh search view on subsequent navigation
+        delete this.searchView;
         this.hasSidebar = false;
     },
 

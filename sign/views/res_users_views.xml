@@ -6,9 +6,6 @@
         <field name="inherit_id" ref="base.view_users_form"/>
         <field name="priority">140</field>
         <field name="arch" type="xml">
-            <group name="applications" position="inside">
-                <field name='group_sign_user'/>
-            </group>
             <group name="messaging" position="after">
                 <group string="Digital Signatures" name="sign">
                     <field name="sign_signature"/>

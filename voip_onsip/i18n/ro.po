@@ -52,4 +52,4 @@ msgstr "res.config.settings"
 #. module: voip_onsip
 #: model:ir.model,name:voip_onsip.model_voip_configurator
 msgid "voip.configurator"
-msgstr ""
+msgstr "voip.configurator"

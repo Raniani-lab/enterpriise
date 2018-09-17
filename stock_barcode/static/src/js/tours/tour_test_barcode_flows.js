@@ -12,7 +12,7 @@ function fail (errorMessage) {
 
 function getLine (description) {
     var $res;
-    $('.line').each(function () {
+    $('.o_barcode_line').each(function () {
         var $line = $(this);
         var barcode = $line.data('barcode').trim();
         if (description.barcode === barcode) {
@@ -36,9 +36,17 @@ function assert (current, expected, info) {
 }
 
 function assertPageSummary (expected) {
-    var $pageSummary = $('.barcode_locations');
-    var current = $pageSummary.text();
-    assert(current, expected, 'Page summary');
+    // FIXME sle: fix the tests instead of fixing the assert method
+    var res = '';
+    var $src = $('.o_barcode_summary_location_src');
+    if ($src.length) {
+        res = "From " + $src.text() + " ";
+    }
+    var $dest = $('.o_barcode_summary_location_dest');
+    if ($dest.length) {
+        res += "To " + $dest.text();
+    }
+    assert(res.trim(), expected.trim(), 'Page summary');
 }
 
 function assertPreviousVisible (expected) {
@@ -67,7 +75,7 @@ function assertNextEnabled (expected) {
 
 function assertNextIsHighlighted (expected) {
     var $nextButton = $('.o_next_page');
-    var current = $nextButton.hasClass('o_button_barcode_highlight');
+    var current = $nextButton.hasClass('btn-primary');
     assert(current, expected, 'Next button is highlighted');
 }
 
@@ -85,12 +93,12 @@ function assertValidateEnabled (expected) {
 
 function assertValidateIsHighlighted (expected) {
     var $validate = $('.o_validate_page');
-    var current = $validate.hasClass('o_button_barcode_highlight');
+    var current = $validate.hasClass('btn-success');
     assert(current, expected, 'Validte button is highlighted');
 }
 
 function assertLinesCount (expected) {
-    var $lines = $('.line');
+    var $lines = $('.o_barcode_line');
     var current = $lines.length;
     assert(current, expected, "Number of lines");
 }
@@ -114,12 +122,16 @@ function assertDestinationLocationHighlight (expected) {
 }
 
 function assertPager (expected) {
-    var $pager = $('.barcode_move_number');
+    var $pager = $('.o_barcode_move_number');
     assert($pager.text(), expected, 'Pager is wrong');
 }
 
 function assertLineIsHighlighted ($line, expected) {
     assert($line.hasClass('o_highlight'), expected, 'line should be highlighted');
+}
+
+function assertLineQty($line, qty) {
+    assert($line.find('.qty-done').text(), qty, 'line quantity is wrong');
 }
 
 function assertFormLocationSrc(expected) {
@@ -143,12 +155,26 @@ function assertInventoryFormQuantity(expected) {
 
 }
 
+function assertErrorMessage(expected) {
+    var $errorMessage = $('.o_notification_content').eq(-1);
+    assert($errorMessage[0].innerText, expected, 'wrong or absent error message');
+}
+
+function assertQuantsCount(expected) {
+    var $quantity = $('.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length;
+    assert($quantity, expected, 'Wrong number of cards');
+}
+
+function assertRaise(expected) {
+    var $dialog = $('.o_dialog_warning');
+    assert(_.trim($dialog.innerText), expected, 'wrong error message from the server');
+}
 // ----------------------------------------------------------------------------
 // Tours
 // ----------------------------------------------------------------------------
 tour.register('test_internal_picking_from_scratch_1', {test: true}, [
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: function() {
             assertPageSummary('From WH/Stock To WH/Stock');
             assertPreviousVisible(true);
@@ -171,12 +197,12 @@ tour.register('test_internal_picking_from_scratch_1', {test: true}, [
      * to scan shelf1, product1, shelf2.
      */
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan LOC-01-01-00'
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: function () {
             assertPageSummary('From WH/Stock/Shelf 1 To WH/Stock');
             assertPreviousVisible(true);
@@ -196,12 +222,12 @@ tour.register('test_internal_picking_from_scratch_1', {test: true}, [
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan product1'
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: function() {
             assertPageSummary('From WH/Stock/Shelf 1 To WH/Stock');
             assertPreviousVisible(true);
@@ -223,12 +249,12 @@ tour.register('test_internal_picking_from_scratch_1', {test: true}, [
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan product1'
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: function() {
             assertPageSummary('From WH/Stock/Shelf 1 To WH/Stock');
             assertPreviousVisible(true);
@@ -246,11 +272,12 @@ tour.register('test_internal_picking_from_scratch_1', {test: true}, [
             assertValidateEnabled(true);
             var $line = getLine({barcode: 'product1'});
             assertLineIsHighlighted($line, true);
+            assertLineQty($line, "2");
         }
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan LOC-01-02-00'
     },
 
@@ -280,12 +307,12 @@ tour.register('test_internal_picking_from_scratch_1', {test: true}, [
      * to scan shelf1, product2, shelf3.
      */
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan LOC-01-01-00'
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: function() {
             assertPageSummary('From WH/Stock/Shelf 1 To WH/Stock/Shelf 2');
             assertPreviousVisible(true);
@@ -307,12 +334,12 @@ tour.register('test_internal_picking_from_scratch_1', {test: true}, [
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan product2'
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: function() {
             assertPageSummary('From WH/Stock/Shelf 1 To WH/Stock/Shelf 2');
             assertPreviousVisible(true);
@@ -336,7 +363,7 @@ tour.register('test_internal_picking_from_scratch_1', {test: true}, [
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan shelf3'
     },
 
@@ -367,12 +394,12 @@ tour.register('test_internal_picking_from_scratch_1', {test: true}, [
      * new move line that will change page at the time we scan shelf2.
      */
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan LOC-01-01-00'
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: function() {
             assertPageSummary('From WH/Stock/Shelf 1 To WH/Stock/Shelf 3');
             assertPreviousVisible(true);
@@ -394,12 +421,12 @@ tour.register('test_internal_picking_from_scratch_1', {test: true}, [
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan product2'
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: function() {
             assertPageSummary('From WH/Stock/Shelf 1 To WH/Stock/Shelf 3');
             assertPreviousVisible(true);
@@ -423,7 +450,7 @@ tour.register('test_internal_picking_from_scratch_1', {test: true}, [
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan LOC-01-02-00'
     },
 
@@ -579,7 +606,7 @@ tour.register('test_internal_picking_from_scratch_2', {test: true}, [
         run: function() {
             assertFormLocationSrc("WH/Stock/Shelf 1");
             assertFormLocationDest("WH/Stock/Shelf 2");
-            assertFormQuantity("2.000");
+            assertFormQuantity("2");
         },
     },
 
@@ -638,12 +665,12 @@ tour.register('test_internal_picking_from_scratch_2', {test: true}, [
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan LOC-01-01-00'
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan product1'
     },
 
@@ -666,7 +693,7 @@ tour.register('test_internal_picking_from_scratch_2', {test: true}, [
 
 tour.register('test_internal_picking_reserved_1', {test: true}, [
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: function() {
             assertPageSummary('From WH/Stock/Shelf 1 To WH/Stock/Shelf 2');
             assertPreviousVisible(true);
@@ -692,12 +719,12 @@ tour.register('test_internal_picking_reserved_1', {test: true}, [
     /* We first move a product1 fro shef3 to shelf2.
      */
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan shelf3'
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: function() {
             assertPageSummary('From WH/Stock/Shelf 3 To WH/Stock');
             assertPreviousVisible(true);
@@ -717,12 +744,12 @@ tour.register('test_internal_picking_reserved_1', {test: true}, [
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan product1'
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: function() {
             assertPageSummary('From WH/Stock/Shelf 3 To WH/Stock');
             assertPreviousVisible(true);
@@ -744,7 +771,7 @@ tour.register('test_internal_picking_reserved_1', {test: true}, [
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan LOC-01-02-00'
     },
 
@@ -781,7 +808,7 @@ tour.register('test_internal_picking_reserved_1', {test: true}, [
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: function() {
             assertPageSummary('From WH/Stock/Shelf 1 To WH/Stock/Shelf 2');
             assertPreviousVisible(true);
@@ -807,12 +834,12 @@ tour.register('test_internal_picking_reserved_1', {test: true}, [
     /* Process the reservation.
      */
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan LOC-01-01-00'
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: function() {
             assertPageSummary('From WH/Stock/Shelf 1 To WH/Stock/Shelf 2');
             assertPreviousVisible(true);
@@ -836,12 +863,12 @@ tour.register('test_internal_picking_reserved_1', {test: true}, [
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan product1'
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: function() {
             assertPageSummary('From WH/Stock/Shelf 1 To WH/Stock/Shelf 2');
             assertPreviousVisible(true);
@@ -865,12 +892,12 @@ tour.register('test_internal_picking_reserved_1', {test: true}, [
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan product2'
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: function() {
             assertPageSummary('From WH/Stock/Shelf 1 To WH/Stock/Shelf 2');
             assertPreviousVisible(true);
@@ -894,12 +921,12 @@ tour.register('test_internal_picking_reserved_1', {test: true}, [
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan LOC-01-02-00'
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: function() {
             assertPageSummary('From WH/Stock/Shelf 1 To WH/Stock/Shelf 2');
             assertPreviousVisible(true);
@@ -916,7 +943,7 @@ tour.register('test_internal_picking_reserved_1', {test: true}, [
             assertValidateIsHighlighted(false);
             assertValidateEnabled(false);
 
-            $('.line .fa-cubes').parent().each(function() {
+            $('.o_barcode_line .fa-cubes').parent().each(function() {
                 var qty = $(this).text().trim();
                 if (qty !== '1 / 1') {
                     fail();
@@ -954,7 +981,7 @@ tour.register('test_internal_picking_reserved_1', {test: true}, [
             assertValidateIsHighlighted(false);
             assertValidateEnabled(false);
 
-            $('.line .fa-cubes').parent().each(function() {
+            $('.o_barcode_line .fa-cubes').parent().each(function() {
                 var qty = $(this).text().trim();
                 if (qty !== '0 / 1') {
                     fail();
@@ -969,7 +996,7 @@ tour.register('test_internal_picking_reserved_1', {test: true}, [
 
 tour.register('test_receipt_reserved_1', {test: true}, [
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: function() {
             assertPageSummary(' To WH/Stock');
             assertPreviousVisible(true);
@@ -989,47 +1016,47 @@ tour.register('test_receipt_reserved_1', {test: true}, [
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan product1'
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan product1'
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan product1'
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan product1'
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan product2'
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan product2'
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan product2'
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan product2'
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan LOC-01-01-00'
     },
 
@@ -1052,7 +1079,7 @@ tour.register('test_receipt_reserved_1', {test: true}, [
             assertValidateIsHighlighted(true);
             assertValidateEnabled(true);
 
-            $('.line .fa-cubes').parent().each(function() {
+            $('.o_barcode_line .fa-cubes').parent().each(function() {
                 var qty = $(this).text().trim();
                 if (qty !== '1 / 4') {
                     fail();
@@ -1060,11 +1087,22 @@ tour.register('test_receipt_reserved_1', {test: true}, [
             });
         }
     },
+
+    {
+        trigger: '.o_add_line',
+    },
+
+    {
+        trigger: '.o_form_label:contains("Product")',
+        run: function() {
+            assertFormLocationDest('WH/Stock/Shelf 1');
+        },
+    },
 ]);
 
 tour.register('test_delivery_reserved_1', {test: true}, [
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: function() {
             assertPageSummary('From WH/Stock ');
             assertPreviousVisible(true);
@@ -1085,12 +1123,12 @@ tour.register('test_delivery_reserved_1', {test: true}, [
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan LOC-01-00-00'
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: function() {
             assertPageSummary('From WH/Stock ');
             assertPreviousVisible(true);
@@ -1111,17 +1149,17 @@ tour.register('test_delivery_reserved_1', {test: true}, [
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan product1'
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan product2'
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan LOC-01-01-00'
     },
 
@@ -1149,39 +1187,55 @@ tour.register('test_delivery_reserved_1', {test: true}, [
 
 tour.register('test_receipt_from_scratch_with_lots_1', {test: true}, [
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: function() {
             assertPageSummary(' To WH/Stock');
         }
     },
 
     {
-        trigger: '.barcode_client_action',
-        run: 'scan productserial1'
-    },
-
-    {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan lot1',
     },
 
     {
-        trigger: '.barcode_client_action',
-        run: 'scan LOC-01-00-00'
+        trigger: '.o_notification_title:contains("Warning")'
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
+        run: function () {
+            assertErrorMessage('You are expected to scan one or more products.');
+        },
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
         run: 'scan productserial1'
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
+        run: 'scan lot1',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan LOC-01-00-00'
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan productserial1'
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
         run: 'scan lot2',
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan LOC-01-01-00'
     },
 
@@ -1196,39 +1250,39 @@ tour.register('test_receipt_from_scratch_with_lots_1', {test: true}, [
 
 tour.register('test_receipt_from_scratch_with_lots_2', {test: true}, [
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: function() {
             assertPageSummary(' To WH/Stock');
         }
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan productlot1'
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan lot1',
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan lot1',
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan lot2',
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan lot2',
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan LOC-01-01-00'
     },
 
@@ -1244,27 +1298,22 @@ tour.register('test_receipt_from_scratch_with_lots_2', {test: true}, [
 tour.register('test_delivery_from_scratch_with_lots_1', {test: true}, [
 
     {
-        trigger: '.barcode_client_action',
-        run: 'scan productlot1',
-    },
-
-    {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan lot1',
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan lot1',
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan lot2',
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan lot2',
     },
     // Open the form view to trigger a save
@@ -1282,27 +1331,43 @@ tour.register('test_delivery_from_scratch_with_sn_1', {test: true}, [
     /* scan a product tracked by serial number. Then scan 4 a its serial numbers.
     */
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan productserial1',
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan sn1',
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
+        run: 'scan sn1',
+    },
+
+    {
+        trigger: '.o_notification_title:contains("Warning")'
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: function () {
+            assertErrorMessage('The scanned serial number is already used.');
+        },
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
         run: 'scan sn2',
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan sn3',
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan sn4',
     },
     // Open the form view to trigger a save
@@ -1318,22 +1383,22 @@ tour.register('test_delivery_from_scratch_with_sn_1', {test: true}, [
 tour.register('test_delivery_reserved_lots_1', {test: true}, [
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan productlot1',
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan lot2',
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan lot1',
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan lot2',
     },
     // Open the form view to trigger a save
@@ -1351,27 +1416,43 @@ tour.register('test_delivery_reserved_with_sn_1', {test: true}, [
     /* scan a product tracked by serial number. Then scan 4 a its serial numbers.
     */
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan productserial1',
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan sn3',
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
+        run: 'scan sn3',
+    },
+
+    {
+        trigger: '.o_notification_title:contains("Warning")'
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: function () {
+            assertErrorMessage('The scanned serial number is already used.');
+        },
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
         run: 'scan sn1',
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan sn4',
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan sn2',
     },
     // Open the form view to trigger a save
@@ -1392,42 +1473,42 @@ tour.register('test_receipt_reserved_lots_multiloc_1', {test: true}, [
     */
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan productlot1',
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan lot1',
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan lot1',
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan LOC-01-02-00',
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan productlot1',
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan lot2',
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan lot2',
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan LOC-01-01-00',
     },
     // Open the form view to trigger a save
@@ -1441,6 +1522,153 @@ tour.register('test_receipt_reserved_lots_multiloc_1', {test: true}, [
 
 ]);
 
+tour.register('test_receipt_duplicate_serial_number', {test: true}, [
+    /* Create a receipt. Try to scan twice the same serial in different
+    * locations.
+    */
+    {
+        trigger: '.o_stock_barcode_main_menu:contains("Barcode Scanning")',
+    },
+    // reception
+    {
+        trigger: '.o_stock_barcode_main_menu',
+        run: 'scan WH-RECEIPTS',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan productserial1',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan sn1',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan LOC-01-01-00',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan productserial1',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan sn1',
+    },
+
+    {
+        trigger: '.o_notification_title:contains("Warning")'
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: function () {
+            assertErrorMessage('The scanned serial number is already used.');
+        },
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan sn2',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan LOC-01-02-00',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan O-BTN.validate',
+    },
+
+    {
+        trigger: '.o_notification_title:contains("Success")'
+    },
+
+    {
+        trigger: '.o_stock_barcode_main_menu',
+        run: function () {
+            assertErrorMessage('The transfer has been validated');
+        },
+    },
+]);
+
+tour.register('test_delivery_duplicate_serial_number', {test: true}, [
+    /* Create a delivery. Try to scan twice the same serial in different
+    * locations.
+    */
+    {
+        trigger: '.o_stock_barcode_main_menu',
+        run: 'scan WH-DELIVERY',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan LOC-01-01-00',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan productserial1',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan sn1',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan LOC-01-01-00',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan productserial1',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan sn1',
+    },
+
+    {
+        trigger: '.o_notification_title:contains("Warning")'
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: function () {
+            assertErrorMessage('The scanned serial number is already used.');
+        },
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan sn2',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan O-BTN.validate',
+    },
+
+    {
+        trigger: '.o_notification_title:contains("Success")'
+    },
+
+    {
+        trigger: '.o_stock_barcode_main_menu',
+        run: function () {
+            assertErrorMessage('The transfer has been validated');
+        },
+    },
+]);
 
 tour.register('test_inventory_adjustment', {test: true}, [
 
@@ -1449,26 +1677,26 @@ tour.register('test_inventory_adjustment', {test: true}, [
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan product1',
     },
-    
+
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan product1',
     },
-    
+
     {
         trigger: '.o_edit',
     },
-    
+
     {
         trigger: '.o_form_label:contains("Product")',
         run: function () {
             assertInventoryFormQuantity('2.000');
         }
     },
-    
+
     {
         trigger :'.o_save',
     },
@@ -1496,11 +1724,19 @@ tour.register('test_inventory_adjustment', {test: true}, [
     },
 
     {
-        trigger: '.o_add_line',
+        trigger: '.o_barcode_client_action',
+        run: 'scan O-BTN.validate',
     },
 
     {
-        trigger: '.o_form_label:contains("Product")',
+        trigger: '.o_notification_title:contains("Success")'
+    },
+
+    {
+        trigger: '.o_stock_barcode_main_menu',
+        run: function () {
+            assertErrorMessage('The inventory adjustment has been validated');
+        },
     },
 
 ]);
@@ -1512,7 +1748,7 @@ tour.register('test_inventory_adjustment_mutli_location', {test: true}, [
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan LOC-01-00-00'
     },
 
@@ -1521,22 +1757,22 @@ tour.register('test_inventory_adjustment_mutli_location', {test: true}, [
     },
 
     {
-        trigger: '.barcode_client_action',
-        run: 'scan product1',
-    },
-    
-    {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan product1',
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
+        run: 'scan product1',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
         run: 'scan product2',
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan LOC-01-01-00'
     },
 
@@ -1545,12 +1781,12 @@ tour.register('test_inventory_adjustment_mutli_location', {test: true}, [
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan product2',
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan LOC-01-02-00'
     },
 
@@ -1559,7 +1795,7 @@ tour.register('test_inventory_adjustment_mutli_location', {test: true}, [
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan product1',
     },
 
@@ -1580,52 +1816,68 @@ tour.register('test_inventory_adjustment_tracked_product', {test: true}, [
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan productlot1',
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan lot1',
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan lot1',
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan productserial1',
     },
-    
+
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan serial1',
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
+        run: 'scan serial1',
+    },
+
+    {
+        trigger: '.o_notification_title:contains("Warning")'
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: function () {
+            assertErrorMessage('The scanned serial number is already used.');
+        },
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
         run: 'scan serial2',
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan productlot1',
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan lot1',
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan productserial1',
     },
 
     {
-        trigger: '.barcode_client_action',
+        trigger: '.o_barcode_client_action',
         run: 'scan serial3',
     },
 
@@ -1635,6 +1887,458 @@ tour.register('test_inventory_adjustment_tracked_product', {test: true}, [
     {
         trigger: '.o_form_label:contains("Product")',
     },
+]);
+
+tour.register('test_inventory_nomenclature', {test: true}, [
+
+    {
+        trigger: '.button_inventory',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: function() {
+            assertScanMessage('scan_products');
+        },
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan 2145631123457', // 12.345 kg
+    },
+
+    {
+        trigger: '.product-label:contains("product_weight")'
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan O-BTN.validate',
+    },
+
+    {
+        trigger: '.o_notification_title:contains("Success")'
+    },
+
+    {
+        trigger: '.o_stock_barcode_main_menu',
+        run: function () {
+            assertErrorMessage('The inventory adjustment has been validated');
+        },
+    },
+]);
+
+tour.register('test_pack_multiple_scan', {test: true}, [
+
+    {
+        trigger: '.o_stock_barcode_main_menu:contains("Barcode Scanning")',
+    },
+// reception
+    {
+        trigger: '.o_stock_barcode_main_menu',
+        run: 'scan WH-RECEIPTS',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan product1',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan product2',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan O-BTN.pack',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan O-BTN.validate',
+    },
+
+    {
+        trigger: '.o_notification_title:contains("Success")'
+    },
+
+    {
+        trigger: '.o_stock_barcode_main_menu',
+        run: function () {
+            assertErrorMessage('The transfer has been validated');
+        },
+    },
+// Delivery transfer to check the error message
+    {
+        trigger: '.o_stock_barcode_main_menu',
+        run: 'scan WH-DELIVERY',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan PACK0001000',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan PACK0001000',
+    },
+
+    {
+        trigger: '.o_notification_title:contains("Warning")'
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: function () {
+            assertErrorMessage('This package is already scanned.');
+        },
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan O-BTN.validate',
+    },
+
+    {
+        trigger: '.o_notification_title:contains("Success")'
+    },
+
+    {
+        trigger: '.o_stock_barcode_main_menu',
+        run: function () {
+            assertErrorMessage('The transfer has been validated');
+        },
+    },
+]);
+
+tour.register('test_pack_multiple_location', {test: true}, [
+
+    {
+        trigger: '.o_stock_barcode_main_menu:contains("Barcode Scanning")',
+    },
+
+    {
+        trigger: '.o_stock_barcode_main_menu',
+        run: 'scan WH-INTERNAL',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan LOC-01-01-00'
+    },
+
+    {
+        trigger: '.o_barcode_summary_location_src:contains("WH/Stock/Shelf 1")',
+        run: 'scan PACK0000666',
+    },
+
+    {
+        trigger: '.o_package_content',
+    },
+
+    {
+        trigger: '.o_kanban_view:contains("product1")',
+        run: function () {
+            assertQuantsCount(2);
+        },
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan LOC-01-02-00',
+    },
+
+    {
+        trigger: '.o_barcode_summary_location_dest:contains("WH/Stock/Shelf 2")',
+        run: 'scan O-BTN.validate',
+    },
+
+    {
+        trigger: '.o_notification_title:contains("Success")'
+    },
+
+    {
+        trigger: '.o_stock_barcode_main_menu',
+        run: function () {
+            assertErrorMessage('The transfer has been validated');
+        },
+    },
+]);
+
+tour.register('test_put_in_pack_from_multiple_pages', {test: true}, [
+    {
+        trigger: '.o_barcode_client_action',
+        run: function () {
+            assertPageSummary('From WH/Stock/Shelf 1 To WH/Stock');
+            assertPreviousVisible(true);
+            assertPreviousEnabled(true);
+            assertNextVisible(true);
+            assertNextEnabled(true);
+            assertNextIsHighlighted(false);
+            assertLinesCount(2);
+            assertScanMessage('scan_src');
+            assertLocationHighlight(false);
+            assertDestinationLocationHighlight(false);
+            assertPager('1/2');
+            assertValidateVisible(false);
+            assertValidateIsHighlighted(false);
+            assertValidateEnabled(false);
+        },
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan LOC-01-01-00'
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: function () {
+            assertPageSummary('From WH/Stock/Shelf 1 To WH/Stock');
+            assertPreviousVisible(true);
+            assertPreviousEnabled(true);
+            assertNextVisible(true);
+            assertNextEnabled(true);
+            assertNextIsHighlighted(false);
+            assertLinesCount(2);
+            assertScanMessage('scan_products');
+            assertLocationHighlight(true);
+            assertDestinationLocationHighlight(false);
+            assertPager('1/2');
+            assertValidateVisible(false);
+            assertValidateIsHighlighted(false);
+            assertValidateEnabled(false);
+        },
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan product1',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan product2',
+    },
+
+    {
+        trigger: '.o_next_page',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan LOC-01-02-00',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan product1',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan product2',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan O-BTN.pack',
+    },
+
+    {
+        trigger: '.o_barcode_summary_location_src:contains("WH/Stock/Shelf 2")',
+        run: 'scan O-BTN.validate',
+    },
+
+    {
+        trigger: '.o_notification_title:contains("Success")'
+    },
+
+]);
+
+tour.register('test_reload_flow', {test: true}, [
+    {
+        trigger: '.o_stock_barcode_main_menu',
+        run: 'scan WH-RECEIPTS'
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan product1'
+    },
+
+    {
+        trigger: '.o_edit',
+    },
+
+    {
+        extra_trigger: '.o_form_label:contains("Product")',
+        trigger: 'input.o_field_widget[name=qty_done]',
+        run: 'text 2',
+    },
+
+    {
+        trigger: '.o_save',
+    },
+
+    {
+        trigger: '.o_add_line',
+    },
+
+    {
+        trigger: ".o_field_widget[name=product_id] input",
+        run: 'text product2',
+    },
+
+    {
+        trigger: ".ui-menu-item > a:contains('product2')",
+    },
+
+    {
+        trigger: '.o_save',
+    },
+
+    {
+        trigger: '.o_barcode_summary_location_dest:contains("WH/Stock")',
+        run: 'scan LOC-01-01-00',
+    },
+
+    {
+        trigger: '.o_barcode_summary_location_dest:contains("WH/Stock/Shelf 1")',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan O-BTN.validate',
+    },
+
+    {
+        trigger: '.o_notification_title:contains("Success")',
+    },
+
+]);
+
+tour.register('test_put_in_pack_from_different_location', {test: true}, [
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan LOC-01-01-00',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan product1',
+    },
+
+    {
+        trigger: '.o_next_page',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan shelf3',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan product2',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan O-BTN.pack',
+    },
+
+    {
+        trigger: '.fa-truck',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan LOC-01-01-00',
+    },
+
+    {
+        trigger: '.o_barcode_summary_location_src:contains("WH/Stock/Shelf 1")',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: function () {
+            assertPageSummary('From WH/Stock/Shelf 1 To WH/Stock');
+            assertPreviousVisible(true);
+            assertPreviousEnabled(true);
+            assertNextVisible(false);
+            assertNextEnabled(false);
+            assertNextIsHighlighted(false);
+            assertLinesCount(0);
+            assertScanMessage('scan_products');
+            assertLocationHighlight(true);
+            assertDestinationLocationHighlight(false);
+            assertPager('3/3');
+            assertValidateVisible(true);
+            assertValidateIsHighlighted(false);
+            assertValidateEnabled(false);
+        },
+    },
+
+    {
+        trigger: '.o_previous_page',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan O-BTN.validate',
+    },
+
+    {
+        trigger: '.o_notification_title:contains("Success")',
+    },
+]);
+
+tour.register('test_put_in_pack_before_dest', {test: true}, [
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan LOC-01-01-00',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan product1',
+    },
+
+    {
+        trigger: '.o_next_page',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan shelf3',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan product2',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan shelf4',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan O-BTN.pack'
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: function() {
+            assertRaise('You cannot move the same package content more than once in the same transfer or split the same package into two location.');
+        }
+    },
+
 ]);
 
 });

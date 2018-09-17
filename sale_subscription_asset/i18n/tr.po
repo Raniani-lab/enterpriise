@@ -3,9 +3,10 @@
 # * sale_subscription_asset
 # 
 # Translators:
-# Murat Kaplan <muratk@projetgrup.com>, 2017
-# Ediz Duman <neps1192@gmail.com>, 2017
-# Martin Trigaux, 2017
+# Ediz Duman <neps1192@gmail.com>, 2018
+# Martin Trigaux, 2018
+# Murat Kaplan <muratk@projetgrup.com>, 2018
+# Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2018
 # Umur Akın <umura@projetgrup.com>, 2018
 msgid ""
 msgstr ""
@@ -63,7 +64,7 @@ msgstr "Abonelik Şablonu"
 msgid ""
 "This asset category will be applied to the lines of the subscription's "
 "invoices."
-msgstr "Bu varlık kategorisi abonelik faturalarının satırlarına uygulanacak"
+msgstr "Bu varlık kategorisi abonelik faturalarının satırlarına uygulanacak."
 
 #. module: sale_subscription_asset
 #: model:ir.model.fields,help:sale_subscription_asset.field_sale_subscription_template__template_asset_category_id

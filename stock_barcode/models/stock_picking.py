@@ -13,6 +13,13 @@ class StockMoveLine(models.Model):
 
     product_barcode = fields.Char(related='product_id.barcode')
     location_processed = fields.Boolean()
+    dummy_id = fields.Char(compute='_compute_dummy_id', inverse='_inverse_dummy_id')
+
+    def _compute_dummy_id(self):
+        pass
+
+    def _inverse_dummy_id(self):
+        pass
 
 
 class StockPicking(models.Model):
@@ -21,7 +28,6 @@ class StockPicking(models.Model):
 
     def get_barcode_view_state(self):
         """ Return the initial state of the barcode view as a dict.
-        blablabla.
         """
         pickings = self.read([
             'move_line_ids',
@@ -47,6 +53,7 @@ class StockPicking(models.Model):
                 'lot_name',
                 'package_id',
                 'result_package_id',
+                'dummy_id',
             ])
             for move_line_id in picking['move_line_ids']:
                 move_line_id['product_id'] = self.env['product.product'].browse(move_line_id.pop('product_id')[0]).read([
@@ -73,6 +80,8 @@ class StockPicking(models.Model):
             picking['use_existing_lots'] = self.env['stock.picking.type'].browse(picking['picking_type_id'][0]).use_existing_lots
             picking['show_entire_packs'] = self.env['stock.picking.type'].browse(picking['picking_type_id'][0]).show_entire_packs
             picking['actionReportDeliverySlipId'] = self.env.ref('stock.action_report_delivery').id
+            if self.env.user.company_id.nomenclature_id:
+                picking['nomenclature_id'] = [self.env.user.company_id.nomenclature_id.id]
         return pickings
 
     @api.multi
@@ -223,7 +232,7 @@ class StockPicking(models.Model):
         return True
 
     def on_barcode_scanned(self, barcode):
-        if not self.picking_type_id.barcode_nomenclature_id:
+        if not self.env.user.company_id.nomenclature_id:
             # Logic for products
             product = self.env['product.product'].search(['|', ('barcode', '=', barcode), ('default_code', '=', barcode)], limit=1)
             if product:
@@ -254,7 +263,7 @@ class StockPicking(models.Model):
                 if self._check_destination_location(location):
                     return
         else:
-            parsed_result = self.picking_type_id.barcode_nomenclature_id.parse_barcode(barcode)
+            parsed_result = self.env.user.company_id.nomenclature_id.parse_barcode(barcode)
             if parsed_result['type'] in ['weight', 'product']:
                 if parsed_result['type'] == 'weight':
                     product_barcode = parsed_result['base_code']
@@ -332,6 +341,7 @@ class StockPicking(models.Model):
             params = {
                 'model': 'stock.picking',
                 'picking_id': self.id,
+                'nomenclature_id': [self.env.user.company_id.nomenclature_id.id],
             }
             return dict(action, target='fullscreen', params=params)
 

@@ -5,13 +5,14 @@
 # Translators:
 # Martin Trigaux, 2018
 # Fabien Bourgeois <fabien@yaltik.com>, 2018
+# Eloïse Stilmant <est@odoo.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-08-24 11:29+0000\n"
 "PO-Revision-Date: 2018-08-24 11:29+0000\n"
-"Last-Translator: Fabien Bourgeois <fabien@yaltik.com>, 2018\n"
+"Last-Translator: Eloïse Stilmant <est@odoo.com>, 2018\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -386,7 +387,7 @@ msgstr "Enregistrer"
 #. module: voip
 #: model:ir.actions.act_window,help:voip.voip_phonecall_view
 msgid "Log the summary of a phonecall"
-msgstr ""
+msgstr "Enregistrez le résumé d'un appel"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_log_wizard__phonecall_id
@@ -516,14 +517,14 @@ msgstr "Numéro de téléphone nettoyé"
 #. module: voip
 #: selection:mail.activity.type,category:0
 msgid "Phonecall"
-msgstr ""
+msgstr "Appel Téléphonique"
 
 #. module: voip
 #. openerp-web
 #: code:addons/voip/static/src/xml/voip_phonecall.xml:66
 #, python-format
 msgid "Phonecall details"
-msgstr ""
+msgstr "Détail de l'appel"
 
 #. module: voip
 #: model:ir.actions.act_window,name:voip.voip_phonecall_view
@@ -806,7 +807,7 @@ msgstr "Configuration VOIP"
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_config_settings__mode
 msgid "VoIP Environment"
-msgstr ""
+msgstr "Environnement VoIP"
 
 #. module: voip
 #: code:addons/voip/wizard/voip_phonecall_transfer_wizard.py:34

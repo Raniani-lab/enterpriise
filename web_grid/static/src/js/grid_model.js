@@ -120,7 +120,10 @@ return AbstractModel.extend({
     reload: function (handle, params) {
         params = params || {};
         if ('context' in params) {
+            // keep the grid anchor, when reloading view (e.i.: removing a filter in search view)
+            var old_context = this.context;
             this.context = params.context;
+            this.context.grid_anchor = old_context.grid_anchor || params.context.grid_anchor;
         }
         if ('domain' in params) {
             this.domain = params.domain;

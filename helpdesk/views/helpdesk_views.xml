@@ -91,7 +91,7 @@
                         <group>
                             <field name="name"/>
                             <field name="sequence" groups="base.group_no_one"/>
-                            <field name="team_ids" widget="many2many_tags" options="{'color_field': 'color'}" groups="base.group_no_one"/>
+                            <field name="team_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                             <field name="template_id" options="{'no_create': True}"/>
                         </group>
                         <group>
@@ -213,7 +213,7 @@
         <field name="name">helpdesk.ticket.graph</field>
         <field name="model">helpdesk.ticket</field>
         <field name="arch" type="xml">
-            <graph string="Helpdesk Tickets" stacked="True">
+            <graph string="Helpdesk Tickets" type="line" stacked="True">
                 <field name="create_date" type="row" interval="day"/>
                 <field name="stage_id" type="col"/>
             </graph>

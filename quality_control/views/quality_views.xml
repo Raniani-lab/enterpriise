@@ -813,7 +813,7 @@
                 </button>
             </xpath>
             <xpath expr="//page[@name='Notes']" position="after">
-                <page string="Message If Failure" attrs="{'invisible': [('test_type', 'in', ['picture', 'dummy', 'register_consumed_materials', 'print_label'])]}">
+                <page string="Message If Failure" attrs="{'invisible': [('test_type', 'in', ['picture', 'text', 'record_lotserial_numbers', 'print_label'])]}">
                     <field name="failure_message"/>
                 </page>
             </xpath>

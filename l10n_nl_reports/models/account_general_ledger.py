@@ -101,12 +101,12 @@ class ReportAccountGeneralLedger(models.AbstractModel):
             SELECT COUNT(*), SUM(l.debit), SUM(l.credit)
             FROM account_move_line l, account_move m
             WHERE l.move_id = m.id
-            AND l.date >= '%s'
-            AND l.date <= '%s'
-            AND l.company_id = %d
+            AND l.date >= %s
+            AND l.date <= %s
+            AND l.company_id = %s
             AND m.state != 'draft'
-        """ % (date_from, date_to, company_id.id)
-        self.env.cr.execute(total_query)
+        """
+        self.env.cr.execute(total_query, (date_from, date_to, company_id.id,))
         moves_count, moves_debit, moves_credit = self.env.cr.fetchall()[0]
         journal_x_moves = {}
         for journal in journal_ids:

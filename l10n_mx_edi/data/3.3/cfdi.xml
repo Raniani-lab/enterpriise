@@ -22,7 +22,7 @@
                 t-att-Total="amount_total"
                 t-att-TipoDeComprobante="document_type[0].upper()"
                 t-att-MetodoPago="payment_policy"
-                t-att-LugarExpedicion="supplier.zip"
+                t-att-LugarExpedicion="issued.zip or supplier.zip"
                 t-att-Confirmacion="confirmation">
                 <t t-set="related" t-value="record.get_cfdi_related()"/>
                 <t t-if="related">

@@ -2,15 +2,12 @@
 # This file contains the translation of the following modules:
 # * delivery_bpost
 # 
-# Translators:
-# Paweł Wodyński <pw@myodoo.pl>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.4+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-02 11:20+0000\n"
-"PO-Revision-Date: 2018-08-02 11:20+0000\n"
-"Last-Translator: Paweł Wodyński <pw@myodoo.pl>, 2018\n"
+"POT-Creation-Date: 2018-08-24 11:28+0000\n"
+"PO-Revision-Date: 2018-08-24 11:28+0000\n"
 "Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -276,6 +273,14 @@ msgid "USPS"
 msgstr ""
 
 #. module: delivery_bpost
+#: model:product.product,uom_name:delivery_bpost.product_product_delivery_bpost_domestic
+#: model:product.product,uom_name:delivery_bpost.product_product_delivery_bpost_world
+#: model:product.template,uom_name:delivery_bpost.product_product_delivery_bpost_domestic_product_template
+#: model:product.template,uom_name:delivery_bpost.product_product_delivery_bpost_world_product_template
+msgid "Unit(s)"
+msgstr ""
+
+#. module: delivery_bpost
 #: code:addons/delivery_bpost/models/delivery_bpost.py:91
 #, python-format
 msgid ""
@@ -345,7 +350,7 @@ msgstr ""
 #: model:ir.ui.view,arch_db:delivery_bpost.res_config_settings_view_form_sale
 #: model:ir.ui.view,arch_db:delivery_bpost.res_config_settings_view_form_stock
 msgid "bpost Delivery Methods"
-msgstr "Metody dostawy bpost"
+msgstr ""
 
 #. module: delivery_bpost
 #: code:addons/delivery_bpost/models/bpost_request.py:46

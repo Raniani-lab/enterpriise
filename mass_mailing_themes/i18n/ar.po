@@ -2,12 +2,20 @@
 # This file contains the translation of the following modules:
 # * mass_mailing_themes
 # 
+# Translators:
+# Mustafa Rawi <mustafa@cubexco.com>, 2018
+# Akram Alfusayal <akram_ma@hotmail.com>, 2018
+# Martin Trigaux, 2018
+# Abd El-Rahman Ali <abdelrahman.ali.242@gmail.com>, 2018
+# Hossam Esam <hossamesam17@gmail.com>, 2018
+# Shaima Safar <shaima.safar@open-inside.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-08-24 11:29+0000\n"
 "PO-Revision-Date: 2018-08-24 11:29+0000\n"
+"Last-Translator: Shaima Safar <shaima.safar@open-inside.com>, 2018\n"
 "Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -197,7 +205,7 @@ msgstr ""
 #: model:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
 #: model:ir.ui.view,arch_db:mass_mailing_themes.theme_tech_template
 msgid "Facebook"
-msgstr ""
+msgstr "فيس بوك"
 
 #. module: mass_mailing_themes
 #: model:ir.ui.view,arch_db:mass_mailing_themes.theme_airmail_template
@@ -225,7 +233,7 @@ msgstr ""
 #. module: mass_mailing_themes
 #: model:ir.ui.view,arch_db:mass_mailing_themes.theme_newsletter_template
 msgid "Hi there!"
-msgstr ""
+msgstr "أهلا بك!"
 
 #. module: mass_mailing_themes
 #: model:ir.ui.view,arch_db:mass_mailing_themes.theme_expo_template
@@ -249,7 +257,7 @@ msgstr ""
 #: model:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
 #: model:ir.ui.view,arch_db:mass_mailing_themes.theme_tech_template
 msgid "Logo"
-msgstr ""
+msgstr "الشعار"
 
 #. module: mass_mailing_themes
 #: model:ir.ui.view,arch_db:mass_mailing_themes.theme_bold_template
@@ -274,7 +282,7 @@ msgstr ""
 #: model:ir.ui.view,arch_db:mass_mailing_themes.theme_expo_template
 #: model:ir.ui.view,arch_db:mass_mailing_themes.theme_newsletter_template
 msgid "More Info"
-msgstr ""
+msgstr "معلومات أخرى"
 
 #. module: mass_mailing_themes
 #: model:ir.ui.view,arch_db:mass_mailing_themes.theme_tech_template
@@ -306,7 +314,7 @@ msgstr ""
 #. module: mass_mailing_themes
 #: model:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template
 msgid "Order"
-msgstr ""
+msgstr "الأمر"
 
 #. module: mass_mailing_themes
 #: model:ir.ui.view,arch_db:mass_mailing_themes.theme_airmail_template
@@ -316,7 +324,7 @@ msgstr ""
 #: model:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
 #: model:ir.ui.view,arch_db:mass_mailing_themes.theme_tech_template
 msgid "Photo"
-msgstr ""
+msgstr "الصورة"
 
 #. module: mass_mailing_themes
 #: model:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
@@ -363,7 +371,7 @@ msgstr ""
 #: model:ir.ui.view,arch_db:mass_mailing_themes.theme_expo_template
 #: model:ir.ui.view,arch_db:mass_mailing_themes.theme_newsletter_template
 msgid "Registration"
-msgstr ""
+msgstr "التسجيل"
 
 #. module: mass_mailing_themes
 #: model:ir.ui.view,arch_db:mass_mailing_themes.theme_airmail_template
@@ -431,7 +439,7 @@ msgstr ""
 #: model:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
 #: model:ir.ui.view,arch_db:mass_mailing_themes.theme_tech_template
 msgid "Twitter"
-msgstr ""
+msgstr "تويتر"
 
 #. module: mass_mailing_themes
 #: model:ir.ui.view,arch_db:mass_mailing_themes.theme_tech_template

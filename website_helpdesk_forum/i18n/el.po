@@ -3,15 +3,14 @@
 # * website_helpdesk_forum
 # 
 # Translators:
-# Fotios Tragopoulos <fotistragopoulos@outlook.com>, 2017
-# Kostas Goutoudis <goutoudis@gmail.com>, 2017
+# Martin Trigaux, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 10.saas~18+e\n"
+"Project-Id-Version: Odoo Server saas~11.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-20 11:33+0000\n"
-"PO-Revision-Date: 2017-09-20 11:33+0000\n"
-"Last-Translator: Kostas Goutoudis <goutoudis@gmail.com>, 2017\n"
+"POT-Creation-Date: 2018-06-25 08:34+0000\n"
+"PO-Revision-Date: 2018-06-25 08:34+0000\n"
+"Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: Greek (https://www.transifex.com/odoo/teams/41243/el/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,30 +21,30 @@ msgstr ""
 #. module: website_helpdesk_forum
 #: model:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
 msgid "<span>By </span>"
-msgstr "<span>Από </span>"
+msgstr ""
 
 #. module: website_helpdesk_forum
 #: model:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
 msgid "Click here to view more result..."
-msgstr "Κάντε κλικ για να δείτε περισσότερα αποτελέσματα..."
+msgstr ""
 
 #. module: website_helpdesk_forum
-#: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_ticket_forum_post_id
+#: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_ticket__forum_post_id
 msgid "Forum Post"
-msgstr "Ανάρτηση Φόρουμ"
+msgstr ""
 
 #. module: website_helpdesk_forum
-#: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_ticket_use_website_helpdesk_forum
+#: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_ticket__use_website_helpdesk_forum
 msgid "Help Center Active"
 msgstr ""
 
 #. module: website_helpdesk_forum
-#: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_team_forum_id
+#: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_team__forum_id
 msgid "Help Center Forum"
-msgstr "Φόρουμ Κέντρου Βοήθειας"
+msgstr ""
 
 #. module: website_helpdesk_forum
-#: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_team_forum_url
+#: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_team__forum_url
 msgid "Help Center Forum URL"
 msgstr ""
 
@@ -70,27 +69,27 @@ msgstr ""
 #. module: website_helpdesk_forum
 #: model:ir.ui.view,arch_db:website_helpdesk_forum.website_helpdesk_forum_team_page
 msgid "No question yet."
-msgstr "Δεν υπάρχουν ερωτήσεις ακόμη."
+msgstr ""
 
 #. module: website_helpdesk_forum
 #: model:ir.ui.view,arch_db:website_helpdesk_forum.helpdesk_ticket_view_form_inherit_website_helpdesk_forum
 msgid "Open Post"
-msgstr "Ανοιχτή Ανάρτηση"
+msgstr ""
 
 #. module: website_helpdesk_forum
 #: model:ir.ui.view,arch_db:website_helpdesk_forum.website_helpdesk_forum_team_page
 msgid "Popular Questions"
-msgstr "Δημοφιλείς ερωτήσεις"
+msgstr ""
 
 #. module: website_helpdesk_forum
 #: model:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
 msgid "Question has accepted answer"
-msgstr "Η ερώτηση έχει αποδεκτή απάντηση"
+msgstr ""
 
 #. module: website_helpdesk_forum
 #: model:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
 msgid "Redirect to external link"
-msgstr "Ανακατεύθυνση σε εξωτερικό σύνδεσμο"
+msgstr ""
 
 #. module: website_helpdesk_forum
 #: model:ir.ui.view,arch_db:website_helpdesk_forum.helpdesk_ticket_view_form_inherit_website_helpdesk_forum

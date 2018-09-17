@@ -64,7 +64,7 @@ msgstr "). Na deze datum kan u uw account heropenen tot"
 #. module: sale_subscription
 #: selection:sale.subscription.alert,mrr_change_period:0
 msgid "1 Month"
-msgstr ""
+msgstr "1 maand"
 
 #. module: sale_subscription
 #: selection:sale.subscription.alert,mrr_change_period:0
@@ -752,7 +752,7 @@ msgstr "Geautomatiseerde actie"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__auto_close_limit
 msgid "Automatic closing limit"
-msgstr ""
+msgstr "Automatisch: afsluitingslimiet"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__website_published
@@ -1233,7 +1233,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__activity_date_deadline_range
 msgid "Due Date In"
-msgstr ""
+msgstr "Vervaldatum in"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__activity_date_deadline_range_type
@@ -1321,7 +1321,7 @@ msgstr "Toekomstige activiteiten"
 #. module: sale_subscription
 #: selection:sale.subscription.template,payment_mode:0
 msgid "Generate Draft Invoice"
-msgstr ""
+msgstr "Genereer concept factuur"
 
 #. module: sale_subscription
 #: selection:sale.subscription.template,payment_mode:0
@@ -1344,7 +1344,7 @@ msgstr "Goed"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__good_health_domain
 msgid "Good Health"
-msgstr ""
+msgstr "Goede gezondheid"
 
 #. module: sale_subscription
 #: model:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
@@ -1354,12 +1354,12 @@ msgstr "Groepeer op"
 #. module: sale_subscription
 #: model:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_kanban
 msgid "Happy face"
-msgstr ""
+msgstr "Blij gezicht"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__health
 msgid "Health"
-msgstr ""
+msgstr "Gezondheid"
 
 #. module: sale_subscription
 #: model:ir.module.category,description:sale_subscription.module_category_subscription_management
@@ -1510,7 +1510,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_kanban
 msgid "In #{kanban_getcolorname(record.color.raw_value)}"
-msgstr ""
+msgstr "In #{kanban_getcolorname(record.color.raw_value)}"
 
 #. module: sale_subscription
 #: code:addons/sale_subscription/controllers/portal.py:45
@@ -1781,12 +1781,12 @@ msgstr "Beheer uw betaalmethodes"
 #. module: sale_subscription
 #: selection:sale.subscription.template,payment_mode:0
 msgid "Manual Invoicing"
-msgstr ""
+msgstr "Manueel factureren"
 
 #. module: sale_subscription
 #: selection:sale.subscription.alert,action:0
 msgid "Mark as To Renew"
-msgstr ""
+msgstr "Markeren als te vernieuwen"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__starred_user_ids
@@ -1842,7 +1842,7 @@ msgstr "Model waarop de server actie loopt."
 #. module: sale_subscription
 #: selection:sale.subscription.alert,trigger_condition:0
 msgid "Modification"
-msgstr ""
+msgstr "Wijziging"
 
 #. module: sale_subscription
 #: selection:sale.subscription.template,recurring_rule_type:0
@@ -1875,12 +1875,12 @@ msgstr "Naam"
 #. module: sale_subscription
 #: selection:sale.subscription,health:0
 msgid "Neutral"
-msgstr ""
+msgstr "Neutraal"
 
 #. module: sale_subscription
 #: model:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_kanban
 msgid "Neutral face"
-msgstr ""
+msgstr "Neutraal gezicht"
 
 #. module: sale_subscription
 #: model:sale.subscription.stage,name:sale_subscription.sale_subscription_state_new
@@ -2014,7 +2014,7 @@ msgstr "Overige"
 #. module: sale_subscription
 #: model:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid "Over"
-msgstr ""
+msgstr "Over"
 
 #. module: sale_subscription
 #: selection:sale.subscription,activity_state:0
@@ -2066,7 +2066,7 @@ msgstr "Periode"
 #. module: sale_subscription
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_report_pivot
 msgid "Pivot Subscription Analysis"
-msgstr ""
+msgstr "Pivot abonnementsanalyse"
 
 #. module: sale_subscription
 #: selection:sale.subscription,activity_state:0
@@ -2187,17 +2187,17 @@ msgstr "Beoordeling laatste waarde"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__rating_operator
 msgid "Rating Operator"
-msgstr ""
+msgstr "Beoordeling operator"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__rating_percentage
 msgid "Rating Percentage"
-msgstr ""
+msgstr "Beoordeling percentage"
 
 #. module: sale_subscription
 #: model:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid "Rating Satisfaction"
-msgstr ""
+msgstr "Beoordelingstevredenheid"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__rating_count
@@ -2282,12 +2282,12 @@ msgstr "Verantwoordelijke gebruiker"
 #. module: sale_subscription
 #: selection:sale.subscription.alert,activity_user:0
 msgid "Responsible of Contract"
-msgstr ""
+msgstr "Verantwoordelijke van contract"
 
 #. module: sale_subscription
 #: model:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_kanban
 msgid "Sad face"
-msgstr ""
+msgstr "Ongelukkig gezicht"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__sale_order_count
@@ -2304,7 +2304,7 @@ msgstr "Abonnementen dashboard"
 #: model:ir.cron,cron_name:sale_subscription.ir_cron_sale_subscription_update_kpi
 #: model:ir.cron,name:sale_subscription.ir_cron_sale_subscription_update_kpi
 msgid "Sale Subscription: Update KPI"
-msgstr ""
+msgstr "Verkoop abonnement: update KPI"
 
 #. module: sale_subscription
 #: model:ir.actions.server,name:sale_subscription.account_analytic_cron_for_invoice_ir_actions_server
@@ -2333,7 +2333,7 @@ msgstr "Verkoop"
 #. module: sale_subscription
 #: selection:sale.subscription.alert,activity_user:0
 msgid "Sales Channel Leader"
-msgstr ""
+msgstr "Verkoop kanaalleider"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_order_line
@@ -2395,7 +2395,7 @@ msgstr ""
 #. module: sale_subscription
 #: selection:sale.subscription.alert,action:0
 msgid "Send an email to the customer"
-msgstr ""
+msgstr "Verzend een e-mail naar de klant"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__sequence
@@ -2412,12 +2412,12 @@ msgstr "Server-acties"
 #. module: sale_subscription
 #: selection:sale.subscription.alert,action:0
 msgid "Set a stage on the subscription"
-msgstr ""
+msgstr "Stel een fase in op het abonnement"
 
 #. module: sale_subscription
 #: selection:sale.subscription.alert,action:0
 msgid "Set a tag on the subscription"
-msgstr ""
+msgstr "Stel een label in op het abonnement"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_alert__binding_model_id
@@ -2439,7 +2439,7 @@ msgstr "Instellingen"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__starred
 msgid "Show Subscription on dashboard"
-msgstr ""
+msgstr "Toon abonnementen op dashboard"
 
 #. module: sale_subscription
 #: model:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
@@ -2449,13 +2449,13 @@ msgstr "Toon alle records welke een actiedatum voor vandaag hebben"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__product_ids
 msgid "Specific Products"
-msgstr ""
+msgstr "Specifieke producten"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__activity_user_ids
 #: selection:sale.subscription.alert,activity_user:0
 msgid "Specific Users"
-msgstr ""
+msgstr "Specifieke gebruiker"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__stage_id
@@ -2468,12 +2468,12 @@ msgstr "Fase"
 #. module: sale_subscription
 #: model:mail.message.subtype,name:sale_subscription.subtype_stage_change
 msgid "Stage Change"
-msgstr ""
+msgstr "Fase wijziging"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__stage_from_id
 msgid "Stage From"
-msgstr ""
+msgstr "Fase van"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_stage__name
@@ -2483,7 +2483,7 @@ msgstr "Naam fase"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__stage_to_id
 msgid "Stage To"
-msgstr ""
+msgstr "Fase naar"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__date_start
@@ -2538,7 +2538,7 @@ msgstr "Abonnement"
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_subscription_alert
 msgid "Subscription Alert"
-msgstr ""
+msgstr "Abonnement waarschuwing"
 
 #. module: sale_subscription
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_report_cohort_action
@@ -2748,7 +2748,7 @@ msgstr "Teamleider"
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_alert__activity_user_field_name
 msgid "Technical name of the user on the record"
-msgstr ""
+msgstr "Technische naam van de gebruiker op het record"
 
 #. module: sale_subscription
 #: model:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_search
@@ -3021,7 +3021,7 @@ msgstr "Gebruik de medewerker zijn werkplanning"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__activity_user_field_name
 msgid "User field name"
-msgstr ""
+msgstr "Gebruiker veldnaam"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_res_users

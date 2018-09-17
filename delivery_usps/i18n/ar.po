@@ -2,12 +2,22 @@
 # This file contains the translation of the following modules:
 # * delivery_usps
 # 
+# Translators:
+# Amer Hazaa <eng.amer.it@gmail.com>, 2018
+# Mustafa Rawi <mustafa@cubexco.com>, 2018
+# Martin Trigaux, 2018
+# jahzar <jahzar@gmail.com>, 2018
+# hoxhe Aits <hoxhe0@gmail.com>, 2018
+# Mohammed Ibrahim <m.ibrahim@mussder.com>, 2018
+# Osama Ahmaro <osamaahmaro@gmail.com>, 2018
+# Shaima Safar <shaima.safar@open-inside.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-08-24 11:28+0000\n"
 "PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"Last-Translator: Shaima Safar <shaima.safar@open-inside.com>, 2018\n"
 "Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,38 +28,38 @@ msgstr ""
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_intl_non_delivery_option:0
 msgid "Abandon"
-msgstr ""
+msgstr "تنازل"
 
 #. module: delivery_usps
 #: model:ir.model.fields,field_description:delivery_usps.field_delivery_carrier__usps_account_validated
 msgid "Account Validated"
-msgstr ""
+msgstr "التحقق من صحة الحساب"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,delivery_type:0
 msgid "Based on Rules"
-msgstr ""
+msgstr "بناء على تعليمات"
 
 #. module: delivery_usps
 #: model:ir.model,name:delivery_usps.model_delivery_carrier
 msgid "Carrier"
-msgstr ""
+msgstr "شركة الشحن"
 
 #. module: delivery_usps
 #: model:ir.model.fields,help:delivery_usps.field_delivery_carrier__usps_account_validated
 msgid "Check this box if your account is validated by USPS"
-msgstr ""
+msgstr "حدد هذا المربع إذا تم التحقق من حسابك بواسطة USPS"
 
 #. module: delivery_usps
 #: code:addons/delivery_usps/models/usps_request.py:64
 #, python-format
 msgid "Company phone number is invalid. Please insert a US phone number."
-msgstr ""
+msgstr "رقم هاتف الشركة غير صالح. الرجاء إدخال رقم هاتف في الولايات المتحدة."
 
 #. module: delivery_usps
 #: model:ir.model.fields,field_description:delivery_usps.field_delivery_carrier__usps_content_type
 msgid "Content Type"
-msgstr ""
+msgstr "نوع المحتوي"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,delivery_type:0
@@ -59,17 +69,17 @@ msgstr ""
 #. module: delivery_usps
 #: model:ir.model.fields,field_description:delivery_usps.field_delivery_carrier__usps_delivery_nature
 msgid "Delivery Nature"
-msgstr ""
+msgstr "نوع الشحن"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_content_type:0
 msgid "Documents"
-msgstr ""
+msgstr "الوثائق"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_delivery_nature:0
 msgid "Domestic"
-msgstr ""
+msgstr "محلي"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,delivery_type:0
@@ -87,70 +97,70 @@ msgstr ""
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_service:0
 msgid "Express"
-msgstr ""
+msgstr "الشحن السريع"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,delivery_type:0
 msgid "FedEx"
-msgstr ""
+msgstr "فيدكس"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_service:0
 msgid "First Class"
-msgstr ""
+msgstr "الدرجة الأولى"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,delivery_type:0
 msgid "Fixed Price"
-msgstr ""
+msgstr "الاسعار الثابته"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_first_class_mail_type:0
 msgid "Flat"
-msgstr ""
+msgstr "مسطح"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_mail_type:0
 msgid "Flat Rate"
-msgstr ""
+msgstr "سعر المسطح"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_domestic_regular_container:0
 #: selection:delivery.carrier,usps_international_regular_container:0
 #: selection:delivery.carrier,usps_mail_type:0
 msgid "Flat Rate Box"
-msgstr ""
+msgstr "سعر صندوق مسطح"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_domestic_regular_container:0
 #: selection:delivery.carrier,usps_international_regular_container:0
 msgid "Flat Rate Envelope"
-msgstr ""
+msgstr "سعر مغلف مسطح"
 
 #. module: delivery_usps
 #: model:ir.ui.view,arch_db:delivery_usps.usps_shipping_request
 msgid "From Company"
-msgstr ""
+msgstr "من شركة"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_content_type:0
 msgid "Gift"
-msgstr ""
+msgstr "هدية"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_delivery_nature:0
 msgid "International"
-msgstr ""
+msgstr "دولي"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_size_container:0
 msgid "Large"
-msgstr ""
+msgstr "كبير"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_mail_type:0
 msgid "Large Envelope"
-msgstr ""
+msgstr "مغلف كبير"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_domestic_regular_container:0
@@ -167,12 +177,12 @@ msgstr ""
 #: selection:delivery.carrier,usps_first_class_mail_type:0
 #: selection:delivery.carrier,usps_mail_type:0
 msgid "Letter"
-msgstr ""
+msgstr "خطاب"
 
 #. module: delivery_usps
 #: model:ir.model.fields,field_description:delivery_usps.field_delivery_carrier__usps_machinable
 msgid "Machinable"
-msgstr ""
+msgstr "ألالة"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_domestic_regular_container:0
@@ -197,17 +207,17 @@ msgstr ""
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_label_file_type:0
 msgid "PDF"
-msgstr ""
+msgstr "PDF"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_mail_type:0
 msgid "Package"
-msgstr ""
+msgstr "طرد"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_first_class_mail_type:0
 msgid "Package Service"
-msgstr ""
+msgstr "خدمة الطرود"
 
 #. module: delivery_usps
 #: model:ir.model.fields,field_description:delivery_usps.field_delivery_carrier__usps_custom_container_girth
@@ -269,7 +279,7 @@ msgstr ""
 #: code:addons/delivery_usps/models/usps_request.py:76
 #, python-format
 msgid "Please provide at least one item to ship."
-msgstr ""
+msgstr "يرجى تقديم عنصر واحد على الأقل لشحن."
 
 #. module: delivery_usps
 #: code:addons/delivery_usps/models/usps_request.py:60
@@ -282,17 +292,17 @@ msgstr ""
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_first_class_mail_type:0
 msgid "Postcard"
-msgstr ""
+msgstr "بطاقة بريدية"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_service:0
 msgid "Priority"
-msgstr ""
+msgstr "الأولوية"
 
 #. module: delivery_usps
 #: model:ir.model.fields,field_description:delivery_usps.field_delivery_carrier__delivery_type
 msgid "Provider"
-msgstr ""
+msgstr "المزود"
 
 #. module: delivery_usps
 #: code:addons/delivery_usps/models/usps_request.py:372
@@ -303,22 +313,22 @@ msgstr ""
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_container:0
 msgid "Rectangular"
-msgstr ""
+msgstr "مستطيل الشكل"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_intl_non_delivery_option:0
 msgid "Redirect"
-msgstr ""
+msgstr "إعادة توجيه"
 
 #. module: delivery_usps
 #: model:ir.model.fields,field_description:delivery_usps.field_delivery_carrier__usps_redirect_partner_id
 msgid "Redirect Partner"
-msgstr ""
+msgstr "إعادة توجيه الشريك"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_size_container:0
 msgid "Regular"
-msgstr ""
+msgstr "منتظم "
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_container:0
@@ -329,18 +339,18 @@ msgstr ""
 #: selection:delivery.carrier,usps_content_type:0
 #: selection:delivery.carrier,usps_intl_non_delivery_option:0
 msgid "Return"
-msgstr ""
+msgstr "مرتجع"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_content_type:0
 msgid "Sample"
-msgstr ""
+msgstr "عينة"
 
 #. module: delivery_usps
 #: code:addons/delivery_usps/models/delivery_usps.py:169
 #, python-format
 msgid "Shipment N° %s has been cancelled"
-msgstr ""
+msgstr "تم إلغاء الشحنة N° %s"
 
 #. module: delivery_usps
 #: code:addons/delivery_usps/models/delivery_usps.py:149
@@ -356,7 +366,7 @@ msgstr ""
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_domestic_regular_container:0
 msgid "Small Flat Rate Envelope"
-msgstr ""
+msgstr "سعر مغلف صغير مسطح  "
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_label_file_type:0
@@ -377,7 +387,7 @@ msgstr ""
 msgid ""
 "The estimated price cannot be computed because the weight of your product is"
 " missing."
-msgstr ""
+msgstr "لا يمكن أن تحسب السعر التقديري للمنتج الخاص بك لأنه الوزن مفقود"
 
 #. module: delivery_usps
 #: code:addons/delivery_usps/models/usps_request.py:67
@@ -396,7 +406,7 @@ msgstr ""
 #. module: delivery_usps
 #: model:ir.ui.view,arch_db:delivery_usps.usps_shipping_request
 msgid "To Company"
-msgstr ""
+msgstr "إلى الشركة"
 
 #. module: delivery_usps
 #: model:ir.model.fields,field_description:delivery_usps.field_delivery_carrier__usps_international_regular_container
@@ -411,17 +421,17 @@ msgstr ""
 #. module: delivery_usps
 #: model:ir.model.fields,field_description:delivery_usps.field_delivery_carrier__usps_container
 msgid "Type of container"
-msgstr ""
+msgstr "نوع الحاوية"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,delivery_type:0
 msgid "UPS"
-msgstr ""
+msgstr "UPS"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,delivery_type:0
 msgid "USPS"
-msgstr ""
+msgstr "USPS"
 
 #. module: delivery_usps
 #: model:ir.ui.view,arch_db:delivery_usps.view_delivery_carrier_form_with_provider_usps
@@ -495,7 +505,7 @@ msgstr ""
 #: model:product.template,uom_name:delivery_usps.product_product_delivery_usps_domestic_product_template
 #: model:product.template,uom_name:delivery_usps.product_product_delivery_usps_international_product_template
 msgid "Unit(s)"
-msgstr ""
+msgstr "وحدة(ات)"
 
 #. module: delivery_usps
 #: model:ir.model.fields,field_description:delivery_usps.field_delivery_carrier__usps_size_container
@@ -511,7 +521,7 @@ msgstr ""
 #. module: delivery_usps
 #: selection:delivery.carrier,delivery_type:0
 msgid "bpost"
-msgstr ""
+msgstr "bpost"
 
 #. module: delivery_usps
 #: model:product.product,weight_uom_name:delivery_usps.product_product_delivery_usps_domestic
@@ -519,4 +529,4 @@ msgstr ""
 #: model:product.template,weight_uom_name:delivery_usps.product_product_delivery_usps_domestic_product_template
 #: model:product.template,weight_uom_name:delivery_usps.product_product_delivery_usps_international_product_template
 msgid "kg"
-msgstr ""
+msgstr "كجم"

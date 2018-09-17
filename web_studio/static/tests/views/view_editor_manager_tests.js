@@ -23,6 +23,10 @@ QUnit.module('ViewEditorManager', {
                         string: "Display Name",
                         type: "char"
                     },
+                    related_attachment_count: {
+                        string: 'Attachment count',
+                        type: 'integer',
+                    },
                     char_field: {
                         string:"A char",
                         type: "char",
@@ -69,6 +73,10 @@ QUnit.module('ViewEditorManager', {
                     id: 7,
                     display_name: "jacques",
                 }],
+            },
+            'ir.attachment': {
+                fields: {},
+                records: [],
             },
         };
     }

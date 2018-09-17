@@ -1,24 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data noupdate="1">
-        <!-- Folders -->
-
-        <record id="documents_accounting_folder" model="documents.folder">
-            <field name="name">Accounting</field>
-        </record>
 
         <!-- Workflow Rules -->
 
-        <record id="vendor_bill_rule" model="documents.workflow.rule">
+        <record id="vendor_bill_rule" model="documents.workflow.rule" forcecreate="0">
             <field name="name">Create a vendor bill</field>
             <field name="create_model">account.invoice.in_invoice</field>
-            <field name="domain_folder_id" ref="documents_accounting_folder"/>
+            <field name="domain_folder_id" ref="documents.documents_finance_folder"/>
         </record>
 
-        <record id="credit_note_rule" model="documents.workflow.rule">
+        <record id="credit_note_rule" model="documents.workflow.rule" forcecreate="0">
             <field name="name">Create a credit note</field>
             <field name="create_model">account.invoice.out_refund</field>
-            <field name="domain_folder_id" ref="documents_accounting_folder"/>
+            <field name="domain_folder_id" ref="documents.documents_finance_folder"/>
         </record>
 
     </data>

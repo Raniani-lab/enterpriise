@@ -7,7 +7,7 @@ from odoo import fields, models
 class ResPartner(models.Model):
     _inherit = 'res.partner'
 
-    signature_count = fields.Integer(compute='_compute_signature_count', string="# Signatures")
+    signature_count = fields.Integer(compute='_compute_signature_count', string="# Signatures", groups='sign.group_sign_user')
 
     def _compute_signature_count(self):
         signature_data = self.env['sign.request.item'].read_group([('partner_id', 'in', self.ids)], ['partner_id'], ['partner_id'])

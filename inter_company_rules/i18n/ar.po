@@ -2,12 +2,19 @@
 # This file contains the translation of the following modules:
 # * inter_company_rules
 # 
+# Translators:
+# Mustafa Rawi <mustafa@cubexco.com>, 2018
+# Martin Trigaux, 2018
+# hoxhe Aits <hoxhe0@gmail.com>, 2018
+# Osoul <baruni@osoul.ly>, 2018
+# Shaima Safar <shaima.safar@open-inside.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.3+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-25 08:34+0000\n"
 "PO-Revision-Date: 2018-06-25 08:34+0000\n"
+"Last-Translator: Shaima Safar <shaima.safar@open-inside.com>, 2018\n"
 "Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,7 +26,7 @@ msgstr ""
 #: code:addons/inter_company_rules/models/account_invoice.py:89
 #, python-format
 msgid " Invoice: "
-msgstr ""
+msgstr "فاتورة:"
 
 #. module: inter_company_rules
 #: model:ir.ui.view,arch_db:inter_company_rules.res_config_settings_view_form
@@ -51,17 +58,17 @@ msgstr ""
 #: model:ir.model.fields,field_description:inter_company_rules.field_res_company__applicable_on
 #: model:ir.model.fields,field_description:inter_company_rules.field_res_config_settings__applicable_on
 msgid "Applicable On"
-msgstr ""
+msgstr "ينطبق على"
 
 #. module: inter_company_rules
 #: model:ir.model.fields,field_description:inter_company_rules.field_account_invoice__auto_generated
 msgid "Auto Generated Document"
-msgstr ""
+msgstr "مولد تلقائي للوثيقة"
 
 #. module: inter_company_rules
 #: model:ir.model.fields,field_description:inter_company_rules.field_purchase_order__auto_generated
 msgid "Auto Generated Purchase Order"
-msgstr ""
+msgstr "مولد تلقائي لامر شراء"
 
 #. module: inter_company_rules
 #: model:ir.model.fields,field_description:inter_company_rules.field_sale_order__auto_generated
@@ -77,7 +84,7 @@ msgstr ""
 #. module: inter_company_rules
 #: model:ir.model,name:inter_company_rules.model_res_company
 msgid "Companies"
-msgstr ""
+msgstr "المؤسسات"
 
 #. module: inter_company_rules
 #: code:addons/inter_company_rules/models/purchase_order.py:82
@@ -122,7 +129,7 @@ msgstr ""
 #. module: inter_company_rules
 #: model:ir.model,name:inter_company_rules.model_account_invoice
 msgid "Invoice"
-msgstr ""
+msgstr "الفاتورة"
 
 #. module: inter_company_rules
 #: code:addons/inter_company_rules/models/account_invoice.py:81
@@ -148,12 +155,12 @@ msgstr ""
 #: selection:res.company,applicable_on:0
 #: selection:res.config.settings,applicable_on:0
 msgid "Purchase Order"
-msgstr ""
+msgstr "أمر شراء"
 
 #. module: inter_company_rules
 #: model:ir.model,name:inter_company_rules.model_sale_order
 msgid "Quotation"
-msgstr ""
+msgstr "عرض مبدئي"
 
 #. module: inter_company_rules
 #: model:ir.model.fields,help:inter_company_rules.field_res_company__intercompany_user_id
@@ -171,7 +178,7 @@ msgstr ""
 #: selection:res.company,applicable_on:0
 #: selection:res.config.settings,applicable_on:0
 msgid "Sale Order"
-msgstr ""
+msgstr "أمر البيع"
 
 #. module: inter_company_rules
 #: selection:res.company,applicable_on:0
@@ -182,7 +189,7 @@ msgstr ""
 #. module: inter_company_rules
 #: model:ir.model.fields,field_description:inter_company_rules.field_res_config_settings__rules_company_id
 msgid "Select Company"
-msgstr ""
+msgstr "اختر شركة"
 
 #. module: inter_company_rules
 #: model:ir.model.fields,help:inter_company_rules.field_res_config_settings__rules_company_id
@@ -198,12 +205,12 @@ msgstr ""
 #. module: inter_company_rules
 #: model:ir.model.fields,field_description:inter_company_rules.field_account_invoice__auto_invoice_id
 msgid "Source Invoice"
-msgstr ""
+msgstr "مصدر الفاتورة"
 
 #. module: inter_company_rules
 #: model:ir.model.fields,field_description:inter_company_rules.field_sale_order__auto_purchase_order_id
 msgid "Source Purchase Order"
-msgstr ""
+msgstr "مصدر طلب الشراء"
 
 #. module: inter_company_rules
 #: model:ir.model.fields,field_description:inter_company_rules.field_purchase_order__auto_sale_order_id
@@ -223,12 +230,12 @@ msgstr ""
 #. module: inter_company_rules
 #: model:ir.model.fields,field_description:inter_company_rules.field_res_company__warehouse_id
 msgid "Warehouse"
-msgstr ""
+msgstr "المخزن"
 
 #. module: inter_company_rules
 #: model:ir.model.fields,field_description:inter_company_rules.field_res_config_settings__warehouse_id
 msgid "Warehouse For Purchase Orders"
-msgstr ""
+msgstr "مستودع للأوامر الشراء"
 
 #. module: inter_company_rules
 #: model:ir.ui.view,arch_db:inter_company_rules.res_config_settings_view_form
@@ -267,12 +274,12 @@ msgstr ""
 #. module: inter_company_rules
 #: model:ir.model,name:inter_company_rules.model_res_config_settings
 msgid "res.config.settings"
-msgstr ""
+msgstr "الدقة.التكوين.إعدادات"
 
 #. module: inter_company_rules
 #: model:ir.ui.view,arch_db:inter_company_rules.res_config_settings_view_form
 msgid "to"
-msgstr ""
+msgstr "إلى"
 
 #. module: inter_company_rules
 #: model:ir.ui.view,arch_db:inter_company_rules.view_company_inter_change_inherit_form

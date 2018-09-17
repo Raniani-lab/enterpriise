@@ -7,7 +7,7 @@ from odoo import fields, models
 class ResPartner(models.Model):
     _inherit = 'res.partner'
 
-    subscription_count = fields.Integer(string='Subscriptions Count', compute='_subscription_count')
+    subscription_count = fields.Integer(string='Subscriptions', compute='_subscription_count')
 
     def _subscription_count(self):
         subscription_data = self.env['sale.subscription'].read_group(domain=[('partner_id', 'in', self.ids)],

@@ -6,17 +6,37 @@
             <field name="priority" eval="70"/>
             <field name="inherit_id" ref="base.res_config_settings_view_form"/>
             <field name="arch" type="xml">
-                <xpath expr="//div[hasclass('o_documents_right_pane')]" position="inside">
-                    <label for="account_folder"/>
-                    <span class="fa fa-lg fa-folder" title="Folder" role="img" aria-label="Folder"/>
-                    <div class="row">
-                        <div class="text-muted col-md-8">
-                            Default destination for the attachments created in accounting.
-                        </div>
-                    </div>
-                    <div class="content-group">
-                        <div class="mt16">
-                           <field name="account_folder"/>
+                <xpath expr="//div[hasclass('o_documents_block')]" position="inside">
+                    <h2>Folder Settings - Accounting</h2>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-xs-12 col-md-6 o_setting_box">
+                            <div class="o_setting_left_pane">
+                                <field name="dms_account_settings"/>
+                            </div>
+                            <div class="o_setting_right_pane o_documents_right_pane">
+                                <label for="account_folder"/>
+                                <div class="row">
+                                    <div class="text-muted col-md-12">
+                                        Default destination for any attachment created in accounting.
+                                    </div>
+                                </div>
+                                <div class="content-group" attrs="{'invisible' : [('dms_account_settings', '=', False)]}">
+                                    <div class="mt16">
+                                       <field name="account_folder" attrs="{'required' : [('dms_account_settings', '=', True)]}"/>
+                                    </div>
+                                </div>
+                                <label for="account_tags"/>
+                                <div class="row">
+                                    <div class="text-muted col-md-12">
+                                        Default tags for any attachment created in accounting.
+                                    </div>
+                                </div>
+                                <div class="content-group" attrs="{'invisible' : [('dms_account_settings', '=', False)]}">
+                                    <div class="mt16">
+                                       <field name="account_tags" widget="many2many_tags" domain="[('folder_id','=', account_folder)]"/>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </xpath>

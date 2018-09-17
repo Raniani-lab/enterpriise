@@ -3,34 +3,42 @@
 # * website_calendar
 # 
 # Translators:
-# Martin Trigaux <mat@odoo.com>, 2017
-# ifaraz ir <ifarazir@gmail.com>, 2017
-# Hamid Darabi <hamid.darabi@gmail.com>, 2017
-# Hamed Mohammadi <hamed@dehongi.com>, 2017
-# Sepehr Khoshnood <sepehr.kho@gmail.com>, 2017
+# Zahed Alfak <tamass4116@gmail.com>, 2018
+# Martin Trigaux, 2018
+# Morovat Guivi <tarjomac@gmail.com>, 2018
+# Hamid Darabi, 2018
+# Faraz Sadri Alamdari <ifarazir@gmail.com>, 2018
+# mohammad azarbara <mohammadazarbara98@gmail.com>, 2018
+# Hamed Mohammadi <hamed@dehongi.com>, 2018
+# Sepehr Khoshnood <sepehr.kho@gmail.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 10.saas~18+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-02 11:50+0000\n"
-"PO-Revision-Date: 2017-10-02 11:50+0000\n"
-"Last-Translator: Sepehr Khoshnood <sepehr.kho@gmail.com>, 2017\n"
+"POT-Creation-Date: 2018-08-24 11:29+0000\n"
+"PO-Revision-Date: 2018-08-24 11:29+0000\n"
+"Last-Translator: Sepehr Khoshnood <sepehr.kho@gmail.com>, 2018\n"
 "Language-Team: Persian (https://www.transifex.com/odoo/teams/41243/fa/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Language: fa\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #. module: website_calendar
-#: code:addons/website_calendar/models/calendar_appointment.py:63
+#: code:addons/website_calendar/models/calendar_appointment.py:65
 #, python-format
 msgid " (copy)"
 msgstr "(کپی)"
 
 #. module: website_calendar
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type_appointment_count
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__appointment_count
 msgid "# Appointments"
+msgstr ""
+
+#. module: website_calendar
+#: model:ir.ui.view,arch_db:website_calendar.appointment_calendar
+msgid "#{day['today_cls'] and 'Today' or ''}"
 msgstr ""
 
 #. module: website_calendar
@@ -58,6 +66,11 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.appointment_form
 msgid "-- select a country --"
+msgstr ""
+
+#. module: website_calendar
+#: model:calendar.alarm,name:website_calendar.calendar_alarm_data_1h_sms
+msgid "1 Hour SMS text"
 msgstr ""
 
 #. module: website_calendar
@@ -95,7 +108,7 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 msgid "<span> hours</span>"
-msgstr ""
+msgstr "<span> ساعت</span>"
 
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
@@ -147,9 +160,14 @@ msgid "A text message reminder is sent to you before your appointment"
 msgstr ""
 
 #. module: website_calendar
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_event_access_token
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_event__access_token
 msgid "Access Token"
-msgstr ""
+msgstr "توکن دسترسی"
+
+#. module: website_calendar
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_needaction
+msgid "Action Needed"
+msgstr "اقدام مورد نیاز است"
 
 #. module: website_calendar
 #: model:ir.actions.act_window,name:website_calendar.website_calendar_report
@@ -170,7 +188,7 @@ msgid ""
 msgstr ""
 
 #. module: website_calendar
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_answer_name
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_answer__name
 #: model:ir.ui.view,arch_db:website_calendar.calendar_appointment_answer_view_form
 msgid "Answer"
 msgstr "پاسخ"
@@ -178,6 +196,8 @@ msgstr "پاسخ"
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.appointment
 #: model:ir.ui.view,arch_db:website_calendar.appointment_form
+#: model:ir.ui.view,arch_db:website_calendar.index
+#: model:website.menu,name:website_calendar.menu_appointment
 msgid "Appointment"
 msgstr ""
 
@@ -187,7 +207,7 @@ msgid "Appointment Confirmation"
 msgstr ""
 
 #. module: website_calendar
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type_appointment_duration
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__appointment_duration
 msgid "Appointment Duration"
 msgstr ""
 
@@ -203,9 +223,9 @@ msgstr ""
 
 #. module: website_calendar
 #: model:ir.model,name:website_calendar.model_calendar_appointment_type
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question_appointment_type_id
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_slot_appointment_type_id
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type_name
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question__appointment_type_id
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_slot__appointment_type_id
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__name
 #: model:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 #: model:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_tree
 msgid "Appointment Type"
@@ -213,7 +233,6 @@ msgstr ""
 
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.appointment_validated
-#: model:ir.ui.view,arch_db:website_calendar.index
 msgid "Appointment:"
 msgstr ""
 
@@ -223,6 +242,7 @@ msgid "Appointment<span class=\"chevron\"/>"
 msgstr ""
 
 #. module: website_calendar
+#: model:ir.model.fields,field_description:website_calendar.field_res_users__group_website_calendar_user
 #: model:ir.module.category,name:website_calendar.module_category_calendar
 #: model:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 #: model:ir.ui.view,arch_db:website_calendar.calendar_event_view_graph
@@ -231,9 +251,9 @@ msgid "Appointments"
 msgstr ""
 
 #. module: website_calendar
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type_assignation_method
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__assignation_method
 msgid "Assignation Method"
-msgstr ""
+msgstr "روش محول کردن"
 
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.appointment_validated
@@ -241,12 +261,12 @@ msgid "Attendees:"
 msgstr ""
 
 #. module: website_calendar
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type_slot_ids
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__slot_ids
 msgid "Availabilities"
 msgstr ""
 
 #. module: website_calendar
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question_answer_ids
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question__answer_ids
 msgid "Available Answers"
 msgstr ""
 
@@ -276,7 +296,7 @@ msgid "Calendar Scheduler Slots"
 msgstr ""
 
 #. module: website_calendar
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type_min_cancellation_hours
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__min_cancellation_hours
 msgid "Cancel Before (hours)"
 msgstr ""
 
@@ -291,11 +311,6 @@ msgid "Chosen by the Customer"
 msgstr ""
 
 #. module: website_calendar
-#: model:ir.actions.act_window,help:website_calendar.calendar_appointment_type_action
-msgid "Click to create a new appointment type."
-msgstr ""
-
-#. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.appointment_form
 msgid "Confirm Appointment <span class=\"fa fa-arrow-right\"/>"
 msgstr ""
@@ -306,7 +321,7 @@ msgid "Confirm your details"
 msgstr ""
 
 #. module: website_calendar
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type_message_confirmation
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_confirmation
 msgid "Confirmation Message"
 msgstr ""
 
@@ -315,7 +330,7 @@ msgstr ""
 #: model:ir.ui.view,arch_db:website_calendar.appointment_form
 #: model:ir.ui.view,arch_db:website_calendar.index
 msgid "Confirmation<span class=\"chevron\"/>"
-msgstr ""
+msgstr "تایید کردن<span class=\"chevron\"/>"
 
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.appointment_validated
@@ -325,28 +340,33 @@ msgstr "تایید شد"
 #. module: website_calendar
 #: model:ir.model,name:website_calendar.model_res_partner
 msgid "Contact"
-msgstr "تماس"
+msgstr "مخاطب"
 
 #. module: website_calendar
 #. openerp-web
 #: code:addons/website_calendar/static/src/js/appointment_employee_url.js:67
 #, python-format
 msgid "Copied !"
+msgstr "کپی شد !"
+
+#. module: website_calendar
+#: model:ir.actions.act_window,help:website_calendar.calendar_appointment_type_action
+msgid "Create a new appointment type"
 msgstr ""
 
 #. module: website_calendar
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_answer_create_uid
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question_create_uid
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_slot_create_uid
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type_create_uid
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_answer__create_uid
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question__create_uid
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_slot__create_uid
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__create_uid
 msgid "Created by"
 msgstr "ایجاد شده توسط"
 
 #. module: website_calendar
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_answer_create_date
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question_create_date
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_slot_create_date
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type_create_date
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_answer__create_date
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question__create_date
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_slot__create_date
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__create_date
 msgid "Created on"
 msgstr "ایجاد شده در"
 
@@ -361,12 +381,12 @@ msgid "Description:"
 msgstr "شرح:"
 
 #. module: website_calendar
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_answer_display_name
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question_display_name
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_slot_display_name
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type_display_name
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_answer__display_name
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question__display_name
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_slot__display_name
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__display_name
 msgid "Display Name"
-msgstr "نام نشان داده شده"
+msgstr "نام نمایشی"
 
 #. module: website_calendar
 #: selection:calendar.appointment.question,question_type:0
@@ -379,7 +399,7 @@ msgid "Duration:"
 msgstr ""
 
 #. module: website_calendar
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type_employee_ids
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__employee_ids
 #: model:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 msgid "Employees"
 msgstr "کارمندان"
@@ -388,6 +408,21 @@ msgstr "کارمندان"
 #: model:ir.model,name:website_calendar.model_calendar_event
 msgid "Event"
 msgstr "رویداد"
+
+#. module: website_calendar
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_follower_ids
+msgid "Followers"
+msgstr "دنبال‌کنندگان"
+
+#. module: website_calendar
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_channel_ids
+msgid "Followers (Channels)"
+msgstr "پیروان (کانال ها)"
+
+#. module: website_calendar
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_partner_ids
+msgid "Followers (Partners)"
+msgstr "پیروان (شرکاء)"
 
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.appointment_calendar
@@ -400,25 +435,35 @@ msgid "Friday"
 msgstr "جمعه"
 
 #. module: website_calendar
-#: model:calendar.appointment.type,message_intro:website_calendar.calendar_appointment
-msgid ""
-"Get a <strong>customized demo</strong> and an <strong>analysis of your "
-"needs</strong>."
-msgstr ""
-
-#. module: website_calendar
-#: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type_assignation_method
+#: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__assignation_method
 msgid ""
 "How employees will be assigned to meetings customers book on your website."
 msgstr ""
 
 #. module: website_calendar
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_answer_id
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question_id
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_slot_id
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type_id
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_answer__id
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question__id
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_slot__id
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__id
 msgid "ID"
 msgstr "شناسه"
+
+#. module: website_calendar
+#: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__message_unread
+msgid "If checked new messages require your attention."
+msgstr ""
+"اگر این گزینه را انتخاب کنید، پیام‌های جدید به توجه شما نیاز خواهند داشت."
+
+#. module: website_calendar
+#: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__message_needaction
+msgid "If checked, new messages require your attention."
+msgstr ""
+"اگر این گزینه را انتخاب کنید، پیام‌های جدید به توجه شما نیاز خواهند داشت."
+
+#. module: website_calendar
+#: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__message_has_error
+msgid "If checked, some messages have a delivery error."
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.setup
@@ -434,48 +479,58 @@ msgid "Individual Appointment Link"
 msgstr ""
 
 #. module: website_calendar
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type_message_intro
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_intro
 msgid "Introduction Message"
 msgstr ""
 
 #. module: website_calendar
-#: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type_country_ids
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_is_follower
+msgid "Is Follower"
+msgstr "دنبال می کند"
+
+#. module: website_calendar
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__is_published
+msgid "Is published"
+msgstr ""
+
+#. module: website_calendar
+#: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__country_ids
 msgid ""
 "Keep empty to allow visitors from any country, otherwise you only allow "
 "visitors from selected countries"
 msgstr ""
 
 #. module: website_calendar
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_answer___last_update
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question___last_update
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_slot___last_update
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type___last_update
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_answer____last_update
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question____last_update
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_slot____last_update
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type____last_update
 msgid "Last Modified on"
-msgstr "آخرین به‌روزرسانی در تاریخ "
+msgstr "آخرین تغییر در"
 
 #. module: website_calendar
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_answer_write_uid
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question_write_uid
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_slot_write_uid
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type_write_uid
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_answer__write_uid
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question__write_uid
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_slot__write_uid
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__write_uid
 msgid "Last Updated by"
-msgstr "آخرین به روز رسانی توسط"
+msgstr "آخرین تغییر توسط"
 
 #. module: website_calendar
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_answer_write_date
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question_write_date
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_slot_write_date
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type_write_date
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_answer__write_date
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question__write_date
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_slot__write_date
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__write_date
 msgid "Last Updated on"
 msgstr "آخرین به روز رسانی در"
 
 #. module: website_calendar
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type_location
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__location
 msgid "Location"
 msgstr "مکان"
 
 #. module: website_calendar
-#: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type_location
+#: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__location
 msgid "Location of the appointments"
 msgstr ""
 
@@ -490,6 +545,12 @@ msgid "Manager"
 msgstr "مدیر"
 
 #. module: website_calendar
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_has_error
+msgid "Message Delivery error"
+msgstr ""
+
+#. module: website_calendar
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_ids
 #: model:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 msgid "Messages"
 msgstr "پیام‌ها"
@@ -517,11 +578,36 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.actions.act_window,help:website_calendar.calendar_event_action_reporting
 #: model:ir.actions.act_window,help:website_calendar.website_calendar_report
-msgid "No data found. You should schedule appointments to get statistics."
+msgid "No data found"
 msgstr ""
 
 #. module: website_calendar
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_event_appointment_type_id
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_needaction_counter
+msgid "Number of Actions"
+msgstr "تعداد اقدامات"
+
+#. module: website_calendar
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_has_error_counter
+msgid "Number of error"
+msgstr ""
+
+#. module: website_calendar
+#: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__message_needaction_counter
+msgid "Number of messages which requires an action"
+msgstr "تعداد پیام ها که نیاز به عمل"
+
+#. module: website_calendar
+#: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__message_has_error_counter
+msgid "Number of messages with delivery error"
+msgstr ""
+
+#. module: website_calendar
+#: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__message_unread_counter
+msgid "Number of unread messages"
+msgstr "تعداد پیام‌های خوانده نشده"
+
+#. module: website_calendar
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_event__appointment_type_id
 msgid "Online Appointment"
 msgstr ""
 
@@ -536,12 +622,12 @@ msgid "Online Appointments"
 msgstr ""
 
 #. module: website_calendar
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question_placeholder
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question__placeholder
 msgid "Placeholder"
 msgstr ""
 
 #. module: website_calendar
-#: code:addons/website_calendar/models/calendar_appointment.py:290
+#: code:addons/website_calendar/models/calendar_appointment.py:300
 #, python-format
 msgid "Please enter a valid hour between 0:00 to 24:00 for your slots."
 msgstr ""
@@ -552,18 +638,18 @@ msgid "Please, select another date."
 msgstr ""
 
 #. module: website_calendar
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question_name
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question__name
 msgid "Question"
 msgstr "پرسش"
 
 #. module: website_calendar
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question_question_type
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question__question_type
 msgid "Question Type"
 msgstr ""
 
 #. module: website_calendar
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_answer_question_id
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type_question_ids
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_answer__question_id
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__question_ids
 #: model:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 msgid "Questions"
 msgstr "پرسش ها"
@@ -579,7 +665,7 @@ msgid "Random"
 msgstr ""
 
 #. module: website_calendar
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type_reminder_ids
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__reminder_ids
 msgid "Reminders"
 msgstr "یادآورها"
 
@@ -589,12 +675,12 @@ msgid "Reporting"
 msgstr "گزارش"
 
 #. module: website_calendar
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question_question_required
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question__question_required
 msgid "Required Answer"
 msgstr ""
 
 #. module: website_calendar
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type_country_ids
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__country_ids
 msgid "Restrict Countries"
 msgstr ""
 
@@ -609,14 +695,8 @@ msgid "Saturday"
 msgstr "شنبه"
 
 #. module: website_calendar
-#: model:ir.ui.view,arch_db:website_calendar.appointment_footer
 #: model:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 msgid "Schedule Appointment"
-msgstr ""
-
-#. module: website_calendar
-#: model:calendar.appointment.type,name:website_calendar.calendar_appointment
-msgid "Schedule a Demo"
 msgstr ""
 
 #. module: website_calendar
@@ -625,12 +705,12 @@ msgid "Schedule an Appointment"
 msgstr ""
 
 #. module: website_calendar
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type_min_schedule_hours
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__min_schedule_hours
 msgid "Schedule before (hours)"
 msgstr ""
 
 #. module: website_calendar
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type_max_schedule_days
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__max_schedule_days
 msgid "Schedule not after (days)"
 msgstr ""
 
@@ -640,8 +720,8 @@ msgid "Scheduling & Availability"
 msgstr ""
 
 #. module: website_calendar
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question_sequence
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type_sequence
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question__sequence
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__sequence
 msgid "Sequence"
 msgstr "دنباله"
 
@@ -656,7 +736,7 @@ msgid "Slots"
 msgstr ""
 
 #. module: website_calendar
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_slot_hour
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_slot__hour
 msgid "Starting Hour"
 msgstr ""
 
@@ -674,6 +754,11 @@ msgstr "یک‌شنبه"
 #: selection:calendar.appointment.slot,weekday:0
 msgid "Sunday"
 msgstr "یکشنبه"
+
+#. module: website_calendar
+#: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__website_url
+msgid "The full URL to access the document through the website."
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.appointment_calendar
@@ -707,12 +792,12 @@ msgid "Time<span class=\"chevron\"/>"
 msgstr ""
 
 #. module: website_calendar
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type_appointment_tz
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__appointment_tz
 msgid "Timezone"
 msgstr "منطقه‌ زمانی"
 
 #. module: website_calendar
-#: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type_appointment_tz
+#: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__appointment_tz
 msgid "Timezone where appointment take place"
 msgstr ""
 
@@ -727,15 +812,63 @@ msgid "Tuesday"
 msgstr "سه‌شنبه"
 
 #. module: website_calendar
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_unread
+msgid "Unread Messages"
+msgstr "پیام های ناخوانده"
+
+#. module: website_calendar
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_unread_counter
+msgid "Unread Messages Counter"
+msgstr "شمارنده پیام‌های خوانده‌نشده"
+
+#. module: website_calendar
+#: model:ir.model,name:website_calendar.model_res_users
+msgid "Users"
+msgstr "کاربران"
+
+#. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.index
 msgid "View Availabilities <span class=\"fa fa-arrow-right\"/>"
 msgstr ""
 
 #. module: website_calendar
-#: model:calendar.appointment.type,message_confirmation:website_calendar.calendar_appointment
-msgid ""
-"We thank you for your interest in our products!<br>\n"
-"               Please make sure to arrive <strong>10 minutes</strong> before your appointment."
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__website_published
+msgid "Visible on current website"
+msgstr ""
+
+#. module: website_calendar
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__website_message_ids
+msgid "Website Messages"
+msgstr "پیام‌های وب‌سایت"
+
+#. module: website_calendar
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__website_url
+msgid "Website URL"
+msgstr "URL وبسایت"
+
+#. module: website_calendar
+#: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__website_message_ids
+msgid "Website communication history"
+msgstr "تاریخچه ارتباط با وبسایت"
+
+#. module: website_calendar
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__website_meta_description
+msgid "Website meta description"
+msgstr "توضیحات متا وبسایت"
+
+#. module: website_calendar
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__website_meta_keywords
+msgid "Website meta keywords"
+msgstr "کلیدواژه‌های متا وبسایت"
+
+#. module: website_calendar
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__website_meta_title
+msgid "Website meta title"
+msgstr "عنوان متا وبسایت"
+
+#. module: website_calendar
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__website_meta_og_img
+msgid "Website opengraph image"
 msgstr ""
 
 #. module: website_calendar
@@ -749,7 +882,7 @@ msgid "Wednesday"
 msgstr "چهارشنبه"
 
 #. module: website_calendar
-#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_slot_weekday
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_slot__weekday
 msgid "Week Day"
 msgstr ""
 
@@ -764,6 +897,12 @@ msgid "With:"
 msgstr ""
 
 #. module: website_calendar
+#: model:ir.actions.act_window,help:website_calendar.calendar_event_action_reporting
+#: model:ir.actions.act_window,help:website_calendar.website_calendar_report
+msgid "You should schedule appointments to get statistics."
+msgstr ""
+
+#. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.appointment_form
 msgid "Your Country"
 msgstr ""
@@ -771,7 +910,7 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.appointment_form
 msgid "Your Email"
-msgstr ""
+msgstr "ایمیل شما"
 
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.appointment_form

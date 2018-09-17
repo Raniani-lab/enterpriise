@@ -4,7 +4,7 @@
 
     <t t-name="event_barcode_template">
         <div class="o_event_barcode_bg o_home_menu_background">
-            <div class="o_event_barcode_detail text-center mt32">
+            <div class="o_event_barcode_detail text-center mt32 row">
                 <div class="col-lg-3 col-12 o_event_date">
                     <span class="o_event_day mt24"><t t-esc="widget.data.date"/></span>
                     <span class="o_event_month"><t t-esc="widget.data.month"/></span>

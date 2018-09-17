@@ -141,7 +141,7 @@ var ViewEditorManager = AbstractEditorManager.extend({
                 def = editor.appendTo(fragment);
             } catch (e) {
                 self.trigger_up('studio_error', {error: 'view_rendering'});
-                self._undo(true);
+                self._undo(null, true);
                 def.reject();
             }
             return $.when(def).then(function () {
@@ -459,14 +459,14 @@ var ViewEditorManager = AbstractEditorManager.extend({
     /**
      * @override
      */
-    _applyChangeHandling: function (result) {
+    _applyChangeHandling: function (result, opID) {
         var self = this;
         var def;
 
         if (!result.fields_views) {
             // the operation can't be applied
             this.trigger_up('studio_error', {error: 'wrong_xpath'});
-            return this._undo(true).then(function () {
+            return this._undo(opID, true).then(function () {
                 return $.Deferred().reject();
             });
         }

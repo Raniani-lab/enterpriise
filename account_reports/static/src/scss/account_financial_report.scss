@@ -100,6 +100,7 @@ p.o_account_reports_contact_info {
     background-color: $o-view-background-color;
     color: $o-main-text-color;
     text-align: left;
+    padding-top: 20px;
 
     &.o_account_reports_no_print:not(.o_account_reports_followup) {
         box-shadow: 0 2px 16px -5px #858585;

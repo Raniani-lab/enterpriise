@@ -12,7 +12,12 @@ The first element of the selection (in DRM) will be used as the signature attach
 """,
     'website': ' ',
     'depends': ['documents', 'sign'],
-    'data': ['data/data.xml', 'views/documents_views.xml'],
+
+    'data': [
+        'data/data.xml',
+        'views/sign_templates.xml',
+    ],
+
     'installable': True,
     'auto_install': True,
 }

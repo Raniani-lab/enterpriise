@@ -2,12 +2,17 @@
 # This file contains the translation of the following modules:
 # * sale_subscription_dashboard
 # 
+# Translators:
+# Martin Trigaux, 2018
+# Michal Veselý <michal@veselyberanek.net>, 2018
+# trendspotter, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-08-24 11:28+0000\n"
 "PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"Last-Translator: trendspotter, 2018\n"
 "Language-Team: Czech (https://www.transifex.com/odoo/teams/41243/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,7 +25,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:312
 #, python-format
 msgid "# of Subscriptions"
-msgstr ""
+msgstr "Počet odebírání"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -71,12 +76,12 @@ msgstr ""
 #. module: sale_subscription_dashboard
 #: model:ir.ui.view,arch_db:sale_subscription_dashboard.invoice_line_entries_report_search
 msgid "Asset End Date"
-msgstr ""
+msgstr "Datum ukončení aktiv"
 
 #. module: sale_subscription_dashboard
 #: model:ir.ui.view,arch_db:sale_subscription_dashboard.invoice_line_entries_report_search
 msgid "Asset Start Date"
-msgstr ""
+msgstr "Počáteční datum aktiva"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -98,7 +103,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:333
 #, python-format
 msgid "Current"
-msgstr ""
+msgstr "Aktuální"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -118,7 +123,7 @@ msgstr ""
 #. module: sale_subscription_dashboard
 #: model:ir.ui.menu,name:sale_subscription_dashboard.menu_sale_subscription_dashboard
 msgid "Dashboard"
-msgstr ""
+msgstr "Nástěnka"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -217,7 +222,7 @@ msgstr ""
 #. module: sale_subscription_dashboard
 #: model:ir.ui.view,arch_db:sale_subscription_dashboard.invoice_line_entries_report_search
 msgid "Group By"
-msgstr ""
+msgstr "Seskupit podle"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -270,7 +275,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:145
 #, python-format
 msgid "Linear"
-msgstr ""
+msgstr "Lineární"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -292,7 +297,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:40
 #, python-format
 msgid "Loading..."
-msgstr ""
+msgstr "Načítání..."
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:390
@@ -333,7 +338,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:194
 #, python-format
 msgid "Months"
-msgstr ""
+msgstr "měsíců"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -403,7 +408,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:443
 #, python-format
 msgid "Partner"
-msgstr ""
+msgstr "Kontakt"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -514,7 +519,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:444
 #, python-format
 msgid "Subscription"
-msgstr ""
+msgstr "Předplatné"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -545,7 +550,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:445
 #, python-format
 msgid "Template"
-msgstr ""
+msgstr "Předloha"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -564,7 +569,7 @@ msgstr ""
 #. module: sale_subscription_dashboard
 #: model:ir.ui.view,arch_db:sale_subscription_dashboard.sale_subscription_view_search_inherit_sale_subscription_dashboard
 msgid "This Year"
-msgstr ""
+msgstr "Tento rok"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -586,7 +591,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:262
 #, python-format
 msgid "Update"
-msgstr ""
+msgstr "Aktualizace"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -594,7 +599,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:107
 #, python-format
 msgid "Warning"
-msgstr ""
+msgstr "Varování"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -669,7 +674,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/controllers/revenue_kpis_dashboard.py:33
 #, python-format
 msgid "name"
-msgstr ""
+msgstr "name"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -684,4 +689,4 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:262
 #, python-format
 msgid "to"
-msgstr ""
+msgstr "k"

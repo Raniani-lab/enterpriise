@@ -7,6 +7,7 @@ import pytz
 from datetime import datetime, timedelta, time
 from dateutil import rrule
 from dateutil.relativedelta import relativedelta
+from babel.dates import format_datetime
 
 from odoo import api, fields, models, _
 from odoo.addons.base.models.res_partner import _tz_get
@@ -268,8 +269,9 @@ class CalendarAppointmentType(models.Model):
                         'weekend_cls': weekend_cls,
                         'today_cls': today_cls
                     }
+
             months.append({
-                'month': start.strftime('%B %Y'),
+                'month': format_datetime(start, 'MMMM Y', locale=self._context.get('lang', 'en_US')),
                 'weeks': dates
             })
             start = start + relativedelta(months=1)

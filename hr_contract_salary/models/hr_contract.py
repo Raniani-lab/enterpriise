@@ -189,4 +189,4 @@ class HrContract(models.Model):
                 'context': ctx,
             }
         else:
-            raise ValidationError(_("No home address defined on the employee!"))
+            raise ValidationError(_("No private address defined on the employee!"))

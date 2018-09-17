@@ -14,6 +14,7 @@ class WorkflowActionRuleAccount(models.Model):
             invoice_type = self.create_model.split('.')[2]
             journal = self.env['account.invoice'].with_context({'type': invoice_type})._default_journal()
             new_obj = None
+            invoice_ids = []
             for attachment in attachments:
                 create_values = {
                     'type': invoice_type,
@@ -33,6 +34,7 @@ class WorkflowActionRuleAccount(models.Model):
 
                 this_attachment.res_model = 'account.invoice'
                 this_attachment.res_id = new_obj.id
+                invoice_ids.append(new_obj.id)
 
             action = {
                 'type': 'ir.actions.act_window',
@@ -42,6 +44,7 @@ class WorkflowActionRuleAccount(models.Model):
                 'view_type': 'list',
                 'view_mode': 'tree',
                 'views': [(False, "list"), (False, "form")],
+                'domain': [('id', 'in', invoice_ids)],
                 'context': self._context,
             }
             if len(attachments) == 1:

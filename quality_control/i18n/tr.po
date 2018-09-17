@@ -3,24 +3,22 @@
 # * quality_control
 # 
 # Translators:
-# Murat Kaplan <muratk@projetgrup.com>, 2017
-# Martin Trigaux, 2017
-# İlknur Püskül <ilknurpuskull@gmail.com>, 2017
-# Gökhan Erdoğdu <gokhan.erdogdu@mechsoft.com.tr>, 2017
-# Levent Karakaş <levent@mektup.at>, 2017
-# Ahmet Altinisik <aaltinisik@altinkaya.com.tr>, 2017
-# checkyoursix <batuhan.akpinar@gmail.com>, 2017
-# UNIBRAVO SOFTWARE <unibravo@gmail.com>, 2017
-# Güven YILMAZ <guvenyilmaz@outlook.com.tr>, 2017
-# Saban Yildiz <sabany@projetgrup.com>, 2017
-# Ediz Duman <neps1192@gmail.com>, 2017
+# Martin Trigaux, 2018
+# checkyoursix <batuhan.akpinar@gmail.com>, 2018
+# Levent Karakaş <levent@mektup.at>, 2018
+# Murat Kaplan <muratk@projetgrup.com>, 2018
+# Saban Yildiz <sabany@projetgrup.com>, 2018
+# Güven YILMAZ <guvenyilmaz@outlook.com.tr>, 2018
+# UNIBRAVO SOFTWARE <unibravo@gmail.com>, 2018
+# Gökhan Erdoğdu <gokhan.erdogdu@mechsoft.com.tr>, 2018
+# Metin Akın <aknmetin@gmail.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.3+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 08:34+0000\n"
-"PO-Revision-Date: 2018-06-25 08:34+0000\n"
-"Last-Translator: Ediz Duman <neps1192@gmail.com>, 2017\n"
+"POT-Creation-Date: 2018-09-05 09:11+0000\n"
+"PO-Revision-Date: 2018-09-05 09:11+0000\n"
+"Last-Translator: Metin Akın <aknmetin@gmail.com>, 2018\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -31,19 +29,23 @@ msgstr ""
 #. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.quality_point_view_form_inherit_quality_control
 msgid "% of the operation"
-msgstr "operasyonun %"
+msgstr "% işlemin"
 
 #. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.quality_alert_team_dashboard_view_kanban
-msgid "<i class=\"fa fa-envelope-o\"/>&amp;nbsp;"
-msgstr "<i class=\"fa fa-envelope-o\"/>&amp;nbsp;"
+msgid ""
+"<i class=\"fa fa-envelope-o\" role=\"img\" aria-label=\"Domain alias\" "
+"title=\"Domain alias\"/>&amp;nbsp;"
+msgstr ""
 
 #. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.quality_point_view_form_inherit_quality_control
 msgid ""
 "<span attrs=\"{'invisible': [('measure_frequency_type', '=', "
 "'all')]}\">Every </span>"
-msgstr "Her"
+msgstr ""
+"<span attrs=\"{'invisible': [('measure_frequency_type', '=', 'all')]}\">Her "
+"</span>"
 
 #. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.stock_picking_view_form_inherit_quality
@@ -51,8 +53,8 @@ msgid ""
 "<span class=\"o_stat_text text-success\" attrs=\"{'invisible': [('quality_check_fail', '=', True)]}\">Quality Checks</span>\n"
 "                    <span class=\"o_stat_text text-danger\" attrs=\"{'invisible': [('quality_check_fail', '!=', True)]}\">Quality Checks</span>"
 msgstr ""
-"<span class=\"o_stat_text text-success\" attrs=\"{'invisible': [('quality_check_fail', '=', True)]}\">Kalite Kontrolleri</span>\n"
-"                    <span class=\"o_stat_text text-danger\" attrs=\"{'invisible': [('quality_check_fail', '!=', True)]}\">Kalite Kontrolleri</span>"
+"<span class=\"o_stat_text text-success\" attrs=\"{'invisible': [('quality_check_fail', '=', True)]}\">Kalite Kontroller</span>\n"
+"                    <span class=\"o_stat_text text-danger\" attrs=\"{'invisible': [('quality_check_fail', '!=', True)]}\">Kalite Kontroller</span>"
 
 #. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.quality_point_view_form_inherit_quality_control
@@ -99,7 +101,7 @@ msgstr "Eposta Kabul Etme"
 #. module: quality_control
 #: model:ir.actions.act_window,help:quality_control.quality_tag_action
 msgid "Add a new tag"
-msgstr ""
+msgstr "Yeni bir etiket ekle"
 
 #. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.quality_check_view_form
@@ -251,12 +253,12 @@ msgstr "Sorunun açıklaması..."
 #. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.quality_alert_view_search
 msgid "Done"
-msgstr "Transfer"
+msgstr "Tamamlandı"
 
 #. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.quality_alert_team_view_form
 msgid "Email Alias"
-msgstr "E-posta Rumuzu"
+msgstr "Eposta Rumuzu"
 
 #. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.quality_check_view_form
@@ -289,18 +291,24 @@ msgstr ""
 #. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.quality_alert_view_search
 #: model:ir.ui.view,arch_db:quality_control.quality_check_view_search
+#: model:ir.ui.view,arch_db:quality_control.quality_point_view_search
 msgid "Group By"
 msgstr "Grupla"
 
 #. module: quality_control
+#: model:ir.ui.view,arch_db:quality_control.quality_alert_team_dashboard_view_kanban
+msgid "In #{kanban_getcolorname(record.color.raw_value)}"
+msgstr ""
+
+#. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.quality_check_view_search
 msgid "In Progress"
-msgstr "Aktif"
+msgstr "Devam Eden"
 
 #. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.quality_alert_view_search
 msgid "In progress"
-msgstr "Devam etmekte"
+msgstr "Devam Eden"
 
 #. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.quality_check_view_form
@@ -316,12 +324,12 @@ msgstr "Maks. Tolerans"
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check__measure
 msgid "Measure"
-msgstr "Ölç"
+msgstr "Ölçüm"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_point__measure_frequency_unit
 msgid "Measure Frequency Unit"
-msgstr "Ölçü Sıklığı Birimi"
+msgstr "Ölçüm Sıklığı Birimi"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check__measure_success
@@ -342,7 +350,7 @@ msgstr "Min Tolerans"
 #. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.quality_alert_view_form
 msgid "Miscellaneous"
-msgstr "Muhtelif"
+msgstr "Diğer"
 
 #. module: quality_control
 #: selection:quality.point,measure_frequency_unit:0
@@ -360,7 +368,7 @@ msgid "Name"
 msgstr "İsim"
 
 #. module: quality_control
-#: code:addons/quality_control/models/quality.py:284
+#: code:addons/quality_control/models/quality.py:283
 #, python-format
 msgid "New"
 msgstr "Yeni"
@@ -410,6 +418,11 @@ msgid "OK"
 msgstr "Tamam"
 
 #. module: quality_control
+#: model:ir.ui.view,arch_db:quality_control.quality_point_view_search
+msgid "Operation Type"
+msgstr "Operasyon Türü"
+
+#. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.quality_check_view_form
 #: model:ir.ui.view,arch_db:quality_control.quality_check_view_form_small
 #: selection:quality.check,measure_success:0
@@ -437,12 +450,7 @@ msgid "Periodically"
 msgstr "Belirli Aralıklarla"
 
 #. module: quality_control
-#: model:ir.model.fields,field_description:quality_control.field_quality_check__picture
-msgid "Picture"
-msgstr "Resim"
-
-#. module: quality_control
-#: code:addons/quality_control/models/quality.py:164
+#: code:addons/quality_control/models/quality.py:163
 #, python-format
 msgid "Picture Uploaded"
 msgstr "Resim Yüklendi"
@@ -451,6 +459,11 @@ msgstr "Resim Yüklendi"
 #: model:ir.ui.view,arch_db:quality_control.quality_alert_view_form
 msgid "Preventive Actions"
 msgstr "Önleyici Faaliyetler"
+
+#. module: quality_control
+#: model:ir.ui.view,arch_db:quality_control.quality_point_view_search
+msgid "Product"
+msgstr "Ürün"
 
 #. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.quality_alert_team_view_form
@@ -463,14 +476,14 @@ msgid "Quality"
 msgstr "Kalite"
 
 #. module: quality_control
-#: code:addons/quality_control/models/quality.py:209
-#: code:addons/quality_control/models/quality.py:221
+#: code:addons/quality_control/models/quality.py:208
+#: code:addons/quality_control/models/quality.py:220
 #: model:ir.model,name:quality_control.model_quality_alert
 #: model:ir.ui.view,arch_db:quality_control.quality_alert_view_calendar
 #: model:ir.ui.view,arch_db:quality_control.stock_picking_view_form_inherit_quality
 #, python-format
 msgid "Quality Alert"
-msgstr "Kalite Alarmı"
+msgstr "Kalite Uyarısı"
 
 #. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.quality_alert_view_graph
@@ -481,7 +494,7 @@ msgstr "Kalite Uyarıları Analizi"
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_stock_picking__quality_alert_count
 msgid "Quality Alert Count"
-msgstr "Kalite Alarm Sayısı"
+msgstr "Kalite Uyarı Sayısı"
 
 #. module: quality_control
 #: model:ir.actions.act_window,name:quality_control.quality_alert_stage_action
@@ -519,7 +532,7 @@ msgid "Quality Alerts"
 msgstr "Kalite Uyarıları"
 
 #. module: quality_control
-#: code:addons/quality_control/models/quality.py:252
+#: code:addons/quality_control/models/quality.py:251
 #: model:ir.model,name:quality_control.model_quality_check
 #, python-format
 msgid "Quality Check"
@@ -537,14 +550,14 @@ msgid "Quality Check Fail"
 msgstr "Kalite Kontrol Hatası"
 
 #. module: quality_control
-#: code:addons/quality_control/models/quality.py:172
+#: code:addons/quality_control/models/quality.py:171
 #: model:ir.ui.view,arch_db:quality_control.quality_check_view_form_failure
 #, python-format
 msgid "Quality Check Failed"
-msgstr "Kalite Kontrol Başarısız Oldu"
+msgstr "Kalite Kontrol Başarısız"
 
 #. module: quality_control
-#: code:addons/quality_control/models/quality.py:187
+#: code:addons/quality_control/models/quality.py:186
 #: model:ir.actions.act_window,name:quality_control.quality_check_action_main
 #: model:ir.actions.act_window,name:quality_control.quality_check_action_picking
 #: model:ir.actions.act_window,name:quality_control.quality_check_action_report
@@ -625,7 +638,7 @@ msgstr "Sorumlu"
 #. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.quality_alert_view_search
 msgid "Root Cause"
-msgstr "Temel Neden"
+msgstr "Kök Neden"
 
 #. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.quality_alert_team_dashboard_view_kanban
@@ -662,6 +675,11 @@ msgstr "Etiketler"
 #: model:ir.ui.view,arch_db:quality_control.quality_alert_team_view_tree
 msgid "Teams"
 msgstr "Ekipler"
+
+#. module: quality_control
+#: model:ir.ui.view,arch_db:quality_control.quality_point_view_search
+msgid "Test Type"
+msgstr "Test Türü"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_alert__title
@@ -705,10 +723,10 @@ msgid "Week(s)"
 msgstr "Hafta"
 
 #. module: quality_control
-#: code:addons/quality_control/models/quality.py:141
+#: code:addons/quality_control/models/quality.py:140
 #, python-format
 msgid "You measured %.2f %s and it should be between %.2f and %.2f %s."
-msgstr "%.2f %s ölçüleriniz%.2f ve %.2f arasında olmalıdır %s."
+msgstr "%.2f %s ölçüler%.2f ve %.2f arasında olmalıdır %s."
 
 #. module: quality_control
 #: code:addons/quality_control/models/stock_picking.py:63

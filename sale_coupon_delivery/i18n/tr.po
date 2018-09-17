@@ -3,8 +3,9 @@
 # * sale_coupon_delivery
 # 
 # Translators:
-# Ediz Duman <neps1192@gmail.com>, 2017
-# Martin Trigaux, 2017
+# Ediz Duman <neps1192@gmail.com>, 2018
+# Martin Trigaux, 2018
+# Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2018
 # Umur Akın <umura@projetgrup.com>, 2018
 msgid ""
 msgstr ""
@@ -72,7 +73,7 @@ msgstr "Satış Kuponu Programı"
 #. module: sale_coupon_delivery
 #: model:ir.model,name:sale_coupon_delivery.model_sale_coupon_reward
 msgid "Sales Coupon Reward"
-msgstr "Satış Kupon Ödülü"
+msgstr "Satış Kuponu Ödülü"
 
 #. module: sale_coupon_delivery
 #: model:ir.model,name:sale_coupon_delivery.model_sale_order_line
@@ -84,4 +85,4 @@ msgstr "Satış Sipariş Satırı"
 #: code:addons/sale_coupon_delivery/models/sale_coupon_program.py:23
 #, python-format
 msgid "The shipping costs are not in the order lines."
-msgstr "Sevkiyat maliyeti sipariş satırlarında değildir."
+msgstr "Sevkiyat maliyetleri sipariş satırlarında değildir."

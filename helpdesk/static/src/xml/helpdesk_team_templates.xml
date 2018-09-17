@@ -12,20 +12,20 @@
                         <td class="o_text">
                             <div class="o_highlight">My Tickets</div>
                         </td>
-                        <td class="o_main" title="My open tickets">
-                            <a href="#" class="o_dashboard_action" name="helpdesk.helpdesk_ticket_action_main">
+                        <td class="o_main o_dashboard_action" title="My open tickets" name="helpdesk.helpdesk_ticket_action_main">
+                            <a href="#">
                                 <span class="o_highlight"><t t-esc="values['my_all']['count']"/></span><br/>
                                 Tickets
                             </a>
                         </td>
-                        <td class="o_main" title="My high priority tickets">
-                            <a href="#" class="o_dashboard_action" name="helpdesk.helpdesk_ticket_action_high_priorities">
+                        <td class="o_main o_dashboard_action" title="My high priority tickets" name="helpdesk.helpdesk_ticket_action_high_priorities">
+                            <a href="#">
                                 <span class="o_highlight"><t t-esc="values['my_high']['count']"/></span><br/>
                                 High Priority (<span title="Two stars, with a maximum of three" role="img" aria-label="Two stars, with a maximum of three"><span class="fa fa-star" style="color: gold"/><span class="fa fa-star" style="color: gold"/></span>)
                             </a>
                         </td>
-                        <td title="My urgent tickets" class="o_main">
-                            <a href="#" class="o_dashboard_action" name="helpdesk.helpdesk_ticket_action_urgent">
+                        <td class="o_main o_dashboard_action" title="My urgent tickets" name="helpdesk.helpdesk_ticket_action_urgent">
+                            <a href="#">
                                 <span class="o_highlight"><t t-esc="values['my_urgent']['count']"/></span><br/>
                                 Urgent (<span title="Three stars, maximum score" role="img" aria-label="Three stars, maximum score"><span class="fa fa-star" style="color: gold"/><span class="fa fa-star" style="color: gold"/><span class="fa fa-star" style="color: gold"/></span>)
                             </a>
@@ -33,34 +33,34 @@
                     </tr>
                     <tr>
                         <td class="o_text">Avg Open Hours</td>
-                        <td class="o_main">
-                            <a href="#" class="o_dashboard_action" name="helpdesk.helpdesk_ticket_action_dashboard"><t t-esc="values['my_all']['hours']"/></a>
+                        <td class="o_main o_dashboard_action" name="helpdesk.helpdesk_ticket_action_dashboard">
+                            <a href="#"><t t-esc="values['my_all']['hours']"/></a>
                         </td>
-                        <td class="o_main">
-                            <a href="#" class="o_dashboard_action" name="helpdesk.helpdesk_ticket_action_dashboard_high_priority">
+                        <td class="o_main o_dashboard_action" name="helpdesk.helpdesk_ticket_action_dashboard_high_priority">
+                            <a href="#">
                                 <t t-esc="values['my_high']['hours']"/>
                             </a>
                         </td>
-                        <td class="o_main">
-                            <a href="#" class="o_dashboard_action" name="helpdesk.helpdesk_ticket_action_dashboard_urgent">
+                        <td class="o_main o_dashboard_action" name="helpdesk.helpdesk_ticket_action_dashboard_urgent">
+                            <a href="#">
                                 <t t-esc="values['my_urgent']['hours']"/>
                             </a>
                         </td>
                     </tr>
                     <tr>
                         <td class="o_text" t-if="success_rate_enable">SLA Failed</td>
-                        <td t-if="success_rate_enable" t-att-class="(values['my_all']['failed'] ? 'o_warning' : 'o_main')" title="View failed tickets">
+                        <td t-if="success_rate_enable" t-att-class="(values['my_all']['failed'] ? 'o_warning' : 'o_main') + ' o_dashboard_action'" name="helpdesk.helpdesk_ticket_action_sla" title="View failed tickets" >
                             <a href="#" class="o_dashboard_action" name="helpdesk.helpdesk_ticket_action_sla" data-extra="overdue">
                                 <t t-esc="values['my_all']['failed']"/>
                             </a>
                         </td>
-                        <td t-if="success_rate_enable" t-att-class="(values['my_high']['failed'] ? 'o_warning' : 'o_main')" title="View high priority failed tickets">
-                            <a href="#" class="o_dashboard_action" name="helpdesk.helpdesk_ticket_action_sla_high" data-extra="overdue">
+                        <td t-if="success_rate_enable" t-att-class="(values['my_high']['failed'] ? 'o_warning' : 'o_main') + ' o_dashboard_action'" name="helpdesk.helpdesk_ticket_action_sla_high" title="View high priority failed tickets">
+                            <a href="#" data-extra="overdue">
                                 <t t-esc="values['my_high']['failed']"/>
                             </a>
                         </td>
-                        <td t-if="success_rate_enable" t-att-class="(values['my_urgent']['failed'] ? 'o_warning' : 'o_main')" title="View urgent failed tickets">
-                            <a href="#" class="o_dashboard_action" name="helpdesk.helpdesk_ticket_action_sla_urgent" data-extra="overdue">
+                        <td t-if="success_rate_enable" t-att-class="(values['my_urgent']['failed'] ? 'o_warning' : 'o_main') + ' o_dashboard_action'" name="helpdesk.helpdesk_ticket_action_sla_urgent" title="View urgent failed tickets">
+                            <a href="#" data-extra="overdue">
                                 <t t-esc="values['my_urgent']['failed']"/>
                             </a>
                         </td>

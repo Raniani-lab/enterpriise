@@ -6,7 +6,7 @@
     <div class="o_documents_inspector h-100">
         <t t-set="nbPreviews" t-value="widget.records.length"/>
         <div class="o_documents_inspector_preview d-flex flex-row flex-wrap align-items-center justify-content-center position-relative">
-            <span t-if="nbPreviews === 0">Select a document</span>
+            <span t-if="nbPreviews === 0">No document selected</span>
             <t t-else="" t-call="documents.DocumentsInspector.previews"/>
         </div>
         <div class="o_documents_inspector_info">
@@ -26,10 +26,10 @@
             <t t-set="mimetype" t-value="record.data.mimetype"/>
             <t t-if="record._isImage">
                 <t t-set="size" t-value="nbPreviews === 1 ? '268x130' : nbPreviews === 2 ? '120x130' : '120x75'"/>
-                <img class="o_preview_available" t-attf-src="/web/image/#{record.res_id}/#{size}?upper_limit=true" t-att-data-id="record.res_id" t-att-title="record.data.name"/>
+                <img class="o_preview_available" t-attf-src="/web/image/#{record.res_id}/#{size}?upper_limit=true&amp;signature=#{record.data.checksum}" t-att-data-id="record.res_id" t-att-title="record.data.name"/>
             </t>
             <div t-elif="record.data.url" t-attf-class="o_image o_mimetype_icon #{(record.data.url.indexOf('youtu') >= 0) and 'o_preview_available' or ''}"
-                 t-att-data-mimetype="mimetype"
+                 t-attf-data-mimetype="#{(record.data.url.indexOf('youtu') >= 0) and 'video' or mimetype}"
                  t-att-title="record.data.name"
                  t-att-data-id="record.res_id"/>
             <div t-else=""
@@ -152,7 +152,7 @@
         <button t-if="widget.records[0].data.active" class="o_active btn fa fa-archive o_inspector_button o_inspector_archive pull-right" title="Archive"/>
         <t t-else="">
             <button class="btn pull-right o_inspector_button o_inspector_delete" title="Delete"><i class="fa fa-trash"/> <small>Delete</small></button>
-            <button class="btn pull-right o_inspector_button o_archived o_inspector_archive" style="margin-right:4px" title="Un-archive"><i class="fa fa-upload"/> <small>Unarchive</small></button>
+            <button class="btn pull-right o_inspector_button o_archived o_inspector_archive" style="margin-right:4px" title="Un-archive"><i class="fa fa-upload"/> <small>Restore</small></button>
         </t>
     </div>
 </t>

@@ -15,13 +15,14 @@ class AccountInvoice(models.Model):
         """ Overridden to automatically trigger the payment of the invoice if a
         mandate is available.
         """
-        super(AccountInvoice, self).invoice_validate()
+        res = super(AccountInvoice, self).invoice_validate()
 
         for record in self.filtered(lambda x: x.type in ['in_refund', 'out_invoice'] and x.residual != 0):
             usable_mandate = record._get_usable_mandate()
             if usable_mandate:
                 record.sdd_paying_mandate_id = usable_mandate
                 record.pay_with_mandate(usable_mandate)
+        return res
 
     def pay_with_mandate(self, mandate):
         """ Uses the mandate passed in parameters to pay this invoice. This function

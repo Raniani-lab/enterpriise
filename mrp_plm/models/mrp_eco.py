@@ -260,10 +260,10 @@ class MrpEco(models.Model):
     def _get_difference_bom_lines(self, old_bom, new_bom):
         # Return difference lines from two bill of material.
         new_bom_commands = []
-        old_bom_lines = dict((line.product_id, line) for line in old_bom.bom_line_ids)
+        old_bom_lines = dict(((line.product_id,tuple(line.attribute_value_ids.ids)), line) for line in old_bom.bom_line_ids)
         if self.new_bom_id:
             for line in new_bom.bom_line_ids:
-                old_line = old_bom_lines.pop(line.product_id, None)
+                old_line = old_bom_lines.pop((line.product_id,tuple(line.attribute_value_ids.ids)), None)
                 if old_line and (line.product_uom_id, line.product_qty, line.operation_id) != (old_line.product_uom_id, old_line.product_qty, old_line.operation_id):
                     new_bom_commands += [(0, 0, {
                         'change_type': 'update',

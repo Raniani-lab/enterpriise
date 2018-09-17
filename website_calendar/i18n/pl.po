@@ -2,15 +2,12 @@
 # This file contains the translation of the following modules:
 # * website_calendar
 # 
-# Translators:
-# Paweł Wodyński <pw@myodoo.pl>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.4+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-02 11:21+0000\n"
-"PO-Revision-Date: 2018-08-02 11:21+0000\n"
-"Last-Translator: Paweł Wodyński <pw@myodoo.pl>, 2018\n"
+"POT-Creation-Date: 2018-08-24 11:29+0000\n"
+"PO-Revision-Date: 2018-08-24 11:29+0000\n"
 "Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -30,6 +27,11 @@ msgid "# Appointments"
 msgstr ""
 
 #. module: website_calendar
+#: model:ir.ui.view,arch_db:website_calendar.appointment_calendar
+msgid "#{day['today_cls'] and 'Today' or ''}"
+msgstr ""
+
+#. module: website_calendar
 #: code:addons/website_calendar/controllers/main.py:138
 #, python-format
 msgid "%s with %s"
@@ -43,13 +45,13 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.appointment_form
 msgid "+1 (650) 691-3277"
-msgstr "+1 (650) 691-3277"
+msgstr ""
 
 #. module: website_calendar
 #: code:addons/website_calendar/controllers/main.py:177
 #, python-format
 msgid ", All Day"
-msgstr ", Cały dzień"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.appointment_form
@@ -59,7 +61,7 @@ msgstr ""
 #. module: website_calendar
 #: model:calendar.alarm,name:website_calendar.calendar_alarm_data_1h_sms
 msgid "1 Hour SMS text"
-msgstr "1 godzina SMS-a"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.appointment_validated
@@ -67,8 +69,6 @@ msgid ""
 "<br/>\n"
 "                            It's too late to cancel online, please contact the attendees another way if you really can't make it."
 msgstr ""
-"<br/>\n"
-"                            Jest już za późno na anulowanie w trybie online, skontaktuj się z uczestnikami w inny sposób, jeśli naprawdę nie możesz tego zrobić."
 
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.appointment_validated
@@ -83,17 +83,17 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.appointment_validated
 msgid "<i class=\"fa fa-fw fa-times\"/>Cancel / Reschedule"
-msgstr "<i class=\"fa fa-fw fa-times\"/>Anuluj / Zmień termin"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 msgid "<span> days</span>"
-msgstr "<span> dni</span>"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 msgid "<span> hours before</span>"
-msgstr "<span> godziny przed</span>"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
@@ -108,7 +108,7 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 msgid "<span>at least </span>"
-msgstr "<span>przynajmniej </span>"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
@@ -121,8 +121,6 @@ msgid ""
 "<strong>Appointment canceled!</strong>\n"
 "                            You can schedule another appointment from here."
 msgstr ""
-"<strong>Spotkanie anulowane!</strong>\n"
-"                            Możesz zaplanować kolejne spotkanie tutaj."
 
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.appointment
@@ -132,10 +130,6 @@ msgid ""
 "                            Someone has booked the same time slot a few\n"
 "                            seconds before you."
 msgstr ""
-"<strong>Spotkanie nie powiodło się!</strong>\n"
-"                            Wybrana szczelina czasowa nie jest już dostępna.\n"
-"                            Ktoś zarezerwował ten sam przedział czasu kilka\n"
-"                            sekund przed tobą."
 
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.appointment
@@ -144,21 +138,16 @@ msgid ""
 "                            The selected timeslot is not available.\n"
 "                            It appears you already have another meeting with us at that date."
 msgstr ""
-"<strong>Spotkanie nie powiodło się!</strong>\n"
-"                            Wybrana szczelina czasowa nie jest dostępna.\n"
-"                            Wygląda na to, że masz już spotkanie z nami w tym dniu."
 
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.appointment_validated
 msgid "<strong>Your appointment has been successfully booked!</strong>"
-msgstr "<strong>Twoje spotkanie zostało pomyślnie zarezerwowane!</strong>"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.appointment_form
 msgid "A text message reminder is sent to you before your appointment"
 msgstr ""
-"Przypomnienie o wiadomości tekstowej zostanie wysłane do Ciebie przed "
-"spotkaniem"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_event__access_token
@@ -174,12 +163,12 @@ msgstr ""
 #: model:ir.actions.act_window,name:website_calendar.website_calendar_report
 #: model:ir.ui.menu,name:website_calendar.menu_schedule_report_online
 msgid "All Appointments"
-msgstr "Wszystkie spotkania"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 msgid "Allow Cancelling"
-msgstr "Zezwalaj na anulowanie"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.actions.act_window,help:website_calendar.calendar_appointment_type_action
@@ -187,8 +176,6 @@ msgid ""
 "Allow your customers to book an appointment on your website\n"
 "                by creating appointment types here."
 msgstr ""
-"Pozwól klientom zarezerwować termin w Twojej witrynie,\n"
-"                tworząc typy spotkań tutaj."
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_answer__name
@@ -199,29 +186,30 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.appointment
 #: model:ir.ui.view,arch_db:website_calendar.appointment_form
+#: model:ir.ui.view,arch_db:website_calendar.index
 #: model:website.menu,name:website_calendar.menu_appointment
 msgid "Appointment"
-msgstr "Spotkanie"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 msgid "Appointment Confirmation"
-msgstr "Potwierdzenie spotkania"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__appointment_duration
 msgid "Appointment Duration"
-msgstr "Termin spotkania"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 msgid "Appointment Introduction"
-msgstr "Wprowadzenie na spotkanie"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.appointment
 msgid "Appointment Time"
-msgstr "Termin spotkania"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.model,name:website_calendar.model_calendar_appointment_type
@@ -231,18 +219,17 @@ msgstr "Termin spotkania"
 #: model:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 #: model:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_tree
 msgid "Appointment Type"
-msgstr "Rodzaj spotkania"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.appointment_validated
-#: model:ir.ui.view,arch_db:website_calendar.index
 msgid "Appointment:"
-msgstr "Spotkanie:"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.index
 msgid "Appointment<span class=\"chevron\"/>"
-msgstr "Spotkanie<span class=\"chevron\"/>"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_res_users__group_website_calendar_user
@@ -251,7 +238,7 @@ msgstr "Spotkanie<span class=\"chevron\"/>"
 #: model:ir.ui.view,arch_db:website_calendar.calendar_event_view_graph
 #: model:ir.ui.view,arch_db:website_calendar.calendar_event_view_pivot
 msgid "Appointments"
-msgstr "Spotkania"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__assignation_method
@@ -261,22 +248,22 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.appointment_validated
 msgid "Attendees:"
-msgstr "Uczestnicy:"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__slot_ids
 msgid "Availabilities"
-msgstr "Dostępność"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question__answer_ids
 msgid "Available Answers"
-msgstr "Dostępne odpowiedzi"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 msgid "Available Employees"
-msgstr "Dostępni pracownicy"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.ui.menu,name:website_calendar.calendar_appointment_type_menu_action
@@ -286,47 +273,47 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.model,name:website_calendar.model_calendar_appointment_answer
 msgid "Calendar Scheduler Answers"
-msgstr "Odpowiedzi harmonogramu kalendarza"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.model,name:website_calendar.model_calendar_appointment_question
 msgid "Calendar Scheduler Questions"
-msgstr "Pytania harmonogramu kalendarza"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.model,name:website_calendar.model_calendar_appointment_slot
 msgid "Calendar Scheduler Slots"
-msgstr "Sloty harmonogramu kalendarza"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__min_cancellation_hours
 msgid "Cancel Before (hours)"
-msgstr "Anuluj przed (godziny)"
+msgstr ""
 
 #. module: website_calendar
 #: selection:calendar.appointment.question,question_type:0
 msgid "Checkboxes (multiple answers)"
-msgstr "Pola wyboru (wiele odpowiedzi)"
+msgstr ""
 
 #. module: website_calendar
 #: selection:calendar.appointment.type,assignation_method:0
 msgid "Chosen by the Customer"
-msgstr "Wybrany przez klienta"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.appointment_form
 msgid "Confirm Appointment <span class=\"fa fa-arrow-right\"/>"
-msgstr "Potwierdź spotkanie <span class=\"fa fa-arrow-right\"/>"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.appointment_form
 msgid "Confirm your details"
-msgstr "Potwierdź swoje dane"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_confirmation
 msgid "Confirmation Message"
-msgstr "Wiadomość potwierdzająca"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.appointment
@@ -394,12 +381,12 @@ msgstr ""
 #. module: website_calendar
 #: selection:calendar.appointment.question,question_type:0
 msgid "Dropdown (one answer)"
-msgstr "Rozwijane (jedna odpowiedź)"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.appointment_validated
 msgid "Duration:"
-msgstr "Czas trwania:"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__employee_ids
@@ -442,8 +429,6 @@ msgstr ""
 msgid ""
 "How employees will be assigned to meetings customers book on your website."
 msgstr ""
-"W jaki sposób pracownicy zostaną przypisani do spotkań klientów, którzy "
-"dokonają rezerwacji w Twojej witrynie."
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_answer__id
@@ -475,23 +460,25 @@ msgid ""
 "                        to the \"Calendar\" application in Odoo and create\n"
 "                        an online appointment."
 msgstr ""
-"Aby skonfigurować swój pierwszy termin, przejdź\n"
-"                        do aplikacji \"Kalendarz\" w Odoo i utwórz\n"
-"                        spotkanie online."
 
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 msgid "Individual Appointment Link"
-msgstr "Indywidualny link do spotkania"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_intro
 msgid "Introduction Message"
-msgstr "Wiadomość wstępna"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_is_follower
 msgid "Is Follower"
+msgstr ""
+
+#. module: website_calendar
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__is_published
+msgid "Is published"
 msgstr ""
 
 #. module: website_calendar
@@ -500,8 +487,6 @@ msgid ""
 "Keep empty to allow visitors from any country, otherwise you only allow "
 "visitors from selected countries"
 msgstr ""
-"Pozostaw puste, aby zezwolić na odwiedzających z dowolnego kraju, w "
-"przeciwnym razie zezwalasz tylko na odwiedzających z wybranych krajów"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_answer____last_update
@@ -535,12 +520,12 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__location
 msgid "Location of the appointments"
-msgstr "Lokalizacja spotkań"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.appointment_validated
 msgid "Location:"
-msgstr "Lokalizacja:"
+msgstr ""
 
 #. module: website_calendar
 #: model:res.groups,name:website_calendar.group_calendar_manager
@@ -571,12 +556,12 @@ msgstr ""
 #. module: website_calendar
 #: selection:calendar.appointment.question,question_type:0
 msgid "Multi-line text"
-msgstr "Tekst wielowierszowy"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.setup
 msgid "No appointments available!"
-msgstr "Brak dostępnych spotkań!"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.actions.act_window,help:website_calendar.calendar_event_action_reporting
@@ -612,7 +597,7 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_event__appointment_type_id
 msgid "Online Appointment"
-msgstr "Spotkanie online"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.actions.act_window,name:website_calendar.calendar_appointment_type_action
@@ -622,7 +607,7 @@ msgstr "Spotkanie online"
 #: model:ir.ui.menu,name:website_calendar.website_appointment_type_menu
 #: model:ir.ui.view,arch_db:website_calendar.calendar_event_view_search_inherit_website_calendar
 msgid "Online Appointments"
-msgstr "Spotkania online"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question__placeholder
@@ -633,12 +618,12 @@ msgstr ""
 #: code:addons/website_calendar/models/calendar_appointment.py:300
 #, python-format
 msgid "Please enter a valid hour between 0:00 to 24:00 for your slots."
-msgstr "Wprowadź prawidłową godzinę między 0:00 a 24:00 dla slotów."
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.appointment
 msgid "Please, select another date."
-msgstr "Proszę wybrać inną datę."
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question__name
@@ -648,7 +633,7 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question__question_type
 msgid "Question Type"
-msgstr "Typ pytania"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_answer__question_id
@@ -660,7 +645,7 @@ msgstr ""
 #. module: website_calendar
 #: selection:calendar.appointment.question,question_type:0
 msgid "Radio (one answer)"
-msgstr "Radio (jedna odpowiedź)"
+msgstr ""
 
 #. module: website_calendar
 #: selection:calendar.appointment.type,assignation_method:0
@@ -680,12 +665,12 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question__question_required
 msgid "Required Answer"
-msgstr "Wymagana odpowiedź"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__country_ids
 msgid "Restrict Countries"
-msgstr "Ogranicz kraje"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.appointment_calendar
@@ -700,27 +685,27 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 msgid "Schedule Appointment"
-msgstr "Umówione spotkanie"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.index
 msgid "Schedule an Appointment"
-msgstr "Zaplanuj spotkanie"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__min_schedule_hours
 msgid "Schedule before (hours)"
-msgstr "Zaplanuj przed (godziny)"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__max_schedule_days
 msgid "Schedule not after (days)"
-msgstr "Zaplanuj nie później (dni)"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 msgid "Scheduling & Availability"
-msgstr "Planowanie i dostępność"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question__sequence
@@ -731,22 +716,22 @@ msgstr ""
 #. module: website_calendar
 #: selection:calendar.appointment.question,question_type:0
 msgid "Single line text"
-msgstr "Tekst jednoliniowy"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 msgid "Slots"
-msgstr "Sloty"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_slot__hour
 msgid "Starting Hour"
-msgstr "Godzina rozpoczęcia"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 msgid "Starting Hour (0:00 - 24:00)"
-msgstr "Godzina rozpoczęcia (0:00 - 24:00)"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.appointment_calendar
@@ -781,18 +766,18 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.appointment_calendar
 msgid "Time displayed in"
-msgstr "Czas wyświetlany w"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.appointment_select_timezone
 msgid "Time zone:"
-msgstr "Strefa czasowa:"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.appointment
 #: model:ir.ui.view,arch_db:website_calendar.index
 msgid "Time<span class=\"chevron\"/>"
-msgstr "Czas<span class=\"chevron\"/>"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__appointment_tz
@@ -802,7 +787,7 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__appointment_tz
 msgid "Timezone where appointment take place"
-msgstr "Strefa czasowa, w której odbywa się spotkanie"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.appointment_calendar
@@ -832,11 +817,11 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.index
 msgid "View Availabilities <span class=\"fa fa-arrow-right\"/>"
-msgstr "Wyświetl dostępność <span class=\"fa fa-arrow-right\"/>"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__website_published
-msgid "Visible in Website"
+msgid "Visible on current website"
 msgstr ""
 
 #. module: website_calendar
@@ -870,6 +855,11 @@ msgid "Website meta title"
 msgstr ""
 
 #. module: website_calendar
+#: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__website_meta_og_img
+msgid "Website opengraph image"
+msgstr ""
+
+#. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.appointment_calendar
 msgid "Wed"
 msgstr ""
@@ -882,17 +872,17 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_slot__weekday
 msgid "Week Day"
-msgstr "Dzień tygodnia"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.appointment_validated
 msgid "When:"
-msgstr "Kiedy:"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.employee_select
 msgid "With:"
-msgstr "Z:"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.actions.act_window,help:website_calendar.calendar_event_action_reporting
@@ -903,7 +893,7 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.appointment_form
 msgid "Your Country"
-msgstr "Twój kraj"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.appointment_form
@@ -923,22 +913,22 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.appointment_validated
 msgid "Your appointment is in less than"
-msgstr "Twoje spotkanie jest w mniej niż"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 msgid "e.g. Schedule a demo"
-msgstr "np. zaplanuj demo"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.appointment_validated
 msgid "hour"
-msgstr "godzina"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.appointment_validated
 msgid "hours from now!"
-msgstr "godziny od teraz!"
+msgstr ""
 
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.appointment_form
@@ -948,4 +938,4 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.ui.view,arch_db:website_calendar.appointment_calendar
 msgid "timezone"
-msgstr "strefa czasowa"
+msgstr ""

@@ -3184,7 +3184,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_subscription_wizard_option
 msgid "sale.subscription.wizard.option"
-msgstr ""
+msgstr "sale.subscription.wizard.option"
 
 #. module: sale_subscription
 #: model:ir.ui.view,arch_db:sale_subscription.subscription

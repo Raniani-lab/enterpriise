@@ -2,24 +2,27 @@
 # This file contains the translation of the following modules:
 # * website_helpdesk_livechat
 # 
+# Translators:
+# Hamed Mohammadi <hamed@dehongi.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 10.saas~18+e\n"
+"Project-Id-Version: Odoo Server saas~11.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-20 11:33+0000\n"
-"PO-Revision-Date: 2017-09-20 11:33+0000\n"
+"POT-Creation-Date: 2018-06-25 08:34+0000\n"
+"PO-Revision-Date: 2018-06-25 08:34+0000\n"
+"Last-Translator: Hamed Mohammadi <hamed@dehongi.com>, 2018\n"
 "Language-Team: Persian (https://www.transifex.com/odoo/teams/41243/fa/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Language: fa\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #. module: website_helpdesk_livechat
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:49
 #, python-format
 msgid " This channel is private. People must be invited to join it."
-msgstr ""
+msgstr "این کانال خصوصی است. افراد باید دعوت شوند تا به گفتگو بپیوندند."
 
 #. module: website_helpdesk_livechat
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:52
@@ -34,7 +37,7 @@ msgstr ""
 #. module: website_helpdesk_livechat
 #: model:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
 msgid "Canned Responses"
-msgstr ""
+msgstr "جوابهای آماده"
 
 #. module: website_helpdesk_livechat
 #: model:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
@@ -56,27 +59,27 @@ msgstr ""
 #. module: website_helpdesk_livechat
 #: model:ir.model,name:website_helpdesk_livechat.model_mail_channel
 msgid "Discussion channel"
-msgstr ""
+msgstr "کانال بحث"
 
 #. module: website_helpdesk_livechat
 #: model:ir.model,name:website_helpdesk_livechat.model_helpdesk_team
 msgid "Helpdesk Team"
-msgstr ""
+msgstr "تیم میز پشتیبانی"
 
 #. module: website_helpdesk_livechat
-#: model:ir.model.fields,field_description:website_helpdesk_livechat.field_helpdesk_team_is_canned_response
+#: model:ir.model.fields,field_description:website_helpdesk_livechat.field_helpdesk_team__is_canned_response
 msgid "Is Canned Response"
 msgstr ""
 
 #. module: website_helpdesk_livechat
-#: model:ir.model.fields,field_description:website_helpdesk_livechat.field_helpdesk_team_feature_livechat_channel_id
+#: model:ir.model.fields,field_description:website_helpdesk_livechat.field_helpdesk_team__feature_livechat_channel_id
 msgid "Live Chat Channel"
-msgstr ""
+msgstr "کانال گفتگوی زنده"
 
 #. module: website_helpdesk_livechat
-#: model:ir.model.fields,field_description:website_helpdesk_livechat.field_helpdesk_team_feature_livechat_web_page
+#: model:ir.model.fields,field_description:website_helpdesk_livechat.field_helpdesk_team__feature_livechat_web_page
 msgid "Live Chat Test Page"
-msgstr ""
+msgstr "صفحه آزمایشی گفتگوی زنده"
 
 #. module: website_helpdesk_livechat
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:101
@@ -118,7 +121,7 @@ msgid "Test the livechat widget from this page:<br/>"
 msgstr ""
 
 #. module: website_helpdesk_livechat
-#: model:ir.model.fields,help:website_helpdesk_livechat.field_helpdesk_team_feature_livechat_web_page
+#: model:ir.model.fields,help:website_helpdesk_livechat.field_helpdesk_team__feature_livechat_web_page
 msgid ""
 "URL to a static page where you client can discuss with the operator of the "
 "channel."
@@ -139,13 +142,13 @@ msgstr ""
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:51
 #, python-format
 msgid "You are in a private conversation with <b>@%s</b>."
-msgstr ""
+msgstr "شما در حال صحبت خصوصی با <b>@%s</b>هستید."
 
 #. module: website_helpdesk_livechat
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:47
 #, python-format
 msgid "You are in channel <b>#%s</b>."
-msgstr ""
+msgstr "شما در کانال <b>#%s</b>هستید."
 
 #. module: website_helpdesk_livechat
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:84

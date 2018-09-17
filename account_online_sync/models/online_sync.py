@@ -430,7 +430,7 @@ class AccountBankStatement(models.Model):
          Return: The number of imported transaction for the journal
         """
         # Since the synchronization succeeded, set it as the bank_statements_source of the journal
-        journal.bank_statements_source = 'online_sync'
+        journal.sudo().write({'bank_statements_source': 'online_sync'})
 
         all_lines = self.env['account.bank.statement.line'].search([('journal_id', '=', journal.id),
                                                                     ('date', '>=', journal.account_online_journal_id.last_sync)])
@@ -511,7 +511,7 @@ class AccountBankStatement(models.Model):
                             'balance_start': (end_amount - total) if balance_start is None else balance_start
                             })
 
-        journal.account_online_journal_id.last_sync = last_date
+        journal.account_online_journal_id.sudo().write({'last_sync': last_date})
         return len(lines)
 
 class AccountBankStatementLine(models.Model):

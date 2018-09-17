@@ -120,7 +120,7 @@ class GenerateSimulationLink(models.TransientModel):
         if self.employee_id:
             partner_to = self.employee_id.address_home_id
             if not partner_to:
-                raise ValidationError(_("No home address defined on the employee!"))
+                raise ValidationError(_("No private address defined on the employee!"))
         elif self.applicant_id:
             partner_to = self.applicant_id.partner_id
             if not partner_to:

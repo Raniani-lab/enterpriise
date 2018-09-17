@@ -27,7 +27,6 @@ Product Life Management
         'views/mrp_eco_views.xml',
         'views/product_views.xml',
         'views/mrp_routing_views.xml',
-        'views/res_users_views.xml',
     ],
     'qweb': [
         'static/src/xml/mrp_plm_templates.xml'

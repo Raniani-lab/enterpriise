@@ -258,7 +258,7 @@
 
     <!-- Common top bar -->
     <!-- TODO: Hide in mobile as it is going to push in control panel and it breaks UI, maybe we will improve it in future -->
-    <div t-name="sale_subscription_dashboard.dashboard_option_pickers" class="o_datepickers_searchview d-none d-md-block">
+    <div t-name="sale_subscription_dashboard.dashboard_option_pickers" class="o_datepickers_searchview d-none d-md-flex">
         <span class="o_datepicker_separator"> to </span><button class="btn btn-primary o_update_options">Update</button>
     </div>
     <t t-name="sale_subscription_dashboard.dashboard_option_filters">
@@ -297,7 +297,7 @@
             <a class="dropdown-toggle" data-toggle="dropdown">Filter on sales team<span class="caret"/></a>
             <ul class="dropdown-menu o_filters_menu" role="menu">
                 <li t-foreach="widget.sales_team" t-as="sale_team">
-                    <a href="#" class="o_sales_team_filter js_tag" t-att-data-id="sale_team.id"><t t-esc="sale_team.name"/></a>
+                    <a role="menuitem" href="#" class="dropdown-item o_sales_team_filter js_tag" t-att-data-id="sale_team.id"><t t-esc="sale_team.name"/></a>
                 </li>
             </ul>
         </div>

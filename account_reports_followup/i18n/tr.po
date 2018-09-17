@@ -3,14 +3,17 @@
 # * account_reports_followup
 # 
 # Translators:
-# Murat Kaplan <muratk@projetgrup.com>, 2017
+# Martin Trigaux, 2018
+# Levent Karakaş <levent@mektup.at>, 2018
+# Murat Kaplan <muratk@projetgrup.com>, 2018
+# Gökhan Erdoğdu <gokhan.erdogdu@mechsoft.com.tr>, 2018
 # Umur Akın <umura@projetgrup.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.3+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 08:34+0000\n"
-"PO-Revision-Date: 2018-06-25 08:34+0000\n"
+"POT-Creation-Date: 2018-08-24 11:28+0000\n"
+"PO-Revision-Date: 2018-08-24 11:28+0000\n"
 "Last-Translator: Umur Akın <umura@projetgrup.com>, 2018\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
@@ -91,7 +94,7 @@ msgstr ""
 "\n"
 "Bir anımsatma göndermemize karşın hesabınızın ciddi olarak geciktiğini görmek bizi üzmüştür.\n"
 "\n"
-"İvedilikle ödeme yapmanız gerekmektedir, aksi durumda hesabınız durdurulacak olup firmanıza hiçbir hizmet ve malzeme tedariği yapılmayacaktır.\n"
+"İvedilikle ödeme yapmanız gerekmektedir, aksi durumda hesabınız durdurulacak olup şirketinize hiçbir hizmet ve malzeme tedariği yapılmayacaktır.\n"
 "Lütfen önümüzdeki 8 gün içinde bu ödemeyi yaparak durumu telafi edin.\n"
 "\n"
 "Eğer bilemediğimiz bir nedenden dolayı ödemeyi yapamıyorsanız hızlı şekilde çözüm sağlamak lütfen muhasebe yetkilimizle görüşmekten çekinmeyin.\n"
@@ -103,7 +106,7 @@ msgstr ""
 #. module: account_reports_followup
 #: model:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
 msgid ": Current Date"
-msgstr ": Geçerli Traih"
+msgstr ": Geçerli Tarih"
 
 #. module: account_reports_followup
 #: model:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
@@ -118,7 +121,7 @@ msgstr ": Kullanıcı Adı"
 #. module: account_reports_followup
 #: model:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
 msgid ": User's Company Name"
-msgstr ": Kullanıcının Şirket Ünvanı"
+msgstr ": Kullanıcının Şirket Adı"
 
 #. module: account_reports_followup
 #: model:ir.model,name:account_reports_followup.model_account_followup_followup
@@ -128,7 +131,7 @@ msgstr "Hesap Takibi"
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__manual_action_note
 msgid "Action To Do"
-msgstr "Yapılacak Eylem"
+msgstr "Yapılması Gerekenler"
 
 #. module: account_reports_followup
 #: model:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
@@ -143,17 +146,17 @@ msgstr "Bir Sorumlu Ata"
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup__company_id
 msgid "Company"
-msgstr "Firma"
+msgstr "Şirket"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup__name
 msgid "Company Name"
-msgstr "Firma Adı"
+msgstr "Şirket Adı"
 
 #. module: account_reports_followup
 #: model:ir.model,name:account_reports_followup.model_res_partner
 msgid "Contact"
-msgstr "Kontak"
+msgstr "İletişim"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup__create_uid
@@ -165,7 +168,7 @@ msgstr "Oluşturan"
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup__create_date
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__create_date
 msgid "Created on"
-msgstr "Oluşturulma zamanı"
+msgstr "Oluşturulma"
 
 #. module: account_reports_followup
 #: sql_constraint:account_followup.followup.line:0
@@ -188,7 +191,7 @@ msgstr "Görünüm Adı"
 #: code:addons/account_reports_followup/static/src/xml/account_reports_followup_template.xml:19
 #, python-format
 msgid "Done"
-msgstr "Biten"
+msgstr "Tamamlandı"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__delay
@@ -314,20 +317,10 @@ msgid "Manual Action Type"
 msgstr ""
 
 #. module: account_reports_followup
-#: code:addons/account_reports_followup/models/account_followup_report.py:82
+#: code:addons/account_reports_followup/models/account_followup_report.py:85
 #, python-format
 msgid "Manual action done"
 msgstr "Manuel işlem tamamlandı"
-
-#. module: account_reports_followup
-#: code:addons/account_reports_followup/models/account_followup.py:81
-#, python-format
-msgid ""
-"No follow-up is defined for the company \"%s\".\n"
-" Please define one."
-msgstr ""
-"\"%s\" şirketi için herhangi bir takip tanımlanmadı.\n"
-" Lütfen bir tane tanımlayın."
 
 #. module: account_reports_followup
 #. openerp-web
@@ -341,7 +334,7 @@ msgstr ""
 #. module: account_reports_followup
 #: sql_constraint:account_followup.followup:0
 msgid "Only one follow-up per company is allowed"
-msgstr "Her firma için yalnız bir izlemeye izin verilir"
+msgstr "Her şirket için yalnız bir takibe izin verilir"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,help:account_reports_followup.field_res_partner__payment_responsible_id
@@ -362,6 +355,11 @@ msgstr "İş Ortağı kayıtları"
 #: model:ir.actions.act_window,name:account_reports_followup.action_account_followup_definition_form
 msgid "Payment Follow-ups"
 msgstr "Tahsilat Takipleri"
+
+#. module: account_reports_followup
+#: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__print_letter
+msgid "Print a Letter"
+msgstr ""
 
 #. module: account_reports_followup
 #. openerp-web
@@ -391,11 +389,6 @@ msgstr "Takip Ara"
 #: model:account_followup.followup.line,name:account_reports_followup.demo_followup_line2
 msgid "Second reminder letter and email"
 msgstr "İkinci hatırlatma mektubu ve e-postası"
-
-#. module: account_reports_followup
-#: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__send_letter
-msgid "Send a Letter"
-msgstr "Bir Mektup Gönder"
 
 #. module: account_reports_followup
 #: model:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
@@ -465,9 +458,9 @@ msgid "Total debit"
 msgstr "Toplam Borç"
 
 #. module: account_reports_followup
-#: model:ir.model.fields,help:account_reports_followup.field_account_followup_followup_line__send_letter
-msgid "When processing, it will print a letter"
-msgstr "İşlenirken bir mektup basılacaktır"
+#: model:ir.model.fields,help:account_reports_followup.field_account_followup_followup_line__print_letter
+msgid "When processing, it will print a PDF"
+msgstr ""
 
 #. module: account_reports_followup
 #: model:ir.model.fields,help:account_reports_followup.field_account_followup_followup_line__send_email
@@ -499,7 +492,7 @@ msgstr ""
 "                            çevirmeyi unutmayın."
 
 #. module: account_reports_followup
-#: code:addons/account_reports_followup/models/account_followup.py:58
+#: code:addons/account_reports_followup/models/account_followup.py:57
 #, python-format
 msgid ""
 "Your description is invalid, use the right legend or %% if you want to use "

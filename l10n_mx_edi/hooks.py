@@ -58,7 +58,7 @@ def _load_xsd_files(cr, registry, url):
         res = objectify.fromstring(response.content)
     except etree.XMLSyntaxError as e:
         logging.getLogger(__name__).info(
-            'You are trying to load an invalid xsd file.\n%s', e.message)
+            'You are trying to load an invalid xsd file.\n%s', e)
         return ''
     namespace = {'xs': 'http://www.w3.org/2001/XMLSchema'}
     sub_urls = res.xpath('//xs:import', namespaces=namespace)

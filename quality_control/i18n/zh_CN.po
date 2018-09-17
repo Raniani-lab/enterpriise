@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"POT-Creation-Date: 2018-09-05 09:11+0000\n"
+"PO-Revision-Date: 2018-09-05 09:11+0000\n"
 "Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -283,6 +283,7 @@ msgstr ""
 #. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.quality_alert_view_search
 #: model:ir.ui.view,arch_db:quality_control.quality_check_view_search
+#: model:ir.ui.view,arch_db:quality_control.quality_point_view_search
 msgid "Group By"
 msgstr "分组"
 
@@ -409,6 +410,11 @@ msgid "OK"
 msgstr "确认"
 
 #. module: quality_control
+#: model:ir.ui.view,arch_db:quality_control.quality_point_view_search
+msgid "Operation Type"
+msgstr "作业类型"
+
+#. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.quality_check_view_form
 #: model:ir.ui.view,arch_db:quality_control.quality_check_view_form_small
 #: selection:quality.check,measure_success:0
@@ -445,6 +451,11 @@ msgstr "图片已上传"
 #: model:ir.ui.view,arch_db:quality_control.quality_alert_view_form
 msgid "Preventive Actions"
 msgstr "预防行动"
+
+#. module: quality_control
+#: model:ir.ui.view,arch_db:quality_control.quality_point_view_search
+msgid "Product"
+msgstr "产品"
 
 #. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.quality_alert_team_view_form
@@ -654,6 +665,11 @@ msgstr "标签"
 #: model:ir.ui.view,arch_db:quality_control.quality_alert_team_view_tree
 msgid "Teams"
 msgstr "团队"
+
+#. module: quality_control
+#: model:ir.ui.view,arch_db:quality_control.quality_point_view_search
+msgid "Test Type"
+msgstr "测试类型"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_alert__title

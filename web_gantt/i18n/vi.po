@@ -2,18 +2,12 @@
 # This file contains the translation of the following modules:
 # * web_gantt
 # 
-# Translators:
-# lam nguyen <lamev.inc@gmail.com>, 2017
-# fanha99 <fanha99@hotmail.com>, 2017
-# Martin Trigaux <mat@odoo.com>, 2017
-# Tuan Tran <tmtuan.projects@gmail.com>, 2017
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 10.saas~18+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-20 11:33+0000\n"
-"PO-Revision-Date: 2017-09-20 11:33+0000\n"
-"Last-Translator: Tuan Tran <tmtuan.projects@gmail.com>, 2017\n"
+"POT-Creation-Date: 2018-08-24 11:29+0000\n"
+"PO-Revision-Date: 2018-08-24 11:29+0000\n"
 "Language-Team: Vietnamese (https://www.transifex.com/odoo/teams/41243/vi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,69 +17,90 @@ msgstr ""
 
 #. module: web_gantt
 #. openerp-web
-#: code:addons/web_gantt/static/src/xml/web_gantt.xml:25
-#: code:addons/web_gantt/static/src/xml/web_gantt.xml:39
+#: code:addons/web_gantt/static/src/xml/web_gantt.xml:24
+#: code:addons/web_gantt/static/src/xml/web_gantt.xml:31
 #, python-format
 msgid "Day"
-msgstr "Ngày"
-
-#. module: web_gantt
-#. openerp-web
-#: code:addons/web_gantt/static/src/js/gantt_view.js:58
-#: code:addons/web_gantt/static/src/js/gantt_view.js:100
-#, python-format
-msgid "Gantt"
-msgstr "Gantt"
-
-#. module: web_gantt
-#. openerp-web
-#: code:addons/web_gantt/static/src/js/gantt_renderer.js:73
-#, python-format
-msgid "Gantt View"
-msgstr "Khung nhìn Gantt"
+msgstr ""
 
 #. module: web_gantt
 #. openerp-web
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:22
-#: code:addons/web_gantt/static/src/xml/web_gantt.xml:31
-#: code:addons/web_gantt/static/src/xml/web_gantt.xml:41
+#, python-format
+msgid "Dropdown menu"
+msgstr ""
+
+#. module: web_gantt
+#. openerp-web
+#: code:addons/web_gantt/static/src/js/gantt_view.js:58
+#: code:addons/web_gantt/static/src/js/gantt_view.js:99
+#, python-format
+msgid "Gantt"
+msgstr ""
+
+#. module: web_gantt
+#. openerp-web
+#: code:addons/web_gantt/static/src/js/gantt_renderer.js:74
+#, python-format
+msgid "Gantt View"
+msgstr ""
+
+#. module: web_gantt
+#. openerp-web
+#: code:addons/web_gantt/static/src/xml/web_gantt.xml:22
+#: code:addons/web_gantt/static/src/xml/web_gantt.xml:26
+#: code:addons/web_gantt/static/src/xml/web_gantt.xml:33
 #, python-format
 msgid "Month"
-msgstr "Tháng"
+msgstr ""
+
+#. module: web_gantt
+#. openerp-web
+#: code:addons/web_gantt/static/src/xml/web_gantt.xml:17
+#, python-format
+msgid "Next"
+msgstr ""
+
+#. module: web_gantt
+#. openerp-web
+#: code:addons/web_gantt/static/src/xml/web_gantt.xml:11
+#, python-format
+msgid "Previous"
+msgstr ""
 
 #. module: web_gantt
 #. openerp-web
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:14
 #, python-format
 msgid "Today"
-msgstr "Hôm nay"
+msgstr ""
 
 #. module: web_gantt
 #. openerp-web
-#: code:addons/web_gantt/static/src/xml/web_gantt.xml:28
-#: code:addons/web_gantt/static/src/xml/web_gantt.xml:40
+#: code:addons/web_gantt/static/src/xml/web_gantt.xml:25
+#: code:addons/web_gantt/static/src/xml/web_gantt.xml:32
 #, python-format
 msgid "Week"
-msgstr "Tuần"
+msgstr ""
 
 #. module: web_gantt
 #. openerp-web
+#: code:addons/web_gantt/static/src/xml/web_gantt.xml:27
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:34
-#: code:addons/web_gantt/static/src/xml/web_gantt.xml:42
 #, python-format
 msgid "Year"
-msgstr "Năm"
+msgstr ""
 
 #. module: web_gantt
 #. openerp-web
-#: code:addons/web_gantt/static/src/js/gantt_controller.js:196
+#: code:addons/web_gantt/static/src/js/gantt_controller.js:208
 #, python-format
 msgid "You are trying to write on a read-only field!"
-msgstr "Bạn đang cố thay đổi nội dung ở mục dữ liệu chỉ đọc!"
+msgstr ""
 
 #. module: web_gantt
 #. openerp-web
-#: code:addons/web_gantt/static/src/js/gantt_controller.js:191
+#: code:addons/web_gantt/static/src/js/gantt_controller.js:203
 #, python-format
 msgid "You have no date_stop field defined!"
-msgstr "Bạn chưa cho biết ngày kết thúc!"
+msgstr ""

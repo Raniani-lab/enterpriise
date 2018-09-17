@@ -115,23 +115,23 @@
         </div>
     </div>
     <div class="o_dial_keypad_button_container">
-        <div class="row">
-            <div class="o_dial_keypad_button_small col-3 text-center">
+        <div class="o_row">
+            <div class="o_dial_keypad_button_small text-center">
               <a href="#" class="o_dial_email">
                 <i class="fa fa-send-o fa-2x" aria-label="Send mail"></i><p class="feature text-center">Send mail</p>
               </a>
             </div>
-            <div class="o_dial_keypad_button_small col-3 text-center">
+            <div class="o_dial_keypad_button_small text-center">
               <a href="#" class="o_dial_to_partner">
                 <i class="fa fa-user fa-2x" aria-label="Customer"></i><p class="feature text-center">Customer</p>
               </a>
             </div>
-            <div t-if="widget.activity_res_id &amp;&amp; widget.activity_res_id != widget.partner_id" class="o_dial_keypad_button_small col-3 text-center">
+            <div t-if="widget.activity_res_id &amp;&amp; widget.activity_res_id != widget.partner_id" class="o_dial_keypad_button_small text-center">
               <a href="#" class="o_dial_to_record">
                 <i role="img" class="fa fa-circle-o fa-2x" aria-label="Activity" title="Activity"></i><p class="feature text-center"><t t-esc="widget.activity_model_name"/></p>
               </a>
             </div>
-            <div t-if="widget.activity_res_id" class="o_dial_keypad_button_small col-3 text-center">
+            <div t-if="widget.activity_res_id" class="o_dial_keypad_button_small text-center">
               <a href="#" class="o_dial_reschedule_activity">
                 <i class="fa fa-calendar fa-2x" aria-label="Schedule Next"></i><p class="feature text-center">Schedule <br/> Next</p>
               </a>

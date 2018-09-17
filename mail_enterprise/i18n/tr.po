@@ -3,13 +3,14 @@
 # * mail_enterprise
 # 
 # Translators:
+# Martin Trigaux, 2018
 # Murat Kaplan <muratk@projetgrup.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.3+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 08:34+0000\n"
-"PO-Revision-Date: 2018-06-25 08:34+0000\n"
+"POT-Creation-Date: 2018-08-24 11:28+0000\n"
+"PO-Revision-Date: 2018-08-24 11:28+0000\n"
 "Last-Translator: Murat Kaplan <muratk@projetgrup.com>, 2018\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
@@ -17,6 +18,13 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Language: tr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#. module: mail_enterprise
+#. openerp-web
+#: code:addons/mail_enterprise/static/src/xml/mail_enterprise.xml:8
+#, python-format
+msgid "Attachment"
+msgstr "Ek"
 
 #. module: mail_enterprise
 #. openerp-web

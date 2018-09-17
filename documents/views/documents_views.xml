@@ -22,14 +22,21 @@
                 <field name="datas_fname"/>
                 <field name="tag_ids"/>
                 <field name="owner_id"/>
-                <field name="partner_id"/>
-                <filter string="My Favorites" name="my_projects" domain="[('favorited_ids', 'in', uid)]"/>
+                <field name="partner_id" string="Contact"/>
+                <filter string="PDF" name="pdf" domain="[('mimetype', 'ilike', 'pdf')]"/>
+                <filter string="Image" name="img" domain="[('mimetype', 'ilike', 'image')]"/>
+                <filter string="Video" name="video" domain="[('mimetype', 'ilike', 'video')]"/>
+                <filter string="Doc" name="doc" domain="[('datas_fname', 'ilike', '.doc')]"/>
                 <separator/>
                 <filter string="Archived" name="Inactive" domain="[('active', '=', False)]"/>
                 <filter string="Model" name="by_model" domain="[]" context="{'group_by': 'res_model'}"/>
             </xpath>
             <xpath expr="//filter[@name='my_documents_filter']" position="replace">
+                <filter name="my_favorites_filter" string="My Favorites" domain="[('favorited_ids', 'in', uid)]"/>
                 <filter name="my_documents_filter" string="My documents" domain="[('owner_id', '=', uid)]"/>
+                <separator/>
+                <filter name="my_locked_filter" string="My locked files" domain="[('lock_uid', '=', uid)]"/>
+                <filter name="all_locked_filter" string="All locked files" domain="[('lock_uid', '!=', False)]"/>
             </xpath>
         </field>
     </record>
@@ -38,7 +45,7 @@
         <field name="name">ir.attachment kanban</field>
         <field name="model">ir.attachment</field>
         <field name="arch" type="xml">
-            <kanban js_class="documents_kanban">
+            <kanban js_class="documents_kanban" create="false">
                 <field name="id"/>
                 <field name="mimetype"/>
                 <field name="favorited_ids"/>
@@ -51,6 +58,7 @@
                 <field name="type"/>
                 <field name="create_date"/>
                 <field name="active"/>
+                <field name="checksum"/>
                 <field name="name"/>
                 <field name="res_model_name"/>
                 <field name="res_name"/>
@@ -61,7 +69,7 @@
                                 <div class="o_kanban_image_wrapper">
                                     <t t-set="webimage" t-value="new RegExp('image.*(gif|jpeg|jpg|png)').test(record.mimetype.value)"/>
                                     <div t-if="record.type.raw_value == 'url'" class="o_url_image fa fa-link fa-3x text-muted"/>
-                                    <img t-elif="webimage" t-attf-src="/web/image/#{record.id.raw_value}?field=thumbnail" width="100" height="100" alt="Document" class="o_attachment_image"/>
+                                    <img t-elif="webimage" t-attf-src="/web/image/#{record.id.raw_value}?field=thumbnail&amp;signature=#{record.checksum.value}" width="100" height="100" alt="Document" class="o_attachment_image"/>
                                     <div t-else="!webimage" class="o_image o_image_thumbnail" t-att-data-mimetype="record.mimetype.value"/>
                                 </div>
                             </div>
@@ -82,7 +90,7 @@
                                                 <span t-att-title="record.res_name.raw_value">: <field name="res_name"/></span>
                                             </t>
                                         </t>
-                                        <t t-elif="record.type.raw_value == 'url'">
+                                        <t t-if="record.type.raw_value == 'url'">
                                             <span class="o_document_url"><i class="fa fa-globe"/> <field name="url" widget="url"/></span>
                                         </t>
                                         <samp t-else="" class="text-muted"> </samp>
@@ -108,32 +116,10 @@
         </field>
     </record>
 
-    <record id="documents_upload_url_view" model="ir.ui.view">
-        <field name="name">upload url</field>
-        <field name="priority" eval="1"/>
-        <field name="model">ir.attachment</field>
-        <field name="arch" type="xml">
-            <form>
-                <sheet>
-                    <group>
-                        <field name="name"/>
-                        <field name="url"/>
-                        <field name="folder_id" groups="base.group_no_one"/>
-                        <field name="type" groups="base.group_no_one"/>
-                        <field name="datas_fname" groups="base.group_no_one"/>
-                    </group>
-                <footer>
-                    <button name="write" type="object" string="Upload" class="btn btn-primary"/>
-                </footer>
-                </sheet>
-            </form>
-        </field>
-    </record>
-
     <record id="documents_view_form" model="ir.ui.view">
         <field name="name">attachments form</field>
         <field name="model">ir.attachment</field>
-        <field name="priority" eval="5"/>
+        <field name="priority" eval="1"/>
         <field name="arch" type="xml">
             <form>
                 <sheet>
@@ -164,7 +150,6 @@
                     </group>
                     <group string="Technical" groups="base.group_no_one">
                         <field name="lock_uid"/>
-                        <field name="url"/>
                         <field name="datas_fname"/>
                         <field name="folder_id"/>
                         <field name="res_model_name"/>
@@ -174,7 +159,7 @@
                         <field name="create_date"/>
                         <field name="create_uid"/>
                         <field name="company_id"/>
-                        <field name="access_token"/>
+                        <field name="access_token" readonly="1"/>
                         <field name="db_datas"/>
                         <field name="store_fname"/>
                         <field name="file_size"/>
@@ -187,11 +172,33 @@
         </field>
     </record>
 
-    <record id="documents_view_tree" model="ir.ui.view">
-        <field name="name">attachments form</field>
+    <record id="documents_upload_url_view" model="ir.ui.view">
+        <field name="name">upload url</field>
+        <field name="priority" eval="5"/>
         <field name="model">ir.attachment</field>
         <field name="arch" type="xml">
-            <tree class="o_documents_list_view">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="url" string="URL" widget="url"/>
+                        <field name="name"/>
+                        <field name="folder_id" invisible="1"/>
+                        <field name="type" invisible="1"/>
+                        <field name="datas_fname" invisible="1"/>
+                    </group>
+                <footer>
+                    <button name="refresh_write" type="object" string="Add" class="btn btn-primary"/>
+                </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="documents_view_list" model="ir.ui.view">
+        <field name="name">attachments list</field>
+        <field name="model">ir.attachment</field>
+        <field name="arch" type="xml">
+            <tree class="o_documents_list_view" create="false" edit="false">
                 <field name="name"/>
                 <field name="res_model"/>
                 <field name="create_date"/>
@@ -234,6 +241,7 @@
             <form>
                 <sheet>
                     <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
                         <h1><field name="name" placeholder="i.e Finance"/></h1>
                     </div>
                     <group>
@@ -275,15 +283,14 @@
         <field name="name">share tree</field>
         <field name="model">documents.share</field>
         <field name="arch" type="xml">
-            <tree>
-                <field name="name"/>
+            <tree create="false">
                 <field name="folder_id"/>
+                <field name="name"/>
                 <field name="type"/>
                 <field name="action"/>
-                <field name="full_url" widget="url" readonly="1"/>
-                <field name="state"/>
                 <field name="create_uid"/>
                 <field name="create_date"/>
+                <field name="state"/>
             </tree>
         </field>
     </record>
@@ -292,9 +299,8 @@
         <field name="name">Share form</field>
         <field name="model">documents.share</field>
         <field name="arch" type="xml">
-            <form class="o_share_form">
+            <form class="o_share_form" create="false">
                 <sheet class="o_share_sheet">
-                    <field name="access_token" groups="base.group_no_one"/>
                     <field name="full_url" widget="CopyClipboardChar" readonly="1"/>
                     <group>
                         <group>
@@ -307,8 +313,7 @@
                         <group  attrs="{'invisible' : [('action', 'in', ['download'])] }">
                             <field name="owner_id"/>
                             <field name="partner_id"/>
-                            <field name="tag_ids" widget="many2many_tags"
-                                   options="{'color_field': 'color'}" groups="base.group_no_one"/>
+                            <field name="tag_ids" widget="many2many_tags" groups="base.group_no_one"/>
                             <label for="email_drop"/>
                             <div>
                                 <field name="email_drop"/>
@@ -326,7 +331,7 @@
                             </div>
                         </group>
                     </group>
-                    <field name="attachment_ids" groups="base.group_no_one"/>
+                    <field name="attachment_ids" groups="base.group_no_one" readonly="1"/>
                 </sheet>
             </form>
         </field>
@@ -339,7 +344,6 @@
             <form class="o_share_form">
                 <sheet class="o_share_sheet">
                     <group class="o_url_group">
-                        <field name="access_token" groups="base.group_no_one"/>
                         <field name="full_url" widget="CopyClipboardChar" readonly="1"/>
                     </group>
                     <group>
@@ -353,8 +357,7 @@
                         <group attrs="{'invisible' : [('action', 'in', ['download'])] }">
                             <field name="owner_id"/>
                             <field name="partner_id"/>
-                            <field name="tag_ids" widget="many2many_tags"
-                                   options="{'color_field': 'color'}" groups="base.group_no_one"/>
+                            <field name="tag_ids" widget="many2many_tags" groups="base.group_no_one"/>
                             <label for="email_drop"/>
                             <div>
                                 <field name="email_drop"/>
@@ -372,7 +375,7 @@
                             </div>
                         </group>
                     </group>
-                    <field name="attachment_ids" groups="base.group_no_one"/>
+                    <field name="attachment_ids" groups="base.group_no_one" readonly="1"/>
                     <footer>
                         <button name="write" type="object" string="Done" class="btn btn-primary"/>
                     </footer>
@@ -388,6 +391,7 @@
         <field name="model">documents.workflow.rule</field>
         <field name="arch" type="xml">
             <tree>
+                <field name="domain_folder_id"/>
                 <field name="name"/>
                 <field name="note"/>
             </tree>
@@ -409,20 +413,22 @@
                         <notebook>
                             <page string="Conditions">
                                 <field name="condition_type" widget="radio" groups="base.group_no_one"/>
-                                <group>
-                                    <field name="domain_folder_id" required="1"/>
-                                </group>
                                 <field name="domain" string="Domain" nolabel="1" widget="domain" colspan="2" options="{'model':'ir.attachment'}" attrs="{ 'invisible' : [('condition_type', '=', 'criteria')]}"/>
-                                <group attrs="{ 'invisible' : [('condition_type', '=', 'domain')]}">
-                                    <field name="criteria_partner_id"/>
-                                    <field name="criteria_owner_id"/>
-                                    <field name="criteria_tag_ids">
-                                        <tree editable="bottom">
-                                            <field name="operator"/>
-                                            <field name="facet_id" domain="[('folder_id','parent_of', parent.domain_folder_id)]"/>
-                                            <field name="tag_id" domain="[('facet_id','=',facet_id)]"/>
-                                        </tree>
-                                    </field>
+                                <group>
+                                    <group>
+                                        <field name="domain_folder_id" required="1"/>
+                                        <field name="criteria_partner_id"  attrs="{ 'invisible' : [('condition_type', '=', 'domain')]}"/>
+                                        <field name="criteria_owner_id"  attrs="{ 'invisible' : [('condition_type', '=', 'domain')]}"/>
+                                    </group>
+                                    <group attrs="{ 'invisible' : [('condition_type', '=', 'domain')]}">
+                                        <field name="criteria_tag_ids">
+                                            <tree editable="bottom">
+                                                <field name="operator"/>
+                                                <field name="facet_id" domain="[('folder_id','parent_of', parent.domain_folder_id)]"/>
+                                                <field name="tag_id" domain="[('facet_id','=',facet_id)]"/>
+                                            </tree>
+                                        </field>
+                                    </group>
                                 </group>
                             </page>
                             <page string="Actions">
@@ -437,14 +443,14 @@
                                     <field name="tag_action_ids">
                                         <tree editable="bottom">
                                             <field name="action"/>
-                                            <field name="facet_id" domain="[('folder_id','parent_of',[parent.folder_id, parent.domain_folder_id])]"/>
+                                            <field name="facet_id" domain="[('folder_id','parent_of',[parent.folder_id, parent.domain_folder_id])]" required="1"/>
                                             <field name="tag_id" domain="[('facet_id','=',facet_id)]"/>
                                         </tree>
                                     </field>
                                 </group>
                             </page>
                             <page string="Notes">
-                               <field name="note"/>
+                               <field name="note" placeholder="Write a tooltip for the action here"/>
                             </page>
                         </notebook>
                     </group>
@@ -623,20 +629,8 @@
         <field name="inherit_id" ref="base.res_config_settings_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//div[hasclass('settings')]" position="inside">
-                <div class="app_settings_block" data-string="Documents" string="Documents" data-key="documents">  <!--groups=""-->
-                    <h2>Folder Settings</h2>
-                    <div class="row mt16 o_settings_container">
-                        <div class="col-xs-12 col-md-6 o_setting_box">
-                            <div class="o_setting_right_pane o_documents_right_pane">
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-md-6 o_setting_box" title="More DMS settings">
-                            <div class="o_setting_left_pane">
-                            </div>
-                            <div class="o_setting_right_pane">
-                            </div>
-                        </div>
-                    </div>
+                <div class="app_settings_block o_documents_block" data-string="Documents" string="Documents" data-key="documents">
+
                 </div>
             </xpath>
         </field>
@@ -651,6 +645,14 @@
       <field name="view_ids" eval="[(5, 0, 0),
         (0, 0, {'view_mode': 'tree', 'view_id': False}),
         (0, 0, {'view_mode': 'form', 'view_id': ref('documents.documents_view_form')})]"/>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_url_form">
+        <field name="name">Add Url</field>
+        <field name="res_model">ir.attachment</field>
+        <field name="view_mode">form</field>
+        <field name="context">{'default_type': 'url', 'form_view_ref': 'documents.documents_upload_url_view'}</field>
+        <field name="target">new</field>
     </record>
 
     <record model="ir.actions.act_window" id="document_action">
@@ -725,11 +727,11 @@
         <menuitem name="Documents" id="documents.dashboard" parent="documents.menu_root" action="document_action" sequence="0"/>
         <menuitem name="Configuration" id="documents.Config" parent="documents.menu_root" sequence="1"/>
 
-            <menuitem name="Settings" id="documents.Settings_menu" parent="documents.Config" action="documents.configuration" sequence="0"/>
+            <menuitem name="Settings" id="documents.Settings_menu" parent="documents.Config" action="documents.configuration" groups="base.group_system" sequence="0"/>
             <menuitem name="Folders" id="documents.folder_menu" parent="documents.Config" action="folder_action" sequence="1"/>
-            <menuitem name="Tags" id="documents.Category_menu" parent="documents.Config" action="facet_action" groups="base.group_no_one" sequence="2"/>
+            <menuitem name="Tags" id="documents.Category_menu" parent="documents.Config" action="facet_action" sequence="2"/>
             <menuitem name="Actions" id="documents.WorkflowRules_menu" parent="documents.Config" action="workflow_rule_action" sequence="3"/>
-            <menuitem name="Shared" id="documents.share_menu" parent="documents.Config" action="share_action" sequence="4"/>
+            <menuitem name="Shared Links" id="documents.share_menu" parent="documents.Config" action="share_action" sequence="4"/>
             <menuitem name="Attachments" id="documents.attachment_list_view_temp" parent="documents.Config" action="document_debug_action" groups="base.group_no_one" sequence="5"/>
 
 </odoo>

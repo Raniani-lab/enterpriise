@@ -3,15 +3,15 @@
 # * web_mobile
 # 
 # Translators:
-# cagri erarslan <cagri.erarslan@mechsoft.com.tr>, 2017
-# Ediz Duman <neps1192@gmail.com>, 2017
+# Murat Kaplan <muratk@projetgrup.com>, 2018
+# cagri erarslan <cagri.erarslan@mechsoft.com.tr>, 2018
 # Umur Akın <umura@projetgrup.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.2+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-22 14:21+0000\n"
-"PO-Revision-Date: 2018-03-22 14:21+0000\n"
+"POT-Creation-Date: 2018-08-24 11:29+0000\n"
+"PO-Revision-Date: 2018-08-24 11:29+0000\n"
 "Last-Translator: Umur Akın <umura@projetgrup.com>, 2018\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
@@ -22,6 +22,13 @@ msgstr ""
 
 #. module: web_mobile
 #. openerp-web
+#: code:addons/web_mobile/static/src/xml/contact_sync.xml:7
+#, python-format
+msgid "Add"
+msgstr "Ekle"
+
+#. module: web_mobile
+#. openerp-web
 #: code:addons/web_mobile/static/src/xml/contact_sync.xml:9
 #, python-format
 msgid "Add to"
@@ -29,7 +36,7 @@ msgstr "Ekle: "
 
 #. module: web_mobile
 #. openerp-web
-#: code:addons/web_mobile/static/src/xml/user_menu.xml:7
+#: code:addons/web_mobile/static/src/xml/user_menu.xml:6
 #, python-format
 msgid "Add to Home Screen"
 msgstr "Ekrana Home Tuşu Ekleyin"
@@ -50,7 +57,21 @@ msgstr ""
 
 #. module: web_mobile
 #. openerp-web
-#: code:addons/web_mobile/static/src/xml/user_menu.xml:10
+#: code:addons/web_mobile/static/src/xml/settings_dashboard.xml:14
+#, python-format
+msgid "On Apple Store"
+msgstr ""
+
+#. module: web_mobile
+#. openerp-web
+#: code:addons/web_mobile/static/src/xml/settings_dashboard.xml:9
+#, python-format
+msgid "On Google Play"
+msgstr ""
+
+#. module: web_mobile
+#. openerp-web
+#: code:addons/web_mobile/static/src/xml/user_menu.xml:7
 #, python-format
 msgid "Switch/Add Account"
 msgstr "Hesap Değiştir/Ekle"

@@ -210,6 +210,7 @@ var SubMenu = Widget.extend({
      * @param {Event} ev
      */
     _onMenu: function (ev) {
+        ev.preventDefault();
         var $menu = $(ev.currentTarget);
         if (!$menu.data('name')) { return; }
 

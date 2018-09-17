@@ -67,7 +67,7 @@ class ProductProduct(models.Model):
         if not self.user_has_groups('mrp.group_mrp_user'):
             return
         for product in self:
-            domain = self._get_documents()
+            domain = product._get_documents()
             product.product_attachment_count = self.env['mrp.document'].search_count(domain)
 
     @api.multi

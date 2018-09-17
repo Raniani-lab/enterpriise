@@ -3,10 +3,7 @@ odoo.define('stock_barcode.inventory_client_action', function (require) {
 
 var core = require('web.core');
 var ClientAction = require('stock_barcode.ClientAction');
-
-// tradiationnal form view used to fill some data manually after scanning Something
-// or to create directly a new line in the main view.
-var FormWidget = require('stock_barcode.FormWidget');
+var ViewsWidget = require('stock_barcode.ViewsWidget');
 
 var _t = core._t;
 
@@ -20,6 +17,8 @@ var InventoryClientAction = ClientAction.extend({
 
     init: function (parent, action) {
         this._super.apply(this, arguments);
+        this.commands['O-BTN.validate'] = this._validate.bind(this);
+        this.commands['O-BTN.cancel'] = this._cancel.bind(this);
         this.mode = 'inventory';
         if (! this.actionParams.inventoryId) {
             this.actionParams.inventoryId = action.context.active_id;
@@ -72,6 +71,20 @@ var InventoryClientAction = ClientAction.extend({
         return state.line_ids;
     },
 
+    /**
+     * @override
+     */
+    _lot_name_used: function (product, lot_name) {
+        var lines = this._getLines(this.currentState);
+        for (var i = 0; i < lines.length; i++) {
+            var line = lines[i];
+            if (line.product_id.id === product.id &&
+                line.prod_lot_id && line.prod_lot_id[1] === lot_name) {
+                return true;
+            }
+        }
+        return false;
+    },
 
     /**
      * @override
@@ -126,25 +139,28 @@ var InventoryClientAction = ClientAction.extend({
                     'product_uom_id': line.product_uom_id,
                     'product_qty': line.product_qty,
                     'location_id': line.location_id.id,
-                    'prod_lot_id': line.prod_lot_id && line.prod_lot_id[0]
+                    'prod_lot_id': line.prod_lot_id && line.prod_lot_id[0],
+                    'dummy_id': line.virtual_id,
                 }];
                 formattedCommands.push(cmd);
             }
         }
-        var self = this;
-        var deferred = $.when();
         if (formattedCommands.length > 0){
-            deferred = this._rpc({
-                'model': this.actionParams.model,
-                'method': 'write',
-                'args': [[this.currentState.id], {
-                    'line_ids': formattedCommands,
-                }],
-            }).then( function () {
-                return self._getState(self.currentState.id);
+            var params = {
+                'mode': 'write',
+                'model_name': this.actionParams.model,
+                'record_id': this.currentState.id,
+                'write_vals': formattedCommands,
+                'write_field': 'line_ids',
+            };
+
+            return this._rpc({
+                'route': '/stock_barcode/get_set_barcode_view_state',
+                'params': params,
             });
+        } else {
+            return $.Deferred().reject();
         }
-        return deferred;
     },
 
     /**
@@ -153,36 +169,33 @@ var InventoryClientAction = ClientAction.extend({
     _showInformation: function () {
         var self = this;
         return this._super.apply(this, arguments).then(function () {
-            if (self.formWidget) {
-                self.formWidget.destroy();
+            if (self.ViewsWidget) {
+                self.ViewsWidget.destroy();
             }
             self.linesWidget.destroy();
-            self.formWidget = new FormWidget(
+            self.ViewsWidget = new ViewsWidget(
                 self,
                 'stock.inventory',
                 'stock_barcode.stock_inventory_barcode2',
                 {},
-                self.currentState.id,
+                {currentId :self.currentState.id},
                 'readonly'
             );
-            self.formWidget.appendTo(self.$el);
+            self.ViewsWidget.appendTo(self.$el);
         });
     },
 
-    //--------------------------------------------------------------------------
-    // Handlers
-    //--------------------------------------------------------------------------
-
     /**
-     * Handles the `validate` OdooEvent.
+     * Makes the rpc to `action_validate`.
+     * This method could open a wizard so it takes care of removing/adding the "barcode_scanned"
+     * event listener.
      *
      * @private
-     * @param {OdooEvent} ev
+     * @returns {Deferred}
      */
-     _onValidate: function (ev) {
-        ev.stopPropagation();
+     _validate: function (ev) {
         var self = this;
-        return this.mutex.exec(function () {
+        this.mutex.exec(function () {
             return self._save().then(function () {
                 self._rpc({
                     'model': self.actionParams.model,
@@ -197,13 +210,11 @@ var InventoryClientAction = ClientAction.extend({
     },
 
     /**
-    * Handles the `cancel` OdooEvent.
-    *
-    * @private
-    * @param {OdooEvent} ev
-    */
-    _onCancel: function (ev) {
-        ev.stopPropagation();
+     * Makes the rpc to `action_cancel`.
+     *
+     * @private
+     */
+    _cancel: function () {
         var self = this;
         this.mutex.exec(function () {
             return self._save().then(function () {
@@ -217,6 +228,32 @@ var InventoryClientAction = ClientAction.extend({
                 });
             });
         });
+    },
+
+    //--------------------------------------------------------------------------
+    // Handlers
+    //--------------------------------------------------------------------------
+
+    /**
+     * Handles the `validate` OdooEvent.
+     *
+     * @private
+     * @param {OdooEvent} ev
+     */
+     _onValidate: function (ev) {
+         ev.stopPropagation();
+         this._validate();
+     },
+
+    /**
+    * Handles the `cancel` OdooEvent.
+    *
+    * @private
+    * @param {OdooEvent} ev
+    */
+    _onCancel: function (ev) {
+        ev.stopPropagation();
+        this._cancel();
     },
 
     /**

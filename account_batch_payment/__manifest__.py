@@ -14,7 +14,7 @@ The total amount deposited will then appear as a single transaction on your bank
 When you proceed with the reconciliation, simply select the corresponding batch payment to reconcile all the payments within.
     """,
     'website': 'https://www.odoo.com/page/accounting',
-    'depends' : ['account_accountant'],
+    'depends' : ['account'],
     'data': [
         'security/account_batch_payment_security.xml',
         'security/ir.model.access.csv',

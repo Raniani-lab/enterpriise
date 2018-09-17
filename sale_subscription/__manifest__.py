@@ -41,7 +41,6 @@ Features:
         'data/sale_subscription_data.xml',
         'data/mail_template_data.xml',
         'report/sale_subscription_report_view.xml',
-        'views/res_users_views.xml',
     ],
     'demo': [
         'data/sale_subscription_demo.xml'

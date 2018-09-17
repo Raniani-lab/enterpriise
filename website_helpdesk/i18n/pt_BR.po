@@ -3,18 +3,16 @@
 # * website_helpdesk
 # 
 # Translators:
-# Mateus Lopes <mateus1@gmail.com>, 2017
-# Martin Trigaux, 2017
-# Rodrigo de Almeida Sottomaior Macedo <rmsolucoeseminformatic4@gmail.com>, 2018
+# Martin Trigaux, 2018
+# Mateus Lopes <mateus1@gmail.com>, 2018
 # Luiz Carlos de Lima <luiz.carlos@akretion.com.br>, 2018
-# AlexSandro Cruz <alex@sapienzae.com.br>, 2018
 # grazziano <gra.negocia@gmail.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.4+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-02 11:20+0000\n"
-"PO-Revision-Date: 2018-08-02 11:20+0000\n"
+"POT-Creation-Date: 2018-08-24 11:28+0000\n"
+"PO-Revision-Date: 2018-08-24 11:28+0000\n"
 "Last-Translator: grazziano <gra.negocia@gmail.com>, 2018\n"
 "Language-Team: Portuguese (Brazil) (https://www.transifex.com/odoo/teams/41243/pt_BR/)\n"
 "MIME-Version: 1.0\n"
@@ -25,19 +23,13 @@ msgstr ""
 
 #. module: website_helpdesk
 #: model:ir.ui.view,arch_db:website_helpdesk.team
-msgid ""
-"<span class=\"sr-only\">Toggle navigation</span>\n"
-"                            <span class=\"icon-bar\"/>\n"
-"                            <span class=\"icon-bar\"/>"
-msgstr ""
-"<span class=\"sr-only\">Alternar navegação</span>\n"
-"<span class=\"icon-bar\"/>\n"
-"<span class=\"icon-bar\"/>"
+msgid "Description"
+msgstr "Descrição"
 
 #. module: website_helpdesk
 #: model:ir.ui.view,arch_db:website_helpdesk.team
-msgid "Description"
-msgstr "Descrição"
+msgid "Dropdown menu"
+msgstr ""
 
 #. module: website_helpdesk
 #: model:website.menu,name:website_helpdesk.website_menu_helpdesk
@@ -58,6 +50,11 @@ msgstr ""
 #: model:ir.model,name:website_helpdesk.model_helpdesk_team
 #: model:ir.ui.view,arch_db:website_helpdesk.team
 msgid "Helpdesk Team"
+msgstr ""
+
+#. module: website_helpdesk
+#: model:ir.model.fields,field_description:website_helpdesk.field_helpdesk_team__is_published
+msgid "Is published"
 msgstr ""
 
 #. module: website_helpdesk
@@ -87,8 +84,8 @@ msgstr ""
 
 #. module: website_helpdesk
 #: model:ir.model.fields,field_description:website_helpdesk.field_helpdesk_team__website_published
-msgid "Visible in Website"
-msgstr "Visível no Website"
+msgid "Visible on current website"
+msgstr ""
 
 #. module: website_helpdesk
 #: model:ir.model.fields,field_description:website_helpdesk.field_helpdesk_team__website_url

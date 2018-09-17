@@ -16,6 +16,7 @@ QUnit.module('MailAttachmentOnSide', {
         this.data = {
             partner: {
                 fields: {
+                    related_attachment_count: {string: 'Attachment count', type: 'integer'},
                     display_name: { string: "Displayed name", type: "char" },
                     foo: {string: "Foo", type: "char", default: "My little Foo Value"},
                     message_ids: {
@@ -27,11 +28,16 @@ QUnit.module('MailAttachmentOnSide', {
                 },
                 records: [{
                     id: 2,
+                    related_attachment_count: 0,
                     display_name: "first partner",
                     foo: "HELLO",
                     message_ids: [],
                 }]
-            }
+            },
+            'ir.attachment': {
+                fields: {},
+                records: [],
+            },
         };
         this.services = mailTestUtils.getMailServices();
     }
@@ -39,7 +45,7 @@ QUnit.module('MailAttachmentOnSide', {
 }, function () {
 
     QUnit.test('Attachment on side', function (assert) {
-        assert.expect(7);
+        assert.expect(11);
 
         var count = 0;
         this.data.partner.records[0].message_ids = [1];
@@ -118,6 +124,9 @@ QUnit.module('MailAttachmentOnSide', {
                     });
                     return $.when(5);
                 }
+                if (args.method === 'register_as_main_attachment') {
+                    return $.when(true);
+                }
                 return this._super.apply(this, arguments);
             },
             intercepts: {
@@ -142,15 +151,27 @@ QUnit.module('MailAttachmentOnSide', {
         assert.strictEqual(form.$('.o_form_sheet_bg + .o_attachment_preview').length, 1,
             "Attachment preview should be next sibling to .o_form_sheet_bg");
 
+        // Don't display arrow if there is no previous/next element
+        assert.strictEqual(form.$('.arrow').length, 0,
+            "Don't display arrow if there is no previous/next attachment");
+
         // send a message with attached PDF file
         form.$('.o_chatter_button_new_message').click();
         form.$('.oe_chatter .o_composer_text_field:first()').val("Attached the pdf file");
         form.$('.oe_chatter .o_composer_button_send').click();
 
+        assert.strictEqual(form.$('.arrow').length, 2,
+            "Display arrows if there multiple attachments");
         assert.strictEqual(form.$('.o_attachment_preview_img > img').length, 0,
             "Preview image should be removed");
         assert.strictEqual(form.$('.o_attachment_preview_container > iframe').length, 1,
             "There should be iframe for pdf viewer");
+        form.$('.o_move_next').click();
+        assert.strictEqual(form.$('.o_attachment_preview_img > img').length, 1,
+            "Display next attachment");
+        form.$('.o_move_previous').click();
+        assert.strictEqual(form.$('.o_attachment_preview_container > iframe').length, 1,
+            "Display preview attachment");
         form.destroy();
     });
 

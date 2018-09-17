@@ -104,8 +104,8 @@ class Certificate(models.Model):
     def get_mx_current_datetime(self):
         '''Get the current datetime with the Mexican timezone.
         '''
-        mexican_tz = timezone('America/Mexico_City')
-        return datetime.now(mexican_tz)
+        return fields.Datetime.context_timestamp(
+            self.with_context(tz='America/Mexico_City'), fields.Datetime.now())
 
     @api.multi
     def get_valid_certificate(self):

@@ -6,12 +6,22 @@ class IrAttachment(models.Model):
     _name = 'ir.attachment'
     _inherit = 'ir.attachment'
 
-    @api.multi
+    def _set_folder_sign(self, vals):
+        if vals.get('res_id'):
+            record = self.env[vals.get('res_model')].browse(vals.get('res_id'))
+            if record.exists():
+                vals.setdefault('folder_id', record.folder_id.id)
+                vals.setdefault('tag_ids', [(6, 0, record.documents_tag_ids.ids)])
+        return vals
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if vals.get('res_model') in ('sign.template', 'sign.request'):
+                vals.update(self._set_folder_sign(vals))
+        return super(IrAttachment, self).create(vals_list)
+
     def write(self, vals):
-        self.check('write', values=vals)
-        if not vals.get('folder_id'):
-            if vals.get('res_model') == 'sign.template' or vals.get('res_model') == 'sign.request':
-                folder = self.env.user.company_id.sign_folder
-                if folder.exists():
-                    vals.update(folder_id=folder.id)
+        if vals.get('res_model') in ('sign.template', 'sign.request'):
+            vals = self._set_folder_sign(vals)
         return super(IrAttachment, self).write(vals)

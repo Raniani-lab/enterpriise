@@ -252,8 +252,8 @@ class HelpdeskTeam(models.Model):
             if not ticket.get('sla_fail'):
                 result['7days']['success'] += ticket['__count']
 
-        result['today']['success'] = (result['today']['success'] * 100) / (result['today']['count'] or 1)
-        result['7days']['success'] = (result['7days']['success'] * 100) / (result['7days']['count'] or 1)
+        result['today']['success'] = round((result['today']['success'] * 100) / (result['today']['count'] or 1), 2)
+        result['7days']['success'] = round((result['7days']['success'] * 100) / (result['7days']['count'] or 1), 2)
         result['my_all']['hours'] = round(result['my_all']['hours'] / (result['my_all']['count'] or 1), 2)
         result['my_high']['hours'] = round(result['my_high']['hours'] / (result['my_high']['count'] or 1), 2)
         result['my_urgent']['hours'] = round(result['my_urgent']['hours'] / (result['my_urgent']['count'] or 1), 2)

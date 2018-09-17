@@ -223,7 +223,9 @@ var DocumentsInspector = Widget.extend({
     _renderModel: function () {
         if (this.records.length === 1){
             var resModelName = this.records[0].data.res_model_name;
-            if (!resModelName) { return; }
+            if (!resModelName || this.records[0].data.res_model === 'ir.attachment') {
+                return;
+            }
 
             var $modelContainer = this.$('.o_model_container');
             var options = {

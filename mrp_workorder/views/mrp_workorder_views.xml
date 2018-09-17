@@ -97,8 +97,8 @@
                     </div>
                     <div class="o_workorder_bar_content o_workorder_bar_content_right">
                         <div attrs="{'invisible': [('working_state', '=', 'blocked')]}">
-                            <button name="action_next" type="object" class="btn-primary" attrs="{'invisible': ['|', ('is_user_working', '=', False),'|', ('is_last_step', '=', True), '&amp;', '|', ('quality_state', '=', 'none'), ('test_type', '!=', 'passfail'), ('test_type', '!=', 'dummy')]}" barcode_trigger="next" string="Next"/>
-                            <button name="action_next" type="object" class="btn-primary" attrs="{'invisible': ['|', '|', ('is_user_working', '=', False), ('is_last_step', '=', True), ('test_type', 'not in', ['register_consumed_materials', 'picture'])]}" barcode_trigger="next" string="Validate"/>
+                            <button name="action_next" type="object" class="btn-primary" attrs="{'invisible': ['|', ('is_user_working', '=', False),'|', ('is_last_step', '=', True), '&amp;', '|', ('quality_state', '=', 'none'), ('test_type', '!=', 'passfail'), ('test_type', '!=', 'text')]}" barcode_trigger="next" string="Next"/>
+                            <button name="action_next" type="object" class="btn-primary" attrs="{'invisible': ['|', '|', ('is_user_working', '=', False), ('is_last_step', '=', True), ('test_type', 'not in', ['record_lotserial_numbers', 'picture'])]}" barcode_trigger="next" string="Validate"/>
                             <button name="record_production" type="object" string="Record production" attrs="{'invisible': ['|', '|', '|', '|', ('is_user_working', '=', False), ('is_last_step', '!=', True), ('skipped_check_ids', '!=', []), ('is_last_lot', '=', True)]}" barcode_trigger="record" class="btn-primary"/>
                             <button name="do_finish" type="object" string="Mark as Done" icon="fa-check" attrs="{'invisible': ['|', '|', '|', '|', ('is_user_working', '=', False), ('is_last_step', '!=', True), ('skipped_check_ids', '!=', []), ('is_last_lot', '=', False)]}" class="btn-primary" barcode_trigger="cloWO"/>
                             <button name="action_open_manufacturing_order" type="object" string="Mark as Done and Close MO" icon="fa-check" attrs="{'invisible': ['|', '|', '|', '|', '|', ('is_user_working', '=', False), ('is_last_step', '!=', True), ('skipped_check_ids', '!=', []), ('is_last_lot', '=', False), ('next_work_order_id', '!=', False)]}" class="btn-primary" barcode_trigger="cloMO"/>
@@ -109,7 +109,7 @@
                 <div class="o_workorder_data">
                     <field class="o_workorder_note" name="note"/>
                     <div class="workorder_picture">
-                        <field name="picture" widget="tablet_image" attrs="{'invisible': [('test_type', '!=', 'picture')], 'required': [('test_type', '=', 'picture')]}"/>
+                        <field name="picture" widget="tablet_image" attrs="{'invisible': [('test_type', '!=', 'picture')]}"/>
                     </div>
                     <h3 attrs="{'invisible': ['|', '|', ('current_quality_check_id', '!=', False), ('check_ids', '=', []), ('qty_producing', '=', 0)]}">
                         <field name="product_id" options="{'no_open': True}"/> -
@@ -131,7 +131,7 @@
                             <field name="quality_state_for_summary" string="Status"/>
                         </tree>
                     </field>
-                    <div class="o_workorder_bar_content o_workorder_form" attrs="{'invisible': ['|', ('test_type', '!=', 'register_consumed_materials'), ('is_last_step', '=', True)]}">
+                    <div class="o_workorder_bar_content o_workorder_form" attrs="{'invisible': ['|', ('test_type', '!=', 'record_lotserial_numbers'), ('is_last_step', '=', True)]}">
                         <div class="o_workorder_field">
                             <div class="o_form_label">Component</div>
                             <field name="component_id" readonly="1"/>

@@ -62,10 +62,10 @@ class MrpProductionWorkcenterLine(models.Model):
                 wo.test_type = wo.current_quality_check_id.point_id.test_type
             elif wo.current_quality_check_id.component_id:
                 wo.component_id = wo.current_quality_check_id.component_id
-                wo.test_type = 'register_consumed_materials'
+                wo.test_type = 'record_lotserial_numbers'
             else:
                 wo.test_type = ''
-            if wo.test_type == 'register_consumed_materials' and wo.quality_state == 'none':
+            if wo.test_type == 'record_lotserial_numbers' and wo.quality_state == 'none':
                 if wo.current_quality_check_id.component_is_byproduct:
                     moves = wo.production_id.move_finished_ids.filtered(lambda m: m.state not in ('done', 'cancel') and m.product_id == wo.component_id)
                 else:
@@ -177,7 +177,7 @@ class MrpProductionWorkcenterLine(models.Model):
         self.ensure_one()
         if self.qty_producing <= 0 or self.qty_producing > self.qty_remaining:
             raise UserError(_('Please ensure the quantity to produce is nonnegative and does not exceed the remaining quantity.'))
-        elif self.test_type == 'register_consumed_materials':
+        elif self.test_type == 'record_lotserial_numbers':
             # Form validation
             if self.component_tracking != 'none' and not self.lot_id:
                 raise UserError(_('Please enter a Lot/SN.'))
@@ -293,7 +293,7 @@ class MrpProductionWorkcenterLine(models.Model):
             })
             # Update the default quantities in component registration steps
             if old_allow_producing_quantity_change and not self.allow_producing_quantity_change:
-                for check in self.check_ids.filtered(lambda c: c.test_type == 'register_consumed_materials' and c.point_id and c.point_id.component_id.tracking != 'serial' and c.quality_state == 'none'):
+                for check in self.check_ids.filtered(lambda c: c.test_type == 'record_lotserial_numbers' and c.point_id and c.point_id.component_id.tracking != 'serial' and c.quality_state == 'none'):
                     moves = self.move_raw_ids.filtered(lambda m: m.state not in ('done', 'cancel') and m.product_id == check.point_id.component_id)
                     check.qty_done = float_round(check.qty_done * self.qty_producing, precision_rounding=moves[0].product_uom.rounding)
 
@@ -344,7 +344,7 @@ class MrpProductionWorkcenterLine(models.Model):
                     qty_done = 1.0
                     if point.component_id and moves and point.component_id.tracking != 'serial':
                         qty_done = float_round(sum(moves.mapped('unit_factor')), precision_rounding=moves[0].product_uom.rounding)
-                    # Do not generate qc for control point of type register_consumed_materials if the component is not consummed in this wo.
+                    # Do not generate qc for control point of type record_lotserial_numbers if the component is not consummed in this wo.
                     if not point.component_id or moves:
                         self.env['quality.check'].create({'workorder_id': wo.id,
                                                           'point_id': point.id,

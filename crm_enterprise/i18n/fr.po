@@ -4,13 +4,14 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# Eloïse Stilmant <est@odoo.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-08-24 11:28+0000\n"
 "PO-Revision-Date: 2018-08-24 11:28+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"Last-Translator: Eloïse Stilmant <est@odoo.com>, 2018\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -28,12 +29,12 @@ msgstr "Archivé"
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_dashboard
 msgid "At A Glance"
-msgstr ""
+msgstr "En un coup d'œil"
 
 #. module: crm_enterprise
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_dashboard
 msgid "Average Expected Revenue"
-msgstr ""
+msgstr "Revenu estimé en moyenne"
 
 #. module: crm_enterprise
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
@@ -85,7 +86,7 @@ msgstr "Client"
 #: model:ir.model.fields,field_description:crm_enterprise.field_crm_lead__days_to_convert
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
 msgid "Days To Convert"
-msgstr ""
+msgstr "Jours à Convertir"
 
 #. module: crm_enterprise
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
@@ -129,12 +130,12 @@ msgstr "Regrouper par"
 #. module: crm_enterprise
 #: model:ir.model.fields,field_description:crm_enterprise.field_crm_lead__lost
 msgid "Is Lost"
-msgstr ""
+msgstr "Est Perdu"
 
 #. module: crm_enterprise
 #: model:ir.model.fields,field_description:crm_enterprise.field_crm_lead__won
 msgid "Is Won"
-msgstr ""
+msgstr "Est Gagné"
 
 #. module: crm_enterprise
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
@@ -270,7 +271,7 @@ msgstr "Ce mois"
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_dashboard
 msgid "Win/Loss ratio"
-msgstr ""
+msgstr "Ratio Gain/Perte"
 
 #. module: crm_enterprise
 #: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search

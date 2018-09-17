@@ -15,7 +15,7 @@ class TestType(models.Model):
         if value:
             return []
         else:
-            return [('technical_name', 'not in', ['register_consumed_materials', 'dummy', 'picture'])]
+            return [('technical_name', 'not in', ['record_lotserial_numbers', 'text', 'picture'])]
 
 
 class MrpRouting(models.Model):
@@ -42,7 +42,7 @@ class QualityPoint(models.Model):
         ('scroll', 'Scroll to specific page')], string="Worksheet",
         default="noupdate")
     worksheet_page = fields.Integer('Worksheet Page')
-    # Used with type register_consumed_materials the product raw to encode.
+    # Used with type record_lotserial_numbers the product raw to encode.
     component_id = fields.Many2one('product.product', 'Component')
 
     @api.onchange('product_id', 'product_tmpl_id', 'picking_type_id')
@@ -110,16 +110,16 @@ class QualityCheck(models.Model):
             check.quality_state_for_summary = _('Done') if state != 'none' else _('To Do')
             if check.point_id:
                 check.component_id = check.point_id.component_id
-            test_type = check.point_id.test_type if check.point_id else 'register_consumed_materials'
+            test_type = check.point_id.test_type if check.point_id else 'record_lotserial_numbers'
             if check.quality_state == 'none':
                 check.result = ''
             else:
                 check.result = check._get_check_result(test_type)
 
     def _get_check_result(self, test_type):
-        if test_type == 'register_consumed_materials' and self.lot_id:
+        if test_type == 'record_lotserial_numbers' and self.lot_id:
             return '{} - {}, {} {}'.format(self.component_id.name, self.lot_id.name, self.qty_done, self.component_uom_id.name)
-        elif test_type == 'register_consumed_materials' and self.qty_done > 0:
+        elif test_type == 'record_lotserial_numbers' and self.qty_done > 0:
             return '{}, {} {}'.format(self.component_id.name, self.qty_done, self.component_uom_id.name)
         else:
             return ''

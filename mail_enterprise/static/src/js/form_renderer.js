@@ -2,11 +2,9 @@ odoo.define('mail_enterprise.form_renderer', function (require) {
 "use strict";
 
 var config = require('web.config');
-var core = require('web.core');
 var pyUtils = require('web.py_utils');
 var FormRenderer = require('web.FormRenderer');
-
-var QWeb = core.qweb;
+var AttachmentViewer = require('mail_enterprise.AttachmentViewer');
 
 /**
  * Display attachment preview on side of form view for large screen devices.
@@ -35,7 +33,6 @@ FormRenderer.include({
         this._super.apply(this, arguments);
 
         this.$attachmentPreview = undefined;
-        this.attachmentPreviewID = undefined;
         this.attachmentPreviewResID = undefined;
     },
 
@@ -75,8 +72,14 @@ FormRenderer.include({
      */
     _renderNode: function (node) {
         if (node.tag === 'div' && node.attrs.class === 'o_attachment_preview') {
-            this.attachmentPreviewID = undefined;
-            this.$attachmentPreview = $('<div>', {class: 'o_attachment_preview'});
+            if (this.attachmentViewer) {
+                if (this.attachmentPreviewResID !== this.state.res_id) {
+                    this.attachmentViewer.destroy();
+                    this.attachmentViewer = undefined;
+                }
+            } else {
+                this.$attachmentPreview = $('<div>', {class: 'o_attachment_preview'});
+            }
             this._handleAttributes(this.$attachmentPreview, node);
             this._registerModifiers(node, this.state, this.$attachmentPreview);
             if (node.attrs.options) {
@@ -133,40 +136,34 @@ FormRenderer.include({
             types: ['pdf', 'image'],
             order: 'asc'
         });
-        var attachments = ev.data.attachments.slice();  // clone array
+        var attachments = $.extend(true, {}, ev.data.attachments);  // clone array
         attachments = _.filter(attachments, function (attachment) {
-            var match = attachment.mimetype.match("(image|pdf)");
+            var match = attachment.mimetype.match(options.types.join('|'));
             attachment.type = match ? match[0] : false;
-            return attachment.type;
+            return match;
         });
         if (options.order === 'desc') {
             attachments.reverse();
         }
-        var attachment = _.find(attachments, function (attachment) {
-            return options.preview_priority_type == attachment.type;
-        });
-         if (!attachment) {
-            attachment = _.find(attachments, function (attachment) {
-                return _.contains(options.types, attachment.type);
-            });
-        }
-        if (attachment && attachment.id !== this.attachmentPreviewID) {
-            this.attachmentPreviewID = attachment.id;
-            this.attachmentPreviewResID = this.state.res_id;
-            // need to remove and append because resizer adds its element
-            this.$attachmentPreview.find('.o_attachment_preview_container').remove();
-            this.$attachmentPreview.append(QWeb.render('AttachmentPreview', {
-                attachment: attachment,
-            }));
-            this.$attachmentPreview.resizable({
-                handles: 'w',
-                minWidth: 400,
-                maxWidth: 900,
-                resize: function (event, ui) {
-                    self.attachmentPreviewWidth = ui.size.width;
-                },
-            });
-            this._interchangeChatter(!this.$attachmentPreview.hasClass('o_invisible_modifier'));
+        if (attachments.length) {
+            if (this.attachmentViewer) {
+                if (this.attachmentViewer.attachments.length !== attachments.length) {
+                    this.attachmentViewer.updateContents(attachments, options.order);
+                }
+            } else {
+                this.attachmentPreviewResID = this.state.res_id;
+                this.attachmentViewer = new AttachmentViewer(this, attachments);
+                this.attachmentViewer.appendTo(this.$attachmentPreview);
+                this.$attachmentPreview.resizable({
+                    handles: 'w',
+                    minWidth: 400,
+                    maxWidth: 900,
+                    resize: function (event, ui) {
+                        self.attachmentPreviewWidth = ui.size.width;
+                    },
+                });
+                this._interchangeChatter(!this.$attachmentPreview.hasClass('o_invisible_modifier'));
+            }
         }
     },
 

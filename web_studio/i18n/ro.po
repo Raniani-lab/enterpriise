@@ -54,7 +54,7 @@ msgstr ""
 #: code:addons/web_studio/controllers/report.py:44
 #, python-format
 msgid "%s Report"
-msgstr ""
+msgstr "%s Raport"
 
 #. module: web_studio
 #. openerp-web
@@ -569,7 +569,7 @@ msgstr "Context"
 #: code:addons/web_studio/static/src/js/edit_menu.js:290
 #, python-format
 msgid "Create a new Menu"
-msgstr ""
+msgstr "Creați un meniu nou"
 
 #. module: web_studio
 #. openerp-web
@@ -1949,7 +1949,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/js/tour.js:116
 #, python-format
 msgid "Save."
-msgstr ""
+msgstr "Salvează."
 
 #. module: web_studio
 #. openerp-web
@@ -2756,7 +2756,7 @@ msgstr ""
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_studio_mixin
 msgid "studio.mixin"
-msgstr ""
+msgstr "studio.mixin"
 
 #. module: web_studio
 #. openerp-web

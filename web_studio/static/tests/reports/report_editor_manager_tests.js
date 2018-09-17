@@ -3,6 +3,7 @@ odoo.define('web_studio.ReportEditorManager_tests', function (require) {
 
 var ace = require('web_editor.ace');
 var config = require('web.config');
+var NotificationService = require('web.NotificationService');
 var testUtils = require('web.test_utils');
 var studioTestUtils = require('web_studio.testUtils');
 var session = require('web.session');
@@ -115,6 +116,42 @@ QUnit.module('ReportEditorManager', {
         }];
     }
 }, function () {
+
+    QUnit.test('empty editor rendering', function (assert) {
+        var done = assert.async();
+        assert.expect(2);
+
+        this.templates.push({
+            key: 'template1',
+            view_id: 55,
+            arch:
+                '<kikou>' +
+                    '<t t-name="template1">' +
+                    '</t>' +
+                '</kikou>',
+        });
+
+        var rem = studioTestUtils.createReportEditorManager({
+            env: {
+                modelName: 'kikou',
+                ids: [42, 43],
+                currentId: 42,
+            },
+            report: {},
+            reportHTML: studioTestUtils.getReportHTML(this.templates),
+            reportViews: studioTestUtils.getReportViews(this.templates),
+        });
+
+        rem.editorIframeDef.then(function () {
+            assert.strictEqual(rem.$('.o_web_studio_sidebar').length, 1,
+                "a sidebar should be rendered");
+            assert.strictEqual(rem.$('iframe').contents().find('.page .o_no_content_helper').length, 1,
+                "the iframe should be rendered with a no content helper");
+
+            rem.destroy();
+            done();
+        });
+    });
 
     QUnit.test('basic editor rendering', function (assert) {
         var done = assert.async();
@@ -457,8 +494,8 @@ QUnit.module('ReportEditorManager', {
         });
 
         rem.editorIframeDef.then(function () {
-            assert.strictEqual(rem.$('.o_web_studio_sidebar_header .active').attr('name'), 'report',
-                "the 'Report' tab should be active");
+            assert.strictEqual(rem.$('.o_web_studio_sidebar_header .active').attr('name'), 'new',
+                "the 'Add' tab should be active");
             assert.strictEqual(rem.$('iframe').contents().find('.o_web_studio_report_selected').length, 0,
                 "there should be no selected node");
 
@@ -470,11 +507,71 @@ QUnit.module('ReportEditorManager', {
                 "the span should be selected");
 
             // switch tab
-            rem.$('.o_web_studio_sidebar_header [name="new"]').click();
-            assert.strictEqual(rem.$('.o_web_studio_sidebar_header .active').attr('name'), 'new',
-                "the 'Add' tab should be active");
+            rem.$('.o_web_studio_sidebar_header [name="report"]').click();
+            assert.strictEqual(rem.$('.o_web_studio_sidebar_header .active').attr('name'), 'report',
+                "the 'Report' tab should be active");
             assert.strictEqual(rem.$('iframe').contents().find('.o_web_studio_report_selected').length, 0,
                 "there should be no selected node anymore");
+
+            rem.destroy();
+            done();
+        });
+    });
+
+    QUnit.test('remove components - when no node is available to select, the add tab is activated', function (assert) {
+        var self = this;
+        var done = assert.async();
+        assert.expect(1);
+
+        this.templates.push({
+            key: 'template1',
+            view_id: 55,
+            arch:
+                '<kikou>' +
+                    '<t t-name="template1">' +
+                        '<div class="row">' +
+                            '<div class="col-12">' +
+                                '<span>First span</span>' +
+                            '</div>' +
+                        '</div>' +
+                    '</t>' +
+                '</kikou>',
+        });
+
+        var rem = studioTestUtils.createReportEditorManager({
+            env: {
+                modelName: 'kikou',
+                ids: [42, 43],
+                currentId: 42,
+            },
+            report: { },
+            reportHTML: studioTestUtils.getReportHTML(this.templates),
+            reportViews: studioTestUtils.getReportViews(this.templates),
+            reportMainViewID: 42,
+            mockRPC: function (route, args) {
+                if (route === '/web_studio/edit_report_view') {
+                    self.templates[1].arch = '<kikou>' +
+                        '<t t-name="template1">' +
+                        '</t>' +
+                    '</kikou>';
+                    return $.when({
+                        report_html: studioTestUtils.getReportHTML(self.templates),
+                        views: studioTestUtils.getReportViews(self.templates),
+                    });
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        rem.editorIframeDef.then(function () {
+            // click to edit a span
+            rem.$('iframe').contents().find('span:contains(First)').click();
+
+            // remove the span from the dom
+            rem.$('.o_web_studio_active .o_web_studio_remove').click();
+            $('.modal-content .btn-primary').click(); // confirm the deletion
+            assert.strictEqual(rem.$('.o_web_studio_sidebar_header .active').attr('name'), 'new',
+                "after the remove, 'Add' tab should be active");
 
             rem.destroy();
             done();
@@ -666,6 +763,71 @@ QUnit.module('ReportEditorManager', {
         });
     });
 
+    QUnit.test('drag & drop text component in existing col', loadIframeCss(function (assert, done) {
+        assert.expect(1);
+
+        var self = this;
+        this.templates.push({
+            key: 'template1',
+            view_id: 55,
+            arch:
+                '<kikou>' +
+                    '<t t-name="template1">' +
+                        '<div class="row">' +
+                            '<div class="col-6"/>' +
+                            '<div class="col-6"/>' +
+                        '</div>' +
+                    '</t>' +
+                '</kikou>',
+        });
+
+        var rem = studioTestUtils.createReportEditorManager({
+            env: {
+                modelName: 'kikou',
+                ids: [42, 43],
+                currentId: 42,
+            },
+            report: {},
+            reportHTML: studioTestUtils.getReportHTML(this.templates),
+            reportViews: studioTestUtils.getReportViews(this.templates),
+            reportMainViewID: 42,
+            mockRPC: function (route, args) {
+                if (route === '/web_studio/edit_report_view') {
+                    assert.deepEqual(args.operations, [{
+                        context: {},
+                        inheritance: [{
+                            content: "<span>New Text Block</span>",
+                            position: "inside",
+                            view_id: 55,
+                            xpath: "/t/div/div[1]"
+                        }],
+                        position: "inside",
+                        type: "add",
+                        view_id: 55,
+                        xpath: "/t/div/div[1]"
+                    }]);
+
+                    return $.when({
+                        report_html: studioTestUtils.getReportHTML(self.templates),
+                        views: studioTestUtils.getReportViews(self.templates),
+                    });
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        rem.editorIframeDef.then(function () {
+            rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]').click();
+
+            // drag and drop a Text component, which should trigger a view edition
+            var $text = rem.$('.o_web_studio_sidebar .o_web_studio_component:contains(Text)');
+            testUtils.dragAndDrop($text, rem.$('iframe').contents().find('.col-6:eq(1)'));
+
+            rem.destroy();
+            done();
+        });
+    }));
+
     QUnit.test('drag & drop components and cancel', function (assert) {
         var done = assert.async();
         assert.expect(4);
@@ -729,8 +891,8 @@ QUnit.module('ReportEditorManager', {
         });
     });
 
-    QUnit.skip('drag & drop field in row', loadIframeCss(function(assert, done) {
-        assert.expect(7);
+    QUnit.test('drag & drop field in row', loadIframeCss(function (assert, done) {
+        assert.expect(6); // 2 asserts by test
 
         this.templates.push({
             key: 'template1',
@@ -792,7 +954,7 @@ QUnit.module('ReportEditorManager', {
             },
         });
 
-        var testIndex = 0;
+        // create multiple tests to avoid duplicating very similar tests
         var tests = [
             {
                 text: "Should select the hook next to the span",
@@ -829,19 +991,17 @@ QUnit.module('ReportEditorManager', {
                 }],
             },
         ];
+        var testIndex = 0;
 
         rem.editorIframeDef.then(function () {
             rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]').click();
 
-            assert.strictEqual($('.o_web_studio_field_modal').length, 0,
-                "there should be no opened modal");
-
-            // drag and drop a Text component, which should trigger a view edition
             var $field = rem.$('.o_web_studio_sidebar .o_web_studio_component:contains(Field)');
 
             for (testIndex; testIndex < tests.length; testIndex++) {
                 var test = tests[testIndex];
                 var $target = rem.$('iframe').contents().find(test.selector);
+                // drag and drop a Field component, which should trigger a view edition
                 testUtils.dragAndDrop($field, $target, {position: test.position});
                 var $nearestHook = rem.$('iframe').contents().find('.o_web_studio_nearest_hook');
                 assert.strictEqual($nearestHook.length, test.nearestHookNumber, test.text + ' (nearestHook number)');
@@ -858,7 +1018,7 @@ QUnit.module('ReportEditorManager', {
         });
     }));
 
-    QUnit.skip('drag & drop field in table', loadIframeCss(function (assert, done) {
+    QUnit.test('drag & drop field in table', loadIframeCss(function (assert, done) {
         assert.expect(20);
 
         this.templates.push({
@@ -946,9 +1106,20 @@ QUnit.module('ReportEditorManager', {
         var testIndex = 0;
         var tests = [
             {
+                text: "Should select the hooks inside the th",
+                selector: 'thead tr th:eq(0)',
+                position: 'left',
+                nearestHookNumber: 1,
+                inheritance: [{
+                    content: "<span t-field=\"o.child.name\"></span>",
+                    position: "before",
+                    view_id: 55,
+                    xpath: "/t/div/div/table/thead/tr/th/span"
+                }],
+            }, {
                 text: "Should select the column (1)",
                 selector: 'tbody tr:eq(1) td:first',
-                position: 'left',
+                position: {left: 80, top: 0},
                 nearestHookNumber: 5,
                 inheritance: [{
                     content: "<th><span>Name</span></th>",
@@ -982,11 +1153,10 @@ QUnit.module('ReportEditorManager', {
                     assert.strictEqual($table.find('tr td:first-child.o_web_studio_nearest_hook').length, 4,
                             "Should select the first cell of each line");
                 },
-            },
-            {
-                text: "Should select the hooks inside the td (1)",
+            }, {
+                text: "Should select the hooks inside the td, on the left",
                 selector: 'tbody tr:eq(1) td:first',
-                position: 'center',
+                position: 'left',
                 nearestHookNumber: 3,
                 inheritance: [{
                     content: "<span t-field=\"o.child.name\"></span>",
@@ -1004,11 +1174,31 @@ QUnit.module('ReportEditorManager', {
                     view_id: 55,
                     xpath: "/t/div/div/table/tbody/tr/td/span"
                 } ],
-            },
-            {
+            }, {
+                text: "Should select the hooks inside the td, on the right",
+                selector: 'tbody tr:eq(1) td:eq(0)',
+                position: 'center',
+                nearestHookNumber: 3,
+                inheritance: [{
+                    content: "<span t-field=\"o.child.name\"></span>",
+                    position: "after",
+                    view_id: 55,
+                    xpath: "/t/div/div/table/tbody/tr/td/span"
+                }, {
+                    content: "<span t-field=\"o.child.name\"></span>",
+                    position: "after",
+                    view_id: 55,
+                    xpath: "/t/div/div/table/tbody/tr/td/span"
+                }, {
+                    content: "<span t-field=\"o.child.name\"></span>",
+                    position: "after",
+                    view_id: 55,
+                    xpath: "/t/div/div/table/tbody/tr/td/span"
+                } ],
+            }, {
                 text: "Should select column without the header because it's colspan=2",
                 selector: 'tbody tr:eq(1) td:eq(1)',
-                position: {left: -30, top: 10},
+                position: {left: -10, top: 0},
                 nearestHookNumber: 4,
                 inheritance: [{
                     content: "<td><span t-field=\"o.child.name\"></span></td>",
@@ -1036,33 +1226,10 @@ QUnit.module('ReportEditorManager', {
                     view_id: 55,
                     xpath: "/t/div/div/table/thead/tr/th"
                 }],
-            },
-            {
-                text: "Should select the hooks inside the td (2)",
-                selector: 'tbody tr:eq(1) td:eq(1)',
-                position: {top: 10, left: 10},
-                nearestHookNumber: 3,
-                inheritance: [{
-                    content: "<span t-field=\"o.child.name\"></span>",
-                    position: "before",
-                    view_id: 55,
-                    xpath: "/t/div/div/table/tbody/tr/td[1]/span"
-                }, {
-                    content: "<span t-field=\"o.child.name\"></span>",
-                    position: "before",
-                    view_id: 55,
-                    xpath: "/t/div/div/table/tbody/tr/td[1]/span"
-                }, {
-                    content: "<span t-field=\"o.child.name\"></span>",
-                    position: "before",
-                    view_id: 55,
-                    xpath: "/t/div/div/table/tbody/tr/td[1]/span"
-                } ],
-            },
-            {
+            }, {
                 text: "Should select the column (2)",
                 selector: 'tbody tr:eq(1) td:eq(2)',
-                position: {left: -30, top: 10},
+                position: {left: -30, top: 0},
                 nearestHookNumber: 5,
                 inheritance: [{
                     content: "<th><span>Name</span></th>",
@@ -1095,8 +1262,7 @@ QUnit.module('ReportEditorManager', {
                     view_id: 55,
                     xpath: "/t/div/div/table/thead/tr/th"
                 }],
-            },
-            {
+            }, {
                 text: "Should select column without the header because there are two colspan=2",
                 selector: 'tbody tr:eq(1) td:eq(4)',
                 position: {top: 10, left: -40},
@@ -1127,8 +1293,7 @@ QUnit.module('ReportEditorManager', {
                     view_id: 55,
                     xpath: "/t/div/div/table/tbody/tr[1]/td[3]"
                 }],
-            },
-            {
+            }, {
                 text: "Should select the column (3)",
                 selector: 'tbody tr:eq(1) td:eq(5)',
                 position: 'left',
@@ -1169,22 +1334,9 @@ QUnit.module('ReportEditorManager', {
                     view_id: 55,
                     xpath: "/t/div/div/table/thead/tr/th[2]"
                 }],
-            },
-            {
-                text: "Should select the hooks inside the th",
-                selector: 'thead tr th:eq(1)',
-                position: {top: 30, left: -10},
-                nearestHookNumber: 1,
-                inheritance: [{
-                    content: "<span t-field=\"o.child.name\"></span>",
-                    position: "after",
-                    view_id: 55,
-                    xpath: "/t/div/div/table/thead/tr/th[1]/span"
-                }],
-            },
-            {
+            }, {
                 text: "Should select the column (4)",
-                selector: 'tbody tr:first td:eq(4)', // TODO test with 'thead tr th:eq(3)' because currently it's not intuitive enough for drop zones
+                selector: 'tbody tr:first td:eq(4)',
                 position: 'right',
                 nearestHookNumber: 5,
                 inheritance: [{
@@ -1721,6 +1873,168 @@ QUnit.module('ReportEditorManager', {
                 rem.destroy();
                 done();
             });
+        });
+    });
+
+    QUnit.test('automatic undo of correct operation', function (assert) {
+        var self = this;
+        var done = assert.async();
+        assert.expect(5);
+
+        this.templates.push({
+            key: 'template1',
+            view_id: 55,
+            arch:
+                '<kikou>' +
+                    '<t t-name="template1"><span>First span</span></t>' +
+                '</kikou>',
+        });
+
+        var rem = studioTestUtils.createReportEditorManager({
+            env: {
+                modelName: 'kikou',
+                ids: [42, 43],
+                currentId: 42,
+            },
+            report: {},
+            reportHTML: studioTestUtils.getReportHTML(this.templates),
+            reportViews: studioTestUtils.getReportViews(this.templates),
+            reportMainViewID: 42,
+            mockRPC: function (route, args) {
+                if (route === '/web_studio/edit_report_view') {
+                    nbEdit++;
+                    switch (nbEdit) {
+                        case 1:
+                            assert.strictEqual(args.operations.length, 1);
+                            assert.deepEqual(args.operations[0].inheritance, [{
+                                content: '<attribute name="class" separator=" " add="o_bold"/>',
+                                position: 'attributes',
+                                view_id: 55,
+                                xpath: '/t/span',
+                            }]);
+                            // first rpc that we will make fail
+                            return firstDef;
+                        case 2:
+                            // NB: undo RPC and second op RPC are dropped by
+                            // MutexedDropPrevious
+                            assert.strictEqual(args.operations.length, 2,
+                                "should have undone the first operation");
+                            assert.deepEqual(args.operations[0].inheritance, [{
+                                content: '<attribute name="class" separator=" " add="o_italic"/>',
+                                position: 'attributes',
+                                view_id: 55,
+                                xpath: '/t/span',
+                            }]);
+                            assert.deepEqual(args.operations[1].inheritance, [{
+                                content: '<attribute name="class" separator=" " add="o_underline"/>',
+                                position: 'attributes',
+                                view_id: 55,
+                                xpath: '/t/span',
+                            }]);
+                            // second rpc that succeeds
+                            return $.when({
+                                report_html: studioTestUtils.getReportHTML(self.templates),
+                                views: studioTestUtils.getReportViews(self.templates),
+                            });
+                        case 3:
+                            assert.ok(false, "should not edit a third time");
+                    }
+
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        var nbEdit = 0;
+        var firstDef = $.Deferred();
+        rem.editorIframeDef.then(function () {
+            rem.$('iframe').contents().find('span:contains(First span)').click();
+
+            // trigger a modification
+            rem.$('.o_web_studio_sidebar .card:eq(1) .o_web_studio_text_decoration button[data-property="bold"]').click();
+
+            // trigger a second modification before the first one has finished
+            rem.$('.o_web_studio_sidebar .card:eq(1) .o_web_studio_text_decoration button[data-property="italic"]').click();
+
+            // trigger a third modification before the first one has finished
+            rem.$('.o_web_studio_sidebar .card:eq(1) .o_web_studio_text_decoration button[data-property="underline"]').click();
+
+            // make the first op fail (will release the MutexedDropPrevious)
+            firstDef.reject();
+
+            rem.destroy();
+            done();
+        });
+    });
+
+    QUnit.test('automatic undo on AST error', function (assert) {
+        var self = this;
+        var done = assert.async();
+        assert.expect(4);
+
+        this.templates.push({
+            key: 'template1',
+            view_id: 55,
+            arch:
+                '<kikou>' +
+                    '<t t-name="template1">' +
+                        '<span>Kikou</span>' +
+                    '</t>' +
+                '</kikou>',
+        });
+        var nbEdit = 0;
+        var rem = studioTestUtils.createReportEditorManager({
+            env: {
+                modelName: 'kikou',
+                ids: [42, 43],
+                currentId: 42,
+            },
+            report: {},
+            reportHTML: studioTestUtils.getReportHTML(this.templates),
+            reportViews: studioTestUtils.getReportViews(this.templates),
+            reportMainViewID: 42,
+            mockRPC: function (route, args) {
+                if (route === '/web_studio/edit_report_view') {
+                    nbEdit++;
+                    if (nbEdit === 1) {
+                        assert.strictEqual(args.operations.length, 1, "the operation is correctly applied");
+                        // simulate an AST error
+                        return $.when({
+                            report_html: {
+                                error: 'AST error',
+                                message: 'You have probably done something wrong',
+                            },
+                        });
+                    }
+                    if (nbEdit === 2) {
+                        assert.strictEqual(args.operations.length, 0, "the operation should be undone");
+                        return $.when({
+                            report_html: studioTestUtils.getReportHTML(self.templates),
+                            views: studioTestUtils.getReportViews(self.templates),
+                        });
+                    }
+                }
+                return this._super.apply(this, arguments);
+            },
+            services: {
+                notification: NotificationService.extend({
+                    notify: function (params) {
+                        assert.step(params.type);
+                    }
+                }),
+            },
+        });
+
+        rem.editorIframeDef.then(function () {
+            rem.$('iframe').contents().find('span:contains(Kikou)').click();
+
+            // trigger a modification that will fail
+            rem.$('.o_web_studio_sidebar .card:eq(1) .o_web_studio_text_decoration button[data-property="bold"]').click();
+
+            assert.verifySteps(['warning'], "should have undone the operation");
+
+            rem.destroy();
+            done();
         });
     });
 

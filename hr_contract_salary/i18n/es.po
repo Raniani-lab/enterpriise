@@ -5,13 +5,12 @@
 # Translators:
 # Martin Trigaux, 2018
 # Diego deCos <diegodecos@hotmail.com>, 2018
-# Diego deCos <diegodecos@hotmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"POT-Creation-Date: 2018-09-05 09:11+0000\n"
+"PO-Revision-Date: 2018-09-05 09:11+0000\n"
 "Last-Translator: Diego deCos <diegodecos@hotmail.com>, 2018\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
 "MIME-Version: 1.0\n"
@@ -1159,7 +1158,7 @@ msgid "No"
 msgstr "No"
 
 #. module: hr_contract_salary
-#: code:addons/hr_contract_salary/controllers/main.py:564
+#: code:addons/hr_contract_salary/controllers/main.py:579
 #, python-format
 msgid ""
 "No HR responsible defined on the job position. Please contact an "
@@ -1172,11 +1171,11 @@ msgstr ""
 #: code:addons/hr_contract_salary/models/hr_contract.py:192
 #: code:addons/hr_contract_salary/wizard/generate_simulation_link.py:123
 #, python-format
-msgid "No home address defined on the employee!"
-msgstr "¡No hay una dirección de hogar definida en el empleado!"
+msgid "No private address defined on the employee!"
+msgstr ""
 
 #. module: hr_contract_salary
-#: code:addons/hr_contract_salary/controllers/main.py:561
+#: code:addons/hr_contract_salary/controllers/main.py:576
 #, python-format
 msgid ""
 "No signature template defined on the contract. Please contact the HR "
@@ -1512,13 +1511,9 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid ""
-"This commission is only effective if the target is reached. The commissions "
-"are paid using warrants that you receive every three months. This results to"
-" a net warrant value of"
+"This commission is only effective if the target is reached. This results to "
+"a net commission value of"
 msgstr ""
-"Esta comisión solo es efectiva si se alcanza el objetivo. Las comisiones se "
-"pagan utilizando garantías que recibe cada tres meses. Esto da como "
-"resultado un valor neto de garantía de"
 
 #. module: hr_contract_salary
 #: model:ir.ui.view,arch_db:hr_contract_salary.salary_package

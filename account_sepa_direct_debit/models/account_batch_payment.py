@@ -31,18 +31,6 @@ class AccountBatchPayment(models.Model):
             if collection_date < date.today():
                 raise UserError(_("You cannot generate a SEPA Direct Debit file with a required collection date in the past."))
 
-            wrong_comm_payments = self.env['account.payment']
-            for payment in self.payment_ids:
-                if payment.communication and payment.communication != wrong_comm_payments._sanitize_communication(payment.communication):
-                    wrong_comm_payments += payment
-
-            wrong_comm_error_format = _("""The following payments' communications are not SEPA compliant: %s.
-                                         To be SEPA compliant, a communication must be made of only latin characters, be maximum 140 characters long, and cannot contain '//' sequence, nor start or end with a / character.""")
-
-            if wrong_comm_payments:
-                raise UserError(wrong_comm_error_format % ', '.join(wrong_comm_payments.mapped('name')))
-
-
         return super(AccountBatchPayment, self).validate_batch()
 
     def _generate_export_file(self):

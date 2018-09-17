@@ -32,6 +32,8 @@ var ReportEditorManager = AbstractEditorManager.extend({
      * @param {Object} params.reportHTML
      * @param {Object} params.reportMainViewID
      * @param {Object} params.reportViews
+     * @param {Object} [params.initialState]
+     * @param {string} [params.initialState.sidebarMode] among ['add', 'report']
      * @param {Object} [params.paperFormat]
      * @param {Object} [params.widgetsOptions]
      */
@@ -46,6 +48,7 @@ var ReportEditorManager = AbstractEditorManager.extend({
         this.reportName = this.report.report_name;
         this.reportViews = params.reportViews;
 
+        this.initialState = params.initialState || {};
         this.paperFormat = params.paperFormat;
         this.widgetsOptions = params.widgetsOptions;
 
@@ -111,36 +114,39 @@ var ReportEditorManager = AbstractEditorManager.extend({
     /**
      * @override
      */
-    _applyChangeHandling: function (result, from_xml) {
+    _applyChangeHandling: function (result, opID, from_xml) {
         var self = this;
-        // TODO: what should we do with result? Maybe update the studio_view_id
-        // if one has been created?
-        if (result) {
-            if (!result.views) {
-                result.views = this.reportViews;
-                console.error("no update ????");
-            }
 
-            if (!from_xml) {
-                // reset studio_arch as it was before the changes for applying
-                // the next operations
-                _.each(result.views, function (view) {
-                    if (view.studio_view_id) {
-                        view.studio_arch = self.reportViews[view.view_id].studio_arch;
-                    }
-                });
-            }
-            this.reportViews = result.views;
-            this.reportHTML = result.report_html;
-
-            return this.updateEditor();
-        } else {
+        if (result.report_html.error) {
             // the operation can't be applied
-            this.trigger_up('studio_error', {error: 'wrong_xpath'});
-            return this._undo(true).then(function () {
+            var error = result.report_html.message
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+            var msg = '<pre>' + error + '</pre>';
+            this.do_warn(_t("Error when compiling AST"), msg, true);
+            return this._undo(opID, true).then(function () {
                 return $.Deferred().reject();
             });
         }
+
+        // TODO: what should we do with result? Maybe update the studio_view_id
+        // if one has been created?
+        if (!from_xml) {
+            // reset studio_arch as it was before the changes for applying
+            // the next operations
+            _.each(result.views, function (view) {
+                if (view.studio_view_id) {
+                    view.studio_arch = self.reportViews[view.view_id].studio_arch;
+                }
+            });
+        }
+        this.reportViews = result.views;
+        this.reportHTML = result.report_html;
+
+        return this.updateEditor();
     },
     /**
      * @private
@@ -250,7 +256,7 @@ var ReportEditorManager = AbstractEditorManager.extend({
      */
     _instantiateSidebar: function (state, previousState) {
         state = _.defaults(state || {}, {
-            mode: 'report',
+            mode: this.initialState.sidebarMode || 'new',
         });
         return new ReportEditorSidebar(this, {
             report: this.report,

@@ -59,7 +59,7 @@ FIELDS_TO_EXPORT = {
     ],
     'ir.ui.menu': ['action', 'active', 'groups_id', 'name', 'parent_id', 'sequence', 'web_icon'],
     'ir.ui.view': [
-        'active', 'arch', 'field_parent', 'groups_id', 'inherit_id', 'mode', 'model', 'name',
+        'active', 'arch', 'field_parent', 'groups_id', 'inherit_id', 'key', 'mode', 'model', 'name',
         'priority', 'type'
     ],
     'mail.template': [

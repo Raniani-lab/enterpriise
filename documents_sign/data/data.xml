@@ -1,38 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data noupdate="1">
-        <!-- Folders -->
-
-        <record id="documents_sign_folder" model="documents.folder">
-            <field name="name">Signatures</field>
-        </record>
-
-        <record id="documents_sign_processed_folder" model="documents.folder">
-            <field name="name">Processed</field>
-            <field name="parent_folder_id" ref="documents_sign_folder"/>
-        </record>
-
-        <record id="documents_sign_done_folder" model="documents.folder">
-            <field name="name">Signed</field>
-            <field name="parent_folder_id" ref="documents_sign_folder"/>
-        </record>
-
         <!-- Workflow Rules -->
 
         <record id="Sign_rule" model="documents.workflow.rule">
-            <field name="name">Create a signature template</field>
+            <field name="name">Request a Signature</field>
             <field name="create_model">sign.template</field>
+            <field name="condition_type">domain</field>
             <field name="domain">[["mimetype","ilike","pdf"]]</field>
-            <field name="domain_folder_id" ref="documents_sign_folder"/>
-            <field name="folder_id" ref="documents_sign_processed_folder"/>
+            <field name="domain_folder_id" ref="documents.documents_internal_folder"/>
         </record>
-
-        <record id="Sign_rule_done" model="documents.workflow.rule">
-            <field name="name">for signed templates</field>
-            <field name="domain">[["res_model","in",["sign.request"]]]</field>
-            <field name="domain_folder_id" ref="documents_sign_folder"/>
-            <field name="folder_id" ref="documents_sign_done_folder"/>
-        </record>
-
     </data>
 </odoo>

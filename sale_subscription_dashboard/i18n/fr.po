@@ -5,13 +5,14 @@
 # Translators:
 # Martin Trigaux, 2018
 # Xavier Belmere <Info@cartmeleon.com>, 2018
+# Eloïse Stilmant <est@odoo.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-08-24 11:28+0000\n"
 "PO-Revision-Date: 2018-08-24 11:28+0000\n"
-"Last-Translator: Xavier Belmere <Info@cartmeleon.com>, 2018\n"
+"Last-Translator: Eloïse Stilmant <est@odoo.com>, 2018\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -172,7 +173,7 @@ msgstr "Exponentiel"
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:277
 #, python-format
 msgid "Filter on categories"
-msgstr ""
+msgstr "Filtrer sur les catégories"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -186,7 +187,7 @@ msgstr "Filtrer par entreprise"
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:297
 #, python-format
 msgid "Filter on sales team"
-msgstr ""
+msgstr "Filtrer sur l'équipe de vente"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -612,7 +613,7 @@ msgstr "Avertissement"
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:9
 #, python-format
 msgid "Welcome!"
-msgstr ""
+msgstr "Bienvenue!"
 
 #. module: sale_subscription_dashboard
 #. openerp-web

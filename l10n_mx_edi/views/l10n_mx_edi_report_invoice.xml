@@ -13,7 +13,7 @@
         <xpath expr="//h2[1]" position="before">
             <t t-if="not o.l10n_mx_edi_cfdi_uuid and o.l10n_mx_edi_is_required()">
                 <!-- due to HTML preview for device responsive -->
-                <button t-attf-class="btn-danger #{'btn' if not type_html else ''}">
+                <button t-attf-class="btn-danger #{'btn' if report_type != 'html' else ''}">
                     <h1>A signature of this invoice is required, but it is not signed.</h1>
                 </button>
             </t>

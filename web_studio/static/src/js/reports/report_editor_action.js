@@ -52,6 +52,7 @@ var ReportEditorAction = AbstractAction.extend({
         }
         else {
             this.do_warn(_t('Error: Preview not available because there is no existing record.'));
+            this.trigger_up('studio_history_back');
         }
         return $.when.apply($, defs);
     },
@@ -63,14 +64,17 @@ var ReportEditorAction = AbstractAction.extend({
      * @returns {Deferred}
      */
     on_attach_callback: function () {
-        var isLoading = this.reportEditorManager.editorIframeDef;
-        if (isLoading.state() === 'pending') {
+        if (!this.reportEditorManager) {
+            // the preview was not availble (see @start) so the manager hasn't
+            // been instantiated
+            return $.when();
+        }
+        if (this.reportEditorManager.editorIframeDef.state() === 'pending') {
             // this is the first rendering of the editor but we only want to
             // update the editor when going back with the breadcrumb
             return $.when();
-        } else {
-            return this.reportEditorManager.updateEditor();
         }
+        return this.reportEditorManager.updateEditor();
     },
 
     //--------------------------------------------------------------------------
@@ -214,9 +218,11 @@ var ReportEditorAction = AbstractAction.extend({
     },
     /**
      * @private
+     * @param {Object} [state]
+     * @param {string} [state.sidebarMode] among ['add', 'report']
      * @returns {Deferred}
      */
-    _renderEditor: function () {
+    _renderEditor: function (state) {
         var self = this;
         var defs = [this._getReportViews()];
         if (this.report.paperformat_id) {
@@ -225,6 +231,7 @@ var ReportEditorAction = AbstractAction.extend({
         return $.when.apply($, defs).then(function () {
             var params = {
                 env: self.env,
+                initialState: state,
                 models: self.models,
                 paperFormat: self.paperFormat,
                 report: self.report,
@@ -266,7 +273,9 @@ var ReportEditorAction = AbstractAction.extend({
         var self = this;
         this._editReport(ev.data).then(function (result) {
             self.report = result[0];
-            self._renderEditor();
+            self._renderEditor({
+                sidebarMode: 'report',
+            });
         });
     },
     /**

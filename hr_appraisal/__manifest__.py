@@ -35,7 +35,6 @@ Key Features
         'views/mail_activity_views.xml',
         'data/hr_appraisal_data.xml',
         'data/mail_data.xml',
-        'views/res_users_views.xml',
     ],
     "demo": [
         "data/survey_demo_data.xml",

@@ -67,10 +67,11 @@
                 cursor: default;
                 text-align: right;
             }
-            .input-group .form-control[disabled] + .input-group-addon {
-                padding: 0 0 0 5px;
-                border: 0;
-                background-color: transparent;
+            .input-group .form-control[disabled] + .input-group-append {
+                .input-group-text {
+                    border: none;
+                    background-color: transparent;
+                }
             }
         }
 
@@ -108,6 +109,9 @@
                     margin-bottom: 0;
                 }
             }
+            a {
+                cursor: pointer;
+            }
         }
 
         #hr_cs_personal_information {
@@ -129,6 +133,16 @@
                 }
                 .col-form-label {
                     color: #000;
+                }
+                input.bg-danger {
+                    background-color: white !important;
+                    border-color: red !important;
+                    color: #495057 !important;
+                }
+                a.select2-choice.bg-danger {
+                    background-color: white !important;
+                    border-color: red !important;
+                    color: #495057 !important;
                 }
             }
         }
@@ -163,6 +177,8 @@
             }
             .close {
                 opacity: 1;
+                background-color: white;
+                border-color: white;
             }
         }
 

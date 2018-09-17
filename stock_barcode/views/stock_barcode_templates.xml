@@ -14,7 +14,7 @@
                 <script type="text/javascript" src="/stock_barcode/static/src/js/tours/tour_test_barcode_flows.js"></script>
                 <script type="text/javascript" src="/stock_barcode/static/src/js/client_action/header_widget.js"></script>
                 <script type="text/javascript" src="/stock_barcode/static/src/js/client_action/lines_widget.js"></script>
-                <script type="text/javascript" src="/stock_barcode/static/src/js/client_action/form_widget.js"></script>
+                <script type="text/javascript" src="/stock_barcode/static/src/js/client_action/views_widget.js"></script>
                 <script type="text/javascript" src="/stock_barcode/static/src/js/client_action/settings_widget.js"></script>
                 <script type="text/javascript" src="/stock_barcode/static/src/js/client_action/abstract_client_action.js"></script>
                 <script type="text/javascript" src="/stock_barcode/static/src/js/client_action/picking_client_action.js"></script>

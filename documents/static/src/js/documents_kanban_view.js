@@ -37,6 +37,7 @@ var DocumentsKanbanView = KanbanView.extend({
         var inspectorFields = [
             'active',
             'available_rule_ids',
+            'checksum',
             'datas_fname',
             'display_name', // necessary for the mail tracking system to work correctly
             'folder_id',

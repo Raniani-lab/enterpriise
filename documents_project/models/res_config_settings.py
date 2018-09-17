@@ -11,13 +11,15 @@ class ResConfigSettings(models.TransientModel):
         folder_id = self.env.user.company_id.project_folder
         if folder_id.exists():
             return folder_id
-        try:
-            return self.env.ref('documents_project.documents_project_folder')
-        except Exception:
-            return False
+        return False
 
+    dms_project_settings = fields.Boolean(related='company_id.dms_project_settings',
+                                          default=lambda self: self.env.user.company_id.dms_project_settings)
     project_folder = fields.Many2one('documents.folder', related='company_id.project_folder',
                                      default=_get_default_project_folder,
-                                     string="project folder")
+                                     string="Project Folder")
+    project_tags = fields.Many2many('documents.tag', 'project_tags_table', related='company_id.project_tags',
+                                    default=lambda self: self.env.user.company_id.project_tags.ids,
+                                    string="Project Tags")
 
 

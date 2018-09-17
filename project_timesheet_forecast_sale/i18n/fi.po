@@ -3,20 +3,19 @@
 # * project_timesheet_forecast_sale
 # 
 # Translators:
-# Tuomo Aura <tuomo.aura@web-veistamo.fi>, 2017
-# Martin Trigaux <mat@odoo.com>, 2017
-# Svante Suominen <svante.suominen@web-veistamo.fi>, 2017
-# Kari Lindgren <kari.lindgren@emsystems.fi>, 2017
-# Jussi Lehto <jussi@gulfeo.com>, 2017
-# Veikko Väätäjä <veikko.vaataja@gmail.com>, 2017
-# Jarmo Kortetjärvi <jarmo.kortetjarvi@gmail.com>, 2017
+# Martin Trigaux, 2018
+# Jussi Lehto <jussi@gulfeo.com>, 2018
+# Svante Suominen <svante.suominen@web-veistamo.fi>, 2018
+# Jarmo Kortetjärvi <jarmo.kortetjarvi@gmail.com>, 2018
+# Veikko Väätäjä <veikko.vaataja@gmail.com>, 2018
+# Tuomo Aura <tuomo.aura@web-veistamo.fi>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 10.saas~18+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-02 11:50+0000\n"
-"PO-Revision-Date: 2017-10-02 11:50+0000\n"
-"Last-Translator: Jarmo Kortetjärvi <jarmo.kortetjarvi@gmail.com>, 2017\n"
+"POT-Creation-Date: 2018-08-24 11:28+0000\n"
+"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"Last-Translator: Tuomo Aura <tuomo.aura@web-veistamo.fi>, 2018\n"
 "Language-Team: Finnish (https://www.transifex.com/odoo/teams/41243/fi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -28,48 +27,26 @@ msgstr ""
 #: code:addons/project_timesheet_forecast_sale/models/project.py:26
 #, python-format
 msgid "%s (%s remaining hours)"
-msgstr ""
+msgstr "%s (%s jäljellä olevat tunnit)"
 
 #. module: project_timesheet_forecast_sale
-#: code:addons/project_timesheet_forecast_sale/controllers/project.py:67
+#: code:addons/project_timesheet_forecast_sale/controllers/project.py:47
 #, python-format
-msgid "Done"
-msgstr "Valmis"
+msgid "After"
+msgstr "Jälkeen"
 
 #. module: project_timesheet_forecast_sale
-#: model:ir.model.fields,field_description:project_timesheet_forecast_sale.field_project_forecast_effective_hours
-msgid "Effective hours"
-msgstr ""
-
-#. module: project_timesheet_forecast_sale
-#: code:addons/project_timesheet_forecast_sale/controllers/project.py:216
-#: code:addons/project_timesheet_forecast_sale/controllers/project.py:230
-#, python-format
-msgid "Forecast"
-msgstr "Ennuste"
-
-#. module: project_timesheet_forecast_sale
-#: code:addons/project_timesheet_forecast_sale/controllers/project.py:67
+#: code:addons/project_timesheet_forecast_sale/controllers/project.py:47
 #, python-format
 msgid "Forecasted"
-msgstr ""
+msgstr "Ennustettu"
 
 #. module: project_timesheet_forecast_sale
-#: code:addons/project_timesheet_forecast_sale/controllers/project.py:67
+#: code:addons/project_timesheet_forecast_sale/controllers/project.py:163
+#: code:addons/project_timesheet_forecast_sale/controllers/project.py:182
 #, python-format
-msgid "Name"
-msgstr "Nimi"
-
-#. module: project_timesheet_forecast_sale
-#: code:addons/project_timesheet_forecast_sale/controllers/project.py:67
-#, python-format
-msgid "Planned"
-msgstr ""
-
-#. module: project_timesheet_forecast_sale
-#: model:ir.model.fields,field_description:project_timesheet_forecast_sale.field_project_forecast_percentage_hours
-msgid "Progress"
-msgstr "Edistyminen"
+msgid "Forecasts"
+msgstr "Ennusteet"
 
 #. module: project_timesheet_forecast_sale
 #: model:ir.model,name:project_timesheet_forecast_sale.model_project_project
@@ -77,14 +54,16 @@ msgid "Project"
 msgstr "Projektit"
 
 #. module: project_timesheet_forecast_sale
-#: code:addons/project_timesheet_forecast_sale/controllers/project.py:67
+#: code:addons/project_timesheet_forecast_sale/controllers/project.py:25
 #, python-format
-msgid "Remaining"
-msgstr "Jäljellä"
+msgid ""
+"Remaining \n"
+" (Forecasts incl.)"
+msgstr ""
 
 #. module: project_timesheet_forecast_sale
 #: model:ir.model,name:project_timesheet_forecast_sale.model_sale_order_line
-#: model:ir.model.fields,field_description:project_timesheet_forecast_sale.field_project_forecast_order_line_id
+#: model:ir.model.fields,field_description:project_timesheet_forecast_sale.field_project_forecast__order_line_id
 msgid "Sales Order Line"
 msgstr "Myyntitilauksen rivi"
 
@@ -95,7 +74,15 @@ msgstr "Tehtävä"
 
 #. module: project_timesheet_forecast_sale
 #: model:ir.ui.view,arch_db:project_timesheet_forecast_sale.timesheet_plan
-msgid "Timesheet/Forecast"
+msgid "Timesheets/Forecasts"
+msgstr ""
+
+#. module: project_timesheet_forecast_sale
+#: code:addons/project_timesheet_forecast_sale/controllers/project.py:26
+#, python-format
+msgid ""
+"What is still to deliver based on sold hours, hours already done and "
+"forecasted hours. Equals to sold hours - done hours - forecasted hours."
 msgstr ""
 
 #. module: project_timesheet_forecast_sale

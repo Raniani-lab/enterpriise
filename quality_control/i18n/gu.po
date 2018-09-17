@@ -2,12 +2,16 @@
 # This file contains the translation of the following modules:
 # * quality_control
 # 
+# Translators:
+# Martin Trigaux, 2018
+# Divya Pandya <dia@odoo.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"POT-Creation-Date: 2018-09-05 09:11+0000\n"
+"PO-Revision-Date: 2018-09-05 09:11+0000\n"
+"Last-Translator: Divya Pandya <dia@odoo.com>, 2018\n"
 "Language-Team: Gujarati (https://www.transifex.com/odoo/teams/41243/gu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -117,7 +121,7 @@ msgstr ""
 #. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.quality_check_view_form_small
 msgid "Cancel"
-msgstr ""
+msgstr "રદ કરો"
 
 #. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.quality_check_view_tree
@@ -142,7 +146,7 @@ msgstr ""
 #. module: quality_control
 #: model:ir.ui.menu,name:quality_control.menu_quality_configuration
 msgid "Configuration"
-msgstr ""
+msgstr "રુપરેખાંકન"
 
 #. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.quality_check_view_form_failure
@@ -203,7 +207,7 @@ msgstr ""
 #. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.quality_alert_view_search
 msgid "Creation Date"
-msgstr ""
+msgstr "સર્જન તારીખ"
 
 #. module: quality_control
 #: model:ir.ui.menu,name:quality_control.menu_quality_dashboard
@@ -228,7 +232,7 @@ msgstr ""
 #. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.quality_alert_view_form
 msgid "Description"
-msgstr ""
+msgstr "વર્ણન"
 
 #. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.quality_alert_view_form
@@ -238,7 +242,7 @@ msgstr ""
 #. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.quality_alert_view_search
 msgid "Done"
-msgstr ""
+msgstr "પુર્ણ થયુ"
 
 #. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.quality_alert_team_view_form
@@ -276,6 +280,7 @@ msgstr ""
 #. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.quality_alert_view_search
 #: model:ir.ui.view,arch_db:quality_control.quality_check_view_search
+#: model:ir.ui.view,arch_db:quality_control.quality_point_view_search
 msgid "Group By"
 msgstr ""
 
@@ -287,7 +292,7 @@ msgstr ""
 #. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.quality_check_view_search
 msgid "In Progress"
-msgstr ""
+msgstr "પ્રગતિમાં છે"
 
 #. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.quality_alert_view_search
@@ -349,13 +354,13 @@ msgstr ""
 #. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.quality_alert_view_tree
 msgid "Name"
-msgstr ""
+msgstr "નામ"
 
 #. module: quality_control
 #: code:addons/quality_control/models/quality.py:283
 #, python-format
 msgid "New"
-msgstr ""
+msgstr "નવું"
 
 #. module: quality_control
 #: selection:quality.check,measure_success:0
@@ -394,11 +399,16 @@ msgstr ""
 #. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.quality_check_view_form
 msgid "Notes"
-msgstr ""
+msgstr "નોંધ"
 
 #. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.quality_check_failure_message
 msgid "OK"
+msgstr "બરાબર"
+
+#. module: quality_control
+#: model:ir.ui.view,arch_db:quality_control.quality_point_view_search
+msgid "Operation Type"
 msgstr ""
 
 #. module: quality_control
@@ -421,7 +431,7 @@ msgstr ""
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_point__measure_frequency_value
 msgid "Percentage"
-msgstr ""
+msgstr "ટકાવારી"
 
 #. module: quality_control
 #: selection:quality.point,measure_frequency_type:0
@@ -438,6 +448,11 @@ msgstr ""
 #: model:ir.ui.view,arch_db:quality_control.quality_alert_view_form
 msgid "Preventive Actions"
 msgstr ""
+
+#. module: quality_control
+#: model:ir.ui.view,arch_db:quality_control.quality_point_view_search
+msgid "Product"
+msgstr "ઉત્પાદન"
 
 #. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.quality_alert_team_view_form
@@ -600,7 +615,7 @@ msgstr ""
 #. module: quality_control
 #: model:ir.ui.menu,name:quality_control.menu_quality_reporting
 msgid "Reporting"
-msgstr ""
+msgstr "અહેવાલીકરણ"
 
 #. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.quality_alert_view_search
@@ -615,7 +630,7 @@ msgstr ""
 #. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.quality_alert_team_dashboard_view_kanban
 msgid "Settings"
-msgstr ""
+msgstr "સુયોજનો"
 
 #. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.quality_alert_view_search
@@ -630,7 +645,7 @@ msgstr ""
 #. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.quality_check_view_search
 msgid "State"
-msgstr ""
+msgstr "અવસ્થા"
 
 #. module: quality_control
 #: model:ir.model,name:quality_control.model_stock_move
@@ -649,9 +664,14 @@ msgid "Teams"
 msgstr ""
 
 #. module: quality_control
+#: model:ir.ui.view,arch_db:quality_control.quality_point_view_search
+msgid "Test Type"
+msgstr ""
+
+#. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_alert__title
 msgid "Title"
-msgstr ""
+msgstr "શીર્ષક"
 
 #. module: quality_control
 #: model:ir.ui.view,arch_db:quality_control.quality_point_view_form_inherit_quality_control

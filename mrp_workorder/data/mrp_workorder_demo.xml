@@ -7,7 +7,7 @@
         <field name="product_tmpl_id" ref="mrp.product_product_computer_desk_product_template"/>
         <field name="picking_type_id" model="stock.warehouse" eval="obj().env.ref('stock.warehouse0').manu_type_id.id"/>
         <field name="operation_id" ref="mrp.mrp_routing_workcenter_5"/>
-        <field name="test_type_id" ref="mrp_workorder.test_type_register_consumed_materials"/>
+        <field name="test_type_id" ref="mrp_workorder.test_type_record_lotserial_numbers"/>
         <field name="note">Please enter the table head serial number.</field>
         <field name="title">Component Registration: Table Head</field>
         <field name="component_id" ref="mrp.product_product_computer_desk_head"/>
@@ -15,12 +15,12 @@
         <field name="worksheet_page">1</field>
     </record>
 
-    <record id="quality_point_dummy" model="quality.point">
+    <record id="quality_point_text" model="quality.point">
         <field name="product_id" ref="mrp.product_product_computer_desk"/>
         <field name="product_tmpl_id" ref="mrp.product_product_computer_desk_product_template"/>
         <field name="picking_type_id" model="stock.warehouse" eval="obj().env.ref('stock.warehouse0').manu_type_id.id"/>
         <field name="operation_id" ref="mrp.mrp_routing_workcenter_5"/>
-        <field name="test_type_id" ref="test_type_dummy"/>
+        <field name="test_type_id" ref="test_type_text"/>
         <field name="note">Please ensure you are using the new SRX679 screwdriver.</field>
         <field name="title">Choice of screwdriver</field>
         <field name="worksheet">scroll</field>
@@ -32,7 +32,7 @@
         <field name="product_tmpl_id" ref="mrp.product_product_computer_desk_product_template"/>
         <field name="picking_type_id" model="stock.warehouse" eval="obj().env.ref('stock.warehouse0').manu_type_id.id"/>
         <field name="operation_id" ref="mrp.mrp_routing_workcenter_5"/>
-        <field name="test_type_id" ref="mrp_workorder.test_type_register_consumed_materials"/>
+        <field name="test_type_id" ref="mrp_workorder.test_type_record_lotserial_numbers"/>
         <field name="note">Please encode the table legs lot number(s).</field>
         <field name="title">Component Registration: Table Legs</field>
         <field name="component_id" ref="mrp.product_product_computer_desk_leg"/>
@@ -40,12 +40,12 @@
         <field name="worksheet_page">4</field>
     </record>
 
-    <record id="quality_point_dummy_2" model="quality.point">
+    <record id="quality_point_text_2" model="quality.point">
         <field name="product_id" ref="mrp.product_product_computer_desk"/>
         <field name="product_tmpl_id" ref="mrp.product_product_computer_desk_product_template"/>
         <field name="picking_type_id" model="stock.warehouse" eval="obj().env.ref('stock.warehouse0').manu_type_id.id"/>
         <field name="operation_id" ref="mrp.mrp_routing_workcenter_5"/>
-        <field name="test_type_id" ref="test_type_dummy"/>
+        <field name="test_type_id" ref="test_type_text"/>
         <field name="note">Please attach the legs to the table as shown below.</field>
         <field name="title">Table Legs</field>
         <field name="worksheet">scroll</field>

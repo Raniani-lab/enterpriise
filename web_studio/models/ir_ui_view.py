@@ -19,23 +19,24 @@ CONTAINER_TYPES = (
     'group', 'page', 'sheet', 'div', 'ul', 'li', 'notebook',
 )
 
-BLACKLIST_CLONE_TEMPLATE = [
-    'web.html_container',
-    'web.report_layout',
-    'web.external_layout',
-    'web.internal_layout',
-    'web.basic_layout',
-    'web.minimal_layout',
-    'web.external_layout_background',
-    'web.external_layout_boxed',
-    'web.external_layout_clean',
-    'web.external_layout_standard',
-]
 
 
 class View(models.Model):
     _name = 'ir.ui.view'
     _inherit = ['studio.mixin', 'ir.ui.view']
+
+    TEMPLATE_VIEWS_BLACKLIST = [
+        'web.html_container',
+        'web.report_layout',
+        'web.external_layout',
+        'web.internal_layout',
+        'web.basic_layout',
+        'web.minimal_layout',
+        'web.external_layout_background',
+        'web.external_layout_boxed',
+        'web.external_layout_clean',
+        'web.external_layout_standard',
+    ]
 
     def _apply_group(self, model, node, modifiers, fields):
 
@@ -760,7 +761,7 @@ class View(models.Model):
             tcall = node.get('t-call')
             if '{' in tcall:
                 continue
-            if tcall in BLACKLIST_CLONE_TEMPLATE:
+            if tcall in self.TEMPLATE_VIEWS_BLACKLIST:
                 continue
             if tcall not in cloned_templates:
                 callview = self.search([('type', '=', 'qweb'), ('key', '=', tcall)])

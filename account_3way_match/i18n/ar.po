@@ -2,12 +2,16 @@
 # This file contains the translation of the following modules:
 # * account_3way_match
 # 
+# Translators:
+# Mustafa Rawi <mustafa@cubexco.com>, 2018
+# Martin Trigaux, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.3+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-25 08:34+0000\n"
 "PO-Revision-Date: 2018-06-25 08:34+0000\n"
+"Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -38,7 +42,7 @@ msgstr ""
 #: selection:account.invoice,release_to_pay_manual:0
 #: selection:account.invoice.line,can_be_paid:0
 msgid "Exception"
-msgstr ""
+msgstr "الاستثناء"
 
 #. module: account_3way_match
 #: model:ir.model.fields,field_description:account_3way_match.field_account_invoice__force_release_to_pay
@@ -55,24 +59,24 @@ msgstr ""
 #. module: account_3way_match
 #: model:ir.model,name:account_3way_match.model_account_invoice
 msgid "Invoice"
-msgstr ""
+msgstr "الفاتورة"
 
 #. module: account_3way_match
 #: model:ir.model,name:account_3way_match.model_account_invoice_line
 msgid "Invoice Line"
-msgstr ""
+msgstr "بند الفاتورة"
 
 #. module: account_3way_match
 #: model:ir.model,name:account_3way_match.model_account_journal
 msgid "Journal"
-msgstr ""
+msgstr "دفتر اليومية"
 
 #. module: account_3way_match
 #: selection:account.invoice,release_to_pay:0
 #: selection:account.invoice,release_to_pay_manual:0
 #: selection:account.invoice.line,can_be_paid:0
 msgid "No"
-msgstr ""
+msgstr "كلا"
 
 #. module: account_3way_match
 #: model:ir.model.fields,field_description:account_3way_match.field_account_invoice_line__can_be_paid
@@ -105,4 +109,4 @@ msgstr ""
 #: selection:account.invoice,release_to_pay_manual:0
 #: selection:account.invoice.line,can_be_paid:0
 msgid "Yes"
-msgstr ""
+msgstr "نعم"

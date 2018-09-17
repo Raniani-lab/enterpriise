@@ -4,13 +4,16 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# Eloïse Stilmant <est@odoo.com>, 2018
+# Elise Carton <eca@odoo.com>, 2018
+# Thomas Dobbelsteyn <tdo@odoo.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-08-24 11:28+0000\n"
 "PO-Revision-Date: 2018-08-24 11:28+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"Last-Translator: Thomas Dobbelsteyn <tdo@odoo.com>, 2018\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,16 +27,19 @@ msgid ""
 "Defines how many times the stock is sold during a period. It is computed by "
 "dividing the outgoing inventory value by the inventory value."
 msgstr ""
+"Définit le nombre de fois que le stock est vendu pendant une certaine "
+"période. Ce nombre est calculé en divisant la valeur de l'inventaire sortant"
+" par la valeur de l'inventaire."
 
 #. module: stock_account_enterprise
 #: model:ir.ui.view,arch_db:stock_account_enterprise.stock_report_dashboard_view_inherit
 msgid "Incoming Inventory Value"
-msgstr ""
+msgstr "Valeur de l'Inventaire Entrant"
 
 #. module: stock_account_enterprise
 #: model:ir.ui.view,arch_db:stock_account_enterprise.stock_report_dashboard_view_inherit
 msgid "Inventory Turnover"
-msgstr ""
+msgstr "Rotation de Stock "
 
 #. module: stock_account_enterprise
 #: model:ir.ui.view,arch_db:stock_account_enterprise.stock_report_dashboard_view_inherit
@@ -57,34 +63,34 @@ msgstr ""
 #. module: stock_account_enterprise
 #: model:ir.ui.view,arch_db:stock_account_enterprise.stock_report_dashboard_view_inherit
 msgid "Outgoing Inventory Value"
-msgstr ""
+msgstr "Valeur d'Inventaire Sortant"
 
 #. module: stock_account_enterprise
 #: model:ir.model,name:stock_account_enterprise.model_stock_report
 msgid "Stock Report"
-msgstr ""
+msgstr "Rapport de Stock"
 
 #. module: stock_account_enterprise
 #: model:ir.ui.view,arch_db:stock_account_enterprise.stock_report_dashboard_view_inherit
 msgid "The total value of what you have in stock."
-msgstr ""
+msgstr "La valeur total de ce que vous avez en stock. "
 
 #. module: stock_account_enterprise
 #: model:ir.model.fields,field_description:stock_account_enterprise.field_stock_report__stock_value
 msgid "Total Valuation of Inventory"
-msgstr ""
+msgstr "Evalutation Totale de l'Inventaire"
 
 #. module: stock_account_enterprise
 #: model:ir.model.fields,field_description:stock_account_enterprise.field_stock_report__valuation
 msgid "Valuation of Inventory using a Domain"
-msgstr ""
+msgstr "Evaluation de l'Inventaire utilisant un Domaine"
 
 #. module: stock_account_enterprise
 #: model:ir.ui.view,arch_db:stock_account_enterprise.stock_report_dashboard_view_inherit
 msgid "Value of all incoming stock moves."
-msgstr ""
+msgstr "Valeur de l'ensemble des mouvements d'inventaire entrants."
 
 #. module: stock_account_enterprise
 #: model:ir.ui.view,arch_db:stock_account_enterprise.stock_report_dashboard_view_inherit
 msgid "Value of all outgoing stock moves."
-msgstr ""
+msgstr "Valeur de l'ensemble des mouvements de stock sortants."

@@ -3,11 +3,21 @@
  * bundle (web.report_assets_common) than the usual one (web.assets_backend).
  */
 
+.o_no_content_helper {
+    border: 2px dashed gray('400');
+    margin-top: 10px;
+    padding: 112px 0px;
+    text-align: center;
+    color: gray('400');
+    font-size: 20px;
+}
+
 .o_web_studio_report_selected {
-    outline: 1px dashed #00a09d;
+    outline: 2px dashed $o-brand-primary;
     outline-offset: -2px;
     // make selection visible on dark/green backgrounds
     box-shadow: inset 0 0 0 2px white;
+    background-color: rgba($o-brand-primary, 0.1);
 }
 
 .o_web_studio_report_highlight {
@@ -22,10 +32,6 @@
         text-shadow: 0 0 10px white;
         @include o-position-absolute(-19px, $left: -19px);
         transform: rotate(30deg);
-        animation-name: bounce-top;
-        animation-duration: 0.6s;
-        animation-fill-mode: both;
-
     }
     &.o_web_studio_report_highlight_left:before {
         left: 0;
@@ -149,68 +155,4 @@ tbody .o_web_studio_hook.o_web_studio_nearest_hook.o_web_studio_hook_field {
 div.row > div > .o_web_studio_nearest_hook.o_web_studio_hook_field:only-child {
     height: 50px;
     background-image: url(/web_studio/static/src/img/report_hook_information.png);
-}
-
-
-/**
- * ----------------------------------------
- * animation bounce-top
- * ----------------------------------------
- */
-@-webkit-keyframes bounce-top {
-  0% {
-    margin-top: -20px;
-    opacity: 0;
-  }
-  24% {
-    opacity: 1;
-  }
-  40% {
-    margin-top: -12px;
-  }
-  65% {
-    margin-top: -6px;
-  }
-  82% {
-    margin-top: -3px;
-  }
-  93% {
-    margin-top: -2px;
-  }
-  25%, 55%, 75%, 87% {
-    margin-top: 0px;
-  }
-  100% {
-    margin-top: 0;
-    opacity: 1;
-  }
-}
-
-@keyframes bounce-top {
-  0% {
-    margin-top: -20px;
-    opacity: 0;
-  }
-  24% {
-    opacity: 1;
-  }
-  40% {
-    margin-top: -12px;
-  }
-  65% {
-    margin-top: -6px;
-  }
-  82% {
-    margin-top: -3px;
-  }
-  93% {
-    margin-top: -2px;
-  }
-  25%, 55%, 75%, 87% {
-    margin-top: 0px;
-  }
-  100% {
-    margin-top: 0;
-    opacity: 1;
-  }
 }

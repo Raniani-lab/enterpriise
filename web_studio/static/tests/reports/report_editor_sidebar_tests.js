@@ -9,11 +9,6 @@ QUnit.module('Studio', {}, function () {
 
     QUnit.module('ReportEditorSidebar', {
         beforeEach: function () {
-            this.widgets = {
-                image: {},
-                integer: {},
-            };
-
             this.data = {
                 'report.paperformat': {
                     fields: {
@@ -35,7 +30,18 @@ QUnit.module('Studio', {}, function () {
                         id: 7,
                         display_name: 'Group7',
                     }],
-                }
+                },
+                'x_mymodel': {
+                    fields: {
+                        display_name: {string: "Name", type: "char"},
+                    },
+                },
+            };
+
+            this.widgetsOptions = {
+                image: {},
+                integer: {},
+                text: {},
             };
         },
     }, function () {
@@ -229,7 +235,6 @@ QUnit.module('Studio', {}, function () {
             assert.expect(3);
 
             var node = {
-                components: ['layout'],
                 node: {
                     attrs: {
                         'data-oe-id': '42',
@@ -262,7 +267,6 @@ QUnit.module('Studio', {}, function () {
             assert.expect(1);
 
             var node = {
-                components: ['layout'],
                 node: {
                     attrs: {
                         'data-oe-id': '42',
@@ -284,6 +288,102 @@ QUnit.module('Studio', {}, function () {
             assert.equal(sidebar.$('.o_web_studio_width:visible').length, 1);
 
             sidebar.destroy();
+        });
+
+        QUnit.test("'Options' tab with widget selection (tOptions) component", function (assert) {
+            assert.expect(4);
+
+            var node = {
+                context: {
+                    'doc': 'x_mymodel',
+                },
+                node: {
+                    attrs: {
+                        'data-oe-id': '42',
+                        'data-oe-xpath': '/t/t/div',
+                        't-field': 'doc.id',
+                        't-options-widget': '"text"',
+                    },
+                    tag: 'span',
+                },
+            };
+            var sidebar = studioTestUtils.createSidebar({
+                state: {
+                    mode: 'properties',
+                    nodes: [node],
+                },
+                widgetsOptions: this.widgetsOptions,
+            });
+
+            assert.strictEqual(sidebar.$('.o_web_studio_tfield_fieldexpression').length, 1,
+                "the t-field component should be displayed");
+            assert.strictEqual(sidebar.$('.o_web_studio_toption_widget').length, 1,
+                "the t-options component should be displayed");
+            assert.strictEqual(sidebar.$('.o_web_studio_toption_widget select').text().replace(/\s/g, ''), "imageintegertext",
+                "all widgets should be selectable");
+            assert.strictEqual(sidebar.$('.o_web_studio_toption_widget select').val(), "text",
+                "the correct widget should be selected");
+
+            sidebar.destroy();
+        });
+
+        QUnit.test("'Options' tab with FieldSelector does not flicker", function (assert) {
+            assert.expect(3);
+            var done = assert.async();
+            var def = $.Deferred();
+
+            var node = {
+                context: {
+                    'doc': 'x_mymodel',
+                },
+                node: {
+                    attrs: {
+                        'data-oe-id': '42',
+                        'data-oe-xpath': '/t/t/div',
+                        't-field': 'doc.id',
+                        't-options-widget': '"text"',
+                    },
+                    context: {
+                        'doc': 'x_mymodel',
+                    },
+                    tag: 'span',
+                },
+            };
+            var sidebar = studioTestUtils.createSidebar({
+                data: this.data,
+                models: {
+                    'x_mymodel': 'My Model',
+                },
+                state: {
+                    mode: 'properties',
+                    nodes: [node],
+                },
+                widgetsOptions: this.widgetsOptions,
+                mockRPC: function (route, args) {
+                    if (args.model === 'x_mymodel' && args.method === 'fields_get') {
+                        // Block the 'read' call
+                        var result = this._super.apply(this, arguments);
+                        return $.when(def).then(_.constant(result));
+                    }
+                    return this._super.apply(this, arguments);
+                },
+            });
+
+            assert.strictEqual($('.o_web_studio_tfield_fieldexpression').length, 0,
+                "the sidebar should wait its components to be rendered before its insertion");
+
+            // release the fields_get
+            def.resolve();
+
+            $.when(def).then(function () {
+                assert.strictEqual($('.o_web_studio_tfield_fieldexpression').length, 1,
+                    "the t-field component should be displayed");
+                assert.strictEqual(sidebar.$('.o_web_studio_tfield_fieldexpression .o_field_selector_value').text().replace(/\s/g, ''), "doc(MyModel)ID",
+                    "the field chain should be correctly displayed");
+
+                done();
+                sidebar.destroy();
+            });
         });
 
         QUnit.test('Various layout changes', function (assert) {
@@ -625,7 +725,6 @@ QUnit.module('Studio', {}, function () {
 
             _.each(layoutChangesOperations, function (changeOperation) {
                 var node = {
-                    components: ['layout'],
                     node: changeOperation.nodeToUse,
                 };
                 var sidebar = studioTestUtils.createSidebar({

@@ -21,10 +21,10 @@ class SignContract(Sign):
         request_item = request.env['sign.request.item'].sudo().search([('access_token', '=', token)])
         contract = request.env['hr.contract'].sudo().with_context(active_test=False).search([
             ('sign_request_ids', 'in', request_item.sign_request_id.ids)])
-        request_template_id = request_item.signature_request_id.template_id.id
+        request_template_id = request_item.sign_request_id.template_id.id
         # Only if the signed document is the document to sign from the salary package
         contract_documents = [
-            contract.signature_request_template_id.id,
+            contract.sign_template_id.id,
             contract.contract_update_template_id.id,
         ]
         if contract and request_template_id in contract_documents:
@@ -89,9 +89,14 @@ class website_hr_contract_salary(http.Controller):
             return request.render('website.http_error', {'status_code': 'Oops',
                                                          'status_message': 'This contract has been updated, please request an updated link..'})
 
-        if not request.env.user.has_group('hr_contract.group_hr_contract_manager') and contract.employee_id \
-                and contract.employee_id.user_id != request.env.user:
-            return request.render('website.404')
+        if not request.env.user.has_group('hr_contract.group_hr_contract_manager'):
+            if not contract.employee_id.user_id and not kw.get('applicant_id'):
+                return request.render(
+                    'website.http_error',
+                    {'status_code': 'Oops',
+                     'status_message': 'The employee is not linked to an existing user, please contact the administrator..'})
+            if contract.employee_id and contract.employee_id.user_id != request.env.user:
+                return request.render('website.404')
 
         if kw.get('employee_contract_id'):
             employee_contract = request.env['hr.contract'].sudo().browse(int(kw.get('employee_contract_id')))

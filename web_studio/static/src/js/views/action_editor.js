@@ -16,6 +16,7 @@ var VIEW_TYPES = [
     'pivot',
     'calendar',
     'gantt',
+    'dashboard',
     'cohort',
 ];
 
@@ -113,6 +114,9 @@ var ActionEditor = Widget.extend({
                 category = 'reporting';
                 break;
             case 'pivot':
+                category = 'reporting';
+                break;
+            case 'dashboard':
                 category = 'reporting';
                 break;
             case 'calendar':

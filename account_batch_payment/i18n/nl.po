@@ -356,7 +356,7 @@ msgstr "Betaling registreren"
 #: code:addons/account_batch_payment/static/src/xml/account_reconciliation.xml:8
 #, python-format
 msgid "Select a Batch Payment"
-msgstr ""
+msgstr "Selecteer een verzamelbetaling"
 
 #. module: account_batch_payment
 #: selection:account.batch.payment,state:0
@@ -428,6 +428,8 @@ msgstr "Waarschuwing"
 #: model:ir.model.fields,help:account_batch_payment.field_account_batch_download_wizard__warning_message
 msgid "Warning message to display about the content of the downloadable file."
 msgstr ""
+"Waarschuwingsbericht om te tonen over de inhoud van het downloadbare "
+"bestand."
 
 #. module: account_batch_payment
 #: model:ir.model.fields,help:account_batch_payment.field_account_batch_payment__file_generation_enabled
@@ -439,7 +441,7 @@ msgstr ""
 #. module: account_batch_payment
 #: model:ir.model,name:account_batch_payment.model_account_batch_download_wizard
 msgid "account.batch.download.wizard"
-msgstr ""
+msgstr "account.batch.download.wizard"
 
 #. module: account_batch_payment
 #: model:ir.model,name:account_batch_payment.model_account_reconciliation_widget
@@ -454,9 +456,9 @@ msgstr "auto ..."
 #. module: account_batch_payment
 #: model:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
 msgid "re-Generate Export File"
-msgstr ""
+msgstr "re-Genereer export bestand"
 
 #. module: account_batch_payment
 #: model:ir.model,name:account_batch_payment.model_report_account_batch_payment_print_batch_payment
 msgid "report.account_batch_payment.print_batch_payment"
-msgstr ""
+msgstr "report.account_batch_payment.print_batch_payment"

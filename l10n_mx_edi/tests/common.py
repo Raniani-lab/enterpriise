@@ -3,7 +3,6 @@
 from odoo.tools.pycompat import imap
 from odoo.addons.account.tests.account_test_classes import AccountingTestCase
 from odoo.tests import tagged
-from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
 
 
 @tagged('post_install', '-at_install')
@@ -68,7 +67,7 @@ class InvoiceTransactionCase(AccountingTestCase):
 
     def set_currency_rates(self, mxn_rate, usd_rate):
         date = (self.env['l10n_mx_edi.certificate'].sudo().
-                get_mx_current_datetime().strftime(DEFAULT_SERVER_DATE_FORMAT))
+                get_mx_current_datetime().date())
         self.mxn.rate_ids.filtered(
             lambda r: r.name == date).unlink()
         self.mxn.rate_ids = self.rate_model.create({

@@ -345,7 +345,7 @@ msgstr "Luni"
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:446
 #, python-format
 msgid "NRR"
-msgstr ""
+msgstr "NRR"
 
 #. module: sale_subscription_dashboard
 #. openerp-web

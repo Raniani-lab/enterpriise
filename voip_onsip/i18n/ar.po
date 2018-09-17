@@ -2,12 +2,16 @@
 # This file contains the translation of the following modules:
 # * voip_onsip
 # 
+# Translators:
+# Akram Alfusayal <akram_ma@hotmail.com>, 2018
+# Shaima Safar <shaima.safar@open-inside.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.3+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-25 08:34+0000\n"
 "PO-Revision-Date: 2018-06-25 08:34+0000\n"
+"Last-Translator: Shaima Safar <shaima.safar@open-inside.com>, 2018\n"
 "Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -33,7 +37,7 @@ msgstr ""
 #. module: voip_onsip
 #: model:ir.model,name:voip_onsip.model_res_users
 msgid "Users"
-msgstr ""
+msgstr "المستخدمون"
 
 #. module: voip_onsip
 #: model:ir.model.fields,field_description:voip_onsip.field_res_config_settings__wsServer
@@ -43,9 +47,9 @@ msgstr ""
 #. module: voip_onsip
 #: model:ir.model,name:voip_onsip.model_res_config_settings
 msgid "res.config.settings"
-msgstr ""
+msgstr "الدقة.التكوين.إعدادات"
 
 #. module: voip_onsip
 #: model:ir.model,name:voip_onsip.model_voip_configurator
 msgid "voip.configurator"
-msgstr ""
+msgstr "الصوت عبر بروتوكول الإنترنت. إعدادات"

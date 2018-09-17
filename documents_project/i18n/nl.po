@@ -5,13 +5,14 @@
 # Translators:
 # Martin Trigaux, 2018
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2018
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-08-24 11:28+0000\n"
 "PO-Revision-Date: 2018-08-24 11:28+0000\n"
-"Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2018\n"
+"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2018\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -25,11 +26,13 @@ msgid ""
 "A set of condition and actions which will be available to all attachments "
 "matching the conditions"
 msgstr ""
+"Een set van condities en acties welke beschikbaar is voor alle bijlages die "
+"aan deze condities voldoen"
 
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_documents_workflow_rule__create_model
 msgid "Attach to"
-msgstr ""
+msgstr "Koppel aan"
 
 #. module: documents_project
 #: model:ir.model,name:documents_project.model_res_company
@@ -39,27 +42,27 @@ msgstr "Bedrijven"
 #. module: documents_project
 #: selection:documents.workflow.rule,create_model:0
 msgid "Credit note"
-msgstr ""
+msgstr "Creditnota"
 
 #. module: documents_project
 #: model:ir.ui.view,arch_db:documents_project.res_config_settings_view_form
 msgid "Default destination for the attachments created in project."
-msgstr ""
+msgstr "Standaard locatie voor de bijlages aangemaakt in het project."
 
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_documents_workflow_rule__has_business_option
 msgid "Has Business Option"
-msgstr ""
+msgstr "Heeft business optie"
 
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_res_company__project_folder
 msgid "Project Folder"
-msgstr ""
+msgstr "Projectmap"
 
 #. module: documents_project
 #: selection:documents.workflow.rule,create_model:0
 msgid "Signature template"
-msgstr ""
+msgstr "Handtekening sjabloon"
 
 #. module: documents_project
 #: selection:documents.workflow.rule,create_model:0
@@ -69,7 +72,7 @@ msgstr "Taak"
 #. module: documents_project
 #: selection:documents.workflow.rule,create_model:0
 msgid "Vendor bill"
-msgstr ""
+msgstr "Leveranciersfactuur"
 
 #. module: documents_project
 #: model:ir.model,name:documents_project.model_ir_attachment
@@ -79,7 +82,7 @@ msgstr "ir.attachment"
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_res_config_settings__project_folder
 msgid "project folder"
-msgstr ""
+msgstr "projectmap"
 
 #. module: documents_project
 #: model:ir.model,name:documents_project.model_res_config_settings

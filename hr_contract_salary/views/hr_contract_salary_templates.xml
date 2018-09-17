@@ -63,7 +63,7 @@
                                              </div>
 
                                             <!-- Company Car -->
-                                            <div class="mobility-options" id="company_car">
+                                            <div class="mobility-options row" id="company_car">
                                                 <div class="col-md-7 offset-md-3">
                                                     <t t-set='max_unused_cars' t-value="contract.max_unused_cars"/>
                                                     <select name="select_car" class="form-control form-control-primary mt16 mb8 advantage_input">
@@ -119,7 +119,7 @@
                                                 </label>
                                             </div>
 
-                                            <div class="mobility-options" id="public_transport">
+                                            <div class="mobility-options row" id="public_transport">
                                                 <div class="col-md-7 offset-md-3">
                                                     <input class="form-control form-control-primary mt16 mb8 advantage_input" type="number" t-att-value="contract.public_transport_employee_amount or '0'" name="public_transport_employee_amount"/>
                                                     <span class="form-text mt8">Enter the monthly amount you spend on public transportation to go to work. The approximative amount reimbursed by the employer is calculated accordingly.</span>
@@ -143,7 +143,7 @@
                                                 </label>
                                             </div>
 
-                                            <div class="mobility-options" id="others">
+                                            <div class="mobility-options row" id="others">
                                                 <div class="col-md-7 offset-md-3">
                                                     <input class="form-control form-control-primary mt16 mb8 advantage_input" type="number" t-att-value="contract.others_reimbursed_amount or '0'" name="others_employee_amount"/>
                                                     <span class="form-text mt8">Enter the monthly amount that should be reimbursed by your employer on transportation (other than public) to go to work.</span>
@@ -507,7 +507,7 @@
                                     <div class="form-group">
                                         <div class="row">
                                             <label class="col-md-2 col-form-label" for="NET">Net</label>
-                                            <div class="col-md-5">
+                                            <div class="col-md-5 mt8">
                                                 <a role="button" data-toggle="modal" data-target="#hr_cs_modal" name="details">Details</a>
                                                 <a role="button" name="recompute" title="Recompute" aria-label="Recompute"><i class="fa fa-refresh fa-spin"/></a>
                                             </div>
@@ -1037,8 +1037,8 @@
                                     <!--  -->
                                     <div name="net" class="form-group">
                                         <div class="row">
-                                            <label class="col-md-10 col-form-label" for="wage">BASIC SALARY</label>
-                                            <div class="col-md-2">
+                                            <label class="col-md-9 col-form-label" for="wage">BASIC SALARY</label>
+                                            <div class="col-md-3">
                                                 <div class="input-group">
                                                     <input class="form-control d-none" type="text" value="2600" disabled="disabled" name="wage"/>
                                                     <div class="input-group-append d-none">
@@ -1058,8 +1058,8 @@
                                     <!--  -->
                                     <div name="internet_atn" class="form-group">
                                         <div class="row">
-                                            <label class="col-md-10 col-form-label" for="ATN.INT.1"><i class="fa fa-1x fa-plus fa-fw"/> Benefit in Kind (Internet)</label>
-                                            <div class="col-md-2">
+                                            <label class="col-md-9 col-form-label" for="ATN.INT.1"><i class="fa fa-1x fa-plus fa-fw"/> Benefit in Kind (Internet)</label>
+                                            <div class="col-md-3">
                                                 <div class="input-group">
                                                     <input class="form-control" type="text" value="5" disabled="disabled" name="ATN.INT.1"/>
                                                     <div class="input-group-append">
@@ -1073,8 +1073,8 @@
                                     <!--  -->
                                     <div name="mobile_atn" class="form-group">
                                         <div class="row">
-                                            <label class="col-md-10 col-form-label" for="ATN.MOB.1"><i class="fa fa-1x fa-plus fa-fw"/> Benefit in Kind Phone (Subscription)</label>
-                                            <div class="col-md-2">
+                                            <label class="col-md-9 col-form-label" for="ATN.MOB.1"><i class="fa fa-1x fa-plus fa-fw"/> Benefit in Kind Phone (Subscription)</label>
+                                            <div class="col-md-3">
                                                 <div class="input-group">
                                                     <input class="form-control" type="text" value="12.50" disabled="disabled" name="ATN.MOB.1"/>
                                                     <div class="input-group-append">
@@ -1088,8 +1088,8 @@
                                     <!--  -->
                                     <div class="form-group">
                                         <div class="row">
-                                            <label class="col-md-10 col-form-label" for="SALARY">GROSS SALARY</label>
-                                            <div class="col-md-2">
+                                            <label class="col-md-9 col-form-label" for="SALARY">GROSS SALARY</label>
+                                            <div class="col-md-3">
                                                 <div class="input-group">
                                                     <input class="form-control" type="text" value="2600" disabled="disabled" name="SALARY"/>
                                                     <div class="input-group-append o_box_subtotal">
@@ -1103,8 +1103,8 @@
                                     <!--  -->
                                     <div name="company_car_atn" class="form-group">
                                         <div class="row">
-                                            <label class="col-md-10 col-form-label" for="ATN.CAR.1"><i class="fa fa-1x fa-plus fa-fw"/> Benefit in Kind (Company Car)</label>
-                                            <div class="col-md-2">
+                                            <label class="col-md-9 col-form-label" for="ATN.CAR.1"><i class="fa fa-1x fa-plus fa-fw"/> Benefit in Kind (Company Car)</label>
+                                            <div class="col-md-3">
                                                 <div class="input-group">
                                                     <input class="form-control" type="text" value="250" disabled="disabled" name="ATN.CAR.1"/>
                                                     <div class="input-group-append">
@@ -1117,8 +1117,8 @@
 
                                     <div class="form-group">
                                         <div class="row">
-                                            <label class="col-md-10 col-form-label" for="ONSS"><i class="fa fa-1x fa-minus fa-fw"/> Social contribution</label>
-                                            <div class="col-md-2">
+                                            <label class="col-md-9 col-form-label" for="ONSS"><i class="fa fa-1x fa-minus fa-fw"/> Social contribution</label>
+                                            <div class="col-md-3">
                                                 <div class="input-group">
                                                     <input class="form-control" type="text" value="339.82" disabled="disabled" name="ONSS"/>
                                                     <div class="input-group-append">
@@ -1132,8 +1132,8 @@
                                     <!--  -->
                                     <div name="employment_bonus" class="form-group">
                                         <div class="row">
-                                            <label class="col-md-10 col-form-label" for="EMP.BONUS"><i class="fa fa-1x fa-plus fa-fw"/> Employment Bonus</label>
-                                            <div class="col-md-2">
+                                            <label class="col-md-9 col-form-label" for="EMP.BONUS"><i class="fa fa-1x fa-plus fa-fw"/> Employment Bonus</label>
+                                            <div class="col-md-3">
                                                 <div class="input-group">
                                                     <input class="form-control" type="text" value="0.0" disabled="disabled" name="EMP.BONUS"/>
                                                     <div class="input-group-append">
@@ -1146,8 +1146,8 @@
 
                                     <div class="form-group" name="ip_div">
                                         <div class="row">
-                                            <label class="col-md-10 col-form-label" for="IP"><i class="fa fa-1x fa-minus fa-fw"/> Intellectual Property</label>
-                                            <div class="col-md-2">
+                                            <label class="col-md-9 col-form-label" for="IP"><i class="fa fa-1x fa-minus fa-fw"/> Intellectual Property</label>
+                                            <div class="col-md-3">
                                                 <div class="input-group">
                                                     <input class="form-control" type="text" t-att-value="25.0" disabled="disabled" name="IP"/>
                                                     <div class="input-group-append">
@@ -1161,8 +1161,8 @@
                                     <!--  -->
                                     <div class="form-group">
                                         <div class="row">
-                                            <label class="col-md-10 col-form-label" for="GROSS">TAXABLE INCOME</label>
-                                            <div class="col-md-2">
+                                            <label class="col-md-9 col-form-label" for="GROSS">TAXABLE INCOME</label>
+                                            <div class="col-md-3">
                                                 <div class="input-group">
                                                     <input class="form-control" type="text" value="2260.18" disabled="disabled" name="GROSS"/>
                                                     <div class="input-group-append">
@@ -1176,8 +1176,8 @@
                                     <!--  -->
                                     <div class="form-group">
                                         <div class="row">
-                                            <label class="col-md-10 col-form-label" for="P.P"><i class="fa fa-1x fa-minus fa-fw"/> Withholding Tax</label>
-                                            <div class="col-md-2">
+                                            <label class="col-md-9 col-form-label" for="P.P"><i class="fa fa-1x fa-minus fa-fw"/> Withholding Tax</label>
+                                            <div class="col-md-3">
                                                 <div class="input-group">
                                                     <input type="text" class="form-control"  value="~" disabled="disabled" name="P.P"/>
                                                     <div class="input-group-append">
@@ -1191,8 +1191,8 @@
                                     <!--  -->
                                     <div name="withholding_tax_reduction" class="form-group">
                                         <div class="row">
-                                            <label class="col-md-10 col-form-label" for="PP.RED"><i class="fa fa-1x fa-plus fa-fw"/> Withholding Tax Reductions</label>
-                                            <div class="col-md-2">
+                                            <label class="col-md-9 col-form-label" for="PP.RED"><i class="fa fa-1x fa-plus fa-fw"/> Withholding Tax Reductions</label>
+                                            <div class="col-md-3">
                                                 <div class="input-group">
                                                     <input type="text" class="form-control" value="0.0" disabled="disabled" name="PP.RED"/>
                                                     <div class="input-group-append">
@@ -1206,8 +1206,8 @@
                                     <!--  -->
                                     <div name="m_onss_div" class="form-group">
                                         <div class="row">
-                                            <label class="col-md-10 col-form-label" for="M.ONSS"><i class="fa fa-1x fa-minus fa-fw"/> Special social contribution</label>
-                                            <div class="col-md-2">
+                                            <label class="col-md-9 col-form-label" for="M.ONSS"><i class="fa fa-1x fa-minus fa-fw"/> Special social contribution</label>
+                                            <div class="col-md-3">
                                                 <div class="input-group">
                                                     <input type="text" class="form-control"  value="0.0" disabled="disabled" name="M.ONSS"/>
                                                     <div class="input-group-append">
@@ -1221,8 +1221,8 @@
                                     <!--  -->
                                     <div class="form-group">
                                         <div class="row">
-                                            <label class="col-md-10 col-form-label" for="MEAL_V_EMP"><i class="fa fa-1x fa-minus fa-fw"/> Meal Vouchers</label>
-                                            <div class="col-md-2">
+                                            <label class="col-md-9 col-form-label" for="MEAL_V_EMP"><i class="fa fa-1x fa-minus fa-fw"/> Meal Vouchers</label>
+                                            <div class="col-md-3">
                                                 <div class="input-group">
                                                     <input type="text" class="form-control"  value="21.80" disabled="disabled" name="MEAL_V_EMP"/>
                                                     <div class="input-group-append">
@@ -1236,8 +1236,8 @@
                                     <!--  -->
                                     <div name="company_car_atn" class="form-group">
                                         <div class="row">
-                                            <label class="col-md-10 col-form-label" for="ATN.CAR.2"><i class="fa fa-1x fa-minus fa-fw"/> Benefit in Kind (Company Car)</label>
-                                            <div class="col-md-2">
+                                            <label class="col-md-9 col-form-label" for="ATN.CAR.2"><i class="fa fa-1x fa-minus fa-fw"/> Benefit in Kind (Company Car)</label>
+                                            <div class="col-md-3">
                                                 <div class="input-group">
                                                     <input type="text" class="form-control" value="250" disabled="disabled" name="ATN.CAR.2"/>
                                                     <div class="input-group-append">
@@ -1252,8 +1252,8 @@
                                     <!--  -->
                                     <div name="internet_atn" class="form-group">
                                         <div class="row">
-                                            <label class="col-md-10 col-form-label" for="ATN.INT.2"><i class="fa fa-1x fa-minus fa-fw"/> Benefit in Kind (Internet)</label>
-                                            <div class="col-md-2">
+                                            <label class="col-md-9 col-form-label" for="ATN.INT.2"><i class="fa fa-1x fa-minus fa-fw"/> Benefit in Kind (Internet)</label>
+                                            <div class="col-md-3">
                                                 <div class="input-group">
                                                     <input class="form-control" type="text" value="5" disabled="disabled" name="ATN.INT.2"/>
                                                     <div class="input-group-append">
@@ -1267,8 +1267,8 @@
                                     <!--  -->
                                     <div name="mobile_atn" class="form-group">
                                         <div class="row">
-                                            <label class="col-md-10 col-form-label" for="ATN.MOB.2"><i class="fa fa-1x fa-minus fa-fw"/> Benefit in Kind (Phone Subscription)</label>
-                                            <div class="col-md-2">
+                                            <label class="col-md-9 col-form-label" for="ATN.MOB.2"><i class="fa fa-1x fa-minus fa-fw"/> Benefit in Kind (Phone Subscription)</label>
+                                            <div class="col-md-3">
                                                 <div class="input-group">
                                                     <input class="form-control" type="text" value="12.50" disabled="disabled" name="ATN.MOB.2"/>
                                                     <div class="input-group-append">
@@ -1281,8 +1281,8 @@
 
                                     <div class="form-group" name="taxed_div">
                                         <div class="row">
-                                            <label class="col-md-10 col-form-label" for="TAXED">TAXED SALARY</label>
-                                            <div class="col-md-2">
+                                            <label class="col-md-9 col-form-label" for="TAXED">TAXED SALARY</label>
+                                            <div class="col-md-3">
                                                 <div class="input-group">
                                                     <input class="form-control" type="text" value="2238.38" disabled="disabled" name="TAXED"/>
                                                     <div class="input-group-append">
@@ -1296,8 +1296,8 @@
                                     <!--  -->
                                     <div class="form-group" name="representation_fees_div">
                                         <div class="row">
-                                            <label class="col-md-10 col-form-label" for="representation_fees"><i class="fa fa-1x fa-plus fa-fw"/> Representation Fees</label>
-                                            <div class="col-md-2">
+                                            <label class="col-md-9 col-form-label" for="representation_fees"><i class="fa fa-1x fa-plus fa-fw"/> Representation Fees</label>
+                                            <div class="col-md-3">
                                                 <div class="input-group">
                                                     <input class="form-control" type="text" t-att-value="contract.representation_fees" disabled="disabled" name="representation_fees"/>
                                                     <div class="input-group-append">
@@ -1310,8 +1310,8 @@
 
                                     <div class="form-group" name="ip_div">
                                         <div class="row">
-                                            <label class="col-md-10 col-form-label" for="IP"><i class="fa fa-1x fa-plus fa-fw"/> Intellectual Property</label>
-                                            <div class="col-md-2">
+                                            <label class="col-md-9 col-form-label" for="IP"><i class="fa fa-1x fa-plus fa-fw"/> Intellectual Property</label>
+                                            <div class="col-md-3">
                                                 <div class="input-group">
                                                     <input class="form-control" type="text" t-att-value="25.0" disabled="disabled" name="IP"/>
                                                     <div class="input-group-append">
@@ -1323,8 +1323,8 @@
                                     </div>
                                     <div name="ip_div" class="form-group">
                                         <div class="row">
-                                            <label class="col-md-10 col-form-label" for="IP.DED"><i class="fa fa-1x fa-minus fa-fw"/> Intellectual Property Income Deduction</label>
-                                            <div class="col-md-2">
+                                            <label class="col-md-9 col-form-label" for="IP.DED"><i class="fa fa-1x fa-minus fa-fw"/> Intellectual Property Income Deduction</label>
+                                            <div class="col-md-3">
                                                 <div class="input-group">
                                                     <input class="form-control" type="text" value="0" disabled="disabled" name="IP.DED"/>
                                                     <div class="input-group-append">
@@ -1338,8 +1338,8 @@
                                     <!--  -->
                                     <div class="form-group">
                                         <div class="row">
-                                            <label class="col-md-10 col-form-label" for="NET">NET SALARY</label>
-                                            <div class="col-md-2">
+                                            <label class="col-md-9 col-form-label" for="NET">NET SALARY</label>
+                                            <div class="col-md-3">
                                                 <div class="input-group">
                                                     <input class="form-control" type="text" value="2238.38" disabled="disabled" name="NET"/>
                                                     <div class="input-group-append">

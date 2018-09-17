@@ -7,4 +7,3 @@ from . import sale_order
 from . import account_analytic_account
 from . import res_config_settings
 from . import account_invoice_line
-from . import res_users

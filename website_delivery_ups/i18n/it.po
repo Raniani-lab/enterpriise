@@ -3,15 +3,18 @@
 # * website_delivery_ups
 # 
 # Translators:
-# Martin Trigaux <mat@odoo.com>, 2017
-# Paolo Valier <paolo.valier@hotmail.it>, 2018
+# Sergio Zanchetta <primes2h@gmail.com>, 2018
+# Martin Trigaux, 2018
+# Paolo Valier, 2018
+# David Minneci <david@numeko.it>, 2018
+# Léonie Bouchat <lbo@odoo.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 10.saas~18+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-02 11:50+0000\n"
-"PO-Revision-Date: 2017-10-02 11:50+0000\n"
-"Last-Translator: Paolo Valier <paolo.valier@hotmail.it>, 2018\n"
+"POT-Creation-Date: 2018-08-24 11:29+0000\n"
+"PO-Revision-Date: 2018-08-24 11:29+0000\n"
+"Last-Translator: Léonie Bouchat <lbo@odoo.com>, 2018\n"
 "Language-Team: Italian (https://www.transifex.com/odoo/teams/41243/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,7 +23,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: website_delivery_ups
-#: model:ir.ui.view,arch_db:website_delivery_ups.payment_delivery_inherit_website_sale_delivery
+#: model:ir.ui.view,arch_db:website_delivery_ups.payment_delivery_methods_inherit_website_sale_delivery
 msgid "(Bill My Account)"
 msgstr ""
 
@@ -34,7 +37,7 @@ msgstr ""
 #. module: website_delivery_ups
 #: model:payment.acquirer,cancel_msg:website_delivery_ups.payment_acquirer_ups_cod
 msgid "<span><i>Cancel,</i> Your payment has been cancelled.</span>"
-msgstr ""
+msgstr "<span><i>Annulla,</i> Il tuo pagamento è stato annullato.</span>"
 
 #. module: website_delivery_ups
 #: model:payment.acquirer,done_msg:website_delivery_ups.payment_acquirer_ups_cod
@@ -42,6 +45,8 @@ msgid ""
 "<span><i>Done,</i> Your online payment has been successfully processed. "
 "Thank you for your order.</span>"
 msgstr ""
+"<span><i>Fatto,</i> Il tuo pagamento è stato elaborato correttamente. Grazie"
+" per il tuo ordine.</span>"
 
 #. module: website_delivery_ups
 #: model:payment.acquirer,error_msg:website_delivery_ups.payment_acquirer_ups_cod
@@ -59,12 +64,12 @@ msgstr ""
 #. module: website_delivery_ups
 #: model:ir.ui.view,arch_db:website_delivery_ups.ups_bill_my_account_dialog
 msgid "Apply"
-msgstr ""
+msgstr "Salva"
 
 #. module: website_delivery_ups
 #: model:payment.acquirer,post_msg:website_delivery_ups.payment_acquirer_ups_cod
 msgid "Bank Account"
-msgstr ""
+msgstr "Conto Bancario"
 
 #. module: website_delivery_ups
 #: model:payment.acquirer,name:website_delivery_ups.payment_acquirer_ups_cod
@@ -77,9 +82,14 @@ msgid "Cancel"
 msgstr "Annulla"
 
 #. module: website_delivery_ups
+#: model:ir.ui.view,arch_db:website_delivery_ups.ups_bill_my_account_dialog
+msgid "Close"
+msgstr "Chiudi"
+
+#. module: website_delivery_ups
 #: model:payment.acquirer,post_msg:website_delivery_ups.payment_acquirer_ups_cod
 msgid "Communication"
-msgstr ""
+msgstr "Comunicazione"
 
 #. module: website_delivery_ups
 #: model:ir.ui.view,arch_db:website_delivery_ups.ups_bill_my_account_dialog
@@ -109,7 +119,7 @@ msgstr ""
 #. module: website_delivery_ups
 #: model:ir.ui.view,arch_db:website_delivery_ups.ups_bill_my_account_dialog
 msgid "UPS Bill My Account"
-msgstr ""
+msgstr "UPS Fatturare il mio Conto"
 
 #. module: website_delivery_ups
 #: model:ir.ui.view,arch_db:website_delivery_ups.res_config_settings_view_form_inherit_website_delivery_ups
@@ -117,6 +127,6 @@ msgid "UPS Delivery Methods"
 msgstr ""
 
 #. module: website_delivery_ups
-#: model:ir.ui.view,arch_db:website_delivery_ups.payment_delivery_inherit_website_sale_delivery
+#: model:ir.ui.view,arch_db:website_delivery_ups.payment_delivery_methods_inherit_website_sale_delivery
 msgid "Using Account"
 msgstr ""

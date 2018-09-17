@@ -3,17 +3,17 @@
 # * web_gantt
 # 
 # Translators:
-# Martin Trigaux <mat@odoo.com>, 2017
-# Mateus Lopes <mateus1@gmail.com>, 2017
-# grazziano <gra.negocia@gmail.com>, 2017
-# Silmar <pinheirosilmar@gmail.com>, 2017
+# Martin Trigaux, 2018
+# Mateus Lopes <mateus1@gmail.com>, 2018
+# grazziano <gra.negocia@gmail.com>, 2018
+# Silmar <pinheirosilmar@gmail.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 10.saas~18+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-20 11:33+0000\n"
-"PO-Revision-Date: 2017-09-20 11:33+0000\n"
-"Last-Translator: Silmar <pinheirosilmar@gmail.com>, 2017\n"
+"POT-Creation-Date: 2018-08-24 11:29+0000\n"
+"PO-Revision-Date: 2018-08-24 11:29+0000\n"
+"Last-Translator: Silmar <pinheirosilmar@gmail.com>, 2018\n"
 "Language-Team: Portuguese (Brazil) (https://www.transifex.com/odoo/teams/41243/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,23 +23,30 @@ msgstr ""
 
 #. module: web_gantt
 #. openerp-web
-#: code:addons/web_gantt/static/src/xml/web_gantt.xml:25
-#: code:addons/web_gantt/static/src/xml/web_gantt.xml:39
+#: code:addons/web_gantt/static/src/xml/web_gantt.xml:24
+#: code:addons/web_gantt/static/src/xml/web_gantt.xml:31
 #, python-format
 msgid "Day"
 msgstr "Dia"
 
 #. module: web_gantt
 #. openerp-web
+#: code:addons/web_gantt/static/src/xml/web_gantt.xml:22
+#, python-format
+msgid "Dropdown menu"
+msgstr ""
+
+#. module: web_gantt
+#. openerp-web
 #: code:addons/web_gantt/static/src/js/gantt_view.js:58
-#: code:addons/web_gantt/static/src/js/gantt_view.js:100
+#: code:addons/web_gantt/static/src/js/gantt_view.js:99
 #, python-format
 msgid "Gantt"
 msgstr "Gantt"
 
 #. module: web_gantt
 #. openerp-web
-#: code:addons/web_gantt/static/src/js/gantt_renderer.js:73
+#: code:addons/web_gantt/static/src/js/gantt_renderer.js:74
 #, python-format
 msgid "Gantt View"
 msgstr "Visualização Gantt"
@@ -47,11 +54,25 @@ msgstr "Visualização Gantt"
 #. module: web_gantt
 #. openerp-web
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:22
-#: code:addons/web_gantt/static/src/xml/web_gantt.xml:31
-#: code:addons/web_gantt/static/src/xml/web_gantt.xml:41
+#: code:addons/web_gantt/static/src/xml/web_gantt.xml:26
+#: code:addons/web_gantt/static/src/xml/web_gantt.xml:33
 #, python-format
 msgid "Month"
 msgstr "Mês"
+
+#. module: web_gantt
+#. openerp-web
+#: code:addons/web_gantt/static/src/xml/web_gantt.xml:17
+#, python-format
+msgid "Next"
+msgstr "Próximo"
+
+#. module: web_gantt
+#. openerp-web
+#: code:addons/web_gantt/static/src/xml/web_gantt.xml:11
+#, python-format
+msgid "Previous"
+msgstr ""
 
 #. module: web_gantt
 #. openerp-web
@@ -62,30 +83,30 @@ msgstr "Hoje"
 
 #. module: web_gantt
 #. openerp-web
-#: code:addons/web_gantt/static/src/xml/web_gantt.xml:28
-#: code:addons/web_gantt/static/src/xml/web_gantt.xml:40
+#: code:addons/web_gantt/static/src/xml/web_gantt.xml:25
+#: code:addons/web_gantt/static/src/xml/web_gantt.xml:32
 #, python-format
 msgid "Week"
 msgstr "Semana"
 
 #. module: web_gantt
 #. openerp-web
+#: code:addons/web_gantt/static/src/xml/web_gantt.xml:27
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:34
-#: code:addons/web_gantt/static/src/xml/web_gantt.xml:42
 #, python-format
 msgid "Year"
 msgstr "Ano"
 
 #. module: web_gantt
 #. openerp-web
-#: code:addons/web_gantt/static/src/js/gantt_controller.js:196
+#: code:addons/web_gantt/static/src/js/gantt_controller.js:208
 #, python-format
 msgid "You are trying to write on a read-only field!"
 msgstr "Você está tentando escrever em um campo somente leitura!"
 
 #. module: web_gantt
 #. openerp-web
-#: code:addons/web_gantt/static/src/js/gantt_controller.js:191
+#: code:addons/web_gantt/static/src/js/gantt_controller.js:203
 #, python-format
 msgid "You have no date_stop field defined!"
 msgstr "Você não tem um campo 'data de parar' definido!"

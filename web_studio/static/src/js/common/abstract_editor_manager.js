@@ -121,7 +121,8 @@ var AbstractEditorManager = Widget.extend({
     _applyChanges: function (remove_last_op, from_xml) {
         var self = this;
 
-        var last_op = this.operations.slice(-1)[0];
+        var lastOp = this.operations.slice(-1)[0];
+        var lastOpID = lastOp && lastOp.id;
 
         bus.trigger('toggle_snack_bar', _t('Saving...'));
 
@@ -129,22 +130,26 @@ var AbstractEditorManager = Widget.extend({
         if (from_xml) {
             def = this.mdp.exec(this._editViewArch.bind(
                 this,
-                last_op.view_id,
-                last_op.new_arch
+                lastOp.view_id,
+                lastOp.new_arch
             )).fail(function () {
                 self.trigger_up('studio_error', {error: 'view_rendering'});
             });
         } else {
             def = this.mdp.exec(function () {
+                var serverOperations = [];
+                _.each(self.operations, function (op) {
+                    if (op.type !== 'replace_arch') {
+                        serverOperations.push(_.omit(op, 'id'));
+                    }
+                });
                 return self._editView(
                     self.view_id,
                     self.studio_view_arch,
-                    _.filter(self.operations, function (op) {
-                        return op.type !== 'replace_arch';
-                    })
+                    serverOperations
                 ).fail(function () {
                     self.trigger_up('studio_error', {error: 'wrong_xpath'});
-                    return self._undo(true).then(function () {
+                    return self._undo(lastOpID, true).then(function () {
                         return $.Deferred().reject();
                     });
                 });
@@ -153,10 +158,10 @@ var AbstractEditorManager = Widget.extend({
         return def
             .then(function (result) {
                 if (from_xml) {
-                    self._cleanOperationsStack(last_op);
+                    self._cleanOperationsStack(lastOp);
                 }
                 if (remove_last_op) { self.operations.pop(); }
-                return self._applyChangeHandling(result, from_xml);
+                return self._applyChangeHandling(result, lastOpID, from_xml);
             })
             .then(function () {
                 self._updateButtons();
@@ -171,10 +176,11 @@ var AbstractEditorManager = Widget.extend({
      * To be overriden.
      *
      * @param {Object} result
-     * @param {boolean} from_xml
+     * @param {String} [opID]
+     * @param {boolean} [from_xml]
      * @returns {Deferred}
      */
-    _applyChangeHandling: function (result, from_xml) {
+    _applyChangeHandling: function (result, opID, from_xml) {
         return $.when();
     },
     /**
@@ -193,6 +199,7 @@ var AbstractEditorManager = Widget.extend({
      * @returns {Deferred}
      */
     _do: function (op) {
+        op.id = _.uniqueId('op_');
         this.operations.push(op);
         this.operations_undone = [];
 
@@ -313,8 +320,10 @@ var AbstractEditorManager = Widget.extend({
             var previousState = oldSidebar.getLocalState ? oldSidebar.getLocalState() : undefined;
             self.sidebar = self._instantiateSidebar(newState, previousState);
 
-            return self.sidebar.prependTo(self.$el).then(function () {
+            var fragment = document.createDocumentFragment();
+            return self.sidebar.appendTo(fragment).then(function () {
                 oldSidebar.destroy();
+                self.sidebar.$el.prependTo(self.$el);
                 self.sidebar.$el.scrollTop(scrolltop);
                 // the XML editor replaces the sidebar in this case
                 if (self.mode === 'rendering') {
@@ -327,15 +336,26 @@ var AbstractEditorManager = Widget.extend({
      * Undo the last operation.
      *
      * @private
-     * @param {Boolean} forget
+     * @param {String} [opID] unique operation identifier
+     * @param {Boolean} [forget=False]
      * @returns {Deferred}
      */
-    _undo: function (forget) {
+    _undo: function (opID, forget) {
         if (!this.operations.length) {
             return $.Deferred().resolve();
         }
-        var op = this.operations.pop();
+
+        // find the operation to undo and update the operations stack
+        var op;
+        if (opID) {
+            op = _.findWhere(this.operations, {id: opID});
+            this.operations = _.without(this.operations, op);
+        } else {
+            op = this.operations.pop();
+        }
+
         if (!forget) {
+            // store the operation in case of redo
             this.operations_undone.push(op);
         }
 

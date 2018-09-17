@@ -5,13 +5,14 @@
 # Translators:
 # Martin Trigaux, 2018
 # e2f_fr_t5 <e2f_fr_t5@outlook.com>, 2018
+# Eloïse Stilmant <est@odoo.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-08-24 11:28+0000\n"
 "PO-Revision-Date: 2018-08-24 11:28+0000\n"
-"Last-Translator: e2f_fr_t5 <e2f_fr_t5@outlook.com>, 2018\n"
+"Last-Translator: Eloïse Stilmant <est@odoo.com>, 2018\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,18 +25,20 @@ msgstr ""
 #, python-format
 msgid "All payments in the batch must belong to the same company."
 msgstr ""
+"Tous les paiements dans le groupe doivent provenir de la même compagnie. "
 
 #. module: account_batch_payment
 #: code:addons/account_batch_payment/models/account_batch_payment.py:86
 #, python-format
 msgid "All payments in the batch must share the same payment method."
 msgstr ""
+"Tous les paiements du groupe doivent partager la même méthode de paiement."
 
 #. module: account_batch_payment
 #: code:addons/account_batch_payment/models/account_batch_payment.py:81
 #, python-format
 msgid "All payments in the batch must share the same type."
-msgstr ""
+msgstr "Tous les paiements du groupe doivent partager le même type."
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__amount
@@ -46,7 +49,7 @@ msgstr "Montant"
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__available_payment_method_ids
 msgid "Available Payment Method"
-msgstr ""
+msgstr "Méthode de paiement disponible "
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__journal_id
@@ -76,7 +79,7 @@ msgstr "Bordereau de dépôt"
 #: model:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
 #: model:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_search
 msgid "Batch Payment"
-msgstr ""
+msgstr "Paiement en groupe"
 
 #. module: account_batch_payment
 #: model:ir.actions.act_window,name:account_batch_payment.action_batch_payment_in
@@ -84,17 +87,17 @@ msgstr ""
 #: model:ir.ui.menu,name:account_batch_payment.menu_batch_payment_purchases
 #: model:ir.ui.menu,name:account_batch_payment.menu_batch_payment_sales
 msgid "Batch Payments"
-msgstr ""
+msgstr "Paiements en Groupe"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__batch_type
 msgid "Batch Type"
-msgstr ""
+msgstr "Type de Groupe"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,help:account_batch_payment.field_account_batch_download_wizard__batch_payment_id
 msgid "Batch payment from which the file has been generated."
-msgstr ""
+msgstr "Paiement de groupe à partir duquel le fichier a été généré."
 
 #. module: account_batch_payment
 #: model:ir.actions.act_window,help:account_batch_payment.action_batch_payment_in
@@ -108,7 +111,7 @@ msgstr ""
 #. module: account_batch_payment
 #: model:ir.ui.view,arch_db:account_batch_payment.download_xml_form
 msgid "Click here to download the generated file:"
-msgstr ""
+msgstr "Cliquez ici pour télécharger le fichier généré:"
 
 #. module: account_batch_payment
 #: model:ir.ui.view,arch_db:account_batch_payment.download_xml_form
@@ -125,7 +128,7 @@ msgstr "Code"
 #: model:ir.actions.server,name:account_batch_payment.action_account_create_batch_payment
 #, python-format
 msgid "Create Batch Payment"
-msgstr ""
+msgstr "Créer un Paiement en Groupe"
 
 #. module: account_batch_payment
 #: model:ir.actions.act_window,help:account_batch_payment.action_batch_payment_in
@@ -152,7 +155,7 @@ msgstr "Créé le"
 #. module: account_batch_payment
 #: model:ir.model.fields,help:account_batch_payment.field_account_batch_payment__export_file_create_date
 msgid "Creation date of the related export file."
-msgstr ""
+msgstr "Date de création du fichier d'export."
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__currency_id
@@ -190,7 +193,7 @@ msgstr ""
 #. module: account_batch_payment
 #: model:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
 msgid "Exported File"
-msgstr ""
+msgstr "Fichier Exporté"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_download_wizard__export_file
@@ -211,7 +214,7 @@ msgstr "Nom de Fichier"
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_download_wizard__export_filename
 msgid "File name"
-msgstr ""
+msgstr "Nom du fichier"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,help:account_batch_payment.field_account_batch_download_wizard__export_file
@@ -383,12 +386,14 @@ msgstr "État"
 msgid ""
 "The batch must have the same payment method as the payments it contains."
 msgstr ""
+"Le groupe doit avoir la même méthode de paiement que les paiements qu'il "
+"contient."
 
 #. module: account_batch_payment
 #: code:addons/account_batch_payment/models/account_batch_payment.py:83
 #, python-format
 msgid "The batch must have the same type as the payments it contains."
-msgstr ""
+msgstr "Le groupe doit avoir le même type que les paiements qu'il contient."
 
 #. module: account_batch_payment
 #: code:addons/account_batch_payment/models/account_batch_payment.py:78
@@ -397,11 +402,13 @@ msgid ""
 "The journal of the batch payment and of the payments it contains must be the"
 " same."
 msgstr ""
+"Le journal du paiement en groupe et des paiements qu'il contient doivent "
+"être le même. "
 
 #. module: account_batch_payment
 #: model:ir.model.fields,help:account_batch_payment.field_account_batch_payment__payment_method_id
 msgid "The payment method used by the payments in this batch."
-msgstr ""
+msgstr "La méthode de paiement utilisée pour les paiements dans ce groupe."
 
 #. module: account_batch_payment
 #: model:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
@@ -427,6 +434,8 @@ msgstr "Avertissement"
 #: model:ir.model.fields,help:account_batch_payment.field_account_batch_download_wizard__warning_message
 msgid "Warning message to display about the content of the downloadable file."
 msgstr ""
+"Un message d'avertissement à afficher sur le contenu du ficher "
+"téléchargeable."
 
 #. module: account_batch_payment
 #: model:ir.model.fields,help:account_batch_payment.field_account_batch_payment__file_generation_enabled
@@ -438,12 +447,12 @@ msgstr ""
 #. module: account_batch_payment
 #: model:ir.model,name:account_batch_payment.model_account_batch_download_wizard
 msgid "account.batch.download.wizard"
-msgstr ""
+msgstr "account.batch.download.wizard"
 
 #. module: account_batch_payment
 #: model:ir.model,name:account_batch_payment.model_account_reconciliation_widget
 msgid "account.reconciliation.widget"
-msgstr ""
+msgstr "account.reconciliation.widget"
 
 #. module: account_batch_payment
 #: model:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
@@ -458,4 +467,4 @@ msgstr ""
 #. module: account_batch_payment
 #: model:ir.model,name:account_batch_payment.model_report_account_batch_payment_print_batch_payment
 msgid "report.account_batch_payment.print_batch_payment"
-msgstr ""
+msgstr "report.account_batch_payment.print_batch_payment"

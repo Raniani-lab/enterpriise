@@ -59,7 +59,7 @@ class AccountInvoice(models.Model):
             can_show = False
         if record.type in ["out_invoice", "out_refund"]:
             can_show = False
-        if record.get_first_attachment() == None:
+        if record.message_main_attachment_id == None:
             can_show = False
         return can_show
 
@@ -121,13 +121,6 @@ class AccountInvoice(models.Model):
         self.ocr_partner_user_change = True
 
     @api.multi
-    def get_first_attachment(self):
-        for message in self.message_ids:
-            if len(message.attachment_ids) == 1:
-                return message.attachment_ids
-        return None
-
-    @api.multi
     @api.returns('mail.message', lambda value: value.id)
     def message_post(self, **kwargs):
         """When a message is posted on an account.invoice, send the attachment to iap-ocr if
@@ -136,7 +129,7 @@ class AccountInvoice(models.Model):
             for record in self:
                 if record.type in ["out_invoice", "out_refund"]:
                     return super(AccountInvoice, self).message_post(**kwargs)
-                if record.get_first_attachment() == None:
+                if record.message_main_attachment_id == None:
                     if "attachment_ids" in kwargs:
                         attachments = self.env["ir.attachment"].search([("id", "in", kwargs["attachment_ids"])])
                         if attachments.exists():
@@ -172,7 +165,7 @@ class AccountInvoice(models.Model):
         """Retry to contact iap to submit the first attachment in the chatter"""
         if self.env.user.company_id.show_ocr_option_selection == 'no_send':
             return False
-        attachments = self.get_first_attachment()
+        attachments = self.message_main_attachment_id
         if attachments and attachments.exists() and self.ocr_extract_data_state in ['no_extract_requested', 'not_enough_credit', 'error_status', 'module_not_up_to_date']:
             self.ocr_extract_data_state = 'extract_requested'
             self.ocr_has_file = True
@@ -384,7 +377,7 @@ class AccountInvoice(models.Model):
     #             self.set_field_with_text(box.field, box.word_text)
     #         elif box.field not in user_selected_found and box.ocr_selected:
     #             self.set_field_with_text(box.field, box.word_text)
-        
+
 
     @api.multi
     def check_status(self):
@@ -432,5 +425,3 @@ class AccountInvoice(models.Model):
             'type': 'ir.actions.act_url',
             'url': url,
         }
-
-        

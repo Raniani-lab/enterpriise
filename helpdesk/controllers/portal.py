@@ -73,7 +73,7 @@ class CustomerPortal(CustomerPortal):
             step=self._items_per_page
         )
 
-        tickets = request.env['helpdesk.ticket'].sudo().search(domain, order=order, limit=self._items_per_page, offset=pager['offset'])
+        tickets = request.env['helpdesk.ticket'].search(domain, order=order, limit=self._items_per_page, offset=pager['offset'])
         request.session['my_tickets_history'] = tickets.ids[:100]
 
         values.update({

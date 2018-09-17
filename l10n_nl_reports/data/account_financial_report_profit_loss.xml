@@ -78,22 +78,13 @@
             <field name="level" eval="3" />
         </record>
 
-        <record id="account_financial_report_pnl_1_2" model="account.financial.html.report.line">
-            <field name="name">KOSTEN</field>
-            <field name="code">NL_COST</field>
-            <field name="formulas">balance = NL_PCOST.balance</field>
-            <field name="parent_id" ref="account_financial_report_pnl_1"/>
-            <field name="sequence" eval="2"/>
-            <field name="level" eval="1" />
-        </record>
-
         <record id="account_financial_report_pnl_1_2_1" model="account.financial.html.report.line">
-            <field name="name">Productiekosten</field>
+            <field name="name">PRODUCTIEKOSTEN</field>
             <field name="code">NL_PCOST</field>
             <field name="formulas">balance = NL_SALA.balance + NL_SOC.balance + NL_OPC.balance + NL_PENS.balance + NL_HOUS.balance + NL_TRANS.balance + NL_SALE.balance + NL_DISTR.balance + NL_OFF.balance + NL_GEN.balance + NL_ERR.balance</field>
-            <field name="parent_id" ref="account_financial_report_pnl_1_2"/>
+            <field name="parent_id" ref="account_financial_report_pnl_1"/>
             <field name="sequence" eval="1"/>
-            <field name="level" eval="2" />
+            <field name="level" eval="1" />
         </record>
 
         <record id="account_financial_report_pnl_1_2_1_1" model="account.financial.html.report.line">

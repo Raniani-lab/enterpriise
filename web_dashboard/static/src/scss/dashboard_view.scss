@@ -127,13 +127,13 @@
         }
 
         .o_aggregate.o_clickable {
-            .o_value {
+            .o_value, .o_variation {
                 // .btn-link(); FIXME
                 cursor: pointer;
 
                 &:after {
                     font: $font-size-base/1 "FontAwesome";
-                    content: '\f0b0';
+                    content: '\f002';
                     vertical-align: middle;
                     margin-left: $padding-small;
                     color: theme-color('primary');

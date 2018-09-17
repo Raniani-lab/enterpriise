@@ -51,6 +51,26 @@ class AccountBatchPayment(models.Model):
                 text_warning += _('In result, the file might not be accepted by all bank as a valid SEPA Credit Transfer file')
             record.sct_warning = text_warning
 
+    @api.model
+    def _sanitize_communication(self, communication):
+        """ Returns a sanitized version of the communication given in parameter,
+            so that:
+                - it contains only latin characters
+                - it does not contain any //
+                - it does not start or end with /
+                - it is maximum 140 characters long
+            (these are the SEPA compliance criteria)
+        """
+        communication = communication[:140]
+        while '//' in communication:
+            communication = communication.replace('//', '/')
+        if communication.startswith('/'):
+            communication = communication[1:]
+        if communication.endswith('/'):
+            communication = communication[:-1]
+        communication = re.sub('[^-A-Za-z0-9/?:().,\'+ ]', '', communication)
+        return communication
+
     def _get_genericity_info(self):
         """ Find out if generating a credit transfer initiation message for payments requires to use the generic rules, as opposed to the standard ones.
             The generic rules are used for payments which are not considered to be standard european credit transfers.
@@ -87,15 +107,10 @@ class AccountBatchPayment(models.Model):
             for payment in self.payment_ids:
                 if not payment.partner_bank_account_id:
                     no_bank_acc_payments += payment
-                if payment.communication and (len(payment.communication) > 140 or payment.communication != wrong_comm_payments._sanitize_communication(payment.communication)):
-                    wrong_comm_payments += payment
 
             no_bank_acc_error_format = _("The following payments have no recipient bank account set: %s. \n\n")
-            wrong_comm_error_format = _("""The following payments' communications are not SEPA compliant: %s.
-                                         To be SEPA compliant, a communication must be made of only latin characters, be maximum 140 characters long, and cannot contain '//' sequence, nor start or end with a / character.""")
             error_message = ''
             error_message += no_bank_acc_payments and no_bank_acc_error_format % ', '.join(no_bank_acc_payments.mapped('name')) or ''
-            error_message += wrong_comm_payments and wrong_comm_error_format % ', '.join(wrong_comm_payments.mapped('name')) or ''
 
             if error_message:
                 raise UserError(error_message)
@@ -162,7 +177,7 @@ class AccountBatchPayment(models.Model):
         GrpHdr = etree.SubElement(CstmrCdtTrfInitn, "GrpHdr")
         MsgId = etree.SubElement(GrpHdr, "MsgId")
         val_MsgId = str(int(time.time() * 100))[-10:]
-        val_MsgId = self.env['account.payment']._sanitize_communication(self.journal_id.company_id.name[-15:]) + val_MsgId
+        val_MsgId = self._sanitize_communication(self.journal_id.company_id.name[-15:]) + val_MsgId
         val_MsgId = str(random.random()) + val_MsgId
         val_MsgId = val_MsgId[-30:]
         MsgId.text = val_MsgId
@@ -227,7 +242,7 @@ class AccountBatchPayment(models.Model):
         payment_model = self.env['account.payment']
 
         Nm = etree.Element("Nm")
-        Nm.text = payment_model._sanitize_communication(company.sepa_initiating_party_name[:name_length])
+        Nm.text = self._sanitize_communication(company.sepa_initiating_party_name[:name_length])
         ret.append(Nm)
 
         if postal_address and company.partner_id.city and company.partner_id.country_id.code:
@@ -236,10 +251,10 @@ class AccountBatchPayment(models.Model):
             Ctry.text = company.partner_id.country_id.code
             if company.partner_id.street:
                 AdrLine = etree.SubElement(PstlAdr, "AdrLine")
-                AdrLine.text = payment_model._sanitize_communication(company.partner_id.street)
+                AdrLine.text = self._sanitize_communication(company.partner_id.street)
             if company.partner_id.zip and company.partner_id.city:
                 AdrLine = etree.SubElement(PstlAdr, "AdrLine")
-                AdrLine.text = payment_model._sanitize_communication(company.partner_id.zip) + " " + payment_model._sanitize_communication(company.partner_id.city)
+                AdrLine.text = self._sanitize_communication(company.partner_id.zip) + " " + self._sanitize_communication(company.partner_id.city)
             ret.append(PstlAdr)
 
         if org_id and company.sepa_orgid_id:
@@ -247,10 +262,10 @@ class AccountBatchPayment(models.Model):
             OrgId = etree.SubElement(Id, "OrgId")
             Othr = etree.SubElement(OrgId, "Othr")
             _Id = etree.SubElement(Othr, "Id")
-            _Id.text = payment_model._sanitize_communication(company.sepa_orgid_id)
+            _Id.text = self._sanitize_communication(company.sepa_orgid_id)
             if company.sepa_orgid_issr:
                 Issr = etree.SubElement(Othr, "Issr")
-                Issr.text = payment_model._sanitize_communication(company.sepa_orgid_issr)
+                Issr.text = self._sanitize_communication(company.sepa_orgid_issr)
             ret.append(Id)
 
         return ret
@@ -291,7 +306,7 @@ class AccountBatchPayment(models.Model):
         CdtTrfTxInf = etree.Element("CdtTrfTxInf")
         PmtId = etree.SubElement(CdtTrfTxInf, "PmtId")
         InstrId = etree.SubElement(PmtId, "InstrId")
-        InstrId.text = payment._sanitize_communication(payment.name)
+        InstrId.text = self._sanitize_communication(payment.name)
         EndToEndId = etree.SubElement(PmtId, "EndToEndId")
         EndToEndId.text = (PmtInfId.text + str(payment.id))[-30:]
         Amt = etree.SubElement(CdtTrfTxInf, "Amt")
@@ -306,7 +321,7 @@ class AccountBatchPayment(models.Model):
         CdtTrfTxInf.append(self._get_CdtrAgt(payment.partner_bank_account_id))
         Cdtr = etree.SubElement(CdtTrfTxInf, "Cdtr")
         Nm = etree.SubElement(Cdtr, "Nm")
-        Nm.text = payment._sanitize_communication((payment.partner_bank_account_id.acc_holder_name or payment.partner_id.name)[:70])
+        Nm.text = self._sanitize_communication((payment.partner_bank_account_id.acc_holder_name or payment.partner_id.name)[:70])
         if payment.payment_type == 'transfer':
             CdtTrfTxInf.append(self._get_CdtrAcct(payment.destination_journal_id.bank_account_id))
         else:
@@ -354,5 +369,5 @@ class AccountBatchPayment(models.Model):
             return False
         RmtInf = etree.Element("RmtInf")
         Ustrd = etree.SubElement(RmtInf, "Ustrd")
-        Ustrd.text = payment._sanitize_communication(payment.communication)
+        Ustrd.text = self._sanitize_communication(payment.communication)
         return RmtInf

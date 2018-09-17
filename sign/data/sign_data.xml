@@ -10,8 +10,8 @@
         </a>) has requested your signature on the document <t t-esc="record.sign_request_id.reference"/>.
     </td></tr>
     <tr t-if="body"><td valign="top">
-        <div style="margin: 16px 0px 16px 0px;">
-            <span style="padding: 16px 8px 16px 8px; border-radius: 3px;">
+        <div style="margin: 16px 0px 16px 0px; padding: 8px 16px 8px 16px; background-color: #F1F1F1;">
+            <span>
                 <t t-raw="body"/>
             </span>
         </div>

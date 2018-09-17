@@ -31,12 +31,14 @@ var DocumentsKanbanController = KanbanController.extend({
     custom_events: _.extend({}, KanbanController.prototype.custom_events, {
         archive_records: '_onArchiveRecords',
         delete_records: '_onDeleteRecords',
+        document_viewer_attachment_changed: '_onDocumentViewerAttachmentChanged',
         download: '_onDownload',
         lock_attachment: '_onLock',
         open_chatter: '_onOpenChatter',
         open_record: '_onOpenRecord',
         replace_file: '_onReplaceFile',
         save_multi: '_onSaveMulti',
+        select_record: '_onRecordSelected',
         selection_changed: '_onSelectionChanged',
         share: '_onShareIDs',
         trigger_rule: '_onTriggerRule',
@@ -52,6 +54,7 @@ var DocumentsKanbanController = KanbanController.extend({
         this.selectedFilterTagIDs = {};
         this.chatter = null;
         this.documentsInspector = null;
+        this.anchorID = null; // used to select records with ctrl/shift keys
 
         var state = this.model.get(this.handle);
         this.selectedFolderID = state.folderID;
@@ -135,7 +138,7 @@ var DocumentsKanbanController = KanbanController.extend({
      * Construct the extra domain based on selector's filters
      *
      * @private
-     * @returns {Array}
+     * @returns {Array[]}
      */
     _buildSelectorDomain: function () {
         var domain = [];
@@ -167,19 +170,20 @@ var DocumentsKanbanController = KanbanController.extend({
      * Group tags by facets.
      *
      * @private
-     * @param {array} tags - raw list of tags
-     * @returns {Array[]}
+     * @param {Object[]} tags - raw list of tags
+     * @returns {Object[]}
      */
     _groupTagsByFacets: function (tags) {
         var groupedFacets = _.reduce(tags, function (memo, tag) {
-            if (!_.has(memo, tag.facet_id)) {
-                memo[tag.facet_id] = {
+            var facetKey = tag.facet_sequence + '-' + tag.facet_name;
+            if (!_.has(memo, facetKey)) {
+                memo[facetKey] = {
                     id: tag.facet_id,
                     name: tag.facet_name,
                     tags: [],
                 };
             }
-            memo[tag.facet_id].tags.push({
+            memo[facetKey].tags.push({
                 id: tag.tag_id,
                 name: tag.tag_name,
                 __count: tag.__count
@@ -254,7 +258,7 @@ var DocumentsKanbanController = KanbanController.extend({
         });
         return $.when.apply($, defs).then(function () {
             var l = Array.prototype.slice.call(arguments);
-            for(var i=0; i<l.length; i++) {
+            for (var i=0; i<l.length; i++) {
                 // convert data from "data:application/zip;base64,R0lGODdhAQBADs=" to "R0lGODdhAQBADs="
                 l[i].datas = l[i].datas.split(',',2)[1];
                 l[i].folder_id = self.selectedFolderID;
@@ -264,7 +268,7 @@ var DocumentsKanbanController = KanbanController.extend({
             }
             return self._rpc({
                 model: 'ir.attachment',
-                method: 'create_multi',
+                method: 'create',
                 args: [l],
             });
         });
@@ -283,8 +287,8 @@ var DocumentsKanbanController = KanbanController.extend({
      * Remove a Tag filter from selector panel
      *
      * @private
-     * @param {Integer} facetID
-     * @param {Integer} tagID
+     * @param {integer} facetID
+     * @param {integer} tagID
      */
     _removeSelectorTagFilter: function (facetID, tagID) {
         this.selectedFilterTagIDs[facetID] = _.without(this.selectedFilterTagIDs[facetID], tagID);
@@ -354,7 +358,7 @@ var DocumentsKanbanController = KanbanController.extend({
      * Render a folder tree, recursively
      *
      * @private
-     * @param {Array<Object>} folders - the subtree of folders to render
+     * @param {Object[]} folders - the subtree of folders to render
      * @returns {jQuery}
      */
     _renderFolders: function (folders) {
@@ -413,8 +417,8 @@ var DocumentsKanbanController = KanbanController.extend({
      * Toggle the selected facet/tag
      *
      * @private
-     * @param {String|Integer} facet
-     * @param {String|Integer} tag
+     * @param {string|integer} facet
+     * @param {string|integer} tag
      */
     _toggleSelectorTag: function (facet, tag) {
         var facetID = parseInt(facet, 10);
@@ -453,6 +457,7 @@ var DocumentsKanbanController = KanbanController.extend({
     },
     /**
      * Override to render the documents selector and inspector sidebars.
+     * Also update the selection.
      *
      * @override
      * @private
@@ -461,9 +466,13 @@ var DocumentsKanbanController = KanbanController.extend({
         var self = this;
         return this._super.apply(this, arguments).then(function () {
             var state = self.model.get(self.handle);
+            var recordIDs = _.pluck(state.data, 'res_id');
+            self.selectedRecordIDs = _.intersection(self.selectedRecordIDs, recordIDs);
             self._renderDocumentsInspector(state);
             self._renderDocumentsSelector(state);
             self._updateChatter(state);
+            self.anchorID = null;
+            self.renderer.updateSelection(self.selectedRecordIDs);
         });
     },
     /**
@@ -532,8 +541,6 @@ var DocumentsKanbanController = KanbanController.extend({
         var active = !ev.data.records[0].data.active;
         var recordIDs = _.pluck(ev.data.records, 'id');
         this.model.toggleActive(recordIDs, active, this.handle).then(function () {
-            var resIDs = _.pluck(ev.data.records, 'res_id');
-            self.selectedRecordIDs = _.difference(self.selectedRecordIDs, resIDs);
             self.update({}, {reload: false}); // the reload is done by toggleActive
         });
     },
@@ -615,6 +622,14 @@ var DocumentsKanbanController = KanbanController.extend({
         });
     },
     /**
+     * Update the controller when the DocumentViewer has modified an attachment
+     *
+     * @private
+     */
+    _onDocumentViewerAttachmentChanged: function () {
+        this.update();
+    },
+    /**
      * @private
      * @param {OdooEvent} ev
      * @param {integer[]} ev.data.resIDs
@@ -623,7 +638,7 @@ var DocumentsKanbanController = KanbanController.extend({
         ev.stopPropagation();
         var resIDs = ev.data.resIDs;
         if (resIDs.length === 1) {
-            window.location = '/web/content/' + resIDs[0] + '?download=true&force_ext=true';
+            window.location = '/web/content/' + resIDs[0] + '?download=true';
         } else {
             var timestamp = moment().format('YYYY-MM-DD');
             session.get_file({
@@ -737,6 +752,68 @@ var DocumentsKanbanController = KanbanController.extend({
         });
     },
     /**
+     * React to records selection changes to update the DocumentInspector with
+     * the current selected records.
+     *
+     * @private
+     * @param {OdooEvent} ev
+     * @param {boolean} ev.data.clear if true, unselect other records
+     * @param {MouseEvent} ev.data.originalEvent the event catched by the child
+     *   element triggering up the OdooEvent
+     * @param {string} ev.data.resID the resID of the record updating its status
+     * @param {boolean} ev.data.selected whether the record is selected or not
+     */
+    _onRecordSelected: function (ev) {
+        ev.stopPropagation();
+
+        // update the list of selected records (support typical behavior of
+        // ctrl/shift/command muti-selection)
+        var shift = ev.data.originalEvent.shiftKey;
+        var ctrl = ev.data.originalEvent.ctrlKey || ev.data.originalEvent.metaKey;
+        var state = this.model.get(this.handle);
+        if (ev.data.clear || shift || ctrl) {
+            if (this.selectedRecordIDs.length === 1 && this.selectedRecordIDs[0] === ev.data.resID) {
+                // unselect the record if it is currently the only selected one
+                this.selectedRecordIDs = [];
+            } else if (shift && this.selectedRecordIDs.length) {
+                var recordIDs = _.pluck(state.data, 'res_id');
+                var anchorIndex = recordIDs.indexOf(this.anchorID);
+                var selectedRecordIndex = recordIDs.indexOf(ev.data.resID);
+                var lowerIndex = Math.min(anchorIndex, selectedRecordIndex);
+                var upperIndex = Math.max(anchorIndex, selectedRecordIndex);
+                var shiftSelection = recordIDs.slice(lowerIndex, upperIndex + 1);
+                if (ctrl) {
+                    this.selectedRecordIDs = _.uniq(this.selectedRecordIDs.concat(shiftSelection));
+                } else {
+                    this.selectedRecordIDs = shiftSelection;
+                }
+            } else if (ctrl && this.selectedRecordIDs.length) {
+                var oldIds = this.selectedRecordIDs.slice();
+                this.selectedRecordIDs = _.without(this.selectedRecordIDs, ev.data.resID);
+                if (this.selectedRecordIDs.length === oldIds.length) {
+                    this.selectedRecordIDs.push(ev.data.resID);
+                    this.anchorID = ev.data.resID;
+                }
+            } else {
+                this.selectedRecordIDs = [ev.data.resID];
+                this.anchorID = ev.data.resID;
+            }
+        } else if (ev.data.selected) {
+            this.selectedRecordIDs.push(ev.data.resID);
+            this.selectedRecordIDs = _.uniq(this.selectedRecordIDs);
+            this.anchorID = ev.data.resID;
+        } else {
+            this.selectedRecordIDs = _.without(this.selectedRecordIDs, ev.data.resID);
+        }
+
+        // notify the controller of the selection changes
+        this.trigger_up('selection_changed', {
+            selection: this.selectedRecordIDs,
+        });
+
+        this.renderer.updateSelection(this.selectedRecordIDs);
+    },
+    /**
      * Replace a file of the document by prompting an input file.
      *
      * @private
@@ -762,7 +839,7 @@ var DocumentsKanbanController = KanbanController.extend({
                 self._rpc({
                     model: 'ir.attachment',
                     method: 'write',
-                    args: [[record.data.id], {datas: data, mimetype: mimetype}],
+                    args: [[record.data.id], {datas: data, mimetype: mimetype, datas_fname: f.name}],
                 }).always(function () {
                     $upload_input.removeAttr('disabled');
                     $upload_input.val("");
@@ -918,16 +995,10 @@ var DocumentsKanbanController = KanbanController.extend({
      */
     _onUploadFromUrl: function (ev) {
         ev.preventDefault();
-        this.do_action({
-            res_model: 'ir.attachment',
-            type: 'ir.actions.act_window',
-            context: {
-                default_type: 'url',
-                default_name: 'url',
+        this.do_action('documents.action_url_form', {
+            additional_context: {
                 default_folder_id: this.selectedFolderID,
             },
-            views: [[false, 'form']],
-            target: 'new',
         });
     },
 });

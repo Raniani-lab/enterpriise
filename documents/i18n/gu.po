@@ -2,23 +2,24 @@
 # This file contains the translation of the following modules:
 # * documents
 # 
+# Translators:
+# Martin Trigaux, 2018
+# Turkesh Patel <turkesh4friends@gmail.com>, 2018
+# Dharmraj Jhala <dja@openerp.com>, 2018
+# Spellbound Soft Solutions <jeel.spellbound@gmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-08-24 11:28+0000\n"
 "PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"Last-Translator: Spellbound Soft Solutions <jeel.spellbound@gmail.com>, 2018\n"
 "Language-Team: Gujarati (https://www.transifex.com/odoo/teams/41243/gu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Language: gu\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
-#. module: documents
-#: model:ir.ui.view,arch_db:documents.documents_view_kanban
-msgid "#{record.lock_uid.value}"
-msgstr ""
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.public_page_layout
@@ -115,12 +116,12 @@ msgstr ""
 #: model:ir.ui.view,arch_db:documents.workflow_rule_form_view
 #, python-format
 msgid "Actions"
-msgstr ""
+msgstr "ક્રિયાઓ"
 
 #. module: documents
 #: selection:documents.workflow.action,action:0
 msgid "Add"
-msgstr ""
+msgstr "ઉમેરો"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_id
@@ -197,12 +198,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_action__facet_id
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__facet_id
 msgid "Category"
-msgstr ""
+msgstr "વર્ગ"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__company_id
 msgid "Company"
-msgstr ""
+msgstr "કંપની"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__condition_type
@@ -212,12 +213,12 @@ msgstr ""
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.workflow_rule_form_view
 msgid "Conditions"
-msgstr ""
+msgstr "શરતો"
 
 #. module: documents
 #: model:ir.ui.menu,name:documents.Config
 msgid "Configuration"
-msgstr ""
+msgstr "રુપરેખાંકન"
 
 #. module: documents
 #: selection:documents.workflow.tag.criteria,operator:0
@@ -238,7 +239,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__create_uid
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "બનાવનાર"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_facet__create_date
@@ -291,7 +292,7 @@ msgstr ""
 #: code:addons/documents/static/src/xml/documents_inspector.xml:154
 #, python-format
 msgid "Delete"
-msgstr ""
+msgstr "કાઢી નાંખો"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_facet__display_name
@@ -302,12 +303,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__display_name
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "પ્રદર્શન નામ"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.documents_view_kanban
 msgid "Document"
-msgstr ""
+msgstr "દસ્તાવેજ"
 
 #. module: documents
 #: selection:documents.share,type:0
@@ -324,7 +325,7 @@ msgstr ""
 #: model:ir.ui.view,arch_db:documents.res_config_settings_view_form
 #, python-format
 msgid "Documents"
-msgstr ""
+msgstr "દસ્તાવેજો"
 
 #. module: documents
 #: selection:documents.workflow.tag.criteria,operator:0
@@ -338,12 +339,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__domain
 #: model:ir.ui.view,arch_db:documents.workflow_rule_form_view
 msgid "Domain"
-msgstr ""
+msgstr "શરતી અવકાશ"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.share_view_form_popup
 msgid "Done"
-msgstr ""
+msgstr "પુર્ણ થયુ"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.share_page
@@ -356,7 +357,7 @@ msgstr ""
 #: selection:documents.share,action:0
 #, python-format
 msgid "Download"
-msgstr ""
+msgstr "ડાઉનલોડ"
 
 #. module: documents
 #: selection:documents.share,action:0
@@ -416,7 +417,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_follower_ids
 #: model:ir.model.fields,field_description:documents.field_ir_attachment__message_follower_ids
 msgid "Followers"
-msgstr ""
+msgstr "અનુયાયીઓ"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_channel_ids
@@ -451,7 +452,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__id
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__id
 msgid "ID"
-msgstr ""
+msgstr "ઓળખ"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_parent_thread_id
@@ -464,19 +465,19 @@ msgstr ""
 #: model:ir.model.fields,help:documents.field_documents_share__message_unread
 #: model:ir.model.fields,help:documents.field_ir_attachment__message_unread
 msgid "If checked new messages require your attention."
-msgstr ""
+msgstr "જો ચેક કરેલા નવા સંદેશા માટે તમારું ધ્યાન આવશ્યક છે"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__message_needaction
 #: model:ir.model.fields,help:documents.field_ir_attachment__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr ""
+msgstr "જો ચેક કરેલું હોય, તો નવા સંદેશા માટે તમારું ધ્યાન આવશ્યક છે."
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__message_has_error
 #: model:ir.model.fields,help:documents.field_ir_attachment__message_has_error
 msgid "If checked, some messages have a delivery error."
-msgstr ""
+msgstr "જો ચેક કરેલું હોય, તો કેટલાક મેસેજીસમાં ડિલિવરીની ભૂલ છે."
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_is_follower
@@ -542,7 +543,7 @@ msgstr ""
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.public_page_layout
 msgid "Login"
-msgstr ""
+msgstr "લોગ ઇન"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.public_page_layout
@@ -582,12 +583,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_ids
 #: model:ir.model.fields,field_description:documents.field_ir_attachment__message_ids
 msgid "Messages"
-msgstr ""
+msgstr "સંદેશાઓ"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.documents_view_search_inherit
 msgid "Model"
-msgstr ""
+msgstr "નમુનો"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.res_config_settings_view_form
@@ -622,7 +623,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_share__name
 #: model:ir.model.fields,field_description:documents.field_documents_tag__name
 msgid "Name"
-msgstr ""
+msgstr "નામ"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.share_view_form
@@ -640,12 +641,12 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__note
 msgid "Note"
-msgstr ""
+msgstr "નોંધ"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.workflow_rule_form_view
 msgid "Notes"
-msgstr ""
+msgstr "નોંધ"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_needaction_counter
@@ -657,25 +658,25 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_has_error_counter
 #: model:ir.model.fields,field_description:documents.field_ir_attachment__message_has_error_counter
 msgid "Number of error"
-msgstr ""
+msgstr "ભૂલની સંખ્યા"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__message_needaction_counter
 #: model:ir.model.fields,help:documents.field_ir_attachment__message_needaction_counter
 msgid "Number of messages which requires an action"
-msgstr ""
+msgstr "સંદેશાઓની સંખ્યા જે ક્રિયા માટે જરૂરી છે"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__message_has_error_counter
 #: model:ir.model.fields,help:documents.field_ir_attachment__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr ""
+msgstr "વિતરણ ભૂલ સાથે સંદેશાઓની સંખ્યા"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__message_unread_counter
 #: model:ir.model.fields,help:documents.field_ir_attachment__message_unread_counter
 msgid "Number of unread messages"
-msgstr ""
+msgstr "ન વાંચેલા સંદેશાની સંખ્યા"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.public_page_layout
@@ -705,7 +706,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__criteria_owner_id
 #: model:ir.model.fields,field_description:documents.field_ir_attachment__owner_id
 msgid "Owner"
-msgstr ""
+msgstr "માલિક"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.share_page
@@ -739,7 +740,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__criteria_partner_id
 #: model:ir.model.fields,field_description:documents.field_ir_attachment__partner_id
 msgid "Partner"
-msgstr ""
+msgstr "ભાગીદાર"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_contact
@@ -758,7 +759,7 @@ msgstr ""
 #. module: documents
 #: selection:documents.workflow.action,action:0
 msgid "Remove"
-msgstr ""
+msgstr "દૂર કરો"
 
 #. module: documents
 #. openerp-web
@@ -796,7 +797,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_folder__sequence
 #: model:ir.model.fields,field_description:documents.field_documents_tag__sequence
 msgid "Sequence"
-msgstr ""
+msgstr "ક્રમ"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__partner_id
@@ -818,7 +819,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:documents.documents_settings_action
 #: model:ir.ui.menu,name:documents.Settings_menu
 msgid "Settings"
-msgstr ""
+msgstr "સુયોજનો"
 
 #. module: documents
 #. openerp-web
@@ -864,7 +865,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__state
 msgid "Status"
-msgstr ""
+msgstr "સ્થિતિ"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__children_folder_ids
@@ -905,7 +906,7 @@ msgstr ""
 #. module: documents
 #: selection:documents.workflow.rule,create_model:0
 msgid "Task"
-msgstr ""
+msgstr "કાર્ય"
 
 #. module: documents
 #: model:ir.ui.view,arch_db:documents.documents_view_form

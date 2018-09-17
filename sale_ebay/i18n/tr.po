@@ -3,22 +3,22 @@
 # * sale_ebay
 # 
 # Translators:
-# gezgin biri <gezginbiri@hotmail.com>, 2017
-# Murat Kaplan <muratk@projetgrup.com>, 2017
-# Güven YILMAZ <guvenyilmaz@outlook.com.tr>, 2017
-# Levent Karakaş <levent@mektup.at>, 2017
-# Ediz Duman <neps1192@gmail.com>, 2017
-# Thermo Dynamic <emirhanayar2004@gmail.com>, 2017
-# gokhun lekesiz <gokhun.lekesiz@rammar.com.tr>, 2017
-# Martin Trigaux, 2017
-# Alexander B. <road2monstercat@gmail.com>, 2017
+# Ediz Duman <neps1192@gmail.com>, 2018
+# Martin Trigaux, 2018
+# Levent Karakaş <levent@mektup.at>, 2018
+# Murat Kaplan <muratk@projetgrup.com>, 2018
+# gokhun lekesiz <gokhun.lekesiz@rammar.com.tr>, 2018
+# Güven YILMAZ <guvenyilmaz@outlook.com.tr>, 2018
+# Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2018
+# Thermo Dynamic <emirhanayar2004@gmail.com>, 2018
+# Alexander B. <road2monstercat@gmail.com>, 2018
 # Umur Akın <umura@projetgrup.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.3+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 08:34+0000\n"
-"PO-Revision-Date: 2018-06-25 08:34+0000\n"
+"POT-Creation-Date: 2018-08-24 11:28+0000\n"
+"PO-Revision-Date: 2018-08-24 11:28+0000\n"
 "Last-Translator: Umur Akın <umura@projetgrup.com>, 2018\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
@@ -49,8 +49,8 @@ msgid ""
 " If you want to set quantity to 0, the Out Of Stock option should be enabled"
 " and the listing duration should set to Good 'Til Canceled"
 msgstr ""
-"Miktarı 0 olarak ayarlamak isterseniz, Tükenmiş seçeneği etkinleştirilmeli "
-"ve listeleme süresi  'İptal Olana Kadar İyi' olarak ayarlanmalıdır."
+"Miktarı -0- olarak ayarlamak isterseniz, Tükenmiş seçeneği etkinleştirilmeli"
+" ve listeleme süresi  'İptal Olana Kadar İyi' olarak ayarlanmalıdır."
 
 #. module: sale_ebay
 #: code:addons/sale_ebay/models/product.py:386
@@ -60,7 +60,7 @@ msgid ""
 " Or if you try to delete a variation, you cannot do it by unselecting it. Setting the quantity to 0 is the safest method to make a variation unavailable."
 msgstr ""
 "Çok varyasyonlu listeleme için en az 2 varyasyon seçmeniz gerekir.\n"
-" Veya bir varyasyonu silmeye çalışırsanız, seçimini kaldırarak bunu yapamazsınız. Miktarı 0 olarak ayarlamak, bir varyasyonu kullanmamak için en güvenli yöntemdir."
+" Veya bir varyasyonu silmeye çalışırsanız, seçimini kaldırarak bunu yapamazsınız. Miktarı -0- olarak ayarlamak, bir varyasyonu kullanmamak için en güvenli yöntemdir."
 
 #. module: sale_ebay
 #: selection:product.template,ebay_listing_duration:0
@@ -86,6 +86,31 @@ msgstr "5 Gün"
 #: selection:product.template,ebay_listing_duration:0
 msgid "7 Days"
 msgstr "7 Gün"
+
+#. module: sale_ebay
+#: model:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+msgid "<span class=\"o_form_label\">Sales Channel</span>"
+msgstr ""
+
+#. module: sale_ebay
+#: model:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+msgid "<span class=\"o_form_label\">Storage</span>"
+msgstr ""
+
+#. module: sale_ebay
+#: model:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+msgid "<span class=\"o_form_label\">Synchronization</span>"
+msgstr ""
+
+#. module: sale_ebay
+#: model:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+msgid "<span class=\"o_form_label\">eBay Account</span>"
+msgstr ""
+
+#. module: sale_ebay
+#: model:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+msgid "<span class=\"o_form_label\">eBay Options</span>"
+msgstr ""
 
 #. module: sale_ebay
 #: code:addons/sale_ebay/models/product.py:259
@@ -153,14 +178,9 @@ msgid "Category Type"
 msgstr "Kategori Türü"
 
 #. module: sale_ebay
-#: model:ir.model.fields,field_description:sale_ebay.field_crm_team__team_type
-msgid "Channel Type"
-msgstr "Ekip Türü"
-
-#. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_item_condition__code
 msgid "Code"
-msgstr "Kodu"
+msgstr "Kod"
 
 #. module: sale_ebay
 #: code:addons/sale_ebay/models/product.py:352
@@ -171,7 +191,7 @@ msgstr "eBay Entegratörünü Şimdi Yapılandır"
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_res_partner
 msgid "Contact"
-msgstr "Kontak"
+msgstr "İletişim"
 
 #. module: sale_ebay
 #: model:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
@@ -216,7 +236,7 @@ msgstr "Özel Mağaza Kategorisi"
 #. module: sale_ebay
 #: model:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
 msgid "Describe the product characteristics..."
-msgstr "Ürün özelliklerini tanıtın"
+msgstr "Ürün özelliklerini tanımlayın ..."
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_template_id
@@ -362,7 +382,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_item_condition_id
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_item_condition_id
 msgid "Item Condition"
-msgstr "Öğe Kouşulu"
+msgstr "Eşya Koşulu"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_category____last_update
@@ -441,7 +461,7 @@ msgstr "Konum"
 #. module: sale_ebay
 #: model:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Mode"
-msgstr "Kip"
+msgstr "Şekli"
 
 #. module: sale_ebay
 #: model:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
@@ -454,7 +474,7 @@ msgstr "Mod ve kimlik bilgileri"
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_policy__name
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_site__name
 msgid "Name"
-msgstr "Adı"
+msgstr "İsim"
 
 #. module: sale_ebay
 #: code:addons/sale_ebay/models/sale_ebay.py:197
@@ -590,9 +610,13 @@ msgid "Sales"
 msgstr "Satış"
 
 #. module: sale_ebay
-#: model:ir.model,name:sale_ebay.model_crm_team
 #: model:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Sales Channel"
+msgstr "Satış Ekibi"
+
+#. module: sale_ebay
+#: model:ir.model,name:sale_ebay.model_crm_team
+msgid "Sales Team"
 msgstr "Satış Ekibi"
 
 #. module: sale_ebay
@@ -645,11 +669,6 @@ msgstr "Açık Artırma için Başlangıç ​​Fiyatı"
 
 #. module: sale_ebay
 #: model:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
-msgid "Storage"
-msgstr "Depolama"
-
-#. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Storage location of your products"
 msgstr "Ürünlerinizin Depolama Konumu"
 
@@ -669,7 +688,7 @@ msgstr "Depo Kategori 2 (Opsiyonel)"
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_subtitle
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_subtitle
 msgid "Subtitle"
-msgstr "Altyazı"
+msgstr "Alt Başlık"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_policy__short_summary
@@ -682,9 +701,9 @@ msgid "Sync now"
 msgstr "Şimdi senkronize et"
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
-msgid "Synchronization"
-msgstr "Senkronizasyon"
+#: model:ir.model.fields,field_description:sale_ebay.field_crm_team__team_type
+msgid "Team Type"
+msgstr ""
 
 #. module: sale_ebay
 #: code:addons/sale_ebay/models/product.py:719
@@ -751,7 +770,7 @@ msgstr "Transfer"
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_policy__policy_type
 msgid "Type"
-msgstr "Türü"
+msgstr "Tür"
 
 #. module: sale_ebay
 #: model:ir.actions.server,name:sale_ebay.action_ebay_update_carrier
@@ -793,11 +812,6 @@ msgid "eBay"
 msgstr "eBay"
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
-msgid "eBay Account"
-msgstr "eBay Hesabı"
-
-#. module: sale_ebay
 #: model:product.category,name:sale_ebay.product_category_ebay
 msgid "eBay Delivery Services"
 msgstr "eBay Teslimat Hizmetleri"
@@ -832,15 +846,10 @@ msgid "eBay Listing ID"
 msgstr "eBay Liste ID"
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
-msgid "eBay Options"
-msgstr "eBay Seçenekler"
-
-#. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_listing_status
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_listing_status
 msgid "eBay Status"
-msgstr "eBay Durum"
+msgstr "eBay Durumu"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_partner__ebay_id

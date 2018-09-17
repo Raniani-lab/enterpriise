@@ -114,10 +114,13 @@ def _load_xsd_files(cr, registry, url):
         response = requests.get(url, timeout=10)
         response.raise_for_status()
         res = objectify.fromstring(response.content)
-    except (requests.exceptions.HTTPError, etree.XMLSyntaxError) as e:
+    except requests.exceptions.HTTPError:
         logging.getLogger(__name__).info(
-            'I cannot connect with the given URL or you are trying to load an '
-            'invalid xsd file.\n%s', e.message)
+            'I cannot connect with the given URL: %s.', url)
+        return ''
+    except etree.XMLSyntaxError as e:
+        logging.getLogger(__name__).info(
+            'You are trying to load an invalid xsd file.\n%s', e)
         return ''
     namespace = {'xs': 'http://www.w3.org/2001/XMLSchema'}
     sub_urls = res.xpath('//xs:import', namespaces=namespace)

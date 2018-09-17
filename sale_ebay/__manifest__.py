@@ -54,4 +54,5 @@ Key Features
   'qweb': ['static/src/xml/*.xml'],
   'application': False,
     'license': 'OEEL-1',
+  'uninstall_hook': 'uninstall_hook',
 }

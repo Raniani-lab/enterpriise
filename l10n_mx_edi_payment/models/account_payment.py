@@ -24,7 +24,7 @@ class AccountPayment(models.Model):
         res = super(AccountPayment, self)._l10n_mx_edi_create_cfdi_payment()
         date_mx = self.env['l10n_mx_edi.certificate'].sudo().get_mx_current_datetime() # noqa
         if not self.l10n_mx_edi_expedition_date:
-            self.l10n_mx_edi_expedition_date = date_mx
+            self.l10n_mx_edi_expedition_date = date_mx.date()
         if not self.l10n_mx_edi_time_payment:
             self.l10n_mx_edi_time_payment = date_mx.strftime(
                 DEFAULT_SERVER_TIME_FORMAT)

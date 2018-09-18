@@ -22,7 +22,7 @@
                 <attribute name="class">page_sales</attribute>
             </page>
             <xpath expr="//group[@name='invoicing']" position="after">
-                <group name="subscription" string="Subscriptions" attrs="{'invisible': [('type', '!=', 'service')]}">
+                <group name="subscription" string="Subscriptions">
                     <field name="recurring_invoice" />
                     <field name="subscription_template_id" class="field_sub_template_id" attrs="{'invisible': [('recurring_invoice', '=', False)]}"/>
                 </group>

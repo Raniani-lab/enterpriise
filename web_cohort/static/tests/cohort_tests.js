@@ -6,6 +6,7 @@ var testUtils = require('web.test_utils');
 
 var createView = testUtils.createView;
 var createActionManager = testUtils.createActionManager;
+var patchDate = testUtils.patchDate;
 
 QUnit.module('Views', {
     beforeEach: function () {
@@ -13,8 +14,8 @@ QUnit.module('Views', {
             subscription: {
                 fields: {
                     id: {string: 'ID', type: 'integer'},
-                    start: {string: 'Start', type: 'date'},
-                    stop: {string: 'Stop', type: 'date'},
+                    start: {string: 'Start', type: 'date', sortable: true},
+                    stop: {string: 'Stop', type: 'date', sortable: true},
                     recurring: {string: 'Recurring Price', type: 'integer', store: true},
                 },
                 records: [
@@ -327,6 +328,116 @@ QUnit.module('Views', {
         assert.strictEqual(actionManager.$('.o_form_view span:nth(1)').attr('name'), 'stop',
                 "Second field in the form view should be stop");
 
+        actionManager.destroy();
+    });
+
+    QUnit.test('rendering of a cohort view with comparison', function (assert) {
+        assert.expect(27);
+
+        var unpatchDate = patchDate(2017, 7, 25, 1, 0, 0);
+
+        var actionManager = createActionManager({
+            data: this.data,
+            archs: {
+                'subscription,false,cohort': '<cohort string="Subscriptions" date_start="start" date_stop="stop" measure="__count__" interval="week" />',
+                'subscription,false,search': '<search></search>',
+            },
+            intercepts: {
+                do_action: function (ev) {
+                    actionManager.doAction(ev.data.action, ev.data.options);
+                },
+            },
+        });
+
+        actionManager.doAction({
+            name: 'Subscriptions',
+            res_model: 'subscription',
+            type: 'ir.actions.act_window',
+            views: [[false, 'cohort']],
+        });
+
+        function verifyContents (results) {
+            var $tables = actionManager.$('table');
+            assert.strictEqual($tables.length, results.length, 'There should be' + results.length + 'tables');
+            var i=0;
+            var result;
+            $tables.each(function () {
+                i++;
+                result = results.shift();
+                var $table = $(this);
+                var rowCount = $table.find('.o_cohort_row_clickable').length;
+
+                if (rowCount) {
+                    assert.strictEqual(rowCount, result, 'the table should contain' + result + 'rows');
+                } else {
+                    assert.strictEqual($table.find('th:first').text().trim(), result,
+                    'the table should contain the time range description' + result);
+                }
+            });
+        }
+
+        function verifyNoContentHelper (text) {
+            if (text) {
+                assert.strictEqual(actionManager.$('div.o_cohort_no_data').length, 1, "there should be a no content helper");
+                assert.strictEqual(actionManager.$('div.o_cohort_no_data').text().trim(), text);
+            } else {
+                assert.strictEqual(actionManager.$('div.o_cohort_no_data').length, 0, "there should be no no content helper");
+            }
+        }
+
+        // with no comparison, with data (no filter)
+
+        verifyContents([3]);
+        verifyNoContentHelper();
+
+        // with no comparison with no data (filter on 'last_year')
+
+        $('.o_time_range_menu_button').click();
+        $('.o_time_range_selector').val('last_year');
+        $('.o_time_range_menu .o_apply_range').click();
+
+        verifyContents([]);
+        verifyNoContentHelper("No data available for cohort.");
+
+
+        // with comparison active, data and comparisonData (filter on 'this_month' + 'previous_period')
+        $('.o_time_range_menu_button').click();
+        $('.o_time_range_menu .o_comparison_checkbox').click();
+        $('.o_time_range_selector').val('this_month');
+        $('.o_time_range_menu .o_apply_range').click();
+
+        verifyContents(['This Month', 2, 'Previous Period', 1]);
+        verifyNoContentHelper();
+
+
+        // with comparison active, data, no comparisonData (filter on 'this_year' + 'previous_period')
+
+        $('.o_time_range_menu_button').click();
+        $('.o_time_range_selector').val('this_year');
+        $('.o_time_range_menu .o_apply_range').click();
+
+        verifyContents(['This Year', 3, 'Previous Period']);
+        verifyNoContentHelper("No data available.");
+
+        // with comparison active, no data, comparisonData (filter on 'today' + 'previous_period')
+
+        $('.o_time_range_menu_button').click();
+        $('.o_time_range_selector').val('today');
+        $('.o_time_range_menu .o_apply_range').click();
+
+        verifyContents(['Today', 'Previous Period', 1]);
+        verifyNoContentHelper("No data available.");
+
+        // with comparison active, no data, no comparisonData (filter on 'last_year' + 'previous_period')
+
+        $('.o_time_range_menu_button').click();
+        $('.o_time_range_selector').val('last_year');
+        $('.o_time_range_menu .o_apply_range').click();
+
+        verifyContents([]);
+        verifyNoContentHelper("No data available for cohort.");
+
+        unpatchDate();
         actionManager.destroy();
     });
 

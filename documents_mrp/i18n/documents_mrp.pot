@@ -1,0 +1,113 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* documents_mrp
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-09-18 10:05+0000\n"
+"PO-Revision-Date: 2018-09-18 10:05+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: documents_mrp
+#: model:ir.model,name:documents_mrp.model_documents_workflow_rule
+msgid "A set of condition and actions which will be available to all attachments matching the conditions"
+msgstr ""
+
+#. module: documents_mrp
+#: model:ir.model.fields,field_description:documents_mrp.field_documents_workflow_rule__create_model
+msgid "Attach to"
+msgstr ""
+
+#. module: documents_mrp
+#: model:ir.model,name:documents_mrp.model_res_company
+msgid "Companies"
+msgstr ""
+
+#. module: documents_mrp
+#: selection:documents.workflow.rule,create_model:0
+msgid "Credit note"
+msgstr ""
+
+#. module: documents_mrp
+#: model_terms:ir.ui.view,arch_db:documents_mrp.res_config_settings_view_form
+msgid "Default destination for any attachment created in mrp."
+msgstr ""
+
+#. module: documents_mrp
+#: model_terms:ir.ui.view,arch_db:documents_mrp.res_config_settings_view_form
+msgid "Default tags for any attachment created in mrp."
+msgstr ""
+
+#. module: documents_mrp
+#: model:ir.model.fields,field_description:documents_mrp.field_res_company__dms_mrp_settings
+#: model:ir.model.fields,field_description:documents_mrp.field_res_config_settings__dms_mrp_settings
+msgid "Dms Mrp Settings"
+msgstr ""
+
+#. module: documents_mrp
+#: model_terms:ir.ui.view,arch_db:documents_mrp.res_config_settings_view_form
+msgid "Folder Settings - mrp"
+msgstr ""
+
+#. module: documents_mrp
+#: model:ir.model.fields,field_description:documents_mrp.field_documents_workflow_rule__has_business_option
+msgid "Has Business Option"
+msgstr ""
+
+#. module: documents_mrp
+#: model:ir.model.fields,field_description:documents_mrp.field_res_config_settings__mrp_folder
+msgid "MRP Folder"
+msgstr ""
+
+#. module: documents_mrp
+#: selection:documents.workflow.rule,create_model:0
+msgid "MRP Product template"
+msgstr ""
+
+#. module: documents_mrp
+#: model:ir.model.fields,field_description:documents_mrp.field_res_config_settings__mrp_tags
+msgid "MRP Tags"
+msgstr ""
+
+#. module: documents_mrp
+#: model:ir.model.fields,field_description:documents_mrp.field_res_company__mrp_folder
+msgid "Mrp Folder"
+msgstr ""
+
+#. module: documents_mrp
+#: model:ir.model.fields,field_description:documents_mrp.field_res_company__mrp_tags
+msgid "Mrp Tags"
+msgstr ""
+
+#. module: documents_mrp
+#: selection:documents.workflow.rule,create_model:0
+msgid "Signature template"
+msgstr ""
+
+#. module: documents_mrp
+#: selection:documents.workflow.rule,create_model:0
+msgid "Task"
+msgstr ""
+
+#. module: documents_mrp
+#: selection:documents.workflow.rule,create_model:0
+msgid "Vendor bill"
+msgstr ""
+
+#. module: documents_mrp
+#: model:ir.model,name:documents_mrp.model_ir_attachment
+msgid "ir.attachment"
+msgstr ""
+
+#. module: documents_mrp
+#: model:ir.model,name:documents_mrp.model_res_config_settings
+msgid "res.config.settings"
+msgstr ""
+

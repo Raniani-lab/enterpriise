@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-05 09:12+0000\n"
-"PO-Revision-Date: 2018-09-05 09:12+0000\n"
+"POT-Creation-Date: 2018-09-18 10:05+0000\n"
+"PO-Revision-Date: 2018-09-18 10:05+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -18,7 +18,7 @@ msgstr ""
 #. module: web_cohort
 #. openerp-web
 #: code:addons/web_cohort/static/src/xml/web_cohort.xml:76
-#: code:addons/web_cohort/static/src/xml/web_cohort.xml:155
+#: code:addons/web_cohort/static/src/xml/web_cohort.xml:154
 #, python-format
 msgid "- By"
 msgstr ""
@@ -32,8 +32,8 @@ msgstr ""
 #. module: web_cohort
 #. openerp-web
 #: code:addons/web_cohort/controllers/main.py:59
-#: code:addons/web_cohort/static/src/xml/web_cohort.xml:113
-#: code:addons/web_cohort/static/src/xml/web_cohort.xml:186
+#: code:addons/web_cohort/static/src/xml/web_cohort.xml:112
+#: code:addons/web_cohort/static/src/xml/web_cohort.xml:184
 #, python-format
 msgid "Average"
 msgstr ""
@@ -147,15 +147,15 @@ msgstr ""
 
 #. module: web_cohort
 #. openerp-web
-#: code:addons/web_cohort/static/src/xml/web_cohort.xml:206
+#: code:addons/web_cohort/static/src/xml/web_cohort.xml:204
 #, python-format
 msgid "No data available for cohort."
 msgstr ""
 
 #. module: web_cohort
 #. openerp-web
-#: code:addons/web_cohort/static/src/xml/web_cohort.xml:129
-#: code:addons/web_cohort/static/src/xml/web_cohort.xml:203
+#: code:addons/web_cohort/static/src/xml/web_cohort.xml:128
+#: code:addons/web_cohort/static/src/xml/web_cohort.xml:201
 #, python-format
 msgid "No data available."
 msgstr ""

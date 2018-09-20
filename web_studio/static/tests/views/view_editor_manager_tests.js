@@ -23,7 +23,7 @@ QUnit.module('ViewEditorManager', {
                         string: "Display Name",
                         type: "char"
                     },
-                    related_attachment_count: {
+                    message_attachment_count: {
                         string: 'Attachment count',
                         type: 'integer',
                     },

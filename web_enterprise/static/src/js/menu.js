@@ -73,7 +73,6 @@ var Menu = Widget.extend({
             maxWidth: function () {
                 return self.$el.width() - (self.$menu_toggle.outerWidth(true) + self.$menu_brand_placeholder.outerWidth(true) + self.systray_menu.$el.outerWidth(true));
             },
-            sizeClass: 'MD',
         });
 
         return this._super.apply(this, arguments);

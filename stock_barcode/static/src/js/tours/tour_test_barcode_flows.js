@@ -193,6 +193,23 @@ tour.register('test_internal_picking_from_scratch_1', {test: true}, [
         }
     },
 
+    //Check show information.
+    {
+        trigger: '.o_show_information',
+    },
+    
+    {
+        trigger: '.o_form_label:contains("Status")',
+    },
+    
+    {
+        trigger: '.o_close',
+    },
+
+    {
+        trigger: '.o_barcode_summary_location_dest:contains("Stock")',
+    },
+
     /* We'll create a movement for 2 product1 from shelf1 to shelf2. The flow for this to happen is
      * to scan shelf1, product1, shelf2.
      */
@@ -1670,10 +1687,135 @@ tour.register('test_delivery_duplicate_serial_number', {test: true}, [
     },
 ]);
 
+tour.register('test_bypass_source_scan', {test: true}, [
+    /* Scan directly a serial number, a package or a lot in delivery order.
+    * It should implicitely trigger the same action than a source location
+    * scan with the state location.
+    */
+    {
+        trigger: '.o_barcode_client_action',
+        run: function () {
+            assertPageSummary('From WH/Stock/Shelf 1');
+            assertPreviousVisible(true);
+            assertPreviousEnabled(true);
+            assertNextVisible(true);
+            assertNextEnabled(true);
+            assertNextIsHighlighted(false);
+            assertLinesCount(1);
+            assertScanMessage('scan_src');
+            assertLocationHighlight(false);
+            assertDestinationLocationHighlight(false);
+            assertPager('1/2');
+            assertValidateVisible(false);
+            assertValidateIsHighlighted(false);
+            assertValidateEnabled(false);
+        }
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan THEPACK',
+    },
+
+    {
+        trigger: '.o_notification_title:contains("Warning")'
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: function () {
+            assertErrorMessage("You are expected to scan one or more products or a package available at the picking's location");
+        },
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan serial1',
+    },
+    
+    {
+        trigger: '.o_edit'
+    },
+    
+    {
+        trigger: '.o_field_many2one[name=lot_id]',
+        extra_trigger: '.o_form_label:contains("Product")',
+        position: "bottom",
+        run: function (actions) {
+            actions.text("", this.$anchor.find("input"));
+        },
+    },
+    
+    {
+        trigger: 'input.o_field_widget[name=qty_done]',
+        run: 'text 0',
+    },
+    
+    {
+        trigger: '.o_save'
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan lot1',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan lot1',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan LOC-01-02-00',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan THEPACK',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan productserial1',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan serial1',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan O-BTN.validate',
+    },
+
+    {
+        trigger: '.o_notification_title:contains("Success")'
+    },
+]);
+
 tour.register('test_inventory_adjustment', {test: true}, [
 
     {
         trigger: '.button_inventory',
+    },
+
+    //Check show information.
+    {
+        trigger: '.o_show_information',
+    },
+    
+    {
+        trigger: '.o_form_label:contains("Status")',
+    },
+    
+    {
+        trigger: '.o_close',
+    },
+
+    {
+        trigger: '.o_barcode_message:contains("Scan products")',
     },
 
     {
@@ -2333,7 +2475,7 @@ tour.register('test_put_in_pack_before_dest', {test: true}, [
     },
 
     {
-        trigger: '.o_barcode_client_action',
+        trigger: '.o_dialog_warning',
         run: function() {
             assertRaise('You cannot move the same package content more than once in the same transfer or split the same package into two location.');
         }

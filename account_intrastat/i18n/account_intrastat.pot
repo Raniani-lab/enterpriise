@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-05 09:11+0000\n"
-"PO-Revision-Date: 2018-09-05 09:11+0000\n"
+"POT-Creation-Date: 2018-09-18 10:05+0000\n"
+"PO-Revision-Date: 2018-09-18 10:05+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,13 +16,13 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: account_intrastat
-#: model:ir.ui.view,arch_db:account_intrastat.search_template_intrastat_type
+#: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_intrastat_type
 msgid "<span class=\"fa fa-filter\"/>\n"
 "                Types:"
 msgstr ""
 
 #. module: account_intrastat
-#: model:ir.ui.view,arch_db:account_intrastat.search_template_intrastat_extended
+#: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_intrastat_extended
 msgid "<span class=\"fa fa-filter\"/> Options:"
 msgstr ""
 
@@ -33,22 +33,22 @@ msgid "Arrival"
 msgstr ""
 
 #. module: account_intrastat
-#: model:ir.ui.view,arch_db:account_intrastat.invoice_form_inherit_account_intrastat
+#: model_terms:ir.ui.view,arch_db:account_intrastat.invoice_form_inherit_account_intrastat
 msgid "Arrival country"
 msgstr ""
 
 #. module: account_intrastat
-#: model:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
+#: model_terms:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
 msgid "By country"
 msgstr ""
 
 #. module: account_intrastat
-#: model:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
+#: model_terms:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
 msgid "By type"
 msgstr ""
 
 #. module: account_intrastat
-#: model:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
+#: model_terms:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
 msgid "Commodity"
 msgstr ""
 
@@ -107,7 +107,7 @@ msgid "Dispatch"
 msgstr ""
 
 #. module: account_intrastat
-#: model:ir.ui.view,arch_db:account_intrastat.invoice_supplier_form_inherit_account_intrastat
+#: model_terms:ir.ui.view,arch_db:account_intrastat.invoice_supplier_form_inherit_account_intrastat
 msgid "Dispatch country"
 msgstr ""
 
@@ -127,17 +127,17 @@ msgid "EC Sales List"
 msgstr ""
 
 #. module: account_intrastat
-#: model:ir.ui.view,arch_db:account_intrastat.search_template_intrastat_extended
+#: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_intrastat_extended
 msgid "Extended"
 msgstr ""
 
 #. module: account_intrastat
-#: model:ir.ui.view,arch_db:account_intrastat.search_template_intrastat_extended
+#: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_intrastat_extended
 msgid "Extended Mode"
 msgstr ""
 
 #. module: account_intrastat
-#: model:ir.ui.view,arch_db:account_intrastat.search_template_intrastat_extended
+#: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_intrastat_extended
 msgid "Extended,"
 msgstr ""
 
@@ -161,16 +161,16 @@ msgstr ""
 
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_account_invoice_line__intrastat_transaction_id
-#: model:ir.ui.view,arch_db:account_intrastat.invoice_form_inherit_account_intrastat
-#: model:ir.ui.view,arch_db:account_intrastat.product_category_form_view_inherit_account_intrastat
-#: model:ir.ui.view,arch_db:account_intrastat.product_template_form_view_inherit_account_intrastat
+#: model_terms:ir.ui.view,arch_db:account_intrastat.invoice_form_inherit_account_intrastat
+#: model_terms:ir.ui.view,arch_db:account_intrastat.product_category_form_view_inherit_account_intrastat
+#: model_terms:ir.ui.view,arch_db:account_intrastat.product_template_form_view_inherit_account_intrastat
 msgid "Intrastat"
 msgstr ""
 
 #. module: account_intrastat
 #: model:ir.actions.act_window,name:account_intrastat.action_report_intrastat_code_tree
 #: model:ir.ui.menu,name:account_intrastat.menu_report_intrastat_code
-#: model:ir.ui.view,arch_db:account_intrastat.view_report_intrastat_code_form
+#: model_terms:ir.ui.view,arch_db:account_intrastat.view_report_intrastat_code_form
 msgid "Intrastat Code"
 msgstr ""
 
@@ -194,7 +194,7 @@ msgid "Intrastat Transport Mode"
 msgstr ""
 
 #. module: account_intrastat
-#: model:ir.ui.view,arch_db:account_intrastat.view_report_intrastat_code_tree
+#: model_terms:ir.ui.view,arch_db:account_intrastat.view_report_intrastat_code_tree
 msgid "Intrastat code"
 msgstr ""
 
@@ -246,7 +246,7 @@ msgid "Quantity"
 msgstr ""
 
 #. module: account_intrastat
-#: model:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
+#: model_terms:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
 msgid "Region"
 msgstr ""
 
@@ -257,7 +257,7 @@ msgid "Region Code"
 msgstr ""
 
 #. module: account_intrastat
-#: model:ir.ui.view,arch_db:account_intrastat.search_template_intrastat_extended
+#: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_intrastat_extended
 msgid "Standard,"
 msgstr ""
 
@@ -275,7 +275,7 @@ msgid "Total"
 msgstr ""
 
 #. module: account_intrastat
-#: model:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
+#: model_terms:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
 msgid "Transaction"
 msgstr ""
 
@@ -286,7 +286,7 @@ msgid "Transaction Code"
 msgstr ""
 
 #. module: account_intrastat
-#: model:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
+#: model_terms:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
 msgid "Transport"
 msgstr ""
 

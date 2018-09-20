@@ -210,6 +210,15 @@ var DashboardRenderer = FormRenderer.extend({
             }
         }
 
+        // customize border left
+        if (variation) {
+            if (variation.signClass === ' o_positive') {
+                $el.addClass('border-success');
+            } else if (variation.signClass === ' o_negative') {
+                $el.addClass('border-danger');
+            }
+        }
+
         this._registerModifiers(node, this.state, $el);
         if (config.debug || node.attrs.help) {
             this._addStatisticTooltip($el, node);

@@ -265,6 +265,127 @@ QUnit.module('Views', {
         });
     });
 
+    QUnit.test('load and reload a grid view with favorite search', function (assert) {
+        assert.expect(4);
+
+        var grid = createView({
+            View: GridView,
+            model: 'analytic.line',
+            data: this.data,
+            arch: '<grid string="Timesheet By Project">' +
+                    '<field name="project_id" type="row" section="1"/>' +
+                    '<field name="task_id" type="row"/>' +
+                    '<field name="date" type="col">' +
+                        '<range name="week" string="Week" span="week" step="day"/>' +
+                    '</field>'+
+                    '<field name="unit_amount" type="measure" widget="float_time"/>' +
+                '</grid>',
+            groupBy: ["task_id", "project_id"], // user-set default search view
+            currentDate: "2017-01-25",
+        });
+
+        assert.strictEqual(grid.$('tr:eq(2) th').text(), 'BS taskP1',
+            "GroupBy should have been taken into account when loading the view."
+        );
+        assert.strictEqual(grid.$('tr:eq(3) th').text(), 'UnknownP1',
+            "GroupBy should have been taken into account when loading the view."
+        );
+
+        grid.$buttons.find('.grid_arrow_next').click();
+
+        assert.strictEqual(grid.$('tr:eq(2) th').text(), 'Another BS taskWebocalypse Now',
+            "GroupBy should have been kept when clicking the pager."
+        );
+        assert.strictEqual(grid.$('tr:eq(3) th').text(), 'BS taskP1',
+            "GroupBy should have been kept when clicking the pager."
+        );
+
+        grid.destroy();
+    });
+
+    QUnit.test('groupBy a string is supported', function (assert) {
+        // groupBy could be a single "field" instead of an Array of strings
+        assert.expect(4);
+
+        var grid = createView({
+            View: GridView,
+            model: 'analytic.line',
+            data: this.data,
+            arch: '<grid string="Timesheet By Project">' +
+                    '<field name="project_id" type="row" section="1"/>' +
+                    '<field name="task_id" type="row"/>' +
+                    '<field name="date" type="col">' +
+                        '<range name="week" string="Week" span="week" step="day"/>' +
+                    '</field>'+
+                    '<field name="unit_amount" type="measure" widget="float_time"/>' +
+                '</grid>',
+            groupBy: "task_id",
+            currentDate: "2017-01-25",
+        });
+
+        assert.strictEqual(grid.$('tr:eq(2) th').text(), 'BS task',
+            "GroupBy should have been taken into account when loading the view."
+        );
+        assert.strictEqual(grid.$('tr:eq(3) th').text(), 'Unknown',
+            "GroupBy should have been taken into account when loading the view."
+        );
+
+        grid.$buttons.find('.grid_arrow_next').click();
+
+        assert.strictEqual(grid.$('tr:eq(2) th').text(), 'Another BS task',
+            "GroupBy should have been kept when clicking the pager."
+        );
+        assert.strictEqual(grid.$('tr:eq(3) th').text(), 'BS task',
+            "GroupBy should have been kept when clicking the pager."
+        );
+
+        grid.destroy();
+    });
+
+    QUnit.test('Removing groupBy defaults to initial groupings', function (assert) {
+        assert.expect(6);
+
+        var grid = createView({
+            View: GridView,
+            model: 'analytic.line',
+            data: this.data,
+            arch: '<grid string="Timesheet By Project">' +
+                    '<field name="project_id" type="row" section="1"/>' +
+                    '<field name="task_id" type="row"/>' +
+                    '<field name="date" type="col">' +
+                        '<range name="week" string="Week" span="week" step="day"/>' +
+                    '</field>'+
+                    '<field name="unit_amount" type="measure" widget="float_time"/>' +
+                '</grid>',
+            groupBy: ["task_id", "project_id"],
+            currentDate: "2017-01-25",
+        });
+
+        assert.strictEqual(grid.$('tr:eq(2) th').text(), 'BS taskP1',
+            "GroupBy should have been taken into account when loading the view."
+        );
+        assert.strictEqual(grid.$('tr:eq(3) th').text(), 'UnknownP1',
+            "GroupBy should have been taken into account when loading the view."
+        );
+
+        grid.update({groupBy: []});
+
+        assert.strictEqual(grid.$('tr:eq(2) th').text(), 'P1',
+            "Should be grouped by default (Project > Task)."
+        );
+        assert.strictEqual(grid.$('tr:eq(3) th').text(), 'BS task',
+            "Should be grouped by default (Project > Task)."
+        );
+        assert.strictEqual(grid.$('tr:eq(4) th').text(), 'Unknown',
+            "Should be grouped by default (Project > Task)."
+        );
+        assert.strictEqual(grid.$('tr:eq(5) th').text(), 'Webocalypse Now',
+            "Should be grouped by default (Project > Task)."
+        );
+
+        grid.destroy();
+    });
+
     QUnit.test('DOM keys are unique', function (assert) {
         /*Snabbdom, the virtual dom libraries, use keys to distinguish similar
         elements (typically grid rows).

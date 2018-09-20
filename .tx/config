@@ -157,6 +157,11 @@ file_filter = documents_account/i18n/<lang>.po
 source_file = documents_account/i18n/documents_account.pot
 source_lang = en
 
+[odoo-master.documents_mrp]
+file_filter = documents_mrp/i18n/<lang>.po
+source_file = documents_mrp/i18n/documents_mrp.pot
+source_lang = en
+
 [odoo-master.documents_project]
 file_filter = documents_project/i18n/<lang>.po
 source_file = documents_project/i18n/documents_project.pot

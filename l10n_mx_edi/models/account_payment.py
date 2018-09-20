@@ -89,7 +89,7 @@ class AccountPayment(models.Model):
         for record in self.filtered(lambda r: r.l10n_mx_edi_is_required()):
             record.l10n_mx_edi_cfdi_name = ('%s-%s-MX-Payment-10.xml' % (
                 record.journal_id.code, record.name))
-            self._l10n_mx_edi_retry()
+            record._l10n_mx_edi_retry()
         return res
 
     # -----------------------------------------------------------------------
@@ -254,7 +254,7 @@ class AccountPayment(models.Model):
 
     @api.multi
     def _l10n_mx_edi_retry(self):
-        for rec in self:
+        for rec in self.filtered(lambda r: r.l10n_mx_edi_is_required()):
             cfdi_values = rec._l10n_mx_edi_create_cfdi_payment()
             error = cfdi_values.pop('error', None)
             cfdi = cfdi_values.pop('cfdi', None)

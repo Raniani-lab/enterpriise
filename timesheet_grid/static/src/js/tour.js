@@ -8,8 +8,8 @@ var _t = core._t;
 
 tour.register('timesheet_tour', {
     url: "/web",
-}, [tour.STEPS.MENU_MORE, {
-    trigger: '.o_app[data-menu-xmlid="hr_timesheet.timesheet_menu_root"], .oe_menu_toggler[data-menu-xmlid="hr_timesheet.timesheet_menu_root"]',
+}, [tour.STEPS.SHOW_APPS_MENU_ITEM, {
+    trigger: '.o_app[data-menu-xmlid="hr_timesheet.timesheet_menu_root"]',
     content: _t('Track the time spent on your projects. <i>It starts here.</i>'),
     position: 'bottom',
 }, {

@@ -2,6 +2,9 @@
     @include media-breakpoint-up(md) {
         border-bottom: 1px solid $o-brand-secondary;
     }
+    @include media-breakpoint-down(sm) {
+        padding: 0px 4px 0px 0px;
+    }
 
     .o_searchview_facet {
         @include media-breakpoint-down(sm) {

@@ -129,7 +129,7 @@
             No data available.
         </div>
         <br/>
-        <div t-if="comparisonReport &amp;&amp; comparisonReport.rows.length" class="table-responsive">
+        <div t-if="comparisonReport &amp;&amp; (report.rows.length || comparisonReport.rows.length)" class="table-responsive">
             <table class="table text-center mb0">
                 <thead>
                     <tr>

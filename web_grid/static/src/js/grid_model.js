@@ -109,7 +109,10 @@ return AbstractModel.extend({
         this.currentRange = params.currentRange;
         this.domain = params.domain;
         this.context = params.context;
-        return this._fetch(this.rowFields);
+        var groupedBy = (params.groupedBy && params.groupedBy.length) ?
+            params.groupedBy : this.rowFields;
+        this.groupedBy = Array.isArray(groupedBy) ? groupedBy : [groupedBy];
+        return this._fetch(this.groupedBy);
     },
     /**
      * @override
@@ -134,10 +137,15 @@ return AbstractModel.extend({
         if ('range' in params) {
             this.currentRange = _.findWhere(this.ranges, {name: params.range});
         }
-        var groupBy = params.groupBy && params.groupBy.length ?
-            params.groupBy :
-            this.rowFields;
-        return this._fetch(groupBy);
+        if ('groupBy' in params) {
+            if (params.groupBy.length) {
+                this.groupedBy = Array.isArray(params.groupBy) ?
+                    params.groupBy : [params.groupBy];
+            } else {
+                this.groupedBy = this.rowFields;
+            }
+        }
+        return this._fetch(this.groupedBy);
     },
 
     //--------------------------------------------------------------------------

@@ -59,6 +59,8 @@
             <link rel="stylesheet" type="text/scss" href="/web_enterprise/static/src/scss/kanban_view.scss"/>
             <link rel="stylesheet" type="text/scss" href="/web_enterprise/static/src/scss/touch_device.scss"/>
             <link rel="stylesheet" type="text/scss" href="/web_enterprise/static/src/scss/keyboard.scss"/>
+
+            <link rel="stylesheet" type="text/scss" href="/web/static/src/scss/navbar_mobile.scss"/>
         </xpath>
 
         <xpath expr="//script[@src='/web/static/src/js/chrome/web_client.js']" position="replace">
@@ -101,8 +103,6 @@
     </template>
 
     <template id="webclient_bootstrap" inherit_id="web.webclient_bootstrap">
-        <xpath expr="//header[@id='oe_main_menu_navbar']" position="replace"/>
-        <xpath expr="//div[hasclass('o_main')]" position="replace"/>
 
         <xpath expr="//t[@t-set='head']" position="after">
             <t t-set="head_web_enterprise">
@@ -121,6 +121,13 @@
                 <meta name="msapplication-TileImage" content="/web_enterprise/static/src/img/mobile-icons/windows-144x144.png"/>
             </t>
             <t t-set="head" t-value="head_web_enterprise + (head or '')"/>
+        </xpath>
+    </template>
+
+    <template id="webclient_login" inherit_id="web.login_layout">
+        <xpath expr="//t[@t-call='web.layout']/t[last()]" position="after">
+            <t t-set="body_classname" t-value="'o_home_menu_background'"/>
+            <t t-set="login_card_classes" t-value="'rounded-0 shadow-sm bg-white'"/>
         </xpath>
     </template>
 </odoo>

@@ -115,6 +115,7 @@
         &.o_grid_section {
             tr th {
                 padding-left: 3 * $table-cell-padding-sm;
+                text-align: left;
             }
             tr:first-child {
                 th {

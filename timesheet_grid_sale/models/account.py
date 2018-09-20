@@ -1,14 +1,18 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models
+from odoo import api, models
 from odoo.osv import expression
+
+from odoo.addons.timesheet_grid_sale.models.sale import DEFAULT_INVOICED_TIMESHEET
 
 
 class AccountInvoice(models.Model):
-    _inherit = "account.invoice"
+    _inherit = 'account.invoice'
 
-    def _get_compute_timesheet_revenue_domain(self, so_line_ids):
-        domain = super(AccountInvoice, self)._get_compute_timesheet_revenue_domain(so_line_ids)
-        if self.env['res.config.settings'].invoiced_timesheet == 'approved':
+    @api.model
+    def _timesheet_domain_get_invoiced_lines(self, sale_line_delivery):
+        domain = super(AccountInvoice, self)._timesheet_domain_get_invoiced_lines(sale_line_delivery)
+        param_invoiced_timesheet = self.env['ir.config_parameter'].sudo().get_param('sale.invoiced_timesheet', DEFAULT_INVOICED_TIMESHEET)
+        if param_invoiced_timesheet == 'approved':
             domain = expression.AND([domain, [('validated', '=', True)]])
         return domain

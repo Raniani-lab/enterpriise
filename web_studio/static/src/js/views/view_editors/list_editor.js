@@ -147,15 +147,6 @@ return ListRenderer.extend(EditorMixin, {
     },
     /**
      * @override
-     */
-    _processColumns: function () {
-        this._super.apply(this, arguments);
-        // we don't want to be able to resequence in the editor
-        this.hasHandle = false;
-        this.handleField = null;
-    },
-    /**
-     * @override
      * @private
      */
     _render: function () {
@@ -169,6 +160,15 @@ return ListRenderer.extend(EditorMixin, {
         this.setSelectable(this.$('th, td').not('.o_web_studio_hook'));
 
         return def;
+    },
+    /**
+     * @override
+     * @private
+     */
+    _renderBody: function () {
+        // we don't want to be able to resequence in the editor
+        this.hasHandle = false;
+        return this._super();
     },
     /**
      * @override

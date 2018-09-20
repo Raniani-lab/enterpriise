@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"POT-Creation-Date: 2018-09-18 10:05+0000\n"
+"PO-Revision-Date: 2018-09-18 10:05+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -22,7 +22,14 @@ msgstr ""
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_res_company__account_folder
+#: model:ir.model.fields,field_description:documents_account.field_res_config_settings__account_folder
 msgid "Account Folder"
+msgstr ""
+
+#. module: documents_account
+#: model:ir.model.fields,field_description:documents_account.field_res_company__account_tags
+#: model:ir.model.fields,field_description:documents_account.field_res_config_settings__account_tags
+msgid "Account Tags"
 msgstr ""
 
 #. module: documents_account
@@ -41,13 +48,34 @@ msgid "Credit note"
 msgstr ""
 
 #. module: documents_account
-#: model:ir.ui.view,arch_db:documents_account.res_config_settings_view_form
-msgid "Default destination for the attachments created in accounting."
+#: model_terms:ir.ui.view,arch_db:documents_account.res_config_settings_view_form
+msgid "Default destination for any attachment created in accounting."
+msgstr ""
+
+#. module: documents_account
+#: model_terms:ir.ui.view,arch_db:documents_account.res_config_settings_view_form
+msgid "Default tags for any attachment created in accounting."
+msgstr ""
+
+#. module: documents_account
+#: model:ir.model.fields,field_description:documents_account.field_res_company__dms_account_settings
+#: model:ir.model.fields,field_description:documents_account.field_res_config_settings__dms_account_settings
+msgid "Dms Account Settings"
+msgstr ""
+
+#. module: documents_account
+#: model_terms:ir.ui.view,arch_db:documents_account.res_config_settings_view_form
+msgid "Folder Settings - Accounting"
 msgstr ""
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_documents_workflow_rule__has_business_option
 msgid "Has Business Option"
+msgstr ""
+
+#. module: documents_account
+#: selection:documents.workflow.rule,create_model:0
+msgid "MRP Product template"
 msgstr ""
 
 #. module: documents_account
@@ -63,11 +91,6 @@ msgstr ""
 #. module: documents_account
 #: selection:documents.workflow.rule,create_model:0
 msgid "Vendor bill"
-msgstr ""
-
-#. module: documents_account
-#: model:ir.model.fields,field_description:documents_account.field_res_config_settings__account_folder
-msgid "account folder"
 msgstr ""
 
 #. module: documents_account

@@ -39,7 +39,8 @@
 
         .o_cp_searchview {
             overflow: hidden;
-            width: 10%;
+            width: 12%;
+            text-align: right;
         }
 
         .o_cp_left, .o_cp_right {
@@ -52,8 +53,7 @@
         }
 
         .o_cp_switch_buttons {
-            margin-right: 10px;
-            &.open > ul.dropdown-menu {
+            &.show > ul.dropdown-menu {
                 display: inline-flex;
                 min-width: 0px;
             }

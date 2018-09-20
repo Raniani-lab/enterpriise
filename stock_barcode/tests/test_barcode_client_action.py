@@ -866,6 +866,72 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
             timeout=180,
         )
 
+    def test_bypass_source_scan(self):
+        """ Scan a lot, package, product without source location scan. """
+        clean_access_rights(self.env)
+        grp_multi_loc = self.env.ref('stock.group_stock_multi_locations')
+        grp_pack = self.env.ref('stock.group_tracking_lot')
+        grp_lot = self.env.ref('stock.group_production_lot')
+        self.env.user.write({'groups_id': [(4, grp_lot.id, 0)]})
+        self.env.user.write({'groups_id': [(4, grp_pack.id, 0)]})
+        self.env.user.write({'groups_id': [(4, grp_multi_loc.id, 0)]})
+
+        lot1 = self.env['stock.production.lot'].create({'name': 'lot1', 'product_id': self.productlot1.id})
+        lot2 = self.env['stock.production.lot'].create({'name': 'serial1', 'product_id': self.productserial1.id})
+
+        pack1 = self.env['stock.quant.package'].create({
+            'name': 'THEPACK',
+        })
+
+        self.env['stock.quant']._update_available_quantity(self.productlot1, self.shelf1, 2, lot_id=lot1)
+        self.env['stock.quant']._update_available_quantity(self.productserial1, self.shelf2, 1, lot_id=lot2)
+        self.env['stock.quant']._update_available_quantity(self.product1, self.shelf2, 4, package_id=pack1)
+
+        delivery_picking = self.env['stock.picking'].create({
+            'location_id': self.stock_location.id,
+            'location_dest_id': self.customer_location.id,
+            'picking_type_id': self.picking_type_out.id,
+        })
+        url = self._get_client_action_url(delivery_picking.id)
+
+        self.env['stock.move'].create({
+            'name': 'test_bypass_source_scan_1_1',
+            'location_id': self.stock_location.id,
+            'location_dest_id': self.customer_location.id,
+            'product_id': self.productserial1.id,
+            'product_uom': self.uom_unit.id,
+            'product_uom_qty': 1,
+            'picking_id': delivery_picking.id,
+        })
+        self.env['stock.move'].create({
+            'name': 'test_bypass_source_scan_1_2',
+            'location_id': self.stock_location.id,
+            'location_dest_id': self.customer_location.id,
+            'product_id': self.productlot1.id,
+            'product_uom': self.uom_unit.id,
+            'product_uom_qty': 2,
+            'picking_id': delivery_picking.id,
+        })
+        self.env['stock.move'].create({
+            'name': 'test_bypass_source_scan_1_3',
+            'location_id': self.stock_location.id,
+            'location_dest_id': self.customer_location.id,
+            'product_id': self.product1.id,
+            'product_uom': self.uom_unit.id,
+            'product_uom_qty': 4,
+            'picking_id': delivery_picking.id,
+        })
+        delivery_picking.action_confirm()
+        delivery_picking.action_assign()
+
+        self.phantom_js(
+            url,
+            "odoo.__DEBUG__.services['web_tour.tour'].run('test_bypass_source_scan')",
+            "odoo.__DEBUG__.services['web_tour.tour'].tours.test_bypass_source_scan.ready",
+            login='admin',
+            timeout=180,
+        )
+
     def test_put_in_pack_from_different_location(self):
         clean_access_rights(self.env)
         grp_multi_loc = self.env.ref('stock.group_stock_multi_locations')

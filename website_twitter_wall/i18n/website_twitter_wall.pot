@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:29+0000\n"
-"PO-Revision-Date: 2018-08-24 11:29+0000\n"
+"POT-Creation-Date: 2018-09-18 10:05+0000\n"
+"PO-Revision-Date: 2018-09-18 10:05+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,33 +16,33 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: website_twitter_wall
-#: model:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
 msgid "(Un)archiving a wall. Do you want to proceed?"
 msgstr ""
 
 #. module: website_twitter_wall
-#: model:ir.ui.view,arch_db:website_twitter_wall.twitter_walls
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_walls
 msgid "<b>Hey! No wall found</b>"
 msgstr ""
 
 #. module: website_twitter_wall
-#: model:ir.ui.view,arch_db:website_twitter_wall.twitter_walls
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_walls
 msgid "<i class=\"fa fa-plus-circle\"/> Create Now"
 msgstr ""
 
 #. module: website_twitter_wall
-#: model:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "<i class=\"fa fa-twitter\"/> <strong> Join the wall</strong>"
 msgstr ""
 
 #. module: website_twitter_wall
-#: model:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
 msgid "<span class=\"o_stat_text\">Live Mode</span>\n"
 "                                <span class=\"o_stat_text\">is <strong class=\"text-danger\"> Off </strong></span>"
 msgstr ""
 
 #. module: website_twitter_wall
-#: model:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
 msgid "<span class=\"o_stat_text\">Live Mode</span>\n"
 "                                <span class=\"o_stat_text\">is <strong class=\"text-success\"> On </strong></span>"
 msgstr ""
@@ -68,12 +68,12 @@ msgid "Created on"
 msgstr ""
 
 #. module: website_twitter_wall
-#: model:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Decrease zoom level"
 msgstr ""
 
 #. module: website_twitter_wall
-#: model:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Delete this tweet"
 msgstr ""
 
@@ -88,12 +88,12 @@ msgid "Display Name"
 msgstr ""
 
 #. module: website_twitter_wall
-#: model:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Exit full screen"
 msgstr ""
 
 #. module: website_twitter_wall
-#: model:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Hey! No tweet found"
 msgstr ""
 
@@ -108,7 +108,7 @@ msgid "Image"
 msgstr ""
 
 #. module: website_twitter_wall
-#: model:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Increase zoom level"
 msgstr ""
 
@@ -148,12 +148,12 @@ msgid "Last Updated on"
 msgstr ""
 
 #. module: website_twitter_wall
-#: model:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "List view"
 msgstr ""
 
 #. module: website_twitter_wall
-#: model:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Live mode"
 msgstr ""
 
@@ -169,7 +169,7 @@ msgstr ""
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__name
-#: model:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
 msgid "Name"
 msgstr ""
 
@@ -179,7 +179,7 @@ msgid "Popular"
 msgstr ""
 
 #. module: website_twitter_wall
-#: model:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
 msgid "Query operators"
 msgstr ""
 
@@ -189,7 +189,7 @@ msgid "Recent"
 msgstr ""
 
 #. module: website_twitter_wall
-#: model:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Repeat"
 msgstr ""
 
@@ -199,32 +199,32 @@ msgid "Search string"
 msgstr ""
 
 #. module: website_twitter_wall
-#: model:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_share
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_share
 msgid "Share #{wall.name} on facebook"
 msgstr ""
 
 #. module: website_twitter_wall
-#: model:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_share
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_share
 msgid "Share #{wall.name} on google+"
 msgstr ""
 
 #. module: website_twitter_wall
-#: model:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_share
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_share
 msgid "Share #{wall.name} on linkedin"
 msgstr ""
 
 #. module: website_twitter_wall
-#: model:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_share
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_share
 msgid "Share #{wall.name} on twitter"
 msgstr ""
 
 #. module: website_twitter_wall
-#: model:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Shuffle"
 msgstr ""
 
 #. module: website_twitter_wall
-#: model:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Single view"
 msgstr ""
 
@@ -251,13 +251,13 @@ msgid "The tweets search failed. Check your credentials and access token"
 msgstr ""
 
 #. module: website_twitter_wall
-#: model:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Three columns view"
 msgstr ""
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__total_tweets
-#: model:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Total Tweets"
 msgstr ""
 
@@ -275,9 +275,9 @@ msgstr ""
 #: code:addons/website_twitter_wall/models/website_twitter_wall.py:132
 #: model:ir.actions.act_window,name:website_twitter_wall.website_twitter_tweet_action
 #: model:ir.ui.menu,name:website_twitter_wall.website_twitter_tweet_menu
-#: model:ir.ui.view,arch_db:website_twitter_wall.website_twitter_tweet_view_form
-#: model:ir.ui.view,arch_db:website_twitter_wall.website_twitter_tweet_view_tree
-#: model:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_tweet_view_form
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_tweet_view_tree
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
 #, python-format
 msgid "Tweets"
 msgstr ""
@@ -298,12 +298,12 @@ msgid "Twitter Wall"
 msgstr ""
 
 #. module: website_twitter_wall
-#: model:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_footer_custom
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_footer_custom
 msgid "Twitter wall"
 msgstr ""
 
 #. module: website_twitter_wall
-#: model:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Two columns view"
 msgstr ""
 
@@ -319,15 +319,15 @@ msgstr ""
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_tweet__wall_ids
-#: model:ir.ui.view,arch_db:website_twitter_wall.website_twitter_tweet_view_form
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_tweet_view_form
 msgid "Wall"
 msgstr ""
 
 #. module: website_twitter_wall
 #: model:ir.actions.act_window,name:website_twitter_wall.website_twitter_wall_action
 #: model:ir.ui.menu,name:website_twitter_wall.twitter_wall_menu
-#: model:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
-#: model:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_tree
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_tree
 msgid "Walls"
 msgstr ""
 
@@ -337,7 +337,7 @@ msgid "Website URL"
 msgstr ""
 
 #. module: website_twitter_wall
-#: model:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
 msgid "Your wall name"
 msgstr ""
 

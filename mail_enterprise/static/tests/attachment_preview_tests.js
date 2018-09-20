@@ -16,7 +16,7 @@ QUnit.module('MailAttachmentOnSide', {
         this.data = {
             partner: {
                 fields: {
-                    related_attachment_count: {string: 'Attachment count', type: 'integer'},
+                    message_attachment_count: {string: 'Attachment count', type: 'integer'},
                     display_name: { string: "Displayed name", type: "char" },
                     foo: {string: "Foo", type: "char", default: "My little Foo Value"},
                     message_ids: {
@@ -28,7 +28,7 @@ QUnit.module('MailAttachmentOnSide', {
                 },
                 records: [{
                     id: 2,
-                    related_attachment_count: 0,
+                    message_attachment_count: 0,
                     display_name: "first partner",
                     foo: "HELLO",
                     message_ids: [],

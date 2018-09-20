@@ -8,7 +8,7 @@ var _t = core._t;
 
 tour.register('helpdesk_tour', {
     url: "/web",
-}, [tour.STEPS.MENU_MORE, {
+}, [{
     trigger: '.o_app[data-menu-xmlid="helpdesk.menu_helpdesk_root"]',
     content: _t('Want to <b>boost your customer satisfaction</b>?<br/><i>Click Helpdesk to start.</i>'),
     position: 'bottom',

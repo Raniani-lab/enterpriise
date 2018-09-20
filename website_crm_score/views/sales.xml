@@ -193,7 +193,7 @@
                                                 <ul class="nav">
                                                     <li class="nav-item">
                                                         <a type="open" class="nav-link">
-                                                            <img t-att-src="kanban_image('res.users', 'image_small', record.user_id.raw_value)" class="oe_kanban_image" alt="Avatar"/>
+                                                            <img t-att-src="kanban_image('res.users', 'image_small', record.user_id.raw_value)" class="o_kanban_image" alt="Avatar"/>
                                                         </a>
                                                     </li>
                                                     <li t-attf-class="nav-item #{button_state}">

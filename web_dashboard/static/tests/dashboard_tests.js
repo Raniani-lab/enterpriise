@@ -2183,5 +2183,104 @@ QUnit.module('Views', {
         unpatchDate();
         actionManager.destroy();
     });
+
+    QUnit.test('rendering of an aggregate with comparison active', function (assert) {
+        assert.expect(27);
+
+        var nbReadGroup = 0;
+
+        var RealDate = window.Date;
+
+        window.Date = function TestDate() {
+            // month are indexed from 0!
+            return new RealDate(2017,2,22);
+        };
+        window.Date.now = function Test() {
+            return new Date(2017,2,22);
+        };
+
+        // create an action manager to test the interactions with the search view
+        var actionManager = createActionManager({
+            data: this.data,
+            archs: {
+                'test_time_range,false,dashboard': '<dashboard>' +
+                            '<group>' +
+                                '<aggregate name="some_value" field="sold" string="Some Value"/>' +
+                            '</group>' +
+                    '</dashboard>',
+                'test_time_range,false,search': '<search></search>',
+            },
+            mockRPC: function (route, args) {
+
+                function _readGroup (expectedDomain,readGroupResult) {
+                    assert.deepEqual(args.kwargs.fields, ['some_value:sum(sold)'], "should read the correct field");
+                    assert.deepEqual(args.kwargs.domain, expectedDomain,
+                        "should send the correct domain");
+                    assert.deepEqual(args.kwargs.groupby, [],
+                        "should send the correct groupby");
+                    return def.then(function (result) {
+                        // this is not the real value computed from data
+                        result[0].some_value = readGroupResult;
+                        return result;
+                    });
+                }
+
+                var def = this._super.apply(this, arguments);
+                if (args.method === 'read_group') {
+                    nbReadGroup++;
+                    if (nbReadGroup === 1) {
+                        _readGroup([], 8);
+                    }
+                    if (nbReadGroup === 2 || nbReadGroup === 3) {
+                        _readGroup(["&", ["date", ">=", "2017-03-22"], ["date", "<", "2017-03-23"]], 16);
+                    }
+                    if (nbReadGroup === 4) {
+                        _readGroup(["&", ["date", ">=", "2017-03-21"], ["date", "<", "2017-03-22"]], 4);
+                    }
+                    if (nbReadGroup === 5) {
+                        _readGroup(["&", ["date", ">=", "2017-03-13"], ["date", "<", "2017-03-20"]], 4);
+                    }
+                    if (nbReadGroup === 6) {
+                        _readGroup(["&", ["date", ">=", "2016-03-14"], ["date", "<", "2016-03-21"]], 16);
+                    }
+                }
+                return def;
+            },
+        });
+
+        actionManager.doAction({
+            res_model: 'test_time_range',
+            type: 'ir.actions.act_window',
+            views: [[false, 'dashboard']],
+        });
+        assert.strictEqual(actionManager.$('.o_aggregate .o_value').text().trim(), "8.00");
+
+        // Apply time range with today
+        $('button.o_time_range_menu_button').click();
+        $('.o_time_range_selector').val('today');
+        $('.o_apply_range').click();
+        assert.strictEqual(actionManager.$('.o_aggregate .o_value').text().trim(), "16.00");
+        assert.strictEqual(actionManager.$('.o_aggregate .o_value').length, 1);
+
+        // Apply range with today and comparison with previous period
+        $('button.o_time_range_menu_button').click();
+        $('.o_comparison_checkbox').click();
+        $('.o_apply_range').click();
+        assert.strictEqual(actionManager.$('.o_aggregate .o_variation').text(), "300%");
+        assert.ok(actionManager.$('.o_aggregate').hasClass('border-success'));
+        assert.strictEqual(actionManager.$('.o_aggregate .o_comparison').text(), "16.00 vs 4.00");
+
+        // Apply range with last week and comparison with last year
+        $('button.o_time_range_menu_button').click();
+        $('.o_time_range_selector').val('last_week');
+        $('.o_comparison_time_range_selector').val('previous_year');
+        $('.o_apply_range').click();
+        assert.strictEqual(actionManager.$('.o_aggregate .o_variation').text(), "-75%");
+        assert.ok(actionManager.$('.o_aggregate').hasClass('border-danger'));
+        assert.strictEqual(actionManager.$('.o_aggregate .o_comparison').text(), "4.00 vs 16.00");
+
+        actionManager.destroy();
+        window.Date = RealDate;
+    });
 });
 });

@@ -9,11 +9,14 @@ import re
 class AccountInvoiceLine(models.Model):
     _inherit = 'account.invoice.line'
 
+    @api.model
+    def _default_account(self):
+        if self._context.get('set_default_account', True):
+            return super(AccountInvoiceLine, self)._default_account()
+
     def _get_predict_postgres_dictionary(self):
-        # According to our test, it is not necessary to return the postgres lang dictionary
-        # But this method can be overwritten in case user would want to use a specific lang
-        # for the search
-        return 'simple'
+        lang = self._context.get('lang') and self._context.get('lang')[:2]
+        return {'fr': 'french'}.get(lang, 'english')
 
     @api.multi
     def _predict_field(self, sql_query, description):
@@ -26,7 +29,6 @@ class AccountInvoiceLine(models.Model):
             'description': parsed_description,
             'company_id': self.company_id.id or self.env.user.company_id.id,
             'limit_parameter': int(limit_parameter),
-            'field': 'account_id',
         }
         try:
             self.env.cr.execute(sql_query, params)
@@ -92,8 +94,6 @@ class AccountInvoiceLine(models.Model):
         if not description or not partner:
             return False
 
-        psql_lang = self._get_predict_postgres_dictionary()
-
         sql_query = """
             SELECT
                 max(f.rel) AS ranking,
@@ -104,20 +104,28 @@ class AccountInvoiceLine(models.Model):
                     p_search.account_id,
                     ts_rank(p_search.document, query_plain) AS rel
                 FROM (
-                    SELECT
+                    (SELECT
                         ail.account_id,
                         (setweight(to_tsvector(%(lang)s, ail.name), 'B')) ||
-                        (setweight(to_tsvector('simple', p.display_name), 'A')) AS document
+                        (setweight(to_tsvector('simple', 'p--'||ail.partner_id::text), 'A')) AS document
                     FROM account_invoice_line ail
                     JOIN account_invoice inv
                         ON ail.invoice_id = inv.id
-                    JOIN res_partner p
-                        ON p.id = ail.partner_id
                     WHERE inv.type = 'in_invoice'
                         AND inv.state NOT IN ('draft', 'cancel')
                         AND ail.company_id = %(company_id)s
                     ORDER BY inv.date_invoice DESC
                     LIMIT %(limit_parameter)s
+                    ) UNION ALL (
+                    SELECT
+                        id as account_id,
+                        (setweight(to_tsvector(%(lang)s, name), 'B')) AS document
+                    FROM account_account
+                    WHERE user_type_id IN (
+                        SELECT id
+                        FROM account_account_type
+                        WHERE internal_group = 'expense')
+                    )
                 ) p_search,
                 to_tsquery(%(lang)s, %(description)s) query_plain
                 WHERE (p_search.document @@ query_plain)
@@ -125,7 +133,7 @@ class AccountInvoiceLine(models.Model):
             GROUP BY f.account_id
             ORDER BY ranking desc, count desc
         """
-        description += ' ' + partner.display_name
+        description += ' p--' + str(partner.id or '')
         return self._predict_field(sql_query, description)
 
     def _get_invoice_line_name_from_product(self):
@@ -145,7 +153,8 @@ class AccountInvoiceLine(models.Model):
         if self.invoice_id.type == 'in_invoice' and self.name:
             # don't call prediction when the name change is triggered by a change of product
             if self.name != self._get_invoice_line_name_from_product():
-                predict_account = True
+                # don't predict the account if it has already be filled
+                predict_account = not bool(self.account_id)
                 if self.env.user.has_group('account.group_products_in_bills'):
                     predicted_product_id = self._predict_product(self.name)
                     # We only change the product if we manage to predict its value
@@ -162,3 +171,5 @@ class AccountInvoiceLine(models.Model):
                     # We only change the account if we manage to predict its value
                     if predicted_account_id:
                         self.account_id = predicted_account_id
+                    else:
+                        self.account_id = self.with_context(set_default_account=True, journal_id=self.invoice_id.journal_id.id)._default_account()

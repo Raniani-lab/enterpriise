@@ -15,7 +15,7 @@
             <t t-set="head_website">
                 <script type="text/javascript">
                     odoo.session_info = {
-                        is_superuser: <t t-esc="json.dumps(request.env.user._is_superuser())"/>,
+                        is_admin: <t t-esc="json.dumps(request.env.user._is_admin())"/>,
                         is_system: <t t-esc="json.dumps(request.env.user._is_system())"/>,
                         user_id: <t t-esc="json.dumps(request.env.user.id)" />,
                     };

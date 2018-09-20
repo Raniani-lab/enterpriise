@@ -1,13 +1,7 @@
 
 .o_home_menu_background {
-    background: linear-gradient(to right bottom, #77717e, #c9a8a9);
-
-    &:before {
-        content: '';
-        background-image: url(/web_enterprise/static/src/img/home-menu-bg-overlay.svg);
-        background-size: cover;
-        @include o-position-absolute(0,0,0,0);
-    }
+    // 'Home menu background' design is shared with enterprise login
+    // screens and it's located in '/web_enterprise/static/src/scss/ui.scss'
 
     // When applied on webclient (note: we do not specify the webclient class
     // here to avoid breaking studio custom style)

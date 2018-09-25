@@ -14,4 +14,8 @@
         'data/res_config_settings_views.xml',
     ],
     'auto_install': True,
+    'qweb': [
+        'static/src/xml/invoice_extract_box.xml',
+        'static/src/xml/invoice_extract_button.xml',
+    ],
 }

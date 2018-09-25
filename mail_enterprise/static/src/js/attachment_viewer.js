@@ -88,7 +88,7 @@ var AttachmentViewer = Widget.extend({
             function() {
                 self._renderAttachment();
             }
-        ); 
+        );
     },
 
     /**

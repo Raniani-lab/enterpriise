@@ -12,6 +12,8 @@
         background-image: url(/web/static/lib/pdfjs/web/images/texture.png);
         background-repeat: repeat;
         color: $o-wo-tablet-text;
+        height: auto;
+        min-height: auto;
 
         font-size: 16px;
 

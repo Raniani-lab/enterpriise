@@ -153,7 +153,7 @@
                     </div>
                 </div>
                 <div class="workorder_pdf">
-                    <field name="worksheet" widget="pdf_viewer" attrs="{'invisible': [('is_last_step', '=', True), ('is_first_step', '=', False)]}"/>
+                    <field name="worksheet" widget="mrp_pdf_viewer_no_reload" attrs="{'invisible': [('is_last_step', '=', True), ('is_first_step', '=', False)]}"/>
                 </div>
                 <field name="_barcode_scanned" widget="barcode_handler"/>
             </form>
@@ -213,8 +213,16 @@
         <xpath expr="." position="inside">
             <link rel="stylesheet" type="text/scss" href="/mrp_workorder/static/src/scss/tablet_view.scss"/>
             <script type="text/javascript" src="/mrp_workorder/static/src/js/mrp_workorder.js"></script>
+            <script type="text/javascript" src="/mrp_workorder/static/src/js/pdf_viewer_widget.js"></script>
         </xpath>
     </template>
+
+    <template id="qunit_suite" inherit_id="web.qunit_suite">
+        <xpath expr="//script[last()]" position="after">
+            <script type="text/javascript" src="/mrp_workorder/static/tests/pdf_viewer_widget_tests.js"/>
+        </xpath>
+    </template>
+
     <record id="mrp_workorder_view_kanban_inherit_quality" model="ir.ui.view">
         <field name="name">mrp.workorder.view.kanban.inherit.quality</field>
         <field name="model">mrp.workorder</field>

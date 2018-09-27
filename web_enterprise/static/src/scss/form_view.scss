@@ -332,7 +332,7 @@
                     margin-top: 0;
 
                     // These elements will appear attached to the tabs
-                    &.oe_form_field_html_text {
+                    &.oe_form_field_html {
                         @include o-form-sheet-negative-margin;
                         margin-top: -$o-horizontal-padding;
                         border: none;

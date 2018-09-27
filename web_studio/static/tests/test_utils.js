@@ -12,6 +12,44 @@ var ReportEditorManager = require('web_studio.ReportEditorManager');
 var ReportEditorSidebar = require('web_studio.ReportEditorSidebar');
 var ViewEditorManager = require('web_studio.ViewEditorManager');
 
+var Wysiwyg = require('web_editor.wysiwyg');
+
+function colorPicker (params) {
+    if (!params.data) {
+        params.data = {};
+    }
+    params.data['ir.ui.view'] = {
+        fields: {
+            display_name: { string: "Displayed name", type: "char" },
+        },
+        records: [],
+        read_template: function (args) {
+            if (args[0] === 'web_editor.colorpicker') {
+                return '<templates><t t-name="web_editor.colorpicker">' +
+                    '<colorpicker>' +
+                    '    <div class="o_colorpicker_section" data-name="theme" data-display="Theme Colors" data-icon-class="fa fa-flask">' +
+                    '        <button data-color="alpha"></button>' +
+                    '        <button data-color="beta"></button>' +
+                    '        <button data-color="gamma"></button>' +
+                    '        <button data-color="delta"></button>' +
+                    '        <button data-color="epsilon"></button>' +
+                    '    </div>' +
+                    '    <div class="o_colorpicker_section" data-name="transparent_grayscale" data-display="Transparent Colors" data-icon-class="fa fa-eye-slash">' +
+                    '        <button class="o_btn_transparent"></button>' +
+                    '        <button data-color="black-25"></button>' +
+                    '        <button data-color="black-50"></button>' +
+                    '        <button data-color="black-75"></button>' +
+                    '        <button data-color="white-25"></button>' +
+                    '        <button data-color="white-50"></button>' +
+                    '        <button data-color="white-75"></button>' +
+                    '    </div>' +
+                    '    <div class="o_colorpicker_section" data-name="common" data-display="Common Colors" data-icon-class="fa fa-paint-brush"></div>' +
+                    '</colorpicker>' +
+                '</t></templates>';
+            }
+        },
+    };
+}
 /**
  * Test Utils
  *
@@ -67,6 +105,7 @@ function createReportEditor (params) {
  */
 function createReportEditorManager (params) {
     var parent = new StudioEnvironment();
+    colorPicker(params);
     testUtils.mock.addMockEnvironment(parent, params);
 
     var rem = new ReportEditorManager(parent, params);
@@ -82,14 +121,19 @@ function createReportEditorManager (params) {
         $('body').addClass('debug');
     }
     parent.prependTo(selector);
-    rem.appendTo(fragment).then(function () {
-        // use dom.append to call on_attach_callback
-        dom.append(parent.$('.o_web_studio_client_action'), fragment, {
-            callbacks: [{widget: rem}],
-            in_DOM: true,
+    return Wysiwyg.prepare(parent).then(function () {
+        return rem.appendTo(fragment).then(function () {
+            // use dom.append to call on_attach_callback
+            dom.append(parent.$('.o_web_studio_client_action'), fragment, {
+                callbacks: [{widget: rem}],
+                in_DOM: true,
+            });
+        }).then(function () {
+            return rem.editorIframeDef.then(function (){
+                return rem;
+            });
         });
     });
-    return rem;
 }
 
 /**
@@ -112,6 +156,7 @@ function createSidebar (params) {
         },
     });
     var parent = new Parent();
+    colorPicker(params);
     testUtils.mock.addMockEnvironment(parent, params);
 
     var sidebar = new ReportEditorSidebar(parent, params);
@@ -129,10 +174,12 @@ function createSidebar (params) {
     parent.appendTo(selector);
 
     var fragment = document.createDocumentFragment();
-    sidebar.appendTo(fragment).then(function () {
-        sidebar.$el.appendTo(parent.$('.o_web_studio_editor_manager'));
+    return Wysiwyg.prepare(parent).then(function () {
+        sidebar.appendTo(fragment).then(function () {
+            sidebar.$el.appendTo(parent.$('.o_web_studio_editor_manager'));
+        });
+        return sidebar;
     });
-    return sidebar;
 }
 
 /**

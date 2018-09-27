@@ -8,6 +8,9 @@ var fieldRegistry = require('web.field_registry');
 var ModelFieldSelector = require('web.ModelFieldSelector');
 var StandaloneFieldManagerMixin = require('web.StandaloneFieldManagerMixin');
 
+var Wysiwyg = require('web_editor.wysiwyg');
+var FontPlugin = require('web_editor.wysiwyg.plugin.font');
+
 var Abstract = require('web_studio.AbstractReportComponent');
 var DomainSelectorDialog = require('web.DomainSelectorDialog');
 var Domain = require("web.Domain");
@@ -413,6 +416,12 @@ var LayoutEditable = AbstractEditComponent.extend({
         this.allClasses = params.node.attrs.class || "";
     },
     /**
+     * @override
+     */
+    willStart: function () {
+        return $.when(this._super(), Wysiwyg.prepare(this));
+    },
+    /**
      * Override to re-render the color picker on each component rendering.
      *
      * @override
@@ -420,12 +429,21 @@ var LayoutEditable = AbstractEditComponent.extend({
     renderElement: function() {
         var self = this;
         this._super.apply(this, arguments);
-        $.summernote.renderer.createPalette(this.$el,$.summernote.options);
-        this.$el.find(".o_web_studio_background_colorpicker .note-color-palette button").on("click", function(e) {
-            self._onColorChange(e.currentTarget, "background");
+        var fontPlugin = new FontPlugin({
+            layoutInfo: {
+                editable: $('<div/>'),
+                editingArea: $('<div/>'),
+            },
+            options: {},
         });
 
-        this.$el.find(".o_web_studio_font_colorpicker .note-color-palette button").on("click", function(e) {
+        this.$('.o_web_studio_background_colorpicker .note-color-palette').append(fontPlugin.createPalette('backColor'));
+        this.$('.o_web_studio_font_colorpicker .note-color-palette').append(fontPlugin.createPalette('foreColor'));
+
+        this.$el.find(".o_web_studio_background_colorpicker .note-color-palette button").on("mousedown", function(e) {
+            self._onColorChange(e.currentTarget, "background");
+        });
+        this.$el.find(".o_web_studio_font_colorpicker .note-color-palette button").on("mousedown", function(e) {
             self._onColorChange(e.currentTarget, "font");
         });
      },
@@ -462,13 +480,15 @@ var LayoutEditable = AbstractEditComponent.extend({
      * @param {JQelement} $elem
      * @param {String} type either font or background
      */
-    _onColorChange: function ($elem, type) {
-        var params = $elem.dataset;
-        if (params.event) {
-            this._editDomAttribute("class", params.value, type === "background" ? this["background-color-class"] : this["font-color-class"]);
+    _onColorChange: function (elem, type) {
+        var $elem = $(elem);
+        var value = $elem.data('value');
+        var isClass = /^(text|bg)-/ .test(value);
+        if (isClass) {
+            this._editDomAttribute("class", value, type === "background" ? this["background-color-class"] : this["font-color-class"]);
         } else {
             var attributeName = type === "background" ? 'background-color' : 'color';
-            this._editDomAttribute("style", attributeName + ':' + params.value, this[attributeName]);
+            this._editDomAttribute("style", attributeName + ':' + value, this[attributeName]);
         }
     },
     /**
@@ -917,6 +937,9 @@ var Text = AbstractEditComponent.extend({
     template : 'web_studio.ReportText',
     selector: TextSelectorTags.split(',').join(filter + ',') + filter,
     blacklist: TextSelectorTags,
+    custom_events: {
+        wysiwyg_blur: '_onBlurWysiwygEditor',
+    },
     /**
      * @override
      */
@@ -945,7 +968,7 @@ var Text = AbstractEditComponent.extend({
             .then(function () {
                 return self.fieldSelector.text.appendTo(self.$('.o_web_studio_text'));
             }).then(function () {
-                self._startSummernote();
+                self._startWysiwygEditor();
             });
     },
 
@@ -953,43 +976,43 @@ var Text = AbstractEditComponent.extend({
     // Private
     //--------------------------------------------------------------------------
 
-    _startSummernote: function () {
+    _onBlurWysiwygEditor: function () {
         var self = this;
-        var initialValue = this.directiveFields.text.value;
-        var value = initialValue;
-        this.$textarea = this.$('textarea:first');
-        this.$textarea.summernote({
+        return this.wysiwyg.save().then(function (isDirty, html) {
+            if (isDirty) {
+                self._triggerViewChange({text: html});
+            }
+        });
+    },
+    _startWysiwygEditor: function () {
+        this.wysiwyg = new Wysiwyg(this, {
             focus: false,
             height: 180,
             toolbar: [
                 // ['style', ['style']],
                 ['font', ['bold', 'italic', 'underline']],
                 ['fontsize', ['fontsize']],
-                ['color', ['color']],
+                ['color', ['colorpicker']],
                 ['clear', ['clear']],
             ],
             prettifyHtml: false,
             styleWithSpan: false,
-            inlinemedia: ['p'],
             lang: "odoo",
-            onChange: function (v) {
-                value = v;
-            },
-            onBlur: function () {
-                if (initialValue === value) {
-                    return;
-                }
-                self.trigger_up('field_changed', {
-                    forceChange: true,
-                    changes: {
-                        text: value,
-                    }
-                });
-            },
             disableDragAndDrop: true,
+            recordInfo: {
+                context: this.context,
+            },
         });
-        // trigger a mouseup to refresh the editor toolbar
-        this.$('.note-editable:first').trigger('mouseup');
+        this.$textarea = this.$('textarea:first').val(this.directiveFields.text.value);
+
+        this.$textarea.off().on('input', function (e) { // to test simple
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            $(this).data('wysiwyg').setValue($(this).val());
+            $(this).data('wysiwyg').trigger_up('wysiwyg_blur');
+        });
+
+        this.wysiwyg.attachTo(this.$textarea);
     },
     /**
      * @override

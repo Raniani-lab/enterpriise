@@ -11,7 +11,7 @@ $o-mm-resto-color-zeta: #795745;
 
 .o_resto_theme {
     // ===== Editor =====
-    &#web_editor_inside_iframe {
+    &.o_in_iframe {
         background-color: $o-mm-resto-color-alpha;
     }
 

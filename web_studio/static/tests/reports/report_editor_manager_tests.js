@@ -131,7 +131,7 @@ QUnit.module('ReportEditorManager', {
                 '</kikou>',
         });
 
-        var rem = studioTestUtils.createReportEditorManager({
+        var def = studioTestUtils.createReportEditorManager({
             env: {
                 modelName: 'kikou',
                 ids: [42, 43],
@@ -154,7 +154,7 @@ QUnit.module('ReportEditorManager', {
             },
         });
 
-        rem.editorIframeDef.then(function () {
+        def.then(function (rem) {
             assert.containsOnce(rem, '.o_web_studio_sidebar',
                 "a sidebar should be rendered");
 
@@ -204,7 +204,7 @@ QUnit.module('ReportEditorManager', {
                 '</kikou>'
         });
 
-        var rem = studioTestUtils.createReportEditorManager({
+        var def = studioTestUtils.createReportEditorManager({
             data: this.data,
             models: this.models,
             env: {
@@ -220,7 +220,7 @@ QUnit.module('ReportEditorManager', {
             reportMainViewID: 42,
         });
 
-        rem.editorIframeDef.then(function () {
+        def.then(function (rem) {
             assert.containsOnce(rem, '.o_web_studio_sidebar',
                 "a sidebar should be rendered");
             assert.strictEqual(rem.$('iframe').contents().find('.page').text(),"First spanSecond span",
@@ -270,7 +270,7 @@ QUnit.module('ReportEditorManager', {
                 '</kikou>',
         });
 
-        var rem = studioTestUtils.createReportEditorManager({
+        var def = studioTestUtils.createReportEditorManager({
             data: this.data,
             models: this.models,
             env: {
@@ -290,7 +290,7 @@ QUnit.module('ReportEditorManager', {
             reportMainViewID: 42,
         });
 
-        rem.editorIframeDef.then(function () {
+        def.then(function (rem) {
             var iframeWidth = getFloatSizeFromPropertyInPixels(rem.$('.o_web_studio_report_iframe_container'),'width');
             assert.ok(Math.abs(iframeWidth-756) <= 1,"the width should be taken from the paperFormat +/- 1px");
 
@@ -321,7 +321,7 @@ QUnit.module('ReportEditorManager', {
                 '</kikou>',
         });
 
-        var rem = studioTestUtils.createReportEditorManager({
+        var def = studioTestUtils.createReportEditorManager({
             data: this.data,
             models: this.models,
             env: {
@@ -357,7 +357,7 @@ QUnit.module('ReportEditorManager', {
             },
         });
 
-        rem.editorIframeDef.then(function () {
+        def.then(function (rem) {
             assert.strictEqual(rem.$('iframe').contents().find('.page').text(), "First span",
                 "the iframe should be rendered");
             assert.containsOnce(rem, '.o_web_studio_report_pager',
@@ -398,7 +398,7 @@ QUnit.module('ReportEditorManager', {
                 '</kikou>',
         });
 
-        var rem = studioTestUtils.createReportEditorManager({
+        var def = studioTestUtils.createReportEditorManager({
             data: this.data,
             models: this.models,
             env: {
@@ -452,7 +452,7 @@ QUnit.module('ReportEditorManager', {
             },
         });
 
-        rem.editorIframeDef.then(function () {
+        def.then(function (rem) {
             assert.strictEqual(rem.$('iframe').contents().find('.page').text(),"First span",
                 "the iframe should be rendered");
 
@@ -500,7 +500,7 @@ QUnit.module('ReportEditorManager', {
                 '</kikou>',
         });
 
-        var rem = studioTestUtils.createReportEditorManager({
+        var def = studioTestUtils.createReportEditorManager({
             data: this.data,
             models: this.models,
             env: {
@@ -516,7 +516,7 @@ QUnit.module('ReportEditorManager', {
             reportMainViewID: 42,
         });
 
-        rem.editorIframeDef.then(function () {
+        def.then(function (rem) {
             assert.hasAttrValue(rem.$('.o_web_studio_sidebar_header .active'), 'name', 'new',
                 "the 'Add' tab should be active");
             assert.strictEqual(rem.$('iframe').contents().find('.o_web_studio_report_selected').length, 0,
@@ -561,7 +561,7 @@ QUnit.module('ReportEditorManager', {
                 '</kikou>',
         });
 
-        var rem = studioTestUtils.createReportEditorManager({
+        var def = studioTestUtils.createReportEditorManager({
             env: {
                 modelName: 'kikou',
                 ids: [42, 43],
@@ -586,7 +586,7 @@ QUnit.module('ReportEditorManager', {
             },
         });
 
-        rem.editorIframeDef.then(function () {
+        def.then(function (rem) {
             // click to edit a span
             testUtils.dom.click(rem.$('iframe').contents().find('span:contains(First)'));
 
@@ -621,7 +621,7 @@ QUnit.module('ReportEditorManager', {
                 '</kikou>',
         });
 
-        var rem = studioTestUtils.createReportEditorManager({
+        var def = studioTestUtils.createReportEditorManager({
             data: this.data,
             models: this.models,
             env: {
@@ -666,7 +666,7 @@ QUnit.module('ReportEditorManager', {
             },
         });
 
-        rem.editorIframeDef.then(function () {
+        def.then(function (rem) {
             testUtils.dom.click(rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]'));
 
             // drag and drop a Text component, which should trigger a view edition
@@ -696,7 +696,7 @@ QUnit.module('ReportEditorManager', {
                 '</kikou>',
         });
 
-        var rem = studioTestUtils.createReportEditorManager({
+        var def = studioTestUtils.createReportEditorManager({
             env: {
                 modelName: 'kikou',
                 ids: [42, 43],
@@ -731,7 +731,7 @@ QUnit.module('ReportEditorManager', {
             },
         });
 
-        rem.editorIframeDef.then(function () {
+        def.then(function (rem) {
             testUtils.dom.click(rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]'));
 
             // drag and drop a Text component, which should trigger a view edition
@@ -764,7 +764,7 @@ QUnit.module('ReportEditorManager', {
                 '</kikou>',
         });
 
-        var rem = studioTestUtils.createReportEditorManager({
+        var def = studioTestUtils.createReportEditorManager({
             data: this.data,
             models: this.models,
             env: {
@@ -780,7 +780,7 @@ QUnit.module('ReportEditorManager', {
             reportMainViewID: 42,
         });
 
-        rem.editorIframeDef.then(function () {
+        def.then(function (rem) {
             testUtils.dom.click(rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]'));
 
             // drag and drop a Text component
@@ -824,7 +824,7 @@ QUnit.module('ReportEditorManager', {
             dataOeContext: '{"o": "model.test"}'
         };
 
-        var rem = studioTestUtils.createReportEditorManager({
+        var def = studioTestUtils.createReportEditorManager({
             data: this.data,
             models: this.models,
             env: {
@@ -854,7 +854,7 @@ QUnit.module('ReportEditorManager', {
             },
         });
 
-        rem.editorIframeDef.then(function () {
+        def.then(function (rem) {
             testUtils.dom.click(rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]'));
 
             var $field = rem.$('.o_web_studio_sidebar .o_web_studio_field_type_container:eq(0) .o_web_studio_component:contains(Field):eq(0)');
@@ -908,7 +908,7 @@ QUnit.module('ReportEditorManager', {
         };
         templateData.docs.mapped = function (fieldName) {return _.pluck(this, fieldName);};
 
-        var rem = studioTestUtils.createReportEditorManager({
+        var def = studioTestUtils.createReportEditorManager({
             data: this.data,
             models: this.models,
             env: {
@@ -965,7 +965,7 @@ QUnit.module('ReportEditorManager', {
         ];
         var testIndex = 0;
 
-        rem.editorIframeDef.then(function () {
+        def.then(function (rem) {
             testUtils.dom.click(rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]'));
 
             var $field = rem.$('.o_web_studio_sidebar .o_web_studio_field_type_container:eq(1) .o_web_studio_component:contains(Field)');
@@ -1044,7 +1044,7 @@ QUnit.module('ReportEditorManager', {
         };
         templateData.docs.mapped = function (fieldName) {return _.pluck(this, fieldName);};
 
-        var rem = studioTestUtils.createReportEditorManager({
+        var def = studioTestUtils.createReportEditorManager({
             data: this.data,
             models: this.models,
             env: {
@@ -1271,7 +1271,7 @@ QUnit.module('ReportEditorManager', {
         ];
 
 
-        rem.editorIframeDef.then(function () {
+        def.then(function (rem) {
             testUtils.dom.click(rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]'));
 
             // drag and drop a Text component, which should trigger a view edition
@@ -1326,7 +1326,7 @@ QUnit.module('ReportEditorManager', {
         var templateData = {
             dataOeContext: '{"o": "account.invoice"}'
         };
-        var rem = studioTestUtils.createReportEditorManager({
+        var def = studioTestUtils.createReportEditorManager({
             data: this.data,
             models: this.models,
             env: {
@@ -1399,7 +1399,7 @@ QUnit.module('ReportEditorManager', {
             },
         });
 
-        rem.editorIframeDef.then(function () {
+        def.then(function (rem) {
             testUtils.dom.click(rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]'));
             var $main = rem.$('iframe').contents().find('main');
 
@@ -1454,7 +1454,7 @@ QUnit.module('ReportEditorManager', {
                 amount_by_group: null,
             }
         };
-        var rem = studioTestUtils.createReportEditorManager({
+        var def = studioTestUtils.createReportEditorManager({
             data: this.data,
             models: this.models,
             env: {
@@ -1486,7 +1486,7 @@ QUnit.module('ReportEditorManager', {
             },
         });
 
-        rem.editorIframeDef.then(function () {
+        def.then(function (rem) {
             testUtils.dom.click(rem.$('iframe').contents().find('main th'));
             var $card = rem.$('.o_web_studio_sidebar .card:has(.o_text:contains(table))');
             testUtils.dom.click($card.find('[data-toggle="collapse"]'));
@@ -1524,7 +1524,7 @@ QUnit.module('ReportEditorManager', {
         var templateData = {
             dataOeContext: '{"o": "model.test"}'
         };
-        var rem = studioTestUtils.createReportEditorManager({
+        var def = studioTestUtils.createReportEditorManager({
             data: this.data,
             models: this.models,
             env: {
@@ -1568,7 +1568,7 @@ QUnit.module('ReportEditorManager', {
             },
         });
 
-        rem.editorIframeDef.then(function () {
+        def.then(function (rem) {
             testUtils.dom.click(rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]'));
             var $main = rem.$('iframe').contents().find('main');
 
@@ -1608,7 +1608,7 @@ QUnit.module('ReportEditorManager', {
             string: "Partner", type: 'many2one', relation: 'res.partner', 'searchable': true,
         };
 
-        var rem = studioTestUtils.createReportEditorManager({
+        var def = studioTestUtils.createReportEditorManager({
             data: this.data,
             models: this.models,
             env: {
@@ -1644,7 +1644,7 @@ QUnit.module('ReportEditorManager', {
             },
         });
 
-        rem.editorIframeDef.then(function () {
+        def.then(function (rem) {
             testUtils.dom.click(rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]'));
             var $page = rem.$('iframe').contents().find('.page');
 
@@ -1674,7 +1674,7 @@ QUnit.module('ReportEditorManager', {
                     '</t>' +
                 '</kikou>',
         });
-        var rem = studioTestUtils.createReportEditorManager({
+        var def = studioTestUtils.createReportEditorManager({
             data: this.data,
             models: this.models,
             env: {
@@ -1706,21 +1706,24 @@ QUnit.module('ReportEditorManager', {
             },
         });
 
-        rem.editorIframeDef.then(function () {
+        def.then(function (rem) {
             testUtils.dom.click(rem.$('iframe').contents().find('span'));
 
             var $editable = rem.$('.o_web_studio_sidebar .card.o_web_studio_active .note-editable');
 
             assert.strictEqual($editable.html(), 'taratata <strong>bo</strong>', 'Should display the text content');
 
-            $editable.focusIn();
+            $editable.mousedown();
             $editable.html('toto <small>titi</small>');
-            $editable.find('span').focusIn();
+            $editable.find('span').mousedown();
             $editable.keydown();
-            $editable.blur();
 
-            rem.destroy();
-            done();
+            setTimeout(function () {
+                // blur the editor
+                rem.$('.o_web_studio_sidebar').mousedown();
+                rem.destroy();
+                done();
+            });
         });
     });
 
@@ -1758,7 +1761,7 @@ QUnit.module('ReportEditorManager', {
                 '</kikou>',
         });
 
-        var rem = studioTestUtils.createReportEditorManager({
+        var def = studioTestUtils.createReportEditorManager({
             data: this.data,
             models: this.models,
             env: {
@@ -1805,15 +1808,17 @@ QUnit.module('ReportEditorManager', {
             },
         });
 
-        rem.editorIframeDef.then(function () {
+        def.then(function (rem) {
             assert.strictEqual(rem.$('iframe').contents().find('.page').text(),"First span",
                 "the iframe should be rendered");
 
             // click to edit a span and change the text (should trigger the report edition)
             testUtils.dom.click(rem.$('iframe').contents().find('span:contains(First)'));
-            testUtils.fields.editInput(rem.$('.o_web_studio_sidebar .o_web_studio_active textarea[name="text"]'), "hello");
 
-            assert.strictEqual(rem.$('iframe').contents().find('.page').text(),"hello",
+            var $textarea = rem.$('.o_web_studio_sidebar .o_web_studio_active textarea[name="text"]');
+            testUtils.fields.editInput($textarea, "hello");
+
+            assert.strictEqual(rem.$('iframe').contents().find('.page').text(), "hello",
                 "the iframe should have been updated");
             var $newTextarea = rem.$('.o_web_studio_sidebar .o_web_studio_active textarea[name="text"]');
             assert.strictEqual($newTextarea.length, 1,
@@ -1854,7 +1859,7 @@ QUnit.module('ReportEditorManager', {
                 '</kikou>',
         });
 
-        var rem = studioTestUtils.createReportEditorManager({
+        var def = studioTestUtils.createReportEditorManager({
             env: {
                 modelName: 'kikou',
                 ids: [42, 43],
@@ -1911,7 +1916,7 @@ QUnit.module('ReportEditorManager', {
 
         var nbEdit = 0;
         var firstDef = $.Deferred();
-        rem.editorIframeDef.then(function () {
+        def.then(function (rem) {
             testUtils.dom.click(rem.$('iframe').contents().find('div:contains(First):last'));
 
             // trigger a modification
@@ -1947,7 +1952,7 @@ QUnit.module('ReportEditorManager', {
                 '</kikou>',
         });
         var nbEdit = 0;
-        var rem = studioTestUtils.createReportEditorManager({
+        var def = studioTestUtils.createReportEditorManager({
             env: {
                 modelName: 'kikou',
                 ids: [42, 43],
@@ -1989,7 +1994,7 @@ QUnit.module('ReportEditorManager', {
             },
         });
 
-        rem.editorIframeDef.then(function () {
+        def.then(function (rem) {
             testUtils.dom.click(rem.$('iframe').contents().find('div:contains(Kikou):last'));
 
             // trigger a modification that will fail

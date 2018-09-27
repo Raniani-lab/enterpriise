@@ -4,7 +4,7 @@ odoo.define('web_studio.reportNewComponents', function (require) {
 var core = require('web.core');
 var config = require('web.config');
 var Dialog = require('web.Dialog');
-var weWidgets = require('web_editor.widget');
+var weWidgets = require('wysiwyg.widgets');
 
 var Abstract = require('web_studio.AbstractReportComponent');
 var NewFieldDialog = require('web_studio.NewFieldDialog');

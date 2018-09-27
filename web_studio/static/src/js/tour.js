@@ -416,11 +416,14 @@ tour.register('web_studio_new_report_tour', {
     // change the text of the H2 to 'test'
     trigger: '.o_web_studio_sidebar .o_web_studio_text .note-editable',
     run: function () {
-        this.$anchor.focusIn();
+        this.$anchor.mousedown();
         this.$anchor[0].firstChild.textContent = 'Test';
-        this.$anchor.keydown();
-        this.$anchor.blur();
+        this.$anchor.trigger($.Event("keydown", {keyCode: 116, key: 't'}));
     }
+}, {
+    // click outside to blur the field
+    trigger: '.o_web_studio_report_editor',
+    extra_trigger: '.o_web_studio_sidebar .o_web_studio_text .note-editable:contains(Test)',
 }, {
     extra_trigger: '.o_web_studio_report_editor iframe .h2:contains(Test)',
     // add a new group on the node
@@ -473,11 +476,14 @@ tour.register('web_studio_new_report_tour', {
     // update column title 'name' into another title
     trigger: '.o_web_studio_sidebar .o_web_studio_text .note-editable',
         run: function () {
-        this.$anchor.focusIn();
+        this.$anchor.mousedown();
         this.$anchor[0].firstChild.textContent = 'new column title';
-        this.$anchor.keydown();
-        this.$anchor.blur();
+        this.$anchor.trigger($.Event("keydown", {keyCode: 101, key: 'e'}));
     }
+}, {
+    // click outside to blur the field
+    trigger: '.o_web_studio_report_editor',
+    extra_trigger: '.o_web_studio_sidebar .o_web_studio_text .note-editable:contains(new column title)',
 }, {
     // wait to be sure the modification has been correctly applied
     extra_trigger: '.o_web_studio_report_editor iframe table thead span:contains(new column title) ',

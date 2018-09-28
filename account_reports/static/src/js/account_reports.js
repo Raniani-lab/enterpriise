@@ -714,7 +714,8 @@ var accountReportsWidget = AbstractAction.extend({
         var id = $line.data('id');
         var offset = $line.data('offset') || 0;
         var progress = $line.data('progress') || 0;
-        var options = _.extend({}, this.report_options, {lines_offset: offset, lines_progress: progress});
+        var remaining = $line.data('remaining') || 0;
+        var options = _.extend({}, this.report_options, {lines_offset: offset, lines_progress: progress, lines_remaining: remaining});
         var self = this;
         this._rpc({
                 model: this.report_model,

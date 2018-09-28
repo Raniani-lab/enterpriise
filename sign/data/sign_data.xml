@@ -97,7 +97,7 @@
     <!-- Item types -->
     <record model="sign.item.type" id="sign_item_type_signature">
         <field name="name">Signature</field>
-        <field name="type">signature</field>
+        <field name="item_type">signature</field>
         <field name="tip">sign it</field>
         <field name="placeholder">Signature</field>
         <field name="default_width" type="float">0.200</field>
@@ -106,7 +106,7 @@
 
     <record model="sign.item.type" id="sign_item_type_initial">
         <field name="name">Initials</field>
-        <field name="type">initial</field>
+        <field name="item_type">initial</field>
         <field name="tip">mark it</field>
         <field name="placeholder">Initials</field>
         <field name="default_width" type="float">0.085</field>
@@ -119,7 +119,7 @@
 
     <record model="sign.item.type" id="sign_item_type_multiline_text">
         <field name="name">Multiline text</field>
-        <field name="type">textarea</field>
+        <field name="item_type">textarea</field>
         <field name="default_width" type="float">0.300</field>
         <field name="default_height" type="float">0.100</field>
     </record>
@@ -127,7 +127,7 @@
     <record model="sign.item.type" id="sign_item_type_checkbox">
         <field name="name">Checkbox</field>
         <field name="placeholder">Checkbox</field>
-        <field name="type">checkbox</field>
+        <field name="item_type">checkbox</field>
         <field name="default_width" type="float">0.015</field>
         <field name="default_height" type="float">0.015</field>
     </record>

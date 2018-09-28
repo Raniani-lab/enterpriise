@@ -355,11 +355,11 @@ class SignRequest(models.Model):
 
                 value = value.value
 
-                if item.type_id.type == "text":
+                if item.type_id.item_type == "text":
                     can.setFont(font, height*item.height*0.8)
                     can.drawString(width*item.posX, height*(1-item.posY-item.height*0.9), value)
 
-                elif item.type_id.type == "textarea":
+                elif item.type_id.item_type == "textarea":
                     can.setFont(font, height*normalFontSize*0.8)
                     lines = value.split('\n')
                     y = (1-item.posY)
@@ -368,12 +368,12 @@ class SignRequest(models.Model):
                         can.drawString(width*item.posX, height*y, line)
                         y -= normalFontSize*0.1
 
-                elif item.type_id.type == "checkbox":
+                elif item.type_id.item_type == "checkbox":
                     can.setFont(font, height*item.height*0.8)
                     value = 'X' if value == 'on' else ''
                     can.drawString(width*item.posX, height*(1-item.posY-item.height*0.9), value)
 
-                elif item.type_id.type == "signature" or item.type_id.type == "initial":
+                elif item.type_id.item_type == "signature" or item.type_id.item_type == "initial":
                     image_reader = ImageReader(io.BytesIO(base64.b64decode(value[value.find(',')+1:])))
                     _fix_image_transparency(image_reader._image)
                     can.drawImage(image_reader, width*item.posX, height*(1-item.posY-item.height), width*item.width, height*item.height, 'auto', True)
@@ -530,11 +530,11 @@ class SignRequestItem(models.Model):
                 item_value = SignItemValue.search([('sign_item_id', '=', int(itemId)), ('sign_request_id', '=', request.id)])
                 if not item_value:
                     item_value = SignItemValue.create({'sign_item_id': int(itemId), 'sign_request_id': request.id, 'value': signature[itemId]})
-                    if item_value.sign_item_id.type_id.type == 'signature':
+                    if item_value.sign_item_id.type_id.item_type == 'signature':
                         self.signature = signature[itemId][signature[itemId].find(',')+1:]
                         if user:
                             user.sign_signature = self.signature
-                    if item_value.sign_item_id.type_id.type == 'initial' and user:
+                    if item_value.sign_item_id.type_id.item_type == 'initial' and user:
                         user.sign_initials = signature[itemId][signature[itemId].find(',')+1:]
 
         return True

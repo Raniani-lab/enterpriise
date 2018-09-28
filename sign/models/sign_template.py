@@ -158,13 +158,13 @@ class SignItemType(models.Model):
     _description = "Signature Item Type"
 
     name = fields.Char(string="Field Name", required=True, translate=True)
-    type = fields.Selection([
+    item_type = fields.Selection([
         ('signature', "Signature"),
         ('initial', "Initial"),
         ('text', "Text"),
         ('textarea', "Multiline Text"),
         ('checkbox', "Checkbox"),
-    ], required=True, default='text')
+    ], required=True, string='Type', default='text', oldname='type')
 
     tip = fields.Char(required=True, default="fill in", translate=True)
     placeholder = fields.Char()

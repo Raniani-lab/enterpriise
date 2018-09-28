@@ -39,35 +39,35 @@ is explained in the ad hoc fields.
             <field name="page_id" ref="appraisal_1" />
             <field name="sequence">1</field>
             <field name="question">Name</field>
-            <field name="type">textbox</field>
+            <field name="question_type">textbox</field>
             <field name="constr_mandatory" eval="True" />
         </record>
         <record model="survey.question" id="appraisal_1_2">
             <field name="page_id" ref="appraisal_1" />
             <field name="sequence">2</field>
             <field name="question">Position Title</field>
-            <field name="type">textbox</field>
+            <field name="question_type">textbox</field>
             <field name="constr_mandatory" eval="True" />
         </record>
         <record model="survey.question" id="appraisal_1_3">
             <field name="page_id" ref="appraisal_1" />
             <field name="sequence">3</field>
             <field name="question">Appraisal for Period</field>
-            <field name="type">textbox</field>
+            <field name="question_type">textbox</field>
             <field name="constr_mandatory" eval="True" />
         </record>
         <record model="survey.question" id="appraisal_1_4">
             <field name="page_id" ref="appraisal_1" />
             <field name="sequence">4</field>
             <field name="question">Date of review</field>
-            <field name="type">textbox</field>
+            <field name="question_type">textbox</field>
             <field name="constr_mandatory" eval="True" />
         </record>
         <record model="survey.question" id="appraisal_1_5">
             <field name="page_id" ref="appraisal_1" />
             <field name="sequence">5</field>
             <field name="question">Appraiser</field>
-            <field name="type">textbox</field>
+            <field name="question_type">textbox</field>
             <field name="constr_mandatory" eval="True" />
         </record>
         <!-- Page 2 -->
@@ -81,21 +81,21 @@ is explained in the ad hoc fields.
             <field name="page_id" ref="appraisal_2" />
             <field name="sequence">1</field>
             <field name="question">Objectives</field>
-            <field name="type">free_text</field>
+            <field name="question_type">free_text</field>
             <field name="constr_mandatory" eval="True" />
         </record>
         <record model="survey.question" id="appraisal_2_2">
             <field name="page_id" ref="appraisal_2" />
             <field name="sequence">2</field>
             <field name="question">Results</field>
-            <field name="type">free_text</field>
+            <field name="question_type">free_text</field>
             <field name="constr_mandatory" eval="True" />
         </record>
         <record model="survey.question" id="appraisal_2_3">
             <field name="page_id" ref="appraisal_2" />
             <field name="sequence">3</field>
             <field name="question">Additional Comments</field>
-            <field name="type">free_text</field>
+            <field name="question_type">free_text</field>
         </record>
         <!-- Page 3 -->
         <record model="survey.page" id="appraisal_3">
@@ -114,7 +114,7 @@ below:&lt;ol&gt;
             <field name="page_id" ref="appraisal_3" />
             <field name="sequence">1</field>
             <field name="question">Subject</field>
-            <field name="type">matrix</field>
+            <field name="question_type">matrix</field>
             <field name="matrix_subtype">simple</field>
             <field name="constr_mandatory" eval="True" />
         </record>
@@ -222,7 +222,7 @@ below:&lt;ol&gt;
             <field name="page_id" ref="appraisal_3" />
             <field name="sequence">2</field>
             <field name="question">Supervisors only</field>
-            <field name="type">matrix</field>
+            <field name="question_type">matrix</field>
             <field name="matrix_subtype">simple</field>
         </record>
                 <record model="survey.label" id="acol_3_2_1">
@@ -287,19 +287,19 @@ over the coming year.&lt;/p&gt;</field>
             <field name="page_id" ref="appraisal_4" />
             <field name="sequence">1</field>
             <field name="question">Professional Development Objectives</field>
-            <field name="type">free_text</field>
+            <field name="question_type">free_text</field>
         </record>
         <record model="survey.question" id="appraisal_4_2">
             <field name="page_id" ref="appraisal_4" />
             <field name="sequence">2</field>
             <field name="question">Personal Performance Objectives</field>
-            <field name="type">free_text</field>
+            <field name="question_type">free_text</field>
         </record>
         <record model="survey.question" id="appraisal_4_3">
             <field name="page_id" ref="appraisal_4" />
             <field name="sequence">3</field>
             <field name="question">Project Objectives</field>
-            <field name="type">free_text</field>
+            <field name="question_type">free_text</field>
         </record>
         <!-- Page 5 -->
         <record model="survey.page" id="appraisal_5">
@@ -312,7 +312,7 @@ over the coming year.&lt;/p&gt;</field>
             <field name="page_id" ref="appraisal_5" />
             <field name="sequence">1</field>
             <field name="question">Use the following space to make any comments regarding the above performance evaluation.</field>
-            <field name="type">free_text</field>
+            <field name="question_type">free_text</field>
         </record>
         <!-- Employee Opinion form -->
         <record model="survey.survey" id="opinion_form">
@@ -344,14 +344,14 @@ over the coming year.&lt;/p&gt;</field>
             <field name="page_id" ref="opinion_1" />
             <field name="sequence">1</field>
             <field name="question">Name of your direct supervisor</field>
-            <field name="type">textbox</field>
+            <field name="question_type">textbox</field>
             <field name="constr_mandatory" eval="True" />
         </record>
         <record model="survey.question" id="opinion_1_2">
             <field name="page_id" ref="opinion_1" />
             <field name="sequence">2</field>
             <field name="question">Date</field>
-            <field name="type">textbox</field>
+            <field name="question_type">textbox</field>
             <field name="constr_mandatory" eval="True" />
         </record>
         <!-- Page 2 -->
@@ -365,7 +365,7 @@ over the coming year.&lt;/p&gt;</field>
             <field name="page_id" ref="opinion_2" />
             <field name="sequence">1</field>
             <field name="question">Engagement</field>
-            <field name="type">matrix</field>
+            <field name="question_type">matrix</field>
             <field name="matrix_subtype">simple</field>
         </record>
                 <record model="survey.label" id="opcol_2_1_1">
@@ -422,7 +422,7 @@ over the coming year.&lt;/p&gt;</field>
             <field name="page_id" ref="opinion_2" />
             <field name="sequence">2</field>
             <field name="question">Leadership</field>
-            <field name="type">matrix</field>
+            <field name="question_type">matrix</field>
             <field name="matrix_subtype">simple</field>
         </record>
                 <record model="survey.label" id="opcol_2_2_1">
@@ -474,7 +474,7 @@ over the coming year.&lt;/p&gt;</field>
             <field name="page_id" ref="opinion_2" />
             <field name="sequence">3</field>
             <field name="question">Effectiveness</field>
-            <field name="type">matrix</field>
+            <field name="question_type">matrix</field>
             <field name="matrix_subtype">simple</field>
         </record>
                 <record model="survey.label" id="opcol_2_3_1">
@@ -521,7 +521,7 @@ over the coming year.&lt;/p&gt;</field>
             <field name="page_id" ref="opinion_2" />
             <field name="sequence">4</field>
             <field name="question">Continuous Improvement</field>
-            <field name="type">matrix</field>
+            <field name="question_type">matrix</field>
             <field name="matrix_subtype">simple</field>
         </record>
                 <record model="survey.label" id="opcol_2_4_1">
@@ -573,7 +573,7 @@ over the coming year.&lt;/p&gt;</field>
             <field name="page_id" ref="opinion_2" />
             <field name="sequence">5</field>
             <field name="question">Openness</field>
-            <field name="type">matrix</field>
+            <field name="question_type">matrix</field>
             <field name="matrix_subtype">simple</field>
         </record>
                 <record model="survey.label" id="opcol_2_5_1">
@@ -615,7 +615,7 @@ over the coming year.&lt;/p&gt;</field>
             <field name="page_id" ref="opinion_2" />
             <field name="sequence">6</field>
             <field name="question">Miscellaneous</field>
-            <field name="type">matrix</field>
+            <field name="question_type">matrix</field>
             <field name="matrix_subtype">simple</field>
         </record>
                 <record model="survey.label" id="opcol_2_6_1">
@@ -667,6 +667,6 @@ over the coming year.&lt;/p&gt;</field>
             <field name="page_id" ref="opinion_2" />
             <field name="sequence">7</field>
             <field name="question">Additional comments</field>
-            <field name="type">free_text</field>
+            <field name="question_type">free_text</field>
         </record>
 </odoo>

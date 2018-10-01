@@ -144,6 +144,7 @@ var AbstractEditComponent = Abstract.extend(StandaloneFieldManagerMixin, {
 
         this.fieldSelector[directiveKey] = new ModelFieldSelector(this, 'record_fake_model', split.chain,
             _.extend({
+                showSearchInput: true,
                 readonly: options.mode === 'readonly',
                 searchable: false,
                 fields: availableKeys,

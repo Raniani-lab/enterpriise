@@ -122,6 +122,7 @@ var NewFieldDialog = Dialog.extend(StandaloneFieldManagerMixin, {
             // This restores default modal height (bootstrap) and allows field selector to overflow
             this.$el.css("overflow", "visible").closest(".modal-dialog").css("height", "auto");
             var field_options = {
+                showSearchInput: true,
                 order: this.order,
                 filter: this.filter,
                 followRelations: this.followRelations,

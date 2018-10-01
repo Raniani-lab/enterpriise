@@ -596,13 +596,13 @@
                         <label for="name" class="oe_edit_only" string="Alert Name"/>
                         <h1><field name="name" placeholder="e.g. Update order quantity"/></h1>
                     </div>
-                    <group string="Apply on">
-                        <group>
+                    <group name="apply_on_panel" string="Apply on">
+                        <group name="subscription_details">
                             <field name="subscription_template_ids" widget="many2many_tags"/>
                             <field name="customer_ids" widget="many2many_tags"/>
                             <field name="company_id" groups="base.group_multi_company"/>
                         </group>
-                        <group>
+                        <group name="mrr_between_details">
                             <label for="mrr_min" string="MRR Between"/>
                             <div class="o_row">
                                 <field name="mrr_min"/>
@@ -611,7 +611,7 @@
                             </div>
                             <field name="product_ids" widget="many2many_tags"/>
                         </group>
-                        <group>
+                        <group name="mrr_details">
                             <label for="mrr_change_amount" string="MRR Change More"/>
                             <div class="o_row">
                                 <field name="mrr_change_amount"/>
@@ -619,7 +619,7 @@
                             </div>
                             <field name="mrr_change_period" string="Over"/>
                         </group>
-                        <group>
+                        <group name="rating_details">
                             <label for="rating_percentage" string="Rating Satisfaction"/>
                             <div class="o_row">
                                 <field name="rating_operator"/>
@@ -627,7 +627,7 @@
                                 <strong>%</strong>
                             </div>
                         </group>
-                        <group>
+                        <group name="stage_details">
                             <label for="stage_from_id" string="Stage"/>
                             <div class="o_row">
                                 <field name="stage_from_id"/>
@@ -656,7 +656,7 @@
                             <field name="trg_date_calendar_id"
                                 attrs="{'invisible': ['|', ('trg_date_id','=',False), ('trg_date_range_type', '!=', 'day')]}"/>
                         </group>
-                        <group>
+                        <group name="action_details">
                             <field name="action"/>
                             <field name="tag_id"
                                 attrs="{'invisible': [('action', '!=', 'set_tag')],
@@ -670,11 +670,11 @@
                         </group>
                     </group>
                     <group string="Activity" name="next_activity" autofocus="autofocus" attrs="{'invisible': [('action', '!=', 'next_activity')]}">
-                        <group>
+                        <group name="activity_details">
                             <field name="activity_type_id" options="{'no_create': True, 'no_open': True}" attrs="{'required': [('action', '=', 'next_activity')]}"/>
                             <field name="activity_summary" placeholder="e.g. Discuss proposal"/>
                         </group>
-                        <group>
+                        <group name="activitity_deadlines">
                             <label for="activity_date_deadline_range"/>
                             <div class="o_row">
                                 <field name="activity_date_deadline_range"/>

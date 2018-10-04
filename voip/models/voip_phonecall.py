@@ -36,10 +36,10 @@ class VoipPhonecall(models.Model):
         help='The status is set to To Do, when a call is created.\n'
              'When the call is over, the status is set to Held.\n'
              'If the call is not applicable anymore, the status can be set to Cancelled.')
-    type = fields.Selection([
+    phonecall_type = fields.Selection([
         ('incoming', 'Incoming'),
         ('outgoing', 'Outgoing')
-    ], string='Type', default='outgoing')
+    ], string='Type', default='outgoing', oldname='type')
 
     @api.multi
     def init_call(self):
@@ -194,7 +194,7 @@ class VoipPhonecall(models.Model):
         phonecall = self.create({
             'name': name,
             'phone': number,
-            'type': 'incoming',
+            'phonecall_type': 'incoming',
             'partner_id': partner_id,
         })
         phonecall.init_call()

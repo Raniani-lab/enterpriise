@@ -9,7 +9,7 @@
             <field name="name">1 Hour SMS text</field>
             <field name="interval">hours</field>
             <field name="duration">1</field>
-            <field name="type">sms</field>
+            <field name="alarm_type">sms</field>
         </record>
 
         <record id="menu_appointment" model="website.menu">

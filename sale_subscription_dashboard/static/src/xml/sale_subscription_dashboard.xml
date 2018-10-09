@@ -5,26 +5,6 @@
 
     <!-- 1. Main dashboard -->
     <div t-name="sale_subscription_dashboard.dashboard" class="container o_account_contract_dashboard">
-        <div t-if="!has_mrr" class="o_welcome_message box">
-            <div class="o_welcome_image"><span class="fa fa-smile-o fa-5x" role="img" aria-label="Welcome!" title="Welcome!"/></div>
-            <div t-if="has_template" class="o_welcome_content">
-                <h2>Hi there!</h2>
-                <t t-if="has_def_revenues">
-                    <p class="mt0">Now that you have defined a subscription template and your revenues types,<br/> invoice your first subscription to activate your dashboard.</p>
-                    <a role="button" class="btn btn-primary on_demo_contracts">Your Subscriptions</a>
-                </t>
-                <t t-if="!has_def_revenues">
-                    <p class="mt0">You're just missing some Deferred Revenue Types to ensure your dashboard works correctly.</p>
-                    <a role="button" class="btn btn-primary on_demo_templates">Edit your Templates</a>
-                </t>
-            </div>
-            <div t-if="!has_template" class="o_welcome_content">
-                <h2>Hi there!</h2>
-                <p class="mt0">This is a sample dashboard. Your actual dashboard will be activated after<br/>having defined your subscription templates and deferred revenue categories and invoiced your first subscription.</p>
-                <a role="button" class="btn btn-primary on_demo_templates">Create a Template</a>
-            </div>
-        </div>
-
         <div class="o_stats_section">
             <div t-foreach="stat_types" t-as="stat">
                 <a href="#" class="on_stat_box" t-att-data-stat="stat['code']">
@@ -247,7 +227,7 @@
 
     <div t-name="sale_subscription_dashboard.salesman_searchview" class="o_datepickers_searchview">
         <span class="o_datepicker_separator"> to </span>
-        <select class="o_salesman_selection" name="salesman">
+        <select class="o_salesman_selection form-control" name="salesman">
             <option></option>
             <t t-foreach="salesman_ids" t-as="sman">
                 <option name="salesman" t-att-selected="salesman &amp;&amp; salesman['id'] === sman['id'] ? 'selected' : undefined" t-att-value="sman['id']"><t t-esc="sman['name']"/></option>
@@ -295,11 +275,11 @@
         <!-- Sales Team -->
         <div t-if="widget.sales_team &amp;&amp; widget.sales_team.length > 1" class="o_dropdown dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown">Filter on sales team<span class="caret"/></a>
-            <ul class="dropdown-menu o_filters_menu" role="menu">
-                <li t-foreach="widget.sales_team" t-as="sale_team">
+            <div class="dropdown-menu o_filters_menu" role="menu">
+                <t t-foreach="widget.sales_team" t-as="sale_team">
                     <a role="menuitem" href="#" class="dropdown-item o_sales_team_filter js_tag" t-att-data-id="sale_team.id"><t t-esc="sale_team.name"/></a>
-                </li>
-            </ul>
+                </t>
+            </div>
         </div>
     </t>
 

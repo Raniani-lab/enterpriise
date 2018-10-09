@@ -45,6 +45,7 @@
         }
 
         .o_burger_menu_app {
+            padding-left: 20px;
             ul {
                 padding: 0px;
                 > li {
@@ -53,15 +54,16 @@
                         display: block;
                         padding: 10px 15px;
                         color: white;
+                        font-weight: inherit;
                         .toggle_icon {
                             margin-top: 4px;
                         }
                     }
-                    > div {
+                    > ul {
                         display: none;
                     }
                     &.show {
-                        > div {
+                        > ul {
                             display: block;
                         }
                     }

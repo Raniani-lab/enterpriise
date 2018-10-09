@@ -178,13 +178,19 @@
                                                             <i class="fa fa-pie-chart" /> Email Details
                                                         </div>
                                                         <div class="col-3" title="Mails sent and not bounced">
-                                                            <strong><t t-esc="record.total_sent.raw_value or 0"></t></strong> Sent
+                                                            <a name="action_view_sent" type="object">
+                                                                <strong><t t-esc="record.total_sent.raw_value or 0"></t></strong> Sent
+                                                            </a>
                                                         </div>
                                                         <div class="col-3">
-                                                            <strong><t t-esc="Math.round((record.total_click.raw_value/(record.total_sent.raw_value or 1)) * 100) or 0" />%</strong> Clicked
+                                                            <a name="action_view_clicked" type="object">
+                                                                <strong><t t-esc="Math.round((record.total_click.raw_value/(record.total_sent.raw_value or 1)) * 100) or 0" />%</strong> Clicked
+                                                            </a>
                                                         </div>
                                                         <div class="col-3">
-                                                            <strong><t t-esc="Math.round((record.total_reply.raw_value/(record.total_sent.raw_value or 1)) * 100) or 0" />%</strong> Replied
+                                                            <a name="action_view_replied" type="object">
+                                                                <strong><t t-esc="Math.round((record.total_reply.raw_value/(record.total_sent.raw_value or 1)) * 100) or 0" />%</strong> Replied
+                                                            </a>
                                                         </div>
                                                     </div>
                                                 </div>

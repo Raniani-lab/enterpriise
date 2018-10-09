@@ -12,6 +12,11 @@ file_filter = account_accountant/i18n/<lang>.po
 source_file = account_accountant/i18n/account_accountant.pot
 source_lang = en
 
+[odoo-master.account_asset]
+file_filter = account_asset/i18n/<lang>.po
+source_file = account_asset/i18n/account_asset.pot
+source_lang = en
+
 [odoo-master.account_bank_statement_import_camt]
 file_filter = account_bank_statement_import_camt/i18n/<lang>.po
 source_file = account_bank_statement_import_camt/i18n/account_bank_statement_import_camt.pot
@@ -35,6 +40,11 @@ source_lang = en
 [odoo-master.account_batch_payment]
 file_filter = account_batch_payment/i18n/<lang>.po
 source_file = account_batch_payment/i18n/account_batch_payment.pot
+source_lang = en
+
+[odoo-master.account_budget]
+file_filter = account_budget/i18n/<lang>.po
+source_file = account_budget/i18n/account_budget.pot
 source_lang = en
 
 [odoo-master.account_deferred_revenue]
@@ -157,9 +167,9 @@ file_filter = documents_account/i18n/<lang>.po
 source_file = documents_account/i18n/documents_account.pot
 source_lang = en
 
-[odoo-master.documents_mrp]
-file_filter = documents_mrp/i18n/<lang>.po
-source_file = documents_mrp/i18n/documents_mrp.pot
+[odoo-master.documents_product]
+file_filter = documents_product/i18n/<lang>.po
+source_file = documents_product/i18n/documents_product.pot
 source_lang = en
 
 [odoo-master.documents_project]
@@ -222,6 +232,11 @@ file_filter = inter_company_rules/i18n/<lang>.po
 source_file = inter_company_rules/i18n/inter_company_rules.pot
 source_lang = en
 
+[odoo-master.iot]
+file_filter = iot/i18n/<lang>.po
+source_file = iot/i18n/iot.pot
+source_lang = en
+
 [odoo-master.mail_enterprise]
 file_filter = mail_enterprise/i18n/<lang>.po
 source_file = mail_enterprise/i18n/mail_enterprise.pot
@@ -275,6 +290,16 @@ source_lang = en
 [odoo-master.ocn_client]
 file_filter = ocn_client/i18n/<lang>.po
 source_file = ocn_client/i18n/ocn_client.pot
+source_lang = en
+
+[odoo-master.pos_iot]
+file_filter = pos_iot/i18n/<lang>.po
+source_file = pos_iot/i18n/pos_iot.pot
+source_lang = en
+
+[odoo-master.pos_restaurant_iot]
+file_filter = pos_restaurant_iot/i18n/<lang>.po
+source_file = pos_restaurant_iot/i18n/pos_restaurant_iot.pot
 source_lang = en
 
 [odoo-master.pos_loyalty]
@@ -525,11 +550,6 @@ source_lang = en
 [odoo-master.website_sale_dashboard]
 file_filter = website_sale_dashboard/i18n/<lang>.po
 source_file = website_sale_dashboard/i18n/website_sale_dashboard.pot
-source_lang = en
-
-[odoo-master.website_sale_dashboard_with_margin]
-file_filter = website_sale_dashboard_with_margin/i18n/<lang>.po
-source_file = website_sale_dashboard_with_margin/i18n/website_sale_dashboard_with_margin.pot
 source_lang = en
 
 [odoo-master.website_studio]

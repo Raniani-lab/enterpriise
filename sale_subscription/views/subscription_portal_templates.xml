@@ -21,7 +21,7 @@
                                 <a role="button" class="mt8 btn btn-secondary" href="?change_pm">Change Payment Method</a>
                             </li>
 
-                            <li t-if="account.user_id" class="list-group-item flex-grow-1 o_portal_contact_block">
+                            <li t-if="account.user_id" class="list-group-item flex-grow-1">
                                 <div class="small mb-1"><strong class="text-muted">Subscription Manager:</strong></div>
                                 <div class="row flex-nowrap">
                                     <div class="col flex-grow-0 pr-2">

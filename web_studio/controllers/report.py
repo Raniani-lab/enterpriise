@@ -15,19 +15,29 @@ class WebStudioReportController(main.WebStudioController):
     @http.route('/web_studio/create_new_report', type='json', auth='user')
     def create_new_report(self, model_name, layout):
 
-        arch = etree.fromstring("""
-            <t t-name="report_blank">
-                <t t-call="web.html_container">
-                    <t t-foreach="docs" t-as="doc">
-                        <t t-call="%(layout)s">
+        if layout == 'web.basic_layout':
+            arch = etree.fromstring("""
+                <t t-name="studio_report">
+                    <t t-call="%(layout)s">
+                        <t t-foreach="docs" t-as="doc">
                             <div class="page"/>
                         </t>
                     </t>
                 </t>
-            </t>
-        """ % {
-            'layout': layout,
-        })
+            """ % { 'layout': layout })
+        else:
+            arch = etree.fromstring("""
+                <t t-name="studio_report">
+                    <t t-call="web.html_container">
+                        <t t-foreach="docs" t-as="doc">
+                            <t t-call="%(layout)s">
+                                <div class="page"/>
+                            </t>
+                        </t>
+                    </t>
+                </t>
+            """ % { 'layout': layout })
+
         view = request.env['ir.ui.view'].create({
             'name': 'report',
             'type': 'qweb',
@@ -73,6 +83,11 @@ class WebStudioReportController(main.WebStudioController):
             report.write(values)
 
         return report.read()
+
+    @http.route('/web_studio/read_paperformat', type='json', auth='user')
+    def read_paperformat(self, report_id):
+        report = request.env['ir.actions.report'].browse(report_id)
+        return report.get_paperformat().read()
 
     @http.route('/web_studio/get_widgets_available_options', type='json', auth='user')
     def get_widgets_available_options(self):
@@ -246,7 +261,10 @@ class WebStudioReportController(main.WebStudioController):
         # render the report to catch a rendering error
         report = request.env['ir.actions.report']._get_report_from_name(report_name)
         try:
-            return report.render_qweb_html([record_id], {'full_branding': True})
+            return report.render_qweb_html([record_id], {
+                'full_branding': True,
+                'studio': True,
+            })
         except Exception as err:
             # the report could not be rendered which probably means the last
             # operation was incorrect

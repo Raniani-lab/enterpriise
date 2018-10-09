@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:29+0000\n"
-"PO-Revision-Date: 2018-08-24 11:29+0000\n"
+"POT-Creation-Date: 2018-09-18 10:05+0000\n"
+"PO-Revision-Date: 2018-09-18 10:05+0000\n"
 "Last-Translator: trendspotter, 2018\n"
 "Language-Team: Czech (https://www.transifex.com/odoo/teams/41243/cs/)\n"
 "MIME-Version: 1.0\n"
@@ -23,7 +23,7 @@ msgstr ""
 #: code:addons/website_studio/static/src/xml/form_manager.xml:9
 #, python-format
 msgid "App icon"
-msgstr ""
+msgstr "Ikona aplikace"
 
 #. module: website_studio
 #. openerp-web
@@ -40,13 +40,13 @@ msgid "Forms"
 msgstr ""
 
 #. module: website_studio
-#: model:ir.ui.view,arch_db:website_studio.default_form_field_name
+#: model_terms:ir.ui.view,arch_db:website_studio.default_form_field_name
 msgid "Name"
 msgstr "Název"
 
 #. module: website_studio
-#: model:ir.ui.view,arch_db:website_studio.default_form_field_name
-#: model:ir.ui.view,arch_db:website_studio.default_form_page
+#: model_terms:ir.ui.view,arch_db:website_studio.default_form_field_name
+#: model_terms:ir.ui.view,arch_db:website_studio.default_form_page
 msgid "Send"
 msgstr "Odeslat"
 

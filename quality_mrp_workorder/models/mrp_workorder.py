@@ -8,9 +8,9 @@ from odoo.exceptions import UserError
 class MrpProductionWorkcenterLine(models.Model):
     _inherit = "mrp.workorder"
 
-    measure = fields.Float(related='current_quality_check_id.measure')
-    measure_success = fields.Selection(related='current_quality_check_id.measure_success')
-    norm_unit = fields.Char(related='current_quality_check_id.norm_unit')
+    measure = fields.Float(related='current_quality_check_id.measure', readonly=False)
+    measure_success = fields.Selection(related='current_quality_check_id.measure_success', readonly=False)
+    norm_unit = fields.Char(related='current_quality_check_id.norm_unit', readonly=False)
 
     def do_pass(self):
         self.ensure_one()

@@ -58,7 +58,6 @@
             <link rel="stylesheet" type="text/scss" href="/web_enterprise/static/src/scss/datepicker.scss"/>
             <link rel="stylesheet" type="text/scss" href="/web_enterprise/static/src/scss/kanban_view.scss"/>
             <link rel="stylesheet" type="text/scss" href="/web_enterprise/static/src/scss/touch_device.scss"/>
-            <link rel="stylesheet" type="text/scss" href="/web_enterprise/static/src/scss/keyboard.scss"/>
 
             <link rel="stylesheet" type="text/scss" href="/web/static/src/scss/navbar_mobile.scss"/>
         </xpath>

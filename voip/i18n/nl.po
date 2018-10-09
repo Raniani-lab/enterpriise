@@ -5,13 +5,14 @@
 # Translators:
 # Martin Trigaux, 2018
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2018
+# Thomas Pot <thomas@open2bizz.nl>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:29+0000\n"
-"PO-Revision-Date: 2018-08-24 11:29+0000\n"
-"Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2018\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"Last-Translator: Thomas Pot <thomas@open2bizz.nl>, 2018\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -91,14 +92,14 @@ msgid "Call Name"
 msgstr "Roepnaam"
 
 #. module: voip
-#: code:addons/voip/models/voip_phonecall.py:192
+#: code:addons/voip/models/voip_phonecall.py:193
 #, python-format
 msgid "Call from "
 msgstr "Oproep van"
 
 #. module: voip
-#: code:addons/voip/models/voip_phonecall.py:182
-#: code:addons/voip/models/voip_phonecall.py:224
+#: code:addons/voip/models/voip_phonecall.py:183
+#: code:addons/voip/models/voip_phonecall.py:225
 #, python-format
 msgid "Call to "
 msgstr "Bellen naar"
@@ -111,14 +112,14 @@ msgid "Calling "
 msgstr "Wordt gebeld"
 
 #. module: voip
-#: model:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
+#: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 msgid "Calls Date"
 msgstr ""
 
 #. module: voip
 #. openerp-web
 #: code:addons/voip/static/src/xml/voip_phonecall.xml:153
-#: model:ir.ui.view,arch_db:voip.wizard_transfer_call_form_view
+#: model_terms:ir.ui.view,arch_db:voip.wizard_transfer_call_form_view
 #, python-format
 msgid "Cancel"
 msgstr "Annuleren"
@@ -162,6 +163,11 @@ msgid "Close"
 msgstr "Sluiten"
 
 #. module: voip
+#: model:ir.model,name:voip.model_res_config_settings
+msgid "Config Settings"
+msgstr "Configuratie instellingen"
+
+#. module: voip
 #: model:ir.model,name:voip.model_res_partner
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__partner_id
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_report__partner_id
@@ -185,7 +191,7 @@ msgid "Created on"
 msgstr "Aangemaakt op"
 
 #. module: voip
-#: model:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
+#: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 msgid "Creation Date"
 msgstr "Aanmaakdatum"
 
@@ -205,7 +211,7 @@ msgstr "Klant is onbereikbaar"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_report__call_date
-#: model:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
+#: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 msgid "Date"
 msgstr "Datum"
 
@@ -265,7 +271,7 @@ msgstr ""
 "Bepaalt de volgorde wanneer een lijst met telefoongesprekken getoond wordt."
 
 #. module: voip
-#: model:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
+#: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 msgid "Group By"
 msgstr "Groepeer op"
 
@@ -309,7 +315,7 @@ msgid "In Call Queue"
 msgstr "In de wachtrij"
 
 #. module: voip
-#: model:ir.actions.act_window,help:voip.voip_phonecall_view
+#: model_terms:ir.actions.act_window,help:voip.voip_phonecall_view
 msgid ""
 "In order to follow up on the call, you can trigger a request for\n"
 "        another call, a meeting."
@@ -385,7 +391,7 @@ msgid "Log"
 msgstr "Log"
 
 #. module: voip
-#: model:ir.actions.act_window,help:voip.voip_phonecall_view
+#: model_terms:ir.actions.act_window,help:voip.voip_phonecall_view
 msgid "Log the summary of a phonecall"
 msgstr "Log de samenvatting van een telefoongesprek"
 
@@ -426,7 +432,7 @@ msgid "Mute"
 msgstr ""
 
 #. module: voip
-#: model:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
+#: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 msgid "My Phonecalls"
 msgstr "Mijn telefoongesprekken"
 
@@ -456,7 +462,7 @@ msgid "Note"
 msgstr "Notitie"
 
 #. module: voip
-#: model:ir.actions.act_window,help:voip.voip_phonecall_view
+#: model_terms:ir.actions.act_window,help:voip.voip_phonecall_view
 msgid ""
 "Odoo allows you to log inbound calls on the fly to track the\n"
 "        history of the communication with a customer or to inform another\n"
@@ -485,7 +491,7 @@ msgid "Outgoing"
 msgstr "Uitgaand"
 
 #. module: voip
-#: model:ir.ui.view,arch_db:voip.res_user_form
+#: model_terms:ir.ui.view,arch_db:voip.res_user_form
 msgid "PBX Configuration"
 msgstr "PBX configuratie"
 
@@ -528,15 +534,10 @@ msgstr "Telefoongesprek details"
 #. module: voip
 #: model:ir.actions.act_window,name:voip.voip_phonecall_view
 #: model:ir.ui.menu,name:voip.menu_voip_phonecall_view
-#: model:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
-#: model:ir.ui.view,arch_db:voip.voip_phonecall_tree_view
+#: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
+#: model_terms:ir.ui.view,arch_db:voip.voip_phonecall_tree_view
 msgid "Phonecalls"
 msgstr "Telefoongesprekken"
-
-#. module: voip
-#: model:ir.model,name:voip.model_voip_phonecall_report
-msgid "Phonecalls by user"
-msgstr "Telefoongesprekken per gebruiker"
 
 #. module: voip
 #. openerp-web
@@ -599,7 +600,7 @@ msgstr "Uit de wachtrij verwijderen"
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__user_id
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_report__user_id
-#: model:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
+#: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 msgid "Responsible"
 msgstr "Verantwoordelijke"
 
@@ -621,7 +622,7 @@ msgid "Schedule"
 msgstr "Plannen"
 
 #. module: voip
-#: model:ir.ui.view,arch_db:voip.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:voip.res_config_settings_view_form
 msgid "Schedule &amp; make calls from CRM app"
 msgstr "Plan &amp; maak telefoongesprekken vanuit de CRM app"
 
@@ -638,7 +639,7 @@ msgid "Search Phone Calls..."
 msgstr "Zoek telefoongesprekken..."
 
 #. module: voip
-#: model:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
+#: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 msgid "Search Phonecalls"
 msgstr "Zoek telefoongesprekken"
 
@@ -749,7 +750,7 @@ msgid "The websocket uri could be wrong."
 msgstr "De websocket url is mogelijk fout."
 
 #. module: voip
-#: model:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
+#: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 #: selection:voip.phonecall,state:0 selection:voip.phonecall.report,state:0
 msgid "To Do"
 msgstr "Te doen"
@@ -777,7 +778,7 @@ msgid "Type"
 msgstr "Type"
 
 #. module: voip
-#: model:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
+#: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 msgid "Unassigned"
 msgstr "Niet toegewezen"
 
@@ -801,9 +802,34 @@ msgid "Users"
 msgstr "Gebruikers"
 
 #. module: voip
-#: model:ir.ui.view,arch_db:voip.view_voip_user_config
+#: model_terms:ir.ui.view,arch_db:voip.view_voip_user_config
 msgid "VOIP Configuration"
 msgstr "VOIP instellingen"
+
+#. module: voip
+#: model:ir.model,name:voip.model_voip_configurator
+msgid "VOIP Configurator"
+msgstr "VOIP configurator"
+
+#. module: voip
+#: model:ir.model,name:voip.model_voip_phonecall
+msgid "VOIP Phonecall"
+msgstr "VOIP telefoongesprek"
+
+#. module: voip
+#: model:ir.model,name:voip.model_voip_phonecall_log_wizard
+msgid "VOIP Phonecall log Wizard"
+msgstr ""
+
+#. module: voip
+#: model:ir.model,name:voip.model_voip_phonecall_report
+msgid "VOIP Phonecalls by user report"
+msgstr ""
+
+#. module: voip
+#: model:ir.model,name:voip.model_voip_phonecall_transfer_wizard
+msgid "VOIP Transfer Wizard of Phonecalls"
+msgstr ""
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_config_settings__mode
@@ -811,7 +837,7 @@ msgid "VoIP Environment"
 msgstr "VoIP omgeving"
 
 #. module: voip
-#: code:addons/voip/wizard/voip_phonecall_transfer_wizard.py:34
+#: code:addons/voip/wizard/voip_phonecall_transfer_wizard.py:35
 #, python-format
 msgid "Warning"
 msgstr "Waarschuwing"
@@ -822,7 +848,7 @@ msgid "WebSocket"
 msgstr "WebSocket"
 
 #. module: voip
-#: code:addons/voip/wizard/voip_phonecall_transfer_wizard.py:35
+#: code:addons/voip/wizard/voip_phonecall_transfer_wizard.py:36
 #, python-format
 msgid ""
 "Wrong configuration for the call. There is no external phone number "
@@ -857,11 +883,6 @@ msgid "min"
 msgstr "min"
 
 #. module: voip
-#: model:ir.model,name:voip.model_res_config_settings
-msgid "res.config.settings"
-msgstr "res.config.settings"
-
-#. module: voip
 #. openerp-web
 #: code:addons/voip/static/src/xml/voip_phonecall.xml:53
 #: code:addons/voip/static/src/xml/voip_phonecall.xml:94
@@ -877,7 +898,7 @@ msgid "the connection cannot be made. "
 msgstr "de connectie kan niet worden gemaakt."
 
 #. module: voip
-#: model:ir.ui.view,arch_db:voip.wizard_transfer_call_form_view
+#: model_terms:ir.ui.view,arch_db:voip.wizard_transfer_call_form_view
 msgid "transfer Option"
 msgstr "doorschakelfunctie"
 
@@ -887,7 +908,7 @@ msgid "transfer To"
 msgstr "doorschakelen naar"
 
 #. module: voip
-#: model:ir.ui.view,arch_db:voip.wizard_transfer_call_form_view
+#: model_terms:ir.ui.view,arch_db:voip.wizard_transfer_call_form_view
 msgid "transfer the Call"
 msgstr "het gesprek doorschakelen"
 
@@ -900,23 +921,3 @@ msgstr "doorschakelen naar een extern toestel"
 #: selection:voip.phonecall.transfer.wizard,transfer_choice:0
 msgid "transfer to your external phone"
 msgstr "doorschakelen naar uw extern toestel"
-
-#. module: voip
-#: model:ir.model,name:voip.model_voip_configurator
-msgid "voip.configurator"
-msgstr "voip.configurator"
-
-#. module: voip
-#: model:ir.model,name:voip.model_voip_phonecall
-msgid "voip.phonecall"
-msgstr "voip.telefoongesprek"
-
-#. module: voip
-#: model:ir.model,name:voip.model_voip_phonecall_log_wizard
-msgid "voip.phonecall.log.wizard"
-msgstr "voip.telefoongespek.log.wizard"
-
-#. module: voip
-#: model:ir.model,name:voip.model_voip_phonecall_transfer_wizard
-msgid "voip.phonecall.transfer.wizard"
-msgstr "voip.telefoongesprek.transfer.wizard"

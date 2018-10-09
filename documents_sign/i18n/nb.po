@@ -4,13 +4,14 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# Jorunn D. Newth, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"POT-Creation-Date: 2018-10-02 10:31+0000\n"
+"PO-Revision-Date: 2018-10-02 10:31+0000\n"
+"Last-Translator: Jorunn D. Newth, 2018\n"
 "Language-Team: Norwegian Bokmål (https://www.transifex.com/odoo/teams/41243/nb/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -26,29 +27,31 @@ msgid ""
 msgstr ""
 
 #. module: documents_sign
-#: model:ir.model.fields,field_description:documents_sign.field_documents_workflow_rule__create_model
-msgid "Attach to"
+#: model:ir.model.fields,field_description:documents_sign.field_sign_request__folder_id
+#: model:ir.model.fields,field_description:documents_sign.field_sign_template__folder_id
+msgid "Attachment Folder"
 msgstr ""
 
 #. module: documents_sign
-#: model:ir.model,name:documents_sign.model_res_company
-msgid "Companies"
-msgstr "Firmaer"
+#: model:ir.model.fields,field_description:documents_sign.field_sign_request__documents_tag_ids
+#: model:ir.model.fields,field_description:documents_sign.field_sign_template__documents_tag_ids
+msgid "Attachment Tags"
+msgstr "Vedleggs-tagger"
+
+#. module: documents_sign
+#: model:ir.model.fields,field_description:documents_sign.field_documents_workflow_rule__create_model
+msgid "Create"
+msgstr "Opprett"
 
 #. module: documents_sign
 #: selection:documents.workflow.rule,create_model:0
 msgid "Credit note"
-msgstr ""
+msgstr "Kreditnota"
 
 #. module: documents_sign
-#: model:ir.ui.view,arch_db:documents_sign.res_config_settings_view_form
-msgid "Default destination for the attachments created in Sign."
-msgstr ""
-
-#. module: documents_sign
-#: model:ir.model.fields,field_description:documents_sign.field_sign_template__folder_id
-msgid "Folder"
-msgstr ""
+#: model:ir.model,name:documents_sign.model_ir_attachment
+msgid "Document"
+msgstr "Dokument"
 
 #. module: documents_sign
 #: model:ir.model.fields,field_description:documents_sign.field_documents_workflow_rule__has_business_option
@@ -56,19 +59,14 @@ msgid "Has Business Option"
 msgstr ""
 
 #. module: documents_sign
-#: model:ir.model.fields,field_description:documents_sign.field_res_company__sign_folder
-msgid "Sign Folder"
+#: selection:documents.workflow.rule,create_model:0
+msgid "Product template"
 msgstr ""
 
 #. module: documents_sign
-#: model:ir.model.fields,field_description:documents_sign.field_documents_folder__sign_template_id
-msgid "Sign Template"
-msgstr ""
-
-#. module: documents_sign
-#: model:ir.model.fields,field_description:documents_sign.field_res_config_settings__sign_folder
-msgid "Sign folder"
-msgstr ""
+#: model:ir.model,name:documents_sign.model_sign_request
+msgid "Signature Request"
+msgstr "Signaturforespørsel"
 
 #. module: documents_sign
 #: model:ir.model,name:documents_sign.model_sign_template
@@ -89,23 +87,3 @@ msgstr "Oppgave"
 #: selection:documents.workflow.rule,create_model:0
 msgid "Vendor bill"
 msgstr ""
-
-#. module: documents_sign
-#: model:ir.model.fields,field_description:documents_sign.field_sign_template__documents_tag_ids
-msgid "attachment tags"
-msgstr ""
-
-#. module: documents_sign
-#: model:ir.model,name:documents_sign.model_documents_folder
-msgid "documents.folder"
-msgstr ""
-
-#. module: documents_sign
-#: model:ir.model,name:documents_sign.model_ir_attachment
-msgid "ir.attachment"
-msgstr "ir.attachment"
-
-#. module: documents_sign
-#: model:ir.model,name:documents_sign.model_res_config_settings
-msgid "res.config.settings"
-msgstr "res.config.settings"

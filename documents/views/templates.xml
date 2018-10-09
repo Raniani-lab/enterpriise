@@ -146,7 +146,7 @@
     <template id="documents.share_single" name="Documents Share Single File">
         <t t-call="documents.public_page_layout">
             <t t-set="file_URL" t-value="base_url + '/web/content/' + str(attachment.id)"/>
-            <t t-set="file_token" t-value="'&amp;share_token=' + str(token) + '&amp;share_id=' + str(share_id)"/>
+            <t t-set="file_token" t-value="'&amp;access_token=' + str(token) + '&amp;related_id=' + str(share_id) + '&amp;access_mode='documents_share'"/>
             <t t-set="preview_URL" t-value="base_url + '/web/image/' + str(attachment.id) + '/600x500?upper_limit=true'"/>
             <t t-set="normal_preview_URL" t-value="base_url + '/web/image/' + str(attachment.id) + '/'"/>
 

@@ -23,7 +23,6 @@
         <record id="website_crm_score_user_0" model="res.users" context="{'no_reset_password': True}">
             <field name="partner_id" ref="website_crm_score_partner_0"/>
             <field name="login">tbuchanan</field>
-            <field name="password">tbuchanan</field>
             <field name="groups_id" eval="[(5,)]"/>
         </record>
 
@@ -40,7 +39,6 @@
         <record id="website_crm_score_user_1" model="res.users" context="{'no_reset_password': True}">
             <field name="partner_id" ref="website_crm_score_partner_1"/>
             <field name="login">fpierce</field>
-            <field name="password">fpierce</field>
             <field name="groups_id" eval="[(5,)]"/>
         </record>
 
@@ -57,7 +55,6 @@
         <record id="website_crm_score_user_2" model="res.users" context="{'no_reset_password': True}">
             <field name="partner_id" ref="website_crm_score_partner_2"/>
             <field name="login">cwatkins</field>
-            <field name="password">cwatkins</field>
             <field name="groups_id" eval="[(5,)]"/>
         </record>
 
@@ -74,7 +71,6 @@
         <record id="website_crm_score_user_3" model="res.users" context="{'no_reset_password': True}">
             <field name="partner_id" ref="website_crm_score_partner_3"/>
             <field name="login">jgarza</field>
-            <field name="password">jgarza</field>
             <field name="groups_id" eval="[(5,)]"/>
         </record>
 

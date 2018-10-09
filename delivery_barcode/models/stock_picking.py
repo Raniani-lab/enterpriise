@@ -6,6 +6,7 @@ from odoo import models, fields, api
 
 class StockPicking(models.Model):
     _name = 'stock.picking'
+    _description = 'Transfer'
     _inherit = ['stock.picking', 'barcodes.barcode_events_mixin']
 
     delivery_packaging_ids = fields.One2many('product.packaging', compute='_compute_delivery_packaging', store=False)

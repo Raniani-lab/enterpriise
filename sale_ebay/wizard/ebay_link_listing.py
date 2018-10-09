@@ -7,6 +7,7 @@ from odoo import models, fields, api
 
 class ebay_link_listing(models.TransientModel):
     _name = 'ebay.link.listing'
+    _description = 'eBay Link Listing'
 
     ebay_id = fields.Char('eBay Listing ID')
 

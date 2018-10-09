@@ -2,12 +2,17 @@
 # This file contains the translation of the following modules:
 # * web_mobile
 # 
+# Translators:
+# Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2018
+# Piotr Szlązak <szlazakpiotr@gmail.com>, 2018
+# Radosław Biegalski <radoslaw.biegalski@openglobe.pl>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:29+0000\n"
-"PO-Revision-Date: 2018-08-24 11:29+0000\n"
+"POT-Creation-Date: 2018-09-18 10:05+0000\n"
+"PO-Revision-Date: 2018-09-18 10:05+0000\n"
+"Last-Translator: Radosław Biegalski <radoslaw.biegalski@openglobe.pl>, 2018\n"
 "Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,28 +25,28 @@ msgstr ""
 #: code:addons/web_mobile/static/src/xml/contact_sync.xml:7
 #, python-format
 msgid "Add"
-msgstr ""
+msgstr "Montaż"
 
 #. module: web_mobile
 #. openerp-web
 #: code:addons/web_mobile/static/src/xml/contact_sync.xml:9
 #, python-format
 msgid "Add to"
-msgstr ""
+msgstr "Dodaj do"
 
 #. module: web_mobile
 #. openerp-web
 #: code:addons/web_mobile/static/src/xml/user_menu.xml:6
 #, python-format
 msgid "Add to Home Screen"
-msgstr ""
+msgstr "Dodaj do ekranu głównego"
 
 #. module: web_mobile
 #. openerp-web
 #: code:addons/web_mobile/static/src/xml/contact_sync.xml:10
 #, python-format
 msgid "Mobile"
-msgstr ""
+msgstr "Tel. komórkowy"
 
 #. module: web_mobile
 #. openerp-web
@@ -69,4 +74,4 @@ msgstr ""
 #: code:addons/web_mobile/static/src/xml/user_menu.xml:7
 #, python-format
 msgid "Switch/Add Account"
-msgstr ""
+msgstr "Przełącz/Dodaj konto"

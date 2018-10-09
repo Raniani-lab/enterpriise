@@ -17,7 +17,7 @@ class AccountInvoice(models.Model):
     def _onchange_partner_id(self):
         res = super(AccountInvoice, self)._onchange_partner_id()
         if self.partner_id.country_id.intrastat:
-            self.intrastat_country_id = self.partner_id.country_id.id
+            self.intrastat_country_id = self._get_intrastat_country_id()
         else:
             self.intrastat_country_id = False
         return res

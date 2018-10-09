@@ -7,6 +7,7 @@ odoo.define('documents.DocumentsKanbanController', function (require) {
  */
 
 var DocumentsInspector = require('documents.DocumentsInspector');
+var DocumentViewer = require('mail.DocumentViewer');
 
 var Chatter = require('mail.Chatter');
 
@@ -33,6 +34,7 @@ var DocumentsKanbanController = KanbanController.extend({
         delete_records: '_onDeleteRecords',
         document_viewer_attachment_changed: '_onDocumentViewerAttachmentChanged',
         download: '_onDownload',
+        kanban_image_clicked: '_onKanbanPreview',
         lock_attachment: '_onLock',
         open_chatter: '_onOpenChatter',
         open_record: '_onOpenRecord',
@@ -86,6 +88,7 @@ var DocumentsKanbanController = KanbanController.extend({
         this.$buttons.on('click', '.o_documents_kanban_share', this._onShareDomain.bind(this));
         this.$buttons.on('click', '.o_documents_kanban_upload', this._onUpload.bind(this));
         this.$buttons.on('click', '.o_documents_kanban_url', this._onUploadFromUrl.bind(this));
+        this.$buttons.on('click', '.o_documents_kanban_request', this._onRequestFile.bind(this));
     },
     /**
      * @override
@@ -180,6 +183,7 @@ var DocumentsKanbanController = KanbanController.extend({
                 memo[facetKey] = {
                     id: tag.facet_id,
                     name: tag.facet_name,
+                    tooltip: tag.facet_tooltip,
                     tags: [],
                 };
             }
@@ -215,22 +219,29 @@ var DocumentsKanbanController = KanbanController.extend({
      * Opens the chatter of the given record.
      *
      * @private
+     * @param {Object} record
+     * @returns {Deferred}
      */
     _openChatter: function (record) {
         var self = this;
-        if (this.chatter) {
-            return;
-        }
-        var $chatterContainer = $('<div>').addClass('o_document_chatter p-relative bg-white');
-        var options = {
-            display_log_button: true,
-        };
-        var mailFields = {mail_thread: 'message_ids', mail_followers: 'message_follower_ids'};
-        this.chatter = new Chatter(this, record, mailFields, options);
-        return this.chatter.appendTo($chatterContainer).then(function () {
-            $chatterContainer.append($('<span>').addClass('o_document_close_chatter text-center').html('&#215;'));
-            self.$el.addClass('o_chatter_open');
-            self.$el.append($chatterContainer);
+        return this.model.fetchActivities(record.id).then(function () {
+            record = self.model.get(record.id);
+            var $chatterContainer = $('<div>').addClass('o_document_chatter p-relative bg-white');
+            var options = {
+                display_log_button: true,
+                isEditable: true,
+            };
+            var mailFields = {mail_thread: 'message_ids',
+                          mail_followers: 'message_follower_ids',
+                          mail_activity: 'activity_ids'};
+
+            self._closeChatter();
+            self.chatter = new Chatter(self, record, mailFields, options);
+            return self.chatter.appendTo($chatterContainer).then(function () {
+                $chatterContainer.append($('<span>').addClass('o_document_close_chatter text-center').html('&#215;'));
+                self.$el.addClass('o_chatter_open');
+                self.$el.append($chatterContainer);
+            });
         });
     },
     /**
@@ -242,7 +253,7 @@ var DocumentsKanbanController = KanbanController.extend({
     _processFiles: function (files) {
         var self = this;
         var defs = [];
-        this.tagIDs = _.flatten(_.values(this.selectedFilterTagIDs));
+        var tagIDs = _.flatten(_.values(this.selectedFilterTagIDs));
         _.each(files, function (f) {
             var def = $.Deferred();
             defs.push(def);
@@ -262,8 +273,8 @@ var DocumentsKanbanController = KanbanController.extend({
                 // convert data from "data:application/zip;base64,R0lGODdhAQBADs=" to "R0lGODdhAQBADs="
                 l[i].datas = l[i].datas.split(',',2)[1];
                 l[i].folder_id = self.selectedFolderID;
-                if (self.tagIDs) {
-                    l[i].tag_ids = [[6, 0, self.tagIDs]];
+                if (tagIDs) {
+                    l[i].tag_ids = [[6, 0, tagIDs]];
                 }
             }
             return self._rpc({
@@ -310,7 +321,7 @@ var DocumentsKanbanController = KanbanController.extend({
             state: state,
         };
         this.documentsInspector = new DocumentsInspector(this, params);
-        this.documentsInspector.appendTo(this.$el);
+        this.documentsInspector.insertAfter(this.$('.o_kanban_view'));
         if (localState) {
             this.documentsInspector.setLocalState(localState);
         }
@@ -468,11 +479,12 @@ var DocumentsKanbanController = KanbanController.extend({
             var state = self.model.get(self.handle);
             var recordIDs = _.pluck(state.data, 'res_id');
             self.selectedRecordIDs = _.intersection(self.selectedRecordIDs, recordIDs);
-            self._renderDocumentsInspector(state);
-            self._renderDocumentsSelector(state);
-            self._updateChatter(state);
-            self.anchorID = null;
-            self.renderer.updateSelection(self.selectedRecordIDs);
+            return self._updateChatter(state).then(function () {
+                self._renderDocumentsInspector(state);
+                self._renderDocumentsSelector(state);
+                self.anchorID = null;
+                self.renderer.updateSelection(self.selectedRecordIDs);
+            });
         });
     },
     /**
@@ -481,18 +493,20 @@ var DocumentsKanbanController = KanbanController.extend({
      *
      * @private
      * @param {Object} state
+     * @returns {Deferred}
      */
     _updateChatter: function (state) {
         if (this.chatter) {
-            this._closeChatter();
             // re-open the chatter if the new selection still contains 1 record
             if (this.selectedRecordIDs.length === 1) {
                 var record = _.findWhere(state.data, {res_id: this.selectedRecordIDs[0]});
                 if (record) {
-                    this._openChatter(record);
+                    return this._openChatter(record);
                 }
             }
+            this._closeChatter();
         }
+        return $.when();
     },
     /**
      * Iterate of o_foldable elements (folders and facets) in this.$el, and set
@@ -666,6 +680,17 @@ var DocumentsKanbanController = KanbanController.extend({
     /**
      * @private
      * @param {OdooEvent} ev
+     * @param {Object} recordData ev.data.record
+     */
+    _onKanbanPreview: function (ev) {
+        ev.stopPropagation();
+        var self = this;
+        var documentViewer = new DocumentViewer(this, [ev.data.record], ev.data.record.id);
+        documentViewer.appendTo(this.$('.o_documents_kanban_view'));
+    },
+    /**
+     * @private
+     * @param {OdooEvent} ev
      * @param {integer} ev.data.resID
      */
     _onLock: function (ev) {
@@ -818,6 +843,7 @@ var DocumentsKanbanController = KanbanController.extend({
      *
      * @private
      * @param {OdooEvent} ev
+     * @param {integer} ev.data.id
      */
     _onReplaceFile: function (ev) {
         var self = this;
@@ -825,7 +851,6 @@ var DocumentsKanbanController = KanbanController.extend({
         $upload_input.on('change', function (e) {
             var f = e.target.files[0];
             var state = self.model.get(self.handle);
-            var record = _.findWhere(state.data, {id: ev.data.id});
             var reader = new FileReader();
 
             reader.onload = function (e) {
@@ -839,7 +864,7 @@ var DocumentsKanbanController = KanbanController.extend({
                 self._rpc({
                     model: 'ir.attachment',
                     method: 'write',
-                    args: [[record.data.id], {datas: data, mimetype: mimetype, datas_fname: f.name}],
+                    args: [[ev.data.id], {datas: data, type: 'binary', mimetype: mimetype, datas_fname: f.name}],
                 }).always(function () {
                     $upload_input.removeAttr('disabled');
                     $upload_input.val("");
@@ -856,6 +881,24 @@ var DocumentsKanbanController = KanbanController.extend({
         $upload_input.click();
     },
     /**
+     * @private
+     * @param {MouseEvent} ev
+     */
+    _onRequestFile: function (ev) {
+        ev.preventDefault();
+        var self = this;
+        var tagIDs = _.flatten(_.values(this.selectedFilterTagIDs));
+        this.do_action('documents.action_request_form', {
+            additional_context: {
+                default_folder_id: this.selectedFolderID,
+                default_tag_ids: [[6, 0, tagIDs]],
+            },
+            on_close: function () {
+                self.reload();
+            },
+        });
+    },
+    /**
      * Save the changes done in the DocumentsInspector and re-render the view.
      *
      * @private
@@ -865,7 +908,7 @@ var DocumentsKanbanController = KanbanController.extend({
         ev.stopPropagation();
         this.model
             .saveMulti(ev.data.dataPointIDs, ev.data.changes, this.handle)
-            .then(this.update.bind(this, {}, {reload: false}));
+            .then(this.update.bind(this, {}, {}));
     },
     /**
      * React to folder selector to filter the records.
@@ -893,10 +936,12 @@ var DocumentsKanbanController = KanbanController.extend({
      */
     _onSelectionChanged: function (ev) {
         ev.stopPropagation();
+        var self = this;
         this.selectedRecordIDs = ev.data.selection;
         var state = this.model.get(this.handle);
-        this._renderDocumentsInspector(state);
-        this._updateChatter(state);
+        this._updateChatter(state).then(function () {
+            self._renderDocumentsInspector(state);
+        });
     },
     /**
      * Share the current domain.
@@ -995,9 +1040,15 @@ var DocumentsKanbanController = KanbanController.extend({
      */
     _onUploadFromUrl: function (ev) {
         ev.preventDefault();
+        var self = this;
+        var tagIDs = _.flatten(_.values(this.selectedFilterTagIDs));
         this.do_action('documents.action_url_form', {
             additional_context: {
                 default_folder_id: this.selectedFolderID,
+                default_tag_ids: [[6, 0, tagIDs]],
+            },
+            on_close: function () {
+                self.reload();
             },
         });
     },

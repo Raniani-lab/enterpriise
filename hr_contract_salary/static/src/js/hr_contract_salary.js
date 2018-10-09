@@ -6,6 +6,8 @@ var base = require('web_editor.base');
 var concurrency = require('web.concurrency');
 var Widget = require('web.Widget');
 var core = require('web.core');
+var Tour = require('web_tour.tour');
+
 var _t = core._t;
 
 var SalaryPackageWidget = Widget.extend({

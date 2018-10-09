@@ -17,13 +17,15 @@
 # Abd El-Rahman Ali <abdelrahman.ali.242@gmail.com>, 2018
 # Shaima Safar <shaima.safar@open-inside.com>, 2018
 # Islam Eldeeb <islameldeb@gmail.com>, 2018
+# Mostafa Hanafy <mostafa.s.hanafy@gmail.com>, 2018
+# Firas Asad <firas101@gmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
-"Last-Translator: Islam Eldeeb <islameldeb@gmail.com>, 2018\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"Last-Translator: Firas Asad <firas101@gmail.com>, 2018\n"
 "Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -32,39 +34,39 @@ msgstr ""
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "\" bank accounts have been retrieved."
 msgstr ""
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "<strong>Ooops</strong> It would seems that the process to"
 msgstr ""
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "<strong>Ooops</strong> We could not"
 msgstr ""
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "<strong>Success!</strong> Your account has been succesfully refreshed."
 msgstr ""
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "<strong>Success!</strong> Your account has been succesfully updated."
 msgstr ""
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid ""
 "<strong>Well done!</strong> Your banking institution is now connected to "
 "Odoo."
 msgstr ""
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "A total of \""
 msgstr ""
 
@@ -124,7 +126,7 @@ msgid "Add a Bank Account"
 msgstr ""
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.online_provider_account_form_view
+#: model_terms:ir.ui.view,arch_db:account_online_sync.online_provider_account_form_view
 msgid "Additional information"
 msgstr "معلومة اضافية"
 
@@ -133,6 +135,11 @@ msgstr "معلومة اضافية"
 #, python-format
 msgid "An error occurred during online synchronization"
 msgstr "حدث خطأ أثناء المزامنة عبر الإنترنت"
+
+#. module: account_online_sync
+#: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message_attachment_count
+msgid "Attachment Count"
+msgstr "عدد المرفقات"
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:317
@@ -147,7 +154,7 @@ msgid "Balance"
 msgstr "الرصيد"
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.online_provider_account_form_view
+#: model_terms:ir.ui.view,arch_db:account_online_sync.online_provider_account_form_view
 msgid "Bank Accounts"
 msgstr "الحسابات البنكية"
 
@@ -162,7 +169,7 @@ msgid "Bank Statement Line"
 msgstr "بند كشف حساب المصرف"
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "Cancel"
 msgstr "إلغاء"
 
@@ -187,8 +194,8 @@ msgid "Company"
 msgstr "المؤسسة"
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.account_bank_journal_form_inherit_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.account_journal_form_inherit_online_sync
+#: model_terms:ir.ui.view,arch_db:account_online_sync.account_bank_journal_form_inherit_online_sync
+#: model_terms:ir.ui.view,arch_db:account_online_sync.account_journal_form_inherit_online_sync
 msgid "Configure"
 msgstr "تهيئة"
 
@@ -201,7 +208,7 @@ msgstr "جهة الاتصال"
 #: code:addons/account_online_sync/models/online_sync.py:161
 #, python-format
 msgid "Create a Bank Account"
-msgstr ""
+msgstr "أنشئ حساب بنكي"
 
 #. module: account_online_sync
 #: selection:account.online.link.wizard,action:0
@@ -251,7 +258,7 @@ msgid "Do not link"
 msgstr ""
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "Done"
 msgstr "تم"
 
@@ -318,7 +325,7 @@ msgstr "إذا حددته، سيتم إخطارك بالرسائل الجديد�
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_provider__message_has_error
 msgid "If checked, some messages have a delivery error."
-msgstr ""
+msgstr "إذا تم تحديده ، فإن بعض الرسائل بها خطأ في التسليم."
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__name
@@ -327,8 +334,8 @@ msgstr "مؤسسة"
 
 #. module: account_online_sync
 #: model:ir.model,name:account_online_sync.model_account_online_journal
-msgid "Interface for online account journal"
-msgstr "واجهه لحساب دفتر يومية عبر الانترنت"
+msgid "Interface for Online Account Journal"
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message_is_follower
@@ -390,7 +397,7 @@ msgstr "آخر مزامنة"
 
 #. module: account_online_sync
 #: model:ir.model,name:account_online_sync.model_account_online_link_wizard
-msgid "Link a particular synchronized account to a journal"
+msgid "Link synchronized account to a journal"
 msgstr ""
 
 #. module: account_online_sync
@@ -399,12 +406,17 @@ msgid "Link to existing journal"
 msgstr ""
 
 #. module: account_online_sync
-#: model:ir.actions.act_window,help:account_online_sync.action_online_provider_account
+#: model_terms:ir.actions.act_window,help:account_online_sync.action_online_provider_account
 msgid "List of bank(s) providing online synchronization"
 msgstr ""
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.online_provider_account_form_view
+#: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message_main_attachment_id
+msgid "Main Attachment"
+msgstr "المرفق الرئيسي"
+
+#. module: account_online_sync
+#: model_terms:ir.ui.view,arch_db:account_online_sync.online_provider_account_form_view
 msgid "Manual Refresh"
 msgstr "تحديث يدوي"
 
@@ -417,7 +429,7 @@ msgstr "الرسالة"
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message_has_error
 msgid "Message Delivery error"
-msgstr ""
+msgstr "خطأ في تسليم الرسائل"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message_ids
@@ -430,7 +442,7 @@ msgid "Method"
 msgstr "طريقة"
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.account_journal_dashboard_inherit_online_sync
+#: model_terms:ir.ui.view,arch_db:account_online_sync.account_journal_dashboard_inherit_online_sync
 msgid "Next sync:"
 msgstr "المزامنة التالية:"
 
@@ -467,7 +479,7 @@ msgstr "عدد الإجراءات"
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message_has_error_counter
 msgid "Number of error"
-msgstr ""
+msgstr "عدد الاخطاء"
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_provider__message_needaction_counter
@@ -477,7 +489,7 @@ msgstr "عدد الرسائل التي تتطلب اجراء"
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_provider__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr ""
+msgstr "عدد الرسائل مع خطأ في التسليم"
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_provider__message_unread_counter
@@ -518,9 +530,9 @@ msgstr ""
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:375
 #: model:ir.ui.menu,name:account_online_sync.menu_action_online_provider_account
-#: model:ir.ui.view,arch_db:account_online_sync.account_journal_dashboard_inherit_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.account_journal_form_inherit_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.account_journal_dashboard_inherit_online_sync
+#: model_terms:ir.ui.view,arch_db:account_online_sync.account_journal_form_inherit_online_sync
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 #, python-format
 msgid "Online Synchronization"
 msgstr "التزامن عبر الإنترنت"
@@ -551,7 +563,7 @@ msgid ""
 msgstr ""
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.account_journal_dashboard_inherit_online_sync
+#: model_terms:ir.ui.view,arch_db:account_online_sync.account_journal_dashboard_inherit_online_sync
 msgid "Problem during synchronization"
 msgstr "مشكلة أثناء المزامنة"
 
@@ -614,8 +626,8 @@ msgid "Synchronization status"
 msgstr "حالة المزامنة"
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.account_journal_dashboard_inherit_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.account_journal_dashboard_inherit_online_sync
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "Synchronize now"
 msgstr "المزامنة الآن"
 
@@ -652,7 +664,7 @@ msgid ""
 msgstr ""
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "The account has been linked to your bank journal."
 msgstr ""
 
@@ -708,7 +720,7 @@ msgid "Unread Messages Counter"
 msgstr "عدد الرسائل الجديدة"
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.online_provider_account_form_view
+#: model_terms:ir.ui.view,arch_db:account_online_sync.online_provider_account_form_view
 msgid "Update Credentials"
 msgstr "تحديث بيانات الاعتماد"
 
@@ -719,7 +731,7 @@ msgid "Update status of provider account"
 msgstr "تحديث حالة حساب المزود"
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.account_journal_dashboard_inherit_online_sync
+#: model_terms:ir.ui.view,arch_db:account_online_sync.account_journal_dashboard_inherit_online_sync
 msgid "View problem"
 msgstr "عرض المشكلة"
 
@@ -744,7 +756,7 @@ msgid "Yodlee"
 msgstr "Yodlee"
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid ""
 "You can associate those bank accounts to a journal in order to automatically"
 " retrieve the latest statements from your bank."
@@ -801,14 +813,14 @@ msgid "transactions loaded"
 msgstr ""
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid ""
 "your account because of the following\n"
 "                    error during the process:"
 msgstr ""
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid ""
 "your account was not\n"
 "                    thoroughly completed. You can try to manually update your account by clicking the refresh button on the dashboard\n"

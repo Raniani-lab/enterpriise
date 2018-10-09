@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-18 10:04+0000\n"
-"PO-Revision-Date: 2018-09-18 10:04+0000\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -89,7 +89,6 @@ msgstr ""
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_stock_picking__quality_alert_ids
-#: model:ir.ui.menu,name:quality_control.menu_quality_alerts
 msgid "Alerts"
 msgstr ""
 
@@ -155,6 +154,7 @@ msgstr ""
 
 #. module: quality_control
 #: model:ir.ui.menu,name:quality_control.menu_quality_control_points
+#: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_search
 msgid "Control Points"
 msgstr ""
 
@@ -197,11 +197,6 @@ msgstr ""
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_search
 msgid "Creation Date"
-msgstr ""
-
-#. module: quality_control
-#: model:ir.ui.menu,name:quality_control.menu_quality_dashboard
-msgid "Dashboard"
 msgstr ""
 
 #. module: quality_control
@@ -280,13 +275,9 @@ msgid "In #{kanban_getcolorname(record.color.raw_value)}"
 msgstr ""
 
 #. module: quality_control
+#: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_search
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_search
 msgid "In Progress"
-msgstr ""
-
-#. module: quality_control
-#: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_search
-msgid "In progress"
 msgstr ""
 
 #. module: quality_control
@@ -401,6 +392,11 @@ msgid "Operation Type"
 msgstr ""
 
 #. module: quality_control
+#: model:ir.ui.menu,name:quality_control.menu_quality_dashboard
+msgid "Overview"
+msgstr ""
+
+#. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_form
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_form_small
 #: selection:quality.check,measure_success:0
@@ -486,11 +482,6 @@ msgid "Quality Alert Team"
 msgstr ""
 
 #. module: quality_control
-#: model:ir.ui.menu,name:quality_control.menu_quality_config_alert_team
-msgid "Quality Alert Teams"
-msgstr ""
-
-#. module: quality_control
 #: model_terms:ir.actions.act_window,help:quality_control.quality_alert_stage_action
 msgid "Quality Alert stages define the different steps a quality alert should go through."
 msgstr ""
@@ -557,23 +548,18 @@ msgid "Quality Control"
 msgstr ""
 
 #. module: quality_control
+#: model:ir.model,name:quality_control.model_quality_point
+msgid "Quality Control Point"
+msgstr ""
+
+#. module: quality_control
 #: model:ir.actions.act_window,name:quality_control.quality_point_action
 msgid "Quality Control Points"
 msgstr ""
 
 #. module: quality_control
-#: model:ir.ui.menu,name:quality_control.menu_quality_controls
-msgid "Quality Controls"
-msgstr ""
-
-#. module: quality_control
 #: model:ir.actions.act_window,name:quality_control.quality_alert_team_action
-msgid "Quality Dashboard"
-msgstr ""
-
-#. module: quality_control
-#: model:ir.model,name:quality_control.model_quality_point
-msgid "Quality Point"
+msgid "Quality Overview"
 msgstr ""
 
 #. module: quality_control
@@ -583,7 +569,14 @@ msgid "Quality Tags"
 msgstr ""
 
 #. module: quality_control
+#: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_search
+#: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_search
+msgid "Quality Team"
+msgstr ""
+
+#. module: quality_control
 #: model:ir.actions.act_window,name:quality_control.quality_alert_team_action_config
+#: model:ir.ui.menu,name:quality_control.menu_quality_config_alert_team
 msgid "Quality Teams"
 msgstr ""
 
@@ -605,6 +598,7 @@ msgstr ""
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_search
+#: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_search
 msgid "Responsible"
 msgstr ""
 
@@ -642,6 +636,11 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_tag_view_search
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_tag_view_tree
 msgid "Tags"
+msgstr ""
+
+#. module: quality_control
+#: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_search
+msgid "Team"
 msgstr ""
 
 #. module: quality_control

@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
 "Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: Russian (https://www.transifex.com/odoo/teams/41243/ru/)\n"
 "MIME-Version: 1.0\n"
@@ -19,13 +19,13 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
 
 #. module: website_helpdesk_slides
-#: code:addons/website_helpdesk_slides/wizard/slide_slide.py:71
+#: code:addons/website_helpdesk_slides/wizard/slide_slide.py:72
 #, python-format
 msgid "Already exists in %s : <a href=\"%s\">click here to view it.</a>"
 msgstr "Уже существует в %s : <a href=\"%s\">нажмите здесь для его просмотра</a>"
 
 #. module: website_helpdesk_slides
-#: model:ir.ui.view,arch_db:website_helpdesk_slides.slide_upload_wizard_view_form
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.slide_upload_wizard_view_form
 msgid "Cancel"
 msgstr "Отменить"
 
@@ -40,7 +40,7 @@ msgid "Channel"
 msgstr "Канал"
 
 #. module: website_helpdesk_slides
-#: model:ir.ui.view,arch_db:website_helpdesk_slides.slides_page
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.slides_page
 msgid "Click here to view more result..."
 msgstr "Нажмите здесь, чтобы посмотреть больше результата ..."
 
@@ -50,7 +50,7 @@ msgid "Content"
 msgstr "Содержание"
 
 #. module: website_helpdesk_slides
-#: code:addons/website_helpdesk_slides/wizard/slide_slide.py:37
+#: code:addons/website_helpdesk_slides/wizard/slide_slide.py:38
 #, python-format
 msgid ""
 "Could not fetch data from url. Document or access right not available:\n"
@@ -75,7 +75,7 @@ msgid "Description"
 msgstr "Описание"
 
 #. module: website_helpdesk_slides
-#: model:ir.ui.view,arch_db:website_helpdesk_slides.slide_upload_wizard_view_form
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.slide_upload_wizard_view_form
 msgid "Description..."
 msgstr "Описание ..."
 
@@ -120,13 +120,13 @@ msgid "Infographic"
 msgstr "Инфографика"
 
 #. module: website_helpdesk_slides
-#: code:addons/website_helpdesk_slides/wizard/slide_slide.py:52
+#: code:addons/website_helpdesk_slides/wizard/slide_slide.py:53
 #, python-format
 msgid "Invalid file type. Please select pdf or image file"
 msgstr "Неверный тип файла. Пожалуйста, выберите PDF или файл изображения"
 
 #. module: website_helpdesk_slides
-#: code:addons/website_helpdesk_slides/wizard/slide_slide.py:60
+#: code:addons/website_helpdesk_slides/wizard/slide_slide.py:61
 #, python-format
 msgid "Invalid slide type. Please select document or presentation type."
 msgstr ""
@@ -153,23 +153,23 @@ msgid "Mime-type"
 msgstr "Mime-тип"
 
 #. module: website_helpdesk_slides
-#: model:ir.ui.view,arch_db:website_helpdesk_slides.slide_upload_wizard_view_form
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.slide_upload_wizard_view_form
 msgid "Name"
 msgstr "Название"
 
 #. module: website_helpdesk_slides
-#: model:ir.ui.view,arch_db:website_helpdesk_slides.website_helpdesk_slides_team_page
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.website_helpdesk_slides_team_page
 msgid "No presentations yet."
 msgstr "Нет презентаций еще."
 
 #. module: website_helpdesk_slides
-#: code:addons/website_helpdesk_slides/wizard/slide_slide.py:40
+#: code:addons/website_helpdesk_slides/wizard/slide_slide.py:41
 #, python-format
 msgid "Please enter valid Youtube or Google Doc URL"
 msgstr "Пожалуйста, введите действительный Youtube или Google Doc URL"
 
 #. module: website_helpdesk_slides
-#: model:ir.ui.view,arch_db:website_helpdesk_slides.website_helpdesk_slides_team_page
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.website_helpdesk_slides_team_page
 msgid "Popular Presentations"
 msgstr "Популярные презентации"
 
@@ -184,12 +184,12 @@ msgid "Presentations URL"
 msgstr "URL Презентации"
 
 #. module: website_helpdesk_slides
-#: model:ir.ui.view,arch_db:website_helpdesk_slides.slide_upload_wizard_view_form
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.slide_upload_wizard_view_form
 msgid "Save"
 msgstr "Сохранить"
 
 #. module: website_helpdesk_slides
-#: model:ir.ui.view,arch_db:website_helpdesk_slides.slide_upload_wizard_view_form
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.slide_upload_wizard_view_form
 msgid "Slide"
 msgstr "Слайд"
 
@@ -199,7 +199,12 @@ msgid "Slide Upload"
 msgstr "Загрузить слайд"
 
 #. module: website_helpdesk_slides
-#: model:ir.ui.view,arch_db:website_helpdesk_slides.slides_page
+#: model:ir.model,name:website_helpdesk_slides.model_slide_upload_wizard
+msgid "Slide Upload Wizard"
+msgstr ""
+
+#. module: website_helpdesk_slides
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.slides_page
 msgid "Slide image"
 msgstr ""
 
@@ -209,7 +214,7 @@ msgid "Tags"
 msgstr "Теги"
 
 #. module: website_helpdesk_slides
-#: model:ir.ui.view,arch_db:website_helpdesk_slides.slide_upload_wizard_view_form
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.slide_upload_wizard_view_form
 msgid "Tags..."
 msgstr "Теги..."
 
@@ -228,7 +233,7 @@ msgid "The full URL to access the document through the website."
 msgstr "Полный URL, чтобы получить доступ к документу через веб-сайт."
 
 #. module: website_helpdesk_slides
-#: model:ir.ui.view,arch_db:website_helpdesk_slides.helpdesk_team_view_form_inherit_website_helpdesk_slides
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.helpdesk_team_view_form_inherit_website_helpdesk_slides
 msgid "The related channel is:<br/>"
 msgstr ""
 
@@ -243,7 +248,7 @@ msgid "Type"
 msgstr "Тип"
 
 #. module: website_helpdesk_slides
-#: code:addons/website_helpdesk_slides/wizard/slide_slide.py:86
+#: code:addons/website_helpdesk_slides/wizard/slide_slide.py:87
 #, python-format
 msgid "Uploded new slide : <a href=\"%s\">click here to view it.</a>"
 msgstr ""
@@ -256,12 +261,12 @@ msgid "Video"
 msgstr "Видео"
 
 #. module: website_helpdesk_slides
-#: model:ir.ui.view,arch_db:website_helpdesk_slides.helpdesk_team_view_form_inherit_website_helpdesk_slides
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.helpdesk_team_view_form_inherit_website_helpdesk_slides
 msgid "View the presentations:<br/>"
 msgstr ""
 
 #. module: website_helpdesk_slides
-#: model:ir.ui.view,arch_db:website_helpdesk_slides.slides_page
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.slides_page
 msgid "Views ."
 msgstr "Просмотры."
 
@@ -277,11 +282,6 @@ msgstr "URL-адрес YouTube или Google документа"
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_helpdesk_team__elearning_id
-#: model:ir.ui.view,arch_db:website_helpdesk_slides.helpdesk_team_view_form_inherit_website_helpdesk_slides
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.helpdesk_team_view_form_inherit_website_helpdesk_slides
 msgid "eLearning"
 msgstr "Онлайн обучение"
-
-#. module: website_helpdesk_slides
-#: model:ir.model,name:website_helpdesk_slides.model_slide_upload_wizard
-msgid "slide.upload.wizard"
-msgstr "slide.upload.wizard"

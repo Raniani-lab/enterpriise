@@ -18,7 +18,7 @@
         <div class="ckca_date" t-esc="page['payment_date_canada']"/>
         <div class="ckca_date_format">YYYY-MM-DD</div>
         <div class="ckca_payee_name" t-esc="page['partner_name']"/>
-        <div class="ckca_payee_address" t-raw="page['partner_address'] and page['partner_address'].replace('\n\n', '\n').replace('\n', '&lt;br&gt;')"/>
+        <div class="ckca_payee_address" t-raw="page.get('partner_address') and page['partner_address'].replace('\n\n', '\n').replace('\n', '&lt;br&gt;')"/>
         <div class="ckca_amount">
             <t t-esc="page['amount']"/>
         </div>

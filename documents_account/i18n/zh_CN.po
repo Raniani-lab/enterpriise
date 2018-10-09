@@ -4,13 +4,17 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# 珠海-杜哥 <liangjia@qq.com>, 2018
+# Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
+# ChinaMaker <liuct@chinamaker.net>, 2018
+# xu xiaohu <xu.xiaohu@gmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"POT-Creation-Date: 2018-10-02 10:31+0000\n"
+"PO-Revision-Date: 2018-10-02 10:31+0000\n"
+"Last-Translator: xu xiaohu <xu.xiaohu@gmail.com>, 2018\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,17 +27,19 @@ msgstr ""
 msgid ""
 "A set of condition and actions which will be available to all attachments "
 "matching the conditions"
-msgstr ""
+msgstr "可用于所有满足条件的附件的条件和动作集合"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_res_company__account_folder
+#: model:ir.model.fields,field_description:documents_account.field_res_config_settings__dms_account_settings
 msgid "Account Folder"
-msgstr ""
+msgstr "账户目录"
 
 #. module: documents_account
-#: model:ir.model.fields,field_description:documents_account.field_documents_workflow_rule__create_model
-msgid "Attach to"
-msgstr ""
+#: model:ir.model.fields,field_description:documents_account.field_res_company__account_tags
+#: model:ir.model.fields,field_description:documents_account.field_res_config_settings__account_tags
+msgid "Account Tags"
+msgstr "财务标签"
 
 #. module: documents_account
 #: model:ir.model,name:documents_account.model_res_company
@@ -41,24 +47,70 @@ msgid "Companies"
 msgstr "公司"
 
 #. module: documents_account
-#: selection:documents.workflow.rule,create_model:0
-msgid "Credit note"
-msgstr ""
+#: model:ir.model,name:documents_account.model_res_config_settings
+msgid "Config Settings"
+msgstr "配置设定"
 
 #. module: documents_account
-#: model:ir.ui.view,arch_db:documents_account.res_config_settings_view_form
-msgid "Default destination for the attachments created in accounting."
-msgstr ""
+#: model:ir.model.fields,field_description:documents_account.field_documents_workflow_rule__create_model
+msgid "Create"
+msgstr "创建"
+
+#. module: documents_account
+#: code:addons/documents_account/models/account_invoice.py:13
+#, python-format
+msgid "Created by: "
+msgstr "创建人："
+
+#. module: documents_account
+#: selection:documents.workflow.rule,create_model:0
+msgid "Credit note"
+msgstr "信用证"
+
+#. module: documents_account
+#: model:ir.model.fields,field_description:documents_account.field_res_company__dms_account_settings
+msgid "Dms Account Settings"
+msgstr "数据库管理系统的会计设置"
+
+#. module: documents_account
+#: model:ir.model,name:documents_account.model_ir_attachment
+msgid "Document"
+msgstr "单据"
+
+#. module: documents_account
+#: model:mail.activity.type,name:documents_account.mail_documents_activity_data_fs
+msgid "Financial Statement"
+msgstr "财务报表"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_documents_workflow_rule__has_business_option
 msgid "Has Business Option"
-msgstr ""
+msgstr "商业选项"
+
+#. module: documents_account
+#: model:ir.model,name:documents_account.model_account_invoice
+msgid "Invoice"
+msgstr "发票"
+
+#. module: documents_account
+#: selection:documents.workflow.rule,create_model:0
+msgid "Product template"
+msgstr "产品模板"
+
+#. module: documents_account
+#: model_terms:ir.ui.view,arch_db:documents_account.res_config_settings_view_form
+msgid "Select the folder to be used for accounting's documents."
+msgstr "选择用于财务文档的目录"
+
+#. module: documents_account
+#: model_terms:ir.ui.view,arch_db:documents_account.res_config_settings_view_form
+msgid "Select the tags to be applied to the accounting's new documents"
+msgstr "选择用于财务文档的标签"
 
 #. module: documents_account
 #: selection:documents.workflow.rule,create_model:0
 msgid "Signature template"
-msgstr ""
+msgstr "签名模板"
 
 #. module: documents_account
 #: selection:documents.workflow.rule,create_model:0
@@ -66,21 +118,16 @@ msgid "Task"
 msgstr "任务"
 
 #. module: documents_account
+#: model:mail.activity.type,name:documents_account.mail_documents_activity_data_vat
+msgid "Tax Statement"
+msgstr "税务报表"
+
+#. module: documents_account
 #: selection:documents.workflow.rule,create_model:0
 msgid "Vendor bill"
-msgstr ""
+msgstr "供应商发票"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_res_config_settings__account_folder
-msgid "account folder"
-msgstr ""
-
-#. module: documents_account
-#: model:ir.model,name:documents_account.model_ir_attachment
-msgid "ir.attachment"
-msgstr "ir.attachment"
-
-#. module: documents_account
-#: model:ir.model,name:documents_account.model_res_config_settings
-msgid "res.config.settings"
-msgstr "设置-基础设置"
+msgid "account default folder"
+msgstr "账户默认目录"

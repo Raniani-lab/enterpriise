@@ -7,11 +7,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo 9.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-07 14:56+0000\n"
+"POT-Creation-Date: 2018-09-28 12:15+0000\n"
 "PO-Revision-Date: 2016-05-19 06:01+0000\n"
 "Last-Translator: Martin Trigaux\n"
-"Language-Team: Spanish (Dominican Republic) (http://www.transifex.com/odoo/"
-"odoo-9/language/es_DO/)\n"
+"Language-Team: Spanish (Dominican Republic) (http://www.transifex.com/odoo/odoo-9/language/es_DO/)\n"
 "Language: es_DO\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,165 +18,353 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: l10n_us_check_printing
-#: model:ir.model.fields,help:l10n_us_check_printing.field_res_company_us_check_margin_left
-#: model:ir.model.fields,help:l10n_us_check_printing.field_res_company_us_check_margin_top
-msgid ""
-"Adjust the margins of generated checks to make it fit your printer's "
-"settings."
-msgstr ""
-
-#. module: l10n_us_check_printing
-#: model:ir.ui.view,arch_db:l10n_us_check_printing.ckus_stub
-msgid "Amount Due"
-msgstr "Importe adeudado"
-
-#. module: l10n_us_check_printing
-#: model:ir.ui.view,arch_db:l10n_us_check_printing.ckus_stub
+#: model_terms:ir.ui.view,arch_db:l10n_us_check_printing.ckus_stub
 msgid "Check Amount:"
 msgstr ""
 
 #. module: l10n_us_check_printing
-#: model:ir.model.fields,field_description:l10n_us_check_printing.field_res_company_us_check_layout
-msgid "Check Layout"
-msgstr ""
-
-#. module: l10n_us_check_printing
-#: selection:res.company,us_check_layout:0
-msgid "Check in middle"
-msgstr ""
-
-#. module: l10n_us_check_printing
-#: selection:res.company,us_check_layout:0
-msgid "Check on bottom"
-msgstr ""
-
-#. module: l10n_us_check_printing
-#: selection:res.company,us_check_layout:0
-msgid "Check on top"
-msgstr ""
-
-#. module: l10n_us_check_printing
-#: model:ir.model,name:l10n_us_check_printing.model_res_company
-msgid "Companies"
-msgstr "Compañías"
-
-#. module: l10n_us_check_printing
-#: model:ir.ui.view,arch_db:l10n_us_check_printing.ckus_stub
+#: model_terms:ir.ui.view,arch_db:l10n_us_check_printing.ckus_stub
 msgid "Description"
-msgstr "Descripción"
+msgstr ""
 
 #. module: l10n_us_check_printing
-#: model:ir.model.fields,field_description:l10n_us_check_printing.field_report_l10n_us_check_printing_print_check_bottom_display_name
-#: model:ir.model.fields,field_description:l10n_us_check_printing.field_report_l10n_us_check_printing_print_check_middle_display_name
-#: model:ir.model.fields,field_description:l10n_us_check_printing.field_report_l10n_us_check_printing_print_check_top_display_name
+#: model:ir.model.fields,field_description:l10n_us_check_printing.field_account_payment__display_name
 msgid "Display Name"
-msgstr "Nombre mostrado"
+msgstr ""
 
 #. module: l10n_us_check_printing
-#: model:ir.ui.view,arch_db:l10n_us_check_printing.ckus_stub
+#: model_terms:ir.ui.view,arch_db:l10n_us_check_printing.ckus_stub
 msgid "Due Date"
-msgstr "Fecha vencimiento"
+msgstr ""
 
 #. module: l10n_us_check_printing
-#: model:ir.model.fields,field_description:l10n_us_check_printing.field_report_l10n_us_check_printing_print_check_bottom_id
-#: model:ir.model.fields,field_description:l10n_us_check_printing.field_report_l10n_us_check_printing_print_check_middle_id
-#: model:ir.model.fields,field_description:l10n_us_check_printing.field_report_l10n_us_check_printing_print_check_top_id
+#: model:ir.model.fields,field_description:l10n_us_check_printing.field_account_payment__id
 msgid "ID"
-msgstr "ID"
+msgstr ""
 
 #. module: l10n_us_check_printing
-#: model:ir.ui.view,arch_db:l10n_us_check_printing.ckus_stub
+#: model_terms:ir.ui.view,arch_db:l10n_us_check_printing.ckus_stub
 msgid "Invoice Amount"
-msgstr "Importe factura"
+msgstr ""
 
 #. module: l10n_us_check_printing
-#: model:ir.model.fields,field_description:l10n_us_check_printing.field_report_l10n_us_check_printing_print_check_bottom___last_update
-#: model:ir.model.fields,field_description:l10n_us_check_printing.field_report_l10n_us_check_printing_print_check_middle___last_update
-#: model:ir.model.fields,field_description:l10n_us_check_printing.field_report_l10n_us_check_printing_print_check_top___last_update
+#: model:ir.model.fields,field_description:l10n_us_check_printing.field_account_payment____last_update
 msgid "Last Modified on"
-msgstr "Última modificación en"
-
-#. module: l10n_us_check_printing
-#: model:ir.model.fields,field_description:l10n_us_check_printing.field_res_company_us_check_margin_left
-msgid "Left Margin"
 msgstr ""
 
 #. module: l10n_us_check_printing
-#: model:ir.model.fields,field_description:l10n_us_check_printing.field_res_company_us_check_multi_stub
-msgid "Multi-Pages Check Stub"
-msgstr ""
-
-#. module: l10n_us_check_printing
-#: selection:res.company,us_check_layout:0
-msgid "None"
-msgstr "Ninguno"
-
-#. module: l10n_us_check_printing
-#: model:ir.ui.view,arch_db:l10n_us_check_printing.ckus_stub
+#: model_terms:ir.ui.view,arch_db:l10n_us_check_printing.ckus_stub
 msgid "Payment"
 msgstr "Pago"
 
 #. module: l10n_us_check_printing
 #: model:ir.model,name:l10n_us_check_printing.model_account_payment
 msgid "Payments"
-msgstr "Pagos"
+msgstr ""
 
 #. module: l10n_us_check_printing
-#: model:ir.actions.report.xml,name:l10n_us_check_printing.action_print_check_bottom
+#: model:ir.actions.report,name:l10n_us_check_printing.action_print_check_bottom
 msgid "Print Check (Bottom)"
 msgstr ""
 
 #. module: l10n_us_check_printing
-#: model:ir.actions.report.xml,name:l10n_us_check_printing.action_print_check_middle
+#: model:ir.actions.report,name:l10n_us_check_printing.action_print_check_middle
 msgid "Print Check (Middle)"
 msgstr ""
 
 #. module: l10n_us_check_printing
-#: model:ir.actions.report.xml,name:l10n_us_check_printing.action_print_check_top
+#: model:ir.actions.report,name:l10n_us_check_printing.action_print_check_top
 msgid "Print Check (Top)"
 msgstr ""
 
-#. module: l10n_us_check_printing
-#: model:ir.model.fields,help:l10n_us_check_printing.field_res_company_us_check_layout
-msgid ""
-"Select the format corresponding to the check paper you will be printing your "
-"checks on.\n"
-"In order to disable the printing feature, select 'None'."
-msgstr ""
+#~ msgid "Action Needed"
+#~ msgstr ""
 
-#. module: l10n_us_check_printing
-#: model:ir.model.fields,help:l10n_us_check_printing.field_res_company_us_check_multi_stub
-msgid ""
-"This option allows you to print check details (stub) on multiple pages if "
-"they don't fit on a single page."
-msgstr ""
+#~ msgid "Amount in Words"
+#~ msgstr ""
 
-#. module: l10n_us_check_printing
-#: model:ir.model.fields,field_description:l10n_us_check_printing.field_res_company_us_check_margin_top
-msgid "Top Margin"
-msgstr ""
+#~ msgid "Attachment Count"
+#~ msgstr ""
 
-#. module: l10n_us_check_printing
-#: model:ir.ui.view,arch_db:l10n_us_check_printing.view_res_company_form_inherited
-msgid "US Check Printing"
-msgstr "Impresión de Cheques de EE.UU."
+#~ msgid "Balance Due"
+#~ msgstr ""
 
-#. module: l10n_us_check_printing
-#: model:ir.ui.view,arch_db:l10n_us_check_printing.view_res_company_form_inherited
-msgid "in"
-msgstr ""
+#~ msgid "Cancelled"
+#~ msgstr ""
 
-#. module: l10n_us_check_printing
-#: model:ir.model,name:l10n_us_check_printing.model_report_l10n_us_check_printing_print_check_bottom
-msgid "report.l10n_us_check_printing.print_check_bottom"
-msgstr ""
+#~ msgid "Change label of the counterpart that will hold the payment difference"
+#~ msgstr ""
 
-#. module: l10n_us_check_printing
-#: model:ir.model,name:l10n_us_check_printing.model_report_l10n_us_check_printing_print_check_middle
-msgid "report.l10n_us_check_printing.print_check_middle"
-msgstr ""
+#~ msgid "Check Number"
+#~ msgstr ""
 
-#. module: l10n_us_check_printing
-#: model:ir.model,name:l10n_us_check_printing.model_report_l10n_us_check_printing_print_check_top
-msgid "report.l10n_us_check_printing.print_check_top"
-msgstr ""
+#~ msgid "Check this option if your pre-printed checks are not numbered."
+#~ msgstr ""
+
+#~ msgid "Code"
+#~ msgstr ""
+
+#~ msgid "Company"
+#~ msgstr ""
+
+#~ msgid "Company related to this journal"
+#~ msgstr ""
+
+#~ msgid "Created by"
+#~ msgstr ""
+
+#~ msgid "Created on"
+#~ msgstr ""
+
+#~ msgid "Currency"
+#~ msgstr ""
+
+#~ msgid "Customer"
+#~ msgstr ""
+
+#~ msgid "Destination Account"
+#~ msgstr ""
+
+#~ msgid "Difference Account"
+#~ msgstr ""
+
+#~ msgid "Draft"
+#~ msgstr ""
+
+#~ msgid "Followers"
+#~ msgstr ""
+
+#~ msgid "Followers (Channels)"
+#~ msgstr ""
+
+#~ msgid "Followers (Partners)"
+#~ msgstr ""
+
+#~ msgid "Has Invoices"
+#~ msgstr ""
+
+#~ msgid "Hide Payment Method"
+#~ msgstr ""
+
+#~ msgid "If checked new messages require your attention."
+#~ msgstr ""
+
+#~ msgid "If checked, new messages require your attention."
+#~ msgstr ""
+
+#~ msgid "If checked, some messages have a delivery error."
+#~ msgstr ""
+
+#~ msgid "Internal Transfer"
+#~ msgstr ""
+
+#~ msgid "Invoices"
+#~ msgstr ""
+
+#~ msgid "Invoices whose journal items have been reconciled with this payment's."
+#~ msgstr ""
+
+#~ msgid "Is Follower"
+#~ msgstr ""
+
+#~ msgid "Journal Entry Name"
+#~ msgstr ""
+
+#~ msgid "Journal Item Label"
+#~ msgstr ""
+
+#~ msgid "Keep open"
+#~ msgstr ""
+
+#~ msgid "Last Updated by"
+#~ msgstr ""
+
+#~ msgid "Last Updated on"
+#~ msgstr ""
+
+#~ msgid "Main Attachment"
+#~ msgstr ""
+
+#~ msgid "Manual Numbering"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Manual: Get paid by cash, check or any other method outside of Odoo.\n"
+#~ "Electronic: Get paid automatically through a payment acquirer by requesting a transaction on a card saved by the customer when buying or subscribing online (payment token).\n"
+#~ "Check: Pay bill by check and print it from Odoo.\n"
+#~ "Batch Deposit: Encase several customer checks at once by generating a batch deposit to submit to your bank. When encoding the bank statement in Odoo, you are suggested to reconcile the transaction with the batch deposit.To enable batch deposit, module account_batch_payment must be installed.\n"
+#~ "SEPA Credit Transfer: Pay bill from a SEPA Credit Transfer file you submit to your bank. To enable sepa credit transfer, module account_sepa must be installed "
+#~ msgstr ""
+
+#~ msgid "Mark invoice as fully paid"
+#~ msgstr ""
+
+#~ msgid "Memo"
+#~ msgstr ""
+
+#~ msgid "Message Delivery error"
+#~ msgstr ""
+
+#~ msgid "Messages"
+#~ msgstr ""
+
+#~ msgid "Move Line"
+#~ msgstr ""
+
+#~ msgid "Move Reconciled"
+#~ msgstr ""
+
+#~ msgid "Multi"
+#~ msgstr ""
+
+#~ msgid "Name"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Note that tokens from acquirers set to only authorize transactions (instead "
+#~ "of capturing the amount) are not available."
+#~ msgstr ""
+
+#~ msgid "Number of Actions"
+#~ msgstr ""
+
+#~ msgid "Number of error"
+#~ msgstr ""
+
+#~ msgid "Number of messages which requires an action"
+#~ msgstr ""
+
+#~ msgid "Number of messages with delivery error"
+#~ msgstr ""
+
+#~ msgid "Number of unread messages"
+#~ msgstr ""
+
+#~ msgid "Partner"
+#~ msgstr ""
+
+#~ msgid "Partner Type"
+#~ msgstr ""
+
+#~ msgid "Payment Amount"
+#~ msgstr ""
+
+#~ msgid "Payment Date"
+#~ msgstr ""
+
+#~ msgid "Payment Difference"
+#~ msgstr ""
+
+#~ msgid "Payment Difference Handling"
+#~ msgstr ""
+
+#~ msgid "Payment Journal"
+#~ msgstr ""
+
+#~ msgid "Payment Method Type"
+#~ msgstr ""
+
+#~ msgid "Payment Reference"
+#~ msgstr ""
+
+#~ msgid "Payment Transaction"
+#~ msgstr ""
+
+#~ msgid "Payment Type"
+#~ msgstr ""
+
+#~ msgid "Posted"
+#~ msgstr ""
+
+#~ msgid "Receive Money"
+#~ msgstr ""
+
+#~ msgid "Recipient Bank Account"
+#~ msgstr ""
+
+#~ msgid "Reconciled"
+#~ msgstr ""
+
+#~ msgid "Reconciled Invoices"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Reference of the document used to issue this payment. Eg. check number, file"
+#~ " name, etc."
+#~ msgstr ""
+
+#~ msgid "Saved payment token"
+#~ msgstr ""
+
+#~ msgid "Send Money"
+#~ msgstr ""
+
+#~ msgid "Sent"
+#~ msgstr ""
+
+#~ msgid "Show Partner Bank Account"
+#~ msgstr ""
+
+#~ msgid "Status"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Technical field containing the invoices for which the payment has been generated.\n"
+#~ "                                                                                                                                                                       This does not especially correspond to the invoices reconciled with the payment,\n"
+#~ "                                                                                                                                                                       as it can have been generated first, and reconciled later"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Technical field holding the number given to the journal entry, automatically"
+#~ " set when the statement line is reconciled then stored to set the same "
+#~ "number again if the line is cancelled, set to draft and re-processed again."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Technical field indicating if the user selected invoices from multiple "
+#~ "partners or from different types."
+#~ msgstr ""
+
+#~ msgid "Technical field used for usability purposes"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Technical field used to adapt the interface to the payment type selected."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Technical field used to hide the payment method if the selected journal has "
+#~ "only one available which is 'manual'"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Technical field used to know whether the field `partner_bank_account_id` "
+#~ "needs to be displayed or not in the payments form views"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "The selected journal is configured to print check numbers. If your pre-"
+#~ "printed check paper already has numbers or if the current numbering is "
+#~ "wrong, you can change it in the journal configuration page."
+#~ msgstr ""
+
+#~ msgid "Transfer To"
+#~ msgstr ""
+
+#~ msgid "Unread Messages"
+#~ msgstr ""
+
+#~ msgid "Unread Messages Counter"
+#~ msgstr ""
+
+#~ msgid "VOID"
+#~ msgstr ""
+
+#~ msgid "Vendor"
+#~ msgstr ""
+
+#~ msgid "Website Messages"
+#~ msgstr ""
+
+#~ msgid "Website communication history"
+#~ msgstr ""

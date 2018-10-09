@@ -41,7 +41,7 @@ class AccountInvoice(models.Model):
     @api.depends('partner_id')
     def _compute_need_external_trade(self):
         """Assign the "Need external trade?" value how in the partner"""
-        for record in self:
+        for record in self.filtered(lambda i: i.type == 'out_invoice'):
             record.l10n_mx_edi_external_trade = record.partner_id.l10n_mx_edi_external_trade
 
     def _inverse_need_external_trade(self):

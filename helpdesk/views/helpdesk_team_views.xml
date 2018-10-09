@@ -179,7 +179,7 @@
                                 </div>
                                 <div attrs="{'invisible': [('use_api','=',False)]}" class="mt16">
                                     <!-- TODO: write a dedicated doc on how to create helpdesk tickets -->
-                                    <a href="https://www.odoo.com/documentation/9.0/api_integration.html" target="_blank">
+                                    <a href="https://www.odoo.com/documentation/12.0/webservices/odoo.html" target="_blank">
                                         <i class="fa fa-arrow-right"></i> View documentation
                                     </a>
                                 </div>
@@ -403,7 +403,7 @@
     </record>
 
     <record id="helpdesk_team_dashboard_action_main" model="ir.actions.act_window">
-        <field name="name">Dashboard</field>
+        <field name="name">Helpdesk Overview</field>
         <field name="res_model">helpdesk.team</field>
         <field name="view_type">form</field>
         <field name="view_mode">kanban,form</field>
@@ -417,7 +417,7 @@
     </record>
 
     <menuitem id="helpdesk_menu_team_dashboard" action="helpdesk.helpdesk_team_dashboard_action_main"
-        sequence="5" parent="helpdesk.menu_helpdesk_root"
+        sequence="5" parent="helpdesk.menu_helpdesk_root" name="Overview"
         groups="helpdesk.group_helpdesk_user"/>
 
 </odoo>

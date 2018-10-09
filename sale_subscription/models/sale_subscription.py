@@ -10,7 +10,6 @@ from uuid import uuid4
 
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
-from odoo.osv import expression
 from odoo.tools import format_date
 from odoo.tools.safe_eval import safe_eval
 
@@ -27,7 +26,7 @@ class SaleSubscription(models.Model):
     def _get_default_pricelist(self):
         return self.env['product.pricelist'].search([('currency_id', '=', self.env.user.company_id.currency_id.id)], limit=1).id
 
-    name = fields.Char(required=True, track_visibility="always")
+    name = fields.Char(required=True, track_visibility="always", default="New")
     code = fields.Char(string="Reference", required=True, track_visibility="onchange", index=True, copy=False)
     stage_id = fields.Many2one(
         'sale.subscription.stage', string='Stage', index=True,
@@ -48,14 +47,15 @@ class SaleSubscription(models.Model):
     recurring_monthly = fields.Float(compute='_compute_recurring_monthly', string="Monthly Recurring Revenue", store=True)
     close_reason_id = fields.Many2one("sale.subscription.close.reason", string="Close Reason", track_visibility='onchange')
     template_id = fields.Many2one('sale.subscription.template', string='Subscription Template', required=True, track_visibility='onchange')
-    payment_mode = fields.Selection(related='template_id.payment_mode')
+    payment_mode = fields.Selection(related='template_id.payment_mode', readonly=False)
     description = fields.Text()
-    user_id = fields.Many2one('res.users', string='Salesperson', track_visibility='onchange')
-    team_user_id = fields.Many2one('res.users', string="Team Leader", related="user_id.partner_id.team_id.user_id")
-    invoice_count = fields.Integer(compute='_compute_invoice_count')
-    country_id = fields.Many2one('res.country', related='partner_id.country_id', store=True)
-    industry_id = fields.Many2one('res.partner.industry', related='partner_id.industry_id', store=True)
-    sale_order_count = fields.Integer(compute='_compute_sale_order_count')
+    user_id = fields.Many2one('res.users', string='Salesperson', track_visibility='onchange', default=lambda self: self.env.user)
+    team_id = fields.Many2one('crm.team', 'Sales Team', change_default=True, default=False)
+    team_user_id = fields.Many2one('res.users', string="Team Leader", related="team_id.user_id", readonly=False)
+    invoice_count = fields.Integer(compute='_compute_invoice_count', groups="account.group_account_invoice")
+    country_id = fields.Many2one('res.country', related='partner_id.country_id', store=True, readonly=False)
+    industry_id = fields.Many2one('res.partner.industry', related='partner_id.industry_id', store=True, readonly=False)
+    sale_order_count = fields.Integer(compute='_compute_sale_order_count', groups="sales_team.group_sale_salesman")
     # customer portal
     uuid = fields.Char('Account UUID', default=lambda self: str(uuid4()), copy=False, required=True)
     website_url = fields.Char('Website URL', compute='_website_url', help='The full URL to access the document through the website.')
@@ -63,7 +63,7 @@ class SaleSubscription(models.Model):
     # add tax calculation
     recurring_amount_tax = fields.Float('Taxes', compute="_amount_all")
     recurring_amount_total = fields.Float('Total', compute="_amount_all")
-    recurring_rule_boundary = fields.Selection(related="template_id.recurring_rule_boundary")
+    recurring_rule_boundary = fields.Selection(related="template_id.recurring_rule_boundary", readonly=False)
     starred_user_ids = fields.Many2many(
         'res.users', 'subscription_starred_user_rel', 'subscription_id', 'user_id',
         default=lambda s: s._get_default_starred_user_ids(),
@@ -80,8 +80,8 @@ class SaleSubscription(models.Model):
     health = fields.Selection([
         ('normal', 'Neutral'),
         ('done', 'Good'),
-        ('bad', 'Bad')], string="Health", copy=False, default='normal', translate=True)
-    in_progress = fields.Boolean(related='stage_id.in_progress')
+        ('bad', 'Bad')], string="Health", copy=False, default='normal', translate=True, help="Set a health status")
+    in_progress = fields.Boolean(related='stage_id.in_progress', readonly=False)
     to_renew = fields.Boolean(string='To Renew', default=False, copy=False)
 
     _sql_constraints = [
@@ -96,13 +96,17 @@ class SaleSubscription(models.Model):
             subscription.percentage_satisfaction = activities['great'] * 100 / total_activity_values if total_activity_values else -1
 
     def _compute_sale_order_count(self):
-        raw_data = self.env['sale.order.line'].sudo().read_group(
-            [('subscription_id', 'in', self.ids)],
-            ['subscription_id', 'order_id'],
-            ['subscription_id', 'order_id'],
-            lazy=False,
-        )
-        count = Counter(g['subscription_id'][0] for g in raw_data)
+        sol = self.env['sale.order.line']
+        if sol.check_access_rights('read', raise_exception=False):
+            raw_data = sol.read_group(
+                [('subscription_id', 'in', self.ids)],
+                ['subscription_id', 'order_id'],
+                ['subscription_id', 'order_id'],
+                lazy=False,
+            )
+            count = Counter(g['subscription_id'][0] for g in raw_data)
+        else:
+            count = Counter()
 
         for subscription in self:
             subscription.sale_order_count = count[subscription.id]
@@ -193,8 +197,9 @@ class SaleSubscription(models.Model):
 
     def _compute_invoice_count(self):
         Invoice = self.env['account.invoice']
+        can_read = Invoice.check_access_rights('read', raise_exception=False)
         for subscription in self:
-            subscription.invoice_count = Invoice.sudo().search_count([('invoice_line_ids.subscription_id', '=', subscription.id)])
+            subscription.invoice_count = can_read and Invoice.search_count([('invoice_line_ids.subscription_id', '=', subscription.id)]) or 0
 
     @api.depends('recurring_invoice_line_ids', 'recurring_invoice_line_ids.quantity', 'recurring_invoice_line_ids.price_subtotal')
     def _compute_recurring_total(self):
@@ -243,7 +248,7 @@ class SaleSubscription(models.Model):
     def onchange_date_start(self):
         if self.recurring_rule_boundary == 'limited':
             periods = {'daily': 'days', 'weekly': 'weeks', 'monthly': 'months', 'yearly': 'years'}
-            self.date = fields.Datetime.from_string(self.date_start) + relativedelta(**{
+            self.date = fields.Date.from_string(self.date_start) + relativedelta(**{
                 periods[self.recurring_rule_type]: self.template_id.recurring_rule_count * self.template_id.recurring_interval})
         else:
             self.date = False
@@ -408,8 +413,14 @@ class SaleSubscription(models.Model):
         return self.write({'date': False})
 
     def set_close(self):
-        stage = self.env['sale.subscription.stage'].search([('in_progress', '=', False)], order='sequence', limit=1)
-        return self.write({'stage_id': stage.id, 'to_renew': False, 'date': fields.Date.from_string(fields.Date.today())})
+        today = fields.Date.from_string(fields.Date.today())
+        search = self.env['sale.subscription.stage'].search
+        for sub in self:
+            stage = search([('in_progress', '=', False), ('sequence', '>', sub.stage_id.sequence)], limit=1)
+            if not stage:
+                stage = search([('in_progress', '=', False)], limit=1)
+            sub.write({'stage_id': stage.id, 'to_renew': False, 'date': today})
+        return True
 
     def _prepare_invoice_data(self):
         self.ensure_one()
@@ -434,13 +445,13 @@ class SaleSubscription(models.Model):
         periods = {'daily': 'days', 'weekly': 'weeks', 'monthly': 'months', 'yearly': 'years'}
         end_date = next_date + relativedelta(**{periods[self.recurring_rule_type]: self.recurring_interval})
         end_date = end_date - relativedelta(days=1)     # remove 1 day as normal people thinks in term of inclusive ranges.
-        addr = self.partner_id.address_get(['delivery'])
+        addr = self.partner_id.address_get(['delivery', 'invoice'])
 
         sale_order = self.env['sale.order'].search([('order_line.subscription_id', 'in', self.ids)], order="id desc", limit=1)
         return {
             'account_id': self.partner_id.property_account_receivable_id.id,
             'type': 'out_invoice',
-            'partner_id': self.partner_id.id,
+            'partner_id': addr['invoice'],
             'partner_shipping_id': addr['delivery'],
             'currency_id': self.pricelist_id.currency_id.id,
             'journal_id': journal.id,
@@ -922,14 +933,14 @@ class SaleSubscriptionTemplate(models.Model):
     description = fields.Text(translate=True, string="Terms and Conditions")
     recurring_rule_type = fields.Selection([('daily', 'Day(s)'), ('weekly', 'Week(s)'),
                                             ('monthly', 'Month(s)'), ('yearly', 'Year(s)'), ],
-                                           string='Recurrence',
+                                           string='Recurrence', required=True,
                                            help="Invoice automatically repeat at specified interval",
                                            default='monthly', track_visibility='onchange')
-    recurring_interval = fields.Integer(string="Repeat Every", help="Repeat every (Days/Week/Month/Year)", default=1, track_visibility='onchange')
-    recurring_rule_boundary = fields.Selection(
-        [('unlimited', 'Unlimited'),
-         ('limited', 'Limited')],
-        string='Recurrence Limit', default='unlimited')
+    recurring_interval = fields.Integer(string="Repeat Every", help="Repeat every (Days/Week/Month/Year)", required=True, default=1, track_visibility='onchange')
+    recurring_rule_boundary = fields.Selection([
+        ('unlimited', 'Forever'),
+        ('limited', 'Fixed')
+    ], string='Duration', default='unlimited')
     recurring_rule_count = fields.Integer(string="End After", default=1)
 
     # Read-only copy of recurring_rule_type for proper readability of recurrence limitation:
@@ -939,12 +950,12 @@ class SaleSubscriptionTemplate(models.Model):
 
     user_closable = fields.Boolean(string="Closable by customer", help="If checked, the user will be able to close his account from the frontend")
     payment_mode = fields.Selection([
-        ('manual', 'Manual Invoicing'),
-        ('draft_invoice', 'Generate Draft Invoice'),
-        ('validate_send', 'Validate & Send by Email'),
-        ('validate_send_payment', 'Validate, Send by Email & Trigger Payment'),
-        ('success_payment', 'Generate Paid Invoice After Successful Payment & Send by Email'),
-    ], default='draft_invoice')
+        ('manual', 'Manual'),
+        ('draft_invoice', 'Draft invoice'),
+        ('validate_send', 'Invoice'),
+        ('validate_send_payment', 'Invoice & try to charge'),
+        ('success_payment', 'Invoice only on successful payment'),
+    ], required=True, default='draft_invoice')
     product_ids = fields.One2many('product.template', 'subscription_template_id', copy=True)
     journal_id = fields.Many2one('account.journal', string="Accounting Journal", domain="[('type', '=', 'sale')]", company_dependent=True,
                                  help="If set, subscriptions with this template will invoice in this journal; "
@@ -954,11 +965,11 @@ class SaleSubscriptionTemplate(models.Model):
     subscription_count = fields.Integer(compute='_compute_subscription_count')
     color = fields.Integer()
     auto_close_limit = fields.Integer(string="Automatic closing limit", default=15,
-                                      help="Number of days before a subscription gets closed when automatic payments is set and are not fulfilled by the customer.")
+                                      help="Number of days before a subscription gets closed when the chosen payment mode trigger automatically the payment.")
     good_health_domain = fields.Char(string='Good Health', default='[]',
-        help="Domain used to change subscription's Kanban state with a 'Good' rating")
+                                     help="Domain used to change subscription's Kanban state with a 'Good' rating")
     bad_health_domain = fields.Char(string='Bad Health', default='[]',
-        help="Domain used to change subscription's Kanban state with a 'Bad' rating")
+                                    help="Domain used to change subscription's Kanban state with a 'Bad' rating")
     invoice_mail_template_id = fields.Many2one('mail.template', string='Invoice Email Template', domain=[('model', '=', 'account.invoice')])
 
     @api.constrains('recurring_interval')
@@ -1008,8 +1019,8 @@ class SaleSubscriptionStage(models.Model):
     description = fields.Text(translate=True)
     sequence = fields.Integer(default=1)
     fold = fields.Boolean(string='Folded in Kanban',
-        help='This stage is folded in the kanban view when there are not records in that stage to display.')
-    rating_template_id = fields.Many2one('mail.template', string='Rating Email Template',domain=[('model', '=', 'sale.subscription')])
+                          help='This stage is folded in the kanban view when there are not records in that stage to display.')
+    rating_template_id = fields.Many2one('mail.template', string='Rating Email Template', domain=[('model', '=', 'sale.subscription')])
     in_progress = fields.Boolean(string='In Progress', default=True)
 
 

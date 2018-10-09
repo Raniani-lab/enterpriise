@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"POT-Creation-Date: 2018-10-02 10:32+0000\n"
+"PO-Revision-Date: 2018-10-02 10:32+0000\n"
 "Last-Translator: Léonie Bouchat <lbo@odoo.com>, 2018\n"
 "Language-Team: Italian (https://www.transifex.com/odoo/teams/41243/it/)\n"
 "MIME-Version: 1.0\n"
@@ -22,11 +22,6 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Language: it\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
-#. module: stock_enterprise
-#: model:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view
-msgid "At A Glance"
-msgstr "In un colpo d'occhio"
 
 #. module: stock_enterprise
 #: selection:stock.report,state:0
@@ -54,7 +49,7 @@ msgid "Customers"
 msgstr "Clienti"
 
 #. module: stock_enterprise
-#: model:ir.ui.view,arch_db:stock_enterprise.stock_report_form_view
+#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_form_view
 msgid "Cycle Time"
 msgstr "Tempo di ciclo"
 
@@ -64,12 +59,12 @@ msgid "Cycle Time (Days)"
 msgstr "Tempo di ciclo (giorni)"
 
 #. module: stock_enterprise
-#: model:ir.ui.view,arch_db:stock_enterprise.stock_report_form_view
+#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_form_view
 msgid "Day(s)"
 msgstr "Giorno(i)"
 
 #. module: stock_enterprise
-#: model:ir.ui.view,arch_db:stock_enterprise.stock_report_form_view
+#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_form_view
 msgid "Delay"
 msgstr "Ritardo"
 
@@ -79,7 +74,7 @@ msgid "Delay (Days)"
 msgstr "Termine (giorni)"
 
 #. module: stock_enterprise
-#: model:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view
+#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view
 msgid ""
 "Delay to deliver an order (in days). Computed by comparing the scheduled "
 "date of the delivery order and its effective date."
@@ -88,7 +83,7 @@ msgstr ""
 "data prevista dell'ordine di consegna e la sua data effettiva. "
 
 #. module: stock_enterprise
-#: model:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view
+#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view
 msgid ""
 "Delay to receive an order (in days). Computed by comparing the scheduled "
 "date of the receipt and its effective date."
@@ -97,14 +92,14 @@ msgstr ""
 "prevista della ricevuta e la sua data effettiva. "
 
 #. module: stock_enterprise
-#: model:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view
-msgid "Deliveries Cycle Time (Days)"
-msgstr "Tempo di ciclo di consegne (giorni)"
+#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view
+msgid "Deliveries Cycle Time"
+msgstr ""
 
 #. module: stock_enterprise
-#: model:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view
-msgid "Deliveries Delay (Days)"
-msgstr "Ritardo di consegne (giorni)"
+#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view
+msgid "Deliveries Delay"
+msgstr ""
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__display_name
@@ -117,17 +112,17 @@ msgid "Done"
 msgstr "Completato"
 
 #. module: stock_enterprise
-#: model:ir.ui.view,arch_db:stock_enterprise.stock_report_search_view
+#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_search_view
 msgid "Done Deliveries"
 msgstr "Consegne effettuate"
 
 #. module: stock_enterprise
-#: model:ir.ui.view,arch_db:stock_enterprise.stock_report_search_view
+#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_search_view
 msgid "Done Receipts"
 msgstr "Ricevute effettuate"
 
 #. module: stock_enterprise
-#: model:ir.ui.view,arch_db:stock_enterprise.stock_report_search_view
+#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_search_view
 msgid "Done Transfers"
 msgstr "Trasefrimenti Fatti"
 
@@ -150,12 +145,6 @@ msgstr "Interno"
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__inventory_id
 msgid "Inventory Adjustment"
 msgstr "Aggiustamento dell’inventario"
-
-#. module: stock_enterprise
-#: model:ir.actions.act_window,name:stock_enterprise.stock_report_dashboard_action
-#: model:ir.ui.menu,name:stock_enterprise.stock_dashboard_menuitem
-msgid "Inventory Overview"
-msgstr "Panoramica inventario"
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__is_late
@@ -203,19 +192,24 @@ msgid "Product"
 msgstr "Prodotto"
 
 #. module: stock_enterprise
+#: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__categ_id
+msgid "Product Category"
+msgstr "Categoria prodotto"
+
+#. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__product_qty
 msgid "Product Quantity"
 msgstr "Quantità prodotto"
 
 #. module: stock_enterprise
-#: model:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view
-msgid "Receipts Cycle Time (Days)"
-msgstr "Tempo di ciclo di ricevute (giorni)"
+#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view
+msgid "Receipts Cycle Time"
+msgstr ""
 
 #. module: stock_enterprise
-#: model:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view
-msgid "Receipts Delay (Days)"
-msgstr "Ritardo di ricevute (giorni)"
+#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view
+msgid "Receipts Delay"
+msgstr ""
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__reference
@@ -223,7 +217,7 @@ msgid "Reference"
 msgstr "Riferimento"
 
 #. module: stock_enterprise
-#: model:ir.ui.view,arch_db:stock_enterprise.stock_report_cohort_view
+#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_cohort_view
 msgid "Report"
 msgstr "Report"
 
@@ -233,7 +227,7 @@ msgid "Status"
 msgstr "Stato"
 
 #. module: stock_enterprise
-#: model:ir.ui.view,arch_db:stock_enterprise.stock_report_pivot_view
+#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_pivot_view
 msgid "Stock Overview"
 msgstr "Panoramica dello stock"
 
@@ -243,7 +237,7 @@ msgid "Stock Report"
 msgstr "Report dello stock"
 
 #. module: stock_enterprise
-#: model:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view
+#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view
 msgid ""
 "Time needed to deliver an order (in days). Computed by comparing the "
 "creation date of the delivery order and its done date."
@@ -253,7 +247,7 @@ msgstr ""
 "effettiva di consegna. "
 
 #. module: stock_enterprise
-#: model:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view
+#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view
 msgid ""
 "Time needed to receive an order (in days). Computed by comparing the "
 "creation date of the receipt and its done date."
@@ -290,3 +284,9 @@ msgstr "In attesa di altro movimento"
 #: selection:stock.report,state:0
 msgid "Waiting Availability"
 msgstr "Attesa disponibilità"
+
+#. module: stock_enterprise
+#: model:ir.actions.act_window,name:stock_enterprise.stock_report_dashboard_action
+#: model:ir.ui.menu,name:stock_enterprise.stock_dashboard_menuitem
+msgid "Warehouse Dashboard"
+msgstr ""

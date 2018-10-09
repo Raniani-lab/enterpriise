@@ -126,11 +126,11 @@
             <search>
                 <field name="attachment_id"/>
                 <field name="tag_ids"/>
+                <filter name="my_templates" string="My Templates" domain="[('create_uid', '=', uid)]"/>
+                <filter name="favorite" string="My Favorites" domain="[('favorited_ids', '=', uid)]"/>
+                <separator/>
                 <filter name="active" string="Active" domain="[('active', '=', True)]"/>
                 <filter name="archive" string="Archived" domain="[('active', '=', False)]"/>
-                <separator/>
-                <filter name="my_templates" string="My Templates" domain="[('create_uid', '=', uid)]"/>
-                <filter name="favorite" string="Favorites" domain="[('favorited_ids', '=', uid)]"/>
             </search>
         </field>
     </record>

@@ -8,14 +8,14 @@
 # Jakub Lohnisky <jakub@lepremier.cz>, 2018
 # Jan Horzinka <jan.horzinka@centrum.cz>, 2018
 # Michal Veselý <michal@veselyberanek.net>, 2018
-# trendspotter, 2018
+# J. Podhorecky <j.podhorecky@volny.cz>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
-"Last-Translator: trendspotter, 2018\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"Last-Translator: J. Podhorecky <j.podhorecky@volny.cz>, 2018\n"
 "Language-Team: Czech (https://www.transifex.com/odoo/teams/41243/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,39 +24,39 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "\" bank accounts have been retrieved."
 msgstr "\" byly načteny bankovní účty."
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "<strong>Ooops</strong> It would seems that the process to"
 msgstr ""
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "<strong>Ooops</strong> We could not"
 msgstr ""
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "<strong>Success!</strong> Your account has been succesfully refreshed."
 msgstr ""
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "<strong>Success!</strong> Your account has been succesfully updated."
-msgstr ""
+msgstr "<strong>Úspěch!</strong> Váš účet byl úspěšně aktualizován."
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid ""
 "<strong>Well done!</strong> Your banking institution is now connected to "
 "Odoo."
 msgstr ""
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "A total of \""
 msgstr ""
 
@@ -116,7 +116,7 @@ msgid "Add a Bank Account"
 msgstr ""
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.online_provider_account_form_view
+#: model_terms:ir.ui.view,arch_db:account_online_sync.online_provider_account_form_view
 msgid "Additional information"
 msgstr ""
 
@@ -124,6 +124,11 @@ msgstr ""
 #: code:addons/account_online_sync/models/online_sync.py:62
 #, python-format
 msgid "An error occurred during online synchronization"
+msgstr ""
+
+#. module: account_online_sync
+#: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message_attachment_count
+msgid "Attachment Count"
 msgstr ""
 
 #. module: account_online_sync
@@ -139,7 +144,7 @@ msgid "Balance"
 msgstr "Zůstatek"
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.online_provider_account_form_view
+#: model_terms:ir.ui.view,arch_db:account_online_sync.online_provider_account_form_view
 msgid "Bank Accounts"
 msgstr "Bankovní účty"
 
@@ -154,7 +159,7 @@ msgid "Bank Statement Line"
 msgstr "Řádek bankovního výkazu"
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "Cancel"
 msgstr "Zrušit"
 
@@ -179,8 +184,8 @@ msgid "Company"
 msgstr "Firma"
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.account_bank_journal_form_inherit_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.account_journal_form_inherit_online_sync
+#: model_terms:ir.ui.view,arch_db:account_online_sync.account_bank_journal_form_inherit_online_sync
+#: model_terms:ir.ui.view,arch_db:account_online_sync.account_journal_form_inherit_online_sync
 msgid "Configure"
 msgstr "Konfigurovat"
 
@@ -243,7 +248,7 @@ msgid "Do not link"
 msgstr ""
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "Done"
 msgstr "Hotovo"
 
@@ -305,12 +310,12 @@ msgstr "Pokud je zaškrtnuto, nové zprávy vyžadují vaši pozornost."
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_provider__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr ""
+msgstr "Pokud je zaškrtnuto, nové zprávy vyžadují vaši pozornost."
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_provider__message_has_error
 msgid "If checked, some messages have a delivery error."
-msgstr ""
+msgstr "Pokud je zaškrtnuto, některé zprávy mají chybu při doručení."
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__name
@@ -319,8 +324,8 @@ msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model,name:account_online_sync.model_account_online_journal
-msgid "Interface for online account journal"
-msgstr "Rozhraní pro online účetní deník"
+msgid "Interface for Online Account Journal"
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message_is_follower
@@ -382,7 +387,7 @@ msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model,name:account_online_sync.model_account_online_link_wizard
-msgid "Link a particular synchronized account to a journal"
+msgid "Link synchronized account to a journal"
 msgstr ""
 
 #. module: account_online_sync
@@ -391,12 +396,17 @@ msgid "Link to existing journal"
 msgstr ""
 
 #. module: account_online_sync
-#: model:ir.actions.act_window,help:account_online_sync.action_online_provider_account
+#: model_terms:ir.actions.act_window,help:account_online_sync.action_online_provider_account
 msgid "List of bank(s) providing online synchronization"
 msgstr ""
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.online_provider_account_form_view
+#: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message_main_attachment_id
+msgid "Main Attachment"
+msgstr "Hlavní příloha"
+
+#. module: account_online_sync
+#: model_terms:ir.ui.view,arch_db:account_online_sync.online_provider_account_form_view
 msgid "Manual Refresh"
 msgstr ""
 
@@ -409,7 +419,7 @@ msgstr "Zpráva"
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message_has_error
 msgid "Message Delivery error"
-msgstr ""
+msgstr "Chyba při doručování zpráv"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message_ids
@@ -422,7 +432,7 @@ msgid "Method"
 msgstr "Metoda"
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.account_journal_dashboard_inherit_online_sync
+#: model_terms:ir.ui.view,arch_db:account_online_sync.account_journal_dashboard_inherit_online_sync
 msgid "Next sync:"
 msgstr ""
 
@@ -430,7 +440,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_online_sync.field_account_journal__next_synchronization
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__next_refresh
 msgid "Next synchronization"
-msgstr ""
+msgstr "Další synchronizace"
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/company.py:21
@@ -439,6 +449,8 @@ msgid ""
 "No bank journal could be found! Please install a chart of accounts first, in"
 " order to create one."
 msgstr ""
+"Žádný bankovní deník nebyl nalezen! Nejprve si nejprve nainstalujte účetní "
+"schéma, abyste vytvořili jeden účet."
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:109
@@ -474,7 +486,7 @@ msgstr "Počet zpráv s chybou při doručení"
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_provider__message_unread_counter
 msgid "Number of unread messages"
-msgstr ""
+msgstr "Počet nepřečtených zpráv"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_journal__account_online_journal_id
@@ -510,12 +522,12 @@ msgstr ""
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:375
 #: model:ir.ui.menu,name:account_online_sync.menu_action_online_provider_account
-#: model:ir.ui.view,arch_db:account_online_sync.account_journal_dashboard_inherit_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.account_journal_form_inherit_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.account_journal_dashboard_inherit_online_sync
+#: model_terms:ir.ui.view,arch_db:account_online_sync.account_journal_form_inherit_online_sync
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 #, python-format
 msgid "Online Synchronization"
-msgstr ""
+msgstr "Online synchronizace"
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:461
@@ -543,7 +555,7 @@ msgid ""
 msgstr ""
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.account_journal_dashboard_inherit_online_sync
+#: model_terms:ir.ui.view,arch_db:account_online_sync.account_journal_dashboard_inherit_online_sync
 msgid "Problem during synchronization"
 msgstr ""
 
@@ -606,8 +618,8 @@ msgid "Synchronization status"
 msgstr ""
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.account_journal_dashboard_inherit_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.account_journal_dashboard_inherit_online_sync
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "Synchronize now"
 msgstr ""
 
@@ -633,6 +645,8 @@ msgstr ""
 msgid ""
 "Technical field used to store information from plaid/yodlee to match partner"
 msgstr ""
+"Technické pole používané k ukládání informací z plaid / yodlee, aby "
+"odpovídalo partnerovi"
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_bank_statement_line__online_partner_vendor_name
@@ -642,9 +656,11 @@ msgid ""
 "Technical field used to store information from plaid/yodlee to match partner"
 " (used when a purchase is made)"
 msgstr ""
+"Technické pole používané k ukládání informací z plaid / yodlee na partnera "
+"(použito při nákupu)"
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "The account has been linked to your bank journal."
 msgstr ""
 
@@ -700,7 +716,7 @@ msgid "Unread Messages Counter"
 msgstr "Počítadlo nepřečtených zpráv"
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.online_provider_account_form_view
+#: model_terms:ir.ui.view,arch_db:account_online_sync.online_provider_account_form_view
 msgid "Update Credentials"
 msgstr ""
 
@@ -711,7 +727,7 @@ msgid "Update status of provider account"
 msgstr ""
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.account_journal_dashboard_inherit_online_sync
+#: model_terms:ir.ui.view,arch_db:account_online_sync.account_journal_dashboard_inherit_online_sync
 msgid "View problem"
 msgstr ""
 
@@ -736,7 +752,7 @@ msgid "Yodlee"
 msgstr "Yodlee"
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid ""
 "You can associate those bank accounts to a journal in order to automatically"
 " retrieve the latest statements from your bank."
@@ -757,12 +773,12 @@ msgstr ""
 #: model:ir.model.fields,help:account_online_sync.field_account_online_journal__balance
 #: model:ir.model.fields,help:account_online_sync.field_account_online_link_wizard__balance
 msgid "balance of the account sent by the third party provider"
-msgstr ""
+msgstr "zůstatek účtu zaslaný poskytovatelem třetí strany"
 
 #. module: account_online_sync
 #: selection:account.online.wizard,method:0
 msgid "edit"
-msgstr ""
+msgstr "upravit"
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_journal__online_identifier
@@ -793,14 +809,14 @@ msgid "transactions loaded"
 msgstr ""
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid ""
 "your account because of the following\n"
 "                    error during the process:"
 msgstr ""
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid ""
 "your account was not\n"
 "                    thoroughly completed. You can try to manually update your account by clicking the refresh button on the dashboard\n"

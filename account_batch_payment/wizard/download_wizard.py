@@ -5,6 +5,7 @@ from odoo import api, models, fields
 
 class DownloadWizard(models.TransientModel):
     _name = "account.batch.download.wizard"
+    _description = 'Account Batch download wizard'
 
     batch_payment_id = fields.Many2one(string='Batch Payment',
                                  comodel_name='account.batch.payment',

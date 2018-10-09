@@ -2,15 +2,12 @@
 # This file contains the translation of the following modules:
 # * account_plaid
 # 
-# Translators:
-# Dorin Hongu <dhongu@gmail.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.3+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 08:34+0000\n"
-"PO-Revision-Date: 2018-06-25 08:34+0000\n"
-"Last-Translator: Dorin Hongu <dhongu@gmail.com>, 2018\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
 "Language-Team: Romanian (https://www.transifex.com/odoo/teams/41243/ro/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -31,8 +28,14 @@ msgstr ""
 
 #. module: account_plaid
 #: model:ir.model,name:account_plaid.model_account_online_journal
-msgid "Interface for online account journal"
-msgstr "Interfață pentru jurnal contabil online"
+msgid "Interface for Online Account Journal"
+msgstr ""
+
+#. module: account_plaid
+#: code:addons/account_plaid/models/plaid.py:136
+#, python-format
+msgid "Only an Accountant is allowed to perform this operation."
+msgstr ""
 
 #. module: account_plaid
 #: selection:account.online.provider,provider_type:0
@@ -71,7 +74,7 @@ msgid ""
 msgstr ""
 
 #. module: account_plaid
-#: code:addons/account_plaid/models/plaid.py:73
+#: code:addons/account_plaid/models/plaid.py:74
 #, python-format
 msgid "Timeout: the server did not reply within 60s"
 msgstr ""

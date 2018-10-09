@@ -11,5 +11,5 @@ For various reasons (legal and technical) certain features that are available in
 * pos_loyalty: mainly because of the global discounts
 * Refunding (both through the backend and through the frontend)
 * Modifying the price of an orderline
-* Multiple Point of Sale configs per PosBox
+* Multiple Point of Sale configs per IoT Box
 * Creating/modifying/deleting orders in the backend

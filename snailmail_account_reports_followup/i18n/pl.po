@@ -2,12 +2,19 @@
 # This file contains the translation of the following modules:
 # * snailmail_account_reports_followup
 # 
+# Translators:
+# Martin Trigaux, 2018
+# Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2018
+# Piotr Szlązak <szlazakpiotr@gmail.com>, 2018
+# Marcin Młynarczyk <mlynarczyk@gmail.com>, 2018
+# Andrzej Donczew <a.donczew@hadron.eu.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"Last-Translator: Andrzej Donczew <a.donczew@hadron.eu.com>, 2018\n"
 "Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -16,26 +23,26 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 
 #. module: snailmail_account_reports_followup
-#: model:ir.ui.view,arch_db:snailmail_account_reports_followup.followup_send_wizard_form
+#: model_terms:ir.ui.view,arch_db:snailmail_account_reports_followup.followup_send_wizard_form
 msgid ""
 "<span attrs=\"{'invisible': [('letters_qty', '&gt;', 1)]}\"> Sending this "
 "document will cost </span>"
 msgstr ""
 
 #. module: snailmail_account_reports_followup
-#: model:ir.ui.view,arch_db:snailmail_account_reports_followup.followup_send_wizard_form
+#: model_terms:ir.ui.view,arch_db:snailmail_account_reports_followup.followup_send_wizard_form
 msgid "Cancel"
-msgstr ""
+msgstr "Anuluj"
 
 #. module: snailmail_account_reports_followup
 #: model:ir.model.fields,field_description:snailmail_account_reports_followup.field_followup_send__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Utworzona przez"
 
 #. module: snailmail_account_reports_followup
 #: model:ir.model.fields,field_description:snailmail_account_reports_followup.field_followup_send__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Data utworzenia"
 
 #. module: snailmail_account_reports_followup
 #: model:ir.model.fields,field_description:snailmail_account_reports_followup.field_followup_send__snailmail_cost
@@ -45,47 +52,52 @@ msgstr ""
 #. module: snailmail_account_reports_followup
 #: model:ir.model.fields,field_description:snailmail_account_reports_followup.field_followup_send__currency_id
 msgid "Currency"
-msgstr ""
+msgstr "Waluta"
 
 #. module: snailmail_account_reports_followup
 #: model:ir.model.fields,field_description:snailmail_account_reports_followup.field_followup_send__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Nazwa wyświetlana"
 
 #. module: snailmail_account_reports_followup
 #: model:ir.model,name:snailmail_account_reports_followup.model_account_followup_followup_line
 msgid "Follow-up Criteria"
-msgstr ""
+msgstr "Kryteria monitowania płatności"
 
 #. module: snailmail_account_reports_followup
 #: model:ir.model,name:snailmail_account_reports_followup.model_account_followup_report
-msgid "Followup Report"
+msgid "Follow-up Report"
+msgstr ""
+
+#. module: snailmail_account_reports_followup
+#: model:ir.model,name:snailmail_account_reports_followup.model_followup_send
+msgid "Followup Send"
 msgstr ""
 
 #. module: snailmail_account_reports_followup
 #: model:ir.model.fields,field_description:snailmail_account_reports_followup.field_followup_send__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: snailmail_account_reports_followup
 #: model:ir.model.fields,field_description:snailmail_account_reports_followup.field_followup_send____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Data ostatniej modyfikacji"
 
 #. module: snailmail_account_reports_followup
 #: model:ir.model.fields,field_description:snailmail_account_reports_followup.field_followup_send__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Ostatnio aktualizowane przez"
 
 #. module: snailmail_account_reports_followup
 #: model:ir.model.fields,field_description:snailmail_account_reports_followup.field_followup_send__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Data ostatniej aktualizacji"
 
 #. module: snailmail_account_reports_followup
 #: model:ir.model.fields,field_description:snailmail_account_reports_followup.field_followup_send__letter_ids
 msgid "Letter"
-msgstr ""
+msgstr "Letter"
 
 #. module: snailmail_account_reports_followup
 #: model:ir.model.fields,field_description:snailmail_account_reports_followup.field_followup_send__letters_qty
@@ -94,25 +106,25 @@ msgstr ""
 
 #. module: snailmail_account_reports_followup
 #: model:ir.actions.act_window,name:snailmail_account_reports_followup.followup_send
-#: model:ir.ui.view,arch_db:snailmail_account_reports_followup.followup_send_wizard_form
+#: model_terms:ir.ui.view,arch_db:snailmail_account_reports_followup.followup_send_wizard_form
 msgid "Send Follow-Ups"
 msgstr ""
 
 #. module: snailmail_account_reports_followup
 #: model:ir.model.fields,field_description:snailmail_account_reports_followup.field_account_followup_followup_line__send_letter
 msgid "Send a Letter"
-msgstr ""
+msgstr "Wyślij list"
 
 #. module: snailmail_account_reports_followup
 #. openerp-web
 #: code:addons/snailmail_account_reports_followup/static/src/xml/account_reports_followup_template.xml:7
-#: model:ir.ui.view,arch_db:snailmail_account_reports_followup.followup_send_wizard_form
+#: model_terms:ir.ui.view,arch_db:snailmail_account_reports_followup.followup_send_wizard_form
 #, python-format
 msgid "Send by Post"
-msgstr ""
+msgstr "Wyślij pocztą"
 
 #. module: snailmail_account_reports_followup
-#: model:ir.ui.view,arch_db:snailmail_account_reports_followup.followup_send_wizard_form
+#: model_terms:ir.ui.view,arch_db:snailmail_account_reports_followup.followup_send_wizard_form
 msgid "Sending these"
 msgstr ""
 
@@ -122,11 +134,6 @@ msgid "When processing, it will send a letter by Post"
 msgstr ""
 
 #. module: snailmail_account_reports_followup
-#: model:ir.ui.view,arch_db:snailmail_account_reports_followup.followup_send_wizard_form
+#: model_terms:ir.ui.view,arch_db:snailmail_account_reports_followup.followup_send_wizard_form
 msgid "documents will cost approximatively"
-msgstr ""
-
-#. module: snailmail_account_reports_followup
-#: model:ir.model,name:snailmail_account_reports_followup.model_followup_send
-msgid "followup.send"
 msgstr ""

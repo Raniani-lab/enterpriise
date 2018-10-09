@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"POT-Creation-Date: 2018-10-02 10:31+0000\n"
+"PO-Revision-Date: 2018-10-02 10:31+0000\n"
 "Last-Translator: Arash Sardari <arashss77@gmail.com>, 2018\n"
 "Language-Team: Persian (https://www.transifex.com/odoo/teams/41243/fa/)\n"
 "MIME-Version: 1.0\n"
@@ -23,6 +23,11 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Language: fa\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#. module: mrp_workorder
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.res_config_settings_view_form
+msgid "<i class=\"fa fa-print\"/> Print barcode commands"
+msgstr ""
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__allow_producing_quantity_change
@@ -35,12 +40,14 @@ msgid "Allow Registration"
 msgstr ""
 
 #. module: mrp_workorder
-#: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder___barcode_scanned
-msgid "Barcode Scanned"
-msgstr "بارکد اسکن شده"
+#. openerp-web
+#: code:addons/mrp_workorder/static/src/xml/mrp_workorder_barcode.xml:7
+#, python-format
+msgid "And barcode"
+msgstr ""
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet_menu
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet_menu
 msgid "Block"
 msgstr ""
 
@@ -65,7 +72,7 @@ msgstr "پاک‌سازی"
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__component_id
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__component_id
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_point__component_id
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Component"
 msgstr ""
 
@@ -75,7 +82,7 @@ msgid "Component UoM"
 msgstr ""
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Continue"
 msgstr "ادامه"
 
@@ -90,8 +97,8 @@ msgid "Current Quality Check"
 msgstr ""
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_inherit_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_inherit_workorder
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Date"
 msgstr "تاریخ"
 
@@ -109,13 +116,20 @@ msgstr ""
 #: code:addons/mrp_workorder/models/quality.py:110
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__qty_done
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__qty_done
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_inherit_workorder
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_inherit_workorder
 #, python-format
 msgid "Done"
 msgstr "انجام شد"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#. openerp-web
+#: code:addons/mrp_workorder/static/src/xml/mrp_workorder_barcode.xml:8
+#, python-format
+msgid "Download"
+msgstr "دانلود"
+
+#. module: mrp_workorder
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Dropdown menu"
 msgstr ""
 
@@ -127,7 +141,12 @@ msgid "Edit"
 msgstr "ویرایش"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model:ir.model.fields,help:mrp_workorder.field_mrp_workorder__component_tracking
+msgid "Ensure the traceability of a storable product in your warehouse."
+msgstr ""
+
+#. module: mrp_workorder
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Finish steps"
 msgstr ""
 
@@ -142,7 +161,7 @@ msgid "Finished Product Sequence Number"
 msgstr ""
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_inherit_workorder
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_inherit_workorder
 msgid "Finished Steps"
 msgstr ""
 
@@ -173,33 +192,27 @@ msgid "Lot"
 msgstr ""
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Lot Number"
 msgstr ""
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Lot Number:"
 msgstr ""
 
 #. module: mrp_workorder
-#: model:ir.model,name:mrp_workorder.model_mrp_production
-msgid "Manufacturing Order"
-msgstr "سفارش تولید"
-
-#. module: mrp_workorder
-#: model:ir.ui.menu,name:mrp_workorder.mrp_production_menu_planning
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_production_tree_view_planning
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_production_tree_view_planning
 msgid "Manufacturing Orders"
 msgstr "سفارشات تولید"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Mark as Done"
 msgstr "علامت به عنوان انجام شده"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Mark as Done and Close MO"
 msgstr ""
 
@@ -221,7 +234,7 @@ msgid "Mrp: Unplan Production Orders"
 msgstr ""
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Next"
 msgstr "بعدی"
 
@@ -237,15 +250,10 @@ msgid "Operation"
 msgstr "عملیات"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_inherit_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_inherit_workorder
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Operator"
 msgstr "اپراتور"
-
-#. module: mrp_workorder
-#: model:ir.ui.menu,name:mrp_workorder.menu_mrp_production_plan
-msgid "Orders to Plan"
-msgstr ""
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__parent_id
@@ -258,7 +266,7 @@ msgid "Parent Routing"
 msgstr "روتین والد"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Pause"
 msgstr "مکث"
 
@@ -268,12 +276,12 @@ msgid "Picture"
 msgstr ""
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_production_view_form_inherit_planning
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_production_view_form_inherit_planning
 msgid "Plan"
 msgstr "پلان"
 
 #. module: mrp_workorder
-#: model:ir.actions.act_window,help:mrp_workorder.mrp_workorder_action_tablet
+#: model_terms:ir.actions.act_window,help:mrp_workorder.mrp_workorder_action_tablet
 msgid "Plan some work orders from your manufacturing orders."
 msgstr ""
 
@@ -315,30 +323,24 @@ msgid "Please upload a picture."
 msgstr ""
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Previous"
 msgstr ""
 
 #. module: mrp_workorder
-#. openerp-web
-#: code:addons/mrp_workorder/static/src/xml/mrp_workorder_barcode.xml:8
-#, python-format
-msgid "Print the barcode commands for Manufacturing."
-msgstr ""
-
-#. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_inherit_workorder
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_inherit_workorder
 msgid "Process"
 msgstr "روند"
 
 #. module: mrp_workorder
+#: model:ir.model,name:mrp_workorder.model_mrp_production
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_alert__production_id
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__production_id
 msgid "Production Order"
 msgstr "سفارش تولید"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Production Workcenter"
 msgstr ""
 
@@ -370,11 +372,16 @@ msgstr ""
 
 #. module: mrp_workorder
 #: model:ir.model,name:mrp_workorder.model_quality_point
-msgid "Quality Point"
-msgstr "نقطه کیفی"
+msgid "Quality Control Point"
+msgstr ""
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.view_routing_steps_search
+#: model:ir.model,name:mrp_workorder.model_quality_point_test_type
+msgid "Quality Control Test Type"
+msgstr ""
+
+#. module: mrp_workorder
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.view_routing_steps_search
 msgid "Quality Point Steps"
 msgstr ""
 
@@ -384,13 +391,13 @@ msgid "Quality State"
 msgstr ""
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_production_tree_view_planning
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_production_tree_view_planning
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Quantity"
 msgstr "تعداد"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Record production"
 msgstr ""
 
@@ -421,7 +428,7 @@ msgid "Result"
 msgstr ""
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.view_routing_steps_search
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.view_routing_steps_search
 msgid "Routing"
 msgstr ""
 
@@ -431,7 +438,7 @@ msgid "Routings"
 msgstr ""
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_production_view_form_inherit_planning
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_production_view_form_inherit_planning
 msgid "Scheduled Date"
 msgstr "تاریخ برنامه ریزی شده"
 
@@ -446,7 +453,7 @@ msgid "Scheduled Start Date"
 msgstr ""
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet_menu
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet_menu
 msgid "Scrap"
 msgstr "اسقاط"
 
@@ -456,17 +463,17 @@ msgid "Scroll to specific page"
 msgstr ""
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Serial Number"
 msgstr "شماره سریال"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Serial Number:"
 msgstr ""
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Skip"
 msgstr "پرش"
 
@@ -481,12 +488,12 @@ msgid "Skipped Check"
 msgstr ""
 
 #. module: mrp_workorder
-#: model:ir.actions.act_window,help:mrp_workorder.mrp_workorder_action_tablet
+#: model_terms:ir.actions.act_window,help:mrp_workorder.mrp_workorder_action_tablet
 msgid "Start a new work order"
 msgstr ""
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Status"
 msgstr "وضعیت"
 
@@ -502,7 +509,7 @@ msgstr "گام"
 
 #. module: mrp_workorder
 #: model:ir.actions.act_window,name:mrp_workorder.action_mrp_workorder_show_steps
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_routing_view_form_inherit_quality
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_routing_view_form_inherit_quality
 msgid "Steps"
 msgstr ""
 
@@ -514,7 +521,6 @@ msgid "Take a Picture"
 msgstr ""
 
 #. module: mrp_workorder
-#: model:ir.model,name:mrp_workorder.model_quality_point_test_type
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__test_type
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_point__test_type_id
 msgid "Test Type"
@@ -540,7 +546,7 @@ msgid "To Do"
 msgstr "در دست اقدام"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_production_tree_view_planning
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_production_tree_view_planning
 msgid "Total Qty"
 msgstr "تعداد کل"
 
@@ -550,19 +556,19 @@ msgid "Type of Operation"
 msgstr "نوع عملیات"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet_menu
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet_menu
 msgid "Unblock"
 msgstr ""
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__component_uom_id
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_production_tree_view_planning
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_production_tree_view_planning
 msgid "Unit of Measure"
 msgstr "واحد اندازه گیری"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_production_view_form_inherit_planning
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_production_view_form_inherit_planning
 msgid "Unplan"
 msgstr ""
 
@@ -574,22 +580,12 @@ msgid "Uploading..."
 msgstr "در حال آپلود..."
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Validate"
 msgstr "تایید اعتبار"
 
 #. module: mrp_workorder
-#: model:ir.model.fields,help:mrp_workorder.field_mrp_workorder___barcode_scanned
-msgid "Value of the last barcode scanned."
-msgstr ""
-
-#. module: mrp_workorder
-#: model:ir.ui.menu,name:mrp_workorder.menu_mrp_production_pending
-msgid "Waiting for Material Availability"
-msgstr "منتظر موجود شدن مواد"
-
-#. module: mrp_workorder
-#: code:addons/mrp_workorder/models/mrp_workorder.py:482
+#: code:addons/mrp_workorder/models/mrp_workorder.py:495
 #, python-format
 msgid "Warning"
 msgstr "هشدار"
@@ -606,7 +602,7 @@ msgid "Work Order"
 msgstr "سفارش کار"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.quality_point_view_form_inherit_mrp
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.quality_point_view_form_inherit_mrp
 msgid "Work Order Operation"
 msgstr ""
 
@@ -617,12 +613,12 @@ msgid "Work Orders"
 msgstr "سفارشات کار"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workcenter_view_kanban_inherit_workorder
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workcenter_view_kanban_inherit_workorder
 msgid "Work orders"
 msgstr ""
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet_menu
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet_menu
 msgid "Workorder Actions"
 msgstr ""
 
@@ -642,7 +638,7 @@ msgid "Worksheet page"
 msgstr ""
 
 #. module: mrp_workorder
-#: code:addons/mrp_workorder/models/mrp_workorder.py:483
+#: code:addons/mrp_workorder/models/mrp_workorder.py:496
 #, python-format
 msgid ""
 "You are using components from another lot. \n"
@@ -662,6 +658,13 @@ msgid "You still need to do the quality checks!"
 msgstr "شما همچنان نیاز است بررسی‌های کیفی انجام دهید!"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_production_view_form_inherit_planning
+#. openerp-web
+#: code:addons/mrp_workorder/static/src/xml/mrp_workorder_barcode.xml:8
+#, python-format
+msgid "commands for Manufacturing"
+msgstr ""
+
+#. module: mrp_workorder
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_production_view_form_inherit_planning
 msgid "to"
 msgstr "به"

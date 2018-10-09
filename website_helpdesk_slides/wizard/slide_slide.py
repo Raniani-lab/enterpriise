@@ -8,6 +8,7 @@ from odoo.exceptions import Warning, UserError
 
 class Slide(models.TransientModel):
     _name = "slide.upload.wizard"
+    _description = 'Slide Upload Wizard'
 
     name = fields.Char('Title', required=True)
     file_name = fields.Char(string="Filename")

@@ -4,14 +4,16 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2018
+# Gunther Clauwaert <gclauwae@hotmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
-"Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2018\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"Last-Translator: Gunther Clauwaert <gclauwae@hotmail.com>, 2018\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,39 +22,39 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "\" bank accounts have been retrieved."
 msgstr "* bankrekeningen zijn opgehaald."
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "<strong>Ooops</strong> It would seems that the process to"
 msgstr "<strong>Oeps</strong>het lijkt erop dat het proces"
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "<strong>Ooops</strong> We could not"
 msgstr "<strong>Oeps</strong> we konden niet"
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "<strong>Success!</strong> Your account has been succesfully refreshed."
 msgstr "<strong>Succes!</strong>Uw account is succesvol vernieuwd."
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "<strong>Success!</strong> Your account has been succesfully updated."
 msgstr "<strong>Succes!</strong>Uw account is succesvol geüpdatet."
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid ""
 "<strong>Well done!</strong> Your banking institution is now connected to "
 "Odoo."
 msgstr "<strong>Goed gedaan!</strong>uw bank is nu gekoppeld aan Odoo."
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "A total of \""
 msgstr "Een totaal van \""
 
@@ -98,7 +100,7 @@ msgstr "Actie"
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message_needaction
 msgid "Action Needed"
-msgstr "Vereist actie"
+msgstr "Actie gevraagd"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__action_required
@@ -112,7 +114,7 @@ msgid "Add a Bank Account"
 msgstr "Voeg een bankrekening toe"
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.online_provider_account_form_view
+#: model_terms:ir.ui.view,arch_db:account_online_sync.online_provider_account_form_view
 msgid "Additional information"
 msgstr "Aanvullende informatie"
 
@@ -121,6 +123,11 @@ msgstr "Aanvullende informatie"
 #, python-format
 msgid "An error occurred during online synchronization"
 msgstr "Een fout is opgetreden tijdens de online synchronisatie"
+
+#. module: account_online_sync
+#: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message_attachment_count
+msgid "Attachment Count"
+msgstr "Aantal bijlagen"
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:317
@@ -135,7 +142,7 @@ msgid "Balance"
 msgstr "Saldo"
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.online_provider_account_form_view
+#: model_terms:ir.ui.view,arch_db:account_online_sync.online_provider_account_form_view
 msgid "Bank Accounts"
 msgstr "Bankrekeningen"
 
@@ -150,7 +157,7 @@ msgid "Bank Statement Line"
 msgstr "Bankafschriftregel"
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "Cancel"
 msgstr "Annuleren"
 
@@ -175,8 +182,8 @@ msgid "Company"
 msgstr "Bedrijf"
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.account_bank_journal_form_inherit_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.account_journal_form_inherit_online_sync
+#: model_terms:ir.ui.view,arch_db:account_online_sync.account_bank_journal_form_inherit_online_sync
+#: model_terms:ir.ui.view,arch_db:account_online_sync.account_journal_form_inherit_online_sync
 msgid "Configure"
 msgstr "Configureren"
 
@@ -239,7 +246,7 @@ msgid "Do not link"
 msgstr "Niet linken"
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "Done"
 msgstr "Gereed"
 
@@ -315,7 +322,7 @@ msgstr "Instelling"
 
 #. module: account_online_sync
 #: model:ir.model,name:account_online_sync.model_account_online_journal
-msgid "Interface for online account journal"
+msgid "Interface for Online Account Journal"
 msgstr "Interface voor online rekening dagboek"
 
 #. module: account_online_sync
@@ -378,8 +385,8 @@ msgstr "Laatste synchronisatie"
 
 #. module: account_online_sync
 #: model:ir.model,name:account_online_sync.model_account_online_link_wizard
-msgid "Link a particular synchronized account to a journal"
-msgstr "Link een specifiek gesynchroniseerde rekening aan een dagboek"
+msgid "Link synchronized account to a journal"
+msgstr ""
 
 #. module: account_online_sync
 #: selection:account.online.link.wizard,action:0
@@ -387,12 +394,17 @@ msgid "Link to existing journal"
 msgstr "Link naar bestaand dagboek"
 
 #. module: account_online_sync
-#: model:ir.actions.act_window,help:account_online_sync.action_online_provider_account
+#: model_terms:ir.actions.act_window,help:account_online_sync.action_online_provider_account
 msgid "List of bank(s) providing online synchronization"
 msgstr "Lijst van bank(en) die online synchronisatie aanbied"
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.online_provider_account_form_view
+#: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message_main_attachment_id
+msgid "Main Attachment"
+msgstr "Hoofd bijlage"
+
+#. module: account_online_sync
+#: model_terms:ir.ui.view,arch_db:account_online_sync.online_provider_account_form_view
 msgid "Manual Refresh"
 msgstr "Handmatig verversen"
 
@@ -418,7 +430,7 @@ msgid "Method"
 msgstr "Methode"
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.account_journal_dashboard_inherit_online_sync
+#: model_terms:ir.ui.view,arch_db:account_online_sync.account_journal_dashboard_inherit_online_sync
 msgid "Next sync:"
 msgstr "Volgende sync:"
 
@@ -506,9 +518,9 @@ msgstr "Online relatie Leveranciersnaam"
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:375
 #: model:ir.ui.menu,name:account_online_sync.menu_action_online_provider_account
-#: model:ir.ui.view,arch_db:account_online_sync.account_journal_dashboard_inherit_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.account_journal_form_inherit_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.account_journal_dashboard_inherit_online_sync
+#: model_terms:ir.ui.view,arch_db:account_online_sync.account_journal_form_inherit_online_sync
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 #, python-format
 msgid "Online Synchronization"
 msgstr "Online synchronisatie"
@@ -541,7 +553,7 @@ msgstr ""
 "koppelen\" als actie om"
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.account_journal_dashboard_inherit_online_sync
+#: model_terms:ir.ui.view,arch_db:account_online_sync.account_journal_dashboard_inherit_online_sync
 msgid "Problem during synchronization"
 msgstr "Problemen tijdens synchronisatie"
 
@@ -604,8 +616,8 @@ msgid "Synchronization status"
 msgstr "Synchronisatie status"
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.account_journal_dashboard_inherit_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.account_journal_dashboard_inherit_online_sync
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "Synchronize now"
 msgstr "Synchroniseer nu"
 
@@ -642,7 +654,7 @@ msgid ""
 msgstr ""
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "The account has been linked to your bank journal."
 msgstr "De rekening is gelinkt aan uw bank dagboek."
 
@@ -700,7 +712,7 @@ msgid "Unread Messages Counter"
 msgstr "Aantal ongelezen berichten"
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.online_provider_account_form_view
+#: model_terms:ir.ui.view,arch_db:account_online_sync.online_provider_account_form_view
 msgid "Update Credentials"
 msgstr "Bijwerken inloggegevens"
 
@@ -711,7 +723,7 @@ msgid "Update status of provider account"
 msgstr "Update status van provider rekening"
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.account_journal_dashboard_inherit_online_sync
+#: model_terms:ir.ui.view,arch_db:account_online_sync.account_journal_dashboard_inherit_online_sync
 msgid "View problem"
 msgstr "Weergave probleem"
 
@@ -736,7 +748,7 @@ msgid "Yodlee"
 msgstr "Yodlee"
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid ""
 "You can associate those bank accounts to a journal in order to automatically"
 " retrieve the latest statements from your bank."
@@ -793,14 +805,14 @@ msgid "transactions loaded"
 msgstr "transacties geladen"
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid ""
 "your account because of the following\n"
 "                    error during the process:"
 msgstr ""
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid ""
 "your account was not\n"
 "                    thoroughly completed. You can try to manually update your account by clicking the refresh button on the dashboard\n"

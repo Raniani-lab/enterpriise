@@ -57,13 +57,9 @@
             <t t-set="wrapwrap_classes" t-value="'o_portal_bg_dark'"/>
 
             <t t-set="o_portal_fullwidth_alert" groups="helpdesk.group_helpdesk_user">
-                <div t-ignore="true" class="text-center">
-                    This is a preview of the customer portal <i class="fa fa-chevron-right"/>
-                    <a title="Edit in the backend" target="_blank"  t-att-href="'/web#return_label=Website&amp;model=helpdesk.ticket&amp;id=%s&amp;view_type=form' % (ticket.id)">
-                        <b>Back in edit mode</b>.
-                    </a>
-                </div>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">&#215;</button>
+                <t t-call="portal.portal_back_in_edit_mode">
+                    <t t-set="backend_url" t-value="'/web#return_label=Website&amp;model=helpdesk.ticket&amp;id=%s&amp;view_type=form' % (ticket.id)"/>
+                </t>
             </t>
 
             <t t-call="portal.portal_record_layout">
@@ -150,12 +146,12 @@
         <t t-call="portal.portal_layout">
             <t t-set="additional_title">Helpdesk Team Satisfaction</t>
             <div id="wrap">
-                <div class="oe_structure"/>
+                <div class="oe_structure" id="oe_structure_helpdesk_index_1"/>
                 <div class="container oe_website_rating_team">
                     <div class="row text-center">
                         <h2>Teams</h2>
                     </div>
-                    <div class="oe_structure"/>
+                    <div class="oe_structure" id="oe_structure_helpdesk_index_2"/>
                     <div class="row">
                         <t t-foreach="teams" t-as="team">
                             <div t-if="team.percentage_satisfaction != -1" class="col-md-6 col-4 col-lg-4 col-xl-4">
@@ -188,7 +184,7 @@
                         </t>
                     </div>
                 </div>
-                <div class="oe_structure"/>
+                <div class="oe_structure" id="oe_structure_helpdesk_index_3"/>
           </div>
         </t>
     </template>
@@ -240,7 +236,7 @@
     <template id="team_rating_page" name="Helpdesk Ticket Rating Page">
         <t t-call="portal.portal_layout">
              <div id="wrap">
-                <div class="oe_structure"/>
+                <div class="oe_structure" id="oe_structure_helpdesk_team_rating_1"/>
                 <div class="container oe_website_rating_team">
                     <h1 t-esc="team.name" class="text-center"/>
                     <div class="row mb32">
@@ -249,7 +245,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="oe_structure"/>
+                <div class="oe_structure" id="oe_structure_helpdesk_team_rating_2"/>
             </div>
         </t>
     </template>

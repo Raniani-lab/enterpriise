@@ -11,7 +11,7 @@ class StockMoveLine(models.Model):
     _name= 'stock.move.line'
     _inherit = ['stock.move.line', 'barcodes.barcode_events_mixin']
 
-    product_barcode = fields.Char(related='product_id.barcode')
+    product_barcode = fields.Char(related='product_id.barcode', readonly=False)
     location_processed = fields.Boolean()
     dummy_id = fields.Char(compute='_compute_dummy_id', inverse='_inverse_dummy_id')
 
@@ -349,17 +349,6 @@ class StockPicking(models.Model):
 class StockPickingType(models.Model):
 
     _inherit = 'stock.picking.type'
-
-    barcode = fields.Char('Barcode', copy=False)
-
-    def _add_barcode(self):
-        """ add a barcode value to the three demo picking types
-        of WH warehouse
-        """
-        picking_types = self.env['stock.picking.type'].with_context(active_test=False).search([])
-        for picking_type in picking_types.filtered(lambda type: type.warehouse_id):
-            barcode = picking_type.warehouse_id.code.replace(" ", "") + "-" + picking_type.name.split(' ')[0]
-            picking_type.barcode = barcode.upper()
 
     @api.multi
     def get_action_picking_tree_ready_kanban(self):

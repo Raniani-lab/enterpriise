@@ -8,6 +8,7 @@ from odoo import models, fields, api
 
 class VoipPhonecallLogWizard(models.TransientModel):
     _name = 'voip.phonecall.log.wizard'
+    _description = 'VOIP Phonecall log Wizard'
 
     phonecall_id = fields.Many2one('voip.phonecall', 'Logged Phonecall', readonly=True)
     activity_id = fields.Many2one('mail.activity', 'Linked Activity', readonly=True)

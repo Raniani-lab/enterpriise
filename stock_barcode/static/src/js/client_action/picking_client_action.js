@@ -171,7 +171,7 @@ var PickingClientAction = ClientAction.extend({
                         var options = {
                             on_close: exitCallback,
                         };
-                        def.then(function () {
+                        return def.then(function () {
                             core.bus.off('barcode_scanned', self, self._onBarcodeScannedHandler);
                             return self.do_action(res, options);
                         });
@@ -326,15 +326,26 @@ var PickingClientAction = ClientAction.extend({
                     'args': [[self.actionParams.pickingId]],
                     kwargs: {context: self.context},
                 }).then(function (res) {
+                    var def = $.when()
                     self._endBarcodeFlow();
                     if (res.type && res.type === 'ir.actions.act_window') {
-                        core.bus.off('barcode_scanned', self, self._onBarcodeScannedHandler);
-                        return self.do_action(res).then(function() {
+                        var exitCallback = function (infos) {
+                            if (infos !== 'special') {
+                                self.trigger_up('reload');
+                            }
                             core.bus.on('barcode_scanned', self, self._onBarcodeScannedHandler);
-                            self.trigger_up('reload');
+                        };
+                        var options = {
+                            on_close: exitCallback,
+                        };
+                        return def.then(function () {
+                            core.bus.off('barcode_scanned', self, self._onBarcodeScannedHandler);
+                            return self.do_action(res, options);
                         });
                     } else {
-                        return self.trigger_up('reload');
+                        return def.then(function () {
+                            return self.trigger_up('reload');
+                        });
                     }
                 });
             });
@@ -383,10 +394,10 @@ var PickingClientAction = ClientAction.extend({
         var self = this;
         this.mutex.exec(function () {
             return self._save().then(function () {
-                return this._rpc({
+                return self._rpc({
                     'model': 'stock.picking',
                     'method': 'do_print_picking',
-                    'args': [[this.actionParams.pickingId]],
+                    'args': [[self.actionParams.pickingId]],
                 }).then(function(res) {
                     return self.do_action(res);
                 });

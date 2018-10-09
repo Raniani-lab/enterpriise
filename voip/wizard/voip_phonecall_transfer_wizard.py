@@ -7,6 +7,7 @@ from odoo.tools.translate import _
 
 class VoipPhonecallTransferWizard(models.TransientModel):
     _name = 'voip.phonecall.transfer.wizard'
+    _description = 'VOIP Transfer Wizard of Phonecalls'
 
     transfer_number = fields.Char('transfer To')
     transfer_choice = fields.Selection(selection=[

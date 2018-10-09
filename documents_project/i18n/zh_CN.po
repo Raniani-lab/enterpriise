@@ -4,13 +4,19 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# 珠海-杜哥 <liangjia@qq.com>, 2018
+# Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
+# 李赋 <fu792659@163.com>, 2018
+# ChinaMaker <liuct@chinamaker.net>, 2018
+# xu xiaohu <xu.xiaohu@gmail.com>, 2018
+# neter ji <jifuyi@qq.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"Last-Translator: neter ji <jifuyi@qq.com>, 2018\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,12 +29,7 @@ msgstr ""
 msgid ""
 "A set of condition and actions which will be available to all attachments "
 "matching the conditions"
-msgstr ""
-
-#. module: documents_project
-#: model:ir.model.fields,field_description:documents_project.field_documents_workflow_rule__create_model
-msgid "Attach to"
-msgstr ""
+msgstr "可用于所有满足条件的附件的条件和动作集合"
 
 #. module: documents_project
 #: model:ir.model,name:documents_project.model_res_company
@@ -36,29 +37,67 @@ msgid "Companies"
 msgstr "公司"
 
 #. module: documents_project
-#: selection:documents.workflow.rule,create_model:0
-msgid "Credit note"
-msgstr ""
+#: model:ir.model,name:documents_project.model_res_config_settings
+msgid "Config Settings"
+msgstr "配置设定"
 
 #. module: documents_project
-#: model:ir.ui.view,arch_db:documents_project.res_config_settings_view_form
-msgid "Default destination for the attachments created in project."
-msgstr ""
+#: model:ir.model.fields,field_description:documents_project.field_documents_workflow_rule__create_model
+msgid "Create"
+msgstr "创建"
+
+#. module: documents_project
+#: selection:documents.workflow.rule,create_model:0
+msgid "Credit note"
+msgstr "信用证"
+
+#. module: documents_project
+#: model:ir.model.fields,field_description:documents_project.field_res_company__dms_project_settings
+#: model:ir.model.fields,field_description:documents_project.field_res_config_settings__dms_project_settings
+msgid "Dms Project Settings"
+msgstr "Dms项目设置"
+
+#. module: documents_project
+#: model:ir.model,name:documents_project.model_ir_attachment
+msgid "Document"
+msgstr "单据"
 
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_documents_workflow_rule__has_business_option
 msgid "Has Business Option"
-msgstr ""
+msgstr "商业选项"
+
+#. module: documents_project
+#: selection:documents.workflow.rule,create_model:0
+msgid "Product Product template"
+msgstr "产品模板"
 
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_res_company__project_folder
+#: model:ir.model.fields,field_description:documents_project.field_res_config_settings__project_folder
 msgid "Project Folder"
-msgstr ""
+msgstr "项目文件夹"
+
+#. module: documents_project
+#: model:ir.model.fields,field_description:documents_project.field_res_company__project_tags
+#: model:ir.model.fields,field_description:documents_project.field_res_config_settings__project_tags
+msgid "Project Tags"
+msgstr "项目标签"
+
+#. module: documents_project
+#: model_terms:ir.ui.view,arch_db:documents_project.res_config_settings_view_form
+msgid "Select the new folder to be used for project's documents"
+msgstr "为项目文档选择一个新文件件"
+
+#. module: documents_project
+#: model_terms:ir.ui.view,arch_db:documents_project.res_config_settings_view_form
+msgid "Select the tags to be applied to the project's new documents"
+msgstr "选择作用于项目的新文档上的标签"
 
 #. module: documents_project
 #: selection:documents.workflow.rule,create_model:0
 msgid "Signature template"
-msgstr ""
+msgstr "签名模板"
 
 #. module: documents_project
 #: selection:documents.workflow.rule,create_model:0
@@ -68,19 +107,4 @@ msgstr "任务"
 #. module: documents_project
 #: selection:documents.workflow.rule,create_model:0
 msgid "Vendor bill"
-msgstr ""
-
-#. module: documents_project
-#: model:ir.model,name:documents_project.model_ir_attachment
-msgid "ir.attachment"
-msgstr "ir.attachment"
-
-#. module: documents_project
-#: model:ir.model.fields,field_description:documents_project.field_res_config_settings__project_folder
-msgid "project folder"
-msgstr ""
-
-#. module: documents_project
-#: model:ir.model,name:documents_project.model_res_config_settings
-msgid "res.config.settings"
-msgstr "设置-基础设置"
+msgstr "供应商发票"

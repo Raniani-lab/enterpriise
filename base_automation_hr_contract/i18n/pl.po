@@ -2,12 +2,17 @@
 # This file contains the translation of the following modules:
 # * base_automation_hr_contract
 # 
+# Translators:
+# Martin Trigaux, 2018
+# Tomasz Leppich <t.leppich@gmail.com>, 2018
+# Paweł Wodyński <pw@myodoo.pl>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.3+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 08:34+0000\n"
-"PO-Revision-Date: 2018-06-25 08:34+0000\n"
+"POT-Creation-Date: 2018-09-18 10:05+0000\n"
+"PO-Revision-Date: 2018-09-18 10:05+0000\n"
+"Last-Translator: Paweł Wodyński <pw@myodoo.pl>, 2018\n"
 "Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,38 +28,43 @@ msgid ""
 "field as True to allow users to run this action. If it is set to False the "
 "action cannot be run through the website."
 msgstr ""
+"Akcja serwera kodu może być wykonana ze strony internetowej za pomocą "
+"dedykowanego kontrolera. Adres to <base>/website/action/<website_path>. "
+"Ustaw to pole jako True, aby umożliwić użytkownikom uruchomienie tej akcji. "
+"Jeśli jest ustawione na False, akcja nie może zostać uruchomiona za "
+"pośrednictwem strony internetowej."
 
 #. module: base_automation_hr_contract
 #: model:ir.model,name:base_automation_hr_contract.model_base_automation
 msgid "Automated Action"
-msgstr ""
+msgstr "Automatyczne akcje"
 
 #. module: base_automation_hr_contract
 #: model:ir.model.fields,field_description:base_automation_hr_contract.field_base_automation__website_published
 msgid "Available on the Website"
-msgstr ""
+msgstr "Dostępne na stronie"
 
 #. module: base_automation_hr_contract
 #: model:ir.model.fields,help:base_automation_hr_contract.field_base_automation__website_url
 msgid "The full URL to access the server action through the website."
-msgstr ""
+msgstr "Pełny adres dostępu do akcji serwera przez stronę."
 
 #. module: base_automation_hr_contract
 #: model:ir.model.fields,field_description:base_automation_hr_contract.field_base_automation__trg_date_resource_field_id
 msgid "Use employee work schedule"
-msgstr ""
+msgstr "Użyj harmonogramu pracy pracownika"
 
 #. module: base_automation_hr_contract
 #: model:ir.model.fields,help:base_automation_hr_contract.field_base_automation__trg_date_resource_field_id
 msgid "Use the user's working schedule."
-msgstr ""
+msgstr "Użyj harmonogramu pracy użytkownika"
 
 #. module: base_automation_hr_contract
 #: model:ir.model.fields,field_description:base_automation_hr_contract.field_base_automation__website_path
 msgid "Website Path"
-msgstr ""
+msgstr "Ścieżka na stronie"
 
 #. module: base_automation_hr_contract
 #: model:ir.model.fields,field_description:base_automation_hr_contract.field_base_automation__website_url
 msgid "Website Url"
-msgstr ""
+msgstr "Adres strony internetowej"

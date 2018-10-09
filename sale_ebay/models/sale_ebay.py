@@ -7,6 +7,7 @@ from odoo.exceptions import UserError, RedirectWarning
 
 class EbayCategory(models.Model):
     _name = 'ebay.category'
+    _description = 'eBay Category'
 
     name = fields.Char('Name')
     full_name = fields.Char('Full Name', store=True, compute='_compute_full_name')
@@ -182,6 +183,7 @@ class EbayCategory(models.Model):
 
 class EbayPolicy(models.Model):
     _name = 'ebay.policy'
+    _description = 'eBay Policy'
 
     name = fields.Char('Name')
     policy_id = fields.Char('Policy ID')
@@ -216,6 +218,7 @@ class EbayPolicy(models.Model):
 
 class EbayItemCondition(models.Model):
     _name = 'ebay.item.condition'
+    _description = 'eBay Item Condition'
 
     name = fields.Char('Name')
     code = fields.Integer('Code')
@@ -223,6 +226,7 @@ class EbayItemCondition(models.Model):
 
 class EbaySite(models.Model):
     _name = "ebay.site"
+    _description = 'eBay Site'
 
     name = fields.Char("Name", readonly=True)
     ebay_id = fields.Char("eBay ID", readonly=True)

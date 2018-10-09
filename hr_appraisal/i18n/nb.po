@@ -4,13 +4,14 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# Jorunn D. Newth, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"POT-Creation-Date: 2018-10-02 10:31+0000\n"
+"PO-Revision-Date: 2018-10-02 10:31+0000\n"
+"Last-Translator: Jorunn D. Newth, 2018\n"
 "Language-Team: Norwegian Bokmål (https://www.transifex.com/odoo/teams/41243/nb/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,12 +20,12 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: hr_appraisal
-#: model:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
 msgid ") Answers"
 msgstr ") svar"
 
 #. module: hr_appraisal
-#: model:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
 msgid ") Sent Appraisal"
 msgstr ""
 
@@ -60,7 +61,7 @@ msgid ""
 msgstr ""
 
 #. module: hr_appraisal
-#: model:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
 msgid "<strong><span>Final Interview: </span></strong>"
 msgstr "<strong><span>Endelig intervju: </span></strong>"
 
@@ -97,7 +98,7 @@ msgstr "Aktivitetstyper"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__survey_completed_ids
-#: model:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 msgid "Answers"
 msgstr "Svar"
 
@@ -107,17 +108,17 @@ msgstr "Svar"
 #: model:ir.model.fields,field_description:hr_appraisal.field_survey_user_input__appraisal_id
 #: model:ir.ui.menu,name:hr_appraisal.menu_hr_appraisal_root
 #: model:ir.ui.menu,name:hr_appraisal.menu_open_view_hr_appraisal_tree
-#: model:ir.ui.view,arch_db:hr_appraisal.hr_employee_view_form
-#: model:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
-#: model:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_tree
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_employee_view_form
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_tree
 msgid "Appraisal"
 msgstr ""
 
 #. module: hr_appraisal
 #: model:ir.actions.act_window,name:hr_appraisal.action_appraisal_report_all
-#: model:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_graph
-#: model:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_pivot
-#: model:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_graph
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_pivot
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
 msgid "Appraisal Analysis"
 msgstr "Evalueringsanalyse"
 
@@ -142,8 +143,8 @@ msgid "Appraisal Form to Fill"
 msgstr ""
 
 #. module: hr_appraisal
-#: model:ir.ui.view,arch_db:hr_appraisal.hr_employee_view_form
-#: model:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_employee_view_form
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 msgid "Appraisal Form..."
 msgstr ""
 
@@ -174,9 +175,9 @@ msgid "Appraisal Repeat Every"
 msgstr ""
 
 #. module: hr_appraisal
-#: code:addons/hr_appraisal/models/hr_appraisal.py:234
+#: code:addons/hr_appraisal/models/hr_appraisal.py:239
 #: selection:hr.appraisal,state:0 selection:hr.appraisal.report,state:0
-#: model:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
 #, python-format
 msgid "Appraisal Sent"
 msgstr ""
@@ -192,7 +193,7 @@ msgid "Appraisal by Manager"
 msgstr ""
 
 #. module: hr_appraisal
-#: code:addons/hr_appraisal/models/hr_appraisal.py:181
+#: code:addons/hr_appraisal/models/hr_appraisal.py:186
 #, python-format
 msgid "Appraisal form(s) have been sent"
 msgstr ""
@@ -203,7 +204,7 @@ msgid "Appraisal to start"
 msgstr ""
 
 #. module: hr_appraisal
-#: model:ir.ui.view,arch_db:hr_appraisal.hr_department_view_kanban
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_department_view_kanban
 msgid "Appraisal(s)"
 msgstr ""
 
@@ -216,8 +217,7 @@ msgstr ""
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_count
-#: model:ir.model.fields,field_description:hr_appraisal.field_res_users__group_hr_appraisal_user
-#: model:ir.ui.view,arch_db:hr_appraisal.hr_department_view_kanban
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_department_view_kanban
 msgid "Appraisals"
 msgstr "Ansattvurderinger"
 
@@ -227,17 +227,22 @@ msgid "Appraisals to Process"
 msgstr ""
 
 #. module: hr_appraisal
-#: model:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
 msgid "Archived"
 msgstr "Arkivert"
 
 #. module: hr_appraisal
-#: model:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
+#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_attachment_count
+msgid "Attachment Count"
+msgstr "Antall vedlegg"
+
+#. module: hr_appraisal
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 msgid "Cancel"
 msgstr "Kanseller"
 
 #. module: hr_appraisal
-#: code:addons/hr_appraisal/models/hr_appraisal.py:234
+#: code:addons/hr_appraisal/models/hr_appraisal.py:239
 #: selection:hr.appraisal,state:0 selection:hr.appraisal.report,state:0
 #, python-format
 msgid "Cancelled"
@@ -267,7 +272,7 @@ msgstr ""
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__colleagues_ids
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_by_colleagues
-#: model:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 msgid "Colleagues"
 msgstr "Kolleger"
 
@@ -297,7 +302,7 @@ msgid "Create Date"
 msgstr "Opprettet dato"
 
 #. module: hr_appraisal
-#: model:ir.actions.act_window,help:hr_appraisal.open_view_hr_appraisal_tree
+#: model_terms:ir.actions.act_window,help:hr_appraisal.open_view_hr_appraisal_tree
 msgid "Create a new appraisal"
 msgstr ""
 
@@ -312,12 +317,12 @@ msgid "Created on"
 msgstr "Opprettet"
 
 #. module: hr_appraisal
-#: model:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
 msgid "Creation Date"
 msgstr "Opprettet Dato"
 
 #. module: hr_appraisal
-#: model:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
 msgid "Date"
 msgstr "Dato"
 
@@ -327,12 +332,12 @@ msgid "Deadline"
 msgstr "Frist"
 
 #. module: hr_appraisal
-#: model:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
 msgid "Deadline:"
 msgstr "Frist:"
 
 #. module: hr_appraisal
-#: model:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
 msgid "Delete"
 msgstr "Slett"
 
@@ -349,21 +354,21 @@ msgid "Display Name"
 msgstr "Visningsnavn"
 
 #. module: hr_appraisal
-#: code:addons/hr_appraisal/models/hr_appraisal.py:234
+#: code:addons/hr_appraisal/models/hr_appraisal.py:239
 #: selection:hr.appraisal,state:0 selection:hr.appraisal.report,state:0
-#: model:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
-#: model:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 #, python-format
 msgid "Done"
 msgstr "Fullført"
 
 #. module: hr_appraisal
-#: model:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
 msgid "Dropdown menu"
 msgstr ""
 
 #. module: hr_appraisal
-#: model:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
 msgid "Edit"
 msgstr "Rediger"
 
@@ -377,9 +382,9 @@ msgstr "Epostmal for ansattvurdering"
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__employee_id
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_report__employee_id
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_self
-#: model:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
-#: model:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
-#: model:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 msgid "Employee"
 msgstr "Ansatt"
 
@@ -400,7 +405,7 @@ msgid "Employee's Appraisal"
 msgstr ""
 
 #. module: hr_appraisal
-#: model:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 msgid "Employee's Name"
 msgstr "Ansattes navn"
 
@@ -410,20 +415,20 @@ msgid "Event"
 msgstr "Arrangement"
 
 #. module: hr_appraisal
-#: model:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
 msgid "Extended Filters..."
 msgstr "Utvidede filtre..."
 
 #. module: hr_appraisal
-#: code:addons/hr_appraisal/models/hr_appraisal.py:177
+#: code:addons/hr_appraisal/models/hr_appraisal.py:182
 #, python-format
 msgid ""
-"Fill form <a href=\"#\" data-oe-model=\"%s\" data-oe-id=\"%s\">%s</a> for <a"
-" href=\"#\" data-oe-model=\"%s\" data-oe-id=\"%s\">%s's</a> appraisal"
+"Fill form <a href=\"%s\">%s</a> for <a href=\"#\" data-oe-model=\"%s\" data-"
+"oe-id=\"%s\">%s's</a> appraisal"
 msgstr ""
 
 #. module: hr_appraisal
-#: model:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 msgid "Final Evaluation"
 msgstr "Endelig evaluering"
 
@@ -433,7 +438,7 @@ msgid "Final Interview"
 msgstr "Endelig intervju"
 
 #. module: hr_appraisal
-#: model:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
 msgid "Final Interview Date"
 msgstr "Dato for endelig intervju"
 
@@ -453,17 +458,17 @@ msgid "Followers (Partners)"
 msgstr "Følgere (partnere)"
 
 #. module: hr_appraisal
-#: model:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
 msgid "Future Activities"
 msgstr "Fremtidige aktiviteter"
 
 #. module: hr_appraisal
-#: model:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
 msgid "Group By"
 msgstr "Grupper etter"
 
 #. module: hr_appraisal
-#: model:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
 msgid "Group by..."
 msgstr "Grupper etter..."
 
@@ -501,12 +506,12 @@ msgid ""
 msgstr ""
 
 #. module: hr_appraisal
-#: model:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
 msgid "In #{kanban_getcolorname(record.color.raw_value)}"
 msgstr ""
 
 #. module: hr_appraisal
-#: model:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
 msgid "In progress Evaluations"
 msgstr "Igangsatte evalueringer"
 
@@ -537,13 +542,18 @@ msgid "Last Updated on"
 msgstr "Sist oppdatert"
 
 #. module: hr_appraisal
-#: model:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
 msgid "Late Activities"
 msgstr "Forsinkede aktiviteter"
 
 #. module: hr_appraisal
+#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_main_attachment_id
+msgid "Main Attachment"
+msgstr ""
+
+#. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__manager_ids
-#: model:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 #: model:res.groups,name:hr_appraisal.group_hr_appraisal_manager
 msgid "Manager"
 msgstr "Leder"
@@ -580,12 +590,12 @@ msgid "Month"
 msgstr "Måned"
 
 #. module: hr_appraisal
-#: model:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
 msgid "My Activities"
 msgstr "Aktivitetene mine"
 
 #. module: hr_appraisal
-#: model:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_tree
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_tree
 msgid "Name"
 msgstr "Navn"
 
@@ -665,12 +675,12 @@ msgid "Periodic Appraisal has been created"
 msgstr ""
 
 #. module: hr_appraisal
-#: model:ir.ui.view,arch_db:hr_appraisal.hr_employee_view_form
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_employee_view_form
 msgid "Periodicity"
 msgstr "Periodisering"
 
 #. module: hr_appraisal
-#: model:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 msgid "Plan"
 msgstr "Planlegg"
 
@@ -685,7 +695,7 @@ msgid "Related Partner"
 msgstr "Tilknyttet partner"
 
 #. module: hr_appraisal
-#: model:ir.ui.view,arch_db:hr_appraisal.hr_employee_view_form
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_employee_view_form
 msgid "Repeat Every"
 msgstr "Gjenta hver"
 
@@ -700,18 +710,18 @@ msgid "Responsible User"
 msgstr "Ansvarlig bruker"
 
 #. module: hr_appraisal
-#: model:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
 msgid "Schedule The Final Interview"
 msgstr "Planlegg endelig intervju"
 
 #. module: hr_appraisal
-#: model:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
 msgid "Search Appraisal"
 msgstr "Søk i ansattvurderinger"
 
 #. module: hr_appraisal
-#: model:ir.ui.view,arch_db:hr_appraisal.hr_employee_view_form
-#: model:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_employee_view_form
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 msgid "Select Appraisal Reviewer..."
 msgstr ""
 
@@ -722,7 +732,7 @@ msgid "Self Appraisal"
 msgstr "Egenvurdering"
 
 #. module: hr_appraisal
-#: model:ir.ui.view,arch_db:hr_appraisal.hr_employee_view_form
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_employee_view_form
 msgid "Send Appraisal Form To"
 msgstr "Send ansattvurderingsskjema til"
 
@@ -732,19 +742,19 @@ msgid "Sent Forms"
 msgstr "Sendte skjemaer"
 
 #. module: hr_appraisal
-#: model:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
 msgid "Show all records which has next action date is before today"
 msgstr "Vis alle oppføringer som har en neste tiltak-dato før dagen i dag"
 
 #. module: hr_appraisal
-#: model:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 msgid "Start Appraisal and Send Forms"
 msgstr ""
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__state
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_report__state
-#: model:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
 msgid "Status"
 msgstr "Status"
 
@@ -801,9 +811,9 @@ msgid "This employee will do a self-appraisal"
 msgstr "Den ansatte vil gjøre en egenvurdering"
 
 #. module: hr_appraisal
-#: code:addons/hr_appraisal/models/hr_appraisal.py:234
+#: code:addons/hr_appraisal/models/hr_appraisal.py:239
 #: selection:hr.appraisal,state:0 selection:hr.appraisal.report,state:0
-#: model:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
 #, python-format
 msgid "To Start"
 msgstr "For å begynne"
@@ -814,7 +824,7 @@ msgid "Today"
 msgstr "I dag"
 
 #. module: hr_appraisal
-#: model:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
 msgid "Today Activities"
 msgstr "Dagens aktiviteter"
 
@@ -827,11 +837,6 @@ msgstr "Uleste meldinger"
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_unread_counter
 msgid "Unread Messages Counter"
 msgstr "Teller for uleste meldinger"
-
-#. module: hr_appraisal
-#: model:ir.model,name:hr_appraisal.model_res_users
-msgid "Users"
-msgstr "Brukere"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__website_message_ids
@@ -849,13 +854,13 @@ msgid "Year"
 msgstr "År"
 
 #. module: hr_appraisal
-#: code:addons/hr_appraisal/models/hr_appraisal.py:227
+#: code:addons/hr_appraisal/models/hr_appraisal.py:232
 #, python-format
 msgid "You cannot delete appraisal which is in %s state"
 msgstr ""
 
 #. module: hr_appraisal
-#: model:ir.actions.act_window,help:hr_appraisal.open_view_hr_appraisal_tree
+#: model_terms:ir.actions.act_window,help:hr_appraisal.open_view_hr_appraisal_tree
 msgid ""
 "You will be able to choose which forms will be sent (Employee,Managers,Collaborators or Colleagues),\n"
 "            to whom and the evaluation deadline. Once you have defined it,\n"
@@ -868,6 +873,6 @@ msgid "collaborate's Appraisal"
 msgstr ""
 
 #. module: hr_appraisal
-#: model:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
 msgid "oe_kanban_text_red"
 msgstr "oe_kanban_text_red"

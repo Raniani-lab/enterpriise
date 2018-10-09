@@ -8,7 +8,7 @@ from odoo.osv import expression
 
 class account_bank_reconciliation_report(models.AbstractModel):
     _name = 'account.bank.reconciliation.report'
-    _description = 'Bank reconciliation report'
+    _description = 'Bank Reconciliation Report'
     _inherit = "account.report"
 
     filter_date = {'date': '', 'filter': 'today'}

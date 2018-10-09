@@ -3,16 +3,15 @@
 # * sale_account_taxcloud
 # 
 # Translators:
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2017
-# Yenthe Van Ginneken <yenthespam@gmail.com>, 2017
-# Martin Trigaux, 2017
+# Martin Trigaux, 2018
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.3+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 08:34+0000\n"
-"PO-Revision-Date: 2018-06-25 08:34+0000\n"
-"Last-Translator: Martin Trigaux, 2017\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2018\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,8 +26,8 @@ msgstr "Factuur"
 
 #. module: sale_account_taxcloud
 #: model:ir.model,name:sale_account_taxcloud.model_sale_order
-msgid "Quotation"
-msgstr "Offerte"
+msgid "Sale Order"
+msgstr "Verkooporder"
 
 #. module: sale_account_taxcloud
 #: code:addons/sale_account_taxcloud/models/sale_order.py:34
@@ -47,4 +46,4 @@ msgstr "Onmogelijk om BTW op te halen vanuit TaxCloud:"
 #. module: sale_account_taxcloud
 #: model:ir.actions.server,name:sale_account_taxcloud.action_sale_order_update_taxes
 msgid "Update taxes with Taxcloud"
-msgstr "Update belastingen met Taxcloud"
+msgstr "Update BTW met Taxcloud"

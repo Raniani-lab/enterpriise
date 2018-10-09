@@ -4,13 +4,15 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# Kostas Goutoudis <goutoudis@gmail.com>, 2018
+# George Tarasidis <george_tarasidis@yahoo.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"Last-Translator: George Tarasidis <george_tarasidis@yahoo.com>, 2018\n"
 "Language-Team: Greek (https://www.transifex.com/odoo/teams/41243/el/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,7 +29,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_bill_my_account
 #: model:ir.model.fields,field_description:delivery_ups.field_sale_order__ups_bill_my_account
 msgid "Bill My Account"
-msgstr ""
+msgstr "Πληρωμή του λογαριασμού μου"
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_cod_funds_code
@@ -35,10 +37,9 @@ msgid "COD Funding Option"
 msgstr ""
 
 #. module: delivery_ups
-#: model:ir.model,name:delivery_ups.model_delivery_carrier
 #: model:ir.model.fields,field_description:delivery_ups.field_product_packaging__package_carrier_type
 msgid "Carrier"
-msgstr ""
+msgstr "Μεταφορέας"
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_sale_order__ups_carrier_account
@@ -70,7 +71,12 @@ msgstr ""
 #: selection:delivery.carrier,delivery_type:0
 #: selection:product.packaging,package_carrier_type:0
 msgid "DHL"
-msgstr ""
+msgstr "DHL"
+
+#. module: delivery_ups
+#: model:ir.model,name:delivery_ups.model_delivery_carrier
+msgid "Delivery Methods"
+msgstr "Μέθοδοι Παράδοσης"
 
 #. module: delivery_ups
 #: selection:delivery.carrier,ups_label_file_type:0
@@ -95,12 +101,12 @@ msgstr ""
 #: selection:delivery.carrier,delivery_type:0
 #: selection:product.packaging,package_carrier_type:0
 msgid "FedEx"
-msgstr ""
+msgstr "FedEx"
 
 #. module: delivery_ups
 #: selection:delivery.carrier,delivery_type:0
 msgid "Fixed Price"
-msgstr ""
+msgstr "Σταθερή τιμή"
 
 #. module: delivery_ups
 #: model:ir.model.fields,help:delivery_ups.field_delivery_carrier__ups_bill_my_account
@@ -131,11 +137,6 @@ msgid "PDF"
 msgstr "PDF"
 
 #. module: delivery_ups
-#: model:ir.model,name:delivery_ups.model_product_packaging
-msgid "Packaging"
-msgstr ""
-
-#. module: delivery_ups
 #: code:addons/delivery_ups/models/ups_request.py:209
 #, python-format
 msgid "Please provide at least one item to ship."
@@ -147,14 +148,14 @@ msgid "Pounds"
 msgstr ""
 
 #. module: delivery_ups
-#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__delivery_type
-msgid "Provider"
+#: model:ir.model,name:delivery_ups.model_product_packaging
+msgid "Product Packaging"
 msgstr ""
 
 #. module: delivery_ups
-#: model:ir.model,name:delivery_ups.model_sale_order
-msgid "Quotation"
-msgstr ""
+#: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__delivery_type
+msgid "Provider"
+msgstr "Πάροχος"
 
 #. module: delivery_ups
 #: selection:delivery.carrier,ups_label_file_type:0
@@ -162,7 +163,12 @@ msgid "SPL"
 msgstr ""
 
 #. module: delivery_ups
-#: model:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form_with_provider_ups
+#: model:ir.model,name:delivery_ups.model_sale_order
+msgid "Sale Order"
+msgstr "Παραγγελία"
+
+#. module: delivery_ups
+#: model_terms:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form_with_provider_ups
 msgid "Saturday Delivery"
 msgstr ""
 
@@ -210,6 +216,8 @@ msgid ""
 "The estimated price cannot be computed because the weight of your product is"
 " missing."
 msgstr ""
+"Δεν μπορεί να υπολογιστεί η εκτιμώμενη τιμή, επειδή λείπει το βάρος του "
+"είδους."
 
 #. module: delivery_ups
 #: code:addons/delivery_ups/models/ups_request.py:219
@@ -236,13 +244,13 @@ msgstr ""
 #. module: delivery_ups
 #: model:ir.model,name:delivery_ups.model_stock_picking
 msgid "Transfer"
-msgstr ""
+msgstr "Μεταφορά"
 
 #. module: delivery_ups
 #: selection:delivery.carrier,delivery_type:0
 #: selection:product.packaging,package_carrier_type:0
 msgid "UPS"
-msgstr ""
+msgstr "UPS"
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_access_number
@@ -257,7 +265,7 @@ msgid "UPS BE"
 msgstr ""
 
 #. module: delivery_ups
-#: model:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form_with_provider_ups
+#: model_terms:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form_with_provider_ups
 msgid "UPS Configuration"
 msgstr ""
 
@@ -267,8 +275,8 @@ msgid "UPS Default Packaging Type"
 msgstr ""
 
 #. module: delivery_ups
-#: model:ir.ui.view,arch_db:delivery_ups.res_config_settings_view_form_sale
-#: model:ir.ui.view,arch_db:delivery_ups.res_config_settings_view_form_stock
+#: model_terms:ir.ui.view,arch_db:delivery_ups.res_config_settings_view_form_sale
+#: model_terms:ir.ui.view,arch_db:delivery_ups.res_config_settings_view_form_stock
 msgid "UPS Delivery Methods"
 msgstr ""
 
@@ -280,7 +288,7 @@ msgstr ""
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_passwd
 msgid "UPS Password"
-msgstr ""
+msgstr "Κωδικός Πρόσβασης UPS"
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_saturday_delivery
@@ -314,7 +322,7 @@ msgstr ""
 #. module: delivery_ups
 #: selection:delivery.carrier,delivery_type:0
 msgid "USPS"
-msgstr ""
+msgstr "USPS"
 
 #. module: delivery_ups
 #: model:product.product,uom_name:delivery_ups.product_product_delivery_ups_be
@@ -322,7 +330,7 @@ msgstr ""
 #: model:product.template,uom_name:delivery_ups.product_product_delivery_ups_be_product_template
 #: model:product.template,uom_name:delivery_ups.product_product_delivery_ups_us_product_template
 msgid "Unit(s)"
-msgstr ""
+msgstr "Μονάδες"
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_package_dimension_unit
@@ -335,7 +343,7 @@ msgid "Ups Package Weight Unit"
 msgstr ""
 
 #. module: delivery_ups
-#: model:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form_with_provider_ups
+#: model_terms:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form_with_provider_ups
 msgid "Value Added Services"
 msgstr ""
 
@@ -348,7 +356,7 @@ msgstr ""
 #: selection:delivery.carrier,delivery_type:0
 #: selection:product.packaging,package_carrier_type:0
 msgid "bpost"
-msgstr ""
+msgstr "bpost"
 
 #. module: delivery_ups
 #: model:product.product,weight_uom_name:delivery_ups.product_product_delivery_ups_be
@@ -356,4 +364,4 @@ msgstr ""
 #: model:product.template,weight_uom_name:delivery_ups.product_product_delivery_ups_be_product_template
 #: model:product.template,weight_uom_name:delivery_ups.product_product_delivery_ups_us_product_template
 msgid "kg"
-msgstr ""
+msgstr "κιλά"

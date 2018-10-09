@@ -40,7 +40,7 @@
             <field name="arch" type="xml">
                 <filter name="supplier" position="after">
                     <separator />
-                    <filter string="With overdue invoices" 
+                    <filter string="Overdue Invoices" 
                             name="filter_with_overdue_invoices"
                             domain="[('followup_status', '=', 'with_overdue_invoices')]"/>
                     <filter string="In need of action"

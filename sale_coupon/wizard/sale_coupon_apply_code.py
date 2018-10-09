@@ -7,6 +7,7 @@ from odoo.exceptions import UserError
 class SaleCouponApplyCode(models.TransientModel):
     _name = 'sale.coupon.apply.code'
     _rec_name = 'coupon_code'
+    _description = 'Sales Coupon Apply Code'
 
     coupon_code = fields.Char(string="Coupon", required=True)
 
@@ -29,13 +30,15 @@ class SaleCouponApplyCode(models.TransientModel):
             error_status = program._check_promo_code(order, coupon_code)
             if not error_status:
                 if program.promo_applicability == 'on_next_order':
-                    coupon = order._create_reward_coupon(program)
-                    return {
-                        'generated_coupon': {
-                            'reward': coupon.program_id.discount_line_product_id.name,
-                            'code': coupon.code,
+                    # Avoid creating the coupon if it already exist
+                    if program.discount_line_product_id.id not in order.generated_coupon_ids.filtered(lambda coupon: coupon.state in ['new', 'reserved']).mapped('discount_line_product_id').ids:
+                        coupon = order._create_reward_coupon(program)
+                        return {
+                            'generated_coupon': {
+                                'reward': coupon.program_id.discount_line_product_id.name,
+                                'code': coupon.code,
+                            }
                         }
-                    }
                 else:  # The program is applied on this order
                     order._create_reward_line(program)
                     order.code_promo_program_id = program

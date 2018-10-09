@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"POT-Creation-Date: 2018-10-02 10:31+0000\n"
+"PO-Revision-Date: 2018-10-02 10:31+0000\n"
 "Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: Russian (https://www.transifex.com/odoo/teams/41243/ru/)\n"
 "MIME-Version: 1.0\n"
@@ -19,14 +19,14 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
 
 #. module: delivery_easypost
-#: model:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
+#: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
 msgid ""
 "<b>Copy your API keys in Odoo</b>\n"
 "                <br/>"
 msgstr ""
 
 #. module: delivery_easypost
-#: model:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
+#: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
 msgid ""
 "<b>Once your account is created, go to your Dashboard and click on the arrow next to your username to configure your carrier accounts. </b>\n"
 "                <b>You can add new carrier accounts on the right side of the same page.</b>\n"
@@ -34,7 +34,7 @@ msgid ""
 msgstr ""
 
 #. module: delivery_easypost
-#: model:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
+#: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
 msgid "API keys"
 msgstr ""
 
@@ -44,12 +44,11 @@ msgid "Based on Rules"
 msgstr "На основании Правил"
 
 #. module: delivery_easypost
-#: model:ir.ui.view,arch_db:delivery_easypost.view_delivery_easypost_carrier_type
+#: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_easypost_carrier_type
 msgid "Cancel"
 msgstr "Отменить"
 
 #. module: delivery_easypost
-#: model:ir.model,name:delivery_easypost.model_delivery_carrier
 #: model:ir.model.fields,field_description:delivery_easypost.field_product_packaging__package_carrier_type
 msgid "Carrier"
 msgstr "Перевозчик"
@@ -63,17 +62,17 @@ msgstr ""
 #. module: delivery_easypost
 #: model:ir.model,name:delivery_easypost.model_delivery_carrier_easypost
 #: model:ir.model.fields,field_description:delivery_easypost.field_delivery_carrier_easypost__carrier_type
-#: model:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
+#: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
 msgid "Carrier Type"
 msgstr ""
 
 #. module: delivery_easypost
-#: model:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
+#: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
 msgid "Carrier accounts"
 msgstr ""
 
 #. module: delivery_easypost
-#: model:ir.ui.view,arch_db:delivery_easypost.view_delivery_easypost_carrier_type
+#: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_easypost_carrier_type
 msgid "Carrrier Type"
 msgstr ""
 
@@ -96,7 +95,7 @@ msgid "DHL"
 msgstr ""
 
 #. module: delivery_easypost
-#: model:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
+#: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
 msgid "Default Package Type"
 msgstr "Тип пакета по умолчанию"
 
@@ -116,13 +115,18 @@ msgid "Delivery Carrier"
 msgstr "Перевозчик доставки"
 
 #. module: delivery_easypost
+#: model:ir.model,name:delivery_easypost.model_delivery_carrier
+msgid "Delivery Methods"
+msgstr "Способы доставки"
+
+#. module: delivery_easypost
 #: model:ir.model.fields,field_description:delivery_easypost.field_delivery_carrier_easypost__display_name
 #: model:ir.model.fields,field_description:delivery_easypost.field_easypost_service__display_name
 msgid "Display Name"
 msgstr "Отображаемое Имя"
 
 #. module: delivery_easypost
-#: model:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
+#: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
 msgid ""
 "Do not forget to load your Easypost carrier accounts for a valid "
 "configuration."
@@ -150,13 +154,13 @@ msgid "Easypost Carrier Type ID, technical for API request"
 msgstr ""
 
 #. module: delivery_easypost
-#: model:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
+#: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
 msgid "Easypost Configuration"
 msgstr ""
 
 #. module: delivery_easypost
-#: model:ir.ui.view,arch_db:delivery_easypost.res_config_settings_view_form_sale
-#: model:ir.ui.view,arch_db:delivery_easypost.res_config_settings_view_form_stock
+#: model_terms:ir.ui.view,arch_db:delivery_easypost.res_config_settings_view_form_sale
+#: model_terms:ir.ui.view,arch_db:delivery_easypost.res_config_settings_view_form_stock
 msgid "Easypost Delivery Methods"
 msgstr ""
 
@@ -171,12 +175,17 @@ msgid "Easypost Order Reference"
 msgstr ""
 
 #. module: delivery_easypost
-#: model:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
+#: model:ir.model,name:delivery_easypost.model_easypost_service
+msgid "Easypost Service"
+msgstr ""
+
+#. module: delivery_easypost
+#: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
 msgid "Easypost Tutorial"
 msgstr ""
 
 #. module: delivery_easypost
-#: model:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
+#: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
 msgid "Easypost Website"
 msgstr ""
 
@@ -208,7 +217,7 @@ msgid "Fixed Price"
 msgstr "Фиксированная цена"
 
 #. module: delivery_easypost
-#: model:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
+#: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
 msgid "Go to"
 msgstr "Перейти к"
 
@@ -232,7 +241,7 @@ msgid ""
 msgstr ""
 
 #. module: delivery_easypost
-#: model:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
+#: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
 msgid "Label File Type"
 msgstr ""
 
@@ -255,7 +264,7 @@ msgid "Last Updated on"
 msgstr "Последний раз обновлено"
 
 #. module: delivery_easypost
-#: model:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
+#: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
 msgid "Load your Easypost carrier accounts"
 msgstr ""
 
@@ -275,16 +284,16 @@ msgid "PNG"
 msgstr "PNG"
 
 #. module: delivery_easypost
-#: model:ir.model,name:delivery_easypost.model_product_packaging
-msgid "Packaging"
-msgstr "Упаковка"
-
-#. module: delivery_easypost
 #: code:addons/delivery_easypost/models/easypost_request.py:78
 #: code:addons/delivery_easypost/models/easypost_request.py:85
 #, python-format
 msgid "Please provide at least one item to ship."
 msgstr "Укажите, пожалуйста, хотя бы один элемент для отгрузки."
+
+#. module: delivery_easypost
+#: model:ir.model,name:delivery_easypost.model_product_packaging
+msgid "Product Packaging"
+msgstr "Тара"
 
 #. module: delivery_easypost
 #: code:addons/delivery_easypost/models/easypost_request.py:215
@@ -309,7 +318,7 @@ msgid "Sale Order/Stock Picking is missing."
 msgstr ""
 
 #. module: delivery_easypost
-#: model:ir.ui.view,arch_db:delivery_easypost.view_delivery_easypost_carrier_type
+#: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_easypost_carrier_type
 msgid "Select"
 msgstr "Выбрать"
 
@@ -330,7 +339,7 @@ msgid "Shipping label for packages"
 msgstr "Отгрузочная метка для упаковки"
 
 #. module: delivery_easypost
-#: model:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
+#: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
 msgid "Sign up"
 msgstr "Регистрация"
 
@@ -430,17 +439,12 @@ msgid "bpost"
 msgstr ""
 
 #. module: delivery_easypost
-#: model:ir.model,name:delivery_easypost.model_easypost_service
-msgid "easypost.service"
-msgstr ""
-
-#. module: delivery_easypost
 #: code:addons/delivery_easypost/models/delivery_carrier.py:86
 #, python-format
 msgid "error_message"
 msgstr ""
 
 #. module: delivery_easypost
-#: model:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
+#: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
 msgid "to create a new account:"
 msgstr ""

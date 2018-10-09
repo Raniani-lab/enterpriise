@@ -4,13 +4,15 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# keecome <7017511@qq.com>, 2018
+# Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"Last-Translator: Jeffery CHEN Fan <jeffery9@gmail.com>, 2018\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,7 +22,7 @@ msgstr ""
 
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_timesheet_forecast_report_analysis__date
-#: model:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search
+#: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search
 msgid "Date"
 msgstr "日期"
 
@@ -36,7 +38,7 @@ msgstr "有效时数"
 
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_timesheet_forecast_report_analysis__employee_id
-#: model:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search
+#: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search
 msgid "Employee"
 msgstr "员工"
 
@@ -46,7 +48,7 @@ msgid "Forecast"
 msgstr "预测"
 
 #. module: project_timesheet_forecast
-#: model:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search
+#: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search
 msgid "Group By"
 msgstr "分组按"
 
@@ -63,12 +65,12 @@ msgstr "最后修改时间"
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_timesheet_forecast_report_analysis__number_hours
 msgid "Number of hours"
-msgstr ""
+msgstr "小时数"
 
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_forecast__working_days_count
 msgid "Number of working days"
-msgstr ""
+msgstr "工作天数"
 
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_forecast__percentage_hours
@@ -77,24 +79,30 @@ msgstr "进度"
 
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_timesheet_forecast_report_analysis__project_id
-#: model:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search
+#: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search
 msgid "Project"
 msgstr "项目"
 
 #. module: project_timesheet_forecast
+#: model:ir.model,name:project_timesheet_forecast.model_project_forecast
+msgid "Project Forecast"
+msgstr "项目预测"
+
+#. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_timesheet_forecast_report_analysis__task_id
-#: model:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search
+#: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search
 msgid "Task"
 msgstr "任务"
 
 #. module: project_timesheet_forecast
-#: model:ir.actions.act_window,help:project_timesheet_forecast.project_timesheet_forecast_report_action
+#: model_terms:ir.actions.act_window,help:project_timesheet_forecast.project_timesheet_forecast_report_action
 msgid ""
 "This report performs analysis on your timesheet and forecast. This allow to "
 "have a global view of past forecast and what was really done. Comparing old "
 "estimation and effective work amount will help you to better plan your futur"
 " project."
 msgstr ""
+"此报告会对您的时间表和预测执行分析。这样就可以全面了解过去的预测以及实际完成的工作。比较旧估算和有效工作量将有助于您更好地规划您的未来项目。"
 
 #. module: project_timesheet_forecast
 #: selection:project.timesheet.forecast.report.analysis,type:0
@@ -102,34 +110,29 @@ msgid "Timesheet"
 msgstr "工时表"
 
 #. module: project_timesheet_forecast
+#: model:ir.model,name:project_timesheet_forecast.model_project_timesheet_forecast_report_analysis
+msgid "Timesheet & Forecast Statistics"
+msgstr "工时表&预测统计"
+
+#. module: project_timesheet_forecast
 #: model:ir.actions.act_window,name:project_timesheet_forecast.project_timesheet_forecast_report_action
-#: model:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_graph
-#: model:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_pivot
-#: model:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search
+#: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_graph
+#: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_pivot
+#: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search
 msgid "Timesheet Forecast Analysis"
-msgstr ""
+msgstr "工时单预测分析"
 
 #. module: project_timesheet_forecast
 #: model:ir.ui.menu,name:project_timesheet_forecast.menu_project_timesheet_forecast_report_analysis
 msgid "Timesheet and Forecast Analysis"
-msgstr ""
-
-#. module: project_timesheet_forecast
-#: model:ir.model,name:project_timesheet_forecast.model_project_timesheet_forecast_report_analysis
-msgid "Timesheet and Forecast Statistics"
-msgstr ""
+msgstr "工时单和预测分析"
 
 #. module: project_timesheet_forecast
 #: model:ir.filters,name:project_timesheet_forecast.ir_filter_project_timesheet_forecast
 msgid "Timesheet vs Forecast"
-msgstr ""
+msgstr "时间表vs预测"
 
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_timesheet_forecast_report_analysis__type
 msgid "Type"
 msgstr "类型"
-
-#. module: project_timesheet_forecast
-#: model:ir.model,name:project_timesheet_forecast.model_project_forecast
-msgid "project.forecast"
-msgstr "project.forecast"

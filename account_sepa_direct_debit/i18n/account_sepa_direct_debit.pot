@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-18 10:05+0000\n"
-"PO-Revision-Date: 2018-09-18 10:05+0000\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -107,7 +107,7 @@ msgid "<strong>Zip:</strong>"
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:79
+#: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:80
 #, python-format
 msgid "A debtor account is required to validate a SEPA Direct Debit mandate."
 msgstr ""
@@ -171,6 +171,11 @@ msgstr ""
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,help:account_sepa_direct_debit.field_sdd_mandate__company_id
 msgid "Company for whose invoices the mandate can be used."
+msgstr ""
+
+#. module: account_sepa_direct_debit
+#: model:ir.model,name:account_sepa_direct_debit.model_res_config_settings
+msgid "Config Settings"
 msgstr ""
 
 #. module: account_sepa_direct_debit
@@ -478,13 +483,13 @@ msgid "One-off Mandate"
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:142
+#: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:143
 #, python-format
 msgid "Only IBAN account numbers can receive SEPA Direct Debit payments. Please select a journal associated to one."
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:93
+#: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:94
 #, python-format
 msgid "Only mandates in draft state can be deleted from database when cancelled."
 msgstr ""
@@ -515,7 +520,7 @@ msgid "Originating SEPA mandate"
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:115
+#: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:116
 #, python-format
 msgid "Paid Invoices"
 msgstr ""
@@ -547,7 +552,7 @@ msgid "Payments generated thanks to this mandate."
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:125
+#: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:126
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.account_sepa_direct_debit_mandate_form
 #, python-format
 msgid "Payments to Collect"
@@ -571,7 +576,7 @@ msgstr ""
 
 #. module: account_sepa_direct_debit
 #: model:ir.model,name:account_sepa_direct_debit.model_account_register_payments
-msgid "Register payments on multiple invoices"
+msgid "Register Payments"
 msgstr ""
 
 #. module: account_sepa_direct_debit
@@ -587,6 +592,11 @@ msgstr ""
 #. module: account_sepa_direct_debit
 #: selection:sdd.mandate,state:0
 msgid "Revoked"
+msgstr ""
+
+#. module: account_sepa_direct_debit
+#: model:ir.model,name:account_sepa_direct_debit.model_sdd_mandate
+msgid "SDD Mandate"
 msgstr ""
 
 #. module: account_sepa_direct_debit
@@ -616,7 +626,7 @@ msgid "SEPA Direct Debit creditor identifier of the company, given by the bank."
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:81
+#: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:82
 #, python-format
 msgid "SEPA Direct Debit scheme only accepts IBAN account numbers. Please select an IBAN-compliant debtor account for this mandate."
 msgstr ""
@@ -653,13 +663,13 @@ msgid "Technical field used to inform the end user there is a SDD mandate that c
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:144
+#: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:145
 #, python-format
 msgid "The bank account you select for payment must be related to a bank. Please fix it first."
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:146
+#: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:147
 #, python-format
 msgid "The bank your payment account is related to must have a BIC number. Please define one."
 msgstr ""
@@ -671,19 +681,19 @@ msgid "The creditor identifier exceeds the maximum length of 35 characters."
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:83
+#: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:84
 #, python-format
 msgid "The debtor account must have a bank with a bic number in order to validate a SEPA Direct Debit mandate."
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:152
+#: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:153
 #, python-format
 msgid "The debtor identifier you specified exceeds the limitation of 35 characters imposed by SEPA regulation"
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:136
+#: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:137
 #, python-format
 msgid "The end date of the mandate must be posterior or equal to its start date."
 msgstr ""
@@ -781,7 +791,7 @@ msgid "You cannot pay an invoice with a mandate that does not cover the moment w
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:85
+#: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:86
 #, python-format
 msgid "You must register this mandate's original document before validating it."
 msgstr ""
@@ -790,15 +800,5 @@ msgstr ""
 #: code:addons/account_sepa_direct_debit/models/account_batch_payment.py:28
 #, python-format
 msgid "Your company must have a creditor identifier in order to issue SEPA Direct Debit payments requests. It can be defined in accounting module's settings."
-msgstr ""
-
-#. module: account_sepa_direct_debit
-#: model:ir.model,name:account_sepa_direct_debit.model_res_config_settings
-msgid "res.config.settings"
-msgstr ""
-
-#. module: account_sepa_direct_debit
-#: model:ir.model,name:account_sepa_direct_debit.model_sdd_mandate
-msgid "sdd.mandate"
 msgstr ""
 

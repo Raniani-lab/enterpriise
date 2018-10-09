@@ -5,14 +5,13 @@
 # Translators:
 # Martin Trigaux, 2018
 # mohamed eboda <m.eboda@gmail.com>, 2018
-# Osoul <baruni@osoul.ly>, 2018
 # Ghaith Gammar <g.gammar@saharaifs.net>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.4+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-02 11:20+0000\n"
-"PO-Revision-Date: 2018-08-02 11:20+0000\n"
+"POT-Creation-Date: 2018-10-02 10:32+0000\n"
+"PO-Revision-Date: 2018-10-02 10:32+0000\n"
 "Last-Translator: Ghaith Gammar <g.gammar@saharaifs.net>, 2018\n"
 "Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
@@ -28,20 +27,15 @@ msgid "Deferred Revenue Category"
 msgstr "فئة الإيرادات المؤجلة"
 
 #. module: sale_subscription_asset
-#: model:ir.ui.view,arch_db:sale_subscription_asset.sale_subscription_template_view_form_inherit_sale_subscription_asset
-#: model:ir.ui.view,arch_db:sale_subscription_asset.sale_subscription_view_form_inherit_sale_subscription_asset
+#: model_terms:ir.ui.view,arch_db:sale_subscription_asset.sale_subscription_template_view_form_inherit_sale_subscription_asset
+#: model_terms:ir.ui.view,arch_db:sale_subscription_asset.sale_subscription_view_form_inherit_sale_subscription_asset
 msgid "Deferred Revenue Type"
 msgstr "نوع الإيرادات المدفوعة مقدما"
 
 #. module: sale_subscription_asset
 #: model:ir.model,name:sale_subscription_asset.model_sale_order
-msgid "Quotation"
-msgstr "عرض مبدئي"
-
-#. module: sale_subscription_asset
-#: model:ir.ui.view,arch_db:sale_subscription_asset.res_config_settings_view_form
-msgid "Revenue Types"
-msgstr ""
+msgid "Sale Order"
+msgstr "أمر البيع"
 
 #. module: sale_subscription_asset
 #: model:ir.model,name:sale_subscription_asset.model_sale_order_line

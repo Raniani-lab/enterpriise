@@ -20,7 +20,6 @@ QUnit.module('DocumentsKanbanView', {
                 fields: {
                     active: {string: "Active", type: 'boolean', default: true},
                     available_rule_ids: {string: "Rules", type: 'many2many', relation: 'documents.workflow.rule'},
-                    datas_fname: {string: "Foo", type: 'char'},
                     file_size: {string: "Size", type: 'integer'},
                     folder_id: {string: "Folders", type: 'many2one', relation: 'documents.folder'},
                     lock_uid: {string: "Locked by", type: "many2one", relation: 'user'},
@@ -39,33 +38,38 @@ QUnit.module('DocumentsKanbanView', {
                     tag_ids: {string: "Tags", type: 'many2many', relation: 'documents.tag'},
                     type: {string: "Type", type: 'selection', selection: [['url', "URL"], ['binary', "File"]], default: 1},
                     url: {string: "Url", type: 'char'},
+                    activity_ids: {string: 'Activities', type: 'one2many', relation: 'mail.activity',
+                        relation_field: 'res_id'},
+                    activity_state: {string: 'State', type: 'selection',
+                        selection: [['overdue', 'Overdue'], ['today', 'Today'], ['planned', 'Planned']]},
                 },
                 records: [
-                    {id: 1, datas_fname: 'yop', file_size: 30000, owner_id: 1, partner_id: 2,
-                        public: true, res_id: 1, res_model: 'task', res_model_name: 'Task',
-                        res_name: 'Write specs', tag_ids: [1, 2], share_ids: [], folder_id: 1, available_rule_ids: [1, 2]},
-                    {id: 2, datas_fname: 'blip', file_size: 20000, owner_id: 2, partner_id: 2,
+                    {id: 1, name: 'yop', file_size: 30000, owner_id: 1, partner_id: 2,
+                        public: true, res_id: 1, res_model: 'task', res_model_name: 'Task', activity_ids: [1,],
+                        activity_state: 'today', res_name: 'Write specs', tag_ids: [1, 2], share_ids: [], folder_id: 1,
+                        available_rule_ids: [1, 2]},
+                    {id: 2, name: 'blip', file_size: 20000, owner_id: 2, partner_id: 2,
                         public: false, res_id: 2, res_model: 'task', res_model_name: 'Task',
                         res_name: 'Write tests', tag_ids: [2], share_ids: [], folder_id: 1, available_rule_ids: [1]},
-                    {id: 3, datas_fname: 'gnap', file_size: 15000, lock_uid: 3, owner_id: 2, partner_id: 1,
+                    {id: 3, name: 'gnap', file_size: 15000, lock_uid: 3, owner_id: 2, partner_id: 1,
                         public: false, res_id: 2, res_model: 'task', res_model_name: 'Task',
                         res_name: 'Write doc', tag_ids: [1, 2, 5], share_ids: [], folder_id: 1, available_rule_ids: [1, 2, 3]},
-                    {id: 4, datas_fname: 'burp', file_size: 10000, mimetype: 'image/png', owner_id: 1, partner_id: 3,
+                    {id: 4, name: 'burp', file_size: 10000, mimetype: 'image/png', owner_id: 1, partner_id: 3,
                         public: true, res_id: 1, res_model: 'order', res_model_name: 'Sale Order',
                         res_name: 'SO 0001', tag_ids: [], share_ids: [], folder_id: 1, available_rule_ids: []},
-                    {id: 5, datas_fname: 'zip', file_size: 40000, lock_uid: 1, owner_id: 2, partner_id: 2,
+                    {id: 5, name: 'zip', file_size: 40000, lock_uid: 1, owner_id: 2, partner_id: 2,
                         public: false, res_id: 3, res_model: false, res_model_name: false,
                         res_name: false, tag_ids: [], share_ids: [], folder_id: 1, available_rule_ids: [1, 2]},
-                    {id: 6, datas_fname: 'pom', file_size: 70000, partner_id: 3,
+                    {id: 6, name: 'pom', file_size: 70000, partner_id: 3,
                         public: true, res_id: 1, res_model: 'order', res_model_name: 'Sale order',
                         res_name: 'SO 0003', tag_ids: [], share_ids: [], folder_id: 2, available_rule_ids: []},
-                    {id: 7, datas_fname: 'zoup', file_size: 20000, mimetype: 'image/png',
+                    {id: 7, name: 'zoup', file_size: 20000, mimetype: 'image/png',
                         owner_id: 3, partner_id: 3, public: true, res_id: false, res_model: false,
                         res_model_name: false, res_name: false, tag_ids: [], share_ids: [], folder_id: false, available_rule_ids: []},
-                    {id: 8, active: false, datas_fname: 'wip', file_size: 70000, owner_id: 3, partner_id: 3,
+                    {id: 8, active: false, name: 'wip', file_size: 70000, owner_id: 3, partner_id: 3,
                         public: true, res_id: 1, res_model: 'order', res_model_name: 'Sale Order',
                         res_name: 'SO 0003', tag_ids: [], share_ids: [], folder_id: 1, available_rule_ids: []},
-                    {id: 9, active: false, datas_fname: 'zorro', file_size: 20000, mimetype: 'image/png',
+                    {id: 9, active: false, name: 'zorro', file_size: 20000, mimetype: 'image/png',
                         owner_id: 3, partner_id: 3, public: true, res_id: false, res_model: false,
                         res_model_name: false, res_name: false, tag_ids: [], share_ids: [], folder_id: 1, available_rule_ids: []},
                 ],
@@ -90,9 +94,10 @@ QUnit.module('DocumentsKanbanView', {
                 fields: {
                     name: {string: 'Name', type: 'char'},
                     parent_folder_id: {string: 'Parent Folder', type: 'many2one', relation: 'documents.folder'},
+                    description: {string: 'Description', type:'text'},
                 },
                 records: [
-                        {id: 1, name: 'Folder1', parent_folder_id: false},
+                        {id: 1, name: 'Folder1', description: '_F1-test-description_', parent_folder_id: false},
                         {id: 2, name: 'Folder2', parent_folder_id: false},
                         {id: 3, name: 'Folder3', parent_folder_id: 1},
                 ],
@@ -104,6 +109,7 @@ QUnit.module('DocumentsKanbanView', {
                       facet_id: 2,
                       facet_name: 'Priority',
                       facet_sequence: 10,
+                      facet_tooltip: 'A priority tooltip',
                       tag_id: 5,
                       tag_name: 'No stress',
                       tag_sequence: 10,
@@ -112,6 +118,7 @@ QUnit.module('DocumentsKanbanView', {
                       facet_id: 1,
                       facet_name: 'Status',
                       facet_sequence: 11,
+                      facet_tooltip: 'A Status tooltip',
                       tag_id: 2,
                       tag_name: 'Draft',
                       tag_sequence: 10,
@@ -120,6 +127,7 @@ QUnit.module('DocumentsKanbanView', {
                       facet_id: 1,
                       facet_name: 'Status',
                       facet_sequence: 11,
+                      facet_tooltip: 'A Status tooltip',
                       tag_id: 1,
                       tag_name: 'New',
                       tag_sequence: 11,
@@ -142,10 +150,11 @@ QUnit.module('DocumentsKanbanView', {
             },
             'documents.workflow.rule': {
                 fields: {
-                    display_name: {string: 'Name', type: 'char'}
+                    display_name: {string: 'Name', type: 'char'},
+                    note: {string: 'Tooltip', type: 'char'},
                 },
                 records: [
-                    {id: 1, display_name: 'Convincing AI not to turn evil'},
+                    {id: 1, display_name: 'Convincing AI not to turn evil', note:'Racing for AI Supremacy'},
                     {id: 2, display_name: 'Follow the white rabbit'},
                     {id: 3, display_name: 'Entangling superstrings'},
                 ],
@@ -162,11 +171,35 @@ QUnit.module('DocumentsKanbanView', {
                 },
                 records: [],
             },
+            'mail.activity': {
+                fields: {
+                    activity_type_id: { string: "Activity type", type: "many2one", relation: "mail.activity.type" },
+                    create_uid: { string: "Assigned to", type: "many2one", relation: 'partner' },
+                    create_user_id: { string: "Creator", type: "many2one", relation: 'partner' },
+                    display_name: { string: "Display name", type: "char" },
+                    date_deadline: { string: "Due Date", type: "date" },
+                    user_id: { string: "Assigned to", type: "many2one", relation: 'partner' },
+                    state: {
+                        string: 'State',
+                        type: 'selection',
+                        selection: [['overdue', 'Overdue'], ['today', 'Today'], ['planned', 'Planned']],
+                    },
+                },
+            },
+            'mail.activity.type': {
+                fields: {
+                    name: { string: "Name", type: "char" },
+                },
+                records: [
+                    { id: 1, name: "Type 1" },
+                    { id: 2, name: "Type 2" },
+                ],
+            },
         };
     },
 }, function () {
     QUnit.test('basic rendering', function (assert) {
-        assert.expect(11);
+        assert.expect(12);
 
         var kanban = createView({
             View: DocumentsKanbanView,
@@ -174,7 +207,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<field name="datas_fname"/>' +
+                        '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
         });
@@ -196,13 +229,15 @@ QUnit.module('DocumentsKanbanView', {
             "should have a 'documents inspector' column");
 
         // check control panel buttons
-        assert.strictEqual(kanban.$buttons.find('.btn-primary').length, 2,
-            "should have two primary buttons");
+        assert.strictEqual(kanban.$buttons.find('.btn-primary').length, 3,
+            "should have three primary buttons");
         assert.strictEqual(kanban.$buttons.find('.btn-primary:first').text().trim(), 'Upload',
             "should have a primary 'Upload' button");
         assert.strictEqual(kanban.$buttons.find('button.o_documents_kanban_url').length, 1,
             "should allow to save a URL");
-        assert.strictEqual(kanban.$buttons.find('.btn-secondary').text().trim(), 'Share',
+        assert.strictEqual(kanban.$buttons.find('button.o_documents_kanban_request').text().trim(), 'Request Document',
+            "should have a primary 'request' button");
+        assert.strictEqual(kanban.$buttons.find('button.btn-secondary').text().trim(), 'Share',
             "should have a secondary 'Share' button");
 
         kanban.destroy();
@@ -217,7 +252,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<field name="datas_fname"/>' +
+                        '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
         });
@@ -254,7 +289,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<field name="datas_fname"/>' +
+                        '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
         });
@@ -288,7 +323,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<field name="datas_fname"/>' +
+                        '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
         });
@@ -317,7 +352,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<field name="datas_fname"/>' +
+                        '<field name="name"/>' +
                         '<button name="some_method" type="object"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
@@ -360,7 +395,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<field name="datas_fname"/>' +
+                        '<field name="name"/>' +
                         '<button name="some_method" type="object"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
@@ -409,7 +444,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<field name="datas_fname"/>' +
+                        '<field name="name"/>' +
                         '<button name="some_method" type="object"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
@@ -424,7 +459,7 @@ QUnit.module('DocumentsKanbanView', {
         assert.strictEqual(kanban.$('.o_documents_inspector_preview .o_document_preview').length, 3,
             "should show 3 document previews in the DocumentsInspector");
 
-        kanban.reload({domain: [['datas_fname', '=', 'burp']]});
+        kanban.reload({domain: [['name', '=', 'burp']]});
 
         assert.strictEqual(kanban.$('.o_record_selected').length, 1,
             "should have 1 selected record");
@@ -451,7 +486,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<field name="datas_fname"/>' +
+                        '<field name="name"/>' +
                         '<button name="some_method" type="object"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
@@ -466,7 +501,7 @@ QUnit.module('DocumentsKanbanView', {
                 execute_action: function (ev) {
                     assert.strictEqual(ev.data.action_data.name, 'some_method',
                         "should call the correct method");
-                    self.data['ir.attachment'].records[0].datas_fname = 'yop changed';
+                    self.data['ir.attachment'].records[0].name = 'yop changed';
                     ev.data.on_closed();
                 },
             },
@@ -503,7 +538,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<field name="datas_fname"/>' +
+                        '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
             domain: domain,
@@ -542,7 +577,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<field name="datas_fname"/>' +
+                        '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
             intercepts: {
@@ -557,6 +592,30 @@ QUnit.module('DocumentsKanbanView', {
         kanban.destroy();
     });
 
+    QUnit.test('can Request a file', function (assert) {
+        assert.expect(1);
+
+        var kanban = createView({
+            View: DocumentsKanbanView,
+            model: 'ir.attachment',
+            data: this.data,
+            arch: '<kanban><templates><t t-name="kanban-box">' +
+                    '<div>' +
+                        '<field name="name"/>' +
+                    '</div>' +
+                '</t></templates></kanban>',
+            intercepts: {
+                do_action: function (ev) {
+                    assert.deepEqual(ev.data.action, "documents.action_request_form", "should open the Request form");
+                },
+            },
+        });
+
+        kanban.$buttons.find('button.o_documents_kanban_request').click();
+
+        kanban.destroy();
+    });
+
     QUnit.test('can render without folder', function (assert) {
         assert.expect(1);
 
@@ -567,7 +626,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<field name="datas_fname"/>' +
+                        '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
         });
@@ -581,7 +640,7 @@ QUnit.module('DocumentsKanbanView', {
     QUnit.module('DocumentsInspector');
 
     QUnit.test('documents inspector with no document selected', function (assert) {
-        assert.expect(2);
+        assert.expect(3);
 
         var kanban = createView({
             View: DocumentsKanbanView,
@@ -589,11 +648,12 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<field name="datas_fname"/>' +
+                        '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
         });
-
+        assert.strictEqual(kanban.$('.o_documents_inspector_preview').text().replace(/\s+/g, ''),
+            '_F1-test-description_', "should display the current folder description");
         assert.strictEqual(kanban.$('.o_documents_inspector_info .o_inspector_value:first').text().trim(),
             '5', "should display the correct number of documents");
         assert.strictEqual(kanban.$('.o_documents_inspector_info .o_inspector_value:nth(1)').text().trim(),
@@ -611,7 +671,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<field name="datas_fname"/>' +
+                        '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
         });
@@ -646,7 +706,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<field name="datas_fname"/>' +
+                        '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
         });
@@ -675,7 +735,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban limit="2"><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<field name="datas_fname"/>' +
+                        '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
         });
@@ -713,7 +773,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<field name="datas_fname"/>' +
+                        '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
         });
@@ -755,7 +815,7 @@ QUnit.module('DocumentsKanbanView', {
             domain: [['active', '=', false]],
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<field name="datas_fname"/>' +
+                        '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
             mockRPC: function (route, args) {
@@ -794,7 +854,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<field name="datas_fname"/>' +
+                        '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
             mockRPC: function (route, args) {
@@ -838,7 +898,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<field name="datas_fname"/>' +
+                        '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
             mockRPC: function (route, args) {
@@ -873,7 +933,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<field name="datas_fname"/>' +
+                        '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
             session: {
@@ -914,7 +974,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<field name="datas_fname"/>' +
+                        '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
             session: {
@@ -961,15 +1021,15 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<field name="datas_fname"/>' +
+                        '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
         });
 
         kanban.$('.o_kanban_record:contains(yop)').click();
 
-        assert.strictEqual(kanban.$('.o_field_widget[name=datas_fname]').val(),
-            'yop', "should correctly display the filename");
+        assert.strictEqual(kanban.$('.o_field_widget[name=name]').val(),
+            'yop', "should correctly display the name");
         assert.strictEqual(kanban.$('.o_field_widget[name=owner_id] input').val(),
             'Hazard', "should correctly display the owner");
         assert.strictEqual(kanban.$('.o_field_widget[name=partner_id] input').val(),
@@ -997,7 +1057,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<field name="datas_fname"/>' +
+                        '<field name="name"/>' +
                         '<field name="owner_id"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
@@ -1047,7 +1107,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<field name="datas_fname"/>' +
+                        '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
         });
@@ -1094,7 +1154,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<field name="datas_fname"/>' +
+                        '<field name="name"/>' +
                         '<field name="owner_id"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
@@ -1158,7 +1218,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<field name="datas_fname"/>' +
+                        '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
             mockRPC: function (route, args) {
@@ -1166,7 +1226,7 @@ QUnit.module('DocumentsKanbanView', {
                 if (args.method === 'write') {
                     assert.step('write');
                     nbWrite++;
-                    assert.deepEqual(args.args, [[1], {datas_fname: value}],
+                    assert.deepEqual(args.args, [[1], {name: value}],
                         "should correctly save the changes");
                     if (nbWrite === 1) {
                         return def.then(_.constant(result));
@@ -1182,7 +1242,7 @@ QUnit.module('DocumentsKanbanView', {
 
         // change filename value of selected record (but block RPC)
         value = 'temp name';
-        kanban.$('.o_field_char[name=datas_fname]').val(value).trigger('input');
+        kanban.$('.o_field_char[name=name]').val(value).trigger('input');
 
         assert.strictEqual(kanban.$('.o_kanban_record:first').text(), 'yop',
             "should still display the old filename");
@@ -1190,7 +1250,7 @@ QUnit.module('DocumentsKanbanView', {
         // change filename value again (this RPC isn't blocked but must wait for
         // the first one to return)
         value = 'new name';
-        kanban.$('.o_field_char[name=datas_fname]').val(value).trigger('input');
+        kanban.$('.o_field_char[name=name]').val(value).trigger('input');
 
         assert.strictEqual(kanban.$('.o_kanban_record:first').text(), 'yop',
             "should still display the old filename");
@@ -1200,7 +1260,7 @@ QUnit.module('DocumentsKanbanView', {
 
         assert.strictEqual(kanban.$('.o_kanban_record:first').text(), 'new name',
             "should still display the new filename in the record");
-        assert.strictEqual(kanban.$('.o_field_char[name=datas_fname]').val(), 'new name',
+        assert.strictEqual(kanban.$('.o_field_char[name=name]').val(), 'new name',
             "should still display the new filename in the documents inspector");
 
         assert.verifySteps(['write', 'resolve', 'write']);
@@ -1217,7 +1277,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<field name="datas_fname"/>' +
+                        '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
             intercepts: {
@@ -1247,7 +1307,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<field name="datas_fname"/>' +
+                        '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
         });
@@ -1278,7 +1338,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<field name="datas_fname"/>' +
+                        '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
         });
@@ -1302,7 +1362,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<field name="datas_fname"/>' +
+                        '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
             mockRPC: function (route, args) {
@@ -1341,7 +1401,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<field name="datas_fname"/>' +
+                        '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
             mockRPC: function (route, args) {
@@ -1387,7 +1447,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<field name="datas_fname"/>' +
+                        '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
         });
@@ -1418,7 +1478,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<field name="datas_fname"/>' +
+                        '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
         });
@@ -1447,7 +1507,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<field name="datas_fname"/>' +
+                        '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
         });
@@ -1461,7 +1521,7 @@ QUnit.module('DocumentsKanbanView', {
     });
 
     QUnit.test('document inspector: display rules of selected documents', function (assert) {
-        assert.expect(5);
+        assert.expect(6);
 
         var kanban = createView({
             View: DocumentsKanbanView,
@@ -1469,7 +1529,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<field name="datas_fname"/>' +
+                        '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
         });
@@ -1489,6 +1549,8 @@ QUnit.module('DocumentsKanbanView', {
             "should display the button for the common rule");
         assert.strictEqual(kanban.$('.o_inspector_rule').text().trim(), 'Convincing AI not to turn evil',
             "should correctly display the content of the rule");
+        assert.strictEqual(kanban.$('.o_inspector_rule span').attr('title'), "Racing for AI Supremacy",
+            "should correctly display the tooltip of the rule");
 
         kanban.destroy();
     });
@@ -1502,7 +1564,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<field name="datas_fname"/>' +
+                        '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
             mockRPC: function (route, args) {
@@ -1539,7 +1601,7 @@ QUnit.module('DocumentsKanbanView', {
             services: mailTestUtils.getMailServices(),
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<field name="datas_fname"/>' +
+                        '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
         });
@@ -1589,7 +1651,7 @@ QUnit.module('DocumentsKanbanView', {
             services: mailTestUtils.getMailServices(),
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<field name="datas_fname"/>' +
+                        '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
         });
@@ -1617,7 +1679,7 @@ QUnit.module('DocumentsKanbanView', {
             services: mailTestUtils.getMailServices(),
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<field name="datas_fname"/>' +
+                        '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
             mockRPC: function (route) {
@@ -1647,6 +1709,128 @@ QUnit.module('DocumentsKanbanView', {
         kanban.destroy();
     });
 
+    QUnit.test('document chatter: render the activity button', function (assert) {
+        assert.expect(3);
+
+        var kanban = createView({
+            View: DocumentsKanbanView,
+            model: 'ir.attachment',
+            data: this.data,
+            services: mailTestUtils.getMailServices(),
+            arch: '<kanban><templates><t t-name="kanban-box">' +
+                    '<div>' +
+                        '<field name="name"/>' +
+                    '</div>' +
+                '</t></templates></kanban>',
+            intercepts: {
+                do_action: function (ev) {
+                    assert.deepEqual(ev.data.action, {
+                        context: {
+                            default_res_id: 1,
+                            default_res_model: 'ir.attachment'
+                        },
+                        res_id: false,
+                        res_model: 'mail.activity',
+                        target: 'new',
+                        type: 'ir.actions.act_window',
+                        view_mode: 'form',
+                        view_type: 'form',
+                        views: [[false, 'form']]
+                        },
+                        "the activity button should trigger do_action with the correct args"
+                    );
+                },
+            },
+        });
+
+        kanban.$('.o_kanban_record:contains(yop)').click();
+        kanban.$('.o_documents_inspector .o_inspector_open_chatter').click();
+
+        assert.strictEqual(kanban.$('.o_document_chatter .o_chatter').length, 1,
+            "should display the chatter");
+
+        var $activityButton = kanban.$('.o_document_chatter .o_chatter_button_schedule_activity');
+        assert.strictEqual($activityButton.length, 1,
+            "should display the activity button");
+        $activityButton.click();
+
+        kanban.destroy();
+    });
+
+    QUnit.test('document chatter: render the activity button', function (assert) {
+        assert.expect(8);
+
+        this.data['mail.activity'].records = [{
+            id: 1,
+            display_name: "An activity",
+            date_deadline: moment().format("YYYY-MM-DD"),
+            state: "today",
+            user_id: 2,
+            create_user_id: 2,
+            activity_type_id: 1,
+        }];
+        this.data.partner = {
+            fields: {
+                display_name: { string: "Displayed name", type: "char" },
+                message_ids: {
+                    string: "messages",
+                    type: "one2many",
+                    relation: 'mail.message',
+                    relation_field: "res_id",
+                },
+                activity_ids: {
+                    string: 'Activities',
+                    type: 'one2many',
+                    relation: 'mail.activity',
+                    relation_field: 'res_id',
+                },
+            },
+            records: [{
+                id: 2,
+                display_name: "first partner",
+                message_ids: [],
+                activity_ids: [],
+            }]
+        };
+        var kanban = createView({
+            View: DocumentsKanbanView,
+            model: 'ir.attachment',
+            data: this.data,
+            services: mailTestUtils.getMailServices(),
+            arch: '<kanban><templates><t t-name="kanban-box">' +
+                    '<div>' +
+                        '<field name="name"/>' +
+                    '</div>' +
+                '</t></templates></kanban>',
+        });
+
+        kanban.$('.o_kanban_record:contains(yop)').click();
+        kanban.$('.o_documents_inspector .o_inspector_open_chatter').click();
+
+        assert.strictEqual(kanban.$('.o_document_chatter .o_chatter').length, 1,
+            "should display the chatter");
+
+        assert.strictEqual(kanban.$('.o_mail_activity').length, 1,
+            "should display the activity area");
+        assert.strictEqual(kanban.$('#o_chatter_activity_info_1').length, 1,
+            "should display an activity");
+        assert.strictEqual(kanban.$('.o_activity_link:contains(Mark Done)').length, 1,
+            "should display the activity mark done button");
+        assert.strictEqual(kanban.$('.o_edit_activity').length, 1,
+            "should display the activity Edit button");
+        assert.strictEqual(kanban.$('.o_unlink_activity').length, 1,
+            "should display the activity Cancel button");
+
+        kanban.$('.o_kanban_record:contains(blip)').click();
+
+        assert.strictEqual(kanban.$('.o_document_chatter .o_chatter').length, 1,
+            "should display the chatter");
+
+        assert.strictEqual(kanban.$('#o_chatter_activity_info_1').length, 0,
+            "should not display an activity");
+        kanban.destroy();
+    });
+
     QUnit.test('document chatter: can write messages in the chatter', function (assert) {
         assert.expect(7);
 
@@ -1657,7 +1841,7 @@ QUnit.module('DocumentsKanbanView', {
             services: mailTestUtils.getMailServices(),
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<field name="datas_fname"/>' +
+                        '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
             mockRPC: function (route, args) {
@@ -1721,7 +1905,7 @@ QUnit.module('DocumentsKanbanView', {
             services: mailTestUtils.getMailServices(),
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<field name="datas_fname"/>' +
+                        '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
         });
@@ -1760,7 +1944,7 @@ QUnit.module('DocumentsKanbanView', {
             services: mailTestUtils.getMailServices(),
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<field name="datas_fname"/>' +
+                        '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
         });
@@ -1793,7 +1977,7 @@ QUnit.module('DocumentsKanbanView', {
             services: mailTestUtils.getMailServices(),
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<field name="datas_fname"/>' +
+                        '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
         });
@@ -1824,7 +2008,7 @@ QUnit.module('DocumentsKanbanView', {
             services: mailTestUtils.getMailServices(),
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<field name="datas_fname"/>' +
+                        '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
         });
@@ -1850,7 +2034,7 @@ QUnit.module('DocumentsKanbanView', {
     QUnit.module('DocumentsSelector');
 
     QUnit.test('document selector: basic rendering', function (assert) {
-        assert.expect(15);
+        assert.expect(19);
 
         var kanban = createView({
             View: DocumentsKanbanView,
@@ -1858,7 +2042,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<field name="datas_fname"/>' +
+                        '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
         });
@@ -1869,8 +2053,8 @@ QUnit.module('DocumentsKanbanView', {
             "should have 3 folders");
         assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_folder:visible').length, 2,
             "two of them should be visible");
-        assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_folder .active').text().trim(),
-            'Folder1', "'Folder1' should be active by default");
+        assert.strictEqual(kanban.$('.o_documents_inspector_preview').text().replace(/\s+/g, ''),
+            '_F1-test-description_', "should display the first folder");
 
         assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_tags .o_documents_selector_header').text().trim(),
             'Tags', "should have a 'tags' section");
@@ -1879,16 +2063,24 @@ QUnit.module('DocumentsKanbanView', {
 
         assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_facet:first > header').text().trim(),
             'Priority', "the first facet should be 'Priority'");
+        assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_facet:first > header').attr('title').trim(),
+            'A priority tooltip', "the first facet have a tooltip");
         assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_facet:last > header').text().trim(),
             'Status', "the last facet should be 'Status'");
+        assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_facet:last > header').attr('title').trim(),
+            'A Status tooltip', "the last facet should be 'Status'");
 
         assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_facet:last .o_documents_selector_tag').length, 2,
             "should have 2 tags in the last facet");
 
         assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_facet:last .o_documents_selector_tag:first header').text().trim(),
             'Draft', "the first tag in the last facet should be 'Draft'");
+        assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_facet:last .o_documents_selector_tag:first header').attr('title').trim(),
+            'A Status tooltip', "the first tag in the last facet have a tooltip");
         assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_facet:last .o_documents_selector_tag:last header').text().trim(),
             'New', "the last tag in the last facet should be 'New'");
+        assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_facet:last .o_documents_selector_tag:last header').attr('title').trim(),
+            'A Status tooltip', "the last tag in the last facet have a tooltip");
 
         assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_models .o_documents_selector_header').text().trim(),
             'Attached To', "should have an 'attached to' section");
@@ -1917,7 +2109,7 @@ QUnit.module('DocumentsKanbanView', {
             },
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<field name="datas_fname"/>' +
+                        '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
         });
@@ -1943,7 +2135,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<field name="datas_fname"/>' +
+                        '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
             domain: [['res_model', '=', false]],
@@ -1968,7 +2160,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<field name="datas_fname"/>' +
+                        '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
         });
@@ -2015,7 +2207,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<field name="datas_fname"/>' +
+                        '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
         });
@@ -2062,7 +2254,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<field name="datas_fname"/>' +
+                        '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
         });
@@ -2116,7 +2308,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<field name="datas_fname"/>' +
+                        '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
             mockRPC: function (route, args) {
@@ -2148,6 +2340,49 @@ QUnit.module('DocumentsKanbanView', {
         kanban.destroy();
     });
 
+    QUnit.test('document selector: should keep its selection when adding a tag', function (assert) {
+        assert.expect(5);
+        var done = assert.async();
+
+        var kanban = createView({
+            View: DocumentsKanbanView,
+            model: 'ir.attachment',
+            data: this.data,
+            arch: '<kanban><templates><t t-name="kanban-box">' +
+                    '<div>' +
+                        '<field name="name"/>' +
+                    '</div>' +
+                '</t></templates></kanban>',
+        });
+
+        // filter on records having tag Draft
+        kanban.$('.o_documents_selector_tag:contains(Draft) input').click();
+
+        assert.ok(kanban.$('.o_documents_selector_tag:contains(Draft) input').is(':checked'),
+            "tag selector should be checked");
+
+        assert.strictEqual(kanban.$('.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length,
+            1, "should have records in the renderer");
+
+        kanban.$('.o_kanban_record:first .o_record_selector').click();
+
+        kanban.$('.o_inspector_tag_add').val('stress').trigger('keydown');
+        concurrency.delay(0).then(function () {
+            var $dropdown = kanban.$('.o_inspector_tag_add').autocomplete('widget');
+            assert.strictEqual($dropdown.find('li').length, 1,
+                "should have an entry in the autocomplete drodown");
+            $dropdown.find('li > a').click();
+
+            assert.ok(kanban.$('.o_documents_selector_tag:contains(Draft) input').is(':checked'),
+                        "tag selector should still be checked");
+            assert.strictEqual(kanban.$('.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length,
+            1, "should still have the same records in the renderer");
+
+            kanban.destroy();
+            done();
+        });
+    });
+
     QUnit.test('document selector: can (un)fold parent folders', function (assert) {
         assert.expect(7);
 
@@ -2157,7 +2392,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<field name="datas_fname"/>' +
+                        '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
         });
@@ -2195,7 +2430,7 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
-                        '<field name="datas_fname"/>' +
+                        '<field name="name"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
         });

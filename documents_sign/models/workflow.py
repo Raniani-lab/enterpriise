@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from odoo import models, fields, api, exceptions
 
 
@@ -17,20 +18,23 @@ class WorkflowActionRuleSign(models.Model):
                     'name': attachment.datas_fname[:attachment.datas_fname.rfind('.')],
                     'attachment_id': attachment.id,
                 }
-                for tag_action in self.tag_action_ids:
-                    tag_action.execute_action(new_obj)
                 if self.folder_id:
                     create_values['folder_id'] = self.folder_id.id
                 elif self.domain_folder_id:
                     create_values['folder_id'] = self.domain_folder_id.id
+                if attachment.tag_ids:
+                    create_values['documents_tag_ids'] = [(6, 0, attachment.tag_ids.ids)]
+
                 new_obj = self.env[self.create_model].create(create_values)
 
                 this_attachment = attachment
                 if attachment.res_model or attachment.res_id:
                     this_attachment = attachment.copy()
 
-                this_attachment.res_model = self.create_model
-                this_attachment.res_id = new_obj.id
+                this_attachment.write({'res_model': self.create_model,
+                                       'res_id': new_obj.id,
+                                       'folder_id': this_attachment.folder_id.id})
+
                 template_ids.append(new_obj.id)
 
             action = {

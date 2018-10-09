@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
 "Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: Russian (https://www.transifex.com/odoo/teams/41243/ru/)\n"
 "MIME-Version: 1.0\n"
@@ -19,22 +19,22 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
 
 #. module: mrp_mps
-#: model:ir.ui.view,arch_db:mrp_mps.report_inventory
+#: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
 msgid "&lt;&amp;hellip;&lt;"
 msgstr "&lt;&amp;hellip;&lt;"
 
 #. module: mrp_mps
-#: model:ir.ui.view,arch_db:mrp_mps.report_inventory
+#: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
 msgid "<span class=\"fa fa-fw\">-</span> Demand Forecast"
 msgstr "<span class=\"fa fa-fw\">-</span> Прогноз спроса"
 
 #. module: mrp_mps
-#: model:ir.ui.view,arch_db:mrp_mps.report_inventory
+#: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
 msgid "<span class=\"fa fa-fw\">-</span> Indirect Demand"
 msgstr "<span class=\"fa fa-fw\">-</span> Косвенный спрос"
 
 #. module: mrp_mps
-#: model:ir.ui.view,arch_db:mrp_mps.report_inventory
+#: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
 msgid ""
 "<span class=\"fa fa-fw\">=</span> \n"
 "                                    Forecasted Inventory"
@@ -43,7 +43,7 @@ msgstr ""
 "                                    Прогнозируемый ресурс"
 
 #. module: mrp_mps
-#: model:ir.ui.view,arch_db:mrp_mps.report_inventory
+#: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
 msgid "<span class=\"text-muted\"> by</span>"
 msgstr "<span class=\"text-muted\"> по</span>"
 
@@ -53,20 +53,20 @@ msgid "Active in MPS"
 msgstr ""
 
 #. module: mrp_mps
-#: model:ir.ui.view,arch_db:mrp_mps.mrp_mps_report_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_mps.mrp_mps_report_view_form
 msgid "Add Product"
 msgstr "Добавить продукт"
 
 #. module: mrp_mps
 #. openerp-web
-#: code:addons/mrp_mps/static/src/js/mrp_mps_report_widget.js:184
-#: model:ir.ui.view,arch_db:mrp_mps.report_inventory
+#: code:addons/mrp_mps/static/src/js/mrp_mps_report_widget.js:185
+#: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
 #, python-format
 msgid "Add a Product"
 msgstr "Добавить продукт"
 
 #. module: mrp_mps
-#: model:ir.ui.view,arch_db:mrp_mps.report_inventory
+#: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
 msgid "Apply"
 msgstr "Применить "
 
@@ -81,8 +81,8 @@ msgid "Automatic"
 msgstr "Автоматически"
 
 #. module: mrp_mps
-#: model:ir.ui.view,arch_db:mrp_mps.mrp_mps_report_view_form
-#: model:ir.ui.view,arch_db:mrp_mps.product_product_view_form_mps
+#: model_terms:ir.ui.view,arch_db:mrp_mps.mrp_mps_report_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_mps.product_product_view_form_mps
 msgid "Cancel"
 msgstr "Отменить"
 
@@ -95,6 +95,11 @@ msgstr "Компании"
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_mps_report__company_id
 msgid "Company"
 msgstr "Компания"
+
+#. module: mrp_mps
+#: model:ir.model,name:mrp_mps.model_res_config_settings
+msgid "Config Settings"
+msgstr ""
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_mps_report__create_uid
@@ -128,9 +133,8 @@ msgstr "Дата"
 
 #. module: mrp_mps
 #: model:ir.model.fields,help:mrp_mps.field_sale_forecast__product_uom_id
-msgid "Default Unit of Measure used for all stock operation."
+msgid "Default unit of measure used for all stock operations."
 msgstr ""
-"Единица измерения по умолчанию, используемая для всех складских операций."
 
 #. module: mrp_mps
 #: model:ir.model.fields,help:mrp_mps.field_res_company__manufacturing_period
@@ -175,8 +179,8 @@ msgstr "Прогноз инвентаризации"
 
 #. module: mrp_mps
 #. openerp-web
-#: code:addons/mrp_mps/static/src/js/mrp_mps_report_widget.js:211
-#: model:ir.ui.view,arch_db:mrp_mps.product_product_view_form_mps
+#: code:addons/mrp_mps/static/src/js/mrp_mps_report_widget.js:212
+#: model_terms:ir.ui.view,arch_db:mrp_mps.product_product_view_form_mps
 #, python-format
 msgid "Forecast Product"
 msgstr "Прогноз продукта"
@@ -211,6 +215,11 @@ msgid "Indirect Quantity"
 msgstr "Косвенное количество"
 
 #. module: mrp_mps
+#: model:ir.model,name:mrp_mps.model_sale_forecast_indirect
+msgid "Indirect Sales Forecast"
+msgstr ""
+
+#. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_mps_report____last_update
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast____last_update
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast_indirect____last_update
@@ -237,7 +246,7 @@ msgid "Latest Apply"
 msgstr "Последние изменения"
 
 #. module: mrp_mps
-#: model:ir.ui.view,arch_db:mrp_mps.report_inventory
+#: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
 msgid "Launch Procurement"
 msgstr "Запуск поставки"
 
@@ -254,7 +263,12 @@ msgid "MPS"
 msgstr ""
 
 #. module: mrp_mps
-#: model:ir.ui.view,arch_db:mrp_mps.report_inventory
+#: model:ir.model,name:mrp_mps.model_mrp_mps_report
+msgid "MPS Report"
+msgstr ""
+
+#. module: mrp_mps
+#: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
 msgid "MPS in Main Warehouse"
 msgstr "MPS в главном складе"
 
@@ -327,7 +341,7 @@ msgstr "Группа поставки"
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_mps_report__product_id
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast__product_id
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast_indirect__product_id
-#: model:ir.ui.view,arch_db:mrp_mps.product_product_view_form_mps
+#: model_terms:ir.ui.view,arch_db:mrp_mps.product_product_view_form_mps
 msgid "Product"
 msgstr "Продукт"
 
@@ -350,14 +364,19 @@ msgid "Rows"
 msgstr "Строки"
 
 #. module: mrp_mps
-#: model:ir.ui.view,arch_db:mrp_mps.product_product_view_form_mps
+#: model:ir.model,name:mrp_mps.model_sale_forecast
+msgid "Sales Forecast"
+msgstr ""
+
+#. module: mrp_mps
+#: model_terms:ir.ui.view,arch_db:mrp_mps.product_product_view_form_mps
 msgid "Save"
 msgstr "Сохранить"
 
 #. module: mrp_mps
 #. openerp-web
 #: code:addons/mrp_mps/static/src/xml/mps_backend.xml:30
-#: model:ir.ui.view,arch_db:mrp_mps.report_inventory
+#: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
 #, python-format
 msgid "Starting Inventory"
 msgstr "Начало инвентаризации"
@@ -373,7 +392,7 @@ msgid "Stock Rule"
 msgstr ""
 
 #. module: mrp_mps
-#: model:ir.ui.view,arch_db:mrp_mps.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_mps.res_config_settings_view_form
 msgid "Time Range"
 msgstr ""
 
@@ -385,7 +404,7 @@ msgid "To Produce"
 msgstr "К производству"
 
 #. module: mrp_mps
-#: code:addons/mrp_mps/models/mrp_mps_report.py:128
+#: code:addons/mrp_mps/models/mrp_mps_report.py:129
 #, python-format
 msgid "To Receive / To Supply / Produce"
 msgstr ""
@@ -396,7 +415,7 @@ msgid "To Supply"
 msgstr "Поставлять"
 
 #. module: mrp_mps
-#: code:addons/mrp_mps/models/mrp_mps_report.py:155
+#: code:addons/mrp_mps/models/mrp_mps_report.py:156
 #, python-format
 msgid "Week %s"
 msgstr ""
@@ -413,43 +432,23 @@ msgstr "Еженедельно"
 
 #. module: mrp_mps
 #. openerp-web
-#: code:addons/mrp_mps/static/src/js/mrp_mps_report_widget.js:82
-#: code:addons/mrp_mps/static/src/js/mrp_mps_report_widget.js:227
+#: code:addons/mrp_mps/static/src/js/mrp_mps_report_widget.js:83
+#: code:addons/mrp_mps/static/src/js/mrp_mps_report_widget.js:228
 #, python-format
 msgid "Wrong value entered!"
 msgstr "Неправильная величина!"
 
 #. module: mrp_mps
-#: model:ir.ui.view,arch_db:mrp_mps.report_inventory
+#: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
 msgid "double click in order to empty"
 msgstr "Дважды нажмите, чтобы очистить"
 
 #. module: mrp_mps
-#: model:ir.model,name:mrp_mps.model_mrp_mps_report
-msgid "mrp.mps.report"
-msgstr "mrp.mps.report"
-
-#. module: mrp_mps
-#: model:ir.model,name:mrp_mps.model_res_config_settings
-msgid "res.config.settings"
-msgstr "res.config.settings"
-
-#. module: mrp_mps
-#: model:ir.model,name:mrp_mps.model_sale_forecast
-msgid "sale.forecast"
-msgstr "sale.forecast"
-
-#. module: mrp_mps
-#: model:ir.model,name:mrp_mps.model_sale_forecast_indirect
-msgid "sale.forecast.indirect"
-msgstr "sale.forecast.indirect"
-
-#. module: mrp_mps
-#: model:ir.ui.view,arch_db:mrp_mps.report_inventory
+#: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
 msgid "set min-max"
 msgstr "установить мин-макс"
 
 #. module: mrp_mps
-#: model:ir.ui.view,arch_db:mrp_mps.report_inventory
+#: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
 msgid "set target"
 msgstr "установить цель"

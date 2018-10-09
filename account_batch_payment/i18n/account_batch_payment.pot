@@ -6,14 +6,24 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-18 10:05+0000\n"
-"PO-Revision-Date: 2018-09-18 10:05+0000\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: account_batch_payment
+#: model:ir.model,name:account_batch_payment.model_account_batch_download_wizard
+msgid "Account Batch download wizard"
+msgstr ""
+
+#. module: account_batch_payment
+#: model:ir.model,name:account_batch_payment.model_account_reconciliation_widget
+msgid "Account Reconciliation widget"
+msgstr ""
 
 #. module: account_batch_payment
 #: code:addons/account_batch_payment/models/account_batch_payment.py:75
@@ -63,6 +73,11 @@ msgstr ""
 #: model:account.payment.method,name:account_batch_payment.account_payment_method_batch_deposit
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.account_journal_dashboard_kanban_view_inherited
 msgid "Batch Deposit"
+msgstr ""
+
+#. module: account_batch_payment
+#: model:ir.model,name:account_batch_payment.model_report_account_batch_payment_print_batch_payment
+msgid "Batch Deposit Report"
 msgstr ""
 
 #. module: account_batch_payment
@@ -424,16 +439,6 @@ msgid "Whether or not this batch payment should display the 'Generate File' butt
 msgstr ""
 
 #. module: account_batch_payment
-#: model:ir.model,name:account_batch_payment.model_account_batch_download_wizard
-msgid "account.batch.download.wizard"
-msgstr ""
-
-#. module: account_batch_payment
-#: model:ir.model,name:account_batch_payment.model_account_reconciliation_widget
-msgid "account.reconciliation.widget"
-msgstr ""
-
-#. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
 msgid "auto ..."
 msgstr ""
@@ -441,10 +446,5 @@ msgstr ""
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
 msgid "re-Generate Export File"
-msgstr ""
-
-#. module: account_batch_payment
-#: model:ir.model,name:account_batch_payment.model_report_account_batch_payment_print_batch_payment
-msgid "report.account_batch_payment.print_batch_payment"
 msgstr ""
 

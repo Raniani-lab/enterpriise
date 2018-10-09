@@ -8,7 +8,7 @@ from odoo import api, fields, models, _
 
 class TestType(models.Model):
     _name = "quality.point.test_type"
-    _description = "Test Type"
+    _description = "Quality Control Test Type"
 
     # Used instead of selection field in order to hide a choice depending on the view.
     name = fields.Char('Name', required=True)
@@ -17,7 +17,7 @@ class TestType(models.Model):
 
 class QualityPoint(models.Model):
     _name = "quality.point"
-    _description = "Quality Point"
+    _description = "Quality Control Point"
     _inherit = ['mail.thread']
     _order = "sequence, id"
 
@@ -111,7 +111,7 @@ class QualityAlertTeam(models.Model):
 
 class QualityReason(models.Model):
     _name = "quality.reason"
-    _description = "Quality Reason"
+    _description = "Root Cause for Quality Failure"
 
     name = fields.Char('Name', required=True, translate=True)
 

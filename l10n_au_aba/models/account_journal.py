@@ -16,7 +16,7 @@ class AccountJournal(models.Model):
     aba_self_balancing = fields.Boolean(string='Include Self Balancing Transaction', default=False)
 
     #Needed for "bank account" form, were the account number is directly set with a related field
-    aba_bsb = fields.Char(string='BSB', related='bank_account_id.aba_bsb', help="BSB code of the account associated to this journal")
+    aba_bsb = fields.Char(string='BSB', related='bank_account_id.aba_bsb', help="BSB code of the account associated to this journal", readonly=False)
 
     @api.constrains('aba_fic')
     def _validate_aba_fic(self):

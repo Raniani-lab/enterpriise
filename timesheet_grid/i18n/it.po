@@ -11,13 +11,14 @@
 # Paolo Valier, 2018
 # Paolo Caruccio <paolo.caruccio66@gmail.com>, 2018
 # Manuela Feliciani <mfeliciani@alice.it>, 2018
+# Léonie Bouchat <lbo@odoo.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
-"Last-Translator: Manuela Feliciani <mfeliciani@alice.it>, 2018\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"Last-Translator: Léonie Bouchat <lbo@odoo.com>, 2018\n"
 "Language-Team: Italian (https://www.transifex.com/odoo/teams/41243/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -110,6 +111,87 @@ msgid ""
 "</table>\n"
 "            "
 msgstr ""
+"<?xml version=\"1.0\"?>\n"
+"<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"padding-top: 16px; background-color: #F1F1F1; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;\"><tr><td align=\"center\">\n"
+"<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"padding: 16px; background-color: white; color: #454748; border-collapse:separate;\">\n"
+"<tbody>\n"
+"    <!-- TITOLO -->\n"
+"    <tr>\n"
+"        <td align=\"center\" style=\"min-width: 590px;\">\n"
+"            <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;\">\n"
+"                <tr><td valign=\"middle\">\n"
+"                    <span style=\"font-size: 10px;\">I tuoi timesheet</span><br/>\n"
+"                    <span style=\"font-size: 20px; font-weight: bold;\">\n"
+"                        ${object.name}\n"
+"                    </span>\n"
+"                </td><td valign=\"middle\" align=\"right\">\n"
+"                    <img src=\"/logo.png?company=${object.company_id.id}\" style=\"padding: 0px; margin: 0px; height: auto; width: 80px;\" alt=\"${object.company_id.name}\"/>\n"
+"                </td></tr>\n"
+"                <tr><td colspan=\"2\" style=\"text-align:center;\">\n"
+"                <hr width=\"100%\" style=\"background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;\"/>\n"
+"                </td></tr>\n"
+"            </table>\n"
+"        </td>\n"
+"    </tr>\n"
+"    <!-- CONTENUTO -->\n"
+"    <tr>\n"
+"        <td align=\"center\" style=\"min-width: 590px;\">\n"
+"            <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;\">\n"
+"                <tr><td valign=\"top\" style=\"font-size: 13px;\">\n"
+"                    <div>\n"
+"                        Buongiorno ${object.name},<br/><br/>\n"
+"                        Questo è un promemoria per approvare l'orario del tuo team per il periodo seguente: ${ctx.get('date_start')} - ${ctx.get('date_stop')}.<br/>\n"
+"                        % if ctx.get('action_url'):\n"
+"                        <div style=\"margin: 16px 0px 16px 0px;\">\n"
+"                            <a href=\"${ctx.get('action_url')}\" style=\"background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size: 13px;\">Completa il tuo timesheet</a>\n"
+"                        </div>\n"
+"                        % endif\n"
+"                        <br/>Grazie,<br/>\n"
+"                        % if user.signature\n"
+"                            ${user.signature | safe}\n"
+"                        % endif\n"
+"                    </div>\n"
+"                </td></tr>\n"
+"                <tr><td style=\"text-align:center;\">\n"
+"                    <hr width=\"100%\" style=\"background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;\"/>\n"
+"                </td></tr>\n"
+"            </table>\n"
+"        </td>\n"
+"    </tr>\n"
+"    <!-- PIÈ DI PAGINA-->\n"
+"    <tr>\n"
+"        <td align=\"center\" style=\"min-width: 590px;\">\n"
+"            <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: white; font-size: 11px; padding: 0px 8px 0px 8px; border-collapse:separate;\">\n"
+"                <tr><td valign=\"middle\" align=\"left\">\n"
+"                    ${object.company_id.name}\n"
+"                </td></tr>\n"
+"                <tr><td valign=\"middle\" align=\"left\" style=\"opacity: 0.7;\">\n"
+"                    ${object.company_id.phone}\n"
+"                    % if object.company_id.email\n"
+"                        | <a href=\"'mailto:%s' % ${object.company_id.email}\" style=\"text-decoration:none; color: #454748;\">${object.company_id.email}</a>\n"
+"                    % endif\n"
+"                    % if object.company_id.website\n"
+"                        | <a href=\"'%s' % ${object.company_id.website}\" style=\"text-decoration:none; color: #454748;\">\n"
+"                        ${object.company_id.website}\n"
+"                    </a>\n"
+"                    % endif\n"
+"                </td></tr>\n"
+"            </table>\n"
+"        </td>\n"
+"    </tr>\n"
+"</tbody>\n"
+"</table>\n"
+"</td></tr>\n"
+"<!-- POWERED BY -->\n"
+"<tr><td align=\"center\" style=\"min-width: 590px;\">\n"
+"    <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: #F1F1F1; color: #454748; padding: 8px; border-collapse:separate;\">\n"
+"      <tr><td style=\"text-align: center; font-size: 13px;\">\n"
+"        Powered by <a target=\"_blank\" href=\"https://www.odoo.com?utm_source=db&amp;utm_medium=mail\" style=\"color: #875A7B;\">Odoo</a>\n"
+"      </td></tr>\n"
+"    </table>\n"
+"</td></tr>\n"
+"</table>\n"
+"            "
 
 #. module: timesheet_grid
 #: model:mail.template,body_html:timesheet_grid.mail_template_timesheet_reminder_user
@@ -196,27 +278,108 @@ msgid ""
 "</table>\n"
 "            "
 msgstr ""
+"<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"padding-top: 16px; background-color: #F1F1F1; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;\"><tr><td align=\"center\">\n"
+"<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"padding: 16px; background-color: white; color: #454748; border-collapse:separate;\">\n"
+"<tbody>\n"
+"    <!-- TITOLO -->\n"
+"    <tr>\n"
+"        <td align=\"center\" style=\"min-width: 590px;\">\n"
+"            <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;\">\n"
+"                <tr><td valign=\"middle\">\n"
+"                    <span style=\"font-size: 10px;\">I tuoi timesheet</span><br/>\n"
+"                    <span style=\"font-size: 20px; font-weight: bold;\">\n"
+"                        ${object.name}\n"
+"                    </span>\n"
+"                </td><td valign=\"middle\" align=\"right\">\n"
+"                    <img src=\"/logo.png?company=${object.company_id.id}\" style=\"padding: 0px; margin: 0px; height: auto; width: 80px;\" alt=\"${object.company_id.name}\"/>\n"
+"                </td></tr>\n"
+"                <tr><td colspan=\"2\" style=\"text-align:center;\">\n"
+"                  <hr width=\"100%\" style=\"background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;\"/>\n"
+"                </td></tr>\n"
+"            </table>\n"
+"        </td>\n"
+"    </tr>\n"
+"    <!-- CONTENUTO -->\n"
+"    <tr>\n"
+"        <td align=\"center\" style=\"min-width: 590px;\">\n"
+"            <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;\">\n"
+"                <tr><td valign=\"top\" style=\"font-size: 13px;\">\n"
+"                    <div>\n"
+"                        Buongiorno ${object.name},<br/><br/>\n"
+"                        Questo è un promemoria per registrare le tue ore per il periodo: ${ctx.get('date_start')} - ${ctx.get('date_stop')}.\n"
+"                        Per il momento, hai registrato solo ${ctx.get('timesheet_hours')} ore su le ${ctx.get('working_hours')} richieste.<br/>\n"
+"                        % if ctx.get('action_url'):\n"
+"                        <div style=\"margin: 16px 0px 16px 0px;\">\n"
+"                            <a href=\"${ctx.get('action_url')}\" style=\"background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size: 13px;\">Completa il tuo timesheet</a>\n"
+"                        </div>\n"
+"                        % endif\n"
+"                        <br/>Grazie,<br/>\n"
+"                        % if user.signature\n"
+"                            ${user.signature | safe}\n"
+"                        % endif\n"
+"                    </div>\n"
+"                </td></tr>\n"
+"                <tr><td style=\"text-align:center;\">\n"
+"                    <hr width=\"100%\" style=\"background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;\"/>\n"
+"                </td></tr>\n"
+"            </table>\n"
+"        </td>\n"
+"    </tr>\n"
+"    <!-- PIÈ DI PAGINA -->\n"
+"    <tr>\n"
+"        <td align=\"center\" style=\"min-width: 590px;\">\n"
+"            <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: white; font-size: 11px; padding: 0px 8px 0px 8px; border-collapse:separate;\">\n"
+"                <tr><td valign=\"middle\" align=\"left\">\n"
+"                    ${object.company_id.name}\n"
+"                </td></tr>\n"
+"                <tr><td valign=\"middle\" align=\"left\" style=\"opacity: 0.7;\">\n"
+"                    ${object.company_id.phone}\n"
+"                    % if object.company_id.email\n"
+"                        | <a href=\"'mailto:%s' % ${object.company_id.email}\" style=\"text-decoration:none; color: #454748;\">${object.company_id.email}</a>\n"
+"                    % endif\n"
+"                    % if object.company_id.website\n"
+"                        | <a href=\"'%s' % ${object.company_id.website}\" style=\"text-decoration:none; color: #454748;\">\n"
+"                            ${object.company_id.website}\n"
+"                        </a>\n"
+"                    % endif\n"
+"                </td></tr>\n"
+"            </table>\n"
+"        </td>\n"
+"    </tr>\n"
+"</tbody>\n"
+"</table>\n"
+"</td></tr>\n"
+"<!-- POWERED BY -->\n"
+"<tr><td align=\"center\" style=\"min-width: 590px;\">\n"
+"    <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: #F1F1F1; color: #454748; padding: 8px; border-collapse:separate;\">\n"
+"      <tr><td style=\"text-align: center; font-size: 13px;\">\n"
+"        Powered by <a target=\"_blank\" href=\"https://www.odoo.com?utm_source=db&amp;utm_medium=mail\" style=\"color: #875A7B;\">Odoo</a>\n"
+"      </td></tr>\n"
+"    </table>\n"
+"</td></tr>\n"
+"</table>\n"
+"            "
 
 #. module: timesheet_grid
-#: model:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
 msgid "Activate a periodical email reminder for timesheet managers"
-msgstr ""
+msgstr "Attiva una email di promemoria periodico per i gestori dei timesheet"
 
 #. module: timesheet_grid
-#: model:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
 msgid "Activate a periodical email reminder for timesheet users"
-msgstr ""
+msgstr "Attiva una email di promemoria periodico per gli utenti dei timesheet"
 
 #. module: timesheet_grid
-#: model:ir.ui.view,arch_db:timesheet_grid.timesheet_view_form
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_form
 msgid "Add a Task"
-msgstr ""
+msgstr "Aggiungi un compito"
 
 #. module: timesheet_grid
 #: code:addons/timesheet_grid/models/analytic.py:81
 #, python-format
 msgid "All selected timesheets are already validated"
-msgstr ""
+msgstr "Tutti i timesheet selezionati sono già stati convalidati"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__amount
@@ -229,7 +392,7 @@ msgid "Analytic Line"
 msgstr "Riga contabilità analitica"
 
 #. module: timesheet_grid
-#: model:ir.ui.view,arch_db:timesheet_grid.timesheet_validation_view_form
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_validation_view_form
 msgid "Cancel"
 msgstr "Annulla"
 
@@ -239,11 +402,18 @@ msgstr "Annulla"
 #, python-format
 msgid "Choose a <b>project name</b>. (e.g. name of a customer, or product)"
 msgstr ""
+"Scegli un <b>nome di progetto</b>. (ad esempio, il nome di un cliente o di "
+"un prodotto)"
 
 #. module: timesheet_grid
 #: model:ir.model,name:timesheet_grid.model_res_company
 msgid "Companies"
 msgstr "Aziende"
+
+#. module: timesheet_grid
+#: model:ir.model,name:timesheet_grid.model_res_config_settings
+msgid "Config Settings"
+msgstr "Impostazioni di configurazione"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_timesheet_validation__create_uid
@@ -260,17 +430,17 @@ msgstr "Creato il"
 #. module: timesheet_grid
 #: model:ir.model.fields,help:timesheet_grid.field_hr_employee__timesheet_validated
 msgid "Date until which the employee's timesheets have been validated"
-msgstr ""
+msgstr "Data fino alla quale sono stati convalidati i timesheet"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_config_settings__reminder_manager_delay
 msgid "Days to Remind Manager"
-msgstr ""
+msgstr "Giorni per ricordare al manager"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_config_settings__reminder_user_delay
 msgid "Days to Remind User"
-msgstr ""
+msgstr "Giorni per ricordare all'utente"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_timesheet_validation__display_name
@@ -287,21 +457,21 @@ msgstr "Impiegato"
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_company__timesheet_mail_employee_interval
 msgid "Employee Frequency"
-msgstr ""
+msgstr "Frequenza di promemoria ai dipendenti"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_company__timesheet_mail_employee_allow
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_config_settings__reminder_user_allow
 msgid "Employee Reminder"
-msgstr ""
+msgstr "Promemoria per i dipendenti"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_company__timesheet_mail_employee_delay
 msgid "Employee Reminder Days"
-msgstr ""
+msgstr "Giorni di promemoria per i dipendenti"
 
 #. module: timesheet_grid
-#: model:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
 msgid "Frequency"
 msgstr "Frequenza"
 
@@ -314,7 +484,7 @@ msgstr "ID"
 #. module: timesheet_grid
 #: model:ir.model.fields,help:timesheet_grid.field_res_config_settings__reminder_manager_allow
 msgid "If checked, send an email to all manager"
-msgstr ""
+msgstr "Se selezionato, invia una email a tutti i manager"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,help:timesheet_grid.field_res_company__timesheet_mail_manager_allow
@@ -322,6 +492,8 @@ msgid ""
 "If checked, send an email to all managers who have not validated their "
 "timesheet"
 msgstr ""
+"Se selezionato, invia una email a tutti i manager che non hanno registrato "
+"il loro timesheet."
 
 #. module: timesheet_grid
 #: model:ir.model.fields,help:timesheet_grid.field_res_company__timesheet_mail_employee_allow
@@ -329,6 +501,8 @@ msgstr ""
 msgid ""
 "If checked, send an email to all users who have not recorded their timesheet"
 msgstr ""
+"Se selezionato, invia una email a tutti gli utenti che non hanno registrato "
+"il loro timesheet."
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_timesheet_validation____last_update
@@ -362,43 +536,43 @@ msgstr "Ultima Settimana"
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_company__timesheet_mail_manager_allow
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_config_settings__reminder_manager_allow
 msgid "Manager Reminder"
-msgstr ""
+msgstr "Promemoria per i manager"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_company__timesheet_mail_manager_delay
 msgid "Manager Reminder Days"
-msgstr ""
+msgstr "Giorni di promemoria per i manager"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_company__timesheet_mail_manager_interval
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_config_settings__reminder_manager_interval
 msgid "Manager Reminder Frequency"
-msgstr ""
+msgstr "Frequenza di promemoria per i manager"
 
 #. module: timesheet_grid
-#: model:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_employee
-#: model:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_project
-#: model:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_task_readonly
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_employee
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_project
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_task_readonly
 msgid "Month"
 msgstr "Mese"
 
 #. module: timesheet_grid
-#: model:ir.ui.view,arch_db:timesheet_grid.timesheet_view_search
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_search
 msgid "My Team"
 msgstr "Mio team"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_company__timesheet_mail_employee_nextdate
 msgid "Next scheduled date for employee reminder"
-msgstr ""
+msgstr "Prossima data prevista per il promemoria per i dipendenti"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_company__timesheet_mail_manager_nextdate
 msgid "Next scheduled date for manager reminder"
-msgstr ""
+msgstr "Prossima data prevista per il promemoria per i manager"
 
 #. module: timesheet_grid
-#: model:ir.ui.view,arch_db:timesheet_grid.timesheet_view_search
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_search
 msgid "Non Validated"
 msgstr "Non Convalidato"
 
@@ -409,21 +583,23 @@ msgid ""
 "Only a Timesheets Manager is allowed to create an entry older than the "
 "validation limit."
 msgstr ""
+"Solo un gestore di timesheet è autorizzato a creare una voce più vecchia del"
+" termine di convalida. "
 
 #. module: timesheet_grid
 #: model:mail.template,subject:timesheet_grid.mail_template_timesheet_reminder_user
 msgid "Reminder to log your timesheets"
-msgstr ""
+msgstr "Promemoria per registrare i tuoi timesheet"
 
 #. module: timesheet_grid
 #: model:mail.template,subject:timesheet_grid.mail_template_timesheet_reminder_manager
 msgid "Reminder to validate your team timesheets"
-msgstr ""
+msgstr "Promemoria per convalidare i timesheet del tuo team"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,help:timesheet_grid.field_account_analytic_line__is_timesheet
 msgid "Set if this analytic line represents a line of timesheet."
-msgstr ""
+msgstr "Imposta se questa voce analitica rappresenta una voce del timesheet. "
 
 #. module: timesheet_grid
 #. openerp-web
@@ -433,6 +609,8 @@ msgid ""
 "Set the number of hours done on this task, for every day of the week. (e.g. "
 "1.5 or 1:30)"
 msgstr ""
+"Definisci il numero di ore lavorate su questo compito, per ogni giorno della"
+" settimana (esempio: 1,5 o 1:30)"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__task_id
@@ -443,10 +621,10 @@ msgstr "Attività"
 #: code:addons/timesheet_grid/models/analytic.py:76
 #, python-format
 msgid "There aren't any timesheet to validate"
-msgstr ""
+msgstr "Non c'è nessun timesheet da convalidare"
 
 #. module: timesheet_grid
-#: model:ir.ui.view,arch_db:timesheet_grid.timesheet_view_form
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_form
 msgid "Time Spent"
 msgstr "Tempo Impiegato"
 
@@ -455,12 +633,12 @@ msgstr "Tempo Impiegato"
 #: code:addons/timesheet_grid/models/analytic.py:152
 #, python-format
 msgid "Timesheet Adjustment"
-msgstr ""
+msgstr "Adeguamento del timesheet"
 
 #. module: timesheet_grid
-#: model:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
 msgid "Timesheet Control"
-msgstr ""
+msgstr "Controllo del timesheet"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__is_timesheet
@@ -470,6 +648,16 @@ msgstr "Riga del Timesheet"
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_hr_employee__timesheet_manager_id
 msgid "Timesheet Responsible"
+msgstr "Responsabile del timesheet"
+
+#. module: timesheet_grid
+#: model:ir.model,name:timesheet_grid.model_timesheet_validation
+msgid "Timesheet Validation"
+msgstr "Convalida del timesheet"
+
+#. module: timesheet_grid
+#: model:ir.model,name:timesheet_grid.model_timesheet_validation_line
+msgid "Timesheet Validation Line"
 msgstr ""
 
 #. module: timesheet_grid
@@ -477,26 +665,26 @@ msgstr ""
 #: model:ir.cron,cron_name:timesheet_grid.timesheet_reminder_user
 #: model:ir.cron,name:timesheet_grid.timesheet_reminder_user
 msgid "Timesheet: Employees Email Reminder"
-msgstr ""
+msgstr "Timesheet: email di promemoria per i dipendenti"
 
 #. module: timesheet_grid
 #: model:ir.actions.server,name:timesheet_grid.timesheet_reminder_manager_ir_actions_server
 #: model:ir.cron,cron_name:timesheet_grid.timesheet_reminder_manager
 #: model:ir.cron,name:timesheet_grid.timesheet_reminder_manager
 msgid "Timesheet: Managers Email Reminder"
-msgstr ""
+msgstr "Timesheet: email di promemoria per i manager"
 
 #. module: timesheet_grid
-#: model:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_employee
-#: model:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_project
-#: model:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_task_readonly
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_employee
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_project
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_task_readonly
 msgid "Timesheets"
 msgstr "Timesheet"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_hr_employee__timesheet_validated
 msgid "Timesheets Validation Date"
-msgstr ""
+msgstr "Data di convalida dei timesheet"
 
 #. module: timesheet_grid
 #. openerp-web
@@ -504,18 +692,20 @@ msgstr ""
 #, python-format
 msgid "Timesheets are done on tasks, click here to create your first one."
 msgstr ""
+"I timesheet sono registrati in base ai compiti, clicca qui per creare il tuo"
+" primo timesheet."
 
 #. module: timesheet_grid
 #: model:ir.ui.menu,name:timesheet_grid.menu_timesheet_grid_validate
 msgid "To Validate"
-msgstr ""
+msgstr "Da convalidare"
 
 #. module: timesheet_grid
 #. openerp-web
 #: code:addons/timesheet_grid/static/src/js/tour.js:13
 #, python-format
 msgid "Track the time spent on your projects. <i>It starts here.</i>"
-msgstr ""
+msgstr "Traccia il tempo dedicato ai tuoi progetti. <i>Inizia qui.</i>"
 
 #. module: timesheet_grid
 #. openerp-web
@@ -525,46 +715,50 @@ msgid ""
 "Use tasks to track the different type of activities. (e.g. Graphic Design, "
 "Programming, Project Management)"
 msgstr ""
+"Usa i compiti per tracciare i diversi tipi di attività. (Ad esempio, disegno"
+" grafico, programmazione, gestione progetti)"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_config_settings__reminder_user_interval
 msgid "User Reminder Frequency"
-msgstr ""
+msgstr "Frequenza di promemoria agli utenti"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,help:timesheet_grid.field_hr_employee__timesheet_manager_id
 msgid "User responsible of timesheet validation. Should be Timesheet Manager."
 msgstr ""
+"Utente responsabile della convalida dei timesheet. Deve essere il gestore "
+"dei timesheet."
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_timesheet_validation_line__validate
-#: model:ir.ui.view,arch_db:timesheet_grid.timesheet_validation_view_form
-#: model:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_employee_validation
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_validation_view_form
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_employee_validation
 msgid "Validate"
 msgstr "Valida"
 
 #. module: timesheet_grid
-#: model:ir.ui.view,arch_db:timesheet_grid.timesheet_validation_view_form
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_validation_view_form
 msgid "Validate Timesheets"
-msgstr ""
+msgstr "Convalida i timesheet"
 
 #. module: timesheet_grid
-#: model:ir.ui.view,arch_db:timesheet_grid.timesheet_validation_view_form
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_validation_view_form
 msgid "Validate the timesheets of the selected employees up to"
-msgstr ""
+msgstr "Convalida i timesheet dei dipendenti selezionati fino a"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,help:timesheet_grid.field_timesheet_validation_line__validate
 msgid "Validate this employee's timesheet up to the chosen date"
-msgstr ""
+msgstr "Convalida il timesheet di questo dipendente fino alla data scelta"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_timesheet_validation__validation_date
 msgid "Validate up to"
-msgstr ""
+msgstr "Convalida fino a "
 
 #. module: timesheet_grid
-#: model:ir.ui.view,arch_db:timesheet_grid.timesheet_view_search
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_search
 msgid "Validated"
 msgstr "Confermato"
 
@@ -572,12 +766,12 @@ msgstr "Confermato"
 #: model:ir.actions.act_window,name:timesheet_grid.action_timesheet_previous_month
 #: model:ir.actions.act_window,name:timesheet_grid.action_timesheet_previous_week
 msgid "Validated Timesheets"
-msgstr ""
+msgstr "Timesheet convalidati"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__validated
 msgid "Validated line"
-msgstr ""
+msgstr "Voce convalidata"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_timesheet_validation_line__validation_id
@@ -587,12 +781,12 @@ msgstr "Convalida"
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_timesheet_validation__validation_line_ids
 msgid "Validation Line"
-msgstr ""
+msgstr "Voce convalidata"
 
 #. module: timesheet_grid
-#: model:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_employee
-#: model:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_project
-#: model:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_task_readonly
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_employee
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_project
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_task_readonly
 msgid "Week"
 msgstr "Settimana"
 
@@ -600,7 +794,7 @@ msgstr "Settimana"
 #: selection:res.company,timesheet_mail_employee_interval:0
 #: selection:res.company,timesheet_mail_manager_interval:0
 msgid "after end of month"
-msgstr ""
+msgstr "dopo la fine del mese"
 
 #. module: timesheet_grid
 #: selection:res.company,timesheet_mail_employee_interval:0
@@ -609,21 +803,6 @@ msgid "after end of week"
 msgstr "dopo fine settimana"
 
 #. module: timesheet_grid
-#: model:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
 msgid "days"
 msgstr "giorni"
-
-#. module: timesheet_grid
-#: model:ir.model,name:timesheet_grid.model_res_config_settings
-msgid "res.config.settings"
-msgstr "res.config.settings"
-
-#. module: timesheet_grid
-#: model:ir.model,name:timesheet_grid.model_timesheet_validation
-msgid "timesheet.validation"
-msgstr "timesheet.validation"
-
-#. module: timesheet_grid
-#: model:ir.model,name:timesheet_grid.model_timesheet_validation_line
-msgid "timesheet.validation.line"
-msgstr ""

@@ -12,12 +12,19 @@ var NewFieldDialog = require('web_studio.NewFieldDialog');
 var _t = core._t;
 var _lt = core._lt;
 
-var AbstractNewComponent = Abstract.extend({
+var AbstractNewBuildingBlock = Abstract.extend({
     type: false,
     structure: false,
     label: false,
     fa: false,
     description: false,
+    addEmptyRowsTargets: true,
+    events: _.extend({}, Abstract.prototype.events, {
+        mouseenter: '_onHover',
+        focusin: '_onHover',
+        mouseleave: '_onStopHover',
+        focusout: '_onStopHover',
+    }),
     /**
      * @override
      */
@@ -35,6 +42,12 @@ var AbstractNewComponent = Abstract.extend({
                 .text(this.description)
             );
         }
+        var dragFunction = _.cancellableThrottleRemoveMeSoon(function (e) {
+                self.trigger_up('drag_component', {
+                    position: { pageX: e.pageX, pageY: e.pageY },
+                    widget: self,
+                });
+            }, 100);
         this.$el.draggable({
             helper: 'clone',
             opacity: 0.4,
@@ -49,15 +62,11 @@ var AbstractNewComponent = Abstract.extend({
                     widget: self
                 });
             },
-            drag: _.throttle(function (e) {
-                self.trigger_up('drag_component', {
-                    position: {pageX: e.pageX, pageY: e.pageY},
-                    widget: self,
-                });
-            }, 100),
+            drag: dragFunction,
             stop: function (e) {
+                dragFunction.cancel();
                 self.trigger_up('drop_component', {
-                    position: {pageX: e.pageX, pageY: e.pageY},
+                    position: { pageX: e.pageX, pageY: e.pageY },
                     widget: self,
                 });
             }
@@ -92,6 +101,31 @@ var AbstractNewComponent = Abstract.extend({
             },
         });
     },
+    //--------------------------------------------------------------------------
+    // Handlers
+    //--------------------------------------------------------------------------
+    /**
+     * @private
+     * @param {MouseEvent} e
+     */
+    _onHover: function (e) {
+        this.trigger_up('begin_preview_drag_component', {
+            widget: this,
+        });
+    },
+
+    /**
+     * @private
+     * @param {MouseEvent} e
+     */
+    _onStopHover: function (e) {
+        this.trigger_up('end_preview_drag_component', {
+            widget: this,
+        });
+    },
+    //--------------------------------------------------------------------------
+    // Private
+    //--------------------------------------------------------------------------
     /**
      * create td and th in table, manage colspan.
      *
@@ -113,8 +147,9 @@ var AbstractNewComponent = Abstract.extend({
 
         _.each(this.targets, function (target) {
             var node = target.node;
+            var inheritanceItem;
             if (node.tag === 'th' || node.tag === 'td') {
-                var loop = node.parent.attrs['t-foreach'] || (node.parent.parent.tag === 't' && node.parent.parent.attrs['t-foreach']);
+                var loop = self._findParentWithTForeach(node) ? true : false;
                 var dataName = loop ? 'Loop' : '';
                 var content = '<' + node.tag + '>';
                 if (node.tag === 'th' || node.parent.parent.tag === 'thead') {
@@ -127,24 +162,25 @@ var AbstractNewComponent = Abstract.extend({
                 content += '</' + node.tag + '>';
 
                 updatedNodes.push(node);
-                inheritance.push({
+                inheritanceItem = {
                     content: content,
                     position: target.position,
                     xpath: node.attrs['data-oe-xpath'],
                     view_id: +node.attrs['data-oe-id'],
-                });
+                };
             } else if (node.tag === 'tr') {
                 updatedNodes.push(node);
-                inheritance.push({
+                inheritanceItem = {
                     content: '<td>' + (options.tbody || '') + '</td>',
                     position: target.position,
                     xpath: node.attrs['data-oe-xpath'],
                     view_id: +node.attrs['data-oe-id'],
-                });
+                };
             }
+            inheritance.push(inheritanceItem);
         });
 
-            // colspan
+        // colspan
         var cellsToGrow = [];
         _.each(this.targets, function (target) {
             var node = target.node;
@@ -155,8 +191,8 @@ var AbstractNewComponent = Abstract.extend({
             // define td index
 
             var nodeIndex = 0;
-            var nodeRow = self._getParentNode(node, function (node) {return node.tag === 'tr';});
-            var cells = self._getChildrenNode(nodeRow, function (node) {return node.tag === 'td' || node.tag === 'th';});
+            var nodeRow = self._getParentNode(node, function (node) { return node.tag === 'tr'; });
+            var cells = self._getChildrenNode(nodeRow, function (node) { return node.tag === 'td' || node.tag === 'th'; });
             for (var k = 0; k < cells.length; k++) {
                 nodeIndex += +(cells[k].attrs.colspan || 1);
                 if (cells[k] === node) {
@@ -166,14 +202,14 @@ var AbstractNewComponent = Abstract.extend({
 
             // select colspan to grow
 
-            var table = self._getParentNode(node, function (node) {return node.tag === 'table';});
-            var rows = self._getChildrenNode(table, function (node) {return node.tag === 'tr';});
+            var table = self._getParentNode(node, function (node) { return node.tag === 'table'; });
+            var rows = self._getChildrenNode(table, function (node) { return node.tag === 'tr'; });
             _.each(rows, function (row) {
                 if (row === nodeRow) {
                     return;
                 }
 
-                var cells = self._getChildrenNode(row, function (node) {return node.tag === 'td' || node.tag === 'th';});
+                var cells = self._getChildrenNode(row, function (node) { return node.tag === 'td' || node.tag === 'th'; });
 
                 var cellIndex = 0;
                 for (var k = 0; k < cells.length; k++) {
@@ -210,7 +246,7 @@ var AbstractNewComponent = Abstract.extend({
                 xml.push(column[0]);
             }
             xml.push('">');
-            if (options.content && k === options.index) {
+            if (options.content && (k === options.index || options.fillStructure)) {
                 xml.push(options.content);
             }
             xml.push('</div>');
@@ -229,6 +265,7 @@ var AbstractNewComponent = Abstract.extend({
             return this._createStructure({
                 index: this.index,
                 content: options.contentInStructure || options.content,
+                fillStructure: options.fillStructure || false,
             });
         } else {
             return _.map(this.targets, function (target) {
@@ -271,17 +308,56 @@ var AbstractNewComponent = Abstract.extend({
         }
         return children;
     },
+    /**
+     * Goes through the hierachy of parents of the node in parameter until we
+     * find the closest parent with a t-foreach defined on it.
+     *
+     * @private
+     * @param {Object} node
+     * @returns {Object|undefined} node that contains a t-foreach as parent of the node in parameter
+     */
+    _findParentWithTForeach: function (node) {
+        if (!node || !node.parent || (node.tag === "div" && node.attrs.class === "page")) {
+            return;
+        }
+        if (node.attrs["t-foreach"]) {
+            return node;
+        }
+        return this._findParentWithTForeach(node.parent);
+    },
 });
+var TextSelectorTags = 'span, p, h1, h2, h3, h4, h5, h6, blockquote, pre, small, u, i, b, font, strong, ul, li, dl, dt, ol, .page > .row > div:empty';
+var filter = ':not([t-field]):not(:has(t, [t-' + QWeb2.ACTIONS_PRECEDENCE.join('], [t-') + ']))';
 
-var BuildingTextComponent = AbstractNewComponent.extend({
+// ----------- TEXT -----------
+
+var BlockText = AbstractNewBuildingBlock.extend({
     type: 'text',
     label: _lt('Text'),
-    dropIn: '.row > div, td, th, p',
+    dropIn: '.page',
+    className: 'o_web_studio_field_char',
+    hookClass: 'o_web_studio_block_char',
+    add: function () {
+        var self = this;
+        return this._super.apply(this, arguments).then(function () {
+            return $.when({
+                inheritance: self._createContent({
+                    content: '<div class="row"><div class="col"><span>New Text Block</span></div></div>',
+                })
+            });
+        });
+    },
+});
+
+var InlineText = AbstractNewBuildingBlock.extend({
+    type: 'text',
+    label: _lt('Text'),
     className: 'o_web_studio_field_char',
     hookClass: 'o_web_studio_hook_inline',
     hookAutoHeight: true,
+    dropIn: TextSelectorTags.split(',').join(filter + '|') + filter,
+    selectorSeparator: '|',
     hookTag: 'span',
-    dropColumns: [[0, 3], [0, 3], [0, 3], [0, 3]],
     add: function () {
         var self = this;
         return this._super.apply(this, arguments).then(function () {
@@ -294,14 +370,81 @@ var BuildingTextComponent = AbstractNewComponent.extend({
     },
 });
 
-var BuildingFieldComponent = AbstractNewComponent.extend({
-    type: 'field',
-    label: _lt('Field'),
-    className: 'o_web_studio_field_many2one',
+var ColumnHalfText = AbstractNewBuildingBlock.extend({
+    type: 'text',
+    label: _lt('Two Columns'),
+    dropIn: '.page',
+    className: 'o_web_studio_field_fa',
+    fa: 'fa-align-left',
+    hookClass: 'o_web_studio_block_char',
+    hookTag: 'div',
+    dropColumns: [[0, 6], [0, 6]],
+    addEmptyRowsTargets: false,
+    add: function () {
+        var self = this;
+        return this._super.apply(this, arguments).then(function () {
+            return $.when({
+                inheritance: self._createContent({
+                    fillStructure: true,
+                    contentInStructure: '<span>New Column</span>',
+                })
+            });
+        });
+    },
+});
+
+var ColumnThirdText = AbstractNewBuildingBlock.extend({
+    type: 'text',
+    label: _lt('Three Columns'),
+    dropIn: '.page',
+    className: 'o_web_studio_field_fa',
+    fa: 'fa-align-left',
+    hookClass: 'o_web_studio_block_char',
+    hookTag: 'div',
+    dropColumns: [[0, 4], [0, 4], [0, 4]],
+    addEmptyRowsTargets: false,
+    add: function () {
+        var self = this;
+        return this._super.apply(this, arguments).then(function () {
+            return $.when({
+                inheritance: self._createContent({
+                    fillStructure: true,
+                    contentInStructure: '<span>New Column</span>',
+                })
+            });
+        });
+    },
+});
+
+var TableCellText = AbstractNewBuildingBlock.extend({
+    type: 'text',
+    label: _lt('Text in Cell'),
+    className: 'o_web_studio_field_char',
     hookAutoHeight: false,
-    hookClass: 'o_web_studio_hook_field',
-    dropColumns: [[0, 3], [0, 3], [0, 3], [0, 3]],
-    dropIn: 'table tr, .row > div, td, th',
+    hookClass: 'o_web_studio_hook_inline',
+    dropIn: 'td, th',
+    hookTag: 'span',
+    add: function () {
+        var self = this;
+        return this._super.apply(this, arguments).then(function () {
+            return $.when({
+                inheritance: self._createContent({
+                    content: '<span>New Text Block</span>',
+                })
+            });
+        });
+    },
+});
+
+
+// ----------- FIELD -----------
+/**
+ * Defines the behavior of a field building block. It behaves by default by asking
+ * the user to select a field in a model, and takes the first target as
+ * destination node
+ */
+var AbstractFieldBlock = AbstractNewBuildingBlock.extend({
+    type: 'field',
     add: function () {
         var self = this;
         return this._super.apply(this, arguments).then(function () {
@@ -309,21 +452,19 @@ var BuildingFieldComponent = AbstractNewComponent.extend({
             var field = {
                 order: 'order',
                 type: 'related',
-                filters: {searchable: false},
+                filters: { searchable: false },
             };
 
             var target = self.targets[0];
-            if (self.targets.length > 1 && (target.node.tag === 'td' || target.node.tag === 'th')) {
-                target = _.find(self.targets, function (target) {
-                    return target.node.tag === "td" && target.node.parent.attrs["t-foreach"];
-                }) || target;
+            if (self._filterTargets) {
+                target = self._filterTargets() || target;
             }
 
-            var availableKeys = _.filter(self._getContextKeys(target.node), function (field) {return !!field.relation;});
+            var availableKeys = _.filter(self._getContextKeys(target.node), function (field) { return !!field.relation; });
             var dialog = new NewFieldDialog(self, 'record_fake_model', field, availableKeys).open();
             dialog.on('field_default_values_saved', self, function (values) {
-                if (!_.contains(values.related, '.')) {
-                    Dialog.alert(self, _t('Please specify a field name for the selected model.'));
+                if (values.related.split('.').length < 2) {
+                    Dialog.alert(self, _t('The record field name is missing'));
                     return;
                 }
                 def.resolve({
@@ -337,14 +478,42 @@ var BuildingFieldComponent = AbstractNewComponent.extend({
             return def;
         });
     },
+});
+
+var BlockField = AbstractFieldBlock.extend({
+    label: _lt('Field'),
+    className: 'o_web_studio_field_many2one',
+    hookClass: 'o_web_studio_hook_field',
+    dropIn: '.page',
     _dataInheritance: function (values) {
         var $field = $('<span/>').attr('t-field', values.related);
         if (values.type === 'binary') {
-             $field.attr('t-options-widget', '"image"');
+            $field.attr('t-options-widget', '"image"');
+        }
+        var fieldHTML = $field.prop('outerHTML');
+
+        return this._createContent({
+            content: "<div class='row'><div class='col'>" + fieldHTML + "</div></div>",
+        });
+    },
+});
+
+var InlineField = AbstractFieldBlock.extend({
+    label: _lt('Field'),
+    className: 'o_web_studio_field_many2one',
+    hookClass: 'o_web_studio_hook_inline',
+    hookAutoHeight: true,
+    dropIn: TextSelectorTags.split(',').join(filter + '|') + filter,
+    selectorSeparator: '|',
+    hookTag: 'span',
+    _dataInheritance: function (values) {
+        var $field = $('<span/>').attr('t-field', values.related);
+        if (values.type === 'binary') {
+            $field.attr('t-options-widget', '"image"');
         }
         var fieldHTML = $field.prop('outerHTML');
         if (this.node.tag === 'td' || this.node.tag === 'th') {
-            return  this._createReportTableColumn({
+            return this._createReportTableColumn({
                 head: $('<span/>').text(values.string).prop('outerHTML'),
                 bodyLoop: fieldHTML,
             });
@@ -355,23 +524,129 @@ var BuildingFieldComponent = AbstractNewComponent.extend({
             });
         }
     },
+    _filterTargets: function () {
+        var self = this;
+        var target = this.targets[0];
+        if (this.targets.length > 1 && (target.node.tag === 'td' || target.node.tag === 'th')) {
+            target = _.find(this.targets, function (target) {
+                return self._findParentWithTForeach(target.node) ? true : false;
+            });
+        }
+        return target;
+    },
 });
 
-var BuildingImageComponent = AbstractNewComponent.extend({
+var TableColumnField = AbstractFieldBlock.extend({
+    label: _lt('Field Column'),
+    className: 'o_web_studio_field_fa',
+    fa: ' fa-plus-square',
+    hookAutoHeight: true,
+    hookClass: 'o_web_studio_hook_table_column',
+    dropIn: 'tr',
+    _dataInheritance: function (values) {
+        var $field = $('<span/>').attr('t-field', values.related);
+        if (values.type === 'binary') {
+            $field.attr('t-options-widget', '"image"');
+        }
+        var fieldHTML = $field.prop('outerHTML');
+        if (this.node.tag === 'td' || this.node.tag === 'th') {
+            return this._createReportTableColumn({
+                head: $('<span/>').text(values.string).prop('outerHTML'),
+                bodyLoop: fieldHTML,
+            });
+        } else {
+            return this._createContent({
+                contentInStructure: '<span><strong>' + values.string + ':</strong><br/></span>' + fieldHTML,
+                content: fieldHTML,
+            });
+        }
+    },
+    _filterTargets: function () {
+        var self = this;
+        var target = this.targets[this.targets.length - 1];
+        if (this.targets.length > 1) {
+            target = _.find(this.targets, function (target) {
+                return self._findParentWithTForeach(target.node) ? true : false;
+            });
+        }
+        return target;
+    },
+});
+
+var TableCellField = AbstractFieldBlock.extend({
+    label: _lt('Field in Cell'),
+    className: 'o_web_studio_field_many2one',
+    hookAutoHeight: false,
+    hookClass: 'o_web_studio_hook_inline',
+    dropIn: 'td, th',
+    hookTag: 'span',
+    _dataInheritance: function (values) {
+        var $field = $('<span/>').attr('t-field', values.related);
+        if (values.type === 'binary') {
+            $field.attr('t-options-widget', '"image"');
+        }
+        var fieldHTML = $field.prop('outerHTML');
+        if (this.node.tag === 'td' || this.node.tag === 'th') {
+            return this._createReportTableColumn({
+                head: $('<span/>').text(values.string).prop('outerHTML'),
+                bodyLoop: fieldHTML,
+            });
+        } else {
+            return this._createContent({
+                contentInStructure: '<span><strong>' + values.string + ':</strong><br/></span>' + fieldHTML,
+                content: fieldHTML,
+            });
+        }
+    },
+    _filterTargets: function () {
+        var self = this;
+        var target = this.targets[0];
+        if (this.targets.length > 1) {
+            target = _.find(this.targets, function (target) {
+                return self._findParentWithTForeach(target.node) ? true : false;
+            }) ;
+        }
+        return target;
+    },
+});
+
+var LabelledField = AbstractFieldBlock.extend({
+    label: _lt('Field & Label'),
+    className: 'o_web_studio_field_many2one',
+    hookClass: 'o_web_studio_hook_information',
+    dropColumns: [[0, 3], [0, 3], [0, 3], [0, 3]],
+    hookAutoHeight: false,
+    dropIn: '.page, .row > div.col*:empty',
+    _dataInheritance: function (values) {
+        var $field = $('<span/>').attr('t-field', values.related);
+        if (values.type === 'binary') {
+            $field.attr('t-options-widget', '"image"');
+        }
+        var fieldHTML = $field.prop('outerHTML');
+
+        return this._createContent({
+            contentInStructure: '<span><strong>' + values.string + ':</strong><br/></span>' + fieldHTML,
+            content: fieldHTML,
+        });
+    },
+});
+
+
+
+// ----------- OTHER -----------
+
+var Image = AbstractNewBuildingBlock.extend({
     type: 'image',
     label: _lt('Image'),
-    dropIn: 'div[class*=col-], td, th, p',
+    dropIn: '.page',
     className: 'o_web_studio_field_picture',
-    hookClass: 'o_web_studio_hook_inline',
-    hookAutoHeight: true,
-    hookTag: 'span',
-    dropColumns: [[0, 3], [0, 3], [0, 3], [0, 3]],
+    hookClass: 'o_web_studio_hook_picture',
     add: function () {
         var self = this;
         return this._super.apply(this, arguments).then(function () {
             var def = $.Deferred();
             var $image = $("<img/>");
-            var dialog = new weWidgets.MediaDialog(self, {onlyImages: true},
+            var dialog = new weWidgets.MediaDialog(self, { onlyImages: true },
                 $image, $image[0]);
             var value;
             dialog.on("save", self, function (event) {
@@ -394,10 +669,11 @@ var BuildingImageComponent = AbstractNewComponent.extend({
     },
 });
 
-var BuildingBlockTitle = AbstractNewComponent.extend({
+var BlockTitle = AbstractNewBuildingBlock.extend({
     type: 'block_title',
     label: _lt('Title Block'),
     className: 'o_web_studio_field_char',
+    hookClass: 'o_web_studio_hook_title',
     dropIn: '.page',
     add: function () {
         var self = this;
@@ -414,7 +690,7 @@ var BuildingBlockTitle = AbstractNewComponent.extend({
     },
 });
 
-var BuildingBlockAddress = AbstractNewComponent.extend({
+var BlockAddress = AbstractNewBuildingBlock.extend({
     type: 'block_address',
     label: _lt('Address Block'),
     fa: 'fa-address-card',
@@ -464,11 +740,12 @@ var BuildingBlockAddress = AbstractNewComponent.extend({
     },
 });
 
-var BuildingBlockTable = AbstractNewComponent.extend({
+var BlockTable = AbstractNewBuildingBlock.extend({
     type: 'block_table',
     label: _lt('Data table'),
     fa: 'fa-th-list',
     className: 'o_web_studio_field_fa',
+    hookClass: 'o_web_studio_hook_table',
     dropIn: '.page',
     add: function () {
         var self = this;
@@ -507,17 +784,17 @@ var BuildingBlockTable = AbstractNewComponent.extend({
         var target = this.targets[0];
         return [{
             content:
-                '<table class="table table-sm o_report_block_table">' +
-                    '<thead>' +
-                        '<tr>' +
-                            '<th><span>Name</span></th>' +
-                        '</tr>' +
-                    '</thead>' +
-                    '<tbody>' +
-                        '<tr t-foreach="' + values.related + '" t-as="table_line">' +
-                            '<td><span t-field="table_line.display_name"/></td>' +
-                        '</tr>' +
-                    '</tbody>' +
+                '<table class="table o_report_block_table">' +
+                '<thead>' +
+                '<tr>' +
+                '<th><span>Name</span></th>' +
+                '</tr>' +
+                '</thead>' +
+                '<tbody>' +
+                '<tr t-foreach="' + values.related + '" t-as="table_line">' +
+                '<td><span t-field="table_line.display_name"/></td>' +
+                '</tr>' +
+                '</tbody>' +
                 '</table>',
             position: target.position,
             xpath: target.node.attrs['data-oe-xpath'],
@@ -526,9 +803,9 @@ var BuildingBlockTable = AbstractNewComponent.extend({
     },
 });
 
-var BuildingBlockTotal = AbstractNewComponent.extend({
+var TableBlockTotal = AbstractNewBuildingBlock.extend({
     type: 'block_total',
-    label: _lt('Accounting Total'),
+    label: _lt('Subtotal & Total'),
     fa: 'fa-money',
     className: 'o_web_studio_field_fa',
     dropIn: '.page',
@@ -569,40 +846,40 @@ var BuildingBlockTotal = AbstractNewComponent.extend({
         return this._createContent({
             contentInStructure:
                 '<table class="table table-sm o_report_block_total">' +
-                    '<t t-set="total_currency_id" t-value="' + data.currency_id + '"/>' +
-                    '<t t-set="total_amount_total" t-value="' + data.amount_total + '"/>' +
-                    '<t t-set="total_amount_untaxed" t-value="' + data.amount_untaxed + '"/>' +
-                    '<t t-set="total_amount_by_groups" t-value="' + data.amount_by_groups + '"/>' +
-                    '<tr t-if="total_amount_untaxed != total_amount_total">' +
-                        '<th>Subtotal</th>' +
-                        '<td colspan="2" class="text-right">' +
-                            '<span t-esc="total_amount_untaxed" t-options="{\'widget\': \'monetary\', \'display_currency\': total_currency_id}"/>' +
-                        '</td>' +
-                    '</tr>' +
-                    '<t t-foreach="total_amount_by_groups" t-as="total_amount_by_group">' +
-                        '<tr>' +
-                            '<th><span t-esc="total_amount_by_group[0]"/></th>' +
-                            '<td><small t-if="len(total_amount_by_group) > 4 and total_amount_by_group[2] and total_amount_untaxed != total_amount_by_group[2]">on <span t-esc="total_amount_by_group[4]"/></small></td>' +
-                            '<td class="text-right">' +
-                                '<span t-esc="total_amount_by_group[3]"/>' +
-                            '</td>' +
-                        '</tr>' +
-                    '</t>' +
-                    '<t t-if="total_amount_by_groups is None and total_amount_total != total_amount_untaxed">' +
-                        '<tr>' +
-                            '<th>Taxes</th>' +
-                            '<td></td>' +
-                            '<td class="text-right">' +
-                                '<span t-esc="total_amount_total - total_amount_untaxed" t-options="{\'widget\': \'monetary\', \'display_currency\': total_currency_id}"/>' +
-                            '</td>' +
-                        '</tr>' +
-                    '</t>' +
-                    '<tr class="border-black">' +
-                        '<th>Total</th>' +
-                        '<td colspan="2" class="text-right">' +
-                            '<span t-esc="total_amount_total" t-options="{\'widget\': \'monetary\', \'display_currency\': total_currency_id}"/>' +
-                        '</td>' +
-                    '</tr>' +
+                '<t t-set="total_currency_id" t-value="' + data.currency_id + '"/>' +
+                '<t t-set="total_amount_total" t-value="' + data.amount_total + '"/>' +
+                '<t t-set="total_amount_untaxed" t-value="' + data.amount_untaxed + '"/>' +
+                '<t t-set="total_amount_by_groups" t-value="' + data.amount_by_groups + '"/>' +
+                '<tr t-if="total_amount_untaxed != total_amount_total">' +
+                '<th>Subtotal</th>' +
+                '<td colspan="2" class="text-right">' +
+                '<span t-esc="total_amount_untaxed" t-options="{\'widget\': \'monetary\', \'display_currency\': total_currency_id}"/>' +
+                '</td>' +
+                '</tr>' +
+                '<t t-foreach="total_amount_by_groups" t-as="total_amount_by_group">' +
+                '<tr>' +
+                '<th><span t-esc="total_amount_by_group[0]"/></th>' +
+                '<td><small t-if="len(total_amount_by_group) > 4 and total_amount_by_group[2] and total_amount_untaxed != total_amount_by_group[2]">on <span t-esc="total_amount_by_group[4]"/></small></td>' +
+                '<td class="text-right">' +
+                '<span t-esc="total_amount_by_group[3]"/>' +
+                '</td>' +
+                '</tr>' +
+                '</t>' +
+                '<t t-if="total_amount_by_groups is None and total_amount_total != total_amount_untaxed">' +
+                '<tr>' +
+                '<th>Taxes</th>' +
+                '<td></td>' +
+                '<td class="text-right">' +
+                '<span t-esc="total_amount_total - total_amount_untaxed" t-options="{\'widget\': \'monetary\', \'display_currency\': total_currency_id}"/>' +
+                '</td>' +
+                '</tr>' +
+                '</t>' +
+                '<tr class="border-black">' +
+                '<th>Total</th>' +
+                '<td colspan="2" class="text-right">' +
+                '<span t-esc="total_amount_total" t-options="{\'widget\': \'monetary\', \'display_currency\': total_currency_id}"/>' +
+                '</td>' +
+                '</tr>' +
                 '</table>',
         });
     },
@@ -611,7 +888,7 @@ var BuildingBlockTotal = AbstractNewComponent.extend({
         var amount_untaxed = '0.0';
         var amount_total = '0.0';
         var amount_by_groups = 'None';
-        if (values.relation === 'account.invoice'){
+        if (values.relation === 'account.invoice') {
             currency_id = values.related + '.currency_id';
         }
         if (values.relation === 'sale.order') {
@@ -631,14 +908,23 @@ var BuildingBlockTotal = AbstractNewComponent.extend({
     },
 });
 
+
 return {
-    BuildingBlockAddress: BuildingBlockAddress,
-    BuildingBlockTable: BuildingBlockTable,
-    BuildingBlockTotal: BuildingBlockTotal,
-    BuildingFieldComponent: BuildingFieldComponent,
-    BuildingImageComponent: BuildingImageComponent,
-    BuildingBlockTitle: BuildingBlockTitle,
-    BuildingTextComponent: BuildingTextComponent,
+    BlockText: BlockText,
+    InlineText: InlineText,
+    ColumnHalfText: ColumnHalfText,
+    ColumnThirdText: ColumnThirdText,
+    TableCellText: TableCellText,
+    BlockField: BlockField,
+    InlineField: InlineField,
+    TableColumnField: TableColumnField,
+    TableCellField: TableCellField,
+    LabelledField: LabelledField,
+    Image: Image,
+    BlockTitle: BlockTitle,
+    BlockAddress: BlockAddress,
+    BlockTable: BlockTable,
+    TableBlockTotal: TableBlockTotal,
 };
 
 });

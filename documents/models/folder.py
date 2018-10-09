@@ -4,6 +4,7 @@ from odoo import models, fields, api
 
 class DocumentFolder(models.Model):
     _name = 'documents.folder'
+    _description = 'Documents Folder'
     _parent_name = 'parent_folder_id'
     _order = 'sequence'
 
@@ -25,12 +26,20 @@ class DocumentFolder(models.Model):
                 name_array.append((record.id, record.name))
         return name_array
 
-    company_id = fields.Many2one('res.company', 'Company')
-    parent_folder_id = fields.Many2one('documents.folder', string="Parent Folder", ondelete="cascade")
+    company_id = fields.Many2one('res.company', 'Company',
+                                 help="This folder will only be available for the selected company")
+    parent_folder_id = fields.Many2one('documents.folder',
+                                       string="Parent Folder",
+                                       ondelete="cascade",
+                                       help="Tag categories from parent folders will be shared to their sub folders")
     name = fields.Char(required=True)
+    description = fields.Html(string="Description")
     children_folder_ids = fields.One2many('documents.folder', 'parent_folder_id', string="Sub folders")
     attachment_ids = fields.One2many('ir.attachment', 'folder_id', string="Documents")
     sequence = fields.Integer('Sequence', default=10)
     share_link_ids = fields.One2many('documents.share', 'folder_id', string="Share Links")
-    facet_ids = fields.One2many('documents.facet', 'folder_id', string="Tag Categories")
-    group_ids = fields.Many2many('res.groups', string="Access Groups")
+    facet_ids = fields.One2many('documents.facet', 'folder_id',
+                                string="Tag Categories",
+                                help="Select the tag categories to be used")
+    group_ids = fields.Many2many('res.groups', string="Access Groups",
+                                 help="This folder will only be available for the selected user groups")

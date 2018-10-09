@@ -5,6 +5,7 @@ from odoo import api, models, fields, _
 
 class AEATTaxReportWizard(models.TransientModel):
     _name = 'l10n_es_reports.aeat.report.wizard'
+    _description = "AEAT Tax Report Wizard"
     _modelo = None # To be defined in subclasses as 'xxx', where xxx is the modelo number of the implemented AEAT tax report
 
     currency_id = fields.Many2one(string='Currency', comodel_name='res.currency', default=lambda x: x.env['res.company']._company_default_get().currency_id)

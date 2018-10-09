@@ -76,7 +76,7 @@ odoo.define('sign.views_custo', function(require) {
                     _sign_upload_file.call(self, true);
                 });
                 this.$buttons.find(selector_button).after(
-                    $('<button class="btn btn-link o-kanban-button-new ml8" type="button">UPLOAD A PDF TEMPLATE</button>')
+                    $('<button class="btn btn-link o-kanban-button-new ml8" type="button">'+ _t('UPLOAD A PDF TEMPLATE') +'</button>')
                     .off('click')
                     .on('click', function (e) {
                         e.preventDefault();

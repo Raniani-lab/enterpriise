@@ -87,14 +87,14 @@ class PlaidProviderAccount(models.Model):
         ctx = self.env.context.copy()
         ctx['method'] = 'add'
         return {
-                'type': 'ir.actions.client',
-                'tag': 'plaid_online_sync_widget',
-                'target': 'new',
-                'institution_id': site_id,
-                'open_link': True,
-                'public_key': self.plaid_fetch('/public_key', {}).get('public_key'),
-                'context': ctx,
-            }
+            'type': 'ir.actions.client',
+            'tag': 'plaid_online_sync_widget',
+            'target': 'new',
+            'institution_id': site_id,
+            'open_link': True,
+            'public_key': self.plaid_fetch('/public_key', {}).get('public_key'),
+            'context': ctx,
+        }
 
     @api.multi
     def link_success(self, public_token, metadata):

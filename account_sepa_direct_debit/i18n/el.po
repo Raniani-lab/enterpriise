@@ -4,13 +4,15 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# Kostas Goutoudis <goutoudis@gmail.com>, 2018
+# George Tarasidis <george_tarasidis@yahoo.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"Last-Translator: George Tarasidis <george_tarasidis@yahoo.com>, 2018\n"
 "Language-Team: Greek (https://www.transifex.com/odoo/teams/41243/el/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,18 +21,18 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: account_sepa_direct_debit
-#: model:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "(if applicable)"
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: model:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "(optional)"
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: model:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_account_payment_form
-#: model:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_view_account_payment_invoice_form_inherit
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_account_payment_form
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_view_account_payment_invoice_form_inherit
 msgid ""
 "<span class=\"alert alert-info\" attrs=\"{'invisible': ['|', '|', "
 "('sdd_mandate_usable', '!=', True), ('payment_type', '!=', 'inbound'), "
@@ -39,92 +41,92 @@ msgid ""
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: model:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "<strong>Address:</strong>"
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: model:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "<strong>City:</strong>"
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: model:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "<strong>Country:</strong>"
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: model:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "<strong>Creditor identifier:</strong>"
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: model:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid ""
 "<strong>Date and place of signature:</strong> "
 "......................................"
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: model:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "<strong>IBAN account number:</strong>"
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: model:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "<strong>Mail address:</strong>"
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: model:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "<strong>Mandate identifier:</strong>"
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: model:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid ""
 "<strong>Name of the reference party:</strong> "
 "......................................"
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: model:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "<strong>Name:</strong>"
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: model:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "<strong>Phone number:</strong>"
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: model:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "<strong>Signature:</strong>"
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: model:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "<strong>Start date:</strong>"
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: model:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "<strong>Transaction type:</strong> recurrent"
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: model:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "<strong>Zip:</strong>"
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:79
+#: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:80
 #, python-format
 msgid "A debtor account is required to validate a SEPA Direct Debit mandate."
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: model:ir.actions.act_window,help:account_sepa_direct_debit.account_sepa_direct_debit_mandate_tree_act
+#: model_terms:ir.actions.act_window,help:account_sepa_direct_debit.account_sepa_direct_debit_mandate_tree_act
 msgid ""
 "A mandate represents the authorization you receive from a customer\n"
 "                    to automatically collect money on her account."
@@ -141,7 +143,7 @@ msgid "Active"
 msgstr "Σε Ισχύ"
 
 #. module: account_sepa_direct_debit
-#: model:ir.ui.view,arch_db:account_sepa_direct_debit.account_sdd_mandate_search_view
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.account_sdd_mandate_search_view
 msgid "Active Mandates"
 msgstr ""
 
@@ -151,22 +153,22 @@ msgid "Batch Payment"
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: model:ir.ui.view,arch_db:account_sepa_direct_debit.account_sepa_direct_debit_mandate_form
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.account_sepa_direct_debit_mandate_form
 msgid "Cancel"
 msgstr "Ακύρωση"
 
 #. module: account_sepa_direct_debit
-#: model:ir.ui.view,arch_db:account_sepa_direct_debit.account_sepa_direct_debit_mandate_form
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.account_sepa_direct_debit_mandate_form
 msgid "Close"
 msgstr "Κλείσιμο"
 
 #. module: account_sepa_direct_debit
 #: selection:sdd.mandate,state:0
 msgid "Closed"
-msgstr ""
+msgstr "Κλειστό"
 
 #. module: account_sepa_direct_debit
-#: model:ir.ui.view,arch_db:account_sepa_direct_debit.account_sdd_mandate_search_view
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.account_sdd_mandate_search_view
 msgid "Closed Mandates"
 msgstr ""
 
@@ -186,6 +188,11 @@ msgid "Company for whose invoices the mandate can be used."
 msgstr ""
 
 #. module: account_sepa_direct_debit
+#: model:ir.model,name:account_sepa_direct_debit.model_res_config_settings
+msgid "Config Settings"
+msgstr ""
+
+#. module: account_sepa_direct_debit
 #: model:ir.model,name:account_sepa_direct_debit.model_res_partner
 msgid "Contact"
 msgstr "Επαφή"
@@ -196,7 +203,7 @@ msgid "Could a SDD mandate be used?"
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: model:ir.actions.act_window,help:account_sepa_direct_debit.account_sepa_direct_debit_mandate_tree_act
+#: model_terms:ir.actions.act_window,help:account_sepa_direct_debit.account_sepa_direct_debit_mandate_tree_act
 msgid "Create a new direct debit customer mandate"
 msgstr ""
 
@@ -221,12 +228,12 @@ msgid "Creditor identifier of your company within SEPA scheme."
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: model:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "Creditor information"
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: model:ir.ui.view,arch_db:account_sepa_direct_debit.account_sepa_direct_debit_mandate_form
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.account_sepa_direct_debit_mandate_form
 msgid "Customer mandate"
 msgstr ""
 
@@ -268,7 +275,7 @@ msgid "Debtor Identifier"
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: model:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "Debtor information"
 msgstr ""
 
@@ -276,23 +283,23 @@ msgstr ""
 #: model:ir.actions.act_window,name:account_sepa_direct_debit.account_sepa_direct_debit_mandate_tree_act
 #: model:ir.actions.act_window,name:account_sepa_direct_debit.account_sepa_direct_debit_partner_mandates
 #: model:ir.ui.menu,name:account_sepa_direct_debit.account_sepa_direct_debit_customer_mandates_menu
-#: model:ir.ui.view,arch_db:account_sepa_direct_debit.account_sdd_res_partner_view
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.account_sdd_res_partner_view
 msgid "Direct Debit Mandates"
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: model:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_account_journal_dashboard_kanban_view
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_account_journal_dashboard_kanban_view
 msgid "Direct Debit Payment to Collect"
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: model:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_view_account_payment_search
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_view_account_payment_search
 msgid "Direct Debit Payments To Collect"
 msgstr ""
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__payments_to_collect_nber
-#: model:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_account_journal_dashboard_kanban_view
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_account_journal_dashboard_kanban_view
 msgid "Direct Debit Payments to Collect"
 msgstr ""
 
@@ -309,22 +316,22 @@ msgstr "Εμφάνιση Ονόματος"
 #. module: account_sepa_direct_debit
 #: selection:sdd.mandate,state:0
 msgid "Draft"
-msgstr ""
+msgstr "Προσχέδιο"
 
 #. module: account_sepa_direct_debit
-#: model:ir.ui.view,arch_db:account_sepa_direct_debit.account_sdd_mandate_search_view
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.account_sdd_mandate_search_view
 msgid "Draft Mandates"
 msgstr ""
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__end_date
 msgid "End Date"
-msgstr ""
+msgstr "Ημερ. Λήξης"
 
 #. module: account_sepa_direct_debit
-#: model:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "End date"
-msgstr ""
+msgstr "Ημερ. λήξης"
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,help:account_sepa_direct_debit.field_res_partner__sdd_mandate_ids
@@ -348,14 +355,14 @@ msgid "ID"
 msgstr "Κωδικός"
 
 #. module: account_sepa_direct_debit
-#: model:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "Identification code"
 msgstr ""
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__name
 msgid "Identifier"
-msgstr ""
+msgstr "Αναγνωριστικό"
 
 #. module: account_sepa_direct_debit
 #: code:addons/account_sepa_direct_debit/models/res_company.py:38
@@ -372,7 +379,7 @@ msgstr ""
 #. module: account_sepa_direct_debit
 #: model:ir.model,name:account_sepa_direct_debit.model_account_invoice
 msgid "Invoice"
-msgstr ""
+msgstr "Τιμολόγιο"
 
 #. module: account_sepa_direct_debit
 #: model:mail.message.subtype,description:account_sepa_direct_debit.sdd_mt_invoice_paid_with_mandate
@@ -381,7 +388,7 @@ msgstr ""
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__paid_invoice_ids
-#: model:ir.ui.view,arch_db:account_sepa_direct_debit.account_sepa_direct_debit_mandate_form
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.account_sepa_direct_debit_mandate_form
 msgid "Invoices Paid"
 msgstr ""
 
@@ -391,14 +398,14 @@ msgid "Invoices paid using this mandate."
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: model:ir.ui.view,arch_db:account_sepa_direct_debit.account_sepa_direct_debit_mandate_form
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.account_sepa_direct_debit_mandate_form
 msgid "Invoices paid with this mandate."
 msgstr ""
 
 #. module: account_sepa_direct_debit
 #: model:ir.model,name:account_sepa_direct_debit.model_account_journal
 msgid "Journal"
-msgstr ""
+msgstr "Ημερολόγιο"
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__payment_journal_id
@@ -427,12 +434,12 @@ msgid "Last Updated on"
 msgstr "Τελευταία Ενημέρωση στις"
 
 #. module: account_sepa_direct_debit
-#: model:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_view_account_payment_search
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_view_account_payment_search
 msgid "Linked to a revoked direct debit mandate"
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: model:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_view_account_invoice_search
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_view_account_invoice_search
 msgid "Linked to revoked mandate"
 msgstr ""
 
@@ -454,12 +461,12 @@ msgid "Mandate state updater"
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: model:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "Mandate validity"
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: model:ir.actions.act_window,help:account_sepa_direct_debit.action_sdd_payments_to_collect
+#: model_terms:ir.actions.act_window,help:account_sepa_direct_debit.action_sdd_payments_to_collect
 msgid "No direct debit payment to collect"
 msgstr ""
 
@@ -478,7 +485,7 @@ msgid "Number of invoices paid with thid mandate."
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: model:ir.actions.act_window,help:account_sepa_direct_debit.account_sepa_direct_debit_mandate_tree_act
+#: model_terms:ir.actions.act_window,help:account_sepa_direct_debit.account_sepa_direct_debit_mandate_tree_act
 msgid ""
 "Once an invoice is made\n"
 "                    in Odoo for a customer having an mandate active on the invoice date,\n"
@@ -500,7 +507,7 @@ msgid "One-off Mandate"
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:142
+#: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:143
 #, python-format
 msgid ""
 "Only IBAN account numbers can receive SEPA Direct Debit payments. Please "
@@ -508,14 +515,14 @@ msgid ""
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:93
+#: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:94
 #, python-format
 msgid ""
 "Only mandates in draft state can be deleted from database when cancelled."
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: model:ir.ui.view,arch_db:account_sepa_direct_debit.account_sdd_res_partner_view
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.account_sdd_res_partner_view
 msgid "Open this partner's mandates"
 msgstr ""
 
@@ -542,10 +549,10 @@ msgid "Originating SEPA mandate"
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:115
+#: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:116
 #, python-format
 msgid "Paid Invoices"
-msgstr ""
+msgstr "Εξοφλημένα Τιμολόγια"
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__paid_invoices_nber
@@ -561,10 +568,10 @@ msgstr ""
 #: model:ir.model,name:account_sepa_direct_debit.model_account_payment
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__payment_ids
 msgid "Payments"
-msgstr ""
+msgstr "Συναλλαγές"
 
 #. module: account_sepa_direct_debit
-#: model:ir.ui.view,arch_db:account_sepa_direct_debit.account_sepa_direct_debit_mandate_form
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.account_sepa_direct_debit_mandate_form
 msgid "Payments generated for this mandate that have not yet been collected."
 msgstr ""
 
@@ -574,32 +581,32 @@ msgid "Payments generated thanks to this mandate."
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:125
-#: model:ir.ui.view,arch_db:account_sepa_direct_debit.account_sepa_direct_debit_mandate_form
+#: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:126
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.account_sepa_direct_debit_mandate_form
 #, python-format
 msgid "Payments to Collect"
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: model:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "Please complete your coordinates."
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: model:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_report_invoice_document
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_report_invoice_document
 msgid ""
 "Please do not pay it manually, the payment will be asked to your bank to be processed\n"
 "                        automatically."
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: model:ir.ui.view,arch_db:account_sepa_direct_debit.account_sepa_direct_debit_mandate_form
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.account_sepa_direct_debit_mandate_form
 msgid "Print"
-msgstr ""
+msgstr "Εκτύπωση"
 
 #. module: account_sepa_direct_debit
 #: model:ir.model,name:account_sepa_direct_debit.model_account_register_payments
-msgid "Register payments on multiple invoices"
+msgid "Register Payments"
 msgstr ""
 
 #. module: account_sepa_direct_debit
@@ -608,13 +615,18 @@ msgid "Required collection date"
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: model:ir.ui.view,arch_db:account_sepa_direct_debit.account_sepa_direct_debit_mandate_form
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.account_sepa_direct_debit_mandate_form
 msgid "Revoke"
 msgstr ""
 
 #. module: account_sepa_direct_debit
 #: selection:sdd.mandate,state:0
 msgid "Revoked"
+msgstr ""
+
+#. module: account_sepa_direct_debit
+#: model:ir.model,name:account_sepa_direct_debit.model_sdd_mandate
+msgid "SDD Mandate"
 msgstr ""
 
 #. module: account_sepa_direct_debit
@@ -634,7 +646,7 @@ msgid "SEPA Direct Debit"
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: model:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "SEPA Direct Debit Mandate"
 msgstr ""
 
@@ -645,7 +657,7 @@ msgid ""
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:81
+#: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:82
 #, python-format
 msgid ""
 "SEPA Direct Debit scheme only accepts IBAN account numbers. Please select an"
@@ -664,14 +676,14 @@ msgid "Sdd Paying Mandate"
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: model:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "Signature"
 msgstr "Υπογραφή"
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__start_date
 msgid "Start Date"
-msgstr ""
+msgstr "Ημερομηνία Έναρξης"
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__state
@@ -686,7 +698,7 @@ msgid ""
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:144
+#: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:145
 #, python-format
 msgid ""
 "The bank account you select for payment must be related to a bank. Please "
@@ -694,7 +706,7 @@ msgid ""
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:146
+#: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:147
 #, python-format
 msgid ""
 "The bank your payment account is related to must have a BIC number. Please "
@@ -708,7 +720,7 @@ msgid "The creditor identifier exceeds the maximum length of 35 characters."
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:83
+#: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:84
 #, python-format
 msgid ""
 "The debtor account must have a bank with a bic number in order to validate a"
@@ -716,7 +728,7 @@ msgid ""
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:152
+#: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:153
 #, python-format
 msgid ""
 "The debtor identifier you specified exceeds the limitation of 35 characters "
@@ -724,18 +736,10 @@ msgid ""
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:136
+#: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:137
 #, python-format
 msgid ""
 "The end date of the mandate must be posterior or equal to its start date."
-msgstr ""
-
-#. module: account_sepa_direct_debit
-#: code:addons/account_sepa_direct_debit/models/account_batch_payment.py:39
-#, python-format
-msgid ""
-"The following payments' communications are not SEPA compliant: %s.\n"
-"                                         To be SEPA compliant, a communication must be made of only latin characters, be maximum 140 characters long, and cannot contain '//' sequence, nor start or end with a / character."
 msgstr ""
 
 #. module: account_sepa_direct_debit
@@ -744,7 +748,7 @@ msgid "The mandate used to generate this payment, if any."
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: model:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid ""
 "The mandate will only be used to pay invoices into the\n"
 "                    specified time range. If no end date is specified,\n"
@@ -766,15 +770,15 @@ msgid "The unique identifier of this mandate."
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: model:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid ""
 "This form grants our company the authorization to\n"
 "                    use direct debit to pay the invoices we send to you."
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: code:addons/account_sepa_direct_debit/models/account_payment.py:197
-#: code:addons/account_sepa_direct_debit/models/account_payment.py:209
+#: code:addons/account_sepa_direct_debit/models/account_payment.py:219
+#: code:addons/account_sepa_direct_debit/models/account_payment.py:231
 #, python-format
 msgid ""
 "This invoice cannot be paid via SEPA Direct Debit, as there is no valid "
@@ -782,7 +786,7 @@ msgid ""
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: model:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_report_invoice_document
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_report_invoice_document
 msgid ""
 "This invoice will be paid using direct debit and is only\n"
 "                        sent for informative purposes."
@@ -797,7 +801,7 @@ msgid ""
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: code:addons/account_sepa_direct_debit/models/account_payment.py:128
+#: code:addons/account_sepa_direct_debit/models/account_payment.py:150
 #, python-format
 msgid ""
 "Trying to generate a Direct Debit XML file containing payments from another "
@@ -805,7 +809,7 @@ msgid ""
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: code:addons/account_sepa_direct_debit/models/account_payment.py:131
+#: code:addons/account_sepa_direct_debit/models/account_payment.py:153
 #, python-format
 msgid ""
 "Trying to generate a Direct Debit XML for payments coming from another "
@@ -813,14 +817,14 @@ msgid ""
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: code:addons/account_sepa_direct_debit/models/account_payment.py:179
+#: code:addons/account_sepa_direct_debit/models/account_payment.py:201
 #, python-format
 msgid ""
 "Trying to register a payment on a mandate belonging to a different partner."
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: code:addons/account_sepa_direct_debit/models/account_payment.py:44
+#: code:addons/account_sepa_direct_debit/models/account_payment.py:66
 #, python-format
 msgid ""
 "Unable to post payment '%s' due to no usable mandate being available at date"
@@ -829,9 +833,9 @@ msgid ""
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: model:ir.ui.view,arch_db:account_sepa_direct_debit.account_sepa_direct_debit_mandate_form
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.account_sepa_direct_debit_mandate_form
 msgid "Validate"
-msgstr ""
+msgstr "Επικύρωση"
 
 #. module: account_sepa_direct_debit
 #: code:addons/account_sepa_direct_debit/models/account_batch_payment.py:32
@@ -842,7 +846,7 @@ msgid ""
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: code:addons/account_sepa_direct_debit/models/account_invoice.py:34
+#: code:addons/account_sepa_direct_debit/models/account_invoice.py:35
 #, python-format
 msgid ""
 "You cannot pay an invoice with a mandate that does not cover the moment when"
@@ -850,7 +854,7 @@ msgid ""
 msgstr ""
 
 #. module: account_sepa_direct_debit
-#: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:85
+#: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:86
 #, python-format
 msgid ""
 "You must register this mandate's original document before validating it."
@@ -862,14 +866,4 @@ msgstr ""
 msgid ""
 "Your company must have a creditor identifier in order to issue SEPA Direct "
 "Debit payments requests. It can be defined in accounting module's settings."
-msgstr ""
-
-#. module: account_sepa_direct_debit
-#: model:ir.model,name:account_sepa_direct_debit.model_res_config_settings
-msgid "res.config.settings"
-msgstr "res.config.settings"
-
-#. module: account_sepa_direct_debit
-#: model:ir.model,name:account_sepa_direct_debit.model_sdd_mandate
-msgid "sdd.mandate"
 msgstr ""

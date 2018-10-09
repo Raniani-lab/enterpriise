@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
 "Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: Mongolian (https://www.transifex.com/odoo/teams/41243/mn/)\n"
 "MIME-Version: 1.0\n"
@@ -19,12 +19,12 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: account_accountant
-#: model:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid "<span class=\"o_form_label\">Fiscal Year</span>"
 msgstr ""
 
 #. module: account_accountant
-#: model:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid "<span class=\"o_form_label\">Inter-Banks Transfers</span>"
 msgstr ""
 
@@ -34,8 +34,8 @@ msgid "Account Groups"
 msgstr "Санхүүгийн бүлгүүд"
 
 #. module: account_accountant
-#: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__module_account_predictive_account
-msgid "Account Predictive Account"
+#: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__module_account_predictive_bills
+msgid "Account Predictive Bills"
 msgstr ""
 
 #. module: account_accountant
@@ -44,12 +44,13 @@ msgid "Account Tags"
 msgstr "Дансны пайзууд"
 
 #. module: account_accountant
-#: model:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid "Account used when transferring between banks"
 msgstr ""
 
 #. module: account_accountant
-#: model:ir.ui.view,arch_db:account_accountant.res_partner_view_form
+#: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:account_accountant.res_partner_view_form
 msgid "Accounting"
 msgstr "Санхүү"
 
@@ -64,13 +65,18 @@ msgid "Bank & Cash Moves"
 msgstr ""
 
 #. module: account_accountant
-#: model:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
+#: model_terms:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
 msgid "Cancel"
 msgstr "Цуцлах"
 
 #. module: account_accountant
 #: model:ir.model,name:account_accountant.model_account_change_lock_date
-msgid "Change lock date"
+msgid "Change Lock Date"
+msgstr ""
+
+#. module: account_accountant
+#: model:ir.model,name:account_accountant.model_res_config_settings
+msgid "Config Settings"
 msgstr ""
 
 #. module: account_accountant
@@ -84,7 +90,7 @@ msgid "Created on"
 msgstr "Үүсгэсэн"
 
 #. module: account_accountant
-#: model:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid "Define fiscal years of more or less than a year"
 msgstr ""
 
@@ -106,7 +112,7 @@ msgstr ""
 
 #. module: account_accountant
 #: model:ir.ui.menu,name:account_accountant.menu_account_fiscal_year
-#: model:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid "Fiscal Years"
 msgstr ""
 
@@ -139,7 +145,7 @@ msgid "Kpi Account Bank Cash Value"
 msgstr ""
 
 #. module: account_accountant
-#: model:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid "Last Day"
 msgstr ""
 
@@ -159,7 +165,7 @@ msgid "Last Updated on"
 msgstr "Сүүлийн засвар хийсэн огноо"
 
 #. module: account_accountant
-#: model:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid "Last day of your fiscal year, for automatic opening entries"
 msgstr ""
 
@@ -222,7 +228,7 @@ msgid ""
 msgstr ""
 
 #. module: account_accountant
-#: model:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid "Predict vendor bill accounts"
 msgstr ""
 
@@ -242,17 +248,17 @@ msgstr ""
 "<b>Санхүүгийн апп</b>-г нээж илрүүлэхдээ бэлэн байна уу? Энд дараад эхэлнэ."
 
 #. module: account_accountant
-#: model:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid "Record cost of goods sold in your journal entries"
 msgstr ""
 
 #. module: account_accountant
-#: model:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
+#: model_terms:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
 msgid "Save"
 msgstr "Хадгалах"
 
 #. module: account_accountant
-#: model:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid ""
 "The system will try to predict vendor bill accounts based on history of "
 "previous bills."
@@ -284,8 +290,3 @@ msgid ""
 msgstr ""
 "Тайлангууд бодит хугацаанд гарна. <i>Ашиг &amp; Алдагдлын тайлан, Баланс "
 "тайланг авахын тулд санхүүгийн жил, мөчлөгийг хаах шаардлагагүй.</i>"
-
-#. module: account_accountant
-#: model:ir.model,name:account_accountant.model_res_config_settings
-msgid "res.config.settings"
-msgstr "res.config.settings"

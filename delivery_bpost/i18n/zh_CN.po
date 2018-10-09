@@ -4,13 +4,15 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# 珠海-杜哥 <liangjia@qq.com>, 2018
+# neter ji <jifuyi@qq.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"Last-Translator: neter ji <jifuyi@qq.com>, 2018\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -34,7 +36,7 @@ msgid "Allow deliveries on Saturday (extra charges apply)"
 msgstr "允许周六发货（额外收费）"
 
 #. module: delivery_bpost
-#: code:addons/delivery_bpost/models/bpost_request.py:97
+#: code:addons/delivery_bpost/models/bpost_request.py:98
 #, python-format
 msgid ""
 "Authentication error -- wrong credentials\n"
@@ -51,7 +53,7 @@ msgstr "根据规则"
 #. module: delivery_bpost
 #: model:ir.model.fields,field_description:delivery_bpost.field_delivery_carrier__bpost_account_number
 msgid "Bpost Account Number"
-msgstr ""
+msgstr "Bpost 账户号码"
 
 #. module: delivery_bpost
 #: model:ir.model.fields,field_description:delivery_bpost.field_delivery_carrier__bpost_delivery_nature
@@ -103,7 +105,6 @@ msgid "Bpost World Express Pro"
 msgstr "比利时邮政国际速运专线"
 
 #. module: delivery_bpost
-#: model:ir.model,name:delivery_bpost.model_delivery_carrier
 #: model:ir.model.fields,field_description:delivery_bpost.field_product_packaging__package_carrier_type
 msgid "Carrier"
 msgstr "承运商"
@@ -118,6 +119,11 @@ msgstr "DHL"
 #: selection:delivery.carrier,bpost_shipment_type:0
 msgid "DOCUMENTS"
 msgstr "文件"
+
+#. module: delivery_bpost
+#: model:ir.model,name:delivery_bpost.model_delivery_carrier
+msgid "Delivery Methods"
+msgstr "交货方式"
 
 #. module: delivery_bpost
 #: model:ir.model.fields,field_description:delivery_bpost.field_delivery_carrier__bpost_saturday
@@ -138,7 +144,7 @@ msgstr "国内的"
 #: selection:delivery.carrier,delivery_type:0
 #: selection:product.packaging,package_carrier_type:0
 msgid "Easypost"
-msgstr ""
+msgstr "Easypost"
 
 #. module: delivery_bpost
 #: selection:delivery.carrier,delivery_type:0
@@ -187,15 +193,10 @@ msgid "PNG"
 msgstr "PNG"
 
 #. module: delivery_bpost
-#: code:addons/delivery_bpost/models/bpost_request.py:133
+#: code:addons/delivery_bpost/models/bpost_request.py:134
 #, python-format
 msgid "Packages over 30 Kg are not accepted by bpost."
 msgstr "比利时邮政不接收超过30Kg的包裹。"
-
-#. module: delivery_bpost
-#: model:ir.model,name:delivery_bpost.model_product_packaging
-msgid "Packaging"
-msgstr "包装"
 
 #. module: delivery_bpost
 #: model:ir.model.fields,field_description:delivery_bpost.field_delivery_carrier__bpost_developer_password
@@ -207,6 +208,11 @@ msgstr "开发者令牌"
 #, python-format
 msgid "Please provide at least one item to ship."
 msgstr "请至少提供一个项目去发货"
+
+#. module: delivery_bpost
+#: model:ir.model,name:delivery_bpost.model_product_packaging
+msgid "Product Packaging"
+msgstr "产品包装"
 
 #. module: delivery_bpost
 #: model:ir.model.fields,field_description:delivery_bpost.field_delivery_carrier__delivery_type
@@ -310,12 +316,12 @@ msgstr "您的公司或仓库地址必须在比利时境内来使用Bpost运输"
 #. module: delivery_bpost
 #: selection:delivery.carrier,bpost_domestic_deliver_type:0
 msgid "bpack 24h Pro"
-msgstr "bpack 24h Pro"
+msgstr "bpack 24h 专业版"
 
 #. module: delivery_bpost
 #: selection:delivery.carrier,bpost_domestic_deliver_type:0
 msgid "bpack 24h business"
-msgstr "bpack 24h business"
+msgstr "bpack 24 小时业务"
 
 #. module: delivery_bpost
 #: selection:delivery.carrier,bpost_domestic_deliver_type:0
@@ -325,17 +331,17 @@ msgstr "bpack Bus"
 #. module: delivery_bpost
 #: selection:delivery.carrier,bpost_international_deliver_type:0
 msgid "bpack Europe Business"
-msgstr "bpack Europe Business"
+msgstr "bpack 的欧洲业务"
 
 #. module: delivery_bpost
 #: selection:delivery.carrier,bpost_international_deliver_type:0
 msgid "bpack World Business"
-msgstr "bpack World Business"
+msgstr "bpack 国际业务"
 
 #. module: delivery_bpost
 #: selection:delivery.carrier,bpost_international_deliver_type:0
 msgid "bpack World Express Pro"
-msgstr "bpack World Express Pro"
+msgstr "bpack 国际速递专业版"
 
 #. module: delivery_bpost
 #: selection:delivery.carrier,delivery_type:0
@@ -344,7 +350,7 @@ msgid "bpost"
 msgstr "bpost"
 
 #. module: delivery_bpost
-#: model:ir.ui.view,arch_db:delivery_bpost.view_delivery_carrier_form_with_provider_bpost
+#: model_terms:ir.ui.view,arch_db:delivery_bpost.view_delivery_carrier_form_with_provider_bpost
 msgid "bpost Configuration"
 msgstr "Bpost配置"
 
@@ -354,8 +360,8 @@ msgid "bpost Default Packaging Type"
 msgstr "Bpost默认打包类型"
 
 #. module: delivery_bpost
-#: model:ir.ui.view,arch_db:delivery_bpost.res_config_settings_view_form_sale
-#: model:ir.ui.view,arch_db:delivery_bpost.res_config_settings_view_form_stock
+#: model_terms:ir.ui.view,arch_db:delivery_bpost.res_config_settings_view_form_sale
+#: model_terms:ir.ui.view,arch_db:delivery_bpost.res_config_settings_view_form_stock
 msgid "bpost Delivery Methods"
 msgstr "Bpost运输方式"
 
@@ -376,7 +382,7 @@ msgid ""
 msgstr "Bpost国际仅用于在比利时境外运输。请更改运输方式为Bpost国内。"
 
 #. module: delivery_bpost
-#: code:addons/delivery_bpost/models/bpost_request.py:111
+#: code:addons/delivery_bpost/models/bpost_request.py:112
 #, python-format
 msgid "bpost did not return prices for this destination country."
 msgstr "Bpost未能返回此目标国家的价格"
@@ -387,4 +393,4 @@ msgstr "Bpost未能返回此目标国家的价格"
 #: model:product.template,weight_uom_name:delivery_bpost.product_product_delivery_bpost_domestic_product_template
 #: model:product.template,weight_uom_name:delivery_bpost.product_product_delivery_bpost_world_product_template
 msgid "kg"
-msgstr "kg"
+msgstr "公斤"

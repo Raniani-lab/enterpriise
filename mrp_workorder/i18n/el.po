@@ -4,19 +4,28 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# Kostas Goutoudis <goutoudis@gmail.com>, 2018
+# Stefanos Nikou <stefanos.nikou@gmail.com>, 2018
+# Giota Dandidou <giotadandidou@gmail.com>, 2018
+# George Tarasidis <george_tarasidis@yahoo.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"POT-Creation-Date: 2018-10-02 10:31+0000\n"
+"PO-Revision-Date: 2018-10-02 10:31+0000\n"
+"Last-Translator: George Tarasidis <george_tarasidis@yahoo.com>, 2018\n"
 "Language-Team: Greek (https://www.transifex.com/odoo/teams/41243/el/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Language: el\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: mrp_workorder
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.res_config_settings_view_form
+msgid "<i class=\"fa fa-print\"/> Print barcode commands"
+msgstr ""
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__allow_producing_quantity_change
@@ -29,37 +38,39 @@ msgid "Allow Registration"
 msgstr ""
 
 #. module: mrp_workorder
-#: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder___barcode_scanned
-msgid "Barcode Scanned"
+#. openerp-web
+#: code:addons/mrp_workorder/static/src/xml/mrp_workorder_barcode.xml:7
+#, python-format
+msgid "And barcode"
 msgstr ""
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet_menu
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet_menu
 msgid "Block"
-msgstr ""
+msgstr "Αποκλεισμός"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__check_ids
 msgid "Check"
-msgstr ""
+msgstr "Επιταγή"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_production__check_ids
 msgid "Checks"
-msgstr ""
+msgstr "Με Επιταγές"
 
 #. module: mrp_workorder
 #. openerp-web
 #: code:addons/mrp_workorder/static/src/xml/widget_template.xml:9
 #, python-format
 msgid "Clear"
-msgstr ""
+msgstr "Καθαρισμός"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__component_id
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__component_id
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_point__component_id
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Component"
 msgstr ""
 
@@ -69,9 +80,9 @@ msgid "Component UoM"
 msgstr ""
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Continue"
-msgstr ""
+msgstr "Συνέχεια"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__control_date
@@ -84,8 +95,8 @@ msgid "Current Quality Check"
 msgstr ""
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_inherit_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_inherit_workorder
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Date"
 msgstr "Ημερομηνία"
 
@@ -103,13 +114,20 @@ msgstr ""
 #: code:addons/mrp_workorder/models/quality.py:110
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__qty_done
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__qty_done
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_inherit_workorder
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_inherit_workorder
 #, python-format
 msgid "Done"
 msgstr "Ολοκληρωμένη"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#. openerp-web
+#: code:addons/mrp_workorder/static/src/xml/mrp_workorder_barcode.xml:8
+#, python-format
+msgid "Download"
+msgstr "Λήψη"
+
+#. module: mrp_workorder
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Dropdown menu"
 msgstr ""
 
@@ -118,10 +136,15 @@ msgstr ""
 #: code:addons/mrp_workorder/static/src/xml/widget_template.xml:8
 #, python-format
 msgid "Edit"
+msgstr "Επεξεργασία"
+
+#. module: mrp_workorder
+#: model:ir.model.fields,help:mrp_workorder.field_mrp_workorder__component_tracking
+msgid "Ensure the traceability of a storable product in your warehouse."
 msgstr ""
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Finish steps"
 msgstr ""
 
@@ -136,7 +159,7 @@ msgid "Finished Product Sequence Number"
 msgstr ""
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_inherit_workorder
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_inherit_workorder
 msgid "Finished Steps"
 msgstr ""
 
@@ -164,36 +187,30 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__lot_id
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__lot_id
 msgid "Lot"
-msgstr ""
+msgstr "Παρτίδα"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Lot Number"
 msgstr ""
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Lot Number:"
 msgstr ""
 
 #. module: mrp_workorder
-#: model:ir.model,name:mrp_workorder.model_mrp_production
-msgid "Manufacturing Order"
-msgstr ""
-
-#. module: mrp_workorder
-#: model:ir.ui.menu,name:mrp_workorder.mrp_production_menu_planning
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_production_tree_view_planning
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_production_tree_view_planning
 msgid "Manufacturing Orders"
-msgstr ""
+msgstr "Εντολές Παραγωγής"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Mark as Done"
-msgstr ""
+msgstr "Σήμανση ως Ολοκληρωμένη"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Mark as Done and Close MO"
 msgstr ""
 
@@ -207,7 +224,7 @@ msgstr "Μενού"
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__move_line_id
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__move_line_id
 msgid "Move Line"
-msgstr ""
+msgstr "Μετακίνηση Γραμμής"
 
 #. module: mrp_workorder
 #: model:ir.actions.server,name:mrp_workorder.production_order_unplan_server_action
@@ -215,31 +232,26 @@ msgid "Mrp: Unplan Production Orders"
 msgstr ""
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Next"
-msgstr ""
+msgstr "Επόμενο"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__note
 msgid "Note"
-msgstr ""
+msgstr "Σημείωση"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_alert__workorder_id
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__workorder_id
 msgid "Operation"
-msgstr ""
+msgstr "Λειτουργία"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_inherit_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_inherit_workorder
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Operator"
-msgstr ""
-
-#. module: mrp_workorder
-#: model:ir.ui.menu,name:mrp_workorder.menu_mrp_production_plan
-msgid "Orders to Plan"
-msgstr ""
+msgstr "Χειριστής"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__parent_id
@@ -249,25 +261,25 @@ msgstr ""
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_point__routing_id
 msgid "Parent Routing"
-msgstr ""
+msgstr "Ευρύτερη Γραμμή Παραγωγής"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Pause"
-msgstr ""
+msgstr "Παύση"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__picture
 msgid "Picture"
-msgstr ""
+msgstr "Εικόνα"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_production_view_form_inherit_planning
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_production_view_form_inherit_planning
 msgid "Plan"
-msgstr ""
+msgstr "Σχεδίασε"
 
 #. module: mrp_workorder
-#: model:ir.actions.act_window,help:mrp_workorder.mrp_workorder_action_tablet
+#: model_terms:ir.actions.act_window,help:mrp_workorder.mrp_workorder_action_tablet
 msgid "Plan some work orders from your manufacturing orders."
 msgstr ""
 
@@ -309,32 +321,26 @@ msgid "Please upload a picture."
 msgstr ""
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Previous"
-msgstr ""
+msgstr "Προηγούμενο"
 
 #. module: mrp_workorder
-#. openerp-web
-#: code:addons/mrp_workorder/static/src/xml/mrp_workorder_barcode.xml:8
-#, python-format
-msgid "Print the barcode commands for Manufacturing."
-msgstr ""
-
-#. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_inherit_workorder
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_inherit_workorder
 msgid "Process"
-msgstr ""
+msgstr "Διεργασία"
 
 #. module: mrp_workorder
+#: model:ir.model,name:mrp_workorder.model_mrp_production
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_alert__production_id
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__production_id
 msgid "Production Order"
-msgstr ""
+msgstr "Εντολή Παραγωγής"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Production Workcenter"
-msgstr ""
+msgstr "Κέντρο Εργασίας Παραγωγής"
 
 #. module: mrp_workorder
 #: model:ir.model,name:mrp_workorder.model_quality_alert
@@ -364,11 +370,16 @@ msgstr ""
 
 #. module: mrp_workorder
 #: model:ir.model,name:mrp_workorder.model_quality_point
-msgid "Quality Point"
+msgid "Quality Control Point"
 msgstr ""
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.view_routing_steps_search
+#: model:ir.model,name:mrp_workorder.model_quality_point_test_type
+msgid "Quality Control Test Type"
+msgstr ""
+
+#. module: mrp_workorder
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.view_routing_steps_search
 msgid "Quality Point Steps"
 msgstr ""
 
@@ -378,13 +389,13 @@ msgid "Quality State"
 msgstr ""
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_production_tree_view_planning
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_production_tree_view_planning
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Quantity"
-msgstr ""
+msgstr "Ποσότητα"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Record production"
 msgstr ""
 
@@ -407,7 +418,7 @@ msgstr ""
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__user_id
 msgid "Responsible"
-msgstr ""
+msgstr "Υπεύθυνοι"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__result
@@ -415,19 +426,19 @@ msgid "Result"
 msgstr ""
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.view_routing_steps_search
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.view_routing_steps_search
 msgid "Routing"
-msgstr ""
+msgstr "Γραμμή Παραγωγής"
 
 #. module: mrp_workorder
 #: model:ir.model,name:mrp_workorder.model_mrp_routing
 msgid "Routings"
-msgstr ""
+msgstr "Γραμμές Παραγωγής"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_production_view_form_inherit_planning
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_production_view_form_inherit_planning
 msgid "Scheduled Date"
-msgstr ""
+msgstr "Προγραμματισμένη Ημερομηνία"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_production__date_planned_finished_wo
@@ -440,9 +451,9 @@ msgid "Scheduled Start Date"
 msgstr ""
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet_menu
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet_menu
 msgid "Scrap"
-msgstr ""
+msgstr "Άχρηστα"
 
 #. module: mrp_workorder
 #: selection:quality.point,worksheet:0
@@ -450,17 +461,17 @@ msgid "Scroll to specific page"
 msgstr ""
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Serial Number"
-msgstr ""
+msgstr "Σειριακός Αριθμός"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Serial Number:"
 msgstr ""
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Skip"
 msgstr "Παράβλεψη"
 
@@ -475,12 +486,12 @@ msgid "Skipped Check"
 msgstr ""
 
 #. module: mrp_workorder
-#: model:ir.actions.act_window,help:mrp_workorder.mrp_workorder_action_tablet
+#: model_terms:ir.actions.act_window,help:mrp_workorder.mrp_workorder_action_tablet
 msgid "Start a new work order"
 msgstr ""
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Status"
 msgstr "Κατάσταση"
 
@@ -496,7 +507,7 @@ msgstr "Βήμα"
 
 #. module: mrp_workorder
 #: model:ir.actions.act_window,name:mrp_workorder.action_mrp_workorder_show_steps
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_routing_view_form_inherit_quality
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_routing_view_form_inherit_quality
 msgid "Steps"
 msgstr ""
 
@@ -508,7 +519,6 @@ msgid "Take a Picture"
 msgstr ""
 
 #. module: mrp_workorder
-#: model:ir.model,name:mrp_workorder.model_quality_point_test_type
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__test_type
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_point__test_type_id
 msgid "Test Type"
@@ -534,29 +544,29 @@ msgid "To Do"
 msgstr "Προς υλοποίηση"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_production_tree_view_planning
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_production_tree_view_planning
 msgid "Total Qty"
-msgstr ""
+msgstr "Σύνολο Ποσ."
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_point__code
 msgid "Type of Operation"
-msgstr ""
+msgstr "Τύπος της Λειτουργίας "
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet_menu
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet_menu
 msgid "Unblock"
-msgstr ""
+msgstr "Ξεμπλοκάρισμα"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__component_uom_id
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_production_tree_view_planning
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_production_tree_view_planning
 msgid "Unit of Measure"
-msgstr ""
+msgstr "Μονάδα Μέτρησης"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_production_view_form_inherit_planning
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_production_view_form_inherit_planning
 msgid "Unplan"
 msgstr ""
 
@@ -565,25 +575,15 @@ msgstr ""
 #: code:addons/mrp_workorder/static/src/xml/widget_template.xml:11
 #, python-format
 msgid "Uploading..."
-msgstr ""
+msgstr "Αποστολή..."
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Validate"
-msgstr ""
+msgstr "Επικύρωση"
 
 #. module: mrp_workorder
-#: model:ir.model.fields,help:mrp_workorder.field_mrp_workorder___barcode_scanned
-msgid "Value of the last barcode scanned."
-msgstr ""
-
-#. module: mrp_workorder
-#: model:ir.ui.menu,name:mrp_workorder.menu_mrp_production_pending
-msgid "Waiting for Material Availability"
-msgstr ""
-
-#. module: mrp_workorder
-#: code:addons/mrp_workorder/models/mrp_workorder.py:482
+#: code:addons/mrp_workorder/models/mrp_workorder.py:495
 #, python-format
 msgid "Warning"
 msgstr "Προσοχή"
@@ -592,15 +592,15 @@ msgstr "Προσοχή"
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_alert__workcenter_id
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__workcenter_id
 msgid "Work Center"
-msgstr ""
+msgstr "Κέντρο Εργασίας"
 
 #. module: mrp_workorder
 #: model:ir.model,name:mrp_workorder.model_mrp_workorder
 msgid "Work Order"
-msgstr ""
+msgstr "Εντολή εργασίας"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.quality_point_view_form_inherit_mrp
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.quality_point_view_form_inherit_mrp
 msgid "Work Order Operation"
 msgstr ""
 
@@ -608,22 +608,22 @@ msgstr ""
 #: model:ir.actions.act_window,name:mrp_workorder.mrp_workorder_action_tablet
 #: model:ir.ui.menu,name:mrp_workorder.mrp_workorder_menu_planning
 msgid "Work Orders"
-msgstr ""
+msgstr "Εντολές Εργασίας"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workcenter_view_kanban_inherit_workorder
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workcenter_view_kanban_inherit_workorder
 msgid "Work orders"
 msgstr ""
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet_menu
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet_menu
 msgid "Workorder Actions"
 msgstr ""
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_point__worksheet
 msgid "Worksheet"
-msgstr ""
+msgstr "Φύλλο εργασίας"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_point__worksheet_page
@@ -636,7 +636,7 @@ msgid "Worksheet page"
 msgstr ""
 
 #. module: mrp_workorder
-#: code:addons/mrp_workorder/models/mrp_workorder.py:483
+#: code:addons/mrp_workorder/models/mrp_workorder.py:496
 #, python-format
 msgid ""
 "You are using components from another lot. \n"
@@ -647,7 +647,7 @@ msgstr ""
 #: code:addons/mrp_workorder/models/mrp_workorder.py:416
 #, python-format
 msgid "You should provide a lot for the final product"
-msgstr ""
+msgstr "Θα πρέπει να δώσετε μια παρτίδα για το τελικό προϊόν"
 
 #. module: mrp_workorder
 #: code:addons/mrp_workorder/models/mrp_workorder.py:414
@@ -656,6 +656,13 @@ msgid "You still need to do the quality checks!"
 msgstr ""
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_production_view_form_inherit_planning
-msgid "to"
+#. openerp-web
+#: code:addons/mrp_workorder/static/src/xml/mrp_workorder_barcode.xml:8
+#, python-format
+msgid "commands for Manufacturing"
 msgstr ""
+
+#. module: mrp_workorder
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_production_view_form_inherit_planning
+msgid "to"
+msgstr "σε"

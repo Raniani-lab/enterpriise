@@ -397,7 +397,7 @@
                             </div>
                             <div class="oe_kanban_content">
                                 <div>
-                                    <field name="tag_ids"/>
+                                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                                 </div>
                                 <div>
                                     <strong><field name="name"/> (#<field name="id"/>)</strong>
@@ -509,7 +509,7 @@
         <field name="name">All Tickets</field>
         <field name="res_model">helpdesk.ticket</field>
         <field name="view_type">form</field>
-        <field name="view_mode">kanban,tree,form</field>
+        <field name="view_mode">kanban,tree,form,activity</field>
         <field name="search_view_id" ref="helpdesk_tickets_view_search"/>
         <field name="view_id" ref="helpdesk.helpdesk_ticket_view_kanban_no_create"/>
         <field name="context">{'search_default_my_ticket': True, 'search_default_is_open': True}</field>
@@ -524,7 +524,7 @@
         <field name="name">All Tickets</field>
         <field name="res_model">helpdesk.ticket</field>
         <field name="view_type">form</field>
-        <field name="view_mode">tree,kanban,form</field>
+        <field name="view_mode">tree,kanban,form,activity</field>
         <field name="search_view_id" ref="helpdesk_tickets_view_search"/>
         <field name="context">{'search_default_is_open': True}</field>
         <field name="help" type="html">
@@ -677,7 +677,7 @@
         <field name="name">Tickets</field>
         <field name="res_model">helpdesk.ticket</field>
         <field name="view_type">form</field>
-        <field name="view_mode">kanban,tree,form</field>
+        <field name="view_mode">kanban,tree,form,activity</field>
         <field name="context">{'search_default_team_id': active_id}</field>
         <field name="search_view_id" ref="helpdesk_tickets_view_search"/>
         <field name="help" type="html">
@@ -691,7 +691,7 @@
         <field name="name">Tickets</field>
         <field name="res_model">helpdesk.ticket</field>
         <field name="view_type">form</field>
-        <field name="view_mode">kanban,tree,form</field>
+        <field name="view_mode">kanban,tree,form,activity</field>
         <field name="context">{'search_default_team_id': active_id, 'search_default_unassigned': True}</field>
         <field name="search_view_id" ref="helpdesk_tickets_view_search"/>
         <field name="help" type="html">
@@ -705,7 +705,7 @@
         <field name="name">Tickets</field>
         <field name="res_model">helpdesk.ticket</field>
         <field name="view_type">form</field>
-        <field name="view_mode">kanban,tree,form</field>
+        <field name="view_mode">kanban,tree,form,activity</field>
         <field name="context">{'search_default_team_id': active_ids, 'search_default_archive': True}</field>
         <field name="search_view_id" ref="helpdesk_tickets_view_search"/>
         <field name="help" type="html">
@@ -719,7 +719,7 @@
         <field name="name">Tickets</field>
         <field name="res_model">helpdesk.ticket</field>
         <field name="view_type">form</field>
-        <field name="view_mode">kanban,tree,form</field>
+        <field name="view_mode">kanban,tree,form,activity</field>
         <field name="context">{'search_default_team_id': active_id, 'search_default_sla_failed': True}</field>
         <field name="search_view_id" ref="helpdesk_tickets_view_search"/>
         <field name="help" type="html">

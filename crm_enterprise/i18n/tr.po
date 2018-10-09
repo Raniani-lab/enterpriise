@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"POT-Creation-Date: 2018-10-02 10:31+0000\n"
+"PO-Revision-Date: 2018-10-02 10:31+0000\n"
 "Last-Translator: Murat Kaplan <muratk@projetgrup.com>, 2018\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
@@ -21,83 +21,69 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #. module: crm_enterprise
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
-msgid "Archived"
-msgstr "Arşivlendi"
-
-#. module: crm_enterprise
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_dashboard
-msgid "At A Glance"
+#: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
+msgid "% Opportunities"
 msgstr ""
 
 #. module: crm_enterprise
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_dashboard
-msgid "Average Expected Revenue"
+#: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_dashboard
+msgid "Average Deal Size"
 msgstr ""
 
 #. module: crm_enterprise
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
+#: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Campaign"
 msgstr "Kampanya"
 
 #. module: crm_enterprise
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
+#: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "City"
 msgstr "Semt/İlçe"
 
 #. module: crm_enterprise
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
+#: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
+msgid "Closed Date"
+msgstr "Kapatma Tarihi"
+
+#. module: crm_enterprise
+#: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Company"
 msgstr "Şirket"
 
 #. module: crm_enterprise
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
+#: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Conversion Date"
 msgstr "Çevrim Tarihi"
 
 #. module: crm_enterprise
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
+#: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Country"
 msgstr "Ülke"
 
 #. module: crm_enterprise
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
+#: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Creation Date"
 msgstr "Oluşturulma Tarihi"
 
 #. module: crm_enterprise
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
-msgid "Current"
-msgstr "Güncel Değer"
-
-#. module: crm_enterprise
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
-msgid "Customer"
-msgstr "Kayıtlı Müşteri"
-
-#. module: crm_enterprise
 #: model:ir.model.fields,field_description:crm_enterprise.field_crm_lead__days_to_convert
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
 msgid "Days To Convert"
 msgstr ""
 
 #. module: crm_enterprise
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_dashboard
+#: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
+msgid "Days To Opportunity"
+msgstr ""
+
+#. module: crm_enterprise
+#: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
+#: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_dashboard
 msgid "Days to Assign"
 msgstr "Atanana Kadarki Gün"
 
 #. module: crm_enterprise
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_dashboard
+#: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
+#: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_dashboard
 msgid "Days to Close"
 msgstr "Kapanmaya Kalan Gün"
 
@@ -107,47 +93,35 @@ msgid "Exceeded Closing Days"
 msgstr ""
 
 #. module: crm_enterprise
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
+#: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_dashboard
+msgid "Exceeding Close Days"
+msgstr ""
+
+#. module: crm_enterprise
+#: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Expected Closing Date"
 msgstr "Tahmini Kapatma Tarihi"
 
 #. module: crm_enterprise
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_dashboard
+#: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
+#: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_dashboard
 msgid "Expected Revenue"
 msgstr "Beklenen Gelir"
 
 #. module: crm_enterprise
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
+#: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Extended Filters"
 msgstr "Genişletilmiş Filtreler"
 
 #. module: crm_enterprise
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
+#: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Group By"
 msgstr "Grupla"
 
 #. module: crm_enterprise
-#: model:ir.model.fields,field_description:crm_enterprise.field_crm_lead__lost
-msgid "Is Lost"
-msgstr ""
-
-#. module: crm_enterprise
-#: model:ir.model.fields,field_description:crm_enterprise.field_crm_lead__won
+#: model:ir.model.fields,field_description:crm_enterprise.field_crm_lead__won_status
 msgid "Is Won"
 msgstr ""
-
-#. module: crm_enterprise
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
-msgid "Last Month"
-msgstr "Geçen Ay"
-
-#. module: crm_enterprise
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
-msgid "Lead / Customer"
-msgstr "Aday / Müşteri"
 
 #. module: crm_enterprise
 #: model:ir.model,name:crm_enterprise.model_crm_lead
@@ -155,9 +129,9 @@ msgid "Lead/Opportunity"
 msgstr "Aday/Fırsat"
 
 #. module: crm_enterprise
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
+#: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
+#: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_pivot
+#: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Leads"
 msgstr "Adaylar"
 
@@ -167,51 +141,44 @@ msgid "Leads Analysis"
 msgstr "Aday Analizi"
 
 #. module: crm_enterprise
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
-msgid "Leads that are assigned to me"
-msgstr "Bana atanan adaylar"
-
-#. module: crm_enterprise
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
+#: selection:crm.lead,won_status:0
+#: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Lost"
 msgstr "Kayıp"
 
 #. module: crm_enterprise
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
+#: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Lost Reason"
 msgstr "Kayıp Nedeni"
 
 #. module: crm_enterprise
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
+#: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Medium"
 msgstr "Orta"
 
 #. module: crm_enterprise
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
-msgid "My Leads"
-msgstr "Adaylarım"
-
-#. module: crm_enterprise
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
+#: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "My Pipeline"
 msgstr "Fırsatlarım"
 
 #. module: crm_enterprise
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_cohort
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_dashboard
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_graph
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
+#: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
+#: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_cohort
+#: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_dashboard
+#: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_graph
+#: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Opportunities"
 msgstr "Fırsatlar"
 
 #. module: crm_enterprise
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
+#: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Opportunities Analysis"
 msgstr "Fırsat Analizi"
+
+#. module: crm_enterprise
+#: selection:crm.lead,won_status:0
+msgid "Pending"
+msgstr "Beklemede"
 
 #. module: crm_enterprise
 #: model:ir.actions.act_window,name:crm_enterprise.crm_opportunity_action_dashboard
@@ -219,68 +186,48 @@ msgid "Pipeline Analysis"
 msgstr "Fırsat Analizi"
 
 #. module: crm_enterprise
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
+#: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
+#: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_dashboard
+msgid "Prorated Revenue"
+msgstr ""
+
+#. module: crm_enterprise
+#: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Sales Channel"
 msgstr "Satış Ekibi"
 
 #. module: crm_enterprise
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
+#: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Salesperson"
 msgstr "Satış Temsilcisi"
 
 #. module: crm_enterprise
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
-msgid "Search Leads"
-msgstr "Adaylarda Ara"
-
-#. module: crm_enterprise
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
+#: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Show only lead"
 msgstr "Sadece adayı göster"
 
 #. module: crm_enterprise
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
+#: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Show only opportunity"
 msgstr "Sadece fırsatı göster"
 
 #. module: crm_enterprise
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
+#: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Source"
 msgstr "Kaynak"
 
 #. module: crm_enterprise
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
+#: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Stage"
 msgstr "Aşama"
 
 #. module: crm_enterprise
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
-msgid "Tag"
-msgstr "Etiket"
-
-#. module: crm_enterprise
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
-msgid "This Month"
-msgstr "Bu Ay"
-
-#. module: crm_enterprise
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_dashboard
-msgid "Win/Loss ratio"
-msgstr ""
-
-#. module: crm_enterprise
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_search
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
+#: selection:crm.lead,won_status:0
+#: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Won"
 msgstr "Kazanıldı"
 
 #. module: crm_enterprise
-#: model:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_graph
+#: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_graph
 msgid "leads"
 msgstr "adaylar"

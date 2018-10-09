@@ -68,7 +68,7 @@ var CohortController = AbstractController.extend({
     renderButtons: function ($node) {
         if ($node) {
             this.$buttons = $(qweb.render('CohortView.buttons', {
-                measures: this.measures,
+                measures: _.sortBy(_.pairs(this.measures), function(x){ return x[1].toLowerCase(); }),
                 intervals: this.intervals,
                 isMobile: config.device.isMobile
             }));

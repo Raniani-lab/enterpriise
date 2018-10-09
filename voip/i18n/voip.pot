@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-18 10:05+0000\n"
-"PO-Revision-Date: 2018-09-18 10:05+0000\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -87,14 +87,14 @@ msgid "Call Name"
 msgstr ""
 
 #. module: voip
-#: code:addons/voip/models/voip_phonecall.py:192
+#: code:addons/voip/models/voip_phonecall.py:193
 #, python-format
 msgid "Call from "
 msgstr ""
 
 #. module: voip
-#: code:addons/voip/models/voip_phonecall.py:182
-#: code:addons/voip/models/voip_phonecall.py:224
+#: code:addons/voip/models/voip_phonecall.py:183
+#: code:addons/voip/models/voip_phonecall.py:225
 #, python-format
 msgid "Call to "
 msgstr ""
@@ -154,6 +154,11 @@ msgstr ""
 #: code:addons/voip/static/src/xml/dialing_panel.xml:16
 #, python-format
 msgid "Close"
+msgstr ""
+
+#. module: voip
+#: model:ir.model,name:voip.model_res_config_settings
+msgid "Config Settings"
 msgstr ""
 
 #. module: voip
@@ -522,11 +527,6 @@ msgid "Phonecalls"
 msgstr ""
 
 #. module: voip
-#: model:ir.model,name:voip.model_voip_phonecall_report
-msgid "Phonecalls by user"
-msgstr ""
-
-#. module: voip
 #. openerp-web
 #: code:addons/voip/static/src/js/dialing_panel.js:161
 #, python-format
@@ -776,12 +776,37 @@ msgid "VOIP Configuration"
 msgstr ""
 
 #. module: voip
+#: model:ir.model,name:voip.model_voip_configurator
+msgid "VOIP Configurator"
+msgstr ""
+
+#. module: voip
+#: model:ir.model,name:voip.model_voip_phonecall
+msgid "VOIP Phonecall"
+msgstr ""
+
+#. module: voip
+#: model:ir.model,name:voip.model_voip_phonecall_log_wizard
+msgid "VOIP Phonecall log Wizard"
+msgstr ""
+
+#. module: voip
+#: model:ir.model,name:voip.model_voip_phonecall_report
+msgid "VOIP Phonecalls by user report"
+msgstr ""
+
+#. module: voip
+#: model:ir.model,name:voip.model_voip_phonecall_transfer_wizard
+msgid "VOIP Transfer Wizard of Phonecalls"
+msgstr ""
+
+#. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_config_settings__mode
 msgid "VoIP Environment"
 msgstr ""
 
 #. module: voip
-#: code:addons/voip/wizard/voip_phonecall_transfer_wizard.py:34
+#: code:addons/voip/wizard/voip_phonecall_transfer_wizard.py:35
 #, python-format
 msgid "Warning"
 msgstr ""
@@ -792,7 +817,7 @@ msgid "WebSocket"
 msgstr ""
 
 #. module: voip
-#: code:addons/voip/wizard/voip_phonecall_transfer_wizard.py:35
+#: code:addons/voip/wizard/voip_phonecall_transfer_wizard.py:36
 #, python-format
 msgid "Wrong configuration for the call. There is no external phone number configured"
 msgstr ""
@@ -819,11 +844,6 @@ msgstr ""
 #: code:addons/voip/static/src/xml/voip_phonecall.xml:94
 #, python-format
 msgid "min"
-msgstr ""
-
-#. module: voip
-#: model:ir.model,name:voip.model_res_config_settings
-msgid "res.config.settings"
 msgstr ""
 
 #. module: voip
@@ -864,25 +884,5 @@ msgstr ""
 #. module: voip
 #: selection:voip.phonecall.transfer.wizard,transfer_choice:0
 msgid "transfer to your external phone"
-msgstr ""
-
-#. module: voip
-#: model:ir.model,name:voip.model_voip_configurator
-msgid "voip.configurator"
-msgstr ""
-
-#. module: voip
-#: model:ir.model,name:voip.model_voip_phonecall
-msgid "voip.phonecall"
-msgstr ""
-
-#. module: voip
-#: model:ir.model,name:voip.model_voip_phonecall_log_wizard
-msgid "voip.phonecall.log.wizard"
-msgstr ""
-
-#. module: voip
-#: model:ir.model,name:voip.model_voip_phonecall_transfer_wizard
-msgid "voip.phonecall.transfer.wizard"
 msgstr ""
 

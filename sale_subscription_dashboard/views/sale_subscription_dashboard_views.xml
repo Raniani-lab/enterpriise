@@ -58,22 +58,6 @@
         <field name="help">From this view, have an analysis of your different invoice line entries.</field>
     </record>
 
-    <record id="sale_subscription_view_search_inherit_sale_subscription_dashboard" model="ir.ui.view">
-        <field name="name">sale.subscription.search.inherit</field>
-        <field name="model">sale.subscription</field>
-        <field name="inherit_id" ref="sale_subscription.sale_subscription_view_search" />
-        <field name="arch" type="xml">
-            <xpath expr="//filter[@name='closed']" position="after">
-                <separator />
-                <filter
-                    string="This Year"
-                    name="this_year"
-                    domain="[('date_start', '&gt;=', context_today().strftime('%Y-01-01')), ('date_start', '&lt;=', context_today().strftime('%Y-12-31'))]" />
-            </xpath>
-        </field>
-    </record>
-
-    <menuitem id="menu_sale_subscription_dashboard" name="Dashboard" sequence="1" parent="sale_subscription.menu_sale_subscription_root"/>
-    <menuitem id="menu_action_subscription_dashboard_report_main" action="sale_subscription_dashboard.action_subscription_dashboard_report_main" parent="menu_sale_subscription_dashboard" name="Revenue KPIs" groups="sale_subscription.group_sale_subscription_manager"/>
-    <menuitem id="menu_action_subscription_dashboard_report_salesman" action="sale_subscription_dashboard.action_subscription_dashboard_report_salesman" parent="menu_sale_subscription_dashboard" name="Salesperson Dashboard"/>
+    <menuitem id="menu_action_subscription_dashboard_report_main" action="sale_subscription_dashboard.action_subscription_dashboard_report_main" parent="sale_subscription.menu_sale_subscription_report" name="Revenue KPIs" groups="sale_subscription.group_sale_subscription_manager"/>
+    <menuitem id="menu_action_subscription_dashboard_report_salesman" action="sale_subscription_dashboard.action_subscription_dashboard_report_salesman" parent="sale_subscription.menu_sale_subscription_report" name="Salesperson Dashboard"/>
 </odoo>

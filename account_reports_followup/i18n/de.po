@@ -4,13 +4,14 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# Johannes Croe <jcr@odoo.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"Last-Translator: Johannes Croe <jcr@odoo.com>, 2018\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -100,22 +101,22 @@ msgstr ""
 "Mit freundlichen Grüßen,\n"
 
 #. module: account_reports_followup
-#: model:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
+#: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
 msgid ": Current Date"
 msgstr ": Heutiges Datum"
 
 #. module: account_reports_followup
-#: model:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
+#: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
 msgid ": Partner Name"
 msgstr ": Partnername"
 
 #. module: account_reports_followup
-#: model:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
+#: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
 msgid ": User Name"
 msgstr ": Benutzername"
 
 #. module: account_reports_followup
-#: model:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
+#: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
 msgid ": User's Company Name"
 msgstr ": Unternehmen des Benutzers"
 
@@ -130,7 +131,7 @@ msgid "Action To Do"
 msgstr "Folgeaktion"
 
 #. module: account_reports_followup
-#: model:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
+#: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
 msgid "After"
 msgstr "Nach"
 
@@ -148,6 +149,11 @@ msgstr "Unternehmen"
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup__name
 msgid "Company Name"
 msgstr "Unternehmensname"
+
+#. module: account_reports_followup
+#: model:ir.model,name:account_reports_followup.model_res_config_settings
+msgid "Config Settings"
+msgstr "Konfiguration "
 
 #. module: account_reports_followup
 #: model:ir.model,name:account_reports_followup.model_res_partner
@@ -172,7 +178,7 @@ msgid "Days of the follow-up levels must be different"
 msgstr "Tage der Mahnstufen müssen verschieden sein"
 
 #. module: account_reports_followup
-#: model:ir.actions.act_window,help:account_reports_followup.action_account_followup_definition_form
+#: model_terms:ir.actions.act_window,help:account_reports_followup.action_account_followup_definition_form
 msgid "Define follow-up levels and their related actions"
 msgstr ""
 
@@ -211,8 +217,8 @@ msgstr "Mahnung"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup__followup_line_ids
-#: model:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_form
-#: model:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_tree
+#: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_form
+#: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_tree
 msgid "Follow-up"
 msgstr "Erinnerung"
 
@@ -228,9 +234,14 @@ msgstr "Mahnstufe"
 
 #. module: account_reports_followup
 #: model:ir.ui.menu,name:account_reports_followup.account_followup_menu
-#: model:ir.ui.view,arch_db:account_reports_followup.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:account_reports_followup.res_config_settings_view_form
 msgid "Follow-up Levels"
 msgstr "Mahnstufen"
+
+#. module: account_reports_followup
+#: model:ir.model,name:account_reports_followup.model_account_followup_report
+msgid "Follow-up Report"
+msgstr ""
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_res_partner__payment_responsible_id
@@ -239,18 +250,13 @@ msgid "Follow-up Responsible"
 msgstr "Verantwortlich für Mahnung"
 
 #. module: account_reports_followup
-#: model:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
-#: model:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_tree
+#: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
+#: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_tree
 msgid "Follow-up Steps"
 msgstr "Mahnstufen"
 
 #. module: account_reports_followup
-#: model:ir.model,name:account_reports_followup.model_account_followup_report
-msgid "Followup Report"
-msgstr "Mahnbericht"
-
-#. module: account_reports_followup
-#: model:ir.actions.act_window,help:account_reports_followup.action_account_followup_definition_form
+#: model_terms:ir.actions.act_window,help:account_reports_followup.action_account_followup_definition_form
 msgid ""
 "For each step, specify the actions to be taken and delay in days. It is\n"
 "                possible to use print and e-mail templates to send specific messages to\n"
@@ -305,7 +311,7 @@ msgstr "Letzte Mahnung"
 #. openerp-web
 #: code:addons/account_reports_followup/static/src/xml/account_reports_followup_template.xml:13
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__manual_action
-#: model:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
+#: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
 #, python-format
 msgid "Manual Action"
 msgstr "Manuelle Folgeaktion"
@@ -316,7 +322,7 @@ msgid "Manual Action Type"
 msgstr ""
 
 #. module: account_reports_followup
-#: code:addons/account_reports_followup/models/account_followup_report.py:85
+#: code:addons/account_reports_followup/models/account_followup_report.py:86
 #, python-format
 msgid "Manual action done"
 msgstr "Manuelle Handlung erledigt"
@@ -346,7 +352,7 @@ msgstr ""
 "verantwortlich ist."
 
 #. module: account_reports_followup
-#: model:ir.ui.view,arch_db:account_reports_followup.account_move_line_partner_tree
+#: model_terms:ir.ui.view,arch_db:account_reports_followup.account_move_line_partner_tree
 msgid "Partner entries"
 msgstr "Partnereinträge"
 
@@ -380,7 +386,7 @@ msgid "Remind me later"
 msgstr ""
 
 #. module: account_reports_followup
-#: model:ir.ui.view,arch_db:account_reports_followup.view_account_followup_filter
+#: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_filter
 msgid "Search Follow-up"
 msgstr "Mahnungen suchen"
 
@@ -390,7 +396,7 @@ msgid "Second reminder letter and email"
 msgstr "Zweiter Brief oder zweite E-Mail zur Erinnerung"
 
 #. module: account_reports_followup
-#: model:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
+#: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
 msgid "Send a Letter or Email"
 msgstr "Sende Brief oder E-Mail"
 
@@ -428,7 +434,7 @@ msgid "Third reminder: phone the customer"
 msgstr "Dritte Erinnerung: Telefon des Kunden"
 
 #. module: account_reports_followup
-#: model:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_form
+#: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_form
 msgid ""
 "To remind customers of paying their invoices, you can\n"
 "                        define different actions depending on how severely\n"
@@ -449,12 +455,12 @@ msgstr ""
 "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tMahnstufe ausgelöst."
 
 #. module: account_reports_followup
-#: model:ir.ui.view,arch_db:account_reports_followup.account_move_line_partner_tree
+#: model_terms:ir.ui.view,arch_db:account_reports_followup.account_move_line_partner_tree
 msgid "Total credit"
 msgstr "Forderungssumme"
 
 #. module: account_reports_followup
-#: model:ir.ui.view,arch_db:account_reports_followup.account_move_line_partner_tree
+#: model_terms:ir.ui.view,arch_db:account_reports_followup.account_move_line_partner_tree
 msgid "Total debit"
 msgstr "Summe Soll"
 
@@ -478,7 +484,7 @@ msgstr ""
 " "
 
 #. module: account_reports_followup
-#: model:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
+#: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
 msgid ""
 "Write here the introduction in the letter,\n"
 "                            according to the level of the follow-up. You can\n"
@@ -503,16 +509,11 @@ msgstr ""
 " eingeben wollen."
 
 #. module: account_reports_followup
-#: model:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
+#: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
 msgid "days overdue, do the following actions:"
 msgstr "bei fällig, tun Sie folgendes:"
 
 #. module: account_reports_followup
-#: model:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
+#: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
 msgid "e.g. Call the customer, check if it's paid, ..."
 msgstr "z.B. Kundenanruf. Prüfen Sie, ob bereits bezahlt wurde ..."
-
-#. module: account_reports_followup
-#: model:ir.model,name:account_reports_followup.model_res_config_settings
-msgid "res.config.settings"
-msgstr "res.config.settings"

@@ -173,7 +173,7 @@ class OnlineAccount(models.Model):
     It is used to save the state of the current online accout.
     """
     _name = 'account.online.journal'
-    _description = 'Interface for online account journal'
+    _description = 'Interface for Online Account Journal'
 
     name = fields.Char(string="Journal Name", required=True)
     account_online_provider_id = fields.Many2one('account.online.provider', ondelete='cascade', readonly=True)
@@ -240,7 +240,7 @@ class OnlineAccount(models.Model):
 
 class OnlineAccountLinkWizard(models.TransientModel):
     _name = 'account.online.link.wizard'
-    _description = 'Link a particular synchronized account to a journal'
+    _description = 'Link synchronized account to a journal'
 
     journal_id = fields.Many2one('account.journal', domain="[('type', '=', 'bank'), ('account_online_journal_id', '=', False)]")
     online_account_id = fields.Many2one('account.online.journal')
@@ -327,8 +327,8 @@ class AccountJournal(models.Model):
 
     next_synchronization = fields.Datetime("Next synchronization", compute='_compute_next_synchronization')
     account_online_journal_id = fields.Many2one('account.online.journal', string='Online Account')
-    account_online_provider_id = fields.Many2one('account.online.provider', related='account_online_journal_id.account_online_provider_id')
-    synchronization_status = fields.Char(related='account_online_provider_id.status')
+    account_online_provider_id = fields.Many2one('account.online.provider', related='account_online_journal_id.account_online_provider_id', readonly=False)
+    synchronization_status = fields.Char(related='account_online_provider_id.status', readonly=False)
     bank_statement_creation = fields.Selection(selection=get_statement_creation_possible_values,
                                                help="""Defines when a new bank statement
                                                will be created when fetching new transactions

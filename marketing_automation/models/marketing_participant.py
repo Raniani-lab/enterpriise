@@ -117,7 +117,7 @@ class MarketingTrace(models.Model):
     participant_id = fields.Many2one(
         'marketing.participant', string='Participant',
         index=True, ondelete='cascade', required=True)
-    res_id = fields.Integer(string='Document ID', related='participant_id.res_id', index=True, store=True)
+    res_id = fields.Integer(string='Document ID', related='participant_id.res_id', index=True, store=True, readonly=False)
     activity_id = fields.Many2one(
         'marketing.activity', string='Activity',
         index=True, ondelete='cascade', required=True)
@@ -138,12 +138,12 @@ class MarketingTrace(models.Model):
     child_ids = fields.One2many('marketing.trace', 'parent_id', string='Direct child traces')
     # statistics
     mail_statistics_ids = fields.One2many('mail.mail.statistics', 'marketing_trace_id', string='Mass mailing statistics')
-    sent = fields.Datetime(related='mail_statistics_ids.sent')
-    exception = fields.Datetime(related='mail_statistics_ids.exception')
-    opened = fields.Datetime(related='mail_statistics_ids.opened')
-    replied = fields.Datetime(related='mail_statistics_ids.replied')
-    bounced = fields.Datetime(related='mail_statistics_ids.bounced')
-    clicked = fields.Datetime(related='mail_statistics_ids.clicked')
+    sent = fields.Datetime(related='mail_statistics_ids.sent', readonly=False)
+    exception = fields.Datetime(related='mail_statistics_ids.exception', readonly=False)
+    opened = fields.Datetime(related='mail_statistics_ids.opened', readonly=False)
+    replied = fields.Datetime(related='mail_statistics_ids.replied', readonly=False)
+    bounced = fields.Datetime(related='mail_statistics_ids.bounced', readonly=False)
+    clicked = fields.Datetime(related='mail_statistics_ids.clicked', readonly=False)
 
     def participant_action_cancel(self):
         self.action_cancel(message=_('Manually'))

@@ -6,6 +6,7 @@ from odoo import fields, http, models, _
 from odoo.addons.sign.controllers.main import Sign
 from odoo.exceptions import AccessError
 from odoo.http import request
+from odoo.tools import consteq
 
 from werkzeug.wsgi import get_current_url
 
@@ -37,6 +38,8 @@ class SignContract(Sign):
                         contract.origin_contract_id.car_id.driver_id = False
                     contract.car_id.driver_id = contract.employee_id.address_home_id
                 contract.access_token_consumed = True
+                if contract.applicant_id:
+                    contract.applicant_id.access_token = False
             # Both applicant/employee and HR responsible have signed
             if request_item.sign_request_id.nb_closed == 2:
                 if contract.employee_id:
@@ -90,6 +93,16 @@ class website_hr_contract_salary(http.Controller):
                                                          'status_message': 'This contract has been updated, please request an updated link..'})
 
         if not request.env.user.has_group('hr_contract.group_hr_contract_manager'):
+            if kw.get('applicant_id'):
+                applicant = request.env['hr.applicant'].sudo().browse(int(kw.get('applicant_id')))
+                if not kw.get('token') or \
+                        not applicant.access_token or \
+                        not consteq(applicant.access_token, kw.get('token')) or \
+                        applicant.access_token_end_date < fields.Date.today():
+                    return request.render(
+                        'website.http_error',
+                        {'status_code': 'Oops',
+                         'status_message': 'This link is invalid. Please contact the HR Responsible to get a new one...'})
             if not contract.employee_id.user_id and not kw.get('applicant_id'):
                 return request.render(
                     'website.http_error',

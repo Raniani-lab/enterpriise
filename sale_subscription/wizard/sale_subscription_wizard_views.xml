@@ -4,8 +4,8 @@
         <field name="name">wizard.form</field>
         <field name="model">sale.subscription.wizard</field>
         <field name="arch" type="xml">
-            <form string="Add Options">
-                <p>You can either create a quotation that will be discounted for the current invoicing period (the options will be added when the quotation is confirmed) or directly insert them in the subscription to invoice it on the next invoice date.</p>
+            <form string="Upsell">
+                <p>To add new products to this running subscription, you can either create a new quotation to ask a customer approval (discounted for the current invoicing period) or directly insert them in the subscription to invoice it on the next invoice date. If you use a quotation, the products will be added at the order confirmation.</p>
                 <group>
                     <field name="date_from"/>
                 </group>
@@ -14,7 +14,7 @@
                         <field name="product_id" domain="[('recurring_invoice', '=', True)]" context="{'default_recurring_invoice': True}"/>
                         <field name="name" invisible="1"/>
                         <field name="quantity" readonly="0"/>
-                        <field name="uom_id" groups="product.group_uom"/>
+                        <field name="uom_id" groups="uom.group_uom"/>
                     </tree>
                 </field>
                 <footer>
@@ -29,7 +29,7 @@
     </record>
 
     <record model="ir.actions.act_window" id="wizard_action">
-        <field name="name">Add Options</field>
+        <field name="name">Upsell</field>
         <field name="res_model">sale.subscription.wizard</field>
         <field name="view_mode">form</field>
         <field name="view_id" ref="wizard_form_view"/>

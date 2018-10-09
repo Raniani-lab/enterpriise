@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-18 10:04+0000\n"
-"PO-Revision-Date: 2018-09-18 10:04+0000\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -53,7 +53,7 @@ msgstr ""
 
 #. module: mrp_mps
 #. openerp-web
-#: code:addons/mrp_mps/static/src/js/mrp_mps_report_widget.js:184
+#: code:addons/mrp_mps/static/src/js/mrp_mps_report_widget.js:185
 #: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
 #, python-format
 msgid "Add a Product"
@@ -91,6 +91,11 @@ msgid "Company"
 msgstr ""
 
 #. module: mrp_mps
+#: model:ir.model,name:mrp_mps.model_res_config_settings
+msgid "Config Settings"
+msgstr ""
+
+#. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_mps_report__create_uid
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast__create_uid
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast_indirect__create_uid
@@ -122,7 +127,7 @@ msgstr ""
 
 #. module: mrp_mps
 #: model:ir.model.fields,help:mrp_mps.field_sale_forecast__product_uom_id
-msgid "Default Unit of Measure used for all stock operation."
+msgid "Default unit of measure used for all stock operations."
 msgstr ""
 
 #. module: mrp_mps
@@ -165,7 +170,7 @@ msgstr ""
 
 #. module: mrp_mps
 #. openerp-web
-#: code:addons/mrp_mps/static/src/js/mrp_mps_report_widget.js:211
+#: code:addons/mrp_mps/static/src/js/mrp_mps_report_widget.js:212
 #: model_terms:ir.ui.view,arch_db:mrp_mps.product_product_view_form_mps
 #, python-format
 msgid "Forecast Product"
@@ -198,6 +203,11 @@ msgstr ""
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast_indirect__quantity
 msgid "Indirect Quantity"
+msgstr ""
+
+#. module: mrp_mps
+#: model:ir.model,name:mrp_mps.model_sale_forecast_indirect
+msgid "Indirect Sales Forecast"
 msgstr ""
 
 #. module: mrp_mps
@@ -241,6 +251,11 @@ msgstr ""
 #. module: mrp_mps
 #: model:ir.ui.menu,name:mrp_mps.mrp_mps_menu_planning
 msgid "MPS"
+msgstr ""
+
+#. module: mrp_mps
+#: model:ir.model,name:mrp_mps.model_mrp_mps_report
+msgid "MPS Report"
 msgstr ""
 
 #. module: mrp_mps
@@ -340,6 +355,11 @@ msgid "Rows"
 msgstr ""
 
 #. module: mrp_mps
+#: model:ir.model,name:mrp_mps.model_sale_forecast
+msgid "Sales Forecast"
+msgstr ""
+
+#. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.product_product_view_form_mps
 msgid "Save"
 msgstr ""
@@ -375,7 +395,7 @@ msgid "To Produce"
 msgstr ""
 
 #. module: mrp_mps
-#: code:addons/mrp_mps/models/mrp_mps_report.py:128
+#: code:addons/mrp_mps/models/mrp_mps_report.py:129
 #, python-format
 msgid "To Receive / To Supply / Produce"
 msgstr ""
@@ -386,7 +406,7 @@ msgid "To Supply"
 msgstr ""
 
 #. module: mrp_mps
-#: code:addons/mrp_mps/models/mrp_mps_report.py:155
+#: code:addons/mrp_mps/models/mrp_mps_report.py:156
 #, python-format
 msgid "Week %s"
 msgstr ""
@@ -403,8 +423,8 @@ msgstr ""
 
 #. module: mrp_mps
 #. openerp-web
-#: code:addons/mrp_mps/static/src/js/mrp_mps_report_widget.js:82
-#: code:addons/mrp_mps/static/src/js/mrp_mps_report_widget.js:227
+#: code:addons/mrp_mps/static/src/js/mrp_mps_report_widget.js:83
+#: code:addons/mrp_mps/static/src/js/mrp_mps_report_widget.js:228
 #, python-format
 msgid "Wrong value entered!"
 msgstr ""
@@ -412,26 +432,6 @@ msgstr ""
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
 msgid "double click in order to empty"
-msgstr ""
-
-#. module: mrp_mps
-#: model:ir.model,name:mrp_mps.model_mrp_mps_report
-msgid "mrp.mps.report"
-msgstr ""
-
-#. module: mrp_mps
-#: model:ir.model,name:mrp_mps.model_res_config_settings
-msgid "res.config.settings"
-msgstr ""
-
-#. module: mrp_mps
-#: model:ir.model,name:mrp_mps.model_sale_forecast
-msgid "sale.forecast"
-msgstr ""
-
-#. module: mrp_mps
-#: model:ir.model,name:mrp_mps.model_sale_forecast_indirect
-msgid "sale.forecast.indirect"
 msgstr ""
 
 #. module: mrp_mps

@@ -4,14 +4,14 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
-# JackTheHunter <Maximilian.N98@gmail.com>, 2018
+# Johannes Croe <jcr@odoo.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:29+0000\n"
-"PO-Revision-Date: 2018-08-24 11:29+0000\n"
-"Last-Translator: JackTheHunter <Maximilian.N98@gmail.com>, 2018\n"
+"POT-Creation-Date: 2018-09-21 14:07+0000\n"
+"PO-Revision-Date: 2018-09-21 14:07+0000\n"
+"Last-Translator: Johannes Croe <jcr@odoo.com>, 2018\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -48,7 +48,7 @@ msgid "Archive"
 msgstr "Archiv"
 
 #. module: website_crm_score
-#: model:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
+#: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
 msgid "Assignation"
 msgstr "Zuweisung"
 
@@ -68,20 +68,21 @@ msgid "Assigned Leads this last month"
 msgstr "Zugewiesene Leads im letzten Monat"
 
 #. module: website_crm_score
+#: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_attachment_count
+#: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__message_attachment_count
+msgid "Attachment Count"
+msgstr "# Anhänge"
+
+#. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__assign_date
 msgid "Auto Assign Date"
 msgstr ""
 
 #. module: website_crm_score
-#: model:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
-#: model:ir.ui.view,arch_db:website_crm_score.team_user_kanban
+#: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
+#: model_terms:ir.ui.view,arch_db:website_crm_score.team_user_kanban
 msgid "Avatar"
 msgstr "Avatar"
-
-#. module: website_crm_score
-#: model:ir.ui.view,arch_db:website_crm_score.crm_lead_view_dashboard
-msgid "Average Score"
-msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_team__capacity
@@ -89,7 +90,7 @@ msgid "Capacity"
 msgstr "Kapazität"
 
 #. module: website_crm_score
-#: model:ir.actions.act_window,help:website_crm_score.team_user_action
+#: model_terms:ir.actions.act_window,help:website_crm_score.team_user_action
 msgid "Create a new salesman"
 msgstr ""
 
@@ -140,7 +141,7 @@ msgstr ""
 "zugewiesen wurde."
 
 #. module: website_crm_score
-#: model:ir.actions.act_window,help:website_crm_score.team_action
+#: model_terms:ir.actions.act_window,help:website_crm_score.team_action
 msgid "Define a new sales channel"
 msgstr ""
 
@@ -188,8 +189,8 @@ msgstr "Abonnenten (Partner)"
 
 #. module: website_crm_score
 #: model:ir.model,name:website_crm_score.model_ir_http
-msgid "HTTP routing"
-msgstr "HTTP-Routing"
+msgid "HTTP Routing"
+msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__id
@@ -215,6 +216,8 @@ msgstr "Falls markiert, benötigen neue Nachrichten Ihre Kenntnisnahme."
 #: model:ir.model.fields,help:website_crm_score.field_website_crm_score__message_has_error
 msgid "If checked, some messages have a delivery error."
 msgstr ""
+"Das Senden mancher Nachrichten ist fehlgeschlagen wenn dieses Fenster "
+"angekreuzt ist."
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_is_follower
@@ -264,13 +267,19 @@ msgid "Lead"
 msgstr "Interessent"
 
 #. module: website_crm_score
+#: model:ir.actions.act_window,name:website_crm_score.website_crm_score_pageviews
+#: model:ir.ui.menu,name:website_crm_score.pageview_menu
+msgid "Lead Page Views"
+msgstr ""
+
+#. module: website_crm_score
 #: model:ir.model,name:website_crm_score.model_crm_lead
 msgid "Lead/Opportunity"
 msgstr "Interessent / Chance"
 
 #. module: website_crm_score
 #: model:ir.actions.act_window,name:website_crm_score.score_leads
-#: model:ir.ui.view,arch_db:website_crm_score.view_crm_score_form
+#: model_terms:ir.ui.view,arch_db:website_crm_score.view_crm_score_form
 msgid "Leads"
 msgstr "Interessenten"
 
@@ -286,17 +295,12 @@ msgid "Leads Count"
 msgstr "Anzahl der Leads"
 
 #. module: website_crm_score
-#: model:ir.ui.menu,name:website_crm_score.leads_menu
-msgid "Leads Management"
-msgstr "Verwaltung der Leads"
-
-#. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__maximum_user_leads
 msgid "Leads Per Month"
 msgstr "Leads pro Monat"
 
 #. module: website_crm_score
-#: model:ir.actions.act_window,help:website_crm_score.team_user_action
+#: model_terms:ir.actions.act_window,help:website_crm_score.team_user_action
 msgid ""
 "Link users to salesteam, set a per 30 days lead capacity for each of them "
 "and set filters to auto assign your leads."
@@ -312,7 +316,20 @@ msgstr ""
 "Liste der (verfolgten) Seiten, die vom Inhaber dieses Leads gesehen wurden."
 
 #. module: website_crm_score
-#: model:ir.ui.view,arch_db:website_crm_score.view_crm_team_user_form
+#. openerp-web
+#: code:addons/website_crm_score/static/src/xml/track_page.xml:9
+#, python-format
+msgid "Log visits on leads"
+msgstr ""
+
+#. module: website_crm_score
+#: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_main_attachment_id
+#: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__message_main_attachment_id
+msgid "Main Attachment"
+msgstr "Hauptanhänge"
+
+#. module: website_crm_score
+#: model_terms:ir.ui.view,arch_db:website_crm_score.view_crm_team_user_form
 msgid "Maximum Leads / 30 days"
 msgstr "Maximale Leads pro 30 Tage"
 
@@ -320,7 +337,7 @@ msgstr "Maximale Leads pro 30 Tage"
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_has_error
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__message_has_error
 msgid "Message Delivery error"
-msgstr ""
+msgstr "Error beim senden der Nachricht"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_ids
@@ -341,7 +358,7 @@ msgstr "Mindestscore zum automatischen Zuweisen (>=)"
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__name
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__name
-#: model:ir.ui.view,arch_db:website_crm_score.view_crm_score_form
+#: model_terms:ir.ui.view,arch_db:website_crm_score.view_crm_score_form
 msgid "Name"
 msgstr "Name"
 
@@ -355,7 +372,7 @@ msgstr "Anzahl der Aktionen"
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_has_error_counter
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__message_has_error_counter
 msgid "Number of error"
-msgstr ""
+msgstr "Fehlernummer"
 
 #. module: website_crm_score
 #: model:ir.model.fields,help:website_crm_score.field_team_user__message_needaction_counter
@@ -367,7 +384,7 @@ msgstr "Anzahl der Nachrichten, die eine Aktion erfordern"
 #: model:ir.model.fields,help:website_crm_score.field_team_user__message_has_error_counter
 #: model:ir.model.fields,help:website_crm_score.field_website_crm_score__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr ""
+msgstr "Anzahl der Nachrichten mit einem Fehler beim Senden."
 
 #. module: website_crm_score
 #: model:ir.model.fields,help:website_crm_score.field_team_user__message_unread_counter
@@ -377,22 +394,21 @@ msgstr "Anzahl ungelesener Nachrichten"
 
 #. module: website_crm_score
 #: model:ir.actions.act_window,name:website_crm_score.crm_score_views_action_table
-#: model:ir.ui.view,arch_db:website_crm_score.crm_case_graph_view_leads_sales
-#: model:ir.ui.view,arch_db:website_crm_score.crm_case_table_view_leads_sales
-#: model:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
+#: model_terms:ir.ui.view,arch_db:website_crm_score.crm_case_graph_view_leads_sales
+#: model_terms:ir.ui.view,arch_db:website_crm_score.crm_case_table_view_leads_sales
+#: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
 msgid "Opportunities"
 msgstr "Verkaufschancen"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__score_pageview_ids
-#: model:ir.ui.view,arch_db:website_crm_score.crm_score_pageview_form
-#: model:ir.ui.view,arch_db:website_crm_score.crm_score_pageview_graph
-#: model:ir.ui.view,arch_db:website_crm_score.website_crm_pageview_tree
+#: model_terms:ir.ui.view,arch_db:website_crm_score.crm_score_pageview_form
+#: model_terms:ir.ui.view,arch_db:website_crm_score.crm_score_pageview_graph
 msgid "Page Views"
 msgstr "Seitenansichten"
 
 #. module: website_crm_score
-#: model:ir.ui.view,arch_db:website_crm_score.lead_score_form
+#: model_terms:ir.ui.view,arch_db:website_crm_score.lead_score_form
 msgid "Page views"
 msgstr "Seitenansichten"
 
@@ -433,13 +449,14 @@ msgstr "Verkäufer"
 
 #. module: website_crm_score
 #: model:ir.actions.act_window,name:website_crm_score.team_action
+#: model:ir.model,name:website_crm_score.model_crm_team
 msgid "Sales Channels"
 msgstr "Vertriebskänale"
 
 #. module: website_crm_score
 #: model:ir.actions.act_window,name:website_crm_score.team_user_action
-#: model:ir.ui.view,arch_db:website_crm_score.view_crm_team_user_form
-#: model:ir.ui.view,arch_db:website_crm_score.view_crm_team_user_tree
+#: model_terms:ir.ui.view,arch_db:website_crm_score.view_crm_team_user_form
+#: model_terms:ir.ui.view,arch_db:website_crm_score.view_crm_team_user_tree
 msgid "Sales Men"
 msgstr "Verkäufer"
 
@@ -447,11 +464,6 @@ msgstr "Verkäufer"
 #: model:ir.model.fields,field_description:website_crm_score.field_res_users__team_user_ids
 msgid "Sales Records"
 msgstr "Verkaufsdaten"
-
-#. module: website_crm_score
-#: model:ir.model,name:website_crm_score.model_crm_team
-msgid "Sales Team"
-msgstr "Verkaufsteam"
 
 #. module: website_crm_score
 #: model:ir.model.fields,help:website_crm_score.field_res_users__sale_team_id
@@ -466,28 +478,29 @@ msgid "Salesman"
 msgstr "Verkäufer"
 
 #. module: website_crm_score
+#: model:ir.model,name:website_crm_score.model_team_user
+msgid "Salesperson (Team Member)"
+msgstr ""
+
+#. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__score
+#: model_terms:ir.ui.view,arch_db:website_crm_score.crm_lead_view_dashboard
 msgid "Score"
 msgstr "Punktzahl"
 
 #. module: website_crm_score
 #: model:ir.actions.act_window,name:website_crm_score.score_action
-#: model:ir.ui.view,arch_db:website_crm_score.view_crm_score_form
-#: model:ir.ui.view,arch_db:website_crm_score.view_crm_score_tree
+#: model_terms:ir.ui.view,arch_db:website_crm_score.view_crm_score_form
+#: model_terms:ir.ui.view,arch_db:website_crm_score.view_crm_score_tree
 msgid "Scores"
 msgstr "Scores"
 
 #. module: website_crm_score
-#: model:ir.ui.view,arch_db:website_crm_score.lead_score_form
-#: model:ir.ui.view,arch_db:website_crm_score.score_opp_form_view
+#: model_terms:ir.ui.view,arch_db:website_crm_score.lead_score_form
+#: model_terms:ir.ui.view,arch_db:website_crm_score.score_opp_form_view
 #: selection:website.crm.score,rule_type:0
 msgid "Scoring"
 msgstr "Bewertung"
-
-#. module: website_crm_score
-#: model:ir.ui.menu,name:website_crm_score.pageview_menu
-msgid "Scoring Page Views"
-msgstr "Bewertung der Seitenansichten"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__score_ids
@@ -511,7 +524,7 @@ msgstr ""
 " Aktionen werden in SQL durchgeführt und umgehen die Zugriffsrechte und ORM-Mechanismen („Score“ erstellen, „aktive“ schreiben, Verknüpfung „crm_lead“ aufheben)."
 
 #. module: website_crm_score
-#: model:ir.ui.view,arch_db:website_crm_score.crm_score_pageview_filter
+#: model_terms:ir.ui.view,arch_db:website_crm_score.crm_score_pageview_filter
 msgid "Search PageViews"
 msgstr "Seitenansichten durchsuchen"
 
@@ -525,13 +538,6 @@ msgstr "Zuweisung der Teams"
 #: model:ir.model.fields,field_description:website_crm_score.field_website_page__track
 msgid "Track"
 msgstr "Track"
-
-#. module: website_crm_score
-#. openerp-web
-#: code:addons/website_crm_score/static/src/xml/track_page.xml:8
-#, python-format
-msgid "Track Page"
-msgstr "Seite verfolgen"
 
 #. module: website_crm_score
 #: model:ir.actions.act_window,name:website_crm_score.crm_score_views_action_graph
@@ -556,7 +562,7 @@ msgid "Url"
 msgstr "URL"
 
 #. module: website_crm_score
-#: model:ir.actions.act_window,help:website_crm_score.team_action
+#: model_terms:ir.actions.act_window,help:website_crm_score.team_action
 msgid ""
 "Use sales channels to organize your sales departments.\n"
 "                    Each channel will work with a separate pipeline."
@@ -585,9 +591,24 @@ msgid "Value"
 msgstr "Wert"
 
 #. module: website_crm_score
+#: model:ir.model,name:website_crm_score.model_ir_ui_view
+msgid "View"
+msgstr "Ansicht"
+
+#. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__view_date
 msgid "Viewing Date"
 msgstr "Datum der Ansicht"
+
+#. module: website_crm_score
+#: model:ir.model,name:website_crm_score.model_website_crm_pageview
+msgid "Website CRM Page View"
+msgstr ""
+
+#. module: website_crm_score
+#: model:ir.model,name:website_crm_score.model_website_crm_score
+msgid "Website CRM Score"
+msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__website_message_ids
@@ -596,7 +617,7 @@ msgid "Website Messages"
 msgstr "Website-Nachrichten"
 
 #. module: website_crm_score
-#: model:ir.actions.act_window,name:website_crm_score.website_crm_score_pageviews
+#: model_terms:ir.ui.view,arch_db:website_crm_score.website_crm_pageview_pivot
 msgid "Website Pages"
 msgstr "Website-Seiten"
 
@@ -620,57 +641,30 @@ msgstr ""
 "werden, die von dynamischen Ereignissen abhängen."
 
 #. module: website_crm_score
-#: model:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
-#: model:ir.ui.view,arch_db:website_crm_score.team_user_kanban
+#: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
+#: model_terms:ir.ui.view,arch_db:website_crm_score.team_user_kanban
 msgid "fa-check"
 msgstr "fa-check"
 
 #. module: website_crm_score
-#: model:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
-#: model:ir.ui.view,arch_db:website_crm_score.team_user_kanban
+#: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
+#: model_terms:ir.ui.view,arch_db:website_crm_score.team_user_kanban
 msgid "fa-times"
 msgstr "fa-times"
 
 #. module: website_crm_score
-#: model:ir.model,name:website_crm_score.model_ir_ui_view
-msgid "ir.ui.view"
-msgstr "ir.ui.view"
-
-#. module: website_crm_score
-#: model:ir.ui.view,arch_db:website_crm_score.website_crm_score_view_kanban
+#: model_terms:ir.ui.view,arch_db:website_crm_score.website_crm_score_view_kanban
 msgid "leads"
 msgstr "Interessenten"
 
 #. module: website_crm_score
-#: model:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
-#: model:ir.ui.view,arch_db:website_crm_score.team_user_kanban
+#: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
+#: model_terms:ir.ui.view,arch_db:website_crm_score.team_user_kanban
 msgid "o_assignation_button_active"
 msgstr "o_asplant_button_aktiv"
 
 #. module: website_crm_score
-#: model:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
-#: model:ir.ui.view,arch_db:website_crm_score.team_user_kanban
+#: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
+#: model_terms:ir.ui.view,arch_db:website_crm_score.team_user_kanban
 msgid "o_assignation_button_inactive"
 msgstr "o_asplant_button_inaktiv"
-
-#. module: website_crm_score
-#: model:ir.model,name:website_crm_score.model_team_user
-msgid "team.user"
-msgstr "team.user"
-
-#. module: website_crm_score
-#. openerp-web
-#: code:addons/website_crm_score/static/src/xml/track_page.xml:8
-#, python-format
-msgid "to better score your leads:"
-msgstr "zur besseren Bewertung Ihrer Leads:"
-
-#. module: website_crm_score
-#: model:ir.model,name:website_crm_score.model_website_crm_pageview
-msgid "website.crm.pageview"
-msgstr "website.crm.pageansicht"
-
-#. module: website_crm_score
-#: model:ir.model,name:website_crm_score.model_website_crm_score
-msgid "website.crm.score"
-msgstr "website.crm.score"

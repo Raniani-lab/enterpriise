@@ -24,6 +24,7 @@
         'data/documents_data.xml',
         'views/documents_views.xml',
         'views/templates.xml',
+        'wizard/request_activity_views.xml',
     ],
 
     'qweb': [

@@ -8,7 +8,7 @@
 Accounting Reports
 ==================
     """,
-    'depends': ['account'],
+    'depends': ['account_accountant'],
     'data': [
         'security/ir.model.access.csv',
         'data/account_financial_report_data.xml',

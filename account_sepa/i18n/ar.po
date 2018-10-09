@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
 "Last-Translator: Islam Eldeeb <islameldeb@gmail.com>, 2018\n"
 "Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
@@ -33,6 +33,11 @@ msgstr ""
 #: model:ir.model,name:account_sepa.model_res_company
 msgid "Companies"
 msgstr "المؤسسات"
+
+#. module: account_sepa
+#: model:ir.model,name:account_sepa.model_res_config_settings
+msgid "Config Settings"
+msgstr ""
 
 #. module: account_sepa
 #: model:ir.model,name:account_sepa.model_account_abstract_payment
@@ -98,7 +103,7 @@ msgid ""
 msgstr "اسم الطرف المرجعي الدائن. قاعدة الاستخدام: تقتصر على 70 حرفا."
 
 #. module: account_sepa
-#: model:ir.ui.view,arch_db:account_sepa.account_journal_dashboard_kanban_view_inherited
+#: model_terms:ir.ui.view,arch_db:account_sepa.account_journal_dashboard_kanban_view_inherited
 msgid "Payment to send via SEPA"
 msgstr "الدفع لإرسال عبر سيبا"
 
@@ -108,7 +113,7 @@ msgid "Payments"
 msgstr "المدفوعات"
 
 #. module: account_sepa
-#: model:ir.ui.view,arch_db:account_sepa.account_journal_dashboard_kanban_view_inherited
+#: model_terms:ir.ui.view,arch_db:account_sepa.account_journal_dashboard_kanban_view_inherited
 msgid "Payments to send via SEPA"
 msgstr "دفعات لإرسال عبر سيبا"
 
@@ -132,8 +137,8 @@ msgstr "حساب مصرفي مستلم"
 
 #. module: account_sepa
 #: model:ir.model,name:account_sepa.model_account_register_payments
-msgid "Register payments on multiple invoices"
-msgstr "تسجيل المدفوعات على عدة فواتير"
+msgid "Register Payments"
+msgstr "تسجيل المدفوعات"
 
 #. module: account_sepa
 #: model:account.payment.method,name:account_sepa.account_payment_method_sepa_ct
@@ -141,7 +146,7 @@ msgid "SEPA Credit Transfer"
 msgstr ""
 
 #. module: account_sepa
-#: model:ir.ui.view,arch_db:account_sepa.view_sepa_credit_transfer_search
+#: model_terms:ir.ui.view,arch_db:account_sepa.view_sepa_credit_transfer_search
 msgid "SEPA Credit Transfer Payments To Send"
 msgstr ""
 
@@ -191,7 +196,7 @@ msgid ""
 msgstr ""
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:338
+#: code:addons/account_sepa/models/account_batch_payment.py:353
 #, python-format
 msgid ""
 "The account %s, linked to partner '%s', is not of type IBAN.\n"
@@ -199,7 +204,7 @@ msgid ""
 msgstr ""
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:83
+#: code:addons/account_sepa/models/account_batch_payment.py:103
 #, python-format
 msgid ""
 "The account %s, of journal '%s', is not of type IBAN.\n"
@@ -215,40 +220,32 @@ msgid ""
 msgstr ""
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:302
+#: code:addons/account_sepa/models/account_batch_payment.py:317
 #, python-format
 msgid ""
 "The amount of the payment '%s' is too high. The maximum permitted is %s."
 msgstr "مبلغ الدفعة '%s'مرتفع جدا. الحد الأقصى المسموح به هو%s."
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:70
+#: code:addons/account_sepa/models/account_batch_payment.py:90
 #, python-format
 msgid ""
 "The creditor bank account %s used in payment %s is not identified by a BIC"
 msgstr ""
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:72
+#: code:addons/account_sepa/models/account_batch_payment.py:92
 #, python-format
 msgid ""
 "The creditor bank account %s used in payment %s is not identified by an IBAN"
 msgstr ""
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:93
+#: code:addons/account_sepa/models/account_batch_payment.py:111
 #, python-format
 msgid ""
 "The following payments have no recipient bank account set: %s. \n"
 "\n"
-msgstr ""
-
-#. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:94
-#, python-format
-msgid ""
-"The following payments' communications are not SEPA compliant: %s.\n"
-"                                         To be SEPA compliant, a communication must be made of only latin characters, be maximum 140 characters long, and cannot contain '//' sequence, nor start or end with a / character."
 msgstr ""
 
 #. module: account_sepa
@@ -280,19 +277,19 @@ msgid ""
 msgstr ""
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:68
+#: code:addons/account_sepa/models/account_batch_payment.py:88
 #, python-format
 msgid "The transaction %s is instructed in another currency than EUR"
 msgstr ""
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:332
+#: code:addons/account_sepa/models/account_batch_payment.py:347
 #, python-format
 msgid "There is no Bank Identifier Code recorded for bank account '%s'"
 msgstr "لا يوجد رمز معرف البنك المسجل للحساب المصرفي'%s'"
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:176
+#: code:addons/account_sepa/models/account_batch_payment.py:191
 #, python-format
 msgid ""
 "There is no Bank Identifier Code recorded for bank account '%s' of journal "
@@ -300,7 +297,7 @@ msgid ""
 msgstr "لا يوجد رمز معرف البنك المسجل للحساب المصرفي '%s'من مجلة'%s'"
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:174
+#: code:addons/account_sepa/models/account_batch_payment.py:189
 #, python-format
 msgid "Too many transactions for a single file."
 msgstr "الكثير من المعاملات لملف واحد."
@@ -320,12 +317,7 @@ msgid "Your Company Name"
 msgstr "اسم الشركة الخاصة بك"
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:64
+#: code:addons/account_sepa/models/account_batch_payment.py:84
 #, python-format
 msgid "Your bank account is not labelled in EUR"
 msgstr "الحساب البنكى الخالص بك غير مصنف باليورو"
-
-#. module: account_sepa
-#: model:ir.model,name:account_sepa.model_res_config_settings
-msgid "res.config.settings"
-msgstr "الدقة.التكوين.إعدادات"

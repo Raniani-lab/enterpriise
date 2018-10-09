@@ -36,6 +36,7 @@ else:
 class team_user(models.Model):
     _name = 'team.user'
     _inherit = ['mail.thread']
+    _description = 'Salesperson (Team Member)'
 
     @api.one
     def _count_leads(self):
@@ -67,7 +68,7 @@ class team_user(models.Model):
 
     team_id = fields.Many2one('crm.team', string='SaleTeam', required=True, oldname='section_id')
     user_id = fields.Many2one('res.users', string='Saleman', required=True)
-    name = fields.Char(string="Name", related='user_id.partner_id.display_name')
+    name = fields.Char(string="Name", related='user_id.partner_id.display_name', readonly=False)
     running = fields.Boolean(string='Running', default=True)
     team_user_domain = fields.Char('Domain', track_visibility='onchange')
     maximum_user_leads = fields.Integer('Leads Per Month')

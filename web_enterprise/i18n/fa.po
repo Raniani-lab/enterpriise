@@ -5,14 +5,13 @@
 # Translators:
 # Martin Trigaux, 2018
 # Hamid Darabi, 2018
-# mehdi samadi <mehsamadi@gmail.com>, 2018
 # Hamed Mohammadi <hamed@dehongi.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:29+0000\n"
-"PO-Revision-Date: 2018-08-24 11:29+0000\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
 "Last-Translator: Hamed Mohammadi <hamed@dehongi.com>, 2018\n"
 "Language-Team: Persian (https://www.transifex.com/odoo/teams/41243/fa/)\n"
 "MIME-Version: 1.0\n"
@@ -146,8 +145,8 @@ msgstr ""
 
 #. module: web_enterprise
 #: model:ir.model,name:web_enterprise.model_ir_http
-msgid "HTTP routing"
-msgstr "مسیریابی پروتکل HTTP"
+msgid "HTTP Routing"
+msgstr ""
 
 #. module: web_enterprise
 #. openerp-web

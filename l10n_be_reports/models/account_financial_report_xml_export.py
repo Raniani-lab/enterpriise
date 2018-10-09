@@ -7,6 +7,7 @@ import json
 
 class AccountFinancialReportXMLReportExport(models.TransientModel):
     _name = "account.financial.html.report.export"
+    _description = "Financial Report XML Export"
 
     ask_restitution = fields.Boolean()
     ask_payment = fields.Boolean()

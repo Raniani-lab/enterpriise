@@ -8,10 +8,10 @@
 # trendspotter, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.3+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 08:34+0000\n"
-"PO-Revision-Date: 2018-06-25 08:34+0000\n"
+"POT-Creation-Date: 2018-09-18 10:05+0000\n"
+"PO-Revision-Date: 2018-09-18 10:05+0000\n"
 "Last-Translator: trendspotter, 2018\n"
 "Language-Team: Czech (https://www.transifex.com/odoo/teams/41243/cs/)\n"
 "MIME-Version: 1.0\n"
@@ -32,12 +32,12 @@ msgstr ""
 "* Výjimka, existuje rozdíl mezi přijatými a fakturovanými částkami."
 
 #. module: account_3way_match
-#: model:ir.ui.view,arch_db:account_3way_match.account_invoice_filter_inherit_account_3way_match
+#: model_terms:ir.ui.view,arch_db:account_3way_match.account_invoice_filter_inherit_account_3way_match
 msgid "Bills in Exception"
 msgstr "Účtenky ve výjimce"
 
 #. module: account_3way_match
-#: model:ir.ui.view,arch_db:account_3way_match.account_invoice_filter_inherit_account_3way_match
+#: model_terms:ir.ui.view,arch_db:account_3way_match.account_invoice_filter_inherit_account_3way_match
 msgid "Bills to Pay"
 msgstr "Účtenky k platbě"
 
@@ -91,14 +91,13 @@ msgstr "Uvolnit k zaplacení"
 
 #. module: account_3way_match
 #: model:ir.model.fields,field_description:account_3way_match.field_account_invoice__release_to_pay
-#: model:ir.ui.view,arch_db:account_3way_match.account_invoice_form_inherit
 msgid "Should be paid"
 msgstr "Měla by být zaplacena"
 
 #. module: account_3way_match
 #: model:ir.model.fields,field_description:account_3way_match.field_account_invoice__release_to_pay_manual
 msgid "Should be paid Manual"
-msgstr ""
+msgstr "Měla by být zaplacen ručně"
 
 #. module: account_3way_match
 #: model:ir.model.fields,help:account_3way_match.field_account_invoice__release_to_pay

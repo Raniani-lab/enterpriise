@@ -3,21 +3,16 @@
 # * website_helpdesk_livechat
 # 
 # Translators:
-# Jeffery CHEN Fan <jeffery9@gmail.com>, 2017
-# Talway <9010446@qq.com>, 2017
-# Gary Wei <Gary.wei@elico-corp.com>, 2017
-# Ryan Zhang <so_happy_boy@hotmail.com>, 2017
-# 杜哥 <liangjia@qq.com>, 2017
-# 苏州远鼎 <tiexinliu@126.com>, 2017
-# e2f <projects@e2f.com>, 2018
-# e2f_cn c5 <jarvisn@ecinnovations.com>, 2018
+# Martin Trigaux, 2018
+# keecome <7017511@qq.com>, 2018
+# 珠海-杜哥 <liangjia@qq.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.3+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 08:34+0000\n"
-"PO-Revision-Date: 2018-06-25 08:34+0000\n"
-"Last-Translator: e2f_cn c5 <jarvisn@ecinnovations.com>, 2018\n"
+"POT-Creation-Date: 2018-09-18 10:05+0000\n"
+"PO-Revision-Date: 2018-09-18 10:05+0000\n"
+"Last-Translator: 珠海-杜哥 <liangjia@qq.com>, 2018\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -46,12 +41,12 @@ msgstr ""
 "                    "
 
 #. module: website_helpdesk_livechat
-#: model:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
 msgid "Canned Responses"
 msgstr "灌装回应"
 
 #. module: website_helpdesk_livechat
-#: model:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
 msgid "Configure Canned Responses"
 msgstr "配置罐装回应"
 
@@ -98,7 +93,8 @@ msgstr "在线聊天测试页面"
 msgid ""
 "No tickets found related to the search query. <br> make sure to use the "
 "right format: (/helpdesk_search Keyword1 Keyword2 etc...)"
-msgstr "<br>"
+msgstr ""
+"未找到与搜索查询相关的工单。 <br> 请确保格式正确: (/helpdesk_search Keyword1 Keyword2 etc...)"
 
 #. module: website_helpdesk_livechat
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:76
@@ -107,7 +103,7 @@ msgid "Search for a helpdesk ticket"
 msgstr "搜索帮助台工单"
 
 #. module: website_helpdesk_livechat
-#: model:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
 msgid ""
 "Set shortcuts predefined answers. This works in both the mail composer and "
 "the live website chatter. Simply ype ':' followed by the shortcut label to "
@@ -115,7 +111,7 @@ msgid ""
 msgstr "设置预定义回复的快捷方式。同时适用于邮件撰写器和实时网站聊天中。只需在快捷方式标签后输入 ':' 即可获取可选择的预设回复。"
 
 #. module: website_helpdesk_livechat
-#: model:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
 msgid "Setup the"
 msgstr "设置"
 
@@ -127,9 +123,9 @@ msgid "Something is missing or wrong in command"
 msgstr "命令不完整或者命令错误"
 
 #. module: website_helpdesk_livechat
-#: model:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
 msgid "Test the livechat widget from this page:<br/>"
-msgstr "<br/>"
+msgstr "通过此页面测试实时聊天小工具：<br/>"
 
 #. module: website_helpdesk_livechat
 #: model:ir.model.fields,help:website_helpdesk_livechat.field_helpdesk_team__feature_livechat_web_page
@@ -139,7 +135,7 @@ msgid ""
 msgstr "你可以在静态网页的URL和客户讨论"
 
 #. module: website_helpdesk_livechat
-#: model:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
 msgid "Use predefined answers in the mail composer"
 msgstr "在邮件撰写器中使用预定义回复"
 
@@ -167,9 +163,9 @@ msgstr "你在频道 <b>#%s</b>."
 msgid ""
 "You can search ticket by typing <b>/helpdesk_search \"Keywords1 Keywords2 "
 "etc\"</b><br>"
-msgstr "<b></b><br>"
+msgstr "您可以通过输入 <b>/helpdesk_search \"例如:关键字1 关键字2\" 搜索服务单</b><br>"
 
 #. module: website_helpdesk_livechat
-#: model:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
 msgid "channel to define auto-popup rules and geolocation filters"
 msgstr "设置渠道以定义自动弹出规则和地理定位过滤器"

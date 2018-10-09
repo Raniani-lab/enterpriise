@@ -38,7 +38,8 @@ class StockReport(models.Model):
     is_backorder = fields.Boolean("Is a Backorder", readonly=True)
     product_qty = fields.Float("Product Quantity", readonly=True)
     is_late = fields.Boolean("Is Late", readonly=True)
-    company_id = fields.Many2one('res.company', readonly=True)
+    company_id = fields.Many2one('res.company', 'Company', readonly=True)
+    categ_id = fields.Many2one('product.category', 'Product Category', readonly=True)
 
     @api.multi
     @api.depends('reference', 'product_id.name')
@@ -69,7 +70,8 @@ class StockReport(models.Model):
             sm.inventory_id as inventory_id,
             sm.state as state,
             sm.product_qty as product_qty,
-            sm.company_id as company_id
+            sm.company_id as company_id,
+            cat.id as categ_id
         """
 
         return select_str
@@ -102,6 +104,7 @@ class StockReport(models.Model):
             LEFT JOIN stock_picking_type spt ON sm.picking_type_id = spt.id
             INNER JOIN product_product p ON sm.product_id = p.id
             INNER JOIN product_template t ON p.product_tmpl_id = t.id
+            INNER JOIN product_category cat ON t.categ_id = cat.id
         """
 
         return from_str
@@ -126,7 +129,8 @@ class StockReport(models.Model):
             spt.code,
             spt.name,
             p.id,
-            is_late
+            is_late,
+            cat.id
         """
 
         return group_by_str

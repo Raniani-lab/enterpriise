@@ -11,13 +11,14 @@
 # Mohammed Ibrahim <m.ibrahim@mussder.com>, 2018
 # Ghaith Gammar <g.gammar@saharaifs.net>, 2018
 # Osama Ahmaro <osamaahmaro@gmail.com>, 2018
+# Firas Asad <firas101@gmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
-"Last-Translator: Osama Ahmaro <osamaahmaro@gmail.com>, 2018\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"Last-Translator: Firas Asad <firas101@gmail.com>, 2018\n"
 "Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -26,77 +27,77 @@ msgstr ""
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid ", from"
 msgstr ""
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "<span>Code</span>"
 msgstr ""
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "<span>Cost/hour</span>"
 msgstr ""
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "<span>Operation</span>"
 msgstr ""
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "<span>Operator</span>"
 msgstr ""
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "<span>Quantity</span>"
-msgstr ""
+msgstr "الكمية"
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "<span>Raw Materials</span>"
 msgstr ""
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "<span>Scraps</span>"
 msgstr ""
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "<span>Total Cost</span>"
 msgstr ""
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "<span>Unit Cost</span>"
 msgstr ""
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "<span>Working Time</span>"
 msgstr ""
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "<strong>Total Cost of Operations</strong>"
 msgstr ""
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "<strong>Total Cost of Raw Materials</strong>"
 msgstr ""
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "<strong>Total Cost of Scraps</strong>"
 msgstr ""
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "<strong>Unit Cost</strong>"
 msgstr ""
 
@@ -106,14 +107,14 @@ msgid "Analytic Account"
 msgstr "الحساب التحليلي"
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "By product(s)"
 msgstr ""
 
 #. module: mrp_account
 #: model:ir.actions.report,name:mrp_account.action_cost_struct_mrp_production
-#: model:ir.ui.view,arch_db:mrp_account.mrp_production_form_inherit_view6
-#: model:ir.ui.view,arch_db:mrp_account.product_product_inherit_form_view_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_production_form_inherit_view6
+#: model_terms:ir.ui.view,arch_db:mrp_account.product_product_inherit_form_view_cost_structure
 msgid "Cost Analysis"
 msgstr ""
 
@@ -123,7 +124,7 @@ msgid "Cost Recorded"
 msgstr ""
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "Cost Structure"
 msgstr "تركيب التكلفة"
 
@@ -133,17 +134,17 @@ msgid "Cost Structure Analysis"
 msgstr ""
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "Cost for"
 msgstr ""
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "Cost of Operations"
 msgstr ""
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "Cost of Scraps"
 msgstr ""
 
@@ -175,9 +176,9 @@ msgid "Last Modified on"
 msgstr "آخر تعديل في"
 
 #. module: mrp_account
-#: model:ir.model,name:mrp_account.model_mrp_production
-msgid "Manufacturing Order"
-msgstr "أمر الإنتاج"
+#: model:ir.model,name:mrp_account.model_report_mrp_account_mrp_cost_structure
+msgid "MRP Cost Structure Report"
+msgstr ""
 
 #. module: mrp_account
 #: model:ir.model,name:mrp_account.model_product_product
@@ -190,7 +191,17 @@ msgid "Product Template"
 msgstr "قالب المنتج"
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model:ir.model,name:mrp_account.model_report_mrp_account_product_template_cost_structure
+msgid "Product Template Cost Structure Report"
+msgstr ""
+
+#. module: mrp_account
+#: model:ir.model,name:mrp_account.model_mrp_production
+msgid "Production Order"
+msgstr "امر الانتاج"
+
+#. module: mrp_account
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "Some of the Manufacturing Order(s) selected are not done yet"
 msgstr ""
 
@@ -214,21 +225,11 @@ msgid "Workcenter Productivity Log"
 msgstr ""
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "hours"
 msgstr "ساعات"
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "manufacturing order(s)."
-msgstr ""
-
-#. module: mrp_account
-#: model:ir.model,name:mrp_account.model_report_mrp_account_mrp_cost_structure
-msgid "report.mrp_account.mrp_cost_structure"
-msgstr ""
-
-#. module: mrp_account
-#: model:ir.model,name:mrp_account.model_report_mrp_account_product_template_cost_structure
-msgid "report.mrp_account.product_template_cost_structure"
 msgstr ""

@@ -53,7 +53,6 @@
             <t t-call="web_studio.Sidebar.Toolbox">
                 <t t-call="web_studio.Sidebar.Parameters" t-if="widget.debug"/>
                 <t t-call="web_studio.Sidebar.XMLEditor" t-if="widget.debug"/>
-                <t t-call="web_studio.Sidebar.Print"/>
             </t>
         </t>
         <t t-if="widget.state.mode === 'properties'">
@@ -90,13 +89,9 @@
     </div>
 </div>
 
-<t t-name="web_studio.Sidebar.Print">
-    <button class="btn btn-secondary float-right o_web_studio_print">Print</button>
-</t>
-
 <!-- edit components templates -->
 <div t-name="web_studio.ReportDirectiveTField" class="o_web_studio_sidebar_text card-body">
-    <label>Field Expression</label>
+    <label>Field expression</label>
     <div class="o_web_studio_tfield_fieldexpression" />
 </div>
 
@@ -116,25 +111,25 @@
 </div>
 
 <div t-name="web_studio.ReportDirectiveTEsc" class="o_web_studio_sidebar_text card-body">
-    <label for="if_expression">Esc Expression</label>
+    <label for="if_expression">Esc expression</label>
     <div class="o_web_studio_tesc_escexpression" />
 </div>
 
 <div t-name="web_studio.ReportDirectiveTSet" class="o_web_studio_sidebar_text card-body">
-    <label for="set_expression">Set Expression</label>
+    <label for="set_expression">Set expression</label>
     <div class="o_web_studio_tset_setexpression" />
-    <label for="value_expression">Related Expression</label>
+    <label for="value_expression">Related expression</label>
     <div class="o_web_studio_tset_valueexpression" />
 </div>
 
 <div t-name="web_studio.ReportDirectiveTForeach" class="o_web_studio_sidebar_text card-body">
-    <label for="foreach_expression">Foreach Expression</label>
+    <label for="foreach_expression">Foreach expression</label>
     <div class="o_web_studio_tforeach_foreachexpression" />
-    <label for="as_expression">As Expression</label>
+    <label for="as_expression">As expression</label>
     <div class="o_web_studio_tas_asexpression" />
 </div>
 
-<div t-name="web_studio.ReportDirectiveTOptions" class="o_web_studio_sidebar_text">
+<div t-name="web_studio.ReportDirectiveTOptions" class="o_web_studio_sidebar_select">
     <label>Widget</label>
     <div class="o_web_studio_toption_widget">
         <select>
@@ -144,9 +139,6 @@
             </t>
         </select>
         <div class="o_studio_report_options_container"></div>
-        <a t-if="widget.widget and widget.widget.options.length" href="#" class="o_studio_option_show float-right mt4">
-            <small>Options</small>
-        </a>
     </div>
 </div>
 
@@ -248,26 +240,40 @@
         </div>
     </div>
     <div class="row no-gutters">
-        <div class="col-10 o_web_studio_sidebar_text o_web_studio_classes">
-            <label>Class</label>
-            <input type="text" t-att-value="widget.allClasses" />
-        </div>
-        <div class="col-2 o_web_studio_sidebar_text o_web_studio_heading">
-            <label>Heading</label>
+        <div class="col-6 o_web_studio_sidebar_select o_web_studio_font_size">
+            <label>Font style</label>
             <select>
                 <option></option>
-                <option t-att-selected="widget.heading == 'h1' or null" value="h1">H1</option>
-                <option t-att-selected="widget.heading == 'h2' or null" value="h2">H2</option>
-                <option t-att-selected="widget.heading == 'h3' or null" value="h3">H3</option>
-                <option t-att-selected="widget.heading == 'h4' or null" value="h4">H4</option>
-                <option t-att-selected="widget.heading == 'h5' or null" value="h5">H5</option>
+                <option t-att-selected="widget.fontSize == 'h1' or null" value="h1">Heading 1</option>
+                <option t-att-selected="widget.fontSize == 'h2' or null" value="h2">Heading 2</option>
+                <option t-att-selected="widget.fontSize == 'h3' or null" value="h3">Heading 3</option>
+                <option t-att-selected="widget.fontSize == 'h4' or null" value="h4">Heading 4</option>
+                <option t-att-selected="widget.fontSize == 'h5' or null" value="h5">Heading 5</option>
+                <option t-att-selected="widget.fontSize == 'h6' or null" value="h6">Heading 6</option>
+                <option t-att-selected="widget.fontSize == 'small' or null" value="small">Small</option>
             </select>
+        </div>
+        <div t-if="widget.isTable" class="col-6 o_web_studio_sidebar_select o_web_studio_table_style">
+            <label>Table style</label>
+            <select>
+                <option></option>
+                <option t-att-selected="widget.tableStyle == 'table-sm' or null" value="table-sm">Compact</option>
+                <option t-att-selected="widget.tableStyle == 'table-striped' or null" value="table-striped">Striped</option>
+                <option t-att-selected="widget.tableStyle == 'table-bordered' or null" value="table-bordered">Bordered</option>
+                <option t-att-selected="widget.tableStyle == 'table-borderless' or null" value="table-borderless">Borderless</option>
+            </select>
+        </div>
+    </div>
+    <div t-if="widget.debug" class="row no-gutters">
+        <div class="col o_web_studio_sidebar_text o_web_studio_classes">
+            <label>Class</label>
+            <input type="text" t-att-value="widget.allClasses" />
         </div>
     </div>
 </div>
 
 <t t-name="web_studio.ReportDirectiveTOptions.options">
-    <div t-attf-class="d-none o_web_studio_toption_options o_web_studio_toption_#{widget.key}">
+    <div t-attf-class="o_web_studio_toption_options o_web_studio_toption_#{widget.key}">
         <t t-foreach="widget.options" t-as="o">
             <div t-attf-class="o_web_studio_toption_option o_web_studio_toption_option_#{widget.key}_#{o.key} #{o.required ? 'o_web_studio_required_option' : ''}">
                 <label>

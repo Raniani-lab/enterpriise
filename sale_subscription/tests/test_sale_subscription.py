@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
-import calendar
 import datetime
 from dateutil.relativedelta import relativedelta
 
 from odoo.addons.sale_subscription.tests.common_sale_subscription import TestSubscriptionCommon
-from odoo.tests import tagged
-from odoo.tools import mute_logger, float_utils
+from odoo.tests import tagged, Form
+from odoo.tools import mute_logger
 from odoo import fields
 
 
@@ -107,12 +106,12 @@ class TestSubscription(TestSubscriptionCommon):
 
         self.sale_journal = self.env['account.journal'].create(
             {'name': 'reflets.info',
-            'code': 'ref',
-            'type': 'sale',
-            'company_id': self.company.id,
-            'sequence_id': self.env['ir.sequence'].search([], limit=1).id,
-            'default_credit_account_id': self.account_receivable.id,
-            'default_debit_account_id': self.account_receivable.id})
+             'code': 'ref',
+             'type': 'sale',
+             'company_id': self.company.id,
+             'sequence_id': self.env['ir.sequence'].search([], limit=1).id,
+             'default_credit_account_id': self.account_receivable.id,
+             'default_debit_account_id': self.account_receivable.id})
 
         self.partner = self.env['res.partner'].create(
             {'name': 'Stevie Nicks',
@@ -124,10 +123,10 @@ class TestSubscription(TestSubscriptionCommon):
 
         self.acquirer = self.env['payment.acquirer'].create(
             {'name': 'The Wire',
-            'provider': 'transfer',
-            'company_id': self.company.id,
-            'environment': 'test',
-            'view_template_id': self.env['ir.ui.view'].search([('type', '=', 'qweb')], limit=1).id})
+             'provider': 'transfer',
+             'company_id': self.company.id,
+             'environment': 'test',
+             'view_template_id': self.env['ir.ui.view'].search([('type', '=', 'qweb')], limit=1).id})
 
         self.payment_method = self.env['payment.token'].create(
             {'name': 'Jimmy McNulty',
@@ -157,6 +156,7 @@ class TestSubscription(TestSubscriptionCommon):
             'company_id': self.company.id,
             'payment_token_id': self.payment_method.id,
             'recurring_invoice_line_ids': [(0, 0, {'product_id': self.product.id, 'name': 'TestRecurringLine', 'price_unit': 50, 'uom_id': self.product.uom_id.id})],
+            'stage_id': self.ref('sale_subscription.sale_subscription_stage_in_progress'),
         })
         self.mock_send_success_count = 0
         # __import__('pudb').set_trace()
@@ -241,20 +241,18 @@ class TestSubscription(TestSubscriptionCommon):
 
     def test_recurring_revenue(self):
         """Test computation of recurring revenue"""
-        eq = lambda x, y, m: self.assertAlmostEqual(x, y, msg=m)
         # Initial subscription is $100/y
         self.subscription_tmpl.recurring_rule_type = 'yearly'
         y_price = 100
         self.sale_order.action_confirm()
         subscription = self.sale_order.order_line.mapped('subscription_id')
-        eq(subscription.recurring_total, y_price, "unexpected price after setup")
-        eq(subscription.recurring_monthly, y_price / 12.0, "unexpected MRR")
+        self.assertAlmostEqual(subscription.recurring_total, y_price, msg="unexpected price after setup")
+        self.assertAlmostEqual(subscription.recurring_monthly, y_price / 12.0, msg="unexpected MRR")
         # Change interval to 3 weeks
         subscription.template_id.recurring_rule_type = 'weekly'
         subscription.template_id.recurring_interval = 3
-        eq(subscription.recurring_total, y_price, 'total should not change when interval changes')
-        eq(subscription.recurring_monthly, y_price * (30 / 7.0) / 3, 'unexpected MRR')
-
+        self.assertAlmostEqual(subscription.recurring_total, y_price, msg='total should not change when interval changes')
+        self.assertAlmostEqual(subscription.recurring_monthly, y_price * (30 / 7.0) / 3, msg='unexpected MRR')
 
     def test_analytic_account(self):
         """Analytic accounting flow."""
@@ -304,8 +302,35 @@ class TestSubscription(TestSubscriptionCommon):
 
     def test_cron_update_kpi(self):
         Snapshot = self.env['sale.subscription.snapshot']
-        subscriptions_count = self.env['sale.subscription'].search_count([])
+        subscriptions_count = self.env['sale.subscription'].search_count([('in_progress', '=', True)])
         before_count = Snapshot.search_count([])
         self.env['sale.subscription']._cron_update_kpi()
         after_count = Snapshot.search_count([])
         self.assertEqual(after_count, before_count + subscriptions_count)
+
+    def test_onchange_date_start(self):
+        recurring_bound_tmpl = self.env['sale.subscription.template'].create({
+            'name': 'Recurring Bound Template',
+            'recurring_rule_boundary': 'limited',
+        })
+        sub_form = Form(self.env['sale.subscription'])
+        sub_form.partner_id = self.user_portal.partner_id
+        sub_form.template_id = recurring_bound_tmpl
+        sub = sub_form.save()
+        self.assertEqual(sub.template_id.recurring_rule_boundary, 'limited')
+        self.assertIsInstance(sub.date, datetime.date)
+
+    def test_default_salesperson(self):
+        partner = self.env['res.partner'].create({'name': 'Tony Stark'})
+        sub_form = Form(self.env['sale.subscription'])
+        sub_form.template_id = self.subscription_tmpl
+        sub_form.partner_id = partner
+        sub = sub_form.save()
+        self.assertEqual(sub.user_id, self.env.user)
+
+        partner.user_id = self.user_portal
+        sub_form = Form(self.env['sale.subscription'])
+        sub_form.template_id = self.subscription_tmpl
+        sub_form.partner_id = partner
+        sub = sub_form.save()
+        self.assertEqual(sub.user_id, self.user_portal)

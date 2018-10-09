@@ -4,16 +4,19 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
 # 老窦 北京 <2662059195@qq.com>, 2018
 # Shane Tsoi <sso@odoo.com>, 2018
-# Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
+# roye w <159820@qq.com>, 2018
+# bower Guo <124358678@qq.com>, 2018
+# xu xiaohu <xu.xiaohu@gmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
-"Last-Translator: Jeffery CHEN Fan <jeffery9@gmail.com>, 2018\n"
+"POT-Creation-Date: 2018-10-02 10:31+0000\n"
+"PO-Revision-Date: 2018-10-02 10:31+0000\n"
+"Last-Translator: xu xiaohu <xu.xiaohu@gmail.com>, 2018\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,9 +25,14 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: mrp_workorder
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.res_config_settings_view_form
+msgid "<i class=\"fa fa-print\"/> Print barcode commands"
+msgstr "打印条码命令"
+
+#. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__allow_producing_quantity_change
 msgid "Allow Changes to Producing Quantity"
-msgstr ""
+msgstr "允许更改生产数量"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_point_test_type__allow_registration
@@ -32,12 +40,14 @@ msgid "Allow Registration"
 msgstr "允许注册"
 
 #. module: mrp_workorder
-#: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder___barcode_scanned
-msgid "Barcode Scanned"
-msgstr "扫描到条码"
+#. openerp-web
+#: code:addons/mrp_workorder/static/src/xml/mrp_workorder_barcode.xml:7
+#, python-format
+msgid "And barcode"
+msgstr "及条码"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet_menu
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet_menu
 msgid "Block"
 msgstr "阻塞"
 
@@ -49,7 +59,7 @@ msgstr "检查"
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_production__check_ids
 msgid "Checks"
-msgstr "支票"
+msgstr "检查"
 
 #. module: mrp_workorder
 #. openerp-web
@@ -62,9 +72,9 @@ msgstr "清除"
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__component_id
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__component_id
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_point__component_id
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Component"
-msgstr "零件"
+msgstr "组件"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__component_uom_id
@@ -72,7 +82,7 @@ msgid "Component UoM"
 msgstr "组件单位"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Continue"
 msgstr "继续"
 
@@ -87,15 +97,15 @@ msgid "Current Quality Check"
 msgstr "当前的质量检查"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_inherit_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_inherit_workorder
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Date"
 msgstr "日期"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,help:mrp_workorder.field_quality_point__test_type_id
 msgid "Defines the type of the quality control point."
-msgstr ""
+msgstr "定义质量控制点类型"
 
 #. module: mrp_workorder
 #: selection:quality.point,worksheet:0
@@ -106,13 +116,20 @@ msgstr "不要更新页面"
 #: code:addons/mrp_workorder/models/quality.py:110
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__qty_done
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__qty_done
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_inherit_workorder
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_inherit_workorder
 #, python-format
 msgid "Done"
 msgstr "完成"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#. openerp-web
+#: code:addons/mrp_workorder/static/src/xml/mrp_workorder_barcode.xml:8
+#, python-format
+msgid "Download"
+msgstr "下载"
+
+#. module: mrp_workorder
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Dropdown menu"
 msgstr "下拉菜单"
 
@@ -124,7 +141,12 @@ msgid "Edit"
 msgstr "编辑"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model:ir.model.fields,help:mrp_workorder.field_mrp_workorder__component_tracking
+msgid "Ensure the traceability of a storable product in your warehouse."
+msgstr "确保可以追溯你仓库中的产品。"
+
+#. module: mrp_workorder
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Finish steps"
 msgstr "完成步骤"
 
@@ -139,14 +161,14 @@ msgid "Finished Product Sequence Number"
 msgstr "成品序列号"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_inherit_workorder
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_inherit_workorder
 msgid "Finished Steps"
 msgstr "完成步骤"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__component_tracking
 msgid "Is Component Tracked"
-msgstr ""
+msgstr "部件已追溯"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__is_first_step
@@ -170,35 +192,29 @@ msgid "Lot"
 msgstr "批次"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Lot Number"
 msgstr "批次号码"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Lot Number:"
 msgstr "批次号码:"
 
 #. module: mrp_workorder
-#: model:ir.model,name:mrp_workorder.model_mrp_production
-msgid "Manufacturing Order"
-msgstr "制造订单"
-
-#. module: mrp_workorder
-#: model:ir.ui.menu,name:mrp_workorder.mrp_production_menu_planning
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_production_tree_view_planning
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_production_tree_view_planning
 msgid "Manufacturing Orders"
 msgstr "制造订单"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Mark as Done"
 msgstr "标记为完成"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Mark as Done and Close MO"
-msgstr ""
+msgstr "标记为完成并关闭MO"
 
 #. module: mrp_workorder
 #: code:addons/mrp_workorder/models/mrp_workorder.py:305
@@ -210,7 +226,7 @@ msgstr "菜单"
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__move_line_id
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__move_line_id
 msgid "Move Line"
-msgstr "凭证明细"
+msgstr "移动行"
 
 #. module: mrp_workorder
 #: model:ir.actions.server,name:mrp_workorder.production_order_unplan_server_action
@@ -218,7 +234,7 @@ msgid "Mrp: Unplan Production Orders"
 msgstr "Mrp:未计划生产订单"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Next"
 msgstr "下一个"
 
@@ -234,15 +250,10 @@ msgid "Operation"
 msgstr "作业"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_inherit_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_inherit_workorder
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Operator"
 msgstr "操作员"
-
-#. module: mrp_workorder
-#: model:ir.ui.menu,name:mrp_workorder.menu_mrp_production_plan
-msgid "Orders to Plan"
-msgstr "待规划的订单"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__parent_id
@@ -255,7 +266,7 @@ msgid "Parent Routing"
 msgstr "父级工艺路线"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Pause"
 msgstr "暂停"
 
@@ -265,12 +276,12 @@ msgid "Picture"
 msgstr "图片"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_production_view_form_inherit_planning
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_production_view_form_inherit_planning
 msgid "Plan"
 msgstr "计划"
 
 #. module: mrp_workorder
-#: model:ir.actions.act_window,help:mrp_workorder.mrp_workorder_action_tablet
+#: model_terms:ir.actions.act_window,help:mrp_workorder.mrp_workorder_action_tablet
 msgid "Plan some work orders from your manufacturing orders."
 msgstr "根据制造订单计划一些工作订单。"
 
@@ -312,30 +323,24 @@ msgid "Please upload a picture."
 msgstr "请上传图片。"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Previous"
-msgstr "以前"
+msgstr "前一"
 
 #. module: mrp_workorder
-#. openerp-web
-#: code:addons/mrp_workorder/static/src/xml/mrp_workorder_barcode.xml:8
-#, python-format
-msgid "Print the barcode commands for Manufacturing."
-msgstr ""
-
-#. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_inherit_workorder
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_inherit_workorder
 msgid "Process"
 msgstr "处理"
 
 #. module: mrp_workorder
+#: model:ir.model,name:mrp_workorder.model_mrp_production
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_alert__production_id
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__production_id
 msgid "Production Order"
 msgstr "生产单"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Production Workcenter"
 msgstr "生产工作中心"
 
@@ -358,7 +363,7 @@ msgstr "质量检查"
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__quality_check_fail
 msgid "Quality Check Fail"
-msgstr "质检未通过"
+msgstr "质检失败"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__quality_check_todo
@@ -367,13 +372,18 @@ msgstr "质量检查Todo"
 
 #. module: mrp_workorder
 #: model:ir.model,name:mrp_workorder.model_quality_point
-msgid "Quality Point"
-msgstr "质量点"
+msgid "Quality Control Point"
+msgstr "质量控制点"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.view_routing_steps_search
+#: model:ir.model,name:mrp_workorder.model_quality_point_test_type
+msgid "Quality Control Test Type"
+msgstr "质量控制测试类型"
+
+#. module: mrp_workorder
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.view_routing_steps_search
 msgid "Quality Point Steps"
-msgstr ""
+msgstr "质检步骤"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__quality_state
@@ -381,20 +391,20 @@ msgid "Quality State"
 msgstr "质量状态"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_production_tree_view_planning
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_production_tree_view_planning
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Quantity"
 msgstr "数量"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Record production"
 msgstr "生产记录"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__component_is_byproduct
 msgid "Register a by product"
-msgstr ""
+msgstr "登记副产品"
 
 #. module: mrp_workorder
 #: code:addons/mrp_workorder/models/quality.py:104
@@ -418,9 +428,9 @@ msgid "Result"
 msgstr "结果"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.view_routing_steps_search
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.view_routing_steps_search
 msgid "Routing"
-msgstr "工艺路线"
+msgstr "工艺"
 
 #. module: mrp_workorder
 #: model:ir.model,name:mrp_workorder.model_mrp_routing
@@ -428,7 +438,7 @@ msgid "Routings"
 msgstr "工艺"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_production_view_form_inherit_planning
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_production_view_form_inherit_planning
 msgid "Scheduled Date"
 msgstr "预定交货日期"
 
@@ -443,7 +453,7 @@ msgid "Scheduled Start Date"
 msgstr "计划的开始日期"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet_menu
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet_menu
 msgid "Scrap"
 msgstr "报废"
 
@@ -453,17 +463,17 @@ msgid "Scroll to specific page"
 msgstr "滚动到特定页面"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Serial Number"
 msgstr "序列号"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Serial Number:"
 msgstr "序列号码:"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Skip"
 msgstr "跳过"
 
@@ -478,28 +488,28 @@ msgid "Skipped Check"
 msgstr "跳过检查"
 
 #. module: mrp_workorder
-#: model:ir.actions.act_window,help:mrp_workorder.mrp_workorder_action_tablet
+#: model_terms:ir.actions.act_window,help:mrp_workorder.mrp_workorder_action_tablet
 msgid "Start a new work order"
 msgstr "开始一个新的工单"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Status"
 msgstr "状态"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__quality_state_for_summary
 msgid "Status Summary"
-msgstr ""
+msgstr "状态摘要"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_point__operation_id
 msgid "Step"
-msgstr "步"
+msgstr "步骤"
 
 #. module: mrp_workorder
 #: model:ir.actions.act_window,name:mrp_workorder.action_mrp_workorder_show_steps
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_routing_view_form_inherit_quality
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_routing_view_form_inherit_quality
 msgid "Steps"
 msgstr "步骤"
 
@@ -511,7 +521,6 @@ msgid "Take a Picture"
 msgstr "拍照"
 
 #. module: mrp_workorder
-#: model:ir.model,name:mrp_workorder.model_quality_point_test_type
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__test_type
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_point__test_type_id
 msgid "Test Type"
@@ -523,7 +532,7 @@ msgid ""
 "The routing contains all the Work Centers used and for how long. This will "
 "create work orders afterwards which alters the execution of the "
 "manufacturing order."
-msgstr ""
+msgstr "工艺路线包含所有使用的工作中心以及使用的时间。 这将在之后创建工作订单，这会改变制造订单的执行。"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__title
@@ -537,7 +546,7 @@ msgid "To Do"
 msgstr "待办"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_production_tree_view_planning
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_production_tree_view_planning
 msgid "Total Qty"
 msgstr "总数量"
 
@@ -547,19 +556,19 @@ msgid "Type of Operation"
 msgstr "作业的类型"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet_menu
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet_menu
 msgid "Unblock"
 msgstr "解除阻塞"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__component_uom_id
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_production_tree_view_planning
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_production_tree_view_planning
 msgid "Unit of Measure"
 msgstr "计量单位"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_production_view_form_inherit_planning
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_production_view_form_inherit_planning
 msgid "Unplan"
 msgstr "取消计划"
 
@@ -571,22 +580,12 @@ msgid "Uploading..."
 msgstr "正在上传..."
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Validate"
 msgstr "审核"
 
 #. module: mrp_workorder
-#: model:ir.model.fields,help:mrp_workorder.field_mrp_workorder___barcode_scanned
-msgid "Value of the last barcode scanned."
-msgstr "上次扫描到的条码的值"
-
-#. module: mrp_workorder
-#: model:ir.ui.menu,name:mrp_workorder.menu_mrp_production_pending
-msgid "Waiting for Material Availability"
-msgstr "等待物料可用"
-
-#. module: mrp_workorder
-#: code:addons/mrp_workorder/models/mrp_workorder.py:482
+#: code:addons/mrp_workorder/models/mrp_workorder.py:495
 #, python-format
 msgid "Warning"
 msgstr "警告"
@@ -603,7 +602,7 @@ msgid "Work Order"
 msgstr "工单"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.quality_point_view_form_inherit_mrp
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.quality_point_view_form_inherit_mrp
 msgid "Work Order Operation"
 msgstr "工单作业"
 
@@ -614,12 +613,12 @@ msgid "Work Orders"
 msgstr "工单"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workcenter_view_kanban_inherit_workorder
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workcenter_view_kanban_inherit_workorder
 msgid "Work orders"
 msgstr "工单"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet_menu
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet_menu
 msgid "Workorder Actions"
 msgstr "工单行为"
 
@@ -639,12 +638,14 @@ msgid "Worksheet page"
 msgstr "工作记录表页面"
 
 #. module: mrp_workorder
-#: code:addons/mrp_workorder/models/mrp_workorder.py:483
+#: code:addons/mrp_workorder/models/mrp_workorder.py:496
 #, python-format
 msgid ""
 "You are using components from another lot. \n"
 "Please validate the components from the first lot before using another lot."
 msgstr ""
+"您正在使用其他批次的组件。\n"
+"请在使用另一批之前验证第一批中的组件。"
 
 #. module: mrp_workorder
 #: code:addons/mrp_workorder/models/mrp_workorder.py:416
@@ -659,6 +660,13 @@ msgid "You still need to do the quality checks!"
 msgstr "你还是需要做质量检查!"
 
 #. module: mrp_workorder
-#: model:ir.ui.view,arch_db:mrp_workorder.mrp_production_view_form_inherit_planning
+#. openerp-web
+#: code:addons/mrp_workorder/static/src/xml/mrp_workorder_barcode.xml:8
+#, python-format
+msgid "commands for Manufacturing"
+msgstr "用于制造的命令"
+
+#. module: mrp_workorder
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_production_view_form_inherit_planning
 msgid "to"
 msgstr "到"

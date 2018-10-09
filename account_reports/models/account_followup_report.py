@@ -15,7 +15,7 @@ class AccountReportFollowupManager(models.Model):
 
 class AccountFollowupReport(models.AbstractModel):
     _name = "account.followup.report"
-    _description = "Followup Report"
+    _description = "Follow-up Report"
     _inherit = 'account.report'
 
     filter_partner_id = False
@@ -94,6 +94,7 @@ class AccountFollowupReport(models.AbstractModel):
                     'move_id': aml.move_id.id,
                     'type': is_payment and 'payment' or 'unreconciled_aml',
                     'unfoldable': False,
+                    'has_invoice': bool(aml.invoice_id),
                     'columns': [type(v) == dict and v or {'name': v} for v in columns],
                 })
             total_due = formatLang(self.env, total, currency_obj=currency)

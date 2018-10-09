@@ -22,7 +22,7 @@
         <field name="project_id" search="[('sale_line_id', '=', ref('sale_timesheet.sale_line_13'))]"/>
         <field name="resource_time">1.25</field>
         <field name="forecast_uom">day</field>
-        <field name="user_id" ref="base.user_root"/>
+        <field name="user_id" ref="base.user_admin"/>
         <field name="employee_id" ref="hr.employee_admin"/>
     </record>
     <record id="project_forecast_data_12" model="project.forecast">
@@ -32,7 +32,7 @@
         <field name="project_id" search="[('sale_line_id', '=', ref('sale_timesheet.sale_line_13'))]"/>
         <field name="resource_time">1.25</field>
         <field name="forecast_uom">day</field>
-        <field name="user_id" ref="base.user_root"/>
+        <field name="user_id" ref="base.user_admin"/>
         <field name="employee_id" ref="hr.employee_admin"/>
     </record>
     <record id="project_forecast_data_13" model="project.forecast">
@@ -84,7 +84,7 @@
         <field name="project_id" search="[('sale_line_id', '=', ref('sale_timesheet.sale_line_22'))]"/>
         <field name="resource_time">1.25</field>
         <field name="forecast_uom">day</field>
-        <field name="user_id" ref="base.user_root"/>
+        <field name="user_id" ref="base.user_admin"/>
         <field name="employee_id" ref="hr.employee_admin"/>
     </record>
     <record id="project_forecast_data_22" model="project.forecast">
@@ -94,7 +94,7 @@
         <field name="project_id" search="[('sale_line_id', '=', ref('sale_timesheet.sale_line_22'))]"/>
         <field name="resource_time">1.25</field>
         <field name="forecast_uom">day</field>
-        <field name="user_id" ref="base.user_root"/>
+        <field name="user_id" ref="base.user_admin"/>
         <field name="employee_id" ref="hr.employee_admin"/>
     </record>
     <record id="project_forecast_data_23" model="project.forecast">
@@ -104,7 +104,7 @@
         <field name="project_id" search="[('sale_line_id', '=', ref('sale_timesheet.sale_line_22'))]"/>
         <field name="resource_time">0.125</field>
         <field name="forecast_uom">day</field>
-        <field name="user_id" ref="base.user_root"/>
+        <field name="user_id" ref="base.user_admin"/>
         <field name="employee_id" ref="hr.employee_admin"/>
     </record>
     <record id="project_forecast_data_24" model="project.forecast">
@@ -114,7 +114,7 @@
         <field name="project_id" search="[('sale_line_id', '=', ref('sale_timesheet.sale_line_22'))]"/>
         <field name="resource_time">1.25</field>
         <field name="forecast_uom">day</field>
-        <field name="user_id" ref="base.user_root"/>
+        <field name="user_id" ref="base.user_admin"/>
         <field name="employee_id" ref="hr.employee_admin"/>
     </record>
     <record id="project_forecast_data_25" model="project.forecast">
@@ -124,7 +124,7 @@
         <field name="project_id" search="[('sale_line_id', '=', ref('sale_timesheet.sale_line_22'))]"/>
         <field name="resource_time">0.625</field>
         <field name="forecast_uom">day</field>
-        <field name="user_id" ref="base.user_demo"/>
+        <field name="user_id" ref="base.user_admin"/>
         <field name="employee_id" ref="hr.employee_qdp"/>
     </record>
 
@@ -135,7 +135,7 @@
         <field name="project_id" ref="sale_timesheet.project_support"/>
         <field name="task_id" search="[('sale_line_id', '=', ref('sale_timesheet.sale_line_21'))]"/>
         <field name="resource_hours">10</field>
-        <field name="user_id" ref="base.user_root"/>
+        <field name="user_id" ref="base.user_admin"/>
         <field name="employee_id" ref="hr.employee_admin"/>
     </record>
     <record id="project_forecast_data_32" model="project.forecast">
@@ -145,7 +145,7 @@
         <field name="task_id" search="[('sale_line_id', '=', ref('sale_timesheet.sale_line_21'))]"/>
         <field name="resource_time">1.25</field>
         <field name="forecast_uom">day</field>
-        <field name="user_id" ref="base.user_demo"/>
+        <field name="user_id" ref="base.user_admin"/>
         <field name="employee_id" ref="hr.employee_qdp"/>
     </record>
     <record id="project_forecast_data_33" model="project.forecast">
@@ -155,7 +155,7 @@
         <field name="task_id" search="[('sale_line_id', '=', ref('sale_timesheet.sale_line_11'))]"/>
         <field name="forecast_uom">day</field>
         <field name="resource_time">1.25</field>
-        <field name="user_id" ref="base.user_root"/>
+        <field name="user_id" ref="base.user_admin"/>
         <field name="employee_id" ref="hr.employee_admin"/>
     </record>
     <record id="project_forecast_data_34" model="project.forecast">
@@ -164,7 +164,7 @@
         <field name="project_id" ref="project.project_project_1"/>
         <field name="task_id" ref="project.project_task_2"/>
         <field name="resource_hours">5</field>
-        <field name="user_id" ref="base.user_root"/>
+        <field name="user_id" ref="base.user_admin"/>
         <field name="employee_id" ref="hr.employee_admin"/>
       </record>
       <record id="project_forecast_data_35" model="project.forecast">

@@ -2,12 +2,18 @@
 # This file contains the translation of the following modules:
 # * voip
 # 
+# Translators:
+# Sengtha Chay <sengtha@gmail.com>, 2018
+# Chan Nath <channath@gmail.com>, 2018
+# Samkhann Seang <seangsamkhann@gmail.com>, 2018
+# AN Souphorn <ansouphorn@gmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:29+0000\n"
-"PO-Revision-Date: 2018-08-24 11:29+0000\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"Last-Translator: AN Souphorn <ansouphorn@gmail.com>, 2018\n"
 "Language-Team: Khmer (https://www.transifex.com/odoo/teams/41243/km/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -33,7 +39,7 @@ msgstr ""
 #: model:ir.model,name:voip.model_mail_activity
 #, python-format
 msgid "Activity"
-msgstr ""
+msgstr "សកម្មភាព"
 
 #. module: voip
 #: model:ir.model,name:voip.model_mail_activity_type
@@ -87,14 +93,14 @@ msgid "Call Name"
 msgstr ""
 
 #. module: voip
-#: code:addons/voip/models/voip_phonecall.py:192
+#: code:addons/voip/models/voip_phonecall.py:193
 #, python-format
 msgid "Call from "
 msgstr ""
 
 #. module: voip
-#: code:addons/voip/models/voip_phonecall.py:182
-#: code:addons/voip/models/voip_phonecall.py:224
+#: code:addons/voip/models/voip_phonecall.py:183
+#: code:addons/voip/models/voip_phonecall.py:225
 #, python-format
 msgid "Call to "
 msgstr ""
@@ -107,17 +113,17 @@ msgid "Calling "
 msgstr ""
 
 #. module: voip
-#: model:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
+#: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 msgid "Calls Date"
 msgstr ""
 
 #. module: voip
 #. openerp-web
 #: code:addons/voip/static/src/xml/voip_phonecall.xml:153
-#: model:ir.ui.view,arch_db:voip.wizard_transfer_call_form_view
+#: model_terms:ir.ui.view,arch_db:voip.wizard_transfer_call_form_view
 #, python-format
 msgid "Cancel"
-msgstr ""
+msgstr "លុបចោល"
 
 #. module: voip
 #. openerp-web
@@ -129,7 +135,7 @@ msgstr ""
 #. module: voip
 #: selection:voip.phonecall,state:0 selection:voip.phonecall.report,state:0
 msgid "Cancelled"
-msgstr ""
+msgstr "បានលុបចោល"
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_mail_activity_type__category
@@ -139,7 +145,7 @@ msgstr ""
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_mail_activity_type__category
 msgid "Category"
-msgstr ""
+msgstr "ប្រភេទ"
 
 #. module: voip
 #. openerp-web
@@ -153,6 +159,11 @@ msgstr ""
 #: code:addons/voip/static/src/xml/dialing_panel.xml:16
 #, python-format
 msgid "Close"
+msgstr "បិទ"
+
+#. module: voip
+#: model:ir.model,name:voip.model_res_config_settings
+msgid "Config Settings"
 msgstr ""
 
 #. module: voip
@@ -160,7 +171,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__partner_id
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_report__partner_id
 msgid "Contact"
-msgstr ""
+msgstr "ទំនាក់ទំនង"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_configurator__create_uid
@@ -168,7 +179,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_log_wizard__create_uid
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_transfer_wizard__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "បង្កើតដោយ"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_configurator__create_date
@@ -176,19 +187,19 @@ msgstr ""
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_log_wizard__create_date
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_transfer_wizard__create_date
 msgid "Created on"
-msgstr ""
+msgstr "បង្កើតនៅ"
 
 #. module: voip
-#: model:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
+#: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 msgid "Creation Date"
-msgstr ""
+msgstr "ថ្ងៃបង្កើត"
 
 #. module: voip
 #. openerp-web
 #: code:addons/voip/static/src/xml/voip_phonecall.xml:126
 #, python-format
 msgid "Customer"
-msgstr ""
+msgstr "អតិថិជន"
 
 #. module: voip
 #. openerp-web
@@ -199,9 +210,9 @@ msgstr ""
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_report__call_date
-#: model:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
+#: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 msgid "Date"
-msgstr ""
+msgstr "កាលបរិច្ឆេត"
 
 #. module: voip
 #: selection:res.config.settings,mode:0
@@ -222,7 +233,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_report__display_name
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_transfer_wizard__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "ឈ្មោះសំរាប់បង្ហាញ"
 
 #. module: voip
 #: selection:voip.phonecall.log.wizard,reschedule_option:0
@@ -258,9 +269,9 @@ msgid "Gives the sequence order when displaying a list of Phonecalls."
 msgstr ""
 
 #. module: voip
-#: model:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
+#: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 msgid "Group By"
-msgstr ""
+msgstr "ជា​ក្រុម​តាម"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_users__sip_external_phone
@@ -279,7 +290,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_report__id
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_transfer_wizard__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: voip
 #: selection:voip.phonecall.log.wizard,reschedule_option:0
@@ -302,7 +313,7 @@ msgid "In Call Queue"
 msgstr ""
 
 #. module: voip
-#: model:ir.actions.act_window,help:voip.voip_phonecall_view
+#: model_terms:ir.actions.act_window,help:voip.voip_phonecall_view
 msgid ""
 "In order to follow up on the call, you can trigger a request for\n"
 "        another call, a meeting."
@@ -334,7 +345,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_report____last_update
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_transfer_wizard____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "កាលបរិច្ឆេតកែប្រែចុងក្រោយ"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_configurator__write_uid
@@ -342,7 +353,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_log_wizard__write_uid
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_transfer_wizard__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "ផ្លាស់ប្តូរចុងក្រោយ"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_configurator__write_date
@@ -350,7 +361,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_log_wizard__write_date
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_transfer_wizard__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "ផ្លាស់ប្តូរចុងក្រោយ"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__activity_id
@@ -376,7 +387,7 @@ msgid "Log"
 msgstr ""
 
 #. module: voip
-#: model:ir.actions.act_window,help:voip.voip_phonecall_view
+#: model_terms:ir.actions.act_window,help:voip.voip_phonecall_view
 msgid "Log the summary of a phonecall"
 msgstr ""
 
@@ -417,7 +428,7 @@ msgid "Mute"
 msgstr ""
 
 #. module: voip
-#: model:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
+#: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 msgid "My Phonecalls"
 msgstr ""
 
@@ -444,10 +455,10 @@ msgstr ""
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__note
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_log_wizard__note
 msgid "Note"
-msgstr ""
+msgstr "កំណត់សំគាល់"
 
 #. module: voip
-#: model:ir.actions.act_window,help:voip.voip_phonecall_view
+#: model_terms:ir.actions.act_window,help:voip.voip_phonecall_view
 msgid ""
 "Odoo allows you to log inbound calls on the fly to track the\n"
 "        history of the communication with a customer or to inform another\n"
@@ -472,7 +483,7 @@ msgid "Outgoing"
 msgstr ""
 
 #. module: voip
-#: model:ir.ui.view,arch_db:voip.res_user_form
+#: model_terms:ir.ui.view,arch_db:voip.res_user_form
 msgid "PBX Configuration"
 msgstr ""
 
@@ -492,7 +503,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:voip.field_mail_activity__phone
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__phone
 msgid "Phone"
-msgstr ""
+msgstr "ទូរស័ព្ទ"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_partner__sanitized_phone
@@ -515,14 +526,9 @@ msgstr ""
 #. module: voip
 #: model:ir.actions.act_window,name:voip.voip_phonecall_view
 #: model:ir.ui.menu,name:voip.menu_voip_phonecall_view
-#: model:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
-#: model:ir.ui.view,arch_db:voip.voip_phonecall_tree_view
+#: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
+#: model_terms:ir.ui.view,arch_db:voip.voip_phonecall_tree_view
 msgid "Phonecalls"
-msgstr ""
-
-#. module: voip
-#: model:ir.model,name:voip.model_voip_phonecall_report
-msgid "Phonecalls by user"
 msgstr ""
 
 #. module: voip
@@ -582,7 +588,7 @@ msgstr ""
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__user_id
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_report__user_id
-#: model:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
+#: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 msgid "Responsible"
 msgstr ""
 
@@ -604,7 +610,7 @@ msgid "Schedule"
 msgstr ""
 
 #. module: voip
-#: model:ir.ui.view,arch_db:voip.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:voip.res_config_settings_view_form
 msgid "Schedule &amp; make calls from CRM app"
 msgstr ""
 
@@ -621,7 +627,7 @@ msgid "Search Phone Calls..."
 msgstr ""
 
 #. module: voip
-#: model:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
+#: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 msgid "Search Phonecalls"
 msgstr ""
 
@@ -635,7 +641,7 @@ msgstr ""
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__sequence
 msgid "Sequence"
-msgstr ""
+msgstr "លំដាប់"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_log_wizard__reschedule_date
@@ -724,7 +730,7 @@ msgid "The websocket uri could be wrong."
 msgstr ""
 
 #. module: voip
-#: model:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
+#: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 #: selection:voip.phonecall,state:0 selection:voip.phonecall.report,state:0
 msgid "To Do"
 msgstr ""
@@ -749,10 +755,10 @@ msgstr ""
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__type
 msgid "Type"
-msgstr ""
+msgstr "ប្រភេទ"
 
 #. module: voip
-#: model:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
+#: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 msgid "Unassigned"
 msgstr ""
 
@@ -773,11 +779,36 @@ msgstr ""
 #. module: voip
 #: model:ir.model,name:voip.model_res_users
 msgid "Users"
+msgstr "អ្នកប្រើ"
+
+#. module: voip
+#: model_terms:ir.ui.view,arch_db:voip.view_voip_user_config
+msgid "VOIP Configuration"
 msgstr ""
 
 #. module: voip
-#: model:ir.ui.view,arch_db:voip.view_voip_user_config
-msgid "VOIP Configuration"
+#: model:ir.model,name:voip.model_voip_configurator
+msgid "VOIP Configurator"
+msgstr ""
+
+#. module: voip
+#: model:ir.model,name:voip.model_voip_phonecall
+msgid "VOIP Phonecall"
+msgstr ""
+
+#. module: voip
+#: model:ir.model,name:voip.model_voip_phonecall_log_wizard
+msgid "VOIP Phonecall log Wizard"
+msgstr ""
+
+#. module: voip
+#: model:ir.model,name:voip.model_voip_phonecall_report
+msgid "VOIP Phonecalls by user report"
+msgstr ""
+
+#. module: voip
+#: model:ir.model,name:voip.model_voip_phonecall_transfer_wizard
+msgid "VOIP Transfer Wizard of Phonecalls"
 msgstr ""
 
 #. module: voip
@@ -786,7 +817,7 @@ msgid "VoIP Environment"
 msgstr ""
 
 #. module: voip
-#: code:addons/voip/wizard/voip_phonecall_transfer_wizard.py:34
+#: code:addons/voip/wizard/voip_phonecall_transfer_wizard.py:35
 #, python-format
 msgid "Warning"
 msgstr ""
@@ -797,7 +828,7 @@ msgid "WebSocket"
 msgstr ""
 
 #. module: voip
-#: code:addons/voip/wizard/voip_phonecall_transfer_wizard.py:35
+#: code:addons/voip/wizard/voip_phonecall_transfer_wizard.py:36
 #, python-format
 msgid ""
 "Wrong configuration for the call. There is no external phone number "
@@ -830,11 +861,6 @@ msgid "min"
 msgstr ""
 
 #. module: voip
-#: model:ir.model,name:voip.model_res_config_settings
-msgid "res.config.settings"
-msgstr ""
-
-#. module: voip
 #. openerp-web
 #: code:addons/voip/static/src/xml/voip_phonecall.xml:53
 #: code:addons/voip/static/src/xml/voip_phonecall.xml:94
@@ -850,7 +876,7 @@ msgid "the connection cannot be made. "
 msgstr ""
 
 #. module: voip
-#: model:ir.ui.view,arch_db:voip.wizard_transfer_call_form_view
+#: model_terms:ir.ui.view,arch_db:voip.wizard_transfer_call_form_view
 msgid "transfer Option"
 msgstr ""
 
@@ -860,7 +886,7 @@ msgid "transfer To"
 msgstr ""
 
 #. module: voip
-#: model:ir.ui.view,arch_db:voip.wizard_transfer_call_form_view
+#: model_terms:ir.ui.view,arch_db:voip.wizard_transfer_call_form_view
 msgid "transfer the Call"
 msgstr ""
 
@@ -872,24 +898,4 @@ msgstr ""
 #. module: voip
 #: selection:voip.phonecall.transfer.wizard,transfer_choice:0
 msgid "transfer to your external phone"
-msgstr ""
-
-#. module: voip
-#: model:ir.model,name:voip.model_voip_configurator
-msgid "voip.configurator"
-msgstr ""
-
-#. module: voip
-#: model:ir.model,name:voip.model_voip_phonecall
-msgid "voip.phonecall"
-msgstr ""
-
-#. module: voip
-#: model:ir.model,name:voip.model_voip_phonecall_log_wizard
-msgid "voip.phonecall.log.wizard"
-msgstr ""
-
-#. module: voip
-#: model:ir.model,name:voip.model_voip_phonecall_transfer_wizard
-msgid "voip.phonecall.transfer.wizard"
 msgstr ""

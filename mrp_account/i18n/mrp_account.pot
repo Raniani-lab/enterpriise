@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-18 10:05+0000\n"
-"PO-Revision-Date: 2018-09-18 10:05+0000\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -161,8 +161,8 @@ msgid "Last Modified on"
 msgstr ""
 
 #. module: mrp_account
-#: model:ir.model,name:mrp_account.model_mrp_production
-msgid "Manufacturing Order"
+#: model:ir.model,name:mrp_account.model_report_mrp_account_mrp_cost_structure
+msgid "MRP Cost Structure Report"
 msgstr ""
 
 #. module: mrp_account
@@ -173,6 +173,16 @@ msgstr ""
 #. module: mrp_account
 #: model:ir.model,name:mrp_account.model_product_template
 msgid "Product Template"
+msgstr ""
+
+#. module: mrp_account
+#: model:ir.model,name:mrp_account.model_report_mrp_account_product_template_cost_structure
+msgid "Product Template Cost Structure Report"
+msgstr ""
+
+#. module: mrp_account
+#: model:ir.model,name:mrp_account.model_mrp_production
+msgid "Production Order"
 msgstr ""
 
 #. module: mrp_account
@@ -203,15 +213,5 @@ msgstr ""
 #. module: mrp_account
 #: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "manufacturing order(s)."
-msgstr ""
-
-#. module: mrp_account
-#: model:ir.model,name:mrp_account.model_report_mrp_account_mrp_cost_structure
-msgid "report.mrp_account.mrp_cost_structure"
-msgstr ""
-
-#. module: mrp_account
-#: model:ir.model,name:mrp_account.model_report_mrp_account_product_template_cost_structure
-msgid "report.mrp_account.product_template_cost_structure"
 msgstr ""
 

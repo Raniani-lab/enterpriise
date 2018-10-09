@@ -26,4 +26,9 @@
             </xpath>
         </field>
     </record>
+
+    <menuitem id="menu_account_asset_asset_list_normal_sale" name="Revenue Types"
+        action="account_deferred_revenue.action_account_asset_asset_list_normal_sale"
+        parent="sale_subscription.menu_sale_subscription_config"
+        sequence="10"/>
 </odoo>

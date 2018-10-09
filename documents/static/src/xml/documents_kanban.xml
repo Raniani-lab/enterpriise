@@ -8,7 +8,10 @@
     <button type="button" t-attf-class="btn btn-primary o_documents_kanban_url">
         Add URL
     </button>
-    <button type="button" t-attf-class="btn btn-secondary o_documents_kanban_share">
+    <button type="button" t-attf-class="btn btn-primary o_documents_kanban_request">
+        Request Document
+    </button>
+    <button type="button" t-attf-class="btn btn-secondary o_documents_kanban_share" groups="documents.group_documents_user">
         Share
     </button>
 </div>

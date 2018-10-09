@@ -6,6 +6,7 @@ from odoo import api, fields, models
 
 class SignRequestSendCopy(models.TransientModel):
     _name = 'sign.request.send.copy'
+    _description = 'Sign send request copy'
 
     @api.model
     def default_get(self, fields):

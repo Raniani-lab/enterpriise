@@ -5,9 +5,9 @@
       <t t-if="widget.activeAttachment">
         <t t-set="activeAttachment" t-value="widget.activeAttachment"/>
         <a class="btn btn-link pull-right" t-att-href="activeAttachment.url"><i class="fa fa-download"/> Download</a>
-        <h3 class="mt0 mb8 pl-2 text-muted"> <t t-esc="activeAttachment.filename"/> </h3>
+        <h3 class="mt0 mb8 pl-2 text-muted pull-right"> <t t-esc="activeAttachment.filename"/> </h3>
         <div t-if="activeAttachment.type == 'image'" class="o_attachment_preview_img">
-            <img class="img img-fluid d-block" t-attf-src="/web/image/#{activeAttachment.id}?unique=1"/>
+            <img id="attachment_img" class="img img-fluid d-block" t-attf-src="/web/image/#{activeAttachment.id}?unique=1"/>
         </div>
         <iframe t-if="activeAttachment.type == 'pdf'" class="mb48" t-attf-src="/web/static/lib/pdfjs/web/viewer.html?file=/web/content/#{activeAttachment.id}"/>
         <t t-if="widget.attachments.length !== 1">

@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-18 10:05+0000\n"
-"PO-Revision-Date: 2018-09-18 10:05+0000\n"
+"POT-Creation-Date: 2018-10-02 10:31+0000\n"
+"PO-Revision-Date: 2018-10-02 10:31+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: account_reports
-#: code:addons/account_reports/models/account_followup_report.py:239
+#: code:addons/account_reports/models/account_followup_report.py:240
 #, python-format
 msgid "%s Payment Reminder"
 msgstr ""
@@ -34,7 +34,7 @@ msgid "&times;"
 msgstr ""
 
 #. module: account_reports
-#: code:addons/account_reports/models/account_report.py:581
+#: code:addons/account_reports/models/account_report.py:582
 #, python-format
 msgid "(No Group)"
 msgstr ""
@@ -101,6 +101,11 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
 msgid "<br/>\n"
 "                Analytic Accounts:"
+msgstr ""
+
+#. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
+msgid "<br/>Companies:"
 msgstr ""
 
 #. module: account_reports
@@ -206,7 +211,17 @@ msgid "Account"
 msgstr ""
 
 #. module: account_reports
-#: model:ir.model,name:account_reports.model_account_financial_html_report
+#: model:ir.model,name:account_reports.model_account_analytic_report
+msgid "Account Analytic Report"
+msgstr ""
+
+#. module: account_reports
+#: model:ir.model,name:account_reports.model_account_chart_template
+msgid "Account Chart Template"
+msgstr ""
+
+#. module: account_reports
+#: model:ir.model,name:account_reports.model_account_report
 #: model_terms:ir.ui.view,arch_db:account_reports.view_account_financial_report_form
 #: model_terms:ir.ui.view,arch_db:account_reports.view_account_financial_report_tree
 msgid "Account Report"
@@ -214,16 +229,21 @@ msgstr ""
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_financial_html_report_line
-msgid "Account Report Line"
+msgid "Account Report (HTML Line)"
 msgstr ""
 
 #. module: account_reports
-#: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
-msgid "Account Tags"
+#: model:ir.model,name:account_reports.model_account_financial_html_report
+msgid "Account Report (HTML)"
 msgstr ""
 
 #. module: account_reports
-#: code:addons/account_reports/models/account_analytic_report.py:78
+#: model:ir.model,name:account_reports.model_account_report_footnote
+msgid "Account Report Footnote"
+msgstr ""
+
+#. module: account_reports
+#: code:addons/account_reports/models/account_analytic_report.py:79
 #, python-format
 msgid "Accounts without a group"
 msgstr ""
@@ -240,7 +260,7 @@ msgstr ""
 
 #. module: account_reports
 #. openerp-web
-#: code:addons/account_reports/static/src/js/account_reports.js:356
+#: code:addons/account_reports/static/src/js/account_reports.js:360
 #: model_terms:ir.ui.view,arch_db:account_reports.main_template
 #, python-format
 msgid "Add a note"
@@ -349,7 +369,7 @@ msgid "Analytic Entries"
 msgstr ""
 
 #. module: account_reports
-#: code:addons/account_reports/models/account_analytic_report.py:28
+#: code:addons/account_reports/models/account_analytic_report.py:29
 #: model:ir.actions.client,name:account_reports.action_account_report_analytic
 #: model:ir.ui.menu,name:account_reports.menu_action_report_account_analytic
 #, python-format
@@ -378,7 +398,7 @@ msgid "Apply"
 msgstr ""
 
 #. module: account_reports
-#: code:addons/account_reports/models/account_report.py:769
+#: code:addons/account_reports/models/account_report.py:770
 #, python-format
 msgid "As of %s"
 msgstr ""
@@ -424,7 +444,7 @@ msgid "Bad debtor"
 msgstr ""
 
 #. module: account_reports
-#: code:addons/account_reports/models/account_analytic_report.py:24
+#: code:addons/account_reports/models/account_analytic_report.py:25
 #: code:addons/account_reports/models/account_consolidated_journals.py:29
 #: code:addons/account_reports/models/account_general_ledger.py:35
 #: code:addons/account_reports/models/account_partner_ledger.py:42
@@ -451,13 +471,13 @@ msgid "Bank Reconciliation"
 msgstr ""
 
 #. module: account_reports
-#: model:account.financial.html.report.line,name:account_reports.account_financial_report_bank_view0
-msgid "Bank and Cash Accounts"
+#: model:ir.model,name:account_reports.model_account_bank_reconciliation_report
+msgid "Bank Reconciliation Report"
 msgstr ""
 
 #. module: account_reports
-#: model:ir.model,name:account_reports.model_account_bank_reconciliation_report
-msgid "Bank reconciliation report"
+#: model:account.financial.html.report.line,name:account_reports.account_financial_report_bank_view0
+msgid "Bank and Cash Accounts"
 msgstr ""
 
 #. module: account_reports
@@ -628,6 +648,11 @@ msgid "Computation Error: unexplained difference"
 msgstr ""
 
 #. module: account_reports
+#: model:ir.model,name:account_reports.model_res_config_settings
+msgid "Config Settings"
+msgstr ""
+
+#. module: account_reports
 #: code:addons/account_reports/models/account_consolidated_journals.py:26
 #: model:ir.actions.client,name:account_reports.action_account_report_cj
 #: model:ir.ui.menu,name:account_reports.menu_action_account_report_cj
@@ -657,7 +682,7 @@ msgid "Cost of Revenue"
 msgstr ""
 
 #. module: account_reports
-#: code:addons/account_reports/models/account_followup_report.py:247
+#: code:addons/account_reports/models/account_followup_report.py:248
 #, python-format
 msgid "Could not send mail to partner because it does not have any email address defined"
 msgstr ""
@@ -805,19 +830,6 @@ msgstr ""
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_res_config_settings__days_between_two_followups
 msgid "Days between two follow-ups"
-msgstr ""
-
-#. module: account_reports
-#: code:addons/account_reports/models/res_company.py:12
-#, python-format
-msgid "Dear Sir/Madam,\n"
-"\n"
-"Our records indicate that some payments on your account are still due. Please find details below.\n"
-"If the amount has already been paid, please disregard this notice. Otherwise, please forward us the total amount stated below.\n"
-"If you have any queries regarding your account, Please contact us.\n"
-"\n"
-"Thank you in advance for your cooperation.\n"
-"Best Regards,"
 msgstr ""
 
 #. module: account_reports
@@ -990,7 +1002,7 @@ msgid "Expenses"
 msgstr ""
 
 #. module: account_reports
-#: code:addons/account_reports/models/account_report.py:700
+#: code:addons/account_reports/models/account_report.py:701
 #, python-format
 msgid "Export (XLSX)"
 msgstr ""
@@ -1033,6 +1045,11 @@ msgid "Folded"
 msgstr ""
 
 #. module: account_reports
+#: model:ir.model,name:account_reports.model_account_followup_report
+msgid "Follow-up Report"
+msgstr ""
+
+#. module: account_reports
 #: model:ir.actions.act_window,name:account_reports.action_view_list_customer_statements
 #: model:ir.ui.menu,name:account_reports.customer_statements_menu
 msgid "Follow-up Reports"
@@ -1044,13 +1061,13 @@ msgid "Follow-up Reports Tree View"
 msgstr ""
 
 #. module: account_reports
-#: code:addons/account_reports/models/account_followup_report.py:234
+#: code:addons/account_reports/models/account_followup_report.py:235
 #, python-format
 msgid "Follow-up email sent to %s"
 msgstr ""
 
 #. module: account_reports
-#: code:addons/account_reports/models/account_followup_report.py:256
+#: code:addons/account_reports/models/account_followup_report.py:257
 #, python-format
 msgid "Follow-up letter printed"
 msgstr ""
@@ -1068,21 +1085,14 @@ msgid "Follow-ups Done / Total Follow-ups"
 msgstr ""
 
 #. module: account_reports
-#: code:addons/account_reports/models/account_followup_report.py:179
-#: model:ir.model,name:account_reports.model_account_followup_report
+#: code:addons/account_reports/models/account_followup_report.py:180
 #, python-format
 msgid "Followup Report"
 msgstr ""
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_res_partner__followup_status
-#: model:ir.model.fields,field_description:account_reports.field_res_users__followup_status
 msgid "Followup status"
-msgstr ""
-
-#. module: account_reports
-#: model:ir.model,name:account_reports.model_account_report_footnote
-msgid "Footnote for reports"
 msgstr ""
 
 #. module: account_reports
@@ -1101,7 +1111,7 @@ msgid "Formulas"
 msgstr ""
 
 #. module: account_reports
-#: code:addons/account_reports/models/account_report.py:782
+#: code:addons/account_reports/models/account_report.py:783
 #, python-format
 msgid "From %s \n"
 " to  %s"
@@ -1137,13 +1147,14 @@ msgid "General Ledger Report"
 msgstr ""
 
 #. module: account_reports
-#: code:addons/account_reports/models/account_report.py:159
+#: code:addons/account_reports/models/account_report.py:160
 #, python-format
 msgid "General Report"
 msgstr ""
 
 #. module: account_reports
 #: model:ir.actions.client,name:account_reports.action_account_report_gt
+#: model:ir.model,name:account_reports.model_account_generic_tax_report
 msgid "Generic Tax Report"
 msgstr ""
 
@@ -1175,7 +1186,7 @@ msgstr ""
 #. module: account_reports
 #: code:addons/account_reports/models/account_financial_report.py:291
 #: code:addons/account_reports/models/account_financial_report.py:867
-#: code:addons/account_reports/models/account_financial_report.py:980
+#: code:addons/account_reports/models/account_financial_report.py:981
 #, python-format
 msgid "Groupby should be a field from account.move.line"
 msgstr ""
@@ -1292,7 +1303,7 @@ msgid "Journal Items"
 msgstr ""
 
 #. module: account_reports
-#: code:addons/account_reports/models/account_report.py:308
+#: code:addons/account_reports/models/account_report.py:309
 #, python-format
 msgid "Journal Items (%s)"
 msgstr ""
@@ -1306,6 +1317,12 @@ msgstr ""
 #: code:addons/account_reports/models/account_consolidated_journals.py:29
 #, python-format
 msgid "Journal Name (Code)"
+msgstr ""
+
+#. module: account_reports
+#: model:ir.actions.act_window,name:account_reports.action_account_print_journal_menu
+#: model:ir.ui.menu,name:account_reports.menu_print_journal
+msgid "Journals Audit"
 msgstr ""
 
 #. module: account_reports
@@ -1408,6 +1425,11 @@ msgid "Main Info"
 msgstr ""
 
 #. module: account_reports
+#: model:ir.model,name:account_reports.model_account_report_manager
+msgid "Manage Summary and Footnotes of Reports"
+msgstr ""
+
+#. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report_footnote__manager_id
 msgid "Manager"
 msgstr ""
@@ -1439,8 +1461,8 @@ msgid "Module"
 msgstr ""
 
 #. module: account_reports
-#: code:addons/account_reports/models/account_generic_tax_report.py:18
-#: code:addons/account_reports/models/account_generic_tax_report.py:21
+#: code:addons/account_reports/models/account_generic_tax_report.py:19
+#: code:addons/account_reports/models/account_generic_tax_report.py:22
 #, python-format
 msgid "NET"
 msgstr ""
@@ -1486,7 +1508,6 @@ msgstr ""
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_move_line__next_action_date
 #: model:ir.model.fields,field_description:account_reports.field_res_partner__payment_next_action_date
-#: model:ir.model.fields,field_description:account_reports.field_res_users__payment_next_action_date
 msgid "Next Action Date"
 msgstr ""
 
@@ -1512,7 +1533,7 @@ msgid "No action needed"
 msgstr ""
 
 #. module: account_reports
-#: code:addons/account_reports/models/account_report.py:932
+#: code:addons/account_reports/models/account_report.py:933
 #, python-format
 msgid "No comparison"
 msgstr ""
@@ -1590,8 +1611,8 @@ msgid "Other Income"
 msgstr ""
 
 #. module: account_reports
-#: model:ir.model.fields,field_description:account_reports.field_res_company__overdue_msg
-msgid "Overdue Payments Message"
+#: model_terms:ir.ui.view,arch_db:account_reports.customer_statements_search_view
+msgid "Overdue Invoices"
 msgstr ""
 
 #. module: account_reports
@@ -1616,7 +1637,7 @@ msgid "Parent Path"
 msgstr ""
 
 #. module: account_reports
-#: code:addons/account_reports/models/account_analytic_report.py:23
+#: code:addons/account_reports/models/account_analytic_report.py:24
 #: code:addons/account_reports/models/account_general_ledger.py:31
 #: model:ir.model.fields,field_description:account_reports.field_account_report_manager__partner_id
 #, python-format
@@ -1641,7 +1662,6 @@ msgstr ""
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_res_partner__partner_ledger_label
-#: model:ir.model.fields,field_description:account_reports.field_res_users__partner_ledger_label
 msgid "Partner Ledger Label"
 msgstr ""
 
@@ -1723,17 +1743,12 @@ msgid "Print Follow-up Letter"
 msgstr ""
 
 #. module: account_reports
-#: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
-msgid "Print Legal Statement"
-msgstr ""
-
-#. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_financial_html_report_line__print_on_new_page
 msgid "Print On New Page"
 msgstr ""
 
 #. module: account_reports
-#: code:addons/account_reports/models/account_report.py:700
+#: code:addons/account_reports/models/account_report.py:701
 #, python-format
 msgid "Print Preview"
 msgstr ""
@@ -1792,7 +1807,7 @@ msgstr ""
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_aged_partner_balance.py:21
-#: code:addons/account_reports/models/account_analytic_report.py:22
+#: code:addons/account_reports/models/account_analytic_report.py:23
 #: code:addons/account_reports/models/account_bank_reconciliation_report.py:23
 #, python-format
 msgid "Reference"
@@ -1932,8 +1947,8 @@ msgid "Summary"
 msgstr ""
 
 #. module: account_reports
-#: code:addons/account_reports/models/account_generic_tax_report.py:18
-#: code:addons/account_reports/models/account_generic_tax_report.py:21
+#: code:addons/account_reports/models/account_generic_tax_report.py:19
+#: code:addons/account_reports/models/account_generic_tax_report.py:22
 #, python-format
 msgid "TAX"
 msgstr ""
@@ -1951,16 +1966,11 @@ msgid "Tax Declaration"
 msgstr ""
 
 #. module: account_reports
-#: code:addons/account_reports/models/account_generic_tax_report.py:151
+#: code:addons/account_reports/models/account_generic_tax_report.py:152
 #: model:ir.model.fields,field_description:account_reports.field_account_financial_html_report__tax_report
 #: model:ir.ui.menu,name:account_reports.menu_action_account_report_gt
 #, python-format
 msgid "Tax Report"
-msgstr ""
-
-#. module: account_reports
-#: model:ir.model,name:account_reports.model_account_chart_template
-msgid "Templates for Account Chart"
 msgstr ""
 
 #. module: account_reports
@@ -1970,7 +1980,6 @@ msgstr ""
 
 #. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_res_partner__payment_next_action_date
-#: model:ir.model.fields,help:account_reports.field_res_users__payment_next_action_date
 msgid "The date before which no action should be taken."
 msgstr ""
 
@@ -2026,8 +2035,8 @@ msgstr ""
 #: code:addons/account_reports/models/account_aged_partner_balance.py:78
 #: code:addons/account_reports/models/account_consolidated_journals.py:41
 #: code:addons/account_reports/models/account_consolidated_journals.py:73
-#: code:addons/account_reports/models/account_financial_report.py:1057
-#: code:addons/account_reports/models/account_financial_report.py:1140
+#: code:addons/account_reports/models/account_financial_report.py:1058
+#: code:addons/account_reports/models/account_financial_report.py:1141
 #: code:addons/account_reports/models/account_general_ledger.py:403
 #: code:addons/account_reports/models/account_general_ledger.py:415
 #: code:addons/account_reports/models/account_partner_ledger.py:219
@@ -2047,17 +2056,15 @@ msgstr ""
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_followup_report.py:35
-#: code:addons/account_reports/models/account_followup_report.py:107
+#: code:addons/account_reports/models/account_followup_report.py:108
 #: model:ir.model.fields,field_description:account_reports.field_res_partner__total_due
-#: model:ir.model.fields,field_description:account_reports.field_res_users__total_due
 #, python-format
 msgid "Total Due"
 msgstr ""
 
 #. module: account_reports
-#: code:addons/account_reports/models/account_followup_report.py:118
+#: code:addons/account_reports/models/account_followup_report.py:119
 #: model:ir.model.fields,field_description:account_reports.field_res_partner__total_overdue
-#: model:ir.model.fields,field_description:account_reports.field_res_users__total_overdue
 #, python-format
 msgid "Total Overdue"
 msgstr ""
@@ -2088,7 +2095,7 @@ msgstr ""
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_financial_report.py:45
-#: code:addons/account_reports/models/account_financial_report.py:904
+#: code:addons/account_reports/models/account_financial_report.py:905
 #, python-format
 msgid "Undefined"
 msgstr ""
@@ -2121,7 +2128,6 @@ msgstr ""
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_res_partner__unreconciled_aml_ids
-#: model:ir.model.fields,field_description:account_reports.field_res_users__unreconciled_aml_ids
 msgid "Unreconciled Aml"
 msgstr ""
 
@@ -2212,7 +2218,6 @@ msgid "With Overdue Invoices"
 msgstr ""
 
 #. module: account_reports
-#: model_terms:ir.ui.view,arch_db:account_reports.customer_statements_search_view
 #: selection:res.partner,followup_status:0
 msgid "With overdue invoices"
 msgstr ""
@@ -2222,21 +2227,6 @@ msgstr ""
 #: code:addons/account_reports/static/src/js/followup_form/followup_form_controller.js:69
 #, python-format
 msgid "You are done with the follow-ups!<br/>You have skipped %s partner(s)."
-msgstr ""
-
-#. module: account_reports
-#: model:ir.model,name:account_reports.model_account_analytic_report
-msgid "account.analytic.report"
-msgstr ""
-
-#. module: account_reports
-#: model:ir.model,name:account_reports.model_account_generic_tax_report
-msgid "account.generic.tax.report"
-msgstr ""
-
-#. module: account_reports
-#: model:ir.model,name:account_reports.model_account_report
-msgid "account.report"
 msgstr ""
 
 #. module: account_reports
@@ -2276,12 +2266,7 @@ msgid "display the unfold all options in report"
 msgstr ""
 
 #. module: account_reports
-#: model:ir.model,name:account_reports.model_account_report_manager
-msgid "manage summary and footnotes of reports"
-msgstr ""
-
-#. module: account_reports
-#: code:addons/account_reports/models/account_financial_report.py:922
+#: code:addons/account_reports/models/account_financial_report.py:923
 #, python-format
 msgid "n/a"
 msgstr ""
@@ -2294,11 +2279,6 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.main_template
 msgid "prior or included in this period."
-msgstr ""
-
-#. module: account_reports
-#: model:ir.model,name:account_reports.model_res_config_settings
-msgid "res.config.settings"
 msgstr ""
 
 #. module: account_reports

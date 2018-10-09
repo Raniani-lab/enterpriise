@@ -10,6 +10,12 @@
         </xpath>
     </template>
 
+    <template id="assets_common" name="hr_contract_salary_assets_common" inherit_id="web.assets_common">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/hr_contract_salary/static/src/js/hr_contract_salary_tours.js"></script>
+        </xpath>
+    </template>
+
     <template id="salary_package" name="My Contract">
         <t t-call="website.layout">
             <div id="wrap">
@@ -1367,7 +1373,7 @@
     <template id="salary_package_thank_you" name="Submitted Salary Package">
         <t t-call="website.layout">
             <div class="wrap">
-                <div id="hr_cs_form" class="container">
+                <div class="container">
                     <div class="text-center mt48 mb48">
                         <h1 class="hr_cs_brand_optional"><i class="fa fa-check-circle-o mr8"/>Congratulations</h1>
                         <p class="lead mb24">Your contract has been sent to:</p>

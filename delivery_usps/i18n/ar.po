@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
 "Last-Translator: Shaima Safar <shaima.safar@open-inside.com>, 2018\n"
 "Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
@@ -41,11 +41,6 @@ msgid "Based on Rules"
 msgstr "بناء على تعليمات"
 
 #. module: delivery_usps
-#: model:ir.model,name:delivery_usps.model_delivery_carrier
-msgid "Carrier"
-msgstr "شركة الشحن"
-
-#. module: delivery_usps
 #: model:ir.model.fields,help:delivery_usps.field_delivery_carrier__usps_account_validated
 msgid "Check this box if your account is validated by USPS"
 msgstr "حدد هذا المربع إذا تم التحقق من حسابك بواسطة USPS"
@@ -65,6 +60,11 @@ msgstr "نوع المحتوي"
 #: selection:delivery.carrier,delivery_type:0
 msgid "DHL"
 msgstr ""
+
+#. module: delivery_usps
+#: model:ir.model,name:delivery_usps.model_delivery_carrier
+msgid "Delivery Methods"
+msgstr "طرق الشحن"
 
 #. module: delivery_usps
 #: model:ir.model.fields,field_description:delivery_usps.field_delivery_carrier__usps_delivery_nature
@@ -138,7 +138,7 @@ msgid "Flat Rate Envelope"
 msgstr "سعر مغلف مسطح"
 
 #. module: delivery_usps
-#: model:ir.ui.view,arch_db:delivery_usps.usps_shipping_request
+#: model_terms:ir.ui.view,arch_db:delivery_usps.usps_shipping_request
 msgid "From Company"
 msgstr "من شركة"
 
@@ -404,7 +404,7 @@ msgid "The selected USPS service (%s) cannot be used to deliver this package."
 msgstr ""
 
 #. module: delivery_usps
-#: model:ir.ui.view,arch_db:delivery_usps.usps_shipping_request
+#: model_terms:ir.ui.view,arch_db:delivery_usps.usps_shipping_request
 msgid "To Company"
 msgstr "إلى الشركة"
 
@@ -434,13 +434,13 @@ msgid "USPS"
 msgstr "USPS"
 
 #. module: delivery_usps
-#: model:ir.ui.view,arch_db:delivery_usps.view_delivery_carrier_form_with_provider_usps
+#: model_terms:ir.ui.view,arch_db:delivery_usps.view_delivery_carrier_form_with_provider_usps
 msgid "USPS Configuration"
 msgstr ""
 
 #. module: delivery_usps
-#: model:ir.ui.view,arch_db:delivery_usps.res_config_settings_view_form_sale
-#: model:ir.ui.view,arch_db:delivery_usps.res_config_settings_view_form_stock
+#: model_terms:ir.ui.view,arch_db:delivery_usps.res_config_settings_view_form_sale
+#: model_terms:ir.ui.view,arch_db:delivery_usps.res_config_settings_view_form_stock
 msgid "USPS Delivery Methods"
 msgstr ""
 

@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import uuid
+
 from odoo import api, fields, models, _
+from odoo.fields import Date
 from odoo.exceptions import ValidationError
 
 from werkzeug.urls import url_encode
@@ -9,6 +12,7 @@ from werkzeug.urls import url_encode
 
 class GenerateSimulationLink(models.TransientModel):
     _name = 'generate.simulation.link'
+    _description = 'Gamification Simulation Link'
 
     @api.model
     def default_get(self, fields):
@@ -26,6 +30,9 @@ class GenerateSimulationLink(models.TransientModel):
         elif model == 'hr.applicant':
             applicant_id = self.env.context.get('active_id')
             applicant = self.env['hr.applicant'].sudo().browse(applicant_id)
+            if not applicant.access_token or applicant.access_token_end_date < Date.today():
+                applicant.access_token = uuid.uuid4().hex
+                applicant.access_token_end_date = self.env['hr.contract']._get_access_token_end_date()
             result['applicant_id'] = applicant_id
             result['contract_id'] = applicant.job_id.default_contract_id.id
         return result
@@ -78,6 +85,7 @@ class GenerateSimulationLink(models.TransientModel):
                 params['new_car_model_id'] = wizard.new_car_model_id.id
             if wizard.applicant_id:
                 params['applicant_id'] = wizard.applicant_id.id
+                params['token'] = wizard.applicant_id.access_token
             if wizard.customer_relation:
                 params['customer_relation'] = 1
             if wizard.final_yearly_costs:

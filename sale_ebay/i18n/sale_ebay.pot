@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-18 10:05+0000\n"
-"PO-Revision-Date: 2018-09-18 10:05+0000\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -151,6 +151,11 @@ msgstr ""
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_item_condition__code
 msgid "Code"
+msgstr ""
+
+#. module: sale_ebay
+#: model:ir.model,name:sale_ebay.model_res_config_settings
+msgid "Config Settings"
 msgstr ""
 
 #. module: sale_ebay
@@ -441,7 +446,7 @@ msgid "Name"
 msgstr ""
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/sale_ebay.py:197
+#: code:addons/sale_ebay/models/sale_ebay.py:199
 #, python-format
 msgid "No Business Policies"
 msgstr ""
@@ -580,7 +585,7 @@ msgstr ""
 
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_crm_team
-msgid "Sales Team"
+msgid "Sales Channels"
 msgstr ""
 
 #. module: sale_ebay
@@ -769,6 +774,11 @@ msgid "eBay"
 msgstr ""
 
 #. module: sale_ebay
+#: model:ir.model,name:sale_ebay.model_ebay_category
+msgid "eBay Category"
+msgstr ""
+
+#. module: sale_ebay
 #: model:product.category,name:sale_ebay.product_category_ebay
 msgid "eBay Delivery Services"
 msgstr ""
@@ -798,8 +808,28 @@ msgid "eBay ID"
 msgstr ""
 
 #. module: sale_ebay
+#: model:ir.model,name:sale_ebay.model_ebay_item_condition
+msgid "eBay Item Condition"
+msgstr ""
+
+#. module: sale_ebay
+#: model:ir.model,name:sale_ebay.model_ebay_link_listing
+msgid "eBay Link Listing"
+msgstr ""
+
+#. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_link_listing__ebay_id
 msgid "eBay Listing ID"
+msgstr ""
+
+#. module: sale_ebay
+#: model:ir.model,name:sale_ebay.model_ebay_policy
+msgid "eBay Policy"
+msgstr ""
+
+#. module: sale_ebay
+#: model:ir.model,name:sale_ebay.model_ebay_site
+msgid "eBay Site"
 msgstr ""
 
 #. module: sale_ebay
@@ -825,7 +855,7 @@ msgid "eBay Website"
 msgstr ""
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/sale_ebay.py:53
+#: code:addons/sale_ebay/models/sale_ebay.py:54
 #, python-format
 msgid "eBay error: Impossible to synchronize the categories. \n"
 "'%s'"
@@ -864,35 +894,5 @@ msgstr ""
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_sales_team
 msgid "ebay Sales Channel"
-msgstr ""
-
-#. module: sale_ebay
-#: model:ir.model,name:sale_ebay.model_ebay_category
-msgid "ebay.category"
-msgstr ""
-
-#. module: sale_ebay
-#: model:ir.model,name:sale_ebay.model_ebay_item_condition
-msgid "ebay.item.condition"
-msgstr ""
-
-#. module: sale_ebay
-#: model:ir.model,name:sale_ebay.model_ebay_link_listing
-msgid "ebay.link.listing"
-msgstr ""
-
-#. module: sale_ebay
-#: model:ir.model,name:sale_ebay.model_ebay_policy
-msgid "ebay.policy"
-msgstr ""
-
-#. module: sale_ebay
-#: model:ir.model,name:sale_ebay.model_ebay_site
-msgid "ebay.site"
-msgstr ""
-
-#. module: sale_ebay
-#: model:ir.model,name:sale_ebay.model_res_config_settings
-msgid "res.config.settings"
 msgstr ""
 

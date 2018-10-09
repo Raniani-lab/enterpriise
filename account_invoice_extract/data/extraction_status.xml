@@ -8,50 +8,42 @@
         <field name="arch" type="xml">
             <xpath expr="//header" position="inside">
                 <button name="retry_ocr" class="oe_highlight" string="Resend File through OCR" type="object" 
-                attrs="{'invisible': [('can_show_resend_button', '=', False)]}"/>
+                attrs="{'invisible': [('extract_can_show_resend_button', '=', False)]}"/>
                 <button name="retry_ocr" class="oe_highlight" string="Send File through OCR" type="object" 
-                attrs="{'invisible': [('can_show_send_button', '=', False)]}"/>
+                attrs="{'invisible': [('extract_can_show_send_button', '=', False)]}"/>
             </xpath>
             <xpath expr="//header" position='after'>
-                <field name="ocr_extract_data_state" attrs="{'invisible':True}"/>
-                <field name="ocr_extract_data_word_ids" attrs="{'invisible':True}"/>
-                <field name="ocr_invoice_id_user_change" attrs="{'invisible':True}"/>
-                <field name="ocr_total_user_change" attrs="{'invisible':True}"/>
-                <field name="ocr_date_user_change" attrs="{'invisible':True}"/>
-                <field name="ocr_due_date_user_change" attrs="{'invisible':True}"/>
-                <field name="ocr_partner_user_change" attrs="{'invisible':True}"/>
-                <field name="can_show_resend_button" attrs="{'invisible':True}"/>
-                <field name="can_show_send_button" attrs="{'invisible':True}"/>
-                <div role="status" class="alert alert-success mb8 o_success_ocr" attrs="{'invisible':['|', ('state', 'not in', ['draft']), ('ocr_extract_data_state', 'not in', ['waiting_validation', 'validation_to_send'])]}" >
-                    Extraction processed with success. Don't forget to validate the different fields.
+                <field name="extract_state" attrs="{'invisible':True}"/>
+                <field name="extract_word_ids" attrs="{'invisible':True}"/>
+                <field name="extract_can_show_resend_button" attrs="{'invisible':True}"/>
+                <field name="extract_can_show_send_button" attrs="{'invisible':True}"/>
+                <div role="status" class="o_success_ocr" attrs="{'invisible':['|', ('state', 'not in', ['draft']), ('extract_state', 'not in', ['waiting_validation', 'validation_to_send'])]}" >
+                    <!-- Extraction processed with success. Don't forget to validate the different fields. -->
                 </div>
-                <div role="status" class="alert alert-danger mb8" attrs="{'invisible':['|', ('state', 'not in', ['draft']), ('ocr_extract_data_state', 'not in', ['not_enough_credit'])]}">
+                <div role="status" class="alert alert-danger mb8" attrs="{'invisible':['|', ('state', 'not in', ['draft']), ('extract_state', 'not in', ['not_enough_credit'])]}">
                     You don't have enough credit to extract datas from your invoice. You can buy new credits here: 
                     <!--TODO: change because popup blocked-->
                     <button string="Buy credits" type="object" name="buy_credits" class="btn btn-sm btn-primary pull-right mb0"/>
                 </div>
-                <div role="status" class="alert alert-info mb8" attrs="{'invisible':['|', ('state', 'not in', ['draft']), ('ocr_extract_data_state', 'not in', ['extract_requested', 'waiting_extraction'])]}">
+                <div role="status" class="alert alert-info mb8" attrs="{'invisible':['|', ('state', 'not in', ['draft']), ('extract_state', 'not in', ['waiting_extraction'])]}">
                     <button string="Update status" type="object" name="check_status" class="btn btn-sm btn-primary pull-right mb0"/>
-                    You have requested a data extraction of your invoice. Please wait while our OCR  process it. The extraction usually takes between 5 to 60 seconds.
+                    The data extraction started. It takes usually between 5 and 60 seconds.
                     <div class="clearfix"/>
                 </div>
-                <div role="status" class="alert alert-info mb8" attrs="{'invisible':['|', ('state', 'not in', ['draft']), ('ocr_extract_data_state', 'not in', ['extract_not_ready'])]}">
+                <div role="status" class="alert alert-info mb8" attrs="{'invisible':['|', ('state', 'not in', ['draft']), ('extract_state', 'not in', ['extract_not_ready'])]}">
                     <button string="Update status" type="object" name="check_status" class="btn btn-sm btn-primary pull-right mb0"/>
-                    The data extraction is not finished yet. Please wait. The extraction usually takes between 5 to 60 seconds.
+                    The data extraction is not finished yet. The extraction usually takes between 5 and 60 seconds.
                     <div class="clearfix"/>
                 </div>
-                <div role="status" class="alert alert-danger mb8" attrs="{'invisible':['|', ('state', 'not in', ['draft']), ('ocr_extract_data_state', 'not in', ['error_status'])]}">
+                <div role="status" class="alert alert-danger mb8" attrs="{'invisible':['|', ('state', 'not in', ['draft']), ('extract_state', 'not in', ['error_status'])]}">
                     An error occured during the ocr process.
-                </div>
-                <div role="status" class="alert alert-danger mb8" attrs="{'invisible':['|', ('state', 'not in', ['draft']), ('ocr_extract_data_state', 'not in', ['module_not_up_to_date'])]}">
-                    Your OCR module is not up-to-date. Please update the module "account_invoice_extract"
                 </div>
             </xpath>
             <xpath expr="//field[@name='message_ids']" position='replace'>
                 <field name="message_ids" widget="mail_thread" options="{'post_refresh': 'always'}"/>
             </xpath>
             <xpath expr="//form" position="attributes">
-                <attribute name="js_class">account_ocr_preview</attribute>
+                <attribute name="js_class">account_invoice_extract_preview</attribute>
             </xpath>
             <xpath expr="//div[hasclass('o_attachment_preview')]" position="replace">
                 <div class="o_attachment_preview" attrs="{'invisible': ['|',('type', 'not in', ['in_invoice', 'in_refund']),('state', '!=', 'draft')]}" options="{'preview_priority_type': 'pdf'}"/>

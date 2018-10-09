@@ -4,13 +4,15 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# Tina Rittmüller <tr@ife.de>, 2018
+# Johannes Croe <jcr@odoo.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"Last-Translator: Johannes Croe <jcr@odoo.com>, 2018\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,12 +23,17 @@ msgstr ""
 #. module: account_sepa
 #: model:ir.model,name:account_sepa.model_account_batch_payment
 msgid "Batch Payment"
-msgstr ""
+msgstr "Massenzahlung"
 
 #. module: account_sepa
 #: model:ir.model,name:account_sepa.model_res_company
 msgid "Companies"
 msgstr "Unternehmen"
+
+#. module: account_sepa
+#: model:ir.model,name:account_sepa.model_res_config_settings
+msgid "Config Settings"
+msgstr "Konfiguration "
 
 #. module: account_sepa
 #: model:ir.model,name:account_sepa.model_account_abstract_payment
@@ -96,7 +103,7 @@ msgid ""
 msgstr "Name des Gläubigers. Regel: Begrenzt auf 70 Zeichen in der Länge."
 
 #. module: account_sepa
-#: model:ir.ui.view,arch_db:account_sepa.account_journal_dashboard_kanban_view_inherited
+#: model_terms:ir.ui.view,arch_db:account_sepa.account_journal_dashboard_kanban_view_inherited
 msgid "Payment to send via SEPA"
 msgstr "Über SEPA zu sendende Zahlungen"
 
@@ -106,7 +113,7 @@ msgid "Payments"
 msgstr "Zahlungen"
 
 #. module: account_sepa
-#: model:ir.ui.view,arch_db:account_sepa.account_journal_dashboard_kanban_view_inherited
+#: model_terms:ir.ui.view,arch_db:account_sepa.account_journal_dashboard_kanban_view_inherited
 msgid "Payments to send via SEPA"
 msgstr "Über SEPA zu sendende Zahlungen"
 
@@ -130,8 +137,8 @@ msgstr "Bankkonto des Empfängers"
 
 #. module: account_sepa
 #: model:ir.model,name:account_sepa.model_account_register_payments
-msgid "Register payments on multiple invoices"
-msgstr "Zahlungen für mehrere Rechnungen erfassen"
+msgid "Register Payments"
+msgstr "Einzahlungen erfassen"
 
 #. module: account_sepa
 #: model:account.payment.method,name:account_sepa.account_payment_method_sepa_ct
@@ -139,7 +146,7 @@ msgid "SEPA Credit Transfer"
 msgstr "SEPA Kreditübertragung"
 
 #. module: account_sepa
-#: model:ir.ui.view,arch_db:account_sepa.view_sepa_credit_transfer_search
+#: model_terms:ir.ui.view,arch_db:account_sepa.view_sepa_credit_transfer_search
 msgid "SEPA Credit Transfer Payments To Send"
 msgstr "SEPA-Überweisung"
 
@@ -197,7 +204,7 @@ msgstr ""
 "nicht durch IBAN Kontonummer und BIC Bankkennung identifiziert."
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:338
+#: code:addons/account_sepa/models/account_batch_payment.py:353
 #, python-format
 msgid ""
 "The account %s, linked to partner '%s', is not of type IBAN.\n"
@@ -207,7 +214,7 @@ msgstr ""
 "Zur Verwendung der SEPA-Verfahren ist ein gültiges IBAN-Konto erforderlich."
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:83
+#: code:addons/account_sepa/models/account_batch_payment.py:103
 #, python-format
 msgid ""
 "The account %s, of journal '%s', is not of type IBAN.\n"
@@ -227,7 +234,7 @@ msgstr ""
 "um über SEPA zu bezahlen. Bitte konfigurieren Sie es zuerst."
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:302
+#: code:addons/account_sepa/models/account_batch_payment.py:317
 #, python-format
 msgid ""
 "The amount of the payment '%s' is too high. The maximum permitted is %s."
@@ -236,7 +243,7 @@ msgstr ""
 "%s."
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:70
+#: code:addons/account_sepa/models/account_batch_payment.py:90
 #, python-format
 msgid ""
 "The creditor bank account %s used in payment %s is not identified by a BIC"
@@ -245,7 +252,7 @@ msgstr ""
 "von einem BIC identifiziert"
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:72
+#: code:addons/account_sepa/models/account_batch_payment.py:92
 #, python-format
 msgid ""
 "The creditor bank account %s used in payment %s is not identified by an IBAN"
@@ -254,19 +261,11 @@ msgstr ""
 "durch eine IBAN identifiziert"
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:93
+#: code:addons/account_sepa/models/account_batch_payment.py:111
 #, python-format
 msgid ""
 "The following payments have no recipient bank account set: %s. \n"
 "\n"
-msgstr ""
-
-#. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:94
-#, python-format
-msgid ""
-"The following payments' communications are not SEPA compliant: %s.\n"
-"                                         To be SEPA compliant, a communication must be made of only latin characters, be maximum 140 characters long, and cannot contain '//' sequence, nor start or end with a / character."
 msgstr ""
 
 #. module: account_sepa
@@ -308,19 +307,19 @@ msgstr ""
 "/ - ? : ( ) . , ' + (leerzeichen)"
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:68
+#: code:addons/account_sepa/models/account_batch_payment.py:88
 #, python-format
 msgid "The transaction %s is instructed in another currency than EUR"
 msgstr "Die Transaktion %s wird in einer anderen Währung als EUR ausgewiesen"
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:332
+#: code:addons/account_sepa/models/account_batch_payment.py:347
 #, python-format
 msgid "There is no Bank Identifier Code recorded for bank account '%s'"
 msgstr "Beim Bankkonto '%s' wurde kein Bank Identifizierungs-Code angegeben."
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:176
+#: code:addons/account_sepa/models/account_batch_payment.py:191
 #, python-format
 msgid ""
 "There is no Bank Identifier Code recorded for bank account '%s' of journal "
@@ -328,7 +327,7 @@ msgid ""
 msgstr "Es wurde kein BIC für das Bankkonto '%s' im Journal '%s' hinterlegt"
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:174
+#: code:addons/account_sepa/models/account_batch_payment.py:189
 #, python-format
 msgid "Too many transactions for a single file."
 msgstr "Zu viele Transaktionen für eine einzelne Datei."
@@ -350,12 +349,7 @@ msgid "Your Company Name"
 msgstr "Unternehmensname"
 
 #. module: account_sepa
-#: code:addons/account_sepa/models/account_batch_payment.py:64
+#: code:addons/account_sepa/models/account_batch_payment.py:84
 #, python-format
 msgid "Your bank account is not labelled in EUR"
 msgstr "Ihr Bankkonto ist nicht in EUR gezeichnet"
-
-#. module: account_sepa
-#: model:ir.model,name:account_sepa.model_res_config_settings
-msgid "res.config.settings"
-msgstr "res.config.settings"

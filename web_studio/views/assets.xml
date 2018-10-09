@@ -8,11 +8,6 @@
             <script type="text/javascript" src="/web_studio/static/src/js/home_menu_all.js"></script>
         </xpath>
     </template>
-    <template id="report_assets_common" inherit_id="web.report_assets_common">
-        <xpath expr="." position="inside">
-            <link rel="stylesheet" type="text/scss" href="/web_studio/static/src/scss/report_iframe.scss"/>
-        </xpath>
-    </template>
 
     <template id="web_studio.assets" name="Web Studio Assets">
 
@@ -106,6 +101,19 @@
         </xpath>
     </template>
 
+    <!-- Reports -->
+    <template id="web_studio.report_assets" name="Web Studio Report Assets">
+        <t t-call="web._assets_helpers"/>
+        <link rel="stylesheet" type="text/scss" href="/web_studio/static/src/scss/report_iframe.scss"/>
+    </template>
+
+    <template id="web_studio.report_layout" inherit_id="web.report_layout">
+        <xpath expr="//head" position="inside">
+            <t t-if="studio" t-call-assets="web_studio.report_assets"/>
+        </xpath>
+    </template>
+
+    <!-- Tests -->
     <template id="js_tests_assets" inherit_id="web.js_tests_assets">
         <xpath expr="." position="inside">
             <t t-call-assets="web_studio.assets"/>

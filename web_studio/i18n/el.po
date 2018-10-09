@@ -4,13 +4,16 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# George Tarasidis <george_tarasidis@yahoo.com>, 2018
+# Kostas Goutoudis <goutoudis@gmail.com>, 2018
+# Stefanos Nikou <stefanos.nikou@gmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:29+0000\n"
-"PO-Revision-Date: 2018-08-24 11:29+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"POT-Creation-Date: 2018-10-02 10:32+0000\n"
+"PO-Revision-Date: 2018-10-02 10:32+0000\n"
+"Last-Translator: Stefanos Nikou <stefanos.nikou@gmail.com>, 2018\n"
 "Language-Team: Greek (https://www.transifex.com/odoo/teams/41243/el/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -49,23 +52,14 @@ msgid ""
 msgstr ""
 
 #. module: web_studio
-#: code:addons/web_studio/controllers/report.py:44
+#: code:addons/web_studio/controllers/report.py:54
 #, python-format
 msgid "%s Report"
 msgstr ""
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/reports/report_kanban_view.js:145
-#: code:addons/web_studio/static/src/js/reports/report_kanban_view.js:149
-#: code:addons/web_studio/static/src/js/reports/report_kanban_view.js:153
-#, python-format
-msgid "(TODO: description)"
-msgstr ""
-
-#. module: web_studio
-#. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:115
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:110
 #, python-format
 msgid "(t-if=\""
 msgstr ""
@@ -120,10 +114,13 @@ msgid "Access Groups"
 msgstr "Ομάδες Πρόσβασης"
 
 #. module: web_studio
-#. openerp-web
-#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:524
-#, python-format
-msgid "Accounting Total"
+#: model:ir.model,name:web_studio.model_ir_actions_act_window
+msgid "Action Window"
+msgstr ""
+
+#. module: web_studio
+#: model:ir.model,name:web_studio.model_ir_actions_act_window_view
+msgid "Action Window View"
 msgstr ""
 
 #. module: web_studio
@@ -142,44 +139,24 @@ msgid "Activate View"
 msgstr ""
 
 #. module: web_studio
-#: model:ir.model.fields,field_description:web_studio.field_ir_cron__activity_type_id
-msgid "Activity"
-msgstr ""
-
-#. module: web_studio
-#: model:ir.model.fields,field_description:web_studio.field_ir_cron__activity_user_type
-msgid "Activity User Type"
-msgstr ""
-
-#. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/new_field_dialog.xml:41
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:8
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:27
 #, python-format
 msgid "Add"
-msgstr ""
-
-#. module: web_studio
-#: model:ir.model.fields,field_description:web_studio.field_ir_cron__channel_ids
-msgid "Add Channels"
-msgstr ""
+msgstr "Προσθήκη"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/js/views/view_editors/form_editor.js:229
 #, python-format
 msgid "Add Chatter Widget"
-msgstr ""
-
-#. module: web_studio
-#: model:ir.model.fields,field_description:web_studio.field_ir_cron__partner_ids
-msgid "Add Followers"
-msgstr ""
+msgstr "Προσθήκη Γραφικού Στοιχείου Συζήτησης"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/tour.js:96
+#: code:addons/web_studio/static/src/js/tour.js:98
 #, python-format
 msgid ""
 "Add a <b>chatter widget</b> to allow discussions on your document: by email "
@@ -237,7 +214,7 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:416
+#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:695
 #, python-format
 msgid "Address Block"
 msgstr ""
@@ -247,7 +224,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:152
 #, python-format
 msgid "All Day"
-msgstr ""
+msgstr "Ολοήμερη"
 
 #. module: web_studio
 #. openerp-web
@@ -258,14 +235,14 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:159
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:151
 #, python-format
 msgid "Amount total"
-msgstr ""
+msgstr "Συνολικό ποσό"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:157
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:149
 #, python-format
 msgid "Amount untaxed"
 msgstr ""
@@ -279,7 +256,6 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/reports/report_editor_manager.js:337
 #: code:addons/web_studio/static/src/js/views/view_editor_sidebar.js:520
 #, python-format
 msgid "Are you sure you want to remove this %s from the view?"
@@ -294,9 +270,9 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:133
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:128
 #, python-format
-msgid "As Expression"
+msgid "As expression"
 msgstr ""
 
 #. module: web_studio
@@ -315,18 +291,18 @@ msgstr ""
 #: code:addons/web_studio/controllers/main.py:58
 #, python-format
 msgid "Automated Actions"
-msgstr ""
+msgstr "Αυτοματοποιημένες ενέργειες"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/submenu.xml:34
+#: code:addons/web_studio/static/src/xml/submenu.xml:35
 #, python-format
 msgid "Automations"
 msgstr ""
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:240
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:232
 #, python-format
 msgid "Background"
 msgstr "Φόντο"
@@ -339,25 +315,51 @@ msgid "Backward"
 msgstr ""
 
 #. module: web_studio
+#: model:ir.model,name:web_studio.model_base
+msgid "Base"
+msgstr "Βάση"
+
+#. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/reports/report_kanban_view.js:144
+#: code:addons/web_studio/static/src/js/reports/report_kanban_view.js:152
 #, python-format
-msgid "Basic Layout"
+msgid "Blank"
 msgstr ""
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/reports/report_editor_sidebar.js:346
+#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks_registry.js:13
 #, python-format
-msgid "Blocks"
-msgstr ""
+msgid "Block"
+msgstr "Αποκλεισμός"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:224
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:216
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:396
 #, python-format
 msgid "Bold"
+msgstr "Έντονη"
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:262
+#, python-format
+msgid "Bordered"
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:263
+#, python-format
+msgid "Borderless"
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/js/reports/report_kanban_view.js:145
+#, python-format
+msgid "Business header/footer"
 msgstr ""
 
 #. module: web_studio
@@ -365,14 +367,14 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/submenu.xml:50
 #, python-format
 msgid "Calendar View"
-msgstr ""
+msgstr "Προβολή Ημερολογίου"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:44
 #, python-format
 msgid "Can Create"
-msgstr ""
+msgstr "Μπορεί να Δημιουργήσει"
 
 #. module: web_studio
 #. openerp-web
@@ -397,7 +399,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/js/views/new_view_dialog.js:36
 #: code:addons/web_studio/static/src/js/views/view_editors/kanban_record_editor.js:383
 #: code:addons/web_studio/static/src/js/views/view_editors/new_buttonbox_dialog.js:34
-#: model:ir.ui.view,arch_db:web_studio.simplified_form_view_import_module
+#: model_terms:ir.ui.view,arch_db:web_studio.simplified_form_view_import_module
 #, python-format
 msgid "Cancel"
 msgstr "Ακύρωση"
@@ -407,7 +409,7 @@ msgstr "Ακύρωση"
 #: code:addons/web_studio/static/src/xml/submenu.xml:10
 #, python-format
 msgid "Change Background"
-msgstr ""
+msgstr "Αλλαγή Φόντου"
 
 #. module: web_studio
 #. openerp-web
@@ -458,37 +460,37 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:252
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:269
 #, python-format
 msgid "Class"
-msgstr ""
+msgstr "Κλάση"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/js/tour.js:20
 #, python-format
 msgid "Click here."
-msgstr ""
+msgstr "Κλικ εδώ."
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/tour.js:100
+#: code:addons/web_studio/static/src/js/tour.js:102
 #, python-format
 msgid "Click to edit."
-msgstr ""
+msgstr "Κλικ για επεξεργασία."
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/js/common/new_field_dialog.js:205
 #: code:addons/web_studio/static/src/js/menu.js:98
-#: model:ir.ui.view,arch_db:web_studio.simplified_form_view_import_module
+#: model_terms:ir.ui.view,arch_db:web_studio.simplified_form_view_import_module
 #, python-format
 msgid "Close"
 msgstr "Κλείσιμο"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/submenu.xml:65
+#: code:addons/web_studio/static/src/xml/submenu.xml:68
 #, python-format
 msgid "Cohort View"
 msgstr ""
@@ -498,20 +500,34 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:143
 #, python-format
 msgid "Color"
-msgstr ""
+msgstr "Χρώμα"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:229
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:221
 #, python-format
 msgid "Colors"
 msgstr ""
 
 #. module: web_studio
 #. openerp-web
+#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks_registry.js:32
+#, python-format
+msgid "Column"
+msgstr "Στήλη"
+
+#. module: web_studio
+#. openerp-web
 #: code:addons/web_studio/static/src/js/views/view_components.js:51
 #, python-format
 msgid "Columns"
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:260
+#, python-format
+msgid "Compact"
 msgstr ""
 
 #. module: web_studio
@@ -524,7 +540,7 @@ msgstr "Εταιρίες"
 #: code:addons/web_studio/static/src/js/views/view_editor_sidebar.js:273
 #, python-format
 msgid "Components"
-msgstr ""
+msgstr "Εξαρτήματα"
 
 #. module: web_studio
 #. openerp-web
@@ -571,7 +587,7 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/tour.js:85
+#: code:addons/web_studio/static/src/js/tour.js:87
 #, python-format
 msgid ""
 "Create your <b>selection values</b> (e.g.: Romance, Polar, Fantasy, etc.)"
@@ -600,7 +616,7 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:155
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:147
 #, python-format
 msgid "Currency"
 msgstr "Νόμισμα"
@@ -610,11 +626,11 @@ msgstr "Νόμισμα"
 #: code:addons/web_studio/static/src/xml/submenu.xml:6
 #, python-format
 msgid "Customizations"
-msgstr ""
+msgstr "Προσαρμογές"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:462
+#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:745
 #, python-format
 msgid "Data table"
 msgstr ""
@@ -639,7 +655,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:261
 #, python-format
 msgid "Day"
-msgstr ""
+msgstr "Ημέρα"
 
 #. module: web_studio
 #. openerp-web
@@ -653,7 +669,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:402
 #, python-format
 msgid "Default"
-msgstr ""
+msgstr "Προεπιλογή"
 
 #. module: web_studio
 #. openerp-web
@@ -668,15 +684,15 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:212
 #, python-format
 msgid "Default Group by"
-msgstr ""
+msgstr "Προεπιλεγμένη Ομαδοποίηση κατά"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/views/view_editor_manager.js:1326
+#: code:addons/web_studio/static/src/js/views/view_editor_manager.js:1330
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:309
 #, python-format
 msgid "Default Values"
-msgstr ""
+msgstr "Προεπιλεγμένες τιμές"
 
 #. module: web_studio
 #. openerp-web
@@ -703,10 +719,10 @@ msgstr ""
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/edit_menu.xml:27
-#: model:ir.ui.view,arch_db:web_studio.act_report_xml_view_kanban
+#: model_terms:ir.ui.view,arch_db:web_studio.act_report_xml_view_kanban
 #, python-format
 msgid "Delete"
-msgstr ""
+msgstr "Διαγραφή"
 
 #. module: web_studio
 #. openerp-web
@@ -767,7 +783,7 @@ msgstr "Τομέας"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/tour.js:80
+#: code:addons/web_studio/static/src/js/tour.js:82
 #, python-format
 msgid ""
 "Drag & drop <b>another field</b>. Let’s try with a <i>selection field</i>."
@@ -778,30 +794,27 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/edit_menu.xml:47
 #, python-format
 msgid "Drag a menu to the right to create a sub-menu"
+msgstr "Σύρετε ένα μενού στα δεξιά για να δημιουργήσετε ένα υπομενού"
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/js/reports/report_editor.js:664
+#, python-format
+msgid "Drag building block here"
 msgstr ""
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/action_editor.xml:39
-#: model:ir.ui.view,arch_db:web_studio.act_report_xml_view_kanban
+#: model_terms:ir.ui.view,arch_db:web_studio.act_report_xml_view_kanban
 #, python-format
 msgid "Dropdown menu"
 msgstr ""
 
 #. module: web_studio
-#: model:ir.model.fields,field_description:web_studio.field_ir_cron__activity_date_deadline_range
-msgid "Due Date In"
-msgstr ""
-
-#. module: web_studio
-#: model:ir.model.fields,field_description:web_studio.field_ir_cron__activity_date_deadline_range_type
-msgid "Due type"
-msgstr ""
-
-#. module: web_studio
-#: model:ir.ui.view,arch_db:web_studio.act_report_xml_view_kanban
+#: model_terms:ir.ui.view,arch_db:web_studio.act_report_xml_view_kanban
 msgid "Duplicate"
-msgstr ""
+msgstr "Δημιουργία Αντίγραφου"
 
 #. module: web_studio
 #. openerp-web
@@ -837,7 +850,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/edit_menu.xml:6
 #, python-format
 msgid "Edit Menu"
-msgstr ""
+msgstr "Επεξεργασία Μενού"
 
 #. module: web_studio
 #. openerp-web
@@ -876,7 +889,7 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:115
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:110
 #, python-format
 msgid "Else"
 msgstr ""
@@ -886,17 +899,12 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:566
 #, python-format
 msgid "Email Alias"
-msgstr ""
-
-#. module: web_studio
-#: model:ir.model.fields,field_description:web_studio.field_ir_cron__template_id
-msgid "Email Template"
-msgstr ""
+msgstr "Ψευδώνυμο Email"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_mail_template
 msgid "Email Templates"
-msgstr ""
+msgstr "Πρότυπα Email"
 
 #. module: web_studio
 #. openerp-web
@@ -914,10 +922,10 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/common/abstract_editor_manager.js:433
+#: code:addons/web_studio/static/src/js/common/abstract_editor_manager.js:453
 #, python-format
 msgid "Error"
-msgstr ""
+msgstr "Σφάλμα"
 
 #. module: web_studio
 #. openerp-web
@@ -928,9 +936,9 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:119
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:114
 #, python-format
-msgid "Esc Expression"
+msgid "Esc expression"
 msgstr ""
 
 #. module: web_studio
@@ -949,9 +957,9 @@ msgstr "Εξαγωγή"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/reports/report_kanban_view.js:152
+#: code:addons/web_studio/static/src/js/reports/report_kanban_view.js:144
 #, python-format
-msgid "External Layout"
+msgid "External"
 msgstr ""
 
 #. module: web_studio
@@ -966,7 +974,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:607
 #, python-format
 msgid "Fast"
-msgstr ""
+msgstr "Γρήγορο"
 
 #. module: web_studio
 #. openerp-web
@@ -977,7 +985,8 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:300
+#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:484
+#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:502
 #: code:addons/web_studio/static/src/xml/kanban_editor.xml:5
 #, python-format
 msgid "Field"
@@ -985,9 +994,16 @@ msgstr "Πεδίο"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:99
+#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:614
 #, python-format
-msgid "Field Expression"
+msgid "Field & Label"
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:540
+#, python-format
+msgid "Field Column"
 msgstr ""
 
 #. module: web_studio
@@ -998,6 +1014,20 @@ msgid "Field Properties"
 msgstr ""
 
 #. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:94
+#, python-format
+msgid "Field expression"
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:577
+#, python-format
+msgid "Field in Cell"
+msgstr ""
+
+#. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_model_fields
 msgid "Fields"
 msgstr "Πεδία"
@@ -1005,7 +1035,7 @@ msgstr "Πεδία"
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/js/views/view_components.js:134
-#: model:ir.ui.view,arch_db:web_studio.act_report_xml_view_kanban
+#: model_terms:ir.ui.view,arch_db:web_studio.act_report_xml_view_kanban
 #, python-format
 msgid "File"
 msgstr "Αρχείο"
@@ -1055,16 +1085,23 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:231
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:223
 #, python-format
 msgid "Font"
+msgstr "Γραμματοσειρά"
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:244
+#, python-format
+msgid "Font style"
 msgstr ""
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:131
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:126
 #, python-format
-msgid "Foreach Expression"
+msgid "Foreach expression"
 msgstr ""
 
 #. module: web_studio
@@ -1100,14 +1137,14 @@ msgstr "Gantt"
 #: code:addons/web_studio/static/src/xml/submenu.xml:62
 #, python-format
 msgid "Gantt View"
-msgstr ""
+msgstr "Προβολή Gantt"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/action_editor.xml:9
 #, python-format
 msgid "General Views"
-msgstr ""
+msgstr "Γενικές Προβολές"
 
 #. module: web_studio
 #. openerp-web
@@ -1125,7 +1162,7 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/tour.js:76
+#: code:addons/web_studio/static/src/js/tour.js:78
 #, python-format
 msgid "Good job! To add more <b>fields</b>, come back to the <i>Add tab</i>."
 msgstr ""
@@ -1158,53 +1195,53 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/search_renderer.xml:40
 #, python-format
 msgid "Group by"
-msgstr ""
-
-#. module: web_studio
-#. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:259
-#, python-format
-msgid "H1"
-msgstr ""
-
-#. module: web_studio
-#. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:260
-#, python-format
-msgid "H2"
-msgstr ""
-
-#. module: web_studio
-#. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:261
-#, python-format
-msgid "H3"
-msgstr ""
-
-#. module: web_studio
-#. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:262
-#, python-format
-msgid "H4"
-msgstr ""
-
-#. module: web_studio
-#. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:263
-#, python-format
-msgid "H5"
-msgstr ""
+msgstr "Ομαδοποίηση κατά"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_http
-msgid "HTTP routing"
-msgstr "Δρομολόγηση HTTP"
+msgid "HTTP Routing"
+msgstr ""
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:256
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:247
 #, python-format
-msgid "Heading"
+msgid "Heading 1"
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:248
+#, python-format
+msgid "Heading 2"
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:249
+#, python-format
+msgid "Heading 3"
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:250
+#, python-format
+msgid "Heading 4"
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:251
+#, python-format
+msgid "Heading 5"
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:252
+#, python-format
+msgid "Heading 6"
 msgstr ""
 
 #. module: web_studio
@@ -1228,7 +1265,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/edit_menu.xml:23
 #, python-format
 msgid "Home"
-msgstr ""
+msgstr "Αρχική"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_res_company__background_image
@@ -1286,7 +1323,7 @@ msgstr "Εικονίδιο"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:359
+#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:640
 #: code:addons/web_studio/static/src/js/views/view_components.js:195
 #, python-format
 msgid "Image"
@@ -1302,19 +1339,26 @@ msgstr ""
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/submenu.xml:20
-#: model:ir.ui.view,arch_db:web_studio.simplified_form_view_import_module
+#: model_terms:ir.ui.view,arch_db:web_studio.simplified_form_view_import_module
 #, python-format
 msgid "Import"
-msgstr ""
+msgstr "Εισαγωγή"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/views/view_editor_manager.js:249
+#: code:addons/web_studio/static/src/js/views/view_editor_manager.js:253
 #, python-format
 msgid ""
 "In order to use a monetary field, you need a currency field on the model. Do"
 " you want to create a currency field first? You can make this field "
 "invisible afterwards."
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks_registry.js:21
+#, python-format
+msgid "Inline"
 msgstr ""
 
 #. module: web_studio
@@ -1328,15 +1372,15 @@ msgstr ""
 #. openerp-web
 #: code:addons/web_studio/static/src/js/reports/report_kanban_view.js:148
 #, python-format
-msgid "Internal Layout"
-msgstr ""
+msgid "Internal"
+msgstr "Εσωτερικές"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:259
 #, python-format
 msgid "Interval"
-msgstr ""
+msgstr "Διάστημα"
 
 #. module: web_studio
 #. openerp-web
@@ -1354,10 +1398,10 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:225
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:217
 #, python-format
 msgid "Italic"
-msgstr ""
+msgstr "Πλάγια"
 
 #. module: web_studio
 #. openerp-web
@@ -1377,7 +1421,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:661
 #, python-format
 msgid "Label"
-msgstr ""
+msgstr "Ετικέτα"
 
 #. module: web_studio
 #. openerp-web
@@ -1392,7 +1436,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:455
 #, python-format
 msgid "Large"
-msgstr ""
+msgstr "Μεγάλο"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_mixin____last_update
@@ -1407,7 +1451,7 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/tour.js:108
+#: code:addons/web_studio/static/src/js/tour.js:110
 #, python-format
 msgid ""
 "Let’s check the result. Close Odoo Studio to get an <b>overview of your "
@@ -1436,7 +1480,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/report_editor.xml:5
 #, python-format
 msgid "Loading..."
-msgstr ""
+msgstr "Φόρτωση..."
 
 #. module: web_studio
 #. openerp-web
@@ -1454,10 +1498,10 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:204
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:196
 #, python-format
 msgid "Margins"
-msgstr ""
+msgstr "Περιθώρια"
 
 #. module: web_studio
 #. openerp-web
@@ -1472,7 +1516,12 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:608
 #, python-format
 msgid "Medium"
-msgstr ""
+msgstr "Μέσο"
+
+#. module: web_studio
+#: model:ir.model,name:web_studio.model_ir_ui_menu
+msgid "Menu"
+msgstr "Μενού"
 
 #. module: web_studio
 #. openerp-web
@@ -1480,6 +1529,13 @@ msgstr ""
 #, python-format
 msgid "Message"
 msgstr "Μήνυμα"
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/js/reports/report_kanban_view.js:149
+#, python-format
+msgid "Minimal header/footer"
+msgstr ""
 
 #. module: web_studio
 #. openerp-web
@@ -1493,14 +1549,14 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:203
 #, python-format
 msgid "Minute"
-msgstr ""
+msgstr "Λεπτό"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:268
 #, python-format
 msgid "Mode"
-msgstr ""
+msgstr "Είδος"
 
 #. module: web_studio
 #. openerp-web
@@ -1509,6 +1565,16 @@ msgstr ""
 #, python-format
 msgid "Model"
 msgstr "Μοντέλο"
+
+#. module: web_studio
+#: model:ir.model,name:web_studio.model_ir_model_access
+msgid "Model Access"
+msgstr ""
+
+#. module: web_studio
+#: model:ir.model,name:web_studio.model_ir_model_data
+msgid "Model Data"
+msgstr "Μοντέλο Δεδομένων"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_model
@@ -1521,7 +1587,7 @@ msgid "Module"
 msgstr "Άρθρωμα"
 
 #. module: web_studio
-#: model:ir.ui.view,arch_db:web_studio.simplified_form_view_import_module
+#: model_terms:ir.ui.view,arch_db:web_studio.simplified_form_view_import_module
 msgid "Module file (.zip)"
 msgstr ""
 
@@ -1538,14 +1604,14 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:263
 #, python-format
 msgid "Month"
-msgstr ""
+msgstr "Μήνας"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/sidebar_common.xml:12
 #, python-format
 msgid "More"
-msgstr ""
+msgstr "Περισσότερα"
 
 #. module: web_studio
 #. openerp-web
@@ -1579,7 +1645,7 @@ msgstr ""
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/edit_menu.xml:59
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:22
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:66
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:65
 #, python-format
 msgid "Name"
 msgstr "Περιγραφή"
@@ -1596,7 +1662,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/kanban_editor.xml:7
 #, python-format
 msgid "New Field"
-msgstr ""
+msgstr "Νέο Πεδίο"
 
 #. module: web_studio
 #. openerp-web
@@ -1619,7 +1685,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/app_creator.xml:11
 #, python-format
 msgid "Next"
-msgstr ""
+msgstr "Επόμενο"
 
 #. module: web_studio
 #. openerp-web
@@ -1635,11 +1701,13 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:610
 #, python-format
 msgid "No"
-msgstr ""
+msgstr "Όχι"
 
 #. module: web_studio
-#: model:ir.model.fields,field_description:web_studio.field_ir_cron__activity_note
-msgid "Note"
+#. openerp-web
+#: code:addons/web_studio/static/src/js/reports/report_kanban_view.js:153
+#, python-format
+msgid "No header/footer"
 msgstr ""
 
 #. module: web_studio
@@ -1651,7 +1719,7 @@ msgstr "Σημειώσεις"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/tour.js:133
+#: code:addons/web_studio/static/src/js/tour.js:135
 #, python-format
 msgid "Now you’re on your own. Enjoy your <b>super power</b>."
 msgstr ""
@@ -1679,7 +1747,7 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:174
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:166
 #, python-format
 msgid "Offset"
 msgstr ""
@@ -1702,13 +1770,12 @@ msgstr ""
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:14
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:148
 #, python-format
 msgid "Options"
-msgstr ""
+msgstr "Επιλογές"
 
 #. module: web_studio
-#: model:ir.ui.view,arch_db:web_studio.act_report_xml_view_kanban
+#: model_terms:ir.ui.view,arch_db:web_studio.act_report_xml_view_kanban
 msgid "PDF file"
 msgstr ""
 
@@ -1745,6 +1812,13 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:226
 #, python-format
 msgid "Planning"
+msgstr "Σχεδιασμός"
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:721
+#, python-format
+msgid "Please specify a field name for the selected model."
 msgstr ""
 
 #. module: web_studio
@@ -1758,14 +1832,14 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/app_creator.xml:10
 #, python-format
 msgid "Previous"
-msgstr ""
+msgstr "Προηγούμενο"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:94
+#: code:addons/web_studio/static/src/xml/report_editor_manager.xml:4
 #, python-format
 msgid "Print"
-msgstr ""
+msgstr "Εκτύπωση"
 
 #. module: web_studio
 #. openerp-web
@@ -1801,6 +1875,11 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:113
 #, python-format
 msgid "Quick Create"
+msgstr "Γρήγορη Δημιουργία"
+
+#. module: web_studio
+#: model:ir.model,name:web_studio.model_ir_qweb
+msgid "Qweb"
 msgstr ""
 
 #. module: web_studio
@@ -1826,17 +1905,10 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/submenu.xml:71
+#: code:addons/web_studio/static/src/xml/submenu.xml:74
 #, python-format
 msgid "Redo"
-msgstr ""
-
-#. module: web_studio
-#. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:126
-#, python-format
-msgid "Related Expression"
-msgstr ""
+msgstr "Ακύρωση αναίρεσης"
 
 #. module: web_studio
 #. openerp-web
@@ -1848,10 +1920,17 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:121
+#, python-format
+msgid "Related expression"
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
 #: code:addons/web_studio/static/src/xml/new_field_dialog.xml:14
 #, python-format
 msgid "Relation:"
-msgstr ""
+msgstr "Σχέση:"
 
 #. module: web_studio
 #. openerp-web
@@ -1882,6 +1961,11 @@ msgid "Report"
 msgstr "Αναφορά"
 
 #. module: web_studio
+#: model:ir.model,name:web_studio.model_ir_actions_report
+msgid "Report Action"
+msgstr ""
+
+#. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/js/reports/report_editor_action.js:28
 #, python-format
@@ -1898,7 +1982,7 @@ msgstr ""
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/controllers/main.py:94
-#: code:addons/web_studio/static/src/xml/submenu.xml:35
+#: code:addons/web_studio/static/src/xml/submenu.xml:31
 #, python-format
 msgid "Reports"
 msgstr "Αναφορές"
@@ -1925,11 +2009,6 @@ msgid "Reset Image"
 msgstr ""
 
 #. module: web_studio
-#: model:ir.model.fields,field_description:web_studio.field_ir_cron__activity_user_id
-msgid "Responsible"
-msgstr ""
-
-#. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:270
 #, python-format
@@ -1943,22 +2022,27 @@ msgid "Right Title"
 msgstr ""
 
 #. module: web_studio
+#: model:ir.model,name:web_studio.model_ir_rule
+msgid "Rule"
+msgstr "Κανόνας"
+
+#. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/tour.js:116
+#: code:addons/web_studio/static/src/js/tour.js:118
 #, python-format
 msgid "Save."
-msgstr ""
+msgstr "Αποθήκευση."
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/common/abstract_editor_manager.js:167
+#: code:addons/web_studio/static/src/js/common/abstract_editor_manager.js:172
 #, python-format
 msgid "Saved"
-msgstr ""
+msgstr "Αποθηκεύτηκε"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/common/abstract_editor_manager.js:126
+#: code:addons/web_studio/static/src/js/common/abstract_editor_manager.js:127
 #, python-format
 msgid "Saving..."
 msgstr ""
@@ -2000,10 +2084,10 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/views/action_editor_action.js:423
+#: code:addons/web_studio/static/src/js/views/action_editor_action.js:422
 #, python-format
 msgid "Select a view"
-msgstr ""
+msgstr "Επιλογή προβολής"
 
 #. module: web_studio
 #. openerp-web
@@ -2024,18 +2108,16 @@ msgstr ""
 #: code:addons/web_studio/static/src/js/views/view_components.js:63
 #, python-format
 msgid "Separator"
-msgstr ""
+msgstr "Διαχωριστής"
+
+#. module: web_studio
+#: model:ir.model,name:web_studio.model_ir_actions_server
+msgid "Server Action"
+msgstr "Server Action"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:124
-#, python-format
-msgid "Set Expression"
-msgstr ""
-
-#. module: web_studio
-#. openerp-web
-#: code:addons/web_studio/static/src/js/tour.js:104
+#: code:addons/web_studio/static/src/js/tour.js:106
 #, python-format
 msgid ""
 "Set an <b>email alias</b>. Then, try to send an email to this address; it "
@@ -2058,6 +2140,13 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:119
+#, python-format
+msgid "Set expression"
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:67
 #, python-format
 msgid "Show invisible elements"
@@ -2065,7 +2154,7 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:168
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:160
 #, python-format
 msgid "Size"
 msgstr "Μέγεθος"
@@ -2075,21 +2164,22 @@ msgstr "Μέγεθος"
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:609
 #, python-format
 msgid "Slow"
-msgstr ""
+msgstr "Αργά"
 
 #. module: web_studio
 #. openerp-web
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:253
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:453
 #, python-format
 msgid "Small"
-msgstr ""
+msgstr "Μικρό"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:183
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:175
 #, python-format
 msgid "Source"
-msgstr ""
+msgstr "Πηγή"
 
 #. module: web_studio
 #. openerp-web
@@ -2100,10 +2190,10 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/views/view_editor_manager.js:695
+#: code:addons/web_studio/static/src/js/views/view_editor_manager.js:699
 #, python-format
 msgid "Stage"
-msgstr ""
+msgstr "Στάδιο"
 
 #. module: web_studio
 #. openerp-web
@@ -2127,6 +2217,13 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:261
+#, python-format
+msgid "Striped"
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
 #: code:addons/web_studio/static/src/js/views/action_editor_action.js:64
 #: model:ir.model.fields,field_description:web_studio.field_ir_model_data__studio
 #, python-format
@@ -2144,8 +2241,13 @@ msgid "Studio App Creator"
 msgstr ""
 
 #. module: web_studio
-#: model:ir.ui.view,arch_db:web_studio.studio_customizations_filter
+#: model_terms:ir.ui.view,arch_db:web_studio.studio_customizations_filter
 msgid "Studio Customizations"
+msgstr ""
+
+#. module: web_studio
+#: model:ir.model,name:web_studio.model_studio_mixin
+msgid "Studio Mixin"
 msgstr ""
 
 #. module: web_studio
@@ -2162,15 +2264,31 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/submenu.js:322
+#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:808
+#, python-format
+msgid "Subtotal & Total"
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/js/submenu.js:332
 #, python-format
 msgid "Subview "
 msgstr ""
 
 #. module: web_studio
-#: model:ir.model.fields,field_description:web_studio.field_ir_cron__activity_summary
-msgid "Summary"
-msgstr "Περίληψη"
+#. openerp-web
+#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks_registry.js:25
+#, python-format
+msgid "Table"
+msgstr "Πίνακας"
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:257
+#, python-format
+msgid "Table style"
+msgstr ""
 
 #. module: web_studio
 #. openerp-web
@@ -2188,7 +2306,7 @@ msgstr "Ετικέτες"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:161
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:153
 #, python-format
 msgid "Taxes amount by groups"
 msgstr ""
@@ -2201,19 +2319,15 @@ msgid "Technical Name"
 msgstr "Τεχνική Ονομασία"
 
 #. module: web_studio
-#: model:ir.model.fields,help:web_studio.field_ir_cron__activity_user_field_name
-msgid "Technical name of the user on the record"
-msgstr ""
-
-#. module: web_studio
-#: code:addons/web_studio/models/ir_ui_view.py:768
+#: code:addons/web_studio/models/ir_ui_view.py:800
 #, python-format
 msgid "Template '%s' not found"
 msgstr ""
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:279
+#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:336
+#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:354
 #: code:addons/web_studio/static/src/js/views/view_components.js:84
 #, python-format
 msgid "Text"
@@ -2221,9 +2335,16 @@ msgstr "Κείμενο"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:223
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:215
 #, python-format
 msgid "Text decoration"
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:421
+#, python-format
+msgid "Text in Cell"
 msgstr ""
 
 #. module: web_studio
@@ -2270,7 +2391,7 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:327
+#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:467
 #, python-format
 msgid "The record field name is missing"
 msgstr ""
@@ -2323,6 +2444,13 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
+#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:398
+#, python-format
+msgid "Three Columns"
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:275
 #, python-format
 msgid "Timeline"
@@ -2337,7 +2465,7 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:396
+#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:674
 #, python-format
 msgid "Title Block"
 msgstr ""
@@ -2365,10 +2493,17 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/submenu.xml:32
+#: code:addons/web_studio/static/src/xml/submenu.xml:33
 #, python-format
 msgid "Translations"
 msgstr "Μεταφράσεις"
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:375
+#, python-format
+msgid "Two Columns"
+msgstr ""
 
 #. module: web_studio
 #. openerp-web
@@ -2379,36 +2514,23 @@ msgstr "Τύπος"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:226
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:218
 #, python-format
 msgid "Underline"
-msgstr ""
+msgstr "Υπογράμμιση"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/submenu.xml:72
+#: code:addons/web_studio/static/src/xml/submenu.xml:75
 #, python-format
 msgid "Undo"
-msgstr ""
-
-#. module: web_studio
-#: model:ir.model.fields,help:web_studio.field_ir_cron__activity_user_type
-msgid ""
-"Use 'Specific User' to always assign the same user on the next activity. Use"
-" 'Generic User From Record' to specify the field name of the user to choose "
-"on the record."
-msgstr ""
+msgstr "Αναίρεση"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/app_creator.xml:47
 #, python-format
 msgid "Use an existing Model"
-msgstr ""
-
-#. module: web_studio
-#: model:ir.model.fields,field_description:web_studio.field_ir_cron__activity_user_field_name
-msgid "User field name"
 msgstr ""
 
 #. module: web_studio
@@ -2428,13 +2550,14 @@ msgstr ""
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:30
+#: model:ir.model,name:web_studio.model_ir_ui_view
 #, python-format
 msgid "View"
 msgstr "Προβολή"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/submenu.js:146
+#: code:addons/web_studio/static/src/js/submenu.js:155
 #: code:addons/web_studio/static/src/xml/submenu.xml:30
 #, python-format
 msgid "Views"
@@ -2442,21 +2565,21 @@ msgstr "Προβολές"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:190
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:182
 #, python-format
 msgid "Visible for"
 msgstr ""
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:105
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:100
 #, python-format
 msgid "Visible if"
 msgstr ""
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/tour.js:125
+#: code:addons/web_studio/static/src/js/tour.js:127
 #, python-format
 msgid "Want more fun? Let’s create more <b>views</b>."
 msgstr ""
@@ -2481,18 +2604,18 @@ msgstr "Προσοχή"
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:262
 #, python-format
 msgid "Week"
-msgstr ""
+msgstr "Εβδομάδα"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/app_creator.xml:24
 #, python-format
 msgid "Welcome to"
-msgstr ""
+msgstr "Καλώς Ήρθατε στο"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/tour.js:129
+#: code:addons/web_studio/static/src/js/tour.js:131
 #, python-format
 msgid "What about a <b>Kanban view</b>?"
 msgstr ""
@@ -2506,23 +2629,23 @@ msgstr ""
 #. openerp-web
 #: code:addons/web_studio/static/src/js/reports/report_kanban_view.js:137
 #, python-format
-msgid "Which layout do you want?"
+msgid "Which type of report do you want to create?"
 msgstr ""
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:138
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:133
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:441
 #, python-format
 msgid "Widget"
-msgstr ""
+msgstr "Γραφικό Στοιχείο"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:216
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:208
 #, python-format
 msgid "Width"
-msgstr ""
+msgstr "Πλάτος"
 
 #. module: web_studio
 #. openerp-web
@@ -2533,7 +2656,7 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/tour.js:121
+#: code:addons/web_studio/static/src/js/tour.js:123
 #, python-format
 msgid ""
 "Wow, nice! And I’m sure you can make it even better! Use this icon to open "
@@ -2553,7 +2676,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:264
 #, python-format
 msgid "Year"
-msgstr ""
+msgstr "Έτος"
 
 #. module: web_studio
 #. openerp-web
@@ -2564,9 +2687,15 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:449
+#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:732
 #, python-format
 msgid "You can only display a user or a partner"
+msgstr ""
+
+#. module: web_studio
+#: code:addons/web_studio/controllers/report.py:184
+#, python-format
+msgid "You cannot modify this view, it is part of the generic layout"
 msgstr ""
 
 #. module: web_studio
@@ -2610,20 +2739,15 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:490
+#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:774
 #, python-format
 msgid ""
 "You need to use a many2many or one2many field to display a list of items"
 msgstr ""
 
 #. module: web_studio
-#: model:ir.model,name:web_studio.model_base
-msgid "base"
-msgstr ""
-
-#. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:210
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:202
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:77
 #, python-format
 msgid "bottom"
@@ -2634,7 +2758,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:165
 #, python-format
 msgid "day"
-msgstr ""
+msgstr "ημέρα"
 
 #. module: web_studio
 #. openerp-web
@@ -2648,61 +2772,11 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/app_creator.xml:33
 #, python-format
 msgid "e.g. Real Estate"
-msgstr ""
-
-#. module: web_studio
-#: model:ir.model,name:web_studio.model_ir_actions_act_window
-msgid "ir.actions.act_window"
-msgstr "ir.actions.act_window"
-
-#. module: web_studio
-#: model:ir.model,name:web_studio.model_ir_actions_act_window_view
-msgid "ir.actions.act_window.view"
-msgstr "ir.actions.act_window.view"
-
-#. module: web_studio
-#: model:ir.model,name:web_studio.model_ir_actions_report
-msgid "ir.actions.report"
-msgstr "ir.actions.report"
-
-#. module: web_studio
-#: model:ir.model,name:web_studio.model_ir_actions_server
-msgid "ir.actions.server"
-msgstr "ir.actions.server"
-
-#. module: web_studio
-#: model:ir.model,name:web_studio.model_ir_model_access
-msgid "ir.model.access"
-msgstr "ir.model.access"
-
-#. module: web_studio
-#: model:ir.model,name:web_studio.model_ir_model_data
-msgid "ir.model.data"
-msgstr "ir.model.data"
-
-#. module: web_studio
-#: model:ir.model,name:web_studio.model_ir_qweb
-msgid "ir.qweb"
-msgstr "ir.qweb"
-
-#. module: web_studio
-#: model:ir.model,name:web_studio.model_ir_rule
-msgid "ir.rule"
-msgstr "ir.rule"
-
-#. module: web_studio
-#: model:ir.model,name:web_studio.model_ir_ui_menu
-msgid "ir.ui.menu"
-msgstr "ir.ui.menu"
-
-#. module: web_studio
-#: model:ir.model,name:web_studio.model_ir_ui_view
-msgid "ir.ui.view"
-msgstr "ir.ui.view"
+msgstr "πχ. Κτηματομεσιτικά"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:212
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:204
 #, python-format
 msgid "left"
 msgstr ""
@@ -2712,7 +2786,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:167
 #, python-format
 msgid "month"
-msgstr ""
+msgstr "μήνας"
 
 #. module: web_studio
 #. openerp-web
@@ -2720,27 +2794,27 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/icon_creator.xml:36
 #, python-format
 msgid "or"
-msgstr ""
+msgstr "ή"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:213
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:218
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:205
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:210
 #, python-format
 msgid "px"
 msgstr ""
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:234
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:243
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:226
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:235
 #, python-format
 msgid "reset color"
 msgstr ""
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:208
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:200
 #, python-format
 msgid "right"
 msgstr ""
@@ -2752,11 +2826,6 @@ msgid "stages"
 msgstr ""
 
 #. module: web_studio
-#: model:ir.model,name:web_studio.model_studio_mixin
-msgid "studio.mixin"
-msgstr ""
-
-#. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:575
 #, python-format
@@ -2765,7 +2834,7 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:206
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:198
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:76
 #, python-format
 msgid "top"
@@ -2790,7 +2859,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:166
 #, python-format
 msgid "week"
-msgstr ""
+msgstr "εβδομάδα"
 
 #. module: web_studio
 #. openerp-web

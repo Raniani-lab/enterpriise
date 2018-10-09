@@ -31,9 +31,23 @@
 </template>
 
 <template id="filter_info_template">
-    <div class="row print_only" style='margin-top: 20px; margin-bottom: 20px;'>
+    <div class="row print_only" style='margin-top: 20px; margin-bottom: 10px;'>
         <div class="col-4">
             <t t-if="options.get('date') and options['date'].get('string')"><t t-esc="options['date']['string']"/></t>
+            <t t-if="not options.get('multi_company')">
+                <br/><t t-esc="report.get('company_name')"/>
+            </t>
+            <t t-if="options.get('multi_company')">
+                <br/>Companies:
+                <t t-set="company_value" t-value="'All'"/>
+                <t t-foreach="options['multi_company']" t-as="c">
+                    <t t-if="c.get('selected') == True">
+                        <t t-set="company_value" t-value="''"/>
+                        "<t t-esc="c.get('name')"/>"
+                    </t>
+                </t>
+                <t t-esc="company_value"/>
+            </t>
         </div>
         <div class="col-4">
             <t t-if="options.get('cash_basis')">Cash Basis</t><t t-if="options.get('cash_basis') == False">Accrual Basis<br/></t>
@@ -149,11 +163,11 @@
             </t>
         </t>
 
-        <tr t-attf-class="#{trclass} #{line.get('class', '')}"
+        <tr t-attf-class="#{trclass} #{line.get('class', '')} #{'o_js_account_report_parent_row_unfolded' if line.get('unfolded', False) else ''}"
             t-att-data-pagebreak="'before' if (line.get('page_break') and context.get('print_mode')) else None"
             t-att-data-parent-id="line.get('parent_id', False)"
             t-att-style="line.get('style', '')">
-            <td t-att-data-id="line['id']" t-att-class="'o_account_report_line ' + (line.get('unfoldable') and 'js_account_report_foldable' or '')" t-att-data-unfolded="line.get('unfolded', False)" t-att-colspan="line.get('colspan', '1')"
+            <td t-att-data-id="line['id']" t-att-class="'o_account_report_line ' + (line.get('unfoldable') and 'js_account_report_foldable o_foldable_total' or '')" t-att-data-unfolded="line.get('unfolded', False)" t-att-colspan="line.get('colspan', '1')"
             t-att-data-offset="line.get('offset', False)" t-att-data-progress="line.get('progress', False)"
             >
                     <t t-if="line.get('unfoldable')">
@@ -189,7 +203,7 @@
                     </t>
             </td>
             <t t-foreach="line.get('columns')" t-as="column">
-                <td t-att-class="'o_account_report_line ' + (column.get('class', lines.get('columns_header')[-1][column_index+line.get('colspan', 1)].get('class', '')))" t-att-style="column.get('style', lines.get('columns_header')[-1][column_index+line.get('colspan', 1)].get('style', ''))">
+                <td t-att-class="'o_account_report_line ' + (column.get('class', lines.get('columns_header')[-1][column_index+line.get('colspan', 1)].get('class', '')) + (line.get('unfoldable') and ' o_foldable_total' or ''))" t-att-style="column.get('style', lines.get('columns_header')[-1][column_index+line.get('colspan', 1)].get('style', ''))">
                     <span class="o_account_report_column_value" t-att-title="column.get('title')">
                         <t t-esc="column.get('name')"/>
                     </span>
@@ -239,31 +253,33 @@
                 <span>You can visualize their impact by activating the option to view unposted entries, or post them to remove this warning.</span>
             </div>
 
-            <h2><t t-esc="report.get('name')"></t></h2>
+            <div class="o_account_reports_header">
+                <h2><t t-esc="report.get('name')"></t></h2>
 
-            <t t-if="not options.get('multi_company')">
-                <h4 class='text-muted' t-esc="report.get('company_name')"/>
-            </t>
-            <t t-if="options.get('multi_company')">
-                <h4>
-                Companies:
-                <t t-set="company_value" t-value="'All'"/>
-                <t t-foreach="options['multi_company']" t-as="c">
-                    <t t-if="c.get('selected') == True">
-                        <t t-set="company_value" t-value="''"/>
-                        "<t t-esc="c.get('name')"/>"
-                    </t>
+                <t t-if="not options.get('multi_company')">
+                    <h4 class='text-muted no_print' t-esc="report.get('company_name')"/>
                 </t>
-                <t t-esc="company_value"/>
-                </h4>
-            </t>
-            <t t-if="model._name == 'account.general.ledger'">
-                <div class="o_account_reports_filter_input_wrapper">
-                    <span class="searchIcon"><i class="fa fa-search" role="img" aria-label="Search" title="Search"></i></span>
-                    <input class="o_account_reports_filter_input" type="text" placeholder="Search account" />
-                </div>
-            </t>
-            <t t-call="account_reports.filter_info_template"/>
+                <t t-if="options.get('multi_company')">
+                    <h4 class="no_print">
+                    Companies:
+                    <t t-set="company_value" t-value="'All'"/>
+                    <t t-foreach="options['multi_company']" t-as="c">
+                        <t t-if="c.get('selected') == True">
+                            <t t-set="company_value" t-value="''"/>
+                            "<t t-esc="c.get('name')"/>"
+                        </t>
+                    </t>
+                    <t t-esc="company_value"/>
+                    </h4>
+                </t>
+                <t t-if="model._name == 'account.general.ledger'">
+                    <div class="o_account_reports_filter_input_wrapper">
+                        <span class="searchIcon"><i class="fa fa-search" role="img" aria-label="Search" title="Search"></i></span>
+                        <input class="o_account_reports_filter_input" type="text" placeholder="Search account" />
+                    </div>
+                </t>
+                <t t-call="account_reports.filter_info_template"/>
+            </div>
             <div class="o_account_reports_summary">
                 <i class="fa fa-fw fa-pencil o_account_reports_edit_summary_pencil" role="img" aria-label="Edit Summary" title="Edit Summary"></i>
                 <div class="o_account_report_summary" role="alert">

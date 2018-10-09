@@ -2,12 +2,22 @@
 # This file contains the translation of the following modules:
 # * documents
 # 
+# Translators:
+# thanh nguyen <thanhnguyen.icsc@gmail.com>, 2018
+# Duy BQ <duybq86@gmail.com>, 2018
+# Martin Trigaux, 2018
+# fanha99 <fanha99@hotmail.com>, 2018
+# son dang <son.dang@doda100.com>, 2018
+# Hoa Thi <giaphoa196@gmail.com>, 2018
+# Thang Duong Bao <nothingctrl@gmail.com>, 2018
+# Minh Nguyen <ndminh210994@gmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"POT-Creation-Date: 2018-10-02 10:31+0000\n"
+"PO-Revision-Date: 2018-10-02 10:31+0000\n"
+"Last-Translator: Minh Nguyen <ndminh210994@gmail.com>, 2018\n"
 "Language-Team: Vietnamese (https://www.transifex.com/odoo/teams/41243/vi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -16,55 +26,98 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: documents
-#: model:ir.ui.view,arch_db:documents.public_page_layout
+#: model_terms:ir.ui.view,arch_db:documents.public_page_layout
 msgid ", expired on"
 msgstr ""
 
 #. module: documents
-#: model:ir.ui.view,arch_db:documents.format_file_size
+#. openerp-web
+#: code:addons/documents/static/src/js/tour.js:50
+#, python-format
+msgid ""
+"<b>Actions</b> allows you to assign tags, automate actions like creating a "
+"task or vendor bill,</br> create activities for users, etc.</br> Actions can"
+" be customized through the Configuration menu."
+msgstr ""
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.format_file_size
 msgid "<b>Bytes</b>"
 msgstr ""
 
 #. module: documents
-#: model:ir.ui.view,arch_db:documents.format_file_size
+#. openerp-web
+#: code:addons/documents/static/src/js/tour.js:26
+#, python-format
+msgid "<b>Close the preview</b> to go back to your selection of documents"
+msgstr ""
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.format_file_size
 msgid "<b>Gb</b>"
 msgstr ""
 
 #. module: documents
-#: model:ir.ui.view,arch_db:documents.format_file_size
+#: model_terms:ir.ui.view,arch_db:documents.format_file_size
 msgid "<b>Kb</b>"
 msgstr ""
 
 #. module: documents
-#: model:ir.ui.view,arch_db:documents.format_file_size
+#: model_terms:ir.ui.view,arch_db:documents.format_file_size
 msgid "<b>Mb</b>"
 msgstr ""
 
 #. module: documents
-#: model:ir.ui.view,arch_db:documents.public_page_layout
+#. openerp-web
+#: code:addons/documents/static/src/js/tour.js:60
+#, python-format
+msgid ""
+"<b>Use tags</b> to easily filter documents. Tags are defined according to "
+"the folder."
+msgstr ""
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.public_page_layout
 msgid "<br/>Powered by"
 msgstr ""
 
 #. module: documents
-#: model:ir.ui.view,arch_db:documents.share_page
-msgid "<i class=\"fa fa-download\"/>  Download All"
+#: model_terms:ir.ui.view,arch_db:documents.share_page
+msgid "<i class=\"fa fa-download fa-fw\"/>  Download All"
 msgstr ""
 
 #. module: documents
-#: model:ir.ui.view,arch_db:documents.share_single
-msgid "<i class=\"fa fa-download\"/> Download"
+#: model_terms:ir.ui.view,arch_db:documents.share_single
+msgid "<i class=\"fa fa-download fa-fw\"/> Download"
 msgstr ""
 
 #. module: documents
-#: model:ir.ui.view,arch_db:documents.share_view_form
-#: model:ir.ui.view,arch_db:documents.share_view_form_popup
+#: model_terms:ir.ui.view,arch_db:documents.share_view_form
+#: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
 msgid ""
 "<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/> Configure Email Servers"
 msgstr ""
+"<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/> Cấu hình máy chủ email"
 
 #. module: documents
-#: model:ir.ui.view,arch_db:documents.share_page
+#: model_terms:ir.ui.view,arch_db:documents.share_single
+msgid "<i class=\"fa fa-link\"/> Go to URL"
+msgstr ""
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.share_page
 msgid "<i class=\"fa fa-upload\"/>  Upload"
+msgstr ""
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.public_page_layout
+msgid "<span style=\"color:white;\">&amp;nbsp;Documents.</span>"
+msgstr ""
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.documents_view_kanban
+#: model_terms:ir.ui.view,arch_db:documents.inherit_mail_attachment_view_kanban
+msgid "<span><b>Requested Document</b></span>"
 msgstr ""
 
 #. module: documents
@@ -73,6 +126,8 @@ msgid ""
 "A Python dictionary that will be evaluated to provide default values when "
 "creating new records for this alias."
 msgstr ""
+"Một Python dictionary mà sẽ được biểu thị/đánh giá để cung cấp các giá trị "
+"mặc định khi tạo mới các bản ghi cho bí danh này."
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_workflow_rule
@@ -82,64 +137,99 @@ msgid ""
 msgstr ""
 
 #. module: documents
-#: model:ir.model.fields,field_description:documents.field_documents_share__access_token
-msgid "Access Token"
-msgstr ""
+#: model:ir.model.fields,field_description:documents.field_documents_folder__group_ids
+msgid "Access Groups"
+msgstr "Nhóm truy cập"
 
 #. module: documents
-#: model:ir.model.fields,field_description:documents.field_documents_folder__group_ids
-msgid "Access groups"
-msgstr ""
+#: model:ir.model.fields,field_description:documents.field_documents_share__access_token
+msgid "Access Token"
+msgstr "Token truy cập"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_action__action
 msgid "Action"
-msgstr ""
+msgstr "Hành động"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_needaction
-#: model:ir.model.fields,field_description:documents.field_ir_attachment__message_needaction
 msgid "Action Needed"
-msgstr ""
+msgstr "Cần có Hành động"
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/xml/documents_inspector.xml:96
+#: code:addons/documents/static/src/xml/documents_inspector.xml:103
 #: model:ir.ui.menu,name:documents.WorkflowRules_menu
-#: model:ir.ui.view,arch_db:documents.documents_view_form
-#: model:ir.ui.view,arch_db:documents.workflow_rule_form_view
+#: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
 #, python-format
 msgid "Actions"
+msgstr "Hành động"
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.share_view_form
+#: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
+#: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
+msgid "Activity"
+msgstr "Hoạt động"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_note
+msgid "Activity Note"
 msgstr ""
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_request_wizard__activity_type_id
+#: model:ir.model.fields,field_description:documents.field_documents_share__activity_type_id
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_type_id
+msgid "Activity type"
+msgstr "Kiểu hoạt động"
+
+#. module: documents
 #: selection:documents.workflow.action,action:0
+#: model_terms:ir.ui.view,arch_db:documents.documents_upload_url_view
 msgid "Add"
+msgstr "Thêm"
+
+#. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/xml/documents_kanban.xml:8
+#, python-format
+msgid "Add URL"
+msgstr ""
+
+#. module: documents
+#: model:ir.actions.act_window,name:documents.action_url_form
+msgid "Add Url"
 msgstr ""
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_id
 msgid "Alias"
-msgstr ""
+msgstr "Bí danh"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_contact
 msgid "Alias Contact Security"
-msgstr ""
+msgstr "An ninh về Bí danh liên hệ"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_name
 msgid "Alias Name"
-msgstr ""
+msgstr "Tên Bí danh"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_domain
 msgid "Alias domain"
-msgstr ""
+msgstr "Miền bí danh"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_model_id
 msgid "Aliased Model"
+msgstr "Aliased Model"
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
+msgid "All locked files"
 msgstr ""
 
 #. module: documents
@@ -148,33 +238,39 @@ msgid "Allows to"
 msgstr ""
 
 #. module: documents
+#: model:ir.module.category,description:documents.module_category_documents_management
+msgid "Allows you to manage your documents."
+msgstr ""
+
+#. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/xml/documents_inspector.xml:152
+#: code:addons/documents/static/src/xml/documents_inspector.xml:159
 #, python-format
 msgid "Archive"
-msgstr ""
+msgstr "Lưu trữ"
 
 #. module: documents
-#: model:ir.ui.view,arch_db:documents.documents_view_search_inherit
+#: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
 msgid "Archived"
-msgstr ""
-
-#. module: documents
-#: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__create_model
-msgid "Attach to"
-msgstr ""
+msgstr "Lưu trữ"
 
 #. module: documents
 #. openerp-web
 #: code:addons/documents/static/src/xml/documents_selector.xml:50
 #, python-format
 msgid "Attached To"
+msgstr "Đính kèm ở"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_share__message_attachment_count
+msgid "Attachment Count"
 msgstr ""
 
 #. module: documents
+#: model:ir.actions.act_window,name:documents.document_debug_action
 #: model:ir.ui.menu,name:documents.attachment_list_view_temp
 msgid "Attachments"
-msgstr ""
+msgstr "Đính kèm"
 
 #. module: documents
 #. openerp-web
@@ -189,15 +285,35 @@ msgid "Available Rules"
 msgstr ""
 
 #. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.documents_request_form_view
+#: model_terms:ir.ui.view,arch_db:documents.documents_upload_url_view
+msgid "Cancel"
+msgstr "Hủy"
+
+#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_action__facet_id
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__facet_id
 msgid "Category"
+msgstr "Danh mục"
+
+#. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/js/tour.js:45
+#, python-format
+msgid "Click here to <b>close the discussion board</b>"
+msgstr ""
+
+#. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/js/tour.js:17
+#, python-format
+msgid "Click on a card to <b>view the document</b>."
 msgstr ""
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__company_id
 msgid "Company"
-msgstr ""
+msgstr "Công ty"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__condition_type
@@ -205,46 +321,67 @@ msgid "Condition type"
 msgstr ""
 
 #. module: documents
-#: model:ir.ui.view,arch_db:documents.workflow_rule_form_view
+#: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
 msgid "Conditions"
-msgstr ""
+msgstr "Điều kiện"
 
 #. module: documents
 #: model:ir.ui.menu,name:documents.Config
 msgid "Configuration"
-msgstr ""
+msgstr "Cấu hình"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_share__partner_id
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__criteria_partner_id
+#: model:ir.model.fields,field_description:documents.field_ir_attachment__partner_id
+#: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
+msgid "Contact"
+msgstr "Liên hệ"
 
 #. module: documents
 #: selection:documents.workflow.tag.criteria,operator:0
 msgid "Contains"
+msgstr "Chứa"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__create_model
+msgid "Create"
+msgstr "Tạo"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_share__activity_option
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_option
+msgid "Create a new activity"
 msgstr ""
 
 #. module: documents
-#: model:ir.ui.view,arch_db:documents.tag_view_tree
+#: model_terms:ir.ui.view,arch_db:documents.tag_view_tree
 msgid "Create a tag"
 msgstr ""
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_facet__create_uid
 #: model:ir.model.fields,field_description:documents.field_documents_folder__create_uid
+#: model:ir.model.fields,field_description:documents.field_documents_request_wizard__create_uid
 #: model:ir.model.fields,field_description:documents.field_documents_share__create_uid
 #: model:ir.model.fields,field_description:documents.field_documents_tag__create_uid
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_action__create_uid
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__create_uid
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Được tạo bởi"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_facet__create_date
 #: model:ir.model.fields,field_description:documents.field_documents_folder__create_date
+#: model:ir.model.fields,field_description:documents.field_documents_request_wizard__create_date
 #: model:ir.model.fields,field_description:documents.field_documents_share__create_date
 #: model:ir.model.fields,field_description:documents.field_documents_tag__create_date
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_action__create_date
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__create_date
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Thời điểm tạo"
 
 #. module: documents
 #: selection:documents.workflow.rule,create_model:0
@@ -257,51 +394,82 @@ msgid "Criteria"
 msgstr ""
 
 #. module: documents
-#: model:ir.ui.view,arch_db:documents.public_page_layout
-msgid "DMS"
-msgstr ""
+#: selection:documents.request_wizard,activity_date_deadline_range_type:0
+#: selection:documents.share,activity_date_deadline_range_type:0
+#: selection:documents.workflow.rule,activity_date_deadline_range_type:0
+msgid "Days"
+msgstr "Ngày"
 
 #. module: documents
-#: model:ir.model.fields,field_description:documents.field_documents_share__tag_ids
-msgid "Default Tags"
+#: model_terms:ir.ui.view,arch_db:documents.res_config_settings_view_form
+msgid "Default Folders"
 msgstr ""
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_defaults
 msgid "Default Values"
-msgstr ""
+msgstr "Giá trị mặc định"
 
 #. module: documents
-#: model:ir.model.fields,field_description:documents.field_documents_share__partner_id
-msgid "Default contact"
-msgstr ""
-
-#. module: documents
-#: model:ir.model.fields,field_description:documents.field_documents_share__owner_id
-msgid "Default owner"
+#: model_terms:ir.ui.view,arch_db:documents.share_view_form
+#: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
+msgid "Default values for uploaded documents"
 msgstr ""
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/xml/documents_inspector.xml:154
+#: code:addons/documents/static/src/xml/documents_inspector.xml:161
 #, python-format
 msgid "Delete"
-msgstr ""
+msgstr "Xoá"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_folder__description
+msgid "Description"
+msgstr "Miêu tả"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_facet__display_name
 #: model:ir.model.fields,field_description:documents.field_documents_folder__display_name
+#: model:ir.model.fields,field_description:documents.field_documents_request_wizard__display_name
 #: model:ir.model.fields,field_description:documents.field_documents_share__display_name
 #: model:ir.model.fields,field_description:documents.field_documents_tag__display_name
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_action__display_name
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__display_name
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__display_name
 msgid "Display Name"
+msgstr "Tên hiển thị"
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
+msgid "Doc"
 msgstr ""
 
 #. module: documents
-#: model:ir.ui.view,arch_db:documents.documents_view_kanban
+#: model:ir.model,name:documents.model_ir_attachment
+#: model_terms:ir.ui.view,arch_db:documents.documents_view_kanban
+#: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
 msgid "Document"
+msgstr "Tài liệu"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_share__owner_id
+msgid "Document Owner"
+msgstr ""
+
+#. module: documents
+#: model:ir.model,name:documents.model_documents_request_wizard
+msgid "Document Request"
+msgstr ""
+
+#. module: documents
+#: model:ir.model,name:documents.model_documents_workflow_action
+msgid "Document Workflow Tag Action"
+msgstr ""
+
+#. module: documents
+#: model:ir.model,name:documents.model_documents_workflow_tag_criteria
+msgid "Document Workflow Tag Criteria"
 msgstr ""
 
 #. module: documents
@@ -311,14 +479,29 @@ msgstr ""
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/xml/documents_inspector.xml:57
+#: code:addons/documents/static/src/xml/documents_inspector.xml:64
 #: model:ir.actions.act_window,name:documents.document_action
 #: model:ir.model.fields,field_description:documents.field_documents_folder__attachment_ids
 #: model:ir.ui.menu,name:documents.dashboard
 #: model:ir.ui.menu,name:documents.menu_root
-#: model:ir.ui.view,arch_db:documents.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:documents.res_config_settings_view_form
 #, python-format
 msgid "Documents"
+msgstr "Tài liệu"
+
+#. module: documents
+#: model:ir.model,name:documents.model_documents_folder
+msgid "Documents Folder"
+msgstr ""
+
+#. module: documents
+#: model:ir.model,name:documents.model_documents_share
+msgid "Documents Share"
+msgstr ""
+
+#. module: documents
+#: model:ir.module.category,name:documents.module_category_documents_management
+msgid "Documents management"
 msgstr ""
 
 #. module: documents
@@ -331,27 +514,27 @@ msgstr ""
 #: selection:documents.workflow.rule,condition_type:0
 #: model:ir.model.fields,field_description:documents.field_documents_share__domain
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__domain
-#: model:ir.ui.view,arch_db:documents.workflow_rule_form_view
+#: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
 msgid "Domain"
-msgstr ""
+msgstr "Miền"
 
 #. module: documents
-#: model:ir.ui.view,arch_db:documents.share_view_form_popup
+#: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
 msgid "Done"
-msgstr ""
+msgstr "Hoàn thành"
 
 #. module: documents
-#: model:ir.ui.view,arch_db:documents.share_page
+#: model_terms:ir.ui.view,arch_db:documents.share_page
 msgid "Downlaod all files"
 msgstr ""
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/xml/documents_inspector.xml:142
+#: code:addons/documents/static/src/xml/documents_inspector.xml:149
 #: selection:documents.share,action:0
 #, python-format
 msgid "Download"
-msgstr ""
+msgstr "Tải xuống"
 
 #. module: documents
 #: selection:documents.share,action:0
@@ -359,14 +542,48 @@ msgid "Download and Upload"
 msgstr ""
 
 #. module: documents
-#: model:ir.model.fields,field_description:documents.field_documents_share__date_deadline
-msgid "Expiration date"
+#: model:ir.model.fields,field_description:documents.field_documents_request_wizard__activity_date_deadline_range
+#: model:ir.model.fields,field_description:documents.field_documents_share__activity_date_deadline_range
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_date_deadline_range
+msgid "Due Date In"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_request_wizard__activity_date_deadline_range_type
+#: model:ir.model.fields,field_description:documents.field_documents_share__activity_date_deadline_range_type
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_date_deadline_range_type
+msgid "Due type"
+msgstr ""
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.folder_view_form
+msgid "E.g. Finance"
+msgstr ""
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.documents_request_form_view
+msgid "E.g. Missing Expense"
+msgstr ""
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.facet_view_form_list
+msgid "E.g. Status"
+msgstr ""
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
+msgid "E.g. Validate document"
+msgstr ""
+
+#. module: documents
+#: selection:ir.attachment,type:0
+msgid "Empty"
 msgstr ""
 
 #. module: documents
 #: selection:documents.share,state:0
 msgid "Expired"
-msgstr ""
+msgstr "Đã hết hạn"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_facet
@@ -385,17 +602,18 @@ msgid "Favorite of"
 msgstr ""
 
 #. module: documents
+#: selection:ir.attachment,type:0
+msgid "File"
+msgstr "Tập tin"
+
+#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_facet__folder_id
+#: model:ir.model.fields,field_description:documents.field_documents_request_wizard__folder_id
 #: model:ir.model.fields,field_description:documents.field_documents_share__folder_id
 #: model:ir.model.fields,field_description:documents.field_documents_tag__folder_id
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__domain_folder_id
 #: model:ir.model.fields,field_description:documents.field_ir_attachment__folder_id
 msgid "Folder"
-msgstr ""
-
-#. module: documents
-#: model:ir.ui.view,arch_db:documents.res_config_settings_view_form
-msgid "Folder Settings"
 msgstr ""
 
 #. module: documents
@@ -409,20 +627,36 @@ msgstr ""
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_follower_ids
-#: model:ir.model.fields,field_description:documents.field_ir_attachment__message_follower_ids
 msgid "Followers"
-msgstr ""
+msgstr "Người dõi theo"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_channel_ids
-#: model:ir.model.fields,field_description:documents.field_ir_attachment__message_channel_ids
 msgid "Followers (Channels)"
-msgstr ""
+msgstr "Người theo dõi (Các kênh)"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_partner_ids
-#: model:ir.model.fields,field_description:documents.field_ir_attachment__message_partner_ids
 msgid "Followers (Partners)"
+msgstr "Người theo dõi (Các đối tác)"
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
+msgid "Future Activities"
+msgstr "Hoạt động tương lai"
+
+#. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/js/tour.js:21
+#, python-format
+msgid ""
+"Go to the <b>images, videos & PDF viewer</b> by clicking on the preview "
+"area."
+msgstr ""
+
+#. module: documents
+#: model:ir.model,name:documents.model_ir_http
+msgid "HTTP Routing"
 msgstr ""
 
 #. module: documents
@@ -431,22 +665,16 @@ msgid "Has Business Option"
 msgstr ""
 
 #. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/js/tour.js:14
-#, python-format
-msgid "Here is the place to manage your documents."
-msgstr ""
-
-#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_facet__id
 #: model:ir.model.fields,field_description:documents.field_documents_folder__id
+#: model:ir.model.fields,field_description:documents.field_documents_request_wizard__id
 #: model:ir.model.fields,field_description:documents.field_documents_share__id
 #: model:ir.model.fields,field_description:documents.field_documents_tag__id
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_action__id
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__id
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_parent_thread_id
@@ -454,63 +682,91 @@ msgid ""
 "ID of the parent record holding the alias (example: project holding the task"
 " creation alias)"
 msgstr ""
+"ID của bản ghi cha mà chứa bí danh (ví dụ: dự án chứa bí danh để tạo nhiệm "
+"vụ)"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__message_unread
-#: model:ir.model.fields,help:documents.field_ir_attachment__message_unread
 msgid "If checked new messages require your attention."
-msgstr ""
+msgstr "Nếu đánh dấu kiểm, các thông điệp mới yêu cầu sự có mặt của bạn."
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__message_needaction
-#: model:ir.model.fields,help:documents.field_ir_attachment__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr ""
+msgstr "Nếu đánh dấu kiểm, các thông điệp mới yêu cầu sự có mặt của bạn."
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__message_has_error
-#: model:ir.model.fields,help:documents.field_ir_attachment__message_has_error
 msgid "If checked, some messages have a delivery error."
 msgstr ""
 
 #. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
+msgid "Image"
+msgstr "Hình ảnh"
+
+#. module: documents
+#: model:mail.activity.type,name:documents.mail_documents_activity_data_Inbox
+msgid "Inbox"
+msgstr "Hộp thư đến"
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.documents_view_form
+msgid "Indexed Content"
+msgstr "Nội dung được đánh chỉ mục"
+
+#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_is_follower
-#: model:ir.model.fields,field_description:documents.field_ir_attachment__message_is_follower
 msgid "Is Follower"
+msgstr "Trở thành người theo dõi"
+
+#. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/js/tour.js:40
+#, python-format
+msgid "It will be sent to the followers of this document"
 msgstr ""
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_facet____last_update
 #: model:ir.model.fields,field_description:documents.field_documents_folder____last_update
+#: model:ir.model.fields,field_description:documents.field_documents_request_wizard____last_update
 #: model:ir.model.fields,field_description:documents.field_documents_share____last_update
 #: model:ir.model.fields,field_description:documents.field_documents_tag____last_update
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_action____last_update
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule____last_update
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Sửa lần cuối vào"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_facet__write_uid
 #: model:ir.model.fields,field_description:documents.field_documents_folder__write_uid
+#: model:ir.model.fields,field_description:documents.field_documents_request_wizard__write_uid
 #: model:ir.model.fields,field_description:documents.field_documents_share__write_uid
 #: model:ir.model.fields,field_description:documents.field_documents_tag__write_uid
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_action__write_uid
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__write_uid
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Cập nhật lần cuối bởi"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_facet__write_date
 #: model:ir.model.fields,field_description:documents.field_documents_folder__write_date
+#: model:ir.model.fields,field_description:documents.field_documents_request_wizard__write_date
 #: model:ir.model.fields,field_description:documents.field_documents_share__write_date
 #: model:ir.model.fields,field_description:documents.field_documents_tag__write_date
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_action__write_date
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__write_date
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Cập nhật lần cuối vào"
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
+msgid "Late Activities"
+msgstr "Các hoạt động gần nhất"
 
 #. module: documents
 #: selection:documents.share,state:0
@@ -518,16 +774,16 @@ msgid "Live"
 msgstr ""
 
 #. module: documents
-#: model:ir.ui.view,arch_db:documents.share_single
+#: model_terms:ir.ui.view,arch_db:documents.share_single
 msgid "Loading"
-msgstr ""
+msgstr "Đang nạp"
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/xml/documents_inspector.xml:147
+#: code:addons/documents/static/src/xml/documents_inspector.xml:154
 #, python-format
 msgid "Lock"
-msgstr ""
+msgstr "Khoá"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_ir_attachment__lock_uid
@@ -535,25 +791,32 @@ msgid "Locked by"
 msgstr ""
 
 #. module: documents
-#: model:ir.ui.view,arch_db:documents.public_page_layout
-msgid "Login"
-msgstr ""
+#: model_terms:ir.ui.view,arch_db:documents.share_view_form
+#: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
+#: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
+msgid "Log a note..."
+msgstr "Ghi chú ..."
 
 #. module: documents
-#: model:ir.ui.view,arch_db:documents.public_page_layout
+#: model_terms:ir.ui.view,arch_db:documents.public_page_layout
+msgid "Login"
+msgstr "Đăng nhập"
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.public_page_layout
 msgid "Logout"
-msgstr ""
+msgstr "Đăng xuất"
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/xml/documents_inspector.xml:62
+#: code:addons/documents/static/src/xml/documents_inspector.xml:69
 #, python-format
 msgid "MB"
 msgstr ""
 
 #. module: documents
-#: model:res.groups,name:documents.group_document_manager
-msgid "Manage Documents"
+#: model:ir.model.fields,field_description:documents.field_documents_share__message_main_attachment_id
+msgid "Main Attachment"
 msgstr ""
 
 #. module: documents
@@ -568,124 +831,136 @@ msgid "Manage tag categories"
 msgstr ""
 
 #. module: documents
+#: model:res.groups,name:documents.group_documents_manager
+msgid "Manager"
+msgstr "Quản lý"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__remove_activities
+msgid "Mark all Activities as done"
+msgstr ""
+
+#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_has_error
-#: model:ir.model.fields,field_description:documents.field_ir_attachment__message_has_error
 msgid "Message Delivery error"
 msgstr ""
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_ids
-#: model:ir.model.fields,field_description:documents.field_ir_attachment__message_ids
 msgid "Messages"
-msgstr ""
+msgstr "Thông điệp"
 
 #. module: documents
-#: model:ir.ui.view,arch_db:documents.documents_view_search_inherit
+#: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
 msgid "Model"
-msgstr ""
+msgstr "Đối tượng"
 
 #. module: documents
-#: model:ir.ui.view,arch_db:documents.res_config_settings_view_form
-msgid "More DMS settings"
-msgstr ""
+#: selection:documents.request_wizard,activity_date_deadline_range_type:0
+#: selection:documents.share,activity_date_deadline_range_type:0
+#: selection:documents.workflow.rule,activity_date_deadline_range_type:0
+msgid "Months"
+msgstr "Tháng"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__folder_id
-msgid "Move to"
+msgid "Move to Folder"
 msgstr ""
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/js/documents_inspector.js:142
+#: code:addons/documents/static/src/js/documents_inspector.js:143
 #, python-format
 msgid "Multiple values"
 msgstr ""
 
 #. module: documents
-#: model:ir.ui.view,arch_db:documents.documents_view_search_inherit
-msgid "My Favorites"
+#: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
+msgid "My Activities"
+msgstr "Hoạt động của tôi"
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
+msgid "My Documents"
 msgstr ""
 
 #. module: documents
-#: model:ir.ui.view,arch_db:documents.documents_view_search_inherit
-msgid "My documents"
+#: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
+msgid "My Favorites"
+msgstr "Mục yêu thích của tôi"
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
+msgid "My locked files"
 msgstr ""
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_facet__name
 #: model:ir.model.fields,field_description:documents.field_documents_folder__name
+#: model:ir.model.fields,field_description:documents.field_documents_request_wizard__name
 #: model:ir.model.fields,field_description:documents.field_documents_share__name
 #: model:ir.model.fields,field_description:documents.field_documents_tag__name
 msgid "Name"
-msgstr ""
+msgstr "Tên"
 
 #. module: documents
-#: model:ir.ui.view,arch_db:documents.share_view_form
-#: model:ir.ui.view,arch_db:documents.share_view_form_popup
+#: model_terms:ir.ui.view,arch_db:documents.share_view_form
+#: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
 msgid "Name of the share link"
 msgstr ""
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/js/documents_kanban_model.js:218
+#: code:addons/documents/static/src/js/documents_kanban_model.js:227
 #, python-format
 msgid "No Source"
 msgstr ""
 
 #. module: documents
-#: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__note
+#: model:ir.model.fields,field_description:documents.field_documents_request_wizard__activity_note
+#: model:ir.model.fields,field_description:documents.field_documents_share__activity_note
 msgid "Note"
-msgstr ""
-
-#. module: documents
-#: model:ir.ui.view,arch_db:documents.workflow_rule_form_view
-msgid "Notes"
-msgstr ""
+msgstr "Ghi chú"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_needaction_counter
-#: model:ir.model.fields,field_description:documents.field_ir_attachment__message_needaction_counter
 msgid "Number of Actions"
-msgstr ""
+msgstr "Số lượng Hành động"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_has_error_counter
-#: model:ir.model.fields,field_description:documents.field_ir_attachment__message_has_error_counter
 msgid "Number of error"
-msgstr ""
+msgstr "Số lỗi"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__message_needaction_counter
-#: model:ir.model.fields,help:documents.field_ir_attachment__message_needaction_counter
 msgid "Number of messages which requires an action"
-msgstr ""
+msgstr "Số thông điệp cần có hành động"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__message_has_error_counter
-#: model:ir.model.fields,help:documents.field_ir_attachment__message_has_error_counter
 msgid "Number of messages with delivery error"
 msgstr ""
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__message_unread_counter
-#: model:ir.model.fields,help:documents.field_ir_attachment__message_unread_counter
 msgid "Number of unread messages"
-msgstr ""
+msgstr "Số thông điệp chưa đọc"
 
 #. module: documents
-#: model:ir.ui.view,arch_db:documents.public_page_layout
+#: model_terms:ir.ui.view,arch_db:documents.public_page_layout
 msgid "Odoo Logo"
 msgstr ""
 
 #. module: documents
-#: model:ir.ui.view,arch_db:documents.public_page_layout
+#: model_terms:ir.ui.view,arch_db:documents.public_page_layout
 msgid "Odoo Website"
 msgstr ""
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__operator
 msgid "Operator"
-msgstr ""
+msgstr "Người vận hành"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_force_thread_id
@@ -694,33 +969,43 @@ msgid ""
 "attached, even if they did not reply to it. If set, this will disable the "
 "creation of new records completely."
 msgstr ""
+"ID tuỳ chọn của một chủ đề/bản ghi (thread) mà tất cả các thông điệp đến sẽ "
+"được gắn/đính vào, thâm chí nếu người ta không reply nó. Nếu được thiết lập,"
+" điều này sẽ vô hiệu hoàn toàn việc tạo mới bản ghi."
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_request_wizard__owner_id
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_user_id
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__criteria_owner_id
 #: model:ir.model.fields,field_description:documents.field_ir_attachment__owner_id
 msgid "Owner"
+msgstr "Chủ sở hữu"
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.share_page
+msgid "Owner: #{attachment.create_uid.name}"
 msgstr ""
 
 #. module: documents
-#: model:ir.ui.view,arch_db:documents.share_page
-msgid "Owner: #{attachment.create_uid.name}"
+#: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
+msgid "PDF"
+msgstr "PDF"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_folder__parent_folder_id
+#: model_terms:ir.ui.view,arch_db:documents.folder_view_search
+msgid "Parent Folder"
 msgstr ""
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_parent_model_id
 msgid "Parent Model"
-msgstr ""
+msgstr "Parent Model"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_parent_thread_id
 msgid "Parent Record Thread ID"
-msgstr ""
-
-#. module: documents
-#: model:ir.model.fields,field_description:documents.field_documents_folder__parent_folder_id
-msgid "Parent folder"
-msgstr ""
+msgstr "Parent Record Thread ID"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_parent_model_id
@@ -729,12 +1014,9 @@ msgid ""
 " necessarily the model given by alias_model_id (example: project "
 "(parent_model) and task (model))"
 msgstr ""
-
-#. module: documents
-#: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__criteria_partner_id
-#: model:ir.model.fields,field_description:documents.field_ir_attachment__partner_id
-msgid "Partner"
-msgstr ""
+"Parent model holding the alias. The model holding the alias reference is not"
+" necessarily the model given by alias_model_id (example: project "
+"(parent_model) and task (model))"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_contact
@@ -744,20 +1026,29 @@ msgid ""
 "- partners: only authenticated partners\n"
 "- followers: only followers of the related document or members of following channels\n"
 msgstr ""
+"Cho sách cho phép post các thông điệp lên tài liệu sử dụng.\n"
+"- mọi người: Mọi người có thể post\n"
+"- đối tác: Chỉ các đối tác đã xác thực\n"
+"- đối tượng dõi theo: Chỉ những người ở trong danh sách dõi theo của tài liệu hoặc thành viên của các kênh sau đây\n"
+
+#. module: documents
+#: selection:documents.workflow.rule,create_model:0
+msgid "Product template"
+msgstr ""
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_force_thread_id
 msgid "Record Thread ID"
-msgstr ""
+msgstr "Record Thread ID"
 
 #. module: documents
 #: selection:documents.workflow.action,action:0
 msgid "Remove"
-msgstr ""
+msgstr "Gỡ"
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/xml/documents_inspector.xml:146
+#: code:addons/documents/static/src/xml/documents_inspector.xml:153
 #, python-format
 msgid "Replace"
 msgstr ""
@@ -768,22 +1059,60 @@ msgid "Replace by"
 msgstr ""
 
 #. module: documents
-#: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__name
-msgid "Rule name"
-msgstr ""
+#: model_terms:ir.ui.view,arch_db:documents.documents_request_form_view
+msgid "Request"
+msgstr "Yêu cầu"
 
 #. module: documents
 #. openerp-web
 #: code:addons/documents/static/src/xml/documents_kanban.xml:11
 #, python-format
-msgid "Save URL"
+msgid "Request Document"
 msgstr ""
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/xml/documents_inspector.xml:9
+#: code:addons/documents/static/src/xml/systray.xml:7
 #, python-format
-msgid "Select a document"
+msgid "Request a Document"
+msgstr ""
+
+#. module: documents
+#: model:ir.actions.act_window,name:documents.action_request_form
+msgid "Request a file"
+msgstr ""
+
+#. module: documents
+#: model:mail.activity.type,name:documents.mail_documents_activity_data_md
+msgid "Requested Document"
+msgstr ""
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
+msgid "Requested files"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_share__activity_user_id
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_user_id
+msgid "Responsible"
+msgstr "Người phụ trách"
+
+#. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/xml/documents_inspector.xml:162
+#, python-format
+msgid "Restore"
+msgstr "Khôi phục"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__name
+msgid "Rule name"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,help:documents.field_documents_folder__facet_ids
+msgid "Select the tag categories to be used"
 msgstr ""
 
 #. module: documents
@@ -791,7 +1120,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_folder__sequence
 #: model:ir.model.fields,field_description:documents.field_documents_tag__sequence
 msgid "Sequence"
-msgstr ""
+msgstr "Trình tự"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__partner_id
@@ -813,19 +1142,23 @@ msgstr ""
 #: model:ir.actions.act_window,name:documents.documents_settings_action
 #: model:ir.ui.menu,name:documents.Settings_menu
 msgid "Settings"
-msgstr ""
+msgstr "Thiết lập"
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/xml/documents_inspector.xml:144
+#: code:addons/documents/static/src/xml/documents_inspector.xml:151
 #: code:addons/documents/static/src/xml/documents_kanban.xml:14
 #, python-format
 msgid "Share"
 msgstr ""
 
 #. module: documents
-#: model:ir.actions.act_window,name:documents.share_action
 #: model:ir.model.fields,field_description:documents.field_documents_folder__share_link_ids
+msgid "Share Links"
+msgstr ""
+
+#. module: documents
+#: model:ir.actions.act_window,name:documents.share_action
 msgid "Share links"
 msgstr ""
 
@@ -836,7 +1169,12 @@ msgstr ""
 
 #. module: documents
 #: model:ir.ui.menu,name:documents.share_menu
-msgid "Shared"
+msgid "Shared Links"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_share__tag_ids
+msgid "Shared Tags"
 msgstr ""
 
 #. module: documents
@@ -845,21 +1183,26 @@ msgid "Shared attachments"
 msgstr ""
 
 #. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
+msgid "Show all records which has next action date is before today"
+msgstr "Hiển thị tất cả dữ liệu có ngày xử lý tiếp theo trước ngày hôm nay"
+
+#. module: documents
 #: selection:documents.workflow.rule,create_model:0
 msgid "Signature template"
 msgstr ""
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/xml/documents_inspector.xml:61
+#: code:addons/documents/static/src/xml/documents_inspector.xml:68
 #, python-format
 msgid "Size"
-msgstr ""
+msgstr "Kích thước"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__state
 msgid "Status"
-msgstr ""
+msgstr "Trạng thái"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__children_folder_ids
@@ -867,12 +1210,23 @@ msgid "Sub folders"
 msgstr ""
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_share__activity_summary
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_summary
+msgid "Summary"
+msgstr "Tóm tắt"
+
+#. module: documents
 #: model:ir.model,name:documents.model_documents_tag
 #: model:ir.model.fields,field_description:documents.field_documents_facet__tag_ids
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_action__tag_id
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__tag_id
-#: model:ir.ui.view,arch_db:documents.tag_view_search
+#: model_terms:ir.ui.view,arch_db:documents.tag_view_search
 msgid "Tag"
+msgstr "Từ khóa"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_folder__facet_ids
+msgid "Tag Categories"
 msgstr ""
 
 #. module: documents
@@ -881,31 +1235,31 @@ msgid "Tag already exists for this facet"
 msgstr ""
 
 #. module: documents
-#: model:ir.model.fields,field_description:documents.field_documents_folder__facet_ids
-msgid "Tag categories"
+#: model:ir.model.fields,help:documents.field_documents_folder__parent_folder_id
+msgid "Tag categories from parent folders will be shared to their sub folders"
 msgstr ""
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/xml/documents_inspector.xml:86
+#: code:addons/documents/static/src/xml/documents_inspector.xml:93
 #: code:addons/documents/static/src/xml/documents_selector.xml:16
+#: model:ir.model.fields,field_description:documents.field_documents_request_wizard__tag_ids
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__criteria_tag_ids
 #: model:ir.model.fields,field_description:documents.field_ir_attachment__tag_ids
 #: model:ir.ui.menu,name:documents.Category_menu
-#: model:ir.ui.view,arch_db:documents.documents_view_form
 #, python-format
 msgid "Tags"
-msgstr ""
+msgstr "Từ khóa"
 
 #. module: documents
 #: selection:documents.workflow.rule,create_model:0
 msgid "Task"
-msgstr ""
+msgstr "Nhiệm vụ"
 
 #. module: documents
-#: model:ir.ui.view,arch_db:documents.documents_view_form
+#: model_terms:ir.ui.view,arch_db:documents.documents_view_form
 msgid "Technical"
-msgstr ""
+msgstr "Kỹ thuật"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_model_id
@@ -914,6 +1268,10 @@ msgid ""
 " email that does not reply to an existing record will cause the creation of "
 "a new record of this model (e.g. a Project Task)"
 msgstr ""
+"Model (Kiểu Tài liệu Odoo) mà bí danh này ứng với nó. Bất kỳ thông điệp "
+"email mà không đáp lại (reply) một bản ghi có sẵn sẽ làm cho Odoo tự động "
+"tạo một bản ghi mới cho model này (vd: tạo mới một Nhiệm vụ Dự án nếu model "
+"là project.task)"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_name
@@ -921,6 +1279,8 @@ msgid ""
 "The name of the email alias, e.g. 'jobs' if you want to catch emails for "
 "<jobs@example.odoo.com>"
 msgstr ""
+"Tên của bí danh email, vd 'vieclam' nếu bạn muốn bắt thông điệp gửi đến địa "
+"chỉ email <vieclam@vidu.odoo.com>"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_user_id
@@ -930,6 +1290,10 @@ msgid ""
 "the sender (From) address, or will use the Administrator account if no "
 "system user is found for that address."
 msgstr ""
+"The owner of records created upon receiving emails on this alias. If this "
+"field is not set the system will attempt to find the right owner based on "
+"the sender (From) address, or will use the Administrator account if no "
+"system user is found for that address."
 
 #. module: documents
 #: sql_constraint:documents.share:0
@@ -937,59 +1301,105 @@ msgid "This access token already exists"
 msgstr ""
 
 #. module: documents
-#: model:ir.ui.view,arch_db:documents.not_available
-msgid "This link has expired"
+#: model:ir.model.fields,help:documents.field_documents_folder__company_id
+msgid "This folder will only be available for the selected company"
 msgstr ""
 
 #. module: documents
-#: model:ir.model.fields,field_description:documents.field_documents_facet__tooltip
-msgid "Tooltip"
-msgstr ""
-
-#. module: documents
-#: model:ir.model.fields,field_description:documents.field_documents_share__full_url
-msgid "URL"
+#: model:ir.model.fields,help:documents.field_documents_folder__group_ids
+msgid "This folder will only be available for the selected user groups"
 msgstr ""
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/xml/documents_inspector.xml:155
+#: code:addons/documents/static/src/js/tour.js:30
+#, python-format
+msgid ""
+"This icons gets you to the <b>discussion board</b>, to chat with followers "
+"of this document"
+msgstr ""
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.not_available
+msgid "This link has expired"
+msgstr ""
+
+#. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/js/tour.js:69
+#, python-format
+msgid ""
+"To delete files, archive them first. </br>Archived documents can still be "
+"accessed using the Archive option in the Filters top menu."
+msgstr ""
+
+#. module: documents
+#: model:mail.activity.type,name:documents.mail_documents_activity_data_tv
+msgid "To validate"
+msgstr ""
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
+msgid "Today Activities"
+msgstr "Hoạt động hôm nay"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_facet__tooltip
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__note
+msgid "Tooltip"
+msgstr ""
+
+#. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/js/tour.js:35
+#, python-format
+msgid "Try to <b>post a message</b>"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_ir_attachment__type
+msgid "Type"
+msgstr "Loại"
+
+#. module: documents
+#: selection:ir.attachment,type:0
+#: model:ir.model.fields,field_description:documents.field_documents_share__full_url
+#: model_terms:ir.ui.view,arch_db:documents.documents_upload_url_view
+#: model_terms:ir.ui.view,arch_db:documents.share_page
+#: model_terms:ir.ui.view,arch_db:documents.share_single
+msgid "URL"
+msgstr "URL"
+
+#. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/xml/documents_inspector.xml:162
 #, python-format
 msgid "Un-archive"
 msgstr ""
 
 #. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/xml/documents_inspector.xml:155
-#, python-format
-msgid "Unarchive"
-msgstr ""
-
-#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_unread
-#: model:ir.model.fields,field_description:documents.field_ir_attachment__message_unread
 msgid "Unread Messages"
-msgstr ""
+msgstr "Tin chưa đọc"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_unread_counter
-#: model:ir.model.fields,field_description:documents.field_ir_attachment__message_unread_counter
 msgid "Unread Messages Counter"
-msgstr ""
+msgstr "Bộ đếm Thông điệp chưa đọc"
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/xml/documents_kanban.xml:6
-#: selection:documents.share,action:0
-#: model:ir.ui.view,arch_db:documents.documents_upload_url_view
-#: model:ir.ui.view,arch_db:documents.share_page
+#: code:addons/documents/static/src/xml/documents_kanban.xml:5
+#: model_terms:ir.ui.view,arch_db:documents.share_page
 #, python-format
 msgid "Upload"
 msgstr ""
 
 #. module: documents
-#: model:ir.actions.act_window,help:documents.document_action
-msgid "Upload <small>a file or</small> drag <small>it here.</small>"
+#: model_terms:ir.actions.act_window,help:documents.document_action
+msgid ""
+"Upload <span class=\"font-weight-normal\">a file or</span> drag <span class"
+"=\"font-weight-normal\">it here.</span>"
 msgstr ""
 
 #. module: documents
@@ -998,20 +1408,70 @@ msgid "Upload by Email"
 msgstr ""
 
 #. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/js/tour.js:55
+#, python-format
+msgid ""
+"Use <b>folders</b> to organize documents by departments, or group of "
+"interests"
+msgstr ""
+
+#. module: documents
+#: model:res.groups,name:documents.group_documents_user
+msgid "User"
+msgstr "Người dùng"
+
+#. module: documents
+#: model:ir.model,name:documents.model_res_users
+msgid "Users"
+msgstr "Người dùng"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_share__date_deadline
+msgid "Valid Until"
+msgstr "Hợp lệ đến"
+
+#. module: documents
 #: selection:documents.workflow.rule,create_model:0
 msgid "Vendor bill"
 msgstr ""
 
 #. module: documents
-#: model:ir.model.fields,field_description:documents.field_documents_share__website_message_ids
-#: model:ir.model.fields,field_description:documents.field_ir_attachment__website_message_ids
-msgid "Website Messages"
+#: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
+msgid "Video"
 msgstr ""
 
 #. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/js/tour.js:13
+#, python-format
+msgid "Want to become a <b>paperless company</b>? Let's discover Odoo DMS."
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_share__website_message_ids
+msgid "Website Messages"
+msgstr "Thông điệp Website"
+
+#. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__website_message_ids
-#: model:ir.model.fields,help:documents.field_ir_attachment__website_message_ids
 msgid "Website communication history"
+msgstr "Lịch sử thông tin liên lạc website"
+
+#. module: documents
+#: selection:documents.request_wizard,activity_date_deadline_range_type:0
+#: selection:documents.share,activity_date_deadline_range_type:0
+#: selection:documents.workflow.rule,activity_date_deadline_range_type:0
+msgid "Weeks"
+msgstr "Tuần"
+
+#. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/js/tour.js:64
+#, python-format
+msgid ""
+"When you <b>upload documents</b>, they appear in the selected folder and "
+"tags."
 msgstr ""
 
 #. module: documents
@@ -1026,37 +1486,37 @@ msgid "Workflow Rule"
 msgstr ""
 
 #. module: documents
-#: model:ir.actions.act_window,name:documents.document_debug_action
-msgid "[debug] Document list view"
+#: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
+msgid "Write a tooltip for the action here"
 msgstr ""
 
 #. module: documents
-#: model:ir.model.fields,field_description:documents.field_documents_facet__color
-#: model:ir.model.fields,field_description:documents.field_documents_tag__color
-msgid "color index"
+#: model:ir.model.fields,help:documents.field_ir_attachment__type
+msgid ""
+"You can either upload a file from your computer or copy/paste an internet "
+"link to your file."
 msgstr ""
+"Bạn có thể tải lên một tệp từ máy tính của bạn hoặc sao chép / dán liên kết "
+"internet vào tệp của bạn."
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/xml/documents_inspector.xml:47
+#: code:addons/documents/static/src/xml/documents_inspector.xml:54
 #, python-format
 msgid "documents selected"
 msgstr ""
 
 #. module: documents
-#: model:ir.ui.view,arch_db:documents.share_page
+#: model_terms:ir.ui.view,arch_db:documents.share_page
 msgid "documents shared by"
 msgstr ""
 
 #. module: documents
-#: model:ir.model,name:documents.model_documents_folder
-msgid "documents.folder"
-msgstr ""
-
-#. module: documents
-#: model:ir.model,name:documents.model_documents_share
-msgid "documents.share"
-msgstr ""
+#: model_terms:ir.ui.view,arch_db:documents.share_view_form
+#: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
+#: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
+msgid "e.g. Discuss proposal"
+msgstr "vd: Thảo luận về Báo giá"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_facet__tooltip
@@ -1064,46 +1524,6 @@ msgid "hover text description"
 msgstr ""
 
 #. module: documents
-#: model:ir.ui.view,arch_db:documents.folder_view_form
-msgid "i.e Finance"
-msgstr ""
-
-#. module: documents
-#: model:ir.ui.view,arch_db:documents.workflow_rule_form_view
-msgid "i.e. Validate document"
-msgstr ""
-
-#. module: documents
-#: model:ir.model,name:documents.model_ir_attachment
-msgid "ir.attachment"
-msgstr ""
-
-#. module: documents
-#: model:ir.ui.view,arch_db:documents.folder_view_search
-msgid "parent"
-msgstr ""
-
-#. module: documents
-#: model:ir.ui.view,arch_db:documents.public_page_layout
+#: model_terms:ir.ui.view,arch_db:documents.public_page_layout
 msgid "shared by"
-msgstr ""
-
-#. module: documents
-#: model:mail.message.subtype,name:documents.documents_share_changed
-msgid "shares changed"
-msgstr ""
-
-#. module: documents
-#: model:ir.model,name:documents.model_documents_workflow_action
-msgid "tag and facet manipulation"
-msgstr ""
-
-#. module: documents
-#: model:ir.model,name:documents.model_documents_workflow_tag_criteria
-msgid "tag based condition"
-msgstr ""
-
-#. module: documents
-#: model:mail.message.subtype,name:documents.documents_tags_changed
-msgid "tags changed"
 msgstr ""

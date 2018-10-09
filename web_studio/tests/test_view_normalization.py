@@ -1099,6 +1099,131 @@ class TestViewNormalization(TransactionCase):
           </data>
         """)
 
+    def test_view_normalization_29(self):
+        self.view = self.base_view.create({
+            'arch_base':
+            '''
+              <form string="Partner">
+                <sheet>
+                  <div class="oe_title">
+                    <h1>
+                        <field name="name" />
+                    </h1>
+                  </div>
+                </sheet>
+              </form>
+            ''',
+            'model': 'res.partner',
+            'type': 'form'})
+
+        self._test_view_normalization(
+            '''
+              <data>
+                <xpath expr="//sheet/*[1]" position="before">
+                  <div class="oe_button_box" name="button_box">
+                  </div>
+                </xpath>
+              </data>
+            ''',
+            '''
+               <data>
+                <xpath expr="//form[1]/sheet[1]/div[1]" position="before">
+                  <div class="oe_button_box" name="button_box">
+                  </div>
+                </xpath>
+              </data>
+            ''')
+
+    def test_view_normalization_30(self):
+        self.view = self.base_view.create({
+            'arch_base':
+            '''
+              <form string="Partner">
+                <sheet>
+                  <div class="oe_title">
+                    <h1>
+                        <field name="name" />
+                    </h1>
+                  </div>
+                </sheet>
+              </form>
+            ''',
+            'model': 'res.partner',
+            'type': 'form'})
+
+        self._test_view_normalization(
+            '''
+              <data>
+                <xpath expr="//sheet/*[1]" position="before">
+                  <div name="x_path_1"></div>
+                </xpath>
+                <xpath expr="//sheet/*[1]" position="before">
+                  <div name="x_path_2"></div>
+                </xpath>
+              </data>
+            ''',
+            '''
+               <data>
+                <xpath expr="//form[1]/sheet[1]/div[1]" position="before">
+                  <div name="x_path_2"/>
+                  <div name="x_path_1"/>
+                </xpath>
+              </data>
+            ''')
+
+    def test_view_normalization_31(self):
+        self.view = self.base_view.create({
+            'arch_base':
+            '''
+              <form string="Partner">
+                <sheet>
+                  <div class="oe_title">
+                    <h1>
+                        <field name="name" />
+                    </h1>
+                  </div>
+                  <div class="other_div">
+                  </div>
+                </sheet>
+              </form>
+            ''',
+            'model': 'res.partner',
+            'type': 'form'})
+
+        # x_path_[1-3] target <div class="oe_title"/>
+        # x_path_4 targets <div class="other_div"/>
+        self._test_view_normalization(
+            '''
+              <data>
+                <xpath expr="//sheet/*[1]" position="before">
+                  <div name="x_path_1"></div>
+                </xpath>
+                <xpath expr="//sheet/*[2]" position="before">
+                  <div name="x_path_2"></div>
+                </xpath>
+                <xpath expr="//sheet/*[4]" position="before">
+                  <div name="x_path_3"></div>
+                </xpath>
+                <xpath expr="//sheet/*[5]" position="after">
+                  <div name="x_path_4"></div>
+                </xpath>
+              </data>
+            ''',
+            '''
+               <data>
+                <xpath expr="//form[1]/sheet[1]/div[1]" position="before">
+                  <div name="x_path_1"/>
+                  <div name="x_path_2"/>
+                </xpath>
+                <xpath expr="//form[1]/sheet[1]/div[1]" position="after">
+                  <div name="x_path_3"/>
+                </xpath>
+                <xpath expr="//form[1]/sheet[1]/div[2]" position="after">
+                  <div name="x_path_4"/>
+                </xpath>
+              </data>
+            ''')
+
     def tearDown(self):
         super(TestViewNormalization, self).tearDown()
         random.seed()

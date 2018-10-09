@@ -3,18 +3,13 @@
 # * sale_subscription_asset
 # 
 # Translators:
-# Angel Moya - PESOL <angel.moya@pesol.es>, 2017
-# Gelo Joga Landoo <gj@landoo.es>, 2017
-# Luis M. Ontalba <luis.martinez@tecnativa.com>, 2017
-# Pedro M. Baeza <pedro.baeza@gmail.com>, 2017
-# e2f <projects@e2f.com>, 2018
 # Martin Trigaux, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.4+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-02 11:20+0000\n"
-"PO-Revision-Date: 2018-08-02 11:20+0000\n"
+"POT-Creation-Date: 2018-10-02 10:32+0000\n"
+"PO-Revision-Date: 2018-10-02 10:32+0000\n"
 "Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
 "MIME-Version: 1.0\n"
@@ -30,20 +25,15 @@ msgid "Deferred Revenue Category"
 msgstr "Categoría de ingresos a plazos"
 
 #. module: sale_subscription_asset
-#: model:ir.ui.view,arch_db:sale_subscription_asset.sale_subscription_template_view_form_inherit_sale_subscription_asset
-#: model:ir.ui.view,arch_db:sale_subscription_asset.sale_subscription_view_form_inherit_sale_subscription_asset
+#: model_terms:ir.ui.view,arch_db:sale_subscription_asset.sale_subscription_template_view_form_inherit_sale_subscription_asset
+#: model_terms:ir.ui.view,arch_db:sale_subscription_asset.sale_subscription_view_form_inherit_sale_subscription_asset
 msgid "Deferred Revenue Type"
 msgstr "Tipo de ingreso diferido"
 
 #. module: sale_subscription_asset
 #: model:ir.model,name:sale_subscription_asset.model_sale_order
-msgid "Quotation"
-msgstr "Presupuesto"
-
-#. module: sale_subscription_asset
-#: model:ir.ui.view,arch_db:sale_subscription_asset.res_config_settings_view_form
-msgid "Revenue Types"
-msgstr "Tipos de ingresos"
+msgid "Sale Order"
+msgstr "Pedido de venta"
 
 #. module: sale_subscription_asset
 #: model:ir.model,name:sale_subscription_asset.model_sale_order_line

@@ -4,14 +4,14 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
-# Максим Дронь <dronmax@gmail.com>, 2018
+# Sergey Vilizhanin, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
-"Last-Translator: Максим Дронь <dronmax@gmail.com>, 2018\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"Last-Translator: Sergey Vilizhanin, 2018\n"
 "Language-Team: Russian (https://www.transifex.com/odoo/teams/41243/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -81,27 +81,27 @@ msgid "7 Days"
 msgstr "7 Дней"
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "<span class=\"o_form_label\">Sales Channel</span>"
 msgstr ""
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "<span class=\"o_form_label\">Storage</span>"
 msgstr ""
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "<span class=\"o_form_label\">Synchronization</span>"
 msgstr ""
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "<span class=\"o_form_label\">eBay Account</span>"
 msgstr ""
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "<span class=\"o_form_label\">eBay Options</span>"
 msgstr ""
 
@@ -139,7 +139,7 @@ msgid "Buy It Now Price"
 msgstr "Цена Купить Сейчас"
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.ebay_link_listing_view
+#: model_terms:ir.ui.view,arch_db:sale_ebay.ebay_link_listing_view
 msgid "Cancel"
 msgstr "Отменить"
 
@@ -176,6 +176,11 @@ msgid "Code"
 msgstr "Код"
 
 #. module: sale_ebay
+#: model:ir.model,name:sale_ebay.model_res_config_settings
+msgid "Config Settings"
+msgstr ""
+
+#. module: sale_ebay
 #: code:addons/sale_ebay/models/product.py:352
 #, python-format
 msgid "Configure The eBay Integrator Now"
@@ -187,7 +192,7 @@ msgid "Contact"
 msgstr "Контакт"
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Countries & Currencies"
 msgstr ""
 
@@ -217,7 +222,7 @@ msgstr "Создан"
 
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_res_currency
-#: model:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Currency"
 msgstr "Валюта"
 
@@ -227,7 +232,7 @@ msgid "Custom Store Category"
 msgstr "Пользовательская Категория Магазина"
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
+#: model_terms:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
 msgid "Describe the product characteristics..."
 msgstr "Опишите характеристики продукта..."
 
@@ -300,7 +305,7 @@ msgid "Ebay: update product status"
 msgstr ""
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
+#: model_terms:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
 msgid "End Item's Listing"
 msgstr "Конец Ассортиментного Списка"
 
@@ -325,7 +330,7 @@ msgstr ""
 "'%s'"
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
+#: model_terms:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
 msgid "Fixed Price"
 msgstr "Фиксированная цена"
 
@@ -359,7 +364,7 @@ msgid "ID"
 msgstr "Номер"
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Import eBay config data and sync transactions"
 msgstr ""
 
@@ -418,12 +423,12 @@ msgid "Leaf Category"
 msgstr ""
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.ebay_link_listing_view
+#: model_terms:ir.ui.view,arch_db:sale_ebay.ebay_link_listing_view
 msgid "Link Existing Listing"
 msgstr "Связать Существующий Листинг"
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
+#: model_terms:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
 msgid "Link With Existing eBay Listing"
 msgstr ""
 
@@ -433,12 +438,12 @@ msgid "Link with Existing eBay Listing"
 msgstr ""
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.ebay_link_listing_view
+#: model_terms:ir.ui.view,arch_db:sale_ebay.ebay_link_listing_view
 msgid "Link with eBay Listing"
 msgstr ""
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
+#: model_terms:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
 msgid "List Item on eBay"
 msgstr ""
 
@@ -454,12 +459,12 @@ msgid "Location"
 msgstr "Место"
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Mode"
 msgstr "Режим"
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Mode and credentials"
 msgstr ""
 
@@ -472,7 +477,7 @@ msgid "Name"
 msgstr "Название"
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/sale_ebay.py:197
+#: code:addons/sale_ebay/models/sale_ebay.py:199
 #, python-format
 msgid "No Business Policies"
 msgstr "Нет Бизнес Политики"
@@ -511,7 +516,7 @@ msgid "Point of Sale"
 msgstr "Точка продаж"
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Policies"
 msgstr "Условия"
 
@@ -532,7 +537,7 @@ msgid "Product"
 msgstr "Продукт"
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Product Categories"
 msgstr "Категории продуктов"
 
@@ -562,7 +567,7 @@ msgid "Production Token"
 msgstr "Действующий Токен"
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Products & Transactions"
 msgstr ""
 
@@ -584,7 +589,7 @@ msgid "Quantity Sold"
 msgstr "Количество Продано"
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
+#: model_terms:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
 msgid "Relist Item"
 msgstr "Повторно Выставляю Позицию"
 
@@ -595,7 +600,7 @@ msgid "Return Policy"
 msgstr "Политика Возврата"
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
+#: model_terms:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
 msgid "Revise Item"
 msgstr "Пересмотр Позиции"
 
@@ -605,17 +610,17 @@ msgid "Sales"
 msgstr "Продажи"
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Sales Channel"
 msgstr "Канал продаж"
 
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_crm_team
-msgid "Sales Team"
-msgstr "Команда продаж"
+msgid "Sales Channels"
+msgstr "Каналы продаж"
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Sales channel to manage eBay sales"
 msgstr ""
 
@@ -640,7 +645,7 @@ msgid "Sandbox Token"
 msgstr "Песочница Токен"
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
+#: model_terms:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
 msgid "Sell on eBay"
 msgstr ""
 
@@ -663,7 +668,7 @@ msgid "Starting Price for Auction"
 msgstr "Стартовая Цена для Аукциона"
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Storage location of your products"
 msgstr ""
 
@@ -691,7 +696,7 @@ msgid "Summary"
 msgstr "Описание"
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Sync now"
 msgstr ""
 
@@ -784,7 +789,7 @@ msgid "Use eBay"
 msgstr "Использовать eBay"
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
+#: model_terms:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
 msgid "Variants"
 msgstr "Варианты"
 
@@ -801,9 +806,14 @@ msgstr "Индекс"
 #. module: sale_ebay
 #: model:crm.team,name:sale_ebay.ebay_sales_team
 #: selection:crm.team,team_type:0
-#: model:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
-#: model:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "eBay"
+msgstr ""
+
+#. module: sale_ebay
+#: model:ir.model,name:sale_ebay.model_ebay_category
+msgid "eBay Category"
 msgstr ""
 
 #. module: sale_ebay
@@ -836,9 +846,29 @@ msgid "eBay ID"
 msgstr "eBay ID"
 
 #. module: sale_ebay
+#: model:ir.model,name:sale_ebay.model_ebay_item_condition
+msgid "eBay Item Condition"
+msgstr ""
+
+#. module: sale_ebay
+#: model:ir.model,name:sale_ebay.model_ebay_link_listing
+msgid "eBay Link Listing"
+msgstr ""
+
+#. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_link_listing__ebay_id
 msgid "eBay Listing ID"
 msgstr "eBay Листинг ID"
+
+#. module: sale_ebay
+#: model:ir.model,name:sale_ebay.model_ebay_policy
+msgid "eBay Policy"
+msgstr ""
+
+#. module: sale_ebay
+#: model:ir.model,name:sale_ebay.model_ebay_site
+msgid "eBay Site"
+msgstr "eBay Сайт"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_listing_status
@@ -863,7 +893,7 @@ msgid "eBay Website"
 msgstr ""
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/sale_ebay.py:53
+#: code:addons/sale_ebay/models/sale_ebay.py:54
 #, python-format
 msgid ""
 "eBay error: Impossible to synchronize the categories. \n"
@@ -890,7 +920,7 @@ msgid "eBay is unreachable. Please try again later."
 msgstr "eBay недоступен. Пожалуйста, повторите попытку позже."
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "eBay parameters"
 msgstr ""
 
@@ -909,33 +939,3 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_sales_team
 msgid "ebay Sales Channel"
 msgstr ""
-
-#. module: sale_ebay
-#: model:ir.model,name:sale_ebay.model_ebay_category
-msgid "ebay.category"
-msgstr "ebay.category"
-
-#. module: sale_ebay
-#: model:ir.model,name:sale_ebay.model_ebay_item_condition
-msgid "ebay.item.condition"
-msgstr "ebay.item.condition"
-
-#. module: sale_ebay
-#: model:ir.model,name:sale_ebay.model_ebay_link_listing
-msgid "ebay.link.listing"
-msgstr "ebay.link.listing"
-
-#. module: sale_ebay
-#: model:ir.model,name:sale_ebay.model_ebay_policy
-msgid "ebay.policy"
-msgstr "ebay.policy"
-
-#. module: sale_ebay
-#: model:ir.model,name:sale_ebay.model_ebay_site
-msgid "ebay.site"
-msgstr "ebay.site"
-
-#. module: sale_ebay
-#: model:ir.model,name:sale_ebay.model_res_config_settings
-msgid "res.config.settings"
-msgstr "res.config.settings"

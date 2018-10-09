@@ -16,6 +16,7 @@ evaluation_context = {
 class website_crm_score(models.Model):
     _name = 'website.crm.score'
     _inherit = ['mail.thread']
+    _description = 'Website CRM Score'
 
     @api.one
     def _count_leads(self):

@@ -20,6 +20,7 @@ _logger = logging.getLogger(__name__)
 
 class ProjectForecast(models.Model):
     _name = 'project.forecast'
+    _description = 'Project Forecast'
 
     def _default_employee_id(self):
         user_id = self.env.context.get('default_user_id', self.env.uid)
@@ -69,8 +70,8 @@ class ProjectForecast(models.Model):
     company_id = fields.Many2one('res.company', string="Company", related='project_id.company_id', store=True, readonly=True)
 
     # used in custom filter
-    stage_id = fields.Many2one(related='task_id.stage_id', string="Task stage")
-    tag_ids = fields.Many2many(related='task_id.tag_ids', string="Task tags")
+    stage_id = fields.Many2one(related='task_id.stage_id', string="Task stage", readonly=False)
+    tag_ids = fields.Many2many(related='task_id.tag_ids', string="Task tags", readonly=False)
 
     time = fields.Float(string="Allocated time / Time span", help="Percentage of working time", compute='_compute_time', store=True, digits=(16, 2))
 
@@ -83,7 +84,7 @@ class ProjectForecast(models.Model):
     # resource
     resource_hours = fields.Float(string="Planned hours", default=0)
     resource_time = fields.Float("Allocated Time", compute='_compute_resource_time', inverse='_inverse_resource_time', compute_sudo=True, store=True, help="Expressed in the Unit of Measure of the project company")
-    forecast_uom = fields.Selection(related='company_id.forecast_uom')
+    forecast_uom = fields.Selection(related='company_id.forecast_uom', readonly=False)
 
     _sql_constraints = [
         ('check_start_date_lower_end_date', 'CHECK(end_date >= start_date)', 'Forecast end date should be greater or equal to its start date'),

@@ -2,12 +2,15 @@
 # This file contains the translation of the following modules:
 # * account_plaid
 # 
+# Translators:
+# Duy BQ <duybq86@gmail.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.3+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 08:34+0000\n"
-"PO-Revision-Date: 2018-06-25 08:34+0000\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"Last-Translator: Duy BQ <duybq86@gmail.com>, 2018\n"
 "Language-Team: Vietnamese (https://www.transifex.com/odoo/teams/41243/vi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,17 +27,23 @@ msgstr ""
 #: code:addons/account_plaid/models/plaid.py:55
 #, python-format
 msgid "Get %s status code for call to %s. Content message: %s"
-msgstr ""
+msgstr "Nhận %s mã trạng thái cho cuộc gọi tới %s. Nội dung thông điệp: %s"
 
 #. module: account_plaid
 #: model:ir.model,name:account_plaid.model_account_online_journal
-msgid "Interface for online account journal"
+msgid "Interface for Online Account Journal"
+msgstr ""
+
+#. module: account_plaid
+#: code:addons/account_plaid/models/plaid.py:136
+#, python-format
+msgid "Only an Accountant is allowed to perform this operation."
 msgstr ""
 
 #. module: account_plaid
 #: selection:account.online.provider,provider_type:0
 msgid "Plaid"
-msgstr ""
+msgstr "Plaid"
 
 #. module: account_plaid
 #: model:ir.model.fields,field_description:account_plaid.field_account_online_provider__plaid_error_type
@@ -49,12 +58,12 @@ msgstr ""
 #. module: account_plaid
 #: model:ir.model.fields,field_description:account_plaid.field_account_online_provider__provider_type
 msgid "Provider Type"
-msgstr ""
+msgstr "Loại nhà cung cấp"
 
 #. module: account_plaid
 #: model:ir.model,name:account_plaid.model_account_online_provider
 msgid "Provider for online account synchronization"
-msgstr ""
+msgstr "Nhà cung cấp cho việc đồng bộ tài khoản trực tuyến"
 
 #. module: account_plaid
 #: code:addons/account_plaid/models/plaid.py:41
@@ -68,7 +77,7 @@ msgid ""
 msgstr ""
 
 #. module: account_plaid
-#: code:addons/account_plaid/models/plaid.py:73
+#: code:addons/account_plaid/models/plaid.py:74
 #, python-format
 msgid "Timeout: the server did not reply within 60s"
 msgstr ""
@@ -76,7 +85,7 @@ msgstr ""
 #. module: account_plaid
 #: selection:account.online.provider,provider_type:0
 msgid "Yodlee"
-msgstr ""
+msgstr "Yodlee"
 
 #. module: account_plaid
 #: model:ir.model.fields,help:account_plaid.field_account_online_provider__plaid_item_id

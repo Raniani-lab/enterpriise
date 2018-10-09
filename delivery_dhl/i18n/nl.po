@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
 "Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -149,7 +149,6 @@ msgid "C - Medical Express"
 msgstr "C - Medisch express"
 
 #. module: delivery_dhl
-#: model:ir.model,name:delivery_dhl.model_delivery_carrier
 #: model:ir.model.fields,field_description:delivery_dhl.field_product_packaging__package_carrier_type
 msgid "Carrier"
 msgstr "Vervoerder"
@@ -181,7 +180,7 @@ msgid "DHL Account Number"
 msgstr "DHL account nummer"
 
 #. module: delivery_dhl
-#: model:ir.ui.view,arch_db:delivery_dhl.view_delivery_carrier_form_with_provider_dhl
+#: model_terms:ir.ui.view,arch_db:delivery_dhl.view_delivery_carrier_form_with_provider_dhl
 msgid "DHL Configuration"
 msgstr "DHL configuratie"
 
@@ -191,8 +190,8 @@ msgid "DHL Default Packaging Type"
 msgstr "DHL standaard verpakking soort"
 
 #. module: delivery_dhl
-#: model:ir.ui.view,arch_db:delivery_dhl.res_config_settings_view_form_sale
-#: model:ir.ui.view,arch_db:delivery_dhl.res_config_settings_view_form_stock
+#: model_terms:ir.ui.view,arch_db:delivery_dhl.res_config_settings_view_form_sale
+#: model_terms:ir.ui.view,arch_db:delivery_dhl.res_config_settings_view_form_stock
 msgid "DHL Delivery Methods"
 msgstr "DHL leveringsmethodes"
 
@@ -207,7 +206,7 @@ msgid "DHL Product"
 msgstr "DHL Product"
 
 #. module: delivery_dhl
-#: code:addons/delivery_dhl/models/dhl_request.py:376
+#: code:addons/delivery_dhl/models/dhl_request.py:375
 #, python-format
 msgid "DHL Site ID is missing, please modify your delivery method settings."
 msgstr "DHL Site ID ontbreekt, verander uw bezorgingsmethode instellingen."
@@ -232,7 +231,7 @@ msgid "DHL USA -> International"
 msgstr "DHL USA -> Internationaal"
 
 #. module: delivery_dhl
-#: code:addons/delivery_dhl/models/dhl_request.py:380
+#: code:addons/delivery_dhl/models/dhl_request.py:379
 #, python-format
 msgid ""
 "DHL account number is missing, please modify your delivery method settings."
@@ -240,10 +239,15 @@ msgstr ""
 "DHL account nummer ontbreekt, verander uw bezorgingsmethode instellingen."
 
 #. module: delivery_dhl
-#: code:addons/delivery_dhl/models/dhl_request.py:378
+#: code:addons/delivery_dhl/models/dhl_request.py:377
 #, python-format
 msgid "DHL password is missing, please modify your delivery method settings."
 msgstr "DHL wachtwoord ontbreekt, verander uw bezorgingsmethode instellingen."
+
+#. module: delivery_dhl
+#: model:ir.model,name:delivery_dhl.model_delivery_carrier
+msgid "Delivery Methods"
+msgstr "Verzendwijzes"
 
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_dutiable
@@ -390,12 +394,7 @@ msgid "Package Weight Unit"
 msgstr "Gewichtseenheid verpakking"
 
 #. module: delivery_dhl
-#: model:ir.model,name:delivery_dhl.model_product_packaging
-msgid "Packaging"
-msgstr "Verpakking"
-
-#. module: delivery_dhl
-#: code:addons/delivery_dhl/models/dhl_request.py:398
+#: code:addons/delivery_dhl/models/dhl_request.py:397
 #, python-format
 msgid "Please provide at least one item to ship."
 msgstr "Voorzie minimaal één item om te verzend aub."
@@ -404,6 +403,11 @@ msgstr "Voorzie minimaal één item om te verzend aub."
 #: selection:delivery.carrier,dhl_package_weight_unit:0
 msgid "Pounds"
 msgstr "Ponden"
+
+#. module: delivery_dhl
+#: model:ir.model,name:delivery_dhl.model_product_packaging
+msgid "Product Packaging"
+msgstr "Product verpakkingen"
 
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__delivery_type
@@ -442,7 +446,7 @@ msgid "T - Express 12:00"
 msgstr "T - Express 12:00"
 
 #. module: delivery_dhl
-#: code:addons/delivery_dhl/models/dhl_request.py:386
+#: code:addons/delivery_dhl/models/dhl_request.py:385
 #, python-format
 msgid ""
 "The address of the customer is missing or wrong (Missing field(s) :\n"
@@ -452,7 +456,7 @@ msgstr ""
 "%s)"
 
 #. module: delivery_dhl
-#: code:addons/delivery_dhl/models/dhl_request.py:394
+#: code:addons/delivery_dhl/models/dhl_request.py:393
 #, python-format
 msgid ""
 "The address of your company warehouse is missing or wrong (Missing field(s) :\n"
@@ -462,7 +466,7 @@ msgstr ""
 "%s)"
 
 #. module: delivery_dhl
-#: code:addons/delivery_dhl/models/dhl_request.py:400
+#: code:addons/delivery_dhl/models/dhl_request.py:399
 #, python-format
 msgid ""
 "The estimated price cannot be computed because the weight of your product is"

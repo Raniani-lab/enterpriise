@@ -13,6 +13,8 @@ var ListView = require('web.ListView');
 var FieldInteger = basic_fields.FieldInteger;
 var FieldBinaryImage = basic_fields.FieldBinaryImage;
 
+var core = require('web.core');
+var QWeb = core.qweb;
 
 KanbanRecord.include({
     _openRecord: function () {
@@ -38,7 +40,7 @@ var BackArrow = FieldInteger.extend({
     _render: function () {
         this.$el.html('<button class="btn btn-secondary o_workorder_icon_btn o_workorder_icon_back"><i class="fa fa-arrow-left"/></button>');
     },
-    _onClick: function() {
+    _onClick: function () {
         var self = this;
         this._rpc({
             method: 'action_back',
@@ -55,9 +57,59 @@ var BackArrow = FieldInteger.extend({
 
 var TabletImage = FieldBinaryImage.extend({
     template: 'FieldBinaryTabletImage',
+    events: _.extend({}, FieldBinaryImage.prototype.events, {
+        'click .o_form_image_controls': '_onOpenPreview',
+        'click .o_input_file': function (ev) {
+            ev.stopImmediatePropagation();
+        },
+    }),
+
+    toggleControl: function () {
+        var $controls = this.$('.o_form_image_controls');
+        $controls.toggleClass('o_invisible_modifier', !this.value);
+    },
+
+    _render: function (){
+        var def = this._super.apply(this, arguments);
+        this.toggleControl();
+        return def;
+    },
+
+    on_clear: function (ev){
+        ev.stopImmediatePropagation();
+        this._super.apply(this, arguments);
+    },
+
+    /**
+     * Open the image preview
+     *
+     * @private
+     */
+    _onOpenPreview: function (ev) {
+        ev.stopPropagation();
+        this.src = this.$el.find('>img').attr('src');
+
+        this.$modal = $(QWeb.render('FieldBinaryTabletImage.Preview', {
+            url: this.src
+        }));
+        this.$modal.click(this._onClosePreview.bind(this));
+        this.$modal.appendTo('body');
+        this.$modal.modal('show');
+    },
+
+    /**
+     * Close the image preview
+     *
+     * @private
+     */
+    _onClosePreview: function (ev) {
+        ev.preventDefault();
+        this.$modal.remove();
+        $('.modal-backdrop').remove();
+    },
 });
 
-function tabletRenderButtons ($node) {
+function tabletRenderButtons($node) {
         var self = this;
         this.$buttons = $('<div/>');
         this.$buttons.html('<button class="btn btn-secondary back-button"><i class="fa fa-arrow-left"/></button>');
@@ -65,7 +117,7 @@ function tabletRenderButtons ($node) {
             self.do_action('mrp.mrp_workcenter_kanban_action', {clear_breadcrumbs: true});
         });
         this.$buttons.appendTo($node);
-};
+}
 
 var TabletKanbanController = KanbanController.extend({
     renderButtons: function ($node) {
@@ -95,4 +147,11 @@ field_registry.add('back_arrow', BackArrow);
 field_registry.add('tablet_image', TabletImage);
 view_registry.add('tablet_kanban_view', TabletKanbanView);
 view_registry.add('tablet_list_view', TabletListView);
+
+return {
+    BackArrow: BackArrow,
+    TabletImage: TabletImage,
+    TabletKanbanView: TabletKanbanView,
+    TabletListView: TabletListView,
+};
 });

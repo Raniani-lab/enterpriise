@@ -7,8 +7,8 @@ from odoo import fields, models
 class ResCompany(models.Model):
     _inherit = 'res.company'
 
-    show_ocr_option_selection = fields.Selection([
-        ('no_send', 'Never send an attachment to IAP'),
-        ('manual_send', "Don't send attachments to iap automatically, but let the user send it manually"),
-        ('auto_send', 'automatically send attachments to iap')], string="Send mode on invoices attachments",
+    extract_show_ocr_option_selection = fields.Selection([
+        ('no_send', 'Do not process bills'),
+        ('manual_send', "Process bills on demand only"),
+        ('auto_send', 'Process all bills automatically')], string="Send mode on invoices attachments",
         required=True, default='manual_send')

@@ -16,6 +16,7 @@ class GithubRepository(models.Model):
 
     _name = 'mail.channel.github'
     _inherit = 'mail.thread'
+    _description = 'Email Github Channel'
 
     def _default_secret(self):
         chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'

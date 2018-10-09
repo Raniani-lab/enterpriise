@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
 "Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: Greek (https://www.transifex.com/odoo/teams/41243/el/)\n"
 "MIME-Version: 1.0\n"
@@ -19,19 +19,24 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: ocn_client
+#: model:ir.model,name:ocn_client.model_res_config_settings
+msgid "Config Settings"
+msgstr ""
+
+#. module: ocn_client
 #: model:ir.model,name:ocn_client.model_res_partner
 msgid "Contact"
 msgstr "Επαφή"
 
 #. module: ocn_client
-#: model:ir.ui.view,arch_db:ocn_client.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:ocn_client.res_config_settings_view_form
 msgid "Get notifications on Android and iOS application"
 msgstr ""
 
 #. module: ocn_client
 #: model:ir.model,name:ocn_client.model_ir_http
-msgid "HTTP routing"
-msgstr "Δρομολόγηση HTTP"
+msgid "HTTP Routing"
+msgstr ""
 
 #. module: ocn_client
 #: model:ir.model,name:ocn_client.model_mail_message
@@ -45,7 +50,7 @@ msgid "OCN Token"
 msgstr ""
 
 #. module: ocn_client
-#: model:ir.ui.view,arch_db:ocn_client.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:ocn_client.res_config_settings_view_form
 msgid "Odoo Cloud Notification (OCN)"
 msgstr ""
 
@@ -59,8 +64,3 @@ msgstr ""
 #: model:ir.model.fields,help:ocn_client.field_res_users__ocn_token
 msgid "Used for sending notification to registered devices"
 msgstr ""
-
-#. module: ocn_client
-#: model:ir.model,name:ocn_client.model_res_config_settings
-msgid "res.config.settings"
-msgstr "res.config.settings"

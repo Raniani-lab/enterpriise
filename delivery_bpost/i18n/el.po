@@ -4,13 +4,14 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# Kostas Goutoudis <goutoudis@gmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"Last-Translator: Kostas Goutoudis <goutoudis@gmail.com>, 2018\n"
 "Language-Team: Greek (https://www.transifex.com/odoo/teams/41243/el/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,7 +22,7 @@ msgstr ""
 #. module: delivery_bpost
 #: selection:delivery.carrier,bpost_label_stock_type:0
 msgid "A4"
-msgstr ""
+msgstr "A4"
 
 #. module: delivery_bpost
 #: selection:delivery.carrier,bpost_label_stock_type:0
@@ -34,7 +35,7 @@ msgid "Allow deliveries on Saturday (extra charges apply)"
 msgstr ""
 
 #. module: delivery_bpost
-#: code:addons/delivery_bpost/models/bpost_request.py:97
+#: code:addons/delivery_bpost/models/bpost_request.py:98
 #, python-format
 msgid ""
 "Authentication error -- wrong credentials\n"
@@ -101,21 +102,25 @@ msgid "Bpost World Express Pro"
 msgstr ""
 
 #. module: delivery_bpost
-#: model:ir.model,name:delivery_bpost.model_delivery_carrier
 #: model:ir.model.fields,field_description:delivery_bpost.field_product_packaging__package_carrier_type
 msgid "Carrier"
-msgstr ""
+msgstr "Μεταφορέας"
 
 #. module: delivery_bpost
 #: selection:delivery.carrier,delivery_type:0
 #: selection:product.packaging,package_carrier_type:0
 msgid "DHL"
-msgstr ""
+msgstr "DHL"
 
 #. module: delivery_bpost
 #: selection:delivery.carrier,bpost_shipment_type:0
 msgid "DOCUMENTS"
 msgstr ""
+
+#. module: delivery_bpost
+#: model:ir.model,name:delivery_bpost.model_delivery_carrier
+msgid "Delivery Methods"
+msgstr "Μέθοδοι Παράδοσης"
 
 #. module: delivery_bpost
 #: model:ir.model.fields,field_description:delivery_bpost.field_delivery_carrier__bpost_saturday
@@ -142,12 +147,12 @@ msgstr ""
 #: selection:delivery.carrier,delivery_type:0
 #: selection:product.packaging,package_carrier_type:0
 msgid "FedEx"
-msgstr ""
+msgstr "FedEx"
 
 #. module: delivery_bpost
 #: selection:delivery.carrier,delivery_type:0
 msgid "Fixed Price"
-msgstr ""
+msgstr "Σταθερή τιμή"
 
 #. module: delivery_bpost
 #: selection:delivery.carrier,bpost_shipment_type:0
@@ -185,14 +190,9 @@ msgid "PNG"
 msgstr ""
 
 #. module: delivery_bpost
-#: code:addons/delivery_bpost/models/bpost_request.py:133
+#: code:addons/delivery_bpost/models/bpost_request.py:134
 #, python-format
 msgid "Packages over 30 Kg are not accepted by bpost."
-msgstr ""
-
-#. module: delivery_bpost
-#: model:ir.model,name:delivery_bpost.model_product_packaging
-msgid "Packaging"
 msgstr ""
 
 #. module: delivery_bpost
@@ -207,9 +207,14 @@ msgid "Please provide at least one item to ship."
 msgstr ""
 
 #. module: delivery_bpost
+#: model:ir.model,name:delivery_bpost.model_product_packaging
+msgid "Product Packaging"
+msgstr ""
+
+#. module: delivery_bpost
 #: model:ir.model.fields,field_description:delivery_bpost.field_delivery_carrier__delivery_type
 msgid "Provider"
-msgstr ""
+msgstr "Πάροχος"
 
 #. module: delivery_bpost
 #: selection:delivery.carrier,bpost_parcel_return_instructions:0
@@ -268,12 +273,12 @@ msgstr ""
 #: selection:delivery.carrier,delivery_type:0
 #: selection:product.packaging,package_carrier_type:0
 msgid "UPS"
-msgstr ""
+msgstr "UPS"
 
 #. module: delivery_bpost
 #: selection:delivery.carrier,delivery_type:0
 msgid "USPS"
-msgstr ""
+msgstr "USPS"
 
 #. module: delivery_bpost
 #: model:product.product,uom_name:delivery_bpost.product_product_delivery_bpost_domestic
@@ -281,7 +286,7 @@ msgstr ""
 #: model:product.template,uom_name:delivery_bpost.product_product_delivery_bpost_domestic_product_template
 #: model:product.template,uom_name:delivery_bpost.product_product_delivery_bpost_world_product_template
 msgid "Unit(s)"
-msgstr ""
+msgstr "Μονάδες"
 
 #. module: delivery_bpost
 #: code:addons/delivery_bpost/models/delivery_bpost.py:91
@@ -337,10 +342,10 @@ msgstr ""
 #: selection:delivery.carrier,delivery_type:0
 #: selection:product.packaging,package_carrier_type:0
 msgid "bpost"
-msgstr ""
+msgstr "bpost"
 
 #. module: delivery_bpost
-#: model:ir.ui.view,arch_db:delivery_bpost.view_delivery_carrier_form_with_provider_bpost
+#: model_terms:ir.ui.view,arch_db:delivery_bpost.view_delivery_carrier_form_with_provider_bpost
 msgid "bpost Configuration"
 msgstr ""
 
@@ -350,10 +355,10 @@ msgid "bpost Default Packaging Type"
 msgstr ""
 
 #. module: delivery_bpost
-#: model:ir.ui.view,arch_db:delivery_bpost.res_config_settings_view_form_sale
-#: model:ir.ui.view,arch_db:delivery_bpost.res_config_settings_view_form_stock
+#: model_terms:ir.ui.view,arch_db:delivery_bpost.res_config_settings_view_form_sale
+#: model_terms:ir.ui.view,arch_db:delivery_bpost.res_config_settings_view_form_stock
 msgid "bpost Delivery Methods"
-msgstr ""
+msgstr "Τρόποι αποστολής της bpost"
 
 #. module: delivery_bpost
 #: code:addons/delivery_bpost/models/bpost_request.py:46
@@ -372,7 +377,7 @@ msgid ""
 msgstr ""
 
 #. module: delivery_bpost
-#: code:addons/delivery_bpost/models/bpost_request.py:111
+#: code:addons/delivery_bpost/models/bpost_request.py:112
 #, python-format
 msgid "bpost did not return prices for this destination country."
 msgstr ""
@@ -383,4 +388,4 @@ msgstr ""
 #: model:product.template,weight_uom_name:delivery_bpost.product_product_delivery_bpost_domestic_product_template
 #: model:product.template,weight_uom_name:delivery_bpost.product_product_delivery_bpost_world_product_template
 msgid "kg"
-msgstr ""
+msgstr "κιλά"

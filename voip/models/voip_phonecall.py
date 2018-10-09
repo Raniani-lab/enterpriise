@@ -8,6 +8,7 @@ from odoo import api, fields, models, _
 
 class VoipPhonecall(models.Model):
     _name = "voip.phonecall"
+    _description = 'VOIP Phonecall'
 
     _order = "sequence, id"
 

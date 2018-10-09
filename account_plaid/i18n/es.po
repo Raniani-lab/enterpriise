@@ -3,16 +3,14 @@
 # * account_plaid
 # 
 # Translators:
-# RGB Consulting <odoo@rgbconsulting.com>, 2017
-# Pedro M. Baeza <pedro.baeza@gmail.com>, 2018
-# Christopher Ormaza <chris.ormaza@gmail.com>, 2018
+# Martin Trigaux, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.3+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 08:34+0000\n"
-"PO-Revision-Date: 2018-06-25 08:34+0000\n"
-"Last-Translator: Christopher Ormaza <chris.ormaza@gmail.com>, 2018\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -35,8 +33,14 @@ msgstr ""
 
 #. module: account_plaid
 #: model:ir.model,name:account_plaid.model_account_online_journal
-msgid "Interface for online account journal"
-msgstr "Interfaz para diario de cuentas en línea"
+msgid "Interface for Online Account Journal"
+msgstr ""
+
+#. module: account_plaid
+#: code:addons/account_plaid/models/plaid.py:136
+#, python-format
+msgid "Only an Accountant is allowed to perform this operation."
+msgstr ""
 
 #. module: account_plaid
 #: selection:account.online.provider,provider_type:0
@@ -75,7 +79,7 @@ msgid ""
 msgstr ""
 
 #. module: account_plaid
-#: code:addons/account_plaid/models/plaid.py:73
+#: code:addons/account_plaid/models/plaid.py:74
 #, python-format
 msgid "Timeout: the server did not reply within 60s"
 msgstr ""

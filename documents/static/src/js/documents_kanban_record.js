@@ -11,6 +11,8 @@ var DocumentsKanbanRecord = KanbanRecord.extend({
     events: _.extend({}, KanbanRecord.prototype.events, {
         'click': '_onSelectRecord',
         'click .o_record_selector': '_onAddRecordToSelection',
+        'click .oe_kanban_previewer': '_onImageClicked',
+        'click .o_request_image': '_onRequestImage',
     }),
 
     //--------------------------------------------------------------------------
@@ -90,6 +92,15 @@ var DocumentsKanbanRecord = KanbanRecord.extend({
         this._toggleSelect(false, ev);
     },
     /**
+     * @private
+     * @param {MouseEvent} ev
+     */
+    _onImageClicked: function (ev) {
+        ev.preventDefault();
+        ev.stopPropagation();
+        this.trigger_up('kanban_image_clicked', {record: this.recordData});
+    },
+    /**
      * Overrides to force the select/unselect as default action (instead of
      * opening the first link of the record)
      *
@@ -102,6 +113,15 @@ var DocumentsKanbanRecord = KanbanRecord.extend({
                 this._toggleSelect(true, ev);
                 break;
         }
+    },
+    /**
+     * @private
+     *
+     */
+    _onRequestImage: function (ev) {
+        ev.preventDefault();
+        ev.stopPropagation();
+        this.trigger_up('replace_file', {id: this.id});
     },
     /**
      * Toggle the selected status of the record (and unselect all other records)

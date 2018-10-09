@@ -6,7 +6,11 @@
     <div class="o_documents_inspector h-100">
         <t t-set="nbPreviews" t-value="widget.records.length"/>
         <div class="o_documents_inspector_preview d-flex flex-row flex-wrap align-items-center justify-content-center position-relative">
-            <span t-if="nbPreviews === 0">No document selected</span>
+            <div t-if="nbPreviews === 0">
+                <t t-if="widget.currentFolder">
+                    <div class="o_inspector_folder_description"><t t-if="widget.currentFolder.description" t-raw="widget.currentFolder.description"/></div>
+                </t>
+            </div>
             <t t-else="" t-call="documents.DocumentsInspector.previews"/>
         </div>
         <div class="o_documents_inspector_info">
@@ -24,12 +28,15 @@
     <t t-foreach="widget.records.slice(0, 4)" t-as="record">
         <div t-attf-class="o_document_preview #{nbPreviews === 1 and 'o_documents_single_preview' or ''} #{record._isImage and 'o_documents_preview_image' or 'o_documents_preview_mimetype'}">
             <t t-set="mimetype" t-value="record.data.mimetype"/>
+            <t t-set="supportedUrlVideo"
+               t-value="record.data.url ? new RegExp('((http(s)?:\/\/)?)(www\.)?((youtube\.com\/)|(youtu.be\/))').test(record.data.url) : false"/>
             <t t-if="record._isImage">
                 <t t-set="size" t-value="nbPreviews === 1 ? '268x130' : nbPreviews === 2 ? '120x130' : '120x75'"/>
                 <img class="o_preview_available" t-attf-src="/web/image/#{record.res_id}/#{size}?upper_limit=true&amp;signature=#{record.data.checksum}" t-att-data-id="record.res_id" t-att-title="record.data.name"/>
             </t>
-            <div t-elif="record.data.url" t-attf-class="o_image o_mimetype_icon #{(record.data.url.indexOf('youtu') >= 0) and 'o_preview_available' or ''}"
-                 t-attf-data-mimetype="#{(record.data.url.indexOf('youtu') >= 0) and 'video' or mimetype}"
+            <div t-elif="record.data.url"
+                 t-attf-class="o_image o_mimetype_icon #{supportedUrlVideo and 'o_preview_available' or ''}"
+                 t-attf-data-mimetype="#{supportedUrlVideo and 'video' or mimetype}"
                  t-att-title="record.data.name"
                  t-att-data-id="record.res_id"/>
             <div t-else=""
@@ -130,8 +137,8 @@
 <!-- Document rules template -->
 <t t-name="documents.DocumentsInspector.rule">
     <div class="o_inspector_rule o_inspector_trigger_hover_target mb-2" t-att-data-id="id">
-        <span><t t-esc="display_name"/></span>
-        <button class="btn fa fa-play text-white bg-primary pull-right o_inspector_trigger_rule o_inspector_trigger_hover"/>
+        <span t-att-title="note || ''"><t t-esc="display_name"/></span>
+        <button t-att-title="note || ''" class="btn fa fa-play text-white bg-primary pull-right o_inspector_trigger_rule o_inspector_trigger_hover"/>
     </div>
 </t>
 
@@ -141,7 +148,7 @@
         <div class="btn-group">
             <button class="btn fa fa-download o_inspector_button o_inspector_download" title="Download"/>
             <t t-if="widget.records[0].data.active">
-                <button class="btn fa fa-share-alt o_inspector_button o_inspector_share" title="Share"/>
+                <button class="btn fa fa-share-alt o_inspector_button o_inspector_share" title="Share" groups="documents.group_documents_user"/>
                 <t t-if="nbPreviews === 1">
                     <button t-if="widget.records[0].data.type !== 'url'" class="btn fa fa-retweet o_inspector_button o_inspector_replace" title="Replace"/>
                     <button t-att-class="'btn fa o_inspector_button o_inspector_lock' + (widget.records[0].data.lock_uid ? ' o_locked fa-lock' : ' fa-unlock-alt')" title="Lock"/>

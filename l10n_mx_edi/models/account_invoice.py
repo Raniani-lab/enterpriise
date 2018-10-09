@@ -436,8 +436,9 @@ class AccountInvoice(models.Model):
             except Exception as e:
                 inv.l10n_mx_edi_log_error(str(e))
                 continue
-            if not hasattr(response, 'Folios'):
-                msg = _('A delay of 2 hours has to be respected before to cancel')
+            if not getattr(response, 'Folios', None):
+                code = getattr(response, 'CodEstatus', None)
+                msg = _("Cancelling got an error") if code else _('A delay of 2 hours has to be respected before to cancel')
             else:
                 code = getattr(response.Folios[0][0], 'EstatusUUID', None)
                 cancelled = code in ('201', '202')  # cancelled or previously cancelled

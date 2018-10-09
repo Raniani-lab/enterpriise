@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
 "Last-Translator: Spellbound Soft Solutions <jeel.spellbound@gmail.com>, 2018\n"
 "Language-Team: Gujarati (https://www.transifex.com/odoo/teams/41243/gu/)\n"
 "MIME-Version: 1.0\n"
@@ -91,6 +91,14 @@ msgstr ""
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_model_id
 msgid "Aliased Model"
+msgstr ""
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__message_attachment_count
+#: model:ir.model.fields,field_description:quality.field_quality_alert_team__message_attachment_count
+#: model:ir.model.fields,field_description:quality.field_quality_check__message_attachment_count
+#: model:ir.model.fields,field_description:quality.field_quality_point__message_attachment_count
+msgid "Attachment Count"
 msgstr ""
 
 #. module: quality
@@ -192,12 +200,12 @@ msgid "Defines the type of the quality control point."
 msgstr ""
 
 #. module: quality
-#: model:ir.ui.view,arch_db:quality.quality_point_view_form
+#: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
 msgid "Describe the quality check to do..."
 msgstr ""
 
 #. module: quality
-#: model:ir.ui.view,arch_db:quality.quality_point_view_form
+#: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
 msgid "Describe why you need to perform this quality check..."
 msgstr ""
 
@@ -306,7 +314,7 @@ msgid "If checked, some messages have a delivery error."
 msgstr "જો ચેક કરેલું હોય, તો કેટલાક મેસેજીસમાં ડિલિવરીની ભૂલ છે."
 
 #. module: quality
-#: model:ir.ui.view,arch_db:quality.quality_point_view_form
+#: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
 msgid "Instructions"
 msgstr ""
 
@@ -366,6 +374,14 @@ msgid "Low"
 msgstr "નીચુ"
 
 #. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__message_main_attachment_id
+#: model:ir.model.fields,field_description:quality.field_quality_alert_team__message_main_attachment_id
+#: model:ir.model.fields,field_description:quality.field_quality_check__message_main_attachment_id
+#: model:ir.model.fields,field_description:quality.field_quality_point__message_main_attachment_id
+msgid "Main Attachment"
+msgstr ""
+
+#. module: quality
 #: model:res.groups,name:quality.group_quality_manager
 msgid "Manager"
 msgstr "વ્યવસ્થાપક"
@@ -420,12 +436,12 @@ msgstr "સામાન્ય"
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_check__note
 #: model:ir.model.fields,field_description:quality.field_quality_point__note
-#: model:ir.ui.view,arch_db:quality.quality_point_view_form
+#: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
 msgid "Note"
 msgstr "નોંધ"
 
 #. module: quality
-#: model:ir.ui.view,arch_db:quality.quality_point_view_form
+#: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
 msgid "Notes"
 msgstr "નોંધ"
 
@@ -470,14 +486,7 @@ msgid "Number of unread messages"
 msgstr "ન વાંચેલા સંદેશાની સંખ્યા"
 
 #. module: quality
-#: model:ir.model.fields,help:quality.field_res_users__group_quality_user
-msgid ""
-"Officer: The quality user uses the quality process\n"
-"Manager: The quality manager manages the quality process"
-msgstr ""
-
-#. module: quality
-#: model:ir.ui.view,arch_db:quality.quality_point_view_form
+#: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
 msgid "Operation"
 msgstr ""
 
@@ -576,7 +585,6 @@ msgid "Product Variant"
 msgstr ""
 
 #. module: quality
-#: model:ir.model.fields,field_description:quality.field_res_users__group_quality_user
 #: model:ir.module.category,name:quality.module_category_quality
 msgid "Quality"
 msgstr ""
@@ -603,12 +611,12 @@ msgstr ""
 
 #. module: quality
 #: model:ir.model,name:quality.model_quality_point
-msgid "Quality Point"
+msgid "Quality Control Point"
 msgstr ""
 
 #. module: quality
-#: model:ir.model,name:quality.model_quality_reason
-msgid "Quality Reason"
+#: model:ir.model,name:quality.model_quality_point_test_type
+msgid "Quality Control Test Type"
 msgstr ""
 
 #. module: quality
@@ -636,6 +644,11 @@ msgstr ""
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__reason_id
 msgid "Root Cause"
+msgstr ""
+
+#. module: quality
+#: model:ir.model,name:quality.model_quality_reason
+msgid "Root Cause for Quality Failure"
 msgstr ""
 
 #. module: quality
@@ -680,7 +693,6 @@ msgid "Technical name"
 msgstr ""
 
 #. module: quality
-#: model:ir.model,name:quality.model_quality_point_test_type
 #: model:ir.model.fields,field_description:quality.field_quality_point__test_type_id
 msgid "Test Type"
 msgstr ""
@@ -730,7 +742,7 @@ msgid "To do"
 msgstr ""
 
 #. module: quality
-#: model:ir.ui.view,arch_db:quality.quality_point_view_form
+#: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
 msgid "Type"
 msgstr "પ્રકાર"
 
@@ -759,11 +771,6 @@ msgstr ""
 #: model:res.groups,name:quality.group_quality_user
 msgid "User"
 msgstr "વપરાશકર્તા"
-
-#. module: quality
-#: model:ir.model,name:quality.model_res_users
-msgid "Users"
-msgstr "વપરાશકર્તાઓ"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__partner_id

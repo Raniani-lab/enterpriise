@@ -17,7 +17,8 @@
     'version': '1.0',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'stock_zebra', 'quality_mrp_iot'],
+    'depends': ['stock_zebra', 'quality_mrp_iot'],
+    'auto_install': True,
 
     # always loaded
     'data': [

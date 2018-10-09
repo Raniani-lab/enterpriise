@@ -147,9 +147,9 @@ class TimesheetForecastController(SaleTimesheetController):
         sale_line_ids = [line_id['sale_line_id'][0] for line_id in sale_line_ids]
         order_ids = request.env['sale.order.line'].sudo().search_read([('id', 'in', sale_line_ids)], ['order_id'])
         order_ids = [order_id['id'] for order_id in order_ids]
-        so_line_ids = request.env['sale.order.line'].sudo().search_read([('order_id', 'in', order_ids), '|', ('task_id', '!=', False), ('project_id', '!=', False), ('analytic_line_ids', '=', False)], ['id', 'order_id'])
-        so_line_ids = [so_line['id'] for so_line in so_line_ids]
-        order_ids = [so_line['order_id'][0] for so_line in so_line_ids]
+        so_line_data = request.env['sale.order.line'].sudo().search_read([('order_id', 'in', order_ids), '|', ('task_id', '!=', False), ('project_id', '!=', False), ('analytic_line_ids', '=', False)], ['id', 'order_id'])
+        so_line_ids = [so_line['id'] for so_line in so_line_data]
+        order_ids = [so_line['order_id'][0] for so_line in so_line_data]
         return empty_line_ids | set(so_line_ids), empty_order_ids | set(order_ids)
 
     # --------------------------------------------------
@@ -169,7 +169,7 @@ class TimesheetForecastController(SaleTimesheetController):
 
     @http.route('/timesheet/plan/action', type='json', auth="user")
     def plan_stat_button(self, domain=[], res_model='account.analytic.line', res_id=False):
-        action = super(TimesheetForecastController, self).plan_stat_button(domain, res_model=res_model)
+        action = super(TimesheetForecastController, self).plan_stat_button(domain=domain, res_model=res_model, res_id=res_id)
         if res_model == 'project.forecast':
             forecasts = request.env['project.forecast'].search(literal_eval(domain))
             projects = forecasts.mapped('project_id')

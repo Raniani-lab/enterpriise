@@ -152,6 +152,22 @@ class Sign(http.Controller):
             pIDs.append(existing.id if existing else ResPartner.create({'name': p[0], 'email': p[1]}).id)
         return pIDs
 
+    @http.route(['/sign/get_signature/<int:request_id>/<item_access_token>'], type='json', auth='public')
+    def sign_get_user_signature(self, request_id, item_access_token, signature_type='signature'):
+        sign_request_item = http.request.env['sign.request.item'].sudo().search([
+            ('sign_request_id', '=', request_id),
+            ('access_token', '=', item_access_token)
+        ])
+        if not sign_request_item:
+            return False
+
+        sign_request_user = http.request.env['res.users'].sudo().search([('partner_id', '=', sign_request_item.partner_id.id)])
+        if sign_request_user and signature_type == 'signature':
+            return sign_request_user.sign_signature
+        elif sign_request_user and signature_type == 'initial':
+            return sign_request_user.sign_initials
+        return False
+
     @http.route(['/sign/send_public/<int:id>/<token>'], type='json', auth='public')
     def make_public_user(self, id, token, name=None, mail=None):
         sign_request = http.request.env['sign.request'].sudo().search([('id', '=', id), ('access_token', '=', token)])

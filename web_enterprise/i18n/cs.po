@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:29+0000\n"
-"PO-Revision-Date: 2018-08-24 11:29+0000\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
 "Last-Translator: trendspotter, 2018\n"
 "Language-Team: Czech (https://www.transifex.com/odoo/teams/41243/cs/)\n"
 "MIME-Version: 1.0\n"
@@ -134,7 +134,7 @@ msgstr "Popis"
 #: code:addons/web_enterprise/static/src/xml/base.xml:268
 #, python-format
 msgid "Discard a record modification"
-msgstr ""
+msgstr "Zrušit změnu záznamu"
 
 #. module: web_enterprise
 #. openerp-web
@@ -145,8 +145,8 @@ msgstr ""
 
 #. module: web_enterprise
 #: model:ir.model,name:web_enterprise.model_ir_http
-msgid "HTTP routing"
-msgstr "HTTP směrování"
+msgid "HTTP Routing"
+msgstr "HTTP Routing"
 
 #. module: web_enterprise
 #. openerp-web
@@ -160,7 +160,7 @@ msgstr ""
 #: code:addons/web_enterprise/static/src/xml/base.xml:98
 #, python-format
 msgid "Log in as an administrator to correct the issue."
-msgstr ""
+msgstr "Přihlásit se jako správce k opravě problému."
 
 #. module: web_enterprise
 #. openerp-web
@@ -339,7 +339,7 @@ msgstr ""
 #: code:addons/web_enterprise/static/src/xml/base.xml:73
 #, python-format
 msgid "This demo database will expire in"
-msgstr ""
+msgstr "Tato demo databáze vyprší"
 
 #. module: web_enterprise
 #. openerp-web

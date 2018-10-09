@@ -8,7 +8,7 @@
         <field name="arch" type="xml">
             <div id="account_reports_followup" position="replace">
                 <div class="content-group" attrs="{'invisible': [('module_account_reports_followup', '=', False)]}">
-                    <div class="row mt16">
+                    <div>
                         <button type="object" icon="fa-arrow-right" name="open_followup_level_form" string="Follow-up Levels" class="oe_link"/>
                     </div>
                 </div>

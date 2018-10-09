@@ -5,14 +5,14 @@
 # Translators:
 # Martin Trigaux, 2018
 # Jan Horzinka <jan.horzinka@centrum.cz>, 2018
-# trendspotter, 2018
+# J. Podhorecky <j.podhorecky@volny.cz>, 2018
 # milda dvorak <milda.dvorak@optimal4.cz>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
 "Last-Translator: milda dvorak <milda.dvorak@optimal4.cz>, 2018\n"
 "Language-Team: Czech (https://www.transifex.com/odoo/teams/41243/cs/)\n"
 "MIME-Version: 1.0\n"
@@ -22,12 +22,12 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
 
 #. module: account_accountant
-#: model:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid "<span class=\"o_form_label\">Fiscal Year</span>"
 msgstr "<span class=\"o_form_label\">Fiskální rok</span>"
 
 #. module: account_accountant
-#: model:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid "<span class=\"o_form_label\">Inter-Banks Transfers</span>"
 msgstr ""
 
@@ -37,8 +37,8 @@ msgid "Account Groups"
 msgstr "Účetní Skupiny"
 
 #. module: account_accountant
-#: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__module_account_predictive_account
-msgid "Account Predictive Account"
+#: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__module_account_predictive_bills
+msgid "Account Predictive Bills"
 msgstr ""
 
 #. module: account_accountant
@@ -47,12 +47,13 @@ msgid "Account Tags"
 msgstr "Účetní značky"
 
 #. module: account_accountant
-#: model:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid "Account used when transferring between banks"
 msgstr "Účet používaný při převodu mezi bankami"
 
 #. module: account_accountant
-#: model:ir.ui.view,arch_db:account_accountant.res_partner_view_form
+#: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:account_accountant.res_partner_view_form
 msgid "Accounting"
 msgstr "Účetnictví"
 
@@ -67,14 +68,19 @@ msgid "Bank & Cash Moves"
 msgstr ""
 
 #. module: account_accountant
-#: model:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
+#: model_terms:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
 msgid "Cancel"
 msgstr "Zrušit"
 
 #. module: account_accountant
 #: model:ir.model,name:account_accountant.model_account_change_lock_date
-msgid "Change lock date"
-msgstr "Změnit datum uzamčení"
+msgid "Change Lock Date"
+msgstr ""
+
+#. module: account_accountant
+#: model:ir.model,name:account_accountant.model_res_config_settings
+msgid "Config Settings"
+msgstr "Nastavení konfigurace"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__create_uid
@@ -87,14 +93,14 @@ msgid "Created on"
 msgstr "Vytvořeno"
 
 #. module: account_accountant
-#: model:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid "Define fiscal years of more or less than a year"
 msgstr ""
 
 #. module: account_accountant
 #: model:ir.model,name:account_accountant.model_digest_digest
 msgid "Digest"
-msgstr ""
+msgstr "Přehled"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__display_name
@@ -109,7 +115,7 @@ msgstr ""
 
 #. module: account_accountant
 #: model:ir.ui.menu,name:account_accountant.menu_account_fiscal_year
-#: model:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid "Fiscal Years"
 msgstr ""
 
@@ -143,7 +149,7 @@ msgid "Kpi Account Bank Cash Value"
 msgstr ""
 
 #. module: account_accountant
-#: model:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid "Last Day"
 msgstr "Poslední den"
 
@@ -163,7 +169,7 @@ msgid "Last Updated on"
 msgstr "Naposled upraveno"
 
 #. module: account_accountant
-#: model:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid "Last day of your fiscal year, for automatic opening entries"
 msgstr "Poslední den vašeho fiskálního roku pro automatické otevření"
 
@@ -227,7 +233,7 @@ msgstr ""
 "data. Použijte ji například pro uzamčení v otevřeném fiskálním roce."
 
 #. module: account_accountant
-#: model:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid "Predict vendor bill accounts"
 msgstr ""
 
@@ -248,17 +254,17 @@ msgstr ""
 " kliknutím zde."
 
 #. module: account_accountant
-#: model:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid "Record cost of goods sold in your journal entries"
 msgstr "Zapsat náklady na prodané zboží do vašich deníkových záznamů"
 
 #. module: account_accountant
-#: model:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
+#: model_terms:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
 msgid "Save"
 msgstr "Uložit"
 
 #. module: account_accountant
-#: model:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid ""
 "The system will try to predict vendor bill accounts based on history of "
 "previous bills."
@@ -290,8 +296,3 @@ msgid ""
 msgstr ""
 "Vaše přehledy jsou dostupné okamžitě. <i>Není potřeba uzavírat fiskální rok,"
 " abyste zjistili zisk &amp; ztrátu nebo rozvahu .</i>"
-
-#. module: account_accountant
-#: model:ir.model,name:account_accountant.model_res_config_settings
-msgid "res.config.settings"
-msgstr "res.config.settings"

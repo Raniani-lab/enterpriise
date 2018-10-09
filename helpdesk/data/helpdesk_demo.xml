@@ -12,7 +12,7 @@
     </record>
     <record id="helpdesk_ticket_1" model="helpdesk.ticket">
         <field name="name">Kitchen collapsing</field>
-        <field name="user_id" ref="base.user_root"/>
+        <field name="user_id" ref="base.user_admin"/>
         <field name="priority">3</field>
         <field name="stage_id" ref="helpdesk.stage_in_progress"/>
     </record>

@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
 "Last-Translator: trendspotter, 2018\n"
 "Language-Team: Czech (https://www.transifex.com/odoo/teams/41243/cs/)\n"
 "MIME-Version: 1.0\n"
@@ -36,7 +36,6 @@ msgid "COD Funding Option"
 msgstr ""
 
 #. module: delivery_ups
-#: model:ir.model,name:delivery_ups.model_delivery_carrier
 #: model:ir.model.fields,field_description:delivery_ups.field_product_packaging__package_carrier_type
 msgid "Carrier"
 msgstr "Přepravce"
@@ -74,6 +73,11 @@ msgid "DHL"
 msgstr ""
 
 #. module: delivery_ups
+#: model:ir.model,name:delivery_ups.model_delivery_carrier
+msgid "Delivery Methods"
+msgstr "Způsoby dodání"
+
+#. module: delivery_ups
 #: selection:delivery.carrier,ups_label_file_type:0
 msgid "EPL"
 msgstr ""
@@ -101,7 +105,7 @@ msgstr "FedEx"
 #. module: delivery_ups
 #: selection:delivery.carrier,delivery_type:0
 msgid "Fixed Price"
-msgstr ""
+msgstr "Pevná cena"
 
 #. module: delivery_ups
 #: model:ir.model.fields,help:delivery_ups.field_delivery_carrier__ups_bill_my_account
@@ -114,7 +118,7 @@ msgstr ""
 #. module: delivery_ups
 #: selection:delivery.carrier,ups_package_dimension_unit:0
 msgid "Inches"
-msgstr ""
+msgstr "Palce"
 
 #. module: delivery_ups
 #: selection:delivery.carrier,ups_package_weight_unit:0
@@ -132,11 +136,6 @@ msgid "PDF"
 msgstr "PDF"
 
 #. module: delivery_ups
-#: model:ir.model,name:delivery_ups.model_product_packaging
-msgid "Packaging"
-msgstr "Balení"
-
-#. module: delivery_ups
 #: code:addons/delivery_ups/models/ups_request.py:209
 #, python-format
 msgid "Please provide at least one item to ship."
@@ -148,14 +147,14 @@ msgid "Pounds"
 msgstr "Libry"
 
 #. module: delivery_ups
+#: model:ir.model,name:delivery_ups.model_product_packaging
+msgid "Product Packaging"
+msgstr ""
+
+#. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__delivery_type
 msgid "Provider"
 msgstr "Poskytovatel"
-
-#. module: delivery_ups
-#: model:ir.model,name:delivery_ups.model_sale_order
-msgid "Quotation"
-msgstr "Nabídka"
 
 #. module: delivery_ups
 #: selection:delivery.carrier,ups_label_file_type:0
@@ -163,7 +162,12 @@ msgid "SPL"
 msgstr ""
 
 #. module: delivery_ups
-#: model:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form_with_provider_ups
+#: model:ir.model,name:delivery_ups.model_sale_order
+msgid "Sale Order"
+msgstr "Prodejní objednávka"
+
+#. module: delivery_ups
+#: model_terms:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form_with_provider_ups
 msgid "Saturday Delivery"
 msgstr ""
 
@@ -210,7 +214,7 @@ msgstr ""
 msgid ""
 "The estimated price cannot be computed because the weight of your product is"
 " missing."
-msgstr ""
+msgstr "Odhadovanou cenu nelze vypočítat, protože chybí váha vašeho produktu."
 
 #. module: delivery_ups
 #: code:addons/delivery_ups/models/ups_request.py:219
@@ -258,7 +262,7 @@ msgid "UPS BE"
 msgstr ""
 
 #. module: delivery_ups
-#: model:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form_with_provider_ups
+#: model_terms:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form_with_provider_ups
 msgid "UPS Configuration"
 msgstr "Konfigurace UPS"
 
@@ -268,8 +272,8 @@ msgid "UPS Default Packaging Type"
 msgstr ""
 
 #. module: delivery_ups
-#: model:ir.ui.view,arch_db:delivery_ups.res_config_settings_view_form_sale
-#: model:ir.ui.view,arch_db:delivery_ups.res_config_settings_view_form_stock
+#: model_terms:ir.ui.view,arch_db:delivery_ups.res_config_settings_view_form_sale
+#: model_terms:ir.ui.view,arch_db:delivery_ups.res_config_settings_view_form_stock
 msgid "UPS Delivery Methods"
 msgstr ""
 
@@ -315,7 +319,7 @@ msgstr ""
 #. module: delivery_ups
 #: selection:delivery.carrier,delivery_type:0
 msgid "USPS"
-msgstr ""
+msgstr "USPS"
 
 #. module: delivery_ups
 #: model:product.product,uom_name:delivery_ups.product_product_delivery_ups_be
@@ -336,7 +340,7 @@ msgid "Ups Package Weight Unit"
 msgstr ""
 
 #. module: delivery_ups
-#: model:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form_with_provider_ups
+#: model_terms:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form_with_provider_ups
 msgid "Value Added Services"
 msgstr ""
 

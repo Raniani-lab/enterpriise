@@ -4,15 +4,16 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
-# zpq001 <zpq001@live.com>, 2018
 # 老窦 北京 <2662059195@qq.com>, 2018
+# Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
+# 珠海-杜哥 <liangjia@qq.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
-"Last-Translator: 老窦 北京 <2662059195@qq.com>, 2018\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"Last-Translator: 珠海-杜哥 <liangjia@qq.com>, 2018\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -79,29 +80,29 @@ msgid "7 Days"
 msgstr "7天"
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "<span class=\"o_form_label\">Sales Channel</span>"
-msgstr ""
+msgstr "<span class=\"o_form_label\">销售渠道</span>"
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "<span class=\"o_form_label\">Storage</span>"
-msgstr ""
+msgstr "<span class=\"o_form_label\">存储</span>"
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "<span class=\"o_form_label\">Synchronization</span>"
-msgstr ""
+msgstr "<span class=\"o_form_label\">同步</span>"
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "<span class=\"o_form_label\">eBay Account</span>"
-msgstr ""
+msgstr "<span class=\"o_form_label\">eBay 账号</span>"
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "<span class=\"o_form_label\">eBay Options</span>"
-msgstr ""
+msgstr "<span class=\"o_form_label\">eBay 设置</span>"
 
 #. module: sale_ebay
 #: code:addons/sale_ebay/models/product.py:259
@@ -135,7 +136,7 @@ msgid "Buy It Now Price"
 msgstr "现买价"
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.ebay_link_listing_view
+#: model_terms:ir.ui.view,arch_db:sale_ebay.ebay_link_listing_view
 msgid "Cancel"
 msgstr "取消"
 
@@ -172,6 +173,11 @@ msgid "Code"
 msgstr "代号"
 
 #. module: sale_ebay
+#: model:ir.model,name:sale_ebay.model_res_config_settings
+msgid "Config Settings"
+msgstr "配置设定"
+
+#. module: sale_ebay
 #: code:addons/sale_ebay/models/product.py:352
 #, python-format
 msgid "Configure The eBay Integrator Now"
@@ -183,7 +189,7 @@ msgid "Contact"
 msgstr "联系人"
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Countries & Currencies"
 msgstr "国家与货币"
 
@@ -213,7 +219,7 @@ msgstr "创建时间"
 
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_res_currency
-#: model:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Currency"
 msgstr "币种"
 
@@ -223,7 +229,7 @@ msgid "Custom Store Category"
 msgstr "自定义店铺类别"
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
+#: model_terms:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
 msgid "Describe the product characteristics..."
 msgstr "说明产品特性..."
 
@@ -296,7 +302,7 @@ msgid "Ebay: update product status"
 msgstr "易趣网：更新产品状态"
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
+#: model_terms:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
 msgid "End Item's Listing"
 msgstr "终止物品的上市"
 
@@ -321,7 +327,7 @@ msgstr ""
 "'%s'"
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
+#: model_terms:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
 msgid "Fixed Price"
 msgstr "固定价格"
 
@@ -355,7 +361,7 @@ msgid "ID"
 msgstr "ID"
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Import eBay config data and sync transactions"
 msgstr "导入易趣网配置数据和同步事务"
 
@@ -414,12 +420,12 @@ msgid "Leaf Category"
 msgstr "叶类"
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.ebay_link_listing_view
+#: model_terms:ir.ui.view,arch_db:sale_ebay.ebay_link_listing_view
 msgid "Link Existing Listing"
 msgstr "链接现有的上市"
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
+#: model_terms:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
 msgid "Link With Existing eBay Listing"
 msgstr "链接现有的易趣网上列表"
 
@@ -429,12 +435,12 @@ msgid "Link with Existing eBay Listing"
 msgstr "链接现有的易趣网上列表"
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.ebay_link_listing_view
+#: model_terms:ir.ui.view,arch_db:sale_ebay.ebay_link_listing_view
 msgid "Link with eBay Listing"
 msgstr "与易趣网上列表链接"
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
+#: model_terms:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
 msgid "List Item on eBay"
 msgstr "易趣网上的列表项目"
 
@@ -450,12 +456,12 @@ msgid "Location"
 msgstr "地点"
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Mode"
 msgstr "模式"
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Mode and credentials"
 msgstr "模式凭证"
 
@@ -468,7 +474,7 @@ msgid "Name"
 msgstr "名称"
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/sale_ebay.py:197
+#: code:addons/sale_ebay/models/sale_ebay.py:199
 #, python-format
 msgid "No Business Policies"
 msgstr "没有商业政策"
@@ -507,7 +513,7 @@ msgid "Point of Sale"
 msgstr "POS"
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Policies"
 msgstr "政策"
 
@@ -528,7 +534,7 @@ msgid "Product"
 msgstr "产品"
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Product Categories"
 msgstr "产品类别"
 
@@ -558,7 +564,7 @@ msgid "Production Token"
 msgstr "生产令牌"
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Products & Transactions"
 msgstr "产品及交易"
 
@@ -571,7 +577,7 @@ msgstr "在eBay发布"
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_quantity
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_quantity
 msgid "Quantity On eBay"
-msgstr ""
+msgstr "在 eBay上的数量"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_quantity_sold
@@ -580,7 +586,7 @@ msgid "Quantity Sold"
 msgstr "卖出数量"
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
+#: model_terms:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
 msgid "Relist Item"
 msgstr "重新上市物品"
 
@@ -591,7 +597,7 @@ msgid "Return Policy"
 msgstr "退货政策"
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
+#: model_terms:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
 msgid "Revise Item"
 msgstr "修订物品"
 
@@ -601,17 +607,17 @@ msgid "Sales"
 msgstr "销售"
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Sales Channel"
 msgstr "销售渠道"
 
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_crm_team
-msgid "Sales Team"
-msgstr "销售团队"
+msgid "Sales Channels"
+msgstr "销售渠道"
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Sales channel to manage eBay sales"
 msgstr "销售渠道管理易趣网销售"
 
@@ -636,9 +642,9 @@ msgid "Sandbox Token"
 msgstr "沙箱令牌"
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
+#: model_terms:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
 msgid "Sell on eBay"
-msgstr ""
+msgstr "在eBay上销售"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_seller_shipping_policy_id
@@ -659,7 +665,7 @@ msgid "Starting Price for Auction"
 msgstr "拍卖起始价"
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Storage location of your products"
 msgstr "您产品的存储位置"
 
@@ -687,7 +693,7 @@ msgid "Summary"
 msgstr "摘要"
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Sync now"
 msgstr "现在同步"
 
@@ -776,7 +782,7 @@ msgid "Use eBay"
 msgstr "使用eBay"
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
+#: model_terms:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
 msgid "Variants"
 msgstr "变体"
 
@@ -793,10 +799,15 @@ msgstr "邮政编码"
 #. module: sale_ebay
 #: model:crm.team,name:sale_ebay.ebay_sales_team
 #: selection:crm.team,team_type:0
-#: model:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
-#: model:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "eBay"
 msgstr "eBay"
+
+#. module: sale_ebay
+#: model:ir.model,name:sale_ebay.model_ebay_category
+msgid "eBay Category"
+msgstr "eBay 类别"
 
 #. module: sale_ebay
 #: model:product.category,name:sale_ebay.product_category_ebay
@@ -812,13 +823,13 @@ msgstr "易趣网描述"
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_domain
 msgid "eBay Environment"
-msgstr ""
+msgstr "eBay 环境"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_fixed_price
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_fixed_price
 msgid "eBay Fixed Price"
-msgstr ""
+msgstr "eBay 固定价格"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_site__ebay_id
@@ -828,9 +839,29 @@ msgid "eBay ID"
 msgstr "eBay ID"
 
 #. module: sale_ebay
+#: model:ir.model,name:sale_ebay.model_ebay_item_condition
+msgid "eBay Item Condition"
+msgstr "eBay 项目条件"
+
+#. module: sale_ebay
+#: model:ir.model,name:sale_ebay.model_ebay_link_listing
+msgid "eBay Link Listing"
+msgstr "eBay 链接列表"
+
+#. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_link_listing__ebay_id
 msgid "eBay Listing ID"
 msgstr "eBay上市 ID"
+
+#. module: sale_ebay
+#: model:ir.model,name:sale_ebay.model_ebay_policy
+msgid "eBay Policy"
+msgstr "eBay 政策"
+
+#. module: sale_ebay
+#: model:ir.model,name:sale_ebay.model_ebay_site
+msgid "eBay Site"
+msgstr "eBay网站"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_listing_status
@@ -855,7 +886,7 @@ msgid "eBay Website"
 msgstr "易趣网的网站"
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/sale_ebay.py:53
+#: code:addons/sale_ebay/models/sale_ebay.py:54
 #, python-format
 msgid ""
 "eBay error: Impossible to synchronize the categories. \n"
@@ -882,7 +913,7 @@ msgid "eBay is unreachable. Please try again later."
 msgstr "eBay 无法访问. 请再试."
 
 #. module: sale_ebay
-#: model:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "eBay parameters"
 msgstr "易趣网的参数"
 
@@ -895,39 +926,9 @@ msgstr "eBay 网址"
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_currency
 msgid "ebay Currency"
-msgstr ""
+msgstr "ebay 货币"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_sales_team
 msgid "ebay Sales Channel"
-msgstr ""
-
-#. module: sale_ebay
-#: model:ir.model,name:sale_ebay.model_ebay_category
-msgid "ebay.category"
-msgstr "ebay.分类"
-
-#. module: sale_ebay
-#: model:ir.model,name:sale_ebay.model_ebay_item_condition
-msgid "ebay.item.condition"
-msgstr "ebay.项目.条件"
-
-#. module: sale_ebay
-#: model:ir.model,name:sale_ebay.model_ebay_link_listing
-msgid "ebay.link.listing"
-msgstr "ebay.链接.清单"
-
-#. module: sale_ebay
-#: model:ir.model,name:sale_ebay.model_ebay_policy
-msgid "ebay.policy"
-msgstr "ebay.政策"
-
-#. module: sale_ebay
-#: model:ir.model,name:sale_ebay.model_ebay_site
-msgid "ebay.site"
-msgstr "ebay.网站"
-
-#. module: sale_ebay
-#: model:ir.model,name:sale_ebay.model_res_config_settings
-msgid "res.config.settings"
-msgstr "设置-基础设置"
+msgstr "ebay 销售渠道"

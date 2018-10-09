@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
 "Last-Translator: trendspotter, 2018\n"
 "Language-Team: Czech (https://www.transifex.com/odoo/teams/41243/cs/)\n"
 "MIME-Version: 1.0\n"
@@ -194,19 +194,19 @@ msgid ""
 msgstr ""
 
 #. module: timesheet_grid
-#: model:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
 msgid "Activate a periodical email reminder for timesheet managers"
 msgstr ""
 
 #. module: timesheet_grid
-#: model:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
 msgid "Activate a periodical email reminder for timesheet users"
 msgstr ""
 
 #. module: timesheet_grid
-#: model:ir.ui.view,arch_db:timesheet_grid.timesheet_view_form
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_form
 msgid "Add a Task"
-msgstr ""
+msgstr "Přidat úkol"
 
 #. module: timesheet_grid
 #: code:addons/timesheet_grid/models/analytic.py:81
@@ -225,7 +225,7 @@ msgid "Analytic Line"
 msgstr "Analytická řádka"
 
 #. module: timesheet_grid
-#: model:ir.ui.view,arch_db:timesheet_grid.timesheet_validation_view_form
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_validation_view_form
 msgid "Cancel"
 msgstr "Zrušit"
 
@@ -240,6 +240,11 @@ msgstr ""
 #: model:ir.model,name:timesheet_grid.model_res_company
 msgid "Companies"
 msgstr "Firmy v systému"
+
+#. module: timesheet_grid
+#: model:ir.model,name:timesheet_grid.model_res_config_settings
+msgid "Config Settings"
+msgstr "Nastavení konfigurace"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_timesheet_validation__create_uid
@@ -297,7 +302,7 @@ msgid "Employee Reminder Days"
 msgstr ""
 
 #. module: timesheet_grid
-#: model:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
 msgid "Frequency"
 msgstr ""
 
@@ -372,21 +377,21 @@ msgid "Manager Reminder Frequency"
 msgstr ""
 
 #. module: timesheet_grid
-#: model:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_employee
-#: model:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_project
-#: model:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_task_readonly
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_employee
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_project
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_task_readonly
 msgid "Month"
 msgstr "Měsíc"
 
 #. module: timesheet_grid
-#: model:ir.ui.view,arch_db:timesheet_grid.timesheet_view_search
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_search
 msgid "My Team"
 msgstr ""
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_company__timesheet_mail_employee_nextdate
 msgid "Next scheduled date for employee reminder"
-msgstr ""
+msgstr "Další plánovaný termín pro připomenutí zaměstnancům"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_company__timesheet_mail_manager_nextdate
@@ -394,7 +399,7 @@ msgid "Next scheduled date for manager reminder"
 msgstr ""
 
 #. module: timesheet_grid
-#: model:ir.ui.view,arch_db:timesheet_grid.timesheet_view_search
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_search
 msgid "Non Validated"
 msgstr ""
 
@@ -442,7 +447,7 @@ msgid "There aren't any timesheet to validate"
 msgstr ""
 
 #. module: timesheet_grid
-#: model:ir.ui.view,arch_db:timesheet_grid.timesheet_view_form
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_form
 msgid "Time Spent"
 msgstr "Strávený čas"
 
@@ -454,7 +459,7 @@ msgid "Timesheet Adjustment"
 msgstr ""
 
 #. module: timesheet_grid
-#: model:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
 msgid "Timesheet Control"
 msgstr ""
 
@@ -466,6 +471,16 @@ msgstr "Řádek časového rozvrhu"
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_hr_employee__timesheet_manager_id
 msgid "Timesheet Responsible"
+msgstr ""
+
+#. module: timesheet_grid
+#: model:ir.model,name:timesheet_grid.model_timesheet_validation
+msgid "Timesheet Validation"
+msgstr ""
+
+#. module: timesheet_grid
+#: model:ir.model,name:timesheet_grid.model_timesheet_validation_line
+msgid "Timesheet Validation Line"
 msgstr ""
 
 #. module: timesheet_grid
@@ -483,9 +498,9 @@ msgid "Timesheet: Managers Email Reminder"
 msgstr ""
 
 #. module: timesheet_grid
-#: model:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_employee
-#: model:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_project
-#: model:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_task_readonly
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_employee
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_project
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_task_readonly
 msgid "Timesheets"
 msgstr "Časové přehledy"
 
@@ -534,18 +549,18 @@ msgstr ""
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_timesheet_validation_line__validate
-#: model:ir.ui.view,arch_db:timesheet_grid.timesheet_validation_view_form
-#: model:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_employee_validation
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_validation_view_form
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_employee_validation
 msgid "Validate"
 msgstr "Schválit"
 
 #. module: timesheet_grid
-#: model:ir.ui.view,arch_db:timesheet_grid.timesheet_validation_view_form
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_validation_view_form
 msgid "Validate Timesheets"
 msgstr ""
 
 #. module: timesheet_grid
-#: model:ir.ui.view,arch_db:timesheet_grid.timesheet_validation_view_form
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_validation_view_form
 msgid "Validate the timesheets of the selected employees up to"
 msgstr ""
 
@@ -560,7 +575,7 @@ msgid "Validate up to"
 msgstr ""
 
 #. module: timesheet_grid
-#: model:ir.ui.view,arch_db:timesheet_grid.timesheet_view_search
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_search
 msgid "Validated"
 msgstr "Ověřeno"
 
@@ -586,9 +601,9 @@ msgid "Validation Line"
 msgstr ""
 
 #. module: timesheet_grid
-#: model:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_employee
-#: model:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_project
-#: model:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_task_readonly
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_employee
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_project
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_task_readonly
 msgid "Week"
 msgstr "Týden"
 
@@ -605,21 +620,6 @@ msgid "after end of week"
 msgstr ""
 
 #. module: timesheet_grid
-#: model:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
 msgid "days"
 msgstr "dnů"
-
-#. module: timesheet_grid
-#: model:ir.model,name:timesheet_grid.model_res_config_settings
-msgid "res.config.settings"
-msgstr "res.config.settings"
-
-#. module: timesheet_grid
-#: model:ir.model,name:timesheet_grid.model_timesheet_validation
-msgid "timesheet.validation"
-msgstr ""
-
-#. module: timesheet_grid
-#: model:ir.model,name:timesheet_grid.model_timesheet_validation_line
-msgid "timesheet.validation.line"
-msgstr ""

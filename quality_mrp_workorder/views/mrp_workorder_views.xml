@@ -18,7 +18,7 @@
                 <div attrs="{'invisible': [('test_type', '!=', 'measure')]}" class="o_row mb8">
                     <label for="measure" string="Measure:" />
                     <field name="measure" attrs="{'required': [('test_type', '=', 'measure')]}" class="oe_inline"/>
-                    <field name="norm_unit"/>
+                    <field name="norm_unit" readonly="1" />
                 </div>
             </xpath>
         </field>

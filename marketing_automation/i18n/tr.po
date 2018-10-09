@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"POT-Creation-Date: 2018-09-18 10:05+0000\n"
+"PO-Revision-Date: 2018-09-18 10:05+0000\n"
 "Last-Translator: Umur Akın <umura@projetgrup.com>, 2018\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
@@ -40,72 +40,72 @@ msgid "# of completed participants"
 msgstr ""
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
 msgid "<i class=\"fa fa-check-circle\"/> Bounced"
 msgstr "<i class=\"fa fa-check-circle\"/> Karşılıksız Çıktı"
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
 msgid "<i class=\"fa fa-check-circle\"/> Clicked"
 msgstr "<i class=\"fa fa-check-circle\"/> Tıklandı"
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
 msgid "<i class=\"fa fa-check-circle\"/> Opened"
 msgstr "<i class=\"fa fa-check-circle\"/> Açıldı"
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
 msgid "<i class=\"fa fa-check-circle\"/> Replied"
 msgstr "<i class=\"fa fa-check-circle\"></i>Yanıtlandı"
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "<i class=\"fa fa-envelope-open-o\"/> Not opened within"
 msgstr ""
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "<i class=\"fa fa-envelope-open-o\"/> Opened after"
 msgstr "<i class=\"fa fa-envelope-open-o\"></i>Şundan sonra açıldı"
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "<i class=\"fa fa-exclamation-circle\"/> Mail bounced after"
 msgstr ""
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "<i class=\"fa fa-hand-pointer-o\"/> Clicked after"
 msgstr ""
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "<i class=\"fa fa-hand-pointer-o\"/> Not clicked within"
 msgstr ""
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "<i class=\"fa fa-pie-chart\"/> Email Details"
 msgstr "<i class=\"fa fa-pie-chart\"></i>E-posta ayrıntıları"
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "<i class=\"fa fa-plus-circle\"/> Add child activity"
 msgstr "<i class=\"fa fa-plus-circle\"/> Alt aktivite ekle"
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "<i class=\"fa fa-reply\"/> Not replied within"
 msgstr ""
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "<i class=\"fa fa-reply\"/> Replied after"
 msgstr "<i class=\"fa fa-reply\"></i>Şundan sonra yanıtlandı"
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid ""
 "<small class=\"oe_edit_only text-muted\" attrs=\"{'invisible': "
 "[('trigger_type', '=', 'begin')]}\">(save the campaign to make its "
@@ -116,42 +116,42 @@ msgstr ""
 "önce kampanyayı kaydedin)</small>"
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "<span class=\"ml8\">after</span>"
 msgstr "<span class=\"ml8\">sonra</span>"
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "<span class=\"o_form_label\" invisible=\"1\">Warning</span>"
 msgstr ""
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
 msgid "<span class=\"o_form_label\">Record</span>"
 msgstr ""
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "<span class=\"oe_edit_only\">Name</span>"
 msgstr ""
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_kanban
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_kanban
 msgid "<span>Completed</span>"
 msgstr "<span>Tamamlandı</span>"
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_kanban
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_kanban
 msgid "<span>Running</span>"
 msgstr "<span>Aktif</span>"
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_kanban
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_kanban
 msgid "<span>Total</span>"
 msgstr "<span>Toplam</span>"
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "<strong>The workflow has been modified!</strong>"
 msgstr ""
 
@@ -183,7 +183,7 @@ msgid "Activity Type"
 msgstr "Aktivite Tipi"
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Activity will allow to send mail or perform actions."
 msgstr "Aktivite e-posta gönderimi veya otomatik eylemi tetikleyecek."
 
@@ -193,17 +193,17 @@ msgid "Activity will only be performed if record satisfies this domain"
 msgstr ""
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_search
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_search
 msgid "Archived"
 msgstr "Arşivlendi"
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.mass_mailing_view_form_marketing_activity
+#: model_terms:ir.ui.view,arch_db:marketing_automation.mass_mailing_view_form_marketing_activity
 msgid "Attach a file"
 msgstr "Bir dosya ekle"
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid ""
 "Be aware that participants that had no more activities could be reintroduced"
 " into the campaign and new traces could be created for them."
@@ -217,9 +217,9 @@ msgstr "Karşılıksız çıktı"
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__campaign_id
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant__campaign_id
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_tree
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_search
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_tree
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_search
 msgid "Campaign"
 msgstr "Kampanya"
 
@@ -235,7 +235,7 @@ msgid "Campaigns"
 msgstr "Kampanyalar"
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
 msgid "Cancel"
 msgstr "İptal"
 
@@ -250,23 +250,23 @@ msgid "Child Activities"
 msgstr "Alt Aktiviteler"
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Click here to add new activity"
 msgstr "Yeni aktivite eklemek için burayı tıklayın"
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Click on 'Edit' button to add new activity in workflow."
 msgstr ""
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__clicked
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Clicked"
 msgstr "Tıklandı"
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_search
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_search
 #: selection:marketing.participant,state:0
 msgid "Completed"
 msgstr "Tamamlandı"
@@ -277,7 +277,7 @@ msgid "Configuration"
 msgstr "Yapılandırma"
 
 #. module: marketing_automation
-#: model:ir.actions.act_window,help:marketing_automation.marketing_campaign_action
+#: model_terms:ir.actions.act_window,help:marketing_automation.marketing_campaign_action
 msgid "Create a new campaign"
 msgstr ""
 
@@ -339,7 +339,7 @@ msgid "Delay Type"
 msgstr "Gecikme Türü"
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Delete"
 msgstr "Sil"
 
@@ -383,23 +383,23 @@ msgid "Document ID"
 msgstr "Doküman ID"
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Domain"
 msgstr "Domain"
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Don't update"
 msgstr "Güncelleme Yapma"
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Edit"
 msgstr "Düzenle"
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
 #: selection:marketing.activity,activity_type:0
 msgid "Email"
 msgstr "Eposta"
@@ -461,7 +461,7 @@ msgid "Exception in server action: %s"
 msgstr ""
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Execute Activities"
 msgstr ""
 
@@ -472,7 +472,7 @@ msgid "Filter"
 msgstr "Filtre"
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Generate Participants"
 msgstr "Katılımcılar Oluşturun"
 
@@ -491,12 +491,12 @@ msgid "ID"
 msgstr "ID"
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
 msgid "It will be generated automatically once you save this record."
 msgstr "Kaydettiğinizde otomatik olarak oluşacak"
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Last 15 Days"
 msgstr "Son 15 gün"
 
@@ -530,7 +530,7 @@ msgid "Last activities synchronization"
 msgstr ""
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Launch a Test"
 msgstr "Test Başlat"
 
@@ -540,12 +540,12 @@ msgid "Launch a test"
 msgstr "Test Başlat"
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.mass_mailing_view_form_marketing_activity
+#: model_terms:ir.ui.view,arch_db:marketing_automation.mass_mailing_view_form_marketing_activity
 msgid "Mail Body"
 msgstr "E-posta Metni"
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.mass_mailing_view_form_marketing_activity
+#: model_terms:ir.ui.view,arch_db:marketing_automation.mass_mailing_view_form_marketing_activity
 msgid "Mail Template"
 msgstr "E-Posta Şablonu"
 
@@ -585,12 +585,12 @@ msgid "Mail: replied"
 msgstr "E-posta : yanıtlandı"
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.mass_mailing_view_form_marketing_activity
+#: model_terms:ir.ui.view,arch_db:marketing_automation.mass_mailing_view_form_marketing_activity
 msgid "Mailing"
 msgstr "E-posta Gönderimi"
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Mails sent and not bounced"
 msgstr "Mailler gönderildi ve karşılıksız çıkmadı"
 
@@ -601,7 +601,7 @@ msgid "Manually"
 msgstr "Elle"
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
 msgid "Mark as completed"
 msgstr "Tamamlandı Olarak İşaretle"
 
@@ -613,13 +613,13 @@ msgstr "Tamamlandı Olarak İşaretlenmiş"
 
 #. module: marketing_automation
 #: model:ir.model,name:marketing_automation.model_marketing_activity
+#: model:ir.model.fields,field_description:marketing_automation.field_account_invoice_send__marketing_activity_id
 #: model:ir.model.fields,field_description:marketing_automation.field_mail_compose_message__marketing_activity_id
 #: model:ir.model.fields,field_description:marketing_automation.field_survey_mail_compose_message__marketing_activity_id
 msgid "Marketing Activity"
 msgstr "Pazarlama Aktitivesi"
 
 #. module: marketing_automation
-#: model:ir.model.fields,field_description:marketing_automation.field_res_users__group_marketing_automation_user
 #: model:ir.module.category,name:marketing_automation.module_marketing_automation_category
 #: model:ir.ui.menu,name:marketing_automation.marketing_automation_menu
 msgid "Marketing Automation"
@@ -703,44 +703,44 @@ msgid "Months"
 msgstr "Ay"
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Name"
 msgstr "İsim"
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_search
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_search
 #: selection:marketing.campaign,state:0
 msgid "New"
 msgstr "Yeni"
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
 msgid "No activity"
 msgstr "Aktivite yok"
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "No activity added"
 msgstr ""
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
 msgid "Non email activity"
 msgstr ""
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
 msgid "Not clicked yet"
 msgstr "Henüz Tıklanmadı"
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
 msgid "Not opened yet"
 msgstr "Henüz açılmadı"
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
 msgid "Not replied yet"
 msgstr "Henüz cevaplanmadı"
 
@@ -755,7 +755,7 @@ msgid "Opened"
 msgstr "Açıldı"
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.mass_mailing_view_form_marketing_activity
+#: model_terms:ir.ui.view,arch_db:marketing_automation.mass_mailing_view_form_marketing_activity
 msgid "Options"
 msgstr "Seçenekler"
 
@@ -790,9 +790,9 @@ msgstr ""
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__participant_id
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_tree
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_trace_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_tree
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_trace_view_form
 msgid "Participant"
 msgstr "Katılımcı"
 
@@ -800,12 +800,12 @@ msgstr "Katılımcı"
 #: model:ir.actions.act_window,name:marketing_automation.marketing_participants_action
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__participant_ids
 #: model:ir.ui.menu,name:marketing_automation.marketing_participants_menu
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Participants"
 msgstr "Katılımcılar"
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Perform"
 msgstr "Uygula"
 
@@ -817,7 +817,7 @@ msgid "Please save the campaign to add a child activity"
 msgstr "Lütfen kampanyanızı bir alt faaliyet ekleyerek kaydedin."
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Please save the campaign to add child activity"
 msgstr ""
 
@@ -828,12 +828,12 @@ msgid "Processed"
 msgstr "İşlendi"
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "REJECTED"
 msgstr "REDDEDİLDİ"
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.mass_mailing_view_form_marketing_activity
+#: model_terms:ir.ui.view,arch_db:marketing_automation.mass_mailing_view_form_marketing_activity
 msgid "Recipients"
 msgstr "Alıcılar"
 
@@ -890,7 +890,7 @@ msgstr ""
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__replied
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Replied"
 msgstr "Cevaplandı"
 
@@ -900,31 +900,31 @@ msgid "Require trace sync"
 msgstr ""
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
 msgid "Resource ID"
 msgstr "Kaynak ID"
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_search
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_tree
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_search
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_tree
 msgid "Resource Name"
 msgstr "Kaynak Adı"
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
 msgid "Run"
 msgstr "Çalıştır"
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_search
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_search
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_search
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_search
 #: selection:marketing.campaign,state:0
 #: selection:marketing.participant,state:0
 msgid "Running"
 msgstr "Devam Eden"
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "SUCCESS"
 msgstr "BAŞARILI"
 
@@ -939,12 +939,12 @@ msgid "Scheduled"
 msgstr "Planlandı"
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_search
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_search
 msgid "Search Campaign"
 msgstr "Kampanyalarda Ara"
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_search
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_search
 msgid "Search Participants"
 msgstr "Katılımcılarda Ara"
 
@@ -960,7 +960,7 @@ msgstr "Şu kadar saat sonra gönder"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__sent
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Sent"
 msgstr "Gönderildi"
 
@@ -971,7 +971,7 @@ msgid "Server Action"
 msgstr "Sunucu Eylemi"
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid ""
 "Some participants are already running on this campaign. Click on 'Update' to"
 " apply the modifications you've just made."
@@ -993,7 +993,7 @@ msgid "Specific mailing used in marketing campaign"
 msgstr ""
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Start"
 msgstr "Başla"
 
@@ -1001,13 +1001,13 @@ msgstr "Başla"
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__state
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant__state
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__state
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_search
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_search
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_search
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_search
 msgid "State"
 msgstr "Durum"
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
 msgid "State: #{record.state.raw_value}"
 msgstr ""
 
@@ -1017,18 +1017,18 @@ msgid "Statistics Graph Data"
 msgstr ""
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Stop"
 msgstr "Durdur"
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_search
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_search
 #: selection:marketing.campaign,state:0
 msgid "Stopped"
 msgstr "Devredışı"
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.mass_mailing_view_form_marketing_activity
+#: model_terms:ir.ui.view,arch_db:marketing_automation.mass_mailing_view_form_marketing_activity
 msgid "Subject"
 msgstr "Konu"
 
@@ -1045,7 +1045,7 @@ msgid "Sync of participants is required"
 msgstr ""
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Target Model"
 msgstr "Hedef Model"
 
@@ -1097,7 +1097,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:marketing_automation.marketing_trace_action
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__trace_ids
 #: model:ir.ui.menu,name:marketing_automation.marketing_trace_menu
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_trace_view_tree
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_trace_view_tree
 msgid "Traces"
 msgstr "İşlemler"
 
@@ -1118,7 +1118,7 @@ msgid "Unique Field"
 msgstr "Benzersiz Alan"
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Update"
 msgstr "Güncelle"
 
@@ -1137,13 +1137,8 @@ msgid "User"
 msgstr "Kullanıcı"
 
 #. module: marketing_automation
-#: model:ir.model,name:marketing_automation.model_res_users
-msgid "Users"
-msgstr "Kullanıcılar"
-
-#. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__validity_duration_number
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Valid during"
 msgstr "Şu Sürede Geçerli :"
 
@@ -1164,13 +1159,13 @@ msgid "Weeks"
 msgstr "Hafta"
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
 msgid "Workflow"
 msgstr "İş Akışı "
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
 msgid "Workflow Started On"
 msgstr "Kampanya Akışı Başladı :"
 
@@ -1191,6 +1186,6 @@ msgid "beginning of campaign"
 msgstr "kampanya başlangıcı"
 
 #. module: marketing_automation
-#: model:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "e.g. eCommerce Offers"
 msgstr "Örn. E-Ticaret'te Terk Edilen Sepetler"

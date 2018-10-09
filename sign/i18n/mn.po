@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-05 09:12+0000\n"
-"PO-Revision-Date: 2018-09-05 09:12+0000\n"
+"POT-Creation-Date: 2018-09-27 08:43+0000\n"
+"PO-Revision-Date: 2018-09-27 08:43+0000\n"
 "Last-Translator: Khishigbat Ganbold <khishigbat@asterisk-tech.mn>, 2018\n"
 "Language-Team: Mongolian (https://www.transifex.com/odoo/teams/41243/mn/)\n"
 "MIME-Version: 1.0\n"
@@ -26,7 +26,7 @@ msgid "# Signatures"
 msgstr ""
 
 #. module: sign
-#: code:addons/sign/models/sign_request.py:233
+#: code:addons/sign/models/sign_request.py:249
 #, python-format
 msgid "%s : Signature request"
 msgstr ""
@@ -38,8 +38,8 @@ msgid "%s couldn't sign the document due to an insufficient credit error."
 msgstr ""
 
 #. module: sign
-#: code:addons/sign/models/sign_request.py:274
-#: code:addons/sign/models/sign_request.py:295
+#: code:addons/sign/models/sign_request.py:290
+#: code:addons/sign/models/sign_request.py:311
 #, python-format
 msgid "%s has been signed"
 msgstr ""
@@ -51,27 +51,27 @@ msgid "%s validated the signature by SMS with the phone number %s."
 msgstr ""
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.sign_template_mail_follower
+#: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_follower
 msgid ") has added you as a follower of the document"
 msgstr ""
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.sign_template_mail_request
+#: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_request
 msgid ") has requested your signature on the document"
 msgstr ""
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign._doc_sign
+#: model_terms:ir.ui.view,arch_db:sign._doc_sign
 msgid "- <em>Waiting Signature</em>"
 msgstr ""
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign._doc_sign
+#: model_terms:ir.ui.view,arch_db:sign._doc_sign
 msgid "<br/>(the email access has not been sent)"
 msgstr "<br/>(имэйлийн хандалт илгээгдээгүй)"
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.sign_template_share_view_form
+#: model_terms:ir.ui.view,arch_db:sign.sign_template_share_view_form
 msgid ""
 "<span attrs=\"{'invisible': [('url', '!=', False)]}\">To be able to share, "
 "there must be either no fields to fill or only one responsible for all the "
@@ -79,22 +79,22 @@ msgid ""
 msgstr ""
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.sign_request_view_form
+#: model_terms:ir.ui.view,arch_db:sign.sign_request_view_form
 msgid "<span class=\"o_stat_text\"> Signed</span>"
 msgstr ""
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.res_partner_view_form
+#: model_terms:ir.ui.view,arch_db:sign.res_partner_view_form
 msgid "<span class=\"o_stat_text\">Signature Requests</span>"
 msgstr ""
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.sign_request_view_form
+#: model_terms:ir.ui.view,arch_db:sign.sign_request_view_form
 msgid "<span class=\"o_stat_text\">View</span>"
 msgstr ""
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.sign_template_share_view_form
+#: model_terms:ir.ui.view,arch_db:sign.sign_template_share_view_form
 msgid ""
 "<span class=\"text-muted\" attrs=\"{'invisible': [('url', '=', "
 "False)]}\">Share this link and Odoo will create a new document per person "
@@ -103,13 +103,13 @@ msgid ""
 msgstr ""
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.sign_item_type_view_form
+#: model_terms:ir.ui.view,arch_db:sign.sign_item_type_view_form
 msgid "<span>(1.0 = full page size)</span>"
 msgstr "<span>(1.0 = бүрэн хуудсын хэмжээ)</span>"
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.sign_template_mail_completed
-#: model:ir.ui.view,arch_db:sign.sign_template_mail_request
+#: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_completed
+#: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_request
 msgid ""
 "<strong>Warning</strong> do not forward this email to other people!<br/>\n"
 "            They will be able to access this document and sign it as yourself."
@@ -132,8 +132,7 @@ msgstr "Үйлдэл Шаардлагатай"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__active
 #: model:ir.model.fields,field_description:sign.field_sign_template__active
-#: model:ir.ui.view,arch_db:sign.sign_request_view_search
-#: model:ir.ui.view,arch_db:sign.sign_template_view_search
+#: model_terms:ir.ui.view,arch_db:sign.sign_template_view_search
 msgid "Active"
 msgstr "Идэвхитэй"
 
@@ -170,27 +169,27 @@ msgstr "Нэг удаа нэмэх"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:495
+#: code:addons/sign/static/src/js/sign_common.js:496
 #, python-format
 msgid "Adopt Your Signature"
 msgstr "Гарын үсэг сонгох"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:501
+#: code:addons/sign/static/src/js/sign_common.js:502
 #, python-format
 msgid "Adopt and Sign"
 msgstr "Сонгоод зурах"
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.sign_request_view_kanban
-#: model:ir.ui.view,arch_db:sign.sign_template_view_kanban
+#: model_terms:ir.ui.view,arch_db:sign.sign_request_view_kanban
+#: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
 msgid "Archive"
 msgstr "Архив"
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.sign_request_view_search
-#: model:ir.ui.view,arch_db:sign.sign_template_view_search
+#: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
+#: model_terms:ir.ui.view,arch_db:sign.sign_template_view_search
 msgid "Archived"
 msgstr "Архивласан"
 
@@ -198,6 +197,11 @@ msgstr "Архивласан"
 #: model:ir.model.fields,field_description:sign.field_sign_template__attachment_id
 msgid "Attachment"
 msgstr "Хавсралт"
+
+#. module: sign
+#: model:ir.model.fields,field_description:sign.field_sign_request__message_attachment_count
+msgid "Attachment Count"
+msgstr ""
 
 #. module: sign
 #. openerp-web
@@ -212,7 +216,7 @@ msgid "Automatic Partner Field"
 msgstr "Автомат Харилцагч талбар"
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.sign_request_view_kanban
+#: model_terms:ir.ui.view,arch_db:sign.sign_request_view_kanban
 msgid "Avatar"
 msgstr "Зураг"
 
@@ -233,10 +237,10 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:504
-#: code:addons/sign/static/src/js/sign_common.js:760
-#: model:ir.ui.view,arch_db:sign.sign_request_view_form
-#: model:ir.ui.view,arch_db:sign.sign_send_request_view_form
+#: code:addons/sign/static/src/js/sign_common.js:505
+#: code:addons/sign/static/src/js/sign_common.js:764
+#: model_terms:ir.ui.view,arch_db:sign.sign_request_view_form
+#: model_terms:ir.ui.view,arch_db:sign.sign_send_request_view_form
 #, python-format
 msgid "Cancel"
 msgstr "Цуцлах"
@@ -267,13 +271,13 @@ msgstr "Гарын үсгийг арилгах"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:644
+#: code:addons/sign/static/src/js/sign_common.js:648
 #, python-format
 msgid "Click to start"
 msgstr "Эхлэх бол дарна уу"
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.sign_template_share_view_form
+#: model_terms:ir.ui.view,arch_db:sign.sign_template_share_view_form
 msgid "Close"
 msgstr "Хаах"
 
@@ -391,13 +395,13 @@ msgid "Default Width"
 msgstr "Үндсэн өргөн"
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.sign_request_view_kanban
-#: model:ir.ui.view,arch_db:sign.sign_template_view_kanban
+#: model_terms:ir.ui.view,arch_db:sign.sign_request_view_kanban
+#: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
 msgid "Delete"
 msgstr "Устгах"
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.sign_request_view_kanban
+#: model_terms:ir.ui.view,arch_db:sign.sign_request_view_kanban
 msgid "Details"
 msgstr "Задаргаа"
 
@@ -407,7 +411,7 @@ msgid "Digital Signature"
 msgstr ""
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.res_users_view_form
+#: model_terms:ir.ui.view,arch_db:sign.res_users_view_form
 msgid "Digital Signatures"
 msgstr "Дижитал гарын үсгүүд"
 
@@ -417,12 +421,12 @@ msgid "Digitial Initials"
 msgstr ""
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.sign_request_send_copy_view_form
+#: model_terms:ir.ui.view,arch_db:sign.sign_request_send_copy_view_form
 msgid "Discard"
 msgstr "Үл хэрэгсэх"
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.sign_item_view_form
+#: model_terms:ir.ui.view,arch_db:sign.sign_item_view_form
 msgid "Display"
 msgstr "Дэлгэц"
 
@@ -443,7 +447,7 @@ msgid "Display Name"
 msgstr "Дэлгэцийн Нэр"
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.sign_template_view_form
+#: model_terms:ir.ui.view,arch_db:sign.sign_template_view_form
 msgid "Document"
 msgstr "Баримт"
 
@@ -462,24 +466,14 @@ msgid "Document Sign"
 msgstr "Баримтын гарын үсэг"
 
 #. module: sign
-#: model:ir.model.fields,field_description:sign.field_res_users__group_sign_user
-msgid "Document Signatures"
-msgstr ""
-
-#. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__template_id
 msgid "Document Template"
 msgstr "Баримтын үлгэр"
 
 #. module: sign
-#: model:ir.model,name:sign.model_sign_request
-msgid "Document To Sign"
-msgstr "Гарын үсэг зурах баримт"
-
-#. module: sign
 #. openerp-web
 #: code:addons/sign/static/src/js/sign_backend.js:884
-#: model:ir.ui.view,arch_db:sign._doc_sign
+#: model_terms:ir.ui.view,arch_db:sign._doc_sign
 #, python-format
 msgid "Download Document"
 msgstr "Баримтыг татах"
@@ -511,8 +505,8 @@ msgid "Draw"
 msgstr "Зурах"
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.sign_request_view_kanban
-#: model:ir.ui.view,arch_db:sign.sign_template_view_kanban
+#: model_terms:ir.ui.view,arch_db:sign.sign_request_view_kanban
+#: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
 msgid "Dropdown menu"
 msgstr ""
 
@@ -531,17 +525,17 @@ msgid "Duplicated Template"
 msgstr "Хуулбарласан үлгэр"
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.sign_template_view_kanban
+#: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
 msgid "Edit"
 msgstr "Засах"
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.sign_template_view_kanban
+#: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
 msgid "Edit Fields"
 msgstr ""
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.sign_template_view_form
+#: model_terms:ir.ui.view,arch_db:sign.sign_template_view_form
 msgid "Edit fields"
 msgstr "Талбаруудыг засах"
 
@@ -565,11 +559,11 @@ msgstr "Ажилтан"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:790
-#: code:addons/sign/static/src/js/sign_common.js:817
-#: code:addons/sign/static/src/js/sign_common.js:1093
-#: code:addons/sign/static/src/js/sign_common.js:1110
-#: code:addons/sign/static/src/js/sign_common.js:1154
+#: code:addons/sign/static/src/js/sign_common.js:794
+#: code:addons/sign/static/src/js/sign_common.js:821
+#: code:addons/sign/static/src/js/sign_common.js:1097
+#: code:addons/sign/static/src/js/sign_common.js:1114
+#: code:addons/sign/static/src/js/sign_common.js:1158
 #, python-format
 msgid "Error"
 msgstr "Алдаа"
@@ -587,12 +581,6 @@ msgid "Favorite of"
 msgstr "Эрхэмлэгч"
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.sign_request_view_search
-#: model:ir.ui.view,arch_db:sign.sign_template_view_search
-msgid "Favorites"
-msgstr "Эрхэм"
-
-#. module: sign
 #. openerp-web
 #: code:addons/sign/static/src/xml/sign_backend.xml:6
 #: model:ir.model.fields,field_description:sign.field_sign_item__name
@@ -607,6 +595,11 @@ msgid "Field Types"
 msgstr "Талбарын төрлүүд"
 
 #. module: sign
+#: model:ir.model,name:sign.model_sign_item
+msgid "Fields to be sign on Document"
+msgstr ""
+
+#. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__datas
 msgid "File Content"
 msgstr "Файлын агуулга"
@@ -619,8 +612,8 @@ msgstr "Файлын нэр"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:737
-#: code:addons/sign/static/src/js/sign_common.js:838
+#: code:addons/sign/static/src/js/sign_common.js:741
+#: code:addons/sign/static/src/js/sign_common.js:842
 #, python-format
 msgid "Final Validation"
 msgstr "Сүүлийн батламжлал"
@@ -641,7 +634,7 @@ msgid "Followers (Partners)"
 msgstr "Дагагчид (Харилцагчид)"
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign._doc_sign
+#: model_terms:ir.ui.view,arch_db:sign._doc_sign
 msgid "From:"
 msgstr ""
 
@@ -658,17 +651,17 @@ msgid "Fully Signed"
 msgstr "Бүрэн гарын үсэг зурсан"
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.sign_request_view_search
+#: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "Future Activities"
 msgstr "Ирээдүйн Үйл ажиллагаанууд"
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.sign_request_view_form
+#: model_terms:ir.ui.view,arch_db:sign.sign_request_view_form
 msgid "Get Completed Document"
 msgstr "Дууссан баримт авах"
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.sign_request_view_search
+#: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "Group By"
 msgstr "Бүлэглэх"
 
@@ -711,13 +704,13 @@ msgid "If checked, some messages have a delivery error."
 msgstr ""
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.sign_request_view_kanban
-#: model:ir.ui.view,arch_db:sign.sign_template_view_kanban
+#: model_terms:ir.ui.view,arch_db:sign.sign_request_view_kanban
+#: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
 msgid "In favorites, remove it"
 msgstr ""
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.sign_item_view_form
+#: model_terms:ir.ui.view,arch_db:sign.sign_item_view_form
 msgid "Information"
 msgstr "Мэдээлэл"
 
@@ -800,7 +793,7 @@ msgid "Last Updated on"
 msgstr "Сүүлийн засвар хийсэн огноо"
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.sign_request_view_search
+#: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "Late Activities"
 msgstr "Хожимдсон Үйл ажиллагаанууд"
 
@@ -822,7 +815,7 @@ msgid "Load"
 msgstr "Ачааллах"
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.doc_sign
+#: model_terms:ir.ui.view,arch_db:sign.doc_sign
 msgid "Logo"
 msgstr "Лого"
 
@@ -836,6 +829,11 @@ msgstr "Уртраг"
 #: code:addons/sign/static/src/xml/sign_common.xml:105
 #, python-format
 msgid "Made with Odoo Sign"
+msgstr ""
+
+#. module: sign
+#: model:ir.model.fields,field_description:sign.field_sign_request__message_main_attachment_id
+msgid "Main Attachment"
 msgstr ""
 
 #. module: sign
@@ -866,7 +864,7 @@ msgid "Messages"
 msgstr "Зурвасууд"
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.deleted_sign_request
+#: model_terms:ir.ui.view,arch_db:sign.deleted_sign_request
 msgid "Missing signature request"
 msgstr "Гарын үсгийн хүсэлт алга"
 
@@ -887,19 +885,25 @@ msgstr "Олон мөртэй текст"
 
 #. module: sign
 #: model:ir.actions.act_window,name:sign.action_sign_template_share
-#: model:ir.ui.view,arch_db:sign.sign_template_share_view_form
+#: model_terms:ir.ui.view,arch_db:sign.sign_template_share_view_form
 msgid "Multiple Signature Requests"
 msgstr "Олон гарын үсгийн хүсэлтүүд"
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.sign_template_view_search
-msgid "My Templates"
+#: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
+msgid "My Documents"
 msgstr ""
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.sign_request_view_search
-msgid "My documents"
-msgstr "Миний баримтууд"
+#: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
+#: model_terms:ir.ui.view,arch_db:sign.sign_template_view_search
+msgid "My Favorites"
+msgstr "Миний эрхэмүүд"
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.sign_template_view_search
+msgid "My Templates"
+msgstr ""
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item_role__name
@@ -909,13 +913,13 @@ msgid "Name"
 msgstr "Нэр"
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.sign_send_request_view_form
-#: model:ir.ui.view,arch_db:sign.sign_template_view_form
+#: model_terms:ir.ui.view,arch_db:sign.sign_send_request_view_form
+#: model_terms:ir.ui.view,arch_db:sign.sign_template_view_form
 msgid "Name for the file"
 msgstr ""
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.sign_send_request_view_form
+#: model_terms:ir.ui.view,arch_db:sign.sign_send_request_view_form
 msgid "Name or email..."
 msgstr ""
 
@@ -927,7 +931,7 @@ msgid "Need a valid PDF to add signature fields !"
 msgstr "Гарын үсгийн талбаруудыг нэмэхэд зөв PDF шаардлагатай !"
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.doc_sign
+#: model_terms:ir.ui.view,arch_db:sign.doc_sign
 msgid "Need to sign? Check your inbox to get your secure access"
 msgstr "Гарын үсэг зурах уу? Мэйлээ шалгаж аюулгүй хандалтаа аваарай"
 
@@ -954,18 +958,18 @@ msgid "Next Activity Type"
 msgstr ""
 
 #. module: sign
-#: model:ir.actions.act_window,help:sign.sign_request_action
+#: model_terms:ir.actions.act_window,help:sign.sign_request_action
 msgid "No documents to sign"
 msgstr ""
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.sign_request_view_kanban
-#: model:ir.ui.view,arch_db:sign.sign_template_view_kanban
+#: model_terms:ir.ui.view,arch_db:sign.sign_request_view_kanban
+#: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
 msgid "Not in favorites, add it"
 msgstr ""
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.sign_template_view_kanban
+#: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
 msgid "Not in favorites, set it"
 msgstr ""
 
@@ -1007,7 +1011,7 @@ msgid "Ok"
 msgstr "Тийм"
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.sign_template_share_view_form
+#: model_terms:ir.ui.view,arch_db:sign.sign_template_share_view_form
 msgid "Open"
 msgstr "Нээх"
 
@@ -1017,7 +1021,7 @@ msgid "Optional Link"
 msgstr ""
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.sign_send_request_view_form
+#: model_terms:ir.ui.view,arch_db:sign.sign_send_request_view_form
 msgid "Optional Message..."
 msgstr ""
 
@@ -1029,7 +1033,7 @@ msgid ""
 msgstr ""
 
 #. module: sign
-#: model:ir.actions.act_window,help:sign.sign_template_action
+#: model_terms:ir.actions.act_window,help:sign.sign_template_action
 msgid "Or,"
 msgstr ""
 
@@ -1072,7 +1076,7 @@ msgid "Planned"
 msgstr "Төлөвлөсөн"
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.doc_sign
+#: model_terms:ir.ui.view,arch_db:sign.doc_sign
 msgid "Please Review And Act On This Document"
 msgstr "Энэ баримтыг үзээд хариулна уу"
 
@@ -1094,7 +1098,7 @@ msgid "Position Y"
 msgstr "Байрлал Y"
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.sign_request_view_form
+#: model_terms:ir.ui.view,arch_db:sign.sign_request_view_form
 msgid "Preview"
 msgstr "Урьдчилан харах"
 
@@ -1128,7 +1132,7 @@ msgid "Request a Signature"
 msgstr "Гарын үсэг хүсэх"
 
 #. module: sign
-#: model:ir.actions.act_window,help:sign.sign_request_action
+#: model_terms:ir.actions.act_window,help:sign.sign_request_action
 msgid ""
 "Request a signature to upload a template (or use an existing one)\n"
 "                to automate your signature process."
@@ -1147,7 +1151,7 @@ msgstr "Шаардлагатай"
 #. module: sign
 #. openerp-web
 #: code:addons/sign/static/src/js/sign_backend.js:999
-#: model:ir.ui.view,arch_db:sign.sign_request_view_form
+#: model_terms:ir.ui.view,arch_db:sign.sign_request_view_form
 #, python-format
 msgid "Resend"
 msgstr ""
@@ -1186,8 +1190,8 @@ msgid "Responsible User"
 msgstr "Хариуцагч хэрэглэгч"
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.sign_request_view_kanban
-#: model:ir.ui.view,arch_db:sign.sign_template_view_kanban
+#: model_terms:ir.ui.view,arch_db:sign.sign_request_view_kanban
+#: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
 msgid "Restore"
 msgstr ""
 
@@ -1198,7 +1202,7 @@ msgid "Role"
 msgstr "Дүр"
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.sign_item_role_view_tree
+#: model_terms:ir.ui.view,arch_db:sign.sign_item_role_view_tree
 msgid "Role Name"
 msgstr ""
 
@@ -1254,10 +1258,10 @@ msgstr "Хариуцагчийг сонгоно уу"
 #. module: sign
 #. openerp-web
 #: code:addons/sign/static/src/js/sign_backend.js:617
-#: model:ir.ui.view,arch_db:sign.sign_request_send_copy_view_form
-#: model:ir.ui.view,arch_db:sign.sign_send_request_view_form
-#: model:ir.ui.view,arch_db:sign.sign_template_view_form
-#: model:ir.ui.view,arch_db:sign.sign_template_view_kanban
+#: model_terms:ir.ui.view,arch_db:sign.sign_request_send_copy_view_form
+#: model_terms:ir.ui.view,arch_db:sign.sign_send_request_view_form
+#: model_terms:ir.ui.view,arch_db:sign.sign_template_view_form
+#: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
 #, python-format
 msgid "Send"
 msgstr "Илгээх"
@@ -1271,7 +1275,7 @@ msgstr ""
 
 #. module: sign
 #: model:ir.actions.act_window,name:sign.action_sign_send_request
-#: model:ir.ui.view,arch_db:sign.sign_send_request_view_form
+#: model_terms:ir.ui.view,arch_db:sign.sign_send_request_view_form
 msgid "Send Signature Request"
 msgstr "Гарын үсгийн хүсэлтийг илгээх"
 
@@ -1281,7 +1285,7 @@ msgid "Send To"
 msgstr ""
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.sign_request_view_form
+#: model_terms:ir.ui.view,arch_db:sign.sign_request_view_form
 msgid "Send a Copy"
 msgstr ""
 
@@ -1299,7 +1303,7 @@ msgstr "Хуулбар илгээх"
 
 #. module: sign
 #: model:ir.actions.act_window,name:sign.action_sign_request_send_copy
-#: model:ir.ui.view,arch_db:sign.sign_request_send_copy_view_form
+#: model_terms:ir.ui.view,arch_db:sign.sign_request_send_copy_view_form
 msgid "Send a copy to third parties"
 msgstr "Хуулбарыг гуравдагч талуудад илгээх"
 
@@ -1311,8 +1315,8 @@ msgstr "Илгээгдсэн хүсэлтүүд"
 #. module: sign
 #. openerp-web
 #: code:addons/sign/static/src/js/sign_backend.js:630
-#: model:ir.ui.view,arch_db:sign.sign_template_view_form
-#: model:ir.ui.view,arch_db:sign.sign_template_view_kanban
+#: model_terms:ir.ui.view,arch_db:sign.sign_template_view_form
+#: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
 #, python-format
 msgid "Share"
 msgstr "Хуваалцах"
@@ -1323,29 +1327,29 @@ msgid "Share Link"
 msgstr "Хуваалцах Холбоос"
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.sign_request_view_search
+#: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "Show all records which has next action date is before today"
 msgstr "Өнөөдрөөс өмнө дараагийн арга хэмжээг товлосон бүх рекордыг харуулах"
 
 #. module: sign
 #. openerp-web
 #: code:addons/sign/static/src/js/sign_backend.js:980
-#: code:addons/sign/wizard/sign_send_request.py:81
-#: code:addons/sign/wizard/sign_template_share.py:32
+#: code:addons/sign/wizard/sign_send_request.py:82
+#: code:addons/sign/wizard/sign_template_share.py:33
 #: model:ir.ui.menu,name:sign.menu_document
 #, python-format
 msgid "Sign"
 msgstr "Гарын үсэг зурах"
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.sign_send_request_view_form
+#: model_terms:ir.ui.view,arch_db:sign.sign_send_request_view_form
 msgid "Sign Directly"
 msgstr ""
 
 #. module: sign
 #. openerp-web
 #: code:addons/sign/static/src/js/sign_backend.js:975
-#: model:ir.ui.view,arch_db:sign._doc_sign
+#: model_terms:ir.ui.view,arch_db:sign._doc_sign
 #, python-format
 msgid "Sign Document"
 msgstr "Баримт дээр гарын үсэг зурах"
@@ -1356,13 +1360,33 @@ msgid "Sign Send Request"
 msgstr ""
 
 #. module: sign
+#: model:ir.model,name:sign.model_sign_template_share
+msgid "Sign Share Template"
+msgstr ""
+
+#. module: sign
 #: model:ir.model,name:sign.model_sign_template_tag
 msgid "Sign Template Tag"
 msgstr ""
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.sign_template_mail_request
+#: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_request
 msgid "Sign document now"
+msgstr ""
+
+#. module: sign
+#: model:ir.model,name:sign.model_sign_send_request
+msgid "Sign send request"
+msgstr ""
+
+#. module: sign
+#: model:ir.model,name:sign.model_sign_request_send_copy
+msgid "Sign send request copy"
+msgstr ""
+
+#. module: sign
+#: model:ir.model,name:sign.model_sign_send_request_signer
+msgid "Sign send request signer"
 msgstr ""
 
 #. module: sign
@@ -1370,7 +1394,7 @@ msgstr ""
 #: code:addons/sign/static/src/xml/sign_backend.xml:57
 #: code:addons/sign/static/src/xml/sign_common.xml:5
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__signature
-#: model:ir.ui.view,arch_db:sign._doc_sign
+#: model_terms:ir.ui.view,arch_db:sign._doc_sign
 #: model:sign.item.type,name:sign.sign_item_type_signature
 #: selection:sign.item.type,type:0
 #, python-format
@@ -1378,19 +1402,14 @@ msgid "Signature"
 msgstr "Гарын үсэг"
 
 #. module: sign
-#: model:ir.model,name:sign.model_sign_item
-msgid "Signature Field For Document To Sign"
-msgstr "Гарын үсэг зурах баримтын гарын үсгийн талбар"
-
-#. module: sign
-#: model:ir.model,name:sign.model_sign_item_value
-msgid "Signature Field Value For Document To Sign"
-msgstr "Гарын үсэг зурах баримтын гарын үсгийн талбарын утга"
-
-#. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item_value__sign_item_id
 msgid "Signature Item"
 msgstr "Гарын үсгийн зүйл"
+
+#. module: sign
+#: model:ir.model,name:sign.model_sign_item_role
+msgid "Signature Item Party"
+msgstr "Гарын үсгийн зүйлийн тал"
 
 #. module: sign
 #: model:ir.actions.act_window,name:sign.sign_item_role_action
@@ -1399,8 +1418,14 @@ msgstr ""
 
 #. module: sign
 #: model:ir.actions.act_window,name:sign.sign_item_type_action
+#: model:ir.model,name:sign.model_sign_item_type
 msgid "Signature Item Type"
 msgstr "Гарын үсгийн зүйлийн төрөл"
+
+#. module: sign
+#: model:ir.model,name:sign.model_sign_item_value
+msgid "Signature Item Value"
+msgstr ""
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__sign_item_ids
@@ -1408,19 +1433,24 @@ msgid "Signature Items"
 msgstr "Гарын үсгийн зүйлс"
 
 #. module: sign
-#: model:ir.model,name:sign.model_sign_request_item
+#: model:ir.model,name:sign.model_sign_request
 #: model:ir.model.fields,field_description:sign.field_sign_item_value__sign_request_id
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__sign_request_id
-#: model:ir.ui.view,arch_db:sign.sign_send_request_view_form
+#: model_terms:ir.ui.view,arch_db:sign.sign_send_request_view_form
 msgid "Signature Request"
 msgstr "Гарын үсгийн хүсэлт"
 
 #. module: sign
-#: code:addons/sign/models/sign_request.py:144
-#: code:addons/sign/models/sign_request.py:545
-#: code:addons/sign/wizard/sign_send_request.py:16
+#: code:addons/sign/models/sign_request.py:160
+#: code:addons/sign/models/sign_request.py:562
+#: code:addons/sign/wizard/sign_send_request.py:17
 #, python-format
 msgid "Signature Request - %s"
+msgstr ""
+
+#. module: sign
+#: model:ir.model,name:sign.model_sign_request_item
+msgid "Signature Request Item"
 msgstr ""
 
 #. module: sign
@@ -1451,7 +1481,7 @@ msgid "Signature configuration"
 msgstr ""
 
 #. module: sign
-#: code:addons/sign/wizard/sign_send_request.py:67
+#: code:addons/sign/wizard/sign_send_request.py:68
 #, python-format
 msgid "Signature(s)"
 msgstr ""
@@ -1459,7 +1489,7 @@ msgstr ""
 #. module: sign
 #: model:ir.actions.act_window,name:sign.sign_request_action
 #: model:ir.ui.menu,name:sign.sign_request_menu
-#: model:ir.ui.view,arch_db:sign.sign_template_view_form
+#: model_terms:ir.ui.view,arch_db:sign.sign_template_view_form
 msgid "Signatures"
 msgstr ""
 
@@ -1469,19 +1499,19 @@ msgid "Signatures in Progress"
 msgstr "Боловсруулж буй гарын үсгүүд"
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.doc_sign
-#: model:ir.ui.view,arch_db:sign.sign_request_view_search
+#: model_terms:ir.ui.view,arch_db:sign.doc_sign
+#: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "Signed"
 msgstr "Гарын үсэг зурсан"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__signing_date
-#: model:ir.ui.view,arch_db:sign._doc_sign
+#: model_terms:ir.ui.view,arch_db:sign._doc_sign
 msgid "Signed on"
 msgstr "Гарын үсэг зурсан огноо"
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.sign_request_view_search
+#: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "Signer Email"
 msgstr ""
 
@@ -1498,7 +1528,7 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:1076
+#: code:addons/sign/static/src/js/sign_common.js:1080
 #, python-format
 msgid "Some fields have still to be completed !"
 msgstr "Зарим талбаруудыг бөглөх шаардлагатай !"
@@ -1512,17 +1542,12 @@ msgstr "Хэн нэгэн энэ үлгэрийг ашигладаг барим�
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:816
-#: code:addons/sign/static/src/js/sign_common.js:1092
-#: code:addons/sign/static/src/js/sign_common.js:1153
+#: code:addons/sign/static/src/js/sign_common.js:820
+#: code:addons/sign/static/src/js/sign_common.js:1096
+#: code:addons/sign/static/src/js/sign_common.js:1157
 #, python-format
 msgid "Sorry, an error occured, please try to fill the document again."
 msgstr "Уучлаарай, алдаа гарсан, баримтыг дахин бөглөх гэж оролдоно уу."
-
-#. module: sign
-#: model:ir.model,name:sign.model_sign_item_type
-msgid "Specialized type for signature fields"
-msgstr "Гарын үсгийн талбаруудад зориулагдсан тусгай төрлүүд"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__state
@@ -1563,7 +1588,7 @@ msgstr "Пайзын нэр аль хэдийн үүссэн байна !"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__tag_ids
-#: model:ir.ui.view,arch_db:sign.sign_template_view_form
+#: model_terms:ir.ui.view,arch_db:sign.sign_template_view_form
 msgid "Tags"
 msgstr "Пайзууд"
 
@@ -1571,12 +1596,12 @@ msgstr "Пайзууд"
 #: model:ir.model.fields,field_description:sign.field_sign_request__template_id
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__template_id
 #: model:ir.model.fields,field_description:sign.field_sign_template_share__template_id
-#: model:ir.ui.view,arch_db:sign.sign_request_view_search
+#: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "Template"
 msgstr "Үлгэр"
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.sign_request_view_search
+#: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "Template or Tag"
 msgstr ""
 
@@ -1593,18 +1618,18 @@ msgstr "Текст"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:865
+#: code:addons/sign/static/src/js/sign_common.js:869
 #, python-format
 msgid "Thank You !"
 msgstr "Баярлалаа !"
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.sign_template_mail_completed
+#: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_completed
 msgid "The document"
 msgstr ""
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.deleted_sign_request
+#: model_terms:ir.ui.view,arch_db:sign.deleted_sign_request
 msgid ""
 "The signature access you are trying to reach does not exist. Maybe the signature request has been deleted or modified. <br/>\n"
 "                    If there still exists a signature request for this document, check your inbox to get your access!"
@@ -1613,7 +1638,7 @@ msgstr ""
 "Хэрэв энэ баримтад гарын үсгийн хүсэлт байсаар байгаа бол хандалтыг авахын тулд та мэйлээ шалгана уу!"
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.sign_request_view_form
+#: model_terms:ir.ui.view,arch_db:sign.sign_request_view_form
 msgid ""
 "This will delete all the already completed documents of this request and "
 "disable every sent accesses, are you sure?"
@@ -1627,7 +1652,7 @@ msgid "Tip"
 msgstr "Зөвлөгөө"
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.sign_request_view_search
+#: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "To Sign"
 msgstr "Гарын үсэг зурах"
 
@@ -1637,7 +1662,7 @@ msgid "Today"
 msgstr "Өнөөдөр"
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.sign_request_view_search
+#: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "Today Activities"
 msgstr "Өнөөдрийн Ажилбарууд"
 
@@ -1648,14 +1673,16 @@ msgid "Type"
 msgstr "Төрөл"
 
 #. module: sign
-#: model:ir.model,name:sign.model_sign_item_role
-msgid "Type of partner which can access a particular signature field"
-msgstr "Тодорхой гарын үсгийн талбар руу хандах эрхтэй харилцагчийн төрөл"
+#. openerp-web
+#: code:addons/sign/static/src/js/sign_backend.js:79
+#, python-format
+msgid "UPLOAD A PDF TEMPLATE"
+msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:789
-#: code:addons/sign/static/src/js/sign_common.js:1109
+#: code:addons/sign/static/src/js/sign_common.js:793
+#: code:addons/sign/static/src/js/sign_common.js:1113
 #, python-format
 msgid "Unable to send the SMS, please contact the sender of the document."
 msgstr ""
@@ -1671,8 +1698,8 @@ msgid "Unread Messages Counter"
 msgstr "Уншаагүй зурвасын тоолуур"
 
 #. module: sign
-#: model:ir.actions.act_window,help:sign.sign_template_action
-#: model:ir.actions.act_window,help:sign.sign_template_with_archived_action
+#: model_terms:ir.actions.act_window,help:sign.sign_template_action
+#: model_terms:ir.actions.act_window,help:sign.sign_template_with_archived_action
 msgid "Upload a PDF"
 msgstr ""
 
@@ -1697,13 +1724,13 @@ msgstr "Батлах"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:743
+#: code:addons/sign/static/src/js/sign_common.js:747
 #, python-format
 msgid "Validate & Send"
 msgstr "Батлаад илгээх"
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign._doc_sign
+#: model_terms:ir.ui.view,arch_db:sign._doc_sign
 msgid "Validate &amp; Send Completed Document"
 msgstr "Дууссан баримтыг батлаад илгээх"
 
@@ -1714,7 +1741,7 @@ msgstr "Утга"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:842
+#: code:addons/sign/static/src/js/sign_common.js:846
 #, python-format
 msgid "Verify"
 msgstr ""
@@ -1734,12 +1761,12 @@ msgid "View Signed document"
 msgstr ""
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.sign_template_mail_completed
+#: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_completed
 msgid "View document now"
 msgstr ""
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.sign_template_mail_follower
+#: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_follower
 msgid "View signature request"
 msgstr ""
 
@@ -1750,7 +1777,7 @@ msgstr "Дуусахыг хүлээж байна"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:1076
+#: code:addons/sign/static/src/js/sign_common.js:1080
 #, python-format
 msgid "Warning"
 msgstr "Анхааруулга"
@@ -1778,7 +1805,7 @@ msgid "Width"
 msgstr "Өргөн"
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.sign_send_request_view_form
+#: model_terms:ir.ui.view,arch_db:sign.sign_send_request_view_form
 msgid "Write email or search contact..."
 msgstr "Имэйл хаягийг бичнэ үү эсвэл холбогчийг хайна уу..."
 
@@ -1798,18 +1825,18 @@ msgid ""
 msgstr ""
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.doc_sign
+#: model_terms:ir.ui.view,arch_db:sign.doc_sign
 msgid "You have completed the document"
 msgstr "Та баримтыг дуусгасан"
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.sign_template_mail_follower
+#: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_follower
 msgid ""
 "You will be notified once the document has been signed by everyone involved."
 msgstr ""
 
 #. module: sign
-#: code:addons/sign/models/sign_request.py:557
+#: code:addons/sign/models/sign_request.py:574
 #, python-format
 msgid "Your confirmation code is %s"
 msgstr ""
@@ -1832,7 +1859,7 @@ msgstr "Таны нэр"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/sign_common.js:866
+#: code:addons/sign/static/src/js/sign_common.js:870
 #, python-format
 msgid "Your signature has been saved."
 msgstr "Таны гарын үсэг хадгалагдсан."
@@ -1850,12 +1877,12 @@ msgid "fill in"
 msgstr ""
 
 #. module: sign
-#: model:ir.ui.view,arch_db:sign.sign_template_mail_completed
+#: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_completed
 msgid "has been completed and signed by everyone."
 msgstr ""
 
 #. module: sign
-#: model:ir.actions.act_window,help:sign.sign_template_action
+#: model_terms:ir.actions.act_window,help:sign.sign_template_action
 msgid "load our templates of contract"
 msgstr "манай гэрээний үлгэрүүдийг ачааллах"
 
@@ -1867,24 +1894,4 @@ msgstr ""
 #. module: sign
 #: model:sign.item.type,tip:sign.sign_item_type_signature
 msgid "sign it"
-msgstr ""
-
-#. module: sign
-#: model:ir.model,name:sign.model_sign_request_send_copy
-msgid "sign.request.send.copy"
-msgstr ""
-
-#. module: sign
-#: model:ir.model,name:sign.model_sign_send_request
-msgid "sign.send.request"
-msgstr ""
-
-#. module: sign
-#: model:ir.model,name:sign.model_sign_send_request_signer
-msgid "sign.send.request.signer"
-msgstr ""
-
-#. module: sign
-#: model:ir.model,name:sign.model_sign_template_share
-msgid "sign.template.share"
 msgstr ""

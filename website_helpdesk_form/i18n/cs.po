@@ -8,10 +8,10 @@
 # trendspotter, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.3+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 08:34+0000\n"
-"PO-Revision-Date: 2018-06-25 08:34+0000\n"
+"POT-Creation-Date: 2018-09-18 10:05+0000\n"
+"PO-Revision-Date: 2018-09-18 10:05+0000\n"
 "Last-Translator: trendspotter, 2018\n"
 "Language-Team: Czech (https://www.transifex.com/odoo/teams/41243/cs/)\n"
 "MIME-Version: 1.0\n"
@@ -21,12 +21,12 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
 
 #. module: website_helpdesk_form
-#: model:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
 msgid "Attachment(s)"
 msgstr "Příloha(y)"
 
 #. module: website_helpdesk_form
-#: model:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
 msgid "Description"
 msgstr "Popis"
 
@@ -36,29 +36,28 @@ msgid "Helpdesk Team"
 msgstr "Tým Helpdesku"
 
 #. module: website_helpdesk_form
-#: model:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
 msgid "Send"
 msgstr "Odeslat"
 
 #. module: website_helpdesk_form
-#: model:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
 msgid "Subject"
 msgstr "Předmět"
 
 #. module: website_helpdesk_form
-#: model:ir.ui.view,arch_db:website_helpdesk_form.helpdesk_team_view_form_inherit_website_helpdesk_form
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_form.helpdesk_team_view_form_inherit_website_helpdesk_form
 msgid "Submit an issue using this page:<br/>"
 msgstr ""
 
 #. module: website_helpdesk_form
-#: model:ir.ui.view,arch_db:website_helpdesk_form.aboutus_page_ir_ui_view
-#: model:ir.ui.view,arch_db:website_helpdesk_form.ticket_submited
-#: model:website.page,arch_db:website_helpdesk_form.aboutus_page
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_form.aboutus_page_ir_ui_view
+#: model_terms:website.page,arch_db:website_helpdesk_form.aboutus_page
 msgid "Thank you for submitting your issue, our team will get right on it!"
-msgstr ""
+msgstr "Děkujeme za zaslání vašeho problému, náš tým se na to rovnou podívá!"
 
 #. module: website_helpdesk_form
-#: model:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
 msgid "Ticket"
 msgstr "Tiket"
 
@@ -68,18 +67,17 @@ msgid "URL to Submit Issue"
 msgstr ""
 
 #. module: website_helpdesk_form
-#: model:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
 msgid "Your Email"
 msgstr "Váš e-mail"
 
 #. module: website_helpdesk_form
-#: model:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
 msgid "Your Name"
 msgstr "Vaše jméno"
 
 #. module: website_helpdesk_form
-#: model:ir.ui.view,arch_db:website_helpdesk_form.aboutus_page_ir_ui_view
-#: model:ir.ui.view,arch_db:website_helpdesk_form.ticket_submited
-#: model:website.page,arch_db:website_helpdesk_form.aboutus_page
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_form.aboutus_page_ir_ui_view
+#: model_terms:website.page,arch_db:website_helpdesk_form.aboutus_page
 msgid "Your Ticket Number is"
 msgstr ""

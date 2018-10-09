@@ -24,7 +24,7 @@ function getLine (description) {
         }
     });
     if (! $res) {
-        fail('cannot get the line');
+        fail('cannot get the line with the barcode ' + description.barcode);
     }
     return $res;
 }
@@ -165,10 +165,6 @@ function assertQuantsCount(expected) {
     assert($quantity, expected, 'Wrong number of cards');
 }
 
-function assertRaise(expected) {
-    var $dialog = $('.o_dialog_warning');
-    assert(_.trim($dialog.innerText), expected, 'wrong error message from the server');
-}
 // ----------------------------------------------------------------------------
 // Tours
 // ----------------------------------------------------------------------------
@@ -197,11 +193,11 @@ tour.register('test_internal_picking_from_scratch_1', {test: true}, [
     {
         trigger: '.o_show_information',
     },
-    
+
     {
         trigger: '.o_form_label:contains("Status")',
     },
-    
+
     {
         trigger: '.o_close',
     },
@@ -1732,11 +1728,11 @@ tour.register('test_bypass_source_scan', {test: true}, [
         trigger: '.o_barcode_client_action',
         run: 'scan serial1',
     },
-    
+
     {
         trigger: '.o_edit'
     },
-    
+
     {
         trigger: '.o_field_many2one[name=lot_id]',
         extra_trigger: '.o_form_label:contains("Product")',
@@ -1745,12 +1741,12 @@ tour.register('test_bypass_source_scan', {test: true}, [
             actions.text("", this.$anchor.find("input"));
         },
     },
-    
+
     {
         trigger: 'input.o_field_widget[name=qty_done]',
         run: 'text 0',
     },
-    
+
     {
         trigger: '.o_save'
     },
@@ -1805,11 +1801,11 @@ tour.register('test_inventory_adjustment', {test: true}, [
     {
         trigger: '.o_show_information',
     },
-    
+
     {
         trigger: '.o_form_label:contains("Status")',
     },
-    
+
     {
         trigger: '.o_close',
     },
@@ -2135,6 +2131,10 @@ tour.register('test_pack_multiple_scan', {test: true}, [
         trigger: '.o_barcode_client_action',
         run: function () {
             assertErrorMessage('This package is already scanned.');
+            var $line = getLine({barcode: 'product1'});
+            assertLineIsHighlighted($line, true);
+            var $line = getLine({barcode: 'product2'});
+            assertLineIsHighlighted($line, true);
         },
     },
 
@@ -2154,6 +2154,62 @@ tour.register('test_pack_multiple_scan', {test: true}, [
         },
     },
 ]);
+
+tour.register('test_pack_common_content_scan', {test: true}, [
+    /* Scan 2 packages PACK1 and PACK2 that contains both product1 and
+     * product 2. It also scan a single product1 before scanning both pacakges.
+     * the purpose is to check that lines with a same product are not merged
+     * together. For product 1, we should have 3 lines. One with PACK 1, one
+     * with PACK2 and the last without package.
+     */
+    {
+        trigger: '.o_stock_barcode_main_menu:contains("Barcode Scanning")',
+    },
+
+    {
+        trigger: '.o_stock_barcode_main_menu',
+        run: 'scan WH-DELIVERY',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan product1',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan PACK1',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan PACK2',
+    },
+
+    {
+        trigger: '.o_barcode_client_action:contains("PACK2")',
+        run: function () {
+            assertLinesCount(5);
+        },
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan O-BTN.validate',
+    },
+
+    {
+        trigger: '.o_notification_title:contains("Success")'
+    },
+
+    {
+        trigger: '.o_stock_barcode_main_menu',
+        run: function () {
+            assertErrorMessage('The transfer has been validated');
+        },
+    },
+]);
+
 
 tour.register('test_pack_multiple_location', {test: true}, [
 
@@ -2344,6 +2400,15 @@ tour.register('test_reload_flow', {test: true}, [
 
     {
         trigger: '.o_barcode_summary_location_dest:contains("WH/Stock")',
+        run: function () {
+            assertScanMessage('scan_more_dest');
+            assertLocationHighlight(false);
+            assertDestinationLocationHighlight(true);
+        },
+    },
+
+    {
+        trigger: '.o_barcode_summary_location_dest:contains("WH/Stock")',
         run: 'scan LOC-01-01-00',
     },
 
@@ -2358,6 +2423,45 @@ tour.register('test_reload_flow', {test: true}, [
 
     {
         trigger: '.o_notification_title:contains("Success")',
+    },
+
+]);
+
+tour.register('test_highlight_packs', {test: true}, [
+    {
+        trigger: '.o_barcode_client_action',
+        run: function () {
+            assertLinesCount(1);
+            assertScanMessage('scan_products');
+            assertValidateVisible(true);
+            assertValidateIsHighlighted(false);
+            assertValidateEnabled(true);
+            var $line = $('.o_barcode_line');
+            assertLineIsHighlighted($line, false);
+
+        },
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan PACK002',
+    },
+
+    {
+        trigger: '.o_barcode_client_action:contains("PACK002")',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: function () {
+            assertLinesCount(2);
+            assertScanMessage('scan_products');
+            assertValidateVisible(true);
+            assertValidateIsHighlighted(true);
+            assertValidateEnabled(true);
+            var $line = $('.o_barcode_line').eq(1);
+            assertLineIsHighlighted($line, true);
+        },
     },
 
 ]);
@@ -2475,10 +2579,20 @@ tour.register('test_put_in_pack_before_dest', {test: true}, [
     },
 
     {
-        trigger: '.o_dialog_warning',
-        run: function() {
-            assertRaise('You cannot move the same package content more than once in the same transfer or split the same package into two location.');
-        }
+        trigger: '.modal-title:contains("Choose destination location")',
+    },
+
+    {
+        trigger: '.btn-primary',
+    },
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan O-BTN.validate',
+    },
+
+    {
+        trigger: '.o_notification_title:contains("Success")',
     },
 
 ]);

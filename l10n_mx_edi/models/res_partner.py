@@ -17,6 +17,11 @@ class ResPartner(models.Model):
         'fill properly the fields in the invoice)')
     l10n_mx_edi_colony = fields.Char(string='Colony Name')
     l10n_mx_edi_locality = fields.Char(string='Locality Name')
+    l10n_mx_edi_curp = fields.Char(
+        'CURP', size=18,
+        help='In Mexico, the Single Code of Population Registration (CURP)'
+        'is a unique alphanumeric code of 18 characters used to officially identify '
+        'both residents and Mexican citizens throughout the country.')
 
     @api.model
     def l10n_mx_edi_get_customer_rfc(self):

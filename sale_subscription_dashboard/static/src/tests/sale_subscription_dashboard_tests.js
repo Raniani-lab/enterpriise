@@ -115,14 +115,14 @@ odoo.define('sale_subscription_dashboard.sale_subscription_tests', function (req
                     currency_id: 3,
                     default_salesman: {
                         id: 1,
-                        name: "Mitchell Stephens"
+                        name: "Mitchell Admin"
                     },
                     salesman_ids: [{
                         id: 1,
-                        name: "Mitchell Stephens"
+                        name: "Mitchell Admin"
                     }, {
                         id: 5,
-                        name: "Marc Brown"
+                        name: "Marc Demo"
                     }]
                 },
                 salesman_values: {
@@ -158,6 +158,21 @@ odoo.define('sale_subscription_dashboard.sale_subscription_tests', function (req
                         account_analytic: false
                     }]
                 },
+                get_stats_by_plan: [{
+                    name: "Odoo Monthly",
+                    nb_customers: 0,
+                    value: 0
+                }, {
+                    name: "Odoo Yearly",
+                    nb_customers: 0,
+                    value: 0
+                }],
+                get_stats_history: {
+                    value_1_months_ago: 0,
+                    value_3_months_ago: 0,
+                    value_12_months_ago: 0
+                },
+                compute_stat: 10495,
             };
         }
     }, function () {
@@ -187,6 +202,111 @@ odoo.define('sale_subscription_dashboard.sale_subscription_tests', function (req
             assert.strictEqual(subscription_dashboard.$('.on_stat_box .o_stat_box_card_amount').text().trim(), "280", "Should contain net revenue amount '280'");
             assert.strictEqual(subscription_dashboard.$('.on_forecast_box .o_stat_box_card_amount').text().trim(), "1k", "Should contain forecasted annual amount '1k'");
             subscription_dashboard.destroy();
+            done();
+        });
+
+        QUnit.test('sale_subscription_forecast', function (assert) {
+            var done = assert.async();
+            var self = this;
+            assert.expect(10);
+            var dashboard = new SubscriptionDashBoard.sale_subscription_dashboard_forecast(null, null, {
+                main_dashboard_action_id: null,
+                start_date: moment(),
+                end_date: moment().add(1, 'month'),
+                currency_id: 3,
+                contract_templates: null,
+                tags: null,
+                companies: null,
+                filters: null,
+            });
+            testUtils.addMockEnvironment(dashboard, {
+                mockRPC: function (route, args) {
+                    if (route === '/sale_subscription_dashboard/get_default_values_forecast') {
+                        assert.deepEqual(_.keys(args).sort(), ['end_date', 'filters', 'forecast_type'], "should be requested only with defined parameters");
+                        return $.when(self.data.forecast_values);
+                    }
+                    return $.when();
+                },
+                session: {
+                    currencies: {
+                        3: {
+                            digits: [69, 2],
+                            position: "before",
+                            symbol: "$"
+                        }
+                    }
+                },
+            });
+            dashboard.appendTo($('#qunit-fixture'));
+            assert.strictEqual(dashboard.$('.o_account_contract_dashboard').length, 1, "should have a dashboard");
+            assert.strictEqual(dashboard.$('.o_account_contract_dashboard .box').length, 2, "should have a dashboard with 2 forecasts");
+
+            assert.strictEqual(dashboard.$('.o_account_contract_dashboard .box:first #forecast_summary_mrr').length, 1, "first forecast should have summary header");
+            assert.strictEqual(dashboard.$('.o_account_contract_dashboard .box:first .o_forecast_options').length, 1, "first forecast should have options");
+            assert.strictEqual(dashboard.$('.o_account_contract_dashboard .box:first #forecast_chart_div_mrr').length, 1, "first forecast should have chart");
+
+            assert.strictEqual(dashboard.$('.o_account_contract_dashboard .box:last #forecast_summary_contracts').length, 1, "last forecast should have summary header");
+            assert.strictEqual(dashboard.$('.o_account_contract_dashboard .box:last .o_forecast_options').length, 1, "last forecast should have options");
+            assert.strictEqual(dashboard.$('.o_account_contract_dashboard .box:last #forecast_chart_div_contracts').length, 1, "last forecast should have chart");
+            dashboard.destroy();
+            done();
+        });
+
+        QUnit.test('sale_subscription_detailed', function (assert) {
+            var done = assert.async();
+            var self = this;
+            assert.expect(8);
+            var dashboard = new SubscriptionDashBoard.sale_subscription_dashboard_detailed(null, null, {
+                main_dashboard_action_id: null,
+                stat_types: this.data.fetch_data.stat_types,
+                start_date: moment(),
+                end_date: moment().add(1, 'month'),
+                selected_stat: 'net_revenue',
+                currency_id: 3,
+                contract_templates: this.data.fetch_data.contract_templates,
+                tags: null,
+                companies: null,
+                filters: {},
+            });
+            testUtils.addMockEnvironment(dashboard, {
+                mockRPC: function (route, args) {
+                    if (route === '/sale_subscription_dashboard/compute_stat') {
+                        return $.when(self.data.compute_stat);
+                    }
+                    if (route === '/sale_subscription_dashboard/get_stats_history') {
+                        return $.when(self.data.get_stats_history);
+                    }
+                    if (route === '/sale_subscription_dashboard/compute_graph') {
+                        return $.when(self.data.compute_stats_graph.graph);
+                    }
+                    if (route === '/sale_subscription_dashboard/get_stats_by_plan') {
+                        return $.when(self.data.get_stats_by_plan);
+                    }
+                    return $.when();
+                },
+                session: {
+                    currencies: {
+                        3: {
+                            digits: [69, 2],
+                            position: "before",
+                            symbol: "$"
+                        }
+                    }
+                },
+            });
+            dashboard.appendTo($('#qunit-fixture'));
+            assert.strictEqual(dashboard.$('.o_account_contract_dashboard').length, 1, "should have a dashboard");
+            assert.strictEqual(dashboard.$('.o_account_contract_dashboard .box').length, 3, "should have a dashboard with 3 boxes");
+
+            assert.strictEqual(dashboard.$('.o_account_contract_dashboard .box.o_graph_detailed').length, 1, "should have in first a graph box");
+            assert.strictEqual(dashboard.$('.o_account_contract_dashboard .box.o_graph_detailed .o_metric_current').length, 1, "should have the current metric");
+            assert.strictEqual(dashboard.$('.o_account_contract_dashboard .box.o_graph_detailed .o_metric_current').text().trim(), "$10k", "should format correctly the current metric value");
+            assert.strictEqual(dashboard.$('.o_account_contract_dashboard .box.o_graph_detailed #stat_chart_div').length, 1, "should display a chart");
+
+            assert.strictEqual(dashboard.$('.o_account_contract_dashboard #o-stat-history-box.box').length, 1, "should have in second a history box");
+            assert.strictEqual(dashboard.$('.o_account_contract_dashboard .box table').length, 1, "should have in third a table box");
+
+            dashboard.destroy();
             done();
         });
 

@@ -62,7 +62,7 @@ QUnit.module('Views', {
                     untaxed: 20,
                     categ_id: 2,
                     date: '1984-12-15',
-                    transformatin_date: '2018-12-15 14:07:03'
+                    transformation_date: '2018-12-15 14:07:03'
                 }],
             },
         };
@@ -131,7 +131,7 @@ QUnit.module('Views', {
         // graph is rendered.
         // Roughly: 2 concurrency.delay = 2 levels of inner async calls.
         var done = assert.async();
-        assert.expect(7);
+        assert.expect(8);
 
         var self = this;
         createAsyncView({
@@ -139,7 +139,7 @@ QUnit.module('Views', {
             model: 'test_report',
             data: this.data,
             arch: '<dashboard>' +
-                      '<widget name="pie_chart" attrs="{\'measure\': \'sold\', \'groupby\': \'categ_id\'}"/>' +
+                      '<widget name="pie_chart" attrs="{\'title\': \'Products sold\', \'measure\': \'sold\', \'groupby\': \'categ_id\'}"/>' +
                   '</dashboard>',
             mockRPC: function (route, args){
                 if (route == '/web/dataset/call_kw/test_report/read_group') {
@@ -147,8 +147,9 @@ QUnit.module('Views', {
                     assert.deepEqual(args.model,"test_report");
                     assert.deepEqual(args.method,"read_group");
                     assert.deepEqual(args.kwargs, {
+                      context: {fill_temporal: true},
                       domain: [],
-                      fields: ["sold"],
+                      fields: ["categ_id", "sold"],
                       groupby: ["categ_id"],
                       lazy: false,
                     });
@@ -172,6 +173,85 @@ QUnit.module('Views', {
                 "texts must contain exactly 4 elements");
             assert.strictEqual(texts.text(), "63%38%FirstSecond",
                 "there should be 4 texts visible");
+            assert.strictEqual($('.o_widget label').text(), "Products sold",
+                "the title of the graph should be displayed");
+            self.dashboard.destroy();
+            delete widgetRegistry.map.test;
+            done();
+        });
+    });
+
+    QUnit.test('basic rendering of empty pie chart widget', function (assert) {
+        // Pie Chart is rendered asynchronously.
+        // concurrency.delay is a fragile way that we use to wait until the
+        // graph is rendered.
+        // Roughly: 2 concurrency.delay = 2 levels of inner async calls.
+        var done = assert.async();
+        assert.expect(1);
+
+        this.data.test_report.records = [];
+
+        var self = this;
+        createAsyncView({
+            View: DashboardView,
+            model: 'test_report',
+            data: this.data,
+            arch: '<dashboard>' +
+                      '<widget name="pie_chart" attrs="{\'measure\': \'sold\', \'groupby\': \'categ_id\'}"/>' +
+                  '</dashboard>',
+        })
+        .then(function (dashboard) {
+            self.dashboard = dashboard;
+        })
+        .then(concurrency.delay.bind(concurrency, 0))
+        .then(concurrency.delay.bind(concurrency, 0))
+        .then(function () {
+            assert.strictEqual(self.dashboard.$('.o_graph_svg_container .nvd3-svg > text').text(),
+                "No data to display", "the error should be embedded in the pie chart");
+            self.dashboard.destroy();
+            done();
+        });
+    });
+
+    QUnit.test('rendering of a pie chart widget and comparison active', function (assert) {
+        // Pie Chart is rendered asynchronously.
+        // concurrency.delay is a fragile way that we use to wait until the
+        // graph is rendered.
+        // Roughly: 2 concurrency.delay = 2 levels of inner async calls.
+        var done = assert.async();
+        assert.expect(3);
+
+        var self = this;
+        createAsyncView({
+            View: DashboardView,
+            model: 'test_time_range',
+            data: this.data,
+            context: {
+                timeRangeMenuData: {
+                    //Q3 2018
+                    timeRange: ['&', ["transformation_date", ">=", "2018-07-01"],["transformation_date", "<=", "2018-09-30"]],
+                    timeRangeDescription: 'This Quarter',
+                    //Q4 2018
+                    comparisonTimeRange: ['&', ["transformation_date", ">=", "2018-10-01"],["transformation_date", "<=", "2018-12-31"]],
+                    comparisonTimeRangeDescription: 'Previous Period',
+                },
+            },
+            arch: '<dashboard>' +
+                      '<widget name="pie_chart" attrs="{\'title\': \'Products sold\', \'measure\': \'sold\', \'groupby\': \'categ_id\'}"/>' +
+                  '</dashboard>',
+        })
+        .then(function (dashboard) {
+            self.dashboard = dashboard;
+        })
+        .then(concurrency.delay.bind(concurrency, 0))
+        .then(concurrency.delay.bind(concurrency, 0))
+        .then(function () {
+            assert.deepEqual($('.o_graph_svg_container').length, 2,
+                "two pie charts should be displayed");
+            assert.strictEqual($('.o_widget label:eq(0)').text(), "Products sold (This Quarter)",
+                "the title of the graph should be displayed");
+            assert.strictEqual($('.o_widget label:eq(1)').text(), "Products sold (Previous Period)",
+                "the title of the comparison graph should be displayed");
             self.dashboard.destroy();
             delete widgetRegistry.map.test;
             done();
@@ -223,7 +303,7 @@ QUnit.module('Views', {
             model: 'test_report',
             data: this.data,
             arch: '<dashboard>' +
-                        '<group string="At a glance">' +
+                        '<group>' +
                             '<aggregate name="sold" field="sold" widget="float_time"/>' +
                         '</group>' +
                     '</dashboard>',
@@ -423,6 +503,32 @@ QUnit.module('Views', {
 
         assert.strictEqual(dashboard.$('.o_value').text(), '8.00\u00a0€',
             "should format the amount with the correct currency");
+
+        dashboard.destroy();
+    });
+
+    QUnit.test('rendering of an aggregate with value label', function (assert) {
+        assert.expect(2);
+
+        var data = this.data;
+        data.test_report.fields.days = {string: "Days to Confirm", type: "float"};
+        data.test_report.records[0].days = 5.3;
+        var dashboard = createView({
+            View: DashboardView,
+            model: 'test_report',
+            data: data,
+            arch: '<dashboard>' +
+                '<group>' +
+                    '<aggregate name="days" field="days" value_label="day(s)"/>' +
+                    '<aggregate name="sold" field="sold"/>' +
+                '</group>' +
+            '</dashboard>',
+        });
+
+        assert.strictEqual(dashboard.$('.o_value:first').text(), '5.30 day(s)',
+        "should have a value label");
+        assert.strictEqual(dashboard.$('.o_value:last').text(), '8.00',
+        "shouldn't have any value label");
 
         dashboard.destroy();
     });
@@ -2281,6 +2387,45 @@ QUnit.module('Views', {
 
         actionManager.destroy();
         window.Date = RealDate;
+    });
+
+    QUnit.test('basic rendering of aggregates with big values', function (assert) {
+        assert.expect(12);
+
+        var readGroupNo = -3;
+        var results = [
+            "0.02", "0.15", "1.52", "15.23", "152.35",
+            "1.52k", "15.24k", "152.35k", "1.52M" , "15.23M",
+            "152.35M" , "1.52G"];
+
+        var dashboard = createView({
+            View: DashboardView,
+            model: 'test_report',
+            data: this.data,
+            arch: '<dashboard>' +
+                        '<group>' +
+                            '<aggregate name="sold" field="sold" widget="monetary"/>' +
+                        '</group>' +
+                    '</dashboard>',
+            mockRPC: function (route, args) {
+                if (args.method === 'read_group') {
+                    readGroupNo++;
+                    return $.when([{sold: Math.pow(10,readGroupNo) * 1.52346}]);
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        assert.strictEqual(dashboard.$('.o_value').text(), results.shift(),
+            "should correctly display the aggregate's value");
+
+        for (var i = 0; i < 11; i++) {
+            dashboard.update({});
+            assert.strictEqual(dashboard.$('.o_value').text(), results.shift(),
+            "should correctly display the aggregate's value");
+        }
+
+        dashboard.destroy();
     });
 });
 });

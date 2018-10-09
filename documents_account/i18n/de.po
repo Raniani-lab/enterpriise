@@ -4,13 +4,14 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# Johannes Croe <jcr@odoo.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"POT-Creation-Date: 2018-10-02 10:31+0000\n"
+"PO-Revision-Date: 2018-10-02 10:31+0000\n"
+"Last-Translator: Johannes Croe <jcr@odoo.com>, 2018\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,16 +25,20 @@ msgid ""
 "A set of condition and actions which will be available to all attachments "
 "matching the conditions"
 msgstr ""
+"Eine Reihe an Bedingungen und Aktionen die für alle Anhänge verfügbar sind "
+"die den Bedingungen entprechen"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_res_company__account_folder
+#: model:ir.model.fields,field_description:documents_account.field_res_config_settings__dms_account_settings
 msgid "Account Folder"
-msgstr ""
+msgstr "Kontenverzeichnis"
 
 #. module: documents_account
-#: model:ir.model.fields,field_description:documents_account.field_documents_workflow_rule__create_model
-msgid "Attach to"
-msgstr ""
+#: model:ir.model.fields,field_description:documents_account.field_res_company__account_tags
+#: model:ir.model.fields,field_description:documents_account.field_res_config_settings__account_tags
+msgid "Account Tags"
+msgstr "Konto Anmerkungen"
 
 #. module: documents_account
 #: model:ir.model,name:documents_account.model_res_company
@@ -41,24 +46,74 @@ msgid "Companies"
 msgstr "Unternehmen"
 
 #. module: documents_account
-#: selection:documents.workflow.rule,create_model:0
-msgid "Credit note"
+#: model:ir.model,name:documents_account.model_res_config_settings
+msgid "Config Settings"
+msgstr "Konfiguration "
+
+#. module: documents_account
+#: model:ir.model.fields,field_description:documents_account.field_documents_workflow_rule__create_model
+msgid "Create"
+msgstr "Anlegen"
+
+#. module: documents_account
+#: code:addons/documents_account/models/account_invoice.py:13
+#, python-format
+msgid "Created by: "
 msgstr ""
 
 #. module: documents_account
-#: model:ir.ui.view,arch_db:documents_account.res_config_settings_view_form
-msgid "Default destination for the attachments created in accounting."
+#: selection:documents.workflow.rule,create_model:0
+msgid "Credit note"
+msgstr "Gutschrift"
+
+#. module: documents_account
+#: model:ir.model.fields,field_description:documents_account.field_res_company__dms_account_settings
+msgid "Dms Account Settings"
+msgstr "Dms Konto Einstellungen"
+
+#. module: documents_account
+#: model:ir.model,name:documents_account.model_ir_attachment
+msgid "Document"
+msgstr "Dokument"
+
+#. module: documents_account
+#: model:mail.activity.type,name:documents_account.mail_documents_activity_data_fs
+msgid "Financial Statement"
 msgstr ""
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_documents_workflow_rule__has_business_option
 msgid "Has Business Option"
+msgstr "Hat Geschäftsoptionen"
+
+#. module: documents_account
+#: model:ir.model,name:documents_account.model_account_invoice
+msgid "Invoice"
+msgstr "Rechnung"
+
+#. module: documents_account
+#: selection:documents.workflow.rule,create_model:0
+msgid "Product template"
 msgstr ""
+
+#. module: documents_account
+#: model_terms:ir.ui.view,arch_db:documents_account.res_config_settings_view_form
+msgid "Select the folder to be used for accounting's documents."
+msgstr ""
+"Wählen Sie das Verzeichnis um es für die Buchhaltungs Dokumente zu "
+"verwenden."
+
+#. module: documents_account
+#: model_terms:ir.ui.view,arch_db:documents_account.res_config_settings_view_form
+msgid "Select the tags to be applied to the accounting's new documents"
+msgstr ""
+"Wählen Sie die Stichwörter, die auf den neuen Dokumenten der Buchhaltung "
+"ausgewählt werden sollen."
 
 #. module: documents_account
 #: selection:documents.workflow.rule,create_model:0
 msgid "Signature template"
-msgstr ""
+msgstr "Vorlage für Signaturanfrage"
 
 #. module: documents_account
 #: selection:documents.workflow.rule,create_model:0
@@ -66,21 +121,16 @@ msgid "Task"
 msgstr "Aufgabe"
 
 #. module: documents_account
+#: model:mail.activity.type,name:documents_account.mail_documents_activity_data_vat
+msgid "Tax Statement"
+msgstr ""
+
+#. module: documents_account
 #: selection:documents.workflow.rule,create_model:0
 msgid "Vendor bill"
-msgstr ""
+msgstr "Lieferantenrechnung"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_res_config_settings__account_folder
-msgid "account folder"
+msgid "account default folder"
 msgstr ""
-
-#. module: documents_account
-#: model:ir.model,name:documents_account.model_ir_attachment
-msgid "ir.attachment"
-msgstr "ir.attachment"
-
-#. module: documents_account
-#: model:ir.model,name:documents_account.model_res_config_settings
-msgid "res.config.settings"
-msgstr "res.config.settings"

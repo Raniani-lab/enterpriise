@@ -4,13 +4,14 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# Johannes Croe <jcr@odoo.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"POT-Creation-Date: 2018-10-02 10:31+0000\n"
+"PO-Revision-Date: 2018-10-02 10:31+0000\n"
+"Last-Translator: Johannes Croe <jcr@odoo.com>, 2018\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,17 +20,17 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: account_taxcloud
-#: model:ir.ui.view,arch_db:account_taxcloud.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:account_taxcloud.res_config_settings_view_form
 msgid "<i class=\"fa fa-fw fa-arrow-right\"/>How to Get Credentials"
-msgstr ""
+msgstr "<i class=\"fa fa-fw fa-arrow-right\"/>Wie erhalten Sie Ihre Zugangsdaten"
 
 #. module: account_taxcloud
-#: model:ir.ui.view,arch_db:account_taxcloud.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:account_taxcloud.res_config_settings_view_form
 msgid "API ID"
 msgstr "API-ID"
 
 #. module: account_taxcloud
-#: model:ir.ui.view,arch_db:account_taxcloud.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:account_taxcloud.res_config_settings_view_form
 msgid "API KEY"
 msgstr "API-Schlüssel"
 
@@ -37,6 +38,11 @@ msgstr "API-Schlüssel"
 #: model:ir.model,name:account_taxcloud.model_res_company
 msgid "Companies"
 msgstr "Unternehmen"
+
+#. module: account_taxcloud
+#: model:ir.model,name:account_taxcloud.model_res_config_settings
+msgid "Config Settings"
+msgstr "Konfiguration "
 
 #. module: account_taxcloud
 #: model:ir.model.fields,field_description:account_taxcloud.field_product_tic_category__create_uid
@@ -49,7 +55,7 @@ msgid "Created on"
 msgstr "Erstellt am"
 
 #. module: account_taxcloud
-#: model:ir.ui.view,arch_db:account_taxcloud.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:account_taxcloud.res_config_settings_view_form
 msgid "Default Category"
 msgstr "Standard-Kategorie"
 
@@ -73,6 +79,15 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_taxcloud.field_product_tic_category__display_name
 msgid "Display Name"
 msgstr "Anzeigename"
+
+#. module: account_taxcloud
+#: model:ir.model.fields,help:account_taxcloud.field_product_template__tic_category_id
+msgid ""
+"Each product falls into a category which has specific taxes predermined by "
+"the government.The system will use the Tax Cloud category set on the "
+"internal category of the product. If thereisn't any, the one on the product "
+"itself will be used. Only used in United States."
+msgstr ""
 
 #. module: account_taxcloud
 #: model:ir.model,name:account_taxcloud.model_account_fiscal_position
@@ -110,9 +125,14 @@ msgid "Product Category"
 msgstr "Produktkategorie"
 
 #. module: account_taxcloud
-#: model:ir.ui.view,arch_db:account_taxcloud.account_taxcloud_tic_category_search
+#: model_terms:ir.ui.view,arch_db:account_taxcloud.account_taxcloud_tic_category_search
 msgid "Product TIC Categories"
 msgstr "Produkt-TIC-Kategorien"
+
+#. module: account_taxcloud
+#: model:ir.model,name:account_taxcloud.model_product_tic_category
+msgid "Product TIC Category"
+msgstr ""
 
 #. module: account_taxcloud
 #: model:ir.model,name:account_taxcloud.model_product_template
@@ -120,7 +140,7 @@ msgid "Product Template"
 msgstr "Produktvorlage"
 
 #. module: account_taxcloud
-#: model:ir.ui.view,arch_db:account_taxcloud.account_taxcloud_tic_category_tree
+#: model_terms:ir.ui.view,arch_db:account_taxcloud.account_taxcloud_tic_category_tree
 msgid "TIC Category"
 msgstr "TIC-Kategorie"
 
@@ -131,7 +151,7 @@ msgstr "TIC-Kategoriecode"
 
 #. module: account_taxcloud
 #: model:ir.model.fields,field_description:account_taxcloud.field_product_category__tic_category_id
-#: model:ir.ui.view,arch_db:account_taxcloud.account_taxcloud_tic_category_search
+#: model_terms:ir.ui.view,arch_db:account_taxcloud.account_taxcloud_tic_category_search
 msgid "TIC Code"
 msgstr "TIC-Code"
 
@@ -141,7 +161,7 @@ msgid "TIC Description"
 msgstr "TIC-Beschreibung"
 
 #. module: account_taxcloud
-#: model:ir.ui.view,arch_db:account_taxcloud.product_category_view_form_inherit_account_taxcloud
+#: model_terms:ir.ui.view,arch_db:account_taxcloud.product_category_view_form_inherit_account_taxcloud
 msgid "TaxCloud"
 msgstr "TaxCloud"
 
@@ -162,17 +182,14 @@ msgid "TaxCloud Categories"
 msgstr "TaxCloud-Kategorien"
 
 #. module: account_taxcloud
-#: model:ir.model.fields,field_description:account_taxcloud.field_product_product__tic_category_id
 #: model:ir.model.fields,field_description:account_taxcloud.field_product_template__tic_category_id
-#: model:ir.ui.view,arch_db:account_taxcloud.product_category_view_form_inherit_account_taxcloud
-#: model:ir.ui.view,arch_db:account_taxcloud.product_template_taxcloud_inherit_form
+#: model_terms:ir.ui.view,arch_db:account_taxcloud.product_category_view_form_inherit_account_taxcloud
+#: model_terms:ir.ui.view,arch_db:account_taxcloud.product_template_taxcloud_inherit_form
 msgid "TaxCloud Category"
 msgstr "TaxCloud-Kategorie"
 
 #. module: account_taxcloud
 #: model:ir.model.fields,help:account_taxcloud.field_product_category__tic_category_id
-#: model:ir.model.fields,help:account_taxcloud.field_product_product__tic_category_id
-#: model:ir.model.fields,help:account_taxcloud.field_product_template__tic_category_id
 msgid ""
 "TaxCloud uses Taxability Information Codes (TIC) to make sure each item in "
 "your catalog is taxed at the right rate (or, for tax-exempt items, not taxed"
@@ -248,13 +265,3 @@ msgstr "TaxCloud-API verwenden"
 #, python-format
 msgid "[%s] %s"
 msgstr "[%s] %s"
-
-#. module: account_taxcloud
-#: model:ir.model,name:account_taxcloud.model_product_tic_category
-msgid "product.tic.category"
-msgstr "product.tic.category"
-
-#. module: account_taxcloud
-#: model:ir.model,name:account_taxcloud.model_res_config_settings
-msgid "res.config.settings"
-msgstr "res.config.settings"

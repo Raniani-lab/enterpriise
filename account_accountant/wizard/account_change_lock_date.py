@@ -6,7 +6,7 @@ class AccountChangeLockDate(models.TransientModel):
     This wizard is used to change the lock date
     """
     _name = 'account.change.lock.date'
-    _description = 'Change lock date'
+    _description = 'Change Lock Date'
 
     period_lock_date = fields.Date(
         string='Lock Date for Non-Advisers',

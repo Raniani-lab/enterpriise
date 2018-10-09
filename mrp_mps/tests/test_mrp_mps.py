@@ -54,8 +54,8 @@ class TestMpsReport(TestMpsCommon):
         # ------------------------------------------------------------------------
         def mps_calculate_forecast(product):
             now = datetime.datetime.now()
-            date = datetime.datetime(now.year, now.month, 1)
-            initial = product.with_context(to_date=date.strftime('%Y-%m-%d')).qty_available
+            date = datetime.datetime(now.year, now.month, 1, 23, 59, 59)
+            initial = product.with_context(to_date=date).qty_available
             indirect = self.Mps.get_indirect(product)[product.id]
             for data in self.Mps.get_data(product):
                 self.assertEqual(data['initial'], initial, 'Wrong calculation of initial demand.')

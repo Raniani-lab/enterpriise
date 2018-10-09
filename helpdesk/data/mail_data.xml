@@ -17,6 +17,14 @@
         <field name="hidden" eval="True"/>
         <field name="description">Ticket created</field>
     </record>
+    <record id="mt_ticket_rated" model="mail.message.subtype">
+        <field name="name">Ticket Rated</field>
+        <field name="sequence">5</field>
+        <field name="res_model">helpdesk.ticket</field>
+        <field name="default" eval="False"/>
+        <field name="hidden" eval="False"/>
+        <field name="description">Ticket rated</field>
+    </record>
     <record id="mt_ticket_stage" model="mail.message.subtype">
         <field name="name">Stage Changed</field>
         <field name="sequence">10</field>
@@ -33,6 +41,14 @@
         <field name="res_model">helpdesk.team</field>
         <field name="default" eval="True"/>
         <field name="parent_id" eval="ref('mt_ticket_new')"/>
+        <field name="relation_field">team_id</field>
+    </record>
+    <record id="mt_team_ticket_rated" model="mail.message.subtype">
+        <field name="name">Ticket Rated</field>
+        <field name="sequence">5</field>
+        <field name="res_model">helpdesk.team</field>
+        <field name="default" eval="False"/>
+        <field name="parent_id" eval="ref('mt_ticket_rated')"/>
         <field name="relation_field">team_id</field>
     </record>
     <record id="mt_team_ticket_stage" model="mail.message.subtype">

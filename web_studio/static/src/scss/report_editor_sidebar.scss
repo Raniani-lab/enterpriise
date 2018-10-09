@@ -153,7 +153,7 @@
                     }
                     .o_web_studio_size > input,
                     .o_web_studio_offset > input {
-                        width: 80%;
+                        width: 40%;
                         margin-right: 5px;
                     }
                     .o_web_studio_classes > input {
@@ -167,6 +167,16 @@
                             background-color: $o-web-studio-bg-darker;
                             padding: 4px;
                             cursor: pointer;
+                        }
+                    }
+                    .o_web_studio_table_style {
+                        > select {
+                            margin-left: 3px;
+                        }
+                    }
+                    .o_web_studio_groups {
+                        .o_field_many2manytags {
+                            width: 100%;
                         }
                     }
                     .o_web_studio_colors {

@@ -3,19 +3,24 @@
 # * website_twitter_wall
 # 
 # Translators:
-# e2f <projects@e2f.com>, 2018
 # Martin Trigaux, 2018
-# Maie <m@maie.name>, 2018
 # e2f_cn c7 <e2f_cn_c7@outlook.com>, 2018
 # 老窦 北京 <2662059195@qq.com>, 2018
 # Fisher <fisher@kdomi.com>, 2018
+# ChinaMaker <liuct@chinamaker.net>, 2018
+# 珠海-杜哥 <liangjia@qq.com>, 2018
+# Youfu Sheng <wdmsyf@sina.com>, 2018
+# snow wang <147156565@qq.com>, 2018
+# Maie <m@maie.name>, 2018
+# keecome <7017511@qq.com>, 2018
+# Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:29+0000\n"
-"PO-Revision-Date: 2018-08-24 11:29+0000\n"
-"Last-Translator: Fisher <fisher@kdomi.com>, 2018\n"
+"POT-Creation-Date: 2018-09-21 14:07+0000\n"
+"PO-Revision-Date: 2018-09-21 14:07+0000\n"
+"Last-Translator: Jeffery CHEN Fan <jeffery9@gmail.com>, 2018\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,38 +29,42 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: website_twitter_wall
-#: model:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
 msgid "(Un)archiving a wall. Do you want to proceed?"
-msgstr ""
+msgstr "(取消)存档一堵墙。你想继续吗？"
 
 #. module: website_twitter_wall
-#: model:ir.ui.view,arch_db:website_twitter_wall.twitter_walls
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_walls
 msgid "<b>Hey! No wall found</b>"
-msgstr ""
+msgstr "<b>嘿哟哟,没发现圣上的围墙!</b>"
 
 #. module: website_twitter_wall
-#: model:ir.ui.view,arch_db:website_twitter_wall.twitter_walls
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_walls
 msgid "<i class=\"fa fa-plus-circle\"/> Create Now"
-msgstr ""
+msgstr "<i class=\"fa fa-plus-circle\"/>现在创建"
 
 #. module: website_twitter_wall
-#: model:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "<i class=\"fa fa-twitter\"/> <strong> Join the wall</strong>"
-msgstr ""
+msgstr "<i class=\"fa fa-twitter\"/> <strong> Join the wall</strong>"
 
 #. module: website_twitter_wall
-#: model:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
 msgid ""
 "<span class=\"o_stat_text\">Live Mode</span>\n"
 "                                <span class=\"o_stat_text\">is <strong class=\"text-danger\"> Off </strong></span>"
 msgstr ""
+"<span class=\"o_stat_text\">拉阔模式</span>\n"
+"                                <span class=\"o_stat_text\">为 <strong class=\"text-danger\"> 关闭 </strong></span>"
 
 #. module: website_twitter_wall
-#: model:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
 msgid ""
 "<span class=\"o_stat_text\">Live Mode</span>\n"
 "                                <span class=\"o_stat_text\">is <strong class=\"text-success\"> On </strong></span>"
 msgstr ""
+"<span class=\"o_stat_text\">拉阔模式</span>\n"
+"                                <span class=\"o_stat_text\">为 <strong class=\"text-success\"> 开启 </strong></span>"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__access_token
@@ -78,14 +87,14 @@ msgid "Created on"
 msgstr "创建时间"
 
 #. module: website_twitter_wall
-#: model:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Decrease zoom level"
-msgstr ""
+msgstr "减少缩放级别"
 
 #. module: website_twitter_wall
-#: model:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Delete this tweet"
-msgstr ""
+msgstr "删除这条推特"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__description
@@ -98,14 +107,14 @@ msgid "Display Name"
 msgstr "显示名称"
 
 #. module: website_twitter_wall
-#: model:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Exit full screen"
-msgstr ""
+msgstr "退出全屏"
 
 #. module: website_twitter_wall
-#: model:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Hey! No tweet found"
-msgstr ""
+msgstr "嘿哟,兄dei!没有发现推"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__id
@@ -118,19 +127,19 @@ msgid "Image"
 msgstr "图像"
 
 #. module: website_twitter_wall
-#: model:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Increase zoom level"
-msgstr ""
+msgstr "增加缩放级别"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__is_live
 msgid "Is Live"
-msgstr ""
+msgstr "Is Live"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,help:website_twitter_wall.field_website_twitter_wall__is_live
 msgid "Is live mode on/off"
-msgstr ""
+msgstr "是直播模式开/关"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__is_published
@@ -145,7 +154,7 @@ msgstr "最后修改日"
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__last_search
 msgid "Last Search"
-msgstr ""
+msgstr "最新搜索"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__write_uid
@@ -158,92 +167,92 @@ msgid "Last Updated on"
 msgstr "最后更新时间"
 
 #. module: website_twitter_wall
-#: model:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "List view"
-msgstr ""
+msgstr "列表视图"
 
 #. module: website_twitter_wall
-#: model:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Live mode"
-msgstr ""
+msgstr "列表模式"
 
 #. module: website_twitter_wall
 #: selection:website.twitter.wall,mode:0
 msgid "Mixed"
-msgstr ""
+msgstr "混合"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,help:website_twitter_wall.field_website_twitter_wall__mode
 msgid "Most recent tweets, most popular tweets, or both"
-msgstr ""
+msgstr "最近的推文，最受欢迎的推文，或两者兼而有之"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__name
-#: model:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
 msgid "Name"
 msgstr "名称"
 
 #. module: website_twitter_wall
 #: selection:website.twitter.wall,mode:0
 msgid "Popular"
-msgstr ""
+msgstr "热门"
 
 #. module: website_twitter_wall
-#: model:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
 msgid "Query operators"
-msgstr ""
+msgstr "查询运算符"
 
 #. module: website_twitter_wall
 #: selection:website.twitter.wall,mode:0
 msgid "Recent"
-msgstr ""
+msgstr "最近"
 
 #. module: website_twitter_wall
-#: model:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Repeat"
 msgstr "重复"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__search_pattern
 msgid "Search string"
-msgstr ""
+msgstr "搜索字符串"
 
 #. module: website_twitter_wall
-#: model:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_share
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_share
 msgid "Share #{wall.name} on facebook"
-msgstr ""
+msgstr "分享 #{wall.name} 于 facebook"
 
 #. module: website_twitter_wall
-#: model:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_share
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_share
 msgid "Share #{wall.name} on google+"
-msgstr ""
+msgstr "分享 #{wall.name} 于google+"
 
 #. module: website_twitter_wall
-#: model:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_share
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_share
 msgid "Share #{wall.name} on linkedin"
-msgstr ""
+msgstr "分享 #{wall.name} 于 linkedin"
 
 #. module: website_twitter_wall
-#: model:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_share
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_share
 msgid "Share #{wall.name} on twitter"
-msgstr ""
+msgstr "分享 #{wall.name} 于twiter"
 
 #. module: website_twitter_wall
-#: model:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Shuffle"
-msgstr ""
+msgstr "随机"
 
 #. module: website_twitter_wall
-#: model:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Single view"
-msgstr ""
+msgstr "单视图"
 
 #. module: website_twitter_wall
-#: code:addons/website_twitter_wall/models/website_twitter_wall.py:81
+#: code:addons/website_twitter_wall/models/website_twitter_wall.py:83
 #, python-format
 msgid ""
 "The Twitter authentication failed. Please check your API key and secret."
-msgstr ""
+msgstr "Twitter身份验证失败。请检查您的API密钥和密码。"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,help:website_twitter_wall.field_website_twitter_wall__website_url
@@ -255,42 +264,42 @@ msgstr "通过网站访问单据的完整URL。"
 msgid ""
 "The search criteria to get the tweets you want. You can use the Twitter "
 "query operators."
-msgstr ""
+msgstr "获取所需推文的搜索条件。您可以使用Twitter查询运算符。"
 
 #. module: website_twitter_wall
-#: code:addons/website_twitter_wall/models/website_twitter_wall.py:92
+#: code:addons/website_twitter_wall/models/website_twitter_wall.py:94
 #, python-format
 msgid "The tweets search failed. Check your credentials and access token"
-msgstr ""
+msgstr "推文搜索失败。检查您的凭据和访问令牌"
 
 #. module: website_twitter_wall
-#: model:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Three columns view"
-msgstr ""
+msgstr "三列视图"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__total_tweets
-#: model:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Total Tweets"
-msgstr ""
+msgstr "总计 Tweets"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__tweet_ids
 msgid "Tweet"
-msgstr ""
+msgstr "Tweet"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_tweet__tweet_html
 msgid "Tweet Html"
-msgstr ""
+msgstr "推Html"
 
 #. module: website_twitter_wall
-#: code:addons/website_twitter_wall/models/website_twitter_wall.py:132
+#: code:addons/website_twitter_wall/models/website_twitter_wall.py:134
 #: model:ir.actions.act_window,name:website_twitter_wall.website_twitter_tweet_action
 #: model:ir.ui.menu,name:website_twitter_wall.website_twitter_tweet_menu
-#: model:ir.ui.view,arch_db:website_twitter_wall.website_twitter_tweet_view_form
-#: model:ir.ui.view,arch_db:website_twitter_wall.website_twitter_tweet_view_tree
-#: model:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_tweet_view_form
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_tweet_view_tree
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
 #, python-format
 msgid "Tweets"
 msgstr "Tweets"
@@ -303,7 +312,7 @@ msgstr "Twitter API 密钥"
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__api_secret
 msgid "Twitter API Secret"
-msgstr "Twitter API 秘密"
+msgstr "Twitter API 密钥"
 
 #. module: website_twitter_wall
 #: model:ir.ui.menu,name:website_twitter_wall.menu_website_twitter_wall_root
@@ -311,19 +320,19 @@ msgid "Twitter Wall"
 msgstr "推特墙"
 
 #. module: website_twitter_wall
-#: model:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_footer_custom
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_footer_custom
 msgid "Twitter wall"
-msgstr ""
+msgstr "推特墙"
 
 #. module: website_twitter_wall
-#: model:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Two columns view"
-msgstr ""
+msgstr "两栏查看"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__mode
 msgid "Type of tweets"
-msgstr ""
+msgstr "推类型"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__website_published
@@ -332,17 +341,23 @@ msgstr "在当前网站显示"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_tweet__wall_ids
-#: model:ir.ui.view,arch_db:website_twitter_wall.website_twitter_tweet_view_form
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_tweet_view_form
 msgid "Wall"
-msgstr ""
+msgstr "墙"
 
 #. module: website_twitter_wall
 #: model:ir.actions.act_window,name:website_twitter_wall.website_twitter_wall_action
 #: model:ir.ui.menu,name:website_twitter_wall.twitter_wall_menu
-#: model:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
-#: model:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_tree
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_tree
 msgid "Walls"
-msgstr ""
+msgstr "墙"
+
+#. module: website_twitter_wall
+#: model:ir.model,name:website_twitter_wall.model_website_twitter_tweet
+#: model:ir.model,name:website_twitter_wall.model_website_twitter_wall
+msgid "Website Twitter"
+msgstr "网站Twitter"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__website_url
@@ -350,16 +365,6 @@ msgid "Website URL"
 msgstr "网站网址"
 
 #. module: website_twitter_wall
-#: model:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
 msgid "Your wall name"
-msgstr ""
-
-#. module: website_twitter_wall
-#: model:ir.model,name:website_twitter_wall.model_website_twitter_tweet
-msgid "website.twitter.tweet"
-msgstr "website.twitter.tweet"
-
-#. module: website_twitter_wall
-#: model:ir.model,name:website_twitter_wall.model_website_twitter_wall
-msgid "website.twitter.wall"
-msgstr ""
+msgstr "墙名"

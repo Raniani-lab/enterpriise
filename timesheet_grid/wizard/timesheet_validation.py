@@ -6,6 +6,7 @@ from odoo import fields, models
 
 class ValidationWizard(models.TransientModel):
     _name = 'timesheet.validation'
+    _description = 'Timesheet Validation'
 
     validation_date = fields.Date('Validate up to')
     validation_line_ids = fields.One2many('timesheet.validation.line', 'validation_id')
@@ -17,6 +18,7 @@ class ValidationWizard(models.TransientModel):
 
 class ValidationWizardLine(models.TransientModel):
     _name = 'timesheet.validation.line'
+    _description = 'Timesheet Validation Line'
 
     validation_id = fields.Many2one('timesheet.validation', required=True, ondelete='cascade')
     employee_id = fields.Many2one('hr.employee', string="Employee", required=True, ondelete='cascade')

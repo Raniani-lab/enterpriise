@@ -11,10 +11,10 @@
 # trendspotter, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.4+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-02 11:20+0000\n"
-"PO-Revision-Date: 2018-08-02 11:20+0000\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
 "Last-Translator: trendspotter, 2018\n"
 "Language-Team: Czech (https://www.transifex.com/odoo/teams/41243/cs/)\n"
 "MIME-Version: 1.0\n"
@@ -24,27 +24,27 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
 
 #. module: mail_github
-#: model:ir.ui.view,arch_db:mail_github.message_github_notification
+#: model_terms:ir.ui.view,arch_db:mail_github.message_github_notification
 msgid "(with"
 msgstr ""
 
 #. module: mail_github
-#: model:ir.ui.view,arch_db:mail_github.message_github_notification
+#: model_terms:ir.ui.view,arch_db:mail_github.message_github_notification
 msgid ") on repository"
 msgstr ""
 
 #. module: mail_github
-#: model:ir.ui.view,arch_db:mail_github.message_github_notification
+#: model_terms:ir.ui.view,arch_db:mail_github.message_github_notification
 msgid ", by"
 msgstr ""
 
 #. module: mail_github
-#: model:ir.ui.view,arch_db:mail_github.message_github_notification
+#: model_terms:ir.ui.view,arch_db:mail_github.message_github_notification
 msgid "<b>State :</b>"
 msgstr ""
 
 #. module: mail_github
-#: model:ir.ui.view,arch_db:mail_github.message_github_notification
+#: model_terms:ir.ui.view,arch_db:mail_github.message_github_notification
 msgid "<b>Title :</b>"
 msgstr ""
 
@@ -54,7 +54,7 @@ msgid "Action Needed"
 msgstr "Vyžaduje akci"
 
 #. module: mail_github
-#: model:ir.ui.view,arch_db:mail_github.mail_channel_github_view_form
+#: model_terms:ir.ui.view,arch_db:mail_github.mail_channel_github_view_form
 msgid ""
 "After that you can choose the events you want to follow in the channels. Be "
 "careful, only <i>Commit comment, Issues, Issue comment, Gollum, Pull "
@@ -63,17 +63,22 @@ msgid ""
 msgstr ""
 
 #. module: mail_github
+#: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__message_attachment_count
+msgid "Attachment Count"
+msgstr ""
+
+#. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__channel_ids
 msgid "Channels"
 msgstr "Kanály"
 
 #. module: mail_github
-#: model:ir.ui.view,arch_db:mail_github.mail_channel_github_view_form
+#: model_terms:ir.ui.view,arch_db:mail_github.mail_channel_github_view_form
 msgid "Channels allowed to follow repositories."
 msgstr ""
 
 #. module: mail_github
-#: model:ir.ui.view,arch_db:mail_github.message_github_notification
+#: model_terms:ir.ui.view,arch_db:mail_github.message_github_notification
 msgid "Commit"
 msgstr ""
 
@@ -104,6 +109,11 @@ msgid "Display Name"
 msgstr "Zobrazovaný název"
 
 #. module: mail_github
+#: model:ir.model,name:mail_github.model_mail_channel_github
+msgid "Email Github Channel"
+msgstr ""
+
+#. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel__github_enabled
 msgid "Enable listening to Github repositories"
 msgstr ""
@@ -129,7 +139,7 @@ msgid "GitHub Login"
 msgstr ""
 
 #. module: mail_github
-#: model:ir.ui.view,arch_db:mail_github.mail_channel_view_form
+#: model_terms:ir.ui.view,arch_db:mail_github.mail_channel_view_form
 msgid "Github"
 msgstr ""
 
@@ -152,12 +162,12 @@ msgstr "Pokud je zaškrtnuto, nové zprávy vyžadují vaši pozornost."
 #. module: mail_github
 #: model:ir.model.fields,help:mail_github.field_mail_channel_github__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr ""
+msgstr "Pokud je zaškrtnuto, nové zprávy vyžadují vaši pozornost."
 
 #. module: mail_github
 #: model:ir.model.fields,help:mail_github.field_mail_channel_github__message_has_error
 msgid "If checked, some messages have a delivery error."
-msgstr ""
+msgstr "Pokud je zaškrtnuto, některé zprávy mají chybu při doručení."
 
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__message_is_follower
@@ -165,7 +175,7 @@ msgid "Is Follower"
 msgstr ""
 
 #. module: mail_github
-#: model:ir.ui.view,arch_db:mail_github.message_github_notification
+#: model_terms:ir.ui.view,arch_db:mail_github.message_github_notification
 msgid "Issue"
 msgstr "Problém"
 
@@ -185,9 +195,14 @@ msgid "Last Updated on"
 msgstr "Naposled upraveno"
 
 #. module: mail_github
+#: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__message_main_attachment_id
+msgid "Main Attachment"
+msgstr "Hlavní příloha"
+
+#. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__message_has_error
 msgid "Message Delivery error"
-msgstr ""
+msgstr "Chyba při doručování zpráv"
 
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__message_ids
@@ -217,17 +232,17 @@ msgstr "Počet zpráv s chybou při doručení"
 #. module: mail_github
 #: model:ir.model.fields,help:mail_github.field_mail_channel_github__message_unread_counter
 msgid "Number of unread messages"
-msgstr ""
+msgstr "Počet nepřečtených zpráv"
 
 #. module: mail_github
-#: model:ir.ui.view,arch_db:mail_github.mail_channel_github_view_form
+#: model_terms:ir.ui.view,arch_db:mail_github.mail_channel_github_view_form
 msgid ""
 "Once the repository is created in Odoo, create it on Github. Then, copy "
 "'Payload URL' and 'Secret' in Github interface."
 msgstr ""
 
 #. module: mail_github
-#: model:ir.ui.view,arch_db:mail_github.message_github_notification
+#: model_terms:ir.ui.view,arch_db:mail_github.message_github_notification
 msgid "PR"
 msgstr ""
 
@@ -247,7 +262,7 @@ msgid "Repository ID"
 msgstr ""
 
 #. module: mail_github
-#: model:ir.ui.view,arch_db:mail_github.mail_channel_github_view_form
+#: model_terms:ir.ui.view,arch_db:mail_github.mail_channel_github_view_form
 msgid "Repository full name: user/repository."
 msgstr ""
 
@@ -267,12 +282,12 @@ msgid "The Github repositories the channel will follow"
 msgstr ""
 
 #. module: mail_github
-#: model:ir.ui.view,arch_db:mail_github.mail_channel_github_view_form
+#: model_terms:ir.ui.view,arch_db:mail_github.mail_channel_github_view_form
 msgid "The signature to be pasted when setting up the webhook on Github"
 msgstr ""
 
 #. module: mail_github
-#: model:ir.ui.view,arch_db:mail_github.mail_channel_github_view_form
+#: model_terms:ir.ui.view,arch_db:mail_github.mail_channel_github_view_form
 msgid ""
 "The webhook 'Content Type' should be set to <b>application/x-www-form-"
 "urlencoded</b>."
@@ -299,7 +314,7 @@ msgid "Users"
 msgstr "Uživatelé"
 
 #. module: mail_github
-#: model:ir.ui.view,arch_db:mail_github.message_github_notification
+#: model_terms:ir.ui.view,arch_db:mail_github.message_github_notification
 msgid "commented"
 msgstr ""
 
@@ -310,12 +325,12 @@ msgid "commit"
 msgstr ""
 
 #. module: mail_github
-#: model:ir.ui.view,arch_db:mail_github.message_github_notification
+#: model_terms:ir.ui.view,arch_db:mail_github.message_github_notification
 msgid "commit(s) on"
 msgstr ""
 
 #. module: mail_github
-#: model:ir.ui.view,arch_db:mail_github.message_github_notification
+#: model_terms:ir.ui.view,arch_db:mail_github.message_github_notification
 msgid "created a new"
 msgstr ""
 
@@ -326,22 +341,17 @@ msgid "issue"
 msgstr ""
 
 #. module: mail_github
-#: model:ir.model,name:mail_github.model_mail_channel_github
-msgid "mail.channel.github"
-msgstr ""
-
-#. module: mail_github
-#: model:ir.ui.view,arch_db:mail_github.message_github_notification
+#: model_terms:ir.ui.view,arch_db:mail_github.message_github_notification
 msgid "modified the following"
 msgstr ""
 
 #. module: mail_github
-#: model:ir.ui.view,arch_db:mail_github.message_github_notification
+#: model_terms:ir.ui.view,arch_db:mail_github.message_github_notification
 msgid "modifies wiki pages on repository"
 msgstr ""
 
 #. module: mail_github
-#: model:ir.ui.view,arch_db:mail_github.message_github_notification
+#: model_terms:ir.ui.view,arch_db:mail_github.message_github_notification
 msgid "on repository"
 msgstr ""
 
@@ -353,11 +363,11 @@ msgid "pull request"
 msgstr ""
 
 #. module: mail_github
-#: model:ir.ui.view,arch_db:mail_github.message_github_notification
+#: model_terms:ir.ui.view,arch_db:mail_github.message_github_notification
 msgid "push"
 msgstr ""
 
 #. module: mail_github
-#: model:ir.ui.view,arch_db:mail_github.message_github_notification
+#: model_terms:ir.ui.view,arch_db:mail_github.message_github_notification
 msgid "remove the following"
 msgstr ""

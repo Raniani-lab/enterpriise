@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
 "Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: Mongolian (https://www.transifex.com/odoo/teams/41243/mn/)\n"
 "MIME-Version: 1.0\n"
@@ -31,13 +31,12 @@ msgid "%s is successfully registered"
 msgstr "%s амжилттай бүртгэгдсэн"
 
 #. module: event_barcode
-#: model:ir.ui.view,arch_db:event_barcode.report_registration_badge
+#: model_terms:ir.ui.view,arch_db:event_barcode.report_registration_badge
 msgid "&amp;nbsp;"
 msgstr "&amp;nbsp;"
 
 #. module: event_barcode
 #: code:addons/event_barcode/controllers/main.py:18
-#: model:ir.model,name:event_barcode.model_event_registration
 #, python-format
 msgid "Attendee"
 msgstr "Оролцогч"
@@ -46,14 +45,14 @@ msgstr "Оролцогч"
 #. openerp-web
 #: code:addons/event_barcode/static/src/xml/event_barcode.xml:33
 #: model:ir.model.fields,field_description:event_barcode.field_event_registration__barcode
-#: model:ir.ui.view,arch_db:event_barcode.report_registration_badge
+#: model_terms:ir.ui.view,arch_db:event_barcode.report_registration_badge
 #, python-format
 msgid "Barcode"
 msgstr "Зураасан код"
 
 #. module: event_barcode
 #: model:ir.actions.client,name:event_barcode.event_barcode_action_main_view
-#: model:ir.ui.view,arch_db:event_barcode.event_event_view_form_inherit_barcode
+#: model_terms:ir.ui.view,arch_db:event_barcode.event_event_view_form_inherit_barcode
 msgid "Barcode Interface"
 msgstr "Зураасан кодын интерфэйс"
 
@@ -88,6 +87,11 @@ msgstr "Хаах"
 #, python-format
 msgid "Error"
 msgstr "Алдаа"
+
+#. module: event_barcode
+#: model:ir.model,name:event_barcode.model_event_registration
+msgid "Event Registration"
+msgstr "Арга хэмжээний бүртгэл"
 
 #. module: event_barcode
 #. openerp-web

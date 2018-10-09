@@ -1,5 +1,5 @@
 [![Build Status](http://runbot.odoo.com/runbot/badge/flat/7/master.svg)](http://runbot.odoo.com/runbot/repo/git-github-com-odoo-enterprise-7)
-[![Tech Doc](http://img.shields.io/badge/10.0-docs-875A7B.svg?style=flat)](http://www.odoo.com/documentation/10.0)
+[![Tech Doc](http://img.shields.io/badge/12.0-docs-875A7B.svg?style=flat)](http://www.odoo.com/documentation/12.0)
 [![Help](http://img.shields.io/badge/master-help-875A7B.svg?style=flat)](https://www.odoo.com/forum/help-1)
 [![Nightly Builds](http://img.shields.io/badge/master-nightly-875A7B.svg?style=flat)](http://nightly.odoo.com/)
 
@@ -27,14 +27,14 @@ a full-featured <a href="https://www.odoo.com">Open Source ERP</a> when you inst
 
 Getting started with Odoo
 -------------------------
-For a standard installation please follow the <a href="https://www.odoo.com/documentation/10.0/setup/install.html">Setup instructions</a>
+For a standard installation please follow the <a href="https://www.odoo.com/documentation/12.0/setup/install.html">Setup instructions</a>
 from the documentation.
 
 If you are a developer you may type the following command at your terminal:
 
     wget -O- https://raw.githubusercontent.com/odoo/odoo/master/setup/setup_dev.py | python
 
-Then follow <a href="https://www.odoo.com/documentation/10.0/tutorials.html">the developer tutorials</a>
+Then follow <a href="https://www.odoo.com/documentation/12.0/tutorials.html">the developer tutorials</a>
 
 
 For Odoo employees

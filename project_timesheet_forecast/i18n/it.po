@@ -7,13 +7,14 @@
 # Martin Trigaux, 2018
 # Luigi Di Naro <gigidn@gmail.com>, 2018
 # Paolo Valier, 2018
+# Alex Siviero <dolanblu@gmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
-"Last-Translator: Paolo Valier, 2018\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"Last-Translator: Alex Siviero <dolanblu@gmail.com>, 2018\n"
 "Language-Team: Italian (https://www.transifex.com/odoo/teams/41243/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,7 +24,7 @@ msgstr ""
 
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_timesheet_forecast_report_analysis__date
-#: model:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search
+#: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search
 msgid "Date"
 msgstr "Data"
 
@@ -39,7 +40,7 @@ msgstr "Ore effettive"
 
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_timesheet_forecast_report_analysis__employee_id
-#: model:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search
+#: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search
 msgid "Employee"
 msgstr "Impiegato"
 
@@ -49,7 +50,7 @@ msgid "Forecast"
 msgstr "Previsione"
 
 #. module: project_timesheet_forecast
-#: model:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search
+#: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search
 msgid "Group By"
 msgstr "Raggruppa per"
 
@@ -80,18 +81,23 @@ msgstr "Avanzamento"
 
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_timesheet_forecast_report_analysis__project_id
-#: model:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search
+#: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search
 msgid "Project"
 msgstr "Progetto"
 
 #. module: project_timesheet_forecast
+#: model:ir.model,name:project_timesheet_forecast.model_project_forecast
+msgid "Project Forecast"
+msgstr "Previsione di Progetto"
+
+#. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_timesheet_forecast_report_analysis__task_id
-#: model:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search
+#: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search
 msgid "Task"
 msgstr "Attività"
 
 #. module: project_timesheet_forecast
-#: model:ir.actions.act_window,help:project_timesheet_forecast.project_timesheet_forecast_report_action
+#: model_terms:ir.actions.act_window,help:project_timesheet_forecast.project_timesheet_forecast_report_action
 msgid ""
 "This report performs analysis on your timesheet and forecast. This allow to "
 "have a global view of past forecast and what was really done. Comparing old "
@@ -105,21 +111,21 @@ msgid "Timesheet"
 msgstr "Timesheet"
 
 #. module: project_timesheet_forecast
+#: model:ir.model,name:project_timesheet_forecast.model_project_timesheet_forecast_report_analysis
+msgid "Timesheet & Forecast Statistics"
+msgstr ""
+
+#. module: project_timesheet_forecast
 #: model:ir.actions.act_window,name:project_timesheet_forecast.project_timesheet_forecast_report_action
-#: model:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_graph
-#: model:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_pivot
-#: model:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search
+#: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_graph
+#: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_pivot
+#: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search
 msgid "Timesheet Forecast Analysis"
 msgstr ""
 
 #. module: project_timesheet_forecast
 #: model:ir.ui.menu,name:project_timesheet_forecast.menu_project_timesheet_forecast_report_analysis
 msgid "Timesheet and Forecast Analysis"
-msgstr ""
-
-#. module: project_timesheet_forecast
-#: model:ir.model,name:project_timesheet_forecast.model_project_timesheet_forecast_report_analysis
-msgid "Timesheet and Forecast Statistics"
 msgstr ""
 
 #. module: project_timesheet_forecast
@@ -131,8 +137,3 @@ msgstr ""
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_timesheet_forecast_report_analysis__type
 msgid "Type"
 msgstr "Tipo"
-
-#. module: project_timesheet_forecast
-#: model:ir.model,name:project_timesheet_forecast.model_project_forecast
-msgid "project.forecast"
-msgstr "project.forecast"

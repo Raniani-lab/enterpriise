@@ -5,17 +5,21 @@
 # Translators:
 # Martin Trigaux, 2018
 # Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
-# 远鼎-Maker <liuct@chinamaker.net>, 2018
+# ChinaMaker <liuct@chinamaker.net>, 2018
 # 老窦 北京 <2662059195@qq.com>, 2018
 # Shane Tsoi <sso@odoo.com>, 2018
 # Jackie Zhang <jzh@odoo.com>, 2018
+# bower Guo <124358678@qq.com>, 2018
+# roye w <159820@qq.com>, 2018
+# 珠海-杜哥 <liangjia@qq.com>, 2018
+# keecome <7017511@qq.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
-"Last-Translator: Jackie Zhang <jzh@odoo.com>, 2018\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"Last-Translator: keecome <7017511@qq.com>, 2018\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -49,7 +53,7 @@ msgid "# ECOs in progress"
 msgstr "# 进行中 ECOs "
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_bom_view_kanban
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_bom_view_kanban
 msgid "&amp;nbsp;"
 msgstr "&amp;nbsp;"
 
@@ -61,14 +65,16 @@ msgid "&times;"
 msgstr "&times;"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
 msgid ""
 "<i class=\"fa fa-envelope-o\" role=\"img\" aria-label=\"Domain alias\" "
 "title=\"Domain alias\"/>&amp;nbsp;"
 msgstr ""
+"<i class=\"fa fa-envelope-o\" role=\"img\" aria-label=\"Domain alias\" "
+"title=\"Domain alias\"/>&amp;nbsp;"
 
 #. module: mrp_plm
-#: code:addons/mrp_plm/models/mrp_eco.py:648
+#: code:addons/mrp_plm/models/mrp_eco.py:650
 #, python-format
 msgid ""
 "<p class=\"o_view_nocontent_smiling_face\">\n"
@@ -77,6 +83,11 @@ msgid ""
 "                        Use this feature to store any files, like drawings or specifications.\n"
 "                    </p>"
 msgstr ""
+"<p class=\"o_view_nocontent_smiling_face\">\n"
+"                    上传文件到产品\n"
+"                   </p><p>\n"
+"                    使用此功能存储任何文件，如图纸或规格。\n"
+"                    </p>"
 
 #. module: mrp_plm
 #: code:addons/mrp_plm/models/product.py:40
@@ -89,24 +100,29 @@ msgid ""
 "                        Use this feature to store any files, like drawings or specifications.\n"
 "                    </p>"
 msgstr ""
+"<p class=\"o_view_nocontent_smiling_face\">\n"
+"                    上传文件到产品\n"
+"                   </p><p>\n"
+"                    使用此功能存储任何文件，如图纸或规格。\n"
+"                    </p>"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "<span>Bill of Materials</span><br/>"
 msgstr "<span>物料清单</span><br/>"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
 msgid "<span>New</span>"
 msgstr "<span>新建</span>"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "<span>Routing</span><br/>"
 msgstr "<span>工艺</span><br/>"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
 msgid "<span>View</span>"
 msgstr "<span>查看</span>"
 
@@ -145,7 +161,7 @@ msgid "Add"
 msgstr "添加"
 
 #. module: mrp_plm
-#: model:ir.actions.act_window,help:mrp_plm.mrp_eco_tag_action
+#: model_terms:ir.actions.act_window,help:mrp_plm.mrp_eco_tag_action
 msgid "Add a new tag"
 msgstr "添加一个新标签"
 
@@ -175,18 +191,18 @@ msgid "Aliased Model"
 msgstr "别名的模型"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
-#: model:ir.ui.view,arch_db:mrp_plm.view_document_search_mrp_plm
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
+#: model_terms:ir.ui.view,arch_db:mrp_plm.view_document_search_mrp_plm
 msgid "All"
 msgstr "全部"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
 msgid "All Approvals have be done"
 msgstr "所有审批已完成"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
 msgid "All Validations"
 msgstr "所有验证"
 
@@ -206,12 +222,12 @@ msgid "Allow to apply changes from this stage."
 msgstr "允许应用此阶段的更改。"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Apply Changes"
 msgstr "应用变更"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Apply Rebase"
 msgstr "应用复位"
 
@@ -238,8 +254,8 @@ msgstr "审批类型"
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__approval_ids
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_stage__approval_template_ids
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_stage_view_form
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_stage_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Approvals"
 msgstr "审批"
 
@@ -249,7 +265,7 @@ msgid "Approvals by stage"
 msgstr "批准分阶段"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Approve"
 msgstr "批准"
 
@@ -269,8 +285,8 @@ msgid "Approves, but the approval is optional"
 msgstr "批准，但审批是可选的"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
-#: model:ir.ui.view,arch_db:mrp_plm.view_document_search_mrp_plm
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
+#: model_terms:ir.ui.view,arch_db:mrp_plm.view_document_search_mrp_plm
 msgid "Archived"
 msgstr "已存档"
 
@@ -292,16 +308,27 @@ msgid "Attachment"
 msgstr "附件"
 
 #. module: mrp_plm
-#: code:addons/mrp_plm/models/mrp_eco.py:640
+#: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__message_attachment_count
+#: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__message_attachment_count
+msgid "Attachment Count"
+msgstr "附件数量"
+
+#. module: mrp_plm
+#: code:addons/mrp_plm/models/mrp_eco.py:642
 #: code:addons/mrp_plm/models/product.py:32
 #: code:addons/mrp_plm/models/product.py:78
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__mrp_document_ids
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
-#: model:ir.ui.view,arch_db:mrp_plm.product_product_view_form_inherit_plm
-#: model:ir.ui.view,arch_db:mrp_plm.product_template_view_form_inherit_plm
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.product_product_view_form_inherit_plm
+#: model_terms:ir.ui.view,arch_db:mrp_plm.product_template_view_form_inherit_plm
 #, python-format
 msgid "Attachments"
 msgstr "附件"
+
+#. module: mrp_plm
+#: model:ir.model,name:mrp_plm.model_report_mrp_report_bom_structure
+msgid "BOM Structure Report"
+msgstr "BOM结构报告"
 
 #. module: mrp_plm
 #: model:ir.model,name:mrp_plm.model_mrp_bom
@@ -309,7 +336,12 @@ msgid "Bill of Material"
 msgstr "物料清单"
 
 #. module: mrp_plm
-#: code:addons/mrp_plm/models/mrp_eco.py:150
+#: model:ir.model,name:mrp_plm.model_mrp_bom_line
+msgid "Bill of Material Line"
+msgstr "物料清单明细"
+
+#. module: mrp_plm
+#: code:addons/mrp_plm/models/mrp_eco.py:152
 #: model:ir.actions.act_window,name:mrp_plm.mrp_bom_action_kanban
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__bom_id
 #: model:ir.ui.menu,name:mrp_plm.menu_mrp_plm_boms
@@ -318,12 +350,14 @@ msgid "Bill of Materials"
 msgstr "物料清单"
 
 #. module: mrp_plm
-#: model:ir.actions.act_window,help:mrp_plm.mrp_bom_action_kanban
+#: model_terms:ir.actions.act_window,help:mrp_plm.mrp_bom_action_kanban
 msgid ""
 "Bills of materials allow you to define the list of required raw\n"
 "              materials used to make a finished product; through a manufacturing\n"
 "              order or a pack of products."
 msgstr ""
+"物料清单（BoM）允许您定义制造成品所需原的材料，\n"
+"包括工单或包装。"
 
 #. module: mrp_plm
 #: selection:mrp.eco,kanban_state:0
@@ -336,18 +370,18 @@ msgid "Blocking Stage"
 msgstr "阻塞阶段"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "BoM"
-msgstr "物料清单"
+msgstr "BoM"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "BoM Changes"
 msgstr "BoM变更"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__bom_rebase_ids
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "BoM Rebase"
 msgstr "BOM 复位"
 
@@ -357,13 +391,13 @@ msgid "BoM Revision"
 msgstr "BoM修订版"
 
 #. module: mrp_plm
-#: code:addons/mrp_plm/models/mrp_eco.py:152
+#: code:addons/mrp_plm/models/mrp_eco.py:154
 #, python-format
 msgid "BoM and Routing"
 msgstr "物料清单以及工艺路线"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
 msgid "BoM:"
 msgstr "BoM:"
 
@@ -383,22 +417,22 @@ msgid "Changes"
 msgstr "变更"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Changes made in previous eco"
 msgstr "在上一个ECO 所做的更改"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Changes made on old bill of materials"
 msgstr "对旧材料清单所做的更改"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Changes made on the new revision bill of materials"
 msgstr "对新修订物料清单所做的更改"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Changes made on the routing."
 msgstr "对路线所做的更改。"
 
@@ -432,7 +466,7 @@ msgstr "仅备注"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__company_id
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "Company"
 msgstr "公司"
 
@@ -443,12 +477,13 @@ msgstr "配置"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_bom_change__conflict
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_search selection:mrp.eco,state:0
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
+#: selection:mrp.eco,state:0
 msgid "Conflict"
 msgstr "冲突"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Conflict Resolved"
 msgstr "冲突已解决"
 
@@ -458,33 +493,33 @@ msgid "Consumed in Operation"
 msgstr "消耗在作业"
 
 #. module: mrp_plm
-#: model:ir.actions.act_window,help:mrp_plm.mrp_bom_action_kanban
+#: model_terms:ir.actions.act_window,help:mrp_plm.mrp_bom_action_kanban
 msgid "Create a bill of materials"
 msgstr "创建一个物料清单."
 
 #. module: mrp_plm
-#: model:ir.actions.act_window,help:mrp_plm.mrp_eco_stage_action
+#: model_terms:ir.actions.act_window,help:mrp_plm.mrp_eco_stage_action
 msgid "Create a new ECO stage"
-msgstr ""
+msgstr "新建ECO阶段"
 
 #. module: mrp_plm
-#: model:ir.actions.act_window,help:mrp_plm.mrp_eco_type_action_dashboard
-#: model:ir.actions.act_window,help:mrp_plm.mrp_eco_type_action_form
+#: model_terms:ir.actions.act_window,help:mrp_plm.mrp_eco_type_action_dashboard
+#: model_terms:ir.actions.act_window,help:mrp_plm.mrp_eco_type_action_form
 msgid "Create a new ECO type"
-msgstr ""
+msgstr "新建ECO类别"
 
 #. module: mrp_plm
-#: model:ir.actions.act_window,help:mrp_plm.mrp_eco_action
-#: model:ir.actions.act_window,help:mrp_plm.mrp_eco_action_approval
-#: model:ir.actions.act_window,help:mrp_plm.mrp_eco_action_approval_my
-#: model:ir.actions.act_window,help:mrp_plm.mrp_eco_action_form
-#: model:ir.actions.act_window,help:mrp_plm.mrp_eco_action_late
-#: model:ir.actions.act_window,help:mrp_plm.mrp_eco_action_main
-#: model:ir.actions.act_window,help:mrp_plm.mrp_eco_action_product_tmpl
-#: model:ir.actions.act_window,help:mrp_plm.mrp_eco_action_report
-#: model:ir.actions.act_window,help:mrp_plm.mrp_eco_action_routing
+#: model_terms:ir.actions.act_window,help:mrp_plm.mrp_eco_action
+#: model_terms:ir.actions.act_window,help:mrp_plm.mrp_eco_action_approval
+#: model_terms:ir.actions.act_window,help:mrp_plm.mrp_eco_action_approval_my
+#: model_terms:ir.actions.act_window,help:mrp_plm.mrp_eco_action_form
+#: model_terms:ir.actions.act_window,help:mrp_plm.mrp_eco_action_late
+#: model_terms:ir.actions.act_window,help:mrp_plm.mrp_eco_action_main
+#: model_terms:ir.actions.act_window,help:mrp_plm.mrp_eco_action_product_tmpl
+#: model_terms:ir.actions.act_window,help:mrp_plm.mrp_eco_action_report
+#: model_terms:ir.actions.act_window,help:mrp_plm.mrp_eco_action_routing
 msgid "Create a new engineering change order"
-msgstr ""
+msgstr "新建工程变更单"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__create_uid
@@ -511,11 +546,6 @@ msgid "Created on"
 msgstr "创建时间"
 
 #. module: mrp_plm
-#: model:ir.ui.menu,name:mrp_plm.menu_mrp_plm_dashboard
-msgid "Dashboard"
-msgstr "仪表板"
-
-#. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__effectivity
 msgid "Date on which the changes should be applied. For reference only."
 msgstr "应该应用更改的日期。 仅供参考。"
@@ -526,12 +556,12 @@ msgid "Default Values"
 msgstr "默认值"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
 msgid "Delete"
 msgstr "刪除"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Description of the change and its reason ..."
 msgstr "变更的说明以及它的原因..."
 
@@ -563,31 +593,42 @@ msgid "Displayed Image"
 msgstr "显示的图像"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_search selection:mrp.eco,state:0
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
+#: selection:mrp.eco,state:0
 msgid "Done"
 msgstr "完成"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
 msgid "Dropdown menu"
 msgstr "下拉菜单"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_routing_change_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_routing_change_view_form
 msgid "Duration"
 msgstr "时长"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_approval__eco_id
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
 msgid "ECO"
 msgstr "ECO"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_graph
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_pivot
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_graph
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_pivot
 msgid "ECO Analysis"
 msgstr "ECO 分析"
+
+#. module: mrp_plm
+#: model:ir.model,name:mrp_plm.model_mrp_eco_approval
+msgid "ECO Approval"
+msgstr "ECO审批"
+
+#. module: mrp_plm
+#: model:ir.model,name:mrp_plm.model_mrp_eco_approval_template
+msgid "ECO Approval Template"
+msgstr "ECO审批模板"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__bom_change_ids
@@ -596,13 +637,13 @@ msgstr "ECO BoM变更"
 
 #. module: mrp_plm
 #: model:ir.model,name:mrp_plm.model_mrp_eco_bom_change
-msgid "ECO Material changes"
-msgstr "ECO 物料变更"
+msgid "ECO BoM changes"
+msgstr "ECO Bom变更"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_bom_change__eco_rebase_id
 msgid "ECO Rebase"
-msgstr ""
+msgstr "ECO 复位"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__routing_change_ids
@@ -610,6 +651,7 @@ msgid "ECO Routing Changes"
 msgstr "ECO 工艺变更"
 
 #. module: mrp_plm
+#: model:ir.model,name:mrp_plm.model_mrp_eco_stage
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_approval__eco_stage_id
 msgid "ECO Stage"
 msgstr "ECO 阶段"
@@ -628,24 +670,29 @@ msgid "ECO Tags"
 msgstr "ECO 标签"
 
 #. module: mrp_plm
+#: model:ir.model,name:mrp_plm.model_mrp_eco_type
+msgid "ECO Type"
+msgstr "ECO类型"
+
+#. module: mrp_plm
 #: model:ir.actions.act_window,name:mrp_plm.mrp_eco_type_action_form
 #: model:ir.ui.menu,name:mrp_plm.menu_mrp_plm_eco_types
 msgid "ECO Types"
 msgstr "ECO 类型"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "ECO approvals"
 msgstr "ECO批准"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_bom_change_view_form
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_routing_change_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_bom_change_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_routing_change_view_form
 msgid "ECO details"
 msgstr "ECO 详情"
 
 #. module: mrp_plm
-#: model:ir.actions.act_window,help:mrp_plm.mrp_eco_stage_action
+#: model_terms:ir.actions.act_window,help:mrp_plm.mrp_eco_stage_action
 msgid "ECO stages give the different stages for the Engineering Change Orders"
 msgstr "ECO阶段为工程变更单提供了不同的阶段"
 
@@ -655,7 +702,7 @@ msgid "ECO to be applied"
 msgstr "待审核的 ECO"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_bom_view_form_inherit_plm
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_bom_view_form_inherit_plm
 msgid "ECO(s)"
 msgstr "ECO(s)"
 
@@ -665,26 +712,26 @@ msgstr "ECO(s)"
 #: model:ir.model.fields,field_description:mrp_plm.field_product_product__eco_ids
 #: model:ir.model.fields,field_description:mrp_plm.field_product_template__eco_ids
 #: model:ir.ui.menu,name:mrp_plm.menu_mrp_plm_eco_report
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_calendar
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_routing_view_form_inherit_plm
-#: model:ir.ui.view,arch_db:mrp_plm.product_template_view_form_inherit_plm
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_calendar
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_routing_view_form_inherit_plm
+#: model_terms:ir.ui.view,arch_db:mrp_plm.product_template_view_form_inherit_plm
 msgid "ECOs"
 msgstr "ECOs"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_bom_view_kanban
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_bom_view_kanban
 msgid "Eco"
 msgstr "Eco"
 
 #. module: mrp_plm
-#: code:addons/mrp_plm/models/mrp_eco.py:661
+#: code:addons/mrp_plm/models/mrp_eco.py:663
 #, python-format
 msgid "Eco BoM"
 msgstr "Eco BoM"
 
 #. module: mrp_plm
-#: code:addons/mrp_plm/models/mrp_eco.py:673
+#: code:addons/mrp_plm/models/mrp_eco.py:675
 #, python-format
 msgid "Eco Routing"
 msgstr "Eco 工艺"
@@ -695,14 +742,14 @@ msgid "Eco Routing changes"
 msgstr "ECO 工艺变更"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
 msgid "Edit Task"
 msgstr "编辑任务"
 
 #. module: mrp_plm
 #: model:mrp.eco.stage,name:mrp_plm.ecostage_effective
 msgid "Effective"
-msgstr ""
+msgstr "有效"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__effectivity
@@ -715,7 +762,7 @@ msgid "Effectivity Date"
 msgstr "生效日期"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_view_form
 msgid "Email Alias"
 msgstr "Email别名"
 
@@ -727,13 +774,8 @@ msgstr "工程变更"
 
 #. module: mrp_plm
 #: model:ir.model,name:mrp_plm.model_mrp_eco
-msgid "Engineering Change Order"
-msgstr "工程变更命令"
-
-#. module: mrp_plm
-#: model:ir.model,name:mrp_plm.model_mrp_eco_stage
-msgid "Engineering Change Order Stage"
-msgstr "工程变更命令阶段"
+msgid "Engineering Change Order (ECO)"
+msgstr "工程变更单 (ECO)"
 
 #. module: mrp_plm
 #: model:ir.actions.act_window,name:mrp_plm.mrp_eco_action
@@ -745,17 +787,16 @@ msgstr "工程变更命令阶段"
 #: model:ir.actions.act_window,name:mrp_plm.mrp_eco_action_product_tmpl
 #: model:ir.actions.act_window,name:mrp_plm.mrp_eco_action_report
 #: model:ir.actions.act_window,name:mrp_plm.mrp_eco_action_routing
-#: model:ir.ui.menu,name:mrp_plm.menu_mrp_plm_ecos
 msgid "Engineering Change Orders"
 msgstr "工程变更命令"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
 msgid "Engineering Changes"
 msgstr "工程变更"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "Filters"
 msgstr "筛选"
 
@@ -793,12 +834,12 @@ msgid "For reference only."
 msgstr "仅供参考。"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "Future Activities"
 msgstr "未来活动"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "Group by..."
 msgstr "分组 于"
 
@@ -864,18 +905,18 @@ msgid ""
 msgstr "如果活动字段设置为否，则可以隐藏工程更改顺序而不移除它。"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
 msgid "Important Messages"
 msgstr "重要信息"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
 msgid "In #{kanban_getcolorname(record.color.raw_value)}"
-msgstr ""
+msgstr "在 #{kanban_getcolorname(record.color.raw_value)}"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 #: selection:mrp.eco,kanban_state:0 selection:mrp.eco,state:0
 #: model:mrp.eco.stage,name:mrp_plm.ecostage_progress
 msgid "In Progress"
@@ -908,7 +949,7 @@ msgid "Kanban State"
 msgstr "看板状态"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_bom_view_kanban
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_bom_view_kanban
 msgid "Kit"
 msgstr "套件"
 
@@ -949,9 +990,15 @@ msgid "Last Updated on"
 msgstr "最后更新时间"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "Late Activities"
 msgstr "逾期活动"
+
+#. module: mrp_plm
+#: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__message_main_attachment_id
+#: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__message_main_attachment_id
+msgid "Main Attachment"
+msgstr "附件"
 
 #. module: mrp_plm
 #: model:res.groups,name:mrp_plm.group_plm_manager
@@ -962,11 +1009,6 @@ msgstr "管理员"
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_routing_change__upd_time_cycle_manual
 msgid "Manual Duration Change"
 msgstr "手动时长变更"
-
-#. module: mrp_plm
-#: model:ir.model,name:mrp_plm.model_mrp_eco_type
-msgid "Manufacturing Process"
-msgstr "制造过程"
 
 #. module: mrp_plm
 #: model:ir.ui.menu,name:mrp_plm.menu_mrp_plm_master_data
@@ -986,22 +1028,22 @@ msgid "Messages"
 msgstr "消息"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_tag_view_search
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_tag_view_search
 msgid "Mrp Eco Tags"
 msgstr "Mrp Eco标签"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "My Activities"
 msgstr "我的活动"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "My Change Orders"
 msgstr "我的变更命令"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
 msgid "My Validations"
 msgstr "我的验证"
 
@@ -1035,7 +1077,7 @@ msgstr "新消耗"
 #. module: mrp_plm
 #: model:mrp.eco.type,name:mrp_plm.ecotype0
 msgid "New Product Introduction"
-msgstr ""
+msgstr "新的产品简介"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_bom_change__new_uom_id
@@ -1084,7 +1126,7 @@ msgstr "还没有"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__note
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Note"
 msgstr "备注"
 
@@ -1142,12 +1184,16 @@ msgid "Overdue"
 msgstr "逾期"
 
 #. module: mrp_plm
+#: model:ir.ui.menu,name:mrp_plm.menu_mrp_plm_dashboard
+msgid "Overview"
+msgstr "概览"
+
+#. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__alias_user_id
 msgid "Owner"
 msgstr "所有者"
 
 #. module: mrp_plm
-#: model:ir.model.fields,field_description:mrp_plm.field_res_users__group_mrp_plm_user
 #: model:ir.module.category,name:mrp_plm.module_category_plm
 #: model:ir.ui.menu,name:mrp_plm.menu_mrp_plm_root
 msgid "PLM"
@@ -1155,8 +1201,8 @@ msgstr "PLM"
 
 #. module: mrp_plm
 #: model:ir.actions.act_window,name:mrp_plm.mrp_eco_type_action_dashboard
-msgid "PLM Dashboard"
-msgstr "PLM仪表板"
+msgid "PLM Overview"
+msgstr "PLM 概览"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__alias_parent_model_id
@@ -1212,7 +1258,7 @@ msgid "Previous ECO Changes"
 msgstr "前一个 ECO 变化"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Previous Eco Bom Changes"
 msgstr "前一个 Eco Bom变化"
 
@@ -1240,17 +1286,17 @@ msgstr "优先级"
 #: model:ir.model,name:mrp_plm.model_product_product
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__product_tmpl_id
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_bom_change__product_id
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_bom_view_kanban
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_bom_change_view_form
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_bom_view_kanban
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_bom_change_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "Product"
 msgstr "产品"
 
 #. module: mrp_plm
-#: code:addons/mrp_plm/models/mrp_eco.py:149
+#: code:addons/mrp_plm/models/mrp_eco.py:151
 #, python-format
 msgid "Product Only"
-msgstr ""
+msgstr "仅产品"
 
 #. module: mrp_plm
 #: model:ir.model,name:mrp_plm.model_product_template
@@ -1260,7 +1306,7 @@ msgstr "产品模板"
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_bom__active
 msgid "Production Ready"
-msgstr ""
+msgstr "生产就绪"
 
 #. module: mrp_plm
 #: model:ir.ui.menu,name:mrp_plm.menu_mrp_plm_products
@@ -1274,12 +1320,13 @@ msgstr "数量"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_bom_change__rebase_id
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_search selection:mrp.eco,state:0
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
+#: selection:mrp.eco,state:0
 msgid "Rebase"
 msgstr "复位"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Rebase new revision of BoM with previous eco bom and old bom changes."
 msgstr "根据以前的ECO BOM和旧BOM的变化，重新调整BOM的新版本。"
 
@@ -1294,7 +1341,7 @@ msgid "Reference"
 msgstr "参考"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Reject"
 msgstr "拒绝"
 
@@ -1335,7 +1382,7 @@ msgid "Responsible User"
 msgstr "责任用户"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Rev :"
 msgstr "Rev :"
 
@@ -1352,15 +1399,15 @@ msgid "Role"
 msgstr "角色"
 
 #. module: mrp_plm
-#: code:addons/mrp_plm/models/mrp_eco.py:152
+#: code:addons/mrp_plm/models/mrp_eco.py:154
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__routing_id
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 #, python-format
 msgid "Routing"
 msgstr "工艺路线"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Routing Changes"
 msgstr "工艺变更"
 
@@ -1370,7 +1417,7 @@ msgid "Routing Revision"
 msgstr "工艺修订版"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
 msgid "Routing:"
 msgstr "工艺:"
 
@@ -1393,7 +1440,7 @@ msgid "Sequence"
 msgstr "序号"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
 msgid "Set Cover Image"
 msgstr "设置封面图像"
 
@@ -1405,12 +1452,12 @@ msgid "Set a Cover Image"
 msgstr "设置一张封面图像"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
 msgid "Settings"
 msgstr "设置"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Short Summary"
 msgstr "简短摘要"
 
@@ -1420,7 +1467,7 @@ msgid "Show Apply Change"
 msgstr "显示应用变更"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "Show all records which has next action date is before today"
 msgstr "显示在今天之前的下一个行动日期的所有记录"
 
@@ -1438,14 +1485,14 @@ msgid ""
 msgstr "产品的小尺寸图像。保持纵横比，自动缩放为64x64px。用于任何需要小图像的场合"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
 msgid "Someone rejected this change"
 msgstr "有人拒绝了此变更"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__stage_id
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_approval_template__stage_id
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "Stage"
 msgstr "阶段"
 
@@ -1455,12 +1502,12 @@ msgid "Stages"
 msgstr "阶段"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Start New Revision"
 msgstr "开始新修订版"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "State"
 msgstr "状态"
 
@@ -1484,13 +1531,13 @@ msgstr ""
 " 计划：未来的活动。"
 
 #. module: mrp_plm
-#: code:addons/mrp_plm/models/mrp_eco.py:345
+#: code:addons/mrp_plm/models/mrp_eco.py:347
 #, python-format
 msgid "Successfully Rebased !"
 msgstr "成功重新启动！"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid ""
 "System will automatically resolved the conflict(s) and apply changes. Do you"
 " agree?"
@@ -1503,7 +1550,7 @@ msgstr "标签名已存在!"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__tag_ids
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_tag_view_tree
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_tag_view_tree
 msgid "Tags"
 msgstr "标签"
 
@@ -1531,6 +1578,12 @@ msgstr "PLM经理管理产品生命周期管理"
 #: model:res.groups,comment:mrp_plm.group_plm_user
 msgid "The PLM user uses products lifecycle management"
 msgstr "PLM用户使用产品生命周期管理"
+
+#. module: mrp_plm
+#: model:ir.model.fields,help:mrp_plm.field_product_product__version
+#: model:ir.model.fields,help:mrp_plm.field_product_template__version
+msgid "The current version of the product."
+msgstr "产品当前版本"
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco_type__alias_model_id
@@ -1569,13 +1622,14 @@ msgstr "没有可用的图像设置为封面。 添加图像作为工程订单�
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__nb_validation
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
 msgid "To Apply"
 msgstr "待启用"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_search selection:mrp.eco,state:0
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
+#: selection:mrp.eco,state:0
 msgid "To Do"
 msgstr "待办"
 
@@ -1585,7 +1639,7 @@ msgid "Today"
 msgstr "今日"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "Today Activities"
 msgstr "今天的活动"
 
@@ -1621,17 +1675,17 @@ msgid "Update"
 msgstr "更新"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Update BoM"
 msgstr "更新BoM"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Update Documents"
 msgstr "更新文档"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Update Routing"
 msgstr "更新工艺"
 
@@ -1641,7 +1695,6 @@ msgid "User"
 msgstr "用户"
 
 #. module: mrp_plm
-#: model:ir.model,name:mrp_plm.model_res_users
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_approval_template__user_ids
 msgid "Users"
 msgstr "用户"
@@ -1656,12 +1709,12 @@ msgstr "已验证"
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_routing__version
 #: model:ir.model.fields,field_description:mrp_plm.field_product_product__version
 #: model:ir.model.fields,field_description:mrp_plm.field_product_template__version
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_bom_view_form_inherit_plm
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_bom_view_form_inherit_plm
 msgid "Version"
 msgstr "版本"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "Waiting Any Validation"
 msgstr "等待验证"
 
@@ -1671,12 +1724,12 @@ msgid "Waiting Approvals"
 msgstr "等待审批"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "Waiting My Validation"
 msgstr "等待我的验证"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
 msgid "Waiting for Approvals"
 msgstr "等待审批"
 
@@ -1708,50 +1761,23 @@ msgid "Work Centers"
 msgstr "工作中心"
 
 #. module: mrp_plm
-#: code:addons/mrp_plm/models/mrp_eco.py:487
+#: code:addons/mrp_plm/models/mrp_eco.py:489
 #, python-format
 msgid "You cannot change the stage, as approvals are required in the process."
 msgstr "您不能更改阶段，因为在流程中需要批准。"
 
 #. module: mrp_plm
-#: code:addons/mrp_plm/models/mrp_eco.py:477
+#: code:addons/mrp_plm/models/mrp_eco.py:479
 #, python-format
 msgid "You cannot change the stage, as approvals are still required."
 msgstr "您不能更改阶段，因为仍然需要批准。"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_stage_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_stage_view_form
 msgid "e.g. Engineering Department"
 msgstr "例如 工程部"
 
 #. module: mrp_plm
-#: model:ir.model.fields,help:mrp_plm.field_res_users__group_mrp_plm_user
-msgid ""
-"group_plm_user: The PLM user uses products lifecycle management\n"
-"group_plm_manager: The PLM manager manages products lifecycle management"
-msgstr ""
-
-#. module: mrp_plm
-#: model:ir.model,name:mrp_plm.model_mrp_bom_line
-msgid "mrp.bom.line"
-msgstr "mrp.bom.line"
-
-#. module: mrp_plm
-#: model:ir.model,name:mrp_plm.model_mrp_eco_approval
-msgid "mrp.eco.approval"
-msgstr "mrp.eco.approval"
-
-#. module: mrp_plm
-#: model:ir.model,name:mrp_plm.model_mrp_eco_approval_template
-msgid "mrp.eco.approval.template"
-msgstr "mrp.eco.approval.template"
-
-#. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
 msgid "oe_kanban_text_red"
 msgstr "oe_kanban_text_red"
-
-#. module: mrp_plm
-#: model:ir.model,name:mrp_plm.model_report_mrp_report_bom_structure
-msgid "report.mrp.report_bom_structure"
-msgstr ""

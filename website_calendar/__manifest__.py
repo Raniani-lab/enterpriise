@@ -14,7 +14,7 @@ Allow clients to Schedule Appointments through your Website
 -------------------------------------------------------------
 
 """,
-    'depends': ['calendar_sms', 'website', 'hr'],
+    'depends': ['calendar_sms', 'website_enterprise', 'hr'],
     'data': [
         'data/website_calendar_data.xml',
         'views/calendar_views.xml',

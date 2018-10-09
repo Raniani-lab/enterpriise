@@ -17,6 +17,7 @@ NUMBER_OF_COLS = 12
 #
 class MrpMpsReport(models.TransientModel):
     _name = 'mrp.mps.report'
+    _description = 'MPS Report'
 
     def _default_manufacturing_period(self):
         return self.env.user.company_id.manufacturing_period
@@ -159,7 +160,7 @@ class MrpMpsReport(models.TransientModel):
             else:
                 date_to = date + relativedelta.relativedelta(days=1)
                 name = babel.dates.format_date(
-                    format="MMM d", date=date.replace(tzinfo=pytz.utc).astimezone(local_tz), locale=self._context.get('lang') or 'en_US')
+                    format="MMM d", date=date, locale=self._context.get('lang') or 'en_US')
             forecasts = self.env['sale.forecast'].search([
                 ('date', '>=', date.strftime('%Y-%m-%d')),
                 ('date', '<', date_to.strftime('%Y-%m-%d')),

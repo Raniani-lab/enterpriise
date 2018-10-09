@@ -18,7 +18,7 @@ TICKET_PRIORITY = [
 
 class HelpdeskTag(models.Model):
     _name = 'helpdesk.tag'
-    _description = 'Tags'
+    _description = 'Helpdesk Tags'
     _order = 'name'
 
     name = fields.Char(required=True)
@@ -31,7 +31,7 @@ class HelpdeskTag(models.Model):
 
 class HelpdeskTicketType(models.Model):
     _name = 'helpdesk.ticket.type'
-    _description = 'Ticket Type'
+    _description = 'Helpdesk Ticket Type'
     _order = 'sequence'
 
     name = fields.Char(required=True, translate=True)
@@ -44,7 +44,7 @@ class HelpdeskTicketType(models.Model):
 
 class HelpdeskTicket(models.Model):
     _name = 'helpdesk.ticket'
-    _description = 'Ticket'
+    _description = 'Helpdesk Ticket'
     _order = 'priority desc, id desc'
     _inherit = ['portal.mixin', 'mail.thread', 'utm.mixin', 'rating.mixin', 'mail.activity.mixin']
 
@@ -105,7 +105,7 @@ class HelpdeskTicket(models.Model):
     partner_email = fields.Char(string='Customer Email')
 
     # Used in message_get_default_recipients, so if no partner is created, email is sent anyway
-    email = fields.Char(related='partner_email', string='Email on Customer')
+    email = fields.Char(related='partner_email', string='Email on Customer', readonly=False)
 
     priority = fields.Selection(TICKET_PRIORITY, string='Priority', default='0')
     stage_id = fields.Many2one('helpdesk.stage', string='Stage', ondelete='restrict', track_visibility='onchange',
@@ -438,6 +438,10 @@ class HelpdeskTicket(models.Model):
     # ------------------------------------------------------------
     # Rating Mixin
     # ------------------------------------------------------------
+
+    @api.multi
+    def rating_apply(self, rate, token=None, feedback=None, subtype=None):
+        return super(HelpdeskTicket, self).rating_apply(rate, token=token, feedback=feedback, subtype="helpdesk.mt_ticket_rated")
 
     def rating_get_parent(self):
         return 'team_id'

@@ -3,7 +3,6 @@ odoo.define('website_crm_score.set_score', function (require) {
 
 var CustomizeMenu = require('website.customizeMenu');
 var rpc = require('web.rpc');
-var weContext = require("web_editor.context");
 var Widget = require('web.Widget');
 
 var TrackPage = Widget.extend({
@@ -33,7 +32,7 @@ var TrackPage = Widget.extend({
             return rpc.query({
                 model: 'ir.ui.view',
                 method: 'read',
-                args: [[viewid], ['track'], weContext.get()],
+                args: [[viewid], ['track']],
             });
         }
     },
@@ -52,7 +51,7 @@ var TrackPage = Widget.extend({
             return rpc.query({
                 model: 'ir.ui.view',
                 method: 'write',
-                args: [[viewid], { track: val }, weContext.get()],
+                args: [[viewid], {track: val}],
             });
         }
     },
@@ -73,4 +72,3 @@ CustomizeMenu.include({
 });
 
 });
-

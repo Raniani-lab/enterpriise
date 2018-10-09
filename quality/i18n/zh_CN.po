@@ -5,16 +5,20 @@
 # Translators:
 # Martin Trigaux, 2018
 # Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
-# 远鼎-Maker <liuct@chinamaker.net>, 2018
+# ChinaMaker <liuct@chinamaker.net>, 2018
 # 老窦 北京 <2662059195@qq.com>, 2018
 # Jackie Zhang <jzh@odoo.com>, 2018
+# bower Guo <124358678@qq.com>, 2018
+# roye w <159820@qq.com>, 2018
+# 敬洪 甘 <349220879@qq.com>, 2018
+# snow wang <147156565@qq.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
-"Last-Translator: Jackie Zhang <jzh@odoo.com>, 2018\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"Last-Translator: snow wang <147156565@qq.com>, 2018\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -51,7 +55,7 @@ msgstr "需要采取行动"
 #. module: quality
 #: model:quality.alert.stage,name:quality.quality_alert_stage_2
 msgid "Action Proposed"
-msgstr ""
+msgstr "建议措施"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_point__active
@@ -92,6 +96,14 @@ msgstr "别名网域"
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_model_id
 msgid "Aliased Model"
 msgstr "别名的模型"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__message_attachment_count
+#: model:ir.model.fields,field_description:quality.field_quality_alert_team__message_attachment_count
+#: model:ir.model.fields,field_description:quality.field_quality_check__message_attachment_count
+#: model:ir.model.fields,field_description:quality.field_quality_point__message_attachment_count
+msgid "Attachment Count"
+msgstr "附件数量"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_point__reason
@@ -189,15 +201,15 @@ msgstr "默认值"
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_point__test_type_id
 msgid "Defines the type of the quality control point."
-msgstr ""
+msgstr "定义质量控制点类别"
 
 #. module: quality
-#: model:ir.ui.view,arch_db:quality.quality_point_view_form
+#: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
 msgid "Describe the quality check to do..."
 msgstr "描述要做的质量检查..."
 
 #. module: quality
-#: model:ir.ui.view,arch_db:quality.quality_point_view_form
+#: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
 msgid "Describe why you need to perform this quality check..."
 msgstr "描述为什么你需要执行此质量检查..."
 
@@ -306,7 +318,7 @@ msgid "If checked, some messages have a delivery error."
 msgstr "如果勾选此项， 某些信息将会产生传递错误。"
 
 #. module: quality
-#: model:ir.ui.view,arch_db:quality.quality_point_view_form
+#: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
 msgid "Instructions"
 msgstr "命令"
 
@@ -366,6 +378,14 @@ msgid "Low"
 msgstr "低"
 
 #. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__message_main_attachment_id
+#: model:ir.model.fields,field_description:quality.field_quality_alert_team__message_main_attachment_id
+#: model:ir.model.fields,field_description:quality.field_quality_check__message_main_attachment_id
+#: model:ir.model.fields,field_description:quality.field_quality_point__message_main_attachment_id
+msgid "Main Attachment"
+msgstr "附件"
+
+#. module: quality
 #: model:res.groups,name:quality.group_quality_manager
 msgid "Manager"
 msgstr "管理员"
@@ -420,12 +440,12 @@ msgstr "一般"
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_check__note
 #: model:ir.model.fields,field_description:quality.field_quality_point__note
-#: model:ir.ui.view,arch_db:quality.quality_point_view_form
+#: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
 msgid "Note"
 msgstr "备注"
 
 #. module: quality
-#: model:ir.ui.view,arch_db:quality.quality_point_view_form
+#: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
 msgid "Notes"
 msgstr "备注"
 
@@ -470,14 +490,7 @@ msgid "Number of unread messages"
 msgstr "未读消息的数量"
 
 #. module: quality
-#: model:ir.model.fields,help:quality.field_res_users__group_quality_user
-msgid ""
-"Officer: The quality user uses the quality process\n"
-"Manager: The quality manager manages the quality process"
-msgstr ""
-
-#. module: quality
-#: model:ir.ui.view,arch_db:quality.quality_point_view_form
+#: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
 msgid "Operation"
 msgstr "作业"
 
@@ -582,7 +595,6 @@ msgid "Product Variant"
 msgstr "产品变体"
 
 #. module: quality
-#: model:ir.model.fields,field_description:quality.field_res_users__group_quality_user
 #: model:ir.module.category,name:quality.module_category_quality
 msgid "Quality"
 msgstr "质量"
@@ -609,13 +621,13 @@ msgstr "质量检查"
 
 #. module: quality
 #: model:ir.model,name:quality.model_quality_point
-msgid "Quality Point"
-msgstr "质量点"
+msgid "Quality Control Point"
+msgstr "质量控制点"
 
 #. module: quality
-#: model:ir.model,name:quality.model_quality_reason
-msgid "Quality Reason"
-msgstr "质量原因"
+#: model:ir.model,name:quality.model_quality_point_test_type
+msgid "Quality Control Test Type"
+msgstr "质检类别"
 
 #. module: quality
 #: model:ir.model,name:quality.model_quality_tag
@@ -643,6 +655,11 @@ msgstr "负责人"
 #: model:ir.model.fields,field_description:quality.field_quality_alert__reason_id
 msgid "Root Cause"
 msgstr "根本原因"
+
+#. module: quality
+#: model:ir.model,name:quality.model_quality_reason
+msgid "Root Cause for Quality Failure"
+msgstr "质量问题的根本原因"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_stage__sequence
@@ -686,7 +703,6 @@ msgid "Technical name"
 msgstr "技术名称"
 
 #. module: quality
-#: model:ir.model,name:quality.model_quality_point_test_type
 #: model:ir.model.fields,field_description:quality.field_quality_point__test_type_id
 msgid "Test Type"
 msgstr "测试类型"
@@ -738,7 +754,7 @@ msgid "To do"
 msgstr "待处理"
 
 #. module: quality
-#: model:ir.ui.view,arch_db:quality.quality_point_view_form
+#: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
 msgid "Type"
 msgstr "类型"
 
@@ -766,11 +782,6 @@ msgstr "用在看板视图"
 #. module: quality
 #: model:res.groups,name:quality.group_quality_user
 msgid "User"
-msgstr "用户"
-
-#. module: quality
-#: model:ir.model,name:quality.model_res_users
-msgid "Users"
 msgstr "用户"
 
 #. module: quality
@@ -802,9 +813,9 @@ msgstr "网站沟通记录"
 #. module: quality
 #: model:quality.reason,name:quality.reason_wo
 msgid "Work Operation"
-msgstr ""
+msgstr "业务"
 
 #. module: quality
 #: model:quality.reason,name:quality.reason_workcenter
 msgid "Workcenter Failure"
-msgstr ""
+msgstr "工作中心故障"

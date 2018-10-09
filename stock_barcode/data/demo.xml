@@ -63,15 +63,11 @@
         <record id="demo_package" model="stock.quant.package" />
 
         <record id="stock.lot_product_cable_management" model="stock.production.lot">
-            <field name="ref">LOT-000001</field>
+            <field name="ref">0000000000017</field>
         </record>
 
         <record id="stock_barcode.stock_barcode_action_main_menu" model="ir.actions.client">
             <field name="params" eval="{'message_demo_barcodes': True}" />
         </record>
-
-        <function model="stock.picking.type" name="_add_barcode">
-          <value eval="[ref('stock.picking_type_out')]"/>
-        </function>
     </data>
 </odoo>

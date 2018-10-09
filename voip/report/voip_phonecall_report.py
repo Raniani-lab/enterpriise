@@ -6,7 +6,7 @@ from odoo import api, models, fields, tools
 
 class VoipPhonecallReport(models.Model):
     _name = "voip.phonecall.report"
-    _description = "Phonecalls by user"
+    _description = "VOIP Phonecalls by user report"
     _auto = False
 
     user_id = fields.Many2one('res.users', 'Responsible', readonly=True)

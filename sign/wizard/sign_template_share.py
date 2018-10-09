@@ -8,6 +8,7 @@ from odoo import api, fields, models, _
 
 class SignTemplateShare(models.TransientModel):
     _name = 'sign.template.share'
+    _description = 'Sign Share Template'
 
     @api.model
     def default_get(self, fields):

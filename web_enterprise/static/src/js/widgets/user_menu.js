@@ -47,17 +47,6 @@ UserMenu.include({
     _onMenuSupport: function () {
         window.open('https://www.odoo.com/help', '_blank');
     },
-    /**
-     * @private
-     */
-    _onMenuShortcuts: function() {
-        new Dialog(this, {
-            size: 'large',
-            dialogClass: 'o_act_window',
-            title: _t("Keyboard Shortcuts"),
-            $content: $(QWeb.render("UserMenu.shortcuts"))
-        }).open();
-    },
 });
 
 });

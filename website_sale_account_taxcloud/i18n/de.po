@@ -1,50 +1,15 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * website_sale_account_taxcloud
 # 
-# Translators:
-# Andi, 2017
-# e2f <projects@e2f.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.3+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 08:34+0000\n"
-"PO-Revision-Date: 2018-06-25 08:34+0000\n"
-"Last-Translator: e2f <projects@e2f.com>, 2018\n"
+"POT-Creation-Date: 2018-09-18 10:05+0000\n"
+"PO-Revision-Date: 2018-09-18 10:05+0000\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
-#. module: website_sale_account_taxcloud
-#: model:ir.ui.view,arch_db:website_sale_account_taxcloud.res_config_settings_view_form_inherit_website_taxcloud
-msgid "<i class=\"fa fa-fw fa-arrow-right\"/>Create Account &amp; Get Credentials"
-msgstr "<i class=\"fa fa-fw fa-arrow-right\"/>"
-
-#. module: website_sale_account_taxcloud
-#: model:ir.ui.view,arch_db:website_sale_account_taxcloud.res_config_settings_view_form_inherit_website_taxcloud
-msgid "API ID"
-msgstr "API-ID"
-
-#. module: website_sale_account_taxcloud
-#: model:ir.ui.view,arch_db:website_sale_account_taxcloud.res_config_settings_view_form_inherit_website_taxcloud
-msgid "API KEY"
-msgstr "API-Schlüssel"
-
-#. module: website_sale_account_taxcloud
-#: model:ir.ui.view,arch_db:website_sale_account_taxcloud.res_config_settings_view_form_inherit_website_taxcloud
-msgid "Compute tax rates based on U.S. ZIP codes"
-msgstr "Berechnung der Steuersätze basierend auf US-Postleitzahlen"
-
-#. module: website_sale_account_taxcloud
-#: model:ir.ui.view,arch_db:website_sale_account_taxcloud.res_config_settings_view_form_inherit_website_taxcloud
-msgid "Default Category"
-msgstr "Standard-Kategorie"
-
-#. module: website_sale_account_taxcloud
-#: model:ir.ui.view,arch_db:website_sale_account_taxcloud.res_config_settings_view_form_inherit_website_taxcloud
-msgid "TaxCloud"
-msgstr "TaxCloud"

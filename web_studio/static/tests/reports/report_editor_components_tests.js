@@ -232,8 +232,8 @@ QUnit.module('ReportComponents', {
             data: this.data,
         });
         parent.appendTo($('#qunit-fixture'));
-
-        var tOptions = new (reportNewComponentsRegistry.get('field'))(parent, {
+        var InlineField = reportNewComponentsRegistry.get('Inline')[1];
+        var tOptions = new InlineField(parent, {
             models: {
                 'model.test': 'Toto',
             },
@@ -286,8 +286,8 @@ QUnit.module('ReportComponents', {
             data: this.data,
         });
         parent.appendTo($('#qunit-fixture'));
-
-        var tOptions = new (reportNewComponentsRegistry.get('field'))(parent, {
+        var InlineField = reportNewComponentsRegistry.get('Inline')[1];
+        var tOptions = new InlineField(parent, {
             models: {
                 'model.test': 'Kikou',
             },
@@ -391,8 +391,8 @@ QUnit.module('ReportComponents', {
         tOptions.appendTo(parent.$el);
         assert.strictEqual(tOptions.$('select').val(), 'image',
             "Should select the image widget");
-        assert.strictEqual(tOptions.$('.o_studio_option_show').length, 0,
-            "'Show Options' should not be displayed because there is no option");
+        assert.strictEqual(tOptions.$('.o_web_studio_toption_option').length, 0,
+            "there should be no available option");
 
         // unset the `widget`
         testUtils.addMockEnvironment(parent, {
@@ -441,11 +441,8 @@ QUnit.module('ReportComponents', {
         tOptions.appendTo(parent.$el);
         assert.strictEqual(tOptions.$('select').val(), 'monetary',
             "Should select the image widget");
-        assert.strictEqual(tOptions.$('.o_studio_option_show').length, 1,
-            "'Show Options' should display option button");
-
-        tOptions.$('.o_studio_option_show').click();
-
+        assert.strictEqual(tOptions.$('.o_web_studio_toption_option').length, 4,
+            "there should be 4 available options for the monetary widget");
         assert.strictEqual(tOptions.$('.o_web_studio_toption_option_monetary_from_currency .o_field_selector_value').text().replace(/\s+/g, ''),
             "o(ModelTest)ChildCurrency",
             "Should display the currency field");
@@ -555,9 +552,8 @@ QUnit.module('ReportComponents', {
 
         var tOptions = new (editComponentsRegistry.get('tOptions'))(parent, params);
         tOptions.appendTo(parent.$el);
-        assert.strictEqual(tOptions.$('.o_studio_option_show').length, 1,
-            "'Show Options' should be displayed");
-        tOptions.$('.o_studio_option_show').click();
+        assert.strictEqual(tOptions.$('.o_web_studio_toption_option').length, 3,
+            "there should be 3 available options for the contact widget (they are filtered)");
         assert.strictEqual(tOptions.$('.o_badge_text').text(), 'nameaddressphonemobileemail', 'Should display default value');
         tOptions.$('.o_input_dropdown input').click();
         assert.strictEqual($('ul.ui-autocomplete .ui-menu-item:not(.o_m2o_dropdown_option)').length, 5, 'Should not display the unselected items');

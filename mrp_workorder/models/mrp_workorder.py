@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models, _
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 from datetime import datetime
 from odoo.tools import float_compare, float_round
 from odoo.addons import decimal_precision as dp
@@ -25,23 +25,23 @@ class MrpProductionWorkcenterLine(models.Model):
     # QC-related fields
     allow_producing_quantity_change = fields.Boolean('Allow Changes to Producing Quantity', default=True)
     component_id = fields.Many2one('product.product', compute='_compute_component_id', readonly=True)
-    component_tracking = fields.Selection(related='component_id.tracking', string="Is Component Tracked")
+    component_tracking = fields.Selection(related='component_id.tracking', string="Is Component Tracked", readonly=False)
     component_remaining_qty = fields.Float('Remaining Quantity for Component', compute='_compute_component_id', readonly=True,digits=dp.get_precision('Product Unit of Measure'))
     component_uom_id = fields.Many2one('uom.uom', compute='_compute_component_id', string="Component UoM")
-    control_date = fields.Datetime(related='current_quality_check_id.control_date')
+    control_date = fields.Datetime(related='current_quality_check_id.control_date', readonly=False)
     is_first_step = fields.Boolean('Is First Step')
     is_last_step = fields.Boolean('Is Last Step')
     is_last_lot = fields.Boolean('Is Last lot', compute='_compute_is_last_lot')
-    lot_id = fields.Many2one(related='current_quality_check_id.lot_id')
-    move_line_id = fields.Many2one(related='current_quality_check_id.move_line_id')
+    lot_id = fields.Many2one(related='current_quality_check_id.lot_id', readonly=False)
+    move_line_id = fields.Many2one(related='current_quality_check_id.move_line_id', readonly=False)
     note = fields.Html(related='current_quality_check_id.note')
     skip_completed_checks = fields.Boolean('Skip Completed Checks', readonly=True)
-    quality_state = fields.Selection(related='current_quality_check_id.quality_state', string="Quality State")
-    qty_done = fields.Float(related='current_quality_check_id.qty_done')
+    quality_state = fields.Selection(related='current_quality_check_id.quality_state', string="Quality State", readonly=False)
+    qty_done = fields.Float(related='current_quality_check_id.qty_done', readonly=False)
     test_type = fields.Char('Test Type', compute='_compute_component_id', readonly=True)
-    user_id = fields.Many2one(related='current_quality_check_id.user_id')
+    user_id = fields.Many2one(related='current_quality_check_id.user_id', readonly=False)
     worksheet_page = fields.Integer('Worksheet page')
-    picture = fields.Binary(related='current_quality_check_id.picture')
+    picture = fields.Binary(related='current_quality_check_id.picture', readonly=False)
 
     @api.depends('qty_producing', 'qty_remaining')
     def _compute_is_last_lot(self):
@@ -62,10 +62,10 @@ class MrpProductionWorkcenterLine(models.Model):
                 wo.test_type = wo.current_quality_check_id.point_id.test_type
             elif wo.current_quality_check_id.component_id:
                 wo.component_id = wo.current_quality_check_id.component_id
-                wo.test_type = 'record_lotserial_numbers'
+                wo.test_type = 'register_consumed_materials'
             else:
                 wo.test_type = ''
-            if wo.test_type == 'record_lotserial_numbers' and wo.quality_state == 'none':
+            if wo.test_type == 'register_consumed_materials' and wo.quality_state == 'none':
                 if wo.current_quality_check_id.component_is_byproduct:
                     moves = wo.production_id.move_finished_ids.filtered(lambda m: m.state not in ('done', 'cancel') and m.product_id == wo.component_id)
                 else:
@@ -177,7 +177,7 @@ class MrpProductionWorkcenterLine(models.Model):
         self.ensure_one()
         if self.qty_producing <= 0 or self.qty_producing > self.qty_remaining:
             raise UserError(_('Please ensure the quantity to produce is nonnegative and does not exceed the remaining quantity.'))
-        elif self.test_type == 'record_lotserial_numbers':
+        elif self.test_type == 'register_consumed_materials':
             # Form validation
             if self.component_tracking != 'none' and not self.lot_id:
                 raise UserError(_('Please enter a Lot/SN.'))
@@ -293,7 +293,7 @@ class MrpProductionWorkcenterLine(models.Model):
             })
             # Update the default quantities in component registration steps
             if old_allow_producing_quantity_change and not self.allow_producing_quantity_change:
-                for check in self.check_ids.filtered(lambda c: c.test_type == 'record_lotserial_numbers' and c.point_id and c.point_id.component_id.tracking != 'serial' and c.quality_state == 'none'):
+                for check in self.check_ids.filtered(lambda c: c.test_type == 'register_consumed_materials' and c.point_id and c.point_id.component_id.tracking != 'serial' and c.quality_state == 'none'):
                     moves = self.move_raw_ids.filtered(lambda m: m.state not in ('done', 'cancel') and m.product_id == check.point_id.component_id)
                     check.qty_done = float_round(check.qty_done * self.qty_producing, precision_rounding=moves[0].product_uom.rounding)
 
@@ -344,7 +344,7 @@ class MrpProductionWorkcenterLine(models.Model):
                     qty_done = 1.0
                     if point.component_id and moves and point.component_id.tracking != 'serial':
                         qty_done = float_round(sum(moves.mapped('unit_factor')), precision_rounding=moves[0].product_uom.rounding)
-                    # Do not generate qc for control point of type record_lotserial_numbers if the component is not consummed in this wo.
+                    # Do not generate qc for control point of type register_consumed_materials if the component is not consummed in this wo.
                     if not point.component_id or moves:
                         self.env['quality.check'].create({'workorder_id': wo.id,
                                                           'point_id': point.id,
@@ -450,17 +450,30 @@ class MrpProductionWorkcenterLine(models.Model):
         return self._next()
 
     def action_open_manufacturing_order(self):
-        self.record_production()
-        return {
-            'type': 'ir.actions.act_window',
-            'res_model': 'mrp.production',
-            'views': [[self.env.ref('mrp.mrp_production_form_view').id, 'form']],
-            'res_id': self.production_id.id,
-            'target': 'main',
-            'flags': {
-                'headless': False,
-            },
-        }
+        action = self.do_finish()
+        try:
+            self.production_id.button_mark_done()
+        except (UserError, ValidationError) as e:
+            # log next activity on MO with error message
+            self.env['mail.activity'].create({
+                'res_id': self.production_id.id,
+                'res_model_id': self.env['ir.model']._get(self.production_id._name).id,
+                'activity_type_id': self.env.ref('mail.mail_activity_data_warning').id,
+                'summary': ('The %s could not be closed') % (self.production_id.name),
+                'note': e.name,
+                'user_id': self.env.user.id,
+            })
+            return {
+                'type': 'ir.actions.act_window',
+                'res_model': 'mrp.production',
+                'views': [[self.env.ref('mrp.mrp_production_form_view').id, 'form']],
+                'res_id': self.production_id.id,
+                'target': 'main',
+                'flags': {
+                    'headless': False,
+                },
+            }
+        return action
 
     def do_finish(self):
         self.record_production()
@@ -502,4 +515,3 @@ class MrpProductionWorkcenterLine(models.Model):
                     'product_id': self.product_id.id,
                 })
             self.final_lot_id = lot
-

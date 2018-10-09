@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-18 10:05+0000\n"
-"PO-Revision-Date: 2018-09-18 10:05+0000\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -146,7 +146,6 @@ msgid "C - Medical Express"
 msgstr ""
 
 #. module: delivery_dhl
-#: model:ir.model,name:delivery_dhl.model_delivery_carrier
 #: model:ir.model.fields,field_description:delivery_dhl.field_product_packaging__package_carrier_type
 msgid "Carrier"
 msgstr ""
@@ -238,6 +237,11 @@ msgstr ""
 #: code:addons/delivery_dhl/models/dhl_request.py:377
 #, python-format
 msgid "DHL password is missing, please modify your delivery method settings."
+msgstr ""
+
+#. module: delivery_dhl
+#: model:ir.model,name:delivery_dhl.model_delivery_carrier
+msgid "Delivery Methods"
 msgstr ""
 
 #. module: delivery_dhl
@@ -385,11 +389,6 @@ msgid "Package Weight Unit"
 msgstr ""
 
 #. module: delivery_dhl
-#: model:ir.model,name:delivery_dhl.model_product_packaging
-msgid "Packaging"
-msgstr ""
-
-#. module: delivery_dhl
 #: code:addons/delivery_dhl/models/dhl_request.py:397
 #, python-format
 msgid "Please provide at least one item to ship."
@@ -398,6 +397,11 @@ msgstr ""
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_package_weight_unit:0
 msgid "Pounds"
+msgstr ""
+
+#. module: delivery_dhl
+#: model:ir.model,name:delivery_dhl.model_product_packaging
+msgid "Product Packaging"
 msgstr ""
 
 #. module: delivery_dhl

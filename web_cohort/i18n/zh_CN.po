@@ -5,13 +5,16 @@
 # Translators:
 # Martin Trigaux, 2018
 # Shane Tsoi <sso@odoo.com>, 2018
+# 珠海-杜哥 <liangjia@qq.com>, 2018
+# ChinaMaker <liuct@chinamaker.net>, 2018
+# KWOKYUK CHEUNG <cheungkwokyuk@gmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-05 09:12+0000\n"
-"PO-Revision-Date: 2018-09-05 09:12+0000\n"
-"Last-Translator: Shane Tsoi <sso@odoo.com>, 2018\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"Last-Translator: KWOKYUK CHEUNG <cheungkwokyuk@gmail.com>, 2018\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,10 +25,15 @@ msgstr ""
 #. module: web_cohort
 #. openerp-web
 #: code:addons/web_cohort/static/src/xml/web_cohort.xml:76
-#: code:addons/web_cohort/static/src/xml/web_cohort.xml:155
+#: code:addons/web_cohort/static/src/xml/web_cohort.xml:154
 #, python-format
 msgid "- By"
-msgstr ""
+msgstr "- 作者"
+
+#. module: web_cohort
+#: model:ir.model,name:web_cohort.model_ir_actions_act_window_view
+msgid "Action Window View"
+msgstr "动作窗视图"
 
 #. module: web_cohort
 #: selection:ir.actions.act_window.view,view_mode:0
@@ -36,11 +44,16 @@ msgstr "活动"
 #. module: web_cohort
 #. openerp-web
 #: code:addons/web_cohort/controllers/main.py:59
-#: code:addons/web_cohort/static/src/xml/web_cohort.xml:113
-#: code:addons/web_cohort/static/src/xml/web_cohort.xml:186
+#: code:addons/web_cohort/static/src/xml/web_cohort.xml:112
+#: code:addons/web_cohort/static/src/xml/web_cohort.xml:184
 #, python-format
 msgid "Average"
 msgstr "平均"
+
+#. module: web_cohort
+#: model:ir.model,name:web_cohort.model_base
+msgid "Base"
+msgstr "基础"
 
 #. module: web_cohort
 #: selection:ir.actions.act_window.view,view_mode:0
@@ -62,14 +75,14 @@ msgstr "队列"
 #: code:addons/web_cohort/static/src/js/cohort_view.js:42
 #, python-format
 msgid "Cohort view has not defined \"date_start\" attribute."
-msgstr ""
+msgstr "分组视图没有定义\"开始日期\"属性"
 
 #. module: web_cohort
 #. openerp-web
 #: code:addons/web_cohort/static/src/js/cohort_view.js:45
 #, python-format
 msgid "Cohort view has not defined \"date_stop\" attribute."
-msgstr ""
+msgstr "分组视图没有定义\"结束日期\"属性."
 
 #. module: web_cohort
 #. openerp-web
@@ -103,7 +116,7 @@ msgstr "图表"
 #: code:addons/web_cohort/static/src/xml/web_cohort.xml:36
 #, python-format
 msgid "Download in Excel file"
-msgstr ""
+msgstr "下载为 Excel 文件"
 
 #. module: web_cohort
 #: selection:ir.actions.act_window.view,view_mode:0
@@ -151,15 +164,15 @@ msgstr "月"
 
 #. module: web_cohort
 #. openerp-web
-#: code:addons/web_cohort/static/src/xml/web_cohort.xml:206
+#: code:addons/web_cohort/static/src/xml/web_cohort.xml:204
 #, python-format
 msgid "No data available for cohort."
-msgstr ""
+msgstr "分组视图没有可用数据."
 
 #. module: web_cohort
 #. openerp-web
-#: code:addons/web_cohort/static/src/xml/web_cohort.xml:129
-#: code:addons/web_cohort/static/src/xml/web_cohort.xml:203
+#: code:addons/web_cohort/static/src/xml/web_cohort.xml:128
+#: code:addons/web_cohort/static/src/xml/web_cohort.xml:201
 #, python-format
 msgid "No data available."
 msgstr "无数据可用"
@@ -201,6 +214,11 @@ msgid "Untitled"
 msgstr "未命名的"
 
 #. module: web_cohort
+#: model:ir.model,name:web_cohort.model_ir_ui_view
+msgid "View"
+msgstr "视图"
+
+#. module: web_cohort
 #: model:ir.model.fields,field_description:web_cohort.field_ir_actions_act_window_view__view_mode
 #: model:ir.model.fields,field_description:web_cohort.field_ir_ui_view__type
 msgid "View Type"
@@ -219,18 +237,3 @@ msgstr "周"
 #, python-format
 msgid "Year"
 msgstr "年"
-
-#. module: web_cohort
-#: model:ir.model,name:web_cohort.model_base
-msgid "base"
-msgstr "基础"
-
-#. module: web_cohort
-#: model:ir.model,name:web_cohort.model_ir_actions_act_window_view
-msgid "ir.actions.act_window.view"
-msgstr "ir.actions.act_window.view"
-
-#. module: web_cohort
-#: model:ir.model,name:web_cohort.model_ir_ui_view
-msgid "ir.ui.view"
-msgstr "ir.ui.view"

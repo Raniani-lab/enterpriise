@@ -17,6 +17,16 @@ var DocumentsKanbanModel = KanbanModel.extend({
     //--------------------------------------------------------------------------
 
     /**
+     * @param {Integer} recordID
+     * @returns {Deferred}
+     */
+    fetchActivities: function (recordID) {
+        var record = this.localData[recordID];
+        return this._fetchSpecialActivity(record, 'activity_ids').then(function (data) {
+            record.specialData.activity_ids = data;
+        });
+    },
+    /**
      * @override
      */
     get: function (dataPointID) {
@@ -108,9 +118,7 @@ var DocumentsKanbanModel = KanbanModel.extend({
      * @returns {Deferred<string>} resolves with the parentID
      */
     saveMulti: function (recordIDs, values, parentID) {
-        return this.mutex
-            .exec(this._saveMulti.bind(this, recordIDs, values, parentID))
-            .then(this.reload.bind(this, parentID, {}));
+        return this.mutex.exec(this._saveMulti.bind(this, recordIDs, values, parentID));
     },
 
     //--------------------------------------------------------------------------
@@ -153,6 +161,7 @@ var DocumentsKanbanModel = KanbanModel.extend({
             return {
                 id: folder.id,
                 name: folder.name,
+                description: folder.description,
                 children: self._buildFoldersTree(subFolders, folder.id)
             };
         });
@@ -190,7 +199,7 @@ var DocumentsKanbanModel = KanbanModel.extend({
         return this._rpc({
             model: 'documents.folder',
             method: 'search_read',
-            fields: ['parent_folder_id', 'name', 'id'],
+            fields: ['parent_folder_id', 'name', 'id', 'description'],
         }).then(function (folders) {
             return self._buildFoldersTree(folders, false);
         });
@@ -243,7 +252,7 @@ var DocumentsKanbanModel = KanbanModel.extend({
     },
     /**
      * Fetch all tags. A tag as a 'tag_id', a 'tag_name', a 'facet_id', a
-     * 'facet_name' and a 'count' (the number of records linked to this tag).
+     * 'facet_name', a 'facet_tooltip' and a 'count' (the number of records linked to this tag).
      *
      * @private
      * @param {Object} params parameters/options passed to the load/reload function
@@ -257,7 +266,7 @@ var DocumentsKanbanModel = KanbanModel.extend({
             method: 'group_by_documents',
             kwargs: {
                 folder_id: params.folderID,
-                domain: this._addFolderToDomain(params.searchDomain, params.folderID),
+                domain: this._addFolderToDomain(params.domain, params.folderID),
             },
         });
     },

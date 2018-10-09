@@ -19,7 +19,7 @@ class AccountBatchPayment(models.Model):
     currency_id = fields.Many2one('res.currency', compute='_compute_currency', store=True, readonly=True)
     batch_type = fields.Selection(selection=[('inbound', 'Inbound'), ('outbound', 'Outbound')], required=True, readonly=True, states={'draft': [('readonly', '=', False)]}, default='inbound')
     payment_method_id = fields.Many2one(comodel_name='account.payment.method', string='Payment Method', required=True, readonly=True, states={'draft': [('readonly', '=', False)]}, help="The payment method used by the payments in this batch.")
-    payment_method_code = fields.Char(related='payment_method_id.code')
+    payment_method_code = fields.Char(related='payment_method_id.code', readonly=False)
     export_file_create_date = fields.Date(string='Generation Date', default=fields.Date.today, readonly=True, help="Creation date of the related export file.")
     export_file = fields.Binary(string='File', readonly=True, help="Export file related to this batch")
     export_filename = fields.Char(string='File Name', help="Name of the export file generated for this batch", store=True)

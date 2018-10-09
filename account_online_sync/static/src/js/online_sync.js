@@ -68,6 +68,9 @@ var OnlineSyncAccountInstitutionSelector = AbstractAction.extend({
         })
         .then(function(result) {
             self.do_action(result);
+        })
+        .fail(function () {
+            self.willDisappear = false;
         });
     },
 

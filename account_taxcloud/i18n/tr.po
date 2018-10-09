@@ -7,13 +7,14 @@
 # Murat Kaplan <muratk@projetgrup.com>, 2018
 # Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2018
 # Umur Akın <umura@projetgrup.com>, 2018
+# Buket Şeker <buket_skr@hotmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
-"Last-Translator: Umur Akın <umura@projetgrup.com>, 2018\n"
+"POT-Creation-Date: 2018-10-02 10:31+0000\n"
+"PO-Revision-Date: 2018-10-02 10:31+0000\n"
+"Last-Translator: Buket Şeker <buket_skr@hotmail.com>, 2018\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,17 +23,17 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #. module: account_taxcloud
-#: model:ir.ui.view,arch_db:account_taxcloud.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:account_taxcloud.res_config_settings_view_form
 msgid "<i class=\"fa fa-fw fa-arrow-right\"/>How to Get Credentials"
 msgstr ""
 
 #. module: account_taxcloud
-#: model:ir.ui.view,arch_db:account_taxcloud.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:account_taxcloud.res_config_settings_view_form
 msgid "API ID"
 msgstr "API Kimliği  (ID)"
 
 #. module: account_taxcloud
-#: model:ir.ui.view,arch_db:account_taxcloud.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:account_taxcloud.res_config_settings_view_form
 msgid "API KEY"
 msgstr "API Anahtarı (KEY)"
 
@@ -40,6 +41,11 @@ msgstr "API Anahtarı (KEY)"
 #: model:ir.model,name:account_taxcloud.model_res_company
 msgid "Companies"
 msgstr "Şirketler"
+
+#. module: account_taxcloud
+#: model:ir.model,name:account_taxcloud.model_res_config_settings
+msgid "Config Settings"
+msgstr "Konfigürasyon Ayarları"
 
 #. module: account_taxcloud
 #: model:ir.model.fields,field_description:account_taxcloud.field_product_tic_category__create_uid
@@ -52,7 +58,7 @@ msgid "Created on"
 msgstr "Oluşturulma"
 
 #. module: account_taxcloud
-#: model:ir.ui.view,arch_db:account_taxcloud.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:account_taxcloud.res_config_settings_view_form
 msgid "Default Category"
 msgstr "Varsayılan Kategori"
 
@@ -76,6 +82,15 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_taxcloud.field_product_tic_category__display_name
 msgid "Display Name"
 msgstr "Görünüm Adı"
+
+#. module: account_taxcloud
+#: model:ir.model.fields,help:account_taxcloud.field_product_template__tic_category_id
+msgid ""
+"Each product falls into a category which has specific taxes predermined by "
+"the government.The system will use the Tax Cloud category set on the "
+"internal category of the product. If thereisn't any, the one on the product "
+"itself will be used. Only used in United States."
+msgstr ""
 
 #. module: account_taxcloud
 #: model:ir.model,name:account_taxcloud.model_account_fiscal_position
@@ -113,9 +128,14 @@ msgid "Product Category"
 msgstr "Ürün Kategorisi"
 
 #. module: account_taxcloud
-#: model:ir.ui.view,arch_db:account_taxcloud.account_taxcloud_tic_category_search
+#: model_terms:ir.ui.view,arch_db:account_taxcloud.account_taxcloud_tic_category_search
 msgid "Product TIC Categories"
 msgstr "Ürün TIC Kategorileri"
+
+#. module: account_taxcloud
+#: model:ir.model,name:account_taxcloud.model_product_tic_category
+msgid "Product TIC Category"
+msgstr ""
 
 #. module: account_taxcloud
 #: model:ir.model,name:account_taxcloud.model_product_template
@@ -123,7 +143,7 @@ msgid "Product Template"
 msgstr "Ürün Şablonu"
 
 #. module: account_taxcloud
-#: model:ir.ui.view,arch_db:account_taxcloud.account_taxcloud_tic_category_tree
+#: model_terms:ir.ui.view,arch_db:account_taxcloud.account_taxcloud_tic_category_tree
 msgid "TIC Category"
 msgstr "TIC Kategori"
 
@@ -134,7 +154,7 @@ msgstr "TIC Kategorileri Kodu"
 
 #. module: account_taxcloud
 #: model:ir.model.fields,field_description:account_taxcloud.field_product_category__tic_category_id
-#: model:ir.ui.view,arch_db:account_taxcloud.account_taxcloud_tic_category_search
+#: model_terms:ir.ui.view,arch_db:account_taxcloud.account_taxcloud_tic_category_search
 msgid "TIC Code"
 msgstr "TIC Kodu"
 
@@ -144,7 +164,7 @@ msgid "TIC Description"
 msgstr "TIC Açıklaması"
 
 #. module: account_taxcloud
-#: model:ir.ui.view,arch_db:account_taxcloud.product_category_view_form_inherit_account_taxcloud
+#: model_terms:ir.ui.view,arch_db:account_taxcloud.product_category_view_form_inherit_account_taxcloud
 msgid "TaxCloud"
 msgstr "TaxCloud"
 
@@ -165,17 +185,14 @@ msgid "TaxCloud Categories"
 msgstr "TaxCloud Kategorileri"
 
 #. module: account_taxcloud
-#: model:ir.model.fields,field_description:account_taxcloud.field_product_product__tic_category_id
 #: model:ir.model.fields,field_description:account_taxcloud.field_product_template__tic_category_id
-#: model:ir.ui.view,arch_db:account_taxcloud.product_category_view_form_inherit_account_taxcloud
-#: model:ir.ui.view,arch_db:account_taxcloud.product_template_taxcloud_inherit_form
+#: model_terms:ir.ui.view,arch_db:account_taxcloud.product_category_view_form_inherit_account_taxcloud
+#: model_terms:ir.ui.view,arch_db:account_taxcloud.product_template_taxcloud_inherit_form
 msgid "TaxCloud Category"
 msgstr "TaxCloud Kategori"
 
 #. module: account_taxcloud
 #: model:ir.model.fields,help:account_taxcloud.field_product_category__tic_category_id
-#: model:ir.model.fields,help:account_taxcloud.field_product_product__tic_category_id
-#: model:ir.model.fields,help:account_taxcloud.field_product_template__tic_category_id
 msgid ""
 "TaxCloud uses Taxability Information Codes (TIC) to make sure each item in "
 "your catalog is taxed at the right rate (or, for tax-exempt items, not taxed"
@@ -249,13 +266,3 @@ msgstr "TaxCloud API Kullan"
 #, python-format
 msgid "[%s] %s"
 msgstr "[%s] %s"
-
-#. module: account_taxcloud
-#: model:ir.model,name:account_taxcloud.model_product_tic_category
-msgid "product.tic.category"
-msgstr "product.tic.category"
-
-#. module: account_taxcloud
-#: model:ir.model,name:account_taxcloud.model_res_config_settings
-msgid "res.config.settings"
-msgstr "res.config.settings"

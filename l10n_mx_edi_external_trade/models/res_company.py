@@ -15,7 +15,7 @@ class ResCompany(models.Model):
         'Used in External Trade in node "NumeroExportadorConfiable".')
     l10n_mx_edi_locality_id = fields.Many2one(
         'l10n_mx_edi.res.locality', string='Locality',
-        related='partner_id.l10n_mx_edi_locality_id',
+        related='partner_id.l10n_mx_edi_locality_id', readonly=False,
         help='Municipality configured for this company')
     l10n_mx_edi_colony_code = fields.Char(
         string='Colony Code',

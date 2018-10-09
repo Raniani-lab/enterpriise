@@ -43,12 +43,12 @@ var LinesWidget = Widget.extend({
      * @param {Number} qty
      * @param {string} model
      */
-    incrementProduct: function(id_or_virtual_id, qty, model) {
+    incrementProduct: function(id_or_virtual_id, qty, model, doNotClearLineHighlight) {
         var $line = this.$("[data-id='" + id_or_virtual_id + "']");
-        this._highlightLine($line);
         var incrementClass = model === 'stock.picking' ? '.qty-done' : '.product_qty';
         var qtyDone = parseInt($line.find(incrementClass).text(), 10);
         $line.find(incrementClass).text(qtyDone + qty);
+        this._highlightLine($line, doNotClearLineHighlight);
 
         this._handleControlButtons();
 
@@ -74,7 +74,7 @@ var LinesWidget = Widget.extend({
      * @param {Object} lineDescription: and object with all theinformation needed to render the
      *                 line's template, including the qty to add.
      */
-    addProduct: function (lineDescription, model) {
+    addProduct: function (lineDescription, model, doNotClearLineHighlight) {
         var $body = this.$el.filter('.o_barcode_lines');
         var $line = $(QWeb.render('stock_barcode_lines_template', {
             lines: [lineDescription],
@@ -84,7 +84,7 @@ var LinesWidget = Widget.extend({
         $body.prepend($line);
         $line.on('click', '.o_edit', this._onClickEditLine.bind(this));
         $line.on('click', '.o_package_content', this._onClickTruckLine.bind(this));
-        this._highlightLine($line);
+        this._highlightLine($line, doNotClearLineHighlight);
 
         this._handleControlButtons();
 
@@ -100,6 +100,11 @@ var LinesWidget = Widget.extend({
             this._toggleScanMessage('scan_products');
         }
 
+    },
+
+    highlightPackage: function (barcode) {
+        var $line = this.$('.o_barcode_line:contains(' + barcode + ')');
+        this._highlightLine($line);
     },
 
     /**
@@ -180,11 +185,31 @@ var LinesWidget = Widget.extend({
         });
         var packageLines = [];
         for (var key in groupedLines) {
+            // check if the package is 'reserved' to display '/ 1' on the line
+            var reservedPackage = true;
+            for (var index in groupedLines[key]) {
+                if (groupedLines[key][index].product_uom_qty === 0){
+                    reservedPackage = false;
+                    break;
+                }
+            }
             if (groupedLines.hasOwnProperty(key)) {
+                groupedLines[key][0].reservedPackage = reservedPackage;
                 packageLines.push(groupedLines[key][0]);
             }
         }
         return packageLines;
+    },
+    /**
+     * Get the current user interface states. Needed when the linesWidget is
+     * reload in order to highlight location and display correct scan message
+     */
+    getState: function () {
+        return {
+            'highlightLocationSource': this.$('.o_barcode_summary_location_src').hasClass('o_barcode_summary_location_highlight'),
+            'highlightDestinationLocation': this.$('.o_barcode_summary_location_dest').hasClass('o_barcode_summary_location_highlight'),
+            'scan_message': this.$('.o_scan_message:not(.o_hidden)').attr('class').split('o_scan_message_')[1].split(' ')[0],
+        };
     },
 
     //--------------------------------------------------------------------------
@@ -318,9 +343,12 @@ var LinesWidget = Widget.extend({
         var qties = $line.find('.o_barcode_scanner_qty').text();
         qties = qties.split('/');
         if (parseInt(qties[0], 10) < parseInt(qties[1], 10)) {
-            return false;
+            return -1;
+        } else if (parseInt(qties[0], 10) === parseInt(qties[1], 10)) {
+            return 0;
+        } else {
+            return 1;
         }
-        return true;
     },
 
     /**
@@ -339,10 +367,14 @@ var LinesWidget = Widget.extend({
             $lines.each(function () {
                 var $line = $(this);
                 reservationProcessed = self._isReservationProcessedLine($line);
-                if (!reservationProcessed) {
+                if (reservationProcessed === -1) {
+                    reservationProcessed = false;
                     return;
                 }
             });
+            if (reservationProcessed === 0 || reservationProcessed === 1){
+                reservationProcessed = true;
+            }
             return reservationProcessed;
         }
     },
@@ -403,20 +435,22 @@ var LinesWidget = Widget.extend({
      * @private
      * @param {Jquery} $line
      */
-    _highlightLine: function ($line) {
+    _highlightLine: function ($line, doNotClearLineHighlight) {
         var $body = this.$el.filter('.o_barcode_lines');
-        this.clearLineHighlight();
+        if (! doNotClearLineHighlight) {
+            this.clearLineHighlight();
+        }
         // Highlight `$line`.
         $line.toggleClass('o_highlight', true);
         $line.parents('.o_barcode_lines').toggleClass('o_js_has_highlight', true);
 
         var isReservationProcessed;
-        if ($line.find('.o_barcode_scanner_qty').text().indexOf('/').length > -1) {
+        if ($line.find('.o_barcode_scanner_qty').text().indexOf('/') === -1) {
             isReservationProcessed = false;
         } else {
             isReservationProcessed = this._isReservationProcessedLine($line);
         }
-        if (isReservationProcessed) {
+        if (isReservationProcessed === 1) {
             $line.toggleClass('o_highlight_green', false);
             $line.toggleClass('o_highlight_red', true);
         } else {

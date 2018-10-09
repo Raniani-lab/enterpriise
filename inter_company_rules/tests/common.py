@@ -43,7 +43,6 @@ class TestInterCompanyRulesCommon(common.SavepointCase):
         cls.res_users_company_a = cls.env['res.users'].create({
             'name': 'User A',
             'login': 'usera',
-            'password': 'usera',
             'email': 'usera@yourcompany.com',
             'company_id': cls.company_a.id,
             'company_ids': [(6, 0, [cls.company_a.id])],
@@ -59,7 +58,6 @@ class TestInterCompanyRulesCommon(common.SavepointCase):
         cls.res_users_company_b = cls.env['res.users'].create({
             'name': 'User B',
             'login': 'userb',
-            'password': 'userb',
             'email': 'userb@yourcompany.com',
             'company_id': cls.company_b.id,
             'company_ids': [(6, 0, [cls.company_b.id])],

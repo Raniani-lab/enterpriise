@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from dateutil.relativedelta import relativedelta
+
 from odoo import models, fields, api
 
 
@@ -8,7 +10,7 @@ class WorkflowActionRule(models.Model):
 
     domain_folder_id = fields.Many2one('documents.folder', string="Folder", required=True, ondelete='cascade')
     name = fields.Char(required=True, string="Rule name")
-    note = fields.Text()
+    note = fields.Char(string="Tooltip")
 
     # Conditions
     condition_type = fields.Selection([
@@ -20,7 +22,7 @@ class WorkflowActionRule(models.Model):
     domain = fields.Char()
 
     # Criteria
-    criteria_partner_id = fields.Many2one('res.partner', string="Partner")
+    criteria_partner_id = fields.Many2one('res.partner', string="Contact")
     criteria_owner_id = fields.Many2one('res.users', string="Owner")
     criteria_tag_ids = fields.One2many('documents.workflow.tag.criteria', 'workflow_rule_id', string="Tags")
 
@@ -30,7 +32,21 @@ class WorkflowActionRule(models.Model):
     tag_action_ids = fields.One2many('documents.workflow.action', 'workflow_rule_id', string='Set Tags')
     folder_id = fields.Many2one('documents.folder', string="Move to Folder")
     has_business_option = fields.Boolean(compute='_get_business')
-    create_model = fields.Selection([], string="Attach to")
+    create_model = fields.Selection([], string="Create")
+
+    # Activity
+    remove_activities = fields.Boolean(string='Mark all Activities as done')
+    activity_option = fields.Boolean(string='Create a new activity')
+    activity_type_id = fields.Many2one('mail.activity.type', string="Activity type")
+    activity_summary = fields.Char('Summary')
+    activity_date_deadline_range = fields.Integer(string='Due Date In')
+    activity_date_deadline_range_type = fields.Selection([
+        ('days', 'Days'),
+        ('weeks', 'Weeks'),
+        ('months', 'Months'),
+    ], string='Due type', default='days')
+    activity_note = fields.Html(string="Activity Note")
+    activity_user_id = fields.Many2one('res.users', string='Responsible')
 
     @api.multi
     def _get_business(self):
@@ -40,7 +56,7 @@ class WorkflowActionRule(models.Model):
         for record in self:
             record.has_business_option = len(self._fields['create_model'].selection)
 
-    def create_record(self, attachments):
+    def create_record(self, attachments=None):
         """
         implemented by each link module to define specific fields for the new business model (create_values)
 
@@ -62,30 +78,37 @@ class WorkflowActionRule(models.Model):
 
         for attachment in attachments:
             # partner/owner/share_link/folder changes
+            attachment_dict = {}
+            if self.user_id:
+                attachment_dict['owner_id'] = self.user_id.id
+            if self.partner_id:
+                attachment_dict['partner_id'] = self.partner_id.id
+            if self.folder_id:
+                attachment_dict['folder_id'] = self.folder_id.id
 
-            if self.user_id.id:
-                attachment.owner_id = self.user_id
-            if self.partner_id.id:
-                attachment.partner_id = self.partner_id
-            # by ensuring that the write dict has either the new or the old folder_id, it
-            # prevents the write overwrite to assign it to a folder based on the res_model.
-            attachment.write({
-                'folder_id': self.folder_id.id if self.folder_id else attachment.folder_id.id,
-            })
+            attachment.write(attachment_dict)
+
+            if self.remove_activities:
+                attachment.activity_ids.action_feedback(
+                    feedback="completed by rule: %s. %s" % (self.name, self.note or '')
+                )
+
+            if self.activity_option and self.activity_type_id:
+                attachment.documents_set_activity(settings_model=self)
 
             # tag and facet actions
             for tag_action in self.tag_action_ids:
                 tag_action.execute_action(attachment)
 
         if self.create_model:
-            return self.create_record(attachments)
+            return self.create_record(attachments=attachments)
 
         return True
 
 
 class WorkflowTagCriteria(models.Model):
     _name = "documents.workflow.tag.criteria"
-    _description = "tag based condition"
+    _description = "Document Workflow Tag Criteria"
 
     workflow_rule_id = fields.Many2one('documents.workflow.rule', ondelete='cascade')
 
@@ -100,7 +123,7 @@ class WorkflowTagCriteria(models.Model):
 
 class WorkflowAction(models.Model):
     _name = "documents.workflow.action"
-    _description = "tag and facet manipulation"
+    _description = "Document Workflow Tag Action"
 
     workflow_rule_id = fields.Many2one('documents.workflow.rule', ondelete='cascade')
 
@@ -120,7 +143,7 @@ class WorkflowAction(models.Model):
             faceted_tags = self.env['documents.tag'].search([('facet_id', '=', self.facet_id.id)])
             if faceted_tags.ids:
                 for tag in faceted_tags:
-                    return attachment.write({'tag_ids': [(3, tag.id, False)]})
+                    attachment.write({'tag_ids': [(3, tag.id, False)]})
             return attachment.write({'tag_ids': [(4, self.tag_id.id, False)]})
         elif self.action == 'remove':
             if self.tag_id.id:

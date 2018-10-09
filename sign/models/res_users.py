@@ -7,5 +7,5 @@ from odoo import fields, models
 class ResUsers(models.Model):
     _inherit = 'res.users'
 
-    sign_signature = fields.Binary(string="Digital Signature")
-    sign_initials = fields.Binary(string="Digitial Initials")
+    sign_signature = fields.Binary(string="Digital Signature", attachment=True, groups="base.group_system")
+    sign_initials = fields.Binary(string="Digitial Initials", attachment=True, groups="base.group_system")

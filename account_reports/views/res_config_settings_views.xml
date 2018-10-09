@@ -9,16 +9,6 @@
             <div id="dynamic_report" position="attributes">
                 <attribute name="attrs">{'invisible': [('module_account_reports', '!=', False)]}</attribute>
             </div>
-            <div id="account_reports" position="after">
-                <div class="content-group" attrs="{'invisible': [('module_account_reports', '=', False)]}">
-                    <div class="mt16">
-                        <button name="%(account.action_account_report)d" icon="fa-arrow-right" type="action" string="Print Legal Statement" class="btn-link"/>
-                    </div>
-                    <div>
-                        <button name="%(account.account_tag_action)d" icon="fa-arrow-right" type="action" string="Account Tags" class="btn-link"/>
-                    </div>
-                </div>
-            </div>
             <div id="account_followup" position="before">
                 <div class="col-lg-6 o_setting_box" id="payment_follow_up">
                     <div class="o_setting_left_pane"/>

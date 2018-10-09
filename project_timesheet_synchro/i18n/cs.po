@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"POT-Creation-Date: 2018-09-18 10:05+0000\n"
+"PO-Revision-Date: 2018-09-18 10:05+0000\n"
 "Last-Translator: trendspotter, 2018\n"
 "Language-Team: Czech (https://www.transifex.com/odoo/teams/41243/cs/)\n"
 "MIME-Version: 1.0\n"
@@ -142,7 +142,7 @@ msgstr "Databáze"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:252
 #, python-format
 msgid "Default project"
-msgstr ""
+msgstr "Výchozí projekt"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -327,6 +327,7 @@ msgstr ""
 msgid ""
 "Note that this will create new projects and tasks on your Odoo instance"
 msgstr ""
+"Všimněte si, že se tím vytvoří nové projekty a úkoly ve vaší instanci Odoo"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -413,7 +414,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:291
 #, python-format
 msgid "Previous week unavailable"
-msgstr ""
+msgstr "Předchozí týden není k dispozici"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -658,7 +659,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/timesheet_app_backend_template.xml:31
 #, python-format
 msgid "Work in disconnected mode and sync in the background."
-msgstr ""
+msgstr "Práce v odpojeném režimu a synchronizace na pozadí."
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -704,14 +705,14 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:521
 #, python-format
 msgid "Your Odoo Server Address"
-msgstr ""
+msgstr "Adresa serveru Odoo"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:570
 #, python-format
 msgid "Your database and account have been created !"
-msgstr ""
+msgstr "Vaše databáze a účet byly vytvořeny!"
 
 #. module: project_timesheet_synchro
 #. openerp-web

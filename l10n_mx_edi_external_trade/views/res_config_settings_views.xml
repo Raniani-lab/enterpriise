@@ -9,7 +9,7 @@
                 <div class="col-12 col-lg-6 o_setting_box" title="The parameters to configure the External Trade.">
                     <div class="o_setting_left_pane"/>
                     <div class="o_setting_right_pane">
-                        <label string='External Trade'/>
+                        <span class="o_form_label">External Trade</span>
                         <div class="text-muted">
                             Configure data to external trade.
                         </div>

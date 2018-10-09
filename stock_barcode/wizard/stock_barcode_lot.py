@@ -118,14 +118,14 @@ class StockBarcodeLot(models.TransientModel):
 
 class StockBarcodeLotLine(models.TransientModel):
     _name = "stock_barcode.lot.line"
-    _description = "Line of LN/SN scanned of a product"
+    _description = "LN/SN Product Lines"
 
     lot_name = fields.Char('Lot')
     qty_reserved = fields.Float('Quantity Reserved')
     qty_done = fields.Float('Quantity Done')
     stock_barcode_lot_id = fields.Many2one('stock_barcode.lot')
     move_line_id = fields.Many2one('stock.move.line')
-    product_barcode = fields.Char('Barcode', related='lot_name')
+    product_barcode = fields.Char('Barcode', related='lot_name', readonly=False)
 
     @api.onchange('qty_done')
     def onchange_qty_done(self):

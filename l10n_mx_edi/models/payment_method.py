@@ -5,7 +5,7 @@ from odoo import fields, models
 
 
 class PaymentMethod(models.Model):
-    """Added to manage the payment methods from SAT master data.
+    """Payment Method for Mexico from SAT Data.
     Electronic documents need this information from such data.
     Here the `xsd <goo.gl/Vk3IF1>`_
     The payment method is an required attribute, to express the payment method
@@ -18,6 +18,7 @@ class PaymentMethod(models.Model):
     lose odoo's features"""
 
     _name = 'l10n_mx_edi.payment.method'
+    _description = "Payment Method for Mexico from SAT Data"
 
     name = fields.Char(
         required=True,

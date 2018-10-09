@@ -2,12 +2,21 @@
 # This file contains the translation of the following modules:
 # * website_crm_score
 # 
+# Translators:
+# thanh nguyen <thanhnguyen.icsc@gmail.com>, 2018
+# Martin Trigaux, 2018
+# fanha99 <fanha99@hotmail.com>, 2018
+# son dang <son.dang@doda100.com>, 2018
+# Thang Duong Bao <nothingctrl@gmail.com>, 2018
+# Duy BQ <duybq86@gmail.com>, 2018
+# Minh Nguyen <ndminh210994@gmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:29+0000\n"
-"PO-Revision-Date: 2018-08-24 11:29+0000\n"
+"POT-Creation-Date: 2018-09-21 14:07+0000\n"
+"PO-Revision-Date: 2018-09-21 14:07+0000\n"
+"Last-Translator: Minh Nguyen <ndminh210994@gmail.com>, 2018\n"
 "Language-Team: Vietnamese (https://www.transifex.com/odoo/teams/41243/vi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,12 +33,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_needaction
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__message_needaction
 msgid "Action Needed"
-msgstr ""
+msgstr "Cần có Hành động"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__running
 msgid "Active"
-msgstr ""
+msgstr "Có hiệu lực"
 
 #. module: website_crm_score
 #: model:ir.model.fields,help:website_crm_score.field_ir_ui_view__track
@@ -40,12 +49,12 @@ msgstr ""
 #. module: website_crm_score
 #: selection:website.crm.score,rule_type:0
 msgid "Archive"
-msgstr ""
+msgstr "Lưu trữ"
 
 #. module: website_crm_score
-#: model:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
+#: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
 msgid "Assignation"
-msgstr ""
+msgstr "Khuyến nghị"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__leads_count
@@ -63,28 +72,29 @@ msgid "Assigned Leads this last month"
 msgstr ""
 
 #. module: website_crm_score
+#: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_attachment_count
+#: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__message_attachment_count
+msgid "Attachment Count"
+msgstr ""
+
+#. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__assign_date
 msgid "Auto Assign Date"
 msgstr ""
 
 #. module: website_crm_score
-#: model:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
-#: model:ir.ui.view,arch_db:website_crm_score.team_user_kanban
+#: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
+#: model_terms:ir.ui.view,arch_db:website_crm_score.team_user_kanban
 msgid "Avatar"
-msgstr ""
-
-#. module: website_crm_score
-#: model:ir.ui.view,arch_db:website_crm_score.crm_lead_view_dashboard
-msgid "Average Score"
-msgstr ""
+msgstr "Ảnh đại diện"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_team__capacity
 msgid "Capacity"
-msgstr ""
+msgstr "Công suất"
 
 #. module: website_crm_score
-#: model:ir.actions.act_window,help:website_crm_score.team_user_action
+#: model_terms:ir.actions.act_window,help:website_crm_score.team_user_action
 msgid "Create a new salesman"
 msgstr ""
 
@@ -93,14 +103,14 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__create_uid
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Được tạo bởi"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__create_date
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__create_date
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Thời điểm tạo"
 
 #. module: website_crm_score
 #: model:ir.actions.server,name:website_crm_score.action_score_now
@@ -133,28 +143,28 @@ msgid ""
 msgstr ""
 
 #. module: website_crm_score
-#: model:ir.actions.act_window,help:website_crm_score.team_action
+#: model_terms:ir.actions.act_window,help:website_crm_score.team_action
 msgid "Define a new sales channel"
 msgstr ""
 
 #. module: website_crm_score
 #: selection:website.crm.score,rule_type:0
 msgid "Delete"
-msgstr ""
+msgstr "Xoá"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__display_name
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__display_name
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Tên hiển thị"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_team__score_team_domain
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__team_user_domain
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__domain
 msgid "Domain"
-msgstr ""
+msgstr "Miền"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__event_based
@@ -165,23 +175,23 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_follower_ids
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__message_follower_ids
 msgid "Followers"
-msgstr ""
+msgstr "Người dõi theo"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_channel_ids
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__message_channel_ids
 msgid "Followers (Channels)"
-msgstr ""
+msgstr "Người theo dõi (Các kênh)"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_partner_ids
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__message_partner_ids
 msgid "Followers (Partners)"
-msgstr ""
+msgstr "Người theo dõi (Các đối tác)"
 
 #. module: website_crm_score
 #: model:ir.model,name:website_crm_score.model_ir_http
-msgid "HTTP routing"
+msgid "HTTP Routing"
 msgstr ""
 
 #. module: website_crm_score
@@ -189,19 +199,19 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__id
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: website_crm_score
 #: model:ir.model.fields,help:website_crm_score.field_team_user__message_unread
 #: model:ir.model.fields,help:website_crm_score.field_website_crm_score__message_unread
 msgid "If checked new messages require your attention."
-msgstr ""
+msgstr "Nếu đánh dấu kiểm, các thông điệp mới yêu cầu sự có mặt của bạn."
 
 #. module: website_crm_score
 #: model:ir.model.fields,help:website_crm_score.field_team_user__message_needaction
 #: model:ir.model.fields,help:website_crm_score.field_website_crm_score__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr ""
+msgstr "Nếu đánh dấu kiểm, các thông điệp mới yêu cầu sự có mặt của bạn."
 
 #. module: website_crm_score
 #: model:ir.model.fields,help:website_crm_score.field_team_user__message_has_error
@@ -213,12 +223,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_is_follower
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__message_is_follower
 msgid "Is Follower"
-msgstr ""
+msgstr "Trở thành người theo dõi"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__lang_id
 msgid "Language"
-msgstr ""
+msgstr "Ngôn ngữ"
 
 #. module: website_crm_score
 #: model:ir.model.fields,help:website_crm_score.field_crm_lead__lang_id
@@ -230,21 +240,21 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview____last_update
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Sửa lần cuối vào"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__write_uid
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__write_uid
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Cập nhật lần cuối bởi"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__write_date
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__write_date
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Cập nhật lần cuối vào"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__last_run
@@ -254,18 +264,24 @@ msgstr ""
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__lead_id
 msgid "Lead"
+msgstr "Tiềm năng"
+
+#. module: website_crm_score
+#: model:ir.actions.act_window,name:website_crm_score.website_crm_score_pageviews
+#: model:ir.ui.menu,name:website_crm_score.pageview_menu
+msgid "Lead Page Views"
 msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model,name:website_crm_score.model_crm_lead
 msgid "Lead/Opportunity"
-msgstr ""
+msgstr "Tiềm năng/Cơ hội"
 
 #. module: website_crm_score
 #: model:ir.actions.act_window,name:website_crm_score.score_leads
-#: model:ir.ui.view,arch_db:website_crm_score.view_crm_score_form
+#: model_terms:ir.ui.view,arch_db:website_crm_score.view_crm_score_form
 msgid "Leads"
-msgstr ""
+msgstr "Tiềm năng"
 
 #. module: website_crm_score
 #: model:ir.ui.menu,name:website_crm_score.team_user
@@ -279,17 +295,12 @@ msgid "Leads Count"
 msgstr ""
 
 #. module: website_crm_score
-#: model:ir.ui.menu,name:website_crm_score.leads_menu
-msgid "Leads Management"
-msgstr ""
-
-#. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__maximum_user_leads
 msgid "Leads Per Month"
 msgstr ""
 
 #. module: website_crm_score
-#: model:ir.actions.act_window,help:website_crm_score.team_user_action
+#: model_terms:ir.actions.act_window,help:website_crm_score.team_user_action
 msgid ""
 "Link users to salesteam, set a per 30 days lead capacity for each of them "
 "and set filters to auto assign your leads."
@@ -301,7 +312,20 @@ msgid "List of (tracked) pages seen by the owner of this lead"
 msgstr ""
 
 #. module: website_crm_score
-#: model:ir.ui.view,arch_db:website_crm_score.view_crm_team_user_form
+#. openerp-web
+#: code:addons/website_crm_score/static/src/xml/track_page.xml:9
+#, python-format
+msgid "Log visits on leads"
+msgstr ""
+
+#. module: website_crm_score
+#: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_main_attachment_id
+#: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__message_main_attachment_id
+msgid "Main Attachment"
+msgstr ""
+
+#. module: website_crm_score
+#: model_terms:ir.ui.view,arch_db:website_crm_score.view_crm_team_user_form
 msgid "Maximum Leads / 30 days"
 msgstr ""
 
@@ -315,7 +339,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_ids
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__message_ids
 msgid "Messages"
-msgstr ""
+msgstr "Thông điệp"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_team__min_for_assign
@@ -330,27 +354,27 @@ msgstr ""
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__name
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__name
-#: model:ir.ui.view,arch_db:website_crm_score.view_crm_score_form
+#: model_terms:ir.ui.view,arch_db:website_crm_score.view_crm_score_form
 msgid "Name"
-msgstr ""
+msgstr "Tên"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_needaction_counter
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__message_needaction_counter
 msgid "Number of Actions"
-msgstr ""
+msgstr "Số lượng Hành động"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_has_error_counter
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__message_has_error_counter
 msgid "Number of error"
-msgstr ""
+msgstr "Số lỗi"
 
 #. module: website_crm_score
 #: model:ir.model.fields,help:website_crm_score.field_team_user__message_needaction_counter
 #: model:ir.model.fields,help:website_crm_score.field_website_crm_score__message_needaction_counter
 msgid "Number of messages which requires an action"
-msgstr ""
+msgstr "Số thông điệp cần có hành động"
 
 #. module: website_crm_score
 #: model:ir.model.fields,help:website_crm_score.field_team_user__message_has_error_counter
@@ -362,26 +386,25 @@ msgstr ""
 #: model:ir.model.fields,help:website_crm_score.field_team_user__message_unread_counter
 #: model:ir.model.fields,help:website_crm_score.field_website_crm_score__message_unread_counter
 msgid "Number of unread messages"
-msgstr ""
+msgstr "Số thông điệp chưa đọc"
 
 #. module: website_crm_score
 #: model:ir.actions.act_window,name:website_crm_score.crm_score_views_action_table
-#: model:ir.ui.view,arch_db:website_crm_score.crm_case_graph_view_leads_sales
-#: model:ir.ui.view,arch_db:website_crm_score.crm_case_table_view_leads_sales
-#: model:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
+#: model_terms:ir.ui.view,arch_db:website_crm_score.crm_case_graph_view_leads_sales
+#: model_terms:ir.ui.view,arch_db:website_crm_score.crm_case_table_view_leads_sales
+#: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
 msgid "Opportunities"
-msgstr ""
+msgstr "Cơ hội"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__score_pageview_ids
-#: model:ir.ui.view,arch_db:website_crm_score.crm_score_pageview_form
-#: model:ir.ui.view,arch_db:website_crm_score.crm_score_pageview_graph
-#: model:ir.ui.view,arch_db:website_crm_score.website_crm_pageview_tree
+#: model_terms:ir.ui.view,arch_db:website_crm_score.crm_score_pageview_form
+#: model_terms:ir.ui.view,arch_db:website_crm_score.crm_score_pageview_graph
 msgid "Page Views"
-msgstr ""
+msgstr "Xem trang"
 
 #. module: website_crm_score
-#: model:ir.ui.view,arch_db:website_crm_score.lead_score_form
+#: model_terms:ir.ui.view,arch_db:website_crm_score.lead_score_form
 msgid "Page views"
 msgstr ""
 
@@ -393,22 +416,22 @@ msgstr ""
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__phone
 msgid "Phone"
-msgstr ""
+msgstr "Điện thoại"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_team__ratio
 msgid "Ratio"
-msgstr ""
+msgstr "Tỷ lệ"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__rule_type
 msgid "Rule Type"
-msgstr ""
+msgstr "Kiểu quy tắc"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__running
 msgid "Running"
-msgstr ""
+msgstr "Đang tính khấu hao"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__team_id
@@ -422,24 +445,20 @@ msgstr ""
 
 #. module: website_crm_score
 #: model:ir.actions.act_window,name:website_crm_score.team_action
+#: model:ir.model,name:website_crm_score.model_crm_team
 msgid "Sales Channels"
-msgstr ""
+msgstr "Kênh Kinh doanh"
 
 #. module: website_crm_score
 #: model:ir.actions.act_window,name:website_crm_score.team_user_action
-#: model:ir.ui.view,arch_db:website_crm_score.view_crm_team_user_form
-#: model:ir.ui.view,arch_db:website_crm_score.view_crm_team_user_tree
+#: model_terms:ir.ui.view,arch_db:website_crm_score.view_crm_team_user_form
+#: model_terms:ir.ui.view,arch_db:website_crm_score.view_crm_team_user_tree
 msgid "Sales Men"
 msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_res_users__team_user_ids
 msgid "Sales Records"
-msgstr ""
-
-#. module: website_crm_score
-#: model:ir.model,name:website_crm_score.model_crm_team
-msgid "Sales Team"
 msgstr ""
 
 #. module: website_crm_score
@@ -452,30 +471,31 @@ msgstr ""
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_team__team_user_ids
 msgid "Salesman"
+msgstr "Nhân viên bán hàng"
+
+#. module: website_crm_score
+#: model:ir.model,name:website_crm_score.model_team_user
+msgid "Salesperson (Team Member)"
 msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__score
+#: model_terms:ir.ui.view,arch_db:website_crm_score.crm_lead_view_dashboard
 msgid "Score"
 msgstr ""
 
 #. module: website_crm_score
 #: model:ir.actions.act_window,name:website_crm_score.score_action
-#: model:ir.ui.view,arch_db:website_crm_score.view_crm_score_form
-#: model:ir.ui.view,arch_db:website_crm_score.view_crm_score_tree
+#: model_terms:ir.ui.view,arch_db:website_crm_score.view_crm_score_form
+#: model_terms:ir.ui.view,arch_db:website_crm_score.view_crm_score_tree
 msgid "Scores"
 msgstr ""
 
 #. module: website_crm_score
-#: model:ir.ui.view,arch_db:website_crm_score.lead_score_form
-#: model:ir.ui.view,arch_db:website_crm_score.score_opp_form_view
+#: model_terms:ir.ui.view,arch_db:website_crm_score.lead_score_form
+#: model_terms:ir.ui.view,arch_db:website_crm_score.score_opp_form_view
 #: selection:website.crm.score,rule_type:0
 msgid "Scoring"
-msgstr ""
-
-#. module: website_crm_score
-#: model:ir.ui.menu,name:website_crm_score.pageview_menu
-msgid "Scoring Page Views"
 msgstr ""
 
 #. module: website_crm_score
@@ -495,7 +515,7 @@ msgid ""
 msgstr ""
 
 #. module: website_crm_score
-#: model:ir.ui.view,arch_db:website_crm_score.crm_score_pageview_filter
+#: model_terms:ir.ui.view,arch_db:website_crm_score.crm_score_pageview_filter
 msgid "Search PageViews"
 msgstr ""
 
@@ -508,14 +528,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_crm_score.field_ir_ui_view__track
 #: model:ir.model.fields,field_description:website_crm_score.field_website_page__track
 msgid "Track"
-msgstr ""
-
-#. module: website_crm_score
-#. openerp-web
-#: code:addons/website_crm_score/static/src/xml/track_page.xml:8
-#, python-format
-msgid "Track Page"
-msgstr ""
+msgstr "Vết"
 
 #. module: website_crm_score
 #: model:ir.actions.act_window,name:website_crm_score.crm_score_views_action_graph
@@ -526,21 +539,21 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_unread
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__message_unread
 msgid "Unread Messages"
-msgstr ""
+msgstr "Tin chưa đọc"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_unread_counter
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__message_unread_counter
 msgid "Unread Messages Counter"
-msgstr ""
+msgstr "Bộ đếm Thông điệp chưa đọc"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__url
 msgid "Url"
-msgstr ""
+msgstr "Url"
 
 #. module: website_crm_score
-#: model:ir.actions.act_window,help:website_crm_score.team_action
+#: model_terms:ir.actions.act_window,help:website_crm_score.team_action
 msgid ""
 "Use sales channels to organize your sales departments.\n"
 "                    Each channel will work with a separate pipeline."
@@ -549,7 +562,7 @@ msgstr ""
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__user_id
 msgid "User"
-msgstr ""
+msgstr "Người dùng"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_res_users__sale_team_id
@@ -559,12 +572,17 @@ msgstr ""
 #. module: website_crm_score
 #: model:ir.model,name:website_crm_score.model_res_users
 msgid "Users"
-msgstr ""
+msgstr "Người dùng"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__value
 msgid "Value"
-msgstr ""
+msgstr "Giá trị"
+
+#. module: website_crm_score
+#: model:ir.model,name:website_crm_score.model_ir_ui_view
+msgid "View"
+msgstr "Xem"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__view_date
@@ -572,21 +590,31 @@ msgid "Viewing Date"
 msgstr ""
 
 #. module: website_crm_score
-#: model:ir.model.fields,field_description:website_crm_score.field_team_user__website_message_ids
-#: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__website_message_ids
-msgid "Website Messages"
+#: model:ir.model,name:website_crm_score.model_website_crm_pageview
+msgid "Website CRM Page View"
 msgstr ""
 
 #. module: website_crm_score
-#: model:ir.actions.act_window,name:website_crm_score.website_crm_score_pageviews
-msgid "Website Pages"
+#: model:ir.model,name:website_crm_score.model_website_crm_score
+msgid "Website CRM Score"
 msgstr ""
+
+#. module: website_crm_score
+#: model:ir.model.fields,field_description:website_crm_score.field_team_user__website_message_ids
+#: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__website_message_ids
+msgid "Website Messages"
+msgstr "Thông điệp Website"
+
+#. module: website_crm_score
+#: model_terms:ir.ui.view,arch_db:website_crm_score.website_crm_pageview_pivot
+msgid "Website Pages"
+msgstr "Trang Website"
 
 #. module: website_crm_score
 #: model:ir.model.fields,help:website_crm_score.field_team_user__website_message_ids
 #: model:ir.model.fields,help:website_crm_score.field_website_crm_score__website_message_ids
 msgid "Website communication history"
-msgstr ""
+msgstr "Lịch sử thông tin liên lạc website"
 
 #. module: website_crm_score
 #: model:ir.model.fields,help:website_crm_score.field_website_crm_score__event_based
@@ -598,57 +626,30 @@ msgid ""
 msgstr ""
 
 #. module: website_crm_score
-#: model:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
-#: model:ir.ui.view,arch_db:website_crm_score.team_user_kanban
+#: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
+#: model_terms:ir.ui.view,arch_db:website_crm_score.team_user_kanban
 msgid "fa-check"
 msgstr ""
 
 #. module: website_crm_score
-#: model:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
-#: model:ir.ui.view,arch_db:website_crm_score.team_user_kanban
+#: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
+#: model_terms:ir.ui.view,arch_db:website_crm_score.team_user_kanban
 msgid "fa-times"
 msgstr ""
 
 #. module: website_crm_score
-#: model:ir.model,name:website_crm_score.model_ir_ui_view
-msgid "ir.ui.view"
-msgstr ""
-
-#. module: website_crm_score
-#: model:ir.ui.view,arch_db:website_crm_score.website_crm_score_view_kanban
+#: model_terms:ir.ui.view,arch_db:website_crm_score.website_crm_score_view_kanban
 msgid "leads"
-msgstr ""
+msgstr "tiềm năng"
 
 #. module: website_crm_score
-#: model:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
-#: model:ir.ui.view,arch_db:website_crm_score.team_user_kanban
+#: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
+#: model_terms:ir.ui.view,arch_db:website_crm_score.team_user_kanban
 msgid "o_assignation_button_active"
 msgstr ""
 
 #. module: website_crm_score
-#: model:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
-#: model:ir.ui.view,arch_db:website_crm_score.team_user_kanban
+#: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
+#: model_terms:ir.ui.view,arch_db:website_crm_score.team_user_kanban
 msgid "o_assignation_button_inactive"
-msgstr ""
-
-#. module: website_crm_score
-#: model:ir.model,name:website_crm_score.model_team_user
-msgid "team.user"
-msgstr ""
-
-#. module: website_crm_score
-#. openerp-web
-#: code:addons/website_crm_score/static/src/xml/track_page.xml:8
-#, python-format
-msgid "to better score your leads:"
-msgstr ""
-
-#. module: website_crm_score
-#: model:ir.model,name:website_crm_score.model_website_crm_pageview
-msgid "website.crm.pageview"
-msgstr ""
-
-#. module: website_crm_score
-#: model:ir.model,name:website_crm_score.model_website_crm_score
-msgid "website.crm.score"
 msgstr ""

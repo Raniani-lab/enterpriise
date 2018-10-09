@@ -7,10 +7,10 @@
 # Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.3+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 08:34+0000\n"
-"PO-Revision-Date: 2018-06-25 08:34+0000\n"
+"POT-Creation-Date: 2018-09-18 10:05+0000\n"
+"PO-Revision-Date: 2018-09-18 10:05+0000\n"
 "Last-Translator: Jeffery CHEN Fan <jeffery9@gmail.com>, 2018\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: analytic_enterprise
-#: model:ir.ui.view,arch_db:analytic_enterprise.account_analytic_line_report_view_grid
+#: model_terms:ir.ui.view,arch_db:analytic_enterprise.account_analytic_line_report_view_grid
 msgid "Analytic Entries"
 msgstr "分析分录"
 
@@ -30,11 +30,11 @@ msgid "Analytic Line"
 msgstr "分析明细行"
 
 #. module: analytic_enterprise
-#: model:ir.ui.view,arch_db:analytic_enterprise.account_analytic_line_report_view_grid
+#: model_terms:ir.ui.view,arch_db:analytic_enterprise.account_analytic_line_report_view_grid
 msgid "Month"
 msgstr "月"
 
 #. module: analytic_enterprise
-#: model:ir.ui.view,arch_db:analytic_enterprise.account_analytic_line_report_view_grid
+#: model_terms:ir.ui.view,arch_db:analytic_enterprise.account_analytic_line_report_view_grid
 msgid "Year"
 msgstr "年"

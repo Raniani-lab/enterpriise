@@ -18,7 +18,7 @@
             <ol class="list-group d-block">
                 <li t-foreach="facets" t-as="facet" t-att-data-id="facet.id" class="o_documents_selector_facet o_foldable list-group-item border-0">
                     <t t-set="facet_att_id" t-value="_.uniqueId('facet_')"/>
-                    <header class="list-group-item-action">
+                    <header class="list-group-item-action" t-att-title="facet.tooltip">
                         <div class="custom-control custom-checkbox">
                             <input type="checkbox" t-att-name="facet_att_id" t-att-id="facet_att_id" t-att-checked="facet.selected ? 'checked' : undefined" class="custom-control-input"/>
                             <label class="custom-control-label d-block" t-att-for="facet_att_id">
@@ -30,7 +30,7 @@
                     <ol class="list-group d-block">
                         <li t-foreach="facet.tags" t-as="tag" t-att-data-id="tag.id" class="o_documents_selector_tag list-group-item border-0 list-group-item-action">
                             <t t-set="tag_att_id" t-value="_.uniqueId('tag_')"/>
-                            <header>
+                            <header t-att-title="facet.tooltip">
                                 <div class="custom-control custom-checkbox">
                                     <input type="checkbox" t-att-name="tag_att_id" t-att-id="tag_att_id" t-att-checked="tag.selected ? 'checked' : undefined" class="custom-control-input"/>
                                     <label t-att-for="tag_att_id" class="custom-control-label d-block">

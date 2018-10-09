@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
 "Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
 "MIME-Version: 1.0\n"
@@ -149,7 +149,6 @@ msgid "C - Medical Express"
 msgstr "C- Medical Express"
 
 #. module: delivery_dhl
-#: model:ir.model,name:delivery_dhl.model_delivery_carrier
 #: model:ir.model.fields,field_description:delivery_dhl.field_product_packaging__package_carrier_type
 msgid "Carrier"
 msgstr "Transportista"
@@ -181,7 +180,7 @@ msgid "DHL Account Number"
 msgstr "DHL Número de cuenta"
 
 #. module: delivery_dhl
-#: model:ir.ui.view,arch_db:delivery_dhl.view_delivery_carrier_form_with_provider_dhl
+#: model_terms:ir.ui.view,arch_db:delivery_dhl.view_delivery_carrier_form_with_provider_dhl
 msgid "DHL Configuration"
 msgstr "DHL Configuración"
 
@@ -191,8 +190,8 @@ msgid "DHL Default Packaging Type"
 msgstr "Tipo de Empaque DHL por defecto"
 
 #. module: delivery_dhl
-#: model:ir.ui.view,arch_db:delivery_dhl.res_config_settings_view_form_sale
-#: model:ir.ui.view,arch_db:delivery_dhl.res_config_settings_view_form_stock
+#: model_terms:ir.ui.view,arch_db:delivery_dhl.res_config_settings_view_form_sale
+#: model_terms:ir.ui.view,arch_db:delivery_dhl.res_config_settings_view_form_stock
 msgid "DHL Delivery Methods"
 msgstr "Métodos de entrega de DHL"
 
@@ -207,7 +206,7 @@ msgid "DHL Product"
 msgstr ""
 
 #. module: delivery_dhl
-#: code:addons/delivery_dhl/models/dhl_request.py:376
+#: code:addons/delivery_dhl/models/dhl_request.py:375
 #, python-format
 msgid "DHL Site ID is missing, please modify your delivery method settings."
 msgstr ""
@@ -234,7 +233,7 @@ msgid "DHL USA -> International"
 msgstr "DHL USA -> Internacional"
 
 #. module: delivery_dhl
-#: code:addons/delivery_dhl/models/dhl_request.py:380
+#: code:addons/delivery_dhl/models/dhl_request.py:379
 #, python-format
 msgid ""
 "DHL account number is missing, please modify your delivery method settings."
@@ -243,12 +242,17 @@ msgstr ""
 "su forma de envío."
 
 #. module: delivery_dhl
-#: code:addons/delivery_dhl/models/dhl_request.py:378
+#: code:addons/delivery_dhl/models/dhl_request.py:377
 #, python-format
 msgid "DHL password is missing, please modify your delivery method settings."
 msgstr ""
 "La contraseña de DHL no está disponible, por favor modifique su "
 "configuración de método de envío."
+
+#. module: delivery_dhl
+#: model:ir.model,name:delivery_dhl.model_delivery_carrier
+msgid "Delivery Methods"
+msgstr "Método de envío"
 
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_dutiable
@@ -395,12 +399,7 @@ msgid "Package Weight Unit"
 msgstr "Unidad de Peso de Paquete"
 
 #. module: delivery_dhl
-#: model:ir.model,name:delivery_dhl.model_product_packaging
-msgid "Packaging"
-msgstr "Empaquetado"
-
-#. module: delivery_dhl
-#: code:addons/delivery_dhl/models/dhl_request.py:398
+#: code:addons/delivery_dhl/models/dhl_request.py:397
 #, python-format
 msgid "Please provide at least one item to ship."
 msgstr "Por favor, proveer al menos un dato para embarcar."
@@ -409,6 +408,11 @@ msgstr "Por favor, proveer al menos un dato para embarcar."
 #: selection:delivery.carrier,dhl_package_weight_unit:0
 msgid "Pounds"
 msgstr "Libras"
+
+#. module: delivery_dhl
+#: model:ir.model,name:delivery_dhl.model_product_packaging
+msgid "Product Packaging"
+msgstr "Empaquetado del producto"
 
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__delivery_type
@@ -447,7 +451,7 @@ msgid "T - Express 12:00"
 msgstr "T - Express 12:00"
 
 #. module: delivery_dhl
-#: code:addons/delivery_dhl/models/dhl_request.py:386
+#: code:addons/delivery_dhl/models/dhl_request.py:385
 #, python-format
 msgid ""
 "The address of the customer is missing or wrong (Missing field(s) :\n"
@@ -457,7 +461,7 @@ msgstr ""
 "%s)"
 
 #. module: delivery_dhl
-#: code:addons/delivery_dhl/models/dhl_request.py:394
+#: code:addons/delivery_dhl/models/dhl_request.py:393
 #, python-format
 msgid ""
 "The address of your company warehouse is missing or wrong (Missing field(s) :\n"
@@ -467,7 +471,7 @@ msgstr ""
 "%s)"
 
 #. module: delivery_dhl
-#: code:addons/delivery_dhl/models/dhl_request.py:400
+#: code:addons/delivery_dhl/models/dhl_request.py:399
 #, python-format
 msgid ""
 "The estimated price cannot be computed because the weight of your product is"

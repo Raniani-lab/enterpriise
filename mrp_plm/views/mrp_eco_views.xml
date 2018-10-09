@@ -233,7 +233,7 @@
     </record>
 
     <record id="mrp_eco_type_action_dashboard" model="ir.actions.act_window">
-        <field name="name">PLM Dashboard</field>
+        <field name="name">PLM Overview</field>
         <field name="res_model">mrp.eco.type</field>
         <field name="view_type">form</field>
         <field name="view_mode">kanban,form</field>
@@ -301,6 +301,7 @@
                     <filter name="rebase" string="Rebase" domain="[('state', '=', 'rebase')]"/>
                     <filter name="conflict" string="Conflict" domain="[('state', '=', 'conflict')]"/>
                     <filter name="done" string="Done" domain="[('state', '=', 'done')]"/>
+                    <separator/>
                     <filter string="Archived" name="archived" domain="[('active', '=', False)]"/>
                     <separator/>
                     <filter name="bomchange" string="BoM" domain="[('type', '!=', 'routing')]"/>
@@ -496,7 +497,7 @@
                                     <field name="change_type"/>
                                     <field name="product_id"/>
                                     <field name="upd_product_qty"/>
-                                    <field name="uom_change" groups="product.group_uom"/>
+                                    <field name="uom_change" groups="uom.group_uom"/>
                                     <field name="operation_change" groups="mrp.group_mrp_routings"/>
                                 </tree>
                             </field>
@@ -507,7 +508,7 @@
                                     <field name="change_type"/>
                                     <field name="product_id"/>
                                     <field name="upd_product_qty"/>
-                                    <field name="uom_change" groups="product.group_uom"/>
+                                    <field name="uom_change" groups="uom.group_uom"/>
                                     <field name="operation_change" groups="mrp.group_mrp_routings"/>
                                     <field name="conflict" invisible="1"/>
                                 </tree>
@@ -519,7 +520,7 @@
                                     <field name="change_type"/>
                                     <field name="product_id"/>
                                     <field name="upd_product_qty"/>
-                                    <field name="uom_change" groups="product.group_uom"/>
+                                    <field name="uom_change" groups="uom.group_uom"/>
                                     <field name="operation_change" groups="mrp.group_mrp_routings"/>
                                     <field name="conflict" invisible="1"/>
                                 </tree>
@@ -656,8 +657,8 @@
                         <label for="upd_product_qty"/>
                         <div class="o_row">
                             <field name="upd_product_qty"/>
-                            <field name="old_uom_id" attrs="{'invisible': [('change_type', '!=', 'remove')]}" options="{'no_open':True,'no_create':True}" groups="product.group_uom"/>
-                            <field name="new_uom_id" attrs="{'invisible': [('change_type', '=', 'remove')]}" options="{'no_open':True,'no_create':True}" groups="product.group_uom"/>
+                            <field name="old_uom_id" attrs="{'invisible': [('change_type', '!=', 'remove')]}" options="{'no_open':True,'no_create':True}" groups="uom.group_uom"/>
+                            <field name="new_uom_id" attrs="{'invisible': [('change_type', '=', 'remove')]}" options="{'no_open':True,'no_create':True}" groups="uom.group_uom"/>
                         </div>
                     </group>
                     <group string="ECO details">
@@ -815,7 +816,7 @@
 
     <menuitem
         id="menu_mrp_plm_dashboard"
-        name="Dashboard"
+        name="Overview"
         action="mrp_eco_type_action_dashboard"
         parent="menu_mrp_plm_root"
         sequence="5"/>
@@ -823,14 +824,9 @@
     <menuitem
         id="menu_mrp_plm_changes"
         name="Changes"
+        action="mrp_eco_action_main"
         parent="menu_mrp_plm_root"
         sequence="10"/>
-    <menuitem
-        id="menu_mrp_plm_ecos"
-        name="Engineering Change Orders"
-        action="mrp_eco_action_main"
-        parent="menu_mrp_plm_changes"
-        sequence="5"/>
 
     <menuitem
         id="menu_mrp_plm_master_data"

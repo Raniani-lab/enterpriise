@@ -191,10 +191,11 @@ var ReportEditorAction = AbstractAction.extend({
     _readPaperFormat: function () {
         var self = this;
         return this._rpc({
-            model: 'report.paperformat',
-            method: 'read',
-            args: [[this.report.paperformat_id[0]]],
-            context: session.user_context,
+            route: '/web_studio/read_paperformat',
+            params: {
+                report_id: this.handle.res_id,
+                context: session.user_context,
+            },
         }).then(function (result) {
             self.paperFormat = result[0];
         });
@@ -224,10 +225,7 @@ var ReportEditorAction = AbstractAction.extend({
      */
     _renderEditor: function (state) {
         var self = this;
-        var defs = [this._getReportViews()];
-        if (this.report.paperformat_id) {
-            defs.push(this._readPaperFormat());
-        }
+        var defs = [this._getReportViews(), this._readPaperFormat()];
         return $.when.apply($, defs).then(function () {
             var params = {
                 env: self.env,

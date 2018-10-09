@@ -359,10 +359,10 @@ class ResCompany(models.Model):
 class ResConfigSettings(models.TransientModel):
     _inherit = 'res.config.settings'
 
-    currency_interval_unit = fields.Selection(related="company_id.currency_interval_unit",)
-    currency_provider = fields.Selection(related="company_id.currency_provider")
-    currency_next_execution_date = fields.Date(related="company_id.currency_next_execution_date")
-    last_currency_sync_date = fields.Date(related="company_id.last_currency_sync_date")
+    currency_interval_unit = fields.Selection(related="company_id.currency_interval_unit", readonly=False)
+    currency_provider = fields.Selection(related="company_id.currency_provider", readonly=False)
+    currency_next_execution_date = fields.Date(related="company_id.currency_next_execution_date", readonly=False)
+    last_currency_sync_date = fields.Date(related="company_id.last_currency_sync_date", readonly=False)
 
     @api.onchange('currency_interval_unit')
     def onchange_currency_interval_unit(self):

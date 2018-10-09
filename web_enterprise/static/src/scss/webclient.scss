@@ -52,19 +52,47 @@ select { // FIXME buggy 'padding-left'
 //------------------------------------------------------------------------------
 // Buttons
 //------------------------------------------------------------------------------
+// Bootstrap define buttons using just one base-color for each color variation
+// (eg.$primary), without control over text-color or border.
+// The following code define exceptions for buttons that needs a different
+// design by default or in specific scenarios.
 
 .btn-secondary {
-    // Bootstrap variables do not control the color for btn-secondary text
-    // anymore. All buttons are either assigned the chosen dark or the chosen
-    // light color, automatically according to their background color. Setting
-    // the dark color to be our Odoo green is not a solution as BS would choose
-    // that green as text color for btn-warning / btn-info / ... which is not
-    // what we want.
+    // Customize the button design without overwrite the default '$secondary'
+    // variable that it's used by other components like .btn-outline-secondary,
+    // list-groups, tables, badges...
+
+    @include button-variant(
+        $background: $o-btn-secondary-bg,
+        $border: $o-btn-secondary-bg,
+        $hover-background: $o-btn-secondary-hover-bg,
+        $hover-border: $o-btn-secondary-hover-bg,
+        $active-background: $o-btn-secondary-active-bg,
+        $active-border: $o-btn-secondary-active-bg);
+
+    // By default, act like a .btn-link
     color: $primary;
 
     &.fa {
-        color: $yiq-text-dark;
+        // For button icons, act like '.btn-link.text-muted'
+        color: $secondary;
     }
+}
+
+.btn-outline-secondary {
+    // Slightly customize to act like an odoo custom btn-secondary with
+    // light gray border and $secondary text.
+    // Used for not prioritary actions ordropdown (eg. dashboard view).
+
+    @include button-variant(
+        $background: $o-btn-secondary-bg,
+        $border: lighten($secondary, 40%),
+        $hover-background: $o-btn-secondary-hover-bg,
+        $hover-border: $o-btn-secondary-hover-bg,
+        $active-background: $o-btn-secondary-active-bg,
+        $active-border: lighten($secondary, 40%));
+
+    color: $secondary;
 }
 
 //------------------------------------------------------------------------------
@@ -113,7 +141,7 @@ select { // FIXME buggy 'padding-left'
 //== Buttons
 .btn, .btn-group > .btn {
     border-radius: 0px;
-    border: none;
+
     &:hover, &:active, &:focus, &:active:focus {
         outline: none;
     }

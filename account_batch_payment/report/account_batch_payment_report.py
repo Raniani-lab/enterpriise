@@ -9,6 +9,7 @@ PAY_LINES_PER_PAGE = 20
 class PrintBatchPayment(models.AbstractModel):
     _name = 'report.account_batch_payment.print_batch_payment'
     _template = 'account_batch_payment.print_batch_payment'
+    _description = 'Batch Deposit Report'
 
     def get_pages(self, batch):
         """ Returns the data structure used by the template

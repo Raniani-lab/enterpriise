@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"POT-Creation-Date: 2018-09-18 10:05+0000\n"
+"PO-Revision-Date: 2018-09-18 10:05+0000\n"
 "Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: Persian (https://www.transifex.com/odoo/teams/41243/fa/)\n"
 "MIME-Version: 1.0\n"
@@ -20,14 +20,7 @@ msgstr ""
 
 #. module: mail_enterprise
 #. openerp-web
-#: code:addons/mail_enterprise/static/src/xml/mail_enterprise.xml:8
-#, python-format
-msgid "Attachment"
-msgstr "پیوست"
-
-#. module: mail_enterprise
-#. openerp-web
-#: code:addons/mail_enterprise/static/src/xml/mail_enterprise.xml:6
+#: code:addons/mail_enterprise/static/src/xml/mail_enterprise.xml:7
 #, python-format
 msgid "Download"
 msgstr "دانلود"

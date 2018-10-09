@@ -311,7 +311,8 @@ return AbstractRenderer.extend({
             for (var i = 0; i < groupFields.length; i++) {
                 var row_field = groupFields[i];
                 var value = rows[rowIndex].values[row_field];
-                var field_type = self.fields[row_field].type;
+                var fieldName = row_field.split(':')[0]; // remove groupby function (:day, :month...)
+                var field_type = self.fields[fieldName].type;
                 rowKeys.push(value[0]);
                 rowValues.push(self._field2label(value, field_type));
             }

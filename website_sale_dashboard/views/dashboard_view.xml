@@ -17,10 +17,11 @@
          <field name="name">sale.report.pivot</field>
          <field name="model">sale.report</field>
          <field name="arch" type="xml">
-             <pivot string="Sales Analysis" disable_linking="True">
-                 <field name="product_id" type="row"/>
-                 <field name="price_subtotal" type="measure"/>
+             <pivot string="Sales Analysis" disable_linking="True" display_quantity="true">
+                 <field name="categ_id" type="row"/>
                  <field name="order_id" type="measure"/>
+                 <field name="price_subtotal" type="measure"/>
+                 <field name="price_total" type="measure"/>
              </pivot>
          </field>
     </record>
@@ -32,16 +33,19 @@
             <field name="arch" type="xml">
                 <dashboard js_class="website_sale_dashboard" banner_route="/website_sale_dashboard/website_sale_dashboard_onboarding">
                     <view type="graph" ref="website_sale_dashboard.view_online_sales_graph"/>
-                    <group col="1" string="At A Glance">
-                        <group col="3">
-                            <aggregate name="price_subtotal_confirmed_orders" field="price_subtotal" string="Untaxed Total" widget="monetary"/>
+                    <group>
+                        <group>
+                            <aggregate name="price_subtotal_confirmed_orders" string="Total Sales" field="price_total" help="Total, Tax Included" widget="monetary"/>
+                            <aggregate name="price_subtotal_all_orders" string="Untaxed Total" field="price_subtotal" widget="monetary"/>
                             <aggregate name="order_id_confirmed_orders" field="order_id" string="Orders"/>
-                            <aggregate name="ordered_qty" string="Ordered Quantity" field="product_uom_qty"/>
+                            <formula name="total" string="Average Order" value="record.price_subtotal_confirmed_orders / record.order_id_confirmed_orders" widget="monetary"/>
+                            <aggregate name="days_to_confirm" string="Days to Confirm" field="days_to_confirm" group_operator="avg"
+                        value_label="day(s)"/>
+                             <aggregate name="customers" string="# Customers" field="partner_id"/>
+                             <aggregate name="lines" string="# Lines" field="nbr"/>
                         </group>
-                        <group col="3">
-                            <aggregate name="price_subtotal_all_orders" field="price_subtotal" invisible="1"/>
-                            <aggregate name="avg_ordered_qty" string="Average Ordered Quantity" field="product_uom_qty" group_operator="avg" clickable="false"/>
-                            <formula name="total" string="Average Untaxed Total" value="record.price_subtotal_confirmed_orders / record.order_id_confirmed_orders" widget="monetary"/>
+                        <group col="1">
+                            <widget name="pie_chart" attrs="{'title': 'Conversion Rate', 'groupby': 'is_abandoned_cart', 'labels': 'Sold,Abandonned'}"/>
                         </group>
                     </group>
                     <view type="pivot" ref="website_sale_dashboard.view_online_sales_pivot"/>
@@ -54,7 +58,7 @@
             <field name="model">sale.report</field>
             <field name="inherit_id" ref="website_sale.sale_report_view_search_website"/>
             <field name="arch" type="xml">
-                <xpath expr="//field[@name='partner_id']" position="before">
+                <xpath expr="//field[@name='product_id']" position="before">
                     <field name="order_id"/>
                 </xpath>
 
@@ -66,13 +70,13 @@
         </record>
 
         <record id="sale_dashboard" model="ir.actions.act_window">
-            <field name="name">Sales Dashboard</field>
+            <field name="name">eCommerce Dashboard</field>
             <field name="res_model">sale.report</field>
             <field name="view_mode">dashboard</field>
             <field name="view_id" ref="sale_dashboard_view"/>
             <field name="domain">[('team_id.team_type', '=', 'website')]</field>
             <field name="search_view_id" ref="website_sale.sale_report_view_search_website"/>
-            <field name="context">{'search_default_confirmed':1, 'time_ranges': {'field':'date', 'range':'this_week', 'comparison_range':'previous_period'}}</field>
+            <field name="context">{'search_default_confirmed': 1, 'time_ranges': {'field':'date', 'range':'last_7_days'}}</field>
         </record>
 
         <record id="website.menu_website_dashboard" model="ir.ui.menu">

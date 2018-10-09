@@ -7,7 +7,7 @@ from odoo.exceptions import UserError
 class StockInventoryLine(models.Model):
     _inherit = "stock.inventory.line"
 
-    product_barcode = fields.Char(related='product_id.barcode')
+    product_barcode = fields.Char(related='product_id.barcode', readonly=False)
     dummy_id = fields.Char(compute='_compute_dummy_id', inverse='_inverse_dummy_id')
 
     def _compute_dummy_id(self):

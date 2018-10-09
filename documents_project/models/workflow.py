@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from odoo import models, fields, api, exceptions
 
 
@@ -7,7 +8,7 @@ class WorkflowActionRuleTask(models.Model):
     has_business_option = fields.Boolean(default=True, compute='_get_business')
     create_model = fields.Selection(selection_add=[('project.task', "Task")])
 
-    def create_record(self, attachments):
+    def create_record(self, attachments=None):
         rv = super(WorkflowActionRuleTask, self).create_record(attachments=attachments)
         if self.create_model == 'project.task':
             new_obj = self.env[self.create_model].create({'name': "new task from document management"})
@@ -26,7 +27,8 @@ class WorkflowActionRuleTask(models.Model):
                 if attachment.res_model or attachment.res_id:
                     this_attachment = attachment.copy()
 
-                this_attachment.res_model = self.create_model
-                this_attachment.res_id = new_obj.id
+                this_attachment.write({'res_model': self.create_model,
+                                       'res_id': new_obj.id,
+                                       'folder_id': this_attachment.folder_id.id})
             return task_action
         return rv

@@ -26,7 +26,7 @@ var SubMenu = Widget.extend({
     init: function (parent, action) {
         this._super.apply(this, arguments);
         this.action = action;
-        this.active_view_types = this.action.view_mode.split(',');
+        this.active_view_types = this._getActiveViewTypes();
         this.activeMenu = 'Views';
         this.studio_actions = [{action: 'action_web_studio_action_editor', title: 'Views'}];
         this.multi_lang = session.multi_lang;
@@ -69,6 +69,15 @@ var SubMenu = Widget.extend({
             this.$('.o_menu_sections li a.active').removeClass('active');
             this.renderElement();
         }
+    },
+    /**
+     * @private
+     * @returns {string[]} the current action active view types
+     */
+    _getActiveViewTypes: function () {
+        return _.map(this.action.views, function (view) {
+            return view.type;
+        });
     },
     /**
      * @private
@@ -173,7 +182,7 @@ var SubMenu = Widget.extend({
      */
     _onActionChanged: function (new_action) {
         this.action = new_action;
-        this.active_view_types = this.action.view_mode.split(',');
+        this.active_view_types = this._getActiveViewTypes();
         this.studio_actions = [{action: 'action_web_studio_action_editor', title: 'Views'}];
         // TODO: fwi stuff with viewManager
         this.renderElement();

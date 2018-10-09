@@ -6,13 +6,14 @@ import uuid
 class DocumentShare(models.Model):
     _name = 'documents.share'
     _inherit = ['mail.thread', 'mail.alias.mixin']
+    _description = 'Documents Share'
 
     folder_id = fields.Many2one('documents.folder', requried=True)
-    name = fields.Char(string="Optional Name")
+    name = fields.Char(string="Name")
 
-    access_token = fields.Char(default=lambda x: str(uuid.uuid4()))
+    access_token = fields.Char(default=lambda x: str(uuid.uuid4()), groups="documents.group_documents_user")
     full_url = fields.Char(string="URL", compute='_compute_full_url')
-    date_deadline = fields.Date(string="Expiration Date")
+    date_deadline = fields.Date(string="Valid Until")
     state = fields.Selection([
         ('live', "Live"),
         ('expired', "Expired"),
@@ -31,10 +32,23 @@ class DocumentShare(models.Model):
         ('download', "Download"),
         ('downloadupload', "Download and Upload"),
     ], default='download', string="Allows to")
-    tag_ids = fields.Many2many('documents.tag', string="Default Tags")
-    partner_id = fields.Many2one('res.partner', string="Default Contact")
-    owner_id = fields.Many2one('res.users', string="Default Owner")
+    tag_ids = fields.Many2many('documents.tag', string="Shared Tags")
+    partner_id = fields.Many2one('res.partner', string="Contact")
+    owner_id = fields.Many2one('res.users', string="Document Owner")
     email_drop = fields.Boolean(string='Upload by Email')
+
+    # Activity
+    activity_option = fields.Boolean(string='Create a new activity')
+    activity_type_id = fields.Many2one('mail.activity.type', string="Activity type")
+    activity_summary = fields.Char('Summary')
+    activity_date_deadline_range = fields.Integer(string='Due Date In')
+    activity_date_deadline_range_type = fields.Selection([
+        ('days', 'Days'),
+        ('weeks', 'Weeks'),
+        ('months', 'Months'),
+    ], string='Due type', default='days')
+    activity_note = fields.Html(string="Note")
+    activity_user_id = fields.Many2one('res.users', string='Responsible')
 
     _sql_constraints = [
         ('share_unique', 'unique (access_token)', "This access token already exists"),

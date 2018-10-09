@@ -4,13 +4,14 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# Jorunn D. Newth, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"Last-Translator: Jorunn D. Newth, 2018\n"
 "Language-Team: Norwegian Bokmål (https://www.transifex.com/odoo/teams/41243/nb/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -44,7 +45,7 @@ msgid "# ECOs in progress"
 msgstr ""
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_bom_view_kanban
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_bom_view_kanban
 msgid "&amp;nbsp;"
 msgstr "&amp;nbsp;"
 
@@ -56,14 +57,16 @@ msgid "&times;"
 msgstr "&times;"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
 msgid ""
 "<i class=\"fa fa-envelope-o\" role=\"img\" aria-label=\"Domain alias\" "
 "title=\"Domain alias\"/>&amp;nbsp;"
 msgstr ""
+"<i class=\"fa fa-envelope-o\" role=\"img\" aria-label=\"Domain alias\" "
+"title=\"Domain alias\"/>&amp;nbsp;"
 
 #. module: mrp_plm
-#: code:addons/mrp_plm/models/mrp_eco.py:648
+#: code:addons/mrp_plm/models/mrp_eco.py:650
 #, python-format
 msgid ""
 "<p class=\"o_view_nocontent_smiling_face\">\n"
@@ -86,22 +89,22 @@ msgid ""
 msgstr ""
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "<span>Bill of Materials</span><br/>"
 msgstr ""
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
 msgid "<span>New</span>"
 msgstr "<span>Ny</span>"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "<span>Routing</span><br/>"
 msgstr "<span>Ruting</span><br/>"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
 msgid "<span>View</span>"
 msgstr "<span>Visning</span>"
 
@@ -142,7 +145,7 @@ msgid "Add"
 msgstr "Legg til"
 
 #. module: mrp_plm
-#: model:ir.actions.act_window,help:mrp_plm.mrp_eco_tag_action
+#: model_terms:ir.actions.act_window,help:mrp_plm.mrp_eco_tag_action
 msgid "Add a new tag"
 msgstr ""
 
@@ -172,18 +175,18 @@ msgid "Aliased Model"
 msgstr ""
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
-#: model:ir.ui.view,arch_db:mrp_plm.view_document_search_mrp_plm
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
+#: model_terms:ir.ui.view,arch_db:mrp_plm.view_document_search_mrp_plm
 msgid "All"
 msgstr "Alle"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
 msgid "All Approvals have be done"
 msgstr "Alle godkjenninger er gjort"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
 msgid "All Validations"
 msgstr "Alle valideringer"
 
@@ -203,12 +206,12 @@ msgid "Allow to apply changes from this stage."
 msgstr ""
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Apply Changes"
 msgstr ""
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Apply Rebase"
 msgstr ""
 
@@ -235,8 +238,8 @@ msgstr "Godkjenningstype"
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__approval_ids
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_stage__approval_template_ids
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_stage_view_form
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_stage_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Approvals"
 msgstr "Godkjenninger"
 
@@ -246,7 +249,7 @@ msgid "Approvals by stage"
 msgstr "Godkjenninger etter stadium"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Approve"
 msgstr "Godkjenn"
 
@@ -266,8 +269,8 @@ msgid "Approves, but the approval is optional"
 msgstr "Godkjenner, men godkjenning er valgfritt"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
-#: model:ir.ui.view,arch_db:mrp_plm.view_document_search_mrp_plm
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
+#: model_terms:ir.ui.view,arch_db:mrp_plm.view_document_search_mrp_plm
 msgid "Archived"
 msgstr "Arkivert"
 
@@ -289,16 +292,27 @@ msgid "Attachment"
 msgstr "Vedlegg"
 
 #. module: mrp_plm
-#: code:addons/mrp_plm/models/mrp_eco.py:640
+#: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__message_attachment_count
+#: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__message_attachment_count
+msgid "Attachment Count"
+msgstr "Antall vedlegg"
+
+#. module: mrp_plm
+#: code:addons/mrp_plm/models/mrp_eco.py:642
 #: code:addons/mrp_plm/models/product.py:32
 #: code:addons/mrp_plm/models/product.py:78
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__mrp_document_ids
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
-#: model:ir.ui.view,arch_db:mrp_plm.product_product_view_form_inherit_plm
-#: model:ir.ui.view,arch_db:mrp_plm.product_template_view_form_inherit_plm
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.product_product_view_form_inherit_plm
+#: model_terms:ir.ui.view,arch_db:mrp_plm.product_template_view_form_inherit_plm
 #, python-format
 msgid "Attachments"
 msgstr "Vedlegg"
+
+#. module: mrp_plm
+#: model:ir.model,name:mrp_plm.model_report_mrp_report_bom_structure
+msgid "BOM Structure Report"
+msgstr ""
 
 #. module: mrp_plm
 #: model:ir.model,name:mrp_plm.model_mrp_bom
@@ -306,7 +320,12 @@ msgid "Bill of Material"
 msgstr "Stykkliste"
 
 #. module: mrp_plm
-#: code:addons/mrp_plm/models/mrp_eco.py:150
+#: model:ir.model,name:mrp_plm.model_mrp_bom_line
+msgid "Bill of Material Line"
+msgstr ""
+
+#. module: mrp_plm
+#: code:addons/mrp_plm/models/mrp_eco.py:152
 #: model:ir.actions.act_window,name:mrp_plm.mrp_bom_action_kanban
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__bom_id
 #: model:ir.ui.menu,name:mrp_plm.menu_mrp_plm_boms
@@ -315,7 +334,7 @@ msgid "Bill of Materials"
 msgstr "Stykklister"
 
 #. module: mrp_plm
-#: model:ir.actions.act_window,help:mrp_plm.mrp_bom_action_kanban
+#: model_terms:ir.actions.act_window,help:mrp_plm.mrp_bom_action_kanban
 msgid ""
 "Bills of materials allow you to define the list of required raw\n"
 "              materials used to make a finished product; through a manufacturing\n"
@@ -333,18 +352,18 @@ msgid "Blocking Stage"
 msgstr ""
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "BoM"
 msgstr "BoM"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "BoM Changes"
 msgstr ""
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__bom_rebase_ids
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "BoM Rebase"
 msgstr ""
 
@@ -354,13 +373,13 @@ msgid "BoM Revision"
 msgstr ""
 
 #. module: mrp_plm
-#: code:addons/mrp_plm/models/mrp_eco.py:152
+#: code:addons/mrp_plm/models/mrp_eco.py:154
 #, python-format
 msgid "BoM and Routing"
 msgstr ""
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
 msgid "BoM:"
 msgstr ""
 
@@ -380,22 +399,22 @@ msgid "Changes"
 msgstr "Endringer"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Changes made in previous eco"
 msgstr ""
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Changes made on old bill of materials"
 msgstr ""
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Changes made on the new revision bill of materials"
 msgstr ""
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Changes made on the routing."
 msgstr ""
 
@@ -429,7 +448,7 @@ msgstr "Bare kommentarer"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__company_id
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "Company"
 msgstr "Firma"
 
@@ -440,12 +459,13 @@ msgstr "Konfigurasjon"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_bom_change__conflict
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_search selection:mrp.eco,state:0
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
+#: selection:mrp.eco,state:0
 msgid "Conflict"
 msgstr "Konflikt"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Conflict Resolved"
 msgstr "Konflikt løst"
 
@@ -455,31 +475,31 @@ msgid "Consumed in Operation"
 msgstr ""
 
 #. module: mrp_plm
-#: model:ir.actions.act_window,help:mrp_plm.mrp_bom_action_kanban
+#: model_terms:ir.actions.act_window,help:mrp_plm.mrp_bom_action_kanban
 msgid "Create a bill of materials"
 msgstr ""
 
 #. module: mrp_plm
-#: model:ir.actions.act_window,help:mrp_plm.mrp_eco_stage_action
+#: model_terms:ir.actions.act_window,help:mrp_plm.mrp_eco_stage_action
 msgid "Create a new ECO stage"
 msgstr ""
 
 #. module: mrp_plm
-#: model:ir.actions.act_window,help:mrp_plm.mrp_eco_type_action_dashboard
-#: model:ir.actions.act_window,help:mrp_plm.mrp_eco_type_action_form
+#: model_terms:ir.actions.act_window,help:mrp_plm.mrp_eco_type_action_dashboard
+#: model_terms:ir.actions.act_window,help:mrp_plm.mrp_eco_type_action_form
 msgid "Create a new ECO type"
 msgstr ""
 
 #. module: mrp_plm
-#: model:ir.actions.act_window,help:mrp_plm.mrp_eco_action
-#: model:ir.actions.act_window,help:mrp_plm.mrp_eco_action_approval
-#: model:ir.actions.act_window,help:mrp_plm.mrp_eco_action_approval_my
-#: model:ir.actions.act_window,help:mrp_plm.mrp_eco_action_form
-#: model:ir.actions.act_window,help:mrp_plm.mrp_eco_action_late
-#: model:ir.actions.act_window,help:mrp_plm.mrp_eco_action_main
-#: model:ir.actions.act_window,help:mrp_plm.mrp_eco_action_product_tmpl
-#: model:ir.actions.act_window,help:mrp_plm.mrp_eco_action_report
-#: model:ir.actions.act_window,help:mrp_plm.mrp_eco_action_routing
+#: model_terms:ir.actions.act_window,help:mrp_plm.mrp_eco_action
+#: model_terms:ir.actions.act_window,help:mrp_plm.mrp_eco_action_approval
+#: model_terms:ir.actions.act_window,help:mrp_plm.mrp_eco_action_approval_my
+#: model_terms:ir.actions.act_window,help:mrp_plm.mrp_eco_action_form
+#: model_terms:ir.actions.act_window,help:mrp_plm.mrp_eco_action_late
+#: model_terms:ir.actions.act_window,help:mrp_plm.mrp_eco_action_main
+#: model_terms:ir.actions.act_window,help:mrp_plm.mrp_eco_action_product_tmpl
+#: model_terms:ir.actions.act_window,help:mrp_plm.mrp_eco_action_report
+#: model_terms:ir.actions.act_window,help:mrp_plm.mrp_eco_action_routing
 msgid "Create a new engineering change order"
 msgstr ""
 
@@ -508,11 +528,6 @@ msgid "Created on"
 msgstr "Opprettet"
 
 #. module: mrp_plm
-#: model:ir.ui.menu,name:mrp_plm.menu_mrp_plm_dashboard
-msgid "Dashboard"
-msgstr "Dashbord"
-
-#. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__effectivity
 msgid "Date on which the changes should be applied. For reference only."
 msgstr ""
@@ -523,12 +538,12 @@ msgid "Default Values"
 msgstr "Standardverdier"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
 msgid "Delete"
 msgstr "Slett"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Description of the change and its reason ..."
 msgstr "Beskrivelse av endring og årsak..."
 
@@ -560,30 +575,41 @@ msgid "Displayed Image"
 msgstr "Vist bilde"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_search selection:mrp.eco,state:0
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
+#: selection:mrp.eco,state:0
 msgid "Done"
 msgstr "Fullført"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
 msgid "Dropdown menu"
 msgstr ""
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_routing_change_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_routing_change_view_form
 msgid "Duration"
 msgstr "Varighet"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_approval__eco_id
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
 msgid "ECO"
 msgstr ""
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_graph
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_pivot
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_graph
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_pivot
 msgid "ECO Analysis"
+msgstr ""
+
+#. module: mrp_plm
+#: model:ir.model,name:mrp_plm.model_mrp_eco_approval
+msgid "ECO Approval"
+msgstr ""
+
+#. module: mrp_plm
+#: model:ir.model,name:mrp_plm.model_mrp_eco_approval_template
+msgid "ECO Approval Template"
 msgstr ""
 
 #. module: mrp_plm
@@ -593,7 +619,7 @@ msgstr ""
 
 #. module: mrp_plm
 #: model:ir.model,name:mrp_plm.model_mrp_eco_bom_change
-msgid "ECO Material changes"
+msgid "ECO BoM changes"
 msgstr ""
 
 #. module: mrp_plm
@@ -607,6 +633,7 @@ msgid "ECO Routing Changes"
 msgstr ""
 
 #. module: mrp_plm
+#: model:ir.model,name:mrp_plm.model_mrp_eco_stage
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_approval__eco_stage_id
 msgid "ECO Stage"
 msgstr ""
@@ -625,24 +652,29 @@ msgid "ECO Tags"
 msgstr ""
 
 #. module: mrp_plm
+#: model:ir.model,name:mrp_plm.model_mrp_eco_type
+msgid "ECO Type"
+msgstr ""
+
+#. module: mrp_plm
 #: model:ir.actions.act_window,name:mrp_plm.mrp_eco_type_action_form
 #: model:ir.ui.menu,name:mrp_plm.menu_mrp_plm_eco_types
 msgid "ECO Types"
 msgstr ""
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "ECO approvals"
 msgstr ""
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_bom_change_view_form
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_routing_change_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_bom_change_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_routing_change_view_form
 msgid "ECO details"
 msgstr ""
 
 #. module: mrp_plm
-#: model:ir.actions.act_window,help:mrp_plm.mrp_eco_stage_action
+#: model_terms:ir.actions.act_window,help:mrp_plm.mrp_eco_stage_action
 msgid "ECO stages give the different stages for the Engineering Change Orders"
 msgstr ""
 
@@ -652,7 +684,7 @@ msgid "ECO to be applied"
 msgstr ""
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_bom_view_form_inherit_plm
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_bom_view_form_inherit_plm
 msgid "ECO(s)"
 msgstr ""
 
@@ -662,26 +694,26 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_plm.field_product_product__eco_ids
 #: model:ir.model.fields,field_description:mrp_plm.field_product_template__eco_ids
 #: model:ir.ui.menu,name:mrp_plm.menu_mrp_plm_eco_report
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_calendar
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_routing_view_form_inherit_plm
-#: model:ir.ui.view,arch_db:mrp_plm.product_template_view_form_inherit_plm
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_calendar
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_routing_view_form_inherit_plm
+#: model_terms:ir.ui.view,arch_db:mrp_plm.product_template_view_form_inherit_plm
 msgid "ECOs"
 msgstr ""
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_bom_view_kanban
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_bom_view_kanban
 msgid "Eco"
 msgstr ""
 
 #. module: mrp_plm
-#: code:addons/mrp_plm/models/mrp_eco.py:661
+#: code:addons/mrp_plm/models/mrp_eco.py:663
 #, python-format
 msgid "Eco BoM"
 msgstr ""
 
 #. module: mrp_plm
-#: code:addons/mrp_plm/models/mrp_eco.py:673
+#: code:addons/mrp_plm/models/mrp_eco.py:675
 #, python-format
 msgid "Eco Routing"
 msgstr ""
@@ -692,7 +724,7 @@ msgid "Eco Routing changes"
 msgstr ""
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
 msgid "Edit Task"
 msgstr "Rediger oppgave"
 
@@ -712,7 +744,7 @@ msgid "Effectivity Date"
 msgstr "Effektivitetsdato"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_view_form
 msgid "Email Alias"
 msgstr "Epostalias"
 
@@ -724,12 +756,7 @@ msgstr ""
 
 #. module: mrp_plm
 #: model:ir.model,name:mrp_plm.model_mrp_eco
-msgid "Engineering Change Order"
-msgstr ""
-
-#. module: mrp_plm
-#: model:ir.model,name:mrp_plm.model_mrp_eco_stage
-msgid "Engineering Change Order Stage"
+msgid "Engineering Change Order (ECO)"
 msgstr ""
 
 #. module: mrp_plm
@@ -742,17 +769,16 @@ msgstr ""
 #: model:ir.actions.act_window,name:mrp_plm.mrp_eco_action_product_tmpl
 #: model:ir.actions.act_window,name:mrp_plm.mrp_eco_action_report
 #: model:ir.actions.act_window,name:mrp_plm.mrp_eco_action_routing
-#: model:ir.ui.menu,name:mrp_plm.menu_mrp_plm_ecos
 msgid "Engineering Change Orders"
 msgstr ""
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
 msgid "Engineering Changes"
 msgstr ""
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "Filters"
 msgstr "Filtre"
 
@@ -790,12 +816,12 @@ msgid "For reference only."
 msgstr "Bare for referanse."
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "Future Activities"
 msgstr "Fremtidige aktiviteter"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "Group by..."
 msgstr "Grupper etter..."
 
@@ -861,18 +887,18 @@ msgid ""
 msgstr ""
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
 msgid "Important Messages"
 msgstr "Viktige meldinger"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
 msgid "In #{kanban_getcolorname(record.color.raw_value)}"
 msgstr ""
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 #: selection:mrp.eco,kanban_state:0 selection:mrp.eco,state:0
 #: model:mrp.eco.stage,name:mrp_plm.ecostage_progress
 msgid "In Progress"
@@ -905,7 +931,7 @@ msgid "Kanban State"
 msgstr "Kanban-status"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_bom_view_kanban
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_bom_view_kanban
 msgid "Kit"
 msgstr ""
 
@@ -946,9 +972,15 @@ msgid "Last Updated on"
 msgstr "Sist oppdatert"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "Late Activities"
 msgstr "Forsinkede aktiviteter"
+
+#. module: mrp_plm
+#: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__message_main_attachment_id
+#: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__message_main_attachment_id
+msgid "Main Attachment"
+msgstr ""
 
 #. module: mrp_plm
 #: model:res.groups,name:mrp_plm.group_plm_manager
@@ -959,11 +991,6 @@ msgstr "Leder"
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_routing_change__upd_time_cycle_manual
 msgid "Manual Duration Change"
 msgstr "Manuell endring i varighet"
-
-#. module: mrp_plm
-#: model:ir.model,name:mrp_plm.model_mrp_eco_type
-msgid "Manufacturing Process"
-msgstr ""
 
 #. module: mrp_plm
 #: model:ir.ui.menu,name:mrp_plm.menu_mrp_plm_master_data
@@ -983,22 +1010,22 @@ msgid "Messages"
 msgstr "Meldinger"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_tag_view_search
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_tag_view_search
 msgid "Mrp Eco Tags"
 msgstr ""
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "My Activities"
 msgstr "Aktivitetene mine"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "My Change Orders"
 msgstr "Endringsordrene mine"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
 msgid "My Validations"
 msgstr "Valideringene mine"
 
@@ -1081,7 +1108,7 @@ msgstr "Ikke enda"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__note
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Note"
 msgstr "Notat"
 
@@ -1139,12 +1166,16 @@ msgid "Overdue"
 msgstr "Forfalt"
 
 #. module: mrp_plm
+#: model:ir.ui.menu,name:mrp_plm.menu_mrp_plm_dashboard
+msgid "Overview"
+msgstr "Oversikt"
+
+#. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__alias_user_id
 msgid "Owner"
 msgstr "Eier"
 
 #. module: mrp_plm
-#: model:ir.model.fields,field_description:mrp_plm.field_res_users__group_mrp_plm_user
 #: model:ir.module.category,name:mrp_plm.module_category_plm
 #: model:ir.ui.menu,name:mrp_plm.menu_mrp_plm_root
 msgid "PLM"
@@ -1152,8 +1183,8 @@ msgstr ""
 
 #. module: mrp_plm
 #: model:ir.actions.act_window,name:mrp_plm.mrp_eco_type_action_dashboard
-msgid "PLM Dashboard"
-msgstr "PLM-dashbord"
+msgid "PLM Overview"
+msgstr ""
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__alias_parent_model_id
@@ -1203,7 +1234,7 @@ msgid "Previous ECO Changes"
 msgstr ""
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Previous Eco Bom Changes"
 msgstr ""
 
@@ -1231,14 +1262,14 @@ msgstr "Prioritet"
 #: model:ir.model,name:mrp_plm.model_product_product
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__product_tmpl_id
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_bom_change__product_id
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_bom_view_kanban
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_bom_change_view_form
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_bom_view_kanban
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_bom_change_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "Product"
 msgstr "Produkt"
 
 #. module: mrp_plm
-#: code:addons/mrp_plm/models/mrp_eco.py:149
+#: code:addons/mrp_plm/models/mrp_eco.py:151
 #, python-format
 msgid "Product Only"
 msgstr ""
@@ -1265,12 +1296,13 @@ msgstr "Antall"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_bom_change__rebase_id
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_search selection:mrp.eco,state:0
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
+#: selection:mrp.eco,state:0
 msgid "Rebase"
 msgstr ""
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Rebase new revision of BoM with previous eco bom and old bom changes."
 msgstr ""
 
@@ -1285,7 +1317,7 @@ msgid "Reference"
 msgstr "Referanse"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Reject"
 msgstr "Avvis"
 
@@ -1326,7 +1358,7 @@ msgid "Responsible User"
 msgstr "Ansvarlig bruker"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Rev :"
 msgstr "Rev:"
 
@@ -1343,15 +1375,15 @@ msgid "Role"
 msgstr "Rolle"
 
 #. module: mrp_plm
-#: code:addons/mrp_plm/models/mrp_eco.py:152
+#: code:addons/mrp_plm/models/mrp_eco.py:154
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__routing_id
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 #, python-format
 msgid "Routing"
 msgstr "Ruting"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Routing Changes"
 msgstr "Endringer i ruting"
 
@@ -1361,7 +1393,7 @@ msgid "Routing Revision"
 msgstr ""
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
 msgid "Routing:"
 msgstr "Ruting:"
 
@@ -1384,7 +1416,7 @@ msgid "Sequence"
 msgstr "Sekvens"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
 msgid "Set Cover Image"
 msgstr "Sett forsidebilde"
 
@@ -1396,12 +1428,12 @@ msgid "Set a Cover Image"
 msgstr "Sett et forsidebilde"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
 msgid "Settings"
 msgstr "Innstillinger"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Short Summary"
 msgstr "Kort sammendrag"
 
@@ -1411,7 +1443,7 @@ msgid "Show Apply Change"
 msgstr ""
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "Show all records which has next action date is before today"
 msgstr "Vis alle oppføringer som har en neste tiltak-dato før dagen i dag"
 
@@ -1431,14 +1463,14 @@ msgstr ""
 "størrelsesforholdet bevart. Bruk dette feltet der det trengs et lite bilde."
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
 msgid "Someone rejected this change"
 msgstr "Noen avviste denne endringen"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__stage_id
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_approval_template__stage_id
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "Stage"
 msgstr "Stadium"
 
@@ -1448,12 +1480,12 @@ msgid "Stages"
 msgstr "Stadier"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Start New Revision"
 msgstr "Start ny revisjon"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "State"
 msgstr "Stat"
 
@@ -1473,13 +1505,13 @@ msgid ""
 msgstr ""
 
 #. module: mrp_plm
-#: code:addons/mrp_plm/models/mrp_eco.py:345
+#: code:addons/mrp_plm/models/mrp_eco.py:347
 #, python-format
 msgid "Successfully Rebased !"
 msgstr ""
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid ""
 "System will automatically resolved the conflict(s) and apply changes. Do you"
 " agree?"
@@ -1492,7 +1524,7 @@ msgstr "Tagnavnet eksisterer allerede!"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__tag_ids
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_tag_view_tree
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_tag_view_tree
 msgid "Tags"
 msgstr "Tagger"
 
@@ -1520,6 +1552,12 @@ msgstr ""
 #. module: mrp_plm
 #: model:res.groups,comment:mrp_plm.group_plm_user
 msgid "The PLM user uses products lifecycle management"
+msgstr ""
+
+#. module: mrp_plm
+#: model:ir.model.fields,help:mrp_plm.field_product_product__version
+#: model:ir.model.fields,help:mrp_plm.field_product_template__version
+msgid "The current version of the product."
 msgstr ""
 
 #. module: mrp_plm
@@ -1557,13 +1595,14 @@ msgstr ""
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__nb_validation
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
 msgid "To Apply"
 msgstr ""
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_search selection:mrp.eco,state:0
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
+#: selection:mrp.eco,state:0
 msgid "To Do"
 msgstr "Å gjøre"
 
@@ -1573,7 +1612,7 @@ msgid "Today"
 msgstr "I dag"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "Today Activities"
 msgstr "Dagens aktiviteter"
 
@@ -1609,17 +1648,17 @@ msgid "Update"
 msgstr "Oppdater"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Update BoM"
 msgstr ""
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Update Documents"
 msgstr ""
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Update Routing"
 msgstr ""
 
@@ -1629,7 +1668,6 @@ msgid "User"
 msgstr "Bruker"
 
 #. module: mrp_plm
-#: model:ir.model,name:mrp_plm.model_res_users
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_approval_template__user_ids
 msgid "Users"
 msgstr "Brukere"
@@ -1644,12 +1682,12 @@ msgstr "Validert"
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_routing__version
 #: model:ir.model.fields,field_description:mrp_plm.field_product_product__version
 #: model:ir.model.fields,field_description:mrp_plm.field_product_template__version
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_bom_view_form_inherit_plm
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_bom_view_form_inherit_plm
 msgid "Version"
 msgstr "Versjon"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "Waiting Any Validation"
 msgstr ""
 
@@ -1659,12 +1697,12 @@ msgid "Waiting Approvals"
 msgstr "Godkjenninger som venter"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "Waiting My Validation"
 msgstr "Venter på godkjenning fra meg"
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
 msgid "Waiting for Approvals"
 msgstr "Venter på godkjenning"
 
@@ -1696,50 +1734,23 @@ msgid "Work Centers"
 msgstr "Arbeidssentre"
 
 #. module: mrp_plm
-#: code:addons/mrp_plm/models/mrp_eco.py:487
+#: code:addons/mrp_plm/models/mrp_eco.py:489
 #, python-format
 msgid "You cannot change the stage, as approvals are required in the process."
 msgstr ""
 
 #. module: mrp_plm
-#: code:addons/mrp_plm/models/mrp_eco.py:477
+#: code:addons/mrp_plm/models/mrp_eco.py:479
 #, python-format
 msgid "You cannot change the stage, as approvals are still required."
 msgstr "Du kan ikke endre stadiet, godkjenninger er fortsatt påkrevde."
 
 #. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_stage_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_stage_view_form
 msgid "e.g. Engineering Department"
 msgstr "for eksempel Utviklingsavdeling"
 
 #. module: mrp_plm
-#: model:ir.model.fields,help:mrp_plm.field_res_users__group_mrp_plm_user
-msgid ""
-"group_plm_user: The PLM user uses products lifecycle management\n"
-"group_plm_manager: The PLM manager manages products lifecycle management"
-msgstr ""
-
-#. module: mrp_plm
-#: model:ir.model,name:mrp_plm.model_mrp_bom_line
-msgid "mrp.bom.line"
-msgstr "mrp.bom.line"
-
-#. module: mrp_plm
-#: model:ir.model,name:mrp_plm.model_mrp_eco_approval
-msgid "mrp.eco.approval"
-msgstr "mrp.eco.approval"
-
-#. module: mrp_plm
-#: model:ir.model,name:mrp_plm.model_mrp_eco_approval_template
-msgid "mrp.eco.approval.template"
-msgstr "mrp.eco.approval.template"
-
-#. module: mrp_plm
-#: model:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
+#: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
 msgid "oe_kanban_text_red"
 msgstr "oe_kanban_text_red"
-
-#. module: mrp_plm
-#: model:ir.model,name:mrp_plm.model_report_mrp_report_bom_structure
-msgid "report.mrp.report_bom_structure"
-msgstr ""

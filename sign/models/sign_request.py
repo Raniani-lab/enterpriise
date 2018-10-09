@@ -35,7 +35,7 @@ def _fix_image_transparency(image):
 
 class SignRequest(models.Model):
     _name = "sign.request"
-    _description = "Document To Sign"
+    _description = "Signature Request"
     _rec_name = 'reference'
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
@@ -319,7 +319,7 @@ class SignRequest(models.Model):
             self.completed_document = self.template_id.attachment_id.datas
             return
 
-        old_pdf = PdfFileReader(io.BytesIO(base64.b64decode(self.template_id.attachment_id.datas)), overwriteWarnings=False)
+        old_pdf = PdfFileReader(io.BytesIO(base64.b64decode(self.template_id.attachment_id.datas)), strict=False, overwriteWarnings=False)
         font = "Helvetica"
         normalFontSize = 0.015
 
@@ -432,7 +432,7 @@ class SignRequest(models.Model):
 
 class SignRequestItem(models.Model):
     _name = "sign.request.item"
-    _description = "Signature Request"
+    _description = "Signature Request Item"
     _rec_name = 'partner_id'
 
     @api.multi
@@ -444,7 +444,7 @@ class SignRequestItem(models.Model):
 
     access_token = fields.Char('Security Token', required=True, default=_default_access_token, readonly=True)
     role_id = fields.Many2one('sign.item.role', string="Role")
-    sms_number = fields.Char(related='partner_id.mobile')
+    sms_number = fields.Char(related='partner_id.mobile', readonly=False)
     sms_token = fields.Char('SMS Token', readonly=True)
 
     signature = fields.Binary(attachment=True)
@@ -455,7 +455,7 @@ class SignRequestItem(models.Model):
         ("completed", "Completed")
     ], readonly=True, default="draft")
 
-    signer_email = fields.Char(related='partner_id.email')
+    signer_email = fields.Char(related='partner_id.email', readonly=False)
 
     latitude = fields.Float(digits=(10, 7))
     longitude = fields.Float(digits=(10, 7))
@@ -476,23 +476,6 @@ class SignRequestItem(models.Model):
     @api.multi
     def action_sent(self):
         self.write({'state': 'sent'})
-        for request_item in self:
-            items = request_item.sign_request_id.template_id.sign_item_ids.filtered(lambda r: r.responsible_id == request_item.role_id)
-            signature_item = items.filtered(lambda item: item.type_id.type == 'signature')
-            initial_item = items.filtered(lambda item: item.type_id.type == 'initial')
-            user = self.env['res.users'].search([('partner_id', '=', request_item.partner_id.id)], limit=1)
-            if user and user.sign_signature and signature_item:
-                self.env['sign.item.value'].create({
-                    'sign_item_id': signature_item.id,
-                    'sign_request_id': request_item.sign_request_id.id,
-                    'value': 'data:image/png;base64,' + str(user.sign_signature, 'utf-8'),
-                })
-            if user and user.sign_initials and initial_item:
-                self.env['sign.item.value'].create({
-                    'sign_item_id': initial_item.id,
-                    'sign_request_id': request_item.sign_request_id.id,
-                    'value': 'data:image/png;base64,' + str(user.sign_initials, 'utf-8'),
-                })
         self.mapped('sign_request_id')._check_after_compute()
 
     @api.multi
@@ -542,7 +525,7 @@ class SignRequestItem(models.Model):
             if not (itemIDs <= autorizedIDs and requiredIDs <= itemIDs): # Security check
                 return False
 
-            user = self.env['res.users'].search([('partner_id', '=', self.partner_id.id)], limit=1)
+            user = self.env['res.users'].search([('partner_id', '=', self.partner_id.id)], limit=1).sudo()
             for itemId in signature:
                 item_value = SignItemValue.search([('sign_item_id', '=', int(itemId)), ('sign_request_id', '=', request.id)])
                 if not item_value:
@@ -571,4 +554,4 @@ class SignRequestItem(models.Model):
     def _send_sms(self):
         self.ensure_one()
         self._reset_sms_token()
-        self.env['sms.api']._send_sms([self.sms_number], _('Your confirmation code is %s' % self.sms_token))
+        self.env['sms.api']._send_sms([self.sms_number], _('Your confirmation code is %s') % self.sms_token)

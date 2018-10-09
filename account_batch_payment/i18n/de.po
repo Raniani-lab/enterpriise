@@ -6,19 +6,30 @@
 # Martin Trigaux, 2018
 # DE R1 <e2fes1@hotmail.com>, 2018
 # DE T2 <e2f48d4s5vd1s2@outlook.com>, 2018
+# Johannes Croe <jcr@odoo.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
-"Last-Translator: DE T2 <e2f48d4s5vd1s2@outlook.com>, 2018\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"Last-Translator: Johannes Croe <jcr@odoo.com>, 2018\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: account_batch_payment
+#: model:ir.model,name:account_batch_payment.model_account_batch_download_wizard
+msgid "Account Batch download wizard"
+msgstr "Massendownload wizard für Accounts"
+
+#. module: account_batch_payment
+#: model:ir.model,name:account_batch_payment.model_account_reconciliation_widget
+msgid "Account Reconciliation widget"
+msgstr ""
 
 #. module: account_batch_payment
 #: code:addons/account_batch_payment/models/account_batch_payment.py:75
@@ -40,7 +51,7 @@ msgstr ""
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__amount
-#: model:ir.ui.view,arch_db:account_batch_payment.print_batch_payment
+#: model_terms:ir.ui.view,arch_db:account_batch_payment.print_batch_payment
 msgid "Amount"
 msgstr "Betrag"
 
@@ -55,29 +66,34 @@ msgid "Bank"
 msgstr "Bank"
 
 #. module: account_batch_payment
-#: model:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_search
+#: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_search
 msgid "Bank Journal"
 msgstr "Bankjournal"
 
 #. module: account_batch_payment
-#: model:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
+#: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
 msgid "Batch Content"
 msgstr ""
 
 #. module: account_batch_payment
 #: model:account.payment.method,name:account_batch_payment.account_payment_method_batch_deposit
-#: model:ir.ui.view,arch_db:account_batch_payment.account_journal_dashboard_kanban_view_inherited
+#: model_terms:ir.ui.view,arch_db:account_batch_payment.account_journal_dashboard_kanban_view_inherited
 msgid "Batch Deposit"
 msgstr "Stapelbuchung"
+
+#. module: account_batch_payment
+#: model:ir.model,name:account_batch_payment.model_report_account_batch_payment_print_batch_payment
+msgid "Batch Deposit Report"
+msgstr ""
 
 #. module: account_batch_payment
 #: model:ir.model,name:account_batch_payment.model_account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_download_wizard__batch_payment_id
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_payment__batch_payment_id
-#: model:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
-#: model:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_search
+#: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
+#: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_search
 msgid "Batch Payment"
-msgstr ""
+msgstr "Massenzahlung"
 
 #. module: account_batch_payment
 #: model:ir.actions.act_window,name:account_batch_payment.action_batch_payment_in
@@ -98,8 +114,8 @@ msgid "Batch payment from which the file has been generated."
 msgstr ""
 
 #. module: account_batch_payment
-#: model:ir.actions.act_window,help:account_batch_payment.action_batch_payment_in
-#: model:ir.actions.act_window,help:account_batch_payment.action_batch_payment_out
+#: model_terms:ir.actions.act_window,help:account_batch_payment.action_batch_payment_in
+#: model_terms:ir.actions.act_window,help:account_batch_payment.action_batch_payment_out
 msgid ""
 "Batch payments allow you grouping different payments to ease\n"
 "                    reconciliation. They are also useful when depositing checks\n"
@@ -107,12 +123,12 @@ msgid ""
 msgstr ""
 
 #. module: account_batch_payment
-#: model:ir.ui.view,arch_db:account_batch_payment.download_xml_form
+#: model_terms:ir.ui.view,arch_db:account_batch_payment.download_xml_form
 msgid "Click here to download the generated file:"
 msgstr ""
 
 #. module: account_batch_payment
-#: model:ir.ui.view,arch_db:account_batch_payment.download_xml_form
+#: model_terms:ir.ui.view,arch_db:account_batch_payment.download_xml_form
 msgid "Close"
 msgstr "Schließen"
 
@@ -129,12 +145,12 @@ msgid "Create Batch Payment"
 msgstr ""
 
 #. module: account_batch_payment
-#: model:ir.actions.act_window,help:account_batch_payment.action_batch_payment_in
+#: model_terms:ir.actions.act_window,help:account_batch_payment.action_batch_payment_in
 msgid "Create a new customer batch payment"
 msgstr ""
 
 #. module: account_batch_payment
-#: model:ir.actions.act_window,help:account_batch_payment.action_batch_payment_out
+#: model_terms:ir.actions.act_window,help:account_batch_payment.action_batch_payment_out
 msgid "Create a new vendor batch payment"
 msgstr ""
 
@@ -161,13 +177,13 @@ msgid "Currency"
 msgstr "Währung"
 
 #. module: account_batch_payment
-#: model:ir.ui.view,arch_db:account_batch_payment.print_batch_payment
+#: model_terms:ir.ui.view,arch_db:account_batch_payment.print_batch_payment
 msgid "Customer"
 msgstr "Kunde"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__date
-#: model:ir.ui.view,arch_db:account_batch_payment.print_batch_payment
+#: model_terms:ir.ui.view,arch_db:account_batch_payment.print_batch_payment
 msgid "Date"
 msgstr "Datum"
 
@@ -179,7 +195,7 @@ msgid "Display Name"
 msgstr "Anzeigename"
 
 #. module: account_batch_payment
-#: model:ir.ui.view,arch_db:account_batch_payment.download_xml_form
+#: model_terms:ir.ui.view,arch_db:account_batch_payment.download_xml_form
 msgid "Download export file"
 msgstr ""
 
@@ -189,7 +205,7 @@ msgid "Export file related to this batch"
 msgstr ""
 
 #. module: account_batch_payment
-#: model:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
+#: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
 msgid "Exported File"
 msgstr ""
 
@@ -225,7 +241,7 @@ msgid "Generation Date"
 msgstr ""
 
 #. module: account_batch_payment
-#: model:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_search
+#: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_search
 msgid "Group By"
 msgstr "Gruppieren nach"
 
@@ -279,7 +295,7 @@ msgid "Last Updated on"
 msgstr "Zuletzt aktualisiert am"
 
 #. module: account_batch_payment
-#: model:ir.ui.view,arch_db:account_batch_payment.print_batch_payment
+#: model_terms:ir.ui.view,arch_db:account_batch_payment.print_batch_payment
 msgid "Memo"
 msgstr "Memo"
 
@@ -317,12 +333,12 @@ msgstr "Zahlungsmethode"
 #. module: account_batch_payment
 #: model:ir.model,name:account_batch_payment.model_account_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__payment_ids
-#: model:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
+#: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
 msgid "Payments"
 msgstr "Zahlungen"
 
 #. module: account_batch_payment
-#: model:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
+#: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
 msgid "Print"
 msgstr "Drucken"
 
@@ -347,7 +363,7 @@ msgid "Reference"
 msgstr "Referenz"
 
 #. module: account_batch_payment
-#: model:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
+#: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
 msgid "Register Payment"
 msgstr "Einzahlung erfassen"
 
@@ -374,7 +390,7 @@ msgstr ""
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__state
-#: model:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_search
+#: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_search
 msgid "State"
 msgstr "Bundesland"
 
@@ -405,17 +421,17 @@ msgid "The payment method used by the payments in this batch."
 msgstr ""
 
 #. module: account_batch_payment
-#: model:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
+#: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
 msgid "Total"
 msgstr "Total"
 
 #. module: account_batch_payment
-#: model:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_search
+#: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_search
 msgid "Unreconciled"
 msgstr "Offene Posten"
 
 #. module: account_batch_payment
-#: model:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
+#: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
 msgid "Validate"
 msgstr "Bestätigen"
 
@@ -437,26 +453,11 @@ msgid ""
 msgstr ""
 
 #. module: account_batch_payment
-#: model:ir.model,name:account_batch_payment.model_account_batch_download_wizard
-msgid "account.batch.download.wizard"
-msgstr ""
-
-#. module: account_batch_payment
-#: model:ir.model,name:account_batch_payment.model_account_reconciliation_widget
-msgid "account.reconciliation.widget"
-msgstr ""
-
-#. module: account_batch_payment
-#: model:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
+#: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
 msgid "auto ..."
 msgstr "auto ..."
 
 #. module: account_batch_payment
-#: model:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
+#: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
 msgid "re-Generate Export File"
-msgstr ""
-
-#. module: account_batch_payment
-#: model:ir.model,name:account_batch_payment.model_report_account_batch_payment_print_batch_payment
-msgid "report.account_batch_payment.print_batch_payment"
 msgstr ""

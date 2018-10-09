@@ -14,18 +14,13 @@
                     <filter name="lead" string="Leads" domain="[('type','=', 'lead')]" help="Show only lead" groups="crm.group_use_lead"/>
                     <filter name="opportunity" string="Opportunities" domain="[('type','=','opportunity')]" help="Show only opportunity" groups="crm.group_use_lead"/>
                     <separator/>
-                    <filter string="Won" name="won"
+                    <filter string="Won" name="won_status"
                             domain="[('probability', '=', 100)]"/>
                     <filter string="Lost" name="lost"
                             domain="[('probability', '=', 0), ('active', '=', False)]"/>
-                    <field name="team_id" context="{'invisible_team': False}"/>
                     <field name="user_id" string="Salesperson"/>
+                    <field name="team_id" context="{'invisible_team': False}"/>
                     <separator/>
-                    <filter string="This Month" name="this_month" domain="[('date_closed', '&gt;=', context_today().strftime('%%Y-%%m-01'))]"/>
-                    <filter string="Last Month" name="last_month" domain="['&amp;', ('date_closed', '&gt;=', (context_today() - relativedelta(months=1)).strftime('%%Y-%%m-01')), ('date_closed', '&lt;', context_today().strftime('%%Y-%%m-01'))]"/>
-                    <separator/>
-                    <filter string="Current" name="current" domain="[('active', '=', True)]"/>
-                    <filter string="Archived" name="archived" domain="[('active', '=', False)]"/>
                     <group expand="0" string="Extended Filters">
                         <field name="partner_id" filter_domain="[('partner_id','child_of',self)]"/>
                         <field name="stage_id" widget="selection" domain="['|', ('team_id', '=', False), ('team_id', '=', 'team_id')]"/>
@@ -33,10 +28,6 @@
                         <field name="medium_id" widget="selection"/>
                         <field name="source_id" widget="selection"/>
                         <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
-                        <newline/>
-                        <field name="create_date"/>
-                        <field name="date_open"/>
-                        <field name="date_closed"/>
                     </group>
                     <field name="city"/>
                     <field name="lost_reason"/>
@@ -53,63 +44,9 @@
                         <filter string="Source" name="source" domain="[]" context="{'group_by':'source_id'}"/>
                         <separator orientation="vertical" />
                         <filter string="Creation Date" context="{'group_by':'create_date:month'}" name="month"/>
-                        <filter string="Expected Closing Date" name="date_deadline" context="{'group_by':'date_deadline'}"/>
                         <filter string="Conversion Date" name="date_conversion" context="{'group_by': 'date_conversion'}" groups="crm.group_use_lead"/>
-                    </group>
-                </search>
-            </field>
-        </record>
-
-        <record id="crm_lead_view_search" model="ir.ui.view">
-            <field name="name">crm.lead.search.lead</field>
-            <field name="model">crm.lead</field>
-            <field name="arch" type="xml">
-                <search string="Search Leads">
-                    <field name="name" string="Lead / Customer" filter_domain="['|','|','|',('partner_name','ilike',self),('email_from','ilike',self),('contact_name','ilike',self),('name','ilike',self)]"/>
-                    <field name="tag_ids" string="Tag" filter_domain="[('tag_ids', 'ilike', self)]"/>
-                    <field name="team_id"/>
-                    <field name="user_id"/>
-                    <field name="partner_id" operator="child_of" string="Customer"/>
-                    <field name="create_date"/>
-                    <field name="country_id"/>
-                    <field name="city"/>
-                    <field name="date_closed"/>
-                    <field name="lost_reason"/>
-                    <field name="probability"/>
-                    <field name="active"/>
-                    <separator />
-                    <filter string="My Leads"
-                            name="assigned_to_me"
-                            domain="[('user_id','=',uid)]"
-                            help="Leads that are assigned to me"/>
-                    <separator />
-                    <filter string="Leads" name="leads" domain="[('type', '=', 'lead')]"/>
-                    <filter string="Opportunities" name="opportunities" domain="[('type', '=', 'opportunity')]"/>
-                    <separator />
-                    <filter string="Won" name="won"
-                            domain="[('probability', '=', 100)]"/>
-                    <filter string="Lost" name="lost"
-                            domain="[('probability', '=', 0), ('active', '=', False)]"/>
-                    <separator />
-                    <filter string="This Month" name="this_month" domain="[('date_closed', '&gt;=', context_today().strftime('%%Y-%%m-01'))]"/>
-                    <filter string="Last Month" name="last_month" domain="['&amp;', ('date_closed', '&gt;=', (context_today() - relativedelta(months=1)).strftime('%%Y-%%m-01')), ('date_closed', '&lt;', context_today().strftime('%%Y-%%m-01'))]"/>
-                    <separator />
-                    <filter string="Current" name="current" domain="[('active', '=', True)]"/>
-                    <filter string="Archived" name="archived" domain="[('active', '=', False)]"/>
-                    <group expand="0" string="Group By">
-                        <filter string="Salesperson" name="salesperson" context="{'group_by':'user_id'}"/>
-                        <filter string="Sales Channel" name="saleschannel" context="{'group_by':'team_id'}"/>
-                        <filter name="stage" string="Stage" context="{'group_by':'stage_id'}"/>
-                        <filter name="city" string="City" context="{'group_by': 'city'}"/>
-                        <filter string="Country" name="country" context="{'group_by':'country_id'}" />
-                        <filter string="Lost Reason" name="lostreason" context="{'group_by':'lost_reason'}"/>
-                        <filter string="Company" name="company" context="{'group_by':'company_id'}" groups="base.group_multi_company"/>
-                        <filter string="Campaign" name="compaign" domain="[]" context="{'group_by':'campaign_id'}"/>
-                        <filter string="Medium" name="medium" domain="[]" context="{'group_by':'medium_id'}"/>
-                        <filter string="Source" name="source" domain="[]" context="{'group_by':'source_id'}"/>
-                        <separator orientation="vertical" />
-                        <filter string="Creation Date" context="{'group_by':'create_date:month'}" name="month"/>
                         <filter string="Expected Closing Date" name="date_deadline" context="{'group_by':'date_deadline'}"/>
+                        <filter string="Closed Date" name="date_closed" context="{'group_by':'date_closed'}"/>
                     </group>
                 </search>
             </field>
@@ -121,8 +58,21 @@
             <field name="arch" type="xml">
                 <graph string="Opportunities">
                     <field name="stage_id" type="row"/>
-                    <field name="date_closed" interval="month" type="row"/>
+                    <field name="date_deadline" interval="month" type="row"/>
                 </graph>
+            </field>
+        </record>
+
+        <record id="crm_lead_view_pivot" model="ir.ui.view">
+            <field name="name">crm.lead.pivot.view</field>
+            <field name="model">crm.lead</field>
+            <field name="arch" type="xml">
+                <pivot string="Leads" display_quantity="true">
+                    <field name="user_id" type="row"/>
+                    <field name="planned_revenue" type="measure"/>
+                    <field name="expected_revenue" type="measure"/>
+                    <field name="day_close" type="measure"/>
+                </pivot>
             </field>
         </record>
 
@@ -131,7 +81,7 @@
             <field name="model">crm.lead</field>
             <field name="arch" type="xml">
                 <graph string="leads" type="line">
-                    <field name="create_date" interval="day" type="row"/>
+                    <field name="create_date" interval="week" type="row"/>
                 </graph>
             </field>
         </record>
@@ -143,18 +93,20 @@
             <field name="arch" type="xml">
                 <dashboard>
                     <view type="graph" ref="crm_enterprise.crm_opportunity_view_graph"/>
-                    <group col="1" string="At A Glance">
-                        <group col="3">
+                    <group>
+                        <group>
                             <aggregate name="opportunities" string="Opportunities" group_operator="count" field="id" measure="__count__"/>
-                            <aggregate name="days_to_assign" string="Days to Assign" field="day_open" group_operator="avg"/>
-                            <aggregate name="days_to_close" string="Days to Close" field="day_close" group_operator="avg"/>
-                        </group>
-                        <group col="3">
                             <aggregate name="expected_revenue_aggregate" field="planned_revenue" string="Expected Revenue"/>
-                            <formula name="average_expected_revenue" string="Average Expected Revenue" value="record.expected_revenue_aggregate / record.opportunities" widget="monetary"/>
-                            <aggregate name="total_won" invisible="1" field="id" group_operator="count" domain="[('won', '=', True)]"/>
-                            <aggregate name="total_lost" invisible="1" field="id" group_operator="count" domain="[('active', '=', False), ('lost', '=', True)]"/>
-                            <formula name="win_loss_ratio" string="Win/Loss ratio" value="record.total_won and (record.total_won / (record.total_won + record.total_lost)) or 0" widget="percentage"/>
+                            <aggregate invisible="1" name="probability" field="probability" group_operator="avg"/>
+                            <formula name="prorated_revenue" string="Prorated Revenue" value="record.probability * record.expected_revenue_aggregate / 100" widget="monetary"/>
+                            <formula name="deal_size" string="Average Deal Size" value="record.expected_revenue_aggregate / record.opportunities" widget="monetary"/>
+                            <aggregate name="days_to_assign" string="Days to Assign" field="day_open" group_operator="avg" value_label="day(s)"/>
+                            <aggregate name="days_to_close" string="Days to Close" field="day_close" group_operator="avg" value_label="day(s)"/>
+                            <aggregate name="days_exceeding_closing" string="Exceeding Close Days" field="days_exceeding_closing" group_operator="avg"/>
+                        </group>
+                        <group col="1">
+                            <widget name="pie_chart" attrs="{'title': 'Win/Loss Ratio', 'groupby': 'won_status', 'domain': '[\'|\', (\'active\', \'=\', False), (\'active\', \'=\', True), (\'won_status\', \'!=\', \'pending\')]'}"/>
+                            <widget name="pie_chart" attrs="{'title': 'Medium', 'groupby': 'medium_id'}"/>
                         </group>
                     </group>
                     <view type="pivot" ref="crm.crm_lead_view_pivot"/>
@@ -170,21 +122,24 @@
             <field name="arch" type="xml">
                 <dashboard>
                     <view type="graph" ref="crm_enterprise.crm_lead_view_graph"/>
-                    <group col="1" string="At A Glance">
-                        <group col="3">
-                            <aggregate name="leads" string="Leads" group_operator="count_distinct" field="id" measure="__count__"/>
-                            <aggregate name="days_to_convert" string="Days To Convert" group_operator="avg" field="days_to_convert"/>
+                    <group>
+                        <group>
+                                <aggregate name="leads" string="Leads" group_operator="count_distinct" field="id" measure="__count__"/>
+                                <aggregate name="days_to_convert" string="Days To Opportunity" group_operator="avg" field="days_to_convert"/>
+                                <aggregate name="days_to_assign" string="Days to Assign" field="day_open" group_operator="avg" value_label="day(s)"/>
+                                <formula name="opportunity_percent" string="% Opportunities" value="record.opportunities / record.leads" widget="percentage"/>
+                                <aggregate name="planned_revenue" string="Expected Revenue" field="planned_revenue"
+                                group_operator="sum" widget="monetary"/>
+                                <aggregate name="expected_revenue" string="Prorated Revenue" field="expected_revenue" group_operator="sum" widget="monetary"/>
+                                <aggregate name="day_close" string="Days to Close" field="day_close" group_operator="avg" value_label="day(s)"/>
+                                <aggregate name="opportunities" string="Opportunities" field="id" domain="[('type','=','opportunity')]" group_operator="count" invisible="1"/>
                         </group>
-                        <group col="3">
-                            <aggregate name="days_to_assign" string="Days to Assign" field="day_open" group_operator="avg"/>
-                            <aggregate name="days_to_close" string="Days to Close" field="day_close" group_operator="avg"/>
-                            <aggregate name="total_won" invisible="1" field="id" group_operator="count" domain="[('won', '=', True)]" measure="__count__"/>
-                            <aggregate name="total_lost" invisible="1" field="id" group_operator="count" domain="[('active', '=', False), ('lost', '=', True)]" measure="__count__"/>
-                            <formula name="win_loss_ratio" string="Win/Loss ratio" value="record.total_won and (record.total_won / (record.total_won + record.total_lost)) or 0" widget="percentage"/>
+                        <group>
+                            <widget name="pie_chart" attrs="{'title': 'Sales Teams', 'groupby': 'team_id'}"/>
+                            <widget name="pie_chart" attrs="{'title': 'Medium', 'groupby': 'medium_id'}"/>
                         </group>
                     </group>
-                    <view type="pivot" ref="crm.crm_lead_view_pivot"/>
-                    <view type="cohort" ref="crm_enterprise.crm_lead_view_cohort"/>
+                    <view type="pivot" ref="crm_enterprise.crm_lead_view_pivot"/>
                 </dashboard>
             </field>
         </record>
@@ -202,22 +157,71 @@
             <field name="name">Pipeline Analysis</field>
             <field name="res_model">crm.lead</field>
             <field name="view_mode">dashboard,pivot,graph,cohort</field>
-            <field name="view_id" ref="crm_opportunity_view_dashboard"/>
             <field name="search_view_id" ref="crm_enterprise.crm_opportunity_view_search"/>
-            <field name="context" eval="{'search_default_opportunity': True, 'list_view_id': ref('crm.crm_case_tree_view_oppor'), 'form_view_id': ref('crm.crm_case_form_view_oppor')}"/>
+            <field name="context" eval="{'search_default_opportunity': True, 'time_ranges': {'field':'create_date', 'range':'last_365_days'}, 'list_view_id': ref('crm.crm_case_tree_view_oppor'), 'form_view_id': ref('crm.crm_case_form_view_oppor')}"/>
+        </record>
+
+        <record id="crm_opportunity_action_dashboard_dashboard" model="ir.actions.act_window.view">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">dashboard</field>
+            <field name="view_id" ref="crm_opportunity_view_dashboard"/>
+            <field name="act_window_id" ref="crm_enterprise.crm_opportunity_action_dashboard"/>
+        </record>
+
+        <record id="crm_opportunity_action_dashboard_pivot" model="ir.actions.act_window.view">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">pivot</field>
+            <field name="view_id" ref="crm.crm_lead_view_pivot"/>
+            <field name="act_window_id" ref="crm_enterprise.crm_opportunity_action_dashboard"/>
+        </record>
+
+        <record id="crm_opportunity_action_dashboard_graph" model="ir.actions.act_window.view">
+            <field name="sequence" eval="3"/>
+            <field name="view_mode">graph</field>
+            <field name="view_id" ref="crm_enterprise.crm_opportunity_view_graph"/>
+            <field name="act_window_id" ref="crm_enterprise.crm_opportunity_action_dashboard"/>
+        </record>
+
+        <record id="crm_opportunity_action_dashboard_cohort" model="ir.actions.act_window.view">
+            <field name="sequence" eval="4"/>
+            <field name="view_mode">cohort</field>
+            <field name="view_id" ref="crm_enterprise.crm_lead_view_cohort"/>
+            <field name="act_window_id" ref="crm_enterprise.crm_opportunity_action_dashboard"/>
         </record>
 
         <record id="crm_lead_action_dashboard" model="ir.actions.act_window">
             <field name="name">Leads Analysis</field>
             <field name="res_model">crm.lead</field>
-            <field name="view_mode">dashboard,pivot,graph,cohort</field>
+            <field name="view_mode">dashboard,pivot,graph</field>
+            <field name="domain">['|', ('type','=','lead'), ('type','=',False)]</field>
+            <field name="search_view_id" ref="crm.view_crm_case_leads_filter"/>
+            <field name="context" eval="{'time_ranges': {'field':'create_date', 'range':'last_30_days'}}"/>
+        </record>
+
+        <record id="crm_lead_action_dashboard_dashboard" model="ir.actions.act_window.view">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">dashboard</field>
             <field name="view_id" ref="crm_lead_dashboard_view"/>
-            <field name="search_view_id" ref="crm_enterprise.crm_lead_view_search"/>
+            <field name="act_window_id" ref="crm_enterprise.crm_lead_action_dashboard"/>
+        </record>
+
+        <record id="crm_lead_action_dashboard_pivot" model="ir.actions.act_window.view">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">pivot</field>
+            <field name="view_id" ref="crm_enterprise.crm_lead_view_pivot"/>
+            <field name="act_window_id" ref="crm_enterprise.crm_lead_action_dashboard"/>
+        </record>
+
+        <record id="crm_lead_action_dashboard_graph" model="ir.actions.act_window.view">
+            <field name="sequence" eval="3"/>
+            <field name="view_mode">graph</field>
+            <field name="view_id" ref="crm_enterprise.crm_lead_view_graph"/>
+            <field name="act_window_id" ref="crm_enterprise.crm_lead_action_dashboard"/>
         </record>
 
         <!-- add dashboard to pipeline action -->
         <record id="crm_lead_action_pipeline_view_dashboard" model="ir.actions.act_window.view">
-            <field name="sequence" eval="6"/>
+            <field name="sequence" eval="7"/>
             <field name="view_mode">dashboard</field>
             <field name="view_id" ref="crm_enterprise.crm_opportunity_view_dashboard"/>
             <field name="act_window_id" ref="crm.crm_lead_opportunities_tree_view"/>
@@ -225,7 +229,7 @@
 
         <!-- add cohort to pipeline action -->
         <record id="crm_lead_act_window_view_cohort" model="ir.actions.act_window.view">
-            <field name="sequence" eval="7"/>
+            <field name="sequence" eval="6"/>
             <field name="view_mode">cohort</field>
             <field name="view_id" ref="crm_enterprise.crm_lead_view_cohort"/>
             <field name="act_window_id" ref="crm.crm_lead_opportunities_tree_view"/>

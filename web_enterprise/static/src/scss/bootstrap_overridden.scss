@@ -21,7 +21,7 @@ $gray-900: #212529 !default;
 $black:    #000 !default;
 
 $primary: $o-brand-primary;
-$secondary: $white;
+$secondary: $gray-600; // BS default
 $success: #00A04A; // FIXME should we really change the default ones ?
 $info: #87C0D1;
 $warning: #F0AD4E;
@@ -40,6 +40,12 @@ $body-color: $o-main-text-color;
 
 $link-color: darken($o-brand-primary, 5%);
 $link-hover-decoration: none;
+
+// Muted
+//
+// Style .text-muted elements
+
+$text-muted: $gray-500;
 
 // Grid columns
 //
@@ -81,7 +87,8 @@ $headings-color: $gray-900;
 //
 // Customizes the `.table` component with basic values, each used across all table variations.
 
-$table-hover-bg: rgba($gray-300, 0.5);
+$table-accent-bg: rgba($black, .01);
+$table-hover-bg: rgba($black, .04);
 
 // Buttons
 //

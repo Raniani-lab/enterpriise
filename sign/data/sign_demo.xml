@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <record id="base.user_admin" model="res.users">
+        <field name="sign_signature" type="base64" file="sign/static/demo/signature.png"/>
+    </record>
     <record id="attachment_sign_2" model="ir.attachment">
         <field name="name">NDA</field>
         <field name="datas_fname">Non-Disclosure Agreement.pdf</field>

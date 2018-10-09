@@ -5,6 +5,8 @@ import logging
 from os.path import join, dirname, realpath
 from lxml import etree, objectify
 
+from werkzeug import url_quote
+
 from odoo import api, tools, SUPERUSER_ID
 # TODO: Add after merge https://github.com/odoo/enterprise/pull/1617
 # from odoo.addons.l10n_mx_edi.hooks import _load_xsd_files
@@ -127,7 +129,7 @@ def _load_xsd_files(cr, registry, url):
     for s_url in sub_urls:
         s_url_catch = _load_xsd_files(
             cr, registry, s_url.get('schemaLocation'))
-        s_url.attrib['schemaLocation'] = s_url_catch
+        s_url.attrib['schemaLocation'] = url_quote(s_url_catch)
     try:
         xsd_string = etree.tostring(res, pretty_print=True)
     except etree.XMLSyntaxError:

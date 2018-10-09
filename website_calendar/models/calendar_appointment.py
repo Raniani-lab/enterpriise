@@ -17,7 +17,7 @@ from odoo.exceptions import ValidationError
 
 class CalendarAppointmentType(models.Model):
     _name = "calendar.appointment.type"
-    _description = "Appointment Type"
+    _description = "Online Appointment Type"
     _inherit = ['mail.thread', "website.seo.metadata", 'website.published.mixin']
     _order = "sequence"
 
@@ -86,9 +86,9 @@ class CalendarAppointmentType(models.Model):
                       ... ]
         """
         def append_slot(day, slot):
-            local_start = appt_tz.localize(datetime.combine(day, time(hour=int(slot.hour), minute=int((slot.hour % 1) * 60))))
+            local_start = appt_tz.localize(datetime.combine(day, time(hour=int(slot.hour), minute=int(round((slot.hour % 1) * 60)))))
             local_end = appt_tz.localize(
-                datetime.combine(day, time(hour=int(slot.hour), minute=int((slot.hour % 1) * 60))) + relativedelta(hours=self.appointment_duration))
+                datetime.combine(day, time(hour=int(slot.hour), minute=int(round((slot.hour % 1) * 60)))) + relativedelta(hours=self.appointment_duration))
             slots.append({
                 self.appointment_tz: (
                     local_start,
@@ -280,7 +280,7 @@ class CalendarAppointmentType(models.Model):
 
 class CalendarAppointmentSlot(models.Model):
     _name = "calendar.appointment.slot"
-    _description = "Calendar Scheduler Slots"
+    _description = "Online Appointment : Time Slot"
     _rec_name = "weekday"
     _order = "weekday, hour"
 
@@ -303,12 +303,12 @@ class CalendarAppointmentSlot(models.Model):
 
     def name_get(self):
         weekdays = dict(self._fields['weekday'].selection)
-        return self.mapped(lambda slot: (slot.id, "%s, %02d:%02d" % (weekdays.get(slot.weekday), int(slot.hour), int((slot.hour % 1) * 60))))
+        return self.mapped(lambda slot: (slot.id, "%s, %02d:%02d" % (weekdays.get(slot.weekday), int(slot.hour), int(round((slot.hour % 1) * 60)))))
 
 
 class CalendarAppointmentQuestion(models.Model):
     _name = "calendar.appointment.question"
-    _description = "Calendar Scheduler Questions"
+    _description = "Online Appointment : Questions"
     _order = "sequence"
 
     sequence = fields.Integer('Sequence')
@@ -327,7 +327,7 @@ class CalendarAppointmentQuestion(models.Model):
 
 class CalendarAppointmentAnswer(models.Model):
     _name = "calendar.appointment.answer"
-    _description = "Calendar Scheduler Answers"
+    _description = "Online Appointment : Answers"
 
     question_id = fields.Many2many('calendar.appointment.question', 'calendar_appointment_question_answer_rel', 'question_id', 'answer_id', string='Questions')
     name = fields.Char('Answer', translate=True, required=True)

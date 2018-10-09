@@ -2,12 +2,16 @@
 # This file contains the translation of the following modules:
 # * account_3way_match
 # 
+# Translators:
+# Martin Trigaux, 2018
+# Slobodan Simić <slsimic@gmail.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.3+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 08:34+0000\n"
-"PO-Revision-Date: 2018-06-25 08:34+0000\n"
+"POT-Creation-Date: 2018-09-18 10:05+0000\n"
+"PO-Revision-Date: 2018-09-18 10:05+0000\n"
+"Last-Translator: Slobodan Simić <slsimic@gmail.com>, 2018\n"
 "Language-Team: Serbian (https://www.transifex.com/odoo/teams/41243/sr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,12 +28,12 @@ msgid ""
 msgstr ""
 
 #. module: account_3way_match
-#: model:ir.ui.view,arch_db:account_3way_match.account_invoice_filter_inherit_account_3way_match
+#: model_terms:ir.ui.view,arch_db:account_3way_match.account_invoice_filter_inherit_account_3way_match
 msgid "Bills in Exception"
 msgstr ""
 
 #. module: account_3way_match
-#: model:ir.ui.view,arch_db:account_3way_match.account_invoice_filter_inherit_account_3way_match
+#: model_terms:ir.ui.view,arch_db:account_3way_match.account_invoice_filter_inherit_account_3way_match
 msgid "Bills to Pay"
 msgstr ""
 
@@ -38,7 +42,7 @@ msgstr ""
 #: selection:account.invoice,release_to_pay_manual:0
 #: selection:account.invoice.line,can_be_paid:0
 msgid "Exception"
-msgstr ""
+msgstr "Izuzetak"
 
 #. module: account_3way_match
 #: model:ir.model.fields,field_description:account_3way_match.field_account_invoice__force_release_to_pay
@@ -55,17 +59,17 @@ msgstr ""
 #. module: account_3way_match
 #: model:ir.model,name:account_3way_match.model_account_invoice
 msgid "Invoice"
-msgstr ""
+msgstr "Faktura"
 
 #. module: account_3way_match
 #: model:ir.model,name:account_3way_match.model_account_invoice_line
 msgid "Invoice Line"
-msgstr ""
+msgstr "Red računa"
 
 #. module: account_3way_match
 #: model:ir.model,name:account_3way_match.model_account_journal
 msgid "Journal"
-msgstr ""
+msgstr "Извештај"
 
 #. module: account_3way_match
 #: selection:account.invoice,release_to_pay:0
@@ -81,7 +85,6 @@ msgstr ""
 
 #. module: account_3way_match
 #: model:ir.model.fields,field_description:account_3way_match.field_account_invoice__release_to_pay
-#: model:ir.ui.view,arch_db:account_3way_match.account_invoice_form_inherit
 msgid "Should be paid"
 msgstr ""
 
@@ -105,4 +108,4 @@ msgstr ""
 #: selection:account.invoice,release_to_pay_manual:0
 #: selection:account.invoice.line,can_be_paid:0
 msgid "Yes"
-msgstr ""
+msgstr "Da"

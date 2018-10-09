@@ -12,13 +12,14 @@
 # Gökhan Erdoğdu <gokhan.erdogdu@mechsoft.com.tr>, 2018
 # Emre Akayoğlu <emre.akayoglu@mechsoft.com.tr>, 2018
 # Umur Akın <umura@projetgrup.com>, 2018
+# Buket Şeker <buket_skr@hotmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
-"Last-Translator: Umur Akın <umura@projetgrup.com>, 2018\n"
+"POT-Creation-Date: 2018-09-18 10:05+0000\n"
+"PO-Revision-Date: 2018-09-18 10:05+0000\n"
+"Last-Translator: Buket Şeker <buket_skr@hotmail.com>, 2018\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -312,14 +313,14 @@ msgstr "Sonraki"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:300
 #, python-format
 msgid "Next week"
-msgstr ""
+msgstr "Gelecek Hafta"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:303
 #, python-format
 msgid "Next week unavailable"
-msgstr ""
+msgstr "Gelecek Hafta Uygun Değil"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -481,7 +482,7 @@ msgstr "Ayarlar"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:557
 #, python-format
 msgid "Show password"
-msgstr ""
+msgstr "Parolayı Göster"
 
 #. module: project_timesheet_synchro
 #. openerp-web

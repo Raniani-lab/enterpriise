@@ -10,7 +10,7 @@ var _t = core._t;
 
 var ReportEditor = Widget.extend(EditorMixin, {
     template: 'web_studio.ReportEditor',
-    nearest_hook_tolerance: 150,
+    nearest_hook_tolerance: 500,
 
     /**
      * @override
@@ -37,6 +37,7 @@ var ReportEditor = Widget.extend(EditorMixin, {
 
         this.$dropZone = $();
         this._onUpdateContentId = _.uniqueId('_processReportPreviewContent');
+        this.isDragging = false;
     },
     /**
      * @override
@@ -49,7 +50,7 @@ var ReportEditor = Widget.extend(EditorMixin, {
     /**
      * @override
      */
-    destroy: function() {
+    destroy: function () {
         window.top[this._onUpdateContentId] = null;
         delete window.top[this._onUpdateContentId];
         if (this.$content) {
@@ -63,23 +64,41 @@ var ReportEditor = Widget.extend(EditorMixin, {
     //--------------------------------------------------------------------------
 
     /**
-     * Insert Studio hooks in the dom iframe, according to which component is
-     * being dragged.
-     *
-     * @param {Component} component
+     * Start dragging the component, notify that no cleanup should occur
+     * because a drag operation is ongoing.
      */
     beginDragComponent: function (component) {
+        this.isDragging = true;
+        if (this.$content.find('.o_web_studio_hook').length === 0) {
+            // for the case where computing the hooks takes long and
+            // the user is too fast with the mouse
+            this._prepareHooksOnIframeBeforeDrag(component);
+        }
+    },
+    beginPreviewDragComponent: function (component) {
+        if (this.isDragging) {
+            return;
+        }
+        this._prepareHooksOnIframeBeforeDrag(component);
+    },
+    /**
+    * Insert Studio hooks in the dom iframe, according to which building block
+    * is being dragged.
+    *
+    * @param {Component} component the building block being dragged
+    */
+    _prepareHooksOnIframeBeforeDrag: function (component) {
         var self = this;
 
-        this.$dropZone.remove();
+        this._cleanHooks();
         this.$noContentHelper.remove();
 
         var dropIn = component.dropIn;
-        if (component.dropColumns) {
+        if (component.dropColumns && component.addEmptyRowsTargets) {
             dropIn = (dropIn ? dropIn + ',' : '') + '.page > .row > div:empty';
         }
         if (dropIn) {
-            var inSelectors = dropIn.split(',');
+            var inSelectors = dropIn.split(component.selectorSeparator || ',');
             _.each(inSelectors, function (selector) {
                 var $target = self.$content.find(selector + "[data-oe-xpath]");
                 _.each($target, function (node) {
@@ -99,7 +118,7 @@ var ReportEditor = Widget.extend(EditorMixin, {
             // when dropping the component, it should have a specific (bootstrap) column structure
             // we will create this structure or complete it if it already exist
             var $hook = self._createHook($('<div/>'), component);
-            var $gridHooks = $('<div class="row o_web_studio_structure_hook o_web_studio_nearest"/>');
+            var $gridHooks = $('<div class="row o_web_studio_structure_hook"/>');
             _.each(component.dropColumns, function (column, index) {
                 var $col = $('<div class="offset-' + column[0] + ' col-' + column[1] + '"/>');
                 $col.append($hook.clone().attr('data-oe-index', index));
@@ -144,7 +163,7 @@ var ReportEditor = Widget.extend(EditorMixin, {
             var $node = $item.data('oe-node');
             var colspan = +$node.data('colspan');
             if (colspan > 1) {
-                $node.attr('colspan', colspan*2-1);
+                $node.attr('colspan', colspan * 2 - 1);
             }
         });
     },
@@ -157,10 +176,10 @@ var ReportEditor = Widget.extend(EditorMixin, {
      * @param {integer} y
      */
     dragComponent: function (component, x, y) {
+        this.isDragging = true;
         this.$dropZone
             .filter('.o_web_studio_nearest_hook')
             .removeClass('o_web_studio_nearest_hook')
-            .css('height', '')
             .closest(this.$dropZoneStructure).each(function () {
                 $(this).children().css('height', '').children('.o_web_studio_hook:only-child').css('height', '');
             });
@@ -168,7 +187,7 @@ var ReportEditor = Widget.extend(EditorMixin, {
         this.$dropZoneStructure.removeClass('o_web_studio_nearest');
 
         var bound = this.$iframe[0].getBoundingClientRect();
-        var isInIframe = (x >= bound.left  && x <= bound.right) && (y >= bound.top && y <= bound.bottom);
+        var isInIframe = (x >= bound.left && x <= bound.right) && (y >= bound.top && y <= bound.bottom);
         if (!isInIframe) {
             return;
         }
@@ -190,15 +209,7 @@ var ReportEditor = Widget.extend(EditorMixin, {
         $nearestHook
             .addClass('o_web_studio_nearest_hook')
             .closest(this.$dropZoneStructure)
-            .addClass('o_web_studio_nearest')
-            .each(function () {
-                var height = $(this).height() + 'px';
-                $(this).children().css('height', height).children('.o_web_studio_hook:only-child').css('height', height);
-            });
-
-        if (component.hookAutoHeight) {
-            $nearestHook.css('height', $nearestHook.data('height') || '');
-        }
+            .addClass('o_web_studio_nearest');
 
         if (!$nearestHook.data('oe-node') || !$nearestHook.data('oe-node').data('oe-id')) {
             return;
@@ -237,10 +248,6 @@ var ReportEditor = Widget.extend(EditorMixin, {
         }
 
         $nearestHooks.addClass('o_web_studio_nearest_hook');
-
-        if (component.hookAutoHeight) {
-            $nearestHooks.css('height', $nearestHook.data('height') || '');
-        }
     },
     /**
      * When a component has been dropped in the iframe, we genrate the changes
@@ -249,15 +256,30 @@ var ReportEditor = Widget.extend(EditorMixin, {
      * @param {Component} component
      */
     dropComponent: function (component) {
+        this.isDragging = false;
         var $nearestHooks = this.$dropZone.filter('.o_web_studio_nearest_hook');
-        var targets = $nearestHooks.map(function () {
-            var $active = $(this);
-            return {
-                node: $active.data('oe-node').data('node'),
-                position: $active.data('oe-position'),
-                data: $active.data(),
-            };
-        }).get();
+        var targets = [];
+
+        // targets need to contain all the targets that are unique (oe-id, oe-xpath)
+        $nearestHooks.get().forEach(function (nearHook) {
+            var $active = $(nearHook);
+            var alreadyAdded = false;
+            var nodeData = $active.data('oe-node').data('node');
+
+            for (var i = 0; i < targets.length; i++) {
+                if (targets[i].node.attrs['data-oe-id'] === nodeData.attrs['data-oe-id'] &&
+                    targets[i].node.attrs['data-oe-xpath'] === nodeData.attrs['data-oe-xpath']) {
+                    alreadyAdded = true;
+                }
+            }
+            if (!alreadyAdded) {
+                targets.push({
+                    node: nodeData,
+                    position: $active.data('oe-position'),
+                    data: $active.data(),
+                });
+            }
+        });
 
         if (targets.length) {
             this.trigger_up('view_change', {
@@ -272,6 +294,10 @@ var ReportEditor = Widget.extend(EditorMixin, {
         } else {
             this._cleanHooks();
         }
+    },
+
+    endPreviewDragComponent: function (component) {
+        this._cleanHooks();
     },
     /**
      * Get the context associated to a node.
@@ -325,7 +351,7 @@ var ReportEditor = Widget.extend(EditorMixin, {
                 .css({
                     top: position.top + 'px',
                     left: position.left + 'px',
-                    bottom: position.top < 50 ? '0':'auto',
+                    bottom: position.top < 50 ? '0' : 'auto',
                 })
                 .toggleClass('o_web_studio_report_highlight_left', position.left < 50)
                 .toggleClass('o_web_studio_report_highlight_top', position.top < 50)
@@ -382,11 +408,17 @@ var ReportEditor = Widget.extend(EditorMixin, {
      * @private
      */
     _cleanHooks: function () {
+        if (this.isDragging) {
+            return;
+        }
+
         this.$dropZone.filter('th, td').each(function () {
             var $node = $(this).data('oe-node');
-            var colspan = $node.data('colspan');
-            if (colspan) {
-                $node.attr('colspan', colspan);
+            if ($node) {
+                var colspan = $node.data('colspan');
+                if (colspan) {
+                    $node.attr('colspan', colspan);
+                }
             }
         });
         this.$content.find('.o_web_studio_hook').remove();
@@ -404,15 +436,18 @@ var ReportEditor = Widget.extend(EditorMixin, {
     _createHookOnNodeAndChildren: function ($node, component) {
         var $hook = this._createHook($node, component);
         var $newHook = $hook.clone();
-        var $children = $node.children().not('.o_web_studio_hook');
+        var $children = $node.children()
+            .not('.o_web_studio_hook')
+
         // display the hook with max height of this sibling
         if ($children.length === 1 && $children.is('td[colspan="99"]')) {
             return;
         }
         if ($children.length) {
-            if (!$node.is('tr') && component.hookAutoHeight) {
-                var height = Math.max.apply(Math, $children.map(function () {return $(this).height();}));
+            if (component.hookAutoHeight) {
+                var height = Math.max.apply(Math, $children.map(function () { return $(this).height(); }));
                 $newHook.data('height', height + 'px');
+                $newHook.css('height', height + 'px');
             }
             $newHook.data('oe-node', $children.first()).data('oe-position', 'before');
             $children.first().before($newHook);
@@ -420,16 +455,28 @@ var ReportEditor = Widget.extend(EditorMixin, {
             $children.each(
                 /* allows to drop besides each children */
                 function (_, childNode) {
-                var $childNode = $(childNode);
-                var $newHook = $hook.clone().data('oe-node', $childNode).data('oe-position', 'after');
-                if (!$childNode.is('tr') && component.hookAutoHeight) {
-                    $newHook.data('height', height + 'px');
-                }
-                $childNode.after($newHook);
-            });
-        } else {
+                    var $childNode = $(childNode);
+                    var $newHook = $hook.clone().data('oe-node', $childNode).data('oe-position', 'after');
+                    if (component.hookAutoHeight) {
+                        $newHook.data('height', height + 'px');
+                        $newHook.css('height', height + 'px');
+                    }
+                    $childNode.after($newHook);
+                });
+        } else if ($node.text() &&
+                    $node[0].tagName.toLowerCase() !== 'th' &&
+                    $node[0].tagName.toLowerCase() !== 'td') {
+                    // in tables, we cannot add span hooks else it breaks the layout
+            if (component.hookAutoHeight) {
+                $newHook.data('height', $node.height() + 'px');
+                $newHook.css('height', $node.height() + 'px');
+            }
+            $node.before($newHook.clone().data('oe-node', $node).data('oe-position', 'before'));
+            $node.after($newHook.clone().data('oe-node', $node).data('oe-position', 'after'));
+        }
+        else {
             $newHook.data('oe-node', $node).data('oe-position', 'inside');
-            $node.prepend($newHook);
+            $node.append($newHook);
         }
     },
     _computeNearestHookAndShowIt: function () {
@@ -439,13 +486,11 @@ var ReportEditor = Widget.extend(EditorMixin, {
         dropZone.reverse();
         _.each(dropZone, function (node) {
             var $node = $(node);
-            $node.addClass('o_web_studio_nearest_hook').css('height', $node.data('height') || '');
             var box = node.getBoundingClientRect();
             box.el = node;
             box.centerY = (box.top + box.bottom) / 2;
             box.centerX = (box.left + box.right) / 2;
             self.dropPosition.push(box);
-            $node.removeClass('o_web_studio_nearest_hook').css('height', '');
         });
     },
     /**
@@ -460,7 +505,7 @@ var ReportEditor = Widget.extend(EditorMixin, {
         var self = this;
         var nodesNotInView = [];
 
-        function connectNodes (node) {
+        function connectNodes(node) {
             if (!node.attrs) {
                 return;
             }
@@ -482,7 +527,7 @@ var ReportEditor = Widget.extend(EditorMixin, {
         _.each(this.nodesArchs, connectNodes);
 
 
-        function connectContextOrder (dom, contextOrder) {
+        function connectContextOrder(dom, contextOrder) {
             var $node = $(dom);
             var newOrder = contextOrder.slice();
             var node = $node.data('node');
@@ -590,19 +635,21 @@ var ReportEditor = Widget.extend(EditorMixin, {
         // the iframe height is recomputed to the height of the content images included
         self.$iframe[0].style.height = self.$iframe[0].contentWindow.document.body.scrollHeight + 'px';
 
-        this.$content.find('.header').css({
-            'margin-bottom': (this.paperFormat.header_spacing || 0) + 'mm',
-        });
+        // TODO: it seems that the paperformat doesn't exactly do that
+        // this.$content.find('.header').css({
+        //     'margin-bottom': (this.paperFormat.header_spacing || 0) + 'mm',
+        // });
         // TODO: won't be pretty if the content is larger than the format
         this.$content.find('.footer').css({
             'position': 'fixed',
             'bottom': '0',
+            'width': this.$content.find('.page').css('width'),
         });
 
         this.$content.find('html')[0].style.overflow = 'hidden';
 
         // set the size of the iframe
-        $(this.$content).find("img").load(function() {
+        $(this.$content).find("img").load(function () {
             self.$iframe[0].style.height = self.$iframe[0].contentWindow.document.body.scrollHeight + 'px';
         });
     },
@@ -610,7 +657,7 @@ var ReportEditor = Widget.extend(EditorMixin, {
      * @private
      */
     _setNoContentHelper: function () {
-        var $page = this.$content.find('.page');
+        var $page = this.$content.find('div.page');
         if ($page.length && !$page.children().length) {
             this.$noContentHelper = $('<div/>', {
                 class: 'o_no_content_helper',
@@ -670,6 +717,10 @@ var ReportEditor = Widget.extend(EditorMixin, {
     _onMouseClick: function (e) {
         e.preventDefault();
         e.stopPropagation();
+
+        if ($(e.target).hasClass('o_no_content_helper')) {
+            return;
+        }
 
         var $node = $(e.target).closest('[data-oe-xpath]');
         if ($node.closest('[t-field], [t-esc]').length) {

@@ -15,9 +15,6 @@
     "data": [
         'views/mrp_workorder_views.xml',
     ],
-    "qweb": [
-        'static/src/xml/quality_picture_templates.xml'
-    ],
     'auto_install': True,
     'license': 'OEEL-1',
 }

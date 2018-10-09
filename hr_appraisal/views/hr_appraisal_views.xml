@@ -37,7 +37,7 @@
                 </h1>
                 <group>
                     <group>
-                        <field name="department_id" groups="hr.group_multi_departments"/>
+                        <field name="department_id" groups="hr_appraisal.group_hr_appraisal_user"/>
                         <field name="date_close" attrs="{'readonly':[('state','in', ('pending','done'))]}"/>
                     </group>
                     <group>
@@ -147,7 +147,7 @@
                             </div>
                             <div class="oe_kanban_content">
                                 <div><strong><field name="employee_id"/></strong></div>
-                                <div groups="hr.group_multi_departments">
+                                <div groups="hr_appraisal.group_hr_appraisal_user">
                                     <field name="department_id"/>
                                 </div>
                                 <t t-if="record.date_close.raw_value and record.date_close.raw_value &lt; (new Date())" t-set="red">oe_kanban_text_red</t>
@@ -183,7 +183,7 @@
         <field name="name">Appraisal</field>
         <field name="res_model">hr.appraisal</field>
         <field name="view_type">form</field>
-        <field name="view_mode">kanban,tree,form</field>
+        <field name="view_mode">kanban,tree,form,activity</field>
         <field name="context">{"search_default_next_month":1}</field>
         <field name="help" type="html">
           <p class="o_view_nocontent_smiling_face">
@@ -207,7 +207,7 @@
         <field name="name">Appraisal</field>
         <field name="res_model">hr.appraisal</field>
         <field name="view_type">form</field>
-        <field name="view_mode">kanban,tree,form</field>
+        <field name="view_mode">kanban,tree,form,activity</field>
         <field name="context">{"search_default_employee_id": [active_id]}</field>
     </record>
 

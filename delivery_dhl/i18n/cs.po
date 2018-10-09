@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
 "Last-Translator: trendspotter, 2018\n"
 "Language-Team: Czech (https://www.transifex.com/odoo/teams/41243/cs/)\n"
 "MIME-Version: 1.0\n"
@@ -150,7 +150,6 @@ msgid "C - Medical Express"
 msgstr ""
 
 #. module: delivery_dhl
-#: model:ir.model,name:delivery_dhl.model_delivery_carrier
 #: model:ir.model.fields,field_description:delivery_dhl.field_product_packaging__package_carrier_type
 msgid "Carrier"
 msgstr "Přepravce"
@@ -182,7 +181,7 @@ msgid "DHL Account Number"
 msgstr ""
 
 #. module: delivery_dhl
-#: model:ir.ui.view,arch_db:delivery_dhl.view_delivery_carrier_form_with_provider_dhl
+#: model_terms:ir.ui.view,arch_db:delivery_dhl.view_delivery_carrier_form_with_provider_dhl
 msgid "DHL Configuration"
 msgstr ""
 
@@ -192,8 +191,8 @@ msgid "DHL Default Packaging Type"
 msgstr ""
 
 #. module: delivery_dhl
-#: model:ir.ui.view,arch_db:delivery_dhl.res_config_settings_view_form_sale
-#: model:ir.ui.view,arch_db:delivery_dhl.res_config_settings_view_form_stock
+#: model_terms:ir.ui.view,arch_db:delivery_dhl.res_config_settings_view_form_sale
+#: model_terms:ir.ui.view,arch_db:delivery_dhl.res_config_settings_view_form_stock
 msgid "DHL Delivery Methods"
 msgstr ""
 
@@ -208,7 +207,7 @@ msgid "DHL Product"
 msgstr ""
 
 #. module: delivery_dhl
-#: code:addons/delivery_dhl/models/dhl_request.py:376
+#: code:addons/delivery_dhl/models/dhl_request.py:375
 #, python-format
 msgid "DHL Site ID is missing, please modify your delivery method settings."
 msgstr ""
@@ -233,17 +232,22 @@ msgid "DHL USA -> International"
 msgstr "DHL USA -> International"
 
 #. module: delivery_dhl
-#: code:addons/delivery_dhl/models/dhl_request.py:380
+#: code:addons/delivery_dhl/models/dhl_request.py:379
 #, python-format
 msgid ""
 "DHL account number is missing, please modify your delivery method settings."
 msgstr ""
 
 #. module: delivery_dhl
-#: code:addons/delivery_dhl/models/dhl_request.py:378
+#: code:addons/delivery_dhl/models/dhl_request.py:377
 #, python-format
 msgid "DHL password is missing, please modify your delivery method settings."
-msgstr ""
+msgstr "Heslo DHL chybí, upravte prosím nastavení způsobu doručení."
+
+#. module: delivery_dhl
+#: model:ir.model,name:delivery_dhl.model_delivery_carrier
+msgid "Delivery Methods"
+msgstr "Způsoby dodání"
 
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_dutiable
@@ -285,7 +289,7 @@ msgstr "FedEx"
 #. module: delivery_dhl
 #: selection:delivery.carrier,delivery_type:0
 msgid "Fixed Price"
-msgstr ""
+msgstr "Pevná cena"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
@@ -305,7 +309,7 @@ msgstr ""
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_package_dimension_unit:0
 msgid "Inches"
-msgstr ""
+msgstr "Palce"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
@@ -356,7 +360,7 @@ msgstr ""
 #: code:addons/delivery_dhl/models/dhl_request.py:179
 #, python-format
 msgid "No service available for the selected product"
-msgstr ""
+msgstr "Pro zvolený produkt není dostupná žádná služba"
 
 #. module: delivery_dhl
 #: code:addons/delivery_dhl/models/dhl_request.py:82
@@ -390,12 +394,7 @@ msgid "Package Weight Unit"
 msgstr ""
 
 #. module: delivery_dhl
-#: model:ir.model,name:delivery_dhl.model_product_packaging
-msgid "Packaging"
-msgstr "Balení"
-
-#. module: delivery_dhl
-#: code:addons/delivery_dhl/models/dhl_request.py:398
+#: code:addons/delivery_dhl/models/dhl_request.py:397
 #, python-format
 msgid "Please provide at least one item to ship."
 msgstr ""
@@ -404,6 +403,11 @@ msgstr ""
 #: selection:delivery.carrier,dhl_package_weight_unit:0
 msgid "Pounds"
 msgstr "Libry"
+
+#. module: delivery_dhl
+#: model:ir.model,name:delivery_dhl.model_product_packaging
+msgid "Product Packaging"
+msgstr ""
 
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__delivery_type
@@ -442,7 +446,7 @@ msgid "T - Express 12:00"
 msgstr ""
 
 #. module: delivery_dhl
-#: code:addons/delivery_dhl/models/dhl_request.py:386
+#: code:addons/delivery_dhl/models/dhl_request.py:385
 #, python-format
 msgid ""
 "The address of the customer is missing or wrong (Missing field(s) :\n"
@@ -450,7 +454,7 @@ msgid ""
 msgstr ""
 
 #. module: delivery_dhl
-#: code:addons/delivery_dhl/models/dhl_request.py:394
+#: code:addons/delivery_dhl/models/dhl_request.py:393
 #, python-format
 msgid ""
 "The address of your company warehouse is missing or wrong (Missing field(s) :\n"
@@ -458,12 +462,12 @@ msgid ""
 msgstr ""
 
 #. module: delivery_dhl
-#: code:addons/delivery_dhl/models/dhl_request.py:400
+#: code:addons/delivery_dhl/models/dhl_request.py:399
 #, python-format
 msgid ""
 "The estimated price cannot be computed because the weight of your product is"
 " missing."
-msgstr ""
+msgstr "Odhadovanou cenu nelze vypočítat, protože chybí váha vašeho produktu."
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
@@ -479,7 +483,7 @@ msgstr ""
 #. module: delivery_dhl
 #: selection:delivery.carrier,delivery_type:0
 msgid "USPS"
-msgstr ""
+msgstr "USPS"
 
 #. module: delivery_dhl
 #: model:product.product,uom_name:delivery_dhl.product_product_delivery_dhl_intl

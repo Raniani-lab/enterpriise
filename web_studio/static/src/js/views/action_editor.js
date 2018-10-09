@@ -29,12 +29,12 @@ var ActionEditor = Widget.extend({
     /**
      * @constructor
      */
-    init: function (parent, action, active_view_types) {
+    init: function (parent, action) {
         this._super.apply(this, arguments);
 
         this.action = action;
-        this.active_view_types = active_view_types;
-        this.default_view = active_view_types[0];
+        this.active_view_types = this._getActiveViewTypes();
+        this.default_view = this.active_view_types[0];
         if (action.initial_view_types) {
             this.active_view_types = action.initial_view_types;
         }
@@ -85,6 +85,15 @@ var ActionEditor = Widget.extend({
     // Private
     //--------------------------------------------------------------------------
 
+    /**
+     * @private
+     * @returns {string[]} the current action active view types
+     */
+    _getActiveViewTypes: function () {
+        return _.map(this.action.views, function (view) {
+            return view.type;
+        });
+    },
     /**
      * Get the view type category.
      *

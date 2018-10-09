@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
 "Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2018\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -20,14 +20,14 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: snailmail_account_reports_followup
-#: model:ir.ui.view,arch_db:snailmail_account_reports_followup.followup_send_wizard_form
+#: model_terms:ir.ui.view,arch_db:snailmail_account_reports_followup.followup_send_wizard_form
 msgid ""
 "<span attrs=\"{'invisible': [('letters_qty', '&gt;', 1)]}\"> Sending this "
 "document will cost </span>"
 msgstr ""
 
 #. module: snailmail_account_reports_followup
-#: model:ir.ui.view,arch_db:snailmail_account_reports_followup.followup_send_wizard_form
+#: model_terms:ir.ui.view,arch_db:snailmail_account_reports_followup.followup_send_wizard_form
 msgid "Cancel"
 msgstr "Annuleren"
 
@@ -63,8 +63,13 @@ msgstr "Betalingsherinneringen creteria"
 
 #. module: snailmail_account_reports_followup
 #: model:ir.model,name:snailmail_account_reports_followup.model_account_followup_report
-msgid "Followup Report"
-msgstr "Betalingsherinneringsrapport"
+msgid "Follow-up Report"
+msgstr ""
+
+#. module: snailmail_account_reports_followup
+#: model:ir.model,name:snailmail_account_reports_followup.model_followup_send
+msgid "Followup Send"
+msgstr ""
 
 #. module: snailmail_account_reports_followup
 #: model:ir.model.fields,field_description:snailmail_account_reports_followup.field_followup_send__id
@@ -94,11 +99,11 @@ msgstr "Brief"
 #. module: snailmail_account_reports_followup
 #: model:ir.model.fields,field_description:snailmail_account_reports_followup.field_followup_send__letters_qty
 msgid "Letters Qty"
-msgstr ""
+msgstr "Brieven hoeveelheid"
 
 #. module: snailmail_account_reports_followup
 #: model:ir.actions.act_window,name:snailmail_account_reports_followup.followup_send
-#: model:ir.ui.view,arch_db:snailmail_account_reports_followup.followup_send_wizard_form
+#: model_terms:ir.ui.view,arch_db:snailmail_account_reports_followup.followup_send_wizard_form
 msgid "Send Follow-Ups"
 msgstr ""
 
@@ -110,13 +115,13 @@ msgstr "Stuur een brief"
 #. module: snailmail_account_reports_followup
 #. openerp-web
 #: code:addons/snailmail_account_reports_followup/static/src/xml/account_reports_followup_template.xml:7
-#: model:ir.ui.view,arch_db:snailmail_account_reports_followup.followup_send_wizard_form
+#: model_terms:ir.ui.view,arch_db:snailmail_account_reports_followup.followup_send_wizard_form
 #, python-format
 msgid "Send by Post"
 msgstr "Verzenden via post"
 
 #. module: snailmail_account_reports_followup
-#: model:ir.ui.view,arch_db:snailmail_account_reports_followup.followup_send_wizard_form
+#: model_terms:ir.ui.view,arch_db:snailmail_account_reports_followup.followup_send_wizard_form
 msgid "Sending these"
 msgstr ""
 
@@ -126,11 +131,6 @@ msgid "When processing, it will send a letter by Post"
 msgstr ""
 
 #. module: snailmail_account_reports_followup
-#: model:ir.ui.view,arch_db:snailmail_account_reports_followup.followup_send_wizard_form
+#: model_terms:ir.ui.view,arch_db:snailmail_account_reports_followup.followup_send_wizard_form
 msgid "documents will cost approximatively"
-msgstr ""
-
-#. module: snailmail_account_reports_followup
-#: model:ir.model,name:snailmail_account_reports_followup.model_followup_send
-msgid "followup.send"
-msgstr ""
+msgstr "documenten kosten ongeveer"

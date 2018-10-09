@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"POT-Creation-Date: 2018-10-02 10:31+0000\n"
+"PO-Revision-Date: 2018-10-02 10:31+0000\n"
 "Last-Translator: Silmar <pinheirosilmar@gmail.com>, 2018\n"
 "Language-Team: Portuguese (Brazil) (https://www.transifex.com/odoo/teams/41243/pt_BR/)\n"
 "MIME-Version: 1.0\n"
@@ -23,7 +23,17 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #. module: website_sale_dashboard
-#: model:ir.ui.view,arch_db:website_sale_dashboard.website_sale_dashboard_onboarding_panel
+#: model_terms:ir.ui.view,arch_db:website_sale_dashboard.sale_dashboard_view
+msgid "# Customers"
+msgstr ""
+
+#. module: website_sale_dashboard
+#: model_terms:ir.ui.view,arch_db:website_sale_dashboard.sale_dashboard_view
+msgid "# Lines"
+msgstr ""
+
+#. module: website_sale_dashboard
+#: model_terms:ir.ui.view,arch_db:website_sale_dashboard.website_sale_dashboard_onboarding_panel
 msgid ""
 "/website_sale_dashboard/static/src/img/website_sale_dashboard_onboarding_bg.jpg"
 msgstr ""
@@ -34,32 +44,22 @@ msgid "Abandoned Cart"
 msgstr ""
 
 #. module: website_sale_dashboard
-#: model:ir.ui.view,arch_db:website_sale_dashboard.sale_report_view_search_website_inherit
+#: model_terms:ir.ui.view,arch_db:website_sale_dashboard.sale_report_view_search_website_inherit
 msgid "Abandoned Carts"
 msgstr ""
 
 #. module: website_sale_dashboard
-#: model:ir.ui.view,arch_db:website_sale_dashboard.sale_dashboard_view
-msgid "At A Glance"
+#: model_terms:ir.ui.view,arch_db:website_sale_dashboard.sale_dashboard_view
+msgid "Average Order"
 msgstr ""
 
 #. module: website_sale_dashboard
-#: model:ir.ui.view,arch_db:website_sale_dashboard.sale_dashboard_view
-msgid "Average Ordered Quantity"
-msgstr ""
-
-#. module: website_sale_dashboard
-#: model:ir.ui.view,arch_db:website_sale_dashboard.sale_dashboard_view
-msgid "Average Untaxed Total"
-msgstr ""
-
-#. module: website_sale_dashboard
-#: model:ir.ui.view,arch_db:website_sale_dashboard.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:website_sale_dashboard.res_config_settings_view_form
 msgid "Client ID"
 msgstr "ID do Cliente"
 
 #. module: website_sale_dashboard
-#: model:ir.ui.view,arch_db:website_sale_dashboard.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:website_sale_dashboard.res_config_settings_view_form
 msgid "Client Secret"
 msgstr "Segredo do Cliente"
 
@@ -74,6 +74,11 @@ msgid "Companies"
 msgstr "Empresas"
 
 #. module: website_sale_dashboard
+#: model_terms:ir.ui.view,arch_db:website_sale_dashboard.sale_dashboard_view
+msgid "Days to Confirm"
+msgstr ""
+
+#. module: website_sale_dashboard
 #: model:ir.model,name:website_sale_dashboard.model_digest_digest
 msgid "Digest"
 msgstr ""
@@ -84,7 +89,7 @@ msgid "Done"
 msgstr "Concluído"
 
 #. module: website_sale_dashboard
-#: model:ir.ui.view,arch_db:website_sale_dashboard.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:website_sale_dashboard.res_config_settings_view_form
 msgid "Follow your website traffic in Odoo."
 msgstr ""
 
@@ -94,7 +99,7 @@ msgid "Fully Invoiced"
 msgstr "Totalmente Faturado"
 
 #. module: website_sale_dashboard
-#: model:ir.ui.view,arch_db:website_sale_dashboard.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:website_sale_dashboard.res_config_settings_view_form
 msgid "How to get my Client ID"
 msgstr ""
 
@@ -119,30 +124,20 @@ msgid "Nothing to Invoice"
 msgstr "Nada para Faturar"
 
 #. module: website_sale_dashboard
-#: model:ir.ui.view,arch_db:website_sale_dashboard.sale_dashboard_view
-msgid "Ordered Quantity"
-msgstr "Quantidade Solicitada"
-
-#. module: website_sale_dashboard
-#: model:ir.ui.view,arch_db:website_sale_dashboard.sale_dashboard_view
+#: model_terms:ir.ui.view,arch_db:website_sale_dashboard.sale_dashboard_view
 msgid "Orders"
 msgstr "Pedidos"
 
 #. module: website_sale_dashboard
-#: model:ir.ui.view,arch_db:website_sale_dashboard.view_online_sales_graph
-#: model:ir.ui.view,arch_db:website_sale_dashboard.view_online_sales_pivot
+#: model_terms:ir.ui.view,arch_db:website_sale_dashboard.view_online_sales_graph
+#: model_terms:ir.ui.view,arch_db:website_sale_dashboard.view_online_sales_pivot
 msgid "Sales Analysis"
 msgstr "Análise de Vendas"
 
 #. module: website_sale_dashboard
-#: model:ir.actions.act_window,name:website_sale_dashboard.sale_dashboard
-msgid "Sales Dashboard"
-msgstr ""
-
-#. module: website_sale_dashboard
 #: model:ir.model,name:website_sale_dashboard.model_sale_report
-msgid "Sales Orders Statistics"
-msgstr "Estatísticas de Pedidos de Venda"
+msgid "Sales Analysis Report"
+msgstr ""
 
 #. module: website_sale_dashboard
 #: model:ir.model.fields,field_description:website_sale_dashboard.field_res_company__website_sale_dashboard_onboarding_state
@@ -150,7 +145,7 @@ msgid "State of the website sale onboarding panel"
 msgstr ""
 
 #. module: website_sale_dashboard
-#: model:ir.ui.view,arch_db:website_sale_dashboard.website_sale_dashboard_onboarding_panel
+#: model_terms:ir.ui.view,arch_db:website_sale_dashboard.website_sale_dashboard_onboarding_panel
 msgid "The configuration is done. Happy selling!"
 msgstr ""
 
@@ -160,12 +155,22 @@ msgid "To Invoice"
 msgstr "Para Faturar"
 
 #. module: website_sale_dashboard
-#: model:ir.ui.view,arch_db:website_sale_dashboard.sale_report_view_search_website_inherit
+#: model_terms:ir.ui.view,arch_db:website_sale_dashboard.sale_dashboard_view
+msgid "Total Sales"
+msgstr ""
+
+#. module: website_sale_dashboard
+#: model_terms:ir.ui.view,arch_db:website_sale_dashboard.sale_dashboard_view
+msgid "Total, Tax Included"
+msgstr ""
+
+#. module: website_sale_dashboard
+#: model_terms:ir.ui.view,arch_db:website_sale_dashboard.sale_report_view_search_website_inherit
 msgid "Unpaid Orders"
 msgstr "Pedidos não pagos"
 
 #. module: website_sale_dashboard
-#: model:ir.ui.view,arch_db:website_sale_dashboard.sale_dashboard_view
+#: model_terms:ir.ui.view,arch_db:website_sale_dashboard.sale_dashboard_view
 msgid "Untaxed Total"
 msgstr "Total não tributado"
 
@@ -180,16 +185,21 @@ msgid "Website"
 msgstr "Site"
 
 #. module: website_sale_dashboard
-#: model:ir.ui.view,arch_db:website_sale_dashboard.website_sale_dashboard_onboarding_panel
+#: model_terms:ir.ui.view,arch_db:website_sale_dashboard.website_sale_dashboard_onboarding_panel
 msgid "action_close_website_sale_dashboard_onboarding"
 msgstr ""
 
 #. module: website_sale_dashboard
-#: model:ir.ui.view,arch_db:website_sale_dashboard.website_sale_dashboard_onboarding_panel
+#: model:ir.actions.act_window,name:website_sale_dashboard.sale_dashboard
+msgid "eCommerce Dashboard"
+msgstr ""
+
+#. module: website_sale_dashboard
+#: model_terms:ir.ui.view,arch_db:website_sale_dashboard.website_sale_dashboard_onboarding_panel
 msgid "o_onboarding_orange"
 msgstr ""
 
 #. module: website_sale_dashboard
-#: model:ir.ui.view,arch_db:website_sale_dashboard.website_sale_dashboard_onboarding_panel
+#: model_terms:ir.ui.view,arch_db:website_sale_dashboard.website_sale_dashboard_onboarding_panel
 msgid "res.company"
 msgstr ""

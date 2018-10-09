@@ -2,12 +2,15 @@
 # This file contains the translation of the following modules:
 # * web_gantt
 # 
+# Translators:
+# Martin Trigaux, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:29+0000\n"
-"PO-Revision-Date: 2018-08-24 11:29+0000\n"
+"POT-Creation-Date: 2018-09-18 10:05+0000\n"
+"PO-Revision-Date: 2018-09-18 10:05+0000\n"
+"Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: Serbian (https://www.transifex.com/odoo/teams/41243/sr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,7 +24,7 @@ msgstr ""
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:31
 #, python-format
 msgid "Day"
-msgstr ""
+msgstr "Dan"
 
 #. module: web_gantt
 #. openerp-web
@@ -36,7 +39,7 @@ msgstr ""
 #: code:addons/web_gantt/static/src/js/gantt_view.js:99
 #, python-format
 msgid "Gantt"
-msgstr ""
+msgstr "Gant"
 
 #. module: web_gantt
 #. openerp-web
@@ -52,7 +55,7 @@ msgstr ""
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:33
 #, python-format
 msgid "Month"
-msgstr ""
+msgstr "Mesec"
 
 #. module: web_gantt
 #. openerp-web
@@ -73,7 +76,7 @@ msgstr ""
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:14
 #, python-format
 msgid "Today"
-msgstr ""
+msgstr "Danas"
 
 #. module: web_gantt
 #. openerp-web
@@ -89,7 +92,7 @@ msgstr ""
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:34
 #, python-format
 msgid "Year"
-msgstr ""
+msgstr "Godina"
 
 #. module: web_gantt
 #. openerp-web

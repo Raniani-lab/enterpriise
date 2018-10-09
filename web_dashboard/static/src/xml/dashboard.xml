@@ -53,6 +53,10 @@
             <span class="oe_tooltip_technical_title">Modifiers:</span>
             <t t-esc="JSON.stringify(node.attrs.modifiers)"/>
         </li>
+        <li data-item="value_label" t-if="node.attrs.value_label">
+            <span class="oe_tooltip_technical_title">Value Label:</span>
+            <t t-esc="node.attrs.value_label"/>
+        </li>
         <li data-item="help" t-if="node.attrs.help" >
             <span class="oe_tooltip_technical_title">Help:</span>
             <t t-esc="node.attrs.help"/>

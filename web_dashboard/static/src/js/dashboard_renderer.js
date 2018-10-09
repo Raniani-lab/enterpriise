@@ -35,12 +35,21 @@ var DashboardRenderer = FormRenderer.extend({
         this.subControllers = {};
         this.subControllersContext = _.pick(state.context || {}, 'pivot', 'graph', 'cohort');
         this.subcontrollersNextMeasures = {pivot: {}, graph: {}, cohort: {}};
-        this.timeRangeDescription = params.timeRangeDescription;
-        this.comparisonTimeRangeDescription = params.comparisonTimeRangeDescription;
         this.formatOptions = {
             // in the dashboard view, all monetary values are displayed in the
             // currency of the current company of the user
             currency_id: this.getSession().company_currency_id,
+            // allow to decide if utils.human_number should be used
+            humanReadable: function (value) {
+                return Math.abs(value) >= 1000;
+            },
+            // with the choices below, 1236 is represented by 1.24k
+            minDigits: 1,
+            decimals: 2,
+            // avoid comma separators for thousands in numbers when human_number is used
+            formatterCallback: function (str) {
+                return str;
+            }
         };
     },
     /**
@@ -89,16 +98,6 @@ var DashboardRenderer = FormRenderer.extend({
         for (viewType in this.subControllers) {
             _.extend(this.subControllersContext[viewType], this.subcontrollersNextMeasures[viewType]);
             this.subcontrollersNextMeasures[viewType] = {};
-        }
-        if (params.context !== undefined) {
-            var timeRangeMenuData = params.context.timeRangeMenuData;
-            if (timeRangeMenuData) {
-                this.timeRangeDescription = timeRangeMenuData.timeRangeDescription;
-                this.comparisonTimeRangeDescription = timeRangeMenuData.comparisonTimeRangeDescription;
-            } else {
-                this.timeRangeDescription = undefined;
-                this.comparisonTimeRangeDescription = undefined;
-            }
         }
         return this._super.apply(this, arguments);
     },
@@ -158,12 +157,12 @@ var DashboardRenderer = FormRenderer.extend({
         var $el = $('<div>')
             .attr('name', node.attrs.name)
             .append($label);
-
         var $value;
         var statisticName = node.attrs.name;
         var variation;
         var formatter;
         var statistic = self.state.fieldsInfo.dashboard[statisticName];
+        var valueLabel =  statistic.value_label ? (' ' + statistic.value_label) : '';
         if (!node.attrs.widget || (node.attrs.widget in fieldUtils.format)) {
             // use a formatter to render the value if there exists one for the
             // specified widget attribute, or there is no widget attribute
@@ -174,9 +173,11 @@ var DashboardRenderer = FormRenderer.extend({
                 var comparisonValue = this.state.comparisonData[statisticName];
                 variation = this.state.variationData[statisticName];
                 renderComparison($el, fieldValue, comparisonValue, variation, formatter, statistic, this.formatOptions);
+                $('.o_comparison', $el).append(valueLabel);
+
             } else {
                 fieldValue = isNaN(fieldValue) ? '-' : formatter(fieldValue, statistic, this.formatOptions);
-                $value = $('<div>', {class: 'o_value'}).html(fieldValue);
+                $value = $('<div>', {class: 'o_value'}).html(fieldValue + valueLabel);
                 $el.append($value);
             }
         } else {
@@ -232,18 +233,31 @@ var DashboardRenderer = FormRenderer.extend({
      * @private
      */
     _renderSubViewButtons: function ($el, controller) {
-        var $buttons = $('<div>', {class: 'o_' + controller.viewType + '_buttons'});
+        var $buttons = $('<div>', {class: 'o_' + controller.viewType + '_buttons o_dashboard_subview_buttons'});
 
         // render the view's buttons
         controller.renderButtons($buttons);
 
+        // we create a button's group, get the primary button(s)
+        // and put it/them into this group
+        var $buttonGroup = $('<div class="btn-group">');
+        $buttonGroup.append($buttons.find('[aria-label="Main actions"]'));
+        $buttonGroup.append($buttons.find('.btn-group[class*="groupbys"]'));
+        $buttonGroup.prependTo($buttons);
+
         // render the button to open the view in full screen
         $('<button>')
-            .addClass("btn btn-secondary fa fa-expand float-right o_button_switch")
+            .addClass("btn btn-outline-secondary fa fa-arrows-alt float-right o_button_switch")
             .attr({title: 'Full Screen View', viewType: controller.viewType})
             .tooltip()
             .on('click', this._onViewSwitcherClicked.bind(this))
             .appendTo($buttons);
+
+        // select primary and interval buttons and alter their style
+        $buttons.find('.btn-primary').removeClass('btn-primary').addClass("btn-outline-secondary");
+        $buttons.find('[class*=interval_button]').addClass('text-muted text-capitalize');
+        // remove bars icon on "Group by" button
+        $buttons.find('.fa.fa-bars').removeClass('fa fa-bars');
 
         $buttons.prependTo($el);
     },
@@ -257,7 +271,7 @@ var DashboardRenderer = FormRenderer.extend({
         var isClickable = node.attrs.clickable === undefined || pyUtils.py_eval(node.attrs.clickable);
         $aggregate.toggleClass('o_clickable', isClickable);
 
-        var $result = $('<div>').append($aggregate);
+        var $result = $('<div>').addClass('o_aggregate_col').append($aggregate);
         this._registerModifiers(node, this.state, $result);
         return $result;
     },
@@ -277,7 +291,21 @@ var DashboardRenderer = FormRenderer.extend({
      * @private
      */
     _renderTagGroup: function (node) {
-        return this._renderOuterGroup(node);
+        var $group = this._renderOuterGroup(node);
+        if (node.children.length && node.children[0].tag === 'widget') {
+            $group.addClass('o_has_widget');
+            var nbr_pie_charts = node.children.reduce(
+                    function (acc, child) {
+                        return acc + (child.attrs.name === "pie_chart" ? 1 : 0);
+                    },
+                    0
+                );
+            $group.addClass('o_nbr_pie_charts_' + nbr_pie_charts);
+            if (this.state.compare) {
+                $group.addClass('o_active_comparison');
+            }
+        }
+        return $group;
     },
     /**
      * Handles nodes with tagname 'view': instanciates the requested view,
@@ -316,8 +344,8 @@ var DashboardRenderer = FormRenderer.extend({
     },
     /**
      * Overrides to destroy potentially previously instantiates sub views, and
-     * to call 'on_attach_callback' on the new sub views if the dashboard if
-     * already in the DOM when being rendered.
+     * to call 'on_attach_callback' on the new sub views and the widgets if the
+     * dashboard is already in the DOM when being rendered.
      *
      * @override
      * @private
@@ -330,39 +358,9 @@ var DashboardRenderer = FormRenderer.extend({
             _.invoke(oldControllers, 'destroy');
             if (self.isInDOM) {
                 _.invoke(self.subControllers, 'on_attach_callback');
+                _.invoke(self.widgets, 'on_attach_callback');
             }
         });
-    },
-    /**
-     * @override
-     * @private
-     * @param {JQueryElement} $node
-     * @returns {JQueryElement}
-     */
-    _renderTagWidget: function (node) {
-        if (!this.state.compare) {
-            return this._super.apply(this, arguments);
-        } else {
-            var $div = $('<div>');
-            var originalTitle = node.attrs.modifiers.title ? node.attrs.modifiers.title : undefined;
-            var fakeState = _.clone(this.state);
-            var fakeNode = JSON.parse(JSON.stringify(node));
-
-            fakeState.domain = fakeState.domain.concat(this.state.timeRange || []);
-            if (originalTitle) {
-                fakeNode.attrs.modifiers.title = originalTitle + ' (' + this.timeRangeDescription + ')';
-            }
-
-            $div.append(this._renderWidget(fakeState, fakeNode));
-
-            fakeState.domain = this.state.domain.concat(this.state.comparisonTimeRange || []);
-            fakeState.data = this.state.comparisonData;
-            if (originalTitle) {
-                fakeNode.attrs.modifiers.title = originalTitle + ' (' + this.comparisonTimeRangeDescription + ')';
-            }
-            $div.append(this._renderWidget(fakeState, fakeNode));
-            return $div;
-        }
     },
     /**
      * Overrides to get rid of the FormRenderer logic about fields, as there is

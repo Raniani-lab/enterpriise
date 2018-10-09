@@ -17,7 +17,7 @@ except ImportError:
 from pytz import timezone
 
 from odoo import _, api, fields, models, tools
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError, UserError
 from odoo.tools.misc import DEFAULT_SERVER_DATETIME_FORMAT
 
 
@@ -177,6 +177,12 @@ class Certificate(models.Model):
 
     @api.multi
     def unlink(self):
+        if self.env['account.invoice'].search(
+                [('l10n_mx_edi_cfdi_certificate_id', 'in', self.ids)]):
+            raise UserError(_(
+                'You cannot remove a certificate that has already been used '
+                'to sign an invoice. Expired Certificates will not be used '
+                'as Odoo uses the latest valid certificate.'))
         res = super(Certificate, self).unlink()
         self.clear_caches()
         return res

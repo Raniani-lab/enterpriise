@@ -7,10 +7,10 @@
 # Eloïse Stilmant <est@odoo.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.3+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 08:34+0000\n"
-"PO-Revision-Date: 2018-06-25 08:34+0000\n"
+"POT-Creation-Date: 2018-09-18 10:05+0000\n"
+"PO-Revision-Date: 2018-09-18 10:05+0000\n"
 "Last-Translator: Eloïse Stilmant <est@odoo.com>, 2018\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -39,12 +39,12 @@ msgstr ""
 "Vous pouvez chercher un ticket en écrivant : <b>/helpdesk_search \"motclé1 motclé2 etc\"</b><br>"
 
 #. module: website_helpdesk_livechat
-#: model:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
 msgid "Canned Responses"
 msgstr "Réponses Enregistrées"
 
 #. module: website_helpdesk_livechat
-#: model:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
 msgid "Configure Canned Responses"
 msgstr "Configurer les Réponses Enregistrées"
 
@@ -102,7 +102,7 @@ msgid "Search for a helpdesk ticket"
 msgstr "Chercher un ticket helpdesk"
 
 #. module: website_helpdesk_livechat
-#: model:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
 msgid ""
 "Set shortcuts predefined answers. This works in both the mail composer and "
 "the live website chatter. Simply ype ':' followed by the shortcut label to "
@@ -114,7 +114,7 @@ msgstr ""
 "des réponses standardisées parmi lesquelles vous pouvez faire votre choix."
 
 #. module: website_helpdesk_livechat
-#: model:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
 msgid "Setup the"
 msgstr "Configurer le"
 
@@ -126,7 +126,7 @@ msgid "Something is missing or wrong in command"
 msgstr "Commande incorrecte ou incomplète"
 
 #. module: website_helpdesk_livechat
-#: model:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
 msgid "Test the livechat widget from this page:<br/>"
 msgstr "Testez le widget de Live Chat de cette page:<br/>"
 
@@ -140,7 +140,7 @@ msgstr ""
 " la chaîne."
 
 #. module: website_helpdesk_livechat
-#: model:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
 msgid "Use predefined answers in the mail composer"
 msgstr "Utilisez les réponses enregistrées dans l'envoi des courriels"
 
@@ -173,7 +173,7 @@ msgstr ""
 "motclé2 etc...\"</b><br>"
 
 #. module: website_helpdesk_livechat
-#: model:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
 msgid "channel to define auto-popup rules and geolocation filters"
 msgstr ""
 "Salon pour définir les règles d'affichage automatique de fenêtres "

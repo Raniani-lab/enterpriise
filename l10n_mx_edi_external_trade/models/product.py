@@ -27,6 +27,7 @@ class UoM(models.Model):
 
 class L10nMXEdiTariffFraction(models.Model):
     _name = 'l10n_mx_edi.tariff.fraction'
+    _description = "Mexican EDI Tariff Fraction"
 
     code = fields.Char(help='Code defined in the SAT to this record.')
     name = fields.Char(help='Name defined in the SAT catalog to this record.')

@@ -365,7 +365,7 @@ class HelpdeskTeam(models.Model):
 
 class HelpdeskStage(models.Model):
     _name = 'helpdesk.stage'
-    _description = 'Stage'
+    _description = 'Helpdesk Stage'
     _order = 'sequence, id'
 
     def _get_default_team_ids(self):

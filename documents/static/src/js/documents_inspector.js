@@ -53,6 +53,7 @@ var DocumentsInspector = Widget.extend({
 
         this.nbDocuments = params.state.count;
         this.size = params.state.size;
+        this.currentFolder = _.findWhere(params.state.folders, {id: params.state.folderID});
 
         this.records = [];
         _.each(params.recordIDs, function (resID) {
@@ -201,10 +202,8 @@ var DocumentsInspector = Widget.extend({
     _renderFields: function () {
         var options = {mode: 'edit'};
         if (this.records.length === 1) {
-            if (this.records[0].data.type !== 'url') {
-                this._renderField('datas_fname', options);
-            } else {
-                this._renderField('name', options);
+            this._renderField('name', options);
+            if (this.records[0].data.type === 'url') {
                 this._renderField('url', options);
             }
             this._renderField('partner_id', options);
@@ -345,10 +344,16 @@ var DocumentsInspector = Widget.extend({
         var disabled = _.some(this.records, function (record) {
             return record.data.lock_uid && record.data.lock_uid.res_id !== session.uid;
         });
+        var binary = _.some(this.records, function (record) {
+            return record.data.type === 'binary';
+        });
         if (disabled) {
             this.$('.o_inspector_replace').prop('disabled', true);
             this.$('.o_inspector_delete').prop('disabled', true);
             this.$('.o_inspector_archive').prop('disabled', true);
+        }
+        if (!binary && (this.records.length > 1 || (this.records.length && this.records[0].data.type === 'empty'))) {
+            this.$('.o_inspector_download').prop('disabled', true);
         }
     },
 
@@ -483,7 +488,7 @@ var DocumentsInspector = Widget.extend({
      */
     _onReplace: function () {
         this.trigger_up('replace_file', {
-            id: this.records[0].id,
+            id: this.records[0].data.id,
         });
     },
     /**

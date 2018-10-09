@@ -1,6 +1,7 @@
 odoo.define('web_studio.ReportEditorSidebar_tests', function (require) {
 "use strict";
 
+var config = require('web.config');
 var testUtils = require('web.test_utils');
 
 var studioTestUtils = require('web_studio.testUtils');
@@ -89,8 +90,8 @@ QUnit.module('Studio', {}, function () {
             testUtils.intercept(sidebar, 'studio_edit_report', function (ev) {
                 if (ev.data.name) {
                     assert.deepEqual(ev.data, { name: "wow_report" });
-                } else if (ev.data.paperformat_id) {
-                    assert.deepEqual(ev.data, { paperformat_id: 42 });
+                } else if ('paperformat_id' in ev.data) {
+                    paperformatValues.push(ev.data);
                 } else if (ev.data.groups_id) {
                     assert.deepEqual(ev.data, { groups_id: [7] });
                 }
@@ -99,20 +100,20 @@ QUnit.module('Studio', {}, function () {
             sidebar.$('input[name="name"]').val("wow_report").trigger('change');
 
             // edit the report paperformat
+            var paperformatValues = [];
             var $dropdown1 = sidebar.$('[name="paperformat_id"] input').autocomplete('widget');
             sidebar.$('[name="paperformat_id"] input').click();
             $dropdown1.find('li:contains(My Awesome Format)').mouseenter().click();
+            assert.deepEqual(paperformatValues, [{ paperformat_id: 42 }]);
+
+            // remove the report paperformat
+            sidebar.$('[name="paperformat_id"] input').val('').trigger('keyup').trigger('focusout');
+            assert.deepEqual(paperformatValues, [{ paperformat_id: 42 }, { paperformat_id: false }]);
 
             // edit groups
             var $dropdown2 = sidebar.$('[name="groups_id"] input').autocomplete('widget');
             sidebar.$('[name="groups_id"] input').click();
             $dropdown2.find('li:contains(Group7)').mouseenter().click();
-
-            // print the report
-            testUtils.intercept(sidebar, 'print_report', function (ev) {
-                assert.deepEqual(ev.data, {});
-            });
-            sidebar.$('.o_web_studio_print').click();
 
             sidebar.destroy();
         });
@@ -505,7 +506,7 @@ QUnit.module('Studio', {}, function () {
                     testName: "set the heading level",
                     nodeToUse: layoutChangeNode,
                     eventToTrigger: "change",
-                    sidebarOperationInputSelector: '.o_web_studio_heading select',
+                    sidebarOperationInputSelector: '.o_web_studio_font_size select',
                     valueToPut: "h3",
                     expectedRPC: {
                         inheritance: [{
@@ -655,7 +656,7 @@ QUnit.module('Studio', {}, function () {
                     testName: "unset the heading level",
                     nodeToUse: nodeWithAllLayoutPropertiesSet,
                     eventToTrigger: "change",
-                    sidebarOperationInputSelector: '.o_web_studio_heading select',
+                    sidebarOperationInputSelector: '.o_web_studio_font_size select',
                     valueToPut: "",
                     expectedRPC: {
                         inheritance: [{
@@ -723,6 +724,10 @@ QUnit.module('Studio', {}, function () {
             // there is one assert by operation
             assert.expect(layoutChangesOperations.length);
 
+            var initialDebugMode = config.debug;
+            // show 'class' in the sidebar
+            config.debug = true;
+
             _.each(layoutChangesOperations, function (changeOperation) {
                 var node = {
                     node: changeOperation.nodeToUse,
@@ -746,6 +751,8 @@ QUnit.module('Studio', {}, function () {
 
                 sidebar.destroy();
             });
+
+            config.debug = initialDebugMode;
         });
     });
 

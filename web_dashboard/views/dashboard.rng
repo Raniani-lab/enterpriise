@@ -47,6 +47,7 @@
             <optional><attribute name="modifiers"/></optional>
             <optional><attribute name="help"/></optional>
             <optional><attribute name="measure"/></optional>
+            <optional><attribute name="value_label"/></optional>
         </element>
     </define>
 
@@ -60,6 +61,7 @@
             <optional><attribute name="attrs"/></optional>
             <optional><attribute name="modifiers"/></optional>
             <optional><attribute name="help"/></optional>
+            <optional><attribute name="value_label"/></optional>
         </element>
     </define>
 

@@ -130,12 +130,8 @@
                 <field name="reference"/>
                 <field name="template_id" string="Template or Tag" filter_domain="['|', ('template_id.attachment_id.name', 'ilike', self), ('template_id.tag_ids.name', 'ilike', self)]"/>
                 <field name="request_item_ids" string="Signer Email" filter_domain="[('request_item_ids.partner_id.email', 'ilike', self)]"/>
-                <filter name="active" string="Active" domain="[('active', '=', True)]"/>
-                <filter name="archive" string="Archived" domain="[('active', '=', False)]"/>
-                <separator/>
-                <filter name="favorite" string="Favorites" domain="[('favorited_ids', '=', uid)]"/>
-                <separator/>
-                <filter name="my_docs" string="My documents" domain="[('create_uid', '=', uid)]"/>
+                <filter name="my_docs" string="My Documents" domain="[('create_uid', '=', uid)]"/>
+                <filter name="favorite" string="My Favorites" domain="[('favorited_ids', '=', uid)]"/>
                 <separator/>
                 <filter name="in_progress" string="To Sign" domain="[('state', '=', 'sent')]"/>
                 <filter name="signed" string="Signed" domain="[('state', '=', 'signed')]"/>
@@ -148,6 +144,8 @@
                 <filter string="Future Activities" name="activities_upcoming_all"
                         domain="[('activity_ids.date_deadline', '&gt;', context_today().strftime('%Y-%m-%d'))
                         ]"/>
+                <separator/>
+                <filter name="archive" string="Archived" domain="[('active', '=', False)]"/>
                 <group expand="0" string="Group By">
                     <filter name="group_by_template" string="Template" domain="[]" context="{'group_by': 'template_id'}"/>
                 </group>
@@ -158,9 +156,8 @@
     <record id="sign_request_action" model="ir.actions.act_window">
         <field name="name">Signatures</field>
         <field name="res_model">sign.request</field>
-        <field name="view_mode">kanban,tree,form</field>
+        <field name="view_mode">kanban,tree,form,activity</field>
         <field name="search_view_id" ref="sign_request_view_search"/>
-        <field name="context" eval="{'search_default_active': 1}"/>
         <field name="help" type="html">
             <p class="o_view_nocontent_empty_folder">
                 No documents to sign

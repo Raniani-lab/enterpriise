@@ -27,7 +27,7 @@ class ProductUoM(models.Model):
 
 
 class ProductSatCode(models.Model):
-    """Added to manage the product codes from SAT master data
+    """Product and UOM Codes from SAT Data.
     This code must be defined in CFDI 3.3, in each concept, and this is set
     by each product.
     Is defined a new catalog to only allow select the codes defined by the SAT
@@ -38,6 +38,7 @@ class ProductSatCode(models.Model):
     This model also is used to define the uom code defined by the SAT
     """
     _name = 'l10n_mx_edi.product.sat.code'
+    _description = "Product and UOM Codes from SAT Data"
 
     code = fields.Char(
         help='This value is required in CFDI version 3.3 to express the '

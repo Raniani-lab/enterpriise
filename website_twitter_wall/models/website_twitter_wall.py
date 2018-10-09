@@ -19,7 +19,9 @@ _logger = getLogger(__name__)
 class WebsiteTwitterWall(models.Model):
     _name = 'website.twitter.wall'
     _inherit = ['website.published.mixin']
+    _description = 'Website Twitter'
     _order = 'name'
+
 
     name = fields.Char(required=True, translate=True)
     description = fields.Text(translate=True)

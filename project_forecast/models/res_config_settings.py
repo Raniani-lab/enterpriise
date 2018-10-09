@@ -10,12 +10,12 @@ class ResConfigSettings(models.TransientModel):
     forecast_uom = fields.Selection([
         ('hour', 'Hours'),
         ('day', 'Days'),
-    ], string="Time Unit", related='company_id.forecast_uom', required=True, help="Encode your forecasts in hours or days.")
+    ], string="Time Unit", related='company_id.forecast_uom', required=True, help="Encode your forecasts in hours or days.", readonly=False)
     forecast_span = fields.Selection([
         ('day', 'By day'),
         ('week', 'By week'),
         ('month', 'By month')
-    ], string="Time Span", related='company_id.forecast_span', required=True, help="Encode your forecast in a table displayed by days, weeks or the whole year.")
+    ], string="Time Span", related='company_id.forecast_span', required=True, help="Encode your forecast in a table displayed by days, weeks or the whole year.", readonly=False)
 
     @api.model
     def create(self, values):

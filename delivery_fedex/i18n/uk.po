@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
 "Last-Translator: Bohdan Lisnenko, 2018\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
@@ -20,12 +20,12 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
 
 #. module: delivery_fedex
-#: model:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
+#: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
 msgid ", click on \"Get Production Key\" and follow all the steps."
 msgstr ", натисніть на \"Отримати ключ виробництва\" і виконайте всі кроки."
 
 #. module: delivery_fedex
-#: model:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
+#: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
 msgid ""
 "<br/>According to your needs, you will need to contact different "
 "certifications :"
@@ -34,17 +34,17 @@ msgstr ""
 "сертифікаціями :"
 
 #. module: delivery_fedex
-#: model:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
+#: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
 msgid "Account Number"
 msgstr "Номер рахунку"
 
 #. module: delivery_fedex
-#: model:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
+#: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
 msgid "Advanced Services with Label Certification"
 msgstr "Розширені послуги без логотипу сертифікації"
 
 #. module: delivery_fedex
-#: model:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
+#: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
 msgid "Advanced Services without Label Certification"
 msgstr "Розширені послуги без логотипу сертифікації"
 
@@ -59,13 +59,12 @@ msgid "Based on Rules"
 msgstr "Засновано на правилах"
 
 #. module: delivery_fedex
-#: model:ir.model,name:delivery_fedex.model_delivery_carrier
 #: model:ir.model.fields,field_description:delivery_fedex.field_product_packaging__package_carrier_type
 msgid "Carrier"
 msgstr "Перевізник"
 
 #. module: delivery_fedex
-#: model:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
+#: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
 msgid "Certification Process"
 msgstr "Процес сертифікації"
 
@@ -84,6 +83,11 @@ msgstr "DROP_BOX"
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_default_packaging_id
 msgid "Default Package Type"
 msgstr "Тип упаковки за замовчуванням"
+
+#. module: delivery_fedex
+#: model:ir.model,name:delivery_fedex.model_delivery_carrier
+msgid "Delivery Methods"
+msgstr "Способи доставки"
 
 #. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_developer_key
@@ -148,8 +152,8 @@ msgid "FedEx Account Number"
 msgstr ""
 
 #. module: delivery_fedex
-#: model:ir.ui.view,arch_db:delivery_fedex.res_config_settings_view_form_sale
-#: model:ir.ui.view,arch_db:delivery_fedex.res_config_settings_view_form_stock
+#: model_terms:ir.ui.view,arch_db:delivery_fedex.res_config_settings_view_form_sale
+#: model_terms:ir.ui.view,arch_db:delivery_fedex.res_config_settings_view_form_stock
 msgid "FedEx Delivery Methods"
 msgstr "Методи доставки FedEx"
 
@@ -159,12 +163,12 @@ msgid "FedEx Saturday Delivery"
 msgstr ""
 
 #. module: delivery_fedex
-#: model:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
+#: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
 msgid "FedEx Web Services \"Move to Production\""
 msgstr "Веб послуги FedEx \"Перемістити до виробництва\""
 
 #. module: delivery_fedex
-#: model:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
+#: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
 msgid "Fedex Configuration"
 msgstr "Налаштування Fedex"
 
@@ -186,7 +190,7 @@ msgid "Fedex Service Type"
 msgstr "Тип послуги Fedex "
 
 #. module: delivery_fedex
-#: model:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
+#: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
 msgid "Fedex Tutorial"
 msgstr "Консультація Fedex"
 
@@ -198,7 +202,7 @@ msgid "Fedex US"
 msgstr "Fedex US"
 
 #. module: delivery_fedex
-#: model:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
+#: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
 msgid "Fedex Website"
 msgstr "Веб-сайт Fedex"
 
@@ -218,7 +222,7 @@ msgid "Fixed Price"
 msgstr "Фіксована ціна"
 
 #. module: delivery_fedex
-#: model:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
+#: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
 msgid "Go to"
 msgstr "Перейти до"
 
@@ -259,7 +263,7 @@ msgid "No packages for this picking"
 msgstr "Немає пакунків для цього комплектування"
 
 #. module: delivery_fedex
-#: model:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
+#: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
 msgid "Once your account is created, go to"
 msgstr "Після того, як буде створено ваш обліковий запис, перейдіть до"
 
@@ -314,14 +318,14 @@ msgid "PRIORITY_OVERNIGHT"
 msgstr "PRIORITY_OVERNIGHT"
 
 #. module: delivery_fedex
-#: model:ir.model,name:delivery_fedex.model_product_packaging
-msgid "Packaging"
-msgstr "Упаковка"
-
-#. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_developer_password
 msgid "Password"
 msgstr "Пароль"
+
+#. module: delivery_fedex
+#: model:ir.model,name:delivery_fedex.model_product_packaging
+msgid "Product Packaging"
+msgstr "Пакування товару"
 
 #. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__delivery_type
@@ -379,12 +383,12 @@ msgid "STOCK_4X9_TRAILING_DOC_TAB"
 msgstr "STOCK_4X9_TRAILING_DOC_TAB"
 
 #. module: delivery_fedex
-#: model:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
+#: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
 msgid "Saturday Delivery"
 msgstr "Суботня доставка"
 
 #. module: delivery_fedex
-#: model:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
+#: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
 msgid "Screenshot"
 msgstr ""
 
@@ -433,17 +437,17 @@ msgstr ""
 "(Обрати країни)"
 
 #. module: delivery_fedex
-#: model:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
+#: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
 msgid "Standard Services"
 msgstr "Стандартні послуги"
 
 #. module: delivery_fedex
-#: model:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
+#: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
 msgid "The last step is the"
 msgstr "Останній крок - це"
 
 #. module: delivery_fedex
-#: model:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
+#: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
 msgid ""
 "These certifications usually require that you contact the FedEx support team"
 " by email."
@@ -500,6 +504,6 @@ msgid "kg"
 msgstr "кг"
 
 #. module: delivery_fedex
-#: model:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
+#: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
 msgid "to create a FedEx account of the following type:"
 msgstr "щоб створити обліковий запис FedEx наступного типу:"

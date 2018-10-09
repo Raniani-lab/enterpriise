@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
 "Last-Translator: Arash Sardari <arashss77@gmail.com>, 2018\n"
 "Language-Team: Persian (https://www.transifex.com/odoo/teams/41243/fa/)\n"
 "MIME-Version: 1.0\n"
@@ -25,12 +25,12 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #. module: account_accountant
-#: model:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid "<span class=\"o_form_label\">Fiscal Year</span>"
 msgstr ""
 
 #. module: account_accountant
-#: model:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid "<span class=\"o_form_label\">Inter-Banks Transfers</span>"
 msgstr ""
 
@@ -40,8 +40,8 @@ msgid "Account Groups"
 msgstr "گروه‌های حساب"
 
 #. module: account_accountant
-#: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__module_account_predictive_account
-msgid "Account Predictive Account"
+#: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__module_account_predictive_bills
+msgid "Account Predictive Bills"
 msgstr ""
 
 #. module: account_accountant
@@ -50,12 +50,13 @@ msgid "Account Tags"
 msgstr "کلمات کلیدی حساب"
 
 #. module: account_accountant
-#: model:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid "Account used when transferring between banks"
 msgstr "حساب استفاده شده در نقل و انتقال بانک"
 
 #. module: account_accountant
-#: model:ir.ui.view,arch_db:account_accountant.res_partner_view_form
+#: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:account_accountant.res_partner_view_form
 msgid "Accounting"
 msgstr "حسابداری"
 
@@ -70,14 +71,19 @@ msgid "Bank & Cash Moves"
 msgstr ""
 
 #. module: account_accountant
-#: model:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
+#: model_terms:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
 msgid "Cancel"
 msgstr "لغو"
 
 #. module: account_accountant
 #: model:ir.model,name:account_accountant.model_account_change_lock_date
-msgid "Change lock date"
-msgstr "تغییر تاریخ قفل"
+msgid "Change Lock Date"
+msgstr ""
+
+#. module: account_accountant
+#: model:ir.model,name:account_accountant.model_res_config_settings
+msgid "Config Settings"
+msgstr ""
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__create_uid
@@ -90,7 +96,7 @@ msgid "Created on"
 msgstr "ایجاد شده در"
 
 #. module: account_accountant
-#: model:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid "Define fiscal years of more or less than a year"
 msgstr ""
 
@@ -112,7 +118,7 @@ msgstr ""
 
 #. module: account_accountant
 #: model:ir.ui.menu,name:account_accountant.menu_account_fiscal_year
-#: model:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid "Fiscal Years"
 msgstr ""
 
@@ -145,7 +151,7 @@ msgid "Kpi Account Bank Cash Value"
 msgstr ""
 
 #. module: account_accountant
-#: model:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid "Last Day"
 msgstr "آخرین روز"
 
@@ -165,7 +171,7 @@ msgid "Last Updated on"
 msgstr "آخرین به روز رسانی در"
 
 #. module: account_accountant
-#: model:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid "Last day of your fiscal year, for automatic opening entries"
 msgstr "آخرین روز سال مالی برای بازگشایی خودکار موجودیت‌ها."
 
@@ -231,7 +237,7 @@ msgstr ""
 "کنید."
 
 #. module: account_accountant
-#: model:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid "Predict vendor bill accounts"
 msgstr ""
 
@@ -251,17 +257,17 @@ msgstr ""
 "به دنبال یافتن <b>برنامه حسابداری<b/> محبوب خود هستید؟ همینجا کلیک کنید."
 
 #. module: account_accountant
-#: model:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid "Record cost of goods sold in your journal entries"
 msgstr "هزینه ثبت شده کالاهای فروخته شده در ورودی‌های روزنامه"
 
 #. module: account_accountant
-#: model:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
+#: model_terms:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
 msgid "Save"
 msgstr "ذخیره"
 
 #. module: account_accountant
-#: model:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid ""
 "The system will try to predict vendor bill accounts based on history of "
 "previous bills."
@@ -293,8 +299,3 @@ msgid ""
 msgstr ""
 "گزارش شما آماده است. <i>نیازی به بستن سال مالی برای گرفتن سود و زیان یا دیدن"
 " تراز نیست.</i>"
-
-#. module: account_accountant
-#: model:ir.model,name:account_accountant.model_res_config_settings
-msgid "res.config.settings"
-msgstr "res.config.settings"

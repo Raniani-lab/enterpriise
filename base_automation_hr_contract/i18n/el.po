@@ -2,12 +2,15 @@
 # This file contains the translation of the following modules:
 # * base_automation_hr_contract
 # 
+# Translators:
+# Kostas Goutoudis <goutoudis@gmail.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.3+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 08:34+0000\n"
-"PO-Revision-Date: 2018-06-25 08:34+0000\n"
+"POT-Creation-Date: 2018-09-18 10:05+0000\n"
+"PO-Revision-Date: 2018-09-18 10:05+0000\n"
+"Last-Translator: Kostas Goutoudis <goutoudis@gmail.com>, 2018\n"
 "Language-Team: Greek (https://www.transifex.com/odoo/teams/41243/el/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -32,12 +35,14 @@ msgstr ""
 #. module: base_automation_hr_contract
 #: model:ir.model.fields,field_description:base_automation_hr_contract.field_base_automation__website_published
 msgid "Available on the Website"
-msgstr ""
+msgstr "Διαθέσιμο στον ιστότοπο"
 
 #. module: base_automation_hr_contract
 #: model:ir.model.fields,help:base_automation_hr_contract.field_base_automation__website_url
 msgid "The full URL to access the server action through the website."
 msgstr ""
+"Η πλήρης διεύθυνση URL για πρόσβαση σε ενέργεια διακομιστή μέσω του "
+"ιστότοπου."
 
 #. module: base_automation_hr_contract
 #: model:ir.model.fields,field_description:base_automation_hr_contract.field_base_automation__trg_date_resource_field_id
@@ -52,9 +57,9 @@ msgstr ""
 #. module: base_automation_hr_contract
 #: model:ir.model.fields,field_description:base_automation_hr_contract.field_base_automation__website_path
 msgid "Website Path"
-msgstr ""
+msgstr "Διαδρομή ιστοτόπου"
 
 #. module: base_automation_hr_contract
 #: model:ir.model.fields,field_description:base_automation_hr_contract.field_base_automation__website_url
 msgid "Website Url"
-msgstr ""
+msgstr "Διεύθυνση URL Ιστότοπου"

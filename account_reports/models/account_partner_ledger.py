@@ -203,7 +203,7 @@ class ReportPartnerLedger(models.AbstractModel):
                         'progress': progress,
                         'class': 'o_account_reports_load_more text-center',
                         'parent_id': 'partner_%s' % partner.id,
-                        'name': _('Load more... (%s remaining)' % remaining_lines),
+                        'name': _('Load more... (%s remaining)') % remaining_lines,
                         'colspan': 10 if self.user_has_groups('base.group_multi_currency') else 9,
                         'columns': [{}],
                     })

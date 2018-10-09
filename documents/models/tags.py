@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from odoo import models, fields, api
-from odoo.osv.expression import expression
+from odoo.osv import expression
 
 
 class TagsCategories(models.Model):
@@ -24,7 +24,7 @@ class Tags(models.Model):
     _description = "Tag"
     _order = "sequence, name"
 
-    folder_id = fields.Many2one('documents.folder', related='facet_id.folder_id', store=True)
+    folder_id = fields.Many2one('documents.folder', related='facet_id.folder_id', store=True, readonly=False)
     facet_id = fields.Many2one('documents.facet', ondelete='cascade', required=True)
     name = fields.Char(required=True)
     sequence = fields.Integer('Sequence', default=10)
@@ -47,24 +47,29 @@ class Tags(models.Model):
         """
         if not domain:
             domain = []
-        model = self.env['ir.attachment']
-        expr = expression(domain, model)
-        domain_query, domain_params = expr.to_sql()
-        folder_query, folder_params = expression([('folder_id', 'parent_of', folder_id)], self).to_sql()
+
+        attachments = self.env['ir.attachment'].search(expression.AND([domain, [('folder_id', '=', folder_id)]]))
+        folders = self.env['documents.folder'].search([('parent_folder_id', 'parent_of', folder_id)])
         query = """
             SELECT  facet.sequence AS facet_sequence,
                     facet.name AS facet_name,
                     facet.id AS facet_id,
+                    facet.tooltip AS facet_tooltip,
                     documents_tag.sequence AS tag_sequence,
                     documents_tag.name AS tag_name,
                     documents_tag.id AS tag_id,
                     COUNT(rel.ir_attachment_id) AS __count
             FROM documents_tag
-                JOIN documents_facet facet ON documents_tag.facet_id = facet.id AND %s
+                JOIN documents_facet facet ON documents_tag.facet_id = facet.id
+                    AND facet.folder_id IN %s
                 LEFT JOIN document_tag_rel rel ON documents_tag.id = rel.documents_tag_id
-                    AND rel.ir_attachment_id IN (SELECT id from ir_attachment WHERE %s)
-            GROUP BY facet.sequence, facet.name, facet.id, documents_tag.sequence, documents_tag.name, documents_tag.id
-            ORDER BY facet.sequence, facet.name, facet.id, documents_tag.sequence, documents_tag.name, documents_tag.id
-        """ % (folder_query, domain_query)
-        self.env.cr.execute(query, folder_params + domain_params)
+                    AND rel.ir_attachment_id = ANY(%s)
+            GROUP BY facet.sequence, facet.name, facet.id, facet.tooltip, documents_tag.sequence, documents_tag.name, documents_tag.id
+            ORDER BY facet.sequence, facet.name, facet.id, facet.tooltip, documents_tag.sequence, documents_tag.name, documents_tag.id
+        """
+        params = [
+            tuple(folders.ids),
+            list(attachments.ids),  # using Postgresql's ANY() with a list to prevent empty list of attachments
+        ]
+        self.env.cr.execute(query, params)
         return self.env.cr.dictfetchall()

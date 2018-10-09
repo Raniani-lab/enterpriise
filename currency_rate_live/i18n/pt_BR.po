@@ -7,13 +7,14 @@
 # Martin Trigaux, 2018
 # Mateus Lopes <mateus1@gmail.com>, 2018
 # grazziano <gra.negocia@gmail.com>, 2018
+# Silmar <pinheirosilmar@gmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
-"Last-Translator: grazziano <gra.negocia@gmail.com>, 2018\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"Last-Translator: Silmar <pinheirosilmar@gmail.com>, 2018\n"
 "Language-Team: Portuguese (Brazil) (https://www.transifex.com/odoo/teams/41243/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -30,6 +31,11 @@ msgstr ""
 #: model:ir.model,name:currency_rate_live.model_res_company
 msgid "Companies"
 msgstr "Empresas"
+
+#. module: currency_rate_live
+#: model:ir.model,name:currency_rate_live.model_res_config_settings
+msgid "Config Settings"
+msgstr "Ajuste de configurações"
 
 #. module: currency_rate_live
 #: model:ir.actions.server,name:currency_rate_live.ir_cron_currency_update_ir_actions_server
@@ -54,7 +60,7 @@ msgid "Federal Tax Administration (Switzerland)"
 msgstr ""
 
 #. module: currency_rate_live
-#: model:ir.ui.view,arch_db:currency_rate_live.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:currency_rate_live.res_config_settings_view_form
 msgid "Interval"
 msgstr "Intervalo"
 
@@ -67,7 +73,7 @@ msgstr "Unidade de Intervalo"
 #. module: currency_rate_live
 #: model:ir.model.fields,field_description:currency_rate_live.field_res_company__last_currency_sync_date
 #: model:ir.model.fields,field_description:currency_rate_live.field_res_config_settings__last_currency_sync_date
-#: model:ir.ui.view,arch_db:currency_rate_live.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:currency_rate_live.res_config_settings_view_form
 msgid "Last Sync Date"
 msgstr ""
 
@@ -93,12 +99,12 @@ msgid "Next Execution Date"
 msgstr "Próxima Data de Execução"
 
 #. module: currency_rate_live
-#: model:ir.ui.view,arch_db:currency_rate_live.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:currency_rate_live.res_config_settings_view_form
 msgid "Next Run"
 msgstr ""
 
 #. module: currency_rate_live
-#: model:ir.ui.view,arch_db:currency_rate_live.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:currency_rate_live.res_config_settings_view_form
 msgid "Service"
 msgstr "Serviço"
 
@@ -152,11 +158,6 @@ msgid ""
 "Your main currency (%s) is not supported by this exchange rate provider. "
 "Please choose another one."
 msgstr ""
-
-#. module: currency_rate_live
-#: model:ir.model,name:currency_rate_live.model_res_config_settings
-msgid "res.config.settings"
-msgstr "res.config.settings"
 
 #. module: currency_rate_live
 #: selection:res.company,currency_provider:0

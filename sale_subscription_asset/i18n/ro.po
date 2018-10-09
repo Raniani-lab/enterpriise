@@ -3,16 +3,13 @@
 # * sale_subscription_asset
 # 
 # Translators:
-# Dorin Hongu <dhongu@gmail.com>, 2018
-# Robert Fluta <robycom@gmail.com>, 2018
-# Cozmin Candea <office@terrabit.ro>, 2018
 # Martin Trigaux, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.4+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-02 11:20+0000\n"
-"PO-Revision-Date: 2018-08-02 11:20+0000\n"
+"POT-Creation-Date: 2018-10-02 10:32+0000\n"
+"PO-Revision-Date: 2018-10-02 10:32+0000\n"
 "Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: Romanian (https://www.transifex.com/odoo/teams/41243/ro/)\n"
 "MIME-Version: 1.0\n"
@@ -28,20 +25,15 @@ msgid "Deferred Revenue Category"
 msgstr "Categorie Venituri Decalate"
 
 #. module: sale_subscription_asset
-#: model:ir.ui.view,arch_db:sale_subscription_asset.sale_subscription_template_view_form_inherit_sale_subscription_asset
-#: model:ir.ui.view,arch_db:sale_subscription_asset.sale_subscription_view_form_inherit_sale_subscription_asset
+#: model_terms:ir.ui.view,arch_db:sale_subscription_asset.sale_subscription_template_view_form_inherit_sale_subscription_asset
+#: model_terms:ir.ui.view,arch_db:sale_subscription_asset.sale_subscription_view_form_inherit_sale_subscription_asset
 msgid "Deferred Revenue Type"
 msgstr ""
 
 #. module: sale_subscription_asset
 #: model:ir.model,name:sale_subscription_asset.model_sale_order
-msgid "Quotation"
-msgstr "Ofertă"
-
-#. module: sale_subscription_asset
-#: model:ir.ui.view,arch_db:sale_subscription_asset.res_config_settings_view_form
-msgid "Revenue Types"
-msgstr ""
+msgid "Sale Order"
+msgstr "Comadă vânzare"
 
 #. module: sale_subscription_asset
 #: model:ir.model,name:sale_subscription_asset.model_sale_order_line

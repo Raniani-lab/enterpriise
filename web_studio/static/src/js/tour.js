@@ -286,6 +286,13 @@ tour.register('web_studio_tests_tour', {
 // been moved at the beginning of this test to avoid the registry to be reloaded
 // before the write on ir.ui.menu.
 
+}, {
+    trigger: '.o_menu_toggle',
+}, {
+    trigger: '.o_web_studio_home_studio_menu .dropdown-toggle',
+}, {
+    // export all modifications
+    trigger: '.o_web_studio_export',
 }]);
 
 tour.register('web_studio_new_report_tour', {

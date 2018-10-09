@@ -9,13 +9,14 @@
 # Ricardo Freitas Rodrigues <ricardo.freitasgr@gmail.com>, 2018
 # Mateus Lopes <mateus1@gmail.com>, 2018
 # grazziano <gra.negocia@gmail.com>, 2018
+# Luciano Giacomazzi <lucianogiacomazzi@gmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
-"Last-Translator: grazziano <gra.negocia@gmail.com>, 2018\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"Last-Translator: Luciano Giacomazzi <lucianogiacomazzi@gmail.com>, 2018\n"
 "Language-Team: Portuguese (Brazil) (https://www.transifex.com/odoo/teams/41243/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -40,7 +41,6 @@ msgid "COD Funding Option"
 msgstr ""
 
 #. module: delivery_ups
-#: model:ir.model,name:delivery_ups.model_delivery_carrier
 #: model:ir.model.fields,field_description:delivery_ups.field_product_packaging__package_carrier_type
 msgid "Carrier"
 msgstr "Transportadora"
@@ -76,6 +76,11 @@ msgstr ""
 #: selection:product.packaging,package_carrier_type:0
 msgid "DHL"
 msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model,name:delivery_ups.model_delivery_carrier
+msgid "Delivery Methods"
+msgstr "Métodos de Entrega"
 
 #. module: delivery_ups
 #: selection:delivery.carrier,ups_label_file_type:0
@@ -136,11 +141,6 @@ msgid "PDF"
 msgstr "PDF"
 
 #. module: delivery_ups
-#: model:ir.model,name:delivery_ups.model_product_packaging
-msgid "Packaging"
-msgstr "Empacotamento"
-
-#. module: delivery_ups
 #: code:addons/delivery_ups/models/ups_request.py:209
 #, python-format
 msgid "Please provide at least one item to ship."
@@ -152,14 +152,14 @@ msgid "Pounds"
 msgstr "Libra Esterlina"
 
 #. module: delivery_ups
+#: model:ir.model,name:delivery_ups.model_product_packaging
+msgid "Product Packaging"
+msgstr "Embalagem de produto"
+
+#. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__delivery_type
 msgid "Provider"
 msgstr "Fornecedor"
-
-#. module: delivery_ups
-#: model:ir.model,name:delivery_ups.model_sale_order
-msgid "Quotation"
-msgstr "Cotação"
 
 #. module: delivery_ups
 #: selection:delivery.carrier,ups_label_file_type:0
@@ -167,7 +167,12 @@ msgid "SPL"
 msgstr "SPL"
 
 #. module: delivery_ups
-#: model:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form_with_provider_ups
+#: model:ir.model,name:delivery_ups.model_sale_order
+msgid "Sale Order"
+msgstr "Pedido de Venda"
+
+#. module: delivery_ups
+#: model_terms:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form_with_provider_ups
 msgid "Saturday Delivery"
 msgstr ""
 
@@ -269,7 +274,7 @@ msgid "UPS BE"
 msgstr "UPS BE"
 
 #. module: delivery_ups
-#: model:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form_with_provider_ups
+#: model_terms:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form_with_provider_ups
 msgid "UPS Configuration"
 msgstr "Configuração UPS"
 
@@ -279,8 +284,8 @@ msgid "UPS Default Packaging Type"
 msgstr "Tipo de empacotamento padrão UPS"
 
 #. module: delivery_ups
-#: model:ir.ui.view,arch_db:delivery_ups.res_config_settings_view_form_sale
-#: model:ir.ui.view,arch_db:delivery_ups.res_config_settings_view_form_stock
+#: model_terms:ir.ui.view,arch_db:delivery_ups.res_config_settings_view_form_sale
+#: model_terms:ir.ui.view,arch_db:delivery_ups.res_config_settings_view_form_stock
 msgid "UPS Delivery Methods"
 msgstr ""
 
@@ -347,7 +352,7 @@ msgid "Ups Package Weight Unit"
 msgstr ""
 
 #. module: delivery_ups
-#: model:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form_with_provider_ups
+#: model_terms:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form_with_provider_ups
 msgid "Value Added Services"
 msgstr ""
 

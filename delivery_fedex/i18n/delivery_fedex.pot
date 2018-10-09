@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-18 10:05+0000\n"
-"PO-Revision-Date: 2018-09-18 10:05+0000\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -51,7 +51,6 @@ msgid "Based on Rules"
 msgstr ""
 
 #. module: delivery_fedex
-#: model:ir.model,name:delivery_fedex.model_delivery_carrier
 #: model:ir.model.fields,field_description:delivery_fedex.field_product_packaging__package_carrier_type
 msgid "Carrier"
 msgstr ""
@@ -75,6 +74,11 @@ msgstr ""
 #. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_default_packaging_id
 msgid "Default Package Type"
+msgstr ""
+
+#. module: delivery_fedex
+#: model:ir.model,name:delivery_fedex.model_delivery_carrier
+msgid "Delivery Methods"
 msgstr ""
 
 #. module: delivery_fedex
@@ -303,13 +307,13 @@ msgid "PRIORITY_OVERNIGHT"
 msgstr ""
 
 #. module: delivery_fedex
-#: model:ir.model,name:delivery_fedex.model_product_packaging
-msgid "Packaging"
+#: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_developer_password
+msgid "Password"
 msgstr ""
 
 #. module: delivery_fedex
-#: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_developer_password
-msgid "Password"
+#: model:ir.model,name:delivery_fedex.model_product_packaging
+msgid "Product Packaging"
 msgstr ""
 
 #. module: delivery_fedex

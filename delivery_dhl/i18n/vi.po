@@ -2,12 +2,17 @@
 # This file contains the translation of the following modules:
 # * delivery_dhl
 # 
+# Translators:
+# thanh nguyen <thanhnguyen.icsc@gmail.com>, 2018
+# Duy BQ <duybq86@gmail.com>, 2018
+# fanha99 <fanha99@hotmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"Last-Translator: fanha99 <fanha99@hotmail.com>, 2018\n"
 "Language-Team: Vietnamese (https://www.transifex.com/odoo/teams/41243/vi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,7 +23,7 @@ msgstr ""
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
 msgid "0 - Logistics Services"
-msgstr ""
+msgstr "0 - Dịch vụ hậu cần"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
@@ -123,12 +128,12 @@ msgstr ""
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_region_code:0
 msgid "America"
-msgstr ""
+msgstr "Nước Mỹ"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_region_code:0
 msgid "Asia Pacific"
-msgstr ""
+msgstr "Châu á Thái Bình Dương"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
@@ -138,7 +143,7 @@ msgstr ""
 #. module: delivery_dhl
 #: selection:delivery.carrier,delivery_type:0
 msgid "Based on Rules"
-msgstr ""
+msgstr "Dựa trên Quy tắc"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
@@ -146,20 +151,19 @@ msgid "C - Medical Express"
 msgstr ""
 
 #. module: delivery_dhl
-#: model:ir.model,name:delivery_dhl.model_delivery_carrier
 #: model:ir.model.fields,field_description:delivery_dhl.field_product_packaging__package_carrier_type
 msgid "Carrier"
-msgstr ""
+msgstr "Nhà Vận chuyển"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_package_dimension_unit:0
 msgid "Centimeters"
-msgstr ""
+msgstr "Cm"
 
 #. module: delivery_dhl
 #: model:ir.model.fields,help:delivery_dhl.field_delivery_carrier__dhl_dutiable
 msgid "Check this if your package is dutiable."
-msgstr ""
+msgstr "Đánh dấu nếu gói của bạn có tính thuế."
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
@@ -170,33 +174,33 @@ msgstr ""
 #: selection:delivery.carrier,delivery_type:0
 #: selection:product.packaging,package_carrier_type:0
 msgid "DHL"
-msgstr ""
+msgstr "DHL"
 
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_account_number
 msgid "DHL Account Number"
-msgstr ""
+msgstr "Số tài khoản DHL"
 
 #. module: delivery_dhl
-#: model:ir.ui.view,arch_db:delivery_dhl.view_delivery_carrier_form_with_provider_dhl
+#: model_terms:ir.ui.view,arch_db:delivery_dhl.view_delivery_carrier_form_with_provider_dhl
 msgid "DHL Configuration"
-msgstr ""
+msgstr "Cấu hình DHL"
 
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_default_packaging_id
 msgid "DHL Default Packaging Type"
-msgstr ""
+msgstr "Kiểu đóng gói mặc định DHL"
 
 #. module: delivery_dhl
-#: model:ir.ui.view,arch_db:delivery_dhl.res_config_settings_view_form_sale
-#: model:ir.ui.view,arch_db:delivery_dhl.res_config_settings_view_form_stock
+#: model_terms:ir.ui.view,arch_db:delivery_dhl.res_config_settings_view_form_sale
+#: model_terms:ir.ui.view,arch_db:delivery_dhl.res_config_settings_view_form_stock
 msgid "DHL Delivery Methods"
-msgstr ""
+msgstr "Cách thức giao hàng DHL"
 
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_password
 msgid "DHL Password"
-msgstr ""
+msgstr "Mật khẩu DHL"
 
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_product_code
@@ -204,47 +208,57 @@ msgid "DHL Product"
 msgstr ""
 
 #. module: delivery_dhl
-#: code:addons/delivery_dhl/models/dhl_request.py:376
+#: code:addons/delivery_dhl/models/dhl_request.py:375
 #, python-format
 msgid "DHL Site ID is missing, please modify your delivery method settings."
 msgstr ""
+"ID trang web DHL bị thiếu, vui lòng sửa đổi cài đặt phương thức giao hàng "
+"của bạn."
 
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_SiteID
 msgid "DHL SiteID"
-msgstr ""
+msgstr "DHL SiteID"
 
 #. module: delivery_dhl
 #: model:delivery.carrier,name:delivery_dhl.delivery_carrier_dhl_dom
 #: model:product.product,name:delivery_dhl.product_product_delivery_dhl_usa
 #: model:product.template,name:delivery_dhl.product_product_delivery_dhl_usa_product_template
 msgid "DHL USA"
-msgstr ""
+msgstr "DHL USA"
 
 #. module: delivery_dhl
 #: model:delivery.carrier,name:delivery_dhl.delivery_carrier_dhl_intl
 #: model:product.product,name:delivery_dhl.product_product_delivery_dhl_intl
 #: model:product.template,name:delivery_dhl.product_product_delivery_dhl_intl_product_template
 msgid "DHL USA -> International"
-msgstr ""
+msgstr "DHL USA -> Quốc tế"
 
 #. module: delivery_dhl
-#: code:addons/delivery_dhl/models/dhl_request.py:380
+#: code:addons/delivery_dhl/models/dhl_request.py:379
 #, python-format
 msgid ""
 "DHL account number is missing, please modify your delivery method settings."
 msgstr ""
+"Số tài khoản DHL bị thiếu, vui lòng sửa đổi cài đặt phương thức phân phối "
+"của bạn."
 
 #. module: delivery_dhl
-#: code:addons/delivery_dhl/models/dhl_request.py:378
+#: code:addons/delivery_dhl/models/dhl_request.py:377
 #, python-format
 msgid "DHL password is missing, please modify your delivery method settings."
 msgstr ""
+"Thiếu mật khẩu DHL, vui lòng sửa đổi cài đặt phương thức phân phối của bạn."
+
+#. module: delivery_dhl
+#: model:ir.model,name:delivery_dhl.model_delivery_carrier
+msgid "Delivery Methods"
+msgstr "Phương thức giao hàng"
 
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_dutiable
 msgid "Dutiable Material"
-msgstr ""
+msgstr "Nguyên liệu tính thuế"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
@@ -265,7 +279,7 @@ msgstr ""
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_region_code:0
 msgid "Europe"
-msgstr ""
+msgstr "Châu Âu"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
@@ -276,12 +290,12 @@ msgstr ""
 #: selection:delivery.carrier,delivery_type:0
 #: selection:product.packaging,package_carrier_type:0
 msgid "FedEx"
-msgstr ""
+msgstr "FedEx"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,delivery_type:0
 msgid "Fixed Price"
-msgstr ""
+msgstr "Giá cố định"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
@@ -301,7 +315,7 @@ msgstr ""
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_package_dimension_unit:0
 msgid "Inches"
-msgstr ""
+msgstr "Inches"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
@@ -316,7 +330,7 @@ msgstr ""
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_package_weight_unit:0
 msgid "Kilograms"
-msgstr ""
+msgstr "Kg"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
@@ -331,7 +345,7 @@ msgstr ""
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_label_template
 msgid "Label Template"
-msgstr ""
+msgstr "Nhãn mẫu"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
@@ -346,7 +360,7 @@ msgstr ""
 #. module: delivery_dhl
 #: selection:product.packaging,package_carrier_type:0
 msgid "No carrier integration"
-msgstr ""
+msgstr "Khong tích hợp Nhà vận chuyển"
 
 #. module: delivery_dhl
 #: code:addons/delivery_dhl/models/dhl_request.py:179
@@ -373,38 +387,38 @@ msgstr ""
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_label_image_format:0
 msgid "PDF"
-msgstr ""
+msgstr "PDF"
 
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_package_dimension_unit
 msgid "Package Dimension Unit"
-msgstr ""
+msgstr "Đơn vị kích thước gói"
 
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_package_weight_unit
 msgid "Package Weight Unit"
-msgstr ""
+msgstr "Đơn vị trọng lượng gói"
 
 #. module: delivery_dhl
-#: model:ir.model,name:delivery_dhl.model_product_packaging
-msgid "Packaging"
-msgstr ""
-
-#. module: delivery_dhl
-#: code:addons/delivery_dhl/models/dhl_request.py:398
+#: code:addons/delivery_dhl/models/dhl_request.py:397
 #, python-format
 msgid "Please provide at least one item to ship."
-msgstr ""
+msgstr "Vui lòng cung cấp ít nhất một mặt hàng để giao hàng."
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_package_weight_unit:0
 msgid "Pounds"
-msgstr ""
+msgstr "Pounds"
+
+#. module: delivery_dhl
+#: model:ir.model,name:delivery_dhl.model_product_packaging
+msgid "Product Packaging"
+msgstr "Đóng gói Sản phẩm"
 
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__delivery_type
 msgid "Provider"
-msgstr ""
+msgstr "Nhà cung cấp"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
@@ -419,7 +433,7 @@ msgstr ""
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_region_code
 msgid "Region"
-msgstr ""
+msgstr "Khu vực"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
@@ -430,7 +444,7 @@ msgstr ""
 #: code:addons/delivery_dhl/models/delivery_dhl.py:131
 #, python-format
 msgid "Shipment created into DHL <br/> <b>Tracking Number : </b>%s"
-msgstr ""
+msgstr "Lô hàng đã được tạo với DHL <br/> <b>Số theo dõi: </b>%s"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
@@ -438,28 +452,33 @@ msgid "T - Express 12:00"
 msgstr ""
 
 #. module: delivery_dhl
-#: code:addons/delivery_dhl/models/dhl_request.py:386
+#: code:addons/delivery_dhl/models/dhl_request.py:385
 #, python-format
 msgid ""
 "The address of the customer is missing or wrong (Missing field(s) :\n"
 " %s)"
 msgstr ""
+"Địa chỉ của khách hàng bị thiếu hoặc sai (Thiếu các trường:\n"
+"%s)"
 
 #. module: delivery_dhl
-#: code:addons/delivery_dhl/models/dhl_request.py:394
+#: code:addons/delivery_dhl/models/dhl_request.py:393
 #, python-format
 msgid ""
 "The address of your company warehouse is missing or wrong (Missing field(s) :\n"
 " %s)"
 msgstr ""
+"Địa chỉ của kho công ty bạn bị thiếu hoặc sai (Thiếu các trường:\n"
+"%s)"
 
 #. module: delivery_dhl
-#: code:addons/delivery_dhl/models/dhl_request.py:400
+#: code:addons/delivery_dhl/models/dhl_request.py:399
 #, python-format
 msgid ""
 "The estimated price cannot be computed because the weight of your product is"
 " missing."
 msgstr ""
+"Không thể tính toán giá ước tính vì trọng lượng của sản phẩm bị thiếu."
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
@@ -470,12 +489,12 @@ msgstr ""
 #: selection:delivery.carrier,delivery_type:0
 #: selection:product.packaging,package_carrier_type:0
 msgid "UPS"
-msgstr ""
+msgstr "UPS"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,delivery_type:0
 msgid "USPS"
-msgstr ""
+msgstr "USPS"
 
 #. module: delivery_dhl
 #: model:product.product,uom_name:delivery_dhl.product_product_delivery_dhl_intl
@@ -483,7 +502,7 @@ msgstr ""
 #: model:product.template,uom_name:delivery_dhl.product_product_delivery_dhl_intl_product_template
 #: model:product.template,uom_name:delivery_dhl.product_product_delivery_dhl_usa_product_template
 msgid "Unit(s)"
-msgstr ""
+msgstr "Đơn vị"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
@@ -525,7 +544,7 @@ msgstr ""
 #: selection:delivery.carrier,delivery_type:0
 #: selection:product.packaging,package_carrier_type:0
 msgid "bpost"
-msgstr ""
+msgstr "bpost"
 
 #. module: delivery_dhl
 #: model:product.product,weight_uom_name:delivery_dhl.product_product_delivery_dhl_intl

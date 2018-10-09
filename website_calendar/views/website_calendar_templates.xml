@@ -17,6 +17,12 @@
         </xpath>
     </template>
 
+    <template id="assets_editor_inherit_website_calendar" inherit_id="website.assets_editor" name="website_calendar Assets Editor">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/website_calendar/static/src/js/website_calendar.editor.js"></script>
+        </xpath>
+    </template>
+
     <template id="qunit_suite" inherit_id="web.qunit_suite" name="Website Calendar Tests" >
         <xpath expr="//t[@t-set='head']" position="inside">
             <script type="text/javascript" src="/website_calendar/static/tests/website_calendar_tests.js"/>
@@ -404,6 +410,16 @@
                 </div>
             </div>
         </t>
+    </template>
+
+    <!-- User Navbar -->
+    <template id="user_navbar_inherit_website_enterprise_inherit_website_calendar" inherit_id="website_enterprise.user_navbar_inherit_website_enterprise">
+        <xpath expr="//div[@name='module_website_calendar']" position="attributes">
+            <attribute name="name"/>
+            <attribute name="t-att-data-module-id"/>
+            <attribute name="t-att-data-module-shortdesc"/>
+            <attribute name="groups">website_calendar.group_calendar_manager</attribute>
+        </xpath>
     </template>
 
 </odoo>

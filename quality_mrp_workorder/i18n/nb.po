@@ -3,15 +3,14 @@
 # * quality_mrp_workorder
 # 
 # Translators:
-# Viktor Basso <viktor@voit.no>, 2018
-# Jorunn D. Newth, 2018
+# Martin Trigaux, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.3+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 08:34+0000\n"
-"PO-Revision-Date: 2018-06-25 08:34+0000\n"
-"Last-Translator: Jorunn D. Newth, 2018\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: Norwegian Bokmål (https://www.transifex.com/odoo/teams/41243/nb/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,17 +19,12 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: quality_mrp_workorder
-#: model:ir.ui.view,arch_db:quality_mrp_workorder.quality_alert_view_form_inherit_mrp
-msgid "Create Work Order Message"
-msgstr "Opprett arbeidsordremelding"
-
-#. module: quality_mrp_workorder
-#: model:ir.ui.view,arch_db:quality_mrp_workorder.quality_alert_view_form_inherit_mrp
+#: model_terms:ir.ui.view,arch_db:quality_mrp_workorder.quality_alert_view_form_inherit_mrp
 msgid "Discard"
 msgstr "Forkast"
 
 #. module: quality_mrp_workorder
-#: model:ir.ui.view,arch_db:quality_mrp_workorder.mrp_workorder_view_form_tablet_inherit_quality
+#: model_terms:ir.ui.view,arch_db:quality_mrp_workorder.mrp_workorder_view_form_tablet_inherit_quality
 msgid "Fail"
 msgstr "Ikke bestått"
 
@@ -41,15 +35,10 @@ msgid "Failure"
 msgstr ""
 
 #. module: quality_mrp_workorder
-#: code:addons/quality_mrp_workorder/models/mrp_workorder.py:43
+#: code:addons/quality_mrp_workorder/models/mrp_workorder.py:40
 #, python-format
 msgid "Failure Message"
 msgstr "Feilmelding"
-
-#. module: quality_mrp_workorder
-#: model:ir.model,name:quality_mrp_workorder.model_mrp_production
-msgid "Manufacturing Order"
-msgstr "Produksjonsordre"
 
 #. module: quality_mrp_workorder
 #: model:ir.model.fields,field_description:quality_mrp_workorder.field_mrp_workorder__measure
@@ -62,7 +51,7 @@ msgid "Measure Success"
 msgstr "Mål suksess"
 
 #. module: quality_mrp_workorder
-#: model:ir.ui.view,arch_db:quality_mrp_workorder.mrp_workorder_view_form_tablet_inherit_quality
+#: model_terms:ir.ui.view,arch_db:quality_mrp_workorder.mrp_workorder_view_form_tablet_inherit_quality
 msgid "Measure:"
 msgstr "Mål:"
 
@@ -72,20 +61,14 @@ msgid "Norm Unit"
 msgstr ""
 
 #. module: quality_mrp_workorder
-#: model:ir.ui.view,arch_db:quality_mrp_workorder.mrp_workorder_view_form_tablet_inherit_quality
+#: model_terms:ir.ui.view,arch_db:quality_mrp_workorder.mrp_workorder_view_form_tablet_inherit_quality
 msgid "Pass"
 msgstr "Bestått"
 
 #. module: quality_mrp_workorder
-#: model:ir.model.fields,field_description:quality_mrp_workorder.field_mrp_workorder__picture
-msgid "Picture"
-msgstr "Bilde"
-
-#. module: quality_mrp_workorder
-#: code:addons/quality_mrp_workorder/models/mrp_workorder.py:35
-#, python-format
-msgid "Please upload a picture."
-msgstr "Last opp et bilde."
+#: model:ir.model,name:quality_mrp_workorder.model_mrp_production
+msgid "Production Order"
+msgstr "Produksjonsordre"
 
 #. module: quality_mrp_workorder
 #: model:ir.model,name:quality_mrp_workorder.model_quality_check
@@ -98,12 +81,12 @@ msgid "Quality Checks"
 msgstr "Kvalitetskontroller"
 
 #. module: quality_mrp_workorder
-#: model:ir.ui.view,arch_db:quality_mrp_workorder.mrp_workorder_tablet_view_form_inherit_maintenance
+#: model_terms:ir.ui.view,arch_db:quality_mrp_workorder.mrp_workorder_tablet_view_form_inherit_maintenance
 msgid "Quality alert"
 msgstr "Kvalitetsvarsel"
 
 #. module: quality_mrp_workorder
-#: model:ir.ui.view,arch_db:quality_mrp_workorder.quality_alert_view_form_inherit_mrp
+#: model_terms:ir.ui.view,arch_db:quality_mrp_workorder.quality_alert_view_form_inherit_mrp
 msgid "Save"
 msgstr "Lagre"
 
@@ -114,7 +97,7 @@ msgid "Success"
 msgstr "Suksess"
 
 #. module: quality_mrp_workorder
-#: model:ir.ui.view,arch_db:quality_mrp_workorder.mrp_workorder_view_form_tablet_inherit_quality
+#: model_terms:ir.ui.view,arch_db:quality_mrp_workorder.mrp_workorder_view_form_tablet_inherit_quality
 msgid "Validate"
 msgstr "Valider"
 

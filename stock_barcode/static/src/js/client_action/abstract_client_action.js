@@ -443,6 +443,19 @@ var ClientAction = AbstractAction.extend({
         var preparedPage = $.extend(true, {}, this.pages[pageIndex]);
         this.linesWidget = new LinesWidget(this, preparedPage, pageIndex, nbPages);
         this.linesWidget.appendTo(this.$el);
+        // In some cases, we want to restore the GUI state of the linesWidget
+        // (on a reload not calling _endBarcodeFlow)
+        if (this.linesWidgetState) {
+            this.linesWidget.highlightLocation(this.linesWidgetState.highlightLocationSource);
+            this.linesWidget.highlightDestinationLocation(this.linesWidgetState.highlightLocationDestination);
+            this.linesWidget._toggleScanMessage(this.linesWidgetState.scan_message);
+            delete this.linesWidgetState;
+        }
+        if (this.lastScannedPackage) {
+            this.linesWidget.highlightPackage(this.lastScannedPackage);
+            delete this.lastScannedPackage;
+
+        }
     },
 
     /**
@@ -610,6 +623,7 @@ var ClientAction = AbstractAction.extend({
         var product = params.product;
         var lotId = params.lot_id;
         var lotName = params.lot_name;
+        var packageId = params.package_id;
         var currentPage = this.pages[this.currentPageIndex];
         var res = false;
         for (var z = 0; z < currentPage.lines.length; z++) {
@@ -621,7 +635,8 @@ var ClientAction = AbstractAction.extend({
                      ! lineInCurrentPage.qty_done &&
                      ! lineInCurrentPage.product_uom_qty &&
                      ! lineInCurrentPage.lot_id &&
-                     !lineInCurrentPage.lot_name
+                     ! lineInCurrentPage.lot_name &&
+                     ! lineInCurrentPage.package_id
                     ) ||
                     (this.actionParams.model === 'stock.inventory' &&
                      ! lineInCurrentPage.product_qty &&
@@ -666,6 +681,12 @@ var ClientAction = AbstractAction.extend({
                     ) {
                     continue;
                 }
+                if (packageId &&
+                    (! lineInCurrentPage.package_id ||
+                    lineInCurrentPage.package_id.id !== packageId[0])
+                    ) {
+                    continue;
+                }
                 res = lineInCurrentPage;
                 break;
             }
@@ -685,6 +706,8 @@ var ClientAction = AbstractAction.extend({
      * @param {Object} params.lot_name
      * @param {Object} params.package_id
      * @param {Object} params.result_package_id
+     * @param {Boolean} params.doNotClearLineHighlight don't clear the previous line highlight when
+     *     highlighting a new one
      * @return {object} object wrapping the incremented line and some other informations
      */
     _incrementLines: function (params) {
@@ -928,7 +951,7 @@ var ClientAction = AbstractAction.extend({
             for (var i=0; i < currentPage.lines.length; i++) {
                 var currentLine = currentPage.lines[i];
                 // FIXME sle: float_compare?
-                if (currentLine.package_id[0] === package_id && currentLine.qty_done > 0) {
+                if (currentLine.package_id && currentLine.package_id[0] === package_id && currentLine.qty_done > 0) {
                     currentNumberOfLines += 1;
                 }
             }
@@ -936,6 +959,7 @@ var ClientAction = AbstractAction.extend({
         };
         return search_read_quants().then(function (packages) {
             if (packages.length) {
+                self.lastScannedPackage = packages[0].name;
                 return get_contained_quants(packages[0].id).then(function (quants) {
                     var packageAlreadyScanned = package_already_scanned(packages[0].id, quants);
                     if (packageAlreadyScanned) {
@@ -963,6 +987,7 @@ var ClientAction = AbstractAction.extend({
                             var res = self._incrementLines({
                                 product: product,
                                 barcode: product_barcode,
+                                product_barcode: product_barcode,
                                 package_id: [packages[0].id, packages[0].display_name],
                                 result_package_id: [packages[0].id, packages[0].display_name],
                                 lot_id: quant.lot_id[0],
@@ -971,9 +996,9 @@ var ClientAction = AbstractAction.extend({
                             self.scannedLines.push(res.lineDescription.virtual_id);
                             if (! self.show_entire_packs) {
                                 if (res.isNewLine) {
-                                    linesActions.push([self.linesWidget.addProduct, [res.lineDescription, self.actionParams.model]]);
+                                    linesActions.push([self.linesWidget.addProduct, [res.lineDescription, self.actionParams.model, true]]);
                                 } else {
-                                    linesActions.push([self.linesWidget.incrementProduct, [res.id || res.virtualId, quant.quantity, self.actionParams.model]]);
+                                    linesActions.push([self.linesWidget.incrementProduct, [res.id || res.virtualId, quant.quantity, self.actionParams.model, true]]);
                                 }
                             }
                         });
@@ -1166,7 +1191,7 @@ var ClientAction = AbstractAction.extend({
         var errorMessage;
 
         // Bypass the step if needed.
-        if (this.mode === 'delivery' || this.mode === 'no_multi_locations'  || this.actionParams.model === 'stock.inventory') {
+        if (this.mode === 'delivery' || this.actionParams.model === 'stock.inventory') {
             this._endBarcodeFlow();
             return this._step_source(barcode, linesActions);
         }
@@ -1176,7 +1201,7 @@ var ClientAction = AbstractAction.extend({
             errorMessage = _t('This location is not a child of the main location.');
             return $.Deferred().reject(errorMessage);
         } else {
-            if (! this.scannedLines.length) {
+            if (! this.scannedLines.length || this.mode === 'no_multi_locations') {
                 if (this.groups.group_tracking_lot) {
                     errorMessage = _t("You are expected to scan one or more products or a package available at the picking's location");
                 } else {
@@ -1311,7 +1336,7 @@ var ClientAction = AbstractAction.extend({
             }
             return self._onBarcodeScanned(barcode).then(function () {
                 // FIXME sle: not the right place to do that
-                if (self.show_entire_packs) {
+                if (self.show_entire_packs && self.lastScannedPackage) {
                     self._reloadLineWidget(self.currentPageIndex);
                 }
             });
@@ -1348,6 +1373,7 @@ var ClientAction = AbstractAction.extend({
         ev.stopPropagation();
         var self = this;
         this.mutex.exec(function () {
+            self.linesWidgetState = self.linesWidget.getState();
             self.linesWidget.destroy();
             self.headerWidget.toggleDisplayContext('specialized');
             // Get the default locations before calling save to not lose a newly created page.
@@ -1400,6 +1426,7 @@ var ClientAction = AbstractAction.extend({
      */
     _onEditLine: function (ev) {
         ev.stopPropagation();
+        this.linesWidgetState = this.linesWidget.getState();
         this.linesWidget.destroy();
         this.headerWidget.toggleDisplayContext('specialized');
 

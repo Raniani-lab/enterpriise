@@ -85,7 +85,7 @@
                     </div>
                 </div>
                 <div class="workorder_actions">
-                    <div class="o_workorder_bar_content">
+                    <div class="o_workorder_bar_content o_workorder_actions">
                         <button name="action_menu" type="object" class="btn-secondary o_workorder_icon_btn" string="" icon="fa-bars" aria-label="Dropdown menu" title="Dropdown menu"/>
                         <button name="button_pending" type="object" class="btn-secondary mr8" attrs="{'invisible': ['|', ('is_user_working', '=', False), ('working_state', '=', 'blocked')]}" barcode_trigger="pause" string="Pause"/>
                         <button name="button_start" type="object" class="btn-warning" attrs="{'invisible': ['|', ('is_user_working', '=', True), ('working_state', '=', 'blocked')]}" barcode_trigger="pause" string="Continue"/>
@@ -98,7 +98,7 @@
                     <div class="o_workorder_bar_content o_workorder_bar_content_right">
                         <div attrs="{'invisible': [('working_state', '=', 'blocked')]}">
                             <button name="action_next" type="object" class="btn-primary" attrs="{'invisible': ['|', ('is_user_working', '=', False),'|', ('is_last_step', '=', True), '&amp;', '|', ('quality_state', '=', 'none'), ('test_type', '!=', 'passfail'), ('test_type', '!=', 'text')]}" barcode_trigger="next" string="Next"/>
-                            <button name="action_next" type="object" class="btn-primary" attrs="{'invisible': ['|', '|', ('is_user_working', '=', False), ('is_last_step', '=', True), ('test_type', 'not in', ['record_lotserial_numbers', 'picture'])]}" barcode_trigger="next" string="Validate"/>
+                            <button name="action_next" type="object" class="btn-primary" attrs="{'invisible': ['|', '|', ('is_user_working', '=', False), ('is_last_step', '=', True), ('test_type', 'not in', ['register_consumed_materials', 'picture'])]}" barcode_trigger="next" string="Validate"/>
                             <button name="record_production" type="object" string="Record production" attrs="{'invisible': ['|', '|', '|', '|', ('is_user_working', '=', False), ('is_last_step', '!=', True), ('skipped_check_ids', '!=', []), ('is_last_lot', '=', True)]}" barcode_trigger="record" class="btn-primary"/>
                             <button name="do_finish" type="object" string="Mark as Done" icon="fa-check" attrs="{'invisible': ['|', '|', '|', '|', ('is_user_working', '=', False), ('is_last_step', '!=', True), ('skipped_check_ids', '!=', []), ('is_last_lot', '=', False)]}" class="btn-primary" barcode_trigger="cloWO"/>
                             <button name="action_open_manufacturing_order" type="object" string="Mark as Done and Close MO" icon="fa-check" attrs="{'invisible': ['|', '|', '|', '|', '|', ('is_user_working', '=', False), ('is_last_step', '!=', True), ('skipped_check_ids', '!=', []), ('is_last_lot', '=', False), ('next_work_order_id', '!=', False)]}" class="btn-primary" barcode_trigger="cloMO"/>
@@ -131,7 +131,7 @@
                             <field name="quality_state_for_summary" string="Status"/>
                         </tree>
                     </field>
-                    <div class="o_workorder_bar_content o_workorder_form" attrs="{'invisible': ['|', ('test_type', '!=', 'record_lotserial_numbers'), ('is_last_step', '=', True)]}">
+                    <div class="o_workorder_bar_content o_workorder_form" attrs="{'invisible': ['|', ('test_type', '!=', 'register_consumed_materials'), ('is_last_step', '=', True)]}">
                         <div class="o_workorder_field">
                             <div class="o_form_label">Component</div>
                             <field name="component_id" readonly="1"/>
@@ -261,7 +261,7 @@
         <field name="model">mrp.routing</field>
         <field name="arch" type="xml">
             <xpath expr="//button" position="before">
-                <button name="action_mrp_workorder_show_steps" type="object" icon="fa-list-ul" context="{'search_default_routing_id': [active_id]}">
+                <button name="action_mrp_workorder_show_steps" type="object" icon="fa-list-ul" context="{'search_default_routing_id': id}">
                     Steps
                 </button>
             </xpath>

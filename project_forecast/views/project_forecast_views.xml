@@ -64,10 +64,11 @@
       <search>
         <field name="project_id"/>
         <field name="task_id"/>
-        <filter name="my_activities" string="My activities"
+        <filter name="my_activities" string="My Activities"
                 domain="[('user_id', '=', uid)]"/>
-        <filter name="my_projects" string="My projects"
+        <filter name="my_projects" string="My Projects"
                 domain="[('project_id.user_id', '=', uid)]" />
+        <separator/>
         <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
         <separator/>
         <filter name="future" string="Future"

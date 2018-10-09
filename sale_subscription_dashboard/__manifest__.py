@@ -4,7 +4,7 @@
 {
     'name': 'Sale Subscription Dashboard',
     'version': '1.0',
-    'depends': ['sale_subscription_asset', 'account_deferred_revenue'],
+    'depends': ['sale_subscription', 'sale_subscription_asset'],
     'description': """
 Sale Subscription Dashboard
 ===========================
@@ -24,6 +24,6 @@ It adds dashboards to :
         "static/src/xml/sale_subscription_dashboard.xml",
     ],
     'installable': True,
-    'application': False,
+    'auto_install': True,
     'license': 'OEEL-1',
 }

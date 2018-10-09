@@ -4,13 +4,15 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# Thomas Pot <thomas@open2bizz.nl>, 2018
+# Yenthe Van Ginneken <yenthespam@gmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2018\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,9 +21,9 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: timesheet_grid_sale
-#: model:ir.ui.view,arch_db:timesheet_grid_sale.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:timesheet_grid_sale.res_config_settings_view_form
 msgid "<span class=\"o_form_label\">Invoicing Policy</span>"
-msgstr ""
+msgstr "<span class=\"o_form_label\">Facturatiebeleid</span>"
 
 #. module: timesheet_grid_sale
 #: selection:res.config.settings,invoiced_timesheet:0
@@ -39,7 +41,17 @@ msgid "Approved timesheets only"
 msgstr "Alleen goedgekeurde urenstaten"
 
 #. module: timesheet_grid_sale
-#: model:ir.ui.view,arch_db:timesheet_grid_sale.res_config_settings_view_form
+#: model:ir.model,name:timesheet_grid_sale.model_res_config_settings
+msgid "Config Settings"
+msgstr "Configuratie instellingen"
+
+#. module: timesheet_grid_sale
+#: model:ir.model,name:timesheet_grid_sale.model_account_invoice
+msgid "Invoice"
+msgstr "Factuur"
+
+#. module: timesheet_grid_sale
+#: model_terms:ir.ui.view,arch_db:timesheet_grid_sale.res_config_settings_view_form
 msgid "Record time spent and invoice it based on:"
 msgstr "Registreer gewerkte tijd en factuur het op basis van:"
 
@@ -52,8 +64,3 @@ msgstr "Verkooporderregel"
 #: model:ir.model.fields,field_description:timesheet_grid_sale.field_res_config_settings__invoiced_timesheet
 msgid "Timesheets Invoicing"
 msgstr "Facturatie urenstaat"
-
-#. module: timesheet_grid_sale
-#: model:ir.model,name:timesheet_grid_sale.model_res_config_settings
-msgid "res.config.settings"
-msgstr "res.config.settings"

@@ -127,15 +127,22 @@
         </t>
         <t t-if="packageLines">
             <t t-foreach="packageLines" t-as="packageLine">
-                <div class="o_barcode_line o_barcode_line_package list-group-item d-flex flex-row flex-nowrap" t-att-data-id="packageLine.virtual_id || packageLine.id">>
-                    <div class="o_barcode_line_details d-flex flex-row flex-nowrap align-items-center py-3 w-100">
-                        <i class="fa fa-archive d-flex"/>
-                        <div class="o_barcode_package_name d-flex">
-                            <span t-esc="'packageLine.package_id[1]'"/>
+                <div class="o_barcode_line list-group-item d-flex flex-row flex-nowrap py-3" t-att-data-id="packageLine.virtual_id || packageLine.id" t-att-data-barcode="packageLine.product_barcode">
+                    <div class="o_barcode_line_details flex-grow-1 flex-column flex-nowrap">
+                        <div>
+                            <i class="fa fa-fw fa-truck"/> <t t-esc="packageLine.package_id[1]"></t> <span class="fa fa-long-arrow-right"></span> <t t-esc="packageLine.result_package_id[1]"></t>
                         </div>
-                        <i class="fa fa-chevron-right d-flex mr-1 ml-1 text-beta"/>
-                        <span t-esc="'packageLine.result_package_id[1]'" class="d-flex"/>
-                        <span><a class="fa fa-truck fa-2x float-right o_package_content"></a></span>
+                        <div>
+                            <i class="fa fa-fw fa-cube"/>
+                            <span t-attf-class="o_barcode_scanner_qty text-monospace badge #{' '}"> <!-- @SLE, Eventually add contextual classes: "badge-warning", "badge-danger", "badge-success"  -->
+                                <span class="d-inline-block text-left" t-if="packageLine.qty_done != 0">1</span>
+                                <span class="d-inline-block text-left" t-else="">0</span>
+                                <span t-if="packageLine.reservedPackage">/  1</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="o_barcode_line_actions d-flex align-items-center pl-4">
+                        <span><a class="fa fa-dropbox text-muted float-right o_package_content"></a></span>
                     </div>
                 </div>
             </t>

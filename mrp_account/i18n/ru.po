@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
 "Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: Russian (https://www.transifex.com/odoo/teams/41243/ru/)\n"
 "MIME-Version: 1.0\n"
@@ -19,77 +19,77 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid ", from"
 msgstr ", от"
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "<span>Code</span>"
 msgstr ""
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "<span>Cost/hour</span>"
 msgstr ""
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "<span>Operation</span>"
 msgstr ""
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "<span>Operator</span>"
 msgstr ""
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "<span>Quantity</span>"
 msgstr ""
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "<span>Raw Materials</span>"
 msgstr ""
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "<span>Scraps</span>"
 msgstr ""
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "<span>Total Cost</span>"
 msgstr ""
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "<span>Unit Cost</span>"
 msgstr ""
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "<span>Working Time</span>"
 msgstr ""
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "<strong>Total Cost of Operations</strong>"
 msgstr "<strong>Итого по операциям</strong>"
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "<strong>Total Cost of Raw Materials</strong>"
 msgstr "<strong>Итого по материалам</strong>"
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "<strong>Total Cost of Scraps</strong>"
 msgstr "<strong>Общая стоимость обрезков</strong>"
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "<strong>Unit Cost</strong>"
 msgstr "<strong>Единица стоимости</strong>"
 
@@ -99,14 +99,14 @@ msgid "Analytic Account"
 msgstr "Аналитический счёт"
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "By product(s)"
 msgstr ""
 
 #. module: mrp_account
 #: model:ir.actions.report,name:mrp_account.action_cost_struct_mrp_production
-#: model:ir.ui.view,arch_db:mrp_account.mrp_production_form_inherit_view6
-#: model:ir.ui.view,arch_db:mrp_account.product_product_inherit_form_view_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_production_form_inherit_view6
+#: model_terms:ir.ui.view,arch_db:mrp_account.product_product_inherit_form_view_cost_structure
 msgid "Cost Analysis"
 msgstr "Анализ стоимости"
 
@@ -116,7 +116,7 @@ msgid "Cost Recorded"
 msgstr "Стоимость записана"
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "Cost Structure"
 msgstr "Структура себестоимости"
 
@@ -126,17 +126,17 @@ msgid "Cost Structure Analysis"
 msgstr "Анализ структуры стоимости"
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "Cost for"
 msgstr "Стоимость для"
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "Cost of Operations"
 msgstr "Стоимость операции"
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "Cost of Scraps"
 msgstr "Стоимость обрезков"
 
@@ -168,9 +168,9 @@ msgid "Last Modified on"
 msgstr "Последнее изменение"
 
 #. module: mrp_account
-#: model:ir.model,name:mrp_account.model_mrp_production
-msgid "Manufacturing Order"
-msgstr "Производственная заявка"
+#: model:ir.model,name:mrp_account.model_report_mrp_account_mrp_cost_structure
+msgid "MRP Cost Structure Report"
+msgstr ""
 
 #. module: mrp_account
 #: model:ir.model,name:mrp_account.model_product_product
@@ -183,7 +183,17 @@ msgid "Product Template"
 msgstr "Шаблон продукта"
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model:ir.model,name:mrp_account.model_report_mrp_account_product_template_cost_structure
+msgid "Product Template Cost Structure Report"
+msgstr ""
+
+#. module: mrp_account
+#: model:ir.model,name:mrp_account.model_mrp_production
+msgid "Production Order"
+msgstr "Производственный заказ"
+
+#. module: mrp_account
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "Some of the Manufacturing Order(s) selected are not done yet"
 msgstr "Некоторые из выбранных производственных заказов еще не сделаны"
 
@@ -211,21 +221,11 @@ msgid "Workcenter Productivity Log"
 msgstr "Журнал продуктивности участка"
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "hours"
 msgstr "часы"
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "manufacturing order(s)."
 msgstr "производственный заказ(ы)"
-
-#. module: mrp_account
-#: model:ir.model,name:mrp_account.model_report_mrp_account_mrp_cost_structure
-msgid "report.mrp_account.mrp_cost_structure"
-msgstr ""
-
-#. module: mrp_account
-#: model:ir.model,name:mrp_account.model_report_mrp_account_product_template_cost_structure
-msgid "report.mrp_account.product_template_cost_structure"
-msgstr ""

@@ -8,6 +8,7 @@ class RealEstate(models.Model):
     invoice linked to it. These data are useful for mod347 report's BOE export."""
 
     _name = 'l10n_es_reports.real.estate'
+    _description = "Real Estate"
 
     name = fields.Char(string='Name', required=True, help="Name to display ot identify this real estate.")
     invoice_ids = fields.One2many(string='Related Invoices', inverse_name='l10n_es_real_estate_id', comodel_name='account.invoice', required=True)

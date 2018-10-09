@@ -35,5 +35,5 @@ class Users(models.Model):
     # the team.user record to find the user's sales channel.
     sale_team_id = fields.Many2one(
         'crm.team', 'User Sales Channel',
-        related='team_user_ids.team_id',
+        related='team_user_ids.team_id', readonly=False,
         store=True)

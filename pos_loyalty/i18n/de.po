@@ -3,24 +3,15 @@
 # * pos_loyalty
 # 
 # Translators:
-# Martin Trigaux, 2017
-# Tina Rittmüller <tr@ife.de>, 2017
-# Wolfgang Taferner, 2017
-# darenkster <inactive+darenkster@transifex.com>, 2017
-# Henry Mineehen <info@mineehen.de>, 2017
-# Thorsten Vocks <thorsten.vocks@openbig.org>, 2017
-# Michael Knappe <michael@michaelknappe.net>, 2017
-# Ermin Trevisan <trevi@twanda.com>, 2017
-# Niki Waibel, 2017
-# e2f <projects@e2f.com>, 2018
-# Katharina Moritz <kmo@e2f.com>, 2018
+# Martin Trigaux, 2018
+# Johannes Croe <jcr@odoo.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.3+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 08:34+0000\n"
-"PO-Revision-Date: 2018-06-25 08:34+0000\n"
-"Last-Translator: Katharina Moritz <kmo@e2f.com>, 2018\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"Last-Translator: Johannes Croe <jcr@odoo.com>, 2018\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -29,17 +20,17 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: pos_loyalty
-#: model:ir.ui.view,arch_db:pos_loyalty.view_loyalty_program_kanban
+#: model_terms:ir.ui.view,arch_db:pos_loyalty.view_loyalty_program_kanban
 msgid "<span>Points per currency :</span>"
 msgstr "<span/>"
 
 #. module: pos_loyalty
-#: model:ir.ui.view,arch_db:pos_loyalty.view_loyalty_program_kanban
+#: model_terms:ir.ui.view,arch_db:pos_loyalty.view_loyalty_program_kanban
 msgid "<strong>Points per order :</strong>"
 msgstr "<strong/>"
 
 #. module: pos_loyalty
-#: model:ir.ui.view,arch_db:pos_loyalty.view_loyalty_program_kanban
+#: model_terms:ir.ui.view,arch_db:pos_loyalty.view_loyalty_program_kanban
 msgid "<strong>Points per product :</strong>"
 msgstr "<strong/>"
 
@@ -71,9 +62,9 @@ msgid "Contact"
 msgstr "Kontakt"
 
 #. module: pos_loyalty
-#: model:ir.actions.act_window,help:pos_loyalty.action_loyalty_program_form
+#: model_terms:ir.actions.act_window,help:pos_loyalty.action_loyalty_program_form
 msgid "Create a new loyalty program"
-msgstr ""
+msgstr "Klicken Sie zur Erstellung eines Treueprogramms."
 
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_program__create_uid
@@ -189,28 +180,29 @@ msgid "Loyalty Points"
 msgstr "Treuepunkte"
 
 #. module: pos_loyalty
+#: model:ir.model,name:pos_loyalty.model_loyalty_program
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_reward__loyalty_program_id
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_rule__loyalty_program_id
-#: model:ir.ui.view,arch_db:pos_loyalty.pos_config_view_form_inherit_pos_loyalty
-#: model:ir.ui.view,arch_db:pos_loyalty.view_loyalty_program_form
+#: model_terms:ir.ui.view,arch_db:pos_loyalty.pos_config_view_form_inherit_pos_loyalty
+#: model_terms:ir.ui.view,arch_db:pos_loyalty.view_loyalty_program_form
 msgid "Loyalty Program"
 msgstr "Treueprogramm"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_program__name
-#: model:ir.ui.view,arch_db:pos_loyalty.view_loyalty_program_form
+#: model_terms:ir.ui.view,arch_db:pos_loyalty.view_loyalty_program_form
 msgid "Loyalty Program Name"
 msgstr "Name des Treueprogramms"
 
 #. module: pos_loyalty
 #: model:ir.actions.act_window,name:pos_loyalty.action_loyalty_program_form
-#: model:ir.ui.view,arch_db:pos_loyalty.view_loyalty_program_tree
-#: model:ir.ui.view,arch_db:pos_loyalty.view_pos_pos_form
+#: model_terms:ir.ui.view,arch_db:pos_loyalty.view_loyalty_program_tree
+#: model_terms:ir.ui.view,arch_db:pos_loyalty.view_pos_pos_form
 msgid "Loyalty Programs"
 msgstr "Treueprogramme"
 
 #. module: pos_loyalty
-#: model:ir.actions.act_window,help:pos_loyalty.action_loyalty_program_form
+#: model_terms:ir.actions.act_window,help:pos_loyalty.action_loyalty_program_form
 msgid ""
 "Loyalty Programs allows you customer to earn points\n"
 "                    and rewards when doing business at your shops."
@@ -219,12 +211,14 @@ msgstr ""
 " und Boni zu erwerben."
 
 #. module: pos_loyalty
-#: model:ir.ui.view,arch_db:pos_loyalty.view_loyalty_reward_form
+#: model:ir.model,name:pos_loyalty.model_loyalty_reward
+#: model_terms:ir.ui.view,arch_db:pos_loyalty.view_loyalty_reward_form
 msgid "Loyalty Reward"
 msgstr "Treuebonus"
 
 #. module: pos_loyalty
-#: model:ir.ui.view,arch_db:pos_loyalty.view_loyalty_rule_form
+#: model:ir.model,name:pos_loyalty.model_loyalty_rule
+#: model_terms:ir.ui.view,arch_db:pos_loyalty.view_loyalty_rule_form
 msgid "Loyalty Rule"
 msgstr "Treueregel"
 
@@ -262,6 +256,11 @@ msgstr "Punktekosten"
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_reward__point_product_id
 msgid "Point Product"
 msgstr "Punkteprodukt"
+
+#. module: pos_loyalty
+#: model:ir.model,name:pos_loyalty.model_pos_config
+msgid "Point of Sale Configuration"
+msgstr "Point Of Sale Konfiguration"
 
 #. module: pos_loyalty
 #: model:ir.model,name:pos_loyalty.model_pos_order
@@ -330,7 +329,7 @@ msgstr "Punkte pro Produkt"
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_pos_config__loyalty_id
 msgid "Pos Loyalty Program"
-msgstr ""
+msgstr "POS Treueprogramm"
 
 #. module: pos_loyalty
 #: selection:loyalty.rule,rule_type:0
@@ -343,7 +342,7 @@ msgid "Resale"
 msgstr "Weiterverkauf"
 
 #. module: pos_loyalty
-#: model:ir.ui.view,arch_db:pos_loyalty.view_loyalty_reward_form
+#: model_terms:ir.ui.view,arch_db:pos_loyalty.view_loyalty_reward_form
 msgid "Reward Name"
 msgstr "Bonusbezeichnung"
 
@@ -353,7 +352,7 @@ msgid "Reward Type"
 msgstr "Bonustyp"
 
 #. module: pos_loyalty
-#: model:ir.ui.view,arch_db:pos_loyalty.view_loyalty_program_form
+#: model_terms:ir.ui.view,arch_db:pos_loyalty.view_loyalty_program_form
 msgid "Reward the customer with gifts or discounts for loyalty points"
 msgstr "Belohnen Sie den Kunden mit Geschenken oder Rabatten für Treuepunkte"
 
@@ -361,13 +360,13 @@ msgstr "Belohnen Sie den Kunden mit Geschenken oder Rabatten für Treuepunkte"
 #. openerp-web
 #: code:addons/pos_loyalty/static/src/xml/loyalty.xml:25
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_program__reward_ids
-#: model:ir.ui.view,arch_db:pos_loyalty.view_loyalty_program_form
+#: model_terms:ir.ui.view,arch_db:pos_loyalty.view_loyalty_program_form
 #, python-format
 msgid "Rewards"
 msgstr "Boni"
 
 #. module: pos_loyalty
-#: model:ir.ui.view,arch_db:pos_loyalty.view_loyalty_rule_form
+#: model_terms:ir.ui.view,arch_db:pos_loyalty.view_loyalty_rule_form
 msgid "Rule Name"
 msgstr "Regelbezeichnung"
 
@@ -378,12 +377,12 @@ msgstr "Regeltyp"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_program__rule_ids
-#: model:ir.ui.view,arch_db:pos_loyalty.view_loyalty_program_form
+#: model_terms:ir.ui.view,arch_db:pos_loyalty.view_loyalty_program_form
 msgid "Rules"
 msgstr "Regeln"
 
 #. module: pos_loyalty
-#: model:ir.ui.view,arch_db:pos_loyalty.view_loyalty_program_form
+#: model_terms:ir.ui.view,arch_db:pos_loyalty.view_loyalty_program_form
 msgid ""
 "Rules change how loyalty points are earned for specific products or "
 "categories"
@@ -434,13 +433,13 @@ msgid "The discount percentage"
 msgstr "Der %-Satz für den Rabatt"
 
 #. module: pos_loyalty
-#: code:addons/pos_loyalty/models/pos_loyalty.py:56
+#: code:addons/pos_loyalty/models/pos_loyalty.py:59
 #, python-format
 msgid "The discount product field is mandatory for discount rewards"
 msgstr "Das Feld für Rabatt-Produkt ist für Rabattboni obligatorisch"
 
 #. module: pos_loyalty
-#: code:addons/pos_loyalty/models/pos_loyalty.py:50
+#: code:addons/pos_loyalty/models/pos_loyalty.py:53
 #, python-format
 msgid "The gift product field is mandatory for gift rewards"
 msgstr "Das Feld für Geschenkprodukte ist für Geschenkboni obligatorisch"
@@ -472,7 +471,7 @@ msgid ""
 msgstr "Die Mindestanzahl an Punkten, die der Kunde für diese Prämie benötigt"
 
 #. module: pos_loyalty
-#: code:addons/pos_loyalty/models/pos_loyalty.py:62
+#: code:addons/pos_loyalty/models/pos_loyalty.py:65
 #, python-format
 msgid "The point product field is mandatory for point resale rewards"
 msgstr "Das Punkteproduktfeld ist für Punkte-Weiterverkaufsboni obligatorisch"
@@ -532,23 +531,3 @@ msgstr "Gesamtpunkte"
 #, python-format
 msgid "Total Points:"
 msgstr "Gesamtpunkte:"
-
-#. module: pos_loyalty
-#: model:ir.model,name:pos_loyalty.model_loyalty_program
-msgid "loyalty.program"
-msgstr "loyalty.program"
-
-#. module: pos_loyalty
-#: model:ir.model,name:pos_loyalty.model_loyalty_reward
-msgid "loyalty.reward"
-msgstr "loyalty.reward"
-
-#. module: pos_loyalty
-#: model:ir.model,name:pos_loyalty.model_loyalty_rule
-msgid "loyalty.rule"
-msgstr "loyalty.rule"
-
-#. module: pos_loyalty
-#: model:ir.model,name:pos_loyalty.model_pos_config
-msgid "pos.config"
-msgstr "pos.config"

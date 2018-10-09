@@ -28,7 +28,6 @@ class TestMrpMaintenance(common.TransactionCase):
             'name': "employee",
             'company_id': self.main_company.id,
             'login': "employee",
-            'password': "employee",
             'email': "employee@yourcompany.example.com",
             'groups_id': [(6, 0, [self.ref('base.group_user')])]
         })
@@ -38,7 +37,6 @@ class TestMrpMaintenance(common.TransactionCase):
             'name': "Equipment Manager",
             'company_id': self.main_company.id,
             'login': "manager",
-            'password': "manager",
             'email': "eqmanager@yourcompany.example.com",
             'groups_id': [(6, 0, [self.ref('maintenance.group_equipment_manager')])]
         })

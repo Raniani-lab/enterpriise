@@ -6,6 +6,7 @@ from odoo import api, models
 
 class MrpCostStructure(models.AbstractModel):
     _name = 'report.mrp_account.mrp_cost_structure'
+    _description = 'MRP Cost Structure Report'
 
     @api.multi
     def get_lines(self, productions):
@@ -94,6 +95,7 @@ class MrpCostStructure(models.AbstractModel):
 
 class ProductTemplateCostStructure(models.AbstractModel):
     _name = 'report.mrp_account.product_template_cost_structure'
+    _description = 'Product Template Cost Structure Report'
 
     @api.model
     def _get_report_values(self, docids, data=None):

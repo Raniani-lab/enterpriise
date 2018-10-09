@@ -29,8 +29,8 @@
                                     return posmodel_super.connect_to_proxy.apply(this, arguments).then(function () {
                                         self.proxy.message('request_serial', {}, {timeout: 5000}).then(function (response) {
                                             self.gui.show_popup('error', {
-                                                'title': 'Error: registered POSBox',
-                                                'body': 'Cannot do unregistered transactions on a registered POSBox.',
+                                                'title': 'Error: registered IoT Box',
+                                                'body': 'Cannot do unregistered transactions on a registered IoT Box.',
                                                 'cancel': function () { window.location = '/web'; }
                                             });
                                             $('.pos-content, .pos-topheader').html('')

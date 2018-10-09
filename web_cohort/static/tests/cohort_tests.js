@@ -118,6 +118,30 @@ QUnit.module('Views', {
         cohort.destroy();
     });
 
+    QUnit.test('correctly sort measure items', function (assert) {
+        assert.expect(3);
+
+        var data = this.data;
+        // It's important to compare capitalized and lowercased words
+        // to be sure the sorting is effective with both of them
+        data.subscription.fields.flop = {string: 'Abc', type: 'integer', store: true};
+        data.subscription.fields.add = {string: 'add', type: 'integer', store: true};
+        data.subscription.fields.zoo = {string: 'Zoo', type: 'integer', store: true};
+
+        var cohort = createView({
+            View: CohortView,
+            model: 'subscription',
+            data: this.data,
+            arch: '<cohort string="Subscription" date_start="start" date_stop="stop"/>',
+        });
+
+        assert.strictEqual( $('.o_cohort_measures_list>button:first-child').html().trim(), 'Abc', 'should begin with the first alphabetical value');
+        assert.strictEqual( $('.o_cohort_measures_list>button:nth-child(4)').html().trim(), 'Zoo', 'should end with the last alphabetical value');
+        assert.strictEqual( $('.o_cohort_measures_list>button:last-child').html(), 'Count', '\'Count\' should be always the last item');
+
+        cohort.destroy();
+    });
+
     QUnit.test('correctly set measure and interval after changed', function (assert) {
         assert.expect(8);
 

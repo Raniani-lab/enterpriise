@@ -6,6 +6,7 @@ from odoo import api, models
 
 class IrUiMenu(models.Model):
     _name = 'ir.ui.menu'
+    _description = 'Menu'
     _inherit = ['studio.mixin', 'ir.ui.menu']
 
     @api.model

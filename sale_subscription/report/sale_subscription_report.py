@@ -4,31 +4,37 @@ from odoo import api, fields, models
 
 class sale_subscription_report(models.Model):
     _name = "sale.subscription.report"
-    _description = "Subscription Statistics"
+    _description = "Subscription Analysis"
     _auto = False
 
     name = fields.Char()
-    date_start = fields.Date('Date Start', readonly=True)
-    date_end = fields.Date('Date End', readonly=True)
+    date_start = fields.Date('Start Date', readonly=True)
+    date_end = fields.Date('End Date', readonly=True)
     product_id = fields.Many2one('product.product', 'Product', readonly=True)
     product_uom = fields.Many2one('uom.uom', 'Unit of Measure', readonly=True)
     recurring_monthly = fields.Float('Monthly Recurring Revenue', readonly=True)
     recurring_yearly = fields.Float('Yearly Recurring Revenue', readonly=True)
-    recurring_total = fields.Float('Total Price', readonly=True)
+    recurring_total = fields.Float('Recurring Price', readonly=True)
     quantity = fields.Float('Quantity', readonly=True)
     partner_id = fields.Many2one('res.partner', 'Customer', readonly=True)
-    user_id = fields.Many2one('res.users', 'Sales Rep', readonly=True)
+    user_id = fields.Many2one('res.users', 'Salesperson', readonly=True)
     company_id = fields.Many2one('res.company', 'Company', readonly=True)
     categ_id = fields.Many2one('product.category', 'Product Category', readonly=True)
     pricelist_id = fields.Many2one('product.pricelist', 'Pricelist', readonly=True)
     template_id = fields.Many2one('sale.subscription.template', 'Subscription Template', readonly=True)
     product_tmpl_id = fields.Many2one('product.template', 'Product Template', readonly=True)
     country_id = fields.Many2one('res.country', 'Country', readonly=True)
-    commercial_partner_id = fields.Many2one('res.partner', 'Commercial Partner', readonly=True)
+    commercial_partner_id = fields.Many2one('res.partner', 'Customer Company', readonly=True)
     industry_id = fields.Many2one('res.partner.industry', 'Industry', readonly=True)
     analytic_account_id = fields.Many2one('account.analytic.account', 'Analytic Account', readonly=True)
     close_reason_id = fields.Many2one('sale.subscription.close.reason', 'Close Reason', readonly=True)
-    to_renew = fields.Boolean('Pending', readonly=True)
+    to_renew = fields.Boolean('To Renew', readonly=True)
+    in_progress = fields.Boolean('Running', readonly=True)
+    health = fields.Selection([
+        ('normal', 'Neutral'),
+        ('done', 'Good'),
+        ('bad', 'Bad')], string="Health", readonly=True)
+    stage_id = fields.Many2one('sale.subscription.stage', string='Stage', readonly=True)
 
     def _select(self):
         select_str = """
@@ -47,6 +53,9 @@ class sale_subscription_report(models.Model):
                     sub.user_id as user_id,
                     sub.company_id as company_id,
                     sub.to_renew,
+                    stage.in_progress,
+                    sub.health,
+                    sub.stage_id,
                     sub.template_id as template_id,
                     t.categ_id as categ_id,
                     sub.pricelist_id as pricelist_id,
@@ -62,6 +71,7 @@ class sale_subscription_report(models.Model):
         from_str = """
                 sale_subscription_line l
                       join sale_subscription sub on (l.analytic_account_id=sub.id)
+                      join sale_subscription_stage stage on sub.stage_id = stage.id
                       left outer join account_analytic_account a on sub.analytic_account_id=a.id
                       join res_partner partner on sub.partner_id = partner.id
                         left join product_product p on (l.product_id=p.id)
@@ -86,6 +96,9 @@ class sale_subscription_report(models.Model):
                     quantity,
                     sub.company_id,
                     sub.to_renew,
+                    stage.in_progress,
+                    sub.health,
+                    sub.stage_id,
                     sub.name,
                     sub.template_id,
                     sub.pricelist_id,

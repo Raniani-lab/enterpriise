@@ -10,8 +10,8 @@
                 <button t-foreach="measures" t-as="measure"
                     type="button"
                     class="dropdown-item"
-                    t-att-data-field="measure">
-                    <t t-esc="measures[measure]"/>
+                    t-att-data-field="measure[0]">
+                    <t t-esc="measure[1]"/>
                 </button>
                 <div t-if="_.keys(measures).length" class="dropdown-divider"/>
                 <button type="button" class="dropdown-item" data-field="__count__">Count</button>

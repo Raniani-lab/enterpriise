@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-18 10:05+0000\n"
-"PO-Revision-Date: 2018-09-18 10:05+0000\n"
+"POT-Creation-Date: 2018-10-08 07:14+0000\n"
+"PO-Revision-Date: 2018-10-08 07:14+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -26,6 +26,11 @@ msgid "Companies"
 msgstr ""
 
 #. module: currency_rate_live
+#: model:ir.model,name:currency_rate_live.model_res_config_settings
+msgid "Config Settings"
+msgstr ""
+
+#. module: currency_rate_live
 #: model:ir.actions.server,name:currency_rate_live.ir_cron_currency_update_ir_actions_server
 #: model:ir.cron,cron_name:currency_rate_live.ir_cron_currency_update
 #: model:ir.cron,name:currency_rate_live.ir_cron_currency_update
@@ -35,6 +40,19 @@ msgstr ""
 #. module: currency_rate_live
 #: selection:res.company,currency_interval_unit:0
 msgid "Daily"
+msgstr ""
+
+#. module: currency_rate_live
+#: model:res.company,overdue_msg:currency_rate_live.res_company_company_1
+#: model:res.company,overdue_msg:currency_rate_live.res_company_company_2
+msgid "Dear Sir/Madam,\n"
+"\n"
+"Our records indicate that some payments on your account are still due. Please find details below.\n"
+"If the amount has already been paid, please disregard this notice. Otherwise, please forward us the total amount stated below.\n"
+"If you have any queries regarding your account, Please contact us.\n"
+"\n"
+"Thank you in advance for your cooperation.\n"
+"Best Regards,"
 msgstr ""
 
 #. module: currency_rate_live
@@ -134,11 +152,6 @@ msgstr ""
 #: code:addons/currency_rate_live/models/res_config_settings.py:143
 #, python-format
 msgid "Your main currency (%s) is not supported by this exchange rate provider. Please choose another one."
-msgstr ""
-
-#. module: currency_rate_live
-#: model:ir.model,name:currency_rate_live.model_res_config_settings
-msgid "res.config.settings"
 msgstr ""
 
 #. module: currency_rate_live

@@ -178,8 +178,21 @@ ActionManager.include({
     _processStudioAction: function (action, options) {
         // needed by ViewEditorManager when instanciating the ViewEditor
         action.env = this._generateActionEnv(action, options);
+
         // needed in _createViewController
         action.controllers = {};
+
+        // similar to what is done in @_generateActionViews), but without
+        // _loadViews - needed in Submenu and ActionEditor to have the same
+        // structure than if the action was opened after being executed
+        var views = _.map(action.views, function (view) {
+            return {
+                type: view[1],
+                viewID: view[0],
+            };
+        });
+        action._views = action.views;  // save the initial attribute
+        action.views = views;
     },
 
     //--------------------------------------------------------------------------

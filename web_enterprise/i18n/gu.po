@@ -4,13 +4,14 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# Spellbound Soft Solutions <jeel.spellbound@gmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:29+0000\n"
-"PO-Revision-Date: 2018-08-24 11:29+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"Last-Translator: Spellbound Soft Solutions <jeel.spellbound@gmail.com>, 2018\n"
 "Language-Team: Gujarati (https://www.transifex.com/odoo/teams/41243/gu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -111,7 +112,7 @@ msgstr ""
 #: code:addons/web_enterprise/static/src/xml/base.xml:277
 #, python-format
 msgid "Create a new record"
-msgstr ""
+msgstr "નવો રેકોર્ડ બનાવો"
 
 #. module: web_enterprise
 #. openerp-web
@@ -132,7 +133,7 @@ msgstr "વર્ણન"
 #: code:addons/web_enterprise/static/src/xml/base.xml:268
 #, python-format
 msgid "Discard a record modification"
-msgstr ""
+msgstr "રેકોર્ડ ફેરફાર કાઢી નાખો"
 
 #. module: web_enterprise
 #. openerp-web
@@ -143,7 +144,7 @@ msgstr ""
 
 #. module: web_enterprise
 #: model:ir.model,name:web_enterprise.model_ir_http
-msgid "HTTP routing"
+msgid "HTTP Routing"
 msgstr ""
 
 #. module: web_enterprise
@@ -292,7 +293,7 @@ msgstr ""
 #: code:addons/web_enterprise/static/src/xml/base.xml:232
 #, python-format
 msgid "Shortcuts"
-msgstr ""
+msgstr "શૉર્ટકટ્સ"
 
 #. module: web_enterprise
 #. openerp-web
@@ -302,6 +303,8 @@ msgid ""
 "Something went wrong while registering your database. You can try again or "
 "contact"
 msgstr ""
+"તમારા ડેટાબેઝની નોંધણી કરતી વખતે કંઈક ખોટું થયું. તમે ફરીથી પ્રયાસ કરો અથવા "
+"સંપર્ક કરી શકો છો"
 
 #. module: web_enterprise
 #. openerp-web
@@ -337,7 +340,7 @@ msgstr ""
 #: code:addons/web_enterprise/static/src/xml/base.xml:73
 #, python-format
 msgid "This demo database will expire in"
-msgstr ""
+msgstr "આ ડેમો ડેટાબેસ સમાપ્ત થશે"
 
 #. module: web_enterprise
 #. openerp-web
@@ -416,4 +419,4 @@ msgstr "દિવસો"
 #: code:addons/web_enterprise/static/src/xml/base.xml:86
 #, python-format
 msgid "or"
-msgstr ""
+msgstr "અથવા"

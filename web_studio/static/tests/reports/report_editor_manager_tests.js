@@ -119,7 +119,7 @@ QUnit.module('ReportEditorManager', {
 
     QUnit.test('empty editor rendering', function (assert) {
         var done = assert.async();
-        assert.expect(2);
+        assert.expect(5);
 
         this.templates.push({
             key: 'template1',
@@ -137,16 +137,39 @@ QUnit.module('ReportEditorManager', {
                 ids: [42, 43],
                 currentId: 42,
             },
-            report: {},
+            report: {
+                report_name: 'awesome_report',
+            },
             reportHTML: studioTestUtils.getReportHTML(this.templates),
             reportViews: studioTestUtils.getReportViews(this.templates),
+            mockRPC: function (route, args) {
+                if (route === '/web_studio/print_report') {
+                    assert.strictEqual(args.report_name, 'awesome_report',
+                        "the correct report should be printed");
+                    assert.strictEqual(args.record_id, 42,
+                        "the report should be printed with the correct record");
+                    return $.when();
+                }
+                return this._super.apply(this, arguments);
+            },
         });
 
         rem.editorIframeDef.then(function () {
             assert.strictEqual(rem.$('.o_web_studio_sidebar').length, 1,
                 "a sidebar should be rendered");
+
+            // no content helper
             assert.strictEqual(rem.$('iframe').contents().find('.page .o_no_content_helper').length, 1,
                 "the iframe should be rendered with a no content helper");
+            testUtils.intercept(rem, 'node_clicked', function () {
+                throw new Error("The no content helper shouldn't be clickable.");
+            });
+            rem.$('iframe').contents().find('.page .o_no_content_helper').click();
+
+            // printing the report
+            assert.strictEqual(rem.$('.o_web_studio_report_print').length, 1,
+                "it should be possible to print the report");
+            rem.$('.o_web_studio_report_print').click();
 
             rem.destroy();
             done();
@@ -578,114 +601,6 @@ QUnit.module('ReportEditorManager', {
         });
     });
 
-    QUnit.test('display hooks when D&D component', function (assert) {
-        var done = assert.async();
-        assert.expect(4);
-
-        this.templates.push({
-            key: 'template1',
-            view_id: 55,
-            arch:
-                '<kikou>' +
-                    '<t t-name="template1">' +
-                        '<div class="row">' +
-                            '<div class="col-12">' +
-                                '<span>First span</span>' +
-                            '</div>' +
-                        '</div>' +
-                    '</t>' +
-                '</kikou>',
-        });
-
-        var rem = studioTestUtils.createReportEditorManager({
-            data: this.data,
-            models: this.models,
-            env: {
-                modelName: 'kikou',
-                ids: [42, 43],
-                currentId: 42,
-            },
-            report: {
-                report_name: 'awesome_report',
-            },
-            reportHTML: studioTestUtils.getReportHTML(this.templates),
-            reportViews: studioTestUtils.getReportViews(this.templates),
-            reportMainViewID: 42,
-        });
-
-        rem.editorIframeDef.then(function () {
-            rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]').click();
-
-            // drag and drop a Text component where there is a hook
-            var $text = rem.$('.o_web_studio_sidebar .o_web_studio_component:contains(Text)');
-            testUtils.dragAndDrop($text, rem.$('iframe').contents().find('body span'), {disableDrop: true});
-
-            assert.strictEqual(rem.$('iframe').contents().find('.row.o_web_studio_structure_hook').length, 2,
-                "there should be 2 structure hooks");
-            assert.strictEqual(rem.$('iframe').contents().find('.o_web_studio_hook').length, 10,
-                "two hooks should be displayed (4 by structure and 2 for span)");
-            assert.strictEqual(rem.$('iframe').contents().find('.row > .col-12 .o_web_studio_hook').length, 2,
-                "two hooks should be displayed in the col (before and after the span)");
-            assert.strictEqual(rem.$('iframe').contents().find('.o_web_studio_nearest_hook').length, 1,
-                "there should be a nearest hook");
-
-            rem.destroy();
-            done();
-        });
-    });
-
-    QUnit.test('do not display hooks when D&D component far from hook', function (assert) {
-        var done = assert.async();
-        assert.expect(2);
-
-        this.templates.push({
-            key: 'template1',
-            view_id: 55,
-            arch:
-                '<kikou>' +
-                    '<t t-name="template1">' +
-                        '<div class="row">' +
-                            '<div class="col-12">' +
-                                '<span>First span</span>' +
-                            '</div>' +
-                        '</div>' +
-                    '</t>' +
-                '</kikou>',
-        });
-
-        var rem = studioTestUtils.createReportEditorManager({
-            data: this.data,
-            models: this.models,
-            env: {
-                modelName: 'kikou',
-                ids: [42, 43],
-                currentId: 42,
-            },
-            report: {
-                report_name: 'awesome_report',
-            },
-            reportHTML: studioTestUtils.getReportHTML(this.templates),
-            reportViews: studioTestUtils.getReportViews(this.templates),
-            reportMainViewID: 42,
-        });
-
-        rem.editorIframeDef.then(function () {
-            rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]').click();
-
-            // drag and drop a Text component where there is no hook
-            var $text = rem.$('.o_web_studio_sidebar .o_web_studio_component:contains(Text)');
-            testUtils.dragAndDrop($text, rem.$('iframe').contents().find('body'), {disableDrop: true});
-
-            assert.strictEqual(rem.$('iframe').contents().find('.o_web_studio_hook').length, 10,
-                "10 hooks should be displayed");
-            assert.strictEqual(rem.$('iframe').contents().find('.o_web_studio_nearest_hook').length, 0,
-                "there should not be a nearest hook");
-
-            rem.destroy();
-            done();
-        });
-    });
-
     QUnit.test('drag & drop text component', function (assert) {
         var done = assert.async();
         assert.expect(1);
@@ -755,7 +670,7 @@ QUnit.module('ReportEditorManager', {
             rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]').click();
 
             // drag and drop a Text component, which should trigger a view edition
-            var $text = rem.$('.o_web_studio_sidebar .o_web_studio_component:contains(Text)');
+            var $text = rem.$('.o_web_studio_sidebar .o_web_studio_field_type_container:eq(1) .o_web_studio_component:contains(Text)');
             testUtils.dragAndDrop($text, rem.$('iframe').contents().find('span:contains(First span)'));
 
             rem.destroy();
@@ -820,7 +735,7 @@ QUnit.module('ReportEditorManager', {
             rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]').click();
 
             // drag and drop a Text component, which should trigger a view edition
-            var $text = rem.$('.o_web_studio_sidebar .o_web_studio_component:contains(Text)');
+            var $text = rem.$('.o_web_studio_sidebar .o_web_studio_component:contains(Text):eq(1)');
             testUtils.dragAndDrop($text, rem.$('iframe').contents().find('.col-6:eq(1)'));
 
             rem.destroy();
@@ -869,7 +784,7 @@ QUnit.module('ReportEditorManager', {
             rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]').click();
 
             // drag and drop a Text component
-            var $text = rem.$('.o_web_studio_sidebar .o_web_studio_component:contains(Field)');
+            var $text = rem.$('.o_web_studio_sidebar .o_web_studio_component:contains(Field):eq(1)');
             testUtils.dragAndDrop($text, rem.$('iframe').contents().find('.col-3:last'));
             assert.strictEqual($('.o_web_studio_field_modal').length, 1, "a field modal should be opened");
 
@@ -891,8 +806,76 @@ QUnit.module('ReportEditorManager', {
         });
     });
 
+    QUnit.test('drag & drop field block', function (assert) {
+        assert.expect(1);
+        var done = assert.async();
+
+        this.templates.push({
+            key: 'template1',
+            view_id: 55,
+            arch:
+                '<kikou>' +
+                    '<t t-name="template1">' +
+                    '</t>' +
+                '</kikou>',
+        });
+
+        var templateData = {
+            dataOeContext: '{"o": "model.test"}'
+        };
+
+        var rem = studioTestUtils.createReportEditorManager({
+            data: this.data,
+            models: this.models,
+            env: {
+                modelName: 'kikou',
+                ids: [42, 43],
+                currentId: 42,
+            },
+            report: {
+                report_name: 'awesome_report',
+            },
+            reportHTML: studioTestUtils.getReportHTML(this.templates, templateData),
+            reportViews: studioTestUtils.getReportViews(this.templates, templateData),
+            reportMainViewID: 42,
+            mockRPC: function (route, args) {
+                if (route === '/web_studio/edit_report_view') {
+                    var operation = _.last(args.operations);
+                    if (!operation) {
+                        // this is to deal with undo operation (which is
+                        // triggered after the first deferred reject)
+                        return $.Deferred().reject();
+                    }
+                    assert.deepEqual(operation.inheritance[0].content, "<div class='row'><div class='col'><span t-field=\"o.child.name\"></span></div></div>",
+                        "the block should be correctly added");
+                    return $.Deferred().reject();
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        rem.editorIframeDef.then(function () {
+            rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]').click();
+
+            var $field = rem.$('.o_web_studio_sidebar .o_web_studio_field_type_container:eq(0) .o_web_studio_component:contains(Field):eq(0)');
+            var $target = rem.$('iframe').contents().find('.page');
+
+            // drag and drop a Field component, which should trigger a view edition
+            testUtils.dragAndDrop($field, $target, {position: 'inside'});
+
+            $('.o_web_studio_field_modal .o_field_selector').trigger('focusin');
+            $('.o_web_studio_field_modal .o_field_selector_item[data-name="o"]').trigger('click');
+            $('.o_web_studio_field_modal .o_field_selector_item[data-name="child"]').trigger('click');
+            $('.o_web_studio_field_modal .o_field_selector_item[data-name="name"]').trigger('click');
+            $('.o_web_studio_field_modal .btn-primary').trigger('click');
+
+            rem.destroy();
+            done();
+        });
+    });
+
     QUnit.test('drag & drop field in row', loadIframeCss(function (assert, done) {
-        assert.expect(6); // 2 asserts by test
+        assert.expect(4); // 2 asserts by test
 
         this.templates.push({
             key: 'template1',
@@ -978,17 +961,6 @@ QUnit.module('ReportEditorManager', {
                     view_id: 55,
                     xpath: '/t/div/div[1]',
                 }],
-            }, {
-                text: "Should select the hook in the created hook row",
-                selector: '.row:first',
-                position: 'bottom',
-                nearestHookNumber: 1,
-                inheritance: [{
-                    content: '<div class="row"><div class="col-3"></div><div class="col-3"><span><strong>Name:</strong><br/></span><span t-field="o.child.name"></span></div><div class="col-3"></div><div class="col-3"></div></div>',
-                    position: 'after',
-                    view_id: 55,
-                    xpath: '/t/div',
-                }],
             },
         ];
         var testIndex = 0;
@@ -996,7 +968,7 @@ QUnit.module('ReportEditorManager', {
         rem.editorIframeDef.then(function () {
             rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]').click();
 
-            var $field = rem.$('.o_web_studio_sidebar .o_web_studio_component:contains(Field)');
+            var $field = rem.$('.o_web_studio_sidebar .o_web_studio_field_type_container:eq(1) .o_web_studio_component:contains(Field)');
 
             for (testIndex; testIndex < tests.length; testIndex++) {
                 var test = tests[testIndex];
@@ -1027,37 +999,33 @@ QUnit.module('ReportEditorManager', {
             arch:
                 '<kikou>' +
                     '<t t-name="template1">' +
-                        '<div class="row">' +
-                            '<div class="col-12">' +
-                                '<table class="table table-sm" style="width: 100%;">' +
-                                    '<thead>' +
-                                        '<tr>' +
-                                            '<th colspan="2"><span>Titre 1</span></th>' +
-                                            '<th><span>Titre 2</span></th>' +
-                                            '<th colspan="2"><span>Titre 3</span></th>' +
-                                            '<th><span>Titre 4</span></th>' +
-                                        '</tr>' +
-                                   '</thead>' +
-                                   '<tbody>' +
-                                        '<tr t-foreach="docs" t-as="l">' +
-                                            '<td><span><t t-esc="l.firstname"/></span></td>' +
-                                            '<td><span><t t-esc="l.name"/></span></td>' +
-                                            '<td><span><t t-esc="l.product"/></span></td>' +
-                                            '<td><span><t t-esc="l.price"/></span></td>' +
-                                            '<td><span><t t-esc="l.quantity"/></span></td>' +
-                                            '<td><span><t t-esc="l.total"/></span></td>' +
-                                        '</tr>' +
-                                        '<tr>' +
-                                            '<td/>' +
-                                            '<td/>' +
-                                            '<td/>' +
-                                            '<td class="text-right" colspan="2"><span class="o_bold">Total</span></td>' +
-                                            '<td class="text-right"><span class="o_bold"><t t-esc="sum(docs.mapped(\'total\'))"/></span></td>' +
-                                        '</tr>' +
-                                    '</tbody>' +
-                                '</table>' +
-                            '</div>' +
-                        '</div>' +
+                        '<table class="table table-sm" style="width: 600px">' +
+                            '<thead>' +
+                                '<tr>' +
+                                    '<th colspan="2"><span>Titre 1</span></th>' +
+                                    '<th><span>Titre 2</span></th>' +
+                                    '<th colspan="2"><span>Titre 3</span></th>' +
+                                    '<th><span>Titre 4</span></th>' +
+                                '</tr>' +
+                            '</thead>' +
+                            '<tbody>' +
+                                '<tr t-foreach="docs" t-as="l">' +
+                                    '<td width="100px"><span><t t-esc="l.firstname"/></span></td>' +
+                                    '<td width="100px"><span><t t-esc="l.name"/></span></td>' +
+                                    '<td width="100px"><span><t t-esc="l.product"/></span></td>' +
+                                    '<td width="100px"><span><t t-esc="l.price"/></span></td>' +
+                                    '<td width="100px"><span><t t-esc="l.quantity"/></span></td>' +
+                                    '<td width="100px"><span><t t-esc="l.total"/></span></td>' +
+                                '</tr>' +
+                                '<tr>' +
+                                    '<td/>' +
+                                    '<td/>' +
+                                    '<td/>' +
+                                    '<td class="text-right" colspan="2"><span class="o_bold">Total</span></td>' +
+                                    '<td class="text-right"><span class="o_bold"><t t-esc="sum(docs.mapped(\'total\'))"/></span></td>' +
+                                '</tr>' +
+                            '</tbody>' +
+                        '</table>' +
                     '</t>' +
                 '</kikou>',
         });
@@ -1108,44 +1076,36 @@ QUnit.module('ReportEditorManager', {
             {
                 text: "Should select the hooks inside the th",
                 selector: 'thead tr th:eq(0)',
+                buildingBlockSelector: '.o_web_studio_sidebar .o_web_studio_field_type_container:eq(1) .o_web_studio_component:contains(Field)',
                 position: 'left',
                 nearestHookNumber: 1,
                 inheritance: [{
                     content: "<span t-field=\"o.child.name\"></span>",
                     position: "before",
                     view_id: 55,
-                    xpath: "/t/div/div/table/thead/tr/th/span"
+                    xpath: "/t/table/thead/tr/th/span"
                 }],
             }, {
                 text: "Should select the column (1)",
+                buildingBlockSelector: '.o_web_studio_sidebar .o_web_studio_field_type_container:eq(2) .o_web_studio_component:contains(Field Column)',
                 selector: 'tbody tr:eq(1) td:first',
-                position: {left: 80, top: 0},
+                position: {left: 20, top: 0},
                 nearestHookNumber: 5,
                 inheritance: [{
                     content: "<th><span>Name</span></th>",
                     position: "before",
                     view_id: 55,
-                    xpath: "/t/div/div/table/thead/tr/th"
+                    xpath: "/t/table/thead/tr/th"
                 }, {
                     content: "<td><span t-field=\"o.child.name\"></span></td>",
                     position: "before",
                     view_id: 55,
-                    xpath: "/t/div/div/table/tbody/tr/td"
-                }, {
-                    content: "<td><span t-field=\"o.child.name\"></span></td>",
-                    position: "before",
-                    view_id: 55,
-                    xpath: "/t/div/div/table/tbody/tr/td"
-                }, {
-                    content: "<td><span t-field=\"o.child.name\"></span></td>",
-                    position: "before",
-                    view_id: 55,
-                    xpath: "/t/div/div/table/tbody/tr/td"
+                    xpath: "/t/table/tbody/tr/td"
                 }, {
                     content: "<td></td>",
                     position: "before",
                     view_id: 55,
-                    xpath: "/t/div/div/table/tbody/tr[1]/td"
+                    xpath: "/t/table/tbody/tr[1]/td"
                 }],
                 onDragAndDrop: function ($table) {
                     assert.strictEqual($table.find('tr th:first-child.o_web_studio_nearest_hook').length, 1,
@@ -1155,6 +1115,7 @@ QUnit.module('ReportEditorManager', {
                 },
             }, {
                 text: "Should select the hooks inside the td, on the left",
+                buildingBlockSelector: '.o_web_studio_sidebar .o_web_studio_field_type_container:eq(1) .o_web_studio_component:contains(Field)',
                 selector: 'tbody tr:eq(1) td:first',
                 position: 'left',
                 nearestHookNumber: 3,
@@ -1162,20 +1123,11 @@ QUnit.module('ReportEditorManager', {
                     content: "<span t-field=\"o.child.name\"></span>",
                     position: "before",
                     view_id: 55,
-                    xpath: "/t/div/div/table/tbody/tr/td/span"
-                }, {
-                    content: "<span t-field=\"o.child.name\"></span>",
-                    position: "before",
-                    view_id: 55,
-                    xpath: "/t/div/div/table/tbody/tr/td/span"
-                }, {
-                    content: "<span t-field=\"o.child.name\"></span>",
-                    position: "before",
-                    view_id: 55,
-                    xpath: "/t/div/div/table/tbody/tr/td/span"
-                } ],
+                    xpath: "/t/table/tbody/tr/td/span"
+                }]
             }, {
                 text: "Should select the hooks inside the td, on the right",
+                buildingBlockSelector: '.o_web_studio_sidebar .o_web_studio_field_type_container:eq(1) .o_web_studio_component:contains(Field)',
                 selector: 'tbody tr:eq(1) td:eq(0)',
                 position: 'center',
                 nearestHookNumber: 3,
@@ -1183,20 +1135,11 @@ QUnit.module('ReportEditorManager', {
                     content: "<span t-field=\"o.child.name\"></span>",
                     position: "after",
                     view_id: 55,
-                    xpath: "/t/div/div/table/tbody/tr/td/span"
-                }, {
-                    content: "<span t-field=\"o.child.name\"></span>",
-                    position: "after",
-                    view_id: 55,
-                    xpath: "/t/div/div/table/tbody/tr/td/span"
-                }, {
-                    content: "<span t-field=\"o.child.name\"></span>",
-                    position: "after",
-                    view_id: 55,
-                    xpath: "/t/div/div/table/tbody/tr/td/span"
-                } ],
-            }, {
+                    xpath: "/t/table/tbody/tr/td/span"
+                }],
+            },{
                 text: "Should select column without the header because it's colspan=2",
+                buildingBlockSelector: '.o_web_studio_sidebar .o_web_studio_field_type_container:eq(2) .o_web_studio_component:contains(Field Column)',
                 selector: 'tbody tr:eq(1) td:eq(1)',
                 position: {left: -10, top: 0},
                 nearestHookNumber: 4,
@@ -1204,97 +1147,72 @@ QUnit.module('ReportEditorManager', {
                     content: "<td><span t-field=\"o.child.name\"></span></td>",
                     position: "after",
                     view_id: 55,
-                    xpath: "/t/div/div/table/tbody/tr/td"
-                }, {
-                    content: "<td><span t-field=\"o.child.name\"></span></td>",
-                    position: "after",
-                    view_id: 55,
-                    xpath: "/t/div/div/table/tbody/tr/td"
-                }, {
-                    content: "<td><span t-field=\"o.child.name\"></span></td>",
-                    position: "after",
-                    view_id: 55,
-                    xpath: "/t/div/div/table/tbody/tr/td"
+                    xpath: "/t/table/tbody/tr/td"
                 }, {
                     content: "<td></td>",
                     position: "after",
                     view_id: 55,
-                    xpath: "/t/div/div/table/tbody/tr[1]/td"
+                    xpath: "/t/table/tbody/tr[1]/td"
                 }, {
                     content: "<attribute name=\"colspan\">3</attribute>",
                     position: "attributes",
                     view_id: 55,
-                    xpath: "/t/div/div/table/thead/tr/th"
+                    xpath: "/t/table/thead/tr/th"
                 }],
             }, {
-                text: "Should select the column (2)",
+                text: "Should insert between 2nd and 3rd column",
+                buildingBlockSelector: '.o_web_studio_sidebar .o_web_studio_field_type_container:eq(2) .o_web_studio_component:contains(Field Column)',
                 selector: 'tbody tr:eq(1) td:eq(2)',
-                position: {left: -30, top: 0},
+                position: {left: -10, top: 0},
                 nearestHookNumber: 5,
                 inheritance: [{
                     content: "<th><span>Name</span></th>",
                     position: "after",
                     view_id: 55,
-                    xpath: "/t/div/div/table/thead/tr/th"
+                    xpath: "/t/table/thead/tr/th"
                 }, {
                     content: "<td><span t-field=\"o.child.name\"></span></td>",
                     position: "after",
                     view_id: 55,
-                    xpath: "/t/div/div/table/tbody/tr/td[1]"
-                }, {
-                    content: "<td><span t-field=\"o.child.name\"></span></td>",
-                    position: "after",
-                    view_id: 55,
-                    xpath: "/t/div/div/table/tbody/tr/td[1]"
-                }, {
-                    content: "<td><span t-field=\"o.child.name\"></span></td>",
-                    position: "after",
-                    view_id: 55,
-                    xpath: "/t/div/div/table/tbody/tr/td[1]"
-                }, {
+                    xpath: "/t/table/tbody/tr/td[1]"
+                  },
+                  {
                     content: "<td></td>",
                     position: "after",
                     view_id: 55,
-                    xpath: "/t/div/div/table/tbody/tr[1]/td[1]"
-                }, {
+                    xpath: "/t/table/tbody/tr[1]/td[1]"
+                  },
+                  {
                     content: "<attribute name=\"colspan\">3</attribute>",
                     position: "attributes",
                     view_id: 55,
-                    xpath: "/t/div/div/table/thead/tr/th"
-                }],
+                    xpath: "/t/table/thead/tr/th"
+                  }],
             }, {
                 text: "Should select column without the header because there are two colspan=2",
+                buildingBlockSelector: '.o_web_studio_sidebar .o_web_studio_field_type_container:eq(2) .o_web_studio_component:contains(Field Column)',
                 selector: 'tbody tr:eq(1) td:eq(4)',
-                position: {top: 10, left: -40},
+                position: {top: 0, left: -10},
                 nearestHookNumber: 3,
                 inheritance: [{
                     content: "<td><span t-field=\"o.child.name\"></span></td>",
                     position: "after",
                     view_id: 55,
-                    xpath: "/t/div/div/table/tbody/tr/td[3]"
-                }, {
-                    content: "<td><span t-field=\"o.child.name\"></span></td>",
-                    position: "after",
-                    view_id: 55,
-                    xpath: "/t/div/div/table/tbody/tr/td[3]"
-                }, {
-                    content: "<td><span t-field=\"o.child.name\"></span></td>",
-                    position: "after",
-                    view_id: 55,
-                    xpath: "/t/div/div/table/tbody/tr/td[3]"
+                    xpath: "/t/table/tbody/tr/td[3]"
                 }, {
                     content: "<attribute name=\"colspan\">3</attribute>",
                     position: "attributes",
                     view_id: 55,
-                    xpath: "/t/div/div/table/thead/tr/th[2]"
+                    xpath: "/t/table/thead/tr/th[2]"
                 }, {
                     content: "<attribute name=\"colspan\">3</attribute>",
                     position: "attributes",
                     view_id: 55,
-                    xpath: "/t/div/div/table/tbody/tr[1]/td[3]"
+                    xpath: "/t/table/tbody/tr[1]/td[3]"
                 }],
             }, {
                 text: "Should select the column (3)",
+                buildingBlockSelector: '.o_web_studio_sidebar .o_web_studio_field_type_container:eq(2) .o_web_studio_component:contains(Field Column)',
                 selector: 'tbody tr:eq(1) td:eq(5)',
                 position: 'left',
                 nearestHookNumber: 5,
@@ -1302,79 +1220,53 @@ QUnit.module('ReportEditorManager', {
                     content: "<th><span>Name</span></th>",
                     position: "after",
                     view_id: 55,
-                    xpath: "/t/div/div/table/thead/tr/th[2]"
+                    xpath: "/t/table/thead/tr/th[2]"
                 }, {
                     content: "<td><span t-field=\"o.child.name\"></span></td>",
                     position: "after",
                     view_id: 55,
-                    xpath: "/t/div/div/table/tbody/tr/td[4]"
-                }, {
-                    content: "<td><span t-field=\"o.child.name\"></span></td>",
-                    position: "after",
-                    view_id: 55,
-                    xpath: "/t/div/div/table/tbody/tr/td[4]"
-                }, {
-                    content: "<td><span t-field=\"o.child.name\"></span></td>",
-                    position: "after",
-                    view_id: 55,
-                    xpath: "/t/div/div/table/tbody/tr/td[4]"
+                    xpath: "/t/table/tbody/tr/td[4]"
                 }, {
                     content: "<td></td>",
                     position: "after",
                     view_id: 55,
-                    xpath: "/t/div/div/table/tbody/tr[1]/td[3]"
+                    xpath: "/t/table/tbody/tr[1]/td[3]"
                 }, {
                     content: "<attribute name=\"colspan\">3</attribute>",
                     position: "attributes",
                     view_id: 55,
-                    xpath: "/t/div/div/table/tbody/tr[1]/td[3]"
+                    xpath: "/t/table/tbody/tr[1]/td[3]"
                 }, {
                     content: "<attribute name=\"colspan\">3</attribute>",
                     position: "attributes",
                     view_id: 55,
-                    xpath: "/t/div/div/table/thead/tr/th[2]"
+                    xpath: "/t/table/thead/tr/th[2]"
                 }],
             }, {
                 text: "Should select the column (4)",
-                selector: 'tbody tr:first td:eq(4)',
+                buildingBlockSelector: '.o_web_studio_sidebar .o_web_studio_field_type_container:eq(2) .o_web_studio_component:contains(Field Column)',
+                selector: 'tbody tr:first td:eq(5)',
                 position: 'right',
                 nearestHookNumber: 5,
                 inheritance: [{
-                    content: "<th><span>Name</span></th>",
-                    position: "after",
-                    view_id: 55,
-                    xpath: "/t/div/div/table/thead/tr/th[2]"
-                }, {
-                    content: "<td><span t-field=\"o.child.name\"></span></td>",
-                    position: "after",
-                    view_id: 55,
-                    xpath: "/t/div/div/table/tbody/tr/td[4]"
-                }, {
-                    content: "<td><span t-field=\"o.child.name\"></span></td>",
-                    position: "after",
-                    view_id: 55,
-                    xpath: "/t/div/div/table/tbody/tr/td[4]"
-                }, {
-                    content: "<td><span t-field=\"o.child.name\"></span></td>",
-                    position: "after",
-                    view_id: 55,
-                    xpath: "/t/div/div/table/tbody/tr/td[4]"
-                }, {
-                    content: "<td></td>",
-                    position: "after",
-                    view_id: 55,
-                    xpath: "/t/div/div/table/tbody/tr[1]/td[3]"
-                }, {
-                    content: "<attribute name=\"colspan\">3</attribute>",
-                    position: "attributes",
-                    view_id: 55,
-                    xpath: "/t/div/div/table/tbody/tr[1]/td[3]"
-                }, {
-                    content: "<attribute name=\"colspan\">3</attribute>",
-                    position: "attributes",
-                    view_id: 55,
-                    xpath: "/t/div/div/table/thead/tr/th[2]"
-                }],
+                        content: "<th><span>Name</span></th>",
+                        position: "after",
+                        view_id: 55,
+                        xpath: "/t/table/thead/tr/th[3]"
+                      },
+                      {
+                        content: "<td><span t-field=\"o.child.name\"></span></td>",
+                        position: "after",
+                        view_id: 55,
+                        xpath: "/t/table/tbody/tr/td[5]"
+                      },
+                      {
+                        content: "<td></td>",
+                        position: "after",
+                        view_id: 55,
+                        xpath: "/t/table/tbody/tr[1]/td[4]"
+                      }
+                ],
             },
         ];
 
@@ -1383,13 +1275,14 @@ QUnit.module('ReportEditorManager', {
             rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]').click();
 
             // drag and drop a Text component, which should trigger a view edition
-            var $text = rem.$('.o_web_studio_sidebar .o_web_studio_component:contains(Field)');
             var $table = rem.$('iframe').contents().find('table');
 
             for (testIndex; testIndex < tests.length; testIndex++) {
                 var test = tests[testIndex];
+                var $buildingBlock = rem.$(test.buildingBlockSelector);
                 var $target = $table.find(test.selector);
-                testUtils.dragAndDrop($text, $target, {position: test.position});
+                $target.css('border','1px solid black'); // makes debugging easier
+                testUtils.dragAndDrop($buildingBlock, $target, {position: test.position});
                 var $nearestHook = $table.find('.o_web_studio_nearest_hook');
                 assert.strictEqual($nearestHook.length, test.nearestHookNumber, test.text + ' (nearestHook number)');
                 if (test.onDragAndDrop) {
@@ -1496,7 +1389,7 @@ QUnit.module('ReportEditorManager', {
                                 '</div>' +
                                 '<div class="col-5 offset-2"></div>' +
                             '</div>',
-                        position: "before",
+                        position: "after",
                         view_id: 55,
                         xpath: "/t/div"
                     }], 'Should send the xpath node with the content');
@@ -1510,7 +1403,7 @@ QUnit.module('ReportEditorManager', {
             rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]').click();
             var $main = rem.$('iframe').contents().find('main');
 
-            var $text = rem.$('.o_web_studio_sidebar .o_web_studio_component:contains(Accounting Total)');
+            var $text = rem.$('.o_web_studio_sidebar .o_web_studio_field_type_container:eq(2) .o_web_studio_component:contains(Subtotal & Total)');
             testUtils.dragAndDrop($text, $main, {position: {top: 50, left: 100}});
             $('.o_web_studio_field_modal .o_field_selector').trigger('focusin');
             $('.o_web_studio_field_modal .o_field_selector_item[data-name="o"]').trigger('click');
@@ -1653,7 +1546,7 @@ QUnit.module('ReportEditorManager', {
                     }
                     assert.deepEqual(operation.inheritance, [{
                         content:
-                            '<table class="table table-sm o_report_block_table">' +
+                            '<table class="table o_report_block_table">' +
                                 '<thead>' +
                                     '<tr>' +
                                         '<th><span>Name</span></th>' +

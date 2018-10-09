@@ -381,7 +381,7 @@ class report_account_general_ledger(models.AbstractModel):
                         'progress': progress,
                         'class': 'o_account_reports_load_more text-center',
                         'parent_id': 'account_%s' % (account.id,),
-                        'name': _('Load more... (%s remaining)' % remaining_lines),
+                        'name': _('Load more... (%s remaining)') % remaining_lines,
                         'colspan': 7,
                         'columns': [{}],
                     })

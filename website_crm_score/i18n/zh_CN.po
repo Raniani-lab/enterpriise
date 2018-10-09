@@ -4,18 +4,23 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
-# Talway <9010446@qq.com>, 2018
-# zpq001 <zpq001@live.com>, 2018
-# 远鼎-Maker <liuct@chinamaker.net>, 2018
+# v2exerer <9010446@qq.com>, 2018
+# ChinaMaker <liuct@chinamaker.net>, 2018
 # Jackie Zhang <jzh@odoo.com>, 2018
 # Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
+# bower Guo <124358678@qq.com>, 2018
+# roye w <159820@qq.com>, 2018
+# 珠海-杜哥 <liangjia@qq.com>, 2018
+# snow wang <147156565@qq.com>, 2018
+# keecome <7017511@qq.com>, 2018
+# niulin lnc. <admin@niulin.net>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:29+0000\n"
-"PO-Revision-Date: 2018-08-24 11:29+0000\n"
-"Last-Translator: Jeffery CHEN Fan <jeffery9@gmail.com>, 2018\n"
+"POT-Creation-Date: 2018-09-21 14:07+0000\n"
+"PO-Revision-Date: 2018-09-21 14:07+0000\n"
+"Last-Translator: niulin lnc. <admin@niulin.net>, 2018\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -51,7 +56,7 @@ msgid "Archive"
 msgstr "归档"
 
 #. module: website_crm_score
-#: model:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
+#: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
 msgid "Assignation"
 msgstr "指派"
 
@@ -71,20 +76,21 @@ msgid "Assigned Leads this last month"
 msgstr "最近一个月分配的线索"
 
 #. module: website_crm_score
+#: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_attachment_count
+#: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__message_attachment_count
+msgid "Attachment Count"
+msgstr "附件数量"
+
+#. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__assign_date
 msgid "Auto Assign Date"
-msgstr ""
+msgstr "自动分配日期"
 
 #. module: website_crm_score
-#: model:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
-#: model:ir.ui.view,arch_db:website_crm_score.team_user_kanban
+#: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
+#: model_terms:ir.ui.view,arch_db:website_crm_score.team_user_kanban
 msgid "Avatar"
 msgstr "头像"
-
-#. module: website_crm_score
-#: model:ir.ui.view,arch_db:website_crm_score.crm_lead_view_dashboard
-msgid "Average Score"
-msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_team__capacity
@@ -92,9 +98,9 @@ msgid "Capacity"
 msgstr "能力"
 
 #. module: website_crm_score
-#: model:ir.actions.act_window,help:website_crm_score.team_user_action
+#: model_terms:ir.actions.act_window,help:website_crm_score.team_user_action
 msgid "Create a new salesman"
-msgstr ""
+msgstr "创建新的销售员"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__create_uid
@@ -141,9 +147,9 @@ msgid ""
 msgstr "日期已通过自动分配机制当线索被分配时。"
 
 #. module: website_crm_score
-#: model:ir.actions.act_window,help:website_crm_score.team_action
+#: model_terms:ir.actions.act_window,help:website_crm_score.team_action
 msgid "Define a new sales channel"
-msgstr ""
+msgstr "定义一个新的销售频道"
 
 #. module: website_crm_score
 #: selection:website.crm.score,rule_type:0
@@ -189,7 +195,7 @@ msgstr "关注者(业务伙伴)"
 
 #. module: website_crm_score
 #: model:ir.model,name:website_crm_score.model_ir_http
-msgid "HTTP routing"
+msgid "HTTP Routing"
 msgstr "HTTP 路由"
 
 #. module: website_crm_score
@@ -265,13 +271,19 @@ msgid "Lead"
 msgstr "线索"
 
 #. module: website_crm_score
+#: model:ir.actions.act_window,name:website_crm_score.website_crm_score_pageviews
+#: model:ir.ui.menu,name:website_crm_score.pageview_menu
+msgid "Lead Page Views"
+msgstr "主页面视图"
+
+#. module: website_crm_score
 #: model:ir.model,name:website_crm_score.model_crm_lead
 msgid "Lead/Opportunity"
 msgstr "线索/商机"
 
 #. module: website_crm_score
 #: model:ir.actions.act_window,name:website_crm_score.score_leads
-#: model:ir.ui.view,arch_db:website_crm_score.view_crm_score_form
+#: model_terms:ir.ui.view,arch_db:website_crm_score.view_crm_score_form
 msgid "Leads"
 msgstr "线索"
 
@@ -287,17 +299,12 @@ msgid "Leads Count"
 msgstr "线索数"
 
 #. module: website_crm_score
-#: model:ir.ui.menu,name:website_crm_score.leads_menu
-msgid "Leads Management"
-msgstr "线索管理"
-
-#. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__maximum_user_leads
 msgid "Leads Per Month"
 msgstr "每月的线索"
 
 #. module: website_crm_score
-#: model:ir.actions.act_window,help:website_crm_score.team_user_action
+#: model_terms:ir.actions.act_window,help:website_crm_score.team_user_action
 msgid ""
 "Link users to salesteam, set a per 30 days lead capacity for each of them "
 "and set filters to auto assign your leads."
@@ -309,7 +316,20 @@ msgid "List of (tracked) pages seen by the owner of this lead"
 msgstr "(被跟踪的)页面清单只能被线索拥有者看到"
 
 #. module: website_crm_score
-#: model:ir.ui.view,arch_db:website_crm_score.view_crm_team_user_form
+#. openerp-web
+#: code:addons/website_crm_score/static/src/xml/track_page.xml:9
+#, python-format
+msgid "Log visits on leads"
+msgstr "在线索记录访问"
+
+#. module: website_crm_score
+#: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_main_attachment_id
+#: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__message_main_attachment_id
+msgid "Main Attachment"
+msgstr "附件"
+
+#. module: website_crm_score
+#: model_terms:ir.ui.view,arch_db:website_crm_score.view_crm_team_user_form
 msgid "Maximum Leads / 30 days"
 msgstr "最多线索／30天"
 
@@ -338,7 +358,7 @@ msgstr "最小得分被自动分配"
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__name
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__name
-#: model:ir.ui.view,arch_db:website_crm_score.view_crm_score_form
+#: model_terms:ir.ui.view,arch_db:website_crm_score.view_crm_score_form
 msgid "Name"
 msgstr "名称"
 
@@ -374,22 +394,21 @@ msgstr "未读消息的数量"
 
 #. module: website_crm_score
 #: model:ir.actions.act_window,name:website_crm_score.crm_score_views_action_table
-#: model:ir.ui.view,arch_db:website_crm_score.crm_case_graph_view_leads_sales
-#: model:ir.ui.view,arch_db:website_crm_score.crm_case_table_view_leads_sales
-#: model:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
+#: model_terms:ir.ui.view,arch_db:website_crm_score.crm_case_graph_view_leads_sales
+#: model_terms:ir.ui.view,arch_db:website_crm_score.crm_case_table_view_leads_sales
+#: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
 msgid "Opportunities"
 msgstr "商机列表"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__score_pageview_ids
-#: model:ir.ui.view,arch_db:website_crm_score.crm_score_pageview_form
-#: model:ir.ui.view,arch_db:website_crm_score.crm_score_pageview_graph
-#: model:ir.ui.view,arch_db:website_crm_score.website_crm_pageview_tree
+#: model_terms:ir.ui.view,arch_db:website_crm_score.crm_score_pageview_form
+#: model_terms:ir.ui.view,arch_db:website_crm_score.crm_score_pageview_graph
 msgid "Page Views"
 msgstr "页面浏览"
 
 #. module: website_crm_score
-#: model:ir.ui.view,arch_db:website_crm_score.lead_score_form
+#: model_terms:ir.ui.view,arch_db:website_crm_score.lead_score_form
 msgid "Page views"
 msgstr "页面浏览"
 
@@ -430,13 +449,14 @@ msgstr "销售"
 
 #. module: website_crm_score
 #: model:ir.actions.act_window,name:website_crm_score.team_action
+#: model:ir.model,name:website_crm_score.model_crm_team
 msgid "Sales Channels"
 msgstr "销售渠道"
 
 #. module: website_crm_score
 #: model:ir.actions.act_window,name:website_crm_score.team_user_action
-#: model:ir.ui.view,arch_db:website_crm_score.view_crm_team_user_form
-#: model:ir.ui.view,arch_db:website_crm_score.view_crm_team_user_tree
+#: model_terms:ir.ui.view,arch_db:website_crm_score.view_crm_team_user_form
+#: model_terms:ir.ui.view,arch_db:website_crm_score.view_crm_team_user_tree
 msgid "Sales Men"
 msgstr "销售"
 
@@ -446,16 +466,11 @@ msgid "Sales Records"
 msgstr "销售单数"
 
 #. module: website_crm_score
-#: model:ir.model,name:website_crm_score.model_crm_team
-msgid "Sales Team"
-msgstr "销售团队"
-
-#. module: website_crm_score
 #: model:ir.model.fields,help:website_crm_score.field_res_users__sale_team_id
 msgid ""
 "Sales Team the user is member of. Used to compute the members of a Sales "
 "Team through the inverse one2many"
-msgstr ""
+msgstr "用户所属的销售团队。用于通过反向one2many计算销售团队的成员"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_team__team_user_ids
@@ -463,28 +478,29 @@ msgid "Salesman"
 msgstr "销售员"
 
 #. module: website_crm_score
+#: model:ir.model,name:website_crm_score.model_team_user
+msgid "Salesperson (Team Member)"
+msgstr "销售员(团队成员)"
+
+#. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__score
+#: model_terms:ir.ui.view,arch_db:website_crm_score.crm_lead_view_dashboard
 msgid "Score"
 msgstr "得分"
 
 #. module: website_crm_score
 #: model:ir.actions.act_window,name:website_crm_score.score_action
-#: model:ir.ui.view,arch_db:website_crm_score.view_crm_score_form
-#: model:ir.ui.view,arch_db:website_crm_score.view_crm_score_tree
+#: model_terms:ir.ui.view,arch_db:website_crm_score.view_crm_score_form
+#: model_terms:ir.ui.view,arch_db:website_crm_score.view_crm_score_tree
 msgid "Scores"
 msgstr "得分"
 
 #. module: website_crm_score
-#: model:ir.ui.view,arch_db:website_crm_score.lead_score_form
-#: model:ir.ui.view,arch_db:website_crm_score.score_opp_form_view
+#: model_terms:ir.ui.view,arch_db:website_crm_score.lead_score_form
+#: model_terms:ir.ui.view,arch_db:website_crm_score.score_opp_form_view
 #: selection:website.crm.score,rule_type:0
 msgid "Scoring"
 msgstr "评分"
-
-#. module: website_crm_score
-#: model:ir.ui.menu,name:website_crm_score.pageview_menu
-msgid "Scoring Page Views"
-msgstr "评分页面浏览量"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__score_ids
@@ -501,11 +517,14 @@ msgid ""
 "\n"
 "Actions are done in sql and bypass the access rights and orm mechanism (create `score`, write `active`, unlink `crm_lead`)"
 msgstr ""
-"评分将为此字段添加“值”分数。\n"
-" 档案设置为激活="
+"评分将为此线索添加分数“值”。\n"
+" 归档将设置为激活 = 假（针对已归档线索）\n"
+"删除将明确删除线索\n"
+"\n"
+"在 SQL 中完成操作并绕过访问权限和 ORM 机制（创建“分数”、写“激活”、取消链接“crm_lead”）"
 
 #. module: website_crm_score
-#: model:ir.ui.view,arch_db:website_crm_score.crm_score_pageview_filter
+#: model_terms:ir.ui.view,arch_db:website_crm_score.crm_score_pageview_filter
 msgid "Search PageViews"
 msgstr "搜索页面浏览量"
 
@@ -519,13 +538,6 @@ msgstr "团队分配"
 #: model:ir.model.fields,field_description:website_crm_score.field_website_page__track
 msgid "Track"
 msgstr "追踪"
-
-#. module: website_crm_score
-#. openerp-web
-#: code:addons/website_crm_score/static/src/xml/track_page.xml:8
-#, python-format
-msgid "Track Page"
-msgstr "追踪页面"
 
 #. module: website_crm_score
 #: model:ir.actions.act_window,name:website_crm_score.crm_score_views_action_graph
@@ -550,7 +562,7 @@ msgid "Url"
 msgstr "Url"
 
 #. module: website_crm_score
-#: model:ir.actions.act_window,help:website_crm_score.team_action
+#: model_terms:ir.actions.act_window,help:website_crm_score.team_action
 msgid ""
 "Use sales channels to organize your sales departments.\n"
 "                    Each channel will work with a separate pipeline."
@@ -566,7 +578,7 @@ msgstr "用户"
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_res_users__sale_team_id
 msgid "User Sales Channel"
-msgstr ""
+msgstr "用户销售频道"
 
 #. module: website_crm_score
 #: model:ir.model,name:website_crm_score.model_res_users
@@ -579,9 +591,24 @@ msgid "Value"
 msgstr "值"
 
 #. module: website_crm_score
+#: model:ir.model,name:website_crm_score.model_ir_ui_view
+msgid "View"
+msgstr "视图"
+
+#. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__view_date
 msgid "Viewing Date"
 msgstr "查看日期"
+
+#. module: website_crm_score
+#: model:ir.model,name:website_crm_score.model_website_crm_pageview
+msgid "Website CRM Page View"
+msgstr "网站CRM页面视图"
+
+#. module: website_crm_score
+#: model:ir.model,name:website_crm_score.model_website_crm_score
+msgid "Website CRM Score"
+msgstr "网站CRM评分"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__website_message_ids
@@ -590,7 +617,7 @@ msgid "Website Messages"
 msgstr "网站信息"
 
 #. module: website_crm_score
-#: model:ir.actions.act_window,name:website_crm_score.website_crm_score_pageviews
+#: model_terms:ir.ui.view,arch_db:website_crm_score.website_crm_pageview_pivot
 msgid "Website Pages"
 msgstr "网站页面"
 
@@ -610,57 +637,30 @@ msgid ""
 msgstr "每次检查时,规则将被重新评估,甚至已经检查过的线索。这个选项中会产生很大的性能损耗,因此只应该依据动态事件来检查规则。"
 
 #. module: website_crm_score
-#: model:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
-#: model:ir.ui.view,arch_db:website_crm_score.team_user_kanban
+#: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
+#: model_terms:ir.ui.view,arch_db:website_crm_score.team_user_kanban
 msgid "fa-check"
 msgstr "fa-check"
 
 #. module: website_crm_score
-#: model:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
-#: model:ir.ui.view,arch_db:website_crm_score.team_user_kanban
+#: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
+#: model_terms:ir.ui.view,arch_db:website_crm_score.team_user_kanban
 msgid "fa-times"
 msgstr "fa-times"
 
 #. module: website_crm_score
-#: model:ir.model,name:website_crm_score.model_ir_ui_view
-msgid "ir.ui.view"
-msgstr "ir.ui.view"
-
-#. module: website_crm_score
-#: model:ir.ui.view,arch_db:website_crm_score.website_crm_score_view_kanban
+#: model_terms:ir.ui.view,arch_db:website_crm_score.website_crm_score_view_kanban
 msgid "leads"
 msgstr "线索"
 
 #. module: website_crm_score
-#: model:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
-#: model:ir.ui.view,arch_db:website_crm_score.team_user_kanban
+#: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
+#: model_terms:ir.ui.view,arch_db:website_crm_score.team_user_kanban
 msgid "o_assignation_button_active"
 msgstr "o_assignation_button_active"
 
 #. module: website_crm_score
-#: model:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
-#: model:ir.ui.view,arch_db:website_crm_score.team_user_kanban
+#: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
+#: model_terms:ir.ui.view,arch_db:website_crm_score.team_user_kanban
 msgid "o_assignation_button_inactive"
 msgstr "o_assignation_button_inactive"
-
-#. module: website_crm_score
-#: model:ir.model,name:website_crm_score.model_team_user
-msgid "team.user"
-msgstr "team.user"
-
-#. module: website_crm_score
-#. openerp-web
-#: code:addons/website_crm_score/static/src/xml/track_page.xml:8
-#, python-format
-msgid "to better score your leads:"
-msgstr "更好的为线索计分"
-
-#. module: website_crm_score
-#: model:ir.model,name:website_crm_score.model_website_crm_pageview
-msgid "website.crm.pageview"
-msgstr "website.crm.pageview"
-
-#. module: website_crm_score
-#: model:ir.model,name:website_crm_score.model_website_crm_score
-msgid "website.crm.score"
-msgstr "website.crm.score"

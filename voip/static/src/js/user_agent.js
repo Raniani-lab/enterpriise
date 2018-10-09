@@ -14,6 +14,12 @@ var clean_number = function(number) {
     return number.replace(/[\s-/.\u00AD]/g, '');
 };
 
+var CALL_STATE = {
+    NO_CALL: 0,
+    RINGING_CALL: 1,
+    ONGOING_CALL: 2,
+};
+
 var UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
     /**
      * @constructor
@@ -21,7 +27,7 @@ var UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
     init: function (parent) {
         mixins.EventDispatcherMixin.init.call(this);
         this.setParent(parent);
-        this.onCall = false;
+        this.callState = CALL_STATE.NO_CALL;
         ajax.rpc('/web/dataset/call_kw/voip.configurator/get_pbx_config', {
             model: 'voip.configurator',
             method: 'get_pbx_config',
@@ -40,14 +46,14 @@ var UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      */
     hangup: function () {
         if (this.mode === "demo") {
-            if (this.onCall) {
+            if (this.callState === CALL_STATE.ONGOING_CALL) {
                 this._onBye();
             } else {
                 this._onCancel();
             }
         }
-        if (this.sipSession) {
-            if (!this.onCall) {
+        if (this.callState !== CALL_STATE.NO_CALL) {
+            if (this.callState === CALL_STATE.RINGING_CALL) {
                 this.sipSession.cancel();
             } else {
                 this.sipSession.bye();
@@ -62,53 +68,20 @@ var UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
     makeCall: function (number) {
         this.ringbacktone.play();
         if (this.mode === "demo") {
-            var response = {'reason_phrase': "Ringing"};
             var self = this;
-            this.timerAccepted = setTimeout(function(){
-                self._onAccepted(response);
+            this.timerAccepted = setTimeout(function () {
+                self._onAccepted();
             },3000);
-            // this.timerBye = setTimeout(function(){
-            //     self.bye();
-            // },10000);
             return;
         }
-
-        //if there is already a media stream, it is reused
-        if (this.mediaStream) {
-            this._makeCall(number);
-        } else {
-            if (SIP.WebRTC.isSupported()) {
-                /*
-                    WebRTC method to get a media stream.
-                    The callbacks functions are getUserMediaSuccess, when the function succeed
-                    and getUserMediaFailure when the function failed.
-                    The _.bind is used to be ensure that the "this" in the callback function will still be the same
-                    and not become the object "window".
-                */
-                var mediaConstraints = {
-                    audio: true,
-                    video: false
-                };
-                SIP.WebRTC.getUserMedia(mediaConstraints, _.bind(mediaStreamSuccess,this), _.bind(mediaStreamFailure,this));
-            } else {
-                this._triggerError(_t('Your browser could not support WebRTC. Please check your configuration.'));
-            }
-        }
-        function mediaStreamSuccess (stream) {
-            this.mediaStream = stream;
-            this._makeCall(number);
-        }
-        function mediaStreamFailure (e) {
-            this._triggerError(_t('Problem during the connection. Check if the application is allowed to access your microphone from your browser.'), true);
-            console.error('getUserMedia failed:', e);
-        }
+        this._makeCall(number);
     },
     /**
      * Mutes the current call
      */
     muteCall: function () {
-        if (this.sipSession) {
-            this.sipSession.mute();
+        if (this.callState === CALL_STATE.ONGOING_CALL) {
+            this._toggleMute(true);
         }
     },
     /**
@@ -117,7 +90,7 @@ var UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      * @param {string} number number clicked
      */
     sendDtmf: function (number) {
-        if (this.sipSession) {
+        if (this.callState === CALL_STATE.ONGOING_CALL) {
             this.sipSession.dtmf(number);
         }
     },
@@ -127,7 +100,7 @@ var UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      * @param {string} number
      */
     transfer: function (number) {
-        if (this.sipSession) {
+        if (this.callState === CALL_STATE.ONGOING_CALL) {
             this.sipSession.refer(number);
         }
     },
@@ -135,14 +108,94 @@ var UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      * Unmutes the current call
      */
     unmuteCall: function () {
-        if (this.sipSession) {
-            this.sipSession.unmute();
+       if (this.callState === CALL_STATE.ONGOING_CALL) {
+            this._toggleMute(false);
         }
     },
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------
 
+    /**
+     * Answer to a INVITE message and accept the call.
+     *
+     * @private
+     * @param {SIP.Session} inviteSession invite SIP session to answer
+     * @param {Object} params Params for the incomming call
+     */
+    _answerCall: function (inviteSession, incomingCallParams) {
+        this.incomingtone.pause();
+        if (this.callState === CALL_STATE.ONGOING_CALL) {
+            this.hangup();
+        }
+        var callOptions = {
+            sessionDescriptionHandlerOptions: {
+                constraints: {
+                    audio: true,
+                    video: false
+                }
+            }
+        };
+        inviteSession.accept(callOptions);
+        this.incomingCall = true;
+        this.sipSession = inviteSession;
+        this.callState = CALL_STATE.ONGOING_CALL;
+        this._configureRemoteAudio();
+        this.sipSession.sessionDescriptionHandler.on('addTrack',_.bind(this._configureRemoteAudio,this));
+        this.trigger_up('sip_incoming_call', incomingCallParams);
+        //Bind action when the call is hanged up
+        this.sipSession.on('bye', _.bind(this._onBye, this));
+    },
+    /**
+     * Clean the audio media stream after a call.
+     *
+     * @private
+     */
+    _cleanRemoteAudio: function () {
+        this.$remoteAudio.srcObject = null;
+        this.$remoteAudio.pause();
+    },
+    /**
+     * Configure the remote audio, the ringtones
+     *
+     * @private
+     */
+    _configureDomElements: function () {
+        this.$remoteAudio = document.createElement("audio");
+        this.$remoteAudio.autoplay = true;
+        $("html").append(this.$remoteAudio);
+        this.ringbacktone = document.createElement("audio");
+        this.ringbacktone.loop = "true";
+        this.ringbacktone.src = "/voip/static/src/sounds/ringbacktone.mp3";
+        $("html").append(this.ringbacktone);
+        this.incomingtone = document.createElement("audio");
+        this.incomingtone.loop = "true";
+        this.incomingtone.src = "/voip/static/src/sounds/incomingcall.mp3";
+        $("html").append(this.incomingtone);
+    },
+    /**
+     * Configure the audio media stream, at the begining of a call.
+     *
+     * @private
+     */
+    _configureRemoteAudio: function () {
+        var call = this.sipSession;
+        var peerConnection = call.sessionDescriptionHandler.peerConnection;
+        var remoteStream = undefined;
+        if (peerConnection.getReceivers) {
+            remoteStream = new window.MediaStream();
+            peerConnection.getReceivers().forEach(function (receiver) {
+                var track = receiver.track;
+                if (track) {
+                    remoteStream.addTrack(track);
+                }
+            });
+        } else {
+            remoteStream = peerConnection.getRemoteStream()[0];
+        }
+        this.$remoteAudio.srcObject = remoteStream;
+        this.$remoteAudio.play();
+    },
     /**
      * Returns the ua after initialising it.
      *
@@ -151,35 +204,66 @@ var UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      * @return {Object} the initialised ua
      */
     _createUa: function (params) {
-        if (!(params.login && params.pbx_ip && params.password)) {
+        if (!(params.pbx_ip && params.wsServer)) {
+            //TODO master: PBX or Websocket address is missing. Please check your settings.
+            this._triggerError(_t('One or more parameter is missing. Please check your configuration.'))
+            return false;
+        }
+        if (!(params.login && params.password)) {
+            //TODO master: Your credentials are not correctly set. Please check your configuration.
             this._triggerError(_t('One or more parameter is missing. Please check your configuration.'));
             return false;
         }
+        params.debug = true;
+        if (params.debug) {
+            params.traceSip = true;
+            params.log = {
+                level: 3,
+                builtinEnabled: true
+            }
+        } else {
+            params.traceSip = false;
+            params.log = {
+                level: 2,
+                builtinEnabled: false
+            }
+        }
         var uaConfig = this._getUaConfig(params);
         try {
-            var ua = new SIP.UA(uaConfig);
-            return ua;
+            return new SIP.UA(uaConfig);
         } catch (err) {
             this._triggerError(_t('The server configuration could be wrong. Please check your configuration.'));
+            return false;
         }
     },
     /**
-     * Returns the ua configuration required.
-     *
-     * @private
-     * @param {Object} params user and pbx configuration parameters
-     * @return {Object} the ua configuration parameters
-     */
+    * Returns the ua configuration required.
+    *
+    * @private
+    * @param {Object} params user and pbx configuration parameters
+    * @return {Object} the ua configuration parameters
+    */
     _getUaConfig: function (params) {
+        var sessionDescriptionHandlerFactoryOptions = {
+            constraints: {
+                audio: true,
+                video: false
+            },
+            iceCheckingTimeout: 1000,
+        };
         return {
             uri: params.login + '@' + params.pbx_ip,
-            wsServers: params.wsServer || null,
+            transportOptions: {
+                wsServers: params.wsServer || null,
+                traceSip: params.traceSip
+            },
             authorizationUser: params.login,
             password: params.password,
             hackIpInContact: true,
-            log: {builtinEnabled: false},
-            // log: {level: 'debug'},
-            // traceSip: true,
+            registerExpires: 3600,
+            register: true,
+            sessionDescriptionHandlerFactoryOptions: sessionDescriptionHandlerFactoryOptions,
+            log: params.log,
         };
     },
     /**
@@ -191,9 +275,13 @@ var UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
     _initUa: function (result) {
         this.mode = result.mode;
         if (this.mode === "prod") {
-            var self = this;
-            this.ua = this._createUa(result);
-            if (! this.ua) {
+            if (!window.RTCPeerConnection) {
+                //TODO: In master, change the error message (Your browser does not support WebRTC. You will not be able to make or receive calls.)
+                this._triggerError(_t('Your browser could not support WebRTC. Please check your configuration.'));
+                return;
+            }
+            this.userAgent = this._createUa(result);
+            if (!this.userAgent) {
                 return;
             }
             this.alwaysTransfer = result.always_transfer;
@@ -201,50 +289,33 @@ var UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
             if (result.external_phone) {
                 this.externalPhone = clean_number(result.external_phone);
             }
+            var self = this;
             // catch the error if the ws uri is wrong
-            this.ua.transport.ws.onerror = function () {
+            this.userAgent.transport.ws.onerror = function () {
                 self._triggerError(_t('The websocket uri could be wrong.') +
                     _t(' Please check your configuration.'));
             };
-            this.ua.on('invite', _.bind(this._onInvite,this));
+            this.userAgent.on('invite', _.bind(this._onInvite,this));
         }
-        this.remoteAudio = document.createElement("audio");
-        this.remoteAudio.autoplay = "autoplay";
-        $("html").append(this.remoteAudio);
-        this.ringbacktone = document.createElement("audio");
-        this.ringbacktone.loop = "true";
-        this.ringbacktone.src = "/voip/static/src/sounds/ringbacktone.mp3";
-        $("html").append(this.ringbacktone);
-        this.incomingtone = document.createElement("audio");
-        this.incomingtone.loop = "true";
-        this.incomingtone.src = "/voip/static/src/sounds/incomingcall.mp3";
-        $("html").append(this.incomingtone);
+        this._configureDomElements()
     },
     /**
-     * Triggers the sip invite and binds event on the sip session.
+     * Triggers the sip invite.
      *
      *  @param {String} number
      *  @private
      */
     _makeCall: function (number) {
-        if (this.sipSession) {
+        if (this.callState !== CALL_STATE.NO_CALL) {
             return;
         }
-        var callOptions = {
-            media: {
-                stream: this.mediaStream,
-                render: {
-                    remote: this.remoteAudio
-                }
-            }
-        };
         try {
             number = clean_number(number);
-            if(this.alwaysTransfer && this.externalPhone){
-                this.sipSession = this.ua.invite(this.externalPhone, callOptions);
+            if (this.alwaysTransfer && this.externalPhone){
+                this.sipSession = this.userAgent.invite(this.externalPhone);
                 this.currentNumber = number;
             } else {
-                this.sipSession = this.ua.invite(number, callOptions);
+                this.sipSession = this.userAgent.invite(number);
             }
         } catch (err) {
             this._triggerError(_t('the connection cannot be made. ') +
@@ -252,14 +323,7 @@ var UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
                 err.reason_phrase + ')');
             return;
         }
-        //Bind action when the call is answered
-        this.sipSession.on('accepted',_.bind(this._onAccepted,this));
-        //Bind action when the call is rejected by the customer
-        this.sipSession.on('rejected',_.bind(this._onRejected,this));
-        //Bind action when the user hangup the call while ringing
-        this.sipSession.on('cancel',_.bind(this._onCancel,this));
-        //Bind action when the call is hanged up
-        this.sipSession.on('bye',_.bind(this._onBye,this));
+        this._setupOutCall();
     },
     // TODO when the _sendNotification is moved into utils instead of mail.utils
     // remove this function and use the one in utils
@@ -267,6 +331,40 @@ var UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         if (window.Notification && Notification.permission === "granted") {
             return new Notification(title,
                 {body: content, icon: "/mail/static/src/img/odoo_o.png", silent: true});
+        }
+    },
+    /**
+     * Bind events to outgoing call.
+     *
+     * @private
+     */
+    _setupOutCall: function () {
+        this.callState = CALL_STATE.RINGING_CALL;
+        this.sipSession.on('accepted',_.bind(this._onAccepted,this));
+        this.sipSession.on('cancel',_.bind(this._onCancel,this));
+        this.sipSession.on('rejected',_.bind(this._onRejected,this));
+    },
+    /**
+     * Toggle the sound of audio media stream
+     *
+     * @private
+     * @param {boolean} mute
+     */
+    _toggleMute: function (mute) {
+        var call = this.sipSession;
+        var peerConnection = call.sessionDescriptionHandler.peerConnection;
+        if (peerConnection.getSenders) {
+            peerConnection.getSenders().forEach(function (sender) {
+                if (sender.track) {
+                    sender.track.enabled = !mute;
+                }
+            });
+        } else {
+            peerConnection.getLocalStreams().forEach(function (stream) {
+                stream.getAudioTracks().forEach(function (track) {
+                    track.enabled = !mute;
+                });
+            });
         }
     },
     /**
@@ -291,12 +389,18 @@ var UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      * @private
      */
     _onAccepted: function () {
-        this.onCall = true;
+        this.callState = CALL_STATE.ONGOING_CALL;
+        var call = this.sipSession;
         this.ringbacktone.pause();
-        this.trigger_up('sip_accepted');
-        if(this.alwaysTransfer && this.currentNumber){
-            this.sipSession.refer(this.currentNumber);
+        if (this.mode === 'prod') {
+            this._configureRemoteAudio();
+            call.sessionDescriptionHandler.on('addTrack',_.bind(this._configureRemoteAudio,this));
+            call.on('bye',_.bind(this._onBye,this));
+            if (this.alwaysTransfer && this.currentNumber){
+                call.refer(this.currentNumber);
+            }
         }
+        this.trigger_up('sip_accepted');
     },
     /**
      * Handles the sip session ending.
@@ -304,11 +408,12 @@ var UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      * @private
      */
     _onBye: function () {
+        this._cleanRemoteAudio();
         this.sipSession = false;
-        this.onCall = false;
+        this.callState = CALL_STATE.NO_CALL;
         this.trigger_up('sip_bye');
         if (this.mode === "demo") {
-            clearTimeout(this.timerBye);
+            clearTimeout(this.timerAccepted);
         }
     },
     /**
@@ -318,12 +423,11 @@ var UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      */
     _onCancel: function () {
         this.sipSession = false;
-        this.onCall = false;
+        this.callState = CALL_STATE.NO_CALL;
         this.ringbacktone.pause();
         this.trigger_up('sip_cancel');
         if (this.mode === "demo") {
             clearTimeout(this.timerAccepted);
-            clearTimeout(this.timerBye);
         }
     },
     /**
@@ -332,7 +436,7 @@ var UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      * @param {Object} inviteSession
      */
     _onInvite: function (inviteSession) {
-        if (this.ignoreIncoming) {
+        if (this.ignoreIncoming || this.callState === CALL_STATE.ONGOING_CALL) {
             inviteSession.reject();
             return;
         }
@@ -388,61 +492,27 @@ var UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
             if (self.notification) {
                 self.notification.onclick = function () {
                     window.focus();
-                    var callOptions = {
-                        media: {
-                            constraints: {
-                                video: false,
-                                audio: true
-                            },
-                            render: {
-                                remote: self.remoteAudio
-                            }
-                        }
-                    };
-                    inviteSession.accept(callOptions);
-                    self.onCall = true;
-                    self.incomingCall = true;
-                    self.sipSession = inviteSession;
-                    self.trigger_up('sip_incoming_call', incomingCallParams);
-                    self.incomingtone.pause();
-                    //Bind action when the call is hanged up
-                    inviteSession.on('bye', _.bind(self._onBye, self));
+                    self._answerCall(inviteSession, incomingCallParams);
                     this.close();
                 };
                 self.notification.addEventListener('close', _rejectInvite);
             } else {
                 var options = {
                     confirm_callback: function () {
-                        self.incomingtone.pause();
-                        if (self.onCall) {
-                            self.hangup();
-                        }
-                        var callOptions = {
-                            media: {
-                                constraints: {
-                                    video: false,
-                                    audio: true
-                                },
-                                render: {
-                                    remote: self.remoteAudio
-                                }
-                            }
-                        };
-                        inviteSession.accept(callOptions);
-                        self.onCall = true;
-                        self.sipSession = inviteSession;
-                        self.trigger_up('sip_incoming_call', incomingCallParams);
-                        //Bind action when the call is hanged up
-                        inviteSession.on('bye',_.bind(self._onBye,self));
+                        self._answerCall(inviteSession, incomingCallParams);
                     },
                     cancel_callback: function () {
-                        inviteSession.reject();
+                        try {
+                            inviteSession.reject();
+                        } catch (err) {
+                            console.error('Reject failed:', err);
+                        }
                         self.incomingtone.pause();
                     },
                 };
                 self.dialog = Dialog.confirm(self, content, options);
                 self.dialog.on('closed', self, function () {
-                    if (inviteSession && !self.onCall) {
+                    if (inviteSession && self.callState !== CALL_STATE.ONGOING_CALL) {
                         inviteSession.reject();
                     }
                     self.incomingtone.pause();
@@ -459,9 +529,8 @@ var UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
     _onRejected: function (response) {
         if (this.sipSession) {
             this.sipSession = false;
-            this.onCall = false;
+            this.callState = CALL_STATE.NO_CALL;
             this.trigger_up('sip_rejected');
-            this.sipSession = false;
             this.ringbacktone.pause();
             if (response.status_code === 404 || response.status_code === 488) {
                 this._triggerError(

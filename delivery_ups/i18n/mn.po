@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
 "Last-Translator: Onii Onii <onii0223@yahoo.com>, 2018\n"
 "Language-Team: Mongolian (https://www.transifex.com/odoo/teams/41243/mn/)\n"
 "MIME-Version: 1.0\n"
@@ -36,7 +36,6 @@ msgid "COD Funding Option"
 msgstr ""
 
 #. module: delivery_ups
-#: model:ir.model,name:delivery_ups.model_delivery_carrier
 #: model:ir.model.fields,field_description:delivery_ups.field_product_packaging__package_carrier_type
 msgid "Carrier"
 msgstr "Тээвэрлэгч"
@@ -72,6 +71,11 @@ msgstr ""
 #: selection:product.packaging,package_carrier_type:0
 msgid "DHL"
 msgstr ""
+
+#. module: delivery_ups
+#: model:ir.model,name:delivery_ups.model_delivery_carrier
+msgid "Delivery Methods"
+msgstr "Хүргэлтийн арга"
 
 #. module: delivery_ups
 #: selection:delivery.carrier,ups_label_file_type:0
@@ -132,11 +136,6 @@ msgid "PDF"
 msgstr "PDF"
 
 #. module: delivery_ups
-#: model:ir.model,name:delivery_ups.model_product_packaging
-msgid "Packaging"
-msgstr "Баглаа"
-
-#. module: delivery_ups
 #: code:addons/delivery_ups/models/ups_request.py:209
 #, python-format
 msgid "Please provide at least one item to ship."
@@ -148,14 +147,14 @@ msgid "Pounds"
 msgstr "Фунт"
 
 #. module: delivery_ups
+#: model:ir.model,name:delivery_ups.model_product_packaging
+msgid "Product Packaging"
+msgstr "Барааны Баглаа"
+
+#. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__delivery_type
 msgid "Provider"
 msgstr "Нийлүүлэгч"
-
-#. module: delivery_ups
-#: model:ir.model,name:delivery_ups.model_sale_order
-msgid "Quotation"
-msgstr "Үнийн санал"
 
 #. module: delivery_ups
 #: selection:delivery.carrier,ups_label_file_type:0
@@ -163,7 +162,12 @@ msgid "SPL"
 msgstr "SPL"
 
 #. module: delivery_ups
-#: model:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form_with_provider_ups
+#: model:ir.model,name:delivery_ups.model_sale_order
+msgid "Sale Order"
+msgstr "Борлуулах захиалга"
+
+#. module: delivery_ups
+#: model_terms:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form_with_provider_ups
 msgid "Saturday Delivery"
 msgstr ""
 
@@ -264,7 +268,7 @@ msgid "UPS BE"
 msgstr "UPS BE"
 
 #. module: delivery_ups
-#: model:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form_with_provider_ups
+#: model_terms:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form_with_provider_ups
 msgid "UPS Configuration"
 msgstr "UPS Тохиргоо"
 
@@ -274,8 +278,8 @@ msgid "UPS Default Packaging Type"
 msgstr "UPS Үндсэн Баглааны Төрөл"
 
 #. module: delivery_ups
-#: model:ir.ui.view,arch_db:delivery_ups.res_config_settings_view_form_sale
-#: model:ir.ui.view,arch_db:delivery_ups.res_config_settings_view_form_stock
+#: model_terms:ir.ui.view,arch_db:delivery_ups.res_config_settings_view_form_sale
+#: model_terms:ir.ui.view,arch_db:delivery_ups.res_config_settings_view_form_stock
 msgid "UPS Delivery Methods"
 msgstr ""
 
@@ -342,7 +346,7 @@ msgid "Ups Package Weight Unit"
 msgstr ""
 
 #. module: delivery_ups
-#: model:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form_with_provider_ups
+#: model_terms:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form_with_provider_ups
 msgid "Value Added Services"
 msgstr ""
 

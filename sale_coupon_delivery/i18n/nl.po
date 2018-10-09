@@ -3,15 +3,14 @@
 # * sale_coupon_delivery
 # 
 # Translators:
-# Yenthe Van Ginneken <yenthespam@gmail.com>, 2017
-# Martin Trigaux, 2017
+# Martin Trigaux, 2018
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.3+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 08:34+0000\n"
-"PO-Revision-Date: 2018-06-25 08:34+0000\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
 "Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2018\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -55,14 +54,14 @@ msgid "Free Shipping"
 msgstr "Gratis verzending"
 
 #. module: sale_coupon_delivery
-#: model:ir.model,name:sale_coupon_delivery.model_sale_order
-msgid "Quotation"
-msgstr "Offerte"
-
-#. module: sale_coupon_delivery
 #: model:ir.model.fields,field_description:sale_coupon_delivery.field_sale_coupon_reward__reward_type
 msgid "Reward Type"
 msgstr "Type beloning"
+
+#. module: sale_coupon_delivery
+#: model:ir.model,name:sale_coupon_delivery.model_sale_order
+msgid "Sale Order"
+msgstr "Verkooporder"
 
 #. module: sale_coupon_delivery
 #: model:ir.model,name:sale_coupon_delivery.model_sale_coupon_program
@@ -84,4 +83,4 @@ msgstr "Verkooporderregel"
 #: code:addons/sale_coupon_delivery/models/sale_coupon_program.py:23
 #, python-format
 msgid "The shipping costs are not in the order lines."
-msgstr "De verzendkosten zitten niet in de orderlijnen."
+msgstr "De verzendkosten zitten niet in de orderregels"

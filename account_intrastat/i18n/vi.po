@@ -2,12 +2,18 @@
 # This file contains the translation of the following modules:
 # * account_intrastat
 # 
+# Translators:
+# thanh nguyen <thanhnguyen.icsc@gmail.com>, 2018
+# Martin Trigaux, 2018
+# Duy BQ <duybq86@gmail.com>, 2018
+# Minh Nguyen <ndminh210994@gmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-05 09:11+0000\n"
-"PO-Revision-Date: 2018-09-05 09:11+0000\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"Last-Translator: Minh Nguyen <ndminh210994@gmail.com>, 2018\n"
 "Language-Team: Vietnamese (https://www.transifex.com/odoo/teams/41243/vi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -16,16 +22,16 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: account_intrastat
-#: model:ir.ui.view,arch_db:account_intrastat.search_template_intrastat_type
+#: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_intrastat_type
 msgid ""
 "<span class=\"fa fa-filter\"/>\n"
 "                Types:"
 msgstr ""
 
 #. module: account_intrastat
-#: model:ir.ui.view,arch_db:account_intrastat.search_template_intrastat_extended
+#: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_intrastat_extended
 msgid "<span class=\"fa fa-filter\"/> Options:"
-msgstr ""
+msgstr "<span class=\"fa fa-filter\"/> Tùy chọn:"
 
 #. module: account_intrastat
 #: code:addons/account_intrastat/models/account_intrastat_report.py:16
@@ -34,22 +40,22 @@ msgid "Arrival"
 msgstr ""
 
 #. module: account_intrastat
-#: model:ir.ui.view,arch_db:account_intrastat.invoice_form_inherit_account_intrastat
+#: model_terms:ir.ui.view,arch_db:account_intrastat.invoice_form_inherit_account_intrastat
 msgid "Arrival country"
 msgstr ""
 
 #. module: account_intrastat
-#: model:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
+#: model_terms:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
 msgid "By country"
 msgstr ""
 
 #. module: account_intrastat
-#: model:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
+#: model_terms:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
 msgid "By type"
 msgstr ""
 
 #. module: account_intrastat
-#: model:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
+#: model_terms:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
 msgid "Commodity"
 msgstr ""
 
@@ -65,7 +71,7 @@ msgstr ""
 #. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_res_company
 msgid "Companies"
-msgstr ""
+msgstr "Công ty"
 
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_res_config_settings__company_country_id
@@ -73,22 +79,27 @@ msgid "Company country"
 msgstr ""
 
 #. module: account_intrastat
+#: model:ir.model,name:account_intrastat.model_res_config_settings
+msgid "Config Settings"
+msgstr "Cấu hình thiết lập"
+
+#. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_res_country
 msgid "Country"
-msgstr ""
+msgstr "Quốc gia"
 
 #. module: account_intrastat
 #: code:addons/account_intrastat/models/account_intrastat_report.py:30
 #: code:addons/account_intrastat/models/account_sales_report.py:24
 #, python-format
 msgid "Country Code"
-msgstr ""
+msgstr "Mã quốc gia"
 
 #. module: account_intrastat
 #: code:addons/account_intrastat/models/account_intrastat_report.py:28
 #, python-format
 msgid "Date"
-msgstr ""
+msgstr "Ngày"
 
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_res_company__intrastat_transport_mode_id
@@ -108,7 +119,7 @@ msgid "Dispatch"
 msgstr ""
 
 #. module: account_intrastat
-#: model:ir.ui.view,arch_db:account_intrastat.invoice_supplier_form_inherit_account_intrastat
+#: model_terms:ir.ui.view,arch_db:account_intrastat.invoice_supplier_form_inherit_account_intrastat
 msgid "Dispatch country"
 msgstr ""
 
@@ -116,7 +127,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_intrastat.field_account_intrastat_report__display_name
 #: model:ir.model.fields,field_description:account_intrastat.field_account_sales_report__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Tên hiển thị"
 
 #. module: account_intrastat
 #: code:addons/account_intrastat/models/account_sales_report.py:124
@@ -128,17 +139,17 @@ msgid "EC Sales List"
 msgstr ""
 
 #. module: account_intrastat
-#: model:ir.ui.view,arch_db:account_intrastat.search_template_intrastat_extended
+#: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_intrastat_extended
 msgid "Extended"
 msgstr ""
 
 #. module: account_intrastat
-#: model:ir.ui.view,arch_db:account_intrastat.search_template_intrastat_extended
+#: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_intrastat_extended
 msgid "Extended Mode"
 msgstr ""
 
 #. module: account_intrastat
-#: model:ir.ui.view,arch_db:account_intrastat.search_template_intrastat_extended
+#: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_intrastat_extended
 msgid "Extended,"
 msgstr ""
 
@@ -146,7 +157,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_intrastat.field_account_intrastat_report__id
 #: model:ir.model.fields,field_description:account_intrastat.field_account_sales_report__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: account_intrastat
 #: code:addons/account_intrastat/models/account_intrastat_report.py:39
@@ -161,19 +172,21 @@ msgid ""
 "International Commercial Terms are a series of predefined commercial terms "
 "used in international transactions."
 msgstr ""
+"Bộ Điều khoản Thương mại Quốc tế (Incoterms) là một chuỗi các điều khoản "
+"thương mại được định nghĩa trước để sử dụng trong các giao dịch quốc tế."
 
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_account_invoice_line__intrastat_transaction_id
-#: model:ir.ui.view,arch_db:account_intrastat.invoice_form_inherit_account_intrastat
-#: model:ir.ui.view,arch_db:account_intrastat.product_category_form_view_inherit_account_intrastat
-#: model:ir.ui.view,arch_db:account_intrastat.product_template_form_view_inherit_account_intrastat
+#: model_terms:ir.ui.view,arch_db:account_intrastat.invoice_form_inherit_account_intrastat
+#: model_terms:ir.ui.view,arch_db:account_intrastat.product_category_form_view_inherit_account_intrastat
+#: model_terms:ir.ui.view,arch_db:account_intrastat.product_template_form_view_inherit_account_intrastat
 msgid "Intrastat"
 msgstr ""
 
 #. module: account_intrastat
 #: model:ir.actions.act_window,name:account_intrastat.action_report_intrastat_code_tree
 #: model:ir.ui.menu,name:account_intrastat.menu_report_intrastat_code
-#: model:ir.ui.view,arch_db:account_intrastat.view_report_intrastat_code_form
+#: model_terms:ir.ui.view,arch_db:account_intrastat.view_report_intrastat_code_form
 msgid "Intrastat Code"
 msgstr ""
 
@@ -197,7 +210,7 @@ msgid "Intrastat Transport Mode"
 msgstr ""
 
 #. module: account_intrastat
-#: model:ir.ui.view,arch_db:account_intrastat.view_report_intrastat_code_tree
+#: model_terms:ir.ui.view,arch_db:account_intrastat.view_report_intrastat_code_tree
 msgid "Intrastat code"
 msgstr ""
 
@@ -219,39 +232,39 @@ msgstr ""
 #. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_account_invoice
 msgid "Invoice"
-msgstr ""
+msgstr "Hóa đơn"
 
 #. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_account_invoice_line
 msgid "Invoice Line"
-msgstr ""
+msgstr "Chi tiết hóa đơn"
 
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_account_intrastat_report____last_update
 #: model:ir.model.fields,field_description:account_intrastat.field_account_sales_report____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Sửa lần cuối vào"
 
 #. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_product_category
 msgid "Product Category"
-msgstr ""
+msgstr "Nhóm sản phẩm"
 
 #. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_product_template
 msgid "Product Template"
-msgstr ""
+msgstr "Mẫu sản phẩm"
 
 #. module: account_intrastat
 #: code:addons/account_intrastat/models/account_intrastat_report.py:43
 #, python-format
 msgid "Quantity"
-msgstr ""
+msgstr "Số lượng"
 
 #. module: account_intrastat
-#: model:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
+#: model_terms:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
 msgid "Region"
-msgstr ""
+msgstr "Khu vực"
 
 #. module: account_intrastat
 #: code:addons/account_intrastat/models/account_intrastat_report.py:32
@@ -260,7 +273,7 @@ msgid "Region Code"
 msgstr ""
 
 #. module: account_intrastat
-#: model:ir.ui.view,arch_db:account_intrastat.search_template_intrastat_extended
+#: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_intrastat_extended
 msgid "Standard,"
 msgstr ""
 
@@ -275,12 +288,12 @@ msgstr ""
 #: code:addons/account_intrastat/models/account_sales_report.py:114
 #, python-format
 msgid "Total"
-msgstr ""
+msgstr "Tổng"
 
 #. module: account_intrastat
-#: model:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
+#: model_terms:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
 msgid "Transaction"
-msgstr ""
+msgstr "Giao dịch"
 
 #. module: account_intrastat
 #: code:addons/account_intrastat/models/account_intrastat_report.py:31
@@ -289,7 +302,7 @@ msgid "Transaction Code"
 msgstr ""
 
 #. module: account_intrastat
-#: model:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
+#: model_terms:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
 msgid "Transport"
 msgstr ""
 
@@ -308,33 +321,28 @@ msgstr ""
 #: code:addons/account_intrastat/models/account_intrastat_report.py:34
 #, python-format
 msgid "Type"
-msgstr ""
+msgstr "Loại"
 
 #. module: account_intrastat
 #: code:addons/account_intrastat/models/account_sales_report.py:23
 #, python-format
 msgid "VAT"
-msgstr ""
+msgstr "Thuế GTGT"
 
 #. module: account_intrastat
 #: code:addons/account_intrastat/models/account_intrastat_report.py:44
 #: code:addons/account_intrastat/models/account_sales_report.py:25
 #, python-format
 msgid "Value"
-msgstr ""
+msgstr "Giá trị"
 
 #. module: account_intrastat
 #: code:addons/account_intrastat/models/account_intrastat_report.py:42
 #, python-format
 msgid "Weight"
-msgstr ""
+msgstr "Khối lượng"
 
 #. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_account_intrastat_code
 msgid "account.intrastat.code"
-msgstr ""
-
-#. module: account_intrastat
-#: model:ir.model,name:account_intrastat.model_res_config_settings
-msgid "res.config.settings"
 msgstr ""

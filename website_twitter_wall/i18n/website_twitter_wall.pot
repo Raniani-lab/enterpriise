@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-18 10:05+0000\n"
-"PO-Revision-Date: 2018-09-18 10:05+0000\n"
+"POT-Creation-Date: 2018-09-21 14:07+0000\n"
+"PO-Revision-Date: 2018-09-21 14:07+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -229,7 +229,7 @@ msgid "Single view"
 msgstr ""
 
 #. module: website_twitter_wall
-#: code:addons/website_twitter_wall/models/website_twitter_wall.py:81
+#: code:addons/website_twitter_wall/models/website_twitter_wall.py:83
 #, python-format
 msgid "The Twitter authentication failed. Please check your API key and secret."
 msgstr ""
@@ -245,7 +245,7 @@ msgid "The search criteria to get the tweets you want. You can use the Twitter q
 msgstr ""
 
 #. module: website_twitter_wall
-#: code:addons/website_twitter_wall/models/website_twitter_wall.py:92
+#: code:addons/website_twitter_wall/models/website_twitter_wall.py:94
 #, python-format
 msgid "The tweets search failed. Check your credentials and access token"
 msgstr ""
@@ -272,7 +272,7 @@ msgid "Tweet Html"
 msgstr ""
 
 #. module: website_twitter_wall
-#: code:addons/website_twitter_wall/models/website_twitter_wall.py:132
+#: code:addons/website_twitter_wall/models/website_twitter_wall.py:134
 #: model:ir.actions.act_window,name:website_twitter_wall.website_twitter_tweet_action
 #: model:ir.ui.menu,name:website_twitter_wall.website_twitter_tweet_menu
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_tweet_view_form
@@ -332,6 +332,12 @@ msgid "Walls"
 msgstr ""
 
 #. module: website_twitter_wall
+#: model:ir.model,name:website_twitter_wall.model_website_twitter_tweet
+#: model:ir.model,name:website_twitter_wall.model_website_twitter_wall
+msgid "Website Twitter"
+msgstr ""
+
+#. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__website_url
 msgid "Website URL"
 msgstr ""
@@ -339,15 +345,5 @@ msgstr ""
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
 msgid "Your wall name"
-msgstr ""
-
-#. module: website_twitter_wall
-#: model:ir.model,name:website_twitter_wall.model_website_twitter_tweet
-msgid "website.twitter.tweet"
-msgstr ""
-
-#. module: website_twitter_wall
-#: model:ir.model,name:website_twitter_wall.model_website_twitter_wall
-msgid "website.twitter.wall"
 msgstr ""
 

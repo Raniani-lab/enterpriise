@@ -7,4 +7,4 @@ from odoo import fields, models
 class ResConfigSettings(models.TransientModel):
     _inherit = 'res.config.settings'
 
-    show_ocr_option_selection = fields.Selection(related='company_id.show_ocr_option_selection', string='OCR Mode')
+    extract_show_ocr_option_selection = fields.Selection(related='company_id.extract_show_ocr_option_selection', string='Automatic Bills Processing', readonly=False)

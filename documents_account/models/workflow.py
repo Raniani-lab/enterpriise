@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from odoo import models, fields, api, exceptions
 
 
@@ -32,8 +33,10 @@ class WorkflowActionRuleAccount(models.Model):
                 if attachment.res_model or attachment.res_id:
                     this_attachment = attachment.copy()
 
-                this_attachment.res_model = 'account.invoice'
-                this_attachment.res_id = new_obj.id
+                this_attachment.write({'res_model': 'account.invoice',
+                                       'res_id': new_obj.id,
+                                       'folder_id': this_attachment.folder_id.id})
+
                 invoice_ids.append(new_obj.id)
 
             action = {

@@ -63,9 +63,9 @@ class ProductTemplate(models.Model):
     ebay_best_offer = fields.Boolean(string="Allow Best Offer", default=False)
     ebay_private_listing = fields.Boolean(string="Private Listing", default=False)
     ebay_start_date = fields.Datetime('Start Date', readonly=1)
-    ebay_quantity_sold = fields.Integer(related='product_variant_ids.ebay_quantity_sold', store=True)
-    ebay_fixed_price = fields.Float(related='product_variant_ids.ebay_fixed_price', store=True)
-    ebay_quantity = fields.Integer(related='product_variant_ids.ebay_quantity', store=True)
+    ebay_quantity_sold = fields.Integer(related='product_variant_ids.ebay_quantity_sold', store=True, readonly=False)
+    ebay_fixed_price = fields.Float(related='product_variant_ids.ebay_fixed_price', store=True, readonly=False)
+    ebay_quantity = fields.Integer(related='product_variant_ids.ebay_quantity', store=True, readonly=False)
     ebay_last_sync = fields.Datetime(string="Last update")
     ebay_template_id = fields.Many2one('mail.template', string='Description Template',
         ondelete='set null',
@@ -112,7 +112,7 @@ class ProductTemplate(models.Model):
             }
         }
         if self.ebay_description and self.ebay_template_id:
-            description = self.ebay_template_id.render_template(self.ebay_template_id.body_html, 'product.template', self.id)
+            description = self.ebay_template_id._render_template(self.ebay_template_id.body_html, 'product.template', self.id)
             item['Item']['Description'] = '<![CDATA['+description+']]>'
         if self.ebay_subtitle:
             item['Item']['SubTitle'] = self._ebay_encode(self.ebay_subtitle)
@@ -792,5 +792,5 @@ class ProductProduct(models.Model):
     ebay_quantity_sold = fields.Integer('Quantity Sold', readonly=True)
     ebay_fixed_price = fields.Float('eBay Fixed Price')
     ebay_quantity = fields.Integer(string='Quantity On eBay', default=1)
-    ebay_listing_type = fields.Selection(related='product_tmpl_id.ebay_listing_type')
+    ebay_listing_type = fields.Selection(related='product_tmpl_id.ebay_listing_type', readonly=False)
     ebay_variant_url = fields.Char('eBay Variant URL')

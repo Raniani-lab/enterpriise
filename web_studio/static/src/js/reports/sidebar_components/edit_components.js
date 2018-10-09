@@ -242,7 +242,7 @@ var AbstractEditComponent = Abstract.extend(StandaloneFieldManagerMixin, {
      * @param {String} toAdd
      * @param {String} toRemove
      */
-    _editoDomAttribute : function (attributeName, toAdd, toRemove) {
+    _editDomAttribute: function (attributeName, toAdd, toRemove) {
         var attribute = '<attribute name="' + attributeName + '" separator="' + (attributeName === 'class' ? ' ' : ';') + '"';
         if (toAdd) {
             attribute += ' add="' + toAdd + '"';
@@ -333,9 +333,10 @@ var LayoutEditable = AbstractEditComponent.extend({
     name: 'layout',
     template : 'web_studio.ReportLayoutEditable',
     events : _.extend({}, AbstractEditComponent.prototype.events, {
-        "change .o_web_studio_margin>input" : "_onMarginInputChange",
-        "change .o_web_studio_width>input" :"_onWidthInputChange",
-        "change .o_web_studio_heading>select" :"_onHeadingInputChange",
+        "change .o_web_studio_margin>input": "_onMarginInputChange",
+        "change .o_web_studio_width>input": "_onWidthInputChange",
+        "change .o_web_studio_font_size>select": "_onFontSizeInputChange",
+        "change .o_web_studio_table_style > select": "_onTableStyleInputChange",
         "click .o_web_studio_text_decoration button": "_onTextDecorationChange",
         "change .o_web_studio_classes>input": "_onClassesChange",
         "click .o_web_studio_colors .o_web_studio_reset_color": "_onResetColor",
@@ -345,11 +346,14 @@ var LayoutEditable = AbstractEditComponent.extend({
      */
     init: function (parent, params) {
         this._super.apply(this, arguments);
+
+        this.debug = config.debug;
+        this.isTable = params.node.tag === 'table';
         this.allClasses = params.node.attrs.class || "";
         this.classesArray =(params.node.attrs.class || "").split(' ');
         this.stylesArray =(params.node.attrs.style || "").split(';');
 
-        var headingRegExp= new RegExp(/^\s*h[12345]{1}\s*$/gim);
+        var fontSizeRegExp= new RegExp(/^\s*(h[123456]{1})|(small)\s*$/gim);
         var backgroundColorRegExp= new RegExp(/^\s*background\-color\s*:/gi);
         var colorRegExp= new RegExp(/^\s*color\s*:/gi);
         var widthRegExp= new RegExp(/^\s*width\s*:/gi);
@@ -365,6 +369,9 @@ var LayoutEditable = AbstractEditComponent.extend({
         this["font-color-class"] = _.find(this.classesArray, function(item) {
             return !item.indexOf('text-');
         });
+        this.tableStyle = _.find(this.classesArray, function(item) {
+            return !item.indexOf('table-');
+        });
         this["background-color"] = _.find(this.stylesArray, function(item) {
             return backgroundColorRegExp.test(item);
         });
@@ -379,8 +386,8 @@ var LayoutEditable = AbstractEditComponent.extend({
             this.width = this.originalWidth.replace(/\D+/g,''); //replaces all non-digits with nothing
         }
 
-        this.heading = _.find(this.classesArray, function(item) {
-            return headingRegExp.test(item);
+        this.fontSize = _.find(this.classesArray, function(item) {
+            return fontSizeRegExp.test(item);
         });
 
         this.italic = _.contains(this.classesArray, 'o_italic');
@@ -442,10 +449,10 @@ var LayoutEditable = AbstractEditComponent.extend({
     _onColorChange: function ($elem, type) {
         var params = $elem.dataset;
         if (params.event) {
-            this._editoDomAttribute ("class", params.value, type === "background" ? this["background-color-class"] : this["font-color-class"]);
+            this._editDomAttribute("class", params.value, type === "background" ? this["background-color-class"] : this["font-color-class"]);
         } else {
             var attributeName = type === "background" ? 'background-color' : 'color';
-            this._editoDomAttribute ("style", attributeName + ':' + params.value, this[attributeName]);
+            this._editDomAttribute("style", attributeName + ':' + params.value, this[attributeName]);
         }
     },
     /**
@@ -467,14 +474,18 @@ var LayoutEditable = AbstractEditComponent.extend({
      * @private
      * @param {JQEvent} e
      */
-    _onHeadingInputChange: function(e) {
+    _onFontSizeInputChange: function(e) {
         e.preventDefault();
-        this._editoDomAttribute ("class", e.target.value, this.heading);
+        this._editDomAttribute("class", e.target.value, this.fontSize);
     },
     /**
      * @private
      * @param {JQEvent} e
      */
+    _onTableStyleInputChange: function (e) {
+        e.preventDefault();
+        this._editDomAttribute("class", e.target.value, this.tableStyle);
+    },
     _onMarginInputChange: function (e) {
         e.preventDefault();
         var toRemove, toAdd;
@@ -484,7 +495,7 @@ var LayoutEditable = AbstractEditComponent.extend({
         if (this[e.target.dataset.margin]) {
             toRemove = e.target.dataset.margin + ':' + this[e.target.dataset.margin] + 'px';
         }
-        this._editoDomAttribute ("style", toAdd, toRemove);
+        this._editDomAttribute("style", toAdd, toRemove);
     },
     /**
      * @private
@@ -494,15 +505,15 @@ var LayoutEditable = AbstractEditComponent.extend({
         e.preventDefault();
         if (e.currentTarget.dataset.target === "background") {
             if (this["background-color-class"]) {
-                this._editoDomAttribute ("class", null, this["background-color-class"]);
+                this._editDomAttribute("class", null, this["background-color-class"]);
             } else if (this["background-color"]) {
-                this._editoDomAttribute ("style", null, this["background-color"]);
+                this._editDomAttribute("style", null, this["background-color"]);
             }
         } else {
             if (this["font-color-class"]) {
-                this._editoDomAttribute ("class", null, this["font-color-class"]);
+                this._editDomAttribute("class", null, this["font-color-class"]);
             } else if (this.color) {
-                this._editoDomAttribute ("style", null, this.color);
+                this._editDomAttribute("style", null, this.color);
             }
         }
     },
@@ -513,7 +524,7 @@ var LayoutEditable = AbstractEditComponent.extend({
     _onTextDecorationChange : function(e) {
         e.preventDefault();
         var data = $(e.target).closest("button").data();
-        this._editoDomAttribute ("class",
+        this._editDomAttribute("class",
             !this[data.property] && ("o_" + data.property),
             this[data.property] && ("o_" + data.property));
     },
@@ -530,7 +541,7 @@ var LayoutEditable = AbstractEditComponent.extend({
         if (this.node.tag.toLowerCase() === 'span' && !hasDisplay) {
             addDisplayInlineBlock = ";display:inline-block";
         }
-        this._editoDomAttribute ("style", e.target.value && ("width:" + e.target.value + "px" + addDisplayInlineBlock), this.originalWidth);
+        this._editDomAttribute("style", e.target.value && ("width:" + e.target.value + "px" + addDisplayInlineBlock), this.originalWidth);
     }
 });
 
@@ -861,9 +872,9 @@ var Column = AbstractEditComponent.extend({
      */
     _triggerViewChange: function (newAttrs) {
         if ('size' in newAttrs && newAttrs.size >= 0) {
-            this._editoDomAttribute ("class", 'col-' + newAttrs.size, this.sizeClass);
+            this._editDomAttribute("class", 'col-' + newAttrs.size, this.sizeClass);
         } else if ('offset' in newAttrs && newAttrs.offset >= 0) {
-            this._editoDomAttribute ("class", 'offset-' + newAttrs.offset, this.offsetClass);
+            this._editDomAttribute("class", 'offset-' + newAttrs.offset, this.offsetClass);
         }
     },
 });
@@ -873,7 +884,7 @@ var Table = AbstractEditComponent.extend({
     blacklist: 'thead, tbody, tfoot, tr, td[colspan="99"]',
 });
 
-var TextSelectorTags = 'span, p, h1, h2, h3, h4, h5, blockquote, pre, small, u, i, b, font, strong, ul, li, dl, dt, ol';
+var TextSelectorTags = 'span, p, h1, h2, h3, h4, h5, h6, blockquote, pre, small, u, i, b, font, strong, ul, li, dl, dt, ol';
 var filter = ':not([t-field]):not(:has(t, [t-' + QWeb2.ACTIONS_PRECEDENCE.join('], [t-') + ']))';
 var Text = AbstractEditComponent.extend({
     name: 'text',
@@ -1043,7 +1054,6 @@ var TOptions = AbstractEditComponent.extend( {
     insertAsLastChildOfPrevious: true,
     events: _.extend({}, AbstractEditComponent.prototype.events, {
         'change select:first': '_onChangeWidget',
-        'click .o_studio_option_show': '_onShowOptions',
     }),
     /**
      * @override
@@ -1054,6 +1064,16 @@ var TOptions = AbstractEditComponent.extend( {
 
         this.changes = {};
         this.widgetsOptions = params.widgetsOptions;
+
+        // for contact widget, we don't want to display all options
+        if (this.widgetsOptions && this.widgetsOptions.contact) {
+            this.widgetsOptions.contact = _.pick(this.widgetsOptions.contact, [
+                'fields',
+                'separator',
+                'no_marker',
+            ]);
+        }
+
         this.widget = null;  // the selected widget
         this.values = {};  // dict containing the t-options values
 
@@ -1272,14 +1292,6 @@ var TOptions = AbstractEditComponent.extend( {
             this._triggerViewChange({});
         }
         this._updateWidgetOptions();
-    },
-    /**
-     * @private
-     * @param {JQEvent} e
-     */
-    _onShowOptions: function (e) {
-        e.preventDefault();
-        this.$('.o_web_studio_toption_options').toggleClass('d-none');
     },
     /**
      * @override

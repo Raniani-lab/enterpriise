@@ -145,8 +145,25 @@ $o-dms-inspector-bg-darker: #1A1A1A;
         height: 100%;
 
         .o_kanban_record.o_kanban_attachment {
+            &.oe_file_request {
+                border-style: dashed;
+                background-color: #fff0;
+            }
+
             .o_kanban_image .o_kanban_image_wrapper {
                 background-color: $gray-200;
+            }
+
+            .o_request_image .o_kanban_image_wrapper {
+                background-color: #fff0;
+
+                &:hover {
+                    background-color: $gray-200;
+                }
+            }
+
+            .oe_kanban_previewer {
+                cursor: zoom-in;
             }
 
             .o_kanban_details {
@@ -232,6 +249,11 @@ $o-dms-inspector-bg-darker: #1A1A1A;
             background-color: $o-dms-inspector-bg-dark;
             border-bottom: 1px solid $o-dms-inspector-bg-darker;
             min-height: 100px;
+
+            .o_inspector_folder_description {
+                white-space: initial;
+                word-wrap: break-word;
+            }
 
             .o_document_preview {
                 margin: $o-dms-p-tiny;
@@ -481,8 +503,9 @@ $o-dms-inspector-bg-darker: #1A1A1A;
         }
 
         .o_chatter_topbar {
-            .o_followers {
-                margin-right: 40px; // prevent the 'close' button from overlapping
+
+            .o_topbar_right_area {
+                right: 40px; // prevent the 'close' button from overlapping
             }
         }
     }

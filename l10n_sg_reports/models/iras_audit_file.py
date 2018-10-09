@@ -16,6 +16,7 @@ IRAS_XSD = 'l10n_sg_reports/data/iras_audit_file.xsd'
 
 class IrasAuditFileWizard(models.TransientModel):
     _name = 'l10n.sg.reports.iaf.wizard'
+    _description = "Singaporean IAF Report Wizard"
 
     date_from = fields.Date(string='Start Date', required=True)
     date_to = fields.Date(string='End Date', required=True)

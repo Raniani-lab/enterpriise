@@ -46,6 +46,7 @@ class SaleOrder(models.Model):
             'template_id': template.id,
             'partner_id': self.partner_invoice_id.id,
             'user_id': self.user_id.id,
+            'team_id': self.team_id.id,
             'date_start': fields.Date.today(),
             'description': self.note or template.description,
             'pricelist_id': self.pricelist_id.id,
@@ -150,16 +151,16 @@ class SaleOrderLine(models.Model):
         correct subscription and to the subscription's analytic account if present.
         """
         res = super(SaleOrderLine, self)._prepare_invoice_line(qty)
-        if self.subscription_id and self.order_id.subscription_management != 'upsell':
-            next_date = fields.Date.from_string(self.subscription_id.recurring_next_date)
-            periods = {'daily': 'days', 'weekly': 'weeks', 'monthly': 'months', 'yearly': 'years'}
-            previous_date = next_date - relativedelta(**{periods[self.subscription_id.recurring_rule_type]: self.subscription_id.recurring_interval})
-            lang = self.order_id.partner_invoice_id.lang
-            format_date = self.env['ir.qweb.field.date'].with_context(lang=lang).value_to_html
-            period_msg = _("Invoicing period: %s - %s") % (format_date(fields.Date.to_string(previous_date), {}), format_date(fields.Date.to_string(next_date - relativedelta(days=1)), {}))
-            res.update({
-                'subscription_id': self.subscription_id.id,
-                'name': res['name'] + '\n' + period_msg})
+        if self.subscription_id:
+            res.update(subscription_id=self.subscription_id.id)
+            if self.order_id.subscription_management != 'upsell':
+                next_date = fields.Date.from_string(self.subscription_id.recurring_next_date)
+                periods = {'daily': 'days', 'weekly': 'weeks', 'monthly': 'months', 'yearly': 'years'}
+                previous_date = next_date - relativedelta(**{periods[self.subscription_id.recurring_rule_type]: self.subscription_id.recurring_interval})
+                lang = self.order_id.partner_invoice_id.lang
+                format_date = self.env['ir.qweb.field.date'].with_context(lang=lang).value_to_html
+                period_msg = _("Invoicing period: %s - %s") % (format_date(fields.Date.to_string(previous_date), {}), format_date(fields.Date.to_string(next_date - relativedelta(days=1)), {}))
+                res.update(name=res['name'] + '\n' + period_msg)
             if self.subscription_id.analytic_account_id:
                 res['account_analytic_id'] = self.subscription_id.analytic_account_id.id
         return res

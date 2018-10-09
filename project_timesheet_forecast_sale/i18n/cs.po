@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
 "Last-Translator: trendspotter, 2018\n"
 "Language-Team: Czech (https://www.transifex.com/odoo/teams/41243/cs/)\n"
 "MIME-Version: 1.0\n"
@@ -50,6 +50,11 @@ msgid "Project"
 msgstr "Projekt"
 
 #. module: project_timesheet_forecast_sale
+#: model:ir.model,name:project_timesheet_forecast_sale.model_project_forecast
+msgid "Project Forecast"
+msgstr "Projektová předpověď"
+
+#. module: project_timesheet_forecast_sale
 #: code:addons/project_timesheet_forecast_sale/controllers/project.py:25
 #, python-format
 msgid ""
@@ -69,7 +74,7 @@ msgid "Task"
 msgstr "Úloha"
 
 #. module: project_timesheet_forecast_sale
-#: model:ir.ui.view,arch_db:project_timesheet_forecast_sale.timesheet_plan
+#: model_terms:ir.ui.view,arch_db:project_timesheet_forecast_sale.timesheet_plan
 msgid "Timesheets/Forecasts"
 msgstr ""
 
@@ -79,9 +84,4 @@ msgstr ""
 msgid ""
 "What is still to deliver based on sold hours, hours already done and "
 "forecasted hours. Equals to sold hours - done hours - forecasted hours."
-msgstr ""
-
-#. module: project_timesheet_forecast_sale
-#: model:ir.model,name:project_timesheet_forecast_sale.model_project_forecast
-msgid "project.forecast"
 msgstr ""

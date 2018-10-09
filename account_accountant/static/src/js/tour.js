@@ -121,7 +121,7 @@ tour.register('account_reports_widgets', {
 tour.register('account_accountant_tour', {
     'skip_enabled': true,
 }, [{
-    trigger: '.o_app[data-menu-xmlid="account.menu_finance"]"]',
+    trigger: '.o_app[data-menu-xmlid="account.menu_finance"]',
     content: _t('Ready to discover your new favorite <b>accounting app</b>? Get started by clicking here.'),
     position: 'bottom',
 }, {

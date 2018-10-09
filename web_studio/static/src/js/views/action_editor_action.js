@@ -64,8 +64,7 @@ var ActionEditorAction = AbstractAction.extend({
         this.set('title', _t('Studio'));
         if (this.options.noEdit) {
             // click on "Views" in menu
-            var view_types = this.action.view_mode.split(',');
-            this.action_editor = new ActionEditor(this, this.action, view_types);
+            this.action_editor = new ActionEditor(this, this.action);
             def = this.action_editor.appendTo(this.$el);
         } else {
             // directly edit the view instead of displaying all views

@@ -7,6 +7,7 @@ from odoo.exceptions import AccessDenied
 
 class VoipConfigurator(models.Model):
     _name = 'voip.configurator'
+    _description = 'VOIP Configurator'
 
     @api.model
     def get_pbx_config(self):

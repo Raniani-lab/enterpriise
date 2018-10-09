@@ -3,16 +3,15 @@
 # * inter_company_rules
 # 
 # Translators:
-# 敬雲 林 <chingyun@yuanchih-consult.com>, 2018
 # Martin Trigaux, 2018
-# Michael Yeung, 2018
+# sejun huang <sejun.huang@gmail.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.3+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 08:34+0000\n"
-"PO-Revision-Date: 2018-06-25 08:34+0000\n"
-"Last-Translator: Michael Yeung, 2018\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"Last-Translator: sejun huang <sejun.huang@gmail.com>, 2018\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/odoo/teams/41243/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,12 +26,12 @@ msgid " Invoice: "
 msgstr ""
 
 #. module: inter_company_rules
-#: model:ir.ui.view,arch_db:inter_company_rules.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:inter_company_rules.res_config_settings_view_form
 msgid ", generate a"
 msgstr ""
 
 #. module: inter_company_rules
-#: model:ir.ui.view,arch_db:inter_company_rules.view_company_inter_change_inherit_form
+#: model_terms:ir.ui.view,arch_db:inter_company_rules.view_company_inter_change_inherit_form
 msgid ""
 "<strong>\n"
 "                                    <span attrs=\"{'invisible': [('applicable_on','!=', 'purchase')]}\" class=\"ml4\">Sale Order</span>\n"
@@ -42,7 +41,7 @@ msgid ""
 msgstr ""
 
 #. module: inter_company_rules
-#: model:ir.ui.view,arch_db:inter_company_rules.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:inter_company_rules.res_config_settings_view_form
 msgid ""
 "<strong>\n"
 "                                <span attrs=\"{'invisible': [('applicable_on','!=', 'purchase')]}\" class=\"ml8\">Sale Order </span>\n"
@@ -85,6 +84,11 @@ msgid "Companies"
 msgstr "公司"
 
 #. module: inter_company_rules
+#: model:ir.model,name:inter_company_rules.model_res_config_settings
+msgid "Config Settings"
+msgstr "配置設置"
+
+#. module: inter_company_rules
 #: code:addons/inter_company_rules/models/purchase_order.py:82
 #: code:addons/inter_company_rules/models/sale_order.py:77
 #, python-format
@@ -120,7 +124,7 @@ msgid "Inter company user of company %s doesn't have enough access rights"
 msgstr ""
 
 #. module: inter_company_rules
-#: model:ir.ui.view,arch_db:inter_company_rules.view_company_inter_change_inherit_form
+#: model_terms:ir.ui.view,arch_db:inter_company_rules.view_company_inter_change_inherit_form
 msgid "Inter-Company Rules"
 msgstr ""
 
@@ -156,11 +160,6 @@ msgid "Purchase Order"
 msgstr "採購訂單"
 
 #. module: inter_company_rules
-#: model:ir.model,name:inter_company_rules.model_sale_order
-msgid "Quotation"
-msgstr "報價"
-
-#. module: inter_company_rules
 #: model:ir.model.fields,help:inter_company_rules.field_res_company__intercompany_user_id
 msgid ""
 "Responsible user for creation of documents triggered by intercompany rules."
@@ -173,6 +172,7 @@ msgid "Rule Type"
 msgstr ""
 
 #. module: inter_company_rules
+#: model:ir.model,name:inter_company_rules.model_sale_order
 #: selection:res.company,applicable_on:0
 #: selection:res.config.settings,applicable_on:0
 msgid "Sale Order"
@@ -236,8 +236,8 @@ msgid "Warehouse For Purchase Orders"
 msgstr ""
 
 #. module: inter_company_rules
-#: model:ir.ui.view,arch_db:inter_company_rules.res_config_settings_view_form
-#: model:ir.ui.view,arch_db:inter_company_rules.view_company_inter_change_inherit_form
+#: model_terms:ir.ui.view,arch_db:inter_company_rules.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:inter_company_rules.view_company_inter_change_inherit_form
 msgid "When a company validates a"
 msgstr ""
 
@@ -265,22 +265,17 @@ msgid "draft"
 msgstr ""
 
 #. module: inter_company_rules
-#: model:ir.ui.view,arch_db:inter_company_rules.view_company_inter_change_inherit_form
+#: model_terms:ir.ui.view,arch_db:inter_company_rules.view_company_inter_change_inherit_form
 msgid "generate a"
 msgstr ""
 
 #. module: inter_company_rules
-#: model:ir.model,name:inter_company_rules.model_res_config_settings
-msgid "res.config.settings"
-msgstr "res.config.settings"
-
-#. module: inter_company_rules
-#: model:ir.ui.view,arch_db:inter_company_rules.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:inter_company_rules.res_config_settings_view_form
 msgid "to"
 msgstr "到"
 
 #. module: inter_company_rules
-#: model:ir.ui.view,arch_db:inter_company_rules.view_company_inter_change_inherit_form
+#: model_terms:ir.ui.view,arch_db:inter_company_rules.view_company_inter_change_inherit_form
 msgid "to this company,"
 msgstr ""
 

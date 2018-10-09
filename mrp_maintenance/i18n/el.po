@@ -4,13 +4,15 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# Kostas Goutoudis <goutoudis@gmail.com>, 2018
+# Stefanos Nikou <stefanos.nikou@gmail.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.3+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 08:34+0000\n"
-"PO-Revision-Date: 2018-06-25 08:34+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"Last-Translator: Stefanos Nikou <stefanos.nikou@gmail.com>, 2018\n"
 "Language-Team: Greek (https://www.transifex.com/odoo/teams/41243/el/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,7 +21,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: mrp_maintenance
-#: model:ir.ui.view,arch_db:mrp_maintenance.mrp_production_view_form_inherit_maintenance
+#: model_terms:ir.ui.view,arch_db:mrp_maintenance.mrp_production_view_form_inherit_maintenance
 msgid "<span class=\"o_stat_text\">Maintenance</span>"
 msgstr ""
 
@@ -29,28 +31,27 @@ msgid "Computed as Latest Failure Date + MTBF"
 msgstr ""
 
 #. module: mrp_maintenance
-#: model:ir.ui.view,arch_db:mrp_maintenance.maintenance_request_view_form_inherit_mrp
+#: model_terms:ir.ui.view,arch_db:mrp_maintenance.maintenance_request_view_form_inherit_mrp
 msgid "Discard"
 msgstr "Απόρριψη"
 
 #. module: mrp_maintenance
-#: model:ir.model,name:mrp_maintenance.model_maintenance_equipment
-#: model:ir.ui.view,arch_db:mrp_maintenance.mrp_workcenter_view_form_inherit_maintenance
+#: model_terms:ir.ui.view,arch_db:mrp_maintenance.mrp_workcenter_view_form_inherit_maintenance
 msgid "Equipment"
 msgstr ""
 
 #. module: mrp_maintenance
-#: model:ir.ui.view,arch_db:mrp_maintenance.mrp_workcenter_view_form_inherit_maintenance
+#: model_terms:ir.ui.view,arch_db:mrp_maintenance.mrp_workcenter_view_form_inherit_maintenance
 msgid "Equipments"
 msgstr ""
 
 #. module: mrp_maintenance
-#: model:ir.ui.view,arch_db:mrp_maintenance.mrp_workcenter_view_form_inherit_maintenance
+#: model_terms:ir.ui.view,arch_db:mrp_maintenance.mrp_workcenter_view_form_inherit_maintenance
 msgid "Est. Next Failure"
 msgstr ""
 
 #. module: mrp_maintenance
-#: model:ir.ui.view,arch_db:mrp_maintenance.maintenance_equipment_view_form_inherit_mrp
+#: model_terms:ir.ui.view,arch_db:mrp_maintenance.maintenance_equipment_view_form_inherit_mrp
 msgid "Estimated Next Failure"
 msgstr ""
 
@@ -66,12 +67,12 @@ msgstr ""
 
 #. module: mrp_maintenance
 #: model:ir.model.fields,help:mrp_maintenance.field_maintenance_equipment__expected_mtbf
-#: model:ir.ui.view,arch_db:mrp_maintenance.maintenance_equipment_view_form_inherit_mrp
+#: model_terms:ir.ui.view,arch_db:mrp_maintenance.maintenance_equipment_view_form_inherit_mrp
 msgid "Expected Mean Time Between Failure"
 msgstr ""
 
 #. module: mrp_maintenance
-#: model:ir.ui.view,arch_db:mrp_maintenance.maintenance_equipment_view_form_inherit_mrp
+#: model_terms:ir.ui.view,arch_db:mrp_maintenance.maintenance_equipment_view_form_inherit_mrp
 msgid "Latest Failure"
 msgstr ""
 
@@ -96,40 +97,40 @@ msgid "Machines & Tools"
 msgstr ""
 
 #. module: mrp_maintenance
-#: model:ir.ui.view,arch_db:mrp_maintenance.mrp_workcenter_view_kanban_inherit_maintenance
+#: model_terms:ir.ui.view,arch_db:mrp_maintenance.mrp_workcenter_view_kanban_inherit_maintenance
 msgid "Maintenance"
-msgstr ""
+msgstr "Συντήρηση"
 
 #. module: mrp_maintenance
+#: model:ir.model,name:mrp_maintenance.model_maintenance_equipment
 #: model:ir.model.fields,field_description:mrp_maintenance.field_mrp_workcenter__equipment_ids
 msgid "Maintenance Equipment"
 msgstr ""
 
 #. module: mrp_maintenance
-#: model:ir.ui.view,arch_db:mrp_maintenance.mrp_production_view_form_inherit_maintenance
+#: model:ir.model,name:mrp_maintenance.model_maintenance_request
+#: model_terms:ir.ui.view,arch_db:mrp_maintenance.mrp_production_view_form_inherit_maintenance
 msgid "Maintenance Request"
 msgstr ""
 
 #. module: mrp_maintenance
-#: code:addons/mrp_maintenance/models/mrp_maintenance.py:96
-#: model:ir.model,name:mrp_maintenance.model_maintenance_request
+#: code:addons/mrp_maintenance/models/mrp_maintenance.py:93
 #, python-format
 msgid "Maintenance Requests"
 msgstr ""
 
 #. module: mrp_maintenance
-#: model:ir.ui.view,arch_db:mrp_maintenance.mrp_workorder_tablet_view_form_inherit_maintenance
+#: model_terms:ir.ui.view,arch_db:mrp_maintenance.mrp_workorder_tablet_view_form_inherit_maintenance
 msgid "Maintenance request"
 msgstr ""
 
 #. module: mrp_maintenance
-#: model:ir.model,name:mrp_maintenance.model_mrp_production
 #: model:ir.model.fields,field_description:mrp_maintenance.field_maintenance_request__production_id
 msgid "Manufacturing Order"
-msgstr ""
+msgstr "Εντολή Παραγωγής"
 
 #. module: mrp_maintenance
-#: model:ir.ui.view,arch_db:mrp_maintenance.maintenance_equipment_view_form_inherit_mrp
+#: model_terms:ir.ui.view,arch_db:mrp_maintenance.maintenance_equipment_view_form_inherit_mrp
 msgid "Mean Time Between Failure"
 msgstr ""
 
@@ -141,13 +142,13 @@ msgstr ""
 
 #. module: mrp_maintenance
 #: model:ir.model.fields,help:mrp_maintenance.field_maintenance_equipment__mttr
-#: model:ir.ui.view,arch_db:mrp_maintenance.maintenance_equipment_view_form_inherit_mrp
+#: model_terms:ir.ui.view,arch_db:mrp_maintenance.maintenance_equipment_view_form_inherit_mrp
 msgid "Mean Time To Repair"
 msgstr ""
 
 #. module: mrp_maintenance
-#: code:addons/mrp_maintenance/models/mrp_maintenance.py:83
-#: code:addons/mrp_maintenance/models/mrp_maintenance.py:118
+#: code:addons/mrp_maintenance/models/mrp_maintenance.py:80
+#: code:addons/mrp_maintenance/models/mrp_maintenance.py:115
 #, python-format
 msgid "New Maintenance Request"
 msgstr ""
@@ -158,40 +159,45 @@ msgid "Number of maintenance requests"
 msgstr ""
 
 #. module: mrp_maintenance
-#: model:ir.model.fields,field_description:mrp_maintenance.field_mrp_production__request_ids
-msgid "Request"
-msgstr ""
+#: model:ir.model,name:mrp_maintenance.model_mrp_production
+msgid "Production Order"
+msgstr "Εντολή Παραγωγής"
 
 #. module: mrp_maintenance
-#: model:ir.ui.view,arch_db:mrp_maintenance.maintenance_request_view_form_inherit_mrp
+#: model:ir.model.fields,field_description:mrp_maintenance.field_mrp_production__request_ids
+msgid "Request"
+msgstr "Αίτηση"
+
+#. module: mrp_maintenance
+#: model_terms:ir.ui.view,arch_db:mrp_maintenance.maintenance_request_view_form_inherit_mrp
 msgid "Save"
 msgstr "Αποθήκευση"
 
 #. module: mrp_maintenance
 #: model:ir.model,name:mrp_maintenance.model_mrp_workcenter
 #: model:ir.model.fields,field_description:mrp_maintenance.field_maintenance_equipment__workcenter_id
-#: model:ir.ui.view,arch_db:mrp_maintenance.maintenance_equipment_view_form_inherit_mrp
+#: model_terms:ir.ui.view,arch_db:mrp_maintenance.maintenance_equipment_view_form_inherit_mrp
 msgid "Work Center"
-msgstr ""
+msgstr "Κέντρο Εργασίας"
 
 #. module: mrp_maintenance
 #: model:ir.ui.menu,name:mrp_maintenance.menu_workcenter_tree
 msgid "Work Centers"
-msgstr ""
+msgstr "Κέντρα Εργασίας"
 
 #. module: mrp_maintenance
 #: model:ir.model,name:mrp_maintenance.model_mrp_workorder
 #: model:ir.model.fields,field_description:mrp_maintenance.field_maintenance_request__workorder_id
 msgid "Work Order"
-msgstr ""
+msgstr "Εντολή εργασίας"
 
 #. module: mrp_maintenance
-#: model:ir.ui.view,arch_db:mrp_maintenance.maintenance_equipment_view_form_inherit_mrp
+#: model_terms:ir.ui.view,arch_db:mrp_maintenance.maintenance_equipment_view_form_inherit_mrp
 msgid "days"
-msgstr ""
+msgstr "ημέρες"
 
 #. module: mrp_maintenance
-#: code:addons/mrp_maintenance/models/mrp_maintenance.py:50
+#: code:addons/mrp_maintenance/models/mrp_maintenance.py:47
 #, python-format
 msgid "work centers"
 msgstr ""

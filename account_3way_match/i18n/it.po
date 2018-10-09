@@ -7,13 +7,14 @@
 # Martin Trigaux, 2018
 # Paolo Valier, 2018
 # Léonie Bouchat <lbo@odoo.com>, 2018
+# Federico Castellano <castellano.federico@outlook.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.3+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 08:34+0000\n"
-"PO-Revision-Date: 2018-06-25 08:34+0000\n"
-"Last-Translator: Léonie Bouchat <lbo@odoo.com>, 2018\n"
+"POT-Creation-Date: 2018-09-18 10:05+0000\n"
+"PO-Revision-Date: 2018-09-18 10:05+0000\n"
+"Last-Translator: Federico Castellano <castellano.federico@outlook.com>, 2018\n"
 "Language-Team: Italian (https://www.transifex.com/odoo/teams/41243/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -33,12 +34,12 @@ msgstr ""
 "  * Eccezione: la quantità ricevuta e la quantità fatturata sono diverse."
 
 #. module: account_3way_match
-#: model:ir.ui.view,arch_db:account_3way_match.account_invoice_filter_inherit_account_3way_match
+#: model_terms:ir.ui.view,arch_db:account_3way_match.account_invoice_filter_inherit_account_3way_match
 msgid "Bills in Exception"
-msgstr ""
+msgstr "Fatture in Eccezione"
 
 #. module: account_3way_match
-#: model:ir.ui.view,arch_db:account_3way_match.account_invoice_filter_inherit_account_3way_match
+#: model_terms:ir.ui.view,arch_db:account_3way_match.account_invoice_filter_inherit_account_3way_match
 msgid "Bills to Pay"
 msgstr "Ricevute da pagare"
 
@@ -52,7 +53,7 @@ msgstr "Eccezione"
 #. module: account_3way_match
 #: model:ir.model.fields,field_description:account_3way_match.field_account_invoice__force_release_to_pay
 msgid "Force status"
-msgstr ""
+msgstr "Forza lo stato"
 
 #. module: account_3way_match
 #: model:ir.model.fields,help:account_3way_match.field_account_invoice__force_release_to_pay
@@ -92,14 +93,13 @@ msgstr "Consegna da Pagare"
 
 #. module: account_3way_match
 #: model:ir.model.fields,field_description:account_3way_match.field_account_invoice__release_to_pay
-#: model:ir.ui.view,arch_db:account_3way_match.account_invoice_form_inherit
 msgid "Should be paid"
 msgstr "Dovrebbe essere pagato"
 
 #. module: account_3way_match
 #: model:ir.model.fields,field_description:account_3way_match.field_account_invoice__release_to_pay_manual
 msgid "Should be paid Manual"
-msgstr ""
+msgstr "Deve essere pagato manualmente"
 
 #. module: account_3way_match
 #: model:ir.model.fields,help:account_3way_match.field_account_invoice__release_to_pay

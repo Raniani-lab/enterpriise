@@ -6,14 +6,19 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-18 10:05+0000\n"
-"PO-Revision-Date: 2018-09-18 10:05+0000\n"
+"POT-Creation-Date: 2018-09-21 14:07+0000\n"
+"PO-Revision-Date: 2018-09-21 14:07+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: web_grid
+#: model:ir.model,name:web_grid.model_ir_actions_act_window_view
+msgid "Action Window View"
+msgstr ""
 
 #. module: web_grid
 #: selection:ir.actions.act_window.view,view_mode:0
@@ -27,6 +32,11 @@ msgstr ""
 #: code:addons/web_grid/static/src/xml/grid_view.xml:5
 #, python-format
 msgid "Add a Line"
+msgstr ""
+
+#. module: web_grid
+#: model:ir.model,name:web_grid.model_base
+msgid "Base"
 msgstr ""
 
 #. module: web_grid
@@ -180,6 +190,11 @@ msgid "Unknown"
 msgstr ""
 
 #. module: web_grid
+#: model:ir.model,name:web_grid.model_ir_ui_view
+msgid "View"
+msgstr ""
+
+#. module: web_grid
 #: model:ir.model.fields,field_description:web_grid.field_ir_actions_act_window_view__view_mode
 #: model:ir.model.fields,field_description:web_grid.field_ir_ui_view__type
 msgid "View Type"
@@ -190,20 +205,5 @@ msgstr ""
 #, python-format
 msgid "Week %(weeknumber)s\n"
 "%(week_start)s - %(week_end)s"
-msgstr ""
-
-#. module: web_grid
-#: model:ir.model,name:web_grid.model_base
-msgid "base"
-msgstr ""
-
-#. module: web_grid
-#: model:ir.model,name:web_grid.model_ir_actions_act_window_view
-msgid "ir.actions.act_window.view"
-msgstr ""
-
-#. module: web_grid
-#: model:ir.model,name:web_grid.model_ir_ui_view
-msgid "ir.ui.view"
 msgstr ""
 

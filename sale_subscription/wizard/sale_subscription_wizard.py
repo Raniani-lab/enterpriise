@@ -4,6 +4,7 @@ from odoo import models, fields, api
 
 class SaleSubscriptionWizard(models.TransientModel):
     _name = 'sale.subscription.wizard'
+    _description = 'Subscription Upsell wizard'
 
     def _default_subscription(self):
         return self.env['sale.subscription'].browse(self._context.get('active_id'))
@@ -66,6 +67,7 @@ class SaleSubscriptionWizard(models.TransientModel):
 
 class SaleSubscriptionWizardOption(models.TransientModel):
     _name = "sale.subscription.wizard.option"
+    _description = 'Subscription Upsell Lines Wizard'
 
     name = fields.Char(string="Description")
     wizard_id = fields.Many2one('sale.subscription.wizard', required=True, ondelete="cascade")

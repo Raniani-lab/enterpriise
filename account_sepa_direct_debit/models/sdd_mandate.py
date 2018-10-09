@@ -14,6 +14,7 @@ class SDDMandate(models.Model):
     using SEPA Direct Debit.
     """
     _name = 'sdd.mandate'
+    _description = 'SDD Mandate'
 
     _sql_constraints = [('name_unique', 'unique(name)', "Mandate identifier must be unique ! Please choose another one.")]
 

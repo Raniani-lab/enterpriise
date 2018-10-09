@@ -8,7 +8,7 @@
         </record>
 
         <record id="base.main_partner" model="res.partner">
-            <field name="vat">ACO560518KW7</field>
+            <field name="vat">TCM970625MB1</field>
             <field name="property_account_position_id" search="[('name', '=', '601 - General de Ley Personas Morales')]"/>
             <field name="street_name">Campobasso Norte</field>
             <field name="street2">Fraccionamiento Montecarlo</field>

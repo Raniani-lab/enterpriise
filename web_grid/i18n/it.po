@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-05 09:12+0000\n"
-"PO-Revision-Date: 2018-09-05 09:12+0000\n"
+"POT-Creation-Date: 2018-09-21 14:07+0000\n"
+"PO-Revision-Date: 2018-09-21 14:07+0000\n"
 "Last-Translator: Léonie Bouchat <lbo@odoo.com>, 2018\n"
 "Language-Team: Italian (https://www.transifex.com/odoo/teams/41243/it/)\n"
 "MIME-Version: 1.0\n"
@@ -21,6 +21,11 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Language: it\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: web_grid
+#: model:ir.model,name:web_grid.model_ir_actions_act_window_view
+msgid "Action Window View"
+msgstr ""
 
 #. module: web_grid
 #: selection:ir.actions.act_window.view,view_mode:0
@@ -37,13 +42,19 @@ msgid "Add a Line"
 msgstr "Aggiungi una Riga"
 
 #. module: web_grid
+#: model:ir.model,name:web_grid.model_base
+msgid "Base"
+msgstr "Base"
+
+#. module: web_grid
 #: selection:ir.actions.act_window.view,view_mode:0
 #: selection:ir.ui.view,type:0
 msgid "Calendar"
 msgstr "Calendario"
 
 #. module: web_grid
-#: code:addons/web_grid/models.py:212 code:addons/web_grid/models.py:244
+#: code:addons/web_grid/models/models.py:201
+#: code:addons/web_grid/models/models.py:233
 #, python-format
 msgid "Can not use fields of type %s as grid columns"
 msgstr ""
@@ -187,30 +198,20 @@ msgid "Unknown"
 msgstr "Sconosciuto"
 
 #. module: web_grid
+#: model:ir.model,name:web_grid.model_ir_ui_view
+msgid "View"
+msgstr "Vista"
+
+#. module: web_grid
 #: model:ir.model.fields,field_description:web_grid.field_ir_actions_act_window_view__view_mode
 #: model:ir.model.fields,field_description:web_grid.field_ir_ui_view__type
 msgid "View Type"
 msgstr "Tipo Vista"
 
 #. module: web_grid
-#: code:addons/web_grid/models.py:255
+#: code:addons/web_grid/models/models.py:244
 #, python-format
 msgid ""
 "Week %(weeknumber)s\n"
 "%(week_start)s - %(week_end)s"
 msgstr ""
-
-#. module: web_grid
-#: model:ir.model,name:web_grid.model_base
-msgid "base"
-msgstr "base"
-
-#. module: web_grid
-#: model:ir.model,name:web_grid.model_ir_actions_act_window_view
-msgid "ir.actions.act_window.view"
-msgstr "ir.actions.act_window.view"
-
-#. module: web_grid
-#: model:ir.model,name:web_grid.model_ir_ui_view
-msgid "ir.ui.view"
-msgstr "ir.ui.view"

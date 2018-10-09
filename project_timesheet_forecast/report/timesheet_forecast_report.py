@@ -8,7 +8,7 @@ from odoo import api, fields, models
 class TimesheetForecastReport(models.Model):
 
     _name = "project.timesheet.forecast.report.analysis"
-    _description = "Timesheet and Forecast Statistics"
+    _description = "Timesheet & Forecast Statistics"
     _auto = False
     _rec_name = 'date'
     _order = 'date desc'

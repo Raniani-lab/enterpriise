@@ -14,68 +14,50 @@
     width: 100%;
     height: auto;
     padding: $o-sheet-vpadding 0;
+    background-color: white;
+
+    %o-dashboard-label-design {
+        color: $headings-color;
+        margin-bottom: 0;
+    }
 
     > .o_group, .o_subview {
         // By default dashboard entries are full-width...
         flex: 1 1 100%;
-        margin: 0 $padding $padding*2;
-        padding: $padding;
-        border: 1px solid gray('400');
-        background-color: white;
-        box-shadow: 0px 5px 2px -5px;
+        margin: 0 $padding ($spacer * 4);
 
-        //...trig masonery layout for very large screens
-        @include media-breakpoint-up(xxl, $o-extra-grid-breakpoints) {
-            flex: 1 1 47%;
+        .o_graph_container {
+            display: flex;
+
+             > .o_graph_svg_container {
+                flex: 1 1 auto;
+                height: 250px;
+
+                > label {
+                    position: absolute;
+                    @extend %o-dashboard-label-design;
+                }
+            }
         }
     }
 
     .o_group {
-        display: flex;
-        flex-flow: row wrap;
-        align-items: flex-start;
-
-        @for $i from 1 through $o-form-group-cols {
-            .o_group_col_#{$i} {
-                padding: 0 $padding-small;
-                width: 50%;
-                flex: 1 1 50%;
-
-                @include media-breakpoint-down(md) {
-                    &.o_group {
-                        width: 100%;
-                        flex: 1 1 100%;
-                    }
-                }
-
-                @include media-breakpoint-up(lg) {
-                    width: floor(100% / 12 * $i);
-                    flex: 0 0 floor(100% / 12 * $i);
-                }
-            }
+        > .o_aggregate_col, .o_formula {
+            display: inline-block;
+            width: 200px;
+            margin-bottom: ($spacer * 1.5);
         }
 
-        .o_group {
-            margin: 0 -10px $padding;
-        }
-
-        .o_horizontal_separator {
-            margin-bottom: $padding-small;
+        .o_group.o_group_col_12 {
             width: 100%;
-            padding: 3px $padding-small;
-            border-bottom: 1px solid  gray('300');
-            font-size: 1.3em;
-            color: gray('600');
         }
 
         .o_aggregate, .o_formula {
-            margin-bottom: $padding-small;
-            width: 220px;
-            padding-left: 8px;
-            border-left: 2px solid grey;
+            padding: 0 ($padding + $padding-small) 0 $padding-small;
+            border-left: $border-width solid $border-color;
 
             > label {
-                margin-bottom: 0;
+                @extend %o-dashboard-label-design;
 
                 &:empty {
                     display: none;
@@ -89,49 +71,46 @@
             .o_value {
                 font-size: 1.6em;
             }
+
             .o_comparison {
                 font-size: 1em
             }
+
             .o_variation {
+                margin-top: ($spacer * .25);
                 font-size: 1.6em;
-                &.o_positive {
-                    color: green;
-                }
-                &.o_negative {
-                    color: red;
+                line-height: 1;
+
+                + .o_comparison {
+                    margin-top: ($spacer * .5);
+                    font-weight: bold;
+                    > span {
+                        font-weight: normal;
+                    }
                 }
             }
 
+            &.border-danger, &.border-success {
+                border-left-width: 2px;
+            }
+
+            @include text-emphasis-variant(".o_variation.o_positive", $success);
+            @include text-emphasis-variant(".o_variation.o_negative", $danger);
         }
 
-        .o_widget, .o_pie_chart {
-            margin-bottom: $padding-small;
-            display: flex;
-            flex-flow: row wrap;
-            align-items: flex-start;
-            flex : 1 1 auto;
-            > label:empty {
-                display: none;
+        .o_horizontal_separator {
+            width: 100%;
+            padding-bottom: $headings-margin-bottom;
+            font-size: 1.3em;
+            color: $headings-color;
+        }
 
-                + .o_value {
-                    font-size: 2.5em;
-                }
-            }
-
-            @include media-breakpoint-between(vsm, md, $o-extra-grid-breakpoints) {
-                width: 100%;
-                flex: 1 0 100%;
-            }
-
-            @include media-breakpoint-up(lg) {
-                flex: 1 1 auto;
-                margin-right: -$padding-small*0.5;
-            }
+        .o_pie_chart {
+            width: 100%;
         }
 
         .o_aggregate.o_clickable {
             .o_value, .o_variation {
-                // .btn-link(); FIXME
                 cursor: pointer;
 
                 &:after {
@@ -139,7 +118,6 @@
                     content: '\f002';
                     vertical-align: middle;
                     margin-left: $padding-small;
-                    color: theme-color('primary');
                     opacity: 0;
                 }
 
@@ -150,31 +128,122 @@
         }
     }
 
-    // Let expand first's group columns to fit the card size.
+    // Expand first's group columns to fit the card size.
     > .o_group {
         justify-content: stretch;
+        display: flex;
+        flex-flow: row wrap;
+        align-items: flex-start;
 
-        > [class*="o_group_col_"] {
-            @include media-breakpoint-between(vsm, md, $o-extra-grid-breakpoints) {
-                width: 100%;
-                flex: 1 0 100%;
-            }
+        > .o_group.o_group_col_2 {
+            width: auto;
+            flex: 1 1 50%;
 
-            @include media-breakpoint-up(lg) {
-                flex: 1 1 auto;
-                margin-right: -$padding-small*0.5;
+            // Groups with at least one widget (commonly graphs)
+            &.o_has_widget {
+                flex: 1;
+                display: flex;
+
+                .o_graph_container {
+                    display: flex;
+                    justify-content: space-between;
+
+                    .o_graph_svg_container {
+                        min-width: 200px;
+                        margin-bottom: ($spacer * 1.5);
+
+                        @include media-breakpoint-up(sm) {
+                            min-width: 300px;
+                            max-width: 400px;
+                        }
+                    }
+                    label {
+                        @extend %o-dashboard-label-design;
+                    }
+                }
+
+                // The following code handle inconsistencies in layout
+                // due to different JS engines used to render pie-charts.
+                // Ideally, we should render graphs using the same
+                // HTML structure and let ‘flex’ so its job.
+
+                // Layout for groups containing 1 pie-chart only
+                &.o_nbr_pie_charts_1 {
+                    .o_graph_svg_container:first-child  {
+                        border-left: $border-width solid $border-color;
+                        padding-left: $padding;
+                    }
+
+                    @include media-breakpoint-down(sm) {
+                        flex: 0 0 100%;
+
+                        .o_graph_svg_container {
+                            &, &:first-child {
+                                border-left: 0;
+                                padding-left: 0;
+                                border-top: $border-width solid $border-color;
+                                padding-top: $padding;
+                            }
+                        }
+
+                        // Comparison active, 2 pie-chart in tot.
+                        &.o_active_comparison {
+                            .o_graph_container {
+                                flex-flow: row wrap;
+                            }
+                        }
+                    }
+
+                }
+
+                // Layout for groups containing 2 pie-charts
+                &.o_nbr_pie_charts_2 {
+                    flex-flow: row wrap;
+                    flex: 0 0 auto;
+
+                    @include media-breakpoint-down(md) {
+                        margin-top: ($spacer * 2);
+                        flex: 0 0 100%;
+                    }
+
+                    // Comparison active, 4 pie-chart tot.
+                    &.o_active_comparison  {
+                        margin-top: ($spacer * 3);
+                        flex: 1 0 100%;
+                    }
+
+                    .o_widget {
+                        flex: 1 1 50%;
+                        border-left: $border-width solid $border-color;
+                        padding-left: $padding;
+                        margin-bottom: ($spacer * 1.5);
+
+                        @include media-breakpoint-down(md) {
+                            border-left: 0;
+                            padding-left: 0;
+                            border-top: $border-width solid $border-color;
+                            padding-top: $padding;
+                            flex: 0 0 100%;
+                        }
+
+                        .o_graph_container {
+                            flex-flow: row wrap;
+                        }
+                    }
+                }
             }
         }
     }
 
-    .o_graph_buttons, .o_pivot_buttons {
-        padding: $padding-small $padding;
-        margin: (-$padding) (-$padding) $padding-small (-$padding);
-        border-bottom: 1px solid gray('400');
+    .o_pivot > table {
+        width: 100%;
     }
 
-    .o_graph_buttons .btn-group + .btn-group.o_dropdown {
-        margin-left: 4px;
+    .o_dashboard_subview_buttons  {
+        // Icons toolbar
+        > .btn-group[role=toolbar] {
+            margin-left: 8px;
+        }
     }
 
     .o_subview {
@@ -189,20 +258,9 @@
         }
 
         &[type=graph] {
-            padding-bottom: 0;
-
             .o_view_controller {
                 width: 100%;
                 min-height: 300px;
-                position: relative;
-
-                .o_graph_container {
-                    display: flex;
-                    @include o-position-absolute(0, 0, 0, 0);
-                }
-                .o_graph_svg_container {
-                    flex: 1 1 auto;
-                }
             }
         }
     }

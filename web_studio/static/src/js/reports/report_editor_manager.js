@@ -11,8 +11,8 @@ var ReportEditorSidebar = require('web_studio.ReportEditorSidebar');
 var ReportEditor = require('web_studio.ReportEditor');
 var AbstractEditorManager = require('web_studio.AbstractEditorManager');
 
+var qweb = core.qweb;
 var _t = core._t;
-
 
 var ReportEditorManager = AbstractEditorManager.extend({
     className: AbstractEditorManager.prototype.className + ' o_web_studio_report_editor_manager',
@@ -20,9 +20,13 @@ var ReportEditorManager = AbstractEditorManager.extend({
         hover_editor: '_onHighlightPreview',
         drop_component: '_onDropComponent',
         begin_drag_component: '_onBeginDragComponent',
-        print_report: '_onPrintReport',
         element_removed: '_onElementRemoved',
         iframe_ready: '_onIframeReady',
+        begin_preview_drag_component: '_onBeginPreviewDragComponent',
+        end_preview_drag_component: '_onEndPreviewDragComponent',
+    }),
+    events: _.extend({}, AbstractEditorManager.prototype.events, {
+        'click .o_web_studio_report_print': '_onPrintReport',
     }),
     /**
      * @override
@@ -60,7 +64,7 @@ var ReportEditorManager = AbstractEditorManager.extend({
     start: function () {
         var self = this;
         return this._super.apply(this, arguments).then(function () {
-            self.renderPager();
+            self._renderActionsSection();
             self._setPaperFormat();
         });
     },
@@ -68,37 +72,7 @@ var ReportEditorManager = AbstractEditorManager.extend({
     //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
-    /**
-     * @override
-     */
-    renderPager: function () {
-        var self = this;
-        this.pager = new Pager(this, this.env.ids.length, 1, 1);
-        this.pager.on('pager_changed', this, function (newState) {
-            this._cleanOperationsStack();
-            this.env.currentId = this.env.ids[newState.current_min - 1];
-            // TODO: maybe we should trigger_up and the action should handle
-            // this? But the pager will be reinstantiate and useless RPCs will
-            // be done (see willStart)
-            // OR should we put _getReportViews of report_editor_action here?
-            // But then it should be mocked in tests?
-            this._getReportViews().then(function (result) {
-                self.reportHTML = result.report_html;
-                self.reportViews = result.views;
-                self.updateEditor();
-            });
-        });
-        var $pager = $('<div>', {
-            class: 'o_web_studio_report_pager',
-        });
-        this.pager.appendTo($pager).then(function () {
-            self.pager.enable();
-        });
 
-        if (self.pager.state.size > 1) {
-            $pager.appendTo(this.$el);
-        }
-    },
     /**
      * @override
      */
@@ -267,6 +241,55 @@ var ReportEditorManager = AbstractEditorManager.extend({
         });
     },
     /**
+     * This section contains the 'Print' button and the pager.
+     *
+     * @private
+     */
+    _renderActionsSection: function () {
+        var $actionsSection = $('<div>', {
+            class: 'o_web_studio_report_actions',
+        });
+        $actionsSection.appendTo(this.$el);
+
+        var $printSection = $(qweb.render('web_studio.PrintSection'));
+        $printSection.appendTo($actionsSection);
+
+        var $pager = this._renderPager();
+        if (this.pager.state.size > 1) {
+            // only display the pager if useful
+            $pager.appendTo($actionsSection);
+        }
+    },
+    /**
+     * @override
+     * @returns {jQuery} the pager node
+     */
+    _renderPager: function () {
+        var self = this;
+        this.pager = new Pager(this, this.env.ids.length, 1, 1);
+        this.pager.on('pager_changed', this, function (newState) {
+            this._cleanOperationsStack();
+            this.env.currentId = this.env.ids[newState.current_min - 1];
+            // TODO: maybe we should trigger_up and the action should handle
+            // this? But the pager will be reinstantiate and useless RPCs will
+            // be done (see willStart)
+            // OR should we put _getReportViews of report_editor_action here?
+            // But then it should be mocked in tests?
+            this._getReportViews().then(function (result) {
+                self.reportHTML = result.report_html;
+                self.reportViews = result.views;
+                self.updateEditor();
+            });
+        });
+        var $pager = $('<div>', {
+            class: 'o_web_studio_report_pager',
+        });
+        this.pager.appendTo($pager).then(function () {
+            self.pager.enable();
+        });
+        return $pager;
+    },
+    /**
      * @private
      * @param {Object} nodesArchs
      */
@@ -320,6 +343,13 @@ var ReportEditorManager = AbstractEditorManager.extend({
         this.view.beginDragComponent(ev.data.widget);
     },
     /**
+     * @private
+     * @param {OdooEvent} ev
+     */
+    _onBeginPreviewDragComponent: function (ev) {
+        this.view.beginPreviewDragComponent(ev.data.widget);
+    },
+    /**
      * @override
      */
     _onDragComponent: function (ev) {
@@ -353,6 +383,13 @@ var ReportEditorManager = AbstractEditorManager.extend({
                 });
             },
         });
+    },
+        /**
+     * @private
+     * @param {OdooEvent} ev
+     */
+    _onEndPreviewDragComponent: function (ev) {
+        this.view.endPreviewDragComponent(ev.data.widget);
     },
     /**
      * @private

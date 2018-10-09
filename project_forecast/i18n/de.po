@@ -3,26 +3,15 @@
 # * project_forecast
 # 
 # Translators:
-# Ermin Trevisan <trevi@twanda.com>, 2017
-# Martin Trigaux, 2017
-# Tina Rittmüller <tr@ife.de>, 2017
-# darenkster <inactive+darenkster@transifex.com>, 2017
-# Krakataua Katarajtu <shlok@hotmail.de>, 2017
-# Henry Mineehen <info@mineehen.de>, 2017
-# Ralf Hilgenstock <rh@dialoge.info>, 2017
-# Wolfgang Taferner, 2017
-# Renzo Meister, 2017
-# Niki Waibel, 2017
-# e2f <projects@e2f.com>, 2018
-# Anja Funk <anja.funk@afimage.de>, 2018
-# Katharina Moritz <kmo@e2f.com>, 2018
+# Martin Trigaux, 2018
+# Johannes Croe <jcr@odoo.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.3+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 08:34+0000\n"
-"PO-Revision-Date: 2018-06-25 08:34+0000\n"
-"Last-Translator: Katharina Moritz <kmo@e2f.com>, 2018\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"Last-Translator: Johannes Croe <jcr@odoo.com>, 2018\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -31,23 +20,23 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: project_forecast
-#: model:ir.ui.view,arch_db:project_forecast.project_forecast_view_form
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_form
 msgid "% Time"
 msgstr "% Zeit"
 
 #. module: project_forecast
-#: code:addons/project_forecast/models/project_forecast.py:199
+#: code:addons/project_forecast/models/project_forecast.py:200
 #, python-format
 msgid "%s Task(s): %s"
 msgstr ""
 
 #. module: project_forecast
-#: model:ir.ui.view,arch_db:project_forecast.project_view_kanban_inherit_project_forecast
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_view_kanban_inherit_project_forecast
 msgid "<span class=\"o_label\">Forecast</span>"
 msgstr "<span class=\"o_label\">Prognose</span>"
 
 #. module: project_forecast
-#: model:ir.ui.view,arch_db:project_forecast.project_view_form_inherit_project_forecast
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_view_form_inherit_project_forecast
 msgid "<span>Forecast</span>"
 msgstr "<span>Prognose</span>"
 
@@ -68,7 +57,7 @@ msgstr ""
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_task__allow_forecast
-#: model:ir.ui.view,arch_db:project_forecast.project_view_form_inherit_project_forecast
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_view_form_inherit_project_forecast
 msgid "Allow Forecast"
 msgstr "Erlaube Prognosen"
 
@@ -78,12 +67,12 @@ msgid "Allow forecast"
 msgstr "Erlaube Prognosen"
 
 #. module: project_forecast
-#: model:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
 msgid "Archived"
 msgstr "Archiviert"
 
 #. module: project_forecast
-#: model:ir.ui.view,arch_db:project_forecast.project_forecast_view_form
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_form
 msgid "Assign To"
 msgstr "Zuordnen zu"
 
@@ -128,6 +117,11 @@ msgid "Company"
 msgstr "Unternehmen"
 
 #. module: project_forecast
+#: model:ir.model,name:project_forecast.model_res_config_settings
+msgid "Config Settings"
+msgstr "Konfiguration "
+
+#. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__create_uid
 msgid "Created by"
 msgstr "Erstellt von"
@@ -149,7 +143,7 @@ msgstr "Anzeigename"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__employee_id
-#: model:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
 msgid "Employee"
 msgstr "Mitarbeiter"
 
@@ -189,7 +183,7 @@ msgid "Forecast"
 msgstr "Prognose"
 
 #. module: project_forecast
-#: code:addons/project_forecast/models/project_forecast.py:273
+#: code:addons/project_forecast/models/project_forecast.py:274
 #, python-format
 msgid "Forecast (in %s)"
 msgstr ""
@@ -197,35 +191,35 @@ msgstr ""
 #. module: project_forecast
 #: model:ir.actions.act_window,name:project_forecast.project_forecast_action_report_activities
 #: model:ir.ui.menu,name:project_forecast.project_forecast_report_activities
-#: model:ir.ui.view,arch_db:project_forecast.project_forecast_view_graph
-#: model:ir.ui.view,arch_db:project_forecast.project_forecast_view_pivot
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_graph
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_pivot
 msgid "Forecast Analysis"
 msgstr "Prognosen-Analyse"
 
 #. module: project_forecast
-#: model:ir.ui.view,arch_db:project_forecast.project_forecast_view_form
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_form
 msgid "Forecast Form"
 msgstr "Prognosenformular"
 
 #. module: project_forecast
-#: model:ir.ui.view,arch_db:project_forecast.project_forecast_view_tree
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_tree
 msgid "Forecast List"
 msgstr "Prognosenliste"
 
 #. module: project_forecast
 #: model:ir.actions.act_window,name:project_forecast.project_forecast_action_by_user
-#: model:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_user
+#: model_terms:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_user
 msgid "Forecast by employee"
 msgstr ""
 
 #. module: project_forecast
 #: model:ir.actions.act_window,name:project_forecast.project_forecast_action_by_project
-#: model:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_project
+#: model_terms:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_project
 msgid "Forecast by project"
 msgstr "Prognosen nach Projekt"
 
 #. module: project_forecast
-#: model:ir.ui.view,arch_db:project_forecast.project_forecast_view_grid_by_task
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_grid_by_task
 msgid "Forecast by task"
 msgstr ""
 
@@ -235,7 +229,7 @@ msgid "Forecast end date should be greater or equal to its start date"
 msgstr ""
 
 #. module: project_forecast
-#: code:addons/project_forecast/models/project_forecast.py:197
+#: code:addons/project_forecast/models/project_forecast.py:198
 #, python-format
 msgid ""
 "Forecast should not overlap existing forecasts. To solve this, check the "
@@ -253,18 +247,18 @@ msgid "Forecast: view by project"
 msgstr ""
 
 #. module: project_forecast
-#: code:addons/project_forecast/models/project_forecast.py:163
+#: code:addons/project_forecast/models/project_forecast.py:164
 #, python-format
 msgid "Forecasted time must be positive"
 msgstr "Veranschlagte Zeit muss positiv sein"
 
 #. module: project_forecast
-#: model:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
 msgid "Future"
 msgstr "Fiktiver Bestand"
 
 #. module: project_forecast
-#: code:addons/project_forecast/models/project_forecast.py:295
+#: code:addons/project_forecast/models/project_forecast.py:296
 #, python-format
 msgid ""
 "Grid adjustment for project forecasts only supports the 'start_date' columns"
@@ -273,7 +267,7 @@ msgid ""
 msgstr ""
 
 #. module: project_forecast
-#: model:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
 msgid "Group By"
 msgstr "Gruppieren nach"
 
@@ -303,20 +297,20 @@ msgid "Last Updated on"
 msgstr "Zuletzt aktualisiert am"
 
 #. module: project_forecast
-#: model:ir.ui.view,arch_db:project_forecast.project_forecast_view_grid_by_task
-#: model:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_project
-#: model:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_user
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_grid_by_task
+#: model_terms:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_project
+#: model_terms:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_user
 msgid "Month"
 msgstr "Monat"
 
 #. module: project_forecast
-#: model:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
-msgid "My activities"
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
+msgid "My Activities"
 msgstr "Meine Aktivitäten"
 
 #. module: project_forecast
-#: model:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
-msgid "My projects"
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
+msgid "My Projects"
 msgstr "Meine Projekte"
 
 #. module: project_forecast
@@ -325,7 +319,7 @@ msgid "Name"
 msgstr "Name"
 
 #. module: project_forecast
-#: model:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
 msgid "Past"
 msgstr "Vergangenheit"
 
@@ -342,12 +336,13 @@ msgstr "Geplante Stunden"
 #. module: project_forecast
 #: model:ir.model,name:project_forecast.model_project_project
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__project_id
-#: model:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
 msgid "Project"
 msgstr "Projekt"
 
 #. module: project_forecast
-#: model:ir.ui.view,arch_db:project_forecast.project_forecast_view_form
+#: model:ir.model,name:project_forecast.model_project_forecast
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_form
 msgid "Project Forecast"
 msgstr "Projektprognosen"
 
@@ -364,7 +359,7 @@ msgstr "Startdatum"
 #. module: project_forecast
 #: model:ir.model,name:project_forecast.model_project_task
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__task_id
-#: model:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
 msgid "Task"
 msgstr "Aufgabe"
 
@@ -379,7 +374,7 @@ msgid "Task tags"
 msgstr "Aufgaben-Tags"
 
 #. module: project_forecast
-#: code:addons/project_forecast/models/project_forecast.py:131
+#: code:addons/project_forecast/models/project_forecast.py:132
 #, python-format
 msgid ""
 "The employee (%s) doesn't have a timezone, this might cause errors in the "
@@ -417,16 +412,16 @@ msgid "User"
 msgstr "Benutzer"
 
 #. module: project_forecast
-#: model:ir.ui.view,arch_db:project_forecast.project_forecast_view_grid_by_task
-#: model:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_project
-#: model:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_user
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_grid_by_task
+#: model_terms:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_project
+#: model_terms:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_user
 msgid "Week"
 msgstr "Woche"
 
 #. module: project_forecast
-#: model:ir.ui.view,arch_db:project_forecast.project_forecast_view_grid_by_task
-#: model:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_project
-#: model:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_user
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_grid_by_task
+#: model_terms:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_project
+#: model_terms:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_user
 msgid "Year"
 msgstr "Jahr"
 
@@ -448,28 +443,18 @@ msgid ""
 msgstr ""
 
 #. module: project_forecast
-#: code:addons/project_forecast/models/project_forecast.py:169
+#: code:addons/project_forecast/models/project_forecast.py:170
 #, python-format
 msgid "Your task is not in the selected project."
 msgstr "Ihre Aufgabe ist nicht im ausgewählten Projekt."
 
 #. module: project_forecast
-#: model:ir.ui.view,arch_db:project_forecast.project_forecast_view_form
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_form
 msgid "day(s)"
 msgstr "Tag(e)"
 
 #. module: project_forecast
-#: model:ir.model,name:project_forecast.model_project_forecast
-msgid "project.forecast"
-msgstr "project.forecast"
-
-#. module: project_forecast
-#: model:ir.model,name:project_forecast.model_res_config_settings
-msgid "res.config.settings"
-msgstr "res.config.settings"
-
-#. module: project_forecast
-#: code:addons/project_forecast/models/project_forecast.py:108
+#: code:addons/project_forecast/models/project_forecast.py:109
 #, python-format
 msgid "undefined"
 msgstr "undefiniert"

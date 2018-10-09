@@ -80,7 +80,14 @@ class TestCaseDocuments(TransactionCase):
             'domain_folder_id': self.folder_a_a.id,
             'name': 'workflow rule on f_a_a',
             'folder_id': self.folder_b.id,
-            'tag_action_ids': [(4, self.tag_action_a.id, 0)]
+            'tag_action_ids': [(4, self.tag_action_a.id, 0)],
+            'remove_activities': True,
+            'activity_option': True,
+            'activity_type_id': self.env.ref('documents.mail_documents_activity_data_Inbox').id,
+            'activity_summary': 'test workflow rule activity summary',
+            'activity_date_deadline_range': 7,
+            'activity_date_deadline_range_type': 'days',
+            'activity_note': 'activity test note',
         })
 
     def test_documents_rules(self):
@@ -91,6 +98,20 @@ class TestCaseDocuments(TransactionCase):
         self.assertTrue(self.tag_b.id in self.attachment_gif.tag_ids.ids, "failed at workflow rule add tag id")
         self.assertTrue(self.tag_b.id in self.attachment_txt.tag_ids.ids, "failed at workflow rule add tag id 2")
         self.assertEqual(len(self.attachment_gif.tag_ids.ids), 1, "failed at workflow rule add tag len")
+
+        activity_gif = self.env['mail.activity'].search(['&',
+                                                         ('res_id', '=', self.attachment_gif.id),
+                                                         ('res_model', '=', 'ir.attachment')])
+
+        self.assertEqual(len(activity_gif), 1, "failed at workflow rule activity len")
+        self.assertTrue(activity_gif.exists(), "failed at workflow rule activity exists")
+        self.assertEqual(activity_gif.summary, 'test workflow rule activity summary',
+                         "failed at activity data summary from workflow create activity")
+        self.assertEqual(activity_gif.note, '<p>activity test note</p>',
+                         "failed at activity data note from workflow create activity")
+        self.assertEqual(activity_gif.activity_type_id.id,
+                         self.env.ref('documents.mail_documents_activity_data_Inbox').id,
+                         "failed at activity data note from workflow create activity")
 
         self.assertEqual(self.attachment_gif.folder_id.id, self.folder_b.id, "failed at workflow rule set folder gif")
         self.assertEqual(self.attachment_txt.folder_id.id, self.folder_b.id, "failed at workflow rule set folder txt")

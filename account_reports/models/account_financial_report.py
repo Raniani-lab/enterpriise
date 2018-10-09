@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 import copy
+import ast
+
 from odoo import models, fields, api, _
 from odoo.tools.safe_eval import safe_eval
 from odoo.tools.misc import formatLang
@@ -14,7 +16,7 @@ from odoo.tools.pycompat import izip
 
 class ReportAccountFinancialReport(models.Model):
     _name = "account.financial.html.report"
-    _description = "Account Report"
+    _description = "Account Report (HTML)"
     _inherit = "account.report"
 
     name = fields.Char(translate=True)
@@ -32,7 +34,7 @@ class ReportAccountFinancialReport(models.Model):
         string='Menu Item', comodel_name='ir.ui.menu', copy=False,
         help="The menu item generated for this report, or None if there isn't any."
     )
-    parent_id = fields.Many2one('ir.ui.menu', related="generated_menu_id.parent_id")
+    parent_id = fields.Many2one('ir.ui.menu', related="generated_menu_id.parent_id", readonly=False)
     tax_report = fields.Boolean('Tax Report', help="Set to True to automatically filter out journal items that have the boolean field 'tax_exigible' set to False")
     applicable_filters_ids = fields.Many2many('ir.filters', domain="[('model_id', '=', 'account.move.line')]",
                                               help='Filters that can be used to filter and group lines in this report.')
@@ -227,7 +229,7 @@ class ReportAccountFinancialReport(models.Model):
                 }
                 action_xmlid = "%s.%s" % (module, 'account_financial_html_report_action_' + str(report.id))
                 data = dict(xml_id=action_xmlid, values=action_vals, noupdate=True)
-                action = self.env['ir.actions.client']._load_records([data])
+                action = self.env['ir.actions.client'].sudo()._load_records([data])
 
                 menu_vals = {
                     'name': report._get_report_name(),
@@ -236,7 +238,7 @@ class ReportAccountFinancialReport(models.Model):
                 }
                 menu_xmlid = "%s.%s" % (module, 'account_financial_html_report_menu_' + str(report.id))
                 data = dict(xml_id=menu_xmlid, values=menu_vals, noupdate=True)
-                menu = self.env['ir.ui.menu']._load_records([data])
+                menu = self.env['ir.ui.menu'].sudo()._load_records([data])
 
                 self.write({'generated_menu_id': menu.id})
 
@@ -292,7 +294,7 @@ class ReportAccountFinancialReport(models.Model):
         domain = [domain] if domain else [()]
         group_by = ', '.join(['"account_move_line".%s' % field for field in group_by])
         all_report_lines = self.env['account.financial.html.report.line'].search([('id', 'child_of', self.line_ids.ids)])
-        all_domains = expression.OR([safe_eval(dom) for dom in all_report_lines.mapped('domain') if dom])
+        all_domains = expression.OR([ast.literal_eval(dom) for dom in all_report_lines.mapped('domain') if dom])
         all_domains = expression.AND([all_domains] + domain)
         tables, where_clause, where_params = self.env['account.move.line']._query_get(domain=all_domains)
         sql = 'SELECT %s FROM %s WHERE %s GROUP BY %s ORDER BY %s' % (group_by, tables, where_clause, group_by, group_by)
@@ -309,8 +311,8 @@ class ReportAccountFinancialReport(models.Model):
         else:
             return False, False
 
-        domain = safe_eval(selected_ir_filter['domain'])
-        group_by = safe_eval(selected_ir_filter['context']).get('group_by', [])
+        domain = ast.literal_eval(selected_ir_filter['domain'])
+        group_by = ast.literal_eval(selected_ir_filter['context']).get('group_by', [])
         return domain, group_by
 
     @api.multi
@@ -377,7 +379,7 @@ class ReportAccountFinancialReport(models.Model):
 
 class AccountFinancialReportLine(models.Model):
     _name = "account.financial.html.report.line"
-    _description = "Account Report Line"
+    _description = "Account Report (HTML Line)"
     _order = "sequence"
     _parent_store = True
 
@@ -566,7 +568,7 @@ class AccountFinancialReportLine(models.Model):
             # Fake domain to always get the join to the account_move_line__move_id table.
             fake_domain = [('move_id.id', '!=', None)]
             sub_tables, sub_where_clause, sub_where_params = self.env['account.move.line']._query_get(domain=fake_domain)
-            tables, where_clause, where_params = self.env['account.move.line']._query_get(domain=fake_domain + safe_eval(self.domain))
+            tables, where_clause, where_params = self.env['account.move.line']._query_get(domain=fake_domain + ast.literal_eval(self.domain))
 
             # Get moves having a line using a bank account.
             bank_journals = self.env['account.journal'].search([('type', 'in', ('bank', 'cash'))])
@@ -617,7 +619,7 @@ class AccountFinancialReportLine(models.Model):
                         FROM account_partial_reconcile part
                         LEFT JOIN account_move_line aml ON aml.id = part.debit_move_id
                         LEFT JOIN account_move_line aml2 ON aml2.id = part.credit_move_id
-                        RIGHT JOIN (SELECT move_id, account_id, ABS(SUM(balance)) AS total_per_account FROM account_move_line GROUP BY move_id, account_id) sub ON (aml2.account_id = sub.account_id AND sub.move_id=aml2.move_id)
+                        LEFT JOIN (SELECT move_id, account_id, ABS(SUM(balance)) AS total_per_account FROM account_move_line GROUP BY move_id, account_id) sub ON (aml2.account_id = sub.account_id AND sub.move_id=aml2.move_id)
                         LEFT JOIN account_account acc ON aml.account_id = acc.id
                         WHERE part.credit_move_id = aml2.id
                         AND acc.reconcile
@@ -637,7 +639,7 @@ class AccountFinancialReportLine(models.Model):
                         FROM account_partial_reconcile part
                         LEFT JOIN account_move_line aml ON aml.id = part.credit_move_id
                         LEFT JOIN account_move_line aml2 ON aml2.id = part.debit_move_id
-                        RIGHT JOIN (SELECT move_id, account_id, ABS(SUM(balance)) AS total_per_account FROM account_move_line GROUP BY move_id, account_id) sub ON (aml2.account_id = sub.account_id AND sub.move_id=aml2.move_id)
+                        LEFT JOIN (SELECT move_id, account_id, ABS(SUM(balance)) AS total_per_account FROM account_move_line GROUP BY move_id, account_id) sub ON (aml2.account_id = sub.account_id AND sub.move_id=aml2.move_id)
                         LEFT JOIN account_account acc ON aml.account_id = acc.id
                         WHERE part.debit_move_id = aml2.id
                         AND acc.reconcile
@@ -740,7 +742,7 @@ class AccountFinancialReportLine(models.Model):
 
             @returns : a dictionnary that has for each aml in the domain a dictionnary of the values of the fields
         """
-        domain = domain and safe_eval(ustr(domain))
+        domain = domain and ast.literal_eval(ustr(domain))
         for index, condition in enumerate(domain):
             if condition[0].startswith('tax_ids.'):
                 new_condition = (condition[0].partition('.')[2], condition[1], condition[2])
@@ -807,7 +809,7 @@ class AccountFinancialReportLine(models.Model):
 
     @api.multi
     def report_move_lines_action(self):
-        domain = safe_eval(self.domain)
+        domain = ast.literal_eval(self.domain)
         if 'date_from' in self.env.context.get('context', {}):
             if self.env.context['context'].get('date_from'):
                 domain = expression.AND([domain, [('date', '>=', self.env.context['context']['date_from'])]])
@@ -889,6 +891,7 @@ class AccountFinancialReportLine(models.Model):
             if currency_id.is_zero(value['name']):
                 # don't print -0.0 in reports
                 value['name'] = abs(value['name'])
+                value['class'] = 'number text-muted'
             value['name'] = formatLang(self.env, value['name'], currency_obj=currency_id)
             return value
         if self.figure_type == 'percents':
@@ -1103,7 +1106,7 @@ class AccountFinancialReportLine(models.Model):
                 'id': line.id,
                 'name': line.name,
                 'level': line.level,
-                'class': '',
+                'class': 'o_account_reports_totals_below_sections' if self.env.user.company_id.totals_below_sections else '',
                 'columns': [{'name': l} for l in res['line']],
                 'unfoldable': len(domain_ids) > 1 and line.show_domain != 'always',
                 'unfolded': line.id in options.get('unfolded_lines', []) or line.show_domain == 'always',
@@ -1126,7 +1129,7 @@ class AccountFinancialReportLine(models.Model):
                     vals = {
                         'id': domain_id,
                         'name': name and len(name) >= 45 and name[0:40] + '...' or name,
-                        'level': 4,
+                        'level': line.level,
                         'parent_id': line.id,
                         'columns': [{'name': l} for l in res[domain_id]],
                         'caret_options': groupby == 'account_id' and 'account.account' or groupby,
@@ -1138,6 +1141,7 @@ class AccountFinancialReportLine(models.Model):
                     lines.append({
                         'id': 'total_' + str(line.id),
                         'name': _('Total') + ' ' + line.name,
+                        'level': line.level,
                         'class': 'o_account_reports_domain_total',
                         'parent_id': line.id,
                         'columns': copy.deepcopy(lines[0]['columns']),

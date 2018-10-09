@@ -140,17 +140,17 @@ var NewReportDialog = Dialog.extend({
         };
 
         this.layouts = [{
-            name: 'web.basic_layout',
-            label: _t("Blank"),
-            description: _t("No header/footer"),
+            name: 'web.external_layout',
+            label: _t("External"),
+            description: _t("Business header/footer"),
         }, {
             name: 'web.internal_layout',
             label: _t("Internal"),
             description: _t("Minimal header/footer"),
         }, {
-            name: 'web.external_layout',
-            label: _t("External"),
-            description: _t("Business header/footer"),
+            name: 'web.basic_layout',
+            label: _t("Blank"),
+            description: _t("No header/footer"),
         }];
 
         this._super(parent, options);

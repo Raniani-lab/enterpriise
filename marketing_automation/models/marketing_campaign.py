@@ -565,3 +565,17 @@ class MarketingActivity(models.Model):
                 child_traces |= child_traces.create(vals)
 
         return child_traces
+
+    def action_view_sent(self):
+        return self._action_view_documents_filtered('sent')
+
+    def action_view_replied(self):
+        return self._action_view_documents_filtered('replied')
+
+    def action_view_clicked(self):
+        return self._action_view_documents_filtered('clicked')
+
+    def _action_view_documents_filtered(self, view_filter):
+        if not self.mass_mailing_id:
+            return False
+        return self.mass_mailing_id._action_view_documents_filtered(view_filter)

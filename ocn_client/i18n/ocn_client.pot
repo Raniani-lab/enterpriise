@@ -6,14 +6,19 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-18 10:05+0000\n"
-"PO-Revision-Date: 2018-09-18 10:05+0000\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: ocn_client
+#: model:ir.model,name:ocn_client.model_res_config_settings
+msgid "Config Settings"
+msgstr ""
 
 #. module: ocn_client
 #: model:ir.model,name:ocn_client.model_res_partner
@@ -27,7 +32,7 @@ msgstr ""
 
 #. module: ocn_client
 #: model:ir.model,name:ocn_client.model_ir_http
-msgid "HTTP routing"
+msgid "HTTP Routing"
 msgstr ""
 
 #. module: ocn_client
@@ -55,10 +60,5 @@ msgstr ""
 #: model:ir.model.fields,help:ocn_client.field_res_partner__ocn_token
 #: model:ir.model.fields,help:ocn_client.field_res_users__ocn_token
 msgid "Used for sending notification to registered devices"
-msgstr ""
-
-#. module: ocn_client
-#: model:ir.model,name:ocn_client.model_res_config_settings
-msgid "res.config.settings"
 msgstr ""
 

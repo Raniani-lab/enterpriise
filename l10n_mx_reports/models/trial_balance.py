@@ -4,6 +4,7 @@
 from lxml import etree
 from lxml.objectify import fromstring
 from odoo import models, api, _, fields, tools
+from odoo.exceptions import UserError
 from odoo.tools.safe_eval import safe_eval
 from odoo.tools.xml_utils import _check_with_xsd
 
@@ -213,6 +214,10 @@ class MxReportAccountTrial(models.AbstractModel):
             name = account.code + " " + account.name
             name = name[:98] + "..." if len(name) > 100 else name
             tag = account.tag_ids.filtered(lambda r: r.color == 4)
+            if len(tag) > 1:
+                raise UserError(_(
+                    'The account %s is incorrectly configured. Only one tag is allowed.'
+                ) % account.name)
             nature = dict(tag.fields_get()['nature']['selection']).get(tag.nature, '')
             cols = [{'name': nature}]
             if not options.get('coa_only'):

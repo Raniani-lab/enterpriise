@@ -7,6 +7,7 @@ from odoo.exceptions import ValidationError
 
 class LoyaltyProgram(models.Model):
     _name = 'loyalty.program'
+    _description = 'Loyalty Program'
 
     name = fields.Char(string='Loyalty Program Name', index=True, required=True, help="An internal identification for the loyalty program configuration")
     pp_currency = fields.Float(string='Points per currency', help="How many loyalty points are given to the customer by sold currency")
@@ -19,6 +20,7 @@ class LoyaltyProgram(models.Model):
 
 class LoyaltyRule(models.Model):
     _name = 'loyalty.rule'
+    _description = 'Loyalty Rule'
 
     name = fields.Char(index=True, required=True, help="An internal identification for this loyalty program rule")
     loyalty_program_id = fields.Many2one('loyalty.program', string='Loyalty Program', help='The Loyalty Program this exception belongs to')
@@ -32,6 +34,7 @@ class LoyaltyRule(models.Model):
 
 class LoyaltyReward(models.Model):
     _name = 'loyalty.reward'
+    _description = 'Loyalty Reward'
 
     name = fields.Char(index=True, required=True, help='An internal identification for this loyalty reward')
     loyalty_program_id = fields.Many2one('loyalty.program', string='Loyalty Program', help='The Loyalty Program this reward belongs to')

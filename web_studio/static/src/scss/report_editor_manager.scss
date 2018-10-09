@@ -3,26 +3,34 @@
         // make it bigger
         flex: 0 0 $o-web-studio-report-sidebar-width;
     }
-    .o_web_studio_report_pager {
+    .o_web_studio_report_actions {
         @include o-position-absolute($top: 8px, $right: 24px);
-        background-color: $o-web-studio-bg-medium,;
-        padding: 3px 3px 3px 8px;
-        border-radius: 5px;
-        color: $o-web-studio-text-inactive;
         z-index: 1;
 
-        .o_pager_value {
-            color:white;
-        }
-        .o_pager_counter {
+        .o_web_studio_report_print {
             margin-right: 8px;
-            vertical-align: middle;
-            line-height: 1;
         }
-        .btn-group > button {
-            padding: 0 5px;
-            @include o-web-studio-btn-variation($o-web-studio-bg-medium, $o-web-studio-bg-medium);
-            @include o-hover-opacity;
+
+        .o_web_studio_report_pager {
+            display: inline-block;
+            background-color: $o-web-studio-bg-medium;
+            border-radius: 5px;
+            color: $o-web-studio-text-inactive;
+            padding: 3px 3px 3px 8px;
+
+            .o_pager_value {
+                color: white;
+            }
+            .o_pager_counter {
+                margin-right: 8px;
+                vertical-align: middle;
+                line-height: 1;
+            }
+            .btn-group > button {
+                padding: 0 5px;
+                @include o-web-studio-btn-variation($o-web-studio-bg-medium, $o-web-studio-bg-medium);
+                @include o-hover-opacity;
+            }
         }
     }
 }

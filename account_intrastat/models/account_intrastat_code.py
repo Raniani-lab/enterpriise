@@ -12,6 +12,7 @@ class AccountIntrastatCode(models.Model):
     https://www.cbs.nl/en-gb/deelnemers%20enquetes/overzicht/bedrijven/onderzoek/lopend/international-trade-in-goods/idep-code-lists
     '''
     _name = 'account.intrastat.code'
+    _description = 'Intrastat Code'
     _translate = False
 
     name = fields.Char(string='Name')

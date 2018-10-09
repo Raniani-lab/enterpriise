@@ -3,16 +3,14 @@
     justify-content: center;
 
     .o_web_studio_report_layout_item {
+        width: 200px;
+        text-align: center;
         margin: 10px;
         padding: 10px;
         border: 1px solid grey;
-        background-color: $o-web-studio-bg-light;
         cursor: pointer;
         &:hover {
-            background-color: white;
+            background-color: $o-web-studio-bg-light;
         }
-    }
-    .o_web_studio_report_layout_description {
-        font-size: 0.8em;
     }
 }

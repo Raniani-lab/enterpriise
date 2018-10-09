@@ -5,14 +5,14 @@
 # Translators:
 # Martin Trigaux, 2018
 # Michal Veselý <michal@veselyberanek.net>, 2018
-# trendspotter, 2018
+# J. Podhorecky <j.podhorecky@volny.cz>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
-"Last-Translator: trendspotter, 2018\n"
+"POT-Creation-Date: 2018-10-02 10:32+0000\n"
+"PO-Revision-Date: 2018-10-02 10:32+0000\n"
+"Last-Translator: J. Podhorecky <j.podhorecky@volny.cz>, 2018\n"
 "Language-Team: Czech (https://www.transifex.com/odoo/teams/41243/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,24 +21,19 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
 
 #. module: sale_enterprise
-#: model:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard
-msgid "Amount Invoiced"
-msgstr "Fakturovaná částka"
-
-#. module: sale_enterprise
-#: model:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard
-msgid "At A Glance"
-msgstr "Na první pohled"
-
-#. module: sale_enterprise
-#: model:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard
-msgid "Average Untaxed Total"
+#: model_terms:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard
+msgid "# Customers"
 msgstr ""
 
 #. module: sale_enterprise
-#: model:ir.actions.act_window,name:sale_enterprise.sale_report_action_dashboard
-msgid "Dashboard"
-msgstr "Nástěnka"
+#: model_terms:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard
+msgid "# Lines"
+msgstr ""
+
+#. module: sale_enterprise
+#: model_terms:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard
+msgid "Average Order"
+msgstr "Průměrná objednávka"
 
 #. module: sale_enterprise
 #: model:ir.model.fields,field_description:sale_enterprise.field_sale_report__days_to_confirm
@@ -46,12 +41,12 @@ msgid "Days To Confirm"
 msgstr ""
 
 #. module: sale_enterprise
-#: model:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard
+#: model_terms:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard
 msgid "Days to Confirm"
 msgstr ""
 
 #. module: sale_enterprise
-#: model:ir.ui.view,arch_db:sale_enterprise.view_order_product_search_inherit
+#: model_terms:ir.ui.view,arch_db:sale_enterprise.view_order_product_search_inherit
 #: selection:sale.report,invoice_status:0
 msgid "Fully Invoiced"
 msgstr ""
@@ -67,28 +62,39 @@ msgid "Nothing to Invoice"
 msgstr ""
 
 #. module: sale_enterprise
-#: model:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard
+#: model_terms:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard
 msgid "Orders"
 msgstr "Objednávky"
 
 #. module: sale_enterprise
-#: model:ir.model,name:sale_enterprise.model_sale_report
-msgid "Sales Orders Statistics"
-msgstr "Statistiky prodejních objednávek"
+#: model:ir.actions.act_window,name:sale_enterprise.sale_report_action_dashboard
+#: model_terms:ir.ui.view,arch_db:sale_enterprise.sale_report_view_pivot
+msgid "Sales Analysis"
+msgstr "Analýza prodeje"
 
 #. module: sale_enterprise
-#: model:ir.ui.view,arch_db:sale_enterprise.view_order_product_search_inherit
+#: model:ir.model,name:sale_enterprise.model_sale_report
+msgid "Sales Analysis Report"
+msgstr ""
+
+#. module: sale_enterprise
+#: model_terms:ir.ui.view,arch_db:sale_enterprise.view_order_product_search_inherit
 #: selection:sale.report,invoice_status:0
 msgid "To Invoice"
 msgstr "K fakturaci"
 
 #. module: sale_enterprise
-#: model:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard
-msgid "Total Days to Confirm"
+#: model_terms:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard
+msgid "Total Sales"
 msgstr ""
 
 #. module: sale_enterprise
-#: model:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard
+#: model_terms:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard
+msgid "Total, Tax Included"
+msgstr ""
+
+#. module: sale_enterprise
+#: model_terms:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard
 msgid "Untaxed Total"
 msgstr ""
 

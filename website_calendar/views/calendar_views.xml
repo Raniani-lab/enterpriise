@@ -17,7 +17,7 @@
         <field name="model">calendar.event</field>
         <field name="inherit_id" ref="calendar.view_calendar_event_search"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='privacy']" position="after">
+            <xpath expr="//filter[@name='mymeetings']" position="after">
                 <separator/>
                 <filter string="Online Appointments" domain="[('appointment_type_id', '!=', False)]" name="online"/>
                 <separator/>

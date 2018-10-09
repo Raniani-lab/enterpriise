@@ -7,10 +7,10 @@
 # Eloïse Stilmant <est@odoo.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.3+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 08:34+0000\n"
-"PO-Revision-Date: 2018-06-25 08:34+0000\n"
+"POT-Creation-Date: 2018-09-18 10:05+0000\n"
+"PO-Revision-Date: 2018-09-18 10:05+0000\n"
 "Last-Translator: Eloïse Stilmant <est@odoo.com>, 2018\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #. module: account_bank_statement_import_qif
-#: model:ir.ui.view,arch_db:account_bank_statement_import_qif.account_bank_statement_import_qif
+#: model_terms:ir.ui.view,arch_db:account_bank_statement_import_qif.account_bank_statement_import_qif
 msgid "<i class=\"fa fa-download mr4\"/>Import Sample Template"
 msgstr "<i class=\"fa fa-download mr4\"/>Importer un modèle d'exemple"
 
@@ -69,12 +69,13 @@ msgid "Import Bank Statement"
 msgstr "Import d'un relevé bancaire"
 
 #. module: account_bank_statement_import_qif
+#: model:ir.model,name:account_bank_statement_import_qif.model_account_journal
 #: model:ir.model.fields,field_description:account_bank_statement_import_qif.field_account_bank_statement_import__journal_id
 msgid "Journal"
 msgstr "Journal"
 
 #. module: account_bank_statement_import_qif
-#: model:ir.ui.view,arch_db:account_bank_statement_import_qif.account_bank_statement_import_qif
+#: model_terms:ir.ui.view,arch_db:account_bank_statement_import_qif.account_bank_statement_import_qif
 msgid "Quicken Interchange Format (.QIF)"
 msgstr "Format d'échange Quicken (.QIF)"
 
@@ -93,7 +94,7 @@ msgstr ""
 "utilité dans le fichier QIF, comme le format est ambigu."
 
 #. module: account_bank_statement_import_qif
-#: model:ir.ui.view,arch_db:account_bank_statement_import_qif.account_bank_statement_import_view_inherited
+#: model_terms:ir.ui.view,arch_db:account_bank_statement_import_qif.account_bank_statement_import_view_inherited
 msgid ""
 "The QIF format is ambiguous about dates: please check with your financial "
 "institution whether they format it with month or day first.<br/>"
@@ -110,7 +111,7 @@ msgstr ""
 "Ce fichier n'est pas un relevé bancaire ou n'est pas correctement formaté."
 
 #. module: account_bank_statement_import_qif
-#: model:ir.ui.view,arch_db:account_bank_statement_import_qif.account_bank_statement_import_view_inherited
+#: model_terms:ir.ui.view,arch_db:account_bank_statement_import_qif.account_bank_statement_import_view_inherited
 msgid "_Import"
 msgstr "_Importer"
 

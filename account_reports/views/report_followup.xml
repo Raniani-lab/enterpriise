@@ -54,7 +54,7 @@
         <template id="line_template_followup_report" inherit_id="account_reports.line_template" primary="True">
             <xpath expr="//div[hasclass('dropdown-menu')]" position="replace">
                 <div t-if='context.get("print_mode") != True' class="dropdown-menu o_account_reports_domain_dropdown" role="menu">
-                    <a role="menuitem" tabindex="-1" t-att-data-id="line['invoice_id']" t-att-view-id="line['view_invoice_id']" action="open_invoice" class="dropdown-item">View Invoice</a>
+                    <a t-if="line['has_invoice']" role="menuitem" tabindex="-1" t-att-data-id="line['invoice_id']" t-att-view-id="line['view_invoice_id']" action="open_invoice" class="dropdown-item">View Invoice</a>
                     <a role="menuitem" tabindex="-1" t-att-data-id="line['move_id']" action="open_move" groups="account.group_account_user" class="dropdown-item">View Journal Entry</a>
                     <a role="menuitem" tabindex="-1" t-att-data-id="line['id']" class="o_change_expected_date dropdown-item">Change expected payment date</a>
                 </div>

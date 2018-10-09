@@ -8,6 +8,7 @@ from odoo.addons.web.controllers.main import clean_action
 class analytic_report(models.AbstractModel):
     _inherit = 'account.report'
     _name = 'account.analytic.report'
+    _description = 'Account Analytic Report'
 
     # the line with this id will contain analytic accounts without a group
     DUMMY_GROUP_ID = 'group_for_accounts_with_no_group'

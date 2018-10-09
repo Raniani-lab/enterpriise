@@ -2,8 +2,6 @@
 <odoo>
     <data>
 
-        <menuitem id="account_reports_partners_reports_menu" name="Partner Reports" parent="account.menu_finance_reports" sequence="2"/>
-        <menuitem id="account_reports_audit_reports_menu" name="Audit Reports" parent="account.menu_finance_reports" sequence="3"/>
 
         <record model="ir.actions.server" id="action_journal_items">
             <field name="name">Journal Items by tax</field>
@@ -366,7 +364,7 @@
         </record>
         <record id="account_financial_report_cashsummary_net_increase0" model="account.financial.html.report.line">
             <field name="name">Net increase in cash and cash equivalents</field>
-            <field name="sequence" eval="3"/>
+            <field name="sequence" eval="1"/>
             <field name="formulas">balance = OP.balance + FI.balance + IN.balance + UNC.balance + REGUL.balance</field>
             <field name="level" eval="0" />
             <field name="financial_report_id" ref="account_financial_report_cashsummary0"/>
@@ -379,7 +377,7 @@
             <field name="sequence" eval="1"/>
             <field name="parent_id" ref='account_financial_report_cashsummary_net_increase0'/>
             <field name="formulas">balance = PRECUS.balance + CACUS.balance + PRESUP.balance + LCP.balance</field>
-            <field name="level" eval="1" />
+            <field name="level" eval="0" />
             <field name="special_date_changer">strict_range</field>
         </record>
         <record id="account_financial_report_cashsummary_prepayments_received0" model="account.financial.html.report.line">
@@ -431,7 +429,7 @@
             <field name="code">IN</field>
             <field name="sequence" eval="2"/>
             <field name="parent_id" ref='account_financial_report_cashsummary_net_increase0'/>
-            <field name="level" eval="1" />
+            <field name="level" eval="0" />
             <field name="formulas">balance = INV_IN.balance + INV_OUT.balance</field>
             <field name="special_date_changer">strict_range</field>
         </record>
@@ -462,7 +460,7 @@
             <field name="code">FI</field>
             <field name="sequence" eval="3"/>
             <field name="parent_id" ref='account_financial_report_cashsummary_net_increase0'/>
-            <field name="level" eval="1" />
+            <field name="level" eval="0" />
             <field name="formulas">balance = FI_IN.balance + FI_OUT.balance</field>
             <field name="special_date_changer">strict_range</field>
         </record>
@@ -493,7 +491,7 @@
             <field name="code">UNC</field>
             <field name="sequence" eval="4"/>
             <field name="parent_id" ref='account_financial_report_cashsummary_net_increase0'/>
-            <field name="level" eval="1" />
+            <field name="level" eval="0" />
             <field name="formulas">balance = UNC_IN.balance + UNC_OUT.balance</field>
             <field name="hide_if_zero" eval="True" />
             <field name="special_date_changer">strict_range</field>
@@ -528,21 +526,21 @@
             <field name="sequence" eval="5"/>
             <field name="parent_id" ref='account_financial_report_cashsummary_net_increase0'/>
             <field name="formulas">balance = (CASHEND.balance - CASHSTART.balance) - (OP.balance + FI.balance + IN.balance + UNC.balance)</field>
-            <field name="level" eval="1" />
+            <field name="level" eval="0" />
             <field name="hide_if_zero" eval="True" />
         </record>
 
         <record id="account_financial_report_cashsummary_opening_balance0" model="account.financial.html.report.line">
             <field name="name">Cash and cash equivalents, beginning of period</field>
             <field name="code">CASHSTART</field>
-            <field name="sequence" eval="1"/>
+            <field name="sequence" eval="0"/>
             <field name="domain" eval="[('account_id.internal_type', '=', 'liquidity')]" />
             <field name="formulas">balance = sum.balance</field>
             <field name="groupby">account_id</field>
             <field name="show_domain">foldable</field>
             <field name="special_date_changer">to_beginning_of_period</field>
             <field name="financial_report_id" ref="account_financial_report_cashsummary0"/>
-            <field name="level" eval="1" />
+            <field name="level" eval="0" />
         </record>
         <record id="account_financial_report_cashsummary_closing_balance0" model="account.financial.html.report.line">
             <field name="name">Cash and cash equivalents, closing balance</field>
@@ -553,7 +551,7 @@
             <field name="groupby">account_id</field>
             <field name="show_domain">foldable</field>
             <field name="financial_report_id" ref="account_financial_report_cashsummary0"/>
-            <field name="level" eval="1" />
+            <field name="level" eval="0" />
         </record>
 
         <!--
@@ -569,7 +567,7 @@
             <field name="name">Cash</field>
             <field name="sequence" eval="1"/>
             <field name="financial_report_id" ref="account_financial_report_executivesummary0"/>
-            <field name="level" eval="1" />
+            <field name="level" eval="0" />
         </record>
         <record id="account_financial_report_executivesummary_cash_received0" model="account.financial.html.report.line">
             <field name="name">Cash received</field>
@@ -579,7 +577,7 @@
             <field name="domain" eval="[('account_id.user_type_id.type', '=', 'liquidity')]" />
             <field name="formulas">balance = sum.debit</field>
             <field name="show_domain">never</field>
-            <field name="level" eval="2" />
+            <field name="level" eval="3" />
             <field name="special_date_changer">strict_range</field>
         </record>
         <record id="account_financial_report_executivesummary_cash_spent0" model="account.financial.html.report.line">
@@ -591,7 +589,7 @@
             <field name="formulas">balance = -sum.credit</field>
             <field name="show_domain">never</field>
             <field name="green_on_positive" eval="False"/>
-            <field name="level" eval="2" />
+            <field name="level" eval="3" />
             <field name="special_date_changer">strict_range</field>
         </record>
         <record id="account_financial_report_executivesummary_cash_surplus0" model="account.financial.html.report.line">
@@ -599,7 +597,7 @@
             <field name="sequence" eval="3"/>
             <field name="parent_id" ref='account_financial_report_executivesummary_cash0'/>
             <field name="formulas">balance = CR.balance + CS.balance</field>
-            <field name="level" eval="2" />
+            <field name="level" eval="3" />
         </record>
         <record id="account_financial_report_executivesummary_closing_bank_balance0" model="account.financial.html.report.line">
             <field name="name">Closing bank balance</field>
@@ -607,20 +605,20 @@
             <field name="parent_id" ref='account_financial_report_executivesummary_cash0'/>
             <field name="domain" eval="[('account_id.internal_type', '=', 'liquidity')]" />
             <field name="formulas">balance = sum.balance</field>
-            <field name="level" eval="2" />
+            <field name="level" eval="3" />
         </record>
         <record id="account_financial_report_executivesummary_profitability0" model="account.financial.html.report.line">
             <field name="name">Profitability</field>
             <field name="sequence" eval="2"/>
             <field name="financial_report_id" ref="account_financial_report_executivesummary0"/>
-            <field name="level" eval="1" />
+            <field name="level" eval="0" />
         </record>
         <record id="account_financial_report_executivesummary_income0" model="account.financial.html.report.line">
             <field name="name">Income</field>
             <field name="sequence" eval="1"/>
             <field name="parent_id" ref='account_financial_report_executivesummary_profitability0'/>
             <field name="formulas">balance = INC.balance</field>
-            <field name="level" eval="2" />
+            <field name="level" eval="3" />
         </record>
         <record id="account_financial_report_executivesummary_direct_costs0" model="account.financial.html.report.line">
             <field name="name">Cost of Revenue</field>
@@ -628,14 +626,14 @@
             <field name="parent_id" ref='account_financial_report_executivesummary_profitability0'/>
             <field name="formulas">balance = COS.balance</field>
             <field name="green_on_positive" eval="False"/>
-            <field name="level" eval="2" />
+            <field name="level" eval="3" />
         </record>
         <record id="account_financial_report_executivesummary_gross_profit0" model="account.financial.html.report.line">
             <field name="name">Gross profit</field>
             <field name="sequence" eval="3"/>
             <field name="parent_id" ref='account_financial_report_executivesummary_profitability0'/>
             <field name="formulas">balance = GRP.balance</field>
-            <field name="level" eval="2" />
+            <field name="level" eval="3" />
         </record>
         <record id="account_financial_report_executivesummary_expenses0" model="account.financial.html.report.line">
             <field name="name">Expenses</field>
@@ -643,20 +641,20 @@
             <field name="parent_id" ref='account_financial_report_executivesummary_profitability0'/>
             <field name="formulas">balance = LEX.balance</field>
             <field name="green_on_positive" eval="False"/>
-            <field name="level" eval="2" />
+            <field name="level" eval="3" />
         </record>
         <record id="account_financial_report_executivesummary_profit0" model="account.financial.html.report.line">
             <field name="name">Net Profit</field>
             <field name="sequence" eval="5"/>
             <field name="parent_id" ref='account_financial_report_executivesummary_profitability0'/>
             <field name="formulas">balance = NEP.balance</field>
-            <field name="level" eval="2" />
+            <field name="level" eval="3" />
         </record>
         <record id="account_financial_report_executivesummary_balancesheet0" model="account.financial.html.report.line">
             <field name="name">Balance Sheet</field>
             <field name="sequence" eval="3"/>
             <field name="financial_report_id" ref="account_financial_report_executivesummary0"/>
-            <field name="level" eval="1" />
+            <field name="level" eval="0" />
         </record>
         <record id="account_financial_report_executivesummary_debtors0" model="account.financial.html.report.line">
             <field name="name">Receivables</field>
@@ -666,7 +664,7 @@
             <field name="domain" eval="[('account_id.user_type_id.type', '=', 'receivable')]" />
             <field name="formulas">balance = sum.balance</field>
             <field name="show_domain">never</field>
-            <field name="level" eval="2" />
+            <field name="level" eval="3" />
         </record>
         <record id="account_financial_report_executivesummary_creditors0" model="account.financial.html.report.line">
             <field name="name">Payables</field>
@@ -677,20 +675,20 @@
             <field name="formulas">balance = sum.balance</field>
             <field name="show_domain">never</field>
             <field name="green_on_positive" eval="False"/>
-            <field name="level" eval="2" />
+            <field name="level" eval="3" />
         </record>
         <record id="account_financial_report_executivesummary_net_assets0" model="account.financial.html.report.line">
             <field name="name">Net assets</field>
             <field name="sequence" eval="3"/>
             <field name="parent_id" ref='account_financial_report_executivesummary_balancesheet0'/>
             <field name="formulas">balance = NA.balance</field>
-            <field name="level" eval="2" />
+            <field name="level" eval="3" />
         </record>
         <record id="account_financial_report_executivesummary_performance0" model="account.financial.html.report.line">
             <field name="name">Performance</field>
             <field name="sequence" eval="4"/>
             <field name="financial_report_id" ref="account_financial_report_executivesummary0"/>
-            <field name="level" eval="1" />
+            <field name="level" eval="0" />
         </record>
         <record id="account_financial_report_executivesummary_gpmargin0" model="account.financial.html.report.line">
             <field name="name">Gross profit margin (gross profit / operating income)</field>
@@ -698,7 +696,7 @@
             <field name="parent_id" ref='account_financial_report_executivesummary_performance0'/>
             <field name="formulas">balance = GRP.balance / OPINC.balance</field>
             <field name="figure_type">percents</field>
-            <field name="level" eval="2" />
+            <field name="level" eval="3" />
         </record>
         <record id="account_financial_report_executivesummary_npmargin0" model="account.financial.html.report.line">
             <field name="name">Net profit margin (net profit / income)</field>
@@ -706,7 +704,7 @@
             <field name="parent_id" ref='account_financial_report_executivesummary_performance0'/>
             <field name="formulas">balance = NEP.balance / INC.balance</field>
             <field name="figure_type">percents</field>
-            <field name="level" eval="2" />
+            <field name="level" eval="3" />
         </record>
         <record id="account_financial_report_executivesummary_return_investment0" model="account.financial.html.report.line">
             <field name="name">Return on investments (net profit / assets)</field>
@@ -714,13 +712,13 @@
             <field name="parent_id" ref='account_financial_report_executivesummary_performance0'/>
             <field name="formulas">balance = NEP.balance / TA.balance</field>
             <field name="figure_type">percents</field>
-            <field name="level" eval="2" />
+            <field name="level" eval="3" />
         </record>
         <record id="account_financial_report_executivesummary_position0" model="account.financial.html.report.line">
             <field name="name">Position</field>
             <field name="sequence" eval="5"/>
             <field name="financial_report_id" ref="account_financial_report_executivesummary0"/>
-            <field name="level" eval="1" />
+            <field name="level" eval="0" />
         </record>
         <record id="account_financial_report_executivesummary_avdebt0" model="account.financial.html.report.line">
             <field name="name">Average debtors days</field>
@@ -729,7 +727,7 @@
             <field name="formulas">balance = DEB.balance / OPINC.balance * NDays</field>
             <field name="figure_type">no_unit</field>
             <field name="green_on_positive" eval="False"/>
-            <field name="level" eval="2" />
+            <field name="level" eval="3" />
         </record>
         <record id="account_financial_report_executivesummary_avgcre0" model="account.financial.html.report.line">
             <field name="name">Average creditors days</field>
@@ -738,14 +736,14 @@
             <field name="formulas">balance = -CRE.balance / OPINC.balance * NDays</field>
             <field name="figure_type">no_unit</field>
             <field name="green_on_positive" eval="False"/>
-            <field name="level" eval="2" />
+            <field name="level" eval="3" />
         </record>
         <record id="account_financial_report_executivesummary_st_cash_forecast0" model="account.financial.html.report.line">
             <field name="name">Short term cash forecast</field>
             <field name="sequence" eval="3"/>
             <field name="parent_id" ref='account_financial_report_executivesummary_position0'/>
             <field name="formulas">balance = DEB.balance + CRE.balance</field>
-            <field name="level" eval="2" />
+            <field name="level" eval="3" />
         </record>
         <record id="account_financial_report_executivesummary_ca_to_l0" model="account.financial.html.report.line">
             <field name="name">Current assets to liabilities</field>
@@ -753,9 +751,10 @@
             <field name="parent_id" ref='account_financial_report_executivesummary_position0'/>
             <field name="formulas">balance = CA.balance / L.balance</field>
             <field name="figure_type">no_unit</field>
-            <field name="level" eval="2" />
+            <field name="level" eval="3" />
         </record>
 
+        <!-- Account Financial Report Actions -->
         <record id="action_account_report_pnl" model="ir.actions.client">
             <field name="name">Profit And Loss</field>
             <field name="tag">account_report</field>
@@ -826,6 +825,11 @@
             <field name="tag">account_report</field>
             <field name="context" eval="{'model': 'account.analytic.report'}" />
         </record>
+
+        <!-- Account Financial Report Menuitems -->
+        <menuitem id="account_reports_partners_reports_menu" name="Partner Reports" parent="account.menu_finance_reports" sequence="2"/>
+        <menuitem id="account_reports_audit_reports_menu" name="Audit Reports" parent="account.menu_finance_reports" sequence="3"/>
+
         <menuitem id="menu_action_account_report_partner_ledger" name="Partner Ledger" action="action_account_report_partner_ledger" parent="account_reports_partners_reports_menu" groups="account.group_account_user"/>
         <menuitem id="menu_action_account_report_aged_receivable" name="Aged Receivable" action="action_account_report_ar" parent="account_reports_partners_reports_menu"/>
         <menuitem id="menu_action_account_report_aged_payable" name="Aged Payable" action="action_account_report_ap" parent="account_reports_partners_reports_menu"/>
@@ -835,11 +839,33 @@
         <menuitem id="menu_action_account_report_gt" name="Tax Report" action="action_account_report_gt" parent="account_reports_audit_reports_menu"/>
         <menuitem id="menu_action_report_account_analytic" name="Analytic Report" action="action_account_report_analytic" parent="account.account_reports_management_menu" groups="analytic.group_analytic_accounting"/>
 
-        <record id="account.menu_print_journal" model="ir.ui.menu">
-            <field name="parent_id" ref='account_reports_audit_reports_menu' />
-            <field name="sequence">20</field>
+        <!-- Journals Audit Report PDF only, needs to be converted -->
+        <record id="account_report_print_journal_view" model="ir.ui.view">
+            <field name="name">Journals Audit</field>
+            <field name="model">account.print.journal</field>
+            <field name="inherit_id" ref="account.account_common_report_view"/>
+            <field name="arch" type="xml">
+            <data>
+                <xpath expr="//field[@name='target_move']" position="after">
+                    <field name="amount_currency" groups="base.group_multi_currency"/>
+                    <field name="sort_selection" widget="radio"/>
+                    <newline/>
+                </xpath>
+            </data>
+            </field>
         </record>
+        <record id="action_account_print_journal_menu" model="ir.actions.act_window">
+            <field name="name">Journals Audit</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">account.print.journal</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="account_report_print_journal_view"/>
+            <field name="target">new</field>
+        </record>
+        <menuitem id="menu_print_journal" name="Journals Audit" parent="account_reports_audit_reports_menu" action="action_account_print_journal_menu" sequence="20"/>
 
+        <!-- Account Financial Report Links Actions -->
         <record id="account_financial_current_year_earnings_line_1" model="account.financial.html.report.line">
             <field name="action_id" ref='action_account_report_pnl' />
         </record>
@@ -853,6 +879,7 @@
             <field name="action_id" ref='action_account_report_bs' />
         </record>
 
+        <!-- Account Financial Report Assets -->
         <template id="account_reports_backend" inherit_id="web.assets_backend" active="True">
             <xpath expr="." position="inside">
                 <script type="text/javascript" src="/account_reports/static/src/js/account_reports.js"></script>

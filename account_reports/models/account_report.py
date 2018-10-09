@@ -6,6 +6,7 @@ import io
 import logging
 import lxml.html
 import datetime
+import ast
 
 from dateutil.relativedelta import relativedelta
 
@@ -29,7 +30,7 @@ _logger = logging.getLogger(__name__)
 
 class AccountReportManager(models.Model):
     _name = 'account.report.manager'
-    _description = 'manage summary and footnotes of reports'
+    _description = 'Manage Summary and Footnotes of Reports'
 
     # must work with multi-company, in case of multi company, no company_id defined
     report_name = fields.Char(required=True, help='name of the model of the report')
@@ -43,7 +44,7 @@ class AccountReportManager(models.Model):
 
 class AccountReportFootnote(models.Model):
     _name = 'account.report.footnote'
-    _description = 'Footnote for reports'
+    _description = 'Account Report Footnote'
 
     text = fields.Char()
     line = fields.Char(index=True)
@@ -51,6 +52,7 @@ class AccountReportFootnote(models.Model):
 
 class AccountReport(models.AbstractModel):
     _name = 'account.report'
+    _description = 'Account Report'
 
     MAX_LINES = 80
     filter_date = None
@@ -303,7 +305,7 @@ class AccountReport(models.AbstractModel):
     def open_tax_report_line(self, options, params=None):
         active_id = int(str(params.get('id')).split('_')[0])
         line = self.env['account.financial.html.report.line'].browse(active_id)
-        domain = safe_eval(line.domain)
+        domain = ast.literal_eval(line.domain)
         action = self.open_action(options, domain)
         action['display_name'] = _('Journal Items (%s)') % line.name
         return action
@@ -365,7 +367,7 @@ class AccountReport(models.AbstractModel):
             })
             action['context'] = ctx
         if options:
-            domain = expression.normalize_domain(safe_eval(action.get('domain', '[]')))
+            domain = expression.normalize_domain(ast.literal_eval(action.get('domain', '[]')))
             if options.get('analytic_accounts'):
                 analytic_ids = [int(r) for r in options['analytic_accounts']]
                 domain = expression.AND([domain, [('analytic_account_id', 'in', analytic_ids)]])

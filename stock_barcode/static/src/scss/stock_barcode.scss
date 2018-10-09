@@ -18,7 +18,7 @@
     background-color: #fff;
     padding: 24px 16px;
     font-size: 1.2em;
-    overflow: hidden;
+    overflow: auto;
     @include size(100%);
 
     .o_stock_barcode_menu {
@@ -29,6 +29,10 @@
         font-size: 0.9em;
     }
 
+    >ul {
+      display: inline-block;
+    }
+    
     .o_stock_barcode_container {
         span.o_stock_barcode_laser {
             @include o-position-absolute(50%, -15px, auto, -15px);

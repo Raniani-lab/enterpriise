@@ -2,12 +2,23 @@
 # This file contains the translation of the following modules:
 # * web_grid
 # 
+# Translators:
+# Judyta Kaźmierczak <judyta.kazmierczak@openglobe.pl>, 2018
+# Monika Motyczyńska <m.monia@op.pl>, 2018
+# Martin Trigaux, 2018
+# Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2018
+# Jaroslaw Kaczmarski, 2018
+# Piotr Szlązak <szlazakpiotr@gmail.com>, 2018
+# Marcin Młynarczyk <mlynarczyk@gmail.com>, 2018
+# Net Voodooman <mirek@reallife.pl>, 2018
+# Paweł Wodyński <pw@myodoo.pl>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-05 09:12+0000\n"
-"PO-Revision-Date: 2018-09-05 09:12+0000\n"
+"POT-Creation-Date: 2018-09-21 14:07+0000\n"
+"PO-Revision-Date: 2018-09-21 14:07+0000\n"
+"Last-Translator: Paweł Wodyński <pw@myodoo.pl>, 2018\n"
 "Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -16,10 +27,15 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 
 #. module: web_grid
+#: model:ir.model,name:web_grid.model_ir_actions_act_window_view
+msgid "Action Window View"
+msgstr ""
+
+#. module: web_grid
 #: selection:ir.actions.act_window.view,view_mode:0
 #: selection:ir.ui.view,type:0
 msgid "Activity"
-msgstr ""
+msgstr "Czynność"
 
 #. module: web_grid
 #. openerp-web
@@ -27,54 +43,60 @@ msgstr ""
 #: code:addons/web_grid/static/src/xml/grid_view.xml:5
 #, python-format
 msgid "Add a Line"
-msgstr ""
+msgstr "Dodaj pozycję"
+
+#. module: web_grid
+#: model:ir.model,name:web_grid.model_base
+msgid "Base"
+msgstr "Baza"
 
 #. module: web_grid
 #: selection:ir.actions.act_window.view,view_mode:0
 #: selection:ir.ui.view,type:0
 msgid "Calendar"
-msgstr ""
+msgstr "Kalendarz"
 
 #. module: web_grid
-#: code:addons/web_grid/models.py:212 code:addons/web_grid/models.py:244
+#: code:addons/web_grid/models/models.py:201
+#: code:addons/web_grid/models/models.py:233
 #, python-format
 msgid "Can not use fields of type %s as grid columns"
-msgstr ""
+msgstr "Nie można użyć pól typu %s jako kolumn siatki"
 
 #. module: web_grid
 #: selection:ir.actions.act_window.view,view_mode:0
 #: selection:ir.ui.view,type:0
 msgid "Cohort"
-msgstr ""
+msgstr "Kohorta"
 
 #. module: web_grid
 #: selection:ir.actions.act_window.view,view_mode:0
 #: selection:ir.ui.view,type:0
 msgid "Dashboard"
-msgstr ""
+msgstr "Konsola"
 
 #. module: web_grid
 #: selection:ir.ui.view,type:0
 msgid "Diagram"
-msgstr ""
+msgstr "Diagram"
 
 #. module: web_grid
 #: selection:ir.actions.act_window.view,view_mode:0
 #: selection:ir.ui.view,type:0
 msgid "Form"
-msgstr ""
+msgstr "Formularz"
 
 #. module: web_grid
 #: selection:ir.actions.act_window.view,view_mode:0
 #: selection:ir.ui.view,type:0
 msgid "Gantt"
-msgstr ""
+msgstr "Wykres Gantta"
 
 #. module: web_grid
 #: selection:ir.actions.act_window.view,view_mode:0
 #: selection:ir.ui.view,type:0
 msgid "Graph"
-msgstr ""
+msgstr "Wykres"
 
 #. module: web_grid
 #. openerp-web
@@ -83,50 +105,50 @@ msgstr ""
 #: selection:ir.ui.view,type:0
 #, python-format
 msgid "Grid"
-msgstr ""
+msgstr "Tabela"
 
 #. module: web_grid
 #: selection:ir.actions.act_window.view,view_mode:0
 #: selection:ir.ui.view,type:0
 msgid "Kanban"
-msgstr ""
+msgstr "Kanban"
 
 #. module: web_grid
 #. openerp-web
 #: code:addons/web_grid/static/src/xml/grid_view.xml:24
 #, python-format
 msgid "Next"
-msgstr ""
+msgstr "Następny"
 
 #. module: web_grid
 #: selection:ir.actions.act_window.view,view_mode:0
 #: selection:ir.ui.view,type:0
 msgid "Pivot"
-msgstr ""
+msgstr "Pivot"
 
 #. module: web_grid
 #. openerp-web
 #: code:addons/web_grid/static/src/xml/grid_view.xml:17
 #, python-format
 msgid "Previous"
-msgstr ""
+msgstr "Poprzedni"
 
 #. module: web_grid
 #: selection:ir.ui.view,type:0
 msgid "QWeb"
-msgstr ""
+msgstr "Qweb"
 
 #. module: web_grid
 #: selection:ir.ui.view,type:0
 msgid "Search"
-msgstr ""
+msgstr "Szukaj"
 
 #. module: web_grid
 #. openerp-web
 #: code:addons/web_grid/static/src/js/grid_renderer.js:244
 #, python-format
 msgid "See all the records aggregated in this cell"
-msgstr ""
+msgstr "Zobacz wszystkie rekordy zagregowane w tej komórce"
 
 #. module: web_grid
 #. openerp-web
@@ -134,21 +156,21 @@ msgstr ""
 #, python-format
 msgid ""
 "The sectioned grid view can't handle groups with different columns sets"
-msgstr ""
+msgstr "Widok przekroju siatki nie obsługuje grup o różnych zestawach kolumn"
 
 #. module: web_grid
 #. openerp-web
 #: code:addons/web_grid/static/src/xml/grid_view.xml:19
 #, python-format
 msgid "Today"
-msgstr ""
+msgstr "Dzisiaj"
 
 #. module: web_grid
 #. openerp-web
 #: code:addons/web_grid/static/src/js/grid_renderer.js:395
 #, python-format
 msgid "Total"
-msgstr ""
+msgstr "Suma"
 
 #. module: web_grid
 #. openerp-web
@@ -161,14 +183,14 @@ msgstr ""
 #: selection:ir.actions.act_window.view,view_mode:0
 #: selection:ir.ui.view,type:0
 msgid "Tree"
-msgstr ""
+msgstr "Drzewo"
 
 #. module: web_grid
 #. openerp-web
 #: code:addons/web_grid/static/src/js/grid_controller.js:204
 #, python-format
 msgid "Undefined"
-msgstr ""
+msgstr "Niezdefiniowane"
 
 #. module: web_grid
 #. openerp-web
@@ -177,33 +199,23 @@ msgstr ""
 #: code:addons/web_grid/static/src/js/grid_renderer.js:358
 #, python-format
 msgid "Unknown"
-msgstr ""
+msgstr "Nieznany"
+
+#. module: web_grid
+#: model:ir.model,name:web_grid.model_ir_ui_view
+msgid "View"
+msgstr "Widok"
 
 #. module: web_grid
 #: model:ir.model.fields,field_description:web_grid.field_ir_actions_act_window_view__view_mode
 #: model:ir.model.fields,field_description:web_grid.field_ir_ui_view__type
 msgid "View Type"
-msgstr ""
+msgstr "Typ widoku"
 
 #. module: web_grid
-#: code:addons/web_grid/models.py:255
+#: code:addons/web_grid/models/models.py:244
 #, python-format
 msgid ""
 "Week %(weeknumber)s\n"
 "%(week_start)s - %(week_end)s"
-msgstr ""
-
-#. module: web_grid
-#: model:ir.model,name:web_grid.model_base
-msgid "base"
-msgstr ""
-
-#. module: web_grid
-#: model:ir.model,name:web_grid.model_ir_actions_act_window_view
-msgid "ir.actions.act_window.view"
-msgstr ""
-
-#. module: web_grid
-#: model:ir.model,name:web_grid.model_ir_ui_view
-msgid "ir.ui.view"
 msgstr ""

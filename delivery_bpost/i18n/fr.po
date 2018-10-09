@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
 "Last-Translator: Eloïse Stilmant <est@odoo.com>, 2018\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -35,7 +35,7 @@ msgid "Allow deliveries on Saturday (extra charges apply)"
 msgstr "Autoriser les livraisons le samedi (inclus des frais supplémentaires)"
 
 #. module: delivery_bpost
-#: code:addons/delivery_bpost/models/bpost_request.py:97
+#: code:addons/delivery_bpost/models/bpost_request.py:98
 #, python-format
 msgid ""
 "Authentication error -- wrong credentials\n"
@@ -104,7 +104,6 @@ msgid "Bpost World Express Pro"
 msgstr "Bpost World Express Pro"
 
 #. module: delivery_bpost
-#: model:ir.model,name:delivery_bpost.model_delivery_carrier
 #: model:ir.model.fields,field_description:delivery_bpost.field_product_packaging__package_carrier_type
 msgid "Carrier"
 msgstr "Transporteur"
@@ -119,6 +118,11 @@ msgstr "DHL"
 #: selection:delivery.carrier,bpost_shipment_type:0
 msgid "DOCUMENTS"
 msgstr "DOCUMENTS"
+
+#. module: delivery_bpost
+#: model:ir.model,name:delivery_bpost.model_delivery_carrier
+msgid "Delivery Methods"
+msgstr "Méthodes de livraison"
 
 #. module: delivery_bpost
 #: model:ir.model.fields,field_description:delivery_bpost.field_delivery_carrier__bpost_saturday
@@ -188,15 +192,10 @@ msgid "PNG"
 msgstr "PNG"
 
 #. module: delivery_bpost
-#: code:addons/delivery_bpost/models/bpost_request.py:133
+#: code:addons/delivery_bpost/models/bpost_request.py:134
 #, python-format
 msgid "Packages over 30 Kg are not accepted by bpost."
 msgstr "bpost n’accepte pas les colis supérieurs à 30 kg."
-
-#. module: delivery_bpost
-#: model:ir.model,name:delivery_bpost.model_product_packaging
-msgid "Packaging"
-msgstr "Conditionnement"
 
 #. module: delivery_bpost
 #: model:ir.model.fields,field_description:delivery_bpost.field_delivery_carrier__bpost_developer_password
@@ -208,6 +207,11 @@ msgstr "Phrase secrète"
 #, python-format
 msgid "Please provide at least one item to ship."
 msgstr "Veuillez fournir au moins un élément concernant l'expédition"
+
+#. module: delivery_bpost
+#: model:ir.model,name:delivery_bpost.model_product_packaging
+msgid "Product Packaging"
+msgstr "Emballage des produits"
 
 #. module: delivery_bpost
 #: model:ir.model.fields,field_description:delivery_bpost.field_delivery_carrier__delivery_type
@@ -357,7 +361,7 @@ msgid "bpost"
 msgstr "bpost"
 
 #. module: delivery_bpost
-#: model:ir.ui.view,arch_db:delivery_bpost.view_delivery_carrier_form_with_provider_bpost
+#: model_terms:ir.ui.view,arch_db:delivery_bpost.view_delivery_carrier_form_with_provider_bpost
 msgid "bpost Configuration"
 msgstr "Configuration de bpost"
 
@@ -367,8 +371,8 @@ msgid "bpost Default Packaging Type"
 msgstr "Type d’emballage bpost par défaut"
 
 #. module: delivery_bpost
-#: model:ir.ui.view,arch_db:delivery_bpost.res_config_settings_view_form_sale
-#: model:ir.ui.view,arch_db:delivery_bpost.res_config_settings_view_form_stock
+#: model_terms:ir.ui.view,arch_db:delivery_bpost.res_config_settings_view_form_sale
+#: model_terms:ir.ui.view,arch_db:delivery_bpost.res_config_settings_view_form_stock
 msgid "bpost Delivery Methods"
 msgstr "Méthodes de livraison bpost"
 
@@ -394,7 +398,7 @@ msgstr ""
 "Domestic."
 
 #. module: delivery_bpost
-#: code:addons/delivery_bpost/models/bpost_request.py:111
+#: code:addons/delivery_bpost/models/bpost_request.py:112
 #, python-format
 msgid "bpost did not return prices for this destination country."
 msgstr "bpost n’a pas indiqué de frais de retour pour ce pays de destination."

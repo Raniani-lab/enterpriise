@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:29+0000\n"
-"PO-Revision-Date: 2018-08-24 11:29+0000\n"
+"POT-Creation-Date: 2018-09-21 14:07+0000\n"
+"PO-Revision-Date: 2018-09-21 14:07+0000\n"
 "Last-Translator: trendspotter, 2018\n"
 "Language-Team: Czech (https://www.transifex.com/odoo/teams/41243/cs/)\n"
 "MIME-Version: 1.0\n"
@@ -22,24 +22,24 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
 
 #. module: website_delivery_ups
-#: model:ir.ui.view,arch_db:website_delivery_ups.payment_delivery_methods_inherit_website_sale_delivery
+#: model_terms:ir.ui.view,arch_db:website_delivery_ups.payment_delivery_methods_inherit_website_sale_delivery
 msgid "(Bill My Account)"
 msgstr ""
 
 #. module: website_delivery_ups
-#: model:payment.acquirer,pending_msg:website_delivery_ups.payment_acquirer_ups_cod
+#: model_terms:payment.acquirer,pending_msg:website_delivery_ups.payment_acquirer_ups_cod
 msgid ""
 "<i>Pending</i>, Thanks for choosing COD(Collect on Delivery/Cash on "
 "Delivery) option. Delivery boy will collect the payment on delivery."
 msgstr ""
 
 #. module: website_delivery_ups
-#: model:payment.acquirer,cancel_msg:website_delivery_ups.payment_acquirer_ups_cod
+#: model_terms:payment.acquirer,cancel_msg:website_delivery_ups.payment_acquirer_ups_cod
 msgid "<span><i>Cancel,</i> Your payment has been cancelled.</span>"
 msgstr "<span><i>Zrušit,</i> Vaše platba byla zrušena.</span>"
 
 #. module: website_delivery_ups
-#: model:payment.acquirer,done_msg:website_delivery_ups.payment_acquirer_ups_cod
+#: model_terms:payment.acquirer,done_msg:website_delivery_ups.payment_acquirer_ups_cod
 msgid ""
 "<span><i>Done,</i> Your online payment has been successfully processed. "
 "Thank you for your order.</span>"
@@ -48,7 +48,7 @@ msgstr ""
 "objednávku.</span>"
 
 #. module: website_delivery_ups
-#: model:payment.acquirer,error_msg:website_delivery_ups.payment_acquirer_ups_cod
+#: model_terms:payment.acquirer,error_msg:website_delivery_ups.payment_acquirer_ups_cod
 msgid ""
 "<span><i>Error,</i> Please be aware that an error occurred during the "
 "transaction. The order has been confirmed but will not be paid. Do not "
@@ -60,12 +60,12 @@ msgstr ""
 " ohledně stavu objednávky, neváhejte nás kontaktovat.</span>"
 
 #. module: website_delivery_ups
-#: model:ir.ui.view,arch_db:website_delivery_ups.ups_bill_my_account_dialog
+#: model_terms:ir.ui.view,arch_db:website_delivery_ups.ups_bill_my_account_dialog
 msgid "Apply"
 msgstr "Použít"
 
 #. module: website_delivery_ups
-#: model:payment.acquirer,post_msg:website_delivery_ups.payment_acquirer_ups_cod
+#: model_terms:payment.acquirer,post_msg:website_delivery_ups.payment_acquirer_ups_cod
 msgid "Bank Account"
 msgstr "Bankovní účet"
 
@@ -75,56 +75,56 @@ msgid "COD"
 msgstr ""
 
 #. module: website_delivery_ups
-#: model:ir.ui.view,arch_db:website_delivery_ups.ups_bill_my_account_dialog
+#: model_terms:ir.ui.view,arch_db:website_delivery_ups.ups_bill_my_account_dialog
 msgid "Cancel"
 msgstr "Zrušit"
 
 #. module: website_delivery_ups
-#: model:ir.ui.view,arch_db:website_delivery_ups.ups_bill_my_account_dialog
+#: model_terms:ir.ui.view,arch_db:website_delivery_ups.ups_bill_my_account_dialog
 msgid "Close"
 msgstr "Zavřít"
 
 #. module: website_delivery_ups
-#: model:payment.acquirer,post_msg:website_delivery_ups.payment_acquirer_ups_cod
+#: model_terms:payment.acquirer,post_msg:website_delivery_ups.payment_acquirer_ups_cod
 msgid "Communication"
 msgstr "Komunikace"
 
 #. module: website_delivery_ups
-#: model:ir.ui.view,arch_db:website_delivery_ups.ups_bill_my_account_dialog
+#: model_terms:ir.ui.view,arch_db:website_delivery_ups.ups_bill_my_account_dialog
 msgid "Enter your Carrier Account #"
 msgstr ""
 
 #. module: website_delivery_ups
-#: model:payment.acquirer,post_msg:website_delivery_ups.payment_acquirer_ups_cod
+#: model_terms:payment.acquirer,post_msg:website_delivery_ups.payment_acquirer_ups_cod
 msgid "Please use the following transfer details"
 msgstr ""
 
 #. module: website_delivery_ups
-#: model:payment.acquirer,post_msg:website_delivery_ups.payment_acquirer_ups_cod
+#: model_terms:payment.acquirer,post_msg:website_delivery_ups.payment_acquirer_ups_cod
 msgid "Please use the order name as communication reference."
 msgstr ""
 
 #. module: website_delivery_ups
 #: model:ir.model,name:website_delivery_ups.model_sale_order
-msgid "Quotation"
-msgstr "Nabídka"
+msgid "Sale Order"
+msgstr "Prodejní objednávka"
 
 #. module: website_delivery_ups
-#: model:ir.ui.view,arch_db:website_delivery_ups.ups_bill_my_account_dialog
+#: model_terms:ir.ui.view,arch_db:website_delivery_ups.ups_bill_my_account_dialog
 msgid "Select Freight Collect Method"
 msgstr ""
 
 #. module: website_delivery_ups
-#: model:ir.ui.view,arch_db:website_delivery_ups.ups_bill_my_account_dialog
+#: model_terms:ir.ui.view,arch_db:website_delivery_ups.ups_bill_my_account_dialog
 msgid "UPS Bill My Account"
 msgstr ""
 
 #. module: website_delivery_ups
-#: model:ir.ui.view,arch_db:website_delivery_ups.res_config_settings_view_form_inherit_website_delivery_ups
+#: model_terms:ir.ui.view,arch_db:website_delivery_ups.res_config_settings_view_form_inherit_website_delivery_ups
 msgid "UPS Delivery Methods"
 msgstr ""
 
 #. module: website_delivery_ups
-#: model:ir.ui.view,arch_db:website_delivery_ups.payment_delivery_methods_inherit_website_sale_delivery
+#: model_terms:ir.ui.view,arch_db:website_delivery_ups.payment_delivery_methods_inherit_website_sale_delivery
 msgid "Using Account"
 msgstr ""

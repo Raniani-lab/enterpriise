@@ -13,7 +13,7 @@ tour.register('documents_tour', {
     content: _t("Want to become a <b>paperless company</b>? Let's discover Odoo DMS."),
     position: 'bottom',
 }, {
-    trigger: '.o_kanban_record:contains(Odoo Studio)',
+    trigger: '.o_kanban_record:contains(People)',
     content: _t("Click on a card to <b>view the document</b>."),
     position: 'bottom',
 }, {

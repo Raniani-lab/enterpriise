@@ -685,8 +685,6 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         )], limit=1)
         sequence.write({'number_next_actual': 1000})
 
-        self.picking_type_out.show_entire_packs = True
-
         self.phantom_js(
             url,
             "odoo.__DEBUG__.services['web_tour.tour'].run('test_pack_multiple_scan')",
@@ -700,6 +698,60 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
             ('name', '=', 'PACK0001000')
         ])
         self.assertEqual(package.location_id, self.customer_location)
+
+    def test_pack_common_content_scan(self):
+        """ Simulate a picking where 2 packages have the same products
+        inside. It should display one barcode line for each package and
+        not a common barcode line for both packages.
+        """
+        clean_access_rights(self.env)
+        grp_pack = self.env.ref('stock.group_tracking_lot')
+        self.env.user.write({'groups_id': [(4, grp_pack.id, 0)]})
+
+        action_id = self.env.ref('stock_barcode.stock_barcode_action_main_menu')
+        url = "/web#action=" + str(action_id.id)
+
+        # Create a pack and 2 quants in this pack
+        pack1 = self.env['stock.quant.package'].create({
+            'name': 'PACK1',
+        })
+        pack2 = self.env['stock.quant.package'].create({
+            'name': 'PACK2',
+        })
+
+        self.env['stock.quant']._update_available_quantity(
+            product_id=self.product1,
+            location_id=self.stock_location,
+            quantity=5,
+            package_id=pack1,
+        )
+        self.env['stock.quant']._update_available_quantity(
+            product_id=self.product2,
+            location_id=self.stock_location,
+            quantity=1,
+            package_id=pack1,
+        )
+
+        self.env['stock.quant']._update_available_quantity(
+            product_id=self.product1,
+            location_id=self.stock_location,
+            quantity=5,
+            package_id=pack2,
+        )
+        self.env['stock.quant']._update_available_quantity(
+            product_id=self.product2,
+            location_id=self.stock_location,
+            quantity=1,
+            package_id=pack2,
+        )
+
+        self.phantom_js(
+            url,
+            "odoo.__DEBUG__.services['web_tour.tour'].run('test_pack_common_content_scan')",
+            "odoo.__DEBUG__.services['web_tour.tour'].tours.test_pack_common_content_scan.ready",
+            login='admin',
+            timeout=180,
+        )
 
     def test_pack_multiple_location(self):
         """ Simulate a picking where a package is scanned two times.
@@ -1027,6 +1079,55 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
             login='admin',
             timeout=180,
         )
+        pack = self.env['stock.quant.package'].search([])[-1]
+        self.assertEqual(len(pack.quant_ids), 2)
+        self.assertEqual(pack.location_id, self.shelf2)
+
+    def test_highlight_packs(self):
+        clean_access_rights(self.env)
+        grp_pack = self.env.ref('stock.group_tracking_lot')
+        self.env.user.write({'groups_id': [(4, grp_pack.id, 0)]})
+
+        pack1 = self.env['stock.quant.package'].create({
+            'name': 'PACK001',
+        })
+        pack2 = self.env['stock.quant.package'].create({
+            'name': 'PACK002',
+        })
+
+        self.env['stock.quant']._update_available_quantity(self.product1, self.stock_location, 4, package_id=pack1)
+        self.env['stock.quant']._update_available_quantity(self.product2, self.stock_location, 4, package_id=pack1)
+        self.env['stock.quant']._update_available_quantity(self.product1, self.stock_location, 2, package_id=pack2)
+        self.env['stock.quant']._update_available_quantity(self.product2, self.stock_location, 2, package_id=pack2)
+
+        out_picking = self.env['stock.picking'].create({
+            'location_id': self.stock_location.id,
+            'location_dest_id': self.customer_location.id,
+            'picking_type_id': self.picking_type_out.id,
+        })
+
+        self.picking_type_out.show_entire_packs = True
+
+        package_level1 = self.env['stock.package_level'].create({
+            'location_id': self.stock_location.id,
+            'location_dest_id': self.customer_location.id,
+            'package_id': pack1.id,
+            'is_done': False,
+            'picking_id': out_picking.id,
+        })
+
+        url = self._get_client_action_url(out_picking.id)
+        out_picking.action_confirm()
+        out_picking.action_assign()
+
+        self.phantom_js(
+            url,
+            "odoo.__DEBUG__.services['web_tour.tour'].run('test_highlight_packs')",
+            "odoo.__DEBUG__.services['web_tour.tour'].tours.test_highlight_packs.ready",
+            login='admin',
+            timeout=180,
+        )
+
 
 @tagged('post_install', '-at_install')
 class TestInventoryAdjustmentBarcodeClientAction(TestBarcodeClientAction):

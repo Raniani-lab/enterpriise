@@ -7,6 +7,7 @@ from odoo.tools import html_escape
 class pageview(models.Model):
     _name = "website.crm.pageview"
     _rec_name = "view_date"
+    _description = 'Website CRM Page View'
 
     view_date = fields.Datetime(string='Viewing Date')
     lead_id = fields.Many2one('crm.lead', string='Lead')

@@ -2,12 +2,22 @@
 # This file contains the translation of the following modules:
 # * web_cohort
 # 
+# Translators:
+# Judyta Kaźmierczak <judyta.kazmierczak@openglobe.pl>, 2018
+# Monika Motyczyńska <m.monia@op.pl>, 2018
+# Martin Trigaux, 2018
+# Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2018
+# Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2018
+# Jaroslaw Kaczmarski, 2018
+# Piotr Szlązak <szlazakpiotr@gmail.com>, 2018
+# Net Voodooman <mirek@reallife.pl>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-05 09:12+0000\n"
-"PO-Revision-Date: 2018-09-05 09:12+0000\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"Last-Translator: Net Voodooman <mirek@reallife.pl>, 2018\n"
 "Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,31 +28,41 @@ msgstr ""
 #. module: web_cohort
 #. openerp-web
 #: code:addons/web_cohort/static/src/xml/web_cohort.xml:76
-#: code:addons/web_cohort/static/src/xml/web_cohort.xml:155
+#: code:addons/web_cohort/static/src/xml/web_cohort.xml:154
 #, python-format
 msgid "- By"
+msgstr ""
+
+#. module: web_cohort
+#: model:ir.model,name:web_cohort.model_ir_actions_act_window_view
+msgid "Action Window View"
 msgstr ""
 
 #. module: web_cohort
 #: selection:ir.actions.act_window.view,view_mode:0
 #: selection:ir.ui.view,type:0
 msgid "Activity"
-msgstr ""
+msgstr "Czynność"
 
 #. module: web_cohort
 #. openerp-web
 #: code:addons/web_cohort/controllers/main.py:59
-#: code:addons/web_cohort/static/src/xml/web_cohort.xml:113
-#: code:addons/web_cohort/static/src/xml/web_cohort.xml:186
+#: code:addons/web_cohort/static/src/xml/web_cohort.xml:112
+#: code:addons/web_cohort/static/src/xml/web_cohort.xml:184
 #, python-format
 msgid "Average"
-msgstr ""
+msgstr "Przeciętny"
+
+#. module: web_cohort
+#: model:ir.model,name:web_cohort.model_base
+msgid "Base"
+msgstr "Baza"
 
 #. module: web_cohort
 #: selection:ir.actions.act_window.view,view_mode:0
 #: selection:ir.ui.view,type:0
 msgid "Calendar"
-msgstr ""
+msgstr "Kalendarz"
 
 #. module: web_cohort
 #. openerp-web
@@ -51,7 +71,7 @@ msgstr ""
 #: selection:ir.ui.view,type:0
 #, python-format
 msgid "Cohort"
-msgstr ""
+msgstr "Kohorta"
 
 #. module: web_cohort
 #. openerp-web
@@ -74,25 +94,25 @@ msgstr ""
 #: code:addons/web_cohort/static/src/xml/web_cohort.xml:17
 #, python-format
 msgid "Count"
-msgstr ""
+msgstr "Liczba"
 
 #. module: web_cohort
 #: selection:ir.actions.act_window.view,view_mode:0
 #: selection:ir.ui.view,type:0
 msgid "Dashboard"
-msgstr ""
+msgstr "Konsola"
 
 #. module: web_cohort
 #. openerp-web
 #: code:addons/web_cohort/static/src/js/cohort_view.js:15
 #, python-format
 msgid "Day"
-msgstr ""
+msgstr "Dzień"
 
 #. module: web_cohort
 #: selection:ir.ui.view,type:0
 msgid "Diagram"
-msgstr ""
+msgstr "Diagram"
 
 #. module: web_cohort
 #. openerp-web
@@ -105,57 +125,57 @@ msgstr ""
 #: selection:ir.actions.act_window.view,view_mode:0
 #: selection:ir.ui.view,type:0
 msgid "Form"
-msgstr ""
+msgstr "Formularz"
 
 #. module: web_cohort
 #: selection:ir.actions.act_window.view,view_mode:0
 #: selection:ir.ui.view,type:0
 msgid "Gantt"
-msgstr ""
+msgstr "Wykres Gantta"
 
 #. module: web_cohort
 #: selection:ir.actions.act_window.view,view_mode:0
 #: selection:ir.ui.view,type:0
 msgid "Graph"
-msgstr ""
+msgstr "Wykres"
 
 #. module: web_cohort
 #: selection:ir.actions.act_window.view,view_mode:0
 #: selection:ir.ui.view,type:0
 msgid "Grid"
-msgstr ""
+msgstr "Tabela"
 
 #. module: web_cohort
 #: selection:ir.actions.act_window.view,view_mode:0
 #: selection:ir.ui.view,type:0
 msgid "Kanban"
-msgstr ""
+msgstr "Kanban"
 
 #. module: web_cohort
 #. openerp-web
 #: code:addons/web_cohort/static/src/xml/web_cohort.xml:6
 #, python-format
 msgid "Measures"
-msgstr ""
+msgstr "Miary"
 
 #. module: web_cohort
 #. openerp-web
 #: code:addons/web_cohort/static/src/js/cohort_view.js:17
 #, python-format
 msgid "Month"
-msgstr ""
+msgstr "Miesiąc"
 
 #. module: web_cohort
 #. openerp-web
-#: code:addons/web_cohort/static/src/xml/web_cohort.xml:206
+#: code:addons/web_cohort/static/src/xml/web_cohort.xml:204
 #, python-format
 msgid "No data available for cohort."
 msgstr ""
 
 #. module: web_cohort
 #. openerp-web
-#: code:addons/web_cohort/static/src/xml/web_cohort.xml:129
-#: code:addons/web_cohort/static/src/xml/web_cohort.xml:203
+#: code:addons/web_cohort/static/src/xml/web_cohort.xml:128
+#: code:addons/web_cohort/static/src/xml/web_cohort.xml:201
 #, python-format
 msgid "No data available."
 msgstr ""
@@ -165,68 +185,58 @@ msgstr ""
 #: code:addons/web_cohort/static/src/xml/web_cohort.xml:43
 #, python-format
 msgid "Period:"
-msgstr ""
+msgstr "Okres:"
 
 #. module: web_cohort
 #: selection:ir.actions.act_window.view,view_mode:0
 #: selection:ir.ui.view,type:0
 msgid "Pivot"
-msgstr ""
+msgstr "Pivot"
 
 #. module: web_cohort
 #: selection:ir.ui.view,type:0
 msgid "QWeb"
-msgstr ""
+msgstr "Qweb"
 
 #. module: web_cohort
 #: selection:ir.ui.view,type:0
 msgid "Search"
-msgstr ""
+msgstr "Szukaj"
 
 #. module: web_cohort
 #: selection:ir.actions.act_window.view,view_mode:0
 #: selection:ir.ui.view,type:0
 msgid "Tree"
-msgstr ""
+msgstr "Drzewo"
 
 #. module: web_cohort
 #. openerp-web
 #: code:addons/web_cohort/static/src/js/cohort_view.js:74
 #, python-format
 msgid "Untitled"
-msgstr ""
+msgstr "Bez tytułu"
+
+#. module: web_cohort
+#: model:ir.model,name:web_cohort.model_ir_ui_view
+msgid "View"
+msgstr "Widok"
 
 #. module: web_cohort
 #: model:ir.model.fields,field_description:web_cohort.field_ir_actions_act_window_view__view_mode
 #: model:ir.model.fields,field_description:web_cohort.field_ir_ui_view__type
 msgid "View Type"
-msgstr ""
+msgstr "Typ widoku"
 
 #. module: web_cohort
 #. openerp-web
 #: code:addons/web_cohort/static/src/js/cohort_view.js:16
 #, python-format
 msgid "Week"
-msgstr ""
+msgstr "Tydzień"
 
 #. module: web_cohort
 #. openerp-web
 #: code:addons/web_cohort/static/src/js/cohort_view.js:18
 #, python-format
 msgid "Year"
-msgstr ""
-
-#. module: web_cohort
-#: model:ir.model,name:web_cohort.model_base
-msgid "base"
-msgstr ""
-
-#. module: web_cohort
-#: model:ir.model,name:web_cohort.model_ir_actions_act_window_view
-msgid "ir.actions.act_window.view"
-msgstr ""
-
-#. module: web_cohort
-#: model:ir.model,name:web_cohort.model_ir_ui_view
-msgid "ir.ui.view"
-msgstr ""
+msgstr "Rok"

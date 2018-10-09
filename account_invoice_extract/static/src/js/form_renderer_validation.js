@@ -6,7 +6,7 @@ var FormRenderer = require('web.FormRenderer');
 var ThreadField = require('mail.ThreadField');
 var FormView = require('web.FormView');
 var BasicModel = require('web.BasicModel');
-var FormController = require('web.FormController');;
+var FormController = require('web.FormController');
 require('mail_enterprise.ThreadField');
 var view_registry = require('web.view_registry');
 var field_utils = require('web.field_utils');
@@ -36,7 +36,7 @@ ThreadField.include({
     },
 });
 
-var AccountOcrFormRenderer = FormRenderer.extend({
+var AccountInvoiceExtractFormRenderer = FormRenderer.extend({
     custom_events: _.extend({}, FormRenderer.prototype.custom_events, {
         preview_attachment_validation: '_onAttachmentPreviewValidation',
         display_boxes: '_display_boxes',
@@ -46,6 +46,112 @@ var AccountOcrFormRenderer = FormRenderer.extend({
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------
+
+    /**
+     * Add click event on a boxLayer
+     *
+     * @private
+     */
+    _add_click_on_box_layer: function ($boxLayer) {
+        var self = this;
+        $boxLayer.click(function (event) {
+            var $user_selected = $(this).find(".userChosenBox");
+            if ($user_selected.length != 0) {
+                var id = $user_selected[0].getAttribute("data_id");
+                if (self.mode == "edit") {
+                    self._rpc({
+                        model: 'account.invoice',
+                        method: 'remove_user_selected_box',
+                        args: [[self.state.res_id], id],
+                    }).then(function (result) {
+                        var user_selected_found = false;
+                        for (var index in self.boxes) {
+                            if (self.boxes[index]["feature"] == self.selected_feature) {
+                                if (self.boxes[index]["user_selected"] == true) {
+                                    self.boxes[index]["user_selected"] = false;
+                                    user_selected_found = true;
+                                }
+                            }
+                        }
+                        if (user_selected_found) {
+                            for (var index in self.boxes) {
+                                if (self.boxes[index]["feature"] == self.selected_feature) {
+                                    if (self.boxes[index]["selected_status"] != 0) {
+                                        self.boxes[index]["selected_status"] = 1;
+                                    }
+                                }
+                            }
+                        } else {
+                            for (var index in self.boxes) {
+                                if (self.boxes[index]["feature"] == self.selected_feature) {
+                                    if (self.boxes[index]["feature"] == self.selected_feature) {
+                                        self.boxes[index]["selected_status"] = 0;
+                                    }
+                                }
+                            }
+                        }
+                        self.trigger_up('display_boxes', {feature: self.selected_feature});
+                        var changes = {}
+                        var feature = $user_selected[0].getAttribute("data_feature");
+                        if (feature == "date") {
+                            changes = {
+                                date:field_utils.parse.date(result.split(" ")[0])
+                            }
+                        }
+                        else if (feature == "supplier") {
+                            changes = {
+                                partner_id:{
+                                    id:result
+                                }
+                            }
+                        }
+                        else if (feature == "VAT") {
+                            changes = {
+                                partner_id:{
+                                    id:result
+                                }
+                            }
+                        }
+                        else if (feature == "due_date") {
+                            changes = {
+                                date_due:field_utils.parse.date(result.split(" ")[0])
+                            }
+                        }
+                        else if (feature == "total") {
+                            if (result["line_id"] != -1) {
+                                changes = {
+                                    invoice_line_ids:{
+                                        id: self.state.data.invoice_line_ids.data[0].id,
+                                        operation: "UPDATE",
+                                        data: {
+                                            price_unit: parseFloat(result["total"]),
+                                        },
+                                    }
+                                }
+                            } else {
+                                //no invoice line, automatic change disabled
+                                return;
+                            }
+                        }
+                        else if (feature == "invoice_id") {
+                            changes = {
+                                reference:result
+                            }
+                        }
+                        else if (feature == "currency") {
+                            changes = {
+                                currency_id:result
+                            }
+                        }
+                        self.trigger_up('field_changed', {
+                            dataPointID: self.state.id,
+                            changes: changes,
+                        });
+                    });  
+                }
+            }
+        });
+    },
 
     /**
      * Add feature buttons on top of page
@@ -69,6 +175,33 @@ var AccountOcrFormRenderer = FormRenderer.extend({
             $buttonsDiv.append($('<button/>', {
                 type:'button',
                 class: 'btn ml4',
+                text: 'VAT',
+                click: function () { 
+                    self.selected_feature = 'VAT_Number'
+                    self.trigger_up('display_boxes', {feature: self.selected_feature}); 
+                }
+            }));
+            $buttonsDiv.append($('<button/>', {
+                type:'button',
+                class: 'btn ml4',
+                text: 'Vendor',
+                click: function () { 
+                    self.selected_feature = 'supplier'
+                    self.trigger_up('display_boxes', {feature: self.selected_feature}); 
+                }
+            }));
+            $buttonsDiv.append($('<button/>', {
+                type:'button',
+                class: 'btn ml4',
+                text: 'Currency',
+                click: function () { 
+                    self.selected_feature = 'currency'
+                    self.trigger_up('display_boxes', {feature: self.selected_feature}); 
+                },
+            }));
+            $buttonsDiv.append($('<button/>', {
+                type:'button',
+                class: 'btn ml4',
                 text: 'Total',
                 click: function () { 
                     self.selected_feature = 'total'
@@ -88,7 +221,7 @@ var AccountOcrFormRenderer = FormRenderer.extend({
             {
                 type:'button',
                 class: 'btn ml4',
-                text: 'Date Due',
+                text: 'Due Date',
                 click: function () { 
                     self.selected_feature = 'due_date'
                     self.trigger_up('display_boxes', {feature: self.selected_feature}); 
@@ -103,27 +236,10 @@ var AccountOcrFormRenderer = FormRenderer.extend({
                     self.trigger_up('display_boxes', {feature: self.selected_feature}); 
                 }
             }));
-            $buttonsDiv.append($('<button/>', {
-                type:'button',
-                class: 'btn ml4',
-                text: 'VAT',
-                click: function () { 
-                    self.selected_feature = 'VAT_Number'
-                    self.trigger_up('display_boxes', {feature: self.selected_feature}); 
-                }
-            }));
-            $buttonsDiv.append($('<button/>', {
-                type:'button',
-                class: 'btn ml4',
-                text: 'Vendor',
-                click: function () { 
-                    self.selected_feature = 'supplier'
-                    self.trigger_up('display_boxes', {feature: self.selected_feature}); 
-                }
-            }));
             if ($(page).hasClass("img-fluid")) { //in case of png
                 $(page).after('<div class="boxLayer"/>');
                 var boxLayer = self.$attachmentPreview[0].getElementsByClassName('boxLayer');
+                self._add_click_on_box_layer($(boxLayer));
                 $(boxLayer)[0].style.width = $(page)[0].clientWidth + "px";
                 $(boxLayer)[0].style.height = $(page)[0].clientHeight + "px";
                 $(boxLayer)[0].style.left = $(page)[0].offsetLeft + "px";
@@ -152,11 +268,11 @@ var AccountOcrFormRenderer = FormRenderer.extend({
         }
 
         this.$attachmentPreview.find('iframe').load(function () { // wait for iframe to load
-            var $frameDoc = self.$attachmentPreview.find('iframe').contents()[0];     
+            var $frameDoc = self.$attachmentPreview.find('iframe').contents()[0];
             $frameDoc.addEventListener("pagerendered", function (evt) {
                 var $iframe = self.$attachmentPreview.find('iframe')[0];
                 var ocr_success = $(".o_success_ocr");
-                if ($iframe != undefined && ocr_success.length > 0 && !ocr_success.hasClass("o_invisible_modifier")) {
+                if ($iframe != undefined && ocr_success.length > 0 && !ocr_success.hasClass("o_invisible_modifier") && self.mode == "edit") {
                     var document = $iframe.contentDocument;
 
                     self._add_feature_buttons($iframe);
@@ -167,6 +283,7 @@ var AccountOcrFormRenderer = FormRenderer.extend({
                     $(document.getElementsByClassName('boxLayer')).remove();
                     $(textLayer).after('<div class="boxLayer"/>');
                     var boxLayer = document.getElementsByClassName('boxLayer');
+                    self._add_click_on_box_layer($(boxLayer));
                     $(boxLayer).each(function (index) {
                         $(this)[0].style.width = $(textLayer)[index].style.width;
                         $(this)[0].style.height = $(textLayer)[index].style.height;
@@ -175,15 +292,24 @@ var AccountOcrFormRenderer = FormRenderer.extend({
             });
         });
         var $document_img = self.$attachmentPreview.find('.img-fluid')[0];
-        self.$attachmentPreview.find('.img-fluid').load(function () {
+        var attachment = document.getElementById('attachment_img');
+        if (attachment != null && attachment.complete) {
             var ocr_success = $(".o_success_ocr");
-            if ($document_img != undefined && ocr_success.length > 0 && !ocr_success.hasClass("o_invisible_modifier")) {
+            if ($document_img != undefined && ocr_success.length > 0 && !ocr_success.hasClass("o_invisible_modifier") && self.mode == "edit") {
                 self._add_feature_buttons($document_img);
                 if ($("account_invoice_extract_css").length == 0)
                     $(document.head).append('<link id="account_invoice_extract_css" rel="stylesheet" type="text/css" href="/account_invoice_extract/static/src/css/account_invoice_extract.css">');
             }
-        })
-        //TODO on complete too
+        } else {
+            self.$attachmentPreview.find('.img-fluid').load(function () {
+                var ocr_success = $(".o_success_ocr");
+                if ($document_img != undefined && ocr_success.length > 0 && !ocr_success.hasClass("o_invisible_modifier") && self.mode == "edit") {
+                    self._add_feature_buttons($document_img);
+                    if ($("account_invoice_extract_css").length == 0)
+                        $(document.head).append('<link id="account_invoice_extract_css" rel="stylesheet" type="text/css" href="/account_invoice_extract/static/src/css/account_invoice_extract.css">');
+                }
+            })
+        }
         
     },
 
@@ -216,47 +342,62 @@ var AccountOcrFormRenderer = FormRenderer.extend({
                 var box = this.boxes[index];
                 if (box["feature"] == ev.data.feature) {
                     var classDiv = "simpleBox";
-                    if (box["ocr_selected"] == true) {
+                    if (box["selected_status"] == 2) {
                         classDiv += " ocrChosenBox";
                     }
-                    if (box["user_selected"] == true) {
+                    if (box["user_selected"] == true || box["selected_status"] == 1) {
                         classDiv = "simpleBox userChosenBox";
                     }
-                    $($(boxLayer)[box["page"]]).append("<div class='" + classDiv + "' style='left:" + (box["box_left"] * parseInt($(boxLayer)[box["page"]].style.width) - 4) + "px;top:" + (box["box_top"] * parseInt($(boxLayer)[box["page"]].style.height) - 4)  + "px;width:" + ((box["box_right"] - box["box_left"]) * parseInt($(boxLayer)[box["page"]].style.width))  + 
-                                "px;height:" + ((box["box_bottom"]-box["box_top"]) * parseInt($(boxLayer)[box["page"]].style.height))  + "px;' data_id='" + box["id"] + "' data_feature='" + box['feature'] +"' data_text='" + box['text'] +"'/>");
+                    $($(boxLayer)[box["page"]]).append("<div class='" + classDiv + 
+                        "' style='left:" + (box["box_midX"] * parseInt($(boxLayer)[box["page"]].style.width)) + "px;" + 
+                        "top:" + (box["box_midY"] * parseInt($(boxLayer)[box["page"]].style.height))  + "px;" + 
+                        "width:" + ((box["box_width"]) * parseInt($(boxLayer)[box["page"]].style.width)) + "px;" + 
+                        "height:" + ((box["box_height"]) * parseInt($(boxLayer)[box["page"]].style.height))  + "px;" + 
+                        "transform: translate(-50%, -50%) rotate(" + box["box_angle"] + "deg);" + 
+                        "-ms-transform: translate(-50%, -50%) rotate(" + box["box_angle"] + "deg);" + 
+                        "-webkit-transform: translate(-50%, -50%) rotate(" + box["box_angle"] + "deg);" + "' data_id='" + box["id"] + "' data_feature='" + box['feature'] +"' data_text='" + box['text'] +"'/>");
                 }
             }
             $(boxLayer).find(".simpleBox").click(function (event) {
+                event.stopPropagation();
                 var id = $(event.target)[0].getAttribute("data_id");
-                self._rpc({
-                    model: 'account.invoice',
-                    method: 'set_user_selected_box',
-                    args: [[self.state.res_id], id, self.mode == "edit"],
-                }).then(function (result) {
-                    for (index in self.boxes) {
-                        if (self.boxes[index]["id"] == id) {
-                            self.boxes[index]["user_selected"] = true;
-                        } else {
-                            self.boxes[index]["user_selected"] = false;
+                if (self.mode == "edit") {
+                    self._rpc({
+                        model: 'account.invoice',
+                        method: 'set_user_selected_box',
+                        args: [[self.state.res_id], id],
+                    }).then(function (result) {
+                        for (var index in self.boxes) {
+                            if (self.boxes[index]["id"] == id) {
+                                self.boxes[index]["user_selected"] = true;
+                            } else {
+                                if (self.boxes[index]["feature"] == self.selected_feature) {
+                                    self.boxes[index]["user_selected"] = false;
+                                    if (self.boxes[index]["selected_status"] != 0) {
+                                        self.boxes[index]["selected_status"] = 2;
+                                    }
+                                }
+                            }
                         }
-                    }
-                    self.trigger_up('display_boxes', {feature: self.selected_feature});
-                    if (self.mode == "edit") {
+                        self.trigger_up('display_boxes', {feature: self.selected_feature});
                         var changes = {}
                         var feature = $(event.target)[0].getAttribute("data_feature");
                         if (feature == "date") {
                             changes = {
-                                date:field_utils.parse.date(result.split(" ")[0])
+                                date_invoice:field_utils.parse.date(result.split(" ")[0])
                             }
                         }
                         else if (feature == "supplier") {
+                            if (result == 0) {
+                                return;
+                            }
                             changes = {
                                 partner_id:{
                                     id:result
                                 }
                             }
                         }
-                        else if (feature == "VAT") {
+                        else if (feature == "VAT_Number") {
                             changes = {
                                 partner_id:{
                                     id:result
@@ -275,7 +416,7 @@ var AccountOcrFormRenderer = FormRenderer.extend({
                                         id: self.state.data.invoice_line_ids.data[0].id,
                                         operation: "UPDATE",
                                         data: {
-                                            price_unit: parseInt(result["total"]),
+                                            price_unit: parseFloat(result["total"]),
                                         },
                                     }
                                 }
@@ -289,31 +430,38 @@ var AccountOcrFormRenderer = FormRenderer.extend({
                                 reference:result
                             }
                         }
+                        else if (feature == "currency") {
+                            changes = {
+                                currency_id: {
+                                    id: result,
+                                }
+                            }
+                        }
                         self.trigger_up('field_changed', {
                             dataPointID: self.state.id,
                             changes: changes,
                         });
-                    } else {
-                        self.trigger_up('reload');
-                    }
-                });  
+                    });  
+                } else {
+                    //self.trigger_up('reload');
+                }
             });
         }
     },
 });
 
-var AccountOcrPreview = FormView.extend({
+var AccountInvoiceExtractPreview = FormView.extend({
     config: _.extend({}, FormRenderer.prototype.config, {
         Model: BasicModel,
-        Renderer: AccountOcrFormRenderer,
+        Renderer: AccountInvoiceExtractFormRenderer,
         Controller: FormController,
     }),
 })
 
-view_registry.add('account_ocr_preview', AccountOcrPreview);
+view_registry.add('account_invoice_extract_preview', AccountInvoiceExtractPreview);
 
 return {
-    Renderer: AccountOcrFormRenderer,
+    Renderer: AccountInvoiceExtractFormRenderer,
 }
 
 });

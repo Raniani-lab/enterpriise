@@ -11,6 +11,7 @@ import re
 
 class AEATBOEExportWizard(models.TransientModel):
     _name = 'l10n_es_reports.aeat.boe.export.wizard'
+    _description = "BOE Export Wizard"
 
     def download_boe_action(self):
         # We add the generation context to the options, as it is not passed
@@ -37,7 +38,7 @@ class Mod111And115And303CommonBOEWizard(models.TransientModel):
         return self.env['res.company']._company_default_get()
 
     company_id = fields.Many2one(string="Current Company", comodel_name='res.company', default=_get_current_company)
-    company_partner_id = fields.Many2one(string="Company Partner", comodel_name='res.partner', related='company_id.partner_id')
+    company_partner_id = fields.Many2one(string="Company Partner", comodel_name='res.partner', related='company_id.partner_id', readonly=False)
     partner_bank_id = fields.Many2one(string="Direct Debit Account", comodel_name='res.partner.bank', help="The IBAN account number to use for direct debit. Leave blank if you don't use direct debit.", domain="[('partner_id','=',company_partner_id)]")
     complementary_declaration = fields.Boolean(string="Complementary Declaration", help="Whether or not this BOE file is a complementary declaration.")
     declaration_type = fields.Selection(string="Declaration Type", selection=[('I', 'I - Income'), ('U', 'U - Direct debit'), ('G', 'G - Income to enter on CCT'), ('N', 'N - To return')], required=True, default='I')
@@ -116,6 +117,7 @@ class Mod347BOEWizard(models.TransientModel):
 
 class Mod347BOEManuaPartnerData(models.TransientModel):
     _name = 'l10n_es_reports.aeat.mod347.manual.partner.data'
+    _description = "Manually Entered Data for Mod 347 Report"
 
     parent_wizard_id = fields.Many2one(comodel_name='l10n_es_reports.aeat.boe.mod347.export.wizard')
     partner_id = fields.Many2one(comodel_name='res.partner', string='Partner', required=True)

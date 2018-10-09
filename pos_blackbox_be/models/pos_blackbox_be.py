@@ -33,7 +33,7 @@ class pos_config(models.Model):
     _inherit = 'pos.config'
 
     report_sequence_number = fields.Integer()
-    blackbox_pos_production_id = fields.Char("Registered POSBox serial number", copy=False)
+    blackbox_pos_production_id = fields.Char("Registered IoT Box serial number", copy=False)
 
     @api.constrains('blackbox_pos_production_id')
     def _check_one_posbox_per_config(self):
@@ -46,7 +46,7 @@ class pos_config(models.Model):
 
                 if pos_config.search([('id', '!=', config.id),
                                       ('blackbox_pos_production_id', '=', config.blackbox_pos_production_id)]):
-                    raise ValidationError(_("Only one Point of Sale allowed per registered POSBox."))
+                    raise ValidationError(_("Only one Point of Sale allowed per registered IoT Box."))
 
     @api.constrains('blackbox_pos_production_id', 'fiscal_position_ids')
     def _check_posbox_fp_tax_code(self):

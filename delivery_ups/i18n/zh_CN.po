@@ -4,13 +4,16 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
+# 珠海-杜哥 <liangjia@qq.com>, 2018
+# neter ji <jifuyi@qq.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"Last-Translator: neter ji <jifuyi@qq.com>, 2018\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -35,7 +38,6 @@ msgid "COD Funding Option"
 msgstr "货到付款支付选项"
 
 #. module: delivery_ups
-#: model:ir.model,name:delivery_ups.model_delivery_carrier
 #: model:ir.model.fields,field_description:delivery_ups.field_product_packaging__package_carrier_type
 msgid "Carrier"
 msgstr "承运方"
@@ -73,6 +75,11 @@ msgid "DHL"
 msgstr "DHL"
 
 #. module: delivery_ups
+#: model:ir.model,name:delivery_ups.model_delivery_carrier
+msgid "Delivery Methods"
+msgstr "交货方式"
+
+#. module: delivery_ups
 #: selection:delivery.carrier,ups_label_file_type:0
 msgid "EPL"
 msgstr "EPL"
@@ -81,7 +88,7 @@ msgstr "EPL"
 #: selection:delivery.carrier,delivery_type:0
 #: selection:product.packaging,package_carrier_type:0
 msgid "Easypost"
-msgstr ""
+msgstr "Easypost"
 
 #. module: delivery_ups
 #: code:addons/delivery_ups/models/delivery_ups.py:113
@@ -135,11 +142,6 @@ msgid "PDF"
 msgstr "PDF"
 
 #. module: delivery_ups
-#: model:ir.model,name:delivery_ups.model_product_packaging
-msgid "Packaging"
-msgstr "包装"
-
-#. module: delivery_ups
 #: code:addons/delivery_ups/models/ups_request.py:209
 #, python-format
 msgid "Please provide at least one item to ship."
@@ -151,14 +153,14 @@ msgid "Pounds"
 msgstr "英镑"
 
 #. module: delivery_ups
+#: model:ir.model,name:delivery_ups.model_product_packaging
+msgid "Product Packaging"
+msgstr "产品包装"
+
+#. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__delivery_type
 msgid "Provider"
 msgstr "服务商"
-
-#. module: delivery_ups
-#: model:ir.model,name:delivery_ups.model_sale_order
-msgid "Quotation"
-msgstr "报价单"
 
 #. module: delivery_ups
 #: selection:delivery.carrier,ups_label_file_type:0
@@ -166,7 +168,12 @@ msgid "SPL"
 msgstr "SPL"
 
 #. module: delivery_ups
-#: model:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form_with_provider_ups
+#: model:ir.model,name:delivery_ups.model_sale_order
+msgid "Sale Order"
+msgstr "销售订单"
+
+#. module: delivery_ups
+#: model_terms:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form_with_provider_ups
 msgid "Saturday Delivery"
 msgstr "星期六交货"
 
@@ -174,7 +181,7 @@ msgstr "星期六交货"
 #: code:addons/delivery_ups/models/delivery_ups.py:231
 #, python-format
 msgid "Shipment N° %s has been cancelled"
-msgstr "装运N° %s已经被取消"
+msgstr "运单N° %s已经被取消"
 
 #. module: delivery_ups
 #: code:addons/delivery_ups/models/delivery_ups.py:202
@@ -182,7 +189,7 @@ msgstr "装运N° %s已经被取消"
 msgid ""
 "Shipment created into UPS<br/><b>Tracking Numbers:</b> "
 "%s<br/><b>Packages:</b> %s"
-msgstr "<br/><b/><br/><b/>"
+msgstr "发货到UPS<br/><b> 跟踪码：</b>%s<br/><b>包裹</b>%s"
 
 #. module: delivery_ups
 #: code:addons/delivery_ups/models/ups_request.py:187
@@ -265,7 +272,7 @@ msgid "UPS BE"
 msgstr "UPS BE"
 
 #. module: delivery_ups
-#: model:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form_with_provider_ups
+#: model_terms:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form_with_provider_ups
 msgid "UPS Configuration"
 msgstr "UPS配置"
 
@@ -275,8 +282,8 @@ msgid "UPS Default Packaging Type"
 msgstr "UPS 默认包装类型"
 
 #. module: delivery_ups
-#: model:ir.ui.view,arch_db:delivery_ups.res_config_settings_view_form_sale
-#: model:ir.ui.view,arch_db:delivery_ups.res_config_settings_view_form_stock
+#: model_terms:ir.ui.view,arch_db:delivery_ups.res_config_settings_view_form_sale
+#: model_terms:ir.ui.view,arch_db:delivery_ups.res_config_settings_view_form_stock
 msgid "UPS Delivery Methods"
 msgstr "UPS 交货方式"
 
@@ -293,7 +300,7 @@ msgstr "UPS 密码"
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_saturday_delivery
 msgid "UPS Saturday Delivery"
-msgstr ""
+msgstr "UPS周六派送"
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_default_service_type
@@ -343,7 +350,7 @@ msgid "Ups Package Weight Unit"
 msgstr "UPS 包装重量单位"
 
 #. module: delivery_ups
-#: model:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form_with_provider_ups
+#: model_terms:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form_with_provider_ups
 msgid "Value Added Services"
 msgstr "增值服务"
 
@@ -364,4 +371,4 @@ msgstr "bpost"
 #: model:product.template,weight_uom_name:delivery_ups.product_product_delivery_ups_be_product_template
 #: model:product.template,weight_uom_name:delivery_ups.product_product_delivery_ups_us_product_template
 msgid "kg"
-msgstr "kg"
+msgstr "公斤"

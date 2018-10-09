@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import fields, models, api, _
+from odoo.exceptions import UserError
 
 class AccountInvoice(models.Model):
     _inherit = 'account.invoice'
@@ -23,8 +24,8 @@ class AccountInvoice(models.Model):
         # If no type is given in context, we give access to every possible value for the field
         return [('A', _("A - Acquisition")), ('E', _("E - Supply")), ('T', _("T - Triangular Operation")), ('S', _("S - Services sale")), ('I', _("I - Services acquisition")), ('M', _("M - Supply without taxes")), ('H', _("H - Supply without taxes delivered by a legal representative"))]
 
-    l10n_es_reports_mod347_invoice_type = fields.Selection(string="Type for mod 347", selection=[('regular', "Regular operation"), ('insurance', "Insurance operation")], default='regular', required=True, help="Defines the category into which this invoice falls for mod 347 report.")
-    l10n_es_reports_mod349_invoice_type = fields.Selection(string="Type for mod 349", selection="_mod_349_selection_values", required=True, help="Defines the category into which this invoice falls for mod 349 report", default=_default_mod_349_invoice_type)
+    l10n_es_reports_mod347_invoice_type = fields.Selection(string="Type for mod 347", selection=[('regular', "Regular operation"), ('insurance', "Insurance operation")], default='regular', help="Defines the category into which this invoice falls for mod 347 report.")
+    l10n_es_reports_mod349_invoice_type = fields.Selection(string="Type for mod 349", selection="_mod_349_selection_values", help="Defines the category into which this invoice falls for mod 349 report", default=_default_mod_349_invoice_type)
     l10n_es_reports_mod349_available = fields.Boolean(string="Available for Mod349", store=True, compute="_compute_l10n_es_reports_mod349_available", help="True if and only if the invoice must be reported on mod 349 report, i.e. it concerns an intracommunitary operation.")
 
     @api.depends('partner_id.country_id')
@@ -36,3 +37,16 @@ class AccountInvoice(models.Model):
     def _get_refund_copy_fields(self):
         rslt = super(AccountInvoice, self)._get_refund_copy_fields()
         return rslt + ['l10n_es_reports_mod347_invoice_type', 'l10n_es_reports_mod349_invoice_type']
+
+    def invoice_validate(self):
+        """ Overridden to require Spanish invoice type to be set if the company
+        of the invoice uses a Spanish COA (so other companies using other COA
+        on the same DB won't be force to use them).
+        """
+        rslt = super(AccountInvoice, self).invoice_validate()
+        spanish_coa_list = [self.env.ref('l10n_es.account_chart_template_pymes'), self.env.ref('l10n_es.account_chart_template_assoc'), self.env.ref('l10n_es.account_chart_template_full')]
+        for record in self:
+            if record.company_id.chart_template_id in spanish_coa_list and \
+            (not record.l10n_es_reports_mod347_invoice_type or (record.l10n_es_reports_mod349_available and not record.l10n_es_reports_mod349_invoice_type)):
+                raise UserError(_("Please select a Spanish invoice type for this invoice."))
+        return rslt

@@ -7,7 +7,7 @@ from odoo import api, fields, models, _
 class HelpdeskTeam(models.Model):
     _inherit = 'helpdesk.team'
 
-    project_id = fields.Many2one("project.project", string="Project")
+    project_id = fields.Many2one("project.project", string="Project", ondelete="restrict")
 
     @api.model
     def create(self, vals):

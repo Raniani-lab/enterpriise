@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-18 10:05+0000\n"
-"PO-Revision-Date: 2018-09-18 10:05+0000\n"
+"POT-Creation-Date: 2018-09-21 14:07+0000\n"
+"PO-Revision-Date: 2018-09-21 14:07+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -77,11 +77,6 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
 #: model_terms:ir.ui.view,arch_db:website_crm_score.team_user_kanban
 msgid "Avatar"
-msgstr ""
-
-#. module: website_crm_score
-#: model_terms:ir.ui.view,arch_db:website_crm_score.crm_lead_view_dashboard
-msgid "Average Score"
 msgstr ""
 
 #. module: website_crm_score
@@ -186,7 +181,7 @@ msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model,name:website_crm_score.model_ir_http
-msgid "HTTP routing"
+msgid "HTTP Routing"
 msgstr ""
 
 #. module: website_crm_score
@@ -262,6 +257,12 @@ msgid "Lead"
 msgstr ""
 
 #. module: website_crm_score
+#: model:ir.actions.act_window,name:website_crm_score.website_crm_score_pageviews
+#: model:ir.ui.menu,name:website_crm_score.pageview_menu
+msgid "Lead Page Views"
+msgstr ""
+
+#. module: website_crm_score
 #: model:ir.model,name:website_crm_score.model_crm_lead
 msgid "Lead/Opportunity"
 msgstr ""
@@ -281,11 +282,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_team__leads_count
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__leads_count
 msgid "Leads Count"
-msgstr ""
-
-#. module: website_crm_score
-#: model:ir.ui.menu,name:website_crm_score.leads_menu
-msgid "Leads Management"
 msgstr ""
 
 #. module: website_crm_score
@@ -392,7 +388,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__score_pageview_ids
 #: model_terms:ir.ui.view,arch_db:website_crm_score.crm_score_pageview_form
 #: model_terms:ir.ui.view,arch_db:website_crm_score.crm_score_pageview_graph
-#: model_terms:ir.ui.view,arch_db:website_crm_score.website_crm_pageview_tree
 msgid "Page Views"
 msgstr ""
 
@@ -438,6 +433,7 @@ msgstr ""
 
 #. module: website_crm_score
 #: model:ir.actions.act_window,name:website_crm_score.team_action
+#: model:ir.model,name:website_crm_score.model_crm_team
 msgid "Sales Channels"
 msgstr ""
 
@@ -454,11 +450,6 @@ msgid "Sales Records"
 msgstr ""
 
 #. module: website_crm_score
-#: model:ir.model,name:website_crm_score.model_crm_team
-msgid "Sales Team"
-msgstr ""
-
-#. module: website_crm_score
 #: model:ir.model.fields,help:website_crm_score.field_res_users__sale_team_id
 msgid "Sales Team the user is member of. Used to compute the members of a Sales Team through the inverse one2many"
 msgstr ""
@@ -469,7 +460,13 @@ msgid "Salesman"
 msgstr ""
 
 #. module: website_crm_score
+#: model:ir.model,name:website_crm_score.model_team_user
+msgid "Salesperson (Team Member)"
+msgstr ""
+
+#. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__score
+#: model_terms:ir.ui.view,arch_db:website_crm_score.crm_lead_view_dashboard
 msgid "Score"
 msgstr ""
 
@@ -485,11 +482,6 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website_crm_score.score_opp_form_view
 #: selection:website.crm.score,rule_type:0
 msgid "Scoring"
-msgstr ""
-
-#. module: website_crm_score
-#: model:ir.ui.menu,name:website_crm_score.pageview_menu
-msgid "Scoring Page Views"
 msgstr ""
 
 #. module: website_crm_score
@@ -572,8 +564,23 @@ msgid "Value"
 msgstr ""
 
 #. module: website_crm_score
+#: model:ir.model,name:website_crm_score.model_ir_ui_view
+msgid "View"
+msgstr ""
+
+#. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__view_date
 msgid "Viewing Date"
+msgstr ""
+
+#. module: website_crm_score
+#: model:ir.model,name:website_crm_score.model_website_crm_pageview
+msgid "Website CRM Page View"
+msgstr ""
+
+#. module: website_crm_score
+#: model:ir.model,name:website_crm_score.model_website_crm_score
+msgid "Website CRM Score"
 msgstr ""
 
 #. module: website_crm_score
@@ -583,7 +590,7 @@ msgid "Website Messages"
 msgstr ""
 
 #. module: website_crm_score
-#: model:ir.actions.act_window,name:website_crm_score.website_crm_score_pageviews
+#: model_terms:ir.ui.view,arch_db:website_crm_score.website_crm_pageview_pivot
 msgid "Website Pages"
 msgstr ""
 
@@ -611,11 +618,6 @@ msgid "fa-times"
 msgstr ""
 
 #. module: website_crm_score
-#: model:ir.model,name:website_crm_score.model_ir_ui_view
-msgid "ir.ui.view"
-msgstr ""
-
-#. module: website_crm_score
 #: model_terms:ir.ui.view,arch_db:website_crm_score.website_crm_score_view_kanban
 msgid "leads"
 msgstr ""
@@ -630,20 +632,5 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
 #: model_terms:ir.ui.view,arch_db:website_crm_score.team_user_kanban
 msgid "o_assignation_button_inactive"
-msgstr ""
-
-#. module: website_crm_score
-#: model:ir.model,name:website_crm_score.model_team_user
-msgid "team.user"
-msgstr ""
-
-#. module: website_crm_score
-#: model:ir.model,name:website_crm_score.model_website_crm_pageview
-msgid "website.crm.pageview"
-msgstr ""
-
-#. module: website_crm_score
-#: model:ir.model,name:website_crm_score.model_website_crm_score
-msgid "website.crm.score"
 msgstr ""
 

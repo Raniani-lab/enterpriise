@@ -395,9 +395,9 @@ class HelpdeskTicket(models.Model):
     def _track_subtype(self, init_values):
         self.ensure_one()
         if 'stage_id' in init_values and self.stage_id.sequence < 1:
-            return 'helpdesk.mt_ticket_new'
+            return self.env.ref('helpdesk.mt_ticket_new')
         elif 'stage_id' in init_values and self.stage_id.sequence >= 1:
-            return 'helpdesk.mt_ticket_stage'
+            return self.env.ref('helpdesk.mt_ticket_stage')
         return super(HelpdeskTicket, self)._track_subtype(init_values)
 
     @api.multi

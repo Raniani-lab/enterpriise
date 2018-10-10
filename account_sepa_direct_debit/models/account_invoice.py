@@ -62,5 +62,5 @@ class AccountInvoice(models.Model):
         """
         self.ensure_one()
         if 'state' in init_values and self.state in ('in_payment', 'paid') and self.type == 'out_invoice' and self.sdd_paying_mandate_id:
-            return 'account_sepa_direct_debit.sdd_mt_invoice_paid_with_mandate'
+            return self.env.ref('account_sepa_direct_debit.sdd_mt_invoice_paid_with_mandate')
         return super(AccountInvoice, self)._track_subtype(init_values)

@@ -192,7 +192,7 @@ class SaleSubscription(models.Model):
     def _track_subtype(self, init_values):
         self.ensure_one()
         if 'stage_id' in init_values:
-            return 'sale_subscription.subtype_stage_change'
+            return self.env.ref('sale_subscription.subtype_stage_change')
         return super(SaleSubscription, self)._track_subtype(init_values)
 
     def _compute_invoice_count(self):

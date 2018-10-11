@@ -6,7 +6,7 @@
     'version': '1.0',
     'category': 'Manufacturing',
     'sequence': 51,
-    'summary': """Work Orders, Planing, Stock Reports.""",
+    'summary': """Work Orders, Planning, Stock Reports.""",
     'depends': ['quality', 'mrp', 'barcodes'],
     'description': """Enterprise extension for MRP
 * Work order planning.  Check planning by Gantt views grouped by production order / work center

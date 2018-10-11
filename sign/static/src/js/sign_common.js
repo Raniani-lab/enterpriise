@@ -95,10 +95,6 @@ odoo.define('sign.PDFIframe', function (require) {
                 rel: "stylesheet", type: "text/css",
                 href: "/web/static/lib/jquery.ui/jquery-ui.css"
             });
-            var $jqueryScript = $("<script></script>", {
-                type: "text/javascript",
-                src: "/web/static/lib/jquery.ui/jquery-ui.js"
-            });
             var $select2Css = $("<link/>", {
                 rel: "stylesheet", type: "text/css",
                 href: "/web/static/lib/select2/select2.css"
@@ -107,7 +103,6 @@ odoo.define('sign.PDFIframe', function (require) {
             this.$('head')[0].appendChild($cssLink[0]);
             this.$('head')[0].appendChild($faLink[0]);
             this.$('head')[0].appendChild($jqueryLink[0]);
-            this.$('head')[0].appendChild($jqueryScript[0]);
             this.$('head')[0].appendChild($select2Css[0]);
 
             var waitFor = [];

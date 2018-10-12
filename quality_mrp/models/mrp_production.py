@@ -46,13 +46,13 @@ class MrpProduction(models.Model):
                     'product_id': self.product_id.id,
                 }
 
-    def _generate_moves(self):
+    def action_confirm(self):
         for production in self:
             points = self.env['quality.point'].search(production._get_quality_point_domain())
             for point in points:
                 if point.check_execute_now():
                     self.env['quality.check'].create(production._get_quality_check_values(point))
-        return super(MrpProduction, self)._generate_moves()
+        return super(MrpProduction, self).action_confirm()
 
     def button_quality_alert(self):
         self.ensure_one()

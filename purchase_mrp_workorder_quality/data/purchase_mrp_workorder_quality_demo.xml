@@ -64,6 +64,11 @@
             <field name="bom_id" ref="mrp.mrp_bom_desk"/>
         </record>
 
+        <function model="stock.move" name="create">
+            <value model="stock.move" eval="obj().env.ref('purchase_mrp_workorder_quality.mrp_production')._get_moves_raw_values()"/>
+        </function>
+
+        <function model="mrp.production" name="action_confirm" eval="[ref('purchase_mrp_workorder_quality.mrp_production')]"/>
         <function model="mrp.production" name="action_assign" eval="[ref('purchase_mrp_workorder_quality.mrp_production')]"/>
         <function model="mrp.production" name="button_plan" eval="[ref('purchase_mrp_workorder_quality.mrp_production')]"/>
 

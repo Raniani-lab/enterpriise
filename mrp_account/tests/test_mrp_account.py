@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+
+from odoo.tests import Form
+
 from odoo.tests import common
 
 
@@ -64,20 +67,20 @@ class TestMrpAccount(common.TransactionCase):
         inventory.action_validate
         bom = self.env.ref('mrp.mrp_bom_desk').copy()
         bom.routing_id = False # TODO: extend the test later with the necessary operations
-        production_table = self.env['mrp.production'].create({
-            'product_id': self.dining_table.id,
-            'product_qty': 5.0,
-            'product_uom_id': self.dining_table.uom_id.id,
-            'bom_id': bom.id
-        })
+        production_table_form = Form(self.env['mrp.production'])
+        production_table_form.product_id = self.dining_table
+        production_table_form.bom_id = bom
+        production_table_form.product_qty = 5.0
+        production_table = production_table_form.save()
 
-        produce_wizard = self.env['mrp.product.produce'].with_context({
+        production_table.action_confirm()
+
+        produce_form = Form(self.env['mrp.product.produce'].with_context({
             'active_id': production_table.id,
             'active_ids': [production_table.id],
-        }).create({
-            'product_qty': 1.0,
-        })
-        produce_wizard._onchange_product_qty()
+        }))
+        produce_form.product_qty = 1.0
+        produce_wizard = produce_form.save()
         produce_wizard.do_produce()
         production_table.post_inventory()
         move_value = production_table.move_finished_ids.filtered(lambda x: x.state == "done").value

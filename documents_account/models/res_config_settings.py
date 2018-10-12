@@ -25,3 +25,6 @@ class ResConfigSettings(models.TransientModel):
                                     default=lambda self: self.env.user.company_id.account_tags.ids,
                                     string="Account Tags")
 
+    @api.onchange('account_folder')
+    def on_account_folder_change(self):
+        self.account_tags = False

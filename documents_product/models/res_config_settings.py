@@ -23,3 +23,7 @@ class ResConfigSettings(models.TransientModel):
                                     related='company_id.product_tags', readonly=False,
                                     default=lambda self: self.env.user.company_id.product_tags.ids,
                                     string="Product Tags")
+
+    @api.onchange('product_folder')
+    def on_product_folder_change(self):
+        self.product_tags = False

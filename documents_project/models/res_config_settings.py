@@ -24,4 +24,6 @@ class ResConfigSettings(models.TransientModel):
                                     default=lambda self: self.env.user.company_id.project_tags.ids,
                                     string="Project Tags")
 
-
+    @api.onchange('project_folder')
+    def on_project_folder_change(self):
+        self.project_tags = False

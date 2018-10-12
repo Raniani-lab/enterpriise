@@ -46,8 +46,8 @@ class StockPicking(models.Model):
         return False
 
     @api.multi
-    def _create_backorder(self, backorder_moves=[]):
-        res = super(StockPicking, self)._create_backorder(backorder_moves=backorder_moves)
+    def _create_backorder(self):
+        res = super(StockPicking, self)._create_backorder()
         if self.env.context.get('skip_check'):
             return res
         # remove quality check of unreceived product

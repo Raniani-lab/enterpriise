@@ -496,6 +496,7 @@
                     <div class="oe_title">
                       <label for="name" class="oe_edit_only"/>
                       <h1><field name="name" placeholder="E.g. Validate document"/></h1>
+                      <field name="note" placeholder="Write a tooltip for the action here"/>
                     </div>
                     <group>
                         <notebook>
@@ -504,7 +505,6 @@
                                 <field name="domain" string="Domain" nolabel="1" widget="domain" colspan="2" options="{'model':'ir.attachment'}" attrs="{ 'invisible' : [('condition_type', '=', 'criteria')]}"/>
                                 <group>
                                     <group>
-                                        <field name="note" placeholder="Write a tooltip for the action here"/>
                                         <field name="domain_folder_id" required="1"/>
                                         <field name="criteria_partner_id"  attrs="{ 'invisible' : [('condition_type', '=', 'domain')]}"/>
                                         <field name="criteria_owner_id"  attrs="{ 'invisible' : [('condition_type', '=', 'domain')]}"/>
@@ -513,7 +513,7 @@
                                         <field name="criteria_tag_ids">
                                             <tree editable="bottom">
                                                 <field name="operator"/>
-                                                <field name="facet_id" domain="[('folder_id','parent_of', parent.domain_folder_id)]"/>
+                                                <field name="facet_id" domain="[('folder_id','parent_of', parent.domain_folder_id)]" required="1"/>
                                                 <field name="tag_id" domain="[('facet_id','=',facet_id)]"/>
                                             </tree>
                                         </field>
@@ -620,18 +620,6 @@
         </field>
     </record>
 
-    <record id="facet_view_tree" model="ir.ui.view">
-        <field name="name">tag categories tree</field>
-        <field name="model">documents.facet</field>
-        <field name="arch" type="xml">
-            <tree default_order="sequence">
-                <field name="sequence" widget="handle"/>
-                <field name="name"/>
-                <field name="folder_id"/>
-            </tree>
-        </field>
-    </record>
-
     <record id="facet_view_form_list" model="ir.ui.view">
         <field name="name">documents facet form view</field>
         <field name="model">documents.facet</field>
@@ -661,6 +649,7 @@
         <field name="model">documents.facet</field>
         <field name="arch" type="xml">
             <tree default_order="sequence">
+                <field name="sequence" widget="handle"/>
                 <field name="name"/>
                 <field name="folder_id"/>
             </tree>
@@ -674,11 +663,11 @@
             <form>
                 <sheet>
                     <group>
-                        <field name="name"/>
+                        <field name="name" string="Tag Category"/>
                         <field name="tooltip"/>
                     </group>
                     <group>
-                        <field name="tag_ids"/>
+                        <field name="tag_ids" nolabel="1"/>
                     </group>
                 </sheet>
             </form>
@@ -723,7 +712,7 @@
         <field name="arch" type="xml">
             <tree editable="bottom">
                 <field name="sequence" widget="handle"/>
-                <field name="name" placeholder="Create a tag"/>
+                <field name="name"  string="Tags" placeholder="Create a tag"/>
             </tree>
         </field>
     </record>
@@ -788,7 +777,7 @@
     </record>
 
     <record model="ir.actions.act_window" id="facet_action">
-      <field name="name">Manage tag categories</field>
+      <field name="name">Manage Tag Categories</field>
       <field name="res_model">documents.facet</field>
       <field name="view_mode">tree,form</field>
         <field name="view_ids" eval="[(5, 0, 0),

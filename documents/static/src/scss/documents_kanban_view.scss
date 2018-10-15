@@ -307,6 +307,10 @@ $o-dms-inspector-bg-darker: #1A1A1A;
 
                 img, .o_preview_available {
                     cursor: zoom-in;
+
+                    &.o_documents_image_background {
+                        background-color: white;
+                    }
                 }
             }
 

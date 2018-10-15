@@ -11,6 +11,9 @@ var _t = core._t;
 var ReportEditor = Widget.extend(EditorMixin, {
     template: 'web_studio.ReportEditor',
     nearest_hook_tolerance: 500,
+    events: _.extend({}, Widget.prototype.events, {
+        'click': '_onClick',
+    }),
 
     /**
      * @override
@@ -604,7 +607,7 @@ var ReportEditor = Widget.extend(EditorMixin, {
      */
     _processReportPreviewContent: function () {
         this.$content = this.$('iframe').contents();
-        this.$content.off('click').on('click', this._onMouseClick.bind(this));
+        this.$content.off('click').on('click', this._onContentClick.bind(this));
         this._connectNodes();
         this.$('.o_web_studio_loader').hide();
         this._resizeIframe();
@@ -710,11 +713,18 @@ var ReportEditor = Widget.extend(EditorMixin, {
     //--------------------------------------------------------------------------
     // Handlers
     //--------------------------------------------------------------------------
+
+    /**
+     * @private
+     */
+    _onClick: function () {
+        this.trigger_up('editor_clicked');
+    },
     /**
      * @private
      * @param {Event} e
      */
-    _onMouseClick: function (e) {
+    _onContentClick: function (e) {
         e.preventDefault();
         e.stopPropagation();
 

@@ -32,7 +32,7 @@
                t-value="record.data.url ? new RegExp('((http(s)?:\/\/)?)(www\.)?((youtube\.com\/)|(youtu.be\/))').test(record.data.url) : false"/>
             <t t-if="record._isImage">
                 <t t-set="size" t-value="nbPreviews === 1 ? '268x130' : nbPreviews === 2 ? '120x130' : '120x75'"/>
-                <img class="o_preview_available" t-attf-src="/web/image/#{record.res_id}/#{size}?upper_limit=true&amp;signature=#{record.data.checksum}" t-att-data-id="record.res_id" t-att-title="record.data.name"/>
+                <img class="o_preview_available o_documents_image_background" t-attf-src="/web/image/#{record.res_id}/#{size}?upper_limit=true&amp;signature=#{record.data.checksum}" t-att-data-id="record.res_id" t-att-title="record.data.name"/>
             </t>
             <div t-elif="record.data.url"
                  t-attf-class="o_image o_mimetype_icon #{supportedUrlVideo and 'o_preview_available' or ''}"

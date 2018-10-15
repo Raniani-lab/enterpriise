@@ -38,7 +38,7 @@
 
     <template id="sign._doc_sign" name="Document Sign">
         <div t-if="current_request_item and current_request_item.state == 'sent' and hasItems" class="o_sign_validate_banner">
-            <button type="button" class="btn btn-primary">Validate &amp; Send Completed Document</button>
+            <button type="button" class="btn btn-primary o_validate_button">Validate &amp; Send Completed Document</button>
         </div>
 
         <div class="container-fluid">

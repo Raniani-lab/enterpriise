@@ -49,7 +49,7 @@ class SignSendRequest(models.TransientModel):
         else:
             self.is_user_signer = False
 
-    def create_request(self):
+    def create_request(self, send=True, without_mail=False):
         template_id = self.template_id.id
         if self.signers_count:
             signers = [{'partner_id': signer.partner_id.id, 'role': signer.role_id.id} for signer in self.signer_ids]
@@ -59,7 +59,7 @@ class SignSendRequest(models.TransientModel):
         reference = self.filename
         subject = self.subject
         message = self.message
-        return self.env['sign.request'].initialize_new(template_id, signers, followers, reference, subject, message, send=True)
+        return self.env['sign.request'].initialize_new(template_id, signers, followers, reference, subject, message, send, without_mail)
 
     def send_request(self):
         res = self.create_request()
@@ -86,6 +86,29 @@ class SignSendRequest(models.TransientModel):
                 'sign_token': user_item.access_token,
                 'create_uid': request.create_uid.id,
                 'state': request.state,
+            },
+        }
+
+    def sign_directly_without_mail(self):
+        res = self.create_request(False, True)
+        request = self.env['sign.request'].browse(res['id'])
+
+        user_item = request.request_item_ids[0]
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'sign.SignableDocument',
+            'name': _('Sign'),
+            'context': {
+                'id': request.id,
+                'token': user_item.access_token,
+                'sign_token': user_item.access_token,
+                'create_uid': request.create_uid.id,
+                'state': request.state,
+                # Don't use mapped to avoid ignoring duplicated signatories
+                'token_list': [item.access_token for item in request.request_item_ids[1:]],
+                'current_signor_name': user_item.partner_id.name,
+                'name_list': [item.partner_id.name for item in request.request_item_ids[1:]],
             },
         }
 

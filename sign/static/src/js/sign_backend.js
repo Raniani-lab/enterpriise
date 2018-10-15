@@ -73,15 +73,23 @@ odoo.define('sign.views_custo', function(require) {
                 this.$buttons.find(selector_button).text(_t("Send a Request")).off("click").on("click", function (e) {
                     e.preventDefault();
                     e.stopImmediatePropagation();
-                    _sign_upload_file.call(self, true);
+                    _sign_upload_file.call(self, true, false);
                 });
                 this.$buttons.find(selector_button).after(
+                    $('<button class="btn btn-primary o-kanban-button-new o-direct ml8" type="button">Sign Directly</button>')
+                    .off('click')
+                    .on('click', function (e) {
+                        e.preventDefault();
+                        e.stopImmediatePropagation();
+                        _sign_upload_file.call(self, false, true);
+                    }));
+                    this.$buttons.find(selector_button+'.o-direct').after(
                     $('<button class="btn btn-link o-kanban-button-new ml8" type="button">'+ _t('UPLOAD A PDF TEMPLATE') +'</button>')
                     .off('click')
                     .on('click', function (e) {
                         e.preventDefault();
                         e.stopImmediatePropagation();
-                        _sign_upload_file.call(self);
+                        _sign_upload_file.call(self, false, false);
                 }));
             },
 
@@ -96,7 +104,7 @@ odoo.define('sign.views_custo', function(require) {
         };
     }
 
-    function _sign_upload_file(inactive) {
+    function _sign_upload_file(inactive, sign_directly_without_mail=false) {
         var self = this;
         var $upload_input = $('<input type="file" name="files[]"/>');
         $upload_input.on('change', function (e) {
@@ -122,6 +130,7 @@ odoo.define('sign.views_custo', function(require) {
                             name: _t("New Template"),
                             context: {
                                 id: data.template,
+                                sign_directly_without_mail: sign_directly_without_mail,
                             },
                         });
                     })
@@ -612,18 +621,24 @@ odoo.define('sign.template', function(require) {
 
             this.templateID = options.context.id;
             this.rolesToChoose = {};
+            this.sign_directly_without_mail = options["context"].sign_directly_without_mail;
 
             var self = this;
-            var $sendButton = $('<button/>', {html: _t("Send"), type: "button"})
+            var button_name_sign = _t("Send");
+            if(self.sign_directly_without_mail) {
+                button_name_sign = _t("Sign Directly");
+            }
+            var $sendButton = $('<button/>', {html: button_name_sign, type: "button"})
                 .addClass('btn btn-primary')
                 .on('click', function() {
                     self.do_action({
                         type: 'ir.actions.act_window',
                         res_model: 'sign.send.request',
-                        views: [[false, 'form']],
+                        views: [[false , 'form']],
                         target: 'new',
                         context: {
                             'active_id': self.templateID,
+                            'sign_directly_without_mail': self.sign_directly_without_mail,
                         },
                     });
                 });
@@ -879,6 +894,9 @@ odoo.define('sign.DocumentBackend', function (require) {
             this.create_uid = options.context.create_uid;
             this.state = options.context.state;
 
+            this.current_name = options.context.current_signor_name;
+            this.token_list = options.context.token_list;
+            this.name_list = options.context.name_list;
             var self = this;
 
             this.$downloadButton = $('<a/>', {html: _t("Download Document")}).addClass('btn btn-primary o_hidden');

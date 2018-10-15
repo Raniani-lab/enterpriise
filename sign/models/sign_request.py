@@ -165,7 +165,15 @@ class SignRequest(models.Model):
         self.write({'completed_document': None, 'access_token': self._default_access_token()})
 
     @api.multi
+    def action_sent_without_mail(self):
+        self.write({'state': 'sent'})
+        for sign_request in self:
+            for sign_request_item in sign_request.request_item_ids:
+                sign_request_item.write({'state':'sent'})
+        
+    @api.multi
     def action_sent(self, subject=None, message=None):
+        # Send accesses by email
         self.write({'state': 'sent'})
         for sign_request in self:
             ignored_partners = []
@@ -407,12 +415,14 @@ class SignRequest(models.Model):
         return self.env['mail.mail'].create(dict(body_html=body_html, state='outgoing', **mail_values))
 
     @api.model
-    def initialize_new(self, id, signers, followers, reference, subject, message, send=True):
+    def initialize_new(self, id, signers, followers, reference, subject, message, send=True, without_mail=False):
         sign_request = self.create({'template_id': id, 'reference': reference, 'favorited_ids': [(4, self.env.user.id)]})
         sign_request.message_subscribe(partner_ids=followers)
         sign_request.set_signers(signers)
         if send:
             sign_request.action_sent(subject, message)
+        if without_mail:
+            sign_request.action_sent_without_mail()
         return {
             'id': sign_request.id,
             'token': sign_request.access_token,

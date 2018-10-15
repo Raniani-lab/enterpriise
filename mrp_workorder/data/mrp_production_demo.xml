@@ -13,6 +13,7 @@
             <field name="title">Picture of the SN</field>
             <field name="worksheet">scroll</field>
             <field name="worksheet_page">1</field>
+            <field name="sequence">1</field>
         </record>
 
     </data>

@@ -496,6 +496,7 @@
                     <div class="oe_title">
                       <label for="name" class="oe_edit_only"/>
                       <h1><field name="name" placeholder="E.g. Validate document"/></h1>
+                      <field name="note" placeholder="Write a tooltip for the action here"/>
                     </div>
                     <group>
                         <notebook>
@@ -504,7 +505,6 @@
                                 <field name="domain" string="Domain" nolabel="1" widget="domain" colspan="2" options="{'model':'ir.attachment'}" attrs="{ 'invisible' : [('condition_type', '=', 'criteria')]}"/>
                                 <group>
                                     <group>
-                                        <field name="note" placeholder="Write a tooltip for the action here"/>
                                         <field name="domain_folder_id" required="1"/>
                                         <field name="criteria_partner_id"  attrs="{ 'invisible' : [('condition_type', '=', 'domain')]}"/>
                                         <field name="criteria_owner_id"  attrs="{ 'invisible' : [('condition_type', '=', 'domain')]}"/>
@@ -513,7 +513,7 @@
                                         <field name="criteria_tag_ids">
                                             <tree editable="bottom">
                                                 <field name="operator"/>
-                                                <field name="facet_id" domain="[('folder_id','parent_of', parent.domain_folder_id)]"/>
+                                                <field name="facet_id" domain="[('folder_id','parent_of', parent.domain_folder_id)]" required="1"/>
                                                 <field name="tag_id" domain="[('facet_id','=',facet_id)]"/>
                                             </tree>
                                         </field>

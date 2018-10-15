@@ -120,6 +120,10 @@ class WorkflowTagCriteria(models.Model):
     facet_id = fields.Many2one('documents.facet', string="Category")
     tag_id = fields.Many2one('documents.tag', string="Tag", required=True)
 
+    @api.onchange('facet_id')
+    def on_folder_change(self):
+        self.tag_id = False
+
 
 class WorkflowAction(models.Model):
     _name = "documents.workflow.action"

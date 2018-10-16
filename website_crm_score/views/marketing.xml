@@ -65,7 +65,11 @@
                                 >
                                 <field string="Leads" name="leads_count" widget="statinfo"/>
                             </button>
+                            <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                                <field name="running" widget="boolean_button" options='{"terminology": "active"}'/>
+			                </button>
                         </div>
+
                         <div class="oe_title">
                             <h1>
                                 <field name="name" placeholder="Name"/>
@@ -76,7 +80,6 @@
                             <field name="value" attrs="{'invisible':[('rule_type','!=','score')]}"/>
                             <field name="domain" widget="domain" options="{'model': 'crm.lead'}"/>
                             <field name="event_based"/>
-                            <field name="running"/>
                             <field name="last_run" groups="base.group_no_one" />
                         </group>
                     </sheet>
@@ -215,28 +218,22 @@
                                 <t t-if="active">o_assignation_button_active</t>
                                 <t t-if="!active">o_assignation_button_inactive</t>
                             </t>
-                            <t t-set="button_icon">
-                                <t t-if="active">fa-check</t>
-                                <t t-if="!active">fa-times</t>
-                            </t>
 
-                            <div class="o_assignation_kanban_record">
-                                <div class="o_kanban_record_top">
+                            <div class="o_assignation_kanban_record oe_kanban_global_click pb-0">
+                                <div class="o_kanban_record_top mb-0">
                                     <ul class="nav">
                                         <li class="nav-item">
                                             <a type="open" class="nav-link">
                                                 <img t-att-src="kanban_image('res.users', 'image_small', record.user_id.raw_value)" class="o_kanban_image" alt="Avatar"/>
                                             </a>
                                         </li>
-                                        <li t-attf-class="nav-item #{button_state}">
-                                            <button name="toggle_active" type="object" class="nav-link">
-                                                <span t-attf-class="fa {{button_icon}}"/>
-                                            </button>
-                                        </li>
                                     </ul>
                                     <ul class="nav o_assignation_body">
                                         <li class="nav-item"><a type="open" class="nav-link"><b><field name="name"/></b></a></li>
-                                        <li class="nav-item"><a type="open" class="nav-link"><field name="team_id"/></a></li>
+                                        <li class="nav-item w-100"><a type="open" class="nav-link"><field name="team_id"/></a></li>
+                                        <li t-attf-class="nav-item #{button_state}">
+                                            <a type="object" name="toggle_active" t-attf-class="nav-link fa fa-check-square"/>
+                                        </li>
                                     </ul>
                                     <div class="o_assignation_leads_count">
                                         <field name="maximum_user_leads" invisible="1"/>
@@ -253,7 +250,7 @@
 
         <!-- Team User Action - form - tree -->
         <record model="ir.actions.act_window" id="team_user_action">
-            <field name="name">Sales Men</field>
+            <field name="name">Salespersons</field>
             <field name="res_model">team.user</field>
             <field name="view_type">form</field>
             <field name="view_mode">kanban,tree,form</field>

@@ -117,3 +117,8 @@ class website_crm_score(models.Model):
                 score.last_run = now
 
         _logger.info('End scoring')
+
+    @api.multi
+    def toggle_active(self):
+        for record in self:
+            record.running = not record.running

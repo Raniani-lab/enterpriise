@@ -1,5 +1,6 @@
 {
     'name': "Lead Scoring",
+    'summary': "Compute scores and assign leads automatically",
     'category': "Sales",
     'version': "1.0",
     'depends': ['base', 'sales_team', 'website_crm', 'crm_enterprise'],
@@ -7,11 +8,13 @@
 Lead Scoring
 ============
 
-This module allows you to...
-    - Track specific page view on your website.
-    - Assign score on lead: sort your lead automatically and consider the more important at first.
-    - Assign lead to salesteams: define your own filters and sort automatically your leads by saleteam.
-    - Assign lead to salesmen: define filter by saleman and dispatch automatically your leads to the right saleman.
+This module allows you to:
+
+* Track the page views of your visitors who posted a message on your Contact Us page.
+  The page views are listed on the related lead.
+* Compute a score on incoming leads, in order to assign accordingly.
+* Assign leads to sales teams.
+* Assign leads to specific salespersons in the sales team.
 """,
     'data': [
         'views/website_crm_score.xml',

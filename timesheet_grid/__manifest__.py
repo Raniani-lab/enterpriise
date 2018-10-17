@@ -17,6 +17,7 @@
         'views/timesheet_templates.xml',
         'wizard/timesheet_validation_views.xml',
     ],
+    'website': ' https://www.odoo.com/page/timesheet-mobile-app',
     'auto_install': True,
     'application': True,
     'license': 'OEEL-1',

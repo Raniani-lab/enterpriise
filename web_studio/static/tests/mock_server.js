@@ -17,6 +17,9 @@ MockServer.include({
         if (route === '/web_studio/get_default_value') {
             return $.when({});
         }
+        if (route === '/web_studio/activity_allowed') {
+            return $.when(false);
+        }
         return this._super.apply(this, arguments);
     },
 });

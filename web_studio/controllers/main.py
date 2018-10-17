@@ -25,6 +25,15 @@ class WebStudioController(http.Controller):
         Model = request.env[model]
         return Model._custom or isinstance(Model, type(request.env['mail.thread']))
 
+    @http.route('/web_studio/activity_allowed', type='json', auth='user')
+    def is_activity_allowed(self, model):
+        """ Returns True iff an activity view can be activated on the model's action, i.e. if
+            - it is a custom model (since we can make it inherit from mail.thread), or
+            - it already inherits from mail.thread.
+        """
+        Model = request.env[model]
+        return Model._custom or isinstance(Model, type(request.env['mail.activity.mixin']))
+
     @http.route('/web_studio/get_studio_action', type='json', auth='user')
     def get_studio_action(self, action_name, model, view_id=None, view_type=None):
         view_type = 'tree' if view_type == 'list' else view_type  # list is stored as tree in db
@@ -319,6 +328,13 @@ class WebStudioController(http.Controller):
     @http.route('/web_studio/add_view_type', type='json', auth='user')
     def add_view_type(self, action_type, action_id, res_model, view_type, args):
         view_type = 'tree' if view_type == 'list' else view_type  # list is stored as tree in db
+
+        if view_type == 'activity':
+            model = request.env['ir.model'].search([('model', '=', res_model)])
+            if model.state == 'manual' and not model.is_mail_activity:
+                # Activate mail.activity.mixin inheritance on the custom model
+                model.write({'is_mail_activity': True})
+
         try:
             request.env[res_model].fields_view_get(view_type=view_type)
         except UserError:
@@ -909,21 +925,28 @@ class WebStudioController(http.Controller):
         if model.state == 'manual' and not model.is_mail_thread:
             # Activate mail.thread inheritance on the custom model
             model.write({'is_mail_thread': True})
+        if model.state == 'manual' and not model.is_mail_activity:
+            # Activate mail.activity inheritance on the custom model
+            model.write({'is_mail_activity': True})
 
-        # Remove message_ids and message_follower_ids if already defined in form view
+        # Remove message_ids, activity_ids and message_follower_ids if already defined in form view
         if operation['remove_message_ids']:
             self._operation_remove(arch, _get_remove_field_op(arch, 'message_ids'))
         if operation['remove_follower_ids']:
             self._operation_remove(arch, _get_remove_field_op(arch, 'message_follower_ids'))
+        if operation['remove_activity_ids']:
+            self._operation_remove(arch, _get_remove_field_op(arch, 'activity_ids'))
 
         xpath_node = etree.SubElement(arch, 'xpath', {
             'expr': '//sheet',
             'position': 'after',
         })
         chatter_node = etree.Element('div', {'class': 'oe_chatter'})
-        thread_node = etree.Element('field', {'name': 'message_ids', 'widget': 'mail_thread'})
         follower_node = etree.Element('field', {'name': 'message_follower_ids', 'widget': 'mail_followers'})
+        activity_node = etree.Element('field', {'name': 'activity_ids', 'widget': 'mail_activity'})
+        thread_node = etree.Element('field', {'name': 'message_ids', 'widget': 'mail_thread'})
         chatter_node.append(follower_node)
+        chatter_node.append(activity_node)
         chatter_node.append(thread_node)
         xpath_node.append(chatter_node)
 

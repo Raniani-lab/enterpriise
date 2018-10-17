@@ -205,6 +205,7 @@ var ViewEditorManager = AbstractEditorManager.extend({
         this._do({
             type: 'chatter',
             model: this.model_name,
+            remove_activity_ids: data.remove_activity_ids,
             remove_message_ids: data.remove_message_ids,
             remove_follower_ids: data.remove_follower_ids,
         });

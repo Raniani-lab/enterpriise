@@ -45,6 +45,7 @@ var ActionEditorAction = AbstractAction.extend({
         // x2mEditorPath is needed to reload the previous view_editor_manager
         // state.
         this.x2mEditorPath = options.x2mEditorPath;
+        this.activityAllowed = undefined;
     },
     /**
      * @override
@@ -53,7 +54,8 @@ var ActionEditorAction = AbstractAction.extend({
         if (!this.action) {
             return $.Deferred().reject();
         }
-        return this._super.apply(this, arguments);
+        var defs = [this._super.apply(this, arguments), this._isActivityAllowed()];
+        return $.when.apply($, defs);
     },
     /**
      * @override
@@ -269,6 +271,24 @@ var ActionEditorAction = AbstractAction.extend({
         });
     },
     /**
+     * Determines whether the model that will be edited supports mail_activity.
+     *
+     * @private
+     * @returns {Deferred}
+     */
+    _isActivityAllowed: function () {
+        var self = this;
+        var modelName = this.action.res_model;
+        return this._rpc({
+            route: '/web_studio/activity_allowed',
+            params: {
+                model: modelName,
+            }
+        }).then(function (activityAllowed) {
+            self.activityAllowed = activityAllowed;
+        });
+    },
+    /**
      * @private
      * Determines whether the model
      * that will be edited supports mail_thread
@@ -427,6 +447,12 @@ var ActionEditorAction = AbstractAction.extend({
     _onNewView: function (event) {
         var self = this;
         var view_type = event.data.view_type;
+
+        if (view_type === 'activity' && !this.activityAllowed) {
+            this.do_warn(_t("The activity view is not available on this model."));
+            return;
+        }
+
         var view_mode = this.action.view_mode + ',' + view_type;
         var def = this._addViewType(this.action, view_type, {
             view_mode: view_mode,

@@ -83,7 +83,7 @@ QUnit.module('Studio Navigation', {
     QUnit.module('Misc');
 
     QUnit.test('open Studio with act_window', function (assert) {
-        assert.expect(16);
+        assert.expect(17);
 
         var actionManager = createActionManager({
             actions: this.actions,
@@ -108,6 +108,7 @@ QUnit.module('Studio Navigation', {
         });
         bus.trigger('studio_toggled', 'main');
 
+        rpcs.push('/web_studio/activity_allowed');
         rpcs.push('/web_studio/get_studio_view_arch');
         rpcs.push('/web/dataset/call_kw/partner');  // load_views with studio in context
         rpcs.push('/web/dataset/search_read');
@@ -208,7 +209,7 @@ QUnit.module('Studio Navigation', {
     });
 
     QUnit.test('navigation in Studio with act_window', function (assert) {
-        assert.expect(25);
+        assert.expect(27);
 
         var actionManager = createActionManager({
             actions: this.actions,
@@ -233,6 +234,7 @@ QUnit.module('Studio Navigation', {
         });
         bus.trigger('studio_toggled', 'main');
 
+        rpcs.push('/web_studio/activity_allowed');
         rpcs.push('/web_studio/get_studio_view_arch');
         rpcs.push('/web/dataset/call_kw/partner');  // load_views with studio in context
         rpcs.push('/web/dataset/search_read');
@@ -254,6 +256,7 @@ QUnit.module('Studio Navigation', {
             studio_clear_breadcrumbs: true,  // is normally set by the webclient
         });
 
+        rpcs.push('/web_studio/activity_allowed');
         rpcs.push('/web_studio/get_studio_view_arch');
         rpcs.push('/web/dataset/call_kw/pony');  // load_views with studio in context
         rpcs.push('/web/dataset/search_read');

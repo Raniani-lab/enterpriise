@@ -189,6 +189,8 @@ var FormEditor =  FormRenderer.extend(EditorMixin, {
             this.has_message_field = true;
         } else if (node.attrs.name === "message_follower_ids") {
             this.has_follower_field = true;
+        } else if (node.attrs.name === "activity_ids") {
+            this.has_activity_field = true;
         } else {
             var modifiers = self._getEvaluatedModifiers(node, this.state);
             if (modifiers.invisible && !this.show_invisible) {
@@ -213,6 +215,7 @@ var FormEditor =  FormRenderer.extend(EditorMixin, {
         this.has_chatter = false;
         this.has_follower_field = false;
         this.has_message_field = false;
+        this.has_activity_field = false;
 
         this.$el.droppable({
             accept: ".o_web_studio_component",
@@ -662,6 +665,7 @@ var FormEditor =  FormRenderer.extend(EditorMixin, {
             structure: 'chatter',
             remove_follower_ids: this.has_follower_field,
             remove_message_ids: this.has_message_field,
+            remove_activity_ids: this.has_activity_field,
         });
     },
     /**

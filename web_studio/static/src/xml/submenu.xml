@@ -67,6 +67,9 @@
           <t t-if="_.contains(widget.active_view_types, 'cohort')">
             <a href="#" data-name="cohort" title="Cohort View" aria-label="Cohort View"><i class="fa fa-signal"/></a>
           </t>
+          <t t-if="_.contains(widget.active_view_types, 'activity')">
+            <a href="#" data-name="activity" title="Activity View" aria-label="Activity View"><i class="fa fa-th"/></a>
+          </t>
         </div>
       </li>
     </ul>

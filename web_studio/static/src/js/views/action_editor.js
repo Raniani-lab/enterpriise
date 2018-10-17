@@ -9,6 +9,7 @@ var ActionEditorView = require('web_studio.ActionEditorView');
 var VIEW_TYPES = [
     'form',
     'search',
+    'activity',
     'list',
     'kanban',
     'grid',
@@ -108,6 +109,9 @@ var ActionEditor = Widget.extend({
                 category = 'general';
                 break;
             case 'search':
+                category = 'general';
+                break;
+            case 'activity':
                 category = 'general';
                 break;
             case 'list':

@@ -458,10 +458,6 @@ var ReportEditorSidebar = Widget.extend(StandaloneFieldManagerMixin, {
         var paperFormatRecord = this.model.get(this.paperformatHandle);
         var many2one = new Many2One(this, 'paperformat_id', paperFormatRecord, {
             mode: 'edit',
-            attrs: {
-                can_create: false,
-                can_write: false,
-            },
         });
         this._registerWidget(this.paperformatHandle, 'paperformat_id', many2one);
         defs.push(many2one.appendTo(this.$('.o_web_studio_paperformat_id')));

@@ -14,9 +14,21 @@ from odoo.tools import topological_sort
 
 # list of models to export (the order ensures that dependencies are satisfied)
 MODELS_TO_EXPORT = [
-    'res.groups', 'ir.model', 'ir.model.fields', 'ir.ui.view', 'ir.actions.act_window',
-    'ir.actions.act_window.view', 'ir.actions.report', 'mail.template', 'ir.actions.server',
-    'ir.ui.menu', 'ir.filters', 'base.automation', 'ir.model.access', 'ir.rule',
+    'res.groups',
+    'report.paperformat',
+    'ir.model',
+    'ir.model.fields',
+    'ir.ui.view',
+    'ir.actions.act_window',
+    'ir.actions.act_window.view',
+    'ir.actions.report',
+    'mail.template',
+    'ir.actions.server',
+    'ir.ui.menu',
+    'ir.filters',
+    'base.automation',
+    'ir.model.access',
+    'ir.rule',
 ]
 # list of fields to export by model
 FIELDS_TO_EXPORT = {
@@ -33,7 +45,7 @@ FIELDS_TO_EXPORT = {
     'ir.actions.act_window.view': ['act_window_id', 'multi', 'sequence', 'view_id', 'view_mode'],
     'ir.actions.report': [
         'attachment', 'attachment_use', 'binding_model_id', 'binding_type', 'groups_id', 'model',
-        'multi', 'name', 'report_name', 'report_type'
+        'multi', 'name', 'paperformat_id', 'report_name', 'report_type'
     ],
     'ir.actions.server': [
         'binding_model_id', 'binding_type', 'child_ids', 'code', 'crud_model_id', 'help',
@@ -77,6 +89,7 @@ FIELDS_NOT_TO_EXPORT = {
     'ir.actions.server': ['channel_ids', 'fields_lines', 'partner_ids'],
     'ir.filter': ['user_id'],
     'mail.template': ['attachment_ids', 'mail_server_id'],
+    'report.paperformat': ['report_ids'],
     'res.groups': ['category_id', 'users'],
 }
 # The fields whose value must be wrapped in <![CDATA[]]>

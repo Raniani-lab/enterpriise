@@ -239,6 +239,7 @@ var ReportEditorManager = AbstractEditorManager.extend({
             models: this.models,
             state: state,
             previousState: previousState,
+            paperFormat: this.paperFormat,
         });
     },
     /**

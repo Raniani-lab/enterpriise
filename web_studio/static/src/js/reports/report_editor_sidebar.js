@@ -31,9 +31,10 @@ var ReportEditorSidebar = Widget.extend(StandaloneFieldManagerMixin, {
      * @constructor
      * @param {Widget} parent
      * @param {Object} params
+     * @param {Object} [params.models]
+     * @param {Object} [params.paperFormat]
      * @param {Object} [params.previousState]
      * @param {Object} [params.report] only mandatory if state.mode = 'report'
-     * @param {Object} [params.models]
      * @param {Object} [params.state]
      * @param {Object} [params.widgetsOptions]
      */
@@ -44,6 +45,7 @@ var ReportEditorSidebar = Widget.extend(StandaloneFieldManagerMixin, {
         this.debug = config.debug;
         this.report = params.report;
         this.state = params.state || {};
+        this.paperFormat = params.paperFormat || {};
         this.previousState = params.previousState || {};
         this.models = params.models;
         this.widgetsOptions = params.widgetsOptions;
@@ -457,6 +459,9 @@ var ReportEditorSidebar = Widget.extend(StandaloneFieldManagerMixin, {
         var defs = [];
         var paperFormatRecord = this.model.get(this.paperformatHandle);
         var many2one = new Many2One(this, 'paperformat_id', paperFormatRecord, {
+            attrs: {
+                placeholder: _t('By default: ') + this.paperFormat.display_name,
+            },
             mode: 'edit',
         });
         this._registerWidget(this.paperformatHandle, 'paperformat_id', many2one);

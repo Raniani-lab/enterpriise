@@ -369,6 +369,26 @@ QUnit.module('ReportComponents', {
         parent.destroy();
     });
 
+    QUnit.test('hidden "width" for layout component with col nodes', function (assert) {
+        assert.expect(1);
+        var parent = new Widget();
+        parent.appendTo($('#qunit-fixture'));
+        var layout = new (editComponentsRegistry.get('layout'))(parent, {
+            node: {
+                tag: 'div',
+                attrs: {
+                    class: 'col- offset-kikou',
+                },
+            },
+        });
+        layout.appendTo(parent.$el);
+
+        assert.containsNone(layout.$('.o_web_studio_width'),
+            "the width attribute shouldn't be displayed for div.col nodes");
+
+        parent.destroy();
+    });
+
     QUnit.test('tOptions component', function (assert) {
         assert.expect(3);
         var parent = new Widget();

@@ -201,7 +201,7 @@
                     data-margin="margin-left" placeholder="left" />
             <span class="text-muted"> px</span>
         </div>
-        <div class="col-3 o_web_studio_sidebar_text o_web_studio_width">
+        <div t-if="widget.displayWidth" class="col-3 o_web_studio_sidebar_text o_web_studio_width">
             <label>Width</label>
             <input type="text" t-att-value="widget.width" />
             <span class="text-muted"> px</span>

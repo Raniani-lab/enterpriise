@@ -379,7 +379,10 @@ var LayoutEditable = AbstractEditComponent.extend({
         this.color = _.find(this.stylesArray, function(item) {
             return colorRegExp.test(item);
         });
-
+        // the width on div.col is set with col-. instead of width style
+        this.displayWidth = !(params.node.tag === 'div' && _.find(this.classesArray, function(item) {
+            return item.indexOf('col') !== -1;
+        }));
         this.originalWidth =  _.find(this.stylesArray, function(item) {
             return widthRegExp.test(item);
         });

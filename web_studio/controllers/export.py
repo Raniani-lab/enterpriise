@@ -8,6 +8,7 @@ from lxml.builder import E
 import os.path
 import zipfile
 
+from odoo import models
 from odoo.osv.expression import OR
 from odoo.tools import topological_sort
 
@@ -121,7 +122,7 @@ def generate_module(module, data):
             continue
 
         # retrieve module and inter-record dependencies
-        fields = [records._fields[name] for name in FIELDS_TO_EXPORT[model]]
+        fields = [records._fields[name] for name in get_fields_to_export(records)]
         record_deps = OrderedDict.fromkeys(records, records.browse())
         for record in records:
             xmlid = get_xmlid(record)
@@ -259,7 +260,7 @@ def generate_record(record, get_xmlid):
 
     # Create the record node
     record_node = E.record(id=xmlid, model=record._name, context="{'studio': True}")
-    for name in FIELDS_TO_EXPORT[record._name]:
+    for name in get_fields_to_export(record):
         field = record._fields[name]
         try:
             record_node.append(generate_field(record, field, get_xmlid))
@@ -275,6 +276,16 @@ def generate_record(record, get_xmlid):
 
     return record_node, skipped
 
+def get_fields_to_export(record):
+    fields_to_export = FIELDS_TO_EXPORT.get(record._name)
+    if not fields_to_export:
+        # deduce the fields_to_export from available data
+        fields_to_export = set(record._fields.keys())
+        fields_to_export -= set(models.MAGIC_COLUMNS)
+        fields_to_export -= set(record.CONCURRENCY_CHECK_FIELD)
+        if FIELDS_NOT_TO_EXPORT.get(record._name):
+            fields_to_export -= set(FIELDS_NOT_TO_EXPORT.get(record._name))
+    return fields_to_export
 
 def generate_field(record, field, get_xmlid):
     """ Serialize the value of ``field`` on ``record`` as an etree Element. """

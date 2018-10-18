@@ -156,9 +156,10 @@
         <record id="crm_opportunity_action_dashboard" model="ir.actions.act_window">
             <field name="name">Pipeline Analysis</field>
             <field name="res_model">crm.lead</field>
-            <field name="view_mode">dashboard,pivot,graph,cohort</field>
+            <field name="view_mode">dashboard,pivot,graph,tree,form,cohort</field>
+            <field name="domain">[('type','=','opportunity')]</field>
+            <field name="context" eval="{'form_view_ref': 'crm.crm_case_form_view_oppor', 'tree_view_ref': 'crm.crm_case_tree_view_oppor','default_type': 'opportunity', 'search_default_opportunity': True, 'time_ranges': {'field':'create_date', 'range':'last_365_days'}}"/>
             <field name="search_view_id" ref="crm_enterprise.crm_opportunity_view_search"/>
-            <field name="context" eval="{'search_default_opportunity': True, 'time_ranges': {'field':'create_date', 'range':'last_365_days'}, 'list_view_id': ref('crm.crm_case_tree_view_oppor'), 'form_view_id': ref('crm.crm_case_form_view_oppor')}"/>
         </record>
 
         <record id="crm_opportunity_action_dashboard_dashboard" model="ir.actions.act_window.view">
@@ -189,10 +190,25 @@
             <field name="act_window_id" ref="crm_enterprise.crm_opportunity_action_dashboard"/>
         </record>
 
+        <record id="crm_opportunity_action_dashboard_tree" model="ir.actions.act_window.view">
+            <field name="sequence" eval="5"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="crm.crm_case_tree_view_oppor"/>
+
+            <field name="act_window_id" ref="crm_enterprise.crm_opportunity_action_dashboard"/>
+        </record>
+
+          <record id="crm_opportunity_action_dashboard_form" model="ir.actions.act_window.view">
+            <field name="sequence" eval="6"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="crm.crm_case_form_view_oppor"/>
+            <field name="act_window_id" ref="crm_enterprise.crm_opportunity_action_dashboard"/>
+        </record>
+
         <record id="crm_lead_action_dashboard" model="ir.actions.act_window">
             <field name="name">Leads Analysis</field>
             <field name="res_model">crm.lead</field>
-            <field name="view_mode">dashboard,pivot,graph</field>
+            <field name="view_mode">dashboard,pivot,graph,tree</field>
             <field name="domain">['|', ('type','=','lead'), ('type','=',False)]</field>
             <field name="search_view_id" ref="crm.view_crm_case_leads_filter"/>
             <field name="context" eval="{'time_ranges': {'field':'create_date', 'range':'last_30_days'}}"/>

@@ -246,7 +246,7 @@
         <field name="name">helpdesk.ticket.pivot.analysis</field>
         <field name="model">helpdesk.ticket</field>
         <field name="arch" type="xml">
-            <pivot string="Helpdesk Ticket Analysis" disable_linking="True">
+            <pivot string="Helpdesk Ticket Analysis">
                 <field name="team_id" type="row"/>
                 <field name="stage_id" type="col"/>
             </pivot>
@@ -794,7 +794,7 @@
         <field name="name">helpdesk.ticket.pivot</field>
         <field name="model">helpdesk.ticket</field>
         <field name="arch" type="xml">
-            <pivot string="Performance Analysis" disable_linking="True">
+            <pivot string="Performance Analysis">
                 <field name="stage_id" type="col"/>
                 <field name="name"/>
                 <field name="close_hours" type="measure"/>

@@ -136,6 +136,7 @@
                 .o_field_many2one {
                     flex: 0 0 100%;
                     > .o_input_dropdown {
+                        width: auto;
                         > .o_dropdown_button {
                             right: 18px;
                             top: -2px;
@@ -152,6 +153,7 @@
                         }
                     }
                     > .o_external_button {
+                        border: 0;
                         padding-right: 0;
                         background-color: transparent;
                         &:hover, &:focus, &:active {

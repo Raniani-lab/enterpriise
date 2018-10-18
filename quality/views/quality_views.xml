@@ -30,7 +30,7 @@
                         </group>
                     </group>
                     <notebook>
-                        <page string="Instructions">
+                        <page string="Instructions" name="instructions">
                             <field name="note" placeholder="Describe the quality check to do..."/>
                         </page>
                         <page string="Notes" name="Notes">

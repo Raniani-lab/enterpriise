@@ -379,7 +379,7 @@ var ReportEditorSidebar = Widget.extend(StandaloneFieldManagerMixin, {
                 }
             }
             var components = this._getNodeEditableComponents(node.node);
-            node.componentsObject = this._getComponentsObject(components);
+            node.components = components;
             var blacklist = this._getComponentsBlacklist(components);
             if (blacklist.length) {
                 blacklists.push(blacklist);
@@ -399,7 +399,7 @@ var ReportEditorSidebar = Widget.extend(StandaloneFieldManagerMixin, {
                 nodeIcon: self._getNodeDisplayName(node.node).icon,
                 node: node.node,
             }));
-            _.each(node.componentsObject, function (Component) {
+            _.each(self._getComponentsObject(node.components), function (Component) {
                 if (!Component) {
                     self.do_warn("Missing component", self.state.directive);
                     return;
@@ -412,6 +412,7 @@ var ReportEditorSidebar = Widget.extend(StandaloneFieldManagerMixin, {
                     context: node.context,
                     state: previousWidgetState,
                     models: self.models,
+                    componentsList: node.components,
                 });
                 var selector = '.collapse';
                 if (Component.prototype.insertAsLastChildOfPrevious) {

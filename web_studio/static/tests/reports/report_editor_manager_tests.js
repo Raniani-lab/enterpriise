@@ -1850,7 +1850,7 @@ QUnit.module('ReportEditorManager', {
             view_id: 55,
             arch:
                 '<kikou>' +
-                    '<t t-name="template1"><span>First span</span></t>' +
+                    '<t t-name="template1"><div>First</div></t>' +
                 '</kikou>',
         });
 
@@ -1874,7 +1874,7 @@ QUnit.module('ReportEditorManager', {
                                 content: '<attribute name="class" separator=" " add="o_bold"/>',
                                 position: 'attributes',
                                 view_id: 55,
-                                xpath: '/t/span',
+                                xpath: '/t/div',
                             }]);
                             // first rpc that we will make fail
                             return firstDef;
@@ -1887,13 +1887,13 @@ QUnit.module('ReportEditorManager', {
                                 content: '<attribute name="class" separator=" " add="o_italic"/>',
                                 position: 'attributes',
                                 view_id: 55,
-                                xpath: '/t/span',
+                                xpath: '/t/div',
                             }]);
                             assert.deepEqual(args.operations[1].inheritance, [{
                                 content: '<attribute name="class" separator=" " add="o_underline"/>',
                                 position: 'attributes',
                                 view_id: 55,
-                                xpath: '/t/span',
+                                xpath: '/t/div',
                             }]);
                             // second rpc that succeeds
                             return $.when({
@@ -1912,7 +1912,7 @@ QUnit.module('ReportEditorManager', {
         var nbEdit = 0;
         var firstDef = $.Deferred();
         rem.editorIframeDef.then(function () {
-            testUtils.dom.click(rem.$('iframe').contents().find('span:contains(First span)'));
+            testUtils.dom.click(rem.$('iframe').contents().find('div:contains(First):last'));
 
             // trigger a modification
             testUtils.dom.click(rem.$('.o_web_studio_sidebar .card:eq(1) .o_web_studio_text_decoration button[data-property="bold"]'));
@@ -1942,7 +1942,7 @@ QUnit.module('ReportEditorManager', {
             arch:
                 '<kikou>' +
                     '<t t-name="template1">' +
-                        '<span>Kikou</span>' +
+                        '<div>Kikou</div>' +
                     '</t>' +
                 '</kikou>',
         });
@@ -1990,7 +1990,7 @@ QUnit.module('ReportEditorManager', {
         });
 
         rem.editorIframeDef.then(function () {
-            testUtils.dom.click(rem.$('iframe').contents().find('span:contains(Kikou)'));
+            testUtils.dom.click(rem.$('iframe').contents().find('div:contains(Kikou):last'));
 
             // trigger a modification that will fail
             testUtils.dom.click(rem.$('.o_web_studio_sidebar .card:eq(1) .o_web_studio_text_decoration button[data-property="bold"]'));

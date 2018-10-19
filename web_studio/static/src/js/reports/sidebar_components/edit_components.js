@@ -27,6 +27,12 @@ var AbstractEditComponent = Abstract.extend(StandaloneFieldManagerMixin, {
     }),
     /**
      * @override
+     * @param {Object} params
+     * @param {Object} params.context
+     * @param {Object} params.node
+     * @param {Object} [params.state]
+     * @param {string[]} [params.componentsList] the list of components for the
+     *                                           node
      */
     init: function (parent, params) {
         this._super.apply(this, arguments);
@@ -34,6 +40,7 @@ var AbstractEditComponent = Abstract.extend(StandaloneFieldManagerMixin, {
         this.state = params.state || {};
         this.node = params.node;
         this.context = params.context;
+        this.componentsList = params.componentsList;
         // TODO: check if using a real model with widgets is reasonnable or if
         // we should use actual html components in QWEB
         this.directiveFields = {};
@@ -43,6 +50,7 @@ var AbstractEditComponent = Abstract.extend(StandaloneFieldManagerMixin, {
 
         // add in init: directive => field selector
         this.fieldSelector = {};
+
     },
     /**
      * @override
@@ -350,6 +358,7 @@ var LayoutEditable = AbstractEditComponent.extend({
 
         this.debug = config.debug;
         this.isTable = params.node.tag === 'table';
+        this.isNodeText = _.contains(this.componentsList, 'text');
         this.allClasses = params.node.attrs.class || "";
         this.classesArray =(params.node.attrs.class || "").split(' ');
         this.stylesArray =(params.node.attrs.style || "").split(';');

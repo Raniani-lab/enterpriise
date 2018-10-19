@@ -208,13 +208,13 @@
         </div>
     </div>
     <div class="row no-gutters">
-        <div class="col-4 o_web_studio_sidebar_text o_web_studio_text_decoration">
+        <div t-if="!widget.isNodeText" class="col-4 o_web_studio_sidebar_text o_web_studio_text_decoration">
             <label>Text decoration</label>
             <button type="button" title="Bold" data-property="bold" t-att-class="widget.bold ? 'btn btn-secondary o_bold active' : 'btn btn-secondary o_bold'"><i class="fa fa-bold"/></button>
             <button type="button" title="Italic" data-property="italic" t-att-class="widget.italic ? 'btn btn-secondary o_italic active' : 'btn btn-secondary o_italic'"><i class="fa fa-italic"/></button>
             <button type="button" title="Underline" data-property="underline" t-att-class="widget.underline ? 'btn btn-secondary o_underline active' : 'btn btn-secondary o_underline'"><i class="fa fa-underline"/></button>
         </div>
-        <div class="col-8 o_web_studio_sidebar_text o_web_studio_colors">
+        <div t-if="!widget.isNodeText" class="col-8 o_web_studio_sidebar_text o_web_studio_colors">
             <label>Colors</label>
             <div class="dropdown">
                 <button class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">Font <span class="caret"/></button>
@@ -237,7 +237,7 @@
         </div>
     </div>
     <div class="row no-gutters">
-        <div class="col-6 o_web_studio_sidebar_select o_web_studio_font_size">
+        <div t-if="!widget.isNodeText" class="col-6 o_web_studio_sidebar_select o_web_studio_font_size">
             <label>Font style</label>
             <select>
                 <option></option>

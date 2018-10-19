@@ -391,10 +391,17 @@ QUnit.module('Studio', {}, function () {
                     'data-oe-id': '99',
                     'data-oe-xpath': '/t/t/div',
                 },
+                tag: 'div',
+            };
+            var layoutChangeTextNode = {
+                attrs: {
+                    'data-oe-id': '99',
+                    'data-oe-xpath': '/t/t/span',
+                },
                 tag: 'span',
             };
             var nodeWithAllLayoutPropertiesSet = {
-                tag: "span",
+                tag: "div",
                 attrs: {
                     //width: "1",
                     style: "margin-top:2px;width:1px;margin-right:3px;margin-bottom:4px;margin-left:5px;",
@@ -405,7 +412,7 @@ QUnit.module('Studio', {}, function () {
             };
 
             var nodeWithAllLayoutPropertiesFontAndBackgroundSet = {
-                tag: "span",
+                tag: "div",
                 attrs: {
                     //width: "1",
                     style: "margin-top:2px;margin-right:3px;width:1px;margin-bottom:4px;margin-left:5px;background-color:#00FF00;color:#00FF00",
@@ -479,10 +486,24 @@ QUnit.module('Studio', {}, function () {
                     valueToPut: "42",
                     expectedRPC: {
                         inheritance: [{
-                            content: "<attribute name=\"style\" separator=\";\" add=\"width:42px;display:inline-block\"/>",
+                            content: "<attribute name=\"style\" separator=\";\" add=\"width:42px\"/>",
                             position: "attributes",
                             view_id: 99,
                             xpath: "/t/t/div"
+                        }]
+                    }
+                }, {
+                    testName: "add a width on a text",
+                    nodeToUse: layoutChangeTextNode,
+                    eventToTrigger: "change",
+                    sidebarOperationInputSelector: '.o_web_studio_width input',
+                    valueToPut: "42",
+                    expectedRPC: {
+                        inheritance: [{
+                            content: "<attribute name=\"style\" separator=\";\" add=\"width:42px;display:inline-block\"/>",
+                            position: "attributes",
+                            view_id: 99,
+                            xpath: "/t/t/span"
                         }]
                     }
                 }, {

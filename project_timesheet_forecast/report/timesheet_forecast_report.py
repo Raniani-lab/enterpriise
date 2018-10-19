@@ -18,7 +18,7 @@ class TimesheetForecastReport(models.Model):
     task_id = fields.Many2one('project.task', string='Task', readonly=True)
     project_id = fields.Many2one('project.project', string='Project', readonly=True)
     number_hours = fields.Float('Number of hours', readonly=True)
-    type = fields.Selection([('forecast', 'Forecast'), ('timesheet', 'Timesheet')], 'Type', readonly=True)
+    line_type = fields.Selection([('forecast', 'Forecast'), ('timesheet', 'Timesheet')], string='Type', readonly=True, oldname='type')
 
     @api.model_cr
     def init(self):
@@ -32,7 +32,7 @@ class TimesheetForecastReport(models.Model):
                         F.task_id AS task_id,
                         F.project_id AS project_id,
                         F.resource_hours / F.working_days_count AS number_hours,
-                        'forecast' AS type,
+                        'forecast' AS line_type,
                         F.id AS id
                     FROM generate_series(
                         (SELECT min(start_date) FROM project_forecast WHERE active=true)::date,
@@ -54,7 +54,7 @@ class TimesheetForecastReport(models.Model):
                         A.task_id AS task_id,
                         A.project_id AS project_id,
                         A.unit_amount AS number_hours,
-                        'timesheet' AS type,
+                        'timesheet' AS line_type,
                         -A.id AS id
                     FROM account_analytic_line A, hr_employee E
                     WHERE A.project_id IS NOT NULL

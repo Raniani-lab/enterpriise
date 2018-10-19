@@ -53,9 +53,9 @@
         <field name="search_view_id" ref="project_timesheet_forecast_report_view_search"/>
         <field name="context">{
             'pivot_row_groupby': ['employee_id'],
-            'pivot_col_groupby': ['date', 'type'],
+            'pivot_col_groupby': ['date', 'line_type'],
             'pivot_measures': ['number_hours'],
-            'group_by': ['date:month', 'type'],
+            'group_by': ['date:month', 'line_type'],
             'search_default_year': True,
 
         }</field>

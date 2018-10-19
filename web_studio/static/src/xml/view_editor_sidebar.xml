@@ -486,10 +486,7 @@
             </div>
         </t>
     </t>
-    <div class="o_web_studio_sidebar_tags">
-        <label for="groups">Limit visibility to groups</label>
-        <div class="o_groups"/>
-    </div>
+    <t t-call="web_studio.Sidebar.Groups"/>
     <div t-if="widget.state.field.manual and widget.state.field.type === 'selection'">
         <a href="#" role="button" class="btn btn-link o_web_studio_edit_selection_values"><i class="fa fa-pencil"/> Edit Possible Values</a>
     </div>
@@ -520,6 +517,7 @@
         <input id="string" name="string" type="text"
             t-att-value="widget.state.attrs.string"/>
     </div>
+    <t t-call="web_studio.Sidebar.Groups"/>
     <t t-call="web_studio.Sidebar.Toolbox">
         <t t-call="web_studio.Sidebar.Remove"/>
     <t t-if="widget.state.attrs['studio-view-group-names']">
@@ -536,6 +534,7 @@
         <input id="string" name="string" type="text"
             t-att-value="widget.state.attrs.string"/>
     </div>
+    <t t-call="web_studio.Sidebar.Groups"/>
     <t t-call="web_studio.Sidebar.Toolbox">
         <t t-call="web_studio.Sidebar.Remove"/>
     <t t-if="widget.state.attrs['studio-view-group-names']">
@@ -629,8 +628,8 @@
                 </t>
             </span>
         </t>
-
     </t>
+    <t t-call="web_studio.Sidebar.Groups"/>
     <t t-call="web_studio.Sidebar.Toolbox">
         <t t-call="web_studio.Sidebar.Remove"/>
     </t>

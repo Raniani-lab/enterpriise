@@ -240,6 +240,7 @@ return Widget.extend(StandaloneFieldManagerMixin, {
      * i.e. the new & existing field if 'new', etc.
      *
      * @private
+     * @returns {Deferred}
      */
     _render: function () {
         var self = this;
@@ -249,8 +250,11 @@ return Widget.extend(StandaloneFieldManagerMixin, {
                 self.trigger_up('drag_component', {position: {pageX: event.pageX, pageY: event.pageY}, $helper: ui.helper});
             }, 200));
         } else if (this.state.mode === 'properties') {
-            return this._renderWidgetsM2MGroups();
+            if (this.$('.o_groups').length) {
+                return this._renderWidgetsM2MGroups();
+            }
         }
+        return $.when();
     },
     /**
      * @private
@@ -325,6 +329,7 @@ return Widget.extend(StandaloneFieldManagerMixin, {
     },
     /**
      * @private
+     * @returns {Deferred}
      */
     _renderWidgetsM2MGroups: function () {
         var self = this;

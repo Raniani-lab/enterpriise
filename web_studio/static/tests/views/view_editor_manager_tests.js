@@ -833,7 +833,7 @@ QUnit.module('ViewEditorManager', {
     });
 
     QUnit.test('notebook edition', function(assert) {
-        assert.expect(8);
+        assert.expect(9);
 
         var arch = "<form>" +
             "<sheet>" +
@@ -889,6 +889,8 @@ QUnit.module('ViewEditorManager', {
             "the sidebar should now display the page properties");
         var $pageInput = vem.$('.o_web_studio_sidebar_content.o_display_page input[name="string"]');
         assert.strictEqual($pageInput.val(), "Kikou", "the page name in sidebar should be set");
+        assert.strictEqual(vem.$('.o_web_studio_sidebar_content.o_display_page .o_groups .o_field_many2manytags').length, 1,
+            "the groups should be editable for notebook pages");
 
         // add a new page
         testUtils.dom.click(vem.$('.o_notebook li:eq(1) > a'));

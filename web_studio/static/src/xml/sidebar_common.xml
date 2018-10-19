@@ -32,4 +32,10 @@
     </ul>
 </div>
 
+
+<div t-name="web_studio.Sidebar.Groups" class="o_web_studio_sidebar_tags">
+    <label for="groups">Limit visibility to groups</label>
+    <div class="o_groups"/>
+</div>
+
 </templates>

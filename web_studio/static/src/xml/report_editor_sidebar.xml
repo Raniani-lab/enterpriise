@@ -46,10 +46,7 @@
                     <label for="attachment_use" class="custom-control-label">Reload from attachment</label>
                 </div>
             </div>
-            <div class="o_web_studio_sidebar_tags">
-                <label for="groups">Limit visibility to groups</label>
-                <div class="o_groups"/>
-            </div>
+            <t t-call="web_studio.Sidebar.Groups"/>
             <t t-call="web_studio.Sidebar.Toolbox">
                 <t t-call="web_studio.Sidebar.Parameters" t-if="widget.debug"/>
                 <t t-call="web_studio.Sidebar.XMLEditor" t-if="widget.debug"/>

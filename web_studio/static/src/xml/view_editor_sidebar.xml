@@ -453,6 +453,13 @@
                 </option>
             </select>
         </div>
+        <div t-if="widget.state.attrs.widget === 'many2many_tags'" class="o_web_studio_sidebar_checkbox">
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" id="color_field" name="color_field" class="custom-control-input" data-type="options"
+                    data-leave-empty='unchecked' t-att-checked="widget.state.attrs.options.color_field ? 'checked' : undefined"/>
+                <label for="color_field" class="custom-control-label">Color on Tags</label>
+            </div>
+        </div>
         <div t-if="widget.view_type === 'form' and widget.state.attrs.widget === 'image'" class="o_web_studio_sidebar_text">
             <label for="size">Image Size</label>
             <t t-set="img_size_value" t-value="widget.state.attrs.options.size ? widget.state.attrs.options.size[0] : 90"/>

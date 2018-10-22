@@ -267,6 +267,32 @@ tour.register('web_studio_tests_tour', {
 }, {
     // verify that the fields have been switched
     extra_trigger: '.o_web_studio_form_view_editor td.o_td_label:eq(0):contains("New Monetary")',
+    // add a m2m field
+    trigger: '.o_web_studio_sidebar .o_web_studio_field_type_container:eq(1) .o_web_studio_field_many2many',
+    run: 'drag_and_drop .o_inner_group:first .o_web_studio_hook:first',
+}, {
+    // type something in the modal
+    trigger: '.o_field_many2one[name="model"] input',
+    run: 'text a',
+}, {
+    // select the first model
+    trigger: '.ui-autocomplete > .ui-menu-item:first > a',
+    in_modal: false,
+}, {
+    trigger: 'button:contains(Confirm)',
+}, {
+    // select the m2m to set its properties
+    trigger: '.o_field_many2many',
+}, {
+    // change the `widget` attribute
+    trigger: '.o_web_studio_sidebar select[name="widget"]',
+    run: function () {
+        this.$anchor.val('many2many_tags').trigger('change');
+    },
+}, {
+    // use colors on the m2m tags
+    trigger: '.o_web_studio_sidebar label[for="color_field"]',
+}, {
     // add a statusbar
     trigger: '.o_web_studio_statusbar_hook',
 }, {

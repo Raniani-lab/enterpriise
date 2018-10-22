@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+import json
 
 from ast import literal_eval
 from copy import deepcopy
@@ -825,6 +826,28 @@ class WebStudioController(http.Controller):
                 eval_attr.append(group_xmlid.complete_name)
             eval_attr = ",".join(eval_attr)
             new_attrs['groups'] = eval_attr
+
+        if new_attrs.get('options'):
+            options = json.loads(new_attrs['options'])
+            if 'color_field' in options:
+                field_name = operation['node']['attrs']['name']
+                field_id = request.env['ir.model.fields'].search([('model', '=', model), ('name', '=', field_name)])
+                related_model_id = request.env['ir.model'].search([('model', '=', field_id.relation)])
+
+                if 'color' in related_model_id.field_id.mapped('name'):
+                    options['color_field'] = 'color'
+                else:
+                    if 'x_color' not in related_model_id.field_id.mapped('name'):
+                        request.env['ir.model.fields'].create({
+                            'model': related_model_id.name,
+                            'model_id': related_model_id.id,
+                            'name': 'x_color',
+                            'field_description': 'Color',
+                            'ttype': 'integer',
+                        })
+                    options['color_field'] = 'x_color'
+                new_attrs['options'] = json.dumps(options)
+
 
         xpath_node = self._get_xpath_node(arch, operation)
 

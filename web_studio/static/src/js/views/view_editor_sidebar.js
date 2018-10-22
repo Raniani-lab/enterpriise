@@ -604,15 +604,22 @@ return Widget.extend(StandaloneFieldManagerMixin, {
         var optionValue;
         if ($input.attr('type') === 'checkbox') {
             optionValue = $input.is(':checked');
+
+            if ((optionValue && $input.data('leave-empty') !== 'checked') ||
+                (!optionValue && $input.data('leave-empty') !== 'unchecked')) {
+                newOptions[optionName] = optionValue;
+            } else {
+                delete newOptions[optionName];
+            }
         } else {
             optionValue = $input.val();
-        }
-        if (optionName === 'size') {
-            var size = parseInt(optionValue);
-            optionValue = [size, size];
-        }
 
-        newOptions[optionName] = optionValue;
+            if (optionName === 'size') {
+                var size = parseInt(optionValue);
+                optionValue = [size, size];
+            }
+            newOptions[optionName] = optionValue;
+        }
 
         this.trigger_up('view_change', {
             type: 'attributes',

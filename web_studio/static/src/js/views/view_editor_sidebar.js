@@ -32,9 +32,8 @@ return Widget.extend(StandaloneFieldManagerMixin, {
         'change .o_display_view input':                      '_onViewChanged',
         'change .o_display_view select':                     '_onViewChanged',
         'click .o_web_studio_edit_selection_values':         '_onSelectionValues',
-        'change .o_display_field input[data-type="options"]': '_onOptionsChanged',
-        'change .o_display_field input[data-type="attributes"]': '_onElementChanged',
-        'change .o_display_field select':                    '_onElementChanged',
+        'change .o_display_field [data-type="attributes"]':  '_onElementChanged',
+        'change .o_display_field [data-type="options"]':     '_onOptionsChanged',
         'change .o_display_field input[data-type="field_name"]': '_onFieldNameChanged',
         'focus .o_display_field input[data-type="attributes"][name="domain"]': '_onDomainEditor',
         'change .o_display_field [data-type="default_value"]': '_onDefaultValueChanged',
@@ -475,12 +474,6 @@ return Widget.extend(StandaloneFieldManagerMixin, {
                 } else {
                     new_attrs.effect = 'False';
                 }
-            } else if (attribute === 'img_size') {
-                // TODO: put that in isOption section
-                var newOptions = _.extend({}, this.state.attrs.options);
-                var size = parseInt($input.val());
-                newOptions.size = [size, size];
-                new_attrs.options = JSON.stringify(newOptions);
             } else if (attribute === 'widget') {
                 // reset widget options
                 var widget = $input.val();
@@ -606,6 +599,7 @@ return Widget.extend(StandaloneFieldManagerMixin, {
         // widgets (see Many2One @init for example).
         var nodeOptions = this.state.node.attrs.options;
         var newOptions = nodeOptions ? pyUtils.py_eval(nodeOptions) : {};
+        var optionName = $input.attr('name');
 
         var optionValue;
         if ($input.attr('type') === 'checkbox') {
@@ -613,8 +607,11 @@ return Widget.extend(StandaloneFieldManagerMixin, {
         } else {
             optionValue = $input.val();
         }
+        if (optionName === 'size') {
+            var size = parseInt(optionValue);
+            optionValue = [size, size];
+        }
 
-        var optionName = $input.attr('name');
         newOptions[optionName] = optionValue;
 
         this.trigger_up('view_change', {

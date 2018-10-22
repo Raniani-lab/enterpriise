@@ -405,7 +405,7 @@
         </div>
         <div t-if="widget.view_type === 'kanban'" class="o_web_studio_sidebar_select">
             <label for="display">Display</label>
-            <select id="display" name="display">
+            <select id="display" name="display" data-type="attributes">
                 <option t-att-selected="!widget.state.attrs.display ? 'selected' : undefined" value="false">Default</option>
                 <option t-att-selected="widget.state.attrs.display === 'right' ? 'selected' : undefined" value="right">Pull Right</option>
                 <option t-att-selected="widget.state.attrs.display === 'full' ? 'selected' : undefined" value="full">Full Width</option>
@@ -446,7 +446,7 @@
         </div>
         <div t-if="_.contains(['list', 'form', 'kanban'], widget.view_type) and (widget.debug or widget.state.attrs.widget !== 'statusbar')" class="o_web_studio_sidebar_select">
             <label for="widget">Widget</label>
-            <select id="widget" name="widget">
+            <select id="widget" name="widget" data-type="attributes">
                 <option t-att-selected="widget.state.attrs.widget ? undefined : 'selected'"></option>
                 <option t-foreach="widget.state.field.field_widgets" t-as="w" t-att-selected="widget.state.attrs.widget ===  w ? 'selected' : undefined">
                     <t t-esc="w"/>
@@ -454,9 +454,9 @@
             </select>
         </div>
         <div t-if="widget.view_type === 'form' and widget.state.attrs.widget === 'image'" class="o_web_studio_sidebar_text">
-            <label for="img_size">Image Size</label>
+            <label for="size">Image Size</label>
             <t t-set="img_size_value" t-value="widget.state.attrs.options.size ? widget.state.attrs.options.size[0] : 90"/>
-            <select id="img_size" name="img_size">
+            <select id="size" name="size" data-type="options">
                 <option t-att-selected="img_size_value === 90 ? 'selected' : undefined" value="90">Small</option>
                 <option t-att-selected="img_size_value === 180 ? 'selected' : undefined" value="180">Medium</option>
                 <option t-att-selected="img_size_value === 270 ? 'selected' : undefined" value="270">Large</option>

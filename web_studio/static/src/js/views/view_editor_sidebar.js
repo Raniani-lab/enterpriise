@@ -32,6 +32,7 @@ return Widget.extend(StandaloneFieldManagerMixin, {
         'change .o_display_view input':                      '_onViewChanged',
         'change .o_display_view select':                     '_onViewChanged',
         'click .o_web_studio_edit_selection_values':         '_onSelectionValues',
+        'change .o_display_field input[data-type="options"]': '_onOptionsChanged',
         'change .o_display_field input[data-type="attributes"]': '_onElementChanged',
         'change .o_display_field select':                    '_onElementChanged',
         'change .o_display_field input[data-type="field_name"]': '_onFieldNameChanged',
@@ -475,6 +476,7 @@ return Widget.extend(StandaloneFieldManagerMixin, {
                     new_attrs.effect = 'False';
                 }
             } else if (attribute === 'img_size') {
+                // TODO: put that in isOption section
                 var newOptions = _.extend({}, this.state.attrs.options);
                 var size = parseInt($input.val());
                 newOptions.size = [size, size];
@@ -505,6 +507,7 @@ return Widget.extend(StandaloneFieldManagerMixin, {
             } else {
                 new_attrs[attribute] = $input.val();
             }
+
             this.trigger_up('view_change', {
                 type: 'attributes',
                 structure: 'edit_attributes',
@@ -589,6 +592,39 @@ return Widget.extend(StandaloneFieldManagerMixin, {
      */
     _onFieldParameters: function () {
         this.trigger_up('open_field_form', {field_name: this.state.attrs.name});
+    },
+    /**
+     * @private
+     * @param {jQueryEvent} ev
+     */
+    _onOptionsChanged: function (ev) {
+        var $input = $(ev.currentTarget);
+
+        // We use the original `options` attribute on the node here and evaluate
+        // it (same processing as in basic_view) ; we cannot directly take the
+        // options dict because it usually has been modified in place in field
+        // widgets (see Many2One @init for example).
+        var nodeOptions = this.state.node.attrs.options;
+        var newOptions = nodeOptions ? pyUtils.py_eval(nodeOptions) : {};
+
+        var optionValue;
+        if ($input.attr('type') === 'checkbox') {
+            optionValue = $input.is(':checked');
+        } else {
+            optionValue = $input.val();
+        }
+
+        var optionName = $input.attr('name');
+        newOptions[optionName] = optionValue;
+
+        this.trigger_up('view_change', {
+            type: 'attributes',
+            structure: 'edit_attributes',
+            node: this.state.node,
+            new_attrs: {
+                options: JSON.stringify(newOptions),
+            },
+        });
     },
     /**
      * @private

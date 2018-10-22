@@ -389,6 +389,13 @@
                 </div>
             </div>
         </t>
+        <div t-if="_.contains(['many2one', 'many2many'], widget.state.field.type)" class="o_web_studio_sidebar_checkbox">
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" id="no_create" name="no_create" class="custom-control-input" data-type="options"
+                    t-att-checked="widget.state.attrs.options.no_create ? 'checked' : undefined"/>
+                <label for="no_create" class="custom-control-label">No Create</label>
+            </div>
+        </div>
         <div t-if="widget.view_type === 'kanban'" class="o_web_studio_sidebar_checkbox">
             <div class="custom-control custom-checkbox">
                 <input type="checkbox" id="bold" name="bold" class="custom-control-input" data-type="attributes"

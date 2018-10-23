@@ -19,6 +19,14 @@
                     <filter string="Root Cause" name="groupby_reason" domain="[]" context="{'group_by':'reason_id'}"/>
                     <filter string="Creation Date" name="groupby_createmonth" domain="[]" context="{'group_by':'create_date'}"/>
                     <filter string="Quality Team" name="groupby_team_id" domain="[]" context="{'group_by': 'team_id'}"/>
+                    <separator/>
+                    <filter string="Late Activities" name="activities_overdue"
+                        domain="[('activity_ids.date_deadline', '&lt;', context_today().strftime('%Y-%m-%d'))]"
+                        help="Show all records which has next action date is before today"/>
+                    <filter string="Today Activities" name="activities_today"
+                        domain="[('activity_ids.date_deadline', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                    <filter string="Future Activities" name="activities_upcoming_all"
+                        domain="[('activity_ids.date_deadline', '&gt;', context_today().strftime('%Y-%m-%d'))]"/>
                 </group>
             </search>
         </field>
@@ -34,6 +42,8 @@
                 <field name="stage_id"/>
                 <field name="tag_ids"/>
                 <field name="priority"/>
+                <field name="activity_ids"/>
+                <field name="activity_state"/>
                 <templates>
                     <t t-name="kanban-box">
                         <div t-attf-class="oe_kanban_card oe_kanban_global_click">
@@ -50,7 +60,8 @@
                                 <img t-att-src="kanban_image('res.users', 'image_small', record.user_id.raw_value)" t-att-title="record.user_id.value" t-att-alt="record.user_id.value" width="24" height="24" class="oe_kanban_avatar float-right"/>
                             </div>
                             <div class="oe_kanban_bottom_left">
-                                 <field name="priority" widget="priority"/>
+                                <field name="priority" widget="priority"/>
+                                <field name="activity_ids" widget="kanban_activity"/>
                             </div>
                         </div>
                     </t>
@@ -117,6 +128,7 @@
                 </sheet>
                 <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
                     <field name="message_ids" widget="mail_thread"/>
                 </div>
             </form>

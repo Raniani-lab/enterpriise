@@ -204,7 +204,7 @@ class QualityCheck(models.Model):
 class QualityAlert(models.Model):
     _name = "quality.alert"
     _description = "Quality Alert"
-    _inherit = ['mail.thread']
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
     name = fields.Char('Name', default=lambda self: _('New'))
     description = fields.Html('Description')

@@ -514,6 +514,7 @@ var ReportEditor = Widget.extend(EditorMixin, {
             }
             var $nodes = self._findAssociatedDOMNodes(node);
             $nodes.data('node', node);
+            node.$nodes = $nodes;
             if ($nodes.length) {
                 node.context = $nodes.data('oe-context');
             } else {

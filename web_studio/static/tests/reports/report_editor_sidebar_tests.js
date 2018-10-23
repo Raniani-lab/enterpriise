@@ -141,6 +141,7 @@ QUnit.module('Studio', {}, function () {
                         'data-oe-xpath': '/t/t/div',
                     },
                     tag: 'span',
+                    $nodes: $(),
                 },
             };
             var sidebar = studioTestUtils.createSidebar({
@@ -177,6 +178,7 @@ QUnit.module('Studio', {}, function () {
                         'data-oe-xpath': '/t/t/div',
                     },
                     tag: 'span',
+                    $nodes: $(),
                 },
             };
 
@@ -187,6 +189,7 @@ QUnit.module('Studio', {}, function () {
                         'data-oe-xpath': '/t/t',
                     },
                     tag: 'div',
+                    $nodes: $(),
                 },
             };
             var sidebar = studioTestUtils.createSidebar({
@@ -240,6 +243,7 @@ QUnit.module('Studio', {}, function () {
                         'data-oe-xpath': '/t/t/div',
                     },
                     tag: 'span',
+                    $nodes: $(),
                 },
             };
             var sidebar = studioTestUtils.createSidebar({
@@ -269,6 +273,7 @@ QUnit.module('Studio', {}, function () {
                         'data-oe-xpath': '/t/t/div',
                     },
                     tag: 'span',
+                    $nodes: $(),
                 },
             };
             var sidebar = studioTestUtils.createSidebar({
@@ -301,6 +306,7 @@ QUnit.module('Studio', {}, function () {
                         't-options-widget': '"text"',
                     },
                     tag: 'span',
+                    $nodes: $(),
                 },
             };
             var sidebar = studioTestUtils.createSidebar({
@@ -343,6 +349,7 @@ QUnit.module('Studio', {}, function () {
                         'doc': 'x_mymodel',
                     },
                     tag: 'span',
+                    $nodes: $(),
                 },
             };
             var sidebar = studioTestUtils.createSidebar({
@@ -392,6 +399,7 @@ QUnit.module('Studio', {}, function () {
                     'data-oe-xpath': '/t/t/div',
                 },
                 tag: 'div',
+                $nodes: $(),
             };
             var layoutChangeTextNode = {
                 attrs: {
@@ -399,6 +407,7 @@ QUnit.module('Studio', {}, function () {
                     'data-oe-xpath': '/t/t/span',
                 },
                 tag: 'span',
+                $nodes: $(),
             };
             var nodeWithAllLayoutPropertiesSet = {
                 tag: "div",
@@ -408,7 +417,8 @@ QUnit.module('Studio', {}, function () {
                     class: "o_bold o_italic h3 bg-gamma text-beta o_underline",
                     'data-oe-id': '99',
                     'data-oe-xpath': '/t/t/div',
-                }
+                },
+                $nodes: $(),
             };
 
             var nodeWithAllLayoutPropertiesFontAndBackgroundSet = {
@@ -419,7 +429,8 @@ QUnit.module('Studio', {}, function () {
                     class: "o_bold o_italic h3 o_underline",
                     'data-oe-id': '99',
                     'data-oe-xpath': '/t/t/div',
-                }
+                },
+                $nodes: $(),
             };
             var layoutChangesOperations = [
                 {
@@ -586,7 +597,20 @@ QUnit.module('Studio', {}, function () {
                             xpath: "/t/t/div"
                         }]
                     },
-                },{
+                }, {
+                    testName: "set the alignment",
+                    nodeToUse: layoutChangeNode,
+                    eventToTrigger: "click",
+                    sidebarOperationInputSelector: '.o_web_studio_text_alignment button[title="right"]',
+                    expectedRPC: {
+                        inheritance: [{
+                            content: "<attribute name=\"class\" separator=\" \" add=\"text-right\"/>",
+                            position: "attributes",
+                            view_id: 99,
+                            xpath: "/t/t/div"
+                        }]
+                    },
+                }, {
                 testName: "remove margin top in pixels",
                 nodeToUse: nodeWithAllLayoutPropertiesSet,
                 eventToTrigger: "change",

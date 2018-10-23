@@ -214,6 +214,16 @@
             <button type="button" title="Italic" data-property="italic" t-att-class="widget.italic ? 'btn btn-secondary o_italic active' : 'btn btn-secondary o_italic'"><i class="fa fa-italic"/></button>
             <button type="button" title="Underline" data-property="underline" t-att-class="widget.underline ? 'btn btn-secondary o_underline active' : 'btn btn-secondary o_underline'"><i class="fa fa-underline"/></button>
         </div>
+        <div t-if="widget.displayAlignment" class="col-4 o_web_studio_sidebar_text o_web_studio_text_alignment">
+            <label>Alignment</label>
+            <t t-foreach="['left', 'center', 'right']" t-as="alignment">
+                <button type="button" t-att-title="alignment" t-attf-data-property="text-#{alignment}" t-attf-class="btn btn-secondary #{widget.alignment === 'text-' + alignment ? 'active' : ''}">
+                    <i t-attf-class="fa fa-align-#{alignment}"/>
+                </button>
+            </t>
+        </div>
+    </div>
+    <div class="row no-gutters">
         <div t-if="!widget.isNodeText" class="col-8 o_web_studio_sidebar_text o_web_studio_colors">
             <label>Colors</label>
             <div class="dropdown">

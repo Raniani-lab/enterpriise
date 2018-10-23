@@ -379,6 +379,7 @@ QUnit.module('ReportComponents', {
                 attrs: {
                     class: 'col- offset-kikou',
                 },
+                $nodes: $(),
             },
         });
         layout.appendTo(parent.$el);

@@ -347,6 +347,7 @@ var LayoutEditable = AbstractEditComponent.extend({
         "change .o_web_studio_font_size>select": "_onFontSizeInputChange",
         "change .o_web_studio_table_style > select": "_onTableStyleInputChange",
         "click .o_web_studio_text_decoration button": "_onTextDecorationChange",
+        "click .o_web_studio_text_alignment button": "_onTextAlignmentChange",
         "change .o_web_studio_classes>input": "_onClassesChange",
         "click .o_web_studio_colors .o_web_studio_reset_color": "_onResetColor",
     }),
@@ -406,6 +407,9 @@ var LayoutEditable = AbstractEditComponent.extend({
         this.italic = _.contains(this.classesArray, 'o_italic');
         this.bold =_.contains(this.classesArray, 'o_bold');
         this.underline = _.contains(this.classesArray, 'o_underline');
+
+        this.alignment = _.intersection(this.classesArray, ['text-left', 'text-center', 'text-right'])[0];
+        this.displayAlignment = !_.contains(['inline', 'float'], this.node.$nodes.css('display'));
 
         this.allClasses = params.node.attrs.class || "";
     },
@@ -529,6 +533,16 @@ var LayoutEditable = AbstractEditComponent.extend({
                 this._editDomAttribute("style", null, this.color);
             }
         }
+    },
+    /**
+     * @private
+     * @param {JQEvent} e
+     */
+    _onTextAlignmentChange : function(e) {
+        e.preventDefault();
+        var data = $(e.currentTarget).data();
+        var toAdd = this.alignment !== data.property ? data.property : null;
+        this._editDomAttribute("class", toAdd, this.alignment);
     },
     /**
      * @private

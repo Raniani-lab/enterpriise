@@ -4,13 +4,15 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
+# Cas Vissers <casvissers@brahoo.nl>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-02 10:31+0000\n"
 "PO-Revision-Date: 2018-10-02 10:31+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"Last-Translator: Cas Vissers <casvissers@brahoo.nl>, 2018\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,7 +23,7 @@ msgstr ""
 #. module: quality_mrp_iot
 #: model:ir.model.fields,field_description:quality_mrp_iot.field_mrp_workorder__boxes
 msgid "Boxes"
-msgstr ""
+msgstr "Boxes"
 
 #. module: quality_mrp_iot
 #. openerp-web
@@ -33,7 +35,7 @@ msgstr "Zichtbaar"
 #. module: quality_mrp_iot
 #: model:ir.model.fields,field_description:quality_mrp_iot.field_mrp_workorder__device_name
 msgid "Device Name: "
-msgstr ""
+msgstr "Apparaatnaam: "
 
 #. module: quality_mrp_iot
 #. openerp-web
@@ -45,7 +47,7 @@ msgstr "Bewerken"
 #. module: quality_mrp_iot
 #: model:ir.model,name:quality_mrp_iot.model_iot_trigger
 msgid "IOT Trigger"
-msgstr ""
+msgstr "IOT trigger"
 
 #. module: quality_mrp_iot
 #: model:ir.model.fields,field_description:quality_mrp_iot.field_mrp_workorder__identifier
@@ -55,12 +57,12 @@ msgstr "Identificatie "
 #. module: quality_mrp_iot
 #: model:ir.model.fields,field_description:quality_mrp_iot.field_mrp_workorder__ip
 msgid "IoT Box Home Page"
-msgstr ""
+msgstr "IoT box startpagina"
 
 #. module: quality_mrp_iot
 #: model_terms:ir.ui.view,arch_db:quality_mrp_iot.mrp_workcenter_view_form_iot
 msgid "IoT Triggers"
-msgstr ""
+msgstr "IoT triggers"
 
 #. module: quality_mrp_iot
 #. openerp-web
@@ -73,7 +75,7 @@ msgstr "Neem een foto"
 #. module: quality_mrp_iot
 #: model:ir.model.fields,field_description:quality_mrp_iot.field_mrp_workcenter__trigger_ids
 msgid "Triggers"
-msgstr ""
+msgstr "Triggers"
 
 #. module: quality_mrp_iot
 #. openerp-web
@@ -95,4 +97,4 @@ msgstr "Werkorder"
 #. module: quality_mrp_iot
 #: model:ir.model.fields,field_description:quality_mrp_iot.field_iot_trigger__workcenter_id
 msgid "Workcenter"
-msgstr "Werkplaats"
+msgstr "Werkplek"

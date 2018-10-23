@@ -13,10 +13,10 @@
 # Luis M. Ontalba <luis.martinez@tecnativa.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-02 10:32+0000\n"
-"PO-Revision-Date: 2018-10-02 10:32+0000\n"
+"POT-Creation-Date: 2018-10-08 07:14+0000\n"
+"PO-Revision-Date: 2018-10-08 07:14+0000\n"
 "Last-Translator: Luis M. Ontalba <luis.martinez@tecnativa.com>, 2018\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
 "MIME-Version: 1.0\n"
@@ -24,6 +24,28 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Language: es\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: sale_subscription
+#: model:sale.subscription.template,description:sale_subscription.cleaning_monthly
+#: model:sale.subscription.template,description:sale_subscription.cleaning_yearly
+msgid ""
+"\n"
+"Payment\n"
+"All payments are due upon receipt. If a payment is not received or payment method is declined, the buyer forfeits the ownership of any items purchased. If no payment is received, no items will be shipped.\n"
+"\n"
+"Shipping Policies\n"
+"Shipping will be paid for by the buyer in the amount agreed upon by the seller at the time of purchase. If an item is lost during shipping, the total cost of item, including shipping, will be refunded to the buyer by the seller. Shipping costs may double if shipping internationally. If an item is damaged during shipping, seller will not be held responsible.\n"
+"\n"
+"Refund/Return Policy\n"
+"Items are entitled to be refunded or returned based on complaint. If an item is damaged during shipping, a replacement item will be sent free of charge. If an item is unsatisfactory, a written explanation is needed before the item may be considered for a refund. Buyer must take into account the description of the item before requesting a refund. If the item matches the description by the seller and the buyer is unsatisfied, seller is not responsible for refund. Exchanges are granted on a case-by-case basis.\n"
+"\n"
+"Cancellation\n"
+"An item may be cancelled up until payment has been processed. Once payment has been processed, the buyer is responsible for payment.\n"
+"\n"
+"Complaints\n"
+"Any complaints about items or sellers may be sent to our support team: support@wesellyourstuff.com or (888) 555-0198. There is no guarantee of a resolution. Each case will be looked at individually, and the seller will be in contact as well.\n"
+"            "
+msgstr ""
 
 #. module: sale_subscription
 #: model:mail.template,subject:sale_subscription.mail_template_subscription_invoice
@@ -1872,7 +1894,10 @@ msgid "Modification"
 msgstr ""
 
 #. module: sale_subscription
+#: model:product.product,uom_name:sale_subscription.product_office_cleaning
+#: model:product.template,uom_name:sale_subscription.product_office_cleaning_product_template
 #: selection:sale.subscription.template,recurring_rule_type:0
+#: model:uom.uom,name:sale_subscription.subscription_uom_month
 msgid "Month(s)"
 msgstr "Mes(es)"
 
@@ -1993,6 +2018,18 @@ msgstr ""
 "Odoo fija automáticamente las suscripciones a renovar en estado\n"
 " pendiente. Tras la negociación, el vendedor debe cerrar o renovar\n"
 " las suscripciones pendientes."
+
+#. module: sale_subscription
+#: model:product.product,name:sale_subscription.product_office_cleaning
+#: model:product.template,name:sale_subscription.product_office_cleaning_product_template
+msgid "Office Cleaning Subscription (Monthly)"
+msgstr ""
+
+#. module: sale_subscription
+#: model:product.product,name:sale_subscription.product_office_cleaning_yearly
+#: model:product.template,name:sale_subscription.product_office_cleaning_yearly_product_template
+msgid "Office Cleaning Subscription (Yearly)"
+msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__on_change_fields
@@ -2786,6 +2823,12 @@ msgid "Tags"
 msgstr "Etiquetas"
 
 #. module: sale_subscription
+#: model:base.automation,name:sale_subscription.subscription_alert_percent_revenue_base_automation
+#: model:sale.subscription.alert,name:sale_subscription.subscription_alert_percent_revenue
+msgid "Take action on less satisfied clients"
+msgstr ""
+
+#. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__recurring_amount_tax
 msgid "Taxes"
 msgstr "Impuestos"
@@ -2907,6 +2950,11 @@ msgid ""
 "This stage is folded in the kanban view when there are not records in that "
 "stage to display."
 msgstr ""
+
+#. module: sale_subscription
+#: model:uom.category,name:sale_subscription.uom_categ_time
+msgid "Time"
+msgstr "Tiempo"
 
 #. module: sale_subscription
 #: selection:sale.subscription.alert,trigger_condition:0
@@ -3201,7 +3249,10 @@ msgid ""
 msgstr ""
 
 #. module: sale_subscription
+#: model:product.product,uom_name:sale_subscription.product_office_cleaning_yearly
+#: model:product.template,uom_name:sale_subscription.product_office_cleaning_yearly_product_template
 #: selection:sale.subscription.template,recurring_rule_type:0
+#: model:uom.uom,name:sale_subscription.subscription_uom_year
 msgid "Year(s)"
 msgstr "Año(s)"
 
@@ -3280,6 +3331,14 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid "e.g. Update order quantity"
 msgstr "Por ejemplo, Actualizar la cantidad de pedido"
+
+#. module: sale_subscription
+#: model:product.product,weight_uom_name:sale_subscription.product_office_cleaning
+#: model:product.product,weight_uom_name:sale_subscription.product_office_cleaning_yearly
+#: model:product.template,weight_uom_name:sale_subscription.product_office_cleaning_product_template
+#: model:product.template,weight_uom_name:sale_subscription.product_office_cleaning_yearly_product_template
+msgid "kg"
+msgstr "kg"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription

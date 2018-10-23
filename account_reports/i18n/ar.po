@@ -20,13 +20,14 @@
 # Mohammed Albasha <m.albasha.ma@gmail.com>, 2018
 # Yihya Hugirat <hugirat@gmail.com>, 2018
 # Abdulmajeed Alomar <majeeed87@gmail.com>, 2018
+# Ali Alrehawi <alrehawi@hotmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-02 10:31+0000\n"
 "PO-Revision-Date: 2018-10-02 10:31+0000\n"
-"Last-Translator: Abdulmajeed Alomar <majeeed87@gmail.com>, 2018\n"
+"Last-Translator: Ali Alrehawi <alrehawi@hotmail.com>, 2018\n"
 "Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -245,7 +246,7 @@ msgstr ""
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_chart_template
 msgid "Account Chart Template"
-msgstr ""
+msgstr "قالب لمخطط الحساب"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_report
@@ -677,7 +678,7 @@ msgstr ""
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_res_config_settings
 msgid "Config Settings"
-msgstr ""
+msgstr "ضبط الإعدادات"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_consolidated_journals.py:26

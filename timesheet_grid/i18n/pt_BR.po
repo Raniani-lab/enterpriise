@@ -200,22 +200,25 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
 msgid "Activate a periodical email reminder for timesheet managers"
 msgstr ""
+"Ativar um lembrete periódico por email para para gerentes de planilhas de "
+"tempo."
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
 msgid "Activate a periodical email reminder for timesheet users"
 msgstr ""
+"Ativar um lembrete periódico em email para usuários de planilhas de tempo"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_form
 msgid "Add a Task"
-msgstr ""
+msgstr "Adicionar uma Tarefa"
 
 #. module: timesheet_grid
 #: code:addons/timesheet_grid/models/analytic.py:81
 #, python-format
 msgid "All selected timesheets are already validated"
-msgstr ""
+msgstr "Todas as planilhas de tempo já estão validadas"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__amount
@@ -238,6 +241,7 @@ msgstr "Cancelar"
 #, python-format
 msgid "Choose a <b>project name</b>. (e.g. name of a customer, or product)"
 msgstr ""
+"Escolha um <b>nome de projeto</b>. (ex. nome de um cliente, ou produto, etc)"
 
 #. module: timesheet_grid
 #: model:ir.model,name:timesheet_grid.model_res_company

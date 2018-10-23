@@ -6,10 +6,10 @@
 # Martin Trigaux, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"POT-Creation-Date: 2018-10-08 07:14+0000\n"
+"PO-Revision-Date: 2018-10-08 07:14+0000\n"
 "Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: Romanian (https://www.transifex.com/odoo/teams/41243/ro/)\n"
 "MIME-Version: 1.0\n"
@@ -44,6 +44,28 @@ msgstr ""
 #: selection:res.company,currency_interval_unit:0
 msgid "Daily"
 msgstr "Zilnic"
+
+#. module: currency_rate_live
+#: model:res.company,overdue_msg:currency_rate_live.res_company_company_1
+#: model:res.company,overdue_msg:currency_rate_live.res_company_company_2
+msgid ""
+"Dear Sir/Madam,\n"
+"\n"
+"Our records indicate that some payments on your account are still due. Please find details below.\n"
+"If the amount has already been paid, please disregard this notice. Otherwise, please forward us the total amount stated below.\n"
+"If you have any queries regarding your account, Please contact us.\n"
+"\n"
+"Thank you in advance for your cooperation.\n"
+"Best Regards,"
+msgstr ""
+"Stimate Domn/Doamnă,\n"
+"\n"
+"Înregistrările noastre indică faptul ca aveți unele plăți încă scadente. Găsiți toate detaliile mai jos.\n"
+"Dacă suma a fost deja plătită, vă rugam sa ignorați acest aviz. În cazul contrar, vă rugam să efectuați plata restantă descrisa mai jos.\n"
+"Dacă aveți întrebări în legătură cu contul dumneavoastră, vă rugam să ne contactați.\n"
+"\n"
+"Va mulțumim anticipat pentru cooperarea dumneavoastră.\n"
+"Cu stima,"
 
 #. module: currency_rate_live
 #: selection:res.company,currency_provider:0

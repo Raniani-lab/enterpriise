@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2018
 msgid ""
 msgstr ""
@@ -22,12 +23,12 @@ msgstr ""
 #. module: sale_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard
 msgid "# Customers"
-msgstr ""
+msgstr "# Klanten"
 
 #. module: sale_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard
 msgid "# Lines"
-msgstr ""
+msgstr "# Regels"
 
 #. module: sale_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard
@@ -69,12 +70,12 @@ msgstr "Orders"
 #: model:ir.actions.act_window,name:sale_enterprise.sale_report_action_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_enterprise.sale_report_view_pivot
 msgid "Sales Analysis"
-msgstr "Verkoop Analyse"
+msgstr "Verkoopanalyse"
 
 #. module: sale_enterprise
 #: model:ir.model,name:sale_enterprise.model_sale_report
 msgid "Sales Analysis Report"
-msgstr "Verkoop analyse rapport"
+msgstr "Verkoopanalyse rapport"
 
 #. module: sale_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_enterprise.view_order_product_search_inherit

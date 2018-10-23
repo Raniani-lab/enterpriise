@@ -5,7 +5,7 @@
 # Translators:
 # Martin Trigaux, 2018
 # Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
-# 珠海-杜哥 <liangjia@qq.com>, 2018
+# liAnGjiA <liangjia@qq.com>, 2018
 # waveyeung <waveyeung@qq.com>, 2018
 # e2f_cn c7 <e2f_cn_c7@outlook.com>, 2018
 # ChinaMaker <liuct@chinamaker.net>, 2018
@@ -94,7 +94,7 @@ msgstr "<br/> 技术支持"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_page
 msgid "<i class=\"fa fa-download fa-fw\"/>  Download All"
-msgstr "<i class=\"fa fa-download fa-fw\"/>  全部下载"
+msgstr "<i class=\"fa fa-download fa-fw\"/>  下载全部"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_single
@@ -146,7 +146,7 @@ msgstr "可用于所有满足条件的附件的条件和动作集合"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__group_ids
 msgid "Access Groups"
-msgstr "访问群"
+msgstr "访问组"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__access_token
@@ -182,7 +182,7 @@ msgstr "活动"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_note
 msgid "Activity Note"
-msgstr "活动注意"
+msgstr "活动备注"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__activity_type_id
@@ -232,7 +232,7 @@ msgstr "别名网域"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_model_id
 msgid "Aliased Model"
-msgstr "别名的模型"
+msgstr "别名模型"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
@@ -364,7 +364,7 @@ msgstr "创建新‎‎活动"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.tag_view_tree
 msgid "Create a tag"
-msgstr "创建一个标签"
+msgstr "创建标签"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_facet__create_uid
@@ -457,7 +457,7 @@ msgstr "文档"
 #: model_terms:ir.ui.view,arch_db:documents.documents_view_kanban
 #: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
 msgid "Document"
-msgstr "单据"
+msgstr "文档"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__owner_id
@@ -601,7 +601,7 @@ msgstr "‎方面‎"
 #. module: documents
 #: sql_constraint:documents.facet:0
 msgid "Facet already exists in this folder"
-msgstr "‎此文件中已存在此文件夹中‎"
+msgstr "方面已在此文件夹中‎"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_ir_attachment__favorited_ids
@@ -858,7 +858,7 @@ msgstr "消息"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
 msgid "Model"
-msgstr "型号"
+msgstr "模型"
 
 #. module: documents
 #: selection:documents.request_wizard,activity_date_deadline_range_type:0
@@ -1198,7 +1198,7 @@ msgstr "签名模板"
 #: code:addons/documents/static/src/xml/documents_inspector.xml:68
 #, python-format
 msgid "Size"
-msgstr "尺寸"
+msgstr "大小"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__state

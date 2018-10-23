@@ -364,8 +364,8 @@
             <input type="checkbox" id="invisible" name="invisible" class="custom-control-input" data-type="attributes"
                 t-att-checked="widget.state.attrs.invisible ? 'checked' : undefined"/>
             <label for="invisible" class="custom-control-label">Invisible</label>
+            <a role="button" href="#" data-type="invisible" class="btn btn-link o_web_studio_attrs">Conditional</a>
         </div>
-        <a role="button" href="#" data-type="invisible" class="btn btn-link o_web_studio_attrs">Conditional</a>
     </div>
     <t t-if="widget.state.modifiers.invisible !== true">
         <t t-if="_.contains(['list', 'form'], widget.view_type)">
@@ -376,8 +376,8 @@
                         t-att-checked="widget.state.attrs.required ? 'checked' : undefined"
                         t-att-disabled="widget.state.field.required ? 'disabled' : undefined"/>
                     <label for="required" class="custom-control-label">Required</label>
+                    <a role="button" href="#" data-type="required" class="btn btn-link o_web_studio_attrs">Conditional</a>
                 </div>
-                <a role="button" href="#" data-type="required" class="btn btn-link o_web_studio_attrs">Conditional</a>
             </div>
             <div class="clearfix o_web_studio_sidebar_checkbox">
                 <t t-set="attrs_readonly" t-value="widget.state.modifiers.readonly and widget.state.modifiers.readonly !== true"/>
@@ -385,8 +385,8 @@
                     <input type="checkbox" id="readonly" name="readonly" class="custom-control-input" data-type="attributes"
                         t-att-checked="widget.state.attrs.readonly ? 'checked' : undefined"/>
                     <label for="readonly" class="custom-control-label">Read only</label>
+                    <a role="button" href="#" data-type="readonly" class="btn btn-link o_web_studio_attrs">Conditional</a>
                 </div>
-                <a role="button" href="#" data-type="readonly" class="btn btn-link o_web_studio_attrs">Conditional</a>
             </div>
         </t>
         <div t-if="widget.view_type === 'kanban'" class="o_web_studio_sidebar_checkbox">

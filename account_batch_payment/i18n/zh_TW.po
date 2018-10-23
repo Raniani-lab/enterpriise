@@ -4,13 +4,14 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# 敬雲 林 <chingyun@yuanchih-consult.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
 "PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"Last-Translator: 敬雲 林 <chingyun@yuanchih-consult.com>, 2018\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/odoo/teams/41243/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,41 +22,41 @@ msgstr ""
 #. module: account_batch_payment
 #: model:ir.model,name:account_batch_payment.model_account_batch_download_wizard
 msgid "Account Batch download wizard"
-msgstr ""
+msgstr "帳號批量下載嚮導"
 
 #. module: account_batch_payment
 #: model:ir.model,name:account_batch_payment.model_account_reconciliation_widget
 msgid "Account Reconciliation widget"
-msgstr ""
+msgstr "科目調節掛件"
 
 #. module: account_batch_payment
 #: code:addons/account_batch_payment/models/account_batch_payment.py:75
 #, python-format
 msgid "All payments in the batch must belong to the same company."
-msgstr ""
+msgstr "批次中的所有付款必須屬於同一公司。"
 
 #. module: account_batch_payment
 #: code:addons/account_batch_payment/models/account_batch_payment.py:86
 #, python-format
 msgid "All payments in the batch must share the same payment method."
-msgstr ""
+msgstr "批次中的所有付款必須共享相同的支付方法。"
 
 #. module: account_batch_payment
 #: code:addons/account_batch_payment/models/account_batch_payment.py:81
 #, python-format
 msgid "All payments in the batch must share the same type."
-msgstr ""
+msgstr "批次中的所有付款必須共享相同的類型。"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__amount
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.print_batch_payment
 msgid "Amount"
-msgstr "金額"
+msgstr "總額"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__available_payment_method_ids
 msgid "Available Payment Method"
-msgstr ""
+msgstr "可用支付方法"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__journal_id
@@ -70,7 +71,7 @@ msgstr "銀行日記帳"
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
 msgid "Batch Content"
-msgstr ""
+msgstr "批次含量"
 
 #. module: account_batch_payment
 #: model:account.payment.method,name:account_batch_payment.account_payment_method_batch_deposit
@@ -81,7 +82,7 @@ msgstr "批量存款"
 #. module: account_batch_payment
 #: model:ir.model,name:account_batch_payment.model_report_account_batch_payment_print_batch_payment
 msgid "Batch Deposit Report"
-msgstr ""
+msgstr "批量存款報告"
 
 #. module: account_batch_payment
 #: model:ir.model,name:account_batch_payment.model_account_batch_payment
@@ -90,7 +91,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_search
 msgid "Batch Payment"
-msgstr ""
+msgstr "批量付款"
 
 #. module: account_batch_payment
 #: model:ir.actions.act_window,name:account_batch_payment.action_batch_payment_in
@@ -98,17 +99,17 @@ msgstr ""
 #: model:ir.ui.menu,name:account_batch_payment.menu_batch_payment_purchases
 #: model:ir.ui.menu,name:account_batch_payment.menu_batch_payment_sales
 msgid "Batch Payments"
-msgstr ""
+msgstr "批量付款"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__batch_type
 msgid "Batch Type"
-msgstr ""
+msgstr "批式"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,help:account_batch_payment.field_account_batch_download_wizard__batch_payment_id
 msgid "Batch payment from which the file has been generated."
-msgstr ""
+msgstr "已生成文件的批付款。"
 
 #. module: account_batch_payment
 #: model_terms:ir.actions.act_window,help:account_batch_payment.action_batch_payment_in
@@ -118,11 +119,14 @@ msgid ""
 "                    reconciliation. They are also useful when depositing checks\n"
 "                    to the bank."
 msgstr ""
+"批量付款允許您分組不同的付款，以方便對帳。\n"
+"在將支票存入銀行時，\n"
+"它們也是有用的。"
 
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.download_xml_form
 msgid "Click here to download the generated file:"
-msgstr ""
+msgstr "點選此處下載生成的文件："
 
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.download_xml_form
@@ -139,23 +143,23 @@ msgstr "代碼"
 #: model:ir.actions.server,name:account_batch_payment.action_account_create_batch_payment
 #, python-format
 msgid "Create Batch Payment"
-msgstr ""
+msgstr "創建批量付款"
 
 #. module: account_batch_payment
 #: model_terms:ir.actions.act_window,help:account_batch_payment.action_batch_payment_in
 msgid "Create a new customer batch payment"
-msgstr ""
+msgstr "創建客戶批量付款"
 
 #. module: account_batch_payment
 #: model_terms:ir.actions.act_window,help:account_batch_payment.action_batch_payment_out
 msgid "Create a new vendor batch payment"
-msgstr ""
+msgstr "創建信用證批量付款"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_download_wizard__create_uid
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__create_uid
 msgid "Created by"
-msgstr "創建者"
+msgstr "創建人"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_download_wizard__create_date
@@ -166,12 +170,12 @@ msgstr "創建時間"
 #. module: account_batch_payment
 #: model:ir.model.fields,help:account_batch_payment.field_account_batch_payment__export_file_create_date
 msgid "Creation date of the related export file."
-msgstr ""
+msgstr "導出文件的相關創建日期。"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__currency_id
 msgid "Currency"
-msgstr "貨幣"
+msgstr "幣別"
 
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.print_batch_payment
@@ -182,7 +186,7 @@ msgstr "客戶"
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__date
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.print_batch_payment
 msgid "Date"
-msgstr "日期   "
+msgstr "日期"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_download_wizard__display_name
@@ -194,17 +198,17 @@ msgstr "顯示名稱"
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.download_xml_form
 msgid "Download export file"
-msgstr ""
+msgstr "下載導出文件"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,help:account_batch_payment.field_account_batch_payment__export_file
 msgid "Export file related to this batch"
-msgstr ""
+msgstr "導出與此批次相關的文件"
 
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
 msgid "Exported File"
-msgstr ""
+msgstr "文件導出"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_download_wizard__export_file
@@ -215,7 +219,7 @@ msgstr "文件"
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__file_generation_enabled
 msgid "File Generation Enabled"
-msgstr ""
+msgstr "啟用生成文件"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__export_filename
@@ -225,17 +229,17 @@ msgstr "文件名稱"
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_download_wizard__export_filename
 msgid "File name"
-msgstr ""
+msgstr "文件名"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,help:account_batch_payment.field_account_batch_download_wizard__export_file
 msgid "Generated XML file"
-msgstr ""
+msgstr "已生成 XML 文件"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__export_file_create_date
 msgid "Generation Date"
-msgstr ""
+msgstr "生成日期"
 
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_search
@@ -252,20 +256,20 @@ msgstr "ID"
 #. module: account_batch_payment
 #: selection:account.batch.payment,batch_type:0
 msgid "Inbound"
-msgstr "轉入"
+msgstr "來電"
 
 #. module: account_batch_payment
 #: code:addons/account_batch_payment/models/account_journal.py:31
 #, python-format
 msgid "Inbound Batch Payments Sequence"
-msgstr ""
+msgstr "入站批量付款順序"
 
 #. module: account_batch_payment
 #. openerp-web
 #: code:addons/account_batch_payment/static/src/js/account_batch_payment_reconciliation.js:135
 #, python-format
 msgid "Incorrect Operation"
-msgstr "錯誤操作"
+msgstr "不正確的作業"
 
 #. module: account_batch_payment
 #: model:ir.model,name:account_batch_payment.model_account_journal
@@ -277,7 +281,7 @@ msgstr "日記帳"
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment____last_update
 #: model:ir.model.fields,field_description:account_batch_payment.field_report_account_batch_payment_print_batch_payment____last_update
 msgid "Last Modified on"
-msgstr "最後修改時間"
+msgstr "最後修改日"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_download_wizard__write_uid
@@ -294,45 +298,45 @@ msgstr "最後更新時間"
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.print_batch_payment
 msgid "Memo"
-msgstr "備註"
+msgstr "備忘錄"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,help:account_batch_payment.field_account_batch_payment__export_filename
 msgid "Name of the export file generated for this batch"
-msgstr ""
+msgstr "導出與此批次生成的文件的名稱"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,help:account_batch_payment.field_account_batch_download_wizard__export_filename
 msgid "Name of the generated XML file"
-msgstr ""
+msgstr "已生成 XML 文件的名稱"
 
 #. module: account_batch_payment
 #: selection:account.batch.payment,state:0
 msgid "New"
-msgstr "新建"
+msgstr "新的"
 
 #. module: account_batch_payment
 #: selection:account.batch.payment,batch_type:0
 msgid "Outbound"
-msgstr "轉出"
+msgstr "境外"
 
 #. module: account_batch_payment
 #: code:addons/account_batch_payment/models/account_journal.py:17
 #, python-format
 msgid "Outbound Batch Payments Sequence"
-msgstr ""
+msgstr "出站批量付款順序"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__payment_method_id
 msgid "Payment Method"
-msgstr "付款方式"
+msgstr "付款方法"
 
 #. module: account_batch_payment
 #: model:ir.model,name:account_batch_payment.model_account_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__payment_ids
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
 msgid "Payments"
-msgstr "收付款"
+msgstr "付款"
 
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
@@ -342,22 +346,22 @@ msgstr "列印"
 #. module: account_batch_payment
 #: model:ir.actions.report,name:account_batch_payment.action_print_batch_payment
 msgid "Print Batch Payment"
-msgstr ""
+msgstr "列印批量付款"
 
 #. module: account_batch_payment
 #: model:ir.actions.server,name:account_batch_payment.action_account_print_batch_payment
 msgid "Print Batch Payments"
-msgstr ""
+msgstr "列印批量付款"
 
 #. module: account_batch_payment
 #: selection:account.batch.payment,state:0
 msgid "Reconciled"
-msgstr "已核銷"
+msgstr "已調節"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__name
 msgid "Reference"
-msgstr "參照"
+msgstr "參考"
 
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
@@ -369,12 +373,12 @@ msgstr "登記付款"
 #: code:addons/account_batch_payment/static/src/xml/account_reconciliation.xml:8
 #, python-format
 msgid "Select a Batch Payment"
-msgstr ""
+msgstr "選擇批量付款"
 
 #. module: account_batch_payment
 #: selection:account.batch.payment,state:0
 msgid "Sent"
-msgstr "送出"
+msgstr "已發送"
 
 #. module: account_batch_payment
 #. openerp-web
@@ -383,26 +387,26 @@ msgstr "送出"
 msgid ""
 "Some journal items from the selected batch payment are already selected in "
 "another reconciliation : "
-msgstr ""
+msgstr "已選批量存款的一些日記帳專案早已在另一個調節中選擇："
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__state
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_search
 msgid "State"
-msgstr "州/省"
+msgstr "狀態"
 
 #. module: account_batch_payment
 #: code:addons/account_batch_payment/models/account_batch_payment.py:88
 #, python-format
 msgid ""
 "The batch must have the same payment method as the payments it contains."
-msgstr ""
+msgstr "批次必須與其包含的付款具有相同的付款方式。"
 
 #. module: account_batch_payment
 #: code:addons/account_batch_payment/models/account_batch_payment.py:83
 #, python-format
 msgid "The batch must have the same type as the payments it contains."
-msgstr ""
+msgstr "批次必須與其包含的付款具有相同的付款方式。"
 
 #. module: account_batch_payment
 #: code:addons/account_batch_payment/models/account_batch_payment.py:78
@@ -410,27 +414,27 @@ msgstr ""
 msgid ""
 "The journal of the batch payment and of the payments it contains must be the"
 " same."
-msgstr ""
+msgstr "批量付款的日記帳及其包含的付款必須相同。"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,help:account_batch_payment.field_account_batch_payment__payment_method_id
 msgid "The payment method used by the payments in this batch."
-msgstr ""
+msgstr "此批次中付款使用的付款方式。"
 
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
 msgid "Total"
-msgstr "合計"
+msgstr "總計"
 
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_search
 msgid "Unreconciled"
-msgstr "反調節"
+msgstr "未調節的"
 
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
 msgid "Validate"
-msgstr "審核"
+msgstr "驗證"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_download_wizard__warning_message
@@ -440,21 +444,21 @@ msgstr "警告"
 #. module: account_batch_payment
 #: model:ir.model.fields,help:account_batch_payment.field_account_batch_download_wizard__warning_message
 msgid "Warning message to display about the content of the downloadable file."
-msgstr ""
+msgstr "顯示有關可下載文件內容的警告消息。"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,help:account_batch_payment.field_account_batch_payment__file_generation_enabled
 msgid ""
 "Whether or not this batch payment should display the 'Generate File' button "
 "instead of 'Print' in form view."
-msgstr ""
+msgstr "此批次付款是否應在表單視圖中顯示「生成文件」按鈕而不是「列印」。"
 
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
 msgid "auto ..."
-msgstr ""
+msgstr "自動 ..."
 
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
 msgid "re-Generate Export File"
-msgstr ""
+msgstr "重新生成導出文件"

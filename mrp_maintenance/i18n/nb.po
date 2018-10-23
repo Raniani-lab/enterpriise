@@ -4,13 +4,14 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# Jorunn D. Newth, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"POT-Creation-Date: 2018-10-08 07:14+0000\n"
+"PO-Revision-Date: 2018-10-08 07:14+0000\n"
+"Last-Translator: Jorunn D. Newth, 2018\n"
 "Language-Team: Norwegian Bokmål (https://www.transifex.com/odoo/teams/41243/nb/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -29,9 +30,19 @@ msgid "Computed as Latest Failure Date + MTBF"
 msgstr ""
 
 #. module: mrp_maintenance
+#: model:maintenance.equipment,name:mrp_maintenance.equipment_furniture1
+msgid "Crosscut Saw: 8 ppi."
+msgstr ""
+
+#. module: mrp_maintenance
 #: model_terms:ir.ui.view,arch_db:mrp_maintenance.maintenance_request_view_form_inherit_mrp
 msgid "Discard"
 msgstr "Forkast"
+
+#. module: mrp_maintenance
+#: model:maintenance.equipment,name:mrp_maintenance.equipment_furniture3
+msgid "Drill Machine"
+msgstr ""
 
 #. module: mrp_maintenance
 #: model_terms:ir.ui.view,arch_db:mrp_maintenance.mrp_workcenter_view_form_inherit_maintenance
@@ -68,6 +79,11 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:mrp_maintenance.maintenance_equipment_view_form_inherit_mrp
 msgid "Expected Mean Time Between Failure"
 msgstr ""
+
+#. module: mrp_maintenance
+#: model:maintenance.equipment.category,name:mrp_maintenance.equipment_furniture_tools
+msgid "Furniture Tools"
+msgstr "Møbelverktøy"
 
 #. module: mrp_maintenance
 #: model_terms:ir.ui.view,arch_db:mrp_maintenance.maintenance_equipment_view_form_inherit_mrp
@@ -170,6 +186,11 @@ msgstr "Forespørsel"
 #: model_terms:ir.ui.view,arch_db:mrp_maintenance.maintenance_request_view_form_inherit_mrp
 msgid "Save"
 msgstr "Lagre"
+
+#. module: mrp_maintenance
+#: model:maintenance.equipment,name:mrp_maintenance.equipment_furniture2
+msgid "Scrub Plane"
+msgstr ""
 
 #. module: mrp_maintenance
 #: model:ir.model,name:mrp_maintenance.model_mrp_workcenter

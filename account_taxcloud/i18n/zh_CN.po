@@ -4,7 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
-# 珠海-杜哥 <liangjia@qq.com>, 2018
+# liAnGjiA <liangjia@qq.com>, 2018
 # neter ji <jifuyi@qq.com>, 2018
 msgid ""
 msgstr ""
@@ -91,7 +91,7 @@ msgstr "每个产品归于一个由政府预先指定的特定税率。系统会
 #. module: account_taxcloud
 #: model:ir.model,name:account_taxcloud.model_account_fiscal_position
 msgid "Fiscal Position"
-msgstr "财政状况"
+msgstr "税科目调整"
 
 #. module: account_taxcloud
 #: model:ir.model.fields,field_description:account_taxcloud.field_product_tic_category__id

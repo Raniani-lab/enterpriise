@@ -390,7 +390,7 @@ msgstr "Düşük"
 #: model:ir.model.fields,field_description:quality.field_quality_check__message_main_attachment_id
 #: model:ir.model.fields,field_description:quality.field_quality_point__message_main_attachment_id
 msgid "Main Attachment"
-msgstr ""
+msgstr "Ana Ek"
 
 #. module: quality
 #: model:res.groups,name:quality.group_quality_manager
@@ -470,7 +470,7 @@ msgstr "Eylemlerin Sayısı"
 #: model:ir.model.fields,field_description:quality.field_quality_check__message_has_error_counter
 #: model:ir.model.fields,field_description:quality.field_quality_point__message_has_error_counter
 msgid "Number of error"
-msgstr ""
+msgstr "Hata Sayısı"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert__message_needaction_counter

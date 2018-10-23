@@ -105,7 +105,7 @@ msgstr "Definisci anni fiscali di più o meno un anno"
 #. module: account_accountant
 #: model:ir.model,name:account_accountant.model_digest_digest
 msgid "Digest"
-msgstr ""
+msgstr "Digest"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__display_name

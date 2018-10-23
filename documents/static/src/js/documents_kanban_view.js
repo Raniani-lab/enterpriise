@@ -60,13 +60,20 @@ var DocumentsKanbanView = KanbanView.extend({
         ];
         _.defaults(this.fieldsInfo[this.viewType], _.pick(this.fields, inspectorFields));
 
-        // force fetch of relational data (display_name) for related rules to
-        // display in the DocumentsInspector
+        // force fetch of relational data (display_name and tooltip) for related
+        // rules to display in the DocumentsInspector
         this.fieldsInfo[this.viewType].available_rule_ids = _.extend({}, {
+            fieldsInfo: {
+                default: {
+                    display_name: {},
+                    note: {},
+                },
+            },
             relatedFields: {
                 display_name: {type: 'string'},
                 note: {type: 'string'},
             },
+            viewType: 'default',
         }, this.fieldsInfo[this.viewType].available_rule_ids);
     },
 });

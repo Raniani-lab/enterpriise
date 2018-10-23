@@ -1697,7 +1697,7 @@ msgstr "Menu Superiore"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_financial_html_report_line__parent_path
 msgid "Parent Path"
-msgstr ""
+msgstr "Percorso"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_analytic_report.py:24
@@ -1949,7 +1949,7 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.template_followup_report
 msgid "Send an email"
-msgstr ""
+msgstr "Invia una email"
 
 #. module: account_reports
 #. openerp-web

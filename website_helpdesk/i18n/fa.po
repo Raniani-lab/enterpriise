@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
+"POT-Creation-Date: 2018-09-18 10:05+0000\n"
+"PO-Revision-Date: 2018-09-18 10:05+0000\n"
 "Last-Translator: Hamed Mohammadi <hamed@dehongi.com>, 2018\n"
 "Language-Team: Persian (https://www.transifex.com/odoo/teams/41243/fa/)\n"
 "MIME-Version: 1.0\n"
@@ -21,12 +21,12 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #. module: website_helpdesk
-#: model:ir.ui.view,arch_db:website_helpdesk.team
+#: model_terms:ir.ui.view,arch_db:website_helpdesk.team
 msgid "Description"
 msgstr "توصیف"
 
 #. module: website_helpdesk
-#: model:ir.ui.view,arch_db:website_helpdesk.team
+#: model_terms:ir.ui.view,arch_db:website_helpdesk.team
 msgid "Dropdown menu"
 msgstr ""
 
@@ -36,7 +36,7 @@ msgid "Help"
 msgstr "راهنما"
 
 #. module: website_helpdesk
-#: model:ir.ui.view,arch_db:website_helpdesk.team
+#: model_terms:ir.ui.view,arch_db:website_helpdesk.team
 msgid "Helpdesk"
 msgstr "میز کمک"
 
@@ -47,7 +47,7 @@ msgstr ""
 
 #. module: website_helpdesk
 #: model:ir.model,name:website_helpdesk.model_helpdesk_team
-#: model:ir.ui.view,arch_db:website_helpdesk.team
+#: model_terms:ir.ui.view,arch_db:website_helpdesk.team
 msgid "Helpdesk Team"
 msgstr "تیم میز پشتیبانی"
 
@@ -57,17 +57,17 @@ msgid "Is published"
 msgstr ""
 
 #. module: website_helpdesk
-#: model:ir.ui.view,arch_db:website_helpdesk.not_published_any_team
+#: model_terms:ir.ui.view,arch_db:website_helpdesk.not_published_any_team
 msgid "No teams have been published."
 msgstr "هیچ تیمی منتشر نشده است."
 
 #. module: website_helpdesk
-#: model:ir.ui.view,arch_db:website_helpdesk.team
+#: model_terms:ir.ui.view,arch_db:website_helpdesk.team
 msgid "Submit a Ticket"
 msgstr ""
 
 #. module: website_helpdesk
-#: model:ir.ui.view,arch_db:website_helpdesk.team
+#: model_terms:ir.ui.view,arch_db:website_helpdesk.team
 msgid "Team Settings"
 msgstr "تنظیمات تیم"
 
@@ -77,7 +77,7 @@ msgid "The full URL to access the document through the website."
 msgstr ""
 
 #. module: website_helpdesk
-#: model:ir.ui.view,arch_db:website_helpdesk.team
+#: model_terms:ir.ui.view,arch_db:website_helpdesk.team
 msgid "View my Tickets"
 msgstr ""
 

@@ -35,7 +35,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents_account.field_res_company__account_folder
 #: model:ir.model.fields,field_description:documents_account.field_res_config_settings__dms_account_settings
 msgid "Account Folder"
-msgstr "Boekhouding Folder"
+msgstr "Boekhoudingmap"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_res_company__account_tags

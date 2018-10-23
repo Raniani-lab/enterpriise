@@ -173,6 +173,8 @@
             <right><t t-esc="order.blackbox_terminal_id"/></right>
         </line>
         <br/>
+        <div>Ticket signature:</div>
+        <br/>
         <div><t t-esc="order.blackbox_signature"/></div>
     </t>
 
@@ -255,8 +257,10 @@
     </t>
 
     <t t-extend="DashboardShare">
-        <t t-jquery="div.user-heading > h3 > t" t-operation="replace">
-            <t t-esc="server_version"/>1805BE_FDM
+        <t t-jquery="div.user-heading > h3" t-operation="replace">
+            <h3>
+                Odoo <t t-esc="server_version"/>1807BE_FDM
+            </h3>
         </t>
     </t>
 

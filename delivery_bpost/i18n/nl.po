@@ -4,13 +4,14 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
 "PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2018\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -245,7 +246,7 @@ msgid ""
 "The address of your company/warehouse is incomplete or wrong (Missing field(s):  \n"
 " %s)"
 msgstr ""
-"Het adres van uw bedrijf/magazijn ontbreekt of is foutief. (Missende veld(en) : \n"
+"Het adres van uw bedrijf/magazijn ontbreekt of is foutief. (Ontbrekende veld(en) : \n"
 "%s)"
 
 #. module: delivery_bpost
@@ -275,7 +276,7 @@ msgid ""
 "The recipient address is incomplete or wrong (Missing field(s):  \n"
 " %s)"
 msgstr ""
-"De ontvanger zijn adres ontbreekt of is foutief (missende veld(en):\n"
+"De ontvanger zijn adres ontbreekt of is foutief (ontbrekende veld(en):\n"
 "%s)"
 
 #. module: delivery_bpost

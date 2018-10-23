@@ -64,18 +64,30 @@ var TabletImage = FieldBinaryImage.extend({
         },
     }),
 
-    toggleControl: function () {
-        var $controls = this.$('.o_form_image_controls');
-        $controls.toggleClass('o_invisible_modifier', !this.value);
-    },
-
+    /**
+     * After render, hide the controls if no image is set
+     *
+     * @return {Deferred}
+     * @override
+     * @private
+     */
     _render: function (){
         var def = this._super.apply(this, arguments);
-        this.toggleControl();
+        this.$('.o_form_image_controls').toggleClass('o_invisible_modifier', !this.value);
         return def;
     },
 
-    on_clear: function (ev){
+    //--------------------------------------------------------------------------
+    // Handlers
+    //--------------------------------------------------------------------------
+
+    /**
+     * Just prevent propagation of click event on the overlay
+     * that opens the preview when the Trash button is clicked
+     *
+     * @override
+     */
+    _onClearClick: function (ev){
         ev.stopImmediatePropagation();
         this._super.apply(this, arguments);
     },

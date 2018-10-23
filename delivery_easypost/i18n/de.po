@@ -144,7 +144,7 @@ msgstr "EPL2"
 #: selection:delivery.carrier,delivery_type:0
 #: selection:product.packaging,package_carrier_type:0
 msgid "Easypost"
-msgstr ""
+msgstr "Easypost"
 
 #. module: delivery_easypost
 #: model:ir.model.fields,field_description:delivery_easypost.field_delivery_carrier__easypost_delivery_type

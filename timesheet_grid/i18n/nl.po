@@ -7,13 +7,14 @@
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
 # Thomas Pot <thomas@open2bizz.nl>, 2018
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2018
+# Cas Vissers <casvissers@brahoo.nl>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
 "PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2018\n"
+"Last-Translator: Cas Vissers <casvissers@brahoo.nl>, 2018\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -261,7 +262,7 @@ msgstr "Aangemaakt op"
 #. module: timesheet_grid
 #: model:ir.model.fields,help:timesheet_grid.field_hr_employee__timesheet_validated
 msgid "Date until which the employee's timesheets have been validated"
-msgstr "Datum tot wanneer de werknemer zijn urenstaten gevalideerd zijn"
+msgstr "Datum tot wanneer de werknemer zijn urenstaten bevestigd zijn"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_config_settings__reminder_manager_delay
@@ -405,7 +406,7 @@ msgstr "Volgende geplande datum voor een manager herinnering "
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_search
 msgid "Non Validated"
-msgstr "Niet gevalideerd"
+msgstr "Niet bevestigd"
 
 #. module: timesheet_grid
 #: code:addons/timesheet_grid/models/analytic.py:106
@@ -488,7 +489,7 @@ msgstr "Urenstaat validatie"
 #. module: timesheet_grid
 #: model:ir.model,name:timesheet_grid.model_timesheet_validation_line
 msgid "Timesheet Validation Line"
-msgstr ""
+msgstr "Urenstaat validatie regel"
 
 #. module: timesheet_grid
 #: model:ir.actions.server,name:timesheet_grid.timesheet_reminder_user_ir_actions_server
@@ -527,7 +528,7 @@ msgstr ""
 #. module: timesheet_grid
 #: model:ir.ui.menu,name:timesheet_grid.menu_timesheet_grid_validate
 msgid "To Validate"
-msgstr "Te valideren"
+msgstr "Te bevestigen"
 
 #. module: timesheet_grid
 #. openerp-web
@@ -564,22 +565,22 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_validation_view_form
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_employee_validation
 msgid "Validate"
-msgstr "Valideer"
+msgstr "Bevestig"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_validation_view_form
 msgid "Validate Timesheets"
-msgstr "Valideer urenstaten"
+msgstr "Bevestig urenstaten"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_validation_view_form
 msgid "Validate the timesheets of the selected employees up to"
-msgstr "Valideer de urenstaten van de geselecteerde werknemers tot en met"
+msgstr "Bevestig de urenstaten van de geselecteerde werknemers tot en met"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,help:timesheet_grid.field_timesheet_validation_line__validate
 msgid "Validate this employee's timesheet up to the chosen date"
-msgstr "Valideer de werknemer zijn urenstaten tot de gekozen datum"
+msgstr "Bevestig de werknemer zijn urenstaten tot de gekozen datum"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_timesheet_validation__validation_date
@@ -600,7 +601,7 @@ msgstr "Bevestigde urenstaten"
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__validated
 msgid "Validated line"
-msgstr "Gevalideerde regel"
+msgstr "Bevestigde regel"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_timesheet_validation_line__validation_id

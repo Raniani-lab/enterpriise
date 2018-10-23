@@ -65,7 +65,7 @@ msgstr "頭像"
 #: code:addons/voip/static/src/xml/dialing_panel.xml:49
 #, python-format
 msgid "Backspace"
-msgstr ""
+msgstr "倒退鍵 Backspace"
 
 #. module: voip
 #. openerp-web
@@ -216,7 +216,7 @@ msgstr "日期   "
 #. module: voip
 #: selection:res.config.settings,mode:0
 msgid "Demo"
-msgstr ""
+msgstr "演示"
 
 #. module: voip
 #. openerp-web
@@ -766,7 +766,7 @@ msgstr "未分配"
 #: code:addons/voip/static/src/xml/dialing_panel.xml:18
 #, python-format
 msgid "Unfold"
-msgstr ""
+msgstr "展開"
 
 #. module: voip
 #. openerp-web

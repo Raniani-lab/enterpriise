@@ -133,7 +133,7 @@ msgstr ""
 #. module: web_dashboard
 #: model:ir.model,name:web_dashboard.model_ir_http
 msgid "HTTP Routing"
-msgstr ""
+msgstr "Routing HTTP"
 
 #. module: web_dashboard
 #. openerp-web

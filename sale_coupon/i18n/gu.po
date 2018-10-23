@@ -9,10 +9,10 @@
 # Divya Pandya <dia@odoo.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-02 10:32+0000\n"
-"PO-Revision-Date: 2018-10-02 10:32+0000\n"
+"POT-Creation-Date: 2018-10-08 07:14+0000\n"
+"PO-Revision-Date: 2018-10-08 07:14+0000\n"
 "Last-Translator: Divya Pandya <dia@odoo.com>, 2018\n"
 "Language-Team: Gujarati (https://www.transifex.com/odoo/teams/41243/gu/)\n"
 "MIME-Version: 1.0\n"
@@ -43,6 +43,12 @@ msgstr ""
 #: code:addons/sale_coupon/models/sale_coupon_reward.py:68
 #, python-format
 msgid "%s%% discount on total amount"
+msgstr ""
+
+#. module: sale_coupon
+#: model:product.product,name:sale_coupon.product_product_10_percent_discount
+#: model:product.template,name:sale_coupon.product_product_10_percent_discount_product_template
+msgid "10.0% discount on total amount"
 msgstr ""
 
 #. module: sale_coupon
@@ -321,6 +327,11 @@ msgid ""
 msgstr ""
 
 #. module: sale_coupon
+#: model:sale.coupon.program,name:sale_coupon.3_ipad_plus_1_free
+msgid "Buy 3 large cabinets, get one for free"
+msgstr ""
+
+#. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_apply_code_view_form
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_generate_view_form
 msgid "Cancel"
@@ -342,6 +353,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon__code
 msgid "Code"
 msgstr "કોડ"
+
+#. module: sale_coupon
+#: model:sale.coupon.program,name:sale_coupon.10_percent_auto_applied
+msgid "Code for 10% on orders"
+msgstr ""
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_program__company_id
@@ -599,6 +615,12 @@ msgstr ""
 #: code:addons/sale_coupon/models/sale_coupon_reward.py:63
 #, python-format
 msgid "Free Product - %s"
+msgstr ""
+
+#. module: sale_coupon
+#: model:product.product,name:sale_coupon.product_product_free_large_cabinet
+#: model:product.template,name:sale_coupon.product_product_free_large_cabinet_product_template
+msgid "Free Product - Large Cabinet"
 msgstr ""
 
 #. module: sale_coupon
@@ -1255,6 +1277,14 @@ msgid "Unit of Measure"
 msgstr ""
 
 #. module: sale_coupon
+#: model:product.product,uom_name:sale_coupon.product_product_10_percent_discount
+#: model:product.product,uom_name:sale_coupon.product_product_free_large_cabinet
+#: model:product.template,uom_name:sale_coupon.product_product_10_percent_discount_product_template
+#: model:product.template,uom_name:sale_coupon.product_product_free_large_cabinet_product_template
+msgid "Unit(s)"
+msgstr ""
+
+#. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_order_view_form
 msgid "Update Promotions"
 msgstr ""
@@ -1328,6 +1358,14 @@ msgstr ""
 #. module: sale_coupon
 #: model:mail.template,subject:sale_coupon.mail_template_sale_coupon
 msgid "Your reward coupon from ${object.program_id.company_id.name} "
+msgstr ""
+
+#. module: sale_coupon
+#: model:product.product,weight_uom_name:sale_coupon.product_product_10_percent_discount
+#: model:product.product,weight_uom_name:sale_coupon.product_product_free_large_cabinet
+#: model:product.template,weight_uom_name:sale_coupon.product_product_10_percent_discount_product_template
+#: model:product.template,weight_uom_name:sale_coupon.product_product_free_large_cabinet_product_template
+msgid "kg"
 msgstr ""
 
 #. module: sale_coupon

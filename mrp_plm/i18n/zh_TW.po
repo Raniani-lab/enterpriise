@@ -86,6 +86,11 @@ msgid ""
 "                        Use this feature to store any files, like drawings or specifications.\n"
 "                    </p>"
 msgstr ""
+"<p class=\"o_view_nocontent_smiling_face\">\n"
+"                    上傳文件到產品\n"
+"                   </p><p>\n"
+"                    使用此功能存儲任何文件，如圖紙或規格。\n"
+"                    </p>"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
@@ -309,7 +314,7 @@ msgstr "附件"
 #. module: mrp_plm
 #: model:ir.model,name:mrp_plm.model_report_mrp_report_bom_structure
 msgid "BOM Structure Report"
-msgstr ""
+msgstr "BOM結構報告"
 
 #. module: mrp_plm
 #: model:ir.model,name:mrp_plm.model_mrp_bom
@@ -319,7 +324,7 @@ msgstr "物料清單"
 #. module: mrp_plm
 #: model:ir.model,name:mrp_plm.model_mrp_bom_line
 msgid "Bill of Material Line"
-msgstr ""
+msgstr "BOM明細"
 
 #. module: mrp_plm
 #: code:addons/mrp_plm/models/mrp_eco.py:152
@@ -383,7 +388,7 @@ msgstr ""
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__user_can_approve
 msgid "Can Approve"
-msgstr ""
+msgstr "能批准"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__user_can_reject
@@ -474,7 +479,7 @@ msgstr "已在作業消耗"
 #. module: mrp_plm
 #: model_terms:ir.actions.act_window,help:mrp_plm.mrp_bom_action_kanban
 msgid "Create a bill of materials"
-msgstr ""
+msgstr "創建一個物料清單."
 
 #. module: mrp_plm
 #: model_terms:ir.actions.act_window,help:mrp_plm.mrp_eco_stage_action
@@ -580,7 +585,7 @@ msgstr "完成"
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
 msgid "Dropdown menu"
-msgstr ""
+msgstr "下拉選單"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_routing_change_view_form
@@ -867,7 +872,7 @@ msgstr "如果勾選此項，有新消息會提醒您。"
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__message_has_error
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco_type__message_has_error
 msgid "If checked, some messages have a delivery error."
-msgstr ""
+msgstr "如果勾選此項， 某些信息將會產生傳遞錯誤。"
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_bom__active
@@ -892,7 +897,7 @@ msgstr "重要信息"
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
 msgid "In #{kanban_getcolorname(record.color.raw_value)}"
-msgstr ""
+msgstr "在 #{kanban_getcolorname(record.color.raw_value)}"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search

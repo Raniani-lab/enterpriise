@@ -29,7 +29,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription_asset.sale_subscription_template_view_form_inherit_sale_subscription_asset
 #: model_terms:ir.ui.view,arch_db:sale_subscription_asset.sale_subscription_view_form_inherit_sale_subscription_asset
 msgid "Deferred Revenue Type"
-msgstr ""
+msgstr "Typ odloženého výnosu"
 
 #. module: sale_subscription_asset
 #: model:ir.model,name:sale_subscription_asset.model_sale_order

@@ -17,13 +17,14 @@
 # Luiz Carlos de Lima <luiz.carlos@akretion.com.br>, 2018
 # Franciele Neiva <franciele.neiva@br.ey.com>, 2018
 # Pablo Valentini <pablondrina@gmail.com>, 2018
+# Yannick Belot <yannickbh@gmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-02 10:32+0000\n"
 "PO-Revision-Date: 2018-10-02 10:32+0000\n"
-"Last-Translator: Pablo Valentini <pablondrina@gmail.com>, 2018\n"
+"Last-Translator: Yannick Belot <yannickbh@gmail.com>, 2018\n"
 "Language-Team: Portuguese (Brazil) (https://www.transifex.com/odoo/teams/41243/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1210,7 +1211,7 @@ msgstr "Agrupar por"
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_http
 msgid "HTTP Routing"
-msgstr ""
+msgstr "Roteamento HTTP"
 
 #. module: web_studio
 #. openerp-web

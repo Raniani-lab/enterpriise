@@ -8,10 +8,10 @@
 # Marie Willemyns <mwi@odoo.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"POT-Creation-Date: 2018-10-08 07:14+0000\n"
+"PO-Revision-Date: 2018-10-08 07:14+0000\n"
 "Last-Translator: Marie Willemyns <mwi@odoo.com>, 2018\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -46,6 +46,29 @@ msgstr "Devise: mise à jour du taux de change"
 #: selection:res.company,currency_interval_unit:0
 msgid "Daily"
 msgstr "Quotidien"
+
+#. module: currency_rate_live
+#: model:res.company,overdue_msg:currency_rate_live.res_company_company_1
+#: model:res.company,overdue_msg:currency_rate_live.res_company_company_2
+msgid ""
+"Dear Sir/Madam,\n"
+"\n"
+"Our records indicate that some payments on your account are still due. Please find details below.\n"
+"If the amount has already been paid, please disregard this notice. Otherwise, please forward us the total amount stated below.\n"
+"If you have any queries regarding your account, Please contact us.\n"
+"\n"
+"Thank you in advance for your cooperation.\n"
+"Best Regards,"
+msgstr ""
+"Madame, Monsieur,\n"
+"\n"
+"D'après nos relevés, nous sommes encore en attente à ce jour de paiements de votre part, dont les détails sont indiqués ci-dessous.\n"
+"Si ces sommes ont déjà été réglées, vous pouvez ignorer ce rappel. Dans le cas contraire, nous vous remercions de bien vouloir nous faire parvenir votre règlement.\n"
+"Si vous avez d'autres questions concernant votre compte, vous pouvez nous contacter directement.\n"
+"\n"
+"En vous remerciant par avance.\n"
+"\n"
+"Cordialement,"
 
 #. module: currency_rate_live
 #: selection:res.company,currency_provider:0

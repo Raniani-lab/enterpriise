@@ -27,7 +27,7 @@ msgstr "<i class=\"fa fa-download mr4\"/>Beispielvorlage Importieren"
 #. module: account_bank_statement_import_csv
 #: model:ir.model,name:account_bank_statement_import_csv.model_base_import_import
 msgid "Base Import"
-msgstr ""
+msgstr "Basis-Import"
 
 #. module: account_bank_statement_import_csv
 #: model_terms:ir.ui.view,arch_db:account_bank_statement_import_csv.account_bank_statement_import_csv

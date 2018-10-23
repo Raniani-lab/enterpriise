@@ -3,7 +3,7 @@
     <data noupdate="1">
 
         <record id="base.main_company" model="res.company">
-            <field name="vat">ACO560518KW7</field>
+            <field name="vat">TCM970625MB1</field>
         </record>
 
     </data>

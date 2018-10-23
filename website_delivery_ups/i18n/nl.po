@@ -30,9 +30,8 @@ msgid ""
 "<i>Pending</i>, Thanks for choosing COD(Collect on Delivery/Cash on "
 "Delivery) option. Delivery boy will collect the payment on delivery."
 msgstr ""
-"<i>In afwachting</i>, Bedankt voor het kiezen voor de COD(Collect on "
-"Delivery/Cash on Delivery) optie. De bezorger zal de betaling innen bij "
-"levering."
+"<i>In afwachting</i>, Bedankt voor het kiezen voor de rembours optie. De "
+"bezorger zal de betaling innen bij levering."
 
 #. module: website_delivery_ups
 #: model_terms:payment.acquirer,cancel_msg:website_delivery_ups.payment_acquirer_ups_cod
@@ -73,7 +72,7 @@ msgstr "Bankrekening"
 #. module: website_delivery_ups
 #: model:payment.acquirer,name:website_delivery_ups.payment_acquirer_ups_cod
 msgid "COD"
-msgstr "COD"
+msgstr "Rembours"
 
 #. module: website_delivery_ups
 #: model_terms:ir.ui.view,arch_db:website_delivery_ups.ups_bill_my_account_dialog

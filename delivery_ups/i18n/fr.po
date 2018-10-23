@@ -188,7 +188,8 @@ msgstr "La livraison n° %s a été annulée"
 msgid ""
 "Shipment created into UPS<br/><b>Tracking Numbers:</b> "
 "%s<br/><b>Packages:</b> %s"
-msgstr "<br/><b/><br/><b/>"
+msgstr ""
+"Envoi créé dans UPS<br/><b>Numéros de suivi :</b> %s<br/><b>Colis :</b> %s"
 
 #. module: delivery_ups
 #: code:addons/delivery_ups/models/ups_request.py:187

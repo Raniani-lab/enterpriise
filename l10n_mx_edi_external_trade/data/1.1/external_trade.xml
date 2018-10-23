@@ -16,7 +16,7 @@
                        t-att-CertificadoOrigen="'1' if record.l10n_mx_edi_cer_source else '0'"
                        t-att-NumCertificadoOrigen="record.l10n_mx_edi_cer_source"
                        t-att-NumeroExportadorConfiable="record.company_id.l10n_mx_edi_num_exporter if customer.country_id in europe_group.country_ids else None"
-                       t-att-Incoterm="record.l10n_mx_edi_incoterm"
+                       t-att-Incoterm="record.incoterm_id.code"
                        Subdivision="0"
                        t-att-Observaciones="record._get_string_cfdi(record.comment, 300) if record.comment else None"
                        t-att-TipoCambioUSD="'%.6f' % amount_usd(usd, mxn, 1)"
@@ -42,7 +42,7 @@
                                t-att-Colonia="record._get_string_cfdi(customer.l10n_mx_edi_colony or '') or None"
                                t-att-Localidad="customer.l10n_mx_edi_locality"
                                t-att-Municipio="customer.city"
-                               t-att-Estado="customer.state_id.code"
+                               t-att-Estado="customer.state_id.code if customer.country_id.l10n_mx_edi_code in ('MEX', 'USA', 'CAN') or customer.state_id.code else 'NA'"
                                t-att-Pais="customer.country_id.l10n_mx_edi_code"
                                t-att-CodigoPostal="customer.zip"/>
                        </cce11:Receptor>

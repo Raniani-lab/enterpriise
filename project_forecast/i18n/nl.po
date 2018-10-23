@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2018
 # Thomas Pot <thomas@open2bizz.nl>, 2018
 msgid ""
@@ -190,7 +191,7 @@ msgstr "Prognose"
 #: code:addons/project_forecast/models/project_forecast.py:274
 #, python-format
 msgid "Forecast (in %s)"
-msgstr "Voorspelling (in %s)"
+msgstr "Prognose (in %s)"
 
 #. module: project_forecast
 #: model:ir.actions.act_window,name:project_forecast.project_forecast_action_report_activities
@@ -220,18 +221,17 @@ msgstr "Voorspeld door werknemer"
 #: model:ir.actions.act_window,name:project_forecast.project_forecast_action_by_project
 #: model_terms:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_project
 msgid "Forecast by project"
-msgstr "Prognotiseer per project"
+msgstr "Prognose per project"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_grid_by_task
 msgid "Forecast by task"
-msgstr "Voorspelling per taak"
+msgstr "Prognose per taak"
 
 #. module: project_forecast
 #: sql_constraint:project.forecast:0
 msgid "Forecast end date should be greater or equal to its start date"
-msgstr ""
-"Voorspelling einddatum moet groter dan of gelijk zijn aan de startdatum"
+msgstr "Prognose einddatum moet groter dan of gelijk zijn aan de startdatum"
 
 #. module: project_forecast
 #: code:addons/project_forecast/models/project_forecast.py:198
@@ -240,22 +240,24 @@ msgid ""
 "Forecast should not overlap existing forecasts. To solve this, check the "
 "project(s): %s."
 msgstr ""
+"De prognose zou geen bestaande prognoses mogen overlappen. Om dit op te "
+"lossen, controleer project(en): %s."
 
 #. module: project_forecast
 #: model:ir.actions.server,name:project_forecast.project_forecast_action_server_by_user
 msgid "Forecast: view by employee"
-msgstr "Voorspelling: bekijk per werknemer"
+msgstr "Prognose: bekijk per werknemer"
 
 #. module: project_forecast
 #: model:ir.actions.server,name:project_forecast.project_forecast_action_server_by_project
 msgid "Forecast: view by project"
-msgstr "Voorspelling: bekijk per project"
+msgstr "Prognose: bekijk per project"
 
 #. module: project_forecast
 #: code:addons/project_forecast/models/project_forecast.py:164
 #, python-format
 msgid "Forecasted time must be positive"
-msgstr "Voorspelde tijd moet positief zijn"
+msgstr "Prognosetijd moet positief zijn"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
@@ -270,6 +272,9 @@ msgid ""
 " field and the 'resource_time' cell field, got respectively %(column_field)r"
 " and %(cell_field)r"
 msgstr ""
+"Grid wijzigingen voor projectvoorspellingen ondersteunen enkel het "
+"'start_date' veld en de 'resource_tim' cel, we kregen respectievelijk "
+"%(column_field)r en %(cell_field)r terug"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
@@ -386,6 +391,9 @@ msgid ""
 "The employee (%s) doesn't have a timezone, this might cause errors in the "
 "time computation. It is configurable on the user linked to the employee"
 msgstr ""
+"Werknemer (%s) heeft geen ingstelde tijdzone. Dit kan fouten veroorzaken in "
+"de tijdberekeningen. De tijdzone is instelbaar per gebruiker, welke "
+"gekoppeld is aan de werknemer."
 
 #. module: project_forecast
 #: model:ir.model.fields,help:project_forecast.field_project_project__allow_forecast
@@ -449,6 +457,9 @@ msgid ""
 "You cannot delete a task containing forecasts. You can either delete all the"
 " task's forecasts and then delete the task or simply deactivate the task."
 msgstr ""
+"U kunt een taak, welke een prognose bevat niet verwijderen. U kunt alle "
+"taakprognoses verwijderen en vervolgens het taak verwijderen of de taak "
+"simpelweg deactiveren."
 
 #. module: project_forecast
 #: code:addons/project_forecast/models/project_forecast.py:170

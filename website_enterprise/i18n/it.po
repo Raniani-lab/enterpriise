@@ -32,7 +32,7 @@ msgstr "Generatore Form"
 #. module: website_enterprise
 #: model_terms:ir.ui.view,arch_db:website_enterprise.user_navbar_inherit_website_enterprise
 msgid "New Appointment Type"
-msgstr ""
+msgstr "Nuovo tipo di appuntamento"
 
 #. module: website_enterprise
 #: model_terms:ir.ui.view,arch_db:website_enterprise.user_navbar

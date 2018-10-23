@@ -5,13 +5,14 @@
 # Translators:
 # Martin Trigaux, 2018
 # sejun huang <sejun.huang@gmail.com>, 2018
+# 敬雲 林 <chingyun@yuanchih-consult.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
 "PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: sejun huang <sejun.huang@gmail.com>, 2018\n"
+"Last-Translator: 敬雲 林 <chingyun@yuanchih-consult.com>, 2018\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/odoo/teams/41243/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -140,7 +141,7 @@ msgstr "已確認"
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_check__control_date
 msgid "Control Date"
-msgstr ""
+msgstr "控制日期"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_check__point_id
@@ -194,7 +195,7 @@ msgstr "預設值"
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_point__test_type_id
 msgid "Defines the type of the quality control point."
-msgstr ""
+msgstr "定義品質控制點類型"
 
 #. module: quality
 #: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
@@ -308,7 +309,7 @@ msgstr "如果勾選此項，有新消息會提醒您。"
 #: model:ir.model.fields,help:quality.field_quality_check__message_has_error
 #: model:ir.model.fields,help:quality.field_quality_point__message_has_error
 msgid "If checked, some messages have a delivery error."
-msgstr ""
+msgstr "如果勾選此項， 某些信息將會產生傳遞錯誤。"
 
 #. module: quality
 #: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
@@ -503,7 +504,7 @@ msgstr "所有收件都將附上一條線程（記錄）選配的ID，即使它�
 #. module: quality
 #: model:quality.reason,name:quality.reason_other
 msgid "Others"
-msgstr ""
+msgstr "其它"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_user_id
@@ -549,7 +550,7 @@ msgstr "揀貨"
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_check__picture
 msgid "Picture"
-msgstr ""
+msgstr "圖片"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert_team__alias_contact
@@ -595,7 +596,7 @@ msgstr "品質"
 #. module: quality
 #: model:ir.model,name:quality.model_quality_alert
 msgid "Quality Alert"
-msgstr ""
+msgstr "品質警示"
 
 #. module: quality
 #: model:ir.model,name:quality.model_quality_alert_stage
@@ -610,17 +611,17 @@ msgstr ""
 #. module: quality
 #: model:ir.model,name:quality.model_quality_check
 msgid "Quality Check"
-msgstr ""
+msgstr "品質檢查"
 
 #. module: quality
 #: model:ir.model,name:quality.model_quality_point
 msgid "Quality Control Point"
-msgstr ""
+msgstr "品質控制點"
 
 #. module: quality
 #: model:ir.model,name:quality.model_quality_point_test_type
 msgid "Quality Control Test Type"
-msgstr ""
+msgstr "品質控制測試類型"
 
 #. module: quality
 #: model:ir.model,name:quality.model_quality_tag
@@ -698,7 +699,7 @@ msgstr ""
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_point__test_type_id
 msgid "Test Type"
-msgstr ""
+msgstr "測試類型"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert_team__alias_model_id

@@ -1,6 +1,7 @@
 import base64
 
 from odoo import api, fields, models, exceptions
+from odoo.models import AbstractModel
 
 # ----------------------------------------------------------
 # Models for client
@@ -96,3 +97,13 @@ class IrActionReport(models.Model):
         data_bytes = datas[0]
         data_base64 = base64.b64encode(data_bytes)
         return composite_url, type, data_base64
+
+class PublisherWarrantyContract(models.AbstractModel):
+    _inherit = "publisher_warranty.contract"
+    _description = 'Publisher Warranty Contract For IoT Box'
+
+    @api.model
+    def _get_message(self):
+        msg = super(PublisherWarrantyContract, self)._get_message()
+        msg['IoTBox'] = self.env['iot.box'].search_count([])
+        return msg

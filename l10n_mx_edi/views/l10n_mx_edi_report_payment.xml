@@ -27,9 +27,12 @@
             <t t-if="o.l10n_mx_edi_cfdi_uuid">
                 <div class="row" id='complement'>
                     <div class="barcode col-3">
-                        <img alt="Barcode" t-att-src="'/report/barcode/QR/%s' % quote_plus('?') + keep_query(
+                        <t t-set="sello" t-value="xml.get('Sello', 'No identificado')[-8:]"/>
+                        <img alt="Barcode" t-att-src="'/report/barcode/?type=QR&amp;value=%s' % quote_plus(
+                            'https://verificacfdi.facturaelectronica.sat.gob.mx/default.aspx?' + keep_query(
                                 re=o.l10n_mx_edi_cfdi_supplier_rfc, rr=o.l10n_mx_edi_cfdi_customer_rfc,
-                                tt=0, id=o.l10n_mx_edi_cfdi_uuid)"/>
+                                tt=0, id=o.l10n_mx_edi_cfdi_uuid)
+                                + '&amp;fe=%s' % quote_plus(sello, 'utf-8', 'strict', '=/').replace('%2B', '+'))"/>
                     </div>
                     <div class="complement-details col-9">
                         <div class="digital-stamp">
@@ -124,6 +127,14 @@
                     </tbody>
                 </table>
             </t>
+        </xpath>
+        <!--remove payment method-->
+        <xpath expr="//div[@t-if='o.payment_method_id']" position="replace">
+            <div class="col-xs-6" t-if="o.payment_method_id">
+                <t t-if="not o.l10n_mx_edi_cfdi_uuid">
+                    <strong>Payment Method: </strong><span t-field="o.payment_method_id.name"/>
+                </t>
+            </div>
         </xpath>
     </template>
 </odoo>

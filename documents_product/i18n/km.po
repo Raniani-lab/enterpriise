@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"POT-Creation-Date: 2018-10-02 10:31+0000\n"
+"PO-Revision-Date: 2018-10-02 10:31+0000\n"
 "Last-Translator: Chan Nath <channath@gmail.com>, 2018\n"
 "Language-Team: Khmer (https://www.transifex.com/odoo/teams/41243/km/)\n"
 "MIME-Version: 1.0\n"
@@ -48,7 +48,6 @@ msgstr ""
 
 #. module: documents_product
 #: model:ir.model.fields,field_description:documents_product.field_res_company__dms_product_settings
-#: model:ir.model.fields,field_description:documents_product.field_res_config_settings__dms_product_settings
 msgid "Dms Product Settings"
 msgstr ""
 
@@ -64,19 +63,19 @@ msgstr ""
 
 #. module: documents_product
 #: model:ir.model.fields,field_description:documents_product.field_res_company__product_folder
-#: model:ir.model.fields,field_description:documents_product.field_res_config_settings__product_folder
+#: model:ir.model.fields,field_description:documents_product.field_res_config_settings__dms_product_settings
 msgid "Product Folder"
-msgstr ""
-
-#. module: documents_product
-#: selection:documents.workflow.rule,create_model:0
-msgid "Product Product template"
 msgstr ""
 
 #. module: documents_product
 #: model:ir.model.fields,field_description:documents_product.field_res_company__product_tags
 #: model:ir.model.fields,field_description:documents_product.field_res_config_settings__product_tags
 msgid "Product Tags"
+msgstr ""
+
+#. module: documents_product
+#: selection:documents.workflow.rule,create_model:0
+msgid "Product template"
 msgstr ""
 
 #. module: documents_product
@@ -102,4 +101,9 @@ msgstr "កិច្ចការ"
 #. module: documents_product
 #: selection:documents.workflow.rule,create_model:0
 msgid "Vendor bill"
+msgstr ""
+
+#. module: documents_product
+#: model:ir.model.fields,field_description:documents_product.field_res_config_settings__product_folder
+msgid "product default folder"
 msgstr ""

@@ -1555,6 +1555,54 @@ QUnit.module('DocumentsKanbanView', {
         kanban.destroy();
     });
 
+    QUnit.test('document inspector: display rules of reloaded record', function (assert) {
+        assert.expect(4);
+
+        var self = this;
+        var kanban = createView({
+            View: DocumentsKanbanView,
+            model: 'ir.attachment',
+            data: this.data,
+            arch: '<kanban><templates><t t-name="kanban-box">' +
+                    '<div>' +
+                        '<field name="name"/>' +
+                        '<button name="some_method" type="object"/>' +
+                    '</div>' +
+                '</t></templates></kanban>',
+            intercepts: {
+                execute_action: function (ev) {
+                    assert.strictEqual(ev.data.action_data.name, 'some_method',
+                        "should call the correct method");
+                    self.data['ir.attachment'].records[0].name = 'yop changed';
+                    ev.data.on_closed();
+                },
+            },
+        });
+
+        kanban.$('.o_kanban_record:contains(yop)').click();
+
+        assert.strictEqual(kanban.$('.o_inspector_rule span').text(),
+            'Convincing AI not to turn evilFollow the white rabbit',
+            "should correctly display the rules of the selected document");
+
+        // click on the button to reload the record
+        kanban.$('.o_kanban_record:contains(yop) button').click();
+
+        assert.strictEqual(kanban.$('.o_record_selected:contains(yop changed)').length, 1,
+            "should have reloaded the updated record");
+
+        // unselect and re-select it (the record has been reloaded, so we want
+        // to make sure its rules have been reloaded correctly as well)
+        kanban.$('.o_kanban_record:contains(yop changed)').click();
+        kanban.$('.o_kanban_record:contains(yop changed)').click();
+
+        assert.strictEqual(kanban.$('.o_inspector_rule span').text(),
+            'Convincing AI not to turn evilFollow the white rabbit',
+            "should correctly display the rules of the selected document");
+
+        kanban.destroy();
+    });
+
     QUnit.test('document inspector: trigger rule actions on selected documents', function (assert) {
         assert.expect(3);
 

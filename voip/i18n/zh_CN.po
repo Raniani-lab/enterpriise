@@ -4,8 +4,9 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
 # v2exerer <9010446@qq.com>, 2018
-# 珠海-杜哥 <liangjia@qq.com>, 2018
+# liAnGjiA <liangjia@qq.com>, 2018
 # niulin lnc. <admin@niulin.net>, 2018
 msgid ""
 msgstr ""
@@ -374,7 +375,7 @@ msgstr "链接活动"
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__mail_message_id
 msgid "Linked Chatter Message"
-msgstr "链接聊天信息"
+msgstr "链接聊天消息"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_mail_activity__voip_phonecall_id

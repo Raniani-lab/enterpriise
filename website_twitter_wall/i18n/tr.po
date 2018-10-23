@@ -159,7 +159,7 @@ msgstr "Son Güncelleme"
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "List view"
-msgstr ""
+msgstr "Liste Görünümü"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
@@ -230,7 +230,7 @@ msgstr ""
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Shuffle"
-msgstr ""
+msgstr "Karıştır"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
@@ -347,7 +347,7 @@ msgstr ""
 #: model:ir.model,name:website_twitter_wall.model_website_twitter_tweet
 #: model:ir.model,name:website_twitter_wall.model_website_twitter_wall
 msgid "Website Twitter"
-msgstr ""
+msgstr "Website Twitter"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__website_url
@@ -357,4 +357,4 @@ msgstr "Web Sitesi URL Adresi"
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
 msgid "Your wall name"
-msgstr ""
+msgstr "Senin Duvar Adın"

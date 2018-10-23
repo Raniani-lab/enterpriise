@@ -54,6 +54,9 @@ class SaleOrder(models.Model):
             'analytic_account_id': self.analytic_account_id.id,
             'payment_token_id': self.transaction_ids.get_last_transaction().payment_token_id.id if template.payment_mode not in ['validate_send_payment', 'success_payment'] else False
         }
+        default_stage = self.env['sale.subscription.stage'].search([('in_progress', '=', True)], limit=1)
+        if default_stage:
+            values['stage_id'] = default_stage.id
         # compute the next date
         today = datetime.date.today()
         periods = {'daily': 'days', 'weekly': 'weeks', 'monthly': 'months', 'yearly': 'years'}

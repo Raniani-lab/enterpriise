@@ -50,13 +50,15 @@
             <cfdi:Complemento>
                 <pago10:Pagos
                     Version="1.0">
+                    <t t-set="inv_rate" t-value="('%.6f' % (total_paid / record.amount)) if record.currency_id != record.invoice_ids.mapped('currency_id') else False"/>
+                    <t t-set="total_xml" t-value="total_paid / float(inv_rate or 1)"/>
                     <pago10:Pago
                         t-att-FechaPago="payment_date"
                         t-att-FormaDePagoP="record.l10n_mx_edi_payment_method_id.code"
                         t-att-MonedaP="record.currency_id.name"
                         t-att-TipoCambioP="payment_rate"
-                        t-att-Monto="'%.*f' % (decimal_precision ,record.amount)"
-                        t-att-NumOperacion="record.communication"
+                        t-att-Monto="'%.*f' % (decimal_precision, total_xml)"
+                        t-att-NumOperacion="record.communication[:100].replace('|', ' ') if record.communication else None"
                         t-att-RfcEmisorCtaOrd="pay_vat_ord"
                         t-att-NomBancoOrdExt="pay_name_ord"
                         t-att-CtaOrdenante="pay_account_ord"
@@ -66,32 +68,22 @@
                         t-att-CertPago="pay_certificate"
                         t-att-CadPago="pay_string"
                         t-att-SelloPago="pay_stamp">
-                        <t t-set="lines" t-value="record.move_line_ids.mapped('move_id.line_ids').filtered(lambda l: l.account_id.user_type_id.type == 'liquidity')"/>
-                        <t t-set="amount_paid" t-value="sum(lines.mapped('amount_currency') if record.currency_id.name != 'MXN' else lines.mapped('debit'))"/>
                         <t t-foreach="record.invoice_ids" t-as="invoice">
-                            <t t-set="amount" t-value="[p for p in invoice._get_payments_vals() if p.get('account_payment_id', False) == record.id]"/>
-                            <t t-set="amount" t-value="round(amount[0].get('amount', 0.0) if amount else 0.0, invoice.currency_id.decimal_places)"/>
-                            <t t-set="balance" t-value="invoice.currency_id._convert(amount, record.currency_id, invoice.company_id, record.payment_date)"/>
-                            <t t-if="balance &gt;= amount_paid">
-                                <t t-set="balance" t-value="amount_paid"/>
-                            </t>
-                            <t t-set="amount_paid" t-value="amount_paid - balance"/>
-                            <t t-set="balance" t-value="record.currency_id.with_context(date=record.payment_date)._convert(balance, invoice.currency_id, invoice.company_id, record.payment_date)"/>
-                            <t t-set="inv_rate" t-value="('%.6f' % (invoice.currency_id._convert(1, record.currency_id, invoice.company_id, record.date_payment or datetime.date.today(), round=False))) if record.currency_id != invoice.currency_id else False"/>
+                            <t t-set="amount" t-value="[p for p in invoice._get_payments_vals() if (p.get('account_payment_id', False) == record.id or not p.get('account_payment_id'))]"/>
+                            <t t-set="amount_payment" t-value="sum([data.get('amount', 0.0) for data in amount])"/>
                             <t t-set="inv_rate" t-value="1 if inv_rate and invoice.currency_id.name == 'MXN' else inv_rate"/>
-                            <t t-set="rate_difference" t-value="[p for p in invoice._get_payments_vals() if p.get('journal_name', '') == record.company_id.currency_exchange_journal_id.name]"/>
-                            <t t-set="rate_difference" t-value="rate_difference[0].get('amount', 0.0) if rate_difference else 0.0"/>
+                            <t t-set="amount_insoluto" t-value="invoice.residual"/>
                             <pago10:DoctoRelacionado
                                 t-att-IdDocumento="invoice.l10n_mx_edi_cfdi_uuid"
-                                t-att-Serie="invoice._l10n_mx_get_serie_and_folio(invoice.number).get('serie', False)"
-                                t-att-Folio="invoice._l10n_mx_get_serie_and_folio(invoice.number).get('folio', False)"
+                                t-att-Serie="invoice._get_string_cfdi(invoice._l10n_mx_get_serie_and_folio(invoice.number).get('serie', False), 25)"
+                                t-att-Folio="invoice._get_string_cfdi(invoice._l10n_mx_get_serie_and_folio(invoice.number).get('folio', False), 40)"
                                 t-att-MonedaDR="invoice.currency_id.name"
                                 t-att-TipoCambioDR="inv_rate"
                                 MetodoDePagoDR="PPD"
                                 t-att-NumParcialidad="len(invoice.payment_ids.filtered(lambda p: p.state not in ('draft', 'cancelled')).ids)"
-                                t-att-ImpSaldoAnt="'%0.*f' % (decimal_precision, invoice.residual + amount + rate_difference)"
-                                t-att-ImpPagado="'%0.*f' % (decimal_precision, balance if balance &lt;= invoice.residual + amount else invoice.residual + amount)"
-                                t-att-ImpSaldoInsoluto="'%0.*f' % (decimal_precision, invoice.residual + amount + rate_difference - balance if invoice.residual + amount + rate_difference - balance &gt;= 0 else 0)"/>
+                                t-att-ImpSaldoAnt="'%0.*f' % (decimal_precision, invoice.residual + amount_payment)"
+                                t-att-ImpPagado="'%0.*f' % (decimal_precision, amount_payment)"
+                                t-att-ImpSaldoInsoluto="'%0.*f' % (decimal_precision, amount_insoluto)"/>
                         </t>
                         <t t-if="total_transferred or total_withhold">
                             <pago10:Impuestos

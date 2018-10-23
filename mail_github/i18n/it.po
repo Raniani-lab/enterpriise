@@ -33,7 +33,7 @@ msgstr "(con "
 #. module: mail_github
 #: model_terms:ir.ui.view,arch_db:mail_github.message_github_notification
 msgid ") on repository"
-msgstr ""
+msgstr ") sul repository "
 
 #. module: mail_github
 #: model_terms:ir.ui.view,arch_db:mail_github.message_github_notification
@@ -43,12 +43,12 @@ msgstr ", da"
 #. module: mail_github
 #: model_terms:ir.ui.view,arch_db:mail_github.message_github_notification
 msgid "<b>State :</b>"
-msgstr ""
+msgstr "<b>Stato :</b>"
 
 #. module: mail_github
 #: model_terms:ir.ui.view,arch_db:mail_github.message_github_notification
 msgid "<b>Title :</b>"
-msgstr ""
+msgstr "<b>Titolo :</b>"
 
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__message_needaction
@@ -77,18 +77,20 @@ msgstr "Canali"
 #. module: mail_github
 #: model_terms:ir.ui.view,arch_db:mail_github.mail_channel_github_view_form
 msgid "Channels allowed to follow repositories."
-msgstr ""
+msgstr "Canali autorizzati a seguire repository."
 
 #. module: mail_github
 #: model_terms:ir.ui.view,arch_db:mail_github.message_github_notification
 msgid "Commit"
-msgstr ""
+msgstr "Commit"
 
 #. module: mail_github
 #: model:ir.model.fields,help:mail_github.field_mail_channel_github__name
 msgid ""
 "Complete name of the github repository. e.i.: my-username/my-public-repo"
 msgstr ""
+"Nome completo del repository github. Esempio: il-mio-nome-utente/il-mio-"
+"repository-pubblico"
 
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__create_uid
@@ -118,7 +120,7 @@ msgstr ""
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel__github_enabled
 msgid "Enable listening to Github repositories"
-msgstr ""
+msgstr "Abilitare il monitoraggio di repository Github"
 
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__message_follower_ids
@@ -138,7 +140,7 @@ msgstr "Followers (Partner)"
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_res_users__github_login
 msgid "GitHub Login"
-msgstr ""
+msgstr "Login GitHub"
 
 #. module: mail_github
 #: model_terms:ir.ui.view,arch_db:mail_github.mail_channel_view_form
@@ -149,7 +151,7 @@ msgstr "Github"
 #: model:ir.actions.act_window,name:mail_github.mail_channel_github_action
 #: model:ir.ui.menu,name:mail_github.mail_channel_menu_github
 msgid "Github Repositories"
-msgstr ""
+msgstr "Repository Github"
 
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__id
@@ -242,6 +244,8 @@ msgid ""
 "Once the repository is created in Odoo, create it on Github. Then, copy "
 "'Payload URL' and 'Secret' in Github interface."
 msgstr ""
+"Una volta creato il repository in Odoo, crealo su Github. Poi copia \"l'URL "
+"del carico utile\" e il \"Segreto\" nell'interfaccia Github. "
 
 #. module: mail_github
 #: model_terms:ir.ui.view,arch_db:mail_github.message_github_notification
@@ -251,42 +255,42 @@ msgstr ""
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__url_token
 msgid "Payload URL"
-msgstr ""
+msgstr "URL del carico utile"
 
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel__github_repo_ids
 msgid "Repositories"
-msgstr ""
+msgstr "Repository"
 
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__github_repository_id
 msgid "Repository ID"
-msgstr ""
+msgstr "ID repository"
 
 #. module: mail_github
 #: model_terms:ir.ui.view,arch_db:mail_github.mail_channel_github_view_form
 msgid "Repository full name: user/repository."
-msgstr ""
+msgstr "Nome completo del repository: utente/repository."
 
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__name
 msgid "Repository name"
-msgstr ""
+msgstr "Nome del repository"
 
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__secret
 msgid "Secret"
-msgstr ""
+msgstr "Segreto"
 
 #. module: mail_github
 #: model:ir.model.fields,help:mail_github.field_mail_channel__github_repo_ids
 msgid "The Github repositories the channel will follow"
-msgstr ""
+msgstr "I repository Github che il canale seguirà "
 
 #. module: mail_github
 #: model_terms:ir.ui.view,arch_db:mail_github.mail_channel_github_view_form
 msgid "The signature to be pasted when setting up the webhook on Github"
-msgstr ""
+msgstr "La firma da incollare durante la configurazione del webhook su Github"
 
 #. module: mail_github
 #: model_terms:ir.ui.view,arch_db:mail_github.mail_channel_github_view_form
@@ -294,6 +298,8 @@ msgid ""
 "The webhook 'Content Type' should be set to <b>application/x-www-form-"
 "urlencoded</b>."
 msgstr ""
+"Il webhook \"tipo di contenuto\" deve essere impostato su <b>application/x"
+"-www-form-urlencoded</b>. "
 
 #. module: mail_github
 #: model:ir.model.fields,help:mail_github.field_mail_channel_github__url_token
@@ -318,51 +324,51 @@ msgstr "Utenti"
 #. module: mail_github
 #: model_terms:ir.ui.view,arch_db:mail_github.message_github_notification
 msgid "commented"
-msgstr ""
+msgstr "commentato"
 
 #. module: mail_github
 #: code:addons/mail_github/controllers/main.py:174
 #, python-format
 msgid "commit"
-msgstr ""
+msgstr "commit"
 
 #. module: mail_github
 #: model_terms:ir.ui.view,arch_db:mail_github.message_github_notification
 msgid "commit(s) on"
-msgstr ""
+msgstr "commit su"
 
 #. module: mail_github
 #: model_terms:ir.ui.view,arch_db:mail_github.message_github_notification
 msgid "created a new"
-msgstr ""
+msgstr "ha creato un nuovo"
 
 #. module: mail_github
 #: code:addons/mail_github/controllers/main.py:197
 #, python-format
 msgid "issue"
-msgstr ""
+msgstr "problema"
 
 #. module: mail_github
 #: model_terms:ir.ui.view,arch_db:mail_github.message_github_notification
 msgid "modified the following"
-msgstr ""
+msgstr "ha modificato"
 
 #. module: mail_github
 #: model_terms:ir.ui.view,arch_db:mail_github.message_github_notification
 msgid "modifies wiki pages on repository"
-msgstr ""
+msgstr "modifica le pagine wiki sul repository"
 
 #. module: mail_github
 #: model_terms:ir.ui.view,arch_db:mail_github.message_github_notification
 msgid "on repository"
-msgstr ""
+msgstr "sul repository"
 
 #. module: mail_github
 #: code:addons/mail_github/controllers/main.py:211
 #: code:addons/mail_github/controllers/main.py:218
 #, python-format
 msgid "pull request"
-msgstr ""
+msgstr "richiesta di estrazione"
 
 #. module: mail_github
 #: model_terms:ir.ui.view,arch_db:mail_github.message_github_notification

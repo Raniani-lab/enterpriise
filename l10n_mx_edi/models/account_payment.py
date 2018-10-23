@@ -407,9 +407,12 @@ class AccountPayment(models.Model):
         date = datetime.combine(
             fields.Datetime.from_string(self.payment_date),
             datetime.strptime('12:00:00', '%H:%M:%S').time()).strftime('%Y-%m-%dT%H:%M:%S')
-        rate = ('%.6f' % (
-            self.currency_id._convert(
-                1, mxn, self.company_id, self.payment_date or fields.Date.today()))) if self.currency_id.name != 'MXN' else False
+        total_paid = 0
+        for invoice in self.invoice_ids:
+            amount = [p for p in invoice._get_payments_vals() if (p.get('account_payment_id', False) == self.id or not p.get('account_payment_id'))]
+            amount_payment = sum([data.get('amount', 0.0) for data in amount])
+            total_paid += amount_payment
+        rate = ('%.6f' % (total_paid / self.amount)) if self.currency_id.name != 'MXN' else False
         return {
             'mxn': mxn,
             'payment_date': date,
@@ -422,6 +425,7 @@ class AccountPayment(models.Model):
             'pay_certificate': False,
             'pay_string': False,
             'pay_stamp': False,
+            'total_paid': total_paid,
         }
 
     @api.multi

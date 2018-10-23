@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2018
 # Thomas Pot <thomas@open2bizz.nl>, 2018
 msgid ""
@@ -283,7 +284,7 @@ msgid ""
 "The partner account '%s' requires a Bank Identification Code (BIC) to pay "
 "via SEPA. Please configure it first."
 msgstr ""
-"Het partner account '%s' vereist een Bank Identificatie Code (BIC) bij "
+"Het relatieaccount '%s' vereist een Bank Identificatie Code (BIC) bij "
 "betalingen via SEPA. Stel dit eerst in."
 
 #. module: account_sepa

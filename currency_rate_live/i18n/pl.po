@@ -9,10 +9,10 @@
 # Piotr Szlązak <szlazakpiotr@gmail.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"POT-Creation-Date: 2018-10-08 07:14+0000\n"
+"PO-Revision-Date: 2018-10-08 07:14+0000\n"
 "Last-Translator: Piotr Szlązak <szlazakpiotr@gmail.com>, 2018\n"
 "Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
@@ -47,6 +47,28 @@ msgstr "Waluta: aktualizacja stawek"
 #: selection:res.company,currency_interval_unit:0
 msgid "Daily"
 msgstr "Codziennie"
+
+#. module: currency_rate_live
+#: model:res.company,overdue_msg:currency_rate_live.res_company_company_1
+#: model:res.company,overdue_msg:currency_rate_live.res_company_company_2
+msgid ""
+"Dear Sir/Madam,\n"
+"\n"
+"Our records indicate that some payments on your account are still due. Please find details below.\n"
+"If the amount has already been paid, please disregard this notice. Otherwise, please forward us the total amount stated below.\n"
+"If you have any queries regarding your account, Please contact us.\n"
+"\n"
+"Thank you in advance for your cooperation.\n"
+"Best Regards,"
+msgstr ""
+"Szanowni Państwo,\n"
+"\n"
+"Nasze dane wskazują, że niektóre płatności za wystawione faktury na Państwa koncie są nadal nie zapłacone. Prosimy zapoznać się ze szczegółami poniżej. Prosimy o przesłanie nam całkowitej należnej kwoty podanej poniżej. \n"
+"Jeżeli kwota została już zapłacona, prosimy o informację zwrotną kiedy przelew został zrealizowany w celu weryfikacji.\n"
+"Jeśli mają Państwo jakiekolwiek pytania dotyczące Państwa konta, zapraszamy do kontaktu z nami.\n"
+"\n"
+"Z góry dziękujemy za współpracę.\n"
+"Z poważaniem,"
 
 #. module: currency_rate_live
 #: selection:res.company,currency_provider:0

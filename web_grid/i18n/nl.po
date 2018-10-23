@@ -5,13 +5,14 @@
 # Translators:
 # Martin Trigaux, 2018
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2018
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:07+0000\n"
 "PO-Revision-Date: 2018-09-21 14:07+0000\n"
-"Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2018\n"
+"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2018\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -172,7 +173,7 @@ msgstr "Totaal"
 #: code:addons/web_grid/static/src/js/grid_renderer.js:393
 #, python-format
 msgid "Total (%s)"
-msgstr ""
+msgstr "Totaal (%s)"
 
 #. module: web_grid
 #: selection:ir.actions.act_window.view,view_mode:0

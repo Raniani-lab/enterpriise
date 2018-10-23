@@ -4,13 +4,14 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-02 10:31+0000\n"
-"PO-Revision-Date: 2018-10-02 10:31+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"POT-Creation-Date: 2018-10-08 07:14+0000\n"
+"PO-Revision-Date: 2018-10-08 07:14+0000\n"
+"Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -65,6 +66,22 @@ msgid "<strong><span>Final Interview: </span></strong>"
 msgstr "<strong><span>Фінальне інтерв'ю: </span></strong>"
 
 #. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.arow_3_1_1
+msgid "Ability to cope with multidisciplinarity of team"
+msgstr "Можливість справлятися з мультидисциплінарністю команди"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.arow_3_1_6
+msgid "Ability to follow and complete work as instructed"
+msgstr "Можливість стежити та виконувати роботи, як зазначено в інструкції"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.arow_3_2_5
+msgid "Ability to manage planning resources, risks, budgets and deadlines"
+msgstr ""
+"Можливість керувати ресурсами планування, ризиками, бюджетами та термінами"
+
+#. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_needaction
 msgid "Action Needed"
 msgstr "Дія необхідна"
@@ -73,6 +90,15 @@ msgstr "Дія необхідна"
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__action_plan
 msgid "Action Plan"
 msgstr "План дій"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.oprow_2_6_1
+msgid ""
+"Actions by Executive management show genuine interest in the well-being of "
+"employees"
+msgstr ""
+"Дії виконавчого управління показують справжній інтерес до добробуту "
+"працівників"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__active
@@ -94,6 +120,30 @@ msgstr "Стан дії"
 #: model:ir.ui.menu,name:hr_appraisal.hr_appraisal_menu_config_activity_type
 msgid "Activity Types"
 msgstr "Типи діяльності"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.arow_3_1_13
+msgid ""
+"Adaptability: Ability to adapt oneself to organizational changes while "
+"keeping efficiency"
+msgstr ""
+"Адаптивність: здатність адаптуватися до організаційних змін, зберігаючи "
+"ефективність"
+
+#. module: hr_appraisal
+#: model:survey.question,question:hr_appraisal.appraisal_2_3
+msgid "Additional Comments"
+msgstr "Додаткові коментарі"
+
+#. module: hr_appraisal
+#: model:survey.question,question:hr_appraisal.opinion_2_7
+msgid "Additional comments"
+msgstr "Додаткові коментарі"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.arow_3_1_11
+msgid "Analytical and synthetic mind"
+msgstr "Аналітичний та синтетичний розум"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__survey_completed_ids
@@ -164,6 +214,11 @@ msgid "Appraisal Meeting For %s"
 msgstr "Оціночна зустріч для %s"
 
 #. module: hr_appraisal
+#: model:survey.page,title:hr_appraisal.opinion_1
+msgid "Appraisal Process"
+msgstr "Процес оцінювання"
+
+#. module: hr_appraisal
 #: model:mail.template,subject:hr_appraisal.send_appraisal_template
 msgid "Appraisal Regarding"
 msgstr "Оцінка щодо"
@@ -190,6 +245,11 @@ msgstr "Статистика оцінювання"
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__manager_appraisal
 msgid "Appraisal by Manager"
 msgstr ""
+
+#. module: hr_appraisal
+#: model:survey.question,question:hr_appraisal.appraisal_1_3
+msgid "Appraisal for Period"
+msgstr "Оцінка за період"
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/hr_appraisal.py:186
@@ -226,9 +286,29 @@ msgid "Appraisals to Process"
 msgstr "Оцінювання для процесу"
 
 #. module: hr_appraisal
+#: model:survey.question,question:hr_appraisal.appraisal_1_5
+msgid "Appraiser"
+msgstr "Оцінювач"
+
+#. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
 msgid "Archived"
 msgstr "Заархівовано"
+
+#. module: hr_appraisal
+#: model_terms:survey.page,description:hr_appraisal.appraisal_1
+msgid "At the conclusion of the appraisal time period"
+msgstr "Після закінчення терміну оцінки"
+
+#. module: hr_appraisal
+#: model_terms:survey.page,description:hr_appraisal.appraisal_1
+msgid "At the outset of the appraisal time period"
+msgstr "На початку терміну оцінки"
+
+#. module: hr_appraisal
+#: model_terms:survey.page,description:hr_appraisal.opinion_1
+msgid "At the supervisor's appraisal date"
+msgstr "На дату оцінки керівника"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_attachment_count
@@ -286,14 +366,40 @@ msgid "Color Index"
 msgstr "Індекс кольору"
 
 #. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.arow_3_1_9
+msgid ""
+"Communication skills (written & verbally): clearness, concision, exactitude"
+msgstr "Навички спілкування (письмові та усні): чіткість та точність"
+
+#. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__company_id
 msgid "Company"
 msgstr "Компанія"
 
 #. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.oprow_2_6_3
+msgid ""
+"Compared to similar jobs in other companies where I could work, my total "
+"compensation..."
+msgstr ""
+"У порівнянні з аналогічними робочими місцями в інших компаніях, де я міг би "
+"працювати, моя сумарна компенсація..."
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.arow_3_1_3
+msgid ""
+"Compliance to internal rules and processes (timesheets completion, etc.)"
+msgstr "Дотримання внутрішніх правил та процедур (заповнення таблиць і т. д.)"
+
+#. module: hr_appraisal
 #: model:ir.ui.menu,name:hr_appraisal.menu_hr_appraisal_configuration
 msgid "Configuration"
 msgstr "Налаштування"
+
+#. module: hr_appraisal
+#: model:survey.question,question:hr_appraisal.opinion_2_4
+msgid "Continuous Improvement"
+msgstr "Постійне покращення"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_report__create_date
@@ -321,9 +427,34 @@ msgid "Creation Date"
 msgstr "Дата створення"
 
 #. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.arow_3_1_14
+msgid "Creativity and forward looking aptitude"
+msgstr "Творчість та перспективність"
+
+#. module: hr_appraisal
+#: model_terms:survey.page,description:hr_appraisal.appraisal_1
+msgid ""
+"Critical or key elements of performance and professional development needs "
+"(if any), should also be noted at this time"
+msgstr ""
+"У цей час слід також відзначити критичні або ключові елементи, що мають "
+"потребу в продуктивності та професійному розвитку (якщо такі є)"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.arow_3_1_8
+msgid "Customer commitment"
+msgstr "Зобов'язання клієнта"
+
+#. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
+#: model:survey.question,question:hr_appraisal.opinion_1_2
 msgid "Date"
 msgstr "Дата"
+
+#. module: hr_appraisal
+#: model:survey.question,question:hr_appraisal.appraisal_1_4
+msgid "Date of review"
+msgstr "Дата огляду"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_report__deadline
@@ -336,15 +467,36 @@ msgid "Deadline:"
 msgstr "Термін дії:"
 
 #. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.arow_3_1_7
+msgid "Decision making"
+msgstr "Прийняття рішень"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.arow_3_2_2
+msgid "Delegation: Ability to efficiently assign tasks to other people"
+msgstr "Делегація: можливість ефективно призначати завдання іншим людям"
+
+#. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
 msgid "Delete"
 msgstr "Видалити"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.oprow_2_2_1
+msgid "Demonstrates genuine concern for me as a person"
+msgstr "Демонструє справжню турботу про мене як про особу"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__department_id
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_report__department_id
 msgid "Department"
 msgstr "Відділ"
+
+#. module: hr_appraisal
+#: model_terms:survey.page,description:hr_appraisal.appraisal_3
+#: model_terms:survey.page,description:hr_appraisal.opinion_1
+msgid "Did not meet standards and expectations"
+msgstr "Не відповідав стандартам та очікуванням"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__display_name
@@ -372,6 +524,11 @@ msgid "Edit"
 msgstr "Редагувати"
 
 #. module: hr_appraisal
+#: model:survey.question,question:hr_appraisal.opinion_2_3
+msgid "Effectiveness"
+msgstr "Ефективність"
+
+#. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__mail_template_id
 msgid "Email Template for Appraisal"
 msgstr "Шаблон ел. пошти для оцінювання"
@@ -394,9 +551,30 @@ msgid "Employee Appraisal"
 msgstr "Атестація співробітників"
 
 #. module: hr_appraisal
+#: model:survey.page,title:hr_appraisal.appraisal_1
+#: model:survey.survey,title:hr_appraisal.appraisal_form
+msgid "Employee Appraisal Form"
+msgstr "Форма атестації співробітників"
+
+#. module: hr_appraisal
+#: model:survey.page,title:hr_appraisal.appraisal_5
+msgid "Employee Comments"
+msgstr "Коментарі співробітника"
+
+#. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_employee
 msgid "Employee Name"
 msgstr "Ім'я співробітника"
+
+#. module: hr_appraisal
+#: model:survey.survey,title:hr_appraisal.opinion_form
+msgid "Employee Opinion Form"
+msgstr "Форма думки співробітників"
+
+#. module: hr_appraisal
+#: model:survey.page,title:hr_appraisal.appraisal_3
+msgid "Employee Performance in Key Areas"
+msgstr "Виконання працівників у ключових сферах"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_colleagues_survey_id
@@ -409,9 +587,30 @@ msgid "Employee's Name"
 msgstr "Ім'я співробітника"
 
 #. module: hr_appraisal
+#: model:survey.question,question:hr_appraisal.opinion_2_1
+msgid "Engagement"
+msgstr "Залучення"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.arow_3_1_2
+msgid "Enthusiasm & implication toward projects/assignments"
+msgstr "Ентузіазм та наслідки для проектів/завдань"
+
+#. module: hr_appraisal
+#: model:survey.page,title:hr_appraisal.opinion_2
+msgid "Evaluation"
+msgstr "Обчислення"
+
+#. module: hr_appraisal
 #: model:ir.model,name:hr_appraisal.model_calendar_event
 msgid "Event"
 msgstr "Подія"
+
+#. module: hr_appraisal
+#: model_terms:survey.page,description:hr_appraisal.appraisal_3
+#: model_terms:survey.page,description:hr_appraisal.opinion_1
+msgid "Exceeds standards and expectations"
+msgstr "Перевищує стандарти та очікування"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
@@ -477,10 +676,107 @@ msgid "HR Department"
 msgstr "Відділ кадрів"
 
 #. module: hr_appraisal
+#: model_terms:survey.page,description:hr_appraisal.opinion_1
+msgid ""
+"His direct reports will be invited through Odoo to express a feedback on "
+"their supervisor's leadership and to give their opinion about their own "
+"engagement and effectiveness, the continuous improvement and openness in "
+"action in thecompany..."
+msgstr ""
+"Його прямі доповіді будуть запрошені через Odoo, щоби висловити відгук про "
+"управління свого керівництва та висловити свою думку про  взаємодію та "
+"ефективність, постійне вдосконалення та відкритість у діяльності компанії "
+"..."
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.oprow_2_1_1
+msgid "I am proud to tell others I work here"
+msgstr "Я пишаюсь тим, що кажу іншим про те, що тут працюю"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.oprow_2_1_5
+msgid ""
+"I am willing to put in a great deal of effort beyond what is expected to "
+"help my workgroup succeed"
+msgstr ""
+"Я готовий докласти значних зусиль, крім того, що очікується допомога моєї "
+"робочої групи для досягнення успіху"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.oprow_2_2_4
+msgid "I believe the information that I get from the person I report to."
+msgstr "Я вірю в інформацію, яку отримую від людини, до якої я звертаюся."
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.oprow_2_2_2
+msgid ""
+"I consistently acquire new knowledge, skills or understanding through "
+"contact with my supervisor. He helps me growing my compete"
+msgstr ""
+"Я постійно набуваю нових знань, вмінь та розуміння через контакт з моїм "
+"керівником. Він допомагає мені збільшувати свою конкуренцію"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.oprow_2_3_2
+msgid "I have enough work"
+msgstr "В мене достатньо роботи"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.oprow_2_6_2
+msgid ""
+"I have the same opportunity to succeed as others with similar experiences, "
+"performance and educational background"
+msgstr ""
+"Я маю ту саму можливість досягти успіху, як і інші з подібним досвідом, "
+"успішністю та освітою"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.oprow_2_5_1
+msgid "I know the company's values and live them"
+msgstr "Я знаю цінності компанії та живу ними"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.oprow_2_3_3
+msgid ""
+"I mostly work on value-added tasks for the company, the products or the "
+"services"
+msgstr ""
+"В основному я працюю над додатковими завданнями для компанії, товарами або "
+"послугами"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.oprow_2_6_4
+msgid "I understand the company strategy and how my workgroup supports it"
+msgstr "Я розумію стратегію компанії та мою підтримку моєї робочої групи"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.oprow_2_1_3
+msgid ""
+"I would prefer to remain with this company even if a comparable job were "
+"available in another company"
+msgstr ""
+"Я би вважав за краще залишатися з цією компанією, навіть якщо подібна робота"
+" буде доступною в іншій компанії"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.oprow_2_3_1
+msgid "I'm efficient at work and my achievements are successful"
+msgstr "Я ефективний на роботі, і мої досягнення є успішними"
+
+#. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__id
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_report__id
 msgid "ID"
 msgstr "ID"
+
+#. module: hr_appraisal
+#: model_terms:survey.page,description:hr_appraisal.appraisal_4
+msgid ""
+"Identify professional, performance, or project objectives you recommend for employee’s continued career development\n"
+"over the coming year."
+msgstr ""
+"Визначте професійні, робочі характеристики або цілі проекту, які ви рекомендуєте для подальшого розвитку роботи працівника\n"
+"на наступний рік."
 
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__message_unread
@@ -496,6 +792,33 @@ msgstr "Якщо відмічено, то нові повідомлення бу
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__message_has_error
 msgid "If checked, some messages have a delivery error."
 msgstr ""
+
+#. module: hr_appraisal
+#: model:survey.question,comments_message:hr_appraisal.appraisal_1_1
+#: model:survey.question,comments_message:hr_appraisal.appraisal_1_2
+#: model:survey.question,comments_message:hr_appraisal.appraisal_1_3
+#: model:survey.question,comments_message:hr_appraisal.appraisal_1_4
+#: model:survey.question,comments_message:hr_appraisal.appraisal_1_5
+#: model:survey.question,comments_message:hr_appraisal.appraisal_2_1
+#: model:survey.question,comments_message:hr_appraisal.appraisal_2_2
+#: model:survey.question,comments_message:hr_appraisal.appraisal_2_3
+#: model:survey.question,comments_message:hr_appraisal.appraisal_3_1
+#: model:survey.question,comments_message:hr_appraisal.appraisal_3_2
+#: model:survey.question,comments_message:hr_appraisal.appraisal_4_1
+#: model:survey.question,comments_message:hr_appraisal.appraisal_4_2
+#: model:survey.question,comments_message:hr_appraisal.appraisal_4_3
+#: model:survey.question,comments_message:hr_appraisal.appraisal_5_1
+#: model:survey.question,comments_message:hr_appraisal.opinion_1_1
+#: model:survey.question,comments_message:hr_appraisal.opinion_1_2
+#: model:survey.question,comments_message:hr_appraisal.opinion_2_1
+#: model:survey.question,comments_message:hr_appraisal.opinion_2_2
+#: model:survey.question,comments_message:hr_appraisal.opinion_2_3
+#: model:survey.question,comments_message:hr_appraisal.opinion_2_4
+#: model:survey.question,comments_message:hr_appraisal.opinion_2_5
+#: model:survey.question,comments_message:hr_appraisal.opinion_2_6
+#: model:survey.question,comments_message:hr_appraisal.opinion_2_7
+msgid "If other, please specify:"
+msgstr "Якщо інше, вкажіть:"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__action_plan
@@ -516,6 +839,11 @@ msgid "In progress Evaluations"
 msgstr "В процесі оцінювання"
 
 #. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.arow_3_1_5
+msgid "Initiative and self autonomy"
+msgstr "Ініціативність та самостійність"
+
+#. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_report__final_interview
 msgid "Interview"
 msgstr "Інтерв'ю"
@@ -524,6 +852,28 @@ msgstr "Інтерв'ю"
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_is_follower
 msgid "Is Follower"
 msgstr "Стежить"
+
+#. module: hr_appraisal
+#: model_terms:survey.page,description:hr_appraisal.appraisal_1
+msgid ""
+"It is the joint responsibility of the employee and the supervisor (appraiser) to establish a feasible work plan for the\n"
+"coming year, including major employee responsibilities and corresponding benchmarks against which results will be\n"
+"evaluated."
+msgstr ""
+"Спільна відповідальність працівника та керівника (оцінювача) полягає в тому, щоби встановити реальний робочий план для\n"
+"наступного року, включаючи основні обов'язки співробітників та відповідні контрольні показники, на підставі яких будуть оцінені\n"
+"результати"
+
+#. module: hr_appraisal
+#: model_terms:survey.page,description:hr_appraisal.appraisal_1
+msgid ""
+"It is the primary responsibility of the supervisor to gather the necessary input from the appropriate sources of feedback\n"
+"(internal and/or external customers, peers). In case of collaboration with Odoo SA Belgium, the supervisor must\n"
+"receive completed evaluation form from the employee's Belgian project manager."
+msgstr ""
+"Основна відповідальність керівника полягає в тому, щоб зібрати необхідні матеріали з відповідних джерел зворотнього зв'язку\n"
+"(внутрішні та/або зовнішні замовники, однолітки). У разі співпраці з Odoo SA, керівник повинен\n"
+"отримати заповнену форму для оцінки від бельгійського менеджера проекту співробітника."
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal____last_update
@@ -545,6 +895,34 @@ msgstr "Останнє оновлення"
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
 msgid "Late Activities"
 msgstr "Останні дії"
+
+#. module: hr_appraisal
+#: model:survey.question,question:hr_appraisal.opinion_2_2
+msgid "Leadership"
+msgstr "Лідерство"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.arow_3_2_3
+msgid ""
+"Leadership: create a challenging and motivating work environment aligned "
+"with the company's strategy"
+msgstr ""
+"Лідерство: створіть складне та мотиваційне робоче середовище, що відповідає "
+"стратегії компанії"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.arow_3_2_4
+msgid "Leadership: sustain subordinates in their professional growth"
+msgstr "Лідерство: підтримуйте підлеглих у своєму професійному рості"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.oprow_2_2_3
+msgid ""
+"Listens and takes into account all ideas and do his best to put in place the"
+" best of these"
+msgstr ""
+"Слухає і враховує всі ідеї, і робить все можливе, щоби поставити найкращі з "
+"них"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_main_attachment_id
@@ -570,6 +948,12 @@ msgid "Managers"
 msgstr "Керівники"
 
 #. module: hr_appraisal
+#: model_terms:survey.page,description:hr_appraisal.appraisal_3
+#: model_terms:survey.page,description:hr_appraisal.opinion_1
+msgid "Meet standards and expectations"
+msgstr "Відповідайте стандартам та очікуванням"
+
+#. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__meeting_id
 msgid "Meeting"
 msgstr "Зустріч"
@@ -585,6 +969,11 @@ msgid "Messages"
 msgstr "Повідомлення"
 
 #. module: hr_appraisal
+#: model:survey.question,question:hr_appraisal.opinion_2_6
+msgid "Miscellaneous"
+msgstr "Інші"
+
+#. module: hr_appraisal
 #: selection:hr.employee,appraisal_frequency_unit:0
 msgid "Month"
 msgstr "Місяць"
@@ -595,9 +984,37 @@ msgid "My Activities"
 msgstr "Мої дії"
 
 #. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.oprow_2_5_2
+msgid ""
+"My best achievements have been communicated to the community, internally or "
+"to customers"
+msgstr ""
+"Мої найкращі досягнення були доведені до відома спільноти або до клієнтів"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.oprow_2_1_2
+msgid "My job provides me with a sense of personal accomplishment"
+msgstr "Моя робота дає мені почуття особистого блага"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.oprow_2_4_1
+msgid ""
+"My work contributes towards the continuous improvement of the company, our "
+"services or products"
+msgstr ""
+"Моя робота сприяє постійному вдосконаленню компанії, наших послуг або "
+"товарів"
+
+#. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_tree
+#: model:survey.question,question:hr_appraisal.appraisal_1_1
 msgid "Name"
 msgstr "Назва"
+
+#. module: hr_appraisal
+#: model:survey.question,question:hr_appraisal.opinion_1_1
+msgid "Name of your direct supervisor"
+msgstr "Ім'я вашого безпосереднього керівника"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__activity_date_deadline
@@ -655,9 +1072,41 @@ msgid "Number of unread messages"
 msgstr "Кількість непрочитаних повідомлень"
 
 #. module: hr_appraisal
+#: model:survey.question,question:hr_appraisal.appraisal_2_1
+msgid "Objectives"
+msgstr "Цілі"
+
+#. module: hr_appraisal
 #: model:res.groups,name:hr_appraisal.group_hr_appraisal_user
 msgid "Officer"
 msgstr "Начальник"
+
+#. module: hr_appraisal
+#: model:survey.question,question:hr_appraisal.opinion_2_5
+msgid "Openness"
+msgstr "Відкритість"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.oprow_2_4_4
+msgid ""
+"Our workgroup identifies and reduces waste of time in our activities and "
+"processes"
+msgstr ""
+"Наша робоча група визначає і зменшує витрати часу на наші дії та процеси"
+
+#. module: hr_appraisal
+#: model_terms:survey.page,description:hr_appraisal.appraisal_1
+msgid "Overall Purpose Of Employee Appraisal"
+msgstr "Загальна ціль оцінки працівників"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.oprow_2_4_3
+msgid ""
+"Overall, I believe the quality of products and/or services my workgroup "
+"delivers is improving"
+msgstr ""
+"В цілому, я вважаю, що якість товарів та/або послуг, які надає моя робоча "
+"група, покращується"
 
 #. module: hr_appraisal
 #: selection:hr.appraisal,activity_state:0
@@ -680,6 +1129,11 @@ msgid "Periodicity"
 msgstr "Періодичність"
 
 #. module: hr_appraisal
+#: model:survey.question,question:hr_appraisal.appraisal_4_2
+msgid "Personal Performance Objectives"
+msgstr "Особисті робочі показники "
+
+#. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 msgid "Plan"
 msgstr "План"
@@ -688,6 +1142,31 @@ msgstr "План"
 #: selection:hr.appraisal,activity_state:0
 msgid "Planned"
 msgstr "Заплановано"
+
+#. module: hr_appraisal
+#: model:survey.question,question:hr_appraisal.appraisal_1_2
+msgid "Position Title"
+msgstr "Назва посади"
+
+#. module: hr_appraisal
+#: model:survey.question,question:hr_appraisal.appraisal_4_1
+msgid "Professional Development Objectives"
+msgstr "Завдання професійного розвитку"
+
+#. module: hr_appraisal
+#: model:survey.page,title:hr_appraisal.appraisal_4
+msgid "Professional Development and Performance Plan"
+msgstr "План професійного розвитку та діяльності"
+
+#. module: hr_appraisal
+#: model:survey.question,question:hr_appraisal.appraisal_4_3
+msgid "Project Objectives"
+msgstr "Цілі проекту"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.arow_3_1_12
+msgid "Promptness and attendance record"
+msgstr "Оперативність та реєстрація відвідувань"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__related_partner_id
@@ -708,6 +1187,20 @@ msgstr "Звітність"
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__activity_user_id
 msgid "Responsible User"
 msgstr ""
+
+#. module: hr_appraisal
+#: model:survey.question,question:hr_appraisal.appraisal_2_2
+msgid "Results"
+msgstr "Рзультати"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.arow_3_2_1
+msgid ""
+"Results of the bottom-up survey and mitigation actions to face technical, "
+"organizational, structural and/or relational issues"
+msgstr ""
+"Результати опитування \"знизу вгору\" та заходів з пом'якшення наслідків для"
+" вирішення технічних, організаційних, структурних та/або реляційних питань"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
@@ -747,6 +1240,19 @@ msgid "Show all records which has next action date is before today"
 msgstr "Показати всі записи, які мають дату наступної дії до сьогоднішньої"
 
 #. module: hr_appraisal
+#: model_terms:survey.page,description:hr_appraisal.appraisal_3
+#: model_terms:survey.page,description:hr_appraisal.opinion_1
+msgid "Significantly below standards and expectations"
+msgstr "Значно нижче стандартів і очікувань"
+
+#. module: hr_appraisal
+#: model_terms:survey.page,description:hr_appraisal.appraisal_3
+#: model_terms:survey.page,description:hr_appraisal.opinion_1
+msgid ""
+"Significantly exceeds standards and expectations required of the position"
+msgstr "Значно перевищує стандарти та очікування, необхідні для позиції"
+
+#. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 msgid "Start Appraisal and Send Forms"
 msgstr "Розпочніть оцінювання та надішліть форми"
@@ -772,9 +1278,84 @@ msgstr ""
 "Заплановано: майбутні дії."
 
 #. module: hr_appraisal
+#: model:survey.question,question:hr_appraisal.appraisal_3_1
+msgid "Subject"
+msgstr "Тема"
+
+#. module: hr_appraisal
+#: model:survey.question,question:hr_appraisal.appraisal_3_2
+msgid "Supervisors only"
+msgstr "Тільки керівники"
+
+#. module: hr_appraisal
 #: model:ir.model,name:hr_appraisal.model_survey_user_input
 msgid "Survey User Input"
 msgstr "Обстеження вхідних даних користувача"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.oprow_2_1_4
+msgid ""
+"Taking everything into account, how satisfied are you with your current job?"
+msgstr "Враховуючи все, наскільки ви задоволені вашою поточною роботою?"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.arow_3_1_4
+msgid ""
+"Team spirit: ability to work efficiently with peers, manage the conflicts "
+"with diplomacy"
+msgstr ""
+"Командний дух: здатність ефективно працювати з однолітками, керувати "
+"конфліктами з дипломатією"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.arow_3_1_10
+msgid "Technical skills regarding to the job requirements"
+msgstr "Технічні навички щодо вимог до роботи"
+
+#. module: hr_appraisal
+#: model:survey.question,validation_error_msg:hr_appraisal.appraisal_1_1
+#: model:survey.question,validation_error_msg:hr_appraisal.appraisal_1_2
+#: model:survey.question,validation_error_msg:hr_appraisal.appraisal_1_3
+#: model:survey.question,validation_error_msg:hr_appraisal.appraisal_1_4
+#: model:survey.question,validation_error_msg:hr_appraisal.appraisal_1_5
+#: model:survey.question,validation_error_msg:hr_appraisal.appraisal_2_1
+#: model:survey.question,validation_error_msg:hr_appraisal.appraisal_2_2
+#: model:survey.question,validation_error_msg:hr_appraisal.appraisal_2_3
+#: model:survey.question,validation_error_msg:hr_appraisal.appraisal_3_1
+#: model:survey.question,validation_error_msg:hr_appraisal.appraisal_3_2
+#: model:survey.question,validation_error_msg:hr_appraisal.appraisal_4_1
+#: model:survey.question,validation_error_msg:hr_appraisal.appraisal_4_2
+#: model:survey.question,validation_error_msg:hr_appraisal.appraisal_4_3
+#: model:survey.question,validation_error_msg:hr_appraisal.appraisal_5_1
+#: model:survey.question,validation_error_msg:hr_appraisal.opinion_1_1
+#: model:survey.question,validation_error_msg:hr_appraisal.opinion_1_2
+#: model:survey.question,validation_error_msg:hr_appraisal.opinion_2_1
+#: model:survey.question,validation_error_msg:hr_appraisal.opinion_2_2
+#: model:survey.question,validation_error_msg:hr_appraisal.opinion_2_3
+#: model:survey.question,validation_error_msg:hr_appraisal.opinion_2_4
+#: model:survey.question,validation_error_msg:hr_appraisal.opinion_2_5
+#: model:survey.question,validation_error_msg:hr_appraisal.opinion_2_6
+#: model:survey.question,validation_error_msg:hr_appraisal.opinion_2_7
+msgid "The answer you entered has an invalid format."
+msgstr "Введена вами відповідь має неправильний формат."
+
+#. module: hr_appraisal
+#: model_terms:survey.page,description:hr_appraisal.opinion_1
+msgid ""
+"The appraiser should rate the employee's major work accomplishments and "
+"performance according to the metric provided below"
+msgstr ""
+"Оцінювач повинен оцінювати основні досягнення роботи та продуктивність "
+"працівника відповідно до показників, наведених нижче"
+
+#. module: hr_appraisal
+#: model_terms:survey.page,description:hr_appraisal.appraisal_3
+msgid ""
+"The appraiser should rate the employee’s major work accomplishments and performance according to the metric provided\n"
+"below:"
+msgstr ""
+"Оцінювач повинен оцінювати основні досягнення роботи та продуктивність працівника відповідно до наданої метрики\n"
+"нижче:"
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/hr_employee.py:76
@@ -790,6 +1371,52 @@ msgid ""
 msgstr ""
 "Дата наступної оцінки обчислюється датами оцінювання (перша оцінка + "
 "періодичність)."
+
+#. module: hr_appraisal
+#: model_terms:survey.page,description:hr_appraisal.appraisal_1
+msgid ""
+"The employee may choose to offer comments or explanation regarding the "
+"completed review."
+msgstr ""
+"Співробітник може обрати запропонувати коментарі чи пояснення щодо "
+"завершеного огляду."
+
+#. module: hr_appraisal
+#: model_terms:survey.page,description:hr_appraisal.appraisal_1
+msgid ""
+"The employee will be responsible for completing a draft of the Appraisal Form as a tool for self-appraisal and a starting\n"
+"point for the supervisor’s evaluation. The employee can add examples of achievements for each criterion.\n"
+"Once the form had been filled, the employee send it to his supervisor."
+msgstr ""
+"Співробітник несе відповідальність за оформлення проектної форми оцінки як інструменту для самооцінки та початку роботи\n"
+"точки для оцінки керівника. Працівник може додати приклади досягнень за кожним критерієм.\n"
+"Після заповнення форми працівник надсилає його своєму керівнику."
+
+#. module: hr_appraisal
+#: model_terms:survey.page,description:hr_appraisal.opinion_1
+msgid ""
+"The employees will send back their anonymous answers to Odoo. The data will "
+"be handled by the HR manager and a brief summary of the data will be sent to"
+" the concerned supervisor, to his team and to the supervisor's supervisor."
+msgstr ""
+"Співробітники відправлять назад свої анонімні відповіді на Odoo. Дані "
+"оброблятимуться менеджером з персоналу, а короткий перелік даних буде "
+"надіслано відповідному наглядачеві, його команді та наглядачеві керівника."
+
+#. module: hr_appraisal
+#: model_terms:survey.page,description:hr_appraisal.appraisal_1
+msgid ""
+"The supervisor send the form to the HR department in India and in Belgium"
+msgstr "Наглядач надсилає цю форму до відділу кадрів в Індії та Бельгії"
+
+#. module: hr_appraisal
+#: model_terms:survey.page,description:hr_appraisal.appraisal_1
+msgid ""
+"The supervisor synthesizes and integrates all input into the completed appraisal. The motivation of the evaluation\n"
+"is explained in the ad hoc fields."
+msgstr ""
+"Наглядач синтезує та об'єднує всі вхідні дані в завершену оцінку. Мотивація оцінки\n"
+"пояснюється в спеціальних полях."
 
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__color
@@ -817,12 +1444,58 @@ msgid "This employee will do a self-appraisal"
 msgstr "Цей співробітник буде оцінювати себе сам"
 
 #. module: hr_appraisal
+#: model:survey.question,constr_error_msg:hr_appraisal.appraisal_1_1
+#: model:survey.question,constr_error_msg:hr_appraisal.appraisal_1_2
+#: model:survey.question,constr_error_msg:hr_appraisal.appraisal_1_3
+#: model:survey.question,constr_error_msg:hr_appraisal.appraisal_1_4
+#: model:survey.question,constr_error_msg:hr_appraisal.appraisal_1_5
+#: model:survey.question,constr_error_msg:hr_appraisal.appraisal_2_1
+#: model:survey.question,constr_error_msg:hr_appraisal.appraisal_2_2
+#: model:survey.question,constr_error_msg:hr_appraisal.appraisal_2_3
+#: model:survey.question,constr_error_msg:hr_appraisal.appraisal_3_1
+#: model:survey.question,constr_error_msg:hr_appraisal.appraisal_3_2
+#: model:survey.question,constr_error_msg:hr_appraisal.appraisal_4_1
+#: model:survey.question,constr_error_msg:hr_appraisal.appraisal_4_2
+#: model:survey.question,constr_error_msg:hr_appraisal.appraisal_4_3
+#: model:survey.question,constr_error_msg:hr_appraisal.appraisal_5_1
+#: model:survey.question,constr_error_msg:hr_appraisal.opinion_1_1
+#: model:survey.question,constr_error_msg:hr_appraisal.opinion_1_2
+#: model:survey.question,constr_error_msg:hr_appraisal.opinion_2_1
+#: model:survey.question,constr_error_msg:hr_appraisal.opinion_2_2
+#: model:survey.question,constr_error_msg:hr_appraisal.opinion_2_3
+#: model:survey.question,constr_error_msg:hr_appraisal.opinion_2_4
+#: model:survey.question,constr_error_msg:hr_appraisal.opinion_2_5
+#: model:survey.question,constr_error_msg:hr_appraisal.opinion_2_6
+#: model:survey.question,constr_error_msg:hr_appraisal.opinion_2_7
+msgid "This question requires an answer."
+msgstr "Це питання потребує відповіді."
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.arow_3_1_15
+msgid "Time management: projects/tasks are completed on time"
+msgstr "Управління часом: проекти/завдання виконуються вчасно"
+
+#. module: hr_appraisal
 #: code:addons/hr_appraisal/models/hr_appraisal.py:239
 #: selection:hr.appraisal,state:0 selection:hr.appraisal.report,state:0
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
 #, python-format
 msgid "To Start"
 msgstr "Почати"
+
+#. module: hr_appraisal
+#: model_terms:survey.page,description:hr_appraisal.appraisal_1
+msgid ""
+"To assist employees in their professional growth, through the identification of strengths and opportunities for\n"
+"development"
+msgstr ""
+"Допомогти працівникам у їхньому професійному рості шляхом визначення сильних сторін та можливостей для\n"
+"розвитку"
+
+#. module: hr_appraisal
+#: model_terms:survey.page,description:hr_appraisal.appraisal_1
+msgid "To initiate a clear and open communication of performance expectations"
+msgstr "Ініціювати чітке та відкрите спілкування очікувань продуктивності"
 
 #. module: hr_appraisal
 #: selection:hr.appraisal,activity_state:0
@@ -845,6 +1518,15 @@ msgid "Unread Messages Counter"
 msgstr "Кількість непрочитаних повідомлень"
 
 #. module: hr_appraisal
+#: model:survey.question,question:hr_appraisal.appraisal_5_1
+msgid ""
+"Use the following space to make any comments regarding the above performance"
+" evaluation."
+msgstr ""
+"Використовуйте таке поле, щоби коментувати вищезазначену оцінку "
+"ефективності."
+
+#. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__website_message_ids
 msgid "Website Messages"
 msgstr "Повідомлення з вебсайту"
@@ -853,6 +1535,20 @@ msgstr "Повідомлення з вебсайту"
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__website_message_ids
 msgid "Website communication history"
 msgstr "Історія бесіди на сайті"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.oprow_2_4_2
+msgid ""
+"What I did several months ago is still of use to the company, the services "
+"or the products today"
+msgstr ""
+"Те, що я зробив кілька місяців тому, все ще користується компанія, послугами"
+" чи товарами сьогодні"
+
+#. module: hr_appraisal
+#: model:survey.page,title:hr_appraisal.appraisal_2
+msgid "Work Plan"
+msgstr "План роботи"
 
 #. module: hr_appraisal
 #: selection:hr.employee,appraisal_frequency_unit:0

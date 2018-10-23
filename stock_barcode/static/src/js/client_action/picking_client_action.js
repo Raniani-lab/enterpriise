@@ -79,8 +79,8 @@ var PickingClientAction = ClientAction.extend({
         var lines = this._getLines(this.currentState);
         for (var i = 0; i < lines.length; i++) {
             var line = lines[i];
-            if (line.product_id.id === product.id &&
-                line.lot_name && line.lot_name === lot_name) {
+            if (line.qty_done !== 0 && line.product_id.id === product.id &&
+                (line.lot_name && line.lot_name === lot_name)) {
                 return true;
             }
         }

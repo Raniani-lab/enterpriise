@@ -556,7 +556,7 @@ QUnit.module('ReportComponents', {
             "there should be 3 available options for the contact widget (they are filtered)");
         assert.strictEqual(tOptions.$('.o_badge_text').text(), 'nameaddressphonemobileemail', 'Should display default value');
         tOptions.$('.o_input_dropdown input').click();
-        assert.strictEqual($('ul.ui-autocomplete .ui-menu-item:not(.o_m2o_dropdown_option)').length, 5, 'Should not display the unselected items');
+        assert.strictEqual($('ul.ui-autocomplete .ui-menu-item').length, 5, 'Should not display the unselected items');
         assert.strictEqual($('ul.ui-autocomplete .o_m2o_dropdown_option').length, 0, 'Should not display create button');
 
         optionsFields = ["name", "address", "phone", "mobile", "email", "city"];
@@ -568,7 +568,7 @@ QUnit.module('ReportComponents', {
         tOptions.$('.o_studio_option_show').click();
         assert.strictEqual(tOptions.$('.o_badge_text').text(), 'nameaddresscityphonemobileemail', 'Should display the new value');
         tOptions.$('.o_input_dropdown input').click();
-        assert.strictEqual($('ul.ui-autocomplete .ui-menu-item:not(.o_m2o_dropdown_option)').length, 4, 'Should not display the unselected items');
+        assert.strictEqual($('ul.ui-autocomplete .ui-menu-item').length, 4, 'Should not display the unselected items');
         tOptions.$('.o_input_dropdown input').click();
 
         optionsFields = ["address", "phone", "mobile", "email", "city"];
@@ -578,6 +578,38 @@ QUnit.module('ReportComponents', {
         optionsFields = ["phone", "mobile", "email", "city"];
         tOptions.$('.o_field_many2manytags .o_delete:first').click();
         assert.strictEqual(tOptions.$('.o_badge_text').text(), 'cityphonemobileemail', 'Should display the new value without "name"');
+
+        parent.destroy();
+    });
+
+    QUnit.test('no search more in many2many_select', function (assert) {
+        assert.expect(3);
+        var parent = new Widget();
+        parent.appendTo($('#qunit-fixture'));
+
+        // to display more options in the many2many_select
+        this.widgetsOptions.contact.fields.default_value = [];
+
+        var tOptions = new (editComponentsRegistry.get('tOptions'))(parent, {
+            widgetsOptions: this.widgetsOptions,
+            node: {
+                attrs: {
+                    't-options': '{"widget": "contact"}',
+                    't-options-no_marker': 'True',
+                    'data-oe-id': 99,
+                    'data-oe-xpath': '/my/node/path/',
+                },
+            },
+            context: {},
+            state: null,
+            models: null,
+        });
+        tOptions.appendTo(parent.$el);
+
+        assert.strictEqual(tOptions.$('.o_badge_text').text(), '', 'Should display default value');
+        tOptions.$('.o_input_dropdown input').click();
+        assert.strictEqual($('ul.ui-autocomplete .ui-menu-item').length, 10, 'Should not display the unselected items');
+        assert.strictEqual($('ul.ui-autocomplete .o_m2o_dropdown_option').length, 0, 'Should not display create button nor the search more');
 
         parent.destroy();
     });

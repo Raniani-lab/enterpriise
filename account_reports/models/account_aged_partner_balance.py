@@ -65,6 +65,7 @@ class report_account_aged_partner(models.AbstractModel):
                     vals = {
                         'id': aml.id,
                         'name': aml.date_maturity or aml.date,
+                        'class': 'date',
                         'caret_options': caret_type,
                         'level': 4,
                         'parent_id': 'partner_%s' % (values['partner_id'],),
@@ -77,7 +78,7 @@ class report_account_aged_partner(models.AbstractModel):
                 'id': 0,
                 'name': _('Total'),
                 'class': 'total',
-                'level': 'None',
+                'level': 2,
                 'columns': [{'name': ''}] * 3 + [{'name': self.format_value(sign * v)} for v in [total[6], total[4], total[3], total[2], total[1], total[0], total[5]]],
             }
             lines.append(total_line)

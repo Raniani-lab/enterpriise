@@ -66,7 +66,7 @@ msgstr "销售订单"
 #. module: sale_coupon_delivery
 #: model:ir.model,name:sale_coupon_delivery.model_sale_coupon_program
 msgid "Sales Coupon Program"
-msgstr "销售优惠计划"
+msgstr "销售优惠券方案"
 
 #. module: sale_coupon_delivery
 #: model:ir.model,name:sale_coupon_delivery.model_sale_coupon_reward

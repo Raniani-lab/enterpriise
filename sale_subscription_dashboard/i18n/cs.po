@@ -296,7 +296,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:346
 #, python-format
 msgid "Monthly Recurring Revenue"
-msgstr ""
+msgstr "Měsíční opakované výnosy"
 
 #. module: sale_subscription_dashboard
 #. openerp-web

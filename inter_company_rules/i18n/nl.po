@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
 # Thomas Pot <thomas@open2bizz.nl>, 2018
 msgid ""
 msgstr ""
@@ -310,4 +311,4 @@ msgstr "naar dit bedrijf,"
 #: selection:res.company,auto_validation:0
 #: selection:res.config.settings,auto_validation:0
 msgid "validated"
-msgstr "gevalideerd"
+msgstr "bevestigd"

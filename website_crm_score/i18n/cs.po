@@ -367,7 +367,7 @@ msgstr "Počet akcí"
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_has_error_counter
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__message_has_error_counter
 msgid "Number of error"
-msgstr ""
+msgstr "Počet chyb"
 
 #. module: website_crm_score
 #: model:ir.model.fields,help:website_crm_score.field_team_user__message_needaction_counter

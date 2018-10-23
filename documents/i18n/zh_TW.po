@@ -538,14 +538,14 @@ msgstr "下載和上傳"
 #: model:ir.model.fields,field_description:documents.field_documents_share__activity_date_deadline_range
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_date_deadline_range
 msgid "Due Date In"
-msgstr ""
+msgstr "截止日期至"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__activity_date_deadline_range_type
 #: model:ir.model.fields,field_description:documents.field_documents_share__activity_date_deadline_range_type
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_date_deadline_range_type
 msgid "Due type"
-msgstr ""
+msgstr "截止類型"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_form
@@ -649,7 +649,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model,name:documents.model_ir_http
 msgid "HTTP Routing"
-msgstr ""
+msgstr "HTTP 路由"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__has_business_option
@@ -688,7 +688,7 @@ msgstr "如果勾選此項，有新消息會提醒您。"
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__message_has_error
 msgid "If checked, some messages have a delivery error."
-msgstr ""
+msgstr "如果勾選此項， 某些信息將會產生傳遞錯誤。"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
@@ -761,7 +761,7 @@ msgstr "晚活動"
 #. module: documents
 #: selection:documents.share,state:0
 msgid "Live"
-msgstr ""
+msgstr "Live"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_single
@@ -1370,7 +1370,7 @@ msgstr "未讀消息計數器"
 #: model_terms:ir.ui.view,arch_db:documents.share_page
 #, python-format
 msgid "Upload"
-msgstr ""
+msgstr "上傳"
 
 #. module: documents
 #: model_terms:ir.actions.act_window,help:documents.document_action

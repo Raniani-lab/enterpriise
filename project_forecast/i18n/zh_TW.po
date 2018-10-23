@@ -451,7 +451,7 @@ msgstr ""
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_form
 msgid "day(s)"
-msgstr ""
+msgstr "天"
 
 #. module: project_forecast
 #: code:addons/project_forecast/models/project_forecast.py:109

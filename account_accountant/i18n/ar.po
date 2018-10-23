@@ -12,13 +12,14 @@
 # Shaima Safar <shaima.safar@open-inside.com>, 2018
 # Malek Gifaeri <Malek.gifaeri@gmail.com>, 2018
 # Ahmed Yousif <ahmed.yousif@outlook.com>, 2018
+# Ali Alrehawi <alrehawi@hotmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
 "PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Ahmed Yousif <ahmed.yousif@outlook.com>, 2018\n"
+"Last-Translator: Ali Alrehawi <alrehawi@hotmail.com>, 2018\n"
 "Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -85,7 +86,7 @@ msgstr ""
 #. module: account_accountant
 #: model:ir.model,name:account_accountant.model_res_config_settings
 msgid "Config Settings"
-msgstr ""
+msgstr "ضبط الإعدادات"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__create_uid

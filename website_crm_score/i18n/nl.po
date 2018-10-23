@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
 # Gunther Clauwaert <gclauwae@hotmail.com>, 2018
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2018
 msgid ""
@@ -78,7 +79,7 @@ msgstr "Aantal bijlagen"
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__assign_date
 msgid "Auto Assign Date"
-msgstr ""
+msgstr "Datum automatisch toewijzen"
 
 #. module: website_crm_score
 #: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
@@ -317,7 +318,7 @@ msgstr ""
 #: code:addons/website_crm_score/static/src/xml/track_page.xml:9
 #, python-format
 msgid "Log visits on leads"
-msgstr ""
+msgstr "Log bezoeken op leads"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_main_attachment_id
@@ -395,7 +396,7 @@ msgstr "Aantal ongelezen berichten"
 #: model_terms:ir.ui.view,arch_db:website_crm_score.crm_case_table_view_leads_sales
 #: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
 msgid "Opportunities"
-msgstr "prospects"
+msgstr "Prospects"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__score_pageview_ids
@@ -468,6 +469,8 @@ msgid ""
 "Sales Team the user is member of. Used to compute the members of a Sales "
 "Team through the inverse one2many"
 msgstr ""
+"Verkoop teams waar van de gebruiker lid is. Gebruikt om de hoeveelheid leden"
+" van een verkoopteam mee te berekenen door een omgekeerde one2many."
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_team__team_user_ids
@@ -534,7 +537,7 @@ msgstr "Toewijzing teams"
 #: model:ir.model.fields,field_description:website_crm_score.field_ir_ui_view__track
 #: model:ir.model.fields,field_description:website_crm_score.field_website_page__track
 msgid "Track"
-msgstr "Parallelsessie"
+msgstr "Volg"
 
 #. module: website_crm_score
 #: model:ir.actions.act_window,name:website_crm_score.crm_score_views_action_graph

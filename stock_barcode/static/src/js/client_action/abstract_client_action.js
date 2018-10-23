@@ -1095,9 +1095,9 @@ var ClientAction = AbstractAction.extend({
                 product_id = _.intersection(products, products_in_lots);
             }
             if (! product_id.length) {
-                product_id = lots[0].product_id[0];
+                product_id = [lots[0].product_id[0]];
             }
-            return readProduct(product_id).then(function (product) {
+            return readProduct(product_id[0]).then(function (product) {
                 var lot = _.find(lots, function (lot) {
                     return lot.product_id[0] === product.id;
                 });
@@ -1106,11 +1106,25 @@ var ClientAction = AbstractAction.extend({
         };
 
         var searchRead = function (barcode) {
-            var def = self._rpc({
-                model: 'stock.production.lot',
-                method: 'search_read',
-                domain: [['name', '=', barcode]],
+            // Check before if it exists reservation with the lot.
+            var line_with_lot = _.find(self.currentState.move_line_ids, function (line) {
+                return (line.lot_id && line.lot_id[1] === barcode) || line.lot_name === barcode;
             });
+            var def;
+            if (line_with_lot) {
+                def = $.when([{
+                    name: barcode,
+                    display_name: barcode,
+                    id: line_with_lot.lot_id[0],
+                    product_id: [line_with_lot.product_id.id, line_with_lot.display_name],
+                }]);
+            } else {
+                def = self._rpc({
+                    model: 'stock.production.lot',
+                    method: 'search_read',
+                    domain: [['name', '=', barcode]],
+                });
+            }
             return def.then(function (res) {
                 if (! res.length) {
                     errorMessage = _t('The scanned lot does not match an existing one.');

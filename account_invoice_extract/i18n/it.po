@@ -42,7 +42,7 @@ msgstr ""
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.res_config_settings_view_form
 msgid "Autocomplete Vendor Bills (OCR + AI)"
-msgstr ""
+msgstr "Compilazione automatica fatture fornitori (OCR + AI)"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_res_config_settings__extract_show_ocr_option_selection

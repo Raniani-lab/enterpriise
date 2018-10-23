@@ -3,17 +3,17 @@
 # * website_form_editor
 # 
 # Translators:
-# Yoshi Tashiro <tashiro@roomsfor.hk>, 2017
-# 高木正勝 <masakatsu.takagi@pro-spire.co.jp>, 2017
-# Martin Trigaux <mat@odoo.com>, 2017
-# Norimichi Sugimoto <norimichi.sugimoto@tls-ltd.co.jp>, 2017
+# Martin Trigaux, 2018
+# Yoshi Tashiro <tashiro@roomsfor.hk>, 2018
+# 高木正勝 <masakatsu.takagi@pro-spire.co.jp>, 2018
+# Norimichi Sugimoto <norimichi.sugimoto@tls-ltd.co.jp>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 10.saas~18+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-20 11:33+0000\n"
-"PO-Revision-Date: 2017-09-20 11:33+0000\n"
-"Last-Translator: Norimichi Sugimoto <norimichi.sugimoto@tls-ltd.co.jp>, 2017\n"
+"POT-Creation-Date: 2018-09-18 10:05+0000\n"
+"PO-Revision-Date: 2018-09-18 10:05+0000\n"
+"Last-Translator: Norimichi Sugimoto <norimichi.sugimoto@tls-ltd.co.jp>, 2018\n"
 "Language-Team: Japanese (https://www.transifex.com/odoo/teams/41243/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,35 +23,28 @@ msgstr ""
 
 #. module: website_form_editor
 #. openerp-web
-#: code:addons/website_form_editor/static/src/xml/website_form_editor.xml:11
+#: code:addons/website_form_editor/static/src/xml/website_form_editor.xml:12
 #, python-format
 msgid "&times;"
 msgstr "&times;"
 
 #. module: website_form_editor
-#: model:ir.ui.view,arch_db:website_form_editor.s_website_form
-msgid ""
-"<span class=\"btn btn-primary btn-lg o_website_form_send\">Send</span>\n"
-"                        <span id=\"o_website_form_result\"/>"
-msgstr ""
-
-#. module: website_form_editor
-#: model:ir.ui.view,arch_db:website_form_editor.snippet_options
+#: model_terms:ir.ui.view,arch_db:website_form_editor.snippet_options
 msgid "Add a custom field"
 msgstr ""
 
 #. module: website_form_editor
-#: model:ir.ui.view,arch_db:website_form_editor.snippet_options
+#: model_terms:ir.ui.view,arch_db:website_form_editor.snippet_options
 msgid "Add an existing field"
 msgstr ""
 
 #. module: website_form_editor
-#: model:ir.ui.view,arch_db:website_form_editor.snippet_options
+#: model_terms:ir.ui.view,arch_db:website_form_editor.snippet_options
 msgid "Change Form Parameters"
 msgstr ""
 
 #. module: website_form_editor
-#: model:ir.ui.view,arch_db:website_form_editor.snippet_options
+#: model_terms:ir.ui.view,arch_db:website_form_editor.snippet_options
 msgid "Checkbox"
 msgstr ""
 
@@ -63,37 +56,37 @@ msgid "Close"
 msgstr "閉じる"
 
 #. module: website_form_editor
-#: model:ir.ui.view,arch_db:website_form_editor.snippet_options
+#: model_terms:ir.ui.view,arch_db:website_form_editor.snippet_options
 msgid "Date"
 msgstr "日付"
 
 #. module: website_form_editor
-#: model:ir.ui.view,arch_db:website_form_editor.snippet_options
+#: model_terms:ir.ui.view,arch_db:website_form_editor.snippet_options
 msgid "Date &amp; Time"
 msgstr ""
 
 #. module: website_form_editor
-#: model:ir.ui.view,arch_db:website_form_editor.snippet_options
+#: model_terms:ir.ui.view,arch_db:website_form_editor.snippet_options
 msgid "Decimal Number"
 msgstr ""
 
 #. module: website_form_editor
-#: model:ir.ui.view,arch_db:website_form_editor.snippet_options
+#: model_terms:ir.ui.view,arch_db:website_form_editor.snippet_options
 msgid "File Upload"
 msgstr "ファイルアップロード"
 
 #. module: website_form_editor
-#: model:ir.ui.view,arch_db:website_form_editor.snippet_options
+#: model_terms:ir.ui.view,arch_db:website_form_editor.snippet_options
 msgid "Hidden"
 msgstr "非表示"
 
 #. module: website_form_editor
-#: model:ir.ui.view,arch_db:website_form_editor.snippet_options
+#: model_terms:ir.ui.view,arch_db:website_form_editor.snippet_options
 msgid "Long Text"
 msgstr ""
 
 #. module: website_form_editor
-#: model:ir.ui.view,arch_db:website_form_editor.snippet_options
+#: model_terms:ir.ui.view,arch_db:website_form_editor.snippet_options
 msgid "Multiple Checkboxes"
 msgstr ""
 
@@ -105,17 +98,17 @@ msgid "No matching record !"
 msgstr "該当レコードがありません。"
 
 #. module: website_form_editor
-#: model:ir.ui.view,arch_db:website_form_editor.snippet_options
+#: model_terms:ir.ui.view,arch_db:website_form_editor.snippet_options
 msgid "Number"
 msgstr "番号"
 
 #. module: website_form_editor
-#: model:ir.ui.view,arch_db:website_form_editor.snippet_options
+#: model_terms:ir.ui.view,arch_db:website_form_editor.snippet_options
 msgid "Radio Buttons"
 msgstr "ラジオボタン"
 
 #. module: website_form_editor
-#: model:ir.ui.view,arch_db:website_form_editor.snippet_options
+#: model_terms:ir.ui.view,arch_db:website_form_editor.snippet_options
 msgid "Required"
 msgstr "必須"
 
@@ -127,16 +120,21 @@ msgid "Save"
 msgstr "保存"
 
 #. module: website_form_editor
-#: model:ir.ui.view,arch_db:website_form_editor.snippet_options
+#: model_terms:ir.ui.view,arch_db:website_form_editor.snippet_options
 msgid "Selection"
 msgstr "選択"
 
 #. module: website_form_editor
-#: model:ir.ui.view,arch_db:website_form_editor.snippet_options
+#: model_terms:ir.ui.view,arch_db:website_form_editor.s_website_form
+msgid "Send"
+msgstr "送信"
+
+#. module: website_form_editor
+#: model_terms:ir.ui.view,arch_db:website_form_editor.snippet_options
 msgid "Text"
 msgstr "テキスト"
 
 #. module: website_form_editor
-#: model:ir.ui.view,arch_db:website_form_editor.ir_model_view
+#: model_terms:ir.ui.view,arch_db:website_form_editor.ir_model_view
 msgid "Website Forms"
 msgstr ""

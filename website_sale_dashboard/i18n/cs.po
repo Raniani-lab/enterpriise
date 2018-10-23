@@ -196,7 +196,7 @@ msgstr ""
 #. module: website_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.website_sale_dashboard_onboarding_panel
 msgid "o_onboarding_orange"
-msgstr ""
+msgstr "o_onboarding_orange"
 
 #. module: website_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.website_sale_dashboard_onboarding_panel

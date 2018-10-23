@@ -864,7 +864,7 @@ var DocumentsKanbanController = KanbanController.extend({
                 self._rpc({
                     model: 'ir.attachment',
                     method: 'write',
-                    args: [[ev.data.id], {datas: data, type: 'binary', mimetype: mimetype, datas_fname: f.name}],
+                    args: [[ev.data.id], {datas: data, mimetype: mimetype, datas_fname: f.name}],
                 }).always(function () {
                     $upload_input.removeAttr('disabled');
                     $upload_input.val("");

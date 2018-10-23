@@ -37,7 +37,7 @@ QUnit.module('relational_fields', {
     QUnit.module('FieldStatus');
 
     QUnit.test('statusbar is rendered correclty on small devices', function (assert) {
-        assert.expect(6);
+        assert.expect(7);
 
         var form = createView({
             View: FormView,
@@ -69,6 +69,8 @@ QUnit.module('relational_fields', {
             "dropdown should be visible");
         assert.strictEqual(form.$('.o_statusbar_status .dropdown-menu button').length, 3,
             "should have 3 status");
+        assert.strictEqual(form.$('.o_statusbar_status button:disabled').length, 3,
+            "all status should be disabled");
         var $activeStatus = form.$('.o_statusbar_status .dropdown-menu button[data-value=4]');
         assert.ok($activeStatus.hasClass('btn-primary'), "active status should be btn-primary");
 
@@ -111,6 +113,37 @@ QUnit.module('relational_fields', {
             'statusbar widget dropdown second button should display the second record display_name');
         assert.strictEqual(form.$('.o_statusbar_status .dropdown-menu button').eq(2).text().trim(), 'aaa',
             'statusbar widget dropdown third button should display the third record display_name');
+        form.destroy();
+    });
+
+    QUnit.test('clickable statusbar widget on mobile view', function (assert) {
+        assert.expect(3);
+
+        var form = createView({
+            View: FormView,
+            model: 'partner',
+            data: this.data,
+            arch:'<form string="Partners">' +
+                    '<header><field name="trululu" widget="statusbar" options=\'{"clickable": "1"}\'/></header>' +
+                '</form>',
+            res_id: 1,
+            config: {
+                device: {
+                    size_class: config.device.SIZES.VSM,
+                }
+            },
+        });
+
+        var $selectedStatus = form.$('.o_statusbar_status button[data-value="4"]');
+        assert.ok($selectedStatus.hasClass('btn-primary') && $selectedStatus.hasClass('disabled'),
+            "selected status should be btn-primary and disabled");
+        var $clickable = form.$('.o_statusbar_status button.btn-secondary:not(.dropdown-toggle):not(:disabled)');
+        assert.strictEqual($clickable.length, 2,
+            "other status should be btn-secondary and not disabled");
+        $clickable.first().click(); // first status clicked
+        var $status = form.$('.o_statusbar_status button[data-value="1"]');
+        assert.ok($status.hasClass("btn-primary") && $status.hasClass("disabled"),
+            "value should have been updated");
         form.destroy();
     });
 });

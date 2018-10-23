@@ -41,7 +41,7 @@ msgstr "% 高興"
 #. module: helpdesk
 #: model_terms:digest.tip,tip_description:helpdesk.digest_tip_helpdesk_0
 msgid "% endif"
-msgstr ""
+msgstr "% endif"
 
 #. module: helpdesk
 #: model_terms:digest.tip,tip_description:helpdesk.digest_tip_helpdesk_0
@@ -204,7 +204,7 @@ msgstr ""
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.tickets_followup
 msgid "<small class=\"text-right\">Status:</small>"
-msgstr ""
+msgstr "<small class=\"text-right\">狀態</small>"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.view_partner_form_inherit_helpdesk
@@ -274,7 +274,7 @@ msgstr ""
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__access_warning
 msgid "Access warning"
-msgstr ""
+msgstr "訪問警告"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__message_needaction
@@ -781,7 +781,7 @@ msgstr ""
 #. module: helpdesk
 #: model:ir.model,name:helpdesk.model_digest_digest
 msgid "Digest"
-msgstr ""
+msgstr "摘要"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla__display_name
@@ -812,7 +812,7 @@ msgstr "文檔"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_kanban
 msgid "Dropdown menu"
-msgstr ""
+msgstr "下拉選單"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_kanban
@@ -1088,7 +1088,7 @@ msgstr "如果勾選此項，有新消息會提醒您。"
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_team__message_has_error
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_ticket__message_has_error
 msgid "If checked, some messages have a delivery error."
-msgstr ""
+msgstr "如果勾選此項， 某些信息將會產生傳遞錯誤。"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_kanban
@@ -1099,7 +1099,7 @@ msgstr "重要信息"
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_kanban
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_kanban
 msgid "In #{kanban_getcolorname(record.color.raw_value)}"
-msgstr ""
+msgstr "在 #{kanban_getcolorname(record.color.raw_value)}"
 
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_team__use_website_helpdesk_livechat
@@ -2213,7 +2213,7 @@ msgstr "今天的活動"
 #. module: helpdesk
 #: model_terms:digest.tip,tip_description:helpdesk.digest_tip_helpdesk_0
 msgid "Try Now"
-msgstr ""
+msgstr "現在試用"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__use_twitter

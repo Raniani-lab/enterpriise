@@ -983,7 +983,7 @@ msgstr "Počet akcí"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_has_error_counter
 msgid "Number of error"
-msgstr ""
+msgstr "Počet chyb"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__message_needaction_counter

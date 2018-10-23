@@ -202,7 +202,7 @@ msgstr "Son Güncelleme"
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__message_main_attachment_id
 msgid "Main Attachment"
-msgstr ""
+msgstr "Ana Ek"
 
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__message_has_error
@@ -222,7 +222,7 @@ msgstr "Eylemlerin Sayısı"
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__message_has_error_counter
 msgid "Number of error"
-msgstr ""
+msgstr "Hata Sayısı"
 
 #. module: mail_github
 #: model:ir.model.fields,help:mail_github.field_mail_channel_github__message_needaction_counter

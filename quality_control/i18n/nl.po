@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2018
 msgid ""
 msgstr ""
@@ -30,6 +31,8 @@ msgid ""
 "<i class=\"fa fa-envelope-o\" role=\"img\" aria-label=\"Domain alias\" "
 "title=\"Domain alias\"/>&amp;nbsp;"
 msgstr ""
+"<i class=\"fa fa-envelope-o\" role=\"img\" aria-label=\"Domain alias\" "
+"title=\"Domain alias\"/>&amp;nbsp;"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_form_inherit_quality_control
@@ -76,12 +79,12 @@ msgstr "<span>van </span>"
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_form_inherit_quality_control
 msgid "<span>to </span>"
-msgstr "<span>tot </span>"
+msgstr "<span>t/m </span>"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.view_quality_point_kanban
 msgid "<strong>Operation :</strong>"
-msgstr "<strong>Operatie :</strong>"
+msgstr "<strong>Bewerking :</strong>"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.view_quality_point_kanban
@@ -101,7 +104,7 @@ msgstr "Voeg een nieuw label toe"
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_form
 msgid "Alert(s)"
-msgstr "Waarschuwingen"
+msgstr "Waarschuwing(en)"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_stock_picking__quality_alert_ids
@@ -141,7 +144,7 @@ msgstr "Datum gecontroleerd"
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_stock_picking__check_ids
 msgid "Checks"
-msgstr "Cheques"
+msgstr "Controles"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_team_dashboard_view_kanban
@@ -392,7 +395,7 @@ msgid ""
 "Note that the easiest way to create a quality check is to do it directly from a logistic operation,\n"
 "              thanks to the use of quality control points."
 msgstr ""
-"Merk op dat de gemakkelijkste manier om een kwaliteitscontrole aan te maken is via een rechtstreekse logistieke operatie,\n"
+"Merk op dat de gemakkelijkste manier om een kwaliteitscontrole aan te maken is via een rechtstreekse logistieke bewerking,\n"
 "dankzij het gebruik van kwaliteitscontrolepunten."
 
 #. module: quality_control
@@ -535,7 +538,7 @@ msgstr "Kwaliteitscontrole analyses"
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_stock_picking__quality_check_fail
 msgid "Quality Check Fail"
-msgstr "Kwaliteitscontrole gefaald"
+msgstr "Kwaliteitscontrole mislukt"
 
 #. module: quality_control
 #: code:addons/quality_control/models/quality.py:171
@@ -609,6 +612,8 @@ msgid ""
 "Quality Teams group the different quality alerts/checks\n"
 "              according to the roles (teams) that need them."
 msgstr ""
+"Kwaliteitsteams groeperen de verschillende kwaliteit waarschuwingen/controles\n"
+"volgende re rollen (teams) die ze nodig hebben."
 
 #. module: quality_control
 #: selection:quality.point,measure_frequency_type:0

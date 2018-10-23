@@ -133,6 +133,8 @@ class YodleeProviderAccount(models.Model):
                 resp = requests.delete(url=url, params=params, data=data, headers=headerVal, timeout=60)
         except requests.exceptions.Timeout:
             raise UserError(_('Timeout: the server did not reply within 30s'))
+        except requests.exceptions.ConnectionError:
+            raise UserError(_('Server not reachable, please try again later'))
         # Manage errors and get new token if needed
         if self.check_yodlee_error(resp) == 'invalid_auth':
             self.get_auth_tokens()
@@ -178,6 +180,16 @@ class YodleeProviderAccount(models.Model):
                 'context': self.env.context,
                 }
 
+    def _getStatus(self, status):
+        if status == 1:
+            return 'ACTION_ABANDONED'
+        if status == 2:
+            return 'SUCCESS'
+        if status == 3:
+            return 'FAILED'
+        else:
+            return status
+
     @api.multi
     def callback_institution(self, informations, state, journal_id):
         action = self.env.ref('account.open_account_journal_dashboard_kanban').id
@@ -194,7 +206,8 @@ class YodleeProviderAccount(models.Model):
                     'name': element.get('bankName') or _('Online institution'),
                     'provider_account_identifier': element.get('providerAccountId'),
                     'provider_identifier': element.get('providerId'),
-                    'status': element.get('status'),
+                    'status': self._getStatus(element.get('status')),
+                    'status_code': element.get('code'),
                     'message': element.get('reason'),
                     'last_refresh': fields.Datetime.now(),
                     'action_required': False,
@@ -205,14 +218,18 @@ class YodleeProviderAccount(models.Model):
                     self.yodlee_fetch('/add_institution', {}, {'providerId': element.get('providerId')}, 'POST')
             else:
                 new_provider_account.write({
-                    'status': element.get('status'),
+                    'status': self._getStatus(element.get('status')),
+                    'status_code': element.get('code'),
                     'message': element.get('reason'),
                     'last_refresh': fields.Datetime.now(),
                     'action_required': False if element.get('status') == 'SUCCESS' else True,
                 })
+                if self._getStatus(element.get('status')) == 'FAILED':
+                    message = _('Error %s, message: %s') % (element.get('code'), element.get('reason'))
+                    new_provider_account.log_message(message)
             # Fetch accounts
             res = new_provider_account.add_update_accounts()
-            res.update({'status': element.get('status'),
+            res.update({'status': self._getStatus(element.get('status')),
                 'message': element.get('reason'),
                 'method': state,
                 'journal_id': journal_id})
@@ -276,6 +293,9 @@ class YodleeProviderAccount(models.Model):
                 'last_refresh': info.get('lastRefreshed'),
                 'action_required': False if info.get('status') == 'SUCCESS' else True,
                 })
+            if info.get('status') == 'FAILED':
+                message = _('message: %s') % (self.get_error_from_code(info.get('statusCode')),)
+                self.log_message(message)
         return True
 
     @api.model

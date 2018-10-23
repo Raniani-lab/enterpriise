@@ -4,16 +4,18 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
-# 珠海-杜哥 <liangjia@qq.com>, 2018
+# liAnGjiA <liangjia@qq.com>, 2018
 # Allen Xie <xfz@forisen.com>, 2018
-# keecome <7017511@qq.com>, 2018
+# 广州救火 <7017511@qq.com>, 2018
+# e2f <projects@e2f.com>, 2018
+# snow wang <147156565@qq.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-18 10:05+0000\n"
-"PO-Revision-Date: 2018-09-18 10:05+0000\n"
-"Last-Translator: keecome <7017511@qq.com>, 2018\n"
+"POT-Creation-Date: 2018-10-08 07:14+0000\n"
+"PO-Revision-Date: 2018-10-08 07:14+0000\n"
+"Last-Translator: snow wang <147156565@qq.com>, 2018\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -108,8 +110,8 @@ msgid ""
 "[('trigger_type', '=', 'begin')]}\">(save the campaign to make its "
 "activities selectable)</small>"
 msgstr ""
-"<small attrs=\"{'invisible': [('trigger_type', '=', 'begin')]}\" "
-"class=\"oe_edit_only text-muted\"/>"
+"<small class=\"oe_edit_only text-muted\" attrs=\"{'invisible': "
+"[('trigger_type', '=', 'begin')]}\">(保存营销活动以使其活动变为可选择状态)</small>"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
@@ -189,6 +191,18 @@ msgid "Activity will only be performed if record satisfies this domain"
 msgstr "只有在记录符合此领域时才会执行活动"
 
 #. module: marketing_automation
+#: model:mail.mass_mailing,name:marketing_automation.mass_mailing_after_7_days
+#: model:utm.source,name:marketing_automation.mass_mailing_after_7_days_utm_source
+msgid "After 7 days"
+msgstr "7 天后"
+
+#. module: marketing_automation
+#: model:marketing.activity,name:marketing_automation.marketing_activity_2
+#: model:utm.source,name:marketing_automation.marketing_activity_2_utm_source
+msgid "After 7 days (if not yet customers)"
+msgstr "7天后（如果还不是客户）"
+
+#. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_search
 msgid "Archived"
 msgstr "已归档"
@@ -260,6 +274,12 @@ msgstr "点击编辑按钮, 在工作流添加新的活动"
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Clicked"
 msgstr "点击率"
+
+#. module: marketing_automation
+#: model:marketing.campaign,name:marketing_automation.marketing_campaign_1
+#: model:utm.campaign,name:marketing_automation.marketing_campaign_1_utm_campaign
+msgid "Commercial prospection"
+msgstr "商业勘探"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_search
@@ -609,7 +629,6 @@ msgstr "已标记为已完成"
 
 #. module: marketing_automation
 #: model:ir.model,name:marketing_automation.model_marketing_activity
-#: model:ir.model.fields,field_description:marketing_automation.field_account_invoice_send__marketing_activity_id
 #: model:ir.model.fields,field_description:marketing_automation.field_mail_compose_message__marketing_activity_id
 #: model:ir.model.fields,field_description:marketing_automation.field_survey_mail_compose_message__marketing_activity_id
 msgid "Marketing Activity"
@@ -681,6 +700,13 @@ msgid "Mass mailing statistics"
 msgstr "群发邮件阶段"
 
 #. module: marketing_automation
+#: model:ir.actions.server,name:marketing_automation.ir_action_server_action_message_sales_person
+#: model:marketing.activity,name:marketing_automation.marketing_activity_3
+#: model:utm.source,name:marketing_automation.marketing_activity_3_utm_source
+msgid "Message for sales person"
+msgstr "销售人员消息"
+
+#. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__model_id
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__model_id
 msgid "Model"
@@ -744,6 +770,14 @@ msgstr "尚未回复"
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant__model_id
 msgid "Object"
 msgstr "对象"
+
+#. module: marketing_automation
+#: model:mail.mass_mailing,name:marketing_automation.mass_mailing_offer_free_trial
+#: model:marketing.activity,name:marketing_automation.marketing_activity_1
+#: model:utm.source,name:marketing_automation.marketing_activity_1_utm_source
+#: model:utm.source,name:marketing_automation.mass_mailing_offer_free_trial_utm_source
+msgid "Offer free catalog"
+msgstr "提供免费试用"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__opened

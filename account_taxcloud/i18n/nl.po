@@ -89,6 +89,11 @@ msgid ""
 "internal category of the product. If thereisn't any, the one on the product "
 "itself will be used. Only used in United States."
 msgstr ""
+"Elk product behoort tot een specifieke BTW categorie vooraf bepaald door de "
+"overheid. Het systeem zal gebruik maken van Tax Cloud categorie geplaatst op"
+" de interne category van het product. Als er geen is dan zal de categorie "
+"van het product zelf gebruikt worden. Enkel in gebruik in de Verenigde "
+"Staten."
 
 #. module: account_taxcloud
 #: model:ir.model,name:account_taxcloud.model_account_fiscal_position
@@ -239,8 +244,8 @@ msgstr ""
 msgid ""
 "The tax rates have been updated, you may want to check it before validation"
 msgstr ""
-"De belastingtarieven zijn geüpdatet, u wilt ze mogelijk controleren voor ze "
-"te valideren"
+"De BTW tarieven zijn geüpdatet, u wilt ze mogelijk controleren voor het "
+"bevestigen"
 
 #. module: account_taxcloud
 #: code:addons/account_taxcloud/models/account_invoice.py:43

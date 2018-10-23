@@ -21,7 +21,7 @@
         <field name="code">CHTAX_200</field>
         <field name="sequence" eval="1"/>
         <field name="level" eval="2"/>
-        <field name="formulas">balance = CHTAX_301a.balance + CHTAX_302a.balance + CHTAX_311a.balance + CHTAX_341a.balance + CHTAX_342a.balance + CHTAX_381a.balance + CHTAX_382a.balance + CHTAX_220_200.balance + CHTAX_230_200.balance + CHTAX_381a_200.balance + CHTAX_382a_200.balance</field>
+        <field name="formulas">balance = CHTAX_302a.balance + CHTAX_311a.balance + CHTAX_342a.balance + CHTAX_381a.balance + CHTAX_382a.balance + CHTAX_220_200.balance + CHTAX_230_200.balance + CHTAX_381a_200.balance + CHTAX_382a_200.balance</field>
         <field name="parent_id" ref="financial_report_line_chtax_299"/>
         <field name="special_date_changer">strict_range</field>
     </record>
@@ -712,7 +712,7 @@
         <field name="parent_id" ref="account_financial_report_line_ch_28"/>
         <field name="special_date_changer">from_beginning</field>
         <field name="green_on_positive">true</field>
-        <field name="domain" eval="[('account_id.user_type_id', '=', 12)]"/>
+        <field name="domain" eval="[('account_id.user_type_id', '=', ref('account.data_unaffected_earnings'))]"/>
         <field name="formulas">balance = CH_R.balance - sum.balance</field>
     </record>
 

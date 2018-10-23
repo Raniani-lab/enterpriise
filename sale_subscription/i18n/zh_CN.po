@@ -5,7 +5,7 @@
 # Translators:
 # Martin Trigaux, 2018
 # Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
-# 珠海-杜哥 <liangjia@qq.com>, 2018
+# liAnGjiA <liangjia@qq.com>, 2018
 # Henry Zhou <zhouhenry@live.com>, 2018
 # 菜小蛇 <lttlsnk@gmail.com>, 2018
 # 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2018
@@ -18,23 +18,62 @@
 # fausthuang, 2018
 # bower Guo <124358678@qq.com>, 2018
 # roye w <159820@qq.com>, 2018
-# keecome <7017511@qq.com>, 2018
+# 广州救火 <7017511@qq.com>, 2018
 # e2f_cn c5 <jarvisn@ecinnovations.com>, 2018
 # snow wang <147156565@qq.com>, 2018
 # neter ji <jifuyi@qq.com>, 2018
+# rejen he <251442037@qq.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-02 10:32+0000\n"
-"PO-Revision-Date: 2018-10-02 10:32+0000\n"
-"Last-Translator: neter ji <jifuyi@qq.com>, 2018\n"
+"POT-Creation-Date: 2018-10-08 07:14+0000\n"
+"PO-Revision-Date: 2018-10-08 07:14+0000\n"
+"Last-Translator: rejen he <251442037@qq.com>, 2018\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: sale_subscription
+#: model:sale.subscription.template,description:sale_subscription.cleaning_monthly
+#: model:sale.subscription.template,description:sale_subscription.cleaning_yearly
+msgid ""
+"\n"
+"Payment\n"
+"All payments are due upon receipt. If a payment is not received or payment method is declined, the buyer forfeits the ownership of any items purchased. If no payment is received, no items will be shipped.\n"
+"\n"
+"Shipping Policies\n"
+"Shipping will be paid for by the buyer in the amount agreed upon by the seller at the time of purchase. If an item is lost during shipping, the total cost of item, including shipping, will be refunded to the buyer by the seller. Shipping costs may double if shipping internationally. If an item is damaged during shipping, seller will not be held responsible.\n"
+"\n"
+"Refund/Return Policy\n"
+"Items are entitled to be refunded or returned based on complaint. If an item is damaged during shipping, a replacement item will be sent free of charge. If an item is unsatisfactory, a written explanation is needed before the item may be considered for a refund. Buyer must take into account the description of the item before requesting a refund. If the item matches the description by the seller and the buyer is unsatisfied, seller is not responsible for refund. Exchanges are granted on a case-by-case basis.\n"
+"\n"
+"Cancellation\n"
+"An item may be cancelled up until payment has been processed. Once payment has been processed, the buyer is responsible for payment.\n"
+"\n"
+"Complaints\n"
+"Any complaints about items or sellers may be sent to our support team: support@wesellyourstuff.com or (888) 555-0198. There is no guarantee of a resolution. Each case will be looked at individually, and the seller will be in contact as well.\n"
+"            "
+msgstr ""
+"\n"
+"付款\n"
+"所有款项应在收到后到期。如果未收到付款或付款方式遭拒，买方将丧失购买商品的所有权。如果没有收到付款，则不会发货。\n"
+"\n"
+"运输政策\n"
+"运费将由买方按照卖方在购买时商定的金额支付。如果物品在运输过程中丢失，物品的总成本（包括运费）将由卖方退还给买方。如果国际运输，运费可能会翻倍。如果物品在运输过程中损坏，卖方将不承担任何责任。\n"
+"\n"
+"退款/退货政策\n"
+"物品有权根据投诉退款或退回。如果物品在运输过程中损坏，将免费发送更换物品。如果某件商品不满意，则在考虑退款之前需要提供书面说明。在请求退款之前，买方必须考虑该项目的描述。如果商品与卖家的描述相符且买家不满意，则卖家不负责退款。交易是根据具体情况授予的。\n"
+"\n"
+"消除\n"
+"在处理完付款之前，商品可能会被取消。付款处理完毕后，买方负责付款。\n"
+"\n"
+"投诉\n"
+"有关物品或卖家的任何投诉可能会发送给我们的支持团队：support@wesellyourstuff.com或(888)555-0198。无法保证解决问题。每个案例都将单独查看，卖家也会联系。\n"
+"            "
 
 #. module: sale_subscription
 #: model:mail.template,subject:sale_subscription.mail_template_subscription_invoice
@@ -1252,7 +1291,7 @@ msgstr "绑定类型"
 msgid ""
 "Calculate the ratio between the number of the best ('great') ratings and the"
 " total number of ratings"
-msgstr "计算最佳（“高分”）评分数与评分总数之间的比率"
+msgstr "计算最佳（'高分' ）评分数与评分总数之间的比率"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -1452,7 +1491,7 @@ msgstr "创建一个新的订阅提醒"
 #. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_stage_action
 msgid "Create a new subscription stage"
-msgstr "创建新订阅"
+msgstr "创建新订阅阶段"
 
 #. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_template_action
@@ -2270,7 +2309,10 @@ msgid "Modification"
 msgstr "修改"
 
 #. module: sale_subscription
+#: model:product.product,uom_name:sale_subscription.product_office_cleaning
+#: model:product.template,uom_name:sale_subscription.product_office_cleaning_product_template
 #: selection:sale.subscription.template,recurring_rule_type:0
+#: model:uom.uom,name:sale_subscription.subscription_uom_month
 msgid "Month(s)"
 msgstr "月"
 
@@ -2392,6 +2434,18 @@ msgstr ""
 "\n"
 "谈判后，销售人员应该终止或重新开始\n"
 "待定订阅。"
+
+#. module: sale_subscription
+#: model:product.product,name:sale_subscription.product_office_cleaning
+#: model:product.template,name:sale_subscription.product_office_cleaning_product_template
+msgid "Office Cleaning Subscription (Monthly)"
+msgstr "办公室清洁订阅（每月）"
+
+#. module: sale_subscription
+#: model:product.product,name:sale_subscription.product_office_cleaning_yearly
+#: model:product.template,name:sale_subscription.product_office_cleaning_yearly_product_template
+msgid "Office Cleaning Subscription (Yearly)"
+msgstr "办公室清洁订阅（每年）"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__on_change_fields
@@ -3176,6 +3230,12 @@ msgid "Tags"
 msgstr "标签"
 
 #. module: sale_subscription
+#: model:base.automation,name:sale_subscription.subscription_alert_percent_revenue_base_automation
+#: model:sale.subscription.alert,name:sale_subscription.subscription_alert_percent_revenue
+msgid "Take action on less satisfied clients"
+msgstr "投诉"
+
+#. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__recurring_amount_tax
 msgid "Taxes"
 msgstr "税"
@@ -3289,6 +3349,11 @@ msgid ""
 "This stage is folded in the kanban view when there are not records in that "
 "stage to display."
 msgstr "当在这个阶段没有记录显示时，在看板视图中就会被折叠。"
+
+#. module: sale_subscription
+#: model:uom.category,name:sale_subscription.uom_categ_time
+msgid "Time"
+msgstr "时间"
 
 #. module: sale_subscription
 #: selection:sale.subscription.alert,trigger_condition:0
@@ -3419,12 +3484,12 @@ msgstr "未读消息计数器"
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_form
 #: model_terms:ir.ui.view,arch_db:sale_subscription.wizard_form_view
 msgid "Upsell"
-msgstr "超售"
+msgstr "超卖"
 
 #. module: sale_subscription
 #: selection:sale.order,subscription_management:0
 msgid "Upselling"
-msgstr "超售"
+msgstr "超卖"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__usage
@@ -3574,7 +3639,10 @@ msgid ""
 msgstr "编写动作将执行的Python代码。一些变量可供使用;有关python表达式的帮助在帮助选项卡中给出。"
 
 #. module: sale_subscription
+#: model:product.product,uom_name:sale_subscription.product_office_cleaning_yearly
+#: model:product.template,uom_name:sale_subscription.product_office_cleaning_yearly_product_template
 #: selection:sale.subscription.template,recurring_rule_type:0
+#: model:uom.uom,name:sale_subscription.subscription_uom_year
 msgid "Year(s)"
 msgstr "年"
 
@@ -3653,6 +3721,14 @@ msgstr "例如月度订阅"
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid "e.g. Update order quantity"
 msgstr "例如：更新订单数量"
+
+#. module: sale_subscription
+#: model:product.product,weight_uom_name:sale_subscription.product_office_cleaning
+#: model:product.product,weight_uom_name:sale_subscription.product_office_cleaning_yearly
+#: model:product.template,weight_uom_name:sale_subscription.product_office_cleaning_product_template
+#: model:product.template,weight_uom_name:sale_subscription.product_office_cleaning_yearly_product_template
+msgid "kg"
+msgstr "公斤"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription

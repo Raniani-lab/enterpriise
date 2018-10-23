@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"POT-Creation-Date: 2018-10-02 10:31+0000\n"
+"PO-Revision-Date: 2018-10-02 10:31+0000\n"
 "Last-Translator: Thomas Pot <thomas@open2bizz.nl>, 2018\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -52,7 +52,6 @@ msgstr "Creditfactuur"
 
 #. module: documents_product
 #: model:ir.model.fields,field_description:documents_product.field_res_company__dms_product_settings
-#: model:ir.model.fields,field_description:documents_product.field_res_config_settings__dms_product_settings
 msgid "Dms Product Settings"
 msgstr "DMS Product Instellingen"
 
@@ -68,20 +67,20 @@ msgstr "Heeft business optie"
 
 #. module: documents_product
 #: model:ir.model.fields,field_description:documents_product.field_res_company__product_folder
-#: model:ir.model.fields,field_description:documents_product.field_res_config_settings__product_folder
+#: model:ir.model.fields,field_description:documents_product.field_res_config_settings__dms_product_settings
 msgid "Product Folder"
-msgstr "Product Brochure"
-
-#. module: documents_product
-#: selection:documents.workflow.rule,create_model:0
-msgid "Product Product template"
-msgstr "Product Product Sjabloon"
+msgstr "Productmap"
 
 #. module: documents_product
 #: model:ir.model.fields,field_description:documents_product.field_res_company__product_tags
 #: model:ir.model.fields,field_description:documents_product.field_res_config_settings__product_tags
 msgid "Product Tags"
-msgstr "Product Labels"
+msgstr "Productlabels"
+
+#. module: documents_product
+#: selection:documents.workflow.rule,create_model:0
+msgid "Product template"
+msgstr "Productsjabloon"
 
 #. module: documents_product
 #: model_terms:ir.ui.view,arch_db:documents_product.res_config_settings_view_form
@@ -108,3 +107,8 @@ msgstr "Taak"
 #: selection:documents.workflow.rule,create_model:0
 msgid "Vendor bill"
 msgstr "Leveranciersfactuur"
+
+#. module: documents_product
+#: model:ir.model.fields,field_description:documents_product.field_res_config_settings__product_folder
+msgid "product default folder"
+msgstr "product standaard map"

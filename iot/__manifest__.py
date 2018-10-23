@@ -9,7 +9,7 @@
     'description': """
 This module provides management of your IoT Boxes inside Odoo.
 """,
-    'depends': ['web'],
+    'depends': ['mail','web'],
     'data': [
         'wizard/iot_wizard.xml',
         'views/iot_views.xml',

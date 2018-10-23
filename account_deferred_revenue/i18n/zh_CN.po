@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
 # neter ji <jifuyi@qq.com>, 2018
 msgid ""
 msgstr ""
@@ -207,7 +208,7 @@ msgstr "在草稿状态可识别"
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
 msgid "Residual"
-msgstr "残留"
+msgstr "残值"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form

@@ -4,15 +4,17 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2018
 # Cas Vissers <c.vissers@brahoo.nl>, 2018
+# Cas Vissers <casvissers@brahoo.nl>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
 "PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Cas Vissers <c.vissers@brahoo.nl>, 2018\n"
+"Last-Translator: Cas Vissers <casvissers@brahoo.nl>, 2018\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -28,22 +30,22 @@ msgstr ", van"
 #. module: mrp_account
 #: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "<span>Code</span>"
-msgstr ""
+msgstr "<span>Code</span>"
 
 #. module: mrp_account
 #: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "<span>Cost/hour</span>"
-msgstr ""
+msgstr "<span>Kosten/Uur</span>"
 
 #. module: mrp_account
 #: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "<span>Operation</span>"
-msgstr ""
+msgstr "<span>Bewerking</span>"
 
 #. module: mrp_account
 #: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "<span>Operator</span>"
-msgstr ""
+msgstr "<span>Operator</span>"
 
 #. module: mrp_account
 #: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
@@ -53,12 +55,12 @@ msgstr "<span>Hoeveelheid</span>"
 #. module: mrp_account
 #: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "<span>Raw Materials</span>"
-msgstr ""
+msgstr "<span>Grondstoffen</span>"
 
 #. module: mrp_account
 #: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "<span>Scraps</span>"
-msgstr ""
+msgstr "<span>Afkeuringen</span>"
 
 #. module: mrp_account
 #: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
@@ -68,12 +70,12 @@ msgstr "<span>Totale kost</span>"
 #. module: mrp_account
 #: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "<span>Unit Cost</span>"
-msgstr ""
+msgstr "<span>Kosten per stuk</span>"
 
 #. module: mrp_account
 #: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "<span>Working Time</span>"
-msgstr ""
+msgstr "<span>Werktijd</span>"
 
 #. module: mrp_account
 #: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
@@ -103,7 +105,7 @@ msgstr "Kostenplaats"
 #. module: mrp_account
 #: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "By product(s)"
-msgstr ""
+msgstr "Per product(en)"
 
 #. module: mrp_account
 #: model:ir.actions.report,name:mrp_account.action_cost_struct_mrp_production
@@ -172,7 +174,7 @@ msgstr "Laatst gewijzigd op"
 #. module: mrp_account
 #: model:ir.model,name:mrp_account.model_report_mrp_account_mrp_cost_structure
 msgid "MRP Cost Structure Report"
-msgstr ""
+msgstr "MRP kosten structuur rapport"
 
 #. module: mrp_account
 #: model:ir.model,name:mrp_account.model_product_product
@@ -187,7 +189,7 @@ msgstr "Productsjabloon"
 #. module: mrp_account
 #: model:ir.model,name:mrp_account.model_report_mrp_account_product_template_cost_structure
 msgid "Product Template Cost Structure Report"
-msgstr ""
+msgstr "Productsjabloon kostenstructuur-rapportage"
 
 #. module: mrp_account
 #: model:ir.model,name:mrp_account.model_mrp_production
@@ -217,12 +219,12 @@ msgstr ""
 #. module: mrp_account
 #: model:ir.model,name:mrp_account.model_mrp_workcenter
 msgid "Work Center"
-msgstr "Productieplaats"
+msgstr "Werkplek"
 
 #. module: mrp_account
 #: model:ir.model,name:mrp_account.model_mrp_workcenter_productivity
 msgid "Workcenter Productivity Log"
-msgstr "Werkplaats effectiviteitslog"
+msgstr "Werkplek effectiviteitslog"
 
 #. module: mrp_account
 #: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure

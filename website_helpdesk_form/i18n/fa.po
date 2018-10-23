@@ -8,10 +8,10 @@
 # Hamed Mohammadi <hamed@dehongi.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.3+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 08:34+0000\n"
-"PO-Revision-Date: 2018-06-25 08:34+0000\n"
+"POT-Creation-Date: 2018-09-18 10:05+0000\n"
+"PO-Revision-Date: 2018-09-18 10:05+0000\n"
 "Last-Translator: Hamed Mohammadi <hamed@dehongi.com>, 2018\n"
 "Language-Team: Persian (https://www.transifex.com/odoo/teams/41243/fa/)\n"
 "MIME-Version: 1.0\n"
@@ -21,12 +21,12 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #. module: website_helpdesk_form
-#: model:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
 msgid "Attachment(s)"
 msgstr "پیوست ها"
 
 #. module: website_helpdesk_form
-#: model:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
 msgid "Description"
 msgstr "توصیف"
 
@@ -36,29 +36,28 @@ msgid "Helpdesk Team"
 msgstr "تیم میز پشتیبانی"
 
 #. module: website_helpdesk_form
-#: model:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
 msgid "Send"
 msgstr "ارسال"
 
 #. module: website_helpdesk_form
-#: model:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
 msgid "Subject"
 msgstr "موضوع"
 
 #. module: website_helpdesk_form
-#: model:ir.ui.view,arch_db:website_helpdesk_form.helpdesk_team_view_form_inherit_website_helpdesk_form
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_form.helpdesk_team_view_form_inherit_website_helpdesk_form
 msgid "Submit an issue using this page:<br/>"
 msgstr "با استفاده از این صفحه یک مشگل را گزارش کنید:<br/>"
 
 #. module: website_helpdesk_form
-#: model:ir.ui.view,arch_db:website_helpdesk_form.aboutus_page_ir_ui_view
-#: model:ir.ui.view,arch_db:website_helpdesk_form.ticket_submited
-#: model:website.page,arch_db:website_helpdesk_form.aboutus_page
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_form.aboutus_page_ir_ui_view
+#: model_terms:website.page,arch_db:website_helpdesk_form.aboutus_page
 msgid "Thank you for submitting your issue, our team will get right on it!"
 msgstr "با تشکر از گزارش مشکل، تیم ما مستقیما به آن خواهند پرداخت!"
 
 #. module: website_helpdesk_form
-#: model:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
 msgid "Ticket"
 msgstr "تیکت"
 
@@ -68,18 +67,17 @@ msgid "URL to Submit Issue"
 msgstr "آدرس گزارش مشکل"
 
 #. module: website_helpdesk_form
-#: model:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
 msgid "Your Email"
 msgstr "ایمیل شما"
 
 #. module: website_helpdesk_form
-#: model:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
 msgid "Your Name"
 msgstr "نام"
 
 #. module: website_helpdesk_form
-#: model:ir.ui.view,arch_db:website_helpdesk_form.aboutus_page_ir_ui_view
-#: model:ir.ui.view,arch_db:website_helpdesk_form.ticket_submited
-#: model:website.page,arch_db:website_helpdesk_form.aboutus_page
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_form.aboutus_page_ir_ui_view
+#: model_terms:website.page,arch_db:website_helpdesk_form.aboutus_page
 msgid "Your Ticket Number is"
 msgstr "شماره تیکت شما عبارت است از"

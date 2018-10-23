@@ -32,7 +32,7 @@ class AccountInvoice(models.Model):
     def action_invoice_open(self):
         products = []
         pattern = re.compile(r'[0-9]{2}  [0-9]{2}  [0-9]{4}  [0-9]{7}')
-        for rec in self.invoice_line_ids.filtered(
+        for rec in self.mapped('invoice_line_ids').filtered(
                 'l10n_mx_edi_customs_number'):
             for ped in rec.l10n_mx_edi_customs_number.split(','):
                 if not pattern.match(ped.strip()):

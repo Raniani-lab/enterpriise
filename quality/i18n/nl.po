@@ -92,7 +92,7 @@ msgstr "Aliasdomein"
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_model_id
 msgid "Aliased Model"
-msgstr "Aliased Model"
+msgstr "Aliased model"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__message_attachment_count
@@ -116,7 +116,7 @@ msgstr "Controleer"
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_point__check_count
 msgid "Check Count"
-msgstr "Controleer telling"
+msgstr "Aantal controles"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__color
@@ -144,7 +144,7 @@ msgstr "Bevestigd"
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_check__control_date
 msgid "Control Date"
-msgstr "Datum controle"
+msgstr "Controledatum"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_check__point_id
@@ -609,7 +609,7 @@ msgstr "Kwaliteitswaarschuwing"
 #. module: quality
 #: model:ir.model,name:quality.model_quality_alert_stage
 msgid "Quality Alert Stage"
-msgstr "Kwaliteitswaarschuwing fase"
+msgstr "Kwaliteitswaarschuwingsfase"
 
 #. module: quality
 #: model:ir.model,name:quality.model_quality_alert_team

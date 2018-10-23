@@ -6,13 +6,14 @@
 # Martin Trigaux, 2018
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
 # Thomas Pot <thomas@open2bizz.nl>, 2018
+# Yenthe Van Ginneken <yenthespam@gmail.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Thomas Pot <thomas@open2bizz.nl>, 2018\n"
+"POT-Creation-Date: 2018-10-08 07:14+0000\n"
+"PO-Revision-Date: 2018-10-08 07:14+0000\n"
+"Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2018\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,6 +23,8 @@ msgstr ""
 
 #. module: account_reports_followup
 #: model:account_followup.followup.line,description:account_reports_followup.demo_followup_line3
+#: model:account_followup.followup.line,description:account_reports_followup.demo_followup_line4
+#: model:account_followup.followup.line,description:account_reports_followup.demo_followup_line5
 msgid ""
 "\n"
 "Dear %(partner_name)s,\n"
@@ -241,11 +244,10 @@ msgstr "Betalingsherinnering niveau's"
 #. module: account_reports_followup
 #: model:ir.model,name:account_reports_followup.model_account_followup_report
 msgid "Follow-up Report"
-msgstr ""
+msgstr "Herinnering rapport"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_res_partner__payment_responsible_id
-#: model:ir.model.fields,field_description:account_reports_followup.field_res_users__payment_responsible_id
 msgid "Follow-up Responsible"
 msgstr "Betalingsherinnering verantwoordelijke"
 
@@ -344,7 +346,6 @@ msgstr "Per bedrijf is één betalingsherinnering mogelijk"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,help:account_reports_followup.field_res_partner__payment_responsible_id
-#: model:ir.model.fields,help:account_reports_followup.field_res_users__payment_responsible_id
 msgid ""
 "Optionally you can assign a user to this field, which will make him "
 "responsible for the action."
@@ -464,6 +465,16 @@ msgstr "Totaal credit"
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.account_move_line_partner_tree
 msgid "Total debit"
 msgstr "Totaal debet"
+
+#. module: account_reports_followup
+#: model:account_followup.followup.line,name:account_reports_followup.demo_followup_line4
+msgid "Urging reminder email"
+msgstr "Verstuur urgente herinnering e-mail"
+
+#. module: account_reports_followup
+#: model:account_followup.followup.line,name:account_reports_followup.demo_followup_line5
+msgid "Urging reminder letter"
+msgstr "Verstuur urgente herinneringsbrief"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,help:account_reports_followup.field_account_followup_followup_line__print_letter

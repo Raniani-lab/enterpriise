@@ -4,8 +4,8 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
-# 珠海-杜哥 <liangjia@qq.com>, 2018
 # Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
+# liAnGjiA <liangjia@qq.com>, 2018
 # ChinaMaker <liuct@chinamaker.net>, 2018
 # xu xiaohu <xu.xiaohu@gmail.com>, 2018
 # neter ji <jifuyi@qq.com>, 2018
@@ -55,7 +55,7 @@ msgstr "信用证"
 #. module: documents_sign
 #: model:ir.model,name:documents_sign.model_ir_attachment
 msgid "Document"
-msgstr "单据"
+msgstr "文档"
 
 #. module: documents_sign
 #: model:ir.model.fields,field_description:documents_sign.field_documents_workflow_rule__has_business_option

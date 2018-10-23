@@ -4,7 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
-# 珠海-杜哥 <liangjia@qq.com>, 2018
+# liAnGjiA <liangjia@qq.com>, 2018
 # Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
 # ChinaMaker <liuct@chinamaker.net>, 2018
 msgid ""
@@ -64,7 +64,7 @@ msgstr "动作"
 #: code:addons/web_enterprise/static/src/xml/base.xml:327
 #, python-format
 msgid "Alt"
-msgstr "在"
+msgstr "Alt"
 
 #. module: web_enterprise
 #. openerp-web
@@ -107,7 +107,7 @@ msgstr "公司菜单"
 #: code:addons/web_enterprise/static/src/xml/base.xml:327
 #, python-format
 msgid "Control"
-msgstr "控制"
+msgstr "Control"
 
 #. module: web_enterprise
 #. openerp-web
@@ -154,7 +154,7 @@ msgstr "HTTP 路由"
 #: code:addons/web_enterprise/static/src/js/widgets/user_menu.js:57
 #, python-format
 msgid "Keyboard Shortcuts"
-msgstr "键盘快捷方式"
+msgstr "键盘快捷键"
 
 #. module: web_enterprise
 #. openerp-web
@@ -295,7 +295,7 @@ msgstr "搜索..."
 #: code:addons/web_enterprise/static/src/xml/base.xml:232
 #, python-format
 msgid "Shortcuts"
-msgstr "快捷方式"
+msgstr "快捷键"
 
 #. module: web_enterprise
 #. openerp-web

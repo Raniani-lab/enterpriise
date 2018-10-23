@@ -33,7 +33,9 @@ class pos_config(models.Model):
     _inherit = 'pos.config'
 
     report_sequence_number = fields.Integer()
-    blackbox_pos_production_id = fields.Char("Registered IoT Box serial number", copy=False)
+    blackbox_pos_production_id = fields.Char("Registered IoT Box serial number",
+        help='e.g. BODO002... The IoT Box must be certified by Odoo S.A. to be used with the blackbox.',
+        copy=False)
 
     @api.constrains('blackbox_pos_production_id')
     def _check_one_posbox_per_config(self):
@@ -187,7 +189,6 @@ class pos_session(models.Model):
     def _compute_discounts(self):
         self.amount_of_discounts = 0
         self.total_discount = 0
-
         for order in self.order_ids:
             for line in order.lines:
                 if line.discount > 0:
@@ -195,7 +196,7 @@ class pos_session(models.Model):
 
                     original_line_discount = line.discount
                     line.discount = 0
-                    price_without_discount = line._amount_line_all(None, None)[line.id]['price_subtotal_incl']
+                    price_without_discount = line.price_subtotal_incl
                     line.discount = original_line_discount
 
                     self.total_discount += price_without_discount - line.price_subtotal_incl
@@ -285,10 +286,6 @@ class pos_session(models.Model):
             data[user[0]]['revenue_per_category'] = list(user[1].items())
 
         return data
-
-    # @api.multi
-    # def unlink(self):
-    #     import pudb; pu.db
 
     @api.one
     def _compute_forbidden_modules_installed(self):
@@ -440,6 +437,16 @@ class pos_order_line_pro_forma(models.Model):
     _inherit = 'pos.order.line'
 
     order_id = fields.Many2one('pos.order_pro_forma')
+
+    @api.model
+    def create(self, values):
+        # the pos.order.line create method consider 'order_id' is a pos.order
+        # override to bypass it and generate a name
+        if values.get('order_id') and not values.get('name'):
+            name = self.env['pos.order_pro_forma'].browse(values['order_id']).name
+            values['name'] = "%s-%s" % (name, values.get('id'))
+        return super(pos_order_line_pro_forma, self).create(values)
+
 
 class pos_order_pro_forma(models.Model):
     _name = 'pos.order_pro_forma'
@@ -598,19 +605,24 @@ class product_template(models.Model):
 
         return super(product_template, self).unlink()
 
+    @api.model
+    def _remove_availibility_all_but_blackbox(self):
+        """ Remove all products from the point of sale that were not create by this module 
+        
+        Useful in demo only.
+        Only a subset of demo products should be displayed for the certification process
+        """
+        blackbox_products = self.env['ir.model.data'].search([
+            ('module', '=', 'pos_blackbox_be'), ('model', '=', 'product.template')
+        ])
+        other_products = self.search([
+            ('id', 'not in', blackbox_products.mapped('res_id')), ('available_in_pos', '=', True)
+        ])
+        return other_products.write({'available_in_pos': False})
+
+
 class module(models.Model):
     _inherit = 'ir.module.module'
-
-    @api.multi
-    def _state_update(self, newstate, states_to_update, level=100):
-        blacklisted_modules = ["pos_reprint", "pos_discount"]
-
-        if newstate == "to install":
-            for module_to_update in self:
-                if module_to_update.name in blacklisted_modules:
-                    raise UserError(_("This module is not allowed with the Fiscal Data Module."))
-
-        return super(module, self)._state_update(newstate, states_to_update, level=level)
 
     @api.multi
     def module_uninstall(self):

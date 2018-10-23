@@ -8,19 +8,42 @@
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2018
 # Gunther Clauwaert <gclauwae@hotmail.com>, 2018
 # Cas Vissers <c.vissers@brahoo.nl>, 2018
+# Cas Vissers <casvissers@brahoo.nl>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-02 10:32+0000\n"
-"PO-Revision-Date: 2018-10-02 10:32+0000\n"
-"Last-Translator: Cas Vissers <c.vissers@brahoo.nl>, 2018\n"
+"POT-Creation-Date: 2018-10-08 07:14+0000\n"
+"PO-Revision-Date: 2018-10-08 07:14+0000\n"
+"Last-Translator: Cas Vissers <casvissers@brahoo.nl>, 2018\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Language: nl\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: sale_subscription
+#: model:sale.subscription.template,description:sale_subscription.cleaning_monthly
+#: model:sale.subscription.template,description:sale_subscription.cleaning_yearly
+msgid ""
+"\n"
+"Payment\n"
+"All payments are due upon receipt. If a payment is not received or payment method is declined, the buyer forfeits the ownership of any items purchased. If no payment is received, no items will be shipped.\n"
+"\n"
+"Shipping Policies\n"
+"Shipping will be paid for by the buyer in the amount agreed upon by the seller at the time of purchase. If an item is lost during shipping, the total cost of item, including shipping, will be refunded to the buyer by the seller. Shipping costs may double if shipping internationally. If an item is damaged during shipping, seller will not be held responsible.\n"
+"\n"
+"Refund/Return Policy\n"
+"Items are entitled to be refunded or returned based on complaint. If an item is damaged during shipping, a replacement item will be sent free of charge. If an item is unsatisfactory, a written explanation is needed before the item may be considered for a refund. Buyer must take into account the description of the item before requesting a refund. If the item matches the description by the seller and the buyer is unsatisfied, seller is not responsible for refund. Exchanges are granted on a case-by-case basis.\n"
+"\n"
+"Cancellation\n"
+"An item may be cancelled up until payment has been processed. Once payment has been processed, the buyer is responsible for payment.\n"
+"\n"
+"Complaints\n"
+"Any complaints about items or sellers may be sent to our support team: support@wesellyourstuff.com or (888) 555-0198. There is no guarantee of a resolution. Each case will be looked at individually, and the seller will be in contact as well.\n"
+"            "
+msgstr ""
 
 #. module: sale_subscription
 #: model:mail.template,subject:sale_subscription.mail_template_subscription_invoice
@@ -1039,7 +1062,7 @@ msgstr "Maak een nieuwe abonnement waarschuwing"
 #. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_stage_action
 msgid "Create a new subscription stage"
-msgstr ""
+msgstr "Maak een nieuwe abonnementsfase"
 
 #. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_template_action
@@ -1393,7 +1416,7 @@ msgstr "Gezondheid"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
 msgid "Health Check"
-msgstr ""
+msgstr "Gezondheidscheck"
 
 #. module: sale_subscription
 #: model:ir.module.category,description:sale_subscription.module_category_subscription_management
@@ -1571,7 +1594,7 @@ msgstr "Factuur"
 #. module: sale_subscription
 #: selection:sale.subscription.template,payment_mode:0
 msgid "Invoice & try to charge"
-msgstr ""
+msgstr "Factureer & probeer te incasseren"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__invoice_count
@@ -1608,7 +1631,7 @@ msgstr "Factuur voor inschrijving ${ctx.get('code')}"
 #. module: sale_subscription
 #: selection:sale.subscription.template,payment_mode:0
 msgid "Invoice only on successful payment"
-msgstr ""
+msgstr "Factuur alleen bij succesvolle betaling"
 
 #. module: sale_subscription
 #: model:mail.template,report_name:sale_subscription.mail_template_subscription_invoice
@@ -1879,7 +1902,10 @@ msgid "Modification"
 msgstr "Wijziging"
 
 #. module: sale_subscription
+#: model:product.product,uom_name:sale_subscription.product_office_cleaning
+#: model:product.template,uom_name:sale_subscription.product_office_cleaning_product_template
 #: selection:sale.subscription.template,recurring_rule_type:0
+#: model:uom.uom,name:sale_subscription.subscription_uom_month
 msgid "Month(s)"
 msgstr "Maand(en)"
 
@@ -2000,6 +2026,18 @@ msgstr ""
 "Odoo stelt automatisch abonnementen die vernieuwd moeten worden in \n"
 "een afwachting fase. Na de onderhandeling zal de verkoper kiezen om de wachtende abonnementen\n"
 "te sluiten of te vernieuwen."
+
+#. module: sale_subscription
+#: model:product.product,name:sale_subscription.product_office_cleaning
+#: model:product.template,name:sale_subscription.product_office_cleaning_product_template
+msgid "Office Cleaning Subscription (Monthly)"
+msgstr ""
+
+#. module: sale_subscription
+#: model:product.product,name:sale_subscription.product_office_cleaning_yearly
+#: model:product.template,name:sale_subscription.product_office_cleaning_yearly_product_template
+msgid "Office Cleaning Subscription (Yearly)"
+msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__on_change_fields
@@ -2306,12 +2344,12 @@ msgstr "Retenties"
 #. module: sale_subscription
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_report_cohort_action
 msgid "Retention Analysis"
-msgstr ""
+msgstr "Retentie analyse"
 
 #. module: sale_subscription
 #: model:ir.ui.menu,name:sale_subscription.menu_account_asset_asset_list_normal_sale
 msgid "Revenue Types"
-msgstr "Soorten uitgestelde omzet"
+msgstr "Omzetsoorten"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__in_progress
@@ -2324,7 +2362,7 @@ msgstr "Actief"
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Running Subscriptions"
-msgstr ""
+msgstr "Lopende abonnementen"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_kanban
@@ -2457,7 +2495,7 @@ msgstr "Server-acties"
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription__health
 msgid "Set a health status"
-msgstr ""
+msgstr "Stel gezondheid in"
 
 #. module: sale_subscription
 #: selection:sale.subscription.alert,action:0
@@ -2615,7 +2653,7 @@ msgstr "Abonnement sluit reden:"
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_subscription_close_reason_wizard
 msgid "Subscription Close Reason Wizard"
-msgstr ""
+msgstr "Abonnement afsluitreden wizard"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_account_analytic_account__subscription_count
@@ -2693,7 +2731,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_subscription_wizard
 msgid "Subscription Upsell wizard"
-msgstr ""
+msgstr "Abonnement upsell ziward"
 
 #. module: sale_subscription
 #: model:sale.subscription.close.reason,name:sale_subscription.close_reason_2
@@ -2745,7 +2783,7 @@ msgstr "Abonnementen"
 #. module: sale_subscription
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_report_pivot_action
 msgid "Subscriptions Analysis"
-msgstr ""
+msgstr "Abonnementen analyses"
 
 #. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_action
@@ -2790,6 +2828,12 @@ msgstr "Label"
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__tag_ids
 msgid "Tags"
 msgstr "Labels"
+
+#. module: sale_subscription
+#: model:base.automation,name:sale_subscription.subscription_alert_percent_revenue_base_automation
+#: model:sale.subscription.alert,name:sale_subscription.subscription_alert_percent_revenue
+msgid "Take action on less satisfied clients"
+msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__recurring_amount_tax
@@ -2911,6 +2955,11 @@ msgid ""
 "This stage is folded in the kanban view when there are not records in that "
 "stage to display."
 msgstr ""
+
+#. module: sale_subscription
+#: model:uom.category,name:sale_subscription.uom_categ_time
+msgid "Time"
+msgstr "Tijd"
 
 #. module: sale_subscription
 #: selection:sale.subscription.alert,trigger_condition:0
@@ -3062,6 +3111,9 @@ msgid ""
 " 'Generic User From Record' to specify the field name of the user to choose "
 "on the record."
 msgstr ""
+"Gebruik 'Specifieke gebruiker' om altijd dezelfde gebruiker toe te wijzen "
+"aan de volgende activiteit. Gebruik 'Generieke gebruiker van record' om het "
+"veldnaam op te geven van de gebruiker die in de record moet worden gekozen."
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__trg_date_calendar_id
@@ -3206,9 +3258,15 @@ msgid ""
 "Write Python code that the action will execute. Some variables are available"
 " for use; help about python expression is given in the help tab."
 msgstr ""
+"Schrijf Python code die de actie uitvoert. Sommige variabelen zijn "
+"beschikbaar voor gebruik; help over Python expressies is gegeven in het hulp"
+" tabblad."
 
 #. module: sale_subscription
+#: model:product.product,uom_name:sale_subscription.product_office_cleaning_yearly
+#: model:product.template,uom_name:sale_subscription.product_office_cleaning_yearly_product_template
 #: selection:sale.subscription.template,recurring_rule_type:0
+#: model:uom.uom,name:sale_subscription.subscription_uom_year
 msgid "Year(s)"
 msgstr "Jaar/jaren"
 
@@ -3282,12 +3340,20 @@ msgstr "Bijv. Bespreken van de offerte"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
 msgid "e.g. Monthly Subscription"
-msgstr ""
+msgstr "bijv. Maandelijks abonnement"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid "e.g. Update order quantity"
 msgstr "bijv. Bijwerken orderhoeveelheid"
+
+#. module: sale_subscription
+#: model:product.product,weight_uom_name:sale_subscription.product_office_cleaning
+#: model:product.product,weight_uom_name:sale_subscription.product_office_cleaning_yearly
+#: model:product.template,weight_uom_name:sale_subscription.product_office_cleaning_product_template
+#: model:product.template,weight_uom_name:sale_subscription.product_office_cleaning_yearly_product_template
+msgid "kg"
+msgstr "kg"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription

@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2018
 msgid ""
 msgstr ""
@@ -63,7 +64,7 @@ msgstr "Er zijn geen teams gepubliceerd."
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.team
 msgid "Submit a Ticket"
-msgstr "Ticket insturen"
+msgstr "Ticket indienen"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.team

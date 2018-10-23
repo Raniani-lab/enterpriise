@@ -72,7 +72,7 @@ class ProviderAccount(models.Model):
             resp_json = resp.json()
         except requests.exceptions.Timeout:
             raise UserError(_('Timeout: the server did not reply within 60s'))
-        except ValueError:
+        except (ValueError, requests.exceptions.ConnectionError):
             raise UserError(_('Server not reachable, please try again later'))
         return resp_json
 
@@ -86,7 +86,7 @@ class ProviderAccount(models.Model):
             resp_json = resp.json()
         except requests.exceptions.Timeout:
             raise UserError(_('Timeout: the server did not reply within 60s'))
-        except ValueError:
+        except (ValueError, requests.exceptions.ConnectionError):
             raise UserError(_('Server not reachable, please try again later'))
         return json.dumps(resp_json)
 
@@ -108,7 +108,7 @@ class ProviderAccount(models.Model):
         else:
             transactions = '<br/><br/><p>%s</p>' % (_('No new transactions have been loaded in the system.'),)
         hide_table = False
-        if (values.get('method') != 'add' or (values.get('method') == 'add' and number_added == 1) or number_added == 0):
+        if ((values.get('method') == 'add' and number_added == 1) or number_added == 0):
             hide_table = True
         transient = self.env['account.online.wizard'].create({
             'number_added': number_added,

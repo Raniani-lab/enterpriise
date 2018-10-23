@@ -20,12 +20,14 @@ More info:
 Legal
 -----
 **The use of pos_blackbox_be sources is only certified on odoo.com SaaS platform
-for version 9.0.**
+for version 11.0.** Contact Odoo SA before installing pos_blackbox_be module.
+
 An obfuscated and certified version of the pos_blackbox_be may be provided on
 requests for on-premise installations.
 No modified version is certified and supported by Odoo SA.
     """,
-    'depends': ['web', 'point_of_sale', 'pos_restaurant'],
+    'depends': ['pos_restaurant', 'l10n_be', 'web_enterprise'],
+    'excludes': ["pos_reprint", "pos_discount"],
     'data': [
         'security/pos_blackbox_be_security.xml',
         'security/ir.model.access.csv',
@@ -39,7 +41,7 @@ No modified version is certified and supported by Odoo SA.
     'qweb': [
         'static/src/xml/pos_blackbox_be.xml'
     ],
-    'installable': False,
+    'installable': True,
     'auto_install': False,
     'license': 'OEEL-1',
 }

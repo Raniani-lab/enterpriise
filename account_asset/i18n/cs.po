@@ -9,14 +9,14 @@
 # Ladislav Tomm <tomm@helemik.cz>, 2018
 # Jan Horzinka <jan.horzinka@centrum.cz>, 2018
 # Michal Veselý <michal@veselyberanek.net>, 2018
-# trendspotter, 2018
+# J. Podhorecky <j.podhorecky@volny.cz>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 13:17+0000\n"
 "PO-Revision-Date: 2018-09-21 13:17+0000\n"
-"Last-Translator: trendspotter, 2018\n"
+"Last-Translator: J. Podhorecky <j.podhorecky@volny.cz>, 2018\n"
 "Language-Team: Czech (https://www.transifex.com/odoo/teams/41243/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -286,7 +286,7 @@ msgstr ""
 #: selection:account.asset.asset,date_first_depreciation:0
 #: selection:account.asset.category,date_first_depreciation:0
 msgid "Based on Last Day of Purchase Period"
-msgstr ""
+msgstr "Na základě posledního dne nákupního období"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
@@ -317,7 +317,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset_category__group_entries
 msgid "Check this if you want to group the generated entries by categories."
-msgstr ""
+msgstr "Zaškrtněte, pokud chcete seskupit generované položky podle kategorií."
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset_asset__method
@@ -378,7 +378,7 @@ msgstr "Spočítat majetek"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
 msgid "Compute Depreciation"
-msgstr ""
+msgstr "Vypočítat odpisy"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
@@ -418,7 +418,7 @@ msgstr "Vytvořeno"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_depreciation_line__depreciated_value
 msgid "Cumulative Depreciation"
-msgstr ""
+msgstr "Kumulativní odpisy"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:639
@@ -462,14 +462,14 @@ msgstr "Datum odpisu"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
 msgid "Deferred Revenue Account"
-msgstr ""
+msgstr "Účet odloženého výnosu"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_product_product__deferred_revenue_category_id
 #: model:ir.model.fields,field_description:account_asset.field_product_template__deferred_revenue_category_id
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
 msgid "Deferred Revenue Type"
-msgstr ""
+msgstr "Typ odloženého výnosu"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_search
@@ -501,7 +501,7 @@ msgstr "Odpisová tabule"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_asset_report__depreciation_nbr
 msgid "Depreciation Count"
-msgstr ""
+msgstr "Počet odpisů"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_depreciation_line__depreciation_date
@@ -513,7 +513,7 @@ msgstr "Datum odpisu"
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__date_first_depreciation
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_category__date_first_depreciation
 msgid "Depreciation Dates"
-msgstr ""
+msgstr "Odpisové termíny"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_category__account_depreciation_id
@@ -533,7 +533,7 @@ msgstr "Položka odpisu"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
 msgid "Depreciation Information"
-msgstr ""
+msgstr "Odpisové informace"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__depreciation_line_ids
@@ -670,7 +670,7 @@ msgstr "Hrubá hodnota"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
 msgid "Gross value of asset"
-msgstr ""
+msgstr "Hrubá hodnota aktiva"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
@@ -720,6 +720,8 @@ msgid ""
 "from the asset date (purchase date) instead of the first January / Start "
 "date of fiscal year"
 msgstr ""
+"Označuje, že první položka odpisů pro toto aktivum musí být provedena od "
+"data aktiva (datum nákupu) namísto prvního ledna / začátku fiskálního roku"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset_category__prorata
@@ -727,11 +729,13 @@ msgid ""
 "Indicates that the first depreciation entry for this asset have to be done "
 "from the purchase date instead of the first of January"
 msgstr ""
+"Označuje, že první položka odpisů tohoto aktiva musí být provedena od data "
+"nákupu namísto 1. ledna"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_asset_report__installment_nbr
 msgid "Installment Count"
-msgstr ""
+msgstr "Počet splátek"
 
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_invoice
@@ -825,7 +829,7 @@ msgstr "Ruční"
 #. module: account_asset
 #: selection:account.asset.category,date_first_depreciation:0
 msgid "Manual (Defaulted on Purchase Date)"
-msgstr ""
+msgstr "Manuální (výchozí při nákupu)"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__message_has_error
@@ -852,12 +856,12 @@ msgstr "Upravit majetek"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
 msgid "Modify Depreciation"
-msgstr ""
+msgstr "Upravit odpisy"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_invoice_line__asset_mrr
 msgid "Monthly Recurring Revenue"
-msgstr ""
+msgstr "Měsíční opakované výnosy"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_depreciation_line__remaining_value
@@ -867,7 +871,7 @@ msgstr "Další doba odpisu"
 #. module: account_asset
 #: model_terms:ir.actions.act_window,help:account_asset.action_asset_asset_report
 msgid "No content"
-msgstr ""
+msgstr "Žádný obsah"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__note
@@ -881,6 +885,8 @@ msgid ""
 "entry in case of prorata temporis assets. It simply changes its accounting "
 "date"
 msgstr ""
+"Všimněte si, že toto datum nemění výpočet první deníkové položky v případě "
+"aktiv prorata temporis. Jednoduše změní účetní datum"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__message_needaction_counter
@@ -909,7 +915,7 @@ msgstr "Počet měsíců za dobu"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__message_has_error_counter
 msgid "Number of error"
-msgstr ""
+msgstr "Počet chyb"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset_asset__message_needaction_counter
@@ -948,7 +954,7 @@ msgstr "Délka období"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
 msgid "Periodicity"
-msgstr ""
+msgstr "Periodicita"
 
 #. module: account_asset
 #: model:ir.actions.act_window,name:account_asset.action_asset_depreciation_confirmation_wizard
@@ -992,7 +998,7 @@ msgstr "Prorata Temporis"
 msgid ""
 "Prorata temporis can be applied only for the \"number of depreciations\" "
 "time method."
-msgstr ""
+msgstr "Prorata temporis lze použít pouze pro metodu \"počet odpisů\"."
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_search
@@ -1007,7 +1013,7 @@ msgstr "Měsíc zakoupení"
 #. module: account_asset
 #: selection:account.asset.category,type:0
 msgid "Purchase: Asset"
-msgstr ""
+msgstr "Nákup: Aktivum"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__name
@@ -1113,7 +1119,7 @@ msgstr "Počet odpisů nutný k odepsání vašeho majetku"
 msgid ""
 "The number of depreciations or the period length of your asset category "
 "cannot be 0."
-msgstr ""
+msgstr "Počet odpisů nebo délka období vaší kategorie aktiv nemůže být 0."
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset_category__date_first_depreciation
@@ -1156,7 +1162,7 @@ msgstr "Časová metoda"
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
 msgid "Time Method Based On"
-msgstr ""
+msgstr "Časová metoda založená na"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__type
@@ -1224,7 +1230,7 @@ msgstr "Rok"
 #: code:addons/account_asset/models/account_asset.py:136
 #, python-format
 msgid "You cannot delete a document that contains posted entries."
-msgstr ""
+msgstr "Nemůžete odstranit dokument, který obsahuje zveřejněné položky."
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:133

@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2018
 msgid ""
 msgstr ""
@@ -80,7 +81,7 @@ msgstr "Diagram"
 #: code:addons/web_dashboard/static/src/xml/dashboard.xml:40
 #, python-format
 msgid "Domain Label:"
-msgstr "Domein label:"
+msgstr "Domeinlabel:"
 
 #. module: web_dashboard
 #. openerp-web
@@ -194,7 +195,7 @@ msgstr "Lijst"
 #: code:addons/web_dashboard/static/src/xml/dashboard.xml:57
 #, python-format
 msgid "Value Label:"
-msgstr ""
+msgstr "Waardelabel:"
 
 #. module: web_dashboard
 #. openerp-web

@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2018
 msgid ""
 msgstr ""
@@ -118,7 +119,7 @@ msgstr "ID"
 #. module: website_helpdesk_slides
 #: selection:slide.upload.wizard,slide_type:0
 msgid "Infographic"
-msgstr "Infografiek"
+msgstr "Infographic"
 
 #. module: website_helpdesk_slides
 #: code:addons/website_helpdesk_slides/wizard/slide_slide.py:53
@@ -201,7 +202,7 @@ msgstr "Presentatie upload"
 #. module: website_helpdesk_slides
 #: model:ir.model,name:website_helpdesk_slides.model_slide_upload_wizard
 msgid "Slide Upload Wizard"
-msgstr ""
+msgstr "Presentatie upload wizard"
 
 #. module: website_helpdesk_slides
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.slides_page
@@ -252,7 +253,8 @@ msgstr "Soort"
 #: code:addons/website_helpdesk_slides/wizard/slide_slide.py:87
 #, python-format
 msgid "Uploded new slide : <a href=\"%s\">click here to view it.</a>"
-msgstr "Nieuwe dia geüpload : <a href=\"%s\">klik hier om te bekijken.</a>"
+msgstr ""
+"Nieuwe presentatie geüpload : <a href=\"%s\">klik hier om te bekijken.</a>"
 
 #. module: website_helpdesk_slides
 #: selection:slide.upload.wizard,slide_type:0

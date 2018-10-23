@@ -29,7 +29,7 @@ msgstr "Uitgestelde omzet categorie"
 #: model_terms:ir.ui.view,arch_db:sale_subscription_asset.sale_subscription_template_view_form_inherit_sale_subscription_asset
 #: model_terms:ir.ui.view,arch_db:sale_subscription_asset.sale_subscription_view_form_inherit_sale_subscription_asset
 msgid "Deferred Revenue Type"
-msgstr "Soort uitgestelde omzet"
+msgstr "Uitgestelde omzetsoort"
 
 #. module: sale_subscription_asset
 #: model:ir.model,name:sale_subscription_asset.model_sale_order
@@ -49,7 +49,7 @@ msgstr "Abonnement"
 #. module: sale_subscription_asset
 #: model:ir.model,name:sale_subscription_asset.model_sale_subscription_template
 msgid "Subscription Template"
-msgstr "Abonnement sjabloon"
+msgstr "Abonnementssjabloon"
 
 #. module: sale_subscription_asset
 #: model:ir.model.fields,help:sale_subscription_asset.field_sale_subscription__asset_category_id

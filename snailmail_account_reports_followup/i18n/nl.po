@@ -5,13 +5,15 @@
 # Translators:
 # Martin Trigaux, 2018
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2018
+# Thomas Pot <thomas@open2bizz.nl>, 2018
+# Cas Vissers <casvissers@brahoo.nl>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
 "PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2018\n"
+"Last-Translator: Cas Vissers <casvissers@brahoo.nl>, 2018\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -64,12 +66,12 @@ msgstr "Betalingsherinneringen creteria"
 #. module: snailmail_account_reports_followup
 #: model:ir.model,name:snailmail_account_reports_followup.model_account_followup_report
 msgid "Follow-up Report"
-msgstr ""
+msgstr "Follow-up rapport"
 
 #. module: snailmail_account_reports_followup
 #: model:ir.model,name:snailmail_account_reports_followup.model_followup_send
 msgid "Followup Send"
-msgstr ""
+msgstr "Opvolging versturen"
 
 #. module: snailmail_account_reports_followup
 #: model:ir.model.fields,field_description:snailmail_account_reports_followup.field_followup_send__id

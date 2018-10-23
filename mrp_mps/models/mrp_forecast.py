@@ -124,10 +124,10 @@ class SaleForecast(models.Model):
             else:
                 qty_supply = sum(forecasts.mapped('to_supply'))
                 new_quantity = quantity - qty_supply
-                if forecasts and forecasts[0].date == date:
+                if forecasts and forecasts[0].date == fields.Date.from_string(date):
                     forecasts[0].write({'to_supply': forecasts[0].to_supply + new_quantity})
                 else:
-                    self.create({'date': date, 'product_id': product_id, 'to_supply': qty_supply, 'mode': 'manual'})
+                    self.create({'date': date, 'product_id': product_id, 'to_supply': new_quantity, 'mode': 'manual'})
 
     @api.model
     def change_forecast_mode(self, product_id=False, date=False, date_to=False, quantity=0.0):

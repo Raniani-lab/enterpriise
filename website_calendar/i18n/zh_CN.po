@@ -4,7 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
-# 珠海-杜哥 <liangjia@qq.com>, 2018
+# liAnGjiA <liangjia@qq.com>, 2018
 # ChinaMaker <liuct@chinamaker.net>, 2018
 # Fisher <fisher@kdomi.com>, 2018
 # Jackie Zhang <jzh@odoo.com>, 2018
@@ -15,13 +15,14 @@
 # Youfu Sheng <wdmsyf@sina.com>, 2018
 # diaojiaolou <124412206@qq.com>, 2018
 # niulin lnc. <admin@niulin.net>, 2018
+# e2f <projects@e2f.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-02 10:32+0000\n"
-"PO-Revision-Date: 2018-10-02 10:32+0000\n"
-"Last-Translator: niulin lnc. <admin@niulin.net>, 2018\n"
+"POT-Creation-Date: 2018-10-08 07:15+0000\n"
+"PO-Revision-Date: 2018-10-08 07:15+0000\n"
+"Last-Translator: e2f <projects@e2f.com>, 2018\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -318,7 +319,7 @@ msgstr "客户选择"
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_form
 msgid "Confirm Appointment <span class=\"fa fa-arrow-right\"/>"
-msgstr "<span class=\"fa fa-arrow-right\"/>"
+msgstr "确认约会 <span class=\"fa fa-arrow-right\"/>"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_form
@@ -438,6 +439,13 @@ msgstr "周五"
 #: selection:calendar.appointment.slot,weekday:0
 msgid "Friday"
 msgstr "周五"
+
+#. module: website_calendar
+#: model_terms:calendar.appointment.type,message_intro:website_calendar.calendar_appointment
+msgid ""
+"Get a <strong>customized demo</strong> and an <strong>analysis of your "
+"needs</strong>."
+msgstr "获取<strong>定制演示</strong>及<strong>需求分析。</strong>"
 
 #. module: website_calendar
 #: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__assignation_method
@@ -750,6 +758,11 @@ msgid "Schedule Appointment"
 msgstr "安排约会"
 
 #. module: website_calendar
+#: model:calendar.appointment.type,name:website_calendar.calendar_appointment
+msgid "Schedule a Demo"
+msgstr "安排演示"
+
+#. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.index
 msgid "Schedule an Appointment"
 msgstr "安排约会"
@@ -874,12 +887,21 @@ msgstr "未读消息计数器"
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.index
 msgid "View Availabilities <span class=\"fa fa-arrow-right\"/>"
-msgstr "<span class=\"fa fa-arrow-right\"/>"
+msgstr "查看可用性 <span class=\"fa fa-arrow-right\"/>"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__website_published
 msgid "Visible on current website"
 msgstr "在当前网站显示"
+
+#. module: website_calendar
+#: model_terms:calendar.appointment.type,message_confirmation:website_calendar.calendar_appointment
+msgid ""
+"We thank you for your interest in our products!<br>\n"
+"               Please make sure to arrive <strong>10 minutes</strong> before your appointment."
+msgstr ""
+"诚挚感谢您对我们的产品感兴趣！<br>\n"
+" 请确保约会前 10 分钟到达。<strong></strong>"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__website_message_ids

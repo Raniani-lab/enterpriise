@@ -305,7 +305,7 @@ msgstr "Twitter API 秘密"
 #. module: website_twitter_wall
 #: model:ir.ui.menu,name:website_twitter_wall.menu_website_twitter_wall_root
 msgid "Twitter Wall"
-msgstr ""
+msgstr "推特牆"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_footer_custom

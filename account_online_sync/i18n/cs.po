@@ -471,7 +471,7 @@ msgstr "Počet akcí"
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message_has_error_counter
 msgid "Number of error"
-msgstr ""
+msgstr "Počet chyb"
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_provider__message_needaction_counter

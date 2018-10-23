@@ -3,18 +3,18 @@
 # * event_barcode
 # 
 # Translators:
-# Yoshi Tashiro <tashiro@roomsfor.hk>, 2017
-# SHIMIZU Taku <shimizu.taku@gmail.com>, 2017
-# Norimichi Sugimoto <norimichi.sugimoto@tls-ltd.co.jp>, 2017
-# 高木正勝 <masakatsu.takagi@pro-spire.co.jp>, 2017
-# 前園義博 <yoshihiro.maezono@pro-spire.co.jp>, 2017
+# SHIMIZU Taku <shimizu.taku@gmail.com>, 2018
+# Martin Trigaux, 2018
+# Yoshi Tashiro <tashiro@roomsfor.hk>, 2018
+# Norimichi Sugimoto <norimichi.sugimoto@tls-ltd.co.jp>, 2018
+# 前園義博 <yoshihiro.maezono@pro-spire.co.jp>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 10.saas~18+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-02 11:50+0000\n"
-"PO-Revision-Date: 2017-10-02 11:50+0000\n"
-"Last-Translator: 前園義博 <yoshihiro.maezono@pro-spire.co.jp>, 2017\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"Last-Translator: 前園義博 <yoshihiro.maezono@pro-spire.co.jp>, 2018\n"
 "Language-Team: Japanese (https://www.transifex.com/odoo/teams/41243/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -35,25 +35,28 @@ msgid "%s is successfully registered"
 msgstr "%s 正常に登録されました"
 
 #. module: event_barcode
-#: model:ir.ui.view,arch_db:event_barcode.report_registration_badge
+#: model_terms:ir.ui.view,arch_db:event_barcode.report_registration_badge
 msgid "&amp;nbsp;"
 msgstr "&amp;nbsp;"
 
 #. module: event_barcode
 #: code:addons/event_barcode/controllers/main.py:18
-#: model:ir.model,name:event_barcode.model_event_registration
 #, python-format
 msgid "Attendee"
-msgstr "出席者"
+msgstr "参加者"
 
 #. module: event_barcode
-#: model:ir.model.fields,field_description:event_barcode.field_event_registration_barcode
+#. openerp-web
+#: code:addons/event_barcode/static/src/xml/event_barcode.xml:33
+#: model:ir.model.fields,field_description:event_barcode.field_event_registration__barcode
+#: model_terms:ir.ui.view,arch_db:event_barcode.report_registration_badge
+#, python-format
 msgid "Barcode"
 msgstr "バーコード"
 
 #. module: event_barcode
 #: model:ir.actions.client,name:event_barcode.event_barcode_action_main_view
-#: model:ir.ui.view,arch_db:event_barcode.event_event_view_form_inherit_barcode
+#: model_terms:ir.ui.view,arch_db:event_barcode.event_event_view_form_inherit_barcode
 msgid "Barcode Interface"
 msgstr "バーコードインターフェイス"
 
@@ -90,6 +93,11 @@ msgid "Error"
 msgstr "エラー"
 
 #. module: event_barcode
+#: model:ir.model,name:event_barcode.model_event_registration
+msgid "Event Registration"
+msgstr "イベント登録"
+
+#. module: event_barcode
 #. openerp-web
 #: code:addons/event_barcode/static/src/js/event_barcode.js:66
 #, python-format
@@ -102,6 +110,13 @@ msgstr "ユーザー入力が無効です"
 #, python-format
 msgid "Print"
 msgstr "印刷"
+
+#. module: event_barcode
+#. openerp-web
+#: code:addons/event_barcode/static/src/xml/event_barcode.xml:42
+#, python-format
+msgid "Registration"
+msgstr "登録"
 
 #. module: event_barcode
 #. openerp-web
@@ -129,3 +144,10 @@ msgstr "ビュー"
 #, python-format
 msgid "Waiting for barcode scan..."
 msgstr "バーコードスキャンを待っています..."
+
+#. module: event_barcode
+#. openerp-web
+#: code:addons/event_barcode/static/src/js/event_barcode.js:117
+#, python-format
+msgid "Warning"
+msgstr "警告"

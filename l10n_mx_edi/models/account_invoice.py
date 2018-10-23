@@ -337,7 +337,8 @@ class AccountInvoice(models.Model):
             msg = getattr(res[0] if res else response, 'mensaje', None)
             code = getattr(res[0] if res else response, 'status', None)
             xml_signed = getattr(res[0] if res else response, 'cfdiTimbrado', None)
-            inv._l10n_mx_edi_post_sign_process(xml_signed.encode('utf-8'), code, msg)
+            inv._l10n_mx_edi_post_sign_process(
+                xml_signed.encode('utf-8') if xml_signed else None, code, msg)
 
     @api.multi
     def _l10n_mx_edi_solfact_cancel(self, pac_info):

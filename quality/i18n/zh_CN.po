@@ -320,7 +320,7 @@ msgstr "如果勾选此项， 某些信息将会产生传递错误。"
 #. module: quality
 #: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
 msgid "Instructions"
-msgstr "命令"
+msgstr "指令"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__message_is_follower
@@ -492,12 +492,12 @@ msgstr "未读消息的数量"
 #. module: quality
 #: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
 msgid "Operation"
-msgstr "作业"
+msgstr "操作"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_point__picking_type_id
 msgid "Operation Type"
-msgstr "作业类型"
+msgstr "操作类型"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert_team__alias_force_thread_id
@@ -627,7 +627,7 @@ msgstr "质量控制点"
 #. module: quality
 #: model:ir.model,name:quality.model_quality_point_test_type
 msgid "Quality Control Test Type"
-msgstr "质检类别"
+msgstr "质量控制测试类型"
 
 #. module: quality
 #: model:ir.model,name:quality.model_quality_tag
@@ -746,7 +746,7 @@ msgstr "质检用户使用质检过程"
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_point__title
 msgid "Title"
-msgstr "称谓"
+msgstr "标题"
 
 #. module: quality
 #: selection:quality.check,quality_state:0

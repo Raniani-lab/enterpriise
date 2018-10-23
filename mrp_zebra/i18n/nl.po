@@ -5,13 +5,15 @@
 # Translators:
 # Martin Trigaux, 2018
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2018
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
+# Cas Vissers <casvissers@brahoo.nl>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
 "PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2018\n"
+"Last-Translator: Cas Vissers <casvissers@brahoo.nl>, 2018\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,12 +24,12 @@ msgstr ""
 #. module: mrp_zebra
 #: model:ir.actions.report,name:mrp_zebra.label_manufacture_template
 msgid "Finished Product Label (ZPL)"
-msgstr ""
+msgstr "Gereed product label (ZPL)"
 
 #. module: mrp_zebra
 #: model_terms:ir.ui.view,arch_db:mrp_zebra.mrp_workorder_view_form_tablet_printers
 msgid "Print Labels"
-msgstr ""
+msgstr "Labels afdrukken"
 
 #. module: mrp_zebra
 #: model:ir.model,name:mrp_zebra.model_quality_point
@@ -44,3 +46,4 @@ msgstr "Werkorder"
 #, python-format
 msgid "You did not set a lot/serial number for the final product"
 msgstr ""
+"U heeft geen partijnummer / serienummer ingegeven voor het gereed product"

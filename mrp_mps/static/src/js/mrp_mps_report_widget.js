@@ -325,6 +325,7 @@ var mrp_mps_report = AbstractAction.extend(ControlPanelMixin, {
      * @param {OdooEvent} event
      */
     _onSearch: function (event) {
+        event.stopPropagation();
         var session = this.getSession();
         var result = pyUtils.eval_domains_and_contexts({
             contexts: [session.user_context],

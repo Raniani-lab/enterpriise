@@ -126,6 +126,11 @@ class TestL10nMxEdiInvoice(common.InvoiceTransactionCase):
         invoice.l10n_mx_edi_pac_status = "retry"
         self.assertEqual(invoice.l10n_mx_edi_pac_status, "retry")
         invoice.l10n_mx_edi_update_pac_status()
+        for _x in range(10):
+            if invoice.l10n_mx_edi_pac_status == 'signed':
+                break
+            time.sleep(2)
+            invoice.l10n_mx_edi_update_pac_status()
         self.assertEqual(invoice.l10n_mx_edi_pac_status, "signed",
                          invoice.message_ids.mapped('body'))
         xml_attachs = invoice.l10n_mx_edi_retrieve_attachments()

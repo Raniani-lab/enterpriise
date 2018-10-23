@@ -141,6 +141,9 @@ QUnit.module('Studio Navigation', {
             archs: this.archs,
             data: this.data,
             mockRPC: function (route) {
+                if (route === '/web_studio/chatter_allowed') {
+                    return $.when(true);
+                }
                 if (route === '/web_studio/get_studio_view_arch') {
                     return $.when();
                 }
@@ -322,6 +325,9 @@ QUnit.module('Studio Navigation', {
             archs: this.archs,
             data: this.data,
             mockRPC: function (route) {
+                if (route === '/web_studio/chatter_allowed') {
+                    return $.when(true);
+                }
                 if (route === '/web_studio/get_studio_view_arch') {
                     return $.when();
                 }

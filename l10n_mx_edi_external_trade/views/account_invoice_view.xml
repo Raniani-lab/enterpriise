@@ -9,7 +9,6 @@
                 <group>
                     <group string="External Trade">
                         <field name="l10n_mx_edi_external_trade"/>
-                        <field name="l10n_mx_edi_incoterm" attrs="{'invisible': [('l10n_mx_edi_external_trade', '=', False)]}"/>
                         <field name="l10n_mx_edi_cer_source" attrs="{'invisible': [('l10n_mx_edi_external_trade', '=', False)]}"/>
                     </group>
                 </group>

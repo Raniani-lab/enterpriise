@@ -4,10 +4,9 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
-# 珠海-杜哥 <liangjia@qq.com>, 2018
-# ChinaMaker <liuct@chinamaker.net>, 2018
-# Jackie Zhang <jzh@odoo.com>, 2018
 # Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
+# liAnGjiA <liangjia@qq.com>, 2018
+# ChinaMaker <liuct@chinamaker.net>, 2018
 # bower Guo <124358678@qq.com>, 2018
 # roye w <159820@qq.com>, 2018
 msgid ""
@@ -160,7 +159,7 @@ msgstr "ID"
 #. module: mail_github
 #: model:ir.model.fields,help:mail_github.field_mail_channel_github__message_unread
 msgid "If checked new messages require your attention."
-msgstr "查看是否有需要你留意的新信息。"
+msgstr "查看是否有需要你留意的新消息。"
 
 #. module: mail_github
 #: model:ir.model.fields,help:mail_github.field_mail_channel_github__message_needaction
@@ -170,7 +169,7 @@ msgstr "如果勾选此项，有新消息会提醒你。"
 #. module: mail_github
 #: model:ir.model.fields,help:mail_github.field_mail_channel_github__message_has_error
 msgid "If checked, some messages have a delivery error."
-msgstr "如果勾选此项， 某些信息将会产生传递错误。"
+msgstr "如果勾选此项， 某些消息将会产生传递错误。"
 
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__message_is_follower

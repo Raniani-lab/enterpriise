@@ -7,13 +7,14 @@
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2018
 # Gunther Clauwaert <gclauwae@hotmail.com>, 2018
+# Cas Vissers <casvissers@brahoo.nl>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-27 08:43+0000\n"
 "PO-Revision-Date: 2018-09-27 08:43+0000\n"
-"Last-Translator: Gunther Clauwaert <gclauwae@hotmail.com>, 2018\n"
+"Last-Translator: Cas Vissers <casvissers@brahoo.nl>, 2018\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -599,7 +600,7 @@ msgstr "Veldtypes"
 #. module: sign
 #: model:ir.model,name:sign.model_sign_item
 msgid "Fields to be sign on Document"
-msgstr ""
+msgstr "Velden welke getekend moeten worden op document"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__datas
@@ -1365,7 +1366,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model,name:sign.model_sign_template_share
 msgid "Sign Share Template"
-msgstr ""
+msgstr "Onderteken deel sjabloon"
 
 #. module: sign
 #: model:ir.model,name:sign.model_sign_template_tag
@@ -1380,17 +1381,17 @@ msgstr "Teken document nu"
 #. module: sign
 #: model:ir.model,name:sign.model_sign_send_request
 msgid "Sign send request"
-msgstr ""
+msgstr "Verstuurd handtekening aanvraag"
 
 #. module: sign
 #: model:ir.model,name:sign.model_sign_request_send_copy
 msgid "Sign send request copy"
-msgstr ""
+msgstr "Verstuur handtekening aanvraag kopie"
 
 #. module: sign
 #: model:ir.model,name:sign.model_sign_send_request_signer
 msgid "Sign send request signer"
-msgstr ""
+msgstr "Verstuurd handtekening aanvraag ondertekenaar "
 
 #. module: sign
 #. openerp-web
@@ -1428,7 +1429,7 @@ msgstr "Handtekening item soort"
 #. module: sign
 #: model:ir.model,name:sign.model_sign_item_value
 msgid "Signature Item Value"
-msgstr ""
+msgstr "Handtekening aanvraag waarde"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__sign_item_ids
@@ -1454,7 +1455,7 @@ msgstr "Handtekening aanvraag - %s"
 #. module: sign
 #: model:ir.model,name:sign.model_sign_request_item
 msgid "Signature Request Item"
-msgstr ""
+msgstr "Handtekening aanvraag item"
 
 #. module: sign
 #: model:ir.actions.act_window,name:sign.sign_request_item_action
@@ -1728,19 +1729,19 @@ msgstr "Gebruikers"
 #: code:addons/sign/static/src/xml/sign_backend.xml:27
 #, python-format
 msgid "Validate"
-msgstr "Valideer"
+msgstr "Bevestig"
 
 #. module: sign
 #. openerp-web
 #: code:addons/sign/static/src/js/sign_common.js:747
 #, python-format
 msgid "Validate & Send"
-msgstr "Valideren & verzenden"
+msgstr "Bevestig & verzenden"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign._doc_sign
 msgid "Validate &amp; Send Completed Document"
-msgstr "Valideer &amp; Verzend voltooid document"
+msgstr "Bevestig &amp; Verzend voltooid document"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item_value__value
@@ -1843,8 +1844,8 @@ msgstr "U heeft het document voltooid"
 msgid ""
 "You will be notified once the document has been signed by everyone involved."
 msgstr ""
-"U wordt verwittigd wanneer het document getekend is door één van de "
-"betrokkenen."
+"U ontvangt een melding zodra het document door alle betrokkenen is "
+"ondertekend."
 
 #. module: sign
 #: code:addons/sign/models/sign_request.py:574

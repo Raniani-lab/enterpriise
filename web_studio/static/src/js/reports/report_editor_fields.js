@@ -11,9 +11,6 @@ var relationalFields = require('web.relational_fields');
 
 
 var FieldMany2ManySelection = relationalFields.FieldMany2ManyTags.extend({
-    custom_events: _.extend({}, relationalFields.FieldMany2ManyTags.prototype.custom_events, {
-        call_service: '_onCallService',
-    }),
     init: function (parent, name, record, options) {
         this._super.apply(this, arguments);
 
@@ -46,15 +43,44 @@ var FieldMany2ManySelection = relationalFields.FieldMany2ManyTags.extend({
             _.difference(value, this.value.res_ids).length === 0;
     },
     /**
+     * Defines an _search method for the internal m2o.
+     *
+     * @private
+     * @param {string} search_val
+     * @returns {Object[]}
+     */
+    _many2oneSearch: function (search_val) {
+        var self = this;
+        var records = _.filter(_.pluck(this.selection, 'data'), function (r) {
+            return r.display_name.indexOf(search_val) !== -1 &&
+               !_.findWhere(self.value.data, {id: r.id});
+        });
+        return _.map(records, function (r) {
+            return {
+                id: r.id,
+                label: r.display_name,
+                name: r.display_name,
+                value: r.display_name,
+            };
+        });
+    },
+    /**
      *
      * @overwrite
      */
     _render: function () {
+        var self = this;
         var res_ids = this.value.res_ids;
         this.value.data = _.filter(this.selection, function (s) {
             return res_ids.indexOf(s.id) !== -1;
         });
-        this._super.apply(this, arguments);
+        return this._super.apply(this, arguments).then(function () {
+            if (self.many2one) {
+                self.many2one._autocompleteSources = [];
+                self.many2one._addAutocompleteSource(self._many2oneSearch.bind(self), {});
+                self.many2one.limit = Object.keys(self.selection).length;
+            }
+        });
     },
     /**
      *
@@ -94,27 +120,6 @@ var FieldMany2ManySelection = relationalFields.FieldMany2ManyTags.extend({
             onFailure: def.reject.bind(def),
         });
         return def;
-    },
-
-    //--------------------------------------------------------------------------
-    // Handlers
-    //--------------------------------------------------------------------------
-    /**
-     * Intercept search_read to use field options
-     *
-     * @private
-     * @param {OdooEvent} ev
-     */
-    _onCallService: function (e) {
-        e.stopPropagation();
-        var kwargs = e.data.args[1].kwargs;
-        var name = kwargs.name;
-        var notInIds = kwargs.args[0][2];
-        var records = _.filter(_.pluck(this.selection, 'data'), function (r) {
-            return r.display_name.indexOf(name) !== -1 && notInIds.indexOf(r.id) === -1;
-        });
-        var selection = _.map(records.slice(0, kwargs.limit), function (r) {return [r.id, r.display_name];});
-        e.data.callback($.Deferred().resolve(selection));
     },
 });
 

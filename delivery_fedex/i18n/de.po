@@ -4,13 +4,14 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# Johannes Croe <jcr@odoo.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
 "PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"Last-Translator: Johannes Croe <jcr@odoo.com>, 2018\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -102,7 +103,7 @@ msgstr "EPL2"
 #: selection:delivery.carrier,delivery_type:0
 #: selection:product.packaging,package_carrier_type:0
 msgid "Easypost"
-msgstr ""
+msgstr "Easypost"
 
 #. module: delivery_fedex
 #: code:addons/delivery_fedex/models/delivery_fedex.py:233
@@ -148,7 +149,7 @@ msgstr "FedEx"
 #. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_account_number
 msgid "FedEx Account Number"
-msgstr ""
+msgstr "FedEx Kundennummer"
 
 #. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.res_config_settings_view_form_sale
@@ -159,7 +160,7 @@ msgstr "FedEx Liefermethoden"
 #. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_saturday_delivery
 msgid "FedEx Saturday Delivery"
-msgstr ""
+msgstr "FedEx Samstagzustellungen"
 
 #. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
@@ -389,7 +390,7 @@ msgstr "Samstagszustellung"
 #. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
 msgid "Screenshot"
-msgstr ""
+msgstr "Screenshot"
 
 #. module: delivery_fedex
 #: code:addons/delivery_fedex/models/delivery_fedex.py:463

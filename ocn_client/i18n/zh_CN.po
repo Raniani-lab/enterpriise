@@ -4,16 +4,17 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
-# 珠海-杜哥 <liangjia@qq.com>, 2018
+# liAnGjiA <liangjia@qq.com>, 2018
 # ChinaMaker <liuct@chinamaker.net>, 2018
 # xu xiaohu <xu.xiaohu@gmail.com>, 2018
+# Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
 "PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: xu xiaohu <xu.xiaohu@gmail.com>, 2018\n"
+"Last-Translator: Jeffery CHEN Fan <jeffery9@gmail.com>, 2018\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -55,7 +56,7 @@ msgstr "OCN令牌"
 #. module: ocn_client
 #: model_terms:ir.ui.view,arch_db:ocn_client.res_config_settings_view_form
 msgid "Odoo Cloud Notification (OCN)"
-msgstr "Odoo云提示（OCN）"
+msgstr "Odoo云通知（OCN）"
 
 #. module: ocn_client
 #: model:ir.model.fields,field_description:ocn_client.field_res_config_settings__ocn_push_notification

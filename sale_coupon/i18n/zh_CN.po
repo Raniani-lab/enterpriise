@@ -4,18 +4,19 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
-# 珠海-杜哥 <liangjia@qq.com>, 2018
-# roye w <159820@qq.com>, 2018
 # Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
-# keecome <7017511@qq.com>, 2018
+# liAnGjiA <liangjia@qq.com>, 2018
+# roye w <159820@qq.com>, 2018
+# 广州救火 <7017511@qq.com>, 2018
 # diaojiaolou <124412206@qq.com>, 2018
+# snow wang <147156565@qq.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-02 10:32+0000\n"
-"PO-Revision-Date: 2018-10-02 10:32+0000\n"
-"Last-Translator: diaojiaolou <124412206@qq.com>, 2018\n"
+"POT-Creation-Date: 2018-10-08 07:14+0000\n"
+"PO-Revision-Date: 2018-10-08 07:14+0000\n"
+"Last-Translator: snow wang <147156565@qq.com>, 2018\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -46,6 +47,12 @@ msgstr "%s %% 全宇宙最给力的产品折扣"
 #, python-format
 msgid "%s%% discount on total amount"
 msgstr "%s%%总价上打折"
+
+#. module: sale_coupon
+#: model:product.product,name:sale_coupon.product_product_10_percent_discount
+#: model:product.template,name:sale_coupon.product_product_10_percent_discount_product_template
+msgid "10.0% discount on total amount"
+msgstr "爽歪歪:在总价有10%的折扣"
 
 #. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.report_coupon
@@ -271,7 +278,7 @@ msgstr "至少%s%s应该购买得到的奖励"
 #. module: sale_coupon
 #: model:ir.model.fields,help:sale_coupon.field_sale_coupon_program__active
 msgid "A program is available for the customers when active"
-msgstr "一个程序在激活的时候可有效的给客户用"
+msgstr "一个方案在激活的时候可有效的给客户用"
 
 #. module: sale_coupon
 #: model:ir.model.fields,help:sale_coupon.field_sale_coupon_program__promo_code
@@ -291,13 +298,13 @@ msgid ""
 "                A coupon program generates coupons with a code that can be used to generate a discount on the current\n"
 "                order or create a coupon for a next order."
 msgstr ""
-"促销计划可以是一个有限的促销没有代码（自动申请）\n"
+"促销方案可以是一个有限的促销没有代码（自动申请）\n"
 "\n"
 "或用一个代码（例如在杂志上显示），可能会对当前的折扣。\n"
 "\n"
 "订购或创建下一个订单的优惠券。\n"
 "\n"
-"优惠券程序生成优惠券，其中的代码可以用来产生当前的折扣。\n"
+"优惠券方案生成优惠券，其中的代码可以用来产生当前的折扣。\n"
 "\n"
 "订购或创建下一个订单的优惠券。"
 
@@ -321,7 +328,7 @@ msgstr "申请优惠券"
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_order__no_code_promo_program_ids
 msgid "Applied Immediate Promo Programs"
-msgstr "应用即时促销计划"
+msgstr "应用即时促销方案"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_order__code_promo_program_id
@@ -387,7 +394,7 @@ msgid ""
 "Automatically Applied - No code is required, if the program rules are met, the reward is applied (Except the global discount or the free shipping rewards which are not cumulative)\n"
 "Use a code - If the program rules are met, a valid code is mandatory for the reward to be applied\n"
 msgstr ""
-"自动应用-不需要代码，如果满足程序规则，则应用奖励（除非全球折扣或免费送货奖励不累计）。\n"
+"自动应用-不需要代码，如果满足方案规则，则应用奖励（除非全球折扣或免费送货奖励不累计）。\n"
 "\n"
 "使用代码-如果满足了程序规则，则必须为应用程序提供有效的代码。\n"
 
@@ -418,6 +425,11 @@ msgstr ""
 " 如果满足某些条件，您可以共享促销代码或自动授予促销。"
 
 #. module: sale_coupon
+#: model:sale.coupon.program,name:sale_coupon.3_ipad_plus_1_free
+msgid "Buy 3 large cabinets, get one for free"
+msgstr "买3个大柜子，免费拿一个"
+
+#. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_apply_code_view_form
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_generate_view_form
 msgid "Cancel"
@@ -433,12 +445,17 @@ msgstr "已关闭"
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_promo_program_search
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_search
 msgid "Closed Programs"
-msgstr "关闭程序"
+msgstr "关闭的方案"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon__code
 msgid "Code"
 msgstr "代码"
+
+#. module: sale_coupon
+#: model:sale.coupon.program,name:sale_coupon.10_percent_auto_applied
+msgid "Code for 10% on orders"
+msgstr "订单折扣码为10％"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_program__company_id
@@ -486,18 +503,18 @@ msgstr "息数"
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_form_common
 #: selection:sale.coupon.program,program_type:0
 msgid "Coupon Program"
-msgstr "优惠券计划"
+msgstr "优惠券方案"
 
 #. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_form
 msgid "Coupon Program Name..."
-msgstr "优惠券节目名称…"
+msgstr "优惠券方案名称…"
 
 #. module: sale_coupon
 #: model:ir.ui.menu,name:sale_coupon.menu_coupon_type_config
 #: model_terms:ir.ui.view,arch_db:sale_coupon.res_config_settings_view_form
 msgid "Coupon Programs"
-msgstr "优惠券规划"
+msgstr "优惠券方案"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_program__rule_id
@@ -508,26 +525,26 @@ msgstr "优惠券规则"
 #: model:ir.model.fields,help:sale_coupon.field_sale_coupon_program__rule_date_to
 #: model:ir.model.fields,help:sale_coupon.field_sale_coupon_rule__rule_date_to
 msgid "Coupon program end date"
-msgstr "优惠券节目结束日期"
+msgstr "优惠券方案结束日期"
 
 #. module: sale_coupon
 #: model:ir.model.fields,help:sale_coupon.field_sale_coupon_program__rule_date_from
 #: model:ir.model.fields,help:sale_coupon.field_sale_coupon_rule__rule_date_from
 msgid "Coupon program start date"
-msgstr "优惠券程序开始日期"
+msgstr "优惠券方案开始日期"
 
 #. module: sale_coupon
 #: model:ir.model.fields,help:sale_coupon.field_sale_coupon_program__sequence
 msgid ""
 "Coupon program will be applied based on given sequence if multiple programs "
 "are defined on same condition(For minimum amount)"
-msgstr "如果多个程序在相同条件下定义（最小数量），则将根据给定的序列应用优惠券程序。"
+msgstr "如果多个程序在相同条件下定义（最小数量），则将根据给定的序列应用优惠券方案。"
 
 #. module: sale_coupon
 #: model:ir.model.fields,help:sale_coupon.field_sale_coupon_program__rule_partners_domain
 #: model:ir.model.fields,help:sale_coupon.field_sale_coupon_rule__rule_partners_domain
 msgid "Coupon program will work for selected customers only"
-msgstr "优惠券计划将只为选定的客户"
+msgstr "优惠券方案将只为选定的客户"
 
 #. module: sale_coupon
 #: model:ir.actions.act_window,name:sale_coupon.sale_coupon_action
@@ -541,12 +558,12 @@ msgstr "优惠券"
 #. module: sale_coupon
 #: model_terms:ir.actions.act_window,help:sale_coupon.sale_coupon_program_action_coupon_program
 msgid "Create a new coupon program"
-msgstr "创建一个新的优惠计划"
+msgstr "创建一个新的优惠方案"
 
 #. module: sale_coupon
 #: model_terms:ir.actions.act_window,help:sale_coupon.sale_coupon_program_action_promo_program
 msgid "Create a new promotion program"
-msgstr "创建一个新的促销计划。"
+msgstr "创建一个新的促销方案"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon__create_uid
@@ -673,7 +690,7 @@ msgstr "过期"
 #. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_search
 msgid "Expired Programs"
-msgstr "过期项目"
+msgstr "过期的方案"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_program__discount_fixed_amount
@@ -702,6 +719,12 @@ msgstr "免费产品"
 #, python-format
 msgid "Free Product - %s"
 msgstr "免费产品－%s"
+
+#. module: sale_coupon
+#: model:product.product,name:sale_coupon.product_product_free_large_cabinet
+#: model:product.template,name:sale_coupon.product_product_free_large_cabinet_product_template
+msgid "Free Product - Large Cabinet"
+msgstr "免费产品哟 - 大柜子"
 
 #. module: sale_coupon
 #: selection:sale.coupon.reward,reward_type:0
@@ -772,7 +795,7 @@ msgstr "无效的合作伙伴。"
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_order_line__is_reward_line
 msgid "Is a program reward line"
-msgstr "是一个节目奖励线"
+msgstr "是一个方案奖励行"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_report_sale_coupon_report_coupon____last_update
@@ -953,7 +976,7 @@ msgstr "产品上含有以下税: "
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_promo_program_search
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_search
 msgid "Opened Programs"
-msgstr "打开的程序"
+msgstr "开启的方案"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_program__order_count
@@ -1011,22 +1034,22 @@ msgstr "用销售订单中应用折扣产品。"
 msgid ""
 "Product used in the sales order to apply the discount. Each coupon program "
 "has its own reward product for reporting purpose"
-msgstr "用销售订单中应用折扣产品。每个优惠券计划呈报其目的本身的奖励品"
+msgstr "用销售订单中应用折扣产品。每个优惠券方案呈报其目的本身的奖励品"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon__program_id
 msgid "Program"
-msgstr "计划"
+msgstr "方案"
 
 #. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_form_common
 msgid "Program Name"
-msgstr "计划名称"
+msgstr "方案名称"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_program__program_type
 msgid "Program Type"
-msgstr "计划类型"
+msgstr "方案类型"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_program__promo_code_usage
@@ -1060,23 +1083,23 @@ msgstr "促销代码"
 #. module: sale_coupon
 #: model:ir.actions.act_window,name:sale_coupon.sale_coupon_program_action_promo_program
 msgid "Promotion Program"
-msgstr "推广计划"
+msgstr "促销方案"
 
 #. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_promo_program_form
 msgid "Promotion Program Name..."
-msgstr "推广计划名称。。。"
+msgstr "促销方案名称。。。"
 
 #. module: sale_coupon
 #: model:ir.ui.menu,name:sale_coupon.menu_promotion_type_config
 #: model_terms:ir.ui.view,arch_db:sale_coupon.res_config_settings_view_form
 msgid "Promotion Programs"
-msgstr "促销规划"
+msgstr "促销方案"
 
 #. module: sale_coupon
 #: selection:sale.coupon.program,program_type:0
 msgid "Promotional Program"
-msgstr "推广计划"
+msgstr "促销方案"
 
 #. module: sale_coupon
 #: code:addons/sale_coupon/models/sale_coupon_program.py:165
@@ -1183,7 +1206,7 @@ msgstr "销售优惠券生成"
 #. module: sale_coupon
 #: model:ir.model,name:sale_coupon.model_sale_coupon_program
 msgid "Sales Coupon Program"
-msgstr "销售优惠计划"
+msgstr "销售优惠券方案"
 
 #. module: sale_coupon
 #: model:ir.model,name:sale_coupon.model_report_sale_coupon_report_coupon
@@ -1284,7 +1307,7 @@ msgstr "优惠券代码必须是唯一的！"
 #: code:addons/sale_coupon/models/sale_coupon.py:65
 #, python-format
 msgid "The coupon program for %s is in draft or closed state"
-msgstr "优惠券计划草案或是关闭状态"
+msgstr "优惠券方案是草稿或关闭状态"
 
 #. module: sale_coupon
 #: code:addons/sale_coupon/models/sale_coupon.py:75
@@ -1309,7 +1332,7 @@ msgstr "固定金额折扣"
 #: code:addons/sale_coupon/models/sale_coupon_program.py:62
 #, python-format
 msgid "The program code must be unique!"
-msgstr "程序代码必须是唯一的！"
+msgstr "方案代码必须是唯一的！"
 
 #. module: sale_coupon
 #: code:addons/sale_coupon/models/sale_coupon_program.py:157
@@ -1367,6 +1390,14 @@ msgid "Unit of Measure"
 msgstr "计量单位"
 
 #. module: sale_coupon
+#: model:product.product,uom_name:sale_coupon.product_product_10_percent_discount
+#: model:product.product,uom_name:sale_coupon.product_product_free_large_cabinet
+#: model:product.template,uom_name:sale_coupon.product_product_10_percent_discount_product_template
+#: model:product.template,uom_name:sale_coupon.product_product_free_large_cabinet_product_template
+msgid "Unit(s)"
+msgstr "件"
+
+#. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_order_view_form
 msgid "Update Promotions"
 msgstr "更新促销"
@@ -1411,7 +1442,7 @@ msgstr "在其生成的优惠券有效期"
 #: code:addons/sale_coupon/models/sale_coupon_program.py:121
 #, python-format
 msgid "You can not delete a program in active state"
-msgstr "不能删除处于活动状态的程序。"
+msgstr "不能删除处于活动状态的方案"
 
 #. module: sale_coupon
 #: code:addons/sale_coupon/models/sale_coupon.py:78
@@ -1442,6 +1473,14 @@ msgstr "圣上的优惠劵代码"
 #: model:mail.template,subject:sale_coupon.mail_template_sale_coupon
 msgid "Your reward coupon from ${object.program_id.company_id.name} "
 msgstr "你的优惠券来自 ${object.program_id.company_id.name} "
+
+#. module: sale_coupon
+#: model:product.product,weight_uom_name:sale_coupon.product_product_10_percent_discount
+#: model:product.product,weight_uom_name:sale_coupon.product_product_free_large_cabinet
+#: model:product.template,weight_uom_name:sale_coupon.product_product_10_percent_discount_product_template
+#: model:product.template,weight_uom_name:sale_coupon.product_product_free_large_cabinet_product_template
+msgid "kg"
+msgstr "公斤"
 
 #. module: sale_coupon
 #: code:addons/sale_coupon/models/sale_order.py:202

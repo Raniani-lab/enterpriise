@@ -174,7 +174,7 @@ msgstr "從"
 #: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:59
 #, python-format
 msgid "From:"
-msgstr ""
+msgstr "從:"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot__id
@@ -185,7 +185,7 @@ msgstr "ID"
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_picking_type_kanban
 msgid "In #{kanban_getcolorname(record.color.raw_value)}"
-msgstr ""
+msgstr "在 #{kanban_getcolorname(record.color.raw_value)}"
 
 #. module: stock_barcode
 #: model:ir.model.fields,help:stock_barcode.field_stock_inventory_line__product_barcode
@@ -361,7 +361,7 @@ msgstr "以前"
 #: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:21
 #, python-format
 msgid "Print Delivery Slip"
-msgstr ""
+msgstr "列印送貨單"
 
 #. module: stock_barcode
 #. openerp-web
@@ -392,7 +392,7 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_move_line
 msgid "Product Moves (Stock Move Line)"
-msgstr ""
+msgstr "產品移動(移庫明細)"
 
 #. module: stock_barcode
 #. openerp-web
@@ -634,7 +634,7 @@ msgstr "至"
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_picking_type_kanban
 msgid "To Process"
-msgstr ""
+msgstr "待處理"
 
 #. module: stock_barcode
 #. openerp-web

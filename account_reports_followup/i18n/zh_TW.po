@@ -5,13 +5,14 @@
 # Translators:
 # Martin Trigaux, 2018
 # sejun huang <sejun.huang@gmail.com>, 2018
+# 敬雲 林 <chingyun@yuanchih-consult.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: sejun huang <sejun.huang@gmail.com>, 2018\n"
+"POT-Creation-Date: 2018-10-08 07:14+0000\n"
+"PO-Revision-Date: 2018-10-08 07:14+0000\n"
+"Last-Translator: 敬雲 林 <chingyun@yuanchih-consult.com>, 2018\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/odoo/teams/41243/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,6 +22,8 @@ msgstr ""
 
 #. module: account_reports_followup
 #: model:account_followup.followup.line,description:account_reports_followup.demo_followup_line3
+#: model:account_followup.followup.line,description:account_reports_followup.demo_followup_line4
+#: model:account_followup.followup.line,description:account_reports_followup.demo_followup_line5
 msgid ""
 "\n"
 "Dear %(partner_name)s,\n"
@@ -35,6 +38,14 @@ msgid ""
 "\n"
 "Best Regards,\n"
 msgstr ""
+"\n"
+"親愛的%(partner_name)s:\n"
+"\n"
+"不知道您是否有收到我公司的多次對賬提醒？\n"
+"貴公司任有超期餘款未付，請貴司於8日內將附件清單所示餘款項結清。如超期仍未結清，\n"
+" 我公司不排除付諸法律流程。我相信這些都不是大家所希望的。相關未結款清單附於郵件附件。如有任何疑問，請立即聯繫我公司會計部門\n"
+"\n"
+"。致\n"
 
 #. module: account_reports_followup
 #: model:account_followup.followup.line,description:account_reports_followup.demo_followup_line1
@@ -48,6 +59,15 @@ msgid ""
 "\n"
 "Best Regards,\n"
 msgstr ""
+"\n"
+"親愛的%(partner_name)s,\n"
+"\n"
+"如果這不是一個誤會的話,看來您的應付款依然沒有支付。\n"
+"請在8天內採取有效的措施來完成付款。\n"
+"如果您已經在收到郵件前付款，請忽略這個信息。\n"
+"請不要猶豫聯繫我們的會計部門。\n"
+"\n"
+"致以誠摯的問候,\n"
 
 #. module: account_reports_followup
 #: model:account_followup.followup.line,description:account_reports_followup.demo_followup_line2
@@ -66,31 +86,39 @@ msgid ""
 "\n"
 "Best Regards,\n"
 msgstr ""
+"\n"
+"親愛的 %(partner_name)s,\n"
+"我們失望的發現儘管我們發了提醒給您,不過您的應付款依然超過了額度。\n"
+"請立即付款, 不然我們會考慮停止與您的業務往來,這意味著貴公司將不再得到我們的良好的技術支持。\n"
+"在接下來的8天裡，請採取適當的措施來落實這筆應付款。\n"
+"如果是因為我們未注意到的發票問題影響支付, 請毫不猶豫的聯繫我們的會計部門, 我們會快速解決這個問題。下面是超期超額的應付款。\n"
+"\n"
+"致以誠摯的問候，\n"
 
 #. module: account_reports_followup
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
 msgid ": Current Date"
-msgstr ""
+msgstr "：當前日期"
 
 #. module: account_reports_followup
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
 msgid ": Partner Name"
-msgstr ""
+msgstr "：合作夥伴名稱"
 
 #. module: account_reports_followup
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
 msgid ": User Name"
-msgstr ""
+msgstr "：用戶名"
 
 #. module: account_reports_followup
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
 msgid ": User's Company Name"
-msgstr ""
+msgstr "：用戶的公司名稱"
 
 #. module: account_reports_followup
 #: model:ir.model,name:account_reports_followup.model_account_followup_followup
 msgid "Account Follow-up"
-msgstr ""
+msgstr "會計催款"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__manual_action_note
@@ -142,12 +170,12 @@ msgstr "創建時間"
 #. module: account_reports_followup
 #: sql_constraint:account_followup.followup.line:0
 msgid "Days of the follow-up levels must be different"
-msgstr ""
+msgstr "催款等級中的天數必須是不同的"
 
 #. module: account_reports_followup
 #: model_terms:ir.actions.act_window,help:account_reports_followup.action_account_followup_definition_form
 msgid "Define follow-up levels and their related actions"
-msgstr ""
+msgstr "默認催款等級和相關功能"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup__display_name
@@ -165,12 +193,12 @@ msgstr "完成"
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__delay
 msgid "Due Days"
-msgstr ""
+msgstr "截止天數"
 
 #. module: account_reports_followup
 #: model:account_followup.followup.line,name:account_reports_followup.demo_followup_line1
 msgid "First reminder email"
-msgstr ""
+msgstr "第一個提醒電子郵件"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__followup_id
@@ -180,7 +208,7 @@ msgstr "催款"
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__name
 msgid "Follow-Up Action"
-msgstr ""
+msgstr "催款動作"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup__followup_line_ids
@@ -192,7 +220,7 @@ msgstr "催款"
 #. module: account_reports_followup
 #: model:ir.model,name:account_reports_followup.model_account_followup_followup_line
 msgid "Follow-up Criteria"
-msgstr ""
+msgstr "催款準則"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_move_line__followup_line_id
@@ -208,13 +236,12 @@ msgstr "催款等級"
 #. module: account_reports_followup
 #: model:ir.model,name:account_reports_followup.model_account_followup_report
 msgid "Follow-up Report"
-msgstr ""
+msgstr "催款報表"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_res_partner__payment_responsible_id
-#: model:ir.model.fields,field_description:account_reports_followup.field_res_users__payment_responsible_id
 msgid "Follow-up Responsible"
-msgstr ""
+msgstr "催款責任人"
 
 #. module: account_reports_followup
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
@@ -229,6 +256,8 @@ msgid ""
 "                possible to use print and e-mail templates to send specific messages to\n"
 "                the customer."
 msgstr ""
+"對於每一步, 定義需要的功能和推遲的天數。\n"
+" 可以通過打印或郵件將這些信息發給客戶。"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,help:account_reports_followup.field_account_followup_followup_line__sequence
@@ -281,13 +310,13 @@ msgstr "手動動作"
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__manual_action_type_id
 msgid "Manual Action Type"
-msgstr ""
+msgstr "手動操作類型"
 
 #. module: account_reports_followup
 #: code:addons/account_reports_followup/models/account_followup_report.py:86
 #, python-format
 msgid "Manual action done"
-msgstr ""
+msgstr "手動操作已完成"
 
 #. module: account_reports_followup
 #. openerp-web
@@ -296,7 +325,7 @@ msgstr ""
 msgid ""
 "Odoo will remind you to take care of this follow-up on the next reminder "
 "date."
-msgstr ""
+msgstr "系統還會在下一個提醒日期提醒您關注一下這個催款"
 
 #. module: account_reports_followup
 #: sql_constraint:account_followup.followup:0
@@ -305,11 +334,10 @@ msgstr "一間公司僅允許一項後續追蹤"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,help:account_reports_followup.field_res_partner__payment_responsible_id
-#: model:ir.model.fields,help:account_reports_followup.field_res_users__payment_responsible_id
 msgid ""
 "Optionally you can assign a user to this field, which will make him "
 "responsible for the action."
-msgstr ""
+msgstr "你可以隨意指定一個用戶到這個字段，將使他負責這個動作"
 
 #. module: account_reports_followup
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.account_move_line_partner_tree
@@ -319,19 +347,19 @@ msgstr "業務夥伴分錄"
 #. module: account_reports_followup
 #: model:ir.actions.act_window,name:account_reports_followup.action_account_followup_definition_form
 msgid "Payment Follow-ups"
-msgstr ""
+msgstr "付款催收"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__print_letter
 msgid "Print a Letter"
-msgstr ""
+msgstr "打印信"
 
 #. module: account_reports_followup
 #. openerp-web
 #: code:addons/account_reports_followup/static/src/xml/account_reports_followup_template.xml:7
 #, python-format
 msgid "Print letter"
-msgstr ""
+msgstr "列印信"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__description
@@ -343,34 +371,34 @@ msgstr "Printed Message"
 #: code:addons/account_reports_followup/static/src/xml/account_reports_followup_template.xml:16
 #, python-format
 msgid "Remind me later"
-msgstr ""
+msgstr "稍後提醒我"
 
 #. module: account_reports_followup
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_filter
 msgid "Search Follow-up"
-msgstr ""
+msgstr "搜索催款"
 
 #. module: account_reports_followup
 #: model:account_followup.followup.line,name:account_reports_followup.demo_followup_line2
 msgid "Second reminder letter and email"
-msgstr ""
+msgstr "第二次提醒信和電子郵件"
 
 #. module: account_reports_followup
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
 msgid "Send a Letter or Email"
-msgstr ""
+msgstr "發送信函或郵件"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__send_email
 msgid "Send an Email"
-msgstr ""
+msgstr "發送電子郵件"
 
 #. module: account_reports_followup
 #. openerp-web
 #: code:addons/account_reports_followup/static/src/xml/account_reports_followup_template.xml:10
 #, python-format
 msgid "Send by email"
-msgstr ""
+msgstr "使用電子郵件寄送"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__sequence
@@ -383,12 +411,12 @@ msgid ""
 "The number of days after the due date of the invoice to wait before sending "
 "the reminder.  Could be negative if you want to send a polite alert "
 "beforehand."
-msgstr ""
+msgstr "依據欠款的天數，決定是否發出提醒。在實際操做時，要確認發出的是一個有禮貌的警告，不然會產生負面作用。"
 
 #. module: account_reports_followup
 #: model:account_followup.followup.line,name:account_reports_followup.demo_followup_line3
 msgid "Third reminder: phone the customer"
-msgstr ""
+msgstr "第三次提醒：給客戶打電話"
 
 #. module: account_reports_followup
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_form
@@ -402,6 +430,12 @@ msgid ""
 "                        same customer, the actions of the most \n"
 "                        overdue invoice will be executed."
 msgstr ""
+"提醒客戶支付他們的發票, \n"
+"您可以根客戶據逾期的嚴重程度定義不同的操作。\n"
+"到期發票超期一定天數後，\n"
+"就會觸發由綁定的催款等級定義的動作。 \n"
+"如果同一客戶有多張逾期發票, \n"
+"將按逾期天數最多的發票被執行相應動作。"
 
 #. module: account_reports_followup
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.account_move_line_partner_tree
@@ -414,21 +448,31 @@ msgid "Total debit"
 msgstr "借方合計"
 
 #. module: account_reports_followup
+#: model:account_followup.followup.line,name:account_reports_followup.demo_followup_line4
+msgid "Urging reminder email"
+msgstr "催促提醒郵件"
+
+#. module: account_reports_followup
+#: model:account_followup.followup.line,name:account_reports_followup.demo_followup_line5
+msgid "Urging reminder letter"
+msgstr "催促提醒信函"
+
+#. module: account_reports_followup
 #: model:ir.model.fields,help:account_reports_followup.field_account_followup_followup_line__print_letter
 msgid "When processing, it will print a PDF"
-msgstr ""
+msgstr "正在處理，它會打印一個PDF文件"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,help:account_reports_followup.field_account_followup_followup_line__send_email
 msgid "When processing, it will send an email"
-msgstr ""
+msgstr "處理時，將發出一個email"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,help:account_reports_followup.field_account_followup_followup_line__manual_action
 msgid ""
 "When processing, it will set the manual action to be taken for that "
 "customer. "
-msgstr ""
+msgstr "當進行時，會將此客戶設為手動操作。"
 
 #. module: account_reports_followup
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
@@ -439,6 +483,11 @@ msgid ""
 "                            forget to translate in all languages you installed\n"
 "                            using to top right icon."
 msgstr ""
+"這裡寫下介紹, \n"
+"根據催款的等級，您可以\n"
+" 使用下列關鍵字，不要 \n"
+"忘記使用右上方的圖標\n"
+" 翻譯成各種語言 ."
 
 #. module: account_reports_followup
 #: code:addons/account_reports_followup/models/account_followup.py:57
@@ -453,9 +502,9 @@ msgstr ""
 #. module: account_reports_followup
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
 msgid "days overdue, do the following actions:"
-msgstr ""
+msgstr "天過期，做下列動作："
 
 #. module: account_reports_followup
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
 msgid "e.g. Call the customer, check if it's paid, ..."
-msgstr ""
+msgstr "例如，打電話給客戶，確認是否付款,..."

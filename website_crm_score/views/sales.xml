@@ -159,7 +159,7 @@
                     </button>
                 </xpath>
                 <xpath expr="//group[@name='right']" position="inside">
-                    <field name="score_team_domain" widget="domain" options="{'model': 'crm.lead'}"/>
+                    <field name="score_team_domain" widget="domain" options="{'model': 'crm.lead', 'in_dialog': True}"/>
                     <label for="assigned_leads_count"/>
                     <div>
                         <field name="assigned_leads_count" class="oe_inline"/> /

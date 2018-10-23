@@ -330,3 +330,13 @@ class DatevExportCSV(models.AbstractModel):
                 lines.append(array)
         writer.writerows(lines)
         return output.getvalue()
+
+
+class report_account_coa(models.AbstractModel):
+    _inherit = "account.coa.report"
+
+    def get_reports_buttons(self):
+        buttons = super(report_account_coa, self).get_reports_buttons()
+        # It doesn't make sense to print the DATEV on anything else than the
+        # proper general ledger
+        return [b for b in buttons if b.get('action') != 'print_zip']

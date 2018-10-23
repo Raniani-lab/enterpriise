@@ -6,10 +6,10 @@
 # Martin Trigaux, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.3+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 08:34+0000\n"
-"PO-Revision-Date: 2018-06-25 08:34+0000\n"
+"POT-Creation-Date: 2018-09-18 10:05+0000\n"
+"PO-Revision-Date: 2018-09-18 10:05+0000\n"
 "Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -19,12 +19,12 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: website_helpdesk_form
-#: model:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
 msgid "Attachment(s)"
 msgstr "Bijlage(s)"
 
 #. module: website_helpdesk_form
-#: model:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
 msgid "Description"
 msgstr "Omschrijving"
 
@@ -34,30 +34,29 @@ msgid "Helpdesk Team"
 msgstr "Helpdesk team"
 
 #. module: website_helpdesk_form
-#: model:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
 msgid "Send"
 msgstr "Verzenden"
 
 #. module: website_helpdesk_form
-#: model:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
 msgid "Subject"
 msgstr "Onderwerp"
 
 #. module: website_helpdesk_form
-#: model:ir.ui.view,arch_db:website_helpdesk_form.helpdesk_team_view_form_inherit_website_helpdesk_form
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_form.helpdesk_team_view_form_inherit_website_helpdesk_form
 msgid "Submit an issue using this page:<br/>"
 msgstr "Verstuur een issue via deze pagina:<br/>"
 
 #. module: website_helpdesk_form
-#: model:ir.ui.view,arch_db:website_helpdesk_form.aboutus_page_ir_ui_view
-#: model:ir.ui.view,arch_db:website_helpdesk_form.ticket_submited
-#: model:website.page,arch_db:website_helpdesk_form.aboutus_page
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_form.aboutus_page_ir_ui_view
+#: model_terms:website.page,arch_db:website_helpdesk_form.aboutus_page
 msgid "Thank you for submitting your issue, our team will get right on it!"
 msgstr ""
 "Bedankt voor het versturen van uw issue, ons team gaat er mee aan de slag!"
 
 #. module: website_helpdesk_form
-#: model:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
 msgid "Ticket"
 msgstr "Ticket"
 
@@ -67,18 +66,17 @@ msgid "URL to Submit Issue"
 msgstr "URL om issue in te dienen"
 
 #. module: website_helpdesk_form
-#: model:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
 msgid "Your Email"
 msgstr "Uw e-mail"
 
 #. module: website_helpdesk_form
-#: model:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
 msgid "Your Name"
 msgstr "Uw naam"
 
 #. module: website_helpdesk_form
-#: model:ir.ui.view,arch_db:website_helpdesk_form.aboutus_page_ir_ui_view
-#: model:ir.ui.view,arch_db:website_helpdesk_form.ticket_submited
-#: model:website.page,arch_db:website_helpdesk_form.aboutus_page
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_form.aboutus_page_ir_ui_view
+#: model_terms:website.page,arch_db:website_helpdesk_form.aboutus_page
 msgid "Your Ticket Number is"
 msgstr "Uw ticketnummer is"

@@ -4,16 +4,17 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2018
 # Gunther Clauwaert <gclauwae@hotmail.com>, 2018
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
+# Thomas Pot <thomas@open2bizz.nl>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-02 10:31+0000\n"
 "PO-Revision-Date: 2018-10-02 10:31+0000\n"
-"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2018\n"
+"Last-Translator: Thomas Pot <thomas@open2bizz.nl>, 2018\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,7 +25,7 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
 msgid ", expired on"
-msgstr ""
+msgstr ", verlopen op"
 
 #. module: documents
 #. openerp-web
@@ -35,18 +36,22 @@ msgid ""
 "task or vendor bill,</br> create activities for users, etc.</br> Actions can"
 " be customized through the Configuration menu."
 msgstr ""
+"<b>Acties</b> maken het mogelijk labels toe te wijzen, acties te "
+"automatiseren, zoals het maken van een taak of een "
+"leveranciersrekening,</br> taken voor gebruikers, etc.</br> Acties kunnen "
+"worden aangepast via het configuratiemenu."
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.format_file_size
 msgid "<b>Bytes</b>"
-msgstr ""
+msgstr "<b>Bytes</b>"
 
 #. module: documents
 #. openerp-web
 #: code:addons/documents/static/src/js/tour.js:26
 #, python-format
 msgid "<b>Close the preview</b> to go back to your selection of documents"
-msgstr ""
+msgstr "<b>Sluit voorbeeldweergave</b> om terug te gaan naar het overzicht."
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.format_file_size
@@ -71,6 +76,8 @@ msgid ""
 "<b>Use tags</b> to easily filter documents. Tags are defined according to "
 "the folder."
 msgstr ""
+"<b>Gebruik labels</b> om documenten eenvoudig te filteren. Labels kunnen per"
+" Map gedefinieerd worden."
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
@@ -80,7 +87,7 @@ msgstr "Aangeboden door"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_page
 msgid "<i class=\"fa fa-download fa-fw\"/>  Download All"
-msgstr "<i class=\"fa fa-download fa-fw\"/>  Download Alle"
+msgstr "<i class=\"fa fa-download fa-fw\"/>  Download alle"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_single
@@ -115,7 +122,7 @@ msgstr "<span style=\"color:white;\">&amp;nbsp;Documenten.</span>"
 #: model_terms:ir.ui.view,arch_db:documents.documents_view_kanban
 #: model_terms:ir.ui.view,arch_db:documents.inherit_mail_attachment_view_kanban
 msgid "<span><b>Requested Document</b></span>"
-msgstr ""
+msgstr "<span><b>Gevraagde Documenten</b></span>"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_defaults
@@ -174,7 +181,7 @@ msgstr "Activiteit"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_note
 msgid "Activity Note"
-msgstr ""
+msgstr "Activiteiten notitie"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__activity_type_id
@@ -224,22 +231,22 @@ msgstr "Aliasdomein"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_model_id
 msgid "Aliased Model"
-msgstr "Aliased Model"
+msgstr "Aliased model"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
 msgid "All locked files"
-msgstr ""
+msgstr "Alle vergrendelde bestanden"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__action
 msgid "Allows to"
-msgstr ""
+msgstr "Staat toe om"
 
 #. module: documents
 #: model:ir.module.category,description:documents.module_category_documents_management
 msgid "Allows you to manage your documents."
-msgstr ""
+msgstr "Hiermee kunt u uw documenten beheren."
 
 #. module: documents
 #. openerp-web
@@ -276,12 +283,12 @@ msgstr "Bijlagen"
 #: code:addons/documents/static/src/js/documents_kanban_view.js:27
 #, python-format
 msgid "Attachments Kanban"
-msgstr ""
+msgstr "Bijlagen kanban"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_ir_attachment__available_rule_ids
 msgid "Available Rules"
-msgstr "Beschikbare Regels"
+msgstr "Beschikbare regels"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_request_form_view
@@ -307,7 +314,7 @@ msgstr "Klik hier om <b>het discussiebord te sluiten</b>"
 #: code:addons/documents/static/src/js/tour.js:17
 #, python-format
 msgid "Click on a card to <b>view the document</b>."
-msgstr ""
+msgstr "Klik op een kaartje om <b>het document te bekijken</b>."
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__company_id
@@ -317,7 +324,7 @@ msgstr "Bedrijf"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__condition_type
 msgid "Condition type"
-msgstr ""
+msgstr "Conditie type"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
@@ -351,7 +358,7 @@ msgstr "Aanmaken"
 #: model:ir.model.fields,field_description:documents.field_documents_share__activity_option
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_option
 msgid "Create a new activity"
-msgstr ""
+msgstr "Nieuwe activiteit toevoegen."
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.tag_view_tree
@@ -402,7 +409,7 @@ msgstr "Dagen"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.res_config_settings_view_form
 msgid "Default Folders"
-msgstr ""
+msgstr "Standaard Mappen"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_defaults
@@ -413,7 +420,7 @@ msgstr "Standaardwaarden"
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
 msgid "Default values for uploaded documents"
-msgstr ""
+msgstr "Standaardwaarden voor geüploade documenten"
 
 #. module: documents
 #. openerp-web
@@ -454,27 +461,27 @@ msgstr "Document"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__owner_id
 msgid "Document Owner"
-msgstr ""
+msgstr "Eigenaar van het document"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_request_wizard
 msgid "Document Request"
-msgstr ""
+msgstr "Aanvraag document"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_workflow_action
 msgid "Document Workflow Tag Action"
-msgstr ""
+msgstr "Document flow labelactie"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_workflow_tag_criteria
 msgid "Document Workflow Tag Criteria"
-msgstr ""
+msgstr "Document flow labelcriteria"
 
 #. module: documents
 #: selection:documents.share,type:0
 msgid "Document list"
-msgstr "Document lijst"
+msgstr "Documentlijst"
 
 #. module: documents
 #. openerp-web
@@ -491,12 +498,12 @@ msgstr "Documenten"
 #. module: documents
 #: model:ir.model,name:documents.model_documents_folder
 msgid "Documents Folder"
-msgstr ""
+msgstr "Documentenmap"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_share
 msgid "Documents Share"
-msgstr ""
+msgstr "Documenten gedeeld"
 
 #. module: documents
 #: model:ir.module.category,name:documents.module_category_documents_management
@@ -557,27 +564,27 @@ msgstr "Vervalsoort"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_form
 msgid "E.g. Finance"
-msgstr ""
+msgstr "Bijv. Financieel"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_request_form_view
 msgid "E.g. Missing Expense"
-msgstr ""
+msgstr "Bijv. Ontbrekende kosten"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.facet_view_form_list
 msgid "E.g. Status"
-msgstr ""
+msgstr "Bijv. Status"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
 msgid "E.g. Validate document"
-msgstr ""
+msgstr "Bijv. Bevestig document"
 
 #. module: documents
 #: selection:ir.attachment,type:0
 msgid "Empty"
-msgstr ""
+msgstr "Leeg"
 
 #. module: documents
 #: selection:documents.share,state:0
@@ -593,7 +600,7 @@ msgstr "Facet"
 #. module: documents
 #: sql_constraint:documents.facet:0
 msgid "Facet already exists in this folder"
-msgstr ""
+msgstr "Facet bestaat al in deze map"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_ir_attachment__favorited_ids
@@ -613,7 +620,7 @@ msgstr "Bestand"
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__domain_folder_id
 #: model:ir.model.fields,field_description:documents.field_ir_attachment__folder_id
 msgid "Folder"
-msgstr "Folder"
+msgstr "Map"
 
 #. module: documents
 #. openerp-web
@@ -622,7 +629,7 @@ msgstr "Folder"
 #: model:ir.ui.menu,name:documents.folder_menu
 #, python-format
 msgid "Folders"
-msgstr "Folders"
+msgstr "mappen"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_follower_ids
@@ -652,6 +659,8 @@ msgid ""
 "Go to the <b>images, videos & PDF viewer</b> by clicking on the preview "
 "area."
 msgstr ""
+"Bekijk <b>afbeeldingen, videos & PDF's </b> door op de voorbeeld weergave te"
+" klikken."
 
 #. module: documents
 #: model:ir.model,name:documents.model_ir_http
@@ -837,7 +846,7 @@ msgstr "Manager"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__remove_activities
 msgid "Mark all Activities as done"
-msgstr ""
+msgstr "Markeer alle activiteiten als gereed"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_has_error
@@ -864,14 +873,14 @@ msgstr "Maanden"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__folder_id
 msgid "Move to Folder"
-msgstr "Verplaats naar Folder"
+msgstr "Verplaats naar map"
 
 #. module: documents
 #. openerp-web
 #: code:addons/documents/static/src/js/documents_inspector.js:143
 #, python-format
 msgid "Multiple values"
-msgstr "Meerdere Waarden"
+msgstr "Meerdere waarden"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
@@ -913,7 +922,7 @@ msgstr "Naam van de deel link"
 #: code:addons/documents/static/src/js/documents_kanban_model.js:227
 #, python-format
 msgid "No Source"
-msgstr "Geen Bron"
+msgstr "Geen bron"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__activity_note
@@ -954,7 +963,7 @@ msgstr "Odoo logo"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
 msgid "Odoo Website"
-msgstr "Odoo Website"
+msgstr "Odoo website"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__operator
@@ -994,7 +1003,7 @@ msgstr "PDF"
 #: model:ir.model.fields,field_description:documents.field_documents_folder__parent_folder_id
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_search
 msgid "Parent Folder"
-msgstr "Bovenliggende Folder"
+msgstr "Bovenliggende map"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_parent_model_id
@@ -1004,7 +1013,7 @@ msgstr "Bovenliggend model"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_parent_thread_id
 msgid "Parent Record Thread ID"
-msgstr "Parent Record Thread ID"
+msgstr "Bovenliggende record Thread ID"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_parent_model_id
@@ -1066,29 +1075,29 @@ msgstr "Opdrachtaanvraag"
 #: code:addons/documents/static/src/xml/documents_kanban.xml:11
 #, python-format
 msgid "Request Document"
-msgstr ""
+msgstr "Document aanvragen"
 
 #. module: documents
 #. openerp-web
 #: code:addons/documents/static/src/xml/systray.xml:7
 #, python-format
 msgid "Request a Document"
-msgstr ""
+msgstr "Document aanvragen"
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.action_request_form
 msgid "Request a file"
-msgstr ""
+msgstr "Bestand aanvragen"
 
 #. module: documents
 #: model:mail.activity.type,name:documents.mail_documents_activity_data_md
 msgid "Requested Document"
-msgstr ""
+msgstr "Aangevraagd document"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
 msgid "Requested files"
-msgstr ""
+msgstr "Aangevraagde bestanden"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__activity_user_id
@@ -1106,12 +1115,12 @@ msgstr "Terugzetten"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__name
 msgid "Rule name"
-msgstr ""
+msgstr "Regel naam"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_folder__facet_ids
 msgid "Select the tag categories to be used"
-msgstr ""
+msgstr "Selecteer de label categorieën die gebruikt worden"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_facet__sequence
@@ -1123,12 +1132,12 @@ msgstr "Volgorde"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__partner_id
 msgid "Set Contact"
-msgstr "Contact Instellen"
+msgstr "Contact instellen"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__user_id
 msgid "Set Owner"
-msgstr "Eigenaar Instellen"
+msgstr "Eigenaar instellen"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__tag_action_ids
@@ -1153,12 +1162,12 @@ msgstr "Deel"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__share_link_ids
 msgid "Share Links"
-msgstr "Delen Links"
+msgstr "Links delen"
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.share_action
 msgid "Share links"
-msgstr "Delen Links"
+msgstr "Links delen"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__type
@@ -1168,17 +1177,17 @@ msgstr "Delen type"
 #. module: documents
 #: model:ir.ui.menu,name:documents.share_menu
 msgid "Shared Links"
-msgstr "Delen Links"
+msgstr "Gedeelde links"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__tag_ids
 msgid "Shared Tags"
-msgstr ""
+msgstr "Gedeelde labels"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__attachment_ids
 msgid "Shared attachments"
-msgstr "Gedeelde Bijlagen"
+msgstr "Gedeelde bijlagen"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
@@ -1230,12 +1239,13 @@ msgstr "Label categorieën"
 #. module: documents
 #: sql_constraint:documents.tag:0
 msgid "Tag already exists for this facet"
-msgstr ""
+msgstr "Label bestaat al voor dit facet"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_folder__parent_folder_id
 msgid "Tag categories from parent folders will be shared to their sub folders"
 msgstr ""
+"Labelcategorieën uit bovenliggende mappen worden gedeeld met hun submappen"
 
 #. module: documents
 #. openerp-web
@@ -1301,12 +1311,13 @@ msgstr "Deze toegangstoken bestaat reeds"
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_folder__company_id
 msgid "This folder will only be available for the selected company"
-msgstr ""
+msgstr "Deze map is alleen beschikbaar voor het geselecteerde bedrijf"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_folder__group_ids
 msgid "This folder will only be available for the selected user groups"
 msgstr ""
+"Deze map is alleen beschikbaar voor de geselecteerde gebruikersgroepen"
 
 #. module: documents
 #. openerp-web
@@ -1339,7 +1350,7 @@ msgstr ""
 #. module: documents
 #: model:mail.activity.type,name:documents.mail_documents_activity_data_tv
 msgid "To validate"
-msgstr ""
+msgstr "Te bevestigen"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
@@ -1357,7 +1368,7 @@ msgstr "Tooltip"
 #: code:addons/documents/static/src/js/tour.js:35
 #, python-format
 msgid "Try to <b>post a message</b>"
-msgstr ""
+msgstr "Probeer om <b>een bericht toe te voegen</b>"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_ir_attachment__type
@@ -1404,6 +1415,8 @@ msgid ""
 "Upload <span class=\"font-weight-normal\">a file or</span> drag <span class"
 "=\"font-weight-normal\">it here.</span>"
 msgstr ""
+"Upload <span class=\"font-weight-normal\">een bestand</span> of sleep <span "
+"class=\"font-weight-normal\">het hierheen.</span>"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__email_drop
@@ -1418,8 +1431,8 @@ msgid ""
 "Use <b>folders</b> to organize documents by departments, or group of "
 "interests"
 msgstr ""
-"Gebruik <b>folders</b> om documenten te organiseren per afdeling of "
-"interesse groepen"
+"Gebruik <b>mappen</b> om documenten te organiseren per afdeling of interesse"
+" groepen"
 
 #. module: documents
 #: model:res.groups,name:documents.group_documents_user
@@ -1484,13 +1497,13 @@ msgstr ""
 #. module: documents
 #: model:ir.actions.act_window,name:documents.workflow_rule_action
 msgid "Workflow Actions"
-msgstr "Workflow Acties"
+msgstr "Workflow acties"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_action__workflow_rule_id
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__workflow_rule_id
 msgid "Workflow Rule"
-msgstr "Workflow Regels"
+msgstr "Workflow regels"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
@@ -1528,7 +1541,7 @@ msgstr "Bijv. Bespreken van de offerte"
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_facet__tooltip
 msgid "hover text description"
-msgstr ""
+msgstr "Muisaanwijzer tekstbeschrijving"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout

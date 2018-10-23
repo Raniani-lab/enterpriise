@@ -666,7 +666,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model,name:documents.model_ir_http
 msgid "HTTP Routing"
-msgstr ""
+msgstr "Routing HTTP"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__has_business_option

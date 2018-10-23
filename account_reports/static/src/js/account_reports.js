@@ -157,6 +157,8 @@ var accountReportsWidget = AbstractAction.extend(ControlPanelMixin, {
         else {
             this.$('.o_account_reports_level1.total').show();
         }
+        this.report_options['filter_accounts'] = query;
+        this.render_footnotes();
     },
     render_searchview_buttons: function() {
         var self = this;
@@ -374,6 +376,9 @@ var accountReportsWidget = AbstractAction.extend(ControlPanelMixin, {
         var number = 1;
         var footnote_to_render = [];
         _.each($dom_footnotes, function(el) {
+            if ($(el).parents('.o_account_reports_filtered_lines').length > 0) {
+                return;
+            }
             var line_id = $(el).data('id');
             var footnote = _.filter(self.footnotes, function(footnote) {return ''+footnote.line === ''+line_id;});
             if (footnote.length !== 0) {

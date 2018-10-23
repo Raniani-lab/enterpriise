@@ -209,7 +209,7 @@ msgstr "附件計數"
 #: code:addons/sign/static/src/xml/sign_common.xml:38
 #, python-format
 msgid "Auto"
-msgstr ""
+msgstr "自動"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item_type__auto_field
@@ -505,7 +505,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_kanban
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
 msgid "Dropdown menu"
-msgstr ""
+msgstr "下拉選單"
 
 #. module: sign
 #. openerp-web
@@ -633,7 +633,7 @@ msgstr "關注者(業務夥伴)"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign._doc_sign
 msgid "From:"
-msgstr ""
+msgstr "從:"
 
 #. module: sign
 #. openerp-web
@@ -696,7 +696,7 @@ msgstr "如果勾選此項，有新消息會提醒您。"
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__message_has_error
 msgid "If checked, some messages have a delivery error."
-msgstr ""
+msgstr "如果勾選此項， 某些信息將會產生傳遞錯誤。"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_kanban
@@ -1063,7 +1063,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item_type__placeholder
 msgid "Placeholder"
-msgstr ""
+msgstr "佔位符"
 
 #. module: sign
 #: selection:sign.request,activity_state:0

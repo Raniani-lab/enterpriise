@@ -5,14 +5,14 @@
 # Translators:
 # Martin Trigaux, 2018
 # Hamid Darabi, 2018
-# mohammad azarbara <mohammadazarbara98@gmail.com>, 2018
+# سید محمد آذربرا <mohammadazarbara98@gmail.com>, 2018
 # Hamed Mohammadi <hamed@dehongi.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"POT-Creation-Date: 2018-10-08 07:14+0000\n"
+"PO-Revision-Date: 2018-10-08 07:14+0000\n"
 "Last-Translator: Hamed Mohammadi <hamed@dehongi.com>, 2018\n"
 "Language-Team: Persian (https://www.transifex.com/odoo/teams/41243/fa/)\n"
 "MIME-Version: 1.0\n"
@@ -23,6 +23,8 @@ msgstr ""
 
 #. module: account_reports_followup
 #: model:account_followup.followup.line,description:account_reports_followup.demo_followup_line3
+#: model:account_followup.followup.line,description:account_reports_followup.demo_followup_line4
+#: model:account_followup.followup.line,description:account_reports_followup.demo_followup_line5
 msgid ""
 "\n"
 "Dear %(partner_name)s,\n"
@@ -214,7 +216,6 @@ msgstr ""
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_res_partner__payment_responsible_id
-#: model:ir.model.fields,field_description:account_reports_followup.field_res_users__payment_responsible_id
 msgid "Follow-up Responsible"
 msgstr ""
 
@@ -307,7 +308,6 @@ msgstr ""
 
 #. module: account_reports_followup
 #: model:ir.model.fields,help:account_reports_followup.field_res_partner__payment_responsible_id
-#: model:ir.model.fields,help:account_reports_followup.field_res_users__payment_responsible_id
 msgid ""
 "Optionally you can assign a user to this field, which will make him "
 "responsible for the action."
@@ -414,6 +414,16 @@ msgstr "کل بستانکاری"
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.account_move_line_partner_tree
 msgid "Total debit"
 msgstr "کل بدهکاری"
+
+#. module: account_reports_followup
+#: model:account_followup.followup.line,name:account_reports_followup.demo_followup_line4
+msgid "Urging reminder email"
+msgstr ""
+
+#. module: account_reports_followup
+#: model:account_followup.followup.line,name:account_reports_followup.demo_followup_line5
+msgid "Urging reminder letter"
+msgstr ""
 
 #. module: account_reports_followup
 #: model:ir.model.fields,help:account_reports_followup.field_account_followup_followup_line__print_letter

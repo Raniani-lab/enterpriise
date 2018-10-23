@@ -188,7 +188,7 @@ msgstr "關注者(業務夥伴)"
 #. module: website_crm_score
 #: model:ir.model,name:website_crm_score.model_ir_http
 msgid "HTTP Routing"
-msgstr ""
+msgstr "HTTP 路由"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__id
@@ -213,7 +213,7 @@ msgstr "如果勾選此項，有新消息會提醒您。"
 #: model:ir.model.fields,help:website_crm_score.field_team_user__message_has_error
 #: model:ir.model.fields,help:website_crm_score.field_website_crm_score__message_has_error
 msgid "If checked, some messages have a delivery error."
-msgstr ""
+msgstr "如果勾選此項， 某些信息將會產生傳遞錯誤。"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_is_follower
@@ -462,7 +462,7 @@ msgstr ""
 msgid ""
 "Sales Team the user is member of. Used to compute the members of a Sales "
 "Team through the inverse one2many"
-msgstr ""
+msgstr "使用者所屬的銷售團隊。用於通過反向one2many計算銷售團隊的成員"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_team__team_user_ids

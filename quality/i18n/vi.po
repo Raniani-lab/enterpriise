@@ -9,13 +9,14 @@
 # fanha99 <fanha99@hotmail.com>, 2018
 # son dang <son.dang@doda100.com>, 2018
 # Minh Nguyen <ndminh210994@gmail.com>, 2018
+# khoibv Mr <kendev2009@gmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
 "PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Minh Nguyen <ndminh210994@gmail.com>, 2018\n"
+"Last-Translator: khoibv Mr <kendev2009@gmail.com>, 2018\n"
 "Language-Team: Vietnamese (https://www.transifex.com/odoo/teams/41243/vi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -102,7 +103,7 @@ msgstr "Aliased Model"
 #: model:ir.model.fields,field_description:quality.field_quality_check__message_attachment_count
 #: model:ir.model.fields,field_description:quality.field_quality_point__message_attachment_count
 msgid "Attachment Count"
-msgstr ""
+msgstr "Số đính kèm"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_point__reason
@@ -385,7 +386,7 @@ msgstr "Thấp"
 #: model:ir.model.fields,field_description:quality.field_quality_check__message_main_attachment_id
 #: model:ir.model.fields,field_description:quality.field_quality_point__message_main_attachment_id
 msgid "Main Attachment"
-msgstr ""
+msgstr "Đính kèm chính"
 
 #. module: quality
 #: model:res.groups,name:quality.group_quality_manager

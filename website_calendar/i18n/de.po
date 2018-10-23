@@ -5,13 +5,15 @@
 # Translators:
 # Martin Trigaux, 2018
 # Johannes Croe <jcr@odoo.com>, 2018
+# DE R1 <e2fes1@hotmail.com>, 2018
+# DE T2 <e2f48d4s5vd1s2@outlook.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-02 10:32+0000\n"
-"PO-Revision-Date: 2018-10-02 10:32+0000\n"
-"Last-Translator: Johannes Croe <jcr@odoo.com>, 2018\n"
+"POT-Creation-Date: 2018-10-08 07:15+0000\n"
+"PO-Revision-Date: 2018-10-08 07:15+0000\n"
+"Last-Translator: DE T2 <e2f48d4s5vd1s2@outlook.com>, 2018\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -431,6 +433,15 @@ msgid "Friday"
 msgstr "Freitag"
 
 #. module: website_calendar
+#: model_terms:calendar.appointment.type,message_intro:website_calendar.calendar_appointment
+msgid ""
+"Get a <strong>customized demo</strong> and an <strong>analysis of your "
+"needs</strong>."
+msgstr ""
+"Sichern Sie sich eine <strong>persönliche Demo</strong> und eine "
+"<strong>Bedarfsanalyse</strong>."
+
+#. module: website_calendar
 #: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__assignation_method
 msgid ""
 "How employees will be assigned to meetings customers book on your website."
@@ -749,6 +760,11 @@ msgid "Schedule Appointment"
 msgstr "Termin planen"
 
 #. module: website_calendar
+#: model:calendar.appointment.type,name:website_calendar.calendar_appointment
+msgid "Schedule a Demo"
+msgstr "Demo planen"
+
+#. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.index
 msgid "Schedule an Appointment"
 msgstr "Termin planen"
@@ -880,6 +896,15 @@ msgstr "Verfügbarkeiten anzeigen <span class=\"fa fa-arrow-right\"/>"
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__website_published
 msgid "Visible on current website"
 msgstr ""
+
+#. module: website_calendar
+#: model_terms:calendar.appointment.type,message_confirmation:website_calendar.calendar_appointment
+msgid ""
+"We thank you for your interest in our products!<br>\n"
+"               Please make sure to arrive <strong>10 minutes</strong> before your appointment."
+msgstr ""
+"Vielen Dank für Ihr Interesse an unseren Produkten!<br>\n"
+"               Bitte seien Sie <strong>10 Minuten</strong> vor Ihrem Termin bei uns."
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__website_message_ids

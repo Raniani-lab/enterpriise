@@ -702,7 +702,7 @@ msgstr ""
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_cost_sales0
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_executivesummary_direct_costs0
 msgid "Cost of Revenue"
-msgstr ""
+msgstr "Náklady na Příjmy"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_followup_report.py:248

@@ -1214,7 +1214,7 @@ msgstr "Raggruppare per"
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_http
 msgid "HTTP Routing"
-msgstr ""
+msgstr "Routing HTTP"
 
 #. module: web_studio
 #. openerp-web

@@ -7,6 +7,7 @@ import odoo.addons.decimal_precision as dp
 class AccountInvoice(models.Model):
     _inherit = 'account.invoice'
 
+    # TODO - Remove in master
     l10n_mx_edi_incoterm = fields.Selection(
         [('CIP', 'CARRIAGE AND INSURANCE PAID TO'),
          ('CPT', 'CARRIAGE PAID TO'),
@@ -23,7 +24,7 @@ class AccountInvoice(models.Model):
          ('FAS', 'FREE ALONGSIDE SHIP'),
          ('FCA', 'FREE CARRIER'),
          ('FOB', 'FREE ON BOARD')],
-        string='Incoterm', help='Indicates the INCOTERM applicable to the '
+        help='Indicates the INCOTERM applicable to the '
         'external trade customer invoice.')
     l10n_mx_edi_cer_source = fields.Char(
         'Certificate Source',

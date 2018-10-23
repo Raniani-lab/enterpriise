@@ -126,7 +126,6 @@
         width: 70%;
     }
     .o_account_reports_edit_summary_pencil {
-        font-size: 16px;
         margin-left: -15px;
         position: absolute;
     }
@@ -440,7 +439,7 @@
     }
 
     .o_account_reports_edit_summary_pencil {
-        @include o-position-absolute(22px, $left: 5px);
+        @include o-position-absolute(20px, $left: 0);
         visibility: hidden;
         opacity: 0;
     }
@@ -452,7 +451,6 @@
         }
 
         .o_account_report_summary .o_input, .o_account_report_summary span {
-            padding-left: 25px;
             padding-right: 0;
         }
     }

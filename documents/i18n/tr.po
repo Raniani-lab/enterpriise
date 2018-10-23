@@ -819,7 +819,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_main_attachment_id
 msgid "Main Attachment"
-msgstr ""
+msgstr "Ana Ek"
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.tag_action
@@ -932,7 +932,7 @@ msgstr "Eylemlerin Sayısı"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_has_error_counter
 msgid "Number of error"
-msgstr ""
+msgstr "Hata Sayısı"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__message_needaction_counter

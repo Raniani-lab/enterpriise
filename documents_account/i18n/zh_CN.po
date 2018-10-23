@@ -4,8 +4,8 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
-# 珠海-杜哥 <liangjia@qq.com>, 2018
 # Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
+# liAnGjiA <liangjia@qq.com>, 2018
 # ChinaMaker <liuct@chinamaker.net>, 2018
 # xu xiaohu <xu.xiaohu@gmail.com>, 2018
 msgid ""
@@ -75,12 +75,12 @@ msgstr "数据库管理系统的会计设置"
 #. module: documents_account
 #: model:ir.model,name:documents_account.model_ir_attachment
 msgid "Document"
-msgstr "单据"
+msgstr "文档"
 
 #. module: documents_account
 #: model:mail.activity.type,name:documents_account.mail_documents_activity_data_fs
 msgid "Financial Statement"
-msgstr "财务报表"
+msgstr "财务报告"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_documents_workflow_rule__has_business_option

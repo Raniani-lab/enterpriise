@@ -5,7 +5,7 @@
 # Translators:
 # Martin Trigaux, 2018
 # Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
-# 珠海-杜哥 <liangjia@qq.com>, 2018
+# liAnGjiA <liangjia@qq.com>, 2018
 # roye w <159820@qq.com>, 2018
 # ChinaMaker <liuct@chinamaker.net>, 2018
 # xu xiaohu <xu.xiaohu@gmail.com>, 2018
@@ -50,7 +50,7 @@ msgstr ""
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
 msgid "<span class=\"text-muted\"> by</span>"
-msgstr "<span class=\"text-muted\"> 于</span>"
+msgstr "<span class=\"text-muted\"> 单位</span>"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_product_product__mps_active

@@ -7,13 +7,14 @@
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2018
 # Thomas Pot <thomas@open2bizz.nl>, 2018
+# Cas Vissers <casvissers@brahoo.nl>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
 "PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Thomas Pot <thomas@open2bizz.nl>, 2018\n"
+"Last-Translator: Cas Vissers <casvissers@brahoo.nl>, 2018\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -560,7 +561,7 @@ msgstr "Productie App sleutel"
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_prod_cert_id
 msgid "Production Cert Key"
-msgstr "Productie cert sleutel"
+msgstr "Productie Cert sleutel"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_prod_token
@@ -633,12 +634,12 @@ msgstr "Sandbox"
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_sandbox_app_id
 msgid "Sandbox App Key"
-msgstr "Sandbox app sleutel"
+msgstr "Sandbox App sleutel"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_sandbox_cert_id
 msgid "Sandbox Cert Key"
-msgstr "Sandbox cert sleutel"
+msgstr "Sandbox Cert sleutel"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_sandbox_token
@@ -677,13 +678,13 @@ msgstr "Opslaglocatie van uw producten"
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_store_category_id
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_store_category_id
 msgid "Store Category (Optional)"
-msgstr "Winkel categorie (optioneel)"
+msgstr "Winkelcategorie (optioneel)"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_store_category_2_id
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_store_category_2_id
 msgid "Store Category 2 (Optional)"
-msgstr "Winkel categorie 2 (optioneel)"
+msgstr "Winkelcategorie 2 (optioneel)"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_subtitle
@@ -768,7 +769,7 @@ msgstr "Titel"
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_stock_picking
 msgid "Transfer"
-msgstr "Overplaatsing"
+msgstr "Verplaatsing"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_policy__policy_type
@@ -817,7 +818,7 @@ msgstr "eBay"
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_ebay_category
 msgid "eBay Category"
-msgstr ""
+msgstr "eBay categorie"
 
 #. module: sale_ebay
 #: model:product.category,name:sale_ebay.product_category_ebay
@@ -851,12 +852,12 @@ msgstr "eBay ID"
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_ebay_item_condition
 msgid "eBay Item Condition"
-msgstr ""
+msgstr "eBay Item conditie"
 
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_ebay_link_listing
 msgid "eBay Link Listing"
-msgstr ""
+msgstr "eBay Link lijst"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_link_listing__ebay_id
@@ -866,7 +867,7 @@ msgstr "eBay lijst ID"
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_ebay_policy
 msgid "eBay Policy"
-msgstr ""
+msgstr "eBay beleid"
 
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_ebay_site

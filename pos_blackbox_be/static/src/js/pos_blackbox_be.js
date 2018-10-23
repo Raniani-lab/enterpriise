@@ -787,7 +787,7 @@ can no longer be modified. Please create a new line with eg. a negative quantity
             var insz_or_bis_number = this.pos.get_cashier().insz_or_bis_number;
 
             if (! insz_or_bis_number) {
-                throw new Error("FDM error: INSZ or BIS number not set for current cashier.");
+                throw new Error("FDM error: " + _t("INSZ or BIS number not set for current cashier."));
             }
 
             packet.add_field(new FDMPacketField("ticket date", 8, order.blackbox_pos_receipt_time.format("YYYYMMDD")));
@@ -817,10 +817,14 @@ can no longer be modified. Please create a new line with eg. a negative quantity
             return packet;
         },
 
-        _show_could_not_connect_error: function () {
+        _show_could_not_connect_error: function (reason) {
+            var body = _t("Could not connect to the Fiscal Data Module.");
+            if (reason) {
+                body = body + ' ' + reason;
+            }
             this.pos.gui.show_popup("blocking-error", {
                 'title': _t("Fiscal Data Module error"),
-                'body':  _t("Could not connect to the Fiscal Data Module."),
+                'body':  body,
             });
         },
 
@@ -1066,8 +1070,12 @@ can no longer be modified. Please create a new line with eg. a negative quantity
             var self = this;
             return posmodel_super.connect_to_proxy.apply(this, arguments).then(function () {
                 self.proxy.message('request_serial', {}, {timeout: 5000}).then(function (response) {
-                    if (! response || "BODO001" + response.toUpperCase() != self.config.blackbox_pos_production_id.toUpperCase()) {
-                        self.proxy._show_could_not_connect_error();
+                    if (! response) {
+                        self.proxy._show_could_not_connect_error(_t("Unreachable FDM"));
+                    } else if ("BODO002" + response.toUpperCase() != self.config.blackbox_pos_production_id.toUpperCase()) {
+                        self.proxy._show_could_not_connect_error(
+                            _t("Incorrect PosBox serial")+' '+self.config.blackbox_pos_production_id.toUpperCase()
+                        );
                     } else {
                         self.chrome.ready.then(function () {
                             var current = $(self.chrome.$el).find('.placeholder-posID').text();
@@ -1106,7 +1114,7 @@ can no longer be modified. Please create a new line with eg. a negative quantity
                     order.blackbox_vsc_identification_number = parsed_response.vsc_identification_number;
                     order.blackbox_unique_fdm_production_number = parsed_response.fdm_unique_production_number;
                     order.blackbox_plu_hash = self._prepare_hash_for_ticket(packet.fields[packet.fields.length - 1].content);
-                    order.blackbox_pos_version = "Odoo " + self.version.server_version + "1805BE_FDM";
+                    order.blackbox_pos_version = "Odoo " + self.version.server_version + "1807BE_FDM";
                     order.blackbox_pos_production_id = self.config.blackbox_pos_production_id;
                     order.blackbox_terminal_id = self.blackbox_terminal_id;
 
@@ -1480,11 +1488,12 @@ can no longer be modified. Please create a new line with eg. a negative quantity
     });
 
     models.load_models({
-        'model': "pos.order",
-        'domain': function (self) { return [['config_id', '=', self.config.id]]; },
-        'fields': ['name', 'hash_chain'],
-        'order': "-date_order",
-        'loaded': function (self, params) {
+        model: "pos.order",
+        domain: function (self) { return [['config_id', '=', self.config.id]]; },
+        fields: ['name', 'hash_chain'],
+        order:  _.map(['date_order'], function (name) { return {name: name, asc: false}; }),
+        limit: 1,  // TODO this works?
+        loaded: function (self, params) {
             self.config.backend_sequence_number = self._extract_order_number(params);
             self.config.blackbox_most_recent_hash = self._get_hash_chain(params);
         }
@@ -1494,11 +1503,12 @@ can no longer be modified. Please create a new line with eg. a negative quantity
 
     // pro forma and regular orders share numbers, so we also need to check the pro forma orders and pick the max
     models.load_models({
-        'model': "pos.order_pro_forma",
-        'domain': function (self) { return [['config_id', '=', self.config.id]]; },
-        'fields': ['name', 'hash_chain'],
-        'order': "-date_order",
-        'loaded': function (self, params) {
+        model: "pos.order_pro_forma",
+        domain: function (self) { return [['config_id', '=', self.config.id]]; },
+        fields: ['name', 'hash_chain'],
+        order:  _.map(['date_order'], function (name) { return {name: name, asc: false}; }),
+        limit: 1,
+        loaded: function (self, params) {
             var pro_forma_number = self._extract_order_number(params);
 
             if (pro_forma_number > self.config.backend_sequence_number) {

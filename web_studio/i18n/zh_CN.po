@@ -15,12 +15,12 @@
 # Emily JIA <eji@odoo.com>, 2018
 # e2f_cn c7 <e2f_cn_c7@outlook.com>, 2018
 # ChinaMaker <liuct@chinamaker.net>, 2018
-# 珠海-杜哥 <liangjia@qq.com>, 2018
+# liAnGjiA <liangjia@qq.com>, 2018
 # KWOKYUK CHEUNG <cheungkwokyuk@gmail.com>, 2018
 # niulin lnc. <admin@niulin.net>, 2018
 # diaojiaolou <124412206@qq.com>, 2018
 # snow wang <147156565@qq.com>, 2018
-# keecome <7017511@qq.com>, 2018
+# 广州救火 <7017511@qq.com>, 2018
 # 湘子 南 <1360857908@qq.com>, 2018
 msgid ""
 msgstr ""
@@ -206,7 +206,7 @@ msgstr "添加按钮"
 #: code:addons/web_studio/static/src/js/views/view_editors/form_editor.js:266
 #, python-format
 msgid "Add a pipeline status bar"
-msgstr "添加 pipeline status 控件"
+msgstr "添加 管道状态条"
 
 #. module: web_studio
 #. openerp-web

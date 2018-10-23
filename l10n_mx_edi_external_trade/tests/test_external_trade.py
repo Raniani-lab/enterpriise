@@ -14,7 +14,7 @@ class TestL10nMxEdiExternalTrade(InvoiceTransactionCase):
         isr_tag = self.env['account.account.tag'].search(
             [('name', '=', 'ISR')])
         self.tax_negative.tag_ids |= isr_tag
-        unit = self.env.ref('product.product_uom_unit')
+        unit = self.env.ref('uom.product_uom_unit')
         self.tariff = self.ref(
             'l10n_mx_edi_external_trade.tariff_fraction_84289099')
         self.product.write({
@@ -26,6 +26,7 @@ class TestL10nMxEdiExternalTrade(InvoiceTransactionCase):
             'cce11': 'http://www.sat.gob.mx/ComercioExterior11',
         }
         self.set_currency_rates(mxn_rate=1, usd_rate=1)
+        self.incoterm = self.ref('account.incoterm_FCA')
 
     def test_l10n_mx_edi_invoice_external_trade(self):
         self.xml_expected_str = misc.file_open(os.path.join(
@@ -61,7 +62,7 @@ class TestL10nMxEdiExternalTrade(InvoiceTransactionCase):
         # -----------------------
 
         invoice = self.create_invoice()
-        invoice.l10n_mx_edi_incoterm = 'FCA'
+        invoice.incoterm_id = self.incoterm
         invoice.action_invoice_open()
         self.assertEqual(invoice.l10n_mx_edi_pac_status, "signed",
                          invoice.message_ids.mapped('body'))
@@ -78,7 +79,7 @@ class TestL10nMxEdiExternalTrade(InvoiceTransactionCase):
         # -------------------------
         # Testing case UMT Aduana, l10n_mx_edi_code_aduana == 1
         # -------------------------
-        kg = self.env.ref('product.product_uom_kgm')
+        kg = self.env.ref('uom.product_uom_kgm')
         kg.l10n_mx_edi_code_aduana = '01'
         self.product.write({
             'weight': 2,
@@ -87,7 +88,7 @@ class TestL10nMxEdiExternalTrade(InvoiceTransactionCase):
                 'l10n_mx_edi_external_trade.tariff_fraction_72123099'),
         })
         invoice = self.create_invoice()
-        invoice.l10n_mx_edi_incoterm = 'FCA'
+        invoice.incoterm_id = self.incoterm
         invoice.action_invoice_open()
         line = invoice.invoice_line_ids
         self.assertEqual(line.l10n_mx_edi_qty_umt,
@@ -105,7 +106,7 @@ class TestL10nMxEdiExternalTrade(InvoiceTransactionCase):
                 'l10n_mx_edi_external_trade.tariff_fraction_27101299'),
         })
         invoice = self.create_invoice()
-        invoice.l10n_mx_edi_incoterm = 'FCA'
+        invoice.incoterm_id = self.incoterm
         # Manually add the value Qty UMT
         line = invoice.invoice_line_ids
         self.assertEqual(line.l10n_mx_edi_qty_umt, 0,

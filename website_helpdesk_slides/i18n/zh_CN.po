@@ -4,8 +4,8 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
-# Lisa Zhang <lzh@odoo.com>, 2018
 # Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
+# Lisa Zhang <lzh@odoo.com>, 2018
 # snow wang <147156565@qq.com>, 2018
 # niulin lnc. <admin@niulin.net>, 2018
 msgid ""
@@ -91,7 +91,7 @@ msgstr "显示名称"
 #. module: website_helpdesk_slides
 #: selection:slide.upload.wizard,slide_type:0
 msgid "Document"
-msgstr "单据"
+msgstr "文档"
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__document_id

@@ -5,6 +5,7 @@
 # Translators:
 # Martin Trigaux, 2018
 # Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
+# liAnGjiA <liangjia@qq.com>, 2018
 # neter ji <jifuyi@qq.com>, 2018
 msgid ""
 msgstr ""
@@ -528,4 +529,4 @@ msgstr "bpost"
 #: model:product.template,weight_uom_name:delivery_usps.product_product_delivery_usps_domestic_product_template
 #: model:product.template,weight_uom_name:delivery_usps.product_product_delivery_usps_international_product_template
 msgid "kg"
-msgstr "kg"
+msgstr "公斤"

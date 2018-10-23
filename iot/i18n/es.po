@@ -9,13 +9,14 @@
 # Luis M. Ontalba <luis.martinez@tecnativa.com>, 2018
 # Miquel Torner <miq@odoo.com>, 2018
 # Nicolás Broggi <rnbroggi@gmail.com>, 2018
+# Cristopher Cravioto <ccr@odoo.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-02 10:32+0000\n"
-"PO-Revision-Date: 2018-10-02 10:32+0000\n"
-"Last-Translator: Nicolás Broggi <rnbroggi@gmail.com>, 2018\n"
+"POT-Creation-Date: 2018-10-08 07:14+0000\n"
+"PO-Revision-Date: 2018-10-08 07:14+0000\n"
+"Last-Translator: Cristopher Cravioto <ccr@odoo.com>, 2018\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -99,9 +100,9 @@ msgstr ""
 
 #. module: iot
 #. openerp-web
-#: code:addons/iot/static/src/js/iot.js:93
+#: code:addons/iot/static/src/js/iot.js:94
 #, python-format
-msgid "Connection with the IoTBox failed!"
+msgid "Connection with the IoT Box failed!"
 msgstr ""
 
 #. module: iot
@@ -181,11 +182,6 @@ msgid "ID"
 msgstr "ID"
 
 #. module: iot
-#: model:ir.model,name:iot.model_iot_box
-msgid "IOT Box"
-msgstr ""
-
-#. module: iot
 #: model:ir.model,name:iot.model_iot_device
 msgid "IOT Device"
 msgstr ""
@@ -216,10 +212,11 @@ msgid "IoT"
 msgstr ""
 
 #. module: iot
+#: model:ir.model,name:iot.model_iot_box
 #: model:ir.model.fields,field_description:iot.field_iot_device__iot_id
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_search
 msgid "IoT Box"
-msgstr ""
+msgstr "IoT Box"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_box__ip_url
@@ -290,8 +287,8 @@ msgstr ""
 
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.view_add_iot_box
-msgid "Ok"
-msgstr "Aceptar"
+msgid "OK"
+msgstr "OK"
 
 #. module: iot
 #: selection:iot.trigger,action:0
@@ -411,7 +408,7 @@ msgstr ""
 
 #. module: iot
 #: model_terms:ir.actions.act_window,help:iot.iot_device_action
-msgid "There is no device connected to your IoT boxes"
+msgid "There is no device connected to your IoT Boxes"
 msgstr ""
 
 #. module: iot

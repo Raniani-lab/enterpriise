@@ -7,10 +7,10 @@
 # Boško Stojaković <bluesoft83@gmail.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-02 10:31+0000\n"
-"PO-Revision-Date: 2018-10-02 10:31+0000\n"
+"POT-Creation-Date: 2018-10-08 07:14+0000\n"
+"PO-Revision-Date: 2018-10-08 07:14+0000\n"
 "Last-Translator: Boško Stojaković <bluesoft83@gmail.com>, 2018\n"
 "Language-Team: Bosnian (https://www.transifex.com/odoo/teams/41243/bs/)\n"
 "MIME-Version: 1.0\n"
@@ -58,10 +58,17 @@ msgstr ""
 
 #. module: mrp_workorder
 #. openerp-web
-#: code:addons/mrp_workorder/static/src/xml/widget_template.xml:9
+#: code:addons/mrp_workorder/static/src/xml/widget_template.xml:8
 #, python-format
 msgid "Clear"
 msgstr "Očisti"
+
+#. module: mrp_workorder
+#. openerp-web
+#: code:addons/mrp_workorder/static/src/xml/widget_template.xml:28
+#, python-format
+msgid "Close"
+msgstr "Zatvori"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__component_id
@@ -127,13 +134,6 @@ msgstr "Preuzimanje"
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Dropdown menu"
 msgstr ""
-
-#. module: mrp_workorder
-#. openerp-web
-#: code:addons/mrp_workorder/static/src/xml/widget_template.xml:8
-#, python-format
-msgid "Edit"
-msgstr "Uredi"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,help:mrp_workorder.field_mrp_workorder__component_tracking
@@ -510,7 +510,7 @@ msgstr ""
 
 #. module: mrp_workorder
 #. openerp-web
-#: code:addons/mrp_workorder/static/src/xml/widget_template.xml:18
+#: code:addons/mrp_workorder/static/src/xml/widget_template.xml:17
 #, python-format
 msgid "Take a Picture"
 msgstr ""
@@ -569,7 +569,7 @@ msgstr "Otkaži planiranje"
 
 #. module: mrp_workorder
 #. openerp-web
-#: code:addons/mrp_workorder/static/src/xml/widget_template.xml:11
+#: code:addons/mrp_workorder/static/src/xml/widget_template.xml:10
 #, python-format
 msgid "Uploading..."
 msgstr "Učitavanje..."
@@ -578,6 +578,13 @@ msgstr "Učitavanje..."
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Validate"
 msgstr "Odobri"
+
+#. module: mrp_workorder
+#. openerp-web
+#: code:addons/mrp_workorder/static/src/xml/widget_template.xml:32
+#, python-format
+msgid "Viewer"
+msgstr ""
 
 #. module: mrp_workorder
 #: code:addons/mrp_workorder/models/mrp_workorder.py:495

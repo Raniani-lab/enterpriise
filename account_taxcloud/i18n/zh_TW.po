@@ -4,14 +4,14 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
-# sejun huang <sejun.huang@gmail.com>, 2018
+# 敬雲 林 <chingyun@yuanchih-consult.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-02 10:31+0000\n"
 "PO-Revision-Date: 2018-10-02 10:31+0000\n"
-"Last-Translator: sejun huang <sejun.huang@gmail.com>, 2018\n"
+"Last-Translator: 敬雲 林 <chingyun@yuanchih-consult.com>, 2018\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/odoo/teams/41243/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,17 +22,17 @@ msgstr ""
 #. module: account_taxcloud
 #: model_terms:ir.ui.view,arch_db:account_taxcloud.res_config_settings_view_form
 msgid "<i class=\"fa fa-fw fa-arrow-right\"/>How to Get Credentials"
-msgstr ""
+msgstr "<i class=\"fa fa-fw fa-arrow-right\"/>如何獲取憑證"
 
 #. module: account_taxcloud
 #: model_terms:ir.ui.view,arch_db:account_taxcloud.res_config_settings_view_form
 msgid "API ID"
-msgstr ""
+msgstr "API ID"
 
 #. module: account_taxcloud
 #: model_terms:ir.ui.view,arch_db:account_taxcloud.res_config_settings_view_form
 msgid "API KEY"
-msgstr ""
+msgstr "API Key"
 
 #. module: account_taxcloud
 #: model:ir.model,name:account_taxcloud.model_res_company
@@ -42,12 +42,12 @@ msgstr "公司"
 #. module: account_taxcloud
 #: model:ir.model,name:account_taxcloud.model_res_config_settings
 msgid "Config Settings"
-msgstr "配置設置"
+msgstr "配置設定"
 
 #. module: account_taxcloud
 #: model:ir.model.fields,field_description:account_taxcloud.field_product_tic_category__create_uid
 msgid "Created by"
-msgstr "創建者"
+msgstr "創建人"
 
 #. module: account_taxcloud
 #: model:ir.model.fields,field_description:account_taxcloud.field_product_tic_category__create_date
@@ -57,13 +57,13 @@ msgstr "創建時間"
 #. module: account_taxcloud
 #: model_terms:ir.ui.view,arch_db:account_taxcloud.res_config_settings_view_form
 msgid "Default Category"
-msgstr ""
+msgstr "預設類別"
 
 #. module: account_taxcloud
 #: model:ir.model.fields,field_description:account_taxcloud.field_res_company__tic_category_id
 #: model:ir.model.fields,field_description:account_taxcloud.field_res_config_settings__tic_category_id
 msgid "Default TIC Code"
-msgstr ""
+msgstr "預設TIC 代碼"
 
 #. module: account_taxcloud
 #: model:ir.model.fields,help:account_taxcloud.field_res_company__tic_category_id
@@ -71,7 +71,7 @@ msgstr ""
 msgid ""
 "Default TICs(Taxability information codes) code to get sales tax from "
 "TaxCloud by product category."
-msgstr ""
+msgstr "預設 TIC （徵稅信息代碼）代碼，用於按產品類別從 TaxCloud 獲取銷售稅。"
 
 #. module: account_taxcloud
 #: model:ir.model.fields,field_description:account_taxcloud.field_product_tic_category__display_name
@@ -85,7 +85,7 @@ msgid ""
 "the government.The system will use the Tax Cloud category set on the "
 "internal category of the product. If thereisn't any, the one on the product "
 "itself will be used. Only used in United States."
-msgstr ""
+msgstr "每個產品歸於一個由政府預先指定的特定稅率。系統會用Tax Cload類別設定產品的內部類別。假如不存在，產品自己的稅會被用上。只限於美國。"
 
 #. module: account_taxcloud
 #: model:ir.model,name:account_taxcloud.model_account_fiscal_position
@@ -105,7 +105,7 @@ msgstr "發票"
 #. module: account_taxcloud
 #: model:ir.model.fields,field_description:account_taxcloud.field_product_tic_category____last_update
 msgid "Last Modified on"
-msgstr "最後修改時間"
+msgstr "最後修改日"
 
 #. module: account_taxcloud
 #: model:ir.model.fields,field_description:account_taxcloud.field_product_tic_category__write_uid
@@ -120,17 +120,17 @@ msgstr "最後更新時間"
 #. module: account_taxcloud
 #: model:ir.model,name:account_taxcloud.model_product_category
 msgid "Product Category"
-msgstr "產品類別"
+msgstr "產品分類"
 
 #. module: account_taxcloud
 #: model_terms:ir.ui.view,arch_db:account_taxcloud.account_taxcloud_tic_category_search
 msgid "Product TIC Categories"
-msgstr ""
+msgstr "產品TIC類別"
 
 #. module: account_taxcloud
 #: model:ir.model,name:account_taxcloud.model_product_tic_category
 msgid "Product TIC Category"
-msgstr ""
+msgstr "產品TIC類別"
 
 #. module: account_taxcloud
 #: model:ir.model,name:account_taxcloud.model_product_template
@@ -140,23 +140,23 @@ msgstr "產品模板"
 #. module: account_taxcloud
 #: model_terms:ir.ui.view,arch_db:account_taxcloud.account_taxcloud_tic_category_tree
 msgid "TIC Category"
-msgstr ""
+msgstr "TIC 類別"
 
 #. module: account_taxcloud
 #: model:ir.model.fields,field_description:account_taxcloud.field_product_tic_category__code
 msgid "TIC Category Code"
-msgstr ""
+msgstr "TIC 類別代碼"
 
 #. module: account_taxcloud
 #: model:ir.model.fields,field_description:account_taxcloud.field_product_category__tic_category_id
 #: model_terms:ir.ui.view,arch_db:account_taxcloud.account_taxcloud_tic_category_search
 msgid "TIC Code"
-msgstr ""
+msgstr "TIC 代碼"
 
 #. module: account_taxcloud
 #: model:ir.model.fields,field_description:account_taxcloud.field_product_tic_category__description
 msgid "TIC Description"
-msgstr ""
+msgstr "TIC說明"
 
 #. module: account_taxcloud
 #: model_terms:ir.ui.view,arch_db:account_taxcloud.product_category_view_form_inherit_account_taxcloud
@@ -166,25 +166,25 @@ msgstr "TaxCloud"
 #. module: account_taxcloud
 #: model:ir.model.fields,field_description:account_taxcloud.field_res_config_settings__taxcloud_api_id
 msgid "TaxCloud API ID"
-msgstr ""
+msgstr "TaxCloud API ID"
 
 #. module: account_taxcloud
 #: model:ir.model.fields,field_description:account_taxcloud.field_res_config_settings__taxcloud_api_key
 msgid "TaxCloud API KEY"
-msgstr ""
+msgstr "TaxCloud API KEY"
 
 #. module: account_taxcloud
 #: model:ir.actions.act_window,name:account_taxcloud.account_taxcloud_tic_category_action
 #: model:ir.ui.menu,name:account_taxcloud.menu_taxcloud_tic_category_action
 msgid "TaxCloud Categories"
-msgstr ""
+msgstr "TaxCloud 類別"
 
 #. module: account_taxcloud
 #: model:ir.model.fields,field_description:account_taxcloud.field_product_template__tic_category_id
 #: model_terms:ir.ui.view,arch_db:account_taxcloud.product_category_view_form_inherit_account_taxcloud
 #: model_terms:ir.ui.view,arch_db:account_taxcloud.product_template_taxcloud_inherit_form
 msgid "TaxCloud Category"
-msgstr ""
+msgstr "TaxCloud 類別"
 
 #. module: account_taxcloud
 #: model:ir.model.fields,help:account_taxcloud.field_product_category__tic_category_id
@@ -197,18 +197,22 @@ msgid ""
 "automatically assigns products to this TIC as a default, so unless you've "
 "changed an item's TIC in the past, it should already be set to 00000."
 msgstr ""
+"TaxCloud 使用徵稅信息代碼 (TIC) "
+"確保以正確的稅率向目錄中每個專案徵稅（或者，對於免稅專案，不徵收任何稅），因此有必要確保為每個專案都分配一個 "
+"TIC。如果您無法為目錄中的專案找到正確的稅務類別，可將其分配到「一般商品和服務」TIC (00000)。TaxCloud 會自動將產品分配到此 TIC"
+" 作為預設值，因此除非您更改過專案的 TIC ，否則它應該已被設定為 00000。"
 
 #. module: account_taxcloud
 #: model:ir.model,name:account_taxcloud.model_account_fiscal_position_template
 msgid "Template for Fiscal Position"
-msgstr "財政狀態模板"
+msgstr "替換規則模板"
 
 #. module: account_taxcloud
 #: code:addons/account_taxcloud/models/account_invoice.py:43
 #: code:addons/account_taxcloud/models/res_config_settings.py:23
 #, python-format
 msgid "The configuration of TaxCloud is in the Accounting app, Settings menu."
-msgstr ""
+msgstr "TaxCloud 的配置位於「會計」應用的「設定」選單中。"
 
 #. module: account_taxcloud
 #: code:addons/account_taxcloud/models/account_invoice.py:115
@@ -216,35 +220,35 @@ msgstr ""
 msgid ""
 "The source document on the refund is not valid and thus the refunded cart "
 "won't be logged on your taxcloud account"
-msgstr ""
+msgstr "有關退款的來源單據無效，因此已退款的購物車將不會記錄在您的 taxcloud 帳戶中"
 
 #. module: account_taxcloud
 #: code:addons/account_taxcloud/models/account_invoice.py:85
 #, python-format
 msgid ""
 "The tax rates have been updated, you may want to check it before validation"
-msgstr ""
+msgstr "稅率已被更新，您可能需要先驗證檢查"
 
 #. module: account_taxcloud
 #: code:addons/account_taxcloud/models/account_invoice.py:43
 #: code:addons/account_taxcloud/models/res_config_settings.py:23
 #, python-format
 msgid "Unable to retrieve taxes from TaxCloud: "
-msgstr ""
+msgstr "無法從 TaxCloud 檢索稅款："
 
 #. module: account_taxcloud
 #: model:ir.actions.server,name:account_taxcloud.action_account_invoice_update_taxes
 msgid "Update taxes with Taxcloud"
-msgstr ""
+msgstr "使用 Taxcloud 更新稅款"
 
 #. module: account_taxcloud
 #: model:ir.model.fields,field_description:account_taxcloud.field_account_fiscal_position__is_taxcloud
 #: model:ir.model.fields,field_description:account_taxcloud.field_account_fiscal_position_template__is_taxcloud
 msgid "Use TaxCloud API"
-msgstr ""
+msgstr "使用TaxCloud API"
 
 #. module: account_taxcloud
 #: code:addons/account_taxcloud/models/product.py:28
 #, python-format
 msgid "[%s] %s"
-msgstr ""
+msgstr "[%s] %s"

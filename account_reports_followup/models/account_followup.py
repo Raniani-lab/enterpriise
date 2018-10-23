@@ -117,8 +117,8 @@ class ResPartner(models.Model):
             delay_in_days = result['delay']
             fups[previous_level] = (current_date - delay, result['id'], delay_in_days)
             previous_level = result['id']
-
-        fups[previous_level] = (current_date - delay, previous_level, delay_in_days)
+        if previous_level:
+            fups[previous_level] = (current_date - delay, previous_level, delay_in_days)
         return fups
 
     def get_followup_html(self):

@@ -10,6 +10,7 @@
 # Eloïse Stilmant <est@odoo.com>, 2018
 # Sébastien BÜHL <buhlsebastien@gmail.com>, 2018
 # Laura Piraux <lap@odoo.com>, 2018
+# Alain van de Werve <avw@openerp.com>, 2018
 # Elise Carton <eca@odoo.com>, 2018
 # Nathan Grognet <ngr@odoo.com>, 2018
 msgid ""
@@ -407,7 +408,7 @@ msgstr "Jours"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.res_config_settings_view_form
 msgid "Default Folders"
-msgstr ""
+msgstr "Dossiers par défaut"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_defaults
@@ -1400,7 +1401,7 @@ msgstr "Compteur de messages non lus"
 #: model_terms:ir.ui.view,arch_db:documents.share_page
 #, python-format
 msgid "Upload"
-msgstr "Télécharger"
+msgstr "Upload"
 
 #. module: documents
 #: model_terms:ir.actions.act_window,help:documents.document_action

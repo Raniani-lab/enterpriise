@@ -7,13 +7,14 @@
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2018
 # Thomas Pot <thomas@open2bizz.nl>, 2018
+# Cas Vissers <casvissers@brahoo.nl>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
 "PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Thomas Pot <thomas@open2bizz.nl>, 2018\n"
+"Last-Translator: Cas Vissers <casvissers@brahoo.nl>, 2018\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -422,7 +423,7 @@ msgstr "Dagboek"
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__payment_journal_id
 msgid "Journal for Direct Debit Payments"
-msgstr "Dagboek voor automatische incassos"
+msgstr "Dagboek voor automatische incasso's"
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,help:account_sepa_direct_debit.field_sdd_mandate__payment_journal_id
@@ -661,7 +662,7 @@ msgstr "Ingetrokken"
 #. module: account_sepa_direct_debit
 #: model:ir.model,name:account_sepa_direct_debit.model_sdd_mandate
 msgid "SDD Mandate"
-msgstr ""
+msgstr "Incasso mandaat"
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_res_partner__sdd_count
@@ -933,8 +934,8 @@ msgstr ""
 msgid ""
 "You must register this mandate's original document before validating it."
 msgstr ""
-"Uw moet het originele document van het mandaat vastleggen voordat u het kan "
-"valideren."
+"Uw moet het originele document van het mandaat vastleggen voordat u deze ka "
+"bevestigen"
 
 #. module: account_sepa_direct_debit
 #: code:addons/account_sepa_direct_debit/models/account_batch_payment.py:28

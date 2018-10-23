@@ -19,10 +19,6 @@ defined by the SAT.
     changed here if is one exception. If this field is actived, then will be
     showed the next fields:
 
-  - **Incoterm**: It is used for the attribute *incoterm* in the External Trade
-    node, is required, and must contain a value from the SAT catalog_ to
-    incoterms.
-
   - **Certificate Source**: If the document to be generated is a
     Certificate of Origin, must be registered the certificate of
     origin folio or the fiscal folio in CFDI with which the issuance of the
@@ -138,7 +134,6 @@ other hand, the optional node "DescripcionesEspecificas" will not be added
 in this version, since it needs fields that depend on the stock module.
 They will be added in a later version.
 
-.. _catalog: http://www.sat.gob.mx/informacion_fiscal/factura_electronica/Documents/c_INCOTERM.xls
 .. _c_FraccionArancelaria: http://www.sat.gob.mx/informacion_fiscal/factura_electronica/Documents/c_FraccionArancelaria.xls 
 .. _Link: http://www.sat.gob.mx/informacion_fiscal/factura_electronica/Documents/c_UnidadMedidaAduana.xls
 .. _c_colonia: http://www.sat.gob.mx/informacion_fiscal/factura_electronica/Documents/c_Colonia.xls

@@ -19,10 +19,10 @@
 # Buket Şeker <buket_skr@hotmail.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-02 10:31+0000\n"
-"PO-Revision-Date: 2018-10-02 10:31+0000\n"
+"POT-Creation-Date: 2018-10-08 07:14+0000\n"
+"PO-Revision-Date: 2018-10-08 07:14+0000\n"
 "Last-Translator: Buket Şeker <buket_skr@hotmail.com>, 2018\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
@@ -78,6 +78,24 @@ msgid "<strong><span>Final Interview: </span></strong>"
 msgstr "<strong><span>Son Görüşme: </span></strong>"
 
 #. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.arow_3_1_1
+msgid "Ability to cope with multidisciplinarity of team"
+msgstr "Takım disiplinlilik ile baş edebilme yeteneği"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.arow_3_1_6
+msgid "Ability to follow and complete work as instructed"
+msgstr ""
+"Yetenek izleyin ve talimatlara uygun olarak çalışmaları tamamlamak için"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.arow_3_2_5
+msgid "Ability to manage planning resources, risks, budgets and deadlines"
+msgstr ""
+"Planlama kaynakları, riskleri, bütçe ve son başvuru tarihleri yönetme "
+"yeteneği"
+
+#. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_needaction
 msgid "Action Needed"
 msgstr "Eylem Gerekiyor"
@@ -86,6 +104,14 @@ msgstr "Eylem Gerekiyor"
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__action_plan
 msgid "Action Plan"
 msgstr "Eylem Planı"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.oprow_2_6_1
+msgid ""
+"Actions by Executive management show genuine interest in the well-being of "
+"employees"
+msgstr ""
+"Çalışanların refah gerçek ilgi tarafından icra yönetimi eylemleri göster"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__active
@@ -107,6 +133,30 @@ msgstr "Aktivite Durumu"
 #: model:ir.ui.menu,name:hr_appraisal.hr_appraisal_menu_config_activity_type
 msgid "Activity Types"
 msgstr "Aktivite Türleri"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.arow_3_1_13
+msgid ""
+"Adaptability: Ability to adapt oneself to organizational changes while "
+"keeping efficiency"
+msgstr ""
+"Uyarlanabilirlik: Kurumsal değişiklikler için verimliliği tutarak kendini "
+"adapte yeteneği"
+
+#. module: hr_appraisal
+#: model:survey.question,question:hr_appraisal.appraisal_2_3
+msgid "Additional Comments"
+msgstr "Ek açıklamalar"
+
+#. module: hr_appraisal
+#: model:survey.question,question:hr_appraisal.opinion_2_7
+msgid "Additional comments"
+msgstr "Ek açıklamalar"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.arow_3_1_11
+msgid "Analytical and synthetic mind"
+msgstr "Analitik ve sentetik"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__survey_completed_ids
@@ -177,6 +227,11 @@ msgid "Appraisal Meeting For %s"
 msgstr ""
 
 #. module: hr_appraisal
+#: model:survey.page,title:hr_appraisal.opinion_1
+msgid "Appraisal Process"
+msgstr "Değerleme işlemi"
+
+#. module: hr_appraisal
 #: model:mail.template,subject:hr_appraisal.send_appraisal_template
 msgid "Appraisal Regarding"
 msgstr "Değerlendirmeye İlişkin"
@@ -203,6 +258,11 @@ msgstr "Değerlendirme İstatistikleri"
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__manager_appraisal
 msgid "Appraisal by Manager"
 msgstr ""
+
+#. module: hr_appraisal
+#: model:survey.question,question:hr_appraisal.appraisal_1_3
+msgid "Appraisal for Period"
+msgstr "Dönem"
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/hr_appraisal.py:186
@@ -239,9 +299,29 @@ msgid "Appraisals to Process"
 msgstr "İşlem Değerlendirmesi"
 
 #. module: hr_appraisal
+#: model:survey.question,question:hr_appraisal.appraisal_1_5
+msgid "Appraiser"
+msgstr "Değer biçen kimse"
+
+#. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
 msgid "Archived"
 msgstr "Arşivlendi"
+
+#. module: hr_appraisal
+#: model_terms:survey.page,description:hr_appraisal.appraisal_1
+msgid "At the conclusion of the appraisal time period"
+msgstr "Değerlendirme süresinin bitiminde"
+
+#. module: hr_appraisal
+#: model_terms:survey.page,description:hr_appraisal.appraisal_1
+msgid "At the outset of the appraisal time period"
+msgstr "Değerleme süresinin başlangıcında"
+
+#. module: hr_appraisal
+#: model_terms:survey.page,description:hr_appraisal.opinion_1
+msgid "At the supervisor's appraisal date"
+msgstr "Denetimcinin değerlendirme tarihinde"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_attachment_count
@@ -299,14 +379,39 @@ msgid "Color Index"
 msgstr "Renk"
 
 #. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.arow_3_1_9
+msgid ""
+"Communication skills (written & verbally): clearness, concision, exactitude"
+msgstr "İletişim becerileri (yazılı & sözlü): netlik, anlatıyor, exactitude"
+
+#. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__company_id
 msgid "Company"
 msgstr "Şirket"
 
 #. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.oprow_2_6_3
+msgid ""
+"Compared to similar jobs in other companies where I could work, my total "
+"compensation..."
+msgstr ""
+"Nerede iş, benim toplam tazminat diğer şirketler benzer projelere kıyasla..."
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.arow_3_1_3
+msgid ""
+"Compliance to internal rules and processes (timesheets completion, etc.)"
+msgstr "Uyum kuralları ve süreçleri (zaman çizelgelerini tamamlama, vs.)"
+
+#. module: hr_appraisal
 #: model:ir.ui.menu,name:hr_appraisal.menu_hr_appraisal_configuration
 msgid "Configuration"
 msgstr "Yapılandırma"
+
+#. module: hr_appraisal
+#: model:survey.question,question:hr_appraisal.opinion_2_4
+msgid "Continuous Improvement"
+msgstr "Sürekli gelişme"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_report__create_date
@@ -334,9 +439,34 @@ msgid "Creation Date"
 msgstr "Oluşturulma Tarihi"
 
 #. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.arow_3_1_14
+msgid "Creativity and forward looking aptitude"
+msgstr "Yaratıcılık ve yetenek dört gözle"
+
+#. module: hr_appraisal
+#: model_terms:survey.page,description:hr_appraisal.appraisal_1
+msgid ""
+"Critical or key elements of performance and professional development needs "
+"(if any), should also be noted at this time"
+msgstr ""
+"Performans ve profesyonel ihtiyaçlar için kritik veya anahtar bileşenler, "
+"şuan da not alınmalıdır."
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.arow_3_1_8
+msgid "Customer commitment"
+msgstr "Taahhüt Tarihi"
+
+#. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
+#: model:survey.question,question:hr_appraisal.opinion_1_2
 msgid "Date"
 msgstr "Tarih"
+
+#. module: hr_appraisal
+#: model:survey.question,question:hr_appraisal.appraisal_1_4
+msgid "Date of review"
+msgstr "İnceleme tarihi"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_report__deadline
@@ -349,15 +479,36 @@ msgid "Deadline:"
 msgstr "Zaman Sınırı"
 
 #. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.arow_3_1_7
+msgid "Decision making"
+msgstr "karar verme"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.arow_3_2_2
+msgid "Delegation: Ability to efficiently assign tasks to other people"
+msgstr "Delegasyon: Diğer kişilere görev atama yetkisi"
+
+#. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
 msgid "Delete"
 msgstr "Sil"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.oprow_2_2_1
+msgid "Demonstrates genuine concern for me as a person"
+msgstr "Bir kişi olarak benim için gerçek bir endişe gösterir"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__department_id
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_report__department_id
 msgid "Department"
 msgstr "Departman"
+
+#. module: hr_appraisal
+#: model_terms:survey.page,description:hr_appraisal.appraisal_3
+#: model_terms:survey.page,description:hr_appraisal.opinion_1
+msgid "Did not meet standards and expectations"
+msgstr "Standartları ve beklentileri karşılamadı"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__display_name
@@ -385,6 +536,11 @@ msgid "Edit"
 msgstr "Düzenle"
 
 #. module: hr_appraisal
+#: model:survey.question,question:hr_appraisal.opinion_2_3
+msgid "Effectiveness"
+msgstr "Takip etkinliği"
+
+#. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__mail_template_id
 msgid "Email Template for Appraisal"
 msgstr "Değerlendirme İçin Eposta Şablonu"
@@ -407,9 +563,30 @@ msgid "Employee Appraisal"
 msgstr "Personel Değerlendirme"
 
 #. module: hr_appraisal
+#: model:survey.page,title:hr_appraisal.appraisal_1
+#: model:survey.survey,title:hr_appraisal.appraisal_form
+msgid "Employee Appraisal Form"
+msgstr "Personel değerlendirme formu"
+
+#. module: hr_appraisal
+#: model:survey.page,title:hr_appraisal.appraisal_5
+msgid "Employee Comments"
+msgstr "Çalışan Yorumlar"
+
+#. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_employee
 msgid "Employee Name"
 msgstr "Personel Adı"
+
+#. module: hr_appraisal
+#: model:survey.survey,title:hr_appraisal.opinion_form
+msgid "Employee Opinion Form"
+msgstr "Çalışan görüş formu"
+
+#. module: hr_appraisal
+#: model:survey.page,title:hr_appraisal.appraisal_3
+msgid "Employee Performance in Key Areas"
+msgstr "Kilit alanlarda çalışan performans"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_colleagues_survey_id
@@ -422,9 +599,30 @@ msgid "Employee's Name"
 msgstr "Personel Adı"
 
 #. module: hr_appraisal
+#: model:survey.question,question:hr_appraisal.opinion_2_1
+msgid "Engagement"
+msgstr "Ödüllendirme"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.arow_3_1_2
+msgid "Enthusiasm & implication toward projects/assignments"
+msgstr "Coşku & dolaylı doğru projeler/atamalar"
+
+#. module: hr_appraisal
+#: model:survey.page,title:hr_appraisal.opinion_2
+msgid "Evaluation"
+msgstr "Değerlendirme"
+
+#. module: hr_appraisal
 #: model:ir.model,name:hr_appraisal.model_calendar_event
 msgid "Event"
 msgstr "Etkinlik"
+
+#. module: hr_appraisal
+#: model_terms:survey.page,description:hr_appraisal.appraisal_3
+#: model_terms:survey.page,description:hr_appraisal.opinion_1
+msgid "Exceeds standards and expectations"
+msgstr "Standartların ve beklentilerin üzerinde"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
@@ -490,10 +688,107 @@ msgid "HR Department"
 msgstr "İK Departmanı"
 
 #. module: hr_appraisal
+#: model_terms:survey.page,description:hr_appraisal.opinion_1
+msgid ""
+"His direct reports will be invited through Odoo to express a feedback on "
+"their supervisor's leadership and to give their opinion about their own "
+"engagement and effectiveness, the continuous improvement and openness in "
+"action in thecompany..."
+msgstr ""
+"Onun doğrudan raporları Odoo aracılığı ile, müdür liderlikleri ve onların "
+"kendi bağlılıkları ve etkinlikleri, şirketteki sürekli gelişim ve "
+"açıklıkları hakkında geri bildirimlerin ifade edilmesi sağlanacaktır."
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.oprow_2_1_1
+msgid "I am proud to tell others I work here"
+msgstr "Diğerleri burada çalıştığımı söylemek için gurur duyuyorum"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.oprow_2_1_5
+msgid ""
+"I am willing to put in a great deal of effort beyond what is expected to "
+"help my workgroup succeed"
+msgstr ""
+"Büyük bir çaba ne benim workgroup başarılı yardımcı olmak için beklenen "
+"ötesinde koymak hazırım"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.oprow_2_2_4
+msgid "I believe the information that I get from the person I report to."
+msgstr "Kişi için rapor almak bilgi inanıyorum."
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.oprow_2_2_2
+msgid ""
+"I consistently acquire new knowledge, skills or understanding through "
+"contact with my supervisor. He helps me growing my compete"
+msgstr ""
+"Sürekli ile benim danışman yeni bilgi, beceri ya da anlayış temas yoluyla "
+"elde. O bana benim yarışmak büyüyen yardımcı olur"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.oprow_2_3_2
+msgid "I have enough work"
+msgstr "Yeterince işim var."
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.oprow_2_6_2
+msgid ""
+"I have the same opportunity to succeed as others with similar experiences, "
+"performance and educational background"
+msgstr ""
+"Ben diğerleri gibi başarılı eğitim arka plan benzer deneyimleri ve "
+"performans ile aynı fırsatı var"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.oprow_2_5_1
+msgid "I know the company's values and live them"
+msgstr "Şirketin değerlerini bilmek ve onları yaşamak"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.oprow_2_3_3
+msgid ""
+"I mostly work on value-added tasks for the company, the products or the "
+"services"
+msgstr ""
+"Çoğunlukla şirket, ürün veya hizmet için katma değerli görevler üzerinde "
+"çalışma"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.oprow_2_6_4
+msgid "I understand the company strategy and how my workgroup supports it"
+msgstr ""
+"Anladığım kadarıyla şirket stratejisi ve benim çalışma grubu nasıl destekler"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.oprow_2_1_3
+msgid ""
+"I would prefer to remain with this company even if a comparable job were "
+"available in another company"
+msgstr ""
+"Bu şirket ile karşılaştırılabilir bir iş olsa bile başka bir şirkette "
+"kullanılabilir kalmasını tercih ederim"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.oprow_2_3_1
+msgid "I'm efficient at work and my achievements are successful"
+msgstr "İş yerinde çalışan ve başarılarımı başarılı"
+
+#. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__id
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_report__id
 msgid "ID"
 msgstr "ID"
+
+#. module: hr_appraisal
+#: model_terms:survey.page,description:hr_appraisal.appraisal_4
+msgid ""
+"Identify professional, performance, or project objectives you recommend for employee’s continued career development\n"
+"over the coming year."
+msgstr ""
+"Gelecek yıllar için personelinizin devam eden kariyerine önermek için, onun "
+"profesyonel, performans ve proje hedeflerini belirleyin"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__message_unread
@@ -509,6 +804,33 @@ msgstr "İşaretliyse, yeni mesajlar dikkatinize sunulacak."
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__message_has_error
 msgid "If checked, some messages have a delivery error."
 msgstr ""
+
+#. module: hr_appraisal
+#: model:survey.question,comments_message:hr_appraisal.appraisal_1_1
+#: model:survey.question,comments_message:hr_appraisal.appraisal_1_2
+#: model:survey.question,comments_message:hr_appraisal.appraisal_1_3
+#: model:survey.question,comments_message:hr_appraisal.appraisal_1_4
+#: model:survey.question,comments_message:hr_appraisal.appraisal_1_5
+#: model:survey.question,comments_message:hr_appraisal.appraisal_2_1
+#: model:survey.question,comments_message:hr_appraisal.appraisal_2_2
+#: model:survey.question,comments_message:hr_appraisal.appraisal_2_3
+#: model:survey.question,comments_message:hr_appraisal.appraisal_3_1
+#: model:survey.question,comments_message:hr_appraisal.appraisal_3_2
+#: model:survey.question,comments_message:hr_appraisal.appraisal_4_1
+#: model:survey.question,comments_message:hr_appraisal.appraisal_4_2
+#: model:survey.question,comments_message:hr_appraisal.appraisal_4_3
+#: model:survey.question,comments_message:hr_appraisal.appraisal_5_1
+#: model:survey.question,comments_message:hr_appraisal.opinion_1_1
+#: model:survey.question,comments_message:hr_appraisal.opinion_1_2
+#: model:survey.question,comments_message:hr_appraisal.opinion_2_1
+#: model:survey.question,comments_message:hr_appraisal.opinion_2_2
+#: model:survey.question,comments_message:hr_appraisal.opinion_2_3
+#: model:survey.question,comments_message:hr_appraisal.opinion_2_4
+#: model:survey.question,comments_message:hr_appraisal.opinion_2_5
+#: model:survey.question,comments_message:hr_appraisal.opinion_2_6
+#: model:survey.question,comments_message:hr_appraisal.opinion_2_7
+msgid "If other, please specify:"
+msgstr "Diğerse belirtiniz:"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__action_plan
@@ -529,6 +851,11 @@ msgid "In progress Evaluations"
 msgstr "Değerlendirme DevamEdiyor"
 
 #. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.arow_3_1_5
+msgid "Initiative and self autonomy"
+msgstr "Girişimi ve kendi özerklik"
+
+#. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_report__final_interview
 msgid "Interview"
 msgstr "Görüşme"
@@ -537,6 +864,29 @@ msgstr "Görüşme"
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_is_follower
 msgid "Is Follower"
 msgstr "Takipçi mi"
+
+#. module: hr_appraisal
+#: model_terms:survey.page,description:hr_appraisal.appraisal_1
+msgid ""
+"It is the joint responsibility of the employee and the supervisor (appraiser) to establish a feasible work plan for the\n"
+"coming year, including major employee responsibilities and corresponding benchmarks against which results will be\n"
+"evaluated."
+msgstr ""
+"Personel ve müdürlerin (değerlendirici) ortak sorumluluğu gelecek yıl için, "
+"değerlendirilecek sonuçlara göre ana personel sorumluluklarını ve "
+"karşılaştırmalarını içeren uygun bir iş planı yapmak."
+
+#. module: hr_appraisal
+#: model_terms:survey.page,description:hr_appraisal.appraisal_1
+msgid ""
+"It is the primary responsibility of the supervisor to gather the necessary input from the appropriate sources of feedback\n"
+"(internal and/or external customers, peers). In case of collaboration with Odoo SA Belgium, the supervisor must\n"
+"receive completed evaluation form from the employee's Belgian project manager."
+msgstr ""
+"Uygun geri bildirim kaynaklarından gerekli girdileri toplamak müdürün ilk "
+"sorumluluğudur. (iç ve/veya dış müşteri, meslektaşlar). Odoo SA Belçika ile "
+"ortak çalışılması durumunda, müdürler personellerin tamamlanan değerlendirme"
+" formlarına Belçik proje müdürüne ulaştırmak zorundadır. "
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal____last_update
@@ -560,9 +910,37 @@ msgid "Late Activities"
 msgstr "Geciken Aktiviteler"
 
 #. module: hr_appraisal
+#: model:survey.question,question:hr_appraisal.opinion_2_2
+msgid "Leadership"
+msgstr "Liderlik"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.arow_3_2_3
+msgid ""
+"Leadership: create a challenging and motivating work environment aligned "
+"with the company's strategy"
+msgstr ""
+"Liderlik: şirketin stratejisiyle uyumlu bir zorlu ve motive edici bir "
+"çalışma ortamı oluşturmak"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.arow_3_2_4
+msgid "Leadership: sustain subordinates in their professional growth"
+msgstr "Liderlik: profesyonel onların büyüme astları ayakta tutmak."
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.oprow_2_2_3
+msgid ""
+"Listens and takes into account all ideas and do his best to put in place the"
+" best of these"
+msgstr ""
+"Dinler ve tüm fikirleri dikkate alır ve bunlardan en iyi koymak için elinden"
+" geleni yap"
+
+#. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_main_attachment_id
 msgid "Main Attachment"
-msgstr ""
+msgstr "Ana Ek"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__manager_ids
@@ -583,6 +961,12 @@ msgid "Managers"
 msgstr "Yöneticiler"
 
 #. module: hr_appraisal
+#: model_terms:survey.page,description:hr_appraisal.appraisal_3
+#: model_terms:survey.page,description:hr_appraisal.opinion_1
+msgid "Meet standards and expectations"
+msgstr "Standartları ve beklentileri karşılıyor."
+
+#. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__meeting_id
 msgid "Meeting"
 msgstr "Toplantı"
@@ -598,6 +982,11 @@ msgid "Messages"
 msgstr "Mesajlar"
 
 #. module: hr_appraisal
+#: model:survey.question,question:hr_appraisal.opinion_2_6
+msgid "Miscellaneous"
+msgstr "Diğer"
+
+#. module: hr_appraisal
 #: selection:hr.employee,appraisal_frequency_unit:0
 msgid "Month"
 msgstr "Ay"
@@ -608,9 +997,36 @@ msgid "My Activities"
 msgstr "Aktivitelerim"
 
 #. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.oprow_2_5_2
+msgid ""
+"My best achievements have been communicated to the community, internally or "
+"to customers"
+msgstr "En iyi başarılarımı halk, dahili veya müşteriler için tebliğ edilmiş"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.oprow_2_1_2
+msgid "My job provides me with a sense of personal accomplishment"
+msgstr "İşimi bana kişisel başarı duygusu ile sağlar."
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.oprow_2_4_1
+msgid ""
+"My work contributes towards the continuous improvement of the company, our "
+"services or products"
+msgstr ""
+"İşimi doğru şirket, bizim hizmet veya ürün geliştirme sürekli katkıda "
+"bulunur."
+
+#. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_tree
+#: model:survey.question,question:hr_appraisal.appraisal_1_1
 msgid "Name"
 msgstr "İsim"
+
+#. module: hr_appraisal
+#: model:survey.question,question:hr_appraisal.opinion_1_1
+msgid "Name of your direct supervisor"
+msgstr "Doğrudan amirin adı"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__activity_date_deadline
@@ -650,7 +1066,7 @@ msgstr "Gönderilen Formların Sayısı"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_has_error_counter
 msgid "Number of error"
-msgstr ""
+msgstr "Hata Sayısı"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__message_needaction_counter
@@ -668,9 +1084,42 @@ msgid "Number of unread messages"
 msgstr "Okunmamış mesaj sayısı"
 
 #. module: hr_appraisal
+#: model:survey.question,question:hr_appraisal.appraisal_2_1
+msgid "Objectives"
+msgstr "Amaçlar"
+
+#. module: hr_appraisal
 #: model:res.groups,name:hr_appraisal.group_hr_appraisal_user
 msgid "Officer"
 msgstr "Yetkili"
+
+#. module: hr_appraisal
+#: model:survey.question,question:hr_appraisal.opinion_2_5
+msgid "Openness"
+msgstr "Açıklık"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.oprow_2_4_4
+msgid ""
+"Our workgroup identifies and reduces waste of time in our activities and "
+"processes"
+msgstr ""
+"Bizim çalışma grubu tanımlayan ve faaliyetleri ve işlemlerin zaman kaybı "
+"azaltır"
+
+#. module: hr_appraisal
+#: model_terms:survey.page,description:hr_appraisal.appraisal_1
+msgid "Overall Purpose Of Employee Appraisal"
+msgstr "Personel Değerlendirmenin Genel Amacı"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.oprow_2_4_3
+msgid ""
+"Overall, I believe the quality of products and/or services my workgroup "
+"delivers is improving"
+msgstr ""
+"Genel olarak, ürün ve/veya çalışma grubum teslim hizmetleri kalitesinin "
+"artırılması inanıyorum."
 
 #. module: hr_appraisal
 #: selection:hr.appraisal,activity_state:0
@@ -693,6 +1142,11 @@ msgid "Periodicity"
 msgstr "Dönemsellik"
 
 #. module: hr_appraisal
+#: model:survey.question,question:hr_appraisal.appraisal_4_2
+msgid "Personal Performance Objectives"
+msgstr "Kişisel performans hedefleri"
+
+#. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 msgid "Plan"
 msgstr "Plan"
@@ -701,6 +1155,31 @@ msgstr "Plan"
 #: selection:hr.appraisal,activity_state:0
 msgid "Planned"
 msgstr "Planlanan"
+
+#. module: hr_appraisal
+#: model:survey.question,question:hr_appraisal.appraisal_1_2
+msgid "Position Title"
+msgstr "Pozisyon başlığı"
+
+#. module: hr_appraisal
+#: model:survey.question,question:hr_appraisal.appraisal_4_1
+msgid "Professional Development Objectives"
+msgstr "Mesleki gelişim hedefleri"
+
+#. module: hr_appraisal
+#: model:survey.page,title:hr_appraisal.appraisal_4
+msgid "Professional Development and Performance Plan"
+msgstr "Mesleki gelişim ve performans planı"
+
+#. module: hr_appraisal
+#: model:survey.question,question:hr_appraisal.appraisal_4_3
+msgid "Project Objectives"
+msgstr "Proje hedefleri"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.arow_3_1_12
+msgid "Promptness and attendance record"
+msgstr "Çabukluk ve katılım kaydı"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__related_partner_id
@@ -721,6 +1200,20 @@ msgstr "Raporlama"
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__activity_user_id
 msgid "Responsible User"
 msgstr "Sorumlu Kullanıcı"
+
+#. module: hr_appraisal
+#: model:survey.question,question:hr_appraisal.appraisal_2_2
+msgid "Results"
+msgstr "Sonuçlar"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.arow_3_2_1
+msgid ""
+"Results of the bottom-up survey and mitigation actions to face technical, "
+"organizational, structural and/or relational issues"
+msgstr ""
+"Teknik, kuruluş, yapısal ve/veya ilişkisel sorunlar karşısında için aşağıdan"
+" yukarıya anket ve risk azaltma eylemleri sonuçlarını"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
@@ -760,6 +1253,21 @@ msgid "Show all records which has next action date is before today"
 msgstr "Bir sonraki eylem tarihi bugünden önce olan tüm kayıtları göster"
 
 #. module: hr_appraisal
+#: model_terms:survey.page,description:hr_appraisal.appraisal_3
+#: model_terms:survey.page,description:hr_appraisal.opinion_1
+msgid "Significantly below standards and expectations"
+msgstr "Standartların ve beklentilerin önemli ölçüde altında "
+
+#. module: hr_appraisal
+#: model_terms:survey.page,description:hr_appraisal.appraisal_3
+#: model_terms:survey.page,description:hr_appraisal.opinion_1
+msgid ""
+"Significantly exceeds standards and expectations required of the position"
+msgstr ""
+"Pozisyonunun ihtiyaçlarına göre standartların ve beklentilerin önemli ölçüde"
+" üzerinde."
+
+#. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 msgid "Start Appraisal and Send Forms"
 msgstr "Değerlendirmeye Başla ve Form Gönder"
@@ -781,9 +1289,84 @@ msgid ""
 msgstr ""
 
 #. module: hr_appraisal
+#: model:survey.question,question:hr_appraisal.appraisal_3_1
+msgid "Subject"
+msgstr "Konu"
+
+#. module: hr_appraisal
+#: model:survey.question,question:hr_appraisal.appraisal_3_2
+msgid "Supervisors only"
+msgstr "Sadece Denetçiler"
+
+#. module: hr_appraisal
 #: model:ir.model,name:hr_appraisal.model_survey_user_input
 msgid "Survey User Input"
 msgstr "Anket kullanıcı girişi"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.oprow_2_1_4
+msgid ""
+"Taking everything into account, how satisfied are you with your current job?"
+msgstr "Her şey dikkate ne kadar memnun alarak mevcut iş ile mi?"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.arow_3_1_4
+msgid ""
+"Team spirit: ability to work efficiently with peers, manage the conflicts "
+"with diplomacy"
+msgstr ""
+"Takım ruhu: yetenek ile eş, verimli bir şekilde çalışmak yönetmek diplomasi "
+"ile çakışıyor"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.arow_3_1_10
+msgid "Technical skills regarding to the job requirements"
+msgstr "Teknik Beceriler iş gereksinimleri için ilgili"
+
+#. module: hr_appraisal
+#: model:survey.question,validation_error_msg:hr_appraisal.appraisal_1_1
+#: model:survey.question,validation_error_msg:hr_appraisal.appraisal_1_2
+#: model:survey.question,validation_error_msg:hr_appraisal.appraisal_1_3
+#: model:survey.question,validation_error_msg:hr_appraisal.appraisal_1_4
+#: model:survey.question,validation_error_msg:hr_appraisal.appraisal_1_5
+#: model:survey.question,validation_error_msg:hr_appraisal.appraisal_2_1
+#: model:survey.question,validation_error_msg:hr_appraisal.appraisal_2_2
+#: model:survey.question,validation_error_msg:hr_appraisal.appraisal_2_3
+#: model:survey.question,validation_error_msg:hr_appraisal.appraisal_3_1
+#: model:survey.question,validation_error_msg:hr_appraisal.appraisal_3_2
+#: model:survey.question,validation_error_msg:hr_appraisal.appraisal_4_1
+#: model:survey.question,validation_error_msg:hr_appraisal.appraisal_4_2
+#: model:survey.question,validation_error_msg:hr_appraisal.appraisal_4_3
+#: model:survey.question,validation_error_msg:hr_appraisal.appraisal_5_1
+#: model:survey.question,validation_error_msg:hr_appraisal.opinion_1_1
+#: model:survey.question,validation_error_msg:hr_appraisal.opinion_1_2
+#: model:survey.question,validation_error_msg:hr_appraisal.opinion_2_1
+#: model:survey.question,validation_error_msg:hr_appraisal.opinion_2_2
+#: model:survey.question,validation_error_msg:hr_appraisal.opinion_2_3
+#: model:survey.question,validation_error_msg:hr_appraisal.opinion_2_4
+#: model:survey.question,validation_error_msg:hr_appraisal.opinion_2_5
+#: model:survey.question,validation_error_msg:hr_appraisal.opinion_2_6
+#: model:survey.question,validation_error_msg:hr_appraisal.opinion_2_7
+msgid "The answer you entered has an invalid format."
+msgstr "Girdiğiniz yanıt geçersiz biçime sahip."
+
+#. module: hr_appraisal
+#: model_terms:survey.page,description:hr_appraisal.opinion_1
+msgid ""
+"The appraiser should rate the employee's major work accomplishments and "
+"performance according to the metric provided below"
+msgstr ""
+"Değerlendirecek kişi, personelin önemli iş başarılarını ve performansını "
+"aşağıda verilen sisteme göre derecelendirmelidir."
+
+#. module: hr_appraisal
+#: model_terms:survey.page,description:hr_appraisal.appraisal_3
+msgid ""
+"The appraiser should rate the employee’s major work accomplishments and performance according to the metric provided\n"
+"below:"
+msgstr ""
+"Değerlendirecek kişi, personelin önemli iş başarılarını ve performansını "
+"aşağıda verilen sisteme göre derecelendirmelidir."
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/hr_employee.py:76
@@ -799,6 +1382,57 @@ msgid ""
 msgstr ""
 "Sonraki değerleme tarihinden değerleme planı'nın tarihlerine göre hesaplanır"
 " (ilk değerleme + periodicity)."
+
+#. module: hr_appraisal
+#: model_terms:survey.page,description:hr_appraisal.appraisal_1
+msgid ""
+"The employee may choose to offer comments or explanation regarding the "
+"completed review."
+msgstr ""
+"Personel, tamamlanmış değerlendirme hakkında yorum ya da açıklama yapmayı "
+"tercih edebilir."
+
+#. module: hr_appraisal
+#: model_terms:survey.page,description:hr_appraisal.appraisal_1
+msgid ""
+"The employee will be responsible for completing a draft of the Appraisal Form as a tool for self-appraisal and a starting\n"
+"point for the supervisor’s evaluation. The employee can add examples of achievements for each criterion.\n"
+"Once the form had been filled, the employee send it to his supervisor."
+msgstr ""
+"Personel kendi değerlendirmesi için bir araç olarak Değerlendirme Formunun "
+"taslağını tamamlamaktan sorumlu olacaktır ve bu değerlendirmeler için bir "
+"başlangıç noktası olacaktır. Personel her kriter için başarı örneklerini "
+"ekleyebilir. Form tamamlandıktan sonra, personel kendi değerlendiricisine "
+"gönderir."
+
+#. module: hr_appraisal
+#: model_terms:survey.page,description:hr_appraisal.opinion_1
+msgid ""
+"The employees will send back their anonymous answers to Odoo. The data will "
+"be handled by the HR manager and a brief summary of the data will be sent to"
+" the concerned supervisor, to his team and to the supervisor's supervisor."
+msgstr ""
+"Personel kendi anonim cevaplarını Odoo'ya geri gönderecekler. Bu bilgi İK "
+"müdürü tarafından değerlendirilecek ve sorumlu müdüre ve müdürün müdürüne "
+"kısa bir özet olarak geri gönderilecektir."
+
+#. module: hr_appraisal
+#: model_terms:survey.page,description:hr_appraisal.appraisal_1
+msgid ""
+"The supervisor send the form to the HR department in India and in Belgium"
+msgstr ""
+"Denetmenler Belçika ve Hindistan'da bulunan İK departmanlarına form "
+"gönderirler."
+
+#. module: hr_appraisal
+#: model_terms:survey.page,description:hr_appraisal.appraisal_1
+msgid ""
+"The supervisor synthesizes and integrates all input into the completed appraisal. The motivation of the evaluation\n"
+"is explained in the ad hoc fields."
+msgstr ""
+"Denetmenler  tüm girdileri tamamlanan değerlendirmelerin içine sentezler ve "
+"entegre ederler. Değerlendirmenin motivasyonu amaca özel alanlarla "
+"açıklanabilir."
 
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__color
@@ -826,12 +1460,58 @@ msgid "This employee will do a self-appraisal"
 msgstr "Bu personel kendi değerlendirmesini yapacak."
 
 #. module: hr_appraisal
+#: model:survey.question,constr_error_msg:hr_appraisal.appraisal_1_1
+#: model:survey.question,constr_error_msg:hr_appraisal.appraisal_1_2
+#: model:survey.question,constr_error_msg:hr_appraisal.appraisal_1_3
+#: model:survey.question,constr_error_msg:hr_appraisal.appraisal_1_4
+#: model:survey.question,constr_error_msg:hr_appraisal.appraisal_1_5
+#: model:survey.question,constr_error_msg:hr_appraisal.appraisal_2_1
+#: model:survey.question,constr_error_msg:hr_appraisal.appraisal_2_2
+#: model:survey.question,constr_error_msg:hr_appraisal.appraisal_2_3
+#: model:survey.question,constr_error_msg:hr_appraisal.appraisal_3_1
+#: model:survey.question,constr_error_msg:hr_appraisal.appraisal_3_2
+#: model:survey.question,constr_error_msg:hr_appraisal.appraisal_4_1
+#: model:survey.question,constr_error_msg:hr_appraisal.appraisal_4_2
+#: model:survey.question,constr_error_msg:hr_appraisal.appraisal_4_3
+#: model:survey.question,constr_error_msg:hr_appraisal.appraisal_5_1
+#: model:survey.question,constr_error_msg:hr_appraisal.opinion_1_1
+#: model:survey.question,constr_error_msg:hr_appraisal.opinion_1_2
+#: model:survey.question,constr_error_msg:hr_appraisal.opinion_2_1
+#: model:survey.question,constr_error_msg:hr_appraisal.opinion_2_2
+#: model:survey.question,constr_error_msg:hr_appraisal.opinion_2_3
+#: model:survey.question,constr_error_msg:hr_appraisal.opinion_2_4
+#: model:survey.question,constr_error_msg:hr_appraisal.opinion_2_5
+#: model:survey.question,constr_error_msg:hr_appraisal.opinion_2_6
+#: model:survey.question,constr_error_msg:hr_appraisal.opinion_2_7
+msgid "This question requires an answer."
+msgstr "Bu soru bir cevap gerektiriyor"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.arow_3_1_15
+msgid "Time management: projects/tasks are completed on time"
+msgstr "Zaman yönetimi: zamanında tamamlanan projeler/görevler"
+
+#. module: hr_appraisal
 #: code:addons/hr_appraisal/models/hr_appraisal.py:239
 #: selection:hr.appraisal,state:0 selection:hr.appraisal.report,state:0
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
 #, python-format
 msgid "To Start"
 msgstr "Başla"
+
+#. module: hr_appraisal
+#: model_terms:survey.page,description:hr_appraisal.appraisal_1
+msgid ""
+"To assist employees in their professional growth, through the identification of strengths and opportunities for\n"
+"development"
+msgstr ""
+"Personellerin mesleki gelişmelerine, güçlü yönlerini ve fırsatları "
+"belirleyerek yardımcı ol. "
+
+#. module: hr_appraisal
+#: model_terms:survey.page,description:hr_appraisal.appraisal_1
+msgid "To initiate a clear and open communication of performance expectations"
+msgstr "Performans beklentilerinin açık ve net iletişimine başla."
 
 #. module: hr_appraisal
 #: selection:hr.appraisal,activity_state:0
@@ -854,6 +1534,15 @@ msgid "Unread Messages Counter"
 msgstr "Okunmamış Mesaj Sayacı"
 
 #. module: hr_appraisal
+#: model:survey.question,question:hr_appraisal.appraisal_5_1
+msgid ""
+"Use the following space to make any comments regarding the above performance"
+" evaluation."
+msgstr ""
+"Yukarıdaki performans değerlendirme ile ilgili herhangi bir yorum yapmak "
+"için aşağıdaki alanı kullanın."
+
+#. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__website_message_ids
 msgid "Website Messages"
 msgstr "Websitesi Mesajları"
@@ -862,6 +1551,19 @@ msgstr "Websitesi Mesajları"
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__website_message_ids
 msgid "Website communication history"
 msgstr "Web Sitesi iletişim geçmişi"
+
+#. module: hr_appraisal
+#: model:survey.label,value:hr_appraisal.oprow_2_4_2
+msgid ""
+"What I did several months ago is still of use to the company, the services "
+"or the products today"
+msgstr ""
+"Birkaç ay önce yaptığım şirket, hizmet veya ürün için kullanımı hala bugün."
+
+#. module: hr_appraisal
+#: model:survey.page,title:hr_appraisal.appraisal_2
+msgid "Work Plan"
+msgstr "İş planı"
 
 #. module: hr_appraisal
 #: selection:hr.employee,appraisal_frequency_unit:0

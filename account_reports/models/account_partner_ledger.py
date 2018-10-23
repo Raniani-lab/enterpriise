@@ -109,6 +109,7 @@ class ReportPartnerLedger(models.AbstractModel):
                 partners[partner]['initial_bal'] = initial_bal_results[partner_id]
                 partners[partner]['balance'] += partners[partner]['initial_bal']['balance']
                 partners[partner]['lines'] = self.env['account.move.line']
+                partners[partner]['total_lines'] = 0
 
         return partners
 
@@ -180,17 +181,20 @@ class ReportPartnerLedger(models.AbstractModel):
                     elif line.payment_id:
                         caret_type = 'account.payment'
                     domain_columns = [line.journal_id.code, line.account_id.code, self._format_aml_name(line), line.date_maturity,
-                                      line.full_reconcile_id.name, self.format_value(progress_before),
+                                      line.full_reconcile_id.name or '', self.format_value(progress_before),
                                       line_debit != 0 and self.format_value(line_debit) or '',
                                       line_credit != 0 and self.format_value(line_credit) or '']
                     if self.user_has_groups('base.group_multi_currency'):
-                        domain_columns.append(self.format_value(line.amount_currency, currency=line.currency_id) if line.amount_currency != 0 else '')
+                        domain_columns.append(self.with_context(no_format=False).format_value(line.amount_currency, currency=line.currency_id) if line.amount_currency != 0 else '')
                     domain_columns.append(self.format_value(progress))
+                    columns = [{'name': v} for v in domain_columns]
+                    columns[3].update({'class': 'date'})
                     domain_lines.append({
                         'id': line.id,
                         'parent_id': 'partner_' + str(partner.id),
                         'name': line.date,
-                        'columns': [{'name': v} for v in domain_columns],
+                        'class': 'date',
+                        'columns': columns,
                         'caret_options': caret_type,
                         'level': 4,
                     })

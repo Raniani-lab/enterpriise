@@ -414,7 +414,7 @@ msgstr ""
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message_main_attachment_id
 msgid "Main Attachment"
-msgstr ""
+msgstr "Ana Ek"
 
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.online_provider_account_form_view
@@ -480,7 +480,7 @@ msgstr "Eylemlerin Sayısı"
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message_has_error_counter
 msgid "Number of error"
-msgstr ""
+msgstr "Hata Sayısı"
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_provider__message_needaction_counter

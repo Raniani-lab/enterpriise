@@ -9,10 +9,10 @@
 # Thomas Pot <thomas@open2bizz.nl>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"POT-Creation-Date: 2018-10-08 07:14+0000\n"
+"PO-Revision-Date: 2018-10-08 07:14+0000\n"
 "Last-Translator: Thomas Pot <thomas@open2bizz.nl>, 2018\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -47,6 +47,29 @@ msgstr "Valuta: koers update"
 #: selection:res.company,currency_interval_unit:0
 msgid "Daily"
 msgstr "Dagelijks"
+
+#. module: currency_rate_live
+#: model:res.company,overdue_msg:currency_rate_live.res_company_company_1
+#: model:res.company,overdue_msg:currency_rate_live.res_company_company_2
+msgid ""
+"Dear Sir/Madam,\n"
+"\n"
+"Our records indicate that some payments on your account are still due. Please find details below.\n"
+"If the amount has already been paid, please disregard this notice. Otherwise, please forward us the total amount stated below.\n"
+"If you have any queries regarding your account, Please contact us.\n"
+"\n"
+"Thank you in advance for your cooperation.\n"
+"Best Regards,"
+msgstr ""
+"Geachte heer / mevrouw,\n"
+"\n"
+"Uit onze gegevens blijkt dat sommige rekeningen nog niet zijn betaald. Hieronder vindt u meer informatie.\n"
+"Indien het bedrag reeds is betaald, dan kunt u dit bericht negeren. Anders willen wij u vragen om het onderstaande totaal bedrag over te maken.\n"
+"\n"
+"Als u vragen heeft over uw facturen, neem dan contact met ons op.\n"
+"\n"
+"Dank u bij voorbaat voor uw medewerking.\n"
+"Met vriendelijke groet,"
 
 #. module: currency_rate_live
 #: selection:res.company,currency_provider:0

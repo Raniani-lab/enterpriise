@@ -74,7 +74,7 @@ msgstr "銷售分析"
 #. module: sale_enterprise
 #: model:ir.model,name:sale_enterprise.model_sale_report
 msgid "Sales Analysis Report"
-msgstr ""
+msgstr "銷售分析報告"
 
 #. module: sale_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_enterprise.view_order_product_search_inherit

@@ -428,7 +428,7 @@ msgstr ""
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_region_code
 msgid "Region"
-msgstr ""
+msgstr "地區"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0

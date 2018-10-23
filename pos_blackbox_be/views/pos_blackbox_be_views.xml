@@ -249,9 +249,15 @@
             <field name="model">pos.config</field>
             <field name="inherit_id" ref="point_of_sale.pos_config_view_form"/>
             <field name="arch" type="xml">
-                <field name="proxy_ip" position="after">
-                    <field name="blackbox_pos_production_id"/>
-                </field>
+                <xpath position="inside"
+                    expr="//div[@id='posbox_reference']/div/div[hasclass('o_setting_right_pane')]/div[hasclass('content-group')]">
+                    <div class="row mt16">
+                        <label string="Certified PosBox Ref."
+                            for="blackbox_pos_production_id"
+                            class="col-md-3 o_light_label"/>
+                        <field name="blackbox_pos_production_id"/>
+                    </div>
+                </xpath>
             </field>
         </record>
 
@@ -339,7 +345,10 @@
                                         <t t-foreach="o.get_total_sold_per_category()" t-as="category">
                                             <tr>
                                                 <td><t t-esc="category[0]"/></td>
-                                                <td style="padding-left: 5px"><t t-esc="format(category[1], 'monetary', o.currency_id)"/></td>
+                                                <td style="padding-left: 5px">
+                                                    <t t-esc="category[1]"
+                                                       t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                                </td>
                                             </tr>
                                         </t>
                                     </table>
@@ -513,7 +522,10 @@
                                             <t t-foreach="user['revenue_per_category']" t-as="category">
                                                 <tr>
                                                     <td><t t-esc="category[0]"/></td>
-                                                    <td style="padding-left: 5px"><t t-esc="format(category[1], 'monetary', o.currency_id)"/></td>
+                                                    <td style="padding-left: 5px">
+                                                        <t t-esc="category[1]"
+                                                           t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                                    </td>
                                                 </tr>
                                             </t>
                                     </table>

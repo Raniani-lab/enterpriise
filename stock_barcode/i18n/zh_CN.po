@@ -5,20 +5,19 @@
 # Translators:
 # Martin Trigaux, 2018
 # Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
-# 珠海-杜哥 <liangjia@qq.com>, 2018
+# liAnGjiA <liangjia@qq.com>, 2018
 # Shane Tsoi <sso@odoo.com>, 2018
 # v2exerer <9010446@qq.com>, 2018
-# bower Guo <124358678@qq.com>, 2018
 # niulin lnc. <admin@niulin.net>, 2018
 # snow wang <147156565@qq.com>, 2018
-# keecome <7017511@qq.com>, 2018
+# 广州救火 <7017511@qq.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-02 10:32+0000\n"
 "PO-Revision-Date: 2018-10-02 10:32+0000\n"
-"Last-Translator: keecome <7017511@qq.com>, 2018\n"
+"Last-Translator: 广州救火 <7017511@qq.com>, 2018\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -29,7 +28,7 @@ msgstr ""
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.res_config_settings_view_form
 msgid "<i class=\"fa fa-print\"/> Print barcode commands"
-msgstr "打印条码命令"
+msgstr "<i class=\"fa fa-print\"/>打印条码命令"
 
 #. module: stock_barcode
 #. openerp-web
@@ -667,7 +666,7 @@ msgstr "单位"
 #: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:50
 #, python-format
 msgid "Validate"
-msgstr "审核"
+msgstr "验证"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.view_barcode_lot_form

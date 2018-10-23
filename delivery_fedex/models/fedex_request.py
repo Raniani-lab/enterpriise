@@ -195,6 +195,8 @@ class FedexRequest():
                                                          Version=self.VersionId,
                                                          RequestedShipment=self.RequestedShipment)
             if (self.response.HighestSeverity != 'ERROR' and self.response.HighestSeverity != 'FAILURE'):
+                if not getattr(self.response, "RateReplyDetails", False):
+                    raise Exception("No rating found")
                 for rating in self.response.RateReplyDetails[0].RatedShipmentDetails:
                     formatted_response['price'][rating.ShipmentRateDetail.TotalNetFedExCharge.Currency] = rating.ShipmentRateDetail.TotalNetFedExCharge.Amount
                 if len(self.response.RateReplyDetails[0].RatedShipmentDetails) == 1:
@@ -212,6 +214,8 @@ class FedexRequest():
             formatted_response['errors_message'] = fault
         except IOError:
             formatted_response['errors_message'] = "Fedex Server Not Found"
+        except Exception as e:
+            formatted_response['errors_message'] = e.args[0]
 
         return formatted_response
 

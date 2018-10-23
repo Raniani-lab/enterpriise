@@ -5,13 +5,14 @@
 # Translators:
 # Martin Trigaux, 2018
 # sejun huang <sejun.huang@gmail.com>, 2018
+# 敬雲 林 <chingyun@yuanchih-consult.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
 "PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: sejun huang <sejun.huang@gmail.com>, 2018\n"
+"Last-Translator: 敬雲 林 <chingyun@yuanchih-consult.com>, 2018\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/odoo/teams/41243/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -135,7 +136,7 @@ msgstr "日期   "
 #. module: mrp_mps
 #: model:ir.model.fields,help:mrp_mps.field_sale_forecast__product_uom_id
 msgid "Default unit of measure used for all stock operations."
-msgstr ""
+msgstr "所有庫存商品的缺省單位。"
 
 #. module: mrp_mps
 #: model:ir.model.fields,help:mrp_mps.field_res_company__manufacturing_period
@@ -388,12 +389,12 @@ msgstr "州/省"
 #. module: mrp_mps
 #: model:ir.model,name:mrp_mps.model_stock_rule
 msgid "Stock Rule"
-msgstr ""
+msgstr "庫存規則"
 
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.res_config_settings_view_form
 msgid "Time Range"
-msgstr ""
+msgstr "時間範圍"
 
 #. module: mrp_mps
 #. openerp-web

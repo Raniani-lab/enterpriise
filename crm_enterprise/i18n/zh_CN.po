@@ -4,8 +4,10 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
+# 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2018
 # diaojiaolou <124412206@qq.com>, 2018
-# 珠海-杜哥 <liangjia@qq.com>, 2018
+# liAnGjiA <liangjia@qq.com>, 2018
 # neter ji <jifuyi@qq.com>, 2018
 msgid ""
 msgstr ""
@@ -155,7 +157,7 @@ msgstr "失去原因"
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Medium"
-msgstr "媒体"
+msgstr "媒介"
 
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search

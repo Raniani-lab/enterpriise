@@ -276,16 +276,7 @@ WebClient.include({
      * @returns {Deferred}
      */
     _openStudioMain: function (options) {
-        var self = this;
-        return this._rpc({
-            route: '/web_studio/chatter_allowed',
-            params: {
-                model: options.action.res_model,
-            }
-        }).then(function (isChatterAllowed) {
-            options.chatter_allowed = isChatterAllowed;
-            return self.do_action('action_web_studio_action_editor', options);
-        });
+        return this.do_action('action_web_studio_action_editor', options);
     },
     /**
      * @private

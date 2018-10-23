@@ -205,17 +205,37 @@ class TestCaseDocuments(TransactionCase):
         self.assertEqual(result_share_folder.id, result_share_folder_act.id, "failed at share link by folder")
         self.assertEqual(result_share_folder_act.type, 'domain', "failed at share link type domain")
 
+        # by Folder with upload and activites
+        vals = {
+            'folder_id': self.folder_b.id,
+            'domain': [],
+            'tag_ids': [(6, 0, [])],
+            'type': 'domain',
+            'date_deadline': '3052-01-01',
+            'action': 'downloadupload',
+            'activity_option': True,
+            'activity_type_id': self.ref('documents.mail_documents_activity_data_tv'),
+            'activity_summary': 'test by Folder with upload and activites',
+            'activity_date_deadline_range': 4,
+            'activity_date_deadline_range_type': 'days',
+            'activity_user_id': self.env.user.id,
+        }
+        action_folder_with_upload = self.env['documents.share'].create_share(vals)
+        share_folder_with_upload = self.env['documents.share'].browse(action_folder_with_upload['res_id'])
+        self.assertTrue(share_folder_with_upload.exists(), 'failed at upload folder creation')
+        self.assertEqual(share_folder_with_upload.activity_type_id.name, 'To validate',
+                         'failed at activity type for upload attachments')
+        self.assertEqual(share_folder_with_upload.state, 'live', "failed at share_link live")
+
         # by Attachments
         vals = {
             'attachment_ids': [(6, 0, [self.attachment_gif.id, self.attachment_txt.id])],
             'folder_id': self.folder_b.id,
+            'date_deadline': '2001-11-05',
             'type': 'ids',
         }
         action_attachments = self.env['documents.share'].create_share(vals)
         result_share_attachments_act = self.env['documents.share'].browse(action_attachments['res_id'])
 
         # Expiration date
-        result_share_attachments_act.write({
-            'date_deadline': '2015-01-01'
-        })
-        self.assertEqual(result_share_attachments_act.state, 'expired', "failed at share_link expiration by date")
+        self.assertEqual(result_share_attachments_act.state, 'expired', "failed at share_link expired")

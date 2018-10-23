@@ -6,10 +6,10 @@
 # Martin Trigaux, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"POT-Creation-Date: 2018-10-08 07:14+0000\n"
+"PO-Revision-Date: 2018-10-08 07:14+0000\n"
 "Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
@@ -44,6 +44,28 @@ msgstr "Валюта: оновлення ставки"
 #: selection:res.company,currency_interval_unit:0
 msgid "Daily"
 msgstr "Щодня"
+
+#. module: currency_rate_live
+#: model:res.company,overdue_msg:currency_rate_live.res_company_company_1
+#: model:res.company,overdue_msg:currency_rate_live.res_company_company_2
+msgid ""
+"Dear Sir/Madam,\n"
+"\n"
+"Our records indicate that some payments on your account are still due. Please find details below.\n"
+"If the amount has already been paid, please disregard this notice. Otherwise, please forward us the total amount stated below.\n"
+"If you have any queries regarding your account, Please contact us.\n"
+"\n"
+"Thank you in advance for your cooperation.\n"
+"Best Regards,"
+msgstr ""
+"Шановний(а) пан/пані,\n"
+"\n"
+"Наші записи вказують на те, що у вас є певні неоплачені рахунки. Будь ласка, ознайомтеся з деталями нижче.\n"
+"Якщо сума вже була оплачена, то просто не звертайте уваги на це повідомлення. В іншому випадку, відправте нам суму, що вказана нижче.\n"
+"Якщо у вас є запитання до нас стосовно вашого рахунку, будь ласка, зв’яжіться з нами.\n"
+"\n"
+"Дуже вдячні за вашу співпрацю.\n"
+"З найкращими побажаннями,"
 
 #. module: currency_rate_live
 #: selection:res.company,currency_provider:0

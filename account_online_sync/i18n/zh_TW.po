@@ -4,14 +4,14 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
-# sejun huang <sejun.huang@gmail.com>, 2018
+# 敬雲 林 <chingyun@yuanchih-consult.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
 "PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: sejun huang <sejun.huang@gmail.com>, 2018\n"
+"Last-Translator: 敬雲 林 <chingyun@yuanchih-consult.com>, 2018\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/odoo/teams/41243/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,39 +22,39 @@ msgstr ""
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "\" bank accounts have been retrieved."
-msgstr ""
+msgstr "\" 銀行帳戶已被收回。"
 
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "<strong>Ooops</strong> It would seems that the process to"
-msgstr ""
+msgstr "<strong>糟糕</strong>貌似在處理"
 
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "<strong>Ooops</strong> We could not"
-msgstr ""
+msgstr "<strong>哎呀</strong> 臣妾做不到"
 
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "<strong>Success!</strong> Your account has been succesfully refreshed."
-msgstr ""
+msgstr "<strong>成功!</strong> 您的帳戶已被成功刷新。"
 
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "<strong>Success!</strong> Your account has been succesfully updated."
-msgstr ""
+msgstr "<strong>成功! </strong>您的帳戶已被成功更新。 "
 
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid ""
 "<strong>Well done!</strong> Your banking institution is now connected to "
 "Odoo."
-msgstr ""
+msgstr "<strong>好了!</strong> 您的銀行機構已經連接至 Odoo."
 
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "A total of \""
-msgstr ""
+msgstr "共計 \""
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_journal__account_number
@@ -65,30 +65,30 @@ msgstr "帳戶號碼"
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__account_online_journal_ids
 msgid "Account Online Journal"
-msgstr ""
+msgstr "線上會計日記帳"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_journal__account_online_provider_id
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_journal__account_online_provider_id
 msgid "Account Online Provider"
-msgstr ""
+msgstr "帳號線上提供者"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_link_wizard__account_online_wizard_id
 msgid "Account Online Wizard"
-msgstr ""
+msgstr "線上帳戶嚮導"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_link_wizard__name
 msgid "Account name"
-msgstr ""
+msgstr "帳戶名稱"
 
 #. module: account_online_sync
 #: model:ir.actions.server,name:account_online_sync.online_sync_cron_ir_actions_server
 #: model:ir.cron,cron_name:account_online_sync.online_sync_cron
 #: model:ir.cron,name:account_online_sync.online_sync_cron
 msgid "Account: Journal online sync"
-msgstr ""
+msgstr "帳號：日誌線上同步"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_link_wizard__action
@@ -103,35 +103,35 @@ msgstr "需要採取行動"
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__action_required
 msgid "Action Required"
-msgstr ""
+msgstr "必須採取行動的"
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:360
 #, python-format
 msgid "Add a Bank Account"
-msgstr ""
+msgstr "添加銀行帳戶"
 
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.online_provider_account_form_view
 msgid "Additional information"
-msgstr ""
+msgstr "附加信息"
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:62
 #, python-format
 msgid "An error occurred during online synchronization"
-msgstr ""
+msgstr "線上同步期間發生錯誤"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message_attachment_count
 msgid "Attachment Count"
-msgstr "附件計數"
+msgstr "附件數量"
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:317
 #, python-format
 msgid "Automated Bank Synchronization"
-msgstr ""
+msgstr "自動同步銀行"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_journal__balance
@@ -152,7 +152,7 @@ msgstr "銀行對帳單"
 #. module: account_online_sync
 #: model:ir.model,name:account_online_sync.model_account_bank_statement_line
 msgid "Bank Statement Line"
-msgstr "銀行對帳單行"
+msgstr "銀行對帳單明細"
 
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
@@ -167,7 +167,7 @@ msgstr "已取消"
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_provider__status_code
 msgid "Code to identify problem"
-msgstr ""
+msgstr "識別問題的代碼"
 
 #. module: account_online_sync
 #: model:ir.model,name:account_online_sync.model_res_company
@@ -183,23 +183,23 @@ msgstr "公司"
 #: model_terms:ir.ui.view,arch_db:account_online_sync.account_bank_journal_form_inherit_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.account_journal_form_inherit_online_sync
 msgid "Configure"
-msgstr "配置"
+msgstr "設定"
 
 #. module: account_online_sync
 #: model:ir.model,name:account_online_sync.model_res_partner
 msgid "Contact"
-msgstr "聯絡人"
+msgstr "聯繫人"
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:161
 #, python-format
 msgid "Create a Bank Account"
-msgstr ""
+msgstr "創建銀行帳戶"
 
 #. module: account_online_sync
 #: selection:account.online.link.wizard,action:0
 msgid "Create new journal"
-msgstr ""
+msgstr "創建日記帳"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_journal__create_uid
@@ -207,7 +207,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__create_uid
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_wizard__create_uid
 msgid "Created by"
-msgstr "創建者"
+msgstr "創建人"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_journal__create_date
@@ -220,7 +220,7 @@ msgstr "創建時間"
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_journal__bank_statement_creation
 msgid "Creation of Bank Statements"
-msgstr ""
+msgstr "創建銀行對帳單"
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_journal__bank_statement_creation
@@ -229,6 +229,9 @@ msgid ""
 "                                               will be created when fetching new transactions\n"
 "                                               from your bank account."
 msgstr ""
+"定義一個新的銀行對帳單\n"
+"                                被新事物觸發建立\n"
+"                                從銀行帳戶。"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_journal__display_name
@@ -241,7 +244,7 @@ msgstr "顯示名稱"
 #. module: account_online_sync
 #: selection:account.online.link.wizard,action:0
 msgid "Do not link"
-msgstr ""
+msgstr "不要關聯"
 
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
@@ -256,12 +259,12 @@ msgstr "失敗的"
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_wizard__sync_date
 msgid "Fetch transaction from"
-msgstr ""
+msgstr "從中獲取事務"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message_follower_ids
 msgid "Followers"
-msgstr "訂閱者"
+msgstr "關注者"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message_channel_ids
@@ -276,7 +279,7 @@ msgstr "關注者(業務夥伴)"
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_wizard__hide_table
 msgid "Hide Table"
-msgstr ""
+msgstr "隱藏表格"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_journal__id
@@ -291,12 +294,12 @@ msgstr "ID"
 msgid ""
 "ID of the banking institution in third party server used for debugging "
 "purpose"
-msgstr ""
+msgstr "用於調試目的的第三方伺服器中的銀行機構ID"
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_provider__provider_account_identifier
 msgid "ID used to identify provider account in third party server"
-msgstr ""
+msgstr "ID用於標識第三方伺服器中的提供商帳戶"
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_provider__message_unread
@@ -311,22 +314,22 @@ msgstr "如果勾選此項，有新消息會提醒您。"
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_provider__message_has_error
 msgid "If checked, some messages have a delivery error."
-msgstr ""
+msgstr "如果勾選此項， 某些信息將會產生傳遞錯誤。"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__name
 msgid "Institution"
-msgstr ""
+msgstr "機構"
 
 #. module: account_online_sync
 #: model:ir.model,name:account_online_sync.model_account_online_journal
 msgid "Interface for Online Account Journal"
-msgstr ""
+msgstr "線上會計帳簿接口"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message_is_follower
 msgid "Is Follower"
-msgstr "是訂閱者"
+msgstr "是關注者"
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:107
@@ -345,7 +348,7 @@ msgstr "日記帳名稱"
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_link_wizard__journal_statements_creation
 msgid "Journal Statements Creation"
-msgstr ""
+msgstr "創建日記帳報表"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_journal____last_update
@@ -353,12 +356,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider____last_update
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_wizard____last_update
 msgid "Last Modified on"
-msgstr "最後修改時間"
+msgstr "最後修改日"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__last_refresh
 msgid "Last Refresh"
-msgstr ""
+msgstr "上次刷新"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_journal__write_uid
@@ -379,32 +382,32 @@ msgstr "最後更新時間"
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_journal__last_sync
 msgid "Last synchronization"
-msgstr ""
+msgstr "最近同步"
 
 #. module: account_online_sync
 #: model:ir.model,name:account_online_sync.model_account_online_link_wizard
 msgid "Link synchronized account to a journal"
-msgstr ""
+msgstr "鏈接同步帳戶到一個日記帳"
 
 #. module: account_online_sync
 #: selection:account.online.link.wizard,action:0
 msgid "Link to existing journal"
-msgstr ""
+msgstr "關聯至現有的日記帳"
 
 #. module: account_online_sync
 #: model_terms:ir.actions.act_window,help:account_online_sync.action_online_provider_account
 msgid "List of bank(s) providing online synchronization"
-msgstr ""
+msgstr "線上同步的銀行列表"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message_main_attachment_id
 msgid "Main Attachment"
-msgstr "主要附件"
+msgstr "附件"
 
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.online_provider_account_form_view
 msgid "Manual Refresh"
-msgstr ""
+msgstr "手動刷新"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message
@@ -415,7 +418,7 @@ msgstr "消息"
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message_has_error
 msgid "Message Delivery error"
-msgstr "郵件傳遞錯誤"
+msgstr "消息遞送錯誤"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message_ids
@@ -430,13 +433,13 @@ msgstr "方法"
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.account_journal_dashboard_inherit_online_sync
 msgid "Next sync:"
-msgstr ""
+msgstr "下一個同步"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_journal__next_synchronization
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__next_refresh
 msgid "Next synchronization"
-msgstr ""
+msgstr "下一個同步"
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/company.py:21
@@ -444,18 +447,18 @@ msgstr ""
 msgid ""
 "No bank journal could be found! Please install a chart of accounts first, in"
 " order to create one."
-msgstr ""
+msgstr "未發現銀行日記帳！請先安裝會計科目表，以便能創建日記帳。"
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:109
 #, python-format
 msgid "No new transactions have been loaded in the system."
-msgstr ""
+msgstr "系統中未加載新事務。"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_wizard__number_added
 msgid "Number Added"
-msgstr ""
+msgstr "添加數量"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message_needaction_counter
@@ -465,7 +468,7 @@ msgstr "行動數量"
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message_has_error_counter
 msgid "Number of error"
-msgstr "錯誤數量"
+msgstr "錯誤數"
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_provider__message_needaction_counter
@@ -475,7 +478,7 @@ msgstr "需要行動消息的數量"
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_provider__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr "發送錯誤的郵件數"
+msgstr "遞送錯誤的消息數量"
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_provider__message_unread_counter
@@ -486,32 +489,32 @@ msgstr "未讀消息的數量"
 #: model:ir.model.fields,field_description:account_online_sync.field_account_journal__account_online_journal_id
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_link_wizard__online_account_id
 msgid "Online Account"
-msgstr ""
+msgstr "線上帳戶"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_bank_statement_line__online_identifier
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_journal__online_identifier
 msgid "Online Identifier"
-msgstr ""
+msgstr "網上標識"
 
 #. module: account_online_sync
 #: model:ir.actions.act_window,name:account_online_sync.action_online_provider_account
 msgid "Online Institution Accounts"
-msgstr ""
+msgstr "線上機構帳戶"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_bank_statement_line__online_partner_bank_account
 #: model:ir.model.fields,field_description:account_online_sync.field_res_partner__online_partner_bank_account
 #: model:ir.model.fields,field_description:account_online_sync.field_res_users__online_partner_bank_account
 msgid "Online Partner Bank Account"
-msgstr ""
+msgstr "線上合作夥伴銀行帳號"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_bank_statement_line__online_partner_vendor_name
 #: model:ir.model.fields,field_description:account_online_sync.field_res_partner__online_partner_vendor_name
 #: model:ir.model.fields,field_description:account_online_sync.field_res_users__online_partner_vendor_name
 msgid "Online Partner Vendor Name"
-msgstr ""
+msgstr "線上業務夥伴的供應商名稱"
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:375
@@ -521,24 +524,24 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 #, python-format
 msgid "Online Synchronization"
-msgstr ""
+msgstr "線上同步"
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:461
 #, python-format
 msgid "Opening statement: first synchronization"
-msgstr ""
+msgstr "開場陳述：首次同步"
 
 #. module: account_online_sync
 #: selection:account.online.provider,provider_type:0
 msgid "Plaid"
-msgstr ""
+msgstr "Plaid"
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:82
 #, python-format
 msgid "Please enter at least a character for the search"
-msgstr ""
+msgstr "請輸入至少一個字元方能搜尋呀"
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:285
@@ -546,12 +549,12 @@ msgstr ""
 msgid ""
 "Please link your accounts to a journal or select \"do not link\" as action "
 "to do"
-msgstr ""
+msgstr "請勾稽您的帳戶與日記帳，或選擇「不勾稽」"
 
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.account_journal_dashboard_inherit_online_sync
 msgid "Problem during synchronization"
-msgstr ""
+msgstr "同步期間出現問題"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_journal__provider_name
@@ -561,29 +564,29 @@ msgstr "服務商"
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__provider_account_identifier
 msgid "Provider Account Identifier"
-msgstr ""
+msgstr "提供商帳戶標識符"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__provider_identifier
 msgid "Provider Identifier"
-msgstr ""
+msgstr "提供者標識符"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__provider_type
 msgid "Provider Type"
-msgstr ""
+msgstr "提供商類型"
 
 #. module: account_online_sync
 #: model:ir.model,name:account_online_sync.model_account_online_provider
 msgid "Provider for online account synchronization"
-msgstr ""
+msgstr "線上帳戶同步的提供商"
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:76
 #: code:addons/account_online_sync/models/online_sync.py:90
 #, python-format
 msgid "Server not reachable, please try again later"
-msgstr ""
+msgstr "伺服器無法訪問，請稍後再試"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_wizard__status
@@ -593,7 +596,7 @@ msgstr "狀態"
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__status_code
 msgid "Status Code"
-msgstr ""
+msgstr "狀態代碼"
 
 #. module: account_online_sync
 #: selection:account.online.wizard,status:0
@@ -603,34 +606,34 @@ msgstr "成功"
 #. module: account_online_sync
 #: model:ir.actions.act_window,name:account_online_sync.action_account_online_wizard_form
 msgid "Synchronization result"
-msgstr ""
+msgstr "同步結果"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_journal__synchronization_status
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__status
 msgid "Synchronization status"
-msgstr ""
+msgstr "同步狀態"
 
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.account_journal_dashboard_inherit_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "Synchronize now"
-msgstr ""
+msgstr "立即同步"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_wizard__account_ids
 msgid "Synchronized accounts"
-msgstr ""
+msgstr "帳戶同步"
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_provider__message
 msgid "Techhnical message from third party provider that can help debugging"
-msgstr ""
+msgstr "來自第三方提供商的技術消息，可以幫助調試"
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_wizard__hide_table
 msgid "Technical field to hide table in view"
-msgstr ""
+msgstr "該字段用於在視圖中隱藏表"
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_bank_statement_line__online_partner_bank_account
@@ -638,7 +641,7 @@ msgstr ""
 #: model:ir.model.fields,help:account_online_sync.field_res_users__online_partner_bank_account
 msgid ""
 "Technical field used to store information from plaid/yodlee to match partner"
-msgstr ""
+msgstr "該字段用於保存從plaid/yodlee匹配的業務夥伴信息"
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_bank_statement_line__online_partner_vendor_name
@@ -647,31 +650,31 @@ msgstr ""
 msgid ""
 "Technical field used to store information from plaid/yodlee to match partner"
 " (used when a purchase is made)"
-msgstr ""
+msgstr "該字段用於保存從plaid/yodlee匹配的業務夥伴（用於可確立採購時）信息"
 
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "The account has been linked to your bank journal."
-msgstr ""
+msgstr "帳戶已經被勾稽到銀行日記帳。"
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:63
 #, python-format
 msgid "The following error happened during the synchronization: %s"
-msgstr ""
+msgstr "在同步期間發生以下錯誤：%s"
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:105
 #, python-format
 msgid "The following transactions have been loaded in the system."
-msgstr ""
+msgstr "以下事務已經被導入系統。"
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:74
 #: code:addons/account_online_sync/models/online_sync.py:88
 #, python-format
 msgid "Timeout: the server did not reply within 60s"
-msgstr ""
+msgstr "超時：伺服器沒在60秒內響應"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_wizard__transactions
@@ -681,19 +684,19 @@ msgstr "交易"
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_provider__action_required
 msgid "True if user needs to take action by updating account"
-msgstr ""
+msgstr "如果使用者需要通過更新帳戶採取操作，則為true"
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:201
 #, python-format
 msgid "Unimplemented"
-msgstr ""
+msgstr "未實現"
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:117
 #, python-format
 msgid "Unknown reason"
-msgstr ""
+msgstr "未知原因"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message_unread
@@ -708,18 +711,18 @@ msgstr "未讀消息計數器"
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.online_provider_account_form_view
 msgid "Update Credentials"
-msgstr ""
+msgstr "更新憑據"
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_journal__synchronization_status
 #: model:ir.model.fields,help:account_online_sync.field_account_online_provider__status
 msgid "Update status of provider account"
-msgstr ""
+msgstr "更新服務商帳號的狀態"
 
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.account_journal_dashboard_inherit_online_sync
 msgid "View problem"
-msgstr ""
+msgstr "查看問題"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__website_message_ids
@@ -734,7 +737,7 @@ msgstr "網站溝通記錄"
 #. module: account_online_sync
 #: model:ir.model,name:account_online_sync.model_account_online_wizard
 msgid "Wizard to link synchronized accounts to journal"
-msgstr ""
+msgstr "勾稽同步帳戶到日記帳嚮導"
 
 #. module: account_online_sync
 #: selection:account.online.provider,provider_type:0
@@ -746,46 +749,46 @@ msgstr "Yodlee公司"
 msgid ""
 "You can associate those bank accounts to a journal in order to automatically"
 " retrieve the latest statements from your bank."
-msgstr ""
+msgstr "您需要關聯銀行帳戶到日記帳，以便系統自動檢索銀行對帳單。"
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:287
 #, python-format
 msgid "You can not link two accounts to the same journal"
-msgstr ""
+msgstr "無法勾稽兩個帳戶到同一個日記帳。"
 
 #. module: account_online_sync
 #: selection:account.online.wizard,method:0
 msgid "add"
-msgstr ""
+msgstr "添加"
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_journal__balance
 #: model:ir.model.fields,help:account_online_sync.field_account_online_link_wizard__balance
 msgid "balance of the account sent by the third party provider"
-msgstr ""
+msgstr "由第三方提供商發送的帳戶餘額"
 
 #. module: account_online_sync
 #: selection:account.online.wizard,method:0
 msgid "edit"
-msgstr ""
+msgstr "編輯"
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_journal__online_identifier
 msgid "id use to identify account in provider system"
-msgstr ""
+msgstr "id用於在提供商系統中識別帳戶"
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_journal__provider_name
 #: model:ir.model.fields,help:account_online_sync.field_account_online_provider__name
 msgid "name of the banking institution"
-msgstr ""
+msgstr "銀行機構名稱"
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:507
 #, python-format
 msgid "online sync"
-msgstr ""
+msgstr "線上同步"
 
 #. module: account_online_sync
 #: selection:account.online.wizard,method:0
@@ -796,7 +799,7 @@ msgstr "刷新"
 #: code:addons/account_online_sync/models/online_sync.py:107
 #, python-format
 msgid "transactions loaded"
-msgstr ""
+msgstr "交易已加載"
 
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
@@ -804,6 +807,8 @@ msgid ""
 "your account because of the following\n"
 "                    error during the process:"
 msgstr ""
+"帳戶因如下\n"
+"        處理過程中的錯誤："
 
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
@@ -812,3 +817,6 @@ msgid ""
 "                    thoroughly completed. You can try to manually update your account by clicking the refresh button on the dashboard\n"
 "                    or in the online synchronization menu."
 msgstr ""
+"帳戶不\n"
+"         完整。您可以嘗試點選儀表板或線上同步選單上\n"
+"         的刷新按鈕來手動更新帳戶。"

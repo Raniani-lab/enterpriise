@@ -19,7 +19,7 @@ tour.register('documents_tour', {
 }, {
     trigger: '.o_preview_available',
     content: _t("Go to the <b>images, videos & PDF viewer</b> by clicking on the preview area."),
-    position: 'left',
+    position: 'bottom',
 }, {
     trigger: '.o_close_btn',
     extra_trigger: '.o_documents_kanban',

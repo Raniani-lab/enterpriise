@@ -4,13 +4,14 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
 "PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2018\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -26,7 +27,7 @@ msgstr "Verlaten"
 #. module: delivery_usps
 #: model:ir.model.fields,field_description:delivery_usps.field_delivery_carrier__usps_account_validated
 msgid "Account Validated"
-msgstr "Rekening gevalideerd"
+msgstr "Account bevestigd"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,delivery_type:0
@@ -36,7 +37,7 @@ msgstr "Gebaseerd op regels"
 #. module: delivery_usps
 #: model:ir.model.fields,help:delivery_usps.field_delivery_carrier__usps_account_validated
 msgid "Check this box if your account is validated by USPS"
-msgstr "Vink dit aan als u rekening gevalideerd is bij USPS"
+msgstr "Vink dit aan als u account bevestigd s bij USPS"
 
 #. module: delivery_usps
 #: code:addons/delivery_usps/models/usps_request.py:64
@@ -328,7 +329,7 @@ msgstr "Doorverwijzen"
 #. module: delivery_usps
 #: model:ir.model.fields,field_description:delivery_usps.field_delivery_carrier__usps_redirect_partner_id
 msgid "Redirect Partner"
-msgstr "Doorverwijs partner"
+msgstr "Doorverwijs relatie"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_size_container:0

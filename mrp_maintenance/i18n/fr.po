@@ -4,13 +4,15 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# e2f <projects@e2f.com>, 2018
+# f5f0a0dac17dde787a1d812a6989680e, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"POT-Creation-Date: 2018-10-08 07:14+0000\n"
+"PO-Revision-Date: 2018-10-08 07:14+0000\n"
+"Last-Translator: f5f0a0dac17dde787a1d812a6989680e, 2018\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -29,9 +31,19 @@ msgid "Computed as Latest Failure Date + MTBF"
 msgstr "Date dernière panne + MTBF"
 
 #. module: mrp_maintenance
+#: model:maintenance.equipment,name:mrp_maintenance.equipment_furniture1
+msgid "Crosscut Saw: 8 ppi."
+msgstr "Scie de long : 8 dents par pouce."
+
+#. module: mrp_maintenance
 #: model_terms:ir.ui.view,arch_db:mrp_maintenance.maintenance_request_view_form_inherit_mrp
 msgid "Discard"
 msgstr "Annuler"
+
+#. module: mrp_maintenance
+#: model:maintenance.equipment,name:mrp_maintenance.equipment_furniture3
+msgid "Drill Machine"
+msgstr "Perceuse"
 
 #. module: mrp_maintenance
 #: model_terms:ir.ui.view,arch_db:mrp_maintenance.mrp_workcenter_view_form_inherit_maintenance
@@ -68,6 +80,11 @@ msgstr "MTBF attendu"
 #: model_terms:ir.ui.view,arch_db:mrp_maintenance.maintenance_equipment_view_form_inherit_mrp
 msgid "Expected Mean Time Between Failure"
 msgstr "Temps moyen entre défaillances attendu"
+
+#. module: mrp_maintenance
+#: model:maintenance.equipment.category,name:mrp_maintenance.equipment_furniture_tools
+msgid "Furniture Tools"
+msgstr "Outillage de mobilier"
 
 #. module: mrp_maintenance
 #: model_terms:ir.ui.view,arch_db:mrp_maintenance.maintenance_equipment_view_form_inherit_mrp
@@ -172,6 +189,11 @@ msgstr "Requête"
 #: model_terms:ir.ui.view,arch_db:mrp_maintenance.maintenance_request_view_form_inherit_mrp
 msgid "Save"
 msgstr "Sauvegarder"
+
+#. module: mrp_maintenance
+#: model:maintenance.equipment,name:mrp_maintenance.equipment_furniture2
+msgid "Scrub Plane"
+msgstr "Riflard"
 
 #. module: mrp_maintenance
 #: model:ir.model,name:mrp_maintenance.model_mrp_workcenter

@@ -199,7 +199,7 @@ msgstr "Followers (Partner)"
 #. module: website_crm_score
 #: model:ir.model,name:website_crm_score.model_ir_http
 msgid "HTTP Routing"
-msgstr ""
+msgstr "Routing HTTP"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__id

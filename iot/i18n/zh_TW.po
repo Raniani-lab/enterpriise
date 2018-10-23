@@ -7,10 +7,10 @@
 # 敬雲 林 <chingyun@yuanchih-consult.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-02 10:32+0000\n"
-"PO-Revision-Date: 2018-10-02 10:32+0000\n"
+"POT-Creation-Date: 2018-10-08 07:14+0000\n"
+"PO-Revision-Date: 2018-10-08 07:14+0000\n"
 "Last-Translator: 敬雲 林 <chingyun@yuanchih-consult.com>, 2018\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/odoo/teams/41243/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -34,6 +34,17 @@ msgid ""
 "                            4. You will be redirected to the IoT Box Homepage<br/>\n"
 "                            5. Paste the token in token field and follow the steps described on the IoT Box Homepage<br/>"
 msgstr ""
+"首先，打開物聯網盒子的電源<br/><br/>\n"
+"\n"
+" <strong>A. 以太網（LAN）連接</strong><br/>\n"
+" 1. 點選下面的「掃瞄」按鈕<br/><br/>\n"
+"\n"
+" <strong>B. WiFi 連接(或當以太網連接不可用時)</strong><br/>\n"
+" 1. 確保以太網電纜（網線）未連接到物聯網盒子<br/>\n"
+" 2. 複製下面的指示物<br/>\n"
+" 3. 將物聯網盒子通過WIFI連入網路（您應該在可用的WiFi網路中看到它）<br/>\n"
+" 4. 您將被重導向到物聯網盒子首頁<br/>\n"
+" 5. 將指示物粘貼到指示物字段中並按照物聯網盒子首頁提示步驟進行操作<br/>"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_trigger__action
@@ -43,7 +54,7 @@ msgstr "動作"
 #. module: iot
 #: model:ir.model,name:iot.model_add_iot_box
 msgid "Add IoT Box wizard"
-msgstr ""
+msgstr "添加物聯網盒子嚮導"
 
 #. module: iot
 #: selection:iot.device,connection:0
@@ -53,7 +64,7 @@ msgstr "藍牙"
 #. module: iot
 #: selection:iot.device,type:0
 msgid "Camera"
-msgstr ""
+msgstr "攝像頭"
 
 #. module: iot
 #: selection:iot.trigger,action:0
@@ -63,41 +74,41 @@ msgstr "取消"
 #. module: iot
 #: model_terms:ir.actions.act_window,help:iot.iot_box_action
 msgid "Click on the"
-msgstr ""
+msgstr "點選"
 
 #. module: iot
 #: selection:iot.trigger,action:0
 msgid "Close MO"
-msgstr ""
+msgstr "關閉 MO"
 
 #. module: iot
 #: selection:iot.trigger,action:0
 msgid "Close WO"
-msgstr ""
+msgstr "關閉 WO"
 
 #. module: iot
 #: model:ir.actions.act_window,name:iot.action_add_iot_box
 #: model_terms:ir.ui.view,arch_db:iot.view_add_iot_box
 msgid "Connect an IoT Box"
-msgstr ""
+msgstr "連接一個物聯網盒子"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_device__connection
 msgid "Connection"
-msgstr ""
+msgstr "連接"
 
 #. module: iot
 #. openerp-web
 #: code:addons/iot/static/src/js/iot.js:291
 #, python-format
 msgid "Connection failed"
-msgstr ""
+msgstr "連接失敗"
 
 #. module: iot
 #. openerp-web
-#: code:addons/iot/static/src/js/iot.js:93
+#: code:addons/iot/static/src/js/iot.js:94
 #, python-format
-msgid "Connection with the IoTBox failed!"
+msgid "Connection with the IoT Box failed!"
 msgstr ""
 
 #. module: iot
@@ -106,7 +117,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:iot.field_iot_device__create_uid
 #: model:ir.model.fields,field_description:iot.field_iot_trigger__create_uid
 msgid "Created by"
-msgstr "創建者"
+msgstr "創建人"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_add_iot_box__create_date
@@ -119,18 +130,18 @@ msgstr "創建時間"
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.view_add_iot_box
 msgid "Detect and Add IoT devices in the network"
-msgstr ""
+msgstr "檢測並添加網路中的物聯網盒子"
 
 #. module: iot
 #: selection:iot.device,type:0
 #: model:ir.model.fields,field_description:iot.field_iot_trigger__device_id
 msgid "Device"
-msgstr ""
+msgstr "設備"
 
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_search
 msgid "Device type"
-msgstr ""
+msgstr "設備類型"
 
 #. module: iot
 #: model:ir.actions.act_window,name:iot.iot_device_action
@@ -151,17 +162,17 @@ msgstr "顯示名稱"
 #. module: iot
 #: selection:iot.trigger,action:0
 msgid "Fail"
-msgstr ""
+msgstr "失敗"
 
 #. module: iot
 #: selection:iot.trigger,action:0
 msgid "Finish"
-msgstr ""
+msgstr "結束"
 
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.view_add_iot_box
 msgid "Found IoT Box(s)"
-msgstr ""
+msgstr "找到物聯網盒子"
 
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_search
@@ -177,19 +188,14 @@ msgid "ID"
 msgstr "ID"
 
 #. module: iot
-#: model:ir.model,name:iot.model_iot_box
-msgid "IOT Box"
-msgstr ""
-
-#. module: iot
 #: model:ir.model,name:iot.model_iot_device
 msgid "IOT Device"
-msgstr ""
+msgstr "IOT 設備"
 
 #. module: iot
 #: model:ir.model,name:iot.model_iot_trigger
 msgid "IOT Trigger"
-msgstr ""
+msgstr "物聯網觸發"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_box__ip
@@ -204,35 +210,36 @@ msgstr "標識"
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_box__identifier
 msgid "Identifier (Mac Address)"
-msgstr ""
+msgstr "標識 (Mac 地址)"
 
 #. module: iot
 #: model:ir.ui.menu,name:iot.iot_menu_root
 msgid "IoT"
-msgstr ""
+msgstr "物聯網"
 
 #. module: iot
+#: model:ir.model,name:iot.model_iot_box
 #: model:ir.model.fields,field_description:iot.field_iot_device__iot_id
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_search
 msgid "IoT Box"
-msgstr ""
+msgstr "IoT 盒子"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_box__ip_url
 msgid "IoT Box Home Page"
-msgstr ""
+msgstr "物聯網盒子首頁"
 
 #. module: iot
 #: model:ir.actions.act_window,name:iot.iot_box_action
 #: model:ir.ui.menu,name:iot.iot_box_menu_action
 msgid "IoT Boxes"
-msgstr ""
+msgstr "物聯網盒子"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_ir_actions_report__device_id
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_search
 msgid "IoT Device"
-msgstr ""
+msgstr "IoT 設備"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_trigger__key
@@ -245,7 +252,7 @@ msgstr "鍵"
 #: model:ir.model.fields,field_description:iot.field_iot_device____last_update
 #: model:ir.model.fields,field_description:iot.field_iot_trigger____last_update
 msgid "Last Modified on"
-msgstr "最後修改時間"
+msgstr "最後修改日"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_add_iot_box__write_uid
@@ -253,7 +260,7 @@ msgstr "最後修改時間"
 #: model:ir.model.fields,field_description:iot.field_iot_device__write_uid
 #: model:ir.model.fields,field_description:iot.field_iot_trigger__write_uid
 msgid "Last Updated by"
-msgstr "最後更新人"
+msgstr "最後更新者"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_add_iot_box__write_date
@@ -282,12 +289,12 @@ msgstr "下一個"
 #. module: iot
 #: model_terms:ir.actions.act_window,help:iot.iot_box_action
 msgid "No IoT Box found !"
-msgstr ""
+msgstr "沒有找到物聯網盒子"
 
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.view_add_iot_box
-msgid "Ok"
-msgstr "確定"
+msgid "OK"
+msgstr "OK"
 
 #. module: iot
 #: selection:iot.trigger,action:0
@@ -297,7 +304,7 @@ msgstr "包裹"
 #. module: iot
 #: selection:iot.trigger,action:0
 msgid "Pass"
-msgstr ""
+msgstr "通過"
 
 #. module: iot
 #: selection:iot.trigger,action:0
@@ -312,17 +319,17 @@ msgstr "以前"
 #. module: iot
 #: selection:iot.trigger,action:0
 msgid "Print Delivery Slip"
-msgstr ""
+msgstr "列印送貨單"
 
 #. module: iot
 #: selection:iot.trigger,action:0
 msgid "Print Labels"
-msgstr ""
+msgstr "標籤列印"
 
 #. module: iot
 #: selection:iot.trigger,action:0
 msgid "Print Operation"
-msgstr ""
+msgstr "列印操作"
 
 #. module: iot
 #: selection:iot.device,type:0
@@ -332,7 +339,7 @@ msgstr "列印機"
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_view_form
 msgid "Printer Reports"
-msgstr ""
+msgstr "列印機報告"
 
 #. module: iot
 #: selection:iot.trigger,action:0
@@ -342,7 +349,7 @@ msgstr "記錄生產"
 #. module: iot
 #: model:ir.model,name:iot.model_ir_actions_report
 msgid "Report Action"
-msgstr ""
+msgstr "報告動作"
 
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.act_report_xml_view_tree_iot
@@ -352,19 +359,19 @@ msgstr "報表 xml"
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_device__report_ids
 msgid "Reports"
-msgstr "報表"
+msgstr "報告"
 
 #. module: iot
 #. openerp-web
 #: code:addons/iot/static/src/js/iot.js:120
 #, python-format
 msgid "SCAN"
-msgstr ""
+msgstr "掃瞄"
 
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.view_add_iot_box
 msgid "Scanning range(s)"
-msgstr ""
+msgstr "掃瞄範圍"
 
 #. module: iot
 #: selection:iot.trigger,action:0
@@ -374,46 +381,46 @@ msgstr "報廢"
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_box__screen_url
 msgid "Screen URL"
-msgstr ""
+msgstr "屏蔽 URL"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_trigger__sequence
 msgid "Sequence"
-msgstr "序列"
+msgstr "序號"
 
 #. module: iot
 #: selection:iot.trigger,action:0
 msgid "Skip"
-msgstr "掠過"
+msgstr "跳過"
 
 #. module: iot
 #. openerp-web
 #: code:addons/iot/static/src/js/iot.js:89
 #, python-format
 msgid "Successfully sent to printer!"
-msgstr ""
+msgstr "成功發送到列印機！"
 
 #. module: iot
 #. openerp-web
 #: code:addons/iot/static/src/js/iot.js:325 selection:iot.trigger,action:0
 #, python-format
 msgid "Take Measure"
-msgstr ""
+msgstr "採取措施"
 
 #. module: iot
 #: selection:iot.trigger,action:0
 msgid "Take Picture"
-msgstr ""
+msgstr "拍照"
 
 #. module: iot
 #: model_terms:ir.actions.act_window,help:iot.iot_device_action
-msgid "There is no device connected to your IoT boxes"
+msgid "There is no device connected to your IoT Boxes"
 msgstr ""
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_add_iot_box__token
 msgid "Token"
-msgstr ""
+msgstr "指示物"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_device__type
@@ -423,41 +430,41 @@ msgstr "類型"
 #. module: iot
 #: model:ir.model.fields,help:iot.field_iot_device__connection
 msgid "Type of connection."
-msgstr ""
+msgstr "連接類型."
 
 #. module: iot
 #: model:ir.model.fields,help:iot.field_iot_device__type
 msgid "Type of device."
-msgstr ""
+msgstr "設備類型."
 
 #. module: iot
 #: selection:iot.device,connection:0
 msgid "USB"
-msgstr ""
+msgstr "USB"
 
 #. module: iot
 #: model:ir.model.fields,help:iot.field_iot_box__screen_url
 msgid "Url of the page that will be displayed by hdmi port of the box."
-msgstr ""
+msgstr "物聯網盒子的HDMI輸出端設備將顯示Url."
 
 #. module: iot
 #: selection:iot.trigger,action:0
 msgid "Validate"
-msgstr "審核"
+msgstr "驗證"
 
 #. module: iot
 #: model:ir.model.fields,help:iot.field_ir_actions_report__device_id
 msgid ""
 "When setting a device here, the report will be printed through this device "
 "on the IoT Box"
-msgstr ""
+msgstr "在此處設定設備時，將通過此設備在物聯網盒子上列印報告"
 
 #. module: iot
 #: model_terms:ir.actions.act_window,help:iot.iot_box_action
 msgid "connect"
-msgstr ""
+msgstr "連接"
 
 #. module: iot
 #: model_terms:ir.actions.act_window,help:iot.iot_box_action
 msgid "to add an IoT Box."
-msgstr ""
+msgstr "添加一個物聯網盒子"

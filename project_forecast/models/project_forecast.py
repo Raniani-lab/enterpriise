@@ -121,6 +121,9 @@ class ProjectForecast(models.Model):
     @api.one
     @api.depends('resource_hours', 'start_date', 'end_date', 'employee_id')
     def _compute_time(self):
+        if not self.employee_id:
+            return
+
         # We want to compute the number of hours that an **employee** works between 00:00:00 and 23:59:59
         # according to him -- his **timezone**
         start = datetime.combine(self.start_date, time.min)

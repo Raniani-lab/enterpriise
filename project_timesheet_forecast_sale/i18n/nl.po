@@ -4,13 +4,14 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
 "PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2018\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -34,7 +35,7 @@ msgstr "Na"
 #: code:addons/project_timesheet_forecast_sale/controllers/project.py:47
 #, python-format
 msgid "Forecasted"
-msgstr "Voorspeld"
+msgstr "Gepland"
 
 #. module: project_timesheet_forecast_sale
 #: code:addons/project_timesheet_forecast_sale/controllers/project.py:163
@@ -51,7 +52,7 @@ msgstr "Project"
 #. module: project_timesheet_forecast_sale
 #: model:ir.model,name:project_timesheet_forecast_sale.model_project_forecast
 msgid "Project Forecast"
-msgstr "Project prognose"
+msgstr "Projectplanning"
 
 #. module: project_timesheet_forecast_sale
 #: code:addons/project_timesheet_forecast_sale/controllers/project.py:25
@@ -60,6 +61,8 @@ msgid ""
 "Remaining \n"
 " (Forecasts incl.)"
 msgstr ""
+"Resterend\n"
+" (Incl. planning)"
 
 #. module: project_timesheet_forecast_sale
 #: model:ir.model,name:project_timesheet_forecast_sale.model_sale_order_line
@@ -75,7 +78,7 @@ msgstr "Taak"
 #. module: project_timesheet_forecast_sale
 #: model_terms:ir.ui.view,arch_db:project_timesheet_forecast_sale.timesheet_plan
 msgid "Timesheets/Forecasts"
-msgstr "Urenstaten/Voorspellingen"
+msgstr "Urenstaten/Planningen"
 
 #. module: project_timesheet_forecast_sale
 #: code:addons/project_timesheet_forecast_sale/controllers/project.py:26
@@ -84,3 +87,6 @@ msgid ""
 "What is still to deliver based on sold hours, hours already done and "
 "forecasted hours. Equals to sold hours - done hours - forecasted hours."
 msgstr ""
+"Wat nog moet worden geleverd, gebaseerd op verkochte uren, uren al gereed en"
+" geplande uren. Dit is gelijk aan de verkochte uren - uren gereed - geplande"
+" uren."

@@ -370,6 +370,17 @@ var ReportEditorSidebar = Widget.extend(StandaloneFieldManagerMixin, {
 
         var blacklists = [];
         this.nodes = [];
+
+        if (!this.debug) {
+            // hide all nodes after .page, they are too technical
+            var pageNodeIndex = _.findIndex(this.state.nodes, function (node) {
+                return node.node.tag === 'div' && _.str.include(node.node.attrs.class, 'page');
+            });
+            if (pageNodeIndex !== -1) {
+                this.state.nodes.splice(pageNodeIndex + 1, this.state.nodes.length - (pageNodeIndex + 1));
+            }
+        }
+
         for (var index = this.state.nodes.length - 1; index >= 0; index--) {
             // copy to not modifying in place the node
             var node = _.extend({}, this.state.nodes[index]);

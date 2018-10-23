@@ -878,10 +878,64 @@ odoo.define('sign.document_signing', function(require) {
         },
     });
 
+    var EncryptedDialog = Dialog.extend({
+        template: "sign.public_password",
+
+        _onValidatePassword: function () {
+            var input = this.$('#o_sign_public_signer_password_input')
+            if(!input.val()) {
+                input.closest('.form-group').toggleClass('o_has_error').find('.form-control, .custom-select').toggleClass('is-invalid');
+                return false;
+            }
+            var route = '/sign/password/' + this.requestID ;
+            var params = {
+                password: input.val()
+            };
+            var self = this;
+            session.rpc(route, params).then(function(response) {
+                if (!response) {
+                    Dialog.alert(self, _t("Password is incorrect."), {
+                        title: _t("Error"),
+                    });
+                }
+                if (response === true) {
+                    self.close();
+                }
+            });
+        },
+
+        init: function(parent, requestID, options) {
+            options = (options || {});
+            options.title = options.title || _t("PDF is encrypted");
+            options.size = options.size || "medium";
+            if(!options.buttons) {
+                options.buttons = [{
+                    text: _t("Generate PDF"),
+                    classes: "btn btn-primary o_sign_validate_encrypted",
+                    click: this._onValidatePassword
+                }]
+            }
+            this._super(parent, options);
+            this.requestID = requestID;
+        },
+
+        /**
+         * @override
+         */
+        renderElement: function () {
+            this._super.apply(this, arguments);
+            this.$modal.find('button.close').addClass('invisible')
+        },
+    });
+
     var ThankYouDialog = Dialog.extend({
         template: "sign.thank_you_dialog",
         events: {
             'click .o_go_to_document': 'on_closed',
+        },
+
+        get_passworddialog_class: function () {
+            return EncryptedDialog;
         },
 
         init: function(parent, RedirectURL, requestID, options) {
@@ -896,6 +950,15 @@ odoo.define('sign.document_signing', function(require) {
             this._super(parent, options);
 
             this.on('closed', this, this.on_closed);
+
+            var self = this;
+            rpc.query({
+                route: '/sign/encrypted/' + requestID
+            }).then(function (response) {
+                if (response === true) {
+                    (new (self.get_passworddialog_class())(self, requestID)).open();
+                }
+            });
         },
 
         /**
@@ -1317,6 +1380,7 @@ odoo.define('sign.document_signing', function(require) {
     }
 
     return {
+        EncryptedDialog: EncryptedDialog,
         ThankYouDialog: ThankYouDialog,
         initDocumentToSign: initDocumentToSign,
         SignableDocument: SignableDocument,

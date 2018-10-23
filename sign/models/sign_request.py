@@ -196,7 +196,18 @@ class SignRequest(models.Model):
     def action_signed(self):
         self.write({'state': 'signed'})
         self.env.cr.commit()
-        self.send_completed_document()
+        if not self.check_is_encrypted():
+            #if the file is encrypted, we must wait that the document is decrypted
+            self.send_completed_document()
+
+    @api.multi
+    def check_is_encrypted(self):
+        self.ensure_one()
+        if not self.template_id.sign_item_ids:
+            return False
+
+        old_pdf = PdfFileReader(io.BytesIO(base64.b64decode(self.template_id.attachment_id.datas)), strict=False, overwriteWarnings=False)
+        return old_pdf.isEncrypted
 
     @api.multi
     def action_canceled(self):
@@ -322,12 +333,18 @@ class SignRequest(models.Model):
         return True
 
     @api.one
-    def generate_completed_document(self):
-        if len(self.template_id.sign_item_ids) <= 0:
+    def generate_completed_document(self, password=""):
+        if not self.template_id.sign_item_ids:
             self.completed_document = self.template_id.attachment_id.datas
             return
 
         old_pdf = PdfFileReader(io.BytesIO(base64.b64decode(self.template_id.attachment_id.datas)), strict=False, overwriteWarnings=False)
+
+        isEncrypted = old_pdf.isEncrypted
+        if isEncrypted and not old_pdf.decrypt(password):
+            # password is not correct
+            return
+
         font = "Helvetica"
         normalFontSize = 0.015
 
@@ -397,6 +414,9 @@ class SignRequest(models.Model):
             page = old_pdf.getPage(p)
             page.mergePage(item_pdf.getPage(p))
             new_pdf.addPage(page)
+
+        if isEncrypted:
+            new_pdf.encrypt(password)
 
         output = io.BytesIO()
         new_pdf.write(output)

@@ -96,6 +96,15 @@
         </div>
     </div>
 
+    <div t-name="sign.public_password">
+        <div class="form-group">
+            <span>Your file is encrypted, PDF's password is required to generate final document. The final document will be encrypted with the same password.</span>
+            <div>
+                <input type="password" id="o_sign_public_signer_password_input" class="form-control"/>
+            </div>
+        </div>
+    </div>
+
     <div t-name="sign.thank_you_dialog">
         <div class="o_thankyou_message">We will let you know by email once everyone has signed.<br/>
         You can close the window and come back later.</div>

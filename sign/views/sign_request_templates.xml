@@ -143,6 +143,33 @@
         </t>
     </template>
 
+    <template id="sign.encrypted_ask_password" name="PDF Encrypted Password Request">
+        <t t-call="web.layout">
+            <t t-set="head">
+                <t t-call-assets="web.assets_common" t-js="false"/>
+                <t t-call-assets="web.assets_frontend" t-js="false"/>
+                <t t-call-assets="web.assets_common" t-css="false"/>
+                <t t-call-assets="web.assets_frontend" t-css="false"/>
+            </t>
+            <div class="container text-center">
+                <h3>Missing Password</h3>
+                <p>
+                    The password's PDF is required to generate the final document.
+                </p>
+                <form string="PDF is encrypted" role="form" method="post" onsubmit="this.action = this.action + location.hash">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                    <div>
+                        <p class="alert alert-danger mb8" t-if="error" role="alert">
+                            <t t-esc="error"/>
+                        </p>
+                    </div>
+                    <input type="password" required="required" name="password" t-att-autofocus="autofocus" maxlength="50"/>
+                    <input type="submit" value="Generate Document" ></input>
+                </form>
+            </div>
+        </t>
+    </template>
+
     <template id="sign.deleted_sign_request" name="Missing Signature Request">
         <t t-call="web.layout">
             <t t-set="head">

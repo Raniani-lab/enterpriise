@@ -2,10 +2,13 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import base64
+import io
 import logging
 import mimetypes
 import os
 import re
+
+from PyPDF2 import PdfFileReader
 
 from odoo import http, _
 from odoo.addons.web.controllers.main import content_disposition
@@ -92,6 +95,8 @@ class Sign(http.Controller):
             document = sign_request.template_id.attachment_id.datas
         elif type == "completed":
             document = sign_request.completed_document
+            if not document: # if the document is completed but the document is encrypted
+                return http.redirect_with_hash('/sign/password/%(request_id)s/%(access_token)s' % {'request_id': id, 'access_token': token})
 
         if not document:
             return http.redirect_with_hash("/sign/document/%(request_id)s/%(access_token)s" % {'request_id': id, 'access_token': token})
@@ -123,6 +128,31 @@ class Sign(http.Controller):
         sign_request.action_sent()
 
         return http.redirect_with_hash('/sign/document/%(request_id)s/%(access_token)s' % {'request_id': sign_request.id, 'access_token': request_item.access_token})
+
+    @http.route(['/sign/password/<int:sign_request_id>/<token>'], type='http', auth='public')
+    def check_password_page(self, sign_request_id, token):
+        values = http.request.params.copy()
+        request_item = http.request.env['sign.request.item'].sudo().search([
+            ('sign_request_id', '=', sign_request_id),
+            ('state', '=', 'completed'),
+            ('sign_request_id.access_token', '=', token)], limit=1)
+        if not request_item:
+            return http.request.not_found()
+
+        if 'password' not in http.request.params:
+            return http.request.render('sign.encrypted_ask_password')
+
+        password = http.request.params['password']
+        template_id = request_item.sign_request_id.template_id
+
+        old_pdf = PdfFileReader(io.BytesIO(base64.b64decode(template_id.attachment_id.datas)), strict=False, overwriteWarnings=False)
+        if old_pdf.isEncrypted and not old_pdf.decrypt(password):
+            values['error'] = _("Wrong password")
+            return http.request.render('sign.encrypted_ask_password', values)
+
+        request_item.sign_request_id.generate_completed_document(password)
+        request_item.sign_request_id.send_completed_document()
+        return http.redirect_with_hash('/sign/document/%(request_id)s/%(access_token)s' % {'request_id': sign_request_id, 'access_token': token})
 
     # -------------
     #  JSON Routes
@@ -228,6 +258,38 @@ class Sign(http.Controller):
         request_item.action_completed()
         request = request_item.sign_request_id
         return True
+
+    @http.route(['/sign/password/<int:sign_request_id>'], type='json', auth='public')
+    def check_password(self, sign_request_id, password=None):
+        request_item = http.request.env['sign.request.item'].sudo().search([
+            ('sign_request_id', '=', sign_request_id),
+            ('state', '=', 'completed')], limit=1)
+        if not request_item:
+            return False
+        template_id = request_item.sign_request_id.template_id
+
+        old_pdf = PdfFileReader(io.BytesIO(base64.b64decode(template_id.attachment_id.datas)), strict=False, overwriteWarnings=False)
+        if old_pdf.isEncrypted and not old_pdf.decrypt(password):
+            return False
+
+        # if the password is correct, we generate document and send it
+        request_item.sign_request_id.generate_completed_document(password)
+        request_item.sign_request_id.send_completed_document()
+        return True
+
+    @http.route(['/sign/encrypted/<int:sign_request_id>'], type='json', auth='public')
+    def check_encrypted(self, sign_request_id):
+        request_item = http.request.env['sign.request.item'].sudo().search([('sign_request_id', '=', sign_request_id)], limit=1)
+        if not request_item:
+            return False
+
+        # we verify that the document is completed by all signor
+        if request_item.sign_request_id.nb_total != request_item.sign_request_id.nb_closed:
+            return False
+        template_id = request_item.sign_request_id.template_id
+
+        old_pdf = PdfFileReader(io.BytesIO(base64.b64decode(template_id.attachment_id.datas)), strict=False, overwriteWarnings=False)
+        return True if old_pdf.isEncrypted else False
 
     @http.route(['/sign/save_location/<int:id>/<token>'], type='json', auth='public')
     def save_location(self, id, token, latitude=0, longitude=0):

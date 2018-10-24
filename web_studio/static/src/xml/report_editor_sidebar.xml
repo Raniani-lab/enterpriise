@@ -222,6 +222,15 @@
                 </button>
             </t>
         </div>
+        <div t-if="!widget.isNodeText" class="col-4 o_web_studio_sidebar_text o_web_studio_font_size">
+            <label>Font</label>
+            <button type="button" title="Smaller" data-property="smaller" class="btn btn-secondary" t-att-disabled="widget.fontSize === 'small' ? 'disabled' : undefined">
+                <i class="fa fa-font"/>
+            </button>
+            <button type="button" title="Bigger" data-property="bigger" class="btn btn-secondary" t-att-disabled="widget.fontSize === 'display-1' ? 'disabled' : undefined">
+                <i class="fa fa-lg fa-font"/>
+            </button>
+        </div>
     </div>
     <div class="row no-gutters">
         <div t-if="!widget.isNodeText" class="col-8 o_web_studio_sidebar_text o_web_studio_colors">
@@ -247,19 +256,6 @@
         </div>
     </div>
     <div class="row no-gutters">
-        <div t-if="!widget.isNodeText" class="col-6 o_web_studio_sidebar_select o_web_studio_font_size">
-            <label>Font style</label>
-            <select>
-                <option></option>
-                <option t-att-selected="widget.fontSize == 'h1' or null" value="h1">Heading 1</option>
-                <option t-att-selected="widget.fontSize == 'h2' or null" value="h2">Heading 2</option>
-                <option t-att-selected="widget.fontSize == 'h3' or null" value="h3">Heading 3</option>
-                <option t-att-selected="widget.fontSize == 'h4' or null" value="h4">Heading 4</option>
-                <option t-att-selected="widget.fontSize == 'h5' or null" value="h5">Heading 5</option>
-                <option t-att-selected="widget.fontSize == 'h6' or null" value="h6">Heading 6</option>
-                <option t-att-selected="widget.fontSize == 'small' or null" value="small">Small</option>
-            </select>
-        </div>
         <div t-if="widget.isTable" class="col-6 o_web_studio_sidebar_select o_web_studio_table_style">
             <label>Table style</label>
             <select>

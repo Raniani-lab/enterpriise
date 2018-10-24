@@ -344,7 +344,7 @@ var LayoutEditable = AbstractEditComponent.extend({
     events : _.extend({}, AbstractEditComponent.prototype.events, {
         "change .o_web_studio_margin>input": "_onMarginInputChange",
         "change .o_web_studio_width>input": "_onWidthInputChange",
-        "change .o_web_studio_font_size>select": "_onFontSizeInputChange",
+        "click .o_web_studio_font_size button": "_onFontSizeChange",
         "change .o_web_studio_table_style > select": "_onTableStyleInputChange",
         "click .o_web_studio_text_decoration button": "_onTextDecorationChange",
         "click .o_web_studio_text_alignment button": "_onTextAlignmentChange",
@@ -364,7 +364,7 @@ var LayoutEditable = AbstractEditComponent.extend({
         this.classesArray =(params.node.attrs.class || "").split(' ');
         this.stylesArray =(params.node.attrs.style || "").split(';');
 
-        var fontSizeRegExp= new RegExp(/^\s*(h[123456]{1})|(small)\s*$/gim);
+        var fontSizeRegExp= new RegExp(/^\s*(h[123456]{1})|(small)|(display-[1234]{1})\s*$/gim);
         var backgroundColorRegExp= new RegExp(/^\s*background\-color\s*:/gi);
         var colorRegExp= new RegExp(/^\s*color\s*:/gi);
         var widthRegExp= new RegExp(/^\s*width\s*:/gi);
@@ -400,6 +400,7 @@ var LayoutEditable = AbstractEditComponent.extend({
             this.width = this.originalWidth.replace(/\D+/g,''); //replaces all non-digits with nothing
         }
 
+        this.allFontSizes = ['small', undefined, 'h6', 'h5', 'h4', 'h3', 'h2', 'h1', 'display-4', 'display-3', 'display-2', 'display-1'];
         this.fontSize = _.find(this.classesArray, function(item) {
             return fontSizeRegExp.test(item);
         });
@@ -491,9 +492,17 @@ var LayoutEditable = AbstractEditComponent.extend({
      * @private
      * @param {JQEvent} e
      */
-    _onFontSizeInputChange: function(e) {
-        e.preventDefault();
-        this._editDomAttribute("class", e.target.value, this.fontSize);
+    _onFontSizeChange: function (e) {
+        var increment = $(e.currentTarget).data('property') === 'bigger' ? 1 : -1;
+        var newSizeIndex;
+        if (this.fontSize) {
+            newSizeIndex = this.allFontSizes.indexOf(this.fontSize) + increment;
+        } else {
+            // index 1 is 'no size set'
+            newSizeIndex = 1 + increment;
+        }
+        var newSize = this.allFontSizes[newSizeIndex];
+        this._editDomAttribute("class", newSize, this.fontSize);
     },
     /**
      * @private

@@ -532,12 +532,11 @@ QUnit.module('Studio', {}, function () {
                 }, {
                     testName: "set the heading level",
                     nodeToUse: layoutChangeNode,
-                    eventToTrigger: "change",
-                    sidebarOperationInputSelector: '.o_web_studio_font_size select',
-                    valueToPut: "h3",
+                    eventToTrigger: "click",
+                    sidebarOperationInputSelector: '.o_web_studio_font_size button[data-property="bigger"]',
                     expectedRPC: {
                         inheritance: [{
-                            content: "<attribute name=\"class\" separator=\" \" add=\"h3\"/>",
+                            content: "<attribute name=\"class\" separator=\" \" add=\"h6\"/>",
                             position: "attributes",
                             view_id: 99,
                             xpath: "/t/t/div"
@@ -691,20 +690,6 @@ QUnit.module('Studio', {}, function () {
                             class: "o_bold o_italic bg-gamma text-beta o_underline"
                         },
                         type: "attributes",
-                    },
-                },{
-                    testName: "unset the heading level",
-                    nodeToUse: nodeWithAllLayoutPropertiesSet,
-                    eventToTrigger: "change",
-                    sidebarOperationInputSelector: '.o_web_studio_font_size select',
-                    valueToPut: "",
-                    expectedRPC: {
-                        inheritance: [{
-                            content: "<attribute name=\"class\" separator=\" \" remove=\"h3\"/>",
-                            position: "attributes",
-                            view_id: 99,
-                            xpath: "/t/t/div"
-                        }]
                     },
                 },  {
                     testName: "unset the background color to a theme color",

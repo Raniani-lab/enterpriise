@@ -143,12 +143,14 @@
                         display: inline-block;
                         width: 21%;
                     }
-                    .o_web_studio_text_decoration > button, .o_web_studio_text_alignment > button {
-                        @include o-web-studio-btn;
-                        padding: 2px 7px;
-                        font-size: 13px;
-                        &.active {
-                            border-color: lighten($o-brand-primary, 5%) !important;
+                    .o_web_studio_text_decoration, .o_web_studio_text_alignment, .o_web_studio_font_size {
+                        > button {
+                            @include o-web-studio-btn;
+                            padding: 2px 7px;
+                            font-size: 13px;
+                            &.active {
+                                border-color: lighten($o-brand-primary, 5%) !important;
+                            }
                         }
                     }
                     .o_web_studio_size > input,

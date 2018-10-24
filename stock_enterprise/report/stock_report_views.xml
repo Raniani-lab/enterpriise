@@ -129,7 +129,7 @@
         </record>
 
         <record id="stock_report_dashboard_action" model="ir.actions.act_window">
-            <field name="name">Warehouse Dashboard</field>
+            <field name="name">Warehouse Analysis</field>
             <field name="res_model">stock.report</field>
             <field name="view_mode">dashboard</field>
             <field name="view_id" ref="stock_report_dashboard_view"/>
@@ -140,7 +140,7 @@
 
         <menuitem
             id="stock_dashboard_menuitem"
-            name="Warehouse Dashboard"
+            name="Warehouse Analysis"
             parent="stock.menu_warehouse_report"
             action="stock_report_dashboard_action"/>
     </data>

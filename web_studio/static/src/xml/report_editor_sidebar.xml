@@ -233,7 +233,7 @@
         </div>
     </div>
     <div class="row no-gutters">
-        <div t-if="!widget.isNodeText" class="col-8 o_web_studio_sidebar_text o_web_studio_colors">
+        <div t-if="!widget.isNodeText" class="col-6 o_web_studio_sidebar_text o_web_studio_colors">
             <label>Colors</label>
             <div class="dropdown">
                 <button class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">Font <span class="caret"/></button>
@@ -254,8 +254,6 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row no-gutters">
         <div t-if="widget.isTable" class="col-6 o_web_studio_sidebar_select o_web_studio_table_style">
             <label>Table style</label>
             <select>

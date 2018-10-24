@@ -232,8 +232,6 @@ div.row.o_web_studio_structure_hook {
     &:not(.o_web_studio_nearest) {
         position: absolute;
         width: 100%;
-        // compensate for bootstrap negative margins on rows
-        padding-right: ($grid-gutter-width / 2);
     }
     &.o_web_studio_nearest {
         position: relative;

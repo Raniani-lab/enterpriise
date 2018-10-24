@@ -124,6 +124,11 @@
                     </div>
                     <div class="o_workorder_bar_content o_workorder_bar_content_right">
                         <div attrs="{'invisible': [('working_state', '=', 'blocked')]}">
+                            <span groups="mrp_workorder.group_mrp_wo_tablet_timer" class="mr-3">
+                                <field name="duration" widget="mrp_time_counter" class="mr-3"/>
+                                <i class="fa fa-clock-o" attrs="{'invisible': [('is_user_working', '=', False)]}"/>
+                                <i class="fa fa-clock-o text-warning" attrs="{'invisible': [('is_user_working', '=', True)]}"/>
+                            </span>
                             <button
                                 name="action_next"
                                 type="object"

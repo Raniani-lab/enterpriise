@@ -32,6 +32,7 @@ Note: Only the admin user is allowed to make those customizations.
         'views/base_import_module_view.xml',
         'views/ir_actions_report_xml.xml',
         'views/ir_model_data.xml',
+        'wizard/base_module_uninstall_view.xml',
     ],
     'qweb': [
         "static/src/xml/*.xml",

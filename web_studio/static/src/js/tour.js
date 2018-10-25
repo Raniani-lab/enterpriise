@@ -291,7 +291,7 @@ tour.register('web_studio_tests_tour', {
     },
 }, {
     // use colors on the m2m tags
-    trigger: '.o_web_studio_sidebar label[for="color_field"]',
+    trigger: '.o_web_studio_sidebar label[for="option_color_field"]',
 }, {
     // add a statusbar
     trigger: '.o_web_studio_statusbar_hook',

@@ -389,13 +389,6 @@
                 </div>
             </div>
         </t>
-        <div t-if="_.contains(['many2one', 'many2many'], widget.state.field.type)" class="o_web_studio_sidebar_checkbox">
-            <div class="custom-control custom-checkbox">
-                <input type="checkbox" id="no_create" name="no_create" class="custom-control-input" data-type="options"
-                    t-att-checked="widget.state.attrs.options.no_create ? 'checked' : undefined"/>
-                <label for="no_create" class="custom-control-label">No Create</label>
-            </div>
-        </div>
         <div t-if="widget.view_type === 'kanban'" class="o_web_studio_sidebar_checkbox">
             <div class="custom-control custom-checkbox">
                 <input type="checkbox" id="bold" name="bold" class="custom-control-input" data-type="attributes"
@@ -444,30 +437,40 @@
                 <span t-else="1"><t t-esc="widget.state.attrs.name"/></span>
             </div>
         </div>
-        <div t-if="_.contains(['list', 'form', 'kanban'], widget.view_type) and (widget.debug or widget.state.attrs.widget !== 'statusbar')" class="o_web_studio_sidebar_select">
-            <label for="widget">Widget</label>
-            <select id="widget" name="widget" data-type="attributes">
-                <option t-foreach="widget.state.field.field_widgets" t-as="w" t-att-selected="widget.widgetKey ===  w ? 'selected' : undefined">
-                    <t t-esc="w"/>
-                </option>
-            </select>
-        </div>
-        <div t-if="widget.state.attrs.widget === 'many2many_tags'" class="o_web_studio_sidebar_checkbox">
-            <div class="custom-control custom-checkbox">
-                <input type="checkbox" id="color_field" name="color_field" class="custom-control-input" data-type="options"
-                    data-leave-empty='unchecked' t-att-checked="widget.state.attrs.options.color_field ? 'checked' : undefined"/>
-                <label for="color_field" class="custom-control-label">Color on Tags</label>
+        <t t-if="_.contains(['list', 'form', 'kanban'], widget.view_type) and (widget.debug or widget.state.attrs.widget !== 'statusbar')">
+            <div class="o_web_studio_sidebar_select">
+                <label for="widget">Widget</label>
+                <select id="widget" name="widget" data-type="attributes">
+                    <option t-foreach="widget.state.field.field_widgets" t-as="w" t-att-selected="widget.widgetKey ===  w ? 'selected' : undefined">
+                        <t t-esc="w"/>
+                    </option>
+                </select>
             </div>
-        </div>
-        <div t-if="widget.view_type === 'form' and widget.state.attrs.widget === 'image'" class="o_web_studio_sidebar_text">
-            <label for="size">Image Size</label>
-            <t t-set="img_size_value" t-value="widget.state.attrs.options.size ? widget.state.attrs.options.size[0] : 90"/>
-            <select id="size" name="size" data-type="options">
-                <option t-att-selected="img_size_value === 90 ? 'selected' : undefined" value="90">Small</option>
-                <option t-att-selected="img_size_value === 180 ? 'selected' : undefined" value="180">Medium</option>
-                <option t-att-selected="img_size_value === 270 ? 'selected' : undefined" value="270">Large</option>
-            </select>
-        </div>
+            <t t-if="widget.OPTIONS_BY_WIDGET[widget.widgetKey]">
+                <t t-foreach="widget.OPTIONS_BY_WIDGET[widget.widgetKey]" t-as="option">
+                    <div t-if="option.type === 'boolean'" class="o_web_studio_sidebar_checkbox">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" data-type="options" t-attf-id="option_#{option.name}" t-att-name="option.name" class="custom-control-input"
+                                t-att-data-leave-empty='option.leaveEmpty' t-att-checked="widget.state.attrs.options[option.name] ? 'checked' : undefined"/>
+                            <label t-attf-for="option_#{option.name}" class="custom-control-label" t-esc="option.string"/>
+                        </div>
+                    </div>
+                    <div t-if="option.type === 'text'" class="o_web_studio_sidebar_text">
+                        <label t-attf-for="option_#{option}" t-esc="option.string"/>
+                        <input type="text" data-type="options" t-attf-id="option_#{option.name}" t-att-name="option.name"
+                            t-att-placeholder="option.placeholder" t-att-value="widget.state.attrs.options[option.name]"/>
+                    </div>
+                    <div t-if="option.type === 'selection'" class="o_web_studio_sidebar_select">
+                        <label t-attf-for="option_#{option}" t-esc="option.string"/>
+                        <select data-type="options" t-attf-id="option_#{option.name}" t-att-name="option.name" >
+                            <t t-debug="value"/>
+                            <option t-foreach="option.selection" t-as="value" t-att-value="JSON.stringify(value[0])"
+                                t-att-selected="_.isEqual(widget.state.attrs.options[option.name], value[0]) ? 'selected' : undefined" t-esc="value[1]"/>
+                        </select>
+                    </div>
+                </t>
+            </t>
+        </t>
         <div t-if="!_.contains(widget.NON_DEFAULT_TYPES, widget.state.field.type)"
             t-att-class="widget.state.field.type === 'selection' ? 'o_web_studio_sidebar_select' : 'o_web_studio_sidebar_text'">
             <label for="default_value">Default value</label>

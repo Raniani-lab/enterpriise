@@ -549,17 +549,17 @@ QUnit.module('ViewEditorManager', {
         // edit the image
         testUtils.dom.click(vem.$('.o_web_studio_form_view_editor .o_field_image'));
 
-        assert.containsOnce(vem, '.o_web_studio_sidebar_content.o_display_field select#img_size',
+        assert.containsOnce(vem, '.o_web_studio_sidebar_content.o_display_field select#option_size',
             "the sidebar should display dropdown to change image size");
-        assert.strictEqual(vem.$('.o_web_studio_sidebar_content.o_display_field select#img_size option:selected').val(), "90",
+        assert.strictEqual(vem.$('.o_web_studio_sidebar_content.o_display_field select#option_size option:selected').val(), "[90,90]",
             "the image size should be correctly selected");
         assert.hasClass(vem.$('.o_web_studio_form_view_editor .o_field_image'),'o_web_studio_clicked',
             "image should have the clicked style");
 
         // change image size to large
-        vem.$('.o_web_studio_sidebar_content.o_display_field select#img_size').val(270).trigger('change');
+        vem.$('.o_web_studio_sidebar_content.o_display_field select#option_size').val("[270,270]").trigger('change');
         assert.verifySteps(['image', 'image'], "the image should have been fetched again");
-        assert.strictEqual(vem.$('.o_web_studio_sidebar_content.o_display_field select#img_size option:selected').val(), "270",
+        assert.strictEqual(vem.$('.o_web_studio_sidebar_content.o_display_field select#option_size option:selected').val(), "[270,270]",
             "the image size should be correctly selected");
         vem.destroy();
     });

@@ -15,8 +15,42 @@ var view_components = require('web_studio.view_components');
 var pyUtils = require('web.py_utils');
 
 var form_component_widget_registry = view_components.registry;
+var _lt = core._lt;
 var _t = core._t;
 var Many2ManyTags = relational_fields.FieldMany2ManyTags;
+
+
+/**
+ * This object is used to define all the options editable through the Studio
+ * sidebar, by field widget.
+ *
+ * An object value must be an array of Object (one object by option).
+ * An option object must have as attributes a `name`, a `string` and a `type`
+ * (currently among `boolean` and `selection`):
+ *
+ * * `selection` option must have an attribute `selection` (array of tuple).
+ * * `boolean` option can have an attribute `leaveEmpty` (`checked` or
+ *     `unchecked`).
+ *
+ * @type {Object}
+ */
+var OPTIONS_BY_WIDGET = {
+    image: [
+        {name: 'size', type: 'selection', string: _lt("Size"), selection: [
+            [[90, 90], _lt("Small")], [[180, 180], _lt("Medium")], [[270, 270], _lt("Large")],
+        ]},
+    ],
+    many2one: [
+        {name: 'no_create', type: 'boolean', string: _lt("Disable creation"), leaveEmpty: 'unchecked'},
+        {name: 'no_open', type: 'boolean', string: _lt("Disable opening"), leaveEmpty: 'unchecked'},
+    ],
+    many2many_tags: [
+        {name: 'color_field', type: 'boolean', string: _lt("Use colors"), leaveEmpty: 'unchecked'},
+    ],
+    radio: [
+        {name: 'horizontal', type: 'boolean', string: _lt("Display horizontally")},
+    ],
+};
 
 return Widget.extend(StandaloneFieldManagerMixin, {
     template: 'web_studio.ViewEditorSidebar',
@@ -111,11 +145,11 @@ return Widget.extend(StandaloneFieldManagerMixin, {
             this.state.modifiers = this.state.attrs.modifiers || {};
             this._computeFieldAttrs();
 
-            // get infos from the widget:
-            // - the possibilty to set a placeholder for this widget
-            // For example: it's not possible to set it on a boolean field.
             var Widget = this.state.attrs.Widget;
             this.widgetKey = this._getWidgetKey(Widget);
+
+            this.OPTIONS_BY_WIDGET = OPTIONS_BY_WIDGET;
+
             this.has_placeholder = Widget && Widget.prototype.has_placeholder || false;
         }
         // Upload image related stuff
@@ -634,11 +668,11 @@ return Widget.extend(StandaloneFieldManagerMixin, {
             }
         } else {
             optionValue = $input.val();
+            try {
+                // the value might have been stringified
+                optionValue = JSON.parse(optionValue);
+            } catch (e) {}
 
-            if (optionName === 'size') {
-                var size = parseInt(optionValue);
-                optionValue = [size, size];
-            }
             newOptions[optionName] = optionValue;
         }
 

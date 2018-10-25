@@ -154,13 +154,13 @@
                     <div class="oe_structure" id="oe_structure_helpdesk_index_2"/>
                     <div class="row">
                         <t t-foreach="teams" t-as="team">
-                            <div t-if="team.percentage_satisfaction != -1" class="col-md-6 col-4 col-lg-4 col-xl-4">
+                            <div t-if="team.rating_percentage_satisfaction != -1" class="col-md-6 col-4 col-lg-4 col-xl-4">
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="caption">
                                             <h4><t t-esc="team.name"/></h4>
-                                            <p t-if="team.percentage_satisfaction"  class="text-muted">
-                                                <i/> Customer Satisfaction Ration: <t t-esc="team.percentage_satisfaction"/> %
+                                            <p t-if="team.rating_percentage_satisfaction"  class="text-muted">
+                                                <i/> Customer Satisfaction Ration: <t t-esc="team.rating_percentage_satisfaction"/> %
                                             </p>
                                             <p t-if="team.alias_name and team.alias_domain"  class="text-muted">
                                                 <i class="fa fa-envelope"/> Email : <t t-esc="team.alias_name"/>@<t t-esc="team.alias_domain"/>

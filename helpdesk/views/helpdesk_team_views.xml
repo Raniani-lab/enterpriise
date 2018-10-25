@@ -240,8 +240,8 @@
                                     Allow your customers to easily rate your services. Activate this option will add a default email template on non folded closing stages
                                 </div>
                                 <div id="use_rating" attrs="{'invisible': [('use_rating', '=', False)]}">
-                                    <field name="percentage_satisfaction" invisible="1"/>
-                                    <div attrs="{'invisible': [('use_rating', '=', True), ('percentage_satisfaction', '!=', -1)]}" class="mt16">
+                                    <field name="rating_percentage_satisfaction" invisible="1"/>
+                                    <div attrs="{'invisible': [('use_rating', '=', True), ('rating_percentage_satisfaction', '!=', -1)]}" class="mt16">
                                         <i>No customer feedback yet.</i>
                                     </div>
                                 </div>
@@ -337,7 +337,7 @@
                 <field name="alias_domain"/>
                 <field name="alias_id"/>
                 <field name="use_rating"/>
-                <field name="percentage_satisfaction" invisible="1"/>
+                <field name="rating_percentage_satisfaction" invisible="1"/>
                 <field name="use_sla"/>
                 <field name="upcoming_sla_fail_tickets"/>
                 <field name="unassigned_tickets"/>
@@ -377,10 +377,10 @@
                                         </div>
                                     </div>
                                 </div><!-- Smiley indicator of rating:
-                                <div t-if="record.use_rating.raw_value and record.percentage_satisfaction.raw_value &gt;= 0" class="row text-center">
+                                <div t-if="record.use_rating.raw_value and record.rating_percentage_satisfaction.raw_value &gt;= 0" class="row text-center">
                                     <a name="action_view_all_rating" type="object" title="Percentage of happy people about this team" class="float-right">
-                                        <h5 t-attf-class="badge #{record.percentage_satisfaction.raw_value &gt;= 50 ? 'badge-success' : 'badge-warning'}">
-                                            <i t-attf-class="fa #{record.percentage_satisfaction.raw_value &gt;= 50 ? 'fa-smile-o' : 'fa-frown-o'}" role="img" aria-label="Satisfaction rate" title="Satisfaction rate"/> <t t-raw="record.percentage_satisfaction.raw_value"/> %
+                                        <h5 t-attf-class="badge #{record.rating_percentage_satisfaction.raw_value &gt;= 50 ? 'badge-success' : 'badge-warning'}">
+                                            <i t-attf-class="fa #{record.rating_percentage_satisfaction.raw_value &gt;= 50 ? 'fa-smile-o' : 'fa-frown-o'}" role="img" aria-label="Satisfaction rate" title="Satisfaction rate"/> <t t-raw="record.rating_percentage_satisfaction.raw_value"/> %
                                         </h5>
                                     </a>
                                 </div> -->

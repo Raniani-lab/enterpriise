@@ -11,9 +11,10 @@ from odoo.exceptions import UserError, ValidationError
 
 class HelpdeskTeam(models.Model):
     _name = "helpdesk.team"
-    _inherit = ['mail.alias.mixin', 'mail.thread']
+    _inherit = ['mail.alias.mixin', 'mail.thread', 'rating.parent.mixin']
     _description = "Helpdesk Team"
     _order = 'sequence,name'
+    _rating_satisfaction_days = False  # takes all existing ratings
 
     def _default_stage_ids(self):
         return [(0, 0, {'name': 'New', 'sequence': 0, 'template_id': self.env.ref('helpdesk.new_ticket_request_email_template', raise_if_not_found=False) or None})]
@@ -51,23 +52,14 @@ class HelpdeskTeam(models.Model):
     use_helpdesk_timesheet = fields.Boolean('Timesheet on Ticket', help="This required to have project module installed.")
     use_twitter = fields.Boolean('Twitter')
     use_api = fields.Boolean('API')
-    use_rating = fields.Boolean('Ratings')
+    use_rating = fields.Boolean('Ratings on tickets')
     portal_show_rating = fields.Boolean('Display Rating on Customer Portal', oldname='use_website_helpdesk_rating')
     portal_rating_url = fields.Char('URL to Submit an Issue', readonly=True, compute='_compute_portal_rating_url')
     use_sla = fields.Boolean('SLA Policies')
     upcoming_sla_fail_tickets = fields.Integer(string='Upcoming SLA Fail Tickets', compute='_compute_upcoming_sla_fail_tickets')
     unassigned_tickets = fields.Integer(string='Unassigned Tickets', compute='_compute_unassigned_tickets')
-    percentage_satisfaction = fields.Integer(
-        compute="_compute_percentage_satisfaction", string="% Happy", store=True, default=-1)
     resource_calendar_id = fields.Many2one('resource.calendar', 'Working Hours',
         default=lambda self: self.env.user.company_id.resource_calendar_id)
-
-    @api.depends('ticket_ids.rating_ids.rating')
-    def _compute_percentage_satisfaction(self):
-        for team in self:
-            activities = team.ticket_ids.rating_get_grades()
-            total_activity_values = sum(activities.values())
-            team.percentage_satisfaction = activities['great'] * 100 / total_activity_values if total_activity_values else -1
 
     @api.depends('name', 'portal_show_rating')
     def _compute_portal_rating_url(self):

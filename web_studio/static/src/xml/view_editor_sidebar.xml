@@ -447,8 +447,7 @@
         <div t-if="_.contains(['list', 'form', 'kanban'], widget.view_type) and (widget.debug or widget.state.attrs.widget !== 'statusbar')" class="o_web_studio_sidebar_select">
             <label for="widget">Widget</label>
             <select id="widget" name="widget" data-type="attributes">
-                <option t-att-selected="widget.state.attrs.widget ? undefined : 'selected'"></option>
-                <option t-foreach="widget.state.field.field_widgets" t-as="w" t-att-selected="widget.state.attrs.widget ===  w ? 'selected' : undefined">
+                <option t-foreach="widget.state.field.field_widgets" t-as="w" t-att-selected="widget.widgetKey ===  w ? 'selected' : undefined">
                     <t t-esc="w"/>
                 </option>
             </select>

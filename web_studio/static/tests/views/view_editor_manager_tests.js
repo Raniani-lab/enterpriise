@@ -281,8 +281,8 @@ QUnit.module('ViewEditorManager', {
             "the sidebar should now display the field properties");
         assert.strictEqual(vem.$('.o_web_studio_sidebar').find('input[name="string"]').val(), "Display Name",
             "the label in sidebar should be Display Name");
-        assert.strictEqual(vem.$('.o_web_studio_sidebar').find('select[name="widget"]').val(), "",
-            "the widget in sidebar should be emtpy");
+        assert.strictEqual(vem.$('.o_web_studio_sidebar').find('select[name="widget"]').val(), "char",
+            "the widget in sidebar should be set by default");
 
         vem.destroy();
     });
@@ -444,8 +444,8 @@ QUnit.module('ViewEditorManager', {
             "the sidebar should now display the field properties");
         assert.hasClass(vem.$('.o_web_studio_form_view_editor [data-node-id]'),'o_web_studio_clicked',
             "the column should have the clicked style");
-        assert.strictEqual(vem.$('.o_web_studio_sidebar').find('select[name="widget"]').val(), "",
-            "the widget in sidebar should be empty");
+        assert.strictEqual(vem.$('.o_web_studio_sidebar').find('select[name="widget"]').val(), "char",
+            "the widget in sidebar should be set by default");
 
         vem.destroy();
     });
@@ -1151,8 +1151,8 @@ QUnit.module('ViewEditorManager', {
             "the sidebar should now display the field properties");
         assert.hasClass(vem.$('.o_web_studio_kanban_view_editor [data-node-id]'),'o_web_studio_clicked',
             "the field should have the clicked style");
-        assert.strictEqual(vem.$('.o_web_studio_sidebar').find('select[name="widget"]').val(), "",
-            "the widget in sidebar should be empty");
+        assert.strictEqual(vem.$('.o_web_studio_sidebar').find('select[name="widget"]').val(), "char",
+            "the widget in sidebar should be set by default");
         assert.strictEqual(vem.$('.o_web_studio_sidebar').find('select[name="display"]').val(), "false",
             "the display attribute should be Default");
         assert.strictEqual(vem.$('.o_web_studio_sidebar').find('input[name="string"]').val(), "Display Name",

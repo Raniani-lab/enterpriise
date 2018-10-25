@@ -115,6 +115,7 @@ return Widget.extend(StandaloneFieldManagerMixin, {
             // - the possibilty to set a placeholder for this widget
             // For example: it's not possible to set it on a boolean field.
             var Widget = this.state.attrs.Widget;
+            this.widgetKey = this._getWidgetKey(Widget);
             this.has_placeholder = Widget && Widget.prototype.has_placeholder || false;
         }
         // Upload image related stuff
@@ -234,6 +235,26 @@ return Widget.extend(StandaloneFieldManagerMixin, {
         });
         newAttributes.attrs = _.str.sprintf("{%s}", attrs.join(", "));
         return newAttributes;
+    },
+    /**
+     * @private
+     * @param {Class} Widget
+     * @returns {string} the field key
+     */
+    _getWidgetKey: function (Widget) {
+        var widgetKey = this.state.attrs.widget;
+        if (!widgetKey) {
+            _.each(field_registry.map, function (val, key) {
+                if (val === Widget) {
+                    widgetKey = key;
+                }
+            });
+            // widget key can be prefixed by a view type (like form.many2many_tags)
+            if (_.str.include(widgetKey, '.')) {
+                widgetKey = widgetKey.split('.')[1];
+            }
+        }
+        return widgetKey;
     },
     /**
      * Render additional sections according to the sidebar mode

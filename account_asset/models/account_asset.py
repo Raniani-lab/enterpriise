@@ -476,13 +476,13 @@ class AccountAssetDepreciationLine(models.Model):
 
     name = fields.Char(string='Depreciation Name', required=True, index=True)
     sequence = fields.Integer(required=True)
-    asset_id = fields.Many2one('account.asset.asset', string='Asset', required=True, ondelete='cascade')
+    asset_id = fields.Many2one('account.asset.asset', string='Asset', required=True, index=True, ondelete='cascade')
     parent_state = fields.Selection(related='asset_id.state', string='State of Asset', readonly=False)
     amount = fields.Float(string='Current Depreciation', digits=0, required=True)
     remaining_value = fields.Float(string='Next Period Depreciation', digits=0, required=True)
     depreciated_value = fields.Float(string='Cumulative Depreciation', required=True)
     depreciation_date = fields.Date('Depreciation Date', index=True)
-    move_id = fields.Many2one('account.move', string='Depreciation Entry')
+    move_id = fields.Many2one('account.move', string='Depreciation Entry', index=True)
     move_check = fields.Boolean(compute='_get_move_check', string='Linked', track_visibility='always', store=True)
     move_posted_check = fields.Boolean(compute='_get_move_posted_check', string='Posted', track_visibility='always', store=True)
 

@@ -16,7 +16,9 @@
     </template>
 
     <template id="public_page_assets" name="public page assets">
-        <t t-call="web._assets_backend_helpers"/>
+        <t t-call="web._assets_helpers">
+            <t t-call="web._assets_backend_helpers"/>
+        </t>
         <t t-call="web._assets_bootstrap"/>
 
         <link rel="stylesheet" type="text/scss" href="/documents/static/src/scss/documents_public_pages.scss"/>

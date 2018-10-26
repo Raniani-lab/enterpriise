@@ -152,12 +152,23 @@
             </field>
         </record>
 
+        <record id="crm.action_report_crm_lead_salesteam" model="ir.actions.act_window">
+            <field name="view_mode">dashboard,pivot,graph,tree,form,cohort</field>
+            <field name="view_id" ref="crm_lead_dashboard_view"/>
+            <field name="search_view_id" ref="crm.view_crm_case_leads_filter"/>
+        </record>
+
+        <record id="crm.action_report_crm_opportunity_salesteam" model="ir.actions.act_window">
+            <field name="view_mode">dashboard,pivot,graph,tree,form,cohort</field>
+            <field name="view_id" ref="crm_opportunity_view_dashboard"/>
+            <field name="search_view_id" ref="crm_enterprise.crm_opportunity_view_search"/>
+        </record>
+
         <!-- dashboard action -->
         <record id="crm_opportunity_action_dashboard" model="ir.actions.act_window">
             <field name="name">Pipeline Analysis</field>
             <field name="res_model">crm.lead</field>
             <field name="view_mode">dashboard,pivot,graph,tree,form,cohort</field>
-            <field name="domain">[('type','=','opportunity')]</field>
             <field name="context" eval="{'form_view_ref': 'crm.crm_case_form_view_oppor', 'tree_view_ref': 'crm.crm_case_tree_view_oppor','default_type': 'opportunity', 'search_default_opportunity': True, 'time_ranges': {'field':'create_date', 'range':'last_365_days'}}"/>
             <field name="search_view_id" ref="crm_enterprise.crm_opportunity_view_search"/>
         </record>

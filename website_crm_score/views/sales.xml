@@ -144,8 +144,7 @@
                 <xpath expr="//button[@name='toggle_active']" position="before">
                     <button class="oe_stat_button" type="action"
                         name="%(crm_score_views_action_graph)d" icon="fa-tags"
-                        context="{'search_default_team_id': active_id, 'search_default_unassigned': 1 }"
-                        attrs="{'invisible': [('use_leads', '=', False)]}">
+                        context="{'search_default_team_id': active_id, 'search_default_unassigned': 1 }">
                         <field name="unassigned_leads_count" widget="statinfo"/>
                     </button>
                     <button class="oe_stat_button" type="action"
@@ -164,11 +163,8 @@
                     </div>
                     <field name="min_for_assign" class="oe_inline"/>
                 </xpath>
-                <group name="right" position="attributes">
-                    <attribute name="attrs">{'invisible': [('team_type', 'in', ['pos', 'ebay'])]}</attribute>
-                </group>
                 <xpath expr="//page[@name='members']" position="replace">
-                    <page string="Assignation" attrs="{'invisible': [('team_type', 'in', ['pos', 'ebay'])]}">
+                    <page string="Assignation">
                         <field name="team_user_ids" widget="one2many" mode="kanban" context="{'default_team_id':active_id, 'ro_team':True}">
                             <kanban>
                                 <field name="user_id"/>

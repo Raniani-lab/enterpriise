@@ -36,7 +36,6 @@ class ResConfigSettings(models.TransientModel):
     ebay_location = fields.Char(string="Location", default='', config_parameter='')
     ebay_out_of_stock = fields.Boolean("Out Of Stock", default=False)
     ebay_sales_team = fields.Many2one("crm.team", string="ebay Sales Channel",
-                                      default=lambda self: self.env['crm.team'].search([('team_type', '=', 'ebay')], limit=1).id,
                                       config_parameter='ebay_sales_team')
     ebay_gallery_plus = fields.Boolean("Gallery Plus", default='', config_parameter='ebay_gallery_plus')
 

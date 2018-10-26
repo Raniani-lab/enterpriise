@@ -138,7 +138,7 @@
                             <div class="content-group">
                                 <div class="row mt16">
                                     <label for="ebay_sales_team" string="Sales Channel" class="col-lg-4 o_light_label"/>
-                                    <field name="ebay_sales_team" class="col-lg-8 oe_inline" context="{'default_team_type': 'ebay'}"/>
+                                    <field name="ebay_sales_team" class="col-lg-8 oe_inline" />
                                 </div>
                             </div>
                         </div>

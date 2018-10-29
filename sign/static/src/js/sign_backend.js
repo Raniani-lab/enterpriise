@@ -182,27 +182,34 @@ odoo.define('sign.template', function(require) {
             }
         },
 
-        init: function(parent, parties, options) {
+        init: function(parent, parties, options, select_options) {
             options = options || {};
 
             this.title = options.title || _t("Customize Field");
             this._super(parent, options);
             //TODO: Add buttons for save, discard and remove.
             this.parties = parties;
+            this.select_options = select_options;
             this.debug = config.debug;
         },
 
         start: function() {
             this.$responsibleSelect = this.$('.o_sign_responsible_select');
+            this.$optionsSelect = this.$('.o_sign_options_select');
             sign_utils.resetResponsibleSelectConfiguration();
+            sign_utils.resetOptionsSelectConfiguration();
 
             var self = this;
             return this._super().then(function() {
                 sign_utils.setAsResponsibleSelect(self.$responsibleSelect.find('select'), self.$currentTarget.data('responsible'), self.parties);
+                sign_utils.setAsOptionsSelect(self.$optionsSelect.find('input'), self.$currentTarget.data('itemId'), self.$currentTarget.data('option_ids'), self.select_options);
                 self.$('input[type="checkbox"]').prop('checked', self.$currentTarget.data('required'));
 
                 self.$('#o_sign_name').val(self.$currentTarget.data('name') );
-                self.title = self.title + ' <span class="fa fa-long-arrow-right"/> ' + self.$currentTarget.prop('field-type') + ' Field';
+                self.title = self.title + ' <span class="fa fa-long-arrow-right"/> ' + self.$currentTarget.prop('field-name') + ' Field';
+                if (self.$currentTarget.prop('field-type') !== 'selection') {
+                    self.$('.o_sign_options_group').hide()
+                }
             });
 
         },
@@ -231,10 +238,11 @@ odoo.define('sign.template', function(require) {
         hide: function() {
             this.$currentTarget.popover("hide");
             var resp = parseInt(this.$responsibleSelect.find('select').val());
+            var selected_options = this.$optionsSelect.find('#o_sign_options_select_input').data('item_options');
             var required = this.$('input[type="checkbox"]').prop('checked');
             var name = this.$('#o_sign_name').val();
             this.getParent().currentRole = resp;
-            this.$currentTarget.data({responsible: resp, required: required, name: name}).trigger('itemChange');
+            this.$currentTarget.data({responsible: resp, required: required, name: name, option_ids: selected_options}).trigger('itemChange');
         }
     });
 
@@ -375,8 +383,7 @@ odoo.define('sign.template', function(require) {
                             cancel: false,
                             helper: function(e) {
                                 var type = self.types[$(this).data('item-type-id')];
-                                var $signatureItem = self.createSignItem(type, true, self.currentRole, 0, 0, type.default_width, type.default_height, '');
-
+                                var $signatureItem = self.createSignItem(type, true, self.currentRole, 0, 0, type.default_width, type.default_height, '', []);
                                 if(!e.ctrlKey) {
                                     self.$('.o_sign_sign_item').removeClass('ui-selected');
                                 }
@@ -407,7 +414,6 @@ odoo.define('sign.template', function(require) {
 
                                 ui.helper.removeClass('o_sign_sign_item_to_add');
                                 var $signatureItem = ui.helper.clone(true).removeClass().addClass('o_sign_sign_item o_sign_sign_item_required');
-
                                 var posX = (ui.offset.left - $parent.find('.textLayer').offset().left) / $parent.innerWidth();
                                 var posY = (ui.offset.top - $parent.find('.textLayer').offset().top) / $parent.innerHeight();
                                 $signatureItem.data({posx: posX, posy: posY});
@@ -457,11 +463,10 @@ odoo.define('sign.template', function(require) {
             var self = this;
 
             $signatureItem.prop('field-type', this.types[$signatureItem.data('type')].item_type);
+            $signatureItem.prop('field-name', this.types[$signatureItem.data('type')].name);
             var itemId = $signatureItem.data('itemId');
-
             var $configArea = $signatureItem.find('.o_sign_config_area');
-
-            $configArea.find('.o_sign_responsible_display').off('mousedown').on('mousedown', function(e) {
+            $configArea.find('.o_sign_item_display').off('mousedown').on('mousedown', function(e) {
                 e.stopPropagation();
                 self.$('.ui-selected').removeClass('ui-selected');
                 $signatureItem.addClass('ui-selected');
@@ -476,7 +481,7 @@ odoo.define('sign.template', function(require) {
                     self.customPopovers[itemId].$currentTarget.popover('hide');
                     self.customPopovers[itemId] = false;
                 } else {
-                    self.customPopovers[itemId] = new SignItemCustomPopover(self, self.parties, {'field_type': $signatureItem[0]['field-type']});
+                    self.customPopovers[itemId] = new SignItemCustomPopover(self, self.parties, {'field_name': $signatureItem[0]['field-name'], 'field_type': $signatureItem[0]['field-type']}, self.select_options);
                     self.customPopovers[itemId].create($signatureItem);
                 }
             });
@@ -568,6 +573,9 @@ odoo.define('sign.template', function(require) {
             if(this.editMode) {
                 var responsibleName = this.parties[$signatureItem.data('responsible')].name;
                 $signatureItem.find('.o_sign_responsible_display').text(responsibleName).prop('title', responsibleName);
+                var option_ids = $signatureItem.data('option_ids') || [];
+                var $options_display = $signatureItem.find('.o_sign_select_options_display');
+                this.display_select_options($options_display, this.select_options, option_ids);
             }
         },
     });
@@ -686,6 +694,12 @@ odoo.define('sign.template', function(require) {
                         })
                         .then(function (sign_items) {
                             self.sign_items = sign_items;
+                            return self._rpc({
+                                model: 'sign.item.option',
+                                method: 'search_read',
+                                args: [[],['id', 'value']],
+                                kwargs: {context: session.user_context},
+                            });
                         });
                     var defIrAttachments = self._rpc({
                             model: 'ir.attachment',
@@ -700,6 +714,16 @@ odoo.define('sign.template', function(require) {
                         });
 
                     return $.when(defSignItems, defIrAttachments);
+                });
+
+            var defSelectOptions = this._rpc({
+                    model: 'sign.item.option',
+                    method: 'search_read',
+                    args: [[]],
+                    kwargs: {context: session.user_context},
+                })
+                .then(function (options) {
+                    self.sign_item_options = options;
                 });
 
             var defParties = this._rpc({
@@ -720,7 +744,7 @@ odoo.define('sign.template', function(require) {
                     self.sign_item_types = types;
                 });
 
-            return $.when(defTemplates, defParties, defItemTypes);
+            return $.when(defTemplates, defParties, defItemTypes, defSelectOptions);
         },
 
         start: function() {
@@ -753,6 +777,7 @@ odoo.define('sign.template', function(require) {
                                                                   parties: this.sign_item_parties,
                                                                   types: this.sign_item_types,
                                                                   signatureItems: this.sign_items,
+                                                                  select_options: this.sign_item_options,
                                                               });
                     return this.iframeWidget.attachTo(this.$('iframe')).then(function() {
                         framework.unblockUI();
@@ -802,12 +827,13 @@ odoo.define('sign.template', function(require) {
             var configuration = (this.iframeWidget)? this.iframeWidget.configuration : {};
             for(var page in configuration) {
                 for(var i = 0 ; i < configuration[page].length ; i++) {
+                    var id = configuration[page][i].data('item-id') || (newId--);
                     var resp = configuration[page][i].data('responsible');
-
-                    data[configuration[page][i].data('item-id') || (newId--)] = {
+                    data[id] = {
                         'type_id': configuration[page][i].data('type'),
                         'required': configuration[page][i].data('required'),
                         'name': configuration[page][i].data('name'),
+                        'option_ids': configuration[page][i].data('option_ids'),
                         'responsible_id': resp,
                         'page': page,
                         'posX': configuration[page][i].data('posx'),

@@ -217,20 +217,20 @@ textarea.o_sign_sign_item {
     border-left-color: #fff;
 } 
 
-.o_sign_sign_item + .popover .o_sign_delete_field_button {
+.popover .o_sign_delete_field_button {
     float: right;
     margin-top: 8px;
     margin-bottom: 8px;
 }
 
-.o_sign_sign_item + .popover .o_sign_delete_field_button.fa-trash {
+.popover .o_sign_delete_field_button.fa-trash {
     cursor: pointer;
     opacity: 0.5;
     transition: opacity ease 250ms;
     margin-top: 8px;
 }
 
-.o_sign_sign_item + .popover .o_sign_delete_field_button.fa-trash:hover {
+.popover .o_sign_delete_field_button.fa-trash:hover {
     opacity: 1.0; 
 }
 
@@ -282,10 +282,30 @@ textarea.o_sign_sign_item {
     margin-right: 5px;
 }
 
-.o_sign_sign_item .o_sign_config_area .o_sign_responsible_display {
+.o_sign_sign_item .o_sign_config_area .o_sign_item_display {
     display: block;
     width: 100%;
     height: 100%;
+}
+
+.o_sign_select_options_display {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.o_sign_item_option {
+    padding: 5px;
+}
+
+.o_sign_selected_option {
+    text-decoration-line: none;
+}
+
+.o_sign_not_selected_option  {
+    text-decoration-line: line-through;
 }
 
 .ui-selected, .ui-selecting { /* jQuery UI */

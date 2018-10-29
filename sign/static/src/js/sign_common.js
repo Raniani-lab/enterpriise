@@ -133,6 +133,7 @@ odoo.define('sign.PDFIframe', function (require) {
                         parseFloat(el.width),
                         parseFloat(el.height),
                         el.value,
+                        el.option_ids,
                         el.name
                     );
                     $signatureItem.data({itemId: el.id, order: i});
@@ -179,13 +180,51 @@ odoo.define('sign.PDFIframe', function (require) {
             this.updateFontSize();
         },
 
+        display_select_options: function ($container, options, selected_options, readonly, active_option) {
+            readonly = (readonly === undefined)? false : readonly;
+            $container.empty();
+
+            selected_options.forEach(function (id, index) {
+                if (index !== 0) {
+                    $container.append($('<span class="o_sign_option_separator">/</span>'));
+                }
+                var $op = $('<span class="o_sign_item_option"/>').text(options[id].value);
+                $op.data('id', id);
+                $container.append($op);
+                if (!readonly) {
+                    $op.on('click', click_handler);
+                }
+            });
+
+            if (active_option) {
+                select_option($container, active_option);
+            }
+            function select_option($container, option_id) {
+                var $selected_op = $container.find(':data(id)').filter(function () { return $(this).data('id') === option_id;});
+                var $other_options = $container.find(':data(id)').filter(function () { return $(this).data('id') !== option_id;});
+
+                $selected_op.addClass('o_sign_selected_option');
+                $selected_op.removeClass('o_sign_not_selected_option');
+                $other_options.removeClass('o_sign_selected_option');
+                $other_options.addClass('o_sign_not_selected_option');
+            }
+
+            function click_handler(e) {
+                var id = $(e.target).data('id');
+                $container = $(e.target.parentElement);
+                $container.parent().val(id);
+                $container.parent().trigger('input');
+                select_option($container, id);
+            }
+        },
+
         updateFontSize: function() {
             var self = this;
             var normalSize = this.$('.page').first().innerHeight() * 0.015;
             this.$('.o_sign_sign_item').each(function(i, el) {
                 var $elem = $(el);
                 var size = parseFloat($elem.css('height'));
-                if($.inArray(self.types[$elem.data('type')].item_type, ['signature', 'initial', 'textarea']) > -1) {
+                if ($.inArray(self.types[$elem.data('type')].item_type, ['signature', 'initial', 'textarea', 'selection']) > -1) {
                     size = normalSize;
                 }
 
@@ -193,19 +232,24 @@ odoo.define('sign.PDFIframe', function (require) {
             });
         },
 
-        createSignItem: function(type, required, responsible, posX, posY, width, height, value, name) {
-            var self = this;
+        createSignItem: function (type, required, responsible, posX, posY, width, height, value, option_ids, name) {
             var readonly = this.readonlyFields || (responsible > 0 && responsible !== this.role) || !!value;
+            var selected_options = option_ids || [];
 
             var $signatureItem = $(core.qweb.render('sign.sign_item', {
                 editMode: this.editMode,
                 readonly: readonly,
                 type: type['item_type'],
                 value: value || "",
+                options: selected_options,
                 placeholder: type['placeholder']
             }));
 
-            return $signatureItem.data({type: type['id'], required: required, responsible: responsible, posx: posX, posy: posY, width: width, height: height, name:name})
+            if (type['type'] === 'selection') {
+                var $options_display = $signatureItem.find('.o_sign_select_options_display');
+                this.display_select_options($options_display, this.select_options, selected_options, readonly, value);
+            }
+            return $signatureItem.data({type: type['id'], required: required, responsible: responsible, posx: posX, posy: posY, width: width, height: height, name:name, option_ids: option_ids})
                                  .data('hasValue', !!value);
         },
 
@@ -277,6 +321,7 @@ odoo.define('sign.Document', function (require) {
             this.RedirectURL = this.$('#o_sign_input_optional_redirect_url').val();
             this.types = this.$('.o_sign_field_type_input_info');
             this.items = this.$('.o_sign_item_input_info');
+            this.select_options = this.$('.o_sign_select_options_input_info');
 
             this.$validateBanner = this.$('.o_sign_validate_banner').first();
 
@@ -296,6 +341,7 @@ odoo.define('sign.Document', function (require) {
                                                                      {
                                                                          types: this.types,
                                                                          signatureItems: this.items,
+                                                                         select_options: this.select_options,
                                                                      },
                                                                      parseInt(this.$('#o_sign_input_current_role').val()));
                 return this.iframeWidget.attachTo(this.$iframe);
@@ -315,35 +361,96 @@ odoo.define('sign.utils', function (require) {
 
     var _t = core._t;
 
-    function getResponsibleSelectConfiguration(parties) {
-        if(getResponsibleSelectConfiguration.configuration === undefined) {
+    function getSelect2Options(placeholder) {
+        return {
+            placeholder: placeholder,
+            allowClear: false,
+            width: '100%',
+
+            formatResult: function(data, resultElem, searchObj) {
+                if(!data.text) {
+                    $(data.element[0]).data('create_name', searchObj.term);
+                    return $("<div/>", {text: _t("Create: \"") + searchObj.term + "\""});
+                }
+                return $("<div/>", {text: data.text});
+            },
+
+            formatSelection: function(data) {
+                if(!data.text) {
+                    return $("<div/>", {text: $(data.element[0]).data('create_name')}).html();
+                }
+                return $("<div/>", {text: data.text}).html();
+            },
+
+            matcher: function(search, data) {
+                if(!data) {
+                    return (search.length > 0);
+                }
+                return (data.toUpperCase().indexOf(search.toUpperCase()) > -1);
+            }
+        };
+    }
+
+    function getOptionsSelectConfiguration(item_id, select_options, selected) {
+        if(getOptionsSelectConfiguration.configuration === undefined) {
+            var data = [];
+            for (var id in select_options) {
+                data.push({id: parseInt(id), text: select_options[id].value});
+            }
             var select2Options = {
-                placeholder: _t("Select the responsible"),
-                allowClear: false,
-                width: '100%',
-
-                formatResult: function(data, resultElem, searchObj) {
-                    if(!data.text) {
-                        $(data.element[0]).data('create_name', searchObj.term);
-                        return $("<div/>", {text: _t("Create: \"") + searchObj.term + "\""});
+                data: data,
+                multiple: true,
+                placeholder: _t("Select available options"),
+                allowClear: true,
+                width: '200px',
+                createSearchChoice:function (term, data) {
+                    if ($(data).filter(function () { return this.text.localeCompare(term)===0; }).length===0) {
+                        return {id:-1, text:term};
                     }
-                    return $("<div/>", {text: data.text});
                 },
+            };
 
-                formatSelection: function(data) {
-                    if(!data.text) {
-                        return $("<div/>", {text: $(data.element[0]).data('create_name')}).html();
-                    }
-                    return $("<div/>", {text: data.text}).html();
-                },
+            var selectChangeHandler = function(e) {
+                var $select = $(e.target), option = e.added || e.removed;
+                $select.data('item_options', $select.select2('val'));
+                var option_id = option.id;
+                var value = option.text || option.data('create_name');
+                if (option_id >= 0 || !value) {
+                    return false;
+                }
+                ajax.rpc('/web/dataset/call_kw/sign.template/add_option', {
+                    model: 'sign.template',
+                    method: 'add_option',
+                    args: [value],
+                    kwargs: {}
+                }).then(process_option);
 
-                matcher: function(search, data) {
-                    if(!data) {
-                        return (search.length > 0);
-                    }
-                    return (data.toUpperCase().indexOf(search.toUpperCase()) > -1);
+                function process_option(optionId) {
+                    var option = {id: optionId, value: value};
+                    select_options[optionId] = option;
+                    selected = $select.select2('val');
+                    selected.pop(); // remove temp element (with id=-1)
+                    selected.push(optionId.toString());
+                    $select.data('item_options', selected);
+                    resetOptionsSelectConfiguration();
+                    setAsOptionsSelect($select, item_id, selected, select_options);
+                    $select.select2('focus');
                 }
             };
+
+            getOptionsSelectConfiguration.configuration = {
+                options: select2Options,
+                handler: selectChangeHandler,
+                item_id: item_id,
+            };
+        }
+
+        return getOptionsSelectConfiguration.configuration;
+    }
+
+    function getResponsibleSelectConfiguration(parties) {
+        if(getResponsibleSelectConfiguration.configuration === undefined) {
+            var select2Options = getSelect2Options(_t("Select the responsible"));
 
             var selectChangeHandler = function(e) {
                 var $select = $(e.target), $option = $(e.added.element[0]);
@@ -392,21 +499,38 @@ odoo.define('sign.utils', function (require) {
         getResponsibleSelectConfiguration.configuration = undefined;
     }
 
+    function resetOptionsSelectConfiguration() {
+        getOptionsSelectConfiguration.configuration = undefined;
+    }
+
     function setAsResponsibleSelect($select, selected, parties) {
         var configuration = getResponsibleSelectConfiguration(parties);
+        setAsSelect(configuration, $select, selected);
+    }
 
+    function setAsOptionsSelect($select, item_id, selected, select_options) {
+        var configuration = getOptionsSelectConfiguration(item_id, select_options, selected);
+        setAsSelect(configuration, $select, selected);
+    }
+
+    function setAsSelect(configuration, $select, selected) {
         $select.select2('destroy');
-        $select.html(configuration.html).addClass('form-control');
-        if(selected !== undefined) {
-            $select.val(selected);
+        if (configuration.html) {
+            $select.html(configuration.html).addClass('form-control');
         }
         $select.select2(configuration.options);
+        if(selected !== undefined) {
+            $select.select2('val', selected);
+        }
+
         $select.off('change').on('change', configuration.handler);
     }
 
     return {
         setAsResponsibleSelect: setAsResponsibleSelect,
         resetResponsibleSelectConfiguration: resetResponsibleSelectConfiguration,
+        setAsOptionsSelect: setAsOptionsSelect,
+        resetOptionsSelectConfiguration: resetOptionsSelectConfiguration,
     };
 });
 
@@ -1074,7 +1198,7 @@ odoo.define('sign.document_signing', function(require) {
             this._super.apply(this, arguments);
         },
 
-        createSignItem: function(type, required, responsible, posX, posY, width, height, value, name) {
+        createSignItem: function(type, required, responsible, posX, posY, width, height, value, options, name) {
             var self = this;
             var $signatureItem = this._super.apply(this, arguments);
             var readonly = this.readonlyFields || (responsible > 0 && responsible !== this.role) || !!value;

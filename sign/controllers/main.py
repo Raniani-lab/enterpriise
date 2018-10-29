@@ -67,6 +67,7 @@ class Sign(http.Controller):
             'role': current_request_item.role_id.id if current_request_item else 0,
             'readonly': not (current_request_item and current_request_item.state == 'sent'),
             'sign_item_types': sign_item_types,
+            'sign_item_select_options': sign_request.template_id.sign_item_ids.mapped('option_ids'),
         }
 
     # -------------
@@ -84,16 +85,16 @@ class Sign(http.Controller):
 
         return http.request.render('sign.doc_sign', document_context)
 
-    @http.route(['/sign/download/<int:id>/<token>/<type>'], type='http', auth='public')
-    def download_document(self, id, token, type, **post):
+    @http.route(['/sign/download/<int:id>/<token>/<download_type>'], type='http', auth='public')
+    def download_document(self, id, token, download_type, **post):
         sign_request = http.request.env['sign.request'].sudo().search([('id', '=', id), ('access_token', '=', token)])
         if not sign_request:
             return http.request.not_found()
 
         document = None
-        if type == "origin":
+        if download_type == "origin":
             document = sign_request.template_id.attachment_id.datas
-        elif type == "completed":
+        elif download_type == "completed":
             document = sign_request.completed_document
             if not document: # if the document is completed but the document is encrypted
                 return http.redirect_with_hash('/sign/password/%(request_id)s/%(access_token)s' % {'request_id': id, 'access_token': token})

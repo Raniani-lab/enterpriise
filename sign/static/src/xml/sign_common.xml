@@ -7,6 +7,11 @@
             <div t-if="type == 'text' || type == 'textarea'" class="o_sign_sign_item"><t t-esc="value"/><t t-if="editMode" t-call="sign.sign_item_configuration"/></div>
 
             <div t-if="type == 'checkbox'" class="o_sign_sign_item"><t t-if="value == 'on'">X</t><t t-if="editMode" t-call="sign.sign_item_configuration"/></div>
+
+            <div t-if="type == 'selection'" class="o_sign_sign_item" style="white-space: normal;">
+                <div class="o_sign_select_options_display"/>
+                <t t-if="editMode" t-call="sign.sign_item_configuration"/>
+            </div>
         </t>
 
         <t t-if="!readonly">
@@ -14,12 +19,17 @@
             <input t-if="type == 'text'" type="text" class="o_sign_sign_item" t-att-placeholder="placeholder"/>
             <input t-if="type == 'checkbox'" type="checkbox" class="o_sign_sign_item"/>
             <textarea t-if="type == 'textarea'" class="o_sign_sign_item" t-att-placeholder="placeholder"/>
+            <div t-if="type == 'selection'" class="o_sign_sign_item" style="white-space: normal;">
+                <div class="o_sign_select_options_display"></div>
+            </div>
         </t>
     </t>
 
     <div t-name="sign.sign_item_configuration" class="o_sign_config_area">
         <span class="fa fa-arrows" role="img" aria-label="Signature configuration" title="Signature configuration"/>
-        <span class="o_sign_responsible_display"/>
+        <div class="o_sign_item_display">
+            <span class="o_sign_responsible_display"/>
+        </div>
     </div>
 
     <!-- Signing part -->

@@ -309,7 +309,7 @@ odoo.define('sign.template', function(require) {
                     page_loop:
                     for(var i = 1 ; i <= this.nbPages ; i++) {
                         for(var j = 0 ; j < this.configuration[i].length ; j++) {
-                            if(this.types[this.configuration[i][j].data('type')].type === 'signature') {
+                            if(this.types[this.configuration[i][j].data('type')].item_type === 'signature') {
                                 continue page_loop;
                             }
                         }
@@ -419,7 +419,7 @@ odoo.define('sign.template', function(require) {
 
                                 self.$iframe.trigger('templateChange');
 
-                                if(self.types[$signatureItem.data('type')].type === 'initial') {
+                                if(self.types[$signatureItem.data('type')].item_type === 'initial') {
                                     (new InitialAllPagesDialog(self, self.parties)).open($signatureItem);
                                 }
 
@@ -456,7 +456,7 @@ odoo.define('sign.template', function(require) {
         enableCustom: function($signatureItem) {
             var self = this;
 
-            $signatureItem.prop('field-type', this.types[$signatureItem.data('type')].name);
+            $signatureItem.prop('field-type', this.types[$signatureItem.data('type')].item_type);
             var itemId = $signatureItem.data('itemId');
 
             var $configArea = $signatureItem.find('.o_sign_config_area');

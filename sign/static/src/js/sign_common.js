@@ -185,7 +185,7 @@ odoo.define('sign.PDFIframe', function (require) {
             this.$('.o_sign_sign_item').each(function(i, el) {
                 var $elem = $(el);
                 var size = parseFloat($elem.css('height'));
-                if($.inArray(self.types[$elem.data('type')].type, ['signature', 'initial', 'textarea']) > -1) {
+                if($.inArray(self.types[$elem.data('type')].item_type, ['signature', 'initial', 'textarea']) > -1) {
                     size = normalSize;
                 }
 
@@ -200,7 +200,7 @@ odoo.define('sign.PDFIframe', function (require) {
             var $signatureItem = $(core.qweb.render('sign.sign_item', {
                 editMode: this.editMode,
                 readonly: readonly,
-                type: type['type'],
+                type: type['item_type'],
                 value: value || "",
                 placeholder: type['placeholder']
             }));
@@ -1017,7 +1017,7 @@ odoo.define('sign.document_signing', function(require) {
             var readonly = this.readonlyFields || (responsible > 0 && responsible !== this.role) || !!value;
 
             if(!readonly) {
-                if(type['type'] === "signature" || type['type'] === "initial") {
+                if(type['item_type'] === "signature" || type['item_type'] === "initial") {
                     $signatureItem.on('click', function(e) {
                         self.refreshSignItems();
                         var $signedItems = self.$('.o_sign_sign_item').filter(function(i) {
@@ -1033,9 +1033,9 @@ odoo.define('sign.document_signing', function(require) {
                             $signatureItem.trigger('input');
                         } else {
                             var signDialog = new SignatureDialog(self, self.getParent().signerName || "", {
-                                signatureType: type['type'],
+                                signatureType: type['item_type'],
                             });
-                            signDialog.signatureType = type['type'];
+                            signDialog.signatureType = type['item_type'];
                             signDialog.signatureRatio = parseFloat($signatureItem.css('width'))/parseFloat($signatureItem.css('height'));
 
                             signDialog.open().onConfirm(function(name, signature) {

@@ -19,9 +19,6 @@ class ResPartner(models.Model):
         'l10n_mx_edi.res.locality', string='Locality',
         help='Optional attribute used in the XML that serves to define the '
         'locality where the domicile is located.')
-    l10n_mx_edi_curp = fields.Char(
-        'CURP', size=18, help='Attribute to set in XML to express the CURP '
-        'when the partner is from a natural person.')
 
     @api.onchange('l10n_mx_edi_locality_id')
     def _onchange_l10n_mx_edi_locality_id(self):

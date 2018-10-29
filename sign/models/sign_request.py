@@ -387,7 +387,7 @@ class SignRequest(models.Model):
                     can.setFont(font, height*item.height*0.8)
                     can.drawString(width*item.posX, height*(1-item.posY-item.height*0.9), value)
 
-                elif item.type_id.type == "selection":
+                elif item.type_id.item_type == "selection":
                     content = []
                     for option in item.option_ids:
                         if option.id != int(value):

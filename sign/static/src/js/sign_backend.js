@@ -208,7 +208,7 @@ odoo.define('sign.template', function(require) {
                 self.$('#o_sign_name').val(self.$currentTarget.data('name') );
                 self.title = self.title + ' <span class="fa fa-long-arrow-right"/> ' + self.$currentTarget.prop('field-name') + ' Field';
                 if (self.$currentTarget.prop('field-type') !== 'selection') {
-                    self.$('.o_sign_options_group').hide()
+                    self.$('.o_sign_options_group').hide();
                 }
             });
 

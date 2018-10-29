@@ -245,7 +245,7 @@ odoo.define('sign.PDFIframe', function (require) {
                 placeholder: type['placeholder']
             }));
 
-            if (type['type'] === 'selection') {
+            if (type['item_type'] === 'selection') {
                 var $options_display = $signatureItem.find('.o_sign_select_options_display');
                 this.display_select_options($options_display, this.select_options, selected_options, readonly, value);
             }

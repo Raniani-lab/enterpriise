@@ -14,10 +14,11 @@ class ReportL10nNLIntrastat(models.AbstractModel):
     def _get_columns_name(self, options):
         return [
             {'name': _('Partner')},
+            {'name': _('Country Code')},
             {'name': _('VAT')},
-            {'name': _('Country')},
             {'name': _('Amount Product'), 'class': 'number'},
             {'name': _('Amount Service'), 'class': 'number'},
+            {'name': _('Total'), 'class': 'number'},
         ]
 
     def _get_report_name(self):
@@ -32,8 +33,8 @@ class ReportL10nNLIntrastat(models.AbstractModel):
 
         query = """
             SELECT l.partner_id, p.name, p.vat, c.code,
-                   SUM(CASE WHEN tt.account_account_tag_id = %(product_tag)s THEN l.credit - l.debit ELSE 0 END) as amount_product,
-                   SUM(CASE WHEN tt.account_account_tag_id = %(service_tag)s THEN l.credit - l.debit ELSE 0 END) as amount_service
+                   ROUND(SUM(CASE WHEN tt.account_account_tag_id = %(product_tag)s THEN l.credit - l.debit ELSE 0 END)) as amount_product,
+                   ROUND(SUM(CASE WHEN tt.account_account_tag_id = %(service_tag)s THEN l.credit - l.debit ELSE 0 END)) as amount_service
             FROM account_move_line l
             LEFT JOIN res_partner p ON l.partner_id = p.id AND p.customer = true
             LEFT JOIN res_country c ON p.country_id = c.id
@@ -45,6 +46,8 @@ class ReportL10nNLIntrastat(models.AbstractModel):
             AND l.date <= %(date_to)s
             AND l.company_id IN %(company_ids)s
             GROUP BY l.partner_id, p.name, p.vat, c.code
+            HAVING ROUND(SUM(CASE WHEN tt.account_account_tag_id = %(product_tag)s THEN l.credit - l.debit ELSE 0 END)) != 0
+            OR ROUND(SUM(CASE WHEN tt.account_account_tag_id = %(service_tag)s THEN l.credit - l.debit ELSE 0 END)) != 0
             ORDER BY p.name
         """
 
@@ -61,7 +64,11 @@ class ReportL10nNLIntrastat(models.AbstractModel):
         # Add lines
         total = 0
         for result in self.env.cr.dictfetchall():
-            total += result['amount_product'] + result['amount_service']
+            amount_product = result['amount_product']
+            amount_service = result['amount_service']
+            line_total = amount_product + amount_service
+            total += line_total
+
             lines.append({
                 'id': result['partner_id'],
                 'caret_options': 'res.partner',
@@ -70,8 +77,12 @@ class ReportL10nNLIntrastat(models.AbstractModel):
                 'level': 2,
                 'columns': [
                     {'name': v} for v in [
-                        result['vat'], result['code'],
-                        self.format_value(result['amount_product']), self.format_value(result['amount_service'])
+                        result['code'],
+                        self._format_vat(result['vat'], result['code']),
+                        # A balance of 0 should display nothing, not even 0
+                        amount_product and self.format_value(amount_product) or None,
+                        amount_service and self.format_value(amount_service) or None,
+                        line_total and self.format_value(line_total) or None,
                     ]
                 ],
                 'unfoldable': False,
@@ -86,10 +97,21 @@ class ReportL10nNLIntrastat(models.AbstractModel):
                 'level': 2,
                 'columns': [
                     {'name': v}
-                    for v in ['', '', '(product + service)', self.format_value(total)]
+                    for v in ['', '', '', '(product + service)', self.format_value(total)]
                 ],
                 'unfoldable': False,
                 'unfolded': False,
             })
 
         return lines
+
+    @api.model
+    def _format_vat(self, vat, country_code):
+        """ VAT numbers must be reported without country code, and grouped by 4
+        characters, with a space between each pair of groups.
+        """
+        if vat:
+            if vat[:2].lower() == country_code.lower():
+                vat = vat[2:]
+            return ' '.join(vat[i:i+4] for i in range(0, len(vat), 4))
+        return None

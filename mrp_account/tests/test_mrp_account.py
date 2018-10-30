@@ -79,7 +79,7 @@ class TestMrpAccount(common.TransactionCase):
             'active_id': production_table.id,
             'active_ids': [production_table.id],
         }))
-        produce_form.product_qty = 1.0
+        produce_form.qty_producing = 1.0
         produce_wizard = produce_form.save()
         produce_wizard.do_produce()
         production_table.post_inventory()

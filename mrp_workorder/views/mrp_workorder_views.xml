@@ -41,7 +41,7 @@
         <field name="arch" type="xml">
             <form string="Production Workcenter" delete="0" create="0" class="o_workorder_tablet">
                 <field name="allow_producing_quantity_change" invisible="1"/>
-                <field name="active_move_line_ids" invisible="1"/>
+                <field name="workorder_line_ids" invisible="1"/>
                 <field name="current_quality_check_id" invisible="1"/>
                 <field name="check_ids" invisible="1"/>
                 <field name="component_tracking" invisible="1"/>
@@ -68,7 +68,7 @@
                         <label for="product_id" string=""/>
                         <field name="product_id" options="{'no_open': True}" readonly="1"/>
                         <label for="qty_producing" string=":"/>
-                        <field name="qty_producing" class="oe_inline text-left" attrs="{'readonly': ['|', ('allow_producing_quantity_change', '=', False), ('product_tracking', '=', 'serial')]}" required="1"/>
+                        <field name="qty_producing" class="oe_inline text-left" attrs="{'readonly': ['|', '|', ('allow_producing_quantity_change', '=', False), ('product_tracking', '=', 'serial'), ('state', 'in', ('done', 'cancel'))]}" required="1"/>
                         / <field name="qty_remaining" class="oe_inline text-left"/>
                         <label for="product_uom_id" string="" class="oe_inline"/>
                         <field name="product_uom_id" options="{'no_open': True}" class="oe_inline" readonly="1"/>

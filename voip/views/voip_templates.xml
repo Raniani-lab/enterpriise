@@ -18,7 +18,8 @@
 
     <template id="voip_tests" name="voip tests" inherit_id="web.qunit_suite">
         <xpath expr="//script[last()]" position="after">
-            <script type="text/javascript" src="/voip/static/tests/voip_tests.js"></script>
+            <script type="text/javascript" src="/voip/static/tests/phone_widget_tests.js"></script>
+            <script type="text/javascript" src="/voip/static/tests/dialing_panel_tests.js"></script>
         </xpath>
     </template>
 </odoo>

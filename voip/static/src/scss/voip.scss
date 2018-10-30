@@ -144,6 +144,11 @@
         .o_phonecall_in_call {
             display: none;
         }
+        .o_voip_row_header {
+            border-bottom: 1px solid gray('200');
+            color: $o-brand-primary;
+            user-select: none;
+        }
         .o_dial_keypad_button_container {
             position: absolute;
             bottom: 0;
@@ -163,6 +168,8 @@
                 display: flex;
                 flex: 1 1 auto;
                 justify-content: space-around;
+                margin-bottom: 10px;
+                margin-top: 10px;
 
                 .o_dial_keypad_button_small {
                     padding: 0;
@@ -261,19 +268,21 @@
         border-top: 1px solid $o-mid-gray;
         display: flex;
 
-        .o_dial_keypad_button .fa {
+        .fa {
             font-size: xx-large;
+            color: $o-mid-gray;
+        }
+        .o_dial_postpone_button {
+            visibility: hidden;
+        }
+        .o_dial_buttons .fa {
+            font-size: 50px;
         }
         .o_dial_call_button .fa {
-            font-size: 50px;
             color: $o-brand-primary;
-        }
-        .o_dial_keypad_button:first-child .fa, .o_dial_keypad_button:last-child .fa {
-            color: $o-mid-gray;
         }
         .o_dial_hangup_button .fa{
             color: LightCoral;
-            font-size: 50px;
         }
     }
 }

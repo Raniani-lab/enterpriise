@@ -3,12 +3,12 @@
     left: 13px;
     font-size: 10px;
 }
-.o_kanban_record:hover .oe_dial_hidden_button{
+.o_kanban_record:hover .o_dial_hidden_button{
     visibility: visible;
 }
-.oe_dial_hidden_button{
+.o_dial_hidden_button{
     visibility: hidden;
 }
-.oe_dial_hidden_button.fa-stack{
+.o_dial_hidden_button.fa-stack{
     height: 1em;
 }

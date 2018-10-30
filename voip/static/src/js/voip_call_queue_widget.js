@@ -24,14 +24,6 @@ var CallCenterWidget = AbstractField.extend({
     //--------------------------------------------------------------------------
 
     /**
-     * Returns if record has call in queue
-     *
-     * @returns {boolean}
-     */
-    isInCallQueue: function () {
-        return this.value;
-    },
-     /**
      * Returns the helper
      *
      * @returns {string}
@@ -39,20 +31,19 @@ var CallCenterWidget = AbstractField.extend({
     getHelper: function () {
         return this.isInCallQueue() ? _t('Remove from Call Queue') : _t('Add to Call Queue');
     },
+    /**
+     * Returns if record has call in queue
+     *
+     * @returns {boolean}
+     */
+    isInCallQueue: function () {
+        return this.value;
+    },
 
     //--------------------------------------------------------------------------
     // Handlers
     //--------------------------------------------------------------------------
 
-    /**
-     * @private
-     * @param {Integer} resID
-     */
-    _onVoipRefresh: function (resID) {
-        if (resID === this.res_id) {
-            this.trigger_up('reload');
-        }
-    },
     /**
      * @private
      */
@@ -65,6 +56,15 @@ var CallCenterWidget = AbstractField.extend({
         }).then(function () {
             self.trigger_up('reload');
         });
+    },
+    /**
+     * @private
+     * @param {integer} resID
+     */
+    _onVoipRefresh: function (resID) {
+        if (resID === this.res_id) {
+            this.trigger_up('reload');
+        }
     },
 });
 

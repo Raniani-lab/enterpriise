@@ -43,6 +43,7 @@ var PhonecallWidget = Widget.extend({
         this.note = phonecall.activity_note || phonecall.note;
         this.isContact = phonecall.isContact;
         this.isRecent = phonecall.isRecent;
+        this.callTries = phonecall.callTries || 0;
     },
 
     //--------------------------------------------------------------------------
@@ -52,14 +53,16 @@ var PhonecallWidget = Widget.extend({
     /**
      * Makes rpc to log the hangup call.
      *
+     * @param {boolean} done should mark activity as done
      * @return {Deferred}
      */
-    hangup: function () {
+    hangUp: function (done) {
         var self = this;
         return this._rpc({
             model: 'voip.phonecall',
             method: 'hangup_call',
             args: [this.id],
+            kwargs: {done: done},
         }).then(function () {
             self.call('mail_service', 'getMailBus').trigger('voip_reload_chatter');
         });
@@ -227,7 +230,8 @@ var PhonecallDetails = Widget.extend({
             method: 'unlink',
             args: [[this.activity_id]],
         }).then(function () {
-            self.trigger_up('closePhonecallDetails');
+            self.$phonecallActivityButtons.hide();
+            self.trigger_up('cancelActivity');
         });
     },
     /**
@@ -269,6 +273,8 @@ var PhonecallDetails = Widget.extend({
             args: [[this.activity_id]],
         }).then(function () {
             self.call('mail_service', 'getMailBus').trigger('voip_reload_chatter');
+            self.$phonecallActivityButtons.hide();
+            self.trigger_up('markActivityDone');
         });
     },
     /**

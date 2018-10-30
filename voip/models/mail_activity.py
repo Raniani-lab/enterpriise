@@ -37,6 +37,16 @@ class MailActivity(models.Model):
             )
         return activities
 
+    def write(self, values):
+        if 'date_deadline' in values:
+            self.mapped('voip_phonecall_id').write({'date_deadline': values['date_deadline']})
+            for user in self.mapped('user_id'):
+                self.env['bus.bus'].sendone(
+                    (self._cr.dbname, 'res.partner', user.partner_id.id),
+                    {'type': 'refresh_voip'}
+                )
+        return super(MailActivity, self).write(values)
+
     @api.multi
     def _compute_phonenumbers(self):
         self.ensure_one()

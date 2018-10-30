@@ -185,7 +185,7 @@ odoo.define('sign.PDFIframe', function (require) {
             this.$('.o_sign_sign_item').each(function(i, el) {
                 var $elem = $(el);
                 var size = parseFloat($elem.css('height'));
-                if($.inArray(self.types[$elem.data('type')].type, ['signature', 'initial', 'textarea']) > -1) {
+                if($.inArray(self.types[$elem.data('type')].item_type, ['signature', 'initial', 'textarea']) > -1) {
                     size = normalSize;
                 }
 
@@ -200,7 +200,7 @@ odoo.define('sign.PDFIframe', function (require) {
             var $signatureItem = $(core.qweb.render('sign.sign_item', {
                 editMode: this.editMode,
                 readonly: readonly,
-                type: type['type'],
+                type: type['item_type'],
                 value: value || "",
                 placeholder: type['placeholder']
             }));
@@ -904,10 +904,75 @@ odoo.define('sign.document_signing', function(require) {
         renderElement: function () {
             this._super.apply(this, arguments);
             this.$modal.addClass('o_sign_thank_you_dialog');
+            this.$modal.find('button.close').addClass('invisible');
         },
 
         on_closed: function () {
             window.location.reload();
+        },
+    });
+
+    var NextDirectSignDialog = Dialog.extend({
+        template: "sign.next_direct_sign_dialog",
+        events: {
+            'click .o_go_to_document': 'on_closed',
+            'click .o_nextdirectsign_link': 'on_click_next',
+        },
+
+        init: function(parent, RedirectURL, requestID, options) {
+            this.token_list = (parent.token_list || {});
+            this.name_list = (parent.name_list || {});
+            this.requestID = parent.requestID;
+            this.create_uid = parent.create_uid;
+            this.state = parent.state;
+
+            options = (options || {});
+            options.title = options.title || _t("Thank You !") + "<br/>";
+            options.subtitle = options.subtitle || _t("Your signature has been saved.") + " " +_.str.sprintf(_t("Next signatory is %s"), this.name_list[0]);
+            options.size = options.size || "medium";
+            options.technical = false;
+            options.buttons = [{text: _.str.sprintf(_t("Next signatory (%s)"), this.name_list[0]), click: this.on_click_next}],
+            this.RedirectURL = "RedirectURL";
+            this.requestID = requestID;
+            this._super(parent, options);
+        },
+
+        /**
+         * @override
+         */
+        renderElement: function () {
+            this._super.apply(this, arguments);
+            this.$modal.addClass('o_sign_next_dialog');
+            this.$modal.find('button.close').addClass('invisible');
+        },
+
+        on_click_next: function () {
+
+            var newCurrentToken = this.token_list[0];
+            var newCurrentName = this.name_list[0];
+            var self = this;
+            this.token_list.shift();
+            this.name_list.shift();
+
+            self.do_action({
+                type: "ir.actions.client",
+                tag: 'sign.SignableDocument',
+                name: _t('Sign'),
+            }, {
+                additional_context: {
+                    id: this.requestID,
+                    create_uid: this.create_uid,
+                    state: this.state,
+                    token: newCurrentToken,
+                    sign_token: newCurrentToken,
+                    token_list: this.token_list,
+                    name_list: this.name_list,
+                    current_signor_name: newCurrentName,
+                },
+                replace_last_action: true,
+            });
+
+            this.destroy();
         },
     });
 
@@ -952,7 +1017,7 @@ odoo.define('sign.document_signing', function(require) {
             var readonly = this.readonlyFields || (responsible > 0 && responsible !== this.role) || !!value;
 
             if(!readonly) {
-                if(type['type'] === "signature" || type['type'] === "initial") {
+                if(type['item_type'] === "signature" || type['item_type'] === "initial") {
                     $signatureItem.on('click', function(e) {
                         self.refreshSignItems();
                         var $signedItems = self.$('.o_sign_sign_item').filter(function(i) {
@@ -968,9 +1033,9 @@ odoo.define('sign.document_signing', function(require) {
                             $signatureItem.trigger('input');
                         } else {
                             var signDialog = new SignatureDialog(self, self.getParent().signerName || "", {
-                                signatureType: type['type'],
+                                signatureType: type['item_type'],
                             });
-                            signDialog.signatureType = type['type'];
+                            signDialog.signatureType = type['item_type'];
                             signDialog.signatureRatio = parseFloat($signatureItem.css('width'))/parseFloat($signatureItem.css('height'));
 
                             signDialog.open().onConfirm(function(name, signature) {
@@ -1033,6 +1098,11 @@ odoo.define('sign.document_signing', function(require) {
             },
 
             'pdfCompleted .o_sign_pdf_iframe': function(e) {
+                if (this.name_list && this.name_list.length > 0) {
+                    var next_name_signatory = this.name_list[0];
+                    var next_signatory = _.str.sprintf(_t("Validate & the next signatory is %s"), next_name_signatory);
+                    this.$validateBanner.find('.o_validate_button').prop('textContent', next_signatory);
+                }
                 this.$validateBanner.show().animate({'opacity': 1}, 500);
             },
 
@@ -1044,6 +1114,23 @@ odoo.define('sign.document_signing', function(require) {
             'notification': function(e) {
                 $('<div/>', {html: e.data.message}).addClass('alert alert-success').insertAfter(self.$('.o_sign_request_reference_title'));
             },
+        },
+
+        init: function (parent, options) {
+            this._super(parent,options);
+            if (parent) {
+                this.token_list = (parent.token_list || {});
+                this.name_list = (parent.name_list || {});
+                this.create_uid = parent.create_uid;
+                this.state = parent.state;
+                this.current_name = parent.current_name;
+            }
+
+            if (this.current_name) {
+                parent.$('div.container-fluid .col-lg-6').first().removeClass('col-lg-6').addClass('col-lg-3')
+                parent.$('div.container-fluid .col-lg-6').first().removeClass('col-lg-6').addClass('col-lg-5')
+                parent.$('div.container-fluid .col-lg-3').first().after('<div class="col-lg-4"><H2>'+this.current_name+'</H2></div>')
+            }
         },
 
         start: function() {
@@ -1058,6 +1145,10 @@ odoo.define('sign.document_signing', function(require) {
 
         get_thankyoudialog_class: function () {
             return ThankYouDialog;
+        },
+
+        get_nextdirectsigndialog_class: function () {
+            return NextDirectSignDialog;
         },
 
         signItemDocument: function(e) {
@@ -1078,6 +1169,10 @@ odoo.define('sign.document_signing', function(require) {
 
             function _sign() {
                 var signatureValues = {};
+                var token_list = this.token_list;
+                var name_list = this.name_list;
+                var create_uid = this.create_uid;
+                var state = this.state;
                 for(var page in this.iframeWidget.configuration) {
                     for(var i = 0 ; i < this.iframeWidget.configuration[page].length ; i++) {
                         var $elem = this.iframeWidget.configuration[page][i];
@@ -1124,7 +1219,16 @@ odoo.define('sign.document_signing', function(require) {
                     }
                     if (response === true) {
                         self.iframeWidget.disableItems();
-                        (new (self.get_thankyoudialog_class())(self, self.RedirectURL, self.requestID)).open();
+                        if(name_list && name_list.length>0) {
+                            this.token_list = token_list;
+                            this.name_list = name_list;
+                            this.create_uid = create_uid;
+                            this.state = state;
+                            (new (self.get_nextdirectsigndialog_class())(self, self.RedirectURL, self.requestID)).open();
+                        }
+                        else {
+                            (new (self.get_thankyoudialog_class())(self, self.RedirectURL, self.requestID)).open();
+                        }
                     }
                     if (typeof response === 'object') {
                         if (response.sms) {

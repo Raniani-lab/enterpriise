@@ -4,7 +4,9 @@
         <field name="name">sign.send.request.view.form</field>
         <field name="model">sign.send.request</field>
         <field name="arch" type="xml">
-            <form string="Send Signature Request">
+            <form>
+                <H2 invisible="context.get('sign_directly_without_mail',False)">Send Signature Request</H2>
+                <H2 invisible="not context.get('sign_directly_without_mail',False)">Sign directly without sending mail request</H2>
                 <field name="signer_ids" placeholder="Write email or search contact..." attrs="{'invisible': [('signers_count', '=', 0)]}"  nolabel="1" class="o_sign_flat_o2m">
                     <tree editable="bottom" create="false" delete="false" >
                         <field name="role_id" force_save="1"/>
@@ -17,8 +19,8 @@
                     <field name="is_user_signer" invisible="1"/>
                     <field name="template_id" invisible="1"/>
                     <field name="follower_ids" widget="many2many_tags" placeholder="Write email or search contact..."/>
-                    <field name="subject" placeholder="Signature Request"/>
-                    <field name="message" placeholder="Optional Message..."/>
+                    <field name="subject" placeholder="Signature Request" invisible="context.get('sign_directly_without_mail',False)"/>
+                    <field name="message" placeholder="Optional Message..." invisible="context.get('sign_directly_without_mail',False)"/>
                     <label for="filename"/>
                     <div class="o_row">
                         <field name="filename"  placeholder="Name for the file" nolabel="1"/>
@@ -26,8 +28,9 @@
                     </div>
                 </group>
                 <footer>
-                    <button string="Sign Directly" name="sign_directly" type="object" class="btn-primary" attrs="{'invisible': [('is_user_signer', '=', False)]}"/>
-                    <button string="Send" name="send_request" type="object" class="btn-primary"/>
+                    <button string="Sign Directly" name="sign_directly" type="object" class="btn-primary" invisible="context.get('sign_directly_without_mail',False)" attrs="{'invisible': [('is_user_signer', '=', False)]}"/>
+                    <button string="Send" name="send_request" type="object" class="btn-primary" invisible="context.get('sign_directly_without_mail',False)"/>
+                    <button string="Sign Directly" name="sign_directly_without_mail" type="object" class="btn-primary" invisible="not context.get('sign_directly_without_mail',False)"/>
                     <button string="Cancel" class="btn-secondary" special="cancel"/>
                 </footer>
             </form>
@@ -35,7 +38,7 @@
     </record>
 
     <record id="action_sign_send_request" model="ir.actions.act_window">
-        <field name="name">Send Signature Request</field>
+        <field name="name">Signature Request</field>
         <field name="res_model">sign.send.request</field>
         <field name="target">new</field>
         <field name="view_type">form</field>

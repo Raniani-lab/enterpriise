@@ -9,8 +9,10 @@
             <script type="text/javascript" src="/voip/static/src/js/dialing_tab.js"></script>
             <script type="text/javascript" src="/voip/static/src/js/user_agent.js"></script>
             <script type="text/javascript" src="/voip/static/src/js/voip_phonecall.js"></script>
+            <script type="text/javascript" src="/voip/static/src/js/voip_call_queue_widget.js"/>
 
             <link rel="stylesheet" type="text/scss" href="/voip/static/src/scss/voip.scss"/>
+            <link rel="stylesheet" type="text/scss" href="/voip/static/src/scss/voip_call_queue_widget.scss"/>
         </xpath>
     </template>
 

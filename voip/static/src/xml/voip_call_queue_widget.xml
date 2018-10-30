@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="CallCenterWidget">
+        <div t-att-title="widget.getHelper()" class="oe_dial_hidden_button text-muted fa-stack">
+            <i class="fa fa-phone fa-lg fa-fw fa-stack-1x"></i>
+            <i t-attf-class="fa fa-stack-1x o_dial_stack_icon #{widget.isInCallQueue() ? 'fa-minus text-danger' : 'fa-plus text-success'}"></i>
+        </div>
+    </t>
+</templates>

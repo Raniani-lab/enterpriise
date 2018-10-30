@@ -17,22 +17,25 @@ class MailActivity(models.Model):
     mobile = fields.Char('Mobile')
     voip_phonecall_id = fields.Many2one('voip.phonecall', 'Linked Voip Phonecall')
 
-    @api.model
-    def create(self, values):
-        activity = super(MailActivity, self).create(values)
-        if activity.activity_type_id.category == 'phonecall':
-            numbers = activity._compute_phonenumbers()
-            if numbers['phone'] or numbers['mobile']:
-                activity.phone = numbers['phone']
-                activity.mobile = numbers['mobile']
-                phonecall = self.env['voip.phonecall'].create_from_activity(activity)
-                activity.voip_phonecall_id = phonecall.id
-                notification = {'type': 'refresh_voip'}
-                self.env['bus.bus'].sendone(
-                    (self._cr.dbname, 'res.partner', activity.user_id.partner_id.id),
-                    notification
-                )
-        return activity
+    @api.model_create_multi
+    def create(self, values_list):
+        activities = super(MailActivity, self).create(values_list)
+        user_to_notify = set()
+        for activity in activities:
+            if activity.activity_type_id.category == 'phonecall':
+                numbers = activity._compute_phonenumbers()
+                if numbers['phone'] or numbers['mobile']:
+                    user_to_notify.add(activity.user_id)
+                    activity.phone = numbers['phone']
+                    activity.mobile = numbers['mobile']
+                    phonecall = self.env['voip.phonecall'].create_from_activity(activity)
+                    activity.voip_phonecall_id = phonecall.id
+        for user in user_to_notify:
+            self.env['bus.bus'].sendone(
+                (self._cr.dbname, 'res.partner', user.partner_id.id),
+                {'type': 'refresh_voip'}
+            )
+        return activities
 
     @api.multi
     def _compute_phonenumbers(self):

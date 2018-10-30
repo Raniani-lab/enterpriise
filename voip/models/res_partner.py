@@ -29,7 +29,7 @@ except ImportError:
 
 class Contact(models.Model):
     _name = 'res.partner'
-    _inherit = ['res.partner', 'phone.validation.mixin']
+    _inherit = ['res.partner', 'phone.validation.mixin', 'voip.queue.mixin']
 
     sanitized_phone = fields.Char("Phone number sanitized", compute='_compute_sanitized_phone', store=True)
     sanitized_mobile = fields.Char("Mobile number sanitized", compute='_compute_sanitized_mobile', store=True)

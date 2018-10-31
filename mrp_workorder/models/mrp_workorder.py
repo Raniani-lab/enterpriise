@@ -168,7 +168,7 @@ class MrpProductionWorkcenterLine(models.Model):
         # Write the lot and qty to the move line
         self.move_line_id.write({'lot_id': self.lot_id.id, 'qty_done': float_round(self.qty_done, precision_rounding=move.product_uom.rounding)})
 
-    def _next(self, state='pass'):
+    def _next(self):
         """ This function:
         - first: fullfill related move line with right lot and validated quantity.
         - second: Generate new quality check for remaining quantity and link them to the original check.
@@ -191,10 +191,9 @@ class MrpProductionWorkcenterLine(models.Model):
         if self.test_type == 'picture' and not self.picture:
             raise UserError(_('Please upload a picture.'))
 
-        self.current_quality_check_id.write({
-            'quality_state': state,
-            'user_id': self.env.user.id,
-            'control_date': datetime.now()})
+        if self.test_type not in ('measure', 'passfail'):
+            self.current_quality_check_id.do_pass()
+
         if self.skip_completed_checks:
             self._change_quality_check(increment=1, children=1, checks=self.skipped_check_ids)
         else:

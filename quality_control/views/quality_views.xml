@@ -216,7 +216,7 @@
                 </footer>
             </form>
         </field>
-  </record>
+   </record>
 
     <!-- QUALITY.CHECK -->
    <record id="quality_check_view_form" model="ir.ui.view">
@@ -295,13 +295,19 @@
                         </div>
                     </group>
                 </group>
+                <label for="picture" invisible="1"/>
+                <div attrs="{'invisible': [('test_type', '!=', 'picture')]}">
+                    <field name="picture" widget="image" attrs="{'required': [('test_type', '=', 'picture')]}"/>
+                </div>
                 <footer>
                     <button name="do_measure" type="object" class="btn-primary" string="Validate"
                         attrs="{'invisible': [('test_type', '!=', 'measure')]}"/>
+                    <button name="do_pass" type="object" class="btn-primary" string="Validate"
+                        attrs="{'invisible': [ '|' , ('test_type', '=', 'passfail'), ('test_type', '=', 'measure')]}"/>
                     <button name="do_pass" type="object" class="btn-primary" string="Pass"
-                        attrs="{'invisible': [('test_type', '=', 'measure')]}"/>
+                        attrs="{'invisible': [('test_type', '!=', 'passfail')]}"/>
                     <button name="do_fail" type="object" class="btn-primary" string="Fail"
-                        attrs="{'invisible': [('test_type', '=', 'measure')]}"/>
+                        attrs="{'invisible': [('test_type', '!=', 'passfail')]}"/>
                     <button string="Cancel" class="btn btn-secondary" special="cancel" />
                 </footer>
             </form>
@@ -314,15 +320,20 @@
         <field name="model">quality.check</field>
         <field name="arch" type="xml">
             <form string="Quality Check Failed">
-                <div class="alert alert-warning" role="alert">
+                <field name="test_type" invisible="1"/>
+                <div class="alert alert-warning" role="alert" attrs="{'invisible': [('test_type', '!=', 'measure')]}" >
                     <field name="warning_message"/>
                 </div>
                 <div>
                     <field name="failure_message"/>
                 </div>
                 <footer>
-                    <button name="correct_measure" type="object" class="btn-primary" string="Correct Measure"/>
-                    <button name="do_fail" type="object" string="Confirm Measure"/>
+                    <button name="correct_measure" type="object" class="btn-primary" string="Correct Measure"
+                        attrs="{'invisible': [('test_type', '!=', 'measure')]}"/>
+                    <button name="redirect_after_failure" type="object" string="Confirm Measure"
+                        attrs="{'invisible': [('test_type', '!=', 'measure')]}"/>
+                    <button name="redirect_after_failure" type="object" class="btn-primary" string="OK"
+                        attrs="{'invisible': [('test_type', '!=', 'passfail')]}"/>
                 </footer>
             </form>
         </field>

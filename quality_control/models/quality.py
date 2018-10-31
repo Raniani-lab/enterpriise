@@ -167,16 +167,7 @@ class QualityCheck(models.Model):
     def do_measure(self):
         self.ensure_one()
         if self.measure < self.point_id.tolerance_min or self.measure > self.point_id.tolerance_max:
-            return {
-                'name': _('Quality Check Failed'),
-                'type': 'ir.actions.act_window',
-                'res_model': 'quality.check',
-                'view_mode': 'form',
-                'view_id': self.env.ref('quality_control.quality_check_view_form_failure').id,
-                'target': 'new',
-                'res_id': self.id,
-                'context': self.env.context,
-            }
+            return self.do_fail()
         else:
             return self.do_pass()
 
@@ -232,6 +223,8 @@ class QualityCheck(models.Model):
     @api.multi
     def redirect_after_pass_fail(self):
         check = self[0]
+        if check.quality_state =='fail' and check.test_type in ['passfail', 'measure'] and check.failure_message:
+            return self.show_failure_message()
         if check.picking_id:
             checks = self.picking_id.check_ids.filtered(lambda x: x.quality_state == 'none')
             if checks:
@@ -240,7 +233,27 @@ class QualityCheck(models.Model):
                 return action
         return super(QualityCheck, self).redirect_after_pass_fail()
 
+    def redirect_after_failure(self):
+        check = self[0]
+        if check.picking_id:
+            checks = self.picking_id.check_ids.filtered(lambda x: x.quality_state == 'none')
+            if checks:
+                action = self.env.ref('quality_control.quality_check_action_small').read()[0]
+                action['res_id'] = checks.ids[0]
+                return action
+        return super(QualityCheck, self).redirect_after_pass_fail()
 
+    def show_failure_message(self):
+        return {
+            'name': _('Quality Check Failed'),
+            'type': 'ir.actions.act_window',
+            'res_model': 'quality.check',
+            'view_mode': 'form',
+            'view_id': self.env.ref('quality_control.quality_check_view_form_failure').id,
+            'target': 'new',
+            'res_id': self.id,
+            'context': self.env.context,
+        }
 class QualityAlert(models.Model):
     _inherit = "quality.alert"
 

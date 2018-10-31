@@ -69,5 +69,13 @@
         <record id="reason_other" model="quality.reason">
             <field name="name">Others</field>
         </record>
+        <record id="quality.test_type_text" model="quality.point.test_type">
+            <field name="name">Text</field>
+            <field name="technical_name">text</field>
+        </record>
+        <record id="quality.test_type_picture" model="quality.point.test_type">
+            <field name="name">Take a Picture</field>
+            <field name="technical_name">picture</field>
+        </record>
     </data>
 </odoo>

@@ -14,6 +14,7 @@ class FinancialReportController(http.Controller):
     @http.route('/account_reports', type='http', auth='user', methods=['POST'], csrf=False)
     def get_report(self, model, options, output_format, token, financial_id=None, **kw):
         uid = request.session.uid
+        account_report_model = request.env['account.report']
         report_obj = request.env[model].sudo(uid)
         options = json.loads(options)
         if financial_id and financial_id != 'null':
@@ -24,16 +25,16 @@ class FinancialReportController(http.Controller):
                 response = request.make_response(
                     None,
                     headers=[
-                        ('Content-Type', 'application/vnd.ms-excel'),
+                        ('Content-Type', account_report_model.get_export_mime_type('xlsx')),
                         ('Content-Disposition', content_disposition(report_name + '.xlsx'))
                     ]
                 )
-                report_obj.get_xlsx(options, response)
+                response.stream.write(report_obj.get_xlsx(options))
             if output_format == 'pdf':
                 response = request.make_response(
                     report_obj.get_pdf(options),
                     headers=[
-                        ('Content-Type', 'application/pdf'),
+                        ('Content-Type', account_report_model.get_export_mime_type('pdf')),
                         ('Content-Disposition', content_disposition(report_name + '.pdf'))
                     ]
                 )
@@ -42,7 +43,7 @@ class FinancialReportController(http.Controller):
                 response = request.make_response(
                     content,
                     headers=[
-                        ('Content-Type', 'application/vnd.sun.xml.writer'),
+                        ('Content-Type', account_report_model.get_export_mime_type('xml')),
                         ('Content-Disposition', content_disposition(report_name + '.xml')),
                         ('Content-Length', len(content))
                     ]
@@ -52,7 +53,7 @@ class FinancialReportController(http.Controller):
                 response = request.make_response(
                     content,
                     headers=[
-                        ('Content-Type', 'application/vnd.sun.xml.writer'),
+                        ('Content-Type', account_report_model.get_export_mime_type('xaf')),
                         ('Content-Disposition', 'attachment; filename=' + content_disposition(report_name + '.xaf;')),
                         ('Content-Length', len(content))
                     ]
@@ -62,7 +63,7 @@ class FinancialReportController(http.Controller):
                 response = request.make_response(
                     content,
                     headers=[
-                        ('Content-Type', 'text/plain'),
+                        ('Content-Type', account_report_model.get_export_mime_type('txt')),
                         ('Content-Disposition', content_disposition(report_name + '.txt')),
                         ('Content-Length', len(content))
                     ]
@@ -72,17 +73,17 @@ class FinancialReportController(http.Controller):
                 response = request.make_response(
                     content,
                     headers=[
-                        ('Content-Type', 'text/csv'),
+                        ('Content-Type', account_report_model.get_export_mime_type('csv')),
                         ('Content-Disposition', 'attachment; filename=' + content_disposition(report_name + '.csv;')),
                         ('Content-Length', len(content))
                     ]
                 )
             if output_format == 'zip':
-                content = report_obj._get_zip(options)
+                content = report_obj.get_zip(options)
                 response = request.make_response(
                     content,
                     headers=[
-                        ('Content-Type', 'application/zip'),
+                        ('Content-Type', account_report_model.get_export_mime_type('zip')),
                         ('Content-Disposition', 'attachment; filename=' + content_disposition(report_name + '.zip')),
                     ]
                 )

@@ -75,7 +75,7 @@ class DatevExportCSV(models.AbstractModel):
 
     def _get_reports_buttons(self):
         buttons = super(DatevExportCSV, self)._get_reports_buttons()
-        buttons += [{'name': _('Export Datev (zip)'), 'action': 'print_zip'}]
+        buttons += [{'name': _('Export Datev (zip)'), 'sequence': 3, 'action': 'print_zip', 'file_export_type': _('Datev zip')}]
         return buttons
 
     # This will be removed in master as export CSV is not needed anymore
@@ -99,7 +99,7 @@ class DatevExportCSV(models.AbstractModel):
                      }
         }
 
-    def _get_zip(self, options):
+    def get_zip(self, options):
         # Check ir_attachment for method _get_path
         # create a sha and replace 2 first letters by something not hexadecimal
         # Return full_path as 2nd args, use it as name for Zipfile
@@ -142,7 +142,7 @@ class DatevExportCSV(models.AbstractModel):
         output = io.BytesIO()
         writer = pycompat.csv_writer(output, delimiter=';', quotechar='"', quoting=2)
 
-        preheader = ['EXTF', 510, 16, 'Debitoren/Kreditoren', 4, None, None, '', '', '', datev_info[0], datev_info[1], fy, 8, 
+        preheader = ['EXTF', 510, 16, 'Debitoren/Kreditoren', 4, None, None, '', '', '', datev_info[0], datev_info[1], fy, 8,
             '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '']
         header = ['Konto', 'Name (AdressatentypUnternehmen)', 'Name (Adressatentypnatürl. Person)', '', '', '', 'Adressatentyp']
         move_line_ids = self.with_context(self._set_context(options), print_mode=True, aml_only=True)._get_lines(options)
@@ -150,11 +150,11 @@ class DatevExportCSV(models.AbstractModel):
 
         if len(move_line_ids):
             self.env.cr.execute("""
-                SELECT distinct(aml.partner_id) 
-                FROM account_move_line aml 
+                SELECT distinct(aml.partner_id)
+                FROM account_move_line aml
                 LEFT JOIN account_move m
                     ON aml.move_id = m.id
-                WHERE aml.id IN %s 
+                WHERE aml.id IN %s
                     AND aml.tax_line_id IS NULL
                     AND aml.debit != aml.credit
                     AND aml.account_id != m.l10n_de_datev_main_account_id""", (tuple(move_line_ids),))
@@ -193,7 +193,7 @@ class DatevExportCSV(models.AbstractModel):
             # We assume it is not an important partner and his datev virtual id will be his odoo id
             account = account.internal_type == 'receivable' and partner.property_account_receivable_id or partner.property_account_payable_id
             prop = self.env['ir.property'].search([
-                ('name', '=', account.internal_type == 'receivable' and 'property_account_receivable_id' or 'property_account_payable_id'), 
+                ('name', '=', account.internal_type == 'receivable' and 'property_account_receivable_id' or 'property_account_payable_id'),
                 ('res_id', '=', 'res.partner,' + str(partner.id)),
                 ('value_reference', '=', 'account.account,'+str(account.id))
             ])
@@ -217,10 +217,10 @@ class DatevExportCSV(models.AbstractModel):
 
         output = io.BytesIO()
         writer = pycompat.csv_writer(output, delimiter=';', quotechar='"', quoting=2)
-        preheader = ['EXTF', 510, 21, 'Buchungsstapel', 7, '', '', '', '', '', datev_info[0], datev_info[1], fy, 8, 
+        preheader = ['EXTF', 510, 21, 'Buchungsstapel', 7, '', '', '', '', '', datev_info[0], datev_info[1], fy, 8,
             date_from, date_to, '', '', '', '', 0, 'EUR', '', '', '', '', '', '', '', '', '']
         header = ['Umsatz (ohne Soll/Haben-Kz)', 'Soll/Haben-Kennzeichen', 'WKZ Umsatz', 'Kurs', 'Basis-Umsatz', 'WKZ Basis-Umsatz', 'Konto', 'Gegenkonto (ohne BU-Schlüssel)', 'BU-Schlüssel', 'Belegdatum', 'Belegfeld 1', 'Belegfeld 2', 'Skonto', 'Buchungstext']
-        
+
         move_line_ids = self.with_context(self._set_context(options), print_mode=True, aml_only=True)._get_lines(options)
         lines = [preheader, header]
 
@@ -240,7 +240,7 @@ class DatevExportCSV(models.AbstractModel):
                 # If both account and counteraccount are the same, ignore the line
                 if aml.account_id == aml.move_id.l10n_de_datev_main_account_id:
                     continue
-                # If line is a tax ignore it as datev requires single line with gross amount and deduct tax itself based 
+                # If line is a tax ignore it as datev requires single line with gross amount and deduct tax itself based
                 # on account or on the control key code
                 if aml.tax_line_id:
                     continue
@@ -259,7 +259,7 @@ class DatevExportCSV(models.AbstractModel):
                 # Account             CounterAccount   Amount
                 # Income Account      Receivable        10
                 #
-                # So when we are on an "Income Account" line linked to a tax, we try to find back 
+                # So when we are on an "Income Account" line linked to a tax, we try to find back
                 # the line representing the tax and we use as amount the tax line balance + base_amount
                 # This means that in the case we happen to have another line with same tax and income account,
                 # (as described above), We have to skip it.

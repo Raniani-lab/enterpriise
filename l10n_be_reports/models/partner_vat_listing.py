@@ -117,7 +117,7 @@ class ReportL10nBePartnerVatListing(models.AbstractModel):
 
     def _get_reports_buttons(self):
         buttons = super(ReportL10nBePartnerVatListing, self)._get_reports_buttons()
-        buttons += [{'name': _('Export (XML)'), 'action': 'print_xml'}]
+        buttons += [{'name': _('Export (XML)'), 'sequence': 3, 'action': 'print_xml', 'file_export_type': _('XML')}]
         return buttons
 
     def get_xml(self, options):
@@ -235,4 +235,4 @@ class ReportL10nBePartnerVatListing(models.AbstractModel):
   </ns2:ClientListingConsignment>
   """ % annual_listing_data
 
-        return data_file + data_begin + data_comp + data_client_info + data_end
+        return (data_file + data_begin + data_comp + data_client_info + data_end).encode('ISO-8859-1')

@@ -81,7 +81,7 @@
                     <group>
                         <group>
                             <field name="contact_person_name"/>
-                            <field name="contact_person_phone"/>
+                            <field name="contact_person_phone" required="1"/>
                         </group>
                         <group>
                             <field name="complementary_declaration"/>

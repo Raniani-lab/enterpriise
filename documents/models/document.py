@@ -26,6 +26,7 @@ class Document(models.Model):
     res_id = fields.Integer('Resource ID', compute="_compute_res_record", inverse="_inverse_res_id", store=True)
     res_name = fields.Char('Resource Name', related='attachment_id.res_name')
     index_content = fields.Text(related='attachment_id.index_content')
+    description = fields.Text('Attachment Description', related='attachment_id.description', readonly=False)
 
     # Document
     name = fields.Char('Name', copy=True, store=True, compute='_compute_name', inverse='_inverse_name')

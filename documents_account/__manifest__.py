@@ -7,15 +7,19 @@
     'category': 'Uncategorized',
     'summary': 'Invoices from Documents',
     'description': """
-Add the ability to create invoices from the document module.
+        Bridge module between the accounting and documents apps. It adds 
+        the ability to create invoices from the document module, and a 
+        button on Accounting's reports allowing to save the report into
+        Documents in the desired format(s).
 """,
     'website': ' ',
-    'depends': ['documents', 'account'],
+    'depends': ['documents', 'account_reports'],
     'data': [
         'assets.xml',
         'data/data.xml',
         'views/documents_views.xml',
         'views/account_views.xml',
+        'wizard/report_export_wizard.xml',
     ],
     'demo': [
         'demo/demo.xml',

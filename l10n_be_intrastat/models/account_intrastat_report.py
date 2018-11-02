@@ -13,7 +13,7 @@ class IntrastatReport(models.AbstractModel):
     def _get_reports_buttons(self):
         res = super(IntrastatReport, self)._get_reports_buttons()
         if self.env.user.company_id.country_id == self.env.ref('base.be'):
-            res += [{'name': _('Export (XML)'), 'action': 'print_xml'}]
+            res += [{'name': _('Export (XML)'), 'sequence': 3, 'action': 'print_xml', 'file_export_type': _('XML')}]
         return res
 
     @api.model

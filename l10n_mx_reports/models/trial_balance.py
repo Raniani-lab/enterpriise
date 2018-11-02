@@ -41,7 +41,7 @@ class MxReportAccountTrial(models.AbstractModel):
     def _get_reports_buttons(self):
         """Create the buttons to be used to download the required files"""
         buttons = super(MxReportAccountTrial, self)._get_reports_buttons()
-        buttons += [{'name': _('Export For SAT (XML)'), 'action': 'print_xml'}]
+        buttons += [{'name': _('Export For SAT (XML)'), 'sequence': 3, 'action': 'print_xml', 'file_export_type': _('SAT XML')}]
         return buttons
 
     def _get_templates(self):

@@ -1030,6 +1030,7 @@ class AccountReport(models.AbstractModel):
                     if c['selected'] and c['id'] not in user_company_ids:
                         c['selected'] = False
 
+
     @api.multi
     def get_html(self, options, line_id=None, additional_context=None):
         '''
@@ -1101,8 +1102,54 @@ class AccountReport(models.AbstractModel):
         html = self.env['ir.ui.view'].render_template(template, values=dict(rcontext))
         return html
 
+    def _get_reports_buttons_in_sequence(self):
+        return sorted(self._get_reports_buttons(), key=lambda x: x.get('sequence', 9))
+
     def _get_reports_buttons(self):
-        return [{'name': _('Print Preview'), 'action': 'print_pdf'}, {'name': _('Export (XLSX)'), 'action': 'print_xlsx'}]
+        return [
+            {'name': _('Print Preview'), 'sequence': 1, 'action': 'print_pdf', 'file_export_type': _('PDF')},
+            {'name': _('Export (XLSX)'), 'sequence': 2, 'action': 'print_xlsx', 'file_export_type': _('XLSX')},
+            {'name':_('Save'), 'sequence': 10, 'action': 'open_report_export_wizard'},
+        ]
+
+    def open_report_export_wizard(self, options):
+        """ Creates a new export wizard for this report and returns an act_window
+        opening it. A new account_report_generation_options key is also added to
+        the context, containing the current options selected on this report
+        (which must hence be taken into account when exporting it to a file).
+        """
+        new_wizard = self.env['account_reports.export.wizard'].create({'report_model': self._name,'report_id': self.id})
+        view_id = self.env.ref('account_reports.view_report_export_wizard').id
+        new_context = self.env.context.copy()
+        new_context['account_report_generation_options'] = options
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Export'),
+            'view_mode': 'form',
+            'view_type': 'form',
+            'res_model': 'account_reports.export.wizard',
+            'target': 'new',
+            'res_id': new_wizard.id,
+            'views': [[view_id, 'form']],
+            'context': new_context,
+        }
+
+
+    @api.model
+    def get_export_mime_type(self, file_type):
+        """ Returns the MIME type associated with a report export file type,
+        for attachment generation.
+        """
+        type_mapping = {
+            'xlsx': 'application/vnd.ms-excel',
+            'pdf': 'application/pdf',
+            'xml': 'application/vnd.sun.xml.writer',
+            'xaf': 'application/vnd.sun.xml.writer',
+            'txt': 'text/plain',
+            'csv': 'text/csv',
+            'zip': 'application/zip',
+        }
+        return type_mapping.get(file_type, False)
 
     def _get_report_manager(self, options):
         domain = [('report_name', '=', self._name)]
@@ -1259,7 +1306,7 @@ class AccountReport(models.AbstractModel):
         """
         return {}
 
-    def get_xlsx(self, options, response):
+    def get_xlsx(self, options, response=None):
         output = io.BytesIO()
         workbook = xlsxwriter.Workbook(output, {'in_memory': True})
         sheet = workbook.add_worksheet(self._get_report_name()[:31])
@@ -1365,8 +1412,10 @@ class AccountReport(models.AbstractModel):
 
         workbook.close()
         output.seek(0)
-        response.stream.write(output.read())
+        generated_file = output.read()
         output.close()
+
+        return generated_file
 
     def print_xml(self, options):
         return {

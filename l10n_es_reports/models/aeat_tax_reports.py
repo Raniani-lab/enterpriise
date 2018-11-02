@@ -78,7 +78,6 @@ class AEATAccountFinancialReport(models.Model):
 
     l10n_es_reports_modelo_number = fields.Char(string="Spanish Modelo Number", help="The modelo number of this report. Non-Spanish (or non-modelo) reports must leave this field to None.")
 
-
     @api.model
     def _get_options(self, previous_options=None):
         """ Overridden in order to add the 'financial_report_line_values' attribute
@@ -86,33 +85,46 @@ class AEATAccountFinancialReport(models.Model):
         to generate this report. This allows transmitting the values manually
         entered in the wizard to the report options.
         """
-        aeat_wizard_id = self.env.context.get('aeat_wizard_id')
-        aeat_modelo = self.env.context.get('aeat_modelo')
-        if aeat_wizard_id and aeat_modelo: # If we do have these, it means an AEAT wizard was used to generate this report
-            aeat_wizard = self.env['l10n_es_reports.mod' + aeat_modelo + '.wizard'].browse(aeat_wizard_id)
-            casilla_prefix = self.CASILLA_FIELD_PREFIX
 
-            # We consider all the casilla fields from the wizard, as they each correspond to a report line.
-            casilla_fields = [x for x in dir(aeat_wizard) if x.startswith(casilla_prefix)]
-            context_line_values = {}
-            for attr in casilla_fields:
-                line_code = 'aeat_mod_' + aeat_wizard._modelo + '_' + attr.replace(self.CASILLA_FIELD_PREFIX, '')
-                context_line_values[line_code] = getattr(aeat_wizard, attr)
+        if self. l10n_es_reports_modelo_number:
+            aeat_wizard_id = self.env.context.get('aeat_wizard_id')
+            aeat_modelo = self.env.context.get('aeat_modelo')
+            if aeat_wizard_id and aeat_modelo: # If we do have these, it means an AEAT wizard was used to generate this report
+                aeat_wizard = self.env['l10n_es_reports.mod' + aeat_modelo + '.wizard'].browse(aeat_wizard_id)
+                casilla_prefix = self.CASILLA_FIELD_PREFIX
 
-            self = self.with_context(self.env.context, financial_report_line_values=context_line_values)
+                # We consider all the casilla fields from the wizard, as they each correspond to a report line.
+                casilla_fields = [x for x in dir(aeat_wizard) if x.startswith(casilla_prefix)]
+                context_line_values = {}
+                for attr in casilla_fields:
+                    line_code = 'aeat_mod_' + aeat_wizard._modelo + '_' + attr.replace(self.CASILLA_FIELD_PREFIX, '')
+                    context_line_values[line_code] = getattr(aeat_wizard, attr)
+
+                self = self.with_context(financial_report_line_values= context_line_values)
 
         rslt = super(AEATAccountFinancialReport, self._with_correct_filters())._get_options(previous_options)
 
         if self.l10n_es_reports_modelo_number == '347':
+            # We totally disable cash basis on mod 347, so that it does not conflict with groupby thresholds
             rslt['cash_basis'] = None
         return rslt
+
+    @api.model
+    def _set_context(self, options):
+        ctx = super(AEATAccountFinancialReport, self)._set_context(options)
+        if self.l10n_es_reports_modelo_number:
+            # For ease of use, we pass through the context the date whose exchange rates must be applied
+            # in case company currency is not €. This value is used in function
+            # _boe_format_number and to compute the metalico threshold in mod 347.
+            ctx['l10n_es_reports_boe_conversion_date'] = options['date']['date_to']
+        return ctx
 
     def _get_reports_buttons(self):
         """ Overridden to add the BOE export button to mod reports.
         """
         rslt = super(AEATAccountFinancialReport, self)._get_reports_buttons()
         if self.l10n_es_reports_modelo_number:
-            rslt.insert(0, {'name': _('Export (BOE)'), 'action': 'print_boe'})
+            rslt.append({'name': _('Export (BOE)'), 'sequence': 0, 'action': 'print_boe', 'file_export_type': _('BOE')})
         return rslt
 
     def print_boe(self, options):
@@ -121,9 +133,7 @@ class AEATAccountFinancialReport(models.Model):
         the user, it show instead a wizard prompting for them, which will, once
         validated and closed, trigger the generation of the BOE itself.
         """
-        # We add the generation context to the options, as it is not passed
-        # otherwize, and we need it for manual lines' values
-        boe_wizard_model = self.env.get('l10n_es_reports.aeat.boe.mod' + self.l10n_es_reports_modelo_number + '.export.wizard')
+        boe_wizard_model = self._get_boe_wizard_model()
 
         if boe_wizard_model != None:
             boe_wizard = boe_wizard_model.create({})
@@ -151,6 +161,9 @@ class AEATAccountFinancialReport(models.Model):
                      'financial_id': self.env.context.get('id'),
             },
         }
+
+    def _get_boe_wizard_model(self):
+       return self.env.get('l10n_es_reports.aeat.boe.mod' + self.l10n_es_reports_modelo_number + '.export.wizard')
 
     def _get_mod_period_and_year(self, options):
         """ Returns the period and year (in terms of AEAT modulo reports regulation)
@@ -220,10 +233,7 @@ class AEATAccountFinancialReport(models.Model):
         if not current_company.vat:
             raise UserError(_("Please first set the TIN of your company."))
 
-        # For ease of use, we pass through the context the date whose exchange rates must be applied
-        # in case company currency is not €. This value is used in function
-        # _boe_format_number and to compute the metalico threshold in mod 347.
-        self = self.with_context(l10n_es_reports_boe_conversion_date=options['date']['date_to'])
+        self = self.with_context(self._set_context(options))
 
         return getattr(self, '_boe_export_mod' + self.l10n_es_reports_modelo_number)(options, current_company, period, year)
 
@@ -271,7 +281,7 @@ class AEATAccountFinancialReport(models.Model):
         if in_currency:
             # If number is an amount expressed in company currency, we ensure that it
             # is written in € in BOE file
-            conversion_date = self.env.context['l10n_es_reports_boe_conversion_date'] # This context key is set in get_txt
+            conversion_date = self.env.context['l10n_es_reports_boe_conversion_date'] # This context key is set in _set_context
             number = company.currency_id._convert(number, self.env.ref('base.EUR'), company, conversion_date)
 
         if isinstance(number, float):
@@ -417,7 +427,7 @@ class AEATAccountFinancialReport(models.Model):
             raise UserError(_("Wrong report dates for BOE generation : please select a range of one month or a trimester."))
 
         rslt = self._generate_111_115_common_header(options, current_company, period, year)
-        casilla_lines_map = self._retrieve_casilla_lines(self.with_context(options.get('l10n_es_generation_context'))._get_lines(options))
+        casilla_lines_map = self._retrieve_casilla_lines(self._get_lines(options))
 
         # Wizard with manually-entered data
         boe_wizard = self._retrieve_boe_manual_wizard(options)
@@ -473,7 +483,7 @@ class AEATAccountFinancialReport(models.Model):
             raise UserError(_("Wrong report dates for BOE generation : please select a range of one month or a trimester."))
 
         rslt = self._generate_111_115_common_header(options, current_company, period, year)
-        casilla_lines_map = self._retrieve_casilla_lines(self.with_context(options.get('l10n_es_generation_context'))._get_lines(options))
+        casilla_lines_map = self._retrieve_casilla_lines(self._get_lines(options))
 
         # Wizard with manually-entered data
         boe_wizard = self._retrieve_boe_manual_wizard(options)
@@ -502,7 +512,7 @@ class AEATAccountFinancialReport(models.Model):
         if not period:
             raise UserError(_("Wrong report dates for BOE generation : please select a range of one month or a trimester."))
 
-        casilla_lines_map = self._retrieve_casilla_lines(self.with_context(options.get('l10n_es_generation_context'))._get_lines(options))
+        casilla_lines_map = self._retrieve_casilla_lines(self._get_lines(options))
         # Header
         rslt = self._boe_format_string('<T3030' + year + period + '0000>')
         rslt += self._boe_format_string('<AUX>')

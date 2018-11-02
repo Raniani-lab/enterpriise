@@ -13,18 +13,26 @@ class AEATBOEExportWizard(models.TransientModel):
     _name = 'l10n_es_reports.aeat.boe.export.wizard'
     _description = "BOE Export Wizard"
 
+    calling_export_wizard_id = fields.Many2one(string="Calling Export Wizard", comodel_name="account_reports.export.wizard", help="Optional field containing the report export wizard calling this BOE wizard, if there is one.")
+
     def download_boe_action(self):
-        # We add the generation context to the options, as it is not passed
-        # otherwize, and we need it for manual lines' values
-        options = self.env.context.get('l10n_es_reports_report_options', {})
-        return {
-            'type': 'ir_actions_account_report_download',
-            'data': {'model': self.env.context.get('model'),
-                     'options': json.dumps({**options, 'l10n_es_reports_boe_wizard_id': self.id}),
-                     'output_format': 'txt',
-                     'financial_id': self.env.context.get('id'),
-            },
-        }
+        if self.calling_export_wizard_id and not self.calling_export_wizard_id.l10n_es_reports_boe_wizard_model:
+            # In this case, the BOE wizard has been called by an export wizard, and this wizard has not yet received the data necessary to generate the file
+            self.calling_export_wizard_id.l10n_es_reports_boe_wizard_id = self.id
+            self.calling_export_wizard_id.l10n_es_reports_boe_wizard_model = self._name
+            return self.calling_export_wizard_id.export_report()
+        else:
+            # We add the generation context to the options, as it is not passed
+            # otherwize, and we need it for manual lines' values
+            options = self.env.context.get('l10n_es_reports_report_options', {})
+            return {
+                'type': 'ir_actions_account_report_download',
+                'data': {'model': self.env.context.get('model'),
+                         'options': json.dumps({**options, 'l10n_es_reports_boe_wizard_id': self.id}),
+                         'output_format': 'txt',
+                         'financial_id': self.env.context.get('id'),
+                },
+            }
 
     def retrieve_boe_manual_data(self):
         return {} # For extension
@@ -62,7 +70,7 @@ class Mod347And349CommonBOEWizard(models.TransientModel):
         return self.env.user.partner_id.phone
 
     contact_person_name = fields.Char(string="Contact person", default=_default_contact_name, required=True, help="Name of the contact person fot this BOE file's submission")
-    contact_person_phone = fields.Char(string="Contact phone number", default=_default_contact_phone, required=True, help="Phone number where to join the contact person")
+    contact_person_phone = fields.Char(string="Contact phone number", default=_default_contact_phone, help="Phone number where to join the contact person")
     complementary_declaration = fields.Boolean(string="Complementary Declaration", help="Whether or not this BOE file corresponds to a complementary declaration")
     substitutive_declaration = fields.Boolean(string="Substitutive Declaration", help="Whether or not this BOE file corresponds to a substitutive declaration")
     previous_report_number = fields.Char(string="Previous Report Number", size=13, help="Number of the previous report, corrected or replaced by this one, if any")

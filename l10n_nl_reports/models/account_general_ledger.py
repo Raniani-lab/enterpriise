@@ -19,7 +19,7 @@ class ReportAccountGeneralLedger(models.AbstractModel):
 
     def _get_reports_buttons(self):
         buttons = super(ReportAccountGeneralLedger, self)._get_reports_buttons()
-        buttons.append({'name': _('EXPORT (XAF)'), 'action': 'l10n_nl_print_xaf'})
+        buttons.append({'name': _('EXPORT (XAF)'), 'sequence': 3', action': 'l10n_nl_print_xaf', 'file_export_type': _('XAF')})
         return buttons
 
     def get_xaf(self, options):

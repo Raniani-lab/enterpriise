@@ -6,8 +6,8 @@ import calendar
 import json
 
 class AccountFinancialReportXMLReportExport(models.TransientModel):
-    _name = "account.financial.html.report.export"
-    _description = "Financial Report XML Export"
+    _name = "l10n_be_reports.periodic.vat.xml.export"
+    _description = "Belgian Periodic VAT Report Export Wizard"
 
     ask_restitution = fields.Boolean()
     ask_payment = fields.Boolean()
@@ -15,20 +15,25 @@ class AccountFinancialReportXMLReportExport(models.TransientModel):
     currency_id = fields.Many2one('res.currency', default=lambda self: self.env.user.company_id.currency_id, required=True)
     grid91 = fields.Monetary(string='Grid 91', currency_field='currency_id',
         help='La grille 91 ne concerne que les assujettis tenus au dépôt de déclarations mensuelles. Cette grille ne peut être complétée que pour la déclaration relative aux opérations du mois de décembre.')
+    calling_export_wizard_id = fields.Many2one(string="Calling Export Wizard", comodel_name="account_reports.export.wizard", help="Optional field containing the report export wizard calling this wizard, if there is one.")
 
     def print_xml(self):
-        options = self.env.context.get('options')
-        options['ask_restitution'] = self.ask_restitution
-        options['ask_payment'] = self.ask_payment
-        options['client_nihil'] = self.client_nihil
-        options['grid91'] = self.grid91
-        return {
+        if self.calling_export_wizard_id and not self.calling_export_wizard_id.l10n_be_reports_periodic_vat_wizard_id:
+            self.calling_export_wizard_id.l10n_be_reports_periodic_vat_wizard_id = self
+            return self.calling_export_wizard_id.export_report()
+        else:
+            options = self.env.context.get('l10n_be_reports_generation_options')
+            options['ask_restitution'] = self.ask_restitution
+            options['ask_payment'] = self.ask_payment
+            options['client_nihil'] = self.client_nihil
+            options['grid91'] = self.grid91
+            return {
                 'type': 'ir_actions_account_report_download',
                 'data': {'model': self.env.context.get('model'),
-                         'options': json.dumps(options),
-                         'output_format': 'xml',
-                         'financial_id': self.env.context.get('id'),
-                         }
+                     'options': json.dumps(options),
+                     'output_format': 'xml',
+                     'financial_id': self.env.context.get('id'),
+                     }
                 }
 
 class AccountFinancialReportXMLExport(models.AbstractModel):
@@ -37,16 +42,25 @@ class AccountFinancialReportXMLExport(models.AbstractModel):
     def _get_reports_buttons(self):
         buttons = super(AccountFinancialReportXMLExport, self)._get_reports_buttons()
         if self.id == self.env['ir.model.data'].xmlid_to_res_id('l10n_be_reports.account_financial_report_l10n_be_tva0'):
-            buttons += [{'name': _('Export (XML)'), 'action': 'print_xml'}]
+            buttons += [{'name': _('Export (XML)'), 'sequence': 3, 'action': 'print_xml', 'file_export_type': _('XML')}]
         return buttons
 
     def print_xml(self, options):
         # add options to context and return action to open transient model
         ctx = self.env.context.copy()
-        ctx['options'] = options
-        action = self.env.ref('l10n_be_reports.action_account_financial_report_export').read()[0]
-        action.update({'context': ctx,})
-        return action
+        ctx['l10n_be_reports_generation_options'] = options
+        new_wizard = self.env['l10n_be_reports.periodic.vat.xml.export'].create({})
+        view_id = self.env.ref('l10n_be_reports.view_account_financial_report_export').id
+        return {
+            'name': _('XML Export Options'),
+            'view_mode': 'form',
+            'views': [[view_id, 'form']],
+            'res_model': 'l10n_be_reports.periodic.vat.xml.export',
+            'type': 'ir.actions.act_window',
+            'res_id': new_wizard.id,
+            'target': 'new',
+            'context': ctx,
+            }
 
     def get_xml(self, options):
         # Check
@@ -165,4 +179,4 @@ class AccountFinancialReportXMLExport(models.AbstractModel):
         data_of_file += '\n\t\t<ns2:Comment>%(comments)s</ns2:Comment>' % (file_data)
         data_of_file += '\n\t</ns2:VATDeclaration> \n</ns2:VATConsignment>'
 
-        return data_of_file
+        return data_of_file.encode()

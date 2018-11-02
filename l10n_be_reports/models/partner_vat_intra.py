@@ -81,7 +81,7 @@ class ReportL10nBePartnerVatIntra(models.AbstractModel):
 
     def _get_reports_buttons(self):
         buttons = super(ReportL10nBePartnerVatIntra, self)._get_reports_buttons()
-        buttons += [{'name': _('Export (XML)'), 'action': 'print_xml'}]
+        buttons += [{'name': _('Export (XML)'), 'sequence': 3, 'action': 'print_xml', 'file_export_type': _('XML')}]
         return buttons
 
     def get_xml(self, options):
@@ -197,4 +197,5 @@ class ReportL10nBePartnerVatIntra(models.AbstractModel):
 
         data_decl = '\n\t<ns2:IntraListing SequenceNumber="1" ClientsNbr="%(clientnbr)s" DeclarantReference="%(dnum)s" AmountSum="%(amountsum).2f">' % (xml_data)
 
-        return data_head + data_decl + data_comp_period + data_clientinfo + '\n\t\t</ns2:IntraListing>\n</ns2:IntraConsignment>' % (xml_data)
+        data_rslt = data_head + data_decl + data_comp_period + data_clientinfo + '\n\t\t</ns2:IntraListing>\n</ns2:IntraConsignment>' % (xml_data)
+        return data_rslt.encode('ISO-8859-1')

@@ -1,25 +1,23 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from ast import literal_eval
+import json
 import babel
 from dateutil.relativedelta import relativedelta
 
-from odoo import http, fields, _
-from odoo.http import request
-
-from odoo.addons.sale_timesheet.controllers.main import SaleTimesheetController
-
+from odoo import fields, models, _
+from odoo.addons.web.controllers.main import clean_action
 
 DEFAULT_MONTH_RANGE = 3
 
 
-class TimesheetForecastController(SaleTimesheetController):
+class ProjectOverview(models.Model):
+    _inherit = 'project.project'
 
-    def _table_get_line_values(self, projects):
-        result = super(TimesheetForecastController, self)._table_get_line_values(projects)
+    def _table_get_line_values(self):
+        result = super(ProjectOverview, self)._table_get_line_values()
 
-        if any(projects.mapped('allow_forecast')):
+        if any(self.mapped('allow_forecast')):
             # add headers
             result['header'] += [{
                 'label': _('Remaining \n (Forecasts incl.)'),
@@ -32,14 +30,14 @@ class TimesheetForecastController(SaleTimesheetController):
                 row += [row[-2] - (row[5] - row[4]) - max(row[4], row[6]) - (row[10] - row[6])]
         return result
 
-    def _table_header(self, projects):
-        header = super(TimesheetForecastController, self)._table_header(projects)
+    def _table_header(self):
+        header = super(ProjectOverview, self)._table_header()
 
         def _to_short_month_name(date):
             month_index = fields.Date.from_string(date).month
-            return babel.dates.get_month_names('abbreviated', locale=request.env.context.get('lang', 'en_US'))[month_index]
+            return babel.dates.get_month_names('abbreviated', locale=self.env.context.get('lang', 'en_US'))[month_index]
 
-        if any(projects.mapped('allow_forecast')):
+        if any(self.mapped('allow_forecast')):
             initial_date = fields.Date.from_string(fields.Date.today())
             fc_months = sorted([fields.Date.to_string(initial_date + relativedelta(months=i, day=1)) for i in range(0, DEFAULT_MONTH_RANGE)])  # M3, M4, M5
 
@@ -53,19 +51,19 @@ class TimesheetForecastController(SaleTimesheetController):
 
         return header
 
-    def _table_row_default(self, projects):
-        default_row = super(TimesheetForecastController, self)._table_row_default(projects)
-        if any(projects.mapped('allow_forecast')):
+    def _table_row_default(self):
+        default_row = super(ProjectOverview, self)._table_row_default()
+        if any(self.mapped('allow_forecast')):
             return [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]  # before, M1, M2, M3, Done, M3, M4, M5, After, Forecasted, Sold, Remaining
         return default_row  # before, M1, M2, M3, Done, Sold, Remaining
 
-    def _table_rows_sql_query(self, projects):
-        query, query_params = super(TimesheetForecastController, self)._table_rows_sql_query(projects)
+    def _table_rows_sql_query(self):
+        query, query_params = super(ProjectOverview, self)._table_rows_sql_query()
 
         initial_date = fields.Date.from_string(fields.Date.today())
         fc_months = sorted([fields.Date.to_string(initial_date + relativedelta(months=i, day=1)) for i in range(0, DEFAULT_MONTH_RANGE)])  # M3, M4, M5
 
-        if any(projects.mapped('allow_forecast')):
+        if any(self.mapped('allow_forecast')):
             query += """
                 UNION
                 SELECT
@@ -95,23 +93,23 @@ class TimesheetForecastController(SaleTimesheetController):
                     AND F.employee_id IS NOT NULL
                 GROUP BY F.project_id, F.task_id, date_trunc('month', date)::date, F.employee_id, S.order_id, F.order_line_id
             """
-            query_params += (tuple(projects.ids), fc_months[0])
+            query_params += (tuple(self.ids), fc_months[0])
         return query, query_params
 
-    def _table_rows_get_employee_lines(self, projects, data_from_db):
-        rows_employee = super(TimesheetForecastController, self)._table_rows_get_employee_lines(projects, data_from_db)
-        if not any(projects.mapped('allow_forecast')):
+    def _table_rows_get_employee_lines(self, data_from_db):
+        rows_employee = super(ProjectOverview, self)._table_rows_get_employee_lines(data_from_db)
+        if not any(self.mapped('allow_forecast')):
             return rows_employee
 
         initial_date = fields.Date.today()
         fc_months = sorted([initial_date + relativedelta(months=i, day=1) for i in range(0, DEFAULT_MONTH_RANGE)])  # M3, M4, M5
-        default_row_vals = self._table_row_default(projects)
+        default_row_vals = self._table_row_default()
 
         # extract employee names
         employee_ids = set()
         for data in data_from_db:
             employee_ids.add(data['employee_id'])
-        map_empl_names = {empl.id: empl.name for empl in request.env['hr.employee'].sudo().browse(employee_ids)}
+        map_empl_names = {empl.id: empl.name for empl in self.env['hr.employee'].sudo().browse(employee_ids)}
 
         # extract rows data for employee, sol and so rows
         for data in data_from_db:
@@ -140,14 +138,14 @@ class TimesheetForecastController(SaleTimesheetController):
                 rows_employee[row_key][10] += data['number_hours']
         return rows_employee
 
-    def _table_get_empty_so_lines(self, projects):
+    def _table_get_empty_so_lines(self):
         """ get the Sale Order Lines having no forecast but having generated a task or a project """
-        empty_line_ids, empty_order_ids = super(TimesheetForecastController, self)._table_get_empty_so_lines(projects)
-        sale_line_ids = request.env['project.task'].sudo().search_read([('project_id', 'in', projects.ids), ('sale_line_id', '!=', False)], ['sale_line_id'])
+        empty_line_ids, empty_order_ids = super(ProjectOverview, self)._table_get_empty_so_lines()
+        sale_line_ids = self.env['project.task'].sudo().search_read([('project_id', 'in', self.ids), ('sale_line_id', '!=', False)], ['sale_line_id'])
         sale_line_ids = [line_id['sale_line_id'][0] for line_id in sale_line_ids]
-        order_ids = request.env['sale.order.line'].sudo().search_read([('id', 'in', sale_line_ids)], ['order_id'])
+        order_ids = self.env['sale.order.line'].sudo().search_read([('id', 'in', sale_line_ids)], ['order_id'])
         order_ids = [order_id['id'] for order_id in order_ids]
-        so_line_data = request.env['sale.order.line'].sudo().search_read([('order_id', 'in', order_ids), '|', ('task_id', '!=', False), ('project_id', '!=', False), ('analytic_line_ids', '=', False)], ['id', 'order_id'])
+        so_line_data = self.env['sale.order.line'].sudo().search_read([('order_id', 'in', order_ids), '|', ('task_id', '!=', False), ('project_id', '!=', False), ('analytic_line_ids', '=', False)], ['id', 'order_id'])
         so_line_ids = [so_line['id'] for so_line in so_line_data]
         order_ids = [so_line['order_id'][0] for so_line in so_line_data]
         return empty_line_ids | set(so_line_ids), empty_order_ids | set(order_ids)
@@ -156,31 +154,26 @@ class TimesheetForecastController(SaleTimesheetController):
     # Actions: Stat buttons, ...
     # --------------------------------------------------
 
-    def _plan_get_stat_button(self, projects):
-        stat_buttons = super(TimesheetForecastController, self)._plan_get_stat_button(projects)
-        if any(projects.mapped('allow_forecast')):
-            stat_buttons.append({
-                'name': _('Forecasts'),
-                'res_model': 'project.forecast',
-                'domain': [('project_id', 'in', projects.ids)],
-                'icon': 'fa fa-tasks',
-            })
-        return stat_buttons
+    def _plan_get_stat_button(self):
+        stat_buttons = super()._plan_get_stat_button()
+        if not any(self.mapped('allow_forecast')):
+            return stat_buttons
 
-    @http.route('/timesheet/plan/action', type='json', auth="user")
-    def plan_stat_button(self, domain=[], res_model='account.analytic.line', res_id=False):
-        action = super(TimesheetForecastController, self).plan_stat_button(domain=domain, res_model=res_model, res_id=res_id)
-        if res_model == 'project.forecast':
-            forecasts = request.env['project.forecast'].search(literal_eval(domain))
-            projects = forecasts.mapped('project_id')
-            if len(projects) == 1:
-                action = request.env['project.forecast'].with_context(active_id=projects.id).action_view_forecast('project_forecast.project_forecast_action_from_project')
-                action['context']['default_project_id'] = projects.id
-            else:
-                action = request.env['project.forecast'].action_view_forecast('project_forecast.project_forecast_action_by_project')
-            action.update({
-                'name': _('Forecasts'),
-                'domain': domain,
-            })
-            action.setdefault('context', {})['search_default_future'] = 0
-        return action
+        if len(self) == 1:
+            action = clean_action(self.env['project.forecast'].with_context(active_id=self.id).action_view_forecast('project_forecast.project_forecast_action_from_project'))
+            action['context']['default_project_id'] = self.id
+        else:
+            action = clean_action(self.env['project.forecast'].action_view_forecast('project_forecast.project_forecast_action_by_project'))
+        action.setdefault('context', {})['search_default_future'] = 0
+
+        stat_buttons.append({
+            'name': _('Forecasts'),
+            'icon': 'fa fa-tasks',
+            'action': {
+                'data-model': 'project.forecast',
+                'data-domain': json.dumps([('project_id', 'in', self.ids)]),
+                'data-context': json.dumps(action['context']),
+                'data-views': json.dumps(action['views'])
+            }
+        })
+        return stat_buttons

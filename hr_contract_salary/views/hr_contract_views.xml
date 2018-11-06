@@ -129,9 +129,9 @@
 
     <menuitem
         id="hr_menu_contract_templates"
-        name="Contract Templates"
+        name="Templates"
         action="action_hr_contract_templates"
-        parent="hr.menu_human_resources_configuration"
+        parent="hr_contract.menu_human_resources_configuration_contract"
         sequence="10"
         groups="hr.group_hr_manager"/>
 </odoo>

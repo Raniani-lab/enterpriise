@@ -16,6 +16,7 @@ class QualityCheck(models.Model):
 
     def redirect_after_pass_fail(self):
         self.ensure_one()
+        action = super(QualityCheck, self).redirect_after_pass_fail()
         checks = False
         if self.production_id and not self.workorder_id:
             checks = self.production_id.check_ids.filtered(lambda x: x.quality_state == 'none')
@@ -26,4 +27,4 @@ class QualityCheck(models.Model):
             action['res_id'] = checks.ids[0]
             return action
         else:
-            return super(QualityCheck, self).redirect_after_pass_fail()
+            return action

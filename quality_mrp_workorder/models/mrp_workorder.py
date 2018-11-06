@@ -14,33 +14,25 @@ class MrpProductionWorkcenterLine(models.Model):
 
     def do_pass(self):
         self.ensure_one()
-        return self._next('pass')
+        self.current_quality_check_id.do_pass()
+        return self._next()
 
     def do_fail(self):
         self.ensure_one()
-        return self._next('fail')
+        self.current_quality_check_id.do_fail()
+        return self._next()
 
     def do_measure(self):
         self.ensure_one()
-        point_id = self.current_quality_check_id.point_id
-        if self.measure < point_id.tolerance_min or self.measure > point_id.tolerance_max:
-            return self.do_fail()
-        else:
-            return self.do_pass()
+        self.current_quality_check_id.do_measure()
+        return self._next()
 
-    def _next(self, state='pass'):
+    def _next(self):
         self.ensure_one()
         old_check_id = self.current_quality_check_id
-        result = super(MrpProductionWorkcenterLine, self)._next(state)
-        if state == 'fail' and old_check_id.failure_message:
-            return {
-                'type': 'ir.actions.act_window',
-                'res_model': 'quality.check',
-                'views': [[self.env.ref('quality_control.quality_check_failure_message').id, 'form']],
-                'name': _('Failure Message'),
-                'target': 'new',
-                'res_id': old_check_id.id,
-            }
+        result = super(MrpProductionWorkcenterLine, self)._next()
+        if old_check_id.quality_state == 'fail':
+            return old_check_id.show_failure_message()
         return result
 
     def button_quality_alert(self):

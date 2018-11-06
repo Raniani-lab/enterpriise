@@ -15,7 +15,7 @@ class TestType(models.Model):
         if value:
             return []
         else:
-            return [('technical_name', 'not in', ['register_consumed_materials', 'text', 'picture'])]
+            return [('technical_name', 'not in', ['register_consumed_materials', 'print_label'])]
 
 
 class MrpRouting(models.Model):

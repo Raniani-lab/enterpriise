@@ -507,6 +507,7 @@ class AccountFinancialReportLine(models.Model):
                 compared to the current user's company currency
             @returns: the string and parameters to use for the SELECT
         """
+        decimal_places = self.env.user.company_id.currency_id.decimal_places
         extra_params = []
         select = '''
             COALESCE(SUM(\"account_move_line\".balance), 0) AS balance,
@@ -517,20 +518,20 @@ class AccountFinancialReportLine(models.Model):
         if currency_table:
             select = 'COALESCE(SUM(CASE '
             for currency_id, rate in currency_table.items():
-                extra_params += [currency_id, rate]
-                select += 'WHEN \"account_move_line\".company_currency_id = %s THEN \"account_move_line\".balance * %s '
+                extra_params += [currency_id, rate, decimal_places]
+                select += 'WHEN \"account_move_line\".company_currency_id = %s THEN ROUND(\"account_move_line\".balance * %s, %s) '
             select += 'ELSE \"account_move_line\".balance END), 0) AS balance, COALESCE(SUM(CASE '
             for currency_id, rate in currency_table.items():
-                extra_params += [currency_id, rate]
-                select += 'WHEN \"account_move_line\".company_currency_id = %s THEN \"account_move_line\".amount_residual * %s '
+                extra_params += [currency_id, rate, decimal_places]
+                select += 'WHEN \"account_move_line\".company_currency_id = %s THEN ROUND(\"account_move_line\".amount_residual * %s, %s) '
             select += 'ELSE \"account_move_line\".amount_residual END), 0) AS amount_residual, COALESCE(SUM(CASE '
             for currency_id, rate in currency_table.items():
-                extra_params += [currency_id, rate]
-                select += 'WHEN \"account_move_line\".company_currency_id = %s THEN \"account_move_line\".debit * %s '
+                extra_params += [currency_id, rate, decimal_places]
+                select += 'WHEN \"account_move_line\".company_currency_id = %s THEN ROUND(\"account_move_line\".debit * %s, %s) '
             select += 'ELSE \"account_move_line\".debit END), 0) AS debit, COALESCE(SUM(CASE '
             for currency_id, rate in currency_table.items():
-                extra_params += [currency_id, rate]
-                select += 'WHEN \"account_move_line\".company_currency_id = %s THEN \"account_move_line\".credit * %s '
+                extra_params += [currency_id, rate, decimal_places]
+                select += 'WHEN \"account_move_line\".company_currency_id = %s THEN ROUND(\"account_move_line\".credit * %s, %s) '
             select += 'ELSE \"account_move_line\".credit END), 0) AS credit'
 
         if self.env.context.get('cash_basis'):

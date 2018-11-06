@@ -45,6 +45,20 @@ WebClient.include({
         }
     },
     /**
+     * Considers the Studio menu when instatiating the menu.
+     *
+     * @override
+     */
+    instanciate_menu_widgets: function () {
+        var self = this;
+        return this._super.apply(this, arguments).then(function() {
+            if (self.studioMode === 'main') {
+                var action = self.action_manager.getCurrentStudioAction();
+                return self.menu.renderStudioMenu(action);
+            }
+        });
+    },
+    /**
      * @override
      */
     do_action: function (action, options) {

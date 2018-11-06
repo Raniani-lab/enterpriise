@@ -2,17 +2,12 @@
 # This file contains the translation of the following modules:
 # * mail_github
 # 
-# Translators:
-# krnkris, 2017
-# gezza <geza.nagy@oregional.hu>, 2017
-# Martin Trigaux, 2017
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.4+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-02 11:20+0000\n"
-"PO-Revision-Date: 2018-08-02 11:20+0000\n"
-"Last-Translator: Martin Trigaux, 2017\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-08-24 11:38+0000\n"
 "Language-Team: Hungarian (https://www.transifex.com/odoo/teams/41243/hu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,37 +16,37 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: mail_github
-#: model:ir.ui.view,arch_db:mail_github.message_github_notification
+#: model_terms:ir.ui.view,arch_db:mail_github.message_github_notification
 msgid "(with"
 msgstr ""
 
 #. module: mail_github
-#: model:ir.ui.view,arch_db:mail_github.message_github_notification
+#: model_terms:ir.ui.view,arch_db:mail_github.message_github_notification
 msgid ") on repository"
 msgstr ""
 
 #. module: mail_github
-#: model:ir.ui.view,arch_db:mail_github.message_github_notification
+#: model_terms:ir.ui.view,arch_db:mail_github.message_github_notification
 msgid ", by"
 msgstr ""
 
 #. module: mail_github
-#: model:ir.ui.view,arch_db:mail_github.message_github_notification
+#: model_terms:ir.ui.view,arch_db:mail_github.message_github_notification
 msgid "<b>State :</b>"
 msgstr ""
 
 #. module: mail_github
-#: model:ir.ui.view,arch_db:mail_github.message_github_notification
+#: model_terms:ir.ui.view,arch_db:mail_github.message_github_notification
 msgid "<b>Title :</b>"
 msgstr ""
 
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__message_needaction
 msgid "Action Needed"
-msgstr "Művelet szükséges"
+msgstr ""
 
 #. module: mail_github
-#: model:ir.ui.view,arch_db:mail_github.mail_channel_github_view_form
+#: model_terms:ir.ui.view,arch_db:mail_github.mail_channel_github_view_form
 msgid ""
 "After that you can choose the events you want to follow in the channels. Be "
 "careful, only <i>Commit comment, Issues, Issue comment, Gollum, Pull "
@@ -60,17 +55,22 @@ msgid ""
 msgstr ""
 
 #. module: mail_github
-#: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__channel_ids
-msgid "Channels"
-msgstr "Csatornák"
+#: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__message_attachment_count
+msgid "Attachment Count"
+msgstr ""
 
 #. module: mail_github
-#: model:ir.ui.view,arch_db:mail_github.mail_channel_github_view_form
+#: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__channel_ids
+msgid "Channels"
+msgstr ""
+
+#. module: mail_github
+#: model_terms:ir.ui.view,arch_db:mail_github.mail_channel_github_view_form
 msgid "Channels allowed to follow repositories."
 msgstr ""
 
 #. module: mail_github
-#: model:ir.ui.view,arch_db:mail_github.message_github_notification
+#: model_terms:ir.ui.view,arch_db:mail_github.message_github_notification
 msgid "Commit"
 msgstr ""
 
@@ -83,22 +83,27 @@ msgstr ""
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__create_uid
 msgid "Created by"
-msgstr "Létrehozta"
+msgstr ""
 
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__create_date
 msgid "Created on"
-msgstr "Létrehozva"
+msgstr ""
 
 #. module: mail_github
 #: model:ir.model,name:mail_github.model_mail_channel
 msgid "Discussion channel"
-msgstr "Hozzászólási csatorna"
+msgstr ""
 
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__display_name
 msgid "Display Name"
-msgstr "Megjelenített név"
+msgstr ""
+
+#. module: mail_github
+#: model:ir.model,name:mail_github.model_mail_channel_github
+msgid "Email Github Channel"
+msgstr ""
 
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel__github_enabled
@@ -108,17 +113,17 @@ msgstr ""
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__message_follower_ids
 msgid "Followers"
-msgstr "Követők"
+msgstr ""
 
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__message_channel_ids
 msgid "Followers (Channels)"
-msgstr "Követők (Csatornák)"
+msgstr ""
 
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__message_partner_ids
 msgid "Followers (Partners)"
-msgstr "Követők (Partnerek)"
+msgstr ""
 
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_res_users__github_login
@@ -126,7 +131,7 @@ msgid "GitHub Login"
 msgstr ""
 
 #. module: mail_github
-#: model:ir.ui.view,arch_db:mail_github.mail_channel_view_form
+#: model_terms:ir.ui.view,arch_db:mail_github.mail_channel_view_form
 msgid "Github"
 msgstr ""
 
@@ -139,17 +144,17 @@ msgstr ""
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__id
 msgid "ID"
-msgstr "Azonosító"
+msgstr ""
 
 #. module: mail_github
 #: model:ir.model.fields,help:mail_github.field_mail_channel_github__message_unread
 msgid "If checked new messages require your attention."
-msgstr "Ha be van jelölve, akkor figyelje az új üzeneteket."
+msgstr ""
 
 #. module: mail_github
 #: model:ir.model.fields,help:mail_github.field_mail_channel_github__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr "Ha be van jelölve, akkor figyelje az új üzeneteket."
+msgstr ""
 
 #. module: mail_github
 #: model:ir.model.fields,help:mail_github.field_mail_channel_github__message_has_error
@@ -159,27 +164,32 @@ msgstr ""
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__message_is_follower
 msgid "Is Follower"
-msgstr "Ő egy követő"
+msgstr ""
 
 #. module: mail_github
-#: model:ir.ui.view,arch_db:mail_github.message_github_notification
+#: model_terms:ir.ui.view,arch_db:mail_github.message_github_notification
 msgid "Issue"
-msgstr "Bejelentett ügy"
+msgstr ""
 
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github____last_update
 msgid "Last Modified on"
-msgstr "Utoljára módosítva"
+msgstr ""
 
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__write_uid
 msgid "Last Updated by"
-msgstr "Utoljára frissítette"
+msgstr ""
 
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__write_date
 msgid "Last Updated on"
-msgstr "Utoljára frissítve "
+msgstr ""
+
+#. module: mail_github
+#: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__message_main_attachment_id
+msgid "Main Attachment"
+msgstr ""
 
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__message_has_error
@@ -189,12 +199,12 @@ msgstr ""
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__message_ids
 msgid "Messages"
-msgstr "Üzenetek"
+msgstr ""
 
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__message_needaction_counter
 msgid "Number of Actions"
-msgstr "Műveletek száma"
+msgstr ""
 
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__message_has_error_counter
@@ -204,7 +214,7 @@ msgstr ""
 #. module: mail_github
 #: model:ir.model.fields,help:mail_github.field_mail_channel_github__message_needaction_counter
 msgid "Number of messages which requires an action"
-msgstr "Üzenetek száma, melyek akciót igényelnek"
+msgstr ""
 
 #. module: mail_github
 #: model:ir.model.fields,help:mail_github.field_mail_channel_github__message_has_error_counter
@@ -214,17 +224,17 @@ msgstr ""
 #. module: mail_github
 #: model:ir.model.fields,help:mail_github.field_mail_channel_github__message_unread_counter
 msgid "Number of unread messages"
-msgstr "Olvasatlan üzenetek száma"
+msgstr ""
 
 #. module: mail_github
-#: model:ir.ui.view,arch_db:mail_github.mail_channel_github_view_form
+#: model_terms:ir.ui.view,arch_db:mail_github.mail_channel_github_view_form
 msgid ""
 "Once the repository is created in Odoo, create it on Github. Then, copy "
 "'Payload URL' and 'Secret' in Github interface."
 msgstr ""
 
 #. module: mail_github
-#: model:ir.ui.view,arch_db:mail_github.message_github_notification
+#: model_terms:ir.ui.view,arch_db:mail_github.message_github_notification
 msgid "PR"
 msgstr ""
 
@@ -244,7 +254,7 @@ msgid "Repository ID"
 msgstr ""
 
 #. module: mail_github
-#: model:ir.ui.view,arch_db:mail_github.mail_channel_github_view_form
+#: model_terms:ir.ui.view,arch_db:mail_github.mail_channel_github_view_form
 msgid "Repository full name: user/repository."
 msgstr ""
 
@@ -264,12 +274,12 @@ msgid "The Github repositories the channel will follow"
 msgstr ""
 
 #. module: mail_github
-#: model:ir.ui.view,arch_db:mail_github.mail_channel_github_view_form
+#: model_terms:ir.ui.view,arch_db:mail_github.mail_channel_github_view_form
 msgid "The signature to be pasted when setting up the webhook on Github"
 msgstr ""
 
 #. module: mail_github
-#: model:ir.ui.view,arch_db:mail_github.mail_channel_github_view_form
+#: model_terms:ir.ui.view,arch_db:mail_github.mail_channel_github_view_form
 msgid ""
 "The webhook 'Content Type' should be set to <b>application/x-www-form-"
 "urlencoded</b>."
@@ -283,20 +293,20 @@ msgstr ""
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__message_unread
 msgid "Unread Messages"
-msgstr "Olvasatlan üzenetek"
+msgstr ""
 
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__message_unread_counter
 msgid "Unread Messages Counter"
-msgstr "Olvasatlan üzenetek számlálója"
+msgstr ""
 
 #. module: mail_github
 #: model:ir.model,name:mail_github.model_res_users
 msgid "Users"
-msgstr "Felhasználók"
+msgstr ""
 
 #. module: mail_github
-#: model:ir.ui.view,arch_db:mail_github.message_github_notification
+#: model_terms:ir.ui.view,arch_db:mail_github.message_github_notification
 msgid "commented"
 msgstr ""
 
@@ -307,12 +317,12 @@ msgid "commit"
 msgstr ""
 
 #. module: mail_github
-#: model:ir.ui.view,arch_db:mail_github.message_github_notification
+#: model_terms:ir.ui.view,arch_db:mail_github.message_github_notification
 msgid "commit(s) on"
 msgstr ""
 
 #. module: mail_github
-#: model:ir.ui.view,arch_db:mail_github.message_github_notification
+#: model_terms:ir.ui.view,arch_db:mail_github.message_github_notification
 msgid "created a new"
 msgstr ""
 
@@ -323,22 +333,17 @@ msgid "issue"
 msgstr ""
 
 #. module: mail_github
-#: model:ir.model,name:mail_github.model_mail_channel_github
-msgid "mail.channel.github"
-msgstr ""
-
-#. module: mail_github
-#: model:ir.ui.view,arch_db:mail_github.message_github_notification
+#: model_terms:ir.ui.view,arch_db:mail_github.message_github_notification
 msgid "modified the following"
 msgstr ""
 
 #. module: mail_github
-#: model:ir.ui.view,arch_db:mail_github.message_github_notification
+#: model_terms:ir.ui.view,arch_db:mail_github.message_github_notification
 msgid "modifies wiki pages on repository"
 msgstr ""
 
 #. module: mail_github
-#: model:ir.ui.view,arch_db:mail_github.message_github_notification
+#: model_terms:ir.ui.view,arch_db:mail_github.message_github_notification
 msgid "on repository"
 msgstr ""
 
@@ -350,11 +355,11 @@ msgid "pull request"
 msgstr ""
 
 #. module: mail_github
-#: model:ir.ui.view,arch_db:mail_github.message_github_notification
+#: model_terms:ir.ui.view,arch_db:mail_github.message_github_notification
 msgid "push"
 msgstr ""
 
 #. module: mail_github
-#: model:ir.ui.view,arch_db:mail_github.message_github_notification
+#: model_terms:ir.ui.view,arch_db:mail_github.message_github_notification
 msgid "remove the following"
 msgstr ""

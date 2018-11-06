@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018
 # Bohdan Lisnenko, 2018
 msgid ""
 msgstr ""
@@ -22,7 +23,7 @@ msgstr ""
 #. module: account_sepa
 #: model:ir.model,name:account_sepa.model_account_batch_payment
 msgid "Batch Payment"
-msgstr ""
+msgstr "Пакетний платіж"
 
 #. module: account_sepa
 #: model:ir.model,name:account_sepa.model_res_company
@@ -32,7 +33,7 @@ msgstr "Компанії"
 #. module: account_sepa
 #: model:ir.model,name:account_sepa.model_res_config_settings
 msgid "Config Settings"
-msgstr ""
+msgstr "Налаштування"
 
 #. module: account_sepa
 #: model:ir.model,name:account_sepa.model_account_abstract_payment
@@ -159,7 +160,7 @@ msgstr "Кредитні перекази SEPA для відправлення"
 #: model:ir.model.fields,field_description:account_sepa.field_res_company__sepa_pain_version
 #: model:ir.model.fields,field_description:account_sepa.field_res_config_settings__sepa_pain_version
 msgid "SEPA Pain Version"
-msgstr "Больова версія SEPA"
+msgstr "Проблемна версія SEPA"
 
 #. module: account_sepa
 #: model:ir.model.fields,help:account_sepa.field_res_company__sepa_pain_version
@@ -210,7 +211,7 @@ msgid ""
 "A valid IBAN account is required to use SEPA features."
 msgstr ""
 "Рахунок %s, пов'язаний з партнером '%s', нетиповий для IBAN.\n"
-"Для використання функцій SEPA потрібен дійсний обліковий запис IBAN."
+"Для використання функцій SEPA потрібен дійсний рахунок IBAN."
 
 #. module: account_sepa
 #: code:addons/account_sepa/models/account_batch_payment.py:103
@@ -220,7 +221,7 @@ msgid ""
 "A valid IBAN account is required to use SEPA features."
 msgstr ""
 "Рахунок %s, журналу '%s', нетиповий для IBAN.\n"
-"Для використання функцій SEPA потрібен дійсний обліковий запис IBAN."
+"Для використання функцій SEPA потрібен дійсний рахунок IBAN."
 
 #. module: account_sepa
 #: code:addons/account_sepa/models/account_payment.py:47
@@ -282,9 +283,8 @@ msgid ""
 "The partner account '%s' requires a Bank Identification Code (BIC) to pay "
 "via SEPA. Please configure it first."
 msgstr ""
-"Обліковий запис патнера '%s' потребує Код Ідентифікації Банку (BIC) для "
-"сплати через єдину европейську мережу розрахунків (SEPA). Налаштуйте його "
-"спочатку."
+"Рахунок патнера '%s' потребує Код Ідентифікації Банку (BIC) для сплати через"
+" єдину европейську мережу розрахунків (SEPA). Налаштуйте його спочатку."
 
 #. module: account_sepa
 #: code:addons/account_sepa/models/account_batch_payment.py:18

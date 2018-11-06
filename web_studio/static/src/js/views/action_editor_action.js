@@ -14,6 +14,7 @@ var NewViewDialog = require('web_studio.NewViewDialog');
 var ViewEditorManager = require('web_studio.ViewEditorManager');
 
 var _t = core._t;
+var _lt = core._lt;
 
 var ActionEditorAction = AbstractAction.extend({
     className: 'o_web_studio_client_action',

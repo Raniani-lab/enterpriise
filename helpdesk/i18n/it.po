@@ -479,7 +479,7 @@ msgstr ""
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.team_rating_progress_data
 msgid "Bad"
-msgstr ""
+msgstr "Sbagliato"
 
 #. module: helpdesk
 #: selection:helpdesk.team,assign_method:0

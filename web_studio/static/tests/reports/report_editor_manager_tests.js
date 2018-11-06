@@ -1589,6 +1589,77 @@ QUnit.module('ReportEditorManager', {
         });
     }));
 
+    QUnit.test('drag & drop block "Address"', function (assert) {
+        assert.expect(1);
+        var done = assert.async();
+
+        this.templates.push({
+            key: 'template1',
+            view_id: 55,
+            arch: '<kikou><t t-name="template1"/></kikou>',
+        });
+
+        var templateData = {
+            dataOeContext: '{"o": "model.test"}',
+        };
+
+        // the address block requires a many2one to res.partner
+        this.data['model.test'].fields.partner = {
+            string: "Partner", type: 'many2one', relation: 'res.partner', 'searchable': true,
+        };
+
+        var rem = studioTestUtils.createReportEditorManager({
+            data: this.data,
+            models: this.models,
+            env: {
+                modelName: 'kikou',
+                ids: [42, 43],
+                currentId: 42,
+            },
+            report: {},
+            reportHTML: studioTestUtils.getReportHTML(this.templates, templateData),
+            reportViews: studioTestUtils.getReportViews(this.templates, templateData),
+            reportMainViewID: 42,
+            mockRPC: function (route, args) {
+                if (route === '/web_studio/edit_report_view') {
+                    var operation = _.last(args.operations);
+                    if (!operation) {
+                        return $.Deferred().reject();
+                    }
+                    assert.deepEqual(operation.inheritance, [{
+                        content:
+                            '<div class="row address">' +
+                                '<div class="col-5"></div>' +
+                                '<div class="col-5 offset-2">' +
+                                    "<div t-field=\"o.partner\" t-options-widget=\"'contact'\"/>" +
+                                '</div>' +
+                            '</div>',
+                        position: "inside",
+                        view_id: 42,
+                        xpath: "/t/html/body/div/main/div",
+                    }], 'Should send the xpath node with the content');
+                    return $.Deferred().reject();
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        rem.editorIframeDef.then(function () {
+            rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]').click();
+            var $page = rem.$('iframe').contents().find('.page');
+
+            var $text = rem.$('.o_web_studio_sidebar .o_web_studio_component:contains(Address)');
+            testUtils.dragAndDrop($text, $page, {position: 'inside'});
+            $('.o_web_studio_field_modal .o_field_selector').trigger('focusin');
+            $('.o_web_studio_field_modal .o_field_selector_item[data-name="o"]').trigger('click');
+            $('.o_web_studio_field_modal .o_field_selector_item[data-name="partner"]').trigger('click');
+            $('.o_web_studio_field_modal .btn-primary').trigger('click');
+
+            rem.destroy();
+            done();
+        });
+    });
+
     QUnit.test('edit text', function (assert) {
         var done = assert.async();
         assert.expect(2);

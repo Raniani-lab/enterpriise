@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <record id="product.product_uom_only_form_view_inherit_l10n_co_edi" model="ir.ui.view">
+        <record id="product_uom_only_form_view_inherit_l10n_co_edi" model="ir.ui.view">
             <field name="name">uom.uom.form.l10n_co_edi</field>
             <field name="model">uom.uom</field>
             <field name="inherit_id" ref="uom.product_uom_form_view"/>

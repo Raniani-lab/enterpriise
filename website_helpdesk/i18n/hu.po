@@ -2,17 +2,12 @@
 # This file contains the translation of the following modules:
 # * website_helpdesk
 # 
-# Translators:
-# krnkris, 2017
-# Martin Trigaux, 2017
-# gezza <geza.nagy@oregional.hu>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.4+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-02 11:20+0000\n"
-"PO-Revision-Date: 2018-08-02 11:20+0000\n"
-"Last-Translator: gezza <geza.nagy@oregional.hu>, 2018\n"
+"POT-Creation-Date: 2018-09-18 10:05+0000\n"
+"PO-Revision-Date: 2018-08-24 11:49+0000\n"
 "Language-Team: Hungarian (https://www.transifex.com/odoo/teams/41243/hu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,30 +16,24 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: website_helpdesk
-#: model:ir.ui.view,arch_db:website_helpdesk.team
-msgid ""
-"<span class=\"sr-only\">Toggle navigation</span>\n"
-"                            <span class=\"icon-bar\"/>\n"
-"                            <span class=\"icon-bar\"/>"
+#: model_terms:ir.ui.view,arch_db:website_helpdesk.team
+msgid "Description"
 msgstr ""
-"<span class=\"sr-only\">Navigáció átkapcsolása</span>\n"
-"                            <span class=\"icon-bar\"/>\n"
-"                            <span class=\"icon-bar\"/>"
 
 #. module: website_helpdesk
-#: model:ir.ui.view,arch_db:website_helpdesk.team
-msgid "Description"
-msgstr "Leírás"
+#: model_terms:ir.ui.view,arch_db:website_helpdesk.team
+msgid "Dropdown menu"
+msgstr ""
 
 #. module: website_helpdesk
 #: model:website.menu,name:website_helpdesk.website_menu_helpdesk
 msgid "Help"
-msgstr "Súgó"
+msgstr ""
 
 #. module: website_helpdesk
-#: model:ir.ui.view,arch_db:website_helpdesk.team
+#: model_terms:ir.ui.view,arch_db:website_helpdesk.team
 msgid "Helpdesk"
-msgstr "Helpdesk"
+msgstr ""
 
 #. module: website_helpdesk
 #: model:website.menu,name:website_helpdesk.menu_helpdesk
@@ -53,22 +42,27 @@ msgstr ""
 
 #. module: website_helpdesk
 #: model:ir.model,name:website_helpdesk.model_helpdesk_team
-#: model:ir.ui.view,arch_db:website_helpdesk.team
+#: model_terms:ir.ui.view,arch_db:website_helpdesk.team
 msgid "Helpdesk Team"
 msgstr ""
 
 #. module: website_helpdesk
-#: model:ir.ui.view,arch_db:website_helpdesk.not_published_any_team
+#: model:ir.model.fields,field_description:website_helpdesk.field_helpdesk_team__is_published
+msgid "Is published"
+msgstr ""
+
+#. module: website_helpdesk
+#: model_terms:ir.ui.view,arch_db:website_helpdesk.not_published_any_team
 msgid "No teams have been published."
 msgstr ""
 
 #. module: website_helpdesk
-#: model:ir.ui.view,arch_db:website_helpdesk.team
+#: model_terms:ir.ui.view,arch_db:website_helpdesk.team
 msgid "Submit a Ticket"
 msgstr ""
 
 #. module: website_helpdesk
-#: model:ir.ui.view,arch_db:website_helpdesk.team
+#: model_terms:ir.ui.view,arch_db:website_helpdesk.team
 msgid "Team Settings"
 msgstr ""
 
@@ -76,19 +70,18 @@ msgstr ""
 #: model:ir.model.fields,help:website_helpdesk.field_helpdesk_team__website_url
 msgid "The full URL to access the document through the website."
 msgstr ""
-"A teljes elérési út/URL a dokumentum weboldalon keresztüli eléréséhez."
 
 #. module: website_helpdesk
-#: model:ir.ui.view,arch_db:website_helpdesk.team
+#: model_terms:ir.ui.view,arch_db:website_helpdesk.team
 msgid "View my Tickets"
 msgstr ""
 
 #. module: website_helpdesk
 #: model:ir.model.fields,field_description:website_helpdesk.field_helpdesk_team__website_published
-msgid "Visible in Website"
-msgstr "Látható a weboldalon"
+msgid "Visible on current website"
+msgstr ""
 
 #. module: website_helpdesk
 #: model:ir.model.fields,field_description:website_helpdesk.field_helpdesk_team__website_url
 msgid "Website URL"
-msgstr "Honlap URL"
+msgstr ""

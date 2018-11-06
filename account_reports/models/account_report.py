@@ -55,6 +55,7 @@ class AccountReport(models.AbstractModel):
     _description = 'Account Report'
 
     MAX_LINES = 80
+    filter_multi_company = True
     filter_date = None
     filter_cash_basis = None
     filter_all_entries = None
@@ -83,10 +84,14 @@ class AccountReport(models.AbstractModel):
             filter_name = element[7:]
             options[filter_name] = getattr(self, element)
 
-        company_ids = get_user_companies(self._cr, self.env.user.id)
-        if len(company_ids) > 1:
-            companies = self.env['res.company'].browse(company_ids)
-            options['multi_company'] = [{'id': c.id, 'name': c.name, 'selected': True if c.id == self.env.user.company_id.id else False} for c in companies]
+        if options.get('multi_company'):
+            company_ids = get_user_companies(self._cr, self.env.user.id)
+            if len(company_ids) > 1:
+                companies = self.env['res.company'].browse(company_ids)
+                options['multi_company'] = [{'id': c.id, 'name': c.name, 'selected': True if c.id == self.env.user.company_id.id else False} for c in companies]
+            else:
+                del options['multi_company']
+
         if options.get('journals'):
             options['journals'] = self._get_journals()
 
@@ -434,9 +439,6 @@ class AccountReport(models.AbstractModel):
             searchview_dict['analytic_tags'] = self.env.user.id in self.env.ref('analytic.group_analytic_tags').users.ids and [(t.id, t.name) for t in self.env['account.analytic.tag'].search([])] or False
             options['selected_analytic_tag_names'] = [self.env['account.analytic.tag'].browse(int(tag)).name for tag in options['analytic_tags']]
         if options.get('partner'):
-            partners = self.env['account.move.line'].read_group([('partner_id', '!=', False)], ['partner_id'], ['partner_id'])
-            searchview_dict['res_partners'] = [partner['partner_id'] for partner in partners] or False # list of tuple(id, name)
-            searchview_dict['res_partner_categories'] = [(category.id, category.name) for category in self.env['res.partner.category'].search([])] or False
             options['selected_partner_ids'] = [self.env['res.partner'].browse(int(partner)).name for partner in options['partner_ids']]
             options['selected_partner_categories'] = [self.env['res.partner.category'].browse(int(category)).name for category in options['partner_categories']]
 

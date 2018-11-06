@@ -4,16 +4,17 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2018
 # Gunther Clauwaert <gclauwae@hotmail.com>, 2018
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
 # dpms <pieter.van.de.wygaert@telenet.be>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 13:17+0000\n"
-"PO-Revision-Date: 2018-09-21 13:17+0000\n"
+"PO-Revision-Date: 2018-08-24 09:15+0000\n"
 "Last-Translator: dpms <pieter.van.de.wygaert@telenet.be>, 2018\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -288,7 +289,7 @@ msgstr "Bevestig activa automatisch"
 #: selection:account.asset.asset,date_first_depreciation:0
 #: selection:account.asset.category,date_first_depreciation:0
 msgid "Based on Last Day of Purchase Period"
-msgstr "Gebaseerd op laatste dag van inkoop periode"
+msgstr "Gebaseerd op laatste dag van inkoopperiode"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
@@ -781,7 +782,7 @@ msgstr "Items"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_category__journal_id
 msgid "Journal"
-msgstr "Kasboek"
+msgstr "Dagboek"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:463

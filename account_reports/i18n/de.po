@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# Ermin Trevisan <trevi@twanda.com>, 2018
 # Wolfgang Taferner, 2018
 # Rudolf Schnapka <rs@techno-flex.de>, 2018
 # Johannes Croe <jcr@odoo.com>, 2018
@@ -345,6 +346,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_reports.field_account_financial_html_report__cash_basis
 msgid "Allow cash basis mode"
 msgstr ""
+"Ermöglicht die Abrechnung nach vereinnahmten Entgelten (Istbesteuerung)"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_financial_html_report__comparison
@@ -514,12 +516,12 @@ msgstr "Kasse/Bank"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
 msgid "Cash Basis"
-msgstr "Einnahme-Überschuss-Rechnung (EÜR)"
+msgstr "Nach vereinnahmten Entgelten"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
 msgid "Cash Basis Method"
-msgstr "Einnahme-Überschuss-Rechnung"
+msgstr "Steuerabrechnung nach vereinnahmten Entgelten"
 
 #. module: account_reports
 #: model:account.financial.html.report,name:account_reports.account_financial_report_cashsummary0
@@ -2312,6 +2314,8 @@ msgstr "Journalfilter im Bericht anzeigen"
 #: model:ir.model.fields,help:account_reports.field_account_financial_html_report__cash_basis
 msgid "display the option to switch to cash basis mode"
 msgstr ""
+"Die Option für den Wechsel zur Abrechnung nach vereinnahmten Entgelten "
+"anzeigen"
 
 #. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_account_financial_html_report__unfold_all_filter

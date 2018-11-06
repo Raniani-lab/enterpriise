@@ -1455,6 +1455,70 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
+    QUnit.test('Remove a drop-down menu using kanban editor', function (assert) {
+        assert.expect(5);
+        var arch =
+            '<kanban>' +
+                '<templates>' +
+                    '<t t-name="kanban-box">' +
+                        '<div>' +
+                            '<div>' +
+                                '<field name="display_name"/>' +
+                            '</div>' +
+                            '<div class="o_dropdown_kanban dropdown">' +
+                                '<a class="dropdown-toggle o-no-caret btn" data-toggle="dropdown" href="#">' +
+                                    '<span class="fa fa-bars fa-lg"/>' +
+                                '</a>' +
+                                '<div class="dropdown-menu" role="menu">' +
+                                    '<a type="edit" class="dropdown-item">Edit</a>'+
+                                '</div>' +
+                            '</div>' +
+                        '</div>' +
+                    '</t>' +
+                '</templates>' +
+            '</kanban>';
+        var fieldsView;
+        var vem = studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'coucou',
+            arch: arch,
+            mockRPC: function (route, args) {
+                if (route === '/web_studio/edit_view') {
+                    assert.strictEqual(args.operations[0].type, 'remove', 'Should have passed correct OP type');
+                    assert.strictEqual(args.operations[0].target.tag, 'div', 'Should have correct target tag');
+                    assert.deepEqual(args.operations[0].target.xpath_info, [
+                        {tag: 'kanban', indice: 1},
+                        {tag: 'templates', indice: 1},
+                        {tag: 't', indice: 1},
+                        {tag: 'div', indice: 1},
+                        {tag: 'div', indice: 2}],
+                        'Should have correct xpath_info as we do not have any tag identifier attribute on drop-down div'
+                    );
+                    // the server sends the arch in string but it's post-processed
+                    // by the ViewEditorManager
+                    fieldsView.arch = arch;
+                    return $.when({
+                        fields: fieldsView.fields,
+                        fields_views: {
+                            kanban: fieldsView,
+                        }
+                    });
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+        // used to generate the new fields view in mockRPC
+        fieldsView = $.extend(true, {}, vem.fields_view);
+        assert.strictEqual(vem.$('.o_dropdown_kanban').length, 1, "there should be one dropdown node");
+        vem.$('.o_dropdown_kanban').click();
+        // remove drop-down from sidebar
+        vem.$('.o_web_studio_sidebar .o_web_studio_remove').click();
+        assert.strictEqual($('.modal-body:first').text(), "Are you sure you want to remove this div from the view?",
+            "should display the correct message");
+        $('.modal .btn-primary').click();
+        vem.destroy();
+    });
+
     QUnit.module('Search');
 
     QUnit.test('empty search editor', function(assert) {

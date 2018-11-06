@@ -180,6 +180,26 @@ tour.register('web_studio_tests_tour', {
     // click on the created app
     trigger: '.o_app[data-menu-xmlid*="studio"]:last',
 }, {
+    // create a new menu
+    trigger: '.o_main_navbar .o_web_edit_menu',
+}, {
+    trigger: '.o_web_studio_edit_menu_modal .js_add_menu',
+}, {
+    trigger: 'input[name="name"]',
+    run: 'text ' + utils.randomString(6),
+}, {
+    trigger: '.o_field_many2one[name="model"] input',
+    run: 'text a',
+}, {
+    trigger: '.ui-autocomplete > .ui-menu-item:first > a',
+    in_modal: false,
+}, {
+    trigger: 'button:contains(Confirm):not(".disabled")',
+},{
+    trigger: 'button:contains(Confirm):not(".disabled")',
+}, {
+    // check that the Studio menu is still there
+    extra_trigger: '.o_web_studio_menu',
     // switch to form view
     trigger: '.o_web_studio_views_icons > a[data-name="form"]',
 }, {

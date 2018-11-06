@@ -7,6 +7,7 @@
 # Eloïse Stilmant <est@odoo.com>, 2018
 # Olivier Lenoir <olivier.lenoir@free.fr>, 2018
 # Laura Piraux <lap@odoo.com>, 2018
+# Léonie Bouchat <lbo@odoo.com>, 2018
 # Nathan Grognet <ngr@odoo.com>, 2018
 # Christophe CHAUVET <christophe.chauvet@gmail.com>, 2018
 # e2f <projects@e2f.com>, 2018
@@ -1075,7 +1076,7 @@ msgid ""
 " total number of ratings"
 msgstr ""
 "Calculez le ratio entre le nombre de meilleures évaluations et le nombre "
-"total de nombre d'évaluations"
+"total d'évaluations"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -1580,7 +1581,7 @@ msgstr "Abonnés (Partenaires)"
 #. module: sale_subscription
 #: selection:sale.subscription.template,recurring_rule_boundary:0
 msgid "Forever"
-msgstr ""
+msgstr "Pour toujours"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search

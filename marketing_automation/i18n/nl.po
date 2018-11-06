@@ -4,15 +4,16 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2018
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-08 07:14+0000\n"
-"PO-Revision-Date: 2018-10-08 07:14+0000\n"
-"Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2018\n"
+"PO-Revision-Date: 2018-08-24 11:38+0000\n"
+"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2018\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -283,7 +284,7 @@ msgstr "Geklikt"
 #: model:marketing.campaign,name:marketing_automation.marketing_campaign_1
 #: model:utm.campaign,name:marketing_automation.marketing_campaign_1_utm_campaign
 msgid "Commercial prospection"
-msgstr "Commerciële prospectie"
+msgstr "Commercieel voorstel"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_search
@@ -646,7 +647,7 @@ msgstr "Marketingactiviteit"
 #: model:ir.module.category,name:marketing_automation.module_marketing_automation_category
 #: model:ir.ui.menu,name:marketing_automation.marketing_automation_menu
 msgid "Marketing Automation"
-msgstr "Marketing Automatisering"
+msgstr "Marketing"
 
 #. module: marketing_automation
 #: code:addons/marketing_automation/models/marketing_campaign.py:537
@@ -860,7 +861,7 @@ msgstr "Uitvoeren"
 #, python-format
 msgid "Please save the campaign to add a child activity"
 msgstr ""
-"Gelieve deze campagne te bewaren om een onderliggende activiteit toe te "
+"U dient deze campagne te bewaren om een onderliggende activiteit toe te "
 "voegen"
 
 #. module: marketing_automation
@@ -1195,7 +1196,7 @@ msgstr "Gebruiker"
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__validity_duration_number
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Valid during"
-msgstr "Geldig tijdens"
+msgstr "Geldig voor"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__validity_duration

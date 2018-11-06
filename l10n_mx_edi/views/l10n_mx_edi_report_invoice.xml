@@ -123,6 +123,7 @@
                         </div>
                         <div class="digital-stamp-content">
                             <span>Emitter certificate:</span> <span t-esc="xml.get('noCertificado', xml.get('NoCertificado'))"/>
+                            <span> | SAT Certificate:</span> <span t-esc="tfd.get('NoCertificadoSAT')"/>
                             <span> | Expedition place:</span> <span t-esc="xml.get('LugarExpedicion')"/>
                             <span> | Fiscal Regime:</span><span t-esc="xml.Emisor.get('RegimenFiscal', '')"/>
                             <span> | Emission Date:</span> <span t-esc="xml.get('fecha', xml.get('Fecha', '')).replace('T', ' ')"/>

@@ -1366,7 +1366,7 @@ msgstr ""
 #: model:product.template,weight_uom_name:sale_coupon.product_product_10_percent_discount_product_template
 #: model:product.template,weight_uom_name:sale_coupon.product_product_free_large_cabinet_product_template
 msgid "kg"
-msgstr ""
+msgstr "kg"
 
 #. module: sale_coupon
 #: code:addons/sale_coupon/models/sale_order.py:202

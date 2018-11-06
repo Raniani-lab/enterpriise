@@ -679,7 +679,7 @@ msgstr "Label"
 #, python-format
 msgid "Please enter a valid hour between 0:00 to 24:00 for your slots."
 msgstr ""
-"Gelieve een geldig uur tussen 0:00 en 24:00 in te geven voor uw slots."
+"U dient een geldig uur tussen 0:00 en 24:00 in te geven voor uw slots."
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment

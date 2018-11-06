@@ -66,6 +66,7 @@ class ReportL10nNLIntrastat(models.AbstractModel):
             lines.append({
                 'id': result['partner_id'],
                 'caret_options': 'res.partner',
+                'model': 'res.partner',
                 'name': result['name'],
                 'level': 2,
                 'columns': [

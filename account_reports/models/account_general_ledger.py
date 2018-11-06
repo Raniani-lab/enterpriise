@@ -134,7 +134,7 @@ class report_account_general_ledger(models.AbstractModel):
         self.env.cr.execute(with_sql + query, with_params + where_params)
         res = self.env.cr.fetchone()
         date = self._context.get('date_to') or fields.Date.today()
-        currency_convert = lambda x: company and company.currency_id._convert(x, self.env.user.company_id.currency_id, company, date) or x
+        currency_convert = lambda x: company and company.currency_id._convert(x, self.env.user.company_id.currency_id, self.env.user.company_id, date) or x
         return {'balance': currency_convert(res[0]), 'amount_currency': res[1], 'debit': currency_convert(res[2]), 'credit': currency_convert(res[3])}
 
     def _do_query(self, options, line_id, group_by_account=True, limit=False):
@@ -245,6 +245,7 @@ class report_account_general_ledger(models.AbstractModel):
                     accounts[unaffected_earnings_account[0]] = unaffected_earnings_per_company[company]
                     accounts[unaffected_earnings_account[0]]['initial_bal'] = unaffected_earnings_per_company[company]
                     accounts[unaffected_earnings_account[0]]['lines'] = []
+                    accounts[unaffected_earnings_account[0]]['total_lines'] = 0
         return accounts
 
     def _get_taxes(self, journal):

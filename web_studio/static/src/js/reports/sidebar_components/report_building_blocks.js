@@ -236,7 +236,11 @@ var AbstractNewBuildingBlock = Abstract.extend({
         return inheritance;
     },
     _createStructure: function (options) {
-        var xml = ['<div class="row">'];
+        var xml = ['<div class="row'];
+        if (this.structureClass) {
+            xml.push(' ' + this.structureClass);
+        }
+        xml.push('">');
         for (var k = 0; k < this.dropColumns.length; k++) {
             var column = this.dropColumns[k];
             xml.push('<div class="col-');
@@ -697,6 +701,7 @@ var BlockAddress = AbstractNewBuildingBlock.extend({
     className: 'o_web_studio_field_fa',
     hookAutoHeight: false,
     hookClass: 'o_web_studio_hook_address',
+    structureClass: 'address',
     dropColumns: [[0, 5], [2, 5]],
     add: function () {
         var self = this;

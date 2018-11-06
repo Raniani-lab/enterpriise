@@ -3,14 +3,14 @@
 # * website_form_editor
 # 
 # Translators:
-# Quim - eccit <quim@eccit.com>, 2017
+# Martin Trigaux, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 10.saas~18+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-20 11:33+0000\n"
-"PO-Revision-Date: 2017-09-20 11:33+0000\n"
-"Last-Translator: Quim - eccit <quim@eccit.com>, 2017\n"
+"POT-Creation-Date: 2018-09-18 10:05+0000\n"
+"PO-Revision-Date: 2018-09-18 10:05+0000\n"
+"Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: Catalan (https://www.transifex.com/odoo/teams/41243/ca/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,35 +20,28 @@ msgstr ""
 
 #. module: website_form_editor
 #. openerp-web
-#: code:addons/website_form_editor/static/src/xml/website_form_editor.xml:11
+#: code:addons/website_form_editor/static/src/xml/website_form_editor.xml:12
 #, python-format
 msgid "&times;"
 msgstr ""
 
 #. module: website_form_editor
-#: model:ir.ui.view,arch_db:website_form_editor.s_website_form
-msgid ""
-"<span class=\"btn btn-primary btn-lg o_website_form_send\">Send</span>\n"
-"                        <span id=\"o_website_form_result\"/>"
-msgstr ""
-
-#. module: website_form_editor
-#: model:ir.ui.view,arch_db:website_form_editor.snippet_options
+#: model_terms:ir.ui.view,arch_db:website_form_editor.snippet_options
 msgid "Add a custom field"
 msgstr ""
 
 #. module: website_form_editor
-#: model:ir.ui.view,arch_db:website_form_editor.snippet_options
+#: model_terms:ir.ui.view,arch_db:website_form_editor.snippet_options
 msgid "Add an existing field"
 msgstr ""
 
 #. module: website_form_editor
-#: model:ir.ui.view,arch_db:website_form_editor.snippet_options
+#: model_terms:ir.ui.view,arch_db:website_form_editor.snippet_options
 msgid "Change Form Parameters"
 msgstr ""
 
 #. module: website_form_editor
-#: model:ir.ui.view,arch_db:website_form_editor.snippet_options
+#: model_terms:ir.ui.view,arch_db:website_form_editor.snippet_options
 msgid "Checkbox"
 msgstr ""
 
@@ -57,40 +50,40 @@ msgstr ""
 #: code:addons/website_form_editor/static/src/xml/website_form_editor.xml:21
 #, python-format
 msgid "Close"
-msgstr ""
+msgstr "Tancar"
 
 #. module: website_form_editor
-#: model:ir.ui.view,arch_db:website_form_editor.snippet_options
+#: model_terms:ir.ui.view,arch_db:website_form_editor.snippet_options
 msgid "Date"
 msgstr "Data"
 
 #. module: website_form_editor
-#: model:ir.ui.view,arch_db:website_form_editor.snippet_options
+#: model_terms:ir.ui.view,arch_db:website_form_editor.snippet_options
 msgid "Date &amp; Time"
 msgstr ""
 
 #. module: website_form_editor
-#: model:ir.ui.view,arch_db:website_form_editor.snippet_options
+#: model_terms:ir.ui.view,arch_db:website_form_editor.snippet_options
 msgid "Decimal Number"
 msgstr ""
 
 #. module: website_form_editor
-#: model:ir.ui.view,arch_db:website_form_editor.snippet_options
+#: model_terms:ir.ui.view,arch_db:website_form_editor.snippet_options
 msgid "File Upload"
 msgstr ""
 
 #. module: website_form_editor
-#: model:ir.ui.view,arch_db:website_form_editor.snippet_options
+#: model_terms:ir.ui.view,arch_db:website_form_editor.snippet_options
 msgid "Hidden"
 msgstr ""
 
 #. module: website_form_editor
-#: model:ir.ui.view,arch_db:website_form_editor.snippet_options
+#: model_terms:ir.ui.view,arch_db:website_form_editor.snippet_options
 msgid "Long Text"
 msgstr ""
 
 #. module: website_form_editor
-#: model:ir.ui.view,arch_db:website_form_editor.snippet_options
+#: model_terms:ir.ui.view,arch_db:website_form_editor.snippet_options
 msgid "Multiple Checkboxes"
 msgstr ""
 
@@ -102,19 +95,19 @@ msgid "No matching record !"
 msgstr ""
 
 #. module: website_form_editor
-#: model:ir.ui.view,arch_db:website_form_editor.snippet_options
+#: model_terms:ir.ui.view,arch_db:website_form_editor.snippet_options
 msgid "Number"
 msgstr ""
 
 #. module: website_form_editor
-#: model:ir.ui.view,arch_db:website_form_editor.snippet_options
+#: model_terms:ir.ui.view,arch_db:website_form_editor.snippet_options
 msgid "Radio Buttons"
 msgstr ""
 
 #. module: website_form_editor
-#: model:ir.ui.view,arch_db:website_form_editor.snippet_options
+#: model_terms:ir.ui.view,arch_db:website_form_editor.snippet_options
 msgid "Required"
-msgstr ""
+msgstr "Requerit"
 
 #. module: website_form_editor
 #. openerp-web
@@ -124,16 +117,21 @@ msgid "Save"
 msgstr "Desar"
 
 #. module: website_form_editor
-#: model:ir.ui.view,arch_db:website_form_editor.snippet_options
+#: model_terms:ir.ui.view,arch_db:website_form_editor.snippet_options
 msgid "Selection"
+msgstr "Selecció"
+
+#. module: website_form_editor
+#: model_terms:ir.ui.view,arch_db:website_form_editor.s_website_form
+msgid "Send"
 msgstr ""
 
 #. module: website_form_editor
-#: model:ir.ui.view,arch_db:website_form_editor.snippet_options
+#: model_terms:ir.ui.view,arch_db:website_form_editor.snippet_options
 msgid "Text"
-msgstr ""
+msgstr "Text"
 
 #. module: website_form_editor
-#: model:ir.ui.view,arch_db:website_form_editor.ir_model_view
+#: model_terms:ir.ui.view,arch_db:website_form_editor.ir_model_view
 msgid "Website Forms"
 msgstr ""

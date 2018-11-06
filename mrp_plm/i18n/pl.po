@@ -150,7 +150,7 @@ msgstr "Stan czynności"
 #: selection:mrp.eco.bom.change,change_type:0
 #: selection:mrp.eco.routing.change,change_type:0
 msgid "Add"
-msgstr "Montaż"
+msgstr "Dodaj"
 
 #. module: mrp_plm
 #: model_terms:ir.actions.act_window,help:mrp_plm.mrp_eco_tag_action
@@ -1757,12 +1757,12 @@ msgstr "Historia komunikacji"
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_routing_change__workcenter_id
 msgid "Work Center"
-msgstr "Centrum robocze"
+msgstr "Gniazdo produkcyjne"
 
 #. module: mrp_plm
 #: model:ir.ui.menu,name:mrp_plm.menu_mrp_plm_workcenters
 msgid "Work Centers"
-msgstr "Centra robocze"
+msgstr "Gniazda produkcyjne"
 
 #. module: mrp_plm
 #: code:addons/mrp_plm/models/mrp_eco.py:489

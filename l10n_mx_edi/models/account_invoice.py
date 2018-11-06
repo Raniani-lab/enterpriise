@@ -357,7 +357,8 @@ class AccountInvoice(models.Model):
             key_password = certificate_id.password
             try:
                 client = Client(url, timeout=20)
-                response = client.service.cancelar(username, password, uuids, cer_pem, key_pem, key_password)
+                response = client.service.cancelar(username, password, uuids, cer_pem.replace(
+                    '\n', ''), key_pem, key_password)
             except Exception as e:
                 inv.l10n_mx_edi_log_error(str(e))
                 continue
@@ -433,7 +434,8 @@ class AccountInvoice(models.Model):
                 client = Client(url, timeout=20)
                 invoices_list = client.factory.create("UUIDS")
                 invoices_list.uuids.string = [uuid]
-                response = client.service.cancel(invoices_list, username, password, company_id.vat, cer_pem, key_pem)
+                response = client.service.cancel(invoices_list, username, password, company_id.vat, cer_pem.replace(
+                    '\n', ''), key_pem)
             except Exception as e:
                 inv.l10n_mx_edi_log_error(str(e))
                 continue
@@ -496,7 +498,6 @@ class AccountInvoice(models.Model):
         self.ensure_one()
         if xml_signed:
             # Post append addenda
-            xml_signed = self.l10n_mx_edi_append_addenda(xml_signed)
             body_msg = _('The sign service has been called with success')
             # Update the pac status
             self.l10n_mx_edi_pac_status = 'signed'
@@ -507,6 +508,7 @@ class AccountInvoice(models.Model):
                 'datas': xml_signed,
                 'mimetype': 'application/xml'
             })
+            xml_signed = self.l10n_mx_edi_append_addenda(xml_signed)
             post_msg = [_('The content of the attachment has been updated')]
         else:
             body_msg = _('The sign service requested failed')
@@ -819,8 +821,14 @@ class AccountInvoice(models.Model):
         self.message_post(
             body=_('Addenda has been added in the CFDI with success'),
             subtype='account.mt_invoice_validated')
-        return base64.encodestring(etree.tostring(
+        xml_signed = base64.encodestring(etree.tostring(
             tree, pretty_print=True, xml_declaration=True, encoding='UTF-8'))
+        attachment_id = self.l10n_mx_edi_retrieve_last_attachment()
+        attachment_id.write({
+            'datas': xml_signed,
+            'mimetype': 'application/xml'
+        })
+        return xml_signed
 
     @api.multi
     def _l10n_mx_edi_create_cfdi(self):

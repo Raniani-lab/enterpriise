@@ -5,6 +5,7 @@
 # Translators:
 # Martin Trigaux, 2018
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2018
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
 # Thomas Pot <thomas@open2bizz.nl>, 2018
 # Cas Vissers <casvissers@brahoo.nl>, 2018
 msgid ""
@@ -27,6 +28,8 @@ msgid ""
 "<span attrs=\"{'invisible': [('letters_qty', '&gt;', 1)]}\"> Sending this "
 "document will cost </span>"
 msgstr ""
+"<span attrs=\"{'invisible': [('letters_qty', '&gt;', 1)]}\"> Dit document "
+"versturen kost </span>"
 
 #. module: snailmail_account_reports_followup
 #: model_terms:ir.ui.view,arch_db:snailmail_account_reports_followup.followup_send_wizard_form
@@ -101,13 +104,13 @@ msgstr "Brief"
 #. module: snailmail_account_reports_followup
 #: model:ir.model.fields,field_description:snailmail_account_reports_followup.field_followup_send__letters_qty
 msgid "Letters Qty"
-msgstr "Brieven hoeveelheid"
+msgstr "Aantal brieven"
 
 #. module: snailmail_account_reports_followup
 #: model:ir.actions.act_window,name:snailmail_account_reports_followup.followup_send
 #: model_terms:ir.ui.view,arch_db:snailmail_account_reports_followup.followup_send_wizard_form
 msgid "Send Follow-Ups"
-msgstr ""
+msgstr "Verstuur herinneringen"
 
 #. module: snailmail_account_reports_followup
 #: model:ir.model.fields,field_description:snailmail_account_reports_followup.field_account_followup_followup_line__send_letter
@@ -125,12 +128,12 @@ msgstr "Verzenden via post"
 #. module: snailmail_account_reports_followup
 #: model_terms:ir.ui.view,arch_db:snailmail_account_reports_followup.followup_send_wizard_form
 msgid "Sending these"
-msgstr ""
+msgstr "Deze aan het versturen"
 
 #. module: snailmail_account_reports_followup
 #: model:ir.model.fields,help:snailmail_account_reports_followup.field_account_followup_followup_line__send_letter
 msgid "When processing, it will send a letter by Post"
-msgstr ""
+msgstr "Bij verwerken wordt een brief verstuurt per post"
 
 #. module: snailmail_account_reports_followup
 #: model_terms:ir.ui.view,arch_db:snailmail_account_reports_followup.followup_send_wizard_form

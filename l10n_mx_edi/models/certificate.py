@@ -17,7 +17,7 @@ except ImportError:
 from pytz import timezone
 
 from odoo import _, api, fields, models, tools
-from odoo.exceptions import ValidationError, UserError
+from odoo.exceptions import ValidationError, UserError, except_orm
 from odoo.tools.misc import DEFAULT_SERVER_DATETIME_FORMAT
 
 
@@ -148,6 +148,8 @@ class Certificate(models.Model):
                 after = mexican_tz.localize(
                     datetime.strptime(certificate.get_notAfter().decode("utf-8"), date_format))
                 serial_number = certificate.get_serial_number()
+            except except_orm as exc_orm:
+                raise exc_orm
             except Exception:
                 raise ValidationError(_('The certificate content is invalid.'))
             # Assign extracted values from the certificate

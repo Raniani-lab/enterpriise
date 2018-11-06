@@ -46,6 +46,19 @@ Menu.include({
     //--------------------------------------------------------------------------
 
     /**
+     * Renders the Studio menu (a navbar below the main navbar).
+     *
+     * @param {Object} action
+     * @returns {Deferred}
+     */
+    renderStudioMenu: function (action) {
+        if (this.studio_menu) {
+            this.studio_menu.destroy();
+        }
+        this.studio_menu = new SubMenu(this, action);
+        return this.studio_menu.insertAfter(this.$('.o_main_navbar'));
+    },
+    /**
      * Modifies the menu according to the Studio mode (black navbar,
      * leave and notes buttons, etc.).
      *
@@ -269,17 +282,11 @@ Menu.include({
         });
     },
     /**
-     * Displays the Studio menu (a navbar below the main navbar).
-     *
      * @private
      * @param {Object} action
      */
     _onStudioMain: function (action) {
-        if (this.studio_menu) {
-            this.studio_menu.destroy();
-        }
-        this.studio_menu = new SubMenu(this, action);
-        this.studio_menu.insertAfter(this.$('.o_main_navbar'));
+        this.renderStudioMenu(action);
     },
 });
 

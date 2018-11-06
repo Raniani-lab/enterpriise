@@ -19,8 +19,8 @@ class ReportL10nDePartnerVatIntra(models.AbstractModel):
         if not context.get('company_ids'):
             return lines
         tag_ids = [self.env['ir.model.data'].xmlid_to_res_id(k) for k in [
-            'l10n_de.tag_de_intracom_community_delivery', 
-            'l10n_de.tag_de_intracom_community_supplies', 
+            'l10n_de.tag_de_intracom_community_delivery',
+            'l10n_de.tag_de_intracom_community_supplies',
             'l10n_de.tag_de_intracom_ABC']]
         query = """
             SELECT p.name As partner_name, l.partner_id AS partner_id, p.vat AS vat,
@@ -63,6 +63,7 @@ class ReportL10nDePartnerVatIntra(models.AbstractModel):
                 lines.append({
                     'id': row['partner_id'],
                     'caret_options': 'res.partner',
+                    'model': 'res.partner',
                     'name': row['partner_name'],
                     'columns': [{'name': v} for v in columns],
                     'unfoldable': False,

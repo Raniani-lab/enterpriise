@@ -9,16 +9,18 @@
 # Sebastiano Pistore <SebastianoPistore.info@protonmail.ch>, 2018
 # ginfriz <ginfriz84@hotmail.it>, 2018
 # Alberto Vincenzi <alberto.vincenzi@gmail.com>, 2018
-# Paolo Valier, 2018
 # David Minneci <david@numeko.it>, 2018
 # Niccolò Lubello <nlubello@gmail.com>, 2018
+# Paolo Valier, 2018
+# mymage <stefano.consolaro@mymage.it>, 2018
 # Léonie Bouchat <lbo@odoo.com>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-08-24 11:37+0000\n"
 "Last-Translator: Léonie Bouchat <lbo@odoo.com>, 2018\n"
 "Language-Team: Italian (https://www.transifex.com/odoo/teams/41243/it/)\n"
 "MIME-Version: 1.0\n"
@@ -230,7 +232,7 @@ msgstr ""
 #: model:product.product,name:delivery_dhl.product_product_delivery_dhl_usa
 #: model:product.template,name:delivery_dhl.product_product_delivery_dhl_usa_product_template
 msgid "DHL USA"
-msgstr ""
+msgstr "DHL Stati Uniti"
 
 #. module: delivery_dhl
 #: model:delivery.carrier,name:delivery_dhl.delivery_carrier_dhl_intl
@@ -362,7 +364,7 @@ msgstr ""
 #. module: delivery_dhl
 #: selection:product.packaging,package_carrier_type:0
 msgid "No carrier integration"
-msgstr ""
+msgstr "Nessuna integrazione vettore"
 
 #. module: delivery_dhl
 #: code:addons/delivery_dhl/models/dhl_request.py:179

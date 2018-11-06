@@ -8,13 +8,14 @@
 # Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2018
 # Tomasz Leppich <t.leppich@gmail.com>, 2018
 # Piotr Szlązak <szlazakpiotr@gmail.com>, 2018
+# Paweł Wodyński <pw@myodoo.pl>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-08 07:14+0000\n"
 "PO-Revision-Date: 2018-10-08 07:14+0000\n"
-"Last-Translator: Piotr Szlązak <szlazakpiotr@gmail.com>, 2018\n"
+"Last-Translator: Paweł Wodyński <pw@myodoo.pl>, 2018\n"
 "Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -134,7 +135,7 @@ msgstr " Wniosek o obsługę"
 #: code:addons/mrp_maintenance/models/mrp_maintenance.py:93
 #, python-format
 msgid "Maintenance Requests"
-msgstr "Wniosek o obsługę"
+msgstr "Wnioski o obsługę"
 
 #. module: mrp_maintenance
 #: model_terms:ir.ui.view,arch_db:mrp_maintenance.mrp_workorder_tablet_view_form_inherit_maintenance
@@ -200,12 +201,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_maintenance.field_maintenance_equipment__workcenter_id
 #: model_terms:ir.ui.view,arch_db:mrp_maintenance.maintenance_equipment_view_form_inherit_mrp
 msgid "Work Center"
-msgstr "Centrum robocze"
+msgstr "Gniazdo produkcyjne"
 
 #. module: mrp_maintenance
 #: model:ir.ui.menu,name:mrp_maintenance.menu_workcenter_tree
 msgid "Work Centers"
-msgstr "Centra robocze"
+msgstr "Gniazda produkcyjne"
 
 #. module: mrp_maintenance
 #: model:ir.model,name:mrp_maintenance.model_mrp_workorder

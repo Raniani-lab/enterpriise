@@ -3,6 +3,7 @@
 
 from odoo import models, api, _, fields
 from odoo.tools import float_is_zero
+from odoo.tools.misc import format_date
 from datetime import timedelta
 
 
@@ -117,17 +118,20 @@ class ReportPartnerLedger(models.AbstractModel):
     def _get_lines(self, options, line_id=None):
         offset = int(options.get('lines_offset', 0))
         lines = []
+        context = self.env.context
         if line_id:
             line_id = int(line_id.split('_')[1]) or None
-        context = self.env.context
-
-        #If a default partner is set, we only want to load the line referring to it.
-        if options.get('partner_id'):
-            line_id = options['partner_id']
+        elif options.get('partner_ids') and len(options.get('partner_ids')) == 1:
+            #If a default partner is set, we only want to load the line referring to it.
+            partner_id = options['partner_ids'][0]
+            line_id = partner_id
+        if line_id:
+            if 'partner_' + str(line_id) not in options.get('unfolded_lines', []):
+                options.get('unfolded_lines', []).append('partner_' + str(line_id))
 
         grouped_partners = self._group_by_partner_id(options, line_id)
         sorted_partners = sorted(grouped_partners, key=lambda p: p.name or '')
-        unfold_all = context.get('print_mode') and not options.get('unfolded_lines') or options.get('partner_id')
+        unfold_all = context.get('print_mode') and not options.get('unfolded_lines')
         total_initial_balance = total_debit = total_credit = total_balance = 0.0
         for partner in sorted_partners:
             debit = grouped_partners[partner]['debit']
@@ -192,7 +196,7 @@ class ReportPartnerLedger(models.AbstractModel):
                     domain_lines.append({
                         'id': line.id,
                         'parent_id': 'partner_' + str(partner.id),
-                        'name': line.date,
+                        'name': format_date(self.env, line.date),
                         'class': 'date',
                         'columns': columns,
                         'caret_options': caret_type,

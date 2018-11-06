@@ -1,13 +1,13 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#    * l10n_mx_edi_customs
+#   * l10n_mx_edi_customs
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 11.0+e\n"
+"Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-15 19:40+0000\n"
-"PO-Revision-Date: 2018-03-15 19:40+0000\n"
+"POT-Creation-Date: 2018-10-30 19:50+0000\n"
+"PO-Revision-Date: 2018-10-30 19:50+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,17 +16,17 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: l10n_mx_edi_customs
-#: model:ir.ui.view,arch_db:l10n_mx_edi_customs.report_invoice_mx
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi_customs.report_invoice_mx
 msgid "<br/>Customs:"
 msgstr "<br/>Pedimentos:"
 
 #. module: l10n_mx_edi_customs
-#: model:ir.model.fields,field_description:l10n_mx_edi_customs.field_account_invoice_line_l10n_mx_edi_customs_number
+#: model:ir.model.fields,field_description:l10n_mx_edi_customs.field_account_invoice_line__l10n_mx_edi_customs_number
 msgid "Customs number"
 msgstr "Número de pedimento"
 
 #. module: l10n_mx_edi_customs
-#: code:addons/l10n_mx_edi_customs/models/account_invoice.py:46
+#: code:addons/l10n_mx_edi_customs/models/account_invoice.py:45
 #, python-format
 msgid "Error in the products:\n"
 " %s\n"
@@ -47,10 +47,10 @@ msgstr "Factura"
 #. module: l10n_mx_edi_customs
 #: model:ir.model,name:l10n_mx_edi_customs.model_account_invoice_line
 msgid "Invoice Line"
-msgstr "Linea de la Factura"
+msgstr "Línea de Factura"
 
 #. module: l10n_mx_edi_customs
-#: model:ir.model.fields,help:l10n_mx_edi_customs.field_account_invoice_line_l10n_mx_edi_customs_number
+#: model:ir.model.fields,help:l10n_mx_edi_customs.field_account_invoice_line__l10n_mx_edi_customs_number
 msgid "Optional field for entering the customs information in the case of first-hand sales of imported goods or in the case of foreign trade operations with goods or services.\n"
 "The format must be:\n"
 " - 2 digits of the year of validation followed by two spaces.\n"

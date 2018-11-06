@@ -4,16 +4,17 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2018
 # Thomas Pot <thomas@open2bizz.nl>, 2018
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Thomas Pot <thomas@open2bizz.nl>, 2018\n"
+"PO-Revision-Date: 2018-08-24 11:36+0000\n"
+"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2018\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -82,6 +83,8 @@ msgid ""
 "In result, the file might not be accepted by all bank as a valid SEPA Credit"
 " Transfer file"
 msgstr ""
+"Als resultaat kan het bestand door alle banken niet als een geldig SEPA-"
+"overschrijvingsbestand worden geaccepteerd"
 
 #. module: account_sepa
 #: model:ir.model.fields,field_description:account_sepa.field_res_company__sepa_orgid_issr
@@ -92,7 +95,7 @@ msgstr "Uitgever"
 #. module: account_sepa
 #: model:ir.model,name:account_sepa.model_account_journal
 msgid "Journal"
-msgstr "Kasboek"
+msgstr "Dagboek"
 
 #. module: account_sepa
 #: model:ir.model.fields,help:account_sepa.field_res_config_settings__sepa_initiating_party_name
@@ -122,13 +125,13 @@ msgstr "Betalingen via SEPA te verzenden"
 #: code:addons/account_sepa/models/account_batch_payment.py:42
 #, python-format
 msgid "Please note that the following warning has been raised:"
-msgstr ""
+msgstr "Houd er rekening mee dat de volgende waarschuwingen is gemeld:"
 
 #. module: account_sepa
 #: code:addons/account_sepa/models/account_batch_payment.py:46
 #, python-format
 msgid "Please note that the following warnings have been raised:"
-msgstr ""
+msgstr "Houd er rekening mee dat de volgende waarschuwing is gemeld:"
 
 #. module: account_sepa
 #: model:ir.model.fields,field_description:account_sepa.field_account_payment__partner_bank_account_id
@@ -178,12 +181,12 @@ msgstr ""
 #. module: account_sepa
 #: model:ir.model.fields,field_description:account_sepa.field_account_batch_payment__sct_generic
 msgid "Sct Generic"
-msgstr ""
+msgstr "Sct Algemeen"
 
 #. module: account_sepa
 #: model:ir.model.fields,field_description:account_sepa.field_account_batch_payment__sct_warning
 msgid "Sct Warning"
-msgstr ""
+msgstr "Sct Waarschuwing"
 
 #. module: account_sepa
 #: selection:res.company,sepa_pain_version:0
@@ -266,6 +269,8 @@ msgid ""
 "The following payments have no recipient bank account set: %s. \n"
 "\n"
 msgstr ""
+"Voor de volgende betalingen is geen bankrekening van een ontvanger "
+"ingesteld: %s\n"
 
 #. module: account_sepa
 #: code:addons/account_sepa/models/account_payment.py:45

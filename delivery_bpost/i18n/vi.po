@@ -360,7 +360,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:delivery_bpost.res_config_settings_view_form_sale
 #: model_terms:ir.ui.view,arch_db:delivery_bpost.res_config_settings_view_form_stock
 msgid "bpost Delivery Methods"
-msgstr ""
+msgstr "Phương thức giao hàng bpost"
 
 #. module: delivery_bpost
 #: code:addons/delivery_bpost/models/bpost_request.py:46
@@ -390,4 +390,4 @@ msgstr ""
 #: model:product.template,weight_uom_name:delivery_bpost.product_product_delivery_bpost_domestic_product_template
 #: model:product.template,weight_uom_name:delivery_bpost.product_product_delivery_bpost_world_product_template
 msgid "kg"
-msgstr ""
+msgstr "kg"

@@ -53,7 +53,7 @@
                             </ul>
                         </li>
                         <li t-ignore="true" t-if="user_id._is_public()">
-                            <a href="/web/login" class="o_docs_btn">Login</a>
+                            <a href="/web/login" class="col-sm-6 o_docs_btn">Login</a>
                         </li>
                     </ul>
                 </header>
@@ -63,7 +63,7 @@
                 <footer class="flex-grow-0 flex-shrink-0 mb16 mt32 ">
                     <div class="text-center col-sm-12">
                         <p t-if="expiration_date">shared by <t t-esc="author"/>, expired on <t t-esc="expiration_date"/></p>
-                        <br/>Powered by <a target="_blank" title="Odoo Website" href="http://www.odoo.com/page/dms"><img class="align-text-top" height="15" src="/web/static/src/img/logo_inverse_white_206px.png" alt="Odoo Logo"/><span style="color:white;">&amp;nbsp;Documents.</span></a>
+                        <br/>Powered by <a target="_blank" title="Odoo Website" href="http://www.odoo.com/page/documents"><img class="align-text-top" height="15" src="/web/static/src/img/logo_inverse_white_206px.png" alt="Odoo Logo"/><span style="color:white;">&amp;nbsp;Documents.</span></a>
                     </div>
                 </footer>
             </div>
@@ -161,7 +161,7 @@
     <template id="documents.share_single" name="Documents Share Single File">
         <t t-call="documents.public_page_layout">
             <t t-set="file_URL" t-value="base_url + '/web/content/' + str(attachment.id)"/>
-            <t t-set="file_token" t-value="'&amp;access_token=' + str(token) + '&amp;related_id=' + str(share_id) + '&amp;access_mode='documents_share'"/>
+            <t t-set="file_token" t-value="'&amp;access_token=' + str(token) + '&amp;related_id=' + str(share_id) + '&amp;access_mode=documents_share'"/>
             <t t-set="preview_URL" t-value="base_url + '/web/image/' + str(attachment.id) + '/600x500?upper_limit=true'"/>
             <t t-set="normal_preview_URL" t-value="base_url + '/web/image/' + str(attachment.id) + '/'"/>
             <t t-set="document_request" t-value="attachment.type == 'empty'"/>

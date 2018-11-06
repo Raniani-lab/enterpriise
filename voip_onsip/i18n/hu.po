@@ -2,15 +2,12 @@
 # This file contains the translation of the following modules:
 # * voip_onsip
 # 
-# Translators:
-# krnkris, 2017
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.3+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 08:34+0000\n"
-"PO-Revision-Date: 2018-06-25 08:34+0000\n"
-"Last-Translator: krnkris, 2017\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-08-24 11:49+0000\n"
 "Language-Team: Hungarian (https://www.transifex.com/odoo/teams/41243/hu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,7 +16,12 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: voip_onsip
-#: model:ir.ui.view,arch_db:voip_onsip.res_config_settings_view_form
+#: model:ir.model,name:voip_onsip.model_res_config_settings
+msgid "Config Settings"
+msgstr ""
+
+#. module: voip_onsip
+#: model_terms:ir.ui.view,arch_db:voip_onsip.res_config_settings_view_form
 msgid "OnSIP Domain"
 msgstr ""
 
@@ -31,24 +33,19 @@ msgstr ""
 #. module: voip_onsip
 #: model:ir.model.fields,help:voip_onsip.field_res_config_settings__wsServer
 msgid "The URL of your WebSocket"
-msgstr "A WebSoccet  URL webcíme"
+msgstr ""
 
 #. module: voip_onsip
 #: model:ir.model,name:voip_onsip.model_res_users
 msgid "Users"
-msgstr "Felhasználók"
+msgstr ""
+
+#. module: voip_onsip
+#: model:ir.model,name:voip_onsip.model_voip_configurator
+msgid "VOIP Configurator"
+msgstr ""
 
 #. module: voip_onsip
 #: model:ir.model.fields,field_description:voip_onsip.field_res_config_settings__wsServer
 msgid "WebSocket"
-msgstr "WebSocket"
-
-#. module: voip_onsip
-#: model:ir.model,name:voip_onsip.model_res_config_settings
-msgid "res.config.settings"
-msgstr "res.config.settings"
-
-#. module: voip_onsip
-#: model:ir.model,name:voip_onsip.model_voip_configurator
-msgid "voip.configurator"
-msgstr "voip.configurator"
+msgstr ""

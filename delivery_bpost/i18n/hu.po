@@ -2,16 +2,12 @@
 # This file contains the translation of the following modules:
 # * delivery_bpost
 # 
-# Translators:
-# Martin Trigaux, 2017
-# krnkris, 2017
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.4+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-02 11:20+0000\n"
-"PO-Revision-Date: 2018-08-02 11:20+0000\n"
-"Last-Translator: krnkris, 2017\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-08-24 11:37+0000\n"
 "Language-Team: Hungarian (https://www.transifex.com/odoo/teams/41243/hu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,7 +18,7 @@ msgstr ""
 #. module: delivery_bpost
 #: selection:delivery.carrier,bpost_label_stock_type:0
 msgid "A4"
-msgstr "A4"
+msgstr ""
 
 #. module: delivery_bpost
 #: selection:delivery.carrier,bpost_label_stock_type:0
@@ -35,7 +31,7 @@ msgid "Allow deliveries on Saturday (extra charges apply)"
 msgstr ""
 
 #. module: delivery_bpost
-#: code:addons/delivery_bpost/models/bpost_request.py:97
+#: code:addons/delivery_bpost/models/bpost_request.py:98
 #, python-format
 msgid ""
 "Authentication error -- wrong credentials\n"
@@ -45,7 +41,7 @@ msgstr ""
 #. module: delivery_bpost
 #: selection:delivery.carrier,delivery_type:0
 msgid "Based on Rules"
-msgstr "Szabályok alapján"
+msgstr ""
 
 #. module: delivery_bpost
 #: model:ir.model.fields,field_description:delivery_bpost.field_delivery_carrier__bpost_account_number
@@ -102,10 +98,9 @@ msgid "Bpost World Express Pro"
 msgstr ""
 
 #. module: delivery_bpost
-#: model:ir.model,name:delivery_bpost.model_delivery_carrier
 #: model:ir.model.fields,field_description:delivery_bpost.field_product_packaging__package_carrier_type
 msgid "Carrier"
-msgstr "Fuvarozó"
+msgstr ""
 
 #. module: delivery_bpost
 #: selection:delivery.carrier,delivery_type:0
@@ -116,6 +111,11 @@ msgstr ""
 #. module: delivery_bpost
 #: selection:delivery.carrier,bpost_shipment_type:0
 msgid "DOCUMENTS"
+msgstr ""
+
+#. module: delivery_bpost
+#: model:ir.model,name:delivery_bpost.model_delivery_carrier
+msgid "Delivery Methods"
 msgstr ""
 
 #. module: delivery_bpost
@@ -131,7 +131,7 @@ msgstr ""
 #. module: delivery_bpost
 #: selection:delivery.carrier,bpost_delivery_nature:0
 msgid "Domestic"
-msgstr "Belföldi"
+msgstr ""
 
 #. module: delivery_bpost
 #: selection:delivery.carrier,delivery_type:0
@@ -148,7 +148,7 @@ msgstr ""
 #. module: delivery_bpost
 #: selection:delivery.carrier,delivery_type:0
 msgid "Fixed Price"
-msgstr "Rögzített ár"
+msgstr ""
 
 #. module: delivery_bpost
 #: selection:delivery.carrier,bpost_shipment_type:0
@@ -163,12 +163,12 @@ msgstr ""
 #. module: delivery_bpost
 #: selection:delivery.carrier,bpost_delivery_nature:0
 msgid "International"
-msgstr "Nemzetközi"
+msgstr ""
 
 #. module: delivery_bpost
 #: selection:product.packaging,package_carrier_type:0
 msgid "No carrier integration"
-msgstr "Nincs szállítmányozó integrálva"
+msgstr ""
 
 #. module: delivery_bpost
 #: selection:delivery.carrier,bpost_shipment_type:0
@@ -178,23 +178,18 @@ msgstr ""
 #. module: delivery_bpost
 #: selection:delivery.carrier,bpost_label_format:0
 msgid "PDF"
-msgstr "PDF"
+msgstr ""
 
 #. module: delivery_bpost
 #: selection:delivery.carrier,bpost_label_format:0
 msgid "PNG"
-msgstr "PNG"
-
-#. module: delivery_bpost
-#: code:addons/delivery_bpost/models/bpost_request.py:133
-#, python-format
-msgid "Packages over 30 Kg are not accepted by bpost."
 msgstr ""
 
 #. module: delivery_bpost
-#: model:ir.model,name:delivery_bpost.model_product_packaging
-msgid "Packaging"
-msgstr "Csomagolás"
+#: code:addons/delivery_bpost/models/bpost_request.py:134
+#, python-format
+msgid "Packages over 30 Kg are not accepted by bpost."
+msgstr ""
 
 #. module: delivery_bpost
 #: model:ir.model.fields,field_description:delivery_bpost.field_delivery_carrier__bpost_developer_password
@@ -205,12 +200,17 @@ msgstr ""
 #: code:addons/delivery_bpost/models/bpost_request.py:58
 #, python-format
 msgid "Please provide at least one item to ship."
-msgstr "Kérem válasszon legalább egy szállítandó tételt."
+msgstr ""
+
+#. module: delivery_bpost
+#: model:ir.model,name:delivery_bpost.model_product_packaging
+msgid "Product Packaging"
+msgstr ""
 
 #. module: delivery_bpost
 #: model:ir.model.fields,field_description:delivery_bpost.field_delivery_carrier__delivery_type
 msgid "Provider"
-msgstr "Szolgáltató"
+msgstr ""
 
 #. module: delivery_bpost
 #: selection:delivery.carrier,bpost_parcel_return_instructions:0
@@ -277,6 +277,14 @@ msgid "USPS"
 msgstr ""
 
 #. module: delivery_bpost
+#: model:product.product,uom_name:delivery_bpost.product_product_delivery_bpost_domestic
+#: model:product.product,uom_name:delivery_bpost.product_product_delivery_bpost_world
+#: model:product.template,uom_name:delivery_bpost.product_product_delivery_bpost_domestic_product_template
+#: model:product.template,uom_name:delivery_bpost.product_product_delivery_bpost_world_product_template
+msgid "Unit(s)"
+msgstr ""
+
+#. module: delivery_bpost
 #: code:addons/delivery_bpost/models/delivery_bpost.py:91
 #, python-format
 msgid ""
@@ -333,7 +341,7 @@ msgid "bpost"
 msgstr ""
 
 #. module: delivery_bpost
-#: model:ir.ui.view,arch_db:delivery_bpost.view_delivery_carrier_form_with_provider_bpost
+#: model_terms:ir.ui.view,arch_db:delivery_bpost.view_delivery_carrier_form_with_provider_bpost
 msgid "bpost Configuration"
 msgstr ""
 
@@ -343,8 +351,8 @@ msgid "bpost Default Packaging Type"
 msgstr ""
 
 #. module: delivery_bpost
-#: model:ir.ui.view,arch_db:delivery_bpost.res_config_settings_view_form_sale
-#: model:ir.ui.view,arch_db:delivery_bpost.res_config_settings_view_form_stock
+#: model_terms:ir.ui.view,arch_db:delivery_bpost.res_config_settings_view_form_sale
+#: model_terms:ir.ui.view,arch_db:delivery_bpost.res_config_settings_view_form_stock
 msgid "bpost Delivery Methods"
 msgstr ""
 
@@ -365,7 +373,7 @@ msgid ""
 msgstr ""
 
 #. module: delivery_bpost
-#: code:addons/delivery_bpost/models/bpost_request.py:111
+#: code:addons/delivery_bpost/models/bpost_request.py:112
 #, python-format
 msgid "bpost did not return prices for this destination country."
 msgstr ""
@@ -376,4 +384,4 @@ msgstr ""
 #: model:product.template,weight_uom_name:delivery_bpost.product_product_delivery_bpost_domestic_product_template
 #: model:product.template,weight_uom_name:delivery_bpost.product_product_delivery_bpost_world_product_template
 msgid "kg"
-msgstr "kg"
+msgstr ""

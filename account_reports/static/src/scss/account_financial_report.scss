@@ -240,7 +240,7 @@
         & td {
             padding-top: 32px;
         }
-        > td.o_foldable_total > span:last-child {
+        > td.o_account_report_line_indent.o_foldable_total > span:last-child {
             margin-left: 10px;
         }
     }
@@ -252,7 +252,7 @@
     .o_account_reports_level2 {
         border-bottom: 1px solid #bbb;
         font-weight: bold;
-        > td > span:last-child {
+        > td.o_account_report_line_indent > span:last-child {
             margin-left: 15px;
         }
         &.total {
@@ -263,11 +263,11 @@
     }
     .o_account_reports_level3 {
         border-bottom: 1px solid #eee;
-        > td > span:last-child {
+        > td.o_account_report_line_indent > span:last-child {
             margin-left: 30px;
         }
         &.total {
-            > td > span:last-child {
+            > td.o_account_report_line_indent > span:last-child {
                 margin-left: 15px;
             }
         }
@@ -277,67 +277,67 @@
             margin-left: 15px;
         }
         border-bottom: 1px solid #eee;
-        > td > span:last-child {
+        > td.o_account_report_line_indent > span:last-child {
             margin-left: 40px;
         }
         &.total {
-            > td > span:last-child {
+            > td.o_account_report_line_indent > span:last-child {
                 margin-left: 30px;
             }
         }
     }
     .o_account_reports_level5 {
         border-bottom: 1px solid #eee;
-        > td > span:last-child {
+        > td.o_account_report_line_indent > span:last-child {
             margin-left: 50px;
         }
         &.total {
-            > td > span:last-child {
+            > td.o_account_report_line_indent > span:last-child {
                 margin-left: 40px;
             }
         }
     }
     .o_account_reports_level6 {
         border-bottom: 1px solid #eee;
-        > td > span:last-child {
+        > td.o_account_report_line_indent > span:last-child {
             margin-left: 60px;
         }
         &.total {
-            > td > span:last-child {
+            > td.o_account_report_line_indent > span:last-child {
                 margin-left: 50px;
             }
         }
     }
     .o_account_reports_level7 {
         border-bottom: 1px solid #eee;
-        > td > span:last-child {
+        > td.o_account_report_line_indent > span:last-child {
             margin-left: 70px;
         }
         &.total {
-            > td > span:last-child {
+            > td.o_account_report_line_indent > span:last-child {
                 margin-left: 60px;
             }
         }
     }
     .o_account_reports_level8 {
         border-bottom: 1px solid #eee;
-        > td > span:last-child {
+        > td.o_account_report_line_indent > span:last-child {
             margin-left: 80px;
         }
     }
     .o_account_reports_level9 {
         border-bottom: 1px solid #eee;
-        > td > span:last-child {
+        > td.o_account_report_line_indent > span:last-child {
             margin-left: 90px;
         }
     }
     .o_account_reports_default_style {
         border-bottom: 1px solid #eee;
-        > td > span:last-child {
+        > td.o_account_report_line_indent > span:last-child {
             margin-left: 50px;
         }
         &.o_account_reports_domain_total {
-            > td > span:last-child {
+            > td.o_account_report_line_indent > span:last-child {
                 margin-left: 30px;
             }
         }

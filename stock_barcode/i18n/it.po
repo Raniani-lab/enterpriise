@@ -5,21 +5,22 @@
 # Translators:
 # Sergio Zanchetta <primes2h@gmail.com>, 2018
 # Francesco Garganese <francesco.garganese@aeromnia.aero>, 2018
-# Martin Trigaux, 2018
 # Sebastiano Pistore <SebastianoPistore.info@protonmail.ch>, 2018
 # p_amoruso <p.amoruso@elvenstudio.it>, 2018
-# Paolo Valier, 2018
 # Fabio Genovese <ing.fabiogenovese@gmail.com>, 2018
 # David Minneci <david@numeko.it>, 2018
-# Léonie Bouchat <lbo@odoo.com>, 2018
+# Martin Trigaux, 2018
 # Simone Bernini <simone@aperturelabs.it>, 2018
+# Paolo Valier, 2018
+# Léonie Bouchat <lbo@odoo.com>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-02 10:32+0000\n"
-"PO-Revision-Date: 2018-10-02 10:32+0000\n"
-"Last-Translator: Simone Bernini <simone@aperturelabs.it>, 2018\n"
+"PO-Revision-Date: 2018-08-24 11:48+0000\n"
+"Last-Translator: Léonie Bouchat <lbo@odoo.com>, 2018\n"
 "Language-Team: Italian (https://www.transifex.com/odoo/teams/41243/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -37,7 +38,7 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:44
 #, python-format
 msgid "Add product"
-msgstr ""
+msgstr "Aggiungi prodotto"
 
 #. module: stock_barcode
 #. openerp-web
@@ -406,7 +407,7 @@ msgstr "Codici a Barre Prodotto"
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_move_line
 msgid "Product Moves (Stock Move Line)"
-msgstr ""
+msgstr "Movimenti del prodotto (riga movimenti magazzino)"
 
 #. module: stock_barcode
 #. openerp-web
@@ -590,7 +591,7 @@ msgstr "Il lotto scansionato non corrisponde a un lotto esistente."
 #: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:1160
 #, python-format
 msgid "The scanned serial number is already used."
-msgstr ""
+msgstr "Il numero di serie scansionato è già utilizzato."
 
 #. module: stock_barcode
 #. openerp-web
@@ -619,14 +620,14 @@ msgstr "Questa rettifica d'inventario è già stata effettuata"
 #: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:1198
 #, python-format
 msgid "This location is not a child of the main location."
-msgstr ""
+msgstr "Questa ubicazione non è un bambino dell'ubicazione principale."
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:964
 #, python-format
 msgid "This package is already scanned."
-msgstr ""
+msgstr "Questo pacchetto è già stato scansionato."
 
 #. module: stock_barcode
 #. openerp-web
@@ -785,7 +786,7 @@ msgstr "posizione"
 #: code:addons/stock_barcode/static/src/xml/stock_barcode.xml:25
 #, python-format
 msgid "operation type"
-msgstr ""
+msgstr "tipo di operazione"
 
 #. module: stock_barcode
 #. openerp-web
@@ -800,24 +801,26 @@ msgstr "foglio di codici a barre dello stock"
 #, python-format
 msgid "to check out what this module can do! You can also print the barcode"
 msgstr ""
+"per verificare cosa può fare questo modulo! È inoltre possibile stampare il "
+"codice a barre"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/xml/stock_barcode.xml:26
 #, python-format
 msgid "to create a new transfer from this location."
-msgstr ""
+msgstr "per creare un nuovo trasferimento da questa ubicazione."
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/xml/stock_barcode.xml:25
 #, python-format
 msgid "to create a new transfer."
-msgstr ""
+msgstr "per creare un nuovo trasferimento."
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/xml/stock_barcode.xml:27
 #, python-format
 msgid "to open it."
-msgstr ""
+msgstr "per aprirlo/la."

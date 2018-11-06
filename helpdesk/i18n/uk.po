@@ -5,12 +5,13 @@
 # Translators:
 # Martin Trigaux, 2018
 # Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-02 10:31+0000\n"
-"PO-Revision-Date: 2018-10-02 10:31+0000\n"
+"PO-Revision-Date: 2018-08-24 11:38+0000\n"
 "Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
@@ -26,7 +27,7 @@ msgid ""
 "Service Rating Request"
 msgstr ""
 "${object.company_id.name or object.user_id.company_id.name or 'Helpdesk'}: "
-"Service Rating Request"
+"Запит на рейтинг послуг"
 
 #. module: helpdesk
 #: model:mail.template,subject:helpdesk.new_ticket_request_email_template
@@ -518,8 +519,7 @@ msgstr "Виберіть електронну адресу:"
 #, python-format
 msgid "Click here and select \"Helpdesk Teams\" for further configuration."
 msgstr ""
-"Клацніть тут та виберіть команду \"Команда помічників\" для подальшої "
-"конфігурації."
+"Клацніть тут та виберіть \"Команда помічників\" для подальшої конфігурації."
 
 #. module: helpdesk
 #. openerp-web
@@ -714,7 +714,7 @@ msgstr "Ім'я клієнта"
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_ticket__access_url
 msgid "Customer Portal URL"
-msgstr "URL Порталу клієнта"
+msgstr "URL порталу клієнта"
 
 #. module: helpdesk
 #. openerp-web
@@ -733,7 +733,7 @@ msgstr "Задоволення потреб клієнтів"
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_form
 #, python-format
 msgid "Customer Tickets"
-msgstr "Квитки клієнта"
+msgstr "Заявки клієнта"
 
 #. module: helpdesk
 #. openerp-web
@@ -764,7 +764,7 @@ msgstr "Дні"
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_sla__time_days
 msgid "Days to reach given stage based on ticket creation date"
-msgstr "Дні, щоб досягти даного етапу на основі дати створення квитка"
+msgstr "Дні, щоб досягти даного етапу на основі дати створення заявки"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__deadline
@@ -805,7 +805,7 @@ msgstr "Опис квитка..."
 #. module: helpdesk
 #: model:ir.model,name:helpdesk.model_digest_digest
 msgid "Digest"
-msgstr ""
+msgstr "Огляд"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla__display_name
@@ -827,6 +827,8 @@ msgstr "Відобразити рейтинг на порталі клієнта
 #, python-format
 msgid "Do not have access, skip this data for user's digest email"
 msgstr ""
+"Не маєте доступу, пропустіть ці дані для електронного оглядового "
+"повідомлення користувача"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_form
@@ -982,7 +984,7 @@ msgstr "Центр допомоги"
 #: model:ir.ui.menu,name:helpdesk.menu_helpdesk_root
 #: model_terms:ir.ui.view,arch_db:helpdesk.digest_digest_view_form
 msgid "Helpdesk"
-msgstr "Help"
+msgstr "Служба підтримки"
 
 #. module: helpdesk
 #: model:ir.actions.act_window,name:helpdesk.helpdesk_team_dashboard_action_main
@@ -992,7 +994,7 @@ msgstr ""
 #. module: helpdesk
 #: model:ir.model,name:helpdesk.model_helpdesk_sla
 msgid "Helpdesk SLA Policies"
-msgstr "Політика довідки SLA "
+msgstr "Політика SLA служби підтримки"
 
 #. module: helpdesk
 #: model:ir.model,name:helpdesk.model_helpdesk_stage
@@ -1032,14 +1034,14 @@ msgstr "Команди служби підтримки"
 #: model:ir.model,name:helpdesk.model_helpdesk_ticket
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_form
 msgid "Helpdesk Ticket"
-msgstr "Квиток служби підтримки"
+msgstr "Заявка служби підтримки"
 
 #. module: helpdesk
 #: model:ir.actions.act_window,name:helpdesk.helpdesk_ticket_analysis_action
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_graph_analysis
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_pivot_analysis
 msgid "Helpdesk Ticket Analysis"
-msgstr "Аналіз квитка довідки"
+msgstr "Аналіз заявки служби підтримки"
 
 #. module: helpdesk
 #: model:ir.model,name:helpdesk.model_helpdesk_ticket_type
@@ -1050,7 +1052,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_graph_main
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_pivot_main
 msgid "Helpdesk Tickets"
-msgstr "Квитки довідки"
+msgstr "Заявки служби підтримки"
 
 #. module: helpdesk
 #: model:ir.actions.server,name:helpdesk.helpdesk_sla_cron_ir_actions_server
@@ -1079,12 +1081,12 @@ msgstr "Години"
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_sla__time_hours
 msgid "Hours to reach given stage based on ticket creation date"
-msgstr "Години для досягнення даного етапу на основі дати створення квитка"
+msgstr "Години для досягнення даного етапу на основі дати створення заявки"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "How to assign newly created tickets to the right person"
-msgstr "Як призначити новостворені квитки для потрібної людини"
+msgstr "Як призначити новостворені заявки для потрібної людини"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla__id
@@ -1140,8 +1142,8 @@ msgid ""
 "In Channel: You can create a new ticket by typing /helpdesk [ticket title]. "
 "You can search ticket by typing /helpdesk_search [Keyword1],[Keyword2],."
 msgstr ""
-"У каналі: Ви можете створити новий квиток, набравши /helpdesk [ticket "
-"title]. Ви можете шукати квиток натисканням /helpdesk_search "
+"У каналі: Ви можете створити нову заявку, набравши /helpdesk [ticket title]."
+" Ви можете шукати заявку натисканням /helpdesk_search "
 "[Keyword1],[Keyword2],."
 
 #. module: helpdesk
@@ -1152,7 +1154,7 @@ msgstr "В процесі"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "Incoming emails create tickets"
-msgstr "Вхідна пошта створює квитки"
+msgstr "Вхідна пошта створює заявки"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__message_is_follower
@@ -1240,7 +1242,7 @@ msgstr "Останні відгуки"
 #: code:addons/helpdesk/static/src/js/tour.js:23
 #, python-format
 msgid "Let's create your first ticket."
-msgstr "Давайте створимо ваш перший квиток."
+msgstr "Давайте створимо вашу першу заявку."
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__use_website_helpdesk_livechat
@@ -1298,8 +1300,7 @@ msgstr "Мінімальний пріоритет"
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_sla__stage_id
 msgid "Minimum stage a ticket needs to reach in order to satisfy this SLA."
-msgstr ""
-"Мінімальний етап для досягнення цієї Угоди має бути досягнутий квиток."
+msgstr "Мінімальний етап для досягнення цієї заявки має бути досягти SLA."
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_search
@@ -1321,28 +1322,28 @@ msgstr "Моя продуктивність"
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_search
 #, python-format
 msgid "My Tickets"
-msgstr "Мої квитки"
+msgstr "Мої заявки"
 
 #. module: helpdesk
 #. openerp-web
 #: code:addons/helpdesk/static/src/xml/helpdesk_team_templates.xml:21
 #, python-format
 msgid "My high priority tickets"
-msgstr "Мої квитки з високим пріоритетом"
+msgstr "Мої заявки з високим пріоритетом"
 
 #. module: helpdesk
 #. openerp-web
 #: code:addons/helpdesk/static/src/xml/helpdesk_team_templates.xml:15
 #, python-format
 msgid "My open tickets"
-msgstr "Мої відкриті квитки"
+msgstr "Мої відкриті заявки"
 
 #. module: helpdesk
 #. openerp-web
 #: code:addons/helpdesk/static/src/xml/helpdesk_team_templates.xml:27
 #, python-format
 msgid "My urgent tickets"
-msgstr "Мої термінові квитки"
+msgstr "Мої термінові заявки"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_stage__name
@@ -1423,7 +1424,7 @@ msgstr ""
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__partner_tickets
 msgid "Number of tickets from the same partner"
-msgstr "Кількість квитків від одного партнера"
+msgstr "Кількість заявок від одного партнера"
 
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_team__message_unread_counter
@@ -1444,14 +1445,14 @@ msgid ""
 "Only apply the SLA to a specific ticket type. If left empty it will apply to"
 " all types."
 msgstr ""
-"Застосовуйте тільки SLA до певного типу квитка. Якщо залишити порожнім, то "
+"Застосовуйте тільки SLA до певного типу заявки. Якщо залишити порожнім, то "
 "буде застосовуватися до всіх типів."
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_search_analysis
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_search
 msgid "Open Tickets"
-msgstr "Відкриті квитки"
+msgstr "Відкриті заявки"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__close_hours
@@ -1492,7 +1493,7 @@ msgstr "Батьківська модель"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__alias_parent_thread_id
 msgid "Parent Record Thread ID"
-msgstr " ID запису батьківської теми"
+msgstr "ID запису батьківської теми"
 
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_team__alias_parent_model_id
@@ -1545,7 +1546,7 @@ msgstr ""
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__access_url
 msgid "Portal Access URL"
-msgstr "URL Доступу до порталу"
+msgstr "URL доступу до порталу"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__priority
@@ -1737,7 +1738,7 @@ msgstr "Збережіть цю сторінку та оновіть, щоб а�
 #: code:addons/helpdesk/static/src/js/tour.js:43
 #, python-format
 msgid "Save this ticket and the modifications you've made to it."
-msgstr "Збережіть цей квиток та внесені до нього зміни."
+msgstr "Збережіть цю заявку та внесені до нього зміни."
 
 #. module: helpdesk
 #: code:addons/helpdesk/controllers/portal.py:39
@@ -1821,7 +1822,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "Set up your Service Level Agreements to track performance"
 msgstr ""
-"Налаштуйте угоду про рівень обслуговування, щоб відстежувати продуктивність"
+"Налаштуйте угоду про рівень обслуговування, щоби відстежувати продуктивність"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_kanban
@@ -1898,7 +1899,7 @@ msgid ""
 "Stages the team will use. This team's tickets will only be able to be in "
 "these stages."
 msgstr ""
-"Етапи, які використовуватиме команда. Квитки цієї команди будуть доступні "
+"Етапи, які використовуватиме команда. Заявки цієї команди будуть доступні "
 "лише на цих етапах."
 
 #. module: helpdesk
@@ -1907,8 +1908,8 @@ msgid ""
 "Stages will allow operators to easily track how a specific\n"
 "            tickets are positioned in the process."
 msgstr ""
-"Етапи дозволять операторам легко відстежувати, як конкретно\n"
-"             квитки розташовані в процесі."
+"Етапи дозволять операторам легко відстежувати, як конкретні\n"
+"             заявки, розташовані в процесі."
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.portal_helpdesk_ticket
@@ -1982,7 +1983,7 @@ msgstr "Мітки"
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_tag_action
 msgid "Tags allows to organize tickets."
-msgstr "Теги дозволяють організовувати квитки."
+msgstr "Теги дозволяють організовувати заявки."
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_sla_view_form
@@ -2007,7 +2008,7 @@ msgstr "Цільовий показник успіху"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_res_users__helpdesk_target_closed
 msgid "Target Tickets to Close"
-msgstr "Цільові квитки для закриття"
+msgstr "Цільові заявки для закриття"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla__team_id
@@ -2036,7 +2037,7 @@ msgstr "Команди"
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_team_action
 msgid "Teams allows to organize tickets."
-msgstr "Команди дозволяють організовувати квитки."
+msgstr "Команди дозволяють організовувати заявки."
 
 #. module: helpdesk
 #: model:ir.actions.act_window,name:helpdesk.email_template_action_helpdesk
@@ -2089,7 +2090,7 @@ msgstr ""
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.portal_helpdesk_ticket
 msgid "There are currently no Ticket for your account."
-msgstr "В даний момент в вашому обліковому записі немає квитка."
+msgstr "В даний момент на вашому обліковому записі немає заявки."
 
 #. module: helpdesk
 #. openerp-web
@@ -2097,7 +2098,7 @@ msgstr "В даний момент в вашому обліковому запи
 #, python-format
 msgid "This dashboard will activate once you have created your first ticket."
 msgstr ""
-"Ця інформаційна панель активується, коли ви створили свій перший квиток."
+"Ця інформаційна панель активується, коли ви створили свою першу заявку."
 
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_ticket__campaign_id
@@ -2148,13 +2149,13 @@ msgstr ""
 #: model:ir.actions.act_window,name:helpdesk.helpdesk_ticket_action_dashboard_urgent
 #: model:ir.actions.act_window,name:helpdesk.helpdesk_ticket_team_analysis_action
 msgid "Ticket Analysis"
-msgstr "Аналіз квитка"
+msgstr "Аналіз заявки"
 
 #. module: helpdesk
 #: model:mail.message.subtype,name:helpdesk.mt_team_ticket_new
 #: model:mail.message.subtype,name:helpdesk.mt_ticket_new
 msgid "Ticket Created"
-msgstr "Квиток створено"
+msgstr "Заявку створено"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_search
@@ -2170,13 +2171,13 @@ msgstr ""
 #. module: helpdesk
 #: model:mail.message.subtype,name:helpdesk.mt_team_ticket_stage
 msgid "Ticket Stage Changed"
-msgstr "Етап квитка змінено"
+msgstr "Етап заявки змінено"
 
 #. module: helpdesk
 #: model:ir.actions.act_window,name:helpdesk.helpdesk_tag_action
 #: model:ir.ui.menu,name:helpdesk.helpdesk_tag_menu
 msgid "Ticket Tags"
-msgstr "Теги квитка"
+msgstr "Теги заявки"
 
 #. module: helpdesk
 #: model:ir.actions.act_window,name:helpdesk.helpdesk_ticket_type_action
@@ -2186,12 +2187,12 @@ msgstr "Теги квитка"
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_search_analysis
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_search
 msgid "Ticket Type"
-msgstr "Тип квитка"
+msgstr "Тип заявки"
 
 #. module: helpdesk
 #: model:mail.message.subtype,description:helpdesk.mt_ticket_new
 msgid "Ticket created"
-msgstr "Квиток створено"
+msgstr "Заявку створено"
 
 #. module: helpdesk
 #: model:mail.message.subtype,description:helpdesk.mt_ticket_rated
@@ -2222,7 +2223,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:helpdesk.portal_my_home_menu_helpdesk
 #, python-format
 msgid "Tickets"
-msgstr "Квитки"
+msgstr "Заявки"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_digest_digest__kpi_helpdesk_tickets_closed
@@ -2234,7 +2235,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_search_analysis_closed
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_search
 msgid "Tickets Search"
-msgstr "Пошук квитків"
+msgstr "Пошук заявки"
 
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_stage__is_close
@@ -2242,18 +2243,18 @@ msgid ""
 "Tickets in this stage are considered as done. This is used notably when "
 "computing SLAs and KPIs on tickets."
 msgstr ""
-"Квитки на цьому етапі вважаються виконаними. Це особливо використовується "
-"при обчисленні SLA та KPI на квитках."
+"Заявки на цьому етапі вважаються виконаними. Це особливо використовується "
+"при обчисленні SLA та KPI на заявках."
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_kanban
 msgid "Tickets to Review"
-msgstr "Квитки для огляду"
+msgstr "Заявки для огляду"
 
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_sla__priority
 msgid "Tickets under this priority will not be taken into account."
-msgstr "Квитки за цим пріоритетом не будуть враховуватися."
+msgstr "Заявки за цим пріоритетом не будуть враховуватися."
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__assign_hours
@@ -2263,7 +2264,7 @@ msgstr "Час до першого призначення (години)"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__use_helpdesk_timesheet
 msgid "Timesheet on Ticket"
-msgstr "Розклад на квитку"
+msgstr "Табель на заявку"
 
 #. module: helpdesk
 #. openerp-web
@@ -2298,7 +2299,7 @@ msgstr ""
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_ticket_type_action
 msgid "Type allows to organize tickets."
-msgstr "Тип дозволяє організовувати квитки."
+msgstr "Тип дозволяє організовувати заявки."
 
 #. module: helpdesk
 #: sql_constraint:helpdesk.ticket.type:0
@@ -2322,7 +2323,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_search_analysis_closed
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_search
 msgid "Unassigned Tickets"
-msgstr "Непризначені квитки"
+msgstr "Непризначені заявки"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__message_unread
@@ -2345,7 +2346,7 @@ msgstr "Майбутня версія SLA не працює"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__upcoming_sla_fail_tickets
 msgid "Upcoming SLA Fail Tickets"
-msgstr "Майбутні квитки на SLA"
+msgstr "Майбутні заявки на SLA"
 
 #. module: helpdesk
 #: selection:helpdesk.sla,priority:0 selection:helpdesk.ticket,priority:0
@@ -2381,14 +2382,14 @@ msgstr "Користувачі"
 #: code:addons/helpdesk/static/src/xml/helpdesk_team_templates.xml:52
 #, python-format
 msgid "View failed tickets"
-msgstr "Перегляд невдалих квитків"
+msgstr "Перегляд невдалих заявок"
 
 #. module: helpdesk
 #. openerp-web
 #: code:addons/helpdesk/static/src/xml/helpdesk_team_templates.xml:57
 #, python-format
 msgid "View high priority failed tickets"
-msgstr "Переглянути невдалі квитки з пріоритетом"
+msgstr "Переглянути невдалі заявки з пріоритетом"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
@@ -2400,7 +2401,7 @@ msgstr ""
 #: code:addons/helpdesk/static/src/xml/helpdesk_team_templates.xml:62
 #, python-format
 msgid "View urgent failed tickets"
-msgstr "Переглянути термінові невдалі квитки"
+msgstr "Переглянути термінові невдалі заявки"
 
 #. module: helpdesk
 #. openerp-web
@@ -2444,14 +2445,14 @@ msgid ""
 "balanced assignation, tickets are assigned to the user with the least amount"
 " of open tickets."
 msgstr ""
-"При випадковому присвоєнні кожен користувач отримує таку ж кількість "
-"квитків. Зі збалансованим призначенням, квитки призначаються користувачеві з"
-" меншою кількістю відкритих квитків."
+"При випадковому присвоєнні кожен користувач отримує таку ж кількість заявок."
+" Зі збалансованим призначенням, заявки призначаються користувачеві з меншою "
+"кількістю відкритих заявок."
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__resource_calendar_id
 msgid "Working Hours"
-msgstr "Робочі кодини"
+msgstr "Робочі години"
 
 #. module: helpdesk
 #. openerp-web
@@ -2479,12 +2480,12 @@ msgstr "дні<br/>"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_sla_view_form
 msgid "e.g. Close urgent tickets within 36 hours"
-msgstr "Наприклад, закрити термінові квитки протягом 36 годин"
+msgstr "Наприклад, закрити термінові заявки протягом 36 годин"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "eLearning"
-msgstr "eLearning"
+msgstr "Електронне навчання"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_sla_view_form
@@ -2506,9 +2507,9 @@ msgstr "пошук команди"
 #: code:addons/helpdesk/static/src/xml/helpdesk_team_templates.xml:173
 #, python-format
 msgid "to create a ticket."
-msgstr "створити квиток."
+msgstr "створити завдання."
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "to create tickets"
-msgstr "створити квитки"
+msgstr "створити завдання"

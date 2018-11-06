@@ -8,4 +8,4 @@ class City(models.Model):
 
     l10n_mx_edi_code = fields.Char(
         'Code', help='Code to use in the CFDI with external trade complement. '
-        'Is based on the SAT catalog.')
+        'It is based on the SAT catalog.')

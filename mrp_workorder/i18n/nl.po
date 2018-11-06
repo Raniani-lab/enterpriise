@@ -4,17 +4,18 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2018
 # Gunther Clauwaert <gclauwae@hotmail.com>, 2018
 # Cas Vissers <casvissers@brahoo.nl>, 2018
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-08 07:14+0000\n"
-"PO-Revision-Date: 2018-10-08 07:14+0000\n"
-"Last-Translator: Cas Vissers <casvissers@brahoo.nl>, 2018\n"
+"PO-Revision-Date: 2018-08-24 11:38+0000\n"
+"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2018\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -42,7 +43,7 @@ msgstr "Registraties toestaan"
 #: code:addons/mrp_workorder/static/src/xml/mrp_workorder_barcode.xml:7
 #, python-format
 msgid "And barcode"
-msgstr "En barcode"
+msgstr "En de barcode voor de "
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet_menu
@@ -310,19 +311,19 @@ msgstr ""
 #: code:addons/mrp_workorder/models/mrp_workorder.py:183
 #, python-format
 msgid "Please enter a Lot/SN."
-msgstr "Gelieve een lot/SN in te geven."
+msgstr "U dient een partij/serienummer in te geven."
 
 #. module: mrp_workorder
 #: code:addons/mrp_workorder/models/mrp_workorder.py:185
 #, python-format
 msgid "Please enter a positive quantity."
-msgstr "Gelieve een positieve hoeveelheid in te geven."
+msgstr "U dient een positieve hoeveelheid in te geven."
 
 #. module: mrp_workorder
 #: code:addons/mrp_workorder/models/mrp_workorder.py:192
 #, python-format
 msgid "Please upload a picture."
-msgstr "Gelieve een afbeelding te uploaden."
+msgstr "U dient een afbeelding te uploaden."
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet

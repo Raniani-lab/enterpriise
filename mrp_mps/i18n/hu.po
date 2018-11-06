@@ -2,17 +2,12 @@
 # This file contains the translation of the following modules:
 # * mrp_mps
 # 
-# Translators:
-# krnkris, 2016
-# Martin Trigaux, 2016
-# gezza <geza.nagy@oregional.hu>, 2016
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.3+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 08:34+0000\n"
-"PO-Revision-Date: 2018-06-25 08:34+0000\n"
-"Last-Translator: gezza <geza.nagy@oregional.hu>, 2016\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-08-24 11:38+0000\n"
 "Language-Team: Hungarian (https://www.transifex.com/odoo/teams/41243/hu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,29 +16,29 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: mrp_mps
-#: model:ir.ui.view,arch_db:mrp_mps.report_inventory
+#: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
 msgid "&lt;&amp;hellip;&lt;"
 msgstr ""
 
 #. module: mrp_mps
-#: model:ir.ui.view,arch_db:mrp_mps.report_inventory
+#: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
 msgid "<span class=\"fa fa-fw\">-</span> Demand Forecast"
 msgstr ""
 
 #. module: mrp_mps
-#: model:ir.ui.view,arch_db:mrp_mps.report_inventory
+#: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
 msgid "<span class=\"fa fa-fw\">-</span> Indirect Demand"
 msgstr ""
 
 #. module: mrp_mps
-#: model:ir.ui.view,arch_db:mrp_mps.report_inventory
+#: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
 msgid ""
 "<span class=\"fa fa-fw\">=</span> \n"
 "                                    Forecasted Inventory"
 msgstr ""
 
 #. module: mrp_mps
-#: model:ir.ui.view,arch_db:mrp_mps.report_inventory
+#: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
 msgid "<span class=\"text-muted\"> by</span>"
 msgstr ""
 
@@ -53,22 +48,22 @@ msgid "Active in MPS"
 msgstr ""
 
 #. module: mrp_mps
-#: model:ir.ui.view,arch_db:mrp_mps.mrp_mps_report_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_mps.mrp_mps_report_view_form
 msgid "Add Product"
 msgstr ""
 
 #. module: mrp_mps
 #. openerp-web
-#: code:addons/mrp_mps/static/src/js/mrp_mps_report_widget.js:184
-#: model:ir.ui.view,arch_db:mrp_mps.report_inventory
+#: code:addons/mrp_mps/static/src/js/mrp_mps_report_widget.js:185
+#: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
 #, python-format
 msgid "Add a Product"
 msgstr ""
 
 #. module: mrp_mps
-#: model:ir.ui.view,arch_db:mrp_mps.report_inventory
+#: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
 msgid "Apply"
-msgstr "Alkalmaz"
+msgstr ""
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_product_product__apply_active
@@ -78,58 +73,63 @@ msgstr ""
 #. module: mrp_mps
 #: selection:sale.forecast,mode:0
 msgid "Automatic"
-msgstr "Automatikus"
+msgstr ""
 
 #. module: mrp_mps
-#: model:ir.ui.view,arch_db:mrp_mps.mrp_mps_report_view_form
-#: model:ir.ui.view,arch_db:mrp_mps.product_product_view_form_mps
+#: model_terms:ir.ui.view,arch_db:mrp_mps.mrp_mps_report_view_form
+#: model_terms:ir.ui.view,arch_db:mrp_mps.product_product_view_form_mps
 msgid "Cancel"
-msgstr "Mégse"
+msgstr ""
 
 #. module: mrp_mps
 #: model:ir.model,name:mrp_mps.model_res_company
 msgid "Companies"
-msgstr "Vállalatok"
+msgstr ""
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_mps_report__company_id
 msgid "Company"
-msgstr "Vállalat"
+msgstr ""
+
+#. module: mrp_mps
+#: model:ir.model,name:mrp_mps.model_res_config_settings
+msgid "Config Settings"
+msgstr ""
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_mps_report__create_uid
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast__create_uid
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast_indirect__create_uid
 msgid "Created by"
-msgstr "Készítette"
+msgstr ""
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_mps_report__create_date
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast__create_date
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast_indirect__create_date
 msgid "Created on"
-msgstr "Létrehozás dátuma"
+msgstr ""
 
 #. module: mrp_mps
 #. openerp-web
 #: code:addons/mrp_mps/static/src/xml/mps_backend.xml:15
-#: code:addons/mrp_mps/static/src/xml/mps_backend.xml:21
+#: code:addons/mrp_mps/static/src/xml/mps_backend.xml:20
 #: selection:mrp.mps.report,period:0
 #: selection:res.company,manufacturing_period:0
 #, python-format
 msgid "Daily"
-msgstr "Naponta"
+msgstr ""
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast__date
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast_indirect__date
 msgid "Date"
-msgstr "Dátum"
+msgstr ""
 
 #. module: mrp_mps
 #: model:ir.model.fields,help:mrp_mps.field_sale_forecast__product_uom_id
-msgid "Default Unit of Measure used for all stock operation."
-msgstr "A készletezési műveletekhez használatos alapértelmezett mértékegység."
+msgid "Default unit of measure used for all stock operations."
+msgstr ""
 
 #. module: mrp_mps
 #: model:ir.model.fields,help:mrp_mps.field_res_company__manufacturing_period
@@ -140,7 +140,7 @@ msgstr ""
 
 #. module: mrp_mps
 #. openerp-web
-#: code:addons/mrp_mps/static/src/xml/mps_backend.xml:37
+#: code:addons/mrp_mps/static/src/xml/mps_backend.xml:35
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast__forecast_qty
 #, python-format
 msgid "Demand Forecast"
@@ -151,29 +151,29 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast__display_name
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast_indirect__display_name
 msgid "Display Name"
-msgstr "Megjelenített név"
+msgstr ""
 
 #. module: mrp_mps
 #: selection:sale.forecast,state:0
 msgid "Done"
-msgstr "Elvégezve"
+msgstr ""
 
 #. module: mrp_mps
 #: selection:sale.forecast,state:0
 msgid "Forecast"
-msgstr "Előrejelzés"
+msgstr ""
 
 #. module: mrp_mps
 #. openerp-web
-#: code:addons/mrp_mps/static/src/xml/mps_backend.xml:52
+#: code:addons/mrp_mps/static/src/xml/mps_backend.xml:50
 #, python-format
 msgid "Forecast Inventory"
 msgstr ""
 
 #. module: mrp_mps
 #. openerp-web
-#: code:addons/mrp_mps/static/src/js/mrp_mps_report_widget.js:211
-#: model:ir.ui.view,arch_db:mrp_mps.product_product_view_form_mps
+#: code:addons/mrp_mps/static/src/js/mrp_mps_report_widget.js:212
+#: model_terms:ir.ui.view,arch_db:mrp_mps.product_product_view_form_mps
 #, python-format
 msgid "Forecast Product"
 msgstr ""
@@ -188,7 +188,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast__id
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast_indirect__id
 msgid "ID"
-msgstr "Azonosító ID"
+msgstr ""
 
 #. module: mrp_mps
 #: model:ir.model.fields,help:mrp_mps.field_sale_forecast__to_supply
@@ -197,7 +197,7 @@ msgstr ""
 
 #. module: mrp_mps
 #. openerp-web
-#: code:addons/mrp_mps/static/src/xml/mps_backend.xml:42
+#: code:addons/mrp_mps/static/src/xml/mps_backend.xml:40
 #, python-format
 msgid "Indirect Demand"
 msgstr ""
@@ -208,25 +208,30 @@ msgid "Indirect Quantity"
 msgstr ""
 
 #. module: mrp_mps
+#: model:ir.model,name:mrp_mps.model_sale_forecast_indirect
+msgid "Indirect Sales Forecast"
+msgstr ""
+
+#. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_mps_report____last_update
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast____last_update
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast_indirect____last_update
 msgid "Last Modified on"
-msgstr "Utoljára frissítve ekkor"
+msgstr ""
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_mps_report__write_uid
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast__write_uid
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast_indirect__write_uid
 msgid "Last Updated by"
-msgstr "Utoljára frissítette"
+msgstr ""
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_mps_report__write_date
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast__write_date
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast_indirect__write_date
 msgid "Last Updated on"
-msgstr "Utoljára frissítve "
+msgstr ""
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_product_product__mps_apply
@@ -234,7 +239,7 @@ msgid "Latest Apply"
 msgstr ""
 
 #. module: mrp_mps
-#: model:ir.ui.view,arch_db:mrp_mps.report_inventory
+#: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
 msgid "Launch Procurement"
 msgstr ""
 
@@ -251,14 +256,19 @@ msgid "MPS"
 msgstr ""
 
 #. module: mrp_mps
-#: model:ir.ui.view,arch_db:mrp_mps.report_inventory
+#: model:ir.model,name:mrp_mps.model_mrp_mps_report
+msgid "MPS Report"
+msgstr ""
+
+#. module: mrp_mps
+#: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
 msgid "MPS in Main Warehouse"
 msgstr ""
 
 #. module: mrp_mps
 #: selection:sale.forecast,mode:0
 msgid "Manual"
-msgstr "Kézi"
+msgstr ""
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_res_company__manufacturing_period
@@ -285,17 +295,17 @@ msgstr ""
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast__mode
 msgid "Mode"
-msgstr "Mód"
+msgstr ""
 
 #. module: mrp_mps
 #. openerp-web
 #: code:addons/mrp_mps/static/src/xml/mps_backend.xml:13
-#: code:addons/mrp_mps/static/src/xml/mps_backend.xml:19
+#: code:addons/mrp_mps/static/src/xml/mps_backend.xml:18
 #: selection:mrp.mps.report,period:0
 #: selection:res.company,manufacturing_period:0
 #, python-format
 msgid "Monthly"
-msgstr "Havi"
+msgstr ""
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast_indirect__product_origin_id
@@ -305,61 +315,61 @@ msgstr ""
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_mps_report__period
 msgid "Period"
-msgstr "Időszak"
+msgstr ""
 
 #. module: mrp_mps
 #. openerp-web
 #: code:addons/mrp_mps/static/src/xml/mps_backend.xml:11
 #, python-format
 msgid "Period:"
-msgstr "Időszak:"
+msgstr ""
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast__group_id
 msgid "Procurement Group"
-msgstr "Beszerzési Csoport"
-
-#. module: mrp_mps
-#: model:ir.model,name:mrp_mps.model_procurement_rule
-msgid "Procurement Rule"
-msgstr "Beszerzési szabály"
+msgstr ""
 
 #. module: mrp_mps
 #: model:ir.model,name:mrp_mps.model_product_product
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_mps_report__product_id
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast__product_id
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast_indirect__product_id
-#: model:ir.ui.view,arch_db:mrp_mps.product_product_view_form_mps
+#: model_terms:ir.ui.view,arch_db:mrp_mps.product_product_view_form_mps
 msgid "Product"
-msgstr "Termék"
+msgstr ""
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast__product_uom_id
 msgid "Product UoM"
-msgstr "Termék ME"
+msgstr ""
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast__warehouse_id
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast_indirect__warehouse_id
 msgid "Production Location"
-msgstr "Gyártási hely"
+msgstr ""
 
 #. module: mrp_mps
 #. openerp-web
-#: code:addons/mrp_mps/static/src/xml/mps_backend.xml:25
+#: code:addons/mrp_mps/static/src/xml/mps_backend.xml:24
 #, python-format
 msgid "Rows"
 msgstr ""
 
 #. module: mrp_mps
-#: model:ir.ui.view,arch_db:mrp_mps.product_product_view_form_mps
+#: model:ir.model,name:mrp_mps.model_sale_forecast
+msgid "Sales Forecast"
+msgstr ""
+
+#. module: mrp_mps
+#: model_terms:ir.ui.view,arch_db:mrp_mps.product_product_view_form_mps
 msgid "Save"
-msgstr "Mentés"
+msgstr ""
 
 #. module: mrp_mps
 #. openerp-web
-#: code:addons/mrp_mps/static/src/xml/mps_backend.xml:32
-#: model:ir.ui.view,arch_db:mrp_mps.report_inventory
+#: code:addons/mrp_mps/static/src/xml/mps_backend.xml:30
+#: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
 #, python-format
 msgid "Starting Inventory"
 msgstr ""
@@ -367,22 +377,27 @@ msgstr ""
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast__state
 msgid "State"
-msgstr "Állapot"
+msgstr ""
 
 #. module: mrp_mps
-#: model:ir.ui.view,arch_db:mrp_mps.res_config_settings_view_form
+#: model:ir.model,name:mrp_mps.model_stock_rule
+msgid "Stock Rule"
+msgstr ""
+
+#. module: mrp_mps
+#: model_terms:ir.ui.view,arch_db:mrp_mps.res_config_settings_view_form
 msgid "Time Range"
 msgstr ""
 
 #. module: mrp_mps
 #. openerp-web
-#: code:addons/mrp_mps/static/src/xml/mps_backend.xml:47
+#: code:addons/mrp_mps/static/src/xml/mps_backend.xml:45
 #, python-format
 msgid "To Produce"
 msgstr ""
 
 #. module: mrp_mps
-#: code:addons/mrp_mps/models/mrp_mps_report.py:128
+#: code:addons/mrp_mps/models/mrp_mps_report.py:129
 #, python-format
 msgid "To Receive / To Supply / Produce"
 msgstr ""
@@ -393,7 +408,7 @@ msgid "To Supply"
 msgstr ""
 
 #. module: mrp_mps
-#: code:addons/mrp_mps/models/mrp_mps_report.py:155
+#: code:addons/mrp_mps/models/mrp_mps_report.py:156
 #, python-format
 msgid "Week %s"
 msgstr ""
@@ -401,52 +416,32 @@ msgstr ""
 #. module: mrp_mps
 #. openerp-web
 #: code:addons/mrp_mps/static/src/xml/mps_backend.xml:14
-#: code:addons/mrp_mps/static/src/xml/mps_backend.xml:20
+#: code:addons/mrp_mps/static/src/xml/mps_backend.xml:19
 #: selection:mrp.mps.report,period:0
 #: selection:res.company,manufacturing_period:0
 #, python-format
 msgid "Weekly"
-msgstr "Heti"
+msgstr ""
 
 #. module: mrp_mps
 #. openerp-web
-#: code:addons/mrp_mps/static/src/js/mrp_mps_report_widget.js:82
-#: code:addons/mrp_mps/static/src/js/mrp_mps_report_widget.js:227
+#: code:addons/mrp_mps/static/src/js/mrp_mps_report_widget.js:83
+#: code:addons/mrp_mps/static/src/js/mrp_mps_report_widget.js:228
 #, python-format
 msgid "Wrong value entered!"
-msgstr "Rosszérték lett megadva!"
+msgstr ""
 
 #. module: mrp_mps
-#: model:ir.ui.view,arch_db:mrp_mps.report_inventory
+#: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
 msgid "double click in order to empty"
 msgstr ""
 
 #. module: mrp_mps
-#: model:ir.model,name:mrp_mps.model_mrp_mps_report
-msgid "mrp.mps.report"
-msgstr ""
-
-#. module: mrp_mps
-#: model:ir.model,name:mrp_mps.model_res_config_settings
-msgid "res.config.settings"
-msgstr "res.config.settings"
-
-#. module: mrp_mps
-#: model:ir.model,name:mrp_mps.model_sale_forecast
-msgid "sale.forecast"
-msgstr ""
-
-#. module: mrp_mps
-#: model:ir.model,name:mrp_mps.model_sale_forecast_indirect
-msgid "sale.forecast.indirect"
-msgstr ""
-
-#. module: mrp_mps
-#: model:ir.ui.view,arch_db:mrp_mps.report_inventory
+#: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
 msgid "set min-max"
 msgstr ""
 
 #. module: mrp_mps
-#: model:ir.ui.view,arch_db:mrp_mps.report_inventory
+#: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
 msgid "set target"
 msgstr ""

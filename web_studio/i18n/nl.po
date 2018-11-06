@@ -4,17 +4,18 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
-# Yenthe Van Ginneken <yenthespam@gmail.com>, 2018
 # Eric Geens <ericgeens@yahoo.com>, 2018
 # Cas Vissers <casvissers@brahoo.nl>, 2018
+# Yenthe Van Ginneken <yenthespam@gmail.com>, 2018
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-02 10:32+0000\n"
-"PO-Revision-Date: 2018-10-02 10:32+0000\n"
-"Last-Translator: Cas Vissers <casvissers@brahoo.nl>, 2018\n"
+"PO-Revision-Date: 2018-08-24 11:49+0000\n"
+"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2018\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -73,7 +74,7 @@ msgstr "%s Rapport"
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:110
 #, python-format
 msgid "(t-if=\""
-msgstr ""
+msgstr "(t-if=\""
 
 #. module: web_studio
 #. openerp-web
@@ -95,6 +96,10 @@ msgid ""
 "            </p>\n"
 "            "
 msgstr ""
+"<p class=\"o_view_nocontent_smiling_face\">\n"
+"                Voeg een nieuwe toegangslijst toe\n"
+"            </p>\n"
+"            "
 
 #. module: web_studio
 #. openerp-web
@@ -232,7 +237,7 @@ msgstr "Labels toevoegen"
 #: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:695
 #, python-format
 msgid "Address Block"
-msgstr ""
+msgstr "Adresblok"
 
 #. module: web_studio
 #. openerp-web
@@ -260,14 +265,14 @@ msgstr "Totaalbedrag"
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:149
 #, python-format
 msgid "Amount untaxed"
-msgstr ""
+msgstr "Bedrag excl. BTW"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/app_creator.xml:59
 #, python-format
 msgid "App Icon"
-msgstr ""
+msgstr "App Icon"
 
 #. module: web_studio
 #. openerp-web
@@ -288,7 +293,7 @@ msgstr "Bent u zeker dat u de achtergrond afbeelding wilt resetten?"
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:128
 #, python-format
 msgid "As expression"
-msgstr ""
+msgstr "Als expressie"
 
 #. module: web_studio
 #. openerp-web
@@ -327,7 +332,7 @@ msgstr "Achtergrond"
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:278
 #, python-format
 msgid "Backward"
-msgstr ""
+msgstr "Terug"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_base
@@ -339,7 +344,7 @@ msgstr "Basis"
 #: code:addons/web_studio/static/src/js/reports/report_kanban_view.js:152
 #, python-format
 msgid "Blank"
-msgstr ""
+msgstr "Blanco"
 
 #. module: web_studio
 #. openerp-web
@@ -375,7 +380,7 @@ msgstr "Zonder randen"
 #: code:addons/web_studio/static/src/js/reports/report_kanban_view.js:145
 #, python-format
 msgid "Business header/footer"
-msgstr ""
+msgstr "Bedrijf kop/voettekst"
 
 #. module: web_studio
 #. openerp-web
@@ -650,7 +655,7 @@ msgstr "Wijzigingen"
 #: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:745
 #, python-format
 msgid "Data table"
-msgstr "Data tafel"
+msgstr "Gegevenstabel"
 
 #. module: web_studio
 #. openerp-web
@@ -723,7 +728,7 @@ msgstr "Standaard waarde"
 #: code:addons/web_studio/static/src/xml/action_editor.xml:32
 #, python-format
 msgid "Default view"
-msgstr ""
+msgstr "Standaard weergave"
 
 #. module: web_studio
 #. openerp-web
@@ -822,7 +827,7 @@ msgstr "Sleep een menu naar rechts om een submenu aan te maken"
 #: code:addons/web_studio/static/src/js/reports/report_editor.js:664
 #, python-format
 msgid "Drag building block here"
-msgstr ""
+msgstr "Sleep een bouwblok hierheen"
 
 #. module: web_studio
 #. openerp-web
@@ -899,7 +904,7 @@ msgstr "Wijzig menu"
 #: code:addons/web_studio/static/src/xml/new_field_dialog.xml:32
 #, python-format
 msgid "Edit selection"
-msgstr ""
+msgstr "Selectie bewerken"
 
 #. module: web_studio
 #. openerp-web
@@ -913,7 +918,7 @@ msgstr "Wijzigbaar"
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:110
 #, python-format
 msgid "Else"
-msgstr ""
+msgstr "Andres"
 
 #. module: web_studio
 #. openerp-web
@@ -953,14 +958,14 @@ msgstr "Fout"
 #: code:addons/web_studio/static/src/js/reports/report_editor_action.js:54
 #, python-format
 msgid "Error: Preview not available because there is no existing record."
-msgstr ""
+msgstr "Fout: Voorbeeld is niet beschikbaar omdat er geen bestaand record is."
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:114
 #, python-format
 msgid "Esc expression"
-msgstr ""
+msgstr "Esc expressie"
 
 #. module: web_studio
 #. openerp-web
@@ -981,7 +986,7 @@ msgstr "Export"
 #: code:addons/web_studio/static/src/js/reports/report_kanban_view.js:144
 #, python-format
 msgid "External"
-msgstr ""
+msgstr "Extern"
 
 #. module: web_studio
 #. openerp-web
@@ -1039,7 +1044,7 @@ msgstr "Veld eigenschappen"
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:94
 #, python-format
 msgid "Field expression"
-msgstr ""
+msgstr "Veld experessie"
 
 #. module: web_studio
 #. openerp-web
@@ -1116,28 +1121,28 @@ msgstr "Lettertype"
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:244
 #, python-format
 msgid "Font style"
-msgstr ""
+msgstr "Lettertype stijl"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:126
 #, python-format
 msgid "Foreach expression"
-msgstr ""
+msgstr "Foreach expressie"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/submenu.xml:41
 #, python-format
 msgid "Form View"
-msgstr ""
+msgstr "Formulier weergave"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:277
 #, python-format
 msgid "Forward"
-msgstr ""
+msgstr "Vooruit"
 
 #. module: web_studio
 #. openerp-web
@@ -1230,42 +1235,42 @@ msgstr "HTTP routing"
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:247
 #, python-format
 msgid "Heading 1"
-msgstr ""
+msgstr "Kop 1"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:248
 #, python-format
 msgid "Heading 2"
-msgstr ""
+msgstr "Kop 2"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:249
 #, python-format
 msgid "Heading 3"
-msgstr ""
+msgstr "Kop 3"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:250
 #, python-format
 msgid "Heading 4"
-msgstr ""
+msgstr "Kop 4"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:251
 #, python-format
 msgid "Heading 5"
-msgstr ""
+msgstr "Kop 5"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:252
 #, python-format
 msgid "Heading 6"
-msgstr ""
+msgstr "Kop 6"
 
 #. module: web_studio
 #. openerp-web
@@ -1380,6 +1385,9 @@ msgid ""
 " you want to create a currency field first? You can make this field "
 "invisible afterwards."
 msgstr ""
+"Om een monetair veld te gebruiken, hebt u een valutaveld in het model nodig."
+" Wilt u eerst een valutaveld maken? Je kunt dit veld naderhand onzichtbaar "
+"maken."
 
 #. module: web_studio
 #. openerp-web
@@ -1421,7 +1429,7 @@ msgstr "Onzichtbaar"
 #: code:addons/web_studio/static/src/xml/action_editor.xml:43
 #, python-format
 msgid "Is default view"
-msgstr ""
+msgstr "Is standaard weergave"
 
 #. module: web_studio
 #. openerp-web
@@ -1435,7 +1443,7 @@ msgstr "Schuingedrukt"
 #: code:addons/web_studio/static/src/xml/submenu.xml:47
 #, python-format
 msgid "Kanban View"
-msgstr ""
+msgstr "Kanban weergave"
 
 #. module: web_studio
 #. openerp-web
@@ -1502,7 +1510,7 @@ msgstr "Limiteer zichtbaarheid voor groepen"
 #: code:addons/web_studio/static/src/xml/submenu.xml:44
 #, python-format
 msgid "List View"
-msgstr ""
+msgstr "Lijst weergave"
 
 #. module: web_studio
 #. openerp-web
@@ -1564,14 +1572,14 @@ msgstr "Bericht"
 #: code:addons/web_studio/static/src/js/reports/report_kanban_view.js:149
 #, python-format
 msgid "Minimal header/footer"
-msgstr ""
+msgstr "Minimale kop/voettekst"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/search_renderer.xml:6
 #, python-format
 msgid "Minus"
-msgstr ""
+msgstr "Minus"
 
 #. module: web_studio
 #. openerp-web
@@ -1739,7 +1747,7 @@ msgstr "Nee"
 #: code:addons/web_studio/static/src/js/reports/report_kanban_view.js:153
 #, python-format
 msgid "No header/footer"
-msgstr ""
+msgstr "Geen kop/voettekst"
 
 #. module: web_studio
 #. openerp-web
@@ -1781,7 +1789,7 @@ msgstr "Odoo studio icoon"
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:166
 #, python-format
 msgid "Offset"
-msgstr ""
+msgstr "Afstand"
 
 #. module: web_studio
 #. openerp-web
@@ -1797,6 +1805,8 @@ msgid ""
 "Only groups with an external ID can be used here. Please choose another "
 "group or assign manually an external ID to this group."
 msgstr ""
+"Alleen groepen met een externe ID kunnen hier worden gebruikt. Kies een "
+"andere groep of wijs handmatig een externe ID toe aan deze groep."
 
 #. module: web_studio
 #. openerp-web
@@ -1850,7 +1860,7 @@ msgstr "Planning"
 #: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:721
 #, python-format
 msgid "Please specify a field name for the selected model."
-msgstr ""
+msgstr "Gelieve een naam op te geven voor het geselecteerde model"
 
 #. module: web_studio
 #: code:addons/web_studio/controllers/main.py:979
@@ -1954,7 +1964,7 @@ msgstr "Relatieveld"
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:121
 #, python-format
 msgid "Related expression"
-msgstr ""
+msgstr "Gerelateerde expressie"
 
 #. module: web_studio
 #. openerp-web
@@ -2176,7 +2186,7 @@ msgstr "Als standaard instellen"
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:119
 #, python-format
 msgid "Set expression"
-msgstr ""
+msgstr "Stel expressie in"
 
 #. module: web_studio
 #. openerp-web
@@ -2321,7 +2331,7 @@ msgstr "Tafel"
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:257
 #, python-format
 msgid "Table style"
-msgstr ""
+msgstr "Tabel stijl"
 
 #. module: web_studio
 #. openerp-web
@@ -2672,7 +2682,7 @@ msgstr "Of dit model abstract is"
 #: code:addons/web_studio/static/src/js/reports/report_kanban_view.js:137
 #, python-format
 msgid "Which type of report do you want to create?"
-msgstr ""
+msgstr "Wat voor rapport wilt u aanmaken?"
 
 #. module: web_studio
 #. openerp-web
@@ -2741,6 +2751,8 @@ msgstr "U kan alleen een gebruiker of een relatie tonen"
 #, python-format
 msgid "You cannot modify this view, it is part of the generic layout"
 msgstr ""
+"U kan deze weergave niet bewerken, ze maakt deel uit van een generieke lay-"
+"out"
 
 #. module: web_studio
 #. openerp-web
@@ -2790,6 +2802,8 @@ msgstr "U moet deel uitmaken van deze groepen om dit veld te zien:"
 msgid ""
 "You need to use a many2many or one2many field to display a list of items"
 msgstr ""
+"U moet een many2many- of one2many-veld gebruiken om een lijst met items weer"
+" te geven"
 
 #. module: web_studio
 #. openerp-web
@@ -2825,7 +2839,7 @@ msgstr "b.v. Vastgoed"
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:204
 #, python-format
 msgid "left"
-msgstr ""
+msgstr "Links"
 
 #. module: web_studio
 #. openerp-web
@@ -2856,14 +2870,14 @@ msgstr "px"
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:235
 #, python-format
 msgid "reset color"
-msgstr ""
+msgstr "reset kleur"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:200
 #, python-format
 msgid "right"
-msgstr ""
+msgstr "rechts"
 
 #. module: web_studio
 #: code:addons/web_studio/controllers/main.py:1124

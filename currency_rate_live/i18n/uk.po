@@ -4,13 +4,14 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-08 07:14+0000\n"
 "PO-Revision-Date: 2018-10-08 07:14+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,7 +22,7 @@ msgstr ""
 #. module: currency_rate_live
 #: selection:res.company,currency_provider:0
 msgid "Bank Of Canada"
-msgstr ""
+msgstr "Банк Канади"
 
 #. module: currency_rate_live
 #: model:ir.model,name:currency_rate_live.model_res_company
@@ -31,7 +32,7 @@ msgstr "Компанії"
 #. module: currency_rate_live
 #: model:ir.model,name:currency_rate_live.model_res_config_settings
 msgid "Config Settings"
-msgstr ""
+msgstr "Налаштування"
 
 #. module: currency_rate_live
 #: model:ir.actions.server,name:currency_rate_live.ir_cron_currency_update_ir_actions_server
@@ -149,6 +150,8 @@ msgid ""
 "Unable to connect to the online exchange rate platform %s. The web service "
 "may be temporary down."
 msgstr ""
+"Неможливо підключитися до платформи обміну валют онлайн %s. Веб-сервіс може "
+"бути тимчасовим."
 
 #. module: currency_rate_live
 #: code:addons/currency_rate_live/models/res_config_settings.py:390
@@ -177,8 +180,10 @@ msgid ""
 "Your main currency (%s) is not supported by this exchange rate provider. "
 "Please choose another one."
 msgstr ""
+"Ваша основна валюта (%s) не підтримується цим постачальником курсу обміну. "
+"Будь ласка, виберіть інший."
 
 #. module: currency_rate_live
 #: selection:res.company,currency_provider:0
 msgid "xe.com"
-msgstr ""
+msgstr "xe.com"

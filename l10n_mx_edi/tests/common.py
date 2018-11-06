@@ -9,6 +9,20 @@ from odoo.tests import tagged
 class InvoiceTransactionCase(AccountingTestCase):
     def setUp(self):
         super(InvoiceTransactionCase, self).setUp()
+        self.manager_billing = self.env['res.users'].with_context(no_reset_password=True).create({  # noqa
+            'name': 'Manager billing mx',
+            'login': 'mx_billing_manager',
+            'email': 'mx_billing_manager@yourcompany.com',
+            'company_id': self.env.ref('base.main_company').id,
+            'groups_id': [(6, 0, [
+                self.ref('account.group_account_manager'),
+                self.ref('account.group_account_user'),
+                self.ref('base.group_system'),
+                self.ref('base.group_partner_manager')
+            ])]
+        })
+
+        self.uid = self.manager_billing
         self.invoice_model = self.env['account.invoice']
         self.invoice_line_model = self.env['account.invoice.line']
         self.tax_model = self.env['account.tax']
@@ -57,7 +71,7 @@ class InvoiceTransactionCase(AccountingTestCase):
         self.ova = self.env['account.account'].search([
             ('user_type_id', '=', self.env.ref(
                 'account.data_account_type_current_assets').id)], limit=1)
-        self.user_billing = self.env['res.users'].create({
+        self.user_billing = self.env['res.users'].with_context(no_reset_password=True).create({  # noqa
             'name': 'User billing mx',
             'login': 'mx_billing_user',
             'email': 'mx_billing_user@yourcompany.com',

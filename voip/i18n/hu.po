@@ -2,18 +2,12 @@
 # This file contains the translation of the following modules:
 # * voip
 # 
-# Translators:
-# krnkris, 2016
-# gezza <geza.nagy@oregional.hu>, 2016
-# Martin Trigaux, 2017
-# Ákos Nagy <akos.nagy@oregional.hu>, 2017
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.4+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-02 11:20+0000\n"
-"PO-Revision-Date: 2018-08-02 11:20+0000\n"
-"Last-Translator: Ákos Nagy <akos.nagy@oregional.hu>, 2017\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-08-24 11:48+0000\n"
 "Language-Team: Hungarian (https://www.transifex.com/odoo/teams/41243/hu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -31,12 +25,15 @@ msgstr ""
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_report__nbr
 msgid "# of Cases"
-msgstr "Esetek száma"
+msgstr ""
 
 #. module: voip
+#. openerp-web
+#: code:addons/voip/static/src/xml/voip_phonecall.xml:131
 #: model:ir.model,name:voip.model_mail_activity
+#, python-format
 msgid "Activity"
-msgstr "Tevékenység"
+msgstr ""
 
 #. module: voip
 #: model:ir.model,name:voip.model_mail_activity_type
@@ -46,20 +43,37 @@ msgstr ""
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_users__sip_always_transfer
 msgid "Always Redirect to Handset"
-msgstr "Mindig átirányítva kézi telefonra"
+msgstr ""
+
+#. module: voip
+#. openerp-web
+#: code:addons/voip/static/src/xml/voip_phonecall.xml:12
+#: code:addons/voip/static/src/xml/voip_phonecall.xml:17
+#: code:addons/voip/static/src/xml/voip_phonecall.xml:73
+#: code:addons/voip/static/src/xml/voip_phonecall.xml:78
+#, python-format
+msgid "Avatar"
+msgstr ""
 
 #. module: voip
 #. openerp-web
 #: code:addons/voip/static/src/xml/dialing_panel.xml:49
 #, python-format
 msgid "Backspace"
-msgstr "Visszalépés"
+msgstr ""
 
 #. module: voip
 #. openerp-web
 #: code:addons/voip/static/src/xml/dialing_panel.xml:35
 #, python-format
 msgid "CONTACTS"
+msgstr ""
+
+#. module: voip
+#. openerp-web
+#: code:addons/voip/static/src/xml/dialing_panel.xml:68
+#, python-format
+msgid "Call"
 msgstr ""
 
 #. module: voip
@@ -73,14 +87,14 @@ msgid "Call Name"
 msgstr ""
 
 #. module: voip
-#: code:addons/voip/models/voip_phonecall.py:192
+#: code:addons/voip/models/voip_phonecall.py:193
 #, python-format
 msgid "Call from "
 msgstr ""
 
 #. module: voip
-#: code:addons/voip/models/voip_phonecall.py:182
-#: code:addons/voip/models/voip_phonecall.py:224
+#: code:addons/voip/models/voip_phonecall.py:183
+#: code:addons/voip/models/voip_phonecall.py:225
 #, python-format
 msgid "Call to "
 msgstr ""
@@ -90,20 +104,20 @@ msgstr ""
 #: code:addons/voip/static/src/js/dialing_panel.js:589
 #, python-format
 msgid "Calling "
-msgstr "Hívás folyamatban"
+msgstr ""
 
 #. module: voip
-#: model:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
+#: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 msgid "Calls Date"
 msgstr ""
 
 #. module: voip
 #. openerp-web
 #: code:addons/voip/static/src/xml/voip_phonecall.xml:153
-#: model:ir.ui.view,arch_db:voip.wizard_transfer_call_form_view
+#: model_terms:ir.ui.view,arch_db:voip.wizard_transfer_call_form_view
 #, python-format
 msgid "Cancel"
-msgstr "Mégsem"
+msgstr ""
 
 #. module: voip
 #. openerp-web
@@ -115,7 +129,7 @@ msgstr ""
 #. module: voip
 #: selection:voip.phonecall,state:0 selection:voip.phonecall.report,state:0
 msgid "Cancelled"
-msgstr "Törölve"
+msgstr ""
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_mail_activity_type__category
@@ -125,21 +139,33 @@ msgstr ""
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_mail_activity_type__category
 msgid "Category"
-msgstr "Kategória"
+msgstr ""
 
 #. module: voip
 #. openerp-web
 #: code:addons/voip/static/src/js/dialing_panel.js:421
 #, python-format
 msgid "Click to unblock"
-msgstr "Blokkolás megszüntetéséhez kattintson"
+msgstr ""
+
+#. module: voip
+#. openerp-web
+#: code:addons/voip/static/src/xml/dialing_panel.xml:16
+#, python-format
+msgid "Close"
+msgstr ""
+
+#. module: voip
+#: model:ir.model,name:voip.model_res_config_settings
+msgid "Config Settings"
+msgstr ""
 
 #. module: voip
 #: model:ir.model,name:voip.model_res_partner
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__partner_id
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_report__partner_id
 msgid "Contact"
-msgstr "Kapcsolat"
+msgstr ""
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_configurator__create_uid
@@ -147,7 +173,7 @@ msgstr "Kapcsolat"
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_log_wizard__create_uid
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_transfer_wizard__create_uid
 msgid "Created by"
-msgstr "Készítette"
+msgstr ""
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_configurator__create_date
@@ -155,44 +181,44 @@ msgstr "Készítette"
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_log_wizard__create_date
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_transfer_wizard__create_date
 msgid "Created on"
-msgstr "Létrehozás dátuma"
+msgstr ""
 
 #. module: voip
-#: model:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
+#: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 msgid "Creation Date"
-msgstr "Létrehozás dátuma"
+msgstr ""
 
 #. module: voip
 #. openerp-web
 #: code:addons/voip/static/src/xml/voip_phonecall.xml:126
 #, python-format
 msgid "Customer"
-msgstr "Vásárló"
+msgstr ""
 
 #. module: voip
 #. openerp-web
 #: code:addons/voip/static/src/js/dialing_panel.js:405
 #, python-format
 msgid "Customer unavailable"
-msgstr "Vásárló nem elérhető"
+msgstr ""
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_report__call_date
-#: model:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
+#: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 msgid "Date"
-msgstr "Dátum"
+msgstr ""
 
 #. module: voip
 #: selection:res.config.settings,mode:0
 msgid "Demo"
-msgstr "Minta"
+msgstr ""
 
 #. module: voip
 #. openerp-web
-#: code:addons/voip/static/src/xml/dialing_panel.xml:5
+#: code:addons/voip/static/src/xml/dialing_panel.xml:6
 #, python-format
 msgid "Display Dialing Panel"
-msgstr "Tárcsázó panel megjelenítése"
+msgstr ""
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_configurator__display_name
@@ -201,23 +227,23 @@ msgstr "Tárcsázó panel megjelenítése"
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_report__display_name
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_transfer_wizard__display_name
 msgid "Display Name"
-msgstr "Megjelenített név"
+msgstr ""
 
 #. module: voip
 #: selection:voip.phonecall.log.wizard,reschedule_option:0
 msgid "Don't Reschedule"
-msgstr "Ne ütemezze át"
+msgstr ""
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__date_deadline
 msgid "Due Date"
-msgstr "Fizetési határidő"
+msgstr ""
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__duration
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_report__duration
 msgid "Duration"
-msgstr "Időtartam"
+msgstr ""
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_voip_phonecall__duration
@@ -229,27 +255,27 @@ msgstr ""
 #: code:addons/voip/static/src/xml/dialing_panel.xml:48
 #, python-format
 msgid "Enter the number..."
-msgstr "Üsse be a számot..."
+msgstr ""
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_voip_phonecall__sequence
 msgid "Gives the sequence order when displaying a list of Phonecalls."
-msgstr "Megadja a telefonhívások listázási sorrendjét."
+msgstr ""
 
 #. module: voip
-#: model:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
+#: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 msgid "Group By"
-msgstr "Csoportosítás ezzel"
+msgstr ""
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_users__sip_external_phone
 msgid "Handset Extension"
-msgstr "Kézi telefon kiterjesztés"
+msgstr ""
 
 #. module: voip
 #: selection:voip.phonecall,state:0 selection:voip.phonecall.report,state:0
 msgid "Held"
-msgstr "Tartott"
+msgstr ""
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_configurator__id
@@ -258,30 +284,30 @@ msgstr "Tartott"
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_report__id
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_transfer_wizard__id
 msgid "ID"
-msgstr "Azonosító ID"
+msgstr ""
 
 #. module: voip
 #: selection:voip.phonecall.log.wizard,reschedule_option:0
 msgid "In 1 Week"
-msgstr "1 hétig"
+msgstr ""
 
 #. module: voip
 #: selection:voip.phonecall.log.wizard,reschedule_option:0
 msgid "In 15 Day"
-msgstr "15 napig"
+msgstr ""
 
 #. module: voip
 #: selection:voip.phonecall.log.wizard,reschedule_option:0
 msgid "In 2 Months"
-msgstr "2 hónapig"
+msgstr ""
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__in_queue
 msgid "In Call Queue"
-msgstr "Hívási sorban"
+msgstr ""
 
 #. module: voip
-#: model:ir.actions.act_window,help:voip.voip_phonecall_view
+#: model_terms:ir.actions.act_window,help:voip.voip_phonecall_view
 msgid ""
 "In order to follow up on the call, you can trigger a request for\n"
 "        another call, a meeting."
@@ -290,14 +316,21 @@ msgstr ""
 #. module: voip
 #: selection:voip.phonecall,type:0
 msgid "Incoming"
-msgstr "Beérkező munka"
+msgstr ""
 
 #. module: voip
 #. openerp-web
 #: code:addons/voip/static/src/js/user_agent.js:362
 #, python-format
 msgid "Incoming call from "
-msgstr "Beérkező hívás innen"
+msgstr ""
+
+#. module: voip
+#. openerp-web
+#: code:addons/voip/static/src/xml/dialing_panel.xml:67
+#, python-format
+msgid "Keypad"
+msgstr ""
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_configurator____last_update
@@ -306,7 +339,7 @@ msgstr "Beérkező hívás innen"
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_report____last_update
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_transfer_wizard____last_update
 msgid "Last Modified on"
-msgstr "Utoljára frissítve ekkor"
+msgstr ""
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_configurator__write_uid
@@ -314,7 +347,7 @@ msgstr "Utoljára frissítve ekkor"
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_log_wizard__write_uid
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_transfer_wizard__write_uid
 msgid "Last Updated by"
-msgstr "Utoljára frissítette"
+msgstr ""
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_configurator__write_date
@@ -322,7 +355,7 @@ msgstr "Utoljára frissítette"
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_log_wizard__write_date
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_transfer_wizard__write_date
 msgid "Last Updated on"
-msgstr "Utoljára frissítve "
+msgstr ""
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__activity_id
@@ -345,10 +378,10 @@ msgstr ""
 #: code:addons/voip/static/src/xml/voip_phonecall.xml:143
 #, python-format
 msgid "Log"
-msgstr "Napló"
+msgstr ""
 
 #. module: voip
-#: model:ir.actions.act_window,help:voip.voip_phonecall_view
+#: model_terms:ir.actions.act_window,help:voip.voip_phonecall_view
 msgid "Log the summary of a phonecall"
 msgstr ""
 
@@ -367,13 +400,13 @@ msgstr ""
 #. module: voip
 #: selection:mail.activity.type,category:0
 msgid "Meeting"
-msgstr "Találkozó"
+msgstr ""
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_mail_activity__mobile
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__mobile
 msgid "Mobile"
-msgstr "Mobilszám"
+msgstr ""
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_partner__sanitized_mobile
@@ -382,9 +415,16 @@ msgid "Mobile number sanitized"
 msgstr ""
 
 #. module: voip
-#: model:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
+#. openerp-web
+#: code:addons/voip/static/src/xml/voip_phonecall.xml:164
+#, python-format
+msgid "Mute"
+msgstr ""
+
+#. module: voip
+#: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 msgid "My Phonecalls"
-msgstr "Telefonhívásaim"
+msgstr ""
 
 #. module: voip
 #. openerp-web
@@ -398,21 +438,21 @@ msgstr ""
 #: code:addons/voip/static/src/xml/voip_phonecall.xml:136
 #, python-format
 msgid "Next"
-msgstr "Következő"
+msgstr ""
 
 #. module: voip
 #: selection:voip.phonecall,state:0 selection:voip.phonecall.report,state:0
 msgid "Not Held"
-msgstr "Nem tartott"
+msgstr ""
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__note
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_log_wizard__note
 msgid "Note"
-msgstr "Jegyzet"
+msgstr ""
 
 #. module: voip
-#: model:ir.actions.act_window,help:voip.voip_phonecall_view
+#: model_terms:ir.actions.act_window,help:voip.voip_phonecall_view
 msgid ""
 "Odoo allows you to log inbound calls on the fly to track the\n"
 "        history of the communication with a customer or to inform another\n"
@@ -424,33 +464,40 @@ msgstr ""
 #: code:addons/voip/static/src/js/user_agent.js:155
 #, python-format
 msgid "One or more parameter is missing. Please check your configuration."
-msgstr "Egy vagy több paraméter hiányzik. Kérem ellenőrizze a beállításait."
+msgstr ""
 
 #. module: voip
 #: selection:mail.activity.type,category:0
 msgid "Other"
-msgstr "Egyéb"
+msgstr ""
 
 #. module: voip
 #: selection:voip.phonecall,type:0
 msgid "Outgoing"
-msgstr "Kimenő"
+msgstr ""
 
 #. module: voip
-#: model:ir.ui.view,arch_db:voip.res_user_form
+#: model_terms:ir.ui.view,arch_db:voip.res_user_form
 msgid "PBX Configuration"
-msgstr "PBX Beállítás"
+msgstr ""
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_config_settings__pbx_ip
 msgid "PBX Server IP"
-msgstr "PBX Szerver IP"
+msgstr ""
+
+#. module: voip
+#. openerp-web
+#: code:addons/voip/static/src/xml/voip_phonecall.xml:32
+#, python-format
+msgid "Pending"
+msgstr ""
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_mail_activity__phone
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__phone
 msgid "Phone"
-msgstr "Telefon"
+msgstr ""
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_partner__sanitized_phone
@@ -464,16 +511,18 @@ msgid "Phonecall"
 msgstr ""
 
 #. module: voip
-#: model:ir.actions.act_window,name:voip.voip_phonecall_view
-#: model:ir.ui.menu,name:voip.menu_voip_phonecall_view
-#: model:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
-#: model:ir.ui.view,arch_db:voip.voip_phonecall_tree_view
-msgid "Phonecalls"
-msgstr "Telefonhívások"
+#. openerp-web
+#: code:addons/voip/static/src/xml/voip_phonecall.xml:66
+#, python-format
+msgid "Phonecall details"
+msgstr ""
 
 #. module: voip
-#: model:ir.model,name:voip.model_voip_phonecall_report
-msgid "Phonecalls by user"
+#: model:ir.actions.act_window,name:voip.voip_phonecall_view
+#: model:ir.ui.menu,name:voip.menu_voip_phonecall_view
+#: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
+#: model_terms:ir.ui.view,arch_db:voip.voip_phonecall_tree_view
+msgid "Phonecalls"
 msgstr ""
 
 #. module: voip
@@ -482,14 +531,13 @@ msgstr ""
 #, python-format
 msgid "Please check if a phone number is given for the current phonecall"
 msgstr ""
-"Kérem ellenőrizze, hogy adott-e meg telefonszámot ehhez a telefonáláshoz"
 
 #. module: voip
 #. openerp-web
 #: code:addons/voip/static/src/js/user_agent.js:251
 #, python-format
 msgid "Please check your configuration.</br> (Reason receives :"
-msgstr "Kérem ellenőrizze a beállításait.</br> (Beérkezett okok :"
+msgstr ""
 
 #. module: voip
 #. openerp-web
@@ -499,13 +547,11 @@ msgid ""
 "Problem during the connection. Check if the application is allowed to access"
 " your microphone from your browser."
 msgstr ""
-"Probléma kapcsolódás közben. Ellenőrizze ,hogy az alkalmazás hozzáfér a "
-"mikrofonjához a böngészőjéből."
 
 #. module: voip
 #: selection:res.config.settings,mode:0
 msgid "Production"
-msgstr "Éles"
+msgstr ""
 
 #. module: voip
 #. openerp-web
@@ -519,7 +565,7 @@ msgstr ""
 #: code:addons/voip/static/src/xml/dialing_panel.xml:23
 #, python-format
 msgid "Refresh the Panel"
-msgstr "Panel frissítése"
+msgstr ""
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_users__sip_ignore_incoming
@@ -531,34 +577,34 @@ msgstr ""
 #: code:addons/voip/static/src/xml/voip_phonecall.xml:40
 #, python-format
 msgid "Remove from the queue"
-msgstr "Eltávolítás a sorból"
+msgstr ""
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__user_id
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_report__user_id
-#: model:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
+#: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 msgid "Responsible"
-msgstr "Felelős"
+msgstr ""
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_users__sip_login
 msgid "SIP Login / Browser's Extension"
-msgstr "SIP belépés / Böngésző kiterjesztés"
+msgstr ""
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_users__sip_password
 msgid "SIP Password"
-msgstr "SIP jelszó"
+msgstr ""
 
 #. module: voip
 #. openerp-web
 #: code:addons/voip/static/src/xml/voip_phonecall.xml:136
 #, python-format
 msgid "Schedule"
-msgstr "Ütemezés"
+msgstr ""
 
 #. module: voip
-#: model:ir.ui.view,arch_db:voip.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:voip.res_config_settings_view_form
 msgid "Schedule &amp; make calls from CRM app"
 msgstr ""
 
@@ -572,70 +618,70 @@ msgstr ""
 #: code:addons/voip/static/src/xml/dialing_panel.xml:22
 #, python-format
 msgid "Search Phone Calls..."
-msgstr "Telefonhívások keresése..."
+msgstr ""
 
 #. module: voip
-#: model:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
+#: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 msgid "Search Phonecalls"
-msgstr "Telefonszámok közötti keresés"
+msgstr ""
 
 #. module: voip
 #. openerp-web
 #: code:addons/voip/static/src/xml/voip_phonecall.xml:121
 #, python-format
 msgid "Send mail"
-msgstr "Üzenetet küld"
+msgstr ""
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__sequence
 msgid "Sequence"
-msgstr "Sorszám"
+msgstr ""
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_log_wizard__reschedule_date
 #: selection:voip.phonecall.log.wizard,reschedule_option:0
 msgid "Specific Date"
-msgstr "Adott dátumon"
+msgstr ""
 
 #. module: voip
 #. openerp-web
 #: code:addons/voip/static/src/js/dialing_panel.js:589
 #, python-format
 msgid "Start Calling"
-msgstr "Hívás elkezdése"
+msgstr ""
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__start_time
 msgid "Start time"
-msgstr "Elindítás ideje"
+msgstr ""
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__state
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_report__state
 msgid "Status"
-msgstr "Állapot"
+msgstr ""
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_log_wizard__summary
 msgid "Summary"
-msgstr "Összegzés"
+msgstr ""
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_res_config_settings__pbx_ip
 msgid "The IP adress of your PBX Server"
-msgstr "Az PBX szervere IP címe"
+msgstr ""
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_res_config_settings__wsServer
 msgid "The URL of your WebSocket"
-msgstr "A WebSoccet  URL webcíme"
+msgstr ""
 
 #. module: voip
 #. openerp-web
 #: code:addons/voip/static/src/js/dialing_panel.js:406
 #, python-format
 msgid "The customer is temporary unavailable. Please try later."
-msgstr "A vásárló ideiglenesen nem elérhető. Kérem próbálja meg később."
+msgstr ""
 
 #. module: voip
 #. openerp-web
@@ -652,7 +698,7 @@ msgstr ""
 #: code:addons/voip/static/src/js/dialing_panel.js:160
 #, python-format
 msgid "The phonecall has no number"
-msgstr "A telefonhívásnak nincs telefonszáma"
+msgstr ""
 
 #. module: voip
 #. openerp-web
@@ -660,7 +706,7 @@ msgstr "A telefonhívásnak nincs telefonszáma"
 #, python-format
 msgid ""
 "The server configuration could be wrong. Please check your configuration."
-msgstr "Rossz lehet a szerver beállítása. Kérem ellenőrizze a beállításait."
+msgstr ""
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_voip_phonecall__state
@@ -678,15 +724,22 @@ msgid "The websocket uri could be wrong."
 msgstr ""
 
 #. module: voip
-#: model:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
+#: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 #: selection:voip.phonecall,state:0 selection:voip.phonecall.report,state:0
 msgid "To Do"
-msgstr "Teendők"
+msgstr ""
 
 #. module: voip
 #: selection:voip.phonecall.log.wizard,reschedule_option:0
 msgid "Tomorrow"
-msgstr "Holnap"
+msgstr ""
+
+#. module: voip
+#. openerp-web
+#: code:addons/voip/static/src/xml/voip_phonecall.xml:159
+#, python-format
+msgid "Transfer"
+msgstr ""
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_transfer_wizard__transfer_choice
@@ -696,29 +749,61 @@ msgstr ""
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__type
 msgid "Type"
-msgstr "Típus"
+msgstr ""
 
 #. module: voip
-#: model:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
+#: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 msgid "Unassigned"
-msgstr "Nem hozzárendelt"
+msgstr ""
+
+#. module: voip
+#. openerp-web
+#: code:addons/voip/static/src/xml/dialing_panel.xml:18
+#, python-format
+msgid "Unfold"
+msgstr ""
 
 #. module: voip
 #. openerp-web
 #: code:addons/voip/static/src/js/voip_phonecall.js:130
 #, python-format
 msgid "Unknown"
-msgstr "Ismeretlen"
+msgstr ""
 
 #. module: voip
 #: model:ir.model,name:voip.model_res_users
 msgid "Users"
-msgstr "Felhasználók"
+msgstr ""
 
 #. module: voip
-#: model:ir.ui.view,arch_db:voip.view_voip_user_config
+#: model_terms:ir.ui.view,arch_db:voip.view_voip_user_config
 msgid "VOIP Configuration"
-msgstr "VOIP beállítás"
+msgstr ""
+
+#. module: voip
+#: model:ir.model,name:voip.model_voip_configurator
+msgid "VOIP Configurator"
+msgstr ""
+
+#. module: voip
+#: model:ir.model,name:voip.model_voip_phonecall
+msgid "VOIP Phonecall"
+msgstr ""
+
+#. module: voip
+#: model:ir.model,name:voip.model_voip_phonecall_log_wizard
+msgid "VOIP Phonecall log Wizard"
+msgstr ""
+
+#. module: voip
+#: model:ir.model,name:voip.model_voip_phonecall_report
+msgid "VOIP Phonecalls by user report"
+msgstr ""
+
+#. module: voip
+#: model:ir.model,name:voip.model_voip_phonecall_transfer_wizard
+msgid "VOIP Transfer Wizard of Phonecalls"
+msgstr ""
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_config_settings__mode
@@ -726,23 +811,23 @@ msgid "VoIP Environment"
 msgstr ""
 
 #. module: voip
-#: code:addons/voip/wizard/voip_phonecall_transfer_wizard.py:34
+#: code:addons/voip/wizard/voip_phonecall_transfer_wizard.py:35
 #, python-format
 msgid "Warning"
-msgstr "Figyelmeztetés"
+msgstr ""
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_config_settings__wsServer
 msgid "WebSocket"
-msgstr "WebSocket"
+msgstr ""
 
 #. module: voip
-#: code:addons/voip/wizard/voip_phonecall_transfer_wizard.py:35
+#: code:addons/voip/wizard/voip_phonecall_transfer_wizard.py:36
 #, python-format
 msgid ""
 "Wrong configuration for the call. There is no external phone number "
 "configured"
-msgstr "Nem megfelelő beállítás a híváshoz. Nincs Külső telefonszám beállítva"
+msgstr ""
 
 #. module: voip
 #. openerp-web
@@ -760,7 +845,6 @@ msgstr ""
 msgid ""
 "Your browser could not support WebRTC. Please check your configuration."
 msgstr ""
-"Webböngészője nem támogathatja a WebRTC-t. Kérem ellenőrizze a beállításait."
 
 #. module: voip
 #. openerp-web
@@ -768,12 +852,7 @@ msgstr ""
 #: code:addons/voip/static/src/xml/voip_phonecall.xml:94
 #, python-format
 msgid "min"
-msgstr "perc"
-
-#. module: voip
-#: model:ir.model,name:voip.model_res_config_settings
-msgid "res.config.settings"
-msgstr "res.config.settings"
+msgstr ""
 
 #. module: voip
 #. openerp-web
@@ -788,49 +867,29 @@ msgstr ""
 #: code:addons/voip/static/src/js/user_agent.js:250
 #, python-format
 msgid "the connection cannot be made. "
-msgstr "csatlakozás nem hozható létre."
+msgstr ""
 
 #. module: voip
-#: model:ir.ui.view,arch_db:voip.wizard_transfer_call_form_view
+#: model_terms:ir.ui.view,arch_db:voip.wizard_transfer_call_form_view
 msgid "transfer Option"
-msgstr "Átirányítás lehetőségek"
+msgstr ""
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_transfer_wizard__transfer_number
 msgid "transfer To"
-msgstr "részére átirányítva"
+msgstr ""
 
 #. module: voip
-#: model:ir.ui.view,arch_db:voip.wizard_transfer_call_form_view
+#: model_terms:ir.ui.view,arch_db:voip.wizard_transfer_call_form_view
 msgid "transfer the Call"
-msgstr "Hívás átirányítása"
+msgstr ""
 
 #. module: voip
 #: selection:voip.phonecall.transfer.wizard,transfer_choice:0
 msgid "transfer to another External Phone"
-msgstr "átirányítás másik Külső telefonra"
+msgstr ""
 
 #. module: voip
 #: selection:voip.phonecall.transfer.wizard,transfer_choice:0
 msgid "transfer to your external phone"
-msgstr "átirányítás a külső telefonszámára"
-
-#. module: voip
-#: model:ir.model,name:voip.model_voip_configurator
-msgid "voip.configurator"
-msgstr "voip.configurator"
-
-#. module: voip
-#: model:ir.model,name:voip.model_voip_phonecall
-msgid "voip.phonecall"
-msgstr ""
-
-#. module: voip
-#: model:ir.model,name:voip.model_voip_phonecall_log_wizard
-msgid "voip.phonecall.log.wizard"
-msgstr ""
-
-#. module: voip
-#: model:ir.model,name:voip.model_voip_phonecall_transfer_wizard
-msgid "voip.phonecall.transfer.wizard"
 msgstr ""

@@ -48,14 +48,15 @@ class TestL10nMxEdiInvoice(common.InvoiceTransactionCase):
             'zip': '37200',
             'property_account_position_id': self.fiscal_position.id,
         })
+        certificate = self.env['l10n_mx_edi.certificate'].create({
+            'content': base64.encodestring(self.cert),
+            'key': base64.encodestring(self.cert_key),
+            'password': self.cert_password,
+        })
         self.account_settings.create({
             'l10n_mx_edi_pac': 'finkok',
             'l10n_mx_edi_pac_test_env': True,
-            'l10n_mx_edi_certificate_ids': [{
-                'content': base64.encodestring(self.cert),
-                'key': base64.encodestring(self.cert_key),
-                'password': self.cert_password,
-            }]
+            'l10n_mx_edi_certificate_ids': [(6, 0, [certificate.id])],
         }).execute()
         self.set_currency_rates(mxn_rate=21, usd_rate=1)
 

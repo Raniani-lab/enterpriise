@@ -4,17 +4,18 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
-# Yenthe Van Ginneken <yenthespam@gmail.com>, 2018
 # Thomas Pot <thomas@open2bizz.nl>, 2018
 # Cas Vissers <casvissers@brahoo.nl>, 2018
+# Yenthe Van Ginneken <yenthespam@gmail.com>, 2018
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Cas Vissers <casvissers@brahoo.nl>, 2018\n"
+"PO-Revision-Date: 2018-08-24 11:37+0000\n"
+"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2018\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -41,6 +42,10 @@ msgid ""
 "('state', '!=', 'draft')]}\" role=\"status\">Direct Debit collecting method "
 "available</span>"
 msgstr ""
+"<span class=\"alert alert-info\" attrs=\"{'invisible': ['|', '|', "
+"('sdd_mandate_usable', '!=', True), ('payment_type', '!=', 'inbound'), "
+"('state', '!=', 'draft')]}\" role=\"status\">Incasso methode "
+"beschikbaar</span>"
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
@@ -230,7 +235,7 @@ msgstr "Aangemaakt op"
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_res_config_settings__sdd_creditor_identifier
 msgid "Creditor Identifier"
-msgstr ""
+msgstr "Crediteur identificatie"
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,help:account_sepa_direct_debit.field_res_config_settings__sdd_creditor_identifier
@@ -263,11 +268,14 @@ msgid ""
 "Date until which the mandate can be used. It will automatically be closed "
 "after this date."
 msgstr ""
+"Datum tot welke het mandaat kan worden gebruikt. Het wordt automatisch "
+"gesloten na deze datum."
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,help:account_sepa_direct_debit.field_account_batch_payment__sdd_required_collection_date
 msgid "Date when the company expects to receive the payments of this batch."
 msgstr ""
+"Datum waarop het bedrijf de betalingen van deze batch verwacht te ontvangen."
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__partner_id
@@ -668,7 +676,7 @@ msgstr "Incasso mandaat"
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_res_partner__sdd_count
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_res_users__sdd_count
 msgid "SDD count"
-msgstr ""
+msgstr "SDD aantal"
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_res_company__sdd_creditor_identifier
@@ -773,6 +781,8 @@ msgid ""
 "The debtor account must have a bank with a bic number in order to validate a"
 " SEPA Direct Debit mandate."
 msgstr ""
+"De debiteur rekening moet een bank met een bic-nummer hebben om een SEPA-"
+"machtiging voor automatische incasso te valideren."
 
 #. module: account_sepa_direct_debit
 #: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:153
@@ -904,6 +914,9 @@ msgid ""
 " %s for partner '%s'. Please create one before encoding a SEPA Direct Debit "
 "payment."
 msgstr ""
+"Kan geen betaling '%s' uitvoeren omdat er geen bruikbaar mandaat beschikbaar"
+" is op datum %s voor relatie '%s'. Maak er een voor het coderen van een "
+"SEPA-incasso."
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.account_sepa_direct_debit_mandate_form
@@ -917,6 +930,8 @@ msgid ""
 "You cannot generate a SEPA Direct Debit file with a required collection date"
 " in the past."
 msgstr ""
+"U kunt in geen SEPA-incassobestand genereren met een vereiste collectiedatum"
+" in het verleden."
 
 #. module: account_sepa_direct_debit
 #: code:addons/account_sepa_direct_debit/models/account_invoice.py:35

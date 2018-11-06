@@ -6,16 +6,17 @@
 # Martin Trigaux, 2018
 # Jaroslav Helemik Nemec <nemec@helemik.cz>, 2018
 # Jakub Lohnisky <jakub@lepremier.cz>, 2018
-# Ladislav Tomm <tomm@helemik.cz>, 2018
 # Jan Horzinka <jan.horzinka@centrum.cz>, 2018
 # Michal Veselý <michal@veselyberanek.net>, 2018
+# Ladislav Tomm <tomm@helemik.cz>, 2018
 # J. Podhorecky <j.podhorecky@volny.cz>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-08 07:14+0000\n"
-"PO-Revision-Date: 2018-10-08 07:14+0000\n"
+"PO-Revision-Date: 2018-08-24 11:38+0000\n"
 "Last-Translator: J. Podhorecky <j.podhorecky@volny.cz>, 2018\n"
 "Language-Team: Czech (https://www.transifex.com/odoo/teams/41243/cs/)\n"
 "MIME-Version: 1.0\n"
@@ -722,7 +723,7 @@ msgstr ""
 #. module: hr_appraisal
 #: model:survey.label,value:hr_appraisal.oprow_2_5_1
 msgid "I know the company's values and live them"
-msgstr ""
+msgstr "Znám hodnoty společnosti a naplňuji je"
 
 #. module: hr_appraisal
 #: model:survey.label,value:hr_appraisal.oprow_2_3_3
@@ -883,6 +884,8 @@ msgid ""
 "Leadership: create a challenging and motivating work environment aligned "
 "with the company's strategy"
 msgstr ""
+"Vedení: Vytvořte náročné a motivující pracovní prostředí sladěné se "
+"strategií společnosti"
 
 #. module: hr_appraisal
 #: model:survey.label,value:hr_appraisal.arow_3_2_4
@@ -1157,7 +1160,7 @@ msgstr "Zodpovědný uživatel"
 #. module: hr_appraisal
 #: model:survey.question,question:hr_appraisal.appraisal_2_2
 msgid "Results"
-msgstr ""
+msgstr "Výsledky"
 
 #. module: hr_appraisal
 #: model:survey.label,value:hr_appraisal.arow_3_2_1
@@ -1353,6 +1356,7 @@ msgstr ""
 msgid ""
 "The supervisor send the form to the HR department in India and in Belgium"
 msgstr ""
+"Supervizor zasílá formulář na oddělení lidských zdrojů v Indii a v Belgii"
 
 #. module: hr_appraisal
 #: model_terms:survey.page,description:hr_appraisal.appraisal_1

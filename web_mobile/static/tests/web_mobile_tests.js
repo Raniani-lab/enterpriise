@@ -1,7 +1,6 @@
 odoo.define('web_mobile.tests', function (require) {
 "use strict";
 
-var config = require('web.config');
 var FormView = require('web.FormView');
 var testUtils = require('web.test_utils');
 
@@ -191,11 +190,6 @@ QUnit.module('web_mobile', {
             data: this.data,
             model: 'partner',
             res_id: 2,
-            config: {
-                device: {
-                    size_class: config.device.SIZES.VSM,
-                },
-            },
             viewOptions: {mode: 'edit'},
         });
 

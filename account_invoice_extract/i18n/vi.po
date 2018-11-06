@@ -145,7 +145,7 @@ msgstr ""
 #. module: account_invoice_extract
 #: model:ir.model.fields,help:account_invoice_extract.field_account_invoice_extract_words__invoice_id
 msgid "Invoice id"
-msgstr ""
+msgstr "Invoice id"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words____last_update

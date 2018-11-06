@@ -179,9 +179,7 @@
             <button t-if="dashboard.number_to_reconcile == 0" attrs="{'invisible': [('account_online_journal_id', '!=', False)]}" type="object" name="action_choose_institution" class="btn btn-primary">Online Synchronization</button>
             <a t-if="dashboard.number_to_reconcile > 0" attrs="{'invisible': [('account_online_journal_id', '!=', False)]}" type="object" name="action_choose_institution" class="oe_inline">Online Synchronization</a>
           </t>
-        </xpath>
 
-        <xpath expr="//div[hasclass('o_kanban_primary_left')]" position="inside">
           <t t-if="record.synchronization_status.value == 'SUCCESS'">
             <span class="text-muted" t-if="(record.account_online_journal_id.value != '')" t-att-title="record.next_synchronization.value">Next sync: <t t-esc="record.next_synchronization.value"/></span>
           </t>

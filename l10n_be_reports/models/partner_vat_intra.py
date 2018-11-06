@@ -61,6 +61,7 @@ class ReportL10nBePartnerVatIntra(models.AbstractModel):
                     'id': row['partner_id'],
                     # 'type': 'partner_id',
                     'caret_options': 'res.partner',
+                    'model': 'res.partner',
                     'name': row['partner_name'],
                     'columns': [{'name': v } for v in columns],
                     # 'level': 2,

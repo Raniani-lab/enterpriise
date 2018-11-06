@@ -32,17 +32,20 @@ msgid ""
 "Free Product - Free product will be provide as reward \n"
 "Free Shipping - Free shipping will be provided as reward (Need delivery module)"
 msgstr ""
+"Sconto - Il premio sarà applicato sotto forma di sconto.\n"
+"Prodotto gratuito - Un prodotto sarà offerto come premio\n"
+"Spedizione gratuita - La spedizione sarà offerta come premio (modulo di Consegna necessaria)"
 
 #. module: sale_coupon_delivery
 #: code:addons/sale_coupon_delivery/models/sale_order.py:33
 #, python-format
 msgid "Discount: "
-msgstr ""
+msgstr "Sconto:"
 
 #. module: sale_coupon_delivery
 #: selection:sale.coupon.reward,reward_type:0
 msgid "Free Product"
-msgstr ""
+msgstr "Prodotto gratuito"
 
 #. module: sale_coupon_delivery
 #: code:addons/sale_coupon_delivery/models/sale_coupon_reward.py:18
@@ -54,7 +57,7 @@ msgstr "Spedizione gratuita"
 #. module: sale_coupon_delivery
 #: model:ir.model.fields,field_description:sale_coupon_delivery.field_sale_coupon_reward__reward_type
 msgid "Reward Type"
-msgstr ""
+msgstr "Tipo di premio"
 
 #. module: sale_coupon_delivery
 #: model:ir.model,name:sale_coupon_delivery.model_sale_order
@@ -69,7 +72,7 @@ msgstr "Programma coupon di vendita"
 #. module: sale_coupon_delivery
 #: model:ir.model,name:sale_coupon_delivery.model_sale_coupon_reward
 msgid "Sales Coupon Reward"
-msgstr ""
+msgstr "Premio coupon di vendita"
 
 #. module: sale_coupon_delivery
 #: model:ir.model,name:sale_coupon_delivery.model_sale_order_line
@@ -81,4 +84,4 @@ msgstr "Riga Ordine di Vendita"
 #: code:addons/sale_coupon_delivery/models/sale_coupon_program.py:23
 #, python-format
 msgid "The shipping costs are not in the order lines."
-msgstr ""
+msgstr "Le spese di spedizione non sono incluse nelle linee di ordine."

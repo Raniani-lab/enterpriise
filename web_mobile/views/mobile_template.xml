@@ -17,7 +17,7 @@
         </xpath>
     </template>
 
-    <template id="qunit_suite" name="web_mobile_tests" inherit_id="web.qunit_suite">
+    <template id="qunit_suite" name="web_mobile_tests" inherit_id="web.qunit_mobile_suite">
         <xpath expr="//t[@t-set='head']" position="inside">
             <script type="text/javascript" src="/web_mobile/static/tests/web_mobile_tests.js"/>
         </xpath>

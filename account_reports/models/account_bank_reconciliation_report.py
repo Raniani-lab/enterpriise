@@ -198,7 +198,10 @@ If non-zero, it could be due to
         # * the starting and ending balance of the bank statements, to make sure there is no gap between them.
         # * there's no 'draft' move linked with a bank statement
         line_currency = self.env.context.get('line_currency', False)
-        last_line['columns'][-1]['title'] = self.format_value(computed_stmt_balance, line_currency) + " - " + self.format_value(report_data['last_st_balance'], line_currency)
+        if self.env.context.get('no_format'):
+            last_line['columns'][-1]['title'] = self.format_value(computed_stmt_balance, line_currency) - self.format_value(report_data['last_st_balance'], line_currency)
+        else:
+            last_line['columns'][-1]['title'] = self.format_value(computed_stmt_balance, line_currency) + " - " + self.format_value(report_data['last_st_balance'], line_currency)
         lines.append(last_line)
 
         return lines

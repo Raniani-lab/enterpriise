@@ -368,6 +368,9 @@ var NewMenuDialog = Dialog.extend(StandaloneFieldManagerMixin, {
      */
     _onSave: function () {
         var self = this;
+
+        this.$footer.find('.confirm_button').addClass('disabled');
+
         var name = this.$el.find('input').first().val();
         var model_id = this.many2one.value && this.many2one.value.res_id;
 
@@ -375,6 +378,8 @@ var NewMenuDialog = Dialog.extend(StandaloneFieldManagerMixin, {
         def.then(function () {
             self.on_saved();
             self.close();
+        }).fail(function () {
+            self.$footer.find('.confirm_button').removeClass('disabled');
         });
     },
 

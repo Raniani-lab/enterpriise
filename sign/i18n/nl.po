@@ -3,18 +3,19 @@
 # * sign
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
-# Yenthe Van Ginneken <yenthespam@gmail.com>, 2018
 # Gunther Clauwaert <gclauwae@hotmail.com>, 2018
+# Martin Trigaux, 2018
 # Cas Vissers <casvissers@brahoo.nl>, 2018
+# Yenthe Van Ginneken <yenthespam@gmail.com>, 2018
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-27 08:43+0000\n"
-"PO-Revision-Date: 2018-09-27 08:43+0000\n"
-"Last-Translator: Cas Vissers <casvissers@brahoo.nl>, 2018\n"
+"PO-Revision-Date: 2018-08-24 11:48+0000\n"
+"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2018\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -39,6 +40,7 @@ msgstr "%s : Handtekening aanvraag"
 #, python-format
 msgid "%s couldn't sign the document due to an insufficient credit error."
 msgstr ""
+"%s kon het document niet ondertekenen vanwege een onvoldoende kredietfout."
 
 #. module: sign
 #: code:addons/sign/models/sign_request.py:290
@@ -51,7 +53,7 @@ msgstr "%s is getekend"
 #: code:addons/sign/controllers/main.py:207
 #, python-format
 msgid "%s validated the signature by SMS with the phone number %s."
-msgstr ""
+msgstr "%s de handtekening is gevalideerd per sms met het telefoonnummer %s."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_follower
@@ -80,6 +82,9 @@ msgid ""
 "there must be either no fields to fill or only one responsible for all the "
 "fields!</span>"
 msgstr ""
+"<span attrs=\"{'invisible': [('url', '!=', False)]}\">Om te kunnen delen, "
+"hoeven er geen velden te worden ingevuld of is er maar één verantwoordelijk "
+"voor alle velden!</span>"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_form
@@ -104,6 +109,10 @@ msgid ""
 "who clicks on the link. The link is private, only those that receive the "
 "link will be able to sign it.</span>"
 msgstr ""
+"<span class=\"text-muted\" attrs=\"{'invisible': [('url', '=', "
+"False)]}\">Deel deze link en Odoo maakt een nieuw document aan per persoon "
+"die klikt op de link. De link is privé, enkel de mensen die deze link "
+"krijgen kunnen het document tekenen.</span>"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_item_type_view_form
@@ -117,6 +126,8 @@ msgid ""
 "<strong>Warning</strong> do not forward this email to other people!<br/>\n"
 "            They will be able to access this document and sign it as yourself."
 msgstr ""
+"<strong>Waarschuwing</strong> stuur deze e-mail niet door naar andere mensen!<br/>\n"
+"             Zij kunnen dit document openen en ondertekenen als uzelf."
 
 #. module: sign
 #. openerp-web
@@ -126,6 +137,8 @@ msgid ""
 "A SMS will be sent to the following phone number. Please update it if it's "
 "not relevant."
 msgstr ""
+"Er wordt een sms verzonden naar het volgende telefoonnummer. Werk het bij "
+"als het niet relevant is."
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_needaction
@@ -293,7 +306,7 @@ msgstr "Kleur"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template_tag__color
 msgid "Color Index"
-msgstr "Kleur index"
+msgstr "Kleurindex"
 
 #. module: sign
 #: model:sign.item.role,name:sign.sign_item_role_company
@@ -738,7 +751,7 @@ msgstr "Is één verantwoordelijke"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__is_user_signer
 msgid "Is User Signer"
-msgstr ""
+msgstr "Is een ondertekenaar"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__last_action_date
@@ -1019,7 +1032,7 @@ msgstr "Open"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__redirect_url
 msgid "Optional Link"
-msgstr ""
+msgstr "Optionele link"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_send_request_view_form
@@ -1032,6 +1045,8 @@ msgid ""
 "Optional link for redirection after signature instead of "
 "https://www.odoo.com/page/sign"
 msgstr ""
+"Optionele link voor doorverwijzing na handtekening in plaats van "
+"https://www.odoo.com/page/sign"
 
 #. module: sign
 #: model_terms:ir.actions.act_window,help:sign.sign_template_action
@@ -1088,6 +1103,7 @@ msgstr "Controleer en reageer op dit document aub"
 #, python-format
 msgid "Please enter the code received through SMS to complete your signature"
 msgstr ""
+"Voer de code in die u via SMS hebt ontvangen om uw handtekening te voltooien"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__posX
@@ -1119,7 +1135,7 @@ msgstr "Voortgang"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_send_copy__request_id
 msgid "Request"
-msgstr "Opdrachtaanvraag"
+msgstr "Verzoek"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__request_item_infos
@@ -1323,7 +1339,7 @@ msgstr "Verzend aanvragen"
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
 #, python-format
 msgid "Share"
-msgstr "Deel"
+msgstr "Delen"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__share_link
@@ -1361,7 +1377,7 @@ msgstr "Teken document"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_send_request_signer__sign_send_request_id
 msgid "Sign Send Request"
-msgstr ""
+msgstr "Onderteken verzendverzoek"
 
 #. module: sign
 #: model:ir.model,name:sign.model_sign_template_share
@@ -1460,7 +1476,7 @@ msgstr "Handtekening aanvraag item"
 #. module: sign
 #: model:ir.actions.act_window,name:sign.sign_request_item_action
 msgid "Signature Request Items"
-msgstr ""
+msgstr "Handtekeningverzoekregels"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__sign_request_ids
@@ -1528,7 +1544,7 @@ msgstr "Getekenden"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__signers_count
 msgid "Signers Count"
-msgstr ""
+msgstr "Aantal ondertekenaars"
 
 #. module: sign
 #. openerp-web
@@ -1686,7 +1702,7 @@ msgstr "Soort"
 #: code:addons/sign/static/src/js/sign_backend.js:79
 #, python-format
 msgid "UPLOAD A PDF TEMPLATE"
-msgstr ""
+msgstr "UPLOAD EEN PDF SJABLOON"
 
 #. module: sign
 #. openerp-web
@@ -1695,6 +1711,8 @@ msgstr ""
 #, python-format
 msgid "Unable to send the SMS, please contact the sender of the document."
 msgstr ""
+"Niet in staat om het sms-bericht te verzenden, neem contact op met de "
+"afzender van het document."
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_unread
@@ -1760,14 +1778,14 @@ msgstr "Verifieer"
 #: code:addons/sign/static/src/xml/sign_common.xml:111
 #, python-format
 msgid "View External Document"
-msgstr ""
+msgstr "Bekijk extern document"
 
 #. module: sign
 #. openerp-web
 #: code:addons/sign/static/src/xml/sign_common.xml:116
 #, python-format
 msgid "View Signed document"
-msgstr ""
+msgstr "Bekijk getekend document"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_completed
@@ -1833,6 +1851,8 @@ msgid ""
 "You can't delete a template for which signature requests exist but you can "
 "archive it instead."
 msgstr ""
+"U kunt een sjabloon niet verwijderen waarvoor handtekeningaanvragen bestaan,"
+" maar u kunt deze in plaats daarvan archiveren."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.doc_sign

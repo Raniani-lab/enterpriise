@@ -11,6 +11,7 @@ class generic_tax_report(models.AbstractModel):
     _name = 'account.generic.tax.report'
     _description = 'Generic Tax Report'
 
+    filter_multi_company = None
     filter_date = {'date_from': '', 'date_to': '', 'filter': 'this_month'}
     filter_all_entries = False
     filter_comparison = {'date_from': '', 'date_to': '', 'filter': 'no_comparison', 'number_period': 1}

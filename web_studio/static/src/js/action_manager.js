@@ -45,6 +45,17 @@ ActionManager.include({
         return this._super.apply(this, arguments);
     },
     /**
+     * Returns the action of the Studio controller in the controllerStack, i.e.
+     * the action currently edited in Studio.
+     *
+     * @returns {Object|null}
+     */
+    getCurrentStudioAction: function () {
+        var controllerID = this.controllerStack[this.studioControllerIndex];
+        var controller = this.controllers[controllerID];
+        return controller ? this.actions[controller.actionID] : null;
+    },
+    /**
      * Restores the action currently edited by Studio.
      *
      * @returns {Deferred}

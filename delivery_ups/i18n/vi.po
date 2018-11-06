@@ -363,4 +363,4 @@ msgstr "bpost"
 #: model:product.template,weight_uom_name:delivery_ups.product_product_delivery_ups_be_product_template
 #: model:product.template,weight_uom_name:delivery_ups.product_product_delivery_ups_us_product_template
 msgid "kg"
-msgstr ""
+msgstr "kg"

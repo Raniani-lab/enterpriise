@@ -29,7 +29,7 @@ class ProductTemplate(models.Model):
         help='The title is restricted to 80 characters')
     ebay_subtitle = fields.Char('Subtitle', size=55,
         help='The subtitle is restricted to 55 characters. Fees can be claimed by eBay for this feature')
-    ebay_description = fields.Html('eBay Description')
+    ebay_description = fields.Html('eBay Description', default='<p><br></p>')
     ebay_item_condition_id = fields.Many2one('ebay.item.condition', string="Item Condition")
     ebay_category_id = fields.Many2one('ebay.category',
         string="Category", domain=[('category_type', '=', 'ebay'),('leaf_category','=',True)])

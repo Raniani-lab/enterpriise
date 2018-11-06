@@ -7,13 +7,15 @@
 # Ricardo Martins <ricardo.nbs.martins@gmail.com>, 2018
 # MS, 2018
 # Joao Felix <jrmfelix@gmail.com>, 2018
+# Diogo Fonseca <dsf@thinkopensolutions.pt>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Joao Felix <jrmfelix@gmail.com>, 2018\n"
+"PO-Revision-Date: 2018-08-24 11:36+0000\n"
+"Last-Translator: Diogo Fonseca <dsf@thinkopensolutions.pt>, 2018\n"
 "Language-Team: Portuguese (https://www.transifex.com/odoo/teams/41243/pt/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,7 +26,7 @@ msgstr ""
 #. module: account_plaid
 #: model:ir.model.fields,help:account_plaid.field_account_online_provider__plaid_error_type
 msgid "Additional information on error"
-msgstr ""
+msgstr "Informação adicional em erro"
 
 #. module: account_plaid
 #: code:addons/account_plaid/models/plaid.py:55
@@ -36,13 +38,13 @@ msgstr ""
 #. module: account_plaid
 #: model:ir.model,name:account_plaid.model_account_online_journal
 msgid "Interface for Online Account Journal"
-msgstr ""
+msgstr "Interface para o diário da conta on-line"
 
 #. module: account_plaid
 #: code:addons/account_plaid/models/plaid.py:136
 #, python-format
 msgid "Only an Accountant is allowed to perform this operation."
-msgstr ""
+msgstr "Só um contabilista pode efetuar esta operação"
 
 #. module: account_plaid
 #: selection:account.online.provider,provider_type:0

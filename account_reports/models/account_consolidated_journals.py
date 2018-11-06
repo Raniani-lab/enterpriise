@@ -28,7 +28,7 @@ class report_account_consolidated_journal(models.AbstractModel):
         options['date'].setdefault('date_to', fields.Date.context_today(self))
 
         # Overwrite journals, otherwise changing companies won't work
-        options['journals'] = self.get_journals()
+        options['journals'] = self._get_journals()
 
         # Keep the selection, though
         selected_journals = {}

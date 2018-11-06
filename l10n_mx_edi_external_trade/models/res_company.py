@@ -12,7 +12,7 @@ class ResCompany(models.Model):
         help='Indicates the number of reliable exporter in accordance '
         'with Article 22 of Annex 1 of the Free Trade Agreement with the '
         'European Association and the Decision of the European Community. '
-        'Used in External Trade in node "NumeroExportadorConfiable".')
+        'Used in External Trade in the attribute "NumeroExportadorConfiable".')
     l10n_mx_edi_locality_id = fields.Many2one(
         'l10n_mx_edi.res.locality', string='Locality',
         related='partner_id.l10n_mx_edi_locality_id', readonly=False,
@@ -21,9 +21,9 @@ class ResCompany(models.Model):
         string='Colony Code',
         compute='_compute_l10n_mx_edi_colony_code',
         inverse='_inverse_l10n_mx_edi_colony_code',
-        help='Code Colony configured for this company, used in the XML that '
-        'serves to define the colony where the location is given and used '
-        'external trade complement.')
+        help='Colony Code configured for this company. It is used in the '
+        'external trade complement to define the colony where the domicile '
+        'is located.')
 
     @api.multi
     def _compute_l10n_mx_edi_colony_code(self):

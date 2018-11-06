@@ -25,7 +25,7 @@
                         <thead>
                             <tr style="background-color:grey; color:white;">
                                 <th class="text-center">Operation Type</th>
-                                <th class="text-center">Key Certificate</th>
+                                <th class="text-center">Certificate Key</th>
                                 <th class="text-center">Certificate Source</th>
                                 <th class="text-center" t-if="external.get('CertificadoOrigen', '') == 1">Number Certificate Source</th>
                                 <th class="text-center">Subdivision</th>
@@ -44,7 +44,7 @@
                     <table class="table table-sm text-center mt4 mb4" align="center" style="font-size:10px">
                         <thead>
                             <tr style="background-color:grey; color:white;">
-                                <th class="text-center" t-if="external.get('NumeroExportadorConfiable', '')">Number Reliable Exporter</th>
+                                <th class="text-center" t-if="external.get('NumeroExportadorConfiable', '')">Number of Reliable Exporter</th>
                                 <th class="text-center">Incoterm</th>
                                 <th class="text-center">Rate USD</th>
                                 <th class="text-center">Total USD</th>

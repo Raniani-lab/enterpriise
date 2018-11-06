@@ -39,12 +39,12 @@ msgstr ""
 #. module: website_sale_dashboard
 #: model:ir.model.fields,field_description:website_sale_dashboard.field_sale_report__is_abandoned_cart
 msgid "Abandoned Cart"
-msgstr ""
+msgstr "Giỏ hàng chưa hoàn tất"
 
 #. module: website_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.sale_report_view_search_website_inherit
 msgid "Abandoned Carts"
-msgstr ""
+msgstr "Các giỏ hàng chưa xác nhận"
 
 #. module: website_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.sale_dashboard_view

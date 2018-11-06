@@ -1815,7 +1815,7 @@ msgstr "損益計算書"
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_executivesummary_profitability0
 msgid "Profitability"
-msgstr ""
+msgstr "収益性"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_partner_ledger.py:18

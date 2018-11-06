@@ -7,7 +7,6 @@
         <field name="arch" type="xml">
             <xpath expr="//page[@name='sales_purchases']//field[@name='customer']" position="after">
                 <field name="l10n_mx_edi_external_trade"/>
-                <field name="l10n_mx_edi_curp"/>
             </xpath>
         </field>
     </record>

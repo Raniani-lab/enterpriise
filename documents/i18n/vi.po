@@ -951,7 +951,7 @@ msgstr "Số thông điệp chưa đọc"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
 msgid "Odoo Logo"
-msgstr ""
+msgstr "Logo hệ thống"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout

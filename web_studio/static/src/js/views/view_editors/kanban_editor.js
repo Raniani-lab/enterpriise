@@ -137,7 +137,7 @@ return KanbanRenderer.extend(EditorMixin, {
     _renderUngrouped: function (fragment) {
         var isDashboard = this.$el.hasClass('o_kanban_dashboard');
         this.recordEditor = new KanbanRecordEditor(
-            this, this.kanbanRecord, this.recordOptions, isDashboard);
+            this, this.kanbanRecord, this.recordOptions, this.arch, isDashboard);
         this.widgets.push(this.recordEditor);
         this.recordEditor.appendTo(fragment);
 

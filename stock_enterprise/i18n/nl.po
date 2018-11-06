@@ -48,12 +48,12 @@ msgstr "Klanten"
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_form_view
 msgid "Cycle Time"
-msgstr ""
+msgstr "Cyclustijd"
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__cycle_time
 msgid "Cycle Time (Days)"
-msgstr ""
+msgstr "Cyclustijd (dagen)"
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_form_view
@@ -68,7 +68,7 @@ msgstr "Werkuren"
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__delay
 msgid "Delay (Days)"
-msgstr ""
+msgstr "Vertraging (dagen)"
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view
@@ -76,6 +76,8 @@ msgid ""
 "Delay to deliver an order (in days). Computed by comparing the scheduled "
 "date of the delivery order and its effective date."
 msgstr ""
+"Vertraging bij de levering van een order (in dagen). Dit is berekend door de"
+" geplande datum te vergelijken met de datum waarop de levering gereed is."
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view
@@ -83,16 +85,18 @@ msgid ""
 "Delay to receive an order (in days). Computed by comparing the scheduled "
 "date of the receipt and its effective date."
 msgstr ""
+"Vertraging bij de ontvangst van een order (in dagen). Dit is berekend door "
+"de geplande datum te vergelijken met de datum waarop de ontvangst gereed is."
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view
 msgid "Deliveries Cycle Time"
-msgstr ""
+msgstr "Leveringen cyclustijd"
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view
 msgid "Deliveries Delay"
-msgstr ""
+msgstr "Leveringen vertraging"
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__display_name
@@ -107,12 +111,12 @@ msgstr "Gereed"
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_search_view
 msgid "Done Deliveries"
-msgstr ""
+msgstr "Leveringen gereed"
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_search_view
 msgid "Done Receipts"
-msgstr ""
+msgstr "Ontvangsten gereed"
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_search_view
@@ -142,12 +146,12 @@ msgstr "Voorraad aanpassing"
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__is_late
 msgid "Is Late"
-msgstr ""
+msgstr "Is te laat"
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__is_backorder
 msgid "Is a Backorder"
-msgstr ""
+msgstr "Is een backorder"
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report____last_update
@@ -177,7 +181,7 @@ msgstr "Relatie"
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__picking_name
 msgid "Picking Name"
-msgstr ""
+msgstr "Pickingnaam"
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__product_id
@@ -197,12 +201,12 @@ msgstr "Producthoeveelheid"
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view
 msgid "Receipts Cycle Time"
-msgstr ""
+msgstr "Ontvangsten cyclustijd"
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view
 msgid "Receipts Delay"
-msgstr ""
+msgstr "Ontvangsten vertraging"
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__reference
@@ -222,7 +226,7 @@ msgstr "Status"
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_pivot_view
 msgid "Stock Overview"
-msgstr ""
+msgstr "Voorraadoverzicht"
 
 #. module: stock_enterprise
 #: model:ir.model,name:stock_enterprise.model_stock_report
@@ -235,6 +239,8 @@ msgid ""
 "Time needed to deliver an order (in days). Computed by comparing the "
 "creation date of the delivery order and its done date."
 msgstr ""
+"Tijd benodigd om een order te leveren (in dagen). Dit is berekend door de "
+"aanmaakdatum te vergelijken met de datum waarop de levering gereed is."
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view
@@ -242,11 +248,13 @@ msgid ""
 "Time needed to receive an order (in days). Computed by comparing the "
 "creation date of the receipt and its done date."
 msgstr ""
+"Tijd benodigd om een order te ontvangen (in dagen). Dit is berekend door de "
+"aanmaakdatum te vergelijken met de datum waarop de ontvangst gereed is."
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__date_done
 msgid "Transfer Date"
-msgstr ""
+msgstr "Verplaatsingsdatum"
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__picking_id

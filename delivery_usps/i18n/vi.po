@@ -438,7 +438,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:delivery_usps.res_config_settings_view_form_sale
 #: model_terms:ir.ui.view,arch_db:delivery_usps.res_config_settings_view_form_stock
 msgid "USPS Delivery Methods"
-msgstr ""
+msgstr "Phương thức giao hàng USPS"
 
 #. module: delivery_usps
 #: model:delivery.carrier,name:delivery_usps.delivery_carrier_usps_domestic
@@ -525,4 +525,4 @@ msgstr "bpost"
 #: model:product.template,weight_uom_name:delivery_usps.product_product_delivery_usps_domestic_product_template
 #: model:product.template,weight_uom_name:delivery_usps.product_product_delivery_usps_international_product_template
 msgid "kg"
-msgstr ""
+msgstr "kg"

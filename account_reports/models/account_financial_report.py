@@ -118,7 +118,8 @@ class ReportAccountFinancialReport(models.Model):
                     current_hierarchy_line.append({
                         # field_index - 1 because ['period'] is not part of options['groups']['fields']
                         'name': last_group.get('string') if field == 'period' else self._get_column_name(last_group, options['groups']['fields'][field_index - 1]),
-                        'colspan': current_colspan
+                        'colspan': current_colspan,
+                        'class': 'number'
                     })
                     last_group = current_group
                     current_colspan = 0

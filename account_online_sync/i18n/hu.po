@@ -2,18 +2,12 @@
 # This file contains the translation of the following modules:
 # * account_online_sync
 # 
-# Translators:
-# krnkris, 2016
-# gezza <geza.nagy@oregional.hu>, 2016
-# Martin Trigaux, 2017
-# Ákos Nagy <akos.nagy@oregional.hu>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.4+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-02 11:20+0000\n"
-"PO-Revision-Date: 2018-08-02 11:20+0000\n"
-"Last-Translator: Ákos Nagy <akos.nagy@oregional.hu>, 2018\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-08-24 11:36+0000\n"
 "Language-Team: Hungarian (https://www.transifex.com/odoo/teams/41243/hu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,39 +16,39 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "\" bank accounts have been retrieved."
 msgstr ""
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "<strong>Ooops</strong> It would seems that the process to"
 msgstr ""
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "<strong>Ooops</strong> We could not"
 msgstr ""
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "<strong>Success!</strong> Your account has been succesfully refreshed."
 msgstr ""
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "<strong>Success!</strong> Your account has been succesfully updated."
 msgstr ""
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid ""
 "<strong>Well done!</strong> Your banking institution is now connected to "
 "Odoo."
 msgstr ""
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "A total of \""
 msgstr ""
 
@@ -62,18 +56,18 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_journal__account_number
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_link_wizard__account_number
 msgid "Account Number"
-msgstr "Bankszámlaszám"
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__account_online_journal_ids
 msgid "Account Online Journal"
-msgstr "Főkönyvi online naplók"
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_journal__account_online_provider_id
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_journal__account_online_provider_id
 msgid "Account Online Provider"
-msgstr "Főkönyvi online szolgáltató"
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_link_wizard__account_online_wizard_id
@@ -90,42 +84,47 @@ msgstr ""
 #: model:ir.cron,cron_name:account_online_sync.online_sync_cron
 #: model:ir.cron,name:account_online_sync.online_sync_cron
 msgid "Account: Journal online sync"
-msgstr "Főkönyv: Napló online szinkronizáció"
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_link_wizard__action
 msgid "Action"
-msgstr "Akció"
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message_needaction
 msgid "Action Needed"
-msgstr "Művelet szükséges"
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__action_required
 msgid "Action Required"
-msgstr "Műveletet igényel"
+msgstr ""
 
 #. module: account_online_sync
-#: code:addons/account_online_sync/models/online_sync.py:322
+#: code:addons/account_online_sync/models/online_sync.py:360
 #, python-format
 msgid "Add a Bank Account"
 msgstr ""
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.online_provider_account_form_view
+#: model_terms:ir.ui.view,arch_db:account_online_sync.online_provider_account_form_view
 msgid "Additional information"
-msgstr "További információ"
+msgstr ""
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:62
 #, python-format
 msgid "An error occurred during online synchronization"
-msgstr "Hiba az online szinkronizálás közben"
+msgstr ""
 
 #. module: account_online_sync
-#: code:addons/account_online_sync/models/online_sync.py:279
+#: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message_attachment_count
+msgid "Attachment Count"
+msgstr ""
+
+#. module: account_online_sync
+#: code:addons/account_online_sync/models/online_sync.py:317
 #, python-format
 msgid "Automated Bank Synchronization"
 msgstr ""
@@ -134,53 +133,58 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_journal__balance
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_link_wizard__balance
 msgid "Balance"
-msgstr "Egyenleg"
+msgstr ""
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.online_provider_account_form_view
+#: model_terms:ir.ui.view,arch_db:account_online_sync.online_provider_account_form_view
 msgid "Bank Accounts"
-msgstr "Bankszámlák"
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model,name:account_online_sync.model_account_bank_statement
 msgid "Bank Statement"
-msgstr "Bankkivonat"
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model,name:account_online_sync.model_account_bank_statement_line
 msgid "Bank Statement Line"
-msgstr "Bankkivonat tételsor"
+msgstr ""
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "Cancel"
-msgstr "Mégsem"
+msgstr ""
 
 #. module: account_online_sync
 #: selection:account.online.wizard,status:0
 msgid "Cancelled"
-msgstr "Visszavonva"
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_provider__status_code
 msgid "Code to identify problem"
-msgstr "Kód a probléma azonosításához"
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model,name:account_online_sync.model_res_company
 msgid "Companies"
-msgstr "Vállalatok"
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__company_id
 msgid "Company"
-msgstr "Vállalat"
+msgstr ""
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.account_bank_journal_form_inherit_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.account_journal_form_inherit_online_sync
+#: model_terms:ir.ui.view,arch_db:account_online_sync.account_bank_journal_form_inherit_online_sync
+#: model_terms:ir.ui.view,arch_db:account_online_sync.account_journal_form_inherit_online_sync
 msgid "Configure"
-msgstr "Beállít"
+msgstr ""
+
+#. module: account_online_sync
+#: model:ir.model,name:account_online_sync.model_res_partner
+msgid "Contact"
+msgstr ""
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:161
@@ -199,7 +203,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__create_uid
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_wizard__create_uid
 msgid "Created by"
-msgstr "Készítette"
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_journal__create_date
@@ -207,7 +211,7 @@ msgstr "Készítette"
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__create_date
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_wizard__create_date
 msgid "Created on"
-msgstr "Létrehozás dátuma"
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_journal__bank_statement_creation
@@ -228,7 +232,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__display_name
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_wizard__display_name
 msgid "Display Name"
-msgstr "Megjelenített név"
+msgstr ""
 
 #. module: account_online_sync
 #: selection:account.online.link.wizard,action:0
@@ -236,34 +240,34 @@ msgid "Do not link"
 msgstr ""
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "Done"
-msgstr "Kész"
+msgstr ""
 
 #. module: account_online_sync
 #: selection:account.online.wizard,status:0
 msgid "Failed"
-msgstr "Sikertelen"
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_wizard__sync_date
 msgid "Fetch transaction from"
-msgstr "Tranzakció letöltése innen"
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message_follower_ids
 msgid "Followers"
-msgstr "Követők"
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message_channel_ids
 msgid "Followers (Channels)"
-msgstr "Követők (Csatornák)"
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message_partner_ids
 msgid "Followers (Partners)"
-msgstr "Követők (Partnerek)"
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_wizard__hide_table
@@ -276,7 +280,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__id
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_wizard__id
 msgid "ID"
-msgstr "Azonosító ID"
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_provider__provider_identifier
@@ -284,23 +288,21 @@ msgid ""
 "ID of the banking institution in third party server used for debugging "
 "purpose"
 msgstr ""
-"Banki szervezet ID azonosító a harmadik fél szerverén hibakeresés "
-"használatához"
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_provider__provider_account_identifier
 msgid "ID used to identify provider account in third party server"
-msgstr "Szolgáltatói fiók ID azonosítására használt a harmadik fél szerverén"
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_provider__message_unread
 msgid "If checked new messages require your attention."
-msgstr "Ha be van jelölve, akkor figyelje az új üzeneteket."
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_provider__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr "Ha be van jelölve, akkor figyelje az új üzeneteket."
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_provider__message_has_error
@@ -310,17 +312,17 @@ msgstr ""
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__name
 msgid "Institution"
-msgstr "Szervzet"
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model,name:account_online_sync.model_account_online_journal
-msgid "Interface for online account journal"
-msgstr "Online könyvelési napló interfész"
+msgid "Interface for Online Account Journal"
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message_is_follower
 msgid "Is Follower"
-msgstr "Ő egy követő"
+msgstr ""
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:107
@@ -329,12 +331,12 @@ msgstr "Ő egy követő"
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_link_wizard__journal_id
 #, python-format
 msgid "Journal"
-msgstr "Napló"
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_journal__name
 msgid "Journal Name"
-msgstr "Napló neve"
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_link_wizard__journal_statements_creation
@@ -347,12 +349,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider____last_update
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_wizard____last_update
 msgid "Last Modified on"
-msgstr "Utoljára frissítve ekkor"
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__last_refresh
 msgid "Last Refresh"
-msgstr "Utolsó frissítés"
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_journal__write_uid
@@ -360,7 +362,7 @@ msgstr "Utolsó frissítés"
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__write_uid
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_wizard__write_uid
 msgid "Last Updated by"
-msgstr "Utoljára frissítette"
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_journal__write_date
@@ -368,16 +370,16 @@ msgstr "Utoljára frissítette"
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__write_date
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_wizard__write_date
 msgid "Last Updated on"
-msgstr "Utoljára frissítve "
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_journal__last_sync
 msgid "Last synchronization"
-msgstr "Utolsó szinkronizáció"
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model,name:account_online_sync.model_account_online_link_wizard
-msgid "Link a particular synchronized account to a journal"
+msgid "Link synchronized account to a journal"
 msgstr ""
 
 #. module: account_online_sync
@@ -386,20 +388,25 @@ msgid "Link to existing journal"
 msgstr ""
 
 #. module: account_online_sync
-#: model:ir.actions.act_window,help:account_online_sync.action_online_provider_account
+#: model_terms:ir.actions.act_window,help:account_online_sync.action_online_provider_account
 msgid "List of bank(s) providing online synchronization"
 msgstr ""
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.online_provider_account_form_view
+#: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message_main_attachment_id
+msgid "Main Attachment"
+msgstr ""
+
+#. module: account_online_sync
+#: model_terms:ir.ui.view,arch_db:account_online_sync.online_provider_account_form_view
 msgid "Manual Refresh"
-msgstr "Kézi frissítés"
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_wizard__message
 msgid "Message"
-msgstr "Üzenet"
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message_has_error
@@ -409,23 +416,23 @@ msgstr ""
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message_ids
 msgid "Messages"
-msgstr "Üzenetek"
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_wizard__method
 msgid "Method"
-msgstr "Módszer"
+msgstr ""
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.account_journal_dashboard_inherit_online_sync
+#: model_terms:ir.ui.view,arch_db:account_online_sync.account_journal_dashboard_inherit_online_sync
 msgid "Next sync:"
-msgstr "Következő szinkr.:"
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_journal__next_synchronization
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__next_refresh
 msgid "Next synchronization"
-msgstr "Következő szinkronizáció"
+msgstr ""
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/company.py:21
@@ -444,12 +451,12 @@ msgstr ""
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_wizard__number_added
 msgid "Number Added"
-msgstr "Szám hozzáadva"
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message_needaction_counter
 msgid "Number of Actions"
-msgstr "Műveletek száma"
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message_has_error_counter
@@ -459,7 +466,7 @@ msgstr ""
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_provider__message_needaction_counter
 msgid "Number of messages which requires an action"
-msgstr "Üzenetek száma, melyek akciót igényelnek"
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_provider__message_has_error_counter
@@ -469,19 +476,19 @@ msgstr ""
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_provider__message_unread_counter
 msgid "Number of unread messages"
-msgstr "Olvasatlan üzenetek száma"
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_journal__account_online_journal_id
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_link_wizard__online_account_id
 msgid "Online Account"
-msgstr "Online fiók"
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_bank_statement_line__online_identifier
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_journal__online_identifier
 msgid "Online Identifier"
-msgstr "Online azonosító"
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.actions.act_window,name:account_online_sync.action_online_provider_account
@@ -489,25 +496,39 @@ msgid "Online Institution Accounts"
 msgstr ""
 
 #. module: account_online_sync
-#: code:addons/account_online_sync/models/online_sync.py:337
-#: model:ir.ui.menu,name:account_online_sync.menu_action_online_provider_account
-#: model:ir.ui.view,arch_db:account_online_sync.account_journal_dashboard_inherit_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.account_journal_form_inherit_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
-#, python-format
-msgid "Online Synchronization"
-msgstr "Online szinkronizálás"
+#: model:ir.model.fields,field_description:account_online_sync.field_account_bank_statement_line__online_partner_bank_account
+#: model:ir.model.fields,field_description:account_online_sync.field_res_partner__online_partner_bank_account
+#: model:ir.model.fields,field_description:account_online_sync.field_res_users__online_partner_bank_account
+msgid "Online Partner Bank Account"
+msgstr ""
 
 #. module: account_online_sync
-#: code:addons/account_online_sync/models/online_sync.py:410
+#: model:ir.model.fields,field_description:account_online_sync.field_account_bank_statement_line__online_partner_vendor_name
+#: model:ir.model.fields,field_description:account_online_sync.field_res_partner__online_partner_vendor_name
+#: model:ir.model.fields,field_description:account_online_sync.field_res_users__online_partner_vendor_name
+msgid "Online Partner Vendor Name"
+msgstr ""
+
+#. module: account_online_sync
+#: code:addons/account_online_sync/models/online_sync.py:375
+#: model:ir.ui.menu,name:account_online_sync.menu_action_online_provider_account
+#: model_terms:ir.ui.view,arch_db:account_online_sync.account_journal_dashboard_inherit_online_sync
+#: model_terms:ir.ui.view,arch_db:account_online_sync.account_journal_form_inherit_online_sync
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#, python-format
+msgid "Online Synchronization"
+msgstr ""
+
+#. module: account_online_sync
+#: code:addons/account_online_sync/models/online_sync.py:461
 #, python-format
 msgid "Opening statement: first synchronization"
-msgstr "Nyitó banki kivonat : első szinkronizáció"
+msgstr ""
 
 #. module: account_online_sync
 #: selection:account.online.provider,provider_type:0
 msgid "Plaid"
-msgstr "Fizetve"
+msgstr ""
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:82
@@ -516,7 +537,7 @@ msgid "Please enter at least a character for the search"
 msgstr ""
 
 #. module: account_online_sync
-#: code:addons/account_online_sync/models/online_sync.py:247
+#: code:addons/account_online_sync/models/online_sync.py:285
 #, python-format
 msgid ""
 "Please link your accounts to a journal or select \"do not link\" as action "
@@ -524,34 +545,34 @@ msgid ""
 msgstr ""
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.account_journal_dashboard_inherit_online_sync
+#: model_terms:ir.ui.view,arch_db:account_online_sync.account_journal_dashboard_inherit_online_sync
 msgid "Problem during synchronization"
-msgstr "Hiba  szinkronizálás közben"
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_journal__provider_name
 msgid "Provider"
-msgstr "Szolgáltató"
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__provider_account_identifier
 msgid "Provider Account Identifier"
-msgstr "Szolgáltatói számla azonosító"
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__provider_identifier
 msgid "Provider Identifier"
-msgstr "Szolgáltatói azonosító"
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__provider_type
 msgid "Provider Type"
-msgstr "Szolgáltató típus"
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model,name:account_online_sync.model_account_online_provider
 msgid "Provider for online account synchronization"
-msgstr "Online könyvelési szinkronizálás szolgáltatója"
+msgstr ""
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:76
@@ -563,17 +584,17 @@ msgstr ""
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_wizard__status
 msgid "Status"
-msgstr "Állapot"
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__status_code
 msgid "Status Code"
-msgstr "Állapot kód"
+msgstr ""
 
 #. module: account_online_sync
 #: selection:account.online.wizard,status:0
 msgid "Success"
-msgstr "Siker"
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.actions.act_window,name:account_online_sync.action_account_online_wizard_form
@@ -584,13 +605,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_online_sync.field_account_journal__synchronization_status
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__status
 msgid "Synchronization status"
-msgstr "Szinkronizálás állapota"
+msgstr ""
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.account_journal_dashboard_inherit_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.account_journal_dashboard_inherit_online_sync
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "Synchronize now"
-msgstr "Most szinkronizál"
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_wizard__account_ids
@@ -601,8 +622,6 @@ msgstr ""
 #: model:ir.model.fields,help:account_online_sync.field_account_online_provider__message
 msgid "Techhnical message from third party provider that can help debugging"
 msgstr ""
-"Műszaki üzenet a harmadik fél szolgáltatótól a hibakeresés segítségnyújtási "
-"szándékáról"
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_wizard__hide_table
@@ -610,7 +629,24 @@ msgid "Technical field to hide table in view"
 msgstr ""
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model:ir.model.fields,help:account_online_sync.field_account_bank_statement_line__online_partner_bank_account
+#: model:ir.model.fields,help:account_online_sync.field_res_partner__online_partner_bank_account
+#: model:ir.model.fields,help:account_online_sync.field_res_users__online_partner_bank_account
+msgid ""
+"Technical field used to store information from plaid/yodlee to match partner"
+msgstr ""
+
+#. module: account_online_sync
+#: model:ir.model.fields,help:account_online_sync.field_account_bank_statement_line__online_partner_vendor_name
+#: model:ir.model.fields,help:account_online_sync.field_res_partner__online_partner_vendor_name
+#: model:ir.model.fields,help:account_online_sync.field_res_users__online_partner_vendor_name
+msgid ""
+"Technical field used to store information from plaid/yodlee to match partner"
+" (used when a purchase is made)"
+msgstr ""
+
+#. module: account_online_sync
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "The account has been linked to your bank journal."
 msgstr ""
 
@@ -618,7 +654,7 @@ msgstr ""
 #: code:addons/account_online_sync/models/online_sync.py:63
 #, python-format
 msgid "The following error happened during the synchronization: %s"
-msgstr "A következő hiba merült fel a szinkronizáció közben: %s"
+msgstr ""
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:105
@@ -636,18 +672,18 @@ msgstr ""
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_wizard__transactions
 msgid "Transactions"
-msgstr "Tranzakciók"
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_provider__action_required
 msgid "True if user needs to take action by updating account"
-msgstr "Igaz, ha a felhasználónak közbe kell lépnie a számla frissítésénél"
+msgstr ""
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:201
 #, python-format
 msgid "Unimplemented"
-msgstr "Nem végrehajtott"
+msgstr ""
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:117
@@ -658,38 +694,38 @@ msgstr ""
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message_unread
 msgid "Unread Messages"
-msgstr "Olvasatlan üzenetek"
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message_unread_counter
 msgid "Unread Messages Counter"
-msgstr "Olvasatlan üzenetek számlálója"
+msgstr ""
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.online_provider_account_form_view
+#: model_terms:ir.ui.view,arch_db:account_online_sync.online_provider_account_form_view
 msgid "Update Credentials"
-msgstr "Megbízások frissítése"
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_journal__synchronization_status
 #: model:ir.model.fields,help:account_online_sync.field_account_online_provider__status
 msgid "Update status of provider account"
-msgstr "Szolgáltatói számla frissítési állapota"
+msgstr ""
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.account_journal_dashboard_inherit_online_sync
+#: model_terms:ir.ui.view,arch_db:account_online_sync.account_journal_dashboard_inherit_online_sync
 msgid "View problem"
-msgstr "Probléma megtekintése"
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__website_message_ids
 msgid "Website Messages"
-msgstr "Weboldal üzenetek"
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_provider__website_message_ids
 msgid "Website communication history"
-msgstr "Weboldal  kommunikáció történet"
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model,name:account_online_sync.model_account_online_wizard
@@ -699,17 +735,17 @@ msgstr ""
 #. module: account_online_sync
 #: selection:account.online.provider,provider_type:0
 msgid "Yodlee"
-msgstr "Yodlee"
+msgstr ""
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid ""
 "You can associate those bank accounts to a journal in order to automatically"
 " retrieve the latest statements from your bank."
 msgstr ""
 
 #. module: account_online_sync
-#: code:addons/account_online_sync/models/online_sync.py:249
+#: code:addons/account_online_sync/models/online_sync.py:287
 #, python-format
 msgid "You can not link two accounts to the same journal"
 msgstr ""
@@ -723,7 +759,7 @@ msgstr ""
 #: model:ir.model.fields,help:account_online_sync.field_account_online_journal__balance
 #: model:ir.model.fields,help:account_online_sync.field_account_online_link_wizard__balance
 msgid "balance of the account sent by the third party provider"
-msgstr "a harmadik fél szolgáltatótól kapott számla egyenlege"
+msgstr ""
 
 #. module: account_online_sync
 #: selection:account.online.wizard,method:0
@@ -733,16 +769,16 @@ msgstr ""
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_journal__online_identifier
 msgid "id use to identify account in provider system"
-msgstr "id azonosító a szolgáltatói rendszerben a számlái azonosítására"
+msgstr ""
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_journal__provider_name
 #: model:ir.model.fields,help:account_online_sync.field_account_online_provider__name
 msgid "name of the banking institution"
-msgstr "banki szervezet neve"
+msgstr ""
 
 #. module: account_online_sync
-#: code:addons/account_online_sync/models/online_sync.py:456
+#: code:addons/account_online_sync/models/online_sync.py:507
 #, python-format
 msgid "online sync"
 msgstr ""
@@ -750,7 +786,7 @@ msgstr ""
 #. module: account_online_sync
 #: selection:account.online.wizard,method:0
 msgid "refresh"
-msgstr "frissítés"
+msgstr ""
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:107
@@ -759,14 +795,14 @@ msgid "transactions loaded"
 msgstr ""
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid ""
 "your account because of the following\n"
 "                    error during the process:"
 msgstr ""
 
 #. module: account_online_sync
-#: model:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
+#: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid ""
 "your account was not\n"
 "                    thoroughly completed. You can try to manually update your account by clicking the refresh button on the dashboard\n"

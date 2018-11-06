@@ -31,8 +31,8 @@ msgid ""
 " be manually chosen for statement formats which doesn't allow automatic "
 "journal detection (QIF for example)."
 msgstr ""
-"Журнал обліку, пов'язаний з банківською випискою, яку ви імпортуєте. Його "
-"потрібно вибирати вручну для форматів звітів, що не виявляє журнали "
+"Журнал бухобліку, пов'язаний з банківською випискою, яку ви імпортуєте. Його"
+" потрібно вибирати вручну для форматів звітів, що не виявляє журнали "
 "автоматично (наприклад, QIF)."
 
 #. module: account_bank_statement_import_qif
@@ -42,9 +42,9 @@ msgid ""
 "financial institutions use the local format.Therefore, it is frequent "
 "outside the US to have QIF date formated day-first (dd/mm/yy)."
 msgstr ""
-"Хоча історично дати QIF форматуються по першому місяцю (мм / дд / рік), "
-"багато фінансових установ використовують місцевий формат. Тому часто за "
-"межами США QIF дата форматується  за першим днем (дд / мм / рр)."
+"Хоча історично дати QIF форматуються спершу по місяцю (мм/дд/рр), багато "
+"фінансових установ використовують місцевий формат. Тому часто за межами США "
+"QIF дата форматується спершу за днем (дд/мм/рр)."
 
 #. module: account_bank_statement_import_qif
 #: code:addons/account_bank_statement_import_qif/wizard/account_bank_statement_import_qif.py:59
@@ -65,7 +65,7 @@ msgstr "Сховати поле журналу в області перегля�
 #. module: account_bank_statement_import_qif
 #: model:ir.model,name:account_bank_statement_import_qif.model_account_bank_statement_import
 msgid "Import Bank Statement"
-msgstr "Імпортувати виписку"
+msgstr "Імпортувати банківську виписку"
 
 #. module: account_bank_statement_import_qif
 #: model:ir.model,name:account_bank_statement_import_qif.model_account_journal
@@ -99,18 +99,18 @@ msgid ""
 "institution whether they format it with month or day first.<br/>"
 msgstr ""
 "Формат QIF невизначений у датах: будь ласка, звірте з вашою фінансової "
-"установою, як вона виставляє першим місяць або день.<br/>"
+"установою, як вона форматує дату спершу по місяць чи дню.<br/>"
 
 #. module: account_bank_statement_import_qif
 #: code:addons/account_bank_statement_import_qif/wizard/account_bank_statement_import_qif.py:105
 #, python-format
 msgid "This file is either not a bank statement or is not correctly formed."
-msgstr "Файл не є випискою банку або сформовано не вірно. "
+msgstr "Файл не є банківською випискою або сформовано не вірно. "
 
 #. module: account_bank_statement_import_qif
 #: model_terms:ir.ui.view,arch_db:account_bank_statement_import_qif.account_bank_statement_import_view_inherited
 msgid "_Import"
-msgstr "_Імпорт"
+msgstr "_Import"
 
 #. module: account_bank_statement_import_qif
 #: selection:account.bank.statement.import,qif_date_format:0

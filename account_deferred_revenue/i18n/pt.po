@@ -9,13 +9,14 @@
 # Manuela Silva <inactive+alfalb@transifex.com>, 2018
 # MS, 2018
 # Nuno Silva <nuno.silva@arxi.pt>, 2018
+# Diogo Fonseca <dsf@thinkopensolutions.pt>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-18 10:05+0000\n"
 "PO-Revision-Date: 2018-09-18 10:05+0000\n"
-"Last-Translator: Nuno Silva <nuno.silva@arxi.pt>, 2018\n"
+"Last-Translator: Diogo Fonseca <dsf@thinkopensolutions.pt>, 2018\n"
 "Language-Team: Portuguese (https://www.transifex.com/odoo/teams/41243/pt/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -66,7 +67,7 @@ msgstr "Receita Acumulativa"
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
 msgid "Current Revenue"
-msgstr ""
+msgstr "Receita corrente "
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_asset_sale_tree
@@ -87,7 +88,7 @@ msgstr "Data do ativo"
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_invoice_revenue_recognition_category
 msgid "Deferred Revenue"
-msgstr ""
+msgstr "Receitas Diferidas"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.action_account_revenue_report_graph
@@ -105,7 +106,7 @@ msgstr "Tipo de Receita Diferida"
 #: model:ir.actions.act_window,name:account_deferred_revenue.action_account_asset_asset_list_normal_sale
 #: model:ir.ui.menu,name:account_deferred_revenue.menu_action_account_asset_asset_list_normal_sale
 msgid "Deferred Revenue Types"
-msgstr ""
+msgstr " Tipos de Receitas Diferidas"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
@@ -143,7 +144,7 @@ msgstr ""
 #. module: account_deferred_revenue
 #: model:ir.ui.menu,name:account_deferred_revenue.menu_recognition_depreciation_confirmation_wizard
 msgid "Generate Deferred Revenues Entries"
-msgstr ""
+msgstr "Gerar Movimentos de Receita Diferida"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
@@ -173,12 +174,12 @@ msgstr "Modificar Receita"
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
 msgid "Next Period Revenue"
-msgstr ""
+msgstr "Receitas do próximo período "
 
 #. module: account_deferred_revenue
 #: model_terms:ir.actions.act_window,help:account_deferred_revenue.action_asset_revenue_report
 msgid "No deferred revenue"
-msgstr ""
+msgstr "Receitas não Diferidas"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
@@ -234,7 +235,7 @@ msgstr "Data da Receita"
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
 msgid "Revenue Entry"
-msgstr ""
+msgstr "Movimento das receitas"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
@@ -244,7 +245,7 @@ msgstr "Informação da Receita"
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
 msgid "Revenue Lines"
-msgstr ""
+msgstr "Linhas das receitas"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_asset_sale_tree
@@ -266,7 +267,7 @@ msgstr "Em Execução"
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_asset_revenue_report_search
 msgid "Sales Date"
-msgstr ""
+msgstr "Data de vendas"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form

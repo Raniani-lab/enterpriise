@@ -24,20 +24,20 @@ class AccountInvoice(models.Model):
          ('FAS', 'FREE ALONGSIDE SHIP'),
          ('FCA', 'FREE CARRIER'),
          ('FOB', 'FREE ON BOARD')],
-        help='Indicates the INCOTERM applicable to the '
+        help='Indicates the applicable INCOTERM to the '
         'external trade customer invoice.')
     l10n_mx_edi_cer_source = fields.Char(
         'Certificate Source',
         help='Used in CFDI like attribute derived from the exception of '
         'certificates of Origin of the Free Trade Agreements that Mexico '
-        'has celebrated with several countries. If have a value, will to '
-        'indicate that funge as certificate of origin and this value will be '
-        'set in the CFDI nose "NumCertificadoOrigen".')
+        'has celebrated with several countries. If it has a value, it will '
+        'indicate that it serves as certificate of origin and this value will '
+        'be set in the CFDI node "NumCertificadoOrigen".')
     l10n_mx_edi_external_trade = fields.Boolean(
         'Need external trade?', compute='_compute_need_external_trade',
         inverse='_inverse_need_external_trade', store=True,
-        help='If this field is active, the CFDI that generate this invoice '
-        'will to include the complement "External Trade".')
+        help='If this field is active, the CFDI that generates this invoice '
+        'will include the complement "External Trade".')
 
     @api.depends('partner_id')
     def _compute_need_external_trade(self):
@@ -110,21 +110,20 @@ class AccountInvoiceLine(models.Model):
         'l10n_mx_edi.tariff.fraction', 'Tariff Fraction', store=True,
         related='product_id.l10n_mx_edi_tariff_fraction_id', readonly=True,
         help='It is used to express the key of the tariff fraction '
-        'corresponding to the description of the product to export. Node '
-        '"FraccionArancelaria" to the concept.')
+        'corresponding to the description of the product to export.')
     l10n_mx_edi_umt_aduana_id = fields.Many2one(
         'uom.uom', 'UMT Aduana', store=True,
         related='product_id.l10n_mx_edi_umt_aduana_id', readonly=True,
         help='Used in complement "Comercio Exterior" to indicate in the '
-        'products the TIGIE Units of Measurement, this based in the SAT '
+        'products the TIGIE Units of Measurement. It is based in the SAT '
         'catalog.')
     l10n_mx_edi_qty_umt = fields.Float(
-        'Qty UMT', help='Quantity expressed in the UMT from product. Is '
+        'Qty UMT', help='Quantity expressed in the UMT from product. It is '
         'used in the attribute "CantidadAduana" in the CFDI',
         digits=dp.get_precision('Product Unit of Measure'))
     l10n_mx_edi_price_unit_umt = fields.Float(
         'Unit Value UMT', help='Unit value expressed in the UMT from product. '
-        'Is used in the attribute "ValorUnitarioAduana" in the CFDI')
+        'It is used in the attribute "ValorUnitarioAduana" in the CFDI')
 
     @api.multi
     def _set_price_unit_umt(self):

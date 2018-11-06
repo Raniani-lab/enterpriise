@@ -249,7 +249,7 @@
         <record id="account_financial_report_pnl_2_1_1_2" model="account.financial.html.report.line">
             <field name="name">Rente en overige financiële lasten</field>
             <field name="code">NL_INTL</field>
-            <field name="formulas">balance = sum.balance</field>
+            <field name="formulas">balance = -sum.balance</field>
             <field name="parent_id" ref="account_financial_report_pnl_2_1_1"/>
             <field name="domain" eval="[('account_id.tag_ids', 'in', ref('l10n_nl.account_tag_31'))]"/>
             <field name="groupby">account_id</field>

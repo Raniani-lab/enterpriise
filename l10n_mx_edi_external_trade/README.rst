@@ -91,12 +91,8 @@ defined by the SAT.
 
 - In the partner:
 
-  - **CURP**: It is used to store the unique Key of the Register of
-    Population (CURP) of the issuer of the CFDI. When it is a natural
-    person, it must contain 18 characters.
-
   - **Need external trade?**: Field used to indicate if the customer needs
-    their invoices with external complement. If the field is equal to True,
+    his/her invoices with external complement. If the field is equal to True,
     then the add-on is added to the CFDIs for this client.
 
 

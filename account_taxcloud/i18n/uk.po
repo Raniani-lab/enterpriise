@@ -4,13 +4,14 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-02 10:31+0000\n"
 "PO-Revision-Date: 2018-10-02 10:31+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,7 +22,7 @@ msgstr ""
 #. module: account_taxcloud
 #: model_terms:ir.ui.view,arch_db:account_taxcloud.res_config_settings_view_form
 msgid "<i class=\"fa fa-fw fa-arrow-right\"/>How to Get Credentials"
-msgstr ""
+msgstr "<i class=\"fa fa-fw fa-arrow-right\"/>Як отримати повноваження"
 
 #. module: account_taxcloud
 #: model_terms:ir.ui.view,arch_db:account_taxcloud.res_config_settings_view_form
@@ -41,7 +42,7 @@ msgstr "Компанії"
 #. module: account_taxcloud
 #: model:ir.model,name:account_taxcloud.model_res_config_settings
 msgid "Config Settings"
-msgstr ""
+msgstr "Налаштування"
 
 #. module: account_taxcloud
 #: model:ir.model.fields,field_description:account_taxcloud.field_product_tic_category__create_uid
@@ -87,6 +88,10 @@ msgid ""
 "internal category of the product. If thereisn't any, the one on the product "
 "itself will be used. Only used in United States."
 msgstr ""
+"Кожен товар потрапляє в категорію, яка має спеціальні податки, визначені "
+"урядом. Система буде використовувати категорію Tax Cloud, яка встановлена на"
+" внутрішню категорію товару. Якщо цього немає, буде використовуватися той, "
+"який встановлено на товарі. Використовується лише в Сполучених Штатах."
 
 #. module: account_taxcloud
 #: model:ir.model,name:account_taxcloud.model_account_fiscal_position
@@ -131,7 +136,7 @@ msgstr "Категорії товару TIC"
 #. module: account_taxcloud
 #: model:ir.model,name:account_taxcloud.model_product_tic_category
 msgid "Product TIC Category"
-msgstr ""
+msgstr "Категорія товару TIC "
 
 #. module: account_taxcloud
 #: model:ir.model,name:account_taxcloud.model_product_template
@@ -198,13 +203,13 @@ msgid ""
 "automatically assigns products to this TIC as a default, so unless you've "
 "changed an item's TIC in the past, it should already be set to 00000."
 msgstr ""
-"TaxCloud використовує Інформаційні кодекси з оподатковування (TIC), щоб "
-"переконатись, що кожен предмет у вашому каталозі оподатковується за "
-"правильною ставкою (або для предметів звільнення від оподаткування взагалі "
-"не оподатковується), тому важливо переконатися, що кожному товару призначено"
-" TIC . Якщо ви не можете знайти потрібну категорію податку для товару у "
-"своєму каталозі, ви можете призначити його для TIC \"Загальні товари та "
-"послуги\", 00000. TaxCloud автоматично призначає товари для цього TIC як за "
+"TaxCloud використовує Інформаційні коди з оподатковування (TIC), щоби "
+"переконатися, що кожен товар у вашому каталозі оподатковується за правильною"
+" ставкою (або для товарів звільнених від оподаткування взагалі не "
+"оподатковується), тому важливо переконатися, що кожному товару призначено "
+"TIC. Якщо ви не можете знайти потрібну категорію податку для товару у своєму"
+" каталозі, ви можете призначити його для TIC \"Загальні товари та послуги\","
+" 00000. TaxCloud автоматично призначає товари для цього TIC за "
 "замовчуванням, тому, якщо ви не змінили в минулому - TIC, то його вже слід "
 "встановити на 00000."
 
@@ -229,8 +234,8 @@ msgid ""
 "The source document on the refund is not valid and thus the refunded cart "
 "won't be logged on your taxcloud account"
 msgstr ""
-"Початковий документ про повернення коштів недійсний, і тому відшкодований "
-"кошик не буде входити до вашого обліку taxcloud"
+"Початковий документ про повернення коштів недійсний, і тому кошик "
+"відшкодування не буде входити до вашого рахунку taxcloud"
 
 #. module: account_taxcloud
 #: code:addons/account_taxcloud/models/account_invoice.py:85
@@ -238,7 +243,7 @@ msgstr ""
 msgid ""
 "The tax rates have been updated, you may want to check it before validation"
 msgstr ""
-"Ставки податку було оновлено, можливо, ви захочете перевірити його перед "
+"Ставки податку було оновлено, можливо, ви захочете позначити їх перед "
 "перевіркою"
 
 #. module: account_taxcloud
@@ -257,7 +262,7 @@ msgstr "Оновити податки з Taxcloud"
 #: model:ir.model.fields,field_description:account_taxcloud.field_account_fiscal_position__is_taxcloud
 #: model:ir.model.fields,field_description:account_taxcloud.field_account_fiscal_position_template__is_taxcloud
 msgid "Use TaxCloud API"
-msgstr "Використання TaxCloud API"
+msgstr "Використати TaxCloud API"
 
 #. module: account_taxcloud
 #: code:addons/account_taxcloud/models/product.py:28

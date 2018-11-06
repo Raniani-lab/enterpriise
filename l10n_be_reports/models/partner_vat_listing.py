@@ -80,6 +80,7 @@ class ReportL10nBePartnerVatListing(models.AbstractModel):
                 'id': record['partner_id'],
                 # 'type': 'partner_id',
                 'caret_options': 'res.partner',
+                'model': 'res.partner',
                 'name': record['name'],
                 'columns': [{'name': v } for v in columns],
                 # 'level': 2,

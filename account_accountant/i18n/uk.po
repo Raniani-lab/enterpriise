@@ -4,13 +4,14 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
 "PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,12 +22,12 @@ msgstr ""
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid "<span class=\"o_form_label\">Fiscal Year</span>"
-msgstr ""
+msgstr "<span class=\"o_form_label\">Фінансовий рік</span>"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid "<span class=\"o_form_label\">Inter-Banks Transfers</span>"
-msgstr ""
+msgstr "<span class=\"o_form_label\">Внутрішньо-банківські переміщення</span>"
 
 #. module: account_accountant
 #: model:ir.ui.menu,name:account_accountant.menu_account_group
@@ -36,7 +37,7 @@ msgstr "Групи рахуків"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__module_account_predictive_bills
 msgid "Account Predictive Bills"
-msgstr ""
+msgstr "Прогнозування рахунків постачальників"
 
 #. module: account_accountant
 #: model:ir.ui.menu,name:account_accountant.account_tag_menu
@@ -62,7 +63,7 @@ msgstr "Англо-Саксонський бухоблік"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_digest_digest__kpi_account_bank_cash
 msgid "Bank & Cash Moves"
-msgstr ""
+msgstr "Банківські та готівкові переміщення"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
@@ -72,12 +73,12 @@ msgstr "Скасувати"
 #. module: account_accountant
 #: model:ir.model,name:account_accountant.model_account_change_lock_date
 msgid "Change Lock Date"
-msgstr ""
+msgstr "Змінити дату блокування"
 
 #. module: account_accountant
 #: model:ir.model,name:account_accountant.model_res_config_settings
 msgid "Config Settings"
-msgstr ""
+msgstr "Налаштування"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__create_uid
@@ -92,12 +93,12 @@ msgstr "Створено"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid "Define fiscal years of more or less than a year"
-msgstr ""
+msgstr "Визначте фінансові роки більш-менш року"
 
 #. module: account_accountant
 #: model:ir.model,name:account_accountant.model_digest_digest
 msgid "Digest"
-msgstr ""
+msgstr "Огляд"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__display_name
@@ -109,12 +110,14 @@ msgstr "Назва для відображення"
 #, python-format
 msgid "Do not have access, skip this data for user's digest email"
 msgstr ""
+"Не маєте доступу, пропустіть ці дані для електронного оглядового "
+"повідомлення користувача"
 
 #. module: account_accountant
 #: model:ir.ui.menu,name:account_accountant.menu_account_fiscal_year
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid "Fiscal Years"
-msgstr ""
+msgstr "Фінансові роки"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__fiscalyear_last_day
@@ -124,7 +127,7 @@ msgstr "Останній день фінансового року"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__fiscalyear_last_month
 msgid "Fiscalyear Last Month"
-msgstr "Останній місяць минулого року"
+msgstr "Останній місяць фінансового року"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__id
@@ -143,7 +146,7 @@ msgstr ""
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_digest_digest__kpi_account_bank_cash_value
 msgid "Kpi Account Bank Cash Value"
-msgstr ""
+msgstr "Значення Kpi готівки банківського рахунку"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
@@ -153,7 +156,7 @@ msgstr "Останній день"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date____last_update
 msgid "Last Modified on"
-msgstr "Остання модифікація"
+msgstr "Останні зміни"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__write_uid
@@ -207,8 +210,8 @@ msgid ""
 "No users, including Advisers, can edit accounts prior to and inclusive of "
 "this date. Use it for fiscal year locking for example."
 msgstr ""
-"Жоден користувач, включаючи радників, не може редагувати рахунки включно до "
-"цієї дати. Можете використовувати цю дату для фіксації річного балансу."
+"Жоден користувач, включаючи консультантів, не може редагувати рахунки "
+"включно до цієї дати. Використовуйте її для блокування фінансового року."
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_res_config_settings__period_lock_date
@@ -217,9 +220,9 @@ msgid ""
 "of this date. Use it for period locking inside an open fiscal year, for "
 "example."
 msgstr ""
-"Тільки користувачі, що мають роль радника можуть редагувати рахунки включно "
-"до цієї дати. Можете використовувати цю дату для фіксації проміжного балансу"
-" в межах фінального річного балансу."
+"Тільки користувачі, що мають роль консультанта можуть редагувати рахунки "
+"включно до цієї дати. Використовуйте її для блокування проміжного балансу в "
+"межах фінансового року."
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_account_change_lock_date__period_lock_date
@@ -228,14 +231,14 @@ msgid ""
 " this date. Use it for period locking inside an open fiscal year, for "
 "example."
 msgstr ""
-"Лише користувачі з роллю \"Консультант\" можуть редагувати облікові записи з"
-" урахуванням цієї дати. Використовуйте його для фінансовго періоду всередині"
-" відкритого фінансового року, наприклад."
+"Лише користувачі з роллю консультанта можуть редагувати рахунки з "
+"урахуванням цієї дати. Використовуйте його для блокування фінансового "
+"періоду всередині відкритого фінансового року."
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid "Predict vendor bill accounts"
-msgstr ""
+msgstr "Прогнозування рахунків постачальників"
 
 #. module: account_accountant
 #: model:ir.ui.menu,name:account_accountant.menu_product_product_categories
@@ -250,13 +253,13 @@ msgid ""
 "Ready to discover your new favorite <b>accounting app</b>? Get started by "
 "clicking here."
 msgstr ""
-"Готові відкрити для себе новий улюблений <b> додаток для обліку</b>? "
+"Готові відкрити для себе новий улюблений <b>додаток бухобліку</b>? "
 "Розпочніть, натиснувши тут."
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid "Record cost of goods sold in your journal entries"
-msgstr "Запишіть вартість товарів, проданих у ваших журнальних записах"
+msgstr "Запишіть вартість проданих товарів у ваших журнальних записах"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
@@ -269,6 +272,8 @@ msgid ""
 "The system will try to predict vendor bill accounts based on history of "
 "previous bills."
 msgstr ""
+"Система спробує спрогнозувати рахунки постачальників на підставі історії "
+"попередніх рахунків."
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__transfer_account_id
@@ -295,5 +300,5 @@ msgid ""
 "to get a Profit &amp; Loss statement or view the Balance Sheet.</i>"
 msgstr ""
 "Ваші звіти доступні в режимі реального часу. <i>Не потрібно закривати "
-"фінансовий рік, щоб отримати прибуток та; Заява про збитки або перегляд "
+"фінансовий рік, щоб отримати виписку про доходи та витрати або звіт "
 "балансу.</i>"

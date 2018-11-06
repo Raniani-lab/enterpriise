@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2018
 # Thomas Pot <thomas@open2bizz.nl>, 2018
 msgid ""
@@ -25,7 +26,7 @@ msgstr ""
 #: code:addons/voip/static/src/js/user_agent.js:207
 #, python-format
 msgid " Please check your configuration."
-msgstr "Gelieve uw configuratie te controleren."
+msgstr "U dient uw configuratie te controleren."
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_report__nbr
@@ -114,7 +115,7 @@ msgstr "Wordt gebeld"
 #. module: voip
 #: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 msgid "Calls Date"
-msgstr ""
+msgstr "Datum telefoongesprek"
 
 #. module: voip
 #. openerp-web
@@ -340,7 +341,7 @@ msgstr "Inkomende oproep van"
 #: code:addons/voip/static/src/xml/dialing_panel.xml:67
 #, python-format
 msgid "Keypad"
-msgstr ""
+msgstr "Keypad"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_configurator____last_update
@@ -429,7 +430,7 @@ msgstr "Mobiele nummers opgeschoond"
 #: code:addons/voip/static/src/xml/voip_phonecall.xml:164
 #, python-format
 msgid "Mute"
-msgstr ""
+msgstr "Dempen"
 
 #. module: voip
 #: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
@@ -819,17 +820,17 @@ msgstr "VOIP telefoongesprek"
 #. module: voip
 #: model:ir.model,name:voip.model_voip_phonecall_log_wizard
 msgid "VOIP Phonecall log Wizard"
-msgstr ""
+msgstr "VOIP telefoongespreklog wizard"
 
 #. module: voip
 #: model:ir.model,name:voip.model_voip_phonecall_report
 msgid "VOIP Phonecalls by user report"
-msgstr ""
+msgstr "VOIP Telefoongesprekken per gebruiker rapport"
 
 #. module: voip
 #: model:ir.model,name:voip.model_voip_phonecall_transfer_wizard
 msgid "VOIP Transfer Wizard of Phonecalls"
-msgstr ""
+msgstr "VOIP doorschakel wizard voor telefoongesprekken"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_config_settings__mode

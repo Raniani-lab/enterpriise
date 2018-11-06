@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
-    'name': "DHL Shipping",
+    'name': "DHL Express Shipping",
     'description': "Send your shippings through DHL and track them online",
     'category': 'Warehouse',
     'version': '1.0',

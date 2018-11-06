@@ -2,16 +2,12 @@
 # This file contains the translation of the following modules:
 # * sale_account_taxcloud
 # 
-# Translators:
-# Martin Trigaux, 2017
-# Eneli Õigus <enelioigus@gmail.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 11.0+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-24 09:24+0000\n"
-"PO-Revision-Date: 2017-10-24 09:24+0000\n"
-"Last-Translator: Eneli Õigus <enelioigus@gmail.com>, 2018\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-08-24 11:48+0000\n"
 "Language-Team: Estonian (https://www.transifex.com/odoo/teams/41243/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,23 +18,26 @@ msgstr ""
 #. module: sale_account_taxcloud
 #: model:ir.model,name:sale_account_taxcloud.model_account_invoice
 msgid "Invoice"
-msgstr "Arve"
+msgstr ""
 
 #. module: sale_account_taxcloud
 #: model:ir.model,name:sale_account_taxcloud.model_sale_order
-msgid "Quotation"
-msgstr "Pakkumine"
+msgid "Sale Order"
+msgstr ""
 
 #. module: sale_account_taxcloud
-#: code:addons/sale_account_taxcloud/models/sale_order.py:65
+#: code:addons/sale_account_taxcloud/models/sale_order.py:34
 #, python-format
-msgid ""
-"The tax rates have been updated, you may want to check it before validation"
+msgid "The configuration of TaxCloud is in the Accounting app, Settings menu."
 msgstr ""
-"Teie maksumäärad on uuendatud, kuid ilmselt soovite enne kinnitamist neid "
-"kontrollida"
+
+#. module: sale_account_taxcloud
+#: code:addons/sale_account_taxcloud/models/sale_order.py:34
+#, python-format
+msgid "Unable to retrieve taxes from TaxCloud: "
+msgstr ""
 
 #. module: sale_account_taxcloud
 #: model:ir.actions.server,name:sale_account_taxcloud.action_sale_order_update_taxes
 msgid "Update taxes with Taxcloud"
-msgstr "Uuenda makse TaxCloud abil"
+msgstr ""

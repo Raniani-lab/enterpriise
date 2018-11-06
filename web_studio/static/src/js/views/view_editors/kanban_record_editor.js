@@ -5,6 +5,8 @@ var config = require('web.config');
 var core = require('web.core');
 var Dialog = require('web.Dialog');
 var KanbanRecord = require('web.KanbanRecord');
+var utils = require('web.utils');
+
 var EditorMixin = require('web_studio.EditorMixin');
 
 var _t = core._t;
@@ -16,12 +18,14 @@ var KanbanRecordEditor = KanbanRecord.extend(EditorMixin, {
      * @param {Widget} parent
      * @param {Object} state
      * @param {Object} options
+     * @param {Object} viewArch
      * @param {Boolean} is_dashboard
      */
-    init: function (parent, state, options, is_dashboard) {
+    init: function (parent, state, options, viewArch, is_dashboard) {
         this._super.apply(this, arguments);
         this.node_id = 1;
         this.hook_nodes = [];
+        this.viewArch = viewArch;
         this.is_dashboard = is_dashboard;
     },
     /**
@@ -160,11 +164,12 @@ var KanbanRecordEditor = KanbanRecord.extend(EditorMixin, {
         var $dropdown = this.$('.o_dropdown_kanban');
         if ($dropdown.length) {
             $dropdown.attr('data-node-id', this.node_id++);
-            // bind handler on dropdown clicked to be able to remove it
-            var node = {
+            // find dropdown node from the arch
+            var node = this._findNodeWithClass({
                 tag: 'div',
-                attrs: {class: 'o_dropdown_kanban'},
-            };
+                class: 'o_dropdown_kanban',
+            });
+            // bind handler on dropdown clicked to be able to remove it
             this.setSelectable($dropdown);
             $dropdown.click(function () {
                 self.selected_node_id = $dropdown.data('node-id');
@@ -240,6 +245,25 @@ var KanbanRecordEditor = KanbanRecord.extend(EditorMixin, {
                 });
             });
         }
+    },
+    /**
+     * @private
+     * @param {string} [attrs.tag] - node tag
+     * @param {string} [attrs.class] - node class
+     * @returns {Object|undefined} found node in the arch
+     */
+    _findNodeWithClass: function (attrs) {
+        var foundNode;
+         utils.traverse(this.viewArch, function (node) {
+            if (_.isObject(node) && node.tag === attrs.tag) {
+                if (_.str.include(node.attrs.class, attrs.class)) {
+                    foundNode = node;
+                    return false;
+                }
+            }
+            return true;
+        });
+        return foundNode;
     },
     /**
      * @private

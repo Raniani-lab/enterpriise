@@ -616,7 +616,8 @@ class MrpEco(models.Model):
         self.mapped('new_bom_id').apply_new_version()
         self.mapped('new_routing_id').apply_new_version()
         if self.type in ('bom', 'both', 'product'):
-            self.env['mrp.document'].search([('res_model', '=', 'product.template'), ('res_id', '=', self.product_tmpl_id.id)]).unlink()
+            documents = self.env['mrp.document'].search([('res_model', '=', 'product.template'), ('res_id', '=', self.product_tmpl_id.id)])
+            documents.mapped('ir_attachment_id').unlink()
             for attach in self.with_context(active_test=False).mrp_document_ids:
                 product_attach = attach.copy({
                     'res_model': 'product.template',

@@ -4,14 +4,15 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
-# Bohdan Lisnenko, 2018
+# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Bohdan Lisnenko, 2018\n"
+"PO-Revision-Date: 2018-08-24 11:37+0000\n"
+"Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -41,7 +42,7 @@ msgid ""
 "Authentication error -- wrong credentials\n"
 "(Detailed error: %s)"
 msgstr ""
-"Помилка автентифікації - помилкові облікові дані\n"
+"Помилка аутентифікації - помилкові облікові дані\n"
 "(Детальна помилка: %s)"
 
 #. module: delivery_bpost
@@ -52,7 +53,7 @@ msgstr "Засновано на правилах"
 #. module: delivery_bpost
 #: model:ir.model.fields,field_description:delivery_bpost.field_delivery_carrier__bpost_account_number
 msgid "Bpost Account Number"
-msgstr ""
+msgstr "Номер рахунку Bpost "
 
 #. module: delivery_bpost
 #: model:ir.model.fields,field_description:delivery_bpost.field_delivery_carrier__bpost_delivery_nature
@@ -143,7 +144,7 @@ msgstr "Вітчизняний"
 #: selection:delivery.carrier,delivery_type:0
 #: selection:product.packaging,package_carrier_type:0
 msgid "Easypost"
-msgstr ""
+msgstr "Easypost"
 
 #. module: delivery_bpost
 #: selection:delivery.carrier,delivery_type:0
@@ -195,7 +196,7 @@ msgstr "PNG"
 #: code:addons/delivery_bpost/models/bpost_request.py:134
 #, python-format
 msgid "Packages over 30 Kg are not accepted by bpost."
-msgstr "Упаковка більше 30 кг не приймаються bpost."
+msgstr "Упаковка більше 30 кг bpost не приймає."
 
 #. module: delivery_bpost
 #: model:ir.model.fields,field_description:delivery_bpost.field_delivery_carrier__bpost_developer_password
@@ -296,7 +297,7 @@ msgstr "USPS"
 #: model:product.template,uom_name:delivery_bpost.product_product_delivery_bpost_domestic_product_template
 #: model:product.template,uom_name:delivery_bpost.product_product_delivery_bpost_world_product_template
 msgid "Unit(s)"
-msgstr "шт"
+msgstr "Штука(и)"
 
 #. module: delivery_bpost
 #: code:addons/delivery_bpost/models/delivery_bpost.py:91
@@ -391,7 +392,7 @@ msgid ""
 "delivery method into bpost Domestic."
 msgstr ""
 "Міжнародний bpost використовується лише для доставки за межами Бельгії. Будь"
-" ласка, змініть метод доставки на адресу Вітчизняний bpost."
+" ласка, змініть метод доставки на адресу Вітчизняного bpost."
 
 #. module: delivery_bpost
 #: code:addons/delivery_bpost/models/bpost_request.py:112

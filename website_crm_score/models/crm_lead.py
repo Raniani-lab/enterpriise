@@ -33,7 +33,7 @@ class Lead(models.Model):
     assign_date = fields.Datetime(string='Auto Assign Date', help="Date when the lead has been assigned via the auto-assignation mechanism")
     pageviews_count = fields.Integer('# Page Views', compute='_count_pageviews')
     lang_id = fields.Many2one('res.lang', string='Language', help="Language from the website when lead has been created")
-    phone = fields.Char('Phone', track_visibility='onchange')
+    phone = fields.Char('Phone', tracking=True)
 
     def encode(self, lead_id):
         md5_lead_id = md5(b"%d%s" % (lead_id, self._get_key().encode('ascii'))).hexdigest()

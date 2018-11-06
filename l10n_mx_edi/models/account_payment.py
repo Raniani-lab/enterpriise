@@ -49,7 +49,7 @@ class AccountPayment(models.Model):
         string='SAT status',
         help='Refers to the status of the CFDI inside the SAT system.',
         readonly=True, copy=False, required=True,
-        track_visibility='onchange', default='undefined')
+        tracking=True, default='undefined')
     l10n_mx_edi_cfdi_name = fields.Char(string='CFDI name', copy=False, readonly=True,
         help='The attachment name of the CFDI.')
     l10n_mx_edi_payment_method_id = fields.Many2one(

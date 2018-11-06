@@ -483,8 +483,8 @@ class AccountAssetDepreciationLine(models.Model):
     depreciated_value = fields.Float(string='Cumulative Depreciation', required=True)
     depreciation_date = fields.Date('Depreciation Date', index=True)
     move_id = fields.Many2one('account.move', string='Depreciation Entry', index=True)
-    move_check = fields.Boolean(compute='_get_move_check', string='Linked', track_visibility='always', store=True)
-    move_posted_check = fields.Boolean(compute='_get_move_posted_check', string='Posted', track_visibility='always', store=True)
+    move_check = fields.Boolean(compute='_get_move_check', string='Linked', tracking=True, store=True)
+    move_posted_check = fields.Boolean(compute='_get_move_posted_check', string='Posted', tracking=True, store=True)
 
     @api.multi
     @api.depends('move_id')

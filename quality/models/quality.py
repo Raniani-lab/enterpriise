@@ -146,15 +146,15 @@ class QualityCheck(models.Model):
     quality_state = fields.Selection([
         ('none', 'To do'),
         ('pass', 'Passed'),
-        ('fail', 'Failed')], string='Status', track_visibility='onchange',
+        ('fail', 'Failed')], string='Status', tracking=True,
         default='none', copy=False)
-    control_date = fields.Datetime('Control Date', track_visibility='onchange')
+    control_date = fields.Datetime('Control Date', tracking=True)
     product_id = fields.Many2one(
         'product.product', 'Product',
         domain="[('type', 'in', ['consu', 'product'])]", required=True)
     picking_id = fields.Many2one('stock.picking', 'Picking')
     lot_id = fields.Many2one('stock.production.lot', 'Lot', domain="[('product_id', '=', product_id)]")
-    user_id = fields.Many2one('res.users', 'Responsible', track_visibility='onchange')
+    user_id = fields.Many2one('res.users', 'Responsible', tracking=True)
     team_id = fields.Many2one('quality.alert.team', 'Team', required=True)
     company_id = fields.Many2one('res.company', 'Company', default=lambda self: self.env.user.company_id)
     alert_ids = fields.One2many('quality.alert', 'check_id', string='Alerts')
@@ -210,7 +210,7 @@ class QualityAlert(models.Model):
     description = fields.Html('Description')
     stage_id = fields.Many2one('quality.alert.stage', 'Stage', ondelete='restrict',
         group_expand='_read_group_stage_ids',
-        default=lambda self: self.env['quality.alert.stage'].search([], limit=1).id, track_visibility="onchange")
+        default=lambda self: self.env['quality.alert.stage'].search([], limit=1).id, tracking=True)
     company_id = fields.Many2one('res.company', 'Company', default=lambda self: self.env.user.company_id)
     reason_id = fields.Many2one('quality.reason', 'Root Cause')
     tag_ids = fields.Many2many('quality.tag', string="Tags")
@@ -219,7 +219,7 @@ class QualityAlert(models.Model):
     picking_id = fields.Many2one('stock.picking', 'Picking')
     action_corrective = fields.Html('Corrective Action')
     action_preventive = fields.Html('Preventive Action')
-    user_id = fields.Many2one('res.users', 'Responsible', track_visibility='onchange', default=lambda self: self.env.user)
+    user_id = fields.Many2one('res.users', 'Responsible', tracking=True, default=lambda self: self.env.user)
     team_id = fields.Many2one(
         'quality.alert.team', 'Team', required=True,
         default=lambda x: x.env['quality.alert.team'].search([], limit=1))

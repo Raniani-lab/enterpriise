@@ -26,30 +26,30 @@ class SaleSubscription(models.Model):
     def _get_default_pricelist(self):
         return self.env['product.pricelist'].search([('currency_id', '=', self.env.user.company_id.currency_id.id)], limit=1).id
 
-    name = fields.Char(required=True, track_visibility="always", default="New")
-    code = fields.Char(string="Reference", required=True, track_visibility="onchange", index=True, copy=False)
+    name = fields.Char(required=True, tracking=True, default="New")
+    code = fields.Char(string="Reference", required=True, tracking=True, index=True, copy=False)
     stage_id = fields.Many2one(
         'sale.subscription.stage', string='Stage', index=True,
-        default=lambda s: s._get_default_stage_id(), group_expand='_read_group_stage_ids', track_visibility='onchange')
+        default=lambda s: s._get_default_stage_id(), group_expand='_read_group_stage_ids', tracking=True)
     analytic_account_id = fields.Many2one('account.analytic.account', string='Analytic Account')
     company_id = fields.Many2one('res.company', string="Company", default=lambda s: s.env['res.company']._company_default_get(), required=True)
     partner_id = fields.Many2one('res.partner', string='Customer', required=True, auto_join=True)
     tag_ids = fields.Many2many('account.analytic.tag', string='Tags')
     date_start = fields.Date(string='Start Date', default=fields.Date.today)
-    date = fields.Date(string='End Date', track_visibility='onchange', help="If set in advance, the subscription will be set to pending 1 month before the date and will be closed on the date set in this field.")
+    date = fields.Date(string='End Date', tracking=True, help="If set in advance, the subscription will be set to pending 1 month before the date and will be closed on the date set in this field.")
     pricelist_id = fields.Many2one('product.pricelist', string='Pricelist', default=_get_default_pricelist, required=True)
     currency_id = fields.Many2one('res.currency', related='pricelist_id.currency_id', string='Currency', readonly=True)
     recurring_invoice_line_ids = fields.One2many('sale.subscription.line', 'analytic_account_id', string='Invoice Lines', copy=True)
     recurring_rule_type = fields.Selection(string='Recurrence', help="Invoice automatically repeat at specified interval", related="template_id.recurring_rule_type", readonly=1)
     recurring_interval = fields.Integer(string='Repeat Every', help="Repeat every (Days/Week/Month/Year)", related="template_id.recurring_interval", readonly=1)
     recurring_next_date = fields.Date(string='Date of Next Invoice', default=fields.Date.today, help="The next invoice will be created on this date then the period will be extended.")
-    recurring_total = fields.Float(compute='_compute_recurring_total', string="Recurring Price", store=True, track_visibility='onchange')
+    recurring_total = fields.Float(compute='_compute_recurring_total', string="Recurring Price", store=True, tracking=True)
     recurring_monthly = fields.Float(compute='_compute_recurring_monthly', string="Monthly Recurring Revenue", store=True)
-    close_reason_id = fields.Many2one("sale.subscription.close.reason", string="Close Reason", track_visibility='onchange')
-    template_id = fields.Many2one('sale.subscription.template', string='Subscription Template', required=True, track_visibility='onchange')
+    close_reason_id = fields.Many2one("sale.subscription.close.reason", string="Close Reason", tracking=True)
+    template_id = fields.Many2one('sale.subscription.template', string='Subscription Template', required=True, tracking=True)
     payment_mode = fields.Selection(related='template_id.payment_mode', readonly=False)
     description = fields.Text()
-    user_id = fields.Many2one('res.users', string='Salesperson', track_visibility='onchange', default=lambda self: self.env.user)
+    user_id = fields.Many2one('res.users', string='Salesperson', tracking=True, default=lambda self: self.env.user)
     team_id = fields.Many2one('crm.team', 'Sales Team', change_default=True, default=False)
     team_user_id = fields.Many2one('res.users', string="Team Leader", related="team_id.user_id", readonly=False)
     invoice_count = fields.Integer(compute='_compute_invoice_count')
@@ -944,8 +944,8 @@ class SaleSubscriptionTemplate(models.Model):
                                             ('monthly', 'Month(s)'), ('yearly', 'Year(s)'), ],
                                            string='Recurrence', required=True,
                                            help="Invoice automatically repeat at specified interval",
-                                           default='monthly', track_visibility='onchange')
-    recurring_interval = fields.Integer(string="Repeat Every", help="Repeat every (Days/Week/Month/Year)", required=True, default=1, track_visibility='onchange')
+                                           default='monthly', tracking=True)
+    recurring_interval = fields.Integer(string="Repeat Every", help="Repeat every (Days/Week/Month/Year)", required=True, default=1, tracking=True)
     recurring_rule_boundary = fields.Selection([
         ('unlimited', 'Forever'),
         ('limited', 'Fixed')
@@ -955,7 +955,7 @@ class SaleSubscriptionTemplate(models.Model):
     # Read-only copy of recurring_rule_type for proper readability of recurrence limitation:
     recurring_rule_type_readonly = fields.Selection(
         string="Recurrence Unit",
-        related='recurring_rule_type', readonly=True, track_visibility=False)
+        related='recurring_rule_type', readonly=True, tracking=False)
 
     user_closable = fields.Boolean(string="Closable by customer", help="If checked, the user will be able to close his account from the frontend")
     payment_mode = fields.Selection([

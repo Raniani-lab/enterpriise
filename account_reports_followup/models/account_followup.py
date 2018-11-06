@@ -69,7 +69,7 @@ class ResPartner(models.Model):
 
     payment_responsible_id = fields.Many2one('res.users', ondelete='set null', string='Follow-up Responsible',
                                              help="Optionally you can assign a user to this field, which will make him responsible for the action.",
-                                             track_visibility="onchange", copy=False, company_dependent=True)
+                                             tracking=True, copy=False, company_dependent=True)
 
     def _get_needofaction_fup_lines_domain(self, date):
         """ returns the part of the domain on account.move.line that will filter lines ready to reach another followup level.

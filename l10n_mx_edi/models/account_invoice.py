@@ -81,7 +81,7 @@ class AccountInvoice(models.Model):
         readonly=True,
         copy=False,
         required=True,
-        track_visibility='onchange',
+        tracking=True,
         default='undefined')
     l10n_mx_edi_cfdi_name = fields.Char(string='CFDI name', copy=False, readonly=True,
         help='The attachment name of the CFDI.')

@@ -27,7 +27,7 @@ class HrAppraisal(models.Model):
     employee_id = fields.Many2one('hr.employee', required=True, string='Employee', index=True)
     department_id = fields.Many2one('hr.department', related='employee_id.department_id', string='Department', store=True, readonly=True)
     date_close = fields.Date(string='Appraisal Deadline', required=True)
-    state = fields.Selection(APPRAISAL_STATES, string='Status', track_visibility='onchange', required=True, copy=False, default='new', index=True)
+    state = fields.Selection(APPRAISAL_STATES, string='Status', tracking=True, required=True, copy=False, default='new', index=True)
     manager_appraisal = fields.Boolean(string='Appraisal by Manager', help="This employee will be appraised by his managers")
     manager_ids = fields.Many2many('hr.employee', 'appraisal_manager_rel', 'hr_appraisal_id')
     manager_survey_id = fields.Many2one('survey.survey', string="Manager's Appraisal")
@@ -45,7 +45,7 @@ class HrAppraisal(models.Model):
     count_completed_survey = fields.Integer(string="Number of Answers", compute='_compute_completed_survey')
     mail_template_id = fields.Many2one('mail.template', string="Email Template for Appraisal", default=lambda self: self.env.ref('hr_appraisal.send_appraisal_template'))
     meeting_id = fields.Many2one('calendar.event', string='Meeting')
-    date_final_interview = fields.Date(string="Final Interview", index=True, track_visibility='onchange')
+    date_final_interview = fields.Date(string="Final Interview", index=True, tracking=True)
 
     @api.multi
     def _compute_sent_survey(self):

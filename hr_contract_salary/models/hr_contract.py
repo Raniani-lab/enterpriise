@@ -30,7 +30,7 @@ class HrContract(models.Model):
         ('PFI', 'PFI'),
         ('CDI', 'CDI'),
         ('CDD', 'CDD')], string="Contract Type", default="PFI")
-    hr_responsible_id = fields.Many2one('res.users', "HR Responsible", track_visibility='onchange',
+    hr_responsible_id = fields.Many2one('res.users', "HR Responsible", tracking=True,
         help="Person responsible of validating the employee's contracts.")
     default_contract_id = fields.Many2one('hr.contract', string="Contract Template",
         help="Default contract used when making an offer to an applicant.")

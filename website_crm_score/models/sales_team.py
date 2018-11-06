@@ -66,7 +66,7 @@ class team_user(models.Model):
     user_id = fields.Many2one('res.users', string='Saleman', required=True)
     name = fields.Char(string="Name", related='user_id.partner_id.display_name', readonly=False)
     running = fields.Boolean(string='Running', default=True)
-    team_user_domain = fields.Char('Domain', track_visibility='onchange')
+    team_user_domain = fields.Char('Domain', tracking=True)
     maximum_user_leads = fields.Integer('Leads Per Month')
     leads_count = fields.Integer('Assigned Leads', compute='_count_leads', help='Assigned Leads this last month')
     percentage_leads = fields.Float(compute='_get_percentage', string='Percentage leads')
@@ -121,12 +121,12 @@ class crm_team(models.Model):
             raise Warning('The domain is incorrectly formatted')
 
     ratio = fields.Float(string='Ratio')
-    score_team_domain = fields.Char('Domain', track_visibility='onchange')
+    score_team_domain = fields.Char('Domain', tracking=True)
     leads_count = fields.Integer(compute='_count_leads')
     assigned_leads_count = fields.Integer(compute='_assigned_leads_count')
     capacity = fields.Integer(compute='_capacity')
     team_user_ids = fields.One2many('team.user', 'team_id', string='Salesman')
-    min_for_assign = fields.Integer("Minimum score", help="Minimum score to be automatically assign (>=)", default=0, required=True, track_visibility='onchange')
+    min_for_assign = fields.Integer("Minimum score", help="Minimum score to be automatically assign (>=)", default=0, required=True, tracking=True)
 
     @api.model
     def direct_assign_leads(self, ids=[]):

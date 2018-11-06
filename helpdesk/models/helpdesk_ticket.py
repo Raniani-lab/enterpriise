@@ -89,12 +89,12 @@ class HelpdeskTicket(models.Model):
         ('normal', 'Normal'),
         ('blocked', 'Blocked'),
         ('done', 'Ready for next stage')], string='Kanban State',
-        default='normal', required=True, track_visibility='onchange',
+        default='normal', required=True, tracking=True,
         help="A ticket's kanban state indicates special situations affecting it:\n"
              "* Normal is the default situation\n"
              "* Blocked indicates something is preventing the progress of this issue\n"
              "* Ready for next stage indicates the issue is ready to be pulled to the next stage")
-    user_id = fields.Many2one('res.users', string='Assigned to', track_visibility='onchange', domain=lambda self: [('groups_id', 'in', self.env.ref('helpdesk.group_helpdesk_user').id)])
+    user_id = fields.Many2one('res.users', string='Assigned to', tracking=True, domain=lambda self: [('groups_id', 'in', self.env.ref('helpdesk.group_helpdesk_user').id)])
     partner_id = fields.Many2one('res.partner', string='Customer')
     partner_tickets = fields.Integer('Number of tickets from the same partner', compute='_compute_partner_tickets')
     attachment_number = fields.Integer(compute='_compute_attachment_number', string="Number of Attachments")
@@ -107,7 +107,7 @@ class HelpdeskTicket(models.Model):
     email = fields.Char(related='partner_email', string='Email on Customer', readonly=False)
 
     priority = fields.Selection(TICKET_PRIORITY, string='Priority', default='0')
-    stage_id = fields.Many2one('helpdesk.stage', string='Stage', ondelete='restrict', track_visibility='onchange',
+    stage_id = fields.Many2one('helpdesk.stage', string='Stage', ondelete='restrict', tracking=True,
                                group_expand='_read_group_stage_ids', copy=False,
                                index=True, domain="[('team_ids', '=', team_id)]")
 

@@ -48,7 +48,7 @@ class HelpdeskTicket(models.Model):
         return result
 
     project_id = fields.Many2one("project.project", string="Project")
-    task_id = fields.Many2one("project.task", string="Task", domain="[('project_id', '=', project_id)]", track_visibility="onchange", help="The task must have the same customer as this ticket.")
+    task_id = fields.Many2one("project.task", string="Task", domain="[('project_id', '=', project_id)]", tracking=True, help="The task must have the same customer as this ticket.")
     timesheet_ids = fields.One2many('account.analytic.line', 'helpdesk_ticket_id', 'Timesheets')
     is_closed = fields.Boolean(related="task_id.stage_id.is_closed", string="Is Closed", readonly=True)
     is_task_active = fields.Boolean(related="task_id.active", string='Is Task Active', readonly=True)

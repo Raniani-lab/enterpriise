@@ -60,7 +60,7 @@ class SignRequest(models.Model):
         ("sent", "Signatures in Progress"),
         ("signed", "Fully Signed"),
         ("canceled", "Canceled")
-    ], default='sent', track_visibility='onchange', group_expand='_expand_states')
+    ], default='sent', tracking=True, group_expand='_expand_states')
 
     completed_document = fields.Binary(readonly=True, string="Completed Document", attachment=True)
 

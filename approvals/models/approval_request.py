@@ -15,7 +15,7 @@ class ApprovalRequest(models.Model):
         request_status_list = dict(self._fields['request_status'].selection).keys()
         return request_status_list
 
-    name = fields.Char(string="Approval Subject", track_visibility=True)
+    name = fields.Char(string="Approval Subject", tracking=True)
     category_id = fields.Many2one('approval.category', string="Category", required=True)
     approver_ids = fields.One2many('approval.approver', 'request_id', string="Approvers")
     date = fields.Datetime(string="Date")
@@ -164,7 +164,7 @@ class ApprovalRequest(models.Model):
 
     @api.multi
     def _write(self, values):
-        # The attribute 'track_visibility' doesn't work for the
+        # The attribute 'tracking' doesn't work for the
         # field request_status, as it is updated from the client side
         # We have to track the values modification by hand.
         if values.get('request_status'):

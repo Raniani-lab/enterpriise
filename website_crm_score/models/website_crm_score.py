@@ -41,22 +41,22 @@ class website_crm_score(models.Model):
             raise Warning('The domain is incorrectly formatted')
 
     name = fields.Char('Name', required=True)
-    rule_type = fields.Selection([('score', 'Scoring'), ('active', 'Archive'), ('unlink', 'Delete')], default='score', required=True, track_visibility='onchange',
+    rule_type = fields.Selection([('score', 'Scoring'), ('active', 'Archive'), ('unlink', 'Delete')], default='score', required=True, tracking=True,
                                  help='Scoring will add a score of `value` for this lead.\n'
                                  'Archive will set active = False on the lead (archived)\n'
                                  'Delete will delete definitively the lead\n\n'
                                  'Actions are done in sql and bypass the access rights and orm mechanism (create `score`, write `active`, unlink `crm_lead`)')
-    value = fields.Float('Value', default=0, required=True, track_visibility='onchange')
-    domain = fields.Char('Domain', track_visibility='onchange', required=True)
+    value = fields.Float('Value', default=0, required=True, tracking=True)
+    domain = fields.Char('Domain', tracking=True, required=True)
     event_based = fields.Boolean(
         'Event-based rule',
         help='When checked, the rule will be re-evaluated every time, even for leads '
              'that have already been checked previously. This option incurs a large '
              'performance penalty, so it should be checked only for rules that depend '
              'on dynamic events',
-        default=False, track_visibility='onchange'
+        default=False, tracking=True
     )
-    running = fields.Boolean('Active', default=True, track_visibility='onchange')
+    running = fields.Boolean('Active', default=True, tracking=True)
     leads_count = fields.Integer(compute='_count_leads')
     last_run = fields.Datetime('Last run', help='Date from the last scoring on all leads.')
 

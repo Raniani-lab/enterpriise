@@ -12,7 +12,7 @@ class RequestWizard(models.TransientModel):
     tag_ids = fields.Many2many('documents.tag', string="Tags")
     folder_id = fields.Many2one('documents.folder')
     owner_id = fields.Many2one('res.users', default=lambda self: self.env.user.id, string="Owner",
-                               track_visibility='onchange')
+                               tracking=True)
 
     activity_type_id = fields.Many2one('mail.activity.type',
                                        string="Activity type",

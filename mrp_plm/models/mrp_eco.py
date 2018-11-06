@@ -155,17 +155,17 @@ class MrpEco(models.Model):
         return types
 
     name = fields.Char('Reference', copy=False, required=True)
-    user_id = fields.Many2one('res.users', 'Responsible', default=lambda self: self.env.user, track_visibility='onchange')
+    user_id = fields.Many2one('res.users', 'Responsible', default=lambda self: self.env.user, tracking=True)
     type_id = fields.Many2one('mrp.eco.type', 'Type', required=True)
     stage_id = fields.Many2one(
         'mrp.eco.stage', 'Stage', ondelete='restrict', copy=False, domain="[('type_id', '=', type_id)]",
-        group_expand='_read_group_stage_ids', track_visibility='onchange',
+        group_expand='_read_group_stage_ids', tracking=True,
         default=lambda self: self.env['mrp.eco.stage'].search([('type_id', '=', self._context.get('default_type_id'))], limit=1))
     company_id = fields.Many2one('res.company', 'Company', default=lambda self: self.env.user.company_id)
     tag_ids = fields.Many2many('mrp.eco.tag', string='Tags')
     priority = fields.Selection([
         ('0', 'Normal'),
-        ('1', 'High')], string='Priority', track_visibility='onchange',
+        ('1', 'High')], string='Priority', tracking=True,
         index=True)
     note = fields.Text('Note')
     effectivity = fields.Selection([
@@ -173,7 +173,7 @@ class MrpEco(models.Model):
         ('date', 'At Date')], string='Effectivity',  # Is this English ?
         compute='_compute_effectivity', inverse='_set_effectivity', store=True,
         help='Date on which the changes should be applied. For reference only.')
-    effectivity_date = fields.Datetime('Effectivity Date', track_visibility='onchange', help="For reference only.")
+    effectivity_date = fields.Datetime('Effectivity Date', tracking=True, help="For reference only.")
     approval_ids = fields.One2many('mrp.eco.approval', 'eco_id', 'Approvals', help='Approvals by stage')
 
     state = fields.Selection([

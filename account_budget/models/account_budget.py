@@ -54,7 +54,7 @@ class CrossoveredBudget(models.Model):
         ('confirm', 'Confirmed'),
         ('validate', 'Validated'),
         ('done', 'Done')
-        ], 'Status', default='draft', index=True, required=True, readonly=True, copy=False, track_visibility='always')
+        ], 'Status', default='draft', index=True, required=True, readonly=True, copy=False, tracking=True)
     crossovered_budget_line = fields.One2many('crossovered.budget.lines', 'crossovered_budget_id', 'Budget Lines',
         states={'done': [('readonly', True)]}, copy=True)
     company_id = fields.Many2one('res.company', 'Company', required=True,

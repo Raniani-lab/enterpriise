@@ -38,9 +38,9 @@ class Document(models.Model):
                             compute='_compute_type')
     favorited_ids = fields.Many2many('res.users', string="Favorite of")
     tag_ids = fields.Many2many('documents.tag', 'document_tag_rel', string="Tags")
-    partner_id = fields.Many2one('res.partner', string="Contact", track_visibility='onchange')
+    partner_id = fields.Many2one('res.partner', string="Contact", tracking=True)
     owner_id = fields.Many2one('res.users', default=lambda self: self.env.user.id, string="Owner",
-                               track_visibility='onchange')
+                               tracking=True)
     available_rule_ids = fields.Many2many('documents.workflow.rule', compute='_compute_available_rules',
                                           string='Available Rules')
     lock_uid = fields.Many2one('res.users', string="Locked by")
@@ -49,7 +49,7 @@ class Document(models.Model):
     # Folder
     folder_id = fields.Many2one('documents.folder',
                                 ondelete="restrict",
-                                track_visibility="onchange",
+                                tracking=True,
                                 required=True,
                                 index=True)
     company_id = fields.Many2one('res.company', string='Company', related='folder_id.company_id', readonly=True)

@@ -366,6 +366,21 @@
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Create a new campaign
+            </p><p>
+                Or <a href="/web#action=marketing_automation.marketing_campaign_action_archived">load our campaign templates</a> to get some ideas.
+            </p>
+        </field>
+    </record>
+
+    <record id="marketing_campaign_action_archived" model="ir.actions.act_window">
+        <field name="name">Campaigns</field>
+        <field name="res_model">marketing.campaign</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="context" eval="{'search_default_archive': 1}"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new campaign
             </p>
         </field>
     </record>

@@ -56,52 +56,55 @@ class WorkflowActionRule(models.Model):
         for record in self:
             record.has_business_option = len(self._fields['create_model'].selection)
 
-    def create_record(self, attachments=None):
+    def create_record(self, documents=None):
         """
         implemented by each link module to define specific fields for the new business model (create_values)
 
-        :param attachments: the list of the attachments of the selection
+        When creating/copying/writing an ir.attachment with a res_model and a res_id, add no_document=True
+        to the context to prevent the automatic creation of a document.
+
+        :param documents: the list of the documents of the selection
         :return: the action dictionary that will be called after the workflow action is done or True.
         """
 
         return True
 
-    def apply_actions(self, attachment_ids):
+    def apply_actions(self, document_ids):
         """
         called by the front-end Document Inspector to apply the actions to the selection of ID's.
 
-        :param context:  attachment_ids[]: the list of attachments to apply the action.
+        :param document_ids: the list of documents to apply the action.
         :return: if the action was to create a new business object, returns an action to open the view of the
                 newly created object, else returns True.
         """
-        attachments = self.env['ir.attachment'].browse(attachment_ids)
+        documents = self.env['documents.document'].browse(document_ids)
 
-        for attachment in attachments:
-            # partner/owner/share_link/folder changes
-            attachment_dict = {}
-            if self.user_id:
-                attachment_dict['owner_id'] = self.user_id.id
-            if self.partner_id:
-                attachment_dict['partner_id'] = self.partner_id.id
-            if self.folder_id:
-                attachment_dict['folder_id'] = self.folder_id.id
+        # partner/owner/share_link/folder changes
+        document_dict = {}
+        if self.user_id:
+            document_dict['owner_id'] = self.user_id.id
+        if self.partner_id:
+            document_dict['partner_id'] = self.partner_id.id
+        if self.folder_id:
+            document_dict['folder_id'] = self.folder_id.id
 
-            attachment.write(attachment_dict)
+        documents.write(document_dict)
 
+        for document in documents:
             if self.remove_activities:
-                attachment.activity_ids.action_feedback(
+                document.activity_ids.action_feedback(
                     feedback="completed by rule: %s. %s" % (self.name, self.note or '')
                 )
 
-            if self.activity_option and self.activity_type_id:
-                attachment.documents_set_activity(settings_model=self)
-
             # tag and facet actions
             for tag_action in self.tag_action_ids:
-                tag_action.execute_action(attachment)
+                tag_action.execute_tag_action(document)
+
+        if self.activity_option and self.activity_type_id:
+            documents.documents_set_activity(settings_record=self)
 
         if self.create_model:
-            return self.create_record(attachments=attachments)
+            return self.create_record(documents=documents)
 
         return True
 
@@ -125,7 +128,7 @@ class WorkflowTagCriteria(models.Model):
         self.tag_id = False
 
 
-class WorkflowAction(models.Model):
+class WorkflowTagAction(models.Model):
     _name = "documents.workflow.action"
     _description = "Document Workflow Tag Action"
 
@@ -140,19 +143,19 @@ class WorkflowAction(models.Model):
     facet_id = fields.Many2one('documents.facet', string="Category")
     tag_id = fields.Many2one('documents.tag', string="Tag")
 
-    def execute_action(self, attachment):
+    def execute_tag_action(self, document):
         if self.action == 'add' and self.tag_id.id:
-            return attachment.write({'tag_ids': [(4, self.tag_id.id, False)]})
+            return document.write({'tag_ids': [(4, self.tag_id.id, False)]})
         elif self.action == 'replace' and self.facet_id.id:
             faceted_tags = self.env['documents.tag'].search([('facet_id', '=', self.facet_id.id)])
             if faceted_tags.ids:
                 for tag in faceted_tags:
-                    attachment.write({'tag_ids': [(3, tag.id, False)]})
-            return attachment.write({'tag_ids': [(4, self.tag_id.id, False)]})
+                    document.write({'tag_ids': [(3, tag.id, False)]})
+            return document.write({'tag_ids': [(4, self.tag_id.id, False)]})
         elif self.action == 'remove':
             if self.tag_id.id:
-                return attachment.write({'tag_ids': [(3, self.tag_id.id, False)]})
+                return document.write({'tag_ids': [(3, self.tag_id.id, False)]})
             elif self.facet_id:
                 faceted_tags = self.env['documents.tag'].search([('facet_id', '=', self.facet_id.id)])
                 for tag in faceted_tags:
-                    return attachment.write({'tag_ids': [(3, tag.id, False)]})
+                    return document.write({'tag_ids': [(3, tag.id, False)]})

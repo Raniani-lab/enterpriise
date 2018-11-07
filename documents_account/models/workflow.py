@@ -9,33 +9,38 @@ class WorkflowActionRuleAccount(models.Model):
     create_model = fields.Selection(selection_add=[('account.invoice.in_invoice', "Vendor bill"),
                                                    ('account.invoice.out_refund', "Credit note")])
 
-    def create_record(self, attachments=None):
-        rv = super(WorkflowActionRuleAccount, self).create_record(attachments=attachments)
+    def create_record(self, documents=None):
+        rv = super(WorkflowActionRuleAccount, self).create_record(documents=documents)
         if self.create_model.startswith('account.invoice'):
             invoice_type = self.create_model.split('.')[2]
             journal = self.env['account.invoice'].with_context({'type': invoice_type})._default_journal()
             new_obj = None
             invoice_ids = []
-            for attachment in attachments:
+            for document in documents:
                 create_values = {
                     'type': invoice_type,
                     'journal_id': journal.id,
                 }
                 if self.partner_id:
                     create_values.update(partner_id=self.partner_id.id)
-                elif attachment.partner_id:
-                    create_values.update(partner_id=attachment.partner_id.id)
+                elif document.partner_id:
+                    create_values.update(partner_id=document.partner_id.id)
 
                 new_obj = self.env['account.invoice'].create(create_values)
-                body = "<p>created with DMS</p>"
-                new_obj.message_post(body=body, attachment_ids=[attachment.id])
-                this_attachment = attachment
-                if attachment.res_model or attachment.res_id:
-                    this_attachment = attachment.copy()
+                body = "<p>created with Documents</p>"
+                new_obj.message_post(body=body, attachment_ids=[document.attachment_id.id])
+                this_document = document
+                if (document.res_model or document.res_id) and document.res_model != 'documents.document':
+                    this_document = document.copy()
+                    attachment_id_copy = document.attachment_id.with_context(no_document=True).copy()
+                    this_document.write({'attachment_id': attachment_id_copy.id})
 
-                this_attachment.write({'res_model': 'account.invoice',
-                                       'res_id': new_obj.id,
-                                       'folder_id': this_attachment.folder_id.id})
+                # the 'no_document' key in the context indicates that this ir_attachment has already a
+                # documents.document and a new document shouldn't be automatically generated.
+                this_document.attachment_id.with_context(no_document=True).write({
+                    'res_model': 'account.invoice',
+                    'res_id': new_obj.id,
+                })
 
                 invoice_ids.append(new_obj.id)
 
@@ -50,13 +55,14 @@ class WorkflowActionRuleAccount(models.Model):
                 'domain': [('id', 'in', invoice_ids)],
                 'context': self._context,
             }
-            if len(attachments) == 1:
+            if len(invoice_ids) == 1:
                 view_id = new_obj.get_formview_id() if new_obj else False
-                action.update({'view_type': 'form',
-                               'view_mode': 'form',
-                               'views': [(view_id, "form")],
-                               'res_id': new_obj.id if new_obj else False,
-                               'view_id': view_id,
-                               })
+                action.update({
+                    'view_type': 'form',
+                    'view_mode': 'form',
+                    'views': [(view_id, "form")],
+                    'res_id': new_obj.id if new_obj else False,
+                    'view_id': view_id,
+                })
             return action
         return rv

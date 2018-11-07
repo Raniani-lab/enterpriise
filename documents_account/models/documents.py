@@ -6,13 +6,23 @@ class IrAttachment(models.Model):
     _name = 'ir.attachment'
     _inherit = 'ir.attachment'
 
-    def _set_folder_settings(self, vals):
-        vals = super(IrAttachment, self)._set_folder_settings(vals)
-        if vals.get('res_model') == 'account.invoice' \
-                and self.env.user.company_id.dms_account_settings \
-                and not vals.get('folder_id'):
-            folder = self.env.user.company_id.account_folder
-            if folder.exists():
-                vals.setdefault('folder_id', folder.id)
-                vals.setdefault('tag_ids', [(6, 0, self.env.user.company_id.account_tags.ids)])
-        return vals
+    def _create_document(self, vals):
+        """
+        :param vals: the create/write dictionary of ir attachment
+        """
+        document_ids = super(IrAttachment, self)._create_document(vals)
+
+        if vals.get('res_model') == 'account.invoice' and vals.get('res_id'):
+            invoice = self.env['account.invoice'].browse(vals['res_id'])
+            company = invoice.company_id
+            if company.documents_account_settings and company.account_folder:
+                for record in self:
+                    document_dict = {
+                        'attachment_id': record.id,
+                        'name': vals.get('name', record.name),
+                        'folder_id': company.account_folder.id,
+                        'tag_ids': [(6, 0, company.account_tags.ids if company.account_tags else [])]
+                    }
+                    self.env['documents.document'].create(document_dict)
+                    return True
+        return document_ids

@@ -6,17 +6,17 @@
 
         <record id="mail_documents_activity_data_Inbox" model="mail.activity.type">
             <field name="name">Inbox</field>
-            <field name="res_model_id" ref="base.model_ir_attachment"/>
+            <field name="res_model_id" ref="documents.model_documents_document"/>
         </record>
 
         <record id="mail_documents_activity_data_tv" model="mail.activity.type">
             <field name="name">To validate</field>
-            <field name="res_model_id" ref="base.model_ir_attachment"/>
+            <field name="res_model_id" ref="documents.model_documents_document"/>
         </record>
 
         <record id="mail_documents_activity_data_md" model="mail.activity.type">
             <field name="name">Requested Document</field>
-            <field name="res_model_id" ref="base.model_ir_attachment"/>
+            <field name="res_model_id" ref="documents.model_documents_document"/>
         </record>
 
         <!-- Folders -->
@@ -445,16 +445,16 @@
 
         <!-- base data -->
 
-        <record id="documents_image_La_landscape" model="ir.attachment">
-            <field name="name">LA landscape</field>
+        <record id="documents_image_La_landscape_document" model="documents.document">
+            <field name="name">LA landscape.jpg</field>
             <field name="datas_fname">LA-landscape.jpg</field>
             <field name="datas" type="base64" file="documents/demo/files/la.jpg"/>
             <field name="folder_id" ref="documents_marketing_folder"/>
             <field name="tag_ids" eval="[(6,0,[ref('documents_marketing_assets_images')])]"/>
         </record>
 
-        <record id="documents_image_city" model="ir.attachment">
-            <field name="name">City</field>
+        <record id="documents_image_city_document" model="documents.document">
+            <field name="name">City.jpg</field>
             <field name="datas_fname">city.jpg</field>
             <field name="datas" type="base64" file="documents/demo/files/city.jpg"/>
             <field name="folder_id" ref="documents_internal_folder"/>
@@ -462,8 +462,8 @@
                                                ref('documents_internal_status_draft')])]"/>
         </record>
 
-        <record id="documents_image_people" model="ir.attachment">
-            <field name="name">People</field>
+        <record id="documents_image_people_document" model="documents.document">
+            <field name="name">People.jpg</field>
             <field name="datas_fname">people.jpg</field>
             <field name="datas" type="base64" file="documents/demo/files/people.jpg"/>
             <field name="folder_id" ref="documents_internal_folder"/>
@@ -471,17 +471,16 @@
                                                ref('documents_internal_status_draft')])]"/>
         </record>
 
-        <record id="documents_attachment_sorry_netsuite" model="ir.attachment">
-            <field name="name">Sorry Netsuite</field>
+        <record id="documents_attachment_sorry_netsuite_document" model="documents.document">
+            <field name="name">Sorry Netsuite.jpg</field>
             <field name="datas_fname">Sorry-Netsuite.jpg</field>
             <field name="datas" type="base64" file="documents/demo/files/sorry_netsuite.jpg"/>
             <field name="folder_id" ref="documents_marketing_folder"/>
             <field name="tag_ids" eval="[(6,0,[ref('documents_marketing_assets_ads')])]"/>
         </record>
 
-        <record id="documents_attachment_video_studio" model="ir.attachment">
+        <record id="documents_attachment_video_studio_document" model="documents.document">
             <field name="name">Video: Odoo Studio</field>
-            <field name="datas_fname">Odoo Studio</field>
             <field name="type">url</field>
             <field name="url">https://www.youtube.com/watch?v=xCvFZrrQq7k</field>
             <field name="folder_id" ref="documents_internal_folder"/>
@@ -489,8 +488,8 @@
                                                ref('documents_internal_status_draft')])]"/>
         </record>
 
-        <record id="documents_vendor_bill_clean" model="ir.attachment">
-            <field name="name">preview_clean</field>
+        <record id="documents_vendor_bill_clean_document" model="documents.document">
+            <field name="name">preview_clean.pdf</field>
             <field name="datas_fname">invoice_preview_clean.pdf</field>
             <field name="datas" type="base64" file="documents/demo/files/preview_clean.pdf"/>
             <field name="folder_id" ref="documents_finance_folder"/>
@@ -500,8 +499,8 @@
                                                     ref('documents_finance_status_inbox')])]"/>
         </record>
 
-        <record id="documents_vendor_bill_backgorund" model="ir.attachment">
-            <field name="name">preview_background</field>
+        <record id="documents_vendor_bill_background_document" model="documents.document">
+            <field name="name">preview_background.pdf</field>
             <field name="datas_fname">invoice_preview_background.pdf</field>
             <field name="datas" type="base64" file="documents/demo/files/preview_background.pdf"/>
             <field name="folder_id" ref="documents_finance_folder"/>
@@ -527,15 +526,15 @@
             <field name="activity_date_deadline_range_type">days</field>
         </record>
 
-        <record id="documents_vendor_bill_extract_open_value" model="ir.attachment">
-            <field name="name">Invoice OpenValue</field>
+        <record id="documents_vendor_bill_extract_open_value_document" model="documents.document">
+            <field name="name">Invoice OpenValue.pdf</field>
             <field name="datas_fname">invoice_openvalue.pdf</field>
             <field name="datas" type="base64" file="documents/demo/files/invoice_openvalue.pdf"/>
             <field name="folder_id" ref="documents_finance_folder"/>
         </record>
 
-        <record id="documents_vendor_bill_extract_azure_interior" model="ir.attachment">
-            <field name="name">Invoice Azure Interior</field>
+        <record id="documents_vendor_bill_extract_azure_interior_document" model="documents.document">
+            <field name="name">Invoice Azure Interior.pdf</field>
             <field name="datas_fname">invoice_azure_interior.pdf</field>
             <field name="datas" type="base64" file="documents/demo/files/invoice_azure_interior.pdf"/>
             <field name="folder_id" ref="documents_finance_folder"/>

@@ -20,6 +20,8 @@
             <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
         </record>
 
+        <!-- folder rules -->
+
         <record id="documents_folder_groups_rule" model="ir.rule">
             <field name="name">Documents.folder: folder groups</field>
             <field name="model_id" ref="model_documents_folder"/>
@@ -30,6 +32,36 @@
             <field name="name">Documents.folder: multicompany</field>
             <field name="model_id" ref="model_documents_folder"/>
             <field name="domain_force">['|',('company_id', '=', False), ('company_id', 'child_of', [user.company_id.id])]</field>
+        </record>
+
+        <!-- documents rules -->
+
+        <record id="documents_document_groups_rule" model="ir.rule">
+            <field name="name">Documents.document: folder groups</field>
+            <field name="model_id" ref="model_documents_document"/>
+            <field name="domain_force">['|', ('folder_id.group_ids', '=', False), ('folder_id.group_ids', 'in', [g.id for g in user.groups_id])]</field>
+        </record>
+
+        <record id="documents_document_company_rule" model="ir.rule">
+            <field name="name">Documents.document: multicompany</field>
+            <field name="model_id" ref="model_documents_document"/>
+            <field name="domain_force">['|',('folder_id.company_id', '=', False), ('folder_id.company_id', 'child_of', [user.company_id.id])]</field>
+        </record>
+
+        <!-- share links rules -->
+
+        <record id="documents_share_folder_company_rule" model="ir.rule">
+            <field name="name">Documents.share: multicompany</field>
+            <field name="model_id" ref="model_documents_share"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|',('folder_id.company_id', '=', False), ('folder_id.company_id', 'child_of', [user.company_id.id])]</field>
+        </record>
+
+        <record id="documents_share_folder_groups_rule" model="ir.rule">
+            <field name="name">Documents.share: groups</field>
+            <field name="model_id" ref="model_documents_share"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('folder_id.group_ids', '=', False), ('folder_id.group_ids', 'in', [g.id for g in user.groups_id])]</field>
         </record>
 
         <record id="documents_share_user_rule" model="ir.rule">

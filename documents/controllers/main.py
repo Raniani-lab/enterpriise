@@ -31,7 +31,7 @@ class ShareRoute(http.Controller):
 
         """
         status, headers, content = request.registry['ir.http'].binary_content(
-            id=id, field=field, filename=filename, related_id=share_id,
+            id=id, field=field, filename=filename, related_id=share_id, model='documents.document',
             access_token=share_token, access_mode='documents_share', download=True)
 
         if status == 304:
@@ -51,7 +51,7 @@ class ShareRoute(http.Controller):
         """returns zip files for the Document Inspector and the portal.
 
         :param name: the name to give to the zip file.
-        :param attachments: files (ir.attachment) to be zipped.
+        :param attachments: files (documents.document) to be zipped.
         :return: a http response to download a zip file.
         """
         stream = io.BytesIO()
@@ -85,7 +85,7 @@ class ShareRoute(http.Controller):
         """
         ids_list = [int(x) for x in file_ids.split(',')]
         env = request.env
-        response = self._make_zip(zip_name, env['ir.attachment'].browse(ids_list))
+        response = self._make_zip(zip_name, env['documents.document'].browse(ids_list))
         if token:
             response.set_cookie('fileToken', token)
         return response
@@ -110,9 +110,9 @@ class ShareRoute(http.Controller):
                         if share.domain:
                             domain = literal_eval(share.domain)
                         domain = expression.AND([domain, [['folder_id', '=', share.folder_id.id]]])
-                        attachments = http.request.env['ir.attachment'].sudo().search(domain)
+                        attachments = http.request.env['documents.document'].sudo().search(domain)
                     elif share.type == 'ids':
-                        attachments = share.attachment_ids
+                        attachments = share.document_ids
                     return self._make_zip((share.name or 'unnamed-link') + '.zip', attachments)
         except Exception:
             logger.exception("Failed to zip share link id: %s" % share_id)
@@ -181,15 +181,15 @@ class ShareRoute(http.Controller):
 
     # Upload file(s) route.
     @http.route(["/document/upload/<int:arg_id>/<token>/",
-                 "/document/upload/<int:arg_id>/<token>/<int:attachment_id>"],
+                 "/document/upload/<int:arg_id>/<token>/<int:document_id>"],
                 type='http', auth='public', methods=['POST'], csrf=False)
-    def upload_attachment(self, arg_id=None, token=None, attachment_id=None, **kwargs):
+    def upload_attachment(self, arg_id=None, token=None, document_id=None, **kwargs):
         """
         Allows public upload if provided with the right token and share_Link.
 
         :param arg_id: id of the share.
         :param token: share access token.
-        :param attachment_id: id of a document request to directly upload its content
+        :param document_id: id of a document request to directly upload its content
         :return if files are uploaded, recalls the share portal with the updated content.
         """
         share = http.request.env['documents.share'].sudo().browse(arg_id)
@@ -197,7 +197,7 @@ class ShareRoute(http.Controller):
         if not share.exists() or share.state != 'live' or not consteq(token, share.access_token):
             return http.request.not_found()
 
-        attachments = request.env['ir.attachment']
+        documents = request.env['documents.document']
         folder = share.folder_id
         folder_id = folder.id or False
         chatter_message = '''<b>File uploaded by:</b> %s (share link)<br/>%s
@@ -210,15 +210,15 @@ class ShareRoute(http.Controller):
                 share.create_uid.name,
                 arg_id,
             )
-        if attachment_id:
-            attachment_request = http.request.env['ir.attachment'].sudo().browse(attachment_id)
+        if document_id:
+            document_request = http.request.env['documents.document'].sudo().browse(document_id)
             if share.type == 'ids':
-                attachments_check = share.attachment_ids
+                documents_check = share.document_ids
             else:
                 domain = expression.AND([literal_eval(share.domain or []), [['folder_id', '=', share.folder_id.id]]])
-                attachments_check = http.request.env['ir.attachment'].sudo().search(domain)
+                documents_check = http.request.env['documents.document'].sudo().search(domain)
 
-            if attachment_request not in attachments_check or attachment_request.type != 'empty':
+            if document_request not in documents_check or document_request.type != 'empty':
                 return http.request.not_found()
             try:
                 file = request.httprequest.files.getlist('requestFile')[0]
@@ -233,29 +233,29 @@ class ShareRoute(http.Controller):
             except Exception:
                 logger.exception("Failed to read uploaded file")
             else:
-                attachment_request.write(write_vals)
-                attachment_request.message_post(body=chatter_message)
+                document_request.write(write_vals)
+                document_request.message_post(body=chatter_message)
         elif share.action == 'downloadupload':
             try:
                 for file in request.httprequest.files.getlist('files'):
                     data = file.read()
-                    attachment_dict = {
-                        'tag_ids': [(6, 0, share.tag_ids.ids)],
-                        'partner_id': share.partner_id.id,
-                        'owner_id': share.owner_id.id,
-                        'folder_id': folder_id,
+                    document_dict = {
                         'mimetype': file.content_type,
                         'name': file.filename,
                         'datas_fname': file.filename,
                         'datas': base64.b64encode(data),
+                        'tag_ids': [(6, 0, share.tag_ids.ids)],
+                        'partner_id': share.partner_id.id,
+                        'owner_id': share.owner_id.id,
+                        'folder_id': folder_id,
                     }
-                    attachment = attachments.sudo().create(attachment_dict)
-                    attachment.message_post(body=chatter_message)
+                    document = documents.sudo().create(document_dict)
+                    document.message_post(body=chatter_message)
                     if share.activity_option:
-                        attachment.documents_set_activity(settings_model=share)
+                        document.documents_set_activity(settings_record=share)
 
             except Exception:
-                logger.exception("Failed to upload attachment")
+                logger.exception("Failed to upload document")
 
         return """<script type='text/javascript'>
                     window.open("/document/share/%s/%s", "_self");
@@ -288,9 +288,9 @@ class ShareRoute(http.Controller):
                 if share.domain:
                     domain = literal_eval(share.domain)
                 domain += [['folder_id', '=', share.folder_id.id]]
-                attachments = http.request.env['ir.attachment'].sudo().search(domain)
+                documents = http.request.env['documents.document'].sudo().search(domain)
             elif share.type == 'ids':
-                attachments = share.attachment_ids
+                documents = share.document_ids
             else:
                 return request.not_found()
 
@@ -301,12 +301,12 @@ class ShareRoute(http.Controller):
                 'share_id': str(share.id),
                 'author': share.create_uid.name,
             }
-            if share.type == 'ids' and len(attachments) == 1:
-                options.update(attachment=attachments[0], request_upload=True)
+            if share.type == 'ids' and len(documents) == 1:
+                options.update(document=documents[0], request_upload=True)
                 return request.render('documents.share_single', options)
             else:
-                options.update(all_button='binary' in [attachment.type for attachment in attachments],
-                               attachment_ids=attachments,
+                options.update(all_button='binary' in [document.type for document in documents],
+                               document_ids=documents,
                                request_upload=share.action == 'downloadupload' or share.type == 'ids')
                 return request.render('documents.share_page', options)
         except Exception:
@@ -327,7 +327,7 @@ class IrHttp(models.AbstractModel):
         :param access_mode: typically a string that describes the behaviour of the custom check
         :param model: the model of the object for which binary_content was called
         :param related_id: the id of the documents.share.
-        :return: object binary if the access_token matches the share and the attachment is in the share.
+        :return: object binary if the access_token matches the share and the document is in the share.
         """
         if access_mode == 'documents_share' and related_id:
             share = env['documents.share'].sudo().browse(int(related_id))
@@ -336,7 +336,7 @@ class IrHttp(models.AbstractModel):
                     return False
                 if not consteq(access_token, share.access_token or ''):
                     return False
-                elif share.type == 'ids' and (id in share.attachment_ids.ids):
+                elif share.type == 'ids' and (id in share.document_ids.ids):
                     return True
                 elif share.type == 'domain':
                     obj = env[model].sudo().browse(int(id))
@@ -344,8 +344,17 @@ class IrHttp(models.AbstractModel):
                     if share.domain:
                         share_domain = literal_eval(share.domain)
                     domain = [['folder_id', '=', share.folder_id.id]] + share_domain
-                    attachments_check = http.request.env['ir.attachment'].sudo().search(domain)
-                    if obj in attachments_check:
+                    documents_check = http.request.env['documents.document'].sudo().search(domain)
+                    if obj in documents_check:
                         return True
         return super(IrHttp, cls)._check_access_mode(env, id, access_mode, model,
                                                      access_token=access_token, related_id=related_id)
+
+    @classmethod
+    def _get_special_models(cls):
+        """
+        :return: the set of models that can go through the URL and access_token check
+        """
+        models = super(IrHttp, cls)._get_special_models()
+        models.add('documents.document')
+        return models

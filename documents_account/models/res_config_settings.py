@@ -13,9 +13,9 @@ class ResConfigSettings(models.TransientModel):
             return folder_id
         return False
 
-    dms_account_settings = fields.Boolean(related='company_id.dms_account_settings', readonly=False,
-                                          default=lambda self: self.env.user.company_id.dms_account_settings,
-                                          string="Account Folder")
+    documents_account_settings = fields.Boolean(related='company_id.documents_account_settings', readonly=False,
+                                                default=lambda self: self.env.user.company_id.documents_account_settings,
+                                                string="Account Folder")
     account_folder = fields.Many2one('documents.folder', related='company_id.account_folder', readonly=False,
                                      default=_get_default_account_folder,
                                      string="account default folder")

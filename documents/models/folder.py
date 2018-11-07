@@ -35,7 +35,7 @@ class DocumentFolder(models.Model):
     name = fields.Char(required=True, translate=True)
     description = fields.Html(string="Description")
     children_folder_ids = fields.One2many('documents.folder', 'parent_folder_id', string="Sub folders")
-    attachment_ids = fields.One2many('ir.attachment', 'folder_id', string="Documents")
+    document_ids = fields.One2many('documents.document', 'folder_id', string="Documents")
     sequence = fields.Integer('Sequence', default=10)
     share_link_ids = fields.One2many('documents.share', 'folder_id', string="Share Links")
     facet_ids = fields.One2many('documents.facet', 'folder_id',

@@ -32,7 +32,7 @@ QUnit.module('Views');
 QUnit.module('DocumentsKanbanView', {
     beforeEach: function () {
         this.data = {
-            'ir.attachment': {
+            'documents.document': {
                 fields: {
                     active: {string: "Active", type: 'boolean', default: true},
                     available_rule_ids: {string: "Rules", type: 'many2many', relation: 'documents.workflow.rule'},
@@ -77,7 +77,7 @@ QUnit.module('DocumentsKanbanView', {
                         public: false, res_id: 3, res_model: false, res_model_name: false,
                         res_name: false, tag_ids: [], share_ids: [], folder_id: 1, available_rule_ids: [1, 2]},
                     {id: 6, name: 'pom', file_size: 70000, partner_id: 3,
-                        public: true, res_id: 1, res_model: 'order', res_model_name: 'Sale order',
+                        public: true, res_id: 1, res_model: 'documents.document', res_model_name: 'Document',
                         res_name: 'SO 0003', tag_ids: [], share_ids: [], folder_id: 2, available_rule_ids: []},
                     {id: 7, name: 'zoup', file_size: 20000, mimetype: 'image/png',
                         owner_id: 3, partner_id: 3, public: true, res_id: false, res_model: false,
@@ -219,7 +219,7 @@ QUnit.module('DocumentsKanbanView', {
 
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
@@ -264,7 +264,7 @@ QUnit.module('DocumentsKanbanView', {
 
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
@@ -301,7 +301,7 @@ QUnit.module('DocumentsKanbanView', {
 
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
@@ -335,7 +335,7 @@ QUnit.module('DocumentsKanbanView', {
 
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
@@ -361,7 +361,7 @@ QUnit.module('DocumentsKanbanView', {
 
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
@@ -404,7 +404,7 @@ QUnit.module('DocumentsKanbanView', {
 
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
@@ -453,7 +453,7 @@ QUnit.module('DocumentsKanbanView', {
 
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
@@ -495,7 +495,7 @@ QUnit.module('DocumentsKanbanView', {
         var self = this;
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
@@ -504,7 +504,7 @@ QUnit.module('DocumentsKanbanView', {
                     '</div>' +
                 '</t></templates></kanban>',
             mockRPC: function (route, args) {
-                if (args.method === 'read' && args.model === 'ir.attachment') {
+                if (args.method === 'read' && args.model === 'documents.document') {
                     assert.deepEqual(args.args[0], [1],
                         "should read the clicked record");
                 }
@@ -514,7 +514,7 @@ QUnit.module('DocumentsKanbanView', {
                 execute_action: function (ev) {
                     assert.strictEqual(ev.data.action_data.name, 'some_method',
                         "should call the correct method");
-                    self.data['ir.attachment'].records[0].name = 'yop changed';
+                    self.data['documents.document'].records[0].name = 'yop changed';
                     ev.data.on_closed();
                 },
             },
@@ -547,7 +547,7 @@ QUnit.module('DocumentsKanbanView', {
         var domain = [['owner_id', '=', 2]];
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
@@ -566,12 +566,31 @@ QUnit.module('DocumentsKanbanView', {
                         type: 'domain',
                     }]);
                 }
+                if (args.method === 'get_model_names') {
+                    return $.when([{
+                        res_model_count: 3,
+                        res_model: 'task',
+                        res_model_name: 'Task'
+                    },{
+                        res_model_count: 3,
+                        res_model: false,
+                        res_model_name: false
+                    },{
+                        res_model_count: 3,
+                        res_model: 'order',
+                        res_model_name: 'Sale Order'
+                    },{
+                        res_model_count: 2,
+                        res_model: 'documents.document',
+                        res_model_name: 'Document'
+                    }]);
+                }
                 return this._super.apply(this, arguments);
             },
         });
 
         // filter on 'task' in the DocumentsSelector
-        testUtils.dom.click(kanban.$('.o_documents_selector .o_documents_selector_model[data-id=task] input:checkbox'));
+        testUtils.dom.click(kanban.$('.o_documents_selector .o_documents_selector_model[data-id="task"] input:checkbox'));
 
         assert.strictEqual(kanban.$('.o_kanban_record:not(.o_kanban_ghost)').length, 2,
             "should have 2 records in the renderer");
@@ -586,7 +605,7 @@ QUnit.module('DocumentsKanbanView', {
 
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
@@ -610,7 +629,7 @@ QUnit.module('DocumentsKanbanView', {
 
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
@@ -635,7 +654,7 @@ QUnit.module('DocumentsKanbanView', {
         this.data['documents.folder'].records = [];
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
@@ -657,7 +676,7 @@ QUnit.module('DocumentsKanbanView', {
 
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
@@ -680,7 +699,7 @@ QUnit.module('DocumentsKanbanView', {
 
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
@@ -715,7 +734,7 @@ QUnit.module('DocumentsKanbanView', {
 
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
@@ -744,7 +763,7 @@ QUnit.module('DocumentsKanbanView', {
 
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
             data: this.data,
             arch: '<kanban limit="2"><templates><t t-name="kanban-box">' +
                     '<div>' +
@@ -782,7 +801,7 @@ QUnit.module('DocumentsKanbanView', {
 
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
@@ -823,7 +842,7 @@ QUnit.module('DocumentsKanbanView', {
 
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
             data: this.data,
             domain: [['active', '=', false]],
             arch: '<kanban><templates><t t-name="kanban-box">' +
@@ -863,7 +882,7 @@ QUnit.module('DocumentsKanbanView', {
 
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
@@ -907,7 +926,7 @@ QUnit.module('DocumentsKanbanView', {
 
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
@@ -917,7 +936,7 @@ QUnit.module('DocumentsKanbanView', {
             mockRPC: function (route, args) {
                 if (args.method === 'create_share') {
                     assert.deepEqual(args.args, [{
-                        attachment_ids: [[6, 0, [1, 2]]],
+                        document_ids: [[6, 0, [1, 2]]],
                         folder_id: 1,
                         type: 'ids',
                     }]);
@@ -942,7 +961,7 @@ QUnit.module('DocumentsKanbanView', {
 
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
@@ -983,7 +1002,7 @@ QUnit.module('DocumentsKanbanView', {
         var self = this;
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
@@ -996,7 +1015,7 @@ QUnit.module('DocumentsKanbanView', {
             mockRPC: function (route, args) {
                 if (args.method === 'toggle_lock') {
                     assert.deepEqual(args.args, [1], "should call method for the correct record");
-                    var record = _.findWhere(self.data['ir.attachment'].records, {id: 1});
+                    var record = _.findWhere(self.data['documents.document'].records, {id: 1});
                     record.lock_uid = record.lock_uid ? false : 1;
                     return $.when();
                 }
@@ -1030,7 +1049,7 @@ QUnit.module('DocumentsKanbanView', {
 
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
@@ -1065,7 +1084,7 @@ QUnit.module('DocumentsKanbanView', {
 
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
@@ -1110,7 +1129,7 @@ QUnit.module('DocumentsKanbanView', {
 
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
@@ -1156,7 +1175,7 @@ QUnit.module('DocumentsKanbanView', {
 
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
@@ -1215,7 +1234,7 @@ QUnit.module('DocumentsKanbanView', {
         var value;
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
@@ -1274,7 +1293,7 @@ QUnit.module('DocumentsKanbanView', {
 
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
@@ -1304,7 +1323,7 @@ QUnit.module('DocumentsKanbanView', {
 
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
@@ -1335,7 +1354,7 @@ QUnit.module('DocumentsKanbanView', {
 
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
@@ -1359,7 +1378,7 @@ QUnit.module('DocumentsKanbanView', {
 
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
@@ -1398,7 +1417,7 @@ QUnit.module('DocumentsKanbanView', {
 
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
@@ -1442,7 +1461,7 @@ QUnit.module('DocumentsKanbanView', {
 
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
@@ -1468,7 +1487,7 @@ QUnit.module('DocumentsKanbanView', {
 
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
@@ -1491,11 +1510,11 @@ QUnit.module('DocumentsKanbanView', {
     QUnit.test('document inspector: unknown tags are hidden', function (assert) {
         assert.expect(1);
 
-        this.data['ir.attachment'].records[0].tag_ids = [1, 2, 78];
+        this.data['documents.document'].records[0].tag_ids = [1, 2, 78];
 
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
@@ -1517,7 +1536,7 @@ QUnit.module('DocumentsKanbanView', {
 
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
@@ -1553,7 +1572,7 @@ QUnit.module('DocumentsKanbanView', {
         var self = this;
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
@@ -1565,7 +1584,7 @@ QUnit.module('DocumentsKanbanView', {
                 execute_action: function (ev) {
                     assert.strictEqual(ev.data.action_data.name, 'some_method',
                         "should call the correct method");
-                    self.data['ir.attachment'].records[0].name = 'yop changed';
+                    self.data['documents.document'].records[0].name = 'yop changed';
                     ev.data.on_closed();
                 },
             },
@@ -1600,7 +1619,7 @@ QUnit.module('DocumentsKanbanView', {
 
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
@@ -1636,7 +1655,7 @@ QUnit.module('DocumentsKanbanView', {
 
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
             data: this.data,
             services: mailTestUtils.getMailServices(),
             arch: '<kanban><templates><t t-name="kanban-box">' +
@@ -1678,15 +1697,15 @@ QUnit.module('DocumentsKanbanView', {
     QUnit.test('document chatter: fetch and display chatter messages', function (assert) {
         assert.expect(2);
 
-        this.data['ir.attachment'].records[0].message_ids = [101, 102];
+        this.data['documents.document'].records[0].message_ids = [101, 102];
         this.data['mail.message'].records = [
-            {body: "Message 1", id: 101, model: 'ir.attachment', res_id: 1},
-            {body: "Message 2", id: 102, model: 'ir.attachment', res_id: 1},
+            {body: "Message 1", id: 101, model: 'documents.document', res_id: 1},
+            {body: "Message 2", id: 102, model: 'documents.document', res_id: 1},
         ];
 
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
             data: this.data,
             services: mailTestUtils.getMailServices(),
             arch: '<kanban><templates><t t-name="kanban-box">' +
@@ -1710,11 +1729,11 @@ QUnit.module('DocumentsKanbanView', {
     QUnit.test('document chatter: fetch and display followers', function (assert) {
         assert.expect(3);
 
-        this.data['ir.attachment'].records[0].message_follower_ids = [301, 302];
+        this.data['documents.document'].records[0].message_follower_ids = [301, 302];
 
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
             data: this.data,
             services: mailTestUtils.getMailServices(),
             arch: '<kanban><templates><t t-name="kanban-box">' +
@@ -1754,7 +1773,7 @@ QUnit.module('DocumentsKanbanView', {
 
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
             data: this.data,
             services: mailTestUtils.getMailServices(),
             arch: '<kanban><templates><t t-name="kanban-box">' +
@@ -1767,7 +1786,7 @@ QUnit.module('DocumentsKanbanView', {
                     assert.deepEqual(ev.data.action, {
                         context: {
                             default_res_id: 1,
-                            default_res_model: 'ir.attachment'
+                            default_res_model: 'documents.document'
                         },
                         res_id: false,
                         res_model: 'mail.activity',
@@ -1834,7 +1853,7 @@ QUnit.module('DocumentsKanbanView', {
         };
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
             data: this.data,
             services: mailTestUtils.getMailServices(),
             arch: '<kanban><templates><t t-name="kanban-box">' +
@@ -1876,7 +1895,7 @@ QUnit.module('DocumentsKanbanView', {
 
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
             data: this.data,
             services: mailTestUtils.getMailServices(),
             arch: '<kanban><templates><t t-name="kanban-box">' +
@@ -1929,15 +1948,15 @@ QUnit.module('DocumentsKanbanView', {
     QUnit.test('document chatter: keep chatter open when switching between records', function (assert) {
         assert.expect(6);
 
-        this.data['ir.attachment'].records[0].message_ids = [101, 102];
+        this.data['documents.document'].records[0].message_ids = [101, 102];
         this.data['mail.message'].records = [
-            {body: "Message on 'yop'", id: 101, model: 'ir.attachment', res_id: 1},
-            {body: "Message on 'blip'", id: 102, model: 'ir.attachment', res_id: 2},
+            {body: "Message on 'yop'", id: 101, model: 'documents.document', res_id: 1},
+            {body: "Message on 'blip'", id: 102, model: 'documents.document', res_id: 2},
         ];
 
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
             data: this.data,
             services: mailTestUtils.getMailServices(),
             arch: '<kanban><templates><t t-name="kanban-box">' +
@@ -1976,7 +1995,7 @@ QUnit.module('DocumentsKanbanView', {
 
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
             data: this.data,
             services: mailTestUtils.getMailServices(),
             arch: '<kanban><templates><t t-name="kanban-box">' +
@@ -2009,7 +2028,7 @@ QUnit.module('DocumentsKanbanView', {
 
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
             data: this.data,
             services: mailTestUtils.getMailServices(),
             arch: '<kanban><templates><t t-name="kanban-box">' +
@@ -2040,7 +2059,7 @@ QUnit.module('DocumentsKanbanView', {
 
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
             data: this.data,
             services: mailTestUtils.getMailServices(),
             arch: '<kanban><templates><t t-name="kanban-box">' +
@@ -2071,12 +2090,38 @@ QUnit.module('DocumentsKanbanView', {
     QUnit.module('DocumentsSelector');
 
     QUnit.test('document selector: basic rendering', function (assert) {
-        assert.expect(19);
+        assert.expect(21);
 
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
             data: this.data,
+            mockRPC: function (route, args) {
+                if (args.method === 'get_model_names') {
+                    assert.strictEqual(args.model, 'documents.document',
+                        "the method should only be called on documents");
+                    assert.deepEqual(args.args[0], [],
+                        "an empty array should be passed as first argument");
+                    return $.when([{
+                        res_model_count: 3,
+                        res_model: 'task',
+                        res_model_name: 'Task'
+                    },{
+                        res_model_count: 3,
+                        res_model: false,
+                        res_model_name: false
+                    },{
+                        res_model_count: 3,
+                        res_model: 'order',
+                        res_model_name: 'Sale Order'
+                    },{
+                        res_model_count: 1,
+                        res_model: 'documents.document',
+                        res_model_name: 'Document'
+                    }]);
+                }
+                return this._super.apply(this, arguments);
+            },
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<field name="name"/>' +
@@ -2121,11 +2166,11 @@ QUnit.module('DocumentsKanbanView', {
 
         assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_models .o_documents_selector_header').text().trim(),
             'Attached To', "should have an 'attached to' section");
-        assert.containsN(kanban, '.o_documents_selector .o_documents_selector_models .o_documents_selector_model', 3,
-            "should have 3 types of models");
+        assert.containsN(kanban, '.o_documents_selector .o_documents_selector_models .o_documents_selector_model', 4,
+            "should have 4 types of models");
         assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_model[data-id=task]').text().replace(/\s/g, ""),
             'Task3', "should display the correct number of records");
-        assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_models .o_documents_selector_model:contains("No Source")').length, 1,
+        assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_models .o_documents_selector_model:contains("Not attached")').length, 1,
             "should at least have a no-model element");
 
         kanban.destroy();
@@ -2136,7 +2181,7 @@ QUnit.module('DocumentsKanbanView', {
 
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
             data: this.data,
             mockRPC: function (route, args) {
                 if (args.method === 'group_by_documents') {
@@ -2164,12 +2209,34 @@ QUnit.module('DocumentsKanbanView', {
     });
 
     QUnit.test('document selector: render without related models', function (assert) {
-        assert.expect(3);
+        assert.expect(4);
 
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
             data: this.data,
+            mockRPC: function (route, args) {
+                if (args.method === 'get_model_names') {
+                    return $.when([{
+                        res_model_count: 3,
+                        res_model: 'task',
+                        res_model_name: 'Task'
+                    },{
+                        res_model_count: 3,
+                        res_model: false,
+                        res_model_name: false
+                    },{
+                        res_model_count: 3,
+                        res_model: 'order',
+                        res_model_name: 'Sale Order'
+                    },{
+                        res_model_count: 2,
+                        res_model: 'documents.document',
+                        res_model_name: 'Document'
+                    }]);
+                }
+                return this._super.apply(this, arguments);
+            },
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<field name="name"/>' +
@@ -2182,7 +2249,9 @@ QUnit.module('DocumentsKanbanView', {
             'Tags', "should have a 'tags' section");
         assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_models .o_documents_selector_header').text().trim(),
             'Attached To', "should have an 'attached to' section");
-        assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_models .o_documents_selector_model:contains("No Source")').length, 1,
+        assert.containsOnce(kanban, '.o_documents_selector .o_documents_selector_models .o_documents_selector_model:contains("Not attached")',
+            "should at least have an unattached document");
+        assert.containsOnce(kanban, '.o_documents_selector .o_documents_selector_models .o_documents_selector_model:contains("Not a file")',
             "should at least have a no-model element");
 
         kanban.destroy();
@@ -2193,8 +2262,30 @@ QUnit.module('DocumentsKanbanView', {
 
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
             data: this.data,
+            mockRPC: function (route, args) {
+                if (args.method === 'get_model_names') {
+                    return $.when([{
+                        res_model_count: 3,
+                        res_model: 'task',
+                        res_model_name: 'Task'
+                    },{
+                        res_model_count: 3,
+                        res_model: false,
+                        res_model_name: false
+                    },{
+                        res_model_count: 3,
+                        res_model: 'order',
+                        res_model_name: 'Sale Order'
+                    },{
+                        res_model_count: 2,
+                        res_model: 'documents.document',
+                        res_model_name: 'Document'
+                    }]);
+                }
+                return this._super.apply(this, arguments);
+            },
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<field name="name"/>' +
@@ -2202,27 +2293,27 @@ QUnit.module('DocumentsKanbanView', {
                 '</t></templates></kanban>',
         });
 
-        assert.strictEqual(kanban.$('.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length, 5, "should have 5 records in the renderer");
-        assert.containsN(kanban, '.o_documents_selector .o_documents_selector_model', 3, "should have 3 related models");
+        assert.containsN(kanban, '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 5, "should have 5 records in the renderer");
+        assert.containsN(kanban, '.o_documents_selector .o_documents_selector_model', 4, "should have 4 related models");
 
         // filter on 'Task'
-        testUtils.dom.click(kanban.$('.o_documents_selector .o_documents_selector_model[data-id=task] input:checkbox'));
+        testUtils.dom.click(kanban.$('.o_documents_selector .o_documents_selector_model[data-id="task"] input:checkbox'));
 
-        assert.strictEqual(kanban.$('.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length, 3, "should have 3 records in the renderer");
-        assert.containsN(kanban, '.o_documents_selector .o_documents_selector_model', 3, "should still have 3 related models");
+        assert.containsN(kanban, '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 3, "should have 3 records in the renderer");
+        assert.containsN(kanban, '.o_documents_selector .o_documents_selector_model', 4, "should still have 4 related models");
 
         // filter on 'Sale Order' (should be a disjunction)
-        testUtils.dom.click(kanban.$('.o_documents_selector .o_documents_selector_model[data-id=order] input:checkbox'));
+        testUtils.dom.click(kanban.$('.o_documents_selector .o_documents_selector_model[data-id="order"] input:checkbox'));
 
-        assert.strictEqual(kanban.$('.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length, 4, "should have 6 records in the renderer");
-        assert.containsN(kanban, '.o_documents_selector .o_documents_selector_model', 3, "should still have 3 related models");
+        assert.containsN(kanban, '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 4, "should have 6 records in the renderer");
+        assert.containsN(kanban, '.o_documents_selector .o_documents_selector_model', 4, "should still have 4 related models");
 
         // remove both filters
-        testUtils.dom.click(kanban.$('.o_documents_selector .o_documents_selector_model[data-id=order] input:checkbox'));
-        testUtils.dom.click(kanban.$('.o_documents_selector .o_documents_selector_model[data-id=task] input:checkbox'));
+        testUtils.dom.click(kanban.$('.o_documents_selector .o_documents_selector_model[data-id="order"] input:checkbox'));
+        testUtils.dom.click(kanban.$('.o_documents_selector .o_documents_selector_model[data-id="task"] input:checkbox'));
 
-        assert.strictEqual(kanban.$('.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length, 5, "should have 7 records in the renderer");
-        assert.containsN(kanban, '.o_documents_selector .o_documents_selector_model', 3, "should still have 3 related models");
+        assert.containsN(kanban, '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 5, "should have 7 records in the renderer");
+        assert.containsN(kanban, '.o_documents_selector .o_documents_selector_model', 4, "should still have 4 related models");
 
         kanban.destroy();
     });
@@ -2232,8 +2323,30 @@ QUnit.module('DocumentsKanbanView', {
 
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
             data: this.data,
+            mockRPC: function (route, args) {
+                if (args.method === 'get_model_names') {
+                    return $.when([{
+                        res_model_count: 3,
+                        res_model: 'task',
+                        res_model_name: 'Task'
+                    },{
+                        res_model_count: 3,
+                        res_model: false,
+                        res_model_name: false
+                    },{
+                        res_model_count: 3,
+                        res_model: 'order',
+                        res_model_name: 'Sale Order'
+                    },{
+                        res_model_count: 2,
+                        res_model: 'documents.document',
+                        res_model_name: 'Document'
+                    }]);
+                }
+                return this._super.apply(this, arguments);
+            },
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<field name="name"/>' +
@@ -2241,37 +2354,60 @@ QUnit.module('DocumentsKanbanView', {
                 '</t></templates></kanban>',
         });
 
-        assert.strictEqual(kanban.$('.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length, 5, "should have 5 records in the renderer");
-        assert.containsN(kanban, '.o_documents_selector .o_documents_selector_model', 3, "should have 3 related models");
+        assert.containsN(kanban, '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 5, "should have 5 records in the renderer");
+        assert.containsN(kanban, '.o_documents_selector .o_documents_selector_model', 4, "should have 4 related models");
 
         // filter on 'No Source'
         testUtils.dom.click(kanban.$('.o_documents_selector .o_documents_selector_model[data-id=false] input:checkbox'));
 
-        assert.strictEqual(kanban.$('.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length, 1, "should have 1 records in the renderer");
-        assert.containsN(kanban, '.o_documents_selector .o_documents_selector_model', 3, "should still have 3 related models");
+        assert.containsOnce(kanban, '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)', "should have 1 records in the renderer");
+        assert.containsN(kanban, '.o_documents_selector .o_documents_selector_model', 4, "should still have 4 related models");
 
         // filter on 'Task'
-        testUtils.dom.click(kanban.$('.o_documents_selector .o_documents_selector_model[data-id=task] input:checkbox'));
+        testUtils.dom.click(kanban.$('.o_documents_selector .o_documents_selector_model[data-id="task"] input:checkbox'));
 
-        assert.strictEqual(kanban.$('.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length, 4, "should have 4 records in the renderer");
-        assert.containsN(kanban, '.o_documents_selector .o_documents_selector_model', 3, "should still have 3 related models");
+        assert.containsN(kanban, '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 4, "should have 4 records in the renderer");
+        assert.containsN(kanban, '.o_documents_selector .o_documents_selector_model', 4, "should still have 4 related models");
 
         // remove both filters
         testUtils.dom.click(kanban.$('.o_documents_selector .o_documents_selector_model[data-id=false] input:checkbox'));
-        testUtils.dom.click(kanban.$('.o_documents_selector .o_documents_selector_model[data-id=task] input:checkbox'));
+        testUtils.dom.click(kanban.$('.o_documents_selector .o_documents_selector_model[data-id="task"] input:checkbox'));
 
-        assert.strictEqual(kanban.$('.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length, 5, "should have 5 records in the renderer");
-        assert.containsN(kanban, '.o_documents_selector .o_documents_selector_model', 3, "should still have 3 related models");
+        assert.containsN(kanban, '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 5, "should have 5 records in the renderer");
+        assert.containsN(kanban, '.o_documents_selector .o_documents_selector_model', 4, "should still have 4 related models");
 
         kanban.destroy();
     });
 
     QUnit.test('document selector: mix filter on related model and search filters', function (assert) {
-        assert.expect(10);
+        assert.expect(20);
 
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
+            mockRPC: function (route, args) {
+                if (args.method === 'get_model_names') {
+                    console.log(args.args[1])
+                    assert.strictEqual(args.model, 'documents.document',
+                        "the method should only be called on documents");
+                    assert.deepEqual(args.args[0], [],
+                        "an empty array should be passed as first argument");
+                        return $.when([{
+                            res_model_count: 3,
+                            res_model: 'task',
+                            res_model_name: 'Task'
+                        },{
+                            res_model_count: 1,
+                            res_model: false,
+                            res_model_name: false
+                        },{
+                            res_model_count: 1,
+                            res_model: 'order',
+                            res_model_name: 'SaleOrder'
+                        }]);
+                }
+                return this._super.apply(this, arguments);
+            },
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
@@ -2292,10 +2428,10 @@ QUnit.module('DocumentsKanbanView', {
         // reload with a domain
         kanban.reload({domain: [['public', '=', true]]});
 
-        assert.strictEqual(kanban.$('.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length, 1, "should have 1 record in the renderer");
-        assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_model[data-id=task]').text().replace(/\s/g, ""),
-            'Task1', "should display the correct number of records");
-        assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_model[data-id=order]').text().replace(/\s/g, ""),
+        assert.containsOnce(kanban, '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 1, "should have 1 record in the renderer");
+        assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_model[data-id="task"]').text().replace(/\s/g, ""),
+            'Task3', "should display the correct number of records");
+        assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_model[data-id="order"]').text().replace(/\s/g, ""),
             'SaleOrder1', "should display the correct number of records");
 
         // filter on 'Sale Order'
@@ -2320,7 +2456,7 @@ QUnit.module('DocumentsKanbanView', {
 
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
@@ -2328,7 +2464,7 @@ QUnit.module('DocumentsKanbanView', {
                     '</div>' +
                 '</t></templates></kanban>',
             mockRPC: function (route, args) {
-                if (route === '/web/dataset/search_read' && args.model === 'ir.attachment') {
+                if (route === '/web/dataset/search_read' && args.model === 'documents.document') {
                     assert.step(args.domain || []);
                 }
                 return this._super.apply(this, arguments);
@@ -2362,7 +2498,7 @@ QUnit.module('DocumentsKanbanView', {
 
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
@@ -2404,7 +2540,7 @@ QUnit.module('DocumentsKanbanView', {
 
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +
@@ -2442,7 +2578,7 @@ QUnit.module('DocumentsKanbanView', {
 
         var kanban = createView({
             View: DocumentsKanbanView,
-            model: 'ir.attachment',
+            model: 'documents.document',
             data: this.data,
             arch: '<kanban><templates><t t-name="kanban-box">' +
                     '<div>' +

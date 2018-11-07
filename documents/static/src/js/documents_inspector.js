@@ -6,8 +6,6 @@ odoo.define('documents.DocumentsInspector', function (require) {
  * the KanbanRenderer in the DocumentsKanbanView.
  */
 
-var DocumentViewer = require('mail.DocumentViewer');
-
 var core = require('web.core');
 var fieldRegistry = require('web.field_registry');
 var session = require('web.session');
@@ -60,7 +58,7 @@ var DocumentsInspector = Widget.extend({
             var record = _.findWhere(params.state.data, {res_id: resID});
             if (record) {
                 self.records.push(_.extend(record, {
-                    _isImage: new RegExp('image.*(gif|jpeg|jpg|png)').test(record.data.mimetype),
+                    isImage: new RegExp('image.*(gif|jpeg|jpg|png)').test(record.data.mimetype),
                 }));
             }
         });
@@ -220,19 +218,20 @@ var DocumentsInspector = Widget.extend({
      * @private
      */
     _renderModel: function () {
-        if (this.records.length === 1){
-            var resModelName = this.records[0].data.res_model_name;
-            if (!resModelName || this.records[0].data.res_model === 'ir.attachment') {
-                return;
-            }
-
-            var $modelContainer = this.$('.o_model_container');
-            var options = {
-                res_model: resModelName,
-                res_name: this.records[0].data.res_name,
-            };
-            $modelContainer.append(qweb.render('documents.DocumentsInspector.resModel', options));
+        if (this.records.length !== 1) {
+           return;
         }
+        var resModelName = this.records[0].data.res_model_name;
+        if (!resModelName || this.records[0].data.res_model === 'documents.document') {
+            return;
+        }
+
+        var $modelContainer = this.$('.o_model_container');
+        var options = {
+            res_model: resModelName,
+            res_name: this.records[0].data.res_name,
+        };
+        $modelContainer.append(qweb.render('documents.DocumentsInspector.resModel', options));
     },
     /**
      * @private
@@ -442,14 +441,18 @@ var DocumentsInspector = Widget.extend({
      * download and print options.
      *
      * @private
+     * @param {MouseEvent} ev
      */
     _onOpenPreview: function (ev) {
+        ev.preventDefault();
         ev.stopPropagation();
         var activeID = $(ev.currentTarget).data('id');
         if (activeID) {
             var records = _.pluck(this.records, 'data');
-            var documentViewer = new DocumentViewer(this, records, activeID);
-            documentViewer.appendTo($('.o_documents_kanban_view'));
+            this.trigger_up('kanban_image_clicked', {
+                recordID: activeID,
+                recordList: records
+            });
         }
     },
     /**

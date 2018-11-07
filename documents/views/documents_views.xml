@@ -11,78 +11,67 @@
         <field name="context" eval="{'module': 'general_settings'}"/>
     </record>
 
-    <!-- attachments -->
+    <!-- Documents -->
 
-    <record id="documents_view_search_inherit" model="ir.ui.view">
-        <field name="name">attachment search view</field>
-        <field name="model">ir.attachment</field>
-        <field name="inherit_id" ref="base.view_attachment_search"/>
+    <record id="documents_view_search" model="ir.ui.view">
+        <field name="name">Document search view</field>
+        <field name="model">documents.document</field>
         <field name="arch" type="xml">
-            <xpath expr="//filter[@name='binary_filter']" position="after">
-                <filter name="requested_filter" string="Requested files" domain="[('type', '=', 'empty')]"/>
-            </xpath>
-            <xpath expr="//search" position="inside">
-                <field name="datas_fname"/>
-                <field name="tag_ids"/>
-                <field name="index_content"/>
-                <field name="owner_id"/>
-                <field name="partner_id" string="Contact"/>
-                <separator/>
-                <filter string="My Activities" name="activities_my"
-                        domain="[('activity_ids.user_id', '=', uid)]"/>
-                <separator/>
-                <filter string="Late Activities" name="activities_overdue"
-                    domain="[('activity_ids.date_deadline', '&lt;', context_today().strftime('%Y-%m-%d'))]"
-                    help="Show all records which has next action date is before today"/>
-                <filter string="Today Activities" name="activities_today"
-                    domain="[('activity_ids.date_deadline', '=', context_today().strftime('%Y-%m-%d'))]"/>
-                <filter string="Future Activities" name="activities_upcoming_all"
-                    domain="[('activity_ids.date_deadline', '&gt;', context_today().strftime('%Y-%m-%d'))
-                    ]"/>
-                <separator/>
-                <filter string="PDF" name="pdf" domain="[('mimetype', 'ilike', 'pdf')]"/>
-                <filter string="Image" name="img" domain="[('mimetype', 'ilike', 'image')]"/>
-                <filter string="Video" name="video" domain="[('mimetype', 'ilike', 'video')]"/>
-                <filter string="Doc" name="doc" domain="[('datas_fname', 'ilike', '.doc')]"/>
-                <separator/>
-                <filter string="Archived" name="Inactive" domain="[('active', '=', False)]"/>
-                <filter string="Model" name="by_model" domain="[]" context="{'group_by': 'res_model'}"/>
-            </xpath>
-            <xpath expr="//filter[@name='my_documents_filter']" position="replace">
-                <filter name="my_documents_filter" string="My Documents" domain="[('owner_id', '=', uid)]"/>
-                <filter name="my_favorites_filter" string="My Favorites" domain="[('favorited_ids', 'in', uid)]"/>
-                <separator/>
-                <filter name="my_locked_filter" string="My locked files" domain="[('lock_uid', '=', uid)]"/>
-                <filter name="all_locked_filter" string="All locked files" domain="[('lock_uid', '!=', False)]"/>
-                <separator/>
-            </xpath>
-            <xpath expr="//field[@name='name']" position="attributes">
-                    <attribute name="string">Document</attribute>
-            </xpath>
-        </field>
-    </record>
-
-    <record id="inherit_mail_attachment_view_kanban" model="ir.ui.view">
-        <field name="name">Attachment Kanban View</field>
-        <field name="model">ir.attachment</field>
-        <field name="inherit_id" ref="mail.view_document_file_kanban"/>
-        <field name="arch" type="xml">
-            <xpath expr="//div[hasclass('o_kanban_record_title')]" position="replace">
-                <div class="o_kanban_record_title">
-                    <field name="name" class="o_text_overflow"/>
-                </div>
-            </xpath>
-            <xpath expr="//div[hasclass('o_kanban_record_body')]" position="inside">
-                <t t-if="record.type.raw_value === 'empty'">
-                    <span><b>Requested Document</b></span>
-                </t>
-            </xpath>
+            <search string="Documents">
+                    <field name="datas_fname"/>
+                    <field name="tag_ids"/>
+                    <field name="group_ids"/>
+                    <field name="index_content"/>
+                    <field name="owner_id"/>
+                    <field name="partner_id" string="Contact"/>
+                    <field name="name" filter_domain="['|', ('name','ilike',self), ('datas_fname','ilike',self)]" string="Document"/>
+                    <field name="create_date"/>
+                    <separator/>
+                    <filter string="My Activities" name="activities_my"
+                            domain="[('activity_ids.user_id', '=', uid)]"/>
+                    <separator/>
+                    <filter string="Late Activities" name="activities_overdue"
+                        domain="[('activity_ids.date_deadline', '&lt;', context_today().strftime('%Y-%m-%d'))]"
+                        help="Show all records which has next action date is before today"/>
+                    <filter string="Today Activities" name="activities_today"
+                        domain="[('activity_ids.date_deadline', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                    <filter string="Future Activities" name="activities_upcoming_all"
+                        domain="[('activity_ids.date_deadline', '&gt;', context_today().strftime('%Y-%m-%d'))
+                        ]"/>
+                    <separator/>
+                    <filter string="PDF" name="pdf" domain="[('mimetype', 'ilike', 'pdf')]"/>
+                    <filter string="Image" name="img" domain="[('mimetype', 'ilike', 'image')]"/>
+                    <filter string="Video" name="video" domain="[('mimetype', 'ilike', 'video')]"/>
+                    <filter string="Doc" name="doc" domain="[('datas_fname', 'ilike', '.doc')]"/>
+                    <separator/>
+                    <filter string="Archived" name="Inactive" domain="[('active', '=', False)]"/>
+                    <filter string="Model" name="by_model" domain="[]" context="{'group_by': 'res_model'}"/>
+                    <filter name="my_documents_filter" string="My Documents" domain="[('owner_id', '=', uid)]"/>
+                    <filter name="my_favorites_filter" string="My Favorites" domain="[('favorited_ids', 'in', uid)]"/>
+                    <separator/>
+                    <filter name="my_locked_filter" string="My locked files" domain="[('lock_uid', '=', uid)]"/>
+                    <filter name="all_locked_filter" string="All locked files" domain="[('lock_uid', '!=', False)]"/>
+                    <separator/>
+                    <filter name="url_filter" string="URL" domain="[('type', '=', 'url')]"/>
+                    <filter name="binary_filter" string="Stored" domain="[('type', '=', 'binary')]"/>
+                    <filter name="requested_filter" string="Requested files" domain="[('type', '=', 'empty')]"/>
+                    <separator/>
+                    <field name="create_uid" string="Created by"/>
+                    <field name="type"/>
+                    <group expand="0" string="Group By">
+                        <filter name="owner" string="Owner" domain="[]" context="{'group_by':'create_uid'}"/>
+                        <filter string="Type" name="type" domain="[]" context="{'group_by':'type'}" groups="base.group_no_one"/>
+                        <filter string="Company" name="company" domain="[]" context="{'group_by':'company_id'}" groups="base.group_multi_company"/>
+                        <filter string="Creation Date" name="creation_month" domain="[]" context="{'group_by':'create_date'}"/>
+                        <filter string="Attached Document Name" name="attached_document_name" domain="[]" context="{'group_by': 'res_name'}"/>
+                    </group>
+                </search>
         </field>
     </record>
 
     <record model="ir.ui.view" id="documents_view_kanban">
-        <field name="name">ir.attachment kanban</field>
-        <field name="model">ir.attachment</field>
+        <field name="name">documents.document kanban</field>
+        <field name="model">documents.document</field>
         <field name="arch" type="xml">
             <kanban js_class="documents_kanban" create="false">
                 <field name="id"/>
@@ -100,6 +89,7 @@
                 <field name="checksum"/>
                 <field name="name"/>
                 <field name="res_model_name"/>
+                <field name="res_model"/>
                 <field name="res_name"/>
                 <field name="activity_ids"/>
                 <field name="activity_state"/>
@@ -118,7 +108,7 @@
                                 <div t-attf-class="o_kanban_image_wrapper #{(webimage || binaryPreviewable || supportedUrlVideo) ? 'oe_kanban_previewer' : ''}">
                                     <div t-if="supportedUrlVideo" class="o_image o_image_thumbnail" data-mimetype="video"/>
                                     <div t-elif="record.type.raw_value == 'url'" class="o_url_image fa fa-link fa-3x text-muted"/>
-                                    <img t-elif="webimage" t-attf-src="/web/image/#{record.id.raw_value}?field=thumbnail&amp;signature=#{record.checksum.value}" width="100" height="100" alt="Document" class="o_attachment_image"/>
+                                    <img t-elif="webimage" t-attf-src="/documents/image/#{record.id.raw_value}?field=thumbnail&amp;signature=#{record.checksum.value}" width="100" height="100" alt="Document" class="o_attachment_image"/>
                                     <div t-elif="fileRequest" class="fa fa-download fa-3x text-muted"/>
                                     <div t-else="!webimage" class="o_image o_image_thumbnail" t-att-data-mimetype="record.mimetype.value"/>
                                 </div>
@@ -126,10 +116,10 @@
                             <div class="o_kanban_details">
                                 <div class="o_kanban_details_wrapper">
                                     <div t-att-title="record.datas_fname.raw_value" class="o_kanban_record_title">
-                                        <field name="name" class="o_text_overflow"/>
+                                        <field name="name" required="True" class="o_text_overflow"/>
                                     </div>
                                     <div class="o_kanban_record_body">
-                                        <t t-if="record.res_model_name.raw_value">
+                                        <t t-if="record.res_model_name.raw_value &amp;&amp; record.res_model.raw_value !== 'documents.document'">
                                             <strong><field name="res_model_name"/></strong>
                                             <t t-if="record.res_name.raw_value">
                                                 <span t-att-title="record.res_name.raw_value">: <field name="res_name"/></span>
@@ -166,21 +156,23 @@
     </record>
 
     <record id="documents_view_form" model="ir.ui.view">
-        <field name="name">attachments form</field>
-        <field name="model">ir.attachment</field>
+        <field name="name">documents form</field>
+        <field name="model">documents.document</field>
         <field name="priority" eval="1"/>
         <field name="arch" type="xml">
             <form>
                 <sheet>
                     <group>
                         <group>
-                            <field name="name"/>
+                            <field name="name" required="True"/>
                             <field name="folder_id"/>
                             <field name="tag_ids" widget="many2many_tags"/>
                             <field name="datas" filename="datas_fname" attrs="{'invisible':[('type','=','url')]}"/>
                             <field name="datas_fname" invisible="1" attrs="{'invisible':[('type','=','url')]}" class="oe_inline oe_right"/>
                             <field name="owner_id"/>
                             <field name="partner_id"/>
+                            <field name="company_id"/>
+                            <field name="group_ids" widget="many2many_tags"/>
                             <field name="file_size" attrs="{ 'invisible' : [('type', '!=', 'binary')]}"/>
                             <field name="type" readonly="1"/>
                             <field name="url" attrs="{ 'invisible' : [('type', '!=', 'url')]}"/>
@@ -212,13 +204,13 @@
     <record id="documents_upload_url_view" model="ir.ui.view">
         <field name="name">upload url</field>
         <field name="priority" eval="5"/>
-        <field name="model">ir.attachment</field>
+        <field name="model">documents.document</field>
         <field name="arch" type="xml">
             <form>
                 <sheet>
                     <group>
                         <field name="url" string="URL" widget="url" required="1"/>
-                        <field name="name"/>
+                        <field name="name" required="True"/>
                         <field name="folder_id" invisible="1"/>
                         <field name="tag_ids" invisible="1"/>
                         <field name="type" invisible="1"/>
@@ -234,11 +226,11 @@
     </record>
 
     <record id="documents_view_list" model="ir.ui.view">
-        <field name="name">attachments list</field>
-        <field name="model">ir.attachment</field>
+        <field name="name">documents list</field>
+        <field name="model">documents.document</field>
         <field name="arch" type="xml">
             <tree class="o_documents_list_view" create="false" edit="false">
-                <field name="name"/>
+                <field name="name" required="True"/>
                 <field name="res_model"/>
                 <field name="create_date"/>
             </tree>
@@ -313,7 +305,7 @@
         <field name="arch" type="xml">
         <search>
             <field name="name"/>
-            <field name="attachment_ids"/>
+            <field name="document_ids"/>
             <field name="folder_id"/>
             <field name="partner_id"/>
          </search>
@@ -368,7 +360,7 @@
                                 </div>
                                 </div>
                             </div>
-                            <field name="folder_id" readonly="1" groups="base.group_no_one" attrs="{'invisible' : [('type', 'in', ['ids'])] }"/>
+                            <field name="folder_id" readonly="1" attrs="{'invisible' : [('type', 'in', ['ids'])] }"/>
                             <field name="tag_ids" readonly="1" groups="base.group_no_one" widget="many2many_tags" attrs="{'invisible' : [('type', 'in', ['ids'])] }"/>
                         </group>
                     </group>
@@ -397,7 +389,7 @@
                         </group>
                         <field name="activity_note" placeholder="Log a note..."/>
                     </group>
-                    <field name="attachment_ids" groups="base.group_no_one" readonly="1"/>
+                    <field name="document_ids" groups="base.group_no_one" readonly="1"/>
                 </sheet>
             </form>
         </field>
@@ -435,7 +427,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <field name="folder_id" readonly="1" groups="base.group_no_one" attrs="{'invisible' : [('type', 'in', ['ids'])] }"/>
+                            <field name="folder_id" readonly="1" attrs="{'invisible' : [('type', 'in', ['ids'])] }"/>
                         </group>
                     </group>
                     <group string="Default values for uploaded documents" attrs="{'invisible' : [('action', 'in', ['download'])] }">
@@ -463,7 +455,7 @@
                         </group>
                         <field name="activity_note" placeholder="Log a note..."/>
                     </group>
-                    <field name="attachment_ids" invisible="1" readonly="1"/>
+                    <field name="document_ids" invisible="1" readonly="1"/>
                     <footer>
                         <button name="write" type="object" string="Done" class="btn btn-primary"/>
                     </footer>
@@ -502,7 +494,7 @@
                         <notebook>
                             <page string="Conditions">
                                 <field name="condition_type" widget="radio" groups="base.group_no_one"/>
-                                <field name="domain" string="Domain" nolabel="1" widget="domain" colspan="2" options="{'model':'ir.attachment'}" attrs="{ 'invisible' : [('condition_type', '=', 'criteria')]}"/>
+                                <field name="domain" string="Domain" nolabel="1" widget="domain" colspan="2" options="{'model':'documents.document'}" attrs="{ 'invisible' : [('condition_type', '=', 'criteria')]}"/>
                                 <group>
                                     <group>
                                         <field name="domain_folder_id" required="1"/>
@@ -743,8 +735,8 @@
     <!-- actions -->
 
     <record model="ir.actions.act_window" id="document_debug_action">
-      <field name="name">Attachments</field>
-      <field name="res_model">ir.attachment</field>
+      <field name="name">Documents</field>
+      <field name="res_model">documents.document</field>
       <field name="view_mode">tree,form</field>
       <field name="view_ids" eval="[(5, 0, 0),
         (0, 0, {'view_mode': 'tree', 'view_id': False}),
@@ -753,7 +745,7 @@
 
     <record model="ir.actions.act_window" id="action_url_form">
         <field name="name">Add Url</field>
-        <field name="res_model">ir.attachment</field>
+        <field name="res_model">documents.document</field>
         <field name="view_mode">form</field>
         <field name="context">{'default_type': 'url', 'form_view_ref': 'documents.documents_upload_url_view'}</field>
         <field name="target">new</field>
@@ -761,10 +753,9 @@
 
     <record model="ir.actions.act_window" id="document_action">
       <field name="name">Documents</field>
-      <field name="res_model">ir.attachment</field>
+      <field name="res_model">documents.document</field>
       <field name="view_mode">kanban</field>
       <field name="view_id" ref="documents.documents_view_kanban"/>
-      <field name="domain">['&amp;', ('res_model', 'not in', ['ir.ui.view', 'Country', 'ir.ui.menu', 'Contact']), ('res_field', '=', False), ('folder_id', '!=', False)]</field>
       <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">Upload <span class="font-weight-normal">a file or</span> drag <span class="font-weight-normal">it here.</span></p>
         </field>
@@ -824,18 +815,18 @@
 
     <!-- Top menu / dashboard icon -->
 
-    <menuitem name="Documents" id="documents.menu_root" web_icon="documents,static/description/icon.png"/>
+    <menuitem name="Documents" id="documents.menu_root" groups="documents.group_documents_user" web_icon="documents,static/description/icon.png"/>
 
     <!-- Top bar menus -->
 
-        <menuitem name="Documents" id="documents.dashboard" parent="documents.menu_root" action="document_action" sequence="0"/>
+        <menuitem name="Documents" id="documents.dashboard" parent="documents.menu_root" action="document_action" groups="documents.group_documents_user" sequence="0"/>
         <menuitem name="Configuration" id="documents.Config" parent="documents.menu_root" sequence="1"/>
 
             <menuitem name="Settings" id="documents.Settings_menu" parent="documents.Config" action="documents.configuration" groups="base.group_system" sequence="0"/>
-            <menuitem name="Folders" id="documents.folder_menu" parent="documents.Config" action="folder_action" sequence="1"/>
-            <menuitem name="Tags" id="documents.Category_menu" parent="documents.Config" action="facet_action" sequence="2"/>
-            <menuitem name="Actions" id="documents.WorkflowRules_menu" parent="documents.Config" action="workflow_rule_action" sequence="3"/>
+            <menuitem name="Folders" id="documents.folder_menu" parent="documents.Config" action="folder_action" groups="documents.group_documents_manager" sequence="1"/>
+            <menuitem name="Tags" id="documents.Category_menu" parent="documents.Config" action="facet_action" groups="documents.group_documents_manager" sequence="2"/>
+            <menuitem name="Actions" id="documents.WorkflowRules_menu" parent="documents.Config" groups="documents.group_documents_manager" action="workflow_rule_action" sequence="3"/>
             <menuitem name="Shared Links" id="documents.share_menu" parent="documents.Config" action="share_action" sequence="4"/>
-            <menuitem name="Attachments" id="documents.attachment_list_view_temp" parent="documents.Config" action="document_debug_action" groups="base.group_no_one" sequence="5"/>
+            <menuitem name="Documents" id="documents.attachment_list_view_temp" parent="documents.Config" action="document_debug_action" groups="base.group_no_one" sequence="5"/>
 
 </odoo>

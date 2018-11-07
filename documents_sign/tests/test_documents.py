@@ -21,7 +21,7 @@ class TestCaseDocumentsBridgeSign(TransactionCase):
             'name': 'folder A - A',
             'parent_folder_id': self.folder_a.id,
         })
-        self.attachment_txt = self.env['ir.attachment'].create({
+        self.document_txt = self.env['documents.document'].create({
             'datas': TEXT,
             'name': 'Test mimetype txt',
             'datas_fname': 'file.txt',
@@ -39,11 +39,11 @@ class TestCaseDocumentsBridgeSign(TransactionCase):
         tests the create new business model (sign).
     
         """
-        self.assertFalse(self.attachment_txt.res_model, "failed at workflow_bridge_dms_sign original res model")
-        self.workflow_rule_template.apply_actions([self.attachment_txt.id])
+        self.assertEqual(self.document_txt.res_model, 'documents.document', "failed at default res model")
+        self.workflow_rule_template.apply_actions([self.document_txt.id])
     
-        self.assertEqual(self.attachment_txt.res_model, 'sign.template', "failed at workflow_bridge_dms_sign"
-                                                                         " new res_model")
-        template = self.env['sign.template'].search([('id', '=', self.attachment_txt.res_id)])
+        self.assertEqual(self.document_txt.res_model, 'sign.template',
+                         "failed at workflow_bridge_dms_sign new res_model")
+        template = self.env['sign.template'].search([('id', '=', self.document_txt.res_id)])
         self.assertTrue(template.exists(), 'failed at workflow_bridge_dms_account template')
-        self.assertEqual(self.attachment_txt.res_id, template.id, "failed at workflow_bridge_dms_account res_id")
+        self.assertEqual(self.document_txt.res_id, template.id, "failed at workflow_bridge_dms_account res_id")

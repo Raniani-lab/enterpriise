@@ -10,11 +10,11 @@ class Users(models.Model):
 
     @api.model
     def systray_get_activities(self):
-        """ Update the systray icon of ir.attachment activities to use the
+        """ Update the systray icon of documents.document activities to use the
         contact application one instead of base icon. """
         activities = super(Users, self).systray_get_activities()
         for activity in activities:
-            if activity['model'] != 'ir.attachment':
+            if activity['model'] != 'documents.document':
                 continue
             activity['icon'] = modules.module.get_module_icon('documents')
         return activities

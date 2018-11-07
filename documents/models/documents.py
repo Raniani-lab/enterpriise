@@ -1,17 +1,41 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api, exceptions, SUPERUSER_ID, modules
+from odoo.osv import expression
+from odoo.tools import crop_image, image_resize_image
 from ast import literal_eval
 from dateutil.relativedelta import relativedelta
-import base64
+import re
 
 
-class IrAttachment(models.Model):
-    _name = 'ir.attachment'
+class Document(models.Model):
+    _name = 'documents.document'
     _description = 'Document'
-    _inherit = ['ir.attachment', 'mail.thread', 'mail.activity.mixin']
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
-    type = fields.Selection(selection_add=[('empty', "Empty")])
+    # Attachment
+    attachment_id = fields.Many2one('ir.attachment', auto_join=True)
+    attachment_name = fields.Char('Attachment Name', related='attachment_id.name', readonly=False)
+    attachment_type = fields.Selection(string='Attachment Type', related='attachment_id.type', readonly=False)
+    datas = fields.Binary(related='attachment_id.datas', related_sudo=True, readonly=False)
+    datas_fname = fields.Char('File Name', related='attachment_id.datas_fname', readonly=False)
+    file_size = fields.Integer(related='attachment_id.file_size', store=True)
+    checksum = fields.Char(related='attachment_id.checksum')
+    mimetype = fields.Char(related='attachment_id.mimetype', default='application/octet-stream')
+    res_model = fields.Char('Resource Model', related='attachment_id.res_model', store=True, readonly=False)
+    res_id = fields.Integer('Resource ID', related='attachment_id.res_id', readonly=False)
+    res_name = fields.Char('Resource Name', related='attachment_id.res_name')
+    index_content = fields.Text(related='attachment_id.index_content')
+
+    # Document
+    name = fields.Char('Name', copy=True, store=True, compute='_compute_name', inverse='_inverse_name')
+    active = fields.Boolean(default=True, string="Active", oldname='archived')
+    thumbnail = fields.Binary(readonly=1, store=True, attachment=True, compute='_compute_thumbnail')
+    url = fields.Char('Url', index=True, size=1024)
+    res_model_name = fields.Char(compute='_compute_res_model_name', index=True)
+    type = fields.Selection([('url', 'URL'), ('binary', 'File'), ('empty', 'Empty')],
+                            string='Type', required=True, store=True, default='empty', change_default=True,
+                            compute='_compute_type')
     favorited_ids = fields.Many2many('res.users', string="Favorite of")
     tag_ids = fields.Many2many('documents.tag', 'document_tag_rel', string="Tags")
     partner_id = fields.Many2one('res.partner', string="Contact", track_visibility='onchange')
@@ -19,54 +43,91 @@ class IrAttachment(models.Model):
                                track_visibility='onchange')
     available_rule_ids = fields.Many2many('documents.workflow.rule', compute='_compute_available_rules',
                                           string='Available Rules')
-    folder_id = fields.Many2one('documents.folder', ondelete="restrict", track_visibility="onchange", index=True)
     lock_uid = fields.Many2one('res.users', string="Locked by")
+    create_share_id = fields.Many2one('documents.share', help='Share used to create this document')
 
-    # AND
-    @api.model
-    def check(self, mode, values=None):
-        super(IrAttachment, self).check(mode, values)
-        if self:
-            # Upstream check did not raise, so default access is granted.
-            # Now perform extra check for folder permissions in the case of files that
-            # are not attached to a specific business document (when attached, the permissions
-            # of the business document prevail)
-            self._cr.execute('''
-                SELECT folder_id 
-                  FROM ir_attachment
-                 WHERE id IN %s AND
-                       folder_id IS NOT NULL AND
-                       res_id IS NULL AND
-                       res_model IS NULL AND
-                       (public = false OR public IS NULL)
-              GROUP BY folder_id
-            ''', [tuple(self.ids)])
-            folder_ids = [r[0] for r in self._cr.fetchall()]
-            if values and values.get('folder_id'):
-                folder_ids.append(values['folder_id'])
+    # Folder
+    folder_id = fields.Many2one('documents.folder',
+                                ondelete="restrict",
+                                track_visibility="onchange",
+                                required=True,
+                                index=True)
+    company_id = fields.Many2one('res.company', string='Company', related='folder_id.company_id', readonly=True)
+    group_ids = fields.Many2many('res.groups', string="Access Groups", readonly=True,
+                                 help="This attachment will only be available for the selected user groups",
+                                 related='folder_id.group_ids')
 
-            if len(folder_ids):
-                # Forbid deleting attachments unless the user has write access to the folder.
-                # All other operations are permitted if the user has read access to the folder.
-                folders = self.env['documents.folder'].browse(folder_ids).exists()
-                folders.check_access_rights('write' if mode == 'unlink' else 'read')
-                folders.check_access_rule(mode)
-
-    @api.onchange('url')
-    def _on_url_change(self):
-        if self.url:
-            self.name = self.url[self.url.rfind('/')+1:]
+    @api.depends('attachment_id.name', 'attachment_id.datas_fname')
+    def _compute_name(self):
+        for record in self:
+            if record.attachment_name:
+                record.name = record.attachment_name
+            elif record.datas_fname:
+                record.name = record.datas_fname
 
     @api.multi
-    def _compute_available_rules(self, folder_id=None):
+    def _inverse_name(self):
+        for record in self:
+            if record.attachment_id:
+                record.datas_fname = record.name
+                record.attachment_name = record.name
+
+    @api.onchange('url')
+    def _onchange_url(self):
+        if self.url and not self.name:
+            self.name = self.url.rsplit('/')[-1]
+
+    @api.depends('datas')
+    def _compute_thumbnail(self):
+        for record in self:
+            if record.mimetype and re.match('image.*(gif|jpeg|jpg|png)', record.mimetype):
+                try:
+                    record.thumbnail = crop_image(record.datas, type='center', size=(80, 80), ratio=(1, 1))
+                except Exception:
+                    pass
+            else:
+                record.thumbnail = False
+
+    @api.depends('attachment_type', 'url')
+    def _compute_type(self):
+        for record in self:
+            record.type = 'empty'
+            if record.attachment_id:
+                record.type = 'binary'
+            elif record.url:
+                record.type = 'url'
+
+    def get_model_names(self, domain):
+        """
+        Called by the front-end to get the names of the models on which the attachments are attached.
+
+        :param domain: the domain of the read_group on documents.
+        :return: the read_group result with an additional res_model_name key.
+        """
+        results = self.read_group(domain, ['res_model'], ['res_model'], lazy=True)
+        for result in results:
+            if result.get('res_model'):
+                model = self.env['ir.model'].name_search(result['res_model'], limit=1)
+                if model:
+                    result['res_model_name'] = model[0][1]
+        return results
+
+    @api.depends('res_model')
+    def _compute_res_model_name(self):
+        for record in self:
+            if record.res_model:
+                model = self.env['ir.model'].name_search(record.res_model, limit=1)
+                if model:
+                    record.res_model_name = model[0][1]
+
+    @api.multi
+    def _compute_available_rules(self):
         """
         loads the rules that can be applied to the attachment.
 
-        :param folder_id: the id of the current folder (used to lighten the search)
         """
-        if not folder_id and self[0].folder_id:
-            folder_id = self[0].folder_id.id
-        rule_domain = [('domain_folder_id', 'parent_of', folder_id)] if folder_id else []
+        folder_ids = self.mapped('folder_id.id')
+        rule_domain = [('domain_folder_id', 'parent_of', folder_ids)] if folder_ids else []
         rules = self.env['documents.workflow.rule'].search(rule_domain)
         for rule in rules:
             domain = []
@@ -74,28 +135,23 @@ class IrAttachment(models.Model):
                 domain = literal_eval(rule.domain) if rule.domain else []
             else:
                 if rule.criteria_partner_id:
-                    domain += [['partner_id', '=', rule.criteria_partner_id.id]]
+                    domain = expression.AND([[['partner_id', '=', rule.criteria_partner_id.id]], domain])
                 if rule.criteria_owner_id:
-                    domain += [['owner_id', '=', rule.criteria_owner_id.id]]
+                    domain = expression.AND([[['owner_id', '=', rule.criteria_owner_id.id]], domain])
                 if rule.create_model:
-                    domain += [['type', '=', 'binary']]
+                    domain = expression.AND([[['type', '=', 'binary']], domain])
                 if rule.criteria_tag_ids:
-                    contains_array = []
-                    not_contains_array = []
-                    for criteria_tag in rule.criteria_tag_ids:
-                        if criteria_tag.operator == 'contains':
-                            contains_array.append(criteria_tag.tag_id.id)
-                        elif criteria_tag.operator == 'notcontains':
-                            not_contains_array.append(criteria_tag.tag_id.id)
-                    if len(contains_array):
-                        domain += [['tag_ids', 'in', contains_array]]
-                    domain += [['tag_ids', 'not in', not_contains_array]]
+                    contains_list = [criteria_tag.tag_id.id for criteria_tag in rule.criteria_tag_ids if criteria_tag.operator == 'contains']
+                    not_contains_list = [criteria_tag.tag_id.id for criteria_tag in rule.criteria_tag_ids if criteria_tag.operator == 'notcontains']
+                    if contains_list:
+                        domain = expression.AND([[['tag_ids', 'in', contains_list]], domain])
+                    domain = expression.AND([[['tag_ids', 'not in', not_contains_list]], domain])
 
             folder_domain = [['folder_id', 'child_of', rule.domain_folder_id.id]]
-            subset = [['id', 'in', self.ids]] + domain + folder_domain
-            attachment_ids = self.env['ir.attachment'].search(subset)
-            for attachment in attachment_ids:
-                attachment.available_rule_ids = [(4, rule.id, False)]
+            subset = expression.AND([[['id', 'in', self.ids]], domain, folder_domain])
+            document_ids = self.env['documents.document'].search(subset)
+            for document in document_ids:
+                document.available_rule_ids = [(4, rule.id, False)]
 
     @api.model
     def message_new(self, msg_dict, custom_values=None):
@@ -105,82 +161,75 @@ class IrAttachment(models.Model):
         to the custom values.
         """
         subject = msg_dict.get('subject', '')
-        body = msg_dict.get('body', '')
         if custom_values is None:
             custom_values = {}
         defaults = {
-            'datas_fname': "Mail: %s.txt" % subject,
-            'mimetype': 'text/plain',
-            'datas': base64.b64encode(bytes(body, 'utf-8')),
+            'name': "Mail: " % subject,
             'active': False,
         }
         defaults.update(custom_values)
 
-        email_from = msg_dict.get('to')
-        alias = email_from[:email_from.find('@')]
-        share = self.env['documents.share'].search([('alias_name', '=', alias)])
-        return super(IrAttachment, self).message_new(msg_dict, defaults).with_context(attachment_values=custom_values,
-                                                                                      share=share,
-                                                                                      res_mail_dict=msg_dict)
+        return super(Document, self).message_new(msg_dict, defaults)
 
     @api.model
-    def _message_post_process_attachments(self, attachments, attachment_ids, message_data):
+    def _message_post_after_hook(self, message, msg_vals, model_description=False, mail_auto_delete=True):
         """
         If the res model was an attachment and a mail, adds all the custom values of the share link
             settings to the attachments of the mail.
 
-        rv: a list of write commands [(4, attachment_id),]
         """
-        rv = super(IrAttachment, self)._message_post_process_attachments(attachments, attachment_ids, message_data)
-        dv = self._context.get('attachment_values')
-        res_mail_dict = self._context.get('res_mail_dict')
-        share = self._context.get('share')
-        if message_data['model'] == 'ir.attachment' and dv:
-            write_vals = {
-                'partner_id': dv['partner_id'],
-                'tag_ids': dv['tag_ids'],
-                'folder_id': dv['folder_id'],
-                'res_model': False,
-                'res_id': False,
-            }
-            attachments = self.env['ir.attachment'].browse([x[1] for x in rv])
+        m2m_commands = msg_vals['attachment_ids']
+        share = self.create_share_id
+        if share:
+            attachments = self.env['ir.attachment'].browse([x[1] for x in m2m_commands])
             for attachment in attachments:
-                attachment.write(write_vals)
-                attachment.message_post(body=res_mail_dict.get('body', ''), subject=res_mail_dict.get('subject', ''))
+                document = self.env['documents.document'].create({
+                    'name': attachment.name,
+                    'attachment_id': attachment.id,
+                    'partner_id': share.partner_id.id if share.partner_id else False,
+                    'tag_ids': [(6, 0, share.tag_ids.ids if share.tag_ids else [])],
+                    'folder_id': share.folder_id.id if share.folder_id else False,
+                })
+                attachment.write({
+                    'res_model': 'documents.document',
+                    'res_id': document.id,
+                })
+                document.message_post(body=msg_vals.get('body', ''), subject=self.name)
                 if share.activity_option:
-                    attachment.documents_set_activity(settings_model=share)
+                    document.documents_set_activity(settings_record=share)
 
-        return rv
+        return super(Document, self)._message_post_after_hook(
+            message, msg_vals, model_description=model_description, mail_auto_delete=mail_auto_delete)
 
     @api.multi
-    def documents_set_activity(self, settings_model=None):
+    def documents_set_activity(self, settings_record=None):
         """
-        Generate an activity based on the fields of settings_model.
+        Generate an activity based on the fields of settings_record.
 
-        :param settings_model: the model that contains the activity fields.
-                    settings_model.activity_type_id (required)
-                    settings_model.activity_summary
-                    settings_model.activity_note
-                    settings_model.activity_date_deadline_range
-                    settings_model.activity_date_deadline_range_type
-                    settings_model.activity_user_id
+        :param settings_record: the record that contains the activity fields.
+                    settings_record.activity_type_id (required)
+                    settings_record.activity_summary
+                    settings_record.activity_note
+                    settings_record.activity_date_deadline_range
+                    settings_record.activity_date_deadline_range_type
+                    settings_record.activity_user_id
         """
-        if settings_model and settings_model.activity_type_id:
+        if settings_record and settings_record.activity_type_id:
             activity_vals = {
-                'activity_type_id': settings_model.activity_type_id.id,
-                'summary': settings_model.activity_summary or '',
-                'note': settings_model.activity_note or '',
+                'activity_type_id': settings_record.activity_type_id.id,
+                'summary': settings_record.activity_summary or '',
+                'note': settings_record.activity_note or '',
             }
-            if settings_model.activity_date_deadline_range > 0:
-                activity_vals['date_deadline'] = fields.Date.context_today(settings_model) + relativedelta(
-                    **{settings_model.activity_date_deadline_range_type: settings_model.activity_date_deadline_range})
+            if settings_record.activity_date_deadline_range > 0:
+                activity_vals['date_deadline'] = fields.Date.context_today(settings_record) + relativedelta(
+                    **{settings_record.activity_date_deadline_range_type: settings_record.activity_date_deadline_range})
 
-            if settings_model._fields.get('activity_user_id') and settings_model.activity_user_id:
-                user = settings_model.activity_user_id
-            elif settings_model._fields.get('user_id') and settings_model.user_id:
-                user = settings_model.user_id
-            elif settings_model._fields.get('owner_id') and settings_model.owner_id:
-                user = settings_model.owner_id
+            if settings_record._fields.get('activity_user_id') and settings_record.activity_user_id:
+                user = settings_record.activity_user_id
+            elif settings_record._fields.get('user_id') and settings_record.user_id:
+                user = settings_record.user_id
+            elif settings_record._fields.get('owner_id') and settings_record.owner_id:
+                user = settings_record.owner_id
             else:
                 user = self.env.user
             if user:
@@ -208,31 +257,39 @@ class IrAttachment(models.Model):
         else:
             self.lock_uid = self.env.uid
 
-    def _set_folder_settings(self, vals):
-        """Implemented by bridge modules to set their folders and tags to attachments
-        @param vals: a create/write dict.
-        """
-        return vals
+    @api.model
+    def create(self, vals):
+        keys = [key for key in vals if
+                self._fields[key].related and self._fields[key].related[0] == 'attachment_id']
+        attachment_dict = {key: vals.pop(key) for key in keys if key in vals}
+        attachment = None
+        if len(attachment_dict):
+            attachment_dict.setdefault('name', vals.get('name', 'unnamed'))
+            attachment = self.env['ir.attachment'].create(attachment_dict)
+            vals['attachment_id'] = attachment.id
+        new_record = super(Document, self).create(vals)
+        if attachment:
+            attachment.write({'res_model': 'documents.document', 'res_id': new_record.id})
+        return new_record
 
-    @api.model_create_multi
-    def create(self, vals_list):
-        for vals_dict in vals_list:
-            if vals_dict.get('res_model'):
-                vals_dict.update(self._set_folder_settings(vals_dict))
-
-        return super(IrAttachment, self).create(vals_list)
-
+    @api.multi
     def write(self, vals):
-        if len(self) == 1 and self.type == 'empty' and len(self.activity_ids):
-            if not vals.get('type'):
-                if vals.get('url'):
-                    vals['type'] = 'url'
-                if vals.get('datas'):
-                    vals['type'] = 'binary'
-            if vals.get('type') in ['url', 'binary']:
-                self.activity_ids.action_feedback()
+        for record in self:
+            if record.type == 'empty' and ('datas' in vals or 'url' in vals):
+                record.activity_ids.action_feedback()
+            if vals.get('datas') and not vals.get('attachment_id') and not record.attachment_id:
+                attachment = self.env['ir.attachment'].create({
+                    'name': vals.get('datas_fname', record.name),
+                    'res_model': 'documents.document',
+                    'res_id': record.id
+                })
+                record.attachment_id = attachment.id
+        return super(Document, self).write(vals)
 
-        vals = self._set_folder_settings(vals)
-        return super(IrAttachment, self).write(vals)
-
-
+    def split_pdf(self, indices=None, remainder=False):
+        self.ensure_one()
+        if self.attachment_id:
+            attachment_ids = self.attachment_id.split_pdf(indices=indices, remainder=remainder)
+            for attachment in attachment_ids:
+                document = self.copy()
+                document.write({'attachment_id': attachment.id})

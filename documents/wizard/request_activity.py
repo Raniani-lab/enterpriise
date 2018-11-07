@@ -29,7 +29,7 @@ class RequestWizard(models.TransientModel):
     @api.multi
     def request_document(self):
         self.ensure_one()
-        attachment = self.env['ir.attachment'].create({
+        document = self.env['documents.document'].create({
             'name': self.name,
             'type': 'empty',
             'folder_id': self.folder_id.id if self.folder_id else False,
@@ -47,5 +47,5 @@ class RequestWizard(models.TransientModel):
             activity_vals['date_deadline'] = fields.Date.context_today(self) + relativedelta(
                 **{self.activity_date_deadline_range_type: self.activity_date_deadline_range})
 
-        attachment.activity_schedule(**activity_vals)
+        document.activity_schedule(**activity_vals)
 

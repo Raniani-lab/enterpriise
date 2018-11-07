@@ -1,40 +1,6 @@
 $o-ma-border-color: gray($o-ma-border-color-gray-value);
 
 // ------------------------------------------------------------------
-// Campaign Kanban
-// ------------------------------------------------------------------
-.o_ma_campaign_kanban {
-    .o_kanban_record {
-        width: 317px;
-        padding: 0px;
-
-        .o_ma_header {
-            padding: 4px 0px;
-            border-bottom: 1px solid $o-ma-border-color;
-            .o_ma_title {
-                font-size: 16px;
-                @include o-text-overflow;
-            }
-            .label {
-                margin-top: 2px;
-            }
-        }
-        .o_ma_counter {
-            padding: 10px 0px;
-            [class*=col-]:not(:last-child) {
-                border-right: 1px solid $o-ma-border-color;
-            }
-        }
-    }
-    &.o_kanban_grouped {
-        flex-flow: row wrap;
-        .o_kanban_record {
-            min-width: inherit;
-        }
-    }
-}
-
-// ------------------------------------------------------------------
 // Abstract Hierarchy
 // ------------------------------------------------------------------
 .o_ma_hierarchy {

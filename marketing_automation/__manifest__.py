@@ -17,7 +17,7 @@
         'views/mail_mass_mailing_views.xml',
         'views/marketing_participant_views.xml',
         'views/marketing_campaign_views.xml',
-        'data/marketing_automation_data.xml',
+        'data/ir_cron_data.xml',
     ],
     'demo': [
         'data/marketing_automation_demo.xml'

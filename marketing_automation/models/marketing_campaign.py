@@ -11,7 +11,6 @@ from odoo import api, fields, models, _, SUPERUSER_ID
 from odoo.fields import Datetime
 from odoo.exceptions import ValidationError, AccessError
 from odoo.osv import expression
-from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT as DATETIME_FORMAT
 from odoo.tools.safe_eval import safe_eval
 
 _logger = logging.getLogger(__name__)

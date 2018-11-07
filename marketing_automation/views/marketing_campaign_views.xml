@@ -87,7 +87,12 @@
                         <h1><field name="name" required="1" placeholder="e.g. eCommerce Offers" /></h1>
                     </div>
                     <group>
-                        <field name="model_id" attrs="{'readonly': [('state', '!=', 'draft')]}" options="{'no_create_edit': True, 'no_open': True}" class="oe_inline" string="Target Model" />
+                        <field name="model_id"
+                            string="Target"
+                            class="oe_inline"
+                            attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            options="{'no_create_edit': True, 'no_open': True}"
+                            context="{'tree_view_ref': 'marketing_automation.ir_model_view_tree_marketing'}"/>
                         <field name="model_name" invisible="1" />
                         <field name="unique_field_id" options="{'no_create_edit': True, 'no_open': True}" groups="base.group_no_one" class="oe_inline" />
                         <field name="domain" widget="domain" options="{'model': 'model_name'}" />

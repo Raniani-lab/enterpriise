@@ -1262,7 +1262,7 @@ class TestInventoryAdjustmentBarcodeClientAction(TestBarcodeClientAction):
         quantity = self.env['stock.move.line'].search([
             ('product_id', '=', product_weight.id),
             ('state', '=', 'done'),
-            ('location_id', '=', self.env.ref('stock.location_inventory').id),
+            ('location_id', '=', product_weight.property_stock_inventory.id),
         ])
 
         self.assertEqual(quantity.qty_done, 12.345)

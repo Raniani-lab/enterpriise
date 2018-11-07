@@ -10,30 +10,29 @@
                 <field name="state"/>
                 <templates>
                     <t t-name="kanban-box">
-                        <div class="oe_kanban_card oe_kanban_global_click">
-                            <div class="row">
+                        <div class="oe_kanban_card oe_kanban_global_click o_marketing_automation_campaign_kanban">
+                            <div class="row no-gutters o_ma_campaign_header">
                                 <div class="col-9">
-                                    <span class="o_ma_text_processed" t-att-title="record.name.raw_value">
+                                    <span t-att-title="record.name.raw_value" class="text-primary">
                                         <t t-esc="record.name.raw_value"/>
                                     </span>
                                 </div>
                                 <div class="col-3">
-                                    <t t-set="state_colors" t-value="{'draft': 'badge-primary', 'running': 'o_ma_processed', 'stopped': 'badge-danger'}"/>
-                                    <span t-attf-class="badge #{state_colors[record.state.raw_value]} float-right" t-att-title="record.state.value">
+                                    <span t-attf-class="badge-pill badge-secondary float-right o_badge_brand" t-att-title="record.state.value">
                                         <t t-esc="record.state.value"/>
                                     </span>
                                 </div>
                             </div>
-                            <div class="row text-uppercase text-center">
-                                <div class="col-4 text-muted">
+                            <div class="row text-uppercase text-center mt8">
+                                <div class="col-4 text-muted o_ma_campaign_item">
                                     <span>Total</span>
                                     <h2 class="mt4"><strong><field name="total_participant_count"/></strong></h2>
                                 </div>
-                                <div class="col-4 o_ma_text_processed">
+                                <div class="col-4 text-primary o_ma_campaign_item">
                                     <span>Running</span>
                                     <h2 class="mt4"><strong><field name="running_participant_count"/></strong></h2>
                                 </div>
-                                <div class="col-4 text-primary">
+                                <div class="col-4 text-primary o_ma_campaign_item o_text_brand">
                                     <span>Completed</span>
                                     <h2 class="mt4"><strong><field name="completed_participant_count"/></strong></h2>
                                 </div>
@@ -276,15 +275,16 @@
                                             <field name="statistics_graph_data" invisible="1" />
                                         </group>
                                         <group>
-                                            <label for="interval_number" string="Perform" />
-                                            <div>
-                                                <field name="interval_number" class="oe_inline" />
-                                                <field name="interval_type" class="oe_inline ml4" />
-                                                <span class="ml8">after</span>
-                                            </div>
-                                            <label for="trigger_type" class="d-none" />
-                                            <div>
-                                                <field name="trigger_type" />
+                                            <label for="interval_number" string="Perform"/>
+                                            <div class="container">
+                                                <div class="row">
+                                                    <field name="interval_number" nolabel="1" class="col-md-6"/>
+                                                    <field name="interval_type" nolabel="1" class="col-md-6"/>
+                                                </div>
+                                                <div class="row">
+                                                    <span class="oe_inline">after</span>
+                                                    <field name="trigger_type" class="oe_inline ml4"/>
+                                                </div>
                                             </div>
                                             <label for="parent_id" attrs="{'invisible': [('trigger_type', '=', 'begin')]}"/>
                                             <div>
@@ -299,30 +299,22 @@
                                                 <field name="validity_duration"/>
                                             </div>
                                             <label for="validity_duration_number" string="Valid during" attrs="{'invisible': [('validity_duration', '=', False)]}"/>
-                                            <div attrs="{'invisible': [('validity_duration', '=', False)]}">
-                                                <field name="validity_duration_number" class="oe_inline"/>
-                                                <field name="validity_duration_type" class="oe_inline"/>
+                                            <div attrs="{'invisible': [('validity_duration', '=', False)]}" class="container">
+                                                <div class="row">
+                                                    <field name="validity_duration_number" nolabel="1" class="col-md-6"/>
+                                                    <field name="validity_duration_type" nolabel="1" class="col-md-6"/>
+                                                </div>
                                             </div>
                                             <field name="model_id" invisible="1" />
                                             <field name="model_name" invisible="1" />
                                         </group>
                                     </group>
-                                    <notebook>
-                                        <page string="Domain">
-                                            <group>
-                                                <field name="domain" widget="domain" nolabel="1" options="{'in_dialog': True, 'model': 'model_name'}" />
-                                            </group>
-                                        </page>
-                                    </notebook>
+                                    <group string="Domain">
+                                        <field name="domain" widget="domain" nolabel="1" options="{'in_dialog': True, 'model': 'model_name'}" />
+                                    </group>
                                 </sheet>
                             </form>
                         </field>
-                        <div class="o_ma_hierarchy_editonly oe_edit_only" attrs="{'invisible': [('marketing_activity_ids', '!=', [])]}">
-                            <h3 class="mb0">Click here to add new activity</h3>
-                            <p>
-                                Activity will allow to send mail or perform actions.
-                            </p>
-                        </div>
                     </div>
                 </sheet>
             </form>
@@ -352,7 +344,7 @@
                 <separator />
                 <filter string="Archived" name="archived" domain="[('active', '=', False)]" />
                 <group>
-                    <filter name="group_state" string="State" context="{'group_by': 'state'}" />
+                    <filter name="group_by_model_id" string="Target" context="{'group_by': 'model_id'}" />
                 </group>
             </search>
         </field>

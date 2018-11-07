@@ -1,6 +1,30 @@
 $o-ma-border-color: gray($o-ma-border-color-gray-value);
 
 // ------------------------------------------------------------------
+// Campaign Kanban
+// ------------------------------------------------------------------
+
+.o_marketing_automation_campaign_kanban {
+    .o_text_brand {
+        color: $o-brand-odoo;
+    }
+    .o_badge_brand {
+        background: $o-brand-odoo;
+    }
+    .o_ma_campaign_header {
+        padding-bottom: 8px;
+        border-bottom: 1px solid $o-ma-border-color;
+    }
+    .o_ma_campaign_item {
+        border-right: 1px solid $o-ma-border-color;
+    }
+    .o_ma_campaign_item:last-child {
+        border-right: none;
+    }
+}
+
+
+// ------------------------------------------------------------------
 // Abstract Hierarchy
 // ------------------------------------------------------------------
 .o_ma_hierarchy {
@@ -21,18 +45,6 @@ $o-ma-border-color: gray($o-ma-border-color-gray-value);
     }
     .o_ma_hierarchy_readonly {
         padding: 40px 0px 0px 40px;
-    }
-    .o_ma_hierarchy_editonly {
-        position: relative;
-        background-color: #DCDADA;
-        max-width: 398px;
-        margin: 6px 0px 0px 62px;
-        padding: 3px 0px 10px 23px;
-        &:before {
-            @include o-caret-up(10px);
-            @include o-position-absolute($top: -10px, $bottom: 100%);
-            border-bottom-color: #DCDADA;
-        }
     }
     .o_ma_hierarchy_container {
         // Add new button

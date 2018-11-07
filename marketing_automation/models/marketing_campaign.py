@@ -28,7 +28,8 @@ class MarketingCampaign(models.Model):
         ('draft', 'New'),
         ('running', 'Running'),
         ('stopped', 'Stopped')
-        ], copy=False, default='draft')
+        ], copy=False, default='draft',
+        group_expand='_group_expand_states')
     model_id = fields.Many2one(
         'ir.model', string='Model', index=True, required=True,
         default=lambda self: self.env.ref('base.model_res_partner', raise_if_not_found=False),
@@ -76,6 +77,9 @@ class MarketingCampaign(models.Model):
             campaign.completed_participant_count = campaign_data.get('completed', 0)
             campaign.total_participant_count = campaign.completed_participant_count + campaign.running_participant_count
             campaign.test_participant_count = campaign_data.get('is_test')
+
+    def _group_expand_states(self, states, domain, order):
+        return [key for key, val in type(self).state.selection]
 
     def action_set_synchronized(self):
         self.write({'last_sync_date': Datetime.now()})

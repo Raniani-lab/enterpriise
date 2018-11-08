@@ -29,7 +29,9 @@ class MarketingParticipant(models.Model):
         models = self.env['ir.model'].search([('is_mail_thread', '=', True)])
         return [(model.model, model.name) for model in models]
 
-    campaign_id = fields.Many2one('marketing.campaign', string='Campaign', ondelete='cascade', required=True)
+    campaign_id = fields.Many2one(
+        'marketing.campaign', string='Campaign',
+        index=True, ondelete='cascade', required=True)
     model_id = fields.Many2one(
         'ir.model', string='Object', related='campaign_id.model_id',
         index=True, readonly=True, store=True)

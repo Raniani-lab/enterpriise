@@ -11,9 +11,10 @@
         'security/marketing_automation_security.xml',
         'security/ir.model.access.csv',
         'views/assets.xml',
-        'views/marketing_campaign_views.xml',
-        'views/marketing_participant_views.xml',
+        'views/marketing_automation_menus.xml',
         'views/mail_mass_mailing_views.xml',
+        'views/marketing_participant_views.xml',
+        'views/marketing_campaign_views.xml',
         'data/marketing_automation_data.xml',
     ],
     'demo': [

@@ -3,12 +3,12 @@
 
 from dateutil.relativedelta import relativedelta
 
-from .common import HelpdeskTransactionCase
+from .common import HelpdeskCommon
 from odoo import fields
 from odoo.exceptions import AccessError
 
 
-class TestHelpdeskFlow(HelpdeskTransactionCase):
+class TestHelpdeskFlow(HelpdeskCommon):
     """ Test used to check that the base functionalities of Helpdesk function as expected.
         - test_access_rights: tests a few access rights constraints
         - test_assign_close_dates: tests the assignation and closing time get computed correctly

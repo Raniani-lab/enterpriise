@@ -5,7 +5,7 @@ from odoo.addons.helpdesk.tests import common
 from odoo.tests.common import Form
 
 
-class TestHelpdeskSaleCoupon(common.HelpdeskTransactionCase):
+class TestHelpdeskSaleCoupon(common.HelpdeskCommon):
     """ Test used to check that the functionalities of After sale in Helpdesk (sale_coupon).
     """
 

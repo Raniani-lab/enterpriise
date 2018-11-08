@@ -5,11 +5,11 @@
 from dateutil.relativedelta import relativedelta
 from datetime import datetime, timedelta, date, time
 
-from .common import HelpdeskTransactionCase
+from .common import HelpdeskCommon
 from odoo import fields
 
 
-class TestHelpdeskSLA(HelpdeskTransactionCase):
+class TestHelpdeskSLA(HelpdeskCommon):
     """ Test used to check that SLAs function as expected.
         - test_sla_base: tests the SLA gets applied and fails when it should
         - test_sla_priority: tests the correct SLA gets applied according to ticket priorities

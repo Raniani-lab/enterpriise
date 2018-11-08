@@ -2,65 +2,67 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from contextlib import contextmanager
 
-from odoo.tests.common import TransactionCase
 from odoo import fields
+from odoo.tests.common import SavepointCase
 
 
-class HelpdeskTransactionCase(TransactionCase):
+class HelpdeskCommon(SavepointCase):
 
-    def setUp(self):
-        super(HelpdeskTransactionCase, self).setUp()
+    @classmethod
+    def setUpClass(cls):
+        super(HelpdeskCommon, cls).setUpClass()
 
         # we create a helpdesk user and a manager
-        self.main_company_id = self.env.ref('base.main_company').id
-        self.helpdesk_manager = self.env['res.users'].create({
-            'company_id': self.main_company_id,
+        Users = cls.env['res.users'].with_context(tracking_disable=True)
+        cls.main_company_id = cls.env.ref('base.main_company').id
+        cls.helpdesk_manager = Users.create({
+            'company_id': cls.main_company_id,
             'name': 'Helpdesk Manager',
             'login': 'hm',
             'email': 'hm@example.com',
-            'groups_id': [(6, 0, [self.env.ref('helpdesk.group_helpdesk_manager').id])]
+            'groups_id': [(6, 0, [cls.env.ref('helpdesk.group_helpdesk_manager').id])]
         })
-        self.helpdesk_user = self.env['res.users'].create({
-            'company_id': self.main_company_id,
+        cls.helpdesk_user = Users.create({
+            'company_id': cls.main_company_id,
             'name': 'Helpdesk User',
             'login': 'hu',
             'email': 'hu@example.com',
-            'groups_id': [(6, 0, [self.env.ref('helpdesk.group_helpdesk_user').id])]
+            'groups_id': [(6, 0, [cls.env.ref('helpdesk.group_helpdesk_user').id])]
         })
         # the manager defines a team for our tests (the .sudo() at the end is to avoid potential uid problems)
-        self.test_team = self.env['helpdesk.team'].with_user(self.helpdesk_manager).create({'name': 'Test Team'}).sudo()
+        cls.test_team = cls.env['helpdesk.team'].with_user(cls.helpdesk_manager).create({'name': 'Test Team'}).sudo()
         # He then defines its stages
-        stage_as_manager = self.env['helpdesk.stage'].with_user(self.helpdesk_manager)
-        self.stage_new = stage_as_manager.create({
+        stage_as_manager = cls.env['helpdesk.stage'].with_user(cls.helpdesk_manager)
+        cls.stage_new = stage_as_manager.create({
             'name': 'New',
             'sequence': 10,
-            'team_ids': [(4, self.test_team.id, 0)],
+            'team_ids': [(4, cls.test_team.id, 0)],
             'is_close': False,
-        }).sudo()
-        self.stage_progress = stage_as_manager.create({
+        })
+        cls.stage_progress = stage_as_manager.create({
             'name': 'In Progress',
             'sequence': 20,
-            'team_ids': [(4, self.test_team.id, 0)],
+            'team_ids': [(4, cls.test_team.id, 0)],
             'is_close': False,
-        }).sudo()
-        self.stage_done = stage_as_manager.create({
+        })
+        cls.stage_done = stage_as_manager.create({
             'name': 'Done',
             'sequence': 30,
-            'team_ids': [(4, self.test_team.id, 0)],
+            'team_ids': [(4, cls.test_team.id, 0)],
             'is_close': True,
-        }).sudo()
-        self.stage_cancel = stage_as_manager.create({
+        })
+        cls.stage_cancel = stage_as_manager.create({
             'name': 'Cancelled',
             'sequence': 40,
-            'team_ids': [(4, self.test_team.id, 0)],
+            'team_ids': [(4, cls.test_team.id, 0)],
             'is_close': True,
-        }).sudo()
+        })
 
         # He also creates a ticket types for Question and Issue
-        self.type_question = self.env['helpdesk.ticket.type'].with_user(self.helpdesk_manager).create({
+        cls.type_question = cls.env['helpdesk.ticket.type'].with_user(cls.helpdesk_manager).create({
             'name': 'Question_test',
         }).sudo()
-        self.type_issue = self.env['helpdesk.ticket.type'].with_user(self.helpdesk_manager).create({
+        cls.type_issue = cls.env['helpdesk.ticket.type'].with_user(cls.helpdesk_manager).create({
             'name': 'Issue_test',
         }).sudo()
 

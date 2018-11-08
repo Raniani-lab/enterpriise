@@ -93,7 +93,7 @@ class HelpdeskTicket(models.Model):
     legend_normal = fields.Char(related='stage_id.legend_normal', string='Kanban Ongoing Explanation', readonly=True, related_sudo=False)
     user_id = fields.Many2one('res.users', string='Assigned to', tracking=True, domain=lambda self: [('groups_id', 'in', self.env.ref('helpdesk.group_helpdesk_user').id)])
     partner_id = fields.Many2one('res.partner', string='Customer')
-    partner_tickets = fields.Integer('Number of tickets from the same partner', compute='_compute_partner_tickets')
+    partner_ticket_count = fields.Integer('Number of closed tickets from the same partner', compute='_compute_partner_ticket_count')
     attachment_number = fields.Integer(compute='_compute_attachment_number', string="Number of Attachments")
 
     # Used to submit tickets from a contact form
@@ -167,14 +167,14 @@ class HelpdeskTicket(models.Model):
             self.partner_email = self.partner_id.email
 
     @api.depends('partner_id')
-    def _compute_partner_tickets(self):
+    def _compute_partner_ticket_count(self):
+        data = self.env['helpdesk.ticket'].read_group([
+            ('partner_id', 'in', self.mapped('partner_id').ids),
+            ('stage_id.is_close', '=', False)
+        ], ['partner_id'], ['partner_id'], lazy=False)
+        ticket_per_partner_map = dict((item['partner_id'][0], item['__count']) for item in data)
         for ticket in self:
-            ticket_data = self.env['helpdesk.ticket'].read_group([
-                ('partner_id', '=', ticket.partner_id.id),
-                ('stage_id.is_close', '=', False)
-            ], ['partner_id'], ['partner_id'])
-            if ticket_data:
-                ticket.partner_tickets = ticket_data[0]['partner_id_count']
+            ticket.partner_ticket_count = ticket_per_partner_map.get(ticket.partner_id.id, 0)
 
     @api.depends('assign_date')
     def _compute_assign_hours(self):

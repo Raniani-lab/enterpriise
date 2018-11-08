@@ -354,7 +354,7 @@ class MarketingActivity(models.Model):
         self.env.cr.execute("""
             SELECT
                 trace.activity_id,
-                COUNT(CASE WHEN stat.bounced IS NULL THEN 1 ELSE null END) AS total_sent,
+                COUNT(CASE WHEN stat.state = 'sent' THEN 1 ELSE null END) AS total_sent,
                 COUNT(CASE WHEN stat.clicked IS NOT NULL THEN 1 ELSE null END) AS total_click,
                 COUNT(CASE WHEN stat.replied IS NOT NULL THEN 1 ELSE null END) AS total_reply,
                 COUNT(CASE WHEN stat.opened IS NOT NULL THEN 1 ELSE null END) AS total_open,

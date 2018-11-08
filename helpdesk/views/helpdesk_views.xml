@@ -495,8 +495,8 @@
         <field name="arch" type="xml">
             <form string="Helpdesk Ticket">
                 <header>
-                    <button name="assign_ticket_to_self" string="Assign To Me" type="object" class="oe_highlight"
-                        groups="helpdesk.group_helpdesk_user" attrs="{'invisible': &quot;[('user_id', '=', uid)]&quot;}"/>
+                    <field name="is_self_assigned" invisible="1"/>
+                    <button name="assign_ticket_to_self" string="Assign To Me" type="object" class="oe_highlight" groups="helpdesk.group_helpdesk_user" attrs="{'invisible': [('is_self_assigned', '=', True)]}"/>
                     <field name="stage_id" widget="statusbar"
                         options="{'clickable': '1', 'fold_field': 'fold'}"/>
                 </header>

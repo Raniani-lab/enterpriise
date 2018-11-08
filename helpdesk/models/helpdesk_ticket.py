@@ -98,6 +98,7 @@ class HelpdeskTicket(models.Model):
     partner_id = fields.Many2one('res.partner', string='Customer')
     partner_ticket_count = fields.Integer('Number of closed tickets from the same partner', compute='_compute_partner_ticket_count')
     attachment_number = fields.Integer(compute='_compute_attachment_number', string="Number of Attachments")
+    is_self_assigned = fields.Boolean("Am I assigned", compute='_compute_is_self_assigned')
 
     # Used to submit tickets from a contact form
     partner_name = fields.Char(string='Customer Name')
@@ -155,6 +156,11 @@ class HelpdeskTicket(models.Model):
         attach_data = { res['res_id']: res['res_id_count'] for res in read_group_res }
         for record in self:
             record.attachment_number = attach_data.get(record.id, 0)
+
+    @api.depends('user_id')
+    def _compute_is_self_assigned(self):
+        for ticket in self:
+            ticket.is_self_assigned = self.env.user == ticket.user_id
 
     @api.onchange('team_id')
     def _onchange_team_id(self):

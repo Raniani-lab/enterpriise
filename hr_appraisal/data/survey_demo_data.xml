@@ -3,7 +3,7 @@
         <!-- Appraisal form -->
         <record model="survey.survey" id="appraisal_form">
             <field name="title">Employee Appraisal Form</field>
-            <field name="stage_id" ref="survey.stage_permanent" />
+            <field name="stage_id" ref="survey.stage_in_progress" />
             <field name="access_mode">token</field>
             <field name="category">hr_appraisal</field>
             <field name="users_can_go_back" eval="True" />
@@ -318,7 +318,7 @@ over the coming year.&lt;/p&gt;</field>
         <!-- Employee Opinion form -->
         <record model="survey.survey" id="opinion_form">
             <field name="title">Employee Opinion Form</field>
-            <field name="stage_id" ref="survey.stage_permanent" />
+            <field name="stage_id" ref="survey.stage_in_progress" />
             <field name="access_mode">token</field>
             <field name="category">hr_appraisal</field>
             <field name="users_can_go_back" eval="True" />

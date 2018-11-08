@@ -45,7 +45,7 @@ odoo.define('sign.PDFIframe', function (require) {
 
             var viewerURL = "/web/static/lib/pdfjs/web/viewer.html?file=";
             viewerURL += encodeURIComponent(this.attachmentLocation).replace(/'/g,"%27").replace(/"/g,"%22") + "#page=1&zoom=page-width";
-            this.$iframe.load(function() {
+            this.$iframe.ready(function () {
                 self.waitForPDF();
             });
             this.$iframe.attr('src', viewerURL);

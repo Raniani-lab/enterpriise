@@ -433,11 +433,11 @@ class MarketingActivity(models.Model):
                 x = i.strftime('%d %b')
                 success.append({
                     'x': x,
-                    'y': stat_map.get((activity.id, i.strftime('%Y-%m-%d'), 'processed'), 0)
+                    'y': stat_map.get((activity.id, i, 'processed'), 0)
                 })
                 rejected.append({
                     'x': x,
-                    'y': stat_map.get((activity.id, i.strftime('%Y-%m-%d'), 'rejected'), 0)
+                    'y': stat_map.get((activity.id, i, 'rejected'), 0)
                 })
             graph_data[activity.id] = [
                 {'values': success, 'key': _('Success'), 'area': True, 'color': '#21B799'},

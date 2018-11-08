@@ -19,13 +19,14 @@ class HelpdeskTeam(models.Model):
     def _default_stage_ids(self):
         return [(0, 0, {'name': 'New', 'sequence': 0, 'template_id': self.env.ref('helpdesk.new_ticket_request_email_template', raise_if_not_found=False) or None})]
 
+    def _default_domain_member_ids(self):
+        return [('groups_id', 'in', self.env.ref('helpdesk.group_helpdesk_user').id)]
+
     name = fields.Char('Helpdesk Team', required=True, translate=True)
     description = fields.Text('About Team', translate=True)
     active = fields.Boolean(default=True)
-    company_id = fields.Many2one(
-        'res.company', string='Company',
-        default=lambda self: self.env.company)
-    sequence = fields.Integer(default=10)
+    company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.company)
+    sequence = fields.Integer("Sequence", default=10)
     color = fields.Integer('Color Index', default=1)
     stage_ids = fields.Many2many(
         'helpdesk.stage', relation='team_stage_rel', string='Stages',
@@ -40,7 +41,7 @@ class HelpdeskTeam(models.Model):
              '\tManually: manual\n'
              '\tRandomly: randomly but everyone gets the same amount\n'
              '\tBalanced: to the person with the least amount of open tickets')
-    member_ids = fields.Many2many('res.users', string='Team Members', domain=lambda self: [('groups_id', 'in', self.env.ref('helpdesk.group_helpdesk_user').id)])
+    member_ids = fields.Many2many('res.users', string='Team Members', domain=lambda self: self._default_domain_member_ids())
     ticket_ids = fields.One2many('helpdesk.ticket', 'team_id', string='Tickets')
 
     use_alias = fields.Boolean('Email alias', default=True)
@@ -98,11 +99,6 @@ class HelpdeskTeam(models.Model):
         if not self.member_ids:
             self.assign_method = 'manual'
 
-    @api.constrains('assign_method', 'member_ids')
-    def _check_member_assignation(self):
-        if not self.member_ids and self.assign_method != 'manual':
-            raise ValidationError(_("You must have team members assigned to change the assignation method."))
-
     @api.onchange('use_alias', 'name')
     def _onchange_use_alias(self):
         if not self.alias_name and self.name and self.use_alias:
@@ -114,6 +110,15 @@ class HelpdeskTeam(models.Model):
     def _onchange_use_helpdesk_timesheet(self):
         if not self.use_helpdesk_timesheet:
             self.use_helpdesk_sale_timesheet = False
+
+    @api.constrains('assign_method', 'member_ids')
+    def _check_member_assignation(self):
+        if not self.member_ids and self.assign_method != 'manual':
+            raise ValidationError(_("You must have team members assigned to change the assignation method."))
+
+    # ------------------------------------------------------------
+    # ORM overrides
+    # ------------------------------------------------------------
 
     @api.model
     def create(self, vals):
@@ -133,7 +138,7 @@ class HelpdeskTeam(models.Model):
         return result
 
     def unlink(self):
-        stages = self.mapped('stage_ids').filtered(lambda stage: stage.team_ids <= self)
+        stages = self.mapped('stage_ids').filtered(lambda stage: stage.team_ids <= self)  # remove stages that only belong to team in self
         stages.unlink()
         return super(HelpdeskTeam, self).unlink()
 
@@ -210,6 +215,10 @@ class HelpdeskTeam(models.Model):
         # just in case we want to do something if we install a module. (like a refresh ...)
         return module_installed
 
+    # ------------------------------------------------------------
+    # Mail Alias Mixin
+    # ------------------------------------------------------------
+
     def get_alias_model_name(self, vals):
         return vals.get('alias_model', 'helpdesk.ticket')
 
@@ -217,6 +226,10 @@ class HelpdeskTeam(models.Model):
         values = super(HelpdeskTeam, self).get_alias_values()
         values['alias_defaults'] = {'team_id': self.id}
         return values
+
+    # ------------------------------------------------------------
+    # Business Methods
+    # ------------------------------------------------------------
 
     @api.model
     def retrieve_dashboard(self):
@@ -287,7 +300,7 @@ class HelpdeskTeam(models.Model):
             dt = fields.Date.today()
             tickets = self.env['helpdesk.ticket'].search(domain + [('stage_id.is_close', '=', True), ('close_date', '>=', dt)])
             activity = tickets.rating_get_grades()
-            total_rating = self.compute_activity_avg(activity)
+            total_rating = self._compute_activity_avg(activity)
             total_activity_values = sum(activity.values())
             team_satisfaction = round((total_rating / total_activity_values if total_activity_values else 0), 2) *10
             if team_satisfaction:
@@ -297,24 +310,18 @@ class HelpdeskTeam(models.Model):
             dt = fields.Datetime.to_string((datetime.date.today() - relativedelta.relativedelta(days=6)))
             tickets = self.env['helpdesk.ticket'].search(domain + [('stage_id.is_close', '=', True), ('close_date', '>=', dt)])
             activity = tickets.rating_get_grades()
-            total_rating = self.compute_activity_avg(activity)
+            total_rating = self._compute_activity_avg(activity)
             total_activity_values = sum(activity.values())
             team_satisfaction_7days = round((total_rating / total_activity_values if total_activity_values else 0), 2) * 10
             if team_satisfaction_7days:
                 result['7days']['rating'] = team_satisfaction_7days
         return result
 
-<<<<<<< HEAD
-    def action_view_ticket_rating(self):
-        """ return the action to see all the rating about the tickets of the Team """
-=======
-    @api.multi
     def _action_view_rating(self, period=False, only_my_closed=False):
         """ return the action to see all the rating about the tickets of the Team
             :param period: either 'today' or 'seven_days' to include (or not) the tickets closed in this period
             :param only_my_closed: True will include only the ticket of the current user in a closed stage
         """
->>>>>>> [REF] helpdesk: clean action for rating
         domain = [('team_id', 'in', self.ids)]
 
         if period == 'seven_days':
@@ -352,7 +359,7 @@ class HelpdeskTeam(models.Model):
         return action
 
     @api.model
-    def compute_activity_avg(self, activity):
+    def _compute_activity_avg(self, activity):
         # compute average base on all rating value
         # like: 5 great, 2 okey, 1 bad
         # great = 10, okey = 5, bad = 0
@@ -400,7 +407,7 @@ class HelpdeskStage(models.Model):
     _description = 'Helpdesk Stage'
     _order = 'sequence, id'
 
-    def _get_default_team_ids(self):
+    def _default_team_ids(self):
         team_id = self.env.context.get('default_team_id')
         if team_id:
             return [(4, team_id, 0)]
@@ -417,7 +424,7 @@ class HelpdeskStage(models.Model):
         help='This stage is folded in the kanban view when there are no records in that stage to display.')
     team_ids = fields.Many2many(
         'helpdesk.team', relation='team_stage_rel', string='Team',
-        default=_get_default_team_ids,
+        default=_default_team_ids,
         help='Specific team that uses this stage. Other teams will not be able to see or use this stage.')
     template_id = fields.Many2one(
         'mail.template', 'Email Template',

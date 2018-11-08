@@ -2,7 +2,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import datetime
-import uuid
 
 from odoo import api, fields, models, tools, _
 from odoo.exceptions import AccessError
@@ -161,13 +160,6 @@ class HelpdeskTicket(models.Model):
         for record in self:
             record.attachment_number = attach_data.get(record.id, 0)
 
-    def action_get_attachment_tree_view(self):
-        attachment_action = self.env.ref('base.action_attachment')
-        action = attachment_action.read()[0]
-        action['domain'] = str(['&', ('res_model', '=', self._name), ('res_id', 'in', self.ids)])
-        action['context'] = dict(self._context, default_res_id=self.id, default_res_model=self._name, default_res_name=self.name)
-        return action
-
     @api.onchange('team_id')
     def _onchange_team_id(self):
         if self.team_id:
@@ -197,7 +189,7 @@ class HelpdeskTicket(models.Model):
     def _compute_assign_hours(self):
         for ticket in self:
             if not ticket.create_date:
-                continue;
+                continue
             time_difference = datetime.datetime.now() - fields.Datetime.from_string(ticket.create_date)
             ticket.assign_hours = (time_difference.seconds) / 3600 + time_difference.days * 24
 
@@ -205,7 +197,7 @@ class HelpdeskTicket(models.Model):
     def _compute_close_hours(self):
         for ticket in self:
             if not ticket.create_date:
-                continue;
+                continue
             time_difference = datetime.datetime.now() - fields.Datetime.from_string(ticket.create_date)
             ticket.close_hours = (time_difference.seconds) / 3600 + time_difference.days * 24
 
@@ -265,6 +257,16 @@ class HelpdeskTicket(models.Model):
                 elif fields.Datetime.now() > ticket.deadline:
                     ticket.sla_fail = True
 
+    # ------------------------------------------------------------
+    # ORM overrides
+    # ------------------------------------------------------------
+
+    def name_get(self):
+        result = []
+        for ticket in self:
+            result.append((ticket.id, "%s (#%d)" % (ticket.name, ticket.id)))
+        return result
+
     @api.model
     def create(self, vals):
         if vals.get('team_id'):
@@ -316,11 +318,9 @@ class HelpdeskTicket(models.Model):
 
         return res
 
-    def name_get(self):
-        result = []
-        for ticket in self:
-            result.append((ticket.id, "%s (#%d)" % (ticket.name, ticket.id)))
-        return result
+    # ------------------------------------------------------------
+    # Actions and Business methods
+    # ------------------------------------------------------------
 
     # Method to called by CRON to update SLA & statistics
     @api.model
@@ -333,6 +333,25 @@ class HelpdeskTicket(models.Model):
     def assign_ticket_to_self(self):
         self.ensure_one()
         self.user_id = self.env.user
+
+    def open_customer_tickets(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Customer Tickets'),
+            'res_model': 'helpdesk.ticket',
+            'view_mode': 'kanban,tree,form,pivot,graph',
+            'context': {'search_default_is_open': True, 'search_default_partner_id': self.partner_id.id}
+        }
+
+    def action_get_attachment_tree_view(self):
+        attachment_action = self.env.ref('base.action_attachment')
+        action = attachment_action.read()[0]
+        action['domain'] = str(['&', ('res_model', '=', self._name), ('res_id', 'in', self.ids)])
+        return action
+
+    # ------------------------------------------------------------
+    # Messaging API
+    # ------------------------------------------------------------
 
     #DVE FIXME: if partner gets created when sending the message it should be set as partner_id of the ticket.
     def _message_get_suggested_recipients(self):

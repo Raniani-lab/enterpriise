@@ -44,6 +44,7 @@ class MarketingCampaign(models.Model):
     domain = fields.Char(string='Filter', default='[]')
     # activities
     marketing_activity_ids = fields.One2many('marketing.activity', 'campaign_id', string='Activities', copy=True)
+    mass_mailing_count = fields.Integer('# Mailings', compute='_compute_mass_mailing_count')
     last_sync_date = fields.Datetime(string='Last activities synchronization')
     require_sync = fields.Boolean(string="Sync of participants is required", compute='_compute_require_sync')
     # participants
@@ -58,6 +59,12 @@ class MarketingCampaign(models.Model):
         for campaign in self.filtered(lambda camp: camp.last_sync_date and camp.state == 'running'):
             activities_changed = campaign.marketing_activity_ids.filtered(lambda activity: activity.require_sync)
             campaign.require_sync = bool(activities_changed)
+
+    @api.depends('marketing_activity_ids.mass_mailing_id')
+    def _compute_mass_mailing_count(self):
+        # TDE NOTE: this could be optimized but is currently displayed only in a form view, no need to optimize now
+        for campaign in self:
+            campaign.mass_mailing_count = len(campaign.mapped('marketing_activity_ids.mass_mailing_id'))
 
     @api.depends('participant_ids.state')
     def _compute_participants(self):
@@ -166,6 +173,15 @@ class MarketingCampaign(models.Model):
 
     def action_stop_campaign(self):
         self.write({'state': 'stopped'})
+
+    def action_view_mailings(self):
+        action = self.env.ref('marketing_automation.mail_mass_mailing_action_marketing_automation').read()[0]
+        action['domain'] = [
+            '&',
+            ('use_in_marketing_automation', '=', True),
+            ('id', 'in', self.mapped('marketing_activity_ids.mass_mailing_id').ids)
+        ]
+        return action
 
     def sync_participants(self):
         """ Creates new participants, taking into account already-existing ones

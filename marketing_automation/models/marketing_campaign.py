@@ -243,6 +243,9 @@ class MarketingActivity(models.Model):
     campaign_id = fields.Many2one(
         'marketing.campaign', string='Campaign',
         index=True, ondelete='cascade', required=True)
+    utm_campaign_id = fields.Many2one(
+        'utm.campaign', string='UTM Campaign',
+        readonly=True, related='campaign_id.utm_campaign_id')  # propagate to mailings
     interval_number = fields.Integer(string='Send after', default=1)
     interval_type = fields.Selection([
         ('hours', 'Hours'),

@@ -96,9 +96,10 @@
                             attrs="{'readonly': [('state', '!=', 'draft')]}"
                             options="{'no_create_edit': True, 'no_open': True}"
                             context="{'tree_view_ref': 'marketing_automation.ir_model_view_tree_marketing'}"/>
-                        <field name="model_name" invisible="1" />
-                        <field name="unique_field_id" options="{'no_create_edit': True, 'no_open': True}" groups="base.group_no_one" class="oe_inline" />
-                        <field name="domain" widget="domain" options="{'model': 'model_name'}" />
+                        <field name="model_name" invisible="1"/>
+                        <field name="unique_field_id" options="{'no_create_edit': True, 'no_open': True}" groups="base.group_no_one" class="oe_inline"/>
+                        <field name="domain" widget="domain" options="{'model': 'model_name'}"/>
+                        <field name="utm_campaign_id" required="0" invisible="1"/>
                     </group>
                     <div class="o_ma_hierarchy">
                         <div class="o_ma_hierarchy_title" attrs="{'invisible': [('marketing_activity_ids', '=', [])]}">Workflow</div>
@@ -108,7 +109,14 @@
                                 Click on 'Edit' button to add new activity in workflow.
                             </p>
                         </div>
-                        <field name="marketing_activity_ids" widget="hierarchy_kanban" mode="kanban" nolabel="1" options="{'create_text':'Add new activity'}" context="{'default_campaign_id': active_id, 'default_model_id': model_id}" class="o_ma_hierarchy_container o_ma_campaign_hierarchy">
+                        <field name="marketing_activity_ids" widget="hierarchy_kanban" mode="kanban" nolabel="1"
+                            class="o_ma_hierarchy_container o_ma_campaign_hierarchy"
+                            options="{'create_text':'Add new activity'}"
+                            context="{
+                                'default_campaign_id': active_id,
+                                'default_model_id': model_id,
+                                'default_utm_campaign_id': utm_campaign_id,
+                            }">
                             <kanban default_order="interval_standardized">
                                 <field name="interval_standardized" invisible="1" />
                                 <field name="id" />
@@ -271,6 +279,7 @@
                                                     'default_state': 'done',
                                                     'default_mailing_model_id': model_id,
                                                     'default_use_in_marketing_automation': True,
+                                                    'default_campaign_id': utm_campaign_id,
                                                     'form_view_ref': 'marketing_automation.mass_mailing_view_form_marketing_activity'}"
                                                 attrs="{
                                                     'required': [('activity_type', '=', 'email')],
@@ -309,8 +318,9 @@
                                                     <field name="validity_duration_type" nolabel="1" class="col-md-6"/>
                                                 </div>
                                             </div>
-                                            <field name="model_id" invisible="1" />
-                                            <field name="model_name" invisible="1" />
+                                            <field name="model_id" invisible="1"/>
+                                            <field name="model_name" invisible="1"/>
+                                            <field name="utm_campaign_id" invisible="1"/>
                                         </group>
                                     </group>
                                     <group string="Domain">

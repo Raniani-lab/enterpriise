@@ -621,7 +621,7 @@ odoo.define('sign.template', function(require) {
 
             this.templateID = options.context.id;
             this.rolesToChoose = {};
-            this.sign_directly_without_mail = options["context"].sign_directly_without_mail;
+            this.sign_directly_without_mail = options["context"].sign_directly_without_mail || false;
 
             var self = this;
             var button_name_sign = _t("Send");

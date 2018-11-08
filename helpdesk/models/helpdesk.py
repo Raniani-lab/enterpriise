@@ -369,27 +369,38 @@ class HelpdeskTeam(models.Model):
         bad = activity['bad'] * 0.00
         return great + okey + bad
 
-    def get_new_user(self):
-        self.ensure_one()
-        new_user = self.env['res.users']
-        member_ids = sorted(self.member_ids.ids)
-        if member_ids:
-            if self.assign_method == 'randomly':
-                # randomly means new ticketss get uniformly distributed
-                previous_assigned_user = self.env['helpdesk.ticket'].search([('team_id', '=', self.id)], order='create_date desc, id desc', limit=1).user_id
-                # handle the case where the previous_assigned_user has left the team (or there is none).
-                if previous_assigned_user and previous_assigned_user.id in member_ids:
-                    previous_index = member_ids.index(previous_assigned_user.id)
-                    new_user = new_user.browse(member_ids[(previous_index + 1) % len(member_ids)])
-                else:
-                    new_user = new_user.browse(member_ids[0])
-            elif self.assign_method == 'balanced':
-                read_group_res = self.env['helpdesk.ticket'].read_group([('stage_id.is_close', '=', False), ('user_id', 'in', member_ids)], ['user_id'], ['user_id'])
-                # add all the members in case a member has no more open tickets (and thus doesn't appear in the previous read_group)
-                count_dict = dict((m_id, 0) for m_id in member_ids)
-                count_dict.update((data['user_id'][0], data['user_id_count']) for data in read_group_res)
-                new_user = new_user.browse(min(count_dict, key=count_dict.get))
-        return new_user
+    def _determine_user_to_assign(self):
+        """ Get a dict with the user (per team) that should be assign to the nearly created ticket according to the team policy
+            :returns a mapping of team identifier with the "to assign" user (maybe an empty record).
+            :rtype : dict (key=team_id, value=record of res.users)
+        """
+        result = dict.fromkeys(self.ids, self.env['res.users'])
+        for team in self:
+            member_ids = sorted(team.member_ids.ids)
+            if member_ids:
+                if team.assign_method == 'randomly':  # randomly means new tickets get uniformly distributed
+                    last_assigned_user = self.env['helpdesk.ticket'].search([('team_id', '=', team.id)], order='create_date desc, id desc', limit=1).user_id
+                    index = 0
+                    if last_assigned_user and last_assigned_user.id in member_ids:
+                        previous_index = member_ids.index(last_assigned_user.id)
+                        index = (previous_index + 1) % len(member_ids)
+                    result[team.id] = self.env['res.users'].browse(member_ids[index])
+                elif team.assign_method == 'balanced':  # find the member with the least open ticket
+                    ticket_count_data = self.env['helpdesk.ticket'].read_group([('stage_id.is_close', '=', False), ('user_id', 'in', member_ids)], ['user_id'], ['user_id'])
+                    open_ticket_per_user_map = dict.fromkeys(member_ids, 0)  # dict: user_id -> open ticket count
+                    open_ticket_per_user_map.update((item['user_id'][0], item['user_id_count']) for item in ticket_count_data)
+                    result[team.id] = self.env['res.users'].browse(min(open_ticket_per_user_map, key=open_ticket_per_user_map.get))
+        return result
+
+    def _determine_stage(self):
+        """ Get a dict with the stage (per team) that should be set as first to a created ticket
+            :returns a mapping of team identifier with the stage (maybe an empty record).
+            :rtype : dict (key=team_id, value=record of helpdesk.stage)
+        """
+        result = dict.fromkeys(self.ids, self.env['helpdesk.stage'])
+        for team in self:
+            result[team.id] = self.env['helpdesk.stage'].search([('team_ids', 'in', team.id)], order='sequence', limit=1)
+        return result
 
     def _get_closing_stage(self):
         """

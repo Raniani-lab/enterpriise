@@ -48,19 +48,17 @@ class HelpdeskTicket(models.Model):
 
     @api.model
     def default_get(self, fields):
-        res = super(HelpdeskTicket, self).default_get(fields)
-        if res.get('team_id'):
-            update_vals = self._onchange_team_get_values(self.env['helpdesk.team'].browse(res['team_id']))
-            if (not fields or 'user_id' in fields) and 'user_id' not in res:
-                res['user_id'] = update_vals['user_id']
-            if (not fields or 'stage_id' in fields) and 'stage_id' not in res:
-                res['stage_id'] = update_vals['stage_id']
-        return res
+        result = super(HelpdeskTicket, self).default_get(fields)
+        if result.get('team_id') and fields:
+            team = self.env['helpdesk.team'].browse(result['team_id'])
+            if 'user_id' in fields and 'user_id' not in result:  # if no user given, deduce it from the team
+                result['user_id'] = team._determine_user_to_assign()[team.id].id
+            if 'stage_id' in fields and 'stage_id' not in result:  # if no stage given, deduce it from the team
+                result['stage_id'] = team._determine_stage()[team.id].id
+        return result
 
     def _default_team_id(self):
-        team_id = self._context.get('default_team_id')
-        if not team_id:
-            team_id = self.env['helpdesk.team'].search([('member_ids', 'in', self.env.uid)], limit=1).id
+        team_id = self.env['helpdesk.team'].search([('member_ids', 'in', self.env.uid)], limit=1).id
         if not team_id:
             team_id = self.env['helpdesk.team'].search([], limit=1).id
         return team_id
@@ -146,12 +144,6 @@ class HelpdeskTicket(models.Model):
         for ticket in self:
             ticket.access_url = '/my/ticket/%s' % ticket.id
 
-    def _onchange_team_get_values(self, team):
-        return {
-            'user_id': team.get_new_user().id,
-            'stage_id': self.env['helpdesk.stage'].search([('team_ids', 'in', team.id)], order='sequence', limit=1).id
-        }
-
     def _compute_attachment_number(self):
         read_group_res = self.env['ir.attachment'].read_group(
             [('res_model', '=', 'helpdesk.ticket'), ('res_id', 'in', self.ids)],
@@ -163,11 +155,10 @@ class HelpdeskTicket(models.Model):
     @api.onchange('team_id')
     def _onchange_team_id(self):
         if self.team_id:
-            update_vals = self._onchange_team_get_values(self.team_id)
             if not self.user_id:
-                self.user_id = update_vals['user_id']
+                self.user_id = self.team_id._determine_user_to_assign()[self.team_id.id]
             if not self.stage_id or self.stage_id not in self.team_id.stage_ids:
-                self.stage_id = update_vals['stage_id']
+                self.stage_id = self.team_id._determine_stage()[self.team_id.id]
 
     @api.onchange('partner_id')
     def _onchange_partner_id(self):
@@ -270,7 +261,12 @@ class HelpdeskTicket(models.Model):
     @api.model
     def create(self, vals):
         if vals.get('team_id'):
-            vals.update(item for item in self._onchange_team_get_values(self.env['helpdesk.team'].browse(vals['team_id'])).items() if item[0] not in vals)
+            team = self.env['helpdesk.team'].browse(vals['team_id'])
+            if 'user_id' not in vals:
+                vals['user_id'] = team._determine_user_to_assign()[team.id].id
+            if 'stage_id' not in vals:
+                vals['stage_id'] = team._determine_stage()[team.id].id
+
         if 'partner_id' in vals and 'partner_email' not in vals:
             partner_email = self.env['res.partner'].browse(vals['partner_id']).email
             vals.update(partner_email=partner_email)

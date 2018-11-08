@@ -304,34 +304,45 @@ class HelpdeskTeam(models.Model):
                 result['7days']['rating'] = team_satisfaction_7days
         return result
 
+<<<<<<< HEAD
     def action_view_ticket_rating(self):
         """ return the action to see all the rating about the tickets of the Team """
+=======
+    @api.multi
+    def _action_view_rating(self, period=False, only_my_closed=False):
+        """ return the action to see all the rating about the tickets of the Team
+            :param period: either 'today' or 'seven_days' to include (or not) the tickets closed in this period
+            :param only_my_closed: True will include only the ticket of the current user in a closed stage
+        """
+>>>>>>> [REF] helpdesk: clean action for rating
         domain = [('team_id', 'in', self.ids)]
-        if self.env.context.get('seven_days'):
+
+        if period == 'seven_days':
             domain += [('close_date', '>=', fields.Datetime.to_string((datetime.date.today() - relativedelta.relativedelta(days=6))))]
-        elif self.env.context.get('today'):
+        elif period == 'today':
             domain += [('close_date', '>=', fields.Datetime.to_string(datetime.date.today()))]
-        if self.env.context.get('helpdesk'):
+
+        if only_my_closed:
             domain += [('user_id', '=', self._uid), ('stage_id.is_close', '=', True)]
+
         ticket_ids = self.env['helpdesk.ticket'].search(domain).ids
-        domain = [('res_id', 'in', ticket_ids), ('rating', '!=', -1), ('res_model', '=', 'helpdesk.ticket'), ('consumed', '=', True)]
         action = self.env.ref('rating.action_view_rating').read()[0]
-        action['domain'] = domain
+        action['domain'] = [('res_id', 'in', ticket_ids), ('rating', '!=', -1), ('res_model', '=', 'helpdesk.ticket'), ('consumed', '=', True)]
         return action
 
     @api.model
-    def helpdesk_rating_today(self):
+    def action_view_rating_today(self):
         #  call this method of on click "Customer Rating" button on dashbord for today rating of teams tickets
-        return self.search(['|', ('member_ids', 'in', self._uid), ('member_ids', '=', False)]).with_context(helpdesk=True, today=True).action_view_ticket_rating()
+        return self.search(['|', ('member_ids', 'in', self._uid), ('member_ids', '=', False)])._action_view_rating(period='today', only_my_closed=True)
 
     @api.model
-    def helpdesk_rating_7days(self):
+    def action_view_rating_7days(self):
         #  call this method of on click "Customer Rating" button on dashbord for last 7days rating of teams tickets
-        return self.search(['|', ('member_ids', 'in', self._uid), ('member_ids', '=', False)]).with_context(helpdesk=True, seven_days=True).action_view_ticket_rating()
+        return self.search(['|', ('member_ids', 'in', self._uid), ('member_ids', '=', False)])._action_view_rating(period='seven_days', only_my_closed=True)
 
     def action_view_all_rating(self):
         """ return the action to see all the rating about the all sort of activity of the team (tickets) """
-        return self.action_view_ticket_rating()
+        return self._action_view_rating()
 
     def action_unhappy_rating_ticket(self):
         self.ensure_one()

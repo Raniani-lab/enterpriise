@@ -83,14 +83,21 @@
             <xpath expr="//div[hasclass('o_account_reports_no_print')]" position="attributes">
                 <attribute name="class">o_account_reports_page o_account_reports_no_print o_account_reports_followup</attribute>
             </xpath>
-            <xpath expr="//div[hasclass('o_account_reports_summary_edit')]" position="replace">
+            <xpath expr="//div[hasclass('o_account_reports_summary')]" position="replace">
+                <div class="o_account_reports_summary">
+                    <i class="fa fa-fw fa-pencil o_account_reports_edit_summary_pencil" role="img" aria-label="Edit Summary" title="Edit Summary"></i>
+                    <div class="o_account_report_summary" role="alert">
+                        <span t-if="report.get('summary')"><t t-esc="report['summary']" t-options="{'widget': 'text'}"/></span>
+                        <input t-if="not report.get('summary')" type='text' class="o_input" name='summary' placeholder='Add a note'/>
+                    </div>
+                </div>
                 <div t-if="context.get('print_mode') != True" class="o_account_reports_summary_edit">
                         <textarea name="summary"><t t-if="report.get('summary')" t-esc="report['summary']" /></textarea>
                         <button t-att-data-id="partner.id" class="btn btn-primary js_account_report_save_summary">Save</button>
                 </div>
             </xpath>
             <xpath expr="//t[@t-call='account_reports.filter_info_template']" position="replace"><t t-call="account_reports.followup_filter_info_template"/></xpath>
-            <xpath expr="//h2" position="replace">
+            <xpath expr="//div[hasclass('o_account_reports_header')]" position="inside">
                 <div class="row">
                     <div class="col-xl-6">
                         <h2 t-if='context.get("print_mode") != True' class="no_print">
@@ -139,7 +146,6 @@
                     </div>
                 </div>
             </xpath>
-            <xpath expr="//h4" position="replace" />
             <xpath expr="//tbody" position="replace">
                 <t t-if="lines.get('lines')">
                     <t t-call="account_reports.line_template_followup_report" />

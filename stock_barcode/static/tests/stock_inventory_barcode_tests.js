@@ -7,7 +7,7 @@ var FormView = require('web.FormView');
 var testUtils = require('web.test_utils');
 
 var createView = testUtils.createView;
-var triggerKeypressEvent = testUtils.triggerKeypressEvent;
+var triggerKeypressEvent = testUtils.dom.triggerKeypressEvent;
 
 QUnit.module('stock_barcode', {}, function () {
 

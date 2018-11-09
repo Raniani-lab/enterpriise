@@ -69,15 +69,15 @@ QUnit.module('Field', {}, function () {
         field.renderButton({$container: $('#qunit-fixture')});
         assert.strictEqual($('.o_invoice_extract_button').length, 1,
             "should display a button");
-        assert.notOk($('.o_invoice_extract_button').hasClass('active'),
+        assert.doesNotHaveClass($('.o_invoice_extract_button'), 'active',
             "button should not be active by default");
 
         field.setActive();
-        assert.ok($('.o_invoice_extract_button').hasClass('active'),
+        assert.hasClass($('.o_invoice_extract_button'),'active',
             "button should become active");
 
         field.setInactive();
-        assert.notOk($('.o_invoice_extract_button').hasClass('active'),
+        assert.doesNotHaveClass($('.o_invoice_extract_button'), 'active',
             "button should become inactive");
 
         parent.destroy();
@@ -110,7 +110,7 @@ QUnit.module('Field', {}, function () {
         assert.strictEqual($('.o_invoice_extract_button').length, 1,
             "should display a button");
 
-        $('.o_invoice_extract_button').click();
+        testUtils.dom.click($('.o_invoice_extract_button'));
 
         assert.verifySteps(['set active field']);
 

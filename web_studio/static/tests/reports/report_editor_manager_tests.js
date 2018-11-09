@@ -155,21 +155,21 @@ QUnit.module('ReportEditorManager', {
         });
 
         rem.editorIframeDef.then(function () {
-            assert.strictEqual(rem.$('.o_web_studio_sidebar').length, 1,
+            assert.containsOnce(rem, '.o_web_studio_sidebar',
                 "a sidebar should be rendered");
 
             // no content helper
             assert.strictEqual(rem.$('iframe').contents().find('.page .o_no_content_helper').length, 1,
                 "the iframe should be rendered with a no content helper");
-            testUtils.intercept(rem, 'node_clicked', function () {
+            testUtils.mock.intercept(rem, 'node_clicked', function () {
                 throw new Error("The no content helper shouldn't be clickable.");
             });
-            rem.$('iframe').contents().find('.page .o_no_content_helper').click();
+            testUtils.dom.click(rem.$('iframe').contents().find('.page .o_no_content_helper'));
 
             // printing the report
-            assert.strictEqual(rem.$('.o_web_studio_report_print').length, 1,
+            assert.containsOnce(rem, '.o_web_studio_report_print',
                 "it should be possible to print the report");
-            rem.$('.o_web_studio_report_print').click();
+            testUtils.dom.click(rem.$('.o_web_studio_report_print'));
 
             rem.destroy();
             done();
@@ -221,7 +221,7 @@ QUnit.module('ReportEditorManager', {
         });
 
         rem.editorIframeDef.then(function () {
-            assert.strictEqual(rem.$('.o_web_studio_sidebar').length, 1,
+            assert.containsOnce(rem, '.o_web_studio_sidebar',
                 "a sidebar should be rendered");
             assert.strictEqual(rem.$('iframe').contents().find('.page').text(),"First spanSecond span",
                 "the iframe should be rendered");
@@ -234,18 +234,18 @@ QUnit.module('ReportEditorManager', {
             assert.ok( heightDifference <= 1, "the default height should be A4 (1122.52px = 297mm) at +/- 1 px because of decimals");
 
             // click to edit a span
-            rem.$('iframe').contents().find('span:contains(Second)').click();
+            testUtils.dom.click(rem.$('iframe').contents().find('span:contains(Second)'));
 
-            assert.ok(rem.$('iframe').contents().find('span:contains(Second)').hasClass('o_web_studio_report_selected'),
+            assert.hasClass(rem.$('iframe').contents().find('span:contains(Second)'),'o_web_studio_report_selected',
                 "the corresponding nodes should be selected");
-            assert.ok(rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="options"]').hasClass('active'),
+            assert.hasClass(rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="options"]'),'active',
                 "the sidebar should have been updated");
-            assert.strictEqual(rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_content .card').length, 2,
+            assert.containsN(rem, '.o_web_studio_sidebar .o_web_studio_sidebar_content .card', 2,
                 "there should be 2 cards in the sidebar");
 
             // click on "Options" (shouldn't do anything)
-            rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="options"]').click();
-            assert.strictEqual(rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_content .card').length, 2,
+            testUtils.dom.click(rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="options"]'));
+            assert.containsN(rem, '.o_web_studio_sidebar .o_web_studio_sidebar_content .card', 2,
                 "there should still be 2 cards in the sidebar");
 
             rem.destroy();
@@ -360,13 +360,13 @@ QUnit.module('ReportEditorManager', {
         rem.editorIframeDef.then(function () {
             assert.strictEqual(rem.$('iframe').contents().find('.page').text(), "First span",
                 "the iframe should be rendered");
-            assert.strictEqual(rem.$('.o_web_studio_report_pager').length, 1,
+            assert.containsOnce(rem, '.o_web_studio_report_pager',
                 "there should be a pager");
             assert.strictEqual(rem.$('.o_web_studio_report_pager').text().trim(), "1 / 2",
                 "the pager should be correctly rendered");
 
             // click to switch between records
-            rem.$('.o_web_studio_report_pager .o_pager_next').click();
+            testUtils.dom.click(rem.$('.o_web_studio_report_pager .o_pager_next'));
 
             assert.strictEqual(rem.$('iframe').contents().find('.page').text(), "hello",
                 "the iframe should be updated");
@@ -457,7 +457,7 @@ QUnit.module('ReportEditorManager', {
                 "the iframe should be rendered");
 
             // click to edit a span
-            rem.$('iframe').contents().find('span:contains(First)').click();
+            testUtils.dom.click(rem.$('iframe').contents().find('span:contains(First)'));
 
             var $textarea = rem.$('.o_web_studio_sidebar .o_web_studio_active textarea[name="text"]');
             assert.strictEqual($textarea.length, 1,
@@ -466,7 +466,7 @@ QUnit.module('ReportEditorManager', {
                 "the Text component should be correctly set");
 
             // change the text (should trigger the report edition)
-            $textarea.val("hello").trigger('input');
+            testUtils.fields.editInput($textarea, "hello");
 
             assert.strictEqual(rem.$('iframe').contents().find('.page').text(),"hello",
                 "the iframe should have been updated");
@@ -517,21 +517,21 @@ QUnit.module('ReportEditorManager', {
         });
 
         rem.editorIframeDef.then(function () {
-            assert.strictEqual(rem.$('.o_web_studio_sidebar_header .active').attr('name'), 'new',
+            assert.hasAttrValue(rem.$('.o_web_studio_sidebar_header .active'), 'name', 'new',
                 "the 'Add' tab should be active");
             assert.strictEqual(rem.$('iframe').contents().find('.o_web_studio_report_selected').length, 0,
                 "there should be no selected node");
 
             // click to edit a span
-            rem.$('iframe').contents().find('span:contains(First)').click();
-            assert.strictEqual(rem.$('.o_web_studio_sidebar_header .active').attr('name'), 'options',
+            testUtils.dom.click(rem.$('iframe').contents().find('span:contains(First)'));
+            assert.hasAttrValue(rem.$('.o_web_studio_sidebar_header .active'), 'name', 'options',
                 "the 'Options' tab should be active");
             assert.strictEqual(rem.$('iframe').contents().find('.o_web_studio_report_selected').length, 1,
                 "the span should be selected");
 
             // switch tab
-            rem.$('.o_web_studio_sidebar_header [name="report"]').click();
-            assert.strictEqual(rem.$('.o_web_studio_sidebar_header .active').attr('name'), 'report',
+            testUtils.dom.click(rem.$('.o_web_studio_sidebar_header [name="report"]'));
+            assert.hasAttrValue(rem.$('.o_web_studio_sidebar_header .active'), 'name', 'report',
                 "the 'Report' tab should be active");
             assert.strictEqual(rem.$('iframe').contents().find('.o_web_studio_report_selected').length, 0,
                 "there should be no selected node anymore");
@@ -588,12 +588,12 @@ QUnit.module('ReportEditorManager', {
 
         rem.editorIframeDef.then(function () {
             // click to edit a span
-            rem.$('iframe').contents().find('span:contains(First)').click();
+            testUtils.dom.click(rem.$('iframe').contents().find('span:contains(First)'));
 
             // remove the span from the dom
-            rem.$('.o_web_studio_active .o_web_studio_remove').click();
-            $('.modal-content .btn-primary').click(); // confirm the deletion
-            assert.strictEqual(rem.$('.o_web_studio_sidebar_header .active').attr('name'), 'new',
+            testUtils.dom.click(rem.$('.o_web_studio_active .o_web_studio_remove'));
+            testUtils.dom.click($('.modal-content .btn-primary'));
+            assert.hasAttrValue(rem.$('.o_web_studio_sidebar_header .active'), 'name', 'new',
                 "after the remove, 'Add' tab should be active");
 
             rem.destroy();
@@ -667,11 +667,11 @@ QUnit.module('ReportEditorManager', {
         });
 
         rem.editorIframeDef.then(function () {
-            rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]').click();
+            testUtils.dom.click(rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]'));
 
             // drag and drop a Text component, which should trigger a view edition
             var $text = rem.$('.o_web_studio_sidebar .o_web_studio_field_type_container:eq(1) .o_web_studio_component:contains(Text)');
-            testUtils.dragAndDrop($text, rem.$('iframe').contents().find('span:contains(First span)'));
+            testUtils.dom.dragAndDrop($text, rem.$('iframe').contents().find('span:contains(First span)'));
 
             rem.destroy();
             done();
@@ -732,11 +732,11 @@ QUnit.module('ReportEditorManager', {
         });
 
         rem.editorIframeDef.then(function () {
-            rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]').click();
+            testUtils.dom.click(rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]'));
 
             // drag and drop a Text component, which should trigger a view edition
             var $text = rem.$('.o_web_studio_sidebar .o_web_studio_component:contains(Text):eq(1)');
-            testUtils.dragAndDrop($text, rem.$('iframe').contents().find('.col-6:eq(1)'));
+            testUtils.dom.dragAndDrop($text, rem.$('iframe').contents().find('.col-6:eq(1)'));
 
             rem.destroy();
             done();
@@ -781,24 +781,24 @@ QUnit.module('ReportEditorManager', {
         });
 
         rem.editorIframeDef.then(function () {
-            rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]').click();
+            testUtils.dom.click(rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]'));
 
             // drag and drop a Text component
             var $text = rem.$('.o_web_studio_sidebar .o_web_studio_component:contains(Field):eq(1)');
-            testUtils.dragAndDrop($text, rem.$('iframe').contents().find('.col-3:last'));
+            testUtils.dom.dragAndDrop($text, rem.$('iframe').contents().find('.col-3:last'));
             assert.strictEqual($('.o_web_studio_field_modal').length, 1, "a field modal should be opened");
 
             // cancel the field selection
-            $('.o_web_studio_field_modal .btn-secondary').click();
+            testUtils.dom.click($('.o_web_studio_field_modal .btn-secondary'));
             assert.strictEqual(rem.$('iframe').contents().find('.o_web_studio_hook').length, 0, "Must cancel the dragAndDrop");
 
             // drag and drop an Address component
             var $address = rem.$('.o_web_studio_sidebar .o_web_studio_component:contains(Address)');
-            testUtils.dragAndDrop($address, rem.$('iframe').contents().find('.col-3:last'));
+            testUtils.dom.dragAndDrop($address, rem.$('iframe').contents().find('.col-3:last'));
             assert.strictEqual($('.o_web_studio_field_modal').length, 1, "a field modal should be opened");
 
             // cancel the field selection
-            $('.o_web_studio_field_modal .btn-secondary').click();
+            testUtils.dom.click($('.o_web_studio_field_modal .btn-secondary'));
             assert.strictEqual(rem.$('iframe').contents().find('.o_web_studio_hook').length, 0, "Must cancel the dragAndDrop");
 
             rem.destroy();
@@ -855,13 +855,13 @@ QUnit.module('ReportEditorManager', {
         });
 
         rem.editorIframeDef.then(function () {
-            rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]').click();
+            testUtils.dom.click(rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]'));
 
             var $field = rem.$('.o_web_studio_sidebar .o_web_studio_field_type_container:eq(0) .o_web_studio_component:contains(Field):eq(0)');
             var $target = rem.$('iframe').contents().find('.page');
 
             // drag and drop a Field component, which should trigger a view edition
-            testUtils.dragAndDrop($field, $target, {position: 'inside'});
+            testUtils.dom.dragAndDrop($field, $target, {position: 'inside'});
 
             $('.o_web_studio_field_modal .o_field_selector').trigger('focusin');
             $('.o_web_studio_field_modal .o_field_selector_item[data-name="o"]').trigger('click');
@@ -966,7 +966,7 @@ QUnit.module('ReportEditorManager', {
         var testIndex = 0;
 
         rem.editorIframeDef.then(function () {
-            rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]').click();
+            testUtils.dom.click(rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]'));
 
             var $field = rem.$('.o_web_studio_sidebar .o_web_studio_field_type_container:eq(1) .o_web_studio_component:contains(Field)');
 
@@ -974,7 +974,7 @@ QUnit.module('ReportEditorManager', {
                 var test = tests[testIndex];
                 var $target = rem.$('iframe').contents().find(test.selector);
                 // drag and drop a Field component, which should trigger a view edition
-                testUtils.dragAndDrop($field, $target, {position: test.position});
+                testUtils.dom.dragAndDrop($field, $target, {position: test.position});
                 var $nearestHook = rem.$('iframe').contents().find('.o_web_studio_nearest_hook');
                 assert.strictEqual($nearestHook.length, test.nearestHookNumber, test.text + ' (nearestHook number)');
 
@@ -1272,7 +1272,7 @@ QUnit.module('ReportEditorManager', {
 
 
         rem.editorIframeDef.then(function () {
-            rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]').click();
+            testUtils.dom.click(rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]'));
 
             // drag and drop a Text component, which should trigger a view edition
             var $table = rem.$('iframe').contents().find('table');
@@ -1282,7 +1282,7 @@ QUnit.module('ReportEditorManager', {
                 var $buildingBlock = rem.$(test.buildingBlockSelector);
                 var $target = $table.find(test.selector);
                 $target.css('border','1px solid black'); // makes debugging easier
-                testUtils.dragAndDrop($buildingBlock, $target, {position: test.position});
+                testUtils.dom.dragAndDrop($buildingBlock, $target, {position: test.position});
                 var $nearestHook = $table.find('.o_web_studio_nearest_hook');
                 assert.strictEqual($nearestHook.length, test.nearestHookNumber, test.text + ' (nearestHook number)');
                 if (test.onDragAndDrop) {
@@ -1400,11 +1400,11 @@ QUnit.module('ReportEditorManager', {
         });
 
         rem.editorIframeDef.then(function () {
-            rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]').click();
+            testUtils.dom.click(rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]'));
             var $main = rem.$('iframe').contents().find('main');
 
             var $text = rem.$('.o_web_studio_sidebar .o_web_studio_field_type_container:eq(2) .o_web_studio_component:contains(Subtotal & Total)');
-            testUtils.dragAndDrop($text, $main, {position: {top: 50, left: 100}});
+            testUtils.dom.dragAndDrop($text, $main, {position: {top: 50, left: 100}});
             $('.o_web_studio_field_modal .o_field_selector').trigger('focusin');
             $('.o_web_studio_field_modal .o_field_selector_item[data-name="o"]').trigger('click');
             $('.o_web_studio_field_modal .btn-primary').trigger('click');
@@ -1487,9 +1487,9 @@ QUnit.module('ReportEditorManager', {
         });
 
         rem.editorIframeDef.then(function () {
-            rem.$('iframe').contents().find('main th').click();
+            testUtils.dom.click(rem.$('iframe').contents().find('main th'));
             var $card = rem.$('.o_web_studio_sidebar .card:has(.o_text:contains(table))');
-            $card.find('[data-toggle="collapse"]').click();
+            testUtils.dom.click($card.find('[data-toggle="collapse"]'));
 
             assert.strictEqual($card.find('.o_web_studio_report_currency_id .o_field_selector_chain_part').text().replace(/\s+/g, ' '),
                 ' o (Model Test) Child ', 'Should display the t-foreach value');
@@ -1569,11 +1569,11 @@ QUnit.module('ReportEditorManager', {
         });
 
         rem.editorIframeDef.then(function () {
-            rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]').click();
+            testUtils.dom.click(rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]'));
             var $main = rem.$('iframe').contents().find('main');
 
             var $text = rem.$('.o_web_studio_sidebar .o_web_studio_component:contains(Data table)');
-            testUtils.dragAndDrop($text, $main, {position: {top: 50, left: 300}});
+            testUtils.dom.dragAndDrop($text, $main, {position: {top: 50, left: 300}});
             $('.o_web_studio_field_modal .o_field_selector').trigger('focusin');
             $('.o_web_studio_field_modal .o_field_selector_item[data-name="o"]').trigger('click');
             $('.o_web_studio_field_modal .btn-primary').trigger('click');
@@ -1645,11 +1645,11 @@ QUnit.module('ReportEditorManager', {
         });
 
         rem.editorIframeDef.then(function () {
-            rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]').click();
+            testUtils.dom.click(rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]'));
             var $page = rem.$('iframe').contents().find('.page');
 
             var $text = rem.$('.o_web_studio_sidebar .o_web_studio_component:contains(Address)');
-            testUtils.dragAndDrop($text, $page, {position: 'inside'});
+            testUtils.dom.dragAndDrop($text, $page, {position: 'inside'});
             $('.o_web_studio_field_modal .o_field_selector').trigger('focusin');
             $('.o_web_studio_field_modal .o_field_selector_item[data-name="o"]').trigger('click');
             $('.o_web_studio_field_modal .o_field_selector_item[data-name="partner"]').trigger('click');
@@ -1707,7 +1707,7 @@ QUnit.module('ReportEditorManager', {
         });
 
         rem.editorIframeDef.then(function () {
-            rem.$('iframe').contents().find('span').click();
+            testUtils.dom.click(rem.$('iframe').contents().find('span'));
 
             var $editable = rem.$('.o_web_studio_sidebar .card.o_web_studio_active .note-editable');
 
@@ -1731,7 +1731,7 @@ QUnit.module('ReportEditorManager', {
         // the XML editor lazy loads its libs and its templates so its start
         // method is monkey-patched to know when the widget has started
         var XMLEditorDef = $.Deferred();
-        testUtils.patch(ace, {
+        testUtils.mock.patch(ace, {
             start: function () {
                 return this._super.apply(this, arguments).then(function () {
                     XMLEditorDef.resolve();
@@ -1810,8 +1810,8 @@ QUnit.module('ReportEditorManager', {
                 "the iframe should be rendered");
 
             // click to edit a span and change the text (should trigger the report edition)
-            rem.$('iframe').contents().find('span:contains(First)').click();
-            rem.$('.o_web_studio_sidebar .o_web_studio_active textarea[name="text"]').val("hello").trigger('input');
+            testUtils.dom.click(rem.$('iframe').contents().find('span:contains(First)'));
+            testUtils.fields.editInput(rem.$('.o_web_studio_sidebar .o_web_studio_active textarea[name="text"]'), "hello");
 
             assert.strictEqual(rem.$('iframe').contents().find('.page').text(),"hello",
                 "the iframe should have been updated");
@@ -1824,16 +1824,16 @@ QUnit.module('ReportEditorManager', {
                 "the iframe should be re-rendered");
 
             // switch tab
-            rem.$('.o_web_studio_sidebar_header [name="report"]').click();
+            testUtils.dom.click(rem.$('.o_web_studio_sidebar_header [name="report"]'));
             // open the XML editor
-            rem.$('.o_web_studio_sidebar .o_web_studio_xml_editor').click();
+            testUtils.dom.click(rem.$('.o_web_studio_sidebar .o_web_studio_xml_editor'));
 
             XMLEditorDef.then(function () {
                 assert.strictEqual(rem.$('iframe').contents().find('.page').text(),"hello",
                     "the iframe should be re-rendered");
 
                 config.debug = initialDebugMode;
-                testUtils.unpatch(ace);
+                testUtils.mock.unpatch(ace);
                 rem.destroy();
                 done();
             });
@@ -1912,16 +1912,16 @@ QUnit.module('ReportEditorManager', {
         var nbEdit = 0;
         var firstDef = $.Deferred();
         rem.editorIframeDef.then(function () {
-            rem.$('iframe').contents().find('span:contains(First span)').click();
+            testUtils.dom.click(rem.$('iframe').contents().find('span:contains(First span)'));
 
             // trigger a modification
-            rem.$('.o_web_studio_sidebar .card:eq(1) .o_web_studio_text_decoration button[data-property="bold"]').click();
+            testUtils.dom.click(rem.$('.o_web_studio_sidebar .card:eq(1) .o_web_studio_text_decoration button[data-property="bold"]'));
 
             // trigger a second modification before the first one has finished
-            rem.$('.o_web_studio_sidebar .card:eq(1) .o_web_studio_text_decoration button[data-property="italic"]').click();
+            testUtils.dom.click(rem.$('.o_web_studio_sidebar .card:eq(1) .o_web_studio_text_decoration button[data-property="italic"]'));
 
             // trigger a third modification before the first one has finished
-            rem.$('.o_web_studio_sidebar .card:eq(1) .o_web_studio_text_decoration button[data-property="underline"]').click();
+            testUtils.dom.click(rem.$('.o_web_studio_sidebar .card:eq(1) .o_web_studio_text_decoration button[data-property="underline"]'));
 
             // make the first op fail (will release the MutexedDropPrevious)
             firstDef.reject();
@@ -1990,10 +1990,10 @@ QUnit.module('ReportEditorManager', {
         });
 
         rem.editorIframeDef.then(function () {
-            rem.$('iframe').contents().find('span:contains(Kikou)').click();
+            testUtils.dom.click(rem.$('iframe').contents().find('span:contains(Kikou)'));
 
             // trigger a modification that will fail
-            rem.$('.o_web_studio_sidebar .card:eq(1) .o_web_studio_text_decoration button[data-property="bold"]').click();
+            testUtils.dom.click(rem.$('.o_web_studio_sidebar .card:eq(1) .o_web_studio_text_decoration button[data-property="bold"]'));
 
             assert.verifySteps(['warning'], "should have undone the operation");
 

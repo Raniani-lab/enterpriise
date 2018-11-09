@@ -106,11 +106,9 @@ function createBoxLayer(params) {
         $page: $page,
     });
 
-    if (params.debug) {
-        boxLayer.appendTo($('body'));
-    } else {
-        boxLayer.appendTo($('#qunit-fixture'));
-    }
+    var $target = params.debug ? $('body') : $('#qunit-fixture');
+    $page.appendTo($target);
+    boxLayer.appendTo($target);
 
     return {
         boxLayer: boxLayer,

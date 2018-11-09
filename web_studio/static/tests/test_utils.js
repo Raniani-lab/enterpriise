@@ -41,7 +41,7 @@ function createReportEditor (params) {
     var parent = new Parent();
     var selector = params.debug ? 'body' : '#qunit-fixture';
     parent.appendTo(selector);
-    testUtils.addMockEnvironment(parent, _.extend(params, {
+    testUtils.mock.addMockEnvironment(parent, _.extend(params, {
         // TODO
     }));
 
@@ -67,7 +67,7 @@ function createReportEditor (params) {
  */
 function createReportEditorManager (params) {
     var parent = new StudioEnvironment();
-    testUtils.addMockEnvironment(parent, params);
+    testUtils.mock.addMockEnvironment(parent, params);
 
     var rem = new ReportEditorManager(parent, params);
     // also destroy to parent widget to avoid memory leak
@@ -112,7 +112,7 @@ function createSidebar (params) {
         },
     });
     var parent = new Parent();
-    testUtils.addMockEnvironment(parent, params);
+    testUtils.mock.addMockEnvironment(parent, params);
 
     var sidebar = new ReportEditorSidebar(parent, params);
     sidebar.destroy = function () {
@@ -143,8 +143,8 @@ function createSidebar (params) {
  */
 function createViewEditorManager (params) {
     var parent = new StudioEnvironment();
-    var mockServer = testUtils.addMockEnvironment(parent, params);
-    var fieldsView = testUtils.fieldsViewGet(mockServer, params);
+    var mockServer = testUtils.mock.addMockEnvironment(parent, params);
+    var fieldsView = testUtils.mock.fieldsViewGet(mockServer, params);
     if (params.viewID) {
         fieldsView.view_id = params.viewID;
     }

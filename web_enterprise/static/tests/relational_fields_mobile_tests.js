@@ -52,21 +52,21 @@ QUnit.module('relational_fields', {
 
         assert.strictEqual(form.$('.o_statusbar_status > button:contains(aaa)').length, 1,
             "should have only one visible status in mobile, the active one");
-        assert.strictEqual(form.$('.o_statusbar_status .dropdown-menu').length, 1,
+        assert.containsOnce(form, '.o_statusbar_status .dropdown-menu',
             "should have a dropdown containing all status");
-        assert.strictEqual(form.$('.o_statusbar_status .dropdown-menu:visible').length, 0,
+        assert.containsNone(form, '.o_statusbar_status .dropdown-menu:visible',
             "dropdown should be hidden");
 
         // open the dropdown
-        form.$('.o_statusbar_status > button').click();
-        assert.strictEqual(form.$('.o_statusbar_status .dropdown-menu:visible').length, 1,
+        testUtils.dom.click(form.$('.o_statusbar_status > button'));
+        assert.containsOnce(form, '.o_statusbar_status .dropdown-menu:visible',
             "dropdown should be visible");
-        assert.strictEqual(form.$('.o_statusbar_status .dropdown-menu button').length, 3,
+        assert.containsN(form, '.o_statusbar_status .dropdown-menu button', 3,
             "should have 3 status");
-        assert.strictEqual(form.$('.o_statusbar_status button:disabled').length, 3,
+        assert.containsN(form, '.o_statusbar_status button:disabled', 3,
             "all status should be disabled");
         var $activeStatus = form.$('.o_statusbar_status .dropdown-menu button[data-value=4]');
-        assert.ok($activeStatus.hasClass('btn-primary'), "active status should be btn-primary");
+        assert.hasClass($activeStatus,'btn-primary', "active status should be btn-primary");
 
         form.destroy();
     });
@@ -84,17 +84,17 @@ QUnit.module('relational_fields', {
             res_id: 4,
         });
 
-        assert.ok(form.$('.o_statusbar_status').hasClass('o_field_empty'),
+        assert.hasClass(form.$('.o_statusbar_status'),'o_field_empty',
             'statusbar widget should have class o_field_empty');
         assert.strictEqual(form.$('.o_statusbar_status').children().length, 2,
             'statusbar widget should have two children');
-        assert.strictEqual(form.$('.o_statusbar_status button.dropdown-toggle').length, 1,
+        assert.containsOnce(form, '.o_statusbar_status button.dropdown-toggle',
             'statusbar widget should have a button');
         assert.strictEqual(form.$('.o_statusbar_status button.dropdown-toggle').text().trim(), '',
             'statusbar button has no text');  // Behavior as of saas-15, might be improved
-        assert.strictEqual(form.$('.o_statusbar_status .dropdown-menu').length, 1,
+        assert.containsOnce(form, '.o_statusbar_status .dropdown-menu',
             'statusbar widget should have a dropdown menu');
-        assert.strictEqual(form.$('.o_statusbar_status .dropdown-menu button').length, 3,
+        assert.containsN(form, '.o_statusbar_status .dropdown-menu button', 3,
             'statusbar widget dropdown menu should have 3 buttons');
         assert.strictEqual(form.$('.o_statusbar_status .dropdown-menu button').eq(0).text().trim(), 'first record',
             'statusbar widget dropdown first button should display the first record display_name');
@@ -106,7 +106,7 @@ QUnit.module('relational_fields', {
     });
 
     QUnit.test('clickable statusbar widget on mobile view', function (assert) {
-        assert.expect(3);
+        assert.expect(5);
 
         var form = createView({
             View: FormView,
@@ -119,15 +119,18 @@ QUnit.module('relational_fields', {
         });
 
         var $selectedStatus = form.$('.o_statusbar_status button[data-value="4"]');
-        assert.ok($selectedStatus.hasClass('btn-primary') && $selectedStatus.hasClass('disabled'),
-            "selected status should be btn-primary and disabled");
-        var $clickable = form.$('.o_statusbar_status button.btn-secondary:not(.dropdown-toggle):not(:disabled)');
-        assert.strictEqual($clickable.length, 2,
-            "other status should be btn-secondary and not disabled");
-        $clickable.first().click(); // first status clicked
+        assert.hasClass($selectedStatus, 'btn-primary');
+        assert.hasClass($selectedStatus,'disabled');
+        var selector = '.o_statusbar_status button.btn-secondary:not(.dropdown-toggle):not(:disabled)';
+        assert.containsN(form, selector, 2, "other status should be btn-secondary and not disabled");
+
+        testUtils.dom.click(form.$('.o_statusbar_status .dropdown-toggle'));
+        testUtils.dom.clickFirst(form.$(selector));
+
         var $status = form.$('.o_statusbar_status button[data-value="1"]');
-        assert.ok($status.hasClass("btn-primary") && $status.hasClass("disabled"),
-            "value should have been updated");
+        assert.hasClass($status, 'btn-primary');
+        assert.hasClass($status, 'disabled');
+
         form.destroy();
     });
 });

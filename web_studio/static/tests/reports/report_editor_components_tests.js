@@ -228,7 +228,7 @@ QUnit.module('ReportComponents', {
     QUnit.test('field', function (assert) {
         assert.expect(2);
         var parent = new Widget();
-        testUtils.addMockEnvironment(parent, {
+        testUtils.mock.addMockEnvironment(parent, {
             data: this.data,
         });
         parent.appendTo($('#qunit-fixture'));
@@ -282,7 +282,7 @@ QUnit.module('ReportComponents', {
     QUnit.test('add a binary field', function (assert) {
         assert.expect(1);
         var parent = new Widget();
-        testUtils.addMockEnvironment(parent, {
+        testUtils.mock.addMockEnvironment(parent, {
             data: this.data,
         });
         parent.appendTo($('#qunit-fixture'));
@@ -391,11 +391,11 @@ QUnit.module('ReportComponents', {
         tOptions.appendTo(parent.$el);
         assert.strictEqual(tOptions.$('select').val(), 'image',
             "Should select the image widget");
-        assert.strictEqual(tOptions.$('.o_web_studio_toption_option').length, 0,
+        assert.containsNone(tOptions, '.o_web_studio_toption_option',
             "there should be no available option");
 
         // unset the `widget`
-        testUtils.addMockEnvironment(parent, {
+        testUtils.mock.addMockEnvironment(parent, {
             intercepts: {
                 view_change: function (ev) {
                     assert.deepEqual(ev.data.operation.new_attrs, {'t-options-widget': '""'},
@@ -417,7 +417,7 @@ QUnit.module('ReportComponents', {
         fields.company_id = {string: "Company", type: "many2one", relation: 'res.company', searchable: true};
         fields.currency_id = {string: "Currency", type: "many2one", relation: 'res.currency', searchable: true};
         fields.date = {string: "Date", type: "datetime", searchable: true};
-        testUtils.addMockEnvironment(parent, {
+        testUtils.mock.addMockEnvironment(parent, {
             data: this.data,
         });
 
@@ -441,7 +441,7 @@ QUnit.module('ReportComponents', {
         tOptions.appendTo(parent.$el);
         assert.strictEqual(tOptions.$('select').val(), 'monetary',
             "Should select the image widget");
-        assert.strictEqual(tOptions.$('.o_web_studio_toption_option').length, 4,
+        assert.containsN(tOptions, '.o_web_studio_toption_option', 4,
             "there should be 4 available options for the monetary widget");
         assert.strictEqual(tOptions.$('.o_web_studio_toption_option_monetary_from_currency .o_field_selector_value').text().replace(/\s+/g, ''),
             "o(ModelTest)ChildCurrency",
@@ -461,7 +461,7 @@ QUnit.module('ReportComponents', {
         var parent = new Widget();
         parent.appendTo($('#qunit-fixture'));
 
-        testUtils.addMockEnvironment(parent, {
+        testUtils.mock.addMockEnvironment(parent, {
             data: this.data,
         });
 
@@ -492,7 +492,7 @@ QUnit.module('ReportComponents', {
         var parent = new Widget();
         parent.appendTo($('#qunit-fixture'));
 
-        testUtils.addMockEnvironment(parent, {
+        testUtils.mock.addMockEnvironment(parent, {
             data: this.data,
         });
 
@@ -523,7 +523,7 @@ QUnit.module('ReportComponents', {
         var parent = new Widget();
 
         var optionsFields;
-        testUtils.addMockEnvironment(parent, {
+        testUtils.mock.addMockEnvironment(parent, {
             intercepts: {
                 view_change: function (ev) {
                     assert.deepEqual(ev.data.operation.new_attrs['t-options-fields'], optionsFields,
@@ -552,31 +552,30 @@ QUnit.module('ReportComponents', {
 
         var tOptions = new (editComponentsRegistry.get('tOptions'))(parent, params);
         tOptions.appendTo(parent.$el);
-        assert.strictEqual(tOptions.$('.o_web_studio_toption_option').length, 3,
+        assert.containsN(tOptions, '.o_web_studio_toption_option', 3,
             "there should be 3 available options for the contact widget (they are filtered)");
         assert.strictEqual(tOptions.$('.o_badge_text').text(), 'nameaddressphonemobileemail', 'Should display default value');
-        tOptions.$('.o_input_dropdown input').click();
+        testUtils.dom.click(tOptions.$('.o_input_dropdown input'));
         assert.strictEqual($('ul.ui-autocomplete .ui-menu-item').length, 5, 'Should not display the unselected items');
         assert.strictEqual($('ul.ui-autocomplete .o_m2o_dropdown_option').length, 0, 'Should not display create button');
 
         optionsFields = ["name", "address", "phone", "mobile", "email", "city"];
-        $('ul.ui-autocomplete .ui-menu-item:contains(city)').click();
+        testUtils.dom.click($('ul.ui-autocomplete .ui-menu-item:contains(city)'));
         tOptions.destroy();
 
         tOptions = new (editComponentsRegistry.get('tOptions'))(parent, params);
         tOptions.appendTo(parent.$el);
-        tOptions.$('.o_studio_option_show').click();
         assert.strictEqual(tOptions.$('.o_badge_text').text(), 'nameaddresscityphonemobileemail', 'Should display the new value');
-        tOptions.$('.o_input_dropdown input').click();
+        testUtils.dom.click(tOptions.$('.o_input_dropdown input'));
         assert.strictEqual($('ul.ui-autocomplete .ui-menu-item').length, 4, 'Should not display the unselected items');
-        tOptions.$('.o_input_dropdown input').click();
+        testUtils.dom.click(tOptions.$('.o_input_dropdown input'));
 
         optionsFields = ["address", "phone", "mobile", "email", "city"];
-        tOptions.$('.o_field_many2manytags .o_delete:first').click();
+        testUtils.dom.click(tOptions.$('.o_field_many2manytags .o_delete:first'));
         assert.strictEqual(tOptions.$('.o_badge_text').text(), 'addresscityphonemobileemail', 'Should display the new value without "name"');
 
         optionsFields = ["phone", "mobile", "email", "city"];
-        tOptions.$('.o_field_many2manytags .o_delete:first').click();
+        testUtils.dom.click(tOptions.$('.o_field_many2manytags .o_delete:first'));
         assert.strictEqual(tOptions.$('.o_badge_text').text(), 'cityphonemobileemail', 'Should display the new value without "name"');
 
         parent.destroy();
@@ -607,7 +606,7 @@ QUnit.module('ReportComponents', {
         tOptions.appendTo(parent.$el);
 
         assert.strictEqual(tOptions.$('.o_badge_text').text(), '', 'Should display default value');
-        tOptions.$('.o_input_dropdown input').click();
+        testUtils.dom.click(tOptions.$('.o_input_dropdown input'));
         assert.strictEqual($('ul.ui-autocomplete .ui-menu-item').length, 10, 'Should not display the unselected items');
         assert.strictEqual($('ul.ui-autocomplete .o_m2o_dropdown_option').length, 0, 'Should not display create button nor the search more');
 
@@ -632,13 +631,13 @@ QUnit.module('ReportComponents', {
         });
         groups.appendTo(parent.$el);
 
-        assert.strictEqual(groups.$('.o_field_many2manytags .o_badge_text').length, 2,
+        assert.containsN(groups, '.o_field_many2manytags .o_badge_text', 2,
             "there should be displayed two groups");
         assert.strictEqual(groups.$('.o_field_many2manytags').text().replace(/\s/g, ''), "MyAwesomeGroupKikou",
             "the groups should be correctly set");
 
         // delete a group
-        testUtils.addMockEnvironment(parent, {
+        testUtils.mock.addMockEnvironment(parent, {
             intercepts: {
                 view_change: function (ev) {
                     assert.deepEqual(ev.data.operation.new_attrs, {groups: [13]},
@@ -646,7 +645,7 @@ QUnit.module('ReportComponents', {
                 },
             },
         });
-        groups.$('.o_field_many2manytags .o_delete:first').click();
+        testUtils.dom.click(groups.$('.o_field_many2manytags .o_delete:first'));
 
         parent.destroy();
     });

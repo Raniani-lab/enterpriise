@@ -74,7 +74,7 @@ QUnit.module('FieldButton', {}, function () {
             "displayed button should be related to created field button widget");
         assert.strictEqual(fieldButton.$el.text().trim(), "myField",
             "should display the correct text on the button");
-        assert.notOk(fieldButton.$el.hasClass('active'),
+        assert.doesNotHaveClass(fieldButton.$el, 'active',
             "should not be active by default");
         assert.strictEqual(fieldButton.$el.data('field-name'), 'my_field',
             "button should refer to field name");
@@ -101,7 +101,7 @@ QUnit.module('FieldButton', {}, function () {
         });
         fieldButton.appendTo($('#qunit-fixture'));
 
-        fieldButton.$el.click();
+        testUtils.dom.click(fieldButton.$el);
         assert.verifySteps(['button clicked']);
 
         parent.destroy();

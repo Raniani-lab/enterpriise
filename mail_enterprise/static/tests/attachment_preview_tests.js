@@ -144,33 +144,36 @@ QUnit.module('MailAttachmentOnSide', {
             services: this.services,
         });
 
-        assert.strictEqual(form.$('.o_attachment_preview_img > img').length, 1,
+        assert.containsOnce(form, '.o_attachment_preview_img > img',
             "There should be an image for attachment preview");
-        assert.strictEqual(form.$('.o_form_sheet_bg > .o_chatter').length, 1,
+        assert.containsOnce(form, '.o_form_sheet_bg > .o_chatter',
             "Chatter should moved inside sheet");
-        assert.strictEqual(form.$('.o_form_sheet_bg + .o_attachment_preview').length, 1,
+        assert.containsOnce(form, '.o_form_sheet_bg + .o_attachment_preview',
             "Attachment preview should be next sibling to .o_form_sheet_bg");
 
         // Don't display arrow if there is no previous/next element
-        assert.strictEqual(form.$('.arrow').length, 0,
+        assert.containsNone(form, '.arrow',
             "Don't display arrow if there is no previous/next attachment");
 
         // send a message with attached PDF file
-        form.$('.o_chatter_button_new_message').click();
+        testUtils.dom.click(form.$('.o_chatter_button_new_message'));
         form.$('.oe_chatter .o_composer_text_field:first()').val("Attached the pdf file");
-        form.$('.oe_chatter .o_composer_button_send').click();
+        testUtils.dom.click(form.$('.oe_chatter .o_composer_button_send'));
 
-        assert.strictEqual(form.$('.arrow').length, 2,
+        assert.containsN(form, '.arrow', 2,
             "Display arrows if there multiple attachments");
-        assert.strictEqual(form.$('.o_attachment_preview_img > img').length, 0,
+        assert.containsNone(form, '.o_attachment_preview_img > img',
             "Preview image should be removed");
-        assert.strictEqual(form.$('.o_attachment_preview_container > iframe').length, 1,
+        assert.containsOnce(form, '.o_attachment_preview_container > iframe',
             "There should be iframe for pdf viewer");
+        // we don't use dom.click() for .o_move_next and .o_move_previous because
+        // those elements are only visible on XXL screens, but the test suite is
+        // executed on an XL device
         form.$('.o_move_next').click();
-        assert.strictEqual(form.$('.o_attachment_preview_img > img').length, 1,
+        assert.containsOnce(form, '.o_attachment_preview_img > img',
             "Display next attachment");
         form.$('.o_move_previous').click();
-        assert.strictEqual(form.$('.o_attachment_preview_container > iframe').length, 1,
+        assert.containsOnce(form, '.o_attachment_preview_container > iframe',
             "Display preview attachment");
         form.destroy();
     });
@@ -199,11 +202,11 @@ QUnit.module('MailAttachmentOnSide', {
             services: this.services,
         });
 
-        assert.strictEqual(form.$('.o_form_sheet_bg .o_attachment_preview').length, 1,
+        assert.containsOnce(form, '.o_form_sheet_bg .o_attachment_preview',
             "the preview should not be displayed");
         assert.strictEqual(form.$('.o_form_sheet_bg .o_attachment_preview').children().length, 0,
             "the preview should be empty");
-        assert.strictEqual(form.$('.o_form_sheet_bg + .o_chatter').length, 1,
+        assert.containsOnce(form, '.o_form_sheet_bg + .o_chatter',
             "chatter should not have been moved");
 
         form.destroy();
@@ -265,7 +268,7 @@ QUnit.module('MailAttachmentOnSide', {
         });
         assert.strictEqual(form.$('.o_attachment_preview').children().length, 0,
             "there should be nothing previewed");
-        assert.strictEqual(form.$('.o_form_sheet_bg + .o_chatter').length, 1,
+        assert.containsOnce(form, '.o_form_sheet_bg + .o_chatter',
             "chatter should not have been moved");
 
         form.destroy();

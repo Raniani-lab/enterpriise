@@ -18,7 +18,7 @@ QUnit.module('mail', {}, function () {
         assert.expect(2);
 
         var activityMenu = new ActivityMenu();
-        testUtils.addMockEnvironment(activityMenu, {
+        testUtils.mock.addMockEnvironment(activityMenu, {
             services: this.services,
             mockRPC: function (route, args) {
                 if (args.method === 'systray_get_activities') {
@@ -35,10 +35,9 @@ QUnit.module('mail', {}, function () {
         });
         activityMenu.appendTo($('#qunit-fixture'));
 
-        var $requestButton = activityMenu.$('.o_sys_documents_request');
-        assert.strictEqual($requestButton.length, 1, "there should be a request document button");
-
-        $requestButton.click();
+        testUtils.dom.click(activityMenu.$('> .dropdown-toggle'));
+        assert.containsOnce(activityMenu, '.o_sys_documents_request');
+        testUtils.dom.click(activityMenu.$('.o_sys_documents_request'));
 
         activityMenu.destroy();
     });

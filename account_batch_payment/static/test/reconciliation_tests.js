@@ -39,26 +39,26 @@ QUnit.module('account', {
         assert.expect(4);
 
         var clientAction = new ReconciliationClientAction.StatementAction(null, this.params.options);
-        testUtils.addMockEnvironment(clientAction, {
+        testUtils.mock.addMockEnvironment(clientAction, {
             data: this.params.data,
         });
         clientAction.appendTo($('#qunit-fixture'));
 
-        assert.strictEqual(clientAction.widgets[0].$('.batch_payments_selector').length, 0,
+        assert.containsNone(clientAction.widgets[0], '.batch_payments_selector',
             "should not have 'Select a Batch Payment' button");
 
         var widget = clientAction.widgets[1];
         widget.$('.accounting_view thead td:first').trigger('click');
-        assert.strictEqual(widget.$('.batch_payments_selector').length, 1,
+        assert.containsOnce(widget, '.batch_payments_selector',
             "should display 'Select a Batch Payment' button");
 
-        assert.strictEqual(widget.$('.accounting_view tbody tr').length, 0,
+        assert.containsNone(widget, '.accounting_view tbody tr',
             "should have not reconciliation propositions");
 
         widget.$('.match .batch_payments_selector:first').trigger('click');
         widget.$('.match a.batch_payment:first').trigger('click');
 
-        assert.strictEqual(widget.$('.accounting_view tbody tr').length, 2,
+        assert.containsN(widget, '.accounting_view tbody tr', 2,
             "should have 2 reconciliation propositions");
 
         clientAction.destroy();

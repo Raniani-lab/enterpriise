@@ -87,9 +87,9 @@ QUnit.module('Box', {}, function () {
             "should display a box layer");
         assert.strictEqual($('.boxLayer').find('.o_invoice_extract_box').length, 1,
             "should display a box inside the box layer");
-        assert.notOk($('.o_invoice_extract_box').hasClass('ocr_chosen'),
+        assert.doesNotHaveClass($('.o_invoice_extract_box'), 'ocr_chosen',
             "box should not be OCR chosen by default");
-        assert.notOk($('.o_invoice_extract_box').hasClass('selected'),
+        assert.doesNotHaveClass($('.o_invoice_extract_box'), 'selected',
             "box should not be selected by default");
         assert.strictEqual($('.o_invoice_extract_box').data('id'), 1,
             "box should have correct ID");
@@ -147,11 +147,11 @@ QUnit.module('Box', {}, function () {
         assert.strictEqual($('.o_invoice_extract_box').length, 1,
             "should display a box");
         assert.ok(box.isOcrChosen(), "should be OCR chosen (modeling)");
-        assert.ok($('.o_invoice_extract_box').hasClass('ocr_chosen'),
+        assert.hasClass($('.o_invoice_extract_box'),'ocr_chosen',
             "should be OCR chosen (rendering)");
         assert.notOk(box.isSelected(),
             "should not be selected (modeling)");
-        assert.notOk($('.o_invoice_extract_box').hasClass('selected'),
+        assert.doesNotHaveClass($('.o_invoice_extract_box'), 'selected',
             "should not be selected (rendering)");
         assert.verifySteps(['warn_ocr_chosen']);
 
@@ -169,13 +169,13 @@ QUnit.module('Box', {}, function () {
         assert.strictEqual($('.o_invoice_extract_box').length, 1,
             "should display a box");
         assert.ok(box.isOcrChosen(), "should be OCR chosen (modeling)");
-        assert.ok($('.o_invoice_extract_box').hasClass('ocr_chosen'),
+        assert.hasClass($('.o_invoice_extract_box'),'ocr_chosen',
             "should be OCR chosen (rendering)");
 
         box.unsetOcrChosen();
 
         assert.notOk(box.isOcrChosen(), "should no longer be OCR chosen (modeling)");
-        assert.notOk($('.o_invoice_extract_box').hasClass('ocr_chosen'),
+        assert.doesNotHaveClass($('.o_invoice_extract_box'), 'ocr_chosen',
             "should no longer be OCR chosen (rendering)");
 
         parent.destroy();
@@ -208,7 +208,7 @@ QUnit.module('Box', {}, function () {
             "should display a box");
         assert.ok(box.isSelected(),
             "should be selected (modeling)");
-        assert.ok($('.o_invoice_extract_box').hasClass('selected'),
+        assert.hasClass($('.o_invoice_extract_box'),'selected',
             "should be selected (rendering)");
         assert.verifySteps(['warn_selected']);
 
@@ -225,19 +225,19 @@ QUnit.module('Box', {}, function () {
             "should display a box");
         assert.notOk(box.isSelected(),
             "should not be selected by default (modeling)");
-        assert.notOk($('.o_invoice_extract_box').hasClass('selected'),
+        assert.doesNotHaveClass($('.o_invoice_extract_box'), 'selected',
             "should not be selected by default (rendering)");
 
         box.setSelected();
         assert.ok(box.isSelected(),
             "should become selected (modeling)");
-        assert.ok($('.o_invoice_extract_box').hasClass('selected'),
+        assert.hasClass($('.o_invoice_extract_box'),'selected',
             "should become selected (rendering)");
 
         box.unsetSelected();
         assert.notOk(box.isSelected(),
             "should become unselected (modeling)");
-        assert.notOk($('.o_invoice_extract_box').hasClass('selected'),
+        assert.doesNotHaveClass($('.o_invoice_extract_box'), 'selected',
             "should become unselected (rendering)");
 
         parent.destroy();
@@ -267,7 +267,7 @@ QUnit.module('Box', {}, function () {
         assert.strictEqual($('.o_invoice_extract_box').length, 1,
             "should display a box");
 
-        $('.o_invoice_extract_box').click();
+        testUtils.dom.click($('.o_invoice_extract_box'));
         assert.verifySteps(['warn_box_clicked']);
 
         parent.destroy();

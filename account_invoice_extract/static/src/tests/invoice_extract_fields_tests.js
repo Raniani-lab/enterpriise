@@ -52,13 +52,13 @@ QUnit.module('Fields', {}, function () {
         fields.renderButtons({ $container: $('#qunit-fixture') });
 
         var $buttons = $('.o_invoice_extract_button');
-        assert.ok($buttons.eq(0).hasClass('active'), "1st button should be active by default");
-        assert.notOk($buttons.eq(1).hasClass('active'), "2nd button should be inactive by default");
-        assert.notOk($buttons.eq(2).hasClass('active'), "3rd button should be inactive by default");
-        assert.notOk($buttons.eq(3).hasClass('active'), "4th button should be inactive by default");
-        assert.notOk($buttons.eq(4).hasClass('active'), "5th button should be inactive by default");
-        assert.notOk($buttons.eq(5).hasClass('active'), "6th button should be inactive by default");
-        assert.notOk($buttons.eq(6).hasClass('active'), "7th button should be inactive by default");
+        assert.hasClass($buttons.eq(0),'active', "1st button should be active by default");
+        assert.doesNotHaveClass($buttons.eq(1), 'active', "2nd button should be inactive by default");
+        assert.doesNotHaveClass($buttons.eq(2), 'active', "3rd button should be inactive by default");
+        assert.doesNotHaveClass($buttons.eq(3), 'active', "4th button should be inactive by default");
+        assert.doesNotHaveClass($buttons.eq(4), 'active', "5th button should be inactive by default");
+        assert.doesNotHaveClass($buttons.eq(5), 'active', "6th button should be inactive by default");
+        assert.doesNotHaveClass($buttons.eq(6), 'active', "7th button should be inactive by default");
 
         parent.destroy();
     });
@@ -127,12 +127,12 @@ QUnit.module('Fields', {}, function () {
         assert.notOk(totalField.isActive(),
             "Total field should be inactive by default");
         // check buttons
-        assert.ok($vatButton.hasClass('active'),
+        assert.hasClass($vatButton,'active',
             "field button 'VAT' should be active by default");
-        assert.notOk($totalButton.hasClass('active'),
+        assert.doesNotHaveClass($totalButton, 'active',
             "field button 'total' should be inactive by default");
 
-        $totalButton.click();
+        testUtils.dom.click($totalButton);
         assert.verifySteps(['new active field: total']);
 
         // check fields
@@ -141,9 +141,9 @@ QUnit.module('Fields', {}, function () {
         assert.ok(totalField.isActive(),
             "Total field should become active");
         // check buttons
-        assert.notOk($vatButton.hasClass('active'),
+        assert.doesNotHaveClass($vatButton, 'active',
             "field button 'VAT' should become inactive");
-        assert.ok($totalButton.hasClass('active'),
+        assert.hasClass($totalButton,'active',
             "field button 'total' should become active");
 
         parent.destroy();
@@ -165,21 +165,21 @@ QUnit.module('Fields', {}, function () {
         var $vatButton = $('.o_invoice_extract_button[data-field-name="VAT_Number"]');
         var $totalButton = $('.o_invoice_extract_button[data-field-name="total"]');
 
-        assert.ok($vatButton.hasClass('active'),
+        assert.hasClass($vatButton,'active',
             "field button 'VAT' should be active by default");
-        assert.notOk($totalButton.hasClass('active'),
+        assert.doesNotHaveClass($totalButton, 'active',
             "field button 'total' should be inactive by default");
 
-        $totalButton.click();
-        assert.notOk($vatButton.hasClass('active'),
+        testUtils.dom.click($totalButton);
+        assert.doesNotHaveClass($vatButton, 'active',
             "field button 'VAT' should become inactive");
-        assert.ok($totalButton.hasClass('active'),
+        assert.hasClass($totalButton,'active',
             "field button 'total' should become active");
 
         fields.resetActive();
-        assert.ok($vatButton.hasClass('active'),
+        assert.hasClass($vatButton,'active',
             "field button 'VAT' should become active after resetting active field");
-        assert.notOk($totalButton.hasClass('active'),
+        assert.doesNotHaveClass($totalButton, 'active',
             "field button 'total' should become inactive after resetting active field");
 
         parent.destroy();

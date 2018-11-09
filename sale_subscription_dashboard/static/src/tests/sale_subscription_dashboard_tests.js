@@ -184,7 +184,7 @@ odoo.define('sale_subscription_dashboard.sale_subscription_tests', function (req
             var subscription_dashboard = new SubscriptionDashBoard.sale_subscription_dashboard_main(null, {
                 id: 1
             });
-            testUtils.addMockEnvironment(subscription_dashboard, {
+            testUtils.mock.addMockEnvironment(subscription_dashboard, {
                 mockRPC: function (route, args) {
                     if (route === '/sale_subscription_dashboard/fetch_data') {
                         return $.when(self.data.fetch_data);
@@ -219,7 +219,7 @@ odoo.define('sale_subscription_dashboard.sale_subscription_tests', function (req
                 companies: null,
                 filters: null,
             });
-            testUtils.addMockEnvironment(dashboard, {
+            testUtils.mock.addMockEnvironment(dashboard, {
                 mockRPC: function (route, args) {
                     if (route === '/sale_subscription_dashboard/get_default_values_forecast') {
                         assert.deepEqual(_.keys(args).sort(), ['end_date', 'filters', 'forecast_type'], "should be requested only with defined parameters");
@@ -238,16 +238,16 @@ odoo.define('sale_subscription_dashboard.sale_subscription_tests', function (req
                 },
             });
             dashboard.appendTo($('#qunit-fixture'));
-            assert.strictEqual(dashboard.$('.o_account_contract_dashboard').length, 1, "should have a dashboard");
-            assert.strictEqual(dashboard.$('.o_account_contract_dashboard .box').length, 2, "should have a dashboard with 2 forecasts");
+            assert.containsOnce(dashboard, '.o_account_contract_dashboard', "should have a dashboard");
+            assert.containsN(dashboard, '.o_account_contract_dashboard .box', 2, "should have a dashboard with 2 forecasts");
 
-            assert.strictEqual(dashboard.$('.o_account_contract_dashboard .box:first #forecast_summary_mrr').length, 1, "first forecast should have summary header");
-            assert.strictEqual(dashboard.$('.o_account_contract_dashboard .box:first .o_forecast_options').length, 1, "first forecast should have options");
-            assert.strictEqual(dashboard.$('.o_account_contract_dashboard .box:first #forecast_chart_div_mrr').length, 1, "first forecast should have chart");
+            assert.containsOnce(dashboard, '.o_account_contract_dashboard .box:first #forecast_summary_mrr', "first forecast should have summary header");
+            assert.containsOnce(dashboard, '.o_account_contract_dashboard .box:first .o_forecast_options', "first forecast should have options");
+            assert.containsOnce(dashboard, '.o_account_contract_dashboard .box:first #forecast_chart_div_mrr', "first forecast should have chart");
 
-            assert.strictEqual(dashboard.$('.o_account_contract_dashboard .box:last #forecast_summary_contracts').length, 1, "last forecast should have summary header");
-            assert.strictEqual(dashboard.$('.o_account_contract_dashboard .box:last .o_forecast_options').length, 1, "last forecast should have options");
-            assert.strictEqual(dashboard.$('.o_account_contract_dashboard .box:last #forecast_chart_div_contracts').length, 1, "last forecast should have chart");
+            assert.containsOnce(dashboard, '.o_account_contract_dashboard .box:last #forecast_summary_contracts', "last forecast should have summary header");
+            assert.containsOnce(dashboard, '.o_account_contract_dashboard .box:last .o_forecast_options', "last forecast should have options");
+            assert.containsOnce(dashboard, '.o_account_contract_dashboard .box:last #forecast_chart_div_contracts', "last forecast should have chart");
             dashboard.destroy();
             done();
         });
@@ -268,7 +268,7 @@ odoo.define('sale_subscription_dashboard.sale_subscription_tests', function (req
                 companies: null,
                 filters: {},
             });
-            testUtils.addMockEnvironment(dashboard, {
+            testUtils.mock.addMockEnvironment(dashboard, {
                 mockRPC: function (route, args) {
                     if (route === '/sale_subscription_dashboard/compute_stat') {
                         return $.when(self.data.compute_stat);
@@ -295,16 +295,16 @@ odoo.define('sale_subscription_dashboard.sale_subscription_tests', function (req
                 },
             });
             dashboard.appendTo($('#qunit-fixture'));
-            assert.strictEqual(dashboard.$('.o_account_contract_dashboard').length, 1, "should have a dashboard");
-            assert.strictEqual(dashboard.$('.o_account_contract_dashboard .box').length, 3, "should have a dashboard with 3 boxes");
+            assert.containsOnce(dashboard, '.o_account_contract_dashboard', "should have a dashboard");
+            assert.containsN(dashboard, '.o_account_contract_dashboard .box', 3, "should have a dashboard with 3 boxes");
 
-            assert.strictEqual(dashboard.$('.o_account_contract_dashboard .box.o_graph_detailed').length, 1, "should have in first a graph box");
-            assert.strictEqual(dashboard.$('.o_account_contract_dashboard .box.o_graph_detailed .o_metric_current').length, 1, "should have the current metric");
+            assert.containsOnce(dashboard, '.o_account_contract_dashboard .box.o_graph_detailed', "should have in first a graph box");
+            assert.containsOnce(dashboard, '.o_account_contract_dashboard .box.o_graph_detailed .o_metric_current', "should have the current metric");
             assert.strictEqual(dashboard.$('.o_account_contract_dashboard .box.o_graph_detailed .o_metric_current').text().trim(), "$10k", "should format correctly the current metric value");
-            assert.strictEqual(dashboard.$('.o_account_contract_dashboard .box.o_graph_detailed #stat_chart_div').length, 1, "should display a chart");
+            assert.containsOnce(dashboard, '.o_account_contract_dashboard .box.o_graph_detailed #stat_chart_div', "should display a chart");
 
-            assert.strictEqual(dashboard.$('.o_account_contract_dashboard #o-stat-history-box.box').length, 1, "should have in second a history box");
-            assert.strictEqual(dashboard.$('.o_account_contract_dashboard .box table').length, 1, "should have in third a table box");
+            assert.containsOnce(dashboard, '.o_account_contract_dashboard #o-stat-history-box.box', "should have in second a history box");
+            assert.containsOnce(dashboard, '.o_account_contract_dashboard .box table', "should have in third a table box");
 
             dashboard.destroy();
             done();
@@ -315,7 +315,7 @@ odoo.define('sale_subscription_dashboard.sale_subscription_tests', function (req
             var self = this;
             assert.expect(9);
             var salesman_dashboard = new SubscriptionDashBoard.sale_subscription_dashboard_salesman();
-            testUtils.addMockEnvironment(salesman_dashboard, {
+            testUtils.mock.addMockEnvironment(salesman_dashboard, {
                 mockRPC: function (route, args) {
                     if (route === '/sale_subscription_dashboard/fetch_salesmen') {
                         return $.when(self.data.fetch_salesman);
@@ -327,13 +327,13 @@ odoo.define('sale_subscription_dashboard.sale_subscription_tests', function (req
                 },
             });
             salesman_dashboard.appendTo($('#qunit-fixture'));
-            assert.strictEqual(salesman_dashboard.$('#mrr_growth_salesman').length, 1, "should display the salesman graph");
+            assert.containsOnce(salesman_dashboard, '#mrr_growth_salesman', "should display the salesman graph");
             assert.strictEqual(salesman_dashboard.$('h3').first().text(), "MRR : 600", "should contain the MRR Amount '600'");
             assert.strictEqual(salesman_dashboard.$('h3').last().text(), "NRR : 1k", "should contain the NRR Amount '1k'");
-            assert.strictEqual(salesman_dashboard.$('#contract_modifications .table-responsive').length, 1, "should display the list of subscription");
+            assert.containsOnce(salesman_dashboard, '#contract_modifications .table-responsive', "should display the list of subscription");
             assert.strictEqual(salesman_dashboard.$('#contract_modifications .table-responsive tr:odd td:eq(1)').text() , "Agrolait", "should contain subscription modifications partner 'Agrolait'");
             assert.strictEqual(salesman_dashboard.$('#contract_modifications .table-responsive tr:odd td:last').text() , "800 (300)", "should contain current MRR Amount '800 (300)'");
-            assert.strictEqual(salesman_dashboard.$('#NRR_invoices .table-responsive').length, 1, "should display the list of NRR Invoices");
+            assert.containsOnce(salesman_dashboard, '#NRR_invoices .table-responsive', "should display the list of NRR Invoices");
             assert.strictEqual(salesman_dashboard.$('#NRR_invoices .table-responsive tr:eq(2) td:first').text(), "Agrolait", "should contain NRR Invoices partner 'Agrolait'");
             assert.strictEqual(salesman_dashboard.$('#NRR_invoices .table-responsive tr:eq(2) td:last').text(), "525", "should contain NRR Invoices Amount '525'");
             salesman_dashboard.destroy();

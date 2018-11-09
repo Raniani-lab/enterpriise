@@ -84,18 +84,17 @@ QUnit.module('web_enterprise', {
 
         homeMenu.appendTo($('#qunit-fixture'));
         homeMenu.on_attach_callback(); // simulate action manager attached to dom
-        homeMenu.$('input.o_menu_search_input').focus().click();
+        testUtils.dom.click(homeMenu.$('input.o_menu_search_input').focus());
 
         // 1. search must be hidden by default
-        assert.ok(
-            homeMenu.$('div.o_menu_search').hasClass('o_bar_hidden'),
+        assert.hasClass(
+            homeMenu.$('div.o_menu_search'),'o_bar_hidden',
             "search must be hidden by default");
 
-        homeMenu.$('input.o_menu_search_input').val("dis").trigger('input');
+        testUtils.fields.editInput(homeMenu.$('input.o_menu_search_input'), "dis");
 
         // 2. search must be visible after some input
-        assert.notOk(
-            homeMenu.$('div.o_menu_search').hasClass('o_bar_hidden'),
+        assert.doesNotHaveClass(homeMenu.$('div.o_menu_search'), 'o_bar_hidden',
             "search must be visible after some input");
 
         // 3. search must contain the input text
@@ -118,15 +117,14 @@ QUnit.module('web_enterprise', {
             "search must have no text after ESC");
 
         // 5. search must still become visible after clearing some non-empty text
-        assert.notOk(
-            homeMenu.$('div.o_menu_search').hasClass('o_bar_hidden'),
+        assert.doesNotHaveClass(homeMenu.$('div.o_menu_search'), 'o_bar_hidden',
             "search must still become visible after clearing some non-empty text");
 
         homeMenu.$('input.o_menu_search_input').trigger(escEvent);
 
         // 6. search must become invisible after ESC on empty text
-        assert.ok(
-            homeMenu.$('div.o_menu_search').hasClass('o_bar_hidden'),
+        assert.hasClass(
+            homeMenu.$('div.o_menu_search'),'o_bar_hidden',
             "search must become invisible after ESC on empty text");
 
         // 7. home menu must be hidden after ESC on empty text

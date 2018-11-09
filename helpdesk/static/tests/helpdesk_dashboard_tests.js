@@ -61,11 +61,11 @@ QUnit.test('dashboard basic rendering', function(assert) {
         },
     });
 
-    assert.strictEqual(kanban.$('div.o_helpdesk_dashboard').length, 1,
+    assert.containsOnce(kanban, 'div.o_helpdesk_dashboard',
             "should render the dashboard");
     assert.strictEqual(kanban.$('.o_target_to_set').text().trim(), '12',
         "should have written correct target");
-    assert.strictEqual(kanban.$('.o_target_to_set').attr('value'), '12',
+    assert.hasAttrValue(kanban.$('.o_target_to_set'), 'value', '12',
         "target's value is 12");
     kanban.destroy();
 });
@@ -104,7 +104,7 @@ QUnit.test('edit the target', function(assert) {
     assert.ok(!kanban.$('.o_target_to_set').attr('value'), "should have no target");
 
     // edit the target
-    kanban.$('.o_target_to_set').click(); // click on the target
+    testUtils.dom.click(kanban.$('.o_target_to_set'));
     kanban.$('.o_helpdesk_dashboard input')
         .val(1200)
         .trigger($.Event('keyup', {which: $.ui.keyCode.ENTER})); // set the target
@@ -141,7 +141,7 @@ QUnit.test('dashboard rendering with empty many2one', function(assert) {
         },
     });
 
-    assert.strictEqual(kanban.$('div.o_helpdesk_dashboard').length, 1,
+    assert.containsOnce(kanban, 'div.o_helpdesk_dashboard',
             "should render the dashboard");
     kanban.destroy();
 });

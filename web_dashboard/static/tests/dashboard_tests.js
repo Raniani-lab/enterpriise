@@ -12,7 +12,7 @@ var widgetRegistry = require('web.widget_registry');
 var createActionManager = testUtils.createActionManager;
 var createAsyncView = testUtils.createAsyncView;
 var createView = testUtils.createView;
-var patchDate = testUtils.patchDate;
+var patchDate = testUtils.mock.patchDate;
 
 var FieldFloat = BasicFields.FieldFloat;
 
@@ -85,11 +85,11 @@ QUnit.module('Views', {
                     '</dashboard>',
         });
 
-        assert.strictEqual(dashboard.$('.o_dashboard_view').length, 1,
+        assert.containsOnce(dashboard, '.o_dashboard_view',
             "root has a child with 'o_dashboard_view' class");
-        assert.strictEqual(dashboard.$('.o_group').length, 2,
+        assert.containsN(dashboard, '.o_group', 2,
             "should have rendered two groups");
-        assert.ok(dashboard.$('.o_group .o_group').hasClass('o_group_col_2'),
+        assert.hasClass(dashboard.$('.o_group .o_group'),'o_group_col_2',
             "inner group should have className o_group_col_2");
 
         dashboard.destroy();
@@ -118,7 +118,7 @@ QUnit.module('Views', {
                     '</dashboard>',
         });
 
-        assert.strictEqual(dashboard.$('.o_widget').length, 1,
+        assert.containsOnce(dashboard, '.o_widget',
             "there should be a node with widget class");
 
         dashboard.destroy();
@@ -284,7 +284,7 @@ QUnit.module('Views', {
             },
         });
 
-        assert.strictEqual(dashboard.$('.o_aggregate').length, 1,
+        assert.containsOnce(dashboard, '.o_aggregate',
             "should have rendered an aggregate");
         assert.strictEqual(dashboard.$('.o_aggregate > label').text(), 'sold',
             "should have correctly rendered the aggregate's label");
@@ -343,7 +343,7 @@ QUnit.module('Views', {
             },
         });
 
-        assert.strictEqual(dashboard.$('[name="formula"]').length, 1,
+        assert.containsOnce(dashboard, '[name="formula"]',
             "should have rendered a formula");
         assert.strictEqual(dashboard.$('[name="formula"] > label').text(), 'Some label',
             "should have correctly rendered the label");
@@ -380,11 +380,10 @@ QUnit.module('Views', {
             },
         });
 
-        assert.strictEqual(dashboard.$('.o_subview .o_graph_buttons').length, 1,
+        assert.containsOnce(dashboard, '.o_subview .o_graph_buttons',
             "should have rendered the graph view's buttons");
-        assert.strictEqual(dashboard.$('.o_subview .o_graph_buttons .o_button_switch').length,
-            1, "should have rendered an additional switch button");
-        assert.strictEqual(dashboard.$('.o_subview .o_graph').length, 1,
+        assert.containsN(dashboard, '.o_subview .o_graph_buttons .o_button_switch', 1, "should have rendered an additional switch button");
+        assert.containsOnce(dashboard, '.o_subview .o_graph',
             "should have rendered a graph view");
 
         assert.verifySteps(['load_views', 'read_group']);
@@ -421,11 +420,10 @@ QUnit.module('Views', {
             },
         });
 
-        assert.strictEqual(dashboard.$('.o_subview .o_pivot_buttons').length, 1,
+        assert.containsOnce(dashboard, '.o_subview .o_pivot_buttons',
             "should have rendered the pivot view's buttons");
-        assert.strictEqual(dashboard.$('.o_subview .o_pivot_buttons .o_button_switch').length,
-            1, "should have rendered an additional switch button");
-        assert.strictEqual(dashboard.$('.o_subview .o_pivot').length, 1,
+        assert.containsN(dashboard, '.o_subview .o_pivot_buttons .o_button_switch', 1, "should have rendered an additional switch button");
+        assert.containsOnce(dashboard, '.o_subview .o_pivot',
             "should have rendered a graph view");
 
         assert.verifySteps(['load_views', 'read_group', 'read_group']);
@@ -467,11 +465,10 @@ QUnit.module('Views', {
             },
         });
 
-        assert.strictEqual(dashboard.$('.o_subview .o_cohort_buttons').length, 1,
+        assert.containsOnce(dashboard, '.o_subview .o_cohort_buttons',
             "should have rendered the cohort view's buttons");
-        assert.strictEqual(dashboard.$('.o_subview .o_cohort_buttons .o_button_switch').length,
-            1, "should have rendered an additional switch button");
-        assert.strictEqual(dashboard.$('.o_subview .o_cohort_view').length, 1,
+        assert.containsN(dashboard, '.o_subview .o_cohort_buttons .o_button_switch', 1, "should have rendered an additional switch button");
+        assert.containsOnce(dashboard, '.o_subview .o_cohort_view',
             "should have rendered a graph view");
 
         assert.verifySteps(['load_views', 'get_cohort_data']);
@@ -626,9 +623,9 @@ QUnit.module('Views', {
                     '</dashboard>',
         });
 
-        assert.ok(dashboard.$('.o_group > div').hasClass('o_invisible_modifier'),
+        assert.hasClass(dashboard.$('.o_group > div'),'o_invisible_modifier',
             "the aggregate container should be invisible");
-        assert.ok(dashboard.$('.o_aggregate[name=sold]').hasClass('o_invisible_modifier'),
+        assert.hasClass(dashboard.$('.o_aggregate[name=sold]'),'o_invisible_modifier',
             "the aggregate should be invisible");
 
         dashboard.destroy();
@@ -646,7 +643,7 @@ QUnit.module('Views', {
                     '</dashboard>',
         });
 
-        assert.ok(dashboard.$('.o_formula').hasClass('o_invisible_modifier'),
+        assert.hasClass(dashboard.$('.o_formula'),'o_invisible_modifier',
             "the formula should be invisible");
 
         dashboard.destroy();
@@ -667,7 +664,7 @@ QUnit.module('Views', {
                     '</dashboard>',
         });
 
-        assert.ok(dashboard.$('.o_aggregate[name=sold]').hasClass('o_invisible_modifier'),
+        assert.hasClass(dashboard.$('.o_aggregate[name=sold]'),'o_invisible_modifier',
             "the aggregate 'sold' should be invisible");
 
         dashboard.destroy();
@@ -689,7 +686,7 @@ QUnit.module('Views', {
                     '</dashboard>',
         });
 
-        assert.ok(dashboard.$('.o_formula').hasClass('o_invisible_modifier'),
+        assert.hasClass(dashboard.$('.o_formula'),'o_invisible_modifier',
             "the formula should be invisible");
 
         dashboard.destroy();
@@ -872,25 +869,25 @@ QUnit.module('Views', {
             views: [[false, 'dashboard']],
         });
 
-        assert.ok(actionManager.$('.o_graph_measures_list .dropdown-item[data-field=sold]').hasClass('selected'),
+        assert.hasClass(actionManager.$('.o_graph_measures_list .dropdown-item[data-field=sold]'),'selected',
             "sold measure should be active in graph view");
-        assert.notOk(actionManager.$('.o_graph_measures_list .dropdown-item[data-field=untaxed]').hasClass('selected'),
+        assert.doesNotHaveClass(actionManager.$('.o_graph_measures_list .dropdown-item[data-field=untaxed]'), 'selected',
             "untaxed measure should not be active in graph view");
-        assert.ok(actionManager.$('.o_pivot_measures_list .dropdown-item[data-field=sold]').hasClass('selected'),
+        assert.hasClass(actionManager.$('.o_pivot_measures_list .dropdown-item[data-field=sold]'),'selected',
             "sold measure should be active in pivot view");
-        assert.notOk(actionManager.$('.o_pivot_measures_list .dropdown-item[data-field=untaxed]').hasClass('selected'),
+        assert.doesNotHaveClass(actionManager.$('.o_pivot_measures_list .dropdown-item[data-field=untaxed]'), 'selected',
             "untaxed measure should not be active in pivot view");
 
         // click on the 'untaxed' field: it should activate the 'untaxed' measure in both subviews
-        actionManager.$('.o_aggregate[name=untaxed]').click();
+        testUtils.dom.click(actionManager.$('.o_aggregate[name=untaxed]'));
 
-        assert.notOk(actionManager.$('.o_graph_measures_list .dropdown-item[data-field=sold]').hasClass('selected'),
+        assert.doesNotHaveClass(actionManager.$('.o_graph_measures_list .dropdown-item[data-field=sold]'), 'selected',
             "sold measure should not be active in graph view");
-        assert.ok(actionManager.$('.o_graph_measures_list .dropdown-item[data-field=untaxed]').hasClass('selected'),
+        assert.hasClass(actionManager.$('.o_graph_measures_list .dropdown-item[data-field=untaxed]'),'selected',
             "untaxed measure should be active in graph view");
-        assert.notOk(actionManager.$('.o_pivot_measures_list .dropdown-item[data-field=sold]').hasClass('selected'),
+        assert.doesNotHaveClass(actionManager.$('.o_pivot_measures_list .dropdown-item[data-field=sold]'), 'selected',
             "sold measure should not be active in pivot view");
-        assert.ok(actionManager.$('.o_pivot_measures_list .dropdown-item[data-field=untaxed]').hasClass('selected'),
+        assert.hasClass(actionManager.$('.o_pivot_measures_list .dropdown-item[data-field=untaxed]'),'selected',
             "untaxed measure should be active in pivot view");
 
         assert.verifySteps([
@@ -949,17 +946,17 @@ QUnit.module('Views', {
             views: [[false, 'dashboard']],
         });
 
-        assert.ok(actionManager.$('.o_cohort_measures_list [data-field=sold]').hasClass('selected'),
+        assert.hasClass(actionManager.$('.o_cohort_measures_list [data-field=sold]'),'selected',
             "sold measure should be active in cohort view");
-        assert.notOk(actionManager.$('.o_cohort_measures_list [data-field=untaxed]').hasClass('selected'),
+        assert.doesNotHaveClass(actionManager.$('.o_cohort_measures_list [data-field=untaxed]'), 'selected',
             "untaxed measure should not be active in cohort view");
 
         // click on the 'untaxed' field: it should activate the 'untaxed' measure in cohort subview
-        actionManager.$('.o_aggregate[name=untaxed]').click();
+        testUtils.dom.click(actionManager.$('.o_aggregate[name=untaxed]'));
 
-        assert.notOk(actionManager.$('.o_cohort_measures_list [data-field=sold]').hasClass('selected'),
+        assert.doesNotHaveClass(actionManager.$('.o_cohort_measures_list [data-field=sold]'), 'selected',
             "sold measure should not be active in cohort view");
-        assert.ok(actionManager.$('.o_cohort_measures_list [data-field=untaxed]').hasClass('selected'),
+        assert.hasClass(actionManager.$('.o_cohort_measures_list [data-field=untaxed]'),'selected',
             "untaxed measure should be active in cohort view");
 
         assert.verifySteps([
@@ -1005,12 +1002,12 @@ QUnit.module('Views', {
         });
 
         // click on the 'untaxed' field: it should update the domain
-        actionManager.$('.o_aggregate[name=untaxed]').click();
+        testUtils.dom.click(actionManager.$('.o_aggregate[name=untaxed]'));
         assert.strictEqual($('.o_control_panel .o_facet_values').text().trim(), 'Category 2',
             "should correctly display the filter in the search view");
 
         // click on the 'sold' field: it should update the domain
-        actionManager.$('.o_aggregate[name=sold]').click();
+        testUtils.dom.click(actionManager.$('.o_aggregate[name=sold]'));
         assert.strictEqual($('.o_control_panel .o_facet_values').text().trim(), 'sold',
             "should correctly display the filter in the search view");
 
@@ -1068,7 +1065,7 @@ QUnit.module('Views', {
         });
 
         // click on the 'untaxed' field: we should see zeros displayed as values
-        actionManager.$('.o_aggregate[name=untaxed]').click();
+        testUtils.dom.click(actionManager.$('.o_aggregate[name=untaxed]'));
         assert.strictEqual($('.o_aggregate[name="untaxed_2"] > .o_value').text(), "0.00",
             "should display zero as no record satisfies constrains");
         assert.strictEqual($('.o_formula[name="formula"] > .o_value').text(), "-", "Should display '-'");
@@ -1118,19 +1115,20 @@ QUnit.module('Views', {
             "'Dashboard' should be displayed in the breadcrumbs");
 
         // activate 'Category 1' filter
-        $('.o_control_panel .o_filters_menu a:contains(Category 1)').click();
+        testUtils.dom.click($('.o_dropdown_toggler_btn:contains(Filter)'));
+        testUtils.dom.click($('.o_control_panel .o_filters_menu a:contains(Category 1)'));
         assert.strictEqual($('.o_control_panel .o_facet_values').text().trim(), 'Category 1',
             "the filter should appear in the search view");
 
         // open graph in fullscreen
-        actionManager.$('.o_graph_buttons .o_button_switch').click();
+        testUtils.dom.click(actionManager.$('.o_graph_buttons .o_button_switch'));
         assert.strictEqual($('.o_control_panel .breadcrumb-item:nth(1)').text(), 'Graph Analysis',
             "'Graph Analysis' should have been stacked in the breadcrumbs");
         assert.strictEqual($('.o_control_panel .o_facet_values').text().trim(), 'Category 1',
             "the filter should have been kept");
 
         // go back using the breadcrumbs
-        $('.o_control_panel .breadcrumb a').click();
+        testUtils.dom.click($('.o_control_panel .breadcrumb a'));
 
         assert.verifySteps([
             [], // initial read_group
@@ -1188,19 +1186,20 @@ QUnit.module('Views', {
             "'Dashboard' should be displayed in the breadcrumbs");
 
         // activate 'Category 1' filter
-        $('.o_control_panel .o_filters_menu a:contains(Category 1)').click();
+        testUtils.dom.click($('.o_dropdown_toggler_btn:contains(Filter)'));
+        testUtils.dom.click($('.o_control_panel .o_filters_menu a:contains(Category 1)'));
         assert.strictEqual($('.o_control_panel .o_facet_values').text().trim(), 'Category 1',
             "the filter should appear in the search view");
 
         // open graph in fullscreen
-        actionManager.$('.o_cohort_buttons .o_button_switch').click();
+        testUtils.dom.click(actionManager.$('.o_cohort_buttons .o_button_switch'));
         assert.strictEqual($('.o_control_panel .breadcrumb li:nth(1)').text(), 'Cohort Analysis',
             "'Cohort Analysis' should have been stacked in the breadcrumbs");
         assert.strictEqual($('.o_control_panel .o_facet_values').text().trim(), 'Category 1',
             "the filter should have been kept");
 
         // go back using the breadcrumbs
-        $('.o_control_panel .breadcrumb a').click();
+        testUtils.dom.click($('.o_control_panel .breadcrumb a'));
 
         assert.verifySteps([
             [], // initial get_cohort_data
@@ -1257,20 +1256,22 @@ QUnit.module('Views', {
         });
 
         // switch to pie mode
-        assert.strictEqual(dashboard.$('.nv-multiBarWithLegend').length, 1,
+        assert.containsOnce(dashboard, '.nv-multiBarWithLegend',
             "should have rendered the graph in bar mode");
-        dashboard.$('.o_graph_buttons button[data-mode=pie]').click();
-        assert.strictEqual(dashboard.$('.nv-pieChart').length, 1,
+        testUtils.dom.click(dashboard.$('.o_graph_buttons button[data-mode=pie]'));
+        assert.containsOnce(dashboard, '.nv-pieChart',
             "should have switched to pie mode");
 
         // select 'untaxed' as measure
         activeMeasure = 'untaxed';
-        assert.strictEqual(dashboard.$('.o_graph_buttons .dropdown-item[data-field=untaxed]').length, 1,
+        assert.containsOnce(dashboard, '.o_graph_buttons .dropdown-item[data-field=untaxed]',
             "should have 'untaxed' in the list of measures");
-        dashboard.$('.o_graph_buttons .dropdown-item[data-field=untaxed]').click();
+
+        testUtils.dom.click($('button.dropdown-toggle:contains(Measures)'));
+        testUtils.dom.click(dashboard.$('.o_graph_buttons .dropdown-item[data-field=untaxed]'));
 
         // open graph in fullscreen
-        dashboard.$('.o_graph_buttons .o_button_switch').click();
+        testUtils.dom.click(dashboard.$('.o_graph_buttons .o_button_switch'));
         assert.verifySteps(['doAction']);
 
         dashboard.destroy();
@@ -1325,12 +1326,13 @@ QUnit.module('Views', {
 
         // select 'untaxed' as measure
         activeMeasure = 'untaxed';
-        assert.strictEqual(dashboard.$('.o_cohort_buttons [data-field=untaxed]').length, 1,
-            "should have 'untaxed' in the list of measures");
-        dashboard.$('.o_cohort_buttons [data-field=untaxed]').click();
+        assert.containsOnce(dashboard, '.o_cohort_buttons [data-field=untaxed]',
+        "should have 'untaxed' in the list of measures");
+        testUtils.dom.click($('button.dropdown-toggle:contains(Measures)'));
+        testUtils.dom.click(dashboard.$('.o_cohort_buttons [data-field=untaxed]'));
 
         // open cohort in fullscreen
-        dashboard.$('.o_cohort_buttons .o_button_switch').click();
+        testUtils.dom.click(dashboard.$('.o_cohort_buttons .o_button_switch'));
         assert.verifySteps(['doAction']);
 
         dashboard.destroy();
@@ -1386,13 +1388,13 @@ QUnit.module('Views', {
             },
         });
 
-        assert.strictEqual(dashboard.$('.o_graph_buttons .dropdown-item[data-field=product_id]').length, 1,
+        assert.containsOnce(dashboard, '.o_graph_buttons .dropdown-item[data-field=product_id]',
             "should have 'Product' as a measure in the graph view");
-        assert.strictEqual(dashboard.$('.o_pivot_measures_list .dropdown-item[data-field=product_id]').length, 1,
+        assert.containsOnce(dashboard, '.o_pivot_measures_list .dropdown-item[data-field=product_id]',
             "should have 'Product' as measure in the pivot view");
 
         // open graph in fullscreen
-        dashboard.$('.o_graph_buttons .o_button_switch').click();
+        testUtils.dom.click(dashboard.$('.o_graph_buttons .o_button_switch'));
 
         assert.verifySteps(['doAction']);
 
@@ -1439,16 +1441,18 @@ QUnit.module('Views', {
         });
 
         // select 'untaxed' as measure in graph view
-        actionManager.$('.o_graph_buttons .dropdown-item[data-field=untaxed]').click();
+        testUtils.dom.click($('.o_graph_buttons button.dropdown-toggle:contains(Measures)'));
+        testUtils.dom.click(actionManager.$('.o_graph_buttons .dropdown-item[data-field=untaxed]'));
 
         // select 'untaxed' as additional measure in pivot view
-        actionManager.$('.o_pivot_measures_list .dropdown-item[data-field=untaxed]').click();
+        testUtils.dom.click($('.o_pivot_buttons button.dropdown-toggle:contains(Measures)'));
+        testUtils.dom.click(actionManager.$('.o_pivot_measures_list .dropdown-item[data-field=untaxed]'));
 
         // open graph in fullscreen
-        actionManager.$('.o_pivot_buttons .o_button_switch').click();
+        testUtils.dom.click(actionManager.$('.o_pivot_buttons .o_button_switch'));
 
         // go back using the breadcrumbs
-        $('.o_control_panel .breadcrumb a').click();
+        testUtils.dom.click($('.o_control_panel .breadcrumb a'));
 
         assert.verifySteps([
             // initial read_group
@@ -1515,15 +1519,16 @@ QUnit.module('Views', {
         });
 
         // open graph in fullscreen
-        actionManager.$('.o_graph_buttons .o_button_switch').click();
+        testUtils.dom.click(actionManager.$('.o_graph_buttons .o_button_switch'));
 
         // filter on bar
-        $('.o_control_panel .o_filters_menu a:contains(Sold)').click();
+        testUtils.dom.click($('.o_dropdown_toggler_btn:contains(Filter)'));
+        testUtils.dom.click($('.o_control_panel .o_filters_menu a:contains(Sold)'));
         assert.strictEqual($('.o_control_panel .o_facet_values').text().trim(), 'Sold',
             "should correctly display the filter in the search view");
 
         // go back using the breadcrumbs
-        $('.o_control_panel .breadcrumb a').click();
+        testUtils.dom.click($('.o_control_panel .breadcrumb a'));
         assert.strictEqual($('.o_control_panel .o_facet_values').text().trim(), 'Sold',
             "should still display the filter in the search view");
 
@@ -1574,10 +1579,10 @@ QUnit.module('Views', {
         });
 
         // open graph in fullscreen
-        actionManager.$('.o_graph_buttons .o_button_switch').click();
+        testUtils.dom.click(actionManager.$('.o_graph_buttons .o_button_switch'));
 
         // go back using the breadcrumbs
-        $('.o_control_panel .breadcrumb a').click();
+        testUtils.dom.click($('.o_control_panel .breadcrumb a'));
 
         assert.verifySteps([
             [['categ_id', '=', 1]], // First rendering of dashboard view
@@ -1610,8 +1615,9 @@ QUnit.module('Views', {
             graph_intervalMapping: {},
         }, "context should be correct");
 
-        dashboard.$('.dropdown-item[data-field="sold"]').click(); // change measure
-        dashboard.$('button[data-mode="line"]').click(); // change mode
+        testUtils.dom.click(dashboard.$('.dropdown-toggle:contains(Measures)'));
+        testUtils.dom.click(dashboard.$('.dropdown-item[data-field="sold"]'));
+        testUtils.dom.click(dashboard.$('button[data-mode="line"]'));
 
         assert.deepEqual(dashboard.getContext().graph, {
             graph_mode: 'line',
@@ -1644,8 +1650,9 @@ QUnit.module('Views', {
             pivot_row_groupby: ['categ_id'],
         }, "context should be correct");
 
-        dashboard.$('.dropdown-item[data-field="sold"]').click(); // change measure
-        dashboard.$('.o_pivot_flip_button').click(); // change mode
+        testUtils.dom.click(dashboard.$('.dropdown-toggle:contains(Measures)'));
+        testUtils.dom.click(dashboard.$('.dropdown-item[data-field="sold"]'));
+        testUtils.dom.click(dashboard.$('.o_pivot_flip_button'));
 
         assert.deepEqual(dashboard.getContext().pivot, {
             pivot_column_groupby: ['categ_id'],
@@ -1682,8 +1689,8 @@ QUnit.module('Views', {
             cohort_interval: 'week',
         }, "context should be correct");
 
-        dashboard.$('[data-field="sold"]').click(); // change measure
-        dashboard.$('button[data-mode="line"]').click(); // change mode
+        testUtils.dom.click(dashboard.$('.dropdown-toggle:contains(Measures)'));
+        testUtils.dom.click(dashboard.$('[data-field="sold"]'));
 
         assert.deepEqual(dashboard.getContext().cohort, {
             cohort_measure: 'sold',
@@ -1728,9 +1735,9 @@ QUnit.module('Views', {
         // check mode
         assert.strictEqual(dashboard.renderer.subControllers.graph.renderer.state.mode,
             "line", "should be in line chart mode");
-        assert.notOk(dashboard.$('button[data-mode="bar"]').hasClass('active'),
+        assert.doesNotHaveClass(dashboard.$('button[data-mode="bar"]'), 'active',
             'bar chart button should not be active');
-        assert.ok(dashboard.$('button[data-mode="line"]').hasClass('active'),
+        assert.hasClass(dashboard.$('button[data-mode="line"]'),'active',
             'line chart button should be active');
 
         dashboard.destroy();
@@ -1761,14 +1768,14 @@ QUnit.module('Views', {
             },
         });
 
-        assert.strictEqual(dashboard.$('thead .o_pivot_header_cell_opened').length, 1,
+        assert.containsOnce(dashboard, 'thead .o_pivot_header_cell_opened',
             "column: should have one opened header");
         assert.strictEqual(dashboard.$('thead .o_pivot_header_cell_closed:contains(First)').length, 1,
             "column: should display one closed header with 'First'");
         assert.strictEqual(dashboard.$('thead .o_pivot_header_cell_closed:contains(Second)').length, 1,
             "column: should display one closed header with 'Second'");
 
-        assert.strictEqual(dashboard.$('tbody .o_pivot_header_cell_opened').length, 1,
+        assert.containsOnce(dashboard, 'tbody .o_pivot_header_cell_opened',
             "row: should have one opened header");
         assert.strictEqual(dashboard.$('tbody .o_pivot_header_cell_closed:contains(First)').length, 1,
             "row: should display one closed header with 'xphone'");
@@ -1820,9 +1827,9 @@ QUnit.module('Views', {
         // check interval
         assert.strictEqual(dashboard.renderer.subControllers.cohort.renderer.state.interval,
             "year", "should use year interval");
-        assert.notOk(dashboard.$('button[data-interval="day"]').hasClass('active'),
+        assert.doesNotHaveClass(dashboard.$('button[data-interval="day"]'), 'active',
                 'day interval button should not be active');
-        assert.ok(dashboard.$('button[data-interval="year"]').hasClass('active'),
+        assert.hasClass(dashboard.$('button[data-interval="year"]'),'active',
             'year interval button should be active');
 
         dashboard.destroy();
@@ -1940,13 +1947,12 @@ QUnit.module('Views', {
             search_view_id: [1, 'search'],
         });
 
-        $('.o_graph_buttons button:first').click();
-        $('.o_graph_buttons .o_graph_measures_list .dropdown-item').eq(1).click();
-        assert.ok($('.o_graph_buttons .o_graph_measures_list .dropdown-item').eq(1).hasClass('selected'),
+        testUtils.dom.click($('.o_graph_buttons button:first'));
+        testUtils.dom.click($('.o_graph_buttons .o_graph_measures_list .dropdown-item').eq(1));
+        assert.hasClass($('.o_graph_buttons .o_graph_measures_list .dropdown-item').eq(1),'selected',
             'groupby should be unselected');
-        $('.o_search_options button span.fa-filter').click();
-        $('.o_filters_menu li a').eq(0).click();
-        assert.ok($('.o_graph_buttons .o_graph_measures_list .dropdown-item').eq(1).hasClass('selected'),
+        testUtils.dom.click($('.o_search_options button span.fa-filter'));
+        assert.hasClass($('.o_graph_buttons .o_graph_measures_list .dropdown-item').eq(1),'selected',
             'groupby should be unselected');
         actionManager.destroy();
     });
@@ -1985,10 +1991,10 @@ QUnit.module('Views', {
         });
 
         // Clicking on aggregate to activate count measure
-        actionManager.$('.o_aggregate:first .o_value').click();
-        assert.ok(actionManager.$('.o_graph_measures_list [data-field=\'__count__\']').hasClass('selected'),
+        testUtils.dom.click(actionManager.$('.o_aggregate:first .o_value'));
+        assert.hasClass(actionManager.$('.o_graph_measures_list [data-field=\'__count__\']'),'selected',
             'count measure should be selected in graph view');
-        assert.ok(actionManager.$('.o_pivot_measures_list [data-field=\'__count\']').hasClass('selected'),
+        assert.hasClass(actionManager.$('.o_pivot_measures_list [data-field=\'__count\']'),'selected',
             'count measure should be selected in pivot view');
 
         actionManager.destroy();
@@ -2028,10 +2034,10 @@ QUnit.module('Views', {
         });
 
         // Clicking on aggregate to activate untaxed measure
-        actionManager.$('.o_aggregate:nth(1) .o_value').click();
-        assert.ok(actionManager.$('.o_graph_measures_list [data-field=\'untaxed\']').hasClass('selected'),
+        testUtils.dom.click(actionManager.$('.o_aggregate:nth(1) .o_value'));
+        assert.hasClass(actionManager.$('.o_graph_measures_list [data-field=\'untaxed\']'),'selected',
             'untaxed measure should be selected in graph view');
-        assert.ok(actionManager.$('.o_pivot_measures_list [data-field=\'untaxed\']').hasClass('selected'),
+        assert.hasClass(actionManager.$('.o_pivot_measures_list [data-field=\'untaxed\']'),'selected',
             'untaxed measure should be selected in pivot view');
 
         actionManager.destroy();
@@ -2070,13 +2076,12 @@ QUnit.module('Views', {
             search_view_id: [1, 'search'],
         });
 
-        $('.o_cohort_buttons button:first').click();
-        $('.o_cohort_buttons .o_cohort_measures_list .dropdown-item').eq(1).click();
-        assert.ok($('.o_cohort_buttons .o_cohort_measures_list .dropdown-item').eq(1).hasClass('selected'),
+        testUtils.dom.click($('.o_cohort_buttons button:first'));
+        testUtils.dom.click($('.o_cohort_buttons .o_cohort_measures_list .dropdown-item').eq(1));
+        assert.hasClass($('.o_cohort_buttons .o_cohort_measures_list .dropdown-item').eq(1),'selected',
             'groupby should be unselected');
-        $('.o_search_options button span.fa-filter').click();
-        $('.o_filters_menu li a').eq(0).click();
-        assert.ok($('.o_cohort_buttons .o_cohort_measures_list .dropdown-item').eq(1).hasClass('selected'),
+        testUtils.dom.click($('.o_search_options button span.fa-filter'));
+        assert.hasClass($('.o_cohort_buttons .o_cohort_measures_list .dropdown-item').eq(1),'selected',
             'groupby should be unselected');
 
         actionManager.destroy();
@@ -2105,15 +2110,15 @@ QUnit.module('Views', {
             },
         });
 
-        assert.ok(dashboard.$('div[name="a"]').hasClass('o_clickable'),
+        assert.hasClass(dashboard.$('div[name="a"]'),'o_clickable',
                     "By default aggregate should be clickable");
-        assert.ok(dashboard.$('div[name="b"]').hasClass('o_clickable'),
+        assert.hasClass(dashboard.$('div[name="b"]'),'o_clickable',
                     "Clickable = true aggregate should be clickable");
-        assert.notOk(dashboard.$('div[name="c"]').hasClass('o_clickable'),
+        assert.doesNotHaveClass(dashboard.$('div[name="c"]'), 'o_clickable',
                     "Clickable = false aggregate should not be clickable");
 
-        dashboard.$('div[name="c"]').click();
-        assert.ok(dashboard.$('.o_graph_measures_list [data-field="sold"]').hasClass('selected'),
+        testUtils.dom.click(dashboard.$('div[name="c"]'));
+        assert.hasClass(dashboard.$('.o_graph_measures_list [data-field="sold"]'),'selected',
                     "Measure on graph should not have changed")
 
         dashboard.destroy();
@@ -2235,18 +2240,18 @@ QUnit.module('Views', {
             type: 'ir.actions.act_window',
             views: [[false, 'dashboard']],
         });
-        assert.strictEqual(actionManager.$('.o_aggregate .o_value').length, 1);
+        assert.containsOnce(actionManager, '.o_aggregate .o_value');
 
         // Apply time range with today
-        $('button.o_time_range_menu_button').click();
+        testUtils.dom.click($('button.o_time_range_menu_button'));
         $('.o_time_range_selector').val('today');
-        $('.o_apply_range').click();
-        assert.strictEqual(actionManager.$('.o_aggregate .o_value').length, 1);
+        testUtils.dom.click($('.o_apply_range'));
+        assert.containsOnce(actionManager, '.o_aggregate .o_value');
 
         // Apply range with today and comparison with previous period
-        $('button.o_time_range_menu_button').click();
-        $('.o_comparison_checkbox').click();
-        $('.o_apply_range').click();
+        testUtils.dom.click($('button.o_time_range_menu_button'));
+        testUtils.dom.click($('.o_comparison_checkbox'));
+        testUtils.dom.click($('.o_apply_range'));
         assert.strictEqual(actionManager.$('.o_aggregate .o_variation').text(), "300%");
         assert.strictEqual(actionManager.$('.o_aggregate .o_comparison').text(), "The value is 16.00 vs The value is 4.00");
 
@@ -2279,9 +2284,9 @@ QUnit.module('Views', {
             views: [[false, 'dashboard']],
         });
 
-        $('.o_time_range_menu_button').click();
-        $('.o_time_range_menu .custom-control-label').click();
-        $('.o_time_range_menu .o_apply_range').click();
+        testUtils.dom.click($('.o_time_range_menu_button'));
+        testUtils.dom.click($('.o_time_range_menu .custom-control-label'));
+        testUtils.dom.click($('.o_time_range_menu .o_apply_range'));
 
         // The test should be modified and extended.
         assert.strictEqual($('.o_cohort_view div.o_cohort_no_data').length, 1);
@@ -2362,27 +2367,27 @@ QUnit.module('Views', {
         assert.strictEqual(actionManager.$('.o_aggregate .o_value').text().trim(), "8.00");
 
         // Apply time range with today
-        $('button.o_time_range_menu_button').click();
+        testUtils.dom.click($('button.o_time_range_menu_button'));
         $('.o_time_range_selector').val('today');
-        $('.o_apply_range').click();
+        testUtils.dom.click($('.o_apply_range'));
         assert.strictEqual(actionManager.$('.o_aggregate .o_value').text().trim(), "16.00");
-        assert.strictEqual(actionManager.$('.o_aggregate .o_value').length, 1);
+        assert.containsOnce(actionManager, '.o_aggregate .o_value');
 
         // Apply range with today and comparison with previous period
-        $('button.o_time_range_menu_button').click();
-        $('.o_comparison_checkbox').click();
-        $('.o_apply_range').click();
+        testUtils.dom.click($('button.o_time_range_menu_button'));
+        testUtils.dom.click($('.o_comparison_checkbox'));
+        testUtils.dom.click($('.o_apply_range'));
         assert.strictEqual(actionManager.$('.o_aggregate .o_variation').text(), "300%");
-        assert.ok(actionManager.$('.o_aggregate').hasClass('border-success'));
+        assert.hasClass(actionManager.$('.o_aggregate'), 'border-success');
         assert.strictEqual(actionManager.$('.o_aggregate .o_comparison').text(), "16.00 vs 4.00");
 
         // Apply range with last week and comparison with last year
-        $('button.o_time_range_menu_button').click();
+        testUtils.dom.click($('button.o_time_range_menu_button'));
         $('.o_time_range_selector').val('last_week');
         $('.o_comparison_time_range_selector').val('previous_year');
-        $('.o_apply_range').click();
+        testUtils.dom.click($('.o_apply_range'));
         assert.strictEqual(actionManager.$('.o_aggregate .o_variation').text(), "-75%");
-        assert.ok(actionManager.$('.o_aggregate').hasClass('border-danger'));
+        assert.hasClass(actionManager.$('.o_aggregate'), 'border-danger');
         assert.strictEqual(actionManager.$('.o_aggregate .o_comparison').text(), "4.00 vs 16.00");
 
         actionManager.destroy();

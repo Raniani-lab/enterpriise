@@ -93,18 +93,18 @@ QUnit.module('ViewEditorManager', {
             arch: "<tree/>",
         });
 
-        assert.strictEqual(vem.$('.o_web_studio_sidebar').length, 1,
+        assert.containsOnce(vem, '.o_web_studio_sidebar',
             "there should be a sidebar");
-        assert.ok(vem.$('.o_web_studio_sidebar').find('.o_web_studio_new').hasClass('active'),
+        assert.hasClass(vem.$('.o_web_studio_sidebar').find('.o_web_studio_new'),'active',
             "the Add tab should be active in list view");
         assert.strictEqual(vem.$('.o_web_studio_sidebar').find('.o_web_studio_field_type_container').length, 2,
             "there should be two sections in Add (new & existing fields");
 
-        vem.$('.o_web_studio_sidebar').find('.o_web_studio_view').click();
+        testUtils.dom.click(vem.$('.o_web_studio_sidebar').find('.o_web_studio_view'));
 
-        assert.ok(vem.$('.o_web_studio_sidebar').find('.o_web_studio_view').hasClass('active'),
+        assert.hasClass(vem.$('.o_web_studio_sidebar').find('.o_web_studio_view'),'active',
             "the View tab should now be active");
-        assert.ok(vem.$('.o_web_studio_sidebar').find('.o_web_studio_properties').hasClass('disabled'),
+        assert.hasClass(vem.$('.o_web_studio_sidebar').find('.o_web_studio_properties'),'disabled',
             "the Properties tab should now be disabled");
 
         vem.destroy();
@@ -121,11 +121,11 @@ QUnit.module('ViewEditorManager', {
 
         assert.strictEqual(vem.view_type, 'list',
             "view type should be list");
-        assert.strictEqual(vem.$('.o_web_studio_list_view_editor').length, 1,
+        assert.containsOnce(vem, '.o_web_studio_list_view_editor',
             "there should be a list editor");
-        assert.strictEqual(vem.$('.o_web_studio_list_view_editor table thead th.o_web_studio_hook').length, 1,
+        assert.containsOnce(vem, '.o_web_studio_list_view_editor table thead th.o_web_studio_hook',
             "there should be one hook");
-        assert.strictEqual(vem.$('.o_web_studio_list_view_editor [data-node-id]').length, 0,
+        assert.containsNone(vem, '.o_web_studio_list_view_editor [data-node-id]',
             "there should be no node");
         var nbFields = _.size(this.data.coucou.fields);
         assert.strictEqual(vem.$('.o_web_studio_sidebar .o_web_studio_existing_fields').children().length, nbFields,
@@ -143,9 +143,9 @@ QUnit.module('ViewEditorManager', {
             arch: "<tree><field name='display_name'/></tree>",
         });
 
-        assert.strictEqual(vem.$('.o_web_studio_list_view_editor [data-node-id]').length, 1,
+        assert.containsOnce(vem, '.o_web_studio_list_view_editor [data-node-id]',
             "there should be one node");
-        assert.strictEqual(vem.$('table thead th.o_web_studio_hook').length, 2,
+        assert.containsN(vem, 'table thead th.o_web_studio_hook', 2,
             "there should be two hooks (before & after the field)");
         var nbFields = _.size(this.data.coucou.fields) - 1; // - display_name
         assert.strictEqual(vem.$('.o_web_studio_sidebar').find('.o_web_studio_existing_fields').children().length, nbFields,
@@ -163,18 +163,18 @@ QUnit.module('ViewEditorManager', {
             arch: "<tree><field name='display_name' invisible='1'/></tree>",
         });
 
-        assert.strictEqual(vem.$('.o_web_studio_list_view_editor [data-node-id]').length, 0,
+        assert.containsNone(vem, '.o_web_studio_list_view_editor [data-node-id]',
             "there should be no node");
-        assert.strictEqual(vem.$('table thead th.o_web_studio_hook').length, 1,
+        assert.containsOnce(vem, 'table thead th.o_web_studio_hook',
             "there should be one hook");
 
         // click on show invisible
-        vem.$('.o_web_studio_sidebar').find('.o_web_studio_view').click();
-        vem.$('.o_web_studio_sidebar').find('input#show_invisible').click();
+        testUtils.dom.click(vem.$('.o_web_studio_sidebar').find('.o_web_studio_view'));
+        testUtils.dom.click(vem.$('.o_web_studio_sidebar').find('input#show_invisible'));
 
-        assert.strictEqual(vem.$('.o_web_studio_list_view_editor [data-node-id]').length, 1,
+        assert.containsOnce(vem, '.o_web_studio_list_view_editor [data-node-id]',
             "there should be one node (the invisible one)");
-        assert.strictEqual(vem.$('table thead th.o_web_studio_hook').length, 2,
+        assert.containsN(vem, 'table thead th.o_web_studio_hook', 2,
             "there should be two hooks (before & after the field)");
 
         vem.destroy();
@@ -208,13 +208,13 @@ QUnit.module('ViewEditorManager', {
         });
         fieldsView = $.extend(true, {}, vem.fields_view);
 
-        vem.$('.o_web_studio_sidebar').find('.o_web_studio_view').click();
-        vem.$('.o_web_studio_sidebar').find('input#show_invisible').click();
+        testUtils.dom.click(vem.$('.o_web_studio_sidebar').find('.o_web_studio_view'));
+        testUtils.dom.click(vem.$('.o_web_studio_sidebar').find('input#show_invisible'));
 
         // select the second column
-        vem.$('thead th[data-node-id=2]').click();
+        testUtils.dom.click(vem.$('thead th[data-node-id=2]'));
         // disable invisible
-        vem.$('.o_web_studio_sidebar').find('input#invisible').click();
+        testUtils.dom.click(vem.$('.o_web_studio_sidebar').find('input#invisible'));
 
         vem.destroy();
     });
@@ -249,13 +249,13 @@ QUnit.module('ViewEditorManager', {
         });
         fieldsView = $.extend(true, {}, vem.fields_view);
 
-        vem.$('.o_web_studio_sidebar').find('.o_web_studio_view').click();
-        vem.$('.o_web_studio_sidebar').find('input#show_invisible').click();
+        testUtils.dom.click(vem.$('.o_web_studio_sidebar').find('.o_web_studio_view'));
+        testUtils.dom.click(vem.$('.o_web_studio_sidebar').find('input#show_invisible'));
 
         // select the second column
-        vem.$('thead th[data-node-id=2]').click();
+        testUtils.dom.click(vem.$('thead th[data-node-id=2]'));
         // disable invisible
-        vem.$('.o_web_studio_sidebar').find('input#invisible').click();
+        testUtils.dom.click(vem.$('.o_web_studio_sidebar').find('input#invisible'));
 
         vem.destroy();
     });
@@ -270,14 +270,14 @@ QUnit.module('ViewEditorManager', {
         });
 
         // click on the field
-        vem.$('.o_web_studio_list_view_editor [data-node-id]').click();
+        testUtils.dom.click(vem.$('.o_web_studio_list_view_editor [data-node-id]'));
 
-        assert.ok(vem.$('.o_web_studio_list_view_editor [data-node-id]').hasClass('o_web_studio_clicked'),
+        assert.hasClass(vem.$('.o_web_studio_list_view_editor [data-node-id]'),'o_web_studio_clicked',
             "the column should have the clicked style");
 
-        assert.ok(vem.$('.o_web_studio_sidebar').find('.o_web_studio_properties').hasClass('active'),
+        assert.hasClass(vem.$('.o_web_studio_sidebar').find('.o_web_studio_properties'),'active',
             "the Properties tab should now be active");
-        assert.strictEqual(vem.$('.o_web_studio_sidebar_content.o_display_field').length, 1,
+        assert.containsOnce(vem, '.o_web_studio_sidebar_content.o_display_field',
             "the sidebar should now display the field properties");
         assert.strictEqual(vem.$('.o_web_studio_sidebar').find('input[name="string"]').val(), "Display Name",
             "the label in sidebar should be Display Name");
@@ -299,13 +299,13 @@ QUnit.module('ViewEditorManager', {
             "</tree>",
         });
 
-        assert.strictEqual(vem.$('.ui-sortable-handle').length, 2,
+        assert.containsN(vem, '.ui-sortable-handle', 2,
             "the widget handle should be displayed");
         assert.strictEqual(vem.$('.o_data_cell').text(), "xpadxpod",
             "the records should be ordered");
 
         // Drag and drop the second line in first position
-        testUtils.dragAndDrop(
+        testUtils.dom.dragAndDrop(
             vem.$('.ui-sortable-handle').eq(1),
             vem.$('tbody tr').first(),
             {position: 'top'}
@@ -330,7 +330,7 @@ QUnit.module('ViewEditorManager', {
             groupBy: ['priority'],
         });
 
-        assert.strictEqual(vem.$('.o_web_studio_list_view_editor .o_list_view_grouped').length, 0,
+        assert.containsNone(vem, '.o_web_studio_list_view_editor .o_list_view_grouped',
             "The list should not be grouped");
 
         vem.destroy();
@@ -386,7 +386,7 @@ QUnit.module('ViewEditorManager', {
             "the columns should be in the correct order");
 
         // move the m2o at index 0
-        testUtils.dragAndDrop(vem.$('.o_web_studio_list_view_editor th:contains(M2O)'),
+        testUtils.dom.dragAndDrop(vem.$('.o_web_studio_list_view_editor th:contains(M2O)'),
             vem.$('th.o_web_studio_hook:first'));
 
         assert.strictEqual(vem.$('.o_web_studio_list_view_editor th').text(), "M2ODisplay NameA char",
@@ -408,11 +408,11 @@ QUnit.module('ViewEditorManager', {
 
         assert.strictEqual(vem.view_type, 'form',
             "view type should be form");
-        assert.strictEqual(vem.$('.o_web_studio_form_view_editor').length, 1,
+        assert.containsOnce(vem, '.o_web_studio_form_view_editor',
             "there should be a form editor");
-        assert.strictEqual(vem.$('.o_web_studio_form_view_editor [data-node-id]').length, 0,
+        assert.containsNone(vem, '.o_web_studio_form_view_editor [data-node-id]',
             "there should be no node");
-        assert.strictEqual(vem.$('.o_web_studio_form_view_editor .o_web_studio_hook').length, 0,
+        assert.containsNone(vem, '.o_web_studio_form_view_editor .o_web_studio_hook',
             "there should be no hook");
 
         vem.destroy();
@@ -431,18 +431,18 @@ QUnit.module('ViewEditorManager', {
                 "</form>",
         });
 
-        assert.strictEqual(vem.$('.o_web_studio_form_view_editor [data-node-id]').length, 1,
+        assert.containsOnce(vem, '.o_web_studio_form_view_editor [data-node-id]',
             "there should be one node");
-        assert.strictEqual(vem.$('.o_web_studio_form_view_editor .o_web_studio_hook').length, 1,
+        assert.containsOnce(vem, '.o_web_studio_form_view_editor .o_web_studio_hook',
             "there should be one hook");
 
-        vem.$('.o_web_studio_form_view_editor [data-node-id]').click();
+        testUtils.dom.click(vem.$('.o_web_studio_form_view_editor [data-node-id]'));
 
-        assert.ok(vem.$('.o_web_studio_sidebar').find('.o_web_studio_properties').hasClass('active'),
+        assert.hasClass(vem.$('.o_web_studio_sidebar').find('.o_web_studio_properties'),'active',
             "the Properties tab should now be active");
-        assert.strictEqual(vem.$('.o_web_studio_sidebar_content.o_display_field').length, 1,
+        assert.containsOnce(vem, '.o_web_studio_sidebar_content.o_display_field',
             "the sidebar should now display the field properties");
-        assert.ok(vem.$('.o_web_studio_form_view_editor [data-node-id]').hasClass('o_web_studio_clicked'),
+        assert.hasClass(vem.$('.o_web_studio_form_view_editor [data-node-id]'),'o_web_studio_clicked',
             "the column should have the clicked style");
         assert.strictEqual(vem.$('.o_web_studio_sidebar').find('select[name="widget"]').val(), "",
             "the widget in sidebar should be empty");
@@ -480,15 +480,15 @@ QUnit.module('ViewEditorManager', {
             },
         });
 
-        assert.strictEqual(vem.$('.o_web_studio_form_view_editor [data-node-id]').length, 1,
+        assert.containsOnce(vem, '.o_web_studio_form_view_editor [data-node-id]',
             "there should be one node");
 
         // edit the many2one
-        vem.$('.o_web_studio_form_view_editor [data-node-id]').click();
+        testUtils.dom.click(vem.$('.o_web_studio_form_view_editor [data-node-id]'));
 
-        assert.strictEqual(vem.$('.o_web_studio_sidebar_content.o_display_field').length, 1,
+        assert.containsOnce(vem, '.o_web_studio_sidebar_content.o_display_field',
             "the sidebar should now display the field properties");
-        assert.ok(vem.$('.o_web_studio_form_view_editor [data-node-id]').hasClass('o_web_studio_clicked'),
+        assert.hasClass(vem.$('.o_web_studio_form_view_editor [data-node-id]'),'o_web_studio_clicked',
             "the column should have the clicked style");
         vem.destroy();
     });
@@ -542,18 +542,18 @@ QUnit.module('ViewEditorManager', {
         // used to generate the new fields view in mockRPC
         fieldsView = $.extend(true, {}, vem.fields_view);
 
-        assert.strictEqual(vem.$('.o_web_studio_form_view_editor .o_field_image').length, 1,
+        assert.containsOnce(vem, '.o_web_studio_form_view_editor .o_field_image',
             "there should be one image");
         assert.verifySteps(['image'], "the image should have been fetched");
 
         // edit the image
-        vem.$('.o_web_studio_form_view_editor .o_field_image').click();
+        testUtils.dom.click(vem.$('.o_web_studio_form_view_editor .o_field_image'));
 
-        assert.strictEqual(vem.$('.o_web_studio_sidebar_content.o_display_field select#img_size').length, 1,
+        assert.containsOnce(vem, '.o_web_studio_sidebar_content.o_display_field select#img_size',
             "the sidebar should display dropdown to change image size");
         assert.strictEqual(vem.$('.o_web_studio_sidebar_content.o_display_field select#img_size option:selected').val(), "90",
             "the image size should be correctly selected");
-        assert.ok(vem.$('.o_web_studio_form_view_editor .o_field_image').hasClass('o_web_studio_clicked'),
+        assert.hasClass(vem.$('.o_web_studio_form_view_editor .o_field_image'),'o_web_studio_clicked',
             "image should have the clicked style");
 
         // change image size to large
@@ -573,6 +573,8 @@ QUnit.module('ViewEditorManager', {
             "</sheet>" +
         "</form>";
         var fieldsView;
+
+        this.data.partner.records[0].image = 'kikou';
 
         var vem = studioTestUtils.createViewEditorManager({
             data: this.data,
@@ -600,16 +602,16 @@ QUnit.module('ViewEditorManager', {
         // used to generate the new fields view in mockRPC
         fieldsView = $.extend(true, {}, vem.fields_view);
 
-        assert.strictEqual(vem.$('.o_web_studio_form_view_editor [data-node-id]').length, 1,
+        assert.containsOnce(vem, '.o_web_studio_form_view_editor [data-node-id]',
             "there should be one binary field");
 
         // edit the binary field
-        vem.$('.o_web_studio_form_view_editor [data-node-id]').click();
+        testUtils.dom.click(vem.$('.o_web_studio_form_view_editor [data-node-id]'));
 
         // Change widget from binary to image
-        assert.strictEqual(vem.$('.o_web_studio_sidebar_content.o_display_field select#widget').length, 1,
+        assert.containsOnce(vem, '.o_web_studio_sidebar_content.o_display_field select#widget',
             "the sidebar should display dropdown to change widget");
-        assert.ok(vem.$('.o_web_studio_form_view_editor [data-node-id]').hasClass('o_web_studio_clicked'),
+        assert.hasClass(vem.$('.o_web_studio_form_view_editor [data-node-id]'),'o_web_studio_clicked',
             "binary field should have the clicked style");
 
         // change widget to image
@@ -633,22 +635,22 @@ QUnit.module('ViewEditorManager', {
                 "</form>",
         });
 
-        assert.strictEqual(vem.$('.o_web_studio_form_view_editor .o_field_widget.o_invisible_modifier').length, 2,
+        assert.containsN(vem, '.o_web_studio_form_view_editor .o_field_widget.o_invisible_modifier', 2,
             "there should be two invisible nodes");
-        assert.strictEqual(vem.$('.o_web_studio_form_view_editor [data-node-id]').length, 1,
+        assert.containsOnce(vem, '.o_web_studio_form_view_editor [data-node-id]',
             "the invisible node should not be editable (only the group has a node-id set)");
-        assert.strictEqual(vem.$('.o_web_studio_form_view_editor .o_web_studio_hook').length, 2,
+        assert.containsN(vem, '.o_web_studio_form_view_editor .o_web_studio_hook', 2,
             "there should be two hooks (outside and inside the group");
 
         // click on show invisible
-        vem.$('.o_web_studio_sidebar').find('.o_web_studio_view').click();
-        vem.$('.o_web_studio_sidebar').find('input#show_invisible').click();
+        testUtils.dom.click(vem.$('.o_web_studio_sidebar').find('.o_web_studio_view'));
+        testUtils.dom.click(vem.$('.o_web_studio_sidebar').find('input#show_invisible'));
 
-        assert.strictEqual(vem.$('.o_web_studio_form_view_editor .o_web_studio_show_invisible[data-node-id]').length, 2,
+        assert.containsN(vem, '.o_web_studio_form_view_editor .o_web_studio_show_invisible[data-node-id]', 2,
             "there should be one visible nodes (the invisible ones)");
-        assert.strictEqual(vem.$('.o_web_studio_form_view_editor .o_invisible_modifier[data-node-id]').length, 0,
+        assert.containsNone(vem, '.o_web_studio_form_view_editor .o_invisible_modifier[data-node-id]',
             "there should be no invisible node");
-        assert.strictEqual(vem.$('.o_web_studio_form_view_editor .o_web_studio_hook').length, 3,
+        assert.containsN(vem, '.o_web_studio_form_view_editor .o_web_studio_hook', 3,
             "there should be three hooks");
 
         vem.destroy();
@@ -675,17 +677,17 @@ QUnit.module('ViewEditorManager', {
             },
         });
 
-        assert.strictEqual(vem.$('.o_web_studio_form_view_editor .oe_chatter[data-node-id]').length, 1,
+        assert.containsOnce(vem, '.o_web_studio_form_view_editor .oe_chatter[data-node-id]',
             "there should be a chatter node");
 
         // click on the chatter
-        vem.$('.o_web_studio_form_view_editor .oe_chatter[data-node-id]').click();
+        testUtils.dom.click(vem.$('.o_web_studio_form_view_editor .oe_chatter[data-node-id]'));
 
-        assert.ok(vem.$('.o_web_studio_sidebar .o_web_studio_properties').hasClass('active'),
+        assert.hasClass(vem.$('.o_web_studio_sidebar .o_web_studio_properties'),'active',
             "the Properties tab should now be active");
-        assert.strictEqual(vem.$('.o_web_studio_sidebar_content.o_display_chatter').length, 1,
+        assert.containsOnce(vem, '.o_web_studio_sidebar_content.o_display_chatter',
             "the sidebar should now display the chatter properties");
-        assert.ok(vem.$('.o_web_studio_form_view_editor .oe_chatter[data-node-id]').hasClass('o_web_studio_clicked'),
+        assert.hasClass(vem.$('.o_web_studio_form_view_editor .oe_chatter[data-node-id]'),'o_web_studio_clicked',
             "the chatter should have the clicked style");
         assert.strictEqual(vem.$('.o_web_studio_sidebar input[name="email_alias"]').val(), "coucou",
             "the email alias in sidebar should be fetched");
@@ -717,15 +719,15 @@ QUnit.module('ViewEditorManager', {
             res_id: 1,
         });
 
-        assert.ok(!vem.$('.o_web_studio_form_view_editor [name="id"]').hasClass('o_web_studio_widget_empty'),
+        assert.doesNotHaveClass(vem.$('.o_web_studio_form_view_editor [name="id"]'), 'o_web_studio_widget_empty',
             "non empty field in group should label should not be special");
-        assert.ok(!vem.$('.o_web_studio_form_view_editor [name="m2o"]').hasClass('o_web_studio_widget_empty'),
+        assert.doesNotHaveClass(vem.$('.o_web_studio_form_view_editor [name="m2o"]'), 'o_web_studio_widget_empty',
             "empty field in group should have without label should not be special");
-        assert.ok(vem.$('.o_web_studio_form_view_editor [name="m2o"]').hasClass('o_field_empty'),
+        assert.hasClass(vem.$('.o_web_studio_form_view_editor [name="m2o"]'),'o_field_empty',
             "empty field in group should have without label should still have the normal empty class");
-        assert.ok(!vem.$('.o_web_studio_form_view_editor [name="display_name"]').hasClass('o_web_studio_widget_empty'),
+        assert.doesNotHaveClass(vem.$('.o_web_studio_form_view_editor [name="display_name"]'), 'o_web_studio_widget_empty',
             "non empty field without label should not be special");
-        assert.ok(vem.$('.o_web_studio_form_view_editor [name="char_field"]').hasClass('o_web_studio_widget_empty'),
+        assert.hasClass(vem.$('.o_web_studio_form_view_editor [name="char_field"]'),'o_web_studio_widget_empty',
             "empty field without label should be special");
         assert.strictEqual(vem.$('.o_web_studio_form_view_editor [name="char_field"]').text(), "A char",
             "empty field without label should have its string as label");
@@ -756,13 +758,13 @@ QUnit.module('ViewEditorManager', {
                 "</form>",
         });
 
-        assert.strictEqual(vem.$('.o_web_studio_form_view_editor .o_form_sheet > div.o_web_studio_hook').length, 3,
+        assert.containsN(vem, '.o_web_studio_form_view_editor .o_form_sheet > div.o_web_studio_hook', 3,
             "there should be three hooks as children of the sheet");
-        assert.ok(vem.$('.o_web_studio_form_view_editor .o_form_sheet > div:eq(1)').hasClass('o_web_studio_hook'),
+        assert.hasClass(vem.$('.o_web_studio_form_view_editor .o_form_sheet > div:eq(1)'),'o_web_studio_hook',
             "second div should be a hook");
-        assert.ok(vem.$('.o_web_studio_form_view_editor .o_form_sheet > div:eq(3)').hasClass('o_web_studio_hook'),
+        assert.hasClass(vem.$('.o_web_studio_form_view_editor .o_form_sheet > div:eq(3)'),'o_web_studio_hook',
             "fourth div should be a hook");
-        assert.ok(vem.$('.o_web_studio_form_view_editor .o_form_sheet > div:eq(5)').hasClass('o_web_studio_hook'),
+        assert.hasClass(vem.$('.o_web_studio_form_view_editor .o_form_sheet > div:eq(5)'),'o_web_studio_hook',
             "last div should be a hook");
 
         vem.destroy();
@@ -794,7 +796,7 @@ QUnit.module('ViewEditorManager', {
         // first group (without title, without content)
         assert.strictEqual(vem.$('.o_web_studio_form_view_editor .o_inner_group:eq(0) .o_web_studio_hook').length, 1,
             "there should be 1 hook");
-        assert.ok(vem.$('.o_web_studio_form_view_editor .o_inner_group:eq(0) tr:eq(1)').hasClass('o_web_studio_hook'),
+        assert.hasClass(vem.$('.o_web_studio_form_view_editor .o_inner_group:eq(0) tr:eq(1)'),'o_web_studio_hook',
             "the second row should be a hook");
 
         // second group (with title, without content)
@@ -802,17 +804,17 @@ QUnit.module('ViewEditorManager', {
             "there should be 1 hook");
         assert.strictEqual(vem.$('.o_web_studio_form_view_editor .o_inner_group:eq(1) tr:eq(0)').text(), "Kikou2",
             "the first row is the group title");
-        assert.ok(vem.$('.o_web_studio_form_view_editor .o_inner_group:eq(1) tr:eq(2)').hasClass('o_web_studio_hook'),
+        assert.hasClass(vem.$('.o_web_studio_form_view_editor .o_inner_group:eq(1) tr:eq(2)'),'o_web_studio_hook',
             "the third row should be a hook");
 
         // third group (without title, with content)
         assert.strictEqual(vem.$('.o_web_studio_form_view_editor .o_inner_group:eq(2) .o_web_studio_hook').length, 2,
             "there should be 2 hooks");
-        assert.ok(vem.$('.o_web_studio_form_view_editor .o_inner_group:eq(2) tr:eq(0)').hasClass('o_web_studio_hook'),
+        assert.hasClass(vem.$('.o_web_studio_form_view_editor .o_inner_group:eq(2) tr:eq(0)'),'o_web_studio_hook',
             "the first row should be a hook");
         assert.strictEqual(vem.$('.o_web_studio_form_view_editor .o_inner_group:eq(2) tr:eq(1)').text(), "M2O",
             "the second row is the field");
-        assert.ok(vem.$('.o_web_studio_form_view_editor .o_inner_group:eq(2) tr:eq(2)').hasClass('o_web_studio_hook'),
+        assert.hasClass(vem.$('.o_web_studio_form_view_editor .o_inner_group:eq(2) tr:eq(2)'),'o_web_studio_hook',
             "the third row should be a hook");
 
         // last group (with title, with content)
@@ -820,11 +822,11 @@ QUnit.module('ViewEditorManager', {
             "there should be 2 hooks");
         assert.strictEqual(vem.$('.o_web_studio_form_view_editor .o_inner_group:eq(3) tr:eq(0)').text(), "Kikou",
             "the first row is the group title");
-        assert.ok(vem.$('.o_web_studio_form_view_editor .o_inner_group:eq(3) tr:eq(1)').hasClass('o_web_studio_hook'),
+        assert.hasClass(vem.$('.o_web_studio_form_view_editor .o_inner_group:eq(3) tr:eq(1)'),'o_web_studio_hook',
             "the second row should be a hook");
         assert.strictEqual(vem.$('.o_web_studio_form_view_editor .o_inner_group:eq(3) tr:eq(2)').text(), "ID",
             "the third row is the field");
-        assert.ok(vem.$('.o_web_studio_form_view_editor .o_inner_group:eq(3) tr:eq(3)').hasClass('o_web_studio_hook'),
+        assert.hasClass(vem.$('.o_web_studio_form_view_editor .o_inner_group:eq(3) tr:eq(3)'),'o_web_studio_hook',
             "the last row should be a hook");
 
         vem.destroy();
@@ -876,20 +878,20 @@ QUnit.module('ViewEditorManager', {
         // used to generate the new fields view in mockRPC
         fieldsView = $.extend(true, {}, vem.fields_view);
 
-        assert.strictEqual(vem.$('.o_notebook li').length, 2,
+        assert.containsN(vem, '.o_notebook li', 2,
             "there should be one existing page and a fake one");
 
         // click on existing tab
         var $page = vem.$('.o_notebook li:first');
-        $page.click();
-        assert.ok($page.hasClass('o_web_studio_clicked'), "the page should be clickable");
-        assert.strictEqual(vem.$('.o_web_studio_sidebar_content.o_display_page').length, 1,
+        testUtils.dom.click($page);
+        assert.hasClass($page,'o_web_studio_clicked', "the page should be clickable");
+        assert.containsOnce(vem, '.o_web_studio_sidebar_content.o_display_page',
             "the sidebar should now display the page properties");
         var $pageInput = vem.$('.o_web_studio_sidebar_content.o_display_page input[name="string"]');
         assert.strictEqual($pageInput.val(), "Kikou", "the page name in sidebar should be set");
 
         // add a new page
-        vem.$('.o_notebook li:eq(1) > a').click();
+        testUtils.dom.click(vem.$('.o_notebook li:eq(1) > a'));
 
         vem.destroy();
     });
@@ -943,9 +945,9 @@ QUnit.module('ViewEditorManager', {
         assert.strictEqual($label.text(), "Kikou",
             "the label should be correctly set");
 
-        $label.click();
-        assert.ok($label.hasClass('o_web_studio_clicked'), "the label should be clickable");
-        assert.strictEqual(vem.$('.o_web_studio_sidebar_content.o_display_label').length, 1,
+        testUtils.dom.click($label);
+        assert.hasClass($label,'o_web_studio_clicked', "the label should be clickable");
+        assert.containsOnce(vem, '.o_web_studio_sidebar_content.o_display_label',
             "the sidebar should now display the label properties");
         var $labelInput = vem.$('.o_web_studio_sidebar_content.o_display_label input[name="string"]');
         assert.strictEqual($labelInput.val(), "Kikou", "the label name in sidebar should be set");
@@ -953,9 +955,9 @@ QUnit.module('ViewEditorManager', {
 
         var $fieldLabel = vem.$('.o_web_studio_form_view_editor label:contains("A char")');
         assert.strictEqual($fieldLabel.length, 1, "there should be a label for the field");
-        $fieldLabel.click();
-        assert.notOk($fieldLabel.hasClass('o_web_studio_clicked'), "the field label should not be clickable");
-        assert.strictEqual(vem.$('.o_web_studio_sidebar_content.o_display_field').length, 1,
+        testUtils.dom.click($fieldLabel);
+        assert.doesNotHaveClass($fieldLabel, 'o_web_studio_clicked', "the field label should not be clickable");
+        assert.containsOnce(vem, '.o_web_studio_sidebar_content.o_display_field',
             "the sidebar should now display the field properties");
 
         vem.destroy();
@@ -1004,13 +1006,13 @@ QUnit.module('ViewEditorManager', {
 
         var $statusbar = vem.$('.o_web_studio_form_view_editor .o_web_studio_statusbar_hook');
         assert.deepEqual($statusbar.length, 1, "there should be a hook to add a statusbar");
-        $statusbar.click();
+        testUtils.dom.click($statusbar);
 
         assert.deepEqual($('.o_web_studio_field_modal').length, 1,
             "a modal should be open to create the new selection field");
         assert.deepEqual($('.o_web_studio_selection_editor li').length, 3,
             "there should be 3 pre-filled values for the selection field");
-        $('.modal-footer .btn-primary:first').click(); // confirm
+        testUtils.dom.click($('.modal-footer .btn-primary:first'));
 
         vem.destroy();
     });
@@ -1073,7 +1075,7 @@ QUnit.module('ViewEditorManager', {
             "the moved field should be the first column");
 
         // move m2o before display_name
-        testUtils.dragAndDrop(vem.$('.o_web_studio_form_view_editor .ui-draggable:eq(2)'),
+        testUtils.dom.dragAndDrop(vem.$('.o_web_studio_form_view_editor .ui-draggable:eq(2)'),
             vem.$('.o_group .o_web_studio_hook:first'));
 
         assert.strictEqual(vem.$('.o_web_studio_form_view_editor .o_form_sheet').text(), "M2ODisplay NameA char",
@@ -1097,11 +1099,11 @@ QUnit.module('ViewEditorManager', {
 
         assert.strictEqual(vem.view_type, 'kanban',
             "view type should be kanban");
-        assert.strictEqual(vem.$('.o_web_studio_kanban_view_editor').length, 1,
+        assert.containsOnce(vem, '.o_web_studio_kanban_view_editor',
             "there should be a kanban editor");
-        assert.strictEqual(vem.$('.o_web_studio_kanban_view_editor [data-node-id]').length, 0,
+        assert.containsNone(vem, '.o_web_studio_kanban_view_editor [data-node-id]',
             "there should be no node");
-        assert.strictEqual(vem.$('.o_web_studio_kanban_view_editor .o_web_studio_hook').length, 0,
+        assert.containsNone(vem, '.o_web_studio_kanban_view_editor .o_web_studio_hook',
             "there should be no hook");
 
         vem.destroy();
@@ -1124,28 +1126,28 @@ QUnit.module('ViewEditorManager', {
                 "</kanban>",
         });
 
-        assert.strictEqual(vem.$('.o_web_studio_kanban_view_editor [data-node-id]').length, 1,
+        assert.containsOnce(vem, '.o_web_studio_kanban_view_editor [data-node-id]',
             "there should be one node");
-        assert.ok(vem.$('.o_web_studio_kanban_view_editor [data-node-id]').hasClass('o_web_studio_widget_empty'),
+        assert.hasClass(vem.$('.o_web_studio_kanban_view_editor [data-node-id]'),'o_web_studio_widget_empty',
             "the empty node should have the empty class");
-        assert.strictEqual(vem.$('.o_web_studio_kanban_view_editor .o_web_studio_hook').length, 1,
+        assert.containsOnce(vem, '.o_web_studio_kanban_view_editor .o_web_studio_hook',
             "there should be one hook");
-        assert.strictEqual(vem.$('.o_kanban_record .o_web_studio_add_kanban_tags').length, 1,
+        assert.containsOnce(vem, '.o_kanban_record .o_web_studio_add_kanban_tags',
             "there should be the hook for tags");
-        assert.strictEqual(vem.$('.o_kanban_record .o_web_studio_add_dropdown').length, 1,
+        assert.containsOnce(vem, '.o_kanban_record .o_web_studio_add_dropdown',
             "there should be the hook for dropdown");
-        assert.strictEqual(vem.$('.o_kanban_record .o_web_studio_add_priority').length, 1,
+        assert.containsOnce(vem, '.o_kanban_record .o_web_studio_add_priority',
             "there should be the hook for priority");
-        assert.strictEqual(vem.$('.o_kanban_record .o_web_studio_add_kanban_image').length, 1,
+        assert.containsOnce(vem, '.o_kanban_record .o_web_studio_add_kanban_image',
             "there should be the hook for image");
 
-        vem.$('.o_web_studio_kanban_view_editor [data-node-id]').click();
+        testUtils.dom.click(vem.$('.o_web_studio_kanban_view_editor [data-node-id]'));
 
-        assert.ok(vem.$('.o_web_studio_sidebar').find('.o_web_studio_properties').hasClass('active'),
+        assert.hasClass(vem.$('.o_web_studio_sidebar').find('.o_web_studio_properties'),'active',
             "the Properties tab should now be active");
-        assert.strictEqual(vem.$('.o_web_studio_sidebar_content.o_display_field').length, 1,
+        assert.containsOnce(vem, '.o_web_studio_sidebar_content.o_display_field',
             "the sidebar should now display the field properties");
-        assert.ok(vem.$('.o_web_studio_kanban_view_editor [data-node-id]').hasClass('o_web_studio_clicked'),
+        assert.hasClass(vem.$('.o_web_studio_kanban_view_editor [data-node-id]'),'o_web_studio_clicked',
             "the field should have the clicked style");
         assert.strictEqual(vem.$('.o_web_studio_sidebar').find('select[name="widget"]').val(), "",
             "the widget in sidebar should be empty");
@@ -1198,16 +1200,16 @@ QUnit.module('ViewEditorManager', {
         // used to generate the new fields view in mockRPC
         fieldsView = $.extend(true, {}, vem.fields_view);
 
-        assert.strictEqual(vem.$('.o_kanban_record .o_web_studio_add_priority').length, 1,
+        assert.containsOnce(vem, '.o_kanban_record .o_web_studio_add_priority',
             "there should be the hook for priority");
         // click the 'Add a priority' link
-        vem.$('.o_kanban_record .o_web_studio_add_priority').click();
+        testUtils.dom.click(vem.$('.o_kanban_record .o_web_studio_add_priority'));
         assert.strictEqual($('.modal .modal-body select > option[value="priority"]').length, 1,
             "there should be 'Priority' option with proper value set in Field selection drop-down ");
         // select priority field from the drop-down
         $('.modal .modal-body select > option[value="priority"]').prop('selected', true);
         // Click 'Confirm' Button
-        $('.modal .modal-footer .btn-primary').click();
+        testUtils.dom.click($('.modal .modal-footer .btn-primary'));
 
         vem.destroy();
     });
@@ -1267,14 +1269,14 @@ QUnit.module('ViewEditorManager', {
         // used to generate the new fields view in mockRPC
         fieldsView = $.extend(true, {}, vem.fields_view);
 
-        assert.strictEqual(vem.$('.o_kanban_record .o_web_studio_add_kanban_image').length, 1,
+        assert.containsOnce(vem, '.o_kanban_record .o_web_studio_add_kanban_image',
             "there should be the hook for Image");
         // click the 'Add a Image' link
-        vem.$('.o_kanban_record .o_web_studio_add_kanban_image').click();
+        testUtils.dom.click(vem.$('.o_kanban_record .o_web_studio_add_kanban_image'));
         assert.strictEqual($('.modal .modal-body select > option[value="partner_id"]').length, 1,
             "there should be 'Res Partner' option with proper value set in Field selection drop-down ");
         // Click 'Confirm' Button
-        $('.modal .modal-footer .btn-primary').click();
+        testUtils.dom.click($('.modal .modal-footer .btn-primary'));
 
         vem.destroy();
     });
@@ -1296,12 +1298,12 @@ QUnit.module('ViewEditorManager', {
                 "</kanban>",
         });
 
-        assert.strictEqual(vem.$('.o_web_studio_kanban_view_editor [data-node-id]').length, 1,
+        assert.containsOnce(vem, '.o_web_studio_kanban_view_editor [data-node-id]',
             "there should be one node");
-        assert.strictEqual(vem.$('.o_web_studio_kanban_view_editor .o_web_studio_hook').length, 1,
+        assert.containsOnce(vem, '.o_web_studio_kanban_view_editor .o_web_studio_hook',
             "there should be one hook");
 
-        vem.$('.o_web_studio_kanban_view_editor [data-node-id]').click();
+        testUtils.dom.click(vem.$('.o_web_studio_kanban_view_editor [data-node-id]'));
 
         assert.strictEqual(vem.$('.o_web_studio_sidebar').find('select[name="widget"]').val(), "email",
             "the widget in sidebar should be correctly set");
@@ -1328,13 +1330,13 @@ QUnit.module('ViewEditorManager', {
                 "</kanban>",
         });
 
-        assert.ok(vem.$('.o_web_studio_kanban_view_editor').hasClass('o_kanban_grouped'),
+        assert.hasClass(vem.$('.o_web_studio_kanban_view_editor'),'o_kanban_grouped',
             "the editor should be grouped");
-        assert.strictEqual(vem.$('.o_web_studio_kanban_view_editor [data-node-id]').length, 1,
+        assert.containsOnce(vem, '.o_web_studio_kanban_view_editor [data-node-id]',
             "there should be one node");
-        assert.ok(vem.$('.o_web_studio_kanban_view_editor [data-node-id]').hasClass('o_web_studio_widget_empty'),
+        assert.hasClass(vem.$('.o_web_studio_kanban_view_editor [data-node-id]'),'o_web_studio_widget_empty',
             "the empty node should have the empty class");
-        assert.strictEqual(vem.$('.o_web_studio_kanban_view_editor .o_web_studio_hook').length, 1,
+        assert.containsOnce(vem, '.o_web_studio_kanban_view_editor .o_web_studio_hook',
             "there should be one hook");
 
         vem.destroy();
@@ -1362,13 +1364,13 @@ QUnit.module('ViewEditorManager', {
                 "</kanban>",
         });
 
-        assert.ok(vem.$('.o_web_studio_kanban_view_editor').hasClass('o_kanban_grouped'),
+        assert.hasClass(vem.$('.o_web_studio_kanban_view_editor'),'o_kanban_grouped',
             "the editor should be grouped");
-        assert.strictEqual(vem.$('.o_web_studio_kanban_view_editor [data-node-id]').length, 1,
+        assert.containsOnce(vem, '.o_web_studio_kanban_view_editor [data-node-id]',
             "there should be one node");
-        assert.notOk(vem.$('.o_web_studio_kanban_view_editor [data-node-id]').hasClass('o_web_studio_widget_empty'),
+        assert.doesNotHaveClass(vem.$('.o_web_studio_kanban_view_editor [data-node-id]'), 'o_web_studio_widget_empty',
             "the empty node should not have the empty class");
-        assert.strictEqual(vem.$('.o_web_studio_kanban_view_editor .o_web_studio_hook').length, 1,
+        assert.containsOnce(vem, '.o_web_studio_kanban_view_editor .o_web_studio_hook',
             "there should be one hook");
 
         vem.destroy();
@@ -1437,17 +1439,17 @@ QUnit.module('ViewEditorManager', {
         // used to generate the new fields view in mockRPC
         fieldsView = $.extend(true, {}, vem.fields_view);
 
-        assert.strictEqual(vem.$('.o_web_studio_sidebar input[name="enable_stage"]').attr('checked'), undefined,
+        assert.hasAttrValue(vem.$('.o_web_studio_sidebar input[name="enable_stage"]'), 'checked', undefined,
             "the stages shouldn't be enabled");
         assert.strictEqual(vem.$('.o_web_studio_sidebar select[name="default_group_by"]').val(), "",
             "the kanban should not be grouped");
 
-        vem.$('.o_web_studio_sidebar input[name="enable_stage"]').click();
+        testUtils.dom.click(vem.$('.o_web_studio_sidebar input[name="enable_stage"]'));
 
         assert.strictEqual(nbEditView, 2,
             "should edit the view twice: add field in view & set the default_group_by");
 
-        assert.strictEqual(vem.$('.o_web_studio_sidebar input[name="enable_stage"]').attr('checked'), 'checked',
+        assert.hasAttrValue(vem.$('.o_web_studio_sidebar input[name="enable_stage"]'), 'checked', 'checked',
             "the stages should be enabled");
         assert.strictEqual(vem.$('.o_web_studio_sidebar select[name="default_group_by"]').val(), "x_stage_id",
             "the kanban should be grouped by stage");
@@ -1509,13 +1511,13 @@ QUnit.module('ViewEditorManager', {
         });
         // used to generate the new fields view in mockRPC
         fieldsView = $.extend(true, {}, vem.fields_view);
-        assert.strictEqual(vem.$('.o_dropdown_kanban').length, 1, "there should be one dropdown node");
-        vem.$('.o_dropdown_kanban').click();
+        assert.containsOnce(vem, '.o_dropdown_kanban', "there should be one dropdown node");
+        testUtils.dom.click(vem.$('.o_dropdown_kanban'));
         // remove drop-down from sidebar
-        vem.$('.o_web_studio_sidebar .o_web_studio_remove').click();
+        testUtils.dom.click(vem.$('.o_web_studio_sidebar .o_web_studio_remove'));
         assert.strictEqual($('.modal-body:first').text(), "Are you sure you want to remove this div from the view?",
             "should display the correct message");
-        $('.modal .btn-primary').click();
+        testUtils.dom.click($('.modal .btn-primary'));
         vem.destroy();
     });
 
@@ -1532,15 +1534,15 @@ QUnit.module('ViewEditorManager', {
 
         assert.strictEqual(vem.view_type, 'search',
             "view type should be search");
-        assert.strictEqual(vem.$('.o_web_studio_search_view_editor').length, 1,
+        assert.containsOnce(vem, '.o_web_studio_search_view_editor',
             "there should be a search editor");
-        assert.strictEqual(vem.$('.o_web_studio_search_autocompletion_fields.table tbody tr.o_web_studio_hook').length, 1,
+        assert.containsOnce(vem, '.o_web_studio_search_autocompletion_fields.table tbody tr.o_web_studio_hook',
             "there should be one hook in the autocompletion fields");
-        assert.strictEqual(vem.$('.o_web_studio_search_filters.table tbody tr.o_web_studio_hook').length, 1,
+        assert.containsOnce(vem, '.o_web_studio_search_filters.table tbody tr.o_web_studio_hook',
             "there should be one hook in the filters");
-        assert.strictEqual(vem.$('.o_web_studio_search_group_by.table tbody tr.o_web_studio_hook').length, 1,
+        assert.containsOnce(vem, '.o_web_studio_search_group_by.table tbody tr.o_web_studio_hook',
             "there should be one hook in the group by");
-        assert.strictEqual(vem.$('.o_web_studio_search_view_editor [data-node-id]').length, 0,
+        assert.containsNone(vem, '.o_web_studio_search_view_editor [data-node-id]',
             "there should be no node");
         vem.destroy();
     });
@@ -1592,36 +1594,36 @@ QUnit.module('ViewEditorManager', {
         fieldsView = $.extend(true, {}, vem.fields_view);
 
         // try to add a field in the autocompletion section
-        testUtils.dragAndDrop(vem.$('.o_web_studio_existing_fields > .ui-draggable:first'), $('.o_web_studio_search_autocompletion_fields .o_web_studio_hook:first'));
+        testUtils.dom.dragAndDrop(vem.$('.o_web_studio_existing_fields > .ui-draggable:first'), $('.o_web_studio_search_autocompletion_fields .o_web_studio_hook:first'));
 
         assert.strictEqual(vem.view_type, 'search',
             "view type should be search");
-        assert.strictEqual(vem.$('.o_web_studio_search_view_editor').length, 1,
+        assert.containsOnce(vem, '.o_web_studio_search_view_editor',
             "there should be a search editor");
-        assert.strictEqual(vem.$('.o_web_studio_search_autocompletion_fields.table tbody tr.o_web_studio_hook').length, 2,
+        assert.containsN(vem, '.o_web_studio_search_autocompletion_fields.table tbody tr.o_web_studio_hook', 2,
             "there should be two hooks in the autocompletion fields");
-        assert.strictEqual(vem.$('.o_web_studio_search_filters.table tbody tr.o_web_studio_hook').length, 3,
+        assert.containsN(vem, '.o_web_studio_search_filters.table tbody tr.o_web_studio_hook', 3,
             "there should be three hook in the filters");
-        assert.strictEqual(vem.$('.o_web_studio_search_group_by.table tbody tr.o_web_studio_hook').length, 2,
+        assert.containsN(vem, '.o_web_studio_search_group_by.table tbody tr.o_web_studio_hook', 2,
             "there should be two hooks in the group by");
-        assert.strictEqual(vem.$('.o_web_studio_search_autocompletion_fields.table [data-node-id]').length, 1,
+        assert.containsOnce(vem, '.o_web_studio_search_autocompletion_fields.table [data-node-id]',
             "there should be 1 node in the autocompletion fields");
-        assert.strictEqual(vem.$('.o_web_studio_search_filters.table [data-node-id]').length, 2,
+        assert.containsN(vem, '.o_web_studio_search_filters.table [data-node-id]', 2,
             "there should be 2 nodes in the filters");
-        assert.strictEqual(vem.$('.o_web_studio_search_group_by.table [data-node-id]').length, 1,
+        assert.containsOnce(vem, '.o_web_studio_search_group_by.table [data-node-id]',
             "there should be 1 nodes in the group by");
-        assert.strictEqual(vem.$('.o_web_studio_search_view_editor [data-node-id]').length, 4,
+        assert.containsN(vem, '.o_web_studio_search_view_editor [data-node-id]', 4,
             "there should be 4 nodes");
 
         // edit the autocompletion field
-        $('.o_web_studio_search_view_editor .o_web_studio_search_autocompletion_container [data-node-id]').click();
+        testUtils.dom.click($('.o_web_studio_search_view_editor .o_web_studio_search_autocompletion_container [data-node-id]'));
 
 
-        assert.ok(vem.$('.o_web_studio_sidebar').find('.o_web_studio_properties').hasClass('active'),
+        assert.hasClass(vem.$('.o_web_studio_sidebar').find('.o_web_studio_properties'),'active',
             "the Properties tab should now be active");
-        assert.strictEqual(vem.$('.o_web_studio_sidebar_content.o_display_field').length, 1,
+        assert.containsOnce(vem, '.o_web_studio_sidebar_content.o_display_field',
             "the sidebar should now display the field properties");
-        assert.ok(vem.$('.o_web_studio_search_view_editor .o_web_studio_search_autocompletion_container [data-node-id]').hasClass('o_web_studio_clicked'),
+        assert.hasClass(vem.$('.o_web_studio_search_view_editor .o_web_studio_search_autocompletion_container [data-node-id]'),'o_web_studio_clicked',
             "the field should have the clicked style");
         assert.strictEqual(vem.$('.o_web_studio_sidebar').find('input[name="string"]').val(), "Display Name",
             "the field should have the label Display Name in the sidebar");
@@ -1666,13 +1668,13 @@ QUnit.module('ViewEditorManager', {
         // used to generate the new fields view in mockRPC
         fieldsView = $.extend(true, {}, vem.fields_view);
 
-        assert.strictEqual(vem.$('[data-node-id]').length, 1, "there should be one node");
+        assert.containsOnce(vem, '[data-node-id]', "there should be one node");
         // edit the autocompletion field
-        vem.$('.o_web_studio_search_autocompletion_container [data-node-id]').click();
-        vem.$('.o_web_studio_sidebar .o_web_studio_remove').click();
-        $('.modal .btn-primary').click();
+        testUtils.dom.click(vem.$('.o_web_studio_search_autocompletion_container [data-node-id]'));
+        testUtils.dom.click(vem.$('.o_web_studio_sidebar .o_web_studio_remove'));
+        testUtils.dom.click($('.modal .btn-primary'));
 
-        assert.strictEqual(vem.$('[data-node-id]').length, 0, "there should be no node anymore");
+        assert.containsNone(vem, '[data-node-id]', "there should be no node anymore");
 
         vem.destroy();
     });
@@ -1695,12 +1697,12 @@ QUnit.module('ViewEditorManager', {
 
         assert.strictEqual(vem.view_type, 'pivot',
             "view type should be pivot");
-        assert.strictEqual(vem.$('.o_web_studio_view_renderer .o_pivot').length, 1,
+        assert.containsOnce(vem, '.o_web_studio_view_renderer .o_pivot',
             "there should be a pivot renderer");
-        assert.strictEqual(vem.$('.o_web_studio_view_renderer > .o_pivot > table').length, 1,
+        assert.containsOnce(vem, '.o_web_studio_view_renderer > .o_pivot > table',
             "the table should be the direct child of pivot");
 
-        vem.$('.o_web_studio_sidebar_header [name="view"]').click();
+        testUtils.dom.click(vem.$('.o_web_studio_sidebar_header [name="view"]'));
 
         vem.destroy();
     });
@@ -1725,9 +1727,9 @@ QUnit.module('ViewEditorManager', {
         assert.strictEqual(vem.view_type, 'graph',
             "view type should be graph");
         return concurrency.delay(0).then(function () {
-            assert.strictEqual(vem.$('.o_web_studio_view_renderer .o_graph').length, 1,
+            assert.containsOnce(vem, '.o_web_studio_view_renderer .o_graph',
                 "there should be a graph renderer");
-            assert.strictEqual(vem.$('.o_web_studio_view_renderer .o_graph .o_graph_svg_container svg').length, 1,
+            assert.containsOnce(vem, '.o_web_studio_view_renderer .o_graph .o_graph_svg_container svg',
                 "the graph should be a child of its container");
             vem.destroy();
             done();
@@ -1760,7 +1762,7 @@ QUnit.module('ViewEditorManager', {
             },
         });
 
-        testUtils.intercept(vem, 'studio_error', function (event) {
+        testUtils.mock.intercept(vem, 'studio_error', function (event) {
             assert.strictEqual(event.data.error, 'view_rendering',
                 "should have raised an error");
         });
@@ -1782,15 +1784,15 @@ QUnit.module('ViewEditorManager', {
         };
 
         // delete a field to generate a view edition
-        vem.$('.o_web_studio_list_view_editor [data-node-id]').click();
-        vem.$('.o_web_studio_sidebar .o_web_studio_remove').click();
-        $('.modal .btn-primary').click();
+        testUtils.dom.click(vem.$('.o_web_studio_list_view_editor [data-node-id]'));
+        testUtils.dom.click(vem.$('.o_web_studio_sidebar .o_web_studio_remove'));
+        testUtils.dom.click($('.modal .btn-primary'));
 
         assert.strictEqual($('.o_web_studio_view_renderer').length, 1,
             "there should only be one renderer");
-        assert.strictEqual(vem.$('.o_web_studio_list_view_editor [data-node-id]').length, 1,
+        assert.containsOnce(vem, '.o_web_studio_list_view_editor [data-node-id]',
             "the view should be back as normal with 1 field");
-        assert.strictEqual(vem.$('.o_web_studio_sidebar_content.o_display_view').length, 1,
+        assert.containsOnce(vem, '.o_web_studio_sidebar_content.o_display_view',
             "the sidebar should have reset to its default mode");
 
         ListRenderer.prototype._renderView = oldRenderView;
@@ -1831,22 +1833,22 @@ QUnit.module('ViewEditorManager', {
         // used to generate the new fields view in mockRPC
         var fieldsView = $.extend(true, {}, vem.fields_view);
 
-        testUtils.intercept(vem, 'studio_error', function (event) {
+        testUtils.mock.intercept(vem, 'studio_error', function (event) {
             assert.strictEqual(event.data.error, 'wrong_xpath',
                 "should have raised an error");
         });
 
-        assert.strictEqual(vem.$('.o_web_studio_list_view_editor [data-node-id]').length, 1,
+        assert.containsOnce(vem, '.o_web_studio_list_view_editor [data-node-id]',
             "there should be one field in the view");
 
         // delete a field to generate a view edition
-        vem.$('.o_web_studio_list_view_editor [data-node-id]').click();
-        vem.$('.o_web_studio_sidebar .o_web_studio_remove').click();
-        $('.modal-dialog .btn-primary').click();
+        testUtils.dom.click(vem.$('.o_web_studio_list_view_editor [data-node-id]'));
+        testUtils.dom.click(vem.$('.o_web_studio_sidebar .o_web_studio_remove'));
+        testUtils.dom.click($('.modal-dialog .btn-primary'));
 
-        assert.strictEqual(vem.$('.o_web_studio_list_view_editor [data-node-id]').length, 1,
+        assert.containsOnce(vem, '.o_web_studio_list_view_editor [data-node-id]',
             "the view should be back as normal with 1 field");
-        assert.strictEqual(vem.$('.o_web_studio_sidebar_content.o_display_view').length, 1,
+        assert.containsOnce(vem, '.o_web_studio_sidebar_content.o_display_view',
             "the sidebar should have reset to its default mode");
 
         vem.destroy();
@@ -1891,20 +1893,20 @@ QUnit.module('ViewEditorManager', {
             "Do you want to create a currency field first? You can make this field invisible afterwards.";
 
         // add a monetary field
-        testUtils.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_monetary'), vem.$('th.o_web_studio_hook').first());
+        testUtils.dom.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_monetary'), vem.$('th.o_web_studio_hook').first());
         assert.strictEqual($('.modal-body:first').text(), currencyCreationText, "this should trigger an alert");
-        $('.modal-footer .btn:contains(Cancel)').click(); // cancel
+        testUtils.dom.click($('.modal-footer .btn:contains(Cancel)'));
 
         // add a related monetary field
-        testUtils.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_related'), vem.$('th.o_web_studio_hook').first());
+        testUtils.dom.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_related'), vem.$('th.o_web_studio_hook').first());
         assert.strictEqual($('.modal .o_field_selector').length, 1,
             "a modal with a field selector should be opened to selected the related field");
         $('.modal .o_field_selector').focusin(); // open the selector popover
-        $('.o_field_selector_popover li[data-name=m2o]').click();
-        $('.o_field_selector_popover li[data-name=monetary_field]').click();
-        $('.modal-footer .btn-primary:first').click(); // confirm
+        testUtils.dom.click($('.o_field_selector_popover li[data-name=m2o]'));
+        testUtils.dom.click($('.o_field_selector_popover li[data-name=monetary_field]'));
+        testUtils.dom.click($('.modal-footer .btn-primary:first'));
         assert.strictEqual($('.modal-body:eq(1)').text(), currencyCreationText, "this should trigger an alert");
-        $('.modal-footer:eq(1) .btn:contains(Ok)').click(); // confirm
+        testUtils.dom.click($('.modal-footer:eq(1) .btn:contains(Ok)'));
 
         vem.destroy();
     });
@@ -1953,20 +1955,20 @@ QUnit.module('ViewEditorManager', {
         fieldsView = $.extend(true, {}, vem.fields_view);
 
         // add a monetary field
-        assert.strictEqual(vem.$('.o_web_studio_list_view_editor [data-node-id]').length, 1,
+        assert.containsOnce(vem, '.o_web_studio_list_view_editor [data-node-id]',
             "there should be one node");
-        testUtils.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_monetary'), $('.o_web_studio_hook'));
+        testUtils.dom.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_monetary'), $('.o_web_studio_hook'));
         assert.strictEqual(nbEdit, 1, "the view should have been updated");
         assert.strictEqual($('.modal').length, 0, "there should be no modal");
 
         // add a related monetary field
-        testUtils.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_related'), vem.$('th.o_web_studio_hook').first());
+        testUtils.dom.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_related'), vem.$('th.o_web_studio_hook').first());
         assert.strictEqual($('.modal .o_field_selector').length, 1,
             "a modal with a field selector should be opened to selected the related field");
         $('.modal .o_field_selector').focusin(); // open the selector popover
-        $('.o_field_selector_popover li[data-name=m2o]').click();
-        $('.o_field_selector_popover li[data-name=monetary_field]').click();
-        $('.modal-footer .btn-primary:first').click(); // confirm
+        testUtils.dom.click($('.o_field_selector_popover li[data-name=m2o]'));
+        testUtils.dom.click($('.o_field_selector_popover li[data-name=monetary_field]'));
+        testUtils.dom.click($('.modal-footer .btn-primary:first'));
         assert.strictEqual(nbEdit, 2, "the view should have been updated");
 
         vem.destroy();
@@ -2017,42 +2019,42 @@ QUnit.module('ViewEditorManager', {
         });
 
         // listen to 'warning' events bubbling up
-        testUtils.intercept(vem, 'warning', assert.step.bind(assert, 'warning'));
+        testUtils.mock.intercept(vem, 'warning', assert.step.bind(assert, 'warning'));
 
         // used to generate the new fields view in mockRPC
         fieldsView = $.extend(true, {}, vem.fields_view);
 
-        testUtils.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_related'), $('.o_web_studio_hook'));
+        testUtils.dom.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_related'), $('.o_web_studio_hook'));
 
         assert.strictEqual($('.modal').length, 1, "a modal should be displayed");
 
         // try to create an empty related field
-        $('.modal button:contains("Confirm")').click();
+        testUtils.dom.click($('.modal button:contains("Confirm")'));
         assert.verifySteps(['warning'], "should have triggered a warning");
         assert.strictEqual($('.modal').length, 1, "the modal should still be displayed");
 
         $('.modal .o_field_selector').focusin(); // open the selector popover
-        $('.o_field_selector_popover li[data-name=m2o]').click();
-        $('.o_field_selector_popover li[data-name=display_name]').click();
-        $('.modal-footer .btn-primary:first').click(); // confirm
+        testUtils.dom.click($('.o_field_selector_popover li[data-name=m2o]'));
+        testUtils.dom.click($('.o_field_selector_popover li[data-name=display_name]'));
+        testUtils.dom.click($('.modal-footer .btn-primary:first'));
 
         // create a new many2one related field
-        testUtils.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_related'), $('.o_web_studio_hook'));
+        testUtils.dom.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_related'), $('.o_web_studio_hook'));
         assert.strictEqual($('.modal').length, 1, "a modal should be displayed");
         $('.modal .o_field_selector').focusin(); // open the selector popover
-        $('.o_field_selector_popover li[data-name=m2o]').click();
-        $('.o_field_selector_popover li[data-name=m2o]').click();
-        $('.modal .o_field_selector .o_field_selector_close').click(); // close the selector popover
-        $('.modal-footer .btn-primary:first').click(); // confirm
+        testUtils.dom.click($('.o_field_selector_popover li[data-name=m2o]'));
+        testUtils.dom.click($('.o_field_selector_popover li[data-name=m2o]'));
+        testUtils.dom.click($('.modal .o_field_selector .o_field_selector_close'));
+        testUtils.dom.click($('.modal-footer .btn-primary:first'));
 
         // create a new one2many related field
-        testUtils.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_related'), $('.o_web_studio_hook'));
+        testUtils.dom.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_related'), $('.o_web_studio_hook'));
         assert.strictEqual($('.modal').length, 1, "a modal should be displayed");
         $('.modal .o_field_selector').focusin(); // open the selector popover
-        $('.o_field_selector_popover li[data-name=m2o]').click();
-        $('.o_field_selector_popover li[data-name=partner_ids]').click();
-        $('.modal .o_field_selector .o_field_selector_close').click(); // close the selector popover
-        $('.modal-footer .btn-primary:first').click(); // confirm
+        testUtils.dom.click($('.o_field_selector_popover li[data-name=m2o]'));
+        testUtils.dom.click($('.o_field_selector_popover li[data-name=partner_ids]'));
+        testUtils.dom.click($('.modal .o_field_selector .o_field_selector_close'));
+        testUtils.dom.click($('.modal-footer .btn-primary:first'));
 
         assert.strictEqual(nbEdit, 3, "should have edited the view");
         assert.verifySteps(['warning'], "should have triggered only one warning");
@@ -2096,21 +2098,20 @@ QUnit.module('ViewEditorManager', {
         var fieldsView = $.extend(true, {}, vem.fields_view);
 
         // listen to 'warning' events bubbling up
-        testUtils.intercept(vem, 'warning', assert.step.bind(assert, 'warning'));
+        testUtils.mock.intercept(vem, 'warning', assert.step.bind(assert, 'warning'));
 
-        testUtils.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_one2many'), $('.o_web_studio_hook'));
+        testUtils.dom.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_one2many'), $('.o_web_studio_hook'));
         assert.strictEqual($('.modal').length, 1, "a modal should be displayed");
 
         // try to confirm without specifying a related field
-        $('.modal button:contains("Confirm")').click();
+        testUtils.dom.click($('.modal button:contains("Confirm")'));
         assert.strictEqual($('.modal').length, 1, "the modal should still be displayed");
         assert.verifySteps(['warning'], "should have triggered a warning");
 
         // select a related field and confirm
-        $('.modal .o_field_many2one input').click();
-        var $dropdown = $('.o_field_many2one input').autocomplete('widget');
-        $dropdown.find('li:first').click();
-        $('.modal button:contains("Confirm")').click();
+        testUtils.fields.many2one.clickOpenDropdown('field');
+        testUtils.fields.many2one.clickHighlightedItem('field');
+        testUtils.dom.click($('.modal button:contains("Confirm")'));
         assert.strictEqual($('.modal').length, 0, "the modal should be closed");
         assert.verifySteps(['warning', 'edit'], "should have created the field");
 
@@ -2153,21 +2154,20 @@ QUnit.module('ViewEditorManager', {
         var fieldsView = $.extend(true, {}, vem.fields_view);
 
         // listen to 'warning' events bubbling up
-        testUtils.intercept(vem, 'warning', assert.step.bind(assert, 'warning'));
+        testUtils.mock.intercept(vem, 'warning', assert.step.bind(assert, 'warning'));
 
-        testUtils.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_many2many'), $('.o_web_studio_hook'));
+        testUtils.dom.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_many2many'), $('.o_web_studio_hook'));
         assert.strictEqual($('.modal').length, 1, "a modal should be displayed");
 
         // try to confirm without specifying a relation
-        $('.modal button:contains("Confirm")').click();
+        testUtils.dom.click($('.modal button:contains("Confirm")'));
         assert.strictEqual($('.modal').length, 1, "the modal should still be displayed");
         assert.verifySteps(['warning'], "should have triggered a warning");
 
         // select a model and confirm
-        $('.modal .o_field_many2one input').click();
-        var $dropdown = $('.o_field_many2one input').autocomplete('widget');
-        $dropdown.find('li:first').click();
-        $('.modal button:contains("Confirm")').click();
+        testUtils.fields.many2one.clickOpenDropdown('model');
+        testUtils.fields.many2one.clickHighlightedItem('model');
+        testUtils.dom.click($('.modal button:contains("Confirm")'));
         assert.strictEqual($('.modal').length, 0, "the modal should be closed");
         assert.verifySteps(['warning', 'edit'], "should have created the field");
 
@@ -2210,21 +2210,20 @@ QUnit.module('ViewEditorManager', {
         var fieldsView = $.extend(true, {}, vem.fields_view);
 
         // listen to 'warning' events bubbling up
-        testUtils.intercept(vem, 'warning', assert.step.bind(assert, 'warning'));
+        testUtils.mock.intercept(vem, 'warning', assert.step.bind(assert, 'warning'));
 
-        testUtils.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_many2one'), $('.o_web_studio_hook'));
+        testUtils.dom.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_many2one'), $('.o_web_studio_hook'));
         assert.strictEqual($('.modal').length, 1, "a modal should be displayed");
 
         // try to confirm without specifying a relation
-        $('.modal button:contains("Confirm")').click();
+        testUtils.dom.click($('.modal button:contains("Confirm")'));
         assert.strictEqual($('.modal').length, 1, "the modal should still be displayed");
         assert.verifySteps(['warning'], "should have triggered a warning");
 
         // select a model and confirm
-        $('.modal .o_field_many2one input').click();
-        var $dropdown = $('.o_field_many2one input').autocomplete('widget');
-        $dropdown.find('li:first').click();
-        $('.modal button:contains("Confirm")').click();
+        testUtils.fields.many2one.clickOpenDropdown('model');
+        testUtils.fields.many2one.clickHighlightedItem('model');
+        testUtils.dom.click($('.modal button:contains("Confirm")'));
         assert.strictEqual($('.modal').length, 0, "the modal should be closed");
         assert.verifySteps(['warning', 'edit'], "should have created the field");
 
@@ -2256,24 +2255,24 @@ QUnit.module('ViewEditorManager', {
             },
         });
 
-        assert.strictEqual(vem.$('.o_web_studio_list_view_editor [data-node-id]').length, 2,
+        assert.containsN(vem, '.o_web_studio_list_view_editor [data-node-id]', 2,
             "there should be two nodes");
 
         // used to generate the new fields view in mockRPC
         fieldsView = $.extend(true, {}, vem.fields_view);
 
-        vem.$('.o_web_studio_list_view_editor [data-node-id]:first').click();
+        testUtils.dom.click(vem.$('.o_web_studio_list_view_editor [data-node-id]:first'));
 
-        assert.strictEqual(vem.$('.o_web_studio_sidebar_content.o_display_field').length, 1,
+        assert.containsOnce(vem, '.o_web_studio_sidebar_content.o_display_field',
             "the sidebar should display the field properties");
 
         // delete a field
-        vem.$('.o_web_studio_sidebar .o_web_studio_remove').click();
-        $('.modal .btn-primary').click();
+        testUtils.dom.click(vem.$('.o_web_studio_sidebar .o_web_studio_remove'));
+        testUtils.dom.click($('.modal .btn-primary'));
 
-        assert.strictEqual(vem.$('.o_web_studio_list_view_editor [data-node-id]').length, 1,
+        assert.containsOnce(vem, '.o_web_studio_list_view_editor [data-node-id]',
             "there should be one node");
-        assert.strictEqual(vem.$('.o_web_studio_sidebar_content.o_display_field').length, 0,
+        assert.containsNone(vem, '.o_web_studio_sidebar_content.o_display_field',
             "the sidebar should have switched mode");
 
         vem.destroy();
@@ -2290,7 +2289,7 @@ QUnit.module('ViewEditorManager', {
         // the XML editor lazy loads its libs and its templates so its start
         // method is monkey-patched to know when the widget has started
         var XMLEditorDef = $.Deferred();
-        testUtils.patch(ace, {
+        testUtils.mock.patch(ace, {
             start: function () {
                 return this._super.apply(this, arguments).then(function () {
                     XMLEditorDef.resolve();
@@ -2321,24 +2320,24 @@ QUnit.module('ViewEditorManager', {
             viewID: 1,
         });
 
-        assert.strictEqual(vem.$('.o_web_studio_view_renderer .o_form_readonly.o_web_studio_form_view_editor').length, 1,
+        assert.containsOnce(vem, '.o_web_studio_view_renderer .o_form_readonly.o_web_studio_form_view_editor',
             "the form editor should be displayed");
 
         // open the XML editor
-        vem.$('.o_web_studio_sidebar_header [name="view"]').click();
-        assert.strictEqual(vem.$('.o_web_studio_sidebar .o_web_studio_xml_editor').length, 1,
+        testUtils.dom.click(vem.$('.o_web_studio_sidebar_header [name="view"]'));
+        assert.containsOnce(vem, '.o_web_studio_sidebar .o_web_studio_xml_editor',
             "there should be a button to open the XML editor");
-        vem.$('.o_web_studio_sidebar .o_web_studio_xml_editor').click();
+        testUtils.dom.click(vem.$('.o_web_studio_sidebar .o_web_studio_xml_editor'));
 
         assert.strictEqual(vem.$('.o_web_studio_view_renderer .o_form_readonly:not(.o_web_studio_form_view_editor)').length, 1,
             "the form should be in read-only");
 
         XMLEditorDef.then(function () {
-            assert.strictEqual(vem.$('.o_ace_view_editor').length, 1, "the XML editor should be opened");
+            assert.containsOnce(vem, '.o_ace_view_editor', "the XML editor should be opened");
 
             // restore monkey-patched elements
             config.debug = initialDebugMode;
-            testUtils.unpatch(ace);
+            testUtils.mock.unpatch(ace);
 
             vem.destroy();
             done();
@@ -2356,7 +2355,7 @@ QUnit.module('ViewEditorManager', {
         // the XML editor lazy loads its libs and its templates so its start
         // method is monkey-patched to know when the widget has started
         var XMLEditorDef = $.Deferred();
-        testUtils.patch(ace, {
+        testUtils.mock.patch(ace, {
             start: function () {
                 return this._super.apply(this, arguments).then(function () {
                     XMLEditorDef.resolve();
@@ -2416,22 +2415,22 @@ QUnit.module('ViewEditorManager', {
 
         // used to generate the new fields view in mockRPC
         var fieldsView = $.extend(true, {}, vem.fields_view);
-        assert.strictEqual(vem.$('.o_web_studio_form_view_editor').length, 1,
+        assert.containsOnce(vem, '.o_web_studio_form_view_editor',
             "the form editor should be displayed");
         // do an operation
-        vem.$('.o_web_studio_form_view_editor .o_field_widget[name="display_name"]').click();
+        testUtils.dom.click(vem.$('.o_web_studio_form_view_editor .o_field_widget[name="display_name"]'));
         vem.$('.o_web_studio_sidebar input[name="string"]').val('Kikou').trigger('change');
         assert.strictEqual(vem.operations.length, 1,
             "there should be one operation in the stack (label rename)");
 
         // open the XML editor
-        vem.$('.o_web_studio_sidebar_header [name="view"]').click();
-        assert.strictEqual(vem.$('.o_web_studio_sidebar .o_web_studio_xml_editor').length, 1,
+        testUtils.dom.click(vem.$('.o_web_studio_sidebar_header [name="view"]'));
+        assert.containsOnce(vem, '.o_web_studio_sidebar .o_web_studio_xml_editor',
             "there should be a button to open the XML editor");
-        vem.$('.o_web_studio_sidebar .o_web_studio_xml_editor').click();
+        testUtils.dom.click(vem.$('.o_web_studio_sidebar .o_web_studio_xml_editor'));
 
         XMLEditorDef.then(function () {
-            assert.strictEqual(vem.$('.o_ace_view_editor').length, 1, "the XML editor should be opened");
+            assert.containsOnce(vem, '.o_ace_view_editor', "the XML editor should be opened");
 
             // the ace editor is too complicated to mimick so call the handler directly
             vem.XMLEditor._saveView({
@@ -2443,7 +2442,7 @@ QUnit.module('ViewEditorManager', {
 
             // restore monkey-patched elements
             config.debug = initialDebugMode;
-            testUtils.unpatch(ace);
+            testUtils.mock.unpatch(ace);
 
             vem.destroy();
             done();
@@ -2460,7 +2459,7 @@ QUnit.module('ViewEditorManager', {
             arch: arch,
         });
 
-        vem.$('.o_web_studio_form_view_editor .o_web_studio_button_hook').click();
+        testUtils.dom.click(vem.$('.o_web_studio_form_view_editor .o_web_studio_button_hook'));
 
         assert.strictEqual($('.modal:visible').length, 1, "there should be one modal");
         assert.strictEqual($('.o_web_studio_new_button_dialog').length, 1,
@@ -2528,32 +2527,32 @@ QUnit.module('ViewEditorManager', {
         fieldsView = $.extend(true, {}, vem.fields_view);
 
         // remove field
-        vem.$('[name="display_name"]').click();
-        vem.$('.o_web_studio_sidebar .o_web_studio_remove').click();
+        testUtils.dom.click(vem.$('[name="display_name"]').parent());
+        testUtils.dom.click(vem.$('.o_web_studio_sidebar .o_web_studio_remove'));
         assert.strictEqual($('.modal-body:first').text(), "Are you sure you want to remove this field from the view?",
             "should display the correct message");
-        $('.modal .btn-primary').click();
+        testUtils.dom.click($('.modal .btn-primary'));
 
         // remove other field so group is empty
-        vem.$('[name="m2o"]').click();
-        vem.$('.o_web_studio_sidebar .o_web_studio_remove').click();
+        testUtils.dom.click(vem.$('[name="m2o"]').parent());
+        testUtils.dom.click(vem.$('.o_web_studio_sidebar .o_web_studio_remove'));
         assert.strictEqual($('.modal-body:first').text(), "Are you sure you want to remove this field from the view?",
             "should display the correct message");
-        $('.modal .btn-primary').click();
+        testUtils.dom.click($('.modal .btn-primary'));
 
         // remove group
-        vem.$('.o_group[data-node-id]').click();
-        vem.$('.o_web_studio_sidebar .o_web_studio_remove').click();
+        testUtils.dom.click(vem.$('.o_group[data-node-id]'));
+        testUtils.dom.click(vem.$('.o_web_studio_sidebar .o_web_studio_remove'));
         assert.strictEqual($('.modal-body:first').text(), "Are you sure you want to remove this group from the view?",
             "should display the correct message");
-        $('.modal .btn-primary').click();
+        testUtils.dom.click($('.modal .btn-primary'));
 
         // remove page
-        vem.$('.o_notebook li[data-node-id]').click();
-        vem.$('.o_web_studio_sidebar .o_web_studio_remove').click();
+        testUtils.dom.click(vem.$('.o_notebook li[data-node-id]'));
+        testUtils.dom.click(vem.$('.o_web_studio_sidebar .o_web_studio_remove'));
         assert.strictEqual($('.modal-body:first').text(), "Are you sure you want to remove this page from the view?",
             "should display the correct message");
-        $('.modal .btn-primary').click();
+        testUtils.dom.click($('.modal .btn-primary'));
 
         assert.strictEqual(editViewCount, 4,
             "should have edit the view 4 times");
@@ -2592,7 +2591,7 @@ QUnit.module('ViewEditorManager', {
             },
         });
 
-        testUtils.intercept(vem, 'node_clicked', function (event) {
+        testUtils.mock.intercept(vem, 'node_clicked', function (event) {
             assert.step(event.data.node.tag);
         }, true);
 
@@ -2600,7 +2599,7 @@ QUnit.module('ViewEditorManager', {
         fieldsView = $.extend(true, {}, vem.fields_view);
 
         // remove field
-        vem.$('[name="display_name"]').click();
+        testUtils.dom.click(vem.$('[name="display_name"]').parent());
         vem.$('.o_web_studio_sidebar [name="string"]').focus();
         vem.$('.o_web_studio_sidebar [name="string"]').val('test').trigger('change');
 
@@ -2637,11 +2636,11 @@ QUnit.module('ViewEditorManager', {
             },
         });
 
-        vem.$('[name="display_name"]').click();
+        testUtils.dom.click(vem.$('[name="display_name"]').parent());
         assert.strictEqual(vem.$('.o_web_studio_sidebar_content.o_display_field input[data-type="default_value"]').val(), "yolo",
             "the sidebar should now display the field properties");
 
-        vem.$('[name="priority"]').click();
+        testUtils.dom.click(vem.$('[name="priority"]').parent());
         assert.strictEqual(vem.$('.o_web_studio_sidebar_content.o_display_field select[data-type="default_value"]').val(), "1",
             "the sidebar should now display the field properties");
 
@@ -2671,10 +2670,10 @@ QUnit.module('ViewEditorManager', {
                 return this._super.apply(this, arguments);
             },
         });
-        testUtils.dragAndDrop(vem.$('.o_web_studio_field_type_container .o_web_studio_field_tabs'), $('.o_group .o_web_studio_hook'));
+        testUtils.dom.dragAndDrop(vem.$('.o_web_studio_field_type_container .o_web_studio_field_tabs'), $('.o_group .o_web_studio_hook'));
         assert.strictEqual(editViewCount, 0,
             "the notebook cannot be dropped inside a group");
-        testUtils.dragAndDrop(vem.$('.o_web_studio_field_type_container .o_web_studio_field_columns'), $('.o_group .o_web_studio_hook'));
+        testUtils.dom.dragAndDrop(vem.$('.o_web_studio_field_type_container .o_web_studio_field_columns'), $('.o_group .o_web_studio_hook'));
         assert.strictEqual(editViewCount, 0,
             "the group cannot be dropped inside a group");
         vem.destroy();
@@ -2689,8 +2688,8 @@ QUnit.module('ViewEditorManager', {
             arch: "<form><sheet/></form>",
         });
 
-        testUtils.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_monetary'), $('.o_web_studio_hook'), {disableDrop: true});
-        assert.strictEqual(vem.$('.o_web_studio_nearest_hook').length, 0, "There should be no highlighted hook");
+        testUtils.dom.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_monetary'), $('.o_web_studio_hook'), {disableDrop: true});
+        assert.containsNone(vem, '.o_web_studio_nearest_hook', "There should be no highlighted hook");
 
         vem.destroy();
     });
@@ -2725,7 +2724,7 @@ QUnit.module('ViewEditorManager', {
         // used to generate the new fields view in mockRPC
         fieldsView = $.extend(true, {}, vem.fields_view);
 
-        testUtils.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_selection'), $('.o_web_studio_hook:first'));
+        testUtils.dom.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_selection'), $('.o_web_studio_hook:first'));
         assert.strictEqual($('.modal .o_web_studio_field_dialog_form').length, 1, "a modal should be opened");
         assert.strictEqual($('.modal .o_web_studio_selection_editor').length, 0, "there should be no selection editor");
 
@@ -2738,38 +2737,38 @@ QUnit.module('ViewEditorManager', {
 
         // add a new value (with button +)
         $('.modal .o_web_studio_selection_new_value input').val('Value 2');
-        $('.modal .o_web_studio_selection_new_value button').click();
+        testUtils.dom.click($('.modal .o_web_studio_selection_new_value button'));
         assert.strictEqual($('.modal .o_web_studio_selection_editor > li').length, 2, "there should be 2 selection values");
 
         // edit the first value
-        $('.modal .o_web_studio_selection_editor li:first .o_web_studio_edit_selection_value').click();
+        testUtils.dom.click($('.modal .o_web_studio_selection_editor li:first .o_web_studio_edit_selection_value'));
         assert.strictEqual($('.modal').length, 2, "a new modal should be opened");
         assert.strictEqual($('.modal:eq(1) input#o_selection_label').val(), "Value 1",
             "the value should be set in the edition modal");
         $('.modal:eq(1) input#o_selection_label').val('My Value');
-        $('.modal:eq(1) button:contains(Confirm)').click();
+        testUtils.dom.click($('.modal:eq(1) button:contains(Confirm)'));
         assert.strictEqual($('.modal').length, 1, "the second modal should be closed");
         assert.strictEqual($('.modal .o_web_studio_selection_editor > li:first span:contains(My Value)').length, 1, "the value should have been updated");
 
         // add a value and delete it
         $('.modal .o_web_studio_selection_new_value input').val('Value 3');
-        $('.modal .o_web_studio_selection_new_value button').click();
+        testUtils.dom.click($('.modal .o_web_studio_selection_new_value button'));
         assert.strictEqual($('.modal .o_web_studio_selection_editor > li').length, 3, "there should be 3 selection values");
 
-        $('.modal .o_web_studio_selection_editor > li:eq(2) .o_web_studio_remove_selection_value').click();
+        testUtils.dom.click($('.modal .o_web_studio_selection_editor > li:eq(2) .o_web_studio_remove_selection_value'));
         assert.strictEqual($('.modal').length, 2, "a new confirmation modal should be opened");
-        $('.modal:eq(1) button:contains(Ok)').click();
+        testUtils.dom.click($('.modal:eq(1) button:contains(Ok)'));
         assert.strictEqual($('.modal').length, 1, "the confirmation modal should be closed");
         assert.strictEqual($('.modal .o_web_studio_selection_editor > li').length, 2, "there should be 2 selection values");
 
         // reorder values
-        testUtils.dragAndDrop(
+        testUtils.dom.dragAndDrop(
             $('.modal .ui-sortable-handle').eq(1),
             $('.modal .o_web_studio_selection_editor > li').first(),
             {position: 'top'});
         assert.strictEqual($('.modal .o_web_studio_selection_editor > li:first span:contains(Value 2)').length, 1, "the values should have been reordered");
 
-        $('.modal button:contains(Confirm)').click();
+        testUtils.dom.click($('.modal button:contains(Confirm)'));
         vem.destroy();
     });
 
@@ -2806,10 +2805,10 @@ QUnit.module('ViewEditorManager', {
         // used to generate the new fields view in mockRPC
         fieldsView = $.extend(true, {}, vem.fields_view);
 
-        assert.strictEqual(vem.$('.o_web_studio_list_view_editor [data-node-id]').length, 1,
+        assert.containsOnce(vem, '.o_web_studio_list_view_editor [data-node-id]',
             "there should be one node");
         // add a priority field
-        testUtils.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_priority'), $('.o_web_studio_hook'));
+        testUtils.dom.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_priority'), $('.o_web_studio_hook'));
 
         assert.strictEqual($('.modal').length, 0, "there should be no modal");
 
@@ -2925,25 +2924,25 @@ QUnit.module('ViewEditorManager', {
                 return this._super.apply(this, arguments);
             },
         });
-        vem.$('.o_web_studio_view_renderer .o_field_one2many').click();
+        testUtils.dom.click(vem.$('.o_web_studio_view_renderer .o_field_one2many'));
         assert.verifySteps(['coucou']);
-        $(vem.$('.o_web_studio_view_renderer .o_field_one2many .o_web_studio_editX2Many')[0]).click();
-        assert.strictEqual(vem.$('.o_web_studio_view_renderer thead tr [data-node-id]').length, 1,
+        testUtils.dom.click($(vem.$('.o_web_studio_view_renderer .o_field_one2many .o_web_studio_editX2Many')[0]));
+        assert.containsOnce(vem, '.o_web_studio_view_renderer thead tr [data-node-id]',
             "there should be 1 nodes in the x2m editor.");
         // used to generate the new fields view in mockRPC
         fieldsView = $.extend(true, {}, vem.fields_view);
-        testUtils.dragAndDrop(vem.$('.o_web_studio_existing_fields .o_web_studio_field_many2one'), $('.o_web_studio_hook'));
-        assert.strictEqual(vem.$('.o_web_studio_view_renderer thead tr [data-node-id]').length, 2,
+        testUtils.dom.dragAndDrop(vem.$('.o_web_studio_existing_fields .o_web_studio_field_many2one'), $('.o_web_studio_hook'));
+        assert.containsN(vem, '.o_web_studio_view_renderer thead tr [data-node-id]', 2,
             "there should be 2 nodes after the drag and drop.");
 
         // click on a field in the x2m list view
-        vem.$('.o_web_studio_view_renderer [data-node-id]:first').click();
+        testUtils.dom.click(vem.$('.o_web_studio_view_renderer [data-node-id]:first'));
         assert.verifySteps(['coucou', 'product'], "the model should be the x2m relation");
 
         // edit field properties
-        assert.strictEqual(vem.$('.o_web_studio_sidebar .o_web_studio_parameters').length, 1,
+        assert.containsOnce(vem, '.o_web_studio_sidebar .o_web_studio_parameters',
             "there should be button to edit the field properties");
-        vem.$('.o_web_studio_sidebar .o_web_studio_parameters').click();
+        testUtils.dom.click(vem.$('.o_web_studio_sidebar .o_web_studio_parameters'));
 
         config.debug = initialDebugMode;
         vem.destroy();
@@ -3031,25 +3030,25 @@ QUnit.module('ViewEditorManager', {
                 return this._super.apply(this, arguments);
             },
         });
-        assert.strictEqual(vem.$('.o_web_studio_add_chatter').length, 1,
+        assert.containsOnce(vem, '.o_web_studio_add_chatter',
             "should be possible to add a chatter");
-        vem.$('.o_web_studio_view_renderer .o_field_one2many').click();
-        $(vem.$('.o_web_studio_view_renderer .o_field_one2many .o_web_studio_editX2Many[data-type="form"]')).click();
-        assert.strictEqual(vem.$('.o_web_studio_add_chatter').length, 0,
+        testUtils.dom.click(vem.$('.o_web_studio_view_renderer .o_field_one2many'));
+        testUtils.dom.click($(vem.$('.o_web_studio_view_renderer .o_field_one2many .o_web_studio_editX2Many[data-type="form"]')));
+        assert.containsNone(vem, '.o_web_studio_add_chatter',
             "should not be possible to add a chatter");
-        vem.$('.o_web_studio_view_renderer .o_field_one2many').click();
-        $(vem.$('.o_web_studio_view_renderer .o_field_one2many .o_web_studio_editX2Many[data-type="form"]')).click();
+        testUtils.dom.click(vem.$('.o_web_studio_view_renderer .o_field_one2many'));
+        testUtils.dom.click($(vem.$('.o_web_studio_view_renderer .o_field_one2many .o_web_studio_editX2Many[data-type="form"]')));
         // used to generate the new fields view in mockRPC
         fieldsView = $.extend(true, {}, vem.fields_view);
         assert.strictEqual(vem.$('.o_field_char').eq(0).text(), 'jean',
             "the partner view form should be displayed.");
-        testUtils.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_char'), vem.$('.o_group .o_web_studio_hook:first'));
+        testUtils.dom.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_char'), vem.$('.o_group .o_web_studio_hook:first'));
 
         // add a new button
-        vem.$('.o_web_studio_form_view_editor .o_web_studio_button_hook').click();
+        testUtils.dom.click(vem.$('.o_web_studio_form_view_editor .o_web_studio_button_hook'));
         assert.strictEqual($('.modal .o_web_studio_new_button_dialog').length, 1,
             "there should be an opened modal to add a button");
-        $('.modal .o_web_studio_new_button_dialog .js_many2one_field input').click();
+        testUtils.dom.click($('.modal .o_web_studio_new_button_dialog .js_many2one_field input'));
 
         vem.destroy();
     });
@@ -3087,11 +3086,11 @@ QUnit.module('ViewEditorManager', {
         });
 
         // edit the x2m form view
-        vem.$('.o_web_studio_form_view_editor .o_field_one2many').click();
-        vem.$('.o_web_studio_form_view_editor .o_field_one2many .o_web_studio_editX2Many[data-type="form"]').click();
+        testUtils.dom.click(vem.$('.o_web_studio_form_view_editor .o_field_one2many'));
+        testUtils.dom.click(vem.$('.o_web_studio_form_view_editor .o_field_one2many .o_web_studio_editX2Many[data-type="form"]'));
         assert.strictEqual(vem.$('.o_web_studio_form_view_editor .o_field_widget[name="m2o"]').text(), "jacques",
             "the x2m form view should be correctly rendered");
-        vem.$('.o_web_studio_form_view_editor .o_field_widget[name="m2o"]').click();
+        testUtils.dom.click(vem.$('.o_web_studio_form_view_editor .o_field_widget[name="m2o"]'));
 
         // open the domain editor
         assert.strictEqual($('.modal .o_domain_selector').length, 0,
@@ -3183,14 +3182,14 @@ QUnit.module('ViewEditorManager', {
         var fieldsView = $.extend(true, {}, vem.fields_view);
 
         // edit the x2m form view
-        vem.$('.o_web_studio_form_view_editor .o_field_one2many').click();
-        vem.$('.o_web_studio_form_view_editor .o_field_one2many .o_web_studio_editX2Many[data-type="list"]').click();
+        testUtils.dom.click(vem.$('.o_web_studio_form_view_editor .o_field_one2many'));
+        testUtils.dom.click(vem.$('.o_web_studio_form_view_editor .o_field_one2many .o_web_studio_editX2Many[data-type="list"]'));
 
         assert.strictEqual(vem.$('.o_web_studio_list_view_editor th').text(), "M2Ocoucou",
             "the columns should be in the correct order");
 
         // move coucou at index 0
-        testUtils.dragAndDrop(vem.$('.o_web_studio_list_view_editor th:contains(coucou)'),
+        testUtils.dom.dragAndDrop(vem.$('.o_web_studio_list_view_editor th:contains(coucou)'),
             vem.$('th.o_web_studio_hook:first'));
 
         vem.destroy();
@@ -3209,12 +3208,12 @@ QUnit.module('ViewEditorManager', {
             arch: arch,
         });
         var $afterGroupHook = vem.$('.o_form_sheet > .o_web_studio_hook');
-        testUtils.dragAndDrop(vem.$('.o_web_studio_field_type_container .o_web_studio_field_tabs'),
+        testUtils.dom.dragAndDrop(vem.$('.o_web_studio_field_type_container .o_web_studio_field_tabs'),
             $afterGroupHook, {disableDrop: true});
-        assert.strictEqual(vem.$('.o_web_studio_nearest_hook').length, 1, "There should be 1 highlighted hook");
-        testUtils.dragAndDrop(vem.$('.o_web_studio_field_type_container .o_web_studio_field_columns'),
+        assert.containsOnce(vem, '.o_web_studio_nearest_hook', "There should be 1 highlighted hook");
+        testUtils.dom.dragAndDrop(vem.$('.o_web_studio_field_type_container .o_web_studio_field_columns'),
             $afterGroupHook, {disableDrop: true});
-        assert.strictEqual(vem.$('.o_web_studio_nearest_hook').length, 1, "There should be 1 highlighted hook");
+        assert.containsOnce(vem, '.o_web_studio_nearest_hook', "There should be 1 highlighted hook");
         vem.destroy();
     });
 
@@ -3283,16 +3282,16 @@ QUnit.module('ViewEditorManager', {
         fieldsView = $.extend(true, {}, vem.fields_view);
 
         // Enter edit mode of the O2M
-        vem.$('.o_field_x2many_list[name=product_ids]').click();
-        vem.$('.o_web_studio_editX2Many').click();
+        testUtils.dom.click(vem.$('.o_field_x2many_list[name=product_ids]'));
+        testUtils.dom.click(vem.$('.o_web_studio_editX2Many[data-type="list"]'));
 
-        vem.$('.o_web_studio_sidebar').find('.o_web_studio_view').click();
-        vem.$('.o_web_studio_sidebar').find('input#show_invisible').click();
+        testUtils.dom.click(vem.$('.o_web_studio_sidebar').find('.o_web_studio_view'));
+        testUtils.dom.click(vem.$('.o_web_studio_sidebar').find('input#show_invisible'));
 
         // select the first column
-        vem.$('thead th[data-node-id=1]').click();
+        testUtils.dom.click(vem.$('thead th[data-node-id=1]'));
         // enable readonly
-        vem.$('.o_web_studio_sidebar').find('input#readonly').click();
+        testUtils.dom.click(vem.$('.o_web_studio_sidebar').find('input#readonly'));
 
         vem.destroy();
     });

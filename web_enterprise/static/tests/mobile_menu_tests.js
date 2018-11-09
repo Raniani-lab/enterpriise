@@ -65,7 +65,7 @@ QUnit.module('web_enterprise mobile_menu_tests', {
 
         function createParent (params) {
             var actionManager = new ActionManager();
-            testUtils.addMockEnvironment(actionManager, params);
+            testUtils.mock.addMockEnvironment(actionManager, params);
             return actionManager;
         }
 
@@ -75,17 +75,17 @@ QUnit.module('web_enterprise mobile_menu_tests', {
         });
 
         var mobileMenu = new Menu(parent, this.data);
-        testUtils.addMockEnvironment(mobileMenu, {
+        testUtils.mock.addMockEnvironment(mobileMenu, {
             mockRPC: function () {
                 return $.when([]);
             },
         });
         mobileMenu.appendTo($('#qunit-fixture'));
 
-        mobileMenu.$('.o_mobile_menu_toggle').click();
-        assert.ok(!$(".o_burger_menu").hasClass('o_hidden'),
+        testUtils.dom.click(mobileMenu.$('.o_mobile_menu_toggle'));
+        assert.isVisible($(".o_burger_menu"),
             "Burger menu should be opened on button click");
-        mobileMenu.$('.o_burger_menu_close').click();
+        testUtils.dom.click(mobileMenu.$('.o_burger_menu_close'));
 
         parent.destroy();
     });
@@ -94,7 +94,7 @@ QUnit.module('web_enterprise mobile_menu_tests', {
         assert.expect(3);
         function createParent (params) {
             var actionManager = new ActionManager();
-            testUtils.addMockEnvironment(actionManager, params);
+            testUtils.mock.addMockEnvironment(actionManager, params);
             return actionManager;
         }
 
@@ -104,7 +104,7 @@ QUnit.module('web_enterprise mobile_menu_tests', {
         });
 
         var mobileMenu = new Menu(parent, this.data);
-        testUtils.addMockEnvironment(mobileMenu, {
+        testUtils.mock.addMockEnvironment(mobileMenu, {
             mockRPC: function () {
                 return $.when([]);
             },
@@ -113,14 +113,14 @@ QUnit.module('web_enterprise mobile_menu_tests', {
         mobileMenu.change_menu_section(3);
         mobileMenu.toggle_mode(false);
 
-        mobileMenu.$('.o_mobile_menu_toggle').click();
-        assert.ok(!$(".o_burger_menu").hasClass('o_hidden'),
+        testUtils.dom.click(mobileMenu.$('.o_mobile_menu_toggle'));
+        assert.isVisible($(".o_burger_menu"),
             "Burger menu should be opened on button click");
-        $('.o_burger_menu_topbar').click();
-        assert.ok(!$(".o_burger_menu_content").hasClass('o_burger_menu_dark'),
+        testUtils.dom.click($('.o_burger_menu_topbar'));
+        assert.doesNotHaveClass($(".o_burger_menu_content"), 'o_burger_menu_dark',
             "Toggle to usermenu on header click");
-        $('.o_burger_menu_topbar').click();
-        assert.ok($(".o_burger_menu_content").hasClass('o_burger_menu_dark'),
+        testUtils.dom.click($('.o_burger_menu_topbar'));
+        assert.hasClass($(".o_burger_menu_content"),'o_burger_menu_dark',
             "Toggle back to main sales menu on header click");
 
         parent.destroy();

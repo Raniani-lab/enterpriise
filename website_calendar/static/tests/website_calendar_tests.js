@@ -68,11 +68,11 @@ QUnit.module('website_calendar', {
             model: 'calendar.appointment.type',
         });
 
-        assert.strictEqual(form.$('.o_form_uri').attr('href'),
+        assert.hasAttrValue(form.$('.o_form_uri'), 'href',
             'http://amazing.odoo.com/website/calendar/schedule-a-demo-1?employee_id=214',
             'Wrong employee url copied.');
 
-        form.$('.o_website_calendar_copy_icon').click();
+        testUtils.dom.click(form.$('.o_website_calendar_copy_icon'));
         // ensure we didn't open the form view
         assert.ok($('.avoid_me').length === 0);
 
@@ -104,13 +104,13 @@ QUnit.module('website_calendar', {
             model: 'calendar.appointment.type'
         });
 
-        form.$buttons.find('.o_form_button_create').click();
+        testUtils.form.clickCreate(form);
 
         assert.strictEqual(form.$('.o_appointment_employee_url_cell').val(), '',
             'No Value should display while creating new record');
 
-        form.$("[name='website_url']").val('/aaa/aaa/').trigger('input');
-        form.$buttons.find('.o_form_button_save').click();
+        testUtils.fields.editInput(form.$("[name='website_url']"), '/aaa/aaa/');
+        testUtils.form.clickSave(form);
 
         form.$('.o_form_uri').each(function (i,r) {
             var link = "";
@@ -119,7 +119,7 @@ QUnit.module('website_calendar', {
             } else {
                 link = "http://amazing.odoo.com/aaa/aaa/?employee_id=214"
             }
-            assert.strictEqual($(r).attr('href'), link,
+            assert.hasAttrValue($(r), 'href', link,
                 'employee url with specific id should Create.');
         });
         form.destroy();

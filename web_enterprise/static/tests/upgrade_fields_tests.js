@@ -40,7 +40,7 @@ QUnit.module('upgrade_fields', {
                 '</form>',
         });
 
-        assert.strictEqual(form.$('.label').length, 0,
+        assert.containsNone(form, '.label',
             "there should be no upgrade label");
         assert.strictEqual(form.$('.o_label').text(), "BarCoucou",
             "the label should be correct");

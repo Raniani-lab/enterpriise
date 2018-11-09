@@ -56,16 +56,16 @@ QUnit.module('web_enterprise', {
 
         assert.strictEqual(form.$('.o_statusbar_buttons a:contains(Action)').length, 1,
             "statusbar should contain a button 'Action'");
-        assert.strictEqual(form.$('.o_statusbar_buttons .dropdown-menu').length, 1,
+        assert.containsOnce(form, '.o_statusbar_buttons .dropdown-menu',
             "statusbar should contain a dropdown");
-        assert.strictEqual(form.$('.o_statusbar_buttons .dropdown-menu:visible').length, 0,
+        assert.containsNone(form, '.o_statusbar_buttons .dropdown-menu:visible',
             "dropdown should be hidden");
 
         // open the dropdown
-        form.$('.o_statusbar_buttons a').click();
-        assert.strictEqual(form.$('.o_statusbar_buttons .dropdown-menu:visible').length, 1,
+        testUtils.dom.click(form.$('.o_statusbar_buttons a'));
+        assert.containsOnce(form, '.o_statusbar_buttons .dropdown-menu:visible',
             "dropdown should be visible");
-        assert.strictEqual(form.$('.o_statusbar_buttons .dropdown-menu > button').length, 2,
+        assert.containsN(form, '.o_statusbar_buttons .dropdown-menu > button', 2,
             "dropdown should contain 2 buttons");
 
         form.destroy();
@@ -89,7 +89,7 @@ QUnit.module('web_enterprise', {
             res_id: 1,
         });
 
-        assert.strictEqual(form.$('.o_statusbar_buttons').length, 0,
+        assert.containsNone(form, '.o_statusbar_buttons',
             "statusbar buttons are not displayed as there is no button");
 
         form.destroy();

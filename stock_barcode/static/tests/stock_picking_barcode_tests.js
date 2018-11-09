@@ -5,7 +5,7 @@ var testUtils = require('web.test_utils');
 var FormView = require('web.FormView');
 
 var createView = testUtils.createView;
-var triggerKeypressEvent = testUtils.triggerKeypressEvent;
+var triggerKeypressEvent = testUtils.dom.triggerKeypressEvent;
 
 QUnit.module('stock_barcode', {}, function () {
 
@@ -165,7 +165,7 @@ QUnit.test('scan a product tracked by lot', function (assert) {
 
     // trigger a change on a field to be able to check that the record is correctly
     // saved before calling get_po_to_split_from_barcode
-    form.$('.o_field_widget[name="display_name"]').val('new value').trigger('input');
+    testUtils.fields.editInput(form.$('.o_field_widget[name="display_name"]'), 'new value');
     _.each(['5','4','3','9','8','2','6','7','1','2','5','2','Enter'], triggerKeypressEvent);
     assert.strictEqual(form.$('.o_data_row .o_data_cell:nth(2)').text(), '0.0',
         "quantity done should still be 0");
@@ -224,7 +224,7 @@ QUnit.test('scan a product verify onChange', function (assert) {
 
     // trigger a change on a field to be able to check that the record is correctly
     // saved before calling get_po_to_split_from_barcode
-    form.$('.o_field_widget[name="display_name"]').val('new value').trigger('input');
+    testUtils.fields.editInput(form.$('.o_field_widget[name="display_name"]'), 'new value');
     _.each(['5','4','3','9','8','2','6','7','1','2','5','2','Enter'], triggerKeypressEvent);
     assert.strictEqual(form.$('.o_data_row .o_data_cell:nth(2)').text(), '1.0',
         "quantity done should be 1");

@@ -77,7 +77,7 @@ QUnit.module('FormView', {
             }
         };
 
-        testUtils.patch(FormRenderer, {
+        testUtils.mock.patch(FormRenderer, {
             /**
              * Called when chatter is rendered
              *
@@ -91,7 +91,7 @@ QUnit.module('FormView', {
         });
     },
     afterEach: function () {
-        testUtils.unpatch(FormRenderer);
+        testUtils.mock.unpatch(FormRenderer);
     },
 }, function () {
 
@@ -127,7 +127,7 @@ QUnit.module('FormView', {
 
         // Need to load form view before going to edit mode, otherwise
         // 'o_success_ocr' is not loaded.
-        $('.o_form_button_edit').click();
+        testUtils.dom.click($('.o_form_button_edit'));
 
         var $attachmentPreview = form.$('.o_attachment_preview_img');
 
@@ -166,6 +166,12 @@ QUnit.module('FormView', {
             "box with ID 5 should be related to field 'total'");
 
         // check visibility of boxes
+        // the box is appended in the o_attachment_preview, which is displayed
+        // on XXL screens thanks to mediaqueries ; however, the test suite is
+        // executed on a 1366x768 screen, so the rule doesn't apply and the
+        // boxes are actually not visible ; for that reason, we don't use the
+        // is(Not)Visible helpers, but directly check the presence/absence of
+        // class o_hidden
         assert.notOk(form.$('.o_invoice_extract_box[data-id=1]').hasClass('o_hidden'),
             "box with ID 1 should be visible");
         assert.notOk(form.$('.o_invoice_extract_box[data-id=2]').hasClass('o_hidden'),
@@ -178,25 +184,25 @@ QUnit.module('FormView', {
             "box with ID 5 should be invisible");
 
         // check selection of boxes
-        assert.notOk(form.$('.o_invoice_extract_box[data-id=1]').hasClass('ocr_chosen'),
+        assert.doesNotHaveClass(form.$('.o_invoice_extract_box[data-id=1]'), 'ocr_chosen',
             "box with ID 1 should not be OCR chosen");
-        assert.notOk(form.$('.o_invoice_extract_box[data-id=1]').hasClass('selected'),
+        assert.doesNotHaveClass(form.$('.o_invoice_extract_box[data-id=1]'), 'selected',
             "box with ID 1 should not be selected");
-        assert.ok(form.$('.o_invoice_extract_box[data-id=2]').hasClass('ocr_chosen'),
+        assert.hasClass(form.$('.o_invoice_extract_box[data-id=2]'),'ocr_chosen',
             "box with ID 2 should be OCR chosen");
-        assert.notOk(form.$('.o_invoice_extract_box[data-id=2]').hasClass('selected'),
+        assert.doesNotHaveClass(form.$('.o_invoice_extract_box[data-id=2]'), 'selected',
             "box with ID 2 should not be selected");
-        assert.notOk(form.$('.o_invoice_extract_box[data-id=3]').hasClass('ocr_chosen'),
+        assert.doesNotHaveClass(form.$('.o_invoice_extract_box[data-id=3]'), 'ocr_chosen',
             "box with ID 3 should not be OCR chosen");
-        assert.ok(form.$('.o_invoice_extract_box[data-id=3]').hasClass('selected'),
+        assert.hasClass(form.$('.o_invoice_extract_box[data-id=3]'),'selected',
             "box with ID 3 should be selected");
-        assert.notOk(form.$('.o_invoice_extract_box[data-id=4]').hasClass('ocr_chosen'),
+        assert.doesNotHaveClass(form.$('.o_invoice_extract_box[data-id=4]'), 'ocr_chosen',
             "box with ID 4 should not be OCR chosen");
-        assert.notOk(form.$('.o_invoice_extract_box[data-id=4]').hasClass('selected'),
+        assert.doesNotHaveClass(form.$('.o_invoice_extract_box[data-id=4]'), 'selected',
             "box with ID 4 should not be selected");
-        assert.ok(form.$('.o_invoice_extract_box[data-id=5]').hasClass('ocr_chosen'),
+        assert.hasClass(form.$('.o_invoice_extract_box[data-id=5]'),'ocr_chosen',
             "box with ID 5 should be OCR chosen");
-        assert.ok(form.$('.o_invoice_extract_box[data-id=5]').hasClass('selected'),
+        assert.hasClass(form.$('.o_invoice_extract_box[data-id=5]'),'selected',
             "box with ID 5 should be selected");
 
         form.destroy();
@@ -246,7 +252,7 @@ QUnit.module('FormView', {
 
         // Need to load form view before going to edit mode, otherwise
         // 'o_success_ocr' is not loaded.
-        $('.o_form_button_edit').click();
+        testUtils.dom.click($('.o_form_button_edit'));
 
         $attachmentPreview = form.$('.o_attachment_preview_img');
         assert.strictEqual($attachmentPreview.length, 1,
@@ -260,7 +266,7 @@ QUnit.module('FormView', {
         assert.strictEqual($('.o_invoice_extract_box').length, 5,
             "should now display boxes in edit mode");
 
-        $('.o_form_button_save').click();
+        testUtils.dom.click($('.o_form_button_save'));
 
         $attachmentPreview = form.$('.o_attachment_preview_img');
         assert.strictEqual($attachmentPreview.length, 1,
@@ -309,12 +315,16 @@ QUnit.module('FormView', {
 
         // Need to load form view before going to edit mode, otherwise
         // 'o_success_ocr' is not loaded.
-        $('.o_form_button_edit').click();
+        testUtils.form.clickEdit(form);
 
         assert.strictEqual($('.o_invoice_extract_button.active').data('field-name'),
-            'VAT_Number',
-            "should have 'VAT_Number' as the active field");
+            'VAT_Number', "should have 'VAT_Number' as the active field");
 
+        // the box is appended in the o_attachment_preview, which is displayed
+        // on XXL screens thanks to mediaqueries ; however, the test suite is
+        // executed on a 1366x768 screen, so the rule doesn't apply and the
+        // boxes are actually not visible ; for that reason, we don't use the
+        // click and is(Not)Visible helpers
         assert.notOk(form.$('.o_invoice_extract_box[data-id=1]').hasClass('o_hidden'),
             "box with ID 1 should be visible");
         assert.notOk(form.$('.o_invoice_extract_box[data-id=2]').hasClass('o_hidden'),
@@ -326,8 +336,7 @@ QUnit.module('FormView', {
         assert.ok(form.$('.o_invoice_extract_box[data-id=5]').hasClass('o_hidden'),
             "box with ID 5 should be invisible");
 
-        assert.strictEqual($('.o_invoice_extract_button[data-field-name="total"]').length,
-            1, "should have a field extract button for 'total'");
+        assert.containsOnce($('body'), '.o_invoice_extract_button[data-field-name="total"]');
         $('.o_invoice_extract_button[data-field-name="total"]').click();
 
         assert.ok(form.$('.o_invoice_extract_box[data-id=1]').hasClass('o_hidden'),

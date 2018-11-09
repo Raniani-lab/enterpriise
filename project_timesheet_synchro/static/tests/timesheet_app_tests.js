@@ -81,7 +81,7 @@ odoo.define('project_timesheet_synchro.timesheet_app_tests', function (require) 
             };
 
             // Patch timesheetUI so that it is no longer a service provider.
-            testUtils.patch(TimeSheetUI, {
+            testUtils.mock.patch(TimeSheetUI, {
                 /**
                  * @override
                  */
@@ -94,7 +94,7 @@ odoo.define('project_timesheet_synchro.timesheet_app_tests', function (require) 
             });
         },
         afterEach: function () {
-            testUtils.unpatch(TimeSheetUI);
+            testUtils.mock.unpatch(TimeSheetUI);
         }
     }, function () {
 

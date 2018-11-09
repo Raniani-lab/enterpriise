@@ -32,9 +32,9 @@ QUnit.module('ReportEditor', {
             reportHTML: reportHTML,
         });
 
-        assert.strictEqual(editor.$('iframe').length, 1,
+        assert.containsOnce(editor, 'iframe',
             "an iframe should be rendered");
-        assert.strictEqual(editor.$('iframe').attr('src'), "about:blank",
+        assert.hasAttrValue(editor.$('iframe'), 'src', "about:blank",
             "the source should be correctly set");
 
         editor.destroy();

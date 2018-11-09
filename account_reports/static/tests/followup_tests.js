@@ -50,7 +50,7 @@ QUnit.module('FollowupViews', {
                 return this._super.apply(this, arguments);
             },
         });
-        assert.strictEqual(followupFormView.$('div.o_account_reports_body').length, 1, "Html content should be rendered");
+        assert.containsOnce(followupFormView, 'div.o_account_reports_body', "Html content should be rendered");
 
         followupFormView.destroy();
     });
@@ -88,7 +88,7 @@ QUnit.module('FollowupViews', {
         var $buttons = followupFormView.$buttons;
         var $buttonDoItLater = $buttons.find('button.o_account_reports_followup_do_it_later_button');
         var $buttonDone = $buttons.find('button.o_account_reports_followup_done_button');
-        assert.ok($buttonDoItLater.hasClass('btn-secondary'),
+        assert.hasClass($buttonDoItLater,'btn-secondary',
             "Do It Later button should have class 'btn-secondary'");
         assert.strictEqual($buttonDone.css('display'), 'none',
             "Done button should be invisible");
@@ -96,7 +96,7 @@ QUnit.module('FollowupViews', {
             "The custom searchview should be visible on the form");
         assert.strictEqual(followupFormView.$searchview.find('span.o_account-progress-bar-content').text(), '0/1',
             "Progress bar value should be '0/1'");
-        $buttonDoItLater.click();
+        testUtils.dom.click($buttonDoItLater);
 
         assert.strictEqual(followupFormView.$searchview.find('span.o_account-progress-bar-content').text(), '0/0',
             "Progress bar value should be '0/0' after click on 'Do It Later'");
@@ -141,7 +141,7 @@ QUnit.module('FollowupViews', {
         assert.strictEqual(followupFormView.$buttons.find('button.o_account_reports_followup_done_button').css('display'), 'none',
             "Done button should be invisible");
 
-        $buttonPrintLetter.click();
+        testUtils.dom.click($buttonPrintLetter);
 
         assert.strictEqual(followupFormView.$searchview.find('span.o_account-progress-bar-content').text(), '0/1',
             "Progress bar value should be '0/1'");
@@ -149,7 +149,7 @@ QUnit.module('FollowupViews', {
         assert.strictEqual(followupFormView.$buttons.find('button.o_account_reports_followup_done_button').css('display'), 'inline-block',
             "Done button should be visible after print");
 
-        followupFormView.$buttons.find('button.o_account_reports_followup_done_button').click();
+        testUtils.dom.click(followupFormView.$buttons.find('button.o_account_reports_followup_done_button'));
 
         assert.strictEqual(followupFormView.$searchview.find('span.o_account-progress-bar-content').text(), '1/1',
             "Progress bar value should be '1/1' after done");
@@ -196,12 +196,12 @@ QUnit.module('FollowupViews', {
             "Progress bar value should be '0/4'");
         assert.strictEqual(followupFormView.pager.$('.o_pager_value').text(), "1", 'pager value should be 1');
         assert.strictEqual(followupFormView.pager.$('.o_pager_limit').text(), "4", 'pager limit should be 4');
-        followupFormView.pager.$('.o_pager_next').click();
+        testUtils.dom.click(followupFormView.pager.$('.o_pager_next'));
 
         assert.strictEqual(followupFormView.pager.$('.o_pager_value').text(), "2", 'pager value should be 2');
 
         var $buttonDoItLater = followupFormView.$buttons.find('button.o_account_reports_followup_do_it_later_button');
-        $buttonDoItLater.click();
+        testUtils.dom.click($buttonDoItLater);
 
         assert.strictEqual(followupFormView.pager.$('.o_pager_value').text(), "2", 'pager value should be 2');
         assert.strictEqual(followupFormView.pager.$('.o_pager_limit').text(), "3", 'pager limit should be 3');

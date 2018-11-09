@@ -67,25 +67,25 @@ QUnit.module('Views', {
             assert.ok(gantt.$('.gantt_task_scale').length, "should gantt scale part");
             assert.ok(gantt.$('.gantt_data_area').length, "should gantt data part");
             assert.ok(gantt.$('.gantt_hor_scroll').length, "should gantt horizontal scroll bar");
-            assert.strictEqual(gantt.$('.gantt_bars_area .gantt_task_line').length, 6,
+            assert.containsN(gantt, '.gantt_bars_area .gantt_task_line', 6,
                 "should display 6 tasks");
 
             gantt.$buttons.find('.o_gantt_button_scale[data-value="day"]').trigger('click');
-            assert.strictEqual(gantt.$('.gantt_bars_area .gantt_task_line').length, 3,
+            assert.containsN(gantt, '.gantt_bars_area .gantt_task_line', 3,
                 "should display 3 tasks in day mode");
             assert.strictEqual(gantt.get('title'), "Forecasts (12 Dec)", "should have correct title");
 
             gantt.$buttons.find('.o_gantt_button_right').trigger('click');
-            assert.strictEqual(gantt.$('.gantt_bars_area .gantt_task_line').length, 3,
+            assert.containsN(gantt, '.gantt_bars_area .gantt_task_line', 3,
                 "should now display 3 tasks");
 
             gantt.$buttons.find('.o_gantt_button_left').trigger('click');
-            assert.strictEqual(gantt.$('.gantt_bars_area .gantt_task_line').length, 3,
+            assert.containsN(gantt, '.gantt_bars_area .gantt_task_line', 3,
                 "should now display 3 tasks");
 
             gantt.reload({domain: [['name', 'like', '2']]});
 
-            assert.strictEqual(gantt.$('.gantt_bars_area .gantt_task_line').length, 1,
+            assert.containsOnce(gantt, '.gantt_bars_area .gantt_task_line',
                 "should apply the the domain filter");
 
             gantt.destroy();
@@ -125,22 +125,22 @@ QUnit.module('Views', {
             'Forecast Test', "should display no period");
 
         // switch to day mode
-        actionManager.controlPanel.$('.o_gantt_button_scale[data-value=day]').click();
+        testUtils.dom.click(actionManager.controlPanel.$('.o_gantt_button_scale[data-value=day]'));
         assert.strictEqual(actionManager.controlPanel.$('.breadcrumb-item').text(),
             'Forecast Test (12 Dec)', "should display the current day");
 
         // switch to week mode
-        actionManager.controlPanel.$('.o_gantt_button_scale[data-value=week]').click();
+        testUtils.dom.click(actionManager.controlPanel.$('.o_gantt_button_scale[data-value=week]'));
         assert.strictEqual(actionManager.controlPanel.$('.breadcrumb-item').text(),
             'Forecast Test (11 Dec - 17 Dec)', "should display the current week");
 
         // switch to month mode
-        actionManager.controlPanel.$('.o_gantt_button_scale[data-value=month]').click();
+        testUtils.dom.click(actionManager.controlPanel.$('.o_gantt_button_scale[data-value=month]'));
         assert.strictEqual(actionManager.controlPanel.$('.breadcrumb-item').text(),
             'Forecast Test (December 2016)', "should display the current month");
 
         // switch to year mode
-        actionManager.controlPanel.$('.o_gantt_button_scale[data-value=year]').click();
+        testUtils.dom.click(actionManager.controlPanel.$('.o_gantt_button_scale[data-value=year]'));
         assert.strictEqual(actionManager.controlPanel.$('.breadcrumb-item').text(),
             'Forecast Test (2016)', "should display the current year");
 
@@ -181,14 +181,14 @@ QUnit.module('Views', {
 
             // when no tasks are present, the gantt library will add an empty
             // task line
-            assert.strictEqual(gantt.$('.gantt_bars_area .gantt_task_line').length, 1,
+            assert.containsOnce(gantt, '.gantt_bars_area .gantt_task_line',
                 "should display 1 tasks line");
 
-            gantt.$('.gantt_task_cell').first().click();
-            $('.modal .modal-body input:first').val('new task').trigger('input');
+            testUtils.dom.click(gantt.$('.gantt_task_cell').first());
+            testUtils.fields.editInput($('.modal .modal-body input:first'), 'new task');
 
             rpcCount = 0;
-            $('.modal .modal-footer button.btn-primary').click();  // save
+            testUtils.dom.click($('.modal .modal-footer button.btn-primary'));
 
             assert.strictEqual(rpcCount, 2, "should have done 2 rpcs (1 write and 1 searchread to reload)");
 
@@ -199,8 +199,8 @@ QUnit.module('Views', {
             assert.strictEqual(self.data.task.records.length, 7, "should have created a task");
 
             // open formViewDialog
-            gantt.$('.gantt_cell.gantt_last_cell').click();
-            $('.modal .o_field_many2one[name="user_id"] input').click();
+            testUtils.dom.click(gantt.$('.gantt_cell.gantt_last_cell'));
+            testUtils.dom.click($('.modal .o_field_many2one[name="user_id"] input'));
 
             gantt.destroy();
             done();
@@ -234,9 +234,9 @@ QUnit.module('Views', {
                 return this._super(route, args);
             },
         }).then(function (gantt) {
-            assert.strictEqual(gantt.$('.inside_task_bar.o_gantt_color_red[consolidation_ids="gantt_task_1"]').length, 2,
+            assert.containsN(gantt, '.inside_task_bar.o_gantt_color_red[consolidation_ids="gantt_task_1"]', 2,
                 "should have 2 task bars for task 1, in red");
-            assert.strictEqual(gantt.$('.inside_task_bar.o_gantt_colorgreen_3[consolidation_ids="gantt_task_5"]').length, 2,
+            assert.containsN(gantt, '.inside_task_bar.o_gantt_colorgreen_3[consolidation_ids="gantt_task_5"]', 2,
                 "should have 2 task bars for task 5, in green");
             assert.strictEqual(gantt.$('.inside_task_bar[consolidation_ids="gantt_task_5"]:nth-child(3)').text(), '41.10 Time',
                 "the number should be rounded to 41.10");
@@ -272,14 +272,14 @@ QUnit.module('Views', {
         }).then(function (gantt) {
 
             // create a task
-            gantt.$('.gantt_task_cell').first().click();
-            $('.modal .modal-body input:first').val('new task').trigger('input');
+            testUtils.dom.click(gantt.$('.gantt_task_cell').first());
+            testUtils.fields.editInput($('.modal .modal-body input:first'), 'new task');
 
             // save it
-            $('.modal .modal-footer button.btn-primary').click();
+            testUtils.dom.click($('.modal .modal-footer button.btn-primary'));
 
             // open formViewDialog
-            gantt.$('.gantt_cell.gantt_last_cell').click();
+            testUtils.dom.clickFirst(gantt.$('.gantt_cell.gantt_last_cell'));
 
             assert.ok(gantt.$('.o_form_readonly'),
                 "the form dialog should be in readonly mode");
@@ -313,13 +313,13 @@ QUnit.module('Views', {
             },
         }).then(function (gantt) {
 
-            assert.notOk($('body').hasClass('modal-open'),
+            assert.doesNotHaveClass($('body'), 'modal-open',
                 "no form dialog should be displayed initially");
 
             // try create a task
-            gantt.$('.gantt_task_cell').first().click();
+            testUtils.dom.click(gantt.$('.gantt_task_cell').first());
 
-            assert.notOk($('body').hasClass('modal-open'),
+            assert.doesNotHaveClass($('body'), 'modal-open',
                 "no form dialog should be displayed when trying to create a task");
 
             gantt.destroy();

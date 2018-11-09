@@ -133,7 +133,7 @@ QUnit.module('web_mobile', {
         assert.strictEqual($button.length, 1, "the tag should be visible in a mobile environment");
         assert.strictEqual(rpcCount, 1, "no extra rpc should be done by the widget (only the one from the view)");
 
-        $button.click();
+        testUtils.dom.click($button);
 
         assert.strictEqual(rpcCount, 2, "an extra rpc should be done on click");
         assert.ok(rpcDone, "a read rpc should have been done");
@@ -200,10 +200,10 @@ QUnit.module('web_mobile', {
 
         assert.strictEqual(mobileDialogCall, 0,
             "the many2one mobile dialog shouldn't be called yet");
-        assert.notOk($input.hasClass('ui-autocomplete-input'),
+        assert.doesNotHaveClass($input, 'ui-autocomplete-input',
             "autocomplete should not be visible in a mobile environment");
 
-        $input.click();
+        testUtils.dom.click($input);
 
         assert.strictEqual(mobileDialogCall, 1,
             "the many2one should call a special dialog in a mobile environment");
@@ -264,7 +264,7 @@ QUnit.module('web_mobile', {
 
         assert.strictEqual(mobileDialogCall, 0, "the many2many_tags should be disabled in a mobile environment");
 
-        $input.click();
+        testUtils.dom.click($input);
 
         assert.strictEqual(mobileDialogCall, 2, "the many2many_tags should call mobileDialog with and without search");
         assert.strictEqual(rpcReadCount, 2, "there should be a read for current form record and selected sibling");

@@ -11,6 +11,22 @@ var testUtils = require('web.test_utils');
 
 var createView = testUtils.createView;
 
+function autocompleteLength() {
+    var $el = $('.ui-autocomplete');
+    if ($el.length === 0) {
+        throw new Error('Autocomplete not found');
+    }
+    return $el.find('li').length;
+}
+
+function searchValue(el, value) {
+    var matches = typeof el === 'string' ? $(el) : el;
+    if (matches.length != 1) {
+        throw new Error(`Found ${matches.length} elements instead of 1`);
+    }
+    matches.val(value).trigger('keydown');
+}
+
 QUnit.module('Views');
 
 QUnit.module('DocumentsKanbanView', {
@@ -213,19 +229,19 @@ QUnit.module('DocumentsKanbanView', {
         });
 
         // check view layout
-        assert.strictEqual(kanban.$('> div').length, 3,
+        assert.containsN(kanban, '> div', 3,
             "should have 3 columns");
-        assert.strictEqual(kanban.$('> .o_documents_selector').length, 1,
+        assert.containsOnce(kanban, '> .o_documents_selector',
             "should have a 'documents selector' column");
-        assert.strictEqual(kanban.$('> .o_kanban_view').length, 1,
+        assert.containsOnce(kanban, '> .o_kanban_view',
             "should have a 'classical kanban view' column");
-        assert.ok(kanban.$('.o_kanban_view').hasClass('o_documents_kanban_view'),
+        assert.hasClass(kanban.$('.o_kanban_view'),'o_documents_kanban_view',
             "should have classname 'o_documents_kanban_view'");
         assert.strictEqual(kanban.$('.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length, 5,
             "should have 5 records in the renderer");
-        assert.strictEqual(kanban.$('.o_kanban_record:first .o_record_selector').length, 1,
+        assert.containsOnce(kanban, '.o_kanban_record:first .o_record_selector',
             "should have a 'selected' button");
-        assert.strictEqual(kanban.$('> .o_documents_inspector').length, 1,
+        assert.containsOnce(kanban, '> .o_documents_inspector',
             "should have a 'documents inspector' column");
 
         // check control panel buttons
@@ -258,23 +274,23 @@ QUnit.module('DocumentsKanbanView', {
         });
 
         var $firstRecord = kanban.$('.o_kanban_record:first');
-        assert.ok(!$firstRecord.hasClass('o_record_selected'),
+        assert.doesNotHaveClass($firstRecord, 'o_record_selected',
             "first record should not be selected");
-        $firstRecord.find('.o_record_selector').click();
-        assert.ok($firstRecord.hasClass('o_record_selected'),
+        testUtils.dom.click($firstRecord.find('.o_record_selector'));
+        assert.hasClass($firstRecord,'o_record_selected',
             "first record should be selected");
 
         var $thirdRecord = kanban.$('.o_kanban_record:nth(2)');
-        assert.ok(!$thirdRecord.hasClass('o_record_selected'),
+        assert.doesNotHaveClass($thirdRecord, 'o_record_selected',
             "third record should not be selected");
-        $thirdRecord.find('.o_record_selector').click();
-        assert.ok($thirdRecord.hasClass('o_record_selected'),
+        testUtils.dom.click($thirdRecord.find('.o_record_selector'));
+        assert.hasClass($thirdRecord,'o_record_selected',
             "third record should be selected");
 
-        $firstRecord.find('.o_record_selector').click();
-        assert.ok(!$firstRecord.hasClass('o_record_selected'),
+        testUtils.dom.click($firstRecord.find('.o_record_selector'));
+        assert.doesNotHaveClass($firstRecord, 'o_record_selected',
             "first record should not be selected");
-        assert.ok($thirdRecord.hasClass('o_record_selected'),
+        assert.hasClass($thirdRecord,'o_record_selected',
             "third record should be selected");
 
         kanban.destroy();
@@ -294,21 +310,21 @@ QUnit.module('DocumentsKanbanView', {
                 '</t></templates></kanban>',
         });
 
-        assert.strictEqual(kanban.$('.o_kanban_record.o_record_selected').length, 0,
+        assert.containsNone(kanban, '.o_kanban_record.o_record_selected',
             "no record should be selected");
 
         var $firstRecord = kanban.$('.o_kanban_record:first');
-        $firstRecord.click();
-        assert.strictEqual(kanban.$('.o_kanban_record.o_record_selected').length, 1,
+        testUtils.dom.click($firstRecord);
+        assert.containsOnce(kanban, '.o_kanban_record.o_record_selected',
             "one record should be selected");
-        assert.ok($firstRecord.hasClass('o_record_selected'),
+        assert.hasClass($firstRecord,'o_record_selected',
             "first record should be selected");
 
         var $thirdRecord = kanban.$('.o_kanban_record:nth(2)');
-        $thirdRecord.click();
-        assert.strictEqual(kanban.$('.o_kanban_record.o_record_selected').length, 1,
+        testUtils.dom.click($thirdRecord);
+        assert.containsOnce(kanban, '.o_kanban_record.o_record_selected',
             "one record should be selected");
-        assert.ok($thirdRecord.hasClass('o_record_selected'),
+        assert.hasClass($thirdRecord,'o_record_selected',
             "third record should be selected");
 
         kanban.destroy();
@@ -328,17 +344,14 @@ QUnit.module('DocumentsKanbanView', {
                 '</t></templates></kanban>',
         });
 
-        assert.strictEqual(kanban.$('.o_kanban_record.o_record_selected').length, 0,
-            "no record should be selected");
+        assert.containsNone(kanban, '.o_kanban_record.o_record_selected');
 
         var $firstRecord = kanban.$('.o_kanban_record:first');
-        $firstRecord.click();
-        assert.ok($firstRecord.hasClass('o_record_selected'),
-            "first record should be selected");
+        testUtils.dom.click($firstRecord);
+        assert.hasClass($firstRecord,'o_record_selected');
 
-        $firstRecord.click();
-        assert.strictEqual(kanban.$('.o_kanban_record.o_record_selected').length, 0,
-            "no more record should be selected");
+        testUtils.dom.click($firstRecord);
+        assert.containsNone(kanban, '.o_kanban_record.o_record_selected');
 
         kanban.destroy();
     });
@@ -364,13 +377,13 @@ QUnit.module('DocumentsKanbanView', {
         });
 
         var $firstRecord = kanban.$('.o_kanban_record:first');
-        assert.ok(!$firstRecord.hasClass('o_record_selected'),
+        assert.doesNotHaveClass($firstRecord, 'o_record_selected',
             "first record should not be selected");
         $firstRecord.focus().trigger($.Event('keydown', {
             keyCode: $.ui.keyCode.ENTER,
             which: $.ui.keyCode.ENTER,
         }));
-        assert.ok($firstRecord.hasClass('o_record_selected'),
+        assert.hasClass($firstRecord,'o_record_selected',
             "first record should be selected");
 
         var $thirdRecord = kanban.$('.o_kanban_record:nth(2)');
@@ -378,9 +391,9 @@ QUnit.module('DocumentsKanbanView', {
             keyCode: $.ui.keyCode.ENTER,
             which: $.ui.keyCode.ENTER,
         }));
-        assert.ok($thirdRecord.hasClass('o_record_selected'),
+        assert.hasClass($thirdRecord,'o_record_selected',
             "third record should be selected");
-        assert.ok(!$firstRecord.hasClass('o_record_selected'),
+        assert.doesNotHaveClass($firstRecord, 'o_record_selected',
             "first record should no longer be selected");
 
         kanban.destroy();
@@ -401,13 +414,13 @@ QUnit.module('DocumentsKanbanView', {
                 '</t></templates></kanban>',
         });
         var $firstRecord = kanban.$('.o_kanban_record:first');
-        assert.ok(!$firstRecord.hasClass('o_record_selected'),
+        assert.doesNotHaveClass($firstRecord, 'o_record_selected',
             "first record should not be selected");
         $firstRecord.focus().trigger($.Event('keydown', {
             keyCode: $.ui.keyCode.ENTER,
             which: $.ui.keyCode.ENTER,
         }));
-        assert.ok($firstRecord.hasClass('o_record_selected'),
+        assert.hasClass($firstRecord,'o_record_selected',
             "first record should be selected");
 
         var $thirdRecord = kanban.$('.o_kanban_record:nth(2)');
@@ -416,9 +429,9 @@ QUnit.module('DocumentsKanbanView', {
             which: $.ui.keyCode.ENTER,
             shiftKey: true,
         }));
-        assert.ok($thirdRecord.hasClass('o_record_selected'),
+        assert.hasClass($thirdRecord,'o_record_selected',
             "third record should be selected (shift)");
-        assert.ok($firstRecord.hasClass('o_record_selected'),
+        assert.hasClass($firstRecord,'o_record_selected',
             "first record should still be selected (shift)");
 
         $firstRecord.focus().trigger($.Event('keydown', {
@@ -427,9 +440,9 @@ QUnit.module('DocumentsKanbanView', {
             ctrlKey: true,
         }));
 
-        assert.ok($thirdRecord.hasClass('o_record_selected'),
+        assert.hasClass($thirdRecord,'o_record_selected',
             "third record should still be selected (ctrl)");
-        assert.ok(!$firstRecord.hasClass('o_record_selected'),
+        assert.doesNotHaveClass($firstRecord, 'o_record_selected',
             "first record should no longer be selected (ctrl)");
 
         kanban.destroy();
@@ -450,27 +463,27 @@ QUnit.module('DocumentsKanbanView', {
                 '</t></templates></kanban>',
         });
 
-        kanban.$('.o_kanban_record:contains(yop) .o_record_selector').click();
-        kanban.$('.o_kanban_record:contains(burp) .o_record_selector').click();
-        kanban.$('.o_kanban_record:contains(blip) .o_record_selector').click();
+        testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop) .o_record_selector'));
+        testUtils.dom.click(kanban.$('.o_kanban_record:contains(burp) .o_record_selector'));
+        testUtils.dom.click(kanban.$('.o_kanban_record:contains(blip) .o_record_selector'));
 
-        assert.strictEqual(kanban.$('.o_record_selected').length, 3,
+        assert.containsN(kanban, '.o_record_selected', 3,
             "should have 3 selected records");
-        assert.strictEqual(kanban.$('.o_documents_inspector_preview .o_document_preview').length, 3,
+        assert.containsN(kanban, '.o_documents_inspector_preview .o_document_preview', 3,
             "should show 3 document previews in the DocumentsInspector");
 
         kanban.reload({domain: [['name', '=', 'burp']]});
 
-        assert.strictEqual(kanban.$('.o_record_selected').length, 1,
+        assert.containsOnce(kanban, '.o_record_selected',
             "should have 1 selected record");
-        assert.strictEqual(kanban.$('.o_documents_inspector_preview .o_document_preview').length, 1,
+        assert.containsOnce(kanban, '.o_documents_inspector_preview .o_document_preview',
             "should show 1 document preview in the DocumentsInspector");
 
         kanban.reload({domain: []});
 
-        assert.strictEqual(kanban.$('.o_record_selected').length, 1,
+        assert.containsOnce(kanban, '.o_record_selected',
             "should have 1 selected records");
-        assert.strictEqual(kanban.$('.o_documents_inspector_preview .o_document_preview').length, 1,
+        assert.containsOnce(kanban, '.o_documents_inspector_preview .o_document_preview',
             "should show 1 document previews in the DocumentsInspector");
 
         kanban.destroy();
@@ -507,22 +520,22 @@ QUnit.module('DocumentsKanbanView', {
             },
         });
 
-        kanban.$('.o_kanban_record:contains(yop) .o_record_selector').click();
-        kanban.$('.o_kanban_record:contains(burp) .o_record_selector').click();
-        kanban.$('.o_kanban_record:contains(blip) .o_record_selector').click();
+        testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop) .o_record_selector'));
+        testUtils.dom.click(kanban.$('.o_kanban_record:contains(burp) .o_record_selector'));
+        testUtils.dom.click(kanban.$('.o_kanban_record:contains(blip) .o_record_selector'));
 
-        assert.strictEqual(kanban.$('.o_record_selected').length, 3,
+        assert.containsN(kanban, '.o_record_selected', 3,
             "should have 3 selected records");
-        assert.strictEqual(kanban.$('.o_documents_inspector_preview .o_document_preview').length, 3,
+        assert.containsN(kanban, '.o_documents_inspector_preview .o_document_preview', 3,
             "should show 3 document previews in the DocumentsInspector");
 
-        kanban.$('.o_kanban_record:contains(yop) button').click();
+        testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop) button'));
 
         assert.strictEqual(kanban.$('.o_record_selected:contains(yop changed)').length, 1,
             "should have re-rendered the updated record");
-        assert.strictEqual(kanban.$('.o_record_selected').length, 3,
+        assert.containsN(kanban, '.o_record_selected', 3,
             "should still have 3 selected records");
-        assert.strictEqual(kanban.$('.o_documents_inspector_preview .o_document_preview').length, 3,
+        assert.containsN(kanban, '.o_documents_inspector_preview .o_document_preview', 3,
             "should still show 3 document previews in the DocumentsInspector");
 
         kanban.destroy();
@@ -558,12 +571,12 @@ QUnit.module('DocumentsKanbanView', {
         });
 
         // filter on 'task' in the DocumentsSelector
-        kanban.$('.o_documents_selector .o_documents_selector_model[data-id=task] input:checkbox').click();
+        testUtils.dom.click(kanban.$('.o_documents_selector .o_documents_selector_model[data-id=task] input:checkbox'));
 
         assert.strictEqual(kanban.$('.o_kanban_record:not(.o_kanban_ghost)').length, 2,
             "should have 2 records in the renderer");
 
-        kanban.$buttons.find('.o_documents_kanban_share').click();
+        testUtils.dom.click(kanban.$buttons.find('.o_documents_kanban_share'));
 
         kanban.destroy();
     });
@@ -587,7 +600,7 @@ QUnit.module('DocumentsKanbanView', {
             },
         });
 
-        kanban.$buttons.find('button.o_documents_kanban_url').click();
+        testUtils.dom.click(kanban.$buttons.find('button.o_documents_kanban_url'));
 
         kanban.destroy();
     });
@@ -611,7 +624,7 @@ QUnit.module('DocumentsKanbanView', {
             },
         });
 
-        kanban.$buttons.find('button.o_documents_kanban_request').click();
+        testUtils.dom.click(kanban.$buttons.find('button.o_documents_kanban_request'));
 
         kanban.destroy();
     });
@@ -677,21 +690,21 @@ QUnit.module('DocumentsKanbanView', {
         });
 
         // select a first document
-        kanban.$('.o_kanban_record:first .o_record_selector').click();
+        testUtils.dom.click(kanban.$('.o_kanban_record:first .o_record_selector'));
 
-        assert.strictEqual(kanban.$('.o_documents_inspector_info .o_selection_size').length, 0,
+        assert.containsNone(kanban, '.o_documents_inspector_info .o_selection_size',
             "should not display the number of selected documents (because only 1)");
-        assert.strictEqual(kanban.$('.o_documents_inspector_preview .o_document_preview').length, 1,
+        assert.containsOnce(kanban, '.o_documents_inspector_preview .o_document_preview',
             "should show a preview of the selected document");
-        assert.ok(kanban.$('.o_documents_inspector_preview .o_document_preview').hasClass('o_documents_single_preview'),
+        assert.hasClass(kanban.$('.o_documents_inspector_preview .o_document_preview'),'o_documents_single_preview',
             "should have the 'o_documents_single_preview' className");
 
         // select a second document
-        kanban.$('.o_kanban_record:nth(2) .o_record_selector').click();
+        testUtils.dom.click(kanban.$('.o_kanban_record:nth(2) .o_record_selector'));
 
         assert.strictEqual(kanban.$('.o_documents_inspector_preview .o_selection_size').text().trim(),
             '2 documents selected', "should display the correct number of selected documents");
-        assert.strictEqual(kanban.$('.o_documents_inspector_preview .o_document_preview').length, 2,
+        assert.containsN(kanban, '.o_documents_inspector_preview .o_document_preview', 2,
             "should show a preview of the selected documents");
 
         kanban.destroy();
@@ -712,15 +725,15 @@ QUnit.module('DocumentsKanbanView', {
         });
 
         // select five documents
-        kanban.$('.o_kanban_record:nth(0) .o_record_selector').click();
-        kanban.$('.o_kanban_record:nth(1) .o_record_selector').click();
-        kanban.$('.o_kanban_record:nth(2) .o_record_selector').click();
-        kanban.$('.o_kanban_record:nth(3) .o_record_selector').click();
-        kanban.$('.o_kanban_record:nth(4) .o_record_selector').click();
+        testUtils.dom.click(kanban.$('.o_kanban_record:nth(0) .o_record_selector'));
+        testUtils.dom.click(kanban.$('.o_kanban_record:nth(1) .o_record_selector'));
+        testUtils.dom.click(kanban.$('.o_kanban_record:nth(2) .o_record_selector'));
+        testUtils.dom.click(kanban.$('.o_kanban_record:nth(3) .o_record_selector'));
+        testUtils.dom.click(kanban.$('.o_kanban_record:nth(4) .o_record_selector'));
 
         assert.strictEqual(kanban.$('.o_documents_inspector_preview .o_selection_size').text().trim(),
             '5 documents selected', "should display the correct number of selected documents");
-        assert.strictEqual(kanban.$('.o_documents_inspector_preview .o_document_preview').length, 4,
+        assert.containsN(kanban, '.o_documents_inspector_preview .o_document_preview', 4,
             "should only show a preview of 4 selected documents");
 
         kanban.destroy();
@@ -740,25 +753,25 @@ QUnit.module('DocumentsKanbanView', {
                 '</t></templates></kanban>',
         });
 
-        kanban.$('.o_kanban_record:first').click();
+        testUtils.dom.click(kanban.$('.o_kanban_record:first'));
 
-        assert.strictEqual(kanban.$('.o_record_selected').length, 1,
+        assert.containsOnce(kanban, '.o_record_selected',
             "should have 1 selected record");
-        assert.strictEqual(kanban.$('.o_documents_inspector_preview .o_document_preview').length, 1,
+        assert.containsOnce(kanban, '.o_documents_inspector_preview .o_document_preview',
             "should show 1 document preview in the DocumentsInspector");
 
-        kanban.pager.$('.o_pager_next').click();
+        testUtils.dom.click(kanban.pager.$('.o_pager_next'));
 
-        assert.strictEqual(kanban.$('.o_record_selected').length, 0,
+        assert.containsNone(kanban, '.o_record_selected',
             "should have no selected record");
-        assert.strictEqual(kanban.$('.o_documents_inspector_preview .o_document_preview').length, 0,
+        assert.containsNone(kanban, '.o_documents_inspector_preview .o_document_preview',
             "should show no document preview in the DocumentsInspector");
 
-        kanban.pager.$('.o_pager_previous').click();
+        testUtils.dom.click(kanban.pager.$('.o_pager_previous'));
 
-        assert.strictEqual(kanban.$('.o_record_selected').length, 0,
+        assert.containsNone(kanban, '.o_record_selected',
             "should have no selected record");
-        assert.strictEqual(kanban.$('.o_documents_inspector_preview .o_document_preview').length, 0,
+        assert.containsNone(kanban, '.o_documents_inspector_preview .o_document_preview',
             "should show no document preview in the DocumentsInspector");
 
         kanban.destroy();
@@ -778,28 +791,28 @@ QUnit.module('DocumentsKanbanView', {
                 '</t></templates></kanban>',
         });
 
-        kanban.$('.o_kanban_record:contains(yop)').click();
+        testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop)'));
 
-        assert.strictEqual(kanban.$('.o_document_preview img').length, 0,
+        assert.containsNone(kanban, '.o_document_preview img',
             "should not have a clickable image");
 
-        kanban.$('.o_kanban_record:contains(burp)').click();
+        testUtils.dom.click(kanban.$('.o_kanban_record:contains(burp)'));
 
-        assert.strictEqual(kanban.$('.o_viewer_content').length, 0,
+        assert.containsNone(kanban, '.o_viewer_content',
             "should not have a document preview");
-        assert.strictEqual(kanban.$('.o_document_preview img').length, 1,
+        assert.containsOnce(kanban, '.o_document_preview img',
             "should have a clickable image");
 
-        kanban.$('.o_document_preview img').click();
+        testUtils.dom.click(kanban.$('.o_document_preview img'));
 
-        assert.strictEqual(kanban.$('.o_viewer_content').length, 1,
+        assert.containsOnce(kanban, '.o_viewer_content',
             "should have a document preview");
-        assert.strictEqual(kanban.$('.o_close_btn').length, 1,
+        assert.containsOnce(kanban, '.o_close_btn',
             "should have a close button");
 
-        kanban.$('.o_close_btn').click();
+        testUtils.dom.click(kanban.$('.o_close_btn'));
 
-        assert.strictEqual(kanban.$('.o_viewer_content').length, 0,
+        assert.containsNone(kanban, '.o_viewer_content',
             "should not have a document preview after pdf exit");
 
         kanban.destroy();
@@ -827,19 +840,19 @@ QUnit.module('DocumentsKanbanView', {
             },
         });
 
-        kanban.$('.o_kanban_record:contains(wip) .o_record_selector').click();
-        kanban.$('.o_kanban_record:contains(zorro) .o_record_selector').click();
+        testUtils.dom.click(kanban.$('.o_kanban_record:contains(wip) .o_record_selector'));
+        testUtils.dom.click(kanban.$('.o_kanban_record:contains(zorro) .o_record_selector'));
 
-        assert.strictEqual(kanban.$('.o_record_selected').length, 2,
+        assert.containsN(kanban, '.o_record_selected', 2,
             "should have 2 selected records");
-        assert.strictEqual(kanban.$('.o_documents_inspector_preview .o_document_preview').length, 2,
+        assert.containsN(kanban, '.o_documents_inspector_preview .o_document_preview', 2,
             "should show 2 document previews in the DocumentsInspector");
 
-        kanban.$('.o_documents_inspector_info .o_inspector_delete').click();
+        testUtils.dom.click(kanban.$('.o_documents_inspector_info .o_inspector_delete'));
 
-        assert.strictEqual(kanban.$('.o_record_selected').length, 0,
+        assert.containsNone(kanban, '.o_record_selected',
             "should have no selected record");
-        assert.strictEqual(kanban.$('.o_documents_inspector_preview .o_document_preview').length, 0,
+        assert.containsNone(kanban, '.o_documents_inspector_preview .o_document_preview',
             "should show 0 document preview in the DocumentsInspector");
 
         kanban.destroy();
@@ -866,24 +879,24 @@ QUnit.module('DocumentsKanbanView', {
             },
         });
 
-        kanban.$('.o_kanban_record:contains(yop) .o_record_selector').click();
-        kanban.$('.o_kanban_record:contains(burp) .o_record_selector').click();
+        testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop) .o_record_selector'));
+        testUtils.dom.click(kanban.$('.o_kanban_record:contains(burp) .o_record_selector'));
 
-        assert.strictEqual(kanban.$('.o_record_selected').length, 2,
+        assert.containsN(kanban, '.o_record_selected', 2,
             "should have 2 selected records");
-        assert.strictEqual(kanban.$('.o_documents_inspector_preview .o_document_preview').length, 2,
+        assert.containsN(kanban, '.o_documents_inspector_preview .o_document_preview', 2,
             "should show 2 document previews in the DocumentsInspector");
 
-        kanban.$('.o_documents_inspector_info .o_inspector_archive').click();
+        testUtils.dom.click(kanban.$('.o_documents_inspector_info .o_inspector_archive'));
 
-        assert.strictEqual(kanban.$('.o_record_selected').length, 0,
+        assert.containsNone(kanban, '.o_record_selected',
             "should have no selected record");
-        assert.strictEqual(kanban.$('.o_documents_inspector_preview .o_document_preview').length, 0,
+        assert.containsNone(kanban, '.o_documents_inspector_preview .o_document_preview',
             "should show no document preview in the DocumentsInspector");
 
         kanban.reload({active: false});
 
-        assert.strictEqual(kanban.$('.o_kanban_view .o_record_selected').length, 0,
+        assert.containsNone(kanban, '.o_kanban_view .o_record_selected',
             "should have no selected archived record");
 
         kanban.destroy();
@@ -913,13 +926,13 @@ QUnit.module('DocumentsKanbanView', {
             },
         });
 
-        kanban.$('.o_kanban_record:contains(yop) .o_record_selector').click();
-        kanban.$('.o_kanban_record:contains(blip) .o_record_selector').click();
+        testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop) .o_record_selector'));
+        testUtils.dom.click(kanban.$('.o_kanban_record:contains(blip) .o_record_selector'));
 
-        assert.strictEqual(kanban.$('.o_record_selected').length, 2,
+        assert.containsN(kanban, '.o_record_selected', 2,
             "should have 2 selected records");
 
-        kanban.$('.o_documents_inspector_info .o_inspector_share').click();
+        testUtils.dom.click(kanban.$('.o_documents_inspector_info .o_inspector_share'));
 
         kanban.destroy();
     });
@@ -942,9 +955,9 @@ QUnit.module('DocumentsKanbanView', {
         });
 
         // select a record that is locked by ourself
-        kanban.$('.o_kanban_record:contains(zip)').click();
+        testUtils.dom.click(kanban.$('.o_kanban_record:contains(zip)'));
 
-        assert.ok(kanban.$('.o_inspector_lock').hasClass('o_locked'),
+        assert.hasClass(kanban.$('.o_inspector_lock'),'o_locked',
             "this attachment should be locked");
         assert.notOk(kanban.$('.o_inspector_lock').is(':disabled'),
             "lock button should not be disabled");
@@ -952,9 +965,9 @@ QUnit.module('DocumentsKanbanView', {
             "replace button should not be disabled");
 
         // select a record that is locked by someone else
-        kanban.$('.o_kanban_record:contains(gnap)').click();
+        testUtils.dom.click(kanban.$('.o_kanban_record:contains(gnap)'));
 
-        assert.ok(kanban.$('.o_inspector_lock').hasClass('o_locked'),
+        assert.hasClass(kanban.$('.o_inspector_lock'),'o_locked',
             "this attachment should be locked as well");
         assert.ok(kanban.$('.o_inspector_replace').is(':disabled'),
             "replace button should be disabled");
@@ -991,22 +1004,22 @@ QUnit.module('DocumentsKanbanView', {
             },
         });
 
-        kanban.$('.o_kanban_record:contains(yop)').click();
+        testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop)'));
 
-        assert.notOk(kanban.$('.o_inspector_lock').hasClass('o_locked'),
+        assert.doesNotHaveClass(kanban.$('.o_inspector_lock'), 'o_locked',
             "this attachment should not be locked");
 
         // lock the record
-        kanban.$('.o_inspector_lock').click();
+        testUtils.dom.click(kanban.$('.o_inspector_lock'));
 
-        assert.ok(kanban.$('.o_inspector_lock').hasClass('o_locked'),
+        assert.hasClass(kanban.$('.o_inspector_lock'),'o_locked',
             "this attachment should be locked");
 
 
         // unlock the record
-        kanban.$('.o_inspector_lock').click();
+        testUtils.dom.click(kanban.$('.o_inspector_lock'));
 
-        assert.notOk(kanban.$('.o_inspector_lock').hasClass('o_locked'),
+        assert.doesNotHaveClass(kanban.$('.o_inspector_lock'), 'o_locked',
             "this attachment should not be locked anymore");
 
         kanban.destroy();
@@ -1026,7 +1039,7 @@ QUnit.module('DocumentsKanbanView', {
                 '</t></templates></kanban>',
         });
 
-        kanban.$('.o_kanban_record:contains(yop)').click();
+        testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop)'));
 
         assert.strictEqual(kanban.$('.o_field_widget[name=name]').val(),
             'yop', "should correctly display the name");
@@ -1034,7 +1047,7 @@ QUnit.module('DocumentsKanbanView', {
             'Hazard', "should correctly display the owner");
         assert.strictEqual(kanban.$('.o_field_widget[name=partner_id] input').val(),
             'Lukaku', "should correctly display the related partner");
-        assert.strictEqual(kanban.$('.o_field_many2one .o_external_button:visible').length, 0,
+        assert.containsNone(kanban, '.o_field_many2one .o_external_button:visible',
             "should not display the external button in many2ones");
         assert.strictEqual(kanban.$('.o_inspector_model_name').text(),
             ' Task', "should correctly display the resource model");
@@ -1044,9 +1057,8 @@ QUnit.module('DocumentsKanbanView', {
         kanban.destroy();
     });
 
-    QUnit.test('document inspector: update document info with one document selected', function (assert) {
+    QUnit.test('document inspector: update document info with one document selected', async function (assert) {
         assert.expect(6);
-        var done = assert.async();
 
         var M2O_DELAY = relationalFields.FieldMany2One.prototype.AUTOCOMPLETE_DELAY;
         relationalFields.FieldMany2One.prototype.AUTOCOMPLETE_DELAY = 0;
@@ -1074,28 +1086,23 @@ QUnit.module('DocumentsKanbanView', {
         assert.strictEqual($firstRecord.text(), 'yopHazard',
             "should display the correct owner");
 
-        $firstRecord.click();
-        assert.ok($firstRecord.hasClass('o_record_selected'),
+        testUtils.dom.click($firstRecord);
+        assert.hasClass($firstRecord,'o_record_selected',
             "first record should be selected");
 
         // change m2o value
-        var $ownerM2O = kanban.$('.o_field_many2one[name=owner_id] input');
-        $ownerM2O.val('De Bruyne').trigger('keydown');
-        concurrency.delay(0).then(function () {
-            $ownerM2O.autocomplete('widget').find('a').first().click();
+        await testUtils.fields.many2one.searchAndClickItem('owner_id', {search: 'De Bruyne'});
 
-            $firstRecord = kanban.$('.o_kanban_record:first');
-            assert.strictEqual($firstRecord.text(), 'yopDe Bruyne',
-                "should have updated the owner");
-            assert.ok($firstRecord.hasClass('o_record_selected'),
-                "first record should still be selected");
-            assert.strictEqual(kanban.$('.o_field_many2one[name=owner_id] input').val(), 'De Bruyne',
-                "should display the new value in the many2one");
+        $firstRecord = kanban.$('.o_kanban_record:first');
+        assert.strictEqual($firstRecord.text(), 'yopDe Bruyne',
+            "should have updated the owner");
+        assert.hasClass($firstRecord,'o_record_selected',
+            "first record should still be selected");
+        assert.strictEqual(kanban.$('.o_field_many2one[name=owner_id] input').val(), 'De Bruyne',
+            "should display the new value in the many2one");
 
-            relationalFields.FieldMany2One.prototype.AUTOCOMPLETE_DELAY = M2O_DELAY;
-            kanban.destroy();
-            done();
-        });
+        relationalFields.FieldMany2One.prototype.AUTOCOMPLETE_DELAY = M2O_DELAY;
+        kanban.destroy();
     });
 
     QUnit.test('document inspector: document info with several documents selected', function (assert) {
@@ -1115,35 +1122,34 @@ QUnit.module('DocumentsKanbanView', {
         // select two records with same m2o value
         var $blip = kanban.$('.o_kanban_record:contains(blip)');
         var $gnap = kanban.$('.o_kanban_record:contains(gnap)');
-        $blip.click();
-        $gnap.find('.o_record_selector').click();
-        assert.ok($blip.hasClass('o_record_selected'),
+        testUtils.dom.click($blip);
+        testUtils.dom.click($gnap.find('.o_record_selector'));
+        assert.hasClass($blip,'o_record_selected',
             "blip record should be selected");
-        assert.ok($gnap.hasClass('o_record_selected'),
+        assert.hasClass($gnap,'o_record_selected',
             "gnap record should be selected");
 
         assert.strictEqual(kanban.$('.o_field_many2one[name=owner_id] input').val(),
             'Lukaku', "should display the correct m2o value");
-        assert.strictEqual(kanban.$('.o_field_many2one .o_external_button:visible').length, 0,
+        assert.containsNone(kanban, '.o_field_many2one .o_external_button:visible',
             "should not display the external button in many2one");
 
         // select a third record with another m2o value
         var $yop = kanban.$('.o_kanban_record:contains(yop)');
-        $yop.find('.o_record_selector').click();
-        assert.ok($yop.hasClass('o_record_selected'),
+        testUtils.dom.click($yop.find('.o_record_selector'));
+        assert.hasClass($yop,'o_record_selected',
             "yop record should be selected");
 
         assert.strictEqual(kanban.$('.o_field_many2one[name=owner_id] input').val(),
             'Multiple values', "should display 'Multiple values'");
-        assert.strictEqual(kanban.$('.o_field_many2one .o_external_button:visible').length, 0,
+        assert.containsNone(kanban, '.o_field_many2one .o_external_button:visible',
             "should not display the external button in many2one");
 
         kanban.destroy();
     });
 
-    QUnit.test('document inspector: update document info with several documents selected', function (assert) {
+    QUnit.test('document inspector: update document info with several documents selected', async function (assert) {
         assert.expect(10);
-        var done = assert.async();
 
         var M2O_DELAY = relationalFields.FieldMany2One.prototype.AUTOCOMPLETE_DELAY;
         relationalFields.FieldMany2One.prototype.AUTOCOMPLETE_DELAY = 0;
@@ -1174,36 +1180,31 @@ QUnit.module('DocumentsKanbanView', {
         assert.strictEqual($secondRecord.text(), 'blipLukaku',
             "should display the correct owner (record 2)");
 
-        $firstRecord.click();
-        $secondRecord.find('.o_record_selector').click();
-        assert.ok($firstRecord.hasClass('o_record_selected'),
+        testUtils.dom.click($firstRecord);
+        testUtils.dom.click($secondRecord.find('.o_record_selector'));
+        assert.hasClass($firstRecord,'o_record_selected',
             "first record should be selected");
-        assert.ok($secondRecord.hasClass('o_record_selected'),
+        assert.hasClass($secondRecord,'o_record_selected',
             "second record should be selected");
 
         // change m2o value for both records
-        var $ownerM2O = kanban.$('.o_field_many2one[name=owner_id] input');
-        $ownerM2O.val('De Bruyne').trigger('keydown');
-        concurrency.delay(0).then(function () {
-            $ownerM2O.autocomplete('widget').find('a').first().click();
+        await testUtils.fields.many2one.searchAndClickItem('owner_id', {search: 'De Bruyne'});
 
-            $firstRecord = kanban.$('.o_kanban_record:first');
-            assert.strictEqual($firstRecord.text(), 'yopDe Bruyne',
-                "should have updated the owner of first record");
-            $secondRecord = kanban.$('.o_kanban_record:nth(1)');
-            assert.strictEqual($secondRecord.text(), 'blipDe Bruyne',
-                "should have updated the owner of second record");
-            assert.ok($firstRecord.hasClass('o_record_selected'),
-                "first record should still be selected");
-            assert.ok($secondRecord.hasClass('o_record_selected'),
-                "second record should still be selected");
-            assert.strictEqual(kanban.$('.o_field_many2one[name=owner_id] input').val(), 'De Bruyne',
-                "should display the new value in the many2one");
+        $firstRecord = kanban.$('.o_kanban_record:first');
+        assert.strictEqual($firstRecord.text(), 'yopDe Bruyne',
+            "should have updated the owner of first record");
+        $secondRecord = kanban.$('.o_kanban_record:nth(1)');
+        assert.strictEqual($secondRecord.text(), 'blipDe Bruyne',
+            "should have updated the owner of second record");
+        assert.hasClass($firstRecord,'o_record_selected',
+            "first record should still be selected");
+        assert.hasClass($secondRecord,'o_record_selected',
+            "second record should still be selected");
+        assert.strictEqual(kanban.$('.o_field_many2one[name=owner_id] input').val(), 'De Bruyne',
+            "should display the new value in the many2one");
 
-            relationalFields.FieldMany2One.prototype.AUTOCOMPLETE_DELAY = M2O_DELAY;
-            kanban.destroy();
-            done();
-        });
+        relationalFields.FieldMany2One.prototype.AUTOCOMPLETE_DELAY = M2O_DELAY;
+        kanban.destroy();
     });
 
     QUnit.test('document inspector: update info: handle concurrent updates', function (assert) {
@@ -1238,11 +1239,11 @@ QUnit.module('DocumentsKanbanView', {
 
         assert.strictEqual(kanban.$('.o_kanban_record:first').text(), 'yop',
             "should display the correct filename");
-        kanban.$('.o_kanban_record:first').click();
+        testUtils.dom.click(kanban.$('.o_kanban_record:first'));
 
         // change filename value of selected record (but block RPC)
         value = 'temp name';
-        kanban.$('.o_field_char[name=name]').val(value).trigger('input');
+        testUtils.fields.editInput(kanban.$('.o_field_char[name=name]'), value);
 
         assert.strictEqual(kanban.$('.o_kanban_record:first').text(), 'yop',
             "should still display the old filename");
@@ -1250,7 +1251,7 @@ QUnit.module('DocumentsKanbanView', {
         // change filename value again (this RPC isn't blocked but must wait for
         // the first one to return)
         value = 'new name';
-        kanban.$('.o_field_char[name=name]').val(value).trigger('input');
+        testUtils.fields.editInput(kanban.$('.o_field_char[name=name]'), value);
 
         assert.strictEqual(kanban.$('.o_kanban_record:first').text(), 'yop',
             "should still display the old filename");
@@ -1292,8 +1293,8 @@ QUnit.module('DocumentsKanbanView', {
             },
         });
 
-        kanban.$('.o_kanban_record:first').click();
-        kanban.$('.o_documents_inspector .o_inspector_object_name').click();
+        testUtils.dom.click(kanban.$('.o_kanban_record:first'));
+        testUtils.dom.click(kanban.$('.o_documents_inspector .o_inspector_object_name'));
 
         kanban.destroy();
     });
@@ -1312,16 +1313,16 @@ QUnit.module('DocumentsKanbanView', {
                 '</t></templates></kanban>',
         });
 
-        kanban.$('.o_kanban_record:first').click();
+        testUtils.dom.click(kanban.$('.o_kanban_record:first'));
 
-        assert.strictEqual(kanban.$('.o_inspector_tag').length, 2,
+        assert.containsN(kanban, '.o_inspector_tag', 2,
             "should display the tags of the selected document");
 
-        kanban.$('.o_kanban_record:nth(1) .o_record_selector').click();
+        testUtils.dom.click(kanban.$('.o_kanban_record:nth(1) .o_record_selector'));
 
-        assert.strictEqual(kanban.$('.o_record_selected').length, 2,
+        assert.containsN(kanban, '.o_record_selected', 2,
             "should have 2 selected records");
-        assert.strictEqual(kanban.$('.o_inspector_tag').length, 1,
+        assert.containsOnce(kanban, '.o_inspector_tag',
             "should display the common tags between the two selected documents");
         assert.strictEqual(kanban.$('.o_inspector_tag').text().replace(/\s/g, ""), 'Status>Draft×',
             "should correctly display the content of the tag");
@@ -1343,11 +1344,11 @@ QUnit.module('DocumentsKanbanView', {
                 '</t></templates></kanban>',
         });
 
-        kanban.$('.o_kanban_record:contains(gnap)').click();
+        testUtils.dom.click(kanban.$('.o_kanban_record:contains(gnap)'));
 
-        assert.strictEqual(kanban.$('.o_inspector_tag').length, 3,
+        assert.containsN(kanban, '.o_inspector_tag', 3,
             "should have 3 tags");
-        assert.strictEqual(kanban.$('.o_inspector_tags .o_inspector_tag_add').length, 0,
+        assert.containsNone(kanban, '.o_inspector_tags .o_inspector_tag_add',
             "should not have an input to add tags");
 
         kanban.destroy();
@@ -1377,15 +1378,15 @@ QUnit.module('DocumentsKanbanView', {
             },
         });
 
-        kanban.$('.o_kanban_record:first').click();
-        kanban.$('.o_kanban_record:nth(2) .o_record_selector').click();
+        testUtils.dom.click(kanban.$('.o_kanban_record:first'));
+        testUtils.dom.click(kanban.$('.o_kanban_record:nth(2) .o_record_selector'));
 
-        assert.strictEqual(kanban.$('.o_inspector_tag').length, 2,
+        assert.containsN(kanban, '.o_inspector_tag', 2,
             "should display two tags");
 
-        kanban.$('.o_inspector_tag:first .o_inspector_tag_remove').click();
+        testUtils.dom.click(kanban.$('.o_inspector_tag:first .o_inspector_tag_remove'));
 
-        assert.strictEqual(kanban.$('.o_inspector_tag').length, 1,
+        assert.containsOnce(kanban, '.o_inspector_tag',
             "should display one tag");
 
         kanban.destroy();
@@ -1416,20 +1417,19 @@ QUnit.module('DocumentsKanbanView', {
             },
         });
 
-        kanban.$('.o_kanban_record:first').click();
-        kanban.$('.o_kanban_record:nth(1) .o_record_selector').click();
+        testUtils.dom.click(kanban.$('.o_kanban_record:first'));
+        testUtils.dom.click(kanban.$('.o_kanban_record:nth(1) .o_record_selector'));
 
-        assert.strictEqual(kanban.$('.o_inspector_tag').length, 1,
-            "should display one tag");
+        assert.containsOnce(kanban, '.o_inspector_tag');
 
-        kanban.$('.o_inspector_tag_add').val('stress').trigger('keydown');
+        searchValue('.o_inspector_tag_add', 'stress');
         concurrency.delay(0).then(function () {
-            var $dropdown = kanban.$('.o_inspector_tag_add').autocomplete('widget');
-            assert.strictEqual($dropdown.find('li').length, 1,
+            assert.strictEqual(autocompleteLength(), 1,
                 "should have an entry in the autocomplete drodown");
-            $dropdown.find('li > a').click();
+            var $autocomplete = kanban.$('.o_inspector_tag_add').autocomplete('widget');
+            testUtils.dom.click($autocomplete.find('li > a'));
 
-            assert.strictEqual(kanban.$('.o_inspector_tag').length, 2,
+            assert.containsN(kanban, '.o_inspector_tag', 2,
                 "should display two tags");
 
             kanban.destroy();
@@ -1439,7 +1439,6 @@ QUnit.module('DocumentsKanbanView', {
 
     QUnit.test('document inspector: do not suggest already linked tags', function (assert) {
         assert.expect(2);
-        var done = assert.async();
 
         var kanban = createView({
             View: DocumentsKanbanView,
@@ -1452,25 +1451,20 @@ QUnit.module('DocumentsKanbanView', {
                 '</t></templates></kanban>',
         });
 
-        kanban.$('.o_kanban_record:first').click();
+        testUtils.dom.click(kanban.$('.o_kanban_record:first'));
 
-        assert.strictEqual(kanban.$('.o_inspector_tag').length, 2,
+        assert.containsN(kanban, '.o_inspector_tag', 2,
             "should display two tags");
 
-        kanban.$('.o_inspector_tag_add').val('new').trigger('keydown');
-        concurrency.delay(0).then(function () {
-            var $dropdown = kanban.$('.o_inspector_tag_add').autocomplete('widget');
-            assert.strictEqual($dropdown.find('li').length, 0,
-                "should have no entry in the autocomplete drodown");
+        searchValue('.o_inspector_tag_add', 'new');
+        assert.strictEqual(autocompleteLength(), 0,
+            "should have no entry in the autocomplete drodown");
 
-            kanban.destroy();
-            done();
-        });
+        kanban.destroy();
     });
 
     QUnit.test('document inspector: tags: trigger a search on input clicked', function (assert) {
         assert.expect(1);
-        var done = assert.async();
 
         var kanban = createView({
             View: DocumentsKanbanView,
@@ -1483,17 +1477,15 @@ QUnit.module('DocumentsKanbanView', {
                 '</t></templates></kanban>',
         });
 
-        kanban.$('.o_kanban_record:first').click();
+        testUtils.dom.click(kanban.$('.o_kanban_record:first'));
 
-        kanban.$('.o_inspector_tag_add').click();
-        concurrency.delay(0).then(function () {
-            var $dropdown = kanban.$('.o_inspector_tag_add').autocomplete('widget');
-            assert.strictEqual($dropdown.find('li').length, 1,
-                "should have an entry in the autocomplete drodown");
+        testUtils.dom.click(kanban.$('.o_inspector_tag_add'));
+        var $autocomplete = kanban.$('.o_inspector_tag_add').autocomplete('widget');
+        assert.strictEqual(autocompleteLength(), 1,
+            "should have an entry in the autocomplete dropdown");
+        testUtils.dom.click($autocomplete.find('li > a'));
 
-            kanban.destroy();
-            done();
-        });
+        kanban.destroy();
     });
 
     QUnit.test('document inspector: unknown tags are hidden', function (assert) {
@@ -1512,9 +1504,9 @@ QUnit.module('DocumentsKanbanView', {
                 '</t></templates></kanban>',
         });
 
-        kanban.$('.o_kanban_record:first').click();
+        testUtils.dom.click(kanban.$('.o_kanban_record:first'));
 
-        assert.strictEqual(kanban.$('.o_inspector_tag').length, 2,
+        assert.containsN(kanban, '.o_inspector_tag', 2,
             "should not display the unknown tag");
 
         kanban.destroy();
@@ -1534,22 +1526,22 @@ QUnit.module('DocumentsKanbanView', {
                 '</t></templates></kanban>',
         });
 
-        kanban.$('.o_kanban_record:first').click();
+        testUtils.dom.click(kanban.$('.o_kanban_record:first'));
 
-        assert.strictEqual(kanban.$('.o_inspector_rule').length, 2,
+        assert.containsN(kanban, '.o_inspector_rule', 2,
             "should display the rules of the selected document");
 
-        kanban.$('.o_kanban_record:nth(1) .o_record_selector').click();
+        testUtils.dom.click(kanban.$('.o_kanban_record:nth(1) .o_record_selector'));
 
-        assert.strictEqual(kanban.$('.o_record_selected').length, 2,
+        assert.containsN(kanban, '.o_record_selected', 2,
             "should have 2 selected records");
-        assert.strictEqual(kanban.$('.o_inspector_rule').length, 1,
+        assert.containsOnce(kanban, '.o_inspector_rule',
             "should display the common rules between the two selected documents");
-        assert.strictEqual(kanban.$('.o_inspector_rule .o_inspector_trigger_rule').length, 1,
+        assert.containsOnce(kanban, '.o_inspector_rule .o_inspector_trigger_rule',
             "should display the button for the common rule");
         assert.strictEqual(kanban.$('.o_inspector_rule').text().trim(), 'Convincing AI not to turn evil',
             "should correctly display the content of the rule");
-        assert.strictEqual(kanban.$('.o_inspector_rule span').attr('title'), "Racing for AI Supremacy",
+        assert.hasAttrValue(kanban.$('.o_inspector_rule span'), 'title', "Racing for AI Supremacy",
             "should correctly display the tooltip of the rule");
 
         kanban.destroy();
@@ -1579,22 +1571,22 @@ QUnit.module('DocumentsKanbanView', {
             },
         });
 
-        kanban.$('.o_kanban_record:contains(yop)').click();
+        testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop)'));
 
         assert.strictEqual(kanban.$('.o_inspector_rule span').text(),
             'Convincing AI not to turn evilFollow the white rabbit',
             "should correctly display the rules of the selected document");
 
         // click on the button to reload the record
-        kanban.$('.o_kanban_record:contains(yop) button').click();
+        testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop) button'));
 
         assert.strictEqual(kanban.$('.o_record_selected:contains(yop changed)').length, 1,
             "should have reloaded the updated record");
 
         // unselect and re-select it (the record has been reloaded, so we want
         // to make sure its rules have been reloaded correctly as well)
-        kanban.$('.o_kanban_record:contains(yop changed)').click();
-        kanban.$('.o_kanban_record:contains(yop changed)').click();
+        testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop changed)'));
+        testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop changed)'));
 
         assert.strictEqual(kanban.$('.o_inspector_rule span').text(),
             'Convincing AI not to turn evilFollow the white rabbit',
@@ -1627,12 +1619,12 @@ QUnit.module('DocumentsKanbanView', {
             },
         });
 
-        kanban.$('.o_kanban_record:first').click();
-        kanban.$('.o_kanban_record:nth(1) .o_record_selector').click();
+        testUtils.dom.click(kanban.$('.o_kanban_record:first'));
+        testUtils.dom.click(kanban.$('.o_kanban_record:nth(1) .o_record_selector'));
 
-        assert.strictEqual(kanban.$('.o_inspector_rule').length, 1,
+        assert.containsOnce(kanban, '.o_inspector_rule',
             "should display the common rules between the two selected documents");
-        kanban.$('.o_inspector_rule .o_inspector_trigger_rule').click();
+        testUtils.dom.click(kanban.$('.o_inspector_rule .o_inspector_trigger_rule'));
 
         kanban.destroy();
     });
@@ -1654,30 +1646,30 @@ QUnit.module('DocumentsKanbanView', {
                 '</t></templates></kanban>',
         });
 
-        assert.strictEqual(kanban.$('.o_document_chatter .o_chatter').length, 0,
+        assert.containsNone(kanban, '.o_document_chatter .o_chatter',
             "should not display any chatter");
 
         // select a record
-        kanban.$('.o_kanban_record:contains(yop)').click();
+        testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop)'));
 
-        assert.strictEqual(kanban.$('.o_document_chatter .o_chatter').length, 0,
+        assert.containsNone(kanban, '.o_document_chatter .o_chatter',
             "should still not display any chatter");
 
         // open the chatter
-        kanban.$('.o_documents_inspector .o_inspector_open_chatter').click();
+        testUtils.dom.click(kanban.$('.o_documents_inspector .o_inspector_open_chatter'));
 
-        assert.strictEqual(kanban.$('.o_document_chatter .o_chatter').length, 1,
+        assert.containsOnce(kanban, '.o_document_chatter .o_chatter',
             "should display the chatter");
-        assert.strictEqual(kanban.$('.o_documents_selector:visible').length, 1,
+        assert.containsOnce(kanban, '.o_documents_selector:visible',
             "documents selector should still be visible");
-        assert.strictEqual(kanban.$('.o_kanban_view:visible').length, 1,
+        assert.containsOnce(kanban, '.o_kanban_view:visible',
             "kanban view should still be visible");
-        assert.strictEqual(kanban.$('.o_documents_inspector:visible').length, 1,
+        assert.containsOnce(kanban, '.o_documents_inspector:visible',
             "documents inspector should still be visible");
 
         // close the chatter
-        kanban.$('.o_document_close_chatter').click();
-        assert.strictEqual(kanban.$('.o_document_chatter .o_chatter').length, 0,
+        testUtils.dom.click(kanban.$('.o_document_close_chatter'));
+        assert.containsNone(kanban, '.o_document_chatter .o_chatter',
             "should no longer display the chatter");
 
         kanban.destroy();
@@ -1704,12 +1696,12 @@ QUnit.module('DocumentsKanbanView', {
                 '</t></templates></kanban>',
         });
 
-        kanban.$('.o_kanban_record:contains(yop)').click();
-        kanban.$('.o_documents_inspector .o_inspector_open_chatter').click();
+        testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop)'));
+        testUtils.dom.click(kanban.$('.o_documents_inspector .o_inspector_open_chatter'));
 
-        assert.strictEqual(kanban.$('.o_document_chatter .o_chatter').length, 1,
+        assert.containsOnce(kanban, '.o_document_chatter .o_chatter',
             "should display the chatter");
-        assert.strictEqual(kanban.$('.o_document_chatter .o_thread_message').length, 2,
+        assert.containsN(kanban, '.o_document_chatter .o_thread_message', 2,
             "should display two messages in the chatter");
 
         kanban.destroy();
@@ -1744,12 +1736,12 @@ QUnit.module('DocumentsKanbanView', {
             },
         });
 
-        kanban.$('.o_kanban_record:contains(yop)').click();
-        kanban.$('.o_documents_inspector .o_inspector_open_chatter').click();
+        testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop)'));
+        testUtils.dom.click(kanban.$('.o_documents_inspector .o_inspector_open_chatter'));
 
-        assert.strictEqual(kanban.$('.o_document_chatter .o_chatter').length, 1,
+        assert.containsOnce(kanban, '.o_document_chatter .o_chatter',
             "should display the chatter");
-        assert.strictEqual(kanban.$('.o_document_chatter .o_followers').length, 1,
+        assert.containsOnce(kanban, '.o_document_chatter .o_followers',
             "should display the follower widget");
         assert.strictEqual(kanban.$('.o_document_chatter .o_followers_count').text(), "2",
             "should have two followers");
@@ -1791,16 +1783,16 @@ QUnit.module('DocumentsKanbanView', {
             },
         });
 
-        kanban.$('.o_kanban_record:contains(yop)').click();
-        kanban.$('.o_documents_inspector .o_inspector_open_chatter').click();
+        testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop)'));
+        testUtils.dom.click(kanban.$('.o_documents_inspector .o_inspector_open_chatter'));
 
-        assert.strictEqual(kanban.$('.o_document_chatter .o_chatter').length, 1,
+        assert.containsOnce(kanban, '.o_document_chatter .o_chatter',
             "should display the chatter");
 
         var $activityButton = kanban.$('.o_document_chatter .o_chatter_button_schedule_activity');
         assert.strictEqual($activityButton.length, 1,
             "should display the activity button");
-        $activityButton.click();
+        testUtils.dom.click($activityButton);
 
         kanban.destroy();
     });
@@ -1852,35 +1844,35 @@ QUnit.module('DocumentsKanbanView', {
                 '</t></templates></kanban>',
         });
 
-        kanban.$('.o_kanban_record:contains(yop)').click();
-        kanban.$('.o_documents_inspector .o_inspector_open_chatter').click();
+        testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop)'));
+        testUtils.dom.click(kanban.$('.o_documents_inspector .o_inspector_open_chatter'));
 
-        assert.strictEqual(kanban.$('.o_document_chatter .o_chatter').length, 1,
+        assert.containsOnce(kanban, '.o_document_chatter .o_chatter',
             "should display the chatter");
 
-        assert.strictEqual(kanban.$('.o_mail_activity').length, 1,
+        assert.containsOnce(kanban, '.o_mail_activity',
             "should display the activity area");
-        assert.strictEqual(kanban.$('#o_chatter_activity_info_1').length, 1,
+        assert.containsOnce(kanban, '#o_chatter_activity_info_1',
             "should display an activity");
         assert.strictEqual(kanban.$('.o_activity_link:contains(Mark Done)').length, 1,
             "should display the activity mark done button");
-        assert.strictEqual(kanban.$('.o_edit_activity').length, 1,
+        assert.containsOnce(kanban, '.o_edit_activity',
             "should display the activity Edit button");
-        assert.strictEqual(kanban.$('.o_unlink_activity').length, 1,
+        assert.containsOnce(kanban, '.o_unlink_activity',
             "should display the activity Cancel button");
 
-        kanban.$('.o_kanban_record:contains(blip)').click();
+        testUtils.dom.click(kanban.$('.o_kanban_record:contains(blip)'));
 
-        assert.strictEqual(kanban.$('.o_document_chatter .o_chatter').length, 1,
+        assert.containsOnce(kanban, '.o_document_chatter .o_chatter',
             "should display the chatter");
 
-        assert.strictEqual(kanban.$('#o_chatter_activity_info_1').length, 0,
+        assert.containsNone(kanban, '#o_chatter_activity_info_1',
             "should not display an activity");
         kanban.destroy();
     });
 
     QUnit.test('document chatter: can write messages in the chatter', function (assert) {
-        assert.expect(7);
+        assert.expect(6);
 
         var kanban = createView({
             View: DocumentsKanbanView,
@@ -1909,30 +1901,27 @@ QUnit.module('DocumentsKanbanView', {
                     return $.when([{}]);
                 }
                 return this._super.apply(this, arguments);
-            }
+            },
         });
 
         // select a record and open the chatter
-        kanban.$('.o_kanban_record:contains(yop)').click();
-        kanban.$('.o_documents_inspector .o_inspector_open_chatter').click();
+        testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop)'));
+        testUtils.dom.click(kanban.$('.o_documents_inspector .o_inspector_open_chatter'));
 
-        assert.strictEqual(kanban.$('.o_document_chatter .o_chatter').length, 1,
+        assert.containsOnce(kanban, '.o_document_chatter .o_chatter',
             "should display the chatter");
-        assert.strictEqual(kanban.$('.o_document_chatter .o_thread_composer').length, 0,
+        assert.containsNone(kanban, '.o_document_chatter .o_thread_composer',
             "chatter composer should not be open");
 
         // open the composer
-        kanban.$('.o_document_chatter .o_chatter_button_new_message').click();
+        testUtils.dom.click(kanban.$('.o_document_chatter .o_chatter_button_new_message'));
 
-        assert.strictEqual(kanban.$('.o_document_chatter .o_thread_composer').length, 1,
+        assert.containsOnce(kanban, '.o_document_chatter .o_thread_composer',
             "chatter composer should be open");
 
         // write and send a message
         kanban.$('.o_document_chatter .o_composer_text_field').val('Some message');
-        kanban.$('.o_document_chatter .o_composer_button_send').click();
-
-        assert.notOk(kanban.$('.o_chat_composer').hasClass('o_hidden'),
-            "the composer should remain visible after a message is sent");
+        testUtils.dom.click(kanban.$('.o_document_chatter .o_composer_button_send'));
 
         kanban.destroy();
     });
@@ -1959,22 +1948,22 @@ QUnit.module('DocumentsKanbanView', {
         });
 
         // select a record and open the chatter
-        kanban.$('.o_kanban_record:contains(yop)').click();
-        kanban.$('.o_documents_inspector .o_inspector_open_chatter').click();
+        testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop)'));
+        testUtils.dom.click(kanban.$('.o_documents_inspector .o_inspector_open_chatter'));
 
-        assert.strictEqual(kanban.$('.o_document_chatter .o_chatter').length, 1,
+        assert.containsOnce(kanban, '.o_document_chatter .o_chatter',
             "should display the chatter");
-        assert.strictEqual(kanban.$('.o_document_chatter .o_thread_message').length, 1,
+        assert.containsOnce(kanban, '.o_document_chatter .o_thread_message',
             "should display one message in the chatter");
         assert.strictEqual(kanban.$('.o_thread_message .o_thread_message_content').text().trim(),
             "Message on 'yop'", "should display the correct message");
 
         // select another record
-        kanban.$('.o_kanban_record:contains(blip)').click();
+        testUtils.dom.click(kanban.$('.o_kanban_record:contains(blip)'));
 
-        assert.strictEqual(kanban.$('.o_document_chatter .o_chatter').length, 1,
+        assert.containsOnce(kanban, '.o_document_chatter .o_chatter',
             "should still display the chatter");
-        assert.strictEqual(kanban.$('.o_document_chatter .o_thread_message').length, 1,
+        assert.containsOnce(kanban, '.o_document_chatter .o_thread_message',
             "should display one message in the chatter");
         assert.strictEqual(kanban.$('.o_thread_message .o_thread_message_content').text().trim(),
             "Message on 'blip'", "should display the correct message");
@@ -1998,18 +1987,18 @@ QUnit.module('DocumentsKanbanView', {
         });
 
         // select a record and open the chatter
-        kanban.$('.o_kanban_record:contains(yop)').click();
-        kanban.$('.o_documents_inspector .o_inspector_open_chatter').click();
+        testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop)'));
+        testUtils.dom.click(kanban.$('.o_documents_inspector .o_inspector_open_chatter'));
 
-        assert.strictEqual(kanban.$('.o_document_chatter .o_chatter').length, 1,
+        assert.containsOnce(kanban, '.o_document_chatter .o_chatter',
             "should display the chatter");
 
         // reload with a domain
         kanban.reload({domain: [['id', '<', 4]]});
 
-        assert.strictEqual(kanban.$('.o_record_selected').length, 1,
+        assert.containsOnce(kanban, '.o_record_selected',
             "record should still be selected");
-        assert.strictEqual(kanban.$('.o_document_chatter .o_chatter').length, 1,
+        assert.containsOnce(kanban, '.o_document_chatter .o_chatter',
             "should still display the chatter");
 
         kanban.destroy();
@@ -2031,16 +2020,16 @@ QUnit.module('DocumentsKanbanView', {
         });
 
         // select a record and open the chatter
-        kanban.$('.o_kanban_record:contains(yop)').click();
-        kanban.$('.o_documents_inspector .o_inspector_open_chatter').click();
+        testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop)'));
+        testUtils.dom.click(kanban.$('.o_documents_inspector .o_inspector_open_chatter'));
 
-        assert.strictEqual(kanban.$('.o_document_chatter .o_chatter').length, 1,
+        assert.containsOnce(kanban, '.o_document_chatter .o_chatter',
             "should display the chatter");
 
         // select another record alongside the first one
-        kanban.$('.o_kanban_record:contains(blip) .o_record_selector').click();
+        testUtils.dom.click(kanban.$('.o_kanban_record:contains(blip) .o_record_selector'));
 
-        assert.strictEqual(kanban.$('.o_document_chatter .o_chatter').length, 0,
+        assert.containsNone(kanban, '.o_document_chatter .o_chatter',
             "should have closed the chatter");
 
         kanban.destroy();
@@ -2062,18 +2051,18 @@ QUnit.module('DocumentsKanbanView', {
         });
 
         // select a record and open the chatter
-        kanban.$('.o_kanban_record:contains(yop)').click();
-        kanban.$('.o_documents_inspector .o_inspector_open_chatter').click();
+        testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop)'));
+        testUtils.dom.click(kanban.$('.o_documents_inspector .o_inspector_open_chatter'));
 
-        assert.strictEqual(kanban.$('.o_document_chatter .o_chatter').length, 1,
+        assert.containsOnce(kanban, '.o_document_chatter .o_chatter',
             "should display the chatter");
 
         // reload with a domain
         kanban.reload({domain: [['id', '>', 4]]});
 
-        assert.strictEqual(kanban.$('.o_record_selected').length, 0,
+        assert.containsNone(kanban, '.o_record_selected',
             "no more record should be selected");
-        assert.strictEqual(kanban.$('.o_document_chatter .o_chatter').length, 0,
+        assert.containsNone(kanban, '.o_document_chatter .o_chatter',
             "should have closed the chatter");
 
         kanban.destroy();
@@ -2097,16 +2086,16 @@ QUnit.module('DocumentsKanbanView', {
 
         assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_folders .o_documents_selector_header').text().trim(),
             'Folders', "should have a 'folders' section");
-        assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_folder').length, 3,
+        assert.containsN(kanban, '.o_documents_selector .o_documents_selector_folder', 3,
             "should have 3 folders");
-        assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_folder:visible').length, 2,
+        assert.containsN(kanban, '.o_documents_selector .o_documents_selector_folder:visible', 2,
             "two of them should be visible");
         assert.strictEqual(kanban.$('.o_documents_inspector_preview').text().replace(/\s+/g, ''),
             '_F1-test-description_', "should display the first folder");
 
         assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_tags .o_documents_selector_header').text().trim(),
             'Tags', "should have a 'tags' section");
-        assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_facet').length, 2,
+        assert.containsN(kanban, '.o_documents_selector .o_documents_selector_facet', 2,
             "should have 2 facets");
 
         assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_facet:first > header').text().trim(),
@@ -2118,7 +2107,7 @@ QUnit.module('DocumentsKanbanView', {
         assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_facet:last > header').attr('title').trim(),
             'A Status tooltip', "the last facet should be 'Status'");
 
-        assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_facet:last .o_documents_selector_tag').length, 2,
+        assert.containsN(kanban, '.o_documents_selector .o_documents_selector_facet:last .o_documents_selector_tag', 2,
             "should have 2 tags in the last facet");
 
         assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_facet:last .o_documents_selector_tag:first header').text().trim(),
@@ -2132,7 +2121,7 @@ QUnit.module('DocumentsKanbanView', {
 
         assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_models .o_documents_selector_header').text().trim(),
             'Attached To', "should have an 'attached to' section");
-        assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_models .o_documents_selector_model').length, 3,
+        assert.containsN(kanban, '.o_documents_selector .o_documents_selector_models .o_documents_selector_model', 3,
             "should have 3 types of models");
         assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_model[data-id=task]').text().replace(/\s/g, ""),
             'Task3', "should display the correct number of records");
@@ -2164,9 +2153,9 @@ QUnit.module('DocumentsKanbanView', {
 
         assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_tags .o_documents_selector_header').text().trim(),
             'Tags', "should have a 'tags' section");
-        assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_facet').length, 0,
+        assert.containsNone(kanban, '.o_documents_selector .o_documents_selector_facet',
             "shouldn't have any facet");
-        assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_facet .o_documents_selector_tag').length, 0,
+        assert.containsNone(kanban, '.o_documents_selector .o_documents_selector_facet .o_documents_selector_tag',
             "shouldn't have any tag");
         assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_models .o_documents_selector_header').text().trim(),
             'Attached To', "should have an 'attached to' section");
@@ -2213,35 +2202,27 @@ QUnit.module('DocumentsKanbanView', {
                 '</t></templates></kanban>',
         });
 
-        assert.strictEqual(kanban.$('.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length,
-            5, "should have 5 records in the renderer");
-        assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_model').length,
-            3, "should have 3 related models");
+        assert.strictEqual(kanban.$('.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length, 5, "should have 5 records in the renderer");
+        assert.containsN(kanban, '.o_documents_selector .o_documents_selector_model', 3, "should have 3 related models");
 
         // filter on 'Task'
-        kanban.$('.o_documents_selector .o_documents_selector_model[data-id=task] input:checkbox').click();
+        testUtils.dom.click(kanban.$('.o_documents_selector .o_documents_selector_model[data-id=task] input:checkbox'));
 
-        assert.strictEqual(kanban.$('.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length,
-            3, "should have 3 records in the renderer");
-        assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_model').length,
-            3, "should still have 3 related models");
+        assert.strictEqual(kanban.$('.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length, 3, "should have 3 records in the renderer");
+        assert.containsN(kanban, '.o_documents_selector .o_documents_selector_model', 3, "should still have 3 related models");
 
         // filter on 'Sale Order' (should be a disjunction)
-        kanban.$('.o_documents_selector .o_documents_selector_model[data-id=order] input:checkbox').click();
+        testUtils.dom.click(kanban.$('.o_documents_selector .o_documents_selector_model[data-id=order] input:checkbox'));
 
-        assert.strictEqual(kanban.$('.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length,
-            4, "should have 6 records in the renderer");
-        assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_model').length,
-            3, "should still have 3 related models");
+        assert.strictEqual(kanban.$('.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length, 4, "should have 6 records in the renderer");
+        assert.containsN(kanban, '.o_documents_selector .o_documents_selector_model', 3, "should still have 3 related models");
 
         // remove both filters
-        kanban.$('.o_documents_selector .o_documents_selector_model[data-id=order] input:checkbox').click();
-        kanban.$('.o_documents_selector .o_documents_selector_model[data-id=task] input:checkbox').click();
+        testUtils.dom.click(kanban.$('.o_documents_selector .o_documents_selector_model[data-id=order] input:checkbox'));
+        testUtils.dom.click(kanban.$('.o_documents_selector .o_documents_selector_model[data-id=task] input:checkbox'));
 
-        assert.strictEqual(kanban.$('.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length,
-            5, "should have 7 records in the renderer");
-        assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_model').length,
-            3, "should still have 3 related models");
+        assert.strictEqual(kanban.$('.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length, 5, "should have 7 records in the renderer");
+        assert.containsN(kanban, '.o_documents_selector .o_documents_selector_model', 3, "should still have 3 related models");
 
         kanban.destroy();
     });
@@ -2260,35 +2241,27 @@ QUnit.module('DocumentsKanbanView', {
                 '</t></templates></kanban>',
         });
 
-        assert.strictEqual(kanban.$('.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length,
-            5, "should have 5 records in the renderer");
-        assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_model').length,
-            3, "should have 3 related models");
+        assert.strictEqual(kanban.$('.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length, 5, "should have 5 records in the renderer");
+        assert.containsN(kanban, '.o_documents_selector .o_documents_selector_model', 3, "should have 3 related models");
 
         // filter on 'No Source'
-        kanban.$('.o_documents_selector .o_documents_selector_model[data-id=false] input:checkbox').click();
+        testUtils.dom.click(kanban.$('.o_documents_selector .o_documents_selector_model[data-id=false] input:checkbox'));
 
-        assert.strictEqual(kanban.$('.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length,
-            1, "should have 1 records in the renderer");
-        assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_model').length,
-            3, "should still have 3 related models");
+        assert.strictEqual(kanban.$('.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length, 1, "should have 1 records in the renderer");
+        assert.containsN(kanban, '.o_documents_selector .o_documents_selector_model', 3, "should still have 3 related models");
 
         // filter on 'Task'
-        kanban.$('.o_documents_selector .o_documents_selector_model[data-id=task] input:checkbox').click();
+        testUtils.dom.click(kanban.$('.o_documents_selector .o_documents_selector_model[data-id=task] input:checkbox'));
 
-        assert.strictEqual(kanban.$('.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length,
-            4, "should have 4 records in the renderer");
-        assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_model').length,
-            3, "should still have 3 related models");
+        assert.strictEqual(kanban.$('.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length, 4, "should have 4 records in the renderer");
+        assert.containsN(kanban, '.o_documents_selector .o_documents_selector_model', 3, "should still have 3 related models");
 
         // remove both filters
-        kanban.$('.o_documents_selector .o_documents_selector_model[data-id=false] input:checkbox').click();
-        kanban.$('.o_documents_selector .o_documents_selector_model[data-id=task] input:checkbox').click();
+        testUtils.dom.click(kanban.$('.o_documents_selector .o_documents_selector_model[data-id=false] input:checkbox'));
+        testUtils.dom.click(kanban.$('.o_documents_selector .o_documents_selector_model[data-id=task] input:checkbox'));
 
-        assert.strictEqual(kanban.$('.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length,
-            5, "should have 5 records in the renderer");
-        assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_model').length,
-            3, "should still have 3 related models");
+        assert.strictEqual(kanban.$('.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length, 5, "should have 5 records in the renderer");
+        assert.containsN(kanban, '.o_documents_selector .o_documents_selector_model', 3, "should still have 3 related models");
 
         kanban.destroy();
     });
@@ -2307,38 +2280,33 @@ QUnit.module('DocumentsKanbanView', {
                 '</t></templates></kanban>',
         });
 
-        assert.strictEqual(kanban.$('.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length,
-            5, "should have 5 records in the renderer");
+        assert.strictEqual(kanban.$('.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length, 5, "should have 5 records in the renderer");
         assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_model[data-id=task]').text().replace(/\s/g, ""),
             'Task3', "should display the correct number of records");
 
         // filter on 'Task'
-        kanban.$('.o_documents_selector .o_documents_selector_model[data-id=task] input:checkbox').click();
+        testUtils.dom.click(kanban.$('.o_documents_selector .o_documents_selector_model[data-id=task] input:checkbox'));
 
-        assert.strictEqual(kanban.$('.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length,
-            3, "should have 3 records in the renderer");
+        assert.strictEqual(kanban.$('.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length, 3, "should have 3 records in the renderer");
 
         // reload with a domain
         kanban.reload({domain: [['public', '=', true]]});
 
-        assert.strictEqual(kanban.$('.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length,
-            1, "should have 1 record in the renderer");
+        assert.strictEqual(kanban.$('.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length, 1, "should have 1 record in the renderer");
         assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_model[data-id=task]').text().replace(/\s/g, ""),
             'Task1', "should display the correct number of records");
         assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_model[data-id=order]').text().replace(/\s/g, ""),
             'SaleOrder1', "should display the correct number of records");
 
         // filter on 'Sale Order'
-        kanban.$('.o_documents_selector .o_documents_selector_model[data-id=order] input:checkbox').click();
+        testUtils.dom.click(kanban.$('.o_documents_selector .o_documents_selector_model[data-id=order] input:checkbox'));
 
-        assert.strictEqual(kanban.$('.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length,
-            2, "should have 2 records in the renderer");
+        assert.strictEqual(kanban.$('.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length, 2, "should have 2 records in the renderer");
 
         // reload without the domain
         kanban.reload({domain: []});
 
-        assert.strictEqual(kanban.$('.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length,
-            4, "should have 4 record in the renderer");
+        assert.strictEqual(kanban.$('.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length, 4, "should have 4 record in the renderer");
         assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_model[data-id=task]').text().replace(/\s/g, ""),
             'Task3', "should display the correct number of records");
         assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_model[data-id=order]').text().replace(/\s/g, ""),
@@ -2368,13 +2336,13 @@ QUnit.module('DocumentsKanbanView', {
         });
 
         // filter on records having tag Draft
-        kanban.$('.o_documents_selector_tag:contains(Draft) input').click();
+        testUtils.dom.click(kanban.$('.o_documents_selector_tag:contains(Draft) input'));
 
         assert.ok(kanban.$('.o_documents_selector_tag:contains(Draft) input').is(':checked'),
             "tag selector should be checked");
 
         // switch to Folder2
-        kanban.$('.o_documents_selector_folder:contains(Folder2) header').click();
+        testUtils.dom.click(kanban.$('.o_documents_selector_folder:contains(Folder2) header'));
 
         assert.notOk(kanban.$('.o_documents_selector_tag:contains(Draft) input').is(':checked'),
             "tag selector should not be checked anymore");
@@ -2404,7 +2372,7 @@ QUnit.module('DocumentsKanbanView', {
         });
 
         // filter on records having tag Draft
-        kanban.$('.o_documents_selector_tag:contains(Draft) input').click();
+        testUtils.dom.click(kanban.$('.o_documents_selector_tag:contains(Draft) input'));
 
         assert.ok(kanban.$('.o_documents_selector_tag:contains(Draft) input').is(':checked'),
             "tag selector should be checked");
@@ -2412,14 +2380,14 @@ QUnit.module('DocumentsKanbanView', {
         assert.strictEqual(kanban.$('.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length,
             1, "should have records in the renderer");
 
-        kanban.$('.o_kanban_record:first .o_record_selector').click();
+        testUtils.dom.click(kanban.$('.o_kanban_record:first .o_record_selector'));
 
-        kanban.$('.o_inspector_tag_add').val('stress').trigger('keydown');
+        searchValue('.o_inspector_tag_add', 'stress');
         concurrency.delay(0).then(function () {
-            var $dropdown = kanban.$('.o_inspector_tag_add').autocomplete('widget');
-            assert.strictEqual($dropdown.find('li').length, 1,
+            assert.strictEqual(autocompleteLength(), 1,
                 "should have an entry in the autocomplete drodown");
-            $dropdown.find('li > a').click();
+            var $autocomplete = kanban.$('.o_inspector_tag_add').autocomplete('widget');
+            testUtils.dom.click($autocomplete.find('li > a'));
 
             assert.ok(kanban.$('.o_documents_selector_tag:contains(Draft) input').is(':checked'),
                         "tag selector should still be checked");
@@ -2447,21 +2415,21 @@ QUnit.module('DocumentsKanbanView', {
 
         assert.strictEqual(kanban.$('.o_documents_selector_folder:contains(Folder1) .o_toggle_fold').length, 1,
             "'Folder1' should be displayed as a parent folder");
-        assert.ok(kanban.$('.o_documents_selector_folder:contains(Folder1) .o_toggle_fold').hasClass('fa-caret-left'),
+        assert.hasClass(kanban.$('.o_documents_selector_folder:contains(Folder1) .o_toggle_fold'),'fa-caret-left',
             "'Folder1' should be folded");
         assert.ok(kanban.$('.o_documents_selector_folder:contains(Folder1) .o_folded').length, 1,
             "'Folder1' should have className o_folded");
 
         // unfold Folder1
-        kanban.$('.o_documents_selector_folder:contains(Folder1) .o_toggle_fold').click();
-        assert.ok(kanban.$('.o_documents_selector_folder:contains(Folder1) .o_toggle_fold').hasClass('fa-caret-down'),
+        testUtils.dom.click(kanban.$('.o_documents_selector_folder:contains(Folder1) .o_toggle_fold'));
+        assert.hasClass(kanban.$('.o_documents_selector_folder:contains(Folder1) .o_toggle_fold'),'fa-caret-down',
             "'Folder1' should be open");
         assert.notOk(kanban.$('.o_documents_selector_folder:contains(Folder1) .o_folded').length, 1,
             "'Folder1' should not have className o_folded anymore");
 
         // fold Folder1
-        kanban.$('.o_documents_selector_folder:contains(Folder1) .o_toggle_fold').click();
-        assert.ok(kanban.$('.o_documents_selector_folder:contains(Folder1) .o_toggle_fold').hasClass('fa-caret-left'),
+        testUtils.dom.click(kanban.$('.o_documents_selector_folder:contains(Folder1) .o_toggle_fold'));
+        assert.hasClass(kanban.$('.o_documents_selector_folder:contains(Folder1) .o_toggle_fold'),'fa-caret-left',
             "'Folder1' should be folded");
         assert.ok(kanban.$('.o_documents_selector_folder:contains(Folder1) .o_folded').length, 1,
             "'Folder1' should have className o_folded");
@@ -2484,15 +2452,15 @@ QUnit.module('DocumentsKanbanView', {
         });
 
         // unfold Folder1
-        kanban.$('.o_documents_selector_folder:contains(Folder1) .o_toggle_fold').click();
-        assert.ok(kanban.$('.o_documents_selector_folder:contains(Folder1) .o_toggle_fold').hasClass('fa-caret-down'),
+        testUtils.dom.click(kanban.$('.o_documents_selector_folder:contains(Folder1) .o_toggle_fold'));
+        assert.hasClass(kanban.$('.o_documents_selector_folder:contains(Folder1) .o_toggle_fold'),'fa-caret-down',
             "'Folder1' should be open");
         assert.notOk(kanban.$('.o_documents_selector_folder:contains(Folder1) .o_folded').length, 1,
             "'Folder1' should not have className o_folded");
 
         kanban.reload({});
 
-        assert.ok(kanban.$('.o_documents_selector_folder:contains(Folder1) .o_toggle_fold').hasClass('fa-caret-down'),
+        assert.hasClass(kanban.$('.o_documents_selector_folder:contains(Folder1) .o_toggle_fold'),'fa-caret-down',
             "'Folder1' should still be open");
         assert.notOk(kanban.$('.o_documents_selector_folder:contains(Folder1) .o_folded').length, 1,
             "'Folder1' should still not have className o_folded");

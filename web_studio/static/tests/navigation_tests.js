@@ -113,7 +113,7 @@ QUnit.module('Studio Navigation', {
         rpcs.push('/web/dataset/search_read');
         assert.verifySteps(rpcs, "should have opened the action in Studio");
 
-        assert.strictEqual(actionManager.$('.o_web_studio_client_action .o_web_studio_kanban_view_editor').length, 1,
+        assert.containsOnce(actionManager, '.o_web_studio_client_action .o_web_studio_kanban_view_editor',
             "the kanban view should be opened");
         assert.strictEqual(actionManager.$('.o_kanban_record:contains(yop)').length, 1,
             "the first partner should be displayed");
@@ -125,7 +125,7 @@ QUnit.module('Studio Navigation', {
         rpcs.push('/web/dataset/search_read');
         assert.verifySteps(rpcs, "should have reloaded the previous action edited by Studio");
 
-        assert.strictEqual(actionManager.$('.o_web_studio_client_action').length, 0,
+        assert.containsNone(actionManager, '.o_web_studio_client_action',
             "Studio should be closed");
         assert.strictEqual(actionManager.$('.o_kanban_view .o_kanban_record:contains(yop)').length, 1,
             "the first partner should be displayed in kanban");
@@ -158,7 +158,7 @@ QUnit.module('Studio Navigation', {
         });
         bus.trigger('studio_toggled', 'main');
 
-        assert.strictEqual(actionManager.$('.o_web_studio_client_action .o_web_studio_form_view_editor').length, 1,
+        assert.containsOnce(actionManager, '.o_web_studio_client_action .o_web_studio_form_view_editor',
             "the form view should be opened");
         assert.strictEqual(actionManager.$('.o_field_widget[name="foo"]').text(), "yop",
             "the first partner should be displayed");
@@ -189,7 +189,7 @@ QUnit.module('Studio Navigation', {
         });
         bus.trigger('studio_toggled', 'main');
 
-        assert.strictEqual(actionManager.$('.o_web_studio_client_action .o_web_studio_kanban_view_editor').length, 1,
+        assert.containsOnce(actionManager, '.o_web_studio_client_action .o_web_studio_kanban_view_editor',
             "the kanban view should be opened");
         actionManager.doAction('action_web_studio_action_editor', {
             action: action,
@@ -199,9 +199,9 @@ QUnit.module('Studio Navigation', {
         });
         actionManager.restoreStudioAction();  // simulate leaving Studio
 
-        assert.strictEqual(actionManager.$('.o_web_studio_client_action').length, 0,
+        assert.containsNone(actionManager, '.o_web_studio_client_action',
             "Studio should be closed");
-        assert.strictEqual(actionManager.$('.o_list_view').length, 1,
+        assert.containsOnce(actionManager, '.o_list_view',
             "the list view should be opened");
 
         actionManager.destroy();
@@ -238,7 +238,7 @@ QUnit.module('Studio Navigation', {
         rpcs.push('/web/dataset/search_read');
         assert.verifySteps(rpcs, "should have opened the action in Studio");
 
-        assert.strictEqual(actionManager.$('.o_web_studio_client_action .o_web_studio_kanban_view_editor').length, 1,
+        assert.containsOnce(actionManager, '.o_web_studio_client_action .o_web_studio_kanban_view_editor',
             "the kanban view should be opened");
         assert.strictEqual(actionManager.$('.o_kanban_record:contains(yop)').length, 1,
             "the first partner should be displayed");
@@ -259,7 +259,7 @@ QUnit.module('Studio Navigation', {
         rpcs.push('/web/dataset/search_read');
         assert.verifySteps(rpcs, "should have opened the navigated action in Studio");
 
-        assert.strictEqual(actionManager.$('.o_web_studio_client_action .o_web_studio_list_view_editor').length, 1,
+        assert.containsOnce(actionManager, '.o_web_studio_client_action .o_web_studio_list_view_editor',
             "the list view should be opened");
         assert.strictEqual(actionManager.$('.o_list_view .o_data_cell').text(), "Twilight SparkleApplejackFluttershy",
             "the list of ponies should be correctly displayed");
@@ -272,9 +272,9 @@ QUnit.module('Studio Navigation', {
         rpcs.push('/web/dataset/search_read');
         assert.verifySteps(rpcs, "should have reloaded the previous action edited by Studio");
 
-        assert.strictEqual(actionManager.$('.o_web_studio_client_action').length, 0,
+        assert.containsNone(actionManager, '.o_web_studio_client_action',
             "Studio should be closed");
-        assert.strictEqual(actionManager.$('.o_list_view').length, 1,
+        assert.containsOnce(actionManager, '.o_list_view',
             "the list view should be opened");
         assert.strictEqual(actionManager.$('.o_list_view .o_data_cell').text(), "Twilight SparkleApplejackFluttershy",
             "the list of ponies should be correctly displayed");
@@ -336,7 +336,7 @@ QUnit.module('Studio Navigation', {
         });
 
         actionManager.doAction(2);  // open a act_window_action
-        actionManager.$('.o_list_view tbody tr:first td:contains(Twilight Sparkle)').click();
+        testUtils.dom.click(actionManager.$('.o_list_view tbody tr:first td:contains(Twilight Sparkle)'));
 
         var action = actionManager.getCurrentAction();
         actionManager.doAction('action_web_studio_action_editor', {
@@ -345,10 +345,10 @@ QUnit.module('Studio Navigation', {
         });
         bus.trigger('studio_toggled', 'main');
 
-        assert.strictEqual(actionManager.$('.o_web_studio_client_action .o_web_studio_form_view_editor').length, 1,
+        assert.containsOnce(actionManager, '.o_web_studio_client_action .o_web_studio_form_view_editor',
             "the form view should be opened");
         actionManager.restoreStudioAction();  // simulate leaving Studio
-        assert.strictEqual(actionManager.$('.o_form_view').length, 1,
+        assert.containsOnce(actionManager, '.o_form_view',
             "the form view should be opened");
         assert.strictEqual(actionManager.$('.o_form_view span:contains(Twilight Sparkle)').length, 1,
             "should have open the same record");

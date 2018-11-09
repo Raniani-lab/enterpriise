@@ -80,35 +80,35 @@ QUnit.test('basic rendering', function (assert) {
     assert.strictEqual(form.$('thead th').text(), "", "toggler column should have no title");
 
     // check the classnames
-    assert.ok(form.$('.o_deprec_lines_toggler_cell:nth(0) button').hasClass('o_is_posted'),
+    assert.hasClass(form.$('.o_deprec_lines_toggler_cell:nth(0) button'),'o_is_posted',
         "first line toggler should have classname 'o_is_posted'");
-    assert.ok(!form.$('.o_deprec_lines_toggler_cell:nth(0) button').hasClass('o_unposted'),
+    assert.doesNotHaveClass(form.$('.o_deprec_lines_toggler_cell:nth(0) button'), 'o_unposted',
         "first line toggler should not have classname 'o_unposted'");
 
-    assert.ok(form.$('.o_deprec_lines_toggler_cell:nth(1) button').hasClass('o_is_posted'),
+    assert.hasClass(form.$('.o_deprec_lines_toggler_cell:nth(1) button'),'o_is_posted',
         "second line toggler should have classname 'o_is_posted'");
-    assert.ok(!form.$('.o_deprec_lines_toggler_cell:nth(1) button').hasClass('o_unposted'),
+    assert.doesNotHaveClass(form.$('.o_deprec_lines_toggler_cell:nth(1) button'), 'o_unposted',
         "second line toggler should not have classname 'o_unposted'");
 
-    assert.ok(!form.$('.o_deprec_lines_toggler_cell:nth(2) button').hasClass('o_is_posted'),
+    assert.doesNotHaveClass(form.$('.o_deprec_lines_toggler_cell:nth(2) button'), 'o_is_posted',
         "third line toggler should not have classname 'o_is_posted'");
-    assert.ok(form.$('.o_deprec_lines_toggler_cell:nth(2) button').hasClass('o_unposted'),
+    assert.hasClass(form.$('.o_deprec_lines_toggler_cell:nth(2) button'),'o_unposted',
         "third line toggler should have classname 'o_unposted'");
 
-    assert.ok(!form.$('.o_deprec_lines_toggler_cell:nth(3) button').hasClass('o_is_posted'),
+    assert.doesNotHaveClass(form.$('.o_deprec_lines_toggler_cell:nth(3) button'), 'o_is_posted',
         "fourth line toggler should not have classname 'o_is_posted'");
-    assert.ok(!form.$('.o_deprec_lines_toggler_cell:nth(3) button').hasClass('o_unposted'),
+    assert.doesNotHaveClass(form.$('.o_deprec_lines_toggler_cell:nth(3) button'), 'o_unposted',
         "fourth line toggler should not have classname 'o_unposted'");
 
     // check the titles
-    assert.strictEqual(form.$('.o_deprec_lines_toggler_cell:nth(0) button').attr('title'),
+    assert.hasAttrValue(form.$('.o_deprec_lines_toggler_cell:nth(0) button'), 'title',
         'Posted', "first line toggler should have correct title");
-    assert.strictEqual(form.$('.o_deprec_lines_toggler_cell:nth(1) button').attr('title'),
+    assert.hasAttrValue(form.$('.o_deprec_lines_toggler_cell:nth(1) button'), 'title',
         'Posted', "second line toggler should have correct title");
-    assert.strictEqual(form.$('.o_deprec_lines_toggler_cell:nth(2) button').attr('title'),
+    assert.hasAttrValue(form.$('.o_deprec_lines_toggler_cell:nth(2) button'), 'title',
         'Accounting entries waiting for manual verification',
         "third line toggler should have correct title");
-    assert.strictEqual(form.$('.o_deprec_lines_toggler_cell:nth(3) button').attr('title'),
+    assert.hasAttrValue(form.$('.o_deprec_lines_toggler_cell:nth(3) button'), 'title',
         'Unposted', "fourth line toggler should have correct title");
 
     // check disabled property
@@ -122,7 +122,7 @@ QUnit.test('basic rendering', function (assert) {
         "fourth line toggle should not be disabled");
 
     // check the visibility: the widget should always be visible, regardless its value
-    assert.strictEqual(form.$('.o_deprec_lines_toggler:visible').length, 4,
+    assert.containsN(form, '.o_deprec_lines_toggler:visible', 4,
         "all togglers should be visible");
 
     form.destroy();
@@ -158,7 +158,7 @@ QUnit.test('click events are correctly triggered', function (assert) {
     });
 
     // click on last row toggler
-    form.$('.o_deprec_lines_toggler_cell:nth(3) button').click();
+    testUtils.dom.click(form.$('.o_deprec_lines_toggler_cell:nth(3) button'));
 
     form.destroy();
 });

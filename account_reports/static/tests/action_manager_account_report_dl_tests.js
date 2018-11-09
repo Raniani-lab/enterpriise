@@ -121,17 +121,21 @@ QUnit.module('Account Reports', {
         });
 
         actionManager.doAction(9);
-        assert.strictEqual(actionManager.controlPanel.$('.o_field_many2manytags[name="partner_ids"]').length, 1,
+        assert.containsOnce(actionManager.controlPanel, '.o_field_many2manytags[name="partner_ids"]',
             "partner_ids m2m field added to filter");
-        assert.strictEqual(actionManager.controlPanel.$('.o_field_many2manytags[name="partner_categories"]').length, 1,
+        assert.containsOnce(actionManager.controlPanel, '.o_field_many2manytags[name="partner_categories"]',
             "partner_categories m2m field added to filter");
-        actionManager.controlPanel.$('.o_search_options a').click();
+
         // search on partners m2m
-        actionManager.controlPanel.$('.o_field_many2one[name="partner_ids"] input').click();
-        $('.ui-autocomplete .ui-menu-item a:contains(Genda Swami)').click();
+        testUtils.dom.click(actionManager.controlPanel.$('.o_search_options a.dropdown-toggle'));
+        testUtils.dom.click(actionManager.controlPanel.$('.o_field_many2one[name="partner_ids"] input'));
+        testUtils.dom.click($('.ui-autocomplete .ui-menu-item a:contains(Genda Swami)'));
+
         // search on partner categories m2m
-        actionManager.controlPanel.$('.o_field_many2one[name="partner_categories"] input').click();
-        $('.ui-autocomplete .ui-menu-item a:contains(Brigadier suryadev singh)').click();
+        testUtils.dom.click(actionManager.controlPanel.$('.o_search_options a.dropdown-toggle'));
+        testUtils.dom.click(actionManager.controlPanel.$('.o_field_many2one[name="partner_categories"] input'));
+        testUtils.dom.click($('.ui-autocomplete .ui-menu-item a:contains(Brigadier suryadev singh)'));
+
         actionManager.destroy();
     });
 });

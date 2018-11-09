@@ -6,7 +6,7 @@ var testUtils = require('web.test_utils');
 
 var createView = testUtils.createView;
 var createActionManager = testUtils.createActionManager;
-var patchDate = testUtils.patchDate;
+var patchDate = testUtils.mock.patchDate;
 
 QUnit.module('Views', {
     beforeEach: function () {
@@ -76,7 +76,7 @@ QUnit.module('Views', {
             arch: '<cohort string="Subscription" date_start="start" date_stop="stop" />'
         });
 
-        assert.strictEqual(cohort.$('.table').length, 1,
+        assert.containsOnce(cohort, '.table',
             'should have a table');
         assert.ok(cohort.$('.table thead tr:first th:first:contains(Start)').length,
             'should contain "Start" in header of first column');
@@ -105,9 +105,9 @@ QUnit.module('Views', {
             arch: '<cohort string="Subscription" date_start="start" date_stop="stop" />'
         });
 
-        assert.ok(cohort.$buttons.find('.o_cohort_measures_list [data-field=__count__]').hasClass('selected'),
+        assert.hasClass(cohort.$buttons.find('.o_cohort_measures_list [data-field=__count__]'),'selected',
                 'count should by default for measure');
-        assert.ok(cohort.$buttons.find('.o_cohort_interval_button[data-interval=day]').hasClass('active'),
+        assert.hasClass(cohort.$buttons.find('.o_cohort_interval_button[data-interval=day]'),'active',
                 'day should by default for interval');
 
         assert.ok(cohort.$('.table thead tr:first th:nth-child(2):contains(Count)').length,
@@ -152,9 +152,9 @@ QUnit.module('Views', {
             arch: '<cohort string="Subscription" date_start="start" date_stop="stop" measure="recurring" interval="week" />'
         });
 
-        assert.ok(cohort.$buttons.find('.o_cohort_measures_list [data-field=recurring]').hasClass('selected'),
+        assert.hasClass(cohort.$buttons.find('.o_cohort_measures_list [data-field=recurring]'),'selected',
                 'should recurring for measure');
-        assert.ok(cohort.$buttons.find('.o_cohort_interval_button[data-interval=week]').hasClass('active'),
+        assert.hasClass(cohort.$buttons.find('.o_cohort_interval_button[data-interval=week]'),'active',
                 'should week for interval');
 
         assert.ok(cohort.$('.table thead tr:first th:nth-child(2):contains(Recurring Price)').length,
@@ -162,14 +162,15 @@ QUnit.module('Views', {
         assert.ok(cohort.$('.table thead tr:first th:nth-child(3):contains(Stop - By Week)').length,
             'should contain "Stop - By Week" in title');
 
-        cohort.$buttons.find('.o_cohort_measures_list [data-field=__count__]').click();
-        assert.ok(cohort.$buttons.find('.o_cohort_measures_list [data-field=__count__]').hasClass('selected'),
+        testUtils.dom.click(cohort.$buttons.find('.dropdown-toggle:contains(Measures)'));
+        testUtils.dom.click(cohort.$buttons.find('.o_cohort_measures_list [data-field=__count__]'));
+        assert.hasClass(cohort.$buttons.find('.o_cohort_measures_list [data-field=__count__]'),'selected',
                 'should active count for measure');
         assert.ok(cohort.$('.table thead tr:first th:nth-child(2):contains(Count)').length,
             'should contain "Count" in header of second column');
 
-        cohort.$buttons.find('.o_cohort_interval_button[data-interval=month]').click();
-        assert.ok(cohort.$buttons.find('.o_cohort_interval_button[data-interval=month]').hasClass('active'),
+        testUtils.dom.click(cohort.$buttons.find('.o_cohort_interval_button[data-interval=month]'));
+        assert.hasClass(cohort.$buttons.find('.o_cohort_interval_button[data-interval=month]'),'active',
                 'should active month for interval');
         assert.ok(cohort.$('.table thead tr:first th:nth-child(3):contains(Stop - By Month)').length,
             'should contain "Stop - By Month" in title');
@@ -217,26 +218,28 @@ QUnit.module('Views', {
         });
 
         // Going to the list view, while clicking Period / Count cell
-        actionManager.$('td.o_cohort_value:first').click();
+        testUtils.dom.click(actionManager.$('td.o_cohort_value:first'));
         assert.strictEqual(actionManager.$('.o_list_view th:nth(1)').text(), 'Start',
                 "First field in the list view should be start");
         assert.strictEqual(actionManager.$('.o_list_view th:nth(2)').text(), 'Stop',
                 "Second field in the list view should be stop");
 
-        // Going to the list view
-        actionManager.$('td div.o_cohort_value:first').click();
+        // Going back to cohort view
+        testUtils.dom.click($('.o_back_button'));
 
+        // Going to the list view
+        testUtils.dom.click(actionManager.$('td div.o_cohort_value:first'));
         assert.strictEqual(actionManager.$('.o_list_view th:nth(1)').text(), 'Start',
                 "First field in the list view should be start");
         assert.strictEqual(actionManager.$('.o_list_view th:nth(2)').text(), 'Stop',
                 "Second field in the list view should be stop");
 
         // Going to the form view
-        actionManager.$('.o_list_view .o_data_row').click();
+        testUtils.dom.click(actionManager.$('.o_list_view .o_data_row'));
 
-        assert.strictEqual(actionManager.$('.o_form_view span:first').attr('name'), 'start',
+        assert.hasAttrValue(actionManager.$('.o_form_view span:first'), 'name', 'start',
                 "First field in the form view should be start");
-        assert.strictEqual(actionManager.$('.o_form_view span:nth(1)').attr('name'), 'stop',
+        assert.hasAttrValue(actionManager.$('.o_form_view span:nth(1)'), 'name', 'stop',
                 "Second field in the form view should be stop");
 
         actionManager.destroy();
@@ -330,26 +333,28 @@ QUnit.module('Views', {
         });
 
         // Going to the list view, while clicking Period / Count cell
-        actionManager.$('td.o_cohort_value:first').click();
+        testUtils.dom.click(actionManager.$('td.o_cohort_value:first'));
         assert.strictEqual(actionManager.$('.o_list_view th:nth(1)').text(), 'Start',
                 "First field in the list view should be start");
         assert.strictEqual(actionManager.$('.o_list_view th:nth(2)').text(), 'Stop',
                 "Second field in the list view should be stop");
 
-        // Going to the list view
-        actionManager.$('td div.o_cohort_value:first').click();
+        // Going back to cohort view
+        testUtils.dom.click($('.o_back_button'));
 
+        // Going to the list view
+        testUtils.dom.click(actionManager.$('td div.o_cohort_value:first'));
         assert.strictEqual(actionManager.$('.o_list_view th:nth(1)').text(), 'Start',
                 "First field in the list view should be start");
         assert.strictEqual(actionManager.$('.o_list_view th:nth(2)').text(), 'Stop',
                 "Second field in the list view should be stop");
 
         // Going to the form view
-        actionManager.$('.o_list_view .o_data_row').click();
+        testUtils.dom.click(actionManager.$('.o_list_view .o_data_row'));
 
-        assert.strictEqual(actionManager.$('.o_form_view span:first').attr('name'), 'start',
+        assert.hasAttrValue(actionManager.$('.o_form_view span:first'), 'name', 'start',
                 "First field in the form view should be start");
-        assert.strictEqual(actionManager.$('.o_form_view span:nth(1)').attr('name'), 'stop',
+        assert.hasAttrValue(actionManager.$('.o_form_view span:nth(1)'), 'name', 'stop',
                 "Second field in the form view should be stop");
 
         actionManager.destroy();
@@ -402,10 +407,10 @@ QUnit.module('Views', {
 
         function verifyNoContentHelper (text) {
             if (text) {
-                assert.strictEqual(actionManager.$('div.o_cohort_no_data').length, 1, "there should be a no content helper");
+                assert.containsOnce(actionManager, 'div.o_cohort_no_data', "there should be a no content helper");
                 assert.strictEqual(actionManager.$('div.o_cohort_no_data').text().trim(), text);
             } else {
-                assert.strictEqual(actionManager.$('div.o_cohort_no_data').length, 0, "there should be no no content helper");
+                assert.containsNone(actionManager, 'div.o_cohort_no_data', "there should be no no content helper");
             }
         }
 
@@ -416,19 +421,19 @@ QUnit.module('Views', {
 
         // with no comparison with no data (filter on 'last_year')
 
-        $('.o_time_range_menu_button').click();
+        testUtils.dom.click($('.o_time_range_menu_button'));
         $('.o_time_range_selector').val('last_year');
-        $('.o_time_range_menu .o_apply_range').click();
+        testUtils.dom.click($('.o_time_range_menu .o_apply_range'));
 
         verifyContents([]);
         verifyNoContentHelper("No data available for cohort.");
 
 
         // with comparison active, data and comparisonData (filter on 'this_month' + 'previous_period')
-        $('.o_time_range_menu_button').click();
-        $('.o_time_range_menu .o_comparison_checkbox').click();
+        testUtils.dom.click($('.o_time_range_menu_button'));
+        testUtils.dom.click($('.o_time_range_menu .o_comparison_checkbox'));
         $('.o_time_range_selector').val('this_month');
-        $('.o_time_range_menu .o_apply_range').click();
+        testUtils.dom.click($('.o_time_range_menu .o_apply_range'));
 
         verifyContents(['This Month', 2, 'Previous Period', 1]);
         verifyNoContentHelper();
@@ -436,27 +441,27 @@ QUnit.module('Views', {
 
         // with comparison active, data, no comparisonData (filter on 'this_year' + 'previous_period')
 
-        $('.o_time_range_menu_button').click();
+        testUtils.dom.click($('.o_time_range_menu_button'));
         $('.o_time_range_selector').val('this_year');
-        $('.o_time_range_menu .o_apply_range').click();
+        testUtils.dom.click($('.o_time_range_menu .o_apply_range'));
 
         verifyContents(['This Year', 3, 'Previous Period']);
         verifyNoContentHelper("No data available.");
 
         // with comparison active, no data, comparisonData (filter on 'today' + 'previous_period')
 
-        $('.o_time_range_menu_button').click();
+        testUtils.dom.click($('.o_time_range_menu_button'));
         $('.o_time_range_selector').val('today');
-        $('.o_time_range_menu .o_apply_range').click();
+        testUtils.dom.click($('.o_time_range_menu .o_apply_range'));
 
         verifyContents(['Today', 'Previous Period', 1]);
         verifyNoContentHelper("No data available.");
 
         // with comparison active, no data, no comparisonData (filter on 'last_year' + 'previous_period')
 
-        $('.o_time_range_menu_button').click();
+        testUtils.dom.click($('.o_time_range_menu_button'));
         $('.o_time_range_selector').val('last_year');
-        $('.o_time_range_menu .o_apply_range').click();
+        testUtils.dom.click($('.o_time_range_menu .o_apply_range'));
 
         verifyContents([]);
         verifyNoContentHelper("No data available for cohort.");

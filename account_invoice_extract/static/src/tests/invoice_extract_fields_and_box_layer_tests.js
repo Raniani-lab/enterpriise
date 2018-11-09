@@ -148,11 +148,11 @@ QUnit.module('Fields & BoxLayer integration', {}, function () {
         assert.strictEqual($('.o_invoice_extract_box[data-id=1]').data('field-name'),
             'VAT_Number',
             "should have correct field name for box with ID 1");
-        assert.notOk($('.o_invoice_extract_box[data-id=1]').hasClass('ocr_chosen'),
+        assert.doesNotHaveClass($('.o_invoice_extract_box[data-id=1]'), 'ocr_chosen',
             "should not set box with ID 1 as OCR chosen");
-        assert.notOk($('.o_invoice_extract_box[data-id=1]').hasClass('selected'),
+        assert.doesNotHaveClass($('.o_invoice_extract_box[data-id=1]'), 'selected',
             "should not set box with ID 1 as selected");
-        assert.notOk($('.o_invoice_extract_box[data-id=1]').hasClass('o_hidden'),
+        assert.isVisible($('.o_invoice_extract_box[data-id=1]'),
             "should show box with ID 1 by default");
         // box 2
         assert.strictEqual($('.o_invoice_extract_box[data-id=2]').length, 1,
@@ -160,11 +160,11 @@ QUnit.module('Fields & BoxLayer integration', {}, function () {
         assert.strictEqual($('.o_invoice_extract_box[data-id=2]').data('field-name'),
             'VAT_Number',
             "should have correct field name for box with ID 2");
-        assert.ok($('.o_invoice_extract_box[data-id=2]').hasClass('ocr_chosen'),
+        assert.hasClass($('.o_invoice_extract_box[data-id=2]'),'ocr_chosen',
             "should set box with ID 2 as OCR chosen");
-        assert.notOk($('.o_invoice_extract_box[data-id=2]').hasClass('selected'),
+        assert.doesNotHaveClass($('.o_invoice_extract_box[data-id=2]'), 'selected',
             "should not set box with ID 2 as selected");
-        assert.notOk($('.o_invoice_extract_box[data-id=2]').hasClass('o_hidden'),
+        assert.isVisible($('.o_invoice_extract_box[data-id=2]'),
             "should show box with ID 2 by default");
         // box 3
         assert.strictEqual($('.o_invoice_extract_box[data-id=3]').length, 1,
@@ -172,11 +172,11 @@ QUnit.module('Fields & BoxLayer integration', {}, function () {
         assert.strictEqual($('.o_invoice_extract_box[data-id=3]').data('field-name'),
             'VAT_Number',
             "should have correct field name for box with ID 3");
-        assert.notOk($('.o_invoice_extract_box[data-id=3]').hasClass('ocr_chosen'),
+        assert.doesNotHaveClass($('.o_invoice_extract_box[data-id=3]'), 'ocr_chosen',
             "should not set box with ID 3 as OCR chosen");
-        assert.ok($('.o_invoice_extract_box[data-id=3]').hasClass('selected'),
+        assert.hasClass($('.o_invoice_extract_box[data-id=3]'),'selected',
             "should set box with ID 3 as selected");
-        assert.notOk($('.o_invoice_extract_box[data-id=3]').hasClass('o_hidden'),
+        assert.isVisible($('.o_invoice_extract_box[data-id=3]'),
             "should show box with ID 3 by default");
         // box 4
         assert.strictEqual($('.o_invoice_extract_box[data-id=4]').length, 1,
@@ -184,11 +184,11 @@ QUnit.module('Fields & BoxLayer integration', {}, function () {
         assert.strictEqual($('.o_invoice_extract_box[data-id=4]').data('field-name'),
             'total',
             "should have correct field name for box with ID 4");
-        assert.notOk($('.o_invoice_extract_box[data-id=4]').hasClass('ocr_chosen'),
+        assert.doesNotHaveClass($('.o_invoice_extract_box[data-id=4]'), 'ocr_chosen',
             "should not set box with ID 4 as OCR chosen");
-        assert.notOk($('.o_invoice_extract_box[data-id=4]').hasClass('selected'),
+        assert.doesNotHaveClass($('.o_invoice_extract_box[data-id=4]'), 'selected',
             "should not set box with ID 4 as selected");
-        assert.ok($('.o_invoice_extract_box[data-id=4]').hasClass('o_hidden'),
+        assert.isNotVisible($('.o_invoice_extract_box[data-id=4]'),
             "should hide box with ID 4 by default");
         // box 5
         assert.strictEqual($('.o_invoice_extract_box[data-id=5]').length, 1,
@@ -196,11 +196,11 @@ QUnit.module('Fields & BoxLayer integration', {}, function () {
         assert.strictEqual($('.o_invoice_extract_box[data-id=5]').data('field-name'),
             'total',
             "should have correct field name for box with ID 5");
-        assert.ok($('.o_invoice_extract_box[data-id=5]').hasClass('ocr_chosen'),
+        assert.hasClass($('.o_invoice_extract_box[data-id=5]'),'ocr_chosen',
             "should set box with ID 5 as OCR chosen");
-        assert.ok($('.o_invoice_extract_box[data-id=5]').hasClass('selected'),
+        assert.hasClass($('.o_invoice_extract_box[data-id=5]'),'selected',
             "should set box with ID 5 as selected");
-        assert.ok($('.o_invoice_extract_box[data-id=5]').hasClass('o_hidden'),
+        assert.isNotVisible($('.o_invoice_extract_box[data-id=5]'),
             "should hide box with ID 5 by default");
 
         var vatField = fields.getField({ name: 'VAT_Number' });
@@ -224,28 +224,28 @@ QUnit.module('Fields & BoxLayer integration', {}, function () {
         assert.strictEqual(fields.getActiveField().getName(), 'VAT_Number',
             "by default, VAT should be the default active field");
 
-        assert.notOk($('.o_invoice_extract_box[data-id=1]').hasClass('o_hidden'),
+        assert.isVisible($('.o_invoice_extract_box[data-id=1]'),
             "should show box with ID 1 by default");
-        assert.notOk($('.o_invoice_extract_box[data-id=2]').hasClass('o_hidden'),
+        assert.isVisible($('.o_invoice_extract_box[data-id=2]'),
             "should show box with ID 2 by default");
-        assert.notOk($('.o_invoice_extract_box[data-id=3]').hasClass('o_hidden'),
+        assert.isVisible($('.o_invoice_extract_box[data-id=3]'),
             "should show box with ID 3 by default");
-        assert.ok($('.o_invoice_extract_box[data-id=4]').hasClass('o_hidden'),
+        assert.isNotVisible($('.o_invoice_extract_box[data-id=4]'),
             "should hide box with ID 4 by default");
-        assert.ok($('.o_invoice_extract_box[data-id=5]').hasClass('o_hidden'),
+        assert.isNotVisible($('.o_invoice_extract_box[data-id=5]'),
             "should hide box with ID 5 by default");
 
-        $('.o_invoice_extract_button[data-field-name="total"]').click();
+        testUtils.dom.click($('.o_invoice_extract_button[data-field-name="total"]'));
 
-        assert.ok($('.o_invoice_extract_box[data-id=1]').hasClass('o_hidden'),
+        assert.isNotVisible($('.o_invoice_extract_box[data-id=1]'),
             "box with ID 1 should become hidden");
-        assert.ok($('.o_invoice_extract_box[data-id=2]').hasClass('o_hidden'),
+        assert.isNotVisible($('.o_invoice_extract_box[data-id=2]'),
             "box with ID 2 should become hidden");
-        assert.ok($('.o_invoice_extract_box[data-id=3]').hasClass('o_hidden'),
+        assert.isNotVisible($('.o_invoice_extract_box[data-id=3]'),
             "box with ID 3 should become hidden");
-        assert.notOk($('.o_invoice_extract_box[data-id=4]').hasClass('o_hidden'),
+        assert.isVisible($('.o_invoice_extract_box[data-id=4]'),
             "box with ID 4 should become visible");
-        assert.notOk($('.o_invoice_extract_box[data-id=5]').hasClass('o_hidden'),
+        assert.isVisible($('.o_invoice_extract_box[data-id=5]'),
             "box with ID 5 should become visible");
 
         parent.destroy();
@@ -261,42 +261,42 @@ QUnit.module('Fields & BoxLayer integration', {}, function () {
         assert.strictEqual(fields.getActiveField().getName(), 'VAT_Number',
             "by default, VAT should be the default active field");
 
-        assert.notOk($('.o_invoice_extract_box[data-id=1]').hasClass('selected'),
+        assert.doesNotHaveClass($('.o_invoice_extract_box[data-id=1]'), 'selected',
             "box with ID 1 should not be selected");
-        assert.notOk($('.o_invoice_extract_box[data-id=2]').hasClass('selected'),
+        assert.doesNotHaveClass($('.o_invoice_extract_box[data-id=2]'), 'selected',
             "box with ID 2 should not be selected");
-        assert.ok($('.o_invoice_extract_box[data-id=3]').hasClass('selected'),
+        assert.hasClass($('.o_invoice_extract_box[data-id=3]'),'selected',
             "box with ID 3 should be selected");
-        assert.notOk($('.o_invoice_extract_box[data-id=4]').hasClass('selected'),
+        assert.doesNotHaveClass($('.o_invoice_extract_box[data-id=4]'), 'selected',
             "box with ID 4 should not be selected");
-        assert.ok($('.o_invoice_extract_box[data-id=5]').hasClass('selected'),
+        assert.hasClass($('.o_invoice_extract_box[data-id=5]'),'selected',
             "box with ID 5 should be selected");
 
-        $('.o_invoice_extract_box[data-id=1]').click();
+        testUtils.dom.click($('.o_invoice_extract_box[data-id=1]'));
 
-        assert.ok($('.o_invoice_extract_box[data-id=1]').hasClass('selected'),
+        assert.hasClass($('.o_invoice_extract_box[data-id=1]'),'selected',
             "box with ID 1 should become selected");
-        assert.notOk($('.o_invoice_extract_box[data-id=2]').hasClass('selected'),
+        assert.doesNotHaveClass($('.o_invoice_extract_box[data-id=2]'), 'selected',
             "box with ID 2 should stay unselected");
-        assert.notOk($('.o_invoice_extract_box[data-id=3]').hasClass('selected'),
+        assert.doesNotHaveClass($('.o_invoice_extract_box[data-id=3]'), 'selected',
             "box with ID 3 should become unselected");
-        assert.notOk($('.o_invoice_extract_box[data-id=4]').hasClass('selected'),
+        assert.doesNotHaveClass($('.o_invoice_extract_box[data-id=4]'), 'selected',
             "box with ID 4 should stay unselected");
-        assert.ok($('.o_invoice_extract_box[data-id=5]').hasClass('selected'),
+        assert.hasClass($('.o_invoice_extract_box[data-id=5]'),'selected',
             "box with ID 5 should stay selected");
 
-        $('.o_invoice_extract_button[data-field-name="total"]').click();
-        $('.o_invoice_extract_box[data-id=4]').click();
+        testUtils.dom.click($('.o_invoice_extract_button[data-field-name="total"]'));
+        testUtils.dom.click($('.o_invoice_extract_box[data-id=4]'));
 
-        assert.ok($('.o_invoice_extract_box[data-id=1]').hasClass('selected'),
+        assert.hasClass($('.o_invoice_extract_box[data-id=1]'),'selected',
             "box with ID 1 should stay selected");
-        assert.notOk($('.o_invoice_extract_box[data-id=2]').hasClass('selected'),
+        assert.doesNotHaveClass($('.o_invoice_extract_box[data-id=2]'), 'selected',
             "box with ID 2 should stay unselected");
-        assert.notOk($('.o_invoice_extract_box[data-id=3]').hasClass('selected'),
+        assert.doesNotHaveClass($('.o_invoice_extract_box[data-id=3]'), 'selected',
             "box with ID 3 should stay unselected");
-        assert.ok($('.o_invoice_extract_box[data-id=4]').hasClass('selected'),
+        assert.hasClass($('.o_invoice_extract_box[data-id=4]'),'selected',
             "box with ID 4 should become selected");
-        assert.notOk($('.o_invoice_extract_box[data-id=5]').hasClass('selected'),
+        assert.doesNotHaveClass($('.o_invoice_extract_box[data-id=5]'), 'selected',
             "box with ID 5 should become unselected");
 
         parent.destroy();
@@ -312,41 +312,41 @@ QUnit.module('Fields & BoxLayer integration', {}, function () {
         assert.strictEqual(fields.getActiveField().getName(), 'VAT_Number',
             "by default, VAT should be the default active field");
 
-        assert.notOk($('.o_invoice_extract_box[data-id=1]').hasClass('selected'),
+        assert.doesNotHaveClass($('.o_invoice_extract_box[data-id=1]'), 'selected',
             "box with ID 1 should not be selected");
-        assert.notOk($('.o_invoice_extract_box[data-id=2]').hasClass('selected'),
+        assert.doesNotHaveClass($('.o_invoice_extract_box[data-id=2]'), 'selected',
             "box with ID 2 should not be selected");
-        assert.ok($('.o_invoice_extract_box[data-id=3]').hasClass('selected'),
+        assert.hasClass($('.o_invoice_extract_box[data-id=3]'),'selected',
             "box with ID 3 should be selected");
-        assert.notOk($('.o_invoice_extract_box[data-id=4]').hasClass('selected'),
+        assert.doesNotHaveClass($('.o_invoice_extract_box[data-id=4]'), 'selected',
             "box with ID 4 should not be selected");
-        assert.ok($('.o_invoice_extract_box[data-id=5]').hasClass('selected'),
+        assert.hasClass($('.o_invoice_extract_box[data-id=5]'),'selected',
             "box with ID 5 should be selected");
 
-        $('.boxLayer').click();
+        testUtils.dom.click($('.boxLayer'));
 
-        assert.notOk($('.o_invoice_extract_box[data-id=1]').hasClass('selected'),
+        assert.doesNotHaveClass($('.o_invoice_extract_box[data-id=1]'), 'selected',
             "box with ID 1 should stay unselected");
-        assert.ok($('.o_invoice_extract_box[data-id=2]').hasClass('selected'),
+        assert.hasClass($('.o_invoice_extract_box[data-id=2]'),'selected',
             "box with ID 2 should become selected (fallback on OCR chosen)");
-        assert.notOk($('.o_invoice_extract_box[data-id=3]').hasClass('selected'),
+        assert.doesNotHaveClass($('.o_invoice_extract_box[data-id=3]'), 'selected',
             "box with ID 3 should become unselected");
-        assert.notOk($('.o_invoice_extract_box[data-id=4]').hasClass('selected'),
+        assert.doesNotHaveClass($('.o_invoice_extract_box[data-id=4]'), 'selected',
             "box with ID 4 should stay unselected");
-        assert.ok($('.o_invoice_extract_box[data-id=5]').hasClass('selected'),
+        assert.hasClass($('.o_invoice_extract_box[data-id=5]'),'selected',
             "box with ID 5 should stay selected");
 
-        $('.boxLayer').click();
+        testUtils.dom.click($('.boxLayer'));
 
-        assert.notOk($('.o_invoice_extract_box[data-id=1]').hasClass('selected'),
+        assert.doesNotHaveClass($('.o_invoice_extract_box[data-id=1]'), 'selected',
             "box with ID 1 should not stay unselected");
-        assert.notOk($('.o_invoice_extract_box[data-id=2]').hasClass('selected'),
+        assert.doesNotHaveClass($('.o_invoice_extract_box[data-id=2]'), 'selected',
             "box with ID 2 should become unselected");
-        assert.notOk($('.o_invoice_extract_box[data-id=3]').hasClass('selected'),
+        assert.doesNotHaveClass($('.o_invoice_extract_box[data-id=3]'), 'selected',
             "box with ID 3 should stay unselected");
-        assert.notOk($('.o_invoice_extract_box[data-id=4]').hasClass('selected'),
+        assert.doesNotHaveClass($('.o_invoice_extract_box[data-id=4]'), 'selected',
             "box with ID 4 should stay unselected");
-        assert.ok($('.o_invoice_extract_box[data-id=5]').hasClass('selected'),
+        assert.hasClass($('.o_invoice_extract_box[data-id=5]'),'selected',
             "box with ID 5 should stay selected");
 
         parent.destroy();

@@ -97,7 +97,7 @@ QUnit.module('Views', {
 
         return concurrency.delay(0).then(function () {
             assert.ok(grid.$('table').length, "should have rendered a table");
-            assert.strictEqual(grid.$('div.o_grid_cell_container').length, 14,
+            assert.containsN(grid, 'div.o_grid_cell_container', 14,
                 "should have 14 cells");
             assert.strictEqual(grid.$('div.o_grid_input:contains(02:30)').length, 1,
                 "should have correctly parsed a float_time");
@@ -106,13 +106,13 @@ QUnit.module('Views', {
 
             assert.ok(grid.$buttons.find('button.grid_arrow_previous').is(':visible'),
                 "previous button should be visible");
-            assert.ok(grid.$buttons.find('button.grid_arrow_range[data-name="week"]').hasClass('active'),
+            assert.hasClass(grid.$buttons.find('button.grid_arrow_range[data-name="week"]'),'active',
                 "current range is shown as active");
 
             assert.strictEqual(grid.$('tfoot td:contains(02:30)').length, 1, "should display total in a column");
             assert.strictEqual(grid.$('tfoot td:contains(00:00)').length, 5, "should display totals, even if 0");
 
-            grid.$buttons.find('button.grid_arrow_next').click();
+            testUtils.dom.click(grid.$buttons.find('button.grid_arrow_next'));
             return concurrency.delay(0);
         }).then(function () {
             assert.ok(grid.$('div.o_grid_cell_container').length, "should not have any cells");
@@ -124,13 +124,13 @@ QUnit.module('Views', {
                 "should not have rendered a no content helper");
 
             assert.notOk(grid.$('td.o_grid_current').length, "should not have any cell marked current");
-            grid.$buttons.find('button.grid_arrow_next').click();
+            testUtils.dom.click(grid.$buttons.find('button.grid_arrow_next'));
 
             return concurrency.delay(0);
         }).then(function () {
             assert.ok(grid.$('.o_grid_nocontent_container p:contains(Add projects and tasks)').length,
                 "should have rendered a no content helper");
-            assert.strictEqual(grid.$('.o_grid_nocontent_container p a img').length, 1,
+            assert.containsOnce(grid, '.o_grid_nocontent_container p a img',
                 "should have rendered a no content helper with an image in a link");
 
             assert.notOk(grid.$('div.o_grid_cell_container').length, "should not have any cell");
@@ -204,7 +204,7 @@ QUnit.module('Views', {
             assert.strictEqual(nbReadGridDomain, 1, "should have read the grid domain");
             assert.strictEqual(nbReadGridDomain, 1, "should have read group");
             assert.strictEqual(nbReadGrid, 2, "should have read one grid by group");
-            assert.strictEqual(grid.$('.o_grid_section').length, 2, "should have one section by project");
+            assert.containsN(grid, '.o_grid_section', 2, "should have one section by project");
 
             // first section
             assert.strictEqual(grid.$('.o_grid_section:eq(0) th:contains(P1)').length, 1,
@@ -231,13 +231,13 @@ QUnit.module('Views', {
 
             assert.ok(grid.$buttons.find('button.grid_arrow_previous').is(':visible'),
                 "previous button should be visible");
-            assert.ok(grid.$buttons.find('button.grid_arrow_range[data-name="week"]').hasClass('active'),
+            assert.hasClass(grid.$buttons.find('button.grid_arrow_range[data-name="week"]'),'active',
                 "current range is shown as active");
 
             assert.strictEqual(grid.$('tfoot td:contains(02:30)').length, 1, "should display total in a column");
             assert.strictEqual(grid.$('tfoot td:contains(00:00)').length, 5, "should display totals, even if 0");
 
-            grid.$buttons.find('button.grid_arrow_next').click();
+            testUtils.dom.click(grid.$buttons.find('button.grid_arrow_next'));
             return concurrency.delay(0);
         }).then(function () {
             assert.strictEqual(nbReadGridDomain, 2, "should have read the grid domain again");
@@ -253,11 +253,11 @@ QUnit.module('Views', {
                 "first section should have a row for Another BS task");
             assert.strictEqual(grid.$('.o_grid_section:eq(1) div.o_grid_cell_container').length, 7,
                 "second section should have 7 cells");
-            grid.$buttons.find('button.grid_arrow_next').click();
+            testUtils.dom.click(grid.$buttons.find('button.grid_arrow_next'));
 
             return concurrency.delay(0);
         }).then(function () {
-            assert.strictEqual(grid.$('.o_grid_nocontent_container').length, 0,
+            assert.containsNone(grid, '.o_grid_nocontent_container',
                 "should not have rendered a no content helper in grouped");
             grid.destroy();
             done();
@@ -290,7 +290,7 @@ QUnit.module('Views', {
             "GroupBy should have been taken into account when loading the view."
         );
 
-        grid.$buttons.find('.grid_arrow_next').click();
+        testUtils.dom.click(grid.$buttons.find('.grid_arrow_next'));
 
         assert.strictEqual(grid.$('tr:eq(2) th').text(), 'Another BS taskWebocalypse Now',
             "GroupBy should have been kept when clicking the pager."
@@ -329,7 +329,7 @@ QUnit.module('Views', {
             "GroupBy should have been taken into account when loading the view."
         );
 
-        grid.$buttons.find('.grid_arrow_next').click();
+        testUtils.dom.click(grid.$buttons.find('.grid_arrow_next'));
 
         assert.strictEqual(grid.$('tr:eq(2) th').text(), 'Another BS task',
             "GroupBy should have been kept when clicking the pager."
@@ -455,7 +455,7 @@ QUnit.module('Views', {
             assert.strictEqual(grid.$('tbody th:eq(1)').text(), "SassyUnknown", "Should be equal.");
             assert.strictEqual(grid.$('tbody th:eq(2)').text(), "RemUnknown", "Should be equal.");
 
-            grid.$buttons.find('button.grid_arrow_previous').click();
+            testUtils.dom.click(grid.$buttons.find('button.grid_arrow_previous'));
             return concurrency.delay(0);
         }).then(function () {
             assert.strictEqual(grid.$('tbody th:first').text(), "SarUnknown", "Should be equal.");
@@ -528,29 +528,29 @@ QUnit.module('Views', {
         });
 
         return concurrency.delay(0).then(function () {
-            assert.strictEqual(grid.$('.o_grid_nocontent_container').length, 0,
+            assert.containsNone(grid, '.o_grid_nocontent_container',
                 "should not have rendered a no content helper");
 
-            assert.strictEqual(grid.$('div.o_grid_cell_container').length, 0, "should not have any cells");
+            assert.containsNone(grid, 'div.o_grid_cell_container', "should not have any cells");
             assert.notOk($('.modal').length, "should not have any modal open");
-            grid.$buttons.find('.o_grid_button_add').click();
+            testUtils.dom.click(grid.$buttons.find('.o_grid_button_add'));
 
             assert.ok($('.modal').length, "should have opened a modal");
 
             // input a project and a task
-            for (var i = 0; i < 2; i++) {
-                $('.modal .o_field_many2one input').eq(i).click();
-                $('.modal .o_field_many2one input').eq(i).autocomplete('widget').find('a').first().click();
-            }
+            testUtils.fields.many2one.clickOpenDropdown('project_id');
+            testUtils.fields.many2one.clickHighlightedItem('project_id');
+            testUtils.fields.many2one.clickOpenDropdown('task_id');
+            testUtils.fields.many2one.clickHighlightedItem('task_id');
 
             // input unit_amount
-            $('.modal input').eq(3).val("4").trigger('input');
+            testUtils.fields.editInput($('.modal input').eq(3), "4");
 
             // save
-            $('.modal .modal-footer button.btn-primary').click();
+            testUtils.dom.click($('.modal .modal-footer button.btn-primary'));
             return concurrency.delay(0);
         }).then(function () {
-            assert.strictEqual(grid.$('div.o_grid_cell_container').length, 7,
+            assert.containsN(grid, 'div.o_grid_cell_container', 7,
                 "should have 7 cell containers (1 for each day)");
 
             assert.strictEqual(grid.$('td.o_grid_total:contains(4:00)').length, 1,
@@ -601,17 +601,17 @@ QUnit.module('Views', {
         });
 
         return concurrency.delay(0).then(function () {
-            grid.$buttons.find('.o_grid_button_add').click();
+            testUtils.dom.click(grid.$buttons.find('.o_grid_button_add'));
             assert.ok($('.modal').length, "should have opened a modal");
             // input a project and a task
-            for (var i = 0; i < 2; i++) {
-                $('.modal .o_field_many2one input').eq(i).click();
-                $('.modal .o_field_many2one input').eq(i).autocomplete('widget').find('a').first().click();
-            }
+            testUtils.fields.many2one.clickOpenDropdown('project_id');
+            testUtils.fields.many2one.clickHighlightedItem('project_id');
+            testUtils.fields.many2one.clickOpenDropdown('task_id');
+            testUtils.fields.many2one.clickHighlightedItem('task_id');
             // input unit_amount
-            $('.modal input').eq(3).val("4").trigger('input');
+            testUtils.fields.editInput($('.modal input').eq(3), "4");
             // save
-            $('.modal .modal-footer button.btn-primary').click();
+            testUtils.dom.click($('.modal .modal-footer button.btn-primary'));
 
             grid.destroy();
             done();
@@ -642,21 +642,21 @@ QUnit.module('Views', {
         return concurrency.delay(0).then(function () {
             assert.strictEqual(grid.$('thead th:not(.o_grid_title_header)').length, 8,
                 "should have 8 columns (1 for each day + 1 for total)");
-            assert.ok(grid.$buttons.find('button.grid_arrow_range[data-name="week"]').hasClass('active'),
+            assert.hasClass(grid.$buttons.find('button.grid_arrow_range[data-name="week"]'),'active',
                 "current range is shown as active");
-            assert.notOk(grid.$buttons.find('button.grid_arrow_range[data-name="month"]').hasClass('active'),
+            assert.doesNotHaveClass(grid.$buttons.find('button.grid_arrow_range[data-name="month"]'), 'active',
                 "month range is not active");
 
-            grid.$buttons.find('button[data-name=month]').click();
+            testUtils.dom.click(grid.$buttons.find('button[data-name=month]'));
 
             return concurrency.delay(0);
         }).then(function () {
 
             assert.strictEqual(grid.$('thead th:not(.o_grid_title_header)').length, 29,
                 "should have 29 columns (1 for each day + 1 for total)");
-            assert.ok(grid.$buttons.find('button.grid_arrow_range[data-name="month"]').hasClass('active'),
+            assert.hasClass(grid.$buttons.find('button.grid_arrow_range[data-name="month"]'),'active',
                 "month range is shown as active");
-            assert.notOk(grid.$buttons.find('button.grid_arrow_range[data-name="week"]').hasClass('active'),
+            assert.doesNotHaveClass(grid.$buttons.find('button.grid_arrow_range[data-name="week"]'), 'active',
                 "week range is not active");
 
             grid.destroy();
@@ -685,10 +685,10 @@ QUnit.module('Views', {
         });
 
         return concurrency.delay(0).then(function () {
-            assert.strictEqual(grid.$('i.o_grid_cell_information').length, 14,
+            assert.containsN(grid, 'i.o_grid_cell_information', 14,
                 "should have 14 icons to open cell info");
 
-            testUtils.intercept(grid, 'do_action', function (event) {
+            testUtils.mock.intercept(grid, 'do_action', function (event) {
                 var action = event.data.action;
 
                 assert.deepEqual(action.domain, domain, "should trigger a do_action with correct values");
@@ -697,7 +697,7 @@ QUnit.module('Views', {
                 assert.strictEqual(action.context.default_project_id, 31, "should pass project_id in context when click on info icon on cell");
                 assert.strictEqual(action.context.default_task_id, 1 , "should pass task_id in context when click on info icon on cell");
             });
-            grid.$('i.o_grid_cell_information').eq(2).click();
+            testUtils.dom.click(grid.$('i.o_grid_cell_information').eq(2));
 
             grid.destroy();
             done();
@@ -747,9 +747,9 @@ QUnit.module('Views', {
         return concurrency.delay(0).then(function () {
             var $input = grid.$('.o_grid_cell_container:eq(0) div.o_grid_input');
 
-            assert.notOk($input.hasClass('o_has_error'),
+            assert.doesNotHaveClass($input, 'o_has_error',
                 "input should not show any error at start");
-            $input.click();
+            testUtils.dom.click($input);
             $input.focus();
             var selection = window.getSelection();
             assert.strictEqual($(selection.focusNode).closest(".o_grid_input")[0], $input[0],
@@ -782,19 +782,19 @@ QUnit.module('Views', {
             $input.text('abc');
             $input.focusout();
 
-            assert.ok($input.hasClass('o_has_error'),
+            assert.hasClass($input,'o_has_error',
                 "input should be formatted to show that there was an error");
 
             $input.text('8.5');
             $input.focusout();
 
-            assert.notOk($input.hasClass('o_has_error'),
+            assert.doesNotHaveClass($input, 'o_has_error',
                 "input should not be formatted like there is an error");
 
             assert.strictEqual($input.text(), "08:30",
                 "text should have been properly parsed/formatted");
 
-            grid.$buttons.find('button:contains("Action")').click();
+            testUtils.dom.click(grid.$buttons.find('button:contains("Action")'));
 
             grid.destroy();
             done();
@@ -858,7 +858,7 @@ QUnit.module('Views', {
         return concurrency.delay(0).then(function () {
             // go back to previous week, to be able to check if grid_anchor is
             // properly updated and sent to the server
-            grid.$buttons.find('.grid_arrow_previous').click();
+            testUtils.dom.click(grid.$buttons.find('.grid_arrow_previous'));
             grid.$('.o_grid_input').first().text('2').focusout();
 
             grid.destroy();
@@ -903,11 +903,11 @@ QUnit.module('Views', {
         assert.strictEqual(actionManager.$('.o_view_grid th:eq(2)').text(), "Tue,Jan 31", "The first day of the span should be the 31st of January");
 
         // move to previous week, and check first column header
-        actionManager.controlPanel.$('.grid_arrow_previous').click();
+        testUtils.dom.click(actionManager.controlPanel.$('.grid_arrow_previous'));
         assert.strictEqual(actionManager.$('.o_view_grid th:eq(2)').text(), "Tue,Jan 24", "The first day of the span should be the 24st of January, as we check the previous week");
 
         // remove the filter in the searchview
-        $('.o_control_panel .o_searchview .o_facet_remove').click();
+        testUtils.dom.click($('.o_control_panel .o_searchview .o_facet_remove'));
 
         // recheck first column header
         assert.strictEqual(actionManager.$('.o_view_grid th:eq(2)').text(), "Tue,Jan 24", "The first day of the span should STILL be the 24st of January, even we resetting search");
@@ -973,11 +973,11 @@ QUnit.module('Views', {
             var $button = grid.$('.o_grid_section:eq(1) .o_grid_cell_container[data-path="1.grid.0.2"] button');
             $button.focus();
 
-            $button.click();
+            testUtils.dom.click($button);
             assert.strictEqual(grid.$('.o_grid_section:eq(1) .o_grid_cell_container[data-path="1.grid.0.2"] button').text(), '0.50',
                 "0.5 is the next value since 0.0 was the closest value in the range");
 
-            $button.click();
+            testUtils.dom.click($button);
             assert.strictEqual(grid.$('.o_grid_section:eq(1) .o_grid_cell_container[data-path="1.grid.0.2"] button').text(), '1.00',
                 "0.5 becomes 1.0 as it is the next value in the range");
 
@@ -987,7 +987,7 @@ QUnit.module('Views', {
             var $button = grid.$('.o_grid_section:eq(0) .o_grid_cell_container[data-path="0.grid.0.0"] button');
             $button.focus();
 
-            $button.click();
+            testUtils.dom.click($button);
             assert.strictEqual(grid.$('.o_grid_section:eq(0) .o_grid_cell_container[data-path="0.grid.0.0"] button').text(), '0.00',
                 "1.25 is starting value, the closest in the range is 1.00, so the next will be 0.00");
 

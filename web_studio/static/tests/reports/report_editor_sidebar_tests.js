@@ -54,18 +54,18 @@ QUnit.module('Studio', {}, function () {
                 report: {},
             });
 
-            assert.ok(sidebar.$('.o_web_studio_sidebar_header [name="report"]').hasClass('active'),
+            assert.hasClass(sidebar.$('.o_web_studio_sidebar_header [name="report"]'),'active',
                 "the report tab should be active");
-            assert.ok(sidebar.$('.o_web_studio_sidebar_header [name="options"]').hasClass('inactive'),
+            assert.hasClass(sidebar.$('.o_web_studio_sidebar_header [name="options"]'),'inactive',
                 "the options tab should be inactive");
 
-            testUtils.intercept(sidebar, 'sidebar_tab_changed', function (ev) {
+            testUtils.mock.intercept(sidebar, 'sidebar_tab_changed', function (ev) {
                 assert.step(ev.data.mode);
             });
-            sidebar.$('.o_web_studio_sidebar_header [name="new"]').click();
+            testUtils.dom.click(sidebar.$('.o_web_studio_sidebar_header [name="new"]'));
             assert.verifySteps(['new'], "the sidebar should be updated");
 
-            sidebar.$('.o_web_studio_sidebar_header [name="options"]').click();
+            testUtils.dom.click(sidebar.$('.o_web_studio_sidebar_header [name="options"]'));
             assert.verifySteps(['new'], "one should not be able to select options");
 
             sidebar.destroy();
@@ -82,12 +82,12 @@ QUnit.module('Studio', {}, function () {
                 },
             });
 
-            assert.strictEqual(sidebar.$('.o_web_studio_sidebar_header > .active').attr('name'), "report",
+            assert.hasAttrValue(sidebar.$('.o_web_studio_sidebar_header > .active'), 'name', "report",
                 "the 'Report' tab should be active");
             assert.strictEqual(sidebar.$('input[name="name"]').val(), "Kikou",
                 "the report name should be displayed");
 
-            testUtils.intercept(sidebar, 'studio_edit_report', function (ev) {
+            testUtils.mock.intercept(sidebar, 'studio_edit_report', function (ev) {
                 if (ev.data.name) {
                     assert.deepEqual(ev.data, { name: "wow_report" });
                 } else if ('paperformat_id' in ev.data) {
@@ -101,9 +101,8 @@ QUnit.module('Studio', {}, function () {
 
             // edit the report paperformat
             var paperformatValues = [];
-            var $dropdown1 = sidebar.$('[name="paperformat_id"] input').autocomplete('widget');
-            sidebar.$('[name="paperformat_id"] input').click();
-            $dropdown1.find('li:contains(My Awesome Format)').mouseenter().click();
+            testUtils.fields.many2one.clickOpenDropdown('paperformat_id');
+            testUtils.fields.many2one.clickHighlightedItem('paperformat_id');
             assert.deepEqual(paperformatValues, [{ paperformat_id: 42 }]);
 
             // remove the report paperformat
@@ -111,9 +110,8 @@ QUnit.module('Studio', {}, function () {
             assert.deepEqual(paperformatValues, [{ paperformat_id: 42 }, { paperformat_id: false }]);
 
             // edit groups
-            var $dropdown2 = sidebar.$('[name="groups_id"] input').autocomplete('widget');
-            sidebar.$('[name="groups_id"] input').click();
-            $dropdown2.find('li:contains(Group7)').mouseenter().click();
+            testUtils.fields.many2one.clickOpenDropdown('groups_id');
+            testUtils.fields.many2one.clickItem('groups_id', 'Group7');
 
             sidebar.destroy();
         });
@@ -125,7 +123,7 @@ QUnit.module('Studio', {}, function () {
                 state: { mode: 'new' },
             });
 
-            assert.strictEqual(sidebar.$('.o_web_studio_sidebar_header > .active').attr('name'), "new",
+            assert.hasAttrValue(sidebar.$('.o_web_studio_sidebar_header > .active'), 'name', "new",
                 "the 'Add' tab should be active");
             assert.ok(sidebar.$('.ui-draggable').length,
                 "there should be draggable components");
@@ -152,18 +150,18 @@ QUnit.module('Studio', {}, function () {
                 },
             });
 
-            assert.strictEqual(sidebar.$('.o_web_studio_sidebar_header > .active').attr('name'), "options",
+            assert.hasAttrValue(sidebar.$('.o_web_studio_sidebar_header > .active'), 'name', "options",
                 "the 'Options' tab should be active");
-            assert.strictEqual(sidebar.$('.o_web_studio_sidebar_content .collapse').length, 1,
+            assert.containsOnce(sidebar, '.o_web_studio_sidebar_content .collapse',
                 "there should be one node in the accordion");
-            assert.ok(sidebar.$('.o_web_studio_sidebar_content .collapse').hasClass('show'),
+            assert.hasClass(sidebar.$('.o_web_studio_sidebar_content .collapse'),'show',
                 "the node should be expanded by default");
 
             // remove the element
-            testUtils.intercept(sidebar, 'element_removed', function (ev) {
+            testUtils.mock.intercept(sidebar, 'element_removed', function (ev) {
                 assert.deepEqual(ev.data.node, node.node);
             });
-            sidebar.$('.o_web_studio_sidebar_content .collapse .o_web_studio_remove').click();
+            testUtils.dom.click(sidebar.$('.o_web_studio_sidebar_content .collapse .o_web_studio_remove'));
 
             sidebar.destroy();
         });
@@ -198,32 +196,32 @@ QUnit.module('Studio', {}, function () {
                 },
             });
 
-            assert.strictEqual(sidebar.$('.o_web_studio_sidebar_header > .active').attr('name'), "options",
+            assert.hasAttrValue(sidebar.$('.o_web_studio_sidebar_header > .active'), 'name', "options",
                 "the 'Options' tab should be active");
-            assert.strictEqual(sidebar.$('.o_web_studio_sidebar_content .card').length, 2,
+            assert.containsN(sidebar, '.o_web_studio_sidebar_content .card', 2,
                 "there should be one node in the accordion");
-            assert.ok(sidebar.$('.o_web_studio_sidebar_content .card:has(.o_text:contains(span)) .collapse').hasClass('show'),
+            assert.hasClass(sidebar.$('.o_web_studio_sidebar_content .card:has(.o_text:contains(span)) .collapse'),'show',
                 "the 'span' node should be expanded by default");
-            assert.ok(!sidebar.$('.o_web_studio_sidebar_content .card:has(.o_text:contains(div)) .collapse').hasClass('show'),
+            assert.doesNotHaveClass(sidebar.$('.o_web_studio_sidebar_content .card:has(.o_text:contains(div)) .collapse'), 'show',
                 "the 'div' node shouldn't be expanded");
             assert.strictEqual(sidebar.$('.o_web_studio_sidebar_content .o_web_studio_accordion > .card:last .card-header').text().trim(), "span",
                 "the last node should be the span");
 
             // expand the first node
-            sidebar.$('.o_web_studio_sidebar_content .o_web_studio_accordion > .card:first [data-toggle="collapse"]').click();
+            testUtils.dom.click(sidebar.$('.o_web_studio_sidebar_content .o_web_studio_accordion > .card:first [data-toggle="collapse"]'));
             // BS4 collapsing is asynchronous
             setTimeout(function () {
-                assert.ok(!sidebar.$('.o_web_studio_sidebar_content .card:has(.o_text:contains(span)) .collapse').hasClass('show'),
+                assert.doesNotHaveClass(sidebar.$('.o_web_studio_sidebar_content .card:has(.o_text:contains(span)) .collapse'), 'show',
                     "the 'span' node should have been closed");
-                assert.ok(sidebar.$('.o_web_studio_sidebar_content .card:has(.o_text:contains(div)) .collapse').hasClass('show'),
+                assert.hasClass(sidebar.$('.o_web_studio_sidebar_content .card:has(.o_text:contains(div)) .collapse'),'show',
                     "the 'div' node should be expanded");
 
                 // reexpand the second node
-                sidebar.$('.o_web_studio_sidebar_content .o_web_studio_accordion > .card:last [data-toggle="collapse"]').click();
+                testUtils.dom.click(sidebar.$('.o_web_studio_sidebar_content .o_web_studio_accordion > .card:last [data-toggle="collapse"]'));
                 setTimeout(function () {
-                    assert.ok(sidebar.$('.o_web_studio_sidebar_content .card:has(.o_text:contains(span)) .collapse').hasClass('show'),
+                    assert.hasClass(sidebar.$('.o_web_studio_sidebar_content .card:has(.o_text:contains(span)) .collapse'),'show',
                         "the 'span' node should be expanded again");
-                    assert.ok(!sidebar.$('.o_web_studio_sidebar_content .card:has(.o_text:contains(div)) .collapse').hasClass('show'),
+                    assert.doesNotHaveClass(sidebar.$('.o_web_studio_sidebar_content .card:has(.o_text:contains(div)) .collapse'), 'show',
                         "the 'div' node shouldn't be expanded anymore");
 
                     done();
@@ -251,14 +249,11 @@ QUnit.module('Studio', {}, function () {
                 },
             });
 
-            assert.strictEqual(sidebar.$('.o_web_studio_sidebar_content .collapse').length, 1,
+            assert.containsOnce(sidebar, '.o_web_studio_sidebar_content .collapse',
                 "there should be one node in the accordion");
-            assert.strictEqual(sidebar.$('.o_web_studio_sidebar_content .o_web_studio_layout').length, 1,
+            assert.containsOnce(sidebar, '.o_web_studio_sidebar_content .o_web_studio_layout',
                 "there should be a layout component");
-
-            // expand options
-            sidebar.$('.o_web_studio_sidebar_content .o_web_studio_layout .expandLayout').click();
-            assert.strictEqual(sidebar.$('.o_web_studio_sidebar_content .o_web_studio_layout .o_web_studio_margin').length, 1,
+            assert.containsOnce(sidebar, '.o_web_studio_sidebar_content .o_web_studio_layout .o_web_studio_margin',
                 "there should be a margin section in the layout component");
 
             sidebar.destroy();
@@ -316,9 +311,9 @@ QUnit.module('Studio', {}, function () {
                 widgetsOptions: this.widgetsOptions,
             });
 
-            assert.strictEqual(sidebar.$('.o_web_studio_tfield_fieldexpression').length, 1,
+            assert.containsOnce(sidebar, '.o_web_studio_tfield_fieldexpression',
                 "the t-field component should be displayed");
-            assert.strictEqual(sidebar.$('.o_web_studio_toption_widget').length, 1,
+            assert.containsOnce(sidebar, '.o_web_studio_toption_widget',
                 "the t-options component should be displayed");
             assert.strictEqual(sidebar.$('.o_web_studio_toption_widget select').text().replace(/\s/g, ''), "imageintegertext",
                 "all widgets should be selectable");
@@ -742,7 +737,7 @@ QUnit.module('Studio', {}, function () {
                     },
                 });
 
-                testUtils.intercept(sidebar, 'view_change', function (ev) {
+                testUtils.mock.intercept(sidebar, 'view_change', function (ev) {
                     assert.deepEqual(ev.data.operation, changeOperation.expectedRPC, changeOperation.testName);
                 });
                 sidebar.$(changeOperation.sidebarOperationInputSelector)

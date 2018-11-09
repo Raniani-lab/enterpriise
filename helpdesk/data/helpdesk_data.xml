@@ -5,6 +5,7 @@
         <field name="name">Customer Care</field>
         <field name="alias_name">support</field>
         <field name="stage_ids" eval="False"/> <!-- eval=False to don't get the default stage. New stages are setted below-->
+        <field name="use_sla" eval="True"/>
     </record>
 
     <!-- stage "New" gets created by default with sequence 0-->

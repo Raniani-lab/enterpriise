@@ -4,6 +4,7 @@ from contextlib import contextmanager
 
 from odoo import fields
 from odoo.tests.common import SavepointCase
+from odoo import fields
 
 
 class HelpdeskCommon(SavepointCase):
@@ -66,6 +67,64 @@ class HelpdeskCommon(SavepointCase):
             'name': 'Issue_test',
         }).sudo()
 
+    @classmethod
+    def setUpSLATeam(cls):
+        """ Generate Team, some stage and SLAs for the team """
+        # create team and stages
+        cls.team_with_sla = cls.env['helpdesk.team'].create({
+            'name': 'Team with SLAs',
+            'use_sla': True
+        })
+
+        Stage = cls.env['helpdesk.stage']
+        cls.team_sla_stage_new = Stage.create({
+            'name': 'New',
+            'sequence': 10,
+            'team_ids': [(4, cls.team_with_sla.id, 0)],
+            'is_close': False,
+        })
+        cls.team_sla_stage_progress = Stage.create({
+            'name': 'In Progress',
+            'sequence': 20,
+            'team_ids': [(4, cls.team_with_sla.id, 0)],
+            'is_close': False,
+        })
+        cls.team_sla_stage_done = Stage.create({
+            'name': 'Done',
+            'sequence': 30,
+            'team_ids': [(4, cls.team_with_sla.id, 0)],
+            'is_close': True,
+        })
+        cls.team_sla_stage_cancel = Stage.create({
+            'name': 'Cancelled',
+            'sequence': 40,
+            'team_ids': [(4, cls.team_with_sla.id, 0)],
+            'is_close': True,
+        })
+
+        # create SLAs
+        SLA = cls.env['helpdesk.sla']
+        cls.sla_1_progress = SLA.create({
+            'name': "2 days to be in progress",
+            'stage_id': cls.team_sla_stage_progress.id,
+            'time_days': 2,
+            'team_id': cls.team_with_sla.id,
+        })
+        cls.sla_2_done = SLA.create({
+            'name': "7 days to be in progress",
+            'stage_id': cls.team_sla_stage_done.id,
+            'time_days': 7,
+            'team_id': cls.team_with_sla.id,
+            'priority': '0',
+        })
+        cls.sla_3_done_prior = SLA.create({
+            'name': "5 days to be in done for 3 stars ticket",
+            'stage_id': cls.team_sla_stage_done.id,
+            'time_days': 5,
+            'team_id': cls.team_with_sla.id,
+            'priority': '3',
+        })
+
     def _utils_set_create_date(self, records, date_str):
         """ This method is a hack in order to be able to define/redefine the create_date
             of the any recordset. This is done in SQL because ORM does not allow to write
@@ -80,6 +139,11 @@ class HelpdeskCommon(SavepointCase):
         self.env.cr.execute(query, (date_str, tuple(records.ids)))
 
         records.invalidate_cache()
+
+        if records._name == 'helpdesk.ticket':
+            field = self.env['helpdesk.sla.status']._fields['deadline']
+            records.mapped('sla_status_ids')._recompute_todo(field)
+            records.recompute()
 
     @contextmanager
     def _ticket_patch_now(self, datetime_str):

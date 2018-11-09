@@ -7,7 +7,6 @@ from datetime import timedelta
 from math import floor
 from odoo import http, _, fields
 from odoo.http import request
-from odoo.tools import pycompat
 from .stat_types import STAT_TYPES, FORECAST_STAT_TYPES, compute_mrr_growth_values
 
 
@@ -232,10 +231,8 @@ class RevenueKPIsDashboard(http.Controller):
     @http.route('/sale_subscription_dashboard/compute_stat', type='json', auth='user')
     def compute_stat(self, stat_type, start_date, end_date, filters):
 
-        if isinstance(start_date, pycompat.string_types):
-            start_date = fields.Date.from_string(start_date)
-        if isinstance(end_date, pycompat.string_types):
-            end_date = fields.Date.from_string(end_date)
+        start_date = fields.Date.to_date(start_date)
+        end_date = fields.Date.to_date(end_date)
 
         return STAT_TYPES[stat_type]['compute'](start_date, end_date, filters)
 

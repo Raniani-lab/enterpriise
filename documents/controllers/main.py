@@ -16,7 +16,7 @@ from ast import literal_eval
 from odoo import http, fields, models
 from odoo.http import request, content_disposition
 from odoo.osv import expression
-from odoo.tools import pycompat, consteq
+from odoo.tools import consteq
 
 logger = logging.getLogger(__name__)
 

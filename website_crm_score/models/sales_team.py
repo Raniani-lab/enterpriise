@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from odoo import fields, api, models
-from odoo.tools import pycompat
 from odoo.tools.safe_eval import safe_eval
 from random import randint, shuffle
 import datetime
@@ -14,24 +13,8 @@ evaluation_context = {
     'context_today': datetime.datetime.now,
 }
 
-if pycompat.PY2:
-    _flanker_warning = False
-    try:
-        from flanker.addresslib import address
-
-        def checkmail(mail):
-            return bool(address.validate_address(mail))
-
-    except ImportError:
-        def checkmail(mail):
-            global _flanker_warning
-            if not _flanker_warning:
-                _logger.warning("The `flanker` Python module is not installed, so email validation is unavailable. Use 'pip install flanker' to install it")
-                _flanker_warning = True
-            return True
-else:
-    _logger.info('Flanker is not compatible with Python 3, email validation has been disabled')
-    def checkmail(mail): return True
+_logger.info('Flanker is not compatible with Python 3, email validation has been disabled')
+def checkmail(mail): return True
 
 class team_user(models.Model):
     _name = 'team.user'

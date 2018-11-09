@@ -11,7 +11,6 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from odoo.exceptions import UserError, ValidationError
 from odoo.osv import expression
-from odoo.tools.pycompat import izip
 
 
 class ReportAccountFinancialReport(models.Model):
@@ -990,7 +989,7 @@ class AccountFinancialReportLine(models.Model):
         return (safe_eval(self.domain) or []) + (self._context.get('filter_domain') or []) + (self._context.get('group_domain') or [])
 
     def _get_group_domain(self, group, groups):
-        return [(field, '=', grp) for field, grp in izip(groups['fields'], group)]
+        return [(field, '=', grp) for field, grp in zip(groups['fields'], group)]
 
     def _eval_formula(self, financial_report, debit_credit, currency_table, linesDict_per_group, groups=False):
         groups = groups or {'fields': [], 'ids': [()]}

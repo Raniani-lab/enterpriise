@@ -9,7 +9,6 @@ from PyPDF2 import PdfFileReader
 
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
-from odoo.tools import pycompat
 
 
 class SignTemplate(models.Model):
@@ -103,7 +102,7 @@ class SignTemplate(models.Model):
 
         item_ids = {
             it
-            for it in pycompat.imap(int, sign_items)
+            for it in map(int, sign_items)
             if it > 0
         }
         template.sign_item_ids.filtered(lambda r: r.id not in item_ids).unlink()

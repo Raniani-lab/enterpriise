@@ -1,6 +1,5 @@
 # coding: utf-8
 
-from odoo.tools.pycompat import imap
 from odoo.addons.account.tests.account_test_classes import AccountingTestCase
 from odoo.tests import tagged
 

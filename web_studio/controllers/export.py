@@ -9,7 +9,7 @@ import os.path
 import zipfile
 
 from odoo.osv.expression import OR
-from odoo.tools import topological_sort, pycompat
+from odoo.tools import topological_sort
 
 # list of models to export (the order ensures that dependencies are satisfied)
 MODELS_TO_EXPORT = [
@@ -280,7 +280,7 @@ def generate_field(record, field, get_xmlid):
     """ Serialize the value of ``field`` on ``record`` as an etree Element. """
     value = record[field.name]
     if field.type == 'boolean':
-        return E.field(name=field.name, eval=pycompat.text_type(value))
+        return E.field(name=field.name, eval=str(value))
     elif field.type in ('many2one', 'reference'):
         if value:
             return E.field(name=field.name, ref=get_xmlid(value))
@@ -297,14 +297,14 @@ def generate_field(record, field, get_xmlid):
         elif (field.model_name, field.name) in CDATA_FIELDS:
             # Wrap value in <![CDATA[]] to preserve it to be interpreted as XML markup
             node = E.field(name=field.name)
-            node.text = etree.CDATA(pycompat.text_type(value))
+            node.text = etree.CDATA(str(value))
             return node
         elif (field.model_name, field.name) in XML_FIELDS:
             # Use an xml parser to remove new lines and indentations in value
             parser = etree.XMLParser(remove_blank_text=True)
             return E.field(etree.XML(value, parser), name=field.name, type='xml')
         else:
-            return E.field(pycompat.text_type(value), name=field.name)
+            return E.field(str(value), name=field.name)
 
 
 def xmlid_getter():

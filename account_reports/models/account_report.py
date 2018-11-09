@@ -17,7 +17,7 @@ except ImportError:
     import xlsxwriter
 
 from odoo import models, fields, api, _
-from odoo.tools import DEFAULT_SERVER_DATE_FORMAT, pycompat, config, date_utils
+from odoo.tools import DEFAULT_SERVER_DATE_FORMAT, config, date_utils
 from odoo.osv import expression
 from babel.dates import get_quarter_names
 from odoo.tools.misc import formatLang, format_date, get_user_companies
@@ -527,7 +527,7 @@ class AccountReport(models.AbstractModel):
 
         # Merge a list of columns together and take care about str values.
         def merge_columns(columns):
-            return ['n/a' if any(isinstance(i, str) for i in x) else sum(x) for x in pycompat.izip(*columns)]
+            return ['n/a' if any(isinstance(i, str) for i in x) else sum(x) for x in zip(*columns)]
 
         # Get_lines for the newly computed hierarchy.
         def get_hierarchy_lines(values, depth=1):

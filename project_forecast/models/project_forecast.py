@@ -11,7 +11,6 @@ from odoo.exceptions import UserError, ValidationError
 from odoo.tools.safe_eval import safe_eval
 from odoo.tools import float_round
 from odoo.osv import expression
-from odoo.tools import pycompat
 
 from odoo.addons.resource.models.resource import HOURS_PER_DAY
 
@@ -305,7 +304,7 @@ class ProjectForecast(models.Model):
                 }
             )
 
-        from_, to_ = pycompat.imap(fields.Date.from_string, column_value.split('/'))
+        from_, to_ = map(fields.Date.from_string, column_value.split('/'))
         start = fields.Date.to_string(from_)
         # range is half-open get the actual end date
         end = fields.Date.to_string(to_ - relativedelta(days=1))

@@ -11,7 +11,6 @@ import json
 import uuid
 import random
 
-from odoo.tools import pycompat
 from odoo.exceptions import UserError
 
 
@@ -98,7 +97,7 @@ class View(models.Model):
     def _groups_branding(self, specs_tree, view_id):
         groups_id = self.browse(view_id).groups_id
         if groups_id:
-            attr_value = ','.join(pycompat.imap(str, groups_id.ids))
+            attr_value = ','.join(map(str, groups_id.ids))
             for node in specs_tree.iter(tag=etree.Element):
                 node.set('studio-view-group-ids', attr_value)
 
@@ -107,7 +106,7 @@ class View(models.Model):
     # So, we add the groups name to find out when they will be available.
     # This information will be used in Studio to inform the user.
     def _set_groups_info(self, node, group_ids):
-        groups = self.env['res.groups'].browse(pycompat.imap(int, group_ids.split(',')))
+        groups = self.env['res.groups'].browse(map(int, group_ids.split(',')))
         view_group_names = ','.join(groups.mapped('name'))
         for child in node.iter(tag=etree.Element):
             child.set('studio-view-group-names', view_group_names)

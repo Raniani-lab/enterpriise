@@ -6,7 +6,6 @@ import uuid
 
 from odoo import api, fields, models, tools, _
 from odoo.exceptions import AccessError
-from odoo.tools import pycompat
 
 TICKET_PRIORITY = [
     ('0', 'All'),

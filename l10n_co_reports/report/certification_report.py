@@ -6,7 +6,6 @@ from datetime import datetime
 
 from odoo import models
 from odoo.exceptions import UserError
-from odoo.tools import pycompat
 from odoo.tools.translate import _
 
 
@@ -93,7 +92,7 @@ class ReportCertificationReport(models.AbstractModel):
 
     def _add_to_partner_total(self, totals, new_values):
         for column, value in new_values.items():
-            if isinstance(value, pycompat.string_types):
+            if isinstance(value, str):
                 totals[column] = ''
             else:
                 totals[column] = totals.get(column, 0) + value

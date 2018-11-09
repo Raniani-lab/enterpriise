@@ -4,8 +4,6 @@
 from odoo import models, api, _, fields
 from datetime import datetime
 
-from odoo.tools import pycompat
-
 
 class report_account_coa(models.AbstractModel):
     _name = "account.coa.report"

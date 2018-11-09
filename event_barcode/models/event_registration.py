@@ -3,7 +3,6 @@ import logging
 import random
 
 from odoo import api, fields, models
-from odoo.tools import pycompat
 
 _logger = logging.getLogger(__name__)
 
@@ -22,7 +21,7 @@ class EventRegistration(models.Model):
         Generate 8 bytes (64 bits) barcodes as 16 bytes barcodes are not
         compatible with all scanners.
          """
-        return pycompat.text_type(random.getrandbits(64))
+        return str(random.getrandbits(64))
 
     barcode = fields.Char(default=_get_random_token, readonly=True, copy=False)
 

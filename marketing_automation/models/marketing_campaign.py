@@ -51,6 +51,7 @@ class MarketingCampaign(models.Model):
     running_participant_count = fields.Integer(string="# of active participants", compute='_compute_participants')
     completed_participant_count = fields.Integer(string="# of completed participants", compute='_compute_participants')
     total_participant_count = fields.Integer(string="# of active and completed participants", compute='_compute_participants')
+    test_participant_count = fields.Integer(string="# of test participants", compute='_compute_participants')
 
     @api.depends('marketing_activity_ids.require_sync', 'last_sync_date')
     def _compute_require_sync(self):
@@ -62,16 +63,20 @@ class MarketingCampaign(models.Model):
     def _compute_participants(self):
         participants_data = self.env['marketing.participant'].read_group(
             [('campaign_id', 'in', self.ids)],
-            ['campaign_id', 'state'],
-            ['campaign_id', 'state'], lazy=False)
-        mapped_data = {campaign.id: {} for campaign in self}
+            ['campaign_id', 'state', 'is_test'],
+            ['campaign_id', 'state', 'is_test'], lazy=False)
+        mapped_data = {campaign.id: {'is_test': 0} for campaign in self}
         for data in participants_data:
-            mapped_data[data['campaign_id'][0]][data['state']] = data['__count']
+            if data['is_test']:
+                mapped_data[data['campaign_id'][0]]['is_test'] += data['__count']
+            else:
+                mapped_data[data['campaign_id'][0]][data['state']] = data['__count']
         for campaign in self:
             campaign_data = mapped_data.get(campaign.id)
             campaign.running_participant_count = campaign_data.get('running', 0)
             campaign.completed_participant_count = campaign_data.get('completed', 0)
             campaign.total_participant_count = campaign.completed_participant_count + campaign.running_participant_count
+            campaign.test_participant_count = campaign_data.get('is_test')
 
     def action_set_synchronized(self):
         self.write({'last_sync_date': Datetime.now()})
@@ -362,6 +367,7 @@ class MarketingActivity(models.Model):
                 marketing_participant AS part
                 ON (trace.participant_id = part.id)
             WHERE
+                (part.is_test = false or part.is_test IS NULL) AND
                 trace.activity_id IN %s
             GROUP BY
                 trace.activity_id;
@@ -386,7 +392,10 @@ class MarketingActivity(models.Model):
             JOIN
                 marketing_activity AS activity
                 ON (activity.id = trace.activity_id)
-            WHERE activity.id IN %s AND trace.schedule_date >= %s
+            WHERE
+                activity.id IN %s AND
+                trace.schedule_date >= %s AND
+                (trace.is_test = false or trace.is_test IS NULL)
             GROUP BY activity.id , dt, trace.state
             ORDER BY dt;
         """, (tuple(self.ids), past_date))
@@ -468,8 +477,8 @@ class MarketingActivity(models.Model):
             rec_valid = self.env[self.model_name].search(rec_domain)
             rec_ids_domain = set(rec_valid.ids)
 
-            traces_allowed = traces.filtered(lambda trace: trace.res_id in rec_ids_domain)
-            traces_rejected = traces.filtered(lambda trace: trace.res_id not in rec_ids_domain)  # either rejected, either deleted record
+            traces_allowed = traces.filtered(lambda trace: trace.res_id in rec_ids_domain or trace.is_test)
+            traces_rejected = traces.filtered(lambda trace: trace.res_id not in rec_ids_domain and not trace.is_test)  # either rejected, either deleted record
         else:
             traces_allowed = traces
             traces_rejected = self.env['marketing.trace']

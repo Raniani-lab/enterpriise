@@ -29,7 +29,9 @@ class MarketingParticipant(models.Model):
         models = self.env['ir.model'].search([('is_mail_thread', '=', True)])
         return [(model.model, model.name) for model in models]
 
-    campaign_id = fields.Many2one('marketing.campaign', string='Campaign', ondelete='cascade', required=True)
+    campaign_id = fields.Many2one(
+        'marketing.campaign', string='Campaign',
+        index=True, ondelete='cascade', required=True)
     model_id = fields.Many2one(
         'ir.model', string='Object', related='campaign_id.model_id',
         index=True, readonly=True, store=True)
@@ -47,6 +49,7 @@ class MarketingParticipant(models.Model):
         ('unlinked', 'Removed'),
         ], default='running', index=True, required=True,
         help='Removed means the related record does not exist anymore.')
+    is_test = fields.Boolean('Test Record', default=False)
 
     @api.depends('model_name', 'res_id')
     def _compute_resource_ref(self):
@@ -118,6 +121,7 @@ class MarketingTrace(models.Model):
         'marketing.participant', string='Participant',
         index=True, ondelete='cascade', required=True)
     res_id = fields.Integer(string='Document ID', related='participant_id.res_id', index=True, store=True, readonly=False)
+    is_test = fields.Boolean(string='Test Trace', related='participant_id.is_test', index=True, store=True, readonly=True)
     activity_id = fields.Many2one(
         'marketing.activity', string='Activity',
         index=True, ondelete='cascade', required=True)

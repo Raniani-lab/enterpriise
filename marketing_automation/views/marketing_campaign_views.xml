@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
-    <menuitem id="marketing_automation_menu" name="Marketing Automation"
-        web_icon="marketing_automation,static/description/icon.png" groups="marketing_automation.group_marketing_automation_user" />
-
     <!-- Campaign -->
     <record id="marketing_campaign_view_kanban" model="ir.ui.view">
         <field name="name">marketing.campaign.view.kanban</field>
@@ -49,23 +45,6 @@
         </field>
     </record>
 
-    <record id="marketing_participant_action_launch_test" model="ir.actions.act_window">
-        <field name="name">Launch a test</field>
-        <field name="res_model">marketing.participant</field>
-        <field name="view_type">form</field>
-        <field name="view_mode">form</field>
-        <field name="target">new</field>
-        <field name="context">{'default_campaign_id': active_id}</field>
-    </record>
-
-    <record id="marketing_participant_action" model="ir.actions.act_window">
-        <field name="name">Records</field>
-        <field name="res_model">marketing.participant</field>
-        <field name="view_type">form</field>
-        <field name="view_mode">tree,form</field>
-        <field name="context">{'search_default_campaign_id': active_id, 'default_campaign_id': active_id}</field>
-    </record>
-
     <record id="marketing_campaign_view_form" model="ir.ui.view">
         <field name="name">marketing.campaign.view.form</field>
         <field name="model">marketing.campaign</field>
@@ -73,8 +52,8 @@
             <form string="Campaign">
                 <header>
                     <button name="action_start_campaign" type="object" states="draft,stopped" class="btn-primary" string="Start" />
-                    <button name="%(marketing_participant_action_launch_test)d" type="action" attrs="{'invisible': ['|', ('marketing_activity_ids', '=', []), ('state', '=', 'stopped') ]}" class="btn-warning" string="Launch a Test" />
-                    <button name="action_stop_campaign" type="object" states="running" class="btn-danger" string="Stop" />
+                    <button name="%(marketing_campaign_test_action)d" type="action" attrs="{'invisible': ['|', ('marketing_activity_ids', '=', []), ('state', '=', 'stopped') ]}" class="btn-secondary" string="Launch a Test" />
+                    <button name="action_stop_campaign" type="object" states="running" class="btn-primary" string="Stop" />
                     <button name="sync_participants" type="object" states="running" class="btn-danger" string="Generate Participants" groups="base.group_no_one"/>
                     <button name="execute_activities" type="object" states="running" class="btn-danger" string="Execute Activities" groups="base.group_no_one"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,running,stopped" />
@@ -91,7 +70,12 @@
                 </div>
                 <sheet>
                     <div name="button_box" class="oe_button_box">
-                        <button name="%(marketing_participant_action)d" type="action" icon="fa-code-fork fa-rotate-180 fa-flip-vertical" class="oe_stat_button">
+                        <button name="%(marketing_participant_action_campaign_test)d" type="action"
+                            icon="fa-flask" class="oe_stat_button">
+                            <field name="test_participant_count" widget="statinfo" string="Tests" />
+                        </button>
+                        <button name="%(marketing_participant_action_campaign)d" type="action"
+                            icon="fa-code-fork fa-rotate-180 fa-flip-vertical" class="oe_stat_button">
                             <field name="total_participant_count" widget="statinfo" string="Participants" />
                         </button>
                         <button name="toggle_active" type="object" icon="fa-archive" class="oe_stat_button">
@@ -385,10 +369,5 @@
         parent="marketing_automation_menu"
         action="marketing_campaign_action"
         sequence="1"/>
-
-    <menuitem id="marketing_automation_configuration_menu" name="Configuration"
-        parent="marketing_automation_menu"
-        sequence="2"
-        groups="base.group_no_one"/>
 
 </odoo>

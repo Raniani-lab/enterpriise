@@ -3,20 +3,21 @@
 # * web_studio
 # 
 # Translators:
-# thanh nguyen <thanhnguyen.icsc@gmail.com>, 2018
-# Martin Trigaux, 2018
-# Duy BQ <duybq86@gmail.com>, 2018
-# fanha99 <fanha99@hotmail.com>, 2018
 # lam nguyen <lamev.inc@gmail.com>, 2018
+# Martin Trigaux, 2018
+# fanha99 <fanha99@hotmail.com>, 2018
 # Hoang Loc Le Huu <loclhh@gmail.com>, 2018
+# thanh nguyen <thanhnguyen.icsc@gmail.com>, 2018
 # Minh Nguyen <ndminh210994@gmail.com>, 2018
+# Duy BQ <duybq86@gmail.com>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-02 10:32+0000\n"
-"PO-Revision-Date: 2018-10-02 10:32+0000\n"
-"Last-Translator: Minh Nguyen <ndminh210994@gmail.com>, 2018\n"
+"PO-Revision-Date: 2018-08-24 11:49+0000\n"
+"Last-Translator: Duy BQ <duybq86@gmail.com>, 2018\n"
 "Language-Team: Vietnamese (https://www.transifex.com/odoo/teams/41243/vi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1973,7 +1974,7 @@ msgstr "Xóa khỏi Chế độ xem"
 #: code:addons/web_studio/static/src/xml/new_field_dialog.xml:33
 #, python-format
 msgid "Remove selection"
-msgstr ""
+msgstr "Xóa các mục chọn"
 
 #. module: web_studio
 #. openerp-web

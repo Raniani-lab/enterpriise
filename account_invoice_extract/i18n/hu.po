@@ -2,12 +2,18 @@
 # This file contains the translation of the following modules:
 # * account_invoice_extract
 # 
+# Translators:
+# Martin Trigaux, 2018
+# krnkris, 2018
+# Ákos Nagy <akos.nagy@oregional.hu>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-25 12:42+0000\n"
 "PO-Revision-Date: 2018-08-24 11:36+0000\n"
+"Last-Translator: Ákos Nagy <akos.nagy@oregional.hu>, 2018\n"
 "Language-Team: Hungarian (https://www.transifex.com/odoo/teams/41243/hu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -60,7 +66,7 @@ msgstr ""
 #. module: account_invoice_extract
 #: model:ir.model,name:account_invoice_extract.model_res_company
 msgid "Companies"
-msgstr ""
+msgstr "Vállalatok"
 
 #. module: account_invoice_extract
 #: selection:account.invoice,extract_state:0
@@ -75,17 +81,17 @@ msgstr ""
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Létrehozta"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Létrehozva"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Megjelenített név"
 
 #. module: account_invoice_extract
 #: selection:res.company,extract_show_ocr_option_selection:0
@@ -110,12 +116,12 @@ msgstr ""
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words__field
 msgid "Field"
-msgstr ""
+msgstr "Mező"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words__id
 msgid "ID"
-msgstr ""
+msgstr "Azonosító"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice__extract_remoteid
@@ -126,7 +132,7 @@ msgstr ""
 #: model:ir.model,name:account_invoice_extract.model_account_invoice
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words__invoice_id
 msgid "Invoice"
-msgstr ""
+msgstr "Számla"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,help:account_invoice_extract.field_account_invoice__extract_remoteid
@@ -141,22 +147,22 @@ msgstr ""
 #. module: account_invoice_extract
 #: model:ir.model.fields,help:account_invoice_extract.field_account_invoice_extract_words__invoice_id
 msgid "Invoice id"
-msgstr ""
+msgstr "Számla id azonosító"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Legutóbb frissítve"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Legutóbb frissítette"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Legutóbb frissítve "
 
 #. module: account_invoice_extract
 #: selection:account.invoice,extract_state:0

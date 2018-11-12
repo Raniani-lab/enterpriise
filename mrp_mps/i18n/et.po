@@ -2,12 +2,24 @@
 # This file contains the translation of the following modules:
 # * mrp_mps
 # 
+# Translators:
+# Rivo Zängov <eraser@eraser.ee>, 2018
+# Martin Trigaux, 2018
+# Wanradt Koell <wanradt@gmail.com>, 2018
+# Arma Gedonsky <armagedonsky@hot.ee>, 2018
+# Egon Raamat <egon@avalah.ee>, 2018
+# Eneli Õigus <enelioigus@gmail.com>, 2018
+# Ants Peetsalu <ants@avalah.ee>, 2018
+# Martin Aavastik <martin@avalah.ee>, 2018
+# Helen Sulaoja <helen@avalah.ee>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
 "PO-Revision-Date: 2018-08-24 11:38+0000\n"
+"Last-Translator: Helen Sulaoja <helen@avalah.ee>, 2018\n"
 "Language-Team: Estonian (https://www.transifex.com/odoo/teams/41243/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,17 +30,17 @@ msgstr ""
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
 msgid "&lt;&amp;hellip;&lt;"
-msgstr ""
+msgstr "&lt;&amp;hellip;&lt;"
 
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
 msgid "<span class=\"fa fa-fw\">-</span> Demand Forecast"
-msgstr ""
+msgstr "<span class=\"fa fa-fw\">-</span> Demand Forecast"
 
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
 msgid "<span class=\"fa fa-fw\">-</span> Indirect Demand"
-msgstr ""
+msgstr "<span class=\"fa fa-fw\">-</span> Indirect Demand"
 
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
@@ -36,11 +48,13 @@ msgid ""
 "<span class=\"fa fa-fw\">=</span> \n"
 "                                    Forecasted Inventory"
 msgstr ""
+"<span class=\"fa fa-fw\">=</span> \n"
+"                                    Prognoositud ladu"
 
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
 msgid "<span class=\"text-muted\"> by</span>"
-msgstr ""
+msgstr "<span class=\"text-muted\"> by</span>"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_product_product__mps_active
@@ -50,7 +64,7 @@ msgstr ""
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.mrp_mps_report_view_form
 msgid "Add Product"
-msgstr ""
+msgstr "Add Product"
 
 #. module: mrp_mps
 #. openerp-web
@@ -58,38 +72,38 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
 #, python-format
 msgid "Add a Product"
-msgstr ""
+msgstr "Add a Product"
 
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
 msgid "Apply"
-msgstr ""
+msgstr "Kinnita"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_product_product__apply_active
 msgid "Apply Active"
-msgstr ""
+msgstr "Aktiivselt rakendatud"
 
 #. module: mrp_mps
 #: selection:sale.forecast,mode:0
 msgid "Automatic"
-msgstr ""
+msgstr "Automatic"
 
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.mrp_mps_report_view_form
 #: model_terms:ir.ui.view,arch_db:mrp_mps.product_product_view_form_mps
 msgid "Cancel"
-msgstr ""
+msgstr "Tühista"
 
 #. module: mrp_mps
 #: model:ir.model,name:mrp_mps.model_res_company
 msgid "Companies"
-msgstr ""
+msgstr "Ettevõtted"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_mps_report__company_id
 msgid "Company"
-msgstr ""
+msgstr "Ettevõte"
 
 #. module: mrp_mps
 #: model:ir.model,name:mrp_mps.model_res_config_settings
@@ -101,14 +115,14 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast__create_uid
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast_indirect__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Loonud"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_mps_report__create_date
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast__create_date
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast_indirect__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Loomise kuupäev"
 
 #. module: mrp_mps
 #. openerp-web
@@ -118,13 +132,13 @@ msgstr ""
 #: selection:res.company,manufacturing_period:0
 #, python-format
 msgid "Daily"
-msgstr ""
+msgstr "Igapäevaselt"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast__date
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast_indirect__date
 msgid "Date"
-msgstr ""
+msgstr "Kuupäev"
 
 #. module: mrp_mps
 #: model:ir.model.fields,help:mrp_mps.field_sale_forecast__product_uom_id
@@ -136,7 +150,7 @@ msgstr ""
 #: model:ir.model.fields,help:mrp_mps.field_res_config_settings__manufacturing_period
 msgid ""
 "Default value for the time ranges in Master Production Schedule report."
-msgstr ""
+msgstr "Ajavahemiku vaikimisi väärtus peamise tootmisgraafiku aruandes."
 
 #. module: mrp_mps
 #. openerp-web
@@ -144,31 +158,31 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast__forecast_qty
 #, python-format
 msgid "Demand Forecast"
-msgstr ""
+msgstr "Nõudluse prognoos"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_mps_report__display_name
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast__display_name
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast_indirect__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Näidatav nimi"
 
 #. module: mrp_mps
 #: selection:sale.forecast,state:0
 msgid "Done"
-msgstr ""
+msgstr "Tehtud"
 
 #. module: mrp_mps
 #: selection:sale.forecast,state:0
 msgid "Forecast"
-msgstr ""
+msgstr "Prognoos"
 
 #. module: mrp_mps
 #. openerp-web
 #: code:addons/mrp_mps/static/src/xml/mps_backend.xml:50
 #, python-format
 msgid "Forecast Inventory"
-msgstr ""
+msgstr "Prognoosi ladu"
 
 #. module: mrp_mps
 #. openerp-web
@@ -176,36 +190,36 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:mrp_mps.product_product_view_form_mps
 #, python-format
 msgid "Forecast Product"
-msgstr ""
+msgstr "Prognoosi toodet"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_product_product__mps_forecasted
 msgid "Forecasted Target"
-msgstr ""
+msgstr "Prognoositud sihtmärk"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_mps_report__id
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast__id
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast_indirect__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: mrp_mps
 #: model:ir.model.fields,help:mrp_mps.field_sale_forecast__to_supply
 msgid "If mode is Manual, this is the forced value"
-msgstr ""
+msgstr "If mode is Manual, this is the forced value"
 
 #. module: mrp_mps
 #. openerp-web
 #: code:addons/mrp_mps/static/src/xml/mps_backend.xml:40
 #, python-format
 msgid "Indirect Demand"
-msgstr ""
+msgstr "Indirect Demand"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast_indirect__quantity
 msgid "Indirect Quantity"
-msgstr ""
+msgstr "Indirect Quantity"
 
 #. module: mrp_mps
 #: model:ir.model,name:mrp_mps.model_sale_forecast_indirect
@@ -217,43 +231,43 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast____last_update
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast_indirect____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Viimati muudetud (millal)"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_mps_report__write_uid
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast__write_uid
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast_indirect__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Viimati uuendatud (kelle poolt)"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_mps_report__write_date
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast__write_date
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast_indirect__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Viimati uuendatud (millal)"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_product_product__mps_apply
 msgid "Latest Apply"
-msgstr ""
+msgstr "Hilisemalt rakendatud"
 
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
 msgid "Launch Procurement"
-msgstr ""
+msgstr "Launch Procurement"
 
 #. module: mrp_mps
 #. openerp-web
 #: code:addons/mrp_mps/static/src/xml/mps_backend.xml:6
 #, python-format
 msgid "Launch green cells"
-msgstr ""
+msgstr "Launch green cells"
 
 #. module: mrp_mps
 #: model:ir.ui.menu,name:mrp_mps.mrp_mps_menu_planning
 msgid "MPS"
-msgstr ""
+msgstr "MPS"
 
 #. module: mrp_mps
 #: model:ir.model,name:mrp_mps.model_mrp_mps_report
@@ -263,39 +277,39 @@ msgstr ""
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
 msgid "MPS in Main Warehouse"
-msgstr ""
+msgstr "MPS in Main Warehouse"
 
 #. module: mrp_mps
 #: selection:sale.forecast,mode:0
 msgid "Manual"
-msgstr ""
+msgstr "Käsitsi"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_res_company__manufacturing_period
 #: model:ir.model.fields,field_description:mrp_mps.field_res_config_settings__manufacturing_period
 msgid "Manufacturing Period"
-msgstr ""
+msgstr "Manufacturing Period"
 
 #. module: mrp_mps
 #: model:ir.actions.client,name:mrp_mps.mrp_mps_report_action_client
 #: model:ir.ui.menu,name:mrp_mps.mrp_mps_report_menu
 msgid "Master Production Schedule"
-msgstr ""
+msgstr "Peamine tootmisgraafik"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_product_product__mps_max_supply
 msgid "Maximum to Supply"
-msgstr ""
+msgstr "Varustamise maksimum"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_product_product__mps_min_supply
 msgid "Minimum to Supply"
-msgstr ""
+msgstr "Varustamise miinimum"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast__mode
 msgid "Mode"
-msgstr ""
+msgstr "Mudel"
 
 #. module: mrp_mps
 #. openerp-web
@@ -305,7 +319,7 @@ msgstr ""
 #: selection:res.company,manufacturing_period:0
 #, python-format
 msgid "Monthly"
-msgstr ""
+msgstr "Igakuine"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast_indirect__product_origin_id
@@ -315,19 +329,19 @@ msgstr ""
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_mps_report__period
 msgid "Period"
-msgstr ""
+msgstr "Periood"
 
 #. module: mrp_mps
 #. openerp-web
 #: code:addons/mrp_mps/static/src/xml/mps_backend.xml:11
 #, python-format
 msgid "Period:"
-msgstr ""
+msgstr "Period:"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast__group_id
 msgid "Procurement Group"
-msgstr ""
+msgstr "Hankegrupp"
 
 #. module: mrp_mps
 #: model:ir.model,name:mrp_mps.model_product_product
@@ -336,25 +350,25 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast_indirect__product_id
 #: model_terms:ir.ui.view,arch_db:mrp_mps.product_product_view_form_mps
 msgid "Product"
-msgstr ""
+msgstr "Toode"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast__product_uom_id
 msgid "Product UoM"
-msgstr ""
+msgstr "Toote mõõtühik"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast__warehouse_id
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast_indirect__warehouse_id
 msgid "Production Location"
-msgstr ""
+msgstr "Tootmise asukoht"
 
 #. module: mrp_mps
 #. openerp-web
 #: code:addons/mrp_mps/static/src/xml/mps_backend.xml:24
 #, python-format
 msgid "Rows"
-msgstr ""
+msgstr "Read"
 
 #. module: mrp_mps
 #: model:ir.model,name:mrp_mps.model_sale_forecast
@@ -364,7 +378,7 @@ msgstr ""
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.product_product_view_form_mps
 msgid "Save"
-msgstr ""
+msgstr "Salvesta"
 
 #. module: mrp_mps
 #. openerp-web
@@ -372,12 +386,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
 #, python-format
 msgid "Starting Inventory"
-msgstr ""
+msgstr "Starting Inventory"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast__state
 msgid "State"
-msgstr ""
+msgstr "Maakond"
 
 #. module: mrp_mps
 #: model:ir.model,name:mrp_mps.model_stock_rule
@@ -387,31 +401,31 @@ msgstr ""
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.res_config_settings_view_form
 msgid "Time Range"
-msgstr ""
+msgstr "Time Range"
 
 #. module: mrp_mps
 #. openerp-web
 #: code:addons/mrp_mps/static/src/xml/mps_backend.xml:45
 #, python-format
 msgid "To Produce"
-msgstr ""
+msgstr "To Produce"
 
 #. module: mrp_mps
 #: code:addons/mrp_mps/models/mrp_mps_report.py:129
 #, python-format
 msgid "To Receive / To Supply / Produce"
-msgstr ""
+msgstr "To Receive / To Supply / Produce"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast__to_supply
 msgid "To Supply"
-msgstr ""
+msgstr "To Supply"
 
 #. module: mrp_mps
 #: code:addons/mrp_mps/models/mrp_mps_report.py:156
 #, python-format
 msgid "Week %s"
-msgstr ""
+msgstr "Nädal %s"
 
 #. module: mrp_mps
 #. openerp-web
@@ -421,7 +435,7 @@ msgstr ""
 #: selection:res.company,manufacturing_period:0
 #, python-format
 msgid "Weekly"
-msgstr ""
+msgstr "Iganädalane"
 
 #. module: mrp_mps
 #. openerp-web
@@ -429,19 +443,19 @@ msgstr ""
 #: code:addons/mrp_mps/static/src/js/mrp_mps_report_widget.js:228
 #, python-format
 msgid "Wrong value entered!"
-msgstr ""
+msgstr "Vale väärtus sisestatud!"
 
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
 msgid "double click in order to empty"
-msgstr ""
+msgstr "double click in order to empty"
 
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
 msgid "set min-max"
-msgstr ""
+msgstr "set min-max"
 
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
 msgid "set target"
-msgstr ""
+msgstr "set target"

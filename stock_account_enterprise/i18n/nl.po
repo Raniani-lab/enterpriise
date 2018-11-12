@@ -33,7 +33,7 @@ msgstr ""
 #. module: stock_account_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_account_enterprise.stock_report_dashboard_view_inherit
 msgid "Incoming Inventory Value"
-msgstr "Binnenkomende voorraadwaarde"
+msgstr "Ontvangen voorraadwaarde"
 
 #. module: stock_account_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_account_enterprise.stock_report_dashboard_view_inherit

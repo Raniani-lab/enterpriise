@@ -412,7 +412,9 @@ class AccountPayment(models.Model):
             amount = [p for p in invoice._get_payments_vals() if (p.get('account_payment_id', False) == self.id or not p.get('account_payment_id'))]
             amount_payment = sum([data.get('amount', 0.0) for data in amount])
             total_paid += amount_payment
-        rate = ('%.6f' % (total_paid / self.amount)) if self.currency_id.name != 'MXN' else False
+        ctx = dict(company_id=self.company_id.id, date=self.payment_date)
+        rate = ('%.6f' % (self.currency_id.with_context(**ctx).compute(
+            1, mxn))) if self.currency_id.name != 'MXN' else False
         return {
             'mxn': mxn,
             'payment_date': date,

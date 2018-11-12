@@ -2,12 +2,20 @@
 # This file contains the translation of the following modules:
 # * sale_ebay
 # 
+# Translators:
+# Martin Trigaux, 2018
+# krnkris, 2018
+# gezza <geza.nagy@oregional.hu>, 2018
+# Ákos Nagy <akos.nagy@oregional.hu>, 2018
+# Zsofia Biro <zsbiro1205@gmail.com>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
 "PO-Revision-Date: 2018-08-24 11:48+0000\n"
+"Last-Translator: Zsofia Biro <zsbiro1205@gmail.com>, 2018\n"
 "Language-Team: Hungarian (https://www.transifex.com/odoo/teams/41243/hu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,6 +32,11 @@ msgid ""
 "        \n"
 "      "
 msgstr ""
+"\n"
+"                  \n"
+"          ${object.ebay_description | safe}\n"
+"        \n"
+"      "
 
 #. module: sale_ebay
 #: code:addons/sale_ebay/models/product.py:383
@@ -32,6 +45,8 @@ msgid ""
 " If you want to set quantity to 0, the Out Of Stock option should be enabled"
 " and the listing duration should set to Good 'Til Canceled"
 msgstr ""
+" Ha a mennyiséget 0-ra szeretné állítani akkor a Készlet hiány lehetőséget "
+"be kell kapcsolni és a listázási időtartamot Törlésig megfelelő-re állítani"
 
 #. module: sale_ebay
 #: code:addons/sale_ebay/models/product.py:386
@@ -40,31 +55,33 @@ msgid ""
 " You need to have at least 2 variations selected for a multi-variations listing.\n"
 " Or if you try to delete a variation, you cannot do it by unselecting it. Setting the quantity to 0 is the safest method to make a variation unavailable."
 msgstr ""
+" Minimum 2 kiválasztott variációnak kell lennie a  többféle variációjú listázáshoz.\n"
+" Vagy, ha megpróbál törölni egy variációt, nem teheti meg csak annak kikapcsolásával. Mennyiség 0-ra állítása a legbiztonságosabb egy variáció elérhetetlené tételéhez."
 
 #. module: sale_ebay
 #: selection:product.template,ebay_listing_duration:0
 msgid "10 Days"
-msgstr ""
+msgstr "10 nap"
 
 #. module: sale_ebay
 #: selection:product.template,ebay_listing_duration:0
 msgid "3 Days"
-msgstr ""
+msgstr "3 nap"
 
 #. module: sale_ebay
 #: selection:product.template,ebay_listing_duration:0
 msgid "30 Days (only for fixed price)"
-msgstr ""
+msgstr "30 nap (kizárólak fix árral)"
 
 #. module: sale_ebay
 #: selection:product.template,ebay_listing_duration:0
 msgid "5 Days"
-msgstr ""
+msgstr "5 nap"
 
 #. module: sale_ebay
 #: selection:product.template,ebay_listing_duration:0
 msgid "7 Days"
-msgstr ""
+msgstr "7 nap"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
@@ -98,66 +115,68 @@ msgid ""
 "All the quantities must be greater than 0 or you need to enable the Out Of "
 "Stock option."
 msgstr ""
+"Összes mennyiségnek nagyobbnak kell lennie mint 0, vagy engedélyeznie kell a"
+" Nincs több raktáron variációt."
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_best_offer
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_best_offer
 msgid "Allow Best Offer"
-msgstr ""
+msgstr "Engedélyezze a legjobb ajánlatot"
 
 #. module: sale_ebay
 #: selection:product.template,ebay_listing_type:0
 msgid "Auction"
-msgstr ""
+msgstr "Árverés"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_country__ebay_available
 #: model:ir.model.fields,field_description:sale_ebay.field_res_currency__ebay_available
 msgid "Availability To Use For eBay API"
-msgstr ""
+msgstr "Elérhető az eBay API használata"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_buy_it_now_price
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_buy_it_now_price
 msgid "Buy It Now Price"
-msgstr ""
+msgstr "Azonnali vételi ár"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.ebay_link_listing_view
 msgid "Cancel"
-msgstr ""
+msgstr "Mégsem"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_category_id
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_category_id
 msgid "Category"
-msgstr ""
+msgstr "Kategória"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_category_2_id
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_category_2_id
 msgid "Category 2 (Optional)"
-msgstr ""
+msgstr "2 kategória (Lehetőség)"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_category__category_id
 msgid "Category ID"
-msgstr ""
+msgstr "Kategória ID azon"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_category__category_parent_id
 msgid "Category Parent ID"
-msgstr ""
+msgstr "Kategória szülő ID azonosító"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_category__category_type
 msgid "Category Type"
-msgstr ""
+msgstr "Kategóriatípus"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_item_condition__code
 msgid "Code"
-msgstr ""
+msgstr "Kód"
 
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_res_config_settings
@@ -168,12 +187,12 @@ msgstr ""
 #: code:addons/sale_ebay/models/product.py:352
 #, python-format
 msgid "Configure The eBay Integrator Now"
-msgstr ""
+msgstr "Most Állítsa be az eBay beépülőt"
 
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_res_partner
 msgid "Contact"
-msgstr ""
+msgstr "Kapcsolattartó"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
@@ -184,7 +203,7 @@ msgstr ""
 #: model:ir.model,name:sale_ebay.model_res_country
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_country
 msgid "Country"
-msgstr ""
+msgstr "Ország"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_category__create_uid
@@ -193,7 +212,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_policy__create_uid
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_site__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Létrehozta"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_category__create_date
@@ -202,34 +221,34 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_policy__create_date
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_site__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Létrehozva"
 
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_res_currency
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Currency"
-msgstr ""
+msgstr "Pénznem"
 
 #. module: sale_ebay
 #: selection:ebay.category,category_type:0
 msgid "Custom Store Category"
-msgstr ""
+msgstr "Egyéni raktározási kategória"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
 msgid "Describe the product characteristics..."
-msgstr ""
+msgstr "Leírja a termék jellemzőit..."
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_template_id
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_template_id
 msgid "Description Template"
-msgstr ""
+msgstr "Leírási sablon"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_dev_id
 msgid "Developer Key"
-msgstr ""
+msgstr "Fejlesztési kulcs"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_category__display_name
@@ -238,13 +257,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_policy__display_name
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_site__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Megjelenített név"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_listing_duration
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_listing_duration
 msgid "Duration"
-msgstr ""
+msgstr "Időtartam"
 
 #. module: sale_ebay
 #: model:ir.actions.server,name:sale_ebay.action_end_items_listings
@@ -291,7 +310,7 @@ msgstr ""
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
 msgid "End Item's Listing"
-msgstr ""
+msgstr "Tétel lista vége"
 
 #. module: sale_ebay
 #: code:addons/sale_ebay/models/product.py:245
@@ -300,6 +319,8 @@ msgid ""
 "Error Encountered.\n"
 " No Variant Set To Be Listed On eBay."
 msgstr ""
+"Hiba következett be.\n"
+" Nincs variáns lista beállítva az eBay-en."
 
 #. module: sale_ebay
 #: code:addons/sale_ebay/models/product.py:389
@@ -308,21 +329,23 @@ msgid ""
 "Error Encountered.\n"
 "'%s'"
 msgstr ""
+"Hiba következett be.\n"
+"'%s'"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
 msgid "Fixed Price"
-msgstr ""
+msgstr "Rögzített ár"
 
 #. module: sale_ebay
 #: selection:product.template,ebay_listing_type:0
 msgid "Fixed price"
-msgstr ""
+msgstr "Rögzített ár"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_category__full_name
 msgid "Full Name"
-msgstr ""
+msgstr "Teljes név"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_gallery_plus
@@ -332,7 +355,7 @@ msgstr ""
 #. module: sale_ebay
 #: selection:product.template,ebay_listing_duration:0
 msgid "Good 'Til Cancelled (only for fixed price)"
-msgstr ""
+msgstr "Érvényes amíg nem kerül érvénytelenítésre (kizárólag fix árra)"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_category__id
@@ -341,7 +364,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_policy__id
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_site__id
 msgid "ID"
-msgstr ""
+msgstr "Azonosító"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
@@ -355,12 +378,14 @@ msgid ""
 "Impossible to revise a listing into a multi-variations listing.\n"
 " Create a new listing."
 msgstr ""
+"Lehetetlen átjavítani a listázást több-variációs listává.\n"
+" Hozzon létre új listát."
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_item_condition_id
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_item_condition_id
 msgid "Item Condition"
-msgstr ""
+msgstr "Tétel kondíciói"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_category____last_update
@@ -369,7 +394,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_policy____last_update
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_site____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Legutóbb frissítve"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_category__write_uid
@@ -378,7 +403,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_policy__write_uid
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_site__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Legutóbb frissítette"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_category__write_date
@@ -387,13 +412,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_policy__write_date
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_site__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Legutóbb frissítve "
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_last_sync
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_last_sync
 msgid "Last update"
-msgstr ""
+msgstr "Utolsó frissítés"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_category__leaf_category
@@ -403,7 +428,7 @@ msgstr ""
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.ebay_link_listing_view
 msgid "Link Existing Listing"
-msgstr ""
+msgstr "Összekapcsolás egy meglévő listához"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
@@ -429,17 +454,17 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_listing_type
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_listing_type
 msgid "Listing Type"
-msgstr ""
+msgstr "Típus listázása"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_location
 msgid "Location"
-msgstr ""
+msgstr "Helyszín"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Mode"
-msgstr ""
+msgstr "Mód"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
@@ -452,30 +477,30 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_policy__name
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_site__name
 msgid "Name"
-msgstr ""
+msgstr "Név"
 
 #. module: sale_ebay
 #: code:addons/sale_ebay/models/sale_ebay.py:199
 #, python-format
 msgid "No Business Policies"
-msgstr ""
+msgstr "Nincsenek üzleti politikák"
 
 #. module: sale_ebay
 #: selection:ebay.category,category_type:0
 msgid "Official eBay Category"
-msgstr ""
+msgstr "Hivatalos eBay kategória"
 
 #. module: sale_ebay
 #: code:addons/sale_ebay/models/product.py:351
 #, python-format
 msgid "One parameter is missing."
-msgstr ""
+msgstr "Egy paraméter hiányzik."
 
 #. module: sale_ebay
 #: code:addons/sale_ebay/models/product.py:377
 #, python-format
 msgid "Or the condition is not compatible with the category."
-msgstr ""
+msgstr "Vagy a feltételek nem kompatibilisek a kategóriával."
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_out_of_stock
@@ -486,63 +511,63 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_seller_payment_policy_id
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_seller_payment_policy_id
 msgid "Payment Policy"
-msgstr ""
+msgstr "Fizetési szabályzat"
 
 #. module: sale_ebay
 #: selection:crm.team,team_type:0
 msgid "Point of Sale"
-msgstr ""
+msgstr "Értékesítési pont"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Policies"
-msgstr ""
+msgstr "Irányelvek"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_policy__policy_id
 msgid "Policy ID"
-msgstr ""
+msgstr "Szabályzat ID azonosító"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_private_listing
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_private_listing
 msgid "Private Listing"
-msgstr ""
+msgstr "Privát listázás"
 
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_product_product
 msgid "Product"
-msgstr ""
+msgstr "Termék"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Product Categories"
-msgstr ""
+msgstr "Termékkategóriák"
 
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_product_template
 msgid "Product Template"
-msgstr ""
+msgstr "Terméksablon"
 
 #. module: sale_ebay
 #: selection:res.config.settings,ebay_domain:0
 msgid "Production"
-msgstr ""
+msgstr "Éles"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_prod_app_id
 msgid "Production App Key"
-msgstr ""
+msgstr "Termelés alkalmazás kulcs"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_prod_cert_id
 msgid "Production Cert Key"
-msgstr ""
+msgstr "Termelés igazolás kulcs"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_prod_token
 msgid "Production Token"
-msgstr ""
+msgstr "Termelési szimbólum"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
@@ -552,7 +577,7 @@ msgstr ""
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_use
 msgid "Publish On eBay"
-msgstr ""
+msgstr "eBay-en nyilvánosságra hozott"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_quantity
@@ -564,33 +589,33 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_quantity_sold
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_quantity_sold
 msgid "Quantity Sold"
-msgstr ""
+msgstr "Mennyiség értékesítve"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
 msgid "Relist Item"
-msgstr ""
+msgstr "Tétel újralistázása"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_seller_return_policy_id
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_seller_return_policy_id
 msgid "Return Policy"
-msgstr ""
+msgstr "Visszaküldés szabályzata"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
 msgid "Revise Item"
-msgstr ""
+msgstr "Tétel felülvizsgálata"
 
 #. module: sale_ebay
 #: selection:crm.team,team_type:0
 msgid "Sales"
-msgstr ""
+msgstr "Értékesítés"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Sales Channel"
-msgstr ""
+msgstr "Értékesítési csatorna"
 
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_crm_team
@@ -605,22 +630,22 @@ msgstr ""
 #. module: sale_ebay
 #: selection:res.config.settings,ebay_domain:0
 msgid "Sandbox"
-msgstr ""
+msgstr "Virtuális homokozó"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_sandbox_app_id
 msgid "Sandbox App Key"
-msgstr ""
+msgstr "Virtuális homokozó alkalmazás kulcs"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_sandbox_cert_id
 msgid "Sandbox Cert Key"
-msgstr ""
+msgstr "Virtuális homokozó igazolás kulcs"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_sandbox_token
 msgid "Sandbox Token"
-msgstr ""
+msgstr "Virtuális homokozó token"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
@@ -631,19 +656,19 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_seller_shipping_policy_id
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_seller_shipping_policy_id
 msgid "Shipping Policy"
-msgstr ""
+msgstr "Szállítási szabályok"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_start_date
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_start_date
 msgid "Start Date"
-msgstr ""
+msgstr "Kezdő dátum"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_price
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_price
 msgid "Starting Price for Auction"
-msgstr ""
+msgstr "Alapár az árveréshez"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
@@ -654,24 +679,24 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_store_category_id
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_store_category_id
 msgid "Store Category (Optional)"
-msgstr ""
+msgstr "Raktározási kategória (Lehetőség)"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_store_category_2_id
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_store_category_2_id
 msgid "Store Category 2 (Optional)"
-msgstr ""
+msgstr "Raktározási kategória 2 (Lehetőség)"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_subtitle
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_subtitle
 msgid "Subtitle"
-msgstr ""
+msgstr "Alcím"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_policy__short_summary
 msgid "Summary"
-msgstr ""
+msgstr "Összegzés"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
@@ -687,14 +712,14 @@ msgstr ""
 #: code:addons/sale_ebay/models/product.py:719
 #, python-format
 msgid "The Buyer Chose The Following Delivery Method :\n"
-msgstr ""
+msgstr "A vásárló válasz a következő szállítási módok közül :\n"
 
 #. module: sale_ebay
 #: code:addons/sale_ebay/models/product.py:715
 #: code:addons/sale_ebay/models/product.py:716
 #, python-format
 msgid "The Buyer Posted :\n"
-msgstr ""
+msgstr "A Vásárló közleménye:\n"
 
 #. module: sale_ebay
 #: model:ir.model.fields,help:sale_ebay.field_product_product__ebay_subtitle
@@ -703,12 +728,14 @@ msgid ""
 "The subtitle is restricted to 55 characters. Fees can be claimed by eBay for"
 " this feature"
 msgstr ""
+"Az alcím 55 karakterre korlátozott. eBay költséget számolhat fel erre a "
+"jellemzőre"
 
 #. module: sale_ebay
 #: model:ir.model.fields,help:sale_ebay.field_product_product__ebay_title
 #: model:ir.model.fields,help:sale_ebay.field_product_template__ebay_title
 msgid "The title is restricted to 80 characters"
-msgstr ""
+msgstr "A cím 80 karakterre korlátozott"
 
 #. module: sale_ebay
 #: model:ir.model.fields,help:sale_ebay.field_crm_team__team_type
@@ -723,59 +750,61 @@ msgid ""
 "The use of a secondary category is not allowed on every eBay sites. Fees can"
 " be claimed by eBay for this feature"
 msgstr ""
+"Második kategória használata nem engedélyezett az összes eBay oldalon. eBay "
+"költséget számolhat fel erre a jellemzőre"
 
 #. module: sale_ebay
 #: model:ir.model.fields,help:sale_ebay.field_product_product__ebay_template_id
 #: model:ir.model.fields,help:sale_ebay.field_product_template__ebay_template_id
 msgid "This field contains the template that will be used."
-msgstr ""
+msgstr "Ez a mező a felhasználni kívánt sablont tartalmazza."
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_title
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_title
 msgid "Title"
-msgstr ""
+msgstr "Megsz."
 
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_stock_picking
 msgid "Transfer"
-msgstr ""
+msgstr "Átvitel"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_policy__policy_type
 msgid "Type"
-msgstr ""
+msgstr "Típus"
 
 #. module: sale_ebay
 #: model:ir.actions.server,name:sale_ebay.action_ebay_update_carrier
 msgid "Update eBay Carrier Information"
-msgstr ""
+msgstr "eBay szállítói információ frissítés"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_sync_stock
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_sync_stock
 msgid "Use Stock Quantity"
-msgstr ""
+msgstr "Raktári mennyiség használata"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_use
 msgid "Use eBay"
-msgstr ""
+msgstr "eBay használata"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
 msgid "Variants"
-msgstr ""
+msgstr "Változatok"
 
 #. module: sale_ebay
 #: selection:crm.team,team_type:0
 msgid "Website"
-msgstr ""
+msgstr "Weboldal"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_zip_code
 msgid "Zip"
-msgstr ""
+msgstr "Irsz."
 
 #. module: sale_ebay
 #: model:crm.team,name:sale_ebay.ebay_sales_team
@@ -793,7 +822,7 @@ msgstr ""
 #. module: sale_ebay
 #: model:product.category,name:sale_ebay.product_category_ebay
 msgid "eBay Delivery Services"
-msgstr ""
+msgstr "eBay szállítási szolgáltatások"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_description
@@ -817,7 +846,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_id
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_id
 msgid "eBay ID"
-msgstr ""
+msgstr "eBay ID azon."
 
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_ebay_item_condition
@@ -832,7 +861,7 @@ msgstr ""
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_link_listing__ebay_id
 msgid "eBay Listing ID"
-msgstr ""
+msgstr "eBay listázási ID azon."
 
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_ebay_policy
@@ -842,24 +871,24 @@ msgstr ""
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_ebay_site
 msgid "eBay Site"
-msgstr ""
+msgstr "eBay Oldal"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_listing_status
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_listing_status
 msgid "eBay Status"
-msgstr ""
+msgstr "eBay Állapot"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_partner__ebay_id
 #: model:ir.model.fields,field_description:sale_ebay.field_res_users__ebay_id
 msgid "eBay User ID"
-msgstr ""
+msgstr "eBay felhasználó ID azonosító"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_variant_url
 msgid "eBay Variant URL"
-msgstr ""
+msgstr "eBay Webcím variáció"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_site
@@ -873,6 +902,8 @@ msgid ""
 "eBay error: Impossible to synchronize the categories. \n"
 "'%s'"
 msgstr ""
+"eBay hiba: Lehetetlen szinkronizálni a kategóriákat. \n"
+"'%s'"
 
 #. module: sale_ebay
 #: code:addons/sale_ebay/models/product.py:483
@@ -882,12 +913,14 @@ msgid ""
 "eBay error: Impossible to synchronize the products. \n"
 "'%s'"
 msgstr ""
+"eBay hiba: Lehetetlen szinkronizálni a termékeket. \n"
+"'%s'"
 
 #. module: sale_ebay
 #: code:addons/sale_ebay/models/product.py:379
 #, python-format
 msgid "eBay is unreachable. Please try again later."
-msgstr ""
+msgstr "eBay elérhetetlen. Kérem próbálja meg később."
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
@@ -898,7 +931,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_url
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_url
 msgid "eBay url"
-msgstr ""
+msgstr "eBay url elérési cím"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_currency

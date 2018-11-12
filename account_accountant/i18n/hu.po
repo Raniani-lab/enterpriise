@@ -2,12 +2,19 @@
 # This file contains the translation of the following modules:
 # * account_accountant
 # 
+# Translators:
+# Martin Trigaux, 2018
+# krnkris, 2018
+# gezza <geza.nagy@oregional.hu>, 2018
+# Ákos Nagy <akos.nagy@oregional.hu>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
 "PO-Revision-Date: 2018-08-24 11:36+0000\n"
+"Last-Translator: Ákos Nagy <akos.nagy@oregional.hu>, 2018\n"
 "Language-Team: Hungarian (https://www.transifex.com/odoo/teams/41243/hu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -49,12 +56,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_partner_view_form
 msgid "Accounting"
-msgstr ""
+msgstr "Könyvelés"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__use_anglo_saxon
 msgid "Anglo-Saxon Accounting"
-msgstr ""
+msgstr "Angolszász könyvelés"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_digest_digest__kpi_account_bank_cash
@@ -64,7 +71,7 @@ msgstr ""
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
 msgid "Cancel"
-msgstr ""
+msgstr "Mégsem"
 
 #. module: account_accountant
 #: model:ir.model,name:account_accountant.model_account_change_lock_date
@@ -79,12 +86,12 @@ msgstr ""
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Létrehozta"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Létrehozva"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
@@ -99,7 +106,7 @@ msgstr ""
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Megjelenített név"
 
 #. module: account_accountant
 #: code:addons/account_accountant/models/digest.py:16
@@ -126,7 +133,7 @@ msgstr ""
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__id
 msgid "ID"
-msgstr ""
+msgstr "Azonosító"
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_res_config_settings__transfer_account_id
@@ -134,6 +141,8 @@ msgid ""
 "Intermediary account used when moving money from a liquidity account to "
 "another"
 msgstr ""
+"Közbenső főkönyvi számlát akkor használ, ha pénzt mozgat át egy likviditási "
+"számláról egy másikra"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_digest_digest__kpi_account_bank_cash_value
@@ -148,17 +157,17 @@ msgstr ""
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Legutóbb frissítve"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Legutóbb frissítette"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Legutóbb frissítve "
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
@@ -170,7 +179,7 @@ msgstr ""
 #: code:addons/account_accountant/static/src/js/tour.js:130
 #, python-format
 msgid "Let's start with a new customer invoice."
-msgstr ""
+msgstr "Kezdjük egy új vevői számlával."
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__fiscalyear_lock_date
@@ -182,7 +191,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__period_lock_date
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__period_lock_date
 msgid "Lock Date for Non-Advisers"
-msgstr ""
+msgstr "Lezárási dátum a nem-könyvelők részére"
 
 #. module: account_accountant
 #: model:ir.ui.menu,name:account_accountant.menu_action_change_lock_date
@@ -201,6 +210,9 @@ msgid ""
 "No users, including Advisers, can edit accounts prior to and inclusive of "
 "this date. Use it for fiscal year locking for example."
 msgstr ""
+"Felhasználók sem, Könyvelőket is beszámítva, szerkeszthetnek főkönyvi "
+"számlákat, melyek előbbiek mint ez a dátum. Használja például az üzleti év "
+"leállításához."
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_res_config_settings__period_lock_date
@@ -209,6 +221,9 @@ msgid ""
 "of this date. Use it for period locking inside an open fiscal year, for "
 "example."
 msgstr ""
+"Kizárólag a 'Könyvelő' jogosultsággal rendelkező felhasználók "
+"szerkeszthetnek számlákat melyek előbbiek mint ez a dátum. Használja például"
+" egy nyitott üzleti év szakaszának leállításához."
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_account_change_lock_date__period_lock_date
@@ -226,7 +241,7 @@ msgstr ""
 #. module: account_accountant
 #: model:ir.ui.menu,name:account_accountant.menu_product_product_categories
 msgid "Product Categories"
-msgstr ""
+msgstr "Termékkategóriák"
 
 #. module: account_accountant
 #. openerp-web
@@ -236,6 +251,8 @@ msgid ""
 "Ready to discover your new favorite <b>accounting app</b>? Get started by "
 "clicking here."
 msgstr ""
+"Készen áll felfedezni az új kedvenc <b>könyvelési alkalmazását</b>? "
+"Kezdéshez kattintson ide."
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
@@ -245,7 +262,7 @@ msgstr ""
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
 msgid "Save"
-msgstr ""
+msgstr "Mentés"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
@@ -257,7 +274,7 @@ msgstr ""
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__transfer_account_id
 msgid "Transfer Account"
-msgstr ""
+msgstr "Belső utalásos számla"
 
 #. module: account_accountant
 #. openerp-web
@@ -267,6 +284,8 @@ msgid ""
 "Use the path to quickly click back to <b>previous screens</b>, without "
 "reloading the page."
 msgstr ""
+"Használja az útvonalat a gyors visszakattintáshoz az <b>előző "
+"képernyőkre</b>, az oldal újratöltése nélkül."
 
 #. module: account_accountant
 #. openerp-web
@@ -276,3 +295,5 @@ msgid ""
 "Your reports are available in real time. <i>No need to close a fiscal year "
 "to get a Profit &amp; Loss statement or view the Balance Sheet.</i>"
 msgstr ""
+"A riportok valós időben elérhetők. <i>Nem szükséges egy üzleti év lezárása "
+"az Eredménykimutatás vagy a Mérleg megtekintéséhez.</i>"

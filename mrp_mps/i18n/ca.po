@@ -4,13 +4,17 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# RGB Consulting <odoo@rgbconsulting.com>, 2018
+# Quim - eccit <quim@eccit.com>, 2018
+# Manel Fernandez <manelfera@outlook.com>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"PO-Revision-Date: 2018-08-24 11:38+0000\n"
+"Last-Translator: Manel Fernandez <manelfera@outlook.com>, 2018\n"
 "Language-Team: Catalan (https://www.transifex.com/odoo/teams/41243/ca/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -76,7 +80,7 @@ msgstr ""
 #. module: mrp_mps
 #: selection:sale.forecast,mode:0
 msgid "Automatic"
-msgstr ""
+msgstr "Automàtic"
 
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.mrp_mps_report_view_form
@@ -121,7 +125,7 @@ msgstr "Creat el"
 #: selection:res.company,manufacturing_period:0
 #, python-format
 msgid "Daily"
-msgstr ""
+msgstr "Diàriament"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast__date
@@ -164,7 +168,7 @@ msgstr "Fet"
 #. module: mrp_mps
 #: selection:sale.forecast,state:0
 msgid "Forecast"
-msgstr ""
+msgstr "Previsió"
 
 #. module: mrp_mps
 #. openerp-web
@@ -271,7 +275,7 @@ msgstr ""
 #. module: mrp_mps
 #: selection:sale.forecast,mode:0
 msgid "Manual"
-msgstr ""
+msgstr "Manual"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_res_company__manufacturing_period
@@ -298,7 +302,7 @@ msgstr ""
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast__mode
 msgid "Mode"
-msgstr ""
+msgstr "Mode"
 
 #. module: mrp_mps
 #. openerp-web
@@ -308,7 +312,7 @@ msgstr ""
 #: selection:res.company,manufacturing_period:0
 #, python-format
 msgid "Monthly"
-msgstr ""
+msgstr "Mensualment"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast_indirect__product_origin_id
@@ -318,19 +322,19 @@ msgstr ""
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_mps_report__period
 msgid "Period"
-msgstr ""
+msgstr "Període"
 
 #. module: mrp_mps
 #. openerp-web
 #: code:addons/mrp_mps/static/src/xml/mps_backend.xml:11
 #, python-format
 msgid "Period:"
-msgstr ""
+msgstr "Període:"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast__group_id
 msgid "Procurement Group"
-msgstr ""
+msgstr "Grup de proveïment "
 
 #. module: mrp_mps
 #: model:ir.model,name:mrp_mps.model_product_product
@@ -339,25 +343,25 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast_indirect__product_id
 #: model_terms:ir.ui.view,arch_db:mrp_mps.product_product_view_form_mps
 msgid "Product"
-msgstr ""
+msgstr "Producte"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast__product_uom_id
 msgid "Product UoM"
-msgstr ""
+msgstr "UdM de producte"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast__warehouse_id
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast_indirect__warehouse_id
 msgid "Production Location"
-msgstr ""
+msgstr "Ubicació de producció"
 
 #. module: mrp_mps
 #. openerp-web
 #: code:addons/mrp_mps/static/src/xml/mps_backend.xml:24
 #, python-format
 msgid "Rows"
-msgstr ""
+msgstr "Files"
 
 #. module: mrp_mps
 #: model:ir.model,name:mrp_mps.model_sale_forecast
@@ -397,7 +401,7 @@ msgstr ""
 #: code:addons/mrp_mps/static/src/xml/mps_backend.xml:45
 #, python-format
 msgid "To Produce"
-msgstr ""
+msgstr "Fabricar"
 
 #. module: mrp_mps
 #: code:addons/mrp_mps/models/mrp_mps_report.py:129
@@ -424,7 +428,7 @@ msgstr ""
 #: selection:res.company,manufacturing_period:0
 #, python-format
 msgid "Weekly"
-msgstr ""
+msgstr "Setmanalment"
 
 #. module: mrp_mps
 #. openerp-web
@@ -432,7 +436,7 @@ msgstr ""
 #: code:addons/mrp_mps/static/src/js/mrp_mps_report_widget.js:228
 #, python-format
 msgid "Wrong value entered!"
-msgstr ""
+msgstr "Valor introduït incorrecte!"
 
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory

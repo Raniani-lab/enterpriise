@@ -2,12 +2,19 @@
 # This file contains the translation of the following modules:
 # * quality
 # 
+# Translators:
+# Martin Trigaux, 2018
+# krnkris, 2018
+# gezza <geza.nagy@oregional.hu>, 2018
+# Ákos Nagy <akos.nagy@oregional.hu>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
 "PO-Revision-Date: 2018-08-24 11:47+0000\n"
+"Last-Translator: Ákos Nagy <akos.nagy@oregional.hu>, 2018\n"
 "Language-Team: Hungarian (https://www.transifex.com/odoo/teams/41243/hu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -32,6 +39,8 @@ msgid ""
 "A Python dictionary that will be evaluated to provide default values when "
 "creating new records for this alias."
 msgstr ""
+"Egy Python szótár aminek a kiértékelésével alapértékeket biztosít ehhez az "
+"álnévhez új feljegyzések létrehozásánál."
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__message_needaction
@@ -39,7 +48,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_check__message_needaction
 #: model:ir.model.fields,field_description:quality.field_quality_point__message_needaction
 msgid "Action Needed"
-msgstr ""
+msgstr "Művelet szükséges"
 
 #. module: quality
 #: model:quality.alert.stage,name:quality.quality_alert_stage_2
@@ -49,7 +58,7 @@ msgstr ""
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_point__active
 msgid "Active"
-msgstr ""
+msgstr "Aktív"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_stage__done
@@ -59,32 +68,32 @@ msgstr ""
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_check__alert_ids
 msgid "Alerts"
-msgstr ""
+msgstr "Figyelmeztetések"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_id
 msgid "Alias"
-msgstr ""
+msgstr "Álnév"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_contact
 msgid "Alias Contact Security"
-msgstr ""
+msgstr "Álnév kapcsolat biztonság"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_name
 msgid "Alias Name"
-msgstr ""
+msgstr "Álnév elnevezése"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_domain
 msgid "Alias domain"
-msgstr ""
+msgstr "Álnév domain"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_model_id
 msgid "Aliased Model"
-msgstr ""
+msgstr "Álnevesített modell"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__message_attachment_count
@@ -103,7 +112,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_alert__check_id
 #: model:ir.model.fields,field_description:quality.field_quality_point__check_ids
 msgid "Check"
-msgstr ""
+msgstr "Csekk"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_point__check_count
@@ -113,12 +122,12 @@ msgstr ""
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__color
 msgid "Color"
-msgstr ""
+msgstr "Szín"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_tag__color
 msgid "Color Index"
-msgstr ""
+msgstr "Színjegyzék"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__company_id
@@ -126,12 +135,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_check__company_id
 #: model:ir.model.fields,field_description:quality.field_quality_point__company_id
 msgid "Company"
-msgstr ""
+msgstr "Vállalat"
 
 #. module: quality
 #: model:quality.alert.stage,name:quality.quality_alert_stage_1
 msgid "Confirmed"
-msgstr ""
+msgstr "Megerősített"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_check__control_date
@@ -146,7 +155,7 @@ msgstr ""
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__action_corrective
 msgid "Corrective Action"
-msgstr ""
+msgstr "Korrekciós művelet"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__create_uid
@@ -158,7 +167,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_reason__create_uid
 #: model:ir.model.fields,field_description:quality.field_quality_tag__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Létrehozta"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__create_date
@@ -170,7 +179,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_reason__create_date
 #: model:ir.model.fields,field_description:quality.field_quality_tag__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Létrehozva"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__date_assign
@@ -180,12 +189,12 @@ msgstr ""
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__date_close
 msgid "Date Closed"
-msgstr ""
+msgstr "Lezárás dátuma"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_defaults
 msgid "Default Values"
-msgstr ""
+msgstr "Alapértelmezett értékek"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_point__test_type_id
@@ -205,7 +214,7 @@ msgstr ""
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__description
 msgid "Description"
-msgstr ""
+msgstr "Leírás"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__display_name
@@ -217,17 +226,17 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_reason__display_name
 #: model:ir.model.fields,field_description:quality.field_quality_tag__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Megjelenített név"
 
 #. module: quality
 #: selection:quality.check,quality_state:0
 msgid "Failed"
-msgstr ""
+msgstr "Sikertelen"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_stage__folded
 msgid "Folded"
-msgstr ""
+msgstr "Behajtott"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__message_follower_ids
@@ -235,7 +244,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_check__message_follower_ids
 #: model:ir.model.fields,field_description:quality.field_quality_point__message_follower_ids
 msgid "Followers"
-msgstr ""
+msgstr "Követők"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__message_channel_ids
@@ -243,7 +252,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_check__message_channel_ids
 #: model:ir.model.fields,field_description:quality.field_quality_point__message_channel_ids
 msgid "Followers (Channels)"
-msgstr ""
+msgstr "Követők (Csatornák)"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__message_partner_ids
@@ -251,7 +260,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_check__message_partner_ids
 #: model:ir.model.fields,field_description:quality.field_quality_point__message_partner_ids
 msgid "Followers (Partners)"
-msgstr ""
+msgstr "Követők (Partnerek)"
 
 #. module: quality
 #: model:ir.module.category,description:quality.module_category_quality
@@ -261,7 +270,7 @@ msgstr ""
 #. module: quality
 #: selection:quality.alert,priority:0
 msgid "High"
-msgstr ""
+msgstr "Magas"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__id
@@ -273,7 +282,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_reason__id
 #: model:ir.model.fields,field_description:quality.field_quality_tag__id
 msgid "ID"
-msgstr ""
+msgstr "Azonosító"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert_team__alias_parent_thread_id
@@ -281,6 +290,8 @@ msgid ""
 "ID of the parent record holding the alias (example: project holding the task"
 " creation alias)"
 msgstr ""
+"Az álnevet tartalmazó szülő rekord azonosítója (példa: a feladat "
+"létrehozására szolgáló álnevet tartalmazó projekt)"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert__message_unread
@@ -288,7 +299,7 @@ msgstr ""
 #: model:ir.model.fields,help:quality.field_quality_check__message_unread
 #: model:ir.model.fields,help:quality.field_quality_point__message_unread
 msgid "If checked new messages require your attention."
-msgstr ""
+msgstr "Ha be van jelölve, akkor figyelje az új üzeneteket."
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert__message_needaction
@@ -296,7 +307,7 @@ msgstr ""
 #: model:ir.model.fields,help:quality.field_quality_check__message_needaction
 #: model:ir.model.fields,help:quality.field_quality_point__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr ""
+msgstr "Ha be van jelölve, akkor figyelje az új üzeneteket."
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert__message_has_error
@@ -317,7 +328,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_check__message_is_follower
 #: model:ir.model.fields,field_description:quality.field_quality_point__message_is_follower
 msgid "Is Follower"
-msgstr ""
+msgstr "Ő egy követő"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert____last_update
@@ -329,7 +340,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_reason____last_update
 #: model:ir.model.fields,field_description:quality.field_quality_tag____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Legutóbb frissítve"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__write_uid
@@ -341,7 +352,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_reason__write_uid
 #: model:ir.model.fields,field_description:quality.field_quality_tag__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Legutóbb frissítette"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__write_date
@@ -353,18 +364,18 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_reason__write_date
 #: model:ir.model.fields,field_description:quality.field_quality_tag__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Legutóbb frissítve "
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__lot_id
 #: model:ir.model.fields,field_description:quality.field_quality_check__lot_id
 msgid "Lot"
-msgstr ""
+msgstr "Tétel szett"
 
 #. module: quality
 #: selection:quality.alert,priority:0
 msgid "Low"
-msgstr ""
+msgstr "Alacsony"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__message_main_attachment_id
@@ -377,7 +388,7 @@ msgstr ""
 #. module: quality
 #: model:res.groups,name:quality.group_quality_manager
 msgid "Manager"
-msgstr ""
+msgstr "Menedzser"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__message_has_error
@@ -393,7 +404,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_check__message_ids
 #: model:ir.model.fields,field_description:quality.field_quality_point__message_ids
 msgid "Messages"
-msgstr ""
+msgstr "Üzenetek"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__name
@@ -404,7 +415,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_reason__name
 #: model:ir.model.fields,field_description:quality.field_quality_tag__name
 msgid "Name"
-msgstr ""
+msgstr "Név"
 
 #. module: quality
 #: code:addons/quality/models/quality.py:32
@@ -419,24 +430,24 @@ msgstr ""
 #: model:quality.alert.stage,name:quality.quality_alert_stage_0
 #, python-format
 msgid "New"
-msgstr ""
+msgstr "Új"
 
 #. module: quality
 #: selection:quality.alert,priority:0
 msgid "Normal"
-msgstr ""
+msgstr "Normál"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_check__note
 #: model:ir.model.fields,field_description:quality.field_quality_point__note
 #: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
 msgid "Note"
-msgstr ""
+msgstr "Megjegyzés"
 
 #. module: quality
 #: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
 msgid "Notes"
-msgstr ""
+msgstr "Megjegyzések"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__message_needaction_counter
@@ -444,7 +455,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_check__message_needaction_counter
 #: model:ir.model.fields,field_description:quality.field_quality_point__message_needaction_counter
 msgid "Number of Actions"
-msgstr ""
+msgstr "Műveletek száma"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__message_has_error_counter
@@ -460,7 +471,7 @@ msgstr ""
 #: model:ir.model.fields,help:quality.field_quality_check__message_needaction_counter
 #: model:ir.model.fields,help:quality.field_quality_point__message_needaction_counter
 msgid "Number of messages which requires an action"
-msgstr ""
+msgstr "Üzenetek száma, melyek akciót igényelnek"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert__message_has_error_counter
@@ -476,12 +487,12 @@ msgstr ""
 #: model:ir.model.fields,help:quality.field_quality_check__message_unread_counter
 #: model:ir.model.fields,help:quality.field_quality_point__message_unread_counter
 msgid "Number of unread messages"
-msgstr ""
+msgstr "Olvasatlan üzenetek száma"
 
 #. module: quality
 #: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
 msgid "Operation"
-msgstr ""
+msgstr "Művelet"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_point__picking_type_id
@@ -495,6 +506,9 @@ msgid ""
 "attached, even if they did not reply to it. If set, this will disable the "
 "creation of new records completely."
 msgstr ""
+"Az üzenetlista (rekord) választható azonosítója, amelyhez minden beérkezett "
+"üzenet csatolásra kerül, még akkor is, ha senki sem válaszolt azokra. Ha "
+"beállításra kerül, az új rekordok létrehozása teljesen kikapcsolásra kerül."
 
 #. module: quality
 #: model:quality.reason,name:quality.reason_other
@@ -504,17 +518,17 @@ msgstr ""
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_user_id
 msgid "Owner"
-msgstr ""
+msgstr "Tulajdonos"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_parent_model_id
 msgid "Parent Model"
-msgstr ""
+msgstr "Forrásmodell"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_parent_thread_id
 msgid "Parent Record Thread ID"
-msgstr ""
+msgstr "Szülő rekord folyamat azonosító"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert_team__alias_parent_model_id
@@ -523,6 +537,9 @@ msgid ""
 " necessarily the model given by alias_model_id (example: project "
 "(parent_model) and task (model))"
 msgstr ""
+"Szülő modell, mely foglalja az álnevet. Az álnév hivatkozást megfogó modell\n"
+"nem szükségszerűen a megadott modell az alias_model_id -ben.\n"
+"(például: projekt (parent_model) és feladat (model))"
 
 #. module: quality
 #: model:quality.reason,name:quality.reason_parts
@@ -538,12 +555,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_alert__picking_id
 #: model:ir.model.fields,field_description:quality.field_quality_check__picking_id
 msgid "Picking"
-msgstr ""
+msgstr "Kiszedés"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_check__picture
 msgid "Picture"
-msgstr ""
+msgstr "Kép"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert_team__alias_contact
@@ -553,29 +570,33 @@ msgid ""
 "- partners: only authenticated partners\n"
 "- followers: only followers of the related document or members of following channels\n"
 msgstr ""
+"Az üzenetátjáró használatának alapvető irányvonalai a dokumentumra vonatkozó üzenetek kiküldéséhez.\n"
+"- mindenki: mindenki tud üzenni\n"
+"- ügyfelek: csak a hitelesített partnerek\n"
+"- követők: csak az idevonatkozó dokumentum követői vagy a következő csatornák tagjai\n"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__action_preventive
 msgid "Preventive Action"
-msgstr ""
+msgstr "Preventív művelet"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__priority
 msgid "Priority"
-msgstr ""
+msgstr "Prioritás"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__product_tmpl_id
 #: model:ir.model.fields,field_description:quality.field_quality_check__product_id
 #: model:ir.model.fields,field_description:quality.field_quality_point__product_tmpl_id
 msgid "Product"
-msgstr ""
+msgstr "Termék"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__product_id
 #: model:ir.model.fields,field_description:quality.field_quality_point__product_id
 msgid "Product Variant"
-msgstr ""
+msgstr "Termékváltozat"
 
 #. module: quality
 #: model:ir.module.category,name:quality.module_category_quality
@@ -620,24 +641,24 @@ msgstr ""
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_force_thread_id
 msgid "Record Thread ID"
-msgstr ""
+msgstr "Rekord-üzenetlista azonosítója"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_point__name
 msgid "Reference"
-msgstr ""
+msgstr "Hivatkozás"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__user_id
 #: model:ir.model.fields,field_description:quality.field_quality_check__user_id
 #: model:ir.model.fields,field_description:quality.field_quality_point__user_id
 msgid "Responsible"
-msgstr ""
+msgstr "Felelős"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__reason_id
 msgid "Root Cause"
-msgstr ""
+msgstr "Kiváltó ok"
 
 #. module: quality
 #: model:ir.model,name:quality.model_quality_reason
@@ -649,7 +670,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__sequence
 #: model:ir.model.fields,field_description:quality.field_quality_point__sequence
 msgid "Sequence"
-msgstr ""
+msgstr "Sorszám"
 
 #. module: quality
 #: model:quality.alert.stage,name:quality.quality_alert_stage_3
@@ -659,24 +680,24 @@ msgstr ""
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__stage_id
 msgid "Stage"
-msgstr ""
+msgstr "Szakasz"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_check__quality_state
 msgid "Status"
-msgstr ""
+msgstr "Állapot"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__tag_ids
 msgid "Tags"
-msgstr ""
+msgstr "Címkék"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__team_id
 #: model:ir.model.fields,field_description:quality.field_quality_check__team_id
 #: model:ir.model.fields,field_description:quality.field_quality_point__team_id
 msgid "Team"
-msgstr ""
+msgstr "Csapat"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_check__test_type
@@ -697,6 +718,9 @@ msgid ""
 " email that does not reply to an existing record will cause the creation of "
 "a new record of this model (e.g. a Project Task)"
 msgstr ""
+"a modell (Odoo rendszer Dokumentum féle), amelyhez ez az álnév tartozik. "
+"Bármely bejövő email, mely nem válaszol egy meglévő feljegyzésre egy új "
+"feljegyzést fog létrehozni ehhez a modellhez (pl. egy projekt ügyet)"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert_team__alias_name
@@ -704,6 +728,8 @@ msgid ""
 "The name of the email alias, e.g. 'jobs' if you want to catch emails for "
 "<jobs@example.odoo.com>"
 msgstr ""
+"Az email álnév neve, pl. 'állások' ha erre az emailcímre szeretné kapni "
+"<allasok@pelda.odoo.com>"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert_team__alias_user_id
@@ -713,6 +739,11 @@ msgid ""
 "the sender (From) address, or will use the Administrator account if no "
 "system user is found for that address."
 msgstr ""
+"A feljegyzés tulajdonosa létrehozva amikor erre az álnévre e-mailek  "
+"érkeznek. Ha ez a mező nincs kialakítva akkor a rendszer megpróbálja "
+"megkeresni a jogos tulajdonost a elküldési (űrlap) címről, vagy az "
+"adminisztrátor felhasználót fogja használni ha nem talált rendszer "
+"felhasználót azzal a címmel."
 
 #. module: quality
 #: model:res.groups,comment:quality.group_quality_manager
@@ -727,17 +758,17 @@ msgstr ""
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_point__title
 msgid "Title"
-msgstr ""
+msgstr "Megsz."
 
 #. module: quality
 #: selection:quality.check,quality_state:0
 msgid "To do"
-msgstr ""
+msgstr "Teendő"
 
 #. module: quality
 #: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
 msgid "Type"
-msgstr ""
+msgstr "Típus"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__message_unread
@@ -745,7 +776,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_check__message_unread
 #: model:ir.model.fields,field_description:quality.field_quality_point__message_unread
 msgid "Unread Messages"
-msgstr ""
+msgstr "Olvasatlan üzenetek"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__message_unread_counter
@@ -753,7 +784,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_check__message_unread_counter
 #: model:ir.model.fields,field_description:quality.field_quality_point__message_unread_counter
 msgid "Unread Messages Counter"
-msgstr ""
+msgstr "Olvasatlan üzenetek számlálója"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_tag__color
@@ -763,17 +794,17 @@ msgstr ""
 #. module: quality
 #: model:res.groups,name:quality.group_quality_user
 msgid "User"
-msgstr ""
+msgstr "Felhasználó"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__partner_id
 msgid "Vendor"
-msgstr ""
+msgstr "Beszállító"
 
 #. module: quality
 #: selection:quality.alert,priority:0
 msgid "Very High"
-msgstr ""
+msgstr "Nagyon nagy"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__website_message_ids
@@ -781,7 +812,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_check__website_message_ids
 #: model:ir.model.fields,field_description:quality.field_quality_point__website_message_ids
 msgid "Website Messages"
-msgstr ""
+msgstr "Weboldal üzenetek"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert__website_message_ids
@@ -789,7 +820,7 @@ msgstr ""
 #: model:ir.model.fields,help:quality.field_quality_check__website_message_ids
 #: model:ir.model.fields,help:quality.field_quality_point__website_message_ids
 msgid "Website communication history"
-msgstr ""
+msgstr "Weboldal  kommunikáció történet"
 
 #. module: quality
 #: model:quality.reason,name:quality.reason_wo

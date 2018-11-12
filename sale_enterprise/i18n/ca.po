@@ -2,12 +2,18 @@
 # This file contains the translation of the following modules:
 # * sale_enterprise
 # 
+# Translators:
+# Martin Trigaux, 2018
+# Quim - eccit <quim@eccit.com>, 2018
+# Manel Fernandez <manelfera@outlook.com>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-02 10:32+0000\n"
-"PO-Revision-Date: 2018-10-02 10:32+0000\n"
+"PO-Revision-Date: 2018-08-24 11:48+0000\n"
+"Last-Translator: Manel Fernandez <manelfera@outlook.com>, 2018\n"
 "Language-Team: Catalan (https://www.transifex.com/odoo/teams/41243/ca/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,17 +24,17 @@ msgstr ""
 #. module: sale_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard
 msgid "# Customers"
-msgstr ""
+msgstr "# Clients"
 
 #. module: sale_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard
 msgid "# Lines"
-msgstr ""
+msgstr "# Línies"
 
 #. module: sale_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard
 msgid "Average Order"
-msgstr ""
+msgstr "Mitjana d'ordres"
 
 #. module: sale_enterprise
 #: model:ir.model.fields,field_description:sale_enterprise.field_sale_report__days_to_confirm
@@ -38,62 +44,62 @@ msgstr ""
 #. module: sale_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard
 msgid "Days to Confirm"
-msgstr ""
+msgstr "Dies per confirmar"
 
 #. module: sale_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_enterprise.view_order_product_search_inherit
 #: selection:sale.report,invoice_status:0
 msgid "Fully Invoiced"
-msgstr ""
+msgstr "Totalment facturat "
 
 #. module: sale_enterprise
 #: model:ir.model.fields,field_description:sale_enterprise.field_sale_report__invoice_status
 msgid "Invoice Status"
-msgstr ""
+msgstr "Estat factura"
 
 #. module: sale_enterprise
 #: selection:sale.report,invoice_status:0
 msgid "Nothing to Invoice"
-msgstr ""
+msgstr "Res a facturar"
 
 #. module: sale_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard
 msgid "Orders"
-msgstr ""
+msgstr "Comandes"
 
 #. module: sale_enterprise
 #: model:ir.actions.act_window,name:sale_enterprise.sale_report_action_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_enterprise.sale_report_view_pivot
 msgid "Sales Analysis"
-msgstr ""
+msgstr "Anàlisi de vendes"
 
 #. module: sale_enterprise
 #: model:ir.model,name:sale_enterprise.model_sale_report
 msgid "Sales Analysis Report"
-msgstr ""
+msgstr "Informe d'anàlisi de vendes"
 
 #. module: sale_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_enterprise.view_order_product_search_inherit
 #: selection:sale.report,invoice_status:0
 msgid "To Invoice"
-msgstr ""
+msgstr "Per facturar"
 
 #. module: sale_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard
 msgid "Total Sales"
-msgstr ""
+msgstr "Vendes totals"
 
 #. module: sale_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard
 msgid "Total, Tax Included"
-msgstr ""
+msgstr "Total, impostos inclosos"
 
 #. module: sale_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard
 msgid "Untaxed Total"
-msgstr ""
+msgstr "Total lliure d'impostos"
 
 #. module: sale_enterprise
 #: selection:sale.report,invoice_status:0
 msgid "Upselling Opportunity"
-msgstr ""
+msgstr "Oportunitat de venda incremental"

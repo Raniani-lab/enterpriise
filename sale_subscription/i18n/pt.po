@@ -11,7 +11,7 @@
 # Manuela Silva <inactive+h_manuela_rodsilva@transifex.com>, 2018
 # Martin Trigaux, 2018
 # Ricardo Martins <ricardo.nbs.martins@gmail.com>, 2018
-# MS, 2018
+# MS <manuelarodsilva@gmail.com>, 2018
 # Nuno Silva <nuno.silva@arxi.pt>, 2018
 # Diogo Fonseca <dsf@thinkopensolutions.pt>, 2018
 # 
@@ -1821,7 +1821,7 @@ msgstr "Membros"
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__message_has_error
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__message_has_error
 msgid "Message Delivery error"
-msgstr ""
+msgstr "Gerir erro de entrega"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__message_ids
@@ -3194,6 +3194,8 @@ msgid ""
 "You must define a product for everything you purchase,\n"
 "            whether it's a physical product, a consumable or services."
 msgstr ""
+"Deve definir um artigo para tudo o que comprar,\n"
+"seja um artigo físico, um consumível ou um serviço."
 
 #. module: sale_subscription
 #: code:addons/sale_subscription/models/sale_subscription.py:429

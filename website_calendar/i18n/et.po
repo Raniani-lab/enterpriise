@@ -2,12 +2,24 @@
 # This file contains the translation of the following modules:
 # * website_calendar
 # 
+# Translators:
+# Rivo Zängov <eraser@eraser.ee>, 2018
+# Martin Trigaux, 2018
+# Wanradt Koell <wanradt@gmail.com>, 2018
+# Arma Gedonsky <armagedonsky@hot.ee>, 2018
+# Ahto Reinaru <ahto.reinaru@gmail.com>, 2018
+# Egon Raamat <egon@avalah.ee>, 2018
+# Eneli Õigus <enelioigus@gmail.com>, 2018
+# Martin Aavastik <martin@avalah.ee>, 2018
+# Helen Sulaoja <helen@avalah.ee>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-08 07:15+0000\n"
 "PO-Revision-Date: 2018-08-24 11:49+0000\n"
+"Last-Translator: Helen Sulaoja <helen@avalah.ee>, 2018\n"
 "Language-Team: Estonian (https://www.transifex.com/odoo/teams/41243/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,7 +31,7 @@ msgstr ""
 #: code:addons/website_calendar/models/calendar_appointment.py:66
 #, python-format
 msgid " (copy)"
-msgstr ""
+msgstr " (koopia)"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__appointment_count
@@ -98,7 +110,7 @@ msgstr ""
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 msgid "<span> hours</span>"
-msgstr ""
+msgstr "<span> hours</span>"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
@@ -152,12 +164,12 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_event__access_token
 msgid "Access Token"
-msgstr ""
+msgstr "Ligipääsu võti"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_needaction
 msgid "Action Needed"
-msgstr ""
+msgstr "Vajalik toiming"
 
 #. module: website_calendar
 #: model:ir.actions.act_window,name:website_calendar.website_calendar_report
@@ -181,7 +193,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_answer__name
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_answer_view_form
 msgid "Answer"
-msgstr ""
+msgstr "Vastus"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment
@@ -271,7 +283,7 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.ui.menu,name:website_calendar.calendar_appointment_type_menu_action
 msgid "Calendar"
-msgstr ""
+msgstr "Kalender"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__min_cancellation_hours
@@ -301,31 +313,31 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_confirmation
 msgid "Confirmation Message"
-msgstr ""
+msgstr "Kinnitamise sõnum"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_form
 #: model_terms:ir.ui.view,arch_db:website_calendar.index
 msgid "Confirmation<span class=\"chevron\"/>"
-msgstr ""
+msgstr "Kinnitus<span class=\"chevron\"/>"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_validated
 msgid "Confirmed"
-msgstr ""
+msgstr "Kinnitatud"
 
 #. module: website_calendar
 #: model:ir.model,name:website_calendar.model_res_partner
 msgid "Contact"
-msgstr ""
+msgstr "Kontakt"
 
 #. module: website_calendar
 #. openerp-web
 #: code:addons/website_calendar/static/src/js/appointment_employee_url.js:67
 #, python-format
 msgid "Copied !"
-msgstr ""
+msgstr "Kopeeritud !"
 
 #. module: website_calendar
 #: model_terms:ir.actions.act_window,help:website_calendar.calendar_appointment_type_action
@@ -338,7 +350,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_slot__create_uid
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Loonud"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_answer__create_date
@@ -346,12 +358,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_slot__create_date
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Loomise kuupäev"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_validated
 msgid "Declined"
-msgstr ""
+msgstr "Declined"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_validated
@@ -364,7 +376,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_slot__display_name
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Näidatav nimi"
 
 #. module: website_calendar
 #: selection:calendar.appointment.question,question_type:0
@@ -380,37 +392,37 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__employee_ids
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 msgid "Employees"
-msgstr ""
+msgstr " töötajad"
 
 #. module: website_calendar
 #: model:ir.model,name:website_calendar.model_calendar_event
 msgid "Event"
-msgstr ""
+msgstr "Sündmus"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_follower_ids
 msgid "Followers"
-msgstr ""
+msgstr "Jälgijad"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_channel_ids
 msgid "Followers (Channels)"
-msgstr ""
+msgstr "Jälgijad (kanalid)"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_partner_ids
 msgid "Followers (Partners)"
-msgstr ""
+msgstr "Jälgijad (partnerid)"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_calendar
 msgid "Fri"
-msgstr ""
+msgstr "Reede"
 
 #. module: website_calendar
 #: selection:calendar.appointment.slot,weekday:0
 msgid "Friday"
-msgstr ""
+msgstr "Reede"
 
 #. module: website_calendar
 #: model_terms:calendar.appointment.type,message_intro:website_calendar.calendar_appointment
@@ -431,17 +443,17 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_slot__id
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: website_calendar
 #: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__message_unread
 msgid "If checked new messages require your attention."
-msgstr ""
+msgstr "Kui kontrollitud, siis uued sõnumid nõuavad Su tähelepanu."
 
 #. module: website_calendar
 #: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr ""
+msgstr "Kui kontrollitud, siis uued sõnumid nõuavad Su tähelepanu."
 
 #. module: website_calendar
 #: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__message_has_error
@@ -469,7 +481,7 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_is_follower
 msgid "Is Follower"
-msgstr ""
+msgstr "Jälgija"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__is_published
@@ -489,7 +501,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_slot____last_update
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Viimati muudetud (millal)"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_answer__write_uid
@@ -497,7 +509,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_slot__write_uid
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Viimati uuendatud (kelle poolt)"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_answer__write_date
@@ -505,12 +517,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_slot__write_date
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Viimati uuendatud (millal)"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__location
 msgid "Location"
-msgstr ""
+msgstr "Asukoht"
 
 #. module: website_calendar
 #: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__location
@@ -530,7 +542,7 @@ msgstr ""
 #. module: website_calendar
 #: model:res.groups,name:website_calendar.group_calendar_manager
 msgid "Manager"
-msgstr ""
+msgstr "Juhataja"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_has_error
@@ -541,17 +553,17 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_ids
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 msgid "Messages"
-msgstr ""
+msgstr "Sõnumid"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_calendar
 msgid "Mon"
-msgstr ""
+msgstr "Esmaspäev"
 
 #. module: website_calendar
 #: selection:calendar.appointment.slot,weekday:0
 msgid "Monday"
-msgstr ""
+msgstr "Esmaspäev"
 
 #. module: website_calendar
 #: selection:calendar.appointment.question,question_type:0
@@ -563,7 +575,7 @@ msgstr ""
 #: code:addons/website_calendar/static/src/js/website_calendar.editor.js:30
 #, python-format
 msgid "Name"
-msgstr ""
+msgstr "Nimi"
 
 #. module: website_calendar
 #. openerp-web
@@ -586,7 +598,7 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_needaction_counter
 msgid "Number of Actions"
-msgstr ""
+msgstr "Toimingute arv"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_has_error_counter
@@ -596,7 +608,7 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__message_needaction_counter
 msgid "Number of messages which requires an action"
-msgstr ""
+msgstr "Tegutsemist nõudvate sõnumite arv"
 
 #. module: website_calendar
 #: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__message_has_error_counter
@@ -606,7 +618,7 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__message_unread_counter
 msgid "Number of unread messages"
-msgstr ""
+msgstr "Lugemata sõnumite arv"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_event__appointment_type_id
@@ -646,7 +658,7 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question__placeholder
 msgid "Placeholder"
-msgstr ""
+msgstr "Kohatäitja"
 
 #. module: website_calendar
 #: code:addons/website_calendar/models/calendar_appointment.py:302
@@ -662,7 +674,7 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question__name
 msgid "Question"
-msgstr ""
+msgstr "Küsimus"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question__question_type
@@ -674,7 +686,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__question_ids
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 msgid "Questions"
-msgstr ""
+msgstr "Küsimused"
 
 #. module: website_calendar
 #: selection:calendar.appointment.question,question_type:0
@@ -684,17 +696,17 @@ msgstr ""
 #. module: website_calendar
 #: selection:calendar.appointment.type,assignation_method:0
 msgid "Random"
-msgstr ""
+msgstr "Juhuvalik"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__reminder_ids
 msgid "Reminders"
-msgstr ""
+msgstr "Meeldetuletused"
 
 #. module: website_calendar
 #: model:ir.ui.menu,name:website_calendar.menu_schedule_report
 msgid "Reporting"
-msgstr ""
+msgstr "Aruandlus"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question__question_required
@@ -714,12 +726,12 @@ msgstr ""
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_calendar
 msgid "Sat"
-msgstr ""
+msgstr "Laupäev"
 
 #. module: website_calendar
 #: selection:calendar.appointment.slot,weekday:0
 msgid "Saturday"
-msgstr ""
+msgstr "Laupäev"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
@@ -755,7 +767,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question__sequence
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__sequence
 msgid "Sequence"
-msgstr ""
+msgstr "Järjestus"
 
 #. module: website_calendar
 #: selection:calendar.appointment.question,question_type:0
@@ -780,32 +792,32 @@ msgstr ""
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_calendar
 msgid "Sun"
-msgstr ""
+msgstr "Pühapäev"
 
 #. module: website_calendar
 #: selection:calendar.appointment.slot,weekday:0
 msgid "Sunday"
-msgstr ""
+msgstr "Pühapäev"
 
 #. module: website_calendar
 #: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__website_url
 msgid "The full URL to access the document through the website."
-msgstr ""
+msgstr "The full URL to access the document through the website."
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_calendar
 msgid "Thu"
-msgstr ""
+msgstr "Saaja"
 
 #. module: website_calendar
 #: selection:calendar.appointment.slot,weekday:0
 msgid "Thursday"
-msgstr ""
+msgstr "Neljapäev"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_form
 msgid "Time"
-msgstr ""
+msgstr "Aeg"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_calendar
@@ -826,7 +838,7 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__appointment_tz
 msgid "Timezone"
-msgstr ""
+msgstr "Ajavöönd"
 
 #. module: website_calendar
 #: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__appointment_tz
@@ -836,22 +848,22 @@ msgstr ""
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_calendar
 msgid "Tue"
-msgstr ""
+msgstr "Teisipäev"
 
 #. module: website_calendar
 #: selection:calendar.appointment.slot,weekday:0
 msgid "Tuesday"
-msgstr ""
+msgstr "Teisipäev"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_unread
 msgid "Unread Messages"
-msgstr ""
+msgstr "Lugemata sõnumid"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_unread_counter
 msgid "Unread Messages Counter"
-msgstr ""
+msgstr "Lugemata sõnumite loendur"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.index
@@ -873,17 +885,17 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__website_message_ids
 msgid "Website Messages"
-msgstr ""
+msgstr "Veebilehe sõnumid"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__website_url
 msgid "Website URL"
-msgstr ""
+msgstr "Veebilehe URL"
 
 #. module: website_calendar
 #: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__website_message_ids
 msgid "Website communication history"
-msgstr ""
+msgstr "Veebilehe suhtluse ajalugu"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__website_meta_description
@@ -908,12 +920,12 @@ msgstr ""
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_calendar
 msgid "Wed"
-msgstr ""
+msgstr "Kolmapäev"
 
 #. module: website_calendar
 #: selection:calendar.appointment.slot,weekday:0
 msgid "Wednesday"
-msgstr ""
+msgstr "Kolmapäev"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_slot__weekday
@@ -944,12 +956,12 @@ msgstr ""
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_form
 msgid "Your Email"
-msgstr ""
+msgstr "Sinu e-post"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_form
 msgid "Your Name"
-msgstr ""
+msgstr "Sinu nimi"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_form
@@ -964,7 +976,7 @@ msgstr ""
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 msgid "e.g. Schedule a demo"
-msgstr ""
+msgstr "nt planeeri demo"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_validated

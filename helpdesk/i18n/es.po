@@ -5,16 +5,18 @@
 # Translators:
 # Martin Trigaux, 2018
 # Lina Maria Avendaño Carvajal <lina8823@gmail.com>, 2018
-# Cristopher Cravioto <ccr@odoo.com>, 2018
 # Miquel Torner <miq@odoo.com>, 2018
+# Cristopher Cravioto <ccr@odoo.com>, 2018
 # Harald Panten <harald.panten@qubiq.es>, 2018
+# luisg123v <lgonzalez@vauxoo.com>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-02 10:31+0000\n"
-"PO-Revision-Date: 2018-10-02 10:31+0000\n"
-"Last-Translator: Harald Panten <harald.panten@qubiq.es>, 2018\n"
+"PO-Revision-Date: 2018-08-24 11:38+0000\n"
+"Last-Translator: luisg123v <lgonzalez@vauxoo.com>, 2018\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -988,7 +990,7 @@ msgstr "Centro de Ayuda"
 #: model:ir.ui.menu,name:helpdesk.menu_helpdesk_root
 #: model_terms:ir.ui.view,arch_db:helpdesk.digest_digest_view_form
 msgid "Helpdesk"
-msgstr "Helpdesk"
+msgstr "Servicio de Asistencia"
 
 #. module: helpdesk
 #: model:ir.actions.act_window,name:helpdesk.helpdesk_team_dashboard_action_main
@@ -1003,7 +1005,7 @@ msgstr "Políticas ANS del servicio de asistencia"
 #. module: helpdesk
 #: model:ir.model,name:helpdesk.model_helpdesk_stage
 msgid "Helpdesk Stage"
-msgstr ""
+msgstr "Etapa del Servicio de Asistencia"
 
 #. module: helpdesk
 #: model:ir.model,name:helpdesk.model_helpdesk_tag

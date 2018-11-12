@@ -2,12 +2,16 @@
 # This file contains the translation of the following modules:
 # * account_plaid
 # 
+# Translators:
+# krnkris, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
 "PO-Revision-Date: 2018-08-24 11:36+0000\n"
+"Last-Translator: krnkris, 2018\n"
 "Language-Team: Hungarian (https://www.transifex.com/odoo/teams/41243/hu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,7 +28,7 @@ msgstr ""
 #: code:addons/account_plaid/models/plaid.py:55
 #, python-format
 msgid "Get %s status code for call to %s. Content message: %s"
-msgstr ""
+msgstr "Ezt az állapotot kapja: %s amint ezt hívja %s. Tartalmi üzenet: %s"
 
 #. module: account_plaid
 #: model:ir.model,name:account_plaid.model_account_online_journal
@@ -40,7 +44,7 @@ msgstr ""
 #. module: account_plaid
 #: selection:account.online.provider,provider_type:0
 msgid "Plaid"
-msgstr ""
+msgstr "Fizetve"
 
 #. module: account_plaid
 #: model:ir.model.fields,field_description:account_plaid.field_account_online_provider__plaid_error_type
@@ -55,12 +59,12 @@ msgstr ""
 #. module: account_plaid
 #: model:ir.model.fields,field_description:account_plaid.field_account_online_provider__provider_type
 msgid "Provider Type"
-msgstr ""
+msgstr "Szolgáltató típus"
 
 #. module: account_plaid
 #: model:ir.model,name:account_plaid.model_account_online_provider
 msgid "Provider for online account synchronization"
-msgstr ""
+msgstr "Online könyvelési szinkronizálás szolgáltatója"
 
 #. module: account_plaid
 #: code:addons/account_plaid/models/plaid.py:41
@@ -82,7 +86,7 @@ msgstr ""
 #. module: account_plaid
 #: selection:account.online.provider,provider_type:0
 msgid "Yodlee"
-msgstr ""
+msgstr "Yodlee"
 
 #. module: account_plaid
 #: model:ir.model.fields,help:account_plaid.field_account_online_provider__plaid_item_id

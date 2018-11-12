@@ -2,12 +2,16 @@
 # This file contains the translation of the following modules:
 # * website_helpdesk_forum
 # 
+# Translators:
+# krnkris, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
 "PO-Revision-Date: 2018-08-24 11:49+0000\n"
+"Last-Translator: krnkris, 2018\n"
 "Language-Team: Hungarian (https://www.transifex.com/odoo/teams/41243/hu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,7 +22,7 @@ msgstr ""
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
 msgid "<span>By </span>"
-msgstr ""
+msgstr "<span>Által </span>"
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
@@ -28,7 +32,7 @@ msgstr ""
 #. module: website_helpdesk_forum
 #: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_ticket__forum_post_id
 msgid "Forum Post"
-msgstr ""
+msgstr "Fórum bejegyzés"
 
 #. module: website_helpdesk_forum
 #: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_ticket__use_website_helpdesk_forum
@@ -86,12 +90,12 @@ msgstr ""
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
 msgid "Question has accepted answer"
-msgstr ""
+msgstr "Elfogadott válasza van a kérdésnek"
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
 msgid "Redirect to external link"
-msgstr ""
+msgstr "Átirányítás egy külső területre."
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.helpdesk_ticket_view_form_inherit_website_helpdesk_forum
@@ -112,7 +116,7 @@ msgstr ""
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
 msgid "View"
-msgstr ""
+msgstr "Nézet"
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.helpdesk_team_view_form_inherit_website_helpdesk_forum

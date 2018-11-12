@@ -2,12 +2,22 @@
 # This file contains the translation of the following modules:
 # * website_helpdesk_slides
 # 
+# Translators:
+# Rivo Zängov <eraser@eraser.ee>, 2018
+# Martin Trigaux, 2018
+# Wanradt Koell <wanradt@gmail.com>, 2018
+# Arma Gedonsky <armagedonsky@hot.ee>, 2018
+# Eneli Õigus <enelioigus@gmail.com>, 2018
+# Martin Aavastik <martin@avalah.ee>, 2018
+# Helen Sulaoja <helen@avalah.ee>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
 "PO-Revision-Date: 2018-08-24 11:49+0000\n"
+"Last-Translator: Helen Sulaoja <helen@avalah.ee>, 2018\n"
 "Language-Team: Estonian (https://www.transifex.com/odoo/teams/41243/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,27 +34,27 @@ msgstr ""
 #. module: website_helpdesk_slides
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.slide_upload_wizard_view_form
 msgid "Cancel"
-msgstr ""
+msgstr "Tühista"
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__category_id
 msgid "Category"
-msgstr ""
+msgstr "Kategooria"
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__channel_id
 msgid "Channel"
-msgstr ""
+msgstr "Allikas"
 
 #. module: website_helpdesk_slides
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.slides_page
 msgid "Click here to view more result..."
-msgstr ""
+msgstr "Vajuta siia, et näha rohkem tulemusi ..."
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__datas
 msgid "Content"
-msgstr ""
+msgstr "Sisu"
 
 #. module: website_helpdesk_slides
 #: code:addons/website_helpdesk_slides/wizard/slide_slide.py:38
@@ -57,17 +67,17 @@ msgstr ""
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Loonud"
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Loomise kuupäev"
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__description
 msgid "Description"
-msgstr ""
+msgstr "Kirjeldus"
 
 #. module: website_helpdesk_slides
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.slide_upload_wizard_view_form
@@ -77,27 +87,27 @@ msgstr ""
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Näidatav nimi"
 
 #. module: website_helpdesk_slides
 #: selection:slide.upload.wizard,slide_type:0
 msgid "Document"
-msgstr ""
+msgstr "Dokument"
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__document_id
 msgid "Document ID"
-msgstr ""
+msgstr "Dokumendi ID"
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__url
 msgid "Document URL"
-msgstr ""
+msgstr "Dokumendi URL"
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__file_name
 msgid "Filename"
-msgstr ""
+msgstr "Faili nimi"
 
 #. module: website_helpdesk_slides
 #: model:ir.model,name:website_helpdesk_slides.model_helpdesk_team
@@ -107,12 +117,12 @@ msgstr ""
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: website_helpdesk_slides
 #: selection:slide.upload.wizard,slide_type:0
 msgid "Infographic"
-msgstr ""
+msgstr "Teabegraafika"
 
 #. module: website_helpdesk_slides
 #: code:addons/website_helpdesk_slides/wizard/slide_slide.py:53
@@ -129,27 +139,27 @@ msgstr ""
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Viimati muudetud (millal)"
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Viimati uuendatud (kelle poolt)"
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Viimati uuendatud (millal)"
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__mime_type
 msgid "Mime-type"
-msgstr ""
+msgstr "Failitüüp"
 
 #. module: website_helpdesk_slides
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.slide_upload_wizard_view_form
 msgid "Name"
-msgstr ""
+msgstr "Nimi"
 
 #. module: website_helpdesk_slides
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.website_helpdesk_slides_team_page
@@ -170,7 +180,7 @@ msgstr ""
 #. module: website_helpdesk_slides
 #: selection:slide.upload.wizard,slide_type:0
 msgid "Presentation"
-msgstr ""
+msgstr "Esitlus"
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_helpdesk_team__elearning_url
@@ -180,12 +190,12 @@ msgstr ""
 #. module: website_helpdesk_slides
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.slide_upload_wizard_view_form
 msgid "Save"
-msgstr ""
+msgstr "Salvesta"
 
 #. module: website_helpdesk_slides
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.slide_upload_wizard_view_form
 msgid "Slide"
-msgstr ""
+msgstr "Slaid"
 
 #. module: website_helpdesk_slides
 #: model:ir.actions.act_window,name:website_helpdesk_slides.slide_upload_action
@@ -205,12 +215,12 @@ msgstr ""
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__tag_ids
 msgid "Tags"
-msgstr ""
+msgstr "Sildid"
 
 #. module: website_helpdesk_slides
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.slide_upload_wizard_view_form
 msgid "Tags..."
-msgstr ""
+msgstr "Sildid..."
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,help:website_helpdesk_slides.field_slide_upload_wizard__slide_type
@@ -222,7 +232,7 @@ msgstr ""
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,help:website_helpdesk_slides.field_helpdesk_team__elearning_url
 msgid "The full URL to access the document through the website."
-msgstr ""
+msgstr "The full URL to access the document through the website."
 
 #. module: website_helpdesk_slides
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.helpdesk_team_view_form_inherit_website_helpdesk_slides
@@ -232,12 +242,12 @@ msgstr ""
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__name
 msgid "Title"
-msgstr ""
+msgstr "Tiitel"
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__slide_type
 msgid "Type"
-msgstr ""
+msgstr "Tüüp"
 
 #. module: website_helpdesk_slides
 #: code:addons/website_helpdesk_slides/wizard/slide_slide.py:87
@@ -248,7 +258,7 @@ msgstr ""
 #. module: website_helpdesk_slides
 #: selection:slide.upload.wizard,slide_type:0
 msgid "Video"
-msgstr ""
+msgstr "Video"
 
 #. module: website_helpdesk_slides
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.helpdesk_team_view_form_inherit_website_helpdesk_slides
@@ -258,20 +268,20 @@ msgstr ""
 #. module: website_helpdesk_slides
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.slides_page
 msgid "Views ."
-msgstr ""
+msgstr "Vaated"
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,help:website_helpdesk_slides.field_slide_upload_wizard__document_id
 msgid "Youtube or Google Document ID"
-msgstr ""
+msgstr "Youtube või Google dokumendi ID"
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,help:website_helpdesk_slides.field_slide_upload_wizard__url
 msgid "Youtube or Google Document URL"
-msgstr ""
+msgstr "Youtube või Google dokumendi URL"
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_helpdesk_team__elearning_id
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.helpdesk_team_view_form_inherit_website_helpdesk_slides
 msgid "eLearning"
-msgstr ""
+msgstr "eÕpe"

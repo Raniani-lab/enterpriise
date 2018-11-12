@@ -2,12 +2,23 @@
 # This file contains the translation of the following modules:
 # * mrp_workorder
 # 
+# Translators:
+# Rivo Zängov <eraser@eraser.ee>, 2018
+# Martin Trigaux, 2018
+# Arma Gedonsky <armagedonsky@hot.ee>, 2018
+# Gert Valdek <gert@airobot.ee>, 2018
+# Egon Raamat <egon@avalah.ee>, 2018
+# Eneli Õigus <enelioigus@gmail.com>, 2018
+# Martin Aavastik <martin@avalah.ee>, 2018
+# Helen Sulaoja <helen@avalah.ee>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-08 07:14+0000\n"
 "PO-Revision-Date: 2018-08-24 11:38+0000\n"
+"Last-Translator: Helen Sulaoja <helen@avalah.ee>, 2018\n"
 "Language-Team: Estonian (https://www.transifex.com/odoo/teams/41243/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -40,31 +51,31 @@ msgstr ""
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet_menu
 msgid "Block"
-msgstr ""
+msgstr "Blokeeri"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__check_ids
 msgid "Check"
-msgstr ""
+msgstr "Check"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_production__check_ids
 msgid "Checks"
-msgstr ""
+msgstr "Tšekid"
 
 #. module: mrp_workorder
 #. openerp-web
 #: code:addons/mrp_workorder/static/src/xml/widget_template.xml:8
 #, python-format
 msgid "Clear"
-msgstr ""
+msgstr "Tühjenda"
 
 #. module: mrp_workorder
 #. openerp-web
 #: code:addons/mrp_workorder/static/src/xml/widget_template.xml:28
 #, python-format
 msgid "Close"
-msgstr ""
+msgstr "Kinnitatud"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__component_id
@@ -82,12 +93,12 @@ msgstr ""
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Continue"
-msgstr ""
+msgstr "Jätka"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__control_date
 msgid "Control Date"
-msgstr ""
+msgstr "Control Date"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__current_quality_check_id
@@ -98,7 +109,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_inherit_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Date"
-msgstr ""
+msgstr "Kuupäev"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,help:mrp_workorder.field_quality_point__test_type_id
@@ -117,14 +128,14 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_inherit_workorder
 #, python-format
 msgid "Done"
-msgstr ""
+msgstr "Tehtud"
 
 #. module: mrp_workorder
 #. openerp-web
 #: code:addons/mrp_workorder/static/src/xml/mrp_workorder_barcode.xml:8
 #, python-format
 msgid "Download"
-msgstr ""
+msgstr "Lae alla"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
@@ -180,7 +191,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__lot_id
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__lot_id
 msgid "Lot"
-msgstr ""
+msgstr "Partii"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
@@ -195,12 +206,12 @@ msgstr ""
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_production_tree_view_planning
 msgid "Manufacturing Orders"
-msgstr ""
+msgstr "Tootmistellimused"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Mark as Done"
-msgstr ""
+msgstr "Märgi tehtuks"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
@@ -211,40 +222,40 @@ msgstr ""
 #: code:addons/mrp_workorder/models/mrp_workorder.py:305
 #, python-format
 msgid "Menu"
-msgstr ""
+msgstr "Menüü"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__move_line_id
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__move_line_id
 msgid "Move Line"
-msgstr ""
+msgstr "Kande rida"
 
 #. module: mrp_workorder
 #: model:ir.actions.server,name:mrp_workorder.production_order_unplan_server_action
 msgid "Mrp: Unplan Production Orders"
-msgstr ""
+msgstr "Mrp: Unplan Production Orders"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Next"
-msgstr ""
+msgstr "Järgmine"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__note
 msgid "Note"
-msgstr ""
+msgstr "Märkused"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_alert__workorder_id
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__workorder_id
 msgid "Operation"
-msgstr ""
+msgstr "Operatsioon"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_inherit_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Operator"
-msgstr ""
+msgstr "Operaator"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__parent_id
@@ -254,12 +265,12 @@ msgstr ""
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_point__routing_id
 msgid "Parent Routing"
-msgstr ""
+msgstr "Parent Routing"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Pause"
-msgstr ""
+msgstr "Peata"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__picture
@@ -269,7 +280,7 @@ msgstr ""
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_production_view_form_inherit_planning
 msgid "Plan"
-msgstr ""
+msgstr "Plaan"
 
 #. module: mrp_workorder
 #: model_terms:ir.actions.act_window,help:mrp_workorder.mrp_workorder_action_tablet
@@ -279,12 +290,12 @@ msgstr ""
 #. module: mrp_workorder
 #: model:ir.ui.menu,name:mrp_workorder.menu_mrp_workorder_production
 msgid "Planning by Production"
-msgstr ""
+msgstr "Planning by Production"
 
 #. module: mrp_workorder
 #: model:ir.ui.menu,name:mrp_workorder.menu_mrp_workorder_workcenter
 msgid "Planning by Workcenter"
-msgstr ""
+msgstr "Planning by Workcenter"
 
 #. module: mrp_workorder
 #: code:addons/mrp_workorder/models/mrp_workorder.py:179
@@ -316,45 +327,45 @@ msgstr ""
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Previous"
-msgstr ""
+msgstr "Eelmine"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_inherit_workorder
 msgid "Process"
-msgstr ""
+msgstr "Protsess"
 
 #. module: mrp_workorder
 #: model:ir.model,name:mrp_workorder.model_mrp_production
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_alert__production_id
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__production_id
 msgid "Production Order"
-msgstr ""
+msgstr "Tootmiskorraldus"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Production Workcenter"
-msgstr ""
+msgstr "Production Workcenter"
 
 #. module: mrp_workorder
 #: model:ir.model,name:mrp_workorder.model_quality_alert
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__quality_alert_ids
 msgid "Quality Alert"
-msgstr ""
+msgstr "Quality Alert"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__quality_alert_count
 msgid "Quality Alert Count"
-msgstr ""
+msgstr "Quality Alert Count"
 
 #. module: mrp_workorder
 #: model:ir.model,name:mrp_workorder.model_quality_check
 msgid "Quality Check"
-msgstr ""
+msgstr "Quality Check"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__quality_check_fail
 msgid "Quality Check Fail"
-msgstr ""
+msgstr "Quality Check Fail"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__quality_check_todo
@@ -385,7 +396,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_production_tree_view_planning
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Quantity"
-msgstr ""
+msgstr "Kogus"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
@@ -411,7 +422,7 @@ msgstr ""
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__user_id
 msgid "Responsible"
-msgstr ""
+msgstr "Vastutaja"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__result
@@ -421,32 +432,32 @@ msgstr ""
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.view_routing_steps_search
 msgid "Routing"
-msgstr ""
+msgstr "Marsruutimine"
 
 #. module: mrp_workorder
 #: model:ir.model,name:mrp_workorder.model_mrp_routing
 msgid "Routings"
-msgstr ""
+msgstr "Tarnimised"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_production_view_form_inherit_planning
 msgid "Scheduled Date"
-msgstr ""
+msgstr "Planeeritud kuupäev"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_production__date_planned_finished_wo
 msgid "Scheduled End Date"
-msgstr ""
+msgstr "Scheduled End Date"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_production__date_planned_start_wo
 msgid "Scheduled Start Date"
-msgstr ""
+msgstr "Scheduled Start Date"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet_menu
 msgid "Scrap"
-msgstr ""
+msgstr "Praak"
 
 #. module: mrp_workorder
 #: selection:quality.point,worksheet:0
@@ -456,7 +467,7 @@ msgstr ""
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Serial Number"
-msgstr ""
+msgstr "Seerianumber"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
@@ -466,7 +477,7 @@ msgstr ""
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Skip"
-msgstr ""
+msgstr "Jäta vahele"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__skip_completed_checks
@@ -486,7 +497,7 @@ msgstr ""
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Status"
-msgstr ""
+msgstr "Staatus"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__quality_state_for_summary
@@ -496,7 +507,7 @@ msgstr ""
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_point__operation_id
 msgid "Step"
-msgstr ""
+msgstr "Samm"
 
 #. module: mrp_workorder
 #: model:ir.actions.act_window,name:mrp_workorder.action_mrp_workorder_show_steps
@@ -515,7 +526,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__test_type
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_point__test_type_id
 msgid "Test Type"
-msgstr ""
+msgstr "Test Type"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,help:mrp_workorder.field_quality_point__routing_id
@@ -524,56 +535,59 @@ msgid ""
 "create work orders afterwards which alters the execution of the "
 "manufacturing order."
 msgstr ""
+"The routing contains all the Work Centers used and for how long. This will "
+"create work orders afterwards which alters the execution of the "
+"manufacturing order."
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__title
 msgid "Title"
-msgstr ""
+msgstr "Tiitel"
 
 #. module: mrp_workorder
 #: code:addons/mrp_workorder/models/quality.py:110
 #, python-format
 msgid "To Do"
-msgstr ""
+msgstr "Tegemiseks"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_production_tree_view_planning
 msgid "Total Qty"
-msgstr ""
+msgstr "Total Qty"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_point__code
 msgid "Type of Operation"
-msgstr ""
+msgstr "Operatsiooni tüüp"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet_menu
 msgid "Unblock"
-msgstr ""
+msgstr "Unblock"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__component_uom_id
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_production_tree_view_planning
 msgid "Unit of Measure"
-msgstr ""
+msgstr "Mõõtühik"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_production_view_form_inherit_planning
 msgid "Unplan"
-msgstr ""
+msgstr "Unplan"
 
 #. module: mrp_workorder
 #. openerp-web
 #: code:addons/mrp_workorder/static/src/xml/widget_template.xml:10
 #, python-format
 msgid "Uploading..."
-msgstr ""
+msgstr "Üleslaadimine..."
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Validate"
-msgstr ""
+msgstr "Kinnita"
 
 #. module: mrp_workorder
 #. openerp-web
@@ -586,18 +600,18 @@ msgstr ""
 #: code:addons/mrp_workorder/models/mrp_workorder.py:495
 #, python-format
 msgid "Warning"
-msgstr ""
+msgstr "Hoiatus"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_alert__workcenter_id
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__workcenter_id
 msgid "Work Center"
-msgstr ""
+msgstr "Töökeskus"
 
 #. module: mrp_workorder
 #: model:ir.model,name:mrp_workorder.model_mrp_workorder
 msgid "Work Order"
-msgstr ""
+msgstr "Work Order"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.quality_point_view_form_inherit_mrp
@@ -608,7 +622,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:mrp_workorder.mrp_workorder_action_tablet
 #: model:ir.ui.menu,name:mrp_workorder.mrp_workorder_menu_planning
 msgid "Work Orders"
-msgstr ""
+msgstr "Töökorraldused"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workcenter_view_kanban_inherit_workorder
@@ -623,7 +637,7 @@ msgstr ""
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_point__worksheet
 msgid "Worksheet"
-msgstr ""
+msgstr "Worksheet"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_point__worksheet_page
@@ -653,7 +667,7 @@ msgstr ""
 #: code:addons/mrp_workorder/models/mrp_workorder.py:414
 #, python-format
 msgid "You still need to do the quality checks!"
-msgstr ""
+msgstr "You still need to do the quality checks!"
 
 #. module: mrp_workorder
 #. openerp-web
@@ -665,4 +679,4 @@ msgstr ""
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_production_view_form_inherit_planning
 msgid "to"
-msgstr ""
+msgstr "kuni"

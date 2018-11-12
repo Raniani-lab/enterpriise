@@ -2,12 +2,23 @@
 # This file contains the translation of the following modules:
 # * hr_contract_salary
 # 
+# Translators:
+# Wanradt Koell <wanradt@gmail.com>, 2018
+# Arma Gedonsky <armagedonsky@hot.ee>, 2018
+# Rivo Zängov <eraser@eraser.ee>, 2018
+# Martin Trigaux, 2018
+# Egon Raamat <egon@avalah.ee>, 2018
+# Eneli Õigus <enelioigus@gmail.com>, 2018
+# Martin Aavastik <martin@avalah.ee>, 2018
+# Helen Sulaoja <helen@avalah.ee>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
 "PO-Revision-Date: 2018-08-24 11:38+0000\n"
+"Last-Translator: Helen Sulaoja <helen@avalah.ee>, 2018\n"
 "Language-Team: Estonian (https://www.transifex.com/odoo/teams/41243/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -44,17 +55,17 @@ msgstr ""
 #: model:mail.template,subject:hr_contract_salary.mail_template_send_offer
 #: model:mail.template,subject:hr_contract_salary.mail_template_send_offer_applicant
 msgid "${object.company_id.name} : Job Offer - ${object.name}"
-msgstr ""
+msgstr "${object.company_id.name} : Tööpakkumine - ${object.name}"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "+ International Communication"
-msgstr ""
+msgstr "+ rahvusvaheline suhtlus"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "+32 2 290 34 90"
-msgstr ""
+msgstr "+32 2 290 34 90"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -64,12 +75,12 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "00.00.00-000.00"
-msgstr ""
+msgstr "00.00.00-000.00"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "110 €"
-msgstr ""
+msgstr "110 €"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -79,7 +90,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "150 €"
-msgstr ""
+msgstr "150 €"
 
 #. module: hr_contract_salary
 #: model:mail.template,body_html:hr_contract_salary.mail_template_send_offer
@@ -98,27 +109,27 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "<i class=\"fa fa-1x fa-crosshairs fa-fw fa-lg\"/> Commissions"
-msgstr ""
+msgstr "<i class=\"fa fa-1x fa-crosshairs fa-fw fa-lg\"/>Vahendustasu"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "<i class=\"fa fa-1x fa-cutlery fa-fw\"/> Meal Vouchers"
-msgstr ""
+msgstr "<i class=\"fa fa-1x fa-cutlery fa-fw\"/>Toidutalong"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "<i class=\"fa fa-1x fa-gift fa-fw fa-lg\"/> 13<sup>th</sup> Month"
-msgstr ""
+msgstr "<i class=\"fa fa-1x fa-gift fa-fw fa-lg\"/>13<sup>s</sup> kuu"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "<i class=\"fa fa-1x fa-globe fa-fw fa-lg\"/> Internet Subscription"
-msgstr ""
+msgstr "<i class=\"fa fa-1x fa-globe fa-fw fa-lg\"/> Interneti tellimus"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "<i class=\"fa fa-1x fa-leaf fa-fw\"/> Eco Vouchers"
-msgstr ""
+msgstr "<i class=\"fa fa-1x fa-leaf fa-fw\"/> Eco vautšer"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -151,22 +162,22 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "<i class=\"fa fa-1x fa-minus fa-fw\"/> Meal Vouchers"
-msgstr ""
+msgstr "<i class=\"fa fa-1x fa-minus fa-fw\"/> Toidutalongid"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "<i class=\"fa fa-1x fa-minus fa-fw\"/> Social contribution"
-msgstr ""
+msgstr "<i class=\"fa fa-1x fa-minus fa-fw\"/> Sotsiaaltoetus"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "<i class=\"fa fa-1x fa-minus fa-fw\"/> Special social contribution"
-msgstr ""
+msgstr "<i class=\"fa fa-1x fa-minus fa-fw\"/> Eesmärgiline sotsiaaltoetus"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "<i class=\"fa fa-1x fa-minus fa-fw\"/> Withholding Tax"
-msgstr ""
+msgstr "<i class=\"fa fa-1x fa-minus fa-fw\"/> Kinnipeetav maks"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -186,7 +197,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "<i class=\"fa fa-1x fa-plus fa-fw\"/> Employment Bonus"
-msgstr ""
+msgstr "<i class=\"fa fa-1x fa-plus fa-fw\"/> Töötaja boonustasu"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -196,12 +207,12 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "<i class=\"fa fa-1x fa-plus fa-fw\"/> Representation Fees"
-msgstr ""
+msgstr "<i class=\"fa fa-1x fa-plus fa-fw\"/> Esindamistasud"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "<i class=\"fa fa-1x fa-plus fa-fw\"/> Withholding Tax Reductions"
-msgstr ""
+msgstr "<i class=\"fa fa-1x fa-plus fa-fw\"/> Kinnipeetavate maksude vähendamine"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -211,17 +222,17 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "<i class=\"fa fa-1x fa-suitcase fa-fw\"/> Legal Leaves"
-msgstr ""
+msgstr "<i class=\"fa fa-1x fa-suitcase fa-fw\"/> Palgaga puhkus"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "<i class=\"fa fa-1x fa-tint fa-fw\"/> Fuel Card"
-msgstr ""
+msgstr "<i class=\"fa fa-1x fa-tint fa-fw\"/> Kütusekaart"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package_thank_you
 msgid "<i class=\"fa fa-check-circle-o mr8\"/>Congratulations"
-msgstr ""
+msgstr "<i class=\"fa fa-check-circle-o mr8\"/> Palju õnne"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -362,7 +373,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_applicant_view_form
 msgid "<span class=\"o_stat_text\">Contracts</span>"
-msgstr ""
+msgstr "<span class=\"o_stat_text\">Lepingud</span>"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_view_form
@@ -372,18 +383,18 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_view_form
 msgid "<span class=\"o_stat_text\">Signature Requests</span>"
-msgstr ""
+msgstr "<span class=\"o_stat_text\">Allkirja taotlus</span>"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_view_form
 msgid "Accept Request"
-msgstr ""
+msgstr "Kinnita taotlus"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_applicant__access_token_end_date
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__access_token_end_date
 msgid "Access Token Validity Date"
-msgstr ""
+msgstr "Saa ligi koodi kehtivusajale"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__active_employee
@@ -393,14 +404,14 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Address"
-msgstr ""
+msgstr "Aadress"
 
 #. module: hr_contract_salary
 #: model:ir.model,name:hr_contract_salary.model_hr_applicant
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__applicant_id
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__applicant_id
 msgid "Applicant"
-msgstr ""
+msgstr "Kandidaat"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -417,17 +428,17 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "BASIC SALARY"
-msgstr ""
+msgstr "PÕHIPALK"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "BE10 3631 0709 4104"
-msgstr ""
+msgstr "BE10 3631 0709 4104"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Bachelor"
-msgstr ""
+msgstr "Bakalaureus"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -437,22 +448,22 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Bank account"
-msgstr ""
+msgstr "Pangakonto"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Batman"
-msgstr ""
+msgstr "Batman"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
 msgid "Birth"
-msgstr ""
+msgstr "Sünnipäev"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Birthdate"
-msgstr ""
+msgstr "Sünnipäev"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -484,7 +495,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.generate_simulation_link_view_form
 msgid "Cancel"
-msgstr ""
+msgstr "Tühista"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -494,12 +505,12 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Cash"
-msgstr ""
+msgstr "Kassa"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Certificate"
-msgstr ""
+msgstr "Sertifikaat"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -514,7 +525,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "City"
-msgstr ""
+msgstr "Linn"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -524,7 +535,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.actions.act_window,help:hr_contract_salary.action_hr_contract_templates
 msgid "Click here to create new contracts."
-msgstr ""
+msgstr "Kliki uute lepingute koostamiseks."
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -534,12 +545,12 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Company Car"
-msgstr ""
+msgstr "Ettevõtte auto"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Computer Science"
-msgstr ""
+msgstr "Arvutiteadus"
 
 #. module: hr_contract_salary
 #: model:ir.model,name:hr_contract_salary.model_res_config_settings
@@ -554,13 +565,13 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__access_token_consumed
 msgid "Consumed Access Token"
-msgstr ""
+msgstr "Kasutatud juurdepääsukood"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Contact Information"
-msgstr ""
+msgstr "Kontaktinformatsioon"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -571,19 +582,19 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__contract_id
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__default_contract_id
 msgid "Contract Template"
-msgstr ""
+msgstr "Lepingu mall"
 
 #. module: hr_contract_salary
 #: model:ir.actions.act_window,name:hr_contract_salary.action_hr_contract_templates
 #: model:ir.ui.menu,name:hr_contract_salary.hr_menu_contract_templates
 msgid "Contract Templates"
-msgstr ""
+msgstr "Lepingute näidised"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__contract_type
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__contract_type
 msgid "Contract Type"
-msgstr ""
+msgstr "Lepingu tüüp"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -593,7 +604,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__contract_update_template_id
 msgid "Contract Update Document Template"
-msgstr ""
+msgstr "Lepingu uuendamise dokumendi näidis"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_view_form
@@ -603,7 +614,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Country"
-msgstr ""
+msgstr "Riik"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -623,33 +634,34 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Loonud"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Loomise kuupäev"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Customize your salary"
-msgstr ""
+msgstr "Kohandage oma palka"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_res_config_settings__access_token_validity
 msgid "Default Access Token Validity Duration"
-msgstr ""
+msgstr "Vaikimisi juurdepääsukoodi kehtivusaeg"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_job__default_contract_id
 msgid "Default Contract for New Employees"
-msgstr ""
+msgstr "Vaikimisi leping uuele töötajale"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract__default_contract_id
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_job__default_contract_id
 msgid "Default contract used when making an offer to an applicant."
 msgstr ""
+"Vaikimisi leping, mida kasutatakse kandideerijale pakkumise tegemiseks."
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract__sign_template_id
@@ -657,32 +669,35 @@ msgid ""
 "Default document that the applicant will have to sign to accept a contract "
 "offer."
 msgstr ""
+"Vaikimisi dokument, mille peab kandideerija allkirjastama lepingu pakkumise "
+"aktsepteerimiseks."
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract__contract_update_template_id
 msgid ""
 "Default document that the employee will have to sign to update his contract."
 msgstr ""
+"Vaikimisi dokument, mille töötaja peab allkirjastama lepingu uuendamiseks."
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Details"
-msgstr ""
+msgstr "Üksikasjad"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Disabled"
-msgstr ""
+msgstr "Puudega"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Disabled Children"
-msgstr ""
+msgstr "Puudega laps"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Disabled Spouse"
-msgstr ""
+msgstr "Puudega abikaasa"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -717,12 +732,12 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Näidatav nimi"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Divorced"
-msgstr ""
+msgstr "Lahutatud"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -737,12 +752,12 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
 msgid "Education"
-msgstr ""
+msgstr "Haridus"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Email"
-msgstr ""
+msgstr "E-mail"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__email_to
@@ -752,7 +767,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
 msgid "Email:"
-msgstr ""
+msgstr "E-post:"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -768,7 +783,7 @@ msgstr ""
 #: model:ir.model,name:hr_contract_salary.model_hr_employee
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__employee_id
 msgid "Employee"
-msgstr ""
+msgstr "Töötaja"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__final_yearly_costs
@@ -779,7 +794,7 @@ msgstr ""
 #: model:ir.model,name:hr_contract_salary.model_hr_contract
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__employee_contract_id
 msgid "Employee Contract"
-msgstr ""
+msgstr "Tööleping"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -794,12 +809,12 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Female"
-msgstr ""
+msgstr "Naine"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Field of Study"
-msgstr ""
+msgstr "Õppevaldkond"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -824,7 +839,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "GROSS SALARY"
-msgstr ""
+msgstr "BRUTOPALK"
 
 #. module: hr_contract_salary
 #: model:ir.model,name:hr_contract_salary.model_generate_simulation_link
@@ -856,13 +871,13 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Gross"
-msgstr ""
+msgstr "Bruto"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__hr_responsible_id
 #: model:sign.item.role,name:hr_contract_salary.sign_item_role_job_responsible
 msgid "HR Responsible"
-msgstr ""
+msgstr "Vastutav personal"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -885,11 +900,13 @@ msgid ""
 "He/She will review your contract.<br/> Feel free to contact him/her if you "
 "have further questions."
 msgstr ""
+"Tema vaatab üle sinu lepingu.<br/>Täiendavate küsimuste korral pöörduge "
+"julgelt tema poole."
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Hide <i class=\"fa fa-chevron-up\"/>"
-msgstr ""
+msgstr "Peida <i class=\"fa fa-chevron-up\"/>"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -904,7 +921,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -926,7 +943,7 @@ msgstr ""
 msgid ""
 "If the active field is set to False, it will allow you to hide the resource "
 "record without removing it."
-msgstr ""
+msgstr "Mitteaktiivset ressursi kirjet on võimalik peita ilma kustutamata."
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -936,7 +953,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "In case of emergency"
-msgstr ""
+msgstr "Hädaolukorras"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__customer_relation
@@ -966,7 +983,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.model,name:hr_contract_salary.model_hr_job
 msgid "Job Position"
-msgstr ""
+msgstr "Ametikoht"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -976,7 +993,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__job_title
 msgid "Job Title"
-msgstr ""
+msgstr "Ametinimetus"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -996,7 +1013,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Viimati muudetud (millal)"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -1006,32 +1023,32 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Viimati uuendatud (kelle poolt)"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Viimati uuendatud (millal)"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Legal Cohabitant"
-msgstr ""
+msgstr "Elukaaslasega"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Legal Leaves"
-msgstr ""
+msgstr "Ametlik puhkus"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Male"
-msgstr ""
+msgstr "Mees"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Marital Status"
-msgstr ""
+msgstr "Perekonnaseis"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -1041,12 +1058,12 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Married"
-msgstr ""
+msgstr "Abielus"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Master"
-msgstr ""
+msgstr "Meister"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -1066,7 +1083,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__new_car_model_id
 msgid "Model"
-msgstr ""
+msgstr "Mudel"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -1076,13 +1093,13 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Monthly Advantages"
-msgstr ""
+msgstr "Igakuised eelised"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Monthly Advantages in Cash"
-msgstr ""
+msgstr "Igakuise tasu informatsioon"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -1098,32 +1115,32 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Monthly Equivalent"
-msgstr ""
+msgstr "Igakuine ekvivalent"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Monthly Salary"
-msgstr ""
+msgstr "Kuupalk"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "NET SALARY"
-msgstr ""
+msgstr "NETOPALK"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Name"
-msgstr ""
+msgstr "Nimi"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "National Identification Number"
-msgstr ""
+msgstr "Isikukood"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Nationality"
-msgstr ""
+msgstr "Rahvus"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -1133,27 +1150,27 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Nature"
-msgstr ""
+msgstr "Olemus"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Net"
-msgstr ""
+msgstr "Neto"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Net calculation"
-msgstr ""
+msgstr "Neto arvutused"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__sign_template_id
 msgid "New Contract Document Template"
-msgstr ""
+msgstr "Uue lepingu dokumendi näidis"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "No"
-msgstr ""
+msgstr "Ei"
 
 #. module: hr_contract_salary
 #: code:addons/hr_contract_salary/controllers/main.py:592
@@ -1162,6 +1179,8 @@ msgid ""
 "No HR responsible defined on the job position. Please contact an "
 "administrator."
 msgstr ""
+"Sellele ametikohale ei ole vastutavat personali määratud. Palun kontakteeru "
+"administraatoriga."
 
 #. module: hr_contract_salary
 #: code:addons/hr_contract_salary/models/hr_contract.py:192
@@ -1186,17 +1205,17 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Number of Dependent Children"
-msgstr ""
+msgstr "Ülalpeetavate laste arv"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Number of Disabled Children"
-msgstr ""
+msgstr "Puudega laste arv"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__origin_contract_id
 msgid "Origin Contract"
-msgstr ""
+msgstr "Päritolu leping"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -1206,12 +1225,12 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Other"
-msgstr ""
+msgstr "Meeldetuletuse lisamine"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Other Dependent People"
-msgstr ""
+msgstr "Ülejäänud ülalpeetavad inimesed"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -1237,27 +1256,27 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract__hr_responsible_id
 msgid "Person responsible of validating the employee's contracts."
-msgstr ""
+msgstr "Töötajate lepingute kinnitamise eest vastutav isik."
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Person to call"
-msgstr ""
+msgstr "Inimene, kellele helistada"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
 msgid "Personal Information"
-msgstr ""
+msgstr "Isiklikud andmed"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Phone number"
-msgstr ""
+msgstr "Telefoninumber"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
 msgid "Phone:"
-msgstr ""
+msgstr "Telefon:"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -1276,23 +1295,25 @@ msgid ""
 "reference only.<br/> The amounts are calculated  based on a full time "
 "permanent contract."
 msgstr ""
+"Pange tähele, et see teave võib olla ebatäpne ning seda kasutades tuleks "
+"viidata.<br/> Summad arvutatakse täiskohaga lepingute põhjal."
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_applicant__proposed_contracts
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_applicant_view_form
 msgid "Proposed Contracts"
-msgstr ""
+msgstr "Lepingu kavandid"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_applicant__proposed_contracts_count
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__contract_reviews_count
 msgid "Proposed Contracts Count"
-msgstr ""
+msgstr "Lepingu kavandite arv"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Public Transportation"
-msgstr ""
+msgstr "Ühistransport"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -1302,7 +1323,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_view_form
 msgid "Refuse Request"
-msgstr ""
+msgstr "Keeldu taotlusest"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -1317,17 +1338,17 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__sign_request_ids
 msgid "Requested Signatures"
-msgstr ""
+msgstr "Nõutud allkirjad"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Review Contract &amp; Sign"
-msgstr ""
+msgstr "Vaata leping läbi ja allkirjasta"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "School"
-msgstr ""
+msgstr "Kool"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -1338,12 +1359,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_applicant__access_token
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__access_token
 msgid "Security Token"
-msgstr ""
+msgstr "Turvamärgis"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.generate_simulation_link_view_form
 msgid "Send Offer"
-msgstr ""
+msgstr "Saada pakkumine"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -1358,7 +1379,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Show <i class=\"fa fa-chevron-down\"/>"
-msgstr ""
+msgstr "Näita"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__sign_request_count
@@ -1373,7 +1394,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Single"
-msgstr ""
+msgstr "Vallaline"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -1398,12 +1419,12 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Spouse Net Revenue"
-msgstr ""
+msgstr "Abikaasa netotulu"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Spouse Other Net Revenue"
-msgstr ""
+msgstr "Abikaasa ülejäänud netotulu"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -1438,7 +1459,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "State"
-msgstr ""
+msgstr "Maakond"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -1448,17 +1469,17 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
 msgid "Status"
-msgstr ""
+msgstr "Staatus"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Street"
-msgstr ""
+msgstr "Tänav"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Street 2"
-msgstr ""
+msgstr "Tänav 2"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -1473,7 +1494,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "TAXABLE INCOME"
-msgstr ""
+msgstr "Maksustatav tulu"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -1483,12 +1504,12 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Tax status for spouse"
-msgstr ""
+msgstr "Abikaasa maksustaatus"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract__origin_contract_id
 msgid "The contract from which this contract has been duplicated."
-msgstr ""
+msgstr "Lepingu ankeet, millest antud leping on kopeeritud."
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -1496,6 +1517,8 @@ msgid ""
 "The number of days you get depends on your working schedule, the number of "
 "days used in your previous job and the number of months worked previously."
 msgstr ""
+"Saadav päevade arv sõltub teie töögraafikust, eelmisel töökohal kasutatud "
+"päevadest ning töötate kuude arvust."
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract__signatures_count
@@ -1526,17 +1549,17 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Total"
-msgstr ""
+msgstr "Kokku"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.res_config_settings_view_form
 msgid "Validity duration for salary package requests for new applicants"
-msgstr ""
+msgstr "Uute kandideerijate palgapakettide taotluste kehtivusaeg"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__vehicle_id
 msgid "Vehicle"
-msgstr ""
+msgstr "Sõiduk"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -1546,12 +1569,12 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Widower"
-msgstr ""
+msgstr "Lesk"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "With Income"
-msgstr ""
+msgstr "Sissetulekuga"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -1576,33 +1599,33 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Without Income"
-msgstr ""
+msgstr "Sissetulekuta"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Yearly Advantages"
-msgstr ""
+msgstr " Iga-aastased eelised"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Yearly Advantages in Cash"
-msgstr ""
+msgstr "Iga-aastased rahalised eelised"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Yes"
-msgstr ""
+msgstr "Jah"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Your Personal Information"
-msgstr ""
+msgstr "Isiklik informatsioon"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package_thank_you
 msgid "Your contract has been sent to:"
-msgstr ""
+msgstr "Sinu leping on saadetud:"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -1614,7 +1637,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Zip Code"
-msgstr ""
+msgstr "Postiindeks"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -1629,12 +1652,12 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "close"
-msgstr ""
+msgstr "sulge"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "day(s)"
-msgstr ""
+msgstr "Päev(ad)"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template

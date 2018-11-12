@@ -137,10 +137,11 @@ class report_account_consolidated_journal(models.AbstractModel):
                    j.name as journal_name, j.code as journal_code,
                    account.name as account_name, account.code as account_code,
                    j.company_id, account_id
-            FROM %s, account_journal j
-            LEFT JOIN res_company c ON j.company_id = c.id
-            JOIN account_account account ON "account_move_line".account_id = account.id
-            WHERE %s AND "account_move_line".journal_id = j.id
+            FROM %s, account_journal j, account_account account, res_company c
+            WHERE %s
+              AND "account_move_line".journal_id = j.id
+              AND "account_move_line".account_id = account.id
+              AND j.company_id = c.id
             GROUP BY month, account_id, yyyy, j.id, account.id, j.company_id
             ORDER BY j.id, account_code, yyyy, month, j.company_id
         """

@@ -4,13 +4,17 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# RGB Consulting <odoo@rgbconsulting.com>, 2018
+# Quim - eccit <quim@eccit.com>, 2018
+# Manel Fernandez <manelfera@outlook.com>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-02 10:31+0000\n"
-"PO-Revision-Date: 2018-10-02 10:31+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"PO-Revision-Date: 2018-08-24 11:37+0000\n"
+"Last-Translator: Manel Fernandez <manelfera@outlook.com>, 2018\n"
 "Language-Team: Catalan (https://www.transifex.com/odoo/teams/41243/ca/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -31,7 +35,7 @@ msgstr ""
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Campaign"
-msgstr ""
+msgstr "Campanya"
 
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
@@ -41,7 +45,7 @@ msgstr "Ciutat"
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Closed Date"
-msgstr ""
+msgstr "Data tancada"
 
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
@@ -51,7 +55,7 @@ msgstr "Companyia"
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Conversion Date"
-msgstr ""
+msgstr "Data de conversió"
 
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
@@ -61,7 +65,7 @@ msgstr "País"
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Creation Date"
-msgstr ""
+msgstr "Data de creació"
 
 #. module: crm_enterprise
 #: model:ir.model.fields,field_description:crm_enterprise.field_crm_lead__days_to_convert
@@ -77,13 +81,13 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_dashboard
 msgid "Days to Assign"
-msgstr ""
+msgstr "Dies per assignar"
 
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_dashboard
 msgid "Days to Close"
-msgstr ""
+msgstr "Dies per al tancament"
 
 #. module: crm_enterprise
 #: model:ir.model.fields,field_description:crm_enterprise.field_crm_lead__days_exceeding_closing
@@ -98,18 +102,18 @@ msgstr ""
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Expected Closing Date"
-msgstr ""
+msgstr "Data de tancament prevista"
 
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_dashboard
 msgid "Expected Revenue"
-msgstr ""
+msgstr "Ingrès esperat"
 
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Extended Filters"
-msgstr ""
+msgstr "Filtres estesos"
 
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
@@ -124,40 +128,40 @@ msgstr ""
 #. module: crm_enterprise
 #: model:ir.model,name:crm_enterprise.model_crm_lead
 msgid "Lead/Opportunity"
-msgstr ""
+msgstr "Iniciativa/Oportunitat"
 
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_pivot
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Leads"
-msgstr ""
+msgstr "Iniciatives"
 
 #. module: crm_enterprise
 #: model:ir.actions.act_window,name:crm_enterprise.crm_lead_action_dashboard
 msgid "Leads Analysis"
-msgstr ""
+msgstr "Anàlisi d'iniciatives"
 
 #. module: crm_enterprise
 #: selection:crm.lead,won_status:0
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Lost"
-msgstr ""
+msgstr "Perdut"
 
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Lost Reason"
-msgstr ""
+msgstr "Motiu de la pèrdua"
 
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Medium"
-msgstr ""
+msgstr "Mitja"
 
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "My Pipeline"
-msgstr ""
+msgstr "El meu flux de vendes"
 
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
@@ -166,22 +170,22 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_graph
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Opportunities"
-msgstr ""
+msgstr "Oportunitats"
 
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Opportunities Analysis"
-msgstr ""
+msgstr "Anàlisi d'oportunitats"
 
 #. module: crm_enterprise
 #: selection:crm.lead,won_status:0
 msgid "Pending"
-msgstr ""
+msgstr "Pendent"
 
 #. module: crm_enterprise
 #: model:ir.actions.act_window,name:crm_enterprise.crm_opportunity_action_dashboard
 msgid "Pipeline Analysis"
-msgstr ""
+msgstr "Anàlisis d'oportunitats"
 
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
@@ -192,7 +196,7 @@ msgstr ""
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Sales Channel"
-msgstr ""
+msgstr "Canal de Vendes"
 
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
@@ -202,30 +206,30 @@ msgstr "Comercial"
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Show only lead"
-msgstr ""
+msgstr "Mostrar només iniciatives"
 
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Show only opportunity"
-msgstr ""
+msgstr "Mostrar només oportunitats"
 
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Source"
-msgstr ""
+msgstr "Text original"
 
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Stage"
-msgstr ""
+msgstr "Etapa"
 
 #. module: crm_enterprise
 #: selection:crm.lead,won_status:0
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Won"
-msgstr ""
+msgstr "Guanyat"
 
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_graph
 msgid "leads"
-msgstr ""
+msgstr "iniciatives"

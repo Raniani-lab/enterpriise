@@ -144,7 +144,7 @@ msgstr "Activiteitsfase"
 #: model:ir.actions.act_window,name:hr_appraisal.mail_activity_type_action_config_hr_appraisal
 #: model:ir.ui.menu,name:hr_appraisal.hr_appraisal_menu_config_activity_type
 msgid "Activity Types"
-msgstr "Soorten activiteiten"
+msgstr "Activeiteitssoorten"
 
 #. module: hr_appraisal
 #: model:survey.label,value:hr_appraisal.arow_3_1_13

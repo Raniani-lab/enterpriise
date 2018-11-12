@@ -58,6 +58,7 @@ class ProviderFedex(models.Model):
                                            ('FEDEX_GROUND', 'FEDEX_GROUND'),
                                            ('FEDEX_2_DAY', 'FEDEX_2_DAY'),
                                            ('FEDEX_2_DAY_AM', 'FEDEX_2_DAY_AM'),
+                                           ('FEDEX_3_DAY_FREIGHT', 'FEDEX_3_DAY_FREIGHT'),
                                            ('FIRST_OVERNIGHT', 'FIRST_OVERNIGHT'),
                                            ('PRIORITY_OVERNIGHT', 'PRIORITY_OVERNIGHT'),
                                            ('STANDARD_OVERNIGHT', 'STANDARD_OVERNIGHT')],

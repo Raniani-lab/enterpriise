@@ -2,12 +2,20 @@
 # This file contains the translation of the following modules:
 # * sale_coupon
 # 
+# Translators:
+# gezza <geza.nagy@oregional.hu>, 2018
+# Kovács Tibor <kovika@gmail.com>, 2018
+# Ákos Nagy <akos.nagy@oregional.hu>, 2018
+# Martin Trigaux, 2018
+# krnkris, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-08 07:14+0000\n"
 "PO-Revision-Date: 2018-08-24 11:48+0000\n"
+"Last-Translator: krnkris, 2018\n"
 "Language-Team: Hungarian (https://www.transifex.com/odoo/teams/41243/hu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -214,12 +222,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_promo_program_search
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_search
 msgid "Active"
-msgstr ""
+msgstr "Aktív"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_program__promo_applicability
 msgid "Applicability"
-msgstr ""
+msgstr "Alkalmazhatóság"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_order__applied_coupon_ids
@@ -255,7 +263,7 @@ msgstr ""
 #. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_form_common
 msgid "Apply Discount"
-msgstr ""
+msgstr "Kedvezmény alkalmazása"
 
 #. module: sale_coupon
 #: selection:sale.coupon.program,promo_applicability:0
@@ -299,7 +307,7 @@ msgstr ""
 #. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.report_coupon
 msgid "Barcode"
-msgstr ""
+msgstr "Vonalkód"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_program__rule_partners_domain
@@ -329,13 +337,13 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_apply_code_view_form
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_generate_view_form
 msgid "Cancel"
-msgstr ""
+msgstr "Mégsem"
 
 #. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_promo_program_search
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_search
 msgid "Closed"
-msgstr ""
+msgstr "Lezárt"
 
 #. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_promo_program_search
@@ -346,7 +354,7 @@ msgstr ""
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon__code
 msgid "Code"
-msgstr ""
+msgstr "Kód"
 
 #. module: sale_coupon
 #: model:sale.coupon.program,name:sale_coupon.10_percent_auto_applied
@@ -356,23 +364,23 @@ msgstr ""
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_program__company_id
 msgid "Company"
-msgstr ""
+msgstr "Vállalat"
 
 #. module: sale_coupon
 #: code:addons/sale_coupon/models/sale_coupon.py:101
 #, python-format
 msgid "Compose Email"
-msgstr ""
+msgstr "Email írás"
 
 #. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_form_common
 msgid "Conditions"
-msgstr ""
+msgstr "Feltételek"
 
 #. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.report_coupon
 msgid "Congratulations"
-msgstr ""
+msgstr "Gratulálunk"
 
 #. module: sale_coupon
 #: selection:sale.coupon,state:0
@@ -387,7 +395,7 @@ msgstr ""
 #. module: sale_coupon
 #: model:ir.actions.report,name:sale_coupon.report_coupon_code
 msgid "Coupon Code"
-msgstr ""
+msgstr "Kupon kód"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_program__coupon_count
@@ -469,7 +477,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_reward__create_uid
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_rule__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Létrehozta"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon__create_date
@@ -479,17 +487,17 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_reward__create_date
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_rule__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Létrehozva"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_program__currency_id
 msgid "Currency"
-msgstr ""
+msgstr "Pénznem"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_generate__partners_domain
 msgid "Customer"
-msgstr ""
+msgstr "Vevő"
 
 #. module: sale_coupon
 #: model:ir.model.fields,help:sale_coupon.field_sale_coupon_program__reward_product_uom_id
@@ -502,7 +510,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_reward__discount_percentage
 #: selection:sale.coupon.reward,reward_type:0
 msgid "Discount"
-msgstr ""
+msgstr "Kedvezmény"
 
 #. module: sale_coupon
 #: model:ir.model.fields,help:sale_coupon.field_sale_coupon_program__reward_type
@@ -554,13 +562,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_reward__display_name
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_rule__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Megjelenített név"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_program__rule_date_to
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_rule__rule_date_to
 msgid "End Date"
-msgstr ""
+msgstr "Befejezés dátuma"
 
 #. module: sale_coupon
 #: model:ir.actions.act_window,name:sale_coupon.sale_coupon_apply_code_action
@@ -570,13 +578,13 @@ msgstr ""
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon__expiration_date
 msgid "Expiration Date"
-msgstr ""
+msgstr "Lejárati idő"
 
 #. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_search
 #: selection:sale.coupon,state:0
 msgid "Expired"
-msgstr ""
+msgstr "Lejárt"
 
 #. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_search
@@ -589,7 +597,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_form_common
 #: selection:sale.coupon.reward,discount_type:0
 msgid "Fixed Amount"
-msgstr ""
+msgstr "Fix összeg"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon__partner_id
@@ -625,7 +633,7 @@ msgstr ""
 #. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_generate_view_form
 msgid "Generate"
-msgstr ""
+msgstr "Létrehozás"
 
 #. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_form
@@ -675,7 +683,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_reward__id
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_rule__id
 msgid "ID"
-msgstr ""
+msgstr "Azonosító"
 
 #. module: sale_coupon
 #: code:addons/sale_coupon/models/sale_coupon.py:67
@@ -697,7 +705,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_reward____last_update
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_rule____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Legutóbb frissítve"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon__write_uid
@@ -707,7 +715,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_reward__write_uid
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_rule__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Legutóbb frissítette"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon__write_date
@@ -717,12 +725,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_reward__write_date
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_rule__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Legutóbb frissítve "
 
 #. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.report_coupon
 msgid "Logo"
-msgstr ""
+msgstr "Logó"
 
 #. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_form_common
@@ -754,7 +762,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_program__rule_min_quantity
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_rule__rule_min_quantity
 msgid "Minimum Quantity"
-msgstr ""
+msgstr "Minimum mennyiség"
 
 #. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.report_coupon
@@ -788,7 +796,7 @@ msgstr ""
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_program__name
 msgid "Name"
-msgstr ""
+msgstr "Név"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_generate__nbr_coupons
@@ -872,17 +880,17 @@ msgstr ""
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_program__order_line_ids
 msgid "Order Line"
-msgstr ""
+msgstr "Rendelési tételsor"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon__order_id
 msgid "Order Reference"
-msgstr ""
+msgstr "Rendeléshivatkozás"
 
 #. module: sale_coupon
 #: selection:sale.coupon.reward,discount_type:0
 msgid "Percentage"
-msgstr ""
+msgstr "Százalék"
 
 #. module: sale_coupon
 #: model:ir.model.fields,help:sale_coupon.field_sale_coupon_program__discount_type
@@ -896,7 +904,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_program__discount_specific_product_id
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_reward__discount_specific_product_id
 msgid "Product"
-msgstr ""
+msgstr "Termék"
 
 #. module: sale_coupon
 #: model:ir.model.fields,help:sale_coupon.field_sale_coupon_program__discount_specific_product_id
@@ -995,18 +1003,18 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_reward__reward_product_quantity
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_form_common
 msgid "Quantity"
-msgstr ""
+msgstr "Mennyiség"
 
 #. module: sale_coupon
 #: selection:sale.coupon,state:0
 msgid "Reserved"
-msgstr ""
+msgstr "Lefoglalt"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_program__reward_id
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_form_common
 msgid "Reward"
-msgstr ""
+msgstr "Jutalmazás"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_order__reward_amount
@@ -1047,7 +1055,7 @@ msgstr ""
 #. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_form_common
 msgid "Rewards"
-msgstr ""
+msgstr "Jutalmazások"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_program__rule_minimum_amount
@@ -1064,12 +1072,12 @@ msgstr ""
 #. module: sale_coupon
 #: model:ir.model,name:sale_coupon.model_sale_order
 msgid "Sale Order"
-msgstr ""
+msgstr "Vásárlói megrendelés"
 
 #. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_form_common
 msgid "Sales"
-msgstr ""
+msgstr "Értékesítés"
 
 #. module: sale_coupon
 #: model:ir.model,name:sale_coupon.model_sale_coupon
@@ -1109,18 +1117,18 @@ msgstr ""
 #. module: sale_coupon
 #: model:ir.actions.act_window,name:sale_coupon.sale_order_action
 msgid "Sales Order"
-msgstr ""
+msgstr "Vásárlói megrendelés"
 
 #. module: sale_coupon
 #: model:ir.model,name:sale_coupon.model_sale_order_line
 msgid "Sales Order Line"
-msgstr ""
+msgstr "Vásárlói megrendelés tételsor"
 
 #. module: sale_coupon
 #: code:addons/sale_coupon/models/sale_coupon_program.py:135
 #, python-format
 msgid "Sales Orders"
-msgstr ""
+msgstr "Vevői megrendelések"
 
 #. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_form_common
@@ -1145,23 +1153,23 @@ msgstr ""
 #. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_view_form
 msgid "Send by Email"
-msgstr ""
+msgstr "Küldés Email-ben"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_program__sequence
 msgid "Sequence"
-msgstr ""
+msgstr "Sorszám"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_program__rule_date_from
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_rule__rule_date_from
 msgid "Start Date"
-msgstr ""
+msgstr "Kezdő dátum"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon__state
 msgid "State"
-msgstr ""
+msgstr "Állam / megye"
 
 #. module: sale_coupon
 #: selection:sale.coupon.rule,rule_minimum_amount_tax_inclusion:0
@@ -1268,7 +1276,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_program__reward_product_uom_id
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_reward__reward_product_uom_id
 msgid "Unit of Measure"
-msgstr ""
+msgstr "Mértékegység"
 
 #. module: sale_coupon
 #: model:product.product,uom_name:sale_coupon.product_product_10_percent_discount
@@ -1276,7 +1284,7 @@ msgstr ""
 #: model:product.template,uom_name:sale_coupon.product_product_10_percent_discount_product_template
 #: model:product.template,uom_name:sale_coupon.product_product_free_large_cabinet_product_template
 msgid "Unit(s)"
-msgstr ""
+msgstr "Egység(ek)"
 
 #. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_order_view_form
@@ -1296,7 +1304,7 @@ msgstr ""
 #. module: sale_coupon
 #: selection:sale.coupon,state:0
 msgid "Valid"
-msgstr ""
+msgstr "Érvényes"
 
 #. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.report_coupon
@@ -1306,7 +1314,7 @@ msgstr ""
 #. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_form_common
 msgid "Validity"
-msgstr ""
+msgstr "Érvényesség"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_program__validity_duration
@@ -1360,7 +1368,7 @@ msgstr ""
 #: model:product.template,weight_uom_name:sale_coupon.product_product_10_percent_discount_product_template
 #: model:product.template,weight_uom_name:sale_coupon.product_product_free_large_cabinet_product_template
 msgid "kg"
-msgstr ""
+msgstr "kg"
 
 #. module: sale_coupon
 #: code:addons/sale_coupon/models/sale_order.py:202

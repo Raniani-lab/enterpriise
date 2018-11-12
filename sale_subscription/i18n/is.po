@@ -2,12 +2,18 @@
 # This file contains the translation of the following modules:
 # * sale_subscription
 # 
+# Translators:
+# Martin Trigaux, 2018
+# Birgir Steinarsson <biggboss83@gmail.com>, 2018
+# Bjorn Ingvarsson <boi@exigo.is>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-08 07:14+0000\n"
 "PO-Revision-Date: 2018-08-24 11:48+0000\n"
+"Last-Translator: Bjorn Ingvarsson <boi@exigo.is>, 2018\n"
 "Language-Team: Icelandic (https://www.transifex.com/odoo/teams/41243/is/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -40,7 +46,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:mail.template,subject:sale_subscription.mail_template_subscription_invoice
 msgid "${object.company_id.name} Invoice (Ref ${object.number or 'n/a'})"
-msgstr ""
+msgstr "${object.company_id.name} Reikningur (nr.  ${object.number or 'n/a'})"
 
 #. module: sale_subscription
 #: model:mail.template,subject:sale_subscription.mail_template_subscription_alert
@@ -61,7 +67,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_kanban
 msgid "&amp;nbsp;"
-msgstr ""
+msgstr "&amp;nbsp;"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -640,55 +646,55 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__action
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid "Action"
-msgstr ""
+msgstr "Aðgerð"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__help
 msgid "Action Description"
-msgstr ""
+msgstr "Action Description"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__name
 msgid "Action Name"
-msgstr ""
+msgstr "Heiti aðgerðar"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__message_needaction
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__message_needaction
 msgid "Action Needed"
-msgstr ""
+msgstr "Þarfnast aðgerðar"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__state
 msgid "Action To Do"
-msgstr ""
+msgstr "Action To Do"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__type
 msgid "Action Type"
-msgstr ""
+msgstr "Action Type"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__active
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__active
 msgid "Active"
-msgstr ""
+msgstr "Virkur"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__activity_ids
 msgid "Activities"
-msgstr ""
+msgstr "Aðgerðir"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__activity_type_id
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid "Activity"
-msgstr ""
+msgstr "Virkni"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__activity_state
 msgid "Activity State"
-msgstr ""
+msgstr "Staða aðgerðar"
 
 #. module: sale_subscription
 #: model:ir.actions.act_window,name:sale_subscription.mail_activity_type_action_config_subscription
@@ -714,7 +720,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_stage_view_form
 msgid "Add a description..."
-msgstr ""
+msgstr "Add a description..."
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.wizard_form_view
@@ -750,14 +756,14 @@ msgstr ""
 #: code:addons/sale_subscription/controllers/portal.py:44
 #, python-format
 msgid "All"
-msgstr ""
+msgstr "Allt"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_account_analytic_account
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__analytic_account_id
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__analytic_account_id
 msgid "Analytic Account"
-msgstr ""
+msgstr "Kostnaðarreikningur"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__filter_domain
@@ -768,7 +774,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_search
 msgid "Archived"
-msgstr ""
+msgstr "Geymt"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__activity_user
@@ -799,7 +805,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "Back"
-msgstr ""
+msgstr "Til baka"
 
 #. module: sale_subscription
 #: selection:sale.subscription,health:0
@@ -846,7 +852,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.wizard_form_view
 msgid "Cancel"
-msgstr ""
+msgstr "Hætta við"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -866,7 +872,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__child_ids
 msgid "Child Actions"
-msgstr ""
+msgstr "Child Actions"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_alert__child_ids
@@ -874,6 +880,8 @@ msgid ""
 "Child server actions that will be executed. Note that the last return "
 "returned action value will be used as global return value."
 msgstr ""
+"Child server actions that will be executed. Note that the last return "
+"returned action value will be used as global return value."
 
 #. module: sale_subscription
 #. openerp-web
@@ -905,7 +913,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_form
 msgid "Close"
-msgstr ""
+msgstr "Loka"
 
 #. module: sale_subscription
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_close_reason_wizard_action
@@ -956,12 +964,12 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__code
 msgid "Code"
-msgstr ""
+msgstr "Númer"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__color
 msgid "Color"
-msgstr ""
+msgstr "Color"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_alert__on_change_fields
@@ -973,12 +981,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__company_id
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__company_id
 msgid "Company"
-msgstr ""
+msgstr "Fyrirtæki"
 
 #. module: sale_subscription
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_config
 msgid "Configuration"
-msgstr ""
+msgstr "Uppsetning"
 
 #. module: sale_subscription
 #. openerp-web
@@ -990,13 +998,13 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "Confirm"
-msgstr ""
+msgstr "Staðfesta"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_res_partner
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "Contact"
-msgstr ""
+msgstr "Tengiliður"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__country_id
@@ -1004,7 +1012,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Country"
-msgstr ""
+msgstr "Land"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.wizard_form_view
@@ -1077,7 +1085,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__crud_model_id
 msgid "Create/Write Target Model"
-msgstr ""
+msgstr "Create/Write Target Model"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__create_uid
@@ -1091,7 +1099,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_wizard__create_uid
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_wizard_option__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Búið til af"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__create_date
@@ -1105,12 +1113,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_wizard__create_date
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_wizard_option__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Stofnað þann"
 
 #. module: sale_subscription
 #: selection:sale.order,subscription_management:0
 msgid "Creation"
-msgstr ""
+msgstr "Creation"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order__subscription_management
@@ -1124,7 +1132,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__currency_id
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__currency_id
 msgid "Currency"
-msgstr ""
+msgstr "Gjaldmiðill"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -1137,7 +1145,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Customer"
-msgstr ""
+msgstr "Viðskiptavinur"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__commercial_partner_id
@@ -1152,12 +1160,12 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__customer_ids
 msgid "Customers"
-msgstr ""
+msgstr "Viðskiptavinir"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_snapshot__date
 msgid "Date"
-msgstr ""
+msgstr "Dags."
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__recurring_next_date
@@ -1199,12 +1207,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_stage__description
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_wizard_option__name
 msgid "Description"
-msgstr ""
+msgstr "Lýsing"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_line__discount
 msgid "Discount (%)"
-msgstr ""
+msgstr "Afsláttur (%)"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_wizard__date_from
@@ -1224,7 +1232,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_wizard__display_name
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_wizard_option__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Nafn"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_template__bad_health_domain
@@ -1239,7 +1247,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:sale.subscription.stage,name:sale_subscription.sale_subscription_stage_draft
 msgid "Draft"
-msgstr ""
+msgstr "Tillaga"
 
 #. module: sale_subscription
 #: selection:sale.subscription.template,payment_mode:0
@@ -1260,12 +1268,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__recurring_rule_boundary
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__recurring_rule_boundary
 msgid "Duration"
-msgstr ""
+msgstr "Duration"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__template_id
 msgid "Email Template"
-msgstr ""
+msgstr "Email Template"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__recurring_rule_count
@@ -1278,7 +1286,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "End Date"
-msgstr ""
+msgstr "End Date"
 
 #. module: sale_subscription
 #. openerp-web
@@ -1300,35 +1308,35 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__xml_id
 msgid "External ID"
-msgstr ""
+msgstr "External ID"
 
 #. module: sale_subscription
 #: selection:sale.subscription.template,recurring_rule_boundary:0
 msgid "Fixed"
-msgstr ""
+msgstr "Fixed"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_stage__fold
 msgid "Folded in Kanban"
-msgstr ""
+msgstr "Folded in Kanban"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__message_follower_ids
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__message_follower_ids
 msgid "Followers"
-msgstr ""
+msgstr "Fylgjendur"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__message_channel_ids
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__message_channel_ids
 msgid "Followers (Channels)"
-msgstr ""
+msgstr "Followers (Channels)"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__message_partner_ids
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__message_partner_ids
 msgid "Followers (Partners)"
-msgstr ""
+msgstr "Fylgjendur (viðskiptafélagar)"
 
 #. module: sale_subscription
 #: selection:sale.subscription.template,recurring_rule_boundary:0
@@ -1365,7 +1373,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Group By"
-msgstr ""
+msgstr "Hópa eftir"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
@@ -1396,7 +1404,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "History"
-msgstr ""
+msgstr "Saga"
 
 #. module: sale_subscription
 #: model:sale.subscription.close.reason,name:sale_subscription.close_reason_4
@@ -1416,7 +1424,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_wizard__id
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_wizard_option__id
 msgid "ID"
-msgstr ""
+msgstr "Auðkenni"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_alert__xml_id
@@ -1427,13 +1435,13 @@ msgstr ""
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription__message_unread
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_template__message_unread
 msgid "If checked new messages require your attention."
-msgstr ""
+msgstr "Ef merkt við þá eru ný skilaboð"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription__message_needaction
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_template__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr ""
+msgstr "If checked, new messages require your attention."
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription__message_has_error
@@ -1517,7 +1525,7 @@ msgstr ""
 #: model:sale.subscription.stage,name:sale_subscription.sale_subscription_stage_in_progress
 #, python-format
 msgid "In Progress"
-msgstr ""
+msgstr "Í vinnslu"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__industry_id
@@ -1537,7 +1545,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
 #: selection:sale.subscription.template,payment_mode:0
 msgid "Invoice"
-msgstr ""
+msgstr "Reikningur"
 
 #. module: sale_subscription
 #: selection:sale.subscription.template,payment_mode:0
@@ -1557,12 +1565,12 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_account_invoice_line
 msgid "Invoice Line"
-msgstr ""
+msgstr "Invoice Line"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__recurring_invoice_line_ids
 msgid "Invoice Lines"
-msgstr ""
+msgstr "Reikningslínur"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription__recurring_rule_type
@@ -1596,7 +1604,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_form
 msgid "Invoices"
-msgstr ""
+msgstr "Reikningar"
 
 #. module: sale_subscription
 #: code:addons/sale_subscription/models/sale_order.py:162
@@ -1608,12 +1616,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__message_is_follower
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__message_is_follower
 msgid "Is Follower"
-msgstr ""
+msgstr "Is Follower"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
 msgid "Journal"
-msgstr ""
+msgstr "Færslubók"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__kpi_1month_mrr_delta
@@ -1648,7 +1656,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_wizard____last_update
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_wizard_option____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Síðast breytt þann"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__last_run
@@ -1667,7 +1675,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_wizard__write_uid
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_wizard_option__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Síðast uppfært af"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__write_date
@@ -1681,7 +1689,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_wizard__write_date
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_wizard_option__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Síðast uppfært þann"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
@@ -1720,7 +1728,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__link_field_id
 msgid "Link using field"
-msgstr ""
+msgstr "Link using field"
 
 #. module: sale_subscription
 #. openerp-web
@@ -1732,7 +1740,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid "Log a note..."
-msgstr ""
+msgstr "Skrá minnispunkt..."
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
@@ -1788,7 +1796,7 @@ msgstr ""
 #. module: sale_subscription
 #: selection:sale.subscription.template,payment_mode:0
 msgid "Manual"
-msgstr ""
+msgstr "Manual"
 
 #. module: sale_subscription
 #: selection:sale.subscription.alert,action:0
@@ -1798,7 +1806,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__starred_user_ids
 msgid "Members"
-msgstr ""
+msgstr "Members"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__message_has_error
@@ -1810,22 +1818,22 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__message_ids
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__message_ids
 msgid "Messages"
-msgstr ""
+msgstr "Skilaboð"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__model_id
 msgid "Model"
-msgstr ""
+msgstr "Model"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__crud_model_name
 msgid "Model Description"
-msgstr ""
+msgstr "Lýsing viðbótar"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__model_name
 msgid "Model Name"
-msgstr ""
+msgstr "Model Name"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_alert__crud_model_id
@@ -1833,6 +1841,8 @@ msgid ""
 "Model for record creation / update. Set this field only to specify a "
 "different model than the base model."
 msgstr ""
+"Model for record creation / update. Set this field only to specify a "
+"different model than the base model."
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_alert__model_id
@@ -1873,7 +1883,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__name
 #, python-format
 msgid "Name"
-msgstr ""
+msgstr "Nafn"
 
 #. module: sale_subscription
 #: selection:sale.subscription,health:0
@@ -1900,7 +1910,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__activity_summary
 msgid "Next Activity Summary"
-msgstr ""
+msgstr "Samantekt næstu virkni"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__activity_type_id
@@ -1920,13 +1930,13 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__activity_note
 msgid "Note"
-msgstr ""
+msgstr "Athugasemd"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__message_needaction_counter
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__message_needaction_counter
 msgid "Number of Actions"
-msgstr ""
+msgstr "Fjöldi aðgerða"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_template__auto_close_limit
@@ -1945,7 +1955,7 @@ msgstr ""
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription__message_needaction_counter
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_template__message_needaction_counter
 msgid "Number of messages which requires an action"
-msgstr ""
+msgstr "Fjöldi skilaboð sem bíða afgreiðslu"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription__message_has_error_counter
@@ -1957,7 +1967,7 @@ msgstr ""
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription__message_unread_counter
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_template__message_unread_counter
 msgid "Number of unread messages"
-msgstr ""
+msgstr "Number of unread messages"
 
 #. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_action_pending
@@ -1995,22 +2005,24 @@ msgid ""
 "Optional help text for the users with a description of the target view, such"
 " as its usage and purpose."
 msgstr ""
+"Optional help text for the users with a description of the target view, such"
+" as its usage and purpose."
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_wizard__option_lines
 #: model_terms:ir.ui.view,arch_db:sale_subscription.wizard_form_view
 msgid "Options"
-msgstr ""
+msgstr "Valmöguleikar"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_view_tree_subscription
 msgid "Order Number"
-msgstr ""
+msgstr "Pöntunarnúmer"
 
 #. module: sale_subscription
 #: model:sale.subscription.close.reason,name:sale_subscription.close_reason_5
 msgid "Other"
-msgstr ""
+msgstr "Annað"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
@@ -2020,7 +2032,7 @@ msgstr ""
 #. module: sale_subscription
 #: selection:sale.subscription,activity_state:0
 msgid "Overdue"
-msgstr ""
+msgstr "Overdue"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -2031,7 +2043,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__payment_mode
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__payment_mode
 msgid "Payment Mode"
-msgstr ""
+msgstr "Greiðslumáti"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_payment_token
@@ -2081,7 +2093,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__pricelist_id
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__pricelist_id
 msgid "Pricelist"
-msgstr ""
+msgstr "Verðlisti"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_line__product_id
@@ -2089,12 +2101,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__product_ids
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_wizard_option__product_id
 msgid "Product"
-msgstr ""
+msgstr "Vara"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__categ_id
 msgid "Product Category"
-msgstr ""
+msgstr "Vöruflokkur"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__product_count
@@ -2105,7 +2117,7 @@ msgstr ""
 #: model:ir.model,name:sale_subscription.model_product_template
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__product_tmpl_id
 msgid "Product Template"
-msgstr ""
+msgstr "Sniðmát vöru"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_product_template__subscription_template_id
@@ -2116,7 +2128,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:sale_subscription.product_template_action_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
 msgid "Products"
-msgstr ""
+msgstr "Vörur"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_alert__link_field_id
@@ -2128,7 +2140,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__code
 msgid "Python Code"
-msgstr ""
+msgstr "Python Code"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_line__quantity
@@ -2136,7 +2148,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_wizard_option__quantity
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "Quantity"
-msgstr ""
+msgstr "Magn"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_line__quantity
@@ -2146,7 +2158,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__rating_ids
 msgid "Rating"
-msgstr ""
+msgstr "Einkunn"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_stage__rating_template_id
@@ -2191,7 +2203,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_close_reason_view_form
 msgid "Reason"
-msgstr ""
+msgstr "Reason"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription__rating_last_feedback
@@ -2223,7 +2235,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__code
 msgid "Reference"
-msgstr ""
+msgstr "Tilvísun"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -2255,12 +2267,12 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_report
 msgid "Reporting"
-msgstr ""
+msgstr "Skýrslur"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__activity_user_id
 msgid "Responsible"
-msgstr ""
+msgstr "Ábyrgðaraðili"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__activity_user_id
@@ -2344,7 +2356,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_form
 msgid "Sales"
-msgstr ""
+msgstr "Sala"
 
 #. module: sale_subscription
 #: selection:sale.subscription.alert,activity_user:0
@@ -2354,20 +2366,20 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_order_line
 msgid "Sales Order Line"
-msgstr ""
+msgstr "Sales Order Line"
 
 #. module: sale_subscription
 #: code:addons/sale_subscription/models/sale_subscription.py:149
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_view_tree_subscription
 #, python-format
 msgid "Sales Orders"
-msgstr ""
+msgstr "Sölupantanir"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__team_id
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Sales Team"
-msgstr ""
+msgstr "Söluhópur"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__user_id
@@ -2375,7 +2387,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Salesperson"
-msgstr ""
+msgstr "Söluaðili"
 
 #. module: sale_subscription
 #. openerp-web
@@ -2417,12 +2429,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_close_reason__sequence
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_stage__sequence
 msgid "Sequence"
-msgstr ""
+msgstr "Runa"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__action_server_id
 msgid "Server Actions"
-msgstr ""
+msgstr "Server Actions"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription__health
@@ -2450,7 +2462,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_kanban
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_form
 msgid "Settings"
-msgstr ""
+msgstr "Stillingar"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__starred
@@ -2481,7 +2493,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Stage"
-msgstr ""
+msgstr "Staða"
 
 #. module: sale_subscription
 #: model:mail.message.subtype,name:sale_subscription.subtype_stage_change
@@ -2496,7 +2508,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_stage__name
 msgid "Stage Name"
-msgstr ""
+msgstr "Heiti stöðu"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__stage_to_id
@@ -2506,7 +2518,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_stage_action
 msgid "Stages"
-msgstr ""
+msgstr "Stig"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__date_start
@@ -2514,7 +2526,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Start Date"
-msgstr ""
+msgstr "Upphafsdagur"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -2524,7 +2536,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.portal_my_subscriptions
 msgid "Status"
-msgstr ""
+msgstr "Staða"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription__activity_state
@@ -2543,7 +2555,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_close_reason_view_form
 msgid "Submit"
-msgstr ""
+msgstr "Leggja fram"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_subscription
@@ -2602,7 +2614,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__subscription_management
 msgid "Subscription Management"
-msgstr ""
+msgstr "Subscription Management"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_product_template__recurring_invoice
@@ -2732,7 +2744,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "Subtotal"
-msgstr ""
+msgstr "Alls"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -2742,18 +2754,18 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__activity_summary
 msgid "Summary"
-msgstr ""
+msgstr "Samantekt"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__tag_id
 msgid "Tag"
-msgstr ""
+msgstr "Tag"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__tag_ids
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__tag_ids
 msgid "Tags"
-msgstr ""
+msgstr "Flokkar"
 
 #. module: sale_subscription
 #: model:base.automation,name:sale_subscription.subscription_alert_percent_revenue_base_automation
@@ -2764,7 +2776,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__recurring_amount_tax
 msgid "Taxes"
-msgstr ""
+msgstr "VSK"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -2786,7 +2798,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_search
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Template"
-msgstr ""
+msgstr "Template"
 
 #. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_template_action
@@ -2811,7 +2823,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "Terms and conditions"
-msgstr ""
+msgstr "Skilmálar"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_wizard__date_from
@@ -2824,7 +2836,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription__website_url
 msgid "The full URL to access the document through the website."
-msgstr ""
+msgstr "The full URL to access the document through the website."
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_alert__website_url
@@ -2912,23 +2924,23 @@ msgstr ""
 #. module: sale_subscription
 #: selection:sale.subscription,activity_state:0
 msgid "Today"
-msgstr ""
+msgstr "Í dag"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Today Activities"
-msgstr ""
+msgstr "Aðgerðir dagsins"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__recurring_amount_total
 #: model_terms:ir.ui.view,arch_db:sale_subscription.portal_my_subscriptions
 msgid "Total"
-msgstr ""
+msgstr "Samtals"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_view_tree_subscription
 msgid "Total Tax Included"
-msgstr ""
+msgstr "Samtals skattar í upphæð"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__trigger
@@ -2967,32 +2979,32 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Unassigned"
-msgstr ""
+msgstr "Óúthlutað"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_line__price_unit
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "Unit Price"
-msgstr ""
+msgstr "Einingarverð"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_line__uom_id
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__product_uom
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_wizard_option__uom_id
 msgid "Unit of Measure"
-msgstr ""
+msgstr "Eining"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__message_unread
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__message_unread
 msgid "Unread Messages"
-msgstr ""
+msgstr "Ólesin skilaboð"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__message_unread_counter
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__message_unread_counter
 msgid "Unread Messages Counter"
-msgstr ""
+msgstr "Teljari fyrir ólesin skilaboð"
 
 #. module: sale_subscription
 #: model:ir.actions.act_window,name:sale_subscription.wizard_action
@@ -3004,7 +3016,7 @@ msgstr ""
 #. module: sale_subscription
 #: selection:sale.order,subscription_management:0
 msgid "Upselling"
-msgstr ""
+msgstr "Upselling"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__usage
@@ -3055,7 +3067,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__fields_lines
 msgid "Value Mapping"
-msgstr ""
+msgstr "Value Mapping"
 
 #. module: sale_subscription
 #. openerp-web
@@ -3087,7 +3099,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__website_url
 msgid "Website URL"
-msgstr ""
+msgstr "Vefsíða Url"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__website_url
@@ -3118,6 +3130,8 @@ msgid ""
 "When dealing with multiple actions, the execution order is based on the "
 "sequence. Low number means high priority."
 msgstr ""
+"When dealing with multiple actions, the execution order is based on the "
+"sequence. Low number means high priority."
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_alert__trg_date_id
@@ -3139,7 +3153,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_wizard_option__wizard_id
 msgid "Wizard"
-msgstr ""
+msgstr "Wizard"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_alert__code
@@ -3216,7 +3230,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid "e.g. Discuss proposal"
-msgstr ""
+msgstr "e.g. Discuss proposal"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
@@ -3226,7 +3240,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid "e.g. Update order quantity"
-msgstr ""
+msgstr "e.g. Update order quantity"
 
 #. module: sale_subscription
 #: model:product.product,weight_uom_name:sale_subscription.product_office_cleaning

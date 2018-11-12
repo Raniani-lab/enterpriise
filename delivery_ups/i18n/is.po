@@ -2,12 +2,16 @@
 # This file contains the translation of the following modules:
 # * delivery_ups
 # 
+# Translators:
+# Bjorn Ingvarsson <boi@exigo.is>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
 "PO-Revision-Date: 2018-08-24 11:37+0000\n"
+"Last-Translator: Bjorn Ingvarsson <boi@exigo.is>, 2018\n"
 "Language-Team: Icelandic (https://www.transifex.com/odoo/teams/41243/is/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -101,7 +105,7 @@ msgstr ""
 #. module: delivery_ups
 #: selection:delivery.carrier,delivery_type:0
 msgid "Fixed Price"
-msgstr ""
+msgstr "Fixed Price"
 
 #. module: delivery_ups
 #: model:ir.model.fields,help:delivery_ups.field_delivery_carrier__ups_bill_my_account
@@ -129,7 +133,7 @@ msgstr ""
 #. module: delivery_ups
 #: selection:delivery.carrier,ups_label_file_type:0
 msgid "PDF"
-msgstr ""
+msgstr "PDF"
 
 #. module: delivery_ups
 #: code:addons/delivery_ups/models/ups_request.py:209
@@ -150,7 +154,7 @@ msgstr ""
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__delivery_type
 msgid "Provider"
-msgstr ""
+msgstr "Provider"
 
 #. module: delivery_ups
 #: selection:delivery.carrier,ups_label_file_type:0
@@ -237,7 +241,7 @@ msgstr ""
 #. module: delivery_ups
 #: model:ir.model,name:delivery_ups.model_stock_picking
 msgid "Transfer"
-msgstr ""
+msgstr "Transfer"
 
 #. module: delivery_ups
 #: selection:delivery.carrier,delivery_type:0

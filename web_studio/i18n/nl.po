@@ -1832,7 +1832,7 @@ msgstr "Papier formaat"
 #: code:addons/web_studio/static/src/xml/submenu.xml:56
 #, python-format
 msgid "Pivot View"
-msgstr "Pivot weergave"
+msgstr "Draaitabel weergave"
 
 #. module: web_studio
 #. openerp-web

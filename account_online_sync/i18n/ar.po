@@ -3,7 +3,6 @@
 # * account_online_sync
 # 
 # Translators:
-# Mustafa Rawi <mustafa@cubexco.com>, 2018
 # Sadig Adam <sadig41@gmail.com>, 2018
 # amrnegm <amrnegm.01@gmail.com>, 2018
 # Martin Trigaux, 2018
@@ -19,13 +18,15 @@
 # Islam Eldeeb <islameldeb@gmail.com>, 2018
 # Mostafa Hanafy <mostafa.s.hanafy@gmail.com>, 2018
 # Firas Asad <firas101@gmail.com>, 2018
+# Mustafa Rawi <mustafa@cubexco.com>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Firas Asad <firas101@gmail.com>, 2018\n"
+"PO-Revision-Date: 2018-08-24 11:36+0000\n"
+"Last-Translator: Mustafa Rawi <mustafa@cubexco.com>, 2018\n"
 "Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -213,7 +214,7 @@ msgstr "أنشئ حساب بنكي"
 #. module: account_online_sync
 #: selection:account.online.link.wizard,action:0
 msgid "Create new journal"
-msgstr ""
+msgstr "إنشاء يومية جديدة"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_journal__create_uid

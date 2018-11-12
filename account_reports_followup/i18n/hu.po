@@ -2,12 +2,19 @@
 # This file contains the translation of the following modules:
 # * account_reports_followup
 # 
+# Translators:
+# Martin Trigaux, 2018
+# krnkris, 2018
+# Kovács Tibor <kovika@gmail.com>, 2018
+# Ákos Nagy <akos.nagy@oregional.hu>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-08 07:14+0000\n"
 "PO-Revision-Date: 2018-08-24 11:36+0000\n"
+"Last-Translator: Ákos Nagy <akos.nagy@oregional.hu>, 2018\n"
 "Language-Team: Hungarian (https://www.transifex.com/odoo/teams/41243/hu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -33,6 +40,17 @@ msgid ""
 "\n"
 "Best Regards,\n"
 msgstr ""
+"\n"
+"Tisztelt %(partner_name)s,\n"
+"\n"
+" A többszörös fizetési-emlékeztető ellenére, még mindig nem történt meg a számla kiegyenlítése.\n"
+"Ha nem történik meg a kiegyenlítés 8 napon belül, törvényes úton vagyunk kénytelenek az adósságot behajtani, minden további felszólítás nélkül.\n"
+"\n"
+"Úgy gondoljuk, hogy ez nem lesz szükséges lépés a lenti részletekkel kapcsolatban.\n"
+"\n"
+"Az üggyel kapcsolatban felmerült kérdésekben, kérjük vegyék fel a kapcsolatot a könyvelési csoportunkkal.\n"
+"\n"
+"Üdvözlettel,\n"
 
 #. module: account_reports_followup
 #: model:account_followup.followup.line,description:account_reports_followup.demo_followup_line1
@@ -46,6 +64,14 @@ msgid ""
 "\n"
 "Best Regards,\n"
 msgstr ""
+"\n"
+"Dear %(partner_name)s,\n"
+"\n"
+" Ha időközben kiegyenlítésre került, vagy a mi hibánkból adódóan téves, akkor tárgytalan, de adataink szerint a következő tétel kifizetés nélkül maradt. Kérjük Önöket a fizetés 8 napon belüli pontos teljesítésére.\n"
+"\n"
+"Ha a levél elküldése előtt a fizetés már megtörtént akkor kérjük tekintsék ezt tárgytalannak. Kérjük vegyék fel a kapcsolatot  könyvelési csoportunkkal.  \n"
+"\n"
+"Üdvözlettel,\n"
 
 #. module: account_reports_followup
 #: model:account_followup.followup.line,description:account_reports_followup.demo_followup_line2
@@ -64,6 +90,19 @@ msgid ""
 "\n"
 "Best Regards,\n"
 msgstr ""
+"\n"
+"Tisztelt %(partner_name)s,\n"
+"\n"
+"Csalódottan vettük tudomásul, és ezért fizetési-emlékeztetőt vagyunk kénytelenek küldeni, mivel a számlája már régebben esedékessé vált.\n"
+"\n"
+"Fontos, hogy azonnal fizessenek, egyéb esetben kénytelenek vagyunk elbírálni a számlájuk lezárását, ami azzal jár, hogy nem leszünk képesek időben szállítani az Önök vállalakozásának (termékeket/szolgáltatásokat).\n"
+"Kérjük Önöket a fizetés 8 napon belüli pontos teljesítésére.\n"
+"\n"
+"Ha a fizetéssel kapcsolatban probléma merült fel, amit mi nem vettünk figyelembe, akkor kérjük vegyék fel a könyvelési csoportunkkal a kapcsolatot, hogy elháríthassuk azt amilyen gyorsan csak lehet.\n"
+"\n"
+"A lejárt számlák részleteit lentebb találják.\n"
+"\n"
+"Üdvözlettel,\n"
 
 #. module: account_reports_followup
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
@@ -88,32 +127,32 @@ msgstr ""
 #. module: account_reports_followup
 #: model:ir.model,name:account_reports_followup.model_account_followup_followup
 msgid "Account Follow-up"
-msgstr ""
+msgstr "Fizetési-emlékeztető könyvelés"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__manual_action_note
 msgid "Action To Do"
-msgstr ""
+msgstr "Elvégzendő művelet"
 
 #. module: account_reports_followup
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
 msgid "After"
-msgstr ""
+msgstr "Utána"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__manual_action_responsible_id
 msgid "Assign a Responsible"
-msgstr ""
+msgstr "Jelöljön ki egy felelőst"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup__company_id
 msgid "Company"
-msgstr ""
+msgstr "Vállalat"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup__name
 msgid "Company Name"
-msgstr ""
+msgstr "Cég neve"
 
 #. module: account_reports_followup
 #: model:ir.model,name:account_reports_followup.model_res_config_settings
@@ -123,24 +162,24 @@ msgstr ""
 #. module: account_reports_followup
 #: model:ir.model,name:account_reports_followup.model_res_partner
 msgid "Contact"
-msgstr ""
+msgstr "Kapcsolattartó"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup__create_uid
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Létrehozta"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup__create_date
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Létrehozva"
 
 #. module: account_reports_followup
 #: sql_constraint:account_followup.followup.line:0
 msgid "Days of the follow-up levels must be different"
-msgstr ""
+msgstr "A fizetési-emlékeztető szintek napjainak különbözőeknek kell lenniük"
 
 #. module: account_reports_followup
 #: model_terms:ir.actions.act_window,help:account_reports_followup.action_account_followup_definition_form
@@ -151,57 +190,57 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup__display_name
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Megjelenített név"
 
 #. module: account_reports_followup
 #. openerp-web
 #: code:addons/account_reports_followup/static/src/xml/account_reports_followup_template.xml:19
 #, python-format
 msgid "Done"
-msgstr ""
+msgstr "Kész"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__delay
 msgid "Due Days"
-msgstr ""
+msgstr "Határidő túllépése napokban"
 
 #. module: account_reports_followup
 #: model:account_followup.followup.line,name:account_reports_followup.demo_followup_line1
 msgid "First reminder email"
-msgstr ""
+msgstr "Első emlékeztető e-mail"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__followup_id
 msgid "Follow Ups"
-msgstr ""
+msgstr "Fizetési emlékeztetők"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__name
 msgid "Follow-Up Action"
-msgstr ""
+msgstr "Fizetési-emlékeztető művelet"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup__followup_line_ids
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_form
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_tree
 msgid "Follow-up"
-msgstr ""
+msgstr "Nyomon-követés"
 
 #. module: account_reports_followup
 #: model:ir.model,name:account_reports_followup.model_account_followup_followup_line
 msgid "Follow-up Criteria"
-msgstr ""
+msgstr "Fizetési-emlékeztető kritériom"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_move_line__followup_line_id
 msgid "Follow-up Level"
-msgstr ""
+msgstr "Fizetési emlékeztető szint"
 
 #. module: account_reports_followup
 #: model:ir.ui.menu,name:account_reports_followup.account_followup_menu
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.res_config_settings_view_form
 msgid "Follow-up Levels"
-msgstr ""
+msgstr "Fizetési-emlékeztető szintek"
 
 #. module: account_reports_followup
 #: model:ir.model,name:account_reports_followup.model_account_followup_report
@@ -211,13 +250,13 @@ msgstr ""
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_res_partner__payment_responsible_id
 msgid "Follow-up Responsible"
-msgstr ""
+msgstr "Fizetési-emlékeztető felelőse"
 
 #. module: account_reports_followup
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_tree
 msgid "Follow-up Steps"
-msgstr ""
+msgstr "Fizetési-emlékezetető lépései"
 
 #. module: account_reports_followup
 #: model_terms:ir.actions.act_window,help:account_reports_followup.action_account_followup_definition_form
@@ -226,45 +265,48 @@ msgid ""
 "                possible to use print and e-mail templates to send specific messages to\n"
 "                the customer."
 msgstr ""
+" Minden lépéshez, határozza meg a műveletet amit a lejárat után annyi nappal el fog végezni. \n"
+"                Lehetséges nyomtatás és e-mail sablon használatával egy üzenet eljuttatása \n"
+"                a vevő részére."
 
 #. module: account_reports_followup
 #: model:ir.model.fields,help:account_reports_followup.field_account_followup_followup_line__sequence
 msgid "Gives the sequence order when displaying a list of follow-up lines."
-msgstr ""
+msgstr "Megadja a fizetési-emlékeztető sorok listázási sorrendjét."
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup__id
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__id
 msgid "ID"
-msgstr ""
+msgstr "Azonosító"
 
 #. module: account_reports_followup
 #: model:ir.model,name:account_reports_followup.model_account_move_line
 msgid "Journal Item"
-msgstr ""
+msgstr "Könyvelési napló tételsor"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup____last_update
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Legutóbb frissítve"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup__write_uid
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Legutóbb frissítette"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup__write_date
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Legutóbb frissítve "
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_move_line__followup_date
 msgid "Latest Follow-up"
-msgstr ""
+msgstr "Legutobbi fizetési emlékeztető"
 
 #. module: account_reports_followup
 #. openerp-web
@@ -273,7 +315,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
 #, python-format
 msgid "Manual Action"
-msgstr ""
+msgstr "Kézi művelet"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__manual_action_type_id
@@ -298,7 +340,7 @@ msgstr ""
 #. module: account_reports_followup
 #: sql_constraint:account_followup.followup:0
 msgid "Only one follow-up per company is allowed"
-msgstr ""
+msgstr "Vállalatonként csak egy fizetési-emlékeztető engedélyezett"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,help:account_reports_followup.field_res_partner__payment_responsible_id
@@ -306,16 +348,18 @@ msgid ""
 "Optionally you can assign a user to this field, which will make him "
 "responsible for the action."
 msgstr ""
+"Választhat felhasználót is erre a mezőre, ami felelőssé teszi erre a "
+"műveletre."
 
 #. module: account_reports_followup
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.account_move_line_partner_tree
 msgid "Partner entries"
-msgstr ""
+msgstr "Partner tételek"
 
 #. module: account_reports_followup
 #: model:ir.actions.act_window,name:account_reports_followup.action_account_followup_definition_form
 msgid "Payment Follow-ups"
-msgstr ""
+msgstr "fizetési-emlékeztetők kifizetése"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__print_letter
@@ -332,7 +376,7 @@ msgstr ""
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__description
 msgid "Printed Message"
-msgstr ""
+msgstr "Kinyomtatott üzenet"
 
 #. module: account_reports_followup
 #. openerp-web
@@ -344,34 +388,34 @@ msgstr ""
 #. module: account_reports_followup
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_filter
 msgid "Search Follow-up"
-msgstr ""
+msgstr "Fizetési-emlékeztető keresése"
 
 #. module: account_reports_followup
 #: model:account_followup.followup.line,name:account_reports_followup.demo_followup_line2
 msgid "Second reminder letter and email"
-msgstr ""
+msgstr "Második emlékeztető levél és e-mail"
 
 #. module: account_reports_followup
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
 msgid "Send a Letter or Email"
-msgstr ""
+msgstr "Egy levél vagy E-mail küldése"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__send_email
 msgid "Send an Email"
-msgstr ""
+msgstr "Egy E-amil küldése"
 
 #. module: account_reports_followup
 #. openerp-web
 #: code:addons/account_reports_followup/static/src/xml/account_reports_followup_template.xml:10
 #, python-format
 msgid "Send by email"
-msgstr ""
+msgstr "Küldés Email-ben"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__sequence
 msgid "Sequence"
-msgstr ""
+msgstr "Sorszám"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,help:account_reports_followup.field_account_followup_followup_line__delay
@@ -380,11 +424,14 @@ msgid ""
 "the reminder.  Could be negative if you want to send a polite alert "
 "beforehand."
 msgstr ""
+"A számla lejárati dátuma utáni napok száma, amíg várakozik a felszólítás "
+"küldése előtt. Negatív is lehet, ha egy udvarias levelet szeretne küldeni a "
+"lejárati dátumra vonatkozólag."
 
 #. module: account_reports_followup
 #: model:account_followup.followup.line,name:account_reports_followup.demo_followup_line3
 msgid "Third reminder: phone the customer"
-msgstr ""
+msgstr "Harmadik emlékeztető: ügyfél felhívása"
 
 #. module: account_reports_followup
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_form
@@ -398,26 +445,34 @@ msgid ""
 "                        same customer, the actions of the most \n"
 "                        overdue invoice will be executed."
 msgstr ""
+"Egy vevő kifizetetlen számlájának emlékeztetésére,\n"
+"                        meghatározhat különböző műveleteket a vevő késedel-\n"
+"                        métől függően. Ezek a műveletek fizetési-emlékeztető szintekbe\n"
+"                        csoportosítottak, melyek a számla fizetési határidő dátumától\n"
+"                        számított bizonyos napokon lesznek kapcsolva.\n"
+"                        Ha több lejárt számlája is van ugyanannak a  \n"
+"                        vevőnek, akkor a leghosszabb nappal lejárt művelet \n"
+"                        lesz elvégezve."
 
 #. module: account_reports_followup
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.account_move_line_partner_tree
 msgid "Total credit"
-msgstr ""
+msgstr "Követel összesen"
 
 #. module: account_reports_followup
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.account_move_line_partner_tree
 msgid "Total debit"
-msgstr ""
+msgstr "Tartozik összesen"
 
 #. module: account_reports_followup
 #: model:account_followup.followup.line,name:account_reports_followup.demo_followup_line4
 msgid "Urging reminder email"
-msgstr ""
+msgstr "Emlékeztető e-mail sürgetése"
 
 #. module: account_reports_followup
 #: model:account_followup.followup.line,name:account_reports_followup.demo_followup_line5
 msgid "Urging reminder letter"
-msgstr ""
+msgstr "Emlékeztető levél sürgetése"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,help:account_reports_followup.field_account_followup_followup_line__print_letter
@@ -427,14 +482,14 @@ msgstr ""
 #. module: account_reports_followup
 #: model:ir.model.fields,help:account_reports_followup.field_account_followup_followup_line__send_email
 msgid "When processing, it will send an email"
-msgstr ""
+msgstr "végrehajtáskor egy e-mailt fog küldeni"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,help:account_reports_followup.field_account_followup_followup_line__manual_action
 msgid ""
 "When processing, it will set the manual action to be taken for that "
 "customer. "
-msgstr ""
+msgstr "Végrehajtáskor, a vevőhöz a kézi műveletet fogja beállítani. "
 
 #. module: account_reports_followup
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
@@ -445,6 +500,10 @@ msgid ""
 "                            forget to translate in all languages you installed\n"
 "                            using to top right icon."
 msgstr ""
+"Írja ide ennek a levélnek a levél bemutatását,\n"
+"                            a fizetési-emlékeztető szint szerint. Használhatóak a\n"
+"                            következő kulcsszavak a szövegben. Meg kell lennie\n"
+"                            az összes jobb felső ikon szerinti nyelv fordításban is!"
 
 #. module: account_reports_followup
 #: code:addons/account_reports_followup/models/account_followup.py:57
@@ -453,13 +512,15 @@ msgid ""
 "Your description is invalid, use the right legend or %% if you want to use "
 "the percent character."
 msgstr ""
+"A leírása érvénytelen, használja a jobb oldali feliratot vagy %% ha akarja a"
+" százalék karaktert használja."
 
 #. module: account_reports_followup
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
 msgid "days overdue, do the following actions:"
-msgstr ""
+msgstr "a határidő napján, a következő műveleteket hajtsa végre:"
 
 #. module: account_reports_followup
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
 msgid "e.g. Call the customer, check if it's paid, ..."
-msgstr ""
+msgstr "pl. Vevő felhívása, ellenőrizni, hogy már kiegyenlésre került, ..."

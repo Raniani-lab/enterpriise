@@ -2,12 +2,18 @@
 # This file contains the translation of the following modules:
 # * web_studio
 # 
+# Translators:
+# Martin Trigaux, 2018
+# Birgir Steinarsson <biggboss83@gmail.com>, 2018
+# Bjorn Ingvarsson <boi@exigo.is>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-02 10:32+0000\n"
 "PO-Revision-Date: 2018-08-24 11:49+0000\n"
+"Last-Translator: Bjorn Ingvarsson <boi@exigo.is>, 2018\n"
 "Language-Team: Icelandic (https://www.transifex.com/odoo/teams/41243/is/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -100,12 +106,12 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/submenu.xml:36
 #, python-format
 msgid "Access Controls"
-msgstr ""
+msgstr "Access Controls"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_res_groups
 msgid "Access Groups"
-msgstr ""
+msgstr "Access Groups"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_actions_act_window
@@ -139,7 +145,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:27
 #, python-format
 msgid "Add"
-msgstr ""
+msgstr "Bæta við"
 
 #. module: web_studio
 #. openerp-web
@@ -232,7 +238,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:151
 #, python-format
 msgid "Amount total"
-msgstr ""
+msgstr "Upphæð alls"
 
 #. module: web_studio
 #. openerp-web
@@ -285,7 +291,7 @@ msgstr ""
 #: code:addons/web_studio/controllers/main.py:58
 #, python-format
 msgid "Automated Actions"
-msgstr ""
+msgstr "Sjálfvirkar aðgerðir"
 
 #. module: web_studio
 #. openerp-web
@@ -311,7 +317,7 @@ msgstr ""
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_base
 msgid "Base"
-msgstr ""
+msgstr "Stofnupphæð"
 
 #. module: web_studio
 #. openerp-web
@@ -325,7 +331,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks_registry.js:13
 #, python-format
 msgid "Block"
-msgstr ""
+msgstr "Block"
 
 #. module: web_studio
 #. openerp-web
@@ -396,7 +402,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:web_studio.simplified_form_view_import_module
 #, python-format
 msgid "Cancel"
-msgstr ""
+msgstr "Hætta við"
 
 #. module: web_studio
 #. openerp-web
@@ -480,7 +486,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:web_studio.simplified_form_view_import_module
 #, python-format
 msgid "Close"
-msgstr ""
+msgstr "Loka"
 
 #. module: web_studio
 #. openerp-web
@@ -494,7 +500,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:143
 #, python-format
 msgid "Color"
-msgstr ""
+msgstr "Color"
 
 #. module: web_studio
 #. openerp-web
@@ -527,7 +533,7 @@ msgstr ""
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_res_company
 msgid "Companies"
-msgstr ""
+msgstr "Fyrirtæki"
 
 #. module: web_studio
 #. openerp-web
@@ -556,7 +562,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/js/views/view_editors/new_buttonbox_dialog.js:30
 #, python-format
 msgid "Confirm"
-msgstr ""
+msgstr "Staðfesta"
 
 #. module: web_studio
 #. openerp-web
@@ -570,7 +576,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:483
 #, python-format
 msgid "Context"
-msgstr ""
+msgstr "Context"
 
 #. module: web_studio
 #. openerp-web
@@ -613,14 +619,14 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:147
 #, python-format
 msgid "Currency"
-msgstr ""
+msgstr "Gjaldmiðill"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/submenu.xml:6
 #, python-format
 msgid "Customizations"
-msgstr ""
+msgstr "Séraðlaganir"
 
 #. module: web_studio
 #. openerp-web
@@ -634,7 +640,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/js/views/view_components.js:114
 #, python-format
 msgid "Date"
-msgstr ""
+msgstr "Dags."
 
 #. module: web_studio
 #. openerp-web
@@ -649,7 +655,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:261
 #, python-format
 msgid "Day"
-msgstr ""
+msgstr "Dagur"
 
 #. module: web_studio
 #. openerp-web
@@ -663,7 +669,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:402
 #, python-format
 msgid "Default"
-msgstr ""
+msgstr "Sjálfgefið"
 
 #. module: web_studio
 #. openerp-web
@@ -686,7 +692,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:309
 #, python-format
 msgid "Default Values"
-msgstr ""
+msgstr "Default Values"
 
 #. module: web_studio
 #. openerp-web
@@ -716,7 +722,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:web_studio.act_report_xml_view_kanban
 #, python-format
 msgid "Delete"
-msgstr ""
+msgstr "Eyða"
 
 #. module: web_studio
 #. openerp-web
@@ -738,7 +744,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:400
 #, python-format
 msgid "Display"
-msgstr ""
+msgstr "Display"
 
 #. module: web_studio
 #. openerp-web
@@ -750,7 +756,7 @@ msgstr ""
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_mixin__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Nafn"
 
 #. module: web_studio
 #. openerp-web
@@ -773,7 +779,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:478
 #, python-format
 msgid "Domain"
-msgstr ""
+msgstr "Lén"
 
 #. module: web_studio
 #. openerp-web
@@ -808,7 +814,7 @@ msgstr ""
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.act_report_xml_view_kanban
 msgid "Duplicate"
-msgstr ""
+msgstr "Afrita"
 
 #. module: web_studio
 #. openerp-web
@@ -893,7 +899,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:566
 #, python-format
 msgid "Email Alias"
-msgstr ""
+msgstr "Email verkefnis"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_mail_template
@@ -919,7 +925,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/js/common/abstract_editor_manager.js:453
 #, python-format
 msgid "Error"
-msgstr ""
+msgstr "Villa!"
 
 #. module: web_studio
 #. openerp-web
@@ -947,7 +953,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/submenu.xml:21
 #, python-format
 msgid "Export"
-msgstr ""
+msgstr "Export"
 
 #. module: web_studio
 #. openerp-web
@@ -984,7 +990,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/kanban_editor.xml:5
 #, python-format
 msgid "Field"
-msgstr ""
+msgstr "Field"
 
 #. module: web_studio
 #. openerp-web
@@ -1024,7 +1030,7 @@ msgstr ""
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_model_fields
 msgid "Fields"
-msgstr ""
+msgstr "Reitir"
 
 #. module: web_studio
 #. openerp-web
@@ -1032,7 +1038,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:web_studio.act_report_xml_view_kanban
 #, python-format
 msgid "File"
-msgstr ""
+msgstr "Файл"
 
 #. module: web_studio
 #: code:addons/web_studio/controllers/main.py:444
@@ -1045,7 +1051,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/js/views/view_components.js:57
 #, python-format
 msgid "Filter"
-msgstr ""
+msgstr "Filter"
 
 #. module: web_studio
 #. openerp-web
@@ -1068,7 +1074,7 @@ msgstr ""
 #: model:ir.model,name:web_studio.model_ir_filters
 #, python-format
 msgid "Filters"
-msgstr ""
+msgstr "Síur"
 
 #. module: web_studio
 #. openerp-web
@@ -1082,7 +1088,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:223
 #, python-format
 msgid "Font"
-msgstr ""
+msgstr "Font"
 
 #. module: web_studio
 #. openerp-web
@@ -1124,7 +1130,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:224
 #, python-format
 msgid "Gantt"
-msgstr ""
+msgstr "Gantt"
 
 #. module: web_studio
 #. openerp-web
@@ -1305,7 +1311,7 @@ msgstr ""
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_mixin__id
 msgid "ID"
-msgstr ""
+msgstr "Auðkenni"
 
 #. module: web_studio
 #. openerp-web
@@ -1313,7 +1319,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:586
 #, python-format
 msgid "Icon"
-msgstr ""
+msgstr "Icon"
 
 #. module: web_studio
 #. openerp-web
@@ -1321,7 +1327,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/js/views/view_components.js:195
 #, python-format
 msgid "Image"
-msgstr ""
+msgstr "Mynd"
 
 #. module: web_studio
 #. openerp-web
@@ -1415,7 +1421,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:661
 #, python-format
 msgid "Label"
-msgstr ""
+msgstr "Label"
 
 #. module: web_studio
 #. openerp-web
@@ -1435,7 +1441,7 @@ msgstr ""
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_mixin____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Síðast breytt þann"
 
 #. module: web_studio
 #: code:addons/web_studio/controllers/main.py:708
@@ -1495,7 +1501,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:196
 #, python-format
 msgid "Margins"
-msgstr ""
+msgstr "Margins"
 
 #. module: web_studio
 #. openerp-web
@@ -1510,19 +1516,19 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:608
 #, python-format
 msgid "Medium"
-msgstr ""
+msgstr "Meðal"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_ui_menu
 msgid "Menu"
-msgstr ""
+msgstr "Valmynd"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:601
 #, python-format
 msgid "Message"
-msgstr ""
+msgstr "Skilaboð"
 
 #. module: web_studio
 #. openerp-web
@@ -1550,7 +1556,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:268
 #, python-format
 msgid "Mode"
-msgstr ""
+msgstr "Mode"
 
 #. module: web_studio
 #. openerp-web
@@ -1558,7 +1564,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/edit_menu.xml:63
 #, python-format
 msgid "Model"
-msgstr ""
+msgstr "Model"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_model_access
@@ -1568,17 +1574,17 @@ msgstr ""
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_model_data
 msgid "Model Data"
-msgstr ""
+msgstr "Model Data"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_model
 msgid "Models"
-msgstr ""
+msgstr "Models"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_module_module
 msgid "Module"
-msgstr ""
+msgstr "Module"
 
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.simplified_form_view_import_module
@@ -1598,14 +1604,14 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:263
 #, python-format
 msgid "Month"
-msgstr ""
+msgstr "Mánuður"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/sidebar_common.xml:12
 #, python-format
 msgid "More"
-msgstr ""
+msgstr "More"
 
 #. module: web_studio
 #. openerp-web
@@ -1642,7 +1648,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:65
 #, python-format
 msgid "Name"
-msgstr ""
+msgstr "Nafn"
 
 #. module: web_studio
 #. openerp-web
@@ -1695,7 +1701,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:610
 #, python-format
 msgid "No"
-msgstr ""
+msgstr "No"
 
 #. module: web_studio
 #. openerp-web
@@ -1709,7 +1715,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/js/menu.js:115
 #, python-format
 msgid "Notes"
-msgstr ""
+msgstr "Athugasemdir"
 
 #. module: web_studio
 #. openerp-web
@@ -1766,7 +1772,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:14
 #, python-format
 msgid "Options"
-msgstr ""
+msgstr "Valmöguleikar"
 
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.act_report_xml_view_kanban
@@ -1833,7 +1839,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/report_editor_manager.xml:4
 #, python-format
 msgid "Print"
-msgstr ""
+msgstr "Prenta"
 
 #. module: web_studio
 #. openerp-web
@@ -1847,14 +1853,14 @@ msgstr ""
 #: code:addons/web_studio/static/src/js/views/view_components.js:207
 #, python-format
 msgid "Priority"
-msgstr ""
+msgstr "Forgangur"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:33
 #, python-format
 msgid "Properties"
-msgstr ""
+msgstr "Eigindi"
 
 #. module: web_studio
 #. openerp-web
@@ -1910,7 +1916,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:419
 #, python-format
 msgid "Related Field"
-msgstr ""
+msgstr "Related Field"
 
 #. module: web_studio
 #. openerp-web
@@ -1952,7 +1958,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:11
 #, python-format
 msgid "Report"
-msgstr ""
+msgstr "Skýrsla"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_actions_report
@@ -1979,14 +1985,14 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/submenu.xml:31
 #, python-format
 msgid "Reports"
-msgstr ""
+msgstr "Skýrslur"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:378
 #, python-format
 msgid "Required"
-msgstr ""
+msgstr "Required"
 
 #. module: web_studio
 #. openerp-web
@@ -2088,7 +2094,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/js/views/view_components.js:129
 #, python-format
 msgid "Selection"
-msgstr ""
+msgstr "Val"
 
 #. module: web_studio
 #. openerp-web
@@ -2107,7 +2113,7 @@ msgstr ""
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_actions_server
 msgid "Server Action"
-msgstr ""
+msgstr "Server Action"
 
 #. module: web_studio
 #. openerp-web
@@ -2151,7 +2157,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:160
 #, python-format
 msgid "Size"
-msgstr ""
+msgstr "Size"
 
 #. module: web_studio
 #. openerp-web
@@ -2173,7 +2179,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:175
 #, python-format
 msgid "Source"
-msgstr ""
+msgstr "Uppruni"
 
 #. module: web_studio
 #. openerp-web
@@ -2187,7 +2193,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/js/views/view_editor_manager.js:699
 #, python-format
 msgid "Stage"
-msgstr ""
+msgstr "Staða"
 
 #. module: web_studio
 #. openerp-web
@@ -2296,7 +2302,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/js/views/view_components.js:201
 #, python-format
 msgid "Tags"
-msgstr ""
+msgstr "Flokkar"
 
 #. module: web_studio
 #. openerp-web
@@ -2310,7 +2316,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:431
 #, python-format
 msgid "Technical Name"
-msgstr ""
+msgstr "Technical Name"
 
 #. module: web_studio
 #: code:addons/web_studio/models/ir_ui_view.py:800
@@ -2325,7 +2331,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/js/views/view_components.js:84
 #, python-format
 msgid "Text"
-msgstr ""
+msgstr "Texti"
 
 #. module: web_studio
 #. openerp-web
@@ -2490,7 +2496,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/submenu.xml:33
 #, python-format
 msgid "Translations"
-msgstr ""
+msgstr "Þýðingar"
 
 #. module: web_studio
 #. openerp-web
@@ -2504,7 +2510,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:221
 #, python-format
 msgid "Type"
-msgstr ""
+msgstr "Gerð"
 
 #. module: web_studio
 #. openerp-web
@@ -2532,7 +2538,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/new_field_dialog.xml:54
 #, python-format
 msgid "Value"
-msgstr ""
+msgstr "Value"
 
 #. module: web_studio
 #. openerp-web
@@ -2547,7 +2553,7 @@ msgstr ""
 #: model:ir.model,name:web_studio.model_ir_ui_view
 #, python-format
 msgid "View"
-msgstr ""
+msgstr "View"
 
 #. module: web_studio
 #. openerp-web
@@ -2555,7 +2561,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/submenu.xml:30
 #, python-format
 msgid "Views"
-msgstr ""
+msgstr "Views"
 
 #. module: web_studio
 #. openerp-web
@@ -2590,7 +2596,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/js/common/new_field_dialog.js:220
 #, python-format
 msgid "Warning"
-msgstr ""
+msgstr "Viðvörun"
 
 #. module: web_studio
 #. openerp-web
@@ -2605,7 +2611,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/app_creator.xml:24
 #, python-format
 msgid "Welcome to"
-msgstr ""
+msgstr "Welcome to"
 
 #. module: web_studio
 #. openerp-web
@@ -2670,7 +2676,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:264
 #, python-format
 msgid "Year"
-msgstr ""
+msgstr "Ár"
 
 #. module: web_studio
 #. openerp-web
@@ -2788,7 +2794,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/icon_creator.xml:36
 #, python-format
 msgid "or"
-msgstr ""
+msgstr "eða"
 
 #. module: web_studio
 #. openerp-web

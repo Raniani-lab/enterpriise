@@ -2,12 +2,18 @@
 # This file contains the translation of the following modules:
 # * iot
 # 
+# Translators:
+# Martin Trigaux, 2018
+# Birgir Steinarsson <biggboss83@gmail.com>, 2018
+# Bjorn Ingvarsson <boi@exigo.is>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-08 07:14+0000\n"
 "PO-Revision-Date: 2018-08-24 09:20+0000\n"
+"Last-Translator: Bjorn Ingvarsson <boi@exigo.is>, 2018\n"
 "Language-Team: Icelandic (https://www.transifex.com/odoo/teams/41243/is/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -34,7 +40,7 @@ msgstr ""
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_trigger__action
 msgid "Action"
-msgstr ""
+msgstr "Aðgerð"
 
 #. module: iot
 #: model:ir.model,name:iot.model_add_iot_box
@@ -54,7 +60,7 @@ msgstr ""
 #. module: iot
 #: selection:iot.trigger,action:0
 msgid "Cancel"
-msgstr ""
+msgstr "Hætta við"
 
 #. module: iot
 #: model_terms:ir.actions.act_window,help:iot.iot_box_action
@@ -102,7 +108,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:iot.field_iot_device__create_uid
 #: model:ir.model.fields,field_description:iot.field_iot_trigger__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Búið til af"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_add_iot_box__create_date
@@ -110,7 +116,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:iot.field_iot_device__create_date
 #: model:ir.model.fields,field_description:iot.field_iot_trigger__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Stofnað þann"
 
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.view_add_iot_box
@@ -142,7 +148,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:iot.field_iot_device__display_name
 #: model:ir.model.fields,field_description:iot.field_iot_trigger__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Nafn"
 
 #. module: iot
 #: selection:iot.trigger,action:0
@@ -162,7 +168,7 @@ msgstr ""
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_search
 msgid "Group By"
-msgstr ""
+msgstr "Hópa eftir"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_add_iot_box__id
@@ -170,7 +176,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:iot.field_iot_device__id
 #: model:ir.model.fields,field_description:iot.field_iot_trigger__id
 msgid "ID"
-msgstr ""
+msgstr "Auðkenni"
 
 #. module: iot
 #: model:ir.model,name:iot.model_iot_device
@@ -185,7 +191,7 @@ msgstr ""
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_box__ip
 msgid "IP Address"
-msgstr ""
+msgstr "IP tala"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_device__identifier
@@ -229,7 +235,7 @@ msgstr ""
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_trigger__key
 msgid "Key"
-msgstr ""
+msgstr "Key"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_add_iot_box____last_update
@@ -237,7 +243,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:iot.field_iot_device____last_update
 #: model:ir.model.fields,field_description:iot.field_iot_trigger____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Síðast breytt þann"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_add_iot_box__write_uid
@@ -245,7 +251,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:iot.field_iot_device__write_uid
 #: model:ir.model.fields,field_description:iot.field_iot_trigger__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Síðast uppfært af"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_add_iot_box__write_date
@@ -253,13 +259,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:iot.field_iot_device__write_date
 #: model:ir.model.fields,field_description:iot.field_iot_trigger__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Síðast uppfært þann"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_box__name
 #: model:ir.model.fields,field_description:iot.field_iot_device__name
 msgid "Name"
-msgstr ""
+msgstr "Nafn"
 
 #. module: iot
 #: selection:iot.device,connection:0
@@ -279,7 +285,7 @@ msgstr ""
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.view_add_iot_box
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #. module: iot
 #: selection:iot.trigger,action:0
@@ -319,7 +325,7 @@ msgstr ""
 #. module: iot
 #: selection:iot.device,type:0
 msgid "Printer"
-msgstr ""
+msgstr "Prentari"
 
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_view_form
@@ -339,12 +345,12 @@ msgstr ""
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.act_report_xml_view_tree_iot
 msgid "Report xml"
-msgstr ""
+msgstr "Report xml"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_device__report_ids
 msgid "Reports"
-msgstr ""
+msgstr "Skýrslur"
 
 #. module: iot
 #. openerp-web
@@ -361,7 +367,7 @@ msgstr ""
 #. module: iot
 #: selection:iot.trigger,action:0
 msgid "Scrap"
-msgstr ""
+msgstr "Scrap"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_box__screen_url
@@ -371,12 +377,12 @@ msgstr ""
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_trigger__sequence
 msgid "Sequence"
-msgstr ""
+msgstr "Runa"
 
 #. module: iot
 #: selection:iot.trigger,action:0
 msgid "Skip"
-msgstr ""
+msgstr "Sleppa"
 
 #. module: iot
 #. openerp-web
@@ -410,7 +416,7 @@ msgstr ""
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_device__type
 msgid "Type"
-msgstr ""
+msgstr "Gerð"
 
 #. module: iot
 #: model:ir.model.fields,help:iot.field_iot_device__connection
@@ -435,7 +441,7 @@ msgstr ""
 #. module: iot
 #: selection:iot.trigger,action:0
 msgid "Validate"
-msgstr ""
+msgstr "Staðfesta"
 
 #. module: iot
 #: model:ir.model.fields,help:iot.field_ir_actions_report__device_id

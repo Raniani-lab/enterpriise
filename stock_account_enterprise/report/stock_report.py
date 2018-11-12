@@ -57,9 +57,11 @@ class StockReport(models.Model):
             if any(field.split(':')[1].split('(')[0] != 'sum' for field in [stock_value, valuation] if field):
                 raise UserError("read_group only support operator sum for valuation and stock_value")
 
+        res = []
         if fields:
-            res = super(StockReport, self).read_group(domain, fields, groupby, offset=offset, limit=limit, orderby=orderby, lazy=lazy) or [{}]
-        else:
+            res = super(StockReport, self).read_group(domain, fields, groupby, offset=offset, limit=limit, orderby=orderby, lazy=lazy)
+
+        if not res and (stock_value or valuation):
             res = [{}]
 
         if stock_value:

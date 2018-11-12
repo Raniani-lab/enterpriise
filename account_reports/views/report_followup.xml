@@ -37,10 +37,12 @@
             <div t-if='context.get("mail") != True' class="print_only" style='margin-bottom: 20px;'>
         <t t-if="invoice_address_id" t-set="partner_addr" t-value="invoice_address_id"></t>
         <t t-else="" t-set="partner_addr" t-value="partner"></t>
+        <t t-if="context.get('snailmail_layout')" t-set="contact_widget_fields" t-value="['address', 'name']"/>
+        <t t-else="" t-set="contact_widget_fields" t-value="['address', 'name', 'phone']"/>
                 <div class="row">
                     <div class="col-5 offset-7" style='margin-top: 15px;'>
                         <div t-field="partner_addr.self"
-                            t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True}'/>
+                            t-options='{"widget": "contact", "fields": contact_widget_fields, "no_marker": True}'/>
                         <span t-field="partner_addr.vat"/>
                     </div>
                 </div>

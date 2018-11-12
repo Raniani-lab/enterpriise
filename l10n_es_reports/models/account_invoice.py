@@ -30,9 +30,10 @@ class AccountInvoice(models.Model):
 
     @api.depends('partner_id.country_id')
     def _compute_l10n_es_reports_mod349_available(self):
-        europe_country_group = self.env.ref('base.europe')
+        # Mod 349 is required for all european countries, except Spain
+        mod349_countries = self.env.ref('base.europe').country_ids - self.env.ref('base.es')
         for record in self:
-            record.l10n_es_reports_mod349_available = record.partner_id.country_id in europe_country_group.country_ids
+            record.l10n_es_reports_mod349_available = record.partner_id.country_id in mod349_countries
 
     def _get_refund_copy_fields(self):
         rslt = super(AccountInvoice, self)._get_refund_copy_fields()

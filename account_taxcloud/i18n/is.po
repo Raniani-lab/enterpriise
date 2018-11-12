@@ -2,12 +2,18 @@
 # This file contains the translation of the following modules:
 # * account_taxcloud
 # 
+# Translators:
+# Martin Trigaux, 2018
+# Birgir Steinarsson <biggboss83@gmail.com>, 2018
+# Bjorn Ingvarsson <boi@exigo.is>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-02 10:31+0000\n"
 "PO-Revision-Date: 2018-08-24 11:37+0000\n"
+"Last-Translator: Bjorn Ingvarsson <boi@exigo.is>, 2018\n"
 "Language-Team: Icelandic (https://www.transifex.com/odoo/teams/41243/is/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -33,7 +39,7 @@ msgstr ""
 #. module: account_taxcloud
 #: model:ir.model,name:account_taxcloud.model_res_company
 msgid "Companies"
-msgstr ""
+msgstr "Fyrirtæki"
 
 #. module: account_taxcloud
 #: model:ir.model,name:account_taxcloud.model_res_config_settings
@@ -43,12 +49,12 @@ msgstr ""
 #. module: account_taxcloud
 #: model:ir.model.fields,field_description:account_taxcloud.field_product_tic_category__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Búið til af"
 
 #. module: account_taxcloud
 #: model:ir.model.fields,field_description:account_taxcloud.field_product_tic_category__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Stofnað þann"
 
 #. module: account_taxcloud
 #: model_terms:ir.ui.view,arch_db:account_taxcloud.res_config_settings_view_form
@@ -72,7 +78,7 @@ msgstr ""
 #. module: account_taxcloud
 #: model:ir.model.fields,field_description:account_taxcloud.field_product_tic_category__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Nafn"
 
 #. module: account_taxcloud
 #: model:ir.model.fields,help:account_taxcloud.field_product_template__tic_category_id
@@ -86,37 +92,37 @@ msgstr ""
 #. module: account_taxcloud
 #: model:ir.model,name:account_taxcloud.model_account_fiscal_position
 msgid "Fiscal Position"
-msgstr ""
+msgstr "Bókhaldsleg staðsetning "
 
 #. module: account_taxcloud
 #: model:ir.model.fields,field_description:account_taxcloud.field_product_tic_category__id
 msgid "ID"
-msgstr ""
+msgstr "Auðkenni"
 
 #. module: account_taxcloud
 #: model:ir.model,name:account_taxcloud.model_account_invoice
 msgid "Invoice"
-msgstr ""
+msgstr "Reikningur"
 
 #. module: account_taxcloud
 #: model:ir.model.fields,field_description:account_taxcloud.field_product_tic_category____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Síðast breytt þann"
 
 #. module: account_taxcloud
 #: model:ir.model.fields,field_description:account_taxcloud.field_product_tic_category__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Síðast uppfært af"
 
 #. module: account_taxcloud
 #: model:ir.model.fields,field_description:account_taxcloud.field_product_tic_category__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Síðast uppfært þann"
 
 #. module: account_taxcloud
 #: model:ir.model,name:account_taxcloud.model_product_category
 msgid "Product Category"
-msgstr ""
+msgstr "Vöruflokkur"
 
 #. module: account_taxcloud
 #: model_terms:ir.ui.view,arch_db:account_taxcloud.account_taxcloud_tic_category_search
@@ -131,7 +137,7 @@ msgstr ""
 #. module: account_taxcloud
 #: model:ir.model,name:account_taxcloud.model_product_template
 msgid "Product Template"
-msgstr ""
+msgstr "Sniðmát vöru"
 
 #. module: account_taxcloud
 #: model_terms:ir.ui.view,arch_db:account_taxcloud.account_taxcloud_tic_category_tree
@@ -197,7 +203,7 @@ msgstr ""
 #. module: account_taxcloud
 #: model:ir.model,name:account_taxcloud.model_account_fiscal_position_template
 msgid "Template for Fiscal Position"
-msgstr ""
+msgstr "Template for Fiscal Position"
 
 #. module: account_taxcloud
 #: code:addons/account_taxcloud/models/account_invoice.py:43

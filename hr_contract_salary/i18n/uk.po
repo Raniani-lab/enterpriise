@@ -6,12 +6,13 @@
 # Martin Trigaux, 2018
 # Bohdan Lisnenko, 2018
 # Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-08-24 11:38+0000\n"
 "Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
@@ -123,7 +124,7 @@ msgstr "<i class=\"fa fa-1x fa-globe fa-fw fa-lg\"/> Онлайн-підписк
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "<i class=\"fa fa-1x fa-leaf fa-fw\"/> Eco Vouchers"
-msgstr "<i class=\"fa fa-1x fa-leaf fa-fw\"/>Еко ваучери"
+msgstr "<i class=\"fa fa-1x fa-leaf fa-fw\"/>Еко-ваучери"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -188,7 +189,8 @@ msgstr "<i class=\"fa fa-1x fa-plus fa-fw\"/>Вигода в добрі (Інт�
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "<i class=\"fa fa-1x fa-plus fa-fw\"/> Benefit in Kind Phone (Subscription)"
-msgstr "<i class=\"fa fa-1x fa-plus fa-fw\"/>Перевага в добрі Телефон (підписка)"
+msgstr ""
+"<i class=\"fa fa-1x fa-plus fa-fw\"/>Перевага в доброму телефоні (підписка)"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -390,7 +392,7 @@ msgstr "Прийняти запит"
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_applicant__access_token_end_date
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__access_token_end_date
 msgid "Access Token Validity Date"
-msgstr "Токен доступу дати дійсності"
+msgstr "Дата дійсного токену доступу"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__active_employee
@@ -640,12 +642,12 @@ msgstr "Створено"
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Customize your salary"
-msgstr "Налаштуйте вашу зарплату"
+msgstr "Налаштуйте вашу зарплатню"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_res_config_settings__access_token_validity
 msgid "Default Access Token Validity Duration"
-msgstr "Тривалість дії токена за умовчанням"
+msgstr "Тривалість дії токена за замовчуванням"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_job__default_contract_id
@@ -664,7 +666,7 @@ msgid ""
 "Default document that the applicant will have to sign to accept a contract "
 "offer."
 msgstr ""
-"Типовий контракт, який заявник повинен буде підписати, щоб прийняти "
+"Типовий контракт, який заявник повинен буде підписати, щоби прийняти "
 "пропозицію щодо контракту."
 
 #. module: hr_contract_salary
@@ -688,12 +690,12 @@ msgstr "Відключено"
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Disabled Children"
-msgstr "Disabled Children"
+msgstr "Відключені дочірні записи"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Disabled Spouse"
-msgstr "Disabled Spouse"
+msgstr "Відключені батьківські записи"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -1393,7 +1395,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Single"
-msgstr "Неодружений/а/"
+msgstr "Неодружений/а"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package

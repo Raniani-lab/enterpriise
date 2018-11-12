@@ -3,14 +3,21 @@
 # * mrp_plm
 # 
 # Translators:
+# Josep Sànchez <papapep@gmx.com>, 2018
+# Marc Tormo i Bochaca <mtbochaca@gmail.com>, 2018
+# Sandra Franch <sandra.franch@upc.edu>, 2018
 # Martin Trigaux, 2018
+# Carles Antoli <carlesantoli@hotmail.com>, 2018
+# RGB Consulting <odoo@rgbconsulting.com>, 2018
+# Quim - eccit <quim@eccit.com>, 2018
 # Manel Fernandez <manelfera@outlook.com>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-08-24 11:38+0000\n"
 "Last-Translator: Manel Fernandez <manelfera@outlook.com>, 2018\n"
 "Language-Team: Catalan (https://www.transifex.com/odoo/teams/41243/ca/)\n"
 "MIME-Version: 1.0\n"
@@ -47,14 +54,14 @@ msgstr ""
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_bom_view_kanban
 msgid "&amp;nbsp;"
-msgstr ""
+msgstr "&amp;nbsp;"
 
 #. module: mrp_plm
 #. openerp-web
 #: code:addons/mrp_plm/static/src/xml/mrp_plm_templates.xml:9
 #, python-format
 msgid "&times;"
-msgstr ""
+msgstr "&vegades;"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
@@ -94,7 +101,7 @@ msgstr ""
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
 msgid "<span>New</span>"
-msgstr ""
+msgstr "<span>Nou</span>"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
@@ -104,7 +111,7 @@ msgstr ""
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
 msgid "<span>View</span>"
-msgstr ""
+msgstr "<span>Vista</span>"
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco_type__alias_defaults
@@ -112,12 +119,14 @@ msgid ""
 "A Python dictionary that will be evaluated to provide default values when "
 "creating new records for this alias."
 msgstr ""
+"Diccionari Python a avaluar per proporcionar valors per defecte quan es "
+"creïn nous registres per aquest pseudònim."
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__message_needaction
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__message_needaction
 msgid "Action Needed"
-msgstr ""
+msgstr "Cal fer alguna acció"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__active
@@ -127,18 +136,18 @@ msgstr "Actiu"
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__activity_ids
 msgid "Activities"
-msgstr ""
+msgstr "Activitats"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__activity_state
 msgid "Activity State"
-msgstr ""
+msgstr "Estat de l'activitat"
 
 #. module: mrp_plm
 #: selection:mrp.eco.bom.change,change_type:0
 #: selection:mrp.eco.routing.change,change_type:0
 msgid "Add"
-msgstr ""
+msgstr "Afegir"
 
 #. module: mrp_plm
 #: model_terms:ir.actions.act_window,help:mrp_plm.mrp_eco_tag_action
@@ -153,22 +162,22 @@ msgstr "Àlies"
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__alias_contact
 msgid "Alias Contact Security"
-msgstr ""
+msgstr "Pseudònim del contacte de seguretat"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__alias_name
 msgid "Alias Name"
-msgstr ""
+msgstr "Pseudònim"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__alias_domain
 msgid "Alias domain"
-msgstr ""
+msgstr "Pseudònim del domini"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__alias_model_id
 msgid "Aliased Model"
-msgstr ""
+msgstr "Model amb pseudònim"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
@@ -247,12 +256,12 @@ msgstr ""
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Approve"
-msgstr ""
+msgstr "Aprova"
 
 #. module: mrp_plm
 #: selection:mrp.eco,kanban_state:0 selection:mrp.eco.approval,status:0
 msgid "Approved"
-msgstr ""
+msgstr "Aprovat"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_approval__user_id
@@ -278,7 +287,7 @@ msgstr ""
 #. module: mrp_plm
 #: selection:mrp.eco,effectivity:0
 msgid "At Date"
-msgstr ""
+msgstr "En data"
 
 #. module: mrp_plm
 #. openerp-web
@@ -291,7 +300,7 @@ msgstr "Adjunt"
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__message_attachment_count
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__message_attachment_count
 msgid "Attachment Count"
-msgstr ""
+msgstr "Nombre d'adjunts"
 
 #. module: mrp_plm
 #: code:addons/mrp_plm/models/mrp_eco.py:642
@@ -313,7 +322,7 @@ msgstr ""
 #. module: mrp_plm
 #: model:ir.model,name:mrp_plm.model_mrp_bom
 msgid "Bill of Material"
-msgstr ""
+msgstr "Llista de material"
 
 #. module: mrp_plm
 #: model:ir.model,name:mrp_plm.model_mrp_bom_line
@@ -327,7 +336,7 @@ msgstr ""
 #: model:ir.ui.menu,name:mrp_plm.menu_mrp_plm_boms
 #, python-format
 msgid "Bill of Materials"
-msgstr ""
+msgstr "Llista de materials (LdM)"
 
 #. module: mrp_plm
 #: model_terms:ir.actions.act_window,help:mrp_plm.mrp_bom_action_kanban
@@ -340,7 +349,7 @@ msgstr ""
 #. module: mrp_plm
 #: selection:mrp.eco,kanban_state:0
 msgid "Blocked"
-msgstr ""
+msgstr "Bloquejat"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_stage__is_blocking
@@ -350,7 +359,7 @@ msgstr ""
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "BoM"
-msgstr ""
+msgstr "Llista de materials (LdM)"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
@@ -382,7 +391,7 @@ msgstr ""
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__user_can_approve
 msgid "Can Approve"
-msgstr ""
+msgstr "Pot aprovar"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__user_can_reject
@@ -425,7 +434,7 @@ msgstr "Tancar"
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__color
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__color
 msgid "Color"
-msgstr ""
+msgstr "Color"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_tag__color
@@ -468,7 +477,7 @@ msgstr ""
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_bom_change__operation_change
 msgid "Consumed in Operation"
-msgstr ""
+msgstr "Consumit en l'operació"
 
 #. module: mrp_plm
 #: model_terms:ir.actions.act_window,help:mrp_plm.mrp_bom_action_kanban
@@ -531,12 +540,12 @@ msgstr ""
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__alias_defaults
 msgid "Default Values"
-msgstr ""
+msgstr "Valors per defecte"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
 msgid "Delete"
-msgstr ""
+msgstr "Eliminar"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
@@ -568,7 +577,7 @@ msgstr "Mostrar Nom"
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__displayed_image_id
 msgid "Displayed Image"
-msgstr ""
+msgstr "Imatge visualitzada"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
@@ -579,12 +588,12 @@ msgstr "Fet"
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
 msgid "Dropdown menu"
-msgstr ""
+msgstr "Menú desplegable"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_routing_change_view_form
 msgid "Duration"
-msgstr ""
+msgstr "Durada"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_approval__eco_id
@@ -722,7 +731,7 @@ msgstr ""
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
 msgid "Edit Task"
-msgstr ""
+msgstr "Editar tasca"
 
 #. module: mrp_plm
 #: model:mrp.eco.stage,name:mrp_plm.ecostage_effective
@@ -742,7 +751,7 @@ msgstr ""
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_view_form
 msgid "Email Alias"
-msgstr ""
+msgstr "Àlies de correu electrònic"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_bom_change__eco_id
@@ -786,25 +795,25 @@ msgstr ""
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_stage__folded
 msgid "Folded in kanban view"
-msgstr ""
+msgstr "Replegat en la vista kanban"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__message_follower_ids
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__message_follower_ids
 msgid "Followers"
-msgstr ""
+msgstr "Seguidors"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__message_channel_ids
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__message_channel_ids
 msgid "Followers (Channels)"
-msgstr ""
+msgstr "Seguidors (Canals)"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__message_partner_ids
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__message_partner_ids
 msgid "Followers (Partners)"
-msgstr ""
+msgstr "Seguidors (Clients)"
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__effectivity_date
@@ -814,12 +823,12 @@ msgstr ""
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "Future Activities"
-msgstr ""
+msgstr "Activitats Futures"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "Group by..."
-msgstr ""
+msgstr "Agrupa per..."
 
 #. module: mrp_plm
 #: model:ir.module.category,description:mrp_plm.module_category_plm
@@ -829,7 +838,7 @@ msgstr ""
 #. module: mrp_plm
 #: selection:mrp.eco,priority:0
 msgid "High"
-msgstr ""
+msgstr "Alta"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__id
@@ -849,24 +858,26 @@ msgid ""
 "ID of the parent record holding the alias (example: project holding the task"
 " creation alias)"
 msgstr ""
+"Id del registre pare que te el pseudònim.(exemple: el projecte que conté el "
+"pseudònim per la creació de tasques)"
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__message_unread
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco_type__message_unread
 msgid "If checked new messages require your attention."
-msgstr ""
+msgstr "Si està marcat, els nous missatges requereixen la vostra atenció."
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__message_needaction
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco_type__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr ""
+msgstr "Si està marcat, els nous missatges requereixen la vostra atenció."
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__message_has_error
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco_type__message_has_error
 msgid "If checked, some messages have a delivery error."
-msgstr ""
+msgstr "Si està marcat, alguns missatges tenen un error d'entrega."
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_bom__active
@@ -874,6 +885,8 @@ msgid ""
 "If the active field is set to False, it will allow you to hide the bills of "
 "material without removing it."
 msgstr ""
+"Si el camp actiu es desmarca, permet ocultar les llistes de material sense "
+"eliminar-les."
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__active
@@ -885,7 +898,7 @@ msgstr ""
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
 msgid "Important Messages"
-msgstr ""
+msgstr "Missatges Importants "
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
@@ -898,7 +911,7 @@ msgstr ""
 #: selection:mrp.eco,kanban_state:0 selection:mrp.eco,state:0
 #: model:mrp.eco.stage,name:mrp_plm.ecostage_progress
 msgid "In Progress"
-msgstr ""
+msgstr "En curs"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_approval__is_approved
@@ -909,7 +922,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__message_is_follower
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__message_is_follower
 msgid "Is Follower"
-msgstr ""
+msgstr "És seguidor"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_approval__is_rejected
@@ -924,12 +937,12 @@ msgstr ""
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__kanban_state
 msgid "Kanban State"
-msgstr ""
+msgstr "Estat kanban"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_bom_view_kanban
 msgid "Kit"
-msgstr ""
+msgstr "Kit"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco____last_update
@@ -970,18 +983,18 @@ msgstr "Última actualització el"
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "Late Activities"
-msgstr ""
+msgstr "Darreres Activitats"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__message_main_attachment_id
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__message_main_attachment_id
 msgid "Main Attachment"
-msgstr ""
+msgstr "Adjunt principal"
 
 #. module: mrp_plm
 #: model:res.groups,name:mrp_plm.group_plm_manager
 msgid "Manager"
-msgstr ""
+msgstr "Director"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_routing_change__upd_time_cycle_manual
@@ -991,19 +1004,19 @@ msgstr ""
 #. module: mrp_plm
 #: model:ir.ui.menu,name:mrp_plm.menu_mrp_plm_master_data
 msgid "Master Data"
-msgstr ""
+msgstr "Dades principals"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__message_has_error
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__message_has_error
 msgid "Message Delivery error"
-msgstr ""
+msgstr "Error d'entrega del missatge"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__message_ids
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__message_ids
 msgid "Messages"
-msgstr ""
+msgstr "Missatges"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_tag_view_search
@@ -1013,7 +1026,7 @@ msgstr ""
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "My Activities"
-msgstr ""
+msgstr "Les meves activitats"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
@@ -1035,7 +1048,7 @@ msgstr "Nom"
 #. module: mrp_plm
 #: model:mrp.eco.stage,name:mrp_plm.ecostage_new
 msgid "New"
-msgstr ""
+msgstr "Nou"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__new_bom_id
@@ -1080,22 +1093,22 @@ msgstr ""
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__activity_date_deadline
 msgid "Next Activity Deadline"
-msgstr ""
+msgstr "Data límit de la següent activitat"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__activity_summary
 msgid "Next Activity Summary"
-msgstr ""
+msgstr "Resum de la següent activitat"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__activity_type_id
 msgid "Next Activity Type"
-msgstr ""
+msgstr "Tipus de la següent activitat"
 
 #. module: mrp_plm
 #: selection:mrp.eco,priority:0
 msgid "Normal"
-msgstr ""
+msgstr "Normal"
 
 #. module: mrp_plm
 #: selection:mrp.eco.approval,status:0
@@ -1106,37 +1119,37 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__note
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Note"
-msgstr ""
+msgstr "Nota"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__message_needaction_counter
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__message_needaction_counter
 msgid "Number of Actions"
-msgstr ""
+msgstr "Nombre d'accions"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__message_has_error_counter
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__message_has_error_counter
 msgid "Number of error"
-msgstr ""
+msgstr "Nombre d'errors"
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__message_needaction_counter
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco_type__message_needaction_counter
 msgid "Number of messages which requires an action"
-msgstr ""
+msgstr "Nombre de missatges que requereixen una acció"
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__message_has_error_counter
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco_type__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr ""
+msgstr "Nombre de missatges amb error d'entrega"
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__message_unread_counter
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco_type__message_unread_counter
 msgid "Number of unread messages"
-msgstr ""
+msgstr "Nombre de missatges no llegits"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_routing_change__old_time_cycle_manual
@@ -1155,16 +1168,19 @@ msgid ""
 "attached, even if they did not reply to it. If set, this will disable the "
 "creation of new records completely."
 msgstr ""
+"Id opcional d'un fil (registre) al que tots els missatges entrants "
+"s'adjuntaran, inclús si no van ser respostes del mateix. Si s'estableix, se "
+"desactivarà completament la creació de nous registres."
 
 #. module: mrp_plm
 #: selection:mrp.eco,activity_state:0
 msgid "Overdue"
-msgstr ""
+msgstr "Fora de termini"
 
 #. module: mrp_plm
 #: model:ir.ui.menu,name:mrp_plm.menu_mrp_plm_dashboard
 msgid "Overview"
-msgstr ""
+msgstr "Vista general"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__alias_user_id
@@ -1175,7 +1191,7 @@ msgstr "Propietari"
 #: model:ir.module.category,name:mrp_plm.module_category_plm
 #: model:ir.ui.menu,name:mrp_plm.menu_mrp_plm_root
 msgid "PLM"
-msgstr ""
+msgstr "PLM"
 
 #. module: mrp_plm
 #: model:ir.actions.act_window,name:mrp_plm.mrp_eco_type_action_dashboard
@@ -1185,12 +1201,12 @@ msgstr ""
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__alias_parent_model_id
 msgid "Parent Model"
-msgstr ""
+msgstr "Model pare"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__alias_parent_thread_id
 msgid "Parent Record Thread ID"
-msgstr ""
+msgstr "Id del registre pare"
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco_type__alias_parent_model_id
@@ -1199,11 +1215,14 @@ msgid ""
 " necessarily the model given by alias_model_id (example: project "
 "(parent_model) and task (model))"
 msgstr ""
+"El model pare conte el pseudònim. El model que conte la referència del "
+"pseudònim no és necessàriament el model que es dóna a través del camp "
+"alias_model_id (exemple: projecto (parent_model) i tasca (model))"
 
 #. module: mrp_plm
 #: selection:mrp.eco,activity_state:0
 msgid "Planned"
-msgstr ""
+msgstr "Planificat"
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco_type__alias_contact
@@ -1213,6 +1232,10 @@ msgid ""
 "- partners: only authenticated partners\n"
 "- followers: only followers of the related document or members of following channels\n"
 msgstr ""
+"Política per enviar un missatge en el document utilitzant la passarel·la del correu.\n"
+"-Tots: Tothom pot enviar.\n"
+"-Empreses: Només les empreses autenticades.\n"
+"-Seguidors: Només els seguidors del document relacionat o els membres dels canals següents.\n"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_bom__previous_bom_id
@@ -1262,7 +1285,7 @@ msgstr "Prioritat"
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_bom_change_view_form
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "Product"
-msgstr ""
+msgstr "Producte"
 
 #. module: mrp_plm
 #: code:addons/mrp_plm/models/mrp_eco.py:151
@@ -1273,7 +1296,7 @@ msgstr ""
 #. module: mrp_plm
 #: model:ir.model,name:mrp_plm.model_product_template
 msgid "Product Template"
-msgstr ""
+msgstr "Plantilla de producte"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_bom__active
@@ -1283,12 +1306,12 @@ msgstr ""
 #. module: mrp_plm
 #: model:ir.ui.menu,name:mrp_plm.menu_mrp_plm_products
 msgid "Products"
-msgstr ""
+msgstr "Productes"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_bom_change__upd_product_qty
 msgid "Quantity"
-msgstr ""
+msgstr "Quantitat"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_bom_change__rebase_id
@@ -1305,7 +1328,7 @@ msgstr ""
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__alias_force_thread_id
 msgid "Record Thread ID"
-msgstr ""
+msgstr "Id. del registre fill"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__name
@@ -1315,12 +1338,12 @@ msgstr "Referència"
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Reject"
-msgstr ""
+msgstr "Rebutjat"
 
 #. module: mrp_plm
 #: selection:mrp.eco.approval,status:0
 msgid "Rejected"
-msgstr ""
+msgstr "Rebutjada"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__displayed_image_attachment_id
@@ -1331,12 +1354,12 @@ msgstr ""
 #: selection:mrp.eco.bom.change,change_type:0
 #: selection:mrp.eco.routing.change,change_type:0
 msgid "Remove"
-msgstr ""
+msgstr "Eliminar"
 
 #. module: mrp_plm
 #: model:ir.ui.menu,name:mrp_plm.menu_mrp_plm_reporting
 msgid "Reporting"
-msgstr ""
+msgstr "Informes"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_approval__required_user_ids
@@ -1346,12 +1369,12 @@ msgstr ""
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__user_id
 msgid "Responsible"
-msgstr ""
+msgstr "Responsable"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__activity_user_id
 msgid "Responsible User"
-msgstr ""
+msgstr "Usuari responsable"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
@@ -1368,7 +1391,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_approval__name
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_approval_template__name
 msgid "Role"
-msgstr ""
+msgstr "Càrrec"
 
 #. module: mrp_plm
 #: code:addons/mrp_plm/models/mrp_eco.py:154
@@ -1376,7 +1399,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 #, python-format
 msgid "Routing"
-msgstr ""
+msgstr "Procés productiu"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
@@ -1397,7 +1420,7 @@ msgstr ""
 #: model:ir.model,name:mrp_plm.model_mrp_routing
 #: model:ir.ui.menu,name:mrp_plm.menu_mrp_plm_routings
 msgid "Routings"
-msgstr ""
+msgstr "Processos productius"
 
 #. module: mrp_plm
 #: model:ir.ui.menu,name:mrp_plm.menu_mrp_plm_search
@@ -1414,14 +1437,14 @@ msgstr "Seqüència"
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
 msgid "Set Cover Image"
-msgstr ""
+msgstr "Ajustar la Imatge de la coberta"
 
 #. module: mrp_plm
 #. openerp-web
 #: code:addons/mrp_plm/static/src/xml/mrp_plm_templates.xml:8
 #, python-format
 msgid "Set a Cover Image"
-msgstr ""
+msgstr "Establir una Imatge de la coberta"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
@@ -1442,6 +1465,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "Show all records which has next action date is before today"
 msgstr ""
+"Mostra tots els registres en que la data de següent acció és abans d'avui"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_bom__image_small
@@ -1455,6 +1479,9 @@ msgid ""
 "image, with aspect ratio preserved. Use this field anywhere a small image is"
 " required."
 msgstr ""
+"Imatge petita del producte. Es redimensionarà automàticament a 64x64 px, "
+"preservant el rati d'aspecte. Utilitzi aquest camp sempre que es necessiti "
+"una imatge petita."
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
@@ -1466,12 +1493,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_approval_template__stage_id
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "Stage"
-msgstr ""
+msgstr "Etapa"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__stage_ids
 msgid "Stages"
-msgstr ""
+msgstr "Etapes"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
@@ -1497,6 +1524,10 @@ msgid ""
 "Today: Activity date is today\n"
 "Planned: Future activities."
 msgstr ""
+"Estat basat en activitats\n"
+"Sobrepassat: La data de venciment ja s'ha passat\n"
+"Avui: La data de l'activitat és avui\n"
+"Planificat: Activitats futures."
 
 #. module: mrp_plm
 #: code:addons/mrp_plm/models/mrp_eco.py:347
@@ -1514,7 +1545,7 @@ msgstr ""
 #. module: mrp_plm
 #: sql_constraint:mrp.eco.tag:0
 msgid "Tag name already exists !"
-msgstr ""
+msgstr "Nom d'etiqueta ja existeix!"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__tag_ids
@@ -1535,7 +1566,7 @@ msgstr ""
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_approval__approval_template_id
 msgid "Template"
-msgstr ""
+msgstr "Plantilla"
 
 #. module: mrp_plm
 #: model:res.groups,comment:mrp_plm.group_plm_manager
@@ -1560,6 +1591,10 @@ msgid ""
 " email that does not reply to an existing record will cause the creation of "
 "a new record of this model (e.g. a Project Task)"
 msgstr ""
+"El model (Tipus de document d'Odoo) al que correspon aquest pseudònim. "
+"Qualsevol correu electrònic entrant que no sigui resposta a un registre "
+"existent, causarà la creació d'un nou registre d'aquest model (per exemple, "
+"una tasca de projecte)"
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco_type__alias_name
@@ -1567,6 +1602,8 @@ msgid ""
 "The name of the email alias, e.g. 'jobs' if you want to catch emails for "
 "<jobs@example.odoo.com>"
 msgstr ""
+"El nom d'aquest pseudònim de correu electrònic. Per exemple, \"jobs\", si el"
+" que vol és obtenir els correus per <jobs@example.odoo.com>"
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco_type__alias_user_id
@@ -1576,6 +1613,10 @@ msgid ""
 "the sender (From) address, or will use the Administrator account if no "
 "system user is found for that address."
 msgstr ""
+"El propietari dels registres creats al rebre correus electrònics amb aquest "
+"pseudònim. Si aquest camp no esta definit, el sistema intentarà de trobar el"
+" propietari correcte basat amb l'adreça de l'emissor (De), o utilitzarà la "
+"compta d'administrador si no es troba un usuari per aquesta adreça."
 
 #. module: mrp_plm
 #. openerp-web
@@ -1602,12 +1643,12 @@ msgstr "Per fer"
 #. module: mrp_plm
 #: selection:mrp.eco,activity_state:0
 msgid "Today"
-msgstr ""
+msgstr "Avui"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "Today Activities"
-msgstr ""
+msgstr "Activitats d'avui"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__type_id
@@ -1620,19 +1661,19 @@ msgstr "Tipus"
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_bom_change__uom_change
 msgid "Unit of Measure"
-msgstr ""
+msgstr "Unitat de mesura"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__message_unread
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__message_unread
 msgid "Unread Messages"
-msgstr ""
+msgstr "Missatges pendents de llegir"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__message_unread_counter
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__message_unread_counter
 msgid "Unread Messages Counter"
-msgstr ""
+msgstr "Comptador de missatges no llegits"
 
 #. module: mrp_plm
 #: selection:mrp.eco.bom.change,change_type:0
@@ -1668,7 +1709,7 @@ msgstr "Usuaris"
 #. module: mrp_plm
 #: model:mrp.eco.stage,name:mrp_plm.ecostage_validated
 msgid "Validated"
-msgstr ""
+msgstr "Validat"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_bom__version
@@ -1677,7 +1718,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_plm.field_product_template__version
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_bom_view_form_inherit_plm
 msgid "Version"
-msgstr ""
+msgstr "Versió"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
@@ -1708,23 +1749,23 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__website_message_ids
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__website_message_ids
 msgid "Website Messages"
-msgstr ""
+msgstr "Missatges del lloc web"
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__website_message_ids
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco_type__website_message_ids
 msgid "Website communication history"
-msgstr ""
+msgstr "Historial de comunicacions del lloc web"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_routing_change__workcenter_id
 msgid "Work Center"
-msgstr ""
+msgstr "Centre de treball"
 
 #. module: mrp_plm
 #: model:ir.ui.menu,name:mrp_plm.menu_mrp_plm_workcenters
 msgid "Work Centers"
-msgstr ""
+msgstr "Centres de producció"
 
 #. module: mrp_plm
 #: code:addons/mrp_plm/models/mrp_eco.py:489
@@ -1746,4 +1787,4 @@ msgstr ""
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
 msgid "oe_kanban_text_red"
-msgstr ""
+msgstr "oe_kanban_text_red"

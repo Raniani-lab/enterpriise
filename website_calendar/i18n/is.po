@@ -2,12 +2,18 @@
 # This file contains the translation of the following modules:
 # * website_calendar
 # 
+# Translators:
+# Martin Trigaux, 2018
+# Birgir Steinarsson <biggboss83@gmail.com>, 2018
+# Bjorn Ingvarsson <boi@exigo.is>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-08 07:15+0000\n"
 "PO-Revision-Date: 2018-08-24 11:49+0000\n"
+"Last-Translator: Bjorn Ingvarsson <boi@exigo.is>, 2018\n"
 "Language-Team: Icelandic (https://www.transifex.com/odoo/teams/41243/is/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,7 +25,7 @@ msgstr ""
 #: code:addons/website_calendar/models/calendar_appointment.py:66
 #, python-format
 msgid " (copy)"
-msgstr ""
+msgstr " (afrita)"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__appointment_count
@@ -157,7 +163,7 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_needaction
 msgid "Action Needed"
-msgstr ""
+msgstr "Þarfnast aðgerðar"
 
 #. module: website_calendar
 #: model:ir.actions.act_window,name:website_calendar.website_calendar_report
@@ -271,7 +277,7 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.ui.menu,name:website_calendar.calendar_appointment_type_menu_action
 msgid "Calendar"
-msgstr ""
+msgstr "Dagatal"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__min_cancellation_hours
@@ -313,12 +319,12 @@ msgstr ""
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_validated
 msgid "Confirmed"
-msgstr ""
+msgstr "Samþykkt"
 
 #. module: website_calendar
 #: model:ir.model,name:website_calendar.model_res_partner
 msgid "Contact"
-msgstr ""
+msgstr "Tengiliður"
 
 #. module: website_calendar
 #. openerp-web
@@ -338,7 +344,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_slot__create_uid
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Búið til af"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_answer__create_date
@@ -346,7 +352,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_slot__create_date
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Stofnað þann"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_validated
@@ -364,7 +370,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_slot__display_name
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Nafn"
 
 #. module: website_calendar
 #: selection:calendar.appointment.question,question_type:0
@@ -380,27 +386,27 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__employee_ids
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 msgid "Employees"
-msgstr ""
+msgstr "Starfsfólk"
 
 #. module: website_calendar
 #: model:ir.model,name:website_calendar.model_calendar_event
 msgid "Event"
-msgstr ""
+msgstr "Event"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_follower_ids
 msgid "Followers"
-msgstr ""
+msgstr "Fylgjendur"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_channel_ids
 msgid "Followers (Channels)"
-msgstr ""
+msgstr "Followers (Channels)"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_partner_ids
 msgid "Followers (Partners)"
-msgstr ""
+msgstr "Fylgjendur (viðskiptafélagar)"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_calendar
@@ -431,17 +437,17 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_slot__id
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__id
 msgid "ID"
-msgstr ""
+msgstr "Auðkenni"
 
 #. module: website_calendar
 #: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__message_unread
 msgid "If checked new messages require your attention."
-msgstr ""
+msgstr "Ef merkt við þá eru ný skilaboð"
 
 #. module: website_calendar
 #: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr ""
+msgstr "If checked, new messages require your attention."
 
 #. module: website_calendar
 #: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__message_has_error
@@ -469,7 +475,7 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_is_follower
 msgid "Is Follower"
-msgstr ""
+msgstr "Is Follower"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__is_published
@@ -489,7 +495,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_slot____last_update
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Síðast breytt þann"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_answer__write_uid
@@ -497,7 +503,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_slot__write_uid
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Síðast uppfært af"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_answer__write_date
@@ -505,12 +511,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_slot__write_date
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Síðast uppfært þann"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__location
 msgid "Location"
-msgstr ""
+msgstr "Staðsetning"
 
 #. module: website_calendar
 #: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__location
@@ -530,7 +536,7 @@ msgstr ""
 #. module: website_calendar
 #: model:res.groups,name:website_calendar.group_calendar_manager
 msgid "Manager"
-msgstr ""
+msgstr "Yfirmaður"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_has_error
@@ -541,7 +547,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_ids
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 msgid "Messages"
-msgstr ""
+msgstr "Skilaboð"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_calendar
@@ -563,7 +569,7 @@ msgstr ""
 #: code:addons/website_calendar/static/src/js/website_calendar.editor.js:30
 #, python-format
 msgid "Name"
-msgstr ""
+msgstr "Nafn"
 
 #. module: website_calendar
 #. openerp-web
@@ -586,7 +592,7 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_needaction_counter
 msgid "Number of Actions"
-msgstr ""
+msgstr "Fjöldi aðgerða"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_has_error_counter
@@ -596,7 +602,7 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__message_needaction_counter
 msgid "Number of messages which requires an action"
-msgstr ""
+msgstr "Fjöldi skilaboð sem bíða afgreiðslu"
 
 #. module: website_calendar
 #: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__message_has_error_counter
@@ -606,7 +612,7 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__message_unread_counter
 msgid "Number of unread messages"
-msgstr ""
+msgstr "Number of unread messages"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_event__appointment_type_id
@@ -694,7 +700,7 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.ui.menu,name:website_calendar.menu_schedule_report
 msgid "Reporting"
-msgstr ""
+msgstr "Skýrslur"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question__question_required
@@ -755,7 +761,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question__sequence
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__sequence
 msgid "Sequence"
-msgstr ""
+msgstr "Runa"
 
 #. module: website_calendar
 #: selection:calendar.appointment.question,question_type:0
@@ -790,7 +796,7 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__website_url
 msgid "The full URL to access the document through the website."
-msgstr ""
+msgstr "The full URL to access the document through the website."
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_calendar
@@ -826,7 +832,7 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__appointment_tz
 msgid "Timezone"
-msgstr ""
+msgstr "Timezone"
 
 #. module: website_calendar
 #: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__appointment_tz
@@ -846,12 +852,12 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_unread
 msgid "Unread Messages"
-msgstr ""
+msgstr "Ólesin skilaboð"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_unread_counter
 msgid "Unread Messages Counter"
-msgstr ""
+msgstr "Teljari fyrir ólesin skilaboð"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.index
@@ -878,7 +884,7 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__website_url
 msgid "Website URL"
-msgstr ""
+msgstr "Vefsíða Url"
 
 #. module: website_calendar
 #: model:ir.model.fields,help:website_calendar.field_calendar_appointment_type__website_message_ids
@@ -888,17 +894,17 @@ msgstr ""
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__website_meta_description
 msgid "Website meta description"
-msgstr ""
+msgstr "Website meta description"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__website_meta_keywords
 msgid "Website meta keywords"
-msgstr ""
+msgstr "Website meta keywords"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__website_meta_title
 msgid "Website meta title"
-msgstr ""
+msgstr "Website meta title"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__website_meta_og_img
@@ -979,7 +985,7 @@ msgstr ""
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_form
 msgid "on"
-msgstr ""
+msgstr "on"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_calendar

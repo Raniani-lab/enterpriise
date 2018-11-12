@@ -13,8 +13,12 @@ Supported formats
 -----------------
 This module supports the three most common check formats and will work out of the box with the linked checks from checkdepot.net.
 
-- Check on top: Quicken / QuickBooks standard (https://www.checkdepot.net/checks/checkorder/59209.htm)
-- Check on middle: Peachtree standard (https://www.checkdepot.net/checks/checkorder/513791.htm)
+View all checks at: https://www.checkdepot.net/checks/laser/Odoo.htm
+
+You can choose between:
+
+- Check on top: Quicken / QuickBooks standard (https://www.checkdepot.net/checks/checkorder/laser_topcheck.htm)
+- Check on middle: Peachtree standard (https://www.checkdepot.net/checks/checkorder/laser_middlecheck.htm)
 - Check on bottom: ADP standard (https://www.checkdepot.net/checks/checkorder/laser_bottomcheck.htm)
     """,
     'website': 'https://www.odoo.com/page/accounting',

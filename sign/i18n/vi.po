@@ -3,21 +3,22 @@
 # * sign
 # 
 # Translators:
-# thanh nguyen <thanhnguyen.icsc@gmail.com>, 2018
-# Duy BQ <duybq86@gmail.com>, 2018
+# Thang Duong Bao <nothingctrl@gmail.com>, 2018
 # Martin Trigaux, 2018
 # fanha99 <fanha99@hotmail.com>, 2018
 # son dang <son.dang@doda100.com>, 2018
-# Thang Duong Bao <nothingctrl@gmail.com>, 2018
+# thanh nguyen <thanhnguyen.icsc@gmail.com>, 2018
 # Minh Nguyen <ndminh210994@gmail.com>, 2018
 # khoibv Mr <kendev2009@gmail.com>, 2018
+# Duy BQ <duybq86@gmail.com>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-27 08:43+0000\n"
-"PO-Revision-Date: 2018-09-27 08:43+0000\n"
-"Last-Translator: khoibv Mr <kendev2009@gmail.com>, 2018\n"
+"PO-Revision-Date: 2018-08-24 11:48+0000\n"
+"Last-Translator: Duy BQ <duybq86@gmail.com>, 2018\n"
 "Language-Team: Vietnamese (https://www.transifex.com/odoo/teams/41243/vi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1324,7 +1325,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__share_link
 msgid "Share Link"
-msgstr ""
+msgstr "Chia sẽ liên kết"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
@@ -1625,7 +1626,7 @@ msgstr "Văn bản"
 #: code:addons/sign/static/src/js/sign_common.js:869
 #, python-format
 msgid "Thank You !"
-msgstr ""
+msgstr "Xin cảm ơn!"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_completed

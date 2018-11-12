@@ -4,13 +4,18 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# Marc Tormo i Bochaca <mtbochaca@gmail.com>, 2018
+# Carles Antoli <carlesantoli@hotmail.com>, 2018
+# RGB Consulting <odoo@rgbconsulting.com>, 2018
+# Quim - eccit <quim@eccit.com>, 2018
 # Manel Fernandez <manelfera@outlook.com>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-02 10:31+0000\n"
-"PO-Revision-Date: 2018-10-02 10:31+0000\n"
+"PO-Revision-Date: 2018-08-24 11:37+0000\n"
 "Last-Translator: Manel Fernandez <manelfera@outlook.com>, 2018\n"
 "Language-Team: Catalan (https://www.transifex.com/odoo/teams/41243/ca/)\n"
 "MIME-Version: 1.0\n"
@@ -91,6 +96,8 @@ msgstr ""
 msgid ""
 "<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/> Configure Email Servers"
 msgstr ""
+"<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/> Configurar servidors de"
+" correu"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_single
@@ -119,6 +126,8 @@ msgid ""
 "A Python dictionary that will be evaluated to provide default values when "
 "creating new records for this alias."
 msgstr ""
+"Diccionari Python a avaluar per proporcionar valors per defecte quan es "
+"creïn nous registres per aquest pseudònim."
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_workflow_rule
@@ -145,7 +154,7 @@ msgstr "Acció"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_needaction
 msgid "Action Needed"
-msgstr ""
+msgstr "Cal fer alguna acció"
 
 #. module: documents
 #. openerp-web
@@ -161,7 +170,7 @@ msgstr "Accions"
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
 msgid "Activity"
-msgstr ""
+msgstr "Activitat"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_note
@@ -179,7 +188,7 @@ msgstr ""
 #: selection:documents.workflow.action,action:0
 #: model_terms:ir.ui.view,arch_db:documents.documents_upload_url_view
 msgid "Add"
-msgstr ""
+msgstr "Afegir"
 
 #. module: documents
 #. openerp-web
@@ -201,22 +210,22 @@ msgstr "Àlies"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_contact
 msgid "Alias Contact Security"
-msgstr ""
+msgstr "Pseudònim del contacte de seguretat"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_name
 msgid "Alias Name"
-msgstr ""
+msgstr "Pseudònim"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_domain
 msgid "Alias domain"
-msgstr ""
+msgstr "Pseudònim del domini"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_model_id
 msgid "Aliased Model"
-msgstr ""
+msgstr "Model amb pseudònim"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
@@ -238,7 +247,7 @@ msgstr ""
 #: code:addons/documents/static/src/xml/documents_inspector.xml:159
 #, python-format
 msgid "Archive"
-msgstr ""
+msgstr "Arxiva"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
@@ -255,7 +264,7 @@ msgstr "Adjuntat a"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_attachment_count
 msgid "Attachment Count"
-msgstr ""
+msgstr "Nombre d'adjunts"
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.document_debug_action
@@ -314,7 +323,7 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
 msgid "Conditions"
-msgstr ""
+msgstr "Condicions"
 
 #. module: documents
 #: model:ir.ui.menu,name:documents.Config
@@ -332,12 +341,12 @@ msgstr "Contacte"
 #. module: documents
 #: selection:documents.workflow.tag.criteria,operator:0
 msgid "Contains"
-msgstr ""
+msgstr "Contingut"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__create_model
 msgid "Create"
-msgstr ""
+msgstr "Crear"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__activity_option
@@ -399,7 +408,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_defaults
 msgid "Default Values"
-msgstr ""
+msgstr "Valors per defecte"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form
@@ -412,7 +421,7 @@ msgstr ""
 #: code:addons/documents/static/src/xml/documents_inspector.xml:161
 #, python-format
 msgid "Delete"
-msgstr ""
+msgstr "Eliminar"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__description
@@ -441,7 +450,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:documents.documents_view_kanban
 #: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
 msgid "Document"
-msgstr ""
+msgstr "Document"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__owner_id
@@ -478,7 +487,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:documents.res_config_settings_view_form
 #, python-format
 msgid "Documents"
-msgstr ""
+msgstr "Documents"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_folder
@@ -525,7 +534,7 @@ msgstr ""
 #: selection:documents.share,action:0
 #, python-format
 msgid "Download"
-msgstr ""
+msgstr "Descarregar"
 
 #. module: documents
 #: selection:documents.share,action:0
@@ -574,7 +583,7 @@ msgstr ""
 #. module: documents
 #: selection:documents.share,state:0
 msgid "Expired"
-msgstr ""
+msgstr "Expirat"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_facet
@@ -619,22 +628,22 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_follower_ids
 msgid "Followers"
-msgstr ""
+msgstr "Seguidors"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_channel_ids
 msgid "Followers (Channels)"
-msgstr ""
+msgstr "Seguidors (Canals)"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_partner_ids
 msgid "Followers (Partners)"
-msgstr ""
+msgstr "Seguidors (Clients)"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
 msgid "Future Activities"
-msgstr ""
+msgstr "Activitats Futures"
 
 #. module: documents
 #. openerp-web
@@ -673,21 +682,23 @@ msgid ""
 "ID of the parent record holding the alias (example: project holding the task"
 " creation alias)"
 msgstr ""
+"Id del registre pare que te el pseudònim.(exemple: el projecte que conté el "
+"pseudònim per la creació de tasques)"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__message_unread
 msgid "If checked new messages require your attention."
-msgstr ""
+msgstr "Si està marcat, els nous missatges requereixen la vostra atenció."
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr ""
+msgstr "Si està marcat, els nous missatges requereixen la vostra atenció."
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__message_has_error
 msgid "If checked, some messages have a delivery error."
-msgstr ""
+msgstr "Si està marcat, alguns missatges tenen un error d'entrega."
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
@@ -697,7 +708,7 @@ msgstr "Imatge"
 #. module: documents
 #: model:mail.activity.type,name:documents.mail_documents_activity_data_Inbox
 msgid "Inbox"
-msgstr ""
+msgstr "Bústia d'entrada"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_view_form
@@ -707,7 +718,7 @@ msgstr "Contingut indexat"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_is_follower
 msgid "Is Follower"
-msgstr ""
+msgstr "És seguidor"
 
 #. module: documents
 #. openerp-web
@@ -755,7 +766,7 @@ msgstr "Última actualització el"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
 msgid "Late Activities"
-msgstr ""
+msgstr "Darreres Activitats"
 
 #. module: documents
 #: selection:documents.share,state:0
@@ -765,14 +776,14 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_single
 msgid "Loading"
-msgstr ""
+msgstr "Carregant "
 
 #. module: documents
 #. openerp-web
 #: code:addons/documents/static/src/xml/documents_inspector.xml:154
 #, python-format
 msgid "Lock"
-msgstr ""
+msgstr "Bloqueja"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_ir_attachment__lock_uid
@@ -784,7 +795,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
 msgid "Log a note..."
-msgstr ""
+msgstr "Registrar una nota..."
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
@@ -794,7 +805,7 @@ msgstr "Entrada"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
 msgid "Logout"
-msgstr ""
+msgstr "Tancar Sessió"
 
 #. module: documents
 #. openerp-web
@@ -806,7 +817,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_main_attachment_id
 msgid "Main Attachment"
-msgstr ""
+msgstr "Adjunt principal"
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.tag_action
@@ -822,7 +833,7 @@ msgstr ""
 #. module: documents
 #: model:res.groups,name:documents.group_documents_manager
 msgid "Manager"
-msgstr ""
+msgstr "Director"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__remove_activities
@@ -832,12 +843,12 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_has_error
 msgid "Message Delivery error"
-msgstr ""
+msgstr "Error d'entrega del missatge"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_ids
 msgid "Messages"
-msgstr ""
+msgstr "Missatges"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
@@ -866,7 +877,7 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
 msgid "My Activities"
-msgstr ""
+msgstr "Les meves activitats"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
@@ -876,7 +887,7 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
 msgid "My Favorites"
-msgstr ""
+msgstr "Els meus favorits"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
@@ -909,37 +920,37 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__activity_note
 #: model:ir.model.fields,field_description:documents.field_documents_share__activity_note
 msgid "Note"
-msgstr ""
+msgstr "Nota"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_needaction_counter
 msgid "Number of Actions"
-msgstr ""
+msgstr "Nombre d'accions"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_has_error_counter
 msgid "Number of error"
-msgstr ""
+msgstr "Nombre d'errors"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__message_needaction_counter
 msgid "Number of messages which requires an action"
-msgstr ""
+msgstr "Nombre de missatges que requereixen una acció"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr ""
+msgstr "Nombre de missatges amb error d'entrega"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__message_unread_counter
 msgid "Number of unread messages"
-msgstr ""
+msgstr "Nombre de missatges no llegits"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
 msgid "Odoo Logo"
-msgstr ""
+msgstr "Logo Odoo"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
@@ -949,7 +960,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__operator
 msgid "Operator"
-msgstr ""
+msgstr "Operador"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_force_thread_id
@@ -958,6 +969,9 @@ msgid ""
 "attached, even if they did not reply to it. If set, this will disable the "
 "creation of new records completely."
 msgstr ""
+"Id opcional d'un fil (registre) al que tots els missatges entrants "
+"s'adjuntaran, inclús si no van ser respostes del mateix. Si s'estableix, se "
+"desactivarà completament la creació de nous registres."
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__owner_id
@@ -986,12 +1000,12 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_parent_model_id
 msgid "Parent Model"
-msgstr ""
+msgstr "Model pare"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_parent_thread_id
 msgid "Parent Record Thread ID"
-msgstr ""
+msgstr "Id del registre pare"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_parent_model_id
@@ -1000,6 +1014,9 @@ msgid ""
 " necessarily the model given by alias_model_id (example: project "
 "(parent_model) and task (model))"
 msgstr ""
+"El model pare conte el pseudònim. El model que conte la referència del "
+"pseudònim no és necessàriament el model que es dóna a través del camp "
+"alias_model_id (exemple: projecto (parent_model) i tasca (model))"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_contact
@@ -1009,6 +1026,10 @@ msgid ""
 "- partners: only authenticated partners\n"
 "- followers: only followers of the related document or members of following channels\n"
 msgstr ""
+"Política per enviar un missatge en el document utilitzant la passarel·la del correu.\n"
+"-Tots: Tothom pot enviar.\n"
+"-Empreses: Només les empreses autenticades.\n"
+"-Seguidors: Només els seguidors del document relacionat o els membres dels canals següents.\n"
 
 #. module: documents
 #: selection:documents.workflow.rule,create_model:0
@@ -1018,12 +1039,12 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_force_thread_id
 msgid "Record Thread ID"
-msgstr ""
+msgstr "Id. del registre fill"
 
 #. module: documents
 #: selection:documents.workflow.action,action:0
 msgid "Remove"
-msgstr ""
+msgstr "Eliminar"
 
 #. module: documents
 #. openerp-web
@@ -1040,7 +1061,7 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_request_form_view
 msgid "Request"
-msgstr ""
+msgstr "Sol·licitud"
 
 #. module: documents
 #. openerp-web
@@ -1075,14 +1096,14 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_share__activity_user_id
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_user_id
 msgid "Responsible"
-msgstr ""
+msgstr "Responsable"
 
 #. module: documents
 #. openerp-web
 #: code:addons/documents/static/src/xml/documents_inspector.xml:162
 #, python-format
 msgid "Restore"
-msgstr ""
+msgstr "Restaurar"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__name
@@ -1129,7 +1150,7 @@ msgstr "Configuració"
 #: code:addons/documents/static/src/xml/documents_kanban.xml:14
 #, python-format
 msgid "Share"
-msgstr ""
+msgstr "Comparteix"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__share_link_ids
@@ -1165,6 +1186,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
 msgid "Show all records which has next action date is before today"
 msgstr ""
+"Mostra tots els registres en que la data de següent acció és abans d'avui"
 
 #. module: documents
 #: selection:documents.workflow.rule,create_model:0
@@ -1233,7 +1255,7 @@ msgstr "Etiquetes"
 #. module: documents
 #: selection:documents.workflow.rule,create_model:0
 msgid "Task"
-msgstr ""
+msgstr "Tasca"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_view_form
@@ -1247,6 +1269,10 @@ msgid ""
 " email that does not reply to an existing record will cause the creation of "
 "a new record of this model (e.g. a Project Task)"
 msgstr ""
+"El model (Tipus de document d'Odoo) al que correspon aquest pseudònim. "
+"Qualsevol correu electrònic entrant que no sigui resposta a un registre "
+"existent, causarà la creació d'un nou registre d'aquest model (per exemple, "
+"una tasca de projecte)"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_name
@@ -1254,6 +1280,8 @@ msgid ""
 "The name of the email alias, e.g. 'jobs' if you want to catch emails for "
 "<jobs@example.odoo.com>"
 msgstr ""
+"El nom d'aquest pseudònim de correu electrònic. Per exemple, \"jobs\", si el"
+" que vol és obtenir els correus per <jobs@example.odoo.com>"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_user_id
@@ -1263,6 +1291,10 @@ msgid ""
 "the sender (From) address, or will use the Administrator account if no "
 "system user is found for that address."
 msgstr ""
+"El propietari dels registres creats al rebre correus electrònics amb aquest "
+"pseudònim. Si aquest camp no esta definit, el sistema intentarà de trobar el"
+" propietari correcte basat amb l'adreça de l'emissor (De), o utilitzarà la "
+"compta d'administrador si no es troba un usuari per aquesta adreça."
 
 #. module: documents
 #: sql_constraint:documents.share:0
@@ -1310,7 +1342,7 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
 msgid "Today Activities"
-msgstr ""
+msgstr "Activitats d'avui"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_facet__tooltip
@@ -1349,12 +1381,12 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_unread
 msgid "Unread Messages"
-msgstr ""
+msgstr "Missatges pendents de llegir"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_unread_counter
 msgid "Unread Messages Counter"
-msgstr ""
+msgstr "Comptador de missatges no llegits"
 
 #. module: documents
 #. openerp-web
@@ -1398,7 +1430,7 @@ msgstr "Usuaris"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__date_deadline
 msgid "Valid Until"
-msgstr ""
+msgstr "Vàlid fins"
 
 #. module: documents
 #: selection:documents.workflow.rule,create_model:0
@@ -1408,7 +1440,7 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
 msgid "Video"
-msgstr ""
+msgstr "Video"
 
 #. module: documents
 #. openerp-web
@@ -1420,12 +1452,12 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__website_message_ids
 msgid "Website Messages"
-msgstr ""
+msgstr "Missatges del lloc web"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__website_message_ids
 msgid "Website communication history"
-msgstr ""
+msgstr "Historial de comunicacions del lloc web"
 
 #. module: documents
 #: selection:documents.request_wizard,activity_date_deadline_range_type:0
@@ -1485,7 +1517,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
 msgid "e.g. Discuss proposal"
-msgstr ""
+msgstr "p. ex. Discussió d'una proposta"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_facet__tooltip

@@ -3,14 +3,20 @@
 # * voip
 # 
 # Translators:
+# Josep Sànchez <papapep@gmx.com>, 2018
 # Martin Trigaux, 2018
+# Marc Tormo i Bochaca <mtbochaca@gmail.com>, 2018
+# RGB Consulting <odoo@rgbconsulting.com>, 2018
+# Quim - eccit <quim@eccit.com>, 2018
+# Manel Fernandez <manelfera@outlook.com>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"PO-Revision-Date: 2018-08-24 11:48+0000\n"
+"Last-Translator: Manel Fernandez <manelfera@outlook.com>, 2018\n"
 "Language-Team: Catalan (https://www.transifex.com/odoo/teams/41243/ca/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -28,7 +34,7 @@ msgstr ""
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_report__nbr
 msgid "# of Cases"
-msgstr ""
+msgstr "# de casos"
 
 #. module: voip
 #. openerp-web
@@ -36,7 +42,7 @@ msgstr ""
 #: model:ir.model,name:voip.model_mail_activity
 #, python-format
 msgid "Activity"
-msgstr ""
+msgstr "Activitat"
 
 #. module: voip
 #: model:ir.model,name:voip.model_mail_activity_type
@@ -56,7 +62,7 @@ msgstr ""
 #: code:addons/voip/static/src/xml/voip_phonecall.xml:78
 #, python-format
 msgid "Avatar"
-msgstr ""
+msgstr "Avatar"
 
 #. module: voip
 #. openerp-web
@@ -70,14 +76,14 @@ msgstr ""
 #: code:addons/voip/static/src/xml/dialing_panel.xml:35
 #, python-format
 msgid "CONTACTS"
-msgstr ""
+msgstr "CONTACTES"
 
 #. module: voip
 #. openerp-web
 #: code:addons/voip/static/src/xml/dialing_panel.xml:68
 #, python-format
 msgid "Call"
-msgstr ""
+msgstr "Trucada"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__call_date
@@ -132,7 +138,7 @@ msgstr ""
 #. module: voip
 #: selection:voip.phonecall,state:0 selection:voip.phonecall.report,state:0
 msgid "Cancelled"
-msgstr ""
+msgstr "Cancel·lat"
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_mail_activity_type__category
@@ -189,14 +195,14 @@ msgstr "Creat el"
 #. module: voip
 #: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 msgid "Creation Date"
-msgstr ""
+msgstr "Data de creació"
 
 #. module: voip
 #. openerp-web
 #: code:addons/voip/static/src/xml/voip_phonecall.xml:126
 #, python-format
 msgid "Customer"
-msgstr ""
+msgstr "Client"
 
 #. module: voip
 #. openerp-web
@@ -240,13 +246,13 @@ msgstr ""
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__date_deadline
 msgid "Due Date"
-msgstr ""
+msgstr "Data de venciment"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__duration
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_report__duration
 msgid "Duration"
-msgstr ""
+msgstr "Durada"
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_voip_phonecall__duration
@@ -278,7 +284,7 @@ msgstr ""
 #. module: voip
 #: selection:voip.phonecall,state:0 selection:voip.phonecall.report,state:0
 msgid "Held"
-msgstr ""
+msgstr "Retingut"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_configurator__id
@@ -319,7 +325,7 @@ msgstr ""
 #. module: voip
 #: selection:voip.phonecall,type:0
 msgid "Incoming"
-msgstr ""
+msgstr "Entrant"
 
 #. module: voip
 #. openerp-web
@@ -403,7 +409,7 @@ msgstr ""
 #. module: voip
 #: selection:mail.activity.type,category:0
 msgid "Meeting"
-msgstr ""
+msgstr "Reunió"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_mail_activity__mobile
@@ -427,7 +433,7 @@ msgstr ""
 #. module: voip
 #: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 msgid "My Phonecalls"
-msgstr ""
+msgstr "Les meves trucades"
 
 #. module: voip
 #. openerp-web
@@ -441,18 +447,18 @@ msgstr ""
 #: code:addons/voip/static/src/xml/voip_phonecall.xml:136
 #, python-format
 msgid "Next"
-msgstr ""
+msgstr "Següent"
 
 #. module: voip
 #: selection:voip.phonecall,state:0 selection:voip.phonecall.report,state:0
 msgid "Not Held"
-msgstr ""
+msgstr "No ocupat"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__note
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_log_wizard__note
 msgid "Note"
-msgstr ""
+msgstr "Nota"
 
 #. module: voip
 #: model_terms:ir.actions.act_window,help:voip.voip_phonecall_view
@@ -477,7 +483,7 @@ msgstr "Altres"
 #. module: voip
 #: selection:voip.phonecall,type:0
 msgid "Outgoing"
-msgstr ""
+msgstr "Sortida"
 
 #. module: voip
 #: model_terms:ir.ui.view,arch_db:voip.res_user_form
@@ -494,7 +500,7 @@ msgstr ""
 #: code:addons/voip/static/src/xml/voip_phonecall.xml:32
 #, python-format
 msgid "Pending"
-msgstr ""
+msgstr "Pendent"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_mail_activity__phone
@@ -526,7 +532,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 #: model_terms:ir.ui.view,arch_db:voip.voip_phonecall_tree_view
 msgid "Phonecalls"
-msgstr ""
+msgstr "Trucades telefòniques"
 
 #. module: voip
 #. openerp-web
@@ -554,7 +560,7 @@ msgstr ""
 #. module: voip
 #: selection:res.config.settings,mode:0
 msgid "Production"
-msgstr ""
+msgstr "Producció"
 
 #. module: voip
 #. openerp-web
@@ -587,7 +593,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_report__user_id
 #: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 msgid "Responsible"
-msgstr ""
+msgstr "Responsable"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_users__sip_login
@@ -604,7 +610,7 @@ msgstr ""
 #: code:addons/voip/static/src/xml/voip_phonecall.xml:136
 #, python-format
 msgid "Schedule"
-msgstr ""
+msgstr "Planificació"
 
 #. module: voip
 #: model_terms:ir.ui.view,arch_db:voip.res_config_settings_view_form
@@ -626,14 +632,14 @@ msgstr ""
 #. module: voip
 #: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 msgid "Search Phonecalls"
-msgstr ""
+msgstr "Cerca trucades"
 
 #. module: voip
 #. openerp-web
 #: code:addons/voip/static/src/xml/voip_phonecall.xml:121
 #, python-format
 msgid "Send mail"
-msgstr ""
+msgstr "Enviar correu"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__sequence
@@ -735,14 +741,14 @@ msgstr "Per fer"
 #. module: voip
 #: selection:voip.phonecall.log.wizard,reschedule_option:0
 msgid "Tomorrow"
-msgstr ""
+msgstr "Demà"
 
 #. module: voip
 #. openerp-web
 #: code:addons/voip/static/src/xml/voip_phonecall.xml:159
 #, python-format
 msgid "Transfer"
-msgstr ""
+msgstr "Transferència"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_transfer_wizard__transfer_choice
@@ -757,7 +763,7 @@ msgstr "Tipus"
 #. module: voip
 #: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 msgid "Unassigned"
-msgstr ""
+msgstr "Sense assignar"
 
 #. module: voip
 #. openerp-web
@@ -855,7 +861,7 @@ msgstr ""
 #: code:addons/voip/static/src/xml/voip_phonecall.xml:94
 #, python-format
 msgid "min"
-msgstr ""
+msgstr "mín"
 
 #. module: voip
 #. openerp-web

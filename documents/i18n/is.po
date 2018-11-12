@@ -2,12 +2,18 @@
 # This file contains the translation of the following modules:
 # * documents
 # 
+# Translators:
+# Martin Trigaux, 2018
+# Birgir Steinarsson <biggboss83@gmail.com>, 2018
+# Bjorn Ingvarsson <boi@exigo.is>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-02 10:31+0000\n"
 "PO-Revision-Date: 2018-08-24 11:37+0000\n"
+"Last-Translator: Bjorn Ingvarsson <boi@exigo.is>, 2018\n"
 "Language-Team: Icelandic (https://www.transifex.com/odoo/teams/41243/is/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -115,6 +121,8 @@ msgid ""
 "A Python dictionary that will be evaluated to provide default values when "
 "creating new records for this alias."
 msgstr ""
+"A Python dictionary that will be evaluated to provide default values when "
+"creating new records for this alias."
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_workflow_rule
@@ -126,7 +134,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__group_ids
 msgid "Access Groups"
-msgstr ""
+msgstr "Access Groups"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__access_token
@@ -136,12 +144,12 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_action__action
 msgid "Action"
-msgstr ""
+msgstr "Aðgerð"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_needaction
 msgid "Action Needed"
-msgstr ""
+msgstr "Þarfnast aðgerðar"
 
 #. module: documents
 #. openerp-web
@@ -150,14 +158,14 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
 #, python-format
 msgid "Actions"
-msgstr ""
+msgstr "Aðgerðir"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
 msgid "Activity"
-msgstr ""
+msgstr "Virkni"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_note
@@ -175,7 +183,7 @@ msgstr ""
 #: selection:documents.workflow.action,action:0
 #: model_terms:ir.ui.view,arch_db:documents.documents_upload_url_view
 msgid "Add"
-msgstr ""
+msgstr "Bæta við"
 
 #. module: documents
 #. openerp-web
@@ -192,27 +200,27 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_id
 msgid "Alias"
-msgstr ""
+msgstr "Alias"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_contact
 msgid "Alias Contact Security"
-msgstr ""
+msgstr "Alias Contact Security"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_name
 msgid "Alias Name"
-msgstr ""
+msgstr "Alias Name"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_domain
 msgid "Alias domain"
-msgstr ""
+msgstr "Alias domain"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_model_id
 msgid "Aliased Model"
-msgstr ""
+msgstr "Aliased Model"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
@@ -234,19 +242,19 @@ msgstr ""
 #: code:addons/documents/static/src/xml/documents_inspector.xml:159
 #, python-format
 msgid "Archive"
-msgstr ""
+msgstr "Setja í geymslu"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
 msgid "Archived"
-msgstr ""
+msgstr "Geymt"
 
 #. module: documents
 #. openerp-web
 #: code:addons/documents/static/src/xml/documents_selector.xml:50
 #, python-format
 msgid "Attached To"
-msgstr ""
+msgstr "Attached To"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_attachment_count
@@ -257,7 +265,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:documents.document_debug_action
 #: model:ir.ui.menu,name:documents.attachment_list_view_temp
 msgid "Attachments"
-msgstr ""
+msgstr "Skjöl"
 
 #. module: documents
 #. openerp-web
@@ -275,13 +283,13 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:documents.documents_request_form_view
 #: model_terms:ir.ui.view,arch_db:documents.documents_upload_url_view
 msgid "Cancel"
-msgstr ""
+msgstr "Hætta við"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_action__facet_id
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__facet_id
 msgid "Category"
-msgstr ""
+msgstr "Flokkur"
 
 #. module: documents
 #. openerp-web
@@ -300,7 +308,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__company_id
 msgid "Company"
-msgstr ""
+msgstr "Fyrirtæki"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__condition_type
@@ -310,12 +318,12 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
 msgid "Conditions"
-msgstr ""
+msgstr "Conditions"
 
 #. module: documents
 #: model:ir.ui.menu,name:documents.Config
 msgid "Configuration"
-msgstr ""
+msgstr "Uppsetning"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__partner_id
@@ -323,7 +331,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_ir_attachment__partner_id
 #: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
 msgid "Contact"
-msgstr ""
+msgstr "Tengiliður"
 
 #. module: documents
 #: selection:documents.workflow.tag.criteria,operator:0
@@ -333,7 +341,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__create_model
 msgid "Create"
-msgstr ""
+msgstr "Stofna"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__activity_option
@@ -356,7 +364,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__create_uid
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Búið til af"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_facet__create_date
@@ -368,7 +376,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__create_date
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Stofnað þann"
 
 #. module: documents
 #: selection:documents.workflow.rule,create_model:0
@@ -385,7 +393,7 @@ msgstr ""
 #: selection:documents.share,activity_date_deadline_range_type:0
 #: selection:documents.workflow.rule,activity_date_deadline_range_type:0
 msgid "Days"
-msgstr ""
+msgstr "Dagar"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.res_config_settings_view_form
@@ -395,7 +403,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_defaults
 msgid "Default Values"
-msgstr ""
+msgstr "Default Values"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form
@@ -408,12 +416,12 @@ msgstr ""
 #: code:addons/documents/static/src/xml/documents_inspector.xml:161
 #, python-format
 msgid "Delete"
-msgstr ""
+msgstr "Eyða"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__description
 msgid "Description"
-msgstr ""
+msgstr "Lýsing"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_facet__display_name
@@ -425,7 +433,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__display_name
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Nafn"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
@@ -474,7 +482,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:documents.res_config_settings_view_form
 #, python-format
 msgid "Documents"
-msgstr ""
+msgstr "Documents"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_folder
@@ -503,12 +511,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__domain
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
 msgid "Domain"
-msgstr ""
+msgstr "Lén"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
 msgid "Done"
-msgstr ""
+msgstr "Lokið"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_page
@@ -591,7 +599,7 @@ msgstr ""
 #. module: documents
 #: selection:ir.attachment,type:0
 msgid "File"
-msgstr ""
+msgstr "Файл"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_facet__folder_id
@@ -615,17 +623,17 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_follower_ids
 msgid "Followers"
-msgstr ""
+msgstr "Fylgjendur"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_channel_ids
 msgid "Followers (Channels)"
-msgstr ""
+msgstr "Followers (Channels)"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_partner_ids
 msgid "Followers (Partners)"
-msgstr ""
+msgstr "Fylgjendur (viðskiptafélagar)"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
@@ -661,7 +669,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__id
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__id
 msgid "ID"
-msgstr ""
+msgstr "Auðkenni"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_parent_thread_id
@@ -669,16 +677,18 @@ msgid ""
 "ID of the parent record holding the alias (example: project holding the task"
 " creation alias)"
 msgstr ""
+"ID of the parent record holding the alias (example: project holding the task"
+" creation alias)"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__message_unread
 msgid "If checked new messages require your attention."
-msgstr ""
+msgstr "Ef merkt við þá eru ný skilaboð"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr ""
+msgstr "If checked, new messages require your attention."
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__message_has_error
@@ -688,7 +698,7 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
 msgid "Image"
-msgstr ""
+msgstr "Mynd"
 
 #. module: documents
 #: model:mail.activity.type,name:documents.mail_documents_activity_data_Inbox
@@ -698,12 +708,12 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_view_form
 msgid "Indexed Content"
-msgstr ""
+msgstr "Indexed Content"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_is_follower
 msgid "Is Follower"
-msgstr ""
+msgstr "Is Follower"
 
 #. module: documents
 #. openerp-web
@@ -722,7 +732,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule____last_update
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Síðast breytt þann"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_facet__write_uid
@@ -734,7 +744,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__write_uid
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Síðast uppfært af"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_facet__write_date
@@ -746,7 +756,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__write_date
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Síðast uppfært þann"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
@@ -761,14 +771,14 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_single
 msgid "Loading"
-msgstr ""
+msgstr "Hleð"
 
 #. module: documents
 #. openerp-web
 #: code:addons/documents/static/src/xml/documents_inspector.xml:154
 #, python-format
 msgid "Lock"
-msgstr ""
+msgstr "Lock"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_ir_attachment__lock_uid
@@ -780,12 +790,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
 msgid "Log a note..."
-msgstr ""
+msgstr "Skrá minnispunkt..."
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
 msgid "Login"
-msgstr ""
+msgstr "Innskráningar nafn"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
@@ -818,7 +828,7 @@ msgstr ""
 #. module: documents
 #: model:res.groups,name:documents.group_documents_manager
 msgid "Manager"
-msgstr ""
+msgstr "Yfirmaður"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__remove_activities
@@ -833,19 +843,19 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_ids
 msgid "Messages"
-msgstr ""
+msgstr "Skilaboð"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
 msgid "Model"
-msgstr ""
+msgstr "Model"
 
 #. module: documents
 #: selection:documents.request_wizard,activity_date_deadline_range_type:0
 #: selection:documents.share,activity_date_deadline_range_type:0
 #: selection:documents.workflow.rule,activity_date_deadline_range_type:0
 msgid "Months"
-msgstr ""
+msgstr "Months"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__folder_id
@@ -872,7 +882,7 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
 msgid "My Favorites"
-msgstr ""
+msgstr "My Favorites"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
@@ -886,7 +896,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_share__name
 #: model:ir.model.fields,field_description:documents.field_documents_tag__name
 msgid "Name"
-msgstr ""
+msgstr "Nafn"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form
@@ -905,12 +915,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__activity_note
 #: model:ir.model.fields,field_description:documents.field_documents_share__activity_note
 msgid "Note"
-msgstr ""
+msgstr "Athugasemd"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_needaction_counter
 msgid "Number of Actions"
-msgstr ""
+msgstr "Fjöldi aðgerða"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_has_error_counter
@@ -920,7 +930,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__message_needaction_counter
 msgid "Number of messages which requires an action"
-msgstr ""
+msgstr "Fjöldi skilaboð sem bíða afgreiðslu"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__message_has_error_counter
@@ -930,7 +940,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__message_unread_counter
 msgid "Number of unread messages"
-msgstr ""
+msgstr "Number of unread messages"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
@@ -954,6 +964,9 @@ msgid ""
 "attached, even if they did not reply to it. If set, this will disable the "
 "creation of new records completely."
 msgstr ""
+"Optional ID of a thread (record) to which all incoming messages will be "
+"attached, even if they did not reply to it. If set, this will disable the "
+"creation of new records completely."
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__owner_id
@@ -961,7 +974,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__criteria_owner_id
 #: model:ir.model.fields,field_description:documents.field_ir_attachment__owner_id
 msgid "Owner"
-msgstr ""
+msgstr "Eigandi"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_page
@@ -971,7 +984,7 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
 msgid "PDF"
-msgstr ""
+msgstr "PDF"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__parent_folder_id
@@ -982,12 +995,12 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_parent_model_id
 msgid "Parent Model"
-msgstr ""
+msgstr "Parent Model"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_parent_thread_id
 msgid "Parent Record Thread ID"
-msgstr ""
+msgstr "Parent Record Thread ID"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_parent_model_id
@@ -996,6 +1009,9 @@ msgid ""
 " necessarily the model given by alias_model_id (example: project "
 "(parent_model) and task (model))"
 msgstr ""
+"Parent model holding the alias. The model holding the alias reference is not"
+" necessarily the model given by alias_model_id (example: project "
+"(parent_model) and task (model))"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_contact
@@ -1005,6 +1021,10 @@ msgid ""
 "- partners: only authenticated partners\n"
 "- followers: only followers of the related document or members of following channels\n"
 msgstr ""
+"Policy to post a message on the document using the mailgateway.\n"
+"- everyone: everyone can post\n"
+"- partners: only authenticated partners\n"
+"- followers: only followers of the related document or members of following channels\n"
 
 #. module: documents
 #: selection:documents.workflow.rule,create_model:0
@@ -1014,7 +1034,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_force_thread_id
 msgid "Record Thread ID"
-msgstr ""
+msgstr "Record Thread ID"
 
 #. module: documents
 #: selection:documents.workflow.action,action:0
@@ -1071,7 +1091,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_share__activity_user_id
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_user_id
 msgid "Responsible"
-msgstr ""
+msgstr "Ábyrgðaraðili"
 
 #. module: documents
 #. openerp-web
@@ -1095,7 +1115,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_folder__sequence
 #: model:ir.model.fields,field_description:documents.field_documents_tag__sequence
 msgid "Sequence"
-msgstr ""
+msgstr "Runa"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__partner_id
@@ -1117,7 +1137,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:documents.documents_settings_action
 #: model:ir.ui.menu,name:documents.Settings_menu
 msgid "Settings"
-msgstr ""
+msgstr "Stillingar"
 
 #. module: documents
 #. openerp-web
@@ -1172,12 +1192,12 @@ msgstr ""
 #: code:addons/documents/static/src/xml/documents_inspector.xml:68
 #, python-format
 msgid "Size"
-msgstr ""
+msgstr "Size"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__state
 msgid "Status"
-msgstr ""
+msgstr "Staða"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__children_folder_ids
@@ -1188,7 +1208,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_share__activity_summary
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_summary
 msgid "Summary"
-msgstr ""
+msgstr "Samantekt"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_tag
@@ -1197,7 +1217,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__tag_id
 #: model_terms:ir.ui.view,arch_db:documents.tag_view_search
 msgid "Tag"
-msgstr ""
+msgstr "Tag"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__facet_ids
@@ -1224,17 +1244,17 @@ msgstr ""
 #: model:ir.ui.menu,name:documents.Category_menu
 #, python-format
 msgid "Tags"
-msgstr ""
+msgstr "Flokkar"
 
 #. module: documents
 #: selection:documents.workflow.rule,create_model:0
 msgid "Task"
-msgstr ""
+msgstr "Task"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_view_form
 msgid "Technical"
-msgstr ""
+msgstr "Tæknilegt"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_model_id
@@ -1243,6 +1263,9 @@ msgid ""
 " email that does not reply to an existing record will cause the creation of "
 "a new record of this model (e.g. a Project Task)"
 msgstr ""
+"The model (Odoo Document Kind) to which this alias corresponds. Any incoming"
+" email that does not reply to an existing record will cause the creation of "
+"a new record of this model (e.g. a Project Task)"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_name
@@ -1250,6 +1273,8 @@ msgid ""
 "The name of the email alias, e.g. 'jobs' if you want to catch emails for "
 "<jobs@example.odoo.com>"
 msgstr ""
+"The name of the email alias, e.g. 'jobs' if you want to catch emails for "
+"<jobs@example.odoo.com>"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_user_id
@@ -1259,6 +1284,10 @@ msgid ""
 "the sender (From) address, or will use the Administrator account if no "
 "system user is found for that address."
 msgstr ""
+"The owner of records created upon receiving emails on this alias. If this "
+"field is not set the system will attempt to find the right owner based on "
+"the sender (From) address, or will use the Administrator account if no "
+"system user is found for that address."
 
 #. module: documents
 #: sql_constraint:documents.share:0
@@ -1306,7 +1335,7 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
 msgid "Today Activities"
-msgstr ""
+msgstr "Aðgerðir dagsins"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_facet__tooltip
@@ -1324,7 +1353,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_ir_attachment__type
 msgid "Type"
-msgstr ""
+msgstr "Gerð"
 
 #. module: documents
 #: selection:ir.attachment,type:0
@@ -1333,7 +1362,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:documents.share_page
 #: model_terms:ir.ui.view,arch_db:documents.share_single
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #. module: documents
 #. openerp-web
@@ -1345,12 +1374,12 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_unread
 msgid "Unread Messages"
-msgstr ""
+msgstr "Ólesin skilaboð"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_unread_counter
 msgid "Unread Messages Counter"
-msgstr ""
+msgstr "Teljari fyrir ólesin skilaboð"
 
 #. module: documents
 #. openerp-web
@@ -1384,12 +1413,12 @@ msgstr ""
 #. module: documents
 #: model:res.groups,name:documents.group_documents_user
 msgid "User"
-msgstr ""
+msgstr "Notandi"
 
 #. module: documents
 #: model:ir.model,name:documents.model_res_users
 msgid "Users"
-msgstr ""
+msgstr "Notendur"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__date_deadline
@@ -1428,7 +1457,7 @@ msgstr ""
 #: selection:documents.share,activity_date_deadline_range_type:0
 #: selection:documents.workflow.rule,activity_date_deadline_range_type:0
 msgid "Weeks"
-msgstr ""
+msgstr "Weeks"
 
 #. module: documents
 #. openerp-web
@@ -1461,6 +1490,8 @@ msgid ""
 "You can either upload a file from your computer or copy/paste an internet "
 "link to your file."
 msgstr ""
+"You can either upload a file from your computer or copy/paste an internet "
+"link to your file."
 
 #. module: documents
 #. openerp-web
@@ -1479,7 +1510,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
 msgid "e.g. Discuss proposal"
-msgstr ""
+msgstr "e.g. Discuss proposal"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_facet__tooltip

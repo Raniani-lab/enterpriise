@@ -2,12 +2,18 @@
 # This file contains the translation of the following modules:
 # * marketing_automation
 # 
+# Translators:
+# Birgir Steinarsson <biggboss83@gmail.com>, 2018
+# Martin Trigaux, 2018
+# Bjorn Ingvarsson <boi@exigo.is>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-08 07:14+0000\n"
 "PO-Revision-Date: 2018-08-24 11:38+0000\n"
+"Last-Translator: Bjorn Ingvarsson <boi@exigo.is>, 2018\n"
 "Language-Team: Icelandic (https://www.transifex.com/odoo/teams/41243/is/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -146,23 +152,23 @@ msgstr ""
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant__trace_ids
 msgid "Actions"
-msgstr ""
+msgstr "Aðgerðir"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__active
 msgid "Active"
-msgstr ""
+msgstr "Virkur"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__marketing_activity_ids
 msgid "Activities"
-msgstr ""
+msgstr "Aðgerðir"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__parent_id
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__activity_id
 msgid "Activity"
-msgstr ""
+msgstr "Virkni"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__activity_type
@@ -195,12 +201,12 @@ msgstr ""
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_search
 msgid "Archived"
-msgstr ""
+msgstr "Geymt"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.mass_mailing_view_form_marketing_activity
 msgid "Attach a file"
-msgstr ""
+msgstr "Setja viðhengi"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
@@ -212,7 +218,7 @@ msgstr ""
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__bounced
 msgid "Bounced"
-msgstr ""
+msgstr "Bounced"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__campaign_id
@@ -221,23 +227,23 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_tree
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_search
 msgid "Campaign"
-msgstr ""
+msgstr "Herferð"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__name
 msgid "Campaign Name"
-msgstr ""
+msgstr "Campaign Name"
 
 #. module: marketing_automation
 #: model:ir.actions.act_window,name:marketing_automation.marketing_campaign_action
 #: model:ir.ui.menu,name:marketing_automation.marketing_campaign_menu
 msgid "Campaigns"
-msgstr ""
+msgstr "Campaigns"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
 msgid "Cancel"
-msgstr ""
+msgstr "Hætta við"
 
 #. module: marketing_automation
 #: selection:marketing.trace,state:0
@@ -280,7 +286,7 @@ msgstr ""
 #. module: marketing_automation
 #: model:ir.ui.menu,name:marketing_automation.marketing_automation_configuration_menu
 msgid "Configuration"
-msgstr ""
+msgstr "Uppsetning"
 
 #. module: marketing_automation
 #: model_terms:ir.actions.act_window,help:marketing_automation.marketing_campaign_action
@@ -293,7 +299,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant__create_uid
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Búið til af"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__create_date
@@ -301,12 +307,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant__create_date
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Stofnað þann"
 
 #. module: marketing_automation
 #: model:ir.model.fields,help:marketing_automation.field_marketing_trace__exception
 msgid "Date of technical error leading to the email not being sent"
-msgstr ""
+msgstr "Date of technical error leading to the email not being sent"
 
 #. module: marketing_automation
 #: model:ir.model.fields,help:marketing_automation.field_marketing_trace__clicked
@@ -316,28 +322,28 @@ msgstr ""
 #. module: marketing_automation
 #: model:ir.model.fields,help:marketing_automation.field_marketing_trace__opened
 msgid "Date when the email has been opened the first time"
-msgstr ""
+msgstr "Date when the email has been opened the first time"
 
 #. module: marketing_automation
 #: model:ir.model.fields,help:marketing_automation.field_marketing_trace__sent
 msgid "Date when the email has been sent"
-msgstr ""
+msgstr "Date when the email has been sent"
 
 #. module: marketing_automation
 #: model:ir.model.fields,help:marketing_automation.field_marketing_trace__replied
 msgid "Date when this email has been replied for the first time."
-msgstr ""
+msgstr "Date when this email has been replied for the first time."
 
 #. module: marketing_automation
 #: model:ir.model.fields,help:marketing_automation.field_marketing_trace__bounced
 msgid "Date when this email has bounced."
-msgstr ""
+msgstr "Date when this email has bounced."
 
 #. module: marketing_automation
 #: selection:marketing.activity,interval_type:0
 #: selection:marketing.activity,validity_duration_type:0
 msgid "Days"
-msgstr ""
+msgstr "Dagar"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__interval_type
@@ -347,7 +353,7 @@ msgstr ""
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Delete"
-msgstr ""
+msgstr "Eyða"
 
 #. module: marketing_automation
 #. openerp-web
@@ -373,7 +379,7 @@ msgstr ""
 #: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:173
 #, python-format
 msgid "Discard"
-msgstr ""
+msgstr "Hætta við"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__display_name
@@ -381,17 +387,17 @@ msgstr ""
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant__display_name
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Nafn"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__res_id
 msgid "Document ID"
-msgstr ""
+msgstr "Document ID"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Domain"
-msgstr ""
+msgstr "Lén"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
@@ -401,34 +407,34 @@ msgstr ""
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Edit"
-msgstr ""
+msgstr "Skrifa"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
 #: selection:marketing.activity,activity_type:0
 msgid "Email"
-msgstr ""
+msgstr "Tölvupóstur"
 
 #. module: marketing_automation
 #: model:ir.model,name:marketing_automation.model_mail_mail_statistics
 msgid "Email Statistics"
-msgstr ""
+msgstr "Email Statistics"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__mass_mailing_id
 msgid "Email Template"
-msgstr ""
+msgstr "Email Template"
 
 #. module: marketing_automation
 #: model:ir.model,name:marketing_automation.model_mail_compose_message
 msgid "Email composition wizard"
-msgstr ""
+msgstr "Email composition wizard"
 
 #. module: marketing_automation
 #: selection:marketing.trace,state:0
 msgid "Error"
-msgstr ""
+msgstr "Villa!"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__state_msg
@@ -452,7 +458,7 @@ msgstr ""
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__exception
 msgid "Exception"
-msgstr ""
+msgstr "Exception"
 
 #. module: marketing_automation
 #: code:addons/marketing_automation/models/marketing_campaign.py:541
@@ -475,7 +481,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__domain
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__domain
 msgid "Filter"
-msgstr ""
+msgstr "Filter"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
@@ -486,7 +492,7 @@ msgstr ""
 #: selection:marketing.activity,interval_type:0
 #: selection:marketing.activity,validity_duration_type:0
 msgid "Hours"
-msgstr ""
+msgstr "Hours"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__id
@@ -494,7 +500,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant__id
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__id
 msgid "ID"
-msgstr ""
+msgstr "Auðkenni"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
@@ -512,7 +518,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant____last_update
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Síðast breytt þann"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__write_uid
@@ -520,7 +526,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant__write_uid
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Síðast uppfært af"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__write_date
@@ -528,7 +534,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant__write_date
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Síðast uppfært þann"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__last_sync_date
@@ -548,7 +554,7 @@ msgstr ""
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.mass_mailing_view_form_marketing_activity
 msgid "Mail Body"
-msgstr ""
+msgstr "Mail Body"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.mass_mailing_view_form_marketing_activity
@@ -593,7 +599,7 @@ msgstr ""
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.mass_mailing_view_form_marketing_activity
 msgid "Mailing"
-msgstr ""
+msgstr "Mailing"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
@@ -682,7 +688,7 @@ msgstr ""
 #. module: marketing_automation
 #: model:ir.model,name:marketing_automation.model_mail_mass_mailing
 msgid "Mass Mailing"
-msgstr ""
+msgstr "Fjöldapóstur"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__mail_statistics_ids
@@ -700,35 +706,35 @@ msgstr ""
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__model_id
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__model_id
 msgid "Model"
-msgstr ""
+msgstr "Model"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__model_name
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__model_name
 msgid "Model Name"
-msgstr ""
+msgstr "Model Name"
 
 #. module: marketing_automation
 #: selection:marketing.activity,interval_type:0
 #: selection:marketing.activity,validity_duration_type:0
 msgid "Months"
-msgstr ""
+msgstr "Months"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Name"
-msgstr ""
+msgstr "Nafn"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_search
 #: selection:marketing.campaign,state:0
 msgid "New"
-msgstr ""
+msgstr "Nýtt"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
 msgid "No activity"
-msgstr ""
+msgstr "Engin virkni"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
@@ -759,7 +765,7 @@ msgstr ""
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant__model_id
 msgid "Object"
-msgstr ""
+msgstr "Object"
 
 #. module: marketing_automation
 #: model:mail.mass_mailing,name:marketing_automation.mass_mailing_offer_free_trial
@@ -772,17 +778,17 @@ msgstr ""
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__opened
 msgid "Opened"
-msgstr ""
+msgstr "Opened"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.mass_mailing_view_form_marketing_activity
 msgid "Options"
-msgstr ""
+msgstr "Valmöguleikar"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__parent_id
 msgid "Parent"
-msgstr ""
+msgstr "Yfirlykill"
 
 #. module: marketing_automation
 #: code:addons/marketing_automation/models/marketing_participant.py:179
@@ -855,17 +861,17 @@ msgstr ""
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.mass_mailing_view_form_marketing_activity
 msgid "Recipients"
-msgstr ""
+msgstr "Viðtakendurf"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant__resource_ref
 msgid "Record"
-msgstr ""
+msgstr "Record"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant__res_id
 msgid "Record ID"
-msgstr ""
+msgstr "Record ID"
 
 #. module: marketing_automation
 #: code:addons/marketing_automation/models/marketing_participant.py:106
@@ -912,7 +918,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__replied
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Replied"
-msgstr ""
+msgstr "Replied"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__require_sync
@@ -922,13 +928,13 @@ msgstr ""
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
 msgid "Resource ID"
-msgstr ""
+msgstr "Resource ID"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_search
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_tree
 msgid "Resource Name"
-msgstr ""
+msgstr "Resource Name"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
@@ -956,7 +962,7 @@ msgstr ""
 #. module: marketing_automation
 #: selection:marketing.trace,state:0
 msgid "Scheduled"
-msgstr ""
+msgstr "Scheduled"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_search
@@ -982,13 +988,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__sent
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Sent"
-msgstr ""
+msgstr "Sent"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__server_action_id
 #: selection:marketing.activity,activity_type:0
 msgid "Server Action"
-msgstr ""
+msgstr "Server Action"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
@@ -1000,12 +1006,12 @@ msgstr ""
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__utm_source_id
 msgid "Source"
-msgstr ""
+msgstr "Uppruni"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__name
 msgid "Source Name"
-msgstr ""
+msgstr "Source Name"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_mail_mass_mailing__use_in_marketing_automation
@@ -1024,7 +1030,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_search
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_search
 msgid "State"
-msgstr ""
+msgstr "Fylki"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
@@ -1050,7 +1056,7 @@ msgstr ""
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.mass_mailing_view_form_marketing_activity
 msgid "Subject"
-msgstr ""
+msgstr "Subject"
 
 #. module: marketing_automation
 #: code:addons/marketing_automation/models/marketing_campaign.py:312
@@ -1067,7 +1073,7 @@ msgstr ""
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Target Model"
-msgstr ""
+msgstr "Target Model"
 
 #. module: marketing_automation
 #. openerp-web
@@ -1138,7 +1144,7 @@ msgstr ""
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Update"
-msgstr ""
+msgstr "Uppfærsla"
 
 #. module: marketing_automation
 #: model:ir.model.fields,help:marketing_automation.field_marketing_campaign__unique_field_id
@@ -1152,7 +1158,7 @@ msgstr ""
 #. module: marketing_automation
 #: model:res.groups,name:marketing_automation.group_marketing_automation_user
 msgid "User"
-msgstr ""
+msgstr "Notandi"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__validity_duration_number
@@ -1174,13 +1180,13 @@ msgstr ""
 #: selection:marketing.activity,interval_type:0
 #: selection:marketing.activity,validity_duration_type:0
 msgid "Weeks"
-msgstr ""
+msgstr "Weeks"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
 msgid "Workflow"
-msgstr ""
+msgstr "Workflow"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form

@@ -253,7 +253,7 @@ class pos_session(models.Model):
                 else:
                     total_sold_per_category[key] = line.price_subtotal_incl
 
-        if group_by_user_id:
+        if group_by_user_id or not total_sold_per_user_per_category:
             return list(total_sold_per_user_per_category.items())
         else:
             return list(total_sold_per_user_per_category[0].items())

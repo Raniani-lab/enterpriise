@@ -2,12 +2,19 @@
 # This file contains the translation of the following modules:
 # * web_grid
 # 
+# Translators:
+# Martin Trigaux, 2018
+# krnkris, 2018
+# gezza <geza.nagy@oregional.hu>, 2018
+# Ákos Nagy <akos.nagy@oregional.hu>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:07+0000\n"
 "PO-Revision-Date: 2018-08-24 11:49+0000\n"
+"Last-Translator: Ákos Nagy <akos.nagy@oregional.hu>, 2018\n"
 "Language-Team: Hungarian (https://www.transifex.com/odoo/teams/41243/hu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,7 +31,7 @@ msgstr ""
 #: selection:ir.actions.act_window.view,view_mode:0
 #: selection:ir.ui.view,type:0
 msgid "Activity"
-msgstr ""
+msgstr "Tevékenység"
 
 #. module: web_grid
 #. openerp-web
@@ -32,60 +39,60 @@ msgstr ""
 #: code:addons/web_grid/static/src/xml/grid_view.xml:5
 #, python-format
 msgid "Add a Line"
-msgstr ""
+msgstr "Sor hozzáadása"
 
 #. module: web_grid
 #: model:ir.model,name:web_grid.model_base
 msgid "Base"
-msgstr ""
+msgstr "Alap"
 
 #. module: web_grid
 #: selection:ir.actions.act_window.view,view_mode:0
 #: selection:ir.ui.view,type:0
 msgid "Calendar"
-msgstr ""
+msgstr "Naptár"
 
 #. module: web_grid
 #: code:addons/web_grid/models/models.py:201
 #: code:addons/web_grid/models/models.py:233
 #, python-format
 msgid "Can not use fields of type %s as grid columns"
-msgstr ""
+msgstr "A %s típusú mező nem használható rács oszlopokként"
 
 #. module: web_grid
 #: selection:ir.actions.act_window.view,view_mode:0
 #: selection:ir.ui.view,type:0
 msgid "Cohort"
-msgstr ""
+msgstr "Csoport"
 
 #. module: web_grid
 #: selection:ir.actions.act_window.view,view_mode:0
 #: selection:ir.ui.view,type:0
 msgid "Dashboard"
-msgstr ""
+msgstr "Kezelőpult"
 
 #. module: web_grid
 #: selection:ir.ui.view,type:0
 msgid "Diagram"
-msgstr ""
+msgstr "Diagram"
 
 #. module: web_grid
 #: selection:ir.actions.act_window.view,view_mode:0
 #: selection:ir.ui.view,type:0
 msgid "Form"
-msgstr ""
+msgstr "Űrlap"
 
 #. module: web_grid
 #: selection:ir.actions.act_window.view,view_mode:0
 #: selection:ir.ui.view,type:0
 msgid "Gantt"
-msgstr ""
+msgstr "Gantt"
 
 #. module: web_grid
 #: selection:ir.actions.act_window.view,view_mode:0
 #: selection:ir.ui.view,type:0
 msgid "Graph"
-msgstr ""
+msgstr "Grafikon"
 
 #. module: web_grid
 #. openerp-web
@@ -94,26 +101,26 @@ msgstr ""
 #: selection:ir.ui.view,type:0
 #, python-format
 msgid "Grid"
-msgstr ""
+msgstr "Tarifatáblázat"
 
 #. module: web_grid
 #: selection:ir.actions.act_window.view,view_mode:0
 #: selection:ir.ui.view,type:0
 msgid "Kanban"
-msgstr ""
+msgstr "Kanban"
 
 #. module: web_grid
 #. openerp-web
 #: code:addons/web_grid/static/src/xml/grid_view.xml:24
 #, python-format
 msgid "Next"
-msgstr ""
+msgstr "Következő"
 
 #. module: web_grid
 #: selection:ir.actions.act_window.view,view_mode:0
 #: selection:ir.ui.view,type:0
 msgid "Pivot"
-msgstr ""
+msgstr "Pivot"
 
 #. module: web_grid
 #. openerp-web
@@ -125,12 +132,12 @@ msgstr ""
 #. module: web_grid
 #: selection:ir.ui.view,type:0
 msgid "QWeb"
-msgstr ""
+msgstr "QWeb"
 
 #. module: web_grid
 #: selection:ir.ui.view,type:0
 msgid "Search"
-msgstr ""
+msgstr "Keresés"
 
 #. module: web_grid
 #. openerp-web
@@ -146,20 +153,22 @@ msgstr ""
 msgid ""
 "The sectioned grid view can't handle groups with different columns sets"
 msgstr ""
+"A szekcionált négyzetrács nézet nem kezelheti a különböző oszlop "
+"részletekkel rendelkező csoportokat"
 
 #. module: web_grid
 #. openerp-web
 #: code:addons/web_grid/static/src/xml/grid_view.xml:19
 #, python-format
 msgid "Today"
-msgstr ""
+msgstr "Ma"
 
 #. module: web_grid
 #. openerp-web
 #: code:addons/web_grid/static/src/js/grid_renderer.js:395
 #, python-format
 msgid "Total"
-msgstr ""
+msgstr "Összesen"
 
 #. module: web_grid
 #. openerp-web
@@ -172,14 +181,14 @@ msgstr ""
 #: selection:ir.actions.act_window.view,view_mode:0
 #: selection:ir.ui.view,type:0
 msgid "Tree"
-msgstr ""
+msgstr "Fa"
 
 #. module: web_grid
 #. openerp-web
 #: code:addons/web_grid/static/src/js/grid_controller.js:204
 #, python-format
 msgid "Undefined"
-msgstr ""
+msgstr "Nincs meghatározva"
 
 #. module: web_grid
 #. openerp-web
@@ -188,18 +197,18 @@ msgstr ""
 #: code:addons/web_grid/static/src/js/grid_renderer.js:358
 #, python-format
 msgid "Unknown"
-msgstr ""
+msgstr "Ismeretlen"
 
 #. module: web_grid
 #: model:ir.model,name:web_grid.model_ir_ui_view
 msgid "View"
-msgstr ""
+msgstr "Nézet"
 
 #. module: web_grid
 #: model:ir.model.fields,field_description:web_grid.field_ir_actions_act_window_view__view_mode
 #: model:ir.model.fields,field_description:web_grid.field_ir_ui_view__type
 msgid "View Type"
-msgstr ""
+msgstr "Nézet típusa"
 
 #. module: web_grid
 #: code:addons/web_grid/models/models.py:244

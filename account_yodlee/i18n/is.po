@@ -2,12 +2,16 @@
 # This file contains the translation of the following modules:
 # * account_yodlee
 # 
+# Translators:
+# Bjorn Ingvarsson <boi@exigo.is>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
 "PO-Revision-Date: 2018-08-24 11:37+0000\n"
+"Last-Translator: Bjorn Ingvarsson <boi@exigo.is>, 2018\n"
 "Language-Team: Icelandic (https://www.transifex.com/odoo/teams/41243/is/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -26,7 +30,7 @@ msgstr ""
 #: code:addons/account_yodlee/models/yodlee.py:242
 #, python-format
 msgid "Account"
-msgstr ""
+msgstr "Bókhaldslykill"
 
 #. module: account_yodlee
 #: code:addons/account_yodlee/models/yodlee.py:335
@@ -90,7 +94,7 @@ msgstr ""
 #. module: account_yodlee
 #: model:ir.model,name:account_yodlee.model_res_company
 msgid "Companies"
-msgstr ""
+msgstr "Fyrirtæki"
 
 #. module: account_yodlee
 #: code:addons/account_yodlee/models/yodlee.py:187

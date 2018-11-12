@@ -2,12 +2,18 @@
 # This file contains the translation of the following modules:
 # * web_mobile
 # 
+# Translators:
+# Martin Trigaux, 2018
+# Arma Gedonsky <armagedonsky@hot.ee>, 2018
+# Eneli Õigus <enelioigus@gmail.com>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-18 10:05+0000\n"
 "PO-Revision-Date: 2018-08-24 11:49+0000\n"
+"Last-Translator: Eneli Õigus <enelioigus@gmail.com>, 2018\n"
 "Language-Team: Estonian (https://www.transifex.com/odoo/teams/41243/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,14 +26,14 @@ msgstr ""
 #: code:addons/web_mobile/static/src/xml/contact_sync.xml:7
 #, python-format
 msgid "Add"
-msgstr ""
+msgstr "Lisa"
 
 #. module: web_mobile
 #. openerp-web
 #: code:addons/web_mobile/static/src/xml/contact_sync.xml:9
 #, python-format
 msgid "Add to"
-msgstr ""
+msgstr "Lisa"
 
 #. module: web_mobile
 #. openerp-web
@@ -41,7 +47,7 @@ msgstr ""
 #: code:addons/web_mobile/static/src/xml/contact_sync.xml:10
 #, python-format
 msgid "Mobile"
-msgstr ""
+msgstr "Mobiil"
 
 #. module: web_mobile
 #. openerp-web

@@ -2,12 +2,18 @@
 # This file contains the translation of the following modules:
 # * account_asset
 # 
+# Translators:
+# Martin Trigaux, 2018
+# Birgir Steinarsson <biggboss83@gmail.com>, 2018
+# Bjorn Ingvarsson <boi@exigo.is>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 13:17+0000\n"
 "PO-Revision-Date: 2018-08-24 09:15+0000\n"
+"Last-Translator: Bjorn Ingvarsson <boi@exigo.is>, 2018\n"
 "Language-Team: Icelandic (https://www.transifex.com/odoo/teams/41243/is/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,7 +25,7 @@ msgstr ""
 #: code:addons/account_asset/models/account_asset.py:429
 #, python-format
 msgid " (copy)"
-msgstr ""
+msgstr " (afrita)"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:571
@@ -72,13 +78,13 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__message_needaction
 msgid "Action Needed"
-msgstr ""
+msgstr "Þarfnast aðgerðar"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__active
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_category__active
 msgid "Active"
-msgstr ""
+msgstr "Virkur"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
@@ -89,7 +95,7 @@ msgstr ""
 #: code:addons/account_asset/models/account_asset.py:639
 #, python-format
 msgid "Amount"
-msgstr ""
+msgstr "Upphæð"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_asset_report__depreciation_value
@@ -105,7 +111,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__account_analytic_id
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_category__account_analytic_id
 msgid "Analytic Account"
-msgstr ""
+msgstr "Kostnaðarreikningur"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__analytic_tag_ids
@@ -120,7 +126,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 #: model_terms:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
 msgid "Asset"
-msgstr ""
+msgstr "Virkur"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_category__account_asset_id
@@ -215,7 +221,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_purchase_tree
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_search
 msgid "Assets"
-msgstr ""
+msgstr "Virkur"
 
 #. module: account_asset
 #: model:ir.actions.act_window,name:account_asset.action_asset_asset_report
@@ -281,13 +287,13 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
 #: model_terms:ir.ui.view,arch_db:account_asset.view_asset_depreciation_confirmation_wizard
 msgid "Cancel"
-msgstr ""
+msgstr "Hætta við"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__category_id
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_search
 msgid "Category"
-msgstr ""
+msgstr "Flokkur"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
@@ -334,7 +340,7 @@ msgstr ""
 #. module: account_asset
 #: selection:account.asset.asset,state:0 selection:asset.asset.report,state:0
 msgid "Close"
-msgstr ""
+msgstr "Loka"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
@@ -347,7 +353,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_asset.field_asset_asset_report__company_id
 #: model_terms:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
 msgid "Company"
-msgstr ""
+msgstr "Fyrirtæki"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__method
@@ -368,7 +374,7 @@ msgstr ""
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
 msgid "Confirm"
-msgstr ""
+msgstr "Staðfesta"
 
 #. module: account_asset
 #: code:addons/account_asset/wizard/asset_depreciation_confirmation_wizard.py:20
@@ -389,7 +395,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_asset.field_asset_depreciation_confirmation_wizard__create_uid
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Búið til af"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__create_date
@@ -398,7 +404,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_asset.field_asset_depreciation_confirmation_wizard__create_date
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Stofnað þann"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_depreciation_line__depreciated_value
@@ -410,12 +416,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__currency_id
 #, python-format
 msgid "Currency"
-msgstr ""
+msgstr "Gjaldmiðill"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 msgid "Current"
-msgstr ""
+msgstr "Núverandi"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_depreciation_line__amount
@@ -427,7 +433,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_asset.field_asset_asset_report__date
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 msgid "Date"
-msgstr ""
+msgstr "Dags."
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
@@ -476,7 +482,7 @@ msgstr ""
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
 msgid "Depreciation"
-msgstr ""
+msgstr "Depreciation"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
@@ -561,7 +567,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_asset.field_asset_depreciation_confirmation_wizard__display_name
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Nafn"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:299
@@ -585,14 +591,14 @@ msgstr ""
 #: selection:account.asset.asset,state:0 selection:asset.asset.report,state:0
 #: model_terms:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
 msgid "Draft"
-msgstr ""
+msgstr "Tillaga"
 
 #. module: account_asset
 #: selection:account.asset.asset,method_time:0
 #: selection:account.asset.category,method_time:0
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__method_end
 msgid "Ending Date"
-msgstr ""
+msgstr "Ending Date"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_category__method_end
@@ -603,7 +609,7 @@ msgstr ""
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
 msgid "Extended Filters..."
-msgstr ""
+msgstr "Extended Filters..."
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__first_depreciation_manual_date
@@ -613,17 +619,17 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__message_follower_ids
 msgid "Followers"
-msgstr ""
+msgstr "Fylgjendur"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__message_channel_ids
 msgid "Followers (Channels)"
-msgstr ""
+msgstr "Followers (Channels)"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__message_partner_ids
 msgid "Followers (Partners)"
-msgstr ""
+msgstr "Fylgjendur (viðskiptafélagar)"
 
 #. module: account_asset
 #: model_terms:ir.actions.act_window,help:account_asset.action_asset_asset_report
@@ -660,13 +666,13 @@ msgstr ""
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
 msgid "Group By"
-msgstr ""
+msgstr "Hópa eftir"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_search
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 msgid "Group By..."
-msgstr ""
+msgstr "Flokka eftir..."
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_category__group_entries
@@ -681,17 +687,17 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_asset.field_asset_depreciation_confirmation_wizard__id
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__id
 msgid "ID"
-msgstr ""
+msgstr "Auðkenni"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset_asset__message_unread
 msgid "If checked new messages require your attention."
-msgstr ""
+msgstr "Ef merkt við þá eru ný skilaboð"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset_asset__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr ""
+msgstr "If checked, new messages require your attention."
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset_asset__message_has_error
@@ -723,17 +729,17 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__invoice_id
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
 msgid "Invoice"
-msgstr ""
+msgstr "Reikningur"
 
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_invoice_line
 msgid "Invoice Line"
-msgstr ""
+msgstr "Invoice Line"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__message_is_follower
 msgid "Is Follower"
-msgstr ""
+msgstr "Is Follower"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset_asset__salvage_value
@@ -743,12 +749,12 @@ msgstr ""
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
 msgid "Items"
-msgstr ""
+msgstr "Items"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_category__journal_id
 msgid "Journal"
-msgstr ""
+msgstr "Færslubók"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:463
@@ -756,7 +762,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
 #, python-format
 msgid "Journal Entries"
-msgstr ""
+msgstr "Færslur fjárhagsbókhalds"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset____last_update
@@ -766,7 +772,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_asset.field_asset_depreciation_confirmation_wizard____last_update
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Síðast breytt þann"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__write_uid
@@ -775,7 +781,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_asset.field_asset_depreciation_confirmation_wizard__write_uid
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Síðast uppfært af"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__write_date
@@ -784,7 +790,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_asset.field_asset_depreciation_confirmation_wizard__write_date
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Síðast uppfært þann"
 
 #. module: account_asset
 #: selection:account.asset.asset,method:0
@@ -805,7 +811,7 @@ msgstr ""
 #. module: account_asset
 #: selection:account.asset.asset,date_first_depreciation:0
 msgid "Manual"
-msgstr ""
+msgstr "Manual"
 
 #. module: account_asset
 #: selection:account.asset.category,date_first_depreciation:0
@@ -820,7 +826,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__message_ids
 msgid "Messages"
-msgstr ""
+msgstr "Skilaboð"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
@@ -857,7 +863,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__note
 msgid "Note"
-msgstr ""
+msgstr "Athugasemd"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset_asset__first_depreciation_manual_date
@@ -870,7 +876,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__message_needaction_counter
 msgid "Number of Actions"
-msgstr ""
+msgstr "Fjöldi aðgerða"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__method_number
@@ -899,7 +905,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset_asset__message_needaction_counter
 msgid "Number of messages which requires an action"
-msgstr ""
+msgstr "Fjöldi skilaboð sem bíða afgreiðslu"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset_asset__message_has_error_counter
@@ -909,7 +915,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset_asset__message_unread_counter
 msgid "Number of unread messages"
-msgstr ""
+msgstr "Number of unread messages"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
@@ -922,7 +928,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_asset.field_asset_asset_report__partner_id
 #, python-format
 msgid "Partner"
-msgstr ""
+msgstr "Viðskipta aðili"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_category__method_period
@@ -948,7 +954,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
 #, python-format
 msgid "Posted"
-msgstr ""
+msgstr "Bókað"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_asset_report__posted_value
@@ -963,7 +969,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_product_template
 msgid "Product Template"
-msgstr ""
+msgstr "Sniðmát vöru"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__prorata
@@ -982,7 +988,7 @@ msgstr ""
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_search
 msgid "Purchase"
-msgstr ""
+msgstr "Innkaup"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
@@ -997,7 +1003,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__name
 msgid "Reason"
-msgstr ""
+msgstr "Reason"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
@@ -1012,12 +1018,12 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__code
 msgid "Reference"
-msgstr ""
+msgstr "Tilvísun"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
 msgid "Residual"
-msgstr ""
+msgstr "Residual"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__value_residual
@@ -1038,7 +1044,7 @@ msgstr ""
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_search
 msgid "Sales"
-msgstr ""
+msgstr "Sala"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__salvage_value
@@ -1058,12 +1064,12 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_depreciation_line__sequence
 msgid "Sequence"
-msgstr ""
+msgstr "Runa"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
 msgid "Set to Draft"
-msgstr ""
+msgstr "Breyta í tillögu"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset_category__method_period
@@ -1079,7 +1085,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__state
 #: model:ir.model.fields,field_description:account_asset.field_asset_asset_report__state
 msgid "Status"
-msgstr ""
+msgstr "Staða"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset_asset__method_period
@@ -1148,14 +1154,14 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_category__type
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_search
 msgid "Type"
-msgstr ""
+msgstr "Gerð"
 
 #. module: account_asset
 #. openerp-web
 #: code:addons/account_asset/static/src/js/account_asset.js:55
 #, python-format
 msgid "Unposted"
-msgstr ""
+msgstr "Unposted"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_asset_report__unposted_value
@@ -1165,18 +1171,18 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__message_unread
 msgid "Unread Messages"
-msgstr ""
+msgstr "Ólesin skilaboð"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__message_unread_counter
 msgid "Unread Messages Counter"
-msgstr ""
+msgstr "Teljari fyrir ólesin skilaboð"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_purchase_tree
 msgid "Vendor"
-msgstr ""
+msgstr "Birgir"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__website_message_ids
@@ -1200,7 +1206,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_asset_report__name
 msgid "Year"
-msgstr ""
+msgstr "Ár"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:136

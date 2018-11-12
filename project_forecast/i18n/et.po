@@ -2,12 +2,22 @@
 # This file contains the translation of the following modules:
 # * project_forecast
 # 
+# Translators:
+# Martin Trigaux, 2018
+# Wanradt Koell <wanradt@gmail.com>, 2018
+# Arma Gedonsky <armagedonsky@hot.ee>, 2018
+# Egon Raamat <egon@avalah.ee>, 2018
+# Eneli Õigus <enelioigus@gmail.com>, 2018
+# Martin Aavastik <martin@avalah.ee>, 2018
+# Helen Sulaoja <helen@avalah.ee>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
 "PO-Revision-Date: 2018-08-24 11:47+0000\n"
+"Last-Translator: Helen Sulaoja <helen@avalah.ee>, 2018\n"
 "Language-Team: Estonian (https://www.transifex.com/odoo/teams/41243/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,7 +28,7 @@ msgstr ""
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_form
 msgid "% Time"
-msgstr ""
+msgstr "% Ajast"
 
 #. module: project_forecast
 #: code:addons/project_forecast/models/project_forecast.py:200
@@ -29,17 +39,17 @@ msgstr ""
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_view_kanban_inherit_project_forecast
 msgid "<span class=\"o_label\">Forecast</span>"
-msgstr ""
+msgstr "<span class=\"o_label\">Prognoos</span>"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_view_form_inherit_project_forecast
 msgid "<span>Forecast</span>"
-msgstr ""
+msgstr "<span>Prognoos</span>"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__active
 msgid "Active"
-msgstr ""
+msgstr "Aktiivne"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__resource_time
@@ -55,37 +65,37 @@ msgstr ""
 #: model:ir.model.fields,field_description:project_forecast.field_project_task__allow_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_view_form_inherit_project_forecast
 msgid "Allow Forecast"
-msgstr ""
+msgstr "Luba prognoos"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_project__allow_forecast
 msgid "Allow forecast"
-msgstr ""
+msgstr "Luba prognoos"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
 msgid "Archived"
-msgstr ""
+msgstr "Arhiveeritud"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_form
 msgid "Assign To"
-msgstr ""
+msgstr "Kellele määrata"
 
 #. module: project_forecast
 #: model:ir.ui.menu,name:project_forecast.project_forecast_group_by_user
 msgid "By Employee"
-msgstr ""
+msgstr "Töötaja järgi"
 
 #. module: project_forecast
 #: model:ir.ui.menu,name:project_forecast.project_forecast_group_by_project
 msgid "By Project"
-msgstr ""
+msgstr "Projekti järgi"
 
 #. module: project_forecast
 #: selection:res.company,forecast_span:0
 msgid "By day"
-msgstr ""
+msgstr "Päeva kaupa"
 
 #. module: project_forecast
 #: selection:res.company,forecast_span:0
@@ -100,17 +110,17 @@ msgstr ""
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__color
 msgid "Color"
-msgstr ""
+msgstr "Värv"
 
 #. module: project_forecast
 #: model:ir.model,name:project_forecast.model_res_company
 msgid "Companies"
-msgstr ""
+msgstr "Ettevõtted"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__company_id
 msgid "Company"
-msgstr ""
+msgstr "Ettevõte"
 
 #. module: project_forecast
 #: model:ir.model,name:project_forecast.model_res_config_settings
@@ -120,28 +130,28 @@ msgstr ""
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Loonud"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Loomise kuupäev"
 
 #. module: project_forecast
 #: selection:res.company,forecast_uom:0
 msgid "Days"
-msgstr ""
+msgstr "Päevad"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Näidatav nimi"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__employee_id
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
 msgid "Employee"
-msgstr ""
+msgstr "Töötaja"
 
 #. module: project_forecast
 #: model:ir.model.fields,help:project_forecast.field_res_company__forecast_span
@@ -160,12 +170,12 @@ msgstr ""
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__end_date
 msgid "End Date"
-msgstr ""
+msgstr "Lõpukuupäev"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__exclude
 msgid "Exclude"
-msgstr ""
+msgstr "Välista"
 
 #. module: project_forecast
 #: model:ir.model.fields,help:project_forecast.field_project_forecast__resource_time
@@ -176,7 +186,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:project_forecast.project_forecast_action_from_project
 #: model:ir.ui.menu,name:project_forecast.project_forecast_menu
 msgid "Forecast"
-msgstr ""
+msgstr "Prognoos"
 
 #. module: project_forecast
 #: code:addons/project_forecast/models/project_forecast.py:274
@@ -190,17 +200,17 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_graph
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_pivot
 msgid "Forecast Analysis"
-msgstr ""
+msgstr "Prognoosi analüüs"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_form
 msgid "Forecast Form"
-msgstr ""
+msgstr "Prognoosi vorm"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_tree
 msgid "Forecast List"
-msgstr ""
+msgstr "Ennustuste nimekiri"
 
 #. module: project_forecast
 #: model:ir.actions.act_window,name:project_forecast.project_forecast_action_by_user
@@ -212,7 +222,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:project_forecast.project_forecast_action_by_project
 #: model_terms:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_project
 msgid "Forecast by project"
-msgstr ""
+msgstr "Prognoosi projekti lõikes"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_grid_by_task
@@ -246,12 +256,12 @@ msgstr ""
 #: code:addons/project_forecast/models/project_forecast.py:164
 #, python-format
 msgid "Forecasted time must be positive"
-msgstr ""
+msgstr "Prognoositav aeg peab olema positiivne"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
 msgid "Future"
-msgstr ""
+msgstr "Tulevane"
 
 #. module: project_forecast
 #: code:addons/project_forecast/models/project_forecast.py:296
@@ -265,109 +275,109 @@ msgstr ""
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
 msgid "Group By"
-msgstr ""
+msgstr "Rühmitamine"
 
 #. module: project_forecast
 #: selection:res.company,forecast_uom:0
 msgid "Hours"
-msgstr ""
+msgstr "Tunnid"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Viimati muudetud (millal)"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Viimati uuendatud (kelle poolt)"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Viimati uuendatud (millal)"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_grid_by_task
 #: model_terms:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_project
 #: model_terms:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_user
 msgid "Month"
-msgstr ""
+msgstr "Kuu"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
 msgid "My Activities"
-msgstr ""
+msgstr "Minu tegevused"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
 msgid "My Projects"
-msgstr ""
+msgstr "Minu projektid"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__name
 msgid "Name"
-msgstr ""
+msgstr "Nimi"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
 msgid "Past"
-msgstr ""
+msgstr "Varasem"
 
 #. module: project_forecast
 #: model:ir.model.fields,help:project_forecast.field_project_forecast__time
 msgid "Percentage of working time"
-msgstr ""
+msgstr "Percentage of working time"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__resource_hours
 msgid "Planned hours"
-msgstr ""
+msgstr "Planeeritud tunnid"
 
 #. module: project_forecast
 #: model:ir.model,name:project_forecast.model_project_project
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__project_id
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
 msgid "Project"
-msgstr ""
+msgstr "Projektid"
 
 #. module: project_forecast
 #: model:ir.model,name:project_forecast.model_project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_form
 msgid "Project Forecast"
-msgstr ""
+msgstr "Projekti prognoos"
 
 #. module: project_forecast
 #: model:ir.model.fields,help:project_forecast.field_project_forecast__user_id
 msgid "Related user name for the resource to manage its access."
-msgstr ""
+msgstr "Seotud kasutajanimi ressursi juurdepääsu haldamiseks."
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__start_date
 msgid "Start Date"
-msgstr ""
+msgstr "Alguskuupäev"
 
 #. module: project_forecast
 #: model:ir.model,name:project_forecast.model_project_task
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__task_id
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
 msgid "Task"
-msgstr ""
+msgstr "Ülesanne"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__stage_id
 msgid "Task stage"
-msgstr ""
+msgstr "Ülesande etapp"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__tag_ids
 msgid "Task tags"
-msgstr ""
+msgstr "Ülesande sildid"
 
 #. module: project_forecast
 #: code:addons/project_forecast/models/project_forecast.py:132
@@ -381,7 +391,7 @@ msgstr ""
 #: model:ir.model.fields,help:project_forecast.field_project_project__allow_forecast
 #: model:ir.model.fields,help:project_forecast.field_project_task__allow_forecast
 msgid "This feature shows the Forecast link in the kanban view"
-msgstr ""
+msgstr "See võimalus näitab prognoosi linki kanban vaates"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_res_company__forecast_span
@@ -404,21 +414,21 @@ msgstr ""
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__user_id
 msgid "User"
-msgstr ""
+msgstr "Kasutaja"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_grid_by_task
 #: model_terms:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_project
 #: model_terms:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_user
 msgid "Week"
-msgstr ""
+msgstr "Nädal"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_grid_by_task
 #: model_terms:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_project
 #: model_terms:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_user
 msgid "Year"
-msgstr ""
+msgstr "Aasta"
 
 #. module: project_forecast
 #: code:addons/project_forecast/models/project.py:21
@@ -441,15 +451,15 @@ msgstr ""
 #: code:addons/project_forecast/models/project_forecast.py:170
 #, python-format
 msgid "Your task is not in the selected project."
-msgstr ""
+msgstr "Your task is not in the selected project."
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_form
 msgid "day(s)"
-msgstr ""
+msgstr "Päev(ad)"
 
 #. module: project_forecast
 #: code:addons/project_forecast/models/project_forecast.py:109
 #, python-format
 msgid "undefined"
-msgstr ""
+msgstr "undefined"

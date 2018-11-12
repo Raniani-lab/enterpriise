@@ -24,7 +24,7 @@ msgstr ""
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
 msgid "(Un)archiving a wall. Do you want to proceed?"
-msgstr ""
+msgstr "(On) archivering van een wall. Wil je doorgaan?"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_walls
@@ -34,12 +34,12 @@ msgstr "<b>Hey! Geen wall gevonden</b>"
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_walls
 msgid "<i class=\"fa fa-plus-circle\"/> Create Now"
-msgstr ""
+msgstr "<i class=\"fa fa-plus-circle\"/> Nu aanmaken"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "<i class=\"fa fa-twitter\"/> <strong> Join the wall</strong>"
-msgstr ""
+msgstr "<i class=\"fa fa-twitter\"/> <strong> Sluit je aan bij de wall</strong>"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
@@ -47,6 +47,8 @@ msgid ""
 "<span class=\"o_stat_text\">Live Mode</span>\n"
 "                                <span class=\"o_stat_text\">is <strong class=\"text-danger\"> Off </strong></span>"
 msgstr ""
+"<span class=\"o_stat_text\">Live mode</span>\n"
+"                                <span class=\"o_stat_text\">is <strong class=\"text-danger\"> Uit </strong></span>"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
@@ -54,6 +56,8 @@ msgid ""
 "<span class=\"o_stat_text\">Live Mode</span>\n"
 "                                <span class=\"o_stat_text\">is <strong class=\"text-success\"> On </strong></span>"
 msgstr ""
+"<span class=\"o_stat_text\">Live mode</span>\n"
+"                                <span class=\"o_stat_text\">is <strong class=\"text-success\"> Aan </strong></span>"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__access_token
@@ -63,7 +67,7 @@ msgstr "Toegangstoken"
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__active
 msgid "Active"
-msgstr "Actie"
+msgstr "Actief"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__create_uid
@@ -83,7 +87,7 @@ msgstr "Verlaag zoomniveau"
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Delete this tweet"
-msgstr ""
+msgstr "Verwijder deze tweet"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__description
@@ -123,12 +127,12 @@ msgstr "Vergroot zoomniveau"
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__is_live
 msgid "Is Live"
-msgstr ""
+msgstr "Is live"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,help:website_twitter_wall.field_website_twitter_wall__is_live
 msgid "Is live mode on/off"
-msgstr ""
+msgstr "Is live mode aan/uit"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__is_published
@@ -143,7 +147,7 @@ msgstr "Laatst gewijzigd op"
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__last_search
 msgid "Last Search"
-msgstr ""
+msgstr "Laatste zoekactie"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__write_uid
@@ -158,7 +162,7 @@ msgstr "Laatst bijgewerkt op"
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "List view"
-msgstr ""
+msgstr "Lijstweergave"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
@@ -173,7 +177,7 @@ msgstr "Gemixed"
 #. module: website_twitter_wall
 #: model:ir.model.fields,help:website_twitter_wall.field_website_twitter_wall__mode
 msgid "Most recent tweets, most popular tweets, or both"
-msgstr ""
+msgstr "Meest recente tweets, populairste tweets of beide"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__name
@@ -189,7 +193,7 @@ msgstr "Populair"
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
 msgid "Query operators"
-msgstr ""
+msgstr "Query-operators"
 
 #. module: website_twitter_wall
 #: selection:website.twitter.wall,mode:0
@@ -204,7 +208,7 @@ msgstr "Herhaal"
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__search_pattern
 msgid "Search string"
-msgstr ""
+msgstr "Zoekreeks"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_share
@@ -234,14 +238,14 @@ msgstr "Shuffle"
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Single view"
-msgstr ""
+msgstr "Enkele weergave"
 
 #. module: website_twitter_wall
 #: code:addons/website_twitter_wall/models/website_twitter_wall.py:83
 #, python-format
 msgid ""
 "The Twitter authentication failed. Please check your API key and secret."
-msgstr ""
+msgstr "De Twitter-authenticatie is mislukt. Controleer uw API-key en secret."
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,help:website_twitter_wall.field_website_twitter_wall__website_url
@@ -255,12 +259,16 @@ msgid ""
 "The search criteria to get the tweets you want. You can use the Twitter "
 "query operators."
 msgstr ""
+"De zoekcriteria om de gewenste tweets te krijgen. U kunt de operators voor "
+"Twitter-zoekopdrachten gebruiken."
 
 #. module: website_twitter_wall
 #: code:addons/website_twitter_wall/models/website_twitter_wall.py:94
 #, python-format
 msgid "The tweets search failed. Check your credentials and access token"
 msgstr ""
+"Het zoeken naar tweets is mislukt. Controleer uw inloggegevens en "
+"toegangstoken"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
@@ -271,12 +279,12 @@ msgstr "Drie kolomsweergave"
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__total_tweets
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Total Tweets"
-msgstr ""
+msgstr "Total tweets"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__tweet_ids
 msgid "Tweet"
-msgstr ""
+msgstr "Tweet"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_tweet__tweet_html

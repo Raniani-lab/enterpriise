@@ -57,31 +57,35 @@
                             t-att-Descuento="total_discount(line, decimal_precision)">
                             <t t-set="taxes_line" t-value="line.filtered('price_subtotal').invoice_line_tax_ids"/>
                             <t t-if="taxes_line">
+                                <t t-set="price" t-value="line.price_unit * (1.0 - (line.discount or 0.0) / 100.0)"/>
+                                <t t-set="tax_line" t-value="{tax['id']: tax for tax in taxes_line.compute_all(price, line.currency_id, line.quantity, line.product_id, line.partner_id)['taxes']}"/>
                                 <t t-set="transferred" t-value="taxes_line.filtered(lambda r: r.amount &gt;= 0)"/>
                                 <t t-set="withholding" t-value="taxes_line.filtered(lambda r: r.amount &lt; 0)"/>
                                 <cfdi:Impuestos>
                                     <t t-if="transferred">
                                         <cfdi:Traslados>
                                             <t t-foreach="transferred" t-as="tax">
+                                                <t t-set="tax_dict" t-value="tax_line.get(tax.id, {})"/>
                                                 <cfdi:Traslado
-                                                    t-att-Base="'%.*f' % (decimal_precision, line.price_subtotal)"
+                                                    t-att-Base="'%.*f' % (decimal_precision, tax_dict.get('base', line.price_subtotal))"
                                                     t-att-Impuesto="tax_name(tax.tag_ids[0].name if tax.tag_ids else '')"
                                                     t-att-TipoFactor="tax.l10n_mx_cfdi_tax_type"
                                                     t-att-TasaOCuota="'%.6f' % abs(tax.amount / 100.0) if tax.l10n_mx_cfdi_tax_type != 'Exento' else False"
-                                                    t-att-Importe="'%.2f' % round(abs(tax.amount / 100.0 * round(line.price_subtotal, 2)), 2) if tax.l10n_mx_cfdi_tax_type != 'Exento' else False"/>
+                                                    t-att-Importe="'%.2f' % abs(tax_dict.get('amount', tax.amount / 100.0 * line.price_subtotal)) if tax.l10n_mx_cfdi_tax_type != 'Exento' else False"/>
                                             </t>
                                         </cfdi:Traslados>
                                     </t>
                                     <t t-if="withholding">
                                         <cfdi:Retenciones>
                                             <t t-foreach="withholding" t-as="tax">
+                                                <t t-set="tax_dict" t-value="tax_line.get(tax.id, {})"/>
                                                 <t t-set="tag_name" t-value="tax.tag_ids.filtered(lambda r: 'Factor:' not in r.name)"/>
                                                 <cfdi:Retencion
-                                                    t-att-Base="'%.*f' % (decimal_precision, line.price_subtotal)"
+                                                    t-att-Base="'%.*f' % (decimal_precision, tax_dict.get('base', line.price_subtotal))"
                                                     t-att-Impuesto="tax_name(tag_name[0].name if tag_name else '')"
                                                     t-att-TipoFactor="tax.l10n_mx_cfdi_tax_type"
                                                     t-att-TasaOCuota="'%.6f' % abs(tax.amount / 100.0)"
-                                                    t-att-Importe="'%.2f' % round(abs(tax.amount / 100.0 * round(line.price_subtotal, 2)), 2)"/>
+                                                    t-att-Importe="'%.2f' % abs(tax_dict.get('amount', tax.amount / 100.0 * line.price_subtotal))"/>
                                             </t>
                                         </cfdi:Retenciones>
                                     </t>

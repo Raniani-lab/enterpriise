@@ -4,9 +4,11 @@ import logging
 import os
 import pytz
 import suds
+import socket
 import re
 from datetime import datetime
 from hashlib import sha256
+from odoo import _
 from suds.client import Client
 from suds.plugin import MessagePlugin
 from suds.sax.element import Element
@@ -98,6 +100,9 @@ class CarvajalRequest():
         except suds.WebFault as fault:
             _logger.error(fault)
             raise CarvajalException(fault.fault.faultstring)
+        except socket.timeout as e:
+            _logger.error(e)
+            raise CarvajalException(_('Connection to Carvajal timed out. Their API is probably down.'))
 
         return {
             'message': response.status,

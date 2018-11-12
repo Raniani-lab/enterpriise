@@ -2,12 +2,19 @@
 # This file contains the translation of the following modules:
 # * website_sale_dashboard
 # 
+# Translators:
+# Martin Trigaux, 2018
+# Arma Gedonsky <armagedonsky@hot.ee>, 2018
+# Eneli Õigus <enelioigus@gmail.com>, 2018
+# Martin Aavastik <martin@avalah.ee>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-02 10:31+0000\n"
 "PO-Revision-Date: 2018-08-24 11:50+0000\n"
+"Last-Translator: Martin Aavastik <martin@avalah.ee>, 2018\n"
 "Language-Team: Estonian (https://www.transifex.com/odoo/teams/41243/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -59,12 +66,12 @@ msgstr ""
 #. module: website_sale_dashboard
 #: selection:res.company,website_sale_dashboard_onboarding_state:0
 msgid "Closed"
-msgstr ""
+msgstr "Suletud"
 
 #. module: website_sale_dashboard
 #: model:ir.model,name:website_sale_dashboard.model_res_company
 msgid "Companies"
-msgstr ""
+msgstr "Ettevõtted"
 
 #. module: website_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.sale_dashboard_view
@@ -79,7 +86,7 @@ msgstr ""
 #. module: website_sale_dashboard
 #: selection:res.company,website_sale_dashboard_onboarding_state:0
 msgid "Done"
-msgstr ""
+msgstr "Tehtud"
 
 #. module: website_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.res_config_settings_view_form
@@ -89,7 +96,7 @@ msgstr ""
 #. module: website_sale_dashboard
 #: selection:sale.report,invoice_status:0
 msgid "Fully Invoiced"
-msgstr ""
+msgstr "Täielikult arveks tehtud"
 
 #. module: website_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.res_config_settings_view_form
@@ -99,7 +106,7 @@ msgstr ""
 #. module: website_sale_dashboard
 #: model:ir.model.fields,field_description:website_sale_dashboard.field_sale_report__invoice_status
 msgid "Invoice Status"
-msgstr ""
+msgstr "Arve staatus"
 
 #. module: website_sale_dashboard
 #: selection:res.company,website_sale_dashboard_onboarding_state:0
@@ -114,18 +121,18 @@ msgstr ""
 #. module: website_sale_dashboard
 #: selection:sale.report,invoice_status:0
 msgid "Nothing to Invoice"
-msgstr ""
+msgstr "Ei ole midagi arveks teha"
 
 #. module: website_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.sale_dashboard_view
 msgid "Orders"
-msgstr ""
+msgstr "Tellimused"
 
 #. module: website_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.view_online_sales_graph
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.view_online_sales_pivot
 msgid "Sales Analysis"
-msgstr ""
+msgstr "Müükide analüüs"
 
 #. module: website_sale_dashboard
 #: model:ir.model,name:website_sale_dashboard.model_sale_report
@@ -145,7 +152,7 @@ msgstr ""
 #. module: website_sale_dashboard
 #: selection:sale.report,invoice_status:0
 msgid "To Invoice"
-msgstr ""
+msgstr "Arveks teha"
 
 #. module: website_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.sale_dashboard_view
@@ -165,17 +172,17 @@ msgstr ""
 #. module: website_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.sale_dashboard_view
 msgid "Untaxed Total"
-msgstr ""
+msgstr "Ilma maksudeta kokku"
 
 #. module: website_sale_dashboard
 #: selection:sale.report,invoice_status:0
 msgid "Upselling Opportunity"
-msgstr ""
+msgstr "Lisamüügi võimalus"
 
 #. module: website_sale_dashboard
 #: model:ir.model,name:website_sale_dashboard.model_website
 msgid "Website"
-msgstr ""
+msgstr "Veebileht"
 
 #. module: website_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.website_sale_dashboard_onboarding_panel

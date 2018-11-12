@@ -8,13 +8,15 @@
 # ExcaliberX <excaliberx@gmail.com>, 2018
 # Yihya Hugirat <hugirat@gmail.com>, 2018
 # שהאב חוסיין <shhab89@gmail.com>, 2018
+# hed shefetr <hed@laylinetech.com>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: שהאב חוסיין <shhab89@gmail.com>, 2018\n"
+"PO-Revision-Date: 2018-08-24 11:47+0000\n"
+"Last-Translator: hed shefetr <hed@laylinetech.com>, 2018\n"
 "Language-Team: Hebrew (https://www.transifex.com/odoo/teams/41243/he/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -122,7 +124,7 @@ msgstr "חברה"
 #. module: project_forecast
 #: model:ir.model,name:project_forecast.model_res_config_settings
 msgid "Config Settings"
-msgstr ""
+msgstr "הגדרות תצורה"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__create_uid

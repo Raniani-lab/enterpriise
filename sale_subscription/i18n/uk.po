@@ -3,17 +3,18 @@
 # * sale_subscription
 # 
 # Translators:
-# Martin Trigaux, 2018
 # Bohdan Lisnenko, 2018
-# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018
 # ТАрас <tratatuta@i.ua>, 2018
+# Martin Trigaux, 2018
+# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-08 07:14+0000\n"
-"PO-Revision-Date: 2018-10-08 07:14+0000\n"
-"Last-Translator: ТАрас <tratatuta@i.ua>, 2018\n"
+"PO-Revision-Date: 2018-08-24 11:48+0000\n"
+"Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -790,7 +791,7 @@ msgstr "Призначити"
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__message_attachment_count
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__message_attachment_count
 msgid "Attachment Count"
-msgstr ""
+msgstr "Підрахунок прикріплення"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__automation_id
@@ -1462,7 +1463,7 @@ msgstr "Якщо відмічено, то нові повідомлення бу
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription__message_has_error
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_template__message_has_error
 msgid "If checked, some messages have a delivery error."
-msgstr ""
+msgstr "Якщо позначено, деякі повідомлення мають помилку доставки."
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_template__user_closable
@@ -1547,7 +1548,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_kanban
 msgid "In #{kanban_getcolorname(record.color.raw_value)}"
-msgstr ""
+msgstr "В #{kanban_getcolorname(record.color.raw_value)}"
 
 #. module: sale_subscription
 #: code:addons/sale_subscription/controllers/portal.py:45
@@ -1812,7 +1813,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__message_main_attachment_id
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__message_main_attachment_id
 msgid "Main Attachment"
-msgstr ""
+msgstr "Основне прикріплення"
 
 #. module: sale_subscription
 #: model:res.groups,name:sale_subscription.group_sale_subscription_manager
@@ -1843,7 +1844,7 @@ msgstr "Учасники"
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__message_has_error
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__message_has_error
 msgid "Message Delivery error"
-msgstr ""
+msgstr "Помилка доставлення повідомлення"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__message_ids
@@ -1980,7 +1981,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__message_has_error_counter
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__message_has_error_counter
 msgid "Number of error"
-msgstr ""
+msgstr "Кількість помилок"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription__message_needaction_counter
@@ -1992,7 +1993,7 @@ msgstr "Кількість повідомлень, які потебують д�
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription__message_has_error_counter
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_template__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr ""
+msgstr "Кількість повідомлень з помилковою дставкою"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription__message_unread_counter
@@ -2312,7 +2313,7 @@ msgstr "Відповідальний"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__activity_user_id
 msgid "Responsible User"
-msgstr ""
+msgstr "Відповідальний користувач"
 
 #. module: sale_subscription
 #: selection:sale.subscription.alert,activity_user:0

@@ -247,6 +247,26 @@ class TestL10nMxEdiInvoice(common.InvoiceTransactionCase):
         self.assertEqual(invoice.state, "open")
 
         # -----------------------
+        # Testing case with include base amount
+        # -----------------------
+        invoice = self.create_invoice()
+        tax_ieps = self.tax_positive.copy({
+            'name': 'IEPS 9%',
+            'amount': 9.0,
+            'include_base_amount': True,
+        })
+        self.tax_positive.sequence = 3
+        for line in invoice.invoice_line_ids:
+            line.invoice_line_tax_id = [self.tax_positive.id, tax_ieps.id]
+        invoice.compute_taxes()
+        invoice.action_invoice_open()
+        self.assertEqual(invoice.l10n_mx_edi_pac_status, "signed",
+                         invoice.message_ids.mapped('body'))
+        xml_total = invoice.l10n_mx_edi_get_xml_etree().get('Total')
+        self.assertEqual(invoice.amount_total, float(xml_total),
+                         'The amount with include base amount is incorrect')
+
+        # -----------------------
         # Testing send payment by email
         # -----------------------
         invoice = self.create_invoice()

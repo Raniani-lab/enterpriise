@@ -2,12 +2,19 @@
 # This file contains the translation of the following modules:
 # * mrp_plm
 # 
+# Translators:
+# Martin Trigaux, 2018
+# krnkris, 2018
+# gezza <geza.nagy@oregional.hu>, 2018
+# Ákos Nagy <akos.nagy@oregional.hu>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
 "PO-Revision-Date: 2018-08-24 11:38+0000\n"
+"Last-Translator: Ákos Nagy <akos.nagy@oregional.hu>, 2018\n"
 "Language-Team: Hungarian (https://www.transifex.com/odoo/teams/41243/hu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -25,7 +32,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_plm.field_product_product__template_attachment_count
 #: model:ir.model.fields,field_description:mrp_plm.field_product_template__template_attachment_count
 msgid "# Attachments"
-msgstr ""
+msgstr "# Mellékletek"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_bom__eco_count
@@ -33,24 +40,24 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_plm.field_product_product__eco_count
 #: model:ir.model.fields,field_description:mrp_plm.field_product_template__eco_count
 msgid "# ECOs"
-msgstr ""
+msgstr "# Foly.Folyamatváltozások"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_bom__eco_inprogress_count
 msgid "# ECOs in progress"
-msgstr ""
+msgstr "# Foly.Folyamatváltozások folyamatban"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_bom_view_kanban
 msgid "&amp;nbsp;"
-msgstr ""
+msgstr "&amp;nbsp;"
 
 #. module: mrp_plm
 #. openerp-web
 #: code:addons/mrp_plm/static/src/xml/mrp_plm_templates.xml:9
 #, python-format
 msgid "&times;"
-msgstr ""
+msgstr "&times;"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
@@ -90,17 +97,17 @@ msgstr ""
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
 msgid "<span>New</span>"
-msgstr ""
+msgstr "<span>Új</span>"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "<span>Routing</span><br/>"
-msgstr ""
+msgstr "<span>Gyártási eljárás</span><br/>"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
 msgid "<span>View</span>"
-msgstr ""
+msgstr "<span>Nézet</span>"
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco_type__alias_defaults
@@ -108,33 +115,35 @@ msgid ""
 "A Python dictionary that will be evaluated to provide default values when "
 "creating new records for this alias."
 msgstr ""
+"Egy Python szótár aminek a kiértékelésével alapértékeket biztosít ehhez az "
+"álnévhez új feljegyzések létrehozásánál."
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__message_needaction
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__message_needaction
 msgid "Action Needed"
-msgstr ""
+msgstr "Művelet szükséges"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__active
 msgid "Active"
-msgstr ""
+msgstr "Aktív"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__activity_ids
 msgid "Activities"
-msgstr ""
+msgstr "Tevékenységek"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__activity_state
 msgid "Activity State"
-msgstr ""
+msgstr "Tevékenység állapota"
 
 #. module: mrp_plm
 #: selection:mrp.eco.bom.change,change_type:0
 #: selection:mrp.eco.routing.change,change_type:0
 msgid "Add"
-msgstr ""
+msgstr "Hozzáadás"
 
 #. module: mrp_plm
 #: model_terms:ir.actions.act_window,help:mrp_plm.mrp_eco_tag_action
@@ -144,48 +153,48 @@ msgstr ""
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__alias_id
 msgid "Alias"
-msgstr ""
+msgstr "Álnév"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__alias_contact
 msgid "Alias Contact Security"
-msgstr ""
+msgstr "Álnév kapcsolat biztonság"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__alias_name
 msgid "Alias Name"
-msgstr ""
+msgstr "Álnév elnevezése"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__alias_domain
 msgid "Alias domain"
-msgstr ""
+msgstr "Álnév domain"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__alias_model_id
 msgid "Aliased Model"
-msgstr ""
+msgstr "Álnevesített modell"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
 #: model_terms:ir.ui.view,arch_db:mrp_plm.view_document_search_mrp_plm
 msgid "All"
-msgstr ""
+msgstr "Összes"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
 msgid "All Approvals have be done"
-msgstr ""
+msgstr "Összes jóváhagyásnak kész kell lennie"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
 msgid "All Validations"
-msgstr ""
+msgstr "Összes jóváhagyás"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__allow_change_stage
 msgid "Allow Change Stage"
-msgstr ""
+msgstr "Folyamat szakasz változtatás engedélyezése"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_stage__allow_apply_change
@@ -200,7 +209,7 @@ msgstr ""
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Apply Changes"
-msgstr ""
+msgstr "Alkalmazza a változtatásokat"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
@@ -210,22 +219,22 @@ msgstr ""
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__type
 msgid "Apply on"
-msgstr ""
+msgstr "Alkalmazza itt"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_stage__approval_roles
 msgid "Approval Roles"
-msgstr ""
+msgstr "Jóváhagyási jogosultságok"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_approval__template_stage_id
 msgid "Approval Stage"
-msgstr ""
+msgstr "Jóváhagyási szint"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_approval_template__approval_type
 msgid "Approval Type"
-msgstr ""
+msgstr "Jóváhagyás típusa"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__approval_ids
@@ -233,7 +242,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_stage_view_form
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Approvals"
-msgstr ""
+msgstr "Jóváhagyások"
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__approval_ids
@@ -243,45 +252,45 @@ msgstr ""
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Approve"
-msgstr ""
+msgstr "Jóváhagyás"
 
 #. module: mrp_plm
 #: selection:mrp.eco,kanban_state:0 selection:mrp.eco.approval,status:0
 msgid "Approved"
-msgstr ""
+msgstr "Jóváhagyott"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_approval__user_id
 msgid "Approved by"
-msgstr ""
+msgstr "Által jóváhagyva"
 
 #. module: mrp_plm
 #: selection:mrp.eco.approval.template,approval_type:0
 msgid "Approves, but the approval is optional"
-msgstr ""
+msgstr "Jóváhagyva, de a jóváhagyás ideiglenes"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 #: model_terms:ir.ui.view,arch_db:mrp_plm.view_document_search_mrp_plm
 msgid "Archived"
-msgstr ""
+msgstr "Archivált"
 
 #. module: mrp_plm
 #: selection:mrp.eco,effectivity:0
 msgid "As soon as possible"
-msgstr ""
+msgstr "Amilyen gyorsan csak lehet"
 
 #. module: mrp_plm
 #: selection:mrp.eco,effectivity:0
 msgid "At Date"
-msgstr ""
+msgstr "Napi árfolyam"
 
 #. module: mrp_plm
 #. openerp-web
 #: code:addons/mrp_plm/static/src/xml/mrp_plm_templates.xml:16
 #, python-format
 msgid "Attachment"
-msgstr ""
+msgstr "Melléklet"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__message_attachment_count
@@ -299,7 +308,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:mrp_plm.product_template_view_form_inherit_plm
 #, python-format
 msgid "Attachments"
-msgstr ""
+msgstr "Csatolmányok"
 
 #. module: mrp_plm
 #: model:ir.model,name:mrp_plm.model_report_mrp_report_bom_structure
@@ -309,7 +318,7 @@ msgstr ""
 #. module: mrp_plm
 #: model:ir.model,name:mrp_plm.model_mrp_bom
 msgid "Bill of Material"
-msgstr ""
+msgstr "Anyagjegyzék"
 
 #. module: mrp_plm
 #: model:ir.model,name:mrp_plm.model_mrp_bom_line
@@ -323,7 +332,7 @@ msgstr ""
 #: model:ir.ui.menu,name:mrp_plm.menu_mrp_plm_boms
 #, python-format
 msgid "Bill of Materials"
-msgstr ""
+msgstr "Anyagjegyzékek"
 
 #. module: mrp_plm
 #: model_terms:ir.actions.act_window,help:mrp_plm.mrp_bom_action_kanban
@@ -336,22 +345,22 @@ msgstr ""
 #. module: mrp_plm
 #: selection:mrp.eco,kanban_state:0
 msgid "Blocked"
-msgstr ""
+msgstr "Blokkolva"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_stage__is_blocking
 msgid "Blocking Stage"
-msgstr ""
+msgstr "Zárolás szakasza"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "BoM"
-msgstr ""
+msgstr "Anyagjegyzék"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "BoM Changes"
-msgstr ""
+msgstr "Anyagjegyzék változtatásai"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__bom_rebase_ids
@@ -362,33 +371,33 @@ msgstr ""
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__new_bom_revision
 msgid "BoM Revision"
-msgstr ""
+msgstr "Anyagjegyzék felülvizsgálat"
 
 #. module: mrp_plm
 #: code:addons/mrp_plm/models/mrp_eco.py:154
 #, python-format
 msgid "BoM and Routing"
-msgstr ""
+msgstr "Anyagjegyzés és Gyártási eljárás"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
 msgid "BoM:"
-msgstr ""
+msgstr "Anyagjegyzék:"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__user_can_approve
 msgid "Can Approve"
-msgstr ""
+msgstr "Jóváhagyhat"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__user_can_reject
 msgid "Can Reject"
-msgstr ""
+msgstr "Elutasíthat"
 
 #. module: mrp_plm
 #: model:ir.ui.menu,name:mrp_plm.menu_mrp_plm_changes
 msgid "Changes"
-msgstr ""
+msgstr "Változtatások"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
@@ -415,39 +424,39 @@ msgstr ""
 #: code:addons/mrp_plm/static/src/xml/mrp_plm_templates.xml:25
 #, python-format
 msgid "Close"
-msgstr ""
+msgstr "Bezárás"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__color
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__color
 msgid "Color"
-msgstr ""
+msgstr "Szín"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_tag__color
 msgid "Color Index"
-msgstr ""
+msgstr "Színjegyzék"
 
 #. module: mrp_plm
 #: selection:mrp.eco.approval,status:0
 msgid "Commented"
-msgstr ""
+msgstr "Megjegyzést írtak"
 
 #. module: mrp_plm
 #: selection:mrp.eco.approval.template,approval_type:0
 msgid "Comments only"
-msgstr ""
+msgstr "Csak megjegyzések"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__company_id
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "Company"
-msgstr ""
+msgstr "Vállalat"
 
 #. module: mrp_plm
 #: model:ir.ui.menu,name:mrp_plm.menu_mrp_plm_configuration
 msgid "Configuration"
-msgstr ""
+msgstr "Konfiguráció"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_bom_change__conflict
@@ -505,7 +514,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_tag__create_uid
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Létrehozta"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__create_date
@@ -517,7 +526,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_tag__create_date
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Létrehozva"
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__effectivity
@@ -527,17 +536,17 @@ msgstr ""
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__alias_defaults
 msgid "Default Values"
-msgstr ""
+msgstr "Alapértelmezett értékek"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
 msgid "Delete"
-msgstr ""
+msgstr "Törlés"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Description of the change and its reason ..."
-msgstr ""
+msgstr "A változtatás és okának leírása ..."
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__bom_change_ids
@@ -559,18 +568,18 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_tag__display_name
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Megjelenített név"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__displayed_image_id
 msgid "Displayed Image"
-msgstr ""
+msgstr "Megjelenített kép"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 #: selection:mrp.eco,state:0
 msgid "Done"
-msgstr ""
+msgstr "Kész"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
@@ -580,19 +589,19 @@ msgstr ""
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_routing_change_view_form
 msgid "Duration"
-msgstr ""
+msgstr "Időtartam"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_approval__eco_id
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
 msgid "ECO"
-msgstr ""
+msgstr "Folyamatmérnöki Folyamatváltoztatás"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_graph
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_pivot
 msgid "ECO Analysis"
-msgstr ""
+msgstr "Folyamatmérnöki Folyamatváltoztatás elemzés"
 
 #. module: mrp_plm
 #: model:ir.model,name:mrp_plm.model_mrp_eco_approval
@@ -607,7 +616,7 @@ msgstr ""
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__bom_change_ids
 msgid "ECO BoM Changes"
-msgstr ""
+msgstr "Folyamatmérnöki Folyamatváltoztatás anyagjegyzék változásai"
 
 #. module: mrp_plm
 #: model:ir.model,name:mrp_plm.model_mrp_eco_bom_change
@@ -622,26 +631,26 @@ msgstr ""
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__routing_change_ids
 msgid "ECO Routing Changes"
-msgstr ""
+msgstr "Folyamatmérnöki Folyamatváltoztatás folyamatainak változásai"
 
 #. module: mrp_plm
 #: model:ir.model,name:mrp_plm.model_mrp_eco_stage
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_approval__eco_stage_id
 msgid "ECO Stage"
-msgstr ""
+msgstr "Folyamatmérnöki Folyamatváltoztatás szakaszok"
 
 #. module: mrp_plm
 #: model:ir.actions.act_window,name:mrp_plm.mrp_eco_stage_action
 #: model:ir.ui.menu,name:mrp_plm.menu_mrp_plm_eco_stages
 msgid "ECO Stages"
-msgstr ""
+msgstr "Folyamatmérnöki Folyamatváltoztatás szintek"
 
 #. module: mrp_plm
 #: model:ir.actions.act_window,name:mrp_plm.mrp_eco_tag_action
 #: model:ir.model,name:mrp_plm.model_mrp_eco_tag
 #: model:ir.ui.menu,name:mrp_plm.menu_mrp_plm_eco_tag
 msgid "ECO Tags"
-msgstr ""
+msgstr "Folyamatmérnöki Folyamatváltoztatás címkék"
 
 #. module: mrp_plm
 #: model:ir.model,name:mrp_plm.model_mrp_eco_type
@@ -652,7 +661,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:mrp_plm.mrp_eco_type_action_form
 #: model:ir.ui.menu,name:mrp_plm.menu_mrp_plm_eco_types
 msgid "ECO Types"
-msgstr ""
+msgstr "Folyamatmérnöki Folyamatváltoztatás típusok"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
@@ -663,22 +672,24 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_bom_change_view_form
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_routing_change_view_form
 msgid "ECO details"
-msgstr ""
+msgstr "Folyamatmérnöki Folyamatváltoztatás részletek"
 
 #. module: mrp_plm
 #: model_terms:ir.actions.act_window,help:mrp_plm.mrp_eco_stage_action
 msgid "ECO stages give the different stages for the Engineering Change Orders"
 msgstr ""
+"Folyamatmérnöki Folyamatváltoztatás szakaszai adják a különböző szakaszoknak"
+" a Folyamatmérnöki Folyamatváltoztatásoknak"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_bom__eco_ids
 msgid "ECO to be applied"
-msgstr ""
+msgstr "Alkalmazandó Folyamatmérnöki Folyamatváltoztatás "
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_bom_view_form_inherit_plm
 msgid "ECO(s)"
-msgstr ""
+msgstr "Folyamatmérnöki Folyamatváltoztatás(ok)"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__nb_ecos
@@ -691,34 +702,34 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_routing_view_form_inherit_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.product_template_view_form_inherit_plm
 msgid "ECOs"
-msgstr ""
+msgstr "Folyamatmérnöki Folyamatváltoztatások"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_bom_view_kanban
 msgid "Eco"
-msgstr ""
+msgstr "Folyamatmérnöki Folyamatváltoztatás"
 
 #. module: mrp_plm
 #: code:addons/mrp_plm/models/mrp_eco.py:663
 #, python-format
 msgid "Eco BoM"
-msgstr ""
+msgstr "Folyamatmérnöki Folyamatváltoztatás anyagjegyzéke"
 
 #. module: mrp_plm
 #: code:addons/mrp_plm/models/mrp_eco.py:675
 #, python-format
 msgid "Eco Routing"
-msgstr ""
+msgstr "Folyamatmérnöki Folyamatváltoztatás gyártásútvonala"
 
 #. module: mrp_plm
 #: model:ir.model,name:mrp_plm.model_mrp_eco_routing_change
 msgid "Eco Routing changes"
-msgstr ""
+msgstr "Folyamatmérnöki Folyamatváltoztatás gyártásútvonal vátozások"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
 msgid "Edit Task"
-msgstr ""
+msgstr "Feladat szerkesztése"
 
 #. module: mrp_plm
 #: model:mrp.eco.stage,name:mrp_plm.ecostage_effective
@@ -728,23 +739,23 @@ msgstr ""
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__effectivity
 msgid "Effectivity"
-msgstr ""
+msgstr "Teljesítés"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__effectivity_date
 msgid "Effectivity Date"
-msgstr ""
+msgstr "Teljesítés kelte"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_view_form
 msgid "Email Alias"
-msgstr ""
+msgstr "E-mail álnevek"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_bom_change__eco_id
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_routing_change__eco_id
 msgid "Engineering Change"
-msgstr ""
+msgstr "Folyamatmérnöki változtatások"
 
 #. module: mrp_plm
 #: model:ir.model,name:mrp_plm.model_mrp_eco
@@ -762,45 +773,45 @@ msgstr ""
 #: model:ir.actions.act_window,name:mrp_plm.mrp_eco_action_report
 #: model:ir.actions.act_window,name:mrp_plm.mrp_eco_action_routing
 msgid "Engineering Change Orders"
-msgstr ""
+msgstr "Folyamatmérnöki Folyamatváltoztatások"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
 msgid "Engineering Changes"
-msgstr ""
+msgstr "Folyamatmérnöki változtatások"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "Filters"
-msgstr ""
+msgstr "Szűrők"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_stage__final_stage
 msgid "Final Stage"
-msgstr ""
+msgstr "Végső szakasz"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_stage__folded
 msgid "Folded in kanban view"
-msgstr ""
+msgstr "Kanban nézetben behajtott"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__message_follower_ids
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__message_follower_ids
 msgid "Followers"
-msgstr ""
+msgstr "Követők"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__message_channel_ids
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__message_channel_ids
 msgid "Followers (Channels)"
-msgstr ""
+msgstr "Követők (Csatornák)"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__message_partner_ids
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__message_partner_ids
 msgid "Followers (Partners)"
-msgstr ""
+msgstr "Követők (Partnerek)"
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__effectivity_date
@@ -815,17 +826,17 @@ msgstr ""
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "Group by..."
-msgstr ""
+msgstr "Csoportosítás..."
 
 #. module: mrp_plm
 #: model:ir.module.category,description:mrp_plm.module_category_plm
 msgid "Helps you manage your product's lifecycles."
-msgstr ""
+msgstr "Segítséget nyújt a terméke életciklusának  szervezésében."
 
 #. module: mrp_plm
 #: selection:mrp.eco,priority:0
 msgid "High"
-msgstr ""
+msgstr "Magas"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__id
@@ -837,7 +848,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_tag__id
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__id
 msgid "ID"
-msgstr ""
+msgstr "Azonosító"
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco_type__alias_parent_thread_id
@@ -845,18 +856,20 @@ msgid ""
 "ID of the parent record holding the alias (example: project holding the task"
 " creation alias)"
 msgstr ""
+"Az álnevet tartalmazó szülő rekord azonosítója (példa: a feladat "
+"létrehozására szolgáló álnevet tartalmazó projekt)"
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__message_unread
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco_type__message_unread
 msgid "If checked new messages require your attention."
-msgstr ""
+msgstr "Ha be van jelölve, akkor figyelje az új üzeneteket."
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__message_needaction
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco_type__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr ""
+msgstr "Ha be van jelölve, akkor figyelje az új üzeneteket."
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__message_has_error
@@ -870,6 +883,8 @@ msgid ""
 "If the active field is set to False, it will allow you to hide the bills of "
 "material without removing it."
 msgstr ""
+"Ha az aktív mező \"Hamis\"-ra van állítva, ez lehetővé teszi, hogy elrejtse "
+"az anyagjegyzékeket, anélkül, hogy törölné azokat."
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__active
@@ -881,7 +896,7 @@ msgstr ""
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
 msgid "Important Messages"
-msgstr ""
+msgstr "Fontos üzenetek"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
@@ -894,7 +909,7 @@ msgstr ""
 #: selection:mrp.eco,kanban_state:0 selection:mrp.eco,state:0
 #: model:mrp.eco.stage,name:mrp_plm.ecostage_progress
 msgid "In Progress"
-msgstr ""
+msgstr "Folyamatban"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_approval__is_approved
@@ -905,7 +920,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__message_is_follower
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__message_is_follower
 msgid "Is Follower"
-msgstr ""
+msgstr "Ő egy követő"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_approval__is_rejected
@@ -915,17 +930,17 @@ msgstr ""
 #. module: mrp_plm
 #: selection:mrp.eco.approval.template,approval_type:0
 msgid "Is required to approve"
-msgstr ""
+msgstr "Jóváhagyást igényel"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__kanban_state
 msgid "Kanban State"
-msgstr ""
+msgstr "Kanbanállapot"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_bom_view_kanban
 msgid "Kit"
-msgstr ""
+msgstr "Szett"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco____last_update
@@ -937,7 +952,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_tag____last_update
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Legutóbb frissítve"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__write_uid
@@ -949,7 +964,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_tag__write_uid
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Legutóbb frissítette"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__write_date
@@ -961,7 +976,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_tag__write_date
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Legutóbb frissítve "
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
@@ -977,17 +992,17 @@ msgstr ""
 #. module: mrp_plm
 #: model:res.groups,name:mrp_plm.group_plm_manager
 msgid "Manager"
-msgstr ""
+msgstr "Menedzser"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_routing_change__upd_time_cycle_manual
 msgid "Manual Duration Change"
-msgstr ""
+msgstr "Kézi időtartam változtatás"
 
 #. module: mrp_plm
 #: model:ir.ui.menu,name:mrp_plm.menu_mrp_plm_master_data
 msgid "Master Data"
-msgstr ""
+msgstr "Törzsadatok"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__message_has_error
@@ -999,44 +1014,45 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__message_ids
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__message_ids
 msgid "Messages"
-msgstr ""
+msgstr "Üzenetek"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_tag_view_search
 msgid "Mrp Eco Tags"
 msgstr ""
+"MRP /Anyag szükséglet tervezés/ Folyamatmérnöki Folyamatváltoztatás Címkék"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "My Activities"
-msgstr ""
+msgstr "Tevékenységeim"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "My Change Orders"
-msgstr ""
+msgstr "Folyamatváltoztatásaim"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
 msgid "My Validations"
-msgstr ""
+msgstr "Érvényesítéseim"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_stage__name
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_tag__name
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__name
 msgid "Name"
-msgstr ""
+msgstr "Név"
 
 #. module: mrp_plm
 #: model:mrp.eco.stage,name:mrp_plm.ecostage_new
 msgid "New"
-msgstr ""
+msgstr "Új"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__new_bom_id
 msgid "New Bill of Materials"
-msgstr ""
+msgstr "Új anyagjegyzék"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__current_bom_id
@@ -1061,17 +1077,17 @@ msgstr ""
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__new_routing_id
 msgid "New Routing"
-msgstr ""
+msgstr "Új gyártási útvonal"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_routing_change__new_time_cycle_manual
 msgid "New manual duration"
-msgstr ""
+msgstr "Új kézi időtartam"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_bom_change__new_product_qty
 msgid "New revision quantity"
-msgstr ""
+msgstr "Új felülvizsgálati mennyiség"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__activity_date_deadline
@@ -1081,7 +1097,7 @@ msgstr ""
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__activity_summary
 msgid "Next Activity Summary"
-msgstr ""
+msgstr "Következő tevékenység összegzése"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__activity_type_id
@@ -1091,24 +1107,24 @@ msgstr ""
 #. module: mrp_plm
 #: selection:mrp.eco,priority:0
 msgid "Normal"
-msgstr ""
+msgstr "Normál"
 
 #. module: mrp_plm
 #: selection:mrp.eco.approval,status:0
 msgid "Not Yet"
-msgstr ""
+msgstr "Még nem"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__note
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Note"
-msgstr ""
+msgstr "Megjegyzés"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__message_needaction_counter
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__message_needaction_counter
 msgid "Number of Actions"
-msgstr ""
+msgstr "Műveletek száma"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__message_has_error_counter
@@ -1120,7 +1136,7 @@ msgstr ""
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__message_needaction_counter
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco_type__message_needaction_counter
 msgid "Number of messages which requires an action"
-msgstr ""
+msgstr "Üzenetek száma, melyek akciót igényelnek"
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__message_has_error_counter
@@ -1132,12 +1148,12 @@ msgstr ""
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__message_unread_counter
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco_type__message_unread_counter
 msgid "Number of unread messages"
-msgstr ""
+msgstr "Olvasatlan üzenetek száma"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_routing_change__old_time_cycle_manual
 msgid "Old manual duration"
-msgstr ""
+msgstr "Régi kézi időtartam"
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco_stage__final_stage
@@ -1151,11 +1167,14 @@ msgid ""
 "attached, even if they did not reply to it. If set, this will disable the "
 "creation of new records completely."
 msgstr ""
+"Az üzenetlista (rekord) választható azonosítója, amelyhez minden beérkezett "
+"üzenet csatolásra kerül, még akkor is, ha senki sem válaszolt azokra. Ha "
+"beállításra kerül, az új rekordok létrehozása teljesen kikapcsolásra kerül."
 
 #. module: mrp_plm
 #: selection:mrp.eco,activity_state:0
 msgid "Overdue"
-msgstr ""
+msgstr "lejárt"
 
 #. module: mrp_plm
 #: model:ir.ui.menu,name:mrp_plm.menu_mrp_plm_dashboard
@@ -1165,13 +1184,13 @@ msgstr ""
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__alias_user_id
 msgid "Owner"
-msgstr ""
+msgstr "Tulajdonos"
 
 #. module: mrp_plm
 #: model:ir.module.category,name:mrp_plm.module_category_plm
 #: model:ir.ui.menu,name:mrp_plm.menu_mrp_plm_root
 msgid "PLM"
-msgstr ""
+msgstr "PLM Termék Életciklus Vezérlés"
 
 #. module: mrp_plm
 #: model:ir.actions.act_window,name:mrp_plm.mrp_eco_type_action_dashboard
@@ -1181,12 +1200,12 @@ msgstr ""
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__alias_parent_model_id
 msgid "Parent Model"
-msgstr ""
+msgstr "Forrásmodell"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__alias_parent_thread_id
 msgid "Parent Record Thread ID"
-msgstr ""
+msgstr "Szülő rekord folyamat azonosító"
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco_type__alias_parent_model_id
@@ -1195,6 +1214,9 @@ msgid ""
 " necessarily the model given by alias_model_id (example: project "
 "(parent_model) and task (model))"
 msgstr ""
+"Szülő modell, mely foglalja az álnevet. Az álnév hivatkozást megfogó modell\n"
+"nem szükségszerűen a megadott modell az alias_model_id -ben.\n"
+"(például: projekt (parent_model) és feladat (model))"
 
 #. module: mrp_plm
 #: selection:mrp.eco,activity_state:0
@@ -1209,11 +1231,15 @@ msgid ""
 "- partners: only authenticated partners\n"
 "- followers: only followers of the related document or members of following channels\n"
 msgstr ""
+"Az üzenetátjáró használatának alapvető irányvonalai a dokumentumra vonatkozó üzenetek kiküldéséhez.\n"
+"- mindenki: mindenki tud üzenni\n"
+"- ügyfelek: csak a hitelesített partnerek\n"
+"- követők: csak az idevonatkozó dokumentum követői vagy a következő csatornák tagjai\n"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_bom__previous_bom_id
 msgid "Previous BoM"
-msgstr ""
+msgstr "Előző anyagjegyzék"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_bom_change__old_operation_id
@@ -1238,17 +1264,17 @@ msgstr ""
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_routing__previous_routing_id
 msgid "Previous Routing"
-msgstr ""
+msgstr "Előző Gyártási eljárás útvonal"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_bom_change__old_product_qty
 msgid "Previous revision quantity"
-msgstr ""
+msgstr "Előző felülvizsgálati mennyiség"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__priority
 msgid "Priority"
-msgstr ""
+msgstr "Prioritás"
 
 #. module: mrp_plm
 #: model:ir.model,name:mrp_plm.model_product_product
@@ -1258,7 +1284,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_bom_change_view_form
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "Product"
-msgstr ""
+msgstr "Termék"
 
 #. module: mrp_plm
 #: code:addons/mrp_plm/models/mrp_eco.py:151
@@ -1269,7 +1295,7 @@ msgstr ""
 #. module: mrp_plm
 #: model:ir.model,name:mrp_plm.model_product_template
 msgid "Product Template"
-msgstr ""
+msgstr "Terméksablon"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_bom__active
@@ -1279,12 +1305,12 @@ msgstr ""
 #. module: mrp_plm
 #: model:ir.ui.menu,name:mrp_plm.menu_mrp_plm_products
 msgid "Products"
-msgstr ""
+msgstr "Termékek"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_bom_change__upd_product_qty
 msgid "Quantity"
-msgstr ""
+msgstr "Mennyiség"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_bom_change__rebase_id
@@ -1301,22 +1327,22 @@ msgstr ""
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__alias_force_thread_id
 msgid "Record Thread ID"
-msgstr ""
+msgstr "Rekord-üzenetlista azonosítója"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__name
 msgid "Reference"
-msgstr ""
+msgstr "Hivatkozás"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Reject"
-msgstr ""
+msgstr "Elutasít"
 
 #. module: mrp_plm
 #: selection:mrp.eco.approval,status:0
 msgid "Rejected"
-msgstr ""
+msgstr "Elutasított"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__displayed_image_attachment_id
@@ -1327,32 +1353,32 @@ msgstr ""
 #: selection:mrp.eco.bom.change,change_type:0
 #: selection:mrp.eco.routing.change,change_type:0
 msgid "Remove"
-msgstr ""
+msgstr "Eltávolítás"
 
 #. module: mrp_plm
 #: model:ir.ui.menu,name:mrp_plm.menu_mrp_plm_reporting
 msgid "Reporting"
-msgstr ""
+msgstr "Riportkészítés"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_approval__required_user_ids
 msgid "Requested Users"
-msgstr ""
+msgstr "Igényelt felhasználó"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__user_id
 msgid "Responsible"
-msgstr ""
+msgstr "Felelős"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__activity_user_id
 msgid "Responsible User"
-msgstr ""
+msgstr "Felelős felhasználó"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Rev :"
-msgstr ""
+msgstr "Fellülv.:"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_bom__revision_ids
@@ -1364,7 +1390,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_approval__name
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_approval_template__name
 msgid "Role"
-msgstr ""
+msgstr "Szerep"
 
 #. module: mrp_plm
 #: code:addons/mrp_plm/models/mrp_eco.py:154
@@ -1372,77 +1398,79 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 #, python-format
 msgid "Routing"
-msgstr ""
+msgstr "Útvonal"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Routing Changes"
-msgstr ""
+msgstr "Folyamatok változásai"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__new_routing_revision
 msgid "Routing Revision"
-msgstr ""
+msgstr "Gyártási eljárás útvonal felülvizsgálata"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
 msgid "Routing:"
-msgstr ""
+msgstr "Gyártási eljárás útvonal:"
 
 #. module: mrp_plm
 #: model:ir.model,name:mrp_plm.model_mrp_routing
 #: model:ir.ui.menu,name:mrp_plm.menu_mrp_plm_routings
 msgid "Routings"
-msgstr ""
+msgstr "Eljárás"
 
 #. module: mrp_plm
 #: model:ir.ui.menu,name:mrp_plm.menu_mrp_plm_search
 msgid "Search"
-msgstr ""
+msgstr "Keresés"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_approval_template__sequence
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_stage__sequence
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__sequence
 msgid "Sequence"
-msgstr ""
+msgstr "Sorszám"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
 msgid "Set Cover Image"
-msgstr ""
+msgstr "Borítókép beállítása"
 
 #. module: mrp_plm
 #. openerp-web
 #: code:addons/mrp_plm/static/src/xml/mrp_plm_templates.xml:8
 #, python-format
 msgid "Set a Cover Image"
-msgstr ""
+msgstr "Borítókép beállítása"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
 msgid "Settings"
-msgstr ""
+msgstr "Beállítások"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Short Summary"
-msgstr ""
+msgstr "Rövid összefoglaló"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__allow_apply_change
 msgid "Show Apply Change"
-msgstr ""
+msgstr "Alkalmazott változtatások mutatása"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "Show all records which has next action date is before today"
 msgstr ""
+"Mutassa az összes rekordot melyre a következő műveleti dátum a mai nap "
+"előtti"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_bom__image_small
 msgid "Small-sized image"
-msgstr ""
+msgstr "Kis méretű kép"
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_bom__image_small
@@ -1451,39 +1479,42 @@ msgid ""
 "image, with aspect ratio preserved. Use this field anywhere a small image is"
 " required."
 msgstr ""
+"Kis-méretű kép a termékről. Automatikusan át lesz alakítva mint 64x64px "
+"képpontos kép, az arányt megtartva. Használja ezt a mezőt mindenhol ahol kis"
+" képre van szükség."
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
 msgid "Someone rejected this change"
-msgstr ""
+msgstr "Valaki elutasította ezt a változtatást"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__stage_id
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_approval_template__stage_id
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "Stage"
-msgstr ""
+msgstr "Szakasz"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__stage_ids
 msgid "Stages"
-msgstr ""
+msgstr "Szakaszok"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Start New Revision"
-msgstr ""
+msgstr "Új felülvizsgálat indítása"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "State"
-msgstr ""
+msgstr "Állam / megye"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__state
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_approval__status
 msgid "Status"
-msgstr ""
+msgstr "Állapot"
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__activity_state
@@ -1510,38 +1541,43 @@ msgstr ""
 #. module: mrp_plm
 #: sql_constraint:mrp.eco.tag:0
 msgid "Tag name already exists !"
-msgstr ""
+msgstr "A címkenév már létezik!"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__tag_ids
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_tag_view_tree
 msgid "Tags"
-msgstr ""
+msgstr "Címkék"
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__user_can_approve
 msgid "Technical field to check if approval by current user is required"
 msgstr ""
+"Műszaki mező annak ellenőrzésére, hogy a jelenlegi felhasználó  jóváhagyása "
+"szükséges"
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__user_can_reject
 msgid "Technical field to check if reject by current user is possible"
 msgstr ""
+"Műszaki mező annak ellenőrzésére, hogy a jelenlegi felhasználó  elutasító "
+"javaslata lehetséges"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_approval__approval_template_id
 msgid "Template"
-msgstr ""
+msgstr "Sablon"
 
 #. module: mrp_plm
 #: model:res.groups,comment:mrp_plm.group_plm_manager
 msgid "The PLM manager manages products lifecycle management"
 msgstr ""
+"A PLM kezelő segítséget nyújt a terméke életciklusának  szervezésében."
 
 #. module: mrp_plm
 #: model:res.groups,comment:mrp_plm.group_plm_user
 msgid "The PLM user uses products lifecycle management"
-msgstr ""
+msgstr "A PLM felhasználó használja a terméke életciklusának  szervezését."
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_product_product__version
@@ -1556,6 +1592,9 @@ msgid ""
 " email that does not reply to an existing record will cause the creation of "
 "a new record of this model (e.g. a Project Task)"
 msgstr ""
+"a modell (Odoo rendszer Dokumentum féle), amelyhez ez az álnév tartozik. "
+"Bármely bejövő email, mely nem válaszol egy meglévő feljegyzésre egy új "
+"feljegyzést fog létrehozni ehhez a modellhez (pl. egy projekt ügyet)"
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco_type__alias_name
@@ -1563,6 +1602,8 @@ msgid ""
 "The name of the email alias, e.g. 'jobs' if you want to catch emails for "
 "<jobs@example.odoo.com>"
 msgstr ""
+"Az email álnév neve, pl. 'állások' ha erre az emailcímre szeretné kapni "
+"<allasok@pelda.odoo.com>"
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco_type__alias_user_id
@@ -1572,6 +1613,11 @@ msgid ""
 "the sender (From) address, or will use the Administrator account if no "
 "system user is found for that address."
 msgstr ""
+"A feljegyzés tulajdonosa létrehozva amikor erre az álnévre e-mailek  "
+"érkeznek. Ha ez a mező nincs kialakítva akkor a rendszer megpróbálja "
+"megkeresni a jogos tulajdonost a elküldési (űrlap) címről, vagy az "
+"adminisztrátor felhasználót fogja használni ha nem talált rendszer "
+"felhasználót azzal a címmel."
 
 #. module: mrp_plm
 #. openerp-web
@@ -1587,23 +1633,23 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
 msgid "To Apply"
-msgstr ""
+msgstr "Alkalmazza"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 #: selection:mrp.eco,state:0
 msgid "To Do"
-msgstr ""
+msgstr "Teendők"
 
 #. module: mrp_plm
 #: selection:mrp.eco,activity_state:0
 msgid "Today"
-msgstr ""
+msgstr "Ma"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "Today Activities"
-msgstr ""
+msgstr "Mai napi tevékenységek"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__type_id
@@ -1611,30 +1657,30 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_routing_change__change_type
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_stage__type_id
 msgid "Type"
-msgstr ""
+msgstr "Típus"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_bom_change__uom_change
 msgid "Unit of Measure"
-msgstr ""
+msgstr "Mértékegység"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__message_unread
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__message_unread
 msgid "Unread Messages"
-msgstr ""
+msgstr "Olvasatlan üzenetek"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__message_unread_counter
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__message_unread_counter
 msgid "Unread Messages Counter"
-msgstr ""
+msgstr "Olvasatlan üzenetek számlálója"
 
 #. module: mrp_plm
 #: selection:mrp.eco.bom.change,change_type:0
 #: selection:mrp.eco.routing.change,change_type:0
 msgid "Update"
-msgstr ""
+msgstr "Frissítés"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
@@ -1654,17 +1700,17 @@ msgstr ""
 #. module: mrp_plm
 #: model:res.groups,name:mrp_plm.group_plm_user
 msgid "User"
-msgstr ""
+msgstr "Felhasználó"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_approval_template__user_ids
 msgid "Users"
-msgstr ""
+msgstr "Felhasználók"
 
 #. module: mrp_plm
 #: model:mrp.eco.stage,name:mrp_plm.ecostage_validated
 msgid "Validated"
-msgstr ""
+msgstr "Jóváhagyott"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_bom__version
@@ -1673,73 +1719,76 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_plm.field_product_template__version
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_bom_view_form_inherit_plm
 msgid "Version"
-msgstr ""
+msgstr "Verzió"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "Waiting Any Validation"
-msgstr ""
+msgstr "Várakozás bármely jóváhagyásra"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__nb_approvals
 msgid "Waiting Approvals"
-msgstr ""
+msgstr "Jóváhagyásokra vár"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "Waiting My Validation"
-msgstr ""
+msgstr "Várakozás az én jóváhagyásomra"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
 msgid "Waiting for Approvals"
-msgstr ""
+msgstr "Jóváhagyásokra vár"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__nb_approvals_my
 msgid "Waiting my Approvals"
-msgstr ""
+msgstr "Jóváhagyásomra vár"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__website_message_ids
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__website_message_ids
 msgid "Website Messages"
-msgstr ""
+msgstr "Weboldal üzenetek"
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__website_message_ids
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco_type__website_message_ids
 msgid "Website communication history"
-msgstr ""
+msgstr "Weboldal  kommunikáció történet"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_routing_change__workcenter_id
 msgid "Work Center"
-msgstr ""
+msgstr "Munkaállomás"
 
 #. module: mrp_plm
 #: model:ir.ui.menu,name:mrp_plm.menu_mrp_plm_workcenters
 msgid "Work Centers"
-msgstr ""
+msgstr "Munkaállomások"
 
 #. module: mrp_plm
 #: code:addons/mrp_plm/models/mrp_eco.py:489
 #, python-format
 msgid "You cannot change the stage, as approvals are required in the process."
 msgstr ""
+"Nem változtathatja meg a szakaszokat, mivel a folyamatokban jóváhagyások "
+"szükségesek."
 
 #. module: mrp_plm
 #: code:addons/mrp_plm/models/mrp_eco.py:479
 #, python-format
 msgid "You cannot change the stage, as approvals are still required."
 msgstr ""
+"Nem változtathatja meg a szakaszokat, mivel még  jóváhagyások szükségesek."
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_stage_view_form
 msgid "e.g. Engineering Department"
-msgstr ""
+msgstr "pl. Folyamatmérnöki osztály"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
 msgid "oe_kanban_text_red"
-msgstr ""
+msgstr "oe_kanban_text_red"

@@ -5,7 +5,7 @@
 # Translators:
 # Martin Trigaux, 2018
 # Manuela Silva <inactive+h_manuela_rodsilva@transifex.com>, 2018
-# MS, 2018
+# MS <manuelarodsilva@gmail.com>, 2018
 # Nuno Silva <nuno.silva@arxi.pt>, 2018
 # Diogo Fonseca <dsf@thinkopensolutions.pt>, 2018
 # 
@@ -46,22 +46,22 @@ msgstr ""
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "<strong>Address:</strong>"
-msgstr ""
+msgstr "<strong>Morada:</strong>"
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "<strong>City:</strong>"
-msgstr ""
+msgstr "<strong>Cidade:</strong>"
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "<strong>Country:</strong>"
-msgstr ""
+msgstr "<strong>pais:</strong>"
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "<strong>Creditor identifier:</strong>"
-msgstr ""
+msgstr "<strong>Identificação do Credor:</strong>"
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
@@ -69,21 +69,23 @@ msgid ""
 "<strong>Date and place of signature:</strong> "
 "......................................"
 msgstr ""
+"<strong>Data e Local da "
+"assinatura:</strong>...................................... "
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "<strong>IBAN account number:</strong>"
-msgstr ""
+msgstr "<strong>Número da conta de IBAN:</strong>"
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "<strong>Mail address:</strong>"
-msgstr ""
+msgstr "<strong>Endereço de email:</strong>"
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "<strong>Mandate identifier:</strong>"
-msgstr ""
+msgstr "<strong>Identificação do mandato:</strong>"
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
@@ -100,27 +102,27 @@ msgstr "<strong>Nome:</strong>"
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "<strong>Phone number:</strong>"
-msgstr ""
+msgstr "<strong>Número de Telefone:</strong>"
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "<strong>Signature:</strong>"
-msgstr ""
+msgstr "<strong>Assinatura: </strong>"
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "<strong>Start date:</strong>"
-msgstr ""
+msgstr "<strong>Data de início:</strong>"
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "<strong>Transaction type:</strong> recurrent"
-msgstr ""
+msgstr "<strong>Tipo de transação:</strong> Recurrente"
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "<strong>Zip:</strong>"
-msgstr ""
+msgstr "<strong>Zip:</strong>"
 
 #. module: account_sepa_direct_debit
 #: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:80
@@ -148,7 +150,7 @@ msgstr "Ativo"
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.account_sdd_mandate_search_view
 msgid "Active Mandates"
-msgstr ""
+msgstr "Mandatos ativos"
 
 #. module: account_sepa_direct_debit
 #: model:ir.model,name:account_sepa_direct_debit.model_account_batch_payment
@@ -173,7 +175,7 @@ msgstr "Fechado"
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.account_sdd_mandate_search_view
 msgid "Closed Mandates"
-msgstr ""
+msgstr "Mandatos fechados"
 
 #. module: account_sepa_direct_debit
 #: model:ir.model,name:account_sepa_direct_debit.model_res_company
@@ -233,12 +235,12 @@ msgstr ""
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "Creditor information"
-msgstr ""
+msgstr "Informação do Credor "
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.account_sepa_direct_debit_mandate_form
 msgid "Customer mandate"
-msgstr ""
+msgstr "Mandato do Cliente"
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,help:account_sepa_direct_debit.field_sdd_mandate__partner_id
@@ -265,22 +267,22 @@ msgstr ""
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__partner_id
 msgid "Debtor"
-msgstr ""
+msgstr "Devedor "
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__partner_bank_id
 msgid "Debtor Account"
-msgstr ""
+msgstr "Conta do Devedor"
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__debtor_id_code
 msgid "Debtor Identifier"
-msgstr ""
+msgstr "Identificador do devedor "
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "Debtor information"
-msgstr ""
+msgstr "Informação do devedor"
 
 #. module: account_sepa_direct_debit
 #: model:ir.actions.act_window,name:account_sepa_direct_debit.account_sepa_direct_debit_mandate_tree_act
@@ -324,7 +326,7 @@ msgstr "Rascunho"
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.account_sdd_mandate_search_view
 msgid "Draft Mandates"
-msgstr ""
+msgstr "Mandatos em rascunho "
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__end_date
@@ -360,7 +362,7 @@ msgstr "Id."
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "Identification code"
-msgstr ""
+msgstr "Código de Identificação "
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__name
@@ -387,23 +389,23 @@ msgstr "Fatura"
 #. module: account_sepa_direct_debit
 #: model:mail.message.subtype,description:account_sepa_direct_debit.sdd_mt_invoice_paid_with_mandate
 msgid "Invoice paid via direct debit."
-msgstr ""
+msgstr "Fatura paga via Débito direto"
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__paid_invoice_ids
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.account_sepa_direct_debit_mandate_form
 msgid "Invoices Paid"
-msgstr ""
+msgstr "Faturas pagas"
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,help:account_sepa_direct_debit.field_sdd_mandate__paid_invoice_ids
 msgid "Invoices paid using this mandate."
-msgstr ""
+msgstr "Faturas pagas usando este mandato."
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.account_sepa_direct_debit_mandate_form
 msgid "Invoices paid with this mandate."
-msgstr ""
+msgstr "Faturas pagas com este mandato."
 
 #. module: account_sepa_direct_debit
 #: model:ir.model,name:account_sepa_direct_debit.model_account_journal
@@ -413,7 +415,7 @@ msgstr "Diário"
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__payment_journal_id
 msgid "Journal for Direct Debit Payments"
-msgstr ""
+msgstr "Diários para pagamentos de débito direto "
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,help:account_sepa_direct_debit.field_sdd_mandate__payment_journal_id
@@ -466,7 +468,7 @@ msgstr ""
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "Mandate validity"
-msgstr ""
+msgstr "Validação do Mandato"
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.actions.act_window,help:account_sepa_direct_debit.action_sdd_payments_to_collect
@@ -532,7 +534,7 @@ msgstr ""
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__original_doc
 msgid "Original Document"
-msgstr ""
+msgstr "Documento Original"
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__original_doc_filename
@@ -565,7 +567,7 @@ msgstr ""
 #. module: account_sepa_direct_debit
 #: model:mail.message.subtype,name:account_sepa_direct_debit.sdd_mt_invoice_paid_with_mandate
 msgid "Paid via direct debit"
-msgstr ""
+msgstr "Pago via crédito direto "
 
 #. module: account_sepa_direct_debit
 #: model:ir.model,name:account_sepa_direct_debit.model_account_payment
@@ -581,19 +583,19 @@ msgstr ""
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,help:account_sepa_direct_debit.field_sdd_mandate__payment_ids
 msgid "Payments generated thanks to this mandate."
-msgstr ""
+msgstr "Pagamentos gerados devido a este mandato."
 
 #. module: account_sepa_direct_debit
 #: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:126
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.account_sepa_direct_debit_mandate_form
 #, python-format
 msgid "Payments to Collect"
-msgstr ""
+msgstr "Pagamento para coletar"
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "Please complete your coordinates."
-msgstr ""
+msgstr "Por favor complete as suas coordenadas."
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_report_invoice_document

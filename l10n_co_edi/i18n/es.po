@@ -997,6 +997,12 @@ msgid "Configure your Carvajal credentials here."
 msgstr ""
 
 #. module: l10n_co_edi
+#: code:addons/l10n_co_edi/models/carvajal_request.py:104
+#, python-format
+msgid "Connection to Carvajal timed out. Their API is probably down."
+msgstr "El tiempo de espera para la conexión se ha agotado. El Servicio de Carvajal T&S no está respondiendo."
+
+#. module: l10n_co_edi
 #: selection:product.template,type:0
 msgid "Consumable"
 msgstr ""

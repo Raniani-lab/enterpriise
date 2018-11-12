@@ -2,12 +2,21 @@
 # This file contains the translation of the following modules:
 # * project_timesheet_synchro
 # 
+# Translators:
+# Rivo Zängov <eraser@eraser.ee>, 2018
+# Martin Trigaux, 2018
+# Arma Gedonsky <armagedonsky@hot.ee>, 2018
+# Egon Raamat <egon@avalah.ee>, 2018
+# Eneli Õigus <enelioigus@gmail.com>, 2018
+# Martin Aavastik <martin@avalah.ee>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-18 10:05+0000\n"
 "PO-Revision-Date: 2018-08-24 11:47+0000\n"
+"Last-Translator: Martin Aavastik <martin@avalah.ee>, 2018\n"
 "Language-Team: Estonian (https://www.transifex.com/odoo/teams/41243/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,7 +29,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:170
 #, python-format
 msgid "&emsp;Start"
-msgstr ""
+msgstr "&emsp;Alusta"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -28,75 +37,75 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:180
 #, python-format
 msgid "&emsp;Stop"
-msgstr ""
+msgstr "&emsp;Lõpeta"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:446
 #, python-format
 msgid "(Last sync was unsuccessful)"
-msgstr ""
+msgstr "(Viimane sünkroniseerimine ebaõnnestus)"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:55
 #, python-format
 msgid "Action"
-msgstr ""
+msgstr "Tegevus"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:236
 #, python-format
 msgid "Activity created"
-msgstr ""
+msgstr "Tegevus on loodud"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:120
 #, python-format
 msgid "Add"
-msgstr ""
+msgstr "Lisa"
 
 #. module: project_timesheet_synchro
 #: model:ir.model,name:project_timesheet_synchro.model_account_analytic_line
 msgid "Analytic Line"
-msgstr ""
+msgstr "Analüütiline rida"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/timesheet_app_backend_template.xml:26
 #, python-format
 msgid "Apple App Store"
-msgstr ""
+msgstr "Apple'i rakenduste pood"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:415
 #, python-format
 msgid "Are you sure that you want to delete this activity?"
-msgstr ""
+msgstr "Kas olete kindel, et soovite selle tegevuse kustutada?"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:473
 #, python-format
 msgid "Are you sure that you want to reset the app?"
-msgstr ""
+msgstr "Kas olete kindel, et soovite rakenduse lähtestada?"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/timesheet_app_backend_template.xml:52
 #, python-format
 msgid "Available for iPhone, Android and Chrome."
-msgstr ""
+msgstr "Saadaval iPhone'le, Androidile ja Chrome'le."
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/timesheet_app_backend_template.xml:30
 #, python-format
 msgid "Blazing Fast"
-msgstr ""
+msgstr "Ülikiire"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -105,7 +114,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:477
 #, python-format
 msgid "Cancel"
-msgstr ""
+msgstr "Tühista"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -115,6 +124,8 @@ msgid ""
 "Connect Timesheets to Odoo to synchronize your activities across all "
 "devices."
 msgstr ""
+"Ühenda  ajaarvestus Odoo'ga, et sünkroniseerida oma tegevusi üle kõigi "
+"seadmete."
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -128,14 +139,14 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:542
 #, python-format
 msgid "Database"
-msgstr ""
+msgstr "Andmebaas"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:252
 #, python-format
 msgid "Default project"
-msgstr ""
+msgstr "Vaikimisi projekt"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -143,7 +154,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:420
 #, python-format
 msgid "Delete"
-msgstr ""
+msgstr "Kustuta"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -151,14 +162,14 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:409
 #, python-format
 msgid "Discard"
-msgstr ""
+msgstr "Loobu"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:490
 #, python-format
 msgid "Discard data"
-msgstr ""
+msgstr "Loobu andmetest"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -168,55 +179,57 @@ msgid ""
 "Either you or the Odoo server is offline at the moment. Make sure you do "
 "have a connection or try again later."
 msgstr ""
+"Teie või Odoo server on hetkel võrguühenduseta. Veenduge, et teil oleks "
+"ühendus või proovige hiljem uuesti."
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/timesheet_app_backend_template.xml:42
 #, python-format
 msgid "Get Things Done"
-msgstr ""
+msgstr "Saage asjad valmis"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/timesheet_app_backend_template.xml:25
 #, python-format
 msgid "Google Chrome Store"
-msgstr ""
+msgstr "Google Chrome pood"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/timesheet_app_backend_template.xml:24
 #, python-format
 msgid "Google Play Store"
-msgstr ""
+msgstr "Google Play pood"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:491
 #, python-format
 msgid "Keep data"
-msgstr ""
+msgstr "Hoia andmed alles"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:443
 #, python-format
 msgid "Last sync :"
-msgstr ""
+msgstr "Viimati sünkroniseeritud :"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:136
 #, python-format
 msgid "Locked"
-msgstr ""
+msgstr "Lukustatud"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:437
 #, python-format
 msgid "Logged in as"
-msgstr ""
+msgstr "Sisse logitud kui"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -226,7 +239,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:559
 #, python-format
 msgid "Login"
-msgstr ""
+msgstr "Kasutajanimi"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -234,35 +247,35 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:540
 #, python-format
 msgid "Login to an on premise Odoo instance"
-msgstr ""
+msgstr "Sisselogimine eeldatava Odoo näitena"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:505
 #, python-format
 msgid "Login with Odoo"
-msgstr ""
+msgstr "Sisselogimine Odoo'ga"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:439
 #, python-format
 msgid "Logout"
-msgstr ""
+msgstr "Logi välja"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:256
 #, python-format
 msgid "Minimal duration"
-msgstr ""
+msgstr "Minimaalne kestus"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/timesheet_app_backend_template.xml:49
 #, python-format
 msgid "More info"
-msgstr ""
+msgstr "Rohkem informatsiooni"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -276,21 +289,21 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:272
 #, python-format
 msgid "Multiple to round up all durations"
-msgstr ""
+msgstr "Mitmekordista kõikide kestuste üles ümardamiseks"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/timesheet_app_backend_template.xml:35
 #, python-format
 msgid "Never lose track of what you need to do."
-msgstr ""
+msgstr "Ärge kunagi kaotage tegemist vajavate tegevuste järge."
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:535
 #, python-format
 msgid "Next"
-msgstr ""
+msgstr "Järgmine"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -311,7 +324,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:92
 #, python-format
 msgid "No task"
-msgstr ""
+msgstr "Ülesannet pole"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -320,20 +333,21 @@ msgstr ""
 msgid ""
 "Note that this will create new projects and tasks on your Odoo instance"
 msgstr ""
+"Pange tähele, et see loob uue projekti ja ülesanded teie Odoo näitesse"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/timesheet_app_backend_template.xml:38
 #, python-format
 msgid "Offline support"
-msgstr ""
+msgstr "Offline-tugi"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:438
 #, python-format
 msgid "On server"
-msgstr ""
+msgstr "Serveris"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -343,13 +357,15 @@ msgid ""
 "Once you have created or synchronized projects and tasks, they will appear "
 "here. This will allow you to plan your day in advance."
 msgstr ""
+"Kui olete loonud või sünkroniseerinud projektid ja ülesanded, siis need "
+"ilmuvad siin. See võimaldab teil planeerida oma päeva ette."
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/timesheet_app_backend_template.xml:16
 #, python-format
 msgid "Open the App"
-msgstr ""
+msgstr "Ava rakendus"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -357,42 +373,42 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:555
 #, python-format
 msgid "Password"
-msgstr ""
+msgstr "Salasõna"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/timesheet_app_backend_template.xml:43
 #, python-format
 msgid "Plan your day. Focus on important tasks."
-msgstr ""
+msgstr "Planeeri oma päev. Keskendu olulistele ülesannetele."
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:531
 #, python-format
 msgid "Please enter a database name:"
-msgstr ""
+msgstr "Palun sisesta andmebaasi nimi:"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:249
 #, python-format
 msgid "Please enter a valid duration"
-msgstr ""
+msgstr "Palun sisesta kehtiv kestus"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:356
 #, python-format
 msgid "Please select a project first"
-msgstr ""
+msgstr "Palun vali esmalt projekt"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:338
 #, python-format
 msgid "Please select a project."
-msgstr ""
+msgstr "Palun vali projekt"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -413,49 +429,49 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:346
 #, python-format
 msgid "Project"
-msgstr ""
+msgstr "Projektid"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:478
 #, python-format
 msgid "RESET"
-msgstr ""
+msgstr "LÄHTESTA"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:499
 #, python-format
 msgid "Reset"
-msgstr ""
+msgstr "Lähtesta"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:116
 #, python-format
 msgid "Run"
-msgstr ""
+msgstr "Run"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:407
 #, python-format
 msgid "Save"
-msgstr ""
+msgstr "Salvesta"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:575
 #, python-format
 msgid "Select your Odoo instance from the list below :"
-msgstr ""
+msgstr "Vali oma Odoo näide allolevast nimekirjast:"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:38
 #, python-format
 msgid "Settings"
-msgstr ""
+msgstr "Seaded"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -469,14 +485,14 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:465
 #, python-format
 msgid "Sign In"
-msgstr ""
+msgstr "Logi sisse"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:466
 #, python-format
 msgid "Sign Up"
-msgstr ""
+msgstr "Registreeru"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -484,7 +500,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/timesheet_app_backend_template.xml:34
 #, python-format
 msgid "Statistics"
-msgstr ""
+msgstr "Statistika"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -498,35 +514,35 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:441
 #, python-format
 msgid "Sync Now"
-msgstr ""
+msgstr "Sünkroniseeri nüüd"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:53
 #, python-format
 msgid "Sync in progress"
-msgstr ""
+msgstr "Sünkroniseerimine on töös"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:35
 #, python-format
 msgid "Synchronize"
-msgstr ""
+msgstr "Sünkroniseeri"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:585
 #, python-format
 msgid "Syncing data, this shouldn't take long"
-msgstr ""
+msgstr "Sünkroniseerib andmeid, see ei tohiks kaua aega võtta"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:351
 #, python-format
 msgid "Task"
-msgstr ""
+msgstr "Ülesanne"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -538,40 +554,44 @@ msgid ""
 "''Synchronization with the external timesheet application'' (available in "
 "Odoo Enterprise Edition)."
 msgstr ""
+"Server, kuhu olete ühendatud, ei toeta ajaarvestuse sünkroniseerimist. Te "
+"peaksite kontakteeruma oma administraatoriga, et installeerida moodul "
+"\"Sünkroniseerimine välise ajaarvestuse rakendusega\" (saadaval Odoo "
+"Enterprise versioonis)"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:24
 #, python-format
 msgid "This Week"
-msgstr ""
+msgstr "See nädal"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:384
 #, python-format
 msgid "Time spent (hh:mm)"
-msgstr ""
+msgstr "Kulunud aeg (tt:mm)"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:361
 #, python-format
 msgid "Time spent (hhmm)"
-msgstr ""
+msgstr "Kulunud aeg (ttmm)"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:265
 #, python-format
 msgid "Time unit"
-msgstr ""
+msgstr "Ajaühik"
 
 #. module: project_timesheet_synchro
 #: model:ir.actions.client,name:project_timesheet_synchro.project_timesheet_synchro_app_action
 #: model:ir.ui.menu,name:project_timesheet_synchro.menu_timesheet_app
 msgid "Timesheet App"
-msgstr ""
+msgstr "Ajaarvestuse rakendus"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -579,14 +599,14 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:233
 #, python-format
 msgid "Today"
-msgstr ""
+msgstr "Täna"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:28
 #, python-format
 msgid "Today's Plan"
-msgstr ""
+msgstr "Tänane plaan"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -600,7 +620,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:320
 #, python-format
 msgid "Total :"
-msgstr ""
+msgstr "Kokku :"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -610,13 +630,15 @@ msgid ""
 "Use Odoo to organize projects and tasks, forecast resources and invoice time"
 " spent on tasks"
 msgstr ""
+"Kasutage Odoo'd projektide ja ülesannete korraldamiseks, ressursside "
+"prognoosimiseks ja arvete esitamiseks ülesannetele kulunud aja põhjal"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:498
 #, python-format
 msgid "Use an Odoo.com account"
-msgstr ""
+msgstr "Kasuta Odoo.com kasutajat"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -630,28 +652,28 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:295
 #, python-format
 msgid "Week"
-msgstr ""
+msgstr "Nädal"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:396
 #, python-format
 msgid "Work Summary"
-msgstr ""
+msgstr "Töö kokkuvõte"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/timesheet_app_backend_template.xml:39
 #, python-format
 msgid "Work anywhere, anytime."
-msgstr ""
+msgstr "Tööta kus tahes ja millal tahes."
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/timesheet_app_backend_template.xml:31
 #, python-format
 msgid "Work in disconnected mode and sync in the background."
-msgstr ""
+msgstr "Tööta väljalülitatud režiimis ja sünkroniseerige taustal."
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -661,27 +683,29 @@ msgid ""
 "Would you like the activities, projects and tasks that you created as a "
 "guest user to be synchronized as well?"
 msgstr ""
+"Kas te soovite, et teie poolt külaliskasutajana loodud tegevused, projektid "
+"ja ülesanded, sünkroniseeritakse samuti?"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:153
 #, python-format
 msgid "Would you like to delete this activity?"
-msgstr ""
+msgstr "Kas te soovite selle tegevuse kustutada?"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:584
 #, python-format
 msgid "You are logged in !"
-msgstr ""
+msgstr "Te olete sisse logitud!"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/timesheet_app_backend_template.xml:15
 #, python-format
 msgid "You can try the app in a new tab:"
-msgstr ""
+msgstr "Teil on võimalik proovida rakendust uuel vahelehel:"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -691,41 +715,43 @@ msgid ""
 "You should have received an email with a link to activate your account. Once"
 " it is activated, you'll be able to"
 msgstr ""
+"Teil peaks olema konto aktiveerimiseks e-kiri koos aktiveerimislingiga. Kui "
+"see on aktiveeritud, saate "
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:521
 #, python-format
 msgid "Your Odoo Server Address"
-msgstr ""
+msgstr "Teie Odoo serveri aadress"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:570
 #, python-format
 msgid "Your database and account have been created !"
-msgstr ""
+msgstr "Teie andmebaas ja kasutaja on loodud!"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/timesheet_app_backend_template.xml:21
 #, python-format
 msgid "Your personal timesheets"
-msgstr ""
+msgstr "Teie isiklik ajaarvestus"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:552
 #, python-format
 msgid "ex: admin@example.com"
-msgstr ""
+msgstr "Nt: admin@example.com"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:523
 #, python-format
 msgid "http://"
-msgstr ""
+msgstr "http://"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -733,7 +759,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:525
 #, python-format
 msgid "https://"
-msgstr ""
+msgstr "https://"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -741,11 +767,11 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:269
 #, python-format
 msgid "minutes"
-msgstr ""
+msgstr "minutit"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:571
 #, python-format
 msgid "sign in"
-msgstr ""
+msgstr "logi sisse"

@@ -2,12 +2,21 @@
 # This file contains the translation of the following modules:
 # * account_deferred_revenue
 # 
+# Translators:
+# Martin Trigaux, 2018
+# Arma Gedonsky <armagedonsky@hot.ee>, 2018
+# Egon Raamat <egon@avalah.ee>, 2018
+# Eneli Õigus <enelioigus@gmail.com>, 2018
+# Marek Pontus, 2018
+# Martin Aavastik <martin@avalah.ee>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-18 10:05+0000\n"
 "PO-Revision-Date: 2018-08-24 11:36+0000\n"
+"Last-Translator: Martin Aavastik <martin@avalah.ee>, 2018\n"
 "Language-Team: Estonian (https://www.transifex.com/odoo/teams/41243/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,91 +27,91 @@ msgstr ""
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_asset_sale_tree
 msgid "Assets"
-msgstr ""
+msgstr "Varad"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_asset_revenue_report_search
 msgid "Assets in running state"
-msgstr ""
+msgstr "Kasutusel olevad vara"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_asset_revenue_report_search
 msgid "Category"
-msgstr ""
+msgstr "Kategooria"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
 msgid "Category of asset"
-msgstr ""
+msgstr "Varade kategooria"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_asset_revenue_report_search
 msgid "Company"
-msgstr ""
+msgstr "Ettevõte"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
 msgid "Compute Revenue"
-msgstr ""
+msgstr "Arvuta tulud"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
 msgid "Confirm"
-msgstr ""
+msgstr "Kinnita"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
 msgid "Cumulative Revenue"
-msgstr ""
+msgstr "Kogunenud tulu"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
 msgid "Current Revenue"
-msgstr ""
+msgstr "Praegune tulu"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_asset_sale_tree
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
 msgid "Customer"
-msgstr ""
+msgstr "Klient"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_asset_revenue_report_search
 msgid "Date of Revenue Sales"
-msgstr ""
+msgstr "Müügitulude kuupäev"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
 msgid "Date of asset"
-msgstr ""
+msgstr "Vara kuupäev"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_invoice_revenue_recognition_category
 msgid "Deferred Revenue"
-msgstr ""
+msgstr "Viittulu"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.action_account_revenue_report_graph
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.action_account_revenue_report_pivot
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_asset_revenue_report_search
 msgid "Deferred Revenue Analysis"
-msgstr ""
+msgstr "Viittulu analüüs"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_invoice_asset_form
 msgid "Deferred Revenue Type"
-msgstr ""
+msgstr "Viittulu liik"
 
 #. module: account_deferred_revenue
 #: model:ir.actions.act_window,name:account_deferred_revenue.action_account_asset_asset_list_normal_sale
 #: model:ir.ui.menu,name:account_deferred_revenue.menu_action_account_asset_asset_list_normal_sale
 msgid "Deferred Revenue Types"
-msgstr ""
+msgstr "Viittulu liigid"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
 msgid "Deferred Revenue name"
-msgstr ""
+msgstr "Viittulu nimetus"
 
 #. module: account_deferred_revenue
 #: model:ir.actions.act_window,name:account_deferred_revenue.action_account_revenue_form
@@ -111,17 +120,17 @@ msgstr ""
 #: model:ir.ui.menu,name:account_deferred_revenue.menu_action_asset_revenue_report
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.res_config_settings_view_form
 msgid "Deferred Revenues"
-msgstr ""
+msgstr "Viittulud"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_asset_revenue_report_search
 msgid "Draft"
-msgstr ""
+msgstr "Mustand"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_asset_revenue_report_search
 msgid "Extended Filters..."
-msgstr ""
+msgstr "Laiendatud filtrid"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.actions.act_window,help:account_deferred_revenue.action_asset_revenue_report
@@ -129,41 +138,43 @@ msgid ""
 "From this report, you can have an overview of your deferred revenue. The\n"
 "            search bar can also be used to personalize your revenue recognition reporting."
 msgstr ""
+"Sellest aruandest saad sa ülevaate oma viituludest. \n"
+"            Otsingu riba kaudu saab luua isikupärased tuluaruanded."
 
 #. module: account_deferred_revenue
 #: model:ir.ui.menu,name:account_deferred_revenue.menu_recognition_depreciation_confirmation_wizard
 msgid "Generate Deferred Revenues Entries"
-msgstr ""
+msgstr "Loo viittulu kanded"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
 msgid "Gross value of asset"
-msgstr ""
+msgstr "Varade koguväärtus"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_asset_revenue_report_search
 msgid "Group By..."
-msgstr ""
+msgstr "Grupeeri..."
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
 msgid "Invoice"
-msgstr ""
+msgstr "Arve"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
 msgid "Items"
-msgstr ""
+msgstr "rida"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
 msgid "Modify Revenue"
-msgstr ""
+msgstr "Muudetud tulu"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
 msgid "Next Period Revenue"
-msgstr ""
+msgstr "Järgmise perioodi tulu"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.actions.act_window,help:account_deferred_revenue.action_asset_revenue_report
@@ -173,85 +184,85 @@ msgstr ""
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
 msgid "Number of Revenues"
-msgstr ""
+msgstr "Tulude arv"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
 msgid "Partner"
-msgstr ""
+msgstr "Partner"
 
 #. module: account_deferred_revenue
 #: model:ir.actions.act_window,name:account_deferred_revenue.action_recognition_depreciation_confirmation_wizard
 msgid "Post Installment Lines"
-msgstr ""
+msgstr "Read peale osamakseid"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_asset_revenue_report_search
 msgid "Posted"
-msgstr ""
+msgstr "Postitatud"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_asset_revenue_report_search
 msgid "Posted depreciation lines"
-msgstr ""
+msgstr "Postitatud amortisatsiooni read"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_asset_revenue_report_search
 msgid "Recognition in draft state"
-msgstr ""
+msgstr "Tuvastamine mustandi staatusega"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
 msgid "Residual"
-msgstr ""
+msgstr "Jääk"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
 msgid "Revenue"
-msgstr ""
+msgstr "Tulu"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
 msgid "Revenue Board"
-msgstr ""
+msgstr "Tulu töölaud"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_asset_revenue_report_search
 msgid "Revenue Date"
-msgstr ""
+msgstr "Tulu kuupäev"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
 msgid "Revenue Entry"
-msgstr ""
+msgstr "Tulu kanne"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
 msgid "Revenue Information"
-msgstr ""
+msgstr "Tulu informatsioon"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
 msgid "Revenue Lines"
-msgstr ""
+msgstr "Tulurida"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_asset_sale_tree
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
 msgid "Revenue Name"
-msgstr ""
+msgstr "Tulu nimetus"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_asset_revenue_report_search
 msgid "Revenue Recognition"
-msgstr ""
+msgstr "Tulu tunnustamine"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_asset_revenue_report_search
 msgid "Running"
-msgstr ""
+msgstr "Töös"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_asset_revenue_report_search
@@ -261,9 +272,9 @@ msgstr ""
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
 msgid "Sell or Dispose"
-msgstr ""
+msgstr "Müük või mahakandmine"
 
 #. module: account_deferred_revenue
 #: model_terms:ir.ui.view,arch_db:account_deferred_revenue.view_account_asset_revenue_form
 msgid "Set to Draft"
-msgstr ""
+msgstr "Määra mustandiks"

@@ -2,12 +2,18 @@
 # This file contains the translation of the following modules:
 # * stock_barcode
 # 
+# Translators:
+# Martin Trigaux, 2018
+# Birgir Steinarsson <biggboss83@gmail.com>, 2018
+# Bjorn Ingvarsson <boi@exigo.is>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-02 10:32+0000\n"
 "PO-Revision-Date: 2018-08-24 11:48+0000\n"
+"Last-Translator: Bjorn Ingvarsson <boi@exigo.is>, 2018\n"
 "Language-Team: Icelandic (https://www.transifex.com/odoo/teams/41243/is/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -39,7 +45,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_inventory_form_view_inherit
 #, python-format
 msgid "Barcode"
-msgstr ""
+msgstr "Strikamerki"
 
 #. module: stock_barcode
 #: model:ir.actions.client,name:stock_barcode.stock_barcode_inventory_client_action
@@ -71,14 +77,14 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:stock_barcode.view_barcode_lot_form
 #, python-format
 msgid "Cancel"
-msgstr ""
+msgstr "Hætta við"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/xml/stock_barcode.xml:12
 #, python-format
 msgid "Close"
-msgstr ""
+msgstr "Loka"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.res_config_settings_view_form
@@ -90,19 +96,19 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:158
 #, python-format
 msgid "Confirm"
-msgstr ""
+msgstr "Staðfesta"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot__create_uid
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot_line__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Búið til af"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot__create_date
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot_line__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Stofnað þann"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot__default_move_id
@@ -114,13 +120,13 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:157
 #, python-format
 msgid "Discard"
-msgstr ""
+msgstr "Hætta við"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot__display_name
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot_line__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Nafn"
 
 #. module: stock_barcode
 #. openerp-web
@@ -149,7 +155,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_inventory_line__dummy_id
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_move_line__dummy_id
 msgid "Dummy"
-msgstr ""
+msgstr "Plat"
 
 #. module: stock_barcode
 #. openerp-web
@@ -157,12 +163,12 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:123
 #, python-format
 msgid "Edit"
-msgstr ""
+msgstr "Skrifa"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_inventory_barcode2
 msgid "From"
-msgstr ""
+msgstr "From"
 
 #. module: stock_barcode
 #. openerp-web
@@ -175,7 +181,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot__id
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot_line__id
 msgid "ID"
-msgstr ""
+msgstr "Auðkenni"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_picking_type_kanban
@@ -187,12 +193,12 @@ msgstr ""
 #: model:ir.model.fields,help:stock_barcode.field_stock_move_line__product_barcode
 #: model:ir.model.fields,help:stock_barcode.field_stock_scrap__product_barcode
 msgid "International Article Number used for product identification."
-msgstr ""
+msgstr "International Article Number used for product identification."
 
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_inventory
 msgid "Inventory"
-msgstr ""
+msgstr "Birgðir"
 
 #. module: stock_barcode
 #. openerp-web
@@ -226,19 +232,19 @@ msgstr ""
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot____last_update
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot_line____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Síðast breytt þann"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot__write_uid
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot_line__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Síðast uppfært af"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot__write_date
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot_line__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Síðast uppfært þann"
 
 #. module: stock_barcode
 #. openerp-web
@@ -255,7 +261,7 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot_line__lot_name
 msgid "Lot"
-msgstr ""
+msgstr "Lot"
 
 #. module: stock_barcode
 #: code:addons/stock_barcode/models/stock_picking.py:109
@@ -266,7 +272,7 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot_line__move_line_id
 msgid "Move Line"
-msgstr ""
+msgstr "Move Line"
 
 #. module: stock_barcode
 #: model:ir.actions.act_window,name:stock_barcode.stock_inventory_action_new_inventory
@@ -319,7 +325,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:stock_barcode.stock_picking_type_action_kanban
 #, python-format
 msgid "Operations"
-msgstr ""
+msgstr "Aðgerir"
 
 #. module: stock_barcode
 #: model:ir.actions.act_window,name:stock_barcode.stock_picking_action_form
@@ -342,7 +348,7 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_picking_type
 msgid "Picking Type"
-msgstr ""
+msgstr "Picking Type"
 
 #. module: stock_barcode
 #. openerp-web
@@ -376,7 +382,7 @@ msgstr ""
 #: model:ir.model,name:stock_barcode.model_product_product
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot__product_id
 msgid "Product"
-msgstr ""
+msgstr "Vara"
 
 #. module: stock_barcode
 #: model:ir.actions.act_window,name:stock_barcode.product_action_barcodes
@@ -409,7 +415,7 @@ msgstr ""
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
 msgid "Quantity"
-msgstr ""
+msgstr "Magn"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot_line__qty_done
@@ -503,7 +509,7 @@ msgstr ""
 #: model:ir.model,name:stock_barcode.model_stock_scrap
 #, python-format
 msgid "Scrap"
-msgstr ""
+msgstr "Scrap"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
@@ -624,7 +630,7 @@ msgstr ""
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_inventory_barcode2
 msgid "To"
-msgstr ""
+msgstr "To"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_picking_type_kanban
@@ -641,12 +647,12 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_picking
 msgid "Transfer"
-msgstr ""
+msgstr "Transfer"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode_kanban
 msgid "Unit of Measure"
-msgstr ""
+msgstr "Eining"
 
 #. module: stock_barcode
 #. openerp-web
@@ -654,7 +660,7 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:50
 #, python-format
 msgid "Validate"
-msgstr ""
+msgstr "Staðfesta"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.view_barcode_lot_form
@@ -672,7 +678,7 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:1327
 #, python-format
 msgid "Warning"
-msgstr ""
+msgstr "Viðvörun"
 
 #. module: stock_barcode
 #. openerp-web

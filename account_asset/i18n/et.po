@@ -2,12 +2,24 @@
 # This file contains the translation of the following modules:
 # * account_asset
 # 
+# Translators:
+# Rivo Zängov <eraser@eraser.ee>, 2018
+# Wanradt Koell <wanradt@gmail.com>, 2018
+# Eneli Õigus <enelioigus@gmail.com>, 2018
+# Martin Aavastik <martin@avalah.ee>, 2018
+# Helen Sulaoja <helen@avalah.ee>, 2018
+# Martin Trigaux, 2018
+# Arma Gedonsky <armagedonsky@hot.ee>, 2018
+# Egon Raamat <egon@avalah.ee>, 2018
+# Marek Pontus, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 13:17+0000\n"
 "PO-Revision-Date: 2018-08-24 09:15+0000\n"
+"Last-Translator: Marek Pontus, 2018\n"
 "Language-Team: Estonian (https://www.transifex.com/odoo/teams/41243/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,35 +31,35 @@ msgstr ""
 #: code:addons/account_asset/models/account_asset.py:429
 #, python-format
 msgid " (copy)"
-msgstr ""
+msgstr " (koopia)"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:571
 #, python-format
 msgid " (grouped)"
-msgstr ""
+msgstr " (grupeeritud)"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__entry_count
 msgid "# Asset Entries"
-msgstr ""
+msgstr "# Varade kanded"
 
 #. module: account_asset
 #: model:ir.actions.server,name:account_asset.account_asset_cron_ir_actions_server
 #: model:ir.cron,cron_name:account_asset.account_asset_cron
 #: model:ir.cron,name:account_asset.account_asset_cron
 msgid "Account Asset: Generate asset entries"
-msgstr ""
+msgstr "Varade arvestus: Loo varade kanded"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_depreciation_confirmation_wizard__date
 msgid "Account Date"
-msgstr ""
+msgstr "Kande kuupäev"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset_category__account_depreciation_id
 msgid "Account used in the depreciation entries, to decrease the asset value."
-msgstr ""
+msgstr "Amortisatsioonikanneteks kasutatud konto, et vähendada vara väärtust."
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset_category__account_depreciation_expense_id
@@ -55,63 +67,64 @@ msgid ""
 "Account used in the periodical entries, to record a part of the asset as "
 "expense."
 msgstr ""
+"Perioodilisteks kirjeteks kasutatud konto, et kirjendada osa varast kuluna."
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset_category__account_asset_id
 msgid ""
 "Account used to record the purchase of the asset at its original price."
-msgstr ""
+msgstr "Konto, mida kasutatakse vara algse hinna kirjeldamiseks."
 
 #. module: account_asset
 #. openerp-web
 #: code:addons/account_asset/static/src/js/account_asset.js:52
 #, python-format
 msgid "Accounting entries waiting for manual verification"
-msgstr ""
+msgstr "Konto kanded, mis ootavad manuaalset kinnitamist"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__message_needaction
 msgid "Action Needed"
-msgstr ""
+msgstr "Vajalik toiming"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__active
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_category__active
 msgid "Active"
-msgstr ""
+msgstr "Aktiivne"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
 msgid "Additional Options"
-msgstr ""
+msgstr "Lisavõimalused"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:639
 #, python-format
 msgid "Amount"
-msgstr ""
+msgstr "Summa"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_asset_report__depreciation_value
 msgid "Amount of Depreciation Lines"
-msgstr ""
+msgstr "Amortisatsiooni ridade hulk"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_asset_report__installment_value
 msgid "Amount of Installment Lines"
-msgstr ""
+msgstr "Osamaksete ridade summa"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__account_analytic_id
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_category__account_analytic_id
 msgid "Analytic Account"
-msgstr ""
+msgstr "Analüütiline konto"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__analytic_tag_ids
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_category__analytic_tag_ids
 msgid "Analytic Tag"
-msgstr ""
+msgstr "Analüütiline silt"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_depreciation_line__asset_id
@@ -120,13 +133,13 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 #: model_terms:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
 msgid "Asset"
-msgstr ""
+msgstr "Aktiivne"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_category__account_asset_id
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 msgid "Asset Account"
-msgstr ""
+msgstr "Vara konto"
 
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_asset_category
@@ -137,7 +150,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
 #: model_terms:ir.ui.view,arch_db:account_asset.view_invoice_asset_category
 msgid "Asset Category"
-msgstr ""
+msgstr "Vara kategooria"
 
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_asset_depreciation_line
@@ -147,27 +160,27 @@ msgstr ""
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
 msgid "Asset Durations to Modify"
-msgstr ""
+msgstr "Vara kestvuse muutmine"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_invoice_line__asset_end_date
 msgid "Asset End Date"
-msgstr ""
+msgstr "Vara lõppkuupäev"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__asset_method_time
 msgid "Asset Method Time"
-msgstr ""
+msgstr "Ajatamise meetod"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__name
 msgid "Asset Name"
-msgstr ""
+msgstr "Vara nimi"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_invoice_line__asset_start_date
 msgid "Asset Start Date"
-msgstr ""
+msgstr "Vara alguskuupäev"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_category__name
@@ -175,38 +188,38 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_asset.field_product_template__asset_category_id
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
 msgid "Asset Type"
-msgstr ""
+msgstr "Vara tüüp"
 
 #. module: account_asset
 #: model:ir.actions.act_window,name:account_asset.action_account_asset_asset_list_normal_purchase
 #: model:ir.ui.menu,name:account_asset.menu_action_account_asset_asset_list_normal_purchase
 #: model_terms:ir.ui.view,arch_db:account_asset.res_config_settings_view_form
 msgid "Asset Types"
-msgstr ""
+msgstr "Varade tüübid"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_asset_report__asset_category_id
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_tree
 msgid "Asset category"
-msgstr ""
+msgstr "Vara kategooria"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:296
 #, python-format
 msgid "Asset created"
-msgstr ""
+msgstr "Vara on loodud"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:344
 #, python-format
 msgid "Asset sold or disposed. Accounting entry awaiting for validation."
-msgstr ""
+msgstr "Vara müüdud või amortiseerunud. Kanded vajavad kinnitamist."
 
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_asset_asset
 msgid "Asset/Revenue Recognition"
-msgstr ""
+msgstr "Vara/tulu tuvastamine"
 
 #. module: account_asset
 #: model:ir.actions.act_window,name:account_asset.action_account_asset_asset_form
@@ -215,7 +228,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_purchase_tree
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_search
 msgid "Assets"
-msgstr ""
+msgstr "Varad"
 
 #. module: account_asset
 #: model:ir.actions.act_window,name:account_asset.action_asset_asset_report
@@ -224,7 +237,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_asset.action_account_asset_report_pivot
 #: model_terms:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
 msgid "Assets Analysis"
-msgstr ""
+msgstr "Põhivarade analüüs"
 
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_asset_depreciation_confirmation_wizard
@@ -234,32 +247,32 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_move__asset_depreciation_ids
 msgid "Assets Depreciation Lines"
-msgstr ""
+msgstr "Vara amortisatsiooni read"
 
 #. module: account_asset
 #: model:ir.ui.menu,name:account_asset.menu_finance_config_assets
 msgid "Assets and Revenues"
-msgstr ""
+msgstr "Varad ja sissetulekud"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 msgid "Assets in closed state"
-msgstr ""
+msgstr "Suletud põhivarad"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 msgid "Assets in draft and open states"
-msgstr ""
+msgstr "Varad mustand või avatud staatuses"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
 msgid "Assets in draft state"
-msgstr ""
+msgstr "Varad mustand staatuses"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
 msgid "Assets in running state"
-msgstr ""
+msgstr "Kasutusel olevad vara"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__message_attachment_count
@@ -281,18 +294,18 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
 #: model_terms:ir.ui.view,arch_db:account_asset.view_asset_depreciation_confirmation_wizard
 msgid "Cancel"
-msgstr ""
+msgstr "Tühista"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__category_id
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_search
 msgid "Category"
-msgstr ""
+msgstr "Kategooria"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
 msgid "Category of asset"
-msgstr ""
+msgstr "Varade kategooria"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset_category__open_asset
@@ -300,11 +313,14 @@ msgid ""
 "Check this if you want to automatically confirm the assets of this category "
 "when created by invoices."
 msgstr ""
+"Märkige see, kui soovite automaatselt kinnitada selle kategooria varad, kui "
+"see on arvetega loodud."
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset_category__group_entries
 msgid "Check this if you want to group the generated entries by categories."
 msgstr ""
+"Märkige see, kui soovite genereeritud kirjeid kategooriatesse grupeerida."
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset_asset__method
@@ -314,6 +330,9 @@ msgid ""
 "  * Linear: Calculated on basis of: Gross Value / Number of Depreciations\n"
 "  * Degressive: Calculated on basis of: Residual Value * Degressive Factor"
 msgstr ""
+"Vali amortisatsiooni meetod amortisatsiooni arvutamiseks.\n"
+"  * Lineaarne: brutoväärtus / amortiseerimiste arvuga\n"
+"  * Kahanev: jääkväärtus * kahanemise kordaja"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset_asset__method_time
@@ -323,6 +342,9 @@ msgid ""
 "  * Number of Entries: Fix the number of entries and the time between 2 depreciations.\n"
 "  * Ending Date: Choose the time between 2 depreciations and the date the depreciations won't go beyond."
 msgstr ""
+"Vali kuupäevade ja numbrite arvutamise meetod.\n"
+"  * Kirjete arv: kindel kirjete arv ja ajaline vahe kahel kandel.\n"
+"  * Lõppemise kuupäev: vali 2 kande vaheline aeg ja kuupäev, milal lõppeb amortisatsioon."
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_asset_depreciation_confirmation_wizard__date
@@ -330,16 +352,18 @@ msgid ""
 "Choose the period for which you want to automatically post the depreciation "
 "lines of running assets"
 msgstr ""
+"Valige ajavahemik, mille jaoks soovite automaatselt postitada aktiivsete "
+"varade amortisatsiooni read"
 
 #. module: account_asset
 #: selection:account.asset.asset,state:0 selection:asset.asset.report,state:0
 msgid "Close"
-msgstr ""
+msgstr "Kinnitatud"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 msgid "Closed"
-msgstr ""
+msgstr "Suletud"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__company_id
@@ -347,40 +371,40 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_asset.field_asset_asset_report__company_id
 #: model_terms:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
 msgid "Company"
-msgstr ""
+msgstr "Ettevõte"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__method
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_category__method
 msgid "Computation Method"
-msgstr ""
+msgstr "Arvutusmeetod"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_asset_depreciation_confirmation_wizard
 msgid "Compute Asset"
-msgstr ""
+msgstr "Arvuta vara"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
 msgid "Compute Depreciation"
-msgstr ""
+msgstr "Arvuta amortisatsioon"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
 msgid "Confirm"
-msgstr ""
+msgstr "Kinnita"
 
 #. module: account_asset
 #: code:addons/account_asset/wizard/asset_depreciation_confirmation_wizard.py:20
 #, python-format
 msgid "Created Asset Moves"
-msgstr ""
+msgstr "Loodud vara liikumised"
 
 #. module: account_asset
 #: code:addons/account_asset/wizard/asset_depreciation_confirmation_wizard.py:20
 #, python-format
 msgid "Created Revenue Moves"
-msgstr ""
+msgstr "Loodud tule liikumised"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__create_uid
@@ -389,7 +413,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_asset.field_asset_depreciation_confirmation_wizard__create_uid
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Loonud"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__create_date
@@ -398,90 +422,90 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_asset.field_asset_depreciation_confirmation_wizard__create_date
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Loomise kuupäev"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_depreciation_line__depreciated_value
 msgid "Cumulative Depreciation"
-msgstr ""
+msgstr "Kogunenud amortisatsioon"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:639
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__currency_id
 #, python-format
 msgid "Currency"
-msgstr ""
+msgstr "Valuuta"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 msgid "Current"
-msgstr ""
+msgstr "Praegune"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_depreciation_line__amount
 msgid "Current Depreciation"
-msgstr ""
+msgstr "Praegune amortisatsioon"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__date
 #: model:ir.model.fields,field_description:account_asset.field_asset_asset_report__date
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 msgid "Date"
-msgstr ""
+msgstr "Kuupäev"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
 msgid "Date of asset"
-msgstr ""
+msgstr "Vara kuupäev"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
 msgid "Date of asset purchase"
-msgstr ""
+msgstr "Soetuskuupäev"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
 msgid "Date of depreciation"
-msgstr ""
+msgstr "Amortiseerumise kuupäev"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
 msgid "Deferred Revenue Account"
-msgstr ""
+msgstr "Viittulu konto"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_product_product__deferred_revenue_category_id
 #: model:ir.model.fields,field_description:account_asset.field_product_template__deferred_revenue_category_id
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
 msgid "Deferred Revenue Type"
-msgstr ""
+msgstr "Viittulu liik"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_search
 msgid "Deferred Revenues"
-msgstr ""
+msgstr "Viittulud"
 
 #. module: account_asset
 #: selection:account.asset.asset,method:0
 #: selection:account.asset.category,method:0
 msgid "Degressive"
-msgstr ""
+msgstr "Kahanev"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__method_progress_factor
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_category__method_progress_factor
 msgid "Degressive Factor"
-msgstr ""
+msgstr "Kahanemise faktor"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
 msgid "Depreciation"
-msgstr ""
+msgstr "Amortisatsioon"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
 msgid "Depreciation Board"
-msgstr ""
+msgstr "Amortisatsiooni kaart"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_asset_report__depreciation_nbr
@@ -492,7 +516,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_depreciation_line__depreciation_date
 #: model:ir.model.fields,field_description:account_asset.field_asset_asset_report__depreciation_date
 msgid "Depreciation Date"
-msgstr ""
+msgstr "Amortisatsiooni kuupäev"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__date_first_depreciation
@@ -503,55 +527,55 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_category__account_depreciation_id
 msgid "Depreciation Entries: Asset Account"
-msgstr ""
+msgstr "Amortisatsiooni kanded: Vara konto"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_category__account_depreciation_expense_id
 msgid "Depreciation Entries: Expense Account"
-msgstr ""
+msgstr "Amortisatsiooni kanded: Kulu konto"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_depreciation_line__move_id
 msgid "Depreciation Entry"
-msgstr ""
+msgstr "Amortisatsiooni sissekanne"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
 msgid "Depreciation Information"
-msgstr ""
+msgstr "Amortisatsiooni informatsioon"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__depreciation_line_ids
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
 msgid "Depreciation Lines"
-msgstr ""
+msgstr "Amortisatsiooni read"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
 msgid "Depreciation Method"
-msgstr ""
+msgstr "Amortisatsioonimeetod"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
 msgid "Depreciation Month"
-msgstr ""
+msgstr "Amortisatsiooni kuu"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_depreciation_line__name
 msgid "Depreciation Name"
-msgstr ""
+msgstr "Amortisatsiooni nimetus"
 
 #. module: account_asset
 #: code:addons/account_asset/wizard/asset_modify.py:85
 #, python-format
 msgid "Depreciation board modified"
-msgstr ""
+msgstr "Amortisatsiooni kaart muudetud"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:642
 #, python-format
 msgid "Depreciation line posted."
-msgstr ""
+msgstr "Postitatud amortisatsiooni rida."
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__display_name
@@ -561,49 +585,49 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_asset.field_asset_depreciation_confirmation_wizard__display_name
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Näidatav nimi"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:299
 #, python-format
 msgid "Disposal Move"
-msgstr ""
+msgstr "Mahakandmise liikumine"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:302
 #, python-format
 msgid "Disposal Moves"
-msgstr ""
+msgstr "Mahakandmise liikumised"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:621
 #, python-format
 msgid "Document closed."
-msgstr ""
+msgstr "Dokument suletud."
 
 #. module: account_asset
 #: selection:account.asset.asset,state:0 selection:asset.asset.report,state:0
 #: model_terms:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
 msgid "Draft"
-msgstr ""
+msgstr "Mustand"
 
 #. module: account_asset
 #: selection:account.asset.asset,method_time:0
 #: selection:account.asset.category,method_time:0
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__method_end
 msgid "Ending Date"
-msgstr ""
+msgstr "Lõppkuupäev"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_category__method_end
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__method_end
 msgid "Ending date"
-msgstr ""
+msgstr "Lõppkuupäev"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
 msgid "Extended Filters..."
-msgstr ""
+msgstr "Laiendatud filtrid"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__first_depreciation_manual_date
@@ -613,17 +637,17 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__message_follower_ids
 msgid "Followers"
-msgstr ""
+msgstr "Jälgijad"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__message_channel_ids
 msgid "Followers (Channels)"
-msgstr ""
+msgstr "Jälgijad (kanalid)"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__message_partner_ids
 msgid "Followers (Partners)"
-msgstr ""
+msgstr "Jälgijad (partnerid)"
 
 #. module: account_asset
 #: model_terms:ir.actions.act_window,help:account_asset.action_asset_asset_report
@@ -631,47 +655,49 @@ msgid ""
 "From this report, you can have an overview on all depreciations. The\n"
 "            search bar can also be used to personalize your assets depreciation reporting."
 msgstr ""
+"Sellest aruandest saab ülevaate kõikidest amortisatsioonidest. \n"
+"            Otsingu riba kaudu saab luua isikupärased amortisatsiooni aruanded."
 
 #. module: account_asset
 #: model:ir.ui.menu,name:account_asset.menu_asset_depreciation_confirmation_wizard
 msgid "Generate Assets Entries"
-msgstr ""
+msgstr "Loo varade sissekanded"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_asset_depreciation_confirmation_wizard
 msgid "Generate Entries"
-msgstr ""
+msgstr "Loo kanded"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_asset_report__gross_value
 msgid "Gross Amount"
-msgstr ""
+msgstr "Kogusumma"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__value
 msgid "Gross Value"
-msgstr ""
+msgstr "Koguväärtus"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
 msgid "Gross value of asset"
-msgstr ""
+msgstr "Varade koguväärtus"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
 msgid "Group By"
-msgstr ""
+msgstr "Rühmitamine"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_search
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 msgid "Group By..."
-msgstr ""
+msgstr "Grupeeri..."
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_category__group_entries
 msgid "Group Journal Entries"
-msgstr ""
+msgstr "Grupeeri andmikukanded"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__id
@@ -681,17 +707,17 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_asset.field_asset_depreciation_confirmation_wizard__id
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset_asset__message_unread
 msgid "If checked new messages require your attention."
-msgstr ""
+msgstr "Kui kontrollitud, siis uued sõnumid nõuavad Su tähelepanu."
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset_asset__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr ""
+msgstr "Kui kontrollitud, siis uued sõnumid nõuavad Su tähelepanu."
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset_asset__message_has_error
@@ -712,6 +738,8 @@ msgid ""
 "Indicates that the first depreciation entry for this asset have to be done "
 "from the purchase date instead of the first of January"
 msgstr ""
+"Näitab, et selle vara esimene amortisatsioonikirje tuleb teha ostu "
+"kuupäevast esimese jaanuari asemel"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_asset_report__installment_nbr
@@ -723,32 +751,32 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__invoice_id
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
 msgid "Invoice"
-msgstr ""
+msgstr "Arve"
 
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_invoice_line
 msgid "Invoice Line"
-msgstr ""
+msgstr "Arve rida"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__message_is_follower
 msgid "Is Follower"
-msgstr ""
+msgstr "Jälgija"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset_asset__salvage_value
 msgid "It is the amount you plan to have that you cannot depreciate."
-msgstr ""
+msgstr "Summa, millest väiksemaks ei amortiseerita."
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
 msgid "Items"
-msgstr ""
+msgstr "rida"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_category__journal_id
 msgid "Journal"
-msgstr ""
+msgstr "Andmik"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:463
@@ -756,7 +784,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
 #, python-format
 msgid "Journal Entries"
-msgstr ""
+msgstr "Andmike kanded"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset____last_update
@@ -766,7 +794,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_asset.field_asset_depreciation_confirmation_wizard____last_update
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Viimati muudetud (millal)"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__write_uid
@@ -775,7 +803,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_asset.field_asset_depreciation_confirmation_wizard__write_uid
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Viimati uuendatud (kelle poolt)"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__write_date
@@ -784,18 +812,18 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_asset.field_asset_depreciation_confirmation_wizard__write_date
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Viimati uuendatud (millal)"
 
 #. module: account_asset
 #: selection:account.asset.asset,method:0
 #: selection:account.asset.category,method:0
 msgid "Linear"
-msgstr ""
+msgstr "Lineaarne"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_depreciation_line__move_check
 msgid "Linked"
-msgstr ""
+msgstr "Seotud"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__message_main_attachment_id
@@ -805,7 +833,7 @@ msgstr ""
 #. module: account_asset
 #: selection:account.asset.asset,date_first_depreciation:0
 msgid "Manual"
-msgstr ""
+msgstr "Käsitsi"
 
 #. module: account_asset
 #: selection:account.asset.category,date_first_depreciation:0
@@ -820,34 +848,34 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__message_ids
 msgid "Messages"
-msgstr ""
+msgstr "Sõnumid"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
 msgid "Modify"
-msgstr ""
+msgstr "Muuda"
 
 #. module: account_asset
 #: model:ir.actions.act_window,name:account_asset.action_asset_modify
 #: model:ir.model,name:account_asset.model_asset_modify
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
 msgid "Modify Asset"
-msgstr ""
+msgstr "Muuda"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
 msgid "Modify Depreciation"
-msgstr ""
+msgstr "Muuda amortisatsiooni"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_invoice_line__asset_mrr
 msgid "Monthly Recurring Revenue"
-msgstr ""
+msgstr "igakuine korduv tulu"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_depreciation_line__remaining_value
 msgid "Next Period Depreciation"
-msgstr ""
+msgstr "Järgmise perioodi amortisatsioon"
 
 #. module: account_asset
 #: model_terms:ir.actions.act_window,help:account_asset.action_asset_asset_report
@@ -857,7 +885,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__note
 msgid "Note"
-msgstr ""
+msgstr "Märkused"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset_asset__first_depreciation_manual_date
@@ -870,26 +898,26 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__message_needaction_counter
 msgid "Number of Actions"
-msgstr ""
+msgstr "Toimingute arv"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__method_number
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_category__method_number
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__method_number
 msgid "Number of Depreciations"
-msgstr ""
+msgstr "Mitu amortisatsiooni"
 
 #. module: account_asset
 #: selection:account.asset.asset,method_time:0
 #: selection:account.asset.category,method_time:0
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
 msgid "Number of Entries"
-msgstr ""
+msgstr "Sissekannete arv"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__method_period
 msgid "Number of Months in a Period"
-msgstr ""
+msgstr "Kuude arv perioodis"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__message_has_error_counter
@@ -899,7 +927,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset_asset__message_needaction_counter
 msgid "Number of messages which requires an action"
-msgstr ""
+msgstr "Tegutsemist nõudvate sõnumite arv"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset_asset__message_has_error_counter
@@ -909,12 +937,12 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset_asset__message_unread_counter
 msgid "Number of unread messages"
-msgstr ""
+msgstr "Lugemata sõnumite arv"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
 msgid "One Entry Every"
-msgstr ""
+msgstr "Üks kanne igal"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:641
@@ -922,23 +950,23 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_asset.field_asset_asset_report__partner_id
 #, python-format
 msgid "Partner"
-msgstr ""
+msgstr "Partner"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_category__method_period
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__method_period
 msgid "Period Length"
-msgstr ""
+msgstr "Perioodi pikkus"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
 msgid "Periodicity"
-msgstr ""
+msgstr "Perioodilisus"
 
 #. module: account_asset
 #: model:ir.actions.act_window,name:account_asset.action_asset_depreciation_confirmation_wizard
 msgid "Post Depreciation Lines"
-msgstr ""
+msgstr "Sisesta amortisatsiooni read"
 
 #. module: account_asset
 #. openerp-web
@@ -948,28 +976,28 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
 #, python-format
 msgid "Posted"
-msgstr ""
+msgstr "Postitatud"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_asset_report__posted_value
 msgid "Posted Amount"
-msgstr ""
+msgstr "Postitatud summa"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
 msgid "Posted depreciation lines"
-msgstr ""
+msgstr "Postitatud amortisatsiooni read"
 
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_product_template
 msgid "Product Template"
-msgstr ""
+msgstr "Toote mall"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__prorata
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_category__prorata
 msgid "Prorata Temporis"
-msgstr ""
+msgstr "Prorata Temporis"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:392
@@ -982,115 +1010,115 @@ msgstr ""
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_search
 msgid "Purchase"
-msgstr ""
+msgstr "Ost"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
 msgid "Purchase Month"
-msgstr ""
+msgstr "Ostukuu"
 
 #. module: account_asset
 #: selection:account.asset.category,type:0
 msgid "Purchase: Asset"
-msgstr ""
+msgstr "Ost: Vara"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__name
 msgid "Reason"
-msgstr ""
+msgstr "Põhjus"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
 msgid "Recognition Account"
-msgstr ""
+msgstr "Tuvastuse konto"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
 msgid "Recognition Income Account"
-msgstr ""
+msgstr "Tuvastatud sissetulekute konto"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__code
 msgid "Reference"
-msgstr ""
+msgstr "Viide"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
 msgid "Residual"
-msgstr ""
+msgstr "Jääk"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__value_residual
 msgid "Residual Value"
-msgstr ""
+msgstr "Hetkeväärtus"
 
 #. module: account_asset
 #: selection:account.asset.asset,state:0 selection:asset.asset.report,state:0
 #: model_terms:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
 msgid "Running"
-msgstr ""
+msgstr "Töös"
 
 #. module: account_asset
 #: selection:account.asset.category,type:0
 msgid "Sale: Revenue Recognition"
-msgstr ""
+msgstr "Müük: tulu tuvastamine"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_search
 msgid "Sales"
-msgstr ""
+msgstr "Müük"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__salvage_value
 msgid "Salvage Value"
-msgstr ""
+msgstr "Jääkväärtus"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_search
 msgid "Search Asset Category"
-msgstr ""
+msgstr "Otsi vara kategooriat"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
 msgid "Sell or Dispose"
-msgstr ""
+msgstr "Müük või mahakandmine"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_depreciation_line__sequence
 msgid "Sequence"
-msgstr ""
+msgstr "Järjestus"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
 msgid "Set to Draft"
-msgstr ""
+msgstr "Määra mustandiks"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset_category__method_period
 msgid "State here the time between 2 depreciations, in months"
-msgstr ""
+msgstr "Määra kahe amortisatsiooni vaheline aeg kuudes"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_depreciation_line__parent_state
 msgid "State of Asset"
-msgstr ""
+msgstr "Vara staatus"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__state
 #: model:ir.model.fields,field_description:account_asset.field_asset_asset_report__state
 msgid "Status"
-msgstr ""
+msgstr "Staatus"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset_asset__method_period
 msgid "The amount of time between two depreciations, in months"
-msgstr ""
+msgstr "Kahe amortisatsiooni vaheline ajahulk kuudes"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset_asset__method_number
 #: model:ir.model.fields,help:account_asset.field_account_asset_category__method_number
 msgid "The number of depreciations needed to depreciate your asset"
-msgstr ""
+msgstr "Vajalike amortisatsioonide arv"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_invoice.py:62
@@ -1130,63 +1158,65 @@ msgid ""
 "This wizard will post installment/depreciation lines for the selected month.<br/>\n"
 "                        This will generate journal entries for all related installment lines on this period of asset/revenue recognition as well."
 msgstr ""
+"See viisard postitab amortisatsiooni osamaksed valitud kuusse.<br/>\n"
+"                        "
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__method_time
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_category__method_time
 msgid "Time Method"
-msgstr ""
+msgstr "Ajameetod"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
 msgid "Time Method Based On"
-msgstr ""
+msgstr "Ajameetod"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__type
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_category__type
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_search
 msgid "Type"
-msgstr ""
+msgstr "Tüüp"
 
 #. module: account_asset
 #. openerp-web
 #: code:addons/account_asset/static/src/js/account_asset.js:55
 #, python-format
 msgid "Unposted"
-msgstr ""
+msgstr "Sisestamata"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_asset_report__unposted_value
 msgid "Unposted Amount"
-msgstr ""
+msgstr "Sisestamata summa"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__message_unread
 msgid "Unread Messages"
-msgstr ""
+msgstr "Lugemata sõnumid"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__message_unread_counter
 msgid "Unread Messages Counter"
-msgstr ""
+msgstr "Lugemata sõnumite loendur"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_purchase_tree
 msgid "Vendor"
-msgstr ""
+msgstr "Tarnija"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__website_message_ids
 msgid "Website Messages"
-msgstr ""
+msgstr "Veebilehe sõnumid"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset_asset__website_message_ids
 msgid "Website communication history"
-msgstr ""
+msgstr "Veebilehe suhtluse ajalugu"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset_asset__state
@@ -1196,17 +1226,20 @@ msgid ""
 "If the asset is confirmed, the status goes in 'Running' and the depreciation lines can be posted in the accounting.\n"
 "You can manually close an asset when the depreciation is over. If the last line of depreciation is posted, the asset automatically goes in that status."
 msgstr ""
+"Vara loomisel on vara mustand staatuses.\n"
+"Kui vara kinnitatakse, läheb see aktiivsesse staatusesse ja amortisatsiooni ridu saab postitada raamatupidamisse.\n"
+"Vara saab sulgeda käsitsi, kui vara on lõpuni amortiseerunud. Kui viimane amortisatsiooni rida on postitatud, läheb vara automaatselt lõpetatud staatusesse."
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_asset_report__name
 msgid "Year"
-msgstr ""
+msgstr "Aasta"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:136
 #, python-format
 msgid "You cannot delete a document that contains posted entries."
-msgstr ""
+msgstr "Sa ei saa kustutada sisestatud sissekannetega dokumenti."
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:133
@@ -1218,26 +1251,26 @@ msgstr ""
 #: code:addons/account_asset/models/account_asset.py:650
 #, python-format
 msgid "You cannot delete posted depreciation lines."
-msgstr ""
+msgstr "Sa ei saa kustutada sisestatud amortisatsiooni ridu."
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:652
 #, python-format
 msgid "You cannot delete posted installment lines."
-msgstr ""
+msgstr "Sa ei saa kustutada sisestatud osamaksete ridu."
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
 msgid "e.g. Computers"
-msgstr ""
+msgstr "nt arvutid"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
 msgid "e.g. Laptop iBook"
-msgstr ""
+msgstr "nt. iBook sülearvuti"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
 msgid "months"
-msgstr ""
+msgstr "kuud"

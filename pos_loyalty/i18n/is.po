@@ -2,12 +2,18 @@
 # This file contains the translation of the following modules:
 # * pos_loyalty
 # 
+# Translators:
+# Martin Trigaux, 2018
+# Birgir Steinarsson <biggboss83@gmail.com>, 2018
+# Bjorn Ingvarsson <boi@exigo.is>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
 "PO-Revision-Date: 2018-08-24 11:47+0000\n"
+"Last-Translator: Bjorn Ingvarsson <boi@exigo.is>, 2018\n"
 "Language-Team: Icelandic (https://www.transifex.com/odoo/teams/41243/is/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -48,12 +54,12 @@ msgstr ""
 #. module: pos_loyalty
 #: selection:loyalty.rule,rule_type:0
 msgid "Category"
-msgstr ""
+msgstr "Flokkur"
 
 #. module: pos_loyalty
 #: model:ir.model,name:pos_loyalty.model_res_partner
 msgid "Contact"
-msgstr ""
+msgstr "Tengiliður"
 
 #. module: pos_loyalty
 #: model_terms:ir.actions.act_window,help:pos_loyalty.action_loyalty_program_form
@@ -65,14 +71,14 @@ msgstr ""
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_reward__create_uid
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_rule__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Búið til af"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_program__create_date
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_reward__create_date
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_rule__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Stofnað þann"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_rule__cumulative
@@ -83,7 +89,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_reward__discount
 #: selection:loyalty.reward,reward_type:0
 msgid "Discount"
-msgstr ""
+msgstr "Afsláttur"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_reward__discount_product_id
@@ -95,7 +101,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_reward__display_name
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_rule__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Nafn"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,help:pos_loyalty.field_loyalty_rule__rule_type
@@ -143,28 +149,28 @@ msgstr ""
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_reward__id
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_rule__id
 msgid "ID"
-msgstr ""
+msgstr "Auðkenni"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_program____last_update
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_reward____last_update
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_rule____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Síðast breytt þann"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_program__write_uid
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_reward__write_uid
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_rule__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Síðast uppfært af"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_program__write_date
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_reward__write_date
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_rule__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Síðast uppfært þann"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_pos_order__loyalty_points
@@ -180,7 +186,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:pos_loyalty.pos_config_view_form_inherit_pos_loyalty
 #: model_terms:ir.ui.view,arch_db:pos_loyalty.view_loyalty_program_form
 msgid "Loyalty Program"
-msgstr ""
+msgstr "Vildarkerfi"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_program__name
@@ -223,7 +229,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_reward__name
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_rule__name
 msgid "Name"
-msgstr ""
+msgstr "Nafn"
 
 #. module: pos_loyalty
 #. openerp-web
@@ -326,7 +332,7 @@ msgstr ""
 #. module: pos_loyalty
 #: selection:loyalty.rule,rule_type:0
 msgid "Product"
-msgstr ""
+msgstr "Vara"
 
 #. module: pos_loyalty
 #: selection:loyalty.reward,reward_type:0
@@ -371,7 +377,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_program__rule_ids
 #: model_terms:ir.ui.view,arch_db:pos_loyalty.view_loyalty_program_form
 msgid "Rules"
-msgstr ""
+msgstr "Rules"
 
 #. module: pos_loyalty
 #: model_terms:ir.ui.view,arch_db:pos_loyalty.view_loyalty_program_form

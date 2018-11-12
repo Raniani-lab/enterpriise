@@ -4,13 +4,18 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# Marc Tormo i Bochaca <mtbochaca@gmail.com>, 2018
+# RGB Consulting <odoo@rgbconsulting.com>, 2018
+# Quim - eccit <quim@eccit.com>, 2018
+# Manel Fernandez <manelfera@outlook.com>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-08 07:14+0000\n"
-"PO-Revision-Date: 2018-10-08 07:14+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"PO-Revision-Date: 2018-08-24 09:20+0000\n"
+"Last-Translator: Manel Fernandez <manelfera@outlook.com>, 2018\n"
 "Language-Team: Catalan (https://www.transifex.com/odoo/teams/41243/ca/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -137,7 +142,7 @@ msgstr ""
 #: model:ir.ui.menu,name:iot.iot_device_menu_action
 #: model_terms:ir.ui.view,arch_db:iot.iot_box_view_form
 msgid "Devices"
-msgstr ""
+msgstr "Dispositius"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_add_iot_box__display_name
@@ -188,12 +193,12 @@ msgstr ""
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_box__ip
 msgid "IP Address"
-msgstr ""
+msgstr "Adreça IP"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_device__identifier
 msgid "Identifier"
-msgstr ""
+msgstr "Identificador"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_box__identifier
@@ -267,12 +272,12 @@ msgstr "Nom"
 #. module: iot
 #: selection:iot.device,connection:0
 msgid "Network"
-msgstr ""
+msgstr "Xarxa"
 
 #. module: iot
 #: selection:iot.trigger,action:0
 msgid "Next"
-msgstr ""
+msgstr "Següent"
 
 #. module: iot
 #: model_terms:ir.actions.act_window,help:iot.iot_box_action
@@ -282,12 +287,12 @@ msgstr ""
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.view_add_iot_box
 msgid "OK"
-msgstr ""
+msgstr "D'acord"
 
 #. module: iot
 #: selection:iot.trigger,action:0
 msgid "Pack"
-msgstr ""
+msgstr "Paquet"
 
 #. module: iot
 #: selection:iot.trigger,action:0
@@ -297,7 +302,7 @@ msgstr ""
 #. module: iot
 #: selection:iot.trigger,action:0
 msgid "Pause"
-msgstr ""
+msgstr "Atura"
 
 #. module: iot
 #: selection:iot.trigger,action:0
@@ -322,7 +327,7 @@ msgstr ""
 #. module: iot
 #: selection:iot.device,type:0
 msgid "Printer"
-msgstr ""
+msgstr "Impressora "
 
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_view_form
@@ -332,7 +337,7 @@ msgstr ""
 #. module: iot
 #: selection:iot.trigger,action:0
 msgid "Record Production"
-msgstr ""
+msgstr "Registre de producció"
 
 #. module: iot
 #: model:ir.model,name:iot.model_ir_actions_report
@@ -364,7 +369,7 @@ msgstr ""
 #. module: iot
 #: selection:iot.trigger,action:0
 msgid "Scrap"
-msgstr ""
+msgstr "Deixalla"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_box__screen_url
@@ -438,7 +443,7 @@ msgstr ""
 #. module: iot
 #: selection:iot.trigger,action:0
 msgid "Validate"
-msgstr ""
+msgstr "Validar"
 
 #. module: iot
 #: model:ir.model.fields,help:iot.field_ir_actions_report__device_id

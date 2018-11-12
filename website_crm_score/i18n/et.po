@@ -2,12 +2,22 @@
 # This file contains the translation of the following modules:
 # * website_crm_score
 # 
+# Translators:
+# Rivo Zängov <eraser@eraser.ee>, 2018
+# Martin Trigaux, 2018
+# Wanradt Koell <wanradt@gmail.com>, 2018
+# Arma Gedonsky <armagedonsky@hot.ee>, 2018
+# Eneli Õigus <enelioigus@gmail.com>, 2018
+# Martin Aavastik <martin@avalah.ee>, 2018
+# Helen Sulaoja <helen@avalah.ee>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:07+0000\n"
 "PO-Revision-Date: 2018-08-24 11:49+0000\n"
+"Last-Translator: Helen Sulaoja <helen@avalah.ee>, 2018\n"
 "Language-Team: Estonian (https://www.transifex.com/odoo/teams/41243/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,18 +28,18 @@ msgstr ""
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__pageviews_count
 msgid "# Page Views"
-msgstr ""
+msgstr "Lehe vaatamiste arv"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_needaction
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__message_needaction
 msgid "Action Needed"
-msgstr ""
+msgstr "Vajalik toiming"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__running
 msgid "Active"
-msgstr ""
+msgstr "Aktiivne"
 
 #. module: website_crm_score
 #: model:ir.model.fields,help:website_crm_score.field_ir_ui_view__track
@@ -40,7 +50,7 @@ msgstr ""
 #. module: website_crm_score
 #: selection:website.crm.score,rule_type:0
 msgid "Archive"
-msgstr ""
+msgstr "Arhiveeri"
 
 #. module: website_crm_score
 #: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
@@ -82,7 +92,7 @@ msgstr ""
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_team__capacity
 msgid "Capacity"
-msgstr ""
+msgstr "Maht"
 
 #. module: website_crm_score
 #: model_terms:ir.actions.act_window,help:website_crm_score.team_user_action
@@ -94,14 +104,14 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__create_uid
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Loonud"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__create_date
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__create_date
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Loomise kuupäev"
 
 #. module: website_crm_score
 #: model:ir.actions.server,name:website_crm_score.action_score_now
@@ -141,21 +151,21 @@ msgstr ""
 #. module: website_crm_score
 #: selection:website.crm.score,rule_type:0
 msgid "Delete"
-msgstr ""
+msgstr "Kustuta"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__display_name
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__display_name
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Näidatav nimi"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_team__score_team_domain
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__team_user_domain
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__domain
 msgid "Domain"
-msgstr ""
+msgstr "Domeen"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__event_based
@@ -166,19 +176,19 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_follower_ids
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__message_follower_ids
 msgid "Followers"
-msgstr ""
+msgstr "Jälgijad"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_channel_ids
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__message_channel_ids
 msgid "Followers (Channels)"
-msgstr ""
+msgstr "Jälgijad (kanalid)"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_partner_ids
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__message_partner_ids
 msgid "Followers (Partners)"
-msgstr ""
+msgstr "Jälgijad (partnerid)"
 
 #. module: website_crm_score
 #: model:ir.model,name:website_crm_score.model_ir_http
@@ -190,19 +200,19 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__id
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: website_crm_score
 #: model:ir.model.fields,help:website_crm_score.field_team_user__message_unread
 #: model:ir.model.fields,help:website_crm_score.field_website_crm_score__message_unread
 msgid "If checked new messages require your attention."
-msgstr ""
+msgstr "Kui kontrollitud, siis uued sõnumid nõuavad Su tähelepanu."
 
 #. module: website_crm_score
 #: model:ir.model.fields,help:website_crm_score.field_team_user__message_needaction
 #: model:ir.model.fields,help:website_crm_score.field_website_crm_score__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr ""
+msgstr "Kui kontrollitud, siis uued sõnumid nõuavad Su tähelepanu."
 
 #. module: website_crm_score
 #: model:ir.model.fields,help:website_crm_score.field_team_user__message_has_error
@@ -214,12 +224,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_is_follower
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__message_is_follower
 msgid "Is Follower"
-msgstr ""
+msgstr "Jälgija"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__lang_id
 msgid "Language"
-msgstr ""
+msgstr "Keel"
 
 #. module: website_crm_score
 #: model:ir.model.fields,help:website_crm_score.field_crm_lead__lang_id
@@ -231,21 +241,21 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview____last_update
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Viimati muudetud (millal)"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__write_uid
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__write_uid
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Viimati uuendatud (kelle poolt)"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__write_date
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__write_date
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Viimati uuendatud (millal)"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__last_run
@@ -255,7 +265,7 @@ msgstr ""
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__lead_id
 msgid "Lead"
-msgstr ""
+msgstr "Müügivihje"
 
 #. module: website_crm_score
 #: model:ir.actions.act_window,name:website_crm_score.website_crm_score_pageviews
@@ -266,13 +276,13 @@ msgstr ""
 #. module: website_crm_score
 #: model:ir.model,name:website_crm_score.model_crm_lead
 msgid "Lead/Opportunity"
-msgstr ""
+msgstr "Müügivihje/võimalus"
 
 #. module: website_crm_score
 #: model:ir.actions.act_window,name:website_crm_score.score_leads
 #: model_terms:ir.ui.view,arch_db:website_crm_score.view_crm_score_form
 msgid "Leads"
-msgstr ""
+msgstr "Müügivihjed"
 
 #. module: website_crm_score
 #: model:ir.ui.menu,name:website_crm_score.team_user
@@ -330,7 +340,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_ids
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__message_ids
 msgid "Messages"
-msgstr ""
+msgstr "Sõnumid"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_team__min_for_assign
@@ -347,13 +357,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__name
 #: model_terms:ir.ui.view,arch_db:website_crm_score.view_crm_score_form
 msgid "Name"
-msgstr ""
+msgstr "Nimi"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_needaction_counter
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__message_needaction_counter
 msgid "Number of Actions"
-msgstr ""
+msgstr "Toimingute arv"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_has_error_counter
@@ -365,7 +375,7 @@ msgstr ""
 #: model:ir.model.fields,help:website_crm_score.field_team_user__message_needaction_counter
 #: model:ir.model.fields,help:website_crm_score.field_website_crm_score__message_needaction_counter
 msgid "Number of messages which requires an action"
-msgstr ""
+msgstr "Tegutsemist nõudvate sõnumite arv"
 
 #. module: website_crm_score
 #: model:ir.model.fields,help:website_crm_score.field_team_user__message_has_error_counter
@@ -377,7 +387,7 @@ msgstr ""
 #: model:ir.model.fields,help:website_crm_score.field_team_user__message_unread_counter
 #: model:ir.model.fields,help:website_crm_score.field_website_crm_score__message_unread_counter
 msgid "Number of unread messages"
-msgstr ""
+msgstr "Lugemata sõnumite arv"
 
 #. module: website_crm_score
 #: model:ir.actions.act_window,name:website_crm_score.crm_score_views_action_table
@@ -385,7 +395,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website_crm_score.crm_case_table_view_leads_sales
 #: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
 msgid "Opportunities"
-msgstr ""
+msgstr "Võimalused"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__score_pageview_ids
@@ -407,12 +417,12 @@ msgstr ""
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__phone
 msgid "Phone"
-msgstr ""
+msgstr "Telefon"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_team__ratio
 msgid "Ratio"
-msgstr ""
+msgstr "Tegur"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__rule_type
@@ -422,12 +432,12 @@ msgstr ""
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__running
 msgid "Running"
-msgstr ""
+msgstr "Töös"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__team_id
 msgid "SaleTeam"
-msgstr ""
+msgstr "Müügitiim"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__user_id
@@ -438,7 +448,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:website_crm_score.team_action
 #: model:ir.model,name:website_crm_score.model_crm_team
 msgid "Sales Channels"
-msgstr ""
+msgstr "Müügitiimid"
 
 #. module: website_crm_score
 #: model:ir.actions.act_window,name:website_crm_score.team_user_action
@@ -462,7 +472,7 @@ msgstr ""
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_team__team_user_ids
 msgid "Salesman"
-msgstr ""
+msgstr "Müügimees"
 
 #. module: website_crm_score
 #: model:ir.model,name:website_crm_score.model_team_user
@@ -519,7 +529,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_crm_score.field_ir_ui_view__track
 #: model:ir.model.fields,field_description:website_crm_score.field_website_page__track
 msgid "Track"
-msgstr ""
+msgstr "Jälgi"
 
 #. module: website_crm_score
 #: model:ir.actions.act_window,name:website_crm_score.crm_score_views_action_graph
@@ -530,18 +540,18 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_unread
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__message_unread
 msgid "Unread Messages"
-msgstr ""
+msgstr "Lugemata sõnumid"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_unread_counter
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__message_unread_counter
 msgid "Unread Messages Counter"
-msgstr ""
+msgstr "Lugemata sõnumite loendur"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__url
 msgid "Url"
-msgstr ""
+msgstr "URL"
 
 #. module: website_crm_score
 #: model_terms:ir.actions.act_window,help:website_crm_score.team_action
@@ -553,7 +563,7 @@ msgstr ""
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__user_id
 msgid "User"
-msgstr ""
+msgstr "Kasutaja"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_res_users__sale_team_id
@@ -563,22 +573,22 @@ msgstr ""
 #. module: website_crm_score
 #: model:ir.model,name:website_crm_score.model_res_users
 msgid "Users"
-msgstr ""
+msgstr "Kasutajad"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__value
 msgid "Value"
-msgstr ""
+msgstr "Väärtus"
 
 #. module: website_crm_score
 #: model:ir.model,name:website_crm_score.model_ir_ui_view
 msgid "View"
-msgstr ""
+msgstr "Vaade"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_pageview__view_date
 msgid "Viewing Date"
-msgstr ""
+msgstr "Vaatamise kuupäev"
 
 #. module: website_crm_score
 #: model:ir.model,name:website_crm_score.model_website_crm_pageview
@@ -594,7 +604,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__website_message_ids
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__website_message_ids
 msgid "Website Messages"
-msgstr ""
+msgstr "Veebilehe sõnumid"
 
 #. module: website_crm_score
 #: model_terms:ir.ui.view,arch_db:website_crm_score.website_crm_pageview_pivot
@@ -605,7 +615,7 @@ msgstr ""
 #: model:ir.model.fields,help:website_crm_score.field_team_user__website_message_ids
 #: model:ir.model.fields,help:website_crm_score.field_website_crm_score__website_message_ids
 msgid "Website communication history"
-msgstr ""
+msgstr "Veebilehe suhtluse ajalugu"
 
 #. module: website_crm_score
 #: model:ir.model.fields,help:website_crm_score.field_website_crm_score__event_based

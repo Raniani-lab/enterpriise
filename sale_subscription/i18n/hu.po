@@ -2,12 +2,20 @@
 # This file contains the translation of the following modules:
 # * sale_subscription
 # 
+# Translators:
+# Zsofia Biro <zsbiro1205@gmail.com>, 2018
+# Ákos Nagy <akos.nagy@oregional.hu>, 2018
+# Martin Trigaux, 2018
+# krnkris, 2018
+# gezza <geza.nagy@oregional.hu>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-08 07:14+0000\n"
 "PO-Revision-Date: 2018-08-24 11:48+0000\n"
+"Last-Translator: gezza <geza.nagy@oregional.hu>, 2018\n"
 "Language-Team: Hungarian (https://www.transifex.com/odoo/teams/41243/hu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -40,7 +48,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:mail.template,subject:sale_subscription.mail_template_subscription_invoice
 msgid "${object.company_id.name} Invoice (Ref ${object.number or 'n/a'})"
-msgstr ""
+msgstr "${object.company_id.name} Számla (Ref ${object.number or 'n/a'})"
 
 #. module: sale_subscription
 #: model:mail.template,subject:sale_subscription.mail_template_subscription_alert
@@ -56,12 +64,12 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__percentage_satisfaction
 msgid "% Happy"
-msgstr ""
+msgstr "% Boldog"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_kanban
 msgid "&amp;nbsp;"
-msgstr ""
+msgstr "&amp;nbsp;"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -625,6 +633,10 @@ msgid ""
 "field as True to allow users to run this action. If it is set to False the "
 "action cannot be run through the website."
 msgstr ""
+"Egy kód szerver műveletet végrehajthat a weboldalról, a dedikált irányító "
+"használatával. A cím az <base>/website/action/<website_path>. Állítsa be ezt"
+" a mezőt igazra, hogy a felhasználók futtatni tudják ezt a műveletet. Ha "
+"hamis-ra állított a művelet, akkor nem futtatható a honlapon keresztül."
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__uuid
@@ -640,55 +652,55 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__action
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid "Action"
-msgstr ""
+msgstr "Akció"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__help
 msgid "Action Description"
-msgstr ""
+msgstr "Művelet leírása"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__name
 msgid "Action Name"
-msgstr ""
+msgstr "Művelet neve"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__message_needaction
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__message_needaction
 msgid "Action Needed"
-msgstr ""
+msgstr "Művelet szükséges"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__state
 msgid "Action To Do"
-msgstr ""
+msgstr "Elvégzendő művelet"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__type
 msgid "Action Type"
-msgstr ""
+msgstr "Művelet típus"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__active
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__active
 msgid "Active"
-msgstr ""
+msgstr "Aktív"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__activity_ids
 msgid "Activities"
-msgstr ""
+msgstr "Tevékenységek"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__activity_type_id
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid "Activity"
-msgstr ""
+msgstr "Tevékenység"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__activity_state
 msgid "Activity State"
-msgstr ""
+msgstr "Tevékenység állapota"
 
 #. module: sale_subscription
 #: model:ir.actions.act_window,name:sale_subscription.mail_activity_type_action_config_subscription
@@ -704,17 +716,17 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__channel_ids
 msgid "Add Channels"
-msgstr ""
+msgstr "Csatornák hozzáadása"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__partner_ids
 msgid "Add Followers"
-msgstr ""
+msgstr "Követők hozzáadása"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_stage_view_form
 msgid "Add a description..."
-msgstr ""
+msgstr "Leírás hozzáadása..."
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.wizard_form_view
@@ -736,7 +748,7 @@ msgstr ""
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_alert
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_tree
 msgid "Alerts"
-msgstr ""
+msgstr "Figyelmeztetések"
 
 #. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_alert_action
@@ -750,30 +762,30 @@ msgstr ""
 #: code:addons/sale_subscription/controllers/portal.py:44
 #, python-format
 msgid "All"
-msgstr ""
+msgstr "Összes"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_account_analytic_account
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__analytic_account_id
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__analytic_account_id
 msgid "Analytic Account"
-msgstr ""
+msgstr "Analitikus számla"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__filter_domain
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid "Apply on"
-msgstr ""
+msgstr "Alkalmazza itt"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_search
 msgid "Archived"
-msgstr ""
+msgstr "Archivált"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__activity_user
 msgid "Assign To"
-msgstr ""
+msgstr "Hozzárendel ehhez"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__message_attachment_count
@@ -794,18 +806,18 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__website_published
 msgid "Available on the Website"
-msgstr ""
+msgstr "Elérhető a honlapon"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "Back"
-msgstr ""
+msgstr "Vissza"
 
 #. module: sale_subscription
 #: selection:sale.subscription,health:0
 #: selection:sale.subscription.report,health:0
 msgid "Bad"
-msgstr ""
+msgstr "Rossz"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__bad_health_domain
@@ -818,7 +830,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__filter_pre_domain
 msgid "Before Update Domain"
-msgstr ""
+msgstr "Tartomány frissítése előtt"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -846,7 +858,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.wizard_form_view
 msgid "Cancel"
-msgstr ""
+msgstr "Mégsem"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -866,7 +878,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__child_ids
 msgid "Child Actions"
-msgstr ""
+msgstr "Alárendelt műveletek"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_alert__child_ids
@@ -874,6 +886,9 @@ msgid ""
 "Child server actions that will be executed. Note that the last return "
 "returned action value will be used as global return value."
 msgstr ""
+"Alárendelt szerver műveletek, amelyek végre lesznek hajtva. Vegye "
+"figyelembe, hogy az utolsó művelet visszatérő értékét használja fel, mint "
+"globális visszatérő érték."
 
 #. module: sale_subscription
 #. openerp-web
@@ -905,7 +920,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_form
 msgid "Close"
-msgstr ""
+msgstr "Bezárás"
 
 #. module: sale_subscription
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_close_reason_wizard_action
@@ -913,7 +928,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_close_reason_wizard__close_reason_id
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__close_reason_id
 msgid "Close Reason"
-msgstr ""
+msgstr "Zárás oka"
 
 #. module: sale_subscription
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_close_reason_action
@@ -921,7 +936,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_close_reason_view_form
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_close_reason_view_tree
 msgid "Close Reasons"
-msgstr ""
+msgstr "Zárás okai"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_form
@@ -939,7 +954,7 @@ msgstr ""
 #: model:sale.subscription.stage,name:sale_subscription.sale_subscription_stage_closed
 #, python-format
 msgid "Closed"
-msgstr ""
+msgstr "Lezárt"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
@@ -956,29 +971,31 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__code
 msgid "Code"
-msgstr ""
+msgstr "Kód"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__color
 msgid "Color"
-msgstr ""
+msgstr "Szín"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_alert__on_change_fields
 msgid "Comma-separated list of field names that triggers the onchange."
 msgstr ""
+"Vesszővel elválasztott mezőnevek listája melyek elindítják a változtatáskori"
+" műveletet."
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__company_id
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__company_id
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__company_id
 msgid "Company"
-msgstr ""
+msgstr "Vállalat"
 
 #. module: sale_subscription
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_config
 msgid "Configuration"
-msgstr ""
+msgstr "Konfiguráció"
 
 #. module: sale_subscription
 #. openerp-web
@@ -990,13 +1007,13 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "Confirm"
-msgstr ""
+msgstr "Megerősítés"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_res_partner
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "Contact"
-msgstr ""
+msgstr "Kapcsolattartó"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__country_id
@@ -1004,7 +1021,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Country"
-msgstr ""
+msgstr "Ország"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.wizard_form_view
@@ -1019,12 +1036,12 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_form
 msgid "Create Invoice"
-msgstr ""
+msgstr "Számla készítése"
 
 #. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.product_action_subscription
 msgid "Create a new product"
-msgstr ""
+msgstr "Új termék létrehozása"
 
 #. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_action
@@ -1077,7 +1094,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__crud_model_id
 msgid "Create/Write Target Model"
-msgstr ""
+msgstr "Hozzon létre/írjon cél modellt"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__create_uid
@@ -1091,7 +1108,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_wizard__create_uid
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_wizard_option__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Létrehozta"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__create_date
@@ -1105,12 +1122,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_wizard__create_date
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_wizard_option__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Létrehozva"
 
 #. module: sale_subscription
 #: selection:sale.order,subscription_management:0
 msgid "Creation"
-msgstr ""
+msgstr "Létrehozás"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order__subscription_management
@@ -1124,7 +1141,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__currency_id
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__currency_id
 msgid "Currency"
-msgstr ""
+msgstr "Pénznem"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -1137,7 +1154,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Customer"
-msgstr ""
+msgstr "Vevő"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__commercial_partner_id
@@ -1152,23 +1169,23 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__customer_ids
 msgid "Customers"
-msgstr ""
+msgstr "Vevők"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_snapshot__date
 msgid "Date"
-msgstr ""
+msgstr "Dátum"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__recurring_next_date
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_form
 msgid "Date of Next Invoice"
-msgstr ""
+msgstr "Következő számla dátuma"
 
 #. module: sale_subscription
 #: selection:sale.subscription.template,recurring_rule_type:0
 msgid "Day(s)"
-msgstr ""
+msgstr "Nap"
 
 #. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_action_pending
@@ -1182,16 +1199,19 @@ msgid ""
 "                                    You can put a negative number if you need a delay before the\n"
 "                                    trigger date, like sending a reminder 15 minutes before a meeting."
 msgstr ""
+"A emlékeztető dátumának késleltetése.\n"
+"                                    Negatív számot is írhat ha az emlékeztető kapcsolására az\n"
+"                                    emlékeztető ideje előtt van szüksége, mint emlékeztető küldése 15 perccel a találkozó előtt."
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__trg_date_range
 msgid "Delay after trigger date"
-msgstr ""
+msgstr "Késleltetés az indítás dátuma után"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__trg_date_range_type
 msgid "Delay type"
-msgstr ""
+msgstr "Késedelem típusa"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__description
@@ -1199,12 +1219,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_stage__description
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_wizard_option__name
 msgid "Description"
-msgstr ""
+msgstr "Leírás"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_line__discount
 msgid "Discount (%)"
-msgstr ""
+msgstr "Árengedmény (%)"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_wizard__date_from
@@ -1224,7 +1244,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_wizard__display_name
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_wizard_option__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Megjelenített név"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_template__bad_health_domain
@@ -1239,7 +1259,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:sale.subscription.stage,name:sale_subscription.sale_subscription_stage_draft
 msgid "Draft"
-msgstr ""
+msgstr "Tervezet"
 
 #. module: sale_subscription
 #: selection:sale.subscription.template,payment_mode:0
@@ -1260,12 +1280,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__recurring_rule_boundary
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__recurring_rule_boundary
 msgid "Duration"
-msgstr ""
+msgstr "Időtartam"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__template_id
 msgid "Email Template"
-msgstr ""
+msgstr "E-mail sablon"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__recurring_rule_count
@@ -1278,7 +1298,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "End Date"
-msgstr ""
+msgstr "Befejezés dátuma"
 
 #. module: sale_subscription
 #. openerp-web
@@ -1295,40 +1315,40 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
 msgid "Expired"
-msgstr ""
+msgstr "Lejárt"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__xml_id
 msgid "External ID"
-msgstr ""
+msgstr "Külső azonosító"
 
 #. module: sale_subscription
 #: selection:sale.subscription.template,recurring_rule_boundary:0
 msgid "Fixed"
-msgstr ""
+msgstr "Állandó"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_stage__fold
 msgid "Folded in Kanban"
-msgstr ""
+msgstr "Kanbannézetben behajtott"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__message_follower_ids
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__message_follower_ids
 msgid "Followers"
-msgstr ""
+msgstr "Követők"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__message_channel_ids
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__message_channel_ids
 msgid "Followers (Channels)"
-msgstr ""
+msgstr "Követők (Csatornák)"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__message_partner_ids
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__message_partner_ids
 msgid "Followers (Partners)"
-msgstr ""
+msgstr "Követők (Partnerek)"
 
 #. module: sale_subscription
 #: selection:sale.subscription.template,recurring_rule_boundary:0
@@ -1351,7 +1371,7 @@ msgstr ""
 #: selection:sale.subscription,health:0
 #: selection:sale.subscription.report,health:0
 msgid "Good"
-msgstr ""
+msgstr "Jó"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__good_health_domain
@@ -1365,7 +1385,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Group By"
-msgstr ""
+msgstr "Csoportosítás ezzel"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
@@ -1391,12 +1411,12 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.module.category,description:sale_subscription.module_category_subscription_management
 msgid "Helps you handle subscriptions and recurring invoicing."
-msgstr ""
+msgstr "Segítséget nyújt a feliratkozások és ismétlődő számlázás kezelésében."
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "History"
-msgstr ""
+msgstr "Előzmények"
 
 #. module: sale_subscription
 #: model:sale.subscription.close.reason,name:sale_subscription.close_reason_4
@@ -1416,24 +1436,24 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_wizard__id
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_wizard_option__id
 msgid "ID"
-msgstr ""
+msgstr "Azonosító"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_alert__xml_id
 msgid "ID of the action if defined in a XML file"
-msgstr ""
+msgstr "Az akció azonosítója ha, meg van határozva az XML fájlban"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription__message_unread
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_template__message_unread
 msgid "If checked new messages require your attention."
-msgstr ""
+msgstr "Ha be van jelölve, akkor figyelje az új üzeneteket."
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription__message_needaction
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_template__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr ""
+msgstr "Ha be van jelölve, akkor figyelje az új üzeneteket."
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription__message_has_error
@@ -1458,6 +1478,8 @@ msgid ""
 "If present, this condition must be satisfied before executing the action "
 "rule."
 msgstr ""
+"Ha fellelhető, akkor ennek a feltételnek teljesülnie kell a műveleti szabály"
+" végrehajtása előtt."
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_alert__filter_pre_domain
@@ -1465,6 +1487,7 @@ msgid ""
 "If present, this condition must be satisfied before the update of the "
 "record."
 msgstr ""
+"Ha létezik, ennek a feltételnek teljesülnie kell a rekord frissítése előtt."
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription__date
@@ -1478,6 +1501,8 @@ msgstr ""
 msgid ""
 "If set, confirming a sale order with this product will create a subscription"
 msgstr ""
+"Ha beállított, akkor ezzel a termékkel  egy vásárlói megrendelés jóváhagyása"
+" egy feliratkozást fog létrehozni"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_template__journal_id
@@ -1517,7 +1542,7 @@ msgstr ""
 #: model:sale.subscription.stage,name:sale_subscription.sale_subscription_stage_in_progress
 #, python-format
 msgid "In Progress"
-msgstr ""
+msgstr "Folyamatban"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__industry_id
@@ -1537,7 +1562,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
 #: selection:sale.subscription.template,payment_mode:0
 msgid "Invoice"
-msgstr ""
+msgstr "Számla"
 
 #. module: sale_subscription
 #: selection:sale.subscription.template,payment_mode:0
@@ -1557,24 +1582,24 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_account_invoice_line
 msgid "Invoice Line"
-msgstr ""
+msgstr "Számlasor"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__recurring_invoice_line_ids
 msgid "Invoice Lines"
-msgstr ""
+msgstr "Számlasorok"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription__recurring_rule_type
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_template__recurring_rule_type
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_template__recurring_rule_type_readonly
 msgid "Invoice automatically repeat at specified interval"
-msgstr ""
+msgstr "Számlák automatikusan ismétlődnek a megadott intervallum szerint"
 
 #. module: sale_subscription
 #: model:mail.template,subject:sale_subscription.email_payment_success
 msgid "Invoice for subscription ${ctx.get('code')}"
-msgstr ""
+msgstr "Ennek a feliratkozásnak a számlája ${ctx.get('code')}"
 
 #. module: sale_subscription
 #: selection:sale.subscription.template,payment_mode:0
@@ -1591,12 +1616,12 @@ msgstr ""
 #. module: sale_subscription
 #: model:mail.template,report_name:sale_subscription.email_payment_success
 msgid "Invoice_${ctx.get('code')}_${ctx.get('previous_date')}"
-msgstr ""
+msgstr "Invoice_${ctx.get('code')}_${ctx.get('previous_date')}"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_form
 msgid "Invoices"
-msgstr ""
+msgstr "Számlák"
 
 #. module: sale_subscription
 #: code:addons/sale_subscription/models/sale_order.py:162
@@ -1608,12 +1633,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__message_is_follower
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__message_is_follower
 msgid "Is Follower"
-msgstr ""
+msgstr "Ő egy követő"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
 msgid "Journal"
-msgstr ""
+msgstr "Napló"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__kpi_1month_mrr_delta
@@ -1648,12 +1673,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_wizard____last_update
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_wizard_option____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Legutóbb frissítve"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__last_run
 msgid "Last Run"
-msgstr ""
+msgstr "Utolsó futás"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__write_uid
@@ -1667,7 +1692,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_wizard__write_uid
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_wizard_option__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Legutóbb frissítette"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__write_date
@@ -1681,7 +1706,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_wizard__write_date
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_wizard_option__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Legutóbb frissítve "
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
@@ -1691,17 +1716,17 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_kanban
 msgid "Latest Rating: Higly Dissatisfied"
-msgstr ""
+msgstr "Legutóbbi értékelés: Nagyon elégedetlen"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_kanban
 msgid "Latest Rating: Not Satisfied"
-msgstr ""
+msgstr "Legutóbbi értékelés: Elégedetlen"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_kanban
 msgid "Latest Rating: Satisfied"
-msgstr ""
+msgstr "Legutóbbi értékelés: Elégedett"
 
 #. module: sale_subscription
 #. openerp-web
@@ -1720,7 +1745,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__link_field_id
 msgid "Link using field"
-msgstr ""
+msgstr "Elérési út, mező használatával"
 
 #. module: sale_subscription
 #. openerp-web
@@ -1732,7 +1757,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid "Log a note..."
-msgstr ""
+msgstr "Naplózzon egy jegyzetet..."
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
@@ -1783,12 +1808,12 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "Manage your payment methods"
-msgstr ""
+msgstr "Fizetési módjainak kezelése"
 
 #. module: sale_subscription
 #: selection:sale.subscription.template,payment_mode:0
 msgid "Manual"
-msgstr ""
+msgstr "Kézi"
 
 #. module: sale_subscription
 #: selection:sale.subscription.alert,action:0
@@ -1798,7 +1823,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__starred_user_ids
 msgid "Members"
-msgstr ""
+msgstr "Tagok"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__message_has_error
@@ -1810,22 +1835,22 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__message_ids
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__message_ids
 msgid "Messages"
-msgstr ""
+msgstr "Üzenetek"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__model_id
 msgid "Model"
-msgstr ""
+msgstr "Modell"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__crud_model_name
 msgid "Model Description"
-msgstr ""
+msgstr "Modell leírás"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__model_name
 msgid "Model Name"
-msgstr ""
+msgstr "Modell neve"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_alert__crud_model_id
@@ -1833,6 +1858,8 @@ msgid ""
 "Model for record creation / update. Set this field only to specify a "
 "different model than the base model."
 msgstr ""
+"Modell az adatbázis rekord bejegyzés készítéséhez, frissítéséhez. Csak akkor"
+" állítsa be, ha az alapmodelltől eltérő modellt szeretne használni."
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_alert__model_id
@@ -1850,14 +1877,14 @@ msgstr ""
 #: selection:sale.subscription.template,recurring_rule_type:0
 #: model:uom.uom,name:sale_subscription.subscription_uom_month
 msgid "Month(s)"
-msgstr ""
+msgstr "Hónap(ok)"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__recurring_monthly
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__recurring_monthly
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_snapshot__recurring_monthly
 msgid "Monthly Recurring Revenue"
-msgstr ""
+msgstr "Havi ismétlődő bevétel"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
@@ -1873,7 +1900,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__name
 #, python-format
 msgid "Name"
-msgstr ""
+msgstr "Név"
 
 #. module: sale_subscription
 #: selection:sale.subscription,health:0
@@ -1890,7 +1917,7 @@ msgstr ""
 #: code:addons/sale_subscription/controllers/portal.py:40
 #, python-format
 msgid "Newest"
-msgstr ""
+msgstr "Legújabb"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__activity_date_deadline
@@ -1900,7 +1927,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__activity_summary
 msgid "Next Activity Summary"
-msgstr ""
+msgstr "Következő tevékenység összegzése"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__activity_type_id
@@ -1920,13 +1947,13 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__activity_note
 msgid "Note"
-msgstr ""
+msgstr "Megjegyzés"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__message_needaction_counter
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__message_needaction_counter
 msgid "Number of Actions"
-msgstr ""
+msgstr "Műveletek száma"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_template__auto_close_limit
@@ -1945,7 +1972,7 @@ msgstr ""
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription__message_needaction_counter
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_template__message_needaction_counter
 msgid "Number of messages which requires an action"
-msgstr ""
+msgstr "Üzenetek száma, melyek akciót igényelnek"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription__message_has_error_counter
@@ -1957,7 +1984,7 @@ msgstr ""
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription__message_unread_counter
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_template__message_unread_counter
 msgid "Number of unread messages"
-msgstr ""
+msgstr "Olvasatlan üzenetek száma"
 
 #. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_action_pending
@@ -1982,7 +2009,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__on_change_fields
 msgid "On Change Fields Trigger"
-msgstr ""
+msgstr "Mezők megváltoztatásakor kapcsol"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_form
@@ -1995,22 +2022,24 @@ msgid ""
 "Optional help text for the users with a description of the target view, such"
 " as its usage and purpose."
 msgstr ""
+"Opcionális segédszöveg felhasználóknak. Tartalmaz egy leírást a célnézetről,"
+" úgy mint a használata és a célja."
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_wizard__option_lines
 #: model_terms:ir.ui.view,arch_db:sale_subscription.wizard_form_view
 msgid "Options"
-msgstr ""
+msgstr "Opciók"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_view_tree_subscription
 msgid "Order Number"
-msgstr ""
+msgstr "Megrendelés szám"
 
 #. module: sale_subscription
 #: model:sale.subscription.close.reason,name:sale_subscription.close_reason_5
 msgid "Other"
-msgstr ""
+msgstr "Egyéb"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
@@ -2020,7 +2049,7 @@ msgstr ""
 #. module: sale_subscription
 #: selection:sale.subscription,activity_state:0
 msgid "Overdue"
-msgstr ""
+msgstr "lejárt"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -2031,7 +2060,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__payment_mode
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__payment_mode
 msgid "Payment Mode"
-msgstr ""
+msgstr "Fizetési mód"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_payment_token
@@ -2047,7 +2076,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:mail.template,subject:sale_subscription.email_payment_reminder
 msgid "Payment reminder for subscription ${object.code}"
-msgstr ""
+msgstr "Fizetési emlékeztető ehhez a feliratkozáshoz ${object.code}"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
@@ -2075,13 +2104,13 @@ msgstr ""
 #: code:addons/sale_subscription/models/sale_subscription.py:440
 #, python-format
 msgid "Please define a sale journal for the company \"%s\"."
-msgstr ""
+msgstr "Kérem  határozzon meg értékesítési naplót a vállalkozáshoz \"%s\"."
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__pricelist_id
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__pricelist_id
 msgid "Pricelist"
-msgstr ""
+msgstr "Árlista"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_line__product_id
@@ -2089,12 +2118,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__product_ids
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_wizard_option__product_id
 msgid "Product"
-msgstr ""
+msgstr "Termék"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__categ_id
 msgid "Product Category"
-msgstr ""
+msgstr "Termékkategória"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__product_count
@@ -2105,7 +2134,7 @@ msgstr ""
 #: model:ir.model,name:sale_subscription.model_product_template
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__product_tmpl_id
 msgid "Product Template"
-msgstr ""
+msgstr "Terméksablon"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_product_template__subscription_template_id
@@ -2116,7 +2145,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:sale_subscription.product_template_action_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
 msgid "Products"
-msgstr ""
+msgstr "Termékek"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_alert__link_field_id
@@ -2128,7 +2157,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__code
 msgid "Python Code"
-msgstr ""
+msgstr "Python kód"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_line__quantity
@@ -2136,7 +2165,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_wizard_option__quantity
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "Quantity"
-msgstr ""
+msgstr "Mennyiség"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_line__quantity
@@ -2146,12 +2175,12 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__rating_ids
 msgid "Rating"
-msgstr ""
+msgstr "Értékelés"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_stage__rating_template_id
 msgid "Rating Email Template"
-msgstr ""
+msgstr "Értékelő e-mail sablon"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__rating_last_feedback
@@ -2166,7 +2195,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__rating_last_value
 msgid "Rating Last Value"
-msgstr ""
+msgstr "Utolsó érték értékelése"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__rating_operator
@@ -2186,23 +2215,23 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__rating_count
 msgid "Rating count"
-msgstr ""
+msgstr "Érték számolás"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_close_reason_view_form
 msgid "Reason"
-msgstr ""
+msgstr "Ok"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription__rating_last_feedback
 msgid "Reason of the rating"
-msgstr ""
+msgstr "Értékelés oka"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__recurring_rule_type
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__recurring_rule_type
 msgid "Recurrence"
-msgstr ""
+msgstr "Ismétlődés"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__recurring_rule_type_readonly
@@ -2218,17 +2247,17 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__recurring_total
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__recurring_total
 msgid "Recurring Price"
-msgstr ""
+msgstr "Ismétlődő ár"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__code
 msgid "Reference"
-msgstr ""
+msgstr "Hivatkozás"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "Reference:"
-msgstr ""
+msgstr "Hivatkozás:"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -2238,34 +2267,34 @@ msgstr ""
 #. module: sale_subscription
 #: selection:sale.order,subscription_management:0
 msgid "Renewal"
-msgstr ""
+msgstr "Megújítás"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__recurring_interval
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__recurring_interval
 msgid "Repeat Every"
-msgstr ""
+msgstr "Ismétlés minden"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription__recurring_interval
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_template__recurring_interval
 msgid "Repeat every (Days/Week/Month/Year)"
-msgstr ""
+msgstr "Ismétlés (nap/hét/hó/év)"
 
 #. module: sale_subscription
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_report
 msgid "Reporting"
-msgstr ""
+msgstr "Riportkészítés"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__activity_user_id
 msgid "Responsible"
-msgstr ""
+msgstr "Felelős"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__activity_user_id
 msgid "Responsible User"
-msgstr ""
+msgstr "Felelős felhasználó"
 
 #. module: sale_subscription
 #: selection:sale.subscription.alert,activity_user:0
@@ -2275,7 +2304,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_report_cohort
 msgid "Retention"
-msgstr ""
+msgstr "bankkivonatok"
 
 #. module: sale_subscription
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_report_cohort_action
@@ -2292,7 +2321,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Running"
-msgstr ""
+msgstr "Futó"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
@@ -2308,7 +2337,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_order
 msgid "Sale Order"
-msgstr ""
+msgstr "Vásárlói megrendelés"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__sale_order_count
@@ -2339,12 +2368,12 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_list
 msgid "Sale Subscriptions"
-msgstr ""
+msgstr "Értékesítés előjegyzések"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_form
 msgid "Sales"
-msgstr ""
+msgstr "Értékesítés"
 
 #. module: sale_subscription
 #: selection:sale.subscription.alert,activity_user:0
@@ -2354,20 +2383,20 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_order_line
 msgid "Sales Order Line"
-msgstr ""
+msgstr "Vásárlói megrendelés tételsor"
 
 #. module: sale_subscription
 #: code:addons/sale_subscription/models/sale_subscription.py:149
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_view_tree_subscription
 #, python-format
 msgid "Sales Orders"
-msgstr ""
+msgstr "Vevői megrendelések"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__team_id
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Sales Team"
-msgstr ""
+msgstr "Értékesítési csapat"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__user_id
@@ -2375,7 +2404,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Salesperson"
-msgstr ""
+msgstr "Értékesítő"
 
 #. module: sale_subscription
 #. openerp-web
@@ -2417,12 +2446,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_close_reason__sequence
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_stage__sequence
 msgid "Sequence"
-msgstr ""
+msgstr "Sorszám"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__action_server_id
 msgid "Server Actions"
-msgstr ""
+msgstr "Szerver műveletek"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription__health
@@ -2450,7 +2479,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_kanban
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_form
 msgid "Settings"
-msgstr ""
+msgstr "Beállítások"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__starred
@@ -2461,6 +2490,8 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Show all records which has next action date is before today"
 msgstr ""
+"Mutassa az összes rekordot melyre a következő műveleti dátum a mai nap "
+"előtti"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__product_ids
@@ -2481,7 +2512,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Stage"
-msgstr ""
+msgstr "Szakasz"
 
 #. module: sale_subscription
 #: model:mail.message.subtype,name:sale_subscription.subtype_stage_change
@@ -2496,7 +2527,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_stage__name
 msgid "Stage Name"
-msgstr ""
+msgstr "Szakasz neve"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__stage_to_id
@@ -2506,7 +2537,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_stage_action
 msgid "Stages"
-msgstr ""
+msgstr "Szakaszok"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__date_start
@@ -2514,17 +2545,17 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Start Date"
-msgstr ""
+msgstr "Kezdő dátum"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "Start date:"
-msgstr ""
+msgstr "Kezdés dátuma:"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.portal_my_subscriptions
 msgid "Status"
-msgstr ""
+msgstr "Állapot"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription__activity_state
@@ -2538,12 +2569,12 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_line__price_subtotal
 msgid "Sub Total"
-msgstr ""
+msgstr "Részösszeg"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_close_reason_view_form
 msgid "Submit"
-msgstr ""
+msgstr "Beküldés"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_subscription
@@ -2559,7 +2590,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_form
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Subscription"
-msgstr ""
+msgstr "Feliratkozás"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_subscription_alert
@@ -2569,7 +2600,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_subscription_report
 msgid "Subscription Analysis"
-msgstr ""
+msgstr "Feliratkozás elemzések"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_subscription_close_reason
@@ -2597,24 +2628,24 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_form
 msgid "Subscription Lines"
-msgstr ""
+msgstr "Előjegyzés sorok"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__subscription_management
 msgid "Subscription Management"
-msgstr ""
+msgstr "Feliratkozás kezelés"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_product_template__recurring_invoice
 msgid "Subscription Product"
-msgstr ""
+msgstr "Feliratkozási termék"
 
 #. module: sale_subscription
 #: model:ir.actions.act_window,name:sale_subscription.product_action_subscription
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_product
 #: model_terms:ir.ui.view,arch_db:sale_subscription.product_template_search_view_inherit_sale_subscription
 msgid "Subscription Products"
-msgstr ""
+msgstr "Feliratkozási termékek"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_subscription_snapshot
@@ -2638,7 +2669,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__template_id
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__template_id
 msgid "Subscription Template"
-msgstr ""
+msgstr "Feliratkozási sablon"
 
 #. module: sale_subscription
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_template_action
@@ -2647,7 +2678,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_list
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_search
 msgid "Subscription Templates"
-msgstr ""
+msgstr "Feliratkozási sablonok"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_subscription_wizard_option
@@ -2704,7 +2735,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 #: model_terms:ir.ui.view,arch_db:sale_subscription.view_sale_subscription_order_line
 msgid "Subscriptions"
-msgstr ""
+msgstr "Feliratkozások"
 
 #. module: sale_subscription
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_report_pivot_action
@@ -2732,7 +2763,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "Subtotal"
-msgstr ""
+msgstr "Részösszeg"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -2742,18 +2773,18 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__activity_summary
 msgid "Summary"
-msgstr ""
+msgstr "Összegzés"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__tag_id
 msgid "Tag"
-msgstr ""
+msgstr "Címke"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__tag_ids
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__tag_ids
 msgid "Tags"
-msgstr ""
+msgstr "Címkék"
 
 #. module: sale_subscription
 #: model:base.automation,name:sale_subscription.subscription_alert_percent_revenue_base_automation
@@ -2764,7 +2795,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__recurring_amount_tax
 msgid "Taxes"
-msgstr ""
+msgstr "Adók"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -2774,7 +2805,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__team_user_id
 msgid "Team Leader"
-msgstr ""
+msgstr "Csapatvezető"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_alert__activity_user_field_name
@@ -2786,7 +2817,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_search
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Template"
-msgstr ""
+msgstr "Sablon"
 
 #. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_template_action
@@ -2799,19 +2830,19 @@ msgstr ""
 #. module: sale_subscription
 #: model:mail.template,subject:sale_subscription.email_payment_close
 msgid "Termination of subscription ${object.code}"
-msgstr ""
+msgstr "Ennek a feliratkozásnak a megszüntetése ${object.code}"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__description
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_form
 msgid "Terms and Conditions"
-msgstr ""
+msgstr "Kikötések és feltételek"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "Terms and conditions"
-msgstr ""
+msgstr "Kikötések és feltételek"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_wizard__date_from
@@ -2825,11 +2856,12 @@ msgstr ""
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription__website_url
 msgid "The full URL to access the document through the website."
 msgstr ""
+"A teljes elérési út/URL a dokumentum weboldalon keresztüli eléréséhez."
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_alert__website_url
 msgid "The full URL to access the server action through the website."
-msgstr ""
+msgstr "A teljes URL a szerver eléréséhez belépés a weboldalon keresztül."
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription__recurring_next_date
@@ -2864,7 +2896,7 @@ msgstr ""
 #: code:addons/sale_subscription/models/sale_subscription.py:462
 #, python-format
 msgid "This invoice covers the following period: %s - %s"
-msgstr ""
+msgstr "A számla a következő időszakot fedi le: %s - %s"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_stage__fold
@@ -2876,7 +2908,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:uom.category,name:sale_subscription.uom_categ_time
 msgid "Time"
-msgstr ""
+msgstr "Idő"
 
 #. module: sale_subscription
 #: selection:sale.subscription.alert,trigger_condition:0
@@ -2892,7 +2924,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 #, python-format
 msgid "To Renew"
-msgstr ""
+msgstr "Megújításhoz"
 
 #. module: sale_subscription
 #: model:sale.subscription.stage,name:sale_subscription.sale_subscription_stage_upsell
@@ -2912,23 +2944,23 @@ msgstr ""
 #. module: sale_subscription
 #: selection:sale.subscription,activity_state:0
 msgid "Today"
-msgstr ""
+msgstr "Ma"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Today Activities"
-msgstr ""
+msgstr "Mai napi tevékenységek"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__recurring_amount_total
 #: model_terms:ir.ui.view,arch_db:sale_subscription.portal_my_subscriptions
 msgid "Total"
-msgstr ""
+msgstr "Összesen"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_view_tree_subscription
 msgid "Total Tax Included"
-msgstr ""
+msgstr "Végösszeg adókkal együtt"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__trigger
@@ -2938,7 +2970,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__trg_date_id
 msgid "Trigger Date"
-msgstr ""
+msgstr "Indítási dátum"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__trigger_condition
@@ -2967,32 +2999,32 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Unassigned"
-msgstr ""
+msgstr "Nem hozzárendelt"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_line__price_unit
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "Unit Price"
-msgstr ""
+msgstr "Egységár"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_line__uom_id
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__product_uom
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_wizard_option__uom_id
 msgid "Unit of Measure"
-msgstr ""
+msgstr "Mértékegység"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__message_unread
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__message_unread
 msgid "Unread Messages"
-msgstr ""
+msgstr "Olvasatlan üzenetek"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__message_unread_counter
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__message_unread_counter
 msgid "Unread Messages Counter"
-msgstr ""
+msgstr "Olvasatlan üzenetek számlálója"
 
 #. module: sale_subscription
 #: model:ir.actions.act_window,name:sale_subscription.wizard_action
@@ -3004,12 +3036,12 @@ msgstr ""
 #. module: sale_subscription
 #: selection:sale.order,subscription_management:0
 msgid "Upselling"
-msgstr ""
+msgstr "Upselling, magasabb értékű értékesítés"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__usage
 msgid "Usage"
-msgstr ""
+msgstr "Használat"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_alert__activity_user_type
@@ -3022,12 +3054,12 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__trg_date_calendar_id
 msgid "Use Calendar"
-msgstr ""
+msgstr "Használja a naptárat"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__trg_date_resource_field_id
 msgid "Use employee work schedule"
-msgstr ""
+msgstr "Használja a munkavállaló munka ütemtervét"
 
 #. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_action_filtered
@@ -3040,7 +3072,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_alert__trg_date_resource_field_id
 msgid "Use the user's working schedule."
-msgstr ""
+msgstr "Használja a felhasználó munka ütemtervét."
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__activity_user_field_name
@@ -3055,7 +3087,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__fields_lines
 msgid "Value Mapping"
-msgstr ""
+msgstr "Érték leképezése"
 
 #. module: sale_subscription
 #. openerp-web
@@ -3077,17 +3109,17 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__website_message_ids
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__website_message_ids
 msgid "Website Messages"
-msgstr ""
+msgstr "Weboldal üzenetek"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__website_path
 msgid "Website Path"
-msgstr ""
+msgstr "Honlap útvonal"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__website_url
 msgid "Website URL"
-msgstr ""
+msgstr "Honlap URL"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__website_url
@@ -3098,12 +3130,12 @@ msgstr ""
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription__website_message_ids
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_template__website_message_ids
 msgid "Website communication history"
-msgstr ""
+msgstr "Weboldal  kommunikáció történet"
 
 #. module: sale_subscription
 #: selection:sale.subscription.template,recurring_rule_type:0
 msgid "Week(s)"
-msgstr ""
+msgstr "Hét(ek)"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_alert__trg_date_calendar_id
@@ -3111,6 +3143,8 @@ msgid ""
 "When calculating a day-based timed condition, it is possible to use a "
 "calendar to compute the date based on working days."
 msgstr ""
+"Ha egy nap-alapú időzített feltételt számol, akkor lehetősége van naptárat "
+"használni a munkanapokon alapuló dátum kiszámításhoz."
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_alert__sequence
@@ -3118,6 +3152,8 @@ msgid ""
 "When dealing with multiple actions, the execution order is based on the "
 "sequence. Low number means high priority."
 msgstr ""
+"Ha tömeges műveletekkel van dolgunk, az elvégzési sorrend a sorszámon "
+"alapul. Alacsony szám magasabb prioritást jelent."
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_alert__trg_date_id
@@ -3125,11 +3161,13 @@ msgid ""
 "When should the condition be triggered.\n"
 "                                  If present, will be checked by the scheduler. If empty, will be checked at creation and update."
 msgstr ""
+"Mikor kell a feltételeket állítani.\n"
+"                                  Ha elérhető, az ütemező jelöli ki. Ha üres, a frissítés létrehozásakor lesz kijelölve."
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_alert__active
 msgid "When unchecked, the rule is hidden and will not be executed."
-msgstr ""
+msgstr "Ha nincs bejelölve, a szabály eltüntetett és nem végrehajtott."
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription__starred
@@ -3139,7 +3177,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_wizard_option__wizard_id
 msgid "Wizard"
-msgstr ""
+msgstr "Varázsló"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_alert__code
@@ -3154,7 +3192,7 @@ msgstr ""
 #: selection:sale.subscription.template,recurring_rule_type:0
 #: model:uom.uom,name:sale_subscription.subscription_uom_year
 msgid "Year(s)"
-msgstr ""
+msgstr "Év(ek)"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__recurring_yearly
@@ -3177,7 +3215,7 @@ msgstr ""
 #: code:addons/sale_subscription/models/sale_subscription.py:429
 #, python-format
 msgid "You must first select a Customer for Subscription %s!"
-msgstr ""
+msgstr "Először ki kell választania az Ügyfelet a Feliratkozáshoz %s!"
 
 #. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.product_template_action_subscription
@@ -3216,7 +3254,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid "e.g. Discuss proposal"
-msgstr ""
+msgstr "pl. Javaslat megbeszélése"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
@@ -3226,7 +3264,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid "e.g. Update order quantity"
-msgstr ""
+msgstr "pl. Megrendelés mennyiségének frissítése"
 
 #. module: sale_subscription
 #: model:product.product,weight_uom_name:sale_subscription.product_office_cleaning
@@ -3234,7 +3272,7 @@ msgstr ""
 #: model:product.template,weight_uom_name:sale_subscription.product_office_cleaning_product_template
 #: model:product.template,weight_uom_name:sale_subscription.product_office_cleaning_yearly_product_template
 msgid "kg"
-msgstr ""
+msgstr "kg"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -3254,7 +3292,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "week(s)"
-msgstr ""
+msgstr "het(ek)"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -3264,4 +3302,4 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_form
 msgid "⇒ Generate Invoice"
-msgstr ""
+msgstr "⇒ Kimenő számla generálása"

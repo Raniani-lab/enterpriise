@@ -67,7 +67,7 @@ msgid ""
 "(Un)archiving a helpdesk team automatically (un)archives its tickets. Do you"
 " want to proceed?"
 msgstr ""
-"Een helpdesk team (on)archiveren zal de tickets automatisch mee "
+"Een helpdeskteam (on)archiveren zal de tickets automatisch mee "
 "(on)archiveren. Wilt u verder gaan?"
 
 #. module: helpdesk
@@ -404,7 +404,7 @@ msgstr "Activiteitsfase"
 #: model:ir.actions.act_window,name:helpdesk.mail_activity_type_action_config_helpdesk
 #: model:ir.ui.menu,name:helpdesk.helpdesk_menu_config_activity_type
 msgid "Activity Types"
-msgstr "Soorten activiteiten"
+msgstr "Activeiteitssoorten"
 
 #. module: helpdesk
 #. openerp-web
@@ -610,7 +610,7 @@ msgstr "Kies een e-mail:"
 #: code:addons/helpdesk/static/src/js/tour.js:67
 #, python-format
 msgid "Click here and select \"Helpdesk Teams\" for further configuration."
-msgstr "Klik hier en selecteer \"Helpdesk teams\" voor verdere configuratie."
+msgstr "Klik hier en selecteer \"Helpdeskteams\" voor verdere configuratie."
 
 #. module: helpdesk
 #. openerp-web
@@ -735,7 +735,7 @@ msgstr "Maak een nieuw ticket"
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_tag_action
 msgid "Create a new ticket tag"
-msgstr "Maak een nieuw ticket label aan"
+msgstr "Maak een nieuw ticketlabel aan"
 
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_team_action
@@ -1103,23 +1103,23 @@ msgstr "Helpdesklabels"
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__team_id
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_tree
 msgid "Helpdesk Team"
-msgstr "Helpdesk team"
+msgstr "Helpdeskteam"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.index
 msgid "Helpdesk Team Satisfaction"
-msgstr "Helpdesk team tevredenheid"
+msgstr "Helpdeskteam tevredenheid"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "Helpdesk Team..."
-msgstr "Helpdesk team..."
+msgstr "Helpdeskteam..."
 
 #. module: helpdesk
 #: model:ir.actions.act_window,name:helpdesk.helpdesk_team_action
 #: model:ir.ui.menu,name:helpdesk.helpdesk_team_menu
 msgid "Helpdesk Teams"
-msgstr "Helpdesk teams"
+msgstr "Helpdeskteams"
 
 #. module: helpdesk
 #: model:ir.model,name:helpdesk.model_helpdesk_ticket
@@ -2269,7 +2269,7 @@ msgstr "Ticket fase veranderd"
 #: model:ir.actions.act_window,name:helpdesk.helpdesk_tag_action
 #: model:ir.ui.menu,name:helpdesk.helpdesk_tag_menu
 msgid "Ticket Tags"
-msgstr "Ticket labels"
+msgstr "Ticketlabels"
 
 #. module: helpdesk
 #: model:ir.actions.act_window,name:helpdesk.helpdesk_ticket_type_action
@@ -2279,7 +2279,7 @@ msgstr "Ticket labels"
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_search_analysis
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_search
 msgid "Ticket Type"
-msgstr "Soort ticket"
+msgstr "Ticketsoort"
 
 #. module: helpdesk
 #: model:mail.message.subtype,description:helpdesk.mt_ticket_new

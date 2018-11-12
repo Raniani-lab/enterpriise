@@ -3,7 +3,6 @@
 # * account_batch_payment
 # 
 # Translators:
-# Mustafa Rawi <mustafa@cubexco.com>, 2018
 # Mustafa J. Kadhem <safi2266@gmail.com>, 2018
 # Akram Alfusayal <akram_ma@hotmail.com>, 2018
 # amrnegm <amrnegm.01@gmail.com>, 2018
@@ -15,13 +14,15 @@
 # Osama Ahmaro <osamaahmaro@gmail.com>, 2018
 # Abd El-Rahman Ali <abdelrahman.ali.242@gmail.com>, 2018
 # Shaima Safar <shaima.safar@open-inside.com>, 2018
+# Mustafa Rawi <mustafa@cubexco.com>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Shaima Safar <shaima.safar@open-inside.com>, 2018\n"
+"PO-Revision-Date: 2018-08-24 11:36+0000\n"
+"Last-Translator: Mustafa Rawi <mustafa@cubexco.com>, 2018\n"
 "Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -37,7 +38,7 @@ msgstr ""
 #. module: account_batch_payment
 #: model:ir.model,name:account_batch_payment.model_account_reconciliation_widget
 msgid "Account Reconciliation widget"
-msgstr ""
+msgstr "أداة التسويات المحاسبية"
 
 #. module: account_batch_payment
 #: code:addons/account_batch_payment/models/account_batch_payment.py:75

@@ -2,12 +2,24 @@
 # This file contains the translation of the following modules:
 # * sale_coupon
 # 
+# Translators:
+# Martin Trigaux, 2018
+# Wanradt Koell <wanradt@gmail.com>, 2018
+# Egon Raamat <egon@avalah.ee>, 2018
+# Marek Pontus, 2018
+# Martin Aavastik <martin@avalah.ee>, 2018
+# Helen Sulaoja <helen@avalah.ee>, 2018
+# Rivo Zängov <eraser@eraser.ee>, 2018
+# Arma Gedonsky <armagedonsky@hot.ee>, 2018
+# Eneli Õigus <enelioigus@gmail.com>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-08 07:14+0000\n"
 "PO-Revision-Date: 2018-08-24 11:48+0000\n"
+"Last-Translator: Eneli Õigus <enelioigus@gmail.com>, 2018\n"
 "Language-Team: Estonian (https://www.transifex.com/odoo/teams/41243/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -86,7 +98,7 @@ msgstr ""
 #. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.view_sale_coupon_program_kanban
 msgid "<strong>Coupons</strong>"
-msgstr ""
+msgstr "<strong>Kupongid</strong>"
 
 #. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.view_sale_coupon_program_kanban
@@ -214,17 +226,17 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_promo_program_search
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_search
 msgid "Active"
-msgstr ""
+msgstr "Aktiivne"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_program__promo_applicability
 msgid "Applicability"
-msgstr ""
+msgstr "Rakendatavus"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_order__applied_coupon_ids
 msgid "Applied Coupons"
-msgstr ""
+msgstr "Rakendatud kupongid"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_order__no_code_promo_program_ids
@@ -255,7 +267,7 @@ msgstr ""
 #. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_form_common
 msgid "Apply Discount"
-msgstr ""
+msgstr "Rakenda allahindlus"
 
 #. module: sale_coupon
 #: selection:sale.coupon.program,promo_applicability:0
@@ -299,7 +311,7 @@ msgstr ""
 #. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.report_coupon
 msgid "Barcode"
-msgstr ""
+msgstr "Ribakood"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_program__rule_partners_domain
@@ -329,13 +341,13 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_apply_code_view_form
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_generate_view_form
 msgid "Cancel"
-msgstr ""
+msgstr "Tühista"
 
 #. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_promo_program_search
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_search
 msgid "Closed"
-msgstr ""
+msgstr "Suletud"
 
 #. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_promo_program_search
@@ -346,7 +358,7 @@ msgstr ""
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon__code
 msgid "Code"
-msgstr ""
+msgstr "Kood"
 
 #. module: sale_coupon
 #: model:sale.coupon.program,name:sale_coupon.10_percent_auto_applied
@@ -356,28 +368,28 @@ msgstr ""
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_program__company_id
 msgid "Company"
-msgstr ""
+msgstr "Ettevõte"
 
 #. module: sale_coupon
 #: code:addons/sale_coupon/models/sale_coupon.py:101
 #, python-format
 msgid "Compose Email"
-msgstr ""
+msgstr "Koosta e-maili"
 
 #. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_form_common
 msgid "Conditions"
-msgstr ""
+msgstr "Tingimused"
 
 #. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.report_coupon
 msgid "Congratulations"
-msgstr ""
+msgstr "Õnnitlused"
 
 #. module: sale_coupon
 #: selection:sale.coupon,state:0
 msgid "Consumed"
-msgstr ""
+msgstr "Kasutatud"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_apply_code__coupon_code
@@ -410,7 +422,7 @@ msgstr ""
 #: model:ir.ui.menu,name:sale_coupon.menu_coupon_type_config
 #: model_terms:ir.ui.view,arch_db:sale_coupon.res_config_settings_view_form
 msgid "Coupon Programs"
-msgstr ""
+msgstr "Kupongiprogrammid"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_program__rule_id
@@ -449,7 +461,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_view_form
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_view_tree
 msgid "Coupons"
-msgstr ""
+msgstr "Kupongid"
 
 #. module: sale_coupon
 #: model_terms:ir.actions.act_window,help:sale_coupon.sale_coupon_program_action_coupon_program
@@ -469,7 +481,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_reward__create_uid
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_rule__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Loonud"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon__create_date
@@ -479,17 +491,17 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_reward__create_date
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_rule__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Loomise kuupäev"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_program__currency_id
 msgid "Currency"
-msgstr ""
+msgstr "Valuuta"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_generate__partners_domain
 msgid "Customer"
-msgstr ""
+msgstr "Klient"
 
 #. module: sale_coupon
 #: model:ir.model.fields,help:sale_coupon.field_sale_coupon_program__reward_product_uom_id
@@ -502,7 +514,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_reward__discount_percentage
 #: selection:sale.coupon.reward,reward_type:0
 msgid "Discount"
-msgstr ""
+msgstr "Allahindlus"
 
 #. module: sale_coupon
 #: model:ir.model.fields,help:sale_coupon.field_sale_coupon_program__reward_type
@@ -554,13 +566,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_reward__display_name
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_rule__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Näidatav nimi"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_program__rule_date_to
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_rule__rule_date_to
 msgid "End Date"
-msgstr ""
+msgstr "Lõpukuupäev"
 
 #. module: sale_coupon
 #: model:ir.actions.act_window,name:sale_coupon.sale_coupon_apply_code_action
@@ -570,13 +582,13 @@ msgstr ""
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon__expiration_date
 msgid "Expiration Date"
-msgstr ""
+msgstr "Aegumiskuupäev"
 
 #. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_search
 #: selection:sale.coupon,state:0
 msgid "Expired"
-msgstr ""
+msgstr "Aegunud"
 
 #. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_search
@@ -589,7 +601,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_form_common
 #: selection:sale.coupon.reward,discount_type:0
 msgid "Fixed Amount"
-msgstr ""
+msgstr "Kindel summa"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon__partner_id
@@ -625,7 +637,7 @@ msgstr ""
 #. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_generate_view_form
 msgid "Generate"
-msgstr ""
+msgstr "Loo"
 
 #. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_form
@@ -635,7 +647,7 @@ msgstr ""
 #. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_generate_view_form
 msgid "Generate Coupons"
-msgstr ""
+msgstr "Loodud kupongid"
 
 #. module: sale_coupon
 #: model_terms:ir.actions.act_window,help:sale_coupon.sale_coupon_program_action_coupon_program
@@ -647,7 +659,7 @@ msgstr ""
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_program__coupon_ids
 msgid "Generated Coupons"
-msgstr ""
+msgstr "Loo kupongid"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_generate__generation_type
@@ -675,7 +687,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_reward__id
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_rule__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: sale_coupon
 #: code:addons/sale_coupon/models/sale_coupon.py:67
@@ -697,7 +709,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_reward____last_update
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_rule____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Viimati muudetud (millal)"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon__write_uid
@@ -707,7 +719,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_reward__write_uid
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_rule__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Viimati uuendatud (kelle poolt)"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon__write_date
@@ -717,12 +729,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_reward__write_date
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_rule__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Viimati uuendatud (millal)"
 
 #. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.report_coupon
 msgid "Logo"
-msgstr ""
+msgstr "Logo"
 
 #. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_form_common
@@ -754,7 +766,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_program__rule_min_quantity
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_rule__rule_min_quantity
 msgid "Minimum Quantity"
-msgstr ""
+msgstr "Minimaalne kogus"
 
 #. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.report_coupon
@@ -788,13 +800,13 @@ msgstr ""
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_program__name
 msgid "Name"
-msgstr ""
+msgstr "Nimi"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_generate__nbr_coupons
 #: selection:sale.coupon.generate,generation_type:0
 msgid "Number of Coupons"
-msgstr ""
+msgstr "Kupongide arv"
 
 #. module: sale_coupon
 #: model:ir.actions.act_window,name:sale_coupon.sale_coupon_generate_action
@@ -809,7 +821,7 @@ msgstr ""
 #. module: sale_coupon
 #: model:ir.model.fields,help:sale_coupon.field_sale_coupon_generate__nbr_coupons
 msgid "Number of coupons"
-msgstr ""
+msgstr "Kupongide arv"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_order__generated_coupon_ids
@@ -877,12 +889,12 @@ msgstr ""
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon__order_id
 msgid "Order Reference"
-msgstr ""
+msgstr "Tellimuse viide"
 
 #. module: sale_coupon
 #: selection:sale.coupon.reward,discount_type:0
 msgid "Percentage"
-msgstr ""
+msgstr "Protsent"
 
 #. module: sale_coupon
 #: model:ir.model.fields,help:sale_coupon.field_sale_coupon_program__discount_type
@@ -896,7 +908,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_program__discount_specific_product_id
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_reward__discount_specific_product_id
 msgid "Product"
-msgstr ""
+msgstr "Toode"
 
 #. module: sale_coupon
 #: model:ir.model.fields,help:sale_coupon.field_sale_coupon_program__discount_specific_product_id
@@ -977,7 +989,7 @@ msgstr ""
 #: model:ir.ui.menu,name:sale_coupon.menu_promotion_type_config
 #: model_terms:ir.ui.view,arch_db:sale_coupon.res_config_settings_view_form
 msgid "Promotion Programs"
-msgstr ""
+msgstr "Kampaaniaprogrammid"
 
 #. module: sale_coupon
 #: selection:sale.coupon.program,program_type:0
@@ -995,18 +1007,18 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_reward__reward_product_quantity
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_form_common
 msgid "Quantity"
-msgstr ""
+msgstr "Kogus"
 
 #. module: sale_coupon
 #: selection:sale.coupon,state:0
 msgid "Reserved"
-msgstr ""
+msgstr "Reserveeritud"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_program__reward_id
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_form_common
 msgid "Reward"
-msgstr ""
+msgstr "Autasu"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_order__reward_amount
@@ -1064,12 +1076,12 @@ msgstr ""
 #. module: sale_coupon
 #: model:ir.model,name:sale_coupon.model_sale_order
 msgid "Sale Order"
-msgstr ""
+msgstr "Müügitellimus"
 
 #. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_form_common
 msgid "Sales"
-msgstr ""
+msgstr "Müük"
 
 #. module: sale_coupon
 #: model:ir.model,name:sale_coupon.model_sale_coupon
@@ -1104,23 +1116,23 @@ msgstr ""
 #. module: sale_coupon
 #: model:ir.model,name:sale_coupon.model_sale_coupon_rule
 msgid "Sales Coupon Rule"
-msgstr ""
+msgstr "Müügikupongi reegel"
 
 #. module: sale_coupon
 #: model:ir.actions.act_window,name:sale_coupon.sale_order_action
 msgid "Sales Order"
-msgstr ""
+msgstr "Müügitellimus"
 
 #. module: sale_coupon
 #: model:ir.model,name:sale_coupon.model_sale_order_line
 msgid "Sales Order Line"
-msgstr ""
+msgstr "Müügitellimuse rida"
 
 #. module: sale_coupon
 #: code:addons/sale_coupon/models/sale_coupon_program.py:135
 #, python-format
 msgid "Sales Orders"
-msgstr ""
+msgstr "Müügitellimused"
 
 #. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_form_common
@@ -1145,23 +1157,23 @@ msgstr ""
 #. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_view_form
 msgid "Send by Email"
-msgstr ""
+msgstr "Saada e-mailiga"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_program__sequence
 msgid "Sequence"
-msgstr ""
+msgstr "Järjestus"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_program__rule_date_from
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_rule__rule_date_from
 msgid "Start Date"
-msgstr ""
+msgstr "Alguskuupäev"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon__state
 msgid "State"
-msgstr ""
+msgstr "Maakond"
 
 #. module: sale_coupon
 #: selection:sale.coupon.rule,rule_minimum_amount_tax_inclusion:0
@@ -1268,7 +1280,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_program__reward_product_uom_id
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_reward__reward_product_uom_id
 msgid "Unit of Measure"
-msgstr ""
+msgstr "Mõõtühik"
 
 #. module: sale_coupon
 #: model:product.product,uom_name:sale_coupon.product_product_10_percent_discount
@@ -1276,7 +1288,7 @@ msgstr ""
 #: model:product.template,uom_name:sale_coupon.product_product_10_percent_discount_product_template
 #: model:product.template,uom_name:sale_coupon.product_product_free_large_cabinet_product_template
 msgid "Unit(s)"
-msgstr ""
+msgstr "Ühik(ut)"
 
 #. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_order_view_form
@@ -1306,13 +1318,13 @@ msgstr ""
 #. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_form_common
 msgid "Validity"
-msgstr ""
+msgstr "Kehtivus"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_program__validity_duration
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_form
 msgid "Validity Duration"
-msgstr ""
+msgstr "Validity Duration"
 
 #. module: sale_coupon
 #: model:ir.model.fields,help:sale_coupon.field_sale_coupon_program__validity_duration
@@ -1360,7 +1372,7 @@ msgstr ""
 #: model:product.template,weight_uom_name:sale_coupon.product_product_10_percent_discount_product_template
 #: model:product.template,weight_uom_name:sale_coupon.product_product_free_large_cabinet_product_template
 msgid "kg"
-msgstr ""
+msgstr "kg"
 
 #. module: sale_coupon
 #: code:addons/sale_coupon/models/sale_order.py:202

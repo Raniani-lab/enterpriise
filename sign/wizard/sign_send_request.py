@@ -75,7 +75,7 @@ class SignSendRequest(models.TransientModel):
         res = self.create_request()
         request = self.env['sign.request'].browse(res['id'])
         user_item = request.request_item_ids.filtered(
-            lambda item: item.partner_id == item.env.user.partner_id)
+            lambda item: item.partner_id == item.env.user.partner_id)[:1]
         return {
             'type': 'ir.actions.client',
             'tag': 'sign.SignableDocument',

@@ -2,12 +2,18 @@
 # This file contains the translation of the following modules:
 # * project_forecast
 # 
+# Translators:
+# Martin Trigaux, 2018
+# Birgir Steinarsson <biggboss83@gmail.com>, 2018
+# Bjorn Ingvarsson <boi@exigo.is>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
 "PO-Revision-Date: 2018-08-24 11:47+0000\n"
+"Last-Translator: Bjorn Ingvarsson <boi@exigo.is>, 2018\n"
 "Language-Team: Icelandic (https://www.transifex.com/odoo/teams/41243/is/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -39,7 +45,7 @@ msgstr ""
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__active
 msgid "Active"
-msgstr ""
+msgstr "Virkur"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__resource_time
@@ -65,7 +71,7 @@ msgstr ""
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
 msgid "Archived"
-msgstr ""
+msgstr "Geymt"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_form
@@ -100,17 +106,17 @@ msgstr ""
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__color
 msgid "Color"
-msgstr ""
+msgstr "Color"
 
 #. module: project_forecast
 #: model:ir.model,name:project_forecast.model_res_company
 msgid "Companies"
-msgstr ""
+msgstr "Fyrirtæki"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__company_id
 msgid "Company"
-msgstr ""
+msgstr "Fyrirtæki"
 
 #. module: project_forecast
 #: model:ir.model,name:project_forecast.model_res_config_settings
@@ -120,28 +126,28 @@ msgstr ""
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Búið til af"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Stofnað þann"
 
 #. module: project_forecast
 #: selection:res.company,forecast_uom:0
 msgid "Days"
-msgstr ""
+msgstr "Dagar"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Nafn"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__employee_id
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
 msgid "Employee"
-msgstr ""
+msgstr "Starfsmaður"
 
 #. module: project_forecast
 #: model:ir.model.fields,help:project_forecast.field_res_company__forecast_span
@@ -160,7 +166,7 @@ msgstr ""
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__end_date
 msgid "End Date"
-msgstr ""
+msgstr "End Date"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__exclude
@@ -251,7 +257,7 @@ msgstr ""
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
 msgid "Future"
-msgstr ""
+msgstr "Future"
 
 #. module: project_forecast
 #: code:addons/project_forecast/models/project_forecast.py:296
@@ -265,39 +271,39 @@ msgstr ""
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
 msgid "Group By"
-msgstr ""
+msgstr "Hópa eftir"
 
 #. module: project_forecast
 #: selection:res.company,forecast_uom:0
 msgid "Hours"
-msgstr ""
+msgstr "Hours"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__id
 msgid "ID"
-msgstr ""
+msgstr "Auðkenni"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Síðast breytt þann"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Síðast uppfært af"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Síðast uppfært þann"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_grid_by_task
 #: model_terms:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_project
 #: model_terms:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_user
 msgid "Month"
-msgstr ""
+msgstr "Mánuður"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
@@ -312,12 +318,12 @@ msgstr ""
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__name
 msgid "Name"
-msgstr ""
+msgstr "Nafn"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
 msgid "Past"
-msgstr ""
+msgstr "Past"
 
 #. module: project_forecast
 #: model:ir.model.fields,help:project_forecast.field_project_forecast__time
@@ -334,7 +340,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__project_id
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
 msgid "Project"
-msgstr ""
+msgstr "Verkefni"
 
 #. module: project_forecast
 #: model:ir.model,name:project_forecast.model_project_forecast
@@ -345,19 +351,19 @@ msgstr ""
 #. module: project_forecast
 #: model:ir.model.fields,help:project_forecast.field_project_forecast__user_id
 msgid "Related user name for the resource to manage its access."
-msgstr ""
+msgstr "Related user name for the resource to manage its access."
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__start_date
 msgid "Start Date"
-msgstr ""
+msgstr "Upphafsdagur"
 
 #. module: project_forecast
 #: model:ir.model,name:project_forecast.model_project_task
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__task_id
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
 msgid "Task"
-msgstr ""
+msgstr "Task"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__stage_id
@@ -404,7 +410,7 @@ msgstr ""
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__user_id
 msgid "User"
-msgstr ""
+msgstr "Notandi"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_grid_by_task
@@ -418,7 +424,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_project
 #: model_terms:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_user
 msgid "Year"
-msgstr ""
+msgstr "Ár"
 
 #. module: project_forecast
 #: code:addons/project_forecast/models/project.py:21

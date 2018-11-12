@@ -509,7 +509,7 @@ msgstr "Zamknij"
 #: code:addons/web_studio/static/src/xml/submenu.xml:68
 #, python-format
 msgid "Cohort View"
-msgstr ""
+msgstr "Widok kohorty"
 
 #. module: web_studio
 #. openerp-web

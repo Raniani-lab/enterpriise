@@ -2,12 +2,17 @@
 # This file contains the translation of the following modules:
 # * delivery_bpost
 # 
+# Translators:
+# Martin Trigaux, 2018
+# krnkris, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
 "PO-Revision-Date: 2018-08-24 11:37+0000\n"
+"Last-Translator: krnkris, 2018\n"
 "Language-Team: Hungarian (https://www.transifex.com/odoo/teams/41243/hu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,7 +23,7 @@ msgstr ""
 #. module: delivery_bpost
 #: selection:delivery.carrier,bpost_label_stock_type:0
 msgid "A4"
-msgstr ""
+msgstr "A4"
 
 #. module: delivery_bpost
 #: selection:delivery.carrier,bpost_label_stock_type:0
@@ -41,7 +46,7 @@ msgstr ""
 #. module: delivery_bpost
 #: selection:delivery.carrier,delivery_type:0
 msgid "Based on Rules"
-msgstr ""
+msgstr "Szabályok alapján"
 
 #. module: delivery_bpost
 #: model:ir.model.fields,field_description:delivery_bpost.field_delivery_carrier__bpost_account_number
@@ -100,7 +105,7 @@ msgstr ""
 #. module: delivery_bpost
 #: model:ir.model.fields,field_description:delivery_bpost.field_product_packaging__package_carrier_type
 msgid "Carrier"
-msgstr ""
+msgstr "Fuvarozó"
 
 #. module: delivery_bpost
 #: selection:delivery.carrier,delivery_type:0
@@ -116,7 +121,7 @@ msgstr ""
 #. module: delivery_bpost
 #: model:ir.model,name:delivery_bpost.model_delivery_carrier
 msgid "Delivery Methods"
-msgstr ""
+msgstr "Szállítás módja"
 
 #. module: delivery_bpost
 #: model:ir.model.fields,field_description:delivery_bpost.field_delivery_carrier__bpost_saturday
@@ -131,7 +136,7 @@ msgstr ""
 #. module: delivery_bpost
 #: selection:delivery.carrier,bpost_delivery_nature:0
 msgid "Domestic"
-msgstr ""
+msgstr "Belföldi"
 
 #. module: delivery_bpost
 #: selection:delivery.carrier,delivery_type:0
@@ -148,7 +153,7 @@ msgstr ""
 #. module: delivery_bpost
 #: selection:delivery.carrier,delivery_type:0
 msgid "Fixed Price"
-msgstr ""
+msgstr "Rögzített ár"
 
 #. module: delivery_bpost
 #: selection:delivery.carrier,bpost_shipment_type:0
@@ -163,12 +168,12 @@ msgstr ""
 #. module: delivery_bpost
 #: selection:delivery.carrier,bpost_delivery_nature:0
 msgid "International"
-msgstr ""
+msgstr "Nemzetközi"
 
 #. module: delivery_bpost
 #: selection:product.packaging,package_carrier_type:0
 msgid "No carrier integration"
-msgstr ""
+msgstr "Nincs szállítmányozó integrálva"
 
 #. module: delivery_bpost
 #: selection:delivery.carrier,bpost_shipment_type:0
@@ -178,12 +183,12 @@ msgstr ""
 #. module: delivery_bpost
 #: selection:delivery.carrier,bpost_label_format:0
 msgid "PDF"
-msgstr ""
+msgstr "PDF"
 
 #. module: delivery_bpost
 #: selection:delivery.carrier,bpost_label_format:0
 msgid "PNG"
-msgstr ""
+msgstr "PNG"
 
 #. module: delivery_bpost
 #: code:addons/delivery_bpost/models/bpost_request.py:134
@@ -200,17 +205,17 @@ msgstr ""
 #: code:addons/delivery_bpost/models/bpost_request.py:58
 #, python-format
 msgid "Please provide at least one item to ship."
-msgstr ""
+msgstr "Kérem válasszon legalább egy szállítandó tételt."
 
 #. module: delivery_bpost
 #: model:ir.model,name:delivery_bpost.model_product_packaging
 msgid "Product Packaging"
-msgstr ""
+msgstr "Termék csomagolás"
 
 #. module: delivery_bpost
 #: model:ir.model.fields,field_description:delivery_bpost.field_delivery_carrier__delivery_type
 msgid "Provider"
-msgstr ""
+msgstr "Szolgáltató"
 
 #. module: delivery_bpost
 #: selection:delivery.carrier,bpost_parcel_return_instructions:0
@@ -282,7 +287,7 @@ msgstr ""
 #: model:product.template,uom_name:delivery_bpost.product_product_delivery_bpost_domestic_product_template
 #: model:product.template,uom_name:delivery_bpost.product_product_delivery_bpost_world_product_template
 msgid "Unit(s)"
-msgstr ""
+msgstr "Egység(ek)"
 
 #. module: delivery_bpost
 #: code:addons/delivery_bpost/models/delivery_bpost.py:91
@@ -384,4 +389,4 @@ msgstr ""
 #: model:product.template,weight_uom_name:delivery_bpost.product_product_delivery_bpost_domestic_product_template
 #: model:product.template,weight_uom_name:delivery_bpost.product_product_delivery_bpost_world_product_template
 msgid "kg"
-msgstr ""
+msgstr "kg"

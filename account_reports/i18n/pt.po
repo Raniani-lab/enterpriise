@@ -10,7 +10,7 @@
 # José Gomes <jg@opencloud.pro>, 2018
 # Ricardo Correia <rcorreiavv@gmail.com>, 2018
 # Vitor Fernandes <vmlf01@gmail.com>, 2018
-# MS, 2018
+# MS <manuelarodsilva@gmail.com>, 2018
 # Nuno Silva <nuno.silva@arxi.pt>, 2018
 # Nelson Costa <nelson.costa@isangola.com>, 2018
 # Diogo Fonseca <dsf@thinkopensolutions.pt>, 2018
@@ -168,7 +168,7 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
 msgid "<span class=\"fa fa-filter\"/> Options:"
-msgstr ""
+msgstr "<span class=\"fa fa-filter\"/>Opções:"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.followup_search_template
@@ -1933,7 +1933,7 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.template_followup_report
 msgid "Send an email"
-msgstr ""
+msgstr "Enviar um email"
 
 #. module: account_reports
 #. openerp-web

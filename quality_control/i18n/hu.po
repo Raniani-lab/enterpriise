@@ -2,12 +2,19 @@
 # This file contains the translation of the following modules:
 # * quality_control
 # 
+# Translators:
+# Martin Trigaux, 2018
+# krnkris, 2018
+# gezza <geza.nagy@oregional.hu>, 2018
+# Ákos Nagy <akos.nagy@oregional.hu>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
 "PO-Revision-Date: 2018-08-24 11:47+0000\n"
+"Last-Translator: Ákos Nagy <akos.nagy@oregional.hu>, 2018\n"
 "Language-Team: Hungarian (https://www.transifex.com/odoo/teams/41243/hu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -81,7 +88,7 @@ msgstr ""
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_team_view_form
 msgid "Accept Emails From"
-msgstr ""
+msgstr "E-mail elfogadása innen"
 
 #. module: quality_control
 #: model_terms:ir.actions.act_window,help:quality_control.quality_tag_action
@@ -96,27 +103,27 @@ msgstr ""
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_stock_picking__quality_alert_ids
 msgid "Alerts"
-msgstr ""
+msgstr "Figyelmeztetések"
 
 #. module: quality_control
 #: selection:quality.point,measure_frequency_type:0
 msgid "All Operations"
-msgstr ""
+msgstr "Összes művelet"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_search
 msgid "Archived"
-msgstr ""
+msgstr "Archivált"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_point__average
 msgid "Average"
-msgstr ""
+msgstr "Átlagos"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_form_small
 msgid "Cancel"
-msgstr ""
+msgstr "Mégsem"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_tree
@@ -131,7 +138,7 @@ msgstr ""
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_stock_picking__check_ids
 msgid "Checks"
-msgstr ""
+msgstr "Csekkek"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_team_dashboard_view_kanban
@@ -141,7 +148,7 @@ msgstr ""
 #. module: quality_control
 #: model:ir.ui.menu,name:quality_control.menu_quality_configuration
 msgid "Configuration"
-msgstr ""
+msgstr "Konfiguráció"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_form_failure
@@ -203,12 +210,12 @@ msgstr ""
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_search
 msgid "Creation Date"
-msgstr ""
+msgstr "Létrehozva"
 
 #. module: quality_control
 #: selection:quality.point,measure_frequency_unit:0
 msgid "Day(s)"
-msgstr ""
+msgstr "Nap"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_form
@@ -223,7 +230,7 @@ msgstr ""
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_form
 msgid "Description"
-msgstr ""
+msgstr "Leírás"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_form
@@ -233,12 +240,12 @@ msgstr ""
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_search
 msgid "Done"
-msgstr ""
+msgstr "Kész"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_team_view_form
 msgid "Email Alias"
-msgstr ""
+msgstr "E-mail álnevek"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_form
@@ -250,7 +257,7 @@ msgstr ""
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_search
 msgid "Failed"
-msgstr ""
+msgstr "Sikertelen"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check__failure_message
@@ -261,7 +268,7 @@ msgstr ""
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_form_inherit_quality_control
 msgid "Frequency"
-msgstr ""
+msgstr "Frekvencia"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_point__measure_frequency_unit_value
@@ -273,7 +280,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_search
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_search
 msgid "Group By"
-msgstr ""
+msgstr "Csoportosítás ezzel"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_team_dashboard_view_kanban
@@ -284,7 +291,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_search
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_search
 msgid "In Progress"
-msgstr ""
+msgstr "Folyamatban"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_form
@@ -300,7 +307,7 @@ msgstr ""
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check__measure
 msgid "Measure"
-msgstr ""
+msgstr "Mérés"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_point__measure_frequency_unit
@@ -326,12 +333,12 @@ msgstr ""
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_form
 msgid "Miscellaneous"
-msgstr ""
+msgstr "Egyéb"
 
 #. module: quality_control
 #: selection:quality.point,measure_frequency_unit:0
 msgid "Month(s)"
-msgstr ""
+msgstr "Hónap(ok)"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_search
@@ -341,13 +348,13 @@ msgstr ""
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_tree
 msgid "Name"
-msgstr ""
+msgstr "Név"
 
 #. module: quality_control
 #: code:addons/quality_control/models/quality.py:283
 #, python-format
 msgid "New"
-msgstr ""
+msgstr "Új"
 
 #. module: quality_control
 #: selection:quality.check,measure_success:0
@@ -386,12 +393,12 @@ msgstr ""
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_form
 msgid "Notes"
-msgstr ""
+msgstr "Megjegyzések"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_failure_message
 msgid "OK"
-msgstr ""
+msgstr "Ok"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_search
@@ -423,7 +430,7 @@ msgstr ""
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_point__measure_frequency_value
 msgid "Percentage"
-msgstr ""
+msgstr "Százalék"
 
 #. module: quality_control
 #: selection:quality.point,measure_frequency_type:0
@@ -444,12 +451,12 @@ msgstr ""
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_search
 msgid "Product"
-msgstr ""
+msgstr "Termék"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_team_view_form
 msgid "Project Name"
-msgstr ""
+msgstr "Projekt neve"
 
 #. module: quality_control
 #: model:ir.ui.menu,name:quality_control.menu_quality_root
@@ -554,7 +561,7 @@ msgstr ""
 #. module: quality_control
 #: model:ir.ui.menu,name:quality_control.menu_quality_control
 msgid "Quality Control"
-msgstr ""
+msgstr "Minőség-ellenőrzés"
 
 #. module: quality_control
 #: model:ir.model,name:quality_control.model_quality_point
@@ -604,28 +611,28 @@ msgstr ""
 #. module: quality_control
 #: model:ir.ui.menu,name:quality_control.menu_quality_reporting
 msgid "Reporting"
-msgstr ""
+msgstr "Riportkészítés"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_search
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_search
 msgid "Responsible"
-msgstr ""
+msgstr "Felelős"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_search
 msgid "Root Cause"
-msgstr ""
+msgstr "Kiváltó ok"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_team_dashboard_view_kanban
 msgid "Settings"
-msgstr ""
+msgstr "Beállítások"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_search
 msgid "Stage"
-msgstr ""
+msgstr "Szakasz"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_point__standard_deviation
@@ -635,28 +642,28 @@ msgstr ""
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_search
 msgid "State"
-msgstr ""
+msgstr "Állam / megye"
 
 #. module: quality_control
 #: model:ir.model,name:quality_control.model_stock_move
 msgid "Stock Move"
-msgstr ""
+msgstr "Készletmozgás"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_tag_view_search
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_tag_view_tree
 msgid "Tags"
-msgstr ""
+msgstr "Címkék"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_search
 msgid "Team"
-msgstr ""
+msgstr "Csapat"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_team_view_tree
 msgid "Teams"
-msgstr ""
+msgstr "Csapatok"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_search
@@ -666,7 +673,7 @@ msgstr ""
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_alert__title
 msgid "Title"
-msgstr ""
+msgstr "Megsz."
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_form_inherit_quality_control
@@ -676,7 +683,7 @@ msgstr ""
 #. module: quality_control
 #: model:ir.model,name:quality_control.model_stock_picking
 msgid "Transfer"
-msgstr ""
+msgstr "Átvitel"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_point__measure_frequency_type
@@ -687,12 +694,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_form_small
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_form_inherit_quality_control
 msgid "Unit of Measure"
-msgstr ""
+msgstr "Mértékegység"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_form_small
 msgid "Validate"
-msgstr ""
+msgstr "Jóváhagyás"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check__warning_message
@@ -702,7 +709,7 @@ msgstr ""
 #. module: quality_control
 #: selection:quality.point,measure_frequency_unit:0
 msgid "Week(s)"
-msgstr ""
+msgstr "Hét(ek)"
 
 #. module: quality_control
 #: code:addons/quality_control/models/quality.py:140

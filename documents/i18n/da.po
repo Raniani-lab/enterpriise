@@ -4,22 +4,23 @@
 # 
 # Translators:
 # peso <peer.sommerlund@gmail.com>, 2018
-# Martin Trigaux, 2018
 # Hans Henrik Gabelgaard <hhg@gabelgaard.org>, 2018
 # Visti Kristensen <visti@vkdata.dk>, 2018
 # Per Rasmussen <perhgrasmussen@gmail.com>, 2018
 # Morten Schou <ms@msteknik.dk>, 2018
 # Jesper Carstensen <jc@danodoo.dk>, 2018
 # Pernille Kristensen <pernillekristensen1994@gmail.com>, 2018
+# Martin Trigaux, 2018
 # Sanne Kristensen <sanne@vkdata.dk>, 2018
 # Ejner Sønniksen <ejner@vkdata.dk>, 2018
 # lhmflexerp <lhm@flexerp.dk>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-02 10:31+0000\n"
-"PO-Revision-Date: 2018-10-02 10:31+0000\n"
+"PO-Revision-Date: 2018-08-24 11:37+0000\n"
 "Last-Translator: lhmflexerp <lhm@flexerp.dk>, 2018\n"
 "Language-Team: Danish (https://www.transifex.com/odoo/teams/41243/da/)\n"
 "MIME-Version: 1.0\n"
@@ -54,6 +55,7 @@ msgstr ""
 #, python-format
 msgid "<b>Close the preview</b> to go back to your selection of documents"
 msgstr ""
+"<b>Luk forhåndsvisning</b> for at gå tilbage til dine valgte dokumenter"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.format_file_size
@@ -68,7 +70,7 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.format_file_size
 msgid "<b>Mb</b>"
-msgstr ""
+msgstr "<b>Mb</b>"
 
 #. module: documents
 #. openerp-web
@@ -87,12 +89,12 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_page
 msgid "<i class=\"fa fa-download fa-fw\"/>  Download All"
-msgstr ""
+msgstr "<i class=\"fa fa-download fa-fw\"/>  Download alle"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_single
 msgid "<i class=\"fa fa-download fa-fw\"/> Download"
-msgstr ""
+msgstr "<i class=\"fa fa-download fa-fw\"/> Download"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form
@@ -100,16 +102,18 @@ msgstr ""
 msgid ""
 "<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/> Configure Email Servers"
 msgstr ""
+"<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/> Konfigurér email "
+"servere"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_single
 msgid "<i class=\"fa fa-link\"/> Go to URL"
-msgstr ""
+msgstr "<i class=\"fa fa-link\"/> Gå til URL"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_page
 msgid "<i class=\"fa fa-upload\"/>  Upload"
-msgstr ""
+msgstr "<i class=\"fa fa-upload\"/>  Upload"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
@@ -184,7 +188,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_share__activity_type_id
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_type_id
 msgid "Activity type"
-msgstr ""
+msgstr "Aktivitetstype"
 
 #. module: documents
 #: selection:documents.workflow.action,action:0
@@ -197,12 +201,12 @@ msgstr "Tilføj"
 #: code:addons/documents/static/src/xml/documents_kanban.xml:8
 #, python-format
 msgid "Add URL"
-msgstr ""
+msgstr "Tilføj URL"
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.action_url_form
 msgid "Add Url"
-msgstr ""
+msgstr "Tilføj url"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_id
@@ -232,17 +236,17 @@ msgstr "Aliased Model"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
 msgid "All locked files"
-msgstr ""
+msgstr "Alle låste filer"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__action
 msgid "Allows to"
-msgstr ""
+msgstr "Tillader at"
 
 #. module: documents
 #: model:ir.module.category,description:documents.module_category_documents_management
 msgid "Allows you to manage your documents."
-msgstr ""
+msgstr "Giver dig mulighed for at håndtere dine dokumenter."
 
 #. module: documents
 #. openerp-web
@@ -310,7 +314,7 @@ msgstr ""
 #: code:addons/documents/static/src/js/tour.js:17
 #, python-format
 msgid "Click on a card to <b>view the document</b>."
-msgstr ""
+msgstr "Klik på et kort for <b>at vise dokumentet</b>."
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__company_id
@@ -320,7 +324,7 @@ msgstr "Virksomhed"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__condition_type
 msgid "Condition type"
-msgstr ""
+msgstr "Betingelsestype"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
@@ -354,12 +358,12 @@ msgstr "Opret"
 #: model:ir.model.fields,field_description:documents.field_documents_share__activity_option
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_option
 msgid "Create a new activity"
-msgstr ""
+msgstr "Opret en ny aktivitet"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.tag_view_tree
 msgid "Create a tag"
-msgstr ""
+msgstr "Opret et tag"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_facet__create_uid
@@ -388,12 +392,12 @@ msgstr "Oprettet den"
 #. module: documents
 #: selection:documents.workflow.rule,create_model:0
 msgid "Credit note"
-msgstr ""
+msgstr "Kreditnota"
 
 #. module: documents
 #: selection:documents.workflow.rule,condition_type:0
 msgid "Criteria"
-msgstr ""
+msgstr "Kriterium"
 
 #. module: documents
 #: selection:documents.request_wizard,activity_date_deadline_range_type:0
@@ -405,7 +409,7 @@ msgstr "Dage"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.res_config_settings_view_form
 msgid "Default Folders"
-msgstr ""
+msgstr "Standardmapper"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_defaults
@@ -416,7 +420,7 @@ msgstr "Standard værdier"
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
 msgid "Default values for uploaded documents"
-msgstr ""
+msgstr "Standardværdier for uploadede dokumenter"
 
 #. module: documents
 #. openerp-web
@@ -457,7 +461,7 @@ msgstr "Dokument"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__owner_id
 msgid "Document Owner"
-msgstr ""
+msgstr "Dokumentejer"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_request_wizard
@@ -477,7 +481,7 @@ msgstr ""
 #. module: documents
 #: selection:documents.share,type:0
 msgid "Document list"
-msgstr ""
+msgstr "Dokumentliste"
 
 #. module: documents
 #. openerp-web
@@ -494,7 +498,7 @@ msgstr "Dokumenter"
 #. module: documents
 #: model:ir.model,name:documents.model_documents_folder
 msgid "Documents Folder"
-msgstr ""
+msgstr "Dokumentmappe"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_share
@@ -509,7 +513,7 @@ msgstr ""
 #. module: documents
 #: selection:documents.workflow.tag.criteria,operator:0
 msgid "Does not contain"
-msgstr ""
+msgstr "Indeholder ikke"
 
 #. module: documents
 #: selection:documents.share,type:0
@@ -528,7 +532,7 @@ msgstr "Udført"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_page
 msgid "Downlaod all files"
-msgstr ""
+msgstr "Download alle filer"
 
 #. module: documents
 #. openerp-web
@@ -541,7 +545,7 @@ msgstr "Download"
 #. module: documents
 #: selection:documents.share,action:0
 msgid "Download and Upload"
-msgstr ""
+msgstr "Download og upload"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__activity_date_deadline_range

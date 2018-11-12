@@ -2,12 +2,19 @@
 # This file contains the translation of the following modules:
 # * account_intrastat
 # 
+# Translators:
+# Martin Trigaux, 2018
+# krnkris, 2018
+# gezza <geza.nagy@oregional.hu>, 2018
+# Ákos Nagy <akos.nagy@oregional.hu>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
 "PO-Revision-Date: 2018-08-24 11:36+0000\n"
+"Last-Translator: Ákos Nagy <akos.nagy@oregional.hu>, 2018\n"
 "Language-Team: Hungarian (https://www.transifex.com/odoo/teams/41243/hu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -65,7 +72,7 @@ msgstr ""
 #. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_res_company
 msgid "Companies"
-msgstr ""
+msgstr "Vállalatok"
 
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_res_config_settings__company_country_id
@@ -80,20 +87,20 @@ msgstr ""
 #. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_res_country
 msgid "Country"
-msgstr ""
+msgstr "Ország"
 
 #. module: account_intrastat
 #: code:addons/account_intrastat/models/account_intrastat_report.py:30
 #: code:addons/account_intrastat/models/account_sales_report.py:24
 #, python-format
 msgid "Country Code"
-msgstr ""
+msgstr "Országkód"
 
 #. module: account_intrastat
 #: code:addons/account_intrastat/models/account_intrastat_report.py:28
 #, python-format
 msgid "Date"
-msgstr ""
+msgstr "Dátum"
 
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_res_company__intrastat_transport_mode_id
@@ -104,7 +111,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_intrastat.field_res_company__incoterm_id
 #: model:ir.model.fields,field_description:account_intrastat.field_res_config_settings__incoterm_id
 msgid "Default incoterm for Intrastat"
-msgstr ""
+msgstr "alapértelmezett  Intrastat incoterm"
 
 #. module: account_intrastat
 #: code:addons/account_intrastat/models/account_intrastat_report.py:17
@@ -121,7 +128,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_intrastat.field_account_intrastat_report__display_name
 #: model:ir.model.fields,field_description:account_intrastat.field_account_sales_report__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Megjelenített név"
 
 #. module: account_intrastat
 #: code:addons/account_intrastat/models/account_sales_report.py:124
@@ -135,7 +142,7 @@ msgstr ""
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_intrastat_extended
 msgid "Extended"
-msgstr ""
+msgstr "Részletes"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_intrastat_extended
@@ -151,7 +158,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_intrastat.field_account_intrastat_report__id
 #: model:ir.model.fields,field_description:account_intrastat.field_account_sales_report__id
 msgid "ID"
-msgstr ""
+msgstr "Azonosító"
 
 #. module: account_intrastat
 #: code:addons/account_intrastat/models/account_intrastat_report.py:39
@@ -166,6 +173,8 @@ msgid ""
 "International Commercial Terms are a series of predefined commercial terms "
 "used in international transactions."
 msgstr ""
+"Nemzetközi üzleti feltételek, olyan előredefiniált üzleti feltételek, "
+"melyeket nemzetközi ügyleteknél használnak."
 
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_account_invoice_line__intrastat_transaction_id
@@ -173,19 +182,19 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_intrastat.product_category_form_view_inherit_account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.product_template_form_view_inherit_account_intrastat
 msgid "Intrastat"
-msgstr ""
+msgstr "Intrastat"
 
 #. module: account_intrastat
 #: model:ir.actions.act_window,name:account_intrastat.action_report_intrastat_code_tree
 #: model:ir.ui.menu,name:account_intrastat.menu_report_intrastat_code
 #: model_terms:ir.ui.view,arch_db:account_intrastat.view_report_intrastat_code_form
 msgid "Intrastat Code"
-msgstr ""
+msgstr "Intrastat kód"
 
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_account_invoice__intrastat_country_id
 msgid "Intrastat Country"
-msgstr ""
+msgstr "Intrastat ország"
 
 #. module: account_intrastat
 #: code:addons/account_intrastat/models/account_intrastat_report.py:234
@@ -199,12 +208,12 @@ msgstr ""
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_account_invoice__intrastat_transport_mode_id
 msgid "Intrastat Transport Mode"
-msgstr ""
+msgstr "Intrastat szállítási mód"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.view_report_intrastat_code_tree
 msgid "Intrastat code"
-msgstr ""
+msgstr "Intrastat kód"
 
 #. module: account_intrastat
 #: model:ir.model.fields,help:account_intrastat.field_account_invoice__intrastat_country_id
@@ -214,49 +223,49 @@ msgstr ""
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_res_country__intrastat
 msgid "Intrastat member"
-msgstr ""
+msgstr "Intrastat tag"
 
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_res_company__intrastat_region_id
 msgid "Intrastat region"
-msgstr ""
+msgstr "Intrastat körzet"
 
 #. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_account_invoice
 msgid "Invoice"
-msgstr ""
+msgstr "Számla"
 
 #. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_account_invoice_line
 msgid "Invoice Line"
-msgstr ""
+msgstr "Számlasor"
 
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_account_intrastat_report____last_update
 #: model:ir.model.fields,field_description:account_intrastat.field_account_sales_report____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Legutóbb frissítve"
 
 #. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_product_category
 msgid "Product Category"
-msgstr ""
+msgstr "Termékkategória"
 
 #. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_product_template
 msgid "Product Template"
-msgstr ""
+msgstr "Terméksablon"
 
 #. module: account_intrastat
 #: code:addons/account_intrastat/models/account_intrastat_report.py:43
 #, python-format
 msgid "Quantity"
-msgstr ""
+msgstr "Mennyiség"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
 msgid "Region"
-msgstr ""
+msgstr "Régió"
 
 #. module: account_intrastat
 #: code:addons/account_intrastat/models/account_intrastat_report.py:32
@@ -280,12 +289,12 @@ msgstr ""
 #: code:addons/account_intrastat/models/account_sales_report.py:114
 #, python-format
 msgid "Total"
-msgstr ""
+msgstr "Összesen"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
 msgid "Transaction"
-msgstr ""
+msgstr "Tranzakció"
 
 #. module: account_intrastat
 #: code:addons/account_intrastat/models/account_intrastat_report.py:31
@@ -313,26 +322,26 @@ msgstr ""
 #: code:addons/account_intrastat/models/account_intrastat_report.py:34
 #, python-format
 msgid "Type"
-msgstr ""
+msgstr "Típus"
 
 #. module: account_intrastat
 #: code:addons/account_intrastat/models/account_sales_report.py:23
 #, python-format
 msgid "VAT"
-msgstr ""
+msgstr "ÁFA"
 
 #. module: account_intrastat
 #: code:addons/account_intrastat/models/account_intrastat_report.py:44
 #: code:addons/account_intrastat/models/account_sales_report.py:25
 #, python-format
 msgid "Value"
-msgstr ""
+msgstr "Érték"
 
 #. module: account_intrastat
 #: code:addons/account_intrastat/models/account_intrastat_report.py:42
 #, python-format
 msgid "Weight"
-msgstr ""
+msgstr "Súly"
 
 #. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_account_intrastat_code

@@ -2,12 +2,18 @@
 # This file contains the translation of the following modules:
 # * sign
 # 
+# Translators:
+# Martin Trigaux, 2018
+# Birgir Steinarsson <biggboss83@gmail.com>, 2018
+# Bjorn Ingvarsson <boi@exigo.is>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-27 08:43+0000\n"
 "PO-Revision-Date: 2018-08-24 11:48+0000\n"
+"Last-Translator: Bjorn Ingvarsson <boi@exigo.is>, 2018\n"
 "Language-Team: Icelandic (https://www.transifex.com/odoo/teams/41243/is/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -123,24 +129,24 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_needaction
 msgid "Action Needed"
-msgstr ""
+msgstr "Þarfnast aðgerðar"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__active
 #: model:ir.model.fields,field_description:sign.field_sign_template__active
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_search
 msgid "Active"
-msgstr ""
+msgstr "Virkur"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__activity_ids
 msgid "Activities"
-msgstr ""
+msgstr "Aðgerðir"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__activity_state
 msgid "Activity State"
-msgstr ""
+msgstr "Staða aðgerðar"
 
 #. module: sign
 #. openerp-web
@@ -181,18 +187,18 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_kanban
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
 msgid "Archive"
-msgstr ""
+msgstr "Setja í geymslu"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_search
 msgid "Archived"
-msgstr ""
+msgstr "Geymt"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__attachment_id
 msgid "Attachment"
-msgstr ""
+msgstr "Attachment"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_attachment_count
@@ -235,7 +241,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.sign_send_request_view_form
 #, python-format
 msgid "Cancel"
-msgstr ""
+msgstr "Hætta við"
 
 #. module: sign
 #: selection:sign.request,state:0
@@ -271,24 +277,24 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_share_view_form
 msgid "Close"
-msgstr ""
+msgstr "Loka"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__color
 #: model:ir.model.fields,field_description:sign.field_sign_template__color
 msgid "Color"
-msgstr ""
+msgstr "Color"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template_tag__color
 msgid "Color Index"
-msgstr ""
+msgstr "Color Index"
 
 #. module: sign
 #: model:sign.item.role,name:sign.sign_item_role_company
 #: model:sign.item.type,name:sign.sign_item_type_company
 msgid "Company"
-msgstr ""
+msgstr "Fyrirtæki"
 
 #. module: sign
 #: selection:sign.request.item,state:0
@@ -308,12 +314,12 @@ msgstr ""
 #. module: sign
 #: model:ir.ui.menu,name:sign.menu_sign_configuration
 msgid "Configuration"
-msgstr ""
+msgstr "Uppsetning"
 
 #. module: sign
 #: model:ir.model,name:sign.model_res_partner
 msgid "Contact"
-msgstr ""
+msgstr "Tengiliður"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__follower_ids
@@ -341,7 +347,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_template_share__create_uid
 #: model:ir.model.fields,field_description:sign.field_sign_template_tag__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Búið til af"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__create_date
@@ -357,12 +363,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_template_share__create_date
 #: model:ir.model.fields,field_description:sign.field_sign_template_tag__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Stofnað þann"
 
 #. module: sign
 #: model:sign.item.role,name:sign.sign_item_role_customer
 msgid "Customer"
-msgstr ""
+msgstr "Viðskiptavinur"
 
 #. module: sign
 #. openerp-web
@@ -374,7 +380,7 @@ msgstr ""
 #. module: sign
 #: model:sign.item.type,name:sign.sign_item_type_date
 msgid "Date"
-msgstr ""
+msgstr "Dags."
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item_type__default_height
@@ -390,7 +396,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_kanban
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
 msgid "Delete"
-msgstr ""
+msgstr "Eyða"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_kanban
@@ -415,12 +421,12 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_send_copy_view_form
 msgid "Discard"
-msgstr ""
+msgstr "Hætta við"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_item_view_form
 msgid "Display"
-msgstr ""
+msgstr "Display"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__display_name
@@ -436,7 +442,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_template_share__display_name
 #: model:ir.model.fields,field_description:sign.field_sign_template_tag__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Nafn"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_form
@@ -480,7 +486,7 @@ msgstr ""
 #. module: sign
 #: selection:sign.request.item,state:0
 msgid "Draft"
-msgstr ""
+msgstr "Tillaga"
 
 #. module: sign
 #. openerp-web
@@ -507,7 +513,7 @@ msgstr ""
 #: code:addons/sign/static/src/xml/sign_backend.xml:45
 #, python-format
 msgid "Duplicate"
-msgstr ""
+msgstr "Afrita"
 
 #. module: sign
 #. openerp-web
@@ -519,7 +525,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
 msgid "Edit"
-msgstr ""
+msgstr "Skrifa"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
@@ -542,12 +548,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__signer_email
 #: model:sign.item.type,name:sign.sign_item_type_email
 msgid "Email"
-msgstr ""
+msgstr "Tölvupóstur"
 
 #. module: sign
 #: model:sign.item.role,name:sign.sign_item_role_employee
 msgid "Employee"
-msgstr ""
+msgstr "Starfsmaður"
 
 #. module: sign
 #. openerp-web
@@ -558,7 +564,7 @@ msgstr ""
 #: code:addons/sign/static/src/js/sign_common.js:1158
 #, python-format
 msgid "Error"
-msgstr ""
+msgstr "Villa!"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__extension
@@ -579,7 +585,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_item_type__name
 #, python-format
 msgid "Field Name"
-msgstr ""
+msgstr "Heiti svæðis"
 
 #. module: sign
 #: model:ir.ui.menu,name:sign.sign_item_type_menu
@@ -594,7 +600,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__datas
 msgid "File Content"
-msgstr ""
+msgstr "File Content"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__reference
@@ -613,17 +619,17 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_follower_ids
 msgid "Followers"
-msgstr ""
+msgstr "Fylgjendur"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_channel_ids
 msgid "Followers (Channels)"
-msgstr ""
+msgstr "Followers (Channels)"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_partner_ids
 msgid "Followers (Partners)"
-msgstr ""
+msgstr "Fylgjendur (viðskiptafélagar)"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign._doc_sign
@@ -635,7 +641,7 @@ msgstr ""
 #: code:addons/sign/static/src/xml/sign_common.xml:28
 #, python-format
 msgid "Full Name"
-msgstr ""
+msgstr "Fullt nafn"
 
 #. module: sign
 #: selection:sign.request,state:0
@@ -655,7 +661,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "Group By"
-msgstr ""
+msgstr "Hópa eftir"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__height
@@ -676,17 +682,17 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_template_share__id
 #: model:ir.model.fields,field_description:sign.field_sign_template_tag__id
 msgid "ID"
-msgstr ""
+msgstr "Auðkenni"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__message_unread
 msgid "If checked new messages require your attention."
-msgstr ""
+msgstr "Ef merkt við þá eru ný skilaboð"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr ""
+msgstr "If checked, new messages require your attention."
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__message_has_error
@@ -702,7 +708,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_item_view_form
 msgid "Information"
-msgstr ""
+msgstr "Information"
 
 #. module: sign
 #: selection:sign.item.type,type:0
@@ -717,7 +723,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_is_follower
 msgid "Is Follower"
-msgstr ""
+msgstr "Is Follower"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template_share__is_one_responsible
@@ -748,7 +754,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_template_share____last_update
 #: model:ir.model.fields,field_description:sign.field_sign_template_tag____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Síðast breytt þann"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__write_uid
@@ -764,7 +770,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_template_share__write_uid
 #: model:ir.model.fields,field_description:sign.field_sign_template_tag__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Síðast uppfært af"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__write_date
@@ -780,7 +786,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_template_share__write_date
 #: model:ir.model.fields,field_description:sign.field_sign_template_tag__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Síðast uppfært þann"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
@@ -802,12 +808,12 @@ msgstr ""
 #: code:addons/sign/static/src/xml/sign_common.xml:39
 #, python-format
 msgid "Load"
-msgstr ""
+msgstr "Load"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.doc_sign
 msgid "Logo"
-msgstr ""
+msgstr "Lógó"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__longitude
@@ -829,7 +835,7 @@ msgstr ""
 #. module: sign
 #: model:res.groups,name:sign.group_sign_manager
 msgid "Manager"
-msgstr ""
+msgstr "Yfirmaður"
 
 #. module: sign
 #. openerp-web
@@ -841,7 +847,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__message
 msgid "Message"
-msgstr ""
+msgstr "Skilaboð"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_has_error
@@ -851,7 +857,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_ids
 msgid "Messages"
-msgstr ""
+msgstr "Skilaboð"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.deleted_sign_request
@@ -861,7 +867,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__sms_number
 msgid "Mobile"
-msgstr ""
+msgstr "Farsími"
 
 #. module: sign
 #: selection:sign.item.type,type:0
@@ -888,7 +894,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_search
 msgid "My Favorites"
-msgstr ""
+msgstr "My Favorites"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_search
@@ -900,7 +906,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_template__name
 #: model:sign.item.type,name:sign.sign_item_type_name
 msgid "Name"
-msgstr ""
+msgstr "Nafn"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_send_request_view_form
@@ -940,7 +946,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__activity_summary
 msgid "Next Activity Summary"
-msgstr ""
+msgstr "Samantekt næstu virkni"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__activity_type_id
@@ -966,7 +972,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_needaction_counter
 msgid "Number of Actions"
-msgstr ""
+msgstr "Fjöldi aðgerða"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_has_error_counter
@@ -976,7 +982,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__message_needaction_counter
 msgid "Number of messages which requires an action"
-msgstr ""
+msgstr "Fjöldi skilaboð sem bíða afgreiðslu"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__message_has_error_counter
@@ -986,24 +992,24 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__message_unread_counter
 msgid "Number of unread messages"
-msgstr ""
+msgstr "Number of unread messages"
 
 #. module: sign
 #: model:res.groups,name:sign.group_sign_user
 msgid "Officer"
-msgstr ""
+msgstr "Officer"
 
 #. module: sign
 #. openerp-web
 #: code:addons/sign/static/src/js/sign_backend.js:1027
 #, python-format
 msgid "Ok"
-msgstr ""
+msgstr "Ok"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_share_view_form
 msgid "Open"
-msgstr ""
+msgstr "Opna"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__redirect_url
@@ -1030,13 +1036,13 @@ msgstr ""
 #. module: sign
 #: selection:sign.request,activity_state:0
 msgid "Overdue"
-msgstr ""
+msgstr "Overdue"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__partner_id
 #: model:ir.model.fields,field_description:sign.field_sign_send_request_signer__partner_id
 msgid "Partner"
-msgstr ""
+msgstr "Viðskipta aðili"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_item_type__auto_field
@@ -1046,7 +1052,7 @@ msgstr ""
 #. module: sign
 #: model:sign.item.type,name:sign.sign_item_type_phone
 msgid "Phone"
-msgstr ""
+msgstr "Sími"
 
 #. module: sign
 #. openerp-web
@@ -1136,7 +1142,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__required
 msgid "Required"
-msgstr ""
+msgstr "Required"
 
 #. module: sign
 #. openerp-web
@@ -1167,7 +1173,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_item__responsible_id
 #, python-format
 msgid "Responsible"
-msgstr ""
+msgstr "Ábyrgðaraðili"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__responsible_count
@@ -1389,7 +1395,7 @@ msgstr ""
 #: selection:sign.item.type,type:0
 #, python-format
 msgid "Signature"
-msgstr ""
+msgstr "Signature"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item_value__sign_item_id
@@ -1543,7 +1549,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_request__state
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__state
 msgid "State"
-msgstr ""
+msgstr "Fylki"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__activity_state
@@ -1564,23 +1570,23 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__subject
 msgid "Subject"
-msgstr ""
+msgstr "Subject"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template_tag__name
 msgid "Tag Name"
-msgstr ""
+msgstr "Tag Name"
 
 #. module: sign
 #: sql_constraint:sign.template.tag:0
 msgid "Tag name already exists !"
-msgstr ""
+msgstr "Tag name already exists !"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__tag_ids
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_form
 msgid "Tags"
-msgstr ""
+msgstr "Flokkar"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__template_id
@@ -1588,7 +1594,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_template_share__template_id
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "Template"
-msgstr ""
+msgstr "Template"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
@@ -1604,7 +1610,7 @@ msgstr ""
 #: model:sign.item.type,name:sign.sign_item_type_text
 #: selection:sign.item.type,type:0
 msgid "Text"
-msgstr ""
+msgstr "Texti"
 
 #. module: sign
 #. openerp-web
@@ -1635,7 +1641,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item_type__tip
 msgid "Tip"
-msgstr ""
+msgstr "Þjórfé"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
@@ -1645,18 +1651,18 @@ msgstr ""
 #. module: sign
 #: selection:sign.request,activity_state:0
 msgid "Today"
-msgstr ""
+msgstr "Í dag"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "Today Activities"
-msgstr ""
+msgstr "Aðgerðir dagsins"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__type_id
 #: model:ir.model.fields,field_description:sign.field_sign_item_type__type
 msgid "Type"
-msgstr ""
+msgstr "Gerð"
 
 #. module: sign
 #. openerp-web
@@ -1676,12 +1682,12 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_unread
 msgid "Unread Messages"
-msgstr ""
+msgstr "Ólesin skilaboð"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_unread_counter
 msgid "Unread Messages Counter"
-msgstr ""
+msgstr "Teljari fyrir ólesin skilaboð"
 
 #. module: sign
 #: model_terms:ir.actions.act_window,help:sign.sign_template_action
@@ -1699,14 +1705,14 @@ msgstr ""
 #. module: sign
 #: model:ir.model,name:sign.model_res_users
 msgid "Users"
-msgstr ""
+msgstr "Notendur"
 
 #. module: sign
 #. openerp-web
 #: code:addons/sign/static/src/xml/sign_backend.xml:27
 #, python-format
 msgid "Validate"
-msgstr ""
+msgstr "Staðfesta"
 
 #. module: sign
 #. openerp-web
@@ -1723,7 +1729,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item_value__value
 msgid "Value"
-msgstr ""
+msgstr "Value"
 
 #. module: sign
 #. openerp-web
@@ -1766,7 +1772,7 @@ msgstr ""
 #: code:addons/sign/static/src/js/sign_common.js:1080
 #, python-format
 msgid "Warning"
-msgstr ""
+msgstr "Viðvörun"
 
 #. module: sign
 #. openerp-web

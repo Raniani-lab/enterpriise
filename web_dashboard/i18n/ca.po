@@ -4,13 +4,15 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# Quim - eccit <quim@eccit.com>, 2018
 # Manel Fernandez <manelfera@outlook.com>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-02 10:32+0000\n"
-"PO-Revision-Date: 2018-10-02 10:32+0000\n"
+"PO-Revision-Date: 2018-08-24 11:49+0000\n"
 "Last-Translator: Manel Fernandez <manelfera@outlook.com>, 2018\n"
 "Language-Team: Catalan (https://www.transifex.com/odoo/teams/41243/ca/)\n"
 "MIME-Version: 1.0\n"
@@ -35,7 +37,7 @@ msgstr ""
 #: selection:ir.actions.act_window.view,view_mode:0
 #: selection:ir.ui.view,type:0
 msgid "Activity"
-msgstr ""
+msgstr "Activitat"
 
 #. module: web_dashboard
 #: model:ir.model,name:web_dashboard.model_base
@@ -68,7 +70,7 @@ msgstr ""
 #: selection:ir.ui.view,type:0
 #, python-format
 msgid "Dashboard"
-msgstr ""
+msgstr "Quadre de comandament"
 
 #. module: web_dashboard
 #: selection:ir.ui.view,type:0
@@ -87,14 +89,14 @@ msgstr ""
 #: code:addons/web_dashboard/static/src/xml/dashboard.xml:35
 #, python-format
 msgid "Domain:"
-msgstr ""
+msgstr "Domini:"
 
 #. module: web_dashboard
 #. openerp-web
 #: code:addons/web_dashboard/static/src/xml/dashboard.xml:26
 #, python-format
 msgid "Field:"
-msgstr ""
+msgstr "Camp:"
 
 #. module: web_dashboard
 #: selection:ir.actions.act_window.view,view_mode:0
@@ -150,7 +152,7 @@ msgstr "Kanban"
 #: code:addons/web_dashboard/static/src/xml/dashboard.xml:53
 #, python-format
 msgid "Modifiers:"
-msgstr ""
+msgstr "Modificadors:"
 
 #. module: web_dashboard
 #. openerp-web
@@ -219,4 +221,4 @@ msgstr "Tipus de vista"
 #: code:addons/web_dashboard/static/src/xml/dashboard.xml:49
 #, python-format
 msgid "Widget:"
-msgstr ""
+msgstr "Widget:"

@@ -2,12 +2,18 @@
 # This file contains the translation of the following modules:
 # * voip
 # 
+# Translators:
+# Martin Trigaux, 2018
+# Birgir Steinarsson <biggboss83@gmail.com>, 2018
+# Bjorn Ingvarsson <boi@exigo.is>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
 "PO-Revision-Date: 2018-08-24 11:48+0000\n"
+"Last-Translator: Bjorn Ingvarsson <boi@exigo.is>, 2018\n"
 "Language-Team: Icelandic (https://www.transifex.com/odoo/teams/41243/is/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -33,7 +39,7 @@ msgstr ""
 #: model:ir.model,name:voip.model_mail_activity
 #, python-format
 msgid "Activity"
-msgstr ""
+msgstr "Virkni"
 
 #. module: voip
 #: model:ir.model,name:voip.model_mail_activity_type
@@ -74,7 +80,7 @@ msgstr ""
 #: code:addons/voip/static/src/xml/dialing_panel.xml:68
 #, python-format
 msgid "Call"
-msgstr ""
+msgstr "Símtal"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__call_date
@@ -117,7 +123,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:voip.wizard_transfer_call_form_view
 #, python-format
 msgid "Cancel"
-msgstr ""
+msgstr "Hætta við"
 
 #. module: voip
 #. openerp-web
@@ -129,7 +135,7 @@ msgstr ""
 #. module: voip
 #: selection:voip.phonecall,state:0 selection:voip.phonecall.report,state:0
 msgid "Cancelled"
-msgstr ""
+msgstr "Afpöntuð"
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_mail_activity_type__category
@@ -139,7 +145,7 @@ msgstr ""
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_mail_activity_type__category
 msgid "Category"
-msgstr ""
+msgstr "Flokkur"
 
 #. module: voip
 #. openerp-web
@@ -153,7 +159,7 @@ msgstr ""
 #: code:addons/voip/static/src/xml/dialing_panel.xml:16
 #, python-format
 msgid "Close"
-msgstr ""
+msgstr "Loka"
 
 #. module: voip
 #: model:ir.model,name:voip.model_res_config_settings
@@ -165,7 +171,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__partner_id
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_report__partner_id
 msgid "Contact"
-msgstr ""
+msgstr "Tengiliður"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_configurator__create_uid
@@ -173,7 +179,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_log_wizard__create_uid
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_transfer_wizard__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Búið til af"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_configurator__create_date
@@ -181,19 +187,19 @@ msgstr ""
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_log_wizard__create_date
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_transfer_wizard__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Stofnað þann"
 
 #. module: voip
 #: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 msgid "Creation Date"
-msgstr ""
+msgstr "Búið til þann"
 
 #. module: voip
 #. openerp-web
 #: code:addons/voip/static/src/xml/voip_phonecall.xml:126
 #, python-format
 msgid "Customer"
-msgstr ""
+msgstr "Viðskiptavinur"
 
 #. module: voip
 #. openerp-web
@@ -206,7 +212,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_report__call_date
 #: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 msgid "Date"
-msgstr ""
+msgstr "Dags."
 
 #. module: voip
 #: selection:res.config.settings,mode:0
@@ -227,7 +233,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_report__display_name
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_transfer_wizard__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Nafn"
 
 #. module: voip
 #: selection:voip.phonecall.log.wizard,reschedule_option:0
@@ -237,13 +243,13 @@ msgstr ""
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__date_deadline
 msgid "Due Date"
-msgstr ""
+msgstr "Gjalddagi"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__duration
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_report__duration
 msgid "Duration"
-msgstr ""
+msgstr "Duration"
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_voip_phonecall__duration
@@ -265,7 +271,7 @@ msgstr ""
 #. module: voip
 #: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 msgid "Group By"
-msgstr ""
+msgstr "Hópa eftir"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_users__sip_external_phone
@@ -284,7 +290,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_report__id
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_transfer_wizard__id
 msgid "ID"
-msgstr ""
+msgstr "Auðkenni"
 
 #. module: voip
 #: selection:voip.phonecall.log.wizard,reschedule_option:0
@@ -316,7 +322,7 @@ msgstr ""
 #. module: voip
 #: selection:voip.phonecall,type:0
 msgid "Incoming"
-msgstr ""
+msgstr "Incoming"
 
 #. module: voip
 #. openerp-web
@@ -339,7 +345,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_report____last_update
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_transfer_wizard____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Síðast breytt þann"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_configurator__write_uid
@@ -347,7 +353,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_log_wizard__write_uid
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_transfer_wizard__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Síðast uppfært af"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_configurator__write_date
@@ -355,7 +361,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_log_wizard__write_date
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_transfer_wizard__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Síðast uppfært þann"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__activity_id
@@ -378,7 +384,7 @@ msgstr ""
 #: code:addons/voip/static/src/xml/voip_phonecall.xml:143
 #, python-format
 msgid "Log"
-msgstr ""
+msgstr "Log"
 
 #. module: voip
 #: model_terms:ir.actions.act_window,help:voip.voip_phonecall_view
@@ -406,7 +412,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:voip.field_mail_activity__mobile
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__mobile
 msgid "Mobile"
-msgstr ""
+msgstr "Farsími"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_partner__sanitized_mobile
@@ -449,7 +455,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__note
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_log_wizard__note
 msgid "Note"
-msgstr ""
+msgstr "Athugasemd"
 
 #. module: voip
 #: model_terms:ir.actions.act_window,help:voip.voip_phonecall_view
@@ -469,12 +475,12 @@ msgstr ""
 #. module: voip
 #: selection:mail.activity.type,category:0
 msgid "Other"
-msgstr ""
+msgstr "Annað"
 
 #. module: voip
 #: selection:voip.phonecall,type:0
 msgid "Outgoing"
-msgstr ""
+msgstr "Outgoing"
 
 #. module: voip
 #: model_terms:ir.ui.view,arch_db:voip.res_user_form
@@ -491,13 +497,13 @@ msgstr ""
 #: code:addons/voip/static/src/xml/voip_phonecall.xml:32
 #, python-format
 msgid "Pending"
-msgstr ""
+msgstr "Í bið"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_mail_activity__phone
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__phone
 msgid "Phone"
-msgstr ""
+msgstr "Sími"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_partner__sanitized_phone
@@ -551,7 +557,7 @@ msgstr ""
 #. module: voip
 #: selection:res.config.settings,mode:0
 msgid "Production"
-msgstr ""
+msgstr "Framleiðsla"
 
 #. module: voip
 #. openerp-web
@@ -584,7 +590,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_report__user_id
 #: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 msgid "Responsible"
-msgstr ""
+msgstr "Ábyrgðaraðili"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_users__sip_login
@@ -601,7 +607,7 @@ msgstr ""
 #: code:addons/voip/static/src/xml/voip_phonecall.xml:136
 #, python-format
 msgid "Schedule"
-msgstr ""
+msgstr "Schedule"
 
 #. module: voip
 #: model_terms:ir.ui.view,arch_db:voip.res_config_settings_view_form
@@ -635,7 +641,7 @@ msgstr ""
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__sequence
 msgid "Sequence"
-msgstr ""
+msgstr "Runa"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_log_wizard__reschedule_date
@@ -659,12 +665,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__state
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_report__state
 msgid "Status"
-msgstr ""
+msgstr "Staða"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_log_wizard__summary
 msgid "Summary"
-msgstr ""
+msgstr "Samantekt"
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_res_config_settings__pbx_ip
@@ -727,7 +733,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 #: selection:voip.phonecall,state:0 selection:voip.phonecall.report,state:0
 msgid "To Do"
-msgstr ""
+msgstr "To Do"
 
 #. module: voip
 #: selection:voip.phonecall.log.wizard,reschedule_option:0
@@ -739,7 +745,7 @@ msgstr ""
 #: code:addons/voip/static/src/xml/voip_phonecall.xml:159
 #, python-format
 msgid "Transfer"
-msgstr ""
+msgstr "Transfer"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_transfer_wizard__transfer_choice
@@ -749,12 +755,12 @@ msgstr ""
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__type
 msgid "Type"
-msgstr ""
+msgstr "Gerð"
 
 #. module: voip
 #: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 msgid "Unassigned"
-msgstr ""
+msgstr "Óúthlutað"
 
 #. module: voip
 #. openerp-web
@@ -768,12 +774,12 @@ msgstr ""
 #: code:addons/voip/static/src/js/voip_phonecall.js:130
 #, python-format
 msgid "Unknown"
-msgstr ""
+msgstr "Unknown"
 
 #. module: voip
 #: model:ir.model,name:voip.model_res_users
 msgid "Users"
-msgstr ""
+msgstr "Notendur"
 
 #. module: voip
 #: model_terms:ir.ui.view,arch_db:voip.view_voip_user_config
@@ -814,7 +820,7 @@ msgstr ""
 #: code:addons/voip/wizard/voip_phonecall_transfer_wizard.py:35
 #, python-format
 msgid "Warning"
-msgstr ""
+msgstr "Viðvörun"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_config_settings__wsServer

@@ -2,12 +2,18 @@
 # This file contains the translation of the following modules:
 # * account_accountant
 # 
+# Translators:
+# Martin Trigaux, 2018
+# Birgir Steinarsson <biggboss83@gmail.com>, 2018
+# Bjorn Ingvarsson <boi@exigo.is>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
 "PO-Revision-Date: 2018-08-24 11:36+0000\n"
+"Last-Translator: Bjorn Ingvarsson <boi@exigo.is>, 2018\n"
 "Language-Team: Icelandic (https://www.transifex.com/odoo/teams/41243/is/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -49,7 +55,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_partner_view_form
 msgid "Accounting"
-msgstr ""
+msgstr "Fjárhagsbókhald"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__use_anglo_saxon
@@ -64,7 +70,7 @@ msgstr ""
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
 msgid "Cancel"
-msgstr ""
+msgstr "Hætta við"
 
 #. module: account_accountant
 #: model:ir.model,name:account_accountant.model_account_change_lock_date
@@ -79,12 +85,12 @@ msgstr ""
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Búið til af"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Stofnað þann"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
@@ -99,7 +105,7 @@ msgstr ""
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Nafn"
 
 #. module: account_accountant
 #: code:addons/account_accountant/models/digest.py:16
@@ -126,7 +132,7 @@ msgstr ""
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__id
 msgid "ID"
-msgstr ""
+msgstr "Auðkenni"
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_res_config_settings__transfer_account_id
@@ -134,6 +140,8 @@ msgid ""
 "Intermediary account used when moving money from a liquidity account to "
 "another"
 msgstr ""
+"Intermediary account used when moving money from a liquidity account to "
+"another"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_digest_digest__kpi_account_bank_cash_value
@@ -148,17 +156,17 @@ msgstr ""
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Síðast breytt þann"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Síðast uppfært af"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Síðast uppfært þann"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
@@ -170,7 +178,7 @@ msgstr ""
 #: code:addons/account_accountant/static/src/js/tour.js:130
 #, python-format
 msgid "Let's start with a new customer invoice."
-msgstr ""
+msgstr "Let's start with a new customer invoice."
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__fiscalyear_lock_date
@@ -182,7 +190,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__period_lock_date
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__period_lock_date
 msgid "Lock Date for Non-Advisers"
-msgstr ""
+msgstr "Lock Date for Non-Advisers"
 
 #. module: account_accountant
 #: model:ir.ui.menu,name:account_accountant.menu_action_change_lock_date
@@ -201,6 +209,8 @@ msgid ""
 "No users, including Advisers, can edit accounts prior to and inclusive of "
 "this date. Use it for fiscal year locking for example."
 msgstr ""
+"No users, including Advisers, can edit accounts prior to and inclusive of "
+"this date. Use it for fiscal year locking for example."
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_res_config_settings__period_lock_date
@@ -209,6 +219,9 @@ msgid ""
 "of this date. Use it for period locking inside an open fiscal year, for "
 "example."
 msgstr ""
+"Only users with the 'Adviser' role can edit accounts prior to and inclusive "
+"of this date. Use it for period locking inside an open fiscal year, for "
+"example."
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_account_change_lock_date__period_lock_date
@@ -236,6 +249,8 @@ msgid ""
 "Ready to discover your new favorite <b>accounting app</b>? Get started by "
 "clicking here."
 msgstr ""
+"Ready to discover your new favorite <b>accounting app</b>? Get started by "
+"clicking here."
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
@@ -245,7 +260,7 @@ msgstr ""
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
 msgid "Save"
-msgstr ""
+msgstr "Vista"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
@@ -257,7 +272,7 @@ msgstr ""
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__transfer_account_id
 msgid "Transfer Account"
-msgstr ""
+msgstr "Transfer Account"
 
 #. module: account_accountant
 #. openerp-web
@@ -267,6 +282,8 @@ msgid ""
 "Use the path to quickly click back to <b>previous screens</b>, without "
 "reloading the page."
 msgstr ""
+"Use the path to quickly click back to <b>previous screens</b>, without "
+"reloading the page."
 
 #. module: account_accountant
 #. openerp-web
@@ -276,3 +293,5 @@ msgid ""
 "Your reports are available in real time. <i>No need to close a fiscal year "
 "to get a Profit &amp; Loss statement or view the Balance Sheet.</i>"
 msgstr ""
+"Your reports are available in real time. <i>No need to close a fiscal year "
+"to get a Profit &amp; Loss statement or view the Balance Sheet.</i>"

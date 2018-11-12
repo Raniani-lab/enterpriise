@@ -2,12 +2,18 @@
 # This file contains the translation of the following modules:
 # * currency_rate_live
 # 
+# Translators:
+# Martin Trigaux, 2018
+# krnkris, 2018
+# Ákos Nagy <akos.nagy@oregional.hu>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-08 07:14+0000\n"
 "PO-Revision-Date: 2018-08-24 11:37+0000\n"
+"Last-Translator: Ákos Nagy <akos.nagy@oregional.hu>, 2018\n"
 "Language-Team: Hungarian (https://www.transifex.com/odoo/teams/41243/hu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,7 +29,7 @@ msgstr ""
 #. module: currency_rate_live
 #: model:ir.model,name:currency_rate_live.model_res_company
 msgid "Companies"
-msgstr ""
+msgstr "Vállalatok"
 
 #. module: currency_rate_live
 #: model:ir.model,name:currency_rate_live.model_res_config_settings
@@ -40,7 +46,7 @@ msgstr ""
 #. module: currency_rate_live
 #: selection:res.company,currency_interval_unit:0
 msgid "Daily"
-msgstr ""
+msgstr "Naponta"
 
 #. module: currency_rate_live
 #: model:res.company,overdue_msg:currency_rate_live.res_company_company_1
@@ -55,11 +61,23 @@ msgid ""
 "Thank you in advance for your cooperation.\n"
 "Best Regards,"
 msgstr ""
+"Tisztelt Hölgyem/Uram,\n"
+"\n"
+"Adataink szerint, az Önök részéről kiegyenlítetlen számláink vannak. Kérjük tekintsék meg a lenti részleteket.\n"
+"Ha időközben kiegyenlítették azokat, akkor tekintsék levelünket tárgytalannak. Egyéb esetben, kérjük Önöket az elmaradt\n"
+"számláink kiegyenlítésére.\n"
+"Egyéb felmerülő kérdésekben állunk szíves rendelkezésükre, kérjük keressenek fel bennünket.\n"
+"\n"
+"Az áru ellenértékének teljes kiegyenlítéséig az áru az Eladó tulajdona, az sem fedezetül sem zálogul nem szolgálhat,\n"
+"el nem tulajdonítható.\n"
+"\n"
+"Előre köszönjük együttműködésüket.\n"
+"Tisztelettel,"
 
 #. module: currency_rate_live
 #: selection:res.company,currency_provider:0
 msgid "European Central Bank"
-msgstr ""
+msgstr "Európai Központi Bank"
 
 #. module: currency_rate_live
 #: selection:res.company,currency_provider:0
@@ -69,13 +87,13 @@ msgstr ""
 #. module: currency_rate_live
 #: model_terms:ir.ui.view,arch_db:currency_rate_live.res_config_settings_view_form
 msgid "Interval"
-msgstr ""
+msgstr "Intervallum"
 
 #. module: currency_rate_live
 #: model:ir.model.fields,field_description:currency_rate_live.field_res_company__currency_interval_unit
 #: model:ir.model.fields,field_description:currency_rate_live.field_res_config_settings__currency_interval_unit
 msgid "Interval Unit"
-msgstr ""
+msgstr "Időköz egysége"
 
 #. module: currency_rate_live
 #: model:ir.model.fields,field_description:currency_rate_live.field_res_company__last_currency_sync_date
@@ -87,7 +105,7 @@ msgstr ""
 #. module: currency_rate_live
 #: selection:res.company,currency_interval_unit:0
 msgid "Manually"
-msgstr ""
+msgstr "Manuális"
 
 #. module: currency_rate_live
 #: selection:res.company,currency_provider:0
@@ -97,13 +115,13 @@ msgstr ""
 #. module: currency_rate_live
 #: selection:res.company,currency_interval_unit:0
 msgid "Monthly"
-msgstr ""
+msgstr "Havi"
 
 #. module: currency_rate_live
 #: model:ir.model.fields,field_description:currency_rate_live.field_res_company__currency_next_execution_date
 #: model:ir.model.fields,field_description:currency_rate_live.field_res_config_settings__currency_next_execution_date
 msgid "Next Execution Date"
-msgstr ""
+msgstr "A következő végrehajtás dátuma"
 
 #. module: currency_rate_live
 #: model_terms:ir.ui.view,arch_db:currency_rate_live.res_config_settings_view_form
@@ -113,13 +131,13 @@ msgstr ""
 #. module: currency_rate_live
 #: model_terms:ir.ui.view,arch_db:currency_rate_live.res_config_settings_view_form
 msgid "Service"
-msgstr ""
+msgstr "Szolgáltatás"
 
 #. module: currency_rate_live
 #: model:ir.model.fields,field_description:currency_rate_live.field_res_company__currency_provider
 #: model:ir.model.fields,field_description:currency_rate_live.field_res_config_settings__currency_provider
 msgid "Service Provider"
-msgstr ""
+msgstr "Szolgáltató"
 
 #. module: currency_rate_live
 #: code:addons/currency_rate_live/models/res_config_settings.py:387
@@ -144,11 +162,13 @@ msgid ""
 "Unable to connect to the online exchange rate platform. The web service may "
 "be temporary down. Please try again in a moment."
 msgstr ""
+"Nem tud az online árfolyam állományhoz kapcsolódni. A web szolgáltatás "
+"lehet, hogy átmenetileg nem üzemel. Kérem próbálja meg ismét."
 
 #. module: currency_rate_live
 #: selection:res.company,currency_interval_unit:0
 msgid "Weekly"
-msgstr ""
+msgstr "Hetente"
 
 #. module: currency_rate_live
 #: selection:res.company,currency_provider:0

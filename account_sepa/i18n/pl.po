@@ -40,7 +40,7 @@ msgstr "Firmy"
 #. module: account_sepa
 #: model:ir.model,name:account_sepa.model_res_config_settings
 msgid "Config Settings"
-msgstr ""
+msgstr "Ustawienia konfiguracji"
 
 #. module: account_sepa
 #: model:ir.model,name:account_sepa.model_account_abstract_payment

@@ -2,12 +2,19 @@
 # This file contains the translation of the following modules:
 # * iot
 # 
+# Translators:
+# Martin Trigaux, 2018
+# krnkris, 2018
+# gezza <geza.nagy@oregional.hu>, 2018
+# Ákos Nagy <akos.nagy@oregional.hu>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-08 07:14+0000\n"
 "PO-Revision-Date: 2018-08-24 09:20+0000\n"
+"Last-Translator: Ákos Nagy <akos.nagy@oregional.hu>, 2018\n"
 "Language-Team: Hungarian (https://www.transifex.com/odoo/teams/41243/hu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -34,7 +41,7 @@ msgstr ""
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_trigger__action
 msgid "Action"
-msgstr ""
+msgstr "Akció"
 
 #. module: iot
 #: model:ir.model,name:iot.model_add_iot_box
@@ -54,7 +61,7 @@ msgstr ""
 #. module: iot
 #: selection:iot.trigger,action:0
 msgid "Cancel"
-msgstr ""
+msgstr "Mégsem"
 
 #. module: iot
 #: model_terms:ir.actions.act_window,help:iot.iot_box_action
@@ -102,7 +109,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:iot.field_iot_device__create_uid
 #: model:ir.model.fields,field_description:iot.field_iot_trigger__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Létrehozta"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_add_iot_box__create_date
@@ -110,7 +117,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:iot.field_iot_device__create_date
 #: model:ir.model.fields,field_description:iot.field_iot_trigger__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Létrehozva"
 
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.view_add_iot_box
@@ -134,7 +141,7 @@ msgstr ""
 #: model:ir.ui.menu,name:iot.iot_device_menu_action
 #: model_terms:ir.ui.view,arch_db:iot.iot_box_view_form
 msgid "Devices"
-msgstr ""
+msgstr "Eszközök"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_add_iot_box__display_name
@@ -142,7 +149,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:iot.field_iot_device__display_name
 #: model:ir.model.fields,field_description:iot.field_iot_trigger__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Megjelenített név"
 
 #. module: iot
 #: selection:iot.trigger,action:0
@@ -152,7 +159,7 @@ msgstr ""
 #. module: iot
 #: selection:iot.trigger,action:0
 msgid "Finish"
-msgstr ""
+msgstr "Befejezve"
 
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.view_add_iot_box
@@ -162,7 +169,7 @@ msgstr ""
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_search
 msgid "Group By"
-msgstr ""
+msgstr "Csoportosítás ezzel"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_add_iot_box__id
@@ -170,7 +177,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:iot.field_iot_device__id
 #: model:ir.model.fields,field_description:iot.field_iot_trigger__id
 msgid "ID"
-msgstr ""
+msgstr "Azonosító"
 
 #. module: iot
 #: model:ir.model,name:iot.model_iot_device
@@ -185,12 +192,12 @@ msgstr ""
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_box__ip
 msgid "IP Address"
-msgstr ""
+msgstr "IP cím"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_device__identifier
 msgid "Identifier"
-msgstr ""
+msgstr "Azonosító"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_box__identifier
@@ -229,7 +236,7 @@ msgstr ""
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_trigger__key
 msgid "Key"
-msgstr ""
+msgstr "Kulcs"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_add_iot_box____last_update
@@ -237,7 +244,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:iot.field_iot_device____last_update
 #: model:ir.model.fields,field_description:iot.field_iot_trigger____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Legutóbb frissítve"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_add_iot_box__write_uid
@@ -245,7 +252,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:iot.field_iot_device__write_uid
 #: model:ir.model.fields,field_description:iot.field_iot_trigger__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Legutóbb frissítette"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_add_iot_box__write_date
@@ -253,23 +260,23 @@ msgstr ""
 #: model:ir.model.fields,field_description:iot.field_iot_device__write_date
 #: model:ir.model.fields,field_description:iot.field_iot_trigger__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Legutóbb frissítve "
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_box__name
 #: model:ir.model.fields,field_description:iot.field_iot_device__name
 msgid "Name"
-msgstr ""
+msgstr "Név"
 
 #. module: iot
 #: selection:iot.device,connection:0
 msgid "Network"
-msgstr ""
+msgstr "Hálózat"
 
 #. module: iot
 #: selection:iot.trigger,action:0
 msgid "Next"
-msgstr ""
+msgstr "Következő"
 
 #. module: iot
 #: model_terms:ir.actions.act_window,help:iot.iot_box_action
@@ -279,12 +286,12 @@ msgstr ""
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.view_add_iot_box
 msgid "OK"
-msgstr ""
+msgstr "Ok"
 
 #. module: iot
 #: selection:iot.trigger,action:0
 msgid "Pack"
-msgstr ""
+msgstr "Csomag"
 
 #. module: iot
 #: selection:iot.trigger,action:0
@@ -294,7 +301,7 @@ msgstr ""
 #. module: iot
 #: selection:iot.trigger,action:0
 msgid "Pause"
-msgstr ""
+msgstr "Szünet"
 
 #. module: iot
 #: selection:iot.trigger,action:0
@@ -319,7 +326,7 @@ msgstr ""
 #. module: iot
 #: selection:iot.device,type:0
 msgid "Printer"
-msgstr ""
+msgstr "Nyomtató"
 
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_view_form
@@ -339,12 +346,12 @@ msgstr ""
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.act_report_xml_view_tree_iot
 msgid "Report xml"
-msgstr ""
+msgstr "Kimutatás xml"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_device__report_ids
 msgid "Reports"
-msgstr ""
+msgstr "Riportok"
 
 #. module: iot
 #. openerp-web
@@ -361,7 +368,7 @@ msgstr ""
 #. module: iot
 #: selection:iot.trigger,action:0
 msgid "Scrap"
-msgstr ""
+msgstr "Hulladék"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_box__screen_url
@@ -371,12 +378,12 @@ msgstr ""
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_trigger__sequence
 msgid "Sequence"
-msgstr ""
+msgstr "Sorszám"
 
 #. module: iot
 #: selection:iot.trigger,action:0
 msgid "Skip"
-msgstr ""
+msgstr "Kihagy"
 
 #. module: iot
 #. openerp-web
@@ -410,7 +417,7 @@ msgstr ""
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_device__type
 msgid "Type"
-msgstr ""
+msgstr "Típus"
 
 #. module: iot
 #: model:ir.model.fields,help:iot.field_iot_device__connection
@@ -435,7 +442,7 @@ msgstr ""
 #. module: iot
 #: selection:iot.trigger,action:0
 msgid "Validate"
-msgstr ""
+msgstr "Jóváhagyás"
 
 #. module: iot
 #: model:ir.model.fields,help:iot.field_ir_actions_report__device_id

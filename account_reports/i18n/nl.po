@@ -196,7 +196,7 @@ msgid ""
 "            Account:"
 msgstr ""
 "<span class=\"fa fa-user\"/>\n"
-"            Account:"
+"            Rekening:"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
@@ -257,7 +257,7 @@ msgstr "Rekeningstelsel sjabloom"
 #: model_terms:ir.ui.view,arch_db:account_reports.view_account_financial_report_form
 #: model_terms:ir.ui.view,arch_db:account_reports.view_account_financial_report_tree
 msgid "Account Report"
-msgstr "account rapport"
+msgstr "Boekhoudrapoorten"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_financial_html_report_line
@@ -1938,7 +1938,7 @@ msgstr "Opslaan"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.main_template
 msgid "Search account"
-msgstr "Zoek account"
+msgstr "Zoek rekening"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_financial_html_report_line__name

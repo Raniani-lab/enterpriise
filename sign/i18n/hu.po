@@ -2,12 +2,21 @@
 # This file contains the translation of the following modules:
 # * sign
 # 
+# Translators:
+# Tamás Dombos, 2018
+# Martin Trigaux, 2018
+# krnkris, 2018
+# gezza <geza.nagy@oregional.hu>, 2018
+# Ákos Nagy <akos.nagy@oregional.hu>, 2018
+# Attila Szöllősi <ata@openmailbox.org>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-27 08:43+0000\n"
 "PO-Revision-Date: 2018-08-24 11:48+0000\n"
+"Last-Translator: Attila Szöllősi <ata@openmailbox.org>, 2018\n"
 "Language-Team: Hungarian (https://www.transifex.com/odoo/teams/41243/hu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -123,24 +132,24 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_needaction
 msgid "Action Needed"
-msgstr ""
+msgstr "Művelet szükséges"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__active
 #: model:ir.model.fields,field_description:sign.field_sign_template__active
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_search
 msgid "Active"
-msgstr ""
+msgstr "Aktív"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__activity_ids
 msgid "Activities"
-msgstr ""
+msgstr "Tevékenységek"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__activity_state
 msgid "Activity State"
-msgstr ""
+msgstr "Tevékenység állapota"
 
 #. module: sign
 #. openerp-web
@@ -181,18 +190,18 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_kanban
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
 msgid "Archive"
-msgstr ""
+msgstr "Archiválás"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_search
 msgid "Archived"
-msgstr ""
+msgstr "Archivált"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__attachment_id
 msgid "Attachment"
-msgstr ""
+msgstr "Melléklet"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_attachment_count
@@ -204,7 +213,7 @@ msgstr ""
 #: code:addons/sign/static/src/xml/sign_common.xml:38
 #, python-format
 msgid "Auto"
-msgstr ""
+msgstr "Automata"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item_type__auto_field
@@ -214,7 +223,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_kanban
 msgid "Avatar"
-msgstr ""
+msgstr "Avatár"
 
 #. module: sign
 #. openerp-web
@@ -235,24 +244,24 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.sign_send_request_view_form
 #, python-format
 msgid "Cancel"
-msgstr ""
+msgstr "Mégsem"
 
 #. module: sign
 #: selection:sign.request,state:0
 msgid "Canceled"
-msgstr ""
+msgstr "Törölve"
 
 #. module: sign
 #: model:sign.item.type,name:sign.sign_item_type_checkbox
 #: selection:sign.item.type,type:0
 msgid "Checkbox"
-msgstr ""
+msgstr "Jelölő négyzet"
 
 #. module: sign
 #: model:ir.actions.act_window,name:sign.sign_template_action
 #: model:ir.actions.act_window,name:sign.sign_template_with_archived_action
 msgid "Choose a Template"
-msgstr ""
+msgstr "Válasszon egy sablont"
 
 #. module: sign
 #. openerp-web
@@ -271,29 +280,29 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_share_view_form
 msgid "Close"
-msgstr ""
+msgstr "Bezárás"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__color
 #: model:ir.model.fields,field_description:sign.field_sign_template__color
 msgid "Color"
-msgstr ""
+msgstr "Szín"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template_tag__color
 msgid "Color Index"
-msgstr ""
+msgstr "Színjegyzék"
 
 #. module: sign
 #: model:sign.item.role,name:sign.sign_item_role_company
 #: model:sign.item.type,name:sign.sign_item_type_company
 msgid "Company"
-msgstr ""
+msgstr "Vállalat"
 
 #. module: sign
 #: selection:sign.request.item,state:0
 msgid "Completed"
-msgstr ""
+msgstr "Befejezve"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__completed_document
@@ -308,12 +317,12 @@ msgstr ""
 #. module: sign
 #: model:ir.ui.menu,name:sign.menu_sign_configuration
 msgid "Configuration"
-msgstr ""
+msgstr "Konfiguráció"
 
 #. module: sign
 #: model:ir.model,name:sign.model_res_partner
 msgid "Contact"
-msgstr ""
+msgstr "Kapcsolattartó"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__follower_ids
@@ -325,7 +334,7 @@ msgstr ""
 #: code:addons/sign/static/src/js/sign_common.js:326
 #, python-format
 msgid "Create: \""
-msgstr ""
+msgstr "Létrehoz: \""
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__create_uid
@@ -341,7 +350,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_template_share__create_uid
 #: model:ir.model.fields,field_description:sign.field_sign_template_tag__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Létrehozta"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__create_date
@@ -357,12 +366,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_template_share__create_date
 #: model:ir.model.fields,field_description:sign.field_sign_template_tag__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Létrehozva"
 
 #. module: sign
 #: model:sign.item.role,name:sign.sign_item_role_customer
 msgid "Customer"
-msgstr ""
+msgstr "Vevő"
 
 #. module: sign
 #. openerp-web
@@ -374,7 +383,7 @@ msgstr ""
 #. module: sign
 #: model:sign.item.type,name:sign.sign_item_type_date
 msgid "Date"
-msgstr ""
+msgstr "Dátum"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item_type__default_height
@@ -390,12 +399,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_kanban
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
 msgid "Delete"
-msgstr ""
+msgstr "Törlés"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_kanban
 msgid "Details"
-msgstr ""
+msgstr "Részletek"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_res_users__sign_signature
@@ -405,7 +414,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.res_users_view_form
 msgid "Digital Signatures"
-msgstr ""
+msgstr "Digitális aláírás"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_res_users__sign_initials
@@ -415,12 +424,12 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_send_copy_view_form
 msgid "Discard"
-msgstr ""
+msgstr "Elvetés"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_item_view_form
 msgid "Display"
-msgstr ""
+msgstr "Megjelenítés"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__display_name
@@ -436,17 +445,17 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_template_share__display_name
 #: model:ir.model.fields,field_description:sign.field_sign_template_tag__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Megjelenített név"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_form
 msgid "Document"
-msgstr ""
+msgstr "Dokumentum"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__page
 msgid "Document Page"
-msgstr ""
+msgstr "Documentum oldal"
 
 #. module: sign
 #. openerp-web
@@ -480,7 +489,7 @@ msgstr ""
 #. module: sign
 #: selection:sign.request.item,state:0
 msgid "Draft"
-msgstr ""
+msgstr "Tervezet"
 
 #. module: sign
 #. openerp-web
@@ -507,7 +516,7 @@ msgstr ""
 #: code:addons/sign/static/src/xml/sign_backend.xml:45
 #, python-format
 msgid "Duplicate"
-msgstr ""
+msgstr "Duplikálás"
 
 #. module: sign
 #. openerp-web
@@ -519,7 +528,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
 msgid "Edit"
-msgstr ""
+msgstr "Szerkesztés"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
@@ -542,12 +551,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__signer_email
 #: model:sign.item.type,name:sign.sign_item_type_email
 msgid "Email"
-msgstr ""
+msgstr "E-mail"
 
 #. module: sign
 #: model:sign.item.role,name:sign.sign_item_role_employee
 msgid "Employee"
-msgstr ""
+msgstr "Alkalmazott"
 
 #. module: sign
 #. openerp-web
@@ -558,7 +567,7 @@ msgstr ""
 #: code:addons/sign/static/src/js/sign_common.js:1158
 #, python-format
 msgid "Error"
-msgstr ""
+msgstr "Hiba"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__extension
@@ -579,7 +588,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_item_type__name
 #, python-format
 msgid "Field Name"
-msgstr ""
+msgstr "Név mező"
 
 #. module: sign
 #: model:ir.ui.menu,name:sign.sign_item_type_menu
@@ -594,13 +603,13 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__datas
 msgid "File Content"
-msgstr ""
+msgstr "Fájltartalom"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__reference
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__filename
 msgid "Filename"
-msgstr ""
+msgstr "Fájlnév"
 
 #. module: sign
 #. openerp-web
@@ -608,34 +617,34 @@ msgstr ""
 #: code:addons/sign/static/src/js/sign_common.js:842
 #, python-format
 msgid "Final Validation"
-msgstr ""
+msgstr "Végső ellenőrzés"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_follower_ids
 msgid "Followers"
-msgstr ""
+msgstr "Követők"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_channel_ids
 msgid "Followers (Channels)"
-msgstr ""
+msgstr "Követők (Csatornák)"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_partner_ids
 msgid "Followers (Partners)"
-msgstr ""
+msgstr "Követők (Partnerek)"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign._doc_sign
 msgid "From:"
-msgstr ""
+msgstr "Feladó:"
 
 #. module: sign
 #. openerp-web
 #: code:addons/sign/static/src/xml/sign_common.xml:28
 #, python-format
 msgid "Full Name"
-msgstr ""
+msgstr "Teljes név"
 
 #. module: sign
 #: selection:sign.request,state:0
@@ -655,12 +664,12 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "Group By"
-msgstr ""
+msgstr "Csoportosítás ezzel"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__height
 msgid "Height"
-msgstr ""
+msgstr "Magasság"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__id
@@ -676,17 +685,17 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_template_share__id
 #: model:ir.model.fields,field_description:sign.field_sign_template_tag__id
 msgid "ID"
-msgstr ""
+msgstr "Azonosító"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__message_unread
 msgid "If checked new messages require your attention."
-msgstr ""
+msgstr "Ha be van jelölve, akkor figyelje az új üzeneteket."
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr ""
+msgstr "Ha be van jelölve, akkor figyelje az új üzeneteket."
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__message_has_error
@@ -702,7 +711,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_item_view_form
 msgid "Information"
-msgstr ""
+msgstr "Információ"
 
 #. module: sign
 #: selection:sign.item.type,type:0
@@ -717,7 +726,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_is_follower
 msgid "Is Follower"
-msgstr ""
+msgstr "Ő egy követő"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template_share__is_one_responsible
@@ -748,7 +757,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_template_share____last_update
 #: model:ir.model.fields,field_description:sign.field_sign_template_tag____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Legutóbb frissítve"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__write_uid
@@ -764,7 +773,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_template_share__write_uid
 #: model:ir.model.fields,field_description:sign.field_sign_template_tag__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Legutóbb frissítette"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__write_date
@@ -780,7 +789,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_template_share__write_date
 #: model:ir.model.fields,field_description:sign.field_sign_template_tag__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Legutóbb frissítve "
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
@@ -802,12 +811,12 @@ msgstr ""
 #: code:addons/sign/static/src/xml/sign_common.xml:39
 #, python-format
 msgid "Load"
-msgstr ""
+msgstr "Betöltés"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.doc_sign
 msgid "Logo"
-msgstr ""
+msgstr "Logó"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__longitude
@@ -829,7 +838,7 @@ msgstr ""
 #. module: sign
 #: model:res.groups,name:sign.group_sign_manager
 msgid "Manager"
-msgstr ""
+msgstr "Menedzser"
 
 #. module: sign
 #. openerp-web
@@ -841,7 +850,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__message
 msgid "Message"
-msgstr ""
+msgstr "Üzenet"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_has_error
@@ -851,7 +860,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_ids
 msgid "Messages"
-msgstr ""
+msgstr "Üzenetek"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.deleted_sign_request
@@ -861,7 +870,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__sms_number
 msgid "Mobile"
-msgstr ""
+msgstr "Mobilszám"
 
 #. module: sign
 #: selection:sign.item.type,type:0
@@ -888,7 +897,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_search
 msgid "My Favorites"
-msgstr ""
+msgstr "Kedvenceim"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_search
@@ -900,7 +909,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_template__name
 #: model:sign.item.type,name:sign.sign_item_type_name
 msgid "Name"
-msgstr ""
+msgstr "Név"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_send_request_view_form
@@ -930,7 +939,7 @@ msgstr ""
 #: code:addons/sign/static/src/js/sign_backend.js:122
 #, python-format
 msgid "New Template"
-msgstr ""
+msgstr "Új sablon"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__activity_date_deadline
@@ -940,7 +949,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__activity_summary
 msgid "Next Activity Summary"
-msgstr ""
+msgstr "Következő tevékenység összegzése"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__activity_type_id
@@ -966,7 +975,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_needaction_counter
 msgid "Number of Actions"
-msgstr ""
+msgstr "Műveletek száma"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_has_error_counter
@@ -976,7 +985,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__message_needaction_counter
 msgid "Number of messages which requires an action"
-msgstr ""
+msgstr "Üzenetek száma, melyek akciót igényelnek"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__message_has_error_counter
@@ -986,24 +995,24 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__message_unread_counter
 msgid "Number of unread messages"
-msgstr ""
+msgstr "Olvasatlan üzenetek száma"
 
 #. module: sign
 #: model:res.groups,name:sign.group_sign_user
 msgid "Officer"
-msgstr ""
+msgstr "Hivatalnok"
 
 #. module: sign
 #. openerp-web
 #: code:addons/sign/static/src/js/sign_backend.js:1027
 #, python-format
 msgid "Ok"
-msgstr ""
+msgstr "Ok"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_share_view_form
 msgid "Open"
-msgstr ""
+msgstr "Megnyitás"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__redirect_url
@@ -1030,13 +1039,13 @@ msgstr ""
 #. module: sign
 #: selection:sign.request,activity_state:0
 msgid "Overdue"
-msgstr ""
+msgstr "lejárt"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__partner_id
 #: model:ir.model.fields,field_description:sign.field_sign_send_request_signer__partner_id
 msgid "Partner"
-msgstr ""
+msgstr "Partner"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_item_type__auto_field
@@ -1046,7 +1055,7 @@ msgstr ""
 #. module: sign
 #: model:sign.item.type,name:sign.sign_item_type_phone
 msgid "Phone"
-msgstr ""
+msgstr "Telefon"
 
 #. module: sign
 #. openerp-web
@@ -1090,7 +1099,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_form
 msgid "Preview"
-msgstr ""
+msgstr "Előnézet"
 
 #. module: sign
 #. openerp-web
@@ -1102,12 +1111,12 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__progress
 msgid "Progress"
-msgstr ""
+msgstr "Előrehaladás"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_send_copy__request_id
 msgid "Request"
-msgstr ""
+msgstr "Üzenet"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__request_item_infos
@@ -1136,7 +1145,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__required
 msgid "Required"
-msgstr ""
+msgstr "Követelmény"
 
 #. module: sign
 #. openerp-web
@@ -1167,7 +1176,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_item__responsible_id
 #, python-format
 msgid "Responsible"
-msgstr ""
+msgstr "Felelős"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__responsible_count
@@ -1177,19 +1186,19 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__activity_user_id
 msgid "Responsible User"
-msgstr ""
+msgstr "Felelős felhasználó"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_kanban
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
 msgid "Restore"
-msgstr ""
+msgstr "Visszaállít"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__role_id
 #: model:ir.model.fields,field_description:sign.field_sign_send_request_signer__role_id
 msgid "Role"
-msgstr ""
+msgstr "Szerep"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_item_role_view_tree
@@ -1229,7 +1238,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_request__access_token
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__access_token
 msgid "Security Token"
-msgstr ""
+msgstr "Biztonsági token"
 
 #. module: sign
 #. openerp-web
@@ -1254,7 +1263,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
 #, python-format
 msgid "Send"
-msgstr ""
+msgstr "Küldés"
 
 #. module: sign
 #. openerp-web
@@ -1309,7 +1318,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
 #, python-format
 msgid "Share"
-msgstr ""
+msgstr "Megosztás"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__share_link
@@ -1320,6 +1329,8 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "Show all records which has next action date is before today"
 msgstr ""
+"Mutassa az összes rekordot melyre a következő műveleti dátum a mai nap "
+"előtti"
 
 #. module: sign
 #. openerp-web
@@ -1389,7 +1400,7 @@ msgstr ""
 #: selection:sign.item.type,type:0
 #, python-format
 msgid "Signature"
-msgstr ""
+msgstr "Aláírás"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item_value__sign_item_id
@@ -1543,7 +1554,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_request__state
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__state
 msgid "State"
-msgstr ""
+msgstr "Állam / megye"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__activity_state
@@ -1559,28 +1570,28 @@ msgstr ""
 #: code:addons/sign/static/src/xml/sign_common.xml:47
 #, python-format
 msgid "Styles"
-msgstr ""
+msgstr "Stílusok"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__subject
 msgid "Subject"
-msgstr ""
+msgstr "Tárgy"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template_tag__name
 msgid "Tag Name"
-msgstr ""
+msgstr "Címke neve"
 
 #. module: sign
 #: sql_constraint:sign.template.tag:0
 msgid "Tag name already exists !"
-msgstr ""
+msgstr "A címkenév már létezik!"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__tag_ids
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_form
 msgid "Tags"
-msgstr ""
+msgstr "Címkék"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__template_id
@@ -1588,7 +1599,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_template_share__template_id
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "Template"
-msgstr ""
+msgstr "Sablon"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
@@ -1598,13 +1609,13 @@ msgstr ""
 #. module: sign
 #: model:ir.ui.menu,name:sign.sign_template_menu
 msgid "Templates"
-msgstr ""
+msgstr "Sablonok"
 
 #. module: sign
 #: model:sign.item.type,name:sign.sign_item_type_text
 #: selection:sign.item.type,type:0
 msgid "Text"
-msgstr ""
+msgstr "Szöveg"
 
 #. module: sign
 #. openerp-web
@@ -1635,7 +1646,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item_type__tip
 msgid "Tip"
-msgstr ""
+msgstr "Borravaló"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
@@ -1645,18 +1656,18 @@ msgstr ""
 #. module: sign
 #: selection:sign.request,activity_state:0
 msgid "Today"
-msgstr ""
+msgstr "Ma"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "Today Activities"
-msgstr ""
+msgstr "Mai napi tevékenységek"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__type_id
 #: model:ir.model.fields,field_description:sign.field_sign_item_type__type
 msgid "Type"
-msgstr ""
+msgstr "Típus"
 
 #. module: sign
 #. openerp-web
@@ -1676,12 +1687,12 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_unread
 msgid "Unread Messages"
-msgstr ""
+msgstr "Olvasatlan üzenetek"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_unread_counter
 msgid "Unread Messages Counter"
-msgstr ""
+msgstr "Olvasatlan üzenetek számlálója"
 
 #. module: sign
 #: model_terms:ir.actions.act_window,help:sign.sign_template_action
@@ -1699,14 +1710,14 @@ msgstr ""
 #. module: sign
 #: model:ir.model,name:sign.model_res_users
 msgid "Users"
-msgstr ""
+msgstr "Felhasználók"
 
 #. module: sign
 #. openerp-web
 #: code:addons/sign/static/src/xml/sign_backend.xml:27
 #, python-format
 msgid "Validate"
-msgstr ""
+msgstr "Jóváhagyás"
 
 #. module: sign
 #. openerp-web
@@ -1723,7 +1734,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item_value__value
 msgid "Value"
-msgstr ""
+msgstr "Érték"
 
 #. module: sign
 #. openerp-web
@@ -1766,7 +1777,7 @@ msgstr ""
 #: code:addons/sign/static/src/js/sign_common.js:1080
 #, python-format
 msgid "Warning"
-msgstr ""
+msgstr "Figyelmeztetés"
 
 #. module: sign
 #. openerp-web
@@ -1778,17 +1789,17 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__website_message_ids
 msgid "Website Messages"
-msgstr ""
+msgstr "Weboldal üzenetek"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__website_message_ids
 msgid "Website communication history"
-msgstr ""
+msgstr "Weboldal  kommunikáció történet"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__width
 msgid "Width"
-msgstr ""
+msgstr "Szélesség"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_send_request_view_form

@@ -8,7 +8,7 @@
 # José Gomes <jg@opencloud.pro>, 2018
 # Martin Trigaux, 2018
 # Cristina Loureiro <cloureiro@live.com>, 2018
-# MS, 2018
+# MS <manuelarodsilva@gmail.com>, 2018
 # Nuno Silva <nuno.silva@arxi.pt>, 2018
 # Diogo Fonseca <dsf@thinkopensolutions.pt>, 2018
 # 
@@ -965,7 +965,7 @@ msgstr "Reunião"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_has_error
 msgid "Message Delivery error"
-msgstr ""
+msgstr "Gerir erro de entrega"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_ids

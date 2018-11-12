@@ -2,12 +2,20 @@
 # This file contains the translation of the following modules:
 # * account_batch_payment
 # 
+# Translators:
+# Martin Trigaux, 2018
+# krnkris, 2018
+# gezza <geza.nagy@oregional.hu>, 2018
+# Kovács Tibor <kovika@gmail.com>, 2018
+# Ákos Nagy <akos.nagy@oregional.hu>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
 "PO-Revision-Date: 2018-08-24 11:36+0000\n"
+"Last-Translator: Ákos Nagy <akos.nagy@oregional.hu>, 2018\n"
 "Language-Team: Hungarian (https://www.transifex.com/odoo/teams/41243/hu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -47,7 +55,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__amount
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.print_batch_payment
 msgid "Amount"
-msgstr ""
+msgstr "Összeg"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__available_payment_method_ids
@@ -57,12 +65,12 @@ msgstr ""
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__journal_id
 msgid "Bank"
-msgstr ""
+msgstr "Bank"
 
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_search
 msgid "Bank Journal"
-msgstr ""
+msgstr "Banki napló"
 
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
@@ -73,7 +81,7 @@ msgstr ""
 #: model:account.payment.method,name:account_batch_payment.account_payment_method_batch_deposit
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.account_journal_dashboard_kanban_view_inherited
 msgid "Batch Deposit"
-msgstr ""
+msgstr "Kötegelt befizetés"
 
 #. module: account_batch_payment
 #: model:ir.model,name:account_batch_payment.model_report_account_batch_payment_print_batch_payment
@@ -124,12 +132,12 @@ msgstr ""
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.download_xml_form
 msgid "Close"
-msgstr ""
+msgstr "Bezárás"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__payment_method_code
 msgid "Code"
-msgstr ""
+msgstr "Kód"
 
 #. module: account_batch_payment
 #: code:addons/account_batch_payment/models/account_journal.py:57
@@ -152,13 +160,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_download_wizard__create_uid
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Létrehozta"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_download_wizard__create_date
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Létrehozva"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,help:account_batch_payment.field_account_batch_payment__export_file_create_date
@@ -168,25 +176,25 @@ msgstr ""
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__currency_id
 msgid "Currency"
-msgstr ""
+msgstr "Pénznem"
 
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.print_batch_payment
 msgid "Customer"
-msgstr ""
+msgstr "Vevő"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__date
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.print_batch_payment
 msgid "Date"
-msgstr ""
+msgstr "Dátum"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_download_wizard__display_name
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__display_name
 #: model:ir.model.fields,field_description:account_batch_payment.field_report_account_batch_payment_print_batch_payment__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Megjelenített név"
 
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.download_xml_form
@@ -207,7 +215,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_download_wizard__export_file
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__export_file
 msgid "File"
-msgstr ""
+msgstr "Fájl"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__file_generation_enabled
@@ -217,7 +225,7 @@ msgstr ""
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__export_filename
 msgid "File Name"
-msgstr ""
+msgstr "Fájl neve"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_download_wizard__export_filename
@@ -237,19 +245,19 @@ msgstr ""
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_search
 msgid "Group By"
-msgstr ""
+msgstr "Csoportosítás ezzel"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_download_wizard__id
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__id
 #: model:ir.model.fields,field_description:account_batch_payment.field_report_account_batch_payment_print_batch_payment__id
 msgid "ID"
-msgstr ""
+msgstr "Azonosító"
 
 #. module: account_batch_payment
 #: selection:account.batch.payment,batch_type:0
 msgid "Inbound"
-msgstr ""
+msgstr "Bejövő"
 
 #. module: account_batch_payment
 #: code:addons/account_batch_payment/models/account_journal.py:31
@@ -262,36 +270,36 @@ msgstr ""
 #: code:addons/account_batch_payment/static/src/js/account_batch_payment_reconciliation.js:135
 #, python-format
 msgid "Incorrect Operation"
-msgstr ""
+msgstr "Hibás művelet"
 
 #. module: account_batch_payment
 #: model:ir.model,name:account_batch_payment.model_account_journal
 msgid "Journal"
-msgstr ""
+msgstr "Napló"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_download_wizard____last_update
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment____last_update
 #: model:ir.model.fields,field_description:account_batch_payment.field_report_account_batch_payment_print_batch_payment____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Legutóbb frissítve"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_download_wizard__write_uid
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Legutóbb frissítette"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_download_wizard__write_date
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Legutóbb frissítve "
 
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.print_batch_payment
 msgid "Memo"
-msgstr ""
+msgstr "Emlékeztető"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,help:account_batch_payment.field_account_batch_payment__export_filename
@@ -306,12 +314,12 @@ msgstr ""
 #. module: account_batch_payment
 #: selection:account.batch.payment,state:0
 msgid "New"
-msgstr ""
+msgstr "Új"
 
 #. module: account_batch_payment
 #: selection:account.batch.payment,batch_type:0
 msgid "Outbound"
-msgstr ""
+msgstr "Kimenő"
 
 #. module: account_batch_payment
 #: code:addons/account_batch_payment/models/account_journal.py:17
@@ -322,19 +330,19 @@ msgstr ""
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__payment_method_id
 msgid "Payment Method"
-msgstr ""
+msgstr "Fizetési módszer"
 
 #. module: account_batch_payment
 #: model:ir.model,name:account_batch_payment.model_account_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__payment_ids
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
 msgid "Payments"
-msgstr ""
+msgstr "Vevői befizetések"
 
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
 msgid "Print"
-msgstr ""
+msgstr "Nyomtatás"
 
 #. module: account_batch_payment
 #: model:ir.actions.report,name:account_batch_payment.action_print_batch_payment
@@ -349,17 +357,17 @@ msgstr ""
 #. module: account_batch_payment
 #: selection:account.batch.payment,state:0
 msgid "Reconciled"
-msgstr ""
+msgstr "Egyeztetett"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__name
 msgid "Reference"
-msgstr ""
+msgstr "Hivatkozás"
 
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
 msgid "Register Payment"
-msgstr ""
+msgstr "Kiegyenlítés rögzítése"
 
 #. module: account_batch_payment
 #. openerp-web
@@ -371,7 +379,7 @@ msgstr ""
 #. module: account_batch_payment
 #: selection:account.batch.payment,state:0
 msgid "Sent"
-msgstr ""
+msgstr "Elküldött"
 
 #. module: account_batch_payment
 #. openerp-web
@@ -386,7 +394,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__state
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_search
 msgid "State"
-msgstr ""
+msgstr "Állam / megye"
 
 #. module: account_batch_payment
 #: code:addons/account_batch_payment/models/account_batch_payment.py:88
@@ -417,22 +425,22 @@ msgstr ""
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
 msgid "Total"
-msgstr ""
+msgstr "Összesen"
 
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_search
 msgid "Unreconciled"
-msgstr ""
+msgstr "Egyeztetetlen, könyveletlen"
 
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
 msgid "Validate"
-msgstr ""
+msgstr "Jóváhagyás"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_download_wizard__warning_message
 msgid "Warning"
-msgstr ""
+msgstr "Figyelmeztetés"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,help:account_batch_payment.field_account_batch_download_wizard__warning_message
@@ -449,7 +457,7 @@ msgstr ""
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
 msgid "auto ..."
-msgstr ""
+msgstr "auto ..."
 
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form

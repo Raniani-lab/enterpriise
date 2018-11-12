@@ -208,7 +208,7 @@ msgstr "Firma, dla której faktury mogą skorzystać z mandatu."
 #. module: account_sepa_direct_debit
 #: model:ir.model,name:account_sepa_direct_debit.model_res_config_settings
 msgid "Config Settings"
-msgstr ""
+msgstr "Ustawienia konfiguracji"
 
 #. module: account_sepa_direct_debit
 #: model:ir.model,name:account_sepa_direct_debit.model_res_partner

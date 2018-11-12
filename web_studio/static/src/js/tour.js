@@ -196,7 +196,8 @@ tour.register('web_studio_tests_tour', {
 }, {
     trigger: 'button:contains(Confirm):not(".disabled")',
 },{
-    trigger: 'button:contains(Confirm):not(".disabled")',
+    // wait for modal reloading after adding menu
+    trigger: '.modal-content:has([data-menu-id]:eq(2)) button:contains(Confirm):not(".disabled")',
 }, {
     // check that the Studio menu is still there
     extra_trigger: '.o_web_studio_menu',

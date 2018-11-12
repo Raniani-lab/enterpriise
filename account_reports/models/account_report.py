@@ -1165,7 +1165,10 @@ class AccountReport(models.AbstractModel):
 
             if 'date' in lines[y].get('class', ''):
                 #write the dates with a specific format to avoid them being casted as floats in the XLSX
-                sheet.write_datetime(y + y_offset, 0, lines[y]['name'], date_default_col1_style)
+                if isinstance(lines[y]['name'], (datetime.date, datetime.datetime)):
+                    sheet.write_datetime(y + y_offset, 0, lines[y]['name'], date_default_col1_style)
+                else:
+                    sheet.write(y + y_offset, 0, lines[y]['name'], date_default_col1_style)
             else:
                 #write the first column, with a specific style to manage the indentation
                 sheet.write(y + y_offset, 0, lines[y]['name'], col1_style)
@@ -1176,7 +1179,10 @@ class AccountReport(models.AbstractModel):
                 if 'date' in lines[y]['columns'][x - 1].get('class', ''):
                     #write the dates with a specific format to avoid them being casted as floats in the XLSX
                     this_cell_style = date_default_style
-                    sheet.write_datetime(y + y_offset, x + lines[y].get('colspan', 1) - 1, lines[y]['columns'][x - 1].get('name', ''), this_cell_style)
+                    if isinstance(lines[y]['columns'][x - 1].get('name', ''), (datetime.date, datetime.datetime)):
+                        sheet.write_datetime(y + y_offset, x + lines[y].get('colspan', 1) - 1, lines[y]['columns'][x - 1].get('name', ''), this_cell_style)
+                    else:
+                        sheet.write(y + y_offset, x + lines[y].get('colspan', 1) - 1, lines[y]['columns'][x - 1].get('name', ''), this_cell_style)
                 else:
                     sheet.write(y + y_offset, x + lines[y].get('colspan', 1) - 1, lines[y]['columns'][x - 1].get('name', ''), this_cell_style)
 

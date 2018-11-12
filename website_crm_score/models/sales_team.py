@@ -13,8 +13,21 @@ evaluation_context = {
     'context_today': datetime.datetime.now,
 }
 
-_logger.info('Flanker is not compatible with Python 3, email validation has been disabled')
-def checkmail(mail): return True
+
+try:
+    from flanker.addresslib import address
+
+    if hasattr(address, 'six'):
+        # Python 3 supported
+        def checkmail(mail):
+            return bool(address.validate_address(mail))
+    else:
+        _logger.info('Flanker version 0.9 or greater required for Python 3 compatibility')
+        def checkmail(mail): return True
+except ImportError:
+    _logger.info('The flanker Python module is not installed, so email validation is unavailable')
+    def checkmail(mail): return True
+
 
 class team_user(models.Model):
     _name = 'team.user'

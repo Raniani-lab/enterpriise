@@ -149,7 +149,7 @@ class HrAppraisal(models.Model):
 
     @api.multi
     def send_appraisal(self):
-        ComposeMessage = self.env['survey.mail.compose.message']
+        ComposeMessage = self.env['survey.invite']
         for appraisal in self:
             appraisal_receiver = appraisal._prepare_user_input_receivers()
             for survey, receivers in appraisal_receiver:
@@ -166,8 +166,6 @@ class HrAppraisal(models.Model):
                         'subject': '%s appraisal: %s' % (appraisal.employee_id.name, survey.title),
                         'body': render_template[appraisal.id]['body'],
                         'date_deadline': appraisal.date_close,
-                        'model': appraisal._name,
-                        'res_id': appraisal.id,
                     }
                     compose_message_wizard = ComposeMessage.with_context(active_id=appraisal.id, active_model=appraisal._name, notif_layout="mail.mail_notification_light").create(values)
                     compose_message_wizard.send_mail()  # Sends a mail and creates a survey.user_input

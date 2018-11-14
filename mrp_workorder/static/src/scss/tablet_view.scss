@@ -38,6 +38,10 @@
                 text-transform: capitalize;
             }
 
+            &.fa-plus-square-o {
+                margin-bottom: 1px;
+            }
+
             &.o_workorder_icon_btn {
                 padding: 0.4em;
 
@@ -59,6 +63,7 @@
         .o_input {
             background-color: $o-wo-tablet-bg;
             color: $o-wo-tablet-text;
+            padding: 0.4em 1em;
         }
 
         .o_field_widget {

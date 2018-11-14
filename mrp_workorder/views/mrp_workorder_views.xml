@@ -78,6 +78,7 @@
                             <label for="final_lot_id" string="Lot Number:" attrs="{'invisible': [('product_tracking', '!=', 'lot')]}"/>
                             <label for="final_lot_id" string="Serial Number:" attrs="{'invisible': [('product_tracking', '!=', 'serial')]}"/>
                             <field name="final_lot_id" context="{'default_product_id': product_id}" domain="['|', '&amp;', ('product_id', '=', product_id), ('product_id.tracking', '!=', 'serial'), ('use_next_on_work_order_id', '=', id)]"/>
+                            <button name="action_generate_serial" type="object" class="btn btn-secondary fa fa-plus-square-o" aria-label="Creates a new serial/lot number" title="Creates a new serial/lot number" role="img" attrs="{'invisible': [('final_lot_id', '!=', False)]}"/>
                         </div>
                     </div>
                     <div class="workorder_bar_right o_workorder_bar_content o_workorder_bar_content_right">

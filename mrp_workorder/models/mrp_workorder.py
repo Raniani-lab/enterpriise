@@ -85,6 +85,12 @@ class MrpProductionWorkcenterLine(models.Model):
         self.mapped('check_ids').filtered(lambda c: c.quality_state == 'none').sudo().unlink()
         return super(MrpProductionWorkcenterLine, self).action_cancel()
 
+    def action_generate_serial(self):
+        self.ensure_one()
+        self.final_lot_id = self.env['stock.production.lot'].create({
+            'product_id': self.product_id.id
+        })
+
     def _create_subsequent_checks(self):
         """ When processing a step with regiter a consumed material
         that's a lot we will some times need to create a new

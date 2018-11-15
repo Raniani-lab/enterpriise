@@ -278,8 +278,16 @@ class website_hr_contract_salary(http.Controller):
             'contract_type': advantages['contract_type'],
             'internet': advantages['internet'],
         })
-        new_contract.set_attribute_value('mobile', advantages['has_mobile'])
-        new_contract.set_attribute_value('mobile_plus', advantages['international_communication'])
+
+        if advantages['has_mobile']:
+            new_contract.mobile = request.env['ir.default'].sudo().get('hr.contract', 'mobile')
+        else:
+            new_contract.mobile = 0.0
+
+        if advantages['international_communication']:
+            new_contract.mobile_plus = request.env['ir.default'].sudo().get('hr.contract', 'mobile_plus')
+        else:
+            new_contract.mobile_plus = 0.0
 
         if advantages['transport_mode_car']:
             if advantages['new_car']:

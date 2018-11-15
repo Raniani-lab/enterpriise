@@ -2,7 +2,7 @@ odoo.define('web_mobile.relational_fields', function (require) {
 "use strict";
 
 var relational_fields = require('web.relational_fields');
-
+var config = require('web.config');
 var mobile = require('web_mobile.rpc');
 
 /**
@@ -75,4 +75,18 @@ relational_fields.FieldMany2One.include({
     },
 });
 
+if (config.device.isMobile) {
+    relational_fields.FieldX2Many.include({
+        _renderButtons: function () {
+            var result = this._super.apply(this, arguments);
+            if (this.$buttons) {
+                this.$buttons
+                    .find('.btn-secondary')
+                    .removeClass('btn-secondary')
+                    .addClass('btn-primary btn-add-record');
+            }
+            return result;
+        }
+    });
+}
 });

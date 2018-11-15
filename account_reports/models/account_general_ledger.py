@@ -2,10 +2,10 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import models, fields, api, _
-from odoo.tools.misc import format_date
-from datetime import datetime, timedelta
-from odoo.addons.web.controllers.main import clean_action
+from odoo.tools.misc import format_date, DEFAULT_SERVER_DATE_FORMAT
+from datetime import timedelta
 from odoo.tools import float_is_zero
+
 
 class report_account_general_ledger(models.AbstractModel):
     _name = "account.general.ledger"
@@ -187,18 +187,31 @@ class report_account_general_ledger(models.AbstractModel):
         return results
 
     def _group_by_account_id(self, options, line_id):
-        accounts = {}
-        results = self._do_query_group_by_account(options, line_id)
-        initial_bal_date_to = fields.Date.from_string(self.env.context['date_from_aml']) + timedelta(days=-1)
-        initial_bal_results = self.with_context(date_to=initial_bal_date_to.strftime('%Y-%m-%d'))._do_query_group_by_account(options, line_id)
-
+        user_currency = self.env.user.company_id.currency_id
+        fiscalyear_dates = self.env.user.company_id.compute_fiscalyear_dates(fields.Date.from_string(options['date']['date_from']))
         context = self.env.context
+        accounts = {}
 
-        last_day_previous_fy = self.env.user.company_id.compute_fiscalyear_dates(fields.Date.from_string(self.env.context['date_from_aml']))['date_from'] + timedelta(days=-1)
+        # Compute the sums for each account.
+        self_ctx = self.with_context(date_from=fiscalyear_dates['date_from'].strftime(DEFAULT_SERVER_DATE_FORMAT), date_to=options['date']['date_to'])
+        results = self_ctx._do_query_group_by_account(options, line_id)
+
+        # Compute the initial balance as the current balance for each account until the report date_from.
+        # E.g. date_from = 2018-01-01, date_to = 2018-12-31.
+        # The initial balance will use date_from = False & date_to = 2017-12-31.
+        date_from_obj = fields.Date.from_string(options['date']['date_from'])
+        self_ctx = self.with_context(date_from=False, date_to=(date_from_obj - timedelta(days=1)).strftime(DEFAULT_SERVER_DATE_FORMAT))
+        initial_bal_results = self_ctx._do_query_group_by_account(options, line_id)
+
+        # Compute the unaffected earnings that is the unaffected difference between income/expense accounts for the
+        # previous fiscal years.
+        # E.g. date_from = 2018-06-01, date_to = 2018-12-31 with a fiscal year starting the 2018-01-01.
+        # The unaffected earnings will use date_from = False & date_to = 2017-12-31 & strict_range = False.
+        self_ctx = self.with_context(date_from=False, date_to=(fiscalyear_dates['date_from'] - timedelta(days=1)).strftime(DEFAULT_SERVER_DATE_FORMAT))
         unaffected_earnings_per_company = {}
         for cid in context.get('company_ids', []):
             company = self.env['res.company'].browse(cid)
-            unaffected_earnings_per_company[company] = self.with_context(date_to=last_day_previous_fy.strftime('%Y-%m-%d'), date_from=False)._do_query_unaffected_earnings(options, line_id, company)
+            unaffected_earnings_per_company[company] =self_ctx._do_query_unaffected_earnings(options, line_id, company)
 
         unaff_earnings_treated_companies = set()
         unaffected_earnings_type = self.env.ref('account.data_unaffected_earnings')
@@ -214,13 +227,7 @@ class report_account_general_ledger(models.AbstractModel):
                     accounts[account][field] += unaffected_earnings_results[field]
                 unaff_earnings_treated_companies.add(account.company_id)
             #use query_get + with statement instead of a search in order to work in cash basis too
-            aml_ctx = {}
-            if context.get('date_from_aml'):
-                aml_ctx = {
-                    'strict_range': True,
-                    'date_from': context['date_from_aml'],
-                }
-            aml_ids = self.with_context(**aml_ctx)._do_query(options, account_id, group_by_account=False)
+            aml_ids = self.with_context(strict_range=True)._do_query(options, account_id, group_by_account=False)
             aml_ids = [x[0] for x in aml_ids]
 
             accounts[account]['total_lines'] = len(aml_ids)
@@ -234,7 +241,6 @@ class report_account_general_ledger(models.AbstractModel):
             accounts[account]['lines'] = self.env['account.move.line'].browse(aml_ids)
 
         # For each company, if the unaffected earnings account wasn't in the selection yet: add it manually
-        user_currency = self.env.user.company_id.currency_id
         for cid in context.get('company_ids', []):
             company = self.env['res.company'].browse(cid)
             if company not in unaff_earnings_treated_companies and not float_is_zero(unaffected_earnings_per_company[company]['balance'], precision_digits=user_currency.decimal_places):
@@ -284,11 +290,10 @@ class report_account_general_ledger(models.AbstractModel):
         context = self.env.context
         company_id = self.env.user.company_id
         used_currency = company_id.currency_id
-        dt_from = options['date'].get('date_from')
         line_id = line_id and int(line_id.split('_')[1]) or None
         aml_lines = []
         # Aml go back to the beginning of the user chosen range but the amount on the account line should go back to either the beginning of the fy or the beginning of times depending on the account
-        grouped_accounts = self.with_context(date_from_aml=dt_from, date_from=dt_from and company_id.compute_fiscalyear_dates(fields.Date.from_string(dt_from))['date_from'] or None)._group_by_account_id(options, line_id)
+        grouped_accounts = self._group_by_account_id(options, line_id)
         sorted_accounts = sorted(grouped_accounts, key=lambda a: a.code)
         unfold_all = context.get('print_mode') and len(options.get('unfolded_lines')) == 0
         sum_debit = sum_credit = sum_balance = 0

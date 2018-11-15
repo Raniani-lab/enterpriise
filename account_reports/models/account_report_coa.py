@@ -119,8 +119,6 @@ class report_account_coa(models.AbstractModel):
 
     @api.model
     def _get_lines(self, options, line_id=None):
-        context = self.env.context
-        company_id = context.get('company_id') or self.env.user.company_id
         grouped_accounts = {}
         initial_balances = {}
         comparison_table = [options.get('date')]
@@ -129,7 +127,7 @@ class report_account_coa(models.AbstractModel):
         #get the balance of accounts for each period
         period_number = 0
         for period in reversed(comparison_table):
-            res = self.with_context(date_from_aml=period['date_from'], date_to=period['date_to'], date_from=period['date_from'] and company_id.compute_fiscalyear_dates(fields.Date.from_string(period['date_from']))['date_from'] or None)._group_by_account_id(options, line_id)  # Aml go back to the beginning of the user chosen range but the amount on the account line should go back to either the beginning of the fy or the beginning of times depending on the account
+            res = self.with_context(date_from=period['date_from'], date_to=period['date_to'])._group_by_account_id(options, line_id)
             if period_number == 0:
                 initial_balances = dict([(k, res[k]['initial_bal']['balance']) for k in res])
             for account in res:

@@ -2,4 +2,5 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from . import test_reports
+from . import test_account_reports
 from . import test_ui

@@ -689,7 +689,7 @@ var accountReportsWidget = AbstractAction.extend(ControlPanelMixin, {
         var action = $(e.target).attr('action');
         var id = $(e.target).parents('td').data('id');
         var params = $(e.target).data();
-        var context = new Context(this.odoo_context, params.actionContext || {});
+        var context = new Context(this.odoo_context, params.actionContext || {}, {active_id: id});
 
         params = _.omit(params, 'actionContext');
         if (action) {

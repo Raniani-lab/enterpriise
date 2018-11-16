@@ -115,9 +115,9 @@ WebClient.include({
      */
     show_application: function () {
         var self = this;
-        var qs = $.deparam.querystring();
-        this.studioMode = _.contains(['main', 'app_creator'], qs.studio) ? qs.studio : false;
         return this._super.apply(this, arguments).then(function () {
+            var qs = $.deparam.querystring();
+            self.studioMode = _.contains(['main', 'app_creator'], qs.studio) ? qs.studio : false;
             if (self.studioMode) {
                 self._updateContext();
                 return self._openStudio();

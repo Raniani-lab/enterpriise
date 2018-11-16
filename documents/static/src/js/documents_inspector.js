@@ -268,7 +268,7 @@ var DocumentsInspector = Widget.extend({
             this.$tagInput = $('<input>', {
                 class: 'o_input o_inspector_tag_add',
                 type: 'text',
-            }).attr('placeholder',"+ Add a tag ");
+            }).attr('placeholder', _t("+ Add a tag "));
 
             this.$tagInput.autocomplete({
                 delay: 0,

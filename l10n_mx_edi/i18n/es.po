@@ -4,13 +4,12 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 11.0+e\n"
+"Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-28 12:10+0000\n"
-"PO-Revision-Date: 2017-11-10 19:34+0000\n"
-"Last-Translator: <>\n"
+"POT-Creation-Date: 2018-11-08 22:24+0000\n"
+"PO-Revision-Date: 2018-11-08 22:24+0000\n"
+"Last-Translator: Luis González <lgonzalez@vauxoo.com>\n"
 "Language-Team: \n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -116,6 +115,12 @@ msgstr "<span> | Régimen Fiscal:</span>"
 #. module: l10n_mx_edi
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_invoice_document_mx
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_document_mx
+msgid "<span> | SAT Certificate:</span>"
+msgstr "<span> | Certificado SAT:</span>"
+
+#. module: l10n_mx_edi
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_invoice_document_mx
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_document_mx
 msgid "<span>Digital stamp SAT</span>"
 msgstr "<span>Sello digital de SAT</span>"
 
@@ -166,6 +171,11 @@ msgid "<strong>Bank Account:</strong>"
 msgstr "<strong>Cuenta Bancaria:</strong>"
 
 #. module: l10n_mx_edi
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_document_mx
+msgid "<strong>Payment Method: </strong>"
+msgstr "<strong>Método de Pago: </strong>"
+
+#. module: l10n_mx_edi
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_invoice_document_mx
 msgid "<strong>Payment Method:</strong>"
 msgstr "<strong>Método de Pago:</strong>"
@@ -173,12 +183,12 @@ msgstr "<strong>Método de Pago:</strong>"
 #. module: l10n_mx_edi
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_document_mx
 msgid "<strong>Payment Way CFDI:</strong>"
-msgstr ""
+msgstr "<strong>Forma de Pago CFDI:</strong>"
 
 #. module: l10n_mx_edi
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_invoice_document_mx
 msgid "<strong>Payment Way:</strong>"
-msgstr ""
+msgstr "<strong>Forma de Pago:</strong>"
 
 #. module: l10n_mx_edi
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_invoice_document_mx
@@ -190,7 +200,7 @@ msgstr ""
 #. module: l10n_mx_edi
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_invoice_document_mx
 msgid "<strong>Usage:</strong>"
-msgstr ""
+msgstr "<strong>Uso:</strong>"
 
 #. module: l10n_mx_edi
 #: code:addons/l10n_mx_edi/models/account_invoice.py:440
@@ -2736,7 +2746,7 @@ msgstr ""
 #. module: l10n_mx_edi
 #: model:ir.model.fields,help:l10n_mx_edi.field_l10n_mx_edi_payment_method__active
 msgid "If this payment way is not used by the company could be deactivated."
-msgstr ""
+msgstr "Si esta forma de pago no es usada por la compañía puede ser desactivada."
 
 #. module: l10n_mx_edi
 #: model:ir.model.fields,help:l10n_mx_edi.field_l10n_mx_edi_product_sat_code__active
@@ -4448,17 +4458,17 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.view_l10n_mx_payment_method_form
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.view_l10n_mx_payment_method_tree
 msgid "Payment Way"
-msgstr ""
+msgstr "Forma de pago"
 
 #. module: l10n_mx_edi
 #: model:ir.ui.menu,name:l10n_mx_edi.cfd_22_metodos_pago
 msgid "Payment Way Codes (MX)"
-msgstr ""
+msgstr "Códigos de las Formas de Pago (MX)"
 
 #. module: l10n_mx_edi
 #: model:ir.model.fields,help:l10n_mx_edi.field_l10n_mx_edi_payment_method__name
 msgid "Payment way, is found in the SAT catalog."
-msgstr ""
+msgstr "Forma de pago, se encuentra en el catálogo de SAT."
 
 #. module: l10n_mx_edi
 #: model:ir.model,name:l10n_mx_edi.model_account_payment

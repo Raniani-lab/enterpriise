@@ -53,19 +53,45 @@ class ReportPartnerLedger(models.AbstractModel):
         account_types = [a.get('id') for a in options.get('account_type') if a.get('selected', False)]
         if not account_types:
             account_types = [a.get('id') for a in options.get('account_type')]
-        select = ',COALESCE(SUM(\"account_move_line\".debit-\"account_move_line\".credit), 0),SUM(\"account_move_line\".debit),SUM(\"account_move_line\".credit)'
-        if options.get('cash_basis'):
-            select = select.replace('debit', 'debit_cash_basis').replace('credit', 'credit_cash_basis')
-        sql = "SELECT \"account_move_line\".partner_id%s FROM %s WHERE %s%s AND \"account_move_line\".partner_id IS NOT NULL GROUP BY \"account_move_line\".partner_id"
-        tables, where_clause, where_params = self.env['account.move.line']._query_get([('account_id.internal_type', 'in', account_types)])
-        line_clause = line_id and ' AND \"account_move_line\".partner_id = ' + str(line_id) or ''
-        if options.get('unreconciled'):
-            line_clause += ' AND \"account_move_line\".full_reconcile_id IS NULL'
-        query = sql % (select, tables, where_clause, line_clause)
-        self.env.cr.execute(query, where_params)
-        results = self.env.cr.fetchall()
-        results = dict([(k[0], {'balance': k[1], 'debit': k[2], 'credit': k[3]}) for k in results])
-        return results
+        # Create the currency table.
+        user_company = self.env.user.company_id
+        companies = self.env['res.company'].search([])
+        rates_table_entries = []
+        for company in companies:
+            if company.currency_id == user_company.currency_id:
+                rate = 1.0
+            else:
+                rate = user_company.currency_id.rate / company.currency_id.rate
+            rates_table_entries.append((company.id, rate, user_company.currency_id.decimal_places))
+        currency_table = ','.join('(%s, %s, %s)' % r for r in rates_table_entries)
+        with_currency_table = 'WITH currency_table(company_id, rate, precision) AS (VALUES %s)' % currency_table
+
+        # Sum query
+        debit_field = 'debit_cash_basis' if options.get('cash_basis') else 'debit'
+        credit_field = 'credit_cash_basis' if options.get('cash_basis') else 'credit'
+        balance_field = 'balance_cash_basis' if options.get('cash_basis') else 'balance'
+        tables, where_clause, params = self.env['account.move.line']._query_get(
+            [('account_id.internal_type', 'in', account_types)])
+        query = '''
+            SELECT
+                \"account_move_line\".partner_id,
+                SUM(ROUND(\"account_move_line\".''' + debit_field + ''' * currency_table.rate, currency_table.precision))     AS debit,
+                SUM(ROUND(\"account_move_line\".''' + credit_field + ''' * currency_table.rate, currency_table.precision))    AS credit,
+                SUM(ROUND(\"account_move_line\".''' + balance_field + ''' * currency_table.rate, currency_table.precision))   AS balance
+            FROM %s
+            LEFT JOIN currency_table                    ON currency_table.company_id = \"account_move_line\".company_id
+            WHERE %s
+            AND \"account_move_line\".partner_id IS NOT NULL
+            GROUP BY \"account_move_line\".partner_id
+        ''' % (tables, where_clause)
+        if line_id:
+            query = query.replace('WHERE', 'WHERE \"account_move_line\".partner_id = %s AND ')
+            params = [str(line_id)] + params
+        if options.get("unreconciled"):
+            query = query.replace("WHERE", 'WHERE \"account_move_line\".full_reconcile_id IS NULL AND ')
+        self._cr.execute(with_currency_table + query, params)
+        query_res = self._cr.dictfetchall()
+        return dict((res['partner_id'], res) for res in query_res)
 
     def _group_by_partner_id(self, options, line_id):
         partners = {}
@@ -158,6 +184,7 @@ class ReportPartnerLedger(models.AbstractModel):
                     'unfolded': 'partner_' + str(partner.id) in options.get('unfolded_lines') or unfold_all,
                     'colspan': 6,
                 })
+            used_currency = self.env.user.company_id.currency_id
             if 'partner_' + str(partner.id) in options.get('unfolded_lines') or unfold_all:
                 if offset == 0:
                     progress = initial_balance
@@ -177,6 +204,10 @@ class ReportPartnerLedger(models.AbstractModel):
                     else:
                         line_debit = line.debit
                         line_credit = line.credit
+                    date = amls.env.context.get('date') or fields.Date.today()
+                    line_currency = line.company_id.currency_id
+                    line_debit = line_currency._convert(line_debit, used_currency, line.company_id, date)
+                    line_credit = line_currency._convert(line_credit, used_currency, line.company_id, date)
                     progress_before = progress
                     progress = progress + line_debit - line_credit
                     caret_type = 'account.move'

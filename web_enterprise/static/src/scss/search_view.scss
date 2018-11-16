@@ -32,7 +32,7 @@
         @include o-position-absolute($top: 4px, $right: 0);
     }
     .o_searchview_autocomplete li.o-selection-focus {
-        background-color: $table-accent-bg;
+        background-color: $table-hover-bg;
     }
 }
 

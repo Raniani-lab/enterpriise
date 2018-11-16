@@ -314,7 +314,8 @@ class report_account_general_ledger(models.AbstractModel):
             if offset == 0:
                 lines.append({
                     'id': 'account_%s' % (account.id,),
-                    'name': display_name,
+                    'name': len(display_name) > 40 and not context.get('print_mode') and display_name[:40]+'...' or display_name,
+                    'title_hover': display_name,
                     'columns': [{'name': v} for v in [amount_currency, self.format_value(debit), self.format_value(credit), self.format_value(balance)]],
                     'level': 2,
                     'unfoldable': True,

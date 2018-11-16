@@ -50,6 +50,7 @@ class ResConfigSettings(models.TransientModel):
         out_of_stock = self.ebay_out_of_stock or ''
         if out_of_stock != self.env['ir.config_parameter'].get_param('ebay_out_of_stock'):
             set_param('ebay_out_of_stock', out_of_stock)
+            siteid = self.ebay_site.ebay_id if self.ebay_site else 0
 
             if self.ebay_domain == 'sand':
                 if self.ebay_sandbox_token and self.ebay_sandbox_cert_id and self.ebay_sandbox_app_id:
@@ -60,7 +61,7 @@ class ResConfigSettings(models.TransientModel):
                         devid="ed74122e-6f71-4877-83d8-e0e2585bd78f",
                         certid=self.ebay_sandbox_cert_id,
                         token=self.ebay_sandbox_token,
-                        siteid=self.site.ebay_id if self.site else 0)
+                        siteid=siteid)
                     call_data = {
                         'OutOfStockControlPreference': 'true' if out_of_stock else 'false',
                     }
@@ -77,7 +78,7 @@ class ResConfigSettings(models.TransientModel):
                         devid="ed74122e-6f71-4877-83d8-e0e2585bd78f",
                         certid=self.ebay_prod_cert_id,
                         token=self.ebay_prod_token,
-                        siteid=self.site.ebay_id if self.site else 0)
+                        siteid=siteid)
                     call_data = {
                         'OutOfStockControlPreference': 'true' if out_of_stock else 'false',
                     }

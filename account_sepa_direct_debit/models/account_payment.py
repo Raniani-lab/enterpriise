@@ -106,7 +106,7 @@ class AccountPayment(models.Model):
         create_xml_node(GrpHdr, 'CtrlSum', float_repr(sum(x.amount for x in self), precision_digits=2))  # This sum ignores the currency, it is used as a checksum (see SEPA rulebook)
         InitgPty = create_xml_node(GrpHdr, 'InitgPty')
         create_xml_node(InitgPty, 'Nm', company_id.name[:140])
-        create_xml_node_chain(InitgPty, ['Id','PrvtId','Othr','Id'], company_id.sdd_creditor_identifier)
+        create_xml_node_chain(InitgPty, ['Id','OrgId','Othr','Id'], company_id.sdd_creditor_identifier)
 
     def _sdd_xml_gen_partner(self, company_id, required_collection_date, payment_info_counter, mandate, CstmrDrctDbtInitn):
         """ Appends to a SDD XML file being generated all the data related to a partner

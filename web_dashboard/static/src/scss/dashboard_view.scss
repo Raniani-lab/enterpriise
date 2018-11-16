@@ -5,6 +5,7 @@
 
 .o_dashboard_view {
     // Scoped dashboard's variables
+    $border-separate-width: 2px;
     $padding: $o-horizontal-padding;
     $padding-small: $o-horizontal-padding*0.5;
 
@@ -24,7 +25,7 @@
     > .o_group, .o_subview {
         // By default dashboard entries are full-width...
         flex: 1 1 100%;
-        margin: 0 $padding ($spacer * 4);
+        margin: 0 $padding ($spacer * 2);
 
         .o_graph_container {
             display: flex;
@@ -54,7 +55,7 @@
 
         .o_aggregate, .o_formula {
             padding: 0 ($padding + $padding-small) 0 $padding-small;
-            border-left: $border-width solid $border-color;
+            border-left: $border-separate-width solid $border-color;
 
             > label {
                 @extend %o-dashboard-label-design;
@@ -91,7 +92,7 @@
             }
 
             &.border-danger, &.border-success {
-                border-left-width: 2px;
+                border-left-width: $border-separate-width;
             }
 
             @include text-emphasis-variant(".o_variation.o_positive", $success);
@@ -150,7 +151,6 @@
 
                     .o_graph_svg_container {
                         min-width: 200px;
-                        margin-bottom: ($spacer * 1.5);
 
                         @include media-breakpoint-up(sm) {
                             min-width: 300px;
@@ -170,7 +170,7 @@
                 // Layout for groups containing 1 pie-chart only
                 &.o_nbr_pie_charts_1 {
                     .o_graph_svg_container:first-child  {
-                        border-left: $border-width solid $border-color;
+                        border-left: $border-separate-width solid $border-color;
                         padding-left: $padding;
                     }
 
@@ -214,9 +214,8 @@
 
                     .o_widget {
                         flex: 1 1 50%;
-                        border-left: $border-width solid $border-color;
+                        border-left: $border-separate-width solid $border-color;
                         padding-left: $padding;
-                        margin-bottom: ($spacer * 1.5);
 
                         @include media-breakpoint-down(md) {
                             border-left: 0;
@@ -260,7 +259,6 @@
         &[type=graph] {
             .o_view_controller {
                 width: 100%;
-                min-height: 300px;
             }
         }
     }

@@ -247,7 +247,9 @@ class WebStudioReportController(main.WebStudioController):
         Qweb = request.env['ir.qweb']
         Attachment = request.env['ir.attachment']
 
-        html = Qweb.render('web.report_layout', values=None)
+        html = Qweb.render('web.report_layout', values={
+            'studio': True,
+        })
         root = etree.fromstring(html).getroottree()
         links = [link.get('href') for link in root.findall("//link")]
         link_ids = [int(link.replace('/web/content/', '').split('-', 1)[0]) for link in links]

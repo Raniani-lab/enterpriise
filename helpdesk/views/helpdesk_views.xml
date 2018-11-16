@@ -360,7 +360,7 @@
         <field name="model">helpdesk.ticket</field>
         <field name="priority">10</field>
         <field name="arch" type="xml">
-            <kanban default_group_by="stage_id" class="o_kanban_small_column" quick_create_view="helpdesk.quick_create_ticket_form">
+            <kanban default_group_by="stage_id" class="o_kanban_small_column o_kanban_helpdesk_ticket" quick_create_view="helpdesk.quick_create_ticket_form">
                 <field name="stage_id"/>
                 <field name="user_id"/>
                 <field name="color"/>

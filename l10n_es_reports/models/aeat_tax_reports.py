@@ -78,21 +78,17 @@ class AEATAccountFinancialReport(models.Model):
 
     l10n_es_reports_modelo_number = fields.Char(string="Spanish Modelo Number", help="The modelo number of this report. Non-Spanish (or non-modelo) reports must leave this field to None.")
 
+
     @api.model
-    def _get_options(self, previous_options=None):
-        if self.l10n_es_reports_modelo_number == '347':
-            self.filter_cash_basis = None # We totally disable cash basis on mod 347, so that it does not conflict with groupby thresholds
-
-        return super(AEATAccountFinancialReport, self)._get_options(previous_options)
-
-
-    def _get_lines(self, options, line_id=None):
+    def get_options(self, previous_options=None):
         """ Overridden in order to add the 'financial_report_line_values' attribute
         to the context before calling super() in case some AEAT wizard was used
         to generate this report. This allows transmitting the values manually
-        entered in the wizard to the report lines.
+        entered in the wizard to the report options.
         """
-        context_line_values = {}
+
+        if self.l10n_es_reports_modelo_number == '347':
+            self.filter_cash_basis = None # We totally disable cash basis on mod 347, so that it does not conflict with groupby thresholds
 
         aeat_wizard_id = self.env.context.get('aeat_wizard_id')
         aeat_modelo = self.env.context.get('aeat_modelo')
@@ -102,11 +98,14 @@ class AEATAccountFinancialReport(models.Model):
 
             # We consider all the casilla fields from the wizard, as they each correspond to a report line.
             casilla_fields = [x for x in dir(aeat_wizard) if x.startswith(casilla_prefix)]
+            context_line_values = {}
             for attr in casilla_fields:
                 line_code = 'aeat_mod_' + aeat_wizard._modelo + '_' + attr.replace(self.CASILLA_FIELD_PREFIX, '')
                 context_line_values[line_code] = getattr(aeat_wizard, attr)
 
-        return super(AEATAccountFinancialReport, self.with_context(self.env.context, financial_report_line_values=context_line_values))._get_lines(options, line_id)
+            self = self.with_context(self.env.context, financial_report_line_values=context_line_values)
+
+        return super(AEATAccountFinancialReport, self).get_options(previous_options)
 
     def _get_reports_buttons(self):
         """ Overridden to add the BOE export button to mod reports.
@@ -147,7 +146,7 @@ class AEATAccountFinancialReport(models.Model):
         return {
             'type': 'ir_actions_account_report_download',
             'data': {'model': self.env.context.get('model'),
-                     'options': json.dumps({**options, 'l10n_es_reports_boe_wizard_id': self.id}),
+                     'options': json.dumps(options),
                      'output_format': 'txt',
                      'financial_id': self.env.context.get('id'),
             },
@@ -421,7 +420,7 @@ class AEATAccountFinancialReport(models.Model):
         boe_wizard = self._retrieve_boe_manual_wizard(options)
 
         # Content of the report
-        rslt += self._boe_format_number(casilla_lines_map['01'], length=8, signed=True, in_currency=True)
+        rslt += self._boe_format_number(casilla_lines_map['01'], length=8, signed=True)
         rslt += self._boe_format_number(casilla_lines_map['02'], length=17, decimal_places=2, signed=True, in_currency=True)
         rslt += self._boe_format_number(casilla_lines_map['03'], length=17, decimal_places=2, signed=True, in_currency=True)
         rslt += self._boe_format_number(casilla_lines_map['04'], length=8, signed=True)

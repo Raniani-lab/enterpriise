@@ -51,6 +51,7 @@
                 <pago10:Pagos
                     Version="1.0">
                     <t t-set="inv_rate" t-value="('%.6f' % (total_paid / record.amount)) if record.currency_id != record.invoice_ids.mapped('currency_id') else False"/>
+                    <t t-set="inv_rate" t-value="(inv_rate if ((total_paid / float(inv_rate)) &lt;= record.amount) else '%.6f' % (float(inv_rate) + 0.000001)) if inv_rate else inv_rate"/>
                     <pago10:Pago
                         t-att-FechaPago="payment_date"
                         t-att-FormaDePagoP="record.l10n_mx_edi_payment_method_id.code"
@@ -68,7 +69,8 @@
                         t-att-CadPago="pay_string"
                         t-att-SelloPago="pay_stamp">
                         <t t-foreach="record.invoice_ids" t-as="invoice">
-                            <t t-set="amount" t-value="[p for p in invoice._get_payments_vals() if (p.get('account_payment_id', False) == record.id or not p.get('account_payment_id'))]"/>
+                            <t t-set="refund_moves" t-value="invoice.refund_invoice_ids.mapped('move_id.id')"/>
+                            <t t-set="amount" t-value="[p for p in invoice._get_payments_vals() if (p.get('account_payment_id', False) == record.id or not p.get('account_payment_id') and p.get('move_id') not in refund_moves)]"/>
                             <t t-set="amount_payment" t-value="sum([data.get('amount', 0.0) for data in amount])"/>
                             <t t-set="amount_insoluto" t-value="invoice.residual"/>
                             <pago10:DoctoRelacionado

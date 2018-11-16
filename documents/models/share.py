@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from odoo import models, fields, api, exceptions
+from odoo.tools.translate import _
 import uuid
 
 
@@ -128,7 +129,7 @@ class DocumentShare(models.Model):
             'context': self._context,
             'res_model': 'documents.share',
             'target': 'new',
-            'name': 'Share',
+            'name': _('Share'),
             'res_id': share.id,
             'type': 'ir.actions.act_window',
             'views': [[view_id, 'form']],

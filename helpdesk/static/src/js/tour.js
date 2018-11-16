@@ -20,6 +20,7 @@ tour.register('helpdesk_tour', {
     width: 200,
 }, {
     trigger: '.o-kanban-button-new',
+    extra_trigger: '.o_kanban_helpdesk_ticket',
     content: _t('Let\'s create your first ticket.'),
     position: 'bottom',
     width: 200,

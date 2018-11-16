@@ -86,6 +86,11 @@ class ReportAccountFinancialReport(models.Model):
         # generate specific groups for each period
         groups = []
         for period in periods:
+            if len(periods) == 1 and self.debit_credit:
+                for group in options['groups'].get('ids'):
+                    groups.append(({'string': _('Debit'), 'class': 'number'},) + tuple(group))
+                for group in options['groups'].get('ids'):
+                    groups.append(({'string': _('Crebit'), 'class': 'number'},) + tuple(group))
             for group in options['groups'].get('ids'):
                 groups.append((period,) + tuple(group))
 
@@ -119,7 +124,7 @@ class ReportAccountFinancialReport(models.Model):
                         # field_index - 1 because ['period'] is not part of options['groups']['fields']
                         'name': last_group.get('string') if field == 'period' else self._get_column_name(last_group, options['groups']['fields'][field_index - 1]),
                         'colspan': current_colspan,
-                        'class': 'number'
+                        'class': 'number',
                     })
                     last_group = current_group
                     current_colspan = 0
@@ -211,7 +216,24 @@ class ReportAccountFinancialReport(models.Model):
         self.filter_hierarchy = True if self.hierarchy_option else None
         self.filter_ir_filters = self.applicable_filters_ids or None
 
-        return super(ReportAccountFinancialReport, self)._get_options(previous_options)
+        rslt = super(ReportAccountFinancialReport, self)._get_options(previous_options)
+
+        # If manual values were stored in the context, we store them as options.
+        # This is useful for report printing, were relying only on the context is
+        # not enough, because of the use of a route to download the report (causing
+        # a context loss, but keeping the options).
+        if self.env.context.get('financial_report_line_values'):
+            rslt['financial_report_line_values'] = self.env.context['financial_report_line_values']
+
+        return rslt
+
+    def set_context(self, options):
+        ctx = super(ReportAccountFinancialReport, self).set_context(options)
+        # We first restore the context for from_context lines from the options
+        if options.get('financial_report_line_values'):
+            ctx.update({'financial_report_line_values': options['financial_report_line_values']})
+
+        return ctx
 
     def _create_action_and_menu(self, parent_id):
         # create action and menu with corresponding external ids, in order to
@@ -1050,7 +1072,10 @@ class AccountFinancialReportLine(models.Model):
                     results_for_group.update({'line': line_res_per_group[group_index]})
                     columns.append(results_for_group)
                 else:
-                    columns.append({'line': {'balance': 0.0}})
+                    res_vals = {'balance': 0.0}
+                    if debit_credit:
+                        res_vals.update({'debit': 0.0, 'credit': 0.0})
+                    columns.append({'line': res_vals})
 
         return columns or [{'line': res} for res in line_res_per_group]
 

@@ -101,9 +101,11 @@ class report_account_coa(models.AbstractModel):
                 {'name': total_amount > 0 and self.format_value(total_amount) or zero_value, 'no_format_name': total_amount > 0 and total_amount or 0},
                 {'name': total_amount < 0 and self.format_value(-total_amount) or zero_value, 'no_format_name': total_amount < 0 and abs(total_amount) or 0},
                 ]
+            name = account.code + " " + account.name
             lines.append({
                 'id': account.id,
-                'name': account.code + " " + account.name,
+                'name': len(name) > 40 and not context.get('print_mode') and name[:40]+'...' or name,
+                'title_hover': name,
                 'columns': cols,
                 'unfoldable': False,
                 'caret_options': 'account.account',

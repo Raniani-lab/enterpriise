@@ -2,6 +2,7 @@ odoo.define('accountReportsFollowup.FollowupFormModel', function (require) {
 "use strict";
 
 var FollowupFormModel = require('accountReports.FollowupFormModel');
+var session = require('web.session');
 
 FollowupFormModel.include({
 
@@ -63,6 +64,7 @@ FollowupFormModel.include({
             model: 'account.followup.report',
             method: 'get_followup_informations',
             args: [this.localData[id].res_id, params],
+            kwargs: {context: session.user_context},
         }).then(function (data) {
             self.localData[id].data.report_manager_id = data.report_manager_id;
             self.localData[id].data.followup_html = data.html;

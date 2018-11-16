@@ -91,7 +91,7 @@ class sale_subscription(http.Controller):
         account_res = request.env['sale.subscription']
         if uuid:
             account = account_res.sudo().browse(account_id)
-            if uuid != account.uuid or not account.in_progress:
+            if uuid != account.uuid:
                 raise NotFound()
             if request.uid == account.partner_id.user_id.id:
                 account = account_res.browse(account_id)

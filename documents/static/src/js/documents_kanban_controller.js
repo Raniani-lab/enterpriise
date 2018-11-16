@@ -16,6 +16,7 @@ var KanbanController = require('web.KanbanController');
 var session = require('web.session');
 
 var qweb = core.qweb;
+var _t = core._t;
 
 var DocumentsKanbanController = KanbanController.extend({
     events: _.extend({}, KanbanController.prototype.events, {
@@ -714,7 +715,7 @@ var DocumentsKanbanController = KanbanController.extend({
         if (this.$('.o_upload_text').length === 0) {
             var $upload_text = $('<div>').addClass("o_upload_text text-center text-white");
             $upload_text.append('<i class="d-block fa fa-upload fa-9x mb-4"/>');
-            $upload_text.append('<span>Drop files here to upload</span>');
+            $upload_text.append('<span>' + _t('Drop files here to upload') + '</span>');
             this.$el.append($upload_text);
         }
         $(document).on('dragover:kanbanView', this._onHoverLeave.bind(this));

@@ -18,7 +18,7 @@
                             <div class="content-group">
                                 <div class="row mt16">
                                     <label for="ebay_domain" string="Mode" class="col-lg-4 o_light_label"/>
-                                    <field name="ebay_domain" class="col-lg-8 oe_inline"/>
+                                    <field name="ebay_domain" class="col-lg-4 oe_inline"/>
                                 </div>
                                 <div class="row">
                                     <label for="ebay_dev_id" class="col-lg-4 o_light_label"/>
@@ -72,11 +72,11 @@
                                 </div>
                                 <div class="row">
                                     <label for="ebay_out_of_stock" class="col-lg-4 o_light_label"/>
-                                    <field name="ebay_out_of_stock" class="col-lg-8 oe_inline"/>
+                                    <field name="ebay_out_of_stock" class="col-lg-4 oe_inline"/>
                                 </div>
                                 <div class="row">
                                     <label for="ebay_gallery_plus" class="col-lg-4 o_light_label"/>
-                                    <field name="ebay_gallery_plus" class="col-lg-8 oe_inline"/>
+                                    <field name="ebay_gallery_plus" class="col-lg-4 oe_inline"/>
                                 </div>
                             </div>
                         </div>

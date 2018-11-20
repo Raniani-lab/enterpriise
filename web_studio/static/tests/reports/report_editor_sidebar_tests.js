@@ -533,10 +533,10 @@ QUnit.module('Studio', {}, function () {
                     testName: "set the heading level",
                     nodeToUse: layoutChangeNode,
                     eventToTrigger: "click",
-                    sidebarOperationInputSelector: '.o_web_studio_font_size button[data-property="bigger"]',
+                    sidebarOperationInputSelector: '.o_web_studio_font_size .dropdown-item-text[data-value="h3"]',
                     expectedRPC: {
                         inheritance: [{
-                            content: "<attribute name=\"class\" separator=\" \" add=\"h6\"/>",
+                            content: "<attribute name=\"class\" separator=\" \" add=\"h3\"/>",
                             position: "attributes",
                             view_id: 99,
                             xpath: "/t/t/div"

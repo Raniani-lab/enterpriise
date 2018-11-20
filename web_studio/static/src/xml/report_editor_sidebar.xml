@@ -222,14 +222,35 @@
                 </button>
             </t>
         </div>
-        <div t-if="!widget.isNodeText" class="col-4 o_web_studio_sidebar_text o_web_studio_font_size">
-            <label>Font</label>
-            <button type="button" title="Smaller" data-property="smaller" class="btn btn-secondary" t-att-disabled="widget.fontSize === 'small' ? 'disabled' : undefined">
-                <i class="fa fa-font"/>
-            </button>
-            <button type="button" title="Bigger" data-property="bigger" class="btn btn-secondary" t-att-disabled="widget.fontSize === 'display-1' ? 'disabled' : undefined">
-                <i class="fa fa-lg fa-font"/>
-            </button>
+        <div t-if="!widget.isNodeText" class="col-4 o_web_studio_font_size">
+            <label>Font style</label>
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"><i class="fa fa-magic"/></button>
+                <div class="dropdown-menu" role="menu">
+                    <div t-attf-class="dropdown-item-text #{!widget.fontSize ? 'active' : null}">Normal</div>
+                    <div t-attf-class="dropdown-item-text #{widget.fontSize == 'small' ? 'active' : null}" data-value="small">
+                        <div class="small">Small</div>
+                    </div>
+                    <div t-attf-class="dropdown-item-text #{widget.fontSize == 'h1' ? 'active' : null}" data-value="h1">
+                        <h1>Heading1</h1>
+                    </div>
+                    <div t-attf-class="dropdown-item-text #{widget.fontSize == 'h2' ? 'active' : null}" data-value="h2">
+                        <h2>Heading2</h2>
+                    </div>
+                    <div t-attf-class="dropdown-item-text #{widget.fontSize == 'h3' ? 'active' : null}" data-value="h3">
+                        <h3>Heading3</h3>
+                    </div>
+                    <div t-attf-class="dropdown-item-text #{widget.fontSize == 'h4' ? 'active' : null}" data-value="h4">
+                        <h4>Heading4</h4>
+                    </div>
+                    <div t-attf-class="dropdown-item-text #{widget.fontSize == 'h5' ? 'active' : null}" data-value="h5">
+                        <h5>Heading5</h5>
+                    </div>
+                    <div t-attf-class="dropdown-item-text #{widget.fontSize == 'h6' ? 'active' : null}" data-value="h6">
+                        <h6>Heading6</h6>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div class="row no-gutters">

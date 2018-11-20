@@ -132,12 +132,21 @@
                         width: 21%;
                     }
                     .o_web_studio_text_decoration, .o_web_studio_text_alignment, .o_web_studio_font_size {
-                        > button {
+                        > button , button.dropdown-toggle {
                             @include o-web-studio-btn;
                             padding: 2px 7px;
                             font-size: 13px;
                             &.active {
                                 border-color: lighten($o-brand-primary, 5%) !important;
+                            }
+                        }
+                    }
+                    .o_web_studio_font_size {
+                        .dropdown-item-text {
+                            cursor: pointer;
+
+                            &.active {
+                                background-color: $o-brand-primary;
                             }
                         }
                     }

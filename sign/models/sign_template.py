@@ -20,13 +20,13 @@ class SignTemplate(models.Model):
     attachment_id = fields.Many2one('ir.attachment', string="Attachment", required=True, ondelete='cascade')
     name = fields.Char(related='attachment_id.name', readonly=False)
     datas = fields.Binary(related='attachment_id.datas', readonly=False)
-    sign_item_ids = fields.One2many('sign.item', 'template_id', string="Signature Items")
+    sign_item_ids = fields.One2many('sign.item', 'template_id', string="Signature Items", copy=True)
     responsible_count = fields.Integer(compute='_compute_responsible_count', string="Responsible Count")
 
     active = fields.Boolean(default=True, string="Active", oldname='archived')
     favorited_ids = fields.Many2many('res.users', string="Favorite of")
 
-    share_link = fields.Char(string="Share Link")
+    share_link = fields.Char(string="Share Link", copy=False)
 
     sign_request_ids = fields.One2many('sign.request', 'template_id', string="Signature Requests")
 
@@ -93,11 +93,11 @@ class SignTemplate(models.Model):
             v = str(int(m.group(1))+1) if m else "2"
             index = m.start() if m else len(name)
             new_attachment.name = name[:index] + " (v" + v + ")"
-
-            template = self.create({
+            template = template.copy({
                 'attachment_id': new_attachment.id,
                 'favorited_ids': [(4, self.env.user.id)]
             })
+
         elif name:
             template.attachment_id.name = name
 
@@ -108,15 +108,24 @@ class SignTemplate(models.Model):
         }
         template.sign_item_ids.filtered(lambda r: r.id not in item_ids).unlink()
         for item in template.sign_item_ids:
-            item.write(sign_items.pop(str(item.id)))
-        SignItem = self.env['sign.item']
+            values = sign_items.pop(str(item.id))
+            values['option_ids'] = [(6, False, [int(op) for op in values.get('option_ids', [])])]
+            item.write(values)
         for item in sign_items.values():
             item['template_id'] = template.id
-            SignItem.create(item)
+            item['option_ids'] = [(6, False, [int(op) for op in item.get('option_ids', [])])]
+            self.env['sign.item'].create(item)
 
         if len(template.sign_item_ids.mapped('responsible_id')) > 1:
             template.share_link = None
+
         return template.id
+
+    @api.model
+    def add_option(self, value):
+        option = self.env['sign.item.option'].search([('value', '=', value)])
+        option_id = option if option else self.env['sign.item.option'].create({'value': value})
+        return option_id.id
 
 
 class SignTemplateTag(models.Model):
@@ -132,6 +141,13 @@ class SignTemplateTag(models.Model):
     ]
 
 
+class SignItemSelectionOption(models.Model):
+    _name = "sign.item.option"
+    _description = "Option of a selection Field"
+
+    value = fields.Text(string="Option")
+
+
 class SignItem(models.Model):
     _name = "sign.item"
     _description = "Fields to be sign on Document"
@@ -142,6 +158,8 @@ class SignItem(models.Model):
 
     required = fields.Boolean(default=True)
     responsible_id = fields.Many2one("sign.item.role", string="Responsible")
+
+    option_ids = fields.Many2many("sign.item.option", string="Selection options")
 
     name = fields.Char(string="Field Name")
     page = fields.Integer(string="Document Page", required=True, default=1)
@@ -171,6 +189,7 @@ class SignItemType(models.Model):
         ('text', "Text"),
         ('textarea', "Multiline Text"),
         ('checkbox', "Checkbox"),
+        ('selection', "Selection"),
     ], required=True, string='Type', default='text', oldname='type')
 
     tip = fields.Char(required=True, default="fill in", translate=True)

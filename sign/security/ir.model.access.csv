@@ -7,6 +7,7 @@ access_sign_request_item_all,sign_request_item all,model_sign_request_item,,0,0,
 access_sign_request_item_group_user,sign_request_item group_user,model_sign_request_item,group_sign_user,1,1,1,1
 access_sign_item_all,sign_item all,model_sign_item,,0,0,0,0
 access_sign_item_group_user,sign_item group_user,model_sign_item,group_sign_user,1,1,1,1
+access_sign_item_option_group_user,sign_item_option group_user,model_sign_item_option,group_sign_user,1,1,1,1
 access_sign_item_value_all,sign_item_value all,model_sign_item_value,,0,0,0,0
 access_sign_item_value_group_user,sign_item_value group_user,model_sign_item_value,group_sign_user,1,1,1,1
 access_sign_item_role_all,sign_item_role all,model_sign_item_role,,0,0,0,0

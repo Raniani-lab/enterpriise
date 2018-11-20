@@ -16,6 +16,9 @@
         <xpath expr="link[last()]" position="after">
             <link rel="stylesheet" type="text/scss" href="/sign/static/src/scss/sign_backend.scss"/>
         </xpath>
+        <xpath expr="link[last()]" position="after">
+            <link rel="stylesheet" type="text/css" href="/sign/static/src/css/iframe.css"/>
+        </xpath>
     </template>
 
     <template id="assets_frontend" inherit_id="web.assets_frontend">

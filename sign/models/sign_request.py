@@ -10,6 +10,9 @@ from email.utils import formataddr
 from PyPDF2 import PdfFileReader, PdfFileWriter
 from reportlab.lib.utils import ImageReader
 from reportlab.pdfgen import canvas
+from reportlab.platypus import Paragraph
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.pdfbase.pdfmetrics import stringWidth
 from werkzeug.urls import url_join
 from random import randint
 
@@ -383,6 +386,23 @@ class SignRequest(models.Model):
                 if item.type_id.item_type == "text":
                     can.setFont(font, height*item.height*0.8)
                     can.drawString(width*item.posX, height*(1-item.posY-item.height*0.9), value)
+
+                elif item.type_id.item_type == "selection":
+                    content = []
+                    for option in item.option_ids:
+                        if option.id != int(value):
+                            content.append("<strike>%s</strike>" % (option.value))
+                        else:
+                            content.append(option.value)
+                    font_size = height * normalFontSize * 0.8
+                    can.setFont(font, font_size)
+                    text = " / ".join(content)
+                    string_width = stringWidth(text.replace("<strike>", "").replace("</strike>", ""), font, font_size)
+                    p = Paragraph(text, getSampleStyleSheet()["Normal"])
+                    w, h = p.wrap(width, height)
+                    posX = width * (item.posX + item.width * 0.5) - string_width // 2
+                    posY = height * (1 - item.posY - item.height * 0.5) - h // 2
+                    p.drawOn(can, posX, posY)
 
                 elif item.type_id.item_type == "textarea":
                     can.setFont(font, height*normalFontSize*0.8)

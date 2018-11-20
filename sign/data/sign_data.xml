@@ -132,6 +132,14 @@
         <field name="default_height" type="float">0.015</field>
     </record>
 
+    <record model="sign.item.type" id="sign_item_type_selection">
+        <field name="name">Selection</field>
+        <field name="item_type">selection</field>
+        <field name="tip">Select an option</field>
+        <field name="default_width" type="float">0.300</field>
+        <field name="default_height" type="float">0.050</field>
+    </record>
+
     <record model="sign.item.type" id="sign_item_type_date">
         <field name="name">Date</field>
         <field name="placeholder">Date</field>

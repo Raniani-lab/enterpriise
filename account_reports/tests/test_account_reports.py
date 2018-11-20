@@ -65,10 +65,17 @@ class TestAccountReports(SingleTransactionCase):
         # Get the new chart of accounts using the new environment.
         chart_template = cls.env.ref('l10n_generic_coa.configurable_chart_template')
 
-        cls.partner_a = cls.env['res.partner'].create({'name': 'partner_a', 'company_id': False})
-        cls.partner_b = cls.env['res.partner'].create({'name': 'partner_b', 'company_id': False})
-        cls.partner_c = cls.env['res.partner'].create({'name': 'partner_c', 'company_id': False})
-        cls.partner_d = cls.env['res.partner'].create({'name': 'partner_d', 'company_id': False})
+        cls.partner_category_a = cls.env['res.partner.category'].create({'name': 'partner_categ_a'})
+        cls.partner_category_b = cls.env['res.partner.category'].create({'name': 'partner_categ_b'})
+
+        cls.partner_a = cls.env['res.partner'].create(
+            {'name': 'partner_a', 'company_id': False, 'category_id': [(6, 0, [])]})
+        cls.partner_b = cls.env['res.partner'].create(
+            {'name': 'partner_b', 'company_id': False, 'category_id': [(6, 0, [cls.partner_category_a.id])]})
+        cls.partner_c = cls.env['res.partner'].create(
+            {'name': 'partner_c', 'company_id': False, 'category_id': [(6, 0, [cls.partner_category_b.id])]})
+        cls.partner_d = cls.env['res.partner'].create(
+            {'name': 'partner_d', 'company_id': False, 'category_id': [(6, 0, [cls.partner_category_a.id, cls.partner_category_b.id])]})
 
         # Init data for company_parent.
         chart_template.try_loading_for_current_company()
@@ -209,11 +216,17 @@ class TestAccountReports(SingleTransactionCase):
         :param date_to:     A datetime object.
         :return:            The newly created options.
         '''
-        filter_date = {
-            'date_from': date_from and date_from.strftime(DEFAULT_SERVER_DATE_FORMAT),
-            'date_to': date_to and date_to.strftime(DEFAULT_SERVER_DATE_FORMAT),
-            'filter': filter,
-        }
+        if date_from and date_to:
+            filter_date = {
+                'date_from': date_from and date_from.strftime(DEFAULT_SERVER_DATE_FORMAT),
+                'date_to': date_to and date_to.strftime(DEFAULT_SERVER_DATE_FORMAT),
+                'filter': filter,
+            }
+        else:
+            filter_date = {
+                'date': (date_from or date_to).strftime(DEFAULT_SERVER_DATE_FORMAT),
+                'filter': filter,
+            }
         report.filter_date = filter_date
         options = report._get_options(None)
         report._apply_date_filter(options)
@@ -820,5 +833,118 @@ class TestAccountReports(SingleTransactionCase):
             [
                 # Partners.
                 ('partner_c',                           -1445.00,       0.00,           0.00,           -1445.00),
+            ],
+        )
+
+    # -------------------------------------------------------------------------
+    # TESTS: Aged Receivable
+    # -------------------------------------------------------------------------
+
+    def test_aged_receivable_folded_unfolded(self):
+        ''' Test folded/unfolded lines. '''
+        # Init options.
+        report = self.env['account.aged.receivable']
+        options = self._init_options(report, 'custom', date_utils.get_month(self.mar_year_minus_1)[1])
+        report = report.with_context(report._set_context(options))
+
+        lines = report._get_lines(options)
+        self.assertLinesValues(
+            lines,
+            #   Name                                    Not Due On,     1 - 30          31 - 60         61 - 90         91 - 120        Older       Total
+            [   0,                                      4,              5,              6,              7,              8,              9,          10],
+            [
+                # Partners.
+                ('partner_a',                           0.00,           0.00,           0.00,           115.00,         780.00,         0.00,       895.00),
+                ('partner_b',                           0.00,           0.00,           230.00,         15.00,          0.00,           0.00,       245.00),
+                ('partner_c',                           0.00,           345.00,         130.00,         0.00,           0.00,           0.00,       475.00),
+                ('partner_d',                           0.00,           345.00,         0.00,           115.00,         0.00,           0.00,       460.00),
+                # Report Total.
+                ('Total',                               0.00,           690.00,         360.00,         245.00,         780.00,         0.00,       2075.00),
+            ],
+        )
+
+        # Mark the 'partner_d' line to be unfolded.
+        line_id = lines[3]['id']
+        options['unfolded_lines'] = [line_id]
+        report = report.with_context(report._set_context(options))
+
+        self.assertLinesValues(
+            report._get_lines(options, line_id=line_id),
+            #   Name                    JRNL        Account         Not Due On,     1 - 30          31 - 60         61 - 90         91 - 120        Older       Total
+            [   0,                      1,          2,              4,              5,              6,              7,              8,              9,          10],
+            [
+                # Partner.
+                ('partner_d',           '',         '',             0.00,           345.00,         0.00,           115.00,         0.00,           0.00,       460.00),
+                # Account Move Lines.
+                ('01/01/2017',          'INV',      '101200',       '',             '',             '',             115.00,         '',             '',         ''),
+                ('03/01/2017',          'INV',      '101200',       '',             345.00,         '',             '',             '',             '',         ''),
+            ],
+        )
+
+    def test_aged_receivable_multi_company(self):
+        ''' Test folded/unfolded lines in a multi-company environment. '''
+        # Select both company_parent/company_child_eur companies.
+        report = self.env['account.aged.receivable']
+        options = self._init_options(report, 'custom', date_utils.get_month(self.mar_year_minus_1)[1])
+        options = self._update_multi_selector_filter(options, 'multi_company', (self.company_parent + self.company_child_eur).ids)
+        report = report.with_context(report._set_context(options))
+
+        lines = report._get_lines(options)
+        self.assertLinesValues(
+            lines,
+            #   Name                                    Not Due On,     1 - 30          31 - 60         61 - 90         91 - 120        Older       Total
+            [   0,                                      4,              5,              6,              7,              8,              9,          10],
+            [
+                # Partners.
+                ('partner_a',                           0.00,           0.00,           0.00,           230.00,         1560.00,        0.00,       1790.00),
+                ('partner_b',                           0.00,           0.00,           460.00,         30.00,          0.00,           0.00,       490.00),
+                ('partner_c',                           0.00,           690.00,         260.00,         0.00,           0.00,           0.00,       950.00),
+                ('partner_d',                           0.00,           690.00,         0.00,           230.00,         0.00,           0.00,       920.00),
+                # Report Total.
+                ('Total',                               0.00,           1380.00,        720.00,         490.00,         1560.00,        0.00,       4150.00),
+            ],
+        )
+
+        # Mark the 'partner_d' line to be unfolded.
+        line_id = lines[3]['id']
+        options['unfolded_lines'] = [line_id]
+        report = report.with_context(report._set_context(options))
+
+        self.assertLinesValues(
+            report._get_lines(options, line_id=line_id),
+            #   Name                    JRNL        Account         Not Due On,     1 - 30          31 - 60         61 - 90         91 - 120        Older       Total
+            [   0,                      1,          2,              4,              5,              6,              7,              8,              9,          10],
+            [
+                # Partner.
+                ('partner_d',           '',         '',             0.00,           690.00,         0.00,           230.00,         0.00,           0.00,       920.00),
+                # Account Move Lines.
+                ('01/01/2017',          'INV',      '101200',       '',             '',             '',             115.00,         '',             '',         ''),
+                ('01/01/2017',          'INV',      '101200',       '',             '',             '',             115.00,         '',             '',         ''),
+                ('03/01/2017',          'INV',      '101200',       '',             345.00,         '',             '',             '',             '',         ''),
+                ('03/01/2017',          'INV',      '101200',       '',             345.00,         '',             '',             '',             '',         ''),
+            ],
+        )
+
+    def test_aged_receivable_filter_partner(self):
+        ''' Test the filter on partners/partner's categories. '''
+        # Init options with modified filter_partner:
+        # - partner_ids: ('partner_b', 'partner_c', 'partner_d')
+        # - partner_categories: ('partner_categ_a')
+        report = self.env['account.aged.receivable']
+        options = self._init_options(report, 'custom', date_utils.get_month(self.mar_year_minus_1)[1])
+        options['partner_ids'] = (self.partner_b + self.partner_c + self.partner_d).ids
+        options['partner_categories'] = self.partner_category_a.ids
+        report = report.with_context(report._set_context(options))
+
+        self.assertLinesValues(
+            report._get_lines(options),
+            #   Name                                    Not Due On,     1 - 30          31 - 60         61 - 90         91 - 120        Older       Total
+            [   0,                                      4,              5,              6,              7,              8,              9,          10],
+            [
+                # Partners.
+                ('partner_b',                           0.00,           0.00,           230.00,         15.00,          0.00,           0.00,       245.00),
+                ('partner_d',                           0.00,           345.00,         0.00,           115.00,         0.00,           0.00,       460.00),
+                # Report Total.
+                ('Total',                               0.00,           345.00,         230.00,         130.00,         0.00,           0.00,       705.00),
             ],
         )

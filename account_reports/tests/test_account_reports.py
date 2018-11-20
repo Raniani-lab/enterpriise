@@ -948,3 +948,116 @@ class TestAccountReports(SingleTransactionCase):
                 ('Total',                               0.00,           345.00,         230.00,         130.00,         0.00,           0.00,       705.00),
             ],
         )
+
+    # -------------------------------------------------------------------------
+    # TESTS: Aged Payable
+    # -------------------------------------------------------------------------
+
+    def test_aged_payable_folded_unfolded(self):
+        ''' Test folded/unfolded lines. '''
+        # Init options.
+        report = self.env['account.aged.payable']
+        options = self._init_options(report, 'custom', date_utils.get_month(self.mar_year_minus_1)[1])
+        report = report.with_context(report._set_context(options))
+
+        lines = report._get_lines(options)
+        self.assertLinesValues(
+            lines,
+            #   Name                                    Not Due On,     1 - 30          31 - 60         61 - 90         91 - 120        Older       Total
+            [   0,                                      4,              5,              6,              7,              8,              9,          10],
+            [
+                # Partners.
+                ('partner_a',                           0.00,           45.00,          230.00,         0.00,           0.00,           0.00,       275.00),
+                ('partner_b',                           0.00,           345.00,         0.00,           0.00,           180.00,         0.00,       525.00),
+                ('partner_c',                           0.00,           0.00,           0.00,           65.00,          1380.00,        0.00,       1445.00),
+                ('partner_d',                           0.00,           0.00,           30.00,          0.00,           1380.00,        0.00,       1410.00),
+                # Report Total.
+                ('Total',                               0.00,           390.00,         260.00,         65.00,          2940.00,        0.00,       3655.00),
+            ],
+        )
+
+        # Mark the 'partner_d' line to be unfolded.
+        line_id = lines[3]['id']
+        options['unfolded_lines'] = [line_id]
+        report = report.with_context(report._set_context(options))
+
+        self.assertLinesValues(
+            report._get_lines(options, line_id=line_id),
+            #   Name                    JRNL        Account         Not Due On,     1 - 30          31 - 60         61 - 90         91 - 120        Older       Total
+            [   0,                      1,          2,              4,              5,              6,              7,              8,              9,          10],
+            [
+                # Partner.
+                ('partner_d',           '',         '',             0.00,           0.00,           30.00,          0.00,           1380.00,        0.00,       1410.00),
+                # Account Move Lines.
+                ('12/01/2016',          'BILL',     '111100',       '',             '',             '',             '',             1380.00,        '',         ''),
+                ('02/01/2017',          'BILL',     '111100',       '',             '',             30.00,          '',             '',             '',         ''),
+            ],
+        )
+
+    def test_aged_payable_multi_company(self):
+        ''' Test folded/unfolded lines in a multi-company environment. '''
+        # Select both company_parent/company_child_eur companies.
+        report = self.env['account.aged.payable']
+        options = self._init_options(report, 'custom', date_utils.get_month(self.mar_year_minus_1)[1])
+        options = self._update_multi_selector_filter(options, 'multi_company', (self.company_parent + self.company_child_eur).ids)
+        report = report.with_context(report._set_context(options))
+
+        lines = report._get_lines(options)
+        self.assertLinesValues(
+            lines,
+            #   Name                                    Not Due On,     1 - 30          31 - 60         61 - 90         91 - 120        Older       Total
+            [   0,                                      4,              5,              6,              7,              8,              9,          10],
+            [
+                # Partners.
+                ('partner_a',                           0.00,           90.00,          460.00,         0.00,           0.00,           0.00,       550.00),
+                ('partner_b',                           0.00,           690.00,         0.00,           0.00,           360.00,         0.00,       1050.00),
+                ('partner_c',                           0.00,           0.00,           0.00,           130.00,         2760.00,        0.00,       2890.00),
+                ('partner_d',                           0.00,           0.00,           60.00,          0.00,           2760.00,        0.00,       2820.00),
+                # Report Total.
+                ('Total',                               0.00,           780.00,         520.00,         130.00,         5880.00,        0.00,       7310.00),
+            ],
+        )
+
+        # Mark the 'partner_d' line to be unfolded.
+        line_id = lines[3]['id']
+        options['unfolded_lines'] = [line_id]
+        report = report.with_context(report._set_context(options))
+
+        self.assertLinesValues(
+            report._get_lines(options, line_id=line_id),
+            #   Name                    JRNL        Account         Not Due On,     1 - 30          31 - 60         61 - 90         91 - 120        Older       Total
+            [   0,                      1,          2,              4,              5,              6,              7,              8,              9,          10],
+            [
+                # Partner.
+                ('partner_d',           '',         '',             0.00,           0.00,           60.00,          0.00,           2760.00,        0.00,       2820.00),
+                # Account Move Lines.
+                ('12/01/2016',          'BILL',     '111100',       '',             '',             '',             '',             1380.00,        '',         ''),
+                ('12/01/2016',          'BILL',     '111100',       '',             '',             '',             '',             1380.00,        '',         ''),
+                ('02/01/2017',          'BILL',     '111100',       '',             '',             30.00,          '',             '',             '',         ''),
+                ('02/01/2017',          'BILL',     '111100',       '',             '',             30.00,          '',             '',             '',         ''),
+            ],
+        )
+
+    def test_aged_payable_filter_partner(self):
+        ''' Test the filter on partners/partner's categories. '''
+        # Init options with modified filter_partner:
+        # - partner_ids: ('partner_b', 'partner_c', 'partner_d')
+        # - partner_categories: ('partner_categ_a')
+        report = self.env['account.aged.payable']
+        options = self._init_options(report, 'custom', date_utils.get_month(self.mar_year_minus_1)[1])
+        options['partner_ids'] = (self.partner_b + self.partner_c + self.partner_d).ids
+        options['partner_categories'] = self.partner_category_a.ids
+        report = report.with_context(report._set_context(options))
+
+        self.assertLinesValues(
+            report._get_lines(options),
+            #   Name                                    Not Due On,     1 - 30          31 - 60         61 - 90         91 - 120        Older       Total
+            [   0,                                      4,              5,              6,              7,              8,              9,          10],
+            [
+                # Partners.
+                ('partner_b',                           0.00,           345.00,         0.00,           0.00,           180.00,         0.00,       525.00),
+                ('partner_d',                           0.00,           0.00,           30.00,          0.00,           1380.00,        0.00,       1410.00),
+                # Report Total.
+                ('Total',                               0.00,           345.00,         30.00,          0.00,           1560.00,        0.00,       1935.00),
+            ],
+        )

@@ -53,7 +53,7 @@
             </t>
         </t>
         <t t-if="widget.state.mode === 'properties'">
-            <div id="accordion" class="o_web_studio_accordion" role="tablist" aria-multiselectable="true">
+            <div id="accordion" class="o_web_studio_accordion mt16" role="tablist" aria-multiselectable="true">
                 <!-- the rest will be dynamically added -->
             </div>
         </t>

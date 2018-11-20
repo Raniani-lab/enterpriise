@@ -1,8 +1,4 @@
 .o_web_studio_sidebar.o_web_studio_report_sidebar {
-    .o_web_studio_properties.active, .o_web_studio_sidebar_content_properties {
-        background-color: lighten($o-web-studio-bg-medium, 7%);
-    }
-
     .o_web_studio_sidebar_content {
         &.o_web_studio_sidebar_content_properties {
             padding-top: 0px;

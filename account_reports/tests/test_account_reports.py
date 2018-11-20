@@ -1061,3 +1061,123 @@ class TestAccountReports(SingleTransactionCase):
                 ('Total',                               0.00,           345.00,         30.00,          0.00,           1560.00,        0.00,       1935.00),
             ],
         )
+
+    # -------------------------------------------------------------------------
+    # TESTS: Trial Balance
+    # -------------------------------------------------------------------------
+
+    def test_trial_balance_initial_state(self):
+        ''' Test lines with base state. '''
+        # Init options.
+        report = self.env['account.coa.report']
+        options = self._init_options(report, 'custom', *date_utils.get_month(self.mar_year_minus_1))
+        report = report.with_context(report._set_context(options))
+
+        self.assertLinesValues(
+            report._get_lines(options),
+            #                                           [  Initial Balance   ]          [   Month Balance    ]          [       Total        ]
+            #   Name                                    Debit           Credit          Debit           Credit          Debit           Credit
+            [   0,                                      1,              2,              3,              4,              5,              6],
+            [
+                # Accounts.
+                ('101200 Account Receivable',           1485.00,        '',             690.00,         100.00,         2075.00,        ''),
+                ('101300 Tax Paid',                     615.00,         '',             90.00,          '',             705.00,         ''),
+                ('101401 Bank',                         '',             750.00,         100.00,         300.00,         '',             950.00),
+                ('111100 Account Payable',              '',             3265.00,        300.00,         690.00,         '',             3655.00),
+                ('111200 Tax Received',                 '',             285.00,         '',             90.00,          '',             375.00),
+                ('200000 Product Sales',                '',             1900.00,        '',             '',             '',             1300.00),
+                ('220000 Expenses',                     4100.00,        '',             '',             '',             1100.00,        ''),
+                ('999999 Undistributed Profits/Losses', 2400.00,        '',             '',             '',             2400.00,        ''),
+                # Report Total.
+                ('Total',                               8600.00,        6200.00,        1180.00,        1180.00,        6280.00,        6280.00),
+            ],
+        )
+
+    def test_trial_balance_cash_basis(self):
+        ''' Test the cash basis option. '''
+        # Check the cash basis option.
+        report = self.env['account.coa.report']
+        options = self._init_options(report, 'custom', *date_utils.get_month(self.mar_year_minus_1))
+        options['cash_basis'] = True
+        report = report.with_context(report._set_context(options))
+
+        self.assertLinesValues(
+            report._get_lines(options),
+            #                                           [  Initial Balance   ]          [   Month Balance    ]          [       Total        ]
+            #   Name                                    Debit           Credit          Debit           Credit          Debit           Credit
+            [   0,                                      1,              2,              3,              4,              5,              6],
+            [
+                # Accounts.
+                ('101200 Account Receivable',           '',             '',             100.00,         100.00,         '',             ''),
+                ('101300 Tax Paid',                     189.13,         '',             39.13,          '',             228.26,         ''),
+                ('101401 Bank',                         '',             750.00,         100.00,         300.00,         '',             950.00),
+                ('111100 Account Payable',              '',             '',             300.00,         300.00,         '',             ''),
+                ('111200 Tax Received',                 '',             91.30,          '',             13.05,          '',             104.35),
+                ('200000 Product Sales',                '',             608.70,         '',             86.95,          '',             695.65),
+                ('220000 Expenses',                     1260.87,        '',             '',             '',             478.26,         ''),
+                # Report Total.
+                ('Total',                               1450.00,        1450.00,        539.13,         800.00,         706.52,         1750.00),
+            ],
+        )
+
+    def test_trial_balance_multi_company(self):
+        ''' Test in a multi-company environment. '''
+        # Select both company_parent/company_child_eur companies.
+        report = self.env['account.coa.report']
+        options = self._init_options(report, 'custom', *date_utils.get_month(self.mar_year_minus_1))
+        options = self._update_multi_selector_filter(options, 'multi_company', (self.company_parent + self.company_child_eur).ids)
+        report = report.with_context(report._set_context(options))
+
+        self.assertLinesValues(
+            report._get_lines(options),
+            #                                           [  Initial Balance   ]          [   Month Balance    ]          [       Total        ]
+            #   Name                                    Debit           Credit          Debit           Credit          Debit           Credit
+            [   0,                                      1,              2,              3,              4,              5,              6],
+            [
+                # Accounts.
+                ('101200 Account Receivable',           1485.00,        '',             690.00,         100.00,         2075.00,        ''),
+                ('101200 Account Receivable',           1485.00,        '',             690.00,         100.00,         2075.00,        ''),
+                ('101300 Tax Paid',                     615.00,         '',             90.00,          '',             705.00,         ''),
+                ('101300 Tax Paid',                     615.00,         '',             90.00,          '',             705.00,         ''),
+                ('101401 Bank',                         '',             750.00,         100.00,         300.00,         '',             950.00),
+                ('101401 Bank',                         '',             750.00,         100.00,         300.00,         '',             950.00),
+                ('111100 Account Payable',              '',             3265.00,        300.00,         690.00,         '',             3655.00),
+                ('111100 Account Payable',              '',             3265.00,        300.00,         690.00,         '',             3655.00),
+                ('111200 Tax Received',                 '',             285.00,         '',             90.00,          '',             375.00),
+                ('111200 Tax Received',                 '',             285.00,         '',             90.00,          '',             375.00),
+                ('200000 Product Sales',                '',             1900.00,        '',             '',             '',             1300.00),
+                ('200000 Product Sales',                '',             1900.00,        '',             '',             '',             1300.00),
+                ('220000 Expenses',                     4100.00,        '',             '',             '',             1100.00,        ''),
+                ('220000 Expenses',                     4100.00,        '',             '',             '',             1100.00,        ''),
+                ('999999 Undistributed Profits/Losses', 2400.00,        '',             '',             '',             2400.00,        ''),
+                ('999999 Undistributed Profits/Losses', 2400.00,        '',             '',             '',             2400.00,        ''),
+                # Report Total.
+                ('Total',                               17200.00,       12400.00,       2360.00,        2360.00,        12560.00,       12560.00),
+            ],
+        )
+
+    def test_trial_balance_journals_filter(self):
+        ''' Test the filter on journals. '''
+        journal = self.env['account.journal'].search([('company_id', '=', self.company_parent.id), ('type', '=', 'sale')])
+
+        # Init options with only the sale journal selected.
+        report = self.env['account.coa.report']
+        options = self._init_options(report, 'custom', *date_utils.get_month(self.mar_year_minus_1))
+        options = self._update_multi_selector_filter(options, 'journals', journal.ids)
+        report = report.with_context(report._set_context(options))
+
+        self.assertLinesValues(
+            report._get_lines(options),
+            #                                           [  Initial Balance   ]          [   Month Balance    ]          [       Total        ]
+            #   Name                                    Debit           Credit          Debit           Credit          Debit           Credit
+            [   0,                                      1,              2,              3,              4,              5,              6],
+            [
+                # Accounts.
+                ('101200 Account Receivable',           2185.00,        '',             690.00,         '',             2875.00,        ''),
+                ('111200 Tax Received',                 '',             285.00,         '',             90.00,          '',             375.00),
+                ('200000 Product Sales',                '',             1900.00,        '',             '',             '',             1300.00),
+                ('999999 Undistributed Profits/Losses', '',             1200.00,        '',             '',             '',             1200.00),
+                # Report Total.
+                ('Total',                               2185.00,        3385.00,        690.00,         90.00,          2875.00,        2875.00),
+            ],
+        )

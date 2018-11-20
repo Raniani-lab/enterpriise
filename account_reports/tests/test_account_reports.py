@@ -1181,3 +1181,26 @@ class TestAccountReports(SingleTransactionCase):
                 ('Total',                               2185.00,        3385.00,        690.00,         90.00,          2875.00,        2875.00),
             ],
         )
+
+    # -------------------------------------------------------------------------
+    # TESTS: Tax Report
+    # -------------------------------------------------------------------------
+
+    def test_tax_report_initial_state(self):
+        ''' Test taxes lines. '''
+        # Init options.
+        report = self.env['account.generic.tax.report']
+        options = self._init_options(report, 'custom', *date_utils.get_month(self.mar_year_minus_1))
+        report = report.with_context(report._set_context(options))
+
+        self.assertLinesValues(
+            report._get_lines(options),
+            #   Name                                    NET             TAX
+            [   0,                                      1,              2],
+            [
+                ('Sales',                               '',             ''),
+                ('Tax 15.00% (15.0)',                   600.00,         90.00),
+                ('Purchases',                           '',             ''),
+                ('Tax 15.00% (15.0)',                   600.00,         90.00),
+            ],
+        )

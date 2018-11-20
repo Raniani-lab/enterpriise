@@ -65,10 +65,10 @@ class TestAccountReports(SingleTransactionCase):
         # Get the new chart of accounts using the new environment.
         chart_template = cls.env.ref('l10n_generic_coa.configurable_chart_template')
 
-        partner_a = cls.env['res.partner'].create({'name': 'partner_a', 'company_id': False})
-        partner_b = cls.env['res.partner'].create({'name': 'partner_b', 'company_id': False})
-        partner_c = cls.env['res.partner'].create({'name': 'partner_c', 'company_id': False})
-        partner_d = cls.env['res.partner'].create({'name': 'partner_d', 'company_id': False})
+        cls.partner_a = cls.env['res.partner'].create({'name': 'partner_a', 'company_id': False})
+        cls.partner_b = cls.env['res.partner'].create({'name': 'partner_b', 'company_id': False})
+        cls.partner_c = cls.env['res.partner'].create({'name': 'partner_c', 'company_id': False})
+        cls.partner_d = cls.env['res.partner'].create({'name': 'partner_d', 'company_id': False})
 
         # Init data for company_parent.
         chart_template.try_loading_for_current_company()
@@ -80,36 +80,36 @@ class TestAccountReports(SingleTransactionCase):
         cls.apr_year_minus_1 = datetime.datetime.strptime('2017-04-01', DEFAULT_SERVER_DATE_FORMAT).date()
 
         # December
-        inv_dec_1 = cls._create_invoice(cls.env, 1200.0, partner_a, 'out_invoice', cls.dec_year_minus_2)
+        inv_dec_1 = cls._create_invoice(cls.env, 1200.0, cls.partner_a, 'out_invoice', cls.dec_year_minus_2)
         cls._create_payment(cls.env, cls.jan_year_minus_1, inv_dec_1, 600.0)
-        inv_dec_2 = cls._create_invoice(cls.env, 1200.0, partner_b, 'in_invoice', cls.dec_year_minus_2)
+        inv_dec_2 = cls._create_invoice(cls.env, 1200.0, cls.partner_b, 'in_invoice', cls.dec_year_minus_2)
         cls._create_payment(cls.env, cls.dec_year_minus_2, inv_dec_2, 1200.0)
-        inv_dec_3 = cls._create_invoice(cls.env, 1200.0, partner_c, 'in_invoice', cls.dec_year_minus_2)
-        inv_dec_4 = cls._create_invoice(cls.env, 1200.0, partner_d, 'in_invoice', cls.dec_year_minus_2)
+        inv_dec_3 = cls._create_invoice(cls.env, 1200.0, cls.partner_c, 'in_invoice', cls.dec_year_minus_2)
+        inv_dec_4 = cls._create_invoice(cls.env, 1200.0, cls.partner_d, 'in_invoice', cls.dec_year_minus_2)
 
         # January
-        inv_jan_1 = cls._create_invoice(cls.env, 100.0, partner_a, 'out_invoice', cls.jan_year_minus_1)
-        inv_jan_2 = cls._create_invoice(cls.env, 100.0, partner_b, 'out_invoice', cls.jan_year_minus_1)
+        inv_jan_1 = cls._create_invoice(cls.env, 100.0, cls.partner_a, 'out_invoice', cls.jan_year_minus_1)
+        inv_jan_2 = cls._create_invoice(cls.env, 100.0, cls.partner_b, 'out_invoice', cls.jan_year_minus_1)
         cls._create_payment(cls.env, cls.jan_year_minus_1, inv_jan_2, 100.0)
-        inv_jan_3 = cls._create_invoice(cls.env, 100.0, partner_c, 'in_invoice', cls.jan_year_minus_1)
+        inv_jan_3 = cls._create_invoice(cls.env, 100.0, cls.partner_c, 'in_invoice', cls.jan_year_minus_1)
         cls._create_payment(cls.env, cls.feb_year_minus_1, inv_jan_3, 50.0)
-        inv_jan_4 = cls._create_invoice(cls.env, 100.0, partner_d, 'out_invoice', cls.jan_year_minus_1)
+        inv_jan_4 = cls._create_invoice(cls.env, 100.0, cls.partner_d, 'out_invoice', cls.jan_year_minus_1)
 
         # February
-        inv_feb_1 = cls._create_invoice(cls.env, 200.0, partner_a, 'in_invoice', cls.feb_year_minus_1)
-        inv_feb_2 = cls._create_invoice(cls.env, 200.0, partner_b, 'out_invoice', cls.feb_year_minus_1)
-        inv_feb_3 = cls._create_invoice(cls.env, 200.0, partner_c, 'out_invoice', cls.feb_year_minus_1)
+        inv_feb_1 = cls._create_invoice(cls.env, 200.0, cls.partner_a, 'in_invoice', cls.feb_year_minus_1)
+        inv_feb_2 = cls._create_invoice(cls.env, 200.0, cls.partner_b, 'out_invoice', cls.feb_year_minus_1)
+        inv_feb_3 = cls._create_invoice(cls.env, 200.0, cls.partner_c, 'out_invoice', cls.feb_year_minus_1)
         cls._create_payment(cls.env, cls.mar_year_minus_1, inv_feb_3, 100.0)
-        inv_feb_4 = cls._create_invoice(cls.env, 200.0, partner_d, 'in_invoice', cls.feb_year_minus_1)
+        inv_feb_4 = cls._create_invoice(cls.env, 200.0, cls.partner_d, 'in_invoice', cls.feb_year_minus_1)
         cls._create_payment(cls.env, cls.feb_year_minus_1, inv_feb_4, 200.0)
 
         # March
-        inv_mar_1 = cls._create_invoice(cls.env, 300.0, partner_a, 'in_invoice', cls.mar_year_minus_1)
+        inv_mar_1 = cls._create_invoice(cls.env, 300.0, cls.partner_a, 'in_invoice', cls.mar_year_minus_1)
         cls._create_payment(cls.env, cls.mar_year_minus_1, inv_mar_1, 300.0)
-        inv_mar_2 = cls._create_invoice(cls.env, 300.0, partner_b, 'in_invoice', cls.mar_year_minus_1)
-        inv_mar_3 = cls._create_invoice(cls.env, 300.0, partner_c, 'out_invoice', cls.mar_year_minus_1)
+        inv_mar_2 = cls._create_invoice(cls.env, 300.0, cls.partner_b, 'in_invoice', cls.mar_year_minus_1)
+        inv_mar_3 = cls._create_invoice(cls.env, 300.0, cls.partner_c, 'out_invoice', cls.mar_year_minus_1)
         cls._create_payment(cls.env, cls.apr_year_minus_1, inv_mar_3, 150.0)
-        inv_mar_4 = cls._create_invoice(cls.env, 300.0, partner_d, 'out_invoice', cls.mar_year_minus_1)
+        inv_mar_4 = cls._create_invoice(cls.env, 300.0, cls.partner_d, 'out_invoice', cls.mar_year_minus_1)
 
         # Init data for company_child_eur.
         # Data are the same as the company_parent with doubled amount.
@@ -122,36 +122,36 @@ class TestAccountReports(SingleTransactionCase):
         cls.company_child_eur.currency_id = cls.env.ref('base.EUR')
 
         # December
-        inv_dec_5 = cls._create_invoice(cls.env, 2400.0, partner_a, 'out_invoice', cls.dec_year_minus_2)
+        inv_dec_5 = cls._create_invoice(cls.env, 2400.0, cls.partner_a, 'out_invoice', cls.dec_year_minus_2)
         cls._create_payment(cls.env, cls.jan_year_minus_1, inv_dec_5, 1200.0)
-        inv_dec_6 = cls._create_invoice(cls.env, 2400.0, partner_b, 'in_invoice', cls.dec_year_minus_2)
+        inv_dec_6 = cls._create_invoice(cls.env, 2400.0, cls.partner_b, 'in_invoice', cls.dec_year_minus_2)
         cls._create_payment(cls.env, cls.dec_year_minus_2, inv_dec_6, 2400.0)
-        inv_dec_7 = cls._create_invoice(cls.env, 2400.0, partner_c, 'in_invoice', cls.dec_year_minus_2)
-        inv_dec_8 = cls._create_invoice(cls.env, 2400.0, partner_d, 'in_invoice', cls.dec_year_minus_2)
+        inv_dec_7 = cls._create_invoice(cls.env, 2400.0, cls.partner_c, 'in_invoice', cls.dec_year_minus_2)
+        inv_dec_8 = cls._create_invoice(cls.env, 2400.0, cls.partner_d, 'in_invoice', cls.dec_year_minus_2)
 
         # January
-        inv_jan_5 = cls._create_invoice(cls.env, 200.0, partner_a, 'out_invoice', cls.jan_year_minus_1)
-        inv_jan_6 = cls._create_invoice(cls.env, 200.0, partner_b, 'out_invoice', cls.jan_year_minus_1)
+        inv_jan_5 = cls._create_invoice(cls.env, 200.0, cls.partner_a, 'out_invoice', cls.jan_year_minus_1)
+        inv_jan_6 = cls._create_invoice(cls.env, 200.0, cls.partner_b, 'out_invoice', cls.jan_year_minus_1)
         cls._create_payment(cls.env, cls.jan_year_minus_1, inv_jan_6, 200.0)
-        inv_jan_7 = cls._create_invoice(cls.env, 200.0, partner_c, 'in_invoice', cls.jan_year_minus_1)
+        inv_jan_7 = cls._create_invoice(cls.env, 200.0, cls.partner_c, 'in_invoice', cls.jan_year_minus_1)
         cls._create_payment(cls.env, cls.feb_year_minus_1, inv_jan_7, 100.0)
-        inv_jan_8 = cls._create_invoice(cls.env, 200.0, partner_d, 'out_invoice', cls.jan_year_minus_1)
+        inv_jan_8 = cls._create_invoice(cls.env, 200.0, cls.partner_d, 'out_invoice', cls.jan_year_minus_1)
 
         # February
-        inv_feb_5 = cls._create_invoice(cls.env, 400.0, partner_a, 'in_invoice', cls.feb_year_minus_1)
-        inv_feb_6 = cls._create_invoice(cls.env, 400.0, partner_b, 'out_invoice', cls.feb_year_minus_1)
-        inv_feb_7 = cls._create_invoice(cls.env, 400.0, partner_c, 'out_invoice', cls.feb_year_minus_1)
+        inv_feb_5 = cls._create_invoice(cls.env, 400.0, cls.partner_a, 'in_invoice', cls.feb_year_minus_1)
+        inv_feb_6 = cls._create_invoice(cls.env, 400.0, cls.partner_b, 'out_invoice', cls.feb_year_minus_1)
+        inv_feb_7 = cls._create_invoice(cls.env, 400.0, cls.partner_c, 'out_invoice', cls.feb_year_minus_1)
         cls._create_payment(cls.env, cls.mar_year_minus_1, inv_feb_7, 200.0)
-        inv_feb_8 = cls._create_invoice(cls.env, 400.0, partner_d, 'in_invoice', cls.feb_year_minus_1)
+        inv_feb_8 = cls._create_invoice(cls.env, 400.0, cls.partner_d, 'in_invoice', cls.feb_year_minus_1)
         cls._create_payment(cls.env, cls.feb_year_minus_1, inv_feb_8, 400.0)
 
         # Mars
-        inv_mar_5 = cls._create_invoice(cls.env, 600.0, partner_a, 'in_invoice', cls.mar_year_minus_1)
+        inv_mar_5 = cls._create_invoice(cls.env, 600.0, cls.partner_a, 'in_invoice', cls.mar_year_minus_1)
         cls._create_payment(cls.env, cls.mar_year_minus_1, inv_mar_5, 600.0)
-        inv_mar_6 = cls._create_invoice(cls.env, 600.0, partner_b, 'in_invoice', cls.mar_year_minus_1)
-        inv_mar_7 = cls._create_invoice(cls.env, 600.0, partner_c, 'out_invoice', cls.mar_year_minus_1)
+        inv_mar_6 = cls._create_invoice(cls.env, 600.0, cls.partner_b, 'in_invoice', cls.mar_year_minus_1)
+        inv_mar_7 = cls._create_invoice(cls.env, 600.0, cls.partner_c, 'out_invoice', cls.mar_year_minus_1)
         cls._create_payment(cls.env, cls.apr_year_minus_1, inv_mar_7, 300.0)
-        inv_mar_8 = cls._create_invoice(cls.env, 600.0, partner_d, 'out_invoice', cls.mar_year_minus_1)
+        inv_mar_8 = cls._create_invoice(cls.env, 600.0, cls.partner_d, 'out_invoice', cls.mar_year_minus_1)
 
         user.company_id = cls.company_parent
 
@@ -548,5 +548,277 @@ class TestAccountReports(SingleTransactionCase):
                 ('Tax Declaration',                     '',             '',             ''),
                 ('Name',                                'Base Amount',  'Tax Amount',   ''),
                 ('Tax 15.00% (15.0)',                   600.00,         375.00,         ''),
+            ],
+        )
+
+    # -------------------------------------------------------------------------
+    # TESTS: Partner Ledger
+    # -------------------------------------------------------------------------
+
+    def test_partner_ledger_folded_unfolded(self):
+        ''' Test folded/unfolded lines. '''
+        # Init options.
+        report = self.env['account.partner.ledger']
+        options = self._init_options(report, 'custom', *date_utils.get_month(self.mar_year_minus_1))
+        report = report.with_context(report._set_context(options))
+
+        lines = report._get_lines(options)
+        self.assertLinesValues(
+            lines,
+            #   Name                                    Init. Balance   Debit           Credit          Balance
+            [   0,                                      6,              7,              8,              9],
+            [
+                # Partners.
+                ('partner_a',                           665.00,         300.00,         345.00,         620.00),
+                ('partner_b',                           65.00,          0.00,           345.00,         -280.00),
+                ('partner_c',                           -1215.00,       345.00,         100.00,         -970.00),
+                ('partner_d',                           -1295.00,       345.00,         0.00,           -950.00),
+                # Report Total.
+                ('Total',                               -1780.00,       990.00,         790.00,         -1580.00),
+            ],
+        )
+
+        # Mark the 'partner_a' line to be unfolded.
+        line_id = lines[0]['id']
+        options['unfolded_lines'] = [line_id]
+        report = report.with_context(report._set_context(options))
+
+        self.assertLinesValues(
+            report._get_lines(options, line_id=line_id),
+            #   Name                    JRNL        Account         Due Date,       Init. Balance   Debit           Credit          Balance
+            [   0,                      1,          2,              4,              6,              7,              8,              9],
+            [
+                # Partner.
+                ('partner_a',           '',         '',             '',             665.00,         300.00,         345.00,         620.00),
+                # Account Move Lines.
+                ('03/01/2017',          'BILL',     '111100',       '03/01/2017',   665.00,         '',             345.00,         320.00),
+                ('03/01/2017',          'BNK1',     '111100',       '03/01/2017',   320.00,         300.00,         '',             620.00),
+            ],
+        )
+
+    def test_partner_ledger_cash_basis(self):
+        ''' Test folded/unfolded lines with the cash basis option. '''
+        # Check the cash basis option.
+        report = self.env['account.partner.ledger']
+        options = self._init_options(report, 'custom', *date_utils.get_month(self.mar_year_minus_1))
+        options['cash_basis'] = True
+        report = report.with_context(report._set_context(options))
+
+        lines = report._get_lines(options)
+        self.assertLinesValues(
+            lines,
+            #   Name                                    Init. Balance   Debit           Credit          Balance
+            [   0,                                      6,              7,              8,              9],
+            [
+                # Partners.
+                ('partner_a',                           0.00,           300.00,         300.00,         0.00),
+                ('partner_b',                           0.00,           0.00,           0.00,           0.00),
+                ('partner_c',                           100.00,         150.00,         100.00,         150.00),
+                ('partner_d',                           0.00,           0.00,           0.00,           0.00),
+                # Report Total.
+                ('Total',                               100.00,         450.00,         400.00,         150.00),
+            ],
+        )
+
+        # Mark the 'partner_a' line to be unfolded.
+        line_id = lines[0]['id']
+        options['unfolded_lines'] = [line_id]
+        report = report.with_context(report._set_context(options))
+
+        self.assertLinesValues(
+            report._get_lines(options, line_id=line_id),
+            #   Name                    JRNL        Account         Due Date,       Init. Balance   Debit           Credit          Balance
+            [   0,                      1,          2,              4,              6,              7,              8,              9],
+            [
+                # Partner.
+                ('partner_a',           '',         '',             '',             0.00,           300.00,         300.00,         0.00),
+                # Account Move Lines.
+                ('03/01/2017',          'BILL',     '111100',       '03/01/2017',   0.00,           '',             300.00,         -300.00),
+                ('03/01/2017',          'BNK1',     '111100',       '03/01/2017',   -300.00,        300.00,         '',             0.00),
+            ],
+        )
+
+    def test_partner_ledger_multi_company(self):
+        ''' Test folded/unfolded lines in a multi-company environment. '''
+        # Select both company_parent/company_child_eur companies.
+        report = self.env['account.partner.ledger']
+        options = self._init_options(report, 'custom', *date_utils.get_month(self.mar_year_minus_1))
+        options = self._update_multi_selector_filter(options, 'multi_company', (self.company_parent + self.company_child_eur).ids)
+        report = report.with_context(report._set_context(options))
+
+        lines = report._get_lines(options)
+        self.assertLinesValues(
+            lines,
+            #   Name                                    Init. Balance   Debit           Credit          Balance
+            [   0,                                      6,              7,              8,              9],
+            [
+                # Partners.
+                ('partner_a',                           1330.00,        600.00,         690.00,         1240.00),
+                ('partner_b',                           130.00,         0.00,           690.00,         -560.00),
+                ('partner_c',                           -2430.00,       690.00,         200.00,         -1940.00),
+                ('partner_d',                           -2590.00,       690.00,         0.00,           -1900.00),
+                # Report Total.
+                ('Total',                               -3560.00,       1980.00,        1580.00,        -3160.00),
+            ],
+        )
+
+        # Mark the 'partner_a' line (for the company_child_eur company) to be unfolded.
+        line_id = lines[0]['id']
+        options['unfolded_lines'] = [line_id]
+        report = report.with_context(report._set_context(options))
+
+        self.assertLinesValues(
+            report._get_lines(options, line_id=line_id),
+            #   Name                    JRNL        Account         Due Date,       Init. Balance   Debit           Credit          Balance
+            [   0,                      1,          2,              4,              6,              7,              8,              9],
+            [
+                # Partner.
+                ('partner_a',           '',         '',             '',             1330.00,        600.00,         690.00,         1240.00),
+                # Account Move Lines.
+                ('03/01/2017',          'BILL',     '111100',       '03/01/2017',   1330.00,        '',             345.00,         985.00),
+                ('03/01/2017',          'BNK1',     '111100',       '03/01/2017',   985.00,         300.00,         '',             1285.00),
+                ('03/01/2017',          'BILL',     '111100',       '03/01/2017',   1285.00,        '',             345.00,         940.00),
+                ('03/01/2017',          'BNK1',     '111100',       '03/01/2017',   940.00,         300.00,         '',             1240.00),
+            ],
+        )
+
+    def test_partner_ledger_load_more(self):
+        ''' Test the load more feature. '''
+        line_id = 'partner_%s' % self.partner_a.id
+
+        # Mark the 'partner_a' line to be unfolded.
+        report = self.env['account.partner.ledger']
+        options = self._init_options(report, 'custom', *date_utils.get_month(self.mar_year_minus_1))
+        options = self._update_multi_selector_filter(options, 'multi_company', (self.company_parent + self.company_child_eur).ids)
+        options['unfolded_lines'] = [line_id]
+        report = report.with_context(report._set_context(options))
+
+        # Force the load more to expand lines one by one.
+        report.MAX_LINES = 1
+
+        self.assertLinesValues(
+            report._get_lines(options, line_id=line_id),
+            #   Name                    JRNL        Account         Due Date,       Init. Balance   Debit           Credit          Balance
+            [   0,                      1,          2,              4,              6,              7,              8,              9],
+            [
+                # Partner.
+                ('partner_a',           '',         '',             '',             1330.00,        600.00,         690.00,         1240.00),
+                # Account Move Lines.
+                ('03/01/2017',          'BILL',     '111100',       '03/01/2017',   1330.00,        '',             345.00,         985.00),
+                ('Load more... (3 remaining)', '',  '',             '',             '',             '',             '',             ''),
+            ],
+        )
+
+        # Store the load more values inside the options.
+        options['lines_offset'] = 1
+        options['lines_progress'] = 985.00
+        report = report.with_context(report._set_context(options))
+        report.MAX_LINES = 2
+
+        self.assertLinesValues(
+            report._get_lines(options, line_id=line_id),
+            #   Name                    JRNL        Account         Due Date,       Init. Balance   Debit           Credit          Balance
+            [   0,                      1,          2,              4,              6,              7,              8,              9],
+            [
+                # Account Move Lines.
+                ('03/01/2017',          'BNK1',     '111100',       '03/01/2017',   985.00,         300.00,         '',             1285.00),
+                ('03/01/2017',          'BILL',     '111100',       '03/01/2017',   1285.00,        '',             345.00,         940.00),
+                # Load more.
+                ('Load more... (1 remaining)', '',  '',             '',             '',             '',             '',             ''),
+            ],
+        )
+
+        # Update the load more values inside the options.
+        options['lines_offset'] = 3
+        options['lines_progress'] = 940.00
+        report = report.with_context(report._set_context(options))
+        report.MAX_LINES = 1
+
+        self.assertLinesValues(
+            report._get_lines(options, line_id=line_id),
+            #   Name                    JRNL        Account         Due Date,       Init. Balance   Debit           Credit          Balance
+            [   0,                      1,          2,              4,              6,              7,              8,              9],
+            [
+                # Account Move Lines.
+                ('03/01/2017',          'BNK1',     '111100',       '03/01/2017',   940.00,         300.00,         '',             1240.00),
+            ],
+        )
+
+    def test_partner_ledger_account_types(self):
+        ''' Test the 'account_type' filter. '''
+        # Select only the account having the 'receivable' type.
+        report = self.env['account.partner.ledger']
+        options = self._init_options(report, 'custom', *date_utils.get_month(self.mar_year_minus_1))
+        options = self._update_multi_selector_filter(options, 'account_type', ['receivable'])
+        report = report.with_context(report._set_context(options))
+
+        lines = report._get_lines(options)
+        self.assertLinesValues(
+            lines,
+            #   Name                                    Init. Balance   Debit           Credit          Balance
+            [   0,                                      6,              7,              8,              9],
+            [
+                # Partners.
+                ('partner_a',                           895.00,         0.00,           0.00,           895.00),
+                ('partner_b',                           245.00,         0.00,           0.00,           245.00),
+                ('partner_c',                           230.00,         345.00,         100.00,         475.00),
+                ('partner_d',                           115.00,         345.00,         0.00,           460.00),
+                # Report Total.
+                ('Total',                               1485.00,        690.00,         100.00,         2075.00),
+            ],
+        )
+
+        # Mark the 'partner_c' line to be unfolded.
+        line_id = lines[2]['id']
+        options['unfolded_lines'] = [line_id]
+        report = report.with_context(report._set_context(options))
+
+        self.assertLinesValues(
+            report._get_lines(options, line_id=line_id),
+            #   Name                    JRNL        Account         Due Date,       Init. Balance   Debit           Credit          Balance
+            [   0,                      1,          2,              4,              6,              7,              8,              9],
+            [
+                # Partner.
+                ('partner_c',           '',         '',             '',             230.00,         345.00,         100.00,         475.00),
+                # Account Move Lines.
+                ('03/01/2017',          'BNK1',     '101200',       '03/01/2017',   230.00,         '',             100.00,         130.00),
+                ('03/01/2017',          'INV',      '101200',       '03/01/2017',   130.00,         345.00,         '',             475.00),
+            ],
+        )
+
+        # Select only the account having the 'payable' type.
+        report = self.env['account.partner.ledger']
+        options = self._init_options(report, 'custom', *date_utils.get_month(self.mar_year_minus_1))
+        options = self._update_multi_selector_filter(options, 'account_type', ['payable'])
+        report = report.with_context(report._set_context(options))
+
+        lines = report._get_lines(options)
+        self.assertLinesValues(
+            lines,
+            #   Name                                    Init. Balance   Debit           Credit          Balance
+            [   0,                                      6,              7,              8,              9],
+            [
+                # Partners.
+                ('partner_a',                           -230.00,        300.00,         345.00,         -275.00),
+                ('partner_b',                           -180.00,        0.00,           345.00,         -525.00),
+                ('partner_c',                           -1445.00,       0.00,           0.00,           -1445.00),
+                ('partner_d',                           -1410.00,       0.00,           0.00,           -1410.00),
+                # Report Total.
+                ('Total',                               -3265.00,       300.00,         690.00,         -3655.00),
+            ],
+        )
+
+        # Mark the 'partner_c' line to be unfolded.
+        line_id = lines[2]['id']
+        options['unfolded_lines'] = [line_id]
+        report = report.with_context(report._set_context(options))
+
+        self.assertLinesValues(
+            report._get_lines(options, line_id=line_id),
+            #   Name                                    Init. Balance   Debit           Credit          Balance
+            [   0,                                      6,              7,              8,              9],
+            [
+                # Partners.
+                ('partner_c',                           -1445.00,       0.00,           0.00,           -1445.00),
             ],
         )

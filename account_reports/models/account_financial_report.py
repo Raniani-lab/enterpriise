@@ -190,8 +190,8 @@ class ReportAccountFinancialReport(models.Model):
 
         return options
 
-    @api.model
-    def _get_options(self, previous_options=None):
+    @api.multi
+    def _with_correct_filters(self):
         if self.date_range:
             self.filter_date = {'date_from': '', 'date_to': '', 'filter': 'this_year'}
             if self.comparison:
@@ -215,7 +215,10 @@ class ReportAccountFinancialReport(models.Model):
                 self.filter_analytic = None
         self.filter_hierarchy = True if self.hierarchy_option else None
         self.filter_ir_filters = self.applicable_filters_ids or None
+        return self
 
+    @api.model
+    def _get_options(self, previous_options=None):
         rslt = super(ReportAccountFinancialReport, self)._get_options(previous_options)
 
         # If manual values were stored in the context, we store them as options.
@@ -226,6 +229,9 @@ class ReportAccountFinancialReport(models.Model):
             rslt['financial_report_line_values'] = self.env.context['financial_report_line_values']
 
         return rslt
+
+    def get_report_informations(self, options):
+        return super(ReportAccountFinancialReport, self._with_correct_filters()).get_report_informations(options)
 
     def set_context(self, options):
         ctx = super(ReportAccountFinancialReport, self).set_context(options)

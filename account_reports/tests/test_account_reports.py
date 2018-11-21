@@ -1779,3 +1779,81 @@ class TestAccountReports(SavepointCase):
                 ('Total Receivables',                           895.00,     245.00,     475.00,     460.00,     895.00,     245.00,     230.00,     115.00),
             ],
         )
+
+    # -------------------------------------------------------------------------
+    # TESTS: Profit And Loss
+    # -------------------------------------------------------------------------
+
+    def test_profit_and_loss_initial_state(self):
+        ''' Test folded/unfolded lines. '''
+        # Init options.
+        report = self.env.ref('account_reports.account_financial_report_profitandloss0')._with_correct_filters()
+        options = self._init_options(report, 'custom', *date_utils.get_month(self.mar_year_minus_1))
+        report = report.with_context(report._set_context(options))
+
+        lines = report._get_lines(options)
+        self.assertLinesValues(
+            lines,
+            #   Name                                            Balance
+            [   0,                                              1],
+            [
+                ('Income',                                      ''),
+                ('Gross Profit',                                ''),
+                ('Operating Income',                            600.00),
+                ('Cost of Revenue',                             0.00),
+                ('Total Gross Profit',                          600.00),
+                ('Other Income',                                0.00),
+                ('Total Income',                                600.00),
+                 ('Expenses',                                    ''),
+                ('Expenses',                                    600.00),
+                ('Depreciation',                                0.00),
+                ('Total Expenses',                              600.00),
+                 ('Net Profit',                                 0.00),
+            ],
+        )
+
+        # Mark the 'Operating Income' line to be unfolded.
+        line_id = lines[2]['id']
+        options['unfolded_lines'] = [line_id]
+        report = report.with_context(report._set_context(options))
+
+        self.assertLinesValues(
+            report._get_lines(options, line_id=line_id),
+            #   Name                                            Balance
+            [   0,                                              1],
+            [
+                ('Operating Income',                            600.00),
+                ('200000 Product Sales',                        600.00),
+                ('Total Operating Income',                      600.00),
+            ],
+        )
+
+    def test_profit_and_loss_filter_journals(self):
+        ''' Test folded lines with a filter on journals. '''
+        journal = self.env['account.journal'].search([('company_id', '=', self.company_parent.id), ('type', '=', 'sale')])
+
+        # Init options with only the sale journal selected.
+        report = self.env.ref('account_reports.account_financial_report_profitandloss0')._with_correct_filters()
+        options = self._init_options(report, 'custom', *date_utils.get_month(self.mar_year_minus_1))
+        options = self._update_multi_selector_filter(options, 'journals', journal.ids)
+        report = report.with_context(report._set_context(options))
+
+        self.assertLinesValues(
+            report._get_lines(options),
+            #   Name                                            Balance
+            [   0,                                              1],
+            [
+                ('Income',                                      ''),
+                ('Gross Profit',                                ''),
+                ('Operating Income',                            600.00),
+                ('Cost of Revenue',                             0.00),
+                ('Total Gross Profit',                          600.00),
+                ('Other Income',                                0.00),
+                ('Total Income',                                600.00),
+                 ('Expenses',                                    ''),
+                ('Expenses',                                    0.00),
+                ('Depreciation',                                0.00),
+                ('Total Expenses',                              0.00),
+                 ('Net Profit',                                 600.00),
+            ],
+        )

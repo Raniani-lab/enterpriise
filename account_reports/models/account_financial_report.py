@@ -953,6 +953,9 @@ class AccountFinancialReportLine(models.Model):
     def _build_cmp(self, balance, comp):
         if comp != 0:
             res = round((balance - comp) / comp * 100, 1)
+            # Avoid displaying '-0.0%'.
+            if float_is_zero(res, precision_rounding=0.1):
+                res = 0.0
             # In case the comparison is made on a negative figure, the color should be the other
             # way around. For example:
             #                       2018         2017           %

@@ -1857,3 +1857,61 @@ class TestAccountReports(SavepointCase):
                  ('Net Profit',                                 600.00),
             ],
         )
+
+    # -------------------------------------------------------------------------
+    # TESTS: Cash Flow Statement
+    # -------------------------------------------------------------------------
+
+    def test_cash_flow_statement_initial_state(self):
+        ''' Test folded/unfolded lines. '''
+        # Init options.
+        report = self.env.ref('account_reports.account_financial_report_cashsummary0')._with_correct_filters()
+        options = self._init_options(report, 'custom', *date_utils.get_month(self.mar_year_minus_1))
+        report = report.with_context(report._set_context(options))
+
+        lines = report._get_lines(options)
+        self.assertLinesValues(
+            lines,
+            #   Name                                                            Balance
+            [   0,                                                              1],
+            [
+                ('Cash and cash equivalents, beginning of period',              -750.00),
+                ('Net increase in cash and cash equivalents',                   ''),
+                ('Cash flows from operating activities',                        ''),
+                ('Advance Payments received from customers',                    0.00),
+                ('Cash received from operating activities',                     86.96),
+                ('Advance payments made to suppliers',                          0.00),
+                ('Cash paid for operating activities',                          -260.87),
+                ('Total Cash flows from operating activities',                  -173.91),
+                ('Cash flows from investing & extraordinary activities',        ''),
+                ('Cash in',                                                     0.00),
+                ('Cash out',                                                    0.00),
+                ('Total Cash flows from investing & extraordinary activities',  0.00),
+                ('Cash flows from financing activities',                        ''),
+                ('Cash in',                                                     0.00),
+                ('Cash out',                                                    0.00),
+                ('Total Cash flows from financing activities',                  0.00),
+                ('Cash flows from unclassified activities',                     ''),
+                ('Cash in',                                                     13.04),
+                ('Cash out',                                                    -39.13),
+                ('Total Cash flows from unclassified activities',               -26.09),
+                ('Total Net increase in cash and cash equivalents',             -200.00),
+                ('Cash and cash equivalents, closing balance',                  -950.00),
+            ],
+        )
+
+        # Mark the 'Cash received from operating activities' line to be unfolded.
+        line_id = lines[4]['id']
+        options['unfolded_lines'] = [line_id]
+        report = report.with_context(report._set_context(options))
+
+        self.assertLinesValues(
+            report._get_lines(options, line_id=line_id),
+            #   Name                                                            Balance
+            [   0,                                                              1],
+            [
+                ('Cash received from operating activities',                     86.96),
+                ('200000 Product Sales',                                        86.96),
+                ('Total Cash received from operating activities',               86.96),
+            ],
+        )

@@ -69,7 +69,7 @@ class AccountPayment(models.Model):
 
         super(AccountPayment, self).post()
 
-    def generate_xml(self, company_id, required_collection_date):
+    def generate_xml(self, company_id, required_collection_date, askBatchBooking):
         """ Generates a SDD XML file containing the payments corresponding to this recordset,
         associating them to the given company, with the specified
         collection date.
@@ -82,7 +82,7 @@ class AccountPayment(models.Model):
         payments_per_journal = self._group_payments_per_bank_journal()
         payment_info_counter = 0
         for (journal, journal_payments) in payments_per_journal.items():
-            journal_payments._sdd_xml_gen_payment_group(company_id, required_collection_date, payment_info_counter, journal, CstmrDrctDbtInitn)
+            journal_payments._sdd_xml_gen_payment_group(company_id, required_collection_date, askBatchBooking,payment_info_counter, journal, CstmrDrctDbtInitn)
             payment_info_counter += 1
 
 
@@ -147,13 +147,13 @@ class AccountPayment(models.Model):
 
             partner_payment.sdd_xml_gen_payment(company_id, mandate.partner_id, partner_payment.name[:35], PmtInf)
 
-    def _sdd_xml_gen_payment_group(self, company_id, required_collection_date, payment_info_counter, journal, CstmrDrctDbtInitn):
+    def _sdd_xml_gen_payment_group(self, company_id, required_collection_date, askBatchBooking, payment_info_counter, journal, CstmrDrctDbtInitn):
         """ Generates a group of payments in the same PmtInfo node, provided
         that they share the same journal."""
         PmtInf = create_xml_node(CstmrDrctDbtInitn, 'PmtInf')
         create_xml_node(PmtInf, 'PmtInfId', str(payment_info_counter))
         create_xml_node(PmtInf, 'PmtMtd', 'DD')
-        create_xml_node(PmtInf, 'BtchBookg', bool(self.env['ir.config_parameter'].sudo().get_param('account_sepa_direct_debit_no_batch_booking')) and '0' or '1')
+        create_xml_node(PmtInf, 'BtchBookg',askBatchBooking and '1' or '0')
         create_xml_node(PmtInf, 'NbOfTxs', str(len(self)))
         create_xml_node(PmtInf, 'CtrlSum', float_repr(sum(x.amount for x in self), precision_digits=2))  # This sum ignores the currency, it is used as a checksum (see SEPA rulebook)
 

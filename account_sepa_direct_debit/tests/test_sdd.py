@@ -105,7 +105,7 @@ class SDDTest(AccountingTestCase):
         self.assertEqual(mandate_china_export.state, 'closed', 'A one-off mandate should be closed after accepting a payment')
 
         #Let us check the conformity of XML generation :
-        xml_file = etree.fromstring(invoice_agrolait.payment_ids.generate_xml(company, fields.Date.today()))
+        xml_file = etree.fromstring(invoice_agrolait.payment_ids.generate_xml(company, fields.Date.today(), True))
 
         schema_file_path = get_module_resource('account_sepa_direct_debit', 'schemas', 'pain.008.001.02.xsd')
         xml_schema = etree.XMLSchema(etree.parse(open(schema_file_path)))

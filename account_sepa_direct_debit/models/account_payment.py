@@ -109,44 +109,6 @@ class AccountPayment(models.Model):
         create_xml_node(InitgPty, 'Nm', company_id.name[:140])
         create_xml_node_chain(InitgPty, ['Id','OrgId','Othr','Id'], company_id.sdd_creditor_identifier)
 
-    def _sdd_xml_gen_partner(self, company_id, required_collection_date, payment_info_counter, mandate, CstmrDrctDbtInitn):
-        """ Appends to a SDD XML file being generated all the data related to a partner
-        and his payments. self must be a recordset whose payments share the same partner.
-
-        /!\ => Grouping the payments by mandate caused problems with Dutch banks, because
-        of the too large number of distinct transactions in the file. We fixed that so that we now
-        group on payment journal. This function is not used anymore
-        and will be removed. It has been replaced by _sdd_xml_gen_payment_group.
-        """
-        PmtInf = create_xml_node(CstmrDrctDbtInitn, 'PmtInf')
-        create_xml_node(PmtInf, 'PmtInfId', str(payment_info_counter))
-        create_xml_node(PmtInf, 'PmtMtd', 'DD')
-        create_xml_node(PmtInf, 'NbOfTxs', str(len(self)))
-        create_xml_node(PmtInf, 'CtrlSum', float_repr(sum(x.amount for x in self), precision_digits=2))  # This sum ignores the currency, it is used as a checksum (see SEPA rulebook)
-
-        PmtTpInf = create_xml_node_chain(PmtInf, ['PmtTpInf','SvcLvl','Cd'], 'SEPA')[0]
-        create_xml_node_chain(PmtTpInf, ['LclInstrm','Cd'], 'CORE')
-        create_xml_node(PmtTpInf, 'SeqTp', 'FRST')
-        #Note: FRST refers to the COLLECTION of payments, not the type of mandate used
-        #This value is only used for informatory purpose.
-
-        create_xml_node(PmtInf, 'ReqdColltnDt', fields.Date.from_string(required_collection_date).strftime("%Y-%m-%d"))
-        create_xml_node_chain(PmtInf, ['Cdtr','Nm'], company_id.name[:70])  # SEPA regulation gives a maximum size of 70 characters for this field
-        create_xml_node_chain(PmtInf, ['CdtrAcct','Id','IBAN'], mandate.payment_journal_id.bank_account_id.sanitized_acc_number)
-        create_xml_node_chain(PmtInf, ['CdtrAgt', 'FinInstnId', 'BIC'], (mandate.payment_journal_id.bank_id.bic or '').replace(' ', '').upper())
-
-        CdtrSchmeId_Othr = create_xml_node_chain(PmtInf, ['CdtrSchmeId','Id','PrvtId','Othr','Id'], company_id.sdd_creditor_identifier)[-2]
-        create_xml_node_chain(CdtrSchmeId_Othr, ['SchmeNm','Prtry'], 'SEPA')
-
-        partner = None
-        for partner_payment in self:
-            if not partner:
-                partner = partner_payment.partner_id
-            elif partner != partner_payment.partner_id:
-                raise UserError("Trying to generate a single XML payment group for payments with different partners.")
-
-            partner_payment.sdd_xml_gen_payment(company_id, mandate.partner_id, partner_payment.name[:35], PmtInf)
-
     def _sdd_xml_gen_payment_group(self, company_id, required_collection_date, askBatchBooking, payment_info_counter, journal, CstmrDrctDbtInitn):
         """ Generates a group of payments in the same PmtInfo node, provided
         that they share the same journal."""
@@ -217,22 +179,6 @@ class AccountPayment(models.Model):
 
         if self.communication:
             create_xml_node_chain(DrctDbtTxInf, ['RmtInf', 'Ustrd'], self._sanitize_communication(self.communication))
-
-    def _group_payments_per_mandate(self):
-        """ Groups the payments of this recordset per associated mandate, in a dictionnary of recordsets.
-
-        /!\ => Grouping the payments by mandate caused problems with Dutch banks, because
-        of the too large number of distinct transactions in the file. We fixed that so that we now
-        group on payment journal. This function is not used anymore
-        and will be removed. It has been replaced by _sdd_xml_gen_payment_group.
-        """
-        rslt = {}
-        for payment in self:
-            if rslt.get(payment.sdd_mandate_id, False):
-                rslt[payment.sdd_mandate_id] += payment
-            else:
-                rslt[payment.sdd_mandate_id] = payment
-        return rslt
 
     def _group_payments_per_bank_journal(self):
         """ Groups the payments of this recordset per associated journal, in a dictionnary of recordsets.

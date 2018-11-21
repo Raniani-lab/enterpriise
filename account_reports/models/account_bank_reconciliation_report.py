@@ -2,8 +2,11 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import models, fields, api, _
-from odoo.tools.misc import formatLang
+from odoo.tools.misc import format_date
+from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
 from odoo.osv import expression
+
+from datetime import datetime
 
 
 class account_bank_reconciliation_report(models.AbstractModel):
@@ -30,7 +33,10 @@ class account_bank_reconciliation_report(models.AbstractModel):
         return {
             'id': 'line_' + str(self.line_number),
             'name': title,
-            'columns': [{'name': v} for v in [date or '', '', amount and self.format_value(amount, line_currency)]],
+            'columns': [{'name': v} for v in [
+                date and format_date(self.env, date) or '',
+                '', amount and self.format_value(amount, line_currency)]
+            ],
             'level': level,
         }
 
@@ -53,7 +59,7 @@ class account_bank_reconciliation_report(models.AbstractModel):
             'caret_options': 'account.bank.statement.line',
             'model': 'account.bank.statement.line',
             'name': len(name) >= 85 and name[0:80] + '...' or name,
-            'columns': [{'name': v} for v in [line.date, line.ref, self.format_value(amount, line_currency)]],
+            'columns': [{'name': v} for v in [format_date(self.env, line.date), line.ref, self.format_value(amount, line_currency)]],
             'class': 'o_account_reports_level3',
         }
 
@@ -158,7 +164,7 @@ class account_bank_reconciliation_report(models.AbstractModel):
 
         accounts = self.env['account.account'].browse(report_data['account_ids'])
         accounts_string = ', '.join(accounts.mapped('code'))
-        lines.append(self._add_title_line(options, gl_title % accounts_string, level=1, amount=report_data['odoo_balance'], date=options['date']['date']))
+        lines.append(self._add_title_line(options, gl_title % accounts_string, level=1, amount=report_data['odoo_balance'], date=datetime.strptime(options['date']['date'], DEFAULT_SERVER_DATE_FORMAT)))
 
         lines.append(self._add_title_line(options, _("Operations to Process"), level=1))
 
@@ -177,7 +183,7 @@ class account_bank_reconciliation_report(models.AbstractModel):
                     lines.append({
                         'id': str(line.id),
                         'name': line.name,
-                        'columns': [{'name': v} for v in [line.date, line.ref, self.format_value(-line.balance, report_data['line_currency'])]],
+                        'columns': [{'name': v} for v in [format_date(self.env, line.date), line.ref, self.format_value(-line.balance, report_data['line_currency'])]],
                         'class': 'o_account_reports_level3',
                         'caret_options': 'account.payment',
                     })

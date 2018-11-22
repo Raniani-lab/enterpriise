@@ -90,23 +90,27 @@ class TestAccountReports(SavepointCase):
         inv_dec_1 = cls._create_invoice(cls.env, 1200.0, cls.partner_a, 'out_invoice', cls.dec_year_minus_2)
         cls._create_payment(cls.env, cls.jan_year_minus_1, inv_dec_1, 600.0)
         inv_dec_2 = cls._create_invoice(cls.env, 1200.0, cls.partner_b, 'in_invoice', cls.dec_year_minus_2)
-        cls._create_payment(cls.env, cls.dec_year_minus_2, inv_dec_2, 1200.0)
+        pay_inv_dec_2 = cls._create_payment(cls.env, cls.dec_year_minus_2, inv_dec_2, 1200.0)
+        cls._create_bank_statement(cls.env, pay_inv_dec_2)
         inv_dec_3 = cls._create_invoice(cls.env, 1200.0, cls.partner_c, 'in_invoice', cls.dec_year_minus_2)
         inv_dec_4 = cls._create_invoice(cls.env, 1200.0, cls.partner_d, 'in_invoice', cls.dec_year_minus_2)
 
         # January
         inv_jan_1 = cls._create_invoice(cls.env, 100.0, cls.partner_a, 'out_invoice', cls.jan_year_minus_1)
         inv_jan_2 = cls._create_invoice(cls.env, 100.0, cls.partner_b, 'out_invoice', cls.jan_year_minus_1)
-        cls._create_payment(cls.env, cls.jan_year_minus_1, inv_jan_2, 100.0)
+        pay_inv_jan_2 = cls._create_payment(cls.env, cls.jan_year_minus_1, inv_jan_2, 100.0)
+        cls._create_bank_statement(cls.env, pay_inv_jan_2)
         inv_jan_3 = cls._create_invoice(cls.env, 100.0, cls.partner_c, 'in_invoice', cls.jan_year_minus_1)
-        cls._create_payment(cls.env, cls.feb_year_minus_1, inv_jan_3, 50.0)
+        pay_inv_jan_3 = cls._create_payment(cls.env, cls.feb_year_minus_1, inv_jan_3, 50.0)
+        cls._create_bank_statement(cls.env, pay_inv_jan_3)
         inv_jan_4 = cls._create_invoice(cls.env, 100.0, cls.partner_d, 'out_invoice', cls.jan_year_minus_1)
 
         # February
         inv_feb_1 = cls._create_invoice(cls.env, 200.0, cls.partner_a, 'in_invoice', cls.feb_year_minus_1)
         inv_feb_2 = cls._create_invoice(cls.env, 200.0, cls.partner_b, 'out_invoice', cls.feb_year_minus_1)
         inv_feb_3 = cls._create_invoice(cls.env, 200.0, cls.partner_c, 'out_invoice', cls.feb_year_minus_1)
-        cls._create_payment(cls.env, cls.mar_year_minus_1, inv_feb_3, 100.0)
+        pay_inv_feb_3 = cls._create_payment(cls.env, cls.mar_year_minus_1, inv_feb_3, 100.0)
+        cls._create_bank_statement(cls.env, pay_inv_feb_3, reconcile=False)
         inv_feb_4 = cls._create_invoice(cls.env, 200.0, cls.partner_d, 'in_invoice', cls.feb_year_minus_1)
         cls._create_payment(cls.env, cls.feb_year_minus_1, inv_feb_4, 200.0)
 
@@ -132,23 +136,27 @@ class TestAccountReports(SavepointCase):
         inv_dec_5 = cls._create_invoice(cls.env, 2400.0, cls.partner_a, 'out_invoice', cls.dec_year_minus_2)
         cls._create_payment(cls.env, cls.jan_year_minus_1, inv_dec_5, 1200.0)
         inv_dec_6 = cls._create_invoice(cls.env, 2400.0, cls.partner_b, 'in_invoice', cls.dec_year_minus_2)
-        cls._create_payment(cls.env, cls.dec_year_minus_2, inv_dec_6, 2400.0)
+        pay_inv_dec_6 = cls._create_payment(cls.env, cls.dec_year_minus_2, inv_dec_6, 2400.0)
+        cls._create_bank_statement(cls.env, pay_inv_dec_6)
         inv_dec_7 = cls._create_invoice(cls.env, 2400.0, cls.partner_c, 'in_invoice', cls.dec_year_minus_2)
         inv_dec_8 = cls._create_invoice(cls.env, 2400.0, cls.partner_d, 'in_invoice', cls.dec_year_minus_2)
 
         # January
         inv_jan_5 = cls._create_invoice(cls.env, 200.0, cls.partner_a, 'out_invoice', cls.jan_year_minus_1)
         inv_jan_6 = cls._create_invoice(cls.env, 200.0, cls.partner_b, 'out_invoice', cls.jan_year_minus_1)
-        cls._create_payment(cls.env, cls.jan_year_minus_1, inv_jan_6, 200.0)
+        pay_inv_jan_6 = cls._create_payment(cls.env, cls.jan_year_minus_1, inv_jan_6, 200.0)
+        cls._create_bank_statement(cls.env, pay_inv_jan_6)
         inv_jan_7 = cls._create_invoice(cls.env, 200.0, cls.partner_c, 'in_invoice', cls.jan_year_minus_1)
-        cls._create_payment(cls.env, cls.feb_year_minus_1, inv_jan_7, 100.0)
+        pay_inv_jan_7 = cls._create_payment(cls.env, cls.feb_year_minus_1, inv_jan_7, 100.0)
+        cls._create_bank_statement(cls.env, pay_inv_jan_7)
         inv_jan_8 = cls._create_invoice(cls.env, 200.0, cls.partner_d, 'out_invoice', cls.jan_year_minus_1)
 
         # February
         inv_feb_5 = cls._create_invoice(cls.env, 400.0, cls.partner_a, 'in_invoice', cls.feb_year_minus_1)
         inv_feb_6 = cls._create_invoice(cls.env, 400.0, cls.partner_b, 'out_invoice', cls.feb_year_minus_1)
         inv_feb_7 = cls._create_invoice(cls.env, 400.0, cls.partner_c, 'out_invoice', cls.feb_year_minus_1)
-        cls._create_payment(cls.env, cls.mar_year_minus_1, inv_feb_7, 200.0)
+        pay_inv_feb_7 = cls._create_payment(cls.env, cls.mar_year_minus_1, inv_feb_7, 200.0)
+        cls._create_bank_statement(cls.env, pay_inv_feb_7, reconcile=False)
         inv_feb_8 = cls._create_invoice(cls.env, 400.0, cls.partner_d, 'in_invoice', cls.feb_year_minus_1)
         cls._create_payment(cls.env, cls.feb_year_minus_1, inv_feb_8, 400.0)
 
@@ -196,7 +204,7 @@ class TestAccountReports(SavepointCase):
         return invoice
 
     @staticmethod
-    def _create_payment(env, date, invoices, amount=None):
+    def _create_payment(env, date, invoices, amount=None, journal=None):
         ''' Helper to create an account.payment on the fly for some invoices.
         :param date:        The payment date.
         :param invoices:    The invoices on which the payment is done.
@@ -208,9 +216,38 @@ class TestAccountReports(SavepointCase):
             payment_form.payment_date = date
             if amount:
                 payment_form.amount = amount
+            if journal:
+                payment_form.journal_id = journal
         register_payment = payment_form.save()
-        register_payment.create_payments()
-        return register_payment
+        payments_action = register_payment.create_payments()
+        return env['account.payment'].search(payments_action['domain'])
+
+    @staticmethod
+    def _create_bank_statement(env, payment, amount=None, reconcile=True):
+        ''' Helper to create an account.bank.statement on the fly for a payment.
+        :param payment:     An account.payment record.
+        :param amount:      An optional custom amount.
+        :param reconcile:   Reconcile the newly created statement line with the payment.
+        :return:            An account.bank.statement record.
+        '''
+        bank_journal = payment.journal_id
+        amount = amount or (payment.payment_type == 'inbound' and payment.amount or -payment.amount)
+        with Form(env['account.bank.statement']) as statement_form:
+            statement_form.journal_id = bank_journal
+            statement_form.date = payment.payment_date
+            statement_form.name = payment.name
+            with statement_form.line_ids.new() as statement_line_form:
+                statement_line_form.date = payment.payment_date
+                statement_line_form.name = payment.name
+                statement_line_form.partner_id = payment.partner_id
+                statement_line_form.amount = amount
+            statement_form.balance_end_real = statement_form.balance_end
+        statement = statement_form.save()
+        if reconcile:
+            move_line = payment.move_line_ids.filtered(
+                lambda aml: aml.account_id in bank_journal.default_debit_account_id + bank_journal.default_credit_account_id)
+            statement.line_ids[0].process_reconciliation(payment_aml_rec=move_line)
+        return statement
 
     # -------------------------------------------------------------------------
     # TESTS METHODS
@@ -273,14 +310,14 @@ class TestAccountReports(SavepointCase):
             c['selected'] = c['id'] in selected_ids
         return new_options
 
-    def assertLinesValues(self, lines, columns, expected_values):
+    def assertLinesValues(self, lines, columns, expected_values, currency=None):
         ''' Helper to compare the lines returned by the _get_lines method
         with some expected results.
         :param lines:               See _get_lines.
         :params columns:            The columns index.
         :param expected_values:     A list of iterables.
         '''
-        user_currency = self.env.user.company_id.currency_id
+        used_currency = currency or self.env.user.company_id.currency_id
 
         # Compare the table length to see if any line is missing
         self.assertEquals(len(lines), len(expected_values))
@@ -304,7 +341,7 @@ class TestAccountReports(SavepointCase):
                         current_value = line['columns'][line_index].get('name', '')
 
                 if type(expected_value) in (int, float) and type(current_value) == str:
-                    expected_value = formatLang(self.env, expected_value, currency_obj=user_currency)
+                    expected_value = formatLang(self.env, expected_value, currency_obj=used_currency)
 
                 compared_values[0].append(current_value)
                 compared_values[1].append(expected_value)
@@ -1914,4 +1951,109 @@ class TestAccountReports(SavepointCase):
                 ('200000 Product Sales',                                        86.96),
                 ('Total Cash received from operating activities',               86.96),
             ],
+        )
+
+    # -------------------------------------------------------------------------
+    # TESTS: Reconciliation Report
+    # -------------------------------------------------------------------------
+
+    def test_reconciliation_report_initial_state(self):
+        ''' Test the lines of the initial state. '''
+        bank_journal = self.env['account.journal'].search([('company_id', '=', self.company_parent.id), ('type', '=', 'bank')])
+
+        # Init options.
+        report = self.env['account.bank.reconciliation.report'].with_context(active_id=bank_journal.id)
+        options = self._init_options(report, 'custom', date_utils.get_month(self.mar_year_minus_1)[1])
+        report = report.with_context(report._set_context(options))
+
+        self.assertLinesValues(
+            report._get_lines(options),
+            #   Name                                                            Date            Amount
+            [   0,                                                              1,              3],
+            [
+                ('Virtual GL Balance',                                          '',             ''),
+                ('Current balance of account 101401',                           '03/31/2017',   -950.00),
+                ('Operations to Process',                                       '',             ''),
+                ('Unreconciled Bank Statement Lines',                           '',             ''),
+                ('CUST.IN/2017/0003',                                           '03/01/2017',   100.00),
+                ('Validated Payments not Linked with a Bank Statement Line',    '',             ''),
+                ('SUPP.OUT/2017/0003',                                          '03/01/2017',   300.00),
+                ('CUST.IN/2017/0003',                                           '03/01/2017',   -100.00),
+                ('SUPP.OUT/2017/0002',                                          '02/01/2017',   200.00),
+                ('CUST.IN/2017/0001',                                           '01/01/2017',   -600.00),
+                ('Total Virtual GL Balance',                                    '',             -1050.00),
+                ('Last Bank Statement Ending Balance',                          '03/01/2017',   -1050.00),
+                ('Unexplained Difference',                                      '',             ''),
+            ],
+        )
+
+    def test_reconciliation_report_multi_company_currency(self):
+        ''' Test the lines in a multi-company/multi-currency environment. '''
+        bank_journal = self.env['account.journal'].search([('company_id', '=', self.company_child_eur.id), ('type', '=', 'bank')])
+
+        # Init options.
+        report = self.env['account.bank.reconciliation.report'].with_context(active_id=bank_journal.id)
+        options = self._init_options(report, 'custom', date_utils.get_month(self.mar_year_minus_1)[1])
+        report = report.with_context(report._set_context(options))
+
+        self.assertLinesValues(
+            report._get_lines(options),
+            #   Name                                                            Date            Amount
+            [   0,                                                              1,              3],
+            [
+                ('Virtual GL Balance',                                          '',             ''),
+                ('Current balance of account 101401',                           '03/31/2017',   -1900.00),
+                ('Operations to Process',                                       '',             ''),
+                ('Unreconciled Bank Statement Lines',                           '',             ''),
+                ('CUST.IN/2017/0007',                                           '03/01/2017',   200.00),
+                ('Validated Payments not Linked with a Bank Statement Line',    '',             ''),
+                ('SUPP.OUT/2017/0006',                                          '03/01/2017',   600.00),
+                ('CUST.IN/2017/0007',                                           '03/01/2017',   -200.00),
+                ('SUPP.OUT/2017/0005',                                          '02/01/2017',   400.00),
+                ('CUST.IN/2017/0005',                                           '01/01/2017',   -1200.00),
+                ('Total Virtual GL Balance',                                    '',             -2100.00),
+                ('Last Bank Statement Ending Balance',                          '03/01/2017',   -2100.00),
+                ('Unexplained Difference',                                      '',             ''),
+            ],
+            currency=self.company_child_eur.currency_id,
+        )
+
+    def test_reconciliation_report_journal_foreign_currency(self):
+        ''' Test the lines with a foreign currency on the journal. '''
+        bank_journal = self.env['account.journal'].search([('company_id', '=', self.company_parent.id), ('type', '=', 'bank')])
+        foreign_currency = self.env.ref('base.EUR')
+
+        # Set up the foreign currency.
+        bank_journal_eur = bank_journal.copy()
+        account = bank_journal.default_debit_account_id.copy()
+        account.currency_id = foreign_currency
+        bank_journal_eur.default_debit_account_id = bank_journal_eur.default_credit_account_id = account
+        bank_journal_eur.currency_id = foreign_currency
+
+        invoice = self._create_invoice(self.env, 1000.0, self.partner_a, 'out_invoice', self.mar_year_minus_1)
+        payment = self._create_payment(self.env, self.mar_year_minus_1, invoice, 1000.0, journal=bank_journal_eur)
+        self._create_bank_statement(self.env, payment, amount=2300.00, reconcile=False)
+
+        # Init options.
+        report = self.env['account.bank.reconciliation.report'].with_context(active_id=bank_journal_eur.id)
+        options = self._init_options(report, 'custom', date_utils.get_month(self.mar_year_minus_1)[1])
+        report = report.with_context(report._set_context(options))
+
+        self.assertLinesValues(
+            report._get_lines(options),
+            #   Name                                                            Date            Amount
+            [   0,                                                              1,              3],
+            [
+                ('Virtual GL Balance',                                          '',             ''),
+                ('Current balance of account 101411',                           '03/31/2017',   2300.00),
+                ('Operations to Process',                                       '',             ''),
+                ('Unreconciled Bank Statement Lines',                           '',             ''),
+                ('CUST.IN/2017/0009',                                           '03/01/2017',   2300.00),
+                ('Validated Payments not Linked with a Bank Statement Line',    '',             ''),
+                ('CUST.IN/2017/0009',                                           '03/01/2017',   -2300.00),
+                ('Total Virtual GL Balance',                                    '',             2300.00),
+                ('Last Bank Statement Ending Balance',                          '03/01/2017',   2300.00),
+                ('Unexplained Difference',                                      '',             ''),
+            ],
+            currency=foreign_currency,
         )

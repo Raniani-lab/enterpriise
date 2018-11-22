@@ -2057,3 +2057,125 @@ class TestAccountReports(SavepointCase):
             ],
             currency=foreign_currency,
         )
+
+    # -------------------------------------------------------------------------
+    # TESTS: Consolidated Journals
+    # -------------------------------------------------------------------------
+
+    def test_consolidated_journals_folded_unfolded(self):
+        ''' Test folded/unfolded lines. '''
+        # Init options.
+        report = self.env['account.consolidated.journal']
+        options = self._init_options(report, 'custom', *date_utils.get_quarter(self.mar_year_minus_1))
+        report = report.with_context(report._set_context(options))
+
+        lines = report._get_lines(options)
+        self.assertLinesValues(
+            lines,
+            #   Name                                    Debit           Credit          Balance
+            [   0,                                      1,              2,              3],
+            [
+                ('Customer Invoices (INV)',             1495.00,        1495.00,        0.00),
+                ('Vendor Bills (BILL)',                 1265.00,        1265.00,        0.00),
+                ('Bank (BNK1)',                         1350.00,        1350.00,        0.00),
+                ('Total',                               4110.00,        4110.00,        0.00),
+                ('',                                    '',             '',             ''),
+                ('Details per month',                   '',             '',             ''),
+                ('Jan 2017',                            1160.00,        1160.00,        0.00),
+                ('Feb 2017',                            1170.00,        1170.00,        0.00),
+                ('Mar 2017',                            1780.00,        1780.00,        0.00),
+            ],
+        )
+
+        # Mark the 'Customer Invoices (INV)' line to be unfolded.
+        line_id = lines[0]['id']
+        options['unfolded_lines'] = [line_id]
+        report = report.with_context(report._set_context(options))
+
+        lines = report._get_lines(options, line_id=line_id)
+        self.assertLinesValues(
+            lines,
+            #   Name                                    Debit           Credit          Balance
+            [   0,                                      1,              2,              3],
+            [
+                ('Customer Invoices (INV)',             1495.00,        1495.00,        0.00),
+                ('101200 Account Receivable',           1495.00,        0.00,           1495.00),
+                ('111200 Tax Received',                 0.00,           195.00,         -195.00),
+                ('200000 Product Sales',                0.00,           1300.00,        -1300.00),
+            ],
+        )
+
+        # Mark the '101200 Account Receivable' line to be unfolded.
+        line_id = lines[1]['id']
+        options['unfolded_lines'] = [line_id]
+        report = report.with_context(report._set_context(options))
+
+        self.assertLinesValues(
+            report._get_lines(options, line_id=line_id),
+            #   Name                                    Debit           Credit          Balance
+            [   0,                                      1,              2,              3],
+            [
+                ('Jan 2017',                            345.00,         0.00,           345.00),
+                ('Feb 2017',                            460.00,         0.00,           460.00),
+                ('Mar 2017',                            690.00,         0.00,           690.00),
+            ],
+        )
+
+    def test_consolidated_journals_filter_journals(self):
+        ''' Test folded/unfolded lines with a filter on journals. '''
+        bank_journal = self.env['account.journal'].search([('company_id', '=', self.company_parent.id), ('type', '=', 'bank')])
+
+        # Init options.
+        report = self.env['account.consolidated.journal']
+        options = self._init_options(report, 'custom', *date_utils.get_quarter(self.mar_year_minus_1))
+        options = self._update_multi_selector_filter(options, 'journals', bank_journal.ids)
+        report = report.with_context(report._set_context(options))
+
+        lines = report._get_lines(options)
+        self.assertLinesValues(
+            lines,
+            #   Name                                    Debit           Credit          Balance
+            [   0,                                      1,              2,              3],
+            [
+                ('Bank (BNK1)',                         1350.00,        1350.00,        0.00),
+                ('Total',                               1350.00,        1350.00,        0.00),
+                ('',                                    '',             '',             ''),
+                ('Details per month',                   '',             '',             ''),
+                ('Jan 2017',                            700.00,         700.00,         0.00),
+                ('Feb 2017',                            250.00,         250.00,         0.00),
+                ('Mar 2017',                            400.00,         400.00,         0.00),
+            ],
+        )
+
+        # Mark the 'Bank (BNK1)' line to be unfolded.
+        line_id = lines[0]['id']
+        options['unfolded_lines'] = [line_id]
+        report = report.with_context(report._set_context(options))
+
+        lines = report._get_lines(options, line_id=line_id)
+        self.assertLinesValues(
+            lines,
+            #   Name                                    Debit           Credit          Balance
+            [   0,                                      1,              2,              3],
+            [
+                ('Bank (BNK1)',                         1350.00,        1350.00,        0.00),
+                ('101200 Account Receivable',           0.00,           800.00,         -800.00),
+                ('101401 Bank',                         800.00,         550.00,         250.00),
+                ('111100 Account Payable',              550.00,         0.00,           550.00),
+            ],
+        )
+
+        # Mark the '101200 Account Receivable' line to be unfolded.
+        line_id = lines[1]['id']
+        options['unfolded_lines'] = [line_id]
+        report = report.with_context(report._set_context(options))
+
+        self.assertLinesValues(
+            report._get_lines(options, line_id=line_id),
+            #   Name                                    Debit           Credit          Balance
+            [   0,                                      1,              2,              3],
+            [
+                ('Jan 2017',                            0.00,           700.00,         -700.00),
+                ('Mar 2017',                            0.00,           100.00,         -100.00),
+            ],
+        )

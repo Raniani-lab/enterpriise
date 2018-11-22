@@ -35,7 +35,7 @@ class account_bank_reconciliation_report(models.AbstractModel):
             'name': title,
             'columns': [{'name': v} for v in [
                 date and format_date(self.env, date) or '',
-                '', amount and self.format_value(amount, line_currency)]
+                '', amount and self.format_value(amount, line_currency) or '']
             ],
             'level': level,
         }

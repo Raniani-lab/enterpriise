@@ -29,9 +29,6 @@ class TestAccountReports(SingleTransactionCase):
             _logger.warn('Reports Tests skipped because l10n_generic_coa is not installed')
             cls.skipTest("l10n_generic_coa not installed")
 
-        cls.year_minus_1 = (datetime.date.today() - relativedelta(years=1)).strftime('%Y')
-        cls.year_minus_2 = (datetime.date.today() - relativedelta(years=2)).strftime('%Y')
-
         # Create companies.
         cls.company_parent = cls.env['res.company'].create({
             'name': 'company_parent',
@@ -45,7 +42,7 @@ class TestAccountReports(SingleTransactionCase):
 
         # EUR = 2 USD
         cls.eur_to_usd = cls.env['res.currency.rate'].create({
-            'name': '%s-01-01' % cls.year_minus_2,
+            'name': '2016-01-01',
             'rate': 2.0,
             'currency_id': cls.env.ref('base.EUR').id,
             'company_id': cls.company_parent.id,
@@ -76,11 +73,11 @@ class TestAccountReports(SingleTransactionCase):
         # Init data for company_parent.
         chart_template.try_loading_for_current_company()
 
-        cls.dec_year_minus_2 = datetime.datetime.strptime('%s-12-01' % cls.year_minus_2, DEFAULT_SERVER_DATE_FORMAT).date()
-        cls.jan_year_minus_1 = datetime.datetime.strptime('%s-01-01' % cls.year_minus_1, DEFAULT_SERVER_DATE_FORMAT).date()
-        cls.feb_year_minus_1 = datetime.datetime.strptime('%s-02-01' % cls.year_minus_1, DEFAULT_SERVER_DATE_FORMAT).date()
-        cls.mar_year_minus_1 = datetime.datetime.strptime('%s-03-01' % cls.year_minus_1, DEFAULT_SERVER_DATE_FORMAT).date()
-        cls.apr_year_minus_1 = datetime.datetime.strptime('%s-04-01' % cls.year_minus_1, DEFAULT_SERVER_DATE_FORMAT).date()
+        cls.dec_year_minus_2 = datetime.datetime.strptime('2016-12-01', DEFAULT_SERVER_DATE_FORMAT).date()
+        cls.jan_year_minus_1 = datetime.datetime.strptime('2017-01-01', DEFAULT_SERVER_DATE_FORMAT).date()
+        cls.feb_year_minus_1 = datetime.datetime.strptime('2017-02-01', DEFAULT_SERVER_DATE_FORMAT).date()
+        cls.mar_year_minus_1 = datetime.datetime.strptime('2017-03-01', DEFAULT_SERVER_DATE_FORMAT).date()
+        cls.apr_year_minus_1 = datetime.datetime.strptime('2017-04-01', DEFAULT_SERVER_DATE_FORMAT).date()
 
         # December
         inv_dec_1 = cls._create_invoice(cls.env, 1200.0, partner_a, 'out_invoice', cls.dec_year_minus_2)

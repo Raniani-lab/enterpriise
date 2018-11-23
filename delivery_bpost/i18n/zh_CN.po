@@ -3,16 +3,18 @@
 # * delivery_bpost
 # 
 # Translators:
+# inspur qiuguodong <qiuguodong@inspur.com>, 2018
 # Martin Trigaux, 2018
-# 珠海-杜哥 <liangjia@qq.com>, 2018
 # neter ji <jifuyi@qq.com>, 2018
+# liAnGjiA <liangjia@qq.com>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: neter ji <jifuyi@qq.com>, 2018\n"
+"PO-Revision-Date: 2018-08-24 11:37+0000\n"
+"Last-Translator: liAnGjiA <liangjia@qq.com>, 2018\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -207,7 +209,7 @@ msgstr "开发者令牌"
 #: code:addons/delivery_bpost/models/bpost_request.py:58
 #, python-format
 msgid "Please provide at least one item to ship."
-msgstr "请至少提供一个项目去发货"
+msgstr "请至少提供一个发货项目"
 
 #. module: delivery_bpost
 #: model:ir.model,name:delivery_bpost.model_product_packaging
@@ -238,7 +240,7 @@ msgstr "样品"
 #: code:addons/delivery_bpost/models/delivery_bpost.py:80
 #, python-format
 msgid "Shipment created into bpost <br/> <b>Tracking Number : </b>%s"
-msgstr "<br/><b/>"
+msgstr "bpost出货<br/><b>订单号</b>%s"
 
 #. module: delivery_bpost
 #: code:addons/delivery_bpost/models/bpost_request.py:50
@@ -246,7 +248,7 @@ msgstr "<br/><b/>"
 msgid ""
 "The address of your company/warehouse is incomplete or wrong (Missing field(s):  \n"
 " %s)"
-msgstr "您公司或仓库的地址是不完整的或错误的(缺少字段%s)"
+msgstr "您公司或仓库的地址有误(缺少字段%s)"
 
 #. module: delivery_bpost
 #: code:addons/delivery_bpost/models/bpost_request.py:60
@@ -262,7 +264,7 @@ msgstr "预计装运不能计算，因为您的产品未提供重量信息"
 msgid ""
 "The estimated shipping price cannot be computed because all your products "
 "are service/digital."
-msgstr "预计装运价格不能计算，因为您所有的产品都是服务或数字的。"
+msgstr "预计装运价格不能计算，因为您所有的产品都是服务类或数字类。"
 
 #. module: delivery_bpost
 #: code:addons/delivery_bpost/models/bpost_request.py:42
@@ -271,7 +273,7 @@ msgid ""
 "The recipient address is incomplete or wrong (Missing field(s):  \n"
 " %s)"
 msgstr ""
-"收件人地址不完整或错误(缺少字段 : \n"
+"收件人地址有误(缺少字段 : \n"
 "%s)"
 
 #. module: delivery_bpost
@@ -305,7 +307,7 @@ msgstr "当运输标签已经生成时您不能取消Bpost运输"
 #: code:addons/delivery_bpost/models/delivery_bpost.py:96
 #, python-format
 msgid "You cannot compute a passphrase for non-bpost carriers."
-msgstr "您不能为非Bpost承运商计算一个令牌"
+msgstr "您不能为非比利时邮政承运人计算令牌。"
 
 #. module: delivery_bpost
 #: code:addons/delivery_bpost/models/bpost_request.py:52

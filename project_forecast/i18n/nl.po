@@ -97,12 +97,12 @@ msgstr "Op dag"
 #. module: project_forecast
 #: selection:res.company,forecast_span:0
 msgid "By month"
-msgstr "Op maand"
+msgstr "Per maand"
 
 #. module: project_forecast
 #: selection:res.company,forecast_span:0
 msgid "By week"
-msgstr "Op week"
+msgstr "Per week"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__color

@@ -1515,8 +1515,8 @@ msgid ""
 "                one month from the end date."
 msgstr ""
 "Abonnementen maken om terugkerende facturen te beheren &amp; betalingen. Abonnementen kunnen\n"
-"                 tijdgebonden zijn of niet. In het geval van een beperkte periode, worden ze gemarkeerd als te worden verlengd\n"
-"                 één maand na de einddatum."
+"tijdgebonden zijn of niet. In het geval van een beperkte periode, worden ze gemarkeerd als te worden verlengd\n"
+"één maand na de einddatum."
 
 #. module: sale_subscription
 #. openerp-web
@@ -2290,7 +2290,7 @@ msgstr "Leden"
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__message_has_error
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__message_has_error
 msgid "Message Delivery error"
-msgstr "Bericht aflever fout"
+msgstr "Bericht afleverfout"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__message_ids
@@ -3306,7 +3306,7 @@ msgid ""
 "                terms and conditions of the subscription."
 msgstr ""
 "Sjablonen worden gebruikt om abonnementen te voor-configureren. Ze kunnen worden geselecteerd door verkoopmedewerkers\n"
-"om snel de voorwaarden en condities van het abonnement te configureren."
+"om snel de algemene verkoopvoorwaarden van het abonnement in te stellen."
 
 #. module: sale_subscription
 #: model:mail.template,subject:sale_subscription.email_payment_close
@@ -3323,7 +3323,7 @@ msgstr "Algemene verkoopvoorwaarden"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "Terms and conditions"
-msgstr "Voorwaarden"
+msgstr "Algemene verkoopvoorwaarden"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_wizard__date_from

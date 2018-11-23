@@ -4,17 +4,19 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
-# 珠海-杜哥 <liangjia@qq.com>, 2018
+# liAnGjiA <liangjia@qq.com>, 2018
 # xu xiaohu <xu.xiaohu@gmail.com>, 2018
-# keecome <7017511@qq.com>, 2018
 # Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
+# inspur qiuguodong <qiuguodong@inspur.com>, 2018
+# 广州救火 <7017511@qq.com>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Jeffery CHEN Fan <jeffery9@gmail.com>, 2018\n"
+"PO-Revision-Date: 2018-08-24 11:47+0000\n"
+"Last-Translator: 广州救火 <7017511@qq.com>, 2018\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -87,7 +89,7 @@ msgstr "按员工"
 #. module: project_forecast
 #: model:ir.ui.menu,name:project_forecast.project_forecast_group_by_project
 msgid "By Project"
-msgstr "按 项目"
+msgstr "按项目"
 
 #. module: project_forecast
 #: selection:res.company,forecast_span:0
@@ -162,7 +164,7 @@ msgstr "在按日，周或全年显示的表格中对您的预测进行编码。
 #: model:ir.model.fields,help:project_forecast.field_res_company__forecast_uom
 #: model:ir.model.fields,help:project_forecast.field_res_config_settings__forecast_uom
 msgid "Encode your forecasts in hours or days."
-msgstr "在几小时或几天内编码您的预测。"
+msgstr "在几小时或几天内对预测编码。"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__end_date
@@ -237,7 +239,7 @@ msgstr "预测结束日期应大于或等于其开始日期"
 msgid ""
 "Forecast should not overlap existing forecasts. To solve this, check the "
 "project(s): %s."
-msgstr "预测不应与现有预测重叠。要解决这个问题，请检查项目: %s."
+msgstr "预测不应与现有预测重复。请检查项目以解决这个问题: %s."
 
 #. module: project_forecast
 #: model:ir.actions.server,name:project_forecast.project_forecast_action_server_by_user
@@ -247,13 +249,13 @@ msgstr "预测：按员工查看"
 #. module: project_forecast
 #: model:ir.actions.server,name:project_forecast.project_forecast_action_server_by_project
 msgid "Forecast: view by project"
-msgstr "按项目视图预测"
+msgstr "按项目预测"
 
 #. module: project_forecast
 #: code:addons/project_forecast/models/project_forecast.py:164
 #, python-format
 msgid "Forecasted time must be positive"
-msgstr "预测的时间必须是正数"
+msgstr "预测时间必须是正数"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
@@ -268,8 +270,8 @@ msgid ""
 " field and the 'resource_time' cell field, got respectively %(column_field)r"
 " and %(cell_field)r"
 msgstr ""
-"项目预测的网格调整仅支持 'start_date' 列字段和 'resource_hours' 单元格字段，分别为 %(column_field)r 和"
-" %(cell_field)r"
+"项目预测的调整仅支持 'start_date' 列字段和 'resource_hours' 单元格字段，分别为 %(column_field)r 和 "
+"%(cell_field)r"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
@@ -289,7 +291,7 @@ msgstr "ID"
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast____last_update
 msgid "Last Modified on"
-msgstr "最后修改日"
+msgstr "最后更改日"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__write_uid
@@ -390,7 +392,7 @@ msgstr "员工（%s）没有时区，这可能会导致时间计算错误。它�
 #: model:ir.model.fields,help:project_forecast.field_project_project__allow_forecast
 #: model:ir.model.fields,help:project_forecast.field_project_task__allow_forecast
 msgid "This feature shows the Forecast link in the kanban view"
-msgstr "这个特征在看板视图显示预测链接"
+msgstr "这个特征在看板视图中显示预测链接"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_res_company__forecast_span
@@ -436,7 +438,7 @@ msgid ""
 "You cannot delete a project containing forecasts. You can either delete all "
 "the project's forecasts and then delete the project or simply deactivate the"
 " project."
-msgstr "你不能删除一个项目，其中包含任务。你可以删除所有项目的任务，然后删除项目或干脆取消的项目。"
+msgstr "不能删除包含预测的项目。您可以删除所有项目的预测，然后删除项目或停用项目。"
 
 #. module: project_forecast
 #: code:addons/project_forecast/models/project.py:43
@@ -444,13 +446,13 @@ msgstr "你不能删除一个项目，其中包含任务。你可以删除所有
 msgid ""
 "You cannot delete a task containing forecasts. You can either delete all the"
 " task's forecasts and then delete the task or simply deactivate the task."
-msgstr "你不能删除一个项目，其中包含任务。你可以删除所有项目的任务，然后删除项目或干脆取消的项目。"
+msgstr "不能删除包含预测的项目。您可以删除所有项目的预测，然后删除项目或停用项目。"
 
 #. module: project_forecast
 #: code:addons/project_forecast/models/project_forecast.py:170
 #, python-format
 msgid "Your task is not in the selected project."
-msgstr "你的任务不在选定的项目。"
+msgstr "项目中暂无任务"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_form

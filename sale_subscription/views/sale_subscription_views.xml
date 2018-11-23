@@ -205,22 +205,16 @@
                             <field name="sale_order_count" widget="statinfo" string="Sales"/>
                         </button>
                     </div>
-                    <div class="d-flex flex-column-reverse flex-md-row justify-content-between">
-                        <div class="oe_title flex-grow">
-                            <h1 class="flex-fill d-flex flex-row" attrs="{'invisible': [('id', '=', False)]}">
-                                <field name="starred" widget="boolean_favorite" class="mr-3" nolabel="1"/>
-                                <field name="display_name"/>
-                                <field name="health" widget="state_selection" class="ml-3" readonly="1"/>
-                            </h1>
-                            <h1 attrs="{'invisible': [('id', '!=', False)]}">
-                                <field name="name" readonly="1"/>
-                            </h1>
-                        </div>
-                        <div class="h1">
-                            <span class="badge badge-warning border-0" attrs="{'invisible': [('to_renew', '=', False)]}">
-                                To Renew
-                            </span>
-                        </div>
+                    <div class="badge-pill badge-warning float-right" attrs="{'invisible': [('to_renew', '=', False)]}">To Renew</div>
+                    <div class="oe_title">
+                        <h1 class="flex-fill d-flex flex-row" attrs="{'invisible': [('id', '=', False)]}">
+                            <field name="starred" widget="boolean_favorite" class="mr-3" nolabel="1"/>
+                            <field name="display_name" class="text-truncate"/>
+                            <field name="health" widget="state_selection" class="ml-3" readonly="1"/>
+                        </h1>
+                        <h1 attrs="{'invisible': [('id', '!=', False)]}">
+                            <field name="name" readonly="1"/>
+                        </h1>
                     </div>
                     <group name="main">
                         <group>

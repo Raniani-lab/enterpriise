@@ -158,7 +158,7 @@ tour.register('web_studio_tests_tour', {
     trigger: '.o_web_studio_app_creator_next.is_ready',
 }, {
     // toggle the home menu
-    trigger: '.o_menu_toggle',
+    trigger: '.o_menu_toggle.fa-th',
 }, {
     // a invisible element cannot be used as a trigger so this small hack is
     // mandatory for the next step
@@ -196,8 +196,7 @@ tour.register('web_studio_tests_tour', {
 }, {
     trigger: 'button:contains(Confirm):not(".disabled")',
 },{
-    // wait for modal reloading after adding menu
-    trigger: '.modal-content:has([data-menu-id]:eq(2)) button:contains(Confirm):not(".disabled")',
+    trigger: 'button:contains(Confirm):not(".disabled")',
 }, {
     // check that the Studio menu is still there
     extra_trigger: '.o_web_studio_menu',
@@ -277,15 +276,24 @@ tour.register('web_studio_tests_tour', {
 }, {
     // verify that a default value has been set for the statusbar
     trigger: '.o_web_studio_sidebar select[name="default_value"]:contains(First Status)',
-    extra_trigger: '.o_web_studio_add_chatter',
 }, {
-    // Verify Chatter can be added after changing view to form
     trigger: '.o_web_studio_views_icons a[data-name=form]',
-    extra_trigger: '.o_web_studio_add_chatter',
 }, {
+    // verify Chatter can be added after changing view to form
+    extra_trigger: '.o_web_studio_add_chatter',
+    // edit action
+    trigger: '.o_web_studio_menu .o_menu_sections a[data-name="views"]',
+}, {
+    // edit form view
+    trigger: '.o_web_studio_view_category .o_web_studio_view_type[data-type="form"] .o_web_studio_thumbnail',
+}, {
+    // verify Chatter can be added after changing view to form
+    extra_trigger: '.o_web_studio_add_chatter',
     // switch in list view
     trigger: '.o_web_studio_menu .o_web_studio_views_icons a[data-name="list"]',
 }, {
+    // wait for the list editor to be rendered because the sidebar is the same
+    extra_trigger: '.o_web_studio_list_view_editor',
     // add an existing field (display_name)
     trigger: '.o_web_studio_sidebar .o_web_studio_field_type_container:eq(1) .o_web_studio_field_char',
     run: 'drag_and_drop .o_web_studio_list_view_editor th.o_web_studio_hook:first',

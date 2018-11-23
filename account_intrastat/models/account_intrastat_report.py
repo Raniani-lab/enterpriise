@@ -90,11 +90,16 @@ class IntrastatReport(models.AbstractModel):
 
     @api.model
     def _prepare_query(self, date_from, date_to, journal_ids, invoice_types=None):
+        query_blocks, params = self._build_query(date_from, date_to, journal_ids, invoice_types=invoice_types)
+        query = 'SELECT %(select)s FROM %(from)s WHERE %(where)s ORDER BY %(order)s' % query_blocks
+        return query, params
+
+    @api.model
+    def _build_query(self, date_from, date_to, journal_ids, invoice_types=None):
         # triangular use cases are handled by letting the intrastat_country_id editable on
         # invoices. Modifying or emptying it allow to alter the intrastat declaration
         # accordingly to specs (https://www.nbb.be/doc/dq/f_pdf_ex/intra2017fr.pdf (§ 4.x))
-        query = '''
-            SELECT
+        select = '''
                 row_number() over () AS sequence,
                 CASE WHEN inv.type IN ('in_invoice', 'out_refund') THEN 19 ELSE 29 END AS system,
                 country.code AS country_code,
@@ -124,7 +129,9 @@ class IntrastatReport(models.AbstractModel):
                     THEN 1 ELSE inv_line_uom.factor END
                 ) AS quantity,
                 inv_line.price_subtotal AS value
-            FROM account_invoice_line inv_line
+                '''
+        from_ = '''
+                account_invoice_line inv_line
                 LEFT JOIN account_invoice inv ON inv_line.invoice_id = inv.id
                 LEFT JOIN account_intrastat_code transaction ON inv_line.intrastat_transaction_id = transaction.id
                 LEFT JOIN res_company company ON inv.company_id = company.id
@@ -142,34 +149,46 @@ class IntrastatReport(models.AbstractModel):
                 LEFT JOIN account_incoterms comp_incoterm ON company.incoterm_id = comp_incoterm.id
                 LEFT JOIN account_intrastat_code inv_transport ON inv.intrastat_transport_mode_id = inv_transport.id
                 LEFT JOIN account_intrastat_code comp_transport ON company.intrastat_transport_mode_id = comp_transport.id
-            WHERE inv.state in ('open', 'in_payment', 'paid')
-                AND inv.company_id = %s
+                '''
+        where = '''
+                inv.state in ('open', 'in_payment', 'paid')
+                AND inv.company_id = %(company_id)s
                 AND company_country.id != country.id
                 AND country.intrastat = TRUE
-                AND inv.date_invoice >= %s
-                AND inv.date_invoice <= %s
+                AND inv.date_invoice >= %(date_from)s
+                AND inv.date_invoice <= %(date_to)s
                 AND prodt.type != 'service'
                 AND partner.vat IS NOT NULL
-                AND inv.journal_id IN %s
-            ORDER BY inv.date_invoice DESC
-        '''
-        params = [self.env.user.company_id.id, date_from, date_to, tuple(journal_ids)]
-
+                AND inv.journal_id IN %(journal_ids)s
+                '''
+        order = 'inv.date_invoice DESC'
+        params = {
+            'company_id': self.env.user.company_id.id,
+            'date_from': date_from,
+            'date_to': date_to,
+            'journal_ids': tuple(journal_ids),
+        }
         if invoice_types:
-            query = query.replace('WHERE', 'WHERE inv.type IN %s AND')
-            params = [tuple(invoice_types)] + params
-
+            where += ' AND inv.type IN %(invoice_types)s'
+            params['invoice_types'] = tuple(invoice_types)
+        query = {
+            'select': select,
+            'from': from_,
+            'where': where,
+            'order': order,
+        }
         return query, params
 
     @api.model
-    def _fill_missing_values(self, vals):
+    def _fill_missing_values(self, vals, cache=None):
         ''' Some values are too complex to be retrieved in the SQL query.
         Then, this method is used to compute the missing values fetched from the database.
 
         :param vals:    A dictionary created by the dictfetchall method.
         :param cache:   A cache dictionary used to avoid performance loss.
         '''
-        cache = {}
+        if cache is None:
+            cache = {}
         for index in range(len(vals)):
             # Check account.intrastat.code
             # If missing, retrieve the commodity code by looking in the product category recursively.
@@ -217,7 +236,7 @@ class IntrastatReport(models.AbstractModel):
             total_value += vals['value']
 
         # Create total line if only one type selected.
-        if (incl_arrivals or incl_dispatches) and not (incl_arrivals and incl_dispatches):
+        if incl_arrivals != incl_dispatches:
             colspan = 12 if extended else 10
             lines.append({
                 'id': 0,

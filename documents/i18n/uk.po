@@ -3,16 +3,15 @@
 # * documents
 # 
 # Translators:
-# Bohdan Lisnenko, 2018
 # ТАрас <tratatuta@i.ua>, 2018
 # Martin Trigaux, 2018
 # Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-02 10:31+0000\n"
+"POT-Creation-Date: 2018-11-12 14:54+0000\n"
 "PO-Revision-Date: 2018-08-24 11:37+0000\n"
 "Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
@@ -21,6 +20,13 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Language: uk\n"
 "Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
+
+#. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/js/documents_inspector.js:271
+#, python-format
+msgid "+ Add a tag "
+msgstr ""
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
@@ -540,6 +546,13 @@ msgid "Download and Upload"
 msgstr ""
 
 #. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/js/documents_kanban_controller.js:718
+#, python-format
+msgid "Drop files here to upload"
+msgstr ""
+
+#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__activity_date_deadline_range
 #: model:ir.model.fields,field_description:documents.field_documents_share__activity_date_deadline_range
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_date_deadline_range
@@ -707,11 +720,6 @@ msgstr "Зображення"
 #: model:mail.activity.type,name:documents.mail_documents_activity_data_Inbox
 msgid "Inbox"
 msgstr "Вхідні"
-
-#. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.documents_view_form
-msgid "Indexed Content"
-msgstr "Проіндексований контент"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_is_follower
@@ -890,6 +898,11 @@ msgstr "Мої закладки"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
 msgid "My locked files"
+msgstr ""
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.documents_view_form
+msgid "NName"
 msgstr ""
 
 #. module: documents
@@ -1144,6 +1157,7 @@ msgstr "Налаштування"
 
 #. module: documents
 #. openerp-web
+#: code:addons/documents/models/share.py:132
 #: code:addons/documents/static/src/xml/documents_inspector.xml:151
 #: code:addons/documents/static/src/xml/documents_kanban.xml:14
 #, python-format
@@ -1253,11 +1267,6 @@ msgstr "Теги"
 #: selection:documents.workflow.rule,create_model:0
 msgid "Task"
 msgstr "Завдання"
-
-#. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.documents_view_form
-msgid "Technical"
-msgstr "Технічний"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_model_id

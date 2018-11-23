@@ -736,7 +736,7 @@ msgstr ""
 #: code:addons/helpdesk/static/src/js/helpdesk_dashboard.js:224
 #, python-format
 msgid "Dashboard"
-msgstr "Quadre de comandament"
+msgstr "Taulell"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla__time_days

@@ -4,7 +4,7 @@
 from odoo import models, api, _, fields
 from odoo.tools import float_is_zero
 from odoo.tools.misc import format_date
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 
 class ReportPartnerLedger(models.AbstractModel):
@@ -61,7 +61,8 @@ class ReportPartnerLedger(models.AbstractModel):
             if company.currency_id == user_company.currency_id:
                 rate = 1.0
             else:
-                rate = user_company.currency_id.rate / company.currency_id.rate
+                rate = self.env['res.currency']._get_conversion_rate(
+                    company.currency_id, user_company.currency_id, user_company, datetime.today())
             rates_table_entries.append((company.id, rate, user_company.currency_id.decimal_places))
         currency_table = ','.join('(%s, %s, %s)' % r for r in rates_table_entries)
         with_currency_table = 'WITH currency_table(company_id, rate, precision) AS (VALUES %s)' % currency_table
@@ -145,6 +146,7 @@ class ReportPartnerLedger(models.AbstractModel):
         offset = int(options.get('lines_offset', 0))
         lines = []
         context = self.env.context
+        company_id = context.get('company_id') or self.env.user.company_id
         if line_id:
             line_id = int(line_id.split('_')[1]) or None
         elif options.get('partner_ids') and len(options.get('partner_ids')) == 1:
@@ -184,7 +186,8 @@ class ReportPartnerLedger(models.AbstractModel):
                     'unfolded': 'partner_' + str(partner.id) in options.get('unfolded_lines') or unfold_all,
                     'colspan': 6,
                 })
-            used_currency = self.env.user.company_id.currency_id
+            user_company = self.env.user.company_id
+            used_currency = user_company.currency_id
             if 'partner_' + str(partner.id) in options.get('unfolded_lines') or unfold_all:
                 if offset == 0:
                     progress = initial_balance
@@ -206,8 +209,8 @@ class ReportPartnerLedger(models.AbstractModel):
                         line_credit = line.credit
                     date = amls.env.context.get('date') or fields.Date.today()
                     line_currency = line.company_id.currency_id
-                    line_debit = line_currency._convert(line_debit, used_currency, line.company_id, date)
-                    line_credit = line_currency._convert(line_credit, used_currency, line.company_id, date)
+                    line_debit = line_currency._convert(line_debit, used_currency, user_company, date)
+                    line_credit = line_currency._convert(line_credit, used_currency, user_company, date)
                     progress_before = progress
                     progress = progress + line_debit - line_credit
                     caret_type = 'account.move'
@@ -215,7 +218,8 @@ class ReportPartnerLedger(models.AbstractModel):
                         caret_type = 'account.invoice.in' if line.invoice_id.type in ('in_refund', 'in_invoice') else 'account.invoice.out'
                     elif line.payment_id:
                         caret_type = 'account.payment'
-                    domain_columns = [line.journal_id.code, line.account_id.code, self._format_aml_name(line), line.date_maturity,
+                    domain_columns = [line.journal_id.code, line.account_id.code, self._format_aml_name(line),
+                                      line.date_maturity and format_date(self.env, line.date_maturity) or '',
                                       line.full_reconcile_id.name or '', self.format_value(progress_before),
                                       line_debit != 0 and self.format_value(line_debit) or '',
                                       line_credit != 0 and self.format_value(line_credit) or '']

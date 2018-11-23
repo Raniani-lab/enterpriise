@@ -110,4 +110,4 @@ msgstr ""
 #: selection:account.invoice,release_to_pay_manual:0
 #: selection:account.invoice.line,can_be_paid:0
 msgid "Yes"
-msgstr ""
+msgstr "Yes"

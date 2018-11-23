@@ -3,15 +3,18 @@
 # * project_timesheet_synchro
 # 
 # Translators:
-# Martin Trigaux, 2017
-# Up Link <linkup.way@gmail.com>, 2018
+# Martin Trigaux, 2018
+# 최재호 <hwangtog@gmail.com>, 2018
+# Link Up링크업 <linkup.way@gmail.com>, 2018
+# Linkup <link-up@naver.com>, 2018
 # Seongseok Shin <shinss61@hotmail.com>, 2018
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 10.saas~18+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-20 11:33+0000\n"
-"PO-Revision-Date: 2017-09-20 11:33+0000\n"
+"POT-Creation-Date: 2018-09-18 10:05+0000\n"
+"PO-Revision-Date: 2018-08-24 11:47+0000\n"
 "Last-Translator: Seongseok Shin <shinss61@hotmail.com>, 2018\n"
 "Language-Team: Korean (https://www.transifex.com/odoo/teams/41243/ko/)\n"
 "MIME-Version: 1.0\n"
@@ -25,7 +28,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:170
 #, python-format
 msgid "&emsp;Start"
-msgstr ""
+msgstr "&emsp;시작"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -33,54 +36,68 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:180
 #, python-format
 msgid "&emsp;Stop"
-msgstr ""
+msgstr "&emsp;중지"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:442
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:446
 #, python-format
 msgid "(Last sync was unsuccessful)"
-msgstr ""
+msgstr "(최근 동기화가 실패하였습니다)"
+
+#. module: project_timesheet_synchro
+#. openerp-web
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:55
+#, python-format
+msgid "Action"
+msgstr "조치"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:236
 #, python-format
 msgid "Activity created"
-msgstr ""
+msgstr "활동이 생성됨"
+
+#. module: project_timesheet_synchro
+#. openerp-web
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:120
+#, python-format
+msgid "Add"
+msgstr "추가"
 
 #. module: project_timesheet_synchro
 #: model:ir.model,name:project_timesheet_synchro.model_account_analytic_line
 msgid "Analytic Line"
-msgstr "분석 명세"
+msgstr "분석 라인"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/timesheet_app_backend_template.xml:26
 #, python-format
 msgid "Apple App Store"
-msgstr ""
+msgstr "애플 앱스토어"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:411
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:415
 #, python-format
 msgid "Are you sure that you want to delete this activity?"
-msgstr ""
+msgstr "이 활동을 삭제하시겠습니까?"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:469
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:473
 #, python-format
 msgid "Are you sure that you want to reset the app?"
-msgstr ""
+msgstr "이 앱을 초기화하시겠습니까?"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/timesheet_app_backend_template.xml:52
 #, python-format
 msgid "Available for iPhone, Android and Chrome."
-msgstr ""
+msgstr "iPhone, Android와 Chrome에서 사용가능"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -92,65 +109,73 @@ msgstr ""
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:157
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:415
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:473
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:419
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:477
 #, python-format
 msgid "Cancel"
 msgstr "취소"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:457
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:461
 #, python-format
 msgid ""
 "Connect Timesheets to Odoo to synchronize your activities across all "
 "devices."
+msgstr "Odoo에서 나의 활동과 모든 장치들을 호환하기 위해 타임시트에 접속"
+
+#. module: project_timesheet_synchro
+#. openerp-web
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:104
+#, python-format
+msgid "Current activity"
 msgstr ""
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:538
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:542
 #, python-format
 msgid "Database"
-msgstr ""
+msgstr "데이터베이스"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:252
 #, python-format
 msgid "Default project"
-msgstr ""
+msgstr "기본 프로젝트"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:158
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:416
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:420
 #, python-format
 msgid "Delete"
 msgstr "삭제"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:404
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:408
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:409
 #, python-format
 msgid "Discard"
-msgstr "폐기"
+msgstr "작성취소"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:486
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:490
 #, python-format
 msgid "Discard data"
 msgstr ""
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:563
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:567
 #, python-format
 msgid ""
 "Either you or the Odoo server is offline at the moment. Make sure you do "
 "have a connection or try again later."
-msgstr ""
+msgstr "귀하 또는 Odoo 서버가 오프라인입니다. 연결이 되어있는지 확인하거나 나중에 다시 시도하십시오."
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -164,85 +189,99 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/timesheet_app_backend_template.xml:25
 #, python-format
 msgid "Google Chrome Store"
-msgstr ""
+msgstr "구글 크롬스토어"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/timesheet_app_backend_template.xml:24
 #, python-format
 msgid "Google Play Store"
-msgstr ""
+msgstr "구글 플레이스토어"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:487
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:491
 #, python-format
 msgid "Keep data"
 msgstr ""
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:439
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:443
 #, python-format
 msgid "Last sync :"
-msgstr ""
+msgstr "최근 동기화 : "
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:433
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:136
+#, python-format
+msgid "Locked"
+msgstr "잠김"
+
+#. module: project_timesheet_synchro
+#. openerp-web
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:437
 #, python-format
 msgid "Logged in as"
 msgstr ""
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:503
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:510
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:547
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:555
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:507
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:514
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:551
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:559
 #, python-format
 msgid "Login"
-msgstr ""
+msgstr "로그인"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:515
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:536
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:519
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:540
 #, python-format
 msgid "Login to an on premise Odoo instance"
-msgstr ""
+msgstr "Odoo가 설치된 곳에 로그인"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:501
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:505
 #, python-format
 msgid "Login with Odoo"
-msgstr ""
+msgstr "Odoo에 로그인"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:435
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:439
 #, python-format
 msgid "Logout"
-msgstr ""
+msgstr "로그아웃"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:256
 #, python-format
 msgid "Minimal duration"
-msgstr ""
+msgstr "최소 지속시간"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/timesheet_app_backend_template.xml:49
 #, python-format
 msgid "More info"
+msgstr "추가정보"
+
+#. module: project_timesheet_synchro
+#. openerp-web
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:145
+#, python-format
+msgid "Motivation Text"
 msgstr ""
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:268
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:272
 #, python-format
 msgid "Multiple to round up all durations"
 msgstr ""
@@ -256,10 +295,24 @@ msgstr ""
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:531
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:535
 #, python-format
 msgid "Next"
 msgstr "다음"
+
+#. module: project_timesheet_synchro
+#. openerp-web
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:300
+#, python-format
+msgid "Next week"
+msgstr ""
+
+#. module: project_timesheet_synchro
+#. openerp-web
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:303
+#, python-format
+msgid "Next week unavailable"
+msgstr ""
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -270,7 +323,7 @@ msgstr ""
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:483
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:487
 #, python-format
 msgid ""
 "Note that this will create new projects and tasks on your Odoo instance"
@@ -285,7 +338,7 @@ msgstr ""
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:434
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:438
 #, python-format
 msgid "On server"
 msgstr ""
@@ -304,15 +357,15 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/timesheet_app_backend_template.xml:16
 #, python-format
 msgid "Open the App"
-msgstr ""
+msgstr "앱을 열기"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:507
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:551
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:511
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:555
 #, python-format
 msgid "Password"
-msgstr ""
+msgstr "비밀번호"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -323,7 +376,7 @@ msgstr ""
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:527
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:531
 #, python-format
 msgid "Please enter a database name:"
 msgstr ""
@@ -337,52 +390,73 @@ msgstr ""
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:352
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:356
 #, python-format
 msgid "Please select a project first"
 msgstr ""
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:334
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:338
 #, python-format
 msgid "Please select a project."
 msgstr ""
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:342
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:288
+#, python-format
+msgid "Previous week"
+msgstr ""
+
+#. module: project_timesheet_synchro
+#. openerp-web
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:291
+#, python-format
+msgid "Previous week unavailable"
+msgstr ""
+
+#. module: project_timesheet_synchro
+#. openerp-web
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:346
 #, python-format
 msgid "Project"
 msgstr "프로젝트"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:474
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:478
 #, python-format
 msgid "RESET"
-msgstr ""
+msgstr "리셋"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:495
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:499
 #, python-format
 msgid "Reset"
-msgstr ""
+msgstr "리셋"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:403
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:116
+#, python-format
+msgid "Run"
+msgstr "동작"
+
+#. module: project_timesheet_synchro
+#. openerp-web
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:407
 #, python-format
 msgid "Save"
-msgstr ""
+msgstr "저장"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:571
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:575
 #, python-format
 msgid "Select your Odoo instance from the list below :"
-msgstr ""
+msgstr "아래 목록에서 원하시는 Odoo를 선택하세요 : "
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -393,17 +467,24 @@ msgstr "설정"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:461
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:557
 #, python-format
-msgid "Sign In"
+msgid "Show password"
 msgstr ""
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:462
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:465
+#, python-format
+msgid "Sign In"
+msgstr "로그인"
+
+#. module: project_timesheet_synchro
+#. openerp-web
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:466
 #, python-format
 msgid "Sign Up"
-msgstr ""
+msgstr "가입하기"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -415,42 +496,49 @@ msgstr "통계"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:437
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:98
+#, python-format
+msgid "Subtract"
+msgstr ""
+
+#. module: project_timesheet_synchro
+#. openerp-web
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:441
 #, python-format
 msgid "Sync Now"
-msgstr ""
+msgstr "지금 동기화"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:53
 #, python-format
 msgid "Sync in progress"
-msgstr ""
+msgstr "동기화중"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:35
 #, python-format
 msgid "Synchronize"
-msgstr ""
+msgstr "동기화"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:581
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:585
 #, python-format
 msgid "Syncing data, this shouldn't take long"
-msgstr ""
+msgstr "데이터 동기화중, 오래걸리지 않습니다"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:347
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:351
 #, python-format
 msgid "Task"
-msgstr "업무"
+msgstr "작업"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:449
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:453
 #, python-format
 msgid ""
 "The server you connected to does not support timesheet synchronization. You "
@@ -458,40 +546,42 @@ msgid ""
 "''Synchronization with the external timesheet application'' (available in "
 "Odoo Enterprise Edition)."
 msgstr ""
+"지금 연결하신 서버는 타임시트 동기화를 지원하지 않습니다. 관리자에게 문의하여 “외부 타임시트 어플리케이션과 동기화” 모듈을 "
+"요청하십시오.(Odoo 엔터프라이즈에서 사용가능)"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:24
 #, python-format
 msgid "This Week"
-msgstr ""
+msgstr "금주"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:380
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:384
 #, python-format
 msgid "Time spent (hh:mm)"
-msgstr ""
+msgstr "시간 사용 (hh:mm)"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:357
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:361
 #, python-format
 msgid "Time spent (hhmm)"
-msgstr ""
+msgstr "시간 사용 (hh:mm)"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:263
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:265
 #, python-format
 msgid "Time unit"
-msgstr ""
+msgstr "시간 단위"
 
 #. module: project_timesheet_synchro
 #: model:ir.actions.client,name:project_timesheet_synchro.project_timesheet_synchro_app_action
 #: model:ir.ui.menu,name:project_timesheet_synchro.menu_timesheet_app
 msgid "Timesheet App"
-msgstr ""
+msgstr "타임시트 앱"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -506,18 +596,25 @@ msgstr "오늘"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:28
 #, python-format
 msgid "Today's Plan"
+msgstr "금일 계획"
+
+#. module: project_timesheet_synchro
+#. openerp-web
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:49
+#, python-format
+msgid "Toggle action"
 msgstr ""
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:316
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:320
 #, python-format
 msgid "Total :"
-msgstr ""
+msgstr "합계 : "
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:458
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:462
 #, python-format
 msgid ""
 "Use Odoo to organize projects and tasks, forecast resources and invoice time"
@@ -526,51 +623,49 @@ msgstr ""
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:494
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:498
 #, python-format
 msgid "Use an Odoo.com account"
-msgstr ""
+msgstr "Odoo.com 계정을 사용"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/timesheet_app_backend_template.xml:22
 #, python-format
-msgid ""
-"Use this timesheet app to manage your own timesheets. It's automatically "
-"synchronized across all your devices and Odoo!"
+msgid "Use timesheet apps to manage your timesheets."
 msgstr ""
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:291
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:295
 #, python-format
 msgid "Week"
 msgstr "주"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:392
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:396
 #, python-format
 msgid "Work Summary"
-msgstr ""
+msgstr "업무 요약"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/timesheet_app_backend_template.xml:39
 #, python-format
 msgid "Work anywhere, anytime."
-msgstr ""
+msgstr "언제 어디든지 일할 수 있습니다."
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/timesheet_app_backend_template.xml:31
 #, python-format
 msgid "Work in disconnected mode and sync in the background."
-msgstr ""
+msgstr "오프라인 모드에서 작업해서 백그라운드에서 동기화합니다."
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:482
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:486
 #, python-format
 msgid ""
 "Would you like the activities, projects and tasks that you created as a "
@@ -586,10 +681,10 @@ msgstr ""
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:580
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:584
 #, python-format
 msgid "You are logged in !"
-msgstr ""
+msgstr "로그인되었습니다!"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -600,7 +695,7 @@ msgstr ""
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:567
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:571
 #, python-format
 msgid ""
 "You should have received an email with a link to activate your account. Once"
@@ -609,14 +704,14 @@ msgstr ""
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:517
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:521
 #, python-format
 msgid "Your Odoo Server Address"
-msgstr ""
+msgstr "Odoo서버 주소"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:566
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:570
 #, python-format
 msgid "Your database and account have been created !"
 msgstr ""
@@ -630,37 +725,37 @@ msgstr ""
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:548
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:552
 #, python-format
 msgid "ex: admin@example.com"
-msgstr ""
+msgstr "예: admin@example.com"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:519
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:523
 #, python-format
 msgid "http://"
-msgstr ""
+msgstr "http://"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:520
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:521
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:524
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:525
 #, python-format
 msgid "https://"
-msgstr ""
+msgstr "https://"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:259
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:266
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:260
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:269
 #, python-format
 msgid "minutes"
-msgstr ""
+msgstr "분"
 
 #. module: project_timesheet_synchro
 #. openerp-web
-#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:567
+#: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:571
 #, python-format
 msgid "sign in"
 msgstr ""

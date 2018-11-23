@@ -9,17 +9,19 @@
 # Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
 # bower Guo <124358678@qq.com>, 2018
 # roye w <159820@qq.com>, 2018
-# keecome <7017511@qq.com>, 2018
-# 珠海-杜哥 <liangjia@qq.com>, 2018
+# 广州救火 <7017511@qq.com>, 2018
 # neter ji <jifuyi@qq.com>, 2018
+# liAnGjiA <liangjia@qq.com>, 2018
 # xu xiaohu <xu.xiaohu@gmail.com>, 2018
+# inspur qiuguodong <qiuguodong@inspur.com>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: xu xiaohu <xu.xiaohu@gmail.com>, 2018\n"
+"PO-Revision-Date: 2018-08-24 11:36+0000\n"
+"Last-Translator: inspur qiuguodong <qiuguodong@inspur.com>, 2018\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -35,12 +37,12 @@ msgstr "\" 银行账户已被收回。"
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "<strong>Ooops</strong> It would seems that the process to"
-msgstr "<strong>糟糕</strong>貌似在处理"
+msgstr "<strong>糟糕</strong>看上去还在处理"
 
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "<strong>Ooops</strong> We could not"
-msgstr "<strong>哎呀</strong> 臣妾做不到"
+msgstr "<strong>哎呀</strong> 我们做不到"
 
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
@@ -79,7 +81,7 @@ msgstr "在线会计日记账"
 #: model:ir.model.fields,field_description:account_online_sync.field_account_journal__account_online_provider_id
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_journal__account_online_provider_id
 msgid "Account Online Provider"
-msgstr "账号在线提供者"
+msgstr "在线账户提供者"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_link_wizard__account_online_wizard_id
@@ -96,7 +98,7 @@ msgstr "账户名称"
 #: model:ir.cron,cron_name:account_online_sync.online_sync_cron
 #: model:ir.cron,name:account_online_sync.online_sync_cron
 msgid "Account: Journal online sync"
-msgstr "账号：日志在线同步"
+msgstr "账户：在线日记账同步"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_link_wizard__action
@@ -106,12 +108,12 @@ msgstr "动作"
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message_needaction
 msgid "Action Needed"
-msgstr "需要采取行动"
+msgstr "所需动作"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__action_required
 msgid "Action Required"
-msgstr "必须采取行动的"
+msgstr "所需动作"
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:360
@@ -238,8 +240,7 @@ msgid ""
 "                                               from your bank account."
 msgstr ""
 "定义一个新的银行对账单\n"
-"                                被新事物触发建立\n"
-"                                从银行账户。"
+"从您的银行账户在获取新事务时创建。"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_journal__display_name
@@ -302,7 +303,7 @@ msgstr "ID"
 msgid ""
 "ID of the banking institution in third party server used for debugging "
 "purpose"
-msgstr "用于调试目的的第三方服务器中的银行机构ID"
+msgstr "用于调试用途的第三方服务器中的银行机构ID"
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_provider__provider_account_identifier
@@ -312,7 +313,7 @@ msgstr "ID用于标识第三方服务器中的提供商帐户"
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_provider__message_unread
 msgid "If checked new messages require your attention."
-msgstr "查看是否有需要你留意的新信息。"
+msgstr "查看是否有需要留意的新信息。"
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_provider__message_needaction
@@ -471,7 +472,7 @@ msgstr "添加数量"
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message_needaction_counter
 msgid "Number of Actions"
-msgstr "行动数量"
+msgstr "动作数量"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message_has_error_counter
@@ -481,7 +482,7 @@ msgstr "错误数"
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_provider__message_needaction_counter
 msgid "Number of messages which requires an action"
-msgstr "需要行动消息的数量"
+msgstr "需要动作消息的数量"
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_provider__message_has_error_counter
@@ -543,13 +544,13 @@ msgstr "开场陈述：首次同步"
 #. module: account_online_sync
 #: selection:account.online.provider,provider_type:0
 msgid "Plaid"
-msgstr "Plaid"
+msgstr "方格"
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:82
 #, python-format
 msgid "Please enter at least a character for the search"
-msgstr "请输入至少一个字符方能搜索呀"
+msgstr "请输入至少一个字符才能搜索"
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:285
@@ -557,7 +558,7 @@ msgstr "请输入至少一个字符方能搜索呀"
 msgid ""
 "Please link your accounts to a journal or select \"do not link\" as action "
 "to do"
-msgstr "请勾稽你的账户与日记账，或选择“不勾稽”"
+msgstr "请关联你的账户与日记账，或选择“不关联”"
 
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.account_journal_dashboard_inherit_online_sync
@@ -567,7 +568,7 @@ msgstr "同步期间出现问题"
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_journal__provider_name
 msgid "Provider"
-msgstr "服务商"
+msgstr "提供商"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__provider_account_identifier
@@ -577,7 +578,7 @@ msgstr "提供商帐户标识符"
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__provider_identifier
 msgid "Provider Identifier"
-msgstr "提供者标识符"
+msgstr "提供商标识符"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__provider_type
@@ -636,7 +637,7 @@ msgstr "账户同步"
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_provider__message
 msgid "Techhnical message from third party provider that can help debugging"
-msgstr "来自第三方提供商的技术消息，可以帮助调试"
+msgstr "帮助调试的第三方提供商的技术消息"
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_wizard__hide_table
@@ -658,12 +659,12 @@ msgstr "该字段用于保存从plaid/yodlee匹配的业务伙伴信息"
 msgid ""
 "Technical field used to store information from plaid/yodlee to match partner"
 " (used when a purchase is made)"
-msgstr "该字段用于保存从plaid/yodlee匹配的业务伙伴（用于可确立采购时）信息"
+msgstr "该字段用于保存从plaid/yodlee匹配的业务伙伴（用于采购时）信息"
 
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "The account has been linked to your bank journal."
-msgstr "账户已经被勾稽到银行日记账。"
+msgstr "账户已经被关联到银行日记账。"
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:63
@@ -745,7 +746,7 @@ msgstr "网站沟通记录"
 #. module: account_online_sync
 #: model:ir.model,name:account_online_sync.model_account_online_wizard
 msgid "Wizard to link synchronized accounts to journal"
-msgstr "勾稽同步账户到日记账向导"
+msgstr "关联同步账户到日记账向导"
 
 #. module: account_online_sync
 #: selection:account.online.provider,provider_type:0
@@ -763,7 +764,7 @@ msgstr "您需要关联银行账户到日记账，以便系统自动检索银行
 #: code:addons/account_online_sync/models/online_sync.py:287
 #, python-format
 msgid "You can not link two accounts to the same journal"
-msgstr "无法勾稽两个账户到同一个日记账。"
+msgstr "无法关联两个账户到同一个日记账。"
 
 #. module: account_online_sync
 #: selection:account.online.wizard,method:0
@@ -784,7 +785,7 @@ msgstr "编辑"
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_journal__online_identifier
 msgid "id use to identify account in provider system"
-msgstr "id用于在提供商系统中识别帐户"
+msgstr "id用于识别提供商系统中的帐户"
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_journal__provider_name
@@ -815,7 +816,7 @@ msgid ""
 "your account because of the following\n"
 "                    error during the process:"
 msgstr ""
-"账户因如下\n"
+"账户如下\n"
 "        处理过程中的错误："
 
 #. module: account_online_sync
@@ -825,6 +826,6 @@ msgid ""
 "                    thoroughly completed. You can try to manually update your account by clicking the refresh button on the dashboard\n"
 "                    or in the online synchronization menu."
 msgstr ""
-"账户不\n"
+"你账户不\n"
 "         完整。您可以尝试点击仪表板或在线同步菜单上\n"
 "         的刷新按钮来手动更新账户。"

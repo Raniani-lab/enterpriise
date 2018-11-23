@@ -23,6 +23,11 @@ session.include({
     get_file: function (options) {
         if (mobile.methods.downloadFile) {
             mobile.methods.downloadFile(options);
+            // There is no need to wait downloadFile because we delegate this to
+            // Download Manager Service where error handling will be handled correclty.
+            // On our side, we do not want to block the UI and consider the request
+            // as success.
+            if (options.success) { options.success(); }
             if (options.complete) { options.complete(); }
             return true;
         } else {

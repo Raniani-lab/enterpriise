@@ -406,7 +406,7 @@ msgstr "Kostenplaats boekingen"
 #: model:ir.ui.menu,name:account_reports.menu_action_report_account_analytic
 #, python-format
 msgid "Analytic Report"
-msgstr "Kostenplaats rapport"
+msgstr "Kostenplaaten"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template

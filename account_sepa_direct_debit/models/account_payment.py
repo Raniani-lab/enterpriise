@@ -152,6 +152,7 @@ class AccountPayment(models.Model):
         PmtInf = create_xml_node(CstmrDrctDbtInitn, 'PmtInf')
         create_xml_node(PmtInf, 'PmtInfId', str(payment_info_counter))
         create_xml_node(PmtInf, 'PmtMtd', 'DD')
+        create_xml_node(PmtInf, 'BtchBookg', bool(self.env['ir.config_parameter'].get_param('account_sepa_direct_debit_no_batch_booking')) and '0' or '1')
         create_xml_node(PmtInf, 'NbOfTxs', str(len(self)))
         create_xml_node(PmtInf, 'CtrlSum', float_repr(sum(x.amount for x in self), precision_digits=2))  # This sum ignores the currency, it is used as a checksum (see SEPA rulebook)
 

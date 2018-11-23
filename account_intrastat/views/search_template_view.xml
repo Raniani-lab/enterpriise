@@ -13,33 +13,31 @@
                 <t t-esc="type_value"/>
                 <span class="caret"/>
             </a>
-            <ul class="dropdown-menu o_filters_menu" role="menu">
+            <div class="dropdown-menu o_filters_menu" role="menu">
                 <t t-foreach="options['intrastat_type']" t-as="c">
-                    <li t-att-title="c.get('name')"
+                    <a t-att-title="c.get('name')"
                         data-filter="intrastat_type"
                         t-att-data-id="c.get('id')"
-                        class="js_account_report_choice_filter">
-                        <a><t t-esc="c.get('name')"/></a>
-                    </li>
+                        class="dropdown-item js_account_report_choice_filter">
+                        <t t-esc="c.get('name')"/>
+                    </a>
                 </t>
-            </ul>
+            </div>
         </template>
-
         <template id="search_template_intrastat_extended">
             <a type="button" class="dropdown-toggle" data-toggle="dropdown">
                 <span class="fa fa-filter"/> Options:
-                <t t-if="options['intrastat_extended']">Extended,</t>
-                <t t-if="not options['intrastat_extended']">Standard,</t>
+                <t t-if="options['intrastat_extended']">Extended</t>
+                <t t-if="not options['intrastat_extended']">Standard</t>
                 <span class="caret"/>
             </a>
-            <ul class="dropdown-menu o_filters_menu" role="menu">
-                <li title="Extended"
-                    data-filter="intrastat_extended"
-                    class="js_account_report_bool_filter">
-                    <a>Extended Mode</a></li>
-            </ul>
+            <div class="dropdown-menu o_filters_menu" role="menu">
+                <a role="menuitem" title="Extended" data-filter="intrastat_extended"
+                    class="dropdown-item js_account_report_bool_filter">
+                    Extended Mode
+                </a>
+            </div>
         </template>
-
         <template id="search_template" inherit_id="account_reports.search_template">
             <xpath expr="." position="inside">
                 <div class="btn-group o_dropdown o_account_reports_filter_intrastat_type"

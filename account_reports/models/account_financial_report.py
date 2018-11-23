@@ -1174,9 +1174,11 @@ class AccountFinancialReportLine(models.Model):
                     domain_ids = sorted(list(domain_ids), key=lambda k: line._get_gb_name(k))
                 for domain_id in domain_ids:
                     name = line._get_gb_name(domain_id)
+                    if not self.env.context.get('print_mode') or not self.env.context.get('no_format'):
+                        name = name[:40] + '...' if name and len(name) >= 45 else name
                     vals = {
                         'id': domain_id,
-                        'name': name and len(name) >= 45 and name[0:40] + '...' or name,
+                        'name': name,
                         'level': line.level,
                         'parent_id': line.id,
                         'columns': [{'name': l} for l in res[domain_id]],

@@ -1187,12 +1187,12 @@ msgstr "Birgir"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__website_message_ids
 msgid "Website Messages"
-msgstr ""
+msgstr "Skilaboð frá vef"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset_asset__website_message_ids
 msgid "Website communication history"
-msgstr ""
+msgstr "Website communication history"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset_asset__state

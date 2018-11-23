@@ -5,23 +5,30 @@
 # Translators:
 # Gunther Clauwaert <gclauwae@hotmail.com>, 2018
 # Martin Trigaux, 2018
-# Yenthe Van Ginneken <yenthespam@gmail.com>, 2018
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
 # Thomas Pot <thomas@open2bizz.nl>, 2018
+# Yenthe Van Ginneken <yenthespam@gmail.com>, 2018
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-02 10:31+0000\n"
+"POT-Creation-Date: 2018-11-12 14:54+0000\n"
 "PO-Revision-Date: 2018-08-24 11:37+0000\n"
-"Last-Translator: Thomas Pot <thomas@open2bizz.nl>, 2018\n"
+"Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2018\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Language: nl\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/js/documents_inspector.js:271
+#, python-format
+msgid "+ Add a tag "
+msgstr "+ Voeg een label toe"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
@@ -549,6 +556,13 @@ msgid "Download and Upload"
 msgstr "Download en upload"
 
 #. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/js/documents_kanban_controller.js:718
+#, python-format
+msgid "Drop files here to upload"
+msgstr "Drop hier uw bestanden op te uploaden"
+
+#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__activity_date_deadline_range
 #: model:ir.model.fields,field_description:documents.field_documents_share__activity_date_deadline_range
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_date_deadline_range
@@ -720,11 +734,6 @@ msgid "Inbox"
 msgstr "Postvak in"
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.documents_view_form
-msgid "Indexed Content"
-msgstr "Geïndexeerde inhoud"
-
-#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_is_follower
 msgid "Is Follower"
 msgstr "Is een volger"
@@ -852,7 +861,7 @@ msgstr "Markeer alle activiteiten als gereed"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_has_error
 msgid "Message Delivery error"
-msgstr "Bericht aflever fout"
+msgstr "Bericht afleverfout"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_ids
@@ -902,6 +911,11 @@ msgstr "Mijn favorieten"
 #: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
 msgid "My locked files"
 msgstr "Mijn vergrendelde bestanden"
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.documents_view_form
+msgid "NName"
+msgstr "Naam"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_facet__name
@@ -1154,6 +1168,7 @@ msgstr "Instellingen"
 
 #. module: documents
 #. openerp-web
+#: code:addons/documents/models/share.py:132
 #: code:addons/documents/static/src/xml/documents_inspector.xml:151
 #: code:addons/documents/static/src/xml/documents_kanban.xml:14
 #, python-format
@@ -1264,11 +1279,6 @@ msgstr "Labels"
 #: selection:documents.workflow.rule,create_model:0
 msgid "Task"
 msgstr "Taak"
-
-#. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.documents_view_form
-msgid "Technical"
-msgstr "Technisch"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_model_id

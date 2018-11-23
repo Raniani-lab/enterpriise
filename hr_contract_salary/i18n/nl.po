@@ -102,6 +102,14 @@ msgid ""
 "</div>\n"
 "        "
 msgstr ""
+"<div style=\"margin: 0px; padding: 0px;\">\n"
+"    <h2>Gefeliciteerd!</h2>\n"
+"    U kunt uw salarispakket configureren door op de onderstaande link te klikken.\n"
+"    <div style=\"margin: 16px 0px 16px 0px;\">\n"
+"        <a href=\"${ctx.get('salary_package_url')}\" target=\"_blank\" style=\"background-color: #875a7b; text-decoration: none; color: #fff; padding: 8px 16px 8px 16px; border-radius: 5px;\">Stel uw pakket in</a>\n"
+"    </div>\n"
+"</div>\n"
+"        "
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -298,6 +306,12 @@ msgid ""
 "intellectual property income instead of a regular salary. This amount will "
 "be paid in cash every month and is less taxed.</span>"
 msgstr ""
+"<span class=\"form-text mt8\" id=\"ip_tooltip\">Aangezien Odoo veel "
+"investeert in het ontwikkelen en schrijven van intellectueel eigendom, "
+"profiteren we van een fiscale ruling die ons in staat stelt een deel van het"
+" salaris van de werknemer te betalen als een inkomen uit intellectueel "
+"eigendom in plaats van een regulier salaris. Dit bedrag wordt elke maand "
+"contant uitbetaald en is minder belast.</span>"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -317,6 +331,11 @@ msgid ""
 "                                                        <span class=\"form-text\" style=\"display: inline;\" name=\"compensation_amount\">x</span>\n"
 "                                                        <span class=\"form-text\" style=\"display: inline;\"> €.</span><br/>"
 msgstr ""
+"<span class=\"form-text mt8\" name=\"holidays_20_days\" style=\"display: inline;\"> U ontvangt 20 dagen betaald verlof. Als u echter maar </span>\n"
+"                                                        <span class=\"form-text\" style=\"display: inline;\" name=\"holidays_amount\">X</span>\n"
+"                                                        <span class=\"form-text\" style=\"display: inline;\"> dagen gebruikt tot het einde van het jaar, ontvangt u een compensatie van ongeveer </span>\n"
+"                                                        <span class=\"form-text\" style=\"display: inline;\" name=\"compensation_amount\">x</span>\n"
+"                                                        <span class=\"form-text\" style=\"display: inline;\"> €.</span><br/>"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -371,6 +390,8 @@ msgid ""
 "<span class=\"form-text\">This is a monthly net amount, taken into account "
 "in your payslip.</span>"
 msgstr ""
+"<span class=\"form-text\">Dit is het maandelijkse netto bedrag, opgenomen in"
+" uw loonstrook.</span>"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -408,7 +429,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.res_config_settings_view_form
 msgid "<span class=\"o_form_label\">Salary Package Configurator</span>"
-msgstr ""
+msgstr "<span class=\"o_form_label\">Loonpakket simulator</span>"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_applicant_view_form
@@ -755,11 +776,13 @@ msgstr "Gehandicapte partner: Ja"
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Disabled people <span class=\"form-text\">&amp;le; 65 years old</span>"
 msgstr ""
+"Mindervalide personen <span class=\"form-text\">&amp;le; 65 jaar oud</span>"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Disabled seniors <span class=\"form-text\">&amp;ge; 65 years old</span>"
 msgstr ""
+"Mindervalide senioren <span class=\"form-text\">&amp;ge;65 jaar oud</span>"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -784,7 +807,7 @@ msgstr "Gescheiden"
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Doors Number: <span name=\"door_number\"/>"
-msgstr "Deurnummer: <span name=\"door_number\"/>"
+msgstr "Toevoeging: <span name=\"door_number\"/>"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -1422,7 +1445,7 @@ msgstr "Verzenden naar verantwoordelijke"
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Seniors <span class=\"form-text\">&amp;ge; 65 years old</span>"
-msgstr ""
+msgstr "Senioren <span class=\"form-text\">&amp;ge; 65 jaar oud</span>"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -1598,6 +1621,8 @@ msgid ""
 "This is the <b>average salary package</b> for your experience. Top performers get <b>up to 50% more</b>\n"
 "                                        and people below expectations get 20% less."
 msgstr ""
+"Dit is het <b>gemiddelde salarispakket</b> voor uw ervaring. Toppresteerders behalen <b>tot 50% meer</b>\n"
+"en mensen die minder presteren krijgen 20% minder."
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package

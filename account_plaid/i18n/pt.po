@@ -5,7 +5,7 @@
 # Translators:
 # Manuela Silva <inactive+h_manuela_rodsilva@transifex.com>, 2018
 # Ricardo Martins <ricardo.nbs.martins@gmail.com>, 2018
-# MS, 2018
+# MS <manuelarodsilva@gmail.com>, 2018
 # Joao Felix <jrmfelix@gmail.com>, 2018
 # Diogo Fonseca <dsf@thinkopensolutions.pt>, 2018
 # 
@@ -64,7 +64,7 @@ msgstr ""
 #. module: account_plaid
 #: model:ir.model.fields,field_description:account_plaid.field_account_online_provider__provider_type
 msgid "Provider Type"
-msgstr ""
+msgstr "Tipo de provedor"
 
 #. module: account_plaid
 #: model:ir.model,name:account_plaid.model_account_online_provider

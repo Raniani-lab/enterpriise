@@ -4,16 +4,18 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
-# keecome <7017511@qq.com>, 2018
+# inspur qiuguodong <qiuguodong@inspur.com>, 2018
+# 广州救火 <7017511@qq.com>, 2018
 # neter ji <jifuyi@qq.com>, 2018
-# 珠海-杜哥 <liangjia@qq.com>, 2018
+# liAnGjiA <liangjia@qq.com>, 2018
 # 演奏王 <wangwhai@qq.com>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-08-24 11:37+0000\n"
 "Last-Translator: 演奏王 <wangwhai@qq.com>, 2018\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -33,7 +35,7 @@ msgstr "(诊断: %r URL %s)"
 #: code:addons/account_yodlee/models/yodlee.py:242
 #, python-format
 msgid "Account"
-msgstr "科目"
+msgstr "账户"
 
 #. module: account_yodlee
 #: code:addons/account_yodlee/models/yodlee.py:335
@@ -43,7 +45,7 @@ msgid ""
 "completed because the site reports that your account is already registered."
 "  Please log in to the site to confirm and then complete the site addition "
 "process with the correct login information."
-msgstr "帐户已注册 (436) : 您的自动注册无法完成，因为网站报告您的帐户已注册。请登录网站进行确认，然后使用正确的登录信息完成网站添加过程。"
+msgstr "帐户已注册 (436) : 您的自动注册无法完成，因为网站显示您的帐户已注册。请登录网站进行确认，然后使用正确的登录信息完成网站添加过程。"
 
 #. module: account_yodlee
 #: code:addons/account_yodlee/models/yodlee.py:322
@@ -56,7 +58,7 @@ msgid ""
 "update your account credentials in case they are changed."
 msgstr ""
 "账户已锁定 "
-"(407)：您的账户似乎已锁定，我们无法更新您的账户。出现此情况的原因通常是短时间内未成功的登录次数过多。请访问网站或联系其客户支持以解决此问题。问题解决后，请更新您的账户凭据，以防这些凭据被更改。"
+"(407)：您的账户似乎已被锁定，我们无法更新您的账户。出现此情况的原因通常是短时间内未成功登录次数过多。请访问网站或联系客户支持以解决此问题。问题解决后，请更新您的账户凭据，以防这些凭据被更改。"
 
 #. module: account_yodlee
 #: code:addons/account_yodlee/models/yodlee.py:349
@@ -65,7 +67,7 @@ msgid ""
 "Account Not Found(408): We're sorry, we couldn't find any accounts for you "
 "at the site. Please log in at the site and confirm that your account is set "
 "up, then try again."
-msgstr "找不到帐户 (408) : 很抱歉，我们在网站上找不到任何帐户。请在该网站登录，并确认您的帐户已设置，然后重试。"
+msgstr "找不到帐户 (408) : 很抱歉，我们在网站上找不到您的任何帐户。请在该网站登录，并确认您的帐户已设置，然后重试。"
 
 #. module: account_yodlee
 #: code:addons/account_yodlee/models/yodlee.py:327
@@ -394,7 +396,7 @@ msgid ""
 "Problem Updating Account(419):We're sorry, we couldn't update your account "
 "because of unexpected variations at the site. This kind of problem is "
 "usually resolved in a few days. Please try again later."
-msgstr "更新账户时遇到问题 (419)：很抱歉，由于网站突然变化，我们无法更新您的账户。此类问题通常会在几天内解决。请稍后再试。"
+msgstr "更新账户时遇到问题 (419)：很抱歉，由于网站出现意外变化，我们无法更新您的账户。此类问题通常会在几天内解决。请稍后再试。"
 
 #. module: account_yodlee
 #: code:addons/account_yodlee/models/yodlee.py:314
@@ -434,12 +436,12 @@ msgstr "未找到属性记录 (510)：该网站无法找到有关您地址的任
 #. module: account_yodlee
 #: model:ir.model.fields,field_description:account_yodlee.field_account_online_provider__provider_type
 msgid "Provider Type"
-msgstr "提供商类型"
+msgstr "供应商类型"
 
 #. module: account_yodlee
 #: model:ir.model,name:account_yodlee.model_account_online_provider
 msgid "Provider for online account synchronization"
-msgstr "在线帐户同步的提供商"
+msgstr "在线帐户同步的供应商"
 
 #. module: account_yodlee
 #: code:addons/account_yodlee/models/yodlee.py:330
@@ -448,7 +450,7 @@ msgid ""
 "Re-Verification Required (429): We could not update your account due to the "
 "site requiring you to verify your personal information. Please log in to the"
 " site and update the fields required."
-msgstr "需要重新验证 (429)：由于网站要求您验证您的个人信息，因此我们无法更新您的账户。请登录该网站，并更新必填的字段。"
+msgstr "需要重新验证 (429)：由于网站要求验证您的个人信息，因此我们无法更新您的账户。请登录该网站，并更新必填的字段。"
 
 #. module: account_yodlee
 #: code:addons/account_yodlee/models/yodlee.py:328
@@ -513,7 +515,7 @@ msgid ""
 "Requested Account Type Not Found (414): We could not find your requested "
 "account. You may have selected a similar site under a different category by "
 "accident in which case you should select the correct site."
-msgstr "未找到请求的账户类型 (414)：我们未能找到您请求的账户。您可能偶然选择了不同类别下的类似网站，在这种情况下您应该选择正确的网站。"
+msgstr "未找到请求的账户类型 (414)：我们未能找到您请求的账户。您可能偶然选择了不同类别的类似网站，在这种情况下您应该选择正确的网站。"
 
 #. module: account_yodlee
 #: code:addons/account_yodlee/models/yodlee.py:313

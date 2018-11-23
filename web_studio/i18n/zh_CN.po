@@ -3,31 +3,33 @@
 # * web_studio
 # 
 # Translators:
-# Martin Trigaux, 2018
 # e2f <projects@e2f.com>, 2018
-# Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
 # Xia Fajin <xia.fajin@elico-corp.com>, 2018
 # Gary Wei <Gary.wei@elico-corp.com>, 2018
 # Xu Lei <xulei8@qq.com>, 2018
 # fausthuang, 2018
 # 老窦 北京 <2662059195@qq.com>, 2018
-# Lisa Zhang <lzh@odoo.com>, 2018
 # Emily JIA <eji@odoo.com>, 2018
+# Martin Trigaux, 2018
 # e2f_cn c7 <e2f_cn_c7@outlook.com>, 2018
+# Lisa Zhang <lzh@odoo.com>, 2018
 # ChinaMaker <liuct@chinamaker.net>, 2018
-# liAnGjiA <liangjia@qq.com>, 2018
 # KWOKYUK CHEUNG <cheungkwokyuk@gmail.com>, 2018
 # niulin lnc. <admin@niulin.net>, 2018
 # diaojiaolou <124412206@qq.com>, 2018
+# liAnGjiA <liangjia@qq.com>, 2018
 # snow wang <147156565@qq.com>, 2018
+# inspur qiuguodong <qiuguodong@inspur.com>, 2018
 # 广州救火 <7017511@qq.com>, 2018
+# Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
 # 湘子 南 <1360857908@qq.com>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-02 10:32+0000\n"
-"PO-Revision-Date: 2018-10-02 10:32+0000\n"
+"PO-Revision-Date: 2018-08-24 11:49+0000\n"
 "Last-Translator: 湘子 南 <1360857908@qq.com>, 2018\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -227,7 +229,7 @@ msgstr "添加图片"
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:39
 #, python-format
 msgid "Add in the print menu"
-msgstr "在打印菜单中添加"
+msgstr "添加打印菜单"
 
 #. module: web_studio
 #. openerp-web
@@ -297,7 +299,7 @@ msgstr "是否确定从视图中移除此 %s？"
 #: code:addons/web_studio/static/src/js/menu.js:253
 #, python-format
 msgid "Are you sure you want to reset the background image?"
-msgstr "兄dei您确定要重置背景图片么?"
+msgstr "您确定要重置背景图片吗？"
 
 #. module: web_studio
 #. openerp-web
@@ -1196,7 +1198,7 @@ msgstr "继续，就快完成了！"
 #: code:addons/web_studio/static/src/js/tour.js:78
 #, python-format
 msgid "Good job! To add more <b>fields</b>, come back to the <i>Add tab</i>."
-msgstr "腰间盘同学请你坐下,你太突出了! 添加更多 <b>fields</b>字段, 请返回 <i>Add tab</i>添加标签页."
+msgstr "做得好！ 要添加更多字段，返回“添加”选项卡。"
 
 #. module: web_studio
 #. openerp-web
@@ -1289,8 +1291,7 @@ msgstr "帮助提示"
 msgid ""
 "Here, you can <b>name</b> your field (e.g. Book reference, ISBN, Internal "
 "Note, etc.)."
-msgstr ""
-"此处, 您可以 <b>name</b> 字段 (例如. Book reference, ISBN, Internal Note, 等等.)."
+msgstr "在这里，您可以为您的字段命名（例如图书参考，ISBN，内部注释等）。"
 
 #. module: web_studio
 #. openerp-web
@@ -1726,7 +1727,7 @@ msgstr "下一个"
 msgid ""
 "Nicely done! Let’s build your screen now; <b>drag</b> a <i>text field</i> "
 "and <b>drop</b> it in your view, on the right."
-msgstr "兄dei,干得漂亮！我们现在构建您的屏幕；<b>拖拽</b><i>一个文本字段</i>，并将其<b/>放到视图右侧。"
+msgstr "做得很好！ 我们现在建立你的屏幕<b>拖拽</b><i>一个文本字段</i>，并将其<b/>放到视图右侧。"
 
 #. module: web_studio
 #. openerp-web
@@ -2693,7 +2694,7 @@ msgstr "向导不能通过 Studio 进行编辑。"
 msgid ""
 "Wow, nice! And I’m sure you can make it even better! Use this icon to open "
 "<b>Odoo Studio</b> and customize any screen."
-msgstr "哦哟, 你赢了! 陈独秀同志你坐下! 你可以点击 <b>Odoo Studio</b> ICON图标来自定义任何页面。"
+msgstr "喔，不错！ 而且我相信你可以让它变得更好！使用打开<b>Odoo Studio</b> 图标来自定义让页面变的更好。"
 
 #. module: web_studio
 #. openerp-web
@@ -2783,7 +2784,7 @@ msgstr "您首先需要在列表视图中创建 many2many 或 one2many 字段。
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:77
 #, python-format
 msgid "bottom"
-msgstr "bottom"
+msgstr "下边"
 
 #. module: web_studio
 #. openerp-web
@@ -2811,7 +2812,7 @@ msgstr "例如，房地产"
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:204
 #, python-format
 msgid "left"
-msgstr "left"
+msgstr "左"
 
 #. module: web_studio
 #. openerp-web
@@ -2849,7 +2850,7 @@ msgstr "重置颜色"
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:200
 #, python-format
 msgid "right"
-msgstr "right"
+msgstr "右"
 
 #. module: web_studio
 #: code:addons/web_studio/controllers/main.py:1124
@@ -2870,7 +2871,7 @@ msgstr "测试电子邮件"
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:76
 #, python-format
 msgid "top"
-msgstr "top"
+msgstr "上"
 
 #. module: web_studio
 #. openerp-web

@@ -53,11 +53,7 @@ var ActionEditorAction = AbstractAction.extend({
         if (!this.action) {
             return $.Deferred().reject();
         }
-        var defs = [this._super.apply(this, arguments)]
-        if (this.viewType === 'form') {
-            defs.push(this._isChatterAllowed());
-        }
-        return $.when.apply($, defs);
+        return this._super.apply(this, arguments);
     },
     /**
      * @override
@@ -210,12 +206,15 @@ var ActionEditorAction = AbstractAction.extend({
             view = views[0];
         }
         var view_id = view[0];
-        self.viewType = view[1];
+        this.viewType = view[1];
 
         // the default view needs to be created before `loadViews` or the
         // renderer will not be aware that a new view exists
-        var archDef = self._getStudioViewArch(self.action.res_model, self.viewType, view_id);
-        return archDef.then(function (studio_view) {
+        var defs = [this._getStudioViewArch(this.action.res_model, this.viewType, view_id)];
+        if (this.viewType === 'form') {
+            defs.push(this._isChatterAllowed());
+        }
+        return $.when.apply($, defs).then(function () {
             // add studio in loadViews context to retrieve groups server-side
             var context = _.extend({}, self.action.context, {studio: true});
             var loadViewDef = self.loadViews(self.action.res_model, context, views, options);
@@ -228,8 +227,8 @@ var ActionEditorAction = AbstractAction.extend({
                     viewType: self.viewType,
                     env: viewEnv,
                     chatter_allowed: self.chatter_allowed,
-                    studio_view_id: studio_view.studio_view_id,
-                    studio_view_arch: studio_view.studio_view_arch,
+                    studio_view_id: self.studioView.studio_view_id,
+                    studio_view_arch: self.studioView.studio_view_arch,
                     x2mEditorPath: self.x2mEditorPath,
                 };
                 self.view_editor = new ViewEditorManager(self, params);
@@ -255,6 +254,7 @@ var ActionEditorAction = AbstractAction.extend({
      * @returns {Deferred}
      */
     _getStudioViewArch: function (model, view_type, view_id) {
+        var self = this;
         core.bus.trigger('clear_cache');
         return this._rpc({
             route: '/web_studio/get_studio_view_arch',
@@ -264,6 +264,8 @@ var ActionEditorAction = AbstractAction.extend({
                 view_id: view_id,
                 context: session.user_context,
             },
+        }).then(function (studioView) {
+            self.studioView = studioView;
         });
     },
     /**

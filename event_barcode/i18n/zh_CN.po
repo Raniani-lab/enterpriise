@@ -3,13 +3,15 @@
 # * event_barcode
 # 
 # Translators:
+# inspur qiuguodong <qiuguodong@inspur.com>, 2018
 # Martin Trigaux, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-08-24 11:37+0000\n"
 "Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -22,7 +24,7 @@ msgstr ""
 #: code:addons/event_barcode/controllers/main.py:26
 #, python-format
 msgid "%s is already registered"
-msgstr "%s 已经注册"
+msgstr "%s 已被注册"
 
 #. module: event_barcode
 #: code:addons/event_barcode/controllers/main.py:24

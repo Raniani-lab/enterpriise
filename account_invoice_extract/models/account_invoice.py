@@ -366,7 +366,7 @@ class AccountInvoice(models.Model):
                     _logger.error('Check VAT error: %s' % str(exception))
                     return 0
 
-                if response.get('name'):
+                if response and response.get('name'):
                     country_id = self.env['res.country'].search([('code', '=', response.pop('country_code',''))])
                     values = {field: response.get(field, None) for field in self._get_partner_fields()}
                     values.update({

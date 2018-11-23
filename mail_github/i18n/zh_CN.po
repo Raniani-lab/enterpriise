@@ -4,18 +4,20 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
-# Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
-# liAnGjiA <liangjia@qq.com>, 2018
 # ChinaMaker <liuct@chinamaker.net>, 2018
+# Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
 # bower Guo <124358678@qq.com>, 2018
 # roye w <159820@qq.com>, 2018
+# inspur qiuguodong <qiuguodong@inspur.com>, 2018
+# liAnGjiA <liangjia@qq.com>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: roye w <159820@qq.com>, 2018\n"
+"PO-Revision-Date: 2018-08-24 11:38+0000\n"
+"Last-Translator: liAnGjiA <liangjia@qq.com>, 2018\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -61,7 +63,7 @@ msgid ""
 "request, Pull request review, Pull request review comment</i> and "
 "<i>Push</i> events are supported."
 msgstr ""
-"之后您可以选择要在频道中跟进此事. 请注意, 仅 <i>提交评论，问题，发布评论，圈粉，拉请求，拉请求审查，拉请求审查评论</i> 和 "
+"在此之后，您可以选择想要在渠道中关注的事件。注意，只支持 <i>提交评论，发布问题，问题评论，圈粉，拉取请求审核，拉取请求审核评论</i> 和 "
 "<i>推送</i> 活动支持."
 
 #. module: mail_github

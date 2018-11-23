@@ -32,4 +32,5 @@
     'qweb': ['static/src/xml/*.xml'],
     'application': True,
     'license': 'OEEL-1',
+    'uninstall_hook': "uninstall_hook",
 }

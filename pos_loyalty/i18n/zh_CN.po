@@ -3,14 +3,16 @@
 # * pos_loyalty
 # 
 # Translators:
+# inspur qiuguodong <qiuguodong@inspur.com>, 2018
 # Martin Trigaux, 2018
 # Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-08-24 11:47+0000\n"
 "Last-Translator: Jeffery CHEN Fan <jeffery9@gmail.com>, 2018\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -27,7 +29,7 @@ msgstr "<span>每元积分：</span>"
 #. module: pos_loyalty
 #: model_terms:ir.ui.view,arch_db:pos_loyalty.view_loyalty_program_kanban
 msgid "<strong>Points per order :</strong>"
-msgstr "<strong>每订单积分：</strong>"
+msgstr "<strong>按订单积分:</strong>"
 
 #. module: pos_loyalty
 #: model_terms:ir.ui.view,arch_db:pos_loyalty.view_loyalty_program_kanban
@@ -119,12 +121,12 @@ msgstr "礼品产品"
 #. module: pos_loyalty
 #: model:ir.model.fields,help:pos_loyalty.field_loyalty_program__pp_product
 msgid "How many loyalty points are given to the customer by product sold"
-msgstr "按产品卖出给客户多少积分"
+msgstr "按产品销售量给客户多少积分"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,help:pos_loyalty.field_loyalty_program__pp_currency
 msgid "How many loyalty points are given to the customer by sold currency"
-msgstr "按销售金钱给客户多少积分"
+msgstr "按销售额给客户多少积分"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,help:pos_loyalty.field_loyalty_program__pp_order
@@ -204,7 +206,7 @@ msgstr "忠诚度方案"
 msgid ""
 "Loyalty Programs allows you customer to earn points\n"
 "                    and rewards when doing business at your shops."
-msgstr "忠诚度方案可以让你的客户到你的店做生意赚取积分和奖励"
+msgstr "忠诚度方案可以让客户到店做生意赚取积分和奖励"
 
 #. module: pos_loyalty
 #: model:ir.model,name:pos_loyalty.model_loyalty_reward
@@ -457,18 +459,18 @@ msgstr "由此销售点使用的忠诚度方案。"
 msgid ""
 "The minimum amount of points the customer must have to qualify for this "
 "reward"
-msgstr "客户必须具备最低积分点为这个奖励"
+msgstr "客户必须拥有此奖励的最低积分点"
 
 #. module: pos_loyalty
 #: code:addons/pos_loyalty/models/pos_loyalty.py:65
 #, python-format
 msgid "The point product field is mandatory for point resale rewards"
-msgstr "积分点产品字段对积分销售奖励是必须的"
+msgstr "积分点产品字段对积分销售奖励是必须的 "
 
 #. module: pos_loyalty
 #: model:ir.model.fields,help:pos_loyalty.field_loyalty_rule__cumulative
 msgid "The points won from this rule will be won in addition to other rules"
-msgstr "积分点从这个规则赢取也会从另外的规则赢取"
+msgstr "积分可以从多个规则中赢取"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,help:pos_loyalty.field_loyalty_rule__product_id
@@ -488,7 +490,7 @@ msgstr "产品表示一个积分点被客户使用"
 #. module: pos_loyalty
 #: model:ir.model.fields,help:pos_loyalty.field_loyalty_reward__discount_product_id
 msgid "The product used to apply discounts"
-msgstr "这个产品可以申请折扣"
+msgstr "此产品可以申请折扣"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,help:pos_loyalty.field_loyalty_reward__reward_type
@@ -502,7 +504,7 @@ msgstr "奖励类型"
 msgid ""
 "There are no rewards available for this customer as part of the loyalty "
 "program"
-msgstr "没有可用于此客户的作为忠诚度方案一部分的奖励"
+msgstr "当前忠诚度方案的客户没有可用奖励"
 
 #. module: pos_loyalty
 #. openerp-web

@@ -2,6 +2,7 @@ odoo.define('accountReports.FollowupFormModel', function (require) {
 "use strict";
 
 var BasicModel = require('web.BasicModel');
+var field_utils = require('web.field_utils');
 var session = require('web.session');
 
 var FollowupFormModel = BasicModel.extend({
@@ -204,12 +205,13 @@ var FollowupFormModel = BasicModel.extend({
      */
     updateNextAction: function (handle) {
         var record = this.localData[handle];
+        var next_action_date = field_utils.parse.date(record.data.next_action_date, {}, {isUTC: true});
         return this._rpc({
             model: 'res.partner',
             method: 'update_next_action',
             args: [[record.res_id], {
                 next_action_type: record.data.next_action,
-                next_action_date: record.data.next_action_date
+                next_action_date: next_action_date
             }],
         });
     },

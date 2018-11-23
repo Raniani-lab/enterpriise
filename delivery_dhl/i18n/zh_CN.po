@@ -3,16 +3,18 @@
 # * delivery_dhl
 # 
 # Translators:
+# inspur qiuguodong <qiuguodong@inspur.com>, 2018
 # Martin Trigaux, 2018
-# 珠海-杜哥 <liangjia@qq.com>, 2018
 # neter ji <jifuyi@qq.com>, 2018
+# liAnGjiA <liangjia@qq.com>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: neter ji <jifuyi@qq.com>, 2018\n"
+"PO-Revision-Date: 2018-08-24 11:37+0000\n"
+"Last-Translator: liAnGjiA <liangjia@qq.com>, 2018\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -163,12 +165,12 @@ msgstr "厘米"
 #. module: delivery_dhl
 #: model:ir.model.fields,help:delivery_dhl.field_delivery_carrier__dhl_dutiable
 msgid "Check this if your package is dutiable."
-msgstr "如果你的包裹需要交税就选择这个"
+msgstr "包裹需缴税选项"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
 msgid "D - Express Worldwide"
-msgstr "世界各地的快递"
+msgstr "D－全球快递"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,delivery_type:0
@@ -315,12 +317,12 @@ msgstr "英寸"
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
 msgid "J - Jumbo Box"
-msgstr "J - 超级重量箱"
+msgstr "J - 超重包裹"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
 msgid "K - Express 9:00"
-msgstr "K - 快递 9:00"
+msgstr "K - Express 9:00"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_package_weight_unit:0
@@ -330,7 +332,7 @@ msgstr "千克"
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
 msgid "L - Express 10:30"
-msgstr "L - 快递 10:30"
+msgstr "L - Express 10:30"
 
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_label_image_format
@@ -345,7 +347,7 @@ msgstr "标签模板"
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
 msgid "M - Express 10:30"
-msgstr "M - 快递 10:30"
+msgstr "M - Express 10:30"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
@@ -387,7 +389,7 @@ msgstr "PDF"
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_package_dimension_unit
 msgid "Package Dimension Unit"
-msgstr "包裹三维单位"
+msgstr "包裹尺寸单位"
 
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_package_weight_unit
@@ -398,7 +400,7 @@ msgstr "包装重量单位"
 #: code:addons/delivery_dhl/models/dhl_request.py:397
 #, python-format
 msgid "Please provide at least one item to ship."
-msgstr "请至少提供一个项目去发货"
+msgstr "请至少提供一个发货项目"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_package_weight_unit:0
@@ -439,7 +441,7 @@ msgstr "S - 同一天"
 #: code:addons/delivery_dhl/models/delivery_dhl.py:131
 #, python-format
 msgid "Shipment created into DHL <br/> <b>Tracking Number : </b>%s"
-msgstr "装运被创建进DHL <br/> <b>运单号: </b>%s"
+msgstr "DHL发货 <br/> <b>运单号: </b>%s"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0
@@ -472,7 +474,7 @@ msgstr ""
 msgid ""
 "The estimated price cannot be computed because the weight of your product is"
 " missing."
-msgstr "因为产品重量缺失所以估计价格不能被计算"
+msgstr "因为产品重量缺失所以价格无法计算"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0

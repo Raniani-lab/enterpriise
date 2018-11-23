@@ -27,6 +27,8 @@ msgid ""
 "A set of condition and actions which will be available to all attachments "
 "matching the conditions"
 msgstr ""
+"En række betingelser og handlinger der vil være tilgængelige for alle "
+"vedhæftninger, som matcher betingelserne"
 
 #. module: documents_project
 #: model:ir.model,name:documents_project.model_res_company
@@ -66,7 +68,7 @@ msgstr ""
 #. module: documents_project
 #: selection:documents.workflow.rule,create_model:0
 msgid "Product template"
-msgstr ""
+msgstr "Produktskabelon"
 
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_res_company__project_folder
@@ -93,7 +95,7 @@ msgstr ""
 #. module: documents_project
 #: selection:documents.workflow.rule,create_model:0
 msgid "Signature template"
-msgstr ""
+msgstr "Underskriftsskabelon"
 
 #. module: documents_project
 #: selection:documents.workflow.rule,create_model:0
@@ -103,7 +105,7 @@ msgstr "Opgave"
 #. module: documents_project
 #: selection:documents.workflow.rule,create_model:0
 msgid "Vendor bill"
-msgstr ""
+msgstr "Leverandørfaktura"
 
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_res_config_settings__project_folder

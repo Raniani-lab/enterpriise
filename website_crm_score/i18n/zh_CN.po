@@ -3,24 +3,26 @@
 # * website_crm_score
 # 
 # Translators:
-# Martin Trigaux, 2018
 # 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2018
 # v2exerer <9010446@qq.com>, 2018
-# ChinaMaker <liuct@chinamaker.net>, 2018
 # Jackie Zhang <jzh@odoo.com>, 2018
-# Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
+# Martin Trigaux, 2018
 # bower Guo <124358678@qq.com>, 2018
 # roye w <159820@qq.com>, 2018
+# ChinaMaker <liuct@chinamaker.net>, 2018
 # liAnGjiA <liangjia@qq.com>, 2018
 # snow wang <147156565@qq.com>, 2018
+# inspur qiuguodong <qiuguodong@inspur.com>, 2018
 # 广州救火 <7017511@qq.com>, 2018
+# Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
 # niulin lnc. <admin@niulin.net>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:07+0000\n"
-"PO-Revision-Date: 2018-09-21 14:07+0000\n"
+"PO-Revision-Date: 2018-08-24 11:49+0000\n"
 "Last-Translator: niulin lnc. <admin@niulin.net>, 2018\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -54,7 +56,7 @@ msgstr "允许指定在网站中的一个页面可否被追踪"
 #. module: website_crm_score
 #: selection:website.crm.score,rule_type:0
 msgid "Archive"
-msgstr "归档"
+msgstr "存档"
 
 #. module: website_crm_score
 #: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
@@ -471,7 +473,7 @@ msgstr "销售单数"
 msgid ""
 "Sales Team the user is member of. Used to compute the members of a Sales "
 "Team through the inverse one2many"
-msgstr "用户所属的销售团队。用于通过反向one2many计算销售团队的成员"
+msgstr "用户所属的销售团队。用于通过反向一对多计算销售团队的成员"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_team__team_user_ids

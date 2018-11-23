@@ -181,12 +181,12 @@ msgstr "Analise das Avaliações"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_collaborators_ids
 msgid "Appraisal Collaborators"
-msgstr ""
+msgstr "Colaboradores de Avaliação"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_colleagues_ids
 msgid "Appraisal Colleagues"
-msgstr ""
+msgstr "Colegas de Avaliação"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__date_close
@@ -1411,7 +1411,7 @@ msgstr ""
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__color
 msgid "This color will be used in the kanban view."
-msgstr ""
+msgstr "Esta cor vai ser usada na vista Kanban"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__collaborators_appraisal
@@ -1471,7 +1471,7 @@ msgstr "A gestão do tempo: Projetos/Tarefas são concluídas a tempo"
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
 #, python-format
 msgid "To Start"
-msgstr ""
+msgstr "Para começar"
 
 #. module: hr_appraisal
 #: model_terms:survey.page,description:hr_appraisal.appraisal_1

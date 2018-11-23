@@ -224,7 +224,6 @@ var EditMenuDialog = Dialog.extend({
         var self = this;
         this._saveChanges().then(function () {
             self._reloadMenuData();
-            self.close();
         });
     },
     /**
@@ -377,7 +376,6 @@ var NewMenuDialog = Dialog.extend(StandaloneFieldManagerMixin, {
         var def = this._createNewMenu(name, this.parent_id, model_id);
         def.then(function () {
             self.on_saved();
-            self.close();
         }).fail(function () {
             self.$footer.find('.confirm_button').removeClass('disabled');
         });

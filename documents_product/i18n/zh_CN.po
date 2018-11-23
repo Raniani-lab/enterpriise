@@ -5,17 +5,18 @@
 # Translators:
 # Martin Trigaux, 2018
 # Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
-# liAnGjiA <liangjia@qq.com>, 2018
 # ChinaMaker <liuct@chinamaker.net>, 2018
+# liAnGjiA <liangjia@qq.com>, 2018
+# inspur qiuguodong <qiuguodong@inspur.com>, 2018
 # xu xiaohu <xu.xiaohu@gmail.com>, 2018
-# neter ji <jifuyi@qq.com>, 2018
 # snow wang <147156565@qq.com>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-02 10:31+0000\n"
-"PO-Revision-Date: 2018-10-02 10:31+0000\n"
+"PO-Revision-Date: 2018-09-21 14:12+0000\n"
 "Last-Translator: snow wang <147156565@qq.com>, 2018\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -29,7 +30,7 @@ msgstr ""
 msgid ""
 "A set of condition and actions which will be available to all attachments "
 "matching the conditions"
-msgstr "可用于所有满足条件的附件的条件和动作集合"
+msgstr "一组适用于符合所有条件附件的状态动作集合"
 
 #. module: documents_product
 #: model:ir.model,name:documents_product.model_res_company
@@ -54,7 +55,7 @@ msgstr "信用证"
 #. module: documents_product
 #: model:ir.model.fields,field_description:documents_product.field_res_company__dms_product_settings
 msgid "Dms Product Settings"
-msgstr "Dms产品设置"
+msgstr "产品数据库管理系统设置"
 
 #. module: documents_product
 #: model:ir.model,name:documents_product.model_ir_attachment
@@ -86,12 +87,12 @@ msgstr "产品模板"
 #. module: documents_product
 #: model_terms:ir.ui.view,arch_db:documents_product.res_config_settings_view_form
 msgid "Select the folder to be used for product's documents"
-msgstr "选择用于产品文档的目录"
+msgstr "选择产品文档目录"
 
 #. module: documents_product
 #: model_terms:ir.ui.view,arch_db:documents_product.res_config_settings_view_form
 msgid "Select the tags to be applied to product's new documents"
-msgstr "选择作用于产品新的文档的标签"
+msgstr "选择产品文档标签"
 
 #. module: documents_product
 #: selection:documents.workflow.rule,create_model:0

@@ -4,21 +4,23 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
-# Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
-# ChinaMaker <liuct@chinamaker.net>, 2018
 # 老窦 北京 <2662059195@qq.com>, 2018
-# Shane Tsoi <sso@odoo.com>, 2018
 # Jackie Zhang <jzh@odoo.com>, 2018
-# bower Guo <124358678@qq.com>, 2018
+# Shane Tsoi <sso@odoo.com>, 2018
 # roye w <159820@qq.com>, 2018
+# bower Guo <124358678@qq.com>, 2018
+# ChinaMaker <liuct@chinamaker.net>, 2018
 # liAnGjiA <liangjia@qq.com>, 2018
+# Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
+# inspur qiuguodong <qiuguodong@inspur.com>, 2018
 # 广州救火 <7017511@qq.com>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-08-24 11:38+0000\n"
 "Last-Translator: 广州救火 <7017511@qq.com>, 2018\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -137,7 +139,7 @@ msgstr "当创建别名的新记录时，一个Python字典被提供作为默认
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__message_needaction
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__message_needaction
 msgid "Action Needed"
-msgstr "需要采取行动"
+msgstr "需处理"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__active
@@ -173,7 +175,7 @@ msgstr "别名"
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__alias_contact
 msgid "Alias Contact Security"
-msgstr "别名联系人安全"
+msgstr "安全联系人别名"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__alias_name
@@ -183,7 +185,7 @@ msgstr "别名"
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__alias_domain
 msgid "Alias domain"
-msgstr "别名网域"
+msgstr "网域别名"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__alias_model_id
@@ -282,7 +284,7 @@ msgstr "批准人"
 #. module: mrp_plm
 #: selection:mrp.eco.approval.template,approval_type:0
 msgid "Approves, but the approval is optional"
-msgstr "批准，但审批是可选的"
+msgstr "批准，但审批可选"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
@@ -356,7 +358,7 @@ msgid ""
 "              materials used to make a finished product; through a manufacturing\n"
 "              order or a pack of products."
 msgstr ""
-"物料清单（BoM）允许您定义制造成品所需原的材料，\n"
+"物料清单（BOM）允许定义制造成品所需的原材料，\n"
 "包括工单或包装。"
 
 #. module: mrp_plm
@@ -372,12 +374,12 @@ msgstr "阻塞阶段"
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "BoM"
-msgstr "BoM"
+msgstr "BOM"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "BoM Changes"
-msgstr "BoM变更"
+msgstr "BOM变更"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__bom_rebase_ids
@@ -388,7 +390,7 @@ msgstr "BOM 复位"
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__new_bom_revision
 msgid "BoM Revision"
-msgstr "BoM修订版"
+msgstr "BOM修订版"
 
 #. module: mrp_plm
 #: code:addons/mrp_plm/models/mrp_eco.py:154
@@ -399,7 +401,7 @@ msgstr "物料清单以及工艺路线"
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
 msgid "BoM:"
-msgstr "BoM:"
+msgstr "BOM:"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__user_can_approve
@@ -563,12 +565,12 @@ msgstr "刪除"
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Description of the change and its reason ..."
-msgstr "变更的说明以及它的原因..."
+msgstr "变更的说明以及原因..."
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__bom_change_ids
 msgid "Difference between old BoM and new BoM revision"
-msgstr "旧的BoM和新的BoM版本之间的区别"
+msgstr "旧的BOM和新的BOM版本之间的区别"
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__routing_change_ids
@@ -633,12 +635,12 @@ msgstr "ECO审批模板"
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__bom_change_ids
 msgid "ECO BoM Changes"
-msgstr "ECO BoM变更"
+msgstr "ECO BOM变更"
 
 #. module: mrp_plm
 #: model:ir.model,name:mrp_plm.model_mrp_eco_bom_change
 msgid "ECO BoM changes"
-msgstr "ECO Bom变更"
+msgstr "ECO BOM变更"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_bom_change__eco_rebase_id
@@ -728,7 +730,7 @@ msgstr "Eco"
 #: code:addons/mrp_plm/models/mrp_eco.py:663
 #, python-format
 msgid "Eco BoM"
-msgstr "Eco BoM"
+msgstr "Eco BOM"
 
 #. module: mrp_plm
 #: code:addons/mrp_plm/models/mrp_eco.py:675
@@ -841,12 +843,12 @@ msgstr "未来活动"
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "Group by..."
-msgstr "分组 于"
+msgstr "分组"
 
 #. module: mrp_plm
 #: model:ir.module.category,description:mrp_plm.module_category_plm
 msgid "Helps you manage your product's lifecycles."
-msgstr "帮助你管理产品生命周期."
+msgstr "协助管理产品生命周期."
 
 #. module: mrp_plm
 #: selection:mrp.eco,priority:0
@@ -895,14 +897,14 @@ msgstr "如果勾选此项， 某些信息将会产生传递错误。"
 msgid ""
 "If the active field is set to False, it will allow you to hide the bills of "
 "material without removing it."
-msgstr "如果有效字段设为否，您将可以不必删除就隐藏物料清单。"
+msgstr "如设为无效，可以不删除就隐藏物料清单。"
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__active
 msgid ""
 "If the active field is set to False, it will allow you to hide the "
 "engineering change order without removing it."
-msgstr "如果活动字段设置为否，则可以隐藏工程更改顺序而不移除它。"
+msgstr "如果活动字段设置为否，可隐藏工程更改顺序而不移除。"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
@@ -1146,7 +1148,7 @@ msgstr "错误数"
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__message_needaction_counter
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco_type__message_needaction_counter
 msgid "Number of messages which requires an action"
-msgstr "需要行动消息的数量"
+msgstr "待处理消息数量"
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__message_has_error_counter
@@ -1221,8 +1223,8 @@ msgid ""
 " necessarily the model given by alias_model_id (example: project "
 "(parent_model) and task (model))"
 msgstr ""
-"父级模型拥有别名。拥有别名参照的模型不必是alias_model_id给出的模型 (example: project(parent_model) and"
-" task (model))"
+"父级模型拥有别名。拥有别名参考的模型不一定是alias_model_id给出的模型 (例如：project(parent_model) 和任务 "
+"(模型))"
 
 #. module: mrp_plm
 #: selection:mrp.eco,activity_state:0
@@ -1245,7 +1247,7 @@ msgstr ""
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_bom__previous_bom_id
 msgid "Previous BoM"
-msgstr "前BoM"
+msgstr "前一个BoM"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_bom_change__old_operation_id
@@ -1487,7 +1489,7 @@ msgstr "产品的小尺寸图像。保持纵横比，自动缩放为64x64px。�
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
 msgid "Someone rejected this change"
-msgstr "有人拒绝了此变更"
+msgstr "有人拒绝此变更"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__stage_id
@@ -1534,19 +1536,19 @@ msgstr ""
 #: code:addons/mrp_plm/models/mrp_eco.py:347
 #, python-format
 msgid "Successfully Rebased !"
-msgstr "成功重新启动！"
+msgstr "重启成功！"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid ""
 "System will automatically resolved the conflict(s) and apply changes. Do you"
 " agree?"
-msgstr "系统将自动解决冲突并应用更改。你同意吗？"
+msgstr "是否允许系统自动解决冲突并更改应用？"
 
 #. module: mrp_plm
 #: sql_constraint:mrp.eco.tag:0
 msgid "Tag name already exists !"
-msgstr "标签名已存在!"
+msgstr "标签名称已存在!"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__tag_ids
@@ -1599,7 +1601,7 @@ msgstr ""
 msgid ""
 "The name of the email alias, e.g. 'jobs' if you want to catch emails for "
 "<jobs@example.odoo.com>"
-msgstr "邮件别名的名称，例如，如果你要收取 <jobs@example.odoo.com> 的电子邮件,别名就要被设为：\"jobs\""
+msgstr "邮件别名的名称，例如，如果您要收取 <jobs@example.odoo.com> 的电子邮件,别名就要被设为：\"jobs\""
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco_type__alias_user_id
@@ -1618,7 +1620,7 @@ msgstr ""
 msgid ""
 "There is no available image to be set as cover. Add an image as an "
 "attachment to the the engineering order."
-msgstr "没有可用的图像设置为封面。 添加图像作为工程订单的附件。"
+msgstr "没有可用的图像。 添加图像作为工程订单的附件。"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__nb_validation

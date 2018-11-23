@@ -3,17 +3,19 @@
 # * mass_mailing_themes
 # 
 # Translators:
-# Martin Trigaux, 2018
 # liAnGjiA <liangjia@qq.com>, 2018
+# Martin Trigaux, 2018
 # e2f_cn c7 <e2f_cn_c7@outlook.com>, 2018
 # Lisa Zhang <lzh@odoo.com>, 2018
+# inspur qiuguodong <qiuguodong@inspur.com>, 2018
 # 广州救火 <7017511@qq.com>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-18 10:05+0000\n"
-"PO-Revision-Date: 2018-09-18 10:05+0000\n"
+"PO-Revision-Date: 2018-08-24 11:38+0000\n"
 "Last-Translator: 广州救火 <7017511@qq.com>, 2018\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -30,7 +32,7 @@ msgstr "$20"
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_airmail_template
 msgid "1958 Royal"
-msgstr "1958 Royal"
+msgstr "1958年皇室"
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_airmail_template
@@ -51,12 +53,12 @@ msgstr "<i/>"
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_expo_template
 msgid "<i>DOE Studio, USA</i>"
-msgstr "<i>DOE Studio, 美国</i>"
+msgstr "<i>美国能源部工作室</i>"
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_expo_template
 msgid "<i>Web Designer, ES</i>"
-msgstr "<i>Web 设计师, ES</i>"
+msgstr "<i>网络营销</i>"
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template
@@ -79,7 +81,7 @@ msgid ""
 "<span style=\"line-height: 30px;\"><small>CODE: </small></span><strong "
 "class=\"o_code h3\">45A9E77DGW8455</strong>"
 msgstr ""
-"<span style=\"line-height: 30px;\"><small>CODE: </small></span><strong "
+"<span style=\"line-height: 30px;\"><small>代码: </small></span><strong "
 "class=\"o_code h3\">45A9E77DGW8455</strong>"
 
 #. module: mass_mailing_themes
@@ -138,7 +140,7 @@ msgstr "横幅图片"
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_newsletter_template
 msgid "Call for Speakers"
-msgstr "号召演讲人"
+msgstr "联络演讲人"
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template

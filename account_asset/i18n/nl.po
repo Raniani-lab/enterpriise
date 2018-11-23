@@ -151,7 +151,7 @@ msgstr "Activa rekening"
 #: model_terms:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
 #: model_terms:ir.ui.view,arch_db:account_asset.view_invoice_asset_category
 msgid "Asset Category"
-msgstr "Categorie apparatuur"
+msgstr "Activacategorie"
 
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_asset_depreciation_line
@@ -849,7 +849,7 @@ msgstr "Handmatig (standaard op inkoopdatum)"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__message_has_error
 msgid "Message Delivery error"
-msgstr "Bericht aflever fout"
+msgstr "Bericht afleverfout"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__message_ids

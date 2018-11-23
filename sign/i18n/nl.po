@@ -870,7 +870,7 @@ msgstr "Bericht"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_has_error
 msgid "Message Delivery error"
-msgstr "Bericht aflever fout"
+msgstr "Bericht afleverfout"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_ids

@@ -91,10 +91,10 @@
         <field name="delivery_type">ups</field>
         <field name="ups_package_weight_unit">LBS</field>
         <field name="ups_package_dimension_unit">IN</field>
-        <field name="ups_username">mahendra007</field>
-        <field name="ups_passwd">barad@123</field>
-        <field name="ups_shipper_number">031V52</field>
-        <field name="ups_access_number">6CF344B6B222D676</field>
+        <field name="ups_username">ups_odoo</field>
+        <field name="ups_passwd">YgnQb4!peCGa.UE</field>
+        <field name="ups_shipper_number">63FW47</field>
+        <field name="ups_access_number">CD53D508393E2CCC</field>
         <field name="ups_default_packaging_id" ref="ups_packaging_02"/>
     </record>
 

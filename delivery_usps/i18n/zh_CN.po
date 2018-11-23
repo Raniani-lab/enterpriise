@@ -3,16 +3,18 @@
 # * delivery_usps
 # 
 # Translators:
-# Martin Trigaux, 2018
 # Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
 # liAnGjiA <liangjia@qq.com>, 2018
+# inspur qiuguodong <qiuguodong@inspur.com>, 2018
+# Martin Trigaux, 2018
 # neter ji <jifuyi@qq.com>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-08-24 11:37+0000\n"
 "Last-Translator: neter ji <jifuyi@qq.com>, 2018\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -29,17 +31,17 @@ msgstr "放弃"
 #. module: delivery_usps
 #: model:ir.model.fields,field_description:delivery_usps.field_delivery_carrier__usps_account_validated
 msgid "Account Validated"
-msgstr "账号有效"
+msgstr "有效账户"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,delivery_type:0
 msgid "Based on Rules"
-msgstr "根据规则"
+msgstr "基础规则"
 
 #. module: delivery_usps
 #: model:ir.model.fields,help:delivery_usps.field_delivery_carrier__usps_account_validated
 msgid "Check this box if your account is validated by USPS"
-msgstr "如果你的账户已被USPS确认，勾选此复选框。"
+msgstr "如果你的账户已被USPS确认，请勾选此复选框。"
 
 #. module: delivery_usps
 #: code:addons/delivery_usps/models/usps_request.py:64
@@ -105,7 +107,7 @@ msgstr "FedEx"
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_service:0
 msgid "First Class"
-msgstr "首个Class"
+msgstr "头等"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,delivery_type:0
@@ -115,25 +117,25 @@ msgstr "固定价格"
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_first_class_mail_type:0
 msgid "Flat"
-msgstr "统一的"
+msgstr "普通"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_mail_type:0
 msgid "Flat Rate"
-msgstr "统一费用"
+msgstr "平价"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_domestic_regular_container:0
 #: selection:delivery.carrier,usps_international_regular_container:0
 #: selection:delivery.carrier,usps_mail_type:0
 msgid "Flat Rate Box"
-msgstr "统一费用纸箱"
+msgstr "平价箱"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_domestic_regular_container:0
 #: selection:delivery.carrier,usps_international_regular_container:0
 msgid "Flat Rate Envelope"
-msgstr "统一费用信封"
+msgstr "平价信"
 
 #. module: delivery_usps
 #: model_terms:ir.ui.view,arch_db:delivery_usps.usps_shipping_request
@@ -163,13 +165,13 @@ msgstr "大信封"
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_domestic_regular_container:0
 msgid "Large Flat Rate Box"
-msgstr "大号统一费用纸箱"
+msgstr "大号平价箱"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_domestic_regular_container:0
 #: selection:delivery.carrier,usps_international_regular_container:0
 msgid "Legal Flat Rate Envelope"
-msgstr "有效统一费用信封"
+msgstr "法定平价信封"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_first_class_mail_type:0
@@ -185,7 +187,7 @@ msgstr "可加工的"
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_domestic_regular_container:0
 msgid "Medium Flat Rate Box"
-msgstr "中号统一费用纸箱"
+msgstr "中号平价箱"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_content_type:0
@@ -241,7 +243,7 @@ msgstr "以英尺为单位记录包装宽度"
 #: selection:delivery.carrier,usps_domestic_regular_container:0
 #: selection:delivery.carrier,usps_international_regular_container:0
 msgid "Padded Flat Rate Envelope"
-msgstr "统一费用的打包信封"
+msgstr "衬垫平价信封"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_first_class_mail_type:0
@@ -252,7 +254,7 @@ msgstr "包裹"
 #: model:ir.model.fields,help:delivery_usps.field_delivery_carrier__usps_machinable
 msgid ""
 "Please check on USPS website to ensure that your package is machinable."
-msgstr "请使用USPS网站进行检查确保你的包装是可加工的。"
+msgstr "请使用USPS网站进行检查并确保你的包装是可加工的。"
 
 #. module: delivery_usps
 #: code:addons/delivery_usps/models/usps_request.py:83
@@ -271,13 +273,13 @@ msgstr "请为收货地址添加邮编"
 #: code:addons/delivery_usps/models/usps_request.py:62
 #, python-format
 msgid "Please enter a valid ZIP code in your Company address"
-msgstr "请在你公司地址处输入一个有效的ZIP密码"
+msgstr "请在你公司地址处输入一个有效的ZIP代码"
 
 #. module: delivery_usps
 #: code:addons/delivery_usps/models/usps_request.py:76
 #, python-format
 msgid "Please provide at least one item to ship."
-msgstr "请至少提供一个项目去发货"
+msgstr "请至少提供一个发货项目"
 
 #. module: delivery_usps
 #: code:addons/delivery_usps/models/usps_request.py:60
@@ -354,17 +356,17 @@ msgstr "装运N° %s已经被取消"
 #: code:addons/delivery_usps/models/delivery_usps.py:149
 #, python-format
 msgid "Shipment created into USPS <br/> <b>Tracking Number : </b>%s"
-msgstr "装运形成USPS<br/><b>运单号：</b>%s"
+msgstr "USPS发货号<br/><b>运单号：</b>%s"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_domestic_regular_container:0
 msgid "Small Flat Rate Box"
-msgstr "小号统一费用纸箱"
+msgstr "小号平价箱"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_domestic_regular_container:0
 msgid "Small Flat Rate Envelope"
-msgstr "小号统一费用信封"
+msgstr "小号平价信"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_label_file_type:0
@@ -385,7 +387,7 @@ msgstr "公司的地址缺失或者错误(缺失字段(集): %s)"
 msgid ""
 "The estimated price cannot be computed because the weight of your product is"
 " missing."
-msgstr "因为产品重量缺失所以估计价格不能被计算"
+msgstr "因为产品重量缺失所以无法估算价格"
 
 #. module: delivery_usps
 #: code:addons/delivery_usps/models/usps_request.py:67
@@ -449,7 +451,7 @@ msgstr "USPS 交货方式"
 #: model:product.product,name:delivery_usps.product_product_delivery_usps_domestic
 #: model:product.template,name:delivery_usps.product_product_delivery_usps_domestic_product_template
 msgid "USPS Domestic Flat Rate Envelope"
-msgstr "USPS 国内统一费用信封"
+msgstr "USPS 国内平价信封"
 
 #. module: delivery_usps
 #: code:addons/delivery_usps/models/usps_request.py:73
@@ -469,7 +471,7 @@ msgstr "USPS 一等邮件类型"
 #: model:product.product,name:delivery_usps.product_product_delivery_usps_international
 #: model:product.template,name:delivery_usps.product_product_delivery_usps_international_product_template
 msgid "USPS International Flat Rate Box"
-msgstr "USPS国际统一费用纸盒"
+msgstr "USPS国际平价箱"
 
 #. module: delivery_usps
 #: code:addons/delivery_usps/models/usps_request.py:71

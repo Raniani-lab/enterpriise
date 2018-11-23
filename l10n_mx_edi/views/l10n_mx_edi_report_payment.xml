@@ -81,6 +81,33 @@
         <xpath expr="//table" position="replace">
             <t t-if="o.l10n_mx_edi_cfdi_uuid">
                 <t t-set="docs_related" t-value="o.l10n_mx_edi_get_payment_etree(xml)"/>
+                <!-- Section to bank accounts-->
+                <t t-set="vat_em" t-value="docs_related[0].getparent().get('RfcEmisorCtaOrd', '') if docs_related else ''"/>
+                <t t-set="bank_em" t-value="docs_related[0].getparent().get('NomBancoOrdExt', '') if docs_related else ''"/>
+                <t t-set="acc_em" t-value="docs_related[0].getparent().get('CtaOrdenante', '') if docs_related else ''"/>
+                <t t-set="vat_re" t-value="docs_related[0].getparent().get('RfcEmisorCtaBen', '') if docs_related else ''"/>
+                <t t-set="acc_re" t-value="docs_related[0].getparent().get('CtaBeneficiario', '') if docs_related else ''"/>
+                <table class="table table-sm" t-if="acc_em or acc_re">
+                    <thead>
+                        <tr>
+                            <th t-if="vat_em"><t t-esc="o.company_id.country_id.vat_label or 'VAT'"/> Emitter Acc. Ord.</th>
+                            <th t-if="bank_em">Bank Name Acc. Ord.</th>
+                            <th t-if="acc_em">Account Ord.</th>
+                            <th t-if="vat_re"><t t-esc="o.company_id.country_id.vat_label or 'VAT'"/> Emitter Acc. Ben.</th>
+                            <th t-if="acc_re">Account Ben.</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td t-if="vat_em"><span t-esc="vat_em"/></td>
+                            <td t-if="bank_em"><span t-esc="bank_em"/></td>
+                            <td t-if="acc_em"><span t-esc="acc_em"/></td>
+                            <td t-if="vat_re"><span t-esc="vat_re"/></td>
+                            <td t-if="acc_re"><span t-esc="acc_re"/></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <!-- Finish section to bank accounts-->
                 <table class="table table-sm">
                     <thead>
                         <tr>

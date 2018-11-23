@@ -220,7 +220,7 @@
         </h3>
     </t>
     <t t-jquery=".user-heading h3" t-operation="after">
-        <t t-set="expiration_date" t-value="new moment(widget.data.expiration_date).format('LL')"/>
+        <t t-set="expiration_date" t-value="widget.data.expiration_date ? new moment(widget.data.expiration_date).format('LL') : null"/>
         <t t-if="expiration_date">
             <h5>Database expiration: <t t-esc="expiration_date"/></h5>
         </t>

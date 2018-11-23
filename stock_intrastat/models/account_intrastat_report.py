@@ -7,12 +7,13 @@ class IntrastatReport(models.AbstractModel):
     _inherit = 'account.intrastat.report'
 
     @api.model
-    def _fill_missing_values(self, vals):
-        vals = super(IntrastatReport, self)._fill_missing_values(vals)
+    def _fill_missing_values(self, vals, cache=None):
+        vals = super(IntrastatReport, self)._fill_missing_values(vals, cache)
 
         # Erase the company region code by the warehouse region code, if any
         invoice_ids = [row['invoice_id'] for row in vals]
-        cache = {}
+        if cache is None:
+            cache = {}
         for index, invoice in enumerate(self.env['account.invoice'].browse(invoice_ids)):
             stock_moves = invoice._get_last_step_stock_moves()
             if stock_moves:

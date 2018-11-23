@@ -64,7 +64,7 @@ class report_account_aged_partner(models.AbstractModel):
                         caret_type = 'account.payment'
                     vals = {
                         'id': aml.id,
-                        'name': aml.date_maturity or aml.date,
+                        'name': format_date(self.env, aml.date_maturity or aml.date),
                         'class': 'date',
                         'caret_options': caret_type,
                         'level': 4,

@@ -4,16 +4,18 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
-# 珠海-杜哥 <liangjia@qq.com>, 2018
 # Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
 # neter ji <jifuyi@qq.com>, 2018
+# liAnGjiA <liangjia@qq.com>, 2018
+# inspur qiuguodong <qiuguodong@inspur.com>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: neter ji <jifuyi@qq.com>, 2018\n"
+"PO-Revision-Date: 2018-08-24 11:37+0000\n"
+"Last-Translator: inspur qiuguodong <qiuguodong@inspur.com>, 2018\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,14 +26,14 @@ msgstr ""
 #. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
 msgid ", click on \"Get Production Key\" and follow all the steps."
-msgstr "，点击“获得产品钥匙”并跟随以下步骤"
+msgstr "，点击“获得生产密钥”并跟随以下步骤"
 
 #. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
 msgid ""
 "<br/>According to your needs, you will need to contact different "
 "certifications :"
-msgstr "<br/>根据您的需求,您需要联系不同的认证 :"
+msgstr "<br/>根据您的需求,您需要添加其他证书 :"
 
 #. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
@@ -138,7 +140,7 @@ msgstr "FEDEX_路运"
 #. module: delivery_fedex
 #: selection:delivery.carrier,fedex_service_type:0
 msgid "FIRST_OVERNIGHT"
-msgstr "第一_隔夜"
+msgstr "第一_隔日"
 
 #. module: delivery_fedex
 #: selection:delivery.carrier,delivery_type:0
@@ -165,7 +167,7 @@ msgstr "FedEx 星期六送货"
 #. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
 msgid "FedEx Web Services \"Move to Production\""
-msgstr "联邦快递的Web服务“移动到生产“"
+msgstr "联邦快递的网上服务“移至生产“"
 
 #. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
@@ -229,7 +231,7 @@ msgstr "去"
 #. module: delivery_fedex
 #: selection:delivery.carrier,fedex_service_type:0
 msgid "INTERNATIONAL_ECONOMY"
-msgstr "国际_经济"
+msgstr "INTERNATIONAL_ECONOMY"
 
 #. module: delivery_fedex
 #: selection:delivery.carrier,fedex_service_type:0
@@ -265,7 +267,7 @@ msgstr "这个分拣没有包裹"
 #. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
 msgid "Once your account is created, go to"
-msgstr "一旦你的账号建立好了，去"
+msgstr "请等您的账户创建后尝试"
 
 #. module: delivery_fedex
 #: selection:delivery.carrier,fedex_label_stock_type:0
@@ -345,7 +347,7 @@ msgstr "需求_快递"
 #. module: delivery_fedex
 #: selection:delivery.carrier,fedex_service_type:0
 msgid "STANDARD_OVERNIGHT"
-msgstr "标准_隔夜"
+msgstr "标准_隔日"
 
 #. module: delivery_fedex
 #: selection:delivery.carrier,fedex_droppoff_type:0
@@ -402,7 +404,7 @@ msgstr "装运N° %s已经被取消"
 #: code:addons/delivery_fedex/models/delivery_fedex.py:424
 #, python-format
 msgid "Shipment created into Fedex <br/> <b>Tracking Number : </b>%s"
-msgstr "装运创建成Fedex <br/> <b>跟踪号码 : </b>%s"
+msgstr "Fedex发货号 <br/> <b>跟踪号码 : </b>%s"
 
 #. module: delivery_fedex
 #: code:addons/delivery_fedex/models/delivery_fedex.py:370
@@ -410,7 +412,7 @@ msgstr "装运创建成Fedex <br/> <b>跟踪号码 : </b>%s"
 msgid ""
 "Shipment created into Fedex<br/><b>Tracking Numbers:</b> "
 "%s<br/><b>Packages:</b> %s"
-msgstr "Fedex<br/><b>创建的运输单跟踪号码:</b> %s<br/><b>包裹:</b> %s"
+msgstr "Fedex发货好<br/><b>创建的运输单跟踪号码:</b> %s<br/><b>包裹:</b> %s"
 
 #. module: delivery_fedex
 #: model:ir.model.fields,help:delivery_fedex.field_delivery_carrier__fedex_saturday_delivery
@@ -441,7 +443,7 @@ msgstr "标准服务"
 #. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
 msgid "The last step is the"
-msgstr "最后一步是"
+msgstr "最后一步"
 
 #. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex

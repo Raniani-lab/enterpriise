@@ -3,25 +3,27 @@
 # * helpdesk
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
-# liAnGjiA <liangjia@qq.com>, 2018
 # ChinaMaker <liuct@chinamaker.net>, 2018
 # 老窦 北京 <2662059195@qq.com>, 2018
 # Jackie Zhang <jzh@odoo.com>, 2018
+# Martin Trigaux, 2018
 # bower Guo <124358678@qq.com>, 2018
 # roye w <159820@qq.com>, 2018
 # neter ji <jifuyi@qq.com>, 2018
 # 李赋 <fu792659@163.com>, 2018
 # 开阖软件 Jeff Wang <jeff@osbzr.com>, 2018
+# liAnGjiA <liangjia@qq.com>, 2018
 # snow wang <147156565@qq.com>, 2018
+# inspur qiuguodong <qiuguodong@inspur.com>, 2018
+# Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
 # niulin lnc. <admin@niulin.net>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-02 10:31+0000\n"
-"PO-Revision-Date: 2018-10-02 10:31+0000\n"
+"PO-Revision-Date: 2018-08-24 11:38+0000\n"
 "Last-Translator: niulin lnc. <admin@niulin.net>, 2018\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -52,7 +54,7 @@ msgstr "% 高兴"
 #. module: helpdesk
 #: model_terms:digest.tip,tip_description:helpdesk.digest_tip_helpdesk_0
 msgid "% endif"
-msgstr "% endif"
+msgstr "%结束条件"
 
 #. module: helpdesk
 #: model_terms:digest.tip,tip_description:helpdesk.digest_tip_helpdesk_0
@@ -70,7 +72,7 @@ msgstr ""
 msgid ""
 "(Un)archiving a helpdesk team automatically (un)archives its tickets. Do you"
 " want to proceed?"
-msgstr "客服团队的归档和反归档也会自动导致相关服务请求的归档和反归档。是否确认继续？"
+msgstr "(Un)自动存档帮助手册 (un)存储标签. 您想继续吗？"
 
 #. module: helpdesk
 #: model:mail.template,body_html:helpdesk.rating_ticket_request_email_template
@@ -199,9 +201,9 @@ msgstr ""
 "<?xml version=\"1.0\"?>\n"
 "<div>\n"
 " 亲爱的 ${object.sudo().partner_id.name or '女士/先生'},<br/><br/>\n"
-" 该自动消息通知您，我们已经关闭了您的服务单(reference ${object.id}).\n"
-"  我们希望所提供的服务达到了您的预期。\n"
-"  如果您有其他任何问题或意见，可以回复此电子邮件，我们将重新打开您的服务单。<br/><br/>\n"
+" 这是一条系统自动的通知，我们已经关闭了您的服务单(reference ${object.id}).\n"
+"  我们希望所提供的服务已满足了您的要求。\n"
+"  如果您有其他任何问题或意见，可以立即回复此电子邮件，我们将重新开启此条服务单。<br/><br/>\n"
 " 谢谢您的合作<br/>\n"
 " 谨致问候,<br/><br/>\n"
 " ${object.team_id.name or 'Helpdesk'} 团队.\n"
@@ -377,7 +379,7 @@ msgstr "访问警告"
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__message_needaction
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__message_needaction
 msgid "Action Needed"
-msgstr "需要采取行动"
+msgstr "需要激活"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla__active
@@ -453,7 +455,7 @@ msgstr "所有门票"
 msgid ""
 "Allow your customers to easily rate your services. Activate this option will"
 " add a default email template on non folded closing stages"
-msgstr "让您的客户轻松评价您的服务。激活此选项将在非折叠关闭阶段添加默认电子邮件模板。"
+msgstr "便于用户评价您的服务。激活此选项将在非折叠关闭阶段添加默认电子邮件模板。"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_sla_view_form
@@ -598,7 +600,7 @@ msgstr "选择一封邮件:"
 #: code:addons/helpdesk/static/src/js/tour.js:67
 #, python-format
 msgid "Click here and select \"Helpdesk Teams\" for further configuration."
-msgstr "单击此处，选择“帮助中心团队”进行"
+msgstr "单击此处并选择“帮助台团队”进行进一步配置。"
 
 #. module: helpdesk
 #. openerp-web
@@ -614,7 +616,7 @@ msgstr "单击此处查看此团队的服务单。"
 msgid ""
 "Click these cards to open their form view, or <b>drag &amp; drop</b> them "
 "through the different stages of this team."
-msgstr "单击这些卡以打开其表单视图, 或者 <b>拖 &amp; 放</b> 此团队的不同阶段."
+msgstr "在团队的不同阶段. 单击此卡片或者 <b>拖 &amp; 放</b>以打开其表单视图"
 
 #. module: helpdesk
 #. openerp-web
@@ -935,7 +937,7 @@ msgstr "客户电子邮箱"
 msgid ""
 "Emails sent to <strong>${email_alias}</strong> generate new tickets in your "
 "Helpdesk funnel.<br>"
-msgstr "发送电子邮件至 <strong>${email_alias}</strong> 生成新的服务单在帮助中心。.<br>"
+msgstr "发送电子邮件至 <strong>${email_alias}</strong> 会在您的帮助中心中生成新的服务单<br>"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__use_website_helpdesk_slides
@@ -1014,7 +1016,7 @@ msgstr "关注者(业务伙伴)"
 msgid ""
 "For example, we respond to urgent tickets related to bugs\n"
 "            in two hours and resolve them within 36 hours."
-msgstr "例如：我们将在两小时对紧急的服务单进行反馈，在36小时内解决。"
+msgstr "例如：我们将在两小时内对紧急的服务单进行反馈，并且会在36小时内解决。"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_search
@@ -1149,7 +1151,7 @@ msgstr "小时"
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_sla__time_hours
 msgid "Hours to reach given stage based on ticket creation date"
-msgstr "基于创建日期到达给定阶段的小时数"
+msgstr "从票据创建日期到指定阶段的小时数"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
@@ -1208,8 +1210,8 @@ msgid ""
 "In Channel: You can create a new ticket by typing /helpdesk [ticket title]. "
 "You can search ticket by typing /helpdesk_search [Keyword1],[Keyword2],."
 msgstr ""
-"在频道中：你可以创建新的服务单，通过输入/helpdesk [服务单主题]。你可以搜索服务单，通过输入/helpdesk_search "
-"[关键词1],[关键词2]。"
+"在频道中：你可以创建新的服务单，通过输入/helpdesk [服务单主题]。你可以通过输入/helpdesk_search "
+"[关键词1],[关键词2]搜索服务单"
 
 #. module: helpdesk
 #: model:helpdesk.stage,name:helpdesk.stage_in_progress
@@ -1502,7 +1504,7 @@ msgstr "未读消息的数量"
 #: code:addons/helpdesk/static/src/js/helpdesk_dashboard.js:189
 #, python-format
 msgid "Only Integer Value should be valid."
-msgstr "仅整型数值是有效的。"
+msgstr "仅整数位有效"
 
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_sla__ticket_type_id
@@ -1528,7 +1530,7 @@ msgid ""
 "Optional ID of a thread (record) to which all incoming messages will be "
 "attached, even if they did not reply to it. If set, this will disable the "
 "creation of new records completely."
-msgstr "所有的进来的邮件都将附上一条线索（记录）选配的ID，即使它们不曾回复过它。如果设置了，这个将完全阻止新记录的创建。"
+msgstr "即使未被回复，所有的收取邮件都将附上一条线索（记录）选配ID。如果设置了，这个将完全阻止新记录的创建。"
 
 #. module: helpdesk
 #: selection:helpdesk.ticket,activity_state:0
@@ -1785,12 +1787,12 @@ msgstr "销售员"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "Save this page and refresh to activate the feature"
-msgstr "保存并刷新，可以启用改功能"
+msgstr "保存此页面并刷新以激活该功能"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "Save this page and refresh to activate the feature."
-msgstr "保存此页面并刷新，以激活该功能。"
+msgstr "保存此页面并刷新以激活该功能"
 
 #. module: helpdesk
 #. openerp-web
@@ -1906,7 +1908,7 @@ msgstr "显示SLA策略"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_search
 msgid "Show all records which has next action date is before today"
-msgstr "显示所有下一个活动日期在今天之前的记录"
+msgstr "显示今天之前所有激活日期的记录"
 
 #. module: helpdesk
 #: model:helpdesk.stage,name:helpdesk.stage_solved
@@ -1961,7 +1963,7 @@ msgstr "团队将要使用的阶段，这个团队的服务单都会在这些阶
 msgid ""
 "Stages will allow operators to easily track how a specific\n"
 "            tickets are positioned in the process."
-msgstr "阶段可以运行操作员轻松的追踪服务单的整个处理流程。"
+msgstr "阶段可帮助操作员更轻松送的追踪服务单的整个处理流程"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.portal_helpdesk_ticket
@@ -2102,8 +2104,7 @@ msgid ""
 "The model (Odoo Document Kind) to which this alias corresponds. Any incoming"
 " email that does not reply to an existing record will cause the creation of "
 "a new record of this model (e.g. a Project Task)"
-msgstr ""
-"相应于这个别名对应的模型(Odoo单据种类)。任何一封不属于对某个已存在的记录的到来邮件，将导致此模块中新记录的创建(例如，一个新的项目任务)。"
+msgstr "相应于这个别名对应的模型(Odoo单据种类)。任何未回复现有记录的传入电子邮件都将导致创建此模型的新记录（例如，项目任务）"
 
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_team__alias_name
@@ -2120,7 +2121,7 @@ msgid ""
 "the sender (From) address, or will use the Administrator account if no "
 "system user is found for that address."
 msgstr ""
-"基于此别名接收到的邮件，创建记录的所有人。若此字段没有设置，系统将试图根据发送者(From)地址来查找正确的所有者，如果对于那个地址没有系统用户被发现，将使用系统管理员账户。"
+"在这个别名上接收电子邮件时创建的记录的所有者。如果未设置此字段，则系统将尝试基于发送方(.)地址找到正确的所有者，或者如果未找到用于该地址的系统用户，则将使用管理员帐户。"
 
 #. module: helpdesk
 #. openerp-web
@@ -2148,7 +2149,7 @@ msgstr "创建了你的第一张服务单之后将激活该仪表板。"
 msgid ""
 "This is a name that helps you keep track of your different campaign efforts,"
 " e.g. Fall_Drive, Christmas_Special"
-msgstr "这是一个帮助您追踪不同营销活动的名称，例如，节能减排、圣诞特辑"
+msgstr "名称会帮助您追踪不同营销活动，例如，节能减排、圣诞特辑"
 
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_ticket__medium_id
@@ -2178,7 +2179,7 @@ msgstr "这个目标不存在."
 #: code:addons/helpdesk/static/src/xml/helpdesk_team_templates.xml:30
 #, python-format
 msgid "Three stars, maximum score"
-msgstr "三个星星是最高分"
+msgstr "三星为最高分"
 
 #. module: helpdesk
 #: model:ir.actions.act_window,name:helpdesk.helpdesk_ticket_action_dashboard
@@ -2329,7 +2330,7 @@ msgstr "Twitter"
 #: code:addons/helpdesk/static/src/xml/helpdesk_team_templates.xml:24
 #, python-format
 msgid "Two stars, with a maximum of three"
-msgstr "两颗星，最多三颗"
+msgstr "两颗星，上限三颗"
 
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_ticket_type_action
@@ -2477,7 +2478,7 @@ msgid ""
 "With random assignation, every user gets the same number of tickets. With "
 "balanced assignation, tickets are assigned to the user with the least amount"
 " of open tickets."
-msgstr "通过随机分配，每个用户均可同等数量的服务单。通过均衡分配，可将服务单分配给具有最少未清服务单的用户。"
+msgstr "通过随机分配，每个用户均可获得同等数量的服务单。通过均衡分配，可将服务单分配给具有最少未清服务单的用户。"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__resource_calendar_id

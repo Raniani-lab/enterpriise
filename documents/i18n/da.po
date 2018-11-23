@@ -17,9 +17,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-02 10:31+0000\n"
+"POT-Creation-Date: 2018-11-12 14:54+0000\n"
 "PO-Revision-Date: 2018-08-24 11:37+0000\n"
 "Last-Translator: lhmflexerp <lhm@flexerp.dk>, 2018\n"
 "Language-Team: Danish (https://www.transifex.com/odoo/teams/41243/da/)\n"
@@ -30,9 +30,16 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/js/documents_inspector.js:271
+#, python-format
+msgid "+ Add a tag "
+msgstr "+ Tilføj et tag "
+
+#. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
 msgid ", expired on"
-msgstr ""
+msgstr ", udløb den"
 
 #. module: documents
 #. openerp-web
@@ -60,12 +67,12 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.format_file_size
 msgid "<b>Gb</b>"
-msgstr ""
+msgstr "<b>Gb</b>"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.format_file_size
 msgid "<b>Kb</b>"
-msgstr ""
+msgstr "<b>Kb</b>"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.format_file_size
@@ -141,6 +148,8 @@ msgid ""
 "A set of condition and actions which will be available to all attachments "
 "matching the conditions"
 msgstr ""
+"En række betingelser og handlinger der vil være tilgængelige for alle "
+"vedhæftninger, som matcher betingelserne"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__group_ids
@@ -181,7 +190,7 @@ msgstr "Aktivitet"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_note
 msgid "Activity Note"
-msgstr ""
+msgstr "Aktivitetsnote"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__activity_type_id
@@ -270,7 +279,7 @@ msgstr "Vedhæftet til"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_attachment_count
 msgid "Attachment Count"
-msgstr ""
+msgstr "Antal vedhæftninger"
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.document_debug_action
@@ -283,12 +292,12 @@ msgstr "Vedhæftede filer"
 #: code:addons/documents/static/src/js/documents_kanban_view.js:27
 #, python-format
 msgid "Attachments Kanban"
-msgstr ""
+msgstr "Vedhæftninger kanban"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_ir_attachment__available_rule_ids
 msgid "Available Rules"
-msgstr ""
+msgstr "Tilgængelige regler"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_request_form_view
@@ -508,7 +517,7 @@ msgstr ""
 #. module: documents
 #: model:ir.module.category,name:documents.module_category_documents_management
 msgid "Documents management"
-msgstr ""
+msgstr "Dokumenthåndtering"
 
 #. module: documents
 #: selection:documents.workflow.tag.criteria,operator:0
@@ -548,6 +557,13 @@ msgid "Download and Upload"
 msgstr "Download og upload"
 
 #. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/js/documents_kanban_controller.js:718
+#, python-format
+msgid "Drop files here to upload"
+msgstr ""
+
+#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__activity_date_deadline_range
 #: model:ir.model.fields,field_description:documents.field_documents_share__activity_date_deadline_range
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_date_deadline_range
@@ -564,27 +580,27 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_form
 msgid "E.g. Finance"
-msgstr ""
+msgstr "Fx regnskab"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_request_form_view
 msgid "E.g. Missing Expense"
-msgstr ""
+msgstr "Fx manglende udgift"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.facet_view_form_list
 msgid "E.g. Status"
-msgstr ""
+msgstr "Fx status"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
 msgid "E.g. Validate document"
-msgstr ""
+msgstr "Fx validér dokument"
 
 #. module: documents
 #: selection:ir.attachment,type:0
 msgid "Empty"
-msgstr ""
+msgstr "Tom"
 
 #. module: documents
 #: selection:documents.share,state:0
@@ -605,7 +621,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_ir_attachment__favorited_ids
 msgid "Favorite of"
-msgstr ""
+msgstr "Favorit hos"
 
 #. module: documents
 #: selection:ir.attachment,type:0
@@ -620,7 +636,7 @@ msgstr "Fil"
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__domain_folder_id
 #: model:ir.model.fields,field_description:documents.field_ir_attachment__folder_id
 msgid "Folder"
-msgstr ""
+msgstr "Mappe"
 
 #. module: documents
 #. openerp-web
@@ -629,7 +645,7 @@ msgstr ""
 #: model:ir.ui.menu,name:documents.folder_menu
 #, python-format
 msgid "Folders"
-msgstr ""
+msgstr "Mapper"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_follower_ids
@@ -704,7 +720,7 @@ msgstr "Hvis afmærket, kræver nye beskeder din opmærksomhed "
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__message_has_error
 msgid "If checked, some messages have a delivery error."
-msgstr ""
+msgstr "Hvis afkrydset har nogle beskeder en leveringsfejl"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
@@ -717,11 +733,6 @@ msgid "Inbox"
 msgstr "Indbakke"
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.documents_view_form
-msgid "Indexed Content"
-msgstr "Indekseret indhold"
-
-#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_is_follower
 msgid "Is Follower"
 msgstr "Følger"
@@ -731,7 +742,7 @@ msgstr "Følger"
 #: code:addons/documents/static/src/js/tour.js:40
 #, python-format
 msgid "It will be sent to the followers of this document"
-msgstr ""
+msgstr "Det vil blive sendt til dette dokuments følgere"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_facet____last_update
@@ -777,7 +788,7 @@ msgstr "Forsinkede aktiviteter"
 #. module: documents
 #: selection:documents.share,state:0
 msgid "Live"
-msgstr ""
+msgstr "Live"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_single
@@ -794,7 +805,7 @@ msgstr "Lås"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_ir_attachment__lock_uid
 msgid "Locked by"
-msgstr ""
+msgstr "Låst af"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form
@@ -818,23 +829,23 @@ msgstr "Log ud"
 #: code:addons/documents/static/src/xml/documents_inspector.xml:69
 #, python-format
 msgid "MB"
-msgstr ""
+msgstr "MB"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_main_attachment_id
 msgid "Main Attachment"
-msgstr ""
+msgstr "Primær vedhæftning"
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.tag_action
 #: model:ir.actions.act_window,name:documents.tree_tag_action
 msgid "Manage document tags"
-msgstr ""
+msgstr "Administrér dokumenttags"
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.facet_action
 msgid "Manage tag categories"
-msgstr ""
+msgstr "Administrér tag kategorier"
 
 #. module: documents
 #: model:res.groups,name:documents.group_documents_manager
@@ -844,12 +855,12 @@ msgstr "Leder"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__remove_activities
 msgid "Mark all Activities as done"
-msgstr ""
+msgstr "Markér alle aktiviteter som udført"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_has_error
 msgid "Message Delivery error"
-msgstr ""
+msgstr "Besked leveringsfejl"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_ids
@@ -871,14 +882,14 @@ msgstr "Måneder"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__folder_id
 msgid "Move to Folder"
-msgstr ""
+msgstr "Flyt til mappe"
 
 #. module: documents
 #. openerp-web
 #: code:addons/documents/static/src/js/documents_inspector.js:143
 #, python-format
 msgid "Multiple values"
-msgstr ""
+msgstr "Flere værdier"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
@@ -888,7 +899,7 @@ msgstr "Mine Aktiviteter"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
 msgid "My Documents"
-msgstr ""
+msgstr "Mine dokumenter"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
@@ -898,6 +909,11 @@ msgstr "Mine Favoritter"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
 msgid "My locked files"
+msgstr "Mine låste filer"
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.documents_view_form
+msgid "NName"
 msgstr ""
 
 #. module: documents
@@ -920,7 +936,7 @@ msgstr ""
 #: code:addons/documents/static/src/js/documents_kanban_model.js:227
 #, python-format
 msgid "No Source"
-msgstr ""
+msgstr "Ingen kilde"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__activity_note
@@ -936,7 +952,7 @@ msgstr "Antal aktioner"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_has_error_counter
 msgid "Number of error"
-msgstr ""
+msgstr "Antal fejl"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__message_needaction_counter
@@ -946,7 +962,7 @@ msgstr "Antal meddelser der kræver handling"
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr ""
+msgstr "Antal beskeder med leveringsfejl"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__message_unread_counter
@@ -961,7 +977,7 @@ msgstr "Odoo logo"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
 msgid "Odoo Website"
-msgstr ""
+msgstr "Odoo Website"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__operator
@@ -1001,7 +1017,7 @@ msgstr "PDF"
 #: model:ir.model.fields,field_description:documents.field_documents_folder__parent_folder_id
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_search
 msgid "Parent Folder"
-msgstr ""
+msgstr "Overordnet mappe"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_parent_model_id
@@ -1040,7 +1056,7 @@ msgstr ""
 #. module: documents
 #: selection:documents.workflow.rule,create_model:0
 msgid "Product template"
-msgstr ""
+msgstr "Produktskabelon"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_force_thread_id
@@ -1057,12 +1073,12 @@ msgstr "Fjern"
 #: code:addons/documents/static/src/xml/documents_inspector.xml:153
 #, python-format
 msgid "Replace"
-msgstr ""
+msgstr "Erstat"
 
 #. module: documents
 #: selection:documents.workflow.action,action:0
 msgid "Replace by"
-msgstr ""
+msgstr "Erstat med"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_request_form_view
@@ -1114,12 +1130,12 @@ msgstr "Gendan"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__name
 msgid "Rule name"
-msgstr ""
+msgstr "Regelnavn"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_folder__facet_ids
 msgid "Select the tag categories to be used"
-msgstr ""
+msgstr "Vælg tag kategorierne der skal bruges"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_facet__sequence
@@ -1131,17 +1147,17 @@ msgstr "Rækkefølge"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__partner_id
 msgid "Set Contact"
-msgstr ""
+msgstr "Angiv kontakt"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__user_id
 msgid "Set Owner"
-msgstr ""
+msgstr "Angiv ejer"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__tag_action_ids
 msgid "Set Tags"
-msgstr ""
+msgstr "Angiv tags"
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.configuration
@@ -1152,6 +1168,7 @@ msgstr "Opsætning"
 
 #. module: documents
 #. openerp-web
+#: code:addons/documents/models/share.py:132
 #: code:addons/documents/static/src/xml/documents_inspector.xml:151
 #: code:addons/documents/static/src/xml/documents_kanban.xml:14
 #, python-format
@@ -1161,32 +1178,32 @@ msgstr "Del"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__share_link_ids
 msgid "Share Links"
-msgstr ""
+msgstr "Del links"
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.share_action
 msgid "Share links"
-msgstr ""
+msgstr "Del links"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__type
 msgid "Share type"
-msgstr ""
+msgstr "Del type"
 
 #. module: documents
 #: model:ir.ui.menu,name:documents.share_menu
 msgid "Shared Links"
-msgstr ""
+msgstr "Delte links"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__tag_ids
 msgid "Shared Tags"
-msgstr ""
+msgstr "Delte tags"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__attachment_ids
 msgid "Shared attachments"
-msgstr ""
+msgstr "Delte vedhæftninger"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
@@ -1196,7 +1213,7 @@ msgstr ""
 #. module: documents
 #: selection:documents.workflow.rule,create_model:0
 msgid "Signature template"
-msgstr ""
+msgstr "Underskriftsskabelon"
 
 #. module: documents
 #. openerp-web
@@ -1213,7 +1230,7 @@ msgstr "Status"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__children_folder_ids
 msgid "Sub folders"
-msgstr ""
+msgstr "Undermapper"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__activity_summary
@@ -1233,7 +1250,7 @@ msgstr "Tag"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__facet_ids
 msgid "Tag Categories"
-msgstr ""
+msgstr "Tag kategorier"
 
 #. module: documents
 #: sql_constraint:documents.tag:0
@@ -1244,6 +1261,7 @@ msgstr ""
 #: model:ir.model.fields,help:documents.field_documents_folder__parent_folder_id
 msgid "Tag categories from parent folders will be shared to their sub folders"
 msgstr ""
+"Tagkategorier fra overordnede mappe vil blive delt med deres undermapper"
 
 #. module: documents
 #. openerp-web
@@ -1261,11 +1279,6 @@ msgstr "Tags"
 #: selection:documents.workflow.rule,create_model:0
 msgid "Task"
 msgstr "Opgave"
-
-#. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.documents_view_form
-msgid "Technical"
-msgstr "Teknisk"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_model_id
@@ -1308,12 +1321,12 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_folder__company_id
 msgid "This folder will only be available for the selected company"
-msgstr ""
+msgstr "Denne mappe vil kun være tilgængelig for den valgte virksomhed"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_folder__group_ids
 msgid "This folder will only be available for the selected user groups"
-msgstr ""
+msgstr "Denne mappe vil kun være tilgængelig for de valgte brugergrupper"
 
 #. module: documents
 #. openerp-web
@@ -1327,7 +1340,7 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.not_available
 msgid "This link has expired"
-msgstr ""
+msgstr "Linket er udløbet"
 
 #. module: documents
 #. openerp-web
@@ -1341,7 +1354,7 @@ msgstr ""
 #. module: documents
 #: model:mail.activity.type,name:documents.mail_documents_activity_data_tv
 msgid "To validate"
-msgstr ""
+msgstr "Til validering"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
@@ -1359,7 +1372,7 @@ msgstr "Værktøjstip"
 #: code:addons/documents/static/src/js/tour.js:35
 #, python-format
 msgid "Try to <b>post a message</b>"
-msgstr ""
+msgstr "Prøv at <b>sende en besked</b>"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_ir_attachment__type
@@ -1380,7 +1393,7 @@ msgstr "URL"
 #: code:addons/documents/static/src/xml/documents_inspector.xml:162
 #, python-format
 msgid "Un-archive"
-msgstr ""
+msgstr "Af-arkivér"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_unread
@@ -1398,7 +1411,7 @@ msgstr "Ulæste besked tæller"
 #: model_terms:ir.ui.view,arch_db:documents.share_page
 #, python-format
 msgid "Upload"
-msgstr ""
+msgstr "Upload"
 
 #. module: documents
 #: model_terms:ir.actions.act_window,help:documents.document_action
@@ -1406,11 +1419,13 @@ msgid ""
 "Upload <span class=\"font-weight-normal\">a file or</span> drag <span class"
 "=\"font-weight-normal\">it here.</span>"
 msgstr ""
+"Upload <span class=\"font-weight-normal\">en fil</span> træk <span class"
+"=\"font-weight-normal\">den herhen.</span>"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__email_drop
 msgid "Upload by Email"
-msgstr ""
+msgstr "Upload via email"
 
 #. module: documents
 #. openerp-web
@@ -1420,6 +1435,8 @@ msgid ""
 "Use <b>folders</b> to organize documents by departments, or group of "
 "interests"
 msgstr ""
+"Anvend <b>mapper</b> til at organisere dokumenter ud fra afdelinger eller "
+"interessentgrupper"
 
 #. module: documents
 #: model:res.groups,name:documents.group_documents_user
@@ -1439,7 +1456,7 @@ msgstr "Gyldig indtil"
 #. module: documents
 #: selection:documents.workflow.rule,create_model:0
 msgid "Vendor bill"
-msgstr ""
+msgstr "Leverandørfaktura"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
@@ -1478,6 +1495,8 @@ msgid ""
 "When you <b>upload documents</b>, they appear in the selected folder and "
 "tags."
 msgstr ""
+"Når du <b>uploader dokumenter</b>, vil de blive vist i den valgte folder og "
+"tag"
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.workflow_rule_action
@@ -1507,12 +1526,12 @@ msgstr ""
 #: code:addons/documents/static/src/xml/documents_inspector.xml:54
 #, python-format
 msgid "documents selected"
-msgstr ""
+msgstr "dokumenter valgt"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_page
 msgid "documents shared by"
-msgstr ""
+msgstr "dokumenter delt af"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form
@@ -1524,9 +1543,9 @@ msgstr "f.eks. Drøft forsalg"
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_facet__tooltip
 msgid "hover text description"
-msgstr ""
+msgstr "beskrivelse i den svævende tekst"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
 msgid "shared by"
-msgstr ""
+msgstr "delt af"

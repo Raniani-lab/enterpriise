@@ -2,6 +2,7 @@ odoo.define('voip.dialing_tab', function (require) {
 "use strict";
 
 var Phonecall = require('voip.phonecall');
+var FieldUtils = require('web.field_utils')
 var Widget = require('web.Widget');
 
 var PhonecallTab = Widget.extend({
@@ -164,8 +165,8 @@ var PhonecallTab = Widget.extend({
      */
     _createPhonecallWidget: function (phonecall) {
         if (phonecall.call_date) {
-            var utcTime = Date.UTC.apply(this, phonecall.call_date.split(/[\s-:]/));
-            phonecall.call_date = new Date(utcTime).toLocaleString();
+            var utcTime = FieldUtils.parse.datetime(phonecall.call_date, false, {isUTC: true});
+            phonecall.call_date = utcTime.local().format("YYYY-MM-DD HH:mm:ss");
         }
         var widget = new Phonecall.PhonecallWidget(this, phonecall);
         widget.on("selectCall", this, this._onSelectCall);

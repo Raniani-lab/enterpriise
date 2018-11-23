@@ -4,20 +4,22 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
-# Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
 # ChinaMaker <liuct@chinamaker.net>, 2018
 # Jackie Zhang <jzh@odoo.com>, 2018
 # bower Guo <124358678@qq.com>, 2018
 # roye w <159820@qq.com>, 2018
-# 广州救火 <7017511@qq.com>, 2018
+# Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
 # liAnGjiA <liangjia@qq.com>, 2018
+# inspur qiuguodong <qiuguodong@inspur.com>, 2018
+# 广州救火 <7017511@qq.com>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-18 09:49+0000\n"
-"PO-Revision-Date: 2018-09-18 09:49+0000\n"
-"Last-Translator: liAnGjiA <liangjia@qq.com>, 2018\n"
+"PO-Revision-Date: 2018-08-24 09:15+0000\n"
+"Last-Translator: 广州救火 <7017511@qq.com>, 2018\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -31,7 +33,7 @@ msgstr ""
 msgid ""
 "\"End Date\" of the budget line should be included in the Period of the "
 "budget"
-msgstr "预算线的“结束日期”应列入预算期间"
+msgstr "预算项目的“结束日期”应包含在预算期间"
 
 #. module: account_budget
 #: code:addons/account_budget/models/account_budget.py:272
@@ -39,7 +41,7 @@ msgstr "预算线的“结束日期”应列入预算期间"
 msgid ""
 "\"Start Date\" of the budget line should be included in the Period of the "
 "budget"
-msgstr "预算项目的“开始日期”应包含在预算期间中"
+msgstr "预算项目的“开始日期”应包含在预算期间"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_account_budget_post__account_ids
@@ -55,12 +57,12 @@ msgstr "成就"
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__message_needaction
 msgid "Action Needed"
-msgstr "需要采取行动"
+msgstr "所需操作"
 
 #. module: account_budget
 #: model:ir.model.fields,help:account_budget.field_crossovered_budget_lines__practical_amount
 msgid "Amount really earned/spent."
-msgstr "实际挣/花到的金额."
+msgstr "实际赚到/消费的金额."
 
 #. module: account_budget
 #: model:ir.model.fields,help:account_budget.field_crossovered_budget_lines__theoritical_amount
@@ -72,7 +74,7 @@ msgstr "您应该在此日期获得/消费的金额。"
 msgid ""
 "Amount you plan to earn/spend. Record a positive amount if it is a revenue "
 "and a negative amount if it is a cost."
-msgstr "你计划赚的钱。如果它是一个收入和一个负数，如果它是一个成本，记录一个正的量。"
+msgstr "你计划赚到或消费的金额。如果它是一个收入和一个负数，如果它是一个成本，记录一个正的量。"
 
 #. module: account_budget
 #: model:ir.model,name:account_budget.model_account_analytic_account
@@ -194,7 +196,7 @@ msgstr "公司"
 msgid ""
 "Comparison between practical and theoretical amount. This measure tells you "
 "if you are below or over budget."
-msgstr "实际与理论量的比较。这项措施告诉你，如果你低于或超过预算。"
+msgstr "实际量与理论量进行比较。如果你低于或超过预算，这项措施会告诉你。"
 
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
@@ -290,7 +292,7 @@ msgstr "ID"
 #. module: account_budget
 #: model:ir.model.fields,help:account_budget.field_crossovered_budget__message_unread
 msgid "If checked new messages require your attention."
-msgstr "查看是否有需要你留意的新信息。"
+msgstr "查看是否有需要留意的新信息。"
 
 #. module: account_budget
 #: model:ir.model.fields,help:account_budget.field_crossovered_budget__message_needaction
@@ -362,17 +364,17 @@ msgstr "未取消"
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__message_needaction_counter
 msgid "Number of Actions"
-msgstr "行动数量"
+msgstr "操作编码"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__message_has_error_counter
 msgid "Number of error"
-msgstr "错误数"
+msgstr "错误编码"
 
 #. module: account_budget
 #: model:ir.model.fields,help:account_budget.field_crossovered_budget__message_needaction_counter
 msgid "Number of messages which requires an action"
-msgstr "需要行动消息的数量"
+msgstr "所需操作的消息编号"
 
 #. module: account_budget
 #: model:ir.model.fields,help:account_budget.field_crossovered_budget__message_has_error_counter
@@ -398,7 +400,7 @@ msgstr "会计期间"
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__planned_amount
 #: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
 msgid "Planned Amount"
-msgstr "已计划的金额"
+msgstr "计划金额"
 
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_graph
@@ -509,4 +511,4 @@ msgstr "网站沟通记录"
 msgid ""
 "You have to enter at least a budgetary position or analytic account on a "
 "budget line."
-msgstr "您必须在预算记录上至少输入预算范围或分析帐户。"
+msgstr "您必须在预算项目上至少输入预算状况或分析帐户。"

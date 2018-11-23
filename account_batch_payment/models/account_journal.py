@@ -13,7 +13,10 @@ class AccountJournal(models.Model):
 
     @api.model
     def _create_batch_payment_outbound_sequence(self):
-        return self.env['ir.sequence'].sudo().create({
+        IrSequence = self.env['ir.sequence']
+        if IrSequence.search([('code', '=', 'account.outbound.batch.payment')]):
+            return
+        return IrSequence.sudo().create({
             'name': _("Outbound Batch Payments Sequence"),
             'padding': 4,
             'code': 'account.outbound.batch.payment',
@@ -27,7 +30,10 @@ class AccountJournal(models.Model):
 
     @api.model
     def _create_batch_payment_inbound_sequence(self):
-        return self.env['ir.sequence'].sudo().create({
+        IrSequence = self.env['ir.sequence']
+        if IrSequence.search([('code', '=', 'account.inbound.batch.payment')]):
+            return
+        return IrSequence.sudo().create({
             'name': _("Inbound Batch Payments Sequence"),
             'padding': 4,
             'code': 'account.inbound.batch.payment',
@@ -46,8 +52,6 @@ class AccountJournal(models.Model):
         self.search([('type', '=', 'bank')]).write({
                 'inbound_payment_method_ids': [(4, batch_deposit.id, None)],
         })
-        self._create_batch_payment_outbound_sequence()
-        self._create_batch_payment_inbound_sequence()
 
     @api.multi
     def open_action_batch_payment(self):

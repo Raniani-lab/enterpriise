@@ -9,7 +9,7 @@ class WorkflowActionRule(models.Model):
     _description = "A set of condition and actions which will be available to all attachments matching the conditions"
 
     domain_folder_id = fields.Many2one('documents.folder', string="Folder", required=True, ondelete='cascade')
-    name = fields.Char(required=True, string="Rule name")
+    name = fields.Char(required=True, string="Rule name", translate=True)
     note = fields.Char(string="Tooltip")
 
     # Conditions

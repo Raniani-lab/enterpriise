@@ -18,17 +18,12 @@ class IrQWeb(models.AbstractModel, QWeb):
     _inherit = 'ir.qweb'
 
     def get_template(self, template, options):
-        try:
-            view_id = int(template)
-        except ValueError:
-            view_id = self.env['ir.ui.view'].search([('type', '=', 'qweb'), ('key', '=', template)], limit=1).id
-
-        if not view_id:
-            raise ValueError("Template '%s' undefined" % template)
-
-        element, document = super(IrQWeb, self).get_template(view_id, options)
-
+        element, document = super(IrQWeb, self).get_template(template, options)
         if options.get('full_branding'):
+            view_id = self.env['ir.ui.view']._view_obj(template).id
+            if not view_id:
+                raise ValueError("Template '%s' undefined" % template)
+
             root = element.getroottree()
             basepath = len('/'.join(root.getpath(root.xpath('//*[@t-name]')[0]).split('/')[0:-1]))
             for node in element.iter(tag=etree.Element):

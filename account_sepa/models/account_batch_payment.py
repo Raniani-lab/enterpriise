@@ -130,7 +130,7 @@ class AccountBatchPayment(models.Model):
 
             return {
                 'file': base64.encodestring(xml_doc),
-                'filename': "SCT-" + self.journal_id.code + "-" + str(fields.Datetime.now()) + ".xml",
+                'filename': "SCT-" + self.journal_id.code + "-" + str(fields.Date.today()) + ".xml",
                 'warning': self.sct_warning,
             }
 

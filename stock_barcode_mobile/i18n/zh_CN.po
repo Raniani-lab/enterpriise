@@ -3,13 +3,15 @@
 # * stock_barcode_mobile
 # 
 # Translators:
+# inspur qiuguodong <qiuguodong@inspur.com>, 2018
 # Martin Trigaux, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-18 10:05+0000\n"
-"PO-Revision-Date: 2018-09-18 10:05+0000\n"
+"PO-Revision-Date: 2018-08-24 11:48+0000\n"
 "Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -30,4 +32,4 @@ msgstr "条码"
 #: code:addons/stock_barcode_mobile/static/src/xml/stock_mobile_barcode.xml:7
 #, python-format
 msgid "Tap to scan"
-msgstr "触摸扫描"
+msgstr "点击即可扫描"

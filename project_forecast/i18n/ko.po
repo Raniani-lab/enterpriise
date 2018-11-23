@@ -3,15 +3,18 @@
 # * project_forecast
 # 
 # Translators:
-# Martin Trigaux, 2017
-# Up Link <linkup.way@gmail.com>, 2018
+# Martin Trigaux, 2018
+# 최재호 <hwangtog@gmail.com>, 2018
+# Link Up링크업 <linkup.way@gmail.com>, 2018
+# Linkup <link-up@naver.com>, 2018
 # Seongseok Shin <shinss61@hotmail.com>, 2018
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 10.saas~18+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-20 11:33+0000\n"
-"PO-Revision-Date: 2017-09-20 11:33+0000\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-08-24 11:47+0000\n"
 "Last-Translator: Seongseok Shin <shinss61@hotmail.com>, 2018\n"
 "Language-Team: Korean (https://www.transifex.com/odoo/teams/41243/ko/)\n"
 "MIME-Version: 1.0\n"
@@ -21,436 +24,440 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: project_forecast
-#: model:ir.ui.view,arch_db:project_forecast.project_forecast_view_form
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_form
 msgid "% Time"
 msgstr "% 시간"
 
 #. module: project_forecast
-#: model:ir.ui.view,arch_db:project_forecast.project_view_kanban_inherit_project_forecast
+#: code:addons/project_forecast/models/project_forecast.py:200
+#, python-format
+msgid "%s Task(s): %s"
+msgstr ""
+
+#. module: project_forecast
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_view_kanban_inherit_project_forecast
 msgid "<span class=\"o_label\">Forecast</span>"
 msgstr "<span class=\"o_label\">예측</span>"
 
 #. module: project_forecast
-#: model:ir.ui.view,arch_db:project_forecast.project_view_form_inherit_project_forecast
-#: model:ir.ui.view,arch_db:project_forecast.task_view_form_inherit_project_forecast
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_view_form_inherit_project_forecast
 msgid "<span>Forecast</span>"
 msgstr "<span>예측</span>"
 
 #. module: project_forecast
-#: code:addons/project_forecast/models/project_forecast.py:152
-#, python-format
-msgid ""
-"A project must have a start date to use a forecast grid, found no start date"
-" for {project.display_name}"
-msgstr ""
-"프로젝트는 예측표를 사용하기 위한 시작일이 필요합니다. {project.display_name}에 대한 시작일을 찾을 수 없습니다."
-
-#. module: project_forecast
-#: code:addons/project_forecast/models/project_forecast.py:170
-#, python-format
-msgid ""
-"A project must have an end date to use a forecast grid, found no end date "
-"for {project.display_name}"
-msgstr ""
-"프로젝트는 예측표를 사용하기 위한 종료일이 필요합니다. {project.display_name}에 대한 종료일을 찾을 수 없습니다."
-
-#. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_active
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast__active
 msgid "Active"
-msgstr "활성화"
+msgstr "활성"
 
 #. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_task_allow_forecast
-#: model:ir.ui.view,arch_db:project_forecast.project_view_form_inherit_project_forecast
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast__resource_time
+msgid "Allocated Time"
+msgstr ""
+
+#. module: project_forecast
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast__time
+msgid "Allocated time / Time span"
+msgstr ""
+
+#. module: project_forecast
+#: model:ir.model.fields,field_description:project_forecast.field_project_task__allow_forecast
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_view_form_inherit_project_forecast
 msgid "Allow Forecast"
 msgstr "예측 허용"
 
 #. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_project_allow_forecast
+#: model:ir.model.fields,field_description:project_forecast.field_project_project__allow_forecast
 msgid "Allow forecast"
 msgstr "예측 허용"
 
 #. module: project_forecast
-#: model:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
 msgid "Archived"
-msgstr "보관완료"
+msgstr "아카이브됨"
 
 #. module: project_forecast
-#: model:ir.ui.view,arch_db:project_forecast.project_forecast_grid
-msgid "Assign"
-msgstr "할당"
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_form
+msgid "Assign To"
+msgstr "할당할 대상"
 
 #. module: project_forecast
-#: model:ir.actions.act_window,name:project_forecast.action_project_forecast_assign
-msgid "Assign user on a task"
-msgstr "작업을 사용자에 할당합니다"
+#: model:ir.ui.menu,name:project_forecast.project_forecast_group_by_user
+msgid "By Employee"
+msgstr "직원별"
 
 #. module: project_forecast
-#: model:ir.ui.view,arch_db:project_forecast.view_project_forecast_assign
-msgid "Assign user on task"
-msgstr "작업을 사용자에 할당합니다"
-
-#. module: project_forecast
-#: model:ir.ui.menu,name:project_forecast.menu_project_forecast_grid_by_project
 #: model:ir.ui.menu,name:project_forecast.project_forecast_group_by_project
 msgid "By Project"
 msgstr "프로젝트별"
 
 #. module: project_forecast
-#: model:ir.ui.menu,name:project_forecast.menu_project_forecast_grid_by_user
-#: model:ir.ui.menu,name:project_forecast.project_forecast_group_by_user
-msgid "By User"
-msgstr "사용자별"
+#: selection:res.company,forecast_span:0
+msgid "By day"
+msgstr "하루"
 
 #. module: project_forecast
-#: code:addons/project_forecast/models/project.py:28
-#, python-format
-msgid ""
-"Can only be used for forecasts not spanning multiple months, found "
-"%(forecast_count)d forecast(s) spanning across months in %(project_name)s"
+#: selection:res.company,forecast_span:0
+msgid "By month"
 msgstr ""
 
 #. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_color
+#: selection:res.company,forecast_span:0
+msgid "By week"
+msgstr ""
+
+#. module: project_forecast
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast__color
 msgid "Color"
 msgstr "색상"
 
 #. module: project_forecast
-#: model:ir.ui.view,arch_db:project_forecast.view_project_forecast_assign
-msgid "Create"
-msgstr "작성"
+#: model:ir.model,name:project_forecast.model_res_company
+msgid "Companies"
+msgstr "회사들"
 
 #. module: project_forecast
-#: model:ir.ui.view,arch_db:project_forecast.task_view_form_inherit_project_forecast
-msgid "Create a forecast"
-msgstr "예측 생성"
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast__company_id
+msgid "Company"
+msgstr "회사"
 
 #. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_assignment_create_uid
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create_uid
+#: model:ir.model,name:project_forecast.model_res_config_settings
+msgid "Config Settings"
+msgstr ""
+
+#. module: project_forecast
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast__create_uid
 msgid "Created by"
 msgstr "작성자"
 
 #. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_assignment_create_date
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_create_date
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast__create_date
 msgid "Created on"
 msgstr "작성일"
 
 #. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_assignment_display_name
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_display_name
-msgid "Display Name"
-msgstr "표시 이름"
+#: selection:res.company,forecast_uom:0
+msgid "Days"
+msgstr "일"
 
 #. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_assignment_employee_id
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_employee_id
-#: model:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast__display_name
+msgid "Display Name"
+msgstr "이름 표시"
+
+#. module: project_forecast
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast__employee_id
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
 msgid "Employee"
 msgstr "임직원"
 
 #. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_end_date
+#: model:ir.model.fields,help:project_forecast.field_res_company__forecast_span
+#: model:ir.model.fields,help:project_forecast.field_res_config_settings__forecast_span
+msgid ""
+"Encode your forecast in a table displayed by days, weeks or the whole year."
+msgstr ""
+
+#. module: project_forecast
+#: model:ir.model.fields,help:project_forecast.field_project_forecast__forecast_uom
+#: model:ir.model.fields,help:project_forecast.field_res_company__forecast_uom
+#: model:ir.model.fields,help:project_forecast.field_res_config_settings__forecast_uom
+msgid "Encode your forecasts in hours or days."
+msgstr ""
+
+#. module: project_forecast
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast__end_date
 msgid "End Date"
 msgstr "종료일"
 
 #. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_exclude
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast__exclude
 msgid "Exclude"
 msgstr "제외"
 
 #. module: project_forecast
-#: code:addons/project_forecast/models/project.py:50
-#: model:ir.actions.act_window,name:project_forecast.project_forecast_action_from_task
+#: model:ir.model.fields,help:project_forecast.field_project_forecast__resource_time
+msgid "Expressed in the Unit of Measure of the project company"
+msgstr ""
+
+#. module: project_forecast
+#: model:ir.actions.act_window,name:project_forecast.project_forecast_action_from_project
 #: model:ir.ui.menu,name:project_forecast.project_forecast_menu
-#: model:ir.ui.view,arch_db:project_forecast.project_view_kanban_inherit_project_forecast
-#, python-format
 msgid "Forecast"
-msgstr "예상"
+msgstr "Forcast"
+
+#. module: project_forecast
+#: code:addons/project_forecast/models/project_forecast.py:274
+#, python-format
+msgid "Forecast (in %s)"
+msgstr ""
 
 #. module: project_forecast
 #: model:ir.actions.act_window,name:project_forecast.project_forecast_action_report_activities
 #: model:ir.ui.menu,name:project_forecast.project_forecast_report_activities
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_graph
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_pivot
 msgid "Forecast Analysis"
-msgstr "예측 분석"
+msgstr "Forcast 분석"
 
 #. module: project_forecast
-#: model:ir.actions.act_window,name:project_forecast.action_project_forecast_grid_by_project
-msgid "Forecast By Project"
-msgstr "프로젝트별 예측"
-
-#. module: project_forecast
-#: model:ir.actions.act_window,name:project_forecast.action_project_forecast_grid_by_user
-msgid "Forecast By User"
-msgstr "사용자별 예측"
-
-#. module: project_forecast
-#: model:ir.ui.view,arch_db:project_forecast.project_forecast_view_form
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_form
 msgid "Forecast Form"
-msgstr "예측 양식"
+msgstr "Forcast 양식"
 
 #. module: project_forecast
-#: model:ir.ui.view,arch_db:project_forecast.project_forecast_view_tree
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_tree
 msgid "Forecast List"
-msgstr "예측 목록"
-
-#. module: project_forecast
-#: model:ir.actions.act_window,name:project_forecast.project_forecast_action_by_project
-msgid "Forecast by project"
-msgstr "프로젝트별 예측"
+msgstr "Forcast 목록"
 
 #. module: project_forecast
 #: model:ir.actions.act_window,name:project_forecast.project_forecast_action_by_user
-msgid "Forecast by user"
-msgstr "사용자별 예측"
+#: model_terms:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_user
+msgid "Forecast by employee"
+msgstr ""
 
 #. module: project_forecast
-#: code:addons/project_forecast/models/project_forecast.py:97
+#: model:ir.actions.act_window,name:project_forecast.project_forecast_action_by_project
+#: model_terms:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_project
+msgid "Forecast by project"
+msgstr "프로젝트별 Forcast"
+
+#. module: project_forecast
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_grid_by_task
+msgid "Forecast by task"
+msgstr ""
+
+#. module: project_forecast
+#: sql_constraint:project.forecast:0
+msgid "Forecast end date should be greater or equal to its start date"
+msgstr ""
+
+#. module: project_forecast
+#: code:addons/project_forecast/models/project_forecast.py:198
+#, python-format
+msgid ""
+"Forecast should not overlap existing forecasts. To solve this, check the "
+"project(s): %s."
+msgstr ""
+
+#. module: project_forecast
+#: model:ir.actions.server,name:project_forecast.project_forecast_action_server_by_user
+msgid "Forecast: view by employee"
+msgstr ""
+
+#. module: project_forecast
+#: model:ir.actions.server,name:project_forecast.project_forecast_action_server_by_project
+msgid "Forecast: view by project"
+msgstr ""
+
+#. module: project_forecast
+#: code:addons/project_forecast/models/project_forecast.py:164
 #, python-format
 msgid "Forecasted time must be positive"
-msgstr "예측된 시간은 양의 값을 가져야 합니다."
+msgstr "Forcast가 적용된 시간은 양의 값을 가져야 합니다."
 
 #. module: project_forecast
-#: model:ir.ui.view,arch_db:project_forecast.view_project_set_dates
-msgid ""
-"Forecasting on a project requires that the project\n"
-"                        have start and end dates"
-msgstr ""
-"프로젝트의 예측을 하기 위해 \n"
-"프로젝트가 시작과 종료일이 필요합니다."
-
-#. module: project_forecast
-#: code:addons/project_forecast/models/project_forecast.py:148
-#, python-format
-msgid ""
-"Forecasting over a project only supports monthly forecasts (got step {})"
-msgstr "프로젝트를 초과한 예측은 월별 예측에서만 가능합니다.(got step{})"
-
-#. module: project_forecast
-#: model:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
 msgid "Future"
-msgstr "미래"
+msgstr "향후"
 
 #. module: project_forecast
-#: model:ir.ui.menu,name:project_forecast.project_forecast_gantt
-msgid "Gantt"
-msgstr "간트"
-
-#. module: project_forecast
-#: model:ir.ui.view,arch_db:project_forecast.project_forecast_view_pivot
-msgid "Graph"
-msgstr "그래프"
-
-#. module: project_forecast
-#: model:ir.ui.menu,name:project_forecast.menu_project_forecast_grid
-msgid "Grid"
-msgstr "그리드"
-
-#. module: project_forecast
-#: code:addons/project_forecast/models/project_forecast.py:186
+#: code:addons/project_forecast/models/project_forecast.py:296
 #, python-format
 msgid ""
 "Grid adjustment for project forecasts only supports the 'start_date' columns"
-" field and the 'resource_hours' cell field, got respectively "
-"%(column_field)r and %(cell_field)r"
+" field and the 'resource_time' cell field, got respectively %(column_field)r"
+" and %(cell_field)r"
 msgstr ""
 
 #. module: project_forecast
-#: model:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
 msgid "Group By"
-msgstr "그룹화"
+msgstr "그룹별"
 
 #. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_assignment_id
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_id
+#: selection:res.company,forecast_uom:0
+msgid "Hours"
+msgstr "시간"
+
+#. module: project_forecast
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast__id
 msgid "ID"
 msgstr "ID"
 
 #. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast___last_update
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_assignment___last_update
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast____last_update
 msgid "Last Modified on"
 msgstr "최근 수정"
 
 #. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_assignment_write_uid
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_write_uid
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast__write_uid
 msgid "Last Updated by"
 msgstr "최근 갱신한 사람"
 
 #. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_assignment_write_date
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_write_date
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast__write_date
 msgid "Last Updated on"
 msgstr "최근 갱신 날짜"
 
 #. module: project_forecast
-#: model:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_project
-#: model:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_user
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_grid_by_task
+#: model_terms:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_project
+#: model_terms:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_user
 msgid "Month"
 msgstr "월"
 
 #. module: project_forecast
-#: model:ir.ui.view,arch_db:project_forecast.project_forecast_grid
-msgid "Monthly Forecast"
-msgstr "월별 예측"
-
-#. module: project_forecast
-#: model:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
-msgid "My activities"
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
+msgid "My Activities"
 msgstr "내 활동"
 
 #. module: project_forecast
-#: model:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
-msgid "My projects"
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
+msgid "My Projects"
 msgstr "내 프로젝트"
 
 #. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_name
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast__name
 msgid "Name"
 msgstr "이름"
 
 #. module: project_forecast
-#: model:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
 msgid "Past"
 msgstr "과거"
 
 #. module: project_forecast
-#: model:ir.model.fields,help:project_forecast.field_project_forecast_time
+#: model:ir.model.fields,help:project_forecast.field_project_forecast__time
 msgid "Percentage of working time"
 msgstr "작업시간 비율"
 
 #. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_resource_hours
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast__resource_hours
 msgid "Planned hours"
 msgstr "계획된 시간"
 
 #. module: project_forecast
 #: model:ir.model,name:project_forecast.model_project_project
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_assignment_project_id
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_project_id
-#: model:ir.ui.view,arch_db:project_forecast.project_forecast_grid
-#: model:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast__project_id
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
 msgid "Project"
 msgstr "프로젝트"
 
 #. module: project_forecast
-#: model:ir.ui.view,arch_db:project_forecast.view_project_set_dates
-msgid "Project Dates"
-msgstr "프로젝트 날짜"
-
-#. module: project_forecast
-#: model:ir.ui.view,arch_db:project_forecast.project_forecast_view_form
+#: model:ir.model,name:project_forecast.model_project_forecast
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_form
 msgid "Project Forecast"
 msgstr "프로젝트 예측"
 
 #. module: project_forecast
-#: model:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_project
-msgid "Project Forecast By Project"
-msgstr "프로젝트별 프로젝트 예측"
-
-#. module: project_forecast
-#: model:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_user
-msgid "Project Forecast By User"
-msgstr "사용자별 프로젝트 예측"
-
-#. module: project_forecast
-#: model:ir.actions.server,name:project_forecast.project_forecast_server_action_archive
-msgid "Project Forecast: Archive/Restore forecasts"
-msgstr "프로젝트 예측 : 보관/복구된 예측"
-
-#. module: project_forecast
-#: model:ir.actions.server,name:project_forecast.action_generate_forecast
-msgid "Project: Generate Task Forecast"
-msgstr "프로젝트 : 작업 예측 생성"
-
-#. module: project_forecast
-#: model:ir.model.fields,help:project_forecast.field_project_forecast_user_id
+#: model:ir.model.fields,help:project_forecast.field_project_forecast__user_id
 msgid "Related user name for the resource to manage its access."
-msgstr ""
+msgstr "이것에 접근을 관리하는 자원에 대한 관련된 사용자 이름."
 
 #. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_start_date
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast__start_date
 msgid "Start Date"
 msgstr "시작일"
 
 #. module: project_forecast
 #: model:ir.model,name:project_forecast.model_project_task
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_assignment_task_id
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_task_id
-#: model:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast__task_id
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
 msgid "Task"
-msgstr "업무"
+msgstr "작업"
 
 #. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_stage_id
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast__stage_id
 msgid "Task stage"
 msgstr "작업 단계"
 
 #. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_tag_ids
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast__tag_ids
 msgid "Task tags"
 msgstr "작업 태그"
 
 #. module: project_forecast
-#: code:addons/project_forecast/models/project_forecast.py:109
+#: code:addons/project_forecast/models/project_forecast.py:132
 #, python-format
-msgid "The start-date must be lower than end-date."
-msgstr "시작일은 종료일보다 앞서야 합니다."
+msgid ""
+"The employee (%s) doesn't have a timezone, this might cause errors in the "
+"time computation. It is configurable on the user linked to the employee"
+msgstr ""
 
 #. module: project_forecast
-#: model:ir.model.fields,help:project_forecast.field_project_project_allow_forecast
-#: model:ir.model.fields,help:project_forecast.field_project_task_allow_forecast
+#: model:ir.model.fields,help:project_forecast.field_project_project__allow_forecast
+#: model:ir.model.fields,help:project_forecast.field_project_task__allow_forecast
 msgid "This feature shows the Forecast link in the kanban view"
 msgstr "이 기능은 예측을 칸반도표에 보여주도록 합니다."
 
 #. module: project_forecast
-#: model:ir.model.fields,field_description:project_forecast.field_project_forecast_user_id
+#: model:ir.model.fields,field_description:project_forecast.field_res_company__forecast_span
+#: model:ir.model.fields,field_description:project_forecast.field_res_config_settings__forecast_span
+msgid "Time Span"
+msgstr ""
+
+#. module: project_forecast
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast__forecast_uom
+#: model:ir.model.fields,field_description:project_forecast.field_res_company__forecast_uom
+#: model:ir.model.fields,field_description:project_forecast.field_res_config_settings__forecast_uom
+msgid "Time Unit"
+msgstr ""
+
+#. module: project_forecast
+#: model:ir.filters,name:project_forecast.ir_filter_forecast_time_by_month
+msgid "Time by month"
+msgstr ""
+
+#. module: project_forecast
+#: model:ir.model.fields,field_description:project_forecast.field_project_forecast__user_id
 msgid "User"
 msgstr "사용자"
 
 #. module: project_forecast
-#: model:ir.ui.view,arch_db:project_forecast.view_project_set_dates
-msgid "View Forecast"
-msgstr "예측 보기"
-
-#. module: project_forecast
-#: model:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_project
-#: model:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_user
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_grid_by_task
+#: model_terms:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_project
+#: model_terms:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_user
 msgid "Week"
 msgstr "주"
 
 #. module: project_forecast
-#: model:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_project
-#: model:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_user
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_grid_by_task
+#: model_terms:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_project
+#: model_terms:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_user
 msgid "Year"
 msgstr "년"
 
 #. module: project_forecast
-#: code:addons/project_forecast/models/project_forecast.py:88
+#: code:addons/project_forecast/models/project.py:21
 #, python-format
-msgid "You cannot set a user with no working time."
-msgstr "사용자가 일하지 않는 날에 설정할 수 없습니다."
+msgid ""
+"You cannot delete a project containing forecasts. You can either delete all "
+"the project's forecasts and then delete the project or simply deactivate the"
+" project."
+msgstr ""
 
 #. module: project_forecast
-#: code:addons/project_forecast/models/project_forecast.py:103
+#: code:addons/project_forecast/models/project.py:43
+#, python-format
+msgid ""
+"You cannot delete a task containing forecasts. You can either delete all the"
+" task's forecasts and then delete the task or simply deactivate the task."
+msgstr ""
+
+#. module: project_forecast
+#: code:addons/project_forecast/models/project_forecast.py:170
 #, python-format
 msgid "Your task is not in the selected project."
 msgstr "해당 작업은 선택한 프로젝트에 없습니다."
 
 #. module: project_forecast
-#: model:ir.model,name:project_forecast.model_project_forecast
-msgid "project.forecast"
-msgstr "project.forecast"
+#: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_form
+msgid "day(s)"
+msgstr ""
 
 #. module: project_forecast
-#: model:ir.model,name:project_forecast.model_project_forecast_assignment
-msgid "project.forecast.assignment"
-msgstr "project.forecast.assignment"
-
-#. module: project_forecast
-#: code:addons/project_forecast/models/project_forecast.py:68
+#: code:addons/project_forecast/models/project_forecast.py:109
 #, python-format
 msgid "undefined"
 msgstr "정의되지 않음"

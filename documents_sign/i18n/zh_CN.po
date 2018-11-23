@@ -5,16 +5,18 @@
 # Translators:
 # Martin Trigaux, 2018
 # Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
-# liAnGjiA <liangjia@qq.com>, 2018
 # ChinaMaker <liuct@chinamaker.net>, 2018
+# liAnGjiA <liangjia@qq.com>, 2018
 # xu xiaohu <xu.xiaohu@gmail.com>, 2018
+# inspur qiuguodong <qiuguodong@inspur.com>, 2018
 # neter ji <jifuyi@qq.com>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-02 10:31+0000\n"
-"PO-Revision-Date: 2018-10-02 10:31+0000\n"
+"PO-Revision-Date: 2018-08-24 11:37+0000\n"
 "Last-Translator: neter ji <jifuyi@qq.com>, 2018\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -28,7 +30,7 @@ msgstr ""
 msgid ""
 "A set of condition and actions which will be available to all attachments "
 "matching the conditions"
-msgstr "可用于所有满足条件的附件的条件和动作集合"
+msgstr "一组适用于符合所有条件附件的状态动作集合"
 
 #. module: documents_sign
 #: model:ir.model.fields,field_description:documents_sign.field_sign_request__folder_id

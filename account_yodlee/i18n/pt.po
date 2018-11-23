@@ -426,7 +426,7 @@ msgstr ""
 #. module: account_yodlee
 #: model:ir.model.fields,field_description:account_yodlee.field_account_online_provider__provider_type
 msgid "Provider Type"
-msgstr ""
+msgstr "Tipo de provedor"
 
 #. module: account_yodlee
 #: model:ir.model,name:account_yodlee.model_account_online_provider

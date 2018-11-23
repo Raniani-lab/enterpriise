@@ -11,6 +11,10 @@
         </record>
 
         <function model="account.journal" name="_enable_batch_deposit_on_bank_journals"/>
+    </data>
 
+    <data noupdate="0">
+        <function model="account.journal" name="_create_batch_payment_outbound_sequence"/>
+        <function model="account.journal" name="_create_batch_payment_inbound_sequence"/>
     </data>
 </odoo>

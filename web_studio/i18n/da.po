@@ -3,22 +3,23 @@
 # * web_studio
 # 
 # Translators:
+# Morten Schou <ms@msteknik.dk>, 2018
+# Jesper Carstensen <jc@danodoo.dk>, 2018
 # Martin Trigaux, 2018
 # Hans Henrik Gabelgaard <hhg@gabelgaard.org>, 2018
 # Per Rasmussen <perhgrasmussen@gmail.com>, 2018
-# Morten Schou <ms@msteknik.dk>, 2018
-# Jesper Carstensen <jc@danodoo.dk>, 2018
 # Jarnhold Nattestad <nattestads@gmail.com>, 2018
 # Pernille Kristensen <pernillekristensen1994@gmail.com>, 2018
 # Sanne Kristensen <sanne@vkdata.dk>, 2018
 # Ejner Sønniksen <ejner@vkdata.dk>, 2018
 # lhmflexerp <lhm@flexerp.dk>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-02 10:32+0000\n"
-"PO-Revision-Date: 2018-10-02 10:32+0000\n"
+"PO-Revision-Date: 2018-08-24 11:49+0000\n"
 "Last-Translator: lhmflexerp <lhm@flexerp.dk>, 2018\n"
 "Language-Team: Danish (https://www.transifex.com/odoo/teams/41243/da/)\n"
 "MIME-Version: 1.0\n"
@@ -36,6 +37,10 @@ msgid ""
 "            </p>\n"
 "            "
 msgstr ""
+" <p class=\"o_view_nocontent_empty_report\">\n"
+"                Tilføj en ny rapport\n"
+"            </p>\n"
+"            "
 
 #. module: web_studio
 #: code:addons/web_studio/controllers/main.py:68
@@ -46,6 +51,10 @@ msgid ""
 "            </p>\n"
 "            "
 msgstr ""
+" <p class=\"o_view_nocontent_smiling_face\">\n"
+"                Tilføj en ny automatiseret handling\n"
+"            </p>\n"
+"            "
 
 #. module: web_studio
 #: code:addons/web_studio/controllers/main.py:86
@@ -56,6 +65,10 @@ msgid ""
 "            </p>\n"
 "            "
 msgstr ""
+" <p class=\"o_view_nocontent_smiling_face\">\n"
+"                Tilføj et nyt filter\n"
+"            </p>\n"
+"            "
 
 #. module: web_studio
 #: code:addons/web_studio/controllers/report.py:54
@@ -251,14 +264,14 @@ msgstr "Beløb i alt"
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:149
 #, python-format
 msgid "Amount untaxed"
-msgstr ""
+msgstr "Beløb ex. moms"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/app_creator.xml:59
 #, python-format
 msgid "App Icon"
-msgstr ""
+msgstr "App ikon"
 
 #. module: web_studio
 #. openerp-web
@@ -380,14 +393,14 @@ msgstr "Kalendervisning"
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:44
 #, python-format
 msgid "Can Create"
-msgstr ""
+msgstr "Kan oprette"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:58
 #, python-format
 msgid "Can Delete"
-msgstr ""
+msgstr "Kan slette"
 
 #. module: web_studio
 #. openerp-web
@@ -441,14 +454,14 @@ msgstr "Afkrydsningsfelt"
 #. module: web_studio
 #: model:ir.model.fields,help:web_studio.field_ir_model_data__studio
 msgid "Checked if it has been edited with Studio."
-msgstr ""
+msgstr "Afkrydset hvis det er redigeret med Studio."
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/app_creator.xml:32
 #, python-format
 msgid "Choose an app name"
-msgstr ""
+msgstr "Vælg et appnavn"
 
 #. module: web_studio
 #. openerp-web
@@ -513,7 +526,7 @@ msgstr "Farve"
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:221
 #, python-format
 msgid "Colors"
-msgstr ""
+msgstr "Farver"
 
 #. module: web_studio
 #. openerp-web
@@ -527,7 +540,7 @@ msgstr "Kolonne"
 #: code:addons/web_studio/static/src/js/views/view_components.js:51
 #, python-format
 msgid "Columns"
-msgstr ""
+msgstr "Kolonner"
 
 #. module: web_studio
 #. openerp-web
@@ -712,7 +725,7 @@ msgstr "Standardværdi"
 #: code:addons/web_studio/static/src/xml/action_editor.xml:32
 #, python-format
 msgid "Default view"
-msgstr ""
+msgstr "Standardvisning"
 
 #. module: web_studio
 #. openerp-web
@@ -863,21 +876,21 @@ msgstr "Redigér menu"
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:494
 #, python-format
 msgid "Edit Possible Values"
-msgstr ""
+msgstr "Redigér mulige værdier"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/js/common/new_field_dialog.js:187
 #, python-format
 msgid "Edit Value"
-msgstr ""
+msgstr "Redigér værdi"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/edit_menu.xml:26
 #, python-format
 msgid "Edit menu"
-msgstr ""
+msgstr "Redigér menu"
 
 #. module: web_studio
 #. openerp-web

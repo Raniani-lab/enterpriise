@@ -231,9 +231,6 @@ return AbstractWebClient.extend({
                             .then(completed.resolve.bind(completed))
                             .fail(completed.reject.bind(completed));
                     });
-                    setTimeout(function () {
-                        completed.resolve();
-                    }, 2000);
                     return completed;
                 });
             });
@@ -254,11 +251,6 @@ return AbstractWebClient.extend({
                     })).always(function () {
                         completed.resolve();
                     });
-
-                    setTimeout(function () {
-                        completed.resolve();
-                    }, 2000);
-
                     return completed;
                 });
             }).always(function () {

@@ -64,30 +64,30 @@ msgstr " (cópia)"
 #: code:addons/account_reports/models/account_aged_partner_balance.py:22
 #, python-format
 msgid "1 - 30"
-msgstr ""
+msgstr "1-30"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_aged_partner_balance.py:22
 #, python-format
 msgid "31 - 60"
-msgstr ""
+msgstr "31 - 60"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_aged_partner_balance.py:22
 #, python-format
 msgid "61 - 90"
-msgstr ""
+msgstr "61 - 90"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_aged_partner_balance.py:22
 #, python-format
 msgid "91 - 120"
-msgstr ""
+msgstr "91 - 120"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_analytic
 msgid "<b>Accounts</b><br/>"
-msgstr ""
+msgstr "<b>Conta </b> <br/>"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.template_followup_report
@@ -97,7 +97,7 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_partner
 msgid "<b>Partners</b><br/>"
-msgstr ""
+msgstr "<b>Parceiros</b><br/>"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_analytic
@@ -118,11 +118,13 @@ msgid ""
 "<br/>\n"
 "                Analytic Accounts:"
 msgstr ""
+"<br/>\n"
+"Contas Analíticas:"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
 msgid "<br/>Companies:"
-msgstr ""
+msgstr "<br/>Empresas:"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.template_followup_report
@@ -150,6 +152,8 @@ msgid ""
 "<span class=\"fa fa-book\"/>\n"
 "            Journals:"
 msgstr ""
+"<span class=\"fa fa-book\"/>\n"
+"Diários:"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_multi_company
@@ -157,6 +161,8 @@ msgid ""
 "<span class=\"fa fa-filter\"/>\n"
 "            Companies:"
 msgstr ""
+"<span class=\"fa fa-filter\"/>\n"
+"Empresas:"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_ir_filters
@@ -164,6 +170,8 @@ msgid ""
 "<span class=\"fa fa-filter\"/>\n"
 "            Filters:"
 msgstr ""
+"<span class=\"fa fa-filter\"/>\n"
+"Filtros:"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
@@ -173,7 +181,7 @@ msgstr "<span class=\"fa fa-filter\"/>Opções:"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.followup_search_template
 msgid "<span class=\"fa fa-filter\"/> Partners:"
-msgstr ""
+msgstr "<span class=\"fa fa-filter\"/>Parceiros:"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_analytic
@@ -183,7 +191,7 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_partner
 msgid "<span class=\"fa fa-folder-open\"/> Partners"
-msgstr ""
+msgstr "<span class=\"fa fa-folder-open\"/>Parceiros"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_account_type
@@ -191,6 +199,8 @@ msgid ""
 "<span class=\"fa fa-user\"/>\n"
 "            Account:"
 msgstr ""
+"<span class=\"fa fa-user\"/>\n"
+"Contas:"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form

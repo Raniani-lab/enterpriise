@@ -351,7 +351,7 @@ class ResCompany(models.Model):
                 else:
                     record.currency_next_execution_date = False
                     continue
-                record.currency_next_execution_date = datetime.datetime.now() + next_update
+                record.currency_next_execution_date = datetime.date.today() + next_update
                 to_update += record
             to_update.update_currency_rates()
 

@@ -995,7 +995,7 @@ msgstr "Afspraak"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_has_error
 msgid "Message Delivery error"
-msgstr "Bericht aflever fout"
+msgstr "Bericht afleverfout"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_ids
@@ -1516,7 +1516,7 @@ msgstr "Deze vraagt moet beantwoord worden."
 #. module: hr_appraisal
 #: model:survey.label,value:hr_appraisal.arow_3_1_15
 msgid "Time management: projects/tasks are completed on time"
-msgstr "Tijdsbeheer: projecten/taken zijn op tijd voltooid"
+msgstr "Tijdbeheer: projecten/taken zijn op tijd voltooid"
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/hr_appraisal.py:239

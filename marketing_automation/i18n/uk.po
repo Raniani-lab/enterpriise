@@ -5,12 +5,13 @@
 # Translators:
 # Martin Trigaux, 2018
 # Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-08 07:14+0000\n"
-"PO-Revision-Date: 2018-10-08 07:14+0000\n"
+"PO-Revision-Date: 2018-08-24 11:38+0000\n"
 "Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
@@ -57,7 +58,7 @@ msgstr "<i class=\"fa fa-check-circle\"/> Відповів"
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "<i class=\"fa fa-envelope-open-o\"/> Not opened within"
-msgstr "<i class=\"fa fa-envelope-open-o\"/> Не відкрито протягом"
+msgstr "<i class=\"fa fa-envelope-open-o\"/> Не відкрито в межах"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
@@ -645,7 +646,7 @@ msgstr "Автоматичне відмічення"
 #: code:addons/marketing_automation/models/marketing_campaign.py:537
 #, python-format
 msgid "Marketing Automation: activity <%s> encountered mass mailing issue %s"
-msgstr "Автоматичне позначення: дія <%s> encountered mass mailing issue %s"
+msgstr "Автоматичне позначення: дія <%s> виникли проблеми масової розсилки %s"
 
 #. module: marketing_automation
 #: code:addons/marketing_automation/models/marketing_campaign.py:507
@@ -1167,8 +1168,8 @@ msgid ""
 "                want to process records which have the same email address"
 msgstr ""
 "Використовується для уникнення дублікатів на основі поля моделі.\n"
-"наприклад,\n"
-"                 для моделі \"Клієнти\" виберіть поле адреси електронної пошти тут, якщо ви цього не\n"
+"Наприклад,\n"
+"                 для моделі \"Клієнти\" виберіть поле адреси електронної пошти тут, якщо ви не\n"
 "                 хочете обробляти записи, що мають однакову адресу електронної пошти"
 
 #. module: marketing_automation
@@ -1207,14 +1208,14 @@ msgstr "Робочий процес"
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
 msgid "Workflow Started On"
-msgstr "Робочий процес почато на"
+msgstr "Робочий процес розпочато"
 
 #. module: marketing_automation
 #: code:addons/marketing_automation/models/marketing_campaign.py:156
 #, python-format
 msgid "You must set up at least one activity to start this campaign."
 msgstr ""
-"Щоб розпочати цю кампанію, потрібно налаштувати принаймні одну діяльність."
+"Щоби розпочати цю кампанію, потрібно налаштувати принаймні одну діяльність."
 
 #. module: marketing_automation
 #: selection:marketing.activity,trigger_type:0

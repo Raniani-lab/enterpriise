@@ -2179,3 +2179,27 @@ class TestAccountReports(SavepointCase):
                 ('Mar 2017',                            0.00,           100.00,         -100.00),
             ],
         )
+
+    # -------------------------------------------------------------------------
+    # TESTS: Followup Report
+    # -------------------------------------------------------------------------
+
+    def test_followup_report_initial_state(self):
+        ''' Test folded/unfolded lines. '''
+        # Init options.
+        report = self.env['account.followup.report']
+        options = report._get_options(None)
+        options['partner_id'] = self.partner_a.id
+        report = report.with_context(report._set_context(options))
+
+        self.assertLinesValues(
+            report._get_lines(options)[:-1],
+            #   Name                                    Date,           Due Date,       Doc.    Comm.   Exp. Date   Blocked             Total Due
+            [   0,                                      1,              2,              3,      4,      5,          6,                  7],
+            [
+                ('INV/2017/0001',                       '01/01/2017',   '01/01/2017',   '',     '',     '',         '',                 115.00),
+                ('INV/2016/0001',                       '12/01/2016',   '12/01/2016',   '',     '',     '',         '',                 780.00),
+                ('',                                    '',             '',             '',     '',     '',         'Total Due',        895.00),
+                ('',                                    '',             '',             '',     '',     '',         'Total Overdue',    895.00),
+            ],
+        )

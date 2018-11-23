@@ -85,10 +85,10 @@ class AccountFollowupReport(models.AbstractModel):
                 columns = [
                     format_date(self.env, aml.date, lang_code=lang_code),
                     date_due,
-                    aml.invoice_id.origin,
+                    aml.invoice_id.origin or '',
                     move_line_name,
-                    expected_pay_date + ' ' + (aml.internal_note or ''),
-                    {'name': aml.blocked, 'blocked': aml.blocked},
+                    (expected_pay_date and expected_pay_date + ' ') + (aml.internal_note or ''),
+                    {'name': '', 'blocked': aml.blocked},
                     amount,
                 ]
                 if self.env.context.get('print_mode'):

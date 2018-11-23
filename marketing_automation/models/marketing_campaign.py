@@ -11,7 +11,6 @@ from odoo import api, fields, models, _, SUPERUSER_ID
 from odoo.fields import Datetime
 from odoo.exceptions import ValidationError, AccessError
 from odoo.osv import expression
-from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT as DATETIME_FORMAT
 from odoo.tools.safe_eval import safe_eval
 
 _logger = logging.getLogger(__name__)
@@ -29,7 +28,8 @@ class MarketingCampaign(models.Model):
         ('draft', 'New'),
         ('running', 'Running'),
         ('stopped', 'Stopped')
-        ], copy=False, default='draft')
+        ], copy=False, default='draft',
+        group_expand='_group_expand_states')
     model_id = fields.Many2one(
         'ir.model', string='Model', index=True, required=True,
         default=lambda self: self.env.ref('base.model_res_partner', raise_if_not_found=False),
@@ -44,6 +44,7 @@ class MarketingCampaign(models.Model):
     domain = fields.Char(string='Filter', default='[]')
     # activities
     marketing_activity_ids = fields.One2many('marketing.activity', 'campaign_id', string='Activities', copy=True)
+    mass_mailing_count = fields.Integer('# Mailings', compute='_compute_mass_mailing_count')
     last_sync_date = fields.Datetime(string='Last activities synchronization')
     require_sync = fields.Boolean(string="Sync of participants is required", compute='_compute_require_sync')
     # participants
@@ -58,6 +59,12 @@ class MarketingCampaign(models.Model):
         for campaign in self.filtered(lambda camp: camp.last_sync_date and camp.state == 'running'):
             activities_changed = campaign.marketing_activity_ids.filtered(lambda activity: activity.require_sync)
             campaign.require_sync = bool(activities_changed)
+
+    @api.depends('marketing_activity_ids.mass_mailing_id')
+    def _compute_mass_mailing_count(self):
+        # TDE NOTE: this could be optimized but is currently displayed only in a form view, no need to optimize now
+        for campaign in self:
+            campaign.mass_mailing_count = len(campaign.mapped('marketing_activity_ids.mass_mailing_id'))
 
     @api.depends('participant_ids.state')
     def _compute_participants(self):
@@ -77,6 +84,9 @@ class MarketingCampaign(models.Model):
             campaign.completed_participant_count = campaign_data.get('completed', 0)
             campaign.total_participant_count = campaign.completed_participant_count + campaign.running_participant_count
             campaign.test_participant_count = campaign_data.get('is_test')
+
+    def _group_expand_states(self, states, domain, order):
+        return [key for key, val in type(self).state.selection]
 
     def action_set_synchronized(self):
         self.write({'last_sync_date': Datetime.now()})
@@ -164,6 +174,15 @@ class MarketingCampaign(models.Model):
     def action_stop_campaign(self):
         self.write({'state': 'stopped'})
 
+    def action_view_mailings(self):
+        action = self.env.ref('marketing_automation.mail_mass_mailing_action_marketing_automation').read()[0]
+        action['domain'] = [
+            '&',
+            ('use_in_marketing_automation', '=', True),
+            ('id', 'in', self.mapped('marketing_activity_ids.mass_mailing_id').ids)
+        ]
+        return action
+
     def sync_participants(self):
         """ Creates new participants, taking into account already-existing ones
         as well as campaign filter and unique field. """
@@ -224,6 +243,9 @@ class MarketingActivity(models.Model):
     campaign_id = fields.Many2one(
         'marketing.campaign', string='Campaign',
         index=True, ondelete='cascade', required=True)
+    utm_campaign_id = fields.Many2one(
+        'utm.campaign', string='UTM Campaign',
+        readonly=True, related='campaign_id.utm_campaign_id')  # propagate to mailings
     interval_number = fields.Integer(string='Send after', default=1)
     interval_type = fields.Selection([
         ('hours', 'Hours'),
@@ -351,7 +373,7 @@ class MarketingActivity(models.Model):
         self.env.cr.execute("""
             SELECT
                 trace.activity_id,
-                COUNT(CASE WHEN stat.bounced IS NULL THEN 1 ELSE null END) AS total_sent,
+                COUNT(CASE WHEN stat.state = 'sent' THEN 1 ELSE null END) AS total_sent,
                 COUNT(CASE WHEN stat.clicked IS NOT NULL THEN 1 ELSE null END) AS total_click,
                 COUNT(CASE WHEN stat.replied IS NOT NULL THEN 1 ELSE null END) AS total_reply,
                 COUNT(CASE WHEN stat.opened IS NOT NULL THEN 1 ELSE null END) AS total_open,
@@ -411,11 +433,11 @@ class MarketingActivity(models.Model):
                 x = i.strftime('%d %b')
                 success.append({
                     'x': x,
-                    'y': stat_map.get((activity.id, i.strftime('%Y-%m-%d'), 'processed'), 0)
+                    'y': stat_map.get((activity.id, i, 'processed'), 0)
                 })
                 rejected.append({
                     'x': x,
-                    'y': stat_map.get((activity.id, i.strftime('%Y-%m-%d'), 'rejected'), 0)
+                    'y': stat_map.get((activity.id, i, 'rejected'), 0)
                 })
             graph_data[activity.id] = [
                 {'values': success, 'key': _('Success'), 'area': True, 'color': '#21B799'},

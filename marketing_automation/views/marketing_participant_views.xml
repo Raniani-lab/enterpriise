@@ -142,10 +142,10 @@
         <field name="model">marketing.participant</field>
         <field name="arch" type="xml">
             <tree string="Participant" create="false">
-                <field name="resource_ref" string="Resource Name"/>
-                <field name="model_id"/>
-                <field name="state"/>
-                <field name="campaign_id"/>
+                <field name="resource_ref" string="Participant Name"/>
+                <field name="model_id" string="Target Model"/>
+                <field name="state" />
+                <field name="campaign_id" />
                 <field name="is_test" invisible="1"/>
             </tree>
         </field>

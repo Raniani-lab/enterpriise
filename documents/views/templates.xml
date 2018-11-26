@@ -160,10 +160,10 @@
     <!-- ====  Single file - direct sharing ==== -->
     <template id="documents.share_single" name="Documents Share Single File">
         <t t-call="documents.public_page_layout">
-            <t t-set="file_URL" t-value="base_url + '/web/content/' + str(document.id)"/>
-            <t t-set="file_token" t-value="'&amp;access_token=' + str(token) + '&amp;related_id=' + str(share_id) + '&amp;access_mode=documents_share'"/>
-            <t t-set="preview_URL" t-value="base_url + '/web/image/' + str(document.id) + '/600x500?upper_limit=true'"/>
-            <t t-set="normal_preview_URL" t-value="base_url + '/web/image/' + str(document.id) + '/'"/>
+            <t t-set="file_URL" t-value="base_url + '/documents/content/' + str(document.id) + '?'"/>
+            <t t-set="file_token" t-value="'share_token=' + str(token) + '&amp;share_id=' + str(share_id) + '&amp;'"/>
+            <t t-set="preview_URL" t-value="base_url + '/documents/image/' + str(document.id) + '/600x500?upper_limit=true' + '&amp;'"/>
+            <t t-set="normal_preview_URL" t-value="base_url + '/documents/image/' + str(document.id) + '?'"/>
             <t t-set="document_request" t-value="document.type == 'empty'"/>
 
             <h3 t-if="request_upload and document_request" class="text-white text-center mb16">
@@ -183,7 +183,7 @@
                         <span t-if="'url' not in document.type"><b t-esc="document.name"/> • <small><t t-call="documents.format_file_size"/></small></span>
                         <span t-else="">URL</span>
                     </figcaption>
-                    <a t-att-href="file_URL + '?download=true' + file_token" target="new" t-att-title="'Download ' + document.name" class="btn o_docs_btn">
+                    <a t-att-href="file_URL + file_token" target="new" t-att-title="'Download ' + document.name" class="btn o_docs_btn">
                         <span t-if="'url' in document.type"><i class="fa fa-link"/> Go to URL</span>
                         <span t-else=""><i class="fa fa-download fa-fw"/> Download</span>
                     </a>
@@ -209,7 +209,7 @@
                         <header>
                             <h3 class="o_card_title mt4 mb8">
                                 <span t-if="document_request" t-esc="document.name"/>
-                                <a t-else="" t-att-href="file_URL + '?download=true' + file_token" target="new" t-att-title="'Download ' + document.name" t-esc="document.name"/>
+                                <a t-else="" t-att-href="file_URL + file_token" target="new" t-att-title="'Download ' + document.name" t-esc="document.name"/>
                             </h3>
                         </header>
                         <div class="o_card_footer">
@@ -224,7 +224,7 @@
                 </article>
 
                 <div class="o_docs_single_actions col-sm-12 justify-content-between flex-row flex-wrap text-center">
-                    <a t-if="not document_request" t-att-href="file_URL + '?download=true' + file_token" target="new" t-att-title="'Download ' + document.name" class="btn btn-lg o_docs_btn mt16">
+                    <a t-if="not document_request" t-att-href="file_URL + file_token" target="new" t-att-title="'Download ' + document.name" class="btn btn-lg o_docs_btn mt16">
                         <span t-if="document.type == 'url'"><i class="fa fa-link"/> Go to URL</span>
                         <span t-else=""><i class="fa fa-download fa-fw"/> Download</span>
                     </a>

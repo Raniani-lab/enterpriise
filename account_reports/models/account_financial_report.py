@@ -190,8 +190,8 @@ class ReportAccountFinancialReport(models.Model):
 
         return options
 
-    @api.model
-    def _get_options(self, previous_options=None):
+    @api.multi
+    def _with_correct_filters(self):
         if self.date_range:
             self.filter_date = {'date_from': '', 'date_to': '', 'filter': 'this_year'}
             if self.comparison:
@@ -215,7 +215,10 @@ class ReportAccountFinancialReport(models.Model):
                 self.filter_analytic = None
         self.filter_hierarchy = True if self.hierarchy_option else None
         self.filter_ir_filters = self.applicable_filters_ids or None
+        return self
 
+    @api.model
+    def _get_options(self, previous_options=None):
         rslt = super(ReportAccountFinancialReport, self)._get_options(previous_options)
 
         # If manual values were stored in the context, we store them as options.
@@ -226,6 +229,9 @@ class ReportAccountFinancialReport(models.Model):
             rslt['financial_report_line_values'] = self.env.context['financial_report_line_values']
 
         return rslt
+
+    def get_report_informations(self, options):
+        return super(ReportAccountFinancialReport, self._with_correct_filters()).get_report_informations(options)
 
     def set_context(self, options):
         ctx = super(ReportAccountFinancialReport, self).set_context(options)
@@ -501,6 +507,7 @@ class AccountFinancialReportLine(models.Model):
                 compared to the current user's company currency
             @returns: the string and parameters to use for the SELECT
         """
+        decimal_places = self.env.user.company_id.currency_id.decimal_places
         extra_params = []
         select = '''
             COALESCE(SUM(\"account_move_line\".balance), 0) AS balance,
@@ -511,20 +518,20 @@ class AccountFinancialReportLine(models.Model):
         if currency_table:
             select = 'COALESCE(SUM(CASE '
             for currency_id, rate in currency_table.items():
-                extra_params += [currency_id, rate]
-                select += 'WHEN \"account_move_line\".company_currency_id = %s THEN \"account_move_line\".balance * %s '
+                extra_params += [currency_id, rate, decimal_places]
+                select += 'WHEN \"account_move_line\".company_currency_id = %s THEN ROUND(\"account_move_line\".balance * %s, %s) '
             select += 'ELSE \"account_move_line\".balance END), 0) AS balance, COALESCE(SUM(CASE '
             for currency_id, rate in currency_table.items():
-                extra_params += [currency_id, rate]
-                select += 'WHEN \"account_move_line\".company_currency_id = %s THEN \"account_move_line\".amount_residual * %s '
+                extra_params += [currency_id, rate, decimal_places]
+                select += 'WHEN \"account_move_line\".company_currency_id = %s THEN ROUND(\"account_move_line\".amount_residual * %s, %s) '
             select += 'ELSE \"account_move_line\".amount_residual END), 0) AS amount_residual, COALESCE(SUM(CASE '
             for currency_id, rate in currency_table.items():
-                extra_params += [currency_id, rate]
-                select += 'WHEN \"account_move_line\".company_currency_id = %s THEN \"account_move_line\".debit * %s '
+                extra_params += [currency_id, rate, decimal_places]
+                select += 'WHEN \"account_move_line\".company_currency_id = %s THEN ROUND(\"account_move_line\".debit * %s, %s) '
             select += 'ELSE \"account_move_line\".debit END), 0) AS debit, COALESCE(SUM(CASE '
             for currency_id, rate in currency_table.items():
-                extra_params += [currency_id, rate]
-                select += 'WHEN \"account_move_line\".company_currency_id = %s THEN \"account_move_line\".credit * %s '
+                extra_params += [currency_id, rate, decimal_places]
+                select += 'WHEN \"account_move_line\".company_currency_id = %s THEN ROUND(\"account_move_line\".credit * %s, %s) '
             select += 'ELSE \"account_move_line\".credit END), 0) AS credit'
 
         if self.env.context.get('cash_basis'):
@@ -953,6 +960,9 @@ class AccountFinancialReportLine(models.Model):
     def _build_cmp(self, balance, comp):
         if comp != 0:
             res = round((balance - comp) / comp * 100, 1)
+            # Avoid displaying '-0.0%'.
+            if float_is_zero(res, precision_rounding=0.1):
+                res = 0.0
             # In case the comparison is made on a negative figure, the color should be the other
             # way around. For example:
             #                       2018         2017           %

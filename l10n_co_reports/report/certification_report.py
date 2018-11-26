@@ -55,7 +55,7 @@ class ReportCertificationReport(models.AbstractModel):
 
     filter_unfold_all = False
     filter_partner_id = False
-    filter_date = {'date_from': '', 'date_to': '', 'filter': 'this_year'}
+    filter_date = {'mode': 'range', 'filter': 'this_year'}
 
     def _get_bimonth_for_aml(self, aml):
         bimonth = aml.date.month

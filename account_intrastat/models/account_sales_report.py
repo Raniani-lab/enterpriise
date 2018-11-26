@@ -9,7 +9,7 @@ class IntrastatReport(models.AbstractModel):
     _description = 'EC Sales List'
     _inherit = 'account.report'
 
-    filter_date = {'date_from': '', 'date_to': '', 'filter': 'this_month'}
+    filter_date = {'mode': 'range', 'filter': 'this_month'}
     filter_journals = True
     filter_multi_company = None
 

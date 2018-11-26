@@ -12,7 +12,7 @@ class L10nInReportAccount(models.AbstractModel):
     _description = "GST Report"
     _inherit = "account.report"
 
-    filter_date = {'date_from': '', 'date_to': '', 'filter': 'this_month'}
+    filter_date = {'mode': 'range', 'filter': 'this_month'}
     filter_partner = True
 
     def _get_templates(self):

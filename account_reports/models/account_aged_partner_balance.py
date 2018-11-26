@@ -10,7 +10,7 @@ class report_account_aged_partner(models.AbstractModel):
     _description = "Aged Partner Balances"
     _inherit = 'account.report'
 
-    filter_date = {'date': '', 'filter': 'today'}
+    filter_date = {'mode': 'single', 'filter': 'today'}
     filter_unfold_all = False
     filter_partner = True
 
@@ -18,7 +18,7 @@ class report_account_aged_partner(models.AbstractModel):
         columns = [{}]
         columns += [
             {'name': v, 'class': 'number', 'style': 'white-space:nowrap;'}
-            for v in [_("JRNL"), _("Account"), _("Reference"), _("Not due on: %s") % format_date(self.env, options['date']['date']),
+            for v in [_("JRNL"), _("Account"), _("Reference"), _("Not due on: %s") % format_date(self.env, options['date']['date_to']),
                       _("1 - 30"), _("31 - 60"), _("61 - 90"), _("91 - 120"), _("Older"), _("Total")]
         ]
         return columns

@@ -340,7 +340,7 @@ var accountReportsWidget = AbstractAction.extend({
                 }
                 else {
                     error = date_to.val() === "";
-                    self.report_options.date.date = field_utils.parse.date(date_to.val());
+                    self.report_options.date.date_to = field_utils.parse.date(date_to.val());
                 }
             }
             if (error) {
@@ -390,7 +390,7 @@ var accountReportsWidget = AbstractAction.extend({
                 }
                 else {
                     error = date_to.val() === "";
-                    self.report_options.comparison.date = field_utils.parse.date(date_to.val());
+                    self.report_options.comparison.date_to = field_utils.parse.date(date_to.val());
                 }
             }
             if (error) {

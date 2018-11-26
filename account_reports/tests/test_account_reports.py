@@ -253,7 +253,7 @@ class TestAccountReports(SavepointCase):
     # TESTS METHODS
     # -------------------------------------------------------------------------
     
-    def _init_options(self, report, filter, date_from=None, date_to=None):
+    def _init_options(self, report, date_from, date_to):
         ''' Create new options at a certain date.        
         :param report:      The report.
         :param filter:      One of the following values: ('today', 'custom', 'this_month', 'this_quarter', 'this_year', 'last_month', 'last_quarter', 'last_year').
@@ -261,21 +261,13 @@ class TestAccountReports(SavepointCase):
         :param date_to:     A datetime object.
         :return:            The newly created options.
         '''
-        if date_from and date_to:
-            filter_date = {
-                'date_from': date_from and date_from.strftime(DEFAULT_SERVER_DATE_FORMAT),
-                'date_to': date_to and date_to.strftime(DEFAULT_SERVER_DATE_FORMAT),
-                'filter': filter,
-            }
-        else:
-            filter_date = {
-                'date': (date_from or date_to).strftime(DEFAULT_SERVER_DATE_FORMAT),
-                'filter': filter,
-            }
-        report.filter_date = filter_date
-        options = report._get_options(None)
-        report._apply_date_filter(options)
-        return options
+        report.filter_date = {
+            'date_from': date_from.strftime(DEFAULT_SERVER_DATE_FORMAT),
+            'date_to': date_to.strftime(DEFAULT_SERVER_DATE_FORMAT),
+            'filter': 'custom',
+            'mode': report.filter_date.get('mode', 'range'),
+        }
+        return report._get_options(None)
 
     def _update_comparison_filter(self, options, report, comparison_type, number_period, date_from=None, date_to=None):
         ''' Modify the existing options to set a new filter_comparison.
@@ -287,15 +279,14 @@ class TestAccountReports(SavepointCase):
         :param date_to:         A datetime object the 'custom' comparison_type.
         :return:                The newly created options.
         '''
-        filter_comparison = {
+        report.filter_comparison = {
             'date_from': date_from and date_from.strftime(DEFAULT_SERVER_DATE_FORMAT),
             'date_to': date_to and date_to.strftime(DEFAULT_SERVER_DATE_FORMAT),
             'filter': comparison_type,
             'number_period': number_period,
         }
         new_options = copy.deepcopy(options)
-        new_options['comparison'] = filter_comparison
-        report._apply_date_filter(new_options)
+        report._init_filter_comparison(new_options)
         return new_options
 
     def _update_multi_selector_filter(self, options, option_key, selected_ids):
@@ -358,7 +349,7 @@ class TestAccountReports(SavepointCase):
         ''' Test folded/unfolded lines. '''
         # Init options.
         report = self.env['account.general.ledger']
-        options = self._init_options(report, 'custom', *date_utils.get_month(self.mar_year_minus_1))
+        options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
         report = report.with_context(report._set_context(options))
 
         lines = report._get_lines(options)
@@ -430,7 +421,7 @@ class TestAccountReports(SavepointCase):
         ''' Test folded/unfolded lines with the cash basis option. '''
         # Check the cash basis option.
         report = self.env['account.general.ledger']
-        options = self._init_options(report, 'custom', *date_utils.get_month(self.mar_year_minus_1))
+        options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
         options['cash_basis'] = True
         report = report.with_context(report._set_context(options))
 
@@ -480,7 +471,7 @@ class TestAccountReports(SavepointCase):
         ''' Test folded/unfolded lines in a multi-company environment. '''
         # Select both company_parent/company_child_eur companies.
         report = self.env['account.general.ledger']
-        options = self._init_options(report, 'custom', *date_utils.get_month(self.mar_year_minus_1))
+        options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
         options = self._update_multi_selector_filter(options, 'multi_company', (self.company_parent + self.company_child_eur).ids)
         report = report.with_context(report._set_context(options))
 
@@ -543,7 +534,7 @@ class TestAccountReports(SavepointCase):
 
         # Mark the '101200 Account Receivable' line to be unfolded.
         report = self.env['account.general.ledger']
-        options = self._init_options(report, 'custom', *date_utils.get_month(self.mar_year_minus_1))
+        options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
         options['unfolded_lines'] = [line_id]
         report = report.with_context(report._set_context(options))
 
@@ -609,7 +600,7 @@ class TestAccountReports(SavepointCase):
 
         # Select only the 'Customer Invoices' journal.
         report = self.env['account.general.ledger']
-        options = self._init_options(report, 'custom', *date_utils.get_month(self.mar_year_minus_1))
+        options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
         options = self._update_multi_selector_filter(options, 'journals', journal.ids)
         report = report.with_context(report._set_context(options))
 
@@ -636,7 +627,7 @@ class TestAccountReports(SavepointCase):
         journal = self.env['account.journal'].search(
             [('company_id', '=', self.company_child_eur.id), ('type', '=', 'sale')])
 
-        options = self._init_options(report, 'custom', *date_utils.get_month(self.mar_year_minus_1))
+        options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
         options = self._update_multi_selector_filter(options, 'journals', journal.ids)
         options = self._update_multi_selector_filter(options, 'multi_company', self.company_child_eur.ids)
 
@@ -667,7 +658,7 @@ class TestAccountReports(SavepointCase):
         ''' Test folded/unfolded lines. '''
         # Init options.
         report = self.env['account.partner.ledger']
-        options = self._init_options(report, 'custom', *date_utils.get_month(self.mar_year_minus_1))
+        options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
         report = report.with_context(report._set_context(options))
 
         lines = report._get_lines(options)
@@ -708,7 +699,7 @@ class TestAccountReports(SavepointCase):
         ''' Test folded/unfolded lines with the cash basis option. '''
         # Check the cash basis option.
         report = self.env['account.partner.ledger']
-        options = self._init_options(report, 'custom', *date_utils.get_month(self.mar_year_minus_1))
+        options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
         options['cash_basis'] = True
         report = report.with_context(report._set_context(options))
 
@@ -750,7 +741,7 @@ class TestAccountReports(SavepointCase):
         ''' Test folded/unfolded lines in a multi-company environment. '''
         # Select both company_parent/company_child_eur companies.
         report = self.env['account.partner.ledger']
-        options = self._init_options(report, 'custom', *date_utils.get_month(self.mar_year_minus_1))
+        options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
         options = self._update_multi_selector_filter(options, 'multi_company', (self.company_parent + self.company_child_eur).ids)
         report = report.with_context(report._set_context(options))
 
@@ -796,7 +787,7 @@ class TestAccountReports(SavepointCase):
 
         # Mark the 'partner_a' line to be unfolded.
         report = self.env['account.partner.ledger']
-        options = self._init_options(report, 'custom', *date_utils.get_month(self.mar_year_minus_1))
+        options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
         options = self._update_multi_selector_filter(options, 'multi_company', (self.company_parent + self.company_child_eur).ids)
         options['unfolded_lines'] = [line_id]
         report = report.with_context(report._set_context(options))
@@ -856,7 +847,7 @@ class TestAccountReports(SavepointCase):
         ''' Test the 'account_type' filter. '''
         # Select only the account having the 'receivable' type.
         report = self.env['account.partner.ledger']
-        options = self._init_options(report, 'custom', *date_utils.get_month(self.mar_year_minus_1))
+        options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
         options = self._update_multi_selector_filter(options, 'account_type', ['receivable'])
         report = report.with_context(report._set_context(options))
 
@@ -896,7 +887,7 @@ class TestAccountReports(SavepointCase):
 
         # Select only the account having the 'payable' type.
         report = self.env['account.partner.ledger']
-        options = self._init_options(report, 'custom', *date_utils.get_month(self.mar_year_minus_1))
+        options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
         options = self._update_multi_selector_filter(options, 'account_type', ['payable'])
         report = report.with_context(report._set_context(options))
 
@@ -939,7 +930,7 @@ class TestAccountReports(SavepointCase):
         ''' Test folded/unfolded lines. '''
         # Init options.
         report = self.env['account.aged.receivable']
-        options = self._init_options(report, 'custom', date_utils.get_month(self.mar_year_minus_1)[1])
+        options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
         report = report.with_context(report._set_context(options))
 
         lines = report._get_lines(options)
@@ -980,7 +971,7 @@ class TestAccountReports(SavepointCase):
         ''' Test folded/unfolded lines in a multi-company environment. '''
         # Select both company_parent/company_child_eur companies.
         report = self.env['account.aged.receivable']
-        options = self._init_options(report, 'custom', date_utils.get_month(self.mar_year_minus_1)[1])
+        options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
         options = self._update_multi_selector_filter(options, 'multi_company', (self.company_parent + self.company_child_eur).ids)
         report = report.with_context(report._set_context(options))
 
@@ -1026,7 +1017,7 @@ class TestAccountReports(SavepointCase):
         # - partner_ids: ('partner_b', 'partner_c', 'partner_d')
         # - partner_categories: ('partner_categ_a')
         report = self.env['account.aged.receivable']
-        options = self._init_options(report, 'custom', date_utils.get_month(self.mar_year_minus_1)[1])
+        options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
         options['partner_ids'] = (self.partner_b + self.partner_c + self.partner_d).ids
         options['partner_categories'] = self.partner_category_a.ids
         report = report.with_context(report._set_context(options))
@@ -1052,7 +1043,7 @@ class TestAccountReports(SavepointCase):
         ''' Test folded/unfolded lines. '''
         # Init options.
         report = self.env['account.aged.payable']
-        options = self._init_options(report, 'custom', date_utils.get_month(self.mar_year_minus_1)[1])
+        options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
         report = report.with_context(report._set_context(options))
 
         lines = report._get_lines(options)
@@ -1093,7 +1084,7 @@ class TestAccountReports(SavepointCase):
         ''' Test folded/unfolded lines in a multi-company environment. '''
         # Select both company_parent/company_child_eur companies.
         report = self.env['account.aged.payable']
-        options = self._init_options(report, 'custom', date_utils.get_month(self.mar_year_minus_1)[1])
+        options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
         options = self._update_multi_selector_filter(options, 'multi_company', (self.company_parent + self.company_child_eur).ids)
         report = report.with_context(report._set_context(options))
 
@@ -1139,7 +1130,7 @@ class TestAccountReports(SavepointCase):
         # - partner_ids: ('partner_b', 'partner_c', 'partner_d')
         # - partner_categories: ('partner_categ_a')
         report = self.env['account.aged.payable']
-        options = self._init_options(report, 'custom', date_utils.get_month(self.mar_year_minus_1)[1])
+        options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
         options['partner_ids'] = (self.partner_b + self.partner_c + self.partner_d).ids
         options['partner_categories'] = self.partner_category_a.ids
         report = report.with_context(report._set_context(options))
@@ -1165,7 +1156,7 @@ class TestAccountReports(SavepointCase):
         ''' Test lines with base state. '''
         # Init options.
         report = self.env['account.coa.report']
-        options = self._init_options(report, 'custom', *date_utils.get_month(self.mar_year_minus_1))
+        options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
         report = report.with_context(report._set_context(options))
 
         self.assertLinesValues(
@@ -1192,7 +1183,7 @@ class TestAccountReports(SavepointCase):
         ''' Test the cash basis option. '''
         # Check the cash basis option.
         report = self.env['account.coa.report']
-        options = self._init_options(report, 'custom', *date_utils.get_month(self.mar_year_minus_1))
+        options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
         options['cash_basis'] = True
         report = report.with_context(report._set_context(options))
 
@@ -1220,7 +1211,7 @@ class TestAccountReports(SavepointCase):
         ''' Test in a multi-company environment. '''
         # Select both company_parent/company_child_eur companies.
         report = self.env['account.coa.report']
-        options = self._init_options(report, 'custom', *date_utils.get_month(self.mar_year_minus_1))
+        options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
         options = self._update_multi_selector_filter(options, 'multi_company', (self.company_parent + self.company_child_eur).ids)
         report = report.with_context(report._set_context(options))
 
@@ -1258,7 +1249,7 @@ class TestAccountReports(SavepointCase):
 
         # Init options with only the sale journal selected.
         report = self.env['account.coa.report']
-        options = self._init_options(report, 'custom', *date_utils.get_month(self.mar_year_minus_1))
+        options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
         options = self._update_multi_selector_filter(options, 'journals', journal.ids)
         report = report.with_context(report._set_context(options))
 
@@ -1286,7 +1277,7 @@ class TestAccountReports(SavepointCase):
         ''' Test taxes lines. '''
         # Init options.
         report = self.env['account.generic.tax.report']
-        options = self._init_options(report, 'custom', *date_utils.get_month(self.mar_year_minus_1))
+        options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
         report = report.with_context(report._set_context(options))
 
         self.assertLinesValues(
@@ -1309,7 +1300,7 @@ class TestAccountReports(SavepointCase):
         ''' Test folded/unfolded lines plus totals_below_sections. '''
         # Init options.
         report = self.env.ref('account_reports.account_financial_report_balancesheet0')._with_correct_filters()
-        options = self._init_options(report, 'custom', date_utils.get_month(self.mar_year_minus_1)[1])
+        options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
         report = report.with_context(report._set_context(options))
 
         lines = report._get_lines(options)
@@ -1385,7 +1376,7 @@ class TestAccountReports(SavepointCase):
         ''' Test folded/unfolded lines with the cash basis option. '''
         # Check the cash basis option.
         report = self.env.ref('account_reports.account_financial_report_balancesheet0')._with_correct_filters()
-        options = self._init_options(report, 'custom', date_utils.get_month(self.mar_year_minus_1)[1])
+        options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
         options['cash_basis'] = True
         report = report.with_context(report._set_context(options))
 
@@ -1433,7 +1424,7 @@ class TestAccountReports(SavepointCase):
         ''' Test folded/unfolded lines in a multi-company environment. '''
         # Select both company_parent/company_child_eur companies.
         report = self.env.ref('account_reports.account_financial_report_balancesheet0')._with_correct_filters()
-        options = self._init_options(report, 'custom', date_utils.get_month(self.mar_year_minus_1)[1])
+        options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
         options = self._update_multi_selector_filter(options, 'multi_company', (self.company_parent + self.company_child_eur).ids)
         report = report.with_context(report._set_context(options))
 
@@ -1500,7 +1491,7 @@ class TestAccountReports(SavepointCase):
         report = self.env.ref('account_reports.account_financial_report_balancesheet0')
         report.applicable_filters_ids = [(6, 0, self.groupby_partner_filter.ids)]
         report = report._with_correct_filters()
-        options = self._init_options(report, 'custom', date_utils.get_month(self.mar_year_minus_1)[1])
+        options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
 
         # Test the group by filter.
         options = self._update_multi_selector_filter(options, 'ir_filters', self.groupby_partner_filter.ids)
@@ -1630,7 +1621,7 @@ class TestAccountReports(SavepointCase):
         report.debit_credit = True
         report.applicable_filters_ids = [(6, 0, self.groupby_partner_filter.ids)]
         report = report._with_correct_filters()
-        options = self._init_options(report, 'custom', date_utils.get_month(self.mar_year_minus_1)[1])
+        options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
         report = report.with_context(report._set_context(options))
 
         lines = report._get_lines(options)
@@ -1744,7 +1735,7 @@ class TestAccountReports(SavepointCase):
         report = self.env.ref('account_reports.account_financial_report_balancesheet0')
         report.applicable_filters_ids = [(6, 0, self.groupby_partner_filter.ids)]
         report = report._with_correct_filters()
-        options = self._init_options(report, 'custom', date_utils.get_month(self.mar_year_minus_1)[1])
+        options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
         options = self._update_comparison_filter(options, report, 'previous_period', 1)
         report = report.with_context(report._set_context(options))
 
@@ -1876,7 +1867,7 @@ class TestAccountReports(SavepointCase):
         ''' Test folded/unfolded lines. '''
         # Init options.
         report = self.env.ref('account_reports.account_financial_report_profitandloss0')._with_correct_filters()
-        options = self._init_options(report, 'custom', *date_utils.get_month(self.mar_year_minus_1))
+        options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
         report = report.with_context(report._set_context(options))
 
         lines = report._get_lines(options)
@@ -1922,7 +1913,7 @@ class TestAccountReports(SavepointCase):
 
         # Init options with only the sale journal selected.
         report = self.env.ref('account_reports.account_financial_report_profitandloss0')._with_correct_filters()
-        options = self._init_options(report, 'custom', *date_utils.get_month(self.mar_year_minus_1))
+        options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
         options = self._update_multi_selector_filter(options, 'journals', journal.ids)
         report = report.with_context(report._set_context(options))
 
@@ -1954,7 +1945,7 @@ class TestAccountReports(SavepointCase):
         ''' Test folded/unfolded lines. '''
         # Init options.
         report = self.env.ref('account_reports.account_financial_report_cashsummary0')._with_correct_filters()
-        options = self._init_options(report, 'custom', *date_utils.get_month(self.mar_year_minus_1))
+        options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
         report = report.with_context(report._set_context(options))
 
         lines = report._get_lines(options)
@@ -2014,7 +2005,7 @@ class TestAccountReports(SavepointCase):
 
         # Init options.
         report = self.env['account.bank.reconciliation.report'].with_context(active_id=bank_journal.id)
-        options = self._init_options(report, 'custom', date_utils.get_month(self.mar_year_minus_1)[1])
+        options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
         report = report.with_context(report._set_context(options))
 
         self.assertLinesValues(
@@ -2044,7 +2035,7 @@ class TestAccountReports(SavepointCase):
 
         # Init options.
         report = self.env['account.bank.reconciliation.report'].with_context(active_id=bank_journal.id)
-        options = self._init_options(report, 'custom', date_utils.get_month(self.mar_year_minus_1)[1])
+        options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
         report = report.with_context(report._set_context(options))
 
         self.assertLinesValues(
@@ -2087,7 +2078,7 @@ class TestAccountReports(SavepointCase):
 
         # Init options.
         report = self.env['account.bank.reconciliation.report'].with_context(active_id=bank_journal_eur.id)
-        options = self._init_options(report, 'custom', date_utils.get_month(self.mar_year_minus_1)[1])
+        options = self._init_options(report, *date_utils.get_month(self.mar_year_minus_1))
         report = report.with_context(report._set_context(options))
 
         self.assertLinesValues(
@@ -2117,7 +2108,7 @@ class TestAccountReports(SavepointCase):
         ''' Test folded/unfolded lines. '''
         # Init options.
         report = self.env['account.consolidated.journal']
-        options = self._init_options(report, 'custom', *date_utils.get_quarter(self.mar_year_minus_1))
+        options = self._init_options(report, *date_utils.get_quarter(self.mar_year_minus_1))
         report = report.with_context(report._set_context(options))
 
         lines = report._get_lines(options)
@@ -2178,7 +2169,7 @@ class TestAccountReports(SavepointCase):
 
         # Init options.
         report = self.env['account.consolidated.journal']
-        options = self._init_options(report, 'custom', *date_utils.get_quarter(self.mar_year_minus_1))
+        options = self._init_options(report, *date_utils.get_quarter(self.mar_year_minus_1))
         options = self._update_multi_selector_filter(options, 'journals', bank_journal.ids)
         report = report.with_context(report._set_context(options))
 

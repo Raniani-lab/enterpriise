@@ -12,13 +12,33 @@ class ReportPartnerLedger(models.AbstractModel):
     _name = "account.partner.ledger"
     _description = "Partner Ledger"
 
-    filter_date = {'date_from': '', 'date_to': '', 'filter': 'this_year'}
+    filter_date = {'mode': 'range', 'filter': 'this_year'}
     filter_cash_basis = False
     filter_all_entries = False
     filter_unfold_all = False
     filter_account_type = [{'id': 'receivable', 'name': _('Receivable'), 'selected': False}, {'id': 'payable', 'name': _('Payable'), 'selected': False}]
     filter_unreconciled = False
     filter_partner = True
+
+    @api.model
+    def _get_options_account_type(self, options):
+        all_account_types = []
+        account_types = []
+        for account_type_option in options.get('account_type', []):
+            if account_type_option['selected']:
+                account_types.append(account_type_option)
+            all_account_types.append(account_type_option)
+        return account_types or all_account_types
+
+    @api.model
+    def _get_options_domain(self, options):
+        # OVERRIDE
+        # Handle filter_unreconciled + filter_account_type
+        domain = super(ReportPartnerLedger, self)._get_options_domain(options)
+        if options.get('unreconciled'):
+            domain.append(('full_reconcile_id', '=', False))
+        domain.append(('account_id.internal_type', 'in', [t['id'] for t in self._get_options_account_type(options)]))
+        return domain
 
     def _get_templates(self):
         templates = super(ReportPartnerLedger, self)._get_templates()
@@ -208,7 +228,7 @@ class ReportPartnerLedger(models.AbstractModel):
                     else:
                         line_debit = line.debit
                         line_credit = line.credit
-                    date = amls.env.context.get('date') or fields.Date.today()
+                    date = amls.env.context.get('date_to') or fields.Date.today()
                     line_currency = line.company_id.currency_id
                     line_debit = line_currency._convert(line_debit, used_currency, user_company, date)
                     line_credit = line_currency._convert(line_credit, used_currency, user_company, date)

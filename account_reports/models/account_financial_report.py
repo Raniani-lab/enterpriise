@@ -7,7 +7,6 @@ from odoo import models, fields, api, _
 from odoo.tools.safe_eval import safe_eval
 from odoo.tools.misc import formatLang
 from odoo.tools import float_is_zero, ustr
-from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from odoo.exceptions import UserError, ValidationError
 from odoo.osv import expression
@@ -37,6 +36,25 @@ class ReportAccountFinancialReport(models.Model):
     tax_report = fields.Boolean('Tax Report', help="Set to True to automatically filter out journal items that have the boolean field 'tax_exigible' set to False")
     applicable_filters_ids = fields.Many2many('ir.filters', domain="[('model_id', '=', 'account.move.line')]",
                                               help='Filters that can be used to filter and group lines in this report. This uses saved filters on journal items.')
+
+    @api.model
+    def _init_filter_ir_filters(self, options, previous_options=None):
+        if self.filter_ir_filters is None:
+            return
+
+        if previous_options and previous_options.get('ir_filters'):
+            filters_map = dict((opt['id'], opt['selected']) for opt in previous_options['ir_filters'])
+        else:
+            filters_map = {}
+        options['ir_filters'] = []
+        for ir_filter in self.applicable_filters_ids:
+            options['ir_filters'].append({
+                'id': ir_filter.id,
+                'name': ir_filter.name,
+                'domain': ast.literal_eval(ir_filter.domain),
+                'groupby': (ir_filter.context and ast.literal_eval(ir_filter.context) or {}).get('group_by', []),
+                'selected': filters_map.get(ir_filter.id, False),
+            })
 
     def _get_column_name(self, field_content, field):
         comodel_name = self.env['account.move.line']._fields[field].comodel_name
@@ -139,6 +157,11 @@ class ReportAccountFinancialReport(models.Model):
         columns = [{'name': ''}]
         if self.debit_credit and not options.get('comparison', {}).get('periods', False):
             columns += [{'name': _('Debit'), 'class': 'number'}, {'name': _('Credit'), 'class': 'number'}]
+        if not self.filter_date:
+            if self.date_range:
+                self.filter_date = {'mode': 'range', 'filter': 'this_year'}
+            else:
+                self.filter_date = {'mode': 'single', 'filter': 'today'}
         columns += [{'name': self.format_date(options), 'class': 'number'}]
         if options.get('comparison') and options['comparison'].get('periods'):
             for period in options['comparison']['periods']:
@@ -164,41 +187,16 @@ class ReportAccountFinancialReport(models.Model):
             return self.env['account.journal'].search([('company_id', 'in', self.env.user.company_ids.ids or [self.env.user.company_id.id]), ('type', 'in', ['bank', 'cash'])], order="company_id, name")
         return super(ReportAccountFinancialReport, self)._get_filter_journals()
 
-    def _build_options(self, previous_options=None):
-        options = super(ReportAccountFinancialReport, self)._build_options(previous_options=previous_options)
-
-        if self.filter_ir_filters:
-            options['ir_filters'] = []
-
-            previously_selected_id = False
-            if previous_options and previous_options.get('ir_filters'):
-                previously_selected_id = [f for f in previous_options['ir_filters'] if f.get('selected')]
-                if previously_selected_id:
-                    previously_selected_id = previously_selected_id[0]['id']
-                else:
-                    previously_selected_id = False
-
-            for ir_filter in self.filter_ir_filters:
-                options['ir_filters'].append({
-                    'id': ir_filter.id,
-                    'name': ir_filter.name,
-                    'domain': ir_filter.domain,
-                    'context': ir_filter.context,
-                    'selected': ir_filter.id == previously_selected_id,
-                })
-
-        return options
-
     @api.multi
     def _with_correct_filters(self):
         if self.date_range:
-            self.filter_date = {'date_from': '', 'date_to': '', 'filter': 'this_year'}
+            self.filter_date = {'mode': 'range', 'filter': 'this_year'}
             if self.comparison:
                 self.filter_comparison = {'date_from': '', 'date_to': '', 'filter': 'no_comparison', 'number_period': 1}
         else:
-            self.filter_date = {'date': '', 'filter': 'today'}
+            self.filter_date = {'mode': 'single', 'filter': 'today'}
             if self.comparison:
-                self.filter_comparison = {'date': '', 'filter': 'no_comparison', 'number_period': 1}
+                self.filter_comparison = {'date_from': '', 'date_to': '', 'filter': 'no_comparison', 'number_period': 1}
         self.filter_cash_basis = False if self.cash_basis else None
         if self.unfold_all_filter:
             self.filter_unfold_all = False
@@ -330,7 +328,7 @@ class ReportAccountFinancialReport(models.Model):
         return self.env.cr.fetchall()
 
     def _get_filter_info(self, options):
-        if not options['ir_filters']:
+        if not options.get('ir_filters'):
             return False, False
 
         selected_ir_filter = [f for f in options['ir_filters'] if f.get('selected')]
@@ -339,9 +337,7 @@ class ReportAccountFinancialReport(models.Model):
         else:
             return False, False
 
-        domain = ast.literal_eval(selected_ir_filter['domain'])
-        group_by = ast.literal_eval(selected_ir_filter['context']).get('group_by', [])
-        return domain, group_by
+        return selected_ir_filter['domain'], selected_ir_filter['groupby']
 
     @api.multi
     def _get_lines(self, options, line_id=None):

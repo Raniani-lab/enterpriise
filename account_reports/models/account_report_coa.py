@@ -10,7 +10,7 @@ class report_account_coa(models.AbstractModel):
     _description = "Chart of Account Report"
     _inherit = "account.general.ledger"
 
-    filter_date = {'date_from': '', 'date_to': '', 'filter': 'this_month'}
+    filter_date = {'mode': 'range', 'filter': 'this_month'}
     filter_comparison = {'date_from': '', 'date_to': '', 'filter': 'no_comparison', 'number_period': 1}
     filter_cash_basis = False
     filter_all_entries = False

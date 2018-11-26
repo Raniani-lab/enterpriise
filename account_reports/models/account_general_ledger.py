@@ -12,7 +12,7 @@ class report_account_general_ledger(models.AbstractModel):
     _description = "General Ledger Report"
     _inherit = "account.report"
 
-    filter_date = {'date_from': '', 'date_to': '', 'filter': 'this_month'}
+    filter_date = {'mode': 'range', 'filter': 'this_month'}
     filter_cash_basis = False
     filter_all_entries = False
     filter_journals = True
@@ -357,7 +357,7 @@ class report_account_general_ledger(models.AbstractModel):
                     else:
                         line_debit = line.debit
                         line_credit = line.credit
-                    date = amls.env.context.get('date') or fields.Date.today()
+                    date = amls.env.context.get('date_to') or fields.Date.today()
                     line_debit = line.company_id.currency_id._convert(line_debit, used_currency, company_id, date)
                     line_credit = line.company_id.currency_id._convert(line_credit, used_currency, company_id, date)
                     progress = progress + line_debit - line_credit

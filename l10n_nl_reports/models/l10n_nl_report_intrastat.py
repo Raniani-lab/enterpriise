@@ -9,7 +9,7 @@ class ReportL10nNLIntrastat(models.AbstractModel):
     _description = 'Intrastat Report (ICP)'
     _inherit = 'account.report'
 
-    filter_date = {'date_from': '', 'date_to': '', 'filter': 'this_year'}
+    filter_date = {'mode': 'range', 'filter': 'this_year'}
 
     def _get_columns_name(self, options):
         return [

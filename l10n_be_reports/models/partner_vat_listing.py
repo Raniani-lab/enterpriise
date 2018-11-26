@@ -12,7 +12,7 @@ class ReportL10nBePartnerVatListing(models.AbstractModel):
     _description = "Partner VAT Listing"
     _inherit = 'account.report'
 
-    filter_date = {'date_from': '', 'date_to': '', 'filter': 'this_month'}
+    filter_date = {'mode': 'range', 'filter': 'this_month'}
 
     @api.model
     def _get_lines(self, options, line_id=None):

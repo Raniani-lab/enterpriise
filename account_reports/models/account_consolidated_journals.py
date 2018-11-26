@@ -9,7 +9,8 @@ class report_account_consolidated_journal(models.AbstractModel):
     _description = "Consolidated Journals Report"
     _inherit = 'account.report'
 
-    filter_date = {'date_from': '', 'date_to': '', 'filter': 'this_year'}
+    filter_multi_company = None
+    filter_date = {'mode': 'range', 'filter': 'this_year'}
     filter_all_entries = False
     filter_journals = True
     filter_unfold_all = False
@@ -22,25 +23,8 @@ class report_account_consolidated_journal(models.AbstractModel):
     def _get_options(self, previous_options=None):
         options = super(report_account_consolidated_journal, self)._get_options(previous_options=previous_options)
         # We do not want multi company for this report
-        if options.get('multi_company'):
-            options.pop('multi_company')
         options.setdefault('date', {})
         options['date'].setdefault('date_to', fields.Date.context_today(self))
-
-        # Overwrite journals, otherwise changing companies won't work
-        options['journals'] = self._get_journals()
-
-        # Keep the selection, though
-        selected_journals = {}
-        if previous_options:
-            selected_journals = {
-                j.get('id'): j.get('selected', False)
-                for j in previous_options.get('journals', [])
-            }
-
-        for j in options['journals']:
-            j['selected'] = selected_journals.get(j.get('id'), False)
-
         return options
 
     def _get_report_name(self):

@@ -13,7 +13,7 @@ class analytic_report(models.AbstractModel):
     # the line with this id will contain analytic accounts without a group
     DUMMY_GROUP_ID = 'group_for_accounts_with_no_group'
 
-    filter_date = {'date_from': '', 'date_to': '', 'filter': 'this_month'}
+    filter_date = {'mode': 'range', 'filter': 'this_month'}
     filter_analytic = True
     filter_hierarchy = False
     filter_unfold_all = False

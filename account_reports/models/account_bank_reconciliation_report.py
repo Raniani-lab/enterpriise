@@ -13,7 +13,7 @@ class account_bank_reconciliation_report(models.AbstractModel):
     _description = 'Bank Reconciliation Report'
     _inherit = "account.report"
 
-    filter_date = {'date': '', 'filter': 'today'}
+    filter_date = {'mode': 'single', 'filter': 'today'}
 
     #used to enumerate the 'layout' lines with a distinct ID
     line_number = 0
@@ -172,7 +172,7 @@ class account_bank_reconciliation_report(models.AbstractModel):
         lines.append(self._add_title_line(
             options, report_currency, gl_title % accounts_string,
             level=1, amount=report_data['total_already_accounted'],
-            date=datetime.strptime(options['date']['date'], DEFAULT_SERVER_DATE_FORMAT))
+            date=datetime.strptime(options['date']['date_to'], DEFAULT_SERVER_DATE_FORMAT))
         )
 
         lines.append(self._add_title_line(options, report_currency, _("Operations to Process"), level=1))

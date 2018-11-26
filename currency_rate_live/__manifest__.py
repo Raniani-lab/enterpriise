@@ -14,9 +14,6 @@
         'views/service_cron_data.xml',
         'data/data.xml',
     ],
-    'demo': [
-        'demo/res_company_demo.xml',
-    ],
     'installable': True,
     'auto_install': True,
     'license': 'OEEL-1',

@@ -126,8 +126,6 @@ class BanxicoTest(TransactionCase):
         super(BanxicoTest, self).setUp()
         self.company = self.env.user.company_id
         self.company.currency_provider = 'banxico'
-        self.company_2 = self.env.ref('currency_rate_live.res_company_company_2')
-        self.company_1 = self.env.ref('currency_rate_live.res_company_company_1')
         self.user_root = self.env.ref('base.user_root')
         self.mxn = self.env.ref('base.MXN')
         self.usd = self.env.ref('base.USD')
@@ -135,6 +133,20 @@ class BanxicoTest(TransactionCase):
         self.cad = self.env.ref('base.CAD')
         self.jpy = self.env.ref('base.JPY')
         self.gbp = self.env.ref('base.GBP')
+        self.company_1 = self.env['res.company'].create({
+            'name': 'Company 1',
+            'country_id': self.env.ref('base.mx').id,
+            'currency_id': self.mxn.id,
+            'currency_provider': 'banxico',
+            'currency_interval_unit': 'daily',
+        })
+        self.company_2 = self.env['res.company'].create({
+            'name': 'Company 2',
+            'country_id': self.env.ref('base.mx').id,
+            'currency_id': self.mxn.id,
+            'currency_provider': 'banxico',
+            'currency_interval_unit': 'daily',
+        })
         self.foreign_currencies = [
             self.usd, self.eur, self.cad, self.jpy, self.gbp]
         self.foreign_expected_rates = [

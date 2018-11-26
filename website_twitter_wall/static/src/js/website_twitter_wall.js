@@ -1,10 +1,10 @@
 odoo.define('website_twitter_wall.views', function (require) {
-"use strict";
+'use strict';
 
-var sAnimations = require('website.content.snippets.animation');
-var ajax = require('web.ajax');
 var core = require('web.core');
 var Widget = require('web.Widget');
+var sAnimations = require('website.content.snippets.animation');
+
 var qweb = core.qweb;
 
 var TweetWall = Widget.extend({
@@ -14,9 +14,10 @@ var TweetWall = Widget.extend({
      * @override
      * @param {number} wall_id
      */
-    init: function (wall_id) {
+    init: function (parent, wallID) {
+        this._super.apply(this, arguments);
         var self = this;
-        this.wall_id = wall_id;
+        this.wall_id = wallID;
         this.pool_cache = {};
         this.repeat = false;
         this.shuffle = false;
@@ -27,7 +28,7 @@ var TweetWall = Widget.extend({
         this.fetch_deferred = null;
         this.prependTweetsTo = $('.o-tw-walls-col:first');
         this.interval = setInterval(function () {
-            self.get_data();
+            self._getData();
         }, this.timeout);
         var zoomLevel = 1 / (window.devicePixelRatio * 0.80);
         this.zoom(zoomLevel);
@@ -45,10 +46,11 @@ var TweetWall = Widget.extend({
         this.zoomLevel = level;
         if ($.browser.mozilla) {
             $('body').css('MozTransform', 'scale(' + this.zoomLevel + ')');
-        }
-        else {
-            $('body').css('zoom',  this.zoomLevel);
-            $("iframe").each(function (iframe){$(iframe.contentDocument).find("body").css('zoom', level)});
+        } else {
+            $('body').css('zoom', this.zoomLevel);
+            $('iframe').each(function (iframe) {
+                $(iframe.contentDocument).find('body').css('zoom', level);
+            });
         }
     },
     /**
@@ -77,19 +79,24 @@ var TweetWall = Widget.extend({
      */
     _getData: function () {
         var self = this;
-        if (!this.fetch_deferred || this.fetch_deferred.state()  !== "pending"){
-            self.fetch_deferred = ajax.jsonRpc("/twitter_wall/get_tweet/" + self.wall_id, 'call', {
-                'last_tweet_id': self.last_tweet_id
+        if (!this.fetch_deferred || this.fetch_deferred.state() !== 'pending') {
+            self.fetch_deferred = this._rpc({
+                route: '/twitter_wall/get_tweet/' + self.wall_id,
+                params: {
+                    'last_tweet_id': self.last_tweet_id,
+                },
             }).then(function (res) {
-                if (res.length){
+                if (res.length) {
                     self.last_tweet_id = res[0].id;
                     _.each(res, function (r) {
                         r.round = 0;
                         self.pool_cache[r.id] = r;
                     });
                 }
-                var at_least_one_not_seen = _.some(self.pool_cache, function (t){return t.round === 0;});
-                if (at_least_one_not_seen || self.repeat) {
+                var atLeastOneNotSeen = _.some(self.pool_cache, function (t) {
+                    return t.round === 0;
+                });
+                if (atLeastOneNotSeen || self.repeat) {
                     self.process_tweet();
                 }
             });
@@ -100,24 +107,30 @@ var TweetWall = Widget.extend({
      */
     _processTweet: function () {
         var self = this;
-        var least_round = _.min(self.pool_cache, function (o){return o.round;}).round;
+        var leastRound = _.min(self.pool_cache, function (o) {
+            return o.round;
+        }).round;
         // Filter tweets that have not been seen for the most time,
-        // exxcluding the ones that are visible on the screen
+        // excluding the ones that are visible on the screen
         // (the last case is when there is not much tweets to loop on, when looping)
         var tweets = _.filter(self.pool_cache, function (f) {
             var el = $('*[data-tweet-id="' + f.id + '"]');
-            if (f.round <= least_round && (!el.length || el.offset().top > $(window).height())){
+            if (f.round <= leastRound && (!el.length || el.offset().top > $(window).height())) {
                 return f;
             }
         });
-        if (this.shuffle) tweets = _.shuffle(tweets);
+        if (this.shuffle) {
+            tweets = _.shuffle(tweets);
+        }
         if (tweets.length) {
             var tweet = tweets[0];
-            self.pool_cache[tweet.id].round = least_round + 1;
-            var tweet_desc = $(tweet.tweet_html);
-            $(qweb.render("website_twitter_wall_tweets", {'tweet': tweet_desc.prop('outerHTML')})).prependTo(self.prependTweetsTo);
-            var next_prepend = self.prependTweetsTo.next('.o-tw-walls-col');
-            self.prependTweetsTo = next_prepend.length ? next_prepend.first() : $('.o-tw-walls-col').first();
+            self.pool_cache[tweet.id].round = leastRound + 1;
+            var tweetDesc = $(tweet.tweet_html);
+            $(qweb.render('website_twitter_wall_tweets', {
+                tweet: tweetDesc.prop('outerHTML'),
+            })).prependTo(self.prependTweetsTo);
+            var nextPrepend = self.prependTweetsTo.next('.o-tw-walls-col');
+            self.prependTweetsTo = nextPrepend.length ? nextPrepend.first() : $('.o-tw-walls-col').first();
         }
     },
     /**
@@ -126,7 +139,7 @@ var TweetWall = Widget.extend({
     _destroy: function () {
         clearInterval(this.interval);
         this.zoom(1);
-    }
+    },
 });
 
 sAnimations.registry.websiteTwitterWall = sAnimations.Class.extend({
@@ -144,27 +157,27 @@ sAnimations.registry.websiteTwitterWall = sAnimations.Class.extend({
      * @param {Object} parent
      */
     start: function () {
+        var self = this;
         this.twitterWall;
         this.mouseTimer;
 
         // create an observer instance
         var observer = new MutationObserver(function (mutations) {
-            var self = this;
             mutations.forEach(function (mutation) {
-            if (mutation.type === 'attributes' && mutation.attributeName === 'data-tweet-id') {
-                $(mutation.target.contentDocument).find('.Tweet-header .Tweet-brand, .Tweet-body .Tweet-actions').remove();
-                $(mutation.target.contentDocument).find("body").css('zoom', $('body').css('zoom'));
-                $(mutation.target.contentDocument).find('.EmbeddedTweet').removeClass('js-clickToOpenTarget');
-            }
-          });
+                if (mutation.type === 'attributes' && mutation.attributeName === 'data-tweet-id') {
+                    $(mutation.target.contentDocument).find('.Tweet-header .Tweet-brand, .Tweet-body .Tweet-actions').remove();
+                    $(mutation.target.contentDocument).find('body').css('zoom', $('body').css('zoom'));
+                    $(mutation.target.contentDocument).find('.EmbeddedTweet').removeClass('js-clickToOpenTarget');
+                }
+            });
         });
 
         // pass in the target node, as well as the observer options
         observer.observe($('.o-tw-walls')[0], {
-          attributes: true,
-          childList: true,
-          characterData: false,
-          subtree: true,
+            attributes: true,
+            childList: true,
+            characterData: false,
+            subtree: true,
         });
 
         // Do some stuff on Fullscreen and exit Fullscreen
@@ -173,7 +186,7 @@ sAnimations.registry.websiteTwitterWall = sAnimations.Class.extend({
             if (document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen) {
 
                 // Initialize widgets
-                this.twitterWall = new TweetWall(parseInt($('.o-tw-walls').data('wall-id')));
+                this.twitterWall = new TweetWall(self, parseInt($('.o-tw-walls').data('wall-id')));
 
                 // Hide scroll
                 window.scrollTo(0, 0);
@@ -192,12 +205,12 @@ sAnimations.registry.websiteTwitterWall = sAnimations.Class.extend({
                         window.clearTimeout(this.mouseTimer);
                     }
                     if (!cursorVisible) {
-                        document.body.style.cursor = "default";
+                        document.body.style.cursor = 'default';
                         cursorVisible = true;
                     }
                     this.mouseTimer = window.setTimeout(function () {
                         this.mouseTimer = null;
-                        document.body.style.cursor = "none";
+                        document.body.style.cursor = 'none';
                         cursorVisible = false;
                     }, 2000);
                 };
@@ -206,8 +219,8 @@ sAnimations.registry.websiteTwitterWall = sAnimations.Class.extend({
                 $('center.o-tw-tweet > span').show();
                 $('.o-tw-tweet-delete').show();
                 $('.o-tw-walls').css('margin-top', '0');
-                document.body.style.cursor = "default";
-                if (this.mouseTimer){
+                document.body.style.cursor = 'default';
+                if (this.mouseTimer) {
                     clearTimeout(this.mouseTimer);
                 }
                 this.twitterWall.destroy();
@@ -227,16 +240,21 @@ sAnimations.registry.websiteTwitterWall = sAnimations.Class.extend({
     _setColumns: function (number, single) {
         var cols = $('.o-tw-walls-col').length;
         var i = cols;
-        var new_cols = [];
-        while (i < number){
-            new_cols.push($('<div class="o-tw-walls-col col-'+ 12 / number +'"></div>').appendTo('.o-tw-walls'));
+        var newCols = [];
+        while (i < number) {
+            newCols.push($('<div class="o-tw-walls-col col-' + 12 / number + '"></div>').appendTo('.o-tw-walls'));
             i++;
         }
         $('.o-tw-walls-col:gt(' + (number - 1) + ')').remove();
         $('.o-tw-walls-col').removeClass('col-4 col-6 col-12').addClass('col-' + 12 / number);
-        if (single)$('.o-tw-walls-col').addClass('o-tw-tweet-single');
-        else if (single === false) $('.o-tw-walls-col').removeClass('o-tw-tweet-single');
-        if (new_cols.length) this.twitterWall.prependTweetsTo = new_cols[0];
+        if (single) {
+            $('.o-tw-walls-col').addClass('o-tw-tweet-single');
+        } else if (single === false) {
+            $('.o-tw-walls-col').removeClass('o-tw-tweet-single');
+        }
+        if (newCols.length) {
+            this.twitterWall.prependTweetsTo = newCols[0];
+        }
     },
 
     //--------------------------------------------------------------------------
@@ -247,9 +265,10 @@ sAnimations.registry.websiteTwitterWall = sAnimations.Class.extend({
      * Delete tweet
      *
      * @override
+     * @param {Event} ev
      */
-    _onDeleteTweet: function () {
-        var tweet = $(this).closest('.o-tw-tweet');
+    _onDeleteTweet: function (ev) {
+        var tweet = $(ev.target).closest('.o-tw-tweet');
         this._rpc({'model':
             'website.twitter.tweet',
             'method': 'unlink',
@@ -288,22 +307,23 @@ sAnimations.registry.websiteTwitterWall = sAnimations.Class.extend({
      * Handle all options
      *
      * @override
+     * @param {Event} ev
      */
-     _onOption: function () {
+    _onOption: function (ev) {
         this.twitterWall.timeout = 7000;
-        var active = $(this).hasClass('active');
-        $(this).toggleClass('active');
-        switch ($(this).data('operation')) {
+        var active = $(ev.target).hasClass('active');
+        $(ev.target).toggleClass('active');
+        switch ($(ev.target).data('operation')) {
             case 'list':
-                $(this).siblings().removeClass('active');
+                $(ev.target).siblings().removeClass('active');
                 this._setColumns(1);
                 break;
             case 'double':
-                $(this).siblings().removeClass('active');
+                $(ev.target).siblings().removeClass('active');
                 this._setColumns(2);
                 break;
             case 'triple':
-                $(this).siblings().removeClass('active');
+                $(ev.target).siblings().removeClass('active');
                 this._setColumns(3);
                 break;
             case 'single':
@@ -317,18 +337,17 @@ sAnimations.registry.websiteTwitterWall = sAnimations.Class.extend({
                 this.twitterWall.toggle_shuffle();
                 break;
         }
-        $(document).trigger("clear_tweet_queue");
-     },
-     /**
+        $(document).trigger('clear_tweet_queue');
+    },
+    /**
      * Handle zoom options
      *
      * @override
+     * @param {Event} ev
      */
-     _onZoom: function () {
-        var step = $(this).data('operation') === 'plus' ? 0.05 : -0.05;
+    _onZoom: function (ev) {
+        var step = $(ev.target).data('operation') === 'plus' ? 0.05 : -0.05;
         this.twitterWall.zoom(this.twitterWall.zoomLevel + step);
-     },
-
+    },
 });
-
 });

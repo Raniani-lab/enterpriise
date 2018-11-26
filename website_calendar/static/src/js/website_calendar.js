@@ -2,9 +2,6 @@ odoo.define('website_calendar.select_appointment_type', function (require) {
 'use strict';
 
 var sAnimations = require('website.content.snippets.animation');
-var ajax = require('web.ajax');
-
-require('web_editor.ready');
 
 sAnimations.registry.websiteCalendarSelect = sAnimations.Class.extend({
     selector: '.o_website_calendar_appointment',
@@ -13,6 +10,15 @@ sAnimations.registry.websiteCalendarSelect = sAnimations.Class.extend({
     },
 
     /**
+     * @constructor
+     */
+    init: function () {
+        this._super.apply(this, arguments);
+        // Check if we cannot replace this by a async handler once the related
+        // task is merged in master
+        this._onAppointmentTypeChange = _.debounce(this._onAppointmentTypeChange, 250);
+    },
+    /**
      * @override
      * @param {Object} parent
      */
@@ -20,6 +26,7 @@ sAnimations.registry.websiteCalendarSelect = sAnimations.Class.extend({
         // set default timezone
         var timezone = jstz.determine();
         $(".o_website_appoinment_form select[name='timezone']").val(timezone.name());
+        return this._super.apply(this, arguments);
     },
 
     //--------------------------------------------------------------------------
@@ -27,58 +34,62 @@ sAnimations.registry.websiteCalendarSelect = sAnimations.Class.extend({
     //--------------------------------------------------------------------------
 
     /**
-     * On appointment type change: adapt appointment intro text and available employees (if option enabled)
+     * On appointment type change: adapt appointment intro text and available
+     * employees (if option enabled)
      *
      * @override
+     * @param {Event} ev
      */
-    _onAppointmentTypeChange: function () {
-        _.debounce(function () {
-            var appointment_id = $(this).val();
-            var previous_selected_employee_id = $(".o_website_appoinment_form select[name='employee_id']").val();
-            var post_url = '/website/calendar/' + appointment_id + '/appointment';
-            $(".o_website_appoinment_form").attr('action', post_url);
-            ajax.jsonRpc("/website/calendar/get_appointment_info", 'call', {
-                appointment_id: appointment_id,
-                prev_emp: previous_selected_employee_id,
-            }).then(function (data) {
-                if (data) {
-                    $('.o_calendar_intro').html(data.message_intro);
-                    if (data.assignation_method === 'chosen') {
-                        $(".o_website_appoinment_form div[name='employee_select']").replaceWith(data.employee_selection_html);
-                    } else {
-                        $(".o_website_appoinment_form div[name='employee_select']").addClass('o_hidden');
-                        $(".o_website_appoinment_form select[name='employee_id']").children().remove();
-                    }
+    _onAppointmentTypeChange: function (ev) {
+        var appointmentID = $(ev.target).val();
+        var previousSelectedEmployeeID = $(".o_website_appoinment_form select[name='employee_id']").val();
+        var postURL = '/website/calendar/' + appointmentID + '/appointment';
+        $(".o_website_appoinment_form").attr('action', postURL);
+        this._rpc({
+            route: "/website/calendar/get_appointment_info",
+            params: {
+                appointment_id: appointmentID,
+                prev_emp: previousSelectedEmployeeID,
+            },
+        }).then(function (data) {
+            if (data) {
+                $('.o_calendar_intro').html(data.message_intro);
+                if (data.assignation_method === 'chosen') {
+                    $(".o_website_appoinment_form div[name='employee_select']").replaceWith(data.employee_selection_html);
+                } else {
+                    $(".o_website_appoinment_form div[name='employee_select']").addClass('o_hidden');
+                    $(".o_website_appoinment_form select[name='employee_id']").children().remove();
                 }
-            });
-        }, 250);
+            }
+        });
     },
-
+});
 });
 
-});
+//==============================================================================
 
 odoo.define('website_calendar.appointment_form', function (require) {
 'use strict';
 
 var sAnimations = require('website.content.snippets.animation');
 
-require('web_editor.ready');
-
 sAnimations.registry.websiteCalendarForm = sAnimations.Class.extend({
     selector: '.o_website_calendar_form',
     read_events: {
-        'change .appointment_submit_form select[name="country_id"]': '_onUpdateCountry'
+        'change .appointment_submit_form select[name="country_id"]': '_onCountryChange',
     },
+
+    //--------------------------------------------------------------------------
+    // Handlers
+    //--------------------------------------------------------------------------
 
     /**
      * @override
+     * @param {Event} ev
      */
-    _onUpdateCountry: function () {
-        var country_code = $(this).find('option:selected').data('phone-code');
-        $('.appointment_submit_form #phone_field').val(country_code);
+    _onCountryChange: function (ev) {
+        var countryCode = $(ev.target).find('option:selected').data('phone-code');
+        $('.appointment_submit_form #phone_field').val(countryCode);
     },
-
 });
-
 });

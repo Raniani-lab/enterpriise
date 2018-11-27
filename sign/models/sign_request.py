@@ -456,8 +456,10 @@ class SignRequest(models.Model):
 
     @api.model
     def initialize_new(self, id, signers, followers, reference, subject, message, send=True, without_mail=False):
-        sign_request = self.create({'template_id': id, 'reference': reference, 'favorited_ids': [(4, self.env.user.id)]})
+        sign_users = self.env['res.users'].search([('partner_id', 'in', [signer['partner_id'] for signer in signers])]).filtered(lambda u: u.has_group('sign.group_sign_user'))
+        sign_request = self.create({'template_id': id, 'reference': reference, 'favorited_ids': [(4, item) for item in (sign_users | self.env.user).ids]})
         sign_request.message_subscribe(partner_ids=followers)
+        sign_request.activity_update(sign_users)
         sign_request.set_signers(signers)
         if send:
             sign_request.action_sent(subject, message)
@@ -478,6 +480,11 @@ class SignRequest(models.Model):
             sign_request.message_subscribe(partner_ids=followers)
             sign_request.send_follower_accesses(self.env['res.partner'].browse(followers))
         return sign_request.id
+
+    @api.model
+    def activity_update(self, sign_users):
+        for user in sign_users:
+            self.activity_schedule(activity_type_id=self.env.ref('mail.mail_activity_data_todo').id, user_id=user.id)
 
 
 class SignRequestItem(models.Model):

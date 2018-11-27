@@ -257,8 +257,11 @@ class Sign(http.Controller):
         if not request_item.sign(signature):
             return False
 
+        # mark signature as done in next activity
+        user_id = http.request.env['res.users'].search([('partner_id', '=', request_item.partner_id.id)]).id
+        request_item.sign_request_id.activity_feedback(['mail.mail_activity_data_todo'], user_id=user_id)
+
         request_item.action_completed()
-        request = request_item.sign_request_id
         return True
 
     @http.route(['/sign/password/<int:sign_request_id>'], type='json', auth='public')

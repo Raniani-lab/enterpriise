@@ -81,6 +81,10 @@ class MrpProductionWorkcenterLine(models.Model):
         if self.is_user_working and self.working_state != 'blocked':
             self.button_pending()
 
+    def action_cancel(self):
+        self.mapped('check_ids').filtered(lambda c: c.quality_state == 'none').sudo().unlink()
+        return super(MrpProductionWorkcenterLine, self).action_cancel()
+
     def _create_subsequent_checks(self):
         """ When processing a step with regiter a consumed material
         that's a lot we will some times need to create a new

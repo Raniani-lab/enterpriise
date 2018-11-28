@@ -23,7 +23,7 @@
             <field name="inherit_id" ref="uom.product_uom_form_view"/>
             <field name="arch" type="xml">
             <data>
-                <xpath expr="//form/group" position="inside">
+                <xpath expr="//group[@name='uom_details']" position="inside">
                     <group string="CFDI">
                         <field name="l10n_mx_edi_code_sat_id"/>
                     </group>

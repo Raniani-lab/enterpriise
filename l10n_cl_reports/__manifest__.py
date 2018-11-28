@@ -13,6 +13,7 @@
     ],
     'data': [
         'data/account_financial_html_report_data.xml',
+        'views/eightcolumns_report_view.xml'
     ],
     'installable': True,
     'auto_install': True,

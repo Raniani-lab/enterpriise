@@ -300,3 +300,75 @@ class QualityAlert(models.Model):
         if msg_dict.get('body'):
             custom_values['description'] = msg_dict['body']
         return super(QualityAlert, self).message_new(msg_dict, custom_values)
+
+
+class ProductTemplate(models.Model):
+    _inherit = "product.template"
+
+    quality_control_point_qty = fields.Integer(compute='_compute_quality_check_qty')
+    quality_pass_qty = fields.Integer(compute='_compute_quality_check_qty')
+    quality_fail_qty = fields.Integer(compute='_compute_quality_check_qty')
+
+    def _compute_quality_check_qty(self):
+        for product_tmpl in self:
+            quality_checks_by_state = self.env['quality.check'].read_group(
+                [('product_id', 'in', product_tmpl.product_variant_ids.ids), ('company_id', '=', self.env.user.company_id.id)],
+                ['product_id'],
+                ['quality_state']
+            )
+            for checks_data in quality_checks_by_state:
+                if checks_data['quality_state'] == 'fail':
+                    product_tmpl.quality_fail_qty = checks_data['quality_state_count']
+                elif checks_data['quality_state'] == 'pass':
+                    product_tmpl.quality_pass_qty = checks_data['quality_state_count']
+            product_tmpl.quality_control_point_qty = self.env['quality.point'].search_count([
+                ('product_tmpl_id', '=', product_tmpl.id), ('company_id', '=', self.env.user.company_id.id)
+            ])
+
+    def action_see_quality_control_points(self):
+        self.ensure_one()
+        action = self.env.ref('quality_control.quality_point_action').read()[0]
+        action['context'] = dict(self.env.context, default_product_tmpl_id=self.id)
+        return action
+
+    def action_see_quality_checks(self):
+        self.ensure_one()
+        action = self.env.ref('quality_control.quality_check_action_main').read()[0]
+        action['context'] = dict(self.env.context, default_product_id=self.product_variant_id.id)
+        return action
+
+
+class ProductProduct(models.Model):
+    _inherit = "product.product"
+
+    quality_control_point_qty = fields.Integer(compute='_compute_quality_check_qty')
+    quality_pass_qty = fields.Integer(compute='_compute_quality_check_qty')
+    quality_fail_qty = fields.Integer(compute='_compute_quality_check_qty')
+
+    def _compute_quality_check_qty(self):
+        for product in self:
+            quality_checks_by_state = self.env['quality.check'].read_group(
+                [('product_id', '=', product.id), ('company_id', '=', self.env.user.company_id.id)],
+                ['product_id'],
+                ['quality_state']
+            )
+            for checks_data in quality_checks_by_state:
+                if checks_data['quality_state'] == 'fail':
+                    product.quality_fail_qty = checks_data['quality_state_count']
+                elif checks_data['quality_state'] == 'pass':
+                    product.quality_pass_qty = checks_data['quality_state_count']
+            product.quality_control_point_qty = self.env['quality.point'].search_count([
+                ('product_id', '=', product.id), ('company_id', '=', self.env.user.company_id.id)
+            ])
+
+    def action_see_quality_control_points(self):
+        self.ensure_one()
+        action = self.env.ref('quality_control.quality_point_action').read()[0]
+        action['context'] = dict(self.env.context, default_product_tmpl_id=self.product_tmpl_id.id)
+        return action
+
+    def action_see_quality_checks(self):
+        self.ensure_one()
+        action = self.env.ref('quality_control.quality_check_action_main').read()[0]
+        action['context'] = dict(self.env.context, default_product_id=self.id)
+        return action

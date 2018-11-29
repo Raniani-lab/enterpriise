@@ -404,6 +404,28 @@ class TestAccountReports(SavepointCase):
             ],
         )
 
+        # Mark the '200000 Product Sales' line to be unfolded.
+        # Note: this account has user_type_id.include_initial_balance = False.
+        line_id = lines[5]['id']
+        options['unfolded_lines'] = [line_id]
+
+        self.assertLinesValues(
+            report._get_lines(options, line_id=line_id),
+            #   Name                                    Date            Partner         Currency    Debit           Credit          Balance
+            [   0,                                      1,              3,              4,          5,              6,              7],
+            [
+                # Account.
+                ('200000 Product Sales',                '',             '',             '',         0.00,           1300.00,        -1300.00),
+                # Initial Balance.
+                ('Initial Balance',                     '',             '',             '',         0.00,           700.00,         -700.00),
+                # Account Move Lines.
+                ('INV/2017/0006',                       '03/01/2017',   'partner_c',    '',         '',             300.00,         -1000.00),
+                ('INV/2017/0007',                       '03/01/2017',   'partner_d',    '',         '',             300.00,         -1300.00),
+                # Account Total.
+                ('Total ',                              '',             '',             '',         0.00,           1300.00,        -1300.00),
+            ],
+        )
+
     def test_general_ledger_cash_basis(self):
         ''' Test folded/unfolded lines with the cash basis option. '''
         # Check the cash basis option.
@@ -1130,11 +1152,11 @@ class TestAccountReports(SavepointCase):
                 ('101401 Bank',                         '',             750.00,         100.00,         300.00,         '',             950.00),
                 ('111100 Account Payable',              '',             3265.00,        300.00,         690.00,         '',             3655.00),
                 ('111200 Tax Received',                 '',             285.00,         '',             90.00,          '',             375.00),
-                ('200000 Product Sales',                '',             1900.00,        '',             '',             '',             1300.00),
-                ('220000 Expenses',                     4100.00,        '',             '',             '',             1100.00,        ''),
+                ('200000 Product Sales',                '',             700.00,         '',             600.00,         '',             1300.00),
+                ('220000 Expenses',                     500.00,         '',             600,            '',             1100.00,        ''),
                 ('999999 Undistributed Profits/Losses', 2400.00,        '',             '',             '',             2400.00,        ''),
                 # Report Total.
-                ('Total',                               8600.00,        6200.00,        1180.00,        1180.00,        6280.00,        6280.00),
+                ('Total',                               5000.00,        5000.00,        1780.00,        1780.00,        6280.00,        6280.00),
             ],
         )
 
@@ -1159,9 +1181,9 @@ class TestAccountReports(SavepointCase):
                 ('111100 Account Payable',              '',             '',             300.00,         300.00,         '',             ''),
                 ('111200 Tax Received',                 '',             91.30,          '',             13.05,          '',             104.35),
                 ('200000 Product Sales',                '',             608.70,         '',             86.95,          '',             695.65),
-                ('220000 Expenses',                     1260.87,        '',             '',             '',             478.26,         ''),
+                ('220000 Expenses',                     217.39,         '',             260.87,         '',             478.26,         ''),
                 # Report Total.
-                ('Total',                               1450.00,        1450.00,        539.13,         800.00,         706.52,         1750.00),
+                ('Total',                               406.52,         1450.00,        800.00,         800.00,         706.52,         1750.00),
             ],
         )
 
@@ -1190,14 +1212,14 @@ class TestAccountReports(SavepointCase):
                 ('111100 Account Payable',              '',             3265.00,        300.00,         690.00,         '',             3655.00),
                 ('111200 Tax Received',                 '',             285.00,         '',             90.00,          '',             375.00),
                 ('111200 Tax Received',                 '',             285.00,         '',             90.00,          '',             375.00),
-                ('200000 Product Sales',                '',             1900.00,        '',             '',             '',             1300.00),
-                ('200000 Product Sales',                '',             1900.00,        '',             '',             '',             1300.00),
-                ('220000 Expenses',                     4100.00,        '',             '',             '',             1100.00,        ''),
-                ('220000 Expenses',                     4100.00,        '',             '',             '',             1100.00,        ''),
+                ('200000 Product Sales',                '',             700.00,         '',             600.00,         '',             1300.00),
+                ('200000 Product Sales',                '',             700.00,         '',             600.00,         '',             1300.00),
+                ('220000 Expenses',                     500.00,         '',             600.00,         '',             1100.00,        ''),
+                ('220000 Expenses',                     500.00,         '',             600.00,         '',             1100.00,        ''),
                 ('999999 Undistributed Profits/Losses', 2400.00,        '',             '',             '',             2400.00,        ''),
                 ('999999 Undistributed Profits/Losses', 2400.00,        '',             '',             '',             2400.00,        ''),
                 # Report Total.
-                ('Total',                               17200.00,       12400.00,       2360.00,        2360.00,        12560.00,       12560.00),
+                ('Total',                               10000.00,       10000.00,       3560.00,        3560.00,        12560.00,       12560.00),
             ],
         )
 
@@ -1220,10 +1242,10 @@ class TestAccountReports(SavepointCase):
                 # Accounts.
                 ('101200 Account Receivable',           2185.00,        '',             690.00,         '',             2875.00,        ''),
                 ('111200 Tax Received',                 '',             285.00,         '',             90.00,          '',             375.00),
-                ('200000 Product Sales',                '',             1900.00,        '',             '',             '',             1300.00),
+                ('200000 Product Sales',                '',             700.00,         '',             600.00,         '',             1300.00),
                 ('999999 Undistributed Profits/Losses', '',             1200.00,        '',             '',             '',             1200.00),
                 # Report Total.
-                ('Total',                               2185.00,        3385.00,        690.00,         90.00,          2875.00,        2875.00),
+                ('Total',                               2185.00,        2185.00,        690.00,         690.00,         2875.00,        2875.00),
             ],
         )
 

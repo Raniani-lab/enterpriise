@@ -197,10 +197,10 @@ class report_account_general_ledger(models.AbstractModel):
         results = self_ctx._do_query_group_by_account(options, line_id)
 
         # Compute the initial balance as the current balance for each account until the report date_from.
-        # E.g. date_from = 2018-01-01, date_to = 2018-12-31.
-        # The initial balance will use date_from = False & date_to = 2017-12-31.
+        # E.g. date_from = 2018-03-01, date_to = 2018-03-31.
+        # The initial balance will use date_from = 2018-01-01 & date_to = 2018-03-01.
         date_from_obj = fields.Date.from_string(options['date']['date_from'])
-        self_ctx = self.with_context(date_from=False, date_to=(date_from_obj - timedelta(days=1)).strftime(DEFAULT_SERVER_DATE_FORMAT))
+        self_ctx = self.with_context(date_from=fiscalyear_dates['date_from'].strftime(DEFAULT_SERVER_DATE_FORMAT), date_to=(date_from_obj - timedelta(days=1)).strftime(DEFAULT_SERVER_DATE_FORMAT))
         initial_bal_results = self_ctx._do_query_group_by_account(options, line_id)
 
         # Compute the unaffected earnings that is the unaffected difference between income/expense accounts for the

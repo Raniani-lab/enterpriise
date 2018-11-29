@@ -5,6 +5,9 @@
         <field name="model">quality.point</field>
         <field name="inherit_id" ref="quality.quality_point_view_form"/>
         <field name="arch" type="xml">
+            <field name="test_type_id" position="after">
+                <field name="test_report_type" widget="selection" attrs="{'invisible': [('test_type','!=','print_label')]}"/>
+            </field>
             <field name="picking_type_id" position="after">
                 <field string="Work Order Operation" name="operation_id" attrs="{'invisible': [('code', '!=', 'mrp_operation')]}" groups="mrp.group_mrp_routings" options="{'no_create': True}"/>
                 <field name="code" invisible="1"/>

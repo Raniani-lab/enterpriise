@@ -52,7 +52,7 @@ msgstr "<span class=\"text-muted\"> ким</span>"
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_product_product__mps_active
 msgid "Active in MPS"
-msgstr ""
+msgstr "Дія у MPS"
 
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.mrp_mps_report_view_form
@@ -137,8 +137,8 @@ msgstr "Дата"
 #: model:ir.model.fields,help:mrp_mps.field_sale_forecast__product_uom_id
 msgid "Default unit of measure used for all stock operations."
 msgstr ""
-"Стандартна одиниця вимірювання, що використовується для всіх операцій з "
-"акціями."
+"Стандартна одиниця вимірювання, що використовується для всіх складських "
+"операцій."
 
 #. module: mrp_mps
 #: model:ir.model.fields,help:mrp_mps.field_res_company__manufacturing_period
@@ -221,7 +221,7 @@ msgstr "Непряма кількість"
 #. module: mrp_mps
 #: model:ir.model,name:mrp_mps.model_sale_forecast_indirect
 msgid "Indirect Sales Forecast"
-msgstr ""
+msgstr "Прогноз непрямого продажу"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_mps_report____last_update
@@ -269,7 +269,7 @@ msgstr "MPS"
 #. module: mrp_mps
 #: model:ir.model,name:mrp_mps.model_mrp_mps_report
 msgid "MPS Report"
-msgstr ""
+msgstr "Звіт MPS "
 
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
@@ -321,7 +321,7 @@ msgstr "Щомісячно"
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast_indirect__product_origin_id
 msgid "Origin Product"
-msgstr ""
+msgstr "Оригінальний товар"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_mps_report__period
@@ -370,7 +370,7 @@ msgstr "Рядки"
 #. module: mrp_mps
 #: model:ir.model,name:mrp_mps.model_sale_forecast
 msgid "Sales Forecast"
-msgstr ""
+msgstr "Прогноз продажів"
 
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.product_product_view_form_mps
@@ -393,7 +393,7 @@ msgstr "Область"
 #. module: mrp_mps
 #: model:ir.model,name:mrp_mps.model_stock_rule
 msgid "Stock Rule"
-msgstr ""
+msgstr "Складське правило"
 
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.res_config_settings_view_form

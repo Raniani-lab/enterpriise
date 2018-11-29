@@ -129,7 +129,9 @@ class MarketingCampaign(models.Model):
                 # Case 1: Trigger = begin
                 # Create new root traces for all running participants -> consider campaign begin date is now to avoid spamming participants
                 if activity.trigger_type == 'begin':
-                    participants = self.env['marketing.participant'].search([('state', '=', 'running')])
+                    participants = self.env['marketing.participant'].search([
+                        ('state', '=', 'running'), ('campaign_id', '=', campaign.id)
+                    ])
                     for participant in participants:
                         schedule_date = Datetime.from_string(Datetime.now()) + activity_offset
                         self.env['marketing.trace'].create({

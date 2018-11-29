@@ -5,12 +5,13 @@
 # Translators:
 # Martin Trigaux, 2018
 # Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-08-24 11:38+0000\n"
 "Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
@@ -27,52 +28,52 @@ msgstr ", від"
 #. module: mrp_account
 #: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "<span>Code</span>"
-msgstr ""
+msgstr "<span>Код</span>"
 
 #. module: mrp_account
 #: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "<span>Cost/hour</span>"
-msgstr ""
+msgstr "<span>Вартість/година</span>"
 
 #. module: mrp_account
 #: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "<span>Operation</span>"
-msgstr ""
+msgstr "<span>Операція</span>"
 
 #. module: mrp_account
 #: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "<span>Operator</span>"
-msgstr ""
+msgstr "<span>Оператор</span>"
 
 #. module: mrp_account
 #: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "<span>Quantity</span>"
-msgstr ""
+msgstr "<span>Кількість</span>"
 
 #. module: mrp_account
 #: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "<span>Raw Materials</span>"
-msgstr ""
+msgstr "<span>Сировина</span>"
 
 #. module: mrp_account
 #: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "<span>Scraps</span>"
-msgstr ""
+msgstr "<span>Брак</span>"
 
 #. module: mrp_account
 #: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "<span>Total Cost</span>"
-msgstr ""
+msgstr "<span>Загальна сума</span>"
 
 #. module: mrp_account
 #: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "<span>Unit Cost</span>"
-msgstr ""
+msgstr "<span>Ціна за одиницю</span>"
 
 #. module: mrp_account
 #: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "<span>Working Time</span>"
-msgstr ""
+msgstr "<span>Робочий час</span>"
 
 #. module: mrp_account
 #: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
@@ -102,7 +103,7 @@ msgstr "Аналітичний рахунок"
 #. module: mrp_account
 #: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "By product(s)"
-msgstr ""
+msgstr "Товаром(и)"
 
 #. module: mrp_account
 #: model:ir.actions.report,name:mrp_account.action_cost_struct_mrp_production
@@ -153,7 +154,7 @@ msgid ""
 "Fill this only if you want automatic analytic accounting entries on "
 "production orders."
 msgstr ""
-"Заповніть це, лише якщо ви хочете, щоб автоматичні аналітичні записи "
+"Заповніть це, лише якщо ви хочете автоматичні аналітичні записи "
 "бухгалтерського обліку для виробничих замовлень."
 
 #. module: mrp_account
@@ -171,7 +172,7 @@ msgstr "Остання модифікація"
 #. module: mrp_account
 #: model:ir.model,name:mrp_account.model_report_mrp_account_mrp_cost_structure
 msgid "MRP Cost Structure Report"
-msgstr ""
+msgstr "Звіт структури вартості MRP"
 
 #. module: mrp_account
 #: model:ir.model,name:mrp_account.model_product_product
@@ -186,7 +187,7 @@ msgstr "Шаблон товару"
 #. module: mrp_account
 #: model:ir.model,name:mrp_account.model_report_mrp_account_product_template_cost_structure
 msgid "Product Template Cost Structure Report"
-msgstr ""
+msgstr "Звіт шаблону товару структури вартості"
 
 #. module: mrp_account
 #: model:ir.model,name:mrp_account.model_mrp_production

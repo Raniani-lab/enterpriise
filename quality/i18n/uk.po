@@ -110,7 +110,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_alert__check_id
 #: model:ir.model.fields,field_description:quality.field_quality_point__check_ids
 msgid "Check"
-msgstr "Чек"
+msgstr "Перевірка"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_point__check_count
@@ -624,7 +624,7 @@ msgstr "Перевірка якості"
 #. module: quality
 #: model:ir.model,name:quality.model_quality_point
 msgid "Quality Control Point"
-msgstr ""
+msgstr "Пункт контролю якості"
 
 #. module: quality
 #: model:ir.model,name:quality.model_quality_point_test_type

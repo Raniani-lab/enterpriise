@@ -6,12 +6,13 @@
 # Martin Trigaux, 2018
 # Hans Henrik Gabelgaard <hhg@gabelgaard.org>, 2018
 # Sanne Kristensen <sanne@vkdata.dk>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-08-24 11:37+0000\n"
 "Last-Translator: Sanne Kristensen <sanne@vkdata.dk>, 2018\n"
 "Language-Team: Danish (https://www.transifex.com/odoo/teams/41243/da/)\n"
 "MIME-Version: 1.0\n"
@@ -121,7 +122,7 @@ msgstr "Tilmelding"
 #: code:addons/event_barcode/static/src/js/event_barcode.js:87
 #, python-format
 msgid "Registration Summary"
-msgstr ""
+msgstr "Registreringsoversigt"
 
 #. module: event_barcode
 #: code:addons/event_barcode/controllers/main.py:13

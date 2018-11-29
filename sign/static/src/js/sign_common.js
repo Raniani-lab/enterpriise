@@ -1064,7 +1064,7 @@ odoo.define('sign.document_signing', function(require) {
 
         init: function(parent, RedirectURL, requestID, options) {
             options = (options || {});
-            options.title = options.title || _t("Thank You !") + "<br/>";
+            options.title = options.title || _t("Thank You !");
             options.subtitle = options.subtitle || _t("Your signature has been saved.");
             options.size = options.size || "medium";
             options.technical = false;
@@ -1092,6 +1092,7 @@ odoo.define('sign.document_signing', function(require) {
             this._super.apply(this, arguments);
             this.$modal.addClass('o_sign_thank_you_dialog');
             this.$modal.find('button.close').addClass('invisible');
+            this.$modal.find('.modal-header .o_subtitle').before('<br/>');
         },
 
         on_closed: function () {

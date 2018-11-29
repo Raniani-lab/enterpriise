@@ -440,7 +440,7 @@ class WebStudioController(http.Controller):
             char_op = deepcopy(op)
             char_op['node']['field_description'].update({
                 'name': filename,
-                'ttype': 'char',
+                'type': 'char',
                 'field_description': _('Filename for %s') % op['node']['field_description']['name'],
             })
             char_op['node']['attrs']['invisible'] = '1'

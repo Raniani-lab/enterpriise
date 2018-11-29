@@ -8,7 +8,10 @@ class AccountJournal(models.Model):
     @api.model
     def _prepare_liquidity_account(self, name, company, currency_id, type):
         res = super(AccountJournal, self)._prepare_liquidity_account(name, company, currency_id, type)
-        xml_id = self.env.ref('l10n_de.tag_de_asset_bs_B_IV').id
-        existing_tags = [x[-1:] for x in res.get('tag_ids', [])]
-        res['tag_ids'] = [(6, 0, existing_tags + [xml_id])]
+
+        if company.country_id.code == 'DE':
+            tag_ids = res.get('tag_ids', [])
+            tag_ids.append((4, self.env.ref('l10n_de.tag_de_asset_bs_B_IV').id))
+            res['tag_ids'] = tag_ids
+
         return res

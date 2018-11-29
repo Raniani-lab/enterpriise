@@ -130,7 +130,7 @@ msgstr "Lokið"
 #: code:addons/mrp_workorder/static/src/xml/mrp_workorder_barcode.xml:8
 #, python-format
 msgid "Download"
-msgstr ""
+msgstr "Niðurhal"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet

@@ -107,7 +107,7 @@ class ResPartner(models.Model):
 
     def _get_needofaction_fup_lines_domain(self, date):
         # that part of the domain concerns the date filtering and is overwritten in account_reports_followup
-        overdue_domain = ['|', '&', ('date_maturity', '!=', False), ('date_maturity', '<=', date), '&', ('date_maturity', '=', False), ('date', '<=', date)]
+        overdue_domain = ['|', '&', ('date_maturity', '!=', False), ('date_maturity', '<', date), '&', ('date_maturity', '=', False), ('date', '<', date)]
         return overdue_domain + ['|', ('next_action_date', '=', False), ('next_action_date', '<=', date)]
 
     def get_followup_lines_domain(self, date, overdue_only=False, only_unblocked=False):

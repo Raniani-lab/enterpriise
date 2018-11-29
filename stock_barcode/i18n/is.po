@@ -149,7 +149,7 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/xml/stock_barcode.xml:16
 #, python-format
 msgid "Download"
-msgstr ""
+msgstr "Niðurhal"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_inventory_line__dummy_id

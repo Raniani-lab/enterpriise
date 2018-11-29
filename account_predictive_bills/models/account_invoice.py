@@ -155,7 +155,7 @@ class AccountInvoiceLine(models.Model):
             if self.name != self._get_invoice_line_name_from_product():
                 # don't predict the account if it has already be filled
                 predict_account = not bool(self.account_id)
-                if self.env.user.has_group('account.group_products_in_bills'):
+                if self.env.user.has_group('account.group_products_in_bills') and not self.product_id:
                     predicted_product_id = self._predict_product(self.name)
                     # We only change the product if we manage to predict its value
                     if predicted_product_id:

@@ -536,7 +536,7 @@ msgstr ""
 #: selection:documents.share,action:0
 #, python-format
 msgid "Download"
-msgstr ""
+msgstr "Niðurhal"
 
 #. module: documents
 #: selection:documents.share,action:0

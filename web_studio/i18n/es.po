@@ -78,7 +78,7 @@ msgstr ""
 msgid ""
 "<div><p>The <strong>%s</strong> property is only applied to records matching"
 " this filter.</p></div>"
-msgstr "<div><p><strong/></p></div>"
+msgstr ""
 
 #. module: web_studio
 #: code:addons/web_studio/controllers/main.py:50

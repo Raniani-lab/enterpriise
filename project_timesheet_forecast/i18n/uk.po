@@ -4,13 +4,15 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"PO-Revision-Date: 2018-08-24 11:47+0000\n"
+"Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -63,12 +65,12 @@ msgstr "Остання модифікація"
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_timesheet_forecast_report_analysis__number_hours
 msgid "Number of hours"
-msgstr ""
+msgstr "Кількість годин"
 
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_forecast__working_days_count
 msgid "Number of working days"
-msgstr ""
+msgstr "Кількість робочих днів"
 
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_forecast__percentage_hours
@@ -100,16 +102,20 @@ msgid ""
 "estimation and effective work amount will help you to better plan your futur"
 " project."
 msgstr ""
+"Цей звіт виконує аналіз на вашому табелі і прогнозі. Це дозволяє мати "
+"глобальний перегляд на попередній прогноз і те, що дійсно було зроблено. "
+"Порівняння старої оцінки та ефективної роботи допоможе вам краще спланувати "
+"свій майбутній проект."
 
 #. module: project_timesheet_forecast
 #: selection:project.timesheet.forecast.report.analysis,type:0
 msgid "Timesheet"
-msgstr "Табель часу"
+msgstr "Табель"
 
 #. module: project_timesheet_forecast
 #: model:ir.model,name:project_timesheet_forecast.model_project_timesheet_forecast_report_analysis
 msgid "Timesheet & Forecast Statistics"
-msgstr ""
+msgstr "Табель та статистика прогнозу"
 
 #. module: project_timesheet_forecast
 #: model:ir.actions.act_window,name:project_timesheet_forecast.project_timesheet_forecast_report_action
@@ -117,17 +123,17 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_pivot
 #: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search
 msgid "Timesheet Forecast Analysis"
-msgstr ""
+msgstr "Аналіз прогнозу табеля"
 
 #. module: project_timesheet_forecast
 #: model:ir.ui.menu,name:project_timesheet_forecast.menu_project_timesheet_forecast_report_analysis
 msgid "Timesheet and Forecast Analysis"
-msgstr ""
+msgstr "Табель та аналіз прогнозу"
 
 #. module: project_timesheet_forecast
 #: model:ir.filters,name:project_timesheet_forecast.ir_filter_project_timesheet_forecast
 msgid "Timesheet vs Forecast"
-msgstr ""
+msgstr "Табель vs Прогноз"
 
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_timesheet_forecast_report_analysis__type

@@ -60,6 +60,14 @@ msgid ""
 "Thank you in advance for your cooperation.\n"
 "Best Regards,"
 msgstr ""
+"Kæri viðskiptavinur,\n"
+"\n"
+"Skv. okkar bókum eru neðangreindir reikningar ógreiddir.\n"
+"Hafi reikningarnir þegar verið greiddir þá biðjumst við velvirðingar á þessu bréfi.  Ef ekki, vinsamlegast gangið þá frá greiðslu sem fyrst.\n"
+"Hafðu samband ef þú hefur einhverjar spurningar.\n"
+"\n"
+"Takk fyrir samstarfið.\n"
+"Bestu kveðjur,"
 
 #. module: currency_rate_live
 #: selection:res.company,currency_provider:0

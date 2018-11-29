@@ -475,7 +475,7 @@
         <field name="name">sale.subscription.kanban</field>
         <field name="model">sale.subscription</field>
         <field name="arch" type="xml">
-            <kanban class="o_kanban_mobile">
+            <kanban default_group_by="stage_id" class="o_kanban_mobile">
                 <field name="user_id"/>
                 <field name="stage_id"/>
                 <field name="starred"/>

@@ -5,12 +5,13 @@
 # Translators:
 # Martin Trigaux, 2018
 # Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-08-24 11:36+0000\n"
 "Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
@@ -22,7 +23,7 @@ msgstr ""
 #. module: account_plaid
 #: model:ir.model.fields,help:account_plaid.field_account_online_provider__plaid_error_type
 msgid "Additional information on error"
-msgstr ""
+msgstr "Додаткова інформація про помилку"
 
 #. module: account_plaid
 #: code:addons/account_plaid/models/plaid.py:55
@@ -39,7 +40,7 @@ msgstr "Інтерфейс для онлайн журналу рахунку"
 #: code:addons/account_plaid/models/plaid.py:136
 #, python-format
 msgid "Only an Accountant is allowed to perform this operation."
-msgstr ""
+msgstr "Тільки бухгалтеру дозволяється виконувати цю операцію."
 
 #. module: account_plaid
 #: selection:account.online.provider,provider_type:0
@@ -49,12 +50,12 @@ msgstr "Plaid"
 #. module: account_plaid
 #: model:ir.model.fields,field_description:account_plaid.field_account_online_provider__plaid_error_type
 msgid "Plaid Error Type"
-msgstr ""
+msgstr "Тип помилки Plaid"
 
 #. module: account_plaid
 #: model:ir.model.fields,field_description:account_plaid.field_account_online_provider__plaid_item_id
 msgid "Plaid Item"
-msgstr ""
+msgstr "Елемент Plaid "
 
 #. module: account_plaid
 #: model:ir.model.fields,field_description:account_plaid.field_account_online_provider__provider_type
@@ -76,12 +77,17 @@ msgid ""
 "error type: %s,\n"
 "request id: %s}"
 msgstr ""
+"Була помилка з послугами Plaid!\n"
+"{message: %s,\n"
+"error code: %s,\n"
+"error type: %s,\n"
+"request id: %s}"
 
 #. module: account_plaid
 #: code:addons/account_plaid/models/plaid.py:74
 #, python-format
 msgid "Timeout: the server did not reply within 60s"
-msgstr ""
+msgstr "Таймаут: сервер не відповідав протягом 60 секунд"
 
 #. module: account_plaid
 #: selection:account.online.provider,provider_type:0
@@ -91,4 +97,4 @@ msgstr "Yodlee"
 #. module: account_plaid
 #: model:ir.model.fields,help:account_plaid.field_account_online_provider__plaid_item_id
 msgid "item id in plaid database"
-msgstr ""
+msgstr "id позиції в базі даних  plaid"

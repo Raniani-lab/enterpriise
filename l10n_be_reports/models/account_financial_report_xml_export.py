@@ -51,7 +51,7 @@ class AccountFinancialReportXMLExport(models.AbstractModel):
     def get_xml(self, options):
         # Check
         if self.id != self.env['ir.model.data'].xmlid_to_res_id('l10n_be_reports.account_financial_report_l10n_be_tva0'):
-            return False
+            return super(AccountFinancialReportXMLExport, self).get_xml(options)
         company = self.env.user.company_id
         vat_no = company.partner_id.vat
         if not vat_no:

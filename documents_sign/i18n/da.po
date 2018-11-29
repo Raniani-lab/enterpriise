@@ -70,7 +70,7 @@ msgstr "Produktskabelon"
 #. module: documents_sign
 #: model:ir.model,name:documents_sign.model_sign_request
 msgid "Signature Request"
-msgstr "Anmodning om Underskrift"
+msgstr "Anmodning om underskrift"
 
 #. module: documents_sign
 #: model:ir.model,name:documents_sign.model_sign_template

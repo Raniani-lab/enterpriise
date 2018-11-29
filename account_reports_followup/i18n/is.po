@@ -191,7 +191,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_form
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_tree
 msgid "Follow-up"
-msgstr ""
+msgstr "Eftirfylgni"
 
 #. module: account_reports_followup
 #: model:ir.model,name:account_reports_followup.model_account_followup_followup_line
@@ -207,7 +207,7 @@ msgstr ""
 #: model:ir.ui.menu,name:account_reports_followup.account_followup_menu
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.res_config_settings_view_form
 msgid "Follow-up Levels"
-msgstr ""
+msgstr "Stig eftirfylgni"
 
 #. module: account_reports_followup
 #: model:ir.model,name:account_reports_followup.model_account_followup_report

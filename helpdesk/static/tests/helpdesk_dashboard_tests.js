@@ -90,9 +90,9 @@ QUnit.test('edit the target', function(assert) {
                 assert.ok(true, "should call /retrieve_dashboard");
                 return $.when(dashboard_data);
             }
-            if (args.method === 'modify_target_helpdesk_team_dashboard') {
-                assert.ok(true, "should call /modify_target_sales_dashboard");
-                dashboard_data.helpdesk_target_closed = args.args[1];
+            if (args.model === 'res.users' && args.method === 'write') {
+                assert.ok(true, "should modify helpdesk_target_closed");
+                dashboard_data.helpdesk_target_closed = args.args[1]['helpdesk_target_closed'];
                 return $.when();
             }
             return this._super(route, args);

@@ -5,12 +5,13 @@
 # Translators:
 # Martin Trigaux, 2018
 # Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-08-24 11:48+0000\n"
 "Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
@@ -700,7 +701,7 @@ msgstr "Синхронізувати зараз"
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_crm_team__team_type
 msgid "Team Type"
-msgstr ""
+msgstr "Тип команди"
 
 #. module: sale_ebay
 #: code:addons/sale_ebay/models/product.py:719

@@ -78,6 +78,8 @@ class AccountBankStmtImportCSV(models.TransientModel):
         statement_id = self._context.get('bank_statement_id', False)
         if not statement_id:
             return data
+        statement = self.env['account.bank.statement'].browse(statement_id)
+        company_currency_name = statement.company_id.currency_id.name
         ret_data = []
 
         vals = {}
@@ -107,6 +109,7 @@ class AccountBankStmtImportCSV(models.TransientModel):
             import_fields.remove('debit')
             import_fields.remove('credit')
 
+        currency_index = 'currency_id' in import_fields and import_fields.index('currency_id') or False
         for index, line in enumerate(data):
             line.append(statement_id)
             line.append(index)
@@ -121,13 +124,15 @@ class AccountBankStmtImportCSV(models.TransientModel):
                 line.remove(line[index])
             if line[import_fields.index('amount')]:
                 ret_data.append(line)
+            # Don't set the currency_id on statement line if the currency is the same as the company one.
+            if currency_index is not False and line[currency_index] == company_currency_name:
+                line[currency_index] = False
         if 'date' in import_fields:
             vals['date'] = data[len(data)-1][import_fields.index('date')]
 
         # add starting balance and date if there is one set in fields
         if vals:
-            self.env['account.bank.statement'].browse(statement_id).write(vals)
-
+            statement.write(vals)
         return ret_data
 
     @api.multi

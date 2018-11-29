@@ -6,15 +6,17 @@
 # Rodrigo de Almeida Sottomaior Macedo <rmsolucoeseminformatic4@gmail.com>, 2018
 # Martin Trigaux, 2018
 # Mateus Lopes <mateus1@gmail.com>, 2018
+# nle_odoo, 2018
 # grazziano <gra.negocia@gmail.com>, 2018
 # Thiago Matos <thiago.crea@gmail.com>, 2018
 # Silmar <pinheirosilmar@gmail.com>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-08-24 11:38+0000\n"
 "Last-Translator: Silmar <pinheirosilmar@gmail.com>, 2018\n"
 "Language-Team: Portuguese (Brazil) (https://www.transifex.com/odoo/teams/41243/pt_BR/)\n"
 "MIME-Version: 1.0\n"
@@ -146,7 +148,7 @@ msgstr "Fatura"
 #: code:addons/inter_company_rules/models/account_invoice.py:81
 #, python-format
 msgid "Please define %s journal for this company: \"%s\" (id:%d)."
-msgstr "Por favor defina o diário de vendas para esta empresa: \"%s\" (id:%d)."
+msgstr "Por favor defina o diário de %s para esta empresa: \"%s\" (id:%d)."
 
 #. module: inter_company_rules
 #: code:addons/inter_company_rules/models/purchase_order.py:39

@@ -3,18 +3,19 @@
 # * iot
 # 
 # Translators:
+# Gunther Clauwaert <gclauwae@hotmail.com>, 2018
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2018
+# Eric Geens <ericgeens@yahoo.com>, 2018
 # Martin Trigaux, 2018
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
-# Gunther Clauwaert <gclauwae@hotmail.com>, 2018
-# Eric Geens <ericgeens@yahoo.com>, 2018
 # Cas Vissers <casvissers@brahoo.nl>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-08 07:14+0000\n"
-"PO-Revision-Date: 2018-10-08 07:14+0000\n"
+"PO-Revision-Date: 2018-08-24 09:20+0000\n"
 "Last-Translator: Cas Vissers <casvissers@brahoo.nl>, 2018\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -40,15 +41,15 @@ msgid ""
 msgstr ""
 "0. Zet de IoT Box aan <br/><br/>\n"
 "\n"
-"                             <strong>A. Ethernet-verbinding </strong><br/>\n"
-"                             1. Klik op de knop \"Scan\" hieronder <br/><br/>\n"
+" <strong>A. Ethernet-verbinding </strong><br/>\n"
+"1. Klik op de knop \"Scan\" hieronder <br/><br/>\n"
 "\n"
-"                             <strong>B. WiFi-verbinding (of Ethernet-verbinding werkt niet)</strong><br/>\n"
-"                             1. Controleer of er geen ethernetkabel op de IoT Box is aangesloten<br/>\n"
-"                             2. Kopieer het token dat hieronder staat <br/>\n"
-"                             3. Maak verbinding met het IoT Box WiFi-netwerk (u zou het in uw beschikbare WiFi-netwerken moeten zien)<br/>\n"
-"                             4. U wordt doorgestuurd naar de IoT Box startpagina <br/>\n"
-"                             5. Plak het token in het tokenveld en volg de stappen beschreven op de IoT Box startpagina <br/>"
+" <strong>B. WiFi-verbinding (of Ethernet-verbinding werkt niet)</strong><br/>\n"
+"1. Controleer of er geen ethernetkabel op de IoT Box is aangesloten<br/>\n"
+"2. Kopieer het token dat hieronder staat <br/>\n"
+"3. Maak verbinding met het IoT Box WiFi-netwerk (u zou het in uw beschikbare WiFi-netwerken moeten zien)<br/>\n"
+"4. U wordt doorgestuurd naar de IoT Box startpagina <br/>\n"
+"5. Plak het token in het tokenveld en volg de stappen beschreven op de IoT Box startpagina <br/>"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_trigger__action

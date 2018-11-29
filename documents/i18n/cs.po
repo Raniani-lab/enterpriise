@@ -1112,7 +1112,7 @@ msgstr "Odpovědný"
 #: code:addons/documents/static/src/xml/documents_inspector.xml:162
 #, python-format
 msgid "Restore"
-msgstr ""
+msgstr "Obnovit"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__name

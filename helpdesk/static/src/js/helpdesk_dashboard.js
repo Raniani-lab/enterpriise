@@ -14,6 +14,7 @@ var KanbanController = require('web.KanbanController');
 var KanbanModel = require('web.KanbanModel');
 var KanbanRenderer = require('web.KanbanRenderer');
 var KanbanView = require('web.KanbanView');
+var session = require('web.session');
 var view_registry = require('web.view_registry');
 
 var QWeb = core.qweb;
@@ -188,10 +189,12 @@ var HelpdeskDashboardController = KanbanController.extend({
         if (isNaN(target_value)) {
             this.do_warn(_t("Wrong value entered!"), _t("Only Integer Value should be valid."));
         } else {
+            var values = {};
+            values[target_name] = parseInt(target_value);
             this._rpc({
-                    model: 'helpdesk.team',
-                    method: 'modify_target_helpdesk_team_dashboard',
-                    args: [target_name, parseInt(target_value)],
+                    model: 'res.users',
+                    method: 'write',
+                    args: [[session.uid], values],
                 })
                 .then(this.reload.bind(this));
         }

@@ -38,12 +38,12 @@ msgstr "# Долучення"
 #: model:ir.model.fields,field_description:mrp_plm.field_product_product__eco_count
 #: model:ir.model.fields,field_description:mrp_plm.field_product_template__eco_count
 msgid "# ECOs"
-msgstr "# ECO"
+msgstr "# Замовлення на інженерні зміни"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_bom__eco_inprogress_count
 msgid "# ECOs in progress"
-msgstr "# ECO в процесі"
+msgstr "# Замовлення на інженерні зміни в процесі"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_bom_view_kanban
@@ -120,7 +120,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__message_needaction
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__message_needaction
 msgid "Action Needed"
-msgstr "Дія необхідна"
+msgstr "Необхідна дія"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__active
@@ -146,7 +146,7 @@ msgstr "Додати"
 #. module: mrp_plm
 #: model_terms:ir.actions.act_window,help:mrp_plm.mrp_eco_tag_action
 msgid "Add a new tag"
-msgstr ""
+msgstr "Додати новий тег"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__alias_id
@@ -353,7 +353,7 @@ msgstr "Етап блокування"
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "BoM"
-msgstr "СЦ"
+msgstr "Специфікація"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
@@ -400,7 +400,7 @@ msgstr "Зміни"
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Changes made in previous eco"
-msgstr "Зміни, внесені в попередній еко"
+msgstr "Зміни, внесені в попереднє замовлення на інженерні зміни"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
@@ -410,12 +410,12 @@ msgstr "Зміни зроблені на старій специфікації"
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Changes made on the new revision bill of materials"
-msgstr "Зміни внесені до нового редакційного матеріалу"
+msgstr "Зміни внесені до нового перегляду специфікації"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Changes made on the routing."
-msgstr "Зміни, внесені в маршрутизацію."
+msgstr "Зміни внесені в маршрутизацію."
 
 #. module: mrp_plm
 #. openerp-web
@@ -549,7 +549,7 @@ msgstr "Опис зміни та причини ..."
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__bom_change_ids
 msgid "Difference between old BoM and new BoM revision"
-msgstr "Різниця між старою специфікацією та новою редакцією специфікації"
+msgstr "Різниця між старою специфікацією та новим переглядом специфікації"
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__routing_change_ids
@@ -599,7 +599,7 @@ msgstr "Замовлення на інженерні зміни"
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_graph
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_pivot
 msgid "ECO Analysis"
-msgstr "Аналіз ЗНІЗ"
+msgstr "Аналіз замовлення на інженерні зміни"
 
 #. module: mrp_plm
 #: model:ir.model,name:mrp_plm.model_mrp_eco_approval
@@ -791,7 +791,7 @@ msgstr "Фінальний етап"
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_stage__folded
 msgid "Folded in kanban view"
-msgstr "Складений у вигляді канбану"
+msgstr "Запакований у перегляді канбану"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__message_follower_ids
@@ -891,7 +891,7 @@ msgid ""
 "engineering change order without removing it."
 msgstr ""
 "Якщо активне поле встановлено на Пмилково, це дозволить вам приховати "
-"замовлення на інжиніринг, не видаляючи його."
+"замовлення на інженерні зміни, не видаляючи його."
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
@@ -1157,7 +1157,9 @@ msgstr "Стара ручна тривалість"
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco_stage__final_stage
 msgid "Once the changes are applied, the ECOs will be moved to this stage."
-msgstr "Коли зміни будуть застосовані, ECO буде перенесено на цей етап"
+msgstr ""
+"Коли зміни будуть застосовані, замовлення на інженерні зміни буде перенесено"
+" на цей етап"
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco_type__alias_force_thread_id
@@ -1204,7 +1206,7 @@ msgstr "Батьківська модель"
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__alias_parent_thread_id
 msgid "Parent Record Thread ID"
-msgstr " ID запису батьківської теми"
+msgstr "ID запису батьківської теми"
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco_type__alias_parent_model_id
@@ -1248,12 +1250,12 @@ msgstr "Попереднє споживання в експлуатації"
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__previous_change_ids
 msgid "Previous ECO Changes"
-msgstr "Попередні зміни ECO"
+msgstr "Попередні зміни замовлення на інженерні зміни"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Previous Eco Bom Changes"
-msgstr "Попередні зміни специфікації Eco"
+msgstr "Попередні зміни специфікації замовлення на інженерні зміни"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_bom_change__old_uom_id
@@ -1322,8 +1324,8 @@ msgstr "Перезавантажити"
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Rebase new revision of BoM with previous eco bom and old bom changes."
 msgstr ""
-"Перезавантажте нову версію специфікації з попередніми специфікаціями ECO та "
-"старими змінами."
+"Перезавантажте нову версію специфікації з попередніми специфікаціями "
+"замовлення на інженерні зміни та старими змінами."
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__alias_force_thread_id
@@ -1502,7 +1504,7 @@ msgstr "Стадії"
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Start New Revision"
-msgstr "Розпочати новий перегляд"
+msgstr "Розпочніть новий перегляд"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
@@ -1524,7 +1526,7 @@ msgid ""
 "Planned: Future activities."
 msgstr ""
 "Етап заснований на діях\n"
-"Прострочений: термін виконання вже минув\n"
+"Протермінований: термін виконання вже минув\n"
 "Сьогодні: дата дії сьогодні\n"
 "Заплановано: майбутні дії."
 
@@ -1556,7 +1558,7 @@ msgstr "Мітки"
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__user_can_approve
 msgid "Technical field to check if approval by current user is required"
 msgstr ""
-"Технічне поле, щоб перевірити, чи потрібне схвалення поточним користувачем"
+"Технічне поле, щоби перевірити, чи потрібне схвалення поточним користувачем"
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__user_can_reject
@@ -1663,7 +1665,7 @@ msgstr "Тип"
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_bom_change__uom_change
 msgid "Unit of Measure"
-msgstr "Одиниця виміру"
+msgstr "Одиниця вимірювання"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__message_unread
@@ -1751,7 +1753,7 @@ msgstr "Очікування мого затвердження"
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__website_message_ids
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__website_message_ids
 msgid "Website Messages"
-msgstr "Повідомлення з вебсайту"
+msgstr "Повідомлення веб-сайту"
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__website_message_ids

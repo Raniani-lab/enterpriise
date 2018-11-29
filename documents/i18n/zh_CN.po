@@ -14,8 +14,8 @@
 # xu xiaohu <xu.xiaohu@gmail.com>, 2018
 # diaojiaolou <124412206@qq.com>, 2018
 # snow wang <147156565@qq.com>, 2018
-# Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
 # 演奏王 <wangwhai@qq.com>, 2018
+# Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
 # liAnGjiA <liangjia@qq.com>, 2018
 # 
 msgid ""
@@ -37,7 +37,7 @@ msgstr ""
 #: code:addons/documents/static/src/js/documents_inspector.js:271
 #, python-format
 msgid "+ Add a tag "
-msgstr "+ 添加标记"
+msgstr "+ 添加标签"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout

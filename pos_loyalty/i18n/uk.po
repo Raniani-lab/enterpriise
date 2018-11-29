@@ -4,13 +4,15 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"PO-Revision-Date: 2018-08-24 11:47+0000\n"
+"Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,7 +23,7 @@ msgstr ""
 #. module: pos_loyalty
 #: model_terms:ir.ui.view,arch_db:pos_loyalty.view_loyalty_program_kanban
 msgid "<span>Points per currency :</span>"
-msgstr "<span>Бали за одиницю валюти:</span>"
+msgstr "<span>Бали за валюту:</span>"
 
 #. module: pos_loyalty
 #: model_terms:ir.ui.view,arch_db:pos_loyalty.view_loyalty_program_kanban
@@ -61,7 +63,7 @@ msgstr "Контакт"
 #. module: pos_loyalty
 #: model_terms:ir.actions.act_window,help:pos_loyalty.action_loyalty_program_form
 msgid "Create a new loyalty program"
-msgstr ""
+msgstr "Створіть нову програму лояльності"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_program__create_uid
@@ -134,12 +136,12 @@ msgstr "Скільки бонусів нараховано клієнту за �
 #. module: pos_loyalty
 #: model:ir.model.fields,help:pos_loyalty.field_loyalty_rule__pp_product
 msgid "How many points the product will earn per product ordered"
-msgstr "Скільки очок товар отримує за кожне замовлення товару"
+msgstr "Скільки балів товар отримує за кожне замовлення товару"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,help:pos_loyalty.field_loyalty_rule__pp_currency
 msgid "How many points the product will earn per value sold"
-msgstr "Скільки очок товар отримує за кожен продаж"
+msgstr "Скільки балів товар отримує за кожен продаж"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_program__id
@@ -257,12 +259,12 @@ msgstr "Товар балів"
 #. module: pos_loyalty
 #: model:ir.model,name:pos_loyalty.model_pos_config
 msgid "Point of Sale Configuration"
-msgstr "Налаштування касового терміналу"
+msgstr "Налаштування точки продажу"
 
 #. module: pos_loyalty
 #: model:ir.model,name:pos_loyalty.model_pos_order
 msgid "Point of Sale Orders"
-msgstr "Замовлення касового терміналу"
+msgstr "Замовлення точки продажу"
 
 #. module: pos_loyalty
 #. openerp-web
@@ -326,7 +328,7 @@ msgstr "Балів за 1 товар"
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_pos_config__loyalty_id
 msgid "Pos Loyalty Program"
-msgstr ""
+msgstr "Програма лояльності точки продажу"
 
 #. module: pos_loyalty
 #: selection:loyalty.rule,rule_type:0
@@ -346,7 +348,7 @@ msgstr "Назва нагороди"
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_reward__reward_type
 msgid "Reward Type"
-msgstr "Тип винагороди"
+msgstr "Тип нагороди"
 
 #. module: pos_loyalty
 #: model_terms:ir.ui.view,arch_db:pos_loyalty.view_loyalty_program_form
@@ -400,12 +402,12 @@ msgstr "Цільовий товар"
 #. module: pos_loyalty
 #: model:ir.model.fields,help:pos_loyalty.field_loyalty_rule__loyalty_program_id
 msgid "The Loyalty Program this exception belongs to"
-msgstr "Програма Лояльності до якої належить це виключення"
+msgstr "Програма лояльності до якої належить це виключення"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,help:pos_loyalty.field_loyalty_reward__loyalty_program_id
 msgid "The Loyalty Program this reward belongs to"
-msgstr "Програма Лояльності до якої належить ця винагорода"
+msgstr "Програма лояльності до якої належить ця винагорода"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,help:pos_loyalty.field_pos_order__loyalty_points
@@ -449,7 +451,7 @@ msgstr "Сума балів лояльності округлених до кр�
 #: model:ir.model.fields,help:pos_loyalty.field_res_partner__loyalty_points
 #: model:ir.model.fields,help:pos_loyalty.field_res_users__loyalty_points
 msgid "The loyalty points the user won as part of a Loyalty Program"
-msgstr "Бали лояльності користувач виграв в рамках програми лояльності. "
+msgstr "Бали лояльності, які користувач виграв в рамках програми лояльності. "
 
 #. module: pos_loyalty
 #: model:ir.model.fields,help:pos_loyalty.field_pos_config__loyalty_id
@@ -462,7 +464,8 @@ msgid ""
 "The minimum amount of points the customer must have to qualify for this "
 "reward"
 msgstr ""
-"Мінімум балів лояльності клієнт повинен мати, щоб отримати цю винагороду"
+"Мінімум балів лояльності, які клієнт повинен мати, щоб отримати цю "
+"винагороду"
 
 #. module: pos_loyalty
 #: code:addons/pos_loyalty/models/pos_loyalty.py:65
@@ -508,7 +511,7 @@ msgstr "Тип нагороди"
 msgid ""
 "There are no rewards available for this customer as part of the loyalty "
 "program"
-msgstr "Для цього клієнта немає нагород, як частина програми лояльності"
+msgstr "Для цього клієнта немає нагород, як частини програми лояльності"
 
 #. module: pos_loyalty
 #. openerp-web

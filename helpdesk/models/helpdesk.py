@@ -332,13 +332,6 @@ class HelpdeskTeam(models.Model):
         bad = activity['bad'] * 0.00
         return great + okey + bad
 
-    @api.model
-    def modify_target_helpdesk_team_dashboard(self, target_name, target_value):
-        if target_name:
-            self.env.user.sudo().write({target_name: target_value})
-        else:
-            raise UserError(_('This target does not exist.'))
-
     @api.multi
     def get_new_user(self):
         self.ensure_one()

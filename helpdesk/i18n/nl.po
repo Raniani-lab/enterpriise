@@ -710,7 +710,7 @@ msgstr "Contact"
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_sla_action
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_sla_action_main
 msgid "Create a new Service Level Agreement (SLA) policy"
-msgstr "Maak een nieuwe Service Level Agreement (SLA) policy"
+msgstr "Maak een nieuw Service Level Agreement (SLA) beleid"
 
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_stage_action

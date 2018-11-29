@@ -110,16 +110,17 @@
             <span class="oe_instance_register oe_instance_error">
               Something went wrong while registering your database. You can try again or contact <a href="https://www.odoo.com/help" target="_blank">Odoo Help</a>.
             </span>
-            <form class="form-inline oe_instance_register oe_instance_register_form">
-                <br/>
-                <div class="form-group">
-                    <label for="enterprise_code">Subscription Code: </label>
-                    <input type="text" class="form-control" id="enterprise_code"
-                           placeholder="Paste code here"
-                           title="Your subscription code"/>
-                </div>
-                <button class="btn btn-primary" id="confirm_enterprise_code">Register</button>
-            </form>
+            <div class="oe_instance_register oe_instance_register_form">
+                <form class="form-inline justify-content-center mt-4">
+                    <div class="form-group">
+                        <label for="enterprise_code">Subscription Code: </label>
+                        <input type="text" class="form-control mx-2" id="enterprise_code"
+                               placeholder="Paste code here"
+                               title="Your subscription code"/>
+                    </div>
+                    <button class="btn btn-primary" id="confirm_enterprise_code">Register</button>
+                </form>
+            </div>
         </div>
     </div>
 </t>

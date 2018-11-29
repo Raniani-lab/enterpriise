@@ -5,6 +5,7 @@ from itertools import groupby
 import re
 import logging
 from datetime import datetime
+from dateutil.relativedelta import relativedelta
 from io import BytesIO
 import requests
 from pytz import timezone
@@ -692,7 +693,8 @@ class AccountInvoice(models.Model):
     @staticmethod
     def _l10n_mx_get_serie_and_folio(number):
         values = {'serie': None, 'folio': None}
-        number_matchs = [rn for rn in re.finditer('\d+', number or '')]
+        number = (number or '').strip()
+        number_matchs = [rn for rn in re.finditer('\d+', number)]
         if number_matchs:
             last_number_match = number_matchs[-1]
             values['serie'] = number[:last_number_match.start()] or None
@@ -747,13 +749,19 @@ class AccountInvoice(models.Model):
         mxn = self.env.ref('base.MXN').with_context(ctx)
         invoice_currency = self.currency_id.with_context(ctx)
         values['rate'] = ('%.6f' % (
-            invoice_currency._convert(1, mxn, self.company_id, self.date_invoice or fields.Date.today()))) if self.currency_id.name != 'MXN' else False
+            invoice_currency._convert(1, mxn, self.company_id, self.date_invoice or fields.Date.today(), round=False))) if self.currency_id.name != 'MXN' else False
 
         values['document_type'] = 'ingreso' if self.type == 'out_invoice' else 'egreso'
 
         term_ids = self.payment_term_id.line_ids
+        # In CFDI 3.3 - SAT 2018 rule 2.7.1.44, the payment policy is PUE
+        # if the invoice will be paid before 17th of the following month,
+        # PPD otherwise
+        date_pue = (fields.Date.from_string(self.date_invoice) +
+                    relativedelta(day=17, months=1))
+        date_due = fields.Date.from_string(self.date_due)
         values['payment_policy'] = 'PPD' if (
-            self.date_due != self.date_invoice) else 'PUE'
+            date_due > date_pue or len(term_ids) > 1) else 'PUE'
         domicile = self.journal_id.l10n_mx_address_issued_id or self.company_id
         values['domicile'] = '%s %s, %s' % (
                 domicile.city,

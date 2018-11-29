@@ -69,7 +69,7 @@ class TimesheetForecastController(SaleTimesheetController):
             query += """
                 UNION
                 SELECT
-                    'forecast' AS line_type,
+                    'forecast' AS type,
                     date_trunc('month', date)::date AS month_date,
                     F.employee_id AS employee_id,
                     S.order_id AS sale_order_id,
@@ -131,7 +131,7 @@ class TimesheetForecastController(SaleTimesheetController):
                 rows_employee[row_key] = [meta_vals] + default_row_vals[:]  # INFO, before, M1, M2, M3, Done, M3, M4, M5, After, Forecasted
 
             index = False
-            if data['report_type'] == 'forecast':
+            if data['type'] == 'forecast':
                 if data['month_date'] in fc_months:
                     index = fc_months.index(data['month_date']) + 6
                 elif data['month_date'] > fc_months[-1]:

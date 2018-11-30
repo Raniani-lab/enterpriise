@@ -378,8 +378,6 @@ class website_hr_contract_salary(http.Controller):
 
         for worked_days_line_vals in payslip.get_worked_day_lines(new_contract, payslip.date_from, payslip.date_to):
             payslip.worked_days_line_ids += request.env['hr.payslip.worked_days'].sudo().new(worked_days_line_vals)
-        for inputs_line_vals in payslip.get_inputs(new_contract, payslip.date_from, payslip.date_to):
-            payslip.input_line_ids += request.env['hr.payslip.input'].sudo().new(inputs_line_vals)
 
         payslip.compute_sheet()
 

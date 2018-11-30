@@ -448,8 +448,9 @@ class TestAccountReports(SavepointCase):
                 ('111200 Tax Received',                 0.00,           104.35,         -104.35),
                 ('200000 Product Sales',                0.00,           695.65,         -695.65),
                 ('220000 Expenses',                     478.26,         0.00,           478.26),
+                ('999999 Undistributed Profits/Losses', 1043.48,        0.00,           1043.48),
                 # Report Total.
-                ('Total',                               4056.52,        5100.00,        -1043.48),
+                ('Total',                               5100.00,        5100.00,        0.00),
             ],
         )
 
@@ -1182,8 +1183,9 @@ class TestAccountReports(SavepointCase):
                 ('111200 Tax Received',                 '',             91.30,          '',             13.05,          '',             104.35),
                 ('200000 Product Sales',                '',             608.70,         '',             86.95,          '',             695.65),
                 ('220000 Expenses',                     217.39,         '',             260.87,         '',             478.26,         ''),
+                ('999999 Undistributed Profits/Losses', 1043.48,        '',             '',             '',             1043.48,        ''),
                 # Report Total.
-                ('Total',                               406.52,         1450.00,        800.00,         800.00,         706.52,         1750.00),
+                ('Total',                               1450.00,        1450.00,        800.00,         800.00,         1750.00,        1750.00),
             ],
         )
 

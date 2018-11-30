@@ -632,6 +632,33 @@ class TestAccountReports(SavepointCase):
             ],
         )
 
+        # Do the same in a multi-currency environment.
+        journal = self.env['account.journal'].search(
+            [('company_id', '=', self.company_child_eur.id), ('type', '=', 'sale')])
+
+        options = self._init_options(report, 'custom', *date_utils.get_month(self.mar_year_minus_1))
+        options = self._update_multi_selector_filter(options, 'journals', journal.ids)
+        options = self._update_multi_selector_filter(options, 'multi_company', self.company_child_eur.ids)
+
+        self.assertLinesValues(
+            report._get_lines(options),
+            #   Name                                    Debit           Credit          Balance
+            [   0,                                      5,              6,              7],
+            [
+                # Accounts.
+                ('101200 Account Receivable',           2875.00,        0.00,           2875.00),
+                ('111200 Tax Received',                 0.00,           375.00,         -375.00),
+                ('200000 Product Sales',                0.00,           1300.00,        -1300.00),
+                ('999999 Undistributed Profits/Losses', 0.00,           1200.00,        -1200.00),
+                # Report Total.
+                ('Total',                               2875.00,        2875.00,        0.00),
+                # Tax Declaration.
+                ('Tax Declaration',                     '',             '',             ''),
+                ('Name',                                'Base Amount',  'Tax Amount',   ''),
+                ('Tax 15.00% (15.0)',                   600.00,         375.00,         ''),
+            ],
+        )
+
     # -------------------------------------------------------------------------
     # TESTS: Partner Ledger
     # -------------------------------------------------------------------------

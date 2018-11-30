@@ -436,6 +436,9 @@ class report_account_general_ledger(models.AbstractModel):
 
         journals = [j for j in options.get('journals') if j.get('selected')]
         if len(journals) == 1 and journals[0].get('type') in ['sale', 'purchase'] and not line_id:
+            journal = self.env['account.journal'].browse(journals[0]['id'])
+            journal_company = journal.company_id
+            journal_currency = journal_company.currency_id
             lines.append({
                 'id': 0,
                 'name': _('Tax Declaration'),
@@ -453,13 +456,16 @@ class report_account_general_ledger(models.AbstractModel):
                 'unfolded': False,
             })
             for tax, values in self._get_taxes(journals[0]).items():
+                base_amount = journal_currency._convert(values['base_amount'], used_currency, journal_company, options['date']['date_to'])
+                tax_amount = journal_currency._convert(values['tax_amount'], used_currency, journal_company, options['date']['date_to'])
                 lines.append({
                     'id': '%s_tax' % (tax.id,),
                     'name': tax.name + ' (' + str(tax.amount) + ')',
                     'caret_options': 'account.tax',
                     'unfoldable': False,
-                    'columns': [{'name': v} for v in ['', '', '', '', values['base_amount'], values['tax_amount'], '']],
+                    'columns': [{'name': v} for v in [self.format_value(base_amount), self.format_value(tax_amount), '']],
                     'level': 4,
+                    'colspan': 5,
                 })
 
         if self.env.context.get('aml_only', False):

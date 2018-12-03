@@ -9,14 +9,17 @@
             <script type="text/javascript" src="/voip/static/src/js/dialing_tab.js"></script>
             <script type="text/javascript" src="/voip/static/src/js/user_agent.js"></script>
             <script type="text/javascript" src="/voip/static/src/js/voip_phonecall.js"></script>
+            <script type="text/javascript" src="/voip/static/src/js/voip_call_queue_widget.js"/>
 
             <link rel="stylesheet" type="text/scss" href="/voip/static/src/scss/voip.scss"/>
+            <link rel="stylesheet" type="text/scss" href="/voip/static/src/scss/voip_call_queue_widget.scss"/>
         </xpath>
     </template>
 
     <template id="voip_tests" name="voip tests" inherit_id="web.qunit_suite">
         <xpath expr="//script[last()]" position="after">
-            <script type="text/javascript" src="/voip/static/tests/voip_tests.js"></script>
+            <script type="text/javascript" src="/voip/static/tests/phone_widget_tests.js"></script>
+            <script type="text/javascript" src="/voip/static/tests/dialing_panel_tests.js"></script>
         </xpath>
     </template>
 </odoo>

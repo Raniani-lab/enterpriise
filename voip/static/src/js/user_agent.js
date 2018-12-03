@@ -1,7 +1,6 @@
 odoo.define('voip.user_agent', function (require) {
 "use strict";
 
-var ajax = require('web.ajax');
 var Class = require('web.Class');
 var core = require('web.core');
 var Dialog = require('web.Dialog');
@@ -28,13 +27,15 @@ var UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         mixins.EventDispatcherMixin.init.call(this);
         this.setParent(parent);
         this.callState = CALL_STATE.NO_CALL;
-        ajax.rpc('/web/dataset/call_kw/voip.configurator/get_pbx_config', {
+        this._rpc({
             model: 'voip.configurator',
             method: 'get_pbx_config',
             args: [],
             kwargs: {},
         }).then(this._initUa.bind(this));
         this.blocked = false;
+        this.timerAccepted = undefined;
+        this.sipSession  = undefined;
     },
 
     //--------------------------------------------------------------------------
@@ -68,10 +69,7 @@ var UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
     makeCall: function (number) {
         this.ringbacktone.play();
         if (this.mode === "demo") {
-            var self = this;
-            this.timerAccepted = setTimeout(function () {
-                self._onAccepted();
-            },3000);
+            this.timerAccepted = this._demoTimeout(this._onAccepted.bind(this));
             return;
         }
         this._makeCall(number);
@@ -235,6 +233,13 @@ var UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
             this._triggerError(_t('The server configuration could be wrong. Please check your configuration.'));
             return false;
         }
+    },
+    /**
+     * @private
+     * @param {function} func
+     */
+    _demoTimeout: function (func) {
+        return setTimeout(func, 3000);
     },
     /**
     * Returns the ua configuration required.
@@ -411,10 +416,10 @@ var UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         this._cleanRemoteAudio();
         this.sipSession = false;
         this.callState = CALL_STATE.NO_CALL;
-        this.trigger_up('sip_bye');
         if (this.mode === "demo") {
             clearTimeout(this.timerAccepted);
         }
+        this.trigger_up('sip_bye');
     },
     /**
      * Handles the sip session cancel.
@@ -425,10 +430,10 @@ var UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         this.sipSession = false;
         this.callState = CALL_STATE.NO_CALL;
         this.ringbacktone.pause();
-        this.trigger_up('sip_cancel');
         if (this.mode === "demo") {
             clearTimeout(this.timerAccepted);
         }
+        this.trigger_up('sip_cancel');
     },
     /**
      * Handles the invite event.

@@ -115,55 +115,60 @@
         </div>
     </div>
     <div class="o_dial_keypad_button_container">
+        <div class="o_voip_row_header">Document</div>
         <div class="o_row">
-            <div class="o_dial_keypad_button_small text-center">
+            <div title="Send mail" class="o_dial_keypad_button_small text-center">
               <a href="#" class="o_dial_email">
-                <i class="fa fa-send-o fa-2x" aria-label="Send mail"></i><p class="feature text-center">Send mail</p>
+                <i class="fa fa-send-o fa-2x" aria-label="Send mail"></i>
               </a>
             </div>
-            <div class="o_dial_keypad_button_small text-center">
+            <div title="Customer" class="o_dial_keypad_button_small text-center">
               <a href="#" class="o_dial_to_partner">
-                <i class="fa fa-user fa-2x" aria-label="Customer"></i><p class="feature text-center">Customer</p>
+                <i class="fa fa-user fa-2x" aria-label="Customer"></i>
               </a>
             </div>
-            <div t-if="widget.activity_res_id &amp;&amp; widget.activity_res_id != widget.partner_id" class="o_dial_keypad_button_small text-center">
+            <div t-att-title="widget.activity_model_name" t-if="widget.activity_res_id &amp;&amp; widget.activity_res_id != widget.partner_id" class="o_dial_keypad_button_small text-center">
               <a href="#" class="o_dial_to_record">
-                <i role="img" class="fa fa-circle-o fa-2x" aria-label="Activity" title="Activity"></i><p class="feature text-center"><t t-esc="widget.activity_model_name"/></p>
+                <i role="img" class="fa fa-wpforms fa-2x" aria-label="Activity"></i>
               </a>
             </div>
-            <div t-if="widget.activity_res_id" class="o_dial_keypad_button_small text-center">
+            <div title="Schedule Activity" t-if="widget.activity_res_id" class="o_dial_keypad_button_small text-center">
               <a href="#" class="o_dial_reschedule_activity">
-                <i class="fa fa-calendar fa-2x" aria-label="Schedule Next"></i><p class="feature text-center">Schedule <br/> Next</p>
+                <i class="fa fa-calendar fa-2x" aria-label="Schedule Next"></i>
               </a>
             </div>
         </div>
-        <div class="row" t-if="widget.activity_id">
-            <div class="o_dial_keypad_button_small col-4 text-center">
-              <a href="#" class="o_dial_log">
-                <i class="fa fa-pencil fa-2x" aria-label="Log"></i><p class="feature text-center">Log</p>
-              </a>
-            </div>
-            <div class="o_dial_keypad_button_small col-4 text-center">
-              <a href="#" class="o_dial_activity_done o_phonecall_activity_button">
-                <i class="fa fa-check fa-2x" aria-label="Mark as done"></i><p class="feature text-center">Mark as done</p>
-              </a>
-            </div>
-            <div class="o_dial_keypad_button_small col-4 text-center">
+        <div class="o_voip_row_header o_phonecall_activity_button" t-if="widget.activity_id">Activity</div>
+        <div class="o_row" t-if="widget.activity_id">
+            <div title="Cancel" class="o_dial_keypad_button_small col-4 text-center">
               <a href="#" class="o_dial_activity_cancel o_phonecall_activity_button">
-                <i class="fa fa-close fa-2x" aria-label="Cancel"></i><p class="feature text-center">Cancel</p>
+                <i class="fa fa-close fa-2x" aria-label="Cancel"></i>
+              </a>
+            </div>
+            <div title="Mark as done" class="o_dial_keypad_button_small col-4 text-center">
+              <a href="#" class="o_dial_activity_done o_phonecall_activity_button">
+                <i class="fa fa-check fa-2x" aria-label="Mark as done"></i>
+              </a>
+            </div>
+            <div class="o_dial_keypad_button_small col-4 text-center">
+              <a href="#" class="o_dial_log o_phonecall_activity_button">
+                <i title="Log" class="fa fa-pencil fa-2x" aria-label="Log"></i>
               </a>
             </div>
         </div>
-        <div class="row o_phonecall_in_call">
-            <div class="o_dial_keypad_button_small col-6 text-center">
-              <button class="o_dial_keypad_button o_dial_transfer_button" title="Transfer" aria-label="Transfer">
-                <i class="fa fa-arrows-h fa-3x"></i>
-              </button>
-            </div>
-            <div class="o_dial_keypad_button_small col-6 text-center">
-              <button class="o_dial_keypad_button o_dial_mute_button" aria-label="Mute" title="Mute">
-                <i class="fa fa-microphone fa-3x"></i>
-              </button>
+        <div class="o_phonecall_in_call">
+            <div class="o_voip_row_header">Call</div>
+            <div class="o_row">
+                <div class="o_dial_keypad_button_small col-6 text-center">
+                <button class="o_dial_keypad_button o_dial_transfer_button" title="Transfer" aria-label="Transfer">
+                    <i class="fa fa-arrows-h fa-2x"></i>
+                </button>
+                </div>
+                <div class="o_dial_keypad_button_small col-6 text-center">
+                <button class="o_dial_keypad_button o_dial_mute_button" aria-label="Mute" title="Mute">
+                    <i class="fa fa-microphone fa-2x"></i>
+                </button>
+                </div>
             </div>
         </div>
     </div>

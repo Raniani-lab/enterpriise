@@ -4,6 +4,7 @@
 import time
 
 from odoo import api, fields, models, _
+from odoo.tools.misc import clean_context
 
 
 class VoipPhonecall(models.Model):
@@ -48,26 +49,32 @@ class VoipPhonecall(models.Model):
         self.start_time = int(time.time())
 
     @api.multi
-    def hangup_call(self):
+    def hangup_call(self, done=True):
         self.ensure_one()
         stop_time = int(time.time())
         duration_seconds = float(stop_time - self.start_time)
         duration = round(duration_seconds / 60, 2)
-        seconds = duration_seconds - int(duration) * 60
-        note = False
-        if (self.activity_id):
-            note = self.activity_id.note
-            duration_log = '<br/><p>Call duration: ' + str(int(duration)) + 'min ' + str(int(seconds)) + 'sec</p>'
-            if self.activity_id.note:
-                self.activity_id.note += duration_log
-            else:
-                self.activity_id.note = duration_log
-            self.activity_id.action_done()
-        self.write({
-            'state': 'done',
-            'duration': duration,
-            'note': note,
-        })
+        if done:
+            note = False
+            if (self.activity_id):
+                note = self.activity_id.note
+                minutes = int(duration)
+                seconds = int(duration_seconds - minutes * 60)
+                duration_log = '<br/><p>Call duration: %smin %ssec</p>' % (minutes, seconds)
+                if self.activity_id.note:
+                    self.activity_id.note += duration_log
+                else:
+                    self.activity_id.note = duration_log
+                self.activity_id.action_done()
+            self.write({
+                'state': 'done',
+                'duration': duration,
+                'note': note,
+            })
+        else:
+            self.write({
+                'duration': duration,
+            })
         return
 
     @api.multi
@@ -79,16 +86,11 @@ class VoipPhonecall(models.Model):
     def remove_from_queue(self):
         self.ensure_one()
         self.in_queue = False
+        res_id = self.activity_id.res_id
         if(self.activity_id and self.state in ['pending', 'open']):
             self.state = 'cancel'
             self.activity_id.unlink()
-
-    @api.multi
-    def log_note(self, note):
-        self.ensure_one()
-        self.note = note
-        if (self.activity_id):
-            self.activity_id.note = note
+        return res_id
 
     @api.one
     def get_info(self):
@@ -140,7 +142,8 @@ class VoipPhonecall(models.Model):
             ('mail_message_id', '!=', False),
             ('in_queue', '=', True),
             ('user_id', '=', self.env.user.id),
-            ('date_deadline', '<=', fields.Date.today())
+            ('date_deadline', '<=', fields.Date.today()),
+            ('state', '!=', 'done')
         ], order='sequence,date_deadline,id').get_info()
 
     @api.model
@@ -208,7 +211,10 @@ class VoipPhonecall(models.Model):
             partner_id = record.id
         elif 'partner_id' in record:
             partner_id = record.partner_id.id
-        return self.create({
+        #clean context to remove default_type
+        #maybe move this in create_call_in_queue
+        ctx = clean_context(self.env.context)
+        return self.with_context(ctx).create({
             'name': activity.res_name,
             'user_id': activity.user_id.id,
             'partner_id': partner_id,

@@ -49,23 +49,24 @@
         <div class="o_dial_keypad_backspace fa fa-long-arrow-left" title="Backspace" role="img" aria-label="Backspace"/>
       </div>
       <div class="clearfix o_dial_keypad_buttons mt16 mb16">
-        <button class="O_dial_number o_dial_keypad_button text-primary">1</button>
-        <button class="O_dial_number o_dial_keypad_button text-primary">2</button>
-        <button class="O_dial_number o_dial_keypad_button text-primary">3</button>
-        <button class="O_dial_number o_dial_keypad_button text-primary">4</button>
-        <button class="O_dial_number o_dial_keypad_button text-primary">5</button>
-        <button class="O_dial_number o_dial_keypad_button text-primary">6</button>
-        <button class="O_dial_number o_dial_keypad_button text-primary">7</button>
-        <button class="O_dial_number o_dial_keypad_button text-primary">8</button>
-        <button class="O_dial_number o_dial_keypad_button text-primary">9</button>
-        <button class="O_dial_number o_dial_keypad_button text-primary">*</button>
-        <button class="O_dial_number o_dial_keypad_button text-primary">0</button>
-        <button class="O_dial_number o_dial_keypad_button text-primary">#</button>
+        <button class="o_dial_number o_dial_keypad_button text-primary">1</button>
+        <button class="o_dial_number o_dial_keypad_button text-primary">2</button>
+        <button class="o_dial_number o_dial_keypad_button text-primary">3</button>
+        <button class="o_dial_number o_dial_keypad_button text-primary">4</button>
+        <button class="o_dial_number o_dial_keypad_button text-primary">5</button>
+        <button class="o_dial_number o_dial_keypad_button text-primary">6</button>
+        <button class="o_dial_number o_dial_keypad_button text-primary">7</button>
+        <button class="o_dial_number o_dial_keypad_button text-primary">8</button>
+        <button class="o_dial_number o_dial_keypad_button text-primary">9</button>
+        <button class="o_dial_number o_dial_keypad_button text-primary">*</button>
+        <button class="o_dial_number o_dial_keypad_button text-primary">0</button>
+        <button class="o_dial_number o_dial_keypad_button text-primary">#</button>
       </div>
     </div>
     <div class="o_dial_buttons o_dial_main_buttons">
-      <button class="col-6 o_dial_keypad_button o_dial_keypad_icon text-gray-light" aria-label="Keypad" title="Keypad"><i class="fa fa-keyboard-o"></i></button>
-      <button class="col-6 o_dial_call_button" aria-label="Call" title="Call"><i class="fa fa-phone"></i></button>
+      <button class="col-4 o_dial_keypad_button o_dial_keypad_icon text-gray-light" aria-label="Keypad" title="Keypad"><i class="fa fa-keyboard-o"></i></button>
+      <button class="col-4 o_dial_postpone_button" aria-label="Hang up but keep call in queue" title="Hang up but keep call in queue"><i class="fa fa-user-times"></i></button>
+      <button class="col-4 o_dial_call_button" aria-label="Call" title="Call"><i class="fa fa-phone"></i></button>
     </div>
   </div>
 </t>

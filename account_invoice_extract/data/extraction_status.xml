@@ -46,7 +46,7 @@
                 <attribute name="js_class">account_invoice_extract_preview</attribute>
             </xpath>
             <xpath expr="//div[hasclass('o_attachment_preview')]" position="replace">
-                <div class="o_attachment_preview" attrs="{'invisible': ['|',('type', 'not in', ['in_invoice', 'in_refund']),('state', '!=', 'draft')]}" options="{'preview_priority_type': 'pdf'}"/>
+                <div class="o_attachment_preview" attrs="{'invisible': [('type', 'not in', ['in_invoice', 'in_refund'])]}" options="{'preview_priority_type': 'pdf'}"/>
             </xpath>
         </field>
     </record>

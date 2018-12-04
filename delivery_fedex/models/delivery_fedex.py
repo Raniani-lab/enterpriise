@@ -35,6 +35,22 @@ FEDEX_CURR_MATCH = {
     u'LVL': u'EURO',
 }
 
+FEDEX_STOCK_TYPE = [
+    ('PAPER_4X6', 'PAPER_4X6'),
+    ('PAPER_4X8', 'PAPER_4X8'),
+    ('PAPER_4X9', 'PAPER_4X9'),
+    ('PAPER_7X4.75', 'PAPER_7X4.75'),
+    ('PAPER_8.5X11_BOTTOM_HALF_LABEL', 'PAPER_8.5X11_BOTTOM_HALF_LABEL'),
+    ('PAPER_8.5X11_TOP_HALF_LABEL', 'PAPER_8.5X11_TOP_HALF_LABEL'),
+    ('PAPER_LETTER', 'PAPER_LETTER'),
+    ('STOCK_4X6', 'STOCK_4X6'),
+    ('STOCK_4X6.75_LEADING_DOC_TAB', 'STOCK_4X6.75_LEADING_DOC_TAB'),
+    ('STOCK_4X6.75_TRAILING_DOC_TAB', 'STOCK_4X6.75_TRAILING_DOC_TAB'),
+    ('STOCK_4X8', 'STOCK_4X8'),
+    ('STOCK_4X9_LEADING_DOC_TAB', 'STOCK_4X9_LEADING_DOC_TAB'),
+    ('STOCK_4X9_TRAILING_DOC_TAB', 'STOCK_4X9_TRAILING_DOC_TAB')
+]
+
 
 class ProviderFedex(models.Model):
     _inherit = 'delivery.carrier'
@@ -70,25 +86,13 @@ class ProviderFedex(models.Model):
     # --> Gross weight of each products are expressed in kilograms.
     # For some services, FedEx requires weights expressed in pounds, so we
     # convert them when necessary.
-    fedex_label_stock_type = fields.Selection([('PAPER_4X6', 'PAPER_4X6'),
-                                               ('PAPER_4X8', 'PAPER_4X8'),
-                                               ('PAPER_4X9', 'PAPER_4X9'),
-                                               ('PAPER_7X4.75', 'PAPER_7X4.75'),
-                                               ('PAPER_8.5X11_BOTTOM_HALF_LABEL', 'PAPER_8.5X11_BOTTOM_HALF_LABEL'),
-                                               ('PAPER_8.5X11_TOP_HALF_LABEL', 'PAPER_8.5X11_TOP_HALF_LABEL'),
-                                               ('PAPER_LETTER', 'PAPER_LETTER'),
-                                               ('STOCK_4X6', 'STOCK_4X6'),
-                                               ('STOCK_4X6.75_LEADING_DOC_TAB', 'STOCK_4X6.75_LEADING_DOC_TAB'),
-                                               ('STOCK_4X6.75_TRAILING_DOC_TAB', 'STOCK_4X6.75_TRAILING_DOC_TAB'),
-                                               ('STOCK_4X8', 'STOCK_4X8'),
-                                               ('STOCK_4X9_LEADING_DOC_TAB', 'STOCK_4X9_LEADING_DOC_TAB'),
-                                               ('STOCK_4X9_TRAILING_DOC_TAB', 'STOCK_4X9_TRAILING_DOC_TAB')],
-                                             default='PAPER_LETTER')
+    fedex_label_stock_type = fields.Selection(FEDEX_STOCK_TYPE, default='PAPER_LETTER')
     fedex_label_file_type = fields.Selection([('PDF', 'PDF'),
                                               ('EPL2', 'EPL2'),
                                               ('PNG', 'PNG'),
                                               ('ZPLII', 'ZPLII')],
                                              default='PDF', string="FEDEX Label File Type", oldname='x_fedex_label_file_type')
+    fedex_document_stock_type = fields.Selection(FEDEX_STOCK_TYPE, default='PAPER_LETTER')
     fedex_saturday_delivery = fields.Boolean(string="FedEx Saturday Delivery", help="""Special service:Saturday Delivery, can be requested on following days.
                                                                                  Thursday:\n1.FEDEX_2_DAY.\nFriday:\n1.PRIORITY_OVERNIGHT.\n2.FIRST_OVERNIGHT.
                                                                                  3.INTERNATIONAL_PRIORITY.\n(To Select Countries)""")
@@ -288,6 +292,7 @@ class ProviderFedex(models.Model):
                     srm.commodities(_convert_curr_iso_fdx(commodity_currency.name), commodity_amount, commodity_number_of_piece, commodity_weight_units, commodity_weight_value, commodity_description, commodity_country_of_manufacture, commodity_quantity, commodity_quantity_units, commodity_harmonized_code)
                 srm.customs_value(_convert_curr_iso_fdx(commodity_currency.name), total_commodities_amount, "NON_DOCUMENTS")
                 srm.duties_payment(picking.picking_type_id.warehouse_id.partner_id.country_id.code, superself.fedex_account_number)
+                srm.commercial_invoice(self.fedex_document_stock_type)
 
             package_count = len(picking.package_ids) or 1
 
@@ -429,7 +434,6 @@ class ProviderFedex(models.Model):
                     fedex_labels = [('LabelFedex-%s-%s.%s' % (carrier_tracking_ref, index, self.fedex_label_file_type), label)
                                     for index, label in enumerate(srm._get_labels(self.fedex_label_file_type))]
                     picking.message_post(body=logmessage, attachments=fedex_labels)
-
                     shipping_data = {'exact_price': carrier_price,
                                      'tracking_number': carrier_tracking_ref}
                     res = res + [shipping_data]
@@ -441,7 +445,10 @@ class ProviderFedex(models.Model):
             ##############
             else:
                 raise UserError(_('No packages for this picking'))
-
+            commercial_invoice = srm.get_document()
+            if commercial_invoice:
+                fedex_documents = [('DocumentFedex.%s' % (self.fedex_label_file_type), commercial_invoice)]
+                picking.message_post(body='Fedex Documents', attachments=fedex_documents)
         return res
 
     def fedex_get_tracking_link(self, picking):

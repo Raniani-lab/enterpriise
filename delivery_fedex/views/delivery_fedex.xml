@@ -22,6 +22,7 @@
                             <field name="fedex_weight_unit" attrs="{'required': [('delivery_type', '=', 'fedex')]}"/>
                             <field name="fedex_label_stock_type" attrs="{'required': [('delivery_type', '=', 'fedex')]}"/>
                             <field name="fedex_label_file_type" attrs="{'required': [('delivery_type', '=', 'fedex')]}"/>
+                            <field name="fedex_document_stock_type" attrs="{'required': [('delivery_type', '=', 'fedex')]}"/>
                             <field name="fedex_saturday_delivery" string="Saturday Delivery" attrs="{'required': [('delivery_type', '=', 'fedex')], 'invisible': [('fedex_service_type', 'not in', ['INTERNATIONAL_PRIORITY', 'FEDEX_2_DAY', 'FIRST_OVERNIGHT', 'PRIORITY_OVERNIGHT'])]}"/>
                         </group>
                     </group>

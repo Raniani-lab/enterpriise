@@ -67,6 +67,7 @@
                     <field name="move_lines" attrs="{'invisible': [('move_lines', '=', False)]}" >
                         <tree>
                             <field name="product_id"/>
+                            <field name="description_picking"/>
                             <field name="product_uom_qty"/>
                             <field name="state"/>
                         </tree>

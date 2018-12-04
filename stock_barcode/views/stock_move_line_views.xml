@@ -25,6 +25,8 @@
                 <field name="owner_id" groups="stock.group_tracking_owner"/>
 
                 <field name="tracking" invisible="1"/>
+                <field name="picking_id" invisible="1"/>
+                <field name="description_picking"/>
                 <field name="picking_type_use_create_lots" invisible="1"/>
                 <field name="picking_type_use_existing_lots" invisible="1"/>
                 <field name="lot_name"

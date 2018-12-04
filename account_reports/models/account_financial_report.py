@@ -232,8 +232,8 @@ class ReportAccountFinancialReport(models.Model):
     def get_report_informations(self, options):
         return super(ReportAccountFinancialReport, self._with_correct_filters()).get_report_informations(options)
 
-    def set_context(self, options):
-        ctx = super(ReportAccountFinancialReport, self).set_context(options)
+    def _set_context(self, options):
+        ctx = super(ReportAccountFinancialReport, self)._set_context(options)
         # We first restore the context for from_context lines from the options
         if options.get('financial_report_line_values'):
             ctx.update({'financial_report_line_values': options['financial_report_line_values']})

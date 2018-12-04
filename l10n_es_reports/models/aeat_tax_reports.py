@@ -80,16 +80,12 @@ class AEATAccountFinancialReport(models.Model):
 
 
     @api.model
-    def get_options(self, previous_options=None):
+    def _get_options(self, previous_options=None):
         """ Overridden in order to add the 'financial_report_line_values' attribute
         to the context before calling super() in case some AEAT wizard was used
         to generate this report. This allows transmitting the values manually
         entered in the wizard to the report options.
         """
-
-        if self.l10n_es_reports_modelo_number == '347':
-            self.filter_cash_basis = None # We totally disable cash basis on mod 347, so that it does not conflict with groupby thresholds
-
         aeat_wizard_id = self.env.context.get('aeat_wizard_id')
         aeat_modelo = self.env.context.get('aeat_modelo')
         if aeat_wizard_id and aeat_modelo: # If we do have these, it means an AEAT wizard was used to generate this report
@@ -105,7 +101,11 @@ class AEATAccountFinancialReport(models.Model):
 
             self = self.with_context(self.env.context, financial_report_line_values=context_line_values)
 
-        return super(AEATAccountFinancialReport, self).get_options(previous_options)
+        rslt = super(AEATAccountFinancialReport, self._with_correct_filters())._get_options(previous_options)
+
+        if self.l10n_es_reports_modelo_number == '347':
+            rslt['cash_basis'] = None
+        return rslt
 
     def _get_reports_buttons(self):
         """ Overridden to add the BOE export button to mod reports.

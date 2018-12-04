@@ -267,7 +267,7 @@ class FedexRequest():
 
     def commodities(self, commodity_currency, commodity_amount, commodity_number_of_piece, commodity_weight_units,
                     commodity_weight_value, commodity_description, commodity_country_of_manufacture, commodity_quantity,
-                    commodity_quantity_units):
+                    commodity_quantity_units, commodity_harmonized_code):
         self.hasCommodities = True
         commodity = self.client.factory.create('Commodity')
         commodity.UnitPrice.Currency = commodity_currency
@@ -283,6 +283,7 @@ class FedexRequest():
         commodity.Description = commodity_description
         commodity.Quantity = commodity_quantity
         commodity.QuantityUnits = commodity_quantity_units
+        commodity.HarmonizedCode = commodity_harmonized_code
 
         self.listCommodities.append(commodity)
 

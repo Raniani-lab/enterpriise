@@ -23,17 +23,17 @@ msgstr ""
 #. module: quality_iot
 #: model:ir.model.fields,field_description:quality_iot.field_quality_point__device_id
 msgid "Device"
-msgstr ""
+msgstr "Пристрій"
 
 #. module: quality_iot
 #: model:ir.model,name:quality_iot.model_iot_device
 msgid "IOT Device"
-msgstr ""
+msgstr "Пристрій IOT"
 
 #. module: quality_iot
 #: model:ir.model.fields,field_description:quality_iot.field_iot_device__qcp_test_type
 msgid "Qcp Test Type"
-msgstr ""
+msgstr "Тип тесту Qcp"
 
 #. module: quality_iot
 #: model:ir.model,name:quality_iot.model_quality_point

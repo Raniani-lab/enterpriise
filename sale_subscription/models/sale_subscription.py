@@ -416,11 +416,20 @@ class SaleSubscription(models.Model):
         today = fields.Date.from_string(fields.Date.today())
         search = self.env['sale.subscription.stage'].search
         for sub in self:
-            stage = search([('in_progress', '=', False), ('sequence', '>', sub.stage_id.sequence)], limit=1)
+            stage = search([('in_progress', '=', False), ('sequence', '>=', sub.stage_id.sequence)], limit=1)
             if not stage:
                 stage = search([('in_progress', '=', False)], limit=1)
             sub.write({'stage_id': stage.id, 'to_renew': False, 'date': today})
         return True
+
+    @api.multi
+    def set_open(self):
+        search = self.env['sale.subscription.stage'].search
+        for sub in self:
+            stage = search([('in_progress', '=', True), ('sequence', '>=', sub.stage_id.sequence)], limit=1)
+            if not stage:
+                stage = search([('in_progress', '=', True)], limit=1)
+            sub.write({'stage_id': stage.id, 'to_renew': False, 'date': False})
 
     def _prepare_invoice_data(self):
         self.ensure_one()
@@ -634,8 +643,7 @@ class SaleSubscription(models.Model):
         if tx.state in ['done', 'authorized']:
             invoice.write({'reference': tx.reference, 'name': tx.reference})
             self.increment_period()
-            self.unset_to_renew()
-            self.clear_date()
+            self.set_open()
         else:
             invoice.action_cancel()
             invoice.unlink()

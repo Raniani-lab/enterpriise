@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-11-22 10:45+0000\n"
-"PO-Revision-Date: 2018-11-22 10:45+0000\n"
+"PO-Revision-Date: 2018-11-12 14:54+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -25,6 +25,11 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
 msgid ", expired on"
+msgstr ""
+
+#. module: documents
+#: model:documents.workflow.rule,name:documents.documents_Finance_validate_inbox_contracts
+msgid "2018 contracts"
 msgstr ""
 
 #. module: documents
@@ -121,6 +126,11 @@ msgid "A set of condition and actions which will be available to all attachments
 msgstr ""
 
 #. module: documents
+#: model:documents.tag,name:documents.documents_hr_documents_absences
+msgid "Absences"
+msgstr ""
+
+#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__group_ids
 msgid "Access Groups"
 msgstr ""
@@ -184,6 +194,11 @@ msgstr ""
 #. module: documents
 #: model:ir.actions.act_window,name:documents.action_url_form
 msgid "Add Url"
+msgstr ""
+
+#. module: documents
+#: model:documents.tag,name:documents.documents_marketing_assets_ads
+msgid "Ads"
 msgstr ""
 
 #. module: documents
@@ -269,6 +284,21 @@ msgid "Available Rules"
 msgstr ""
 
 #. module: documents
+#: model:documents.folder,name:documents.documents_marketing_brand1_folder
+msgid "Brand 1"
+msgstr ""
+
+#. module: documents
+#: model:documents.folder,name:documents.documents_marketing_brand2_folder
+msgid "Brand 2"
+msgstr ""
+
+#. module: documents
+#: model:documents.tag,name:documents.documents_marketing_assets_brochures
+msgid "Brochures"
+msgstr ""
+
+#. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_request_form_view
 #: model_terms:ir.ui.view,arch_db:documents.documents_upload_url_view
 msgid "Cancel"
@@ -325,6 +355,13 @@ msgstr ""
 #. module: documents
 #: selection:documents.workflow.tag.criteria,operator:0
 msgid "Contains"
+msgstr ""
+
+#. module: documents
+#: model:documents.tag,name:documents.documents_finance_documents_Contracts
+#: model:documents.tag,name:documents.documents_hr_documents_contracts
+#: model:documents.tag,name:documents.documents_internal_template_contracts
+msgid "Contracts"
 msgstr ""
 
 #. module: documents
@@ -410,6 +447,11 @@ msgstr ""
 #. module: documents
 #: model:documents.workflow.rule,name:documents.documents_Internal_deprecate_doc
 msgid "Deprecate Document(s)"
+msgstr ""
+
+#. module: documents
+#: model:documents.tag,name:documents.documents_internal_status_deprecated
+msgid "Deprecated"
 msgstr ""
 
 #. module: documents
@@ -514,7 +556,7 @@ msgstr ""
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_page
-msgid "Downlaod all files"
+msgid "Download all files"
 msgstr ""
 
 #. module: documents
@@ -528,6 +570,11 @@ msgstr ""
 #. module: documents
 #: selection:documents.share,action:0
 msgid "Download and Upload"
+msgstr ""
+
+#. module: documents
+#: model:documents.tag,name:documents.documents_internal_status_draft
+msgid "Draft"
 msgstr ""
 
 #. module: documents
@@ -603,6 +650,11 @@ msgid "File"
 msgstr ""
 
 #. module: documents
+#: model:documents.folder,name:documents.documents_finance_folder
+msgid "Finance"
+msgstr ""
+
+#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_facet__folder_id
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__folder_id
 #: model:ir.model.fields,field_description:documents.field_documents_share__folder_id
@@ -649,8 +701,18 @@ msgid "Go to the <b>images, videos & PDF viewer</b> by clicking on the preview a
 msgstr ""
 
 #. module: documents
+#: model:documents.folder,name:documents.documents_hr_folder
+msgid "HR"
+msgstr ""
+
+#. module: documents
 #: model:ir.model,name:documents.model_ir_http
 msgid "HTTP Routing"
+msgstr ""
+
+#. module: documents
+#: model:documents.tag,name:documents.documents_internal_knowledge_hr_policies
+msgid "HR policies"
 msgstr ""
 
 #. module: documents
@@ -696,8 +758,20 @@ msgid "Image"
 msgstr ""
 
 #. module: documents
+#: model:documents.tag,name:documents.documents_marketing_assets_images
+msgid "Images"
+msgstr ""
+
+#. module: documents
+#: model:documents.tag,name:documents.documents_finance_status_inbox
+#: model:documents.tag,name:documents.documents_hr_status_inbox
 #: model:mail.activity.type,name:documents.mail_documents_activity_data_Inbox
 msgid "Inbox"
+msgstr ""
+
+#. module: documents
+#: model:documents.folder,name:documents.documents_internal_folder
+msgid "Internal"
 msgstr ""
 
 #. module: documents
@@ -754,6 +828,11 @@ msgid "Late Activities"
 msgstr ""
 
 #. module: documents
+#: model:documents.tag,name:documents.documents_finance_documents_legal
+msgid "Legal statements"
+msgstr ""
+
+#. module: documents
 #: selection:documents.share,state:0
 msgid "Live"
 msgstr ""
@@ -785,6 +864,11 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
 msgid "Login"
+msgstr ""
+
+#. module: documents
+#: model:documents.tag,name:documents.documents_marketing_assets_logos
+msgid "Logos"
 msgstr ""
 
 #. module: documents
@@ -823,6 +907,11 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__remove_activities
 msgid "Mark all Activities as done"
+msgstr ""
+
+#. module: documents
+#: model:documents.folder,name:documents.documents_marketing_folder
+msgid "Marketing"
 msgstr ""
 
 #. module: documents
@@ -958,6 +1047,11 @@ msgid "Optional ID of a thread (record) to which all incoming messages will be a
 msgstr ""
 
 #. module: documents
+#: model:documents.tag,name:documents.documents_internal_knowledge_other
+msgid "Other"
+msgstr ""
+
+#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__owner_id
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_user_id
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__criteria_owner_id
@@ -997,12 +1091,22 @@ msgid "Parent model holding the alias. The model holding the alias reference is 
 msgstr ""
 
 #. module: documents
+#: model:documents.tag,name:documents.documents_hr_documents_payslips
+msgid "Payslips"
+msgstr ""
+
+#. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_contact
 msgid "Policy to post a message on the document using the mailgateway.\n"
 "- everyone: everyone can post\n"
 "- partners: only authenticated partners\n"
 "- followers: only followers of the related document or members of following channels\n"
 ""
+msgstr ""
+
+#. module: documents
+#: model:documents.tag,name:documents.documents_internal_template_Presentations
+msgid "Presentations"
 msgstr ""
 
 #. module: documents
@@ -1091,6 +1195,11 @@ msgid "Rule name"
 msgstr ""
 
 #. module: documents
+#: model:documents.tag,name:documents.documents_internal_knowledge_Sales
+msgid "Sales"
+msgstr ""
+
+#. module: documents
 #: model:ir.model.fields,help:documents.field_documents_folder__facet_ids
 msgid "Select the tag categories to be used"
 msgstr ""
@@ -1171,6 +1280,11 @@ msgstr ""
 #. module: documents
 #: selection:documents.workflow.rule,create_model:0
 msgid "Signature template"
+msgstr ""
+
+#. module: documents
+#: model:documents.tag,name:documents.documents_internal_template_sign
+msgid "Sign"
 msgstr ""
 
 #. module: documents
@@ -1280,6 +1394,13 @@ msgid "This link has expired"
 msgstr ""
 
 #. module: documents
+#: model:documents.tag,name:documents.documents_finance_status_tc
+#: model:documents.tag,name:documents.documents_hr_status_tc
+#: model:documents.tag,name:documents.documents_internal_status_tc
+msgid "To Review"
+msgstr ""
+
+#. module: documents
 #. openerp-web
 #: code:addons/documents/static/src/js/tour.js:69
 #, python-format
@@ -1381,9 +1502,21 @@ msgid "Valid Until"
 msgstr ""
 
 #. module: documents
+#: model:documents.tag,name:documents.documents_finance_status_validated
+#: model:documents.tag,name:documents.documents_hr_status_validated
+#: model:documents.tag,name:documents.documents_internal_status_validated
+msgid "Validated"
+msgstr ""
+
+#. module: documents
 #: model:documents.workflow.rule,name:documents.documents_Finance_validate_review
 #: model:documents.workflow.rule,name:documents.documents_Internal_validate_review
 msgid "Validate Document(s)"
+msgstr ""
+
+#. module: documents
+#: model:documents.tag,name:documents.documents_finance_documents_vendor_bill
+msgid "Vendor Bills"
 msgstr ""
 
 #. module: documents
@@ -1394,6 +1527,11 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
 msgid "Video"
+msgstr ""
+
+#. module: documents
+#: model:documents.tag,name:documents.documents_marketing_assets_Videos
+msgid "Videos"
 msgstr ""
 
 #. module: documents
@@ -1476,4 +1614,3 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
 msgid "shared by"
 msgstr ""
-

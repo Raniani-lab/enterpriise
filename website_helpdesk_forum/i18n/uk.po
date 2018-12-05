@@ -3,13 +3,15 @@
 # * website_helpdesk_forum
 # 
 # Translators:
+# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018
 # Martin Trigaux, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-08-24 11:49+0000\n"
 "Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
@@ -104,7 +106,7 @@ msgstr "Поділитися на форум"
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.helpdesk_team_view_form_inherit_website_helpdesk_forum
 msgid "The related forum is:<br/>"
-msgstr "Пов'язаний форум - це:<br/>"
+msgstr "Пов'язаний форум є:<br/>"
 
 #. module: website_helpdesk_forum
 #: code:addons/website_helpdesk_forum/models/helpdesk.py:77

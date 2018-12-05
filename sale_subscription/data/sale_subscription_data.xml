@@ -57,11 +57,6 @@
         <field name="description">Subscription stage has changed</field>
     </record>
 
-    <!-- enable discount in sales config -->
-    <record id="base.group_user" model="res.groups">
-        <field name="implied_ids" eval="[(4, ref('sale.group_discount_per_so_line'))]"/>
-    </record>
-
     <data noupdate="1">
         <record id="seq_sale_subscription" model="ir.sequence">
             <field name="name">Subscriptions</field>

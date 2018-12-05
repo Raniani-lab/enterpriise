@@ -26,8 +26,8 @@
                                    <field name="account_folder" attrs="{'required' : [('dms_account_settings', '=', True)]}"/>
                                 </div>
                             </div>
-                            <label for="account_tags"/>
-                            <div class="row">
+                            <label for="account_tags" attrs="{'invisible' : [('dms_account_settings', '=', False)]}"/>
+                            <div class="row" attrs="{'invisible' : [('dms_account_settings', '=', False)]}">
                                 <div class="text-muted col-md-12">
                                     Select the tags to be applied to the accounting's new documents
                                 </div>

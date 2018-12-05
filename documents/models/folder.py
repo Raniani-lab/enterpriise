@@ -32,7 +32,7 @@ class DocumentFolder(models.Model):
                                        string="Parent Folder",
                                        ondelete="cascade",
                                        help="Tag categories from parent folders will be shared to their sub folders")
-    name = fields.Char(required=True)
+    name = fields.Char(required=True, translate=True)
     description = fields.Html(string="Description")
     children_folder_ids = fields.One2many('documents.folder', 'parent_folder_id', string="Sub folders")
     attachment_ids = fields.One2many('ir.attachment', 'folder_id', string="Documents")

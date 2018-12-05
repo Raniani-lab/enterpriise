@@ -19,9 +19,9 @@ class ResConfigSettings(models.TransientModel):
 
     @api.model
     def create(self, vals):
-        if 'ocn_push_notification' in vals and vals.get('ocn_push_notification'):
+        ir_params = self.env['ir.config_parameter'].sudo()
+        if vals.get('ocn_push_notification') and not ir_params.get_param('odoo_ocn.project_id'):
             # Every time when user change setting, we need to validate ocn service
-            ir_params = self.env['ir.config_parameter'].sudo()
             params = {
                 'ocnuuid': self._get_ocn_uuid(),
                 'server_version': odoo.release.version,

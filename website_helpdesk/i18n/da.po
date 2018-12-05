@@ -55,7 +55,7 @@ msgstr "Helpdesk team"
 #. module: website_helpdesk
 #: model:ir.model.fields,field_description:website_helpdesk.field_helpdesk_team__is_published
 msgid "Is published"
-msgstr ""
+msgstr "Er udgivet"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.not_published_any_team

@@ -26,8 +26,8 @@
                                <field name="project_folder" attrs="{'required' : [('dms_project_settings', '=', True)]}"/>
                             </div>
                         </div>
-                        <label for="project_tags"/>
-                        <div class="row">
+                        <label for="project_tags" attrs="{'invisible' : [('dms_project_settings', '=', False)]}"/>
+                        <div class="row" attrs="{'invisible' : [('dms_project_settings', '=', False)]}">
                             <div class="text-muted col-md-12">
                                 Select the tags to be applied to the project's new documents
                             </div>

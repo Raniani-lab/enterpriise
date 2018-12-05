@@ -4,6 +4,7 @@
 # 
 # Translators:
 # 최재호 <hwangtog@gmail.com>, 2018
+# nle_odoo, 2018
 # Linkup <link-up@naver.com>, 2018
 # 
 msgid ""
@@ -150,7 +151,7 @@ msgstr "<b>@%s</b>와(과) 비공개 대화를 하고 있습니다."
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:47
 #, python-format
 msgid "You are in channel <b>#%s</b>."
-msgstr "<b># % s</b> 채널에 있습니다."
+msgstr "<b>#%s</b> 채널에 있습니다."
 
 #. module: website_helpdesk_livechat
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:84

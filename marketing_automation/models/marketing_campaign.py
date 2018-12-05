@@ -206,6 +206,8 @@ class MarketingCampaign(models.Model):
                 # Don't use browse maybe record is deleted
                 existing_records = RecordModel.browse(existing_rec_ids).read([campaign.unique_field_id.name])
                 unique_field_vals = list({rec[campaign.unique_field_id.name] for rec in existing_records})
+                if campaign.unique_field_id.ttype == 'many2one':
+                    unique_field_vals = [record[0] for record in unique_field_vals]
                 unique_domain = [(campaign.unique_field_id.name, 'not in', unique_field_vals)]
                 record_domain = expression.AND([unique_domain, record_domain])
             db_rec_ids = set(RecordModel.search(record_domain).ids)

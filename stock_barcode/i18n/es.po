@@ -3,16 +3,18 @@
 # * stock_barcode
 # 
 # Translators:
-# Martin Trigaux, 2018
+# nle_odoo, 2018
 # Nicolás Broggi <rnbroggi@gmail.com>, 2018
 # Luis M. Ontalba <luis.martinez@tecnativa.com>, 2018
+# Martin Trigaux, 2018
 # Miquel Torner <miq@odoo.com>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-02 10:32+0000\n"
-"PO-Revision-Date: 2018-10-02 10:32+0000\n"
+"PO-Revision-Date: 2018-08-24 11:48+0000\n"
 "Last-Translator: Miquel Torner <miq@odoo.com>, 2018\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
 "MIME-Version: 1.0\n"
@@ -545,8 +547,8 @@ msgid ""
 "The barcode \"%(barcode)s\" doesn't correspond to a proper product, package "
 "or location."
 msgstr ""
-"El código de barras \"% (barcode) s\" no corresponde a un producto, paquete "
-"o ubicación apropiados."
+"El código de barras \"%(barcode)s\" no corresponde a un producto, paquete o "
+"ubicación apropiados."
 
 #. module: stock_barcode
 #. openerp-web

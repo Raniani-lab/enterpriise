@@ -574,7 +574,7 @@ msgstr "Відсоток знижок повинен становити від 1
 #: code:addons/sale_coupon/models/sale_order.py:184
 #, python-format
 msgid "Discount: "
-msgstr ""
+msgstr "Знижка: "
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_report_sale_coupon_report_coupon__display_name

@@ -95,7 +95,8 @@ class AccountPayment(models.Model):
     def post(self):
         """Generate CFDI to payment after that invoice is paid"""
         date_mx = self.env['l10n_mx_edi.certificate'].sudo().get_mx_current_datetime()
-        res = super(AccountPayment, self).post()
+        res = super(AccountPayment, self.with_context(
+            l10n_mx_edi_manual_reconciliation=False)).post()
         for record in self.filtered(lambda r: r.l10n_mx_edi_is_required()):
             record.write({
                 'l10n_mx_edi_expedition_date': date_mx,
@@ -213,26 +214,44 @@ class AccountPayment(models.Model):
         return self.env['account.invoice'].l10n_mx_edi_generate_cadena(xslt_path, cfdi)
 
     @api.multi
+    def _compute_reconciled_invoice_ids(self):
+        # /!\ This is a BACKPORT from v12: this method becomes a computed 'reconciled_invoice_ids' field.
+        self.ensure_one()
+        return self.move_line_ids.mapped('matched_debit_ids.debit_move_id.invoice_id') | self.move_line_ids.mapped('matched_credit_ids.credit_move_id.invoice_id')
+
+    @api.multi
     def l10n_mx_edi_is_required(self):
         self.ensure_one()
         required = (
             self.payment_type == 'inbound' and
             self.company_id.country_id == self.env.ref('base.mx') and
-            self.invoice_ids.filtered(lambda i: i.type == 'out_invoice'))
+            not self.invoice_ids.filtered(lambda i: i.type != 'out_invoice'))
         if not required:
             return required
         if not self.invoice_ids:
-            raise UserError(_(
-                'Is necessary assign the invoices that are paid with this '
-                'payment to allow relate in the CFDI the fiscal '
-                'documents that are affected with this record.'))
+            self.message_post(body=_(
+                'It is necessary to assign the invoices that are paid with '
+                'this payment to allow relate in the CFDI the fiscal '
+                'documents that are affected by this record.'))
+            return False
+        if not self.move_reconciled:
+            self.message_post(body=_(
+                'The payment is not full reconciled.\n'
+                'Please, you need reconcile the payment (completely) with the '
+                'customer invoices to pay. Or if it is necessary you can '
+                ' create an advance invoice with this payment.'))
+            return False
         if False in self.invoice_ids.mapped('l10n_mx_edi_cfdi_uuid'):
             raise UserError(_(
                 'Some of the invoices that will be paid with this record '
                 'is not signed, and the UUID is required to indicate '
                 'the invoices that are paid with this CFDI'))
         if not self.invoice_ids.filtered(
-                lambda i: i.date_due != i.date_invoice):
+                lambda i: i._l10n_mx_edi_get_payment_policy() == 'PPD'):
+            self.message_post(body=_(
+                'It is not necessary generate the payment receipt complement '
+                'for this record because all the invoices have the payment '
+                'method as PUE.'))
             return False
         return required
 
@@ -726,7 +745,7 @@ class AccountPayment(models.Model):
             record.write({
                 'l10n_mx_edi_expedition_date': False,
                 'l10n_mx_edi_time_payment': False,
-                'l10n_mx_edi_origin': self._set_cfdi_origin(
+                'l10n_mx_edi_origin': record._set_cfdi_origin(
                     record.l10n_mx_edi_cfdi_uuid),
             })
         return super(AccountPayment, self).action_draft()

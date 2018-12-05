@@ -7,7 +7,7 @@ from odoo.addons.timesheet_grid_sale.models.sale import DEFAULT_INVOICED_TIMESHE
 
 
 class AccountInvoice(models.Model):
-    _inherit = 'account.invoice'
+    _inherit = 'account.invoice.line'
 
     @api.model
     def _timesheet_domain_get_invoiced_lines(self, sale_line_delivery):

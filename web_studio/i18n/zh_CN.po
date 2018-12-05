@@ -9,12 +9,11 @@
 # Xu Lei <xulei8@qq.com>, 2018
 # fausthuang, 2018
 # 老窦 北京 <2662059195@qq.com>, 2018
+# Lisa Zhang <lzh@odoo.com>, 2018
 # Emily JIA <eji@odoo.com>, 2018
 # Martin Trigaux, 2018
 # e2f_cn c7 <e2f_cn_c7@outlook.com>, 2018
-# Lisa Zhang <lzh@odoo.com>, 2018
 # ChinaMaker <liuct@chinamaker.net>, 2018
-# KWOKYUK CHEUNG <cheungkwokyuk@gmail.com>, 2018
 # niulin lnc. <admin@niulin.net>, 2018
 # diaojiaolou <124412206@qq.com>, 2018
 # liAnGjiA <liangjia@qq.com>, 2018
@@ -48,7 +47,7 @@ msgid ""
 "            "
 msgstr ""
 " <p class=\"o_view_nocontent_empty_report\">\n"
-"                新增报告\n"
+"                添加新报告\n"
 "            </p>\n"
 "            "
 
@@ -144,17 +143,17 @@ msgstr "访问控制"
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_res_groups
 msgid "Access Groups"
-msgstr "访问群"
+msgstr "访问组"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_actions_act_window
 msgid "Action Window"
-msgstr "动作视图"
+msgstr "动作窗口"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_actions_act_window_view
 msgid "Action Window View"
-msgstr "动作窗视图"
+msgstr "动作窗口视图"
 
 #. module: web_studio
 #. openerp-web
@@ -236,7 +235,7 @@ msgstr "添加打印菜单"
 #: code:addons/web_studio/static/src/xml/new_field_dialog.xml:39
 #, python-format
 msgid "Add new value"
-msgstr "添加新的值"
+msgstr "添加新值"
 
 #. module: web_studio
 #. openerp-web
@@ -271,7 +270,7 @@ msgstr "允许创建列表视图链接"
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:151
 #, python-format
 msgid "Amount total"
-msgstr "总额合计"
+msgstr "合计金额"
 
 #. module: web_studio
 #. openerp-web
@@ -324,7 +323,7 @@ msgstr "自动动作"
 #: code:addons/web_studio/controllers/main.py:58
 #, python-format
 msgid "Automated Actions"
-msgstr "自动的动作"
+msgstr "自动动作"
 
 #. module: web_studio
 #. openerp-web
@@ -379,7 +378,7 @@ msgstr "加粗"
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:262
 #, python-format
 msgid "Bordered"
-msgstr "有边框的"
+msgstr "有边框"
 
 #. module: web_studio
 #. openerp-web
@@ -421,7 +420,7 @@ msgstr "能删除"
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:51
 #, python-format
 msgid "Can Edit"
-msgstr "可编辑的"
+msgstr "能编辑"
 
 #. module: web_studio
 #. openerp-web
@@ -602,7 +601,7 @@ msgstr "确认"
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:225
 #, python-format
 msgid "Consolidate"
-msgstr "统一"
+msgstr "合并"
 
 #. module: web_studio
 #. openerp-web
@@ -747,7 +746,7 @@ msgstr "默认视图"
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:191
 #, python-format
 msgid "Delay Field"
-msgstr "时长字段"
+msgstr "延迟字段"
 
 #. module: web_studio
 #. openerp-web
@@ -861,7 +860,7 @@ msgstr "持续时间单位"
 #: code:addons/web_studio/static/src/js/home_menu.js:123
 #, python-format
 msgid "Edit Application Icon"
-msgstr "编辑应用ICON图标"
+msgstr "编辑应用图标"
 
 #. module: web_studio
 #. openerp-web
@@ -911,7 +910,7 @@ msgstr "编辑菜单"
 #: code:addons/web_studio/static/src/xml/new_field_dialog.xml:32
 #, python-format
 msgid "Edit selection"
-msgstr "编辑选中项"
+msgstr "编辑选项"
 
 #. module: web_studio
 #. openerp-web
@@ -932,7 +931,7 @@ msgstr "Else"
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:566
 #, python-format
 msgid "Email Alias"
-msgstr "Email别名"
+msgstr "电子邮件别名"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_mail_template
@@ -944,7 +943,7 @@ msgstr "电子邮件模板"
 #: code:addons/web_studio/static/src/xml/action_editor_sidebar.xml:15
 #, python-format
 msgid "Empty List Message"
-msgstr "列表消息为空"
+msgstr "清空列表消息"
 
 #. module: web_studio
 #. openerp-web
@@ -1051,7 +1050,7 @@ msgstr "字段权限"
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:94
 #, python-format
 msgid "Field expression"
-msgstr "字段表达式"
+msgstr "Field表达式"
 
 #. module: web_studio
 #. openerp-web

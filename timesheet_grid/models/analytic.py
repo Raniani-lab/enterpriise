@@ -106,6 +106,21 @@ class AnalyticLine(models.Model):
             raise AccessError(_('Only a Timesheets Manager is allowed to create an entry older than the validation limit.'))
         return line
 
+    @api.multi
+    def write(self, vals):
+        res = super(AnalyticLine, self).write(vals)
+        # Write then check: otherwise, the use can create the timesheet in the future, then change
+        # its date.
+        if not self.user_has_groups('hr_timesheet.group_timesheet_manager') and self.filtered(lambda r: r.is_timesheet and r.validated):
+            raise AccessError(_('Only a Timesheets Manager is allowed to modify a validated entry.'))
+        return res
+
+    @api.multi
+    def unlink(self):
+        if not self.user_has_groups('hr_timesheet.group_timesheet_manager') and self.filtered(lambda r: r.is_timesheet and r.validated):
+            raise AccessError(_('Only a Timesheets Manager is allowed to delete a validated entry.'))
+        return super(AnalyticLine, self).unlink()
+
     @api.model
     def _fields_view_get(self, view_id=None, view_type='form', toolbar=False, submenu=False):
         """ Set the correct label for `unit_amount`, depending on company UoM """

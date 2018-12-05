@@ -233,11 +233,13 @@ ActionManager.include({
     /**
      * @private
      * @param {OdooEvent} ev
+     * @param {string} ev.data.actionID
      */
     _onReloadAction: function (ev) {
         var self = this;
-        this._loadAction(ev.data.actionID).then(function (result) {
-            self._preprocessAction(result, {});
+        var action = _.findWhere(this.actions, {id: ev.data.actionID});
+        this._loadAction(action.id).then(function (result) {
+            self._preprocessAction(result, {additional_context: action.context});
             self._processStudioAction(result, {});
             bus.trigger('action_changed', result);
             if (ev.data.def) {

@@ -108,7 +108,7 @@ msgstr "Дата"
 #. module: mrp_workorder
 #: model:ir.model.fields,help:mrp_workorder.field_quality_point__test_type_id
 msgid "Defines the type of the quality control point."
-msgstr ""
+msgstr "Визначає тип пункту контролю якості."
 
 #. module: mrp_workorder
 #: selection:quality.point,worksheet:0
@@ -376,7 +376,7 @@ msgstr "Пункт контролю якості"
 #. module: mrp_workorder
 #: model:ir.model,name:mrp_workorder.model_quality_point_test_type
 msgid "Quality Control Test Type"
-msgstr ""
+msgstr "Тип тесту контролю якості"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.view_routing_steps_search

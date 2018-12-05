@@ -25,7 +25,6 @@ class TestL10nMxEdiInvoice(common.InvoiceTransactionCase):
         self.cert_password = '12345678a'
         self.l10n_mx_edi_basic_configuration()
         self.company_partner = self.env.ref('base.main_partner')
-        self.payment_term = self.ref('account.account_payment_term_net')
         self.config_parameter = self.env.ref(
             'l10n_mx_edi.l10n_mx_edi_version_cfdi')
         self.xml_expected_str = misc.file_open(os.path.join(

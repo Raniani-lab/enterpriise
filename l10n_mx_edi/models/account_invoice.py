@@ -606,7 +606,7 @@ class AccountInvoice(models.Model):
         allow = self - not_allow
         allow.write({'l10n_mx_edi_time_invoice': False})
         for record in allow.filtered('l10n_mx_edi_cfdi_uuid'):
-            record.l10n_mx_edi_origin = self._set_cfdi_origin('04', [record.l10n_mx_edi_cfdi_uuid])
+            record.l10n_mx_edi_origin = record._set_cfdi_origin('04', [record.l10n_mx_edi_cfdi_uuid])
         return super(AccountInvoice, self - not_allow).action_invoice_draft()
 
     @api.model
@@ -618,7 +618,7 @@ class AccountInvoice(models.Model):
             invoice, date_invoice=date_invoice, date=date,
             description=description, journal_id=journal_id)
         if invoice.l10n_mx_edi_cfdi_uuid:
-            values['l10n_mx_edi_origin'] = self._set_cfdi_origin('01', [invoice.l10n_mx_edi_cfdi_uuid])
+            values['l10n_mx_edi_origin'] = '%s|%s' % ('01', invoice.l10n_mx_edi_cfdi_uuid)
         return values
 
     @api.multi
@@ -718,6 +718,28 @@ class AccountInvoice(models.Model):
         return text.strip()[:size]
 
     @api.multi
+    def _l10n_mx_edi_get_payment_policy(self):
+        self.ensure_one()
+        version = self.l10n_mx_edi_get_pac_version()
+        term_ids = self.payment_term_id.line_ids
+        if version == '3.2':
+            if len(term_ids.ids) > 1:
+                return 'Pago en parcialidades'
+            else:
+                return 'Pago en una sola exhibición'
+        elif version == '3.3' and self.date_due and self.date_invoice:
+            # In CFDI 3.3 - SAT 2018 rule 2.7.1.44, the payment policy is PUE
+            # if the invoice will be paid before 17th of the following month,
+            # PPD otherwise
+            date_pue = (fields.Date.from_string(self.date_invoice) +
+                        relativedelta(day=17, months=1))
+            date_due = fields.Date.from_string(self.date_due)
+            if (date_due > date_pue or len(term_ids) > 1):
+                return 'PPD'
+            return 'PUE'
+        return ''
+
+    @api.multi
     def _l10n_mx_edi_create_cfdi_values(self):
         '''Create the values to fill the CFDI template.
         '''
@@ -752,16 +774,7 @@ class AccountInvoice(models.Model):
             invoice_currency._convert(1, mxn, self.company_id, self.date_invoice or fields.Date.today(), round=False))) if self.currency_id.name != 'MXN' else False
 
         values['document_type'] = 'ingreso' if self.type == 'out_invoice' else 'egreso'
-
-        term_ids = self.payment_term_id.line_ids
-        # In CFDI 3.3 - SAT 2018 rule 2.7.1.44, the payment policy is PUE
-        # if the invoice will be paid before 17th of the following month,
-        # PPD otherwise
-        date_pue = (fields.Date.from_string(self.date_invoice) +
-                    relativedelta(day=17, months=1))
-        date_due = fields.Date.from_string(self.date_due)
-        values['payment_policy'] = 'PPD' if (
-            date_due > date_pue or len(term_ids) > 1) else 'PUE'
+        values['payment_policy'] = self._l10n_mx_edi_get_payment_policy()
         domicile = self.journal_id.l10n_mx_address_issued_id or self.company_id
         values['domicile'] = '%s %s, %s' % (
                 domicile.city,

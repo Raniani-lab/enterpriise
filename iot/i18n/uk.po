@@ -128,7 +128,7 @@ msgstr ""
 #: selection:iot.device,type:0
 #: model:ir.model.fields,field_description:iot.field_iot_trigger__device_id
 msgid "Device"
-msgstr ""
+msgstr "Пристрій"
 
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_search
@@ -182,12 +182,12 @@ msgstr "ID"
 #. module: iot
 #: model:ir.model,name:iot.model_iot_device
 msgid "IOT Device"
-msgstr ""
+msgstr "Пристрій IOT"
 
 #. module: iot
 #: model:ir.model,name:iot.model_iot_trigger
 msgid "IOT Trigger"
-msgstr ""
+msgstr "Тригер IOT"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_box__ip
@@ -219,7 +219,7 @@ msgstr "IoT Box"
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_box__ip_url
 msgid "IoT Box Home Page"
-msgstr ""
+msgstr "Домашня сторінка IoT Box "
 
 #. module: iot
 #: model:ir.actions.act_window,name:iot.iot_box_action

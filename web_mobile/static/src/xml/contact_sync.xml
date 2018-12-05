@@ -4,11 +4,10 @@
     <t t-name="ContactSync">
         <button t-attf-class="btn oe_stat_button"
             widget="contact_sync" t-if="widget.is_mobile">
-            <div class="fa fa-fw  fa-user-plus o_button_icon mt8" role="img" aria-label="Add" title="Add"> </div>
-            <div class="o_field_widget o_stat_info">
-                <span class="o_stat_value">Add to</span>
-                <span class="o_stat_value">Mobile</span>
-            </div>
+            <i class="fa fa-fw fa-user-plus o_button_icon" role="img" aria-label="Add" title="Add"></i>
+            <span class="o_field_widget o_stat_info">
+                <span class="o_stat_text text-primary">Add to<br/>Mobile</span>
+            </span>
         </button>
     </t>
 

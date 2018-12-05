@@ -5,6 +5,7 @@
 # Translators:
 # Martin Trigaux, 2018
 # 최재호 <hwangtog@gmail.com>, 2018
+# nle_odoo, 2018
 # Link Up링크업 <linkup.way@gmail.com>, 2018
 # Linkup <link-up@naver.com>, 2018
 # 
@@ -41,7 +42,7 @@ msgid ""
 "Best Regards,\n"
 msgstr ""
 "\n"
-"%(partner_name) 귀하,\n"
+"%(partner_name)s 귀하,\n"
 "\n"
 "여러 번 알림을 보냈음에도 불구하고 귀하의 계정이 결산되지 않았습니다.\n"
 "\n"
@@ -66,7 +67,7 @@ msgid ""
 "Best Regards,\n"
 msgstr ""
 "\n"
-"%(partner_name) 귀하,\n"
+"%(partner_name)s 귀하,\n"
 "\n"
 "당사의 확인에 따르면 다음 금액이 지급되지 않았습니다. 적절한 조치를 취해 8일 이내에 대금을 지급해 주십시오.\n"
 "\n"
@@ -92,7 +93,7 @@ msgid ""
 "Best Regards,\n"
 msgstr ""
 "\n"
-"%(partner_name) 귀하,\n"
+"%(partner_name)s 귀하,\n"
 "\n"
 "알림을 보냈음에도 불구하고 귀하의 계정에서 지급이 장기간 연체되어 매우 유감입니다.\n"
 "\n"

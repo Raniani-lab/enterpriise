@@ -18,9 +18,10 @@ class AccountBankStatementLine(models.Model):
         for aml_dict in counterpart_aml_dicts or []:
             if aml_dict['move_line'].invoice_id:
                 invoice_ids.append(aml_dict['move_line'].invoice_id.id)
-        res = super(AccountBankStatementLine, self).process_reconciliation(
-            counterpart_aml_dicts=counterpart_aml_dicts,
-            payment_aml_rec=payment_aml_rec, new_aml_dicts=new_aml_dicts)
+        res = super(AccountBankStatementLine, self.with_context(
+            l10n_mx_edi_manual_reconciliation=False)).process_reconciliation(
+                counterpart_aml_dicts=counterpart_aml_dicts,
+                payment_aml_rec=payment_aml_rec, new_aml_dicts=new_aml_dicts)
         if not self.l10n_mx_edi_is_required():
             return res
         payments = res.mapped('line_ids.payment_id')

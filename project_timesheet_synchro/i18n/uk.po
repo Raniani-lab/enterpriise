@@ -4,13 +4,15 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-24 11:28+0000\n"
-"PO-Revision-Date: 2018-08-24 11:28+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"POT-Creation-Date: 2018-09-18 10:05+0000\n"
+"PO-Revision-Date: 2018-08-24 11:47+0000\n"
+"Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -71,7 +73,7 @@ msgstr "Рядок аналітики"
 #: code:addons/project_timesheet_synchro/static/src/xml/timesheet_app_backend_template.xml:26
 #, python-format
 msgid "Apple App Store"
-msgstr "Apple App Store"
+msgstr "Магазин додатків Apple"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -85,7 +87,7 @@ msgstr "Ви впевнені, що хочете видалити цю дію?"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:473
 #, python-format
 msgid "Are you sure that you want to reset the app?"
-msgstr "Ви впевнені, що хочете скинути налаштування додатоку? "
+msgstr "Ви впевнені, що хочете скинути налаштування додатку? "
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -99,7 +101,7 @@ msgstr "Доступний для iPhone, Android та Chrome."
 #: code:addons/project_timesheet_synchro/static/src/xml/timesheet_app_backend_template.xml:30
 #, python-format
 msgid "Blazing Fast"
-msgstr "Швидко палаючий"
+msgstr "Дуже швидко"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -125,7 +127,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:104
 #, python-format
 msgid "Current activity"
-msgstr ""
+msgstr "Поточна дія"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -275,7 +277,7 @@ msgstr "Більше інформації"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:145
 #, python-format
 msgid "Motivation Text"
-msgstr ""
+msgstr "Мотиваційний текст"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -303,14 +305,14 @@ msgstr "Наступний"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:300
 #, python-format
 msgid "Next week"
-msgstr ""
+msgstr "Наступний тиждень"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:303
 #, python-format
 msgid "Next week unavailable"
-msgstr ""
+msgstr "Наступний тиждень недоступний"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -408,14 +410,14 @@ msgstr "Будь ласка, виберіть проект"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:288
 #, python-format
 msgid "Previous week"
-msgstr ""
+msgstr "Попередній тиждень"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:291
 #, python-format
 msgid "Previous week unavailable"
-msgstr ""
+msgstr "Ппередній тиждень недоступний"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -443,7 +445,7 @@ msgstr "Скинути"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:116
 #, python-format
 msgid "Run"
-msgstr "Запуск"
+msgstr "Запустити"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -471,7 +473,7 @@ msgstr "Налаштування"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:557
 #, python-format
 msgid "Show password"
-msgstr ""
+msgstr "Показати пароль"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -500,7 +502,7 @@ msgstr "Статистика"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:98
 #, python-format
 msgid "Subtract"
-msgstr ""
+msgstr "Відняти"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -547,7 +549,7 @@ msgid ""
 "''Synchronization with the external timesheet application'' (available in "
 "Odoo Enterprise Edition)."
 msgstr ""
-"Сервер, до якого ви підключилися, не підтримує синхронізацію розкладу. Ви "
+"Сервер, до якого ви підключилися, не підтримує синхронізацію табеля. Ви "
 "повинні звернутися до свого адміністратора, щоби встановити модуль "
 "''Синхронізація із зовнішньою програмою для розкладу'' (доступна в Odoo "
 "Enterprise Edition)."
@@ -557,7 +559,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:24
 #, python-format
 msgid "This Week"
-msgstr "На тижні"
+msgstr "Цього тижня"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -578,13 +580,13 @@ msgstr "Витрачений час (годхв)"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:265
 #, python-format
 msgid "Time unit"
-msgstr "Одиниця виміру часу"
+msgstr "Одиниця вимірювання часу"
 
 #. module: project_timesheet_synchro
 #: model:ir.actions.client,name:project_timesheet_synchro.project_timesheet_synchro_app_action
 #: model:ir.ui.menu,name:project_timesheet_synchro.menu_timesheet_app
 msgid "Timesheet App"
-msgstr "Додаток розкладу"
+msgstr "Додаток табелю"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -606,7 +608,7 @@ msgstr "План на сьогодні"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:49
 #, python-format
 msgid "Toggle action"
-msgstr ""
+msgstr "Переключити дію"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -638,7 +640,7 @@ msgstr "Використовуйте обліковий запис Odoo.com"
 #: code:addons/project_timesheet_synchro/static/src/xml/timesheet_app_backend_template.xml:22
 #, python-format
 msgid "Use timesheet apps to manage your timesheets."
-msgstr ""
+msgstr "Використовуйте додатки табелю для керування вашими табелями."
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -730,7 +732,7 @@ msgstr "Було створено вашу базу даних та обліко
 #: code:addons/project_timesheet_synchro/static/src/xml/timesheet_app_backend_template.xml:21
 #, python-format
 msgid "Your personal timesheets"
-msgstr "Ваш персональний розклад"
+msgstr "Ваші персональні табелі"
 
 #. module: project_timesheet_synchro
 #. openerp-web

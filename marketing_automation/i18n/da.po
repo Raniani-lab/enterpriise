@@ -3,21 +3,21 @@
 # * marketing_automation
 # 
 # Translators:
-# Martin Trigaux, 2018
 # Hans Henrik Gabelgaard <hhg@gabelgaard.org>, 2018
-# jonas jensen <j.jensen@tcomp.dk>, 2018
 # Morten Schou <ms@msteknik.dk>, 2018
 # Jesper Carstensen <jc@danodoo.dk>, 2018
+# Ejner Sønniksen <ejner@vkdata.dk>, 2018
+# Martin Trigaux, 2018
 # Pernille Kristensen <pernillekristensen1994@gmail.com>, 2018
 # Sanne Kristensen <sanne@vkdata.dk>, 2018
-# Ejner Sønniksen <ejner@vkdata.dk>, 2018
 # lhmflexerp <lhm@flexerp.dk>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-08 07:14+0000\n"
-"PO-Revision-Date: 2018-10-08 07:14+0000\n"
+"PO-Revision-Date: 2018-08-24 11:38+0000\n"
 "Last-Translator: lhmflexerp <lhm@flexerp.dk>, 2018\n"
 "Language-Team: Danish (https://www.transifex.com/odoo/teams/41243/da/)\n"
 "MIME-Version: 1.0\n"
@@ -317,32 +317,32 @@ msgstr "Oprettet den"
 #. module: marketing_automation
 #: model:ir.model.fields,help:marketing_automation.field_marketing_trace__exception
 msgid "Date of technical error leading to the email not being sent"
-msgstr "Dato for den tekniske fejl, der førte til at emailen ikke blev sendt"
+msgstr "Dato for den tekniske fejl der førte til, at e-mailen ikke blev sendt"
 
 #. module: marketing_automation
 #: model:ir.model.fields,help:marketing_automation.field_marketing_trace__clicked
 msgid "Date when customer clicked on at least one tracked link"
-msgstr "Dato hvor kunde klikkede op mindst et sporet link"
+msgstr "Dato, hvor kunden klikkede på mindst et sporet link"
 
 #. module: marketing_automation
 #: model:ir.model.fields,help:marketing_automation.field_marketing_trace__opened
 msgid "Date when the email has been opened the first time"
-msgstr "Dato hvornår email har været åbnet første gang"
+msgstr "Dato, hvornår e-mailen har været åbnet første gang"
 
 #. module: marketing_automation
 #: model:ir.model.fields,help:marketing_automation.field_marketing_trace__sent
 msgid "Date when the email has been sent"
-msgstr "Dato hvor e-mailen er blevet sendt"
+msgstr "Dato, hvornår e-mailen er blevet sendt"
 
 #. module: marketing_automation
 #: model:ir.model.fields,help:marketing_automation.field_marketing_trace__replied
 msgid "Date when this email has been replied for the first time."
-msgstr "Dato hvor denne e-mail første gang blev besvaret."
+msgstr "Dato, hvornår denne e-mail første gang blev besvaret."
 
 #. module: marketing_automation
 #: model:ir.model.fields,help:marketing_automation.field_marketing_trace__bounced
 msgid "Date when this email has bounced."
-msgstr "Dato hvor denne email blev returneret."
+msgstr "Dato, hvornår denne e-mail blev returneret."
 
 #. module: marketing_automation
 #: selection:marketing.activity,interval_type:0
@@ -365,14 +365,14 @@ msgstr "Slet"
 #: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:166
 #, python-format
 msgid "Delete Activity"
-msgstr "Slet Aktivitet"
+msgstr "Slet aktivitet"
 
 #. module: marketing_automation
 #. openerp-web
 #: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:168
 #, python-format
 msgid "Delete All"
-msgstr "Slet Alle"
+msgstr "Slet alle"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__child_ids
@@ -384,7 +384,7 @@ msgstr ""
 #: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:173
 #, python-format
 msgid "Discard"
-msgstr "Kasser"
+msgstr "Kassér"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__display_name
@@ -424,7 +424,7 @@ msgstr "E-mail"
 #. module: marketing_automation
 #: model:ir.model,name:marketing_automation.model_mail_mail_statistics
 msgid "Email Statistics"
-msgstr "Email Statistikker"
+msgstr "E-mail statistikker"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__mass_mailing_id
@@ -434,7 +434,7 @@ msgstr "E-mail skabelon"
 #. module: marketing_automation
 #: model:ir.model,name:marketing_automation.model_mail_compose_message
 msgid "Email composition wizard"
-msgstr "Wizard til at oprette Email"
+msgstr "Guide til at oprette e-mail"
 
 #. module: marketing_automation
 #: selection:marketing.trace,state:0
@@ -480,7 +480,7 @@ msgstr ""
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Execute Activities"
-msgstr "Udfør Aktiviteter"
+msgstr "Udfør aktiviteter"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__domain
@@ -491,7 +491,7 @@ msgstr "Filter"
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Generate Participants"
-msgstr "Generér Deltagere"
+msgstr "Generér deltagere"
 
 #. module: marketing_automation
 #: selection:marketing.activity,interval_type:0
@@ -515,7 +515,7 @@ msgstr ""
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Last 15 Days"
-msgstr "Sidste 15 Dage"
+msgstr "Seneste 15 dage"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity____last_update
@@ -564,7 +564,7 @@ msgstr ""
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.mass_mailing_view_form_marketing_activity
 msgid "Mail Template"
-msgstr "Mail Skabelon"
+msgstr "Mailskabelon"
 
 #. module: marketing_automation
 #: selection:marketing.activity,trigger_type:0
@@ -977,7 +977,7 @@ msgstr ""
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_search
 msgid "Search Participants"
-msgstr "Søg Deltagere"
+msgstr "Søg deltagere"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__interval_number

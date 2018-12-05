@@ -9,7 +9,7 @@ This module helps for analyzing event registration pattern,
 by enabling cohort view for registered attendees.
     """,
     'category': 'Marketing',
-    'depends': ['event'],
+    'depends': ['event', 'web_cohort'],
     'data': [
         'views/event_registration_views.xml',
     ],

@@ -9,7 +9,7 @@
     'description': """
 Contains advanced features for CRM such as new views
     """,
-    'depends': ['crm', 'web_dashboard'],
+    'depends': ['crm', 'web_dashboard', 'web_cohort'],
     'data': [
         'views/crm_lead_views.xml',
     ],

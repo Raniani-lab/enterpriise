@@ -3,8 +3,8 @@
 # * delivery_dhl
 # 
 # Translators:
-# Martin Trigaux, 2018
 # Wiktor Kaźmierczak <wik92tor@wp.pl>, 2018
+# Martin Trigaux, 2018
 # zbik2607 <darek@krokus.com.pl>, 2018
 # Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2018
 # Tomasz Leppich <t.leppich@gmail.com>, 2018
@@ -14,12 +14,13 @@
 # Piotr Cierkosz <piotr.w.cierkosz@gmail.com>, 2018
 # Radosław Biegalski <radoslaw.biegalski@openglobe.pl>, 2018
 # Paweł Wodyński <pw@myodoo.pl>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-08-24 11:37+0000\n"
 "Last-Translator: Paweł Wodyński <pw@myodoo.pl>, 2018\n"
 "Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
@@ -464,7 +465,7 @@ msgstr "T - Ekspres 12:00"
 msgid ""
 "The address of the customer is missing or wrong (Missing field(s) :\n"
 " %s)"
-msgstr "Brakujący lub nieprawidłowy adres klienta."
+msgstr ""
 
 #. module: delivery_dhl
 #: code:addons/delivery_dhl/models/dhl_request.py:393
@@ -473,7 +474,6 @@ msgid ""
 "The address of your company warehouse is missing or wrong (Missing field(s) :\n"
 " %s)"
 msgstr ""
-"Adres Twojego magazynu nie został wprowadzony badź jest nieprawidłowy."
 
 #. module: delivery_dhl
 #: code:addons/delivery_dhl/models/dhl_request.py:399

@@ -27,8 +27,8 @@
                                    <field name="product_folder" attrs="{'required' : [('dms_product_settings', '=', True)]}"/>
                                 </div>
                             </div>
-                            <label for="product_tags"/>
-                            <div class="row">
+                            <label for="product_tags" attrs="{'invisible' : [('dms_product_settings', '=', False)]}"/>
+                            <div class="row" attrs="{'invisible' : [('dms_product_settings', '=', False)]}">
                                 <div class="text-muted col-md-12">
                                     Select the tags to be applied to product's new documents
                                 </div>

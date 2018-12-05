@@ -32,7 +32,7 @@ msgstr ""
 #. module: pos_iot
 #: model:ir.model,name:pos_iot.model_pos_config
 msgid "Point of Sale Configuration"
-msgstr ""
+msgstr "Uppsetning kassakerfis"
 
 #. module: pos_iot
 #: model:ir.model.fields,field_description:pos_iot.field_pos_config__iotbox_id
@@ -44,4 +44,4 @@ msgstr ""
 msgid ""
 "The hostname or ip address of the hardware proxy, Will be autodetected if "
 "left empty."
-msgstr ""
+msgstr "Vélarheiti eða ip tala vélbúnaðargáttar. Sækir sjálfvirkt ef autt."

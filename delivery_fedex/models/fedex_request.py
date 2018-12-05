@@ -238,6 +238,16 @@ class FedexRequest():
         LabelSpecification.LabelOrder = label_order
         self.RequestedShipment.LabelSpecification = LabelSpecification
 
+    def commercial_invoice(self, document_stock_type):
+        shipping_document = self.client.factory.create('ShippingDocumentSpecification')
+        shipping_document.ShippingDocumentTypes = "COMMERCIAL_INVOICE"
+        commercial_invoice_detail = self.client.factory.create('CommercialInvoiceDetail')
+        commercial_invoice_detail.Format = self.client.factory.create('ShippingDocumentFormat')
+        commercial_invoice_detail.Format.ImageType = "PDF"
+        commercial_invoice_detail.Format.StockType = document_stock_type
+        shipping_document.CommercialInvoiceDetail = commercial_invoice_detail
+        self.RequestedShipment.ShippingDocumentSpecification = shipping_document
+
     def shipping_charges_payment(self, shipping_charges_payment_account):
         self.RequestedShipment.ShippingChargesPayment.PaymentType = 'SENDER'
         Payor = self.client.factory.create('Payor')
@@ -267,7 +277,7 @@ class FedexRequest():
 
     def commodities(self, commodity_currency, commodity_amount, commodity_number_of_piece, commodity_weight_units,
                     commodity_weight_value, commodity_description, commodity_country_of_manufacture, commodity_quantity,
-                    commodity_quantity_units):
+                    commodity_quantity_units, commodity_harmonized_code):
         self.hasCommodities = True
         commodity = self.client.factory.create('Commodity')
         commodity.UnitPrice.Currency = commodity_currency
@@ -283,6 +293,7 @@ class FedexRequest():
         commodity.Description = commodity_description
         commodity.Quantity = commodity_quantity
         commodity.QuantityUnits = commodity_quantity_units
+        commodity.HarmonizedCode = commodity_harmonized_code
 
         self.listCommodities.append(commodity)
 
@@ -339,6 +350,12 @@ class FedexRequest():
 
     def get_label(self):
         return binascii.a2b_base64(self.response.CompletedShipmentDetail.CompletedPackageDetails[0].Label.Parts[0].Image)
+
+    def get_document(self):
+        if 'ShipmentDocuments' in self.response.CompletedShipmentDetail:
+            return binascii.a2b_base64(self.response.CompletedShipmentDetail.ShipmentDocuments[0].Parts[0].Image)
+        else:
+            return False
 
     # Deletion stuff
 

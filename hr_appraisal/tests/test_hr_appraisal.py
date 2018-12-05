@@ -29,7 +29,7 @@ class TestHrAppraisal(TransactionCase):
             work_email='michael@odoo.com',
             appraisal_by_manager=True,
             appraisal_manager_ids=[self.env.ref('hr.employee_al').id],
-            appraisal_manager_survey_id=self.env.ref('survey.feedback_form').id,
+            appraisal_manager_survey_id=self.env.ref('survey.survey_feedback').id,
             appraisal_by_colleagues=True,
             appraisal_colleagues_ids=[self.env.ref('hr.employee_stw')],
             appraisal_colleagues_survey_id=self.env.ref('hr_appraisal.opinion_form').id,

@@ -141,6 +141,7 @@ QUnit.module('Studio', {}, function () {
                         'data-oe-xpath': '/t/t/div',
                     },
                     tag: 'span',
+                    $nodes: $(),
                 },
             };
             var sidebar = studioTestUtils.createSidebar({
@@ -177,6 +178,7 @@ QUnit.module('Studio', {}, function () {
                         'data-oe-xpath': '/t/t/div',
                     },
                     tag: 'span',
+                    $nodes: $(),
                 },
             };
 
@@ -187,6 +189,7 @@ QUnit.module('Studio', {}, function () {
                         'data-oe-xpath': '/t/t',
                     },
                     tag: 'div',
+                    $nodes: $(),
                 },
             };
             var sidebar = studioTestUtils.createSidebar({
@@ -240,6 +243,7 @@ QUnit.module('Studio', {}, function () {
                         'data-oe-xpath': '/t/t/div',
                     },
                     tag: 'span',
+                    $nodes: $(),
                 },
             };
             var sidebar = studioTestUtils.createSidebar({
@@ -269,6 +273,7 @@ QUnit.module('Studio', {}, function () {
                         'data-oe-xpath': '/t/t/div',
                     },
                     tag: 'span',
+                    $nodes: $(),
                 },
             };
             var sidebar = studioTestUtils.createSidebar({
@@ -301,6 +306,7 @@ QUnit.module('Studio', {}, function () {
                         't-options-widget': '"text"',
                     },
                     tag: 'span',
+                    $nodes: $(),
                 },
             };
             var sidebar = studioTestUtils.createSidebar({
@@ -343,6 +349,7 @@ QUnit.module('Studio', {}, function () {
                         'doc': 'x_mymodel',
                     },
                     tag: 'span',
+                    $nodes: $(),
                 },
             };
             var sidebar = studioTestUtils.createSidebar({
@@ -391,28 +398,39 @@ QUnit.module('Studio', {}, function () {
                     'data-oe-id': '99',
                     'data-oe-xpath': '/t/t/div',
                 },
+                tag: 'div',
+                $nodes: $(),
+            };
+            var layoutChangeTextNode = {
+                attrs: {
+                    'data-oe-id': '99',
+                    'data-oe-xpath': '/t/t/span',
+                },
                 tag: 'span',
+                $nodes: $(),
             };
             var nodeWithAllLayoutPropertiesSet = {
-                tag: "span",
+                tag: "div",
                 attrs: {
                     //width: "1",
                     style: "margin-top:2px;width:1px;margin-right:3px;margin-bottom:4px;margin-left:5px;",
                     class: "o_bold o_italic h3 bg-gamma text-beta o_underline",
                     'data-oe-id': '99',
                     'data-oe-xpath': '/t/t/div',
-                }
+                },
+                $nodes: $(),
             };
 
             var nodeWithAllLayoutPropertiesFontAndBackgroundSet = {
-                tag: "span",
+                tag: "div",
                 attrs: {
                     //width: "1",
                     style: "margin-top:2px;margin-right:3px;width:1px;margin-bottom:4px;margin-left:5px;background-color:#00FF00;color:#00FF00",
                     class: "o_bold o_italic h3 o_underline",
                     'data-oe-id': '99',
                     'data-oe-xpath': '/t/t/div',
-                }
+                },
+                $nodes: $(),
             };
             var layoutChangesOperations = [
                 {
@@ -479,10 +497,24 @@ QUnit.module('Studio', {}, function () {
                     valueToPut: "42",
                     expectedRPC: {
                         inheritance: [{
-                            content: "<attribute name=\"style\" separator=\";\" add=\"width:42px;display:inline-block\"/>",
+                            content: "<attribute name=\"style\" separator=\";\" add=\"width:42px\"/>",
                             position: "attributes",
                             view_id: 99,
                             xpath: "/t/t/div"
+                        }]
+                    }
+                }, {
+                    testName: "add a width on a text",
+                    nodeToUse: layoutChangeTextNode,
+                    eventToTrigger: "change",
+                    sidebarOperationInputSelector: '.o_web_studio_width input',
+                    valueToPut: "42",
+                    expectedRPC: {
+                        inheritance: [{
+                            content: "<attribute name=\"style\" separator=\";\" add=\"width:42px;display:inline-block\"/>",
+                            position: "attributes",
+                            view_id: 99,
+                            xpath: "/t/t/span"
                         }]
                     }
                 }, {
@@ -500,9 +532,8 @@ QUnit.module('Studio', {}, function () {
                 }, {
                     testName: "set the heading level",
                     nodeToUse: layoutChangeNode,
-                    eventToTrigger: "change",
-                    sidebarOperationInputSelector: '.o_web_studio_font_size select',
-                    valueToPut: "h3",
+                    eventToTrigger: "click",
+                    sidebarOperationInputSelector: '.o_web_studio_font_size .dropdown-item-text[data-value="h3"]',
                     expectedRPC: {
                         inheritance: [{
                             content: "<attribute name=\"class\" separator=\" \" add=\"h3\"/>",
@@ -565,7 +596,20 @@ QUnit.module('Studio', {}, function () {
                             xpath: "/t/t/div"
                         }]
                     },
-                },{
+                }, {
+                    testName: "set the alignment",
+                    nodeToUse: layoutChangeNode,
+                    eventToTrigger: "click",
+                    sidebarOperationInputSelector: '.o_web_studio_text_alignment button[title="right"]',
+                    expectedRPC: {
+                        inheritance: [{
+                            content: "<attribute name=\"class\" separator=\" \" add=\"text-right\"/>",
+                            position: "attributes",
+                            view_id: 99,
+                            xpath: "/t/t/div"
+                        }]
+                    },
+                }, {
                 testName: "remove margin top in pixels",
                 nodeToUse: nodeWithAllLayoutPropertiesSet,
                 eventToTrigger: "change",
@@ -646,20 +690,6 @@ QUnit.module('Studio', {}, function () {
                             class: "o_bold o_italic bg-gamma text-beta o_underline"
                         },
                         type: "attributes",
-                    },
-                },{
-                    testName: "unset the heading level",
-                    nodeToUse: nodeWithAllLayoutPropertiesSet,
-                    eventToTrigger: "change",
-                    sidebarOperationInputSelector: '.o_web_studio_font_size select',
-                    valueToPut: "",
-                    expectedRPC: {
-                        inheritance: [{
-                            content: "<attribute name=\"class\" separator=\" \" remove=\"h3\"/>",
-                            position: "attributes",
-                            view_id: 99,
-                            xpath: "/t/t/div"
-                        }]
                     },
                 },  {
                     testName: "unset the background color to a theme color",

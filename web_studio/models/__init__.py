@@ -14,3 +14,4 @@ from . import ir_ui_view
 from . import res_groups
 from . import res_company
 from . import ir_qweb
+from . import report_paperformat

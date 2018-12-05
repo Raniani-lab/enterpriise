@@ -27,6 +27,12 @@ var AbstractEditComponent = Abstract.extend(StandaloneFieldManagerMixin, {
     }),
     /**
      * @override
+     * @param {Object} params
+     * @param {Object} params.context
+     * @param {Object} params.node
+     * @param {Object} [params.state]
+     * @param {string[]} [params.componentsList] the list of components for the
+     *                                           node
      */
     init: function (parent, params) {
         this._super.apply(this, arguments);
@@ -34,6 +40,7 @@ var AbstractEditComponent = Abstract.extend(StandaloneFieldManagerMixin, {
         this.state = params.state || {};
         this.node = params.node;
         this.context = params.context;
+        this.componentsList = params.componentsList;
         // TODO: check if using a real model with widgets is reasonnable or if
         // we should use actual html components in QWEB
         this.directiveFields = {};
@@ -43,6 +50,7 @@ var AbstractEditComponent = Abstract.extend(StandaloneFieldManagerMixin, {
 
         // add in init: directive => field selector
         this.fieldSelector = {};
+
     },
     /**
      * @override
@@ -336,9 +344,10 @@ var LayoutEditable = AbstractEditComponent.extend({
     events : _.extend({}, AbstractEditComponent.prototype.events, {
         "change .o_web_studio_margin>input": "_onMarginInputChange",
         "change .o_web_studio_width>input": "_onWidthInputChange",
-        "change .o_web_studio_font_size>select": "_onFontSizeInputChange",
+        "click .o_web_studio_font_size .dropdown-item-text": "_onFontSizeChange",
         "change .o_web_studio_table_style > select": "_onTableStyleInputChange",
         "click .o_web_studio_text_decoration button": "_onTextDecorationChange",
+        "click .o_web_studio_text_alignment button": "_onTextAlignmentChange",
         "change .o_web_studio_classes>input": "_onClassesChange",
         "click .o_web_studio_colors .o_web_studio_reset_color": "_onResetColor",
     }),
@@ -350,11 +359,12 @@ var LayoutEditable = AbstractEditComponent.extend({
 
         this.debug = config.debug;
         this.isTable = params.node.tag === 'table';
+        this.isNodeText = _.contains(this.componentsList, 'text');
         this.allClasses = params.node.attrs.class || "";
         this.classesArray =(params.node.attrs.class || "").split(' ');
         this.stylesArray =(params.node.attrs.style || "").split(';');
 
-        var fontSizeRegExp= new RegExp(/^\s*(h[123456]{1})|(small)\s*$/gim);
+        var fontSizeRegExp= new RegExp(/^\s*(h[123456]{1})|(small)|(display-[1234]{1})\s*$/gim);
         var backgroundColorRegExp= new RegExp(/^\s*background\-color\s*:/gi);
         var colorRegExp= new RegExp(/^\s*color\s*:/gi);
         var widthRegExp= new RegExp(/^\s*width\s*:/gi);
@@ -379,7 +389,10 @@ var LayoutEditable = AbstractEditComponent.extend({
         this.color = _.find(this.stylesArray, function(item) {
             return colorRegExp.test(item);
         });
-
+        // the width on div.col is set with col-. instead of width style
+        this.displayWidth = !(params.node.tag === 'div' && _.find(this.classesArray, function(item) {
+            return item.indexOf('col') !== -1;
+        }));
         this.originalWidth =  _.find(this.stylesArray, function(item) {
             return widthRegExp.test(item);
         });
@@ -394,6 +407,9 @@ var LayoutEditable = AbstractEditComponent.extend({
         this.italic = _.contains(this.classesArray, 'o_italic');
         this.bold =_.contains(this.classesArray, 'o_bold');
         this.underline = _.contains(this.classesArray, 'o_underline');
+
+        this.alignment = _.intersection(this.classesArray, ['text-left', 'text-center', 'text-right'])[0];
+        this.displayAlignment = !_.contains(['inline', 'float'], this.node.$nodes.css('display'));
 
         this.allClasses = params.node.attrs.class || "";
     },
@@ -475,9 +491,9 @@ var LayoutEditable = AbstractEditComponent.extend({
      * @private
      * @param {JQEvent} e
      */
-    _onFontSizeInputChange: function(e) {
+    _onFontSizeChange: function (e) {
         e.preventDefault();
-        this._editDomAttribute("class", e.target.value, this.fontSize);
+        this._editDomAttribute('class', $(e.currentTarget).data('value'), this.fontSize);
     },
     /**
      * @private
@@ -517,6 +533,16 @@ var LayoutEditable = AbstractEditComponent.extend({
                 this._editDomAttribute("style", null, this.color);
             }
         }
+    },
+    /**
+     * @private
+     * @param {JQEvent} e
+     */
+    _onTextAlignmentChange : function(e) {
+        e.preventDefault();
+        var data = $(e.currentTarget).data();
+        var toAdd = this.alignment !== data.property ? data.property : null;
+        this._editDomAttribute("class", toAdd, this.alignment);
     },
     /**
      * @private

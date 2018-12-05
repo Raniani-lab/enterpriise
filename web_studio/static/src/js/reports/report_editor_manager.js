@@ -17,6 +17,7 @@ var _t = core._t;
 var ReportEditorManager = AbstractEditorManager.extend({
     className: AbstractEditorManager.prototype.className + ' o_web_studio_report_editor_manager',
     custom_events: _.extend({}, AbstractEditorManager.prototype.custom_events, {
+        editor_clicked: '_onEditorClick',
         hover_editor: '_onHighlightPreview',
         drop_component: '_onDropComponent',
         begin_drag_component: '_onBeginDragComponent',
@@ -238,6 +239,7 @@ var ReportEditorManager = AbstractEditorManager.extend({
             models: this.models,
             state: state,
             previousState: previousState,
+            paperFormat: this.paperFormat,
         });
     },
     /**
@@ -362,6 +364,12 @@ var ReportEditorManager = AbstractEditorManager.extend({
      */
     _onDropComponent: function (ev) {
         this.view.dropComponent(ev.data.widget);
+    },
+    /**
+     * @private
+     */
+    _onEditorClick: function () {
+        this.view.unselectedElements();
     },
     /**
      * @private

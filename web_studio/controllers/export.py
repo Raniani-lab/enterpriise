@@ -8,14 +8,27 @@ from lxml.builder import E
 import os.path
 import zipfile
 
+from odoo import models
 from odoo.osv.expression import OR
 from odoo.tools import topological_sort
 
 # list of models to export (the order ensures that dependencies are satisfied)
 MODELS_TO_EXPORT = [
-    'res.groups', 'ir.model', 'ir.model.fields', 'ir.ui.view', 'ir.actions.act_window',
-    'ir.actions.act_window.view', 'ir.actions.report', 'mail.template', 'ir.actions.server',
-    'ir.ui.menu', 'ir.filters', 'base.automation', 'ir.model.access', 'ir.rule',
+    'res.groups',
+    'report.paperformat',
+    'ir.model',
+    'ir.model.fields',
+    'ir.ui.view',
+    'ir.actions.act_window',
+    'ir.actions.act_window.view',
+    'ir.actions.report',
+    'mail.template',
+    'ir.actions.server',
+    'ir.ui.menu',
+    'ir.filters',
+    'base.automation',
+    'ir.model.access',
+    'ir.rule',
 ]
 # list of fields to export by model
 FIELDS_TO_EXPORT = {
@@ -32,7 +45,7 @@ FIELDS_TO_EXPORT = {
     'ir.actions.act_window.view': ['act_window_id', 'multi', 'sequence', 'view_id', 'view_mode'],
     'ir.actions.report': [
         'attachment', 'attachment_use', 'binding_model_id', 'binding_type', 'groups_id', 'model',
-        'multi', 'name', 'report_name', 'report_type'
+        'multi', 'name', 'paperformat_id', 'report_name', 'report_type'
     ],
     'ir.actions.server': [
         'binding_model_id', 'binding_type', 'child_ids', 'code', 'crud_model_id', 'help',
@@ -76,6 +89,7 @@ FIELDS_NOT_TO_EXPORT = {
     'ir.actions.server': ['channel_ids', 'fields_lines', 'partner_ids'],
     'ir.filter': ['user_id'],
     'mail.template': ['attachment_ids', 'mail_server_id'],
+    'report.paperformat': ['report_ids'],
     'res.groups': ['category_id', 'users'],
 }
 # The fields whose value must be wrapped in <![CDATA[]]>
@@ -121,7 +135,7 @@ def generate_module(module, data):
             continue
 
         # retrieve module and inter-record dependencies
-        fields = [records._fields[name] for name in FIELDS_TO_EXPORT[model]]
+        fields = [records._fields[name] for name in get_fields_to_export(records)]
         record_deps = OrderedDict.fromkeys(records, records.browse())
         for record in records:
             xmlid = get_xmlid(record)
@@ -259,7 +273,7 @@ def generate_record(record, get_xmlid):
 
     # Create the record node
     record_node = E.record(id=xmlid, model=record._name, context="{'studio': True}")
-    for name in FIELDS_TO_EXPORT[record._name]:
+    for name in get_fields_to_export(record):
         field = record._fields[name]
         try:
             record_node.append(generate_field(record, field, get_xmlid))
@@ -275,6 +289,16 @@ def generate_record(record, get_xmlid):
 
     return record_node, skipped
 
+def get_fields_to_export(record):
+    fields_to_export = FIELDS_TO_EXPORT.get(record._name)
+    if not fields_to_export:
+        # deduce the fields_to_export from available data
+        fields_to_export = set(record._fields.keys())
+        fields_to_export -= set(models.MAGIC_COLUMNS)
+        fields_to_export -= set(record.CONCURRENCY_CHECK_FIELD)
+        if FIELDS_NOT_TO_EXPORT.get(record._name):
+            fields_to_export -= set(FIELDS_NOT_TO_EXPORT.get(record._name))
+    return fields_to_export
 
 def generate_field(record, field, get_xmlid):
     """ Serialize the value of ``field`` on ``record`` as an etree Element. """

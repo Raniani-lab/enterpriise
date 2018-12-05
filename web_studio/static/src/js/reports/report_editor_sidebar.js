@@ -31,9 +31,10 @@ var ReportEditorSidebar = Widget.extend(StandaloneFieldManagerMixin, {
      * @constructor
      * @param {Widget} parent
      * @param {Object} params
+     * @param {Object} [params.models]
+     * @param {Object} [params.paperFormat]
      * @param {Object} [params.previousState]
      * @param {Object} [params.report] only mandatory if state.mode = 'report'
-     * @param {Object} [params.models]
      * @param {Object} [params.state]
      * @param {Object} [params.widgetsOptions]
      */
@@ -44,6 +45,7 @@ var ReportEditorSidebar = Widget.extend(StandaloneFieldManagerMixin, {
         this.debug = config.debug;
         this.report = params.report;
         this.state = params.state || {};
+        this.paperFormat = params.paperFormat || {};
         this.previousState = params.previousState || {};
         this.models = params.models;
         this.widgetsOptions = params.widgetsOptions;
@@ -368,6 +370,17 @@ var ReportEditorSidebar = Widget.extend(StandaloneFieldManagerMixin, {
 
         var blacklists = [];
         this.nodes = [];
+
+        if (!this.debug) {
+            // hide all nodes after .page, they are too technical
+            var pageNodeIndex = _.findIndex(this.state.nodes, function (node) {
+                return node.node.tag === 'div' && _.str.include(node.node.attrs.class, 'page');
+            });
+            if (pageNodeIndex !== -1) {
+                this.state.nodes.splice(pageNodeIndex + 1, this.state.nodes.length - (pageNodeIndex + 1));
+            }
+        }
+
         for (var index = this.state.nodes.length - 1; index >= 0; index--) {
             // copy to not modifying in place the node
             var node = _.extend({}, this.state.nodes[index]);
@@ -377,7 +390,7 @@ var ReportEditorSidebar = Widget.extend(StandaloneFieldManagerMixin, {
                 }
             }
             var components = this._getNodeEditableComponents(node.node);
-            node.componentsObject = this._getComponentsObject(components);
+            node.components = components;
             var blacklist = this._getComponentsBlacklist(components);
             if (blacklist.length) {
                 blacklists.push(blacklist);
@@ -397,7 +410,7 @@ var ReportEditorSidebar = Widget.extend(StandaloneFieldManagerMixin, {
                 nodeIcon: self._getNodeDisplayName(node.node).icon,
                 node: node.node,
             }));
-            _.each(node.componentsObject, function (Component) {
+            _.each(self._getComponentsObject(node.components), function (Component) {
                 if (!Component) {
                     self.do_warn("Missing component", self.state.directive);
                     return;
@@ -410,6 +423,7 @@ var ReportEditorSidebar = Widget.extend(StandaloneFieldManagerMixin, {
                     context: node.context,
                     state: previousWidgetState,
                     models: self.models,
+                    componentsList: node.components,
                 });
                 var selector = '.collapse';
                 if (Component.prototype.insertAsLastChildOfPrevious) {
@@ -457,11 +471,10 @@ var ReportEditorSidebar = Widget.extend(StandaloneFieldManagerMixin, {
         var defs = [];
         var paperFormatRecord = this.model.get(this.paperformatHandle);
         var many2one = new Many2One(this, 'paperformat_id', paperFormatRecord, {
-            mode: 'edit',
             attrs: {
-                can_create: false,
-                can_write: false,
+                placeholder: _t('By default: ') + this.paperFormat.display_name,
             },
+            mode: 'edit',
         });
         this._registerWidget(this.paperformatHandle, 'paperformat_id', many2one);
         defs.push(many2one.appendTo(this.$('.o_web_studio_paperformat_id')));

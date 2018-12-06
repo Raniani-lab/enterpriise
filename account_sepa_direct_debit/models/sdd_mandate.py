@@ -41,7 +41,7 @@ class SDDMandate(models.Model):
     paid_invoice_ids = fields.One2many(string='Invoices Paid', comodel_name='account.invoice', readonly=True, inverse_name='sdd_paying_mandate_id', help="Invoices paid using this mandate.")
     start_date = fields.Date(string="Start Date", required=True, readonly=True, states={'draft':[('readonly',False)]}, help="Date from which the mandate can be used (inclusive).")
     end_date = fields.Date(string="End Date", states={'closed':[('readonly',True)]}, help="Date until which the mandate can be used. It will automatically be closed after this date.")
-    original_doc = fields.Binary(string="Original Document", readonly=True, states={'draft':[('readonly',False)]}, help="Original document into which the customer authorises the use of Direct Debit for his invoices.")
+    original_doc = fields.Binary(string="Original Document", readonly=True, states={'draft':[('readonly',False)]}, help="Original document into which the customer authorises the use of Direct Debit for his invoices.", attachment=False) # TODO: check — should probably remain in DB for confidence purposes?
     original_doc_filename = fields.Char(string='Original Document File Name', help="File name of original_doc.")
     payment_journal_id = fields.Many2one(string='Journal for Direct Debit Payments', comodel_name='account.journal', required=True, help='Journal to use to receive SEPA Direct Debit payments from this mandate.')
     payment_ids = fields.One2many(string='Payments', comodel_name='account.payment', inverse_name='sdd_mandate_id', help="Payments generated thanks to this mandate.")

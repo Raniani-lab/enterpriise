@@ -50,11 +50,13 @@ class Certificate(models.Model):
     content = fields.Binary(
         string='Certificate',
         help='Certificate in der format',
-        required=True,)
+        required=True,
+        attachment=False,)
     key = fields.Binary(
         string='Certificate Key',
         help='Certificate Key in der format',
-        required=True,)
+        required=True,
+        attachment=False,)
     password = fields.Char(
         string='Certificate Password',
         help='Password for the Certificate Key',

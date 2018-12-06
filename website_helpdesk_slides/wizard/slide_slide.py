@@ -24,7 +24,7 @@ class Slide(models.TransientModel):
         string='Type', required=True,
         default='document',
         help="The document type will be set automatically based on the document URL and properties (e.g. height and width for presentation and document).")
-    datas = fields.Binary('Content')
+    datas = fields.Binary('Content', attachment=False)
     url = fields.Char('Document URL', help="Youtube or Google Document URL")
     mime_type = fields.Char('Mime-type')
     document_id = fields.Char('Document ID', help="Youtube or Google Document ID")

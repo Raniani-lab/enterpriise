@@ -202,7 +202,6 @@ var SalaryPackageWidget = Widget.extend({
         $("input[name='ONSS']").val(- data['ONSS']);
         $("input[name='GROSS']").val(data['GROSS']);
         $("input[name='P.P']").val(- data['P.P']);
-        $("input[name='PP.RED']").val(data['PP.RED']);
         $("input[name='M.ONSS']").val(- data['M.ONSS']);
         $("input[name='EMP.BONUS']").val(data['EMP.BONUS']);
         $("input[name='MEAL_V_EMP']").val(- data['MEAL_V_EMP']);
@@ -232,7 +231,6 @@ var SalaryPackageWidget = Widget.extend({
         data['ATN.INT.2'] ? internet_atn_div.removeClass('d-none') : internet_atn_div.addClass('d-none');
         data['ATN.CAR.2'] ? company_car_atn_div.removeClass('d-none') : company_car_atn_div.addClass('d-none');
         data['EMP.BONUS'] ? employment_bonus_div.removeClass('d-none') : employment_bonus_div.addClass('d-none');
-        data['PP.RED'] ? withholding_tax_reduction_div.removeClass('d-none') : withholding_tax_reduction_div.addClass('d-none');
         data['M.ONSS'] ? miscellaneous_onss_div.removeClass('d-none') : miscellaneous_onss_div.addClass('d-none');
         data['REP.FEES'] ? representation_fees_div.removeClass('d-none') : representation_fees_div.addClass('d-none');
         $("div[name='compute_loading']").addClass('d-none');

@@ -278,8 +278,16 @@ class website_hr_contract_salary(http.Controller):
             'contract_type': advantages['contract_type'],
             'internet': advantages['internet'],
         })
-        new_contract.set_attribute_value('mobile', advantages['has_mobile'])
-        new_contract.set_attribute_value('mobile_plus', advantages['international_communication'])
+
+        if advantages['has_mobile']:
+            new_contract.mobile = request.env['ir.default'].sudo().get('hr.contract', 'mobile')
+        else:
+            new_contract.mobile = 0.0
+
+        if advantages['international_communication']:
+            new_contract.mobile_plus = request.env['ir.default'].sudo().get('hr.contract', 'mobile_plus')
+        else:
+            new_contract.mobile_plus = 0.0
 
         if advantages['transport_mode_car']:
             if advantages['new_car']:
@@ -397,19 +405,7 @@ class website_hr_contract_salary(http.Controller):
             'GROSS': round(payslip.get_salary_line_total('GROSS'), 2),
             'REP.FEES': round(payslip.get_salary_line_total('REP.FEES'), 2),
             'P.P': round(payslip.get_salary_line_total('P.P'), 2),
-            'PP.RED': round(
-                payslip.get_salary_line_total('PPRed.0') +
-                payslip.get_salary_line_total('PPRed.1') +
-                payslip.get_salary_line_total('Ch.A') +
-                payslip.get_salary_line_total('Red.Iso') +
-                payslip.get_salary_line_total('Red.Iso.Par') +
-                payslip.get_salary_line_total('Red.Dis') +
-                payslip.get_salary_line_total('Red.Seniors') +
-                payslip.get_salary_line_total('Red.Juniors') +
-                payslip.get_salary_line_total('Sp.handicap') +
-                payslip.get_salary_line_total('Red.Spouse.Net') +
-                payslip.get_salary_line_total('Red.Spouse.Oth.Net'), 2),
-            'M.ONSS': round(payslip.get_salary_line_total('M.ONSS.1'), 2) or round(payslip.get_salary_line_total('M.ONSS.2'), 2),
+            'M.ONSS': round(payslip.get_salary_line_total('M.ONSS'), 2),
             'MEAL_V_EMP': round(payslip.get_salary_line_total('MEAL_V_EMP'), 2),
             'ATN.CAR.2': round(payslip.get_salary_line_total('ATN.CAR.2'), 2),
             'ATN.INT.2': round(payslip.get_salary_line_total('ATN.INT.2'), 2),

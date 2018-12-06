@@ -228,13 +228,13 @@
                                             </label>
                                             <div class="col-md-7">
                                                 <div t-att-class="'d-none' if not contract.holidays_editable else ''">
-                                                    <span class="badge badge-secondary"><t t-esc="contract.get_attribute('holidays', 'lower_bound')"/></span>
-                                                    <input type="range" t-att-value="contract.holidays" t-att-min="contract.get_attribute('holidays', 'lower_bound')" t-att-max="contract.get_attribute('holidays', 'upper_bound')" step="1" list="holidays-range" name="holidays_slider" class="advantage_input hr_cs_control_range" t-att-disabled="not contract.holidays_editable"/>
-                                                    <span class="badge badge-secondary"><t t-esc="contract.get_attribute('holidays', 'upper_bound')"/></span>
+                                                    <span class="badge badge-secondary">0</span>
+                                                    <input type="range" t-att-value="contract.holidays" min="0" max="35" step="1" list="holidays-range" name="holidays_slider" class="advantage_input hr_cs_control_range" t-att-disabled="not contract.holidays_editable"/>
+                                                    <span class="badge badge-secondary">35</span>
                                                     <datalist id="holidays-range">
-                                                        <t t-set="step" t-value="(contract.get_attribute('holidays', 'upper_bound') - contract.get_attribute('holidays', 'lower_bound')) / 10.0"/>
+                                                        <t t-set="step" t-value="35.0 / 10.0"/>
                                                         <t t-foreach="range(1, 10)" t-as="i">
-                                                            <option><t t-esc="contract.get_attribute('holidays', 'lower_bound') + step * i"/></option>
+                                                            <option><t t-esc="step * i"/></option>
                                                         </t>
                                                     </datalist>
                                                 </div>
@@ -344,13 +344,13 @@
                                                 <i class="fa fa-1x fa-tint fa-fw"/> Fuel Card
                                             </label>
                                             <div class="col-md-7">
-                                                <span class="badge badge-secondary"><t t-esc="contract.get_attribute('fuel_card', 'lower_bound')"/></span>
-                                                <input type="range" t-att-value="contract.fuel_card" t-att-min="contract.get_attribute('fuel_card', 'lower_bound')" t-att-max="contract.get_attribute('fuel_card', 'upper_bound')" step="10" list="fuel-card-range" name="fuel_card_slider" class="advantage_input hr_cs_control_range"/>
-                                                <span class="badge badge-secondary"><t t-esc="contract.get_attribute('fuel_card', 'upper_bound')"/></span>
+                                                <span class="badge badge-secondary">0</span>
+                                                <input type="range" t-att-value="contract.fuel_card" min="0" max="500" step="10" list="fuel-card-range" name="fuel_card_slider" class="advantage_input hr_cs_control_range"/>
+                                                <span class="badge badge-secondary">500</span>
                                                 <datalist id="fuel-card-range">
-                                                    <t t-set="step" t-value="(contract.get_attribute('fuel_card', 'upper_bound') - contract.get_attribute('fuel_card', 'lower_bound')) / 10.0"/>
+                                                    <t t-set="step" t-value="500.0 / 10.0"/>
                                                     <t t-foreach="range(1, 10)" t-as="i">
-                                                        <option><t t-esc="contract.get_attribute('fuel_card', 'lower_bound') + step * i"/></option>
+                                                        <option><t t-esc="step * i"/></option>
                                                     </t>
                                                 </datalist>
                                             </div>
@@ -1186,21 +1186,6 @@
                                             <div class="col-md-3">
                                                 <div class="input-group">
                                                     <input type="text" class="form-control"  value="~" disabled="disabled" name="P.P"/>
-                                                    <div class="input-group-append">
-                                                        <div class="input-group-text">€</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!--  -->
-                                    <div name="withholding_tax_reduction" class="form-group">
-                                        <div class="row">
-                                            <label class="col-md-9 col-form-label" for="PP.RED"><i class="fa fa-1x fa-plus fa-fw"/> Withholding Tax Reductions</label>
-                                            <div class="col-md-3">
-                                                <div class="input-group">
-                                                    <input type="text" class="form-control" value="0.0" disabled="disabled" name="PP.RED"/>
                                                     <div class="input-group-append">
                                                         <div class="input-group-text">€</div>
                                                     </div>

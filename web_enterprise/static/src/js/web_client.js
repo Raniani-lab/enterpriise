@@ -144,10 +144,6 @@ return AbstractWebClient.extend({
         });
     },
 
-    set_action_manager: function () {
-        this.action_manager = new ActionManager(this, session.user_context);
-        return this.action_manager.appendTo(this.$el);
-    },
     // --------------------------------------------------------------
     // do_*
     // --------------------------------------------------------------

@@ -145,7 +145,7 @@ class DatevExportCSV(models.AbstractModel):
         preheader = ['EXTF', 510, 16, 'Debitoren/Kreditoren', 4, None, None, '', '', '', datev_info[0], datev_info[1], fy, 8, 
             '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '']
         header = ['Konto', 'Name (AdressatentypUnternehmen)', 'Name (Adressatentypnatürl. Person)', '', '', '', 'Adressatentyp']
-        move_line_ids = self.with_context(self.set_context(options), print_mode=True, aml_only=True).get_lines(options)
+        move_line_ids = self.with_context(self._set_context(options), print_mode=True, aml_only=True)._get_lines(options)
         lines = [preheader, header]
 
         if len(move_line_ids):

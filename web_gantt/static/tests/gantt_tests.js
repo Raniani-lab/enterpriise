@@ -177,6 +177,7 @@ QUnit.module('Views', {
                 rpcCount++;
                 return this._super(route, args);
             },
+            debounce: false,
         }).then(function (gantt) {
 
             // when no tasks are present, the gantt library will add an empty

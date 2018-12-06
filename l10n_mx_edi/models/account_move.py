@@ -15,7 +15,7 @@ class AccountMoveLine(models.Model):
             return res
         for pay in self.mapped('payment_id'):
             pay.write({'invoice_ids': [
-                (6, 0, pay._compute_reconciled_invoice_ids().ids)]})
+                (6, 0, pay.reconciled_invoice_ids.ids)]})
             if pay.l10n_mx_edi_is_required() and pay.l10n_mx_edi_pac_status != 'signed':
                 pay.l10n_mx_edi_cfdi_name = ('%s-%s-MX-Payment-10.xml' % (
                     pay.journal_id.code, pay.name))

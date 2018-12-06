@@ -26,6 +26,8 @@ var GanttController = AbstractController.extend({
         this._super.apply(this, arguments);
         this.set('title', this.displayName);
         this.context = params.context;
+
+        this._displayTask = _.debounce(this._displayTask, 500, true);
     },
 
     //--------------------------------------------------------------------------
@@ -131,7 +133,7 @@ var GanttController = AbstractController.extend({
      * @param {Object}  task
      * @param {boolean} [readonly=false]
      */
-    _displayTask: _.debounce(function (task, readonly) {
+    _displayTask: function (task, readonly) {
         var taskId = _.isString(task.id) ? parseInt(_.last(task.id.split("_")), 10) : task.id;
         readonly = readonly ? readonly : false;
 
@@ -142,7 +144,7 @@ var GanttController = AbstractController.extend({
             on_saved: this.reload.bind(this),
             readonly: readonly
         }).open();
-    }, 500, true),
+    },
     /**
      * @private
      * @param {Moment} focusDate

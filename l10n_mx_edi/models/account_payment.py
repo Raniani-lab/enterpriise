@@ -214,12 +214,6 @@ class AccountPayment(models.Model):
         return self.env['account.invoice'].l10n_mx_edi_generate_cadena(xslt_path, cfdi)
 
     @api.multi
-    def _compute_reconciled_invoice_ids(self):
-        # /!\ This is a BACKPORT from v12: this method becomes a computed 'reconciled_invoice_ids' field.
-        self.ensure_one()
-        return self.move_line_ids.mapped('matched_debit_ids.debit_move_id.invoice_id') | self.move_line_ids.mapped('matched_credit_ids.credit_move_id.invoice_id')
-
-    @api.multi
     def l10n_mx_edi_is_required(self):
         self.ensure_one()
         required = (

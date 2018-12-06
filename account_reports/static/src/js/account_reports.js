@@ -131,8 +131,11 @@ var accountReportsWidget = AbstractAction.extend({
              var self = this;
              self.report_options.partner_ids = ev.data.partner_ids;
              self.report_options.partner_categories = ev.data.partner_categories;
+             self.report_options.analytic_accounts = ev.data.analytic_accounts;
+             self.report_options.analytic_tags = ev.data.analytic_tags;
              return self.reload().then(function () {
                  self.$searchview_buttons.find('.account_partner_filter').click();
+                 self.$searchview_buttons.find('.account_analytic_filter').click();
              });
          },
     },
@@ -392,19 +395,6 @@ var accountReportsWidget = AbstractAction.extend({
                 self.reload();
             }
         });
-        // analytic filter
-        this.$searchview_buttons.find('.js_account_reports_analytic_auto_complete').select2();
-        if (self.report_options.analytic) {
-            self.$searchview_buttons.find('[data-filter="analytic_accounts"]').select2("val", self.report_options.analytic_accounts);
-            self.$searchview_buttons.find('[data-filter="analytic_tags"]').select2("val", self.report_options.analytic_tags);
-        }
-        this.$searchview_buttons.find('.js_account_reports_analytic_auto_complete').on('change', function(){
-            self.report_options.analytic_accounts = self.$searchview_buttons.find('[data-filter="analytic_accounts"]').val();
-            self.report_options.analytic_tags = self.$searchview_buttons.find('[data-filter="analytic_tags"]').val();
-            return self.reload().then(function(){
-                self.$searchview_buttons.find('.account_analytic_filter').click();
-            })
-        });
 
         // partner filter
         if (this.report_options.partner) {
@@ -430,6 +420,33 @@ var accountReportsWidget = AbstractAction.extend({
                 }
             } else {
                 this.$searchview_buttons.find('.js_account_partner_m2m').append(this.M2MFilters.$el);
+            }
+        }
+
+        // analytic filter
+        if (this.report_options.analytic) {
+            if (!this.M2MFilters) {
+                var fields = {};
+                if (this.report_options.analytic_accounts) {
+                    fields['analytic_accounts'] = {
+                        label: _t('Accounts'),
+                        modelName: 'account.analytic.account',
+                        value: this.report_options.analytic_accounts.map(Number),
+                    };
+                }
+                if (this.report_options.analytic_tags) {
+                    fields['analytic_tags'] = {
+                        label: _t('Tags'),
+                        modelName: 'account.analytic.tag',
+                        value: this.report_options.analytic_tags.map(Number),
+                    };
+                }
+                if (!_.isEmpty(fields)) {
+                    this.M2MFilters = new M2MFilters(this, fields);
+                    this.M2MFilters.appendTo(this.$searchview_buttons.find('.js_account_analytic_m2m'));
+                }
+            } else {
+                this.$searchview_buttons.find('.js_account_analytic_m2m').append(this.M2MFilters.$el);
             }
         }
     },

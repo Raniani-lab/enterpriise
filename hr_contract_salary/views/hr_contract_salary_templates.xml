@@ -1195,21 +1195,6 @@
                                     </div>
 
                                     <!--  -->
-                                    <div name="withholding_tax_reduction" class="form-group">
-                                        <div class="row">
-                                            <label class="col-md-9 col-form-label" for="PP.RED"><i class="fa fa-1x fa-plus fa-fw"/> Withholding Tax Reductions</label>
-                                            <div class="col-md-3">
-                                                <div class="input-group">
-                                                    <input type="text" class="form-control" value="0.0" disabled="disabled" name="PP.RED"/>
-                                                    <div class="input-group-append">
-                                                        <div class="input-group-text">€</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!--  -->
                                     <div name="m_onss_div" class="form-group">
                                         <div class="row">
                                             <label class="col-md-9 col-form-label" for="M.ONSS"><i class="fa fa-1x fa-minus fa-fw"/> Special social contribution</label>

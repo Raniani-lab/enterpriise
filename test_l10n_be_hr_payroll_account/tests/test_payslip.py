@@ -32,7 +32,7 @@ class TestUi(tests.HttpCase):
         payslip.compute_sheet()
 
         # Check the amounts on payslip
-        self.assertEqual(len(payslip.line_ids), 18)
+        self.assertEqual(len(payslip.line_ids), 15)
         self.assertEqual(payslip.get_salary_line_total('BASIC'), 2650.00)
         self.assertEqual(payslip.get_salary_line_total('ATN.INT'), 5.00)
         self.assertEqual(payslip.get_salary_line_total('ATN.MOB'), 12.0)
@@ -40,10 +40,7 @@ class TestUi(tests.HttpCase):
         self.assertEqual(payslip.get_salary_line_total('ONSS'), -348.58)
         self.assertEqual(payslip.get_salary_line_total('ATN.CAR'), 152.00)
         self.assertEqual(payslip.get_salary_line_total('GROSS'), 2470.42)
-        self.assertEqual(payslip.get_salary_line_total('B.I.'), 0.00)
-        self.assertEqual(payslip.get_salary_line_total('P.P'), -602.72)
-        self.assertEqual(payslip.get_salary_line_total('Oth.Fam.Red'), 0.0)
-        self.assertEqual(payslip.get_salary_line_total('Red.Iso'), 25.00)
+        self.assertEqual(payslip.get_salary_line_total('P.P'), -577.72)
         self.assertEqual(payslip.get_salary_line_total('ATN.CAR.2'), -152.00)
         self.assertEqual(payslip.get_salary_line_total('ATN.INT.2'), -5.00)
         self.assertEqual(payslip.get_salary_line_total('ATN.MOB.2'), -12.00)

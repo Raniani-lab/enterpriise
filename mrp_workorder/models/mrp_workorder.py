@@ -449,7 +449,7 @@ class MrpProductionWorkcenterLine(models.Model):
             'res_id': self.id,
             'target': 'fullscreen',
             'flags': {
-                'headless': True,
+                'withControlPanel': False,
                 'form_view_initial_mode': 'edit',
             },
         }
@@ -478,9 +478,6 @@ class MrpProductionWorkcenterLine(models.Model):
                 'views': [[self.env.ref('mrp.mrp_production_form_view').id, 'form']],
                 'res_id': self.production_id.id,
                 'target': 'main',
-                'flags': {
-                    'headless': False,
-                },
             }
         return action
 

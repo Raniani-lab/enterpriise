@@ -71,7 +71,7 @@ var DocumentsKanbanController = KanbanController.extend({
      * @override
      */
     start: function () {
-        this.$el.addClass('o_documents_kanban d-flex');
+        this.$('.o_content').addClass('o_documents_kanban d-flex');
         return this._super.apply(this, arguments);
     },
 
@@ -163,7 +163,7 @@ var DocumentsKanbanController = KanbanController.extend({
      * @private
      */
     _closeChatter: function () {
-        this.$el.removeClass('o_chatter_open');
+        this.$('.o_content').removeClass('o_chatter_open');
         this.$('.o_document_chatter').remove();
         if (this.chatter) {
             this.chatter.destroy();
@@ -240,8 +240,8 @@ var DocumentsKanbanController = KanbanController.extend({
             self.chatter = new Chatter(self, record, mailFields, options);
             return self.chatter.appendTo($chatterContainer).then(function () {
                 $chatterContainer.append($('<span>').addClass('o_document_close_chatter text-center').html('&#215;'));
-                self.$el.addClass('o_chatter_open');
-                self.$el.append($chatterContainer);
+                self.$('.o_content').addClass('o_chatter_open');
+                self.$('.o_content').append($chatterContainer);
             });
         });
     },
@@ -360,7 +360,7 @@ var DocumentsKanbanController = KanbanController.extend({
         var $folders = $documentSelector.find('.o_documents_selector_folders_container');
         $folders.append(this._renderFolders(state.folders));
 
-        this.$el.prepend($documentSelector);
+        this.$('.o_content').prepend($documentSelector);
         this._markPartiallySelectedFacet();
         this._updateFoldableElements();
 
@@ -510,8 +510,8 @@ var DocumentsKanbanController = KanbanController.extend({
         return $.when();
     },
     /**
-     * Iterate of o_foldable elements (folders and facets) in this.$el, and set
-     * their fold status (in the UI) according to the internal state
+     * Iterate of o_foldable elements (folders and facets) and set their fold
+     * status (in the UI) according to the internal state
      *
      * @private
      */
@@ -689,7 +689,7 @@ var DocumentsKanbanController = KanbanController.extend({
             var $upload_text = $('<div>').addClass("o_upload_text text-center text-white");
             $upload_text.append('<i class="d-block fa fa-upload fa-9x mb-4"/>');
             $upload_text.append('<span>' + _t('Drop files here to upload') + '</span>');
-            this.$el.append($upload_text);
+            this.$('.o_content').append($upload_text);
         }
         $(document).on('dragover:kanbanView', this._onHoverLeave.bind(this));
     },

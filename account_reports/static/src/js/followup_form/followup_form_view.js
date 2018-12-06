@@ -21,11 +21,6 @@ var FollowupFormView = FormView.extend({
         Model: FollowupFormModel,
         Renderer: FollowupFormRenderer,
     }),
-    /**
-     * This parameter was added in order to display the custom searchview
-     * (progress bar) as it is hidden by default on a form view.
-     */
-    searchable: true,
 });
 
 viewRegistry.add('followup_form', FollowupFormView);

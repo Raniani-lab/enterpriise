@@ -229,11 +229,11 @@ QUnit.module('DocumentsKanbanView', {
         });
 
         // check view layout
-        assert.containsN(kanban, '> div', 3,
+        assert.containsN(kanban.$('.o_content'), '> div', 3,
             "should have 3 columns");
-        assert.containsOnce(kanban, '> .o_documents_selector',
+        assert.containsOnce(kanban.$('.o_content'), '> .o_documents_selector',
             "should have a 'documents selector' column");
-        assert.containsOnce(kanban, '> .o_kanban_view',
+        assert.containsOnce(kanban.$('.o_content'), '> .o_kanban_view',
             "should have a 'classical kanban view' column");
         assert.hasClass(kanban.$('.o_kanban_view'),'o_documents_kanban_view',
             "should have classname 'o_documents_kanban_view'");
@@ -241,19 +241,19 @@ QUnit.module('DocumentsKanbanView', {
             "should have 5 records in the renderer");
         assert.containsOnce(kanban, '.o_kanban_record:first .o_record_selector',
             "should have a 'selected' button");
-        assert.containsOnce(kanban, '> .o_documents_inspector',
+        assert.containsOnce(kanban.$('.o_content'), '> .o_documents_inspector',
             "should have a 'documents inspector' column");
 
         // check control panel buttons
-        assert.strictEqual(kanban.$buttons.find('.btn-primary').length, 3,
+        assert.strictEqual(kanban.$('.o_cp_buttons .btn-primary').length, 3,
             "should have three primary buttons");
-        assert.strictEqual(kanban.$buttons.find('.btn-primary:first').text().trim(), 'Upload',
+        assert.strictEqual(kanban.$('.o_cp_buttons .btn-primary:first').text().trim(), 'Upload',
             "should have a primary 'Upload' button");
-        assert.strictEqual(kanban.$buttons.find('button.o_documents_kanban_url').length, 1,
+        assert.strictEqual(kanban.$('.o_cp_buttons button.o_documents_kanban_url').length, 1,
             "should allow to save a URL");
-        assert.strictEqual(kanban.$buttons.find('button.o_documents_kanban_request').text().trim(), 'Request Document',
+        assert.strictEqual(kanban.$('.o_cp_buttons button.o_documents_kanban_request').text().trim(), 'Request Document',
             "should have a primary 'request' button");
-        assert.strictEqual(kanban.$buttons.find('button.btn-secondary').text().trim(), 'Share',
+        assert.strictEqual(kanban.$('.o_cp_buttons button.btn-secondary').text().trim(), 'Share',
             "should have a secondary 'Share' button");
 
         kanban.destroy();

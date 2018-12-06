@@ -903,7 +903,7 @@ QUnit.module('Views', {
         assert.strictEqual(actionManager.$('.o_view_grid th:eq(2)').text(), "Tue,Jan 31", "The first day of the span should be the 31st of January");
 
         // move to previous week, and check first column header
-        testUtils.dom.click(actionManager.controlPanel.$('.grid_arrow_previous'));
+        testUtils.dom.click(actionManager.$('.o_control_panel .grid_arrow_previous'));
         assert.strictEqual(actionManager.$('.o_view_grid th:eq(2)').text(), "Tue,Jan 24", "The first day of the span should be the 24st of January, as we check the previous week");
 
         // remove the filter in the searchview

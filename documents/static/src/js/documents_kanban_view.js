@@ -25,7 +25,7 @@ var DocumentsKanbanView = KanbanView.extend({
         Renderer: DocumentsKanbanRenderer,
     }),
     display_name: _lt('Attachments Kanban'),
-    groupable: false,
+    searchMenuTypes: ['filter', 'favorite'],
 
     /**
      * @override

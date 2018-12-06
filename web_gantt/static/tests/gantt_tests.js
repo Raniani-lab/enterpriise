@@ -63,7 +63,7 @@ QUnit.module('Views', {
                 action: {name: "Forecasts"}
             },
         }).then(function (gantt) {
-            assert.strictEqual(gantt.get('title'), "Forecasts", "should have correct title");
+            assert.strictEqual(gantt.$('.o_control_panel .breadcrumb-item').text(), "Forecasts", "should have correct title");
             assert.ok(gantt.$('.gantt_task_scale').length, "should gantt scale part");
             assert.ok(gantt.$('.gantt_data_area').length, "should gantt data part");
             assert.ok(gantt.$('.gantt_hor_scroll').length, "should gantt horizontal scroll bar");
@@ -73,7 +73,7 @@ QUnit.module('Views', {
             gantt.$buttons.find('.o_gantt_button_scale[data-value="day"]').trigger('click');
             assert.containsN(gantt, '.gantt_bars_area .gantt_task_line', 3,
                 "should display 3 tasks in day mode");
-            assert.strictEqual(gantt.get('title'), "Forecasts (12 Dec)", "should have correct title");
+            assert.strictEqual(gantt.$('.o_control_panel .breadcrumb-item').text(), "Forecasts (12 Dec)", "should have correct title");
 
             gantt.$buttons.find('.o_gantt_button_right').trigger('click');
             assert.containsN(gantt, '.gantt_bars_area .gantt_task_line', 3,
@@ -121,27 +121,27 @@ QUnit.module('Views', {
         actionManager.doAction(1);
 
         // there is no selected period by default
-        assert.strictEqual(actionManager.controlPanel.$('.breadcrumb-item').text(),
+        assert.strictEqual(actionManager.$('.o_control_panel .breadcrumb-item').text(),
             'Forecast Test', "should display no period");
 
         // switch to day mode
-        testUtils.dom.click(actionManager.controlPanel.$('.o_gantt_button_scale[data-value=day]'));
-        assert.strictEqual(actionManager.controlPanel.$('.breadcrumb-item').text(),
+        testUtils.dom.click(actionManager.$('.o_control_panel .o_gantt_button_scale[data-value=day]'));
+        assert.strictEqual(actionManager.$('.o_control_panel .breadcrumb-item').text(),
             'Forecast Test (12 Dec)', "should display the current day");
 
         // switch to week mode
-        testUtils.dom.click(actionManager.controlPanel.$('.o_gantt_button_scale[data-value=week]'));
-        assert.strictEqual(actionManager.controlPanel.$('.breadcrumb-item').text(),
+        testUtils.dom.click(actionManager.$('.o_control_panel .o_gantt_button_scale[data-value=week]'));
+        assert.strictEqual(actionManager.$('.o_control_panel .breadcrumb-item').text(),
             'Forecast Test (11 Dec - 17 Dec)', "should display the current week");
 
         // switch to month mode
-        testUtils.dom.click(actionManager.controlPanel.$('.o_gantt_button_scale[data-value=month]'));
-        assert.strictEqual(actionManager.controlPanel.$('.breadcrumb-item').text(),
+        testUtils.dom.click(actionManager.$('.o_control_panel .o_gantt_button_scale[data-value=month]'));
+        assert.strictEqual(actionManager.$('.o_control_panel .breadcrumb-item').text(),
             'Forecast Test (December 2016)', "should display the current month");
 
         // switch to year mode
-        testUtils.dom.click(actionManager.controlPanel.$('.o_gantt_button_scale[data-value=year]'));
-        assert.strictEqual(actionManager.controlPanel.$('.breadcrumb-item').text(),
+        testUtils.dom.click(actionManager.$('.o_control_panel .o_gantt_button_scale[data-value=year]'));
+        assert.strictEqual(actionManager.$('.o_control_panel .breadcrumb-item').text(),
             'Forecast Test (2016)', "should display the current year");
 
         actionManager.destroy();
@@ -179,7 +179,6 @@ QUnit.module('Views', {
             },
             debounce: false,
         }).then(function (gantt) {
-
             // when no tasks are present, the gantt library will add an empty
             // task line
             assert.containsOnce(gantt, '.gantt_bars_area .gantt_task_line',
@@ -189,7 +188,7 @@ QUnit.module('Views', {
             testUtils.fields.editInput($('.modal .modal-body input:first'), 'new task');
 
             rpcCount = 0;
-            testUtils.dom.click($('.modal .modal-footer button.btn-primary'));
+            testUtils.modal.clickButton('Save');
 
             assert.strictEqual(rpcCount, 2, "should have done 2 rpcs (1 write and 1 searchread to reload)");
 
@@ -224,8 +223,8 @@ QUnit.module('Views', {
             viewOptions: {
                 initialDate: initialDate,
                 action: {name: "Forecasts"},
-                groupBy: ['user_id']
             },
+            groupBy: ['user_id'],
             mockRPC: function (route, args) {
                 assert.step(args.method);
                 if (args.method === 'search_read') {

@@ -23,7 +23,6 @@ var GridController = AbstractController.extend({
      */
     init: function (parent, model, renderer, params) {
         this._super.apply(this, arguments);
-        this.set('title', params.title);
         this.context = params.context;
         this.navigationButtons = params.navigationButtons;
         this.ranges = params.ranges;
@@ -182,7 +181,7 @@ var GridController = AbstractController.extend({
                     model: self.modelName,
                     resIDs: ids,
                 },
-                on_closed: self.reload.bind(self),
+                on_closed: self.reload.bind(self, {}),
             });
         });
     },

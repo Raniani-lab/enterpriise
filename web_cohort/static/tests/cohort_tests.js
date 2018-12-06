@@ -225,7 +225,7 @@ QUnit.module('Views', {
                 "Second field in the list view should be stop");
 
         // Going back to cohort view
-        testUtils.dom.click($('.o_back_button'));
+        testUtils.dom.click(actionManager.$('.o_back_button'));
 
         // Going to the list view
         testUtils.dom.click(actionManager.$('td div.o_cohort_value:first'));
@@ -244,7 +244,6 @@ QUnit.module('Views', {
 
         actionManager.destroy();
     });
-
 
     QUnit.test('test mode churn', function(assert) {
         assert.expect(3);

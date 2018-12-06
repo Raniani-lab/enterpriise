@@ -53,11 +53,13 @@ var CohortController = AbstractController.extend({
      * @override
      * @returns {Object}
      */
-    getContext: function () {
+    getOwnedQueryParams: function () {
         var state = this.model.get();
         return {
-            cohort_measure: state.measure,
-            cohort_interval: state.interval,
+            context: {
+                cohort_measure: state.measure,
+                cohort_interval: state.interval,
+            }
         };
     },
 

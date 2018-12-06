@@ -12,6 +12,7 @@ class IntrastatReport(models.AbstractModel):
     filter_date = {'mode': 'range', 'filter': 'this_month'}
     filter_journals = True
     filter_multi_company = None
+    filter_with_vat = False
     filter_intrastat_type = [
         {'name': _('Arrival'), 'selected': False, 'id': 'arrival'},
         {'name': _('Dispatch'), 'selected': False, 'id': 'dispatch'},
@@ -86,16 +87,17 @@ class IntrastatReport(models.AbstractModel):
         else:
             incl_arrivals = incl_dispatches = True
 
-        return options['date']['date_from'], options['date']['date_to'], journal_ids, incl_arrivals, incl_dispatches, options.get('intrastat_extended')
+        return options['date']['date_from'], options['date']['date_to'], journal_ids, \
+            incl_arrivals, incl_dispatches, options.get('intrastat_extended'), options.get('with_vat')
 
     @api.model
-    def _prepare_query(self, date_from, date_to, journal_ids, invoice_types=None):
-        query_blocks, params = self._build_query(date_from, date_to, journal_ids, invoice_types=invoice_types)
+    def _prepare_query(self, date_from, date_to, journal_ids, invoice_types=None, with_vat=False):
+        query_blocks, params = self._build_query(date_from, date_to, journal_ids, invoice_types=invoice_types, with_vat=with_vat)
         query = 'SELECT %(select)s FROM %(from)s WHERE %(where)s ORDER BY %(order)s' % query_blocks
         return query, params
 
     @api.model
-    def _build_query(self, date_from, date_to, journal_ids, invoice_types=None):
+    def _build_query(self, date_from, date_to, journal_ids, invoice_types=None, with_vat=False):
         # triangular use cases are handled by letting the intrastat_country_id editable on
         # invoices. Modifying or emptying it allow to alter the intrastat declaration
         # accordingly to specs (https://www.nbb.be/doc/dq/f_pdf_ex/intra2017fr.pdf (§ 4.x))
@@ -158,7 +160,6 @@ class IntrastatReport(models.AbstractModel):
                 AND coalesce(inv.date, inv.date_invoice) >= %(date_from)s
                 AND coalesce(inv.date, inv.date_invoice) <= %(date_to)s
                 AND prodt.type != 'service'
-                AND partner.vat IS NOT NULL
                 AND inv.journal_id IN %(journal_ids)s
                 '''
         order = 'inv.date_invoice DESC'
@@ -168,6 +169,8 @@ class IntrastatReport(models.AbstractModel):
             'date_to': date_to,
             'journal_ids': tuple(journal_ids),
         }
+        if with_vat:
+            where += ' AND partner.vat IS NOT NULL '
         if invoice_types:
             where += ' AND inv.type IN %(invoice_types)s'
             params['invoice_types'] = tuple(invoice_types)
@@ -214,7 +217,7 @@ class IntrastatReport(models.AbstractModel):
     def _get_lines(self, options, line_id=None):
         self.env['account.invoice.line'].check_access_rights('read')
 
-        date_from, date_to, journal_ids, incl_arrivals, incl_dispatches, extended = self._decode_options(options)
+        date_from, date_to, journal_ids, incl_arrivals, incl_dispatches, extended, with_vat = self._decode_options(options)
 
         invoice_types = []
         if incl_arrivals:
@@ -222,7 +225,7 @@ class IntrastatReport(models.AbstractModel):
         if incl_dispatches:
             invoice_types += ['out_invoice', 'in_refund']
 
-        query, params = self._prepare_query(date_from, date_to, journal_ids, invoice_types=invoice_types)
+        query, params = self._prepare_query(date_from, date_to, journal_ids, invoice_types=invoice_types, with_vat=with_vat)
 
         self._cr.execute(query, params)
         query_res = self._cr.dictfetchall()

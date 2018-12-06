@@ -397,7 +397,7 @@ class website_hr_contract_salary(http.Controller):
             'GROSS': round(payslip.get_salary_line_total('GROSS'), 2),
             'REP.FEES': round(payslip.get_salary_line_total('REP.FEES'), 2),
             'P.P': round(payslip.get_salary_line_total('P.P'), 2),
-            'M.ONSS': round(payslip.get_salary_line_total('M.ONSS.1'), 2) or round(payslip.get_salary_line_total('M.ONSS.2'), 2),
+            'M.ONSS': round(payslip.get_salary_line_total('M.ONSS'), 2),
             'MEAL_V_EMP': round(payslip.get_salary_line_total('MEAL_V_EMP'), 2),
             'ATN.CAR.2': round(payslip.get_salary_line_total('ATN.CAR.2'), 2),
             'ATN.INT.2': round(payslip.get_salary_line_total('ATN.INT.2'), 2),

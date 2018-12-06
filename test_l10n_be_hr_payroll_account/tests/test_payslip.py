@@ -44,7 +44,7 @@ class TestUi(tests.HttpCase):
         self.assertEqual(payslip.get_salary_line_total('ATN.CAR.2'), -152.00)
         self.assertEqual(payslip.get_salary_line_total('ATN.INT.2'), -5.00)
         self.assertEqual(payslip.get_salary_line_total('ATN.MOB.2'), -12.00)
-        self.assertEqual(payslip.get_salary_line_total('M.ONSS.1'), -23.66)
+        self.assertEqual(payslip.get_salary_line_total('M.ONSS'), -23.66)
         self.assertEqual(payslip.get_salary_line_total('MEAL_V_EMP'), -21.80)
         self.assertEqual(payslip.get_salary_line_total('REP.FEES'), 150.00)
         self.assertEqual(payslip.get_salary_line_total('NET'), 1828.25)

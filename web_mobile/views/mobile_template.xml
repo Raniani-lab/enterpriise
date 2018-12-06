@@ -10,12 +10,14 @@
             <script type="text/javascript" src="/web_mobile/static/src/js/form_view.js"></script>
             <script type="text/javascript" src="/web_mobile/static/src/js/notification_manager.js"></script>
             <script type="text/javascript" src="/web_mobile/static/src/js/relational_fields.js"></script>
+            <script type="text/javascript" src="/web_mobile/static/src/js/pivot_controller.js"></script>
             <script type="text/javascript" src="/web_mobile/static/src/js/rpc.js"></script>
             <script type="text/javascript" src="/web_mobile/static/src/js/session.js"></script>
             <script type="text/javascript" src="/web_mobile/static/src/js/user_menu.js"></script>
             <script type="text/javascript" src="/web_mobile/static/src/js/views/control_panel/control_panel_controller.js"></script>
             <link rel="stylesheet" type="text/scss" href="/web_mobile/static/src/scss/mobile.scss"/>
             <link rel="stylesheet" type="text/scss" href="/web_mobile/static/src/scss/form_view_mobile.scss"/>
+            <link rel="stylesheet" type="text/scss" href="/web_mobile/static/src/scss/pivot_view_mobile.scss"/>
         </xpath>
     </template>
 

@@ -3,8 +3,6 @@ odoo.define('account_plaid.acc_config_widget', function(require) {
 
 var ajax = require('web.ajax');
 var core = require('web.core');
-var framework = require('web.framework');
-var QWeb = core.qweb;
 var AbstractAction = require('web.AbstractAction');
 
 var PlaidAccountConfigurationWidget = AbstractAction.extend({
@@ -15,7 +13,6 @@ var PlaidAccountConfigurationWidget = AbstractAction.extend({
     },
     init: function(parent, context) {
         this._super(parent, context);
-        var self = this;
         this.context = context.context;
         this.exit = false;
         this.loaded = $.Deferred();

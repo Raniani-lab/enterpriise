@@ -1,19 +1,18 @@
 odoo.define('mrp_mps.mrp_mps_report', function (require) {
 'use strict';
 
-var core = require('web.core');
-var session = require('web.session');
 var AbstractAction = require('web.AbstractAction');
-var ControlPanelMixin = require('web.ControlPanelMixin');
-var SearchView = require('web.SearchView');
-var data = require('web.data');
-var pyUtils = require('web.py_utils');
+var core = require('web.core');
 var field_utils = require('web.field_utils');
+var session = require('web.session');
 
 var QWeb = core.qweb;
 var _t = core._t;
 
-var mrp_mps_report = AbstractAction.extend(ControlPanelMixin, {
+var mrp_mps_report = AbstractAction.extend({
+    hasControlPanel: true,
+    loadControlPanel: true,
+    withSearchBar: true,
     custom_events: {
         search: '_onSearch',
     },
@@ -30,47 +29,39 @@ var mrp_mps_report = AbstractAction.extend(ControlPanelMixin, {
         'click .o_mps_product_name': 'open_mps_product',
     },
     init: function(parent, action) {
+        this._super.apply(this, arguments);
+
         this.actionManager = parent;
         this.action = action;
+        this.context = action.context;
         this.domain = [];
-        return this._super.apply(this, arguments);
+
+        this.controlPanelParams.modelName = 'product.product';
+        // TODO: disable_groupby: true,
     },
-    render_search_view: function(){
+    willStart: function () {
         var self = this;
-        var defs = [];
-        return this._rpc({
-                model: 'ir.model.data',
-                method: 'get_object_reference',
-                args: ['product', 'product_template_search_view'],
-                kwargs: {context: session.user_context},
-            })
-            .then(function(view_id){
-                self.dataset = new data.DataSetSearch(this, 'product.product');
-                return self.loadFieldView(self.dataset, view_id[1], 'search')
-                .then(function (fields_view) {
-                    self.fields_view = fields_view;
-                    var options = {
-                        $buttons: $("<div>"),
-                        action: this.action,
-                        disable_groupby: true,
-                    };
-                    self.searchview = new SearchView(self, self.dataset, self.fields_view, options);
-                    return self.searchview.appendTo($("<div>")).then(function () {
-                        defs.push(self.update_cp());
-                        self.$searchview_buttons = self.searchview.$buttons.contents();
-                    });
-                });
-            });
-    },
-    willStart: function() {
-        return this.get_html();
+        var _super = this._super.bind(this);
+        var args = arguments;
+        var def1 = this._rpc({
+            model: 'ir.model.data',
+            method: 'get_object_reference',
+            args: ['product', 'product_template_search_view'],
+            kwargs: {context: session.user_context},
+        })
+        .then(function (viewId) {
+            self.controlPanelParams.viewId = viewId[1];
+        });
+        var def2 = this.get_html();
+        return $.when(def1, def2).then(function () {
+            return _super.apply(self, args);
+        });
     },
     start: function() {
         var self = this;
         return this._super.apply(this, arguments).then(function () {
-            return self.render_search_view().then(function () {
-                self.$el.html(self.html);
-            });
+            self.update_cp();
+            self.re_renderElement();
         });
     },
     on_change_quantity: function(e) {
@@ -130,7 +121,7 @@ var mrp_mps_report = AbstractAction.extend(ControlPanelMixin, {
                 args: [parseInt(target.data('product')), target.data('date'), target.data('date_to'), parseInt(target.data('value'))],
                 kwargs: {context: session.user_context},
             })
-            .then(function(result){
+            .then(function () {
                 self.get_html().then(function() {
                     self.re_renderElement();
                 });
@@ -146,7 +137,7 @@ var mrp_mps_report = AbstractAction.extend(ControlPanelMixin, {
         }
     },
     re_renderElement: function() {
-        this.$el.html(this.html);
+        this.$('.o_content').html(this.html);
     },
     option_mps_period: function(e){
         var self = this;
@@ -164,7 +155,7 @@ var mrp_mps_report = AbstractAction.extend(ControlPanelMixin, {
                         args: [res, {'period': self.period}],
                         kwargs: {context: session.user_context},
                     })
-                    .done(function(result){
+                    .done(function () {
                         self.get_html().then(function() {
                             self.update_cp();
                             self.re_renderElement();
@@ -172,7 +163,7 @@ var mrp_mps_report = AbstractAction.extend(ControlPanelMixin, {
                     });
         });
     },
-    add_product_wizard: function(e){
+    add_product_wizard: function () {
         var self = this;
         return this._rpc({
                 model: 'ir.model.data',
@@ -233,7 +224,7 @@ var mrp_mps_report = AbstractAction.extend(ControlPanelMixin, {
             args: [parseInt($input.data('product')), target_value, $input.data('date'), $input.data('date_to'), $input.data('name')],
             kwargs: {context: session.user_context},
         })
-        .done(function(res){
+        .done(function () {
             self.get_html().then(function() {
                 self.re_renderElement();
             });
@@ -248,7 +239,7 @@ var mrp_mps_report = AbstractAction.extend(ControlPanelMixin, {
                 args: [product],
                 kwargs: {context: session.user_context},
             })
-            .then(function(result){
+            .then(function () {
                 self.get_html().then(function() {
                     self.re_renderElement();
                 });
@@ -276,21 +267,17 @@ var mrp_mps_report = AbstractAction.extend(ControlPanelMixin, {
             this.renderButtons();
         }
         this.$searchview_buttons = $(QWeb.render("MPS.optionButton", {period: self.report_context.period}));
-        this.$searchview_buttons.siblings('.o_mps_period_filter');
         this.$searchview_buttons.find('.o_mps_option_mps_period').bind('click', function (event) {
             self.option_mps_period(event);
         });
-        this.$searchview_buttons.siblings('.o_mps_columns_filter');
         this.$searchview_buttons.find('.o_mps_option_mps_columns').bind('click', function (event) {
             self.mps_show_line(event);
         });
-        this.update_control_panel({
+        this.updateControlPanel({
             cp_content: {
                 $buttons: this.$buttons,
-                $searchview: this.searchview.$el,
                 $searchview_buttons: this.$searchview_buttons
             },
-            searchview: this.searchview,
         });
     },
     do_show: function() {
@@ -307,7 +294,7 @@ var mrp_mps_report = AbstractAction.extend(ControlPanelMixin, {
                     args: [],
                     kwargs: {context: session.user_context},
                 })
-                .then(function(result){
+                .then(function () {
                     self.get_html().then(function() {
                         self.re_renderElement();
                     });
@@ -326,12 +313,7 @@ var mrp_mps_report = AbstractAction.extend(ControlPanelMixin, {
      */
     _onSearch: function (event) {
         event.stopPropagation();
-        var session = this.getSession();
-        var result = pyUtils.eval_domains_and_contexts({
-            contexts: [session.user_context],
-            domains: event.data.domains
-        });
-        this.domain = result.domain;
+        this.domain = event.data.domain;
         this.get_html().then(this.re_renderElement.bind(this));
     },
 });

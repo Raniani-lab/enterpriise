@@ -156,11 +156,9 @@ var FollowupFormController = FormController.extend({
             max: progressInfo.numberDone + progressInfo.numberTodo,
             percent: (progressInfo.numberDone / total * 100),
         }));
-        this.update_control_panel({
+        this.updateControlPanel({
             cp_content: {
                 $searchview: this.$searchview,
-                // hack to hide the default searchview buttons
-                $searchview_buttons: $(),
             }}, {
             clear: false,
         });

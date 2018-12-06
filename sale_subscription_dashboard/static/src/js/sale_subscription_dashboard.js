@@ -3,7 +3,6 @@ odoo.define('sale_subscription_dashboard.dashboard', function (require) {
 
 var AbstractAction = require('web.AbstractAction');
 var ajax = require('web.ajax');
-var ControlPanelMixin = require('web.ControlPanelMixin');
 var core = require('web.core');
 var datepicker = require('web.datepicker');
 var Dialog = require('web.Dialog');
@@ -30,7 +29,7 @@ because of the calculation and is then rendered separately.
 */
 
 // Abstract widget with common methods
-var sale_subscription_dashboard_abstract = AbstractAction.extend(ControlPanelMixin, {
+var sale_subscription_dashboard_abstract = AbstractAction.extend({
     cssLibs: [
         '/web/static/lib/nvd3/nv.d3.css'
     ],
@@ -39,6 +38,7 @@ var sale_subscription_dashboard_abstract = AbstractAction.extend(ControlPanelMix
         '/web/static/lib/nvd3/nv.d3.js',
         '/web/static/src/js/libs/nvd3.js'
     ],
+    hasControlPanel: true,
 
     /**
      * Loads the libraries listed in this.jsLibs and this.cssLibs
@@ -100,7 +100,7 @@ var sale_subscription_dashboard_abstract = AbstractAction.extend(ControlPanelMix
                 if (response.result === true) {
                     self.currency_id = response.currency_id;
                     self.filters.company_ids = company_ids;
-                    self.$el.empty();
+                    self.$('.o_content').empty();
                     self.render_dashboard();
                 } else {
                     Dialog.alert(self, response.error_message, {
@@ -172,7 +172,7 @@ var sale_subscription_dashboard_abstract = AbstractAction.extend(ControlPanelMix
         }
 
         $.when(def).then(function() {
-            self.update_control_panel({
+            self.updateControlPanel({
                 cp_content: {
                     $searchview: self.$searchview,
                     $searchview_buttons: self.$searchview_buttons,
@@ -229,10 +229,10 @@ var sale_subscription_dashboard_main = sale_subscription_dashboard_abstract.exte
         'click .on_demo_templates': 'on_demo_templates',
     },
 
-    init: function(parent, context) {
-        this._super(parent);
+    init: function(parent, action) {
+        this._super.apply(this, arguments);
 
-        this.main_dashboard_action_id = context.id;
+        this.main_dashboard_action_id = action.id;
         this.start_date = moment().subtract(1, 'M').startOf('month');
         this.end_date = moment().subtract(1, 'M').endOf('month');
 
@@ -312,7 +312,7 @@ var sale_subscription_dashboard_main = sale_subscription_dashboard_abstract.exte
             start_date: this.start_date,
             end_date: this.end_date,
         }));
-        this.$el.append(this.$main_dashboard);
+        this.$('.o_content').append(this.$main_dashboard);
 
         var stat_boxes = this.$main_dashboard.find('.o_stat_box');
         var forecast_boxes = this.$main_dashboard.find('.o_forecast_box');
@@ -415,8 +415,8 @@ var sale_subscription_dashboard_detailed = sale_subscription_dashboard_abstract.
         'click .o_detailed_analysis': 'on_detailed_analysis',
     },
 
-    init: function(parent, context, options) {
-        this._super(parent);
+    init: function(parent, action, options) {
+        this._super.apply(this, arguments);
 
         this.main_dashboard_action_id = options.main_dashboard_action_id;
         this.stat_types = options.stat_types;
@@ -457,7 +457,7 @@ var sale_subscription_dashboard_detailed = sale_subscription_dashboard_abstract.
             this.fetch_computed_stat()
         ).done(function(){
 
-            self.$el.append(QWeb.render("sale_subscription_dashboard.detailed_dashboard", {
+            self.$('.o_content').append(QWeb.render("sale_subscription_dashboard.detailed_dashboard", {
                 selected_stat_values: _.findWhere(self.stat_types, {code: self.selected_stat}),
                 start_date: self.start_date,
                 end_date: self.end_date,
@@ -678,8 +678,8 @@ var sale_subscription_dashboard_forecast = sale_subscription_dashboard_abstract.
         'change input.growth_type': 'on_growth_type_change',
     },
 
-    init: function(parent, context, options) {
-        this._super(parent);
+    init: function(parent, action, options) {
+        this._super.apply(this, arguments);
 
         this.main_dashboard_action_id = options.main_dashboard_action_id;
         this.start_date = options.start_date;
@@ -705,7 +705,7 @@ var sale_subscription_dashboard_forecast = sale_subscription_dashboard_abstract.
     },
 
     render_dashboard: function() {
-        this.$el.append(QWeb.render("sale_subscription_dashboard.forecast", {
+        this.$('.o_content').append(QWeb.render("sale_subscription_dashboard.forecast", {
             start_date: this.start_date,
             end_date: this.end_date,
             values: this.values,
@@ -836,7 +836,7 @@ var sale_subscription_dashboard_forecast = sale_subscription_dashboard_abstract.
     },
 
     update_cp: function() { // Redefinition to not show anything in controlpanel for forecast dashboard
-        this.update_control_panel({});
+        this.updateControlPanel({});
     },
 });
 
@@ -1024,7 +1024,7 @@ var sale_subscription_dashboard_salesman = sale_subscription_dashboard_abstract.
     },
 
     render_dashboard: function() {
-        this.$el.empty().append(QWeb.render("sale_subscription_dashboard.salesman", {
+        this.$('.o_content').empty().append(QWeb.render("sale_subscription_dashboard.salesman", {
             salesman_ids: this.salesman_ids,
             salesman: this.salesman,
             start_date: this.start_date,
@@ -1167,7 +1167,7 @@ var sale_subscription_dashboard_salesman = sale_subscription_dashboard_abstract.
         this.$searchview.on('click', '.o_update_options', this.on_update_options);
 
         this.set_up_datetimepickers();
-        this.update_control_panel({
+        this.updateControlPanel({
             cp_content: {
                 $searchview: this.$searchview,
             },

@@ -209,7 +209,7 @@ odoo.define('sale_subscription_dashboard.sale_subscription_tests', function (req
             var done = assert.async();
             var self = this;
             assert.expect(10);
-            var dashboard = new SubscriptionDashBoard.sale_subscription_dashboard_forecast(null, null, {
+            var dashboard = new SubscriptionDashBoard.sale_subscription_dashboard_forecast(null, {}, {
                 main_dashboard_action_id: null,
                 start_date: moment(),
                 end_date: moment().add(1, 'month'),
@@ -256,7 +256,7 @@ odoo.define('sale_subscription_dashboard.sale_subscription_tests', function (req
             var done = assert.async();
             var self = this;
             assert.expect(8);
-            var dashboard = new SubscriptionDashBoard.sale_subscription_dashboard_detailed(null, null, {
+            var dashboard = new SubscriptionDashBoard.sale_subscription_dashboard_detailed(null, {}, {
                 main_dashboard_action_id: null,
                 stat_types: this.data.fetch_data.stat_types,
                 start_date: moment(),
@@ -314,7 +314,7 @@ odoo.define('sale_subscription_dashboard.sale_subscription_tests', function (req
             var done = assert.async();
             var self = this;
             assert.expect(9);
-            var salesman_dashboard = new SubscriptionDashBoard.sale_subscription_dashboard_salesman();
+            var salesman_dashboard = new SubscriptionDashBoard.sale_subscription_dashboard_salesman(null, {});
             testUtils.mock.addMockEnvironment(salesman_dashboard, {
                 mockRPC: function (route, args) {
                     if (route === '/sale_subscription_dashboard/fetch_salesmen') {

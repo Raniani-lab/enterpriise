@@ -2,7 +2,6 @@ odoo.define('sign.views_custo', function(require) {
     'use strict';
 
     var core = require('web.core');
-    var session = require('web.session');
     var KanbanController = require("web.KanbanController");
     var KanbanColumn = require("web.KanbanColumn");
     var KanbanRecord = require("web.KanbanRecord");
@@ -158,7 +157,6 @@ odoo.define('sign.template', function(require) {
     'use strict';
 
     var AbstractAction = require('web.AbstractAction');
-    var ControlPanelMixin = require('web.ControlPanelMixin');
     var core = require('web.core');
     var config = require('web.config');
     var Dialog = require('web.Dialog');
@@ -580,9 +578,8 @@ odoo.define('sign.template', function(require) {
         },
     });
 
-    var Template = AbstractAction.extend(ControlPanelMixin, {
-        className: "o_sign_template",
-
+    var Template = AbstractAction.extend({
+        hasControlPanel: true,
         events: {
             'click .fa-pencil': function(e) {
                 this.$templateNameInput.focus().select();
@@ -764,6 +761,8 @@ odoo.define('sign.template', function(require) {
                 });
             });
 
+            this.$('.o_content').addClass('o_sign_template');
+
             return this._super();
 
             function init_iframe() {
@@ -788,7 +787,7 @@ odoo.define('sign.template', function(require) {
         },
 
         initialize_content: function() {
-            this.$el.append(core.qweb.render('sign.template', {widget: this}));
+            this.$('.o_content').append(core.qweb.render('sign.template', {widget: this}));
 
             this.$('iframe,.o_sign_template_name_input').prop('disabled', this.has_sign_requests);
 
@@ -814,10 +813,8 @@ odoo.define('sign.template', function(require) {
         },
 
         refresh_cp: function() {
-            this.update_control_panel({
+            this.updateControlPanel({
                 cp_content: this.cp_content,
-                search_view_hidden: true,
-                clear: true
             });
         },
 
@@ -891,17 +888,15 @@ odoo.define('sign.template', function(require) {
 odoo.define('sign.DocumentBackend', function (require) {
     'use strict';
 
-    var ajax = require('web.ajax');
-    var ControlPanelMixin = require('web.ControlPanelMixin');
-    var core = require('web.core');
-    var framework = require('web.framework');
     var AbstractAction = require('web.AbstractAction');
+    var core = require('web.core');
     var Document = require('sign.Document');
+    var framework = require('web.framework');
 
     var _t = core._t;
 
-    var DocumentBackend = AbstractAction.extend(ControlPanelMixin, {
-        className: 'o_sign_document',
+    var DocumentBackend = AbstractAction.extend({
+        hasControlPanel: true,
 
         go_back_to_kanban: function () {
             return this.do_action("sign.sign_request_action", {
@@ -909,21 +904,21 @@ odoo.define('sign.DocumentBackend', function (require) {
             });
         },
 
-        init: function (parent, options) {
+        init: function (parent, action) {
             this._super.apply(this, arguments);
-            if(options.context.id === undefined) {
+            var context = action.context;
+            if(context.id === undefined) {
                 return;
             }
 
-            this.documentID = options.context.id;
-            this.token = options.context.token;
-            this.create_uid = options.context.create_uid;
-            this.state = options.context.state;
+            this.documentID = context.id;
+            this.token = context.token;
+            this.create_uid = context.create_uid;
+            this.state = context.state;
 
-            this.current_name = options.context.current_signor_name;
-            this.token_list = options.context.token_list;
-            this.name_list = options.context.name_list;
-            var self = this;
+            this.current_name = context.current_signor_name;
+            this.token_list = context.token_list;
+            this.name_list = context.name_list;
 
             this.$downloadButton = $('<a/>', {html: _t("Download Document")}).addClass('btn btn-primary o_hidden');
             this.cp_content = {$buttons: this.$downloadButton};
@@ -938,7 +933,8 @@ odoo.define('sign.DocumentBackend', function (require) {
                 route: '/sign/get_document/' + this.documentID + '/' + this.token,
                 params: {message: this.message}
             }).then(function(html) {
-                self.$el.append($(html.trim()));
+                self.$('.o_content').append($(html.trim()));
+                self.$('.o_content').addClass('o_sign_document');
 
                 var $cols = self.$('.col-lg-4').toggleClass('col-lg-6 col-lg-4');
                 var $buttonsContainer = $cols.first().remove();
@@ -972,10 +968,8 @@ odoo.define('sign.DocumentBackend', function (require) {
         },
 
         refresh_cp: function () {
-            this.update_control_panel({
+            this.updateControlPanel({
                 cp_content: this.cp_content,
-                search_view_hidden: true,
-                clear: true
             });
         },
     });
@@ -987,10 +981,8 @@ odoo.define('sign.document_edition', function(require) {
     'use strict';
 
     var core = require('web.core');
-    var Dialog = require('web.Dialog');
     var session = require('web.session');
     var DocumentBackend = require('sign.DocumentBackend');
-    var sign_utils = require('sign.utils');
 
     var _t = core._t;
 
@@ -1007,7 +999,7 @@ odoo.define('sign.document_edition', function(require) {
             },
         },
 
-        init: function(parent, options) {
+        init: function(parent, action, options) {
             this._super.apply(this, arguments);
 
             var self = this;
@@ -1095,12 +1087,6 @@ odoo.define('sign.document_signing_backend', function(require) {
     var SignableDocumentBackend = DocumentBackend.extend({
         get_document_class: function () {
             return SignableDocument2;
-        },
-    });
-
-    var SMSSignerDialogBackend = document_signing.SMSSignerDialog.include({
-        get_thankyoudialog_class: function () {
-            return NoPubThankYouDialog;
         },
     });
 

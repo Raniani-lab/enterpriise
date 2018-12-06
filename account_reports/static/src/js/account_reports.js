@@ -4,7 +4,6 @@ odoo.define('account_reports.account_report', function (require) {
 var core = require('web.core');
 var Context = require('web.Context');
 var AbstractAction = require('web.AbstractAction');
-var ControlPanelMixin = require('web.ControlPanelMixin');
 var Dialog = require('web.Dialog');
 var crash_manager = require('web.crash_manager');
 var datepicker = require('web.datepicker');
@@ -113,7 +112,8 @@ var M2MFilters = Widget.extend(StandaloneFieldManagerMixin, {
     },
 });
 
-var accountReportsWidget = AbstractAction.extend(ControlPanelMixin, {
+var accountReportsWidget = AbstractAction.extend({
+    hasControlPanel: true,
 
     events: {
         'input .o_account_reports_filter_input': 'filter_accounts',
@@ -199,9 +199,14 @@ var accountReportsWidget = AbstractAction.extend(ControlPanelMixin, {
             this.renderButtons();
         }
         var status = {
-            cp_content: {$buttons: this.$buttons, $searchview_buttons: this.$searchview_buttons, $pager: this.$pager, $searchview: this.$searchview},
+            cp_content: {
+                $buttons: this.$buttons,
+                $searchview_buttons: this.$searchview_buttons,
+                $pager: this.$pager,
+                $searchview: this.$searchview,
+            },
         };
-        return this.update_control_panel(status, {clear: true});
+        return this.updateControlPanel(status, {clear: true});
     },
     reload: function() {
         var self = this;
@@ -223,8 +228,8 @@ var accountReportsWidget = AbstractAction.extend(ControlPanelMixin, {
         this.update_cp();
     },
     render_template: function() {
-        this.$el.html(this.main_html);
-        this.$el.find('.o_account_reports_summary_edit').hide();
+        this.$('.o_content').html(this.main_html);
+        this.$('.o_content').find('.o_account_reports_summary_edit').hide();
         this._add_line_classes();
     },
     _add_line_classes: function() {
@@ -527,7 +532,7 @@ var accountReportsWidget = AbstractAction.extend(ControlPanelMixin, {
         // check if we already have some footnote for this line
         var existing_footnote = _.filter(self.footnotes, function(footnote) {
             return ''+footnote.line === ''+line_id;
-        })
+        });
         var text = '';
         if (existing_footnote.length !== 0) {
             text = existing_footnote[0].text;

@@ -19,7 +19,6 @@ function isChildOf(locationParent, locationChild) {
 }
 
 var ClientAction = AbstractAction.extend({
-    className: 'o_barcode_client_action',
     custom_events: {
         show_information: '_onShowInformation',
         show_settings: '_onShowSettings',
@@ -95,13 +94,14 @@ var ClientAction = AbstractAction.extend({
 
     start: function () {
         var self = this;
+        this.$('.o_content').addClass('o_barcode_client_action');
         core.bus.on('barcode_scanned', this, this._onBarcodeScannedHandler);
 
         this.headerWidget = new HeaderWidget(this);
         this.settingsWidget = new SettingsWidget(this, this.actionParams.model, this.mode);
         return this._super.apply(this, arguments).then(function () {
-            self.headerWidget.prependTo(self.$el);
-            self.settingsWidget.appendTo(self.$el);
+            self.headerWidget.prependTo(self.$('.o_content'));
+            self.settingsWidget.appendTo(self.$('.o_content'));
             self.settingsWidget.do_hide();
             return self._save();
         }).then(function () {
@@ -229,7 +229,6 @@ var ClientAction = AbstractAction.extend({
         return [];
     },
 
-    
     /**
     *
      * @returns {Boolean} True if the lot_name for product is already present.
@@ -442,7 +441,7 @@ var ClientAction = AbstractAction.extend({
         var nbPages = this.pages.length;
         var preparedPage = $.extend(true, {}, this.pages[pageIndex]);
         this.linesWidget = new LinesWidget(this, preparedPage, pageIndex, nbPages);
-        this.linesWidget.appendTo(this.$el);
+        this.linesWidget.appendTo(this.$('.o_content'));
         // In some cases, we want to restore the GUI state of the linesWidget
         // (on a reload not calling _endBarcodeFlow)
         if (this.linesWidgetState) {
@@ -1422,7 +1421,7 @@ var ClientAction = AbstractAction.extend({
                         false
                     );
                 }
-                return self.ViewsWidget.appendTo(self.$el);
+                return self.ViewsWidget.appendTo(self.$('.o_content'));
             });
         });
     },
@@ -1477,7 +1476,7 @@ var ClientAction = AbstractAction.extend({
                         {currentId: id}
                     );
                 }
-                return self.ViewsWidget.appendTo(self.$el);
+                return self.ViewsWidget.appendTo(self.$('.o_content'));
             });
         });
     },

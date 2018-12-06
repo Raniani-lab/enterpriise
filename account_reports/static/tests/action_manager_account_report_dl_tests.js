@@ -99,13 +99,14 @@ QUnit.module('Account Reports', {
                             '<li class="o_account_report_search js_account_partner_m2m"/>' +
                             '</ul>',
                     };
+                    var reportOptions;
                     if (count === 1) {
-                        var reportOptions = args.args[1];
+                        reportOptions = args.args[1];
                         assert.strictEqual(reportOptions.partner_ids[0], 1,
                             "pass correct partner_id to report");
                         vals.options.partner_ids = reportOptions.partner_ids;
                     } else if (count == 2) {
-                        var reportOptions = args.args[1];
+                        reportOptions = args.args[1];
                         assert.strictEqual(reportOptions.partner_categories[0], 1,
                             "pass correct partner_id to report");
                         vals.options.partner_categories = reportOptions.partner_categories;
@@ -121,19 +122,19 @@ QUnit.module('Account Reports', {
         });
 
         actionManager.doAction(9);
-        assert.containsOnce(actionManager.controlPanel, '.o_field_many2manytags[name="partner_ids"]',
+        assert.containsOnce(actionManager, '.o_control_panel .o_field_many2manytags[name="partner_ids"]',
             "partner_ids m2m field added to filter");
-        assert.containsOnce(actionManager.controlPanel, '.o_field_many2manytags[name="partner_categories"]',
+        assert.containsOnce(actionManager, '.o_control_panel .o_field_many2manytags[name="partner_categories"]',
             "partner_categories m2m field added to filter");
 
         // search on partners m2m
-        testUtils.dom.click(actionManager.controlPanel.$('.o_search_options a.dropdown-toggle'));
-        testUtils.dom.click(actionManager.controlPanel.$('.o_field_many2one[name="partner_ids"] input'));
+        testUtils.dom.click(actionManager.$('.o_control_panel .o_search_options a.dropdown-toggle'));
+        testUtils.dom.click(actionManager.$('.o_control_panel .o_field_many2one[name="partner_ids"] input'));
         testUtils.dom.click($('.ui-autocomplete .ui-menu-item a:contains(Genda Swami)'));
 
         // search on partner categories m2m
-        testUtils.dom.click(actionManager.controlPanel.$('.o_search_options a.dropdown-toggle'));
-        testUtils.dom.click(actionManager.controlPanel.$('.o_field_many2one[name="partner_categories"] input'));
+        testUtils.dom.click(actionManager.$('.o_control_panel .o_search_options a.dropdown-toggle'));
+        testUtils.dom.click(actionManager.$('.o_control_panel .o_field_many2one[name="partner_categories"] input'));
         testUtils.dom.click($('.ui-autocomplete .ui-menu-item a:contains(Brigadier suryadev singh)'));
 
         actionManager.destroy();

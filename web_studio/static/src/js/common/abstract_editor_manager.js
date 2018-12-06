@@ -29,12 +29,8 @@ var AbstractEditorManager = Widget.extend({
     },
     /**
      * @override
-     * @param {Widget} parent
-     * @param {Object} params
-     * @param {Object} params.env - environment (model and ids)
-     *    (id, context, etc.)
      */
-    init: function (parent, params) {
+    init: function () {
         this._super.apply(this, arguments);
 
         this.editor = undefined;
@@ -44,8 +40,6 @@ var AbstractEditorManager = Widget.extend({
 
         this.operations = [];
         this.operations_undone = [];
-
-        this.env = params.env;
 
         this.mdp = new concurrency.MutexedDropPrevious();
 

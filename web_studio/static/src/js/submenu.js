@@ -159,6 +159,7 @@ var SubMenu = Widget.extend({
         } else {
             this.studio_actions = [{action: action, title: title}];
         }
+        delete options.index; // to prevent collision with option of doAction
 
         if (action === 'action_web_studio_action_editor') {
             // do not open the default view in this case
@@ -168,7 +169,11 @@ var SubMenu = Widget.extend({
         if (action._originalAction) {
             action = JSON.parse(action._originalAction);
         }
-        this.do_action(action, options);
+        if (action === 'action_web_studio_action_editor') {
+            this.trigger_up('switch_studio_view', options);
+        } else {
+            this.do_action(action, options);
+        }
         this.renderElement();
     },
 
@@ -238,9 +243,6 @@ var SubMenu = Widget.extend({
                 model: this.action.res_model,
                 view_id: this.action.view_id[0],
             }).then(function (result) {
-                result.flags = _.extend({}, result.flags, {
-                    studioActionEnv: self.action.env,
-                });
                 self._replaceAction(result, title, {
                     studio_clear_studio_breadcrumbs: true,
                 });

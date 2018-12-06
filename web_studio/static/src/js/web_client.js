@@ -16,6 +16,7 @@ WebClient.include({
         'reload_menu_data': '_onReloadMenuData',
         'studio_icon_clicked': '_onStudioIconClicked',
         'studio_history_back': '_onStudioHistoryBack',
+        'switch_studio_view': '_onSwitchStudioView',
     }),
 
     /**
@@ -225,10 +226,9 @@ WebClient.include({
     _navigateInStudio: function (viewType) {
         var self = this;
         // the action has been processed by the AM
-        var action = this.action_manager.getCurrentAction();
+        var action = this.action_manager.getLastAction();
         var options = {
             action: action,
-            studio_clear_breadcrumbs: true,  // see @_pushController in AM
             viewType: viewType,
         };
         return this._openStudioMain(options).then(function () {
@@ -267,6 +267,7 @@ WebClient.include({
             var controller = this.action_manager.getCurrentController();
             def = this._openStudioMain({
                 action: action,
+                controllerState: controller.widget.exportState(),
                 viewType: controller.viewType,
             });
         } else {
@@ -409,6 +410,22 @@ WebClient.include({
         } else {
             this._closeStudio();
         }
+    },
+    /**
+     * @private
+     * @param {OdooEvent} ev
+     */
+    _onSwitchStudioView: function (ev) {
+        var action = this.action_manager.getCurrentStudioAction();
+        var controller = this.action_manager.getCurrentStudioController();
+        var params = _.extend({}, ev.data, {
+            action: action,
+        });
+        if (controller.widget) {
+            // not always the case in case of navigation
+            params.controllerState = controller.widget.exportState();
+        }
+        this._openStudioMain(params);
     },
 });
 

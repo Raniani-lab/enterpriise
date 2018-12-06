@@ -55,14 +55,18 @@ var ViewEditorManager = AbstractEditorManager.extend({
      * @override
      * @param {Widget} parent
      * @param {Object} params
+     * @param {Object} params.action
      * @param {Object} params.fields_view
      * @param {string} params.viewType
      * @param {Object} [params.chatter_allowed]
+     * @param {String} [params.controllerState]
      * @param {Object} [params.studio_view_id]
      * @param {Object} [params.studio_view_arch]
      */
     init: function (parent, params) {
         this._super.apply(this, arguments);
+
+        this.action = params.action;
 
         this.fields_view = params.fields_view;
         this.view_id = this.fields_view.view_id;
@@ -73,10 +77,6 @@ var ViewEditorManager = AbstractEditorManager.extend({
         // do not take it from the fields_view as it directly comes from the
         // server and might be `tree` sometimes
         this.view_type = params.viewType;
-        if (this.view_type == 'list') {
-            // reset the group by so lists are not grouped in studio.
-            this.env.groupBy = [];
-        }
 
         this.renamingAllowedFields = []; // those fields can be renamed
 
@@ -93,6 +93,8 @@ var ViewEditorManager = AbstractEditorManager.extend({
         this.studio_view_id = params.studio_view_id;
         this.studio_view_arch = params.studio_view_arch;
         this.x2mEditorPath = params.x2mEditorPath || [];
+
+        this.controllerState = params.controllerState;
     },
     /**
      * @override
@@ -821,7 +823,7 @@ var ViewEditorManager = AbstractEditorManager.extend({
         // this is a crappy way of processing the arch received as string
         // because we need a processed fields_view to find the x2m fields view
         var View = view_registry.get(this.mainViewType);
-        var view = new View(this.fields_view, this.env);
+        var view = new View(this.fields_view, _.extend({}, this.x2mViewParams));
 
         var fields_view = view.fieldsView;
         _.each(this.x2mEditorPath, function (step) {
@@ -838,6 +840,12 @@ var ViewEditorManager = AbstractEditorManager.extend({
     _instantiateEditor: function (params) {
         params = params || {};
         var fields_view = this.x2mField ? this._getX2mFieldsView() : this.fields_view;
+        var viewParams = this.x2mField ? this.x2mViewParams : {
+            action: this.action,
+            context: this.action.context,
+            controllerState: this.controllerState,
+            domain: this.action.domain,
+        };
 
         var def;
         // Different behaviour for the search view because
@@ -852,7 +860,7 @@ var ViewEditorManager = AbstractEditorManager.extend({
             def = $.when(this.view);
         } else {
             var View = view_registry.get(this.view_type);
-            this.view = new View(fields_view, this.env);
+            this.view = new View(fields_view, _.extend({}, viewParams));
             if (this.mode === 'edition') {
                 var Editor = Editors[this.view_type];
                 if (!Editor) {
@@ -865,6 +873,8 @@ var ViewEditorManager = AbstractEditorManager.extend({
                     chatter_allowed: chatterAllowed,
                     show_invisible: this.sidebar && this.sidebar.state.show_invisible,
                     arch: this.view.arch,
+                    x2mField: this.x2mField,
+                    viewType: this.view_type,
                 });
 
                 if (this.view_type === 'list') {
@@ -970,8 +980,7 @@ var ViewEditorManager = AbstractEditorManager.extend({
         // and a new view means a new basic model (the reference to the parent
         // will thus lost). This is why we reuse the same model and specify a
         // `parentID` (see @_onOpenOne2ManyRecord in FormController).
-
-        this.env = {
+        this.x2mViewParams = {
             currentId: data.res_id,
             context: data.getContext(),
             ids: data.res_ids,

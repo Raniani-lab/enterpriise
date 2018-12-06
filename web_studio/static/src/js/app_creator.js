@@ -16,7 +16,7 @@ var FieldMany2One = relational_fields.FieldMany2One;
 var _t = core._t;
 
 var AppCreator = AbstractAction.extend(StandaloneFieldManagerMixin, {
-    template: 'web_studio.AppCreator',
+    contentTemplate: 'web_studio.AppCreator',
     events: {
         'click .o_web_studio_app_creator_next': '_onNext',
         'click .o_web_studio_app_creator_back': '_onBack',

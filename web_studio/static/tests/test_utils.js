@@ -148,18 +148,18 @@ function createViewEditorManager (params) {
     if (params.viewID) {
         fieldsView.view_id = params.viewID;
     }
-    var env = {
-        modelName: params.model,
-        ids: 'res_id' in params ? [params.res_id] : undefined,
-        currentId: 'res_id' in params ? params.res_id : undefined,
-        domain: params.domain || [],
-        context: params.context || {},
-        groupBy: params.groupBy || [],
-    };
     var vem = new ViewEditorManager(parent, {
+        action: {
+            context: params.context || {},
+            domain: params.domain || [],
+            res_model: params.model,
+        },
+        controllerState: {
+            currentId: 'res_id' in params ? params.res_id : undefined,
+            resIds: 'res_id' in params ? [params.res_id] : undefined,
+        },
         fields_view: fieldsView,
         viewType: fieldsView.type,
-        env: env,
         studio_view_id: params.studioViewID,
         chatter_allowed: params.chatter_allowed,
     });

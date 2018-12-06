@@ -16,7 +16,7 @@ var framework = require('web.framework');
 var _t = core._t;
 
 var FormManager = AbstractAction.extend({
-    template: 'website_studio.FormManager',
+    contentTemplate: 'website_studio.FormManager',
 
     events: {
         'click .o_web_studio_thumbnail': '_onClickThumbnail',
@@ -34,7 +34,7 @@ var FormManager = AbstractAction.extend({
      *                           - clear_breadcrumbs: a boolean
      *                              to reset the breadcrumbs
      */
-    init: function (parent, context, options) {
+    init: function (parent, action, options) {
         this._super.apply(this, arguments);
         this.action = options.action;
         this._onClickThumbnail = _.debounce(this._onClickThumbnail, 300, true);

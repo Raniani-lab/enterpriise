@@ -32,6 +32,7 @@ var ReportEditorManager = AbstractEditorManager.extend({
     /**
      * @override
      * @param {Object} params
+     * @param {Object} params.env - environment (model and ids)
      * @param {Object} params.models
      * @param {Object} params.report
      * @param {Object} params.reportHTML
@@ -47,6 +48,7 @@ var ReportEditorManager = AbstractEditorManager.extend({
 
         this.view_id = params.reportMainViewID;
 
+        this.env = params.env;
         this.models = params.models;
         this.report = params.report;
         this.reportHTML = params.reportHTML;

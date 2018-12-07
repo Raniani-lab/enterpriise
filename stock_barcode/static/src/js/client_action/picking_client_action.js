@@ -309,7 +309,7 @@ var PickingClientAction = ClientAction.extend({
                 {currentId: self.currentState.id},
                 'readonly'
             );
-            self.ViewsWidget.appendTo(self.$el);
+            self.ViewsWidget.appendTo(self.$('.o_content'));
         });
     },
 
@@ -382,9 +382,14 @@ var PickingClientAction = ClientAction.extend({
                 });
                 package_id = package_id.package_id[0];
 
-                var params = {domain: [['package_id', '=', package_id]]};
+                var params = {
+                    searchQuery: {
+                        context: self.context,
+                        domain: [['package_id', '=', package_id]],
+                    },
+                };
                 self.ViewsWidget = new ViewsWidget(self, 'stock.quant', 'stock_barcode.stock_quant_barcode_kanban', {}, params, false, 'kanban');
-                return self.ViewsWidget.appendTo(self.$el);
+                return self.ViewsWidget.appendTo(self.$('.o_content'));
             });
         });
     },

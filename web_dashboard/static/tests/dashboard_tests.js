@@ -383,8 +383,7 @@ QUnit.module('Views', {
         assert.containsOnce(dashboard, '.o_subview .o_graph_buttons',
             "should have rendered the graph view's buttons");
         assert.containsN(dashboard, '.o_subview .o_graph_buttons .o_button_switch', 1, "should have rendered an additional switch button");
-        assert.containsOnce(dashboard, '.o_subview .o_graph',
-            "should have rendered a graph view");
+        assert.containsOnce(dashboard, '.o_subview .o_graph_renderer');
 
         assert.verifySteps(['load_views', 'read_group']);
 
@@ -1477,11 +1476,6 @@ QUnit.module('Views', {
     });
 
     QUnit.test('open subview fullscreen, update domain and come back', function (assert) {
-        // This test encodes the current behavior of this particular scenario, which is not the one
-        // we want, but with the current implementation of the searchview, we can't really do better.
-        // When coming back to the dashboard, the state of the searchview as it was when we left
-        // should be restored. So two assertions of this test will have to be adapted once the
-        // searchview will be rewrote, and when the desired behavior will be implemented.
         assert.expect(7);
 
         var actionManager = createActionManager({
@@ -1529,14 +1523,14 @@ QUnit.module('Views', {
 
         // go back using the breadcrumbs
         testUtils.dom.click($('.o_control_panel .breadcrumb a'));
-        assert.strictEqual($('.o_control_panel .o_facet_values').text().trim(), 'Sold',
-            "should still display the filter in the search view");
+        assert.strictEqual($('.o_control_panel .o_facet_values').text().trim(), '',
+            "should not display the filter in the search view");
 
         assert.verifySteps([
             [], // graph in dashboard
             [], // graph full screen
             [['sold', '=', 10]], // graph full screen with filter applied
-            [['sold', '=', 10]], // graph in dashboard after coming back
+            [], // graph in dashboard after coming back
         ]);
 
         actionManager.destroy();
@@ -1593,7 +1587,7 @@ QUnit.module('Views', {
         actionManager.destroy();
     });
 
-    QUnit.test('getContext correctly returns graph subview context', function (assert) {
+    QUnit.test('getOwnedQueryParams correctly returns graph subview context', function (assert) {
         assert.expect(2);
 
         var dashboard = createView({
@@ -1608,7 +1602,7 @@ QUnit.module('Views', {
             },
         });
 
-        assert.deepEqual(dashboard.getContext().graph, {
+        assert.deepEqual(dashboard.getOwnedQueryParams().context.graph, {
             graph_mode: 'bar',
             graph_measure: '__count__',
             graph_groupbys: ['categ_id'],
@@ -1619,7 +1613,7 @@ QUnit.module('Views', {
         testUtils.dom.click(dashboard.$('.dropdown-item[data-field="sold"]'));
         testUtils.dom.click(dashboard.$('button[data-mode="line"]'));
 
-        assert.deepEqual(dashboard.getContext().graph, {
+        assert.deepEqual(dashboard.getOwnedQueryParams().context.graph, {
             graph_mode: 'line',
             graph_measure: 'sold',
             graph_groupbys: ['categ_id'],
@@ -1629,7 +1623,7 @@ QUnit.module('Views', {
         dashboard.destroy();
     });
 
-    QUnit.test('getContext correctly returns pivot subview context', function (assert) {
+    QUnit.test('getOwnedQueryParams correctly returns pivot subview context', function (assert) {
         assert.expect(2);
 
         var dashboard = createView({
@@ -1644,7 +1638,7 @@ QUnit.module('Views', {
             },
         });
 
-        assert.deepEqual(dashboard.getContext().pivot, {
+        assert.deepEqual(dashboard.getOwnedQueryParams().context.pivot, {
             pivot_column_groupby: [],
             pivot_measures: ['__count'],
             pivot_row_groupby: ['categ_id'],
@@ -1654,7 +1648,7 @@ QUnit.module('Views', {
         testUtils.dom.click(dashboard.$('.dropdown-item[data-field="sold"]'));
         testUtils.dom.click(dashboard.$('.o_pivot_flip_button'));
 
-        assert.deepEqual(dashboard.getContext().pivot, {
+        assert.deepEqual(dashboard.getOwnedQueryParams().context.pivot, {
             pivot_column_groupby: ['categ_id'],
             pivot_measures: ['__count', 'sold'],
             pivot_row_groupby: [],
@@ -1663,7 +1657,7 @@ QUnit.module('Views', {
         dashboard.destroy();
     });
 
-    QUnit.test('getContext correctly returns cohort subview context', function (assert) {
+    QUnit.test('getOwnedQueryParams correctly returns cohort subview context', function (assert) {
         assert.expect(2);
 
         this.data.test_report.fields.create_date = {type: 'date', string: 'Creation Date'};
@@ -1684,7 +1678,7 @@ QUnit.module('Views', {
             },
         });
 
-        assert.deepEqual(dashboard.getContext().cohort, {
+        assert.deepEqual(dashboard.getOwnedQueryParams().context.cohort, {
             cohort_measure: '__count__',
             cohort_interval: 'week',
         }, "context should be correct");
@@ -1692,7 +1686,7 @@ QUnit.module('Views', {
         testUtils.dom.click(dashboard.$('.dropdown-toggle:contains(Measures)'));
         testUtils.dom.click(dashboard.$('[data-field="sold"]'));
 
-        assert.deepEqual(dashboard.getContext().cohort, {
+        assert.deepEqual(dashboard.getOwnedQueryParams().context.cohort, {
             cohort_measure: 'sold',
             cohort_interval: 'week',
         }, "context should be correct");

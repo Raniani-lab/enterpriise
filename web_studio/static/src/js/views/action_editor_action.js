@@ -17,7 +17,6 @@ var _t = core._t;
 var _lt = core._lt;
 
 var ActionEditorAction = AbstractAction.extend({
-    className: 'o_web_studio_client_action',
     custom_events: {
         'studio_default_view': '_onSetDefaultView',
         'studio_disable_view': '_onDisableView',
@@ -31,12 +30,15 @@ var ActionEditorAction = AbstractAction.extend({
      * @param {Object} options
      * @param {Object} options.action - action description
      * @param {Boolean} options.chatter_allowed
+     * @param {string} [options.controllerState]
      * @param {boolean} [options.noEdit] - do not edit a view
      * @param {string} [options.viewType]
      * @param {Object} [options.x2mEditorPath]
      */
     init: function (parent, context, options) {
         this._super.apply(this, arguments);
+        this._title = _t('Studio');
+        this.controlPanelParams.title = this._title;
         this.options = options;
         this.action = options.action;
         this.viewType = options.viewType;
@@ -46,6 +48,7 @@ var ActionEditorAction = AbstractAction.extend({
         // state.
         this.x2mEditorPath = options.x2mEditorPath;
         this.activityAllowed = undefined;
+        this.controllerState = options.controllerState || {};
     },
     /**
      * @override
@@ -63,11 +66,11 @@ var ActionEditorAction = AbstractAction.extend({
     start: function () {
         var self = this;
         var def;
-        this.set('title', _t('Studio'));
+        this.$el.addClass('o_web_studio_client_action');
         if (this.options.noEdit) {
             // click on "Views" in menu
             this.action_editor = new ActionEditor(this, this.action);
-            def = this.action_editor.appendTo(this.$el);
+            def = this.action_editor.appendTo(this.$('.o_content'));
         } else {
             // directly edit the view instead of displaying all views
             def = this._editView(this.viewType);
@@ -221,17 +224,24 @@ var ActionEditorAction = AbstractAction.extend({
             var context = _.extend({}, self.action.context, {studio: true});
             var loadViewDef = self.loadViews(self.action.res_model, context, views, options);
             return loadViewDef.then(function (fields_views) {
-                var viewEnv = _.defaults({}, self.action.env, {
-                    currentId: self.action.env.ids && self.action.env.ids[0],
-                });
+                if (!self.action.controlPanelFieldsView) {
+                    // in case of Studio navigation, the processing done on the
+                    // action in ActWindowActionManager@_executeWindowAction
+                    // is by-passed
+                    self.action.controlPanelFieldsView = fields_views.search;
+                }
+                if (!self.controllerState.currentId) {
+                    self.controllerState.currentId = self.controllerState.resIds && self.controllerState.resIds[0];
+                }
                 var params = {
+                    action: self.action,
                     fields_view: fields_views[self.viewType],
                     viewType: self.viewType,
-                    env: viewEnv,
                     chatter_allowed: self.chatter_allowed,
                     studio_view_id: self.studioView.studio_view_id,
                     studio_view_arch: self.studioView.studio_view_arch,
                     x2mEditorPath: self.x2mEditorPath,
+                    controllerState: self.controllerState,
                 };
                 self.view_editor = new ViewEditorManager(self, params);
 
@@ -240,7 +250,7 @@ var ActionEditorAction = AbstractAction.extend({
                     if (self.action_editor) {
                         dom.detach([{widget: self.action_editor}]);
                     }
-                    dom.append(self.$el, [fragment], {
+                    dom.append(self.$('.o_content'), [fragment], {
                         in_DOM: self.isInDOM,
                         callbacks: [{widget: self.view_editor}],
                     });

@@ -105,6 +105,7 @@ QUnit.module('Studio Navigation', {
 
         actionManager.doAction('action_web_studio_action_editor', {
             action: actionManager.getCurrentAction(),
+            controllerState: actionManager.getCurrentController().widget.exportState(),
         });
         bus.trigger('studio_toggled', 'main');
 
@@ -155,6 +156,7 @@ QUnit.module('Studio Navigation', {
         actionManager.doAction(1);  // open a act_window_action
         actionManager.doAction('action_web_studio_action_editor', {
             action: actionManager.getCurrentAction(),
+            controllerState: actionManager.getCurrentController().widget.exportState(),
             viewType: 'form',
         });
         bus.trigger('studio_toggled', 'main');
@@ -187,6 +189,7 @@ QUnit.module('Studio Navigation', {
         var action = actionManager.getCurrentAction();
         actionManager.doAction('action_web_studio_action_editor', {
             action: action,
+            controllerState: actionManager.getCurrentController().widget.exportState(),
         });
         bus.trigger('studio_toggled', 'main');
 
@@ -194,6 +197,7 @@ QUnit.module('Studio Navigation', {
             "the kanban view should be opened");
         actionManager.doAction('action_web_studio_action_editor', {
             action: action,
+            controllerState: actionManager.getCurrentStudioController().widget.exportState(),
             pushState: false,
             replace_last_action: true,
             viewType: 'list',
@@ -231,6 +235,7 @@ QUnit.module('Studio Navigation', {
 
         actionManager.doAction('action_web_studio_action_editor', {
             action: actionManager.getCurrentAction(),
+            controllerState: actionManager.getCurrentController().widget.exportState(),
         });
         bus.trigger('studio_toggled', 'main');
 
@@ -252,8 +257,7 @@ QUnit.module('Studio Navigation', {
         assert.verifySteps(rpcs, "should not have done any extra rpc for the new action");
 
         actionManager.doAction('action_web_studio_action_editor', {
-            action: actionManager.getCurrentAction(),
-            studio_clear_breadcrumbs: true,  // is normally set by the webclient
+            action: actionManager.getLastAction(),
         });
 
         rpcs.push('/web_studio/activity_allowed');
@@ -313,6 +317,7 @@ QUnit.module('Studio Navigation', {
         actionManager.doAction(1);  // open a act_window_action
         actionManager.doAction('action_web_studio_action_editor', {
             action: actionManager.getCurrentAction(),
+            controllerState: actionManager.getCurrentController().widget.exportState(),
         });
         bus.trigger('studio_toggled', 'main');
         actionManager.restoreStudioAction();  // simulate leaving Studio
@@ -344,6 +349,7 @@ QUnit.module('Studio Navigation', {
         var action = actionManager.getCurrentAction();
         actionManager.doAction('action_web_studio_action_editor', {
             action: action,
+            controllerState: actionManager.getCurrentController().widget.exportState(),
             viewType: 'form',  // is normally set by the webclient
         });
         bus.trigger('studio_toggled', 'main');

@@ -75,7 +75,7 @@ var GridView = AbstractView.extend({
         // controller
         this.controllerParams.formViewID = false;
         this.controllerParams.listViewID = false;
-        _.each(params.action && params.action.views, function (view) {
+        _.each(params.actionViews, function (view) {
             if (view.type === 'form') {
                 self.controllerParams.formViewID = view.viewID;
             }

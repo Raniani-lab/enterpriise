@@ -51,8 +51,26 @@ ActionManager.include({
      * @returns {Object|null}
      */
     getCurrentStudioAction: function () {
+        var controller = this.getCurrentStudioController();
+        return controller ? this.actions[controller.actionID] : null;
+    },
+    /**
+     * Returns the Studio controller in the controllerStack.
+     *
+     * @returns {Object|null}
+     */
+    getCurrentStudioController: function () {
         var controllerID = this.controllerStack[this.studioControllerIndex];
         var controller = this.controllers[controllerID];
+        return controller;
+    },
+    /**
+     * we cannot use getCurrentAction because when navigating in Studio, we
+     * bypass the logic (and getCurrentController has not widget key)
+     */
+    getLastAction: function () {
+        var currentControllerID = _.last(this.controllerStack);
+        var controller = currentControllerID ? this.controllers[currentControllerID] : null;
         return controller ? this.actions[controller.actionID] : null;
     },
     /**
@@ -83,7 +101,10 @@ ActionManager.include({
             viewType: this.studioViewType,
         };
         if (this.studioViewType === 'form') {
-            options.resID = action.env.currentId;
+            // widget could be unset in case of navigation (see @_executeWindowAction)
+            if (controller.widget) {
+                options.resID = controller.widget.exportState().currentId;
+            }
         }
         return this.doAction(action.id, options);
     },
@@ -138,24 +159,21 @@ ActionManager.include({
             // as we are navigating through Studio (with a menu), reset the
             // breadcrumb index
             this.studioControllerIndex = 0;
+            this.navigatingInStudio = true;
 
             return $.when(action);
-
         }
         return this._super.apply(this, arguments);
     },
-    /*
-     * @override
+    /**
      * @private
+     * @override
      */
-    _getBreadcrumbs: function () {
-        if (this.studioControllerIndex !== undefined) {
-            // do not display the breadcrumbs from the action edited by Studio
-            var stack = this.controllerStack;
-            this.controllerStack = stack.slice(this.studioControllerIndex + 1);
-            var result = this._super.apply(this, arguments);
-            this.controllerStack = stack;
-            return result;
+    _getControllerStackIndex: function (options) {
+        if (options.studio_clear_studio_breadcrumbs) {
+            // only display the controllers that are after Studio in the
+            // breadcrumbs
+            return this.studioControllerIndex + 1;
         }
         return this._super.apply(this, arguments);
     },
@@ -163,20 +181,35 @@ ActionManager.include({
      * @override
      * @private
      */
-    _pushController: function (controller, options) {
-        var length = this.controllerStack.length - 1;
-        var toDestroy;
-        if (options && options.studio_clear_breadcrumbs) {
-            // we actually don't want to destroy the whole controller stack
-            // but we want to keep the last controller, which is the one
-            // associated to the action edited by Studio
-            toDestroy = this.controllerStack.splice(0, length);
+    _pushController: function (controller) {
+        var length;
+        if (this.navigatingInStudio) {
+            // we are navigating inside Studio, so we destroy the whole
+            // controller stack except the last controller, which is the one
+            // associated with the action edited by Studio
+            this.navigatingInStudio = false;
+            length = this.controllerStack.length;
+            var toDestroy = this.controllerStack.slice(0, length - 1);
             this._removeControllers(toDestroy);
-        } else if (options && options.studio_clear_studio_breadcrumbs) {
-            toDestroy = this.controllerStack.splice(this.studioControllerIndex + 1);
-            this._removeControllers(toDestroy);
+            this.controllerStack = this.controllerStack.slice(length - 1);
+            // set controller index to 1 as this is its position in the stack
+            controller.index = 1;
         }
-        return this._super.apply(this, arguments);
+
+        this._super.apply(this, arguments);
+
+        if (this.studioControllerIndex !== undefined) {
+            // we are inside studio, so we update the breadcrumbs once the
+            // controller has been added to the controllerStack (from Studio
+            // controller excluded, to the last but one controller, which will
+            // add its part to the breadcrumbs itself)
+            // updating it afterwards is easier than trying to guess what will
+            // be the controllerStack (after the push) beforehand
+            var indexFrom = this.studioControllerIndex + 1;
+            var indexTo = this.controllerStack.length - 1;
+            var breadcrumbs = this._getBreadcrumbs(this.controllerStack.slice(indexFrom, indexTo));
+            controller.widget.updateControlPanel({breadcrumbs: breadcrumbs}, {clear: false});
+        }
     },
     /**
      * @_executeWindowAction is overridden when navigating in Studio but some
@@ -184,12 +217,8 @@ ActionManager.include({
      *
      * @private
      * @param {Object} action
-     * @param {Object} options
      */
-    _processStudioAction: function (action, options) {
-        // needed by ViewEditorManager when instanciating the ViewEditor
-        action.env = this._generateActionEnv(action, options);
-
+    _processStudioAction: function (action) {
         // needed in _createViewController
         action.controllers = {};
 

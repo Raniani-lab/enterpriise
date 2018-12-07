@@ -12,7 +12,7 @@ var QWeb = core.qweb;
 
 // load widget with main barcode scanning View
 var EventScanView = AbstractAction.extend({
-    template: 'event_barcode_template',
+    contentTemplate: 'event_barcode_template',
     events: {
         'keypress #event_barcode': 'on_manual_scan',
         'click .o_event_social': 'open_attendees',

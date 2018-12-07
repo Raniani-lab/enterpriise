@@ -3,7 +3,6 @@ odoo.define('account_yodlee.acc_config_widget', function(require) {
 
 var AbstractAction = require('web.AbstractAction');
 var core = require('web.core');
-var framework = require('web.framework');
 
 var QWeb = core.qweb;
 
@@ -59,5 +58,5 @@ var YodleeCallbackWidget = AbstractAction.extend({
 
 core.action_registry.add('yodlee_online_sync_widget', YodleeAccountConfigurationWidget);
 core.action_registry.add('yodlee_callback_widget', YodleeCallbackWidget);
-    
+
 });

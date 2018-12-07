@@ -155,7 +155,7 @@
 }
 
 // Standalone list views
-.o_content > div > .table-responsive > .o_list_view.table {
+.o_content > .table-responsive > .o_list_view.table {
     // List views always have the table-sm class, maybe we should remove
     // it (and consider it does not exist) and change the default table paddings
     @include o-list-view-full-width-padding($base: $table-cell-padding-sm, $ratio: 2);

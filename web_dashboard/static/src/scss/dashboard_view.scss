@@ -27,7 +27,7 @@
         flex: 1 1 100%;
         margin: 0 $padding ($spacer * 2);
 
-        .o_graph_container {
+        .o_graph_renderer {
             display: flex;
 
              > .o_graph_svg_container {
@@ -145,7 +145,7 @@
                 flex: 1;
                 display: flex;
 
-                .o_graph_container {
+                .o_graph_renderer {
                     display: flex;
                     justify-content: space-between;
 
@@ -188,7 +188,7 @@
 
                         // Comparison active, 2 pie-chart in tot.
                         &.o_active_comparison {
-                            .o_graph_container {
+                            .o_graph_renderer {
                                 flex-flow: row wrap;
                             }
                         }
@@ -225,7 +225,7 @@
                             flex: 0 0 100%;
                         }
 
-                        .o_graph_container {
+                        .o_graph_renderer {
                             flex-flow: row wrap;
                         }
                     }

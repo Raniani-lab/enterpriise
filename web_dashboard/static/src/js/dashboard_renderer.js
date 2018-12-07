@@ -80,7 +80,10 @@ var DashboardRenderer = FormRenderer.extend({
      */
     getsubControllersContext: function () {
         return _.mapObject(this.subControllers, function (controller) {
-            return controller.getContext();
+            // for now the views embedded in a dashboard can be of type
+            // cohort, graph, pivot. The getOwnedQueryParams method of their controller
+            // does not export anything but a context.
+            return controller.getOwnedQueryParams().context;
         });
     },
     /**
@@ -91,7 +94,7 @@ var DashboardRenderer = FormRenderer.extend({
     updateState: function (state, params) {
         var viewType;
         for (viewType in this.subControllers) {
-            this.subControllersContext[viewType] = this.subControllers[viewType].getContext();
+            this.subControllersContext[viewType] = this.subControllers[viewType].getOwnedQueryParams().context;
         }
         var subControllersContext = _.pick(params.context || {}, 'pivot', 'graph', 'cohort');
         _.extend(this.subControllersContext, subControllersContext);
@@ -242,7 +245,7 @@ var DashboardRenderer = FormRenderer.extend({
         // and put it/them into this group
         var $buttonGroup = $('<div class="btn-group">');
         $buttonGroup.append($buttons.find('[aria-label="Main actions"]'));
-        $buttonGroup.append($buttons.find('.btn-group[class*="groupbys"]'));
+        $buttonGroup.append($buttons.find('.o_dropdown:has(.o_group_by_menu)'));
         $buttonGroup.prependTo($buttons);
 
         // render the button to open the view in full screen
@@ -254,7 +257,9 @@ var DashboardRenderer = FormRenderer.extend({
             .appendTo($buttons);
 
         // select primary and interval buttons and alter their style
-        $buttons.find('.btn-primary').removeClass('btn-primary').addClass("btn-outline-secondary");
+        $buttons.find('.btn-primary,.btn-secondary')
+            .removeClass('btn-primary btn-secondary o_dropdown_toggler_btn')
+            .addClass("btn-outline-secondary");
         $buttons.find('[class*=interval_button]').addClass('text-muted text-capitalize');
         // remove bars icon on "Group by" button
         $buttons.find('.fa.fa-bars').removeClass('fa fa-bars');
@@ -320,15 +325,18 @@ var DashboardRenderer = FormRenderer.extend({
         var self = this;
         var viewType = node.attrs.type;
         var controllerContext = this.subControllersContext[viewType];
-        var subViewParams = {
+        var searchQuery = {
             context: _.extend({}, this.state.context, controllerContext),
             domain: this.state.domain,
             groupBy: [],
+        };
+        var subViewParams = {
             modelName: this.state.model,
             withControlPanel: false,
             hasSwitchButton: true,
             isEmbedded: true,
             additionalMeasures: this.additionalMeasures,
+            searchQuery: searchQuery,
         };
         var SubView = viewRegistry.get(viewType);
         var subView = new SubView(this.subFieldsViews[viewType], subViewParams);
@@ -423,7 +431,10 @@ var DashboardRenderer = FormRenderer.extend({
         var viewType = $(ev.currentTarget).attr('viewType');
         var controller = this.subControllers[viewType];
         this.trigger_up('open_view', {
-            context: _.extend({}, this.state.context, controller.getContext()),
+            // for now the views embedded in a dashboard can be of type
+            // cohort, graph, pivot. The getOwnedQueryParams method of their controller
+            // does not export anything but a context.
+            context: _.extend({}, this.state.context, controller.getOwnedQueryParams().context),
             viewType: viewType,
             additionalMeasures: this.additionalMeasures,
         });

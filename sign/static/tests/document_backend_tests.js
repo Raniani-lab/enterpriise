@@ -25,9 +25,9 @@ QUnit.module('document_backend_tests', function () {
         });
 
 
-        actionManager.doAction(9, {context: {id: 4}});
+        actionManager.doAction(9);
 
-        assert.strictEqual(actionManager.$('.o_sign_document').text(), 'def',
+        assert.strictEqual(actionManager.$('.o_sign_document').text().trim(), 'def',
             'should display text from server');
 
         actionManager.destroy();
@@ -53,8 +53,8 @@ QUnit.module('document_backend_tests', function () {
         });
 
 
-        actionManager.doAction(9, {context: {id: 4}});
-        actionManager.doAction(9, {context: {id: 4}});
+        actionManager.doAction(9);
+        actionManager.doAction(9);
 
         actionManager.destroy();
     });

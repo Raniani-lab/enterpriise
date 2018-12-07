@@ -12,7 +12,6 @@ var ReportEditorManager = require('web_studio.ReportEditorManager');
 var _t = core._t;
 
 var ReportEditorAction = AbstractAction.extend({
-    className: 'o_web_studio_client_action',
     custom_events: _.extend({}, AbstractAction.prototype.custom_events, {
         'open_record_form_view': '_onOpenRecordFormView',
         'studio_edit_report': '_onEditReport',
@@ -25,11 +24,11 @@ var ReportEditorAction = AbstractAction.extend({
     init: function (parent, context, options) {
         this._super.apply(this, arguments);
 
-        this.set('title', _t("Report Editor"));
+        this._title = _t("Report Editor");
         this.handle = options.report;
         this.reportName = this.handle.data.report_name;
+        this.controllerState = options.controllerState;
 
-        this.studioActionEnv = options.studioActionEnv;
         this.env = {};
     },
     /**
@@ -46,6 +45,7 @@ var ReportEditorAction = AbstractAction.extend({
      * @override
      */
     start: function () {
+        this.$el.addClass('o_web_studio_client_action');
         var defs = [this._super.apply(this, arguments)];
         if (this.env.currentId) {
             defs.push(this._renderEditor());
@@ -127,23 +127,13 @@ var ReportEditorAction = AbstractAction.extend({
         var self = this;
         this.env.modelName = this.report.model;
 
-        if (this.studioActionEnv.modelName === this.report.model) {
-            // we can use the ids coming from the action
-            this.env.ids = this.studioActionEnv.ids;
-        }
-
-        var def;
-        if (!this.env.ids || !this.env.ids.length) {
-            def = this._rpc({
-                model: self.report.model,
-                method: 'search',
-                args: [[]],
-                context: session.user_context,
-            }).then(function (result) {
-                self.env.ids = result;
-            });
-        }
-        return $.when(def).then(function () {
+        return this._rpc({
+            model: self.report.model,
+            method: 'search',
+            args: [[]],
+            context: session.user_context,
+        }).then(function (result) {
+            self.env.ids = result;
             self.env.currentId = self.env.ids && self.env.ids[0];
         });
     },
@@ -245,7 +235,7 @@ var ReportEditorAction = AbstractAction.extend({
             var fragment = document.createDocumentFragment();
             return self.reportEditorManager.appendTo(fragment).then(function () {
                 // dom is used to correctly call on_attach_callback
-                dom.append(self.$el, [fragment], {
+                dom.append(self.$('.o_content'), [fragment], {
                     in_DOM: self.isInDOM,
                     callbacks: [{widget: self.reportEditorManager}],
                 });

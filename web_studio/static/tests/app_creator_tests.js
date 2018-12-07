@@ -15,7 +15,7 @@ QUnit.module('Studio', {}, function () {
         assert.expect(11);
 
         var $target = $('#qunit-fixture');
-        var app_creator = new AppCreator(null);
+        var app_creator = new AppCreator(null, {});
         app_creator.debug = false;
         app_creator.appendTo($target);
 
@@ -95,7 +95,7 @@ QUnit.module('Studio', {}, function () {
         assert.expect(5);
 
         var $target = $('#qunit-fixture');
-        var appCreator = new AppCreator(null);
+        var appCreator = new AppCreator(null, {});
         appCreator.appendTo($target);
 
         testUtils.mock.addMockEnvironment(appCreator, {

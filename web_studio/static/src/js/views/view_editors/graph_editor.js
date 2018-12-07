@@ -22,7 +22,7 @@ return GraphRenderer.extend(EditorMixin, {
             // this after it
             _.defer(function() {
                 self.$el.wrap($('<div>', {
-                    class: 'o_graph',
+                    class: 'o_graph_controller',
                 }));
                 self.setElement(self.$el.parent());
             });

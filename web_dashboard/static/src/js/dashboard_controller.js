@@ -4,6 +4,7 @@ odoo.define('web_dashboard.DashboardController', function (require) {
 var AbstractController = require('web.AbstractController');
 var BasicController = require('web.BasicController');
 var core = require('web.core');
+var Domain = require('web.Domain');
 
 var _t = core._t;
 
@@ -22,7 +23,7 @@ var DashboardController = AbstractController.extend({
         // clicked field specific - filters, so that they can be removed if
         // another field is clicked.
         this.actionDomain = params.actionDomain;
-        this.currentFilters = [];
+        this.currentFilterIDs = [];
     },
 
     //--------------------------------------------------------------------------
@@ -32,8 +33,8 @@ var DashboardController = AbstractController.extend({
     /**
      * @override
      */
-    getContext: function () {
-        return this.renderer.getsubControllersContext();
+    getOwnedQueryParams: function () {
+        return {context: this.renderer.getsubControllersContext()};
     },
 
     //--------------------------------------------------------------------------
@@ -67,7 +68,9 @@ var DashboardController = AbstractController.extend({
                 additionalMeasures: ev.data.additionalMeasures
             };
         }
-        this.do_action(action, {keepSearchView: true});
+        this.do_action(action, {
+            controllerState: this.exportState(),
+        });
     },
     /**
      * Handles a reload request (it occurs when a field is clicked). If this
@@ -84,19 +87,16 @@ var DashboardController = AbstractController.extend({
      */
     _onReload: function (ev) {
         ev.stopPropagation();
-        var self = this;
         var newFilters = [];
         if (ev.data.domain && ev.data.domain.length) {
-            newFilters.push({domain: ev.data.domain, help: ev.data.domainLabel});
+            newFilters.push({
+                type: 'filter',
+                domain: Domain.prototype.arrayToString(ev.data.domain),
+                description: ev.data.domainLabel
+            });
         }
-        this.trigger_up('update_filters', {
-            callback: function (addedFilters) {
-                self.currentFilters = addedFilters;
-            },
-            controllerID: this.controllerID,
-            filtersToRemove: this.currentFilters || [],
-            newFilters: newFilters,
-        });
+        var filtersToRemove = this.currentFilterIDs || [];
+        this.currentFilterIDs = this._controlPanel.updateFilters(newFilters, filtersToRemove);
     },
 });
 

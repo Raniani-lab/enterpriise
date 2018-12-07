@@ -92,7 +92,7 @@ QUnit.module('FollowupViews', {
             "Do It Later button should have class 'btn-secondary'");
         assert.strictEqual($buttonDone.css('display'), 'none',
             "Done button should be invisible");
-        assert.ok(followupFormView.$searchview.is(':visible'),
+        assert.isVisible(followupFormView.$searchview,
             "The custom searchview should be visible on the form");
         assert.strictEqual(followupFormView.$searchview.find('span.o_account-progress-bar-content').text(), '0/1',
             "Progress bar value should be '0/1'");

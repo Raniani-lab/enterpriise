@@ -71,7 +71,7 @@
         <xpath expr="//script[@src='/web/static/src/js/fields/upgrade_fields.js']" position="replace"/>
         <xpath expr="//script[last()]" position="after">
             <script type="text/javascript" src="/web_enterprise/static/src/js/apps.js"></script>
-            <script type="text/javascript" src="/web_enterprise/static/src/js/control_panel.js"></script>
+            <script type="text/javascript" src="/web_enterprise/static/src/js/control_panel_renderer.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/home_menu.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/menu_mobile.js"></script>
             <script type="text/javascript" src="/web_enterprise/static/src/js/views/form_renderer.js"></script>

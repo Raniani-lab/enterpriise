@@ -193,7 +193,7 @@ QUnit.module('web_mobile', {
             viewOptions: {mode: 'edit'},
         });
 
-        var $input = form.$('input');
+        var $input = form.$('.o_field_widget[name="parent_id"] input');
 
         assert.notStrictEqual($input[0], document.activeElement,
             "autofocus should be disabled");

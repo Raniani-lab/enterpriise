@@ -24,7 +24,7 @@ var GanttController = AbstractController.extend({
 
     init: function (parent, model, renderer, params) {
         this._super.apply(this, arguments);
-        this.set('title', this.displayName);
+        this._initialTitle = this._title;
         this.context = params.context;
 
         this._displayTask = _.debounce(this._displayTask, 500, true);
@@ -39,7 +39,7 @@ var GanttController = AbstractController.extend({
      * @returns {string}
      */
     getTitle: function () {
-        return this.get('title');
+        return this._title;
     },
     /**
      * Render the buttons according to the GanttView.buttons template and add
@@ -153,7 +153,7 @@ var GanttController = AbstractController.extend({
         var self = this;
         this.model.setFocusDate(focusDate);
         this.reload().then(function () {
-            self.set('title', self.displayName + ' (' + self.model.get().date_display + ')');
+            self._setTitle(self._initialTitle + ' (' + self.model.get().date_display + ')');
         });
     },
     /**
@@ -164,7 +164,7 @@ var GanttController = AbstractController.extend({
         var self = this;
         this.model.setScale(scale);
         this.reload().then(function () {
-            self.set('title', self.displayName + ' (' + self.model.get().date_display + ')');
+            self._setTitle(self._initialTitle + ' (' + self.model.get().date_display + ')');
         });
     },
 

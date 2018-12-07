@@ -181,7 +181,7 @@ var InventoryClientAction = ClientAction.extend({
                 {currentId :self.currentState.id},
                 'readonly'
             );
-            self.ViewsWidget.appendTo(self.$el);
+            self.ViewsWidget.appendTo(self.$('.o_content'));
         });
     },
 

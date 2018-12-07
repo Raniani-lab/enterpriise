@@ -25,8 +25,7 @@ var DashboardView = BasicView.extend({
         Renderer: DashboardRenderer,
     },
     display_name: _lt('Dashboard'),
-    groupable: false,
-    enableTimeRangeMenu: true,
+    searchMenuTypes: ['filter', 'timeRange', 'favorite'],
     icon: 'fa-tachometer',
     viewType: 'dashboard',
 
@@ -49,18 +48,6 @@ var DashboardView = BasicView.extend({
         this.loadParams.aggregates = this.fieldsView.aggregates;
         this.loadParams.formulas = this.fieldsView.formulas;
 
-        // add '*_view_ref' keys in context, to fetch the adequate view
-        var context = this.loadParams.context;
-        _.each(this.fieldsView.subViews, function (subView) {
-            if (subView[0]) {
-                context[subView[1] + '_view_ref'] = subView[0];
-            }
-        });
-
-        // replaces the xmlids by false in the views description
-        this.fieldsView.subViews = _.map(this.fieldsView.subViews, function (subView) {
-            return [false, subView[1]]; // e.g. [false, 'graph']
-        });
 	},
 
     //--------------------------------------------------------------------------
@@ -73,12 +60,12 @@ var DashboardView = BasicView.extend({
      * @override
      * @private
      */
-    _loadData: function (parent) {
+    _loadData: function (model) {
         var self = this;
 
         var subViewsDef;
         if (this.fieldsView.subViews.length) {
-            subViewsDef = parent
+            subViewsDef = model
                 .loadViews(this.modelName, this.loadParams.context, this.fieldsView.subViews)
                 .then(function (fieldsViews) {
                     for (var viewType in fieldsViews) {
@@ -194,6 +181,20 @@ var DashboardView = BasicView.extend({
 
         return res;
     },
+    _updateMVCParams: function () {
+        var self = this;
+        this._super.apply(this, arguments);
+        // add '*_view_ref' keys in context, to fetch the adequate view
+        _.each(this.fieldsView.subViews, function (subView) {
+            if (subView[0]) {
+                self.loadParams.context[subView[1] + '_view_ref'] = subView[0];
+            }
+        });
+        // replaces the xmlids by false in the views description
+        this.fieldsView.subViews = _.map(this.fieldsView.subViews, function (subView) {
+            return [false, subView[1]]; // e.g. [false, 'graph']
+        });
+    }
 });
 
 viewRegistry.add('dashboard', DashboardView);

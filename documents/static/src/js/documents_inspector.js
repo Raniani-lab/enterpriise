@@ -237,6 +237,9 @@ var DocumentsInspector = Widget.extend({
      * @private
      */
     _renderRules: function () {
+        if (!this.currentFolder) {
+           return;
+        }
         var self = this;
         _.each(this.rules, function (rule) {
             var $rule = $(qweb.render('documents.DocumentsInspector.rule', rule));

@@ -33,12 +33,19 @@ var DocumentsKanbanModel = KanbanModel.extend({
         var result = this._super.apply(this, arguments);
         if (result && result.type === 'list') {
             var dataPoint = this.localData[dataPointID];
-            _.extend(result, _.pick(dataPoint, 'folderID', 'folders', 'relatedModels', 'size', 'tags'));
+            _.extend(result, _.pick(dataPoint,
+                                   'availableFolderIDs',
+                                   'folderID',
+                                   'folders',
+                                   'relatedModels',
+                                   'size',
+                                   'tags')
+            );
         }
         return result;
     },
     /**
-     * Override to explicitely specify the 'searchDomain', which is the domain
+     * Override to explicitly specify the 'searchDomain', which is the domain
      * coming from the search view. This domain is used to load the related
      * models, whereas a combination of this domain and the domain of the
      * DocumentsSelector is used for the classical search_read.
@@ -53,19 +60,22 @@ var DocumentsKanbanModel = KanbanModel.extend({
         var self = this;
         var _super = this._super.bind(this);
         return this._fetchFolders().then(function (folders) {
-            var defaultFolderID = folders.length ? folders[0].id : false;
+            var availableFolderIDs = _.pluck(folders, 'id');
+            var folderTree = self._buildFolderTree(folders, false);
             params = _.extend({}, params, {
-                folderID: defaultFolderID,
-                folders: folders,
+                availableFolderIDs: availableFolderIDs,
+                folderID: false,
+                folders: folderTree,
             });
 
             params.domain = params.domain || [];
             params.searchDomain = params.domain;
-            params.domain = self._addFolderToDomain(params.domain, params.folderID);
+            params.domain = params.domain.concat([['folder_id', 'in', params.availableFolderIDs]]);
 
             var def = _super(params);
             return self._fetchAdditionalData(def, params).then(function (dataPointID) {
                 var dataPoint = self.localData[dataPointID];
+                dataPoint.availableFolderIDs = params.availableFolderIDs;
                 dataPoint.folderID = params.folderID;
                 dataPoint.folders = params.folders;
                 dataPoint.isRootDataPoint = true;
@@ -91,12 +101,12 @@ var DocumentsKanbanModel = KanbanModel.extend({
 
         if (element.isRootDataPoint) {
             // we are reloading the whole view
-            element.folderID = options.folderID || element.folderID;
-            options.folderID = element.folderID;
+            element.folderID = options.folderID;
+            element.availableFolderIDs = options.availableFolderIDs;
 
             var searchDomain = options.domain || element.searchDomain;
             element.searchDomain = options.searchDomain = searchDomain;
-            options.domain = this._addFolderToDomain(searchDomain, options.folderID);
+            options.domain = this._extendDomainWithFolder(searchDomain, options.folderID, options.availableFolderIDs);
             if (options.selectorDomain !== undefined) {
                 options.domain = searchDomain.concat(options.selectorDomain);
             }
@@ -129,12 +139,18 @@ var DocumentsKanbanModel = KanbanModel.extend({
      * Return an extended version of the given domain containing a part that
      * filters out records that do not belong to the given folder.
      *
+     * @private
      * @param {Array[]} domain
      * @param {integer} folderID
+     * @param {integer[]} availableFolderIDs
      * @returns {Array[]}
      */
-    _addFolderToDomain: function (domain, folderID) {
-        return domain.concat([['folder_id', '=', folderID]]);
+    _extendDomainWithFolder: function (domain, folderID, availableFolderIDs) {
+        if (folderID) {
+            return domain.concat([['folder_id', '=', folderID]]);
+        } else {
+            return domain.concat([['folder_id', 'in', availableFolderIDs || []]]);
+        }
     },
     /**
      * Build folders' tree based on flat array returned from server
@@ -144,7 +160,7 @@ var DocumentsKanbanModel = KanbanModel.extend({
      * @param {Integer} parent_id
      * @returns {Array<Object>}
      */
-    _buildFoldersTree: function (folders, parent_id) {
+    _buildFolderTree: function (folders, parent_id) {
         var self = this;
         if (folders.length === 0) {
             return [];
@@ -162,7 +178,7 @@ var DocumentsKanbanModel = KanbanModel.extend({
                 id: folder.id,
                 name: folder.name,
                 description: folder.description,
-                children: self._buildFoldersTree(subFolders, folder.id)
+                children: self._buildFolderTree(subFolders, folder.id)
             };
         });
     },
@@ -189,19 +205,16 @@ var DocumentsKanbanModel = KanbanModel.extend({
         });
     },
     /**
-     * Fetch all folders, and convert them into a tree structure
+     * Fetch all folders
      *
      * @private
      * @returns {Deferred<array>}
      */
     _fetchFolders: function () {
-        var self = this;
         return this._rpc({
             model: 'documents.folder',
             method: 'search_read',
             fields: ['parent_folder_id', 'name', 'id', 'description'],
-        }).then(function (folders) {
-            return self._buildFoldersTree(folders, false);
         });
     },
     /**
@@ -217,7 +230,7 @@ var DocumentsKanbanModel = KanbanModel.extend({
         return this._rpc({
             model: 'documents.document',
             method: 'get_model_names',
-            args: [[], this._addFolderToDomain(params.searchDomain, params.folderID)],
+            args: [[], this._extendDomainWithFolder(params.searchDomain, params.folderID, params.availableFolderIDs)],
         }).then(function (models) {
             return _.map(models, function (model) {
                 if (!model.res_model_name) {
@@ -256,17 +269,22 @@ var DocumentsKanbanModel = KanbanModel.extend({
      *
      * @private
      * @param {Object} params parameters/options passed to the load/reload function
-     * @param {array} params.domain domain used during the load/reload call
-     * @returns {Deferred<array>}
+     * @param {Array} params.domain domain used during the load/reload call
+     * @param {integer} params.folderID the current folder ID
+     * @param {integer[]} params.availableFolderIDs all the folder IDs available
+     * @returns {Deferred<Array>}
      */
     _fetchTags: function (params) {
         params = params || {};
+        if (!params.folderID) {
+            return $.when([]);
+        }
         return this._rpc({
             model: 'documents.tag',
             method: 'group_by_documents',
             kwargs: {
                 folder_id: params.folderID,
-                domain: this._addFolderToDomain(params.domain, params.folderID),
+                domain: this._extendDomainWithFolder(params.domain, params.folderID, params.availableFolderIDs),
             },
         });
     },

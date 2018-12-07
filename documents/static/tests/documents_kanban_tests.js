@@ -215,7 +215,7 @@ QUnit.module('DocumentsKanbanView', {
     },
 }, function () {
     QUnit.test('basic rendering', function (assert) {
-        assert.expect(12);
+        assert.expect(15);
 
         var kanban = createView({
             View: DocumentsKanbanView,
@@ -228,6 +228,14 @@ QUnit.module('DocumentsKanbanView', {
                 '</t></templates></kanban>',
         });
 
+        assert.ok(kanban.$buttons.find('.o_documents_kanban_share').is(':disabled'),
+            "the share button should be disabled on global view");
+
+        assert.containsN(kanban, '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 6,
+            "should have 6 records in the renderer");
+        assert.containsNone(kanban, '.o_documents_selector_tags',
+            "should not display the tag navigation because no folder is selected by default");
+        testUtils.dom.click(kanban.$('.o_documents_selector_folder header:eq(1)'));
         // check view layout
         assert.containsN(kanban.$('.o_content'), '> div', 3,
             "should have 3 columns");
@@ -588,11 +596,11 @@ QUnit.module('DocumentsKanbanView', {
                 return this._super.apply(this, arguments);
             },
         });
-
+        testUtils.dom.click(kanban.$('.o_documents_selector_folder header:eq(1)'));
         // filter on 'task' in the DocumentsSelector
         testUtils.dom.click(kanban.$('.o_documents_selector .o_documents_selector_model[data-id="task"] input:checkbox'));
 
-        assert.strictEqual(kanban.$('.o_kanban_record:not(.o_kanban_ghost)').length, 2,
+        assert.containsN(kanban, '.o_kanban_record:not(.o_kanban_ghost)', 2,
             "should have 2 records in the renderer");
 
         testUtils.dom.click(kanban.$buttons.find('.o_documents_kanban_share'));
@@ -663,8 +671,8 @@ QUnit.module('DocumentsKanbanView', {
                 '</t></templates></kanban>',
         });
 
-        assert.strictEqual(kanban.$('.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length, 1,
-            "should have 1 record in the renderer (the one which is not in a folder)");
+        assert.containsNone(kanban, '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)',
+            "should have 0 record in the renderer, documents only displays attachments in folders");
 
         kanban.destroy();
     });
@@ -684,6 +692,7 @@ QUnit.module('DocumentsKanbanView', {
                     '</div>' +
                 '</t></templates></kanban>',
         });
+        testUtils.dom.click(kanban.$('.o_documents_selector_folder header:eq(1)'));
         assert.strictEqual(kanban.$('.o_documents_inspector_preview').text().replace(/\s+/g, ''),
             '_F1-test-description_', "should display the current folder description");
         assert.strictEqual(kanban.$('.o_documents_inspector_info .o_inspector_value:first').text().trim(),
@@ -945,6 +954,7 @@ QUnit.module('DocumentsKanbanView', {
             },
         });
 
+        testUtils.dom.click(kanban.$('.o_documents_selector_folder header:eq(1)'));
         testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop) .o_record_selector'));
         testUtils.dom.click(kanban.$('.o_kanban_record:contains(blip) .o_record_selector'));
 
@@ -1332,6 +1342,7 @@ QUnit.module('DocumentsKanbanView', {
                 '</t></templates></kanban>',
         });
 
+        testUtils.dom.click(kanban.$('.o_documents_selector_folder header:eq(1)'));
         testUtils.dom.click(kanban.$('.o_kanban_record:first'));
 
         assert.containsN(kanban, '.o_inspector_tag', 2,
@@ -1363,6 +1374,7 @@ QUnit.module('DocumentsKanbanView', {
                 '</t></templates></kanban>',
         });
 
+        testUtils.dom.click(kanban.$('.o_documents_selector_folder header:eq(1)'));
         testUtils.dom.click(kanban.$('.o_kanban_record:contains(gnap)'));
 
         assert.containsN(kanban, '.o_inspector_tag', 3,
@@ -1397,6 +1409,7 @@ QUnit.module('DocumentsKanbanView', {
             },
         });
 
+        testUtils.dom.click(kanban.$('.o_documents_selector_folder header:eq(1)'));
         testUtils.dom.click(kanban.$('.o_kanban_record:first'));
         testUtils.dom.click(kanban.$('.o_kanban_record:nth(2) .o_record_selector'));
 
@@ -1436,6 +1449,7 @@ QUnit.module('DocumentsKanbanView', {
             },
         });
 
+        testUtils.dom.click(kanban.$('.o_documents_selector_folder header:eq(1)'));
         testUtils.dom.click(kanban.$('.o_kanban_record:first'));
         testUtils.dom.click(kanban.$('.o_kanban_record:nth(1) .o_record_selector'));
 
@@ -1470,6 +1484,7 @@ QUnit.module('DocumentsKanbanView', {
                 '</t></templates></kanban>',
         });
 
+        testUtils.dom.click(kanban.$('.o_documents_selector_folder header:eq(1)'));
         testUtils.dom.click(kanban.$('.o_kanban_record:first'));
 
         assert.containsN(kanban, '.o_inspector_tag', 2,
@@ -1496,6 +1511,7 @@ QUnit.module('DocumentsKanbanView', {
                 '</t></templates></kanban>',
         });
 
+        testUtils.dom.click(kanban.$('.o_documents_selector_folder header:eq(1)'));
         testUtils.dom.click(kanban.$('.o_kanban_record:first'));
 
         testUtils.dom.click(kanban.$('.o_inspector_tag_add'));
@@ -1523,6 +1539,7 @@ QUnit.module('DocumentsKanbanView', {
                 '</t></templates></kanban>',
         });
 
+        testUtils.dom.click(kanban.$('.o_documents_selector_folder header:eq(1)'));
         testUtils.dom.click(kanban.$('.o_kanban_record:first'));
 
         assert.containsN(kanban, '.o_inspector_tag', 2,
@@ -1545,6 +1562,7 @@ QUnit.module('DocumentsKanbanView', {
                 '</t></templates></kanban>',
         });
 
+        testUtils.dom.click(kanban.$('.o_documents_selector_folder header:eq(1)'));
         testUtils.dom.click(kanban.$('.o_kanban_record:first'));
 
         assert.containsN(kanban, '.o_inspector_rule', 2,
@@ -1590,6 +1608,7 @@ QUnit.module('DocumentsKanbanView', {
             },
         });
 
+        testUtils.dom.click(kanban.$('.o_documents_selector_folder header:eq(1)'));
         testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop)'));
 
         assert.strictEqual(kanban.$('.o_inspector_rule span').text(),
@@ -1638,6 +1657,7 @@ QUnit.module('DocumentsKanbanView', {
             },
         });
 
+        testUtils.dom.click(kanban.$('.o_documents_selector_folder header:eq(1)'));
         testUtils.dom.click(kanban.$('.o_kanban_record:first'));
         testUtils.dom.click(kanban.$('.o_kanban_record:nth(1) .o_record_selector'));
 
@@ -2091,7 +2111,7 @@ QUnit.module('DocumentsKanbanView', {
     QUnit.module('DocumentsSelector');
 
     QUnit.test('document selector: basic rendering', function (assert) {
-        assert.expect(21);
+        assert.expect(19);
 
         var kanban = createView({
             View: DocumentsKanbanView,
@@ -2099,10 +2119,6 @@ QUnit.module('DocumentsKanbanView', {
             data: this.data,
             mockRPC: function (route, args) {
                 if (args.method === 'get_model_names') {
-                    assert.strictEqual(args.model, 'documents.document',
-                        "the method should only be called on documents");
-                    assert.deepEqual(args.args[0], [],
-                        "an empty array should be passed as first argument");
                     return $.when([{
                         res_model_count: 3,
                         res_model: 'task',
@@ -2130,12 +2146,14 @@ QUnit.module('DocumentsKanbanView', {
                 '</t></templates></kanban>',
         });
 
+
+        testUtils.dom.click(kanban.$('.o_documents_selector_folder header:eq(1)'));
         assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_folders .o_documents_selector_header').text().trim(),
             'Folders', "should have a 'folders' section");
-        assert.containsN(kanban, '.o_documents_selector .o_documents_selector_folder', 3,
-            "should have 3 folders");
-        assert.containsN(kanban, '.o_documents_selector .o_documents_selector_folder:visible', 2,
-            "two of them should be visible");
+        assert.containsN(kanban, '.o_documents_selector .o_documents_selector_folder', 5,
+            "should have 5 folders");
+        assert.containsN(kanban, '.o_documents_selector .o_documents_selector_folder:visible', 3,
+            "three of them should be visible");
         assert.strictEqual(kanban.$('.o_documents_inspector_preview').text().replace(/\s+/g, ''),
             '_F1-test-description_', "should display the first folder");
 
@@ -2197,8 +2215,9 @@ QUnit.module('DocumentsKanbanView', {
                 '</t></templates></kanban>',
         });
 
+        testUtils.dom.click(kanban.$('.o_documents_selector_folder header:eq(1)'));
         assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_tags .o_documents_selector_header').text().trim(),
-            'Tags', "should have a 'tags' section");
+            '', "shouldn't have a 'tags' section");
         assert.containsNone(kanban, '.o_documents_selector .o_documents_selector_facet',
             "shouldn't have any facet");
         assert.containsNone(kanban, '.o_documents_selector .o_documents_selector_facet .o_documents_selector_tag',
@@ -2246,8 +2265,9 @@ QUnit.module('DocumentsKanbanView', {
             domain: [['res_model', '=', false]],
         });
 
-        assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_tags .o_documents_selector_header').text().trim(),
-            'Tags', "should have a 'tags' section");
+        assert.containsNone(kanban, '.o_documents_selector .o_documents_selector_tags .o_documents_selector_header',
+            "shouldn't have a 'tags' section");
+        testUtils.dom.click(kanban.$('.o_documents_selector_folder header:eq(1)'));
         assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_models .o_documents_selector_header').text().trim(),
             'Attached To', "should have an 'attached to' section");
         assert.containsOnce(kanban, '.o_documents_selector .o_documents_selector_models .o_documents_selector_model:contains("Not attached")',
@@ -2294,7 +2314,7 @@ QUnit.module('DocumentsKanbanView', {
                 '</t></templates></kanban>',
         });
 
-        assert.containsN(kanban, '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 5, "should have 5 records in the renderer");
+        assert.containsN(kanban, '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 6, "should have 6 records in the renderer");
         assert.containsN(kanban, '.o_documents_selector .o_documents_selector_model', 4, "should have 4 related models");
 
         // filter on 'Task'
@@ -2313,7 +2333,7 @@ QUnit.module('DocumentsKanbanView', {
         testUtils.dom.click(kanban.$('.o_documents_selector .o_documents_selector_model[data-id="order"] input:checkbox'));
         testUtils.dom.click(kanban.$('.o_documents_selector .o_documents_selector_model[data-id="task"] input:checkbox'));
 
-        assert.containsN(kanban, '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 5, "should have 7 records in the renderer");
+        assert.containsN(kanban, '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 6, "should have 6 records in the renderer");
         assert.containsN(kanban, '.o_documents_selector .o_documents_selector_model', 4, "should still have 4 related models");
 
         kanban.destroy();
@@ -2355,7 +2375,7 @@ QUnit.module('DocumentsKanbanView', {
                 '</t></templates></kanban>',
         });
 
-        assert.containsN(kanban, '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 5, "should have 5 records in the renderer");
+        assert.containsN(kanban, '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 6, "should have 6 records in the renderer");
         assert.containsN(kanban, '.o_documents_selector .o_documents_selector_model', 4, "should have 4 related models");
 
         // filter on 'No Source'
@@ -2374,7 +2394,7 @@ QUnit.module('DocumentsKanbanView', {
         testUtils.dom.click(kanban.$('.o_documents_selector .o_documents_selector_model[data-id=false] input:checkbox'));
         testUtils.dom.click(kanban.$('.o_documents_selector .o_documents_selector_model[data-id="task"] input:checkbox'));
 
-        assert.containsN(kanban, '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 5, "should have 5 records in the renderer");
+        assert.containsN(kanban, '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 6, "should have 6 records in the renderer");
         assert.containsN(kanban, '.o_documents_selector .o_documents_selector_model', 4, "should still have 4 related models");
 
         kanban.destroy();
@@ -2417,7 +2437,7 @@ QUnit.module('DocumentsKanbanView', {
                 '</t></templates></kanban>',
         });
 
-        assert.strictEqual(kanban.$('.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length, 5, "should have 5 records in the renderer");
+        assert.containsN(kanban, '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 6, "should have 6 records in the renderer");
         assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_model[data-id=task]').text().replace(/\s/g, ""),
             'Task3', "should display the correct number of records");
 
@@ -2453,7 +2473,7 @@ QUnit.module('DocumentsKanbanView', {
     });
 
     QUnit.test('document selector: selected tags are reset when switching between folders', function (assert) {
-        assert.expect(6);
+        assert.expect(7);
 
         var kanban = createView({
             View: DocumentsKanbanView,
@@ -2472,6 +2492,7 @@ QUnit.module('DocumentsKanbanView', {
             },
         });
 
+        testUtils.dom.click(kanban.$('.o_documents_selector_folder header:eq(1)'));
         // filter on records having tag Draft
         testUtils.dom.click(kanban.$('.o_documents_selector_tag:contains(Draft) input'));
 
@@ -2485,6 +2506,7 @@ QUnit.module('DocumentsKanbanView', {
             "tag selector should not be checked anymore");
 
         assert.verifySteps([
+            [["folder_id", "in", [1, 2, 3]]],
             [["folder_id", "=", 1]],
             [["folder_id", "=", 1], ["tag_ids", "in", [2]]],
             [["folder_id", "=", 2]],
@@ -2507,6 +2529,8 @@ QUnit.module('DocumentsKanbanView', {
                     '</div>' +
                 '</t></templates></kanban>',
         });
+
+        testUtils.dom.click(kanban.$('.o_documents_selector_folder header:eq(1)'));
 
         // filter on records having tag Draft
         testUtils.dom.click(kanban.$('.o_documents_selector_tag:contains(Draft) input'));

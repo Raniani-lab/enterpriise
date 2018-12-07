@@ -60,7 +60,8 @@ var DocumentsKanbanController = KanbanController.extend({
         this.anchorID = null; // used to select records with ctrl/shift keys
 
         var state = this.model.get(this.handle);
-        this.selectedFolderID = state.folderID;
+        this.selectedFolderID = false;
+        this.availableFolderIDs = state.availableFolderIDs;
 
         // store in memory the folded state of folders and facets, to keep it
         // at each reload
@@ -99,6 +100,7 @@ var DocumentsKanbanController = KanbanController.extend({
     update: function (params, options) {
         params = params || {};
         params.folderID = this.selectedFolderID;
+        params.availableFolderIDs = this.availableFolderIDs;
         params.selectorDomain = this._buildSelectorDomain();
         return this._super(params, options);
     },
@@ -148,6 +150,8 @@ var DocumentsKanbanController = KanbanController.extend({
         var domain = [];
         if (this.selectedFolderID) {
             domain.push(['folder_id', '=', this.selectedFolderID]);
+        } else {
+            domain.push(['folder_id', 'in', this.availableFolderIDs || []]);
         }
         _.each(this.selectedFilterTagIDs, function (facetTagIDs) {
             if (facetTagIDs.length) {
@@ -361,7 +365,9 @@ var DocumentsKanbanController = KanbanController.extend({
         $folders.append(this._renderFolders(state.folders));
 
         this.$('.o_content').prepend($documentSelector);
-        this._markPartiallySelectedFacet();
+        if (this.selectedFolderID) {
+            this._markPartiallySelectedFacet();
+        }
         this._updateFoldableElements();
 
         this.$('.o_documents_selector').scrollTop(scrollTop || 0);
@@ -376,6 +382,9 @@ var DocumentsKanbanController = KanbanController.extend({
     _renderFolders: function (folders) {
         var self = this;
         var $folders = $('<ul>', {class: 'list-group d-block'});
+        $(qweb.render('documents.AllFolderSelection', {
+            activeFolderID: self.selectedFolderID
+        })).appendTo($folders);
         _.each(folders, function (folder) {
             var $folder = $(qweb.render('documents.DocumentsSelectorFolder', {
                 activeFolderID: self.selectedFolderID,
@@ -397,13 +406,15 @@ var DocumentsKanbanController = KanbanController.extend({
      * @param {Object} vals
      * @param {Array[]} [vals.document_ids] M2M commandsF
      * @param {Array[]} [vals.domain] the domain to share
-     * @param {integer} vals.folderID
+     * @param {integer|undefined} [vals.folder_id=undefined]
      * @param {Array[]} [vals.tags] M2M commands
      * @param {string} vals.type the type of share (either 'ids' or 'domain')
-     * @returns {Deferred}
      */
     _share: function (vals) {
         var self = this;
+        if (!vals.folder_id) {
+            return;
+        }
         this._rpc({
             model: 'documents.share',
             method: 'create_share',
@@ -485,6 +496,7 @@ var DocumentsKanbanController = KanbanController.extend({
                 self._renderDocumentsSelector(state);
                 self.anchorID = null;
                 self.renderer.updateSelection(self.selectedRecordIDs);
+                self.$buttons.find('.o_documents_kanban_share').prop('disabled', !self.selectedFolderID);
             });
         });
     },
@@ -922,11 +934,9 @@ var DocumentsKanbanController = KanbanController.extend({
         ev.preventDefault();
         var $item = $(ev.currentTarget).closest('.o_documents_selector_folder');
         var data = $item.data();
-        if ('id' in data && data.id !== this.selectedFolderID) {
-            this.selectedFilterTagIDs = {}; // reset the tags as they depend on the current folder
-            this.selectedFolderID = data.id;
-            this._applySelectors();
-        }
+        this.selectedFilterTagIDs = {}; // reset the tags as they depend on the current folder
+        this.selectedFolderID = 'id' in data ? data.id : false;
+        this._applySelectors();
     },
     /**
      * React to records selection changes to update the DocumentInspector with

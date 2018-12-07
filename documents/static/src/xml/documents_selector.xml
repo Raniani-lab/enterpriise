@@ -10,7 +10,7 @@
             </header>
             <div class="o_documents_selector_folders_container"/>
         </section>
-        <section class="o_documents_selector_section mb-3 o_documents_selector_tags">
+        <section t-if="facets.length" class="o_documents_selector_section mb-3 o_documents_selector_tags">
             <header class="o_documents_selector_header text-uppercase">
                 <i class="o_documents_tag_color fa fa-tag mr-1"/>
                 <b>Tags</b>
@@ -73,6 +73,16 @@
             <label t-att-for="folder.name" class="mb0 d-block">
                 <i t-if="folder.children.length" class="fa fa-fw pull-right o_toggle_fold fa-caret-down"/>
                 <span class="o_docs_label_title"><t t-esc="folder.name"/></span>
+            </label>
+        </header>
+    </li>
+</t>
+
+<t t-name="documents.AllFolderSelection">
+    <li class="o_documents_selector_folder border-0 list-group-item">
+        <header t-att-class="'list-group-item-action' + (activeFolderID === false ? ' active' : '')">
+            <label class="mb0 d-block">
+                <span class="o_docs_label_title"><b>All</b></span>
             </label>
         </header>
     </li>

@@ -427,7 +427,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <field name="folder_id" readonly="1" attrs="{'invisible' : [('type', 'in', ['ids'])] }"/>
+                            <field name="folder_id" readonly="1" attrs="{'invisible' : [('type', 'in', ['ids'])], 'required' : [('type', 'in', ['domain'])] }"/>
                         </group>
                     </group>
                     <group string="Default values for uploaded documents" attrs="{'invisible' : [('action', 'in', ['download'])] }">

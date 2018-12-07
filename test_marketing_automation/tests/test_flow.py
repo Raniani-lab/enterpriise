@@ -128,3 +128,108 @@ for record in records:
         self.assertTrue([
             'SA' not in record.name
             for record in self.test_rec4])
+
+    @mute_logger('odoo.addons.base.ir.ir_model', 'odoo.models')
+    def test_unique_field_many2one(self):
+        Campaign = self.env['marketing.campaign'].sudo(self.user_market)
+        Activity = self.env['marketing.activity'].sudo(self.user_market)
+        MassMail = self.env['mail.mass_mailing'].sudo(self.user_market)
+
+        partner_field = self.env['ir.model.fields'].search(
+            [('model_id', '=', self.test_model.id), ('name', '=', 'partner_id')])
+
+        campaign = Campaign.create({
+            'name': 'My First Campaign',
+            'model_id': self.test_model.id,
+            'domain': '%s' % ([('name', '!=', 'Invalid')]),
+            'unique_field_id': partner_field.id,
+        })
+
+        mass_mailing = MassMail.create({
+            'name': 'Hello',
+            'body_html': '<div>My Email Body</div>',
+            'mailing_model_id': self.test_model.id,
+            'use_in_marketing_automation': True,
+        })
+        act_0 = Activity.create({
+            'name': 'Enter the campaign',
+            'campaign_id': campaign.id,
+            'activity_type': 'email',
+            'mass_mailing_id': mass_mailing.id,
+            'trigger_type': 'begin',
+            'interval_number': '0',
+        })
+
+        campaign.action_start_campaign()
+        self.assertEqual(campaign.state, 'running')
+        campaign.sync_participants()
+
+        self.assertEqual(campaign.running_participant_count, 2)
+        self.assertEqual(
+            self.TestModel.browse(campaign.participant_ids.mapped('res_id')).mapped(partner_field.name),
+            (self.test_rec1 | self.test_rec2).mapped(partner_field.name)
+        )
+
+        self.test_rec_new = self.TestModel.create({'name': 'Test_New', 'partner_id': self.test_partner3.id})
+        self.test_rec_old = self.TestModel.create({'name': 'Test_Old', 'partner_id': self.test_partner2.id})
+        campaign.sync_participants()
+
+        self.assertEqual(campaign.running_participant_count, 3)
+        self.assertEqual(
+            self.TestModel.browse(campaign.participant_ids.mapped('res_id')).mapped(partner_field.name),
+            (self.test_rec1 | self.test_rec2 | self.test_rec_new).mapped(partner_field.name)
+        )
+
+    @mute_logger('odoo.addons.base.ir.ir_model', 'odoo.models')
+    def test_unique_field(self):
+        Campaign = self.env['marketing.campaign'].sudo(self.user_market)
+        Activity = self.env['marketing.activity'].sudo(self.user_market)
+        MassMail = self.env['mail.mass_mailing'].sudo(self.user_market)
+
+        name_field = self.env['ir.model.fields'].search(
+            [('model_id', '=', self.test_model.id), ('name', '=', 'display_name')])
+
+        campaign = Campaign.create({
+            'name': 'My First Campaign',
+            'model_id': self.test_model.id,
+            'domain': '%s' % ([('name', '!=', 'Invalid')]),
+            'unique_field_id': name_field.id,
+        })
+
+        mass_mailing = MassMail.create({
+            'name': 'Hello',
+            'body_html': '<div>My Email Body</div>',
+            'mailing_model_id': self.test_model.id,
+            'use_in_marketing_automation': True,
+        })
+        act_0 = Activity.create({
+            'name': 'Enter the campaign',
+            'campaign_id': campaign.id,
+            'activity_type': 'email',
+            'mass_mailing_id': mass_mailing.id,
+            'trigger_type': 'begin',
+            'interval_number': '0',
+        })
+
+        campaign.action_start_campaign()
+        self.assertEqual(campaign.state, 'running')
+        campaign.sync_participants()
+
+        first_recordset = self.test_rec1 | self.test_rec2 | self.test_rec3 | self.test_rec4
+
+        self.assertEqual(campaign.running_participant_count, 4)
+        self.assertEqual(
+            set(self.TestModel.browse(campaign.participant_ids.mapped('res_id')).mapped(name_field.name)),
+            set(first_recordset.mapped(name_field.name))
+        )
+
+        self.test_rec_new = self.TestModel.create({'name': 'Test_4'})
+        self.test_rec_old = self.TestModel.create({'name': 'Test_1'})
+        campaign.sync_participants()
+
+        # the record with a new value should have been added, not the other
+        self.assertEqual(campaign.running_participant_count, 5)
+        self.assertEqual(
+            set(self.TestModel.browse(campaign.participant_ids.mapped('res_id')).mapped(name_field.name)),
+            set((first_recordset | self.test_rec_new).mapped(name_field.name))
+        )

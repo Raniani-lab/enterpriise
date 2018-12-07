@@ -22,14 +22,17 @@ class MarketingCampaignTestBase(common.TransactionCase):
             'email': 'juliette.marketuser@example.com',
             'groups_id': [(6, 0, [self.ref('base.group_user'), self.ref('marketing_automation.group_marketing_automation_user')])]
         })
-
-        self.test_model = self.env.ref('test_mail.model_mail_test_simple')
-        TestModel = self.env['mail.test.simple']
-        self.test_rec0 = TestModel.create({'name': 'Invalid'})
-        self.test_rec1 = TestModel.create({'name': 'Test_1'})
-        self.test_rec2 = TestModel.create({'name': 'Test_2'})
-        self.test_rec3 = TestModel.create({'name': 'Test_3'})
-        self.test_rec4 = TestModel.create({'name': 'Brol_1'})
+        Partners = self.env['res.partner']
+        self.test_partner1 = Partners.create({'name': 'P1'})
+        self.test_partner2 = Partners.create({'name': 'P2'})
+        self.test_partner3 = Partners.create({'name': 'P3'})
+        self.test_model = self.env.ref('test_marketing_automation.model_test_marketing_automation_test_simple')
+        self.TestModel = self.env['test_marketing_automation.test.simple']
+        self.test_rec0 = self.TestModel.create({'name': 'Invalid'})
+        self.test_rec1 = self.TestModel.create({'name': 'Test_1', 'partner_id': self.test_partner1.id})
+        self.test_rec2 = self.TestModel.create({'name': 'Test_2', 'partner_id': self.test_partner2.id})
+        self.test_rec3 = self.TestModel.create({'name': 'Test_3', 'partner_id': self.test_partner2.id})
+        self.test_rec4 = self.TestModel.create({'name': 'Brol_1'})
 
         self.patcher = patch('odoo.addons.marketing_automation.models.marketing_campaign.Datetime', wraps=Datetime)
         self.patcher2 = patch('odoo.addons.marketing_automation.models.marketing_participant.Datetime', wraps=Datetime)

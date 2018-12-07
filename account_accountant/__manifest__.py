@@ -3,7 +3,7 @@
 {
     'name': 'Accounting',
     'version': '1.1',
-    'category': 'Accounting',
+    'category': 'Accounting/Accounting',
     'sequence': 35,
     'summary': 'Manage financial and analytic accounting',
     'description': """

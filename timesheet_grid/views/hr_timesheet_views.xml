@@ -29,8 +29,8 @@
                             <group>
                                 <field name="project_id" required="1" class="o_timesheet_tour_project_name"/>
                                 <field name="task_id" context="{'default_project_id': project_id}" class="o_timesheet_tour_task_name"/>
-                                <field name="user_id" invisible="1" groups="hr_timesheet.group_timesheet_manager"/>
-                                <field name="employee_id" groups="hr_timesheet.group_timesheet_manager"/>
+                                <field name="user_id" invisible="1" groups="hr_timesheet.group_hr_timesheet_approver"/>
+                                <field name="employee_id" groups="hr_timesheet.group_hr_timesheet_approver"/>
                             </group>
                             <group>
                                 <field name="date"/>
@@ -117,7 +117,7 @@
                     <attribute name="edit">true</attribute>
                 </xpath>
             </field>
-            <field name="groups_id" eval="[(4, ref('hr_timesheet.group_timesheet_manager'))]"/>
+            <field name="groups_id" eval="[(4, ref('hr_timesheet.group_hr_timesheet_approver'))]"/>
         </record>
         <record id="timesheet_view_grid_by_employee_validation" model="ir.ui.view">
             <field name="name">account.analytic.line.grid.employee.validation</field>
@@ -313,7 +313,7 @@
 
         <menuitem name="To Validate" id="menu_timesheet_grid_validate"
                   parent="hr_timesheet.timesheet_menu_root"
-                  groups="hr_timesheet.group_timesheet_manager"
+                  groups="hr_timesheet.group_hr_timesheet_approver"
                   sequence="10"/>
         <menuitem name="Last Week" id="menu_timesheet_grid_validate_previous_week"
                   parent="menu_timesheet_grid_validate"

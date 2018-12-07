@@ -5,7 +5,7 @@
 {
     'name': 'Quality Base',
     'version': '1.0',
-    'category': 'Manufacturing',
+    'category': 'Manufacturing/Quality',
     'sequence': 50,
     'summary': 'Basic Feature for Quality',
     'depends': ['stock', 'decimal_precision'],

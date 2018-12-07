@@ -10,12 +10,16 @@ from odoo.tools import float_round
 class Employee(models.Model):
     _inherit = 'hr.employee'
 
+    def _get_timesheet_manager_id_domain(self):
+        group = self.env.ref('hr_timesheet.group_hr_timesheet_approver', raise_if_not_found=False)
+        return [('groups_id', 'in', [group.id])] if group else []
+
     timesheet_validated = fields.Date(
         "Timesheets Validation Date",
         help="Date until which the employee's timesheets have been validated")
     timesheet_manager_id = fields.Many2one(
         'res.users', string='Timesheet Responsible',
-        domain=lambda self: [('groups_id', 'in', self.env.ref('hr_timesheet.group_timesheet_manager').id)],
+        domain=_get_timesheet_manager_id_domain,
         help="User responsible of timesheet validation. Should be Timesheet Manager.")
 
     @api.onchange('parent_id')

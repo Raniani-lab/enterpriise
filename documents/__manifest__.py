@@ -9,7 +9,7 @@
     """,
 
     'author': "Odoo",
-    'category': 'Extra Tools',
+    'category': 'Operations/Documents',
     'version': '1.0',
     'application': True,
 

@@ -5,7 +5,7 @@
 {
     'name': 'Appointments',
     'version': '1.0',
-    'category': 'Website',
+    'category': 'Marketing/Online Appointment',
     'sequence': 131,
     'summary': 'Schedule appointments with clients',
     'website': 'https://www.odoo.com/page/appointments',

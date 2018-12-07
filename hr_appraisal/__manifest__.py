@@ -4,7 +4,7 @@
 {
     'name': 'Appraisal',
     'version': '1.0',
-    'category': 'Human Resources',
+    'category': 'Human Resources/Appraisals',
     'sequence': 31,
     'summary': 'Assess your employees',
     'website': 'https://www.odoo.com/page/appraisal',

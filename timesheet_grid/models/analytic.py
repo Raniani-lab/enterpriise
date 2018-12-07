@@ -14,6 +14,13 @@ from odoo.osv import expression
 class AnalyticLine(models.Model):
     _inherit = 'account.analytic.line'
 
+    def _domain_employee_id(self):
+        if not self.user_has_groups('hr_timesheet.group_timesheet_manager'):
+            return [('timesheet_manager_id', '=', self.env.user.id)]
+        return []
+
+    employee_id = fields.Many2one('hr.employee', "Employee", domain=_domain_employee_id)
+
     # reset amount on copy
     amount = fields.Monetary(copy=False)
     validated = fields.Boolean("Validated line", compute='_compute_timesheet_validated', store=True, compute_sudo=True)
@@ -80,6 +87,11 @@ class AnalyticLine(models.Model):
         if not validable_employees:
             raise UserError(_('All selected timesheets are already validated'))
 
+        if not self.user_has_groups('hr_timesheet.group_timesheet_manager'):
+            validable_employees = validable_employees.filtered(lambda e: e.timesheet_manager_id.id == self.env.user.id)
+            if not validable_employees:
+                raise UserError(_('All selected timesheets are already validated. You are not indicated as responsible for your timesheet so you can\'t validate your own timesheet.'))
+
         validation = self.env['timesheet.validation'].create({
             'validation_date': validate_to,
             'validation_line_ids': [
@@ -102,8 +114,8 @@ class AnalyticLine(models.Model):
             vals['name'] = _('/')
         line = super(AnalyticLine, self).create(vals)
         # A line created before validation limit will be automatically validated
-        if not self.user_has_groups('hr_timesheet.group_timesheet_manager') and line.is_timesheet and line.validated:
-            raise AccessError(_('Only a Timesheets Manager is allowed to create an entry older than the validation limit.'))
+        if not self.user_has_groups('hr_timesheet.group_hr_timesheet_approver') and line.is_timesheet and line.validated:
+            raise AccessError(_('Only a Timesheets Approver or Manager is allowed to create an entry older than the validation limit.'))
         return line
 
     @api.multi
@@ -111,14 +123,14 @@ class AnalyticLine(models.Model):
         res = super(AnalyticLine, self).write(vals)
         # Write then check: otherwise, the use can create the timesheet in the future, then change
         # its date.
-        if not self.user_has_groups('hr_timesheet.group_timesheet_manager') and self.filtered(lambda r: r.is_timesheet and r.validated):
-            raise AccessError(_('Only a Timesheets Manager is allowed to modify a validated entry.'))
+        if not self.user_has_groups('hr_timesheet.group_hr_timesheet_approver') and self.filtered(lambda r: r.is_timesheet and r.validated):
+            raise AccessError(_('Only a Timesheets Approver or Manager is allowed to modify a validated entry.'))
         return res
 
     @api.multi
     def unlink(self):
-        if not self.user_has_groups('hr_timesheet.group_timesheet_manager') and self.filtered(lambda r: r.is_timesheet and r.validated):
-            raise AccessError(_('Only a Timesheets Manager is allowed to delete a validated entry.'))
+        if not self.user_has_groups('hr_timesheet.group_hr_timesheet_approver') and self.filtered(lambda r: r.is_timesheet and r.validated):
+            raise AccessError(_('Only a Timesheets Approver or Manager is allowed to delete a validated entry.'))
         return super(AnalyticLine, self).unlink()
 
     @api.model

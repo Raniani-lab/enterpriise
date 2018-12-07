@@ -3,7 +3,7 @@
 {
     'name': 'Approvals',
     'version': '1.0',
-    'category': 'Human Resources',
+    'category': 'Human Resources/Approvals',
     'summary': 'Create and validate approvals requests',
     'description': """
 This module manages approvals workflow

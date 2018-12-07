@@ -5,7 +5,7 @@
     'version': "1.0",
     'summary': "Build automated mailing campaigns",
     'website': 'https://www.odoo.com/page/marketing-automation',
-    'category': "Marketing",
+    'category': "Marketing/Marketing Automation",
     'depends': ['mass_mailing'],
     'data': [
         'security/marketing_automation_security.xml',

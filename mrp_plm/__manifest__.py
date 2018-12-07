@@ -4,7 +4,7 @@
 {
     'name': 'Product Lifecycle Management (PLM)',
     'version': '1.0',
-    'category': 'Manufacturing',
+    'category': 'Manufacturing/PLM',
     'sequence': 50,
     'summary': """Manage engineering change orders on products, bills of material and routings""",
     'website': 'https://www.odoo.com/page/mrp-plm',

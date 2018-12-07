@@ -4,7 +4,7 @@
 {
     'name': 'Helpdesk',
     'version': '1.2',
-    'category': 'Helpdesk',
+    'category': 'Operations/Helpdesk',
     'sequence': 57,
     'summary': 'Track help tickets',
     'website': 'https://www.odoo.com/page/helpdesk',

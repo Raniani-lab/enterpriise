@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 
 
 class DocumentFolder(models.Model):
@@ -43,3 +43,29 @@ class DocumentFolder(models.Model):
                                 help="Select the tag categories to be used")
     group_ids = fields.Many2many('res.groups', string="Access Groups",
                                  help="This folder will only be available for the selected user groups")
+    action_count = fields.Integer('Action Count', compute='_compute_action_count')
+
+    @api.multi
+    def _compute_action_count(self):
+        read_group_var = self.env['documents.workflow.rule'].read_group(
+            [('domain_folder_id', 'in', self.ids)],
+            fields=['domain_folder_id'],
+            groupby=['domain_folder_id'])
+
+        action_count_dict = dict((d['domain_folder_id'][0], d['domain_folder_id_count']) for d in read_group_var)
+        for record in self:
+            record.action_count = action_count_dict.get(record.id, 0)
+
+    @api.multi
+    def action_see_actions(self):
+        domain = [('domain_folder_id', '=', self.id)]
+        return {
+            'name': _('Actions'),
+            'domain': domain,
+            'res_model': 'documents.workflow.rule',
+            'type': 'ir.actions.act_window',
+            'views': [(False, 'list'), (False, 'form')],
+            'view_mode': 'tree,form',
+            'view_type': 'list',
+            'context': "{'default_domain_folder_id': %s}" % self.id
+        }

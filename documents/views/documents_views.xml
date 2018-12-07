@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <!-- settings -->
+    <!-- special actions -->
 
-    <record id="documents_settings_action" model="ir.actions.act_window">
+    <record id="settings_action" model="ir.actions.act_window">
         <field name="name">Settings</field>
         <field name="res_model">res.config.settings</field>
         <field name="view_mode">form</field>
@@ -13,7 +13,7 @@
 
     <!-- Documents -->
 
-    <record id="documents_view_search" model="ir.ui.view">
+    <record id="document_view_search" model="ir.ui.view">
         <field name="name">Document search view</field>
         <field name="model">documents.document</field>
         <field name="arch" type="xml">
@@ -69,7 +69,7 @@
         </field>
     </record>
 
-    <record model="ir.ui.view" id="documents_view_kanban">
+    <record id="document_view_kanban" model="ir.ui.view">
         <field name="name">documents.document kanban</field>
         <field name="model">documents.document</field>
         <field name="arch" type="xml">
@@ -155,7 +155,7 @@
         </field>
     </record>
 
-    <record id="documents_view_form" model="ir.ui.view">
+    <record id="document_view_form" model="ir.ui.view">
         <field name="name">documents form</field>
         <field name="model">documents.document</field>
         <field name="priority" eval="1"/>
@@ -257,7 +257,7 @@
         <field name="arch" type="xml">
             <tree>
                 <field name="sequence" widget="handle"/>
-                <field name="name"/>
+                <field name="display_name"/>
                 <field name="parent_folder_id"/>
                 <field name="create_uid"/>
                 <field name="create_date"/>
@@ -271,6 +271,14 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                            <button name="action_see_actions" type="object" class="oe_stat_button" icon="fa-gears">
+                                <div class="o_field_widget o_stat_info">
+                                    <span class="o_stat_value"><field name="action_count"/></span>
+                                    <span class="o_stat_text">Action(s)</span>
+                                </div>
+                            </button>
+                        </div>
                     <div class="oe_title">
                         <label for="name" class="oe_edit_only"/>
                         <h1><field name="name" placeholder="E.g. Finance"/></h1>
@@ -355,7 +363,7 @@
                                         </div>
                                     </div>
                                     <div class="content-group" attrs="{'invisible': [('alias_domain', '!=', False)]}">
-                                        <a type="action" name='%(documents_settings_action)d' class="btn btn-sm btn-link" role="button"><i class="fa fa-fw o_button_icon fa-arrow-right"/> Configure Email Servers</a>
+                                        <a type="action" name='%(settings_action)d' class="btn btn-sm btn-link" role="button"><i class="fa fa-fw o_button_icon fa-arrow-right"/> Configure Email Servers</a>
                                     </div>
                                 </div>
                                 </div>
@@ -423,7 +431,7 @@
                                         </div>
                                     </div>
                                     <div class="content-group" attrs="{'invisible': [('alias_domain', '!=', False)]}">
-                                        <a type="action" name='%(documents_settings_action)d' class="btn btn-sm btn-link" role="button"><i class="fa fa-fw o_button_icon fa-arrow-right"/> Configure Email Servers</a>
+                                        <a type="action" name='%(settings_action)d' class="btn btn-sm btn-link" role="button"><i class="fa fa-fw o_button_icon fa-arrow-right"/> Configure Email Servers</a>
                                     </div>
                                 </div>
                             </div>
@@ -471,6 +479,7 @@
         <field name="model">documents.workflow.rule</field>
         <field name="arch" type="xml">
             <tree>
+                <field name="sequence" widget="handle"/>
                 <field name="domain_folder_id"/>
                 <field name="name"/>
                 <field name="create_date"/>
@@ -734,16 +743,16 @@
 
     <!-- actions -->
 
-    <record model="ir.actions.act_window" id="document_debug_action">
+    <record id="document_debug_action" model="ir.actions.act_window">
       <field name="name">Documents</field>
       <field name="res_model">documents.document</field>
       <field name="view_mode">tree,form</field>
       <field name="view_ids" eval="[(5, 0, 0),
         (0, 0, {'view_mode': 'tree', 'view_id': False}),
-        (0, 0, {'view_mode': 'form', 'view_id': ref('documents.documents_view_form')})]"/>
+        (0, 0, {'view_mode': 'form', 'view_id': ref('documents.document_view_form')})]"/>
     </record>
 
-    <record model="ir.actions.act_window" id="action_url_form">
+    <record id="action_url_form" model="ir.actions.act_window">
         <field name="name">Add Url</field>
         <field name="res_model">documents.document</field>
         <field name="view_mode">form</field>
@@ -751,23 +760,23 @@
         <field name="target">new</field>
     </record>
 
-    <record model="ir.actions.act_window" id="document_action">
+    <record id="document_action" model="ir.actions.act_window">
       <field name="name">Documents</field>
       <field name="res_model">documents.document</field>
       <field name="view_mode">kanban</field>
-      <field name="view_id" ref="documents.documents_view_kanban"/>
+      <field name="view_id" ref="documents.document_view_kanban"/>
       <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">Upload <span class="font-weight-normal">a file or</span> drag <span class="font-weight-normal">it here.</span></p>
         </field>
     </record>
 
-    <record model="ir.actions.act_window" id="workflow_rule_action">
+    <record id="workflow_rule_action" model="ir.actions.act_window">
       <field name="name">Workflow Actions</field>
       <field name="res_model">documents.workflow.rule</field>
       <field name="view_mode">tree,form</field>
     </record>
 
-    <record model="ir.actions.act_window" id="facet_action">
+    <record id="facet_action" model="ir.actions.act_window">
       <field name="name">Manage Tag Categories</field>
       <field name="res_model">documents.facet</field>
       <field name="view_mode">tree,form</field>
@@ -777,7 +786,7 @@
     </record>
 
 
-    <record model="ir.actions.act_window" id="share_action">
+    <record id="share_action" model="ir.actions.act_window">
       <field name="name">Share links</field>
       <field name="res_model">documents.share</field>
       <field name="view_mode">tree,form</field>
@@ -786,25 +795,25 @@
             (0, 0, {'view_mode': 'form', 'view_id': ref('documents.share_view_form')})]"/>
     </record>
 
-    <record model="ir.actions.act_window" id="folder_action">
+    <record id="folder_action" model="ir.actions.act_window">
       <field name="name">Folders</field>
       <field name="res_model">documents.folder</field>
       <field name="view_mode">tree,form</field>
     </record>
 
-    <record model="ir.actions.act_window" id="tag_action">
+    <record id="tag_action" model="ir.actions.act_window">
       <field name="name">Manage document tags</field>
       <field name="res_model">documents.tag</field>
       <field name="view_mode">tree,form</field>
     </record>
 
-    <record model="ir.actions.act_window" id="tree_tag_action">
+    <record id="tree_tag_action" model="ir.actions.act_window">
       <field name="name">Manage document tags</field>
       <field name="res_model">documents.tag</field>
       <field name="view_mode">tree</field>
     </record>
 
-    <record model="ir.actions.act_window" id="documents.configuration">
+    <record id="configuration_action" model="ir.actions.act_window">
         <field name="name">Settings</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">res.config.settings</field>
@@ -822,10 +831,10 @@
         <menuitem name="Documents" id="documents.dashboard" parent="documents.menu_root" action="document_action" groups="documents.group_documents_user" sequence="0"/>
         <menuitem name="Configuration" id="documents.Config" parent="documents.menu_root" sequence="1"/>
 
-            <menuitem name="Settings" id="documents.Settings_menu" parent="documents.Config" action="documents.configuration" groups="base.group_system" sequence="0"/>
+            <menuitem name="Settings" id="documents.settings_menu" parent="documents.Config" action="configuration_action" groups="base.group_system" sequence="0"/>
             <menuitem name="Folders" id="documents.folder_menu" parent="documents.Config" action="folder_action" groups="documents.group_documents_manager" sequence="1"/>
-            <menuitem name="Tags" id="documents.Category_menu" parent="documents.Config" action="facet_action" groups="documents.group_documents_manager" sequence="2"/>
-            <menuitem name="Actions" id="documents.WorkflowRules_menu" parent="documents.Config" groups="documents.group_documents_manager" action="workflow_rule_action" sequence="3"/>
+            <menuitem name="Tags" id="documents.category_menu" parent="documents.Config" action="facet_action" groups="documents.group_documents_manager" sequence="2"/>
+            <menuitem name="Actions" id="documents.workflow_rules_menu" parent="documents.Config" groups="base.group_no_one" action="workflow_rule_action" sequence="3"/>
             <menuitem name="Shared Links" id="documents.share_menu" parent="documents.Config" action="share_action" sequence="4"/>
             <menuitem name="Documents" id="documents.attachment_list_view_temp" parent="documents.Config" action="document_debug_action" groups="base.group_no_one" sequence="5"/>
 

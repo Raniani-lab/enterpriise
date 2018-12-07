@@ -98,7 +98,10 @@ var DocumentsKanbanRecord = KanbanRecord.extend({
     _onImageClicked: function (ev) {
         ev.preventDefault();
         ev.stopPropagation();
-        this.trigger_up('kanban_image_clicked', {record: this.recordData});
+        this.trigger_up('kanban_image_clicked', {
+            recordList: [this.recordData],
+            recordID: this.recordData.id
+        });
     },
     /**
      * Overrides to force the select/unselect as default action (instead of

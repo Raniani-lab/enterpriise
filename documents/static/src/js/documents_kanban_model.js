@@ -215,16 +215,16 @@ var DocumentsKanbanModel = KanbanModel.extend({
     _fetchRelatedModels: function (params) {
         params = params || {};
         return this._rpc({
-            model: 'ir.attachment',
-            method: 'read_group',
-            domain: this._addFolderToDomain(params.searchDomain, params.folderID),
-            fields: ['res_model', 'res_model_name'],
-            groupBy: ['res_model', 'res_model_name'],
-            lazy: false,
+            model: 'documents.document',
+            method: 'get_model_names',
+            args: [[], this._addFolderToDomain(params.searchDomain, params.folderID)],
         }).then(function (models) {
             return _.map(models, function (model) {
                 if (!model.res_model_name) {
-                    model.res_model_name = _t('No Source');
+                    model.res_model_name = model.res_model || _t('Not a file');
+                }
+                if (model.res_model === 'documents.document') {
+                    model.res_model_name = _t('Not attached');
                 }
                 return model;
             });
@@ -240,7 +240,7 @@ var DocumentsKanbanModel = KanbanModel.extend({
     _fetchSize: function (params) {
         params = params || {};
         return this._rpc({
-            model: 'ir.attachment',
+            model: 'documents.document',
             method: 'read_group',
             domain: params.domain || [],
             fields: ['file_size'],

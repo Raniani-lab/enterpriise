@@ -8,32 +8,35 @@ class WorkflowActionRuleSign(models.Model):
     has_business_option = fields.Boolean(default=True, compute='_get_business')
     create_model = fields.Selection(selection_add=[('sign.template', "Signature template")])
 
-    def create_record(self, attachments=None):
-        rv = super(WorkflowActionRuleSign, self).create_record(attachments=attachments)
+    def create_record(self, documents=None):
+        rv = super(WorkflowActionRuleSign, self).create_record(documents=documents)
         if self.create_model == 'sign.template':
             new_obj = None
             template_ids = []
-            for attachment in attachments:
+            for document in documents:
                 create_values = {
-                    'name': attachment.datas_fname[:attachment.datas_fname.rfind('.')],
-                    'attachment_id': attachment.id,
+                    'name': document.datas_fname.rsplit('.', 1)[0],
+                    'attachment_id': document.attachment_id.id,
                 }
                 if self.folder_id:
                     create_values['folder_id'] = self.folder_id.id
                 elif self.domain_folder_id:
                     create_values['folder_id'] = self.domain_folder_id.id
-                if attachment.tag_ids:
-                    create_values['documents_tag_ids'] = [(6, 0, attachment.tag_ids.ids)]
+                if document.tag_ids:
+                    create_values['documents_tag_ids'] = [(6, 0, document.tag_ids.ids)]
 
                 new_obj = self.env[self.create_model].create(create_values)
 
-                this_attachment = attachment
-                if attachment.res_model or attachment.res_id:
-                    this_attachment = attachment.copy()
+                this_document = document
+                if (document.res_model or document.res_id) and document.res_model != 'documents.document':
+                    this_document = document.copy()
+                    attachment_id_copy = document.attachment_id.with_context(no_document=True).copy()
+                    this_document.write({'attachment_id': attachment_id_copy.id})
 
-                this_attachment.write({'res_model': self.create_model,
-                                       'res_id': new_obj.id,
-                                       'folder_id': this_attachment.folder_id.id})
+                this_document.attachment_id.with_context(no_document=True).write({
+                    'res_model': self.create_model,
+                    'res_id': new_obj.id
+                })
 
                 template_ids.append(new_obj.id)
 
@@ -48,7 +51,7 @@ class WorkflowActionRuleSign(models.Model):
                 'domain': [('id', 'in', template_ids)],
                 'context': self._context,
             }
-            if len(attachments) == 1:
+            if len(template_ids) == 1:
                 return new_obj.go_to_custom_template()
             return action
         return rv

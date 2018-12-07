@@ -57,7 +57,7 @@
                             <input type="checkbox" t-att-name="model_att_id" t-att-id="model_att_id" t-att-checked="model.selected ? 'checked' : undefined" class="custom-control-input"/>
                             <label t-att-for="model_att_id" class="custom-control-label d-block">
                                 <t t-esc="model.res_model_name"/>
-                                <b t-if="model.__count > 0" class="o_documents_selector_count pull-right text-muted mr-2 small"><t t-esc="model.__count"/></b>
+                                <b t-if="model.res_model_count > 0" class="o_documents_selector_count pull-right text-muted mr-2 small"><t t-esc="model.res_model_count"/></b>
                             </label>
                         </div>
                     </header>

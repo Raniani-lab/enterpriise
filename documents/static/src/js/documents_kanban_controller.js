@@ -7,7 +7,7 @@ odoo.define('documents.DocumentsKanbanController', function (require) {
  */
 
 var DocumentsInspector = require('documents.DocumentsInspector');
-var DocumentViewer = require('mail.DocumentViewer');
+var DocumentViewer = require('documents.DocumentViewer');
 
 var Chatter = require('mail.Chatter');
 
@@ -279,7 +279,7 @@ var DocumentsKanbanController = KanbanController.extend({
                 }
             }
             return self._rpc({
-                model: 'ir.attachment',
+                model: 'documents.document',
                 method: 'create',
                 args: [l],
             });
@@ -395,7 +395,7 @@ var DocumentsKanbanController = KanbanController.extend({
      *
      * @private
      * @param {Object} vals
-     * @param {Array[]} [vals.attachment_ids] M2M commandsF
+     * @param {Array[]} [vals.document_ids] M2M commandsF
      * @param {Array[]} [vals.domain] the domain to share
      * @param {integer} vals.folderID
      * @param {Array[]} [vals.tags] M2M commands
@@ -653,7 +653,7 @@ var DocumentsKanbanController = KanbanController.extend({
         ev.stopPropagation();
         var resIDs = ev.data.resIDs;
         if (resIDs.length === 1) {
-            window.location = '/web/content/' + resIDs[0] + '?download=true';
+            window.location = '/documents/content/' + resIDs[0];
         } else {
             var timestamp = moment().format('YYYY-MM-DD');
             session.get_file({
@@ -675,33 +675,6 @@ var DocumentsKanbanController = KanbanController.extend({
         this._processFiles(ev.originalEvent.dataTransfer.files).always(function () {
             self.$('.o_documents_kanban_view').removeClass('o_drop_over');
             self.$('.o_upload_text').remove();
-            self.reload();
-        });
-    },
-    /**
-     * @private
-     * @param {OdooEvent} ev
-     * @param {Object} recordData ev.data.record
-     */
-    _onKanbanPreview: function (ev) {
-        ev.stopPropagation();
-        var self = this;
-        var documentViewer = new DocumentViewer(this, [ev.data.record], ev.data.record.id);
-        documentViewer.appendTo(this.$('.o_documents_kanban_view'));
-    },
-    /**
-     * @private
-     * @param {OdooEvent} ev
-     * @param {integer} ev.data.resID
-     */
-    _onLock: function (ev) {
-        ev.stopPropagation();
-        var self = this;
-        this._rpc({
-            model: 'ir.attachment',
-            method: 'toggle_lock',
-            args: [ev.data.resID],
-        }).always(function () {
             self.reload();
         });
     },
@@ -738,6 +711,35 @@ var DocumentsKanbanController = KanbanController.extend({
         $(document).off('dragover:kanbanView');
         this.renderer.$el.removeClass('o_drop_over');
         this.$('.o_upload_text').remove();
+    },
+    /**
+     * @private
+     * @param {OdooEvent} ev
+     * @param {integer} ev.data.recordID
+     * @param {Array<Object>} ev.data.recordList
+     */
+    _onKanbanPreview: function (ev) {
+        ev.stopPropagation();
+        var documents = ev.data.recordList;
+        var documentID = ev.data.recordID;
+        var documentViewer = new DocumentViewer(this, documents, documentID);
+        documentViewer.appendTo(this.$('.o_documents_kanban_view'));
+    },
+    /**
+     * @private
+     * @param {OdooEvent} ev
+     * @param {integer} ev.data.resID
+     */
+    _onLock: function (ev) {
+        ev.stopPropagation();
+        var self = this;
+        this._rpc({
+            model: 'documents.document',
+            method: 'toggle_lock',
+            args: [ev.data.resID],
+        }).always(function () {
+            self.reload();
+        });
     },
     /**
      * Open the chatter of the given document.
@@ -851,7 +853,6 @@ var DocumentsKanbanController = KanbanController.extend({
         var $upload_input = $('<input type="file" name="files[]"/>');
         $upload_input.on('change', function (e) {
             var f = e.target.files[0];
-            var state = self.model.get(self.handle);
             var reader = new FileReader();
 
             reader.onload = function (e) {
@@ -863,9 +864,9 @@ var DocumentsKanbanController = KanbanController.extend({
                                         dataString.indexOf(";")
                                         );
                 self._rpc({
-                    model: 'ir.attachment',
+                    model: 'documents.document',
                     method: 'write',
-                    args: [[ev.data.id], {datas: data, mimetype: mimetype, datas_fname: f.name}],
+                    args: [[ev.data.id], {datas: data, mimetype: mimetype, datas_fname: f.name, name: f.name}],
                 }).always(function () {
                     $upload_input.removeAttr('disabled');
                     $upload_input.val("");
@@ -968,7 +969,7 @@ var DocumentsKanbanController = KanbanController.extend({
     _onShareIDs: function (ev) {
         ev.stopPropagation();
         this._share({
-            attachment_ids: [[6, 0, ev.data.resIDs]],
+            document_ids: [[6, 0, ev.data.resIDs]],
             folder_id: this.selectedFolderID,
             type: 'ids',
         });
@@ -980,7 +981,7 @@ var DocumentsKanbanController = KanbanController.extend({
         ev.stopPropagation();
         var self = this;
         self._rpc({
-            model: 'ir.attachment',
+            model: 'documents.document',
             method: 'toggle_favorited',
             args: [ev.data.resID],
         })

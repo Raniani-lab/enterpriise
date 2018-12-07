@@ -12,7 +12,7 @@ class DocumentShare(models.Model):
     folder_id = fields.Many2one('documents.folder', requried=True)
     name = fields.Char(string="Name")
 
-    access_token = fields.Char(default=lambda x: str(uuid.uuid4()), groups="documents.group_documents_user")
+    access_token = fields.Char(required=True, default=lambda x: str(uuid.uuid4()), groups="documents.group_documents_user")
     full_url = fields.Char(string="URL", compute='_compute_full_url')
     date_deadline = fields.Date(string="Valid Until")
     state = fields.Selection([
@@ -25,7 +25,7 @@ class DocumentShare(models.Model):
         ('domain', "Domain"),
     ], default='ids', string="Share type")
     # type == 'ids'
-    attachment_ids = fields.Many2many('ir.attachment', string='Shared attachments')
+    document_ids = fields.Many2many('documents.document', string='Shared Documents')
     # type == 'domain'
     domain = fields.Char()
 
@@ -77,7 +77,7 @@ class DocumentShare(models.Model):
                     record.state = 'expired'
 
     def get_alias_model_name(self, vals):
-        return vals.get('alias_model', 'ir.attachment')
+        return vals.get('alias_model', 'documents.document')
 
     @api.multi
     def _compute_alias_domain(self):
@@ -99,6 +99,7 @@ class DocumentShare(models.Model):
                 'tag_ids': [(6, 0, self.tag_ids.ids)],
                 'folder_id': self.folder_id.id,
                 'partner_id': self.partner_id.id,
+                'create_share_id': self.id,
             }
             share.alias_id.alias_defaults = values
 

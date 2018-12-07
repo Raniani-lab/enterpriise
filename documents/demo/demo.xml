@@ -15,16 +15,15 @@
 
         <!-- Attachments -->
 
-        <record id="documents_agile_url_demo" model="ir.attachment">
+        <record id="documents_agile_url_demo" model="documents.document">
             <field name="name">Agile and Open source project management video</field>
-            <field name="datas_fname">odoo agile Video</field>
             <field name="type">url</field>
             <field name="folder_id" ref="documents_internal_folder"/>
             <field name="tag_ids" eval="[(6,0,[ref('documents_internal_knowledge_other')])]"/>
             <field name="url">https://youtu.be/ZrFMphnpYpM</field>
         </record>
 
-        <record id="documents_image_panama" model="ir.attachment">
+        <record id="documents_image_panama_document" model="documents.document">
             <field name="name">panama</field>
             <field name="datas_fname">panama-sky.jpg</field>
             <field name="datas" type="base64" file="documents/demo/files/panama-sky.jpg"/>
@@ -32,9 +31,8 @@
             <field name="tag_ids" eval="[(6,0,[ref('documents_marketing_assets_images')])]"/>
         </record>
 
-        <record id="documents_pdf_enterprise_agreement" model="ir.attachment">
+        <record id="documents_pdf_enterprise_agreement" model="documents.document">
             <field name="name">Odoo Enterprise Agreement</field>
-            <field name="datas_fname">odoo-enterprise-agreement</field>
             <field name="type">url</field>
             <field name="folder_id" ref="documents_internal_folder"/>
             <field name="tag_ids" eval="[(6,0,[ref('documents_internal_template_contracts')])]"/>

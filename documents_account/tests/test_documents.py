@@ -7,7 +7,7 @@ GIF = b"R0lGODdhAQABAIAAAP///////ywAAAAAAQABAAACAkQBADs="
 TEXT = base64.b64encode(bytes("workflow bridge account", 'utf-8'))
 
 
-@tagged('post_install', '-at_install')
+@tagged('post_install', '-at_install', 'test_document_bridge')
 class TestCaseDocumentsBridgeAccount(TransactionCase):
 
     def setUp(self):
@@ -19,15 +19,14 @@ class TestCaseDocumentsBridgeAccount(TransactionCase):
             'name': 'folder A - A',
             'parent_folder_id': self.folder_a.id,
         })
-        self.attachment_txt = self.env['ir.attachment'].create({
+        self.document_txt = self.env['documents.document'].create({
             'datas': TEXT,
             'name': 'Test mimetype txt',
             'datas_fname': 'file.txt',
             'mimetype': 'text/plain',
             'folder_id': self.folder_a_a.id,
         })
-
-        self.attachment_gif = self.env['ir.attachment'].create({
+        self.document_gif = self.env['documents.document'].create({
             'datas': GIF,
             'name': 'Test mimetype gif',
             'datas_fname': 'file.gif',
@@ -46,8 +45,8 @@ class TestCaseDocumentsBridgeAccount(TransactionCase):
         tests the create new business model (vendor bill & credit note).
 
         """
-        self.assertFalse(self.attachment_txt.res_model, "failed at workflow_bridge_dms_account original res model")
-        multi_return = self.workflow_rule_vendor_bill.apply_actions([self.attachment_txt.id, self.attachment_gif.id])
+        self.assertEqual(self.document_txt.res_model, 'documents.document', "failed at default res model")
+        multi_return = self.workflow_rule_vendor_bill.apply_actions([self.document_txt.id, self.document_gif.id])
         self.assertEqual(multi_return.get('type'), 'ir.actions.act_window',
                          'failed at invoice workflow return value type')
         self.assertEqual(multi_return.get('res_model'), 'account.invoice',
@@ -55,16 +54,53 @@ class TestCaseDocumentsBridgeAccount(TransactionCase):
         self.assertEqual(multi_return.get('view_type'), 'list',
                          'failed at invoice workflow return value view type')
 
-        self.assertEqual(self.attachment_txt.res_model, 'account.invoice', "failed at workflow_bridge_dms_account"
+        self.assertEqual(self.document_txt.res_model, 'account.invoice', "failed at workflow_bridge_dms_account"
                                                                            " new res_model")
-        vendor_bill_txt = self.env['account.invoice'].search([('id', '=', self.attachment_txt.res_id)])
+        vendor_bill_txt = self.env['account.invoice'].search([('id', '=', self.document_txt.res_id)])
         self.assertTrue(vendor_bill_txt.exists(), 'failed at workflow_bridge_dms_account vendor_bill')
-        self.assertEqual(self.attachment_txt.res_id, vendor_bill_txt.id, "failed at workflow_bridge_dms_account res_id")
+        self.assertEqual(self.document_txt.res_id, vendor_bill_txt.id, "failed at workflow_bridge_dms_account res_id")
         self.assertEqual(vendor_bill_txt.type, 'in_invoice', "failed at workflow_bridge_dms_account vendor_bill type")
-        vendor_bill_gif = self.env['account.invoice'].search([('id', '=', self.attachment_gif.res_id)])
-        self.assertEqual(self.attachment_gif.res_id, vendor_bill_gif.id, "failed at workflow_bridge_dms_account res_id")
+        vendor_bill_gif = self.env['account.invoice'].search([('id', '=', self.document_gif.res_id)])
+        self.assertEqual(self.document_gif.res_id, vendor_bill_gif.id, "failed at workflow_bridge_dms_account res_id")
 
-        single_return = self.workflow_rule_vendor_bill.apply_actions([self.attachment_txt.id])
+        single_return = self.workflow_rule_vendor_bill.apply_actions([self.document_txt.id])
         self.assertEqual(single_return.get('view_type'), 'form',
                          'failed at invoice workflow return value view type for single file')
+        self.assertEqual(single_return.get('res_model'), 'account.invoice',
+                         'failed at invoice res_model action from workflow create model')
+        invoice = self.env[single_return['res_model']].browse(single_return.get('res_id'))
+        attachments = self.env['ir.attachment'].search([('res_model', '=', 'account.invoice'), ('res_id', '=', invoice.id)])
+        self.assertEqual(len(attachments), 1, 'there should only be one ir attachment matching')
 
+    def test_bridge_account_account_settings_on_write(self):
+        """
+        Makes sure the settings apply their values when an document is assigned a res_model, res_id
+        """
+        folder_test = self.env['documents.folder'].create({'name': 'folder_test'})
+        
+        company_test = self.env['res.company'].create({
+            'name': 'test bridge accounts',
+            'account_folder': folder_test.id,
+            'documents_account_settings': False
+        })
+        invoice_test = self.env['account.invoice'].create({
+            'name': 'invoice_test',
+            'company_id': company_test.id
+        })
+        document_txt_test = self.env['ir.attachment'].create({
+            'datas': TEXT,
+            'name': 'Test test txt',
+            'datas_fname': 'fileText_test.txt',
+            'mimetype': 'text/plain',
+        })
+        
+        company_test.write({'documents_account_settings': True})
+
+        document_txt_test.write({
+            'res_model': 'account.invoice',
+            'res_id': invoice_test.id
+        })
+
+        txt_doc = self.env['documents.document'].search([('attachment_id', '=', document_txt_test.id)])
+
+        self.assertEqual(txt_doc.folder_id, folder_test, 'the text test document have a folder')

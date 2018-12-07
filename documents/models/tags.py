@@ -48,7 +48,7 @@ class Tags(models.Model):
         if not domain:
             domain = []
 
-        attachments = self.env['ir.attachment'].search(expression.AND([domain, [('folder_id', '=', folder_id)]]))
+        documents = self.env['documents.document'].search(expression.AND([domain, [('folder_id', '=', folder_id)]]))
         folders = self.env['documents.folder'].search([('parent_folder_id', 'parent_of', folder_id)])
         query = """
             SELECT  facet.sequence AS facet_sequence,
@@ -58,18 +58,18 @@ class Tags(models.Model):
                     documents_tag.sequence AS tag_sequence,
                     documents_tag.name AS tag_name,
                     documents_tag.id AS tag_id,
-                    COUNT(rel.ir_attachment_id) AS __count
+                    COUNT(rel.documents_document_id) AS __count
             FROM documents_tag
                 JOIN documents_facet facet ON documents_tag.facet_id = facet.id
                     AND facet.folder_id IN %s
                 LEFT JOIN document_tag_rel rel ON documents_tag.id = rel.documents_tag_id
-                    AND rel.ir_attachment_id = ANY(%s)
+                    AND rel.documents_document_id = ANY(%s)
             GROUP BY facet.sequence, facet.name, facet.id, facet.tooltip, documents_tag.sequence, documents_tag.name, documents_tag.id
             ORDER BY facet.sequence, facet.name, facet.id, facet.tooltip, documents_tag.sequence, documents_tag.name, documents_tag.id
         """
         params = [
             tuple(folders.ids),
-            list(attachments.ids),  # using Postgresql's ANY() with a list to prevent empty list of attachments
+            list(documents.ids),  # using Postgresql's ANY() with a list to prevent empty list of documents
         ]
         self.env.cr.execute(query, params)
         return self.env.cr.dictfetchall()

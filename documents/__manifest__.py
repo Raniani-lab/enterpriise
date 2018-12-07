@@ -14,7 +14,7 @@
     'application': True,
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'mail', 'portal', 'web'],
+    'depends': ['base', 'mail', 'portal', 'web', 'attachment_indexation'],
 
     # always loaded
     'data': [

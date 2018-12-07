@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from . import documents
+from . import ir_attachment
+from . import document
 from . import folder
 from . import res_users
 from . import share

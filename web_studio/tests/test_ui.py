@@ -23,4 +23,4 @@ class TestUi(odoo.tests.HttpCase):
         self.phantom_js("/web?studio=app_creator",
                         "odoo.__DEBUG__.services['web_tour.tour'].run('web_studio_tests_tour')",
                         "odoo.__DEBUG__.services['web_tour.tour'].tours.web_studio_tests_tour.ready",
-                        login="admin")
+                        login="admin", timeout=120)

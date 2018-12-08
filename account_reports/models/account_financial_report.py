@@ -36,7 +36,7 @@ class ReportAccountFinancialReport(models.Model):
     parent_id = fields.Many2one('ir.ui.menu', related="generated_menu_id.parent_id", readonly=False)
     tax_report = fields.Boolean('Tax Report', help="Set to True to automatically filter out journal items that have the boolean field 'tax_exigible' set to False")
     applicable_filters_ids = fields.Many2many('ir.filters', domain="[('model_id', '=', 'account.move.line')]",
-                                              help='Filters that can be used to filter and group lines in this report.')
+                                              help='Filters that can be used to filter and group lines in this report. This uses saved filters on journal items.')
 
     def _get_column_name(self, field_content, field):
         comodel_name = self.env['account.move.line']._fields[field].comodel_name

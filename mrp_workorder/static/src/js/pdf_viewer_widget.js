@@ -165,7 +165,7 @@ var FieldPdfViewerNoReload = FieldPdfViewer.extend({
     _moveAndInitIFrame: function (){
         var $el = this.$el;
         var $iFrame = $el.find('iframe');
-        var $controller = $el.closest('.o_view_controller');
+        var $controller = $el.closest('.content.o_workorder_tablet');
 
         // Save the PDFViewerApp on the DOM element since this widget will be destroyed on any action
         $iFrame.on('load', function () {

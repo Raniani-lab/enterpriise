@@ -31,7 +31,6 @@
                 @include o-hover-text-color(lighten($o-brand-primary, 5%), $o-brand-primary);
             }
             .card {
-                background: $o-web-studio-bg-medium;
                 position: relative;
                 border: none;
                 margin-top: 0;
@@ -104,10 +103,10 @@
                     border: none;
                     border-top: 1px solid $o-web-studio-bg-dark;
                     padding-top: 8px;
+                    @include o-bg-color($o-web-studio-bg-medium);
 
                     &:last-child() {
                         padding: 9px 15px 37px;
-                        background: transparentize($o-web-studio-bg-dark, 0.8);
                     }
                     .row {
                         margin-bottom: 8px;

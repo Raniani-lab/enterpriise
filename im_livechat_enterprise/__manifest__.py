@@ -17,5 +17,5 @@ Contains advanced features for Live Chat such as new views
     ],
     'installable': True,
     'application': False,
-    'auto_install': True,
+    'auto_install': ['im_livechat'],
 }

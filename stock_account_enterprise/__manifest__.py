@@ -17,5 +17,5 @@ Contains the enterprise views for Stock account
     ],
     'installable': True,
     'application': False,
-    'auto_install': True,
+    'auto_install': ['stock_account'],
 }

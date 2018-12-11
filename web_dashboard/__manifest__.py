@@ -18,5 +18,4 @@ can embed graph and/or pivot views, and displays aggregate values.
     'qweb': [
         "static/src/xml/dashboard.xml",
     ],
-    'auto_install': True,
 }

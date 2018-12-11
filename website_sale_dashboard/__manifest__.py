@@ -16,5 +16,5 @@ It also provides new tools to analyse your data.
         'views/res_config_settings_views.xml'
     ],
     'qweb': ['static/src/xml/*.xml'],
-    'auto_install': True,
+    'auto_install': ['website_sale'],
 }

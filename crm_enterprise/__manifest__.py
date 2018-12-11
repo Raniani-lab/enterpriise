@@ -18,5 +18,5 @@ Contains advanced features for CRM such as new views
     ],
     'installable': True,
     'application': False,
-    'auto_install': True,
+    'auto_install': ['crm'],
 }

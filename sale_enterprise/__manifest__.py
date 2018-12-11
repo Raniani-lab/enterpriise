@@ -18,5 +18,5 @@ Contains advanced features for sale management
     ],
     'installable': True,
     'application': False,
-    'auto_install': True,
+    'auto_install': ['sale'],
 }

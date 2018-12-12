@@ -40,7 +40,7 @@ class SaleSubscription(models.Model):
     date = fields.Date(string='End Date', tracking=True, help="If set in advance, the subscription will be set to pending 1 month before the date and will be closed on the date set in this field.")
     pricelist_id = fields.Many2one('product.pricelist', string='Pricelist', default=_get_default_pricelist, required=True)
     currency_id = fields.Many2one('res.currency', related='pricelist_id.currency_id', string='Currency', readonly=True)
-    recurring_invoice_line_ids = fields.One2many('sale.subscription.line', 'analytic_account_id', string='Invoice Lines', copy=True)
+    recurring_invoice_line_ids = fields.One2many('sale.subscription.line', 'analytic_account_id', string='Subscription Lines', copy=True)
     recurring_rule_type = fields.Selection(string='Recurrence', help="Invoice automatically repeat at specified interval", related="template_id.recurring_rule_type", readonly=1)
     recurring_interval = fields.Integer(string='Repeat Every', help="Repeat every (Days/Week/Month/Year)", related="template_id.recurring_interval", readonly=1)
     recurring_next_date = fields.Date(string='Date of Next Invoice', default=fields.Date.today, help="The next invoice will be created on this date then the period will be extended.")

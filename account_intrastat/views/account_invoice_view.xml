@@ -44,7 +44,7 @@
             <field name="model">account.invoice.line</field>
             <field name="inherit_id" ref="account.view_invoice_line_form"/>
             <field name="arch" type="xml">
-                <xpath expr="//field[@name='discount']" position="after">
+                <xpath expr="//group[@name='account_details']" position="inside">
                     <field name="intrastat_transaction_id" context="{'search_view_ref': 'account_intrastat.view_intrastat_code_restricted_type_search',
                     'form_view_ref': 'account_intrastat.view_intrastat_code_restricted_type_form', 'default_type': 'transaction'}"/>
                 </xpath>

@@ -190,10 +190,10 @@ QUnit.module('DocumentsKanbanView', {
             'mail.activity': {
                 fields: {
                     activity_type_id: { string: "Activity type", type: "many2one", relation: "mail.activity.type" },
-                    create_uid: { string: "Assigned to", type: "many2one", relation: 'partner' },
-                    create_user_id: { string: "Creator", type: "many2one", relation: 'partner' },
+                    create_uid: { string: "Created By", type: "many2one", relation: 'partner' },
                     display_name: { string: "Display name", type: "char" },
                     date_deadline: { string: "Due Date", type: "date" },
+                    can_write: { string: "Can write", type: "boolean" },
                     user_id: { string: "Assigned to", type: "many2one", relation: 'partner' },
                     state: {
                         string: 'State',
@@ -1825,7 +1825,8 @@ QUnit.module('DocumentsKanbanView', {
             date_deadline: moment().format("YYYY-MM-DD"),
             state: "today",
             user_id: 2,
-            create_user_id: 2,
+            create_uid: 2,
+            can_write: true,
             activity_type_id: 1,
         }];
         this.data.partner = {

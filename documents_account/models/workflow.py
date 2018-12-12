@@ -26,23 +26,20 @@ class WorkflowActionRuleAccount(models.Model):
                 elif document.partner_id:
                     create_values.update(partner_id=document.partner_id.id)
 
-                new_obj = self.env['account.invoice'].create(create_values)
-                body = "<p>created with Documents</p>"
-                new_obj.message_post(body=body, attachment_ids=[document.attachment_id.id])
-                this_document = document
-                if (document.res_model or document.res_id) and document.res_model != 'documents.document':
-                    this_document = document.copy()
-                    attachment_id_copy = document.attachment_id.with_context(no_document=True).copy()
-                    this_document.write({'attachment_id': attachment_id_copy.id})
+                if document.res_model == 'account.invoice' and document.res_id:
+                    invoice_ids.append(document.res_id)
+                else:
+                    new_obj = self.env['account.invoice'].create(create_values)
+                    body = "<p>created with Documents</p>"
+                    new_obj.message_post(body=body, attachment_ids=[document.attachment_id.id])
 
-                # the 'no_document' key in the context indicates that this ir_attachment has already a
-                # documents.document and a new document shouldn't be automatically generated.
-                this_document.attachment_id.with_context(no_document=True).write({
-                    'res_model': 'account.invoice',
-                    'res_id': new_obj.id,
-                })
-
-                invoice_ids.append(new_obj.id)
+                    # the 'no_document' key in the context indicates that this ir_attachment has already a
+                    # documents.document and a new document shouldn't be automatically generated.
+                    document.attachment_id.with_context(no_document=True).write({
+                        'res_model': 'account.invoice',
+                        'res_id': new_obj.id,
+                    })
+                    invoice_ids.append(new_obj.id)
 
             action = {
                 'type': 'ir.actions.act_window',
@@ -56,12 +53,13 @@ class WorkflowActionRuleAccount(models.Model):
                 'context': self._context,
             }
             if len(invoice_ids) == 1:
-                view_id = new_obj.get_formview_id() if new_obj else False
+                record = new_obj or self.env['account.invoice'].browse(invoice_ids[0])
+                view_id = record.get_formview_id() if record else False
                 action.update({
                     'view_type': 'form',
                     'view_mode': 'form',
                     'views': [(view_id, "form")],
-                    'res_id': new_obj.id if new_obj else False,
+                    'res_id': invoice_ids[0],
                     'view_id': view_id,
                 })
             return action

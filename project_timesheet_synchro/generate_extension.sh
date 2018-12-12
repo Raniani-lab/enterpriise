@@ -26,8 +26,10 @@ cp $odoo_path/addons/web/static/src/js/core/local_storage.js extension/web/stati
 cp $odoo_path/addons/web/static/src/js/core/mixins.js extension/web/static/src/js/core
 cp $odoo_path/addons/web/static/src/js/core/pyeval.js extension/web/static/src/js/core
 cp $odoo_path/addons/web/static/src/js/core/qweb.js extension/web/static/src/js/core
+cp $odoo_path/addons/web/static/src/js/core/ram_storage.js extension/web/static/src/js/core
 cp $odoo_path/addons/web/static/src/js/core/registry.js extension/web/static/src/js/core
 cp $odoo_path/addons/web/static/src/js/core/rpc.js extension/web/static/src/js/core
+cp $odoo_path/addons/web/static/src/js/core/service_mixins.js extension/web/static/src/js/core
 cp $odoo_path/addons/web/static/src/js/core/session.js extension/web/static/src/js/core
 cp $odoo_path/addons/web/static/src/js/core/time.js extension/web/static/src/js/core
 cp $odoo_path/addons/web/static/src/js/core/translation.js extension/web/static/src/js/core
@@ -39,6 +41,7 @@ cp $odoo_path/addons/web/static/src/js/libs/nvd3.js extension/web/static/src/js/
 
 [ -d extension/web/static/src/js/services ] || mkdir extension/web/static/src/js/services
 cp $odoo_path/addons/web/static/src/js/services/ajax_service.js extension/web/static/src/js/services
+cp $odoo_path/addons/web/static/src/js/services/config.js extension/web/static/src/js/services
 cp $odoo_path/addons/web/static/src/js/services/core.js extension/web/static/src/js/services
 cp $odoo_path/addons/web/static/src/js/services/session.js extension/web/static/src/js/services
 

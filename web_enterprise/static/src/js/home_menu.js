@@ -312,7 +312,7 @@ var HomeMenu = Widget.extend({
             case 67: // c
             case 88: // x
                 // keep focus and selection on keyboard copy and cut
-                if (event.ctrlKey || event.metaKey) {
+                if (ev.ctrlKey || ev.metaKey) {
                     break;
                 }
             default:

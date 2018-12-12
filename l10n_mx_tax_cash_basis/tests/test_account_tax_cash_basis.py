@@ -20,10 +20,9 @@ class TestL10nMxTaxCashBasis(InvoiceTransactionCase):
             dp.digits = 3
 
         self.today = Date.today()
-        today = Date.from_string(self.today)
-        self.yesterday = Date.to_string(today - timedelta(days=1))
-        self.two_days_ago = Date.to_string(today - timedelta(days=2))
-        self.a_week_ago = Date.to_string(today - timedelta(days=7))
+        self.yesterday = self.today - timedelta(days=1)
+        self.two_days_ago = self.today - timedelta(days=2)
+        self.a_week_ago = self.today - timedelta(days=7)
 
         # In order to avoid using this method we at l10n_mx_edi need to use a
         # company of our own. Having MXN as currency. And Loading our Chart of
@@ -33,7 +32,6 @@ class TestL10nMxTaxCashBasis(InvoiceTransactionCase):
 
         self.env.user.company_id.write({'currency_id': self.mxn.id})
         self.create_rates()
-        self.user_billing = self.uid
 
         self.tax_cash_basis_journal_id = self.company.tax_cash_basis_journal_id
         self.user_type_id = self.env.ref(
@@ -70,7 +68,7 @@ class TestL10nMxTaxCashBasis(InvoiceTransactionCase):
             'tax_exigibility': 'on_payment',
             'account_id': self.tax_account.id,
             'refund_account_id': self.tax_account.id,
-            'cash_basis_account': self.cash_tax_account.id,
+            'cash_basis_account_id': self.cash_tax_account.id,
             'cash_basis_base_account_id': self.account_tax_cash_basis.id})
 
     def delete_journal_data(self):
@@ -189,15 +187,15 @@ class TestL10nMxTaxCashBasis(InvoiceTransactionCase):
             self.env.user.company_id.country_id,
             self.env.ref('base.mx'), "The company's country is not Mexico")
 
-        xrate = self.mxn.with_context(date=self.two_days_ago).compute(1, self.usd)  # noqa
+        xrate = self.mxn._convert(1, self.usd, self.company, self.two_days_ago)
         self.assertEquals(
             xrate, 0.80, 'two days ago in USD at a rate => 1MXN = 0.80 USD')
 
-        xrate = self.mxn.with_context(date=self.yesterday).compute(1, self.usd)
+        xrate = self.mxn._convert(1, self.usd, self.company, self.yesterday)
         self.assertEquals(
             xrate, 1.00, 'yesterday in USD at a rate => 1MXN = 1.00 USD')
 
-        xrate = self.mxn.with_context(date=self.today).compute(1, self.usd)
+        xrate = self.mxn._convert(1, self.usd, self.company, self.today)
         self.assertEquals(
             xrate, 1.25, 'today in USD at a rate => 1MXN = 1.25 USD')
 

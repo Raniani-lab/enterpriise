@@ -24,7 +24,6 @@ class AccountPartialReconcile(models.Model):
             domain.pop()
             move_date = aml_obj.search(domain, limit=1, order="date desc").date
         return (
-            line.amount_currency and line.balance and
-            line.currency_id.with_context(date=move_date).compute(
+            line.amount_currency and line.balance and line.currency_id._convert(  # noqa
                 line.amount_currency * amount / line.balance,
-                line.company_id.currency_id) or 0.0)
+                line.company_id.currency_id, line.company_id, move_date) or 0.0)  # noqa

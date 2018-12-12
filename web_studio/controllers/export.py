@@ -81,7 +81,7 @@ FIELDS_TO_EXPORT = {
         'reply_to', 'report_name', 'report_template', 'scheduled_date', 'sub_model_object_field',
         'sub_object', 'subject', 'use_default_to', 'user_signature'
     ],
-    'res.groups': ['color', 'comment', 'implied_ids', 'is_portal', 'name', 'share'],
+    'res.groups': ['color', 'comment', 'implied_ids', 'name', 'share'],
 }
 # list of relational fields to NOT export, by model
 FIELDS_NOT_TO_EXPORT = {

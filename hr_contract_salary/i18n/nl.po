@@ -165,7 +165,8 @@ msgid ""
 "<i class=\"fa fa-1x fa-minus fa-fw\"/> Intellectual Property Income "
 "Deduction"
 msgstr ""
-"<i class=\"fa fa-1x fa-minus fa-fw\"/>Intellectuele eigendom inkomstenaftrek"
+"<i class=\"fa fa-1x fa-minus fa-fw\"/> Intellectuele eigendom "
+"inkomstenaftrek"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package

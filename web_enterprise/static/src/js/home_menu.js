@@ -309,6 +309,12 @@ var HomeMenu = Widget.extend({
                     this.trigger_up('hide_home_menu');
                 }
                 break;
+            case 67: // c
+            case 88: // x
+                // keep focus and selection on keyboard copy and cut
+                if (event.ctrlKey || event.metaKey) {
+                    break;
+                }
             default:
                 if (!this.$input.is(':focus')) {
                     this.$input.focus();

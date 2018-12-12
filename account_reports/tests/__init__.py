@@ -3,3 +3,4 @@
 
 from . import test_account_reports
 from . import test_ui
+from . import test_reports

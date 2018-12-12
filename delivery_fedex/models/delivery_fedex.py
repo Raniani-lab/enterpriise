@@ -101,75 +101,10 @@ class ProviderFedex(models.Model):
     def on_change_fedex_service_type(self):
         self.fedex_saturday_delivery = False
 
-    @tools.ormcache('environment', 'account_number', 'meter_number', 'droppoff_type', 'service_type',
-                    'package_code', 'package_height', 'package_width', 'package_length', 'weight_unit', 'fedex_saturday_delivery', 'currency_name',
-                    'shipper_company', 'shipper_warehouse', 'recipient', 'weight', 'max_weight',
-                    'cache_interval', 'total_custom_amount')
-    def _fedex_get_rate(self, environment, account_number, meter_number, droppoff_type, service_type,
-                        package_code, package_height, package_width, package_length, weight_unit, fedex_saturday_delivery, order_name, currency_name,
-                        shipper_company, shipper_warehouse, recipient, weight, max_weight,
-                        cache_interval, total_custom_amount):
-        Partner = self.env['res.partner']
-        shipper_company = Partner.browse(shipper_company[0])
-        shipper_warehouse = Partner.browse(shipper_warehouse[0])
-        recipient = Partner.browse(recipient[0])
-
-        # Authentication stuff
-        srm = FedexRequest(self.log_xml, request_type="rating", prod_environment=environment)
-        superself = self.sudo()
-        srm.web_authentication_detail(superself.fedex_developer_key, superself.fedex_developer_password)
-        srm.client_detail(account_number, meter_number)
-
-        # Build basic rating request and set addresses
-        srm.transaction_detail(order_name)
-        srm.shipment_request(droppoff_type, service_type, package_code, weight_unit, fedex_saturday_delivery)
-
-        srm.set_currency(_convert_curr_iso_fdx(currency_name))
-        srm.set_shipper(shipper_company, shipper_warehouse)
-        srm.set_recipient(recipient)
-        if recipient.company_id.country_id.code == 'IN' and shipper_company.country_id.code == 'IN':
-            srm.customs_value(_convert_curr_iso_fdx(currency_name), total_custom_amount, "NON_DOCUMENTS")
-
-        if max_weight and weight > max_weight:
-            total_package = int(weight / max_weight)
-            last_package_weight = weight % max_weight
-            for sequence in range(1, total_package + 1):
-                srm.add_package(
-                    max_weight,
-                    package_code=package_code,
-                    package_height=package_height,
-                    package_width=package_width,
-                    package_length=package_length,
-                    sequence_number=sequence,
-                    mode='rating',
-                )
-            if last_package_weight:
-                total_package = total_package + 1
-                srm.add_package(
-                    last_package_weight,
-                    package_code=package_code,
-                    package_height=package_height,
-                    package_width=package_width,
-                    package_length=package_length,
-                    sequence_number=total_package,
-                    mode='rating',
-                )
-            srm.set_master_package(weight, total_package)
-        else:
-            srm.add_package(
-                weight,
-                package_code=package_code,
-                package_height=package_height,
-                package_width=package_width,
-                package_length=package_length,
-                mode='rating',
-            )
-            srm.set_master_package(weight, 1)
-        return srm.rate()
-
     def fedex_rate_shipment(self, order):
         max_weight = self._fedex_convert_weight(self.fedex_default_packaging_id.max_weight, self.fedex_weight_unit)
         price = 0.0
+        is_india = order.partner_shipping_id.country_id.code == 'IN' and order.company_id.partner_id.country_id.code == 'IN'
 
         # Estimate weight of the sales order; will be definitely recomputed on the picking field "weight"
         est_weight_value = sum([(line.product_id.weight * line.product_uom_qty) for line in order.order_line]) or 0.0
@@ -184,37 +119,82 @@ class ProviderFedex(models.Model):
         order_currency = order.currency_id
         superself = self.sudo()
 
-        # Cache the rate for 4 hours
-        cache_interval = int(time.time() / (4 * 3600))
-        total_custom_amount = 0.0
-        if order.partner_id.country_id.code == 'IN' and self.company_id.country_id.code == 'IN':
-            total_custom_amount = sum([
-                (line.product_id.list_price * line.product_uom_qty)
-                for line in order.order_line.filtered(lambda l: l.product_id.type in ['product', 'consu'])
-            ])
+        # Authentication stuff
+        srm = FedexRequest(self.log_xml, request_type="rating", prod_environment=self.prod_environment)
+        srm.web_authentication_detail(superself.fedex_developer_key, superself.fedex_developer_password)
+        srm.client_detail(superself.fedex_account_number, superself.fedex_meter_number)
 
-        request = self._fedex_get_rate(
-            self.prod_environment,
-            superself.fedex_account_number,
-            superself.fedex_meter_number,
+        # Build basic rating request and set addresses
+        srm.transaction_detail(order.name)
+        srm.shipment_request(
             self.fedex_droppoff_type,
             self.fedex_service_type,
             self.fedex_default_packaging_id.shipper_package_code,
-            self.fedex_default_packaging_id.height,
-            self.fedex_default_packaging_id.width,
-            self.fedex_default_packaging_id.length,
             self.fedex_weight_unit,
             self.fedex_saturday_delivery,
-            order.name,
-            order_currency.name,
-            (order.company_id.partner_id.id, order.company_id.partner_id['__last_update']),
-            (order.warehouse_id.partner_id.id, order.warehouse_id.partner_id['__last_update']),
-            (order.partner_shipping_id.id, order.partner_shipping_id['__last_update']),
-            weight_value,
-            max_weight,
-            cache_interval,
-            total_custom_amount,
         )
+        pkg = self.fedex_default_packaging_id
+
+        srm.set_currency(_convert_curr_iso_fdx(order_currency.name))
+        srm.set_shipper(order.company_id.partner_id, order.warehouse_id.partner_id)
+        srm.set_recipient(order.partner_shipping_id)
+
+        if max_weight and weight_value > max_weight:
+            total_package = int(weight_value / max_weight)
+            last_package_weight = weight_value % max_weight
+
+            for sequence in range(1, total_package + 1):
+                srm.add_package(
+                    max_weight,
+                    package_code=pkg.shipper_package_code,
+                    package_height=pkg.height,
+                    package_width=pkg.width,
+                    package_length=pkg.length,
+                    sequence_number=sequence,
+                    mode='rating',
+                )
+            if last_package_weight:
+                total_package = total_package + 1
+                srm.add_package(
+                    last_package_weight,
+                    package_code=pkg.shipper_package_code,
+                    package_height=pkg.height,
+                    package_width=pkg.width,
+                    package_length=pkg.length,
+                    sequence_number=total_package,
+                    mode='rating',
+                )
+            srm.set_master_package(weight_value, total_package)
+        else:
+            srm.add_package(
+                weight_value,
+                package_code=pkg.shipper_package_code,
+                package_height=pkg.height,
+                package_width=pkg.width,
+                package_length=pkg.length,
+                mode='rating',
+            )
+            srm.set_master_package(weight_value, 1)
+
+        # Commodities for customs declaration (international shipping)
+        if self.fedex_service_type in ['INTERNATIONAL_ECONOMY', 'INTERNATIONAL_PRIORITY'] or is_india:
+            total_commodities_amount = 0.0
+            commodity_country_of_manufacture = order.warehouse_id.partner_id.country_id.code
+
+            for line in order.order_line.filtered(lambda l: l.product_id.type in ['product', 'consu']):
+                commodity_amount = line.price_total / line.product_uom_qty
+                total_commodities_amount += (commodity_amount * line.product_uom_qty)
+                commodity_description = line.product_id.name
+                commodity_number_of_piece = '1'
+                commodity_weight_units = self.fedex_weight_unit
+                commodity_weight_value = self._fedex_convert_weight(line.product_id.weight * line.product_uom_qty, self.fedex_weight_unit)
+                commodity_quantity = line.product_uom_qty
+                commodity_quantity_units = 'EA'
+                srm.commodities(_convert_curr_iso_fdx(order_currency.name), commodity_amount, commodity_number_of_piece, commodity_weight_units, commodity_weight_value, commodity_description, commodity_country_of_manufacture, commodity_quantity, commodity_quantity_units)
+            srm.customs_value(_convert_curr_iso_fdx(order_currency.name), total_commodities_amount, "NON_DOCUMENTS")
+            srm.duties_payment(order.warehouse_id.partner_id.country_id.code, superself.fedex_account_number)
+
+        request = srm.rate()
 
         warnings = request.get('warnings_message')
         if warnings:

@@ -6,12 +6,13 @@
 # Martin Trigaux, 2018
 # ТАрас <tratatuta@i.ua>, 2018
 # Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-08-24 11:48+0000\n"
 "Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
@@ -43,7 +44,7 @@ msgstr "Дія"
 #. module: voip
 #: model:ir.model,name:voip.model_mail_activity_type
 msgid "Activity Type"
-msgstr "Тип діяльності"
+msgstr "Тип дії"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_users__sip_always_transfer
@@ -497,7 +498,7 @@ msgstr "Налаштування PBX "
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_config_settings__pbx_ip
 msgid "PBX Server IP"
-msgstr "PBX сервер IP"
+msgstr "IP PBX сервера"
 
 #. module: voip
 #. openerp-web
@@ -805,7 +806,7 @@ msgstr "Налаштування VOIP"
 #. module: voip
 #: model:ir.model,name:voip.model_voip_configurator
 msgid "VOIP Configurator"
-msgstr ""
+msgstr "Налаштування IP-телефонії"
 
 #. module: voip
 #: model:ir.model,name:voip.model_voip_phonecall

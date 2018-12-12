@@ -100,7 +100,7 @@ msgstr "DHL"
 #. module: delivery_easypost
 #: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
 msgid "Default Package Type"
-msgstr ""
+msgstr "Výchozí typ balíčku"
 
 #. module: delivery_easypost
 #: model:ir.model.fields,field_description:delivery_easypost.field_delivery_carrier__easypost_default_packaging_id
@@ -133,7 +133,7 @@ msgstr "Zobrazovaný název"
 msgid ""
 "Do not forget to load your Easypost carrier accounts for a valid "
 "configuration."
-msgstr ""
+msgstr "Nezapomeňte načíst účty operátora Easypost pro platnou konfiguraci."
 
 #. module: delivery_easypost
 #: selection:delivery.carrier,easypost_label_file_type:0
@@ -234,6 +234,7 @@ msgstr "ID"
 #: model:ir.model.fields,help:delivery_easypost.field_delivery_carrier__easypost_default_service_id
 msgid "If not set, the less expensive available service level will be chosen."
 msgstr ""
+"Pokud není nastaveno, bude vybrána méně nákladná dostupná úroveň služby."
 
 #. module: delivery_easypost
 #: code:addons/delivery_easypost/models/easypost_request.py:310
@@ -269,12 +270,12 @@ msgstr "Naposled upraveno"
 #. module: delivery_easypost
 #: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
 msgid "Load your Easypost carrier accounts"
-msgstr ""
+msgstr "Vložte účty operátora Easypost"
 
 #. module: delivery_easypost
 #: selection:product.packaging,package_carrier_type:0
 msgid "No carrier integration"
-msgstr ""
+msgstr "Žádná integrace operátora"
 
 #. module: delivery_easypost
 #: selection:delivery.carrier,easypost_label_file_type:0
@@ -399,6 +400,8 @@ msgid ""
 "There is no rate available for the selected service level for one of your "
 "package. Please choose another service level."
 msgstr ""
+"Pro vybraný servisní stupeň není k dispozici žádný balíček. Vyberte prosím "
+"jinou úroveň služby."
 
 #. module: delivery_easypost
 #: model:ir.model,name:delivery_easypost.model_stock_picking
@@ -450,4 +453,4 @@ msgstr ""
 #. module: delivery_easypost
 #: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
 msgid "to create a new account:"
-msgstr ""
+msgstr "vytvořit nový účet:"

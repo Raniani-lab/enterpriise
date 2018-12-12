@@ -29,6 +29,9 @@ class LogPlugin(MessagePlugin):
     def received(self, context):
         self.debug_logger(context.reply, 'fedex_response')
 
+    def marshalled(self, context):
+        context.envelope = context.envelope.prune()
+
 
 class FedexRequest():
     """ Low-level object intended to interface Odoo recordsets with FedEx,
@@ -187,6 +190,8 @@ class FedexRequest():
     def rate(self):
         formatted_response = {'price': {}}
         del self.ClientDetail.Region
+        if self.hasCommodities:
+            self.RequestedShipment.CustomsClearanceDetail.Commodities = self.listCommodities
 
         try:
             self.response = self.client.service.getRates(WebAuthenticationDetail=self.WebAuthenticationDetail,

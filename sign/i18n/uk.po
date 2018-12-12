@@ -199,7 +199,7 @@ msgstr "Заархівовано"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__attachment_id
 msgid "Attachment"
-msgstr "Вкладення"
+msgstr "Прикріплення"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_attachment_count
@@ -431,7 +431,7 @@ msgstr "Відмінити"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_item_view_form
 msgid "Display"
-msgstr "Відображати"
+msgstr "Відобразити"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__display_name
@@ -457,7 +457,7 @@ msgstr "Документ"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__page
 msgid "Document Page"
-msgstr "Документ"
+msgstr "Сторінка докумету"
 
 #. module: sign
 #. openerp-web
@@ -498,7 +498,7 @@ msgstr "Чернетка"
 #: code:addons/sign/static/src/xml/sign_backend.xml:66
 #, python-format
 msgid "Drag & Drop a field in the PDF"
-msgstr "Перетягніть поле в PDF-файл"
+msgstr "Перетягніть поле в PDF"
 
 #. module: sign
 #. openerp-web
@@ -656,12 +656,12 @@ msgstr "Повністю підписаний"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "Future Activities"
-msgstr "Майбутня діяльність"
+msgstr "Майбутні дії"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_form
 msgid "Get Completed Document"
-msgstr "Отримати завершений документ"
+msgstr "Отримати заповнений документ"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
@@ -692,7 +692,7 @@ msgstr "ID"
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__message_unread
 msgid "If checked new messages require your attention."
-msgstr "Якщо позначено, то повідомленя потребує вашої уваги"
+msgstr "Якщо позначено, то повідомлення потребує вашої уваги"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__message_needaction
@@ -948,7 +948,7 @@ msgstr "Новий шаблон"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__activity_date_deadline
 msgid "Next Activity Deadline"
-msgstr "Наступий дедлайн дії"
+msgstr "Дедлайн наступної дії"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__activity_summary
@@ -958,7 +958,7 @@ msgstr "Підсумок наступної дії"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__activity_type_id
 msgid "Next Activity Type"
-msgstr "Наступний тип дії"
+msgstr "Тип наступної дії"
 
 #. module: sign
 #: model_terms:ir.actions.act_window,help:sign.sign_request_action
@@ -1004,7 +1004,7 @@ msgstr "Кількість непрочитаних повідомлень"
 #. module: sign
 #: model:res.groups,name:sign.group_sign_user
 msgid "Officer"
-msgstr "Начальник"
+msgstr "Керівник"
 
 #. module: sign
 #. openerp-web
@@ -1043,7 +1043,7 @@ msgstr ""
 #. module: sign
 #: selection:sign.request,activity_state:0
 msgid "Overdue"
-msgstr "Прострочено"
+msgstr "Протерміновано"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__partner_id
@@ -1242,7 +1242,7 @@ msgstr "Збережено"
 #: model:ir.model.fields,field_description:sign.field_sign_request__access_token
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__access_token
 msgid "Security Token"
-msgstr "Token безпеки"
+msgstr "Токен безпеки"
 
 #. module: sign
 #. openerp-web
@@ -1256,7 +1256,7 @@ msgstr "Виберіть стиль підпису"
 #: code:addons/sign/static/src/js/sign_common.js:319
 #, python-format
 msgid "Select the responsible"
-msgstr "Обрати відповідальний"
+msgstr "Обрати відповідального"
 
 #. module: sign
 #. openerp-web
@@ -1567,7 +1567,7 @@ msgid ""
 "Planned: Future activities."
 msgstr ""
 "Етап заснований на діях\n"
-"Прострочений: термін виконання вже минув\n"
+"Протермінований: термін виконання вже минув\n"
 "Сьогодні: дата дії сьогодні\n"
 "Заплановано: майбутні дії."
 
@@ -1739,7 +1739,7 @@ msgstr "Підтвердити та відправити"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign._doc_sign
 msgid "Validate &amp; Send Completed Document"
-msgstr "Перевірте та надішліть завершений документ"
+msgstr "Підтвердити та надіслати заповнений документ"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item_value__value
@@ -1799,7 +1799,7 @@ msgstr "Ми дамо вам знати по електронній пошті, 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__website_message_ids
 msgid "Website Messages"
-msgstr "Повідомлення з вебсайту"
+msgstr "Повідомлення з веб-сайту"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__website_message_ids
@@ -1834,7 +1834,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.doc_sign
 msgid "You have completed the document"
-msgstr "Ви завершили документ"
+msgstr "Ви заповнили документ"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_follower
@@ -1854,7 +1854,7 @@ msgstr ""
 #: code:addons/sign/static/src/xml/sign_common.xml:78
 #, python-format
 msgid "Your email"
-msgstr "Ваш електронний лист"
+msgstr "Ваша електронна пошта"
 
 #. module: sign
 #. openerp-web

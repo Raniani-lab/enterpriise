@@ -711,7 +711,7 @@ msgstr "Cosmetisch"
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_cost_sales0
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_executivesummary_direct_costs0
 msgid "Cost of Revenue"
-msgstr "Kosten van de omzet"
+msgstr "Inkoopwaarde van de omzet"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_followup_report.py:248
@@ -762,13 +762,13 @@ msgstr "Valuta"
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_current_assets0
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_current_assets_view0
 msgid "Current Assets"
-msgstr "Huidige activa"
+msgstr "Vlottende activa"
 
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_current_liabilities0
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_current_liabilities1
 msgid "Current Liabilities"
-msgstr "Huidige passiva"
+msgstr "Kort vreemd vermogen"
 
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_current_year_earnings_line_2
@@ -1778,7 +1778,7 @@ msgstr "Plus langlopende activa"
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_non_current_liabilities0
 msgid "Plus Non-current Liabilities"
-msgstr "Plus Langlopende passiva"
+msgstr "Plus lang vreemd vermogen"
 
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_executivesummary_position0
@@ -1793,7 +1793,7 @@ msgstr "Alleen definitieve boekingen"
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_prepayements0
 msgid "Prepayments"
-msgstr "Voorafbetalingen"
+msgstr "Vooruitbetalingen"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_comparison

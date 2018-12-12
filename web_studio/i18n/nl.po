@@ -1579,7 +1579,7 @@ msgstr "Minimale kop/voettekst"
 #: code:addons/web_studio/static/src/xml/search_renderer.xml:6
 #, python-format
 msgid "Minus"
-msgstr "Minus"
+msgstr "Min"
 
 #. module: web_studio
 #. openerp-web

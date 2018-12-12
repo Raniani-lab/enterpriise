@@ -998,5 +998,51 @@ QUnit.module('Views', {
         });
     });
 
+    QUnit.test('button context not polluted by previous click', function (assert) {
+        assert.expect(4);
+        var done = assert.async();
+
+        var grid = createView({
+            View: GridView,
+            model: 'analytic.line',
+            data: this.data,
+            arch: this.arch,
+            currentDate: "2017-01-31",
+            mockRPC: function (route, args) {
+                if (route === 'some-image') {
+                    return $.when();
+                }
+                if (args.method === 'search') {
+                    return $.when([1, 2, 3, 4, 5]);
+                }
+                return this._super.apply(this, arguments);
+            },
+            intercepts: {
+                execute_action: function (event) {
+                    if (event.data.action_data.name === 'action_name') {
+                        assert.step(event.data.action_data.context.grid_anchor);
+                    }
+                },
+            },
+        });
+
+        return concurrency.delay(0).then(function () {
+            grid.$buttons.find('.grid_arrow_previous').click();
+
+            // check that first button click does not affect that button
+            // context for subsequent clicks on it
+            grid.$buttons.find('button:contains("Action")').click();
+            assert.verifySteps(['2017-01-24'],
+                'first button click get current grid anchor date');
+            grid.$buttons.find('.grid_arrow_previous').click();
+            grid.$buttons.find('button:contains("Action")').click();
+            assert.verifySteps(['2017-01-24', '2017-01-17'],
+                'second button click get current grid anchor date');
+
+            grid.destroy();
+            done();
+        });
+    });
+
 });
 });

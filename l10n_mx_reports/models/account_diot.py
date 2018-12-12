@@ -2,11 +2,17 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from __future__ import division
 
+from contextlib import contextmanager
+import locale
 import re
+import json
+import logging
 from unicodedata import normalize
-from odoo import _, api, models
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
-from odoo.tools import DEFAULT_SERVER_DATE_FORMAT, float_compare
+from odoo.tools import DEFAULT_SERVER_DATE_FORMAT, float_compare, translate
+
+_logger = logging.getLogger(__name__)
 
 
 class MxReportPartnerLedger(models.AbstractModel):
@@ -325,12 +331,81 @@ class MxReportPartnerLedger(models.AbstractModel):
     def _get_reports_buttons(self):
         buttons = super(MxReportPartnerLedger, self)._get_reports_buttons()
         buttons += [{'name': _('Print DIOT (TXT)'), 'action': 'print_txt'}]
+        buttons += [{'name': _('Print DPIVA (TXT)'), 'action': 'print_dpiva_txt'}]
         return buttons
+
+    def print_dpiva_txt(self, options):
+        options.update({'is_dpiva': True})
+        return {
+            'type': 'ir_actions_account_report_download',
+            'data': {
+                'model': self.env.context.get('model'),
+                'options': json.dumps(options),
+                'output_format': 'txt',
+                'financial_id': self.env.context.get('id'),
+            }
+        }
 
     def get_txt(self, options):
         ctx = self._set_context(options)
         ctx.update({'no_format':True, 'print_mode':True, 'raise': True})
+        if options.get('is_dpiva'):
+            return self.with_context(ctx)._l10n_mx_dpiva_txt_export(options)
         return self.with_context(ctx)._l10n_mx_diot_txt_export(options)
+
+    @contextmanager
+    def _custom_setlocale(self):
+        old_locale = locale.getlocale(locale.LC_TIME)
+        try:
+            locale.setlocale(locale.LC_TIME, 'es_MX.utf8')
+        except locale.Error:
+            _logger.info('Error when try to set locale "es_MX". Please '
+                         'contact your system administrator.')
+        try:
+            yield
+        finally:
+            locale.setlocale(locale.LC_TIME, old_locale)
+
+    def _l10n_mx_dpiva_txt_export(self, options):
+        txt_data = self.get_lines(options)
+        lines = ''
+        date = fields.datetime.strptime(
+            self.env.context['date_from'], DEFAULT_SERVER_DATE_FORMAT)
+        with self._custom_setlocale():
+            month = date.strftime("%B").capitalize()
+
+        for line in txt_data:
+            if not line.get('id').startswith('partner_'):
+                continue
+            columns = line.get('columns', [])
+            if not sum([c.get('name', 0) for c in columns[5:]]):
+                continue
+            data = [''] * 48
+            data[0] = '1.0'  # Version
+            data[1] = date.year  # Fiscal Year
+            data[2] = 'MES'  # Cabling value
+            data[3] = month  # Period
+            data[4] = 1  # 1 Because has data
+            data[5] = 1  # 1 = Normal, 2 = Complementary (Not supported now).
+            data[8] = len([x for x in txt_data if x.get(
+                'parent_id') == line.get('id') and 'total' not in x.get(
+                    'id', '')])  # Count the operations
+            for num in range(9, 26):
+                data[num] = '0'
+            data[26] = columns[0]['name']
+            data[27] = columns[1]['name']
+            data[28] = columns[2]['name'] if columns[0]['name'] == '04' else ''
+            data[29] = columns[2]['name'] if columns[0]['name'] != '04' else ''
+            data[30] = u''.join(line.get('name', '')).encode('utf-8').strip().decode('utf-8') if columns[0]['name'] != '04' else ''
+            data[31] = columns[3]['name'] if columns[0]['name'] != '04' else ''
+            data[32] = u''.join(columns[4]['name']).encode('utf-8').strip().decode('utf-8') if columns[0]['name'] != '04' else ''
+            data[33] = int(columns[5]['name']) if columns[5]['name'] else ''
+            data[39] = int(columns[6]['name']) if columns[6]['name'] else ''
+            data[44] = int(columns[7]['name']) if columns[7]['name'] else ''
+            data[45] = int(columns[8]['name']) if columns[8]['name'] else ''
+            data[46] = int(columns[9]['name']) if columns[9]['name'] else ''
+            lines += '|%s|\n' % '|'.join(str(d) for d in data)
+        return lines
 
     def _l10n_mx_diot_txt_export(self, options):
         txt_data = self._get_lines(options)

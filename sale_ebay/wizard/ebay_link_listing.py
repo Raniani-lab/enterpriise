@@ -11,8 +11,11 @@ class ebay_link_listing(models.TransientModel):
 
     ebay_id = fields.Char('eBay Listing ID')
 
-    @api.one
     def link_listing(self):
+        for listing in self:
+            listing._link_listing()
+
+    def _link_listing(self):
         response = self.env['product.template'].ebay_execute('GetItem', {
             'ItemID': self.ebay_id,
             'DetailLevel': 'ReturnAll'

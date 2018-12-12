@@ -37,13 +37,15 @@ class HrPayslipEmployeeDepartureNotice(models.TransientModel):
         ('without', 'Employee will leave before notice period')
         ], string='Respect of the notice period', required=True, default='with')
 
-    @api.one
     @api.depends('employee_id')
     def _compute_oldest_contract_id(self):
         """ get the oldest contract """
-        self.oldest_contract_id = self.env['hr.contract'].search(
-            [('employee_id', '=', self.employee_id.id), ('state', '!=', 'cancel')], order='date_start asc', limit=1)
-        self.first_contract = self.oldest_contract_id.date_start
+        for notice in self:
+            notice.oldest_contract_id = self.env['hr.contract'].search([
+                ('employee_id', '=', notice.employee_id.id),
+                ('state', '!=', 'cancel')
+            ], order='date_start asc', limit=1)
+            notice.first_contract = notice.oldest_contract_id.date_start
 
     @api.onchange('notice_duration_month_before_2014', 'notice_duration_week_after_2014', 'start_notice_period', 'notice_respect')
     def _onchange_notice_duration(self):
@@ -53,38 +55,44 @@ class HrPayslipEmployeeDepartureNotice(models.TransientModel):
             months_to_weeks = self.notice_duration_month_before_2014 / 3.0 * 13
             self.end_notice_period = self.start_notice_period + timedelta(weeks=months_to_weeks+self.notice_duration_week_after_2014)
 
-    @api.one
     @api.depends('first_contract', 'leaving_type', 'salary_december_2013', 'start_notice_period')
     def _notice_duration(self):
         first_2014 = datetime(2014, 1, 1)
-        first_day_since_2014 = self.first_contract if self._get_years(relativedelta(first_2014, self.first_contract)) < 0 else first_2014
-        period_since_2014 = relativedelta(self.start_notice_period, first_day_since_2014)
-        difference_in_years = self._get_years(relativedelta(datetime(2013, 12, 31), self.first_contract))
-        if self.leaving_type == 'fired':
-            # Part I
-            if difference_in_years > 0:
-                self.salary_visibility = True
-                if self.salary_december_2013 == 'inferior':
-                    self.notice_duration_month_before_2014 = int(math.ceil(difference_in_years/5.0)*3.0)
+        for notice in self:
+            if notice._get_years(relativedelta(first_2014, notice.first_contract)) < 0:
+                first_day_since_2014 = notice.first_contract
+            else:
+                first_day_since_2014 = first_2014
+            period_since_2014 = relativedelta(notice.start_notice_period, first_day_since_2014)
+            difference_in_years = notice._get_years(relativedelta(datetime(2013, 12, 31),
+                notice.first_contract))
+            if notice.leaving_type == 'fired':
+                # Part I
+                if difference_in_years > 0:
+                    notice.salary_visibility = True
+                    if notice.salary_december_2013 == 'inferior':
+                        notice.notice_duration_month_before_2014 = int(math.ceil(difference_in_years/5.0)*3.0)
+                    else:
+                        notice.notice_duration_month_before_2014 = max(int(math.ceil(difference_in_years)), 3)
                 else:
-                    self.notice_duration_month_before_2014 = max(int(math.ceil(difference_in_years)), 3)
-            else:
-                self.salary_visibility = False
-                self.notice_duration_month_before_2014 = 0
-            # Part II
-            self.notice_duration_week_after_2014 = self._find_week(period_since_2014.months + period_since_2014.years*12, 'fired')
-        elif self.leaving_type == 'resigned':
-            self.salary_visibility = False
-            if difference_in_years > 0:
-                self.notice_duration_month_before_2014 = 3
-                self.notice_duration_week_after_2014 = 0
-            else:
-                self.notice_duration_month_before_2014 = 0
-                self.notice_duration_week_after_2014 = self._find_week(period_since_2014.months + period_since_2014.years*12, 'resigned')
-        elif self.leaving_type == 'retired':
-            self.salary_visibility = False
-            self.notice_duration_month_before_2014 = 0
-            self.notice_duration_week_after_2014 = 0
+                    notice.salary_visibility = False
+                    notice.notice_duration_month_before_2014 = 0
+                # Part II
+                notice.notice_duration_week_after_2014 = notice._find_week(
+                    period_since_2014.months + period_since_2014.years*12, 'fired')
+            elif notice.leaving_type == 'resigned':
+                notice.salary_visibility = False
+                if difference_in_years > 0:
+                    notice.notice_duration_month_before_2014 = 3
+                    notice.notice_duration_week_after_2014 = 0
+                else:
+                    notice.notice_duration_month_before_2014 = 0
+                    notice.notice_duration_week_after_2014 = notice._find_week(
+                        period_since_2014.months + period_since_2014.years*12, 'resigned')
+            elif notice.leaving_type == 'retired':
+                notice.salary_visibility = False
+                notice.notice_duration_month_before_2014 = 0
+                notice.notice_duration_week_after_2014 = 0
 
     def _get_years(self, date):
         return date.years + date.months/12 + date.days/365

@@ -435,11 +435,11 @@ class AccountFinancialReportLine(models.Model):
         ('code_uniq', 'unique (code)', "A report line with the same code already exists."),
     ]
 
-    @api.one
     @api.constrains('code')
     def _code_constrains(self):
-        if self.code and self.code.strip().lower() in __builtins__.keys():
-            raise ValidationError('The code "%s" is invalid on line with name "%s"' % (self.code, self.name))
+        for rec in self:
+            if rec.code and rec.code.strip().lower() in __builtins__.keys():
+                raise ValidationError('The code "%s" is invalid on line with name "%s"' % (rec.code, rec.name))
 
     @api.multi
     def _get_copied_code(self):
@@ -786,11 +786,11 @@ class AccountFinancialReportLine(models.Model):
                 'domain': domain,
                 }
 
-    @api.one
     @api.constrains('groupby')
     def _check_same_journal(self):
-        if self.groupby and self.groupby not in self.env['account.move.line']:
-            raise ValidationError(_("Groupby should be a journal item field"))
+        for rec in self:
+            if rec.groupby and rec.groupby not in self.env['account.move.line']:
+                raise ValidationError(_("Groupby should be a journal item field"))
 
     def _get_sum(self, currency_table, financial_report, field_names=None):
         ''' Returns the sum of the amls in the domain '''
@@ -803,25 +803,30 @@ class AccountFinancialReportLine(models.Model):
             res = self.with_context(strict_range=strict_range, date_from=date_from, date_to=date_to, active_test=False)._compute_line(currency_table, financial_report, group_by=self.groupby, domain=self._get_aml_domain())
         return res
 
-    @api.one
     def _get_balance(self, linesDict, currency_table, financial_report, field_names=None):
+        results = []
+
         if not field_names:
             field_names = ['debit', 'credit', 'balance']
-        res = dict((fn, 0.0) for fn in field_names)
-        c = FormulaContext(self.env['account.financial.html.report.line'], linesDict, currency_table, financial_report, self)
-        if self.formulas:
-            for f in self.formulas.split(';'):
-                [field, formula] = f.split('=')
-                field = field.strip()
-                if field in field_names:
-                    try:
-                        res[field] = safe_eval(formula, c, nocopy=True)
-                    except ValueError as err:
-                        if 'division by zero' in err.args[0]:
-                            res[field] = 0
-                        else:
-                            raise err
-        return res
+
+        for rec in self:
+            res = dict((fn, 0.0) for fn in field_names)
+            c = FormulaContext(self.env['account.financial.html.report.line'],
+                    linesDict, currency_table, financial_report, rec)
+            if rec.formulas:
+                for f in rec.formulas.split(';'):
+                    [field, formula] = f.split('=')
+                    field = field.strip()
+                    if field in field_names:
+                        try:
+                            res[field] = safe_eval(formula, c, nocopy=True)
+                        except ValueError as err:
+                            if 'division by zero' in err.args[0]:
+                                res[field] = 0
+                            else:
+                                raise err
+            results.append(res)
+        return results
 
     def _get_rows_count(self):
         groupby = self.groupby or 'id'

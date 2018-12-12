@@ -39,15 +39,15 @@ class ResCompany(models.Model):
         help="Will appear in SEPA payments as the name of the party initiating the payment. Limited to 70 characters.")
     sepa_pain_version = fields.Selection([('pain.001.001.03', 'Generic'), ('pain.001.001.03.ch.02', 'Swiss Version'), ('pain.001.003.03', 'German Version')], string='SEPA Pain Version', help='SEPA may be a generic format, some countries differ from the SEPA recommandations made by the EPC (European Payment Councile) and thus the XML created need some tweakenings.', required=True, default=_default_sepa_pain_version)
 
-    @api.one
     @api.constrains('sepa_orgid_id', 'sepa_orgid_issr', 'sepa_initiating_party_name')
     def _check_sepa_fields(self):
-        if self.sepa_orgid_id:
-            check_valid_SEPA_str(self.sepa_orgid_id)
-        if self.sepa_orgid_issr:
-            check_valid_SEPA_str(self.sepa_orgid_issr)
-        if self.sepa_initiating_party_name:
-            check_valid_SEPA_str(self.sepa_initiating_party_name)
+        for rec in self:
+            if rec.sepa_orgid_id:
+                check_valid_SEPA_str(rec.sepa_orgid_id)
+            if rec.sepa_orgid_issr:
+                check_valid_SEPA_str(rec.sepa_orgid_issr)
+            if rec.sepa_initiating_party_name:
+                check_valid_SEPA_str(rec.sepa_initiating_party_name)
 
     @api.onchange('country_id')
     def _onchange_country(self):

@@ -21,16 +21,27 @@ class MrpEcoType(models.Model):
     color = fields.Integer('Color', default=1)
     stage_ids = fields.One2many('mrp.eco.stage', 'type_id', 'Stages')
 
-    @api.one
     def _compute_nb(self):
         # TDE FIXME: this seems not good for performances, to check (replace by read_group later on)
         MrpEco = self.env['mrp.eco']
         for eco_type in self:
-            eco_type.nb_ecos = MrpEco.search_count([('type_id', '=', eco_type.id), ('state', '!=', 'done')])
-            eco_type.nb_validation = MrpEco.search_count([('stage_id.type_id', '=', eco_type.id), ('stage_id.allow_apply_change', '=', True), ('state', '=', 'progress')])
-            eco_type.nb_approvals = MrpEco.search_count([('stage_id.type_id', '=', eco_type.id), ('approval_ids.status', '=', 'none')])
-            eco_type.nb_approvals_my = MrpEco.search_count([('stage_id.type_id', '=', eco_type.id), ('approval_ids.status', '=', 'none'),
-                                                       ('approval_ids.required_user_ids', '=', self.env.user.id)])
+            eco_type.nb_ecos = MrpEco.search_count([
+                ('type_id', '=', eco_type.id), ('state', '!=', 'done')
+            ])
+            eco_type.nb_validation = MrpEco.search_count([
+                ('stage_id.type_id', '=', eco_type.id),
+                ('stage_id.allow_apply_change', '=', True),
+                ('state', '=', 'progress')
+            ])
+            eco_type.nb_approvals = MrpEco.search_count([
+                ('stage_id.type_id', '=', eco_type.id),
+                ('approval_ids.status', '=', 'none')
+            ])
+            eco_type.nb_approvals_my = MrpEco.search_count([
+                ('stage_id.type_id', '=', eco_type.id),
+                ('approval_ids.status', '=', 'none'),
+                ('approval_ids.required_user_ids', '=', self.env.user.id)
+            ])
 
     def get_alias_model_name(self, vals):
         return vals.get('alias_model', 'mrp.eco')
@@ -92,21 +103,21 @@ class MrpEcoApproval(models.Model):
     is_rejected = fields.Boolean(
         compute='_compute_is_rejected', store=True)
 
-    @api.one
     @api.depends('status', 'approval_template_id.approval_type')
     def _compute_is_approved(self):
-        if self.approval_template_id.approval_type == 'mandatory':
-            self.is_approved = self.status == 'approved'
-        else:
-            self.is_approved = True
+        for rec in self:
+            if rec.approval_template_id.approval_type == 'mandatory':
+                rec.is_approved = rec.status == 'approved'
+            else:
+                rec.is_approved = True
 
-    @api.one
     @api.depends('status', 'approval_template_id.approval_type')
     def _compute_is_rejected(self):
-        if self.approval_template_id.approval_type == 'mandatory':
-            self.is_rejected = self.status == 'rejected'
-        else:
-            self.is_rejected = False
+        for rec in self:
+            if rec.approval_template_id.approval_type == 'mandatory':
+                rec.is_rejected = rec.status == 'rejected'
+            else:
+                rec.is_rejected = False
 
 
 class MrpEcoStage(models.Model):
@@ -132,15 +143,15 @@ class MrpEcoStage(models.Model):
     approval_roles = fields.Char('Approval Roles', compute='_compute_approvals', store=True)
     is_blocking = fields.Boolean('Blocking Stage', compute='_compute_is_blocking', store=True)
 
-    @api.one
     @api.depends('approval_template_ids.name')
     def _compute_approvals(self):
-        self.approval_roles = ', '.join(self.approval_template_ids.mapped('name'))
+        for rec in self:
+            rec.approval_roles = ', '.join(rec.approval_template_ids.mapped('name'))
 
-    @api.one
     @api.depends('approval_template_ids.approval_type')
     def _compute_is_blocking(self):
-        self.is_blocking = any(template.approval_type == 'mandatory' for template in self.approval_template_ids)
+        for rec in self:
+            rec.is_blocking = any(template.approval_type == 'mandatory' for template in rec.approval_template_ids)
 
 
 class MrpEco(models.Model):
@@ -365,36 +376,36 @@ class MrpEco(models.Model):
                 # Compute difference between old bom and newly activated bom.
                 eco.previous_change_ids = eco._get_difference_bom_lines(eco.bom_id, eco.current_bom_id)
 
-    @api.one
     @api.depends('routing_id.operation_ids', 'new_routing_id.operation_ids')
     def _compute_routing_change_ids(self):
-        # TDE TODO: should we add workcenter logic ?
-        new_routing_commands = []
-        old_routing_lines = dict(((op.workcenter_id,), op) for op in self.routing_id.operation_ids)
-        if self.new_routing_id and self.routing_id:
-            for operation in self.new_routing_id.operation_ids:
-                key = (operation.workcenter_id,)
-                old_op = old_routing_lines.pop(key, None)
-                if old_op and tools.float_compare(old_op.time_cycle_manual, operation.time_cycle_manual, 2) != 0:
+        for rec in self:
+            # TDE TODO: should we add workcenter logic ?
+            new_routing_commands = []
+            old_routing_lines = dict(((op.workcenter_id,), op) for op in rec.routing_id.operation_ids)
+            if rec.new_routing_id and rec.routing_id:
+                for operation in rec.new_routing_id.operation_ids:
+                    key = (operation.workcenter_id,)
+                    old_op = old_routing_lines.pop(key, None)
+                    if old_op and tools.float_compare(old_op.time_cycle_manual, operation.time_cycle_manual, 2) != 0:
+                        new_routing_commands += [(0, 0, {
+                            'change_type': 'update',
+                            'workcenter_id': operation.workcenter_id.id,
+                            'new_time_cycle_manual': operation.time_cycle_manual,
+                            'old_time_cycle_manual': old_op.time_cycle_manual
+                        })]
+                    elif not old_op:
+                        new_routing_commands += [(0, 0, {
+                            'change_type': 'add',
+                            'workcenter_id': operation.workcenter_id.id,
+                            'new_time_cycle_manual': operation.time_cycle_manual
+                        })]
+                for key, old_op in old_routing_lines.items():
                     new_routing_commands += [(0, 0, {
-                        'change_type': 'update',
-                        'workcenter_id': operation.workcenter_id.id,
-                        'new_time_cycle_manual': operation.time_cycle_manual,
+                        'change_type': 'remove',
+                        'workcenter_id': old_op.workcenter_id.id,
                         'old_time_cycle_manual': old_op.time_cycle_manual
                     })]
-                elif not old_op:
-                    new_routing_commands += [(0, 0, {
-                        'change_type': 'add',
-                        'workcenter_id': operation.workcenter_id.id,
-                        'new_time_cycle_manual': operation.time_cycle_manual
-                    })]
-            for key, old_op in old_routing_lines.items():
-                new_routing_commands += [(0, 0, {
-                    'change_type': 'remove',
-                    'workcenter_id': old_op.workcenter_id.id,
-                    'old_time_cycle_manual': old_op.time_cycle_manual
-                })]
-        self.routing_change_ids = new_routing_commands
+            rec.routing_change_ids = new_routing_commands
 
     def _compute_user_approval(self):
         for eco in self:
@@ -404,33 +415,34 @@ class MrpEco(models.Model):
             eco.user_can_approve = is_required_approval and not last_approval.is_approved
             eco.user_can_reject = is_required_approval and not last_approval.is_rejected
 
-    @api.one
     @api.depends('stage_id', 'approval_ids.is_approved', 'approval_ids.is_rejected')
     def _compute_kanban_state(self):
         """ State of ECO is based on the state of approvals for the current stage. """
-        approvals = self.approval_ids.filtered(lambda app: app.template_stage_id == self.stage_id and not app.is_closed)
-        if not approvals:
-            self.kanban_state = 'normal'
-        elif all(approval.is_approved for approval in approvals):
-            self.kanban_state = 'done'
-        elif any(approval.is_rejected for approval in approvals):
-            self.kanban_state = 'blocked'
-        else:
-            self.kanban_state = 'normal'
+        for rec in self:
+            approvals = rec.approval_ids.filtered(lambda app:
+                app.template_stage_id == rec.stage_id and not app.is_closed)
+            if not approvals:
+                rec.kanban_state = 'normal'
+            elif all(approval.is_approved for approval in approvals):
+                rec.kanban_state = 'done'
+            elif any(approval.is_rejected for approval in approvals):
+                rec.kanban_state = 'blocked'
+            else:
+                rec.kanban_state = 'normal'
 
-    @api.one
     @api.depends('kanban_state', 'stage_id', 'approval_ids')
     def _compute_allow_change_stage(self):
-        approvals = self.approval_ids.filtered(lambda app: app.template_stage_id == self.stage_id)
-        if approvals:
-            self.allow_change_stage = self.kanban_state == 'done'
-        else:
-            self.allow_change_stage = self.kanban_state in ['normal', 'done']
+        for rec in self:
+            approvals = rec.approval_ids.filtered(lambda app: app.template_stage_id == rec.stage_id)
+            if approvals:
+                rec.allow_change_stage = rec.kanban_state == 'done'
+            else:
+                rec.allow_change_stage = rec.kanban_state in ['normal', 'done']
 
-    @api.one
     @api.depends('state', 'stage_id.allow_apply_change')
     def _compute_allow_apply_change(self):
-        self.allow_apply_change = self.stage_id.allow_apply_change and self.state in ('confirmed', 'progress')
+        for rec in self:
+            rec.allow_apply_change = rec.stage_id.allow_apply_change and rec.state in ('confirmed', 'progress')
 
     @api.onchange('product_tmpl_id')
     def onchange_product_tmpl_id(self):
@@ -683,15 +695,15 @@ class MrpEcoBomChange(models.Model):
     operation_change = fields.Char(compute='_compute_change', string='Consumed in Operation')
     conflict = fields.Boolean()
 
-    @api.one
     @api.depends('new_product_qty', 'old_product_qty', 'old_operation_id', 'new_operation_id', 'old_uom_id', 'new_uom_id')
     def _compute_change(self):
-        self.upd_product_qty = self.new_product_qty - self.old_product_qty
-        self.operation_change = self.new_operation_id.name if self.change_type == 'add' else self.old_operation_id.name
-        if (self.old_uom_id and self.new_uom_id) and self.old_uom_id != self.new_uom_id:
-            self.uom_change = self.old_uom_id.name + ' -> ' + self.new_uom_id.name
-        if (self.old_operation_id != self.new_operation_id) and self.change_type == 'update':
-            self.operation_change = (self.old_operation_id.name or '') + ' -> ' + (self.new_operation_id.name or '')
+        for rec in self:
+            rec.upd_product_qty = rec.new_product_qty - rec.old_product_qty
+            rec.operation_change = rec.new_operation_id.name if rec.change_type == 'add' else rec.old_operation_id.name
+            if (rec.old_uom_id and rec.new_uom_id) and rec.old_uom_id != rec.new_uom_id:
+                rec.uom_change = rec.old_uom_id.name + ' -> ' + rec.new_uom_id.name
+            if (rec.old_operation_id != rec.new_operation_id) and rec.change_type == 'update':
+                rec.operation_change = (rec.old_operation_id.name or '') + ' -> ' + (rec.new_operation_id.name or '')
 
 
 class MrpEcoRoutingChange(models.Model):
@@ -705,10 +717,10 @@ class MrpEcoRoutingChange(models.Model):
     new_time_cycle_manual = fields.Float('New manual duration', default=0)
     upd_time_cycle_manual = fields.Float('Manual Duration Change', compute='_compute_upd_time_cycle_manual', store=True)
 
-    @api.one
     @api.depends('new_time_cycle_manual', 'old_time_cycle_manual')
     def _compute_upd_time_cycle_manual(self):
-        self.upd_time_cycle_manual = self.new_time_cycle_manual - self.old_time_cycle_manual
+        for rec in self:
+            rec.upd_time_cycle_manual = rec.new_time_cycle_manual - rec.old_time_cycle_manual
 
 
 class MrpEcoTag(models.Model):

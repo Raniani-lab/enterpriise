@@ -30,11 +30,11 @@ class res_company(models.Model):
             self.auto_validation = False
             self.warehouse_id = False
 
-    @api.one
     @api.constrains('applicable_on', 'rule_type')
     def _check_intercompany_missmatch_selection(self):
-        if self.applicable_on and self.rule_type == 'invoice_and_refund':
-            raise Warning(_('''You cannot select to create invoices based on other invoices
-                    simultaneously with another option ('Create Sales Orders when buying to this
-                    company' or 'Create Purchase Orders when selling to this company')!'''))
+        for rec in self:
+            if rec.applicable_on and rec.rule_type == 'invoice_and_refund':
+                raise Warning(_('''You cannot select to create invoices based on other invoices
+                        simultaneously with another option ('Create Sales Orders when buying to this
+                        company' or 'Create Purchase Orders when selling to this company')!'''))
 

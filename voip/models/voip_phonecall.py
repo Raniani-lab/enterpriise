@@ -92,47 +92,49 @@ class VoipPhonecall(models.Model):
             self.activity_id.unlink()
         return res_id
 
-    @api.one
     def get_info(self):
-        info = {'id': self.id,
-                'name': self.name,
-                'state': self.state,
-                'date_deadline': self.date_deadline,
-                'call_date': self.call_date,
-                'duration': self.duration,
-                'phone': self.phone,
-                'mobile': self.mobile,
-                'note': self.note,
-                }
-        if self.partner_id:
-            ir_model = self.env['ir.model'].search([('model', '=', 'res.partner')])
-            info.update(
-                partner_id=self.partner_id.id,
-                activity_res_id=self.partner_id.id,
-                activity_res_model='res.partner',
-                activity_model_name=ir_model.display_name,
-                partner_name=self.partner_id.name,
-                partner_image_small=self.partner_id.image_small,
-                partner_email=self.partner_id.email
-            )
-        if self.activity_id:
-            ir_model = self.env['ir.model'].search([('model', '=', self.activity_id.res_model)])
-            info.update(
-                activity_id=self.activity_id.id,
-                activity_res_id=self.activity_id.res_id,
-                activity_res_model=self.activity_id.res_model,
-                activity_model_name=ir_model.display_name,
-                activity_summary=self.activity_id.summary,
-                activity_note=self.activity_id.note,
-            )
-        elif self.mail_message_id:
-            ir_model = self.env['ir.model'].search([('model', '=', self.mail_message_id.model)])
-            info.update(
-                activity_res_id=self.mail_message_id.res_id,
-                activity_res_model=self.mail_message_id.model,
-                activity_model_name=ir_model.display_name,
-            )
-        return info
+        infos = []
+        for rec in self:
+            info = {'id': rec.id,
+                    'name': rec.name,
+                    'state': rec.state,
+                    'date_deadline': rec.date_deadline,
+                    'call_date': rec.call_date,
+                    'duration': rec.duration,
+                    'phone': rec.phone,
+                    'mobile': rec.mobile,
+                    'note': rec.note,
+                    }
+            if rec.partner_id:
+                ir_model = self.env['ir.model'].search([('model', '=', 'res.partner')])
+                info.update(
+                    partner_id=rec.partner_id.id,
+                    activity_res_id=rec.partner_id.id,
+                    activity_res_model='res.partner',
+                    activity_model_name=ir_model.display_name,
+                    partner_name=rec.partner_id.name,
+                    partner_image_small=rec.partner_id.image_small,
+                    partner_email=rec.partner_id.email
+                )
+            if rec.activity_id:
+                ir_model = self.env['ir.model'].search([('model', '=', rec.activity_id.res_model)])
+                info.update(
+                    activity_id=rec.activity_id.id,
+                    activity_res_id=rec.activity_id.res_id,
+                    activity_res_model=rec.activity_id.res_model,
+                    activity_model_name=ir_model.display_name,
+                    activity_summary=rec.activity_id.summary,
+                    activity_note=rec.activity_id.note,
+                )
+            elif rec.mail_message_id:
+                ir_model = self.env['ir.model'].search([('model', '=', rec.mail_message_id.model)])
+                info.update(
+                    activity_res_id=rec.mail_message_id.res_id,
+                    activity_res_model=rec.mail_message_id.model,
+                    activity_model_name=ir_model.display_name,
+                )
+            infos.append(info)
+        return infos
 
     @api.model
     def get_next_activities_list(self):

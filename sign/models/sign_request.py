@@ -76,39 +76,38 @@ class SignRequest(models.Model):
     request_item_infos = fields.Binary(compute="_compute_request_item_infos")
     last_action_date = fields.Datetime(related="message_ids.create_date", readonly=True, string="Last Action Date")
 
-    @api.one
     @api.depends('request_item_ids.state')
     def _compute_count(self):
-        wait, closed = 0, 0
-        for s in self.request_item_ids:
-            if s.state == "sent":
-                wait += 1
-            if s.state == "completed":
-                closed += 1
-        self.nb_wait = wait
-        self.nb_closed = closed
-        self.nb_total = wait + closed
+        for rec in self:
+            wait, closed = 0, 0
+            for s in rec.request_item_ids:
+                if s.state == "sent":
+                    wait += 1
+                if s.state == "completed":
+                    closed += 1
+            rec.nb_wait = wait
+            rec.nb_closed = closed
+            rec.nb_total = wait + closed
+            if rec.nb_wait + rec.nb_closed <= 0:
+                rec.progress = 0
+            else:
+                rec.progress = rec.nb_closed*100 / (rec.nb_total)
 
-        if self.nb_wait + self.nb_closed <= 0:
-            self.progress = 0
-        else:
-            self.progress = self.nb_closed*100 / (self.nb_total)
-
-    @api.one
     @api.depends('request_item_ids.state', 'request_item_ids.partner_id.name')
     def _compute_request_item_infos(self):
-        infos = []
-        for item in self.request_item_ids:
-            infos.append({
-                'partner_name': item.partner_id.name if item.partner_id else 'Public User',
-                'state': item.state,
-            })
-        self.request_item_infos = infos
+        for rec in self:
+            infos = []
+            for item in rec.request_item_ids:
+                infos.append({
+                    'partner_name': item.partner_id.name if item.partner_id else 'Public User',
+                    'state': item.state,
+                })
+            rec.request_item_infos = infos
 
-    @api.one
     def _check_after_compute(self):
-        if self.state == 'sent' and self.nb_closed == len(self.request_item_ids) and len(self.request_item_ids) > 0: # All signed
-            self.action_signed()
+        for rec in self:
+            if rec.state == 'sent' and rec.nb_closed == len(rec.request_item_ids) and len(rec.request_item_ids) > 0: # All signed
+                rec.action_signed()
 
     @api.multi
     def button_send(self):
@@ -218,27 +217,27 @@ class SignRequest(models.Model):
         for request_item in self.mapped('request_item_ids'):
             request_item.action_draft()
 
-    @api.one
     def set_signers(self, signers):
-        self.request_item_ids.filtered(lambda r: not r.partner_id or not r.role_id).unlink()
-
-        ids_to_remove = []
-        for request_item in self.request_item_ids:
-            for i in range(0, len(signers)):
-                if signers[i]['partner_id'] == request_item.partner_id.id and signers[i]['role'] == request_item.role_id.id:
-                    signers.pop(i)
-                    break
-            else:
-                ids_to_remove.append(request_item.id)
-
         SignRequestItem = self.env['sign.request.item']
-        SignRequestItem.browse(ids_to_remove).unlink()
-        for signer in signers:
-            SignRequestItem.create({
-                'partner_id': signer['partner_id'],
-                'sign_request_id': self.id,
-                'role_id': signer['role'],
-            })
+
+        for rec in self:
+            rec.request_item_ids.filtered(lambda r: not r.partner_id or not r.role_id).unlink()
+            ids_to_remove = []
+            for request_item in rec.request_item_ids:
+                for i in range(0, len(signers)):
+                    if signers[i]['partner_id'] == request_item.partner_id.id and signers[i]['role'] == request_item.role_id.id:
+                        signers.pop(i)
+                        break
+                else:
+                    ids_to_remove.append(request_item.id)
+
+            SignRequestItem.browse(ids_to_remove).unlink()
+            for signer in signers:
+                SignRequestItem.create({
+                    'partner_id': signer['partner_id'],
+                    'sign_request_id': rec.id,
+                    'role_id': signer['role'],
+                })
 
     @api.multi
     def send_signature_accesses(self, subject=None, message=None, ignored_partners=[]):
@@ -249,8 +248,8 @@ class SignRequest(models.Model):
         self.request_item_ids.filtered(lambda r: not r.partner_id or r.partner_id.id not in ignored_partners).send_signature_accesses(subject, message)
         return True
 
-    @api.one
     def send_follower_accesses(self, followers, subject=None, message=None):
+        self.ensure_one()
         base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
         tpl = self.env.ref('sign.sign_template_mail_follower')
         body = tpl.render({
@@ -343,8 +342,8 @@ class SignRequest(models.Model):
     def _get_normal_font_size(self):
         return 0.015
 
-    @api.one
     def generate_completed_document(self, password=""):
+        self.ensure_one()
         if not self.template_id.sign_item_ids:
             self.completed_document = self.template_id.attachment_id.datas
             return
@@ -617,8 +616,7 @@ class SignRequestItem(models.Model):
         for record in self:
             record.sms_token = randint(100000, 999999)
 
-    @api.one
     def _send_sms(self):
-        self.ensure_one()
-        self._reset_sms_token()
-        self.env['sms.api']._send_sms([self.sms_number], _('Your confirmation code is %s') % self.sms_token)
+        for rec in self:
+            rec._reset_sms_token()
+            self.env['sms.api']._send_sms([rec.sms_number], _('Your confirmation code is %s') % rec.sms_token)

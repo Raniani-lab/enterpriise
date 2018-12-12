@@ -22,13 +22,13 @@ class ProviderUSPS(models.Model):
                                             ('REGULAR', 'Regular')],
                                            default='REGULAR', store=True, compute='_compute_size_container')
 
-    @api.one
     @api.depends('usps_container')
     def _compute_size_container(self):
-        if self.usps_container == 'VARIABLE':
-            self.usps_size_container = 'REGULAR'
-        else:
-            self.usps_size_container = 'LARGE'
+        for rec in self:
+            if rec.usps_container == 'VARIABLE':
+                rec.usps_size_container = 'REGULAR'
+            else:
+                rec.usps_size_container = 'LARGE'
 
     usps_label_file_type = fields.Selection([('PDF', 'PDF'),
                                              ('TIF', 'TIF')],

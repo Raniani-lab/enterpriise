@@ -12,22 +12,22 @@ class AccountTax(models.Model):
 
     identification_letter = fields.Selection([('A', 'A'), ('B', 'B'), ('C', 'C'), ('D', 'D')], compute='_compute_identification_letter')
 
-    @api.one
     @api.depends('amount_type', 'amount')
     def _compute_identification_letter(self):
-        if self.type_tax_use == "sale" and (self.amount_type == "percent" or self.amount_type == "group"):
-            if self.amount == 21:
-                self.identification_letter = "A"
-            elif self.amount == 12:
-                self.identification_letter = "B"
-            elif self.amount == 6:
-                self.identification_letter = "C"
-            elif self.amount == 0:
-                self.identification_letter = "D"
+        for rec in self:
+            if rec.type_tax_use == "sale" and (rec.amount_type == "percent" or rec.amount_type == "group"):
+                if rec.amount == 21:
+                    rec.identification_letter = "A"
+                elif rec.amount == 12:
+                    rec.identification_letter = "B"
+                elif rec.amount == 6:
+                    rec.identification_letter = "C"
+                elif rec.amount == 0:
+                    rec.identification_letter = "D"
+                else:
+                    rec.identification_letter = False
             else:
-                self.identification_letter = False
-        else:
-            self.identification_letter = False
+                rec.identification_letter = False
 
 class pos_config(models.Model):
     _inherit = 'pos.config'
@@ -75,11 +75,11 @@ class res_users(models.Model):
     insz_or_bis_number = fields.Char("INSZ or BIS number",
                                      help="Social security identification number")
 
-    @api.one
     @api.constrains('insz_or_bis_number')
     def _check_insz_or_bis_number(self):
-        if self.insz_or_bis_number and (len(self.insz_or_bis_number) != 11 or not self.insz_or_bis_number.isdigit()):
-            raise ValidationError(_("The INSZ or BIS number has to consist of 11 numerical digits."))
+        for rec in self:
+            if rec.insz_or_bis_number and (len(rec.insz_or_bis_number) != 11 or not rec.insz_or_bis_number.isdigit()):
+                raise ValidationError(_("The INSZ or BIS number has to consist of 11 numerical digits."))
 
     @api.model
     def create(self, values):
@@ -141,82 +141,75 @@ class pos_session(models.Model):
         ('work_out', 'WORK OUT')
     ], compute='_compute_work_status')
 
-    @api.one
     @api.depends('statement_ids')
     def _compute_total_sold(self):
-        self.total_sold = 0
+        for rec in self:
+            rec.total_sold = 0
+            for st in rec.statement_ids:
+                rec.total_sold += st.total_entry_encoding
 
-        for st in self.statement_ids:
-            self.total_sold += st.total_entry_encoding
-
-    @api.one
     @api.depends('pro_forma_order_ids')
     def _compute_total_pro_forma(self):
-        self.total_pro_forma = 0
+        for rec in self:
+            rec.total_pro_forma = 0
+            for pro_forma in rec.pro_forma_order_ids:
+                rec.total_pro_forma += pro_forma.amount_total
 
-        for pro_forma in self.pro_forma_order_ids:
-            self.total_pro_forma += pro_forma.amount_total
-
-    @api.one
     @api.depends('order_ids')
     def _compute_total_tax(self):
-        self.total_base_of_measure_tax_a = 0
-        self.total_base_of_measure_tax_b = 0
-        self.total_base_of_measure_tax_c = 0
-        self.total_base_of_measure_tax_d = 0
+        for rec in self:
+            rec.total_base_of_measure_tax_a = 0
+            rec.total_base_of_measure_tax_b = 0
+            rec.total_base_of_measure_tax_c = 0
+            rec.total_base_of_measure_tax_d = 0
+            for order in rec.order_ids:
+                rec.total_base_of_measure_tax_a += order.blackbox_tax_category_a
+                rec.total_base_of_measure_tax_b += order.blackbox_tax_category_b
+                rec.total_base_of_measure_tax_c += order.blackbox_tax_category_c
+                rec.total_base_of_measure_tax_d += order.blackbox_tax_category_d
+            # compute the tax totals
+            currency = self.env['res.currency'].browse(rec.currency_id.id)
+            rec.total_tax_a = currency.round(rec.total_base_of_measure_tax_a * 0.21)
+            rec.total_tax_b = currency.round(rec.total_base_of_measure_tax_b * 0.12)
+            rec.total_tax_c = currency.round(rec.total_base_of_measure_tax_c * 0.06)
+            rec.total_tax_d = 0
 
-        for order in self.order_ids:
-            self.total_base_of_measure_tax_a += order.blackbox_tax_category_a
-            self.total_base_of_measure_tax_b += order.blackbox_tax_category_b
-            self.total_base_of_measure_tax_c += order.blackbox_tax_category_c
-            self.total_base_of_measure_tax_d += order.blackbox_tax_category_d
-
-        # compute the tax totals
-        currency = self.env['res.currency'].browse(self.currency_id.id)
-        self.total_tax_a = currency.round(self.total_base_of_measure_tax_a * 0.21)
-        self.total_tax_b = currency.round(self.total_base_of_measure_tax_b * 0.12)
-        self.total_tax_c = currency.round(self.total_base_of_measure_tax_c * 0.06)
-        self.total_tax_d = 0
-
-    @api.one
     @api.depends('order_ids')
     def _compute_amount_of_vat_tickets(self):
-        self.amount_of_vat_tickets = len(self.order_ids)
+        for rec in self:
+            rec.amount_of_vat_tickets = len(rec.order_ids)
 
-    @api.one
     @api.depends('order_ids', 'pro_forma_order_ids')
     def _compute_amounts_of_tickets(self):
-        self.amount_of_vat_tickets = len(self.order_ids)
-        self.amount_of_pro_forma_tickets = len(self.pro_forma_order_ids)
+        for rec in self:
+            rec.amount_of_vat_tickets = len(rec.order_ids)
+            rec.amount_of_pro_forma_tickets = len(rec.pro_forma_order_ids)
 
-    @api.one
     @api.depends('order_ids')
     def _compute_discounts(self):
-        self.amount_of_discounts = 0
-        self.total_discount = 0
-        for order in self.order_ids:
-            for line in order.lines:
-                if line.discount > 0:
-                    self.amount_of_discounts += 1
+        for rec in self:
+            rec.amount_of_discounts = 0
+            rec.total_discount = 0
+            for order in rec.order_ids:
+                for line in order.lines:
+                    if line.discount > 0:
+                        rec.amount_of_discounts += 1
+                        original_line_discount = line.discount
+                        line.discount = 0
+                        price_without_discount = line.price_subtotal_incl
+                        line.discount = original_line_discount
+                        rec.total_discount += price_without_discount - line.price_subtotal_incl
 
-                    original_line_discount = line.discount
-                    line.discount = 0
-                    price_without_discount = line.price_subtotal_incl
-                    line.discount = original_line_discount
-
-                    self.total_discount += price_without_discount - line.price_subtotal_incl
-
-    @api.one
     @api.depends('order_ids')
     def _compute_corrections(self):
-        self.amount_of_corrections = 0
-        self.total_corrections = 0
-
-        for order in self.order_ids:
-            for line in order.lines:
-                if line.price_subtotal_incl < 0:
-                    self.amount_of_corrections += 1
-                    self.total_corrections += line.price_subtotal_incl
+        for rec in self:
+            rec.amount_of_corrections = 0
+            rec.total_corrections = 0
+            for order in rec.order_ids:
+                for line in order.lines:
+                    if line.price_subtotal_incl < 0:
+                        rec.amount_of_corrections += 1
+                        rec.total_corrections += line.price_subtotal_incl
 
     @api.depends('order_ids')
     def _compute_work_status(self):
@@ -310,9 +303,8 @@ class pos_session(models.Model):
 
         return data
 
-    @api.one
     def _compute_forbidden_modules_installed(self):
-        ir_module = self.env['ir.module.module'].sudo()
+        IrModule = self.env['ir.module.module'].sudo()
 
         # We don't want pos_discount because it creates a single PLU
         # line with a user-set product that acts as a
@@ -325,13 +317,13 @@ class pos_session(models.Model):
         # (like it happens in the regular pos module). That way the
         # discounts are 'notices' which are not regulated by law.
         blacklisted_modules = ["pos_reprint", "pos_discount"]
-        blacklisted_installed_modules = ir_module.search([('name', 'in', blacklisted_modules),
+        blacklisted_installed_modules = IrModule.search([('name', 'in', blacklisted_modules),
                                                           ('state', '!=', 'uninstalled')])
-
-        if blacklisted_installed_modules:
-            self.forbidden_modules_installed = True
-        else:
-            self.forbidden_modules_installed = False
+        for rec in self:
+            if blacklisted_installed_modules:
+                rec.forbidden_modules_installed = True
+            else:
+                rec.forbidden_modules_installed = False
 
     def action_report_journal_file(self):
         self.ensure_one()

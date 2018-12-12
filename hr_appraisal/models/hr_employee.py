@@ -42,9 +42,9 @@ class HrEmployee(models.Model):
         for employee in self:
             employee.appraisal_count = result.get(employee.id, 0)
 
-    @api.one
     def _compute_related_partner(self):
-        self.related_partner_id = self.user_id.partner_id
+        for rec in self:
+            rec.related_partner_id = rec.user_id.partner_id
 
     @api.onchange('appraisal_by_manager', 'parent_id')
     def _onchange_manager_appraisal(self):

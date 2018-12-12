@@ -314,32 +314,33 @@ class ProductTemplate(models.Model):
         }
         return items
 
-    @api.multi
     def _get_item_dict(self):
-        if len(self.product_variant_ids) > 1 \
-           and self.ebay_listing_type == 'FixedPriceItem':
-            item_dict = self._prepare_variant_dict()
-        else:
-            item_dict = self._prepare_non_variant_dict()
-        return item_dict
+        result = []
+        for product in self:
+            if len(product.product_variant_ids) > 1 and product.ebay_listing_type == 'FixedPriceItem':
+                item_dict = product._prepare_variant_dict()
+            else:
+                item_dict = product._prepare_non_variant_dict()
+            result.append(item_dict)
+        return result
 
-    @api.one
     def _set_variant_url(self, item_id):
-        variants = self.product_variant_ids.filtered('ebay_use')
-        if len(variants) > 1 and self.ebay_listing_type == 'FixedPriceItem':
-            for variant in variants:
-                name_value_list = [{
-                    'Name': self._ebay_encode(spec.attribute_id.name),
-                    'Value': self._ebay_encode(spec.name)
-                } for spec in variant.attribute_value_ids]
-                call_data = {
-                    'ItemID': item_id,
-                    'VariationSpecifics': {
-                        'NameValueList': name_value_list
+        for product in self:
+            variants = product.product_variant_ids.filtered('ebay_use')
+            if len(variants) > 1 and product.ebay_listing_type == 'FixedPriceItem':
+                for variant in variants:
+                    name_value_list = [{
+                        'Name': self._ebay_encode(spec.attribute_id.name),
+                        'Value': self._ebay_encode(spec.name)
+                    } for spec in variant.attribute_value_ids]
+                    call_data = {
+                        'ItemID': item_id,
+                        'VariationSpecifics': {
+                            'NameValueList': name_value_list
+                        }
                     }
-                }
-                item = self.ebay_execute('GetItem', call_data)
-                variant.ebay_variant_url = item.dict()['Item']['ListingDetails']['ViewItemURL']
+                    item = self.ebay_execute('GetItem', call_data)
+                    variant.ebay_variant_url = item.dict()['Item']['ListingDetails']['ViewItemURL']
 
     @api.model
     def get_ebay_api(self, domain):
@@ -420,58 +421,59 @@ class ProductTemplate(models.Model):
             urls.append(response.dict()['SiteHostedPictureDetails']['FullURL'])
         return urls
 
-    @api.one
     def _update_ebay_data(self, response):
         domain = self.env['ir.config_parameter'].sudo().get_param('ebay_domain')
         item = self.ebay_execute('GetItem', {'ItemID': response['ItemID']}).dict()
         qty = int(item['Item']['Quantity']) - int(item['Item']['SellingStatus']['QuantitySold'])
-        self.write({
-            'ebay_listing_status': 'Active' if qty > 0 else 'Out Of Stock',
-            'ebay_id': response['ItemID'],
-            'ebay_url': item['Item']['ListingDetails']['ViewItemURL'],
-            'ebay_start_date': datetime.strptime(response['StartTime'].split('.')[0], '%Y-%m-%dT%H:%M:%S')
-        })
+        for product in self:
+            product.write({
+                'ebay_listing_status': 'Active' if qty > 0 else 'Out Of Stock',
+                'ebay_id': response['ItemID'],
+                'ebay_url': item['Item']['ListingDetails']['ViewItemURL'],
+                'ebay_start_date': datetime.strptime(response['StartTime'].split('.')[0],
+                    '%Y-%m-%dT%H:%M:%S')
+            })
 
-    @api.one
     def push_product_ebay(self):
-        if self.ebay_listing_status != 'Active':
-            item_dict = self._get_item_dict()
+        for product in self:
+            if product.ebay_listing_status != 'Active':
+                item_dict = product._get_item_dict()
 
-            response = self.ebay_execute('AddItem' if self.ebay_listing_type == 'Chinese'
-                                         else 'AddFixedPriceItem', item_dict)
-            self._set_variant_url(response.dict()['ItemID'])
-            self._update_ebay_data(response.dict())
+                response = self.ebay_execute('AddItem' if product.ebay_listing_type == 'Chinese'
+                                             else 'AddFixedPriceItem', item_dict)
+                product._set_variant_url(response.dict()['ItemID'])
+                product._update_ebay_data(response.dict())
 
-    @api.one
     def end_listing_product_ebay(self):
-        call_data = {"ItemID": self.ebay_id,
-                     "EndingReason": "NotAvailable"}
-        self.ebay_execute('EndItem' if self.ebay_listing_type == 'Chinese'
-                          else 'EndFixedPriceItem', call_data)
-        self.ebay_listing_status = 'Ended'
+        for product in self:
+            call_data = {"ItemID": product.ebay_id,
+                         "EndingReason": "NotAvailable"}
+            self.ebay_execute('EndItem' if product.ebay_listing_type == 'Chinese'
+                              else 'EndFixedPriceItem', call_data)
+            product.ebay_listing_status = 'Ended'
 
-    @api.one
     def relist_product_ebay(self):
-        item_dict = self._get_item_dict()
-        # set the item id to relist the correct ebay listing
-        item_dict['Item']['ItemID'] = self.ebay_id
-        response = self.ebay_execute('RelistItem' if self.ebay_listing_type == 'Chinese'
-                                     else 'RelistFixedPriceItem', item_dict)
-        self._set_variant_url(response.dict()['ItemID'])
-        self._update_ebay_data(response.dict())
+        for product in self:
+            item_dict = product._get_item_dict()
+            # set the item id to relist the correct ebay listing
+            item_dict['Item']['ItemID'] = product.ebay_id
+            response = self.ebay_execute('RelistItem' if product.ebay_listing_type == 'Chinese'
+                                         else 'RelistFixedPriceItem', item_dict)
+            product._set_variant_url(response.dict()['ItemID'])
+            product._update_ebay_data(response.dict())
 
-    @api.one
     def revise_product_ebay(self):
-        item_dict = self._get_item_dict()
-        # set the item id to revise the correct ebay listing
-        item_dict['Item']['ItemID'] = self.ebay_id
-        if not self.ebay_subtitle:
-            item_dict['DeletedField'] = 'Item.SubTitle'
+        for product in self:
+            item_dict = product._get_item_dict()
+            # set the item id to revise the correct ebay listing
+            item_dict['Item']['ItemID'] = product.ebay_id
+            if not product.ebay_subtitle:
+                item_dict['DeletedField'] = 'Item.SubTitle'
 
-        response = self.ebay_execute('ReviseItem' if self.ebay_listing_type == 'Chinese'
-                                     else 'ReviseFixedPriceItem', item_dict)
-        self._set_variant_url(response.dict()['ItemID'])
-        self._update_ebay_data(response.dict())
+            response = self.ebay_execute('ReviseItem' if product.ebay_listing_type == 'Chinese'
+                                         else 'ReviseFixedPriceItem', item_dict)
+            product._set_variant_url(response.dict()['ItemID'])
+            product._update_ebay_data(response.dict())
 
     @api.model
     def sync_product_status(self, sync_big_stocks=False, auto_commit=False):
@@ -570,8 +572,11 @@ class ProductTemplate(models.Model):
             if products.filtered(lambda p: end_date > p.ebay_start_date >= start_date):
                 self._sync_product_status_ranged(1, delta_days=i*120, sync_big_stocks=sync_big_stocks, auto_commit=auto_commit)
 
-    @api.one
     def _sync_transaction(self, item, auto_commit=False):
+        for product in self:
+            product.__sync_transaction(item, auto_commit=auto_commit)
+
+    def __sync_transaction(self, item, auto_commit=False):
         try:
             if self.ebay_listing_status != 'Ended'\
                and self.ebay_listing_status != 'Out Of Stock':
@@ -611,8 +616,11 @@ class ProductTemplate(models.Model):
             # not configured, ignore
             return
 
-    @api.one
     def create_sale_order(self, transaction):
+        for product in self:
+            product._create_sale_order(transaction)
+
+    def _create_sale_order(self, transaction):
         if not self.env['sale.order'].search([
            ('client_order_ref', '=', transaction['OrderLineItemID'])]):
             # After 15 days eBay doesn't send the email anymore but 'Invalid Request'.
@@ -784,8 +792,11 @@ class ProductTemplate(models.Model):
                     lambda line: not line._is_delivery()).mapped('product_id.invoice_policy'):
                 sale_order._create_invoices(final=True)
 
-    @api.one
     def sync_available_qty(self):
+        for product in self:
+            product._sync_available_qty()
+
+    def _sync_available_qty(self):
         if self.ebay_sync_stock:
             if self.ebay_listing_status in ['Active', 'Error']:
                 # The product is Active on eBay but there is no more stock
@@ -830,15 +841,15 @@ class ProductTemplate(models.Model):
                     else:
                         self.relist_product_ebay()
 
-    @api.one
     def unlink_listing_product_ebay(self):
-        self._sync_product_status()
-        self.write({
-            'ebay_use': False,
-            'ebay_id': False,
-            'ebay_listing_status': 'Unlisted',
-            'ebay_url': False,
-        })
+        for product in self:
+            product._sync_product_status()
+            product.write({
+                'ebay_use': False,
+                'ebay_id': False,
+                'ebay_listing_status': 'Unlisted',
+                'ebay_url': False,
+            })
 
     @api.model
     def _cron_sync_ebay_products(self, sync_big_stocks=False, auto_commit=False):

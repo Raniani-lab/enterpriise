@@ -33,14 +33,14 @@ class MrpBom(models.Model):
             bom.eco_count = result.get(bom.id, 0)
             bom.eco_inprogress_count = result_inprogress.get(bom.product_tmpl_id.id, 0)
 
-    @api.one
     def _compute_revision_ids(self):
-        previous_boms = self.env['mrp.bom']
-        current = self
-        while current.previous_bom_id:
-            previous_boms |= current
-            current = current.previous_bom_id
-        self.revision_ids = previous_boms.ids
+        for rec in self:
+            previous_boms = self.env['mrp.bom']
+            current = self
+            while current.previous_bom_id:
+                previous_boms |= current
+                current = current.previous_bom_id
+            rec.revision_ids = previous_boms.ids
 
     @api.multi
     def apply_new_version(self):

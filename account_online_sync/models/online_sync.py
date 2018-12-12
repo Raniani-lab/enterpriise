@@ -34,9 +34,9 @@ class ProviderAccount(models.Model):
     account_online_journal_ids = fields.One2many('account.online.journal', 'account_online_provider_id')
     company_id = fields.Many2one('res.company', required=True, readonly=True, default=lambda self: self.env.company)
 
-    @api.one
     def _compute_next_synchronization(self):
-        self.next_refresh = self.env['ir.cron'].sudo().search([('id', '=', self.env.ref('account_online_sync.online_sync_cron').id)], limit=1).nextcall
+        for rec in self:
+            rec.next_refresh = self.env['ir.cron'].sudo().search([('id', '=', self.env.ref('account_online_sync.online_sync_cron').id)], limit=1).nextcall
 
     @api.multi
     def open_action(self, action_name, number_added):
@@ -342,9 +342,13 @@ class AccountJournal(models.Model):
                                                default='none',
                                                string='Creation of Bank Statements')
 
-    @api.one
     def _compute_next_synchronization(self):
-        self.next_synchronization = self.env['ir.cron'].sudo().search([('id', '=', self.env.ref('account_online_sync.online_sync_cron').id)], limit=1).nextcall
+        next_sync = self.env['ir.cron'].sudo().search([
+            ('id', '=', self.env.ref('account_online_sync.online_sync_cron').id)
+        ], limit=1).nextcall
+
+        for rec in self:
+            rec.next_synchronization = next_sync
 
     @api.multi
     def action_choose_institution(self):

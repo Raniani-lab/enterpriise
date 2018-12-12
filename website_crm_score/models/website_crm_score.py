@@ -18,27 +18,27 @@ class website_crm_score(models.Model):
     _inherit = ['mail.thread']
     _description = 'Website CRM Score'
 
-    @api.one
     def _count_leads(self):
-        if self.id:
-            self._cr.execute("""
-                 SELECT COUNT(1)
-                 FROM crm_lead_score_rel
-                 WHERE score_id = %s
-                 """, (self.id,))
-            self.leads_count = self._cr.fetchone()[0]
-        else:
-            self.leads_count = 0
+        for rec in self:
+            if rec.id:
+                self._cr.execute("""
+                     SELECT COUNT(1)
+                     FROM crm_lead_score_rel
+                     WHERE score_id = %s
+                     """, (rec.id,))
+                rec.leads_count = rec._cr.fetchone()[0]
+            else:
+                rec.leads_count = 0
 
-    @api.one
     @api.constrains('domain')
     def _assert_valid_domain(self):
-        try:
-            domain = safe_eval(self.domain or '[]', evaluation_context)
-            self.env['crm.lead'].search(domain, limit=1)
-        except Exception as e:
-            _logger.warning('Exception: %s' % (e,))
-            raise Warning('The domain is incorrectly formatted')
+        for rec in self:
+            try:
+                domain = safe_eval(rec.domain or '[]', evaluation_context)
+                self.env['crm.lead'].search(domain, limit=1)
+            except Exception as e:
+                _logger.warning('Exception: %s' % (e,))
+                raise Warning('The domain is incorrectly formatted')
 
     name = fields.Char('Name', required=True)
     rule_type = fields.Selection([('score', 'Scoring'), ('active', 'Archive'), ('unlink', 'Delete')], default='score', required=True, tracking=True,

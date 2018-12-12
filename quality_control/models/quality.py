@@ -133,25 +133,25 @@ class QualityCheck(models.Model):
     warning_message = fields.Text(compute='_compute_warning_message')
     norm_unit = fields.Char(related='point_id.norm_unit', readonly=True)
 
-    @api.one
     @api.depends('measure_success')
     def _compute_warning_message(self):
-        if self.measure_success == 'fail':
-            self.warning_message = _('You measured %.2f %s and it should be between %.2f and %.2f %s.') % (
-                self.measure, self.norm_unit, self.point_id.tolerance_min,
-                self.point_id.tolerance_max, self.norm_unit
-            )
+        for rec in self:
+            if rec.measure_success == 'fail':
+                rec.warning_message = _('You measured %.2f %s and it should be between %.2f and %.2f %s.') % (
+                    rec.measure, rec.norm_unit, rec.point_id.tolerance_min,
+                    rec.point_id.tolerance_max, rec.norm_unit
+                )
 
-    @api.one
     @api.depends('measure')
     def _compute_measure_success(self):
-        if self.point_id.test_type == 'passfail':
-            self.measure_success = 'none'
-        else:
-            if self.measure < self.point_id.tolerance_min or self.measure > self.point_id.tolerance_max:
-                self.measure_success = 'fail'
+        for rec in self:
+            if rec.point_id.test_type == 'passfail':
+                rec.measure_success = 'none'
             else:
-                self.measure_success = 'pass'
+                if rec.measure < rec.point_id.tolerance_min or rec.measure > rec.point_id.tolerance_max:
+                    rec.measure_success = 'fail'
+                else:
+                    rec.measure_success = 'pass'
 
     # Add picture dependency
     @api.depends('picture')

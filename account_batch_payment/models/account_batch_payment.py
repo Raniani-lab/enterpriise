@@ -44,28 +44,31 @@ class AccountBatchPayment(models.Model):
         for record in self:
             record.available_payment_method_ids = record.batch_type == 'inbound' and record.journal_id.inbound_payment_method_ids.ids or record.journal_id.outbound_payment_method_ids.ids
 
-    @api.one
     @api.depends('journal_id')
     def _compute_currency(self):
-        if self.journal_id:
-            self.currency_id = self.journal_id.currency_id or self.journal_id.company_id.currency_id
-        else:
-            self.currency_id = False
+        for batch in self:
+            if batch.journal_id:
+                batch.currency_id = batch.journal_id.currency_id or batch.journal_id.company_id.currency_id
+            else:
+                batch.currency_id = False
 
-    @api.one
     @api.depends('payment_ids', 'payment_ids.amount', 'journal_id')
     def _compute_amount(self):
-        company_currency = self.journal_id.company_id.currency_id or self.env.company.currency_id
-        journal_currency = self.journal_id.currency_id or company_currency
-        amount = 0
-        for payment in self.payment_ids:
-            payment_currency = payment.currency_id or company_currency
-            if payment_currency == journal_currency:
-                amount += payment.amount
-            else:
-                # Note : this makes self.date the value date, which IRL probably is the date of the reception by the bank
-                amount += payment_currency._convert(payment.amount, journal_currency, self.journal_id.company_id, self.date or fields.Date.today())
-        self.amount = amount
+        for batch in self:
+            company_currency = batch.journal_id.company_id.currency_id or self.env.company.currency_id
+            journal_currency = batch.journal_id.currency_id or company_currency
+            amount = 0
+            for payment in batch.payment_ids:
+                payment_currency = payment.currency_id or company_currency
+                if payment_currency == journal_currency:
+                    amount += payment.amount
+                else:
+                    # note: this makes rec.date the value date, which IRL probably is the
+                    # date of the reception by the bank
+                    amount += payment_currency._convert(
+                        payment.amount, journal_currency, batch.journal_id.company_id,
+                        batch.date or fields.Date.today())
+            batch.amount = amount
 
     @api.constrains('batch_type', 'journal_id', 'payment_ids')
     def _check_payments_constrains(self):
@@ -104,11 +107,11 @@ class AccountBatchPayment(models.Model):
 
         return rslt
 
-    @api.one
     def normalize_payments(self):
-        # Since a batch payment has no confirmation step (it can be used to select payments in a bank reconciliation
-        # as long as state != reconciled), its payments need to be posted
-        self.payment_ids.filtered(lambda r: r.state == 'draft').post()
+        for batch in self:
+            # Since a batch payment has no confirmation step (it can be used to select payments in a bank reconciliation
+            # as long as state != reconciled), its payments need to be posted
+            batch.payment_ids.filtered(lambda r: r.state == 'draft').post()
 
     @api.model
     def _get_batch_name(self, batch_type, sequence_date, vals):

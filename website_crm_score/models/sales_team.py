@@ -19,33 +19,33 @@ class team_user(models.Model):
     _inherit = ['mail.thread']
     _description = 'Salesperson (Team Member)'
 
-    @api.one
     def _count_leads(self):
-        if self.id:
-            limit_date = datetime.datetime.now() - datetime.timedelta(days=30)
-            domain = [('user_id', '=', self.user_id.id),
-                      ('team_id', '=', self.team_id.id),
-                      ('assign_date', '>', fields.Datetime.to_string(limit_date))
-                      ]
-            self.leads_count = self.env['crm.lead'].search_count(domain)
-        else:
-            self.leads_count = 0
+        for rec in self:
+            if rec.id:
+                limit_date = datetime.datetime.now() - datetime.timedelta(days=30)
+                domain = [('user_id', '=', rec.user_id.id),
+                          ('team_id', '=', rec.team_id.id),
+                          ('assign_date', '>', fields.Datetime.to_string(limit_date))
+                          ]
+                rec.leads_count = self.env['crm.lead'].search_count(domain)
+            else:
+                rec.leads_count = 0
 
-    @api.one
     def _get_percentage(self):
-        try:
-            self.percentage_leads = round(100 * self.leads_count / float(self.maximum_user_leads), 2)
-        except ZeroDivisionError:
-            self.percentage_leads = 0.0
+        for rec in self:
+            try:
+                rec.percentage_leads = round(100 * rec.leads_count / float(rec.maximum_user_leads), 2)
+            except ZeroDivisionError:
+                rec.percentage_leads = 0.0
 
-    @api.one
     @api.constrains('team_user_domain')
     def _assert_valid_domain(self):
-        try:
-            domain = safe_eval(self.team_user_domain or '[]', evaluation_context)
-            self.env['crm.lead'].search(domain, limit=1)
-        except Exception:
-            raise Warning('The domain is incorrectly formatted')
+        for rec in self:
+            try:
+                domain = safe_eval(rec.team_user_domain or '[]', evaluation_context)
+                self.env['crm.lead'].search(domain, limit=1)
+            except Exception:
+                raise Warning('The domain is incorrectly formatted')
 
     team_id = fields.Many2one('crm.team', string='Sales Team', required=True, oldname='section_id')
     user_id = fields.Many2one('res.users', string='Saleman', required=True)
@@ -56,10 +56,10 @@ class team_user(models.Model):
     leads_count = fields.Integer('Assigned Leads', compute='_count_leads', help='Assigned Leads this last month')
     percentage_leads = fields.Float(compute='_get_percentage', string='Percentage leads')
 
-    @api.one
     def toggle_active(self):
-        if isinstance(self.id, int):  # if already saved
-            self.running = not self.running
+        for rec in self:
+            if isinstance(rec.id, int):  # if already saved
+                rec.running = not rec.running
 
 
 class crm_team(models.Model):
@@ -76,34 +76,34 @@ class crm_team(models.Model):
             team_id = super(crm_team, self)._get_default_team_id(user_id=user_id)
         return team_id
 
-    @api.one
     def _count_leads(self):
-        if self.id:
-            self.leads_count = self.env['crm.lead'].search_count([('team_id', '=', self.id)])
-        else:
-            self.leads_count = 0
+        for rec in self:
+            if rec.id:
+                rec.leads_count = self.env['crm.lead'].search_count([('team_id', '=', rec.id)])
+            else:
+                rec.leads_count = 0
 
-    @api.one
     def _assigned_leads_count(self):
-        limit_date = datetime.datetime.now() - datetime.timedelta(days=30)
-        domain = [('assign_date', '>=', fields.Datetime.to_string(limit_date)),
-                  ('team_id', '=', self.id),
-                  ('user_id', '!=', False)
-                  ]
-        self.assigned_leads_count = self.env['crm.lead'].search_count(domain)
+        for rec in self:
+            limit_date = datetime.datetime.now() - datetime.timedelta(days=30)
+            domain = [('assign_date', '>=', fields.Datetime.to_string(limit_date)),
+                      ('team_id', '=', rec.id),
+                      ('user_id', '!=', False)
+                      ]
+            rec.assigned_leads_count = self.env['crm.lead'].search_count(domain)
 
-    @api.one
     def _capacity(self):
-        self.capacity = sum(s.maximum_user_leads for s in self.team_user_ids)
+        for rec in self:
+            rec.capacity = sum(s.maximum_user_leads for s in rec.team_user_ids)
 
-    @api.one
     @api.constrains('score_team_domain')
     def _assert_valid_domain(self):
-        try:
-            domain = safe_eval(self.score_team_domain or '[]', evaluation_context)
-            self.env['crm.lead'].search(domain, limit=1)
-        except Exception:
-            raise Warning('The domain is incorrectly formatted')
+        for rec in self:
+            try:
+                domain = safe_eval(rec.score_team_domain or '[]', evaluation_context)
+                self.env['crm.lead'].search(domain, limit=1)
+            except Exception:
+                raise Warning('The domain is incorrectly formatted')
 
     ratio = fields.Float(string='Ratio')
     score_team_domain = fields.Char('Domain', tracking=True)

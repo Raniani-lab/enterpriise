@@ -642,35 +642,38 @@ class SaleSubscription(models.Model):
         pass
 
     # online payments
-    @api.one
     def _do_payment(self, payment_token, invoice, two_steps_sec=True):
         tx_obj = self.env['payment.transaction']
-        reference = "SUB%s-%s" % (self.id, datetime.datetime.now().strftime('%y%m%d_%H%M%S'))
-        values = {
-            'amount': invoice.amount_total,
-            'acquirer_id': payment_token.acquirer_id.id,
-            'type': 'server2server',
-            'currency_id': invoice.currency_id.id,
-            'reference': reference,
-            'payment_token_id': payment_token.id,
-            'partner_id': self.partner_id.id,
-            'partner_country_id': self.partner_id.country_id.id,
-            'invoice_ids': [(6, 0, [invoice.id])],
-            'callback_model_id': self.env['ir.model'].sudo().search([('model', '=', self._name)], limit=1).id,
-            'callback_res_id': self.id,
-            'callback_method': 'reconcile_pending_transaction',
-        }
+        results = []
 
-        tx = tx_obj.create(values)
+        for rec in self:
+            reference = "SUB%s-%s" % (rec.id, datetime.datetime.now().strftime('%y%m%d_%H%M%S'))
+            values = {
+                'amount': invoice.amount_total,
+                'acquirer_id': payment_token.acquirer_id.id,
+                'type': 'server2server',
+                'currency_id': invoice.currency_id.id,
+                'reference': reference,
+                'payment_token_id': payment_token.id,
+                'partner_id': rec.partner_id.id,
+                'partner_country_id': rec.partner_id.country_id.id,
+                'invoice_ids': [(6, 0, [invoice.id])],
+                'callback_model_id': self.env['ir.model'].sudo().search([('model', '=', rec._name)], limit=1).id,
+                'callback_res_id': rec.id,
+                'callback_method': 'reconcile_pending_transaction',
+            }
+            tx = tx_obj.create(values)
 
-        baseurl = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
-        payment_secure = {'3d_secure': two_steps_sec,
-                          'accept_url': baseurl + '/my/subscription/%s/payment/%s/accept/' % (self.uuid, tx.id),
-                          'decline_url': baseurl + '/my/subscription/%s/payment/%s/decline/' % (self.uuid, tx.id),
-                          'exception_url': baseurl + '/my/subscription/%s/payment/%s/exception/' % (self.uuid, tx.id),
-                          }
-        tx.s2s_do_transaction(**payment_secure)
-        return tx
+            baseurl = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
+            payment_secure = {
+                '3d_secure': two_steps_sec,
+                'accept_url': baseurl + '/my/subscription/%s/payment/%s/accept/' % (rec.uuid, tx.id),
+                'decline_url': baseurl + '/my/subscription/%s/payment/%s/decline/' % (rec.uuid, tx.id),
+                'exception_url': baseurl + '/my/subscription/%s/payment/%s/exception/' % (rec.uuid, tx.id),
+            }
+            tx.s2s_do_transaction(**payment_secure)
+            results.append(tx)
+        return results
 
     @api.multi
     def reconcile_pending_transaction(self, tx, invoice=False):

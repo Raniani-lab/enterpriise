@@ -60,23 +60,23 @@ class AccountPayment(models.Model):
                         {'partner_bank_account_id': [('partner_id', 'in', partners.ids + partners.mapped('commercial_partner_id').ids)]}
                 }
 
-    @api.one
     @api.constrains('payment_method_id', 'journal_id')
     def _check_bank_account(self):
-        if self.payment_method_id == self.env.ref('account_sepa.account_payment_method_sepa_ct'):
-            if not self.journal_id.bank_account_id or not self.journal_id.bank_account_id.acc_type == 'iban':
-                raise ValidationError(_("The journal '%s' requires a proper IBAN account to pay via SEPA. Please configure it first.") % self.journal_id.name)
-            if not self.journal_id.bank_account_id.bank_bic:
-                raise ValidationError(_("The account '%s' (journal %s) requires a Bank Identification Code (BIC) to pay via SEPA. Please configure it first.")
-                    % (self.journal_id.bank_account_id.acc_number, self.journal_id.name))
+        for rec in self:
+            if rec.payment_method_id == self.env.ref('account_sepa.account_payment_method_sepa_ct'):
+                if not rec.journal_id.bank_account_id or not rec.journal_id.bank_account_id.acc_type == 'iban':
+                    raise ValidationError(_("The journal '%s' requires a proper IBAN account to pay via SEPA. Please configure it first.") % rec.journal_id.name)
+                if not rec.journal_id.bank_account_id.bank_bic:
+                    raise ValidationError(_("The account '%s' (journal %s) requires a Bank Identification Code (BIC) to pay via SEPA. Please configure it first.")
+                        % (rec.journal_id.bank_account_id.acc_number, rec.journal_id.name))
 
-    @api.one
     @api.constrains('payment_method_id', 'partner_bank_account_id')
     def _check_partner_bank_account(self):
-        if self.payment_method_id == self.env.ref('account_sepa.account_payment_method_sepa_ct'):
-            # Note, the condition allows to use non-IBAN account. SEPA actually supports this under certain conditions
-            if self.partner_bank_account_id.acc_type == 'iban' and not self.partner_bank_account_id.bank_bic:
-                raise ValidationError(_("The partner account '%s' requires a Bank Identification Code (BIC) to pay via SEPA. Please configure it first.") % self.partner_bank_account_id.acc_number)
+        for rec in self:
+            if rec.payment_method_id == self.env.ref('account_sepa.account_payment_method_sepa_ct'):
+                # Note, the condition allows to use non-IBAN account. SEPA actually supports this under certain conditions
+                if rec.partner_bank_account_id.acc_type == 'iban' and not rec.partner_bank_account_id.bank_bic:
+                    raise ValidationError(_("The partner account '%s' requires a Bank Identification Code (BIC) to pay via SEPA. Please configure it first.") % rec.partner_bank_account_id.acc_number)
 
     @api.onchange('destination_journal_id')
     def _onchange_destination_journal_id(self):

@@ -36,50 +36,52 @@ class HrPayslipEmployeeDepartureHoliday(models.TransientModel):
     fictitious_remuneration_n1 = fields.Monetary('Remuneration fictitious previous year', compute='_compute_fictitious_remuneration_n1')
 
 
-    @api.one
     @api.depends('employee_id')
     def _compute_payslip_ids(self):
         """ get all payslip """
 
-        current_year = self.employee_id.end_notice_period.replace(month=1, day=1)
-        previous_year = current_year + relativedelta(years=-1)
+        for attest in self:
+            current_year = attest.employee_id.end_notice_period.replace(month=1, day=1)
+            previous_year = current_year + relativedelta(years=-1)
 
-        self.payslip_n_ids = self.env['hr.payslip'].search(
-            [('employee_id', '=', self.employee_id.id),('date_to', '>=', current_year)])
-        self.payslip_n1_ids = self.env['hr.payslip'].search(
-            [('employee_id', '=', self.employee_id.id), ('date_to', '>=', previous_year),
-            ('date_from', '<', current_year)])
+            attest.payslip_n_ids = self.env['hr.payslip'].search(
+                [('employee_id', '=', attest.employee_id.id),('date_to', '>=', current_year)])
+            attest.payslip_n1_ids = self.env['hr.payslip'].search(
+                [('employee_id', '=', attest.employee_id.id), ('date_to', '>=', previous_year),
+                ('date_from', '<', current_year)])
 
-        self.net_n = sum(payslip.basic_wage for payslip in self.payslip_n_ids)
-        self.net_n1 = sum(payslip.basic_wage for payslip in self.payslip_n1_ids)
+            attest.net_n = sum(payslip.basic_wage for payslip in attest.payslip_n_ids)
+            attest.net_n1 = sum(payslip.basic_wage for payslip in attest.payslip_n1_ids)
 
-    @api.one
     @api.depends('employee_id')
     def _compute_leave_ids(self):
         """ get all Time Off """
 
-        current_year = self.employee_id.end_notice_period.replace(month=1, day=1)
-        next_year = current_year + relativedelta(years=+1)
+        for attest in self:
+            current_year = attest.employee_id.end_notice_period.replace(month=1, day=1)
+            next_year = current_year + relativedelta(years=+1)
 
-        self.time_off_n_ids = self.env['hr.leave'].search(
-            [('employee_id', '=', self.employee_id.id), ('date_to', '>=', current_year),
-            ('date_from', '<', next_year)])
+            attest.time_off_n_ids = self.env['hr.leave'].search(
+                [('employee_id', '=', attest.employee_id.id), ('date_to', '>=', current_year),
+                ('date_from', '<', next_year)])
 
-        self.time_off_allocation_n_ids = self.env['hr.leave.allocation'].search(
-            [('employee_id', '=', self.employee_id.id)])
+            attest.time_off_allocation_n_ids = self.env['hr.leave.allocation'].search(
+                [('employee_id', '=', attest.employee_id.id)])
 
-        self.time_off_taken = sum(time_off.number_of_days for time_off in self.time_off_n_ids)
-        self.time_off_allocated = sum(allocation.number_of_days for allocation in self.time_off_allocation_n_ids)
+            attest.time_off_taken = sum(time_off.number_of_days for time_off in attest.time_off_n_ids)
+            attest.time_off_allocated = sum(allocation.number_of_days for allocation in attest.time_off_allocation_n_ids)
 
-    @api.one
     @api.depends('unpaid_average_remunaration_n', 'unpaid_time_off_n')
     def _compute_fictitious_remuneration_n(self):
-        self.fictitious_remuneration_n = self.unpaid_time_off_n * self.unpaid_average_remunaration_n * 3 / (13 * 5)
+        for attest in self:
+            attest.fictitious_remuneration_n = (
+                attest.unpaid_time_off_n * attest.unpaid_average_remunaration_n * 3 / (13 * 5))
 
-    @api.one
     @api.depends('unpaid_average_remunaration_n1', 'unpaid_time_off_n1')
     def _compute_fictitious_remuneration_n1(self):
-        self.fictitious_remuneration_n1 = self.unpaid_time_off_n1 * self.unpaid_average_remunaration_n1 * 3 / (13 * 5)
+        for attest in self:
+            attest.fictitious_remuneration_n1 = (
+                attest.unpaid_time_off_n1 * attest.unpaid_average_remunaration_n1 * 3 / (13 * 5))
 
 
     def compute_termination_holidays(self):

@@ -7,9 +7,9 @@ from hashlib import md5
 class Lead(models.Model):
     _inherit = 'crm.lead'
 
-    @api.one
     def _count_pageviews(self):
-        self.pageviews_count = len(self.score_pageview_ids)
+        for rec in self:
+            rec.pageviews_count = len(rec.score_pageview_ids)
 
     @api.depends('score_ids', 'score_ids.value')
     def _compute_score(self):

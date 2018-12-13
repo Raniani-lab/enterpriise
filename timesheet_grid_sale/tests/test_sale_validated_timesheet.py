@@ -117,7 +117,7 @@ class TestSaleValidatedTimesheet(TestCommonSaleTimesheetNoChart):
         self.assertEqual(self.delivered_so_line.qty_delivered, 6, 'Delivered quantity should be 6 as some timesheet is validated')
 
         # invoice SO
-        invoice_id1 = self.sale_order.action_invoice_create()
+        invoice_id1 = self.sale_order._create_invoices()
         invoice1 = self.env['account.invoice'].browse(invoice_id1)
         # check invoiced amount
         self.assertEqual(invoice1.amount_total, self.ordered_so_line.price_unit * 10 + self.delivered_so_line.price_unit * 6, 'Invoiced amount should be equal to Ordered SOL + Delivered SOL unit price * 6')
@@ -146,7 +146,7 @@ class TestSaleValidatedTimesheet(TestCommonSaleTimesheetNoChart):
         self.assertEqual(self.delivered_so_line.qty_delivered, 10, 'All quantity should be delivered')
 
         # invoice remaining SO
-        invoice_id2 = self.sale_order.action_invoice_create()
+        invoice_id2 = self.sale_order._create_invoices()
         invoice2 = self.env['account.invoice'].browse(invoice_id2)
 
         # check invoiced amount

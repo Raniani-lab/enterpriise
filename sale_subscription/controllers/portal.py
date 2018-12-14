@@ -242,7 +242,7 @@ class sale_subscription(http.Controller):
         if kw.get('pm_id'):
             new_token = request.env['payment.token'].browse(int(kw.get('pm_id')))
 
-            if new_token.verified:
+            if (new_token.verified and new_token.acquirer_id.check_validity) or not new_token.acquirer_id.check_validity:
                 account.payment_token_id = new_token
                 get_param = 'message=Your payment method has been changed for this subscription.&message_class=alert-success'
             else:

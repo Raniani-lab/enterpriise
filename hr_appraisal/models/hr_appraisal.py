@@ -149,26 +149,35 @@ class HrAppraisal(models.Model):
 
     @api.multi
     def send_appraisal(self):
-        ComposeMessage = self.env['survey.invite']
         for appraisal in self:
-            appraisal_receiver = appraisal._prepare_user_input_receivers()
-            for survey, receivers in appraisal_receiver:
-                for employee in receivers:
-                    email = employee.related_partner_id.email or employee.work_email
-                    if not email:
+            survey_data = appraisal._prepare_user_input_receivers()
+            for survey, employees in survey_data:
+                for employee in employees:
+                    if employee.related_partner_id.email:
+                        partner_ids = [(4, employee.related_partner_id.id)]
+                        emails = False
+                    elif employee.work_email:
+                        partner_ids = False
+                        emails = employee.work_email
+                    else:
                         continue
-                    render_template = appraisal.mail_template_id.with_context(email=email, survey=survey, employee=employee).generate_email([appraisal.id])
+
+                    if appraisal.mail_template_id:
+                        render_template = appraisal.mail_template_id.with_context(email=emails, survey=survey, employee=employee).generate_email([appraisal.id])
+                        body = render_template[appraisal.id]['body']
+                    else:
+                        body = ''
+
                     values = {
                         'survey_id': survey.id,
-                        'public': 'email_private',
-                        'partner_ids': employee.related_partner_id and [(4, employee.related_partner_id.id)] or False,
-                        'multi_email': email,
+                        'partner_ids': partner_ids,
+                        'emails': emails,
                         'subject': '%s appraisal: %s' % (appraisal.employee_id.name, survey.title),
-                        'body': render_template[appraisal.id]['body'],
-                        'date_deadline': appraisal.date_close,
+                        'body': body,
+                        'deadline': appraisal.date_close,
                     }
-                    compose_message_wizard = ComposeMessage.with_context(active_id=appraisal.id, active_model=appraisal._name, notif_layout="mail.mail_notification_light").create(values)
-                    compose_message_wizard.send_mail()  # Sends a mail and creates a survey.user_input
+                    compose_message_wizard = self.env['survey.invite'].with_context(active_id=appraisal.id, active_model=appraisal._name, notif_layout="mail.mail_notification_light").create(values)
+                    compose_message_wizard.action_invite()
                     if employee.user_id:
                         user_input = survey.user_input_ids.filtered(lambda user_input: user_input.partner_id == employee.user_id.partner_id and user_input.state != 'done')
                         if user_input:

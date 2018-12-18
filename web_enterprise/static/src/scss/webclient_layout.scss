@@ -21,9 +21,8 @@ html {
 
         > .o_action_manager {
             direction: ltr; //Define direction attribute here so when rtlcss preprocessor run, it converts it to rtl
-            flex: 1 1 auto;
+            flex: 1 1 100%;
             @include media-breakpoint-up(md) {
-                height: 100%;
                 overflow: hidden;
                 // iOS fix for scroll-x element inside scroll-y element
                 -webkit-overflow-scrolling: touch;
@@ -37,11 +36,10 @@ html {
                     flex: 0 0 auto;
                 }
                 > .o_content {
-                    flex: 1 1 auto;
+                    flex: 1 1 100%;
                     position: relative;  // Allow to redistribute the 100% height to its child
                     @include media-breakpoint-up(md) {
                         overflow: auto;
-                        height: 100%;
                         // iOS fix for scroll-x element inside scroll-y element
                         -webkit-overflow-scrolling: touch;
                     }

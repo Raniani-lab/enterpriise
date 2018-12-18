@@ -43,7 +43,7 @@ class HrAppraisal(models.Model):
     count_sent_survey = fields.Integer(string="Number of Sent Forms", compute='_compute_sent_survey')
     survey_completed_ids = fields.One2many('survey.user_input', 'appraisal_id', string='Answers', domain=lambda self: [('state', '=', 'done')])
     count_completed_survey = fields.Integer(string="Number of Answers", compute='_compute_completed_survey')
-    mail_template_id = fields.Many2one('mail.template', string="Email Template for Appraisal", default=lambda self: self.env.ref('hr_appraisal.send_appraisal_template'))
+    survey_template_id = fields.Many2one('mail.template', string="Appraisal Survey Invite Email", default=lambda self: self.env.ref('hr_appraisal.mail_template_user_input_appraisal'))
     meeting_id = fields.Many2one('calendar.event', string='Meeting')
     date_final_interview = fields.Date(string="Final Interview", index=True, tracking=True)
 
@@ -162,21 +162,20 @@ class HrAppraisal(models.Model):
                     else:
                         continue
 
-                    if appraisal.mail_template_id:
-                        render_template = appraisal.mail_template_id.with_context(email=emails, survey=survey, employee=employee).generate_email([appraisal.id])
-                        body = render_template[appraisal.id]['body']
-                    else:
-                        body = ''
-
                     values = {
                         'survey_id': survey.id,
+                        'template_id': appraisal.survey_template_id.id,
                         'partner_ids': partner_ids,
                         'emails': emails,
-                        'subject': '%s appraisal: %s' % (appraisal.employee_id.name, survey.title),
-                        'body': body,
                         'deadline': appraisal.date_close,
                     }
-                    compose_message_wizard = self.env['survey.invite'].with_context(active_id=appraisal.id, active_model=appraisal._name, notif_layout="mail.mail_notification_light").create(values)
+                    compose_message_wizard = self.env['survey.invite'].with_context(
+                        default_subject=_('%s appraisal: %s') % (appraisal.employee_id.name, survey.title),
+                        default_body=_('Please fill out appraisal survey.'),
+                        active_id=appraisal.id,
+                        active_model=appraisal._name,
+                        notif_layout="mail.mail_notification_light"
+                    ).create(values)
                     compose_message_wizard.action_invite()
                     if employee.user_id:
                         user_input = survey.user_input_ids.filtered(lambda user_input: user_input.partner_id == employee.user_id.partner_id and user_input.state != 'done')

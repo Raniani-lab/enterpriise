@@ -5,7 +5,7 @@
             <field name="employee_id" ref="hr.employee_admin"/>
             <field name="state">new</field>
             <field name="date_close" eval="(DateTime.now() + timedelta(1)).strftime('%Y-%m-%d')"/>
-            <field name="mail_template_id" ref="send_appraisal_template"/>
+            <field name="survey_template_id" ref="mail_template_user_input_appraisal"/>
             <field name="manager_survey_id" ref="hr_appraisal.opinion_form"/>
             <field name="colleagues_appraisal" eval="True"/>
             <field name="colleagues_ids" eval="[(6,0,[ref('hr.employee_al')])]"/>

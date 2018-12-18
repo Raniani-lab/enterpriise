@@ -153,7 +153,7 @@
         <field name="mass_mailing_id" ref="mass_mailing_after_7_days" />
         <field name="interval_number">7</field>
         <field name="interval_type">days</field>
-        <field name="domain">[['category_id', 'not ilike', 'Partner']]</field>
+        <field name="activity_domain">[['category_id', 'not ilike', 'Partner']]</field>
         <field name="campaign_id" ref="marketing_campaign_1"/>
     </record>
 

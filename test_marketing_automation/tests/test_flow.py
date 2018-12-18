@@ -56,7 +56,7 @@ for record in records:
         })
         act_1 = Activity.create({
             'name': 'Update name',
-            'domain': '%s' % ([('name', 'ilike', 'Test')]),
+            'activity_domain': '%s' % ([('name', 'ilike', 'Test')]),
             'campaign_id': campaign.id,
             'parent_id': act_0.id,
             'activity_type': 'action',

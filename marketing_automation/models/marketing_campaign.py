@@ -271,8 +271,12 @@ class MarketingActivity(models.Model):
     require_sync = fields.Boolean('Require trace sync')
 
     domain = fields.Char(
-        string='Filter', default='[]',
-        help='Activity will only be performed if record satisfies this domain')
+        string='Applied Filter', default='[]',
+        help='Activity will only be performed if record satisfies this domain, obtained from the combination of the activity filter and its inherited filter',
+        compute='_compute_inherited_domain', store=True, readonly=True)
+    activity_domain = fields.Char(
+        string='Activity Filter', default='[]',
+        help='Domain that applies to this activity and its child activities')
     model_id = fields.Many2one('ir.model', related='campaign_id.model_id', string='Model', readonly=True)
     model_name = fields.Char(related='model_id.model', string='Model Name', readonly=True)
 
@@ -309,6 +313,17 @@ class MarketingActivity(models.Model):
     total_reply = fields.Integer(compute='_compute_statistics')
     total_bounce = fields.Integer(compute='_compute_statistics')
     statistics_graph_data = fields.Char(compute='_compute_statistics_graph_data')
+
+    @api.depends('activity_domain', 'campaign_id.domain')
+    def _compute_inherited_domain(self):
+        for activity in self:
+            domain = expression.AND([safe_eval(activity.activity_domain),
+                                     safe_eval(activity.campaign_id.domain)])
+            ancestor = activity.parent_id
+            while ancestor:
+                domain = expression.AND([domain, safe_eval(ancestor.activity_domain)])
+                ancestor = ancestor.parent_id
+            activity.domain = domain
 
     @api.depends('interval_type', 'interval_number')
     def _compute_interval_standardized(self):

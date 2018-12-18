@@ -1,4 +1,4 @@
-odoo.define('quality_mrp_iot.pedal_form', function(require) {
+odoo.define('mrp_workorder_iot.pedal_form', function(require) {
 "use strict";
 
 var basic_fields = require('web.basic_fields');

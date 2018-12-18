@@ -160,9 +160,9 @@
                                     <t t-if="record.date_final_interview.raw_value and record.state.raw_value != 'new'"><strong><span>Final Interview: </span></strong>
                                     <span t-attf-class="#{deadline}"><i><field name="date_final_interview"/></i></span></t>
                                 </div>
-                                <div>
-                                    <a name="action_get_users_input" type="object">(<field name="count_sent_survey"/>) Sent Appraisal</a>
-                                    <a name="action_get_users_input" type="object" context="{'answers':True}"> (<field name="count_completed_survey"/>) Answers</a>
+                                <div class="row">
+                                    <a name="action_get_users_input" type="object" class="col-lg-6"><field name="count_sent_survey"/> Invitations</a>
+                                    <a name="action_get_completed_users_input" type="object" class="col-lg-6"> <field name="count_completed_survey"/> Answers</a>
                                 </div>
                                 <div class="oe_kanban_bottom_right">
                                     <div class="o_kanban_inline_block">

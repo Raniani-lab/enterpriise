@@ -168,6 +168,7 @@ class HrAppraisal(models.Model):
                         'partner_ids': partner_ids,
                         'emails': emails,
                         'deadline': appraisal.date_close,
+                        'appraisal_id': appraisal.id,
                     }
                     compose_message_wizard = self.env['survey.invite'].with_context(
                         default_subject=_('%s appraisal: %s') % (appraisal.employee_id.name, survey.title),
@@ -267,14 +268,17 @@ class HrAppraisal(models.Model):
 
     @api.multi
     def action_get_users_input(self):
-        """ Link to open sent appraisal"""
-        self.ensure_one()
+        """ Link to sent invites """
         action = self.env.ref('survey.action_survey_user_input').read()[0]
-        if self.env.context.get('answers'):
-            users_input = self.survey_completed_ids
-        else:
-            users_input = self.survey_sent_ids
-        action['domain'] = str([('id', 'in', users_input.ids)])
+        action['domain'] = [('appraisal_id', 'in', self.ids)]
+        action['context'] = {}  # Remove default group_by for surveys
+        return action
+
+    @api.multi
+    def action_get_completed_users_input(self):
+        """ Link to done surveys """
+        action = self.env.ref('survey.action_survey_user_input').read()[0]
+        action['domain'] = ['&', ('appraisal_id', 'in', self.ids), ('state', '=', 'done')]
         action['context'] = {}  # Remove default group_by for surveys.
         return action
 

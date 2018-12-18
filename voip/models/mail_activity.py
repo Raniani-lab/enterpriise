@@ -69,32 +69,39 @@ class MailActivity(models.Model):
         return numbers
 
     @api.multi
-    def action_feedback(self, feedback=False):
-        mail_message_id = False
-        phone_activities = self.filtered(lambda a: a.voip_phonecall_id)
-        if phone_activities:
-            remaining = self - phone_activities
-            for activity in phone_activities:
-                user_id = activity.user_id.partner_id.id
-                note = activity.note
-                voip_phonecall_id = activity.voip_phonecall_id
-                mail_message_id = super(MailActivity, activity).action_feedback(feedback)
-
-                vals = {
-                    'state': 'done',
-                    'mail_message_id': mail_message_id,
-                    'note': feedback if feedback else note,
+    def _action_done(self, feedback=False, attachment_ids=None):
+        # extract potential required data to update phonecalls
+        phonecall_values_to_keep = {}  # mapping index of self and acitivty value to keep {index: {key1: value1, key2: value2}}
+        for index, activity in enumerate(self):
+            if activity.voip_phonecall_id:
+                phonecall_values_to_keep[index] = {
+                    'note': activity.note,
+                    'voip_phonecall_id': activity.voip_phonecall_id,
+                    'call_date': activity.voip_phonecall_id.call_date,
+                    'partner_id': activity.user_id.partner_id.id
                 }
-                if not voip_phonecall_id.call_date:
-                    vals.update(call_date=fields.Datetime.now())
-                voip_phonecall_id.write(vals)
-                self.env['bus.bus'].sendone(
-                    (self._cr.dbname, 'res.partner', user_id),
-                    {'type': 'refresh_voip'}
-                )
-        else:
-            remaining = self
-        if remaining:
-            mail_message_id = super(MailActivity, remaining).action_feedback(feedback)
 
-        return mail_message_id
+        # call super, and unlink `self`
+        messages, activities = super(MailActivity, self)._action_done(feedback=feedback, attachment_ids=attachment_ids)
+
+        # update phonecalls and broadcast refresh notifications on bus
+        if phonecall_values_to_keep:
+            bus_notifications = []
+            for index, message in enumerate(self):
+                if index in phonecall_values_to_keep:
+                    values_to_keep = phonecall_values_to_keep[index]
+                    phonecall = values_to_keep['voip_phonecall_id']
+                    values_to_write = {
+                        'state': 'done',
+                        'mail_message_id': message.id,
+                        'note': feedback if feedback else values_to_keep['note'],
+                    }
+                    if not values_to_keep['call_date']:
+                        values_to_write['call_date'] = fields.Datetime.now()
+                    phonecall.write(values_to_write)
+
+                    bus_notifications.append([(self._cr.dbname, 'res.partner', values_to_keep['partner_id']), {'type': 'refresh_voip'}])
+
+            self.env['bus.bus'].sendmany(bus_notifications)
+
+        return messages, activities

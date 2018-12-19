@@ -2,6 +2,7 @@ from os.path import join
 from lxml import objectify
 from odoo.tools import misc
 from odoo.addons.l10n_mx_edi.tests import common
+from odoo.tests.common import Form
 
 
 class TestL10nMxEdiPayment(common.InvoiceTransactionCase):
@@ -30,7 +31,7 @@ class TestL10nMxEdiPayment(common.InvoiceTransactionCase):
         })
         self.account_payment.bank_id = self.bank.id
         self.account_payment.acc_number = '0123456789'
-        self.transfer = self.ref('l10n_mx_edi.payment_method_transferencia')
+        self.transfer = self.browse_ref('l10n_mx_edi.payment_method_transferencia')
         self.xml_expected_str = misc.file_open(join(
             'l10n_mx_edi_payment_bank', 'tests',
             'expected_payment.xml')).read().encode('UTF-8')
@@ -48,17 +49,15 @@ class TestL10nMxEdiPayment(common.InvoiceTransactionCase):
         invoice.refresh()
         self.assertEqual(invoice.l10n_mx_edi_pac_status, "signed",
                          invoice.message_ids.mapped("body"))
-        ctx = {'active_model': 'account.invoice', 'active_ids': [invoice.id]}
-        register_payments = self.env['account.register.payments'].with_context(ctx).create({ # noqa
-            'payment_date': invoice.date,
-            'l10n_mx_edi_payment_method_id': self.transfer,
-            'payment_method_id': self.payment_method_manual_out.id,
-            'journal_id': journal.id,
-            'communication': invoice.number,
-            'amount': invoice.amount_total,
-            'l10n_mx_edi_partner_bank_id': self.account_payment.id,
-        })
-        register_payments.create_payments()
+        payment_register = Form(self.env['account.payment'].with_context(active_model='account.invoice', active_ids=invoice.ids))
+        payment_register.payment_date = invoice.date
+        payment_register.l10n_mx_edi_payment_method_id = self.transfer
+        payment_register.payment_method_id = self.payment_method_manual_out
+        payment_register.journal_id = journal
+        payment_register.communication = invoice.number
+        payment_register.amount = invoice.amount_total
+        payment_register.l10n_mx_edi_partner_bank_id = self.account_payment
+        payment_register.save().post()
         payment = invoice.payment_ids
         self.assertEqual(
             payment.l10n_mx_edi_pac_status, 'signed',

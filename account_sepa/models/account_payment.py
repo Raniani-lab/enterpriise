@@ -4,21 +4,50 @@ from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 
 
-class AccountAbstractPayment(models.AbstractModel):
-    _inherit = "account.abstract.payment"
+class AccountPayment(models.Model):
+    _inherit = "account.payment"
+
+    display_qr_code = fields.Boolean(compute="_compute_display_code", store=False)
+    qr_code_url = fields.Char(compute="_compute_qr_code_url", store=False)
+
+    @api.multi
+    @api.depends('partner_type', 'payment_method_code', 'partner_bank_account_id')
+    def _compute_display_code(self):
+        for record in self:
+            record.display_qr_code = (record.partner_type == 'supplier' and
+                                      record.payment_method_code == 'manual' and
+                                      self.env.user.company_id.country_id in self.env.ref('base.europe').country_ids and
+                                      bool(record.partner_bank_account_id))
+
+    @api.multi
+    @api.depends('partner_bank_account_id', 'amount', 'communication')
+    def _compute_qr_code_url(self):
+        for record in self:
+            if record.partner_bank_account_id.qr_code_valid:
+                txt = _('Scan me with your banking app.')
+                record.qr_code_url = '''
+                    <br/>
+                    <img class="border border-dark rounded" src="{qrcode}"/>
+                    <br/>
+                    <strong class="text-center">{txt}</strong>
+                    '''.format(
+                        txt=txt,
+                        qrcode=record.partner_bank_account_id.build_qr_code_url(record.amount, record.communication))
+            else:
+                record.qr_code_url = '<strong class="text-center">{error}</strong><br/>'.format(
+                    error=_('The SEPA QR Code information is not set correctly.'))
 
     @api.model
     def _get_method_codes_using_bank_account(self):
-        res = super(AccountAbstractPayment, self)._get_method_codes_using_bank_account()
-        res.append('sepa_ct')
+        res = super(AccountPayment, self)._get_method_codes_using_bank_account()
+        res += ['sepa_ct', 'manual']
         return res
 
-
-class AccountRegisterPayments(models.TransientModel):
-    _inherit = "account.register.payments"
-
-    partner_bank_account_id = fields.Many2one('res.partner.bank', string="Recipient Bank Account")
-
+    @api.model
+    def _get_method_codes_needing_bank_account(self):
+        res = super(AccountPayment, self)._get_method_codes_needing_bank_account()
+        res += ['sepa_ct']
+        return res
 
     @api.onchange('payment_method_id')
     def _onchange_payment_method_id(self):
@@ -30,12 +59,6 @@ class AccountRegisterPayments(models.TransientModel):
                 return {'domain':
                         {'partner_bank_account_id': [('partner_id', 'in', partners.ids + partners.mapped('commercial_partner_id').ids)]}
                 }
-
-
-class AccountPayment(models.Model):
-    _inherit = "account.payment"
-
-    partner_bank_account_id = fields.Many2one('res.partner.bank', string="Recipient Bank Account")
 
     @api.one
     @api.constrains('payment_method_id', 'journal_id')

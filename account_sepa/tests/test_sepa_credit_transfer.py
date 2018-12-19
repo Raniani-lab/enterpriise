@@ -6,6 +6,7 @@ from lxml import etree
 from odoo.addons.account.tests.account_test_classes import AccountingTestCase
 from odoo.modules.module import get_module_resource
 from odoo.tests import tagged
+from odoo.tests.common import Form
 
 
 @tagged('post_install','-at_install')
@@ -13,6 +14,8 @@ class TestSEPACreditTransfer(AccountingTestCase):
 
     def setUp(self):
         super(TestSEPACreditTransfer, self).setUp()
+
+        self.env.user.company_id.country_id = self.env.ref('base.be')
 
         # Get some records
         self.asustek_sup = self.env['res.partner'].search([('name', 'ilike', 'Wood Corner'), ('supplier', '=', True)])
@@ -38,6 +41,7 @@ class TestSEPACreditTransfer(AccountingTestCase):
             'partner_id': self.asustek_sup[0].id,
             'acc_number': 'BE39103123456719',
             'bank_id': self.env.ref('base.bank_bnp').id,
+            'currency_id': self.env.ref('base.USD').id,
         })
         self.setSingleBankAccountToPartner(self.suppliers[0], {
             'acc_type': 'bank',
@@ -110,3 +114,25 @@ class TestSEPACreditTransfer(AccountingTestCase):
         self.assertTrue(self.xmlschema.validate(sct_doc), self.xmlschema.error_log.last_error)
         self.assertEqual(self.payment_1.state, 'sent')
         self.assertEqual(self.payment_3.state, 'sent')
+
+    def testQRCode(self):
+        """Test thats the QR-Code is displayed iff the mendatory fields are
+        written and in the good state"""
+
+        form = Form(self.env['account.payment'])
+        form.partner_type = 'customer'
+        self.assertEqual(form.display_qr_code, False)
+        form.partner_type = 'supplier'
+        self.assertEqual(form.display_qr_code, False)
+        form.payment_method_code == 'manual'
+        self.assertEqual(form.display_qr_code, False)
+        form.partner_id = self.asustek_sup
+        self.assertEqual(form.display_qr_code, True)
+        self.assertIn('The SEPA QR Code information is not set correctly', form.qr_code_url, 'A warning should be displayed')
+        self.asustek_sup.bank_ids[0].currency_id = self.env.ref('base.EUR')
+        form.partner_bank_account_id = form.partner_id.bank_ids[0]
+        self.assertIn('<img ', form.qr_code_url, 'The QR code should be displayed')
+        form.partner_bank_account_id = self.env['res.partner.bank']
+        self.assertIn('The SEPA QR Code information is not set correctly', form.qr_code_url, 'A warning should be displayed')
+        form.payment_method_id = self.sepa_ct
+        self.assertEqual(form.display_qr_code, False)

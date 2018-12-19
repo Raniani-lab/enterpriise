@@ -19,7 +19,7 @@ class TestAccountReports(SavepointCase):
     # -------------------------------------------------------------------------
     # DATA GENERATION
     # -------------------------------------------------------------------------
-    
+
     @classmethod
     def setUpClass(cls):
         super(TestAccountReports, cls).setUpClass()
@@ -193,12 +193,12 @@ class TestAccountReports(SavepointCase):
         self_ctx = self_ctx.with_context(journal_id=journal_id)
         view = 'account.invoice_form' if 'out' in invoice_type else 'account.invoice_supplier_form'
 
-        with Form(self_ctx, view=view) as invoice_form:
-            invoice_form.partner_id = partner
-            invoice_form.date_invoice = date
-            with invoice_form.invoice_line_ids.new() as invoice_line_form:
-                invoice_line_form.name = 'test'
-                invoice_line_form.price_unit = amount
+        invoice_form = Form(self_ctx, view=view)
+        invoice_form.partner_id = partner
+        invoice_form.date_invoice = date
+        with invoice_form.invoice_line_ids.new() as invoice_line_form:
+            invoice_line_form.name = 'test'
+            invoice_line_form.price_unit = amount
         invoice = invoice_form.save()
         invoice.action_invoice_open()
         return invoice
@@ -211,16 +211,16 @@ class TestAccountReports(SavepointCase):
         :param amount:      The payment amount.
         :return:            An account.payment record.
         '''
-        self_ctx = env['account.register.payments'].with_context(active_model='account.invoice', active_ids=invoices.ids)
-        with Form(self_ctx) as payment_form:
-            payment_form.payment_date = date
-            if amount:
-                payment_form.amount = amount
-            if journal:
-                payment_form.journal_id = journal
+        self_ctx = env['account.payment'].with_context(active_model='account.invoice', active_ids=invoices.ids)
+        payment_form = Form(self_ctx)
+        payment_form.payment_date = date
+        if amount:
+            payment_form.amount = amount
+        if journal:
+            payment_form.journal_id = journal
         register_payment = payment_form.save()
-        payments_action = register_payment.create_payments()
-        return env['account.payment'].search(payments_action['domain'])
+        register_payment.post()
+        return register_payment
 
     @staticmethod
     def _create_bank_statement(env, payment, amount=None, reconcile=True):
@@ -232,16 +232,16 @@ class TestAccountReports(SavepointCase):
         '''
         bank_journal = payment.journal_id
         amount = amount or (payment.payment_type == 'inbound' and payment.amount or -payment.amount)
-        with Form(env['account.bank.statement']) as statement_form:
-            statement_form.journal_id = bank_journal
-            statement_form.date = payment.payment_date
-            statement_form.name = payment.name
-            with statement_form.line_ids.new() as statement_line_form:
-                statement_line_form.date = payment.payment_date
-                statement_line_form.name = payment.name
-                statement_line_form.partner_id = payment.partner_id
-                statement_line_form.amount = amount
-            statement_form.balance_end_real = statement_form.balance_end
+        statement_form = Form(env['account.bank.statement'])
+        statement_form.journal_id = bank_journal
+        statement_form.date = payment.payment_date
+        statement_form.name = payment.name
+        with statement_form.line_ids.new() as statement_line_form:
+            statement_line_form.date = payment.payment_date
+            statement_line_form.name = payment.name
+            statement_line_form.partner_id = payment.partner_id
+            statement_line_form.amount = amount
+        statement_form.balance_end_real = statement_form.balance_end
         statement = statement_form.save()
         if reconcile:
             move_line = payment.move_line_ids.filtered(
@@ -252,9 +252,9 @@ class TestAccountReports(SavepointCase):
     # -------------------------------------------------------------------------
     # TESTS METHODS
     # -------------------------------------------------------------------------
-    
+
     def _init_options(self, report, date_from, date_to):
-        ''' Create new options at a certain date.        
+        ''' Create new options at a certain date.
         :param report:      The report.
         :param filter:      One of the following values: ('today', 'custom', 'this_month', 'this_quarter', 'this_year', 'last_month', 'last_quarter', 'last_year').
         :param date_from:   A datetime object or False.
@@ -344,7 +344,7 @@ class TestAccountReports(SavepointCase):
     # -------------------------------------------------------------------------
     # TESTS: General Ledger
     # -------------------------------------------------------------------------
-    
+
     def test_general_ledger_folded_unfolded(self):
         ''' Test folded/unfolded lines. '''
         # Init options.
@@ -2073,7 +2073,7 @@ class TestAccountReports(SavepointCase):
         bank_journal_eur.currency_id = foreign_currency
 
         invoice = self._create_invoice(self.env, 1000.0, self.partner_a, 'out_invoice', self.mar_year_minus_1)
-        payment = self._create_payment(self.env, self.mar_year_minus_1, invoice, 1000.0, journal=bank_journal_eur)
+        payment = self._create_payment(self.env, self.mar_year_minus_1, invoice, journal=bank_journal_eur)
         self._create_bank_statement(self.env, payment, amount=2300.00, reconcile=False)
 
         # Init options.

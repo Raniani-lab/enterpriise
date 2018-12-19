@@ -825,18 +825,11 @@ class AccountPayment(models.Model):
         return super(AccountPayment, self).action_draft()
 
 
-class AccountRegisterPayments(models.TransientModel):
-    _inherit = 'account.register.payments'
+class AccountPaymentRegister(models.TransientModel):
+    _inherit = 'account.payment.register'
 
-    l10n_mx_edi_payment_method_id = fields.Many2one(
-        'l10n_mx_edi.payment.method',
-        string='Payment Way',
-        help='Indicates the way the payment was/will be received, where the '
-        'options could be: Cash, Nominal Check, Credit Card, etc.')
-
-    def _prepare_payment_vals(self, invoices):
-        res = super(AccountRegisterPayments, self)._prepare_payment_vals(
-            invoices)
+    def _prepare_payment_vals(self, invoice):
+        res = super(AccountPaymentRegister, self)._prepare_payment_vals(invoice)
         res.update({
             'l10n_mx_edi_payment_method_id': self.l10n_mx_edi_payment_method_id.id,
         })

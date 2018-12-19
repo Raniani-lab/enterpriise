@@ -202,10 +202,6 @@ class AccountPayment(models.Model):
             if mandate.one_off:
                 mandate.action_close_mandate()
 
-
-class AccountRegisterPaymentsWizard(models.TransientModel):
-    _inherit = "account.register.payments"
-
     def create_payments(self):
         if self.payment_method_code == 'sdd':
             rslt = self.env['account.payment']
@@ -216,4 +212,4 @@ class AccountRegisterPaymentsWizard(models.TransientModel):
                 rslt += invoice.pay_with_mandate(mandate)
             return rslt
 
-        return super(AccountRegisterPaymentsWizard, self).create_payments()
+        return super(AccountPayment, self).create_payments()

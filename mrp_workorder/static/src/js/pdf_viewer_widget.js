@@ -88,7 +88,7 @@ var FieldPdfViewerNoReload = FieldPdfViewer.extend({
     _checkCorrectPage: function (page){
         var self = this;
         setTimeout(function (){
-            if (page !== self.pdfViewer.currentPageNumber){
+            if (self.pdfViewer && page !== self.pdfViewer.currentPageNumber){
                 self._goToPage(page);
             }
         }, 500);
@@ -124,7 +124,7 @@ var FieldPdfViewerNoReload = FieldPdfViewer.extend({
      */
     _goToPage: function (page){
         var self = this;
-        if (page !== self.pdfViewer.currentPageNumber){
+        if (self.pdfViewer && page !== self.pdfViewer.currentPageNumber){
             setTimeout(function (){
                 self.pdfViewer.currentPageNumber = page;
                 self._goToPage(page);

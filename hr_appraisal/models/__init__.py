@@ -5,4 +5,5 @@ from . import calendar_event
 from . import hr_appraisal
 from . import hr_employee
 from . import hr_department
+from . import survey
 from . import survey_user

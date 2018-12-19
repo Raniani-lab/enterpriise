@@ -33,6 +33,7 @@ Key Features
         'report/hr_appraisal_report_views.xml',
         'views/hr_department_views.xml',
         'views/mail_activity_views.xml',
+        'views/survey_survey_views.xml',
         'views/survey_user_views.xml',
         'data/hr_appraisal_data.xml',
         'data/mail_data.xml',

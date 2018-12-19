@@ -24,6 +24,9 @@ Quality Base
         'data/quality_data.xml',
         'views/quality_views.xml',
     ],
+    'qweb': [
+        'static/src/xml/widget_template.xml',
+    ],
     'demo': [],
     'application': False,
     'license': 'OEEL-1',

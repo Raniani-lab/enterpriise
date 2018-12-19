@@ -45,4 +45,13 @@
             </form>
         </field>
     </record>
+
+    <!-- js stuff -->
+    <template id="assets_backend" inherit_id="web.assets_backend" name="Quality assets">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/quality/static/src/js/tablet_image_widget.js"></script>
+            <link rel="stylesheet" type="text/scss" href="/quality/static/src/scss/tablet_view.scss"/>
+        </xpath>
+    </template>
+
 </odoo>

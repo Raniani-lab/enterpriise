@@ -13,7 +13,7 @@
                             <t t-set="fileupload_id" t-value="widget.fileupload_id"/>
                         </t>
                     </div>
-                    <div id="workorder_picture_button">
+                    <div id="picture_button">
                         <button class="btn btn-primary o_select_file_button" barcode_trigger="measure">Take a Picture</button>
                     </div>
                 </div>

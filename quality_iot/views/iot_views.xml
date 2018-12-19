@@ -33,4 +33,12 @@
             </xpath>
         </field>
     </record>
+
+    <!-- js stuff -->
+    <template id="assets_backend" inherit_id="web.assets_backend" name="Quality IoT assets">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/quality_iot/static/src/js/iot_picture.js"></script>
+        </xpath>
+    </template>
+
 </odoo>

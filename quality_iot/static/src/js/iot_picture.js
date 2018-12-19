@@ -1,10 +1,8 @@
-odoo.define('quality_mrp_iot.iot_picture', function (require) {
+odoo.define('quality_iot.iot_picture', function (require) {
 "use strict";
 
 var registry = require('web.field_registry');
-
-var MrpWorkorderWidgets = require('mrp_workorder.update_kanban');
-var TabletImage = MrpWorkorderWidgets.TabletImage;
+var TabletImage = require('quality.tablet_image_field').TabletImage;
 
 var TabletImageIot = TabletImage.extend({
     events: _.extend({}, TabletImage.prototype.events, {

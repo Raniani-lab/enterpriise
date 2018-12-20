@@ -37,11 +37,14 @@ var ActionEditorAction = AbstractAction.extend({
      */
     init: function (parent, context, options) {
         this._super.apply(this, arguments);
+
         this._title = _t('Studio');
         this.controlPanelParams.title = this._title;
         this.options = options;
         this.action = options.action;
-        this.viewType = options.viewType;
+
+        this._setEditedView(options.viewType);
+
         // We set the x2mEditorPath since when we click on the studio breadcrumb
         // a new view_editor_manager is instantiated and then the previous
         // x2mEditorPath is needed to reload the previous view_editor_manager
@@ -67,13 +70,15 @@ var ActionEditorAction = AbstractAction.extend({
         var self = this;
         var def;
         this.$el.addClass('o_web_studio_client_action');
-        if (this.options.noEdit) {
-            // click on "Views" in menu
+
+        var isEditable = _.contains(ActionEditor.prototype.VIEW_TYPES, this.viewType);
+        if (this.options.noEdit || !isEditable) {
+            // click on "Views" in menu or view we cannot edit
             this.action_editor = new ActionEditor(this, this.action);
             def = this.action_editor.appendTo(this.$('.o_content'));
         } else {
             // directly edit the view instead of displaying all views
-            def = this._editView(this.viewType);
+            def = this._editView();
         }
         return Promise.all([def, this._super.apply(this, arguments)]).then(function () {
             self._pushState();
@@ -160,7 +165,7 @@ var ActionEditorAction = AbstractAction.extend({
                         .guardedCatch(reject);
                 }
             });
-        })
+        });
     },
     /**
      * @private
@@ -189,39 +194,20 @@ var ActionEditorAction = AbstractAction.extend({
     },
     /**
      * @private
-     * @param {String} view_type
      */
-    _editView: function (view_type) {
+    _editView: function () {
         var self = this;
-        var options = {};
-
-        var views = this.action._views || this.action.views;
-        views = views.slice();
-        // search is not in action.view
-        options.load_filters = true;
-        var searchview_id = this.action.search_view_id && this.action.search_view_id[0];
-        views.push([searchview_id || false, 'search']);
-
-        var view = _.find(views, function (el) {
-            return el[1] === view_type;
-        });
-        if (!view) {
-            // see action manager
-            view = views[0];
-        }
-        var view_id = view[0];
-        this.viewType = view[1];
 
         // the default view needs to be created before `loadViews` or the
         // renderer will not be aware that a new view exists
-        var defs = [this._getStudioViewArch(this.action.res_model, this.viewType, view_id)];
+        var defs = [this._getStudioViewArch(this.action.res_model, this.viewType, this.viewId)];
         if (this.viewType === 'form') {
             defs.push(this._isChatterAllowed());
         }
         return Promise.all(defs).then(function () {
             // add studio in loadViews context to retrieve groups server-side
             var context = _.extend({}, self.action.context, {studio: true});
-            var loadViewDef = self.loadViews(self.action.res_model, context, views, options);
+            var loadViewDef = self.loadViews(self.action.res_model, context, self.views, { load_filters: true });
             return loadViewDef.then(function (fields_views) {
                 if (!self.action.controlPanelFieldsView) {
                     // in case of Studio navigation, the processing done on the
@@ -398,6 +384,24 @@ var ActionEditorAction = AbstractAction.extend({
     },
     /**
      * @private
+     * @param {string} [viewType]
+     */
+    _setEditedView: function (viewType) {
+        var views = this.action._views || this.action.views;
+        this.views = views.slice();
+        // search is not in action.view
+        var searchview_id = this.action.search_view_id && this.action.search_view_id[0];
+        this.views.push([searchview_id || false, 'search']);
+
+        var view = _.find(views, function (v) {
+            return v[1] === viewType;
+        });
+        this.view = view || views[0];  // see action manager
+        this.viewId = this.view[0];
+        this.viewType = this.view[1];
+    },
+    /**
+     * @private
      * @param {String} view_mode
      * @returns {Promise}
      */
@@ -446,11 +450,12 @@ var ActionEditorAction = AbstractAction.extend({
     /**
      * @private
      * @param {OdooEvent} event
+     * @param {string} event.data.view_type
      */
     _onEditView: function (event) {
-        var view_type = event.data.view_type;
-        this._editView(view_type).then(function () {
-            bus.trigger('edition_mode_entered', view_type);
+        this._setEditedView(event.data.view_type);
+        this._editView().then(function () {
+            bus.trigger('edition_mode_entered', event.data.view_type);
         });
     },
     /**

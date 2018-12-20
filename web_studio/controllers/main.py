@@ -618,12 +618,7 @@ class WebStudioController(http.Controller):
     @http.route('/web_studio/create_default_view', type='json', auth='user')
     def create_default_view(self, model, view_type, attrs):
         attrs['string'] = "Default %s view for %s" % (view_type, model)
-        # The grid view arch has the attributes set as children nodes and not in
-        # the view node
-        if view_type == 'grid':
-            arch = self._get_default_grid_view(attrs)
-        else:
-            arch = self._get_default_view(view_type, attrs)
+        arch = self._get_default_view(view_type, attrs)
         request.env['ir.ui.view'].create({
             'type': view_type,
             'model': model,

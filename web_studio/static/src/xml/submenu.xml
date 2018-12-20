@@ -55,9 +55,6 @@
           <t t-if="_.contains(widget.active_view_types, 'pivot')">
             <a href="#" data-name="pivot" title="Pivot View" aria-label="Pivot View"><i class="fa fa-table"/></a>
           </t>
-          <t t-if="_.contains(widget.active_view_types, 'grid')">
-            <a href="#" data-name="grid" title="Grid View" aria-label="Grid View"><i class="fa fa-th"/></a>
-          </t>
           <t t-if="_.contains(widget.active_view_types, 'gantt')">
             <a href="#" data-name="gantt" title="Gantt View" aria-label="Gantt View"><i class="fa fa-tasks"/></a>
           </t>

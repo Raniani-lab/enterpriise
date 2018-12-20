@@ -12,6 +12,7 @@ QUnit.module('Studio Navigation', {
             partner: {
                 fields: {
                     foo: {string: "Foo", type: "char"},
+                    date: {string: "Date", type: "date"},
                     bar: {string: "Bar", type: "many2one", relation: 'partner'},
                 },
                 records: [
@@ -375,6 +376,42 @@ QUnit.module('Studio Navigation', {
             "the form view should be opened");
         assert.strictEqual(actionManager.$('.o_form_view span:contains(Twilight Sparkle)').length, 1,
             "should have open the same record");
+
+        actionManager.destroy();
+    });
+
+    QUnit.test('open Studio with non editable view', async function (assert) {
+        assert.expect(1);
+
+        this.actions.push({
+            id: 42,
+            name: 'Partners Action 42',
+            res_model: 'partner',
+            type: 'ir.actions.act_window',
+            views: [[42, 'grid'], [2, 'list'], [false, 'form']],
+        });
+        this.archs['partner,42,grid'] = '<grid>' +
+                '<field name="foo" type="row"/>' +
+                '<field name="id" type="measure"/>' +
+                '<field name="date" type="col">' +
+                    '<range name="week" string="Week" span="week" step="day"/>' +
+                '</field>' +
+            '</grid>';
+
+        var actionManager = await createActionManager({
+            actions: this.actions,
+            archs: this.archs,
+            data: this.data,
+        });
+
+        await actionManager.doAction(42);
+        await actionManager.doAction('action_web_studio_action_editor', {
+            action: actionManager.getCurrentAction(),
+            controllerState: actionManager.getCurrentController().widget.exportState(),
+        });
+
+        assert.containsOnce(actionManager, '.o_web_studio_action_editor',
+            "action editor should be opened (grid is not editable)");
 
         actionManager.destroy();
     });

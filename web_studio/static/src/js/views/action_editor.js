@@ -6,26 +6,24 @@ var Widget = require('web.Widget');
 var ActionEditorSidebar = require('web_studio.ActionEditorSidebar');
 var ActionEditorView = require('web_studio.ActionEditorView');
 
-var VIEW_TYPES = [
-    'form',
-    'search',
-    'activity',
-    'list',
-    'kanban',
-    'grid',
-    'graph',
-    'pivot',
-    'calendar',
-    'gantt',
-    'dashboard',
-    'cohort',
-];
-
 var ActionEditor = Widget.extend({
     template: 'web_studio.ActionEditor',
     custom_events: {
         'parameters_clicked': '_onActionParameters',
     },
+    VIEW_TYPES: [
+        'form',
+        'search',
+        'activity',
+        'list',
+        'kanban',
+        'graph',
+        'pivot',
+        'calendar',
+        'gantt',
+        'dashboard',
+        'cohort',
+    ],
 
     /**
      * @constructor
@@ -48,7 +46,7 @@ var ActionEditor = Widget.extend({
 
         // order view_types: put active ones at the begining
         var ordered_view_types = this.active_view_types.slice();
-        _.each(VIEW_TYPES, function (el) {
+        _.each(this.VIEW_TYPES, function (el) {
             if (! _.contains(ordered_view_types, el)) {
                 ordered_view_types.push(el);
             }
@@ -118,9 +116,6 @@ var ActionEditor = Widget.extend({
                 category = 'multiple';
                 break;
             case 'kanban':
-                category = 'multiple';
-                break;
-            case 'grid':
                 category = 'multiple';
                 break;
             case 'graph':

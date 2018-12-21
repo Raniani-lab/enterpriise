@@ -36,15 +36,16 @@ var DocumentsKanbanView = KanbanView.extend({
         // add the fields used in the DocumentsInspector to the list of fields to fetch
         var inspectorFields = [
             'active',
+            'activity_ids',
             'available_rule_ids',
             'checksum',
             'datas_fname',
             'display_name', // necessary for the mail tracking system to work correctly
             'folder_id',
             'lock_uid',
+            'message_attachment_count',
             'message_follower_ids',
             'message_ids',
-            'activity_ids',
             'mimetype',
             'name',
             'owner_id',

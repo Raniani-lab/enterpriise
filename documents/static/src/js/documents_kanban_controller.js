@@ -227,7 +227,7 @@ var DocumentsKanbanController = KanbanController.extend({
         var self = this;
         return this.model.fetchActivities(record.id).then(function () {
             record = self.model.get(record.id);
-            var $chatterContainer = $('<div>').addClass('o_document_chatter p-relative bg-white');
+            var $chatterContainer = $('<div>').addClass('o_document_chatter oe_chatter p-relative bg-white');
             var options = {
                 display_log_button: true,
                 isEditable: true,

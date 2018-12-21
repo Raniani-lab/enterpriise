@@ -151,6 +151,10 @@ return Widget.extend(StandaloneFieldManagerMixin, {
             this.OPTIONS_BY_WIDGET = OPTIONS_BY_WIDGET;
 
             this.has_placeholder = Widget && Widget.prototype.has_placeholder || false;
+
+            // aggregate makes no sense with some widgets
+            this.hasAggregate = _.contains(['integer', 'float', 'monetary'], field.type) &&
+                !_.contains(['progressbar', 'handle'], this.state.attrs.widget);
         }
         // Upload image related stuff
         if (this.state.node && this.state.node.tag === 'button') {
@@ -562,6 +566,13 @@ return Widget.extend(StandaloneFieldManagerMixin, {
                     newModifiers[attribute] = $input.is(':checked');
                     new_attrs = this._getNewAttrsFromModifiers(newModifiers);
                 }
+            } else if (attribute === 'aggregate') {
+                var aggregate = $input.find('option:selected').attr('name');
+                // only one of them can be set at the same time
+                new_attrs = {
+                    avg: aggregate === 'avg' ? 'Average of ' + this.state.attrs.string : '',
+                    sum: aggregate === 'sum' ? 'Sum of ' +  this.state.attrs.string : '',
+                };
             } else {
                 new_attrs[attribute] = $input.val();
             }

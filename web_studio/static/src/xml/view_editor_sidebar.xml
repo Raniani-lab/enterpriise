@@ -510,6 +510,16 @@
                 </t>
             </t>
         </t>
+        <t t-if="widget.view_type === 'list' and widget.hasAggregate">
+            <div class="o_web_studio_sidebar_select">
+                <label for="aggregate">Aggregate</label>
+                <select id="aggregate" name="aggregate" data-type="attributes">
+                    <option name="" data-type="attributes" value=""></option>
+                    <option name="sum" data-type="attributes" t-att-selected="widget.state.attrs.sum ? 'selected' : undefined" value="sum">Sum</option>
+                    <option name="avg" data-type="attributes" t-att-selected="widget.state.attrs.avg? 'selected' : undefined" value="avg">Average</option>
+                </select>
+            </div>
+        </t>
         <div t-if="!_.contains(widget.NON_DEFAULT_TYPES, widget.state.field.type)"
             t-att-class="widget.state.field.type === 'selection' ? 'o_web_studio_sidebar_select' : 'o_web_studio_sidebar_text'">
             <label for="default_value">Default value</label>

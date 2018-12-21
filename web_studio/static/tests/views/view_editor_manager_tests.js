@@ -427,6 +427,80 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
+    QUnit.test('list editor field with aggregate function', async function (assert) {
+        assert.expect(10);
+
+        this.data.coucou.fields.croissant = {string: "Croissant", type: "integer"};
+        this.data.coucou.records = [{id: 1, display_name: 'Red Right Hand', croissant: 3},
+                                    {id: 2, display_name: 'Hell Broke Luce', croissant: 5}];
+
+        var arch = '<tree><field name="display_name"/><field name="croissant"/></tree>';
+        var sumArchReturn = '<tree><field name="display_name"/><field name="croissant" sum="Sum of Croissant"/></tree>';
+        var avgArchReturn = '<tree><field name="display_name"/><field name="croissant" avg="Average of Croissant"/></tree>';
+        var fieldsView;
+
+        var vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'coucou',
+            arch: arch,
+            mockRPC: function(route, args) {
+                if (route === '/web_studio/edit_view') {
+                    var op = args.operations[args.operations.length -1];
+                    if (op.new_attrs.sum !== "") {
+                        assert.strictEqual(op.new_attrs.sum, 'Sum of Croissant',
+                            '"sum" aggregate should be applied');
+                        fieldsView.arch = sumArchReturn;
+                    }
+                    else if (op.new_attrs.avg !== "") {
+                        assert.strictEqual(op.new_attrs.avg, 'Average of Croissant',
+                            '"avg" aggregate should be applied');
+                        fieldsView.arch = avgArchReturn;
+                    } else if (op.new_attrs.sum === "" || op.new_attrs.avg == "") {
+                        fieldsView.arch = arch;
+                        assert.ok('neither "sum" nor "avg" selected for aggregation');
+                    }
+                    return Promise.resolve({
+                        fields_views: {list: fieldsView},
+                        fields: fieldsView.fields,
+                    });
+                }
+                return this._super.apply(this, arguments);
+            }
+        });
+
+        fieldsView = $.extend(true, {}, vem.fields_view);
+
+        await testUtils.dom.click(vem.$('thead th[data-node-id=1]')); // select the first column
+
+        // selecting column other than float, integer or monetary should not show aggregate selection
+        assert.containsNone(vem, '.o_web_studio_sidebar select[name="aggregate"]',
+            "should not have aggregate selection for character type column");
+
+        await testUtils.dom.click(vem.$('thead th[data-node-id=2]')); // select the second column
+        assert.containsOnce(vem, '.o_web_studio_sidebar select[name="aggregate"]',
+            "should have aggregate selection for integer type column");
+
+        // select 'sum' aggregate function
+        await testUtils.fields.editAndTrigger(vem.$('.o_web_studio_sidebar').find('select[name="aggregate"]'), 'sum', ['change']);
+        assert.strictEqual(vem.$('tfoot tr td.o_list_number').text(), "8",
+            "total should be '8'");
+        assert.strictEqual(vem.$('tfoot tr td.o_list_number').attr('title'), "Sum of Croissant",
+            "title should be 'Sum of Croissant'");
+
+        // select 'avg' aggregate function
+        await testUtils.fields.editAndTrigger(vem.$('.o_web_studio_sidebar').find('select[name="aggregate"]'), 'avg', ['change']);
+        assert.strictEqual(vem.$('tfoot tr td.o_list_number').text(), "4",
+            "total should be '4'");
+        assert.strictEqual(vem.$('tfoot tr td.o_list_number').attr('title'), "Average of Croissant",
+            "title should be 'Avg of Croissant'");
+
+        // select '' aggregate function
+        await testUtils.fields.editAndTrigger(vem.$('.o_web_studio_sidebar').find('select[name="aggregate"]'), '', ['change']);
+        assert.strictEqual(vem.$('tfoot tr td.o_list_number').text(), "", "Total should be ''");
+
+        vem.destroy();
+    });
+
     QUnit.module('Form');
 
     QUnit.test('empty form editor', async function (assert) {

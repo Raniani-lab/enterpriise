@@ -9,9 +9,15 @@
     'description': """
         This module provides the core of the Odoo Mobile App.
         """,
-    'depends': ['web_settings_dashboard'],
+    'depends': [
+        'base_setup',
+    ],
     'qweb': ['static/src/xml/*.xml'],
-    'data': ['views/mobile_template.xml', 'views/views.xml'],
+    'data': [
+        'views/mobile_template.xml',
+        'views/views.xml',
+        'views/res_config_settings_views.xml',
+    ],
     'installable': True,
     'auto_install': True,
     'license': 'OEEL-1',

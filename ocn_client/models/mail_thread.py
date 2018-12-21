@@ -15,8 +15,11 @@ class MailThread(models.AbstractModel):
         and every direct message. We have to take into account the risk of
         duplicated notifications in case of a mention in a channel of `chat` type.
         """
-
         rdata = super(MailThread, self)._notify_compute_recipients(message, msg_vals)
+
+        if not self.env['ir.config_parameter'].sudo().get_param('odoo_ocn.project_id'):
+            return rdata
+
         notif_pids = [r['id'] for r in rdata['partners'] if r['active']]
         chat_cids = [r['id'] for r in rdata['channels'] if r['type'] == 'chat']
 

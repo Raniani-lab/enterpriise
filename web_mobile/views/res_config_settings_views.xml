@@ -11,10 +11,10 @@
                  <div class="row mt16 o_settings_container">
                     <div class="col-xs-12 col-md-6 o_setting_box">
                          <div class="o_setting_left_pane">
-                            <field name="ocn_push_notification"/>
+                            <field name="module_ocn_client"/>
                          </div>
                          <div class="o_setting_right_pane">
-                            <label for="ocn_push_notification"/>
+                            <label for="module_ocn_client"/>
                             <div class="text-muted">
                                  Get notifications on Android and iOS application
                             </div>

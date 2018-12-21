@@ -7,9 +7,9 @@
         <field name="inherit_id" ref="account.invoice_supplier_form"/>
         <field name="arch" type="xml">
             <xpath expr="//header" position="inside">
-                <button name="retry_ocr" class="oe_highlight" string="Resend File through OCR" type="object" 
+                <button name="retry_ocr" class="oe_highlight" string="Resend For Digitalization" type="object" 
                 attrs="{'invisible': [('extract_can_show_resend_button', '=', False)]}"/>
-                <button name="retry_ocr" class="oe_highlight" string="Send File through OCR" type="object" 
+                <button name="retry_ocr" class="oe_highlight" string="Send For Digitalization" type="object" 
                 attrs="{'invisible': [('extract_can_show_send_button', '=', False)]}"/>
             </xpath>
             <xpath expr="//header" position='after'>
@@ -27,7 +27,7 @@
                 </div>
                 <div role="status" class="alert alert-info mb8" attrs="{'invisible':['|', ('state', 'not in', ['draft']), ('extract_state', 'not in', ['waiting_extraction'])]}">
                     <button string="Update status" type="object" name="check_status" class="btn btn-sm btn-primary pull-right mb0"/>
-                    The data extraction started. It takes usually between 5 and 60 seconds.
+                    The file has been sent and is being processed. It usually takes between 5 and 60 seconds.
                     <div class="clearfix"/>
                 </div>
                 <div role="status" class="alert alert-info mb8" attrs="{'invisible':['|', ('state', 'not in', ['draft']), ('extract_state', 'not in', ['extract_not_ready'])]}">
@@ -36,7 +36,7 @@
                     <div class="clearfix"/>
                 </div>
                 <div role="status" class="alert alert-danger mb8" attrs="{'invisible':['|', ('state', 'not in', ['draft']), ('extract_state', 'not in', ['error_status'])]}">
-                    An error occured during the ocr process.
+                    An error occured during digitalization. Try resending the bill.
                 </div>
             </xpath>
             <xpath expr="//field[@name='message_ids']" position='replace'>

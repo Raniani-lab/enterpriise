@@ -65,6 +65,7 @@ class SaleOrder(models.Model):
                             'type_tax_use': 'sale',
                             'description': 'Sales Tax',
                             'company_id': company.id,
+                            'active': False,  # these taxes should never be used manually
                         })
                     line.tax_id = tax
         return True

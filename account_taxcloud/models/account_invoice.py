@@ -62,7 +62,7 @@ class AccountInvoice(models.Model):
                 if len(line.invoice_line_tax_ids) != 1 or float_compare(line.invoice_line_tax_ids.amount, tax_rate, precision_digits=3):
                     raise_warning = True
                     tax_rate = float_round(tax_rate, precision_digits=3)
-                    tax = self.env['account.tax'].sudo().search([
+                    tax = self.env['account.tax'].sudo().with_context(active_test=False).search([
                         ('amount', '=', tax_rate),
                         ('amount_type', '=', 'percent'),
                         ('type_tax_use', '=', 'sale'),
@@ -76,6 +76,7 @@ class AccountInvoice(models.Model):
                             'type_tax_use': 'sale',
                             'description': 'Sales Tax',
                             'company_id': company.id,
+                            'active': False,  # these taxes should never be used manually
                         })
                     line.invoice_line_tax_ids = tax
 

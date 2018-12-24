@@ -62,7 +62,7 @@ class team_user(models.Model):
         except Exception:
             raise Warning('The domain is incorrectly formatted')
 
-    team_id = fields.Many2one('crm.team', string='SaleTeam', required=True, oldname='section_id')
+    team_id = fields.Many2one('crm.team', string='Sales Team', required=True, oldname='section_id')
     user_id = fields.Many2one('res.users', string='Saleman', required=True)
     name = fields.Char(string="Name", related='user_id.partner_id.display_name', readonly=False)
     running = fields.Boolean(string='Running', default=True)

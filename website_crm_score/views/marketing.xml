@@ -248,6 +248,20 @@
             </field>
         </record>
 
+        <record id="team_user_view_search" model="ir.ui.view">
+            <field name="name">team.user.view.search</field>
+            <field name="model">team.user</field>
+            <field name="arch" type="xml">
+                <search string="Sales Person">
+                    <field name="name"/>
+                    <field name="team_id"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Sales Team" name="groupby_team_id" context="{'group_by':'team_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
         <!-- Team User Action - form - tree -->
         <record model="ir.actions.act_window" id="team_user_action">
             <field name="name">Salespersons</field>

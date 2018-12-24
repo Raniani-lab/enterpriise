@@ -117,6 +117,11 @@ file_filter = crm_enterprise/i18n/<lang>.po
 source_file = crm_enterprise/i18n/crm_enterprise.pot
 source_lang = en
 
+[odoo-master.crm_helpdesk]
+file_filter = crm_helpdesk/i18n/<lang>.po
+source_file = crm_helpdesk/i18n/crm_helpdesk.pot
+source_lang = en
+
 [odoo-master.currency_rate_live]
 file_filter = currency_rate_live/i18n/<lang>.po
 source_file = currency_rate_live/i18n/currency_rate_live.pot
@@ -225,6 +230,11 @@ source_lang = en
 [odoo-master.hr_holidays_gantt]
 file_filter = hr_holidays_gantt/i18n/<lang>.po
 source_file = hr_holidays_gantt/i18n/hr_holidays_gantt.pot
+source_lang = en
+
+[odoo-master.im_livechat_enterprise]
+file_filter = im_livechat_enterprise/i18n/<lang>.po
+source_file = im_livechat_enterprise/i18n/im_livechat_enterprise.pot
 source_lang = en
 
 [odoo-master.inter_company_rules]

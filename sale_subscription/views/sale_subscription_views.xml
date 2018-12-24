@@ -80,7 +80,7 @@
         <field name="view_type">form</field>
         <field name="view_mode">kanban,tree,form,pivot,graph,cohort,activity</field>
         <field name="context">{
-            "group_by": "stage_id",
+            "search_default_stage":1,
             "search_default_my_subscriptions":1
         }</field>
         <field name="domain">[]</field>
@@ -126,10 +126,9 @@
         <field name="view_type">form</field>
         <field name="view_mode">tree,form,pivot,graph,kanban,cohort,activity</field>
         <field name="context">{
-            'group_by': 'stage_id',
+            'search_default_stage':1,
             'search_default_user_id':uid,
-            'search_default_pending':1,
-            'search_default_renew':1
+            'search_default_pending':1
         }</field>
         <field name="domain">[]</field>
         <field name="search_view_id" eval='False'/>

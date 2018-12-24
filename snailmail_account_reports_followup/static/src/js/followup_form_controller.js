@@ -60,12 +60,16 @@ FollowupFormController.include({
      * @private
      */
     _onSendLetter: function () {
+        var self = this;
         this.model.doSendLetter(this.handle);
         this._updateButtons();
-        var res_id = this.model.get(this.handle, {raw: true}).res_id
+        var res_id = this.model.get(this.handle, {raw: true}).res_id;
         this.do_action('snailmail_account_reports_followup.followup_send', {
-            additional_context: {active_ids: [res_id]}
-        })
+            additional_context: { active_ids: [res_id] },
+            on_close: function () {
+                self.trigger_up('reload');
+            }
+        });
     },
 });
 });

@@ -9,9 +9,9 @@
             <field name="arch" type="xml">
                 <form string="Send Follow-Ups">
                     <!-- truly invisible fields for control and options -->
-                    <field name="letter_ids" invisible="1"/>
-                    <field name="currency_id" invisible="1"/>
+                    <field name="partner_ids" invisible="1"/>
                     <field name="letters_qty" invisible="1"/>
+                    <field name="invalid_addresses" invisible="1"/>
                     <!-- visible fields -->
                     <div class="text-left d-inline-block" name='cost'>
                         <span attrs="{'invisible': [('letters_qty', '>', 1)]}"> Sending this document will cost </span>
@@ -23,8 +23,20 @@
                             </span>
                         </b>
                         <i class="fa fa-info-circle" role="img" aria-label="Warning" title="
-                        The letter will be sent using the IAP service from Odoo.&#10;Make sure you have enough credits on your account or proceed to a recharge.&#10;In case of multiple sending, the price is estimated based on 1 page per document.
+                        The letter will be sent using the IAP service from Odoo.&#10;Make sure you have enough credits on your account or proceed to a recharge.
                         "/>
+                        <br/>
+                        <span attrs="{'invisible': [('invalid_addresses', '=', 0)]}">
+                            <span class="text-danger" attrs="{'invisible': [('letters_qty', '>', 1)]}">
+                                The recipient's address is incomplete.
+                            </span>
+                            <span attrs="{'invisible': [('letters_qty', '=', 1)]}">
+                                <span class="text-danger">
+                                    Some customer addresses are not complete.
+                                </span>
+                                <button type="object" name="invalid_addresses_action" class="btn btn-link" role="button"><field name="invalid_addresses" readonly="1" options="{'digits':[0,0]}"/> customers</button>
+                            </span>
+                        </span>
                     </div>
 
                     <footer>
@@ -37,7 +49,7 @@
         </record>
 
        <act_window
-            name="Send Follow-Ups"
+            name="Send By Post"
             id="followup_send"
             multi="True"
             key2="client_action_multi"

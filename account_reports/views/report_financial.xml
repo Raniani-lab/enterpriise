@@ -29,6 +29,11 @@
     <li t-if="line['caret_options'] == 'tax.report.line'">
       <a role="menuitem" tabindex="-1" t-att-data-id="line['id']" action="open_tax_report_line" class="dropdown-item">Audit</a>
     </li>
+    <li t-if="line['caret_options'] == 'account.multicurrency'">
+      <a role="menuitem" tabindex="-1" t-att-data-id="line['account_id']" action="open_general_ledger" class="dropdown-item">General Ledger</a>
+      <a role="menuitem" tabindex="-1" t-att-data-account_id="line['account_id']" t-att-data-currency_id="line['currency_id']" action="toggle_provision" class="dropdown-item" t-if="line.get('included') == 1">Exclude from adjustment/provisions entries</a>
+      <a role="menuitem" tabindex="-1" t-att-data-account_id="line['account_id']" t-att-data-currency_id="line['currency_id']" action="toggle_provision" class="dropdown-item" t-if="line.get('included') == 0">Include in adjustment/provisions entries</a>
+    </li>
     <li t-if="line['caret_options'] == 'account.bank.statement.line'"><a role="menuitem" tabindex="-1" t-att-data-id="line['id']" t-att-data-model="line.get('model', 'account.move.line')" data-object="account.bank.statement" action="open_document" class="dropdown-item">View Bank Statement</a></li>
     <li t-if="line['caret_options'] == 'account.analytic.account'">
         <a role="menuitem" tabindex="-1" t-att-data-id="line['id']" action="open_analytic_entries" class="dropdown-item">Analytic Entries</a>
@@ -129,6 +134,11 @@
                     <t t-esc="' '.join(opt['name'] for opt in options['groupby_fields'] if opt['selected'])"/>
                 </t>
             </div>
+            <div class='col-12'>
+                <t t-if="options.get('company_currency')">
+                    Company Currency: <t t-esc="options['company_currency']['currency_name']"/>
+                </t>
+            </div>
         </div>
     </div>
 </template>
@@ -155,8 +165,9 @@
         <tr t-attf-class="#{trclass} #{line.get('class', '')} #{'o_js_account_report_parent_row_unfolded' if line.get('unfolded', False) else ''}"
             t-att-data-pagebreak="'before' if (line.get('page_break') and context.get('print_mode')) else None"
             t-att-data-parent-id="line.get('parent_id', False)"
+            t-att="{k: v for k, v in line.items() if k.startswith('data-')}"
             t-att-style="line.get('style', '')">
-            <td t-att-data-id="line['id']" t-att-class="'o_account_report_line o_account_report_line_indent ' + (line.get('unfoldable') and 'js_account_report_foldable o_foldable_total' or '') + ' ' + line.get('name_class', '')" t-att-data-unfolded="line.get('unfolded', False)" 
+            <td t-att-data-id="line['id']" t-att-class="'o_account_report_line o_account_report_line_indent ' + (line.get('unfoldable') and 'js_account_report_foldable o_foldable_total' or '') + ' ' + line.get('name_class', '')" t-att-data-unfolded="line.get('unfolded', False)"
             t-att-data-offset="line.get('offset', False)" t-att-data-progress="line.get('progress', False)" t-att-data-remaining="line.get('remaining', False)"
             >
                     <t t-if="line.get('unfoldable')">
@@ -357,6 +368,24 @@
     </xpath>
     <xpath expr="//div[hasclass('o_account_reports_domain_dropdown')]/*[last()]" position="before">
         <t t-if="line['caret_options'] != 'account.tax' and line['caret_options'] != 'account.account'"><a role="menuitem" tabindex="-1" t-att-data-id="line['id']" action="open_document" class="dropdown-item">View Journal Entry</a></t>
+    </xpath>
+</template>
+
+<!-- multicurrency revaluation report templates -->
+<template id="template_multicurrency_report" inherit_id="account_reports.main_template" primary="True">
+    <xpath expr="//div[hasclass('o_account_reports_page')]" position="before">
+        <div class="alert alert-warning text-center mb-0 no_print" t-if="options.get('custom_rate')">
+            <span>You are using custom exchange rates.
+            <a type="button" class="btn btn btn-link js_account_report_custom_currency" style="padding: 0; vertical-align=baseline;" data-filter='current_currency'>⇒ Reset to Odoo’s Rate</a></span>
+        </div>
+        <div class="alert alert-warning text-center mb-0 no_print" t-if="options.get('warning_multicompany')">
+            <span>This report only displays the data of the active company.</span>
+        </div>
+    </xpath>
+</template>
+<template id="line_template_multicurrency_report" inherit_id="account_reports.line_template" primary="True">
+    <xpath expr="//span[hasclass('account_report_line_name')]" position="inside">
+        &amp;nbsp;<a t-if="'currency_id' in line" t-att-data-id="line.get('currency_id')" action="view_currency" class="no_print oe_link_reports"> ⇒ Rates</a>
     </xpath>
 </template>
 

@@ -48,7 +48,7 @@ class AccountMove(models.Model):
             tax_activity_type = move.company_id.account_tax_next_activity_type or False
             periodicity = tax_activity_type.delay_count == 1 and 'month' or 'quarter'
             if move.date != date_utils.end_of(move.date, periodicity):
-                raise UserError(_("Can't post the move with reference %s as its ending date %s does not correspond to end date of the period.") % (move.ref, move.date))
+                raise UserError(_("Can't post the move with reference %s as its ending date %s does not correspond to the end date of the period.") % (move.ref, move.date))
             activity = move.activity_ids.filtered(lambda m: m.activity_type_id == tax_activity_type)
             # Change lock date to date of the move
             move.company_id.tax_lock_date = move.date

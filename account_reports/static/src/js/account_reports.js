@@ -553,6 +553,19 @@ var accountReportsWidget = AbstractAction.extend({
             });
             self.reload();
         });
+        var rate_handler = function (event) {
+            var option_value = $(this).data('filter');
+            if (option_value == 'current_currency') {
+                delete self.report_options.currency_rates;
+            } else if (option_value == 'custom_currency') {
+                _.each($('input.js_account_report_custom_currency_input'), function(input) {
+                    self.report_options.currency_rates[input.name].rate = input.value;
+                });
+            }
+            self.reload();
+        }
+        $(document).on('click', '.js_account_report_custom_currency', rate_handler);
+        this.$searchview_buttons.find('.js_account_report_custom_currency').click(rate_handler);
         this.$searchview_buttons.find('.js_account_reports_one_choice_filter').click(function (event) {
             self.report_options[$(this).data('filter')] = $(this).data('id');
             self.reload();

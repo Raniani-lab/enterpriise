@@ -237,6 +237,21 @@
         </ul>
     </template>
 
+    <template id="search_template_currency">
+        <a type="button" class="dropdown-toggle" data-toggle="dropdown">
+            <span class="fa fa-line-chart"/> Exchange Rates
+        </a>
+        <div class="dropdown-menu o_filters_menu" role="menu">
+            <div class="o_account_report_search" data-filter='custom_currency'>
+                <div t-foreach="options['currency_rates'].values()" t-as="opt" class="form-group">
+                    <label t-att-for="opt['currency_id']">1 <t t-esc="opt['currency_main']"/> <i class="fa fa-arrow-right"/> <t t-esc="opt['currency_name']"/></label>
+                    <input t-att-value="opt['rate']" t-att-name="opt['currency_id']" type="number" min="0" step="0.000001" class="js_account_report_custom_currency_input"/>
+                </div>
+                <button type="button" class="btn btn-primary js_account_report_custom_currency" data-filter="custom_currency">Apply</button>
+            </div>
+        </div>
+    </template>
+
     <template id="search_template">
         <div class="btn-group o_dropdown o_account_reports_filter_date" t-if="options.get('date') != None">
             <t t-call="account_reports.search_template_date_filter"/>
@@ -261,6 +276,9 @@
         </div>
         <div class="btn-group o_dropdown o_account_reports_filter_partner" t-if="options.get('partner')">
             <t t-call="account_reports.search_template_partner"/>
+        </div>
+        <div class="btn-group o_dropdown o_account_reports_filter_currency" t-if="options.get('currency_rates')">
+            <t t-call="account_reports.search_template_currency"/>
         </div>
         <div id="extra_options_dropdown" class="btn-group o_dropdown o_account_reports_filter_bool" t-if="options.get('cash_basis') != None or options.get('all_entries') != None or options.get('unfold_all') != None">
             <t t-call="account_reports.search_template_extra_options"/>

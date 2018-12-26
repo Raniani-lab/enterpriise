@@ -17,6 +17,9 @@ class ResCompany(models.Model):
     account_tax_original_periodicity_reminder_day = fields.Integer(string='Start from original', help='technical helper to prevent rewriting activity date when saving settings')
     account_tax_periodicity_journal_id = fields.Many2one('account.journal', string='Journal', domain=[('type', '=', 'general')])
     account_tax_next_activity_type = fields.Many2one('mail.activity.type')
+    account_revaluation_journal_id = fields.Many2one('account.journal', domain=[('type', '=', 'general')])
+    account_revaluation_expense_provision_account_id = fields.Many2one('account.account', string='Expense Provision Account')
+    account_revaluation_income_provision_account_id = fields.Many2one('account.account', string='Income Provision Account')
 
     def _get_default_misc_journal(self):
         """ Returns a default 'miscellanous' journal to use for

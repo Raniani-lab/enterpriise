@@ -464,14 +464,15 @@ class AccountPayment(models.Model):
         date = datetime.combine(
             fields.Datetime.from_string(self.payment_date),
             datetime.strptime('12:00:00', '%H:%M:%S').time()).strftime('%Y-%m-%dT%H:%M:%S')
-        total_paid = total_curr = 0
+        total_paid = total_curr = total_currency = 0
         for invoice in self.invoice_ids:
             amount = [p for p in invoice._get_payments_vals() if (
                 p.get('account_payment_id', False) == self.id or not p.get(
                     'account_payment_id') and (not p.get('invoice_id') or p.get(
                         'invoice_id') == invoice.id))]
             amount_payment = sum([data.get('amount', 0.0) for data in amount])
-            total_paid += amount_payment
+            total_paid += amount_payment if invoice.currency_id != self.currency_id else 0
+            total_currency += amount_payment if invoice.currency_id == self.currency_id else 0
             total_curr += invoice.currency_id.with_context(
                 date=self.payment_date)._convert(
                     amount_payment, self.currency_id, self.company_id,
@@ -514,6 +515,7 @@ class AccountPayment(models.Model):
             'pay_string': False,
             'pay_stamp': False,
             'total_paid': total_paid,
+            'total_currency': total_currency,
         }
 
     @api.multi

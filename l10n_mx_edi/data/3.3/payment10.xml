@@ -50,8 +50,9 @@
             <cfdi:Complemento>
                 <pago10:Pagos
                     Version="1.0">
-                    <t t-set="inv_rate" t-value="('%.6f' % (total_paid / record.amount)) if record.currency_id != record.invoice_ids.mapped('currency_id') else False"/>
-                    <t t-set="inv_rate" t-value="(inv_rate if ((total_paid / float(inv_rate)) &lt;= record.amount) else '%.6f' % (float(inv_rate) + 0.000001)) if inv_rate else inv_rate"/>
+                    <t t-set="amount" t-value="record.amount - total_currency"/>
+                    <t t-set="inv_rate" t-value="('%.6f' % (total_paid / amount)) if record.currency_id != record.invoice_ids.mapped('currency_id') else False"/>
+                    <t t-set="inv_rate" t-value="(inv_rate if ((total_paid / float(inv_rate)) &lt;= amount) else '%.6f' % (float(inv_rate) + 0.000001)) if inv_rate else inv_rate"/>
                     <pago10:Pago
                         t-att-FechaPago="payment_date"
                         t-att-FormaDePagoP="record.l10n_mx_edi_payment_method_id.code"

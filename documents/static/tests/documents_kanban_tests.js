@@ -215,7 +215,7 @@ QUnit.module('DocumentsKanbanView', {
     },
 }, function () {
     QUnit.test('basic rendering', function (assert) {
-        assert.expect(15);
+        assert.expect(18);
 
         var kanban = createView({
             View: DocumentsKanbanView,
@@ -228,6 +228,12 @@ QUnit.module('DocumentsKanbanView', {
                 '</t></templates></kanban>',
         });
 
+        assert.ok(kanban.$buttons.find('.o_documents_kanban_upload').is(':disabled'),
+            "the upload button should be disabled on global view");
+        assert.ok(kanban.$buttons.find('.o_documents_kanban_url').is(':disabled'),
+            "the upload url button should be disabled on global view");
+        assert.ok(kanban.$buttons.find('.o_documents_kanban_request').is(':disabled'),
+            "the request button should be disabled on global view");
         assert.ok(kanban.$buttons.find('.o_documents_kanban_share').is(':disabled'),
             "the share button should be disabled on global view");
 
@@ -627,6 +633,7 @@ QUnit.module('DocumentsKanbanView', {
             },
         });
 
+        testUtils.dom.click(kanban.$('.o_documents_selector_folder header:eq(1)'));
         testUtils.dom.click(kanban.$buttons.find('button.o_documents_kanban_url'));
 
         kanban.destroy();
@@ -651,6 +658,7 @@ QUnit.module('DocumentsKanbanView', {
             },
         });
 
+        testUtils.dom.click(kanban.$('.o_documents_selector_folder header:eq(1)'));
         testUtils.dom.click(kanban.$buttons.find('button.o_documents_kanban_request'));
 
         kanban.destroy();

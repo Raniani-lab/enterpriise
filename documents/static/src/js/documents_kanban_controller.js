@@ -91,6 +91,7 @@ var DocumentsKanbanController = KanbanController.extend({
         this.$buttons.on('click', '.o_documents_kanban_upload', this._onUpload.bind(this));
         this.$buttons.on('click', '.o_documents_kanban_url', this._onUploadFromUrl.bind(this));
         this.$buttons.on('click', '.o_documents_kanban_request', this._onRequestFile.bind(this));
+        this._updateButtons();
     },
     /**
      * @override
@@ -496,9 +497,21 @@ var DocumentsKanbanController = KanbanController.extend({
                 self._renderDocumentsSelector(state);
                 self.anchorID = null;
                 self.renderer.updateSelection(self.selectedRecordIDs);
-                self.$buttons.find('.o_documents_kanban_share').prop('disabled', !self.selectedFolderID);
             });
         });
+    },
+    /**
+     * Disables the control panel buttons if there is no selected folder.
+     *
+     * @override
+     * @private
+     */
+    _updateButtons: function () {
+        this._super.apply(this, arguments);
+        this.$buttons.find('.o_documents_kanban_upload').prop('disabled', !this.selectedFolderID);
+        this.$buttons.find('.o_documents_kanban_url').prop('disabled', !this.selectedFolderID);
+        this.$buttons.find('.o_documents_kanban_request').prop('disabled', !this.selectedFolderID);
+        this.$buttons.find('.o_documents_kanban_share').prop('disabled', !this.selectedFolderID);
     },
     /**
      * If a chatter is currently open, close it and re-open it with the

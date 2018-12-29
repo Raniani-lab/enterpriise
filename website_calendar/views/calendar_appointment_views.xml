@@ -39,9 +39,9 @@
                         <h1><field name="name" placeholder="e.g. Schedule a demo"/></h1>
                     </div>
                     <notebook>
-                        <page string="Scheduling &amp; Availability">
+                        <page string="Scheduling &amp; Availability" name="schedule_availability">
                             <group>
-                                <group>
+                                <group name="left_details">
                                     <label for="appointment_duration"/>
                                     <div>
                                           <field name="appointment_duration" class="oe_inline" widget="float_time"/><span> hours</span>
@@ -62,7 +62,7 @@
                                         </div>
                                     </div>
                                 </group>
-                                <group>
+                                <group name="right_details">
                                     <field name="appointment_tz"/>
                                     <field name="reminder_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                                     <field name="location"/>
@@ -79,7 +79,7 @@
                                 </tree>
                             </field>
                         </page>
-                        <page string="Slots">
+                        <page string="Slots" name="slots">
                             <field name="slot_ids">
                                 <tree editable="bottom">
                                     <field name="weekday"/>
@@ -87,7 +87,7 @@
                                 </tree>
                             </field>
                         </page>
-                        <page string="Questions">
+                        <page string="Questions" name="questions">
                             <field name="question_ids">
                                 <tree>
                                     <field name="sequence" widget="handle"/>
@@ -95,13 +95,13 @@
                                     <field name="question_type"/>
                                     <field name="question_required"/>
                                 </tree>
-                                <form string="Questions">
+                                <form string="Questions" name="question_form">
                                     <group>
-                                        <group>
+                                        <group name="question_form_left">
                                             <field name="name"/>
                                             <field name="question_type" widget="radio"/>
                                         </group>
-                                        <group>
+                                        <group name="question_form_right">
                                             <field name="answer_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}"
                                                    attrs="{'invisible': [('question_type','in',('char','text'))], 'required':[('question_type','in',('select','radio','checkbox'))]}"/>
                                             <field name="placeholder" attrs="{'invisible': [('question_type','in',('select','radio','checkbox'))]}"/>
@@ -111,7 +111,7 @@
                                 </form>
                             </field>
                         </page>
-                        <page string="Messages">
+                        <page string="Messages" name="messages">
                             <separator string="Appointment Introduction"/>
                             <field name="message_intro"/>
                             <separator string="Appointment Confirmation"/>

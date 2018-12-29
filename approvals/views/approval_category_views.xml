@@ -51,9 +51,9 @@
                         <field name="description"/>
                     </group>
                     <notebook>
-                        <page string="Options">
+                        <page string="Options" name="options">
                             <group>
-                                <group string="Option Settings">
+                                <group string="Option Settings" name="option_settings">
                                     <field name="requirer_document" string="Document"/>
                                     <field name="has_partner" string="Contact"/>
                                     <field name="has_date" string="Date"/>
@@ -65,7 +65,7 @@
                                     <field name="has_payment_method" string="Payment"/>
                                     <field name="has_location" string="Location"/>
                                 </group>
-                                <group string="Approvers">
+                                <group string="Approvers" name="approvers">
                                     <field name="is_manager_approver"/>
                                     <field name="user_ids" widget="many2many_tags">
                                     </field>

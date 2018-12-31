@@ -20,8 +20,11 @@ class Employee(models.Model):
 
     @api.onchange('parent_id')
     def _onchange_parent_id(self):
-        if self.parent_id:
-            self.timesheet_manager_id = self.parent_id.user_id
+        super(Employee, self)._onchange_parent_id()
+        previous_manager = self._origin.parent_id.user_id
+        manager = self.parent_id.user_id
+        if manager and manager.has_group('hr_timesheet.group_timesheet_manager') and (self.timesheet_manager_id == previous_manager or not self.timesheet_manager_id):
+            self.timesheet_manager_id = manager
 
     @api.multi
     def get_timesheet_and_working_hours(self, date_start, date_stop):

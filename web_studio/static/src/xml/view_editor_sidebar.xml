@@ -463,7 +463,6 @@
                     <div t-if="option.type === 'selection'" class="o_web_studio_sidebar_select">
                         <label t-attf-for="option_#{option}" t-esc="option.string"/>
                         <select data-type="options" t-attf-id="option_#{option.name}" t-att-name="option.name" >
-                            <t t-debug="value"/>
                             <option t-foreach="option.selection" t-as="value" t-att-value="JSON.stringify(value[0])"
                                 t-att-selected="_.isEqual(widget.state.attrs.options[option.name], value[0]) ? 'selected' : undefined" t-esc="value[1]"/>
                         </select>

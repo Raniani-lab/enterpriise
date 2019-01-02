@@ -375,28 +375,41 @@ var DocumentsKanbanController = KanbanController.extend({
     },
     /**
      * Render a folder tree, recursively
+     * does not render the "all" folder selector.
      *
      * @private
      * @param {Object[]} folders - the subtree of folders to render
      * @returns {jQuery}
      */
-    _renderFolders: function (folders) {
+    _renderFolderList: function (folders) {
         var self = this;
         var $folders = $('<ul>', {class: 'list-group d-block'});
-        $(qweb.render('documents.AllFolderSelection', {
-            activeFolderID: self.selectedFolderID
-        })).appendTo($folders);
         _.each(folders, function (folder) {
             var $folder = $(qweb.render('documents.DocumentsSelectorFolder', {
                 activeFolderID: self.selectedFolderID,
                 folder: folder,
             }));
             if (folder.children.length) {
-                var $children =  self._renderFolders(folder.children);
+                var $children =  self._renderFolderList(folder.children);
                 $children.appendTo($folder);
             }
             $folder.appendTo($folders);
         });
+        return $folders;
+    },
+    /**
+     * Render the folder selector, including the "All" folder selection
+     *
+     * @private
+     * @param {Object[]} folders
+     * @returns {jQuery}
+     */
+    _renderFolders: function (folders) {
+        var $folders = this._renderFolderList(folders);
+        var $allFolder = $(qweb.render('documents.AllFolderSelection', {
+            activeFolderID: this.selectedFolderID
+        }))
+        $allFolder.prependTo($folders);
         return $folders;
     },
     /**

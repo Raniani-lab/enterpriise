@@ -215,7 +215,7 @@ QUnit.module('DocumentsKanbanView', {
     },
 }, function () {
     QUnit.test('basic rendering', function (assert) {
-        assert.expect(18);
+        assert.expect(19);
 
         var kanban = createView({
             View: DocumentsKanbanView,
@@ -228,6 +228,8 @@ QUnit.module('DocumentsKanbanView', {
                 '</t></templates></kanban>',
         });
 
+        assert.containsOnce(kanban, '.o_documents_selector_folder:contains(All) header',
+            "Should only have a single all selector")
         assert.ok(kanban.$buttons.find('.o_documents_kanban_upload').is(':disabled'),
             "the upload button should be disabled on global view");
         assert.ok(kanban.$buttons.find('.o_documents_kanban_url').is(':disabled'),
@@ -2158,8 +2160,8 @@ QUnit.module('DocumentsKanbanView', {
         testUtils.dom.click(kanban.$('.o_documents_selector_folder header:eq(1)'));
         assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_folders .o_documents_selector_header').text().trim(),
             'Folders', "should have a 'folders' section");
-        assert.containsN(kanban, '.o_documents_selector .o_documents_selector_folder', 5,
-            "should have 5 folders");
+        assert.containsN(kanban, '.o_documents_selector .o_documents_selector_folder', 4,
+            "should have 4 folders");
         assert.containsN(kanban, '.o_documents_selector .o_documents_selector_folder:visible', 3,
             "three of them should be visible");
         assert.strictEqual(kanban.$('.o_documents_inspector_preview').text().replace(/\s+/g, ''),

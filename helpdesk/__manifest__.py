@@ -42,7 +42,6 @@ Features:
         'data/digest_data.xml',
         'data/mail_data.xml',
         'data/helpdesk_data.xml',
-        'data/helpdesk_cron.xml',
         'views/helpdesk_views.xml',
         'views/helpdesk_team_views.xml',
         'views/assets.xml',

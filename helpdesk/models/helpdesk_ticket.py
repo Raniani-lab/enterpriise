@@ -2,8 +2,11 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import datetime
+from datetime import time
+from dateutil import relativedelta
 
 from odoo import api, fields, models, tools, _
+from odoo.osv import expression
 from odoo.exceptions import AccessError
 
 TICKET_PRIORITY = [
@@ -110,10 +113,11 @@ class HelpdeskTicket(models.Model):
                                index=True, domain="[('team_ids', '=', team_id)]")
 
     # next 4 fields are computed in write (or create)
-    assign_date = fields.Datetime(string='First assignation date')
-    assign_hours = fields.Integer(string='Time to first assignation (hours)', compute='_compute_assign_hours', store=True)
-    close_date = fields.Datetime(string='Close date')
-    close_hours = fields.Integer(string='Open Time (hours)', compute='_compute_close_hours', store=True)
+    assign_date = fields.Datetime("First assignation date")
+    assign_hours = fields.Integer("Time to first assignation (hours)", compute='_compute_assign_hours', store=True, help="This duration is based on the working calendar of the team")
+    close_date = fields.Datetime("Close date")
+    close_hours = fields.Integer("Time to close (hours)", compute='_compute_close_hours', store=True, help="This duration is based on the working calendar of the team")
+    open_hours = fields.Integer("Open Time (hours)", compute='_compute_open_hours', search='_search_open_hours', help="This duration is not based on the working calendar of the team")
 
     sla_id = fields.Many2one('helpdesk.sla', string='SLA Policy', compute='_compute_sla', store=True)
     sla_name = fields.Char(string='SLA Policy name', compute='_compute_sla', store=True)  # care if related -> crash on creation with a team.
@@ -179,18 +183,48 @@ class HelpdeskTicket(models.Model):
     @api.depends('assign_date')
     def _compute_assign_hours(self):
         for ticket in self:
-            if not ticket.create_date:
-                continue
-            time_difference = datetime.datetime.now() - fields.Datetime.from_string(ticket.create_date)
-            ticket.assign_hours = (time_difference.seconds) / 3600 + time_difference.days * 24
+            create_date = fields.Datetime.from_string(ticket.create_date)
+            if create_date and ticket.assign_date:
+                duration_data = ticket.team_id.resource_calendar_id.get_work_duration_data(create_date, fields.Datetime.from_string(ticket.assign_date), compute_leaves=True)
+                ticket.assign_hours = duration_data['hours']
+            else:
+                ticket.assign_hours = False
 
-    @api.depends('close_date')
+    @api.depends('create_date', 'close_date')
     def _compute_close_hours(self):
         for ticket in self:
-            if not ticket.create_date:
-                continue
-            time_difference = datetime.datetime.now() - fields.Datetime.from_string(ticket.create_date)
-            ticket.close_hours = (time_difference.seconds) / 3600 + time_difference.days * 24
+            create_date = fields.Datetime.from_string(ticket.create_date)
+            if create_date and ticket.close_date:
+                duration_data = ticket.team_id.resource_calendar_id.get_work_duration_data(create_date, fields.Datetime.from_string(ticket.close_date), compute_leaves=True)
+                ticket.close_hours = duration_data['hours']
+            else:
+                ticket.close_hours = False
+
+    @api.depends('close_hours')
+    def _compute_open_hours(self):
+        for ticket in self:
+            if ticket.create_date:  # fix from https://github.com/odoo/enterprise/commit/928fbd1a16e9837190e9c172fa50828fae2a44f7
+                if ticket.close_date:
+                    time_difference = ticket.close_hours - fields.Datetime.from_string(ticket.create_date)
+                else:
+                    time_difference = fields.Datetime.now() - fields.Datetime.from_string(ticket.create_date)
+                ticket.open_hours = (time_difference.seconds) / 3600 + time_difference.days * 24
+
+    @api.model
+    def _search_open_hours(self, operator, value):
+        dt = fields.Datetime.now() - relativedelta(hours=value)
+
+        d1, d2 = False, False
+        if operator in ['<', '<=', '>', '>=']:
+            d1 = ['&', ('close_date', '=', False), ('create_date', expression.TERM_OPERATORS_NEGATION[operator], dt)]
+            d2 = ['&', ('close_date', '!=', False), ('close_hours', operator, value)]
+        elif operator in ['=', '!=']:
+            subdomain = ['&', ('close_date', expression.TERM_OPERATORS_NEGATION[operator], dt), ('create_date', '>=', dt.replace(minutes=0, seconds=0, microseconds=0)), ('create_date', '<', dt.replace(minutes=59, seconds=59, microseconds=99))]
+            if operator in expression.NEGATIVE_TERM_OPERATORS:
+                subdomain = expression.distribute_not(subdomain)
+            d1 = ['&', ('close_date', '=', False), subdomain]
+            d2 = ['&', ('close_date', '!=', False), ('close_hours', operator, value)]
+        return expression.OR([d1, d2])
 
     @api.depends('team_id', 'priority', 'ticket_type_id', 'create_date')
     def _compute_sla(self):
@@ -288,15 +322,15 @@ class HelpdeskTicket(models.Model):
         assigned_tickets = closed_tickets = self.browse()
         if vals.get('user_id'):
             assigned_tickets = self.filtered(lambda ticket: not ticket.assign_date)
-        new_stage_id = vals.get('stage_id')
-        if new_stage_id:
-            new_stage = self.env['helpdesk.stage'].browse(new_stage_id)
-            if new_stage.is_close:
+
+        if vals.get('stage_id'):
+            if self.env['helpdesk.stage'].browse(vals.get('stage_id')).is_close:
                 closed_tickets = self.filtered(lambda ticket: not ticket.close_date)
-            # allow partner to close again a ticket that has been re-opened
-            elif self.closed_by_partner and new_stage != self.stage_id and new_stage != self.team_id._get_closing_stage():
+            else:  # auto reset the 'closed_by_partner' flag
                 vals['closed_by_partner'] = False
-        now = datetime.datetime.now()
+
+        now = fields.Datetime.now()
+
         res = super(HelpdeskTicket, self - assigned_tickets - closed_tickets).write(vals)
         res &= super(HelpdeskTicket, assigned_tickets - closed_tickets).write(dict(vals, **{
             'assign_date': now,
@@ -317,14 +351,6 @@ class HelpdeskTicket(models.Model):
     # ------------------------------------------------------------
     # Actions and Business methods
     # ------------------------------------------------------------
-
-    # Method to called by CRON to update SLA & statistics
-    @api.model
-    def recompute_all(self):
-        tickets = self.search([('stage_id.is_close', '=', False)])
-        tickets._compute_sla()
-        tickets._compute_close_hours()
-        return True
 
     def assign_ticket_to_self(self):
         self.ensure_one()

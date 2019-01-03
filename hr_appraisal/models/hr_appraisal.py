@@ -3,8 +3,9 @@
 
 
 from odoo import api, fields, models, _
-from odoo.exceptions import UserError
-
+from odoo.exceptions import UserError, ValidationError
+import datetime
+from dateutil.relativedelta import relativedelta
 
 class HrAppraisal(models.Model):
     _name = "hr.appraisal"
@@ -209,7 +210,22 @@ class HrAppraisal(models.Model):
 
     @api.model
     def create(self, vals):
+        employee_id = vals.get('employee_id') or self.env.context.get('default_employee_id')
+        appraisals = self.search([('employee_id', '=', employee_id), ('state', '!=', 'cancel')])
+        if appraisals and not self.env.user.has_group('hr_appraisal.group_hr_appraisal_manager'):
+            last_appraisal_date = max(appraisals.mapped('date_close'))
+            appraisal_min_period = int(self.env['ir.config_parameter'].sudo().get_param('hr_appraisal.appraisal_min_period'))
+            next_authorized_appraisal = last_appraisal_date + relativedelta(months=appraisal_min_period)
+            if datetime.date.today() < next_authorized_appraisal:
+                raise ValidationError(_("Your last appraisal was on %s. You will be able to request a new \
+appraisal on %s. If you think it's too late, feel free to have a chat with your manager.") %
+                    (fields.Datetime.to_string(last_appraisal_date), fields.Datetime.to_string(next_authorized_appraisal)))
+
         result = super(HrAppraisal, self.with_context(mail_create_nolog=True)).create(vals)
+        if vals.get('state') and vals['state'] == 'pending':
+                self.send_appraisal()
+
+        result.employee_id.sudo().appraisal_date = result.date_close
         result.subscribe_employees()
         date_final_interview = vals.get('date_final_interview')
         if date_final_interview:
@@ -227,6 +243,7 @@ class HrAppraisal(models.Model):
         result = super(HrAppraisal, self).write(vals)
         date_final_interview = vals.get('date_final_interview')
         if vals.get('date_close'):
+            self.mapped('employee_id').write({'appraisal_date': vals.get('date_close')})
             self.activity_reschedule(['hr_appraisal.mail_act_appraisal_form'], date_deadline=vals['date_close'])
         if date_final_interview:
             # creating employee meeting and interview date

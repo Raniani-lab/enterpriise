@@ -57,3 +57,19 @@ class Employee(models.Model):
             working_hours = employee.get_work_days_data(datetime_min, datetime_max, compute_leaves=False)['hours']
             result[employee.id]['working_hours'] = float_round(working_hours, 2)
         return result
+
+
+class User(models.Model):
+    _inherit = ['res.users']
+
+    timesheet_manager_id = fields.Many2one(related='employee_id.timesheet_manager_id')
+
+    def __init__(self, pool, cr):
+        """ Override of __init__ to add access rights.
+            Access rights are disabled by default, but allowed
+            on some specific fields defined in self.SELF_{READ/WRITE}ABLE_FIELDS.
+        """
+        init_res = super(User, self).__init__(pool, cr)
+        # duplicate list to avoid modifying the original reference
+        type(self).SELF_READABLE_FIELDS = ['timesheet_manager_id'] + type(self).SELF_READABLE_FIELDS
+        return init_res

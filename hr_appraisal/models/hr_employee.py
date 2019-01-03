@@ -24,10 +24,7 @@ class HrEmployee(models.Model):
     appraisal_by_collaborators = fields.Boolean(string='Collaborators')
     appraisal_collaborators_ids = fields.Many2many('hr.employee', 'emp_appraisal_subordinates_rel', 'hr_appraisal_id')
     appraisal_collaborators_survey_id = fields.Many2one('survey.survey', string="collaborate's Appraisal")
-    periodic_appraisal = fields.Boolean(string='Periodic Appraisal', default=False)
     periodic_appraisal_created = fields.Boolean(string='Periodic Appraisal has been created', default=False)  # Flag for the cron
-    appraisal_frequency = fields.Integer(string='Appraisal Repeat Every', default=1)
-    appraisal_frequency_unit = fields.Selection([('year', 'Year'), ('month', 'Month')], string='Appraisal Frequency', copy=False, default='year')
     appraisal_count = fields.Integer(compute='_compute_appraisal_count', string='Appraisals')
     related_partner_id = fields.Many2one('res.partner', compute='_compute_related_partner')
 
@@ -80,7 +77,6 @@ class HrEmployee(models.Model):
     def _get_employees_to_appraise(self):
         current_date = datetime.date.today()
         return self.search([
-            ('periodic_appraisal', '=', True),
             ('periodic_appraisal_created', '=', False),
             ('appraisal_date', '<=', current_date + relativedelta(days=8)),
             ('appraisal_date', '>=', current_date),
@@ -90,13 +86,13 @@ class HrEmployee(models.Model):
     def run_employee_appraisal(self, automatic=False, use_new_cursor=False):  # cronjob
         current_date = datetime.date.today()
         # Set the date of the next appraisal to come if the date is passed:
-        for employee in self.search([('periodic_appraisal', '=', True), ('appraisal_date', '<=', current_date)]):
-            months = employee.appraisal_frequency if employee.appraisal_frequency_unit == 'month' else employee.appraisal_frequency * 12
+        for employee in self.search([('appraisal_date', '<=', current_date)]):
+            months = int(self.env['ir.config_parameter'].sudo().get_param('hr_appraisal.appraisal_max_period'))
             employee.write({
                 'appraisal_date': fields.Date.to_string(current_date + relativedelta(months=months)),
                 'periodic_appraisal_created': False
             })
-        # Create perdiodic appraisal if appraisal date is in less than a week adn the appraisal for this perdiod has not been created yet:
+        # Create perdiodic appraisal if appraisal date is in less than a week and the appraisal for this perdiod has not been created yet:
         for employee in self._get_employees_to_appraise():
             vals = {'employee_id': employee.id,
                     'date_close': employee.appraisal_date,

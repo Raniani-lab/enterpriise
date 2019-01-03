@@ -98,17 +98,5 @@
             <field name="perm_create" eval="False"/>
             <field name="perm_unlink" eval="False"/>
         </record>
-
-        <!-- Public -->
-        <record id="subscription_public" model="ir.rule">
-            <field name="name">Subscription public access</field>
-            <field name="model_id" ref="sale_subscription.model_sale_subscription"/>
-            <field name="domain_force">[('type','=','subscription')]</field>
-            <field name="groups" eval="[(4, ref('base.group_public'))]"/>
-            <field name="perm_read" eval="True"/>
-            <field name="perm_write" eval="False"/>
-            <field name="perm_create" eval="False"/>
-            <field name="perm_unlink" eval="False"/>
-        </record>
     </data>
 </odoo>

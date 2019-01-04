@@ -153,6 +153,7 @@ class SignItemSelectionOption(models.Model):
 class SignItem(models.Model):
     _name = "sign.item"
     _description = "Fields to be sign on Document"
+    _rec_name = 'template_id'
 
     template_id = fields.Many2one('sign.template', string="Document Template", required=True, ondelete='cascade')
 
@@ -205,6 +206,7 @@ class SignItemType(models.Model):
 class SignItemValue(models.Model):
     _name = "sign.item.value"
     _description = "Signature Item Value"
+    _rec_name = 'sign_request_id'
 
     sign_item_id = fields.Many2one('sign.item', string="Signature Item", required=True, ondelete='cascade')
     sign_request_id = fields.Many2one('sign.request', string="Signature Request", required=True, ondelete='cascade')

@@ -41,8 +41,13 @@ class DocumentFolder(models.Model):
     facet_ids = fields.One2many('documents.facet', 'folder_id',
                                 string="Tag Categories",
                                 help="Tag categories defined for this workspace")
-    group_ids = fields.Many2many('res.groups', string="Access Groups",
-                                 help="This workspace will only be available to the selected user groups")
+    group_ids = fields.Many2many('res.groups',
+        string="Write Groups", help='Groups able to see the workspace and read/create/edit its documents.')
+    read_group_ids = fields.Many2many('res.groups', 'documents_folder_read_groups',
+        string="Read Groups", help='Groups able to see the workspace and read its documents without create/edit rights.')
+
+    user_specific = fields.Boolean(string="Own Documents Only",
+                                   help="Limit Read Groups to the documents of which they are owner.")
 
     #stat buttons
     action_count = fields.Integer('Action Count', compute='_compute_action_count')

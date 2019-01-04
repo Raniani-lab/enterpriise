@@ -6,12 +6,10 @@ import io
 import logging
 import os
 
-from ast import literal_eval
-
 from odoo import http
 from odoo.exceptions import AccessError
 from odoo.http import request, content_disposition
-from odoo.osv import expression
+from odoo.tools.translate import _
 from odoo.tools import consteq, image_process
 
 logger = logging.getLogger(__name__)
@@ -35,22 +33,9 @@ class ShareRoute(http.Controller):
 
         if share_id:
             share = env['documents.share'].sudo().browse(int(share_id))
-            if (not share.exists() or
-                    share.state == 'expired' or
-                    not share_token or
-                    not consteq(share_token, share.access_token)):
-                return (404, [], None)
-            elif share.type == 'ids' and (id in share.document_ids.ids):
-                record = env['documents.document'].sudo().browse(int(id))
-            elif share.type == 'domain':
-                record = env['documents.document'].sudo().browse(int(id))
-                share_domain = []
-                if share.domain:
-                    share_domain = literal_eval(share.domain)
-                domain = expression.AND([[('folder_id', '=', share.folder_id.id), ('id', '=', id)], share_domain])
-                document_check = http.request.env['documents.document'].sudo().search(domain)
-                if not document_check:
-                    return (404, [], None)
+            record = share._get_documents_and_check_access(share_token, [int(id)], operation='read')
+        if not record:
+            return (404, [], None)
 
         #check access right
         try:
@@ -59,7 +44,7 @@ class ShareRoute(http.Controller):
             return (404, [], None)
 
         mimetype = False
-        if record._name == 'documents.document' and record.type == 'url' and record.url:
+        if record.type == 'url' and record.url:
             module_resource_path = record.url
             filename = os.path.basename(module_resource_path)
             status = 301
@@ -168,20 +153,11 @@ class ShareRoute(http.Controller):
         env = request.env
         try:
             share = env['documents.share'].sudo().browse(share_id)
-            if share.state == 'expired':
+            documents = share._get_documents_and_check_access(access_token, operation='read')
+            if documents:
+                return self._make_zip((share.name or 'unnamed-link') + '.zip', documents)
+            else:
                 return request.not_found()
-            if consteq(access_token, share.access_token):
-                if share.action != 'upload':
-                    documents = False
-                    if share.type == 'domain':
-                        domain = []
-                        if share.domain:
-                            domain = literal_eval(share.domain)
-                        domain = expression.AND([domain, [['folder_id', '=', share.folder_id.id]]])
-                        documents = env['documents.document'].sudo().search(domain)
-                    elif share.type == 'ids':
-                        documents = share.document_ids
-                    return self._make_zip((share.name or 'unnamed-link') + '.zip', documents)
         except Exception:
             logger.exception("Failed to zip share link id: %s" % share_id)
         return request.not_found()
@@ -196,12 +172,12 @@ class ShareRoute(http.Controller):
         try:
             env = request.env
             share = env['documents.share'].sudo().browse(share_id)
-            if consteq(access_token, share.access_token):
+            if share._get_documents_and_check_access(access_token, document_ids=[], operation='read') is not False:
                 return base64.b64decode(env['res.users'].sudo().browse(share.create_uid.id).image_64)
             else:
                 return request.not_found()
         except Exception:
-            logger.exception("Failed to download portrait id: %s" % id)
+            logger.exception("Failed to download portrait")
         return request.not_found()
 
     @http.route(["/document/thumbnail/<int:share_id>/<access_token>/<int:id>"],
@@ -214,12 +190,8 @@ class ShareRoute(http.Controller):
         :return: the thumbnail of the document for the portal view.
         """
         try:
-            env = request.env
-            share = env['documents.share'].sudo().browse(share_id)
-            if share.state == 'expired':
-                return request.not_found()
-            if consteq(share.access_token, access_token):
-                return self._get_file_response(id, share_id=share.id, share_token=share.access_token, field='thumbnail')
+            thumbnail = self._get_file_response(id, share_id=share_id, share_token=access_token, field='thumbnail')
+            return thumbnail
         except Exception:
             logger.exception("Failed to download thumbnail id: %s" % id)
         return request.not_found()
@@ -236,14 +208,11 @@ class ShareRoute(http.Controller):
         :param share_id: id of the share link
         :return: a portal page to preview and download a single file.
         """
-        env = request.env
-        share = env['documents.share'].sudo().browse(share_id)
-        if consteq(access_token, share.access_token):
-            try:
-                if share.action != 'upload' and share.state != 'expired':
-                    return self._get_file_response(id, share_id=share_id, share_token=share.access_token, field='datas')
-            except Exception:
-                logger.exception("Failed to download document %s" % id)
+        try:
+            document = self._get_file_response(id, share_id=share_id, share_token=access_token, field='datas')
+            return document or request.not_found()
+        except Exception:
+            logger.exception("Failed to download document %s" % id)
 
         return request.not_found()
 
@@ -261,32 +230,27 @@ class ShareRoute(http.Controller):
         :return if files are uploaded, recalls the share portal with the updated content.
         """
         share = http.request.env['documents.share'].sudo().browse(share_id)
-
-        if not share.exists() or share.state != 'live' or not consteq(token, share.access_token):
+        if not share.can_upload or (not document_id and share.action != 'downloadupload'):
             return http.request.not_found()
-        documents = request.env['documents.document']
+
+        available_documents = share._get_documents_and_check_access(
+            token, [document_id] if document_id else [], operation='write')
         folder = share.folder_id
         folder_id = folder.id or False
-        chatter_message = '''<b>File uploaded by:</b> %s (share link)<br/>%s
-                             <b>Link created by:</b> %s <br/>
-                             <a href="/web#id=%s&model=documents.share&view_type=form" target="_blank">
-                                <b>View the share link</b>
-                             </a>''' % (
+        button_text = share.name or _('Share link')
+        chatter_message = _('''<b> File uploaded by: </b> %s <br/>
+                               <b> Link created by: </b> %s <br/>
+                               <a class="btn btn-primary" href="/web#id=%s&model=documents.share&view_type=form" target="_blank">
+                                  <b>%s</b>
+                               </a>
+                             ''') % (
                 http.request.env.user.name,
-                ('<b>Link name:</b> ' + share.name + '<br/>' if share.name else ''),
                 share.create_uid.name,
                 share_id,
+                button_text,
             )
-        if document_id:
-            document_request = http.request.env['documents.document'].with_user(share.create_uid).browse(document_id)
-            if share.type == 'ids':
-                documents_check = share.document_ids
-            else:
-                domain = expression.AND([literal_eval(share.domain or []), [('folder_id', '=', share.folder_id.id),
-                                                                            ('id', '=', document_id)]])
-                documents_check = http.request.env['documents.document'].sudo().search(domain)
-
-            if not documents_check or document_request.type != 'empty':
+        if document_id and available_documents:
+            if available_documents.type != 'empty':
                 return http.request.not_found()
             try:
                 file = request.httprequest.files.getlist('requestFile')[0]
@@ -301,9 +265,9 @@ class ShareRoute(http.Controller):
             except Exception:
                 logger.exception("Failed to read uploaded file")
             else:
-                document_request.with_context(binary_field_real_user=http.request.env.user).write(write_vals)
-                document_request.message_post(body=chatter_message)
-        elif share.action == 'downloadupload':
+                available_documents.with_context(binary_field_real_user=http.request.env.user).write(write_vals)
+                available_documents.message_post(body=chatter_message)
+        elif not document_id and available_documents is not False:
             try:
                 for file in request.httprequest.files.getlist('files'):
                     data = file.read()
@@ -317,14 +281,15 @@ class ShareRoute(http.Controller):
                         'owner_id': share.owner_id.id,
                         'folder_id': folder_id,
                     }
-                    document = documents.with_user(share.create_uid).with_context(binary_field_real_user=http.request.env.user).create(document_dict)
+                    document = request.env['documents.document'].with_user(share.create_uid).with_context(binary_field_real_user=http.request.env.user).create(document_dict)
                     document.message_post(body=chatter_message)
                     if share.activity_option:
                         document.documents_set_activity(settings_record=share)
 
             except Exception:
                 logger.exception("Failed to upload document")
-
+        else:
+            return http.request.not_found()
         return """<script type='text/javascript'>
                     window.open("/document/share/%s/%s", "_self");
                 </script>""" % (share_id, token)
@@ -341,26 +306,17 @@ class ShareRoute(http.Controller):
         :param token: share access token
         """
         try:
-            share = http.request.env['documents.share'].sudo().search([('id', '=', share_id)])
-            if share.state == 'expired':
-                expired_options = {
-                    'expiration_date': share.date_deadline,
-                    'author': share.create_uid.name,
-                }
-                return request.render('documents.not_available', expired_options)
-            if not consteq(token, share.access_token):
-                return request.not_found()
-
-            if share.type == 'domain':
-                domain = []
-                if share.domain:
-                    domain = literal_eval(share.domain)
-                domain += [['folder_id', '=', share.folder_id.id]]
-                documents = http.request.env['documents.document'].sudo().search(domain)
-            elif share.type == 'ids':
-                documents = share.document_ids
-            else:
-                return request.not_found()
+            share = http.request.env['documents.share'].sudo().browse(share_id)
+            available_documents = share._get_documents_and_check_access(token, operation='read')
+            if available_documents is False:
+                if share._check_token(token):
+                    options = {
+                        'expiration_date': share.date_deadline,
+                        'author': share.create_uid.name,
+                    }
+                    return request.render('documents.not_available', options)
+                else:
+                    return request.not_found()
 
             options = {
                 'base_url': http.request.env["ir.config_parameter"].sudo().get_param("web.base.url"),
@@ -369,12 +325,12 @@ class ShareRoute(http.Controller):
                 'share_id': str(share.id),
                 'author': share.create_uid.name,
             }
-            if share.type == 'ids' and len(documents) == 1:
-                options.update(document=documents[0], request_upload=True)
+            if share.type == 'ids' and len(available_documents) == 1:
+                options.update(document=available_documents[0], request_upload=True)
                 return request.render('documents.share_single', options)
             else:
-                options.update(all_button='binary' in [document.type for document in documents],
-                               document_ids=documents,
+                options.update(all_button='binary' in [document.type for document in available_documents],
+                               document_ids=available_documents,
                                request_upload=share.action == 'downloadupload' or share.type == 'ids')
                 return request.render('documents.share_page', options)
         except Exception:

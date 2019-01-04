@@ -168,7 +168,9 @@ class Document(models.Model):
         """
         folder_ids = self.mapped('folder_id.id')
         rule_domain = [('domain_folder_id', 'parent_of', folder_ids)] if folder_ids else []
-        rules = self.env['documents.workflow.rule'].search(rule_domain)
+        # searching rules with sudo as rules are inherited from parent folders and should be available even
+        # when they come from a restricted folder.
+        rules = self.env['documents.workflow.rule'].sudo().search(rule_domain)
         for rule in rules:
             domain = []
             if rule.condition_type == 'domain':
@@ -353,10 +355,13 @@ class Document(models.Model):
     def search_panel_select_range(self, field_name):
         if field_name == 'folder_id':
             fields = ['display_name', 'description', 'parent_folder_id']
-            DocumentFolder = self.env['documents.folder'].with_context(hierarchical_naming=False)
+            available_folders = self.env['documents.folder'].search([])
+            folder_domain = expression.OR([[('parent_folder_id', 'parent_of', available_folders.ids)], [('id', 'in', available_folders.ids)]])
+            # also fetches the ancestors of the available folders to display the complete folder tree for all available folders.
+            DocumentFolder = self.env['documents.folder'].sudo().with_context(hierarchical_naming=False)
             return {
                 'parent_field': 'parent_folder_id',
-                'values': DocumentFolder.search_read([], fields),
+                'values': DocumentFolder.search_read(folder_domain, fields),
             }
         return super(Document, self).search_panel_select_range(field_name)
 

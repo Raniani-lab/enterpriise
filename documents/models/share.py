@@ -1,6 +1,13 @@
 # -*- coding: utf-8 -*-
+
+from ast import literal_eval
+
 from odoo import models, fields, api, exceptions
 from odoo.tools.translate import _
+from odoo.tools import consteq
+
+from odoo.osv import expression
+
 import uuid
 
 
@@ -19,6 +26,7 @@ class DocumentShare(models.Model):
         ('live', "Live"),
         ('expired', "Expired"),
     ], default='live', compute='_compute_state', string="Status")
+    can_upload = fields.Boolean(compute='_compute_can_upload')
 
     type = fields.Selection([
         ('ids', "Document list"),
@@ -60,6 +68,87 @@ class DocumentShare(models.Model):
         for record in self:
             name_array.append((record.id, record.name or "unnamed link"))
         return name_array
+
+    def _get_documents(self, document_ids=None):
+        """
+        :param list[int] document_ids: limit to the list of documents to fetch.
+        :return: recordset of the documents that can be accessed by the create_uid based on the settings
+        of the share link.
+        """
+        self.ensure_one()
+        limited_self = self.with_user(self.create_uid)
+        Documents = limited_self.env['documents.document']
+
+        search_ids = set()
+        domains = [[('folder_id', '=', self.folder_id.id)]]
+
+        if document_ids is not None:
+            if not document_ids:
+                return Documents
+            search_ids = set(document_ids)
+
+        if self.type == 'domain':
+            record_domain = literal_eval(self.domain)
+            domains.append(record_domain)
+        else:
+            share_ids = limited_self.document_ids.ids
+            search_ids = search_ids.intersection(share_ids) if search_ids else share_ids
+
+        if search_ids or self.type != 'domain':
+            domains.append([('id', 'in', list(search_ids))])
+
+        search_domain = expression.AND(domains)
+        return Documents.search(search_domain)
+
+    def _get_writable_documents(self, documents):
+        """
+
+        :param documents:
+        :return: the recordset of documents for which the create_uid has write access
+        False only if no write right.
+        """
+        self.ensure_one()
+        try:
+            # checks the rights first in case of empty recordset
+            documents.with_user(self.create_uid).check_access_rights('write')
+        except exceptions.AccessError:
+            return False
+        return documents.with_user(self.create_uid)._filter_access_rules('write')
+
+    def _check_token(self, access_token):
+        if not access_token:
+            return False
+        try:
+            return consteq(access_token, self.access_token)
+        except:
+            return False
+
+    def _get_documents_and_check_access(self, access_token, document_ids=None, operation='write'):
+        """
+        :param str access_token: the access_token to be checked with the share link access_token
+        :param list[int] document_ids: limit to the list of documents to fetch and check from the share link.
+        :param str operation: access right to check on documents (read/write).
+        :return: Recordset[documents.document]: all the accessible requested documents
+        False if it fails access checks: False always means "no access right", if there are no documents but
+        the rights are valid, it still returns an empty recordset.
+        """
+        self.ensure_one()
+        if not self._check_token(access_token):
+            return False
+        if self.state == 'expired':
+            return False
+        documents = self._get_documents(document_ids)
+        if operation == 'write':
+            return self._get_writable_documents(documents)
+        else:
+            return documents
+
+    def _compute_can_upload(self):
+        for record in self:
+            folder = record.folder_id
+            folder_has_groups = folder.group_ids.ids or folder.read_group_ids.ids
+            in_write_group = set(folder.group_ids.ids) & set(record.create_uid.groups_id.ids)
+            record.can_upload = in_write_group or not folder_has_groups
 
     def _compute_state(self):
         """

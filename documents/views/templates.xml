@@ -5,7 +5,6 @@
 
     <template id="documents.not_available">
         <t t-call="documents.public_page_layout">
-            <t t-set="shareType" t-value="'o_expired'"/>
             <h2 class="o_documents_portal_central_message text-center mt160 text-white">This link has expired</h2>
         </t>
     </template>
@@ -39,8 +38,8 @@
             </t>
 
             <t t-set="body_classname" t-value="'o_docs_share_page o_home_menu_background'"/>
-
-            <div id="wrap" t-att-class="'h-100 flex-column flex-nowrap d-flex position-relative container ' + shareType or ''">
+            <t t-set="shareType" t-value="shareType or ''"/>
+            <div id="wrap" t-att-class="'h-100 flex-column flex-nowrap d-flex position-relative container ' + shareType">
                 <header class="mt8">
                     <span class="o_company_logo" t-field="res_company.logo" t-options="{'widget': 'image'}" t-att-alt="'Logo of %s' % res_company.name" t-att-title="res_company.name"/>
 

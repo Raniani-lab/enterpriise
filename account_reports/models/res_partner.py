@@ -123,8 +123,7 @@ class ResPartner(models.Model):
         Compute the next action status of the customer. It can be 'manual' or 'auto'.
         """
         self.ensure_one()
-        lang_code = self.lang or self.env.user.lang or 'en_US'
-        date_auto = format_date(self.env, fields.datetime.now() + timedelta(days=self.env.user.company_id.days_between_two_followups), lang_code=lang_code)
+        date_auto = format_date(self.env, fields.datetime.now() + timedelta(days=self.env.user.company_id.days_between_two_followups))
         if self.payment_next_action_date:
             return {
                 'type': 'manual',

@@ -56,8 +56,8 @@ class AccountFollowupReport(models.AbstractModel):
         partner = options.get('partner_id') and self.env['res.partner'].browse(options['partner_id']) or False
         if not partner:
             return []
-        lang_code = partner.lang or self.env.user.lang or 'en_US'
 
+        lang_code = partner.lang if self._context.get('print_mode') else self.env.user.lang or 'en_US'
         lines = []
         res = {}
         today = fields.Date.today()

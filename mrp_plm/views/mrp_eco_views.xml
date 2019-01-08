@@ -579,10 +579,11 @@
         <field name="name">mrp.eco.view.calendar</field>
         <field name="model">mrp.eco</field>
         <field name="arch" type="xml">
-            <calendar string="ECOs" date_start="create_date" date_stop="effectivity_date" color="stage_id">
-                <field name="name"/>
+            <calendar string="ECOs" date_start="create_date" date_stop="effectivity_date" color="stage_id" event_limit="5">
+                <field name="user_id" avatar_field="image_small"/>
                 <field name="product_tmpl_id"/>
                 <field name="type"/>
+                <field name="stage_id"/>
             </calendar>
         </field>
     </record>

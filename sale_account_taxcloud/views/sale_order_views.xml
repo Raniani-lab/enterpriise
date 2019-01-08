@@ -10,4 +10,22 @@ for order in records:
         </field>
         <field name="binding_model_id" ref="sale.model_sale_order"/>
     </record>
+
+    <record id="view_order_form_inherit" model="ir.ui.view">
+        <field name="name">sale.order.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <form position="inside">
+                <field name="is_taxcloud" invisible="1"/>
+            </form>
+            <xpath expr="//tree/field[@name='tax_id']" position="attributes">
+                <attribute name="attrs">{'column_invisible': [('parent.is_taxcloud', '=', True)]}</attribute>
+            </xpath>
+            <xpath expr="//tree/field[@name='price_tax']" position="replace"/>
+            <xpath expr="//tree/field[@name='tax_id']" position="after">
+                <field name="price_tax" string="Tax" attrs="{'column_invisible': [('parent.is_taxcloud', '=', False)]}"/>
+            </xpath>
+        </field>
+    </record>
 </odoo>

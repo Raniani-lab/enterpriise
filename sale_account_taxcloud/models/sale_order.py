@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from odoo import api, models, _
+from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
 from odoo.tools import float_compare, float_round
 
@@ -9,6 +9,8 @@ from .taxcloud_request import TaxCloudRequest
 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
+
+    is_taxcloud = fields.Boolean(related='fiscal_position_id.is_taxcloud', help='Technical field to determine whether to hide taxes in views or not.')
 
     @api.multi
     def action_confirm(self):

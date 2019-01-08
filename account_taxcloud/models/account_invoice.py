@@ -15,6 +15,8 @@ _logger = logging.getLogger(__name__)
 class AccountInvoice(models.Model):
     _inherit = 'account.invoice'
 
+    is_taxcloud = fields.Boolean(related='fiscal_position_id.is_taxcloud', help='Technical field to determine whether to hide taxes in views or not.')
+
     @api.multi
     def action_invoice_open(self):
         for invoice in self:

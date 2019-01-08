@@ -18,54 +18,53 @@
         <field name="model">documents.document</field>
         <field name="arch" type="xml">
             <search string="Documents">
-                    <field name="datas_fname"/>
-                    <field name="tag_ids"/>
-                    <field name="group_ids"/>
-                    <field name="index_content"/>
-                    <field name="owner_id"/>
-                    <field name="partner_id" string="Contact"/>
-                    <field name="name" filter_domain="['|', ('name','ilike',self), ('datas_fname','ilike',self)]" string="Document"/>
-                    <field name="create_date"/>
-                    <separator/>
-                    <filter string="My Activities" name="activities_my"
-                            domain="[('activity_ids.user_id', '=', uid)]"/>
-                    <separator/>
-                    <filter string="Late Activities" name="activities_overdue"
-                        domain="[('activity_ids.date_deadline', '&lt;', context_today().strftime('%Y-%m-%d'))]"
-                        help="Show all records which has next action date is before today"/>
-                    <filter string="Today Activities" name="activities_today"
-                        domain="[('activity_ids.date_deadline', '=', context_today().strftime('%Y-%m-%d'))]"/>
-                    <filter string="Future Activities" name="activities_upcoming_all"
-                        domain="[('activity_ids.date_deadline', '&gt;', context_today().strftime('%Y-%m-%d'))
-                        ]"/>
-                    <separator/>
-                    <filter string="PDF" name="pdf" domain="[('mimetype', 'ilike', 'pdf')]"/>
-                    <filter string="Image" name="img" domain="[('mimetype', 'ilike', 'image')]"/>
-                    <filter string="Video" name="video" domain="[('mimetype', 'ilike', 'video')]"/>
-                    <filter string="Doc" name="doc" domain="[('datas_fname', 'ilike', '.doc')]"/>
-                    <separator/>
-                    <filter string="Archived" name="Inactive" domain="[('active', '=', False)]"/>
-                    <filter string="Model" name="by_model" domain="[]" context="{'group_by': 'res_model'}"/>
-                    <filter name="my_documents_filter" string="My Documents" domain="[('owner_id', '=', uid)]"/>
-                    <filter name="my_favorites_filter" string="My Favorites" domain="[('favorited_ids', 'in', uid)]"/>
-                    <separator/>
-                    <filter name="my_locked_filter" string="My locked files" domain="[('lock_uid', '=', uid)]"/>
-                    <filter name="all_locked_filter" string="All locked files" domain="[('lock_uid', '!=', False)]"/>
-                    <separator/>
-                    <filter name="url_filter" string="URL" domain="[('type', '=', 'url')]"/>
-                    <filter name="binary_filter" string="Stored" domain="[('type', '=', 'binary')]"/>
-                    <filter name="requested_filter" string="Requested files" domain="[('type', '=', 'empty')]"/>
-                    <separator/>
-                    <field name="create_uid" string="Created by"/>
-                    <field name="type"/>
-                    <group expand="0" string="Group By">
-                        <filter name="owner" string="Owner" domain="[]" context="{'group_by':'create_uid'}"/>
-                        <filter string="Type" name="type" domain="[]" context="{'group_by':'type'}" groups="base.group_no_one"/>
-                        <filter string="Company" name="company" domain="[]" context="{'group_by':'company_id'}" groups="base.group_multi_company"/>
-                        <filter string="Creation Date" name="creation_month" domain="[]" context="{'group_by':'create_date'}"/>
-                        <filter string="Attached Document Name" name="attached_document_name" domain="[]" context="{'group_by': 'res_name'}"/>
-                    </group>
-                </search>
+                <field name="name" string="Name"/>
+                <field name="tag_ids"/>
+                <field name="group_ids"/>
+                <field name="index_content"/>
+                <field name="owner_id"/>
+                <field name="partner_id" string="Contact"/>
+                <field name="create_date"/>
+                <separator/>
+                <filter string="My Activities" name="activities_my"
+                        domain="[('activity_ids.user_id', '=', uid)]"/>
+                <separator/>
+                <filter string="Late Activities" name="activities_overdue"
+                    domain="[('activity_ids.date_deadline', '&lt;', context_today().strftime('%Y-%m-%d'))]"
+                    help="Show all records which has next action date is before today"/>
+                <filter string="Today Activities" name="activities_today"
+                    domain="[('activity_ids.date_deadline', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter string="Future Activities" name="activities_upcoming_all"
+                    domain="[('activity_ids.date_deadline', '&gt;', context_today().strftime('%Y-%m-%d'))
+                    ]"/>
+                <separator/>
+                <filter string="PDF" name="pdf" domain="[('mimetype', 'ilike', 'pdf')]"/>
+                <filter string="Image" name="img" domain="[('mimetype', 'ilike', 'image')]"/>
+                <filter string="Video" name="video" domain="[('mimetype', 'ilike', 'video')]"/>
+                <filter string="Doc" name="doc" domain="[('datas_fname', 'ilike', '.doc')]"/>
+                <separator/>
+                <filter string="Archived" name="Inactive" domain="[('active', '=', False)]"/>
+                <filter string="Model" name="by_model" domain="[]" context="{'group_by': 'res_model'}"/>
+                <filter name="my_documents_filter" string="My Documents" domain="[('owner_id', '=', uid)]"/>
+                <filter name="my_favorites_filter" string="My Favorites" domain="[('favorited_ids', 'in', uid)]"/>
+                <separator/>
+                <filter name="my_locked_filter" string="My locked files" domain="[('lock_uid', '=', uid)]"/>
+                <filter name="all_locked_filter" string="All locked files" domain="[('lock_uid', '!=', False)]"/>
+                <separator/>
+                <filter name="url_filter" string="URL" domain="[('type', '=', 'url')]"/>
+                <filter name="binary_filter" string="Stored" domain="[('type', '=', 'binary')]"/>
+                <filter name="requested_filter" string="Requested files" domain="[('type', '=', 'empty')]"/>
+                <separator/>
+                <field name="create_uid" string="Created by"/>
+                <field name="type"/>
+                <group expand="0" string="Group By">
+                    <filter name="owner" string="Owner" domain="[]" context="{'group_by':'create_uid'}"/>
+                    <filter string="Type" name="type" domain="[]" context="{'group_by':'type'}" groups="base.group_no_one"/>
+                    <filter string="Company" name="company" domain="[]" context="{'group_by':'company_id'}" groups="base.group_multi_company"/>
+                    <filter string="Creation Date" name="creation_month" domain="[]" context="{'group_by':'create_date'}"/>
+                    <filter string="Attached Document Name" name="attached_document_name" domain="[]" context="{'group_by': 'res_name'}"/>
+                </group>
+            </search>
         </field>
     </record>
 

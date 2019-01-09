@@ -4,12 +4,12 @@
 
     <t t-name="batch_payments_selector">
         <div t-if="batchPayments.length > 0" class="dropdown batch_payments_selector">
-            <a data-toggle="dropdown" href="javascript:void(0)">
+            <a data-toggle="dropdown" href="#">
                 <i class="fa fa-bookmark"></i> Select a Batch Payment
             </a>
             <ul class="dropdown-menu" role="menu">
                 <t t-foreach="batchPayments" t-as="batch">
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0)" class="batch_payment" t-att-data-batch_payment_id="batch.id">
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#" class="batch_payment" t-att-data-batch_payment_id="batch.id">
                         <t t-esc="batch.name"/> :
                         <t t-esc="batch.amount_str"/>
                         <t t-if="batch.amount_currency_str">

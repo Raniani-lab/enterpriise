@@ -209,6 +209,7 @@ class HelpdeskTicket(models.Model):
     stage_id = fields.Many2one('helpdesk.stage', string='Stage', ondelete='restrict', tracking=True,
                                group_expand='_read_group_stage_ids', copy=False,
                                index=True, domain="[('team_ids', '=', team_id)]")
+    date_last_stage_update = fields.Datetime("Last Stage Update", copy=False, readonly=True)
 
     # next 4 fields are computed in write (or create)
     assign_date = fields.Datetime("First assignation date")
@@ -384,6 +385,7 @@ class HelpdeskTicket(models.Model):
 
     @api.model_create_multi
     def create(self, list_value):
+        now = fields.Datetime.now()
         # determine user_id and stage_id if not given. Done in batch.
         teams = self.env['helpdesk.team'].browse([vals['team_id'] for vals in list_value if 'team_id' in vals])
         team_default_map = dict.fromkeys(teams.ids, dict())
@@ -392,6 +394,10 @@ class HelpdeskTicket(models.Model):
                 'stage_id': team._determine_stage()[team.id].id,
                 'user_id': team._determine_user_to_assign()[team.id].id
             }
+
+        # determine partner email for ticket with partner but no email given
+        partners = self.env['res.partner'].browse([vals['partner_id'] for vals in list_value if 'partner_id' in vals and vals.get('partner_id') and 'partner_email' not in vals])
+        partner_email_map = {partner.id: partner.email for partner in partners}
 
         for vals in list_value:
             if vals.get('team_id'):
@@ -407,9 +413,12 @@ class HelpdeskTicket(models.Model):
                     vals['assign_date'] = fields.Datetime.now()
                     vals['assign_hours'] = 0
 
-        if 'partner_id' in vals and 'partner_email' not in vals:
-            partner_email = self.env['res.partner'].browse(vals['partner_id']).email
-            vals.update(partner_email=partner_email)
+            # set partner email if in map of not given
+            if vals.get('partner_id') in partner_email_map:
+                vals['partner_email'] = partner_email_map.get(vals['partner_id'])
+
+            if vals.get('stage_id'):
+                vals['date_last_stage_update'] = now
 
         # context: no_log, because subtype already handle this
         tickets = super(HelpdeskTicket, self).create(list_value)
@@ -439,6 +448,10 @@ class HelpdeskTicket(models.Model):
                 vals['closed_by_partner'] = False
 
         now = fields.Datetime.now()
+
+        # update last stage date when changing stage
+        if 'stage_id' in vals:
+            vals['date_last_stage_update'] = now
 
         res = super(HelpdeskTicket, self - assigned_tickets - closed_tickets).write(vals)
         res &= super(HelpdeskTicket, assigned_tickets - closed_tickets).write(dict(vals, **{

@@ -592,10 +592,35 @@ class MarketingActivity(models.Model):
                 'state_msg': _('Exception in mass mailing: %s') % str(e),
             })
         else:
-            traces.write({
-                'state': 'processed',
-                'schedule_date': Datetime.now(),
-            })
+            failed_stats = self.env['mail.mail.statistics'].sudo().search([
+                ('marketing_trace_id', 'in', traces.ids),
+                '|', ('exception', '!=', False), ('ignored', '!=', False)])
+            ignored_doc_ids = [stat.res_id for stat in failed_stats if stat.exception]
+            error_doc_ids = [stat.res_id for stat in failed_stats if stat.ignored]
+
+            processed_traces = traces
+            ignored_traces = traces.filtered(lambda trace: trace.res_id in ignored_doc_ids)
+            error_traces = traces.filtered(lambda trace: trace.res_id in error_doc_ids)
+
+            if ignored_traces:
+                ignored_traces.write({
+                    'state': 'canceled',
+                    'schedule_date': Datetime.now(),
+                    'state_msg': _('Email ignored')
+                })
+                processed_traces = processed_traces - ignored_traces
+            if error_traces:
+                error_traces.write({
+                    'state': 'error',
+                    'schedule_date': Datetime.now(),
+                    'state_msg': _('Email failed')
+                })
+                processed_traces = processed_traces - error_traces
+            if processed_traces:
+                processed_traces.write({
+                    'state': 'processed',
+                    'schedule_date': Datetime.now(),
+                })
         return True
 
     def _generate_children_traces(self, traces):

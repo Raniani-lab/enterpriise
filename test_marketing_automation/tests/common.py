@@ -23,20 +23,20 @@ class MarketingCampaignTestBase(common.TransactionCase):
             'groups_id': [(6, 0, [self.ref('base.group_user'), self.ref('marketing_automation.group_marketing_automation_user')])]
         })
         Partners = self.env['res.partner']
-        self.test_partner1 = Partners.create({'name': 'P1'})
-        self.test_partner2 = Partners.create({'name': 'P2'})
-        self.test_partner3 = Partners.create({'name': 'P3'})
+        self.test_partner1 = Partners.create({'name': 'P1', 'email': 'p1@example.com'})
+        self.test_partner2 = Partners.create({'name': 'P2', 'email': 'p2@example.com'})
+        self.test_partner3 = Partners.create({'name': 'P3', 'email': 'p3@example.com'})
         self.test_model = self.env.ref('test_marketing_automation.model_test_marketing_automation_test_simple')
         self.TestModel = self.env['test_marketing_automation.test.simple']
-        self.test_rec0 = self.TestModel.create({'name': 'Invalid'})
-        self.test_rec1 = self.TestModel.create({'name': 'Test_1', 'partner_id': self.test_partner1.id})
-        self.test_rec2 = self.TestModel.create({'name': 'Test_2', 'partner_id': self.test_partner2.id})
-        self.test_rec3 = self.TestModel.create({'name': 'Test_3', 'partner_id': self.test_partner2.id})
-        self.test_rec4 = self.TestModel.create({'name': 'Brol_1'})
+        self.test_rec0 = self.TestModel.create({'name': 'Invalid', 'email_from': 'invalid@example.com'})
+        self.test_rec1 = self.TestModel.create({'name': 'Test_1', 'email_from': 'p1@example.com', 'partner_id': self.test_partner1.id})
+        self.test_rec2 = self.TestModel.create({'name': 'Test_2', 'email_from': 'p2@example.com', 'partner_id': self.test_partner2.id})
+        self.test_rec3 = self.TestModel.create({'name': 'Test_3', 'email_from': 'p3@example.com', 'partner_id': self.test_partner3.id})
+        self.test_rec4 = self.TestModel.create({'name': 'Brol_1', 'email_from': 'brol@example.com'})
 
         self.patcher = patch('odoo.addons.marketing_automation.models.marketing_campaign.Datetime', wraps=Datetime)
         self.patcher2 = patch('odoo.addons.marketing_automation.models.marketing_participant.Datetime', wraps=Datetime)
-        
+
         self.mock_datetime = self.patcher.start()
         self.mock_datetime2 = self.patcher2.start()
 

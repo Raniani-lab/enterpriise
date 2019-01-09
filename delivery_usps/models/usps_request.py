@@ -9,18 +9,6 @@ from lxml import etree
 
 from odoo import fields, _
 
-# This demo data is only used for the cancel shipping.
-# https://www.usps.com/business/web-tools-apis/package-pickup-api.htm#_Toc289864484
-CANCEL_SHIPMENT_ADDRESS = {'ID': '308ABC004378',
-                           'FirmName': 'ABC Corp.',
-                           'SuiteOrApt': 'Suite 777',
-                           'Address2': '1390 Market Street',
-                           'Urbanization': '',
-                           'City': 'Houston',
-                           'State': 'TX',
-                           'ZIP5': '77058',
-                           'ZIP4': '1234',
-                           'ConfirmationNumber': 'WTC123456789'}
 
 # This re should match postcodes like 12345 and 12345-6789
 ZIP_ZIP4 = re.compile('^[0-9]{5}(-[0-9]{4})?$')
@@ -40,9 +28,9 @@ class USPSRequest():
     def __init__(self, prod_environment, debug_logger):
         self.debug_logger = debug_logger
         if not prod_environment:
-            self.url = 'http://testing.shippingapis.com/ShippingAPI.dll'
+            self.url = 'https://stg-secure.shippingapis.com/ShippingAPI.dll'
         else:
-            self.url = 'http://production.shippingapis.com/ShippingAPI.dll'
+            self.url = 'https://secure.shippingapis.com/ShippingAPI.dll'
         self.prod_environment = prod_environment
 
     def check_required_value(self, recipient, delivery_nature, shipper, order=False, picking=False):
@@ -206,11 +194,12 @@ class USPSRequest():
         shipping_detail = {
             'api': api,
             'ID': carrier.sudo().usps_username,
-            'revision': "2",
+            'revision': '2' if carrier.usps_delivery_nature == 'international' else '',
             'ImageParameters': '',
             'picking_warehouse_partner': picking.picking_type_id.warehouse_id.partner_id,
             'picking_warehouse_partner_phone': self._convert_phone_number(picking.picking_type_id.warehouse_id.partner_id.phone),
             'picking_partner': picking.partner_id,
+            'picking_partner_phone': self._convert_phone_number(picking.partner_id.phone or picking.partner_id.mobile or ''),
             'picking_carrier': picking.carrier_id,
             'ToPOBoxFlag': 'N',
             'ToPOBoxFlagDom': 'false',
@@ -248,10 +237,9 @@ class USPSRequest():
         request_text = picking.env['ir.qweb'].render('delivery_usps.usps_shipping_common', ship_detail)
         api = self._api_url(delivery_nature, service)
         dict_response = {'tracking_number': 0.0, 'price': 0.0, 'currency': "USD"}
-        url = 'https://secure.shippingapis.com/ShippingAPI.dll'
         try:
             self.debug_logger(request_text, 'usps_request_ship')
-            req = requests.get(url, params={'API': api, 'XML': request_text})
+            req = requests.get(self.url, params={'API': api, 'XML': request_text})
             req.raise_for_status()
             response_text = req.content
             self.debug_logger(response_text, 'usps_response_ship')
@@ -265,19 +253,7 @@ class USPSRequest():
         if errors_return:
             dict_response['error_message'] = self._error_message(errors_number[0].text, errors_return[0].text)
             return dict_response
-
-        elif root.tag == 'DelivConfirmCertifyV4.0Response' or root.tag == 'DeliveryConfirmationV4.0Response':
-            # domestic Priority and First Class
-            dict_response['tracking_number'] = root.findtext('DeliveryConfirmationNumber')
-            dict_response['price'] = float(root.findtext('Postage'))
-            dict_response['label'] = binascii.a2b_base64(root.findtext('DeliveryConfirmationLabel'))
-        elif root.tag == 'ExpressMailLabelCertifyResponse' or root.tag == 'ExpressMailLabelResponse':
-            # for Domestic Express
-            dict_response['tracking_number'] = root.findtext('EMConfirmationNumber')
-            dict_response['price'] = float(root.findtext('Postage'))
-            dict_response['label'] = binascii.a2b_base64(root.findtext('EMLabel'))
         else:
-            # for International
             dict_response['tracking_number'] = root.findtext('BarcodeNumber')
             dict_response['price'] = float(root.findtext('Postage'))
             dict_response['label'] = binascii.a2b_base64(root.findtext('LabelImage'))
@@ -285,21 +261,12 @@ class USPSRequest():
         return dict_response
 
     def _usps_cancel_shipping_data(self, picking):
-        if self.prod_environment:
-            zip5, zip4 = split_zip(picking.picking_type_id.warehouse_id.partner_id.zip)
-            return {
-                'ID': picking.carrier_id.sudo().usps_username,
-                'FirmName': picking.picking_type_id.warehouse_id.partner_id.name,
-                'SuiteOrApt': picking.picking_type_id.warehouse_id.partner_id.street,
-                'Address2': picking.picking_type_id.warehouse_id.partner_id.street2,
-                'Urbanization': '',
-                'City': picking.picking_type_id.warehouse_id.partner_id.city,
-                'State': picking.picking_type_id.warehouse_id.partner_id.state_id.code,
-                'ZIP5': zip5,
-                'ZIP4': zip4,
-                'ConfirmationNumber': picking.carrier_tracking_ref
-            }
-        return CANCEL_SHIPMENT_ADDRESS
+        return {
+            'ID': picking.carrier_id.sudo().usps_username,
+            'BarcodeNumber': picking.carrier_tracking_ref,
+            'carrier_type': picking.carrier_id.usps_delivery_nature,
+            'api': 'eVSCancel' if self.prod_environment else 'eVSCancelCertify'
+        }
 
     def cancel_shipment(self, picking, account_validated):
         cancel_detail = self._usps_cancel_shipping_data(picking)
@@ -309,11 +276,10 @@ class USPSRequest():
         if not account_validated:
             dict_response['ShipmentDeleted'] = True
         else:
-            url = 'https://stg-secure.shippingapis.com/ShippingAPI.dll'
-            api = 'CarrierPickupCancel'
+            api = 'eVSCancel' if self.prod_environment else 'eVSCancelCertify'
             try:
                 self.debug_logger(request_text, 'usps_request_cancel')
-                req = requests.get(url, params={'API': api, 'XML': request_text})
+                req = requests.get(self.url, params={'API': api, 'XML': request_text})
                 req.raise_for_status()
                 response_text = req.content
                 self.debug_logger(response_text, 'usps_response_cancel')
@@ -333,20 +299,14 @@ class USPSRequest():
         api = ''
         if not self.prod_environment:
             if delivery_nature == 'domestic':
-                if service == 'Express':
-                    api = 'ExpressMailLabelCertify'
-                else:
-                    api = 'DelivConfirmCertifyV4'
+                api = 'eVSCertify'
             else:
-                api = "%s%s" % (str(service).replace(" ", ""), 'MailIntlCertify')
+                api = "eVS%s%s" % (str(service).replace(" ", ""), 'MailIntlCertify')
         else:
             if delivery_nature == 'domestic':
-                if service == 'Express':
-                    api = 'ExpressMailLabel'
-                else:
-                    api = 'DeliveryConfirmationV4'
+                api = 'eVS'
             else:
-                api = "%s%s" % (str(service).replace(" ", ""), 'MailIntl')
+                api = "eVS%s%s" % (str(service).replace(" ", ""), 'MailIntl')
         return api
 
     def _convert_phone_number(self, phone):

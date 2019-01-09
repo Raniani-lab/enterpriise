@@ -153,6 +153,11 @@ class FedexRequest():
             self.RequestedShipment.MasterTrackingId.TrackingNumber = master_tracking_id
 
     def add_package(self, weight_value, package_code=False, package_height=0, package_width=0, package_length=0, sequence_number=False, mode='shipping'):
+        # TODO remove in master and change the signature of a public method
+        return self._add_package(weight_value=weight_value, package_code=package_code, package_height=package_height, package_width=package_width,
+                                 package_length=package_length, sequence_number=sequence_number, mode=mode, po_number=False, dept_number=False)
+
+    def _add_package(self, weight_value, package_code=False, package_height=0, package_width=0, package_length=0, sequence_number=False, mode='shipping', po_number=False, dept_number=False):
         package = self.client.factory.create('RequestedPackageLineItem')
         package_weight = self.client.factory.create('Weight')
         package_weight.Value = weight_value
@@ -164,6 +169,17 @@ class FedexRequest():
             package.Dimensions.Width = package_width
             package.Dimensions.Length = package_length
             package.Dimensions.Units = "IN"
+        if po_number:
+            po_reference = self.client.factory.create('CustomerReference')
+            po_reference.CustomerReferenceType = 'P_O_NUMBER'
+            po_reference.Value = po_number
+            package.CustomerReferences.append(po_reference)
+        if dept_number:
+            dept_reference = self.client.factory.create('CustomerReference')
+            dept_reference.CustomerReferenceType = 'DEPARTMENT_NUMBER'
+            dept_reference.Value = dept_number
+            package.CustomerReferences.append(dept_reference)
+
         package.Weight = package_weight
         if mode == 'rating':
             package.GroupPackageCount = 1

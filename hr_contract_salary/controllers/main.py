@@ -29,30 +29,32 @@ class SignContract(Sign):
             contract.contract_update_template_id.id,
         ]
         if contract and request_template_id in contract_documents:
-            # Only the applicant/employee has signed
-            if request_item.sign_request_id.nb_closed == 1:
-                contract.active = True
-                if contract.car_id:
-                    if contract.origin_contract_id and contract.origin_contract_id.car_id \
-                            and contract.origin_contract_id.car_id != contract.car_id:
-                        contract.origin_contract_id.car_id.driver_id = False
-                    contract.car_id.driver_id = contract.employee_id.address_home_id
-                contract.access_token_consumed = True
-                if contract.applicant_id:
-                    contract.applicant_id.access_token = False
-            # Both applicant/employee and HR responsible have signed
-            if request_item.sign_request_id.nb_closed == 2:
-                if contract.employee_id:
-                    contract.employee_id.active = True
-                if contract.employee_id.address_home_id:
-                    contract.employee_id.address_home_id.active = True
-                if contract.car_id:
-                    contract.car_id.active = True
-                if contract.car_id.log_contracts:
-                    contract.car_id.log_contracts.write({'active': True})
+            self._update_contract_on_signature(request_item, contract)
             return {'url': '/salary_package/thank_you/' + str(contract.id)}
         return result
 
+    def _update_contract_on_signature(self, request_item, contract):
+        # Only the applicant/employee has signed
+        if request_item.sign_request_id.nb_closed == 1:
+            contract.active = True
+            if contract.car_id:
+                if contract.origin_contract_id and contract.origin_contract_id.car_id \
+                        and contract.origin_contract_id.car_id != contract.car_id:
+                    contract.origin_contract_id.car_id.driver_id = False
+                contract.car_id.driver_id = contract.employee_id.address_home_id
+            contract.access_token_consumed = True
+            if contract.applicant_id:
+                contract.applicant_id.access_token = False
+        # Both applicant/employee and HR responsible have signed
+        if request_item.sign_request_id.nb_closed == 2:
+            if contract.employee_id:
+                contract.employee_id.active = True
+            if contract.employee_id.address_home_id:
+                contract.employee_id.address_home_id.active = True
+            if contract.car_id:
+                contract.car_id.active = True
+            if contract.car_id.log_contracts:
+                contract.car_id.log_contracts.write({'active': True})
 
 class website_hr_contract_salary(http.Controller):
 

@@ -201,18 +201,20 @@ class MarketingCampaign(models.Model):
             existing_rec_ids = set([live_participant['res_id'] for live_participant in participants_data])
 
             record_domain = safe_eval(campaign.domain or [])
-            # check uniqueness based on 'unique_field_id' field
-            if campaign.unique_field_id and campaign.unique_field_id.name != 'id':
-                # Don't use browse maybe record is deleted
-                existing_records = RecordModel.browse(existing_rec_ids).read([campaign.unique_field_id.name])
-                unique_field_vals = list({rec[campaign.unique_field_id.name] for rec in existing_records})
-                if campaign.unique_field_id.ttype == 'many2one':
-                    unique_field_vals = [record[0] for record in unique_field_vals]
-                unique_domain = [(campaign.unique_field_id.name, 'not in', unique_field_vals)]
-                record_domain = expression.AND([unique_domain, record_domain])
             db_rec_ids = set(RecordModel.search(record_domain).ids)
             to_create = db_rec_ids - existing_rec_ids
             to_remove = existing_rec_ids - db_rec_ids
+            if campaign.unique_field_id and campaign.unique_field_id.name != 'id':
+                without_duplicates = []
+                unique_field_vals = {rec[campaign.unique_field_id.name]
+                                     for rec in RecordModel.browse(existing_rec_ids).exists()}
+                for rec_id in to_create:
+                    field_val = RecordModel.browse(rec_id)[campaign.unique_field_id.name]
+                    # we exclude the empty recordset with the first condition
+                    if (not campaign.unique_field_id.relation or field_val) and field_val not in unique_field_vals:
+                        without_duplicates.append(rec_id)
+                        unique_field_vals.add(field_val)
+                to_create = without_duplicates
 
             BATCH_SIZE = 100
             for index, rec_id in enumerate(to_create, start=1):

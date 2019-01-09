@@ -24,7 +24,7 @@ cp $odoo_path/addons/web/static/src/js/core/concurrency.js extension/web/static/
 cp $odoo_path/addons/web/static/src/js/core/context.js extension/web/static/src/js/core
 cp $odoo_path/addons/web/static/src/js/core/local_storage.js extension/web/static/src/js/core
 cp $odoo_path/addons/web/static/src/js/core/mixins.js extension/web/static/src/js/core
-cp $odoo_path/addons/web/static/src/js/core/pyeval.js extension/web/static/src/js/core
+cp $odoo_path/addons/web/static/src/js/core/py_utils.js extension/web/static/src/js/core
 cp $odoo_path/addons/web/static/src/js/core/qweb.js extension/web/static/src/js/core
 cp $odoo_path/addons/web/static/src/js/core/ram_storage.js extension/web/static/src/js/core
 cp $odoo_path/addons/web/static/src/js/core/registry.js extension/web/static/src/js/core
@@ -37,6 +37,8 @@ cp $odoo_path/addons/web/static/src/js/core/utils.js extension/web/static/src/js
 cp $odoo_path/addons/web/static/src/js/core/widget.js extension/web/static/src/js/core
 
 [ -d extension/web/static/src/js/libs ] || mkdir extension/web/static/src/js/libs
+cp $odoo_path/addons/web/static/src/js/libs/content-disposition.js extension/web/static/src/js/libs
+cp $odoo_path/addons/web/static/src/js/libs/download.js extension/web/static/src/js/libs
 cp $odoo_path/addons/web/static/src/js/libs/nvd3.js extension/web/static/src/js/libs
 
 [ -d extension/web/static/src/js/services ] || mkdir extension/web/static/src/js/services
@@ -57,7 +59,7 @@ cp -r $odoo_path/addons/web/static/lib/underscore extension/web/static/lib
 cp -r $odoo_path/addons/web/static/lib/underscore.string extension/web/static/lib
 
 [ -d extension/web/static/lib/bootstrap/css ] || mkdir -p extension/web/static/lib/bootstrap/css
-lessc $odoo_path/addons/web/static/lib/bootstrap/less/bootstrap.less > extension/web/static/lib/bootstrap/css/bootstrap.min.css
+sassc $odoo_path/addons/web/static/lib/bootstrap/scss/bootstrap.scss > extension/web/static/lib/bootstrap/css/bootstrap.min.css
 
 [ -d extension/web/static/lib/bootstrap/js ] || mkdir -p extension/web/static/lib/bootstrap/js
 cp $odoo_path/addons/web/static/lib/bootstrap/js/modal.js extension/web/static/lib/bootstrap/js

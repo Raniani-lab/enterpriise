@@ -30,10 +30,10 @@
             Cantidad="1.0"
             ClaveProdServ="01010101"
             ClaveUnidad="H87"
-            Descripcion='FURN_7800  Desk Combination Desk combination, black-brown: chair   desk   drawer'
+            Descripcion='[FURN_7800] Desk Combination Desk combination, black-brown: chair   desk   drawer'
             Importe="450.00"
             NoIdentificacion="FURN_7800"
-            Unidad="Unit s"
+            Unidad="Unit(s)"
             ValorUnitario="450.00">
             <cfdi:Impuestos>
                 <cfdi:Traslados>

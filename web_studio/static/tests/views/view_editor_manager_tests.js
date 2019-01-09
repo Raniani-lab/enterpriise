@@ -6,6 +6,7 @@ var mailTestUtils = require('mail.testUtils');
 var ace = require('web_editor.ace');
 var concurrency = require('web.concurrency');
 var config = require('web.config');
+var framework = require('web.framework');
 var ListRenderer = require('web.ListRenderer');
 var testUtils = require('web.test_utils');
 
@@ -2814,6 +2815,77 @@ QUnit.module('ViewEditorManager', {
         assert.strictEqual($('.modal').length, 0, "there should be no modal");
 
         vem.destroy();
+    });
+
+    QUnit.test('blockUI not removed just after rename', function (assert) {
+        assert.expect(13);
+        // renaming is only available in debug mode
+        var initialDebugMode = config.debug;
+        config.debug = true;
+
+        var blockUI = framework.blockUI;
+        var unblockUI = framework.unblockUI;
+        framework.blockUI = function () {
+            assert.step('block UI');
+        };
+        framework.unblockUI = function () {
+            assert.step('unblock UI');
+        };
+
+        var fieldsView;
+        var vem = studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'coucou',
+            arch: "<tree><field name='display_name'/></tree>",
+            mockRPC: function(route, args) {
+                assert.step(route);
+                if (route === '/web_studio/edit_view') {
+                    var fieldName = args.operations[0].node.field_description.name;
+                    fieldsView.arch = `<tree><field name='${fieldName}'/><field name='display_name'/></tree>`;
+                    fieldsView.fields[fieldName] = {
+                        string: "Coucou",
+                        type: "char"
+                    };
+                    return $.when({
+                        fields_views: {list: fieldsView},
+                        fields: fieldsView.fields,
+                    });
+                } else if (route === '/web_studio/rename_field') {
+                    return $.when();
+                }
+                return this._super.apply(this, arguments);
+            }
+        });
+
+        assert.strictEqual(vem.$('thead th[data-node-id]').length, 1, "there should be one field");
+
+        // create a new field before existing one
+        fieldsView = $.extend(true, {}, vem.fields_view);
+        testUtils.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_char'), vem.$('.o_web_studio_hook:first'));
+        assert.strictEqual(vem.$('thead th[data-node-id]').length, 2, "there should be two fields");
+
+        // rename the field
+        testUtils.dom.click(vem.$('thead th[data-node-id=1]'));
+        testUtils.fields.editAndTrigger(vem.$('.o_web_studio_sidebar input[name="name"]'), 'new', ['change']);
+
+        assert.verifySteps([
+            '/web/dataset/search_read',
+            '/web_studio/edit_view',
+            '/web/dataset/search_read',
+            '/web_studio/get_default_value',
+            'block UI',
+            '/web_studio/rename_field',
+            '/web_studio/edit_view',
+            '/web/dataset/search_read',
+            '/web_studio/get_default_value',
+            'unblock UI',
+        ]);
+
+        vem.destroy();
+
+        framework.blockUI = blockUI;
+        framework.unblockUI = unblockUI;
+        config.debug = initialDebugMode;
     });
 
     QUnit.module('X2Many');

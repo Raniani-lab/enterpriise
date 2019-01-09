@@ -275,6 +275,12 @@ class ProviderFedex(models.Model):
 
             package_count = len(picking.package_ids) or 1
 
+            # For india picking courier is not accepted without this details in label.
+            po_number = dept_number = False
+            if picking.partner_id.country_id.code == 'IN' and picking.picking_type_id.warehouse_id.partner_id.country_id.code == 'IN':
+                po_number = 'B2B' if picking.partner_id.commercial_partner_id.is_company else 'B2C'
+                dept_number = 'BILL D/T: SENDER'
+
             # TODO RIM master: factorize the following crap
 
             ################
@@ -299,13 +305,15 @@ class ProviderFedex(models.Model):
 
                     package_weight = self._fedex_convert_weight(package.shipping_weight, self.fedex_weight_unit)
                     packaging = package.packaging_id
-                    srm.add_package(
+                    srm._add_package(
                         package_weight,
                         package_code=packaging.shipper_package_code,
                         package_height=packaging.height,
                         package_width=packaging.width,
                         package_length=packaging.length,
                         sequence_number=sequence,
+                        po_number=po_number,
+                        dept_number=dept_number,
                     )
                     srm.set_master_package(net_weight, package_count, master_tracking_id=master_tracking_id)
                     request = srm.process_shipment()
@@ -375,12 +383,14 @@ class ProviderFedex(models.Model):
             ###############
             elif package_count == 1:
                 packaging = picking.package_ids[:1].packaging_id or picking.carrier_id.fedex_default_packaging_id
-                srm.add_package(
+                srm._add_package(
                     net_weight,
                     package_code=packaging.shipper_package_code,
                     package_height=packaging.height,
-                    package_width=-packaging.width,
+                    package_width=packaging.width,
                     package_length=packaging.length,
+                    po_number=po_number,
+                    dept_number=dept_number,
                 )
                 srm.set_master_package(net_weight, 1)
 

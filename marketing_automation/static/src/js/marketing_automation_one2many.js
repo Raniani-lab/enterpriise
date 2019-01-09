@@ -56,6 +56,7 @@ var HierarchyKanban = FieldOne2Many.extend({
      */
     _setHierarchyData: function () {
         var data = this.value.data;
+        this.allData = data;
         var parentMap = {};
         this.value.data = _.filter(data, function (record) {
             parentMap[record.res_id] = record;
@@ -67,6 +68,20 @@ var HierarchyKanban = FieldOne2Many.extend({
                 parentMap[record.data.parent_id.res_id].children.push(record);
             }
         });
+    },
+    /**
+     * The implicit contract on this.value.data has been broken by _setHierarchyData
+     * so we need to make sure that we generated the right command by checking
+     * if the record id is in all_data (which is what this.value.data should be)
+     *
+     * @override
+     * @private
+     */
+    _setValue: function (value, options) {
+        if (value.operation === 'ADD' && _.some(this.allData, {id: value.id})) {
+            value.operation = 'UPDATE';
+        }
+        return this._super(value, options);
     },
 
     //--------------------------------------------------------------------------

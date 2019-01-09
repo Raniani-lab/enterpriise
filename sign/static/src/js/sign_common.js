@@ -555,8 +555,10 @@ odoo.define('sign.document_signing', function(require) {
 
         events: {
             'click a.o_sign_mode': function(e) {
-                this.$modeButtons.removeClass('btn-primary');
-                $(e.target).addClass('btn-primary');
+                e.preventDefault();
+
+                this.$modeButtons.removeClass('active');
+                $(e.target).addClass('active');
                 this.$signatureField.jSignature('reset');
 
                 this.mode = $(e.target).data('mode');
@@ -584,8 +586,14 @@ odoo.define('sign.document_signing', function(require) {
 
             'click .o_sign_select_style': function(e) {
                 var self = this;
+                var width = Math.min(
+                    self.$fontDialog.find('a').first().height() * self.signatureRatio * 1.25,
+                    this.$signerNameInput.width()
+                );
+
+                e.preventDefault();
                 this.$fontDialog.find('a').empty().append($('<div/>').addClass("o_sign_loading"));
-                this.$fontDialog.show().animate({'width': self.$fontDialog.find('a').first().height() * self.signatureRatio * 1.25}, 500, function() {
+                this.$fontDialog.show().animate({'width': width}, 500, function() {
                     self.buildPreviewButtons();
                 });
             },
@@ -600,6 +608,8 @@ odoo.define('sign.document_signing', function(require) {
             },
 
             'click .o_sign_clean': function (e) {
+                e.preventDefault();
+
                 this.$signatureField.jSignature('reset');
             },
 
@@ -667,6 +677,12 @@ odoo.define('sign.document_signing', function(require) {
                 var width = self.$signatureField.width();
                 var height = width / self.signatureRatio;
 
+                // necessary because the lib is adding invisible div with margin
+                // signature field too tall without this code
+                self.$signatureField.css({
+                    width: width,
+                    height: height,
+                });
                 self.$signatureField.empty().jSignature({
                     'decor-color': 'transparent',
                     'background-color': '#FFF',
@@ -693,8 +709,8 @@ odoo.define('sign.document_signing', function(require) {
                 }
                 self.emptySignature = self.$signatureField.jSignature("getData");
 
-                self.$modeButtons.filter('.btn-primary').click();
-                self.$('.modal-footer .btn-primary').focus();
+                self.$modeButtons.filter('.btn.active').click();
+                self.$signerNameInput.focus();
             });
 
             return this._super.apply(this, arguments);
@@ -763,6 +779,7 @@ odoo.define('sign.document_signing', function(require) {
             var self = this;
             this.$fontDialog.find('a').each(function(i, el) {
                 var $img = $('<img/>', {src: self.getSVGText(SignatureDialog.fonts[$(el).data('fontNb')], self.getSignatureText())});
+                $img.addClass('img-fluid');
                 $(el).empty().append($img);
             });
         },

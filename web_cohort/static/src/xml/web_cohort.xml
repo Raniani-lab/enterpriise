@@ -93,16 +93,16 @@
                             <t t-esc="row.date" />
                         </td>
                         <td class="o_cohort_value">
-                            <t t-esc="row.value" />
+                            <t t-esc="format_float(row.value)" />
                         </td>
                         <td t-foreach="row.columns" t-as="col">
-                            <div
+                            <div t-if="col.percentage !== ''"
                                 t-attf-style="background-color: rgba(0, 160, 157, #{col.percentage/100.0}); color: #{col.percentage gt 50 and '#FFFFFF' or 'inherit'}"
                                 t-att-data-col="col_index"
                                 t-att-class="'o_cohort_highlight' + (col.value === '-' ? '' : ' o_cohort_value')"
                                 t-att-data-period="col.period"
                                 t-att-data-count="mode === 'churn' ? (col.churn_value === '-' ? '' : col.churn_value) : (col.value === '-' ? '' : col.value)">
-                                <t t-esc="col.percentage" /><t t-if="col.percentage !== ''">%</t>
+                                <t t-esc="format_percentage(col.percentage / 100.0)" />
                             </div>
                         </td>
                     </tr>
@@ -114,11 +114,11 @@
                         </td>
                         <t t-set="avg" t-value="report.avg" />
                         <td>
-                            <t t-esc="avg.avg_value.toFixed(1)"/>
+                            <t t-esc="format_float(avg.avg_value)"/>
                         </td>
                         <td t-foreach="avg.columns_avg" t-as="col">
                             <t t-if="avg.columns_avg[col]['count']">
-                                <t t-esc="(avg.columns_avg[col]['percentage'] / avg.columns_avg[col]['count']).toFixed(1)" />%
+                                <t t-esc="format_percentage(avg.columns_avg[col]['percentage'] / (avg.columns_avg[col]['count'] * 100.0) )" />
                             </t>
                         </td>
                     </tr>
@@ -169,12 +169,12 @@
                             <t t-esc="row.value" />
                         </td>
                         <td t-foreach="row.columns" t-as="col">
-                            <div
+                            <div t-if="col.percentage !== ''"
                                 t-attf-style="background-color: rgba(0, 160, 157, #{col.percentage/100.0}); color: #{col.percentage gt 50 and '#FFFFFF' or 'inherit'}"
                                 t-att-data-col="col_index"
                                 t-att-class="'o_cohort_highlight' + (col.value === '-' ? '' : ' o_cohort_value')"
                                 t-att-data-original-title="mode === 'churn' ? (col.churn_value === '-' ? '' : col.churn_value) : (col.value === '-' ? '' : col.value)">
-                                <t t-esc="col.percentage" /><t t-if="col.percentage !== ''">%</t>
+                                <t t-esc="format_percentage(col.percentage / 100.0)" />
                             </div>
                         </td>
                     </tr>
@@ -186,11 +186,11 @@
                         </td>
                         <t t-set="avg" t-value="comparisonReport.avg" />
                         <td>
-                            <t t-esc="avg.avg_value.toFixed(1)"/>
+                            <t t-esc="format_float(avg.avg_value)"/>
                         </td>
                         <td t-foreach="avg.columns_avg" t-as="col">
                             <t t-if="avg.columns_avg[col]['count']">
-                                <t t-esc="(avg.columns_avg[col]['percentage'] / avg.columns_avg[col]['count']).toFixed(1)" />%
+                                <t t-esc="format_percentage(avg.columns_avg[col]['percentage'] / (avg.columns_avg[col]['count'] * 100.0))" />
                             </t>
                         </td>
                     </tr>

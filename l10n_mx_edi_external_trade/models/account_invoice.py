@@ -82,7 +82,7 @@ class AccountInvoice(models.Model):
         values['unit_value_usd'] = lambda l, c, u: c.compute(
             l.l10n_mx_edi_price_unit_umt, u)
         values['amount_usd'] = lambda origin, dest, amount: origin.compute(
-            amount, dest)
+            amount, dest, round=False)
         values['total_usd'] = lambda i, u, c: sum([
             round(l.l10n_mx_edi_qty_umt * c.compute(
                 l.l10n_mx_edi_price_unit_umt, u), 2) for l in i])

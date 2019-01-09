@@ -128,3 +128,56 @@ for record in records:
         self.assertTrue([
             'SA' not in record.name
             for record in self.test_rec4])
+
+    @mute_logger('odoo.addons.base.ir.ir_model', 'odoo.models')
+    def test_missing_record(self):
+        Campaign = self.env['marketing.campaign'].sudo(self.user_market)
+        Activity = self.env['marketing.activity'].sudo(self.user_market)
+        MassMail = self.env['mail.mass_mailing'].sudo(self.user_market)
+
+        name_field = self.env['ir.model.fields'].search(
+            [('model_id', '=', self.test_model.id), ('name', '=', 'display_name')])
+
+        campaign = Campaign.create({
+            'name': 'My First Campaign',
+            'model_id': self.test_model.id,
+            'domain': '%s' % ([('name', '!=', 'Invalid')]),
+        })
+
+        mass_mailing = MassMail.create({
+            'name': 'Hello',
+            'body_html': '<div>My Email Body</div>',
+            'mailing_model_id': self.test_model.id,
+            'use_in_marketing_automation': True,
+        })
+        act_0 = Activity.create({
+            'name': 'Enter the campaign',
+            'campaign_id': campaign.id,
+            'activity_type': 'email',
+            'mass_mailing_id': mass_mailing.id,
+            'trigger_type': 'begin',
+            'interval_number': '0',
+        })
+
+        campaign.action_start_campaign()
+        self.assertEqual(campaign.state, 'running')
+        campaign.sync_participants()
+
+        first_recordset = self.test_rec1 | self.test_rec2 | self.test_rec3 | self.test_rec4
+
+        self.assertEqual(campaign.running_participant_count, 4)
+        self.assertEqual(
+            set(campaign.participant_ids.mapped('res_id')),
+            set(first_recordset.ids)
+        )
+
+        self.test_rec1.unlink()
+        campaign.sync_participants()
+
+        # the missing record should have been removed (and not caused any crash)
+        self.assertEqual(campaign.running_participant_count, 3)
+        # note that the participant itself is not removed, only its state is modified (from running to unlinked)
+        self.assertEqual(
+            set(campaign.participant_ids.mapped('res_id')),
+            set(first_recordset.ids)
+        )

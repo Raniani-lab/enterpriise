@@ -44,6 +44,7 @@ var CohortModel = AbstractModel.extend({
             measure: this.measure,
             interval: this.interval,
         };
+        this.context = params.context;
         return this._fetchData();
     },
     /**
@@ -106,6 +107,7 @@ var CohortModel = AbstractModel.extend({
                     domain: this.domain.concat(this.timeRange),
                     mode: this.mode,
                     timeline: this.timeline,
+                    context: this.context,
                 }
             })];
         if (this.compare) {

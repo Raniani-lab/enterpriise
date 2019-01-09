@@ -258,7 +258,7 @@
         <field name="model">helpdesk.ticket</field>
         <field name="arch" type="xml">
             <search string="Tickets Search">
-                <field name="display_name"/>
+                <field name="name"/>
                 <field name="id" string="Ticket ID"/>
                 <field name="tag_ids"/>
                 <field name="ticket_type_id"/>

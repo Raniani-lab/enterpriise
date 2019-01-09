@@ -20,53 +20,71 @@ class WebCohort(http.Controller):
         workbook.set_colour_RGB(0x21, 224, 224, 224)
         style_highlight = xlwt.easyxf('font: bold on; pattern: pattern solid, fore_colour gray_lighter; align: horiz centre;')
         style_normal = xlwt.easyxf('align: horiz centre;')
-        row, col = 0, 0
+        row = 0
 
-        # Headers
-        columns_length = len(result['report']['rows'][0]['columns'])
-        if result['timeline'] == 'backward':
-            header_sign = ''
-            col_range = range(-(columns_length - 1), 1)
-        else:
-            header_sign = '+'
-            col_range = range(columns_length)
-
-        worksheet.write_merge(row, row, col + 2, columns_length + 1, '%s - By %s' % (result['date_stop_string'], result['interval_string']), style_highlight)
-        row += 1
-        worksheet.write(row, col, result['date_start_string'], style_highlight)
-        col += 1
-        worksheet.write(row, col, result['measure_string'], style_highlight)
-        col += 1
-        for n in col_range:
-            worksheet.write(row, col, '%s%s' % (header_sign, n), style_highlight)
-            col += 1
-
-        # Rows
-        row += 1
-        for res in result['report']['rows']:
-            col = 0
-            worksheet.write(row, col, res['date'], style_normal)
-            col += 1
-            worksheet.write(row, col, res['value'], style_normal)
-            col += 1
-            for i in res['columns']:
-                worksheet.write(row, col, i['percentage'] == '-' and i['percentage'] or str(i['percentage']) + '%', style_normal)
-                col += 1
-            row += 1
-
-        # Total
-        col = 0
-        worksheet.write(row, col, _('Average'), style_highlight)
-        col += 1
-        worksheet.write(row, col, '%.1f' % result['report']['avg']['avg_value'], style_highlight)
-        col += 1
-        total = result['report']['avg']['columns_avg']
-        for n in range(columns_length):
-            if total[str(n)]['count']:
-                worksheet.write(row, col, '%.1f' % float(total[str(n)]['percentage'] / total[str(n)]['count']) + '%', style_highlight)
+        def write_data(report, row, col):
+            # Headers
+            columns_length = len(result[report]['rows'][0]['columns'])
+            if result['timeline'] == 'backward':
+                header_sign = ''
+                col_range = range(-(columns_length - 1), 1)
             else:
-                worksheet.write(row, col, '-', style_highlight)
+                header_sign = '+'
+                col_range = range(columns_length)
+
+            worksheet.write_merge(row, row, col + 2, columns_length + 1, '%s - By %s' % (result['date_stop_string'], result['interval_string']), style_highlight)
+            row += 1
+            worksheet.write(row, col, result['date_start_string'], style_highlight)
             col += 1
+            worksheet.write(row, col, result['measure_string'], style_highlight)
+            col += 1
+            for n in col_range:
+                worksheet.write(row, col, '%s%s' % (header_sign, n), style_highlight)
+                col += 1
+
+            # Rows
+            row += 1
+            for res in result[report]['rows']:
+                col = 0
+                worksheet.write(row, col, res['date'], style_normal)
+                col += 1
+                worksheet.write(row, col, res['value'], style_normal)
+                col += 1
+                for i in res['columns']:
+                    worksheet.write(row, col, i['percentage'] == '-' and i['percentage'] or str(i['percentage']) + '%', style_normal)
+                    col += 1
+                row += 1
+
+            # Total
+            col = 0
+            worksheet.write(row, col, _('Average'), style_highlight)
+            col += 1
+            worksheet.write(row, col, '%.1f' % result[report]['avg']['avg_value'], style_highlight)
+            col += 1
+            total = result[report]['avg']['columns_avg']
+            for n in range(columns_length):
+                if total[str(n)]['count']:
+                    worksheet.write(row, col, '%.1f' % float(total[str(n)]['percentage'] / total[str(n)]['count']) + '%', style_highlight)
+                else:
+                    worksheet.write(row, col, '-', style_highlight)
+                col += 1
+
+            return row
+
+        report_length = len(result['report']['rows'])
+        comparison_report = result.get('comparisonReport', False)
+        if comparison_report:
+            comparison_report_length = len(comparison_report['rows'])
+
+        if comparison_report:
+            if report_length:
+                row = write_data('report', row, 0)
+                if comparison_report_length:
+                    write_data('comparisonReport', row + 2, 0)
+            elif comparison_report_length:
+                write_data('comparisonReport', row, 0)
+        else:
+            row = write_data('report', row, 0)
 
         response = request.make_response(
             None,

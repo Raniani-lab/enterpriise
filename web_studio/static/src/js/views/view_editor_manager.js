@@ -1074,34 +1074,28 @@ var ViewEditorManager = AbstractEditorManager.extend({
     _renameField: function (oldName, newName) {
         var self = this;
 
-        return this.mdp.exec(function () {
-            // blockUI is used to prevent the user from doing any operation
-            // because the hooks are still related to the old field name
-            framework.blockUI();
-            self.sidebar.$('input').attr('disabled', true);
-            self.sidebar.$('select').attr('disabled', true);
+        // blockUI is used to prevent the user from doing any operation
+        // because the hooks are still related to the old field name
+        framework.blockUI();
+        this.sidebar.$('input').attr('disabled', true);
+        this.sidebar.$('select').attr('disabled', true);
 
-            return self._rpc({
-                    route: '/web_studio/rename_field',
-                    params: {
-                        studio_view_id: self.studio_view_id,
-                        studio_view_arch: self.studio_view_arch,
-                        model: self.x2mModel ? self.x2mModel : self.model_name,
-                        old_name: oldName,
-                        new_name: newName,
-                    },
-                })
-                .then(function () {
-                    self._updateOperations(oldName, newName);
-                    var oldFieldIndex = self.renamingAllowedFields.indexOf(oldName);
-                    self.renamingAllowedFields.splice(oldFieldIndex, 1);
-                    self.renamingAllowedFields.push(newName);
-                })
-                .always(function () {
-                    framework.unblockUI();
-                    return self._applyChanges();
-                });
-        });
+        return this._rpc({
+            route: '/web_studio/rename_field',
+            params: {
+                studio_view_id: this.studio_view_id,
+                studio_view_arch: this.studio_view_arch,
+                model: this.x2mModel ? this.x2mModel : this.model_name,
+                old_name: oldName,
+                new_name: newName,
+            },
+        }).then(function () {
+            self._updateOperations(oldName, newName);
+            var oldFieldIndex = self.renamingAllowedFields.indexOf(oldName);
+            self.renamingAllowedFields.splice(oldFieldIndex, 1);
+            self.renamingAllowedFields.push(newName);
+            return self._applyChanges().then(framework.unblockUI).fail(framework.unblockUI);
+        }).fail(framework.unblockUI);
     },
     /**
      * @private

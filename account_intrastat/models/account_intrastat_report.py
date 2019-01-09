@@ -112,7 +112,7 @@ class IntrastatReport(models.AbstractModel):
                 inv.id AS invoice_id,
                 inv.currency_id AS invoice_currency_id,
                 inv.number AS invoice_number,
-                inv.date_invoice AS invoice_date,
+                coalesce(inv.date, inv.date_invoice) AS invoice_date,
                 inv.type AS invoice_type,
                 inv_incoterm.code AS invoice_incoterm,
                 comp_incoterm.code AS company_incoterm,
@@ -155,8 +155,8 @@ class IntrastatReport(models.AbstractModel):
                 AND inv.company_id = %(company_id)s
                 AND company_country.id != country.id
                 AND country.intrastat = TRUE
-                AND inv.date_invoice >= %(date_from)s
-                AND inv.date_invoice <= %(date_to)s
+                AND coalesce(inv.date, inv.date_invoice) >= %(date_from)s
+                AND coalesce(inv.date, inv.date_invoice) <= %(date_to)s
                 AND prodt.type != 'service'
                 AND partner.vat IS NOT NULL
                 AND inv.journal_id IN %(journal_ids)s

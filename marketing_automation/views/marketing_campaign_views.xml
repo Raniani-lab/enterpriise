@@ -352,6 +352,8 @@
         <field name="model">marketing.campaign</field>
         <field name="arch" type="xml">
             <search string="Search Campaign">
+                <field name="name"/>
+                <field name="model_id" string="Target Model" />
                 <filter string="New" name="new" domain="[('state', '=', 'draft')]" />
                 <filter string="Running" name="running" domain="[('state', '=', 'running')]" />
                 <filter string="Stopped" name="stopped" domain="[('state', '=', 'stopped')]" />

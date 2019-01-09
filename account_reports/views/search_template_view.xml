@@ -104,20 +104,20 @@
 
     <template id="search_template_extra_options">
         <a type="button" class="dropdown-toggle" data-toggle="dropdown">
-            <t t-set="display_options" t-value="[]"/>
             <span class="fa fa-filter"/> Options:
             <t t-if="options.get('cash_basis') != None">
-                <t t-if="options['cash_basis']" t-set="display_options" t-value="display_options + ['Cash Basis']"/>
-                <t t-else="" t-set="display_options" t-value="display_options + ['Accrual Basis']"/>
+                <t t-if="options['cash_basis']">Cash Basis</t>
+                <t t-if="not options['cash_basis']">Accrual Basis</t>
             </t>
             <t t-if="options.get('all_entries') != None" groups="account.group_account_user"> 
-                <t t-if="options['all_entries']" t-set="display_options" t-value="display_options + ['With Draft Entries']"/>
-                <t t-else="" t-set="display_options" t-value="display_options + ['Posted Entries Only']"/>
+                <t t-if="options.get('cash_basis') != None">,</t>
+                <t t-if="options['all_entries']">With Draft Entries</t>
+                <t t-if="not options['all_entries']">Posted Entries Only</t>
             </t>
             <t t-if="options.get('unreconciled') != None">
-                <t t-if="options['unreconciled']" t-set="display_options" t-value="display_options + ['Only Show Unreconciled Entries']"/>
+                <t t-if="options.get('all_entries') != None">,</t>
+                <t t-if="options['unreconciled']">Only Show Unreconciled Entries</t>
             </t>
-            <t t-esc="', '.join(display_options)"/>
         </a>
         <div class="dropdown-menu o_filters_menu" role="menu">
             <a role="menuitem" class="dropdown-item js_account_report_bool_filter" t-if="options.get('cash_basis') != None" title="Cash Basis Method" data-filter="cash_basis" groups="account.group_account_user">Cash Basis Method</a>

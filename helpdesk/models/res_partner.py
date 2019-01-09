@@ -10,8 +10,21 @@ class ResPartner(models.Model):
     ticket_count = fields.Integer("Tickets", compute='_compute_ticket_count')
 
     def _compute_ticket_count(self):
-        for partner in self:
-            partner.ticket_count = self.env['helpdesk.ticket'].search_count([('partner_id', 'child_of', partner.ids)])
+        # retrieve all children partners and prefetch 'parent_id' on them
+        all_partners = self.search([('id', 'child_of', self.ids)])
+        all_partners.read(['parent_id'])
+
+        # group tickets by partner, and account for each partner in self
+        groups = self.env['helpdesk.ticket'].read_group(
+            [('partner_id', 'in', all_partners.ids)],
+            fields=['partner_id'], groupby=['partner_id'],
+        )
+        for group in groups:
+            partner = self.browse(group['partner_id'][0])
+            while partner:
+                if partner in self:
+                    partner.ticket_count += group['partner_id_count']
+                partner = partner.parent_id
 
     @api.multi
     def action_open_helpdesk_ticket(self):

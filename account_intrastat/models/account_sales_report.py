@@ -46,8 +46,8 @@ class IntrastatReport(models.AbstractModel):
                 AND country.intrastat = TRUE
                 AND company_partner.country_id != country.id
                 AND company.id = %s
-                AND inv.date_invoice >= %s
-                AND inv.date_invoice <= %s
+                AND coalesce(inv.date, inv.date_invoice) >= %s
+                AND coalesce(inv.date, inv.date_invoice) <= %s
                 AND inv.type in ('out_invoice', 'out_refund')
                 AND partner.vat IS NOT NULL
                 AND inv.journal_id IN %s

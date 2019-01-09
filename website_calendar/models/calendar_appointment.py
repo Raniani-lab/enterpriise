@@ -329,5 +329,5 @@ class CalendarAppointmentAnswer(models.Model):
     _name = "calendar.appointment.answer"
     _description = "Online Appointment : Answers"
 
-    question_id = fields.Many2many('calendar.appointment.question', 'calendar_appointment_question_answer_rel', 'question_id', 'answer_id', string='Questions')
+    question_id = fields.Many2many('calendar.appointment.question', 'calendar_appointment_question_answer_rel', 'answer_id', 'question_id', string='Questions')
     name = fields.Char('Answer', translate=True, required=True)

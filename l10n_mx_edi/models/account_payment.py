@@ -10,6 +10,7 @@ from lxml.objectify import fromstring
 from suds.client import Client
 from odoo import _, api, fields, models
 from odoo.tools import DEFAULT_SERVER_TIME_FORMAT
+from odoo.tools.float_utils import float_compare
 from odoo.tools.misc import html_escape
 from odoo.exceptions import UserError
 
@@ -29,13 +30,14 @@ class AccountPayment(models.Model):
 
     l10n_mx_edi_pac_status = fields.Selection(
         selection=[
+            ('none', 'CFDI not necessary'),
             ('retry', 'Retry'),
             ('to_sign', 'To sign'),
             ('signed', 'Signed'),
             ('to_cancel', 'To cancel'),
             ('cancelled', 'Cancelled')
         ],
-        string='PAC status',
+        string='PAC status', default='none',
         help='Refers to the status of the CFDI inside the PAC.',
         readonly=True, copy=False)
     l10n_mx_edi_sat_status = fields.Selection(
@@ -222,30 +224,48 @@ class AccountPayment(models.Model):
             not self.invoice_ids.filtered(lambda i: i.type != 'out_invoice'))
         if not required:
             return required
-        if not self.invoice_ids:
-            self.message_post(body=_(
-                'It is necessary to assign the invoices that are paid with '
-                'this payment to allow relate in the CFDI the fiscal '
-                'documents that are affected by this record.'))
-            return False
-        if not self.move_reconciled:
-            self.message_post(body=_(
-                'The payment is not full reconciled.\n'
-                'Please, you need reconcile the payment (completely) with the '
-                'customer invoices to pay. Or if it is necessary you can '
-                ' create an advance invoice with this payment.'))
-            return False
-        if False in self.invoice_ids.mapped('l10n_mx_edi_cfdi_uuid'):
+        if self.invoice_ids and False in self.invoice_ids.mapped('l10n_mx_edi_cfdi_uuid'):
             raise UserError(_(
                 'Some of the invoices that will be paid with this record '
-                'is not signed, and the UUID is required to indicate '
+                'are not signed, and the UUID is required to indicate '
                 'the invoices that are paid with this CFDI'))
-        if not self.invoice_ids.filtered(
+        messages = []
+        if not self.invoice_ids:
+            messages.append(_(
+                '<b>This payment <b>has not</b> invoices related.'
+                '</b><br/><br/>'
+                'Which actions can you take?\n'
+                '<ul>'
+                '<ol>If this is an payment advance, you need to create a new '
+                'invoice with a product that will represent the payment in '
+                'advance and reconcile such invoice with this payment. For '
+                'more information please read '
+                '<a href="http://omawww.sat.gob.mx/informacion_fiscal/factura_electronica/Documents/Complementoscfdi/Caso_uso_Anticipo.pdf">'
+                'this SAT reference.</a></ol>'
+                '<ol>If you already have the invoices that are paid make the '
+                'payment matching of them.</ol>'
+                '</ul>'
+                '<p>If you follow this steps once you finish them and the '
+                'paid amount is bellow the sum of invoices the payment '
+                'will be automatically signed'
+                '</p>'))
+        if self.invoice_ids and not self.invoice_ids.filtered(
                 lambda i: i._l10n_mx_edi_get_payment_policy() == 'PPD'):
-            self.message_post(body=_(
-                'It is not necessary generate the payment receipt complement '
-                'for this record because all the invoices have the payment '
-                'method as PUE.'))
+            messages.append(_(
+                '<b>The invoices related with this payment have the payment '
+                'method as <b>PUE</b>.'
+                '</b><br/><br/>'
+                'When an invoice has the payment method <b>PUE</b> do not '
+                'requires generate a payment complement. For more information '
+                'please read '
+                '<a href="http://omawww.sat.gob.mx/informacion_fiscal/factura_electronica/Documents/Complementoscfdi/Guia_comple_pagos.pdf">'
+                'this SAT reference.</a>, Pag. 3. Or read the '
+                '<a href="https://www.odoo.com/documentation/user/11.0/es/accounting/localizations/mexico.html#payments-just-available-for-cfdi-3-3">'
+                'Odoo documentation</a> to know how to indicate the payment '
+                'method in the invoice CFDI.'
+                ))
+        if messages:
+            self.message_post(body=account_invoice.create_list_html(messages))
             return False
         return required
 
@@ -319,6 +339,8 @@ class AccountPayment(models.Model):
         company_id = self.company_id
         pac_name = company_id.l10n_mx_edi_pac
         values = self._l10n_mx_edi_create_cfdi_values()
+        if 'error' in values:
+            error_log.append(values.get('error'))
 
         # -----------------------
         # Check the configuration
@@ -421,14 +443,41 @@ class AccountPayment(models.Model):
         date = datetime.combine(
             fields.Datetime.from_string(self.payment_date),
             datetime.strptime('12:00:00', '%H:%M:%S').time()).strftime('%Y-%m-%dT%H:%M:%S')
-        total_paid = 0
+        total_paid = total_curr = 0
         for invoice in self.invoice_ids:
-            amount = [p for p in invoice._get_payments_vals() if (p.get('account_payment_id', False) == self.id or not p.get('account_payment_id'))]
+            amount = [p for p in invoice._get_payments_vals() if (
+                p.get('account_payment_id', False) == self.id or not p.get(
+                    'account_payment_id') and (not p.get('invoice_id') or p.get(
+                        'invoice_id') == invoice.id))]
             amount_payment = sum([data.get('amount', 0.0) for data in amount])
             total_paid += amount_payment
+            total_curr += invoice.currency_id.with_context(
+                date=self.payment_date).compute(amount_payment, self.currency_id)
+        precision = self.env['decimal.precision'].precision_get('Account')
+        if not self.move_reconciled and float_compare(
+                self.amount, total_curr, precision_digits=precision) > 0:
+            return {'error': _(
+                '<b>The amount paid is bigger than the sum of the invoices.'
+                '</b><br/><br/>'
+                'Which actions can you take?\n'
+                '<ul>'
+                '<ol>If the customer has more invoices, go to those invoices '
+                'and reconcile them with this payment.</ol>'
+                '<ol>If the customer <b>has not</b> more invoices to be paid '
+                'You need to create a new invoice with a product that will '
+                'represent the payment in advance and reconcile such invoice '
+                'with this payment.</ol>'
+                '</ul>'
+                '<p>If you follow this steps once you finish them and the '
+                'paid amount is bellow the sum of invoices the payment '
+                'will be automatically signed'
+                '</p><blockquote>For more information please read '
+                '<a href="http://omawww.sat.gob.mx/informacion_fiscal/factura_electronica/Documents/Complementoscfdi/Guia_comple_pagos.pdf">'
+                ' this SAT reference </a>, Pag. 22</blockquote>')
+            }
         ctx = dict(company_id=self.company_id.id, date=self.payment_date)
-        rate = ('%.6f' % (self.currency_id.with_context(**ctx).compute(
-            1, mxn))) if self.currency_id.name != 'MXN' else False
+        rate = ('%.6f' % (self.currency_id.with_context(**ctx)._convert(
+            1, mxn, self.company_id, self.payment_date))) if self.currency_id.name != 'MXN' else False
         return {
             'mxn': mxn,
             'payment_date': date,

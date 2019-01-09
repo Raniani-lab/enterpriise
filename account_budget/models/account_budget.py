@@ -157,15 +157,16 @@ class CrossoveredBudgetLines(models.Model):
             else:
                 line.is_above_budget = line.practical_amount < line.theoritical_amount
 
-    @api.multi
+    @api.depends("crossovered_budget_id", "general_budget_id", "analytic_account_id")
     def _compute_line_name(self):
         #just in case someone opens the budget line in form view
-        computed_name = self.crossovered_budget_id.name
-        if self.general_budget_id:
-            computed_name += ' - ' + self.general_budget_id.name
-        if self.analytic_account_id:
-            computed_name += ' - ' + self.analytic_account_id.name
-        self.name = computed_name
+        for record in self:
+            computed_name = record.crossovered_budget_id.name
+            if record.general_budget_id:
+                computed_name += ' - ' + record.general_budget_id.name
+            if record.analytic_account_id:
+                computed_name += ' - ' + record.analytic_account_id.name
+            record.name = computed_name
 
     @api.multi
     def _compute_practical_amount(self):

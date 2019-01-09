@@ -18,6 +18,10 @@ The first element of the selection (in DRM) will be used as the signature attach
         'views/sign_templates.xml',
     ],
 
+    'demo': [
+        'demo/demo.xml',
+    ],
+
     'installable': True,
     'auto_install': True,
 }

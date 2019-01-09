@@ -69,8 +69,7 @@
                         t-att-CadPago="pay_string"
                         t-att-SelloPago="pay_stamp">
                         <t t-foreach="record.invoice_ids" t-as="invoice">
-                            <t t-set="refund_moves" t-value="invoice.refund_invoice_ids.mapped('move_id.id')"/>
-                            <t t-set="amount" t-value="[p for p in invoice._get_payments_vals() if (p.get('account_payment_id', False) == record.id or not p.get('account_payment_id') and p.get('move_id') not in refund_moves)]"/>
+                            <t t-set="amount" t-value="[p for p in invoice._get_payments_vals() if (p.get('account_payment_id', False) == record.id or not p.get('account_payment_id') and (not p.get('invoice_id') or p.get('invoice_id') == invoice.id))]"/>
                             <t t-set="amount_payment" t-value="sum([data.get('amount', 0.0) for data in amount])"/>
                             <t t-set="amount_insoluto" t-value="invoice.residual"/>
                             <pago10:DoctoRelacionado

@@ -12,10 +12,10 @@ var _t = core._t;
 var _lt = core._lt;
 
 var intervals = {
-    day: _t('Day'),
-    week: _t('Week'),
-    month: _t('Month'),
-    year: _t('Year'),
+    day: _lt('Day'),
+    week: _lt('Week'),
+    month: _lt('Month'),
+    year: _lt('Year'),
 };
 
 var CohortView = AbstractView.extend({

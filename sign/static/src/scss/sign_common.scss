@@ -64,7 +64,9 @@
 }
 
 /* Signature Dialog */
-.o_sign_font_dialog {
+// The .card selector is important to make sure the position absolute will take
+// priority over the position relative of the card.
+.card.o_sign_font_dialog {
     @include o-position-absolute(0, 0);
     display: none;
     height: 100%;

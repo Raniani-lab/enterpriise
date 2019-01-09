@@ -173,7 +173,7 @@ msgstr ""
 #. module: delivery_bpost
 #: selection:product.packaging,package_carrier_type:0
 msgid "No carrier integration"
-msgstr ""
+msgstr "Žádná integrace operátora"
 
 #. module: delivery_bpost
 #: selection:delivery.carrier,bpost_shipment_type:0

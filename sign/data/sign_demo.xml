@@ -7,7 +7,7 @@
         <field name="name">NDA</field>
         <field name="datas_fname">Non-Disclosure Agreement.pdf</field>
         <field name="datas" type="base64" file="sign/static/demo/nda.pdf"/>
-        <field name="mimetype">application/pdf;base64</field>
+        <field name="mimetype">application/pdf</field>
     </record>
 
     <record id="template_sign_2" model="sign.template">
@@ -20,7 +20,7 @@
         <field name="name">Real Estate</field>
         <field name="datas_fname">Real_Estate_Listing_Agreement.pdf</field>
         <field name="datas" type="base64" file="sign/static/demo/rela.pdf"/>
-        <field name="mimetype">application/pdf;base64</field>
+        <field name="mimetype">application/pdf</field>
     </record>
 
     <record id="template_sign_4" model="sign.template">
@@ -33,7 +33,7 @@
         <field name="name">SaaS Sale</field>
         <field name="datas_fname">YC_Form_SaaS_Agreement.pdf</field>
         <field name="datas" type="base64" file="sign/static/demo/saas.pdf"/>
-        <field name="mimetype">application/pdf;base64</field>
+        <field name="mimetype">application/pdf</field>
     </record>
 
     <record id="template_sign_5" model="sign.template">

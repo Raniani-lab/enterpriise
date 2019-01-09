@@ -32,7 +32,7 @@ class AccountFollowupReport(models.AbstractModel):
                    {'name': _('Communication'), 'style': 'text-align:right; white-space:nowrap;'},
                    {'name': _('Expected Date'), 'class': 'date', 'style': 'white-space:nowrap;'},
                    {'name': _('Excluded'), 'class': 'date', 'style': 'white-space:nowrap;'},
-                   {'name': _('Total Due'), 'class': 'number', 'style': 'text-align:right; white-space:nowrap;'}
+                   {'name': _('Total Due'), 'class': 'number o_price_total', 'style': 'text-align:right; white-space:nowrap;'}
                   ]
         if self.env.context.get('print_mode'):
             headers = headers[:5] + headers[7:]  # Remove the 'Expected Date' and 'Excluded' columns

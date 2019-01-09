@@ -189,12 +189,15 @@ class account_bank_reconciliation_report(models.AbstractModel):
             lines.append(self._add_title_line(options, report_currency, _("Validated Payments not Linked with a Bank Statement Line"), level=2))
             for aml_values in report_data['not_reconciled_payments']:
                     self.line_number += 1
+                    line_description = line_title = aml_values['ref']
+                    if line_description and len(line_description) > 83 and not self.env.context.get('print_mode'):
+                        line_description = line_description[:80] + '...'
                     lines.append({
                         'id': aml_values['id'],
                         'name': aml_values['name'],
                         'columns': [
                             {'name': format_date(self.env, aml_values['date'])},
-                            {'name': aml_values['ref']},
+                            {'name': line_description, 'title': line_title, 'style': 'display:block;'},
                             {'name': self.format_value(-aml_values['balance'], report_currency)},
                         ],
                         'class': 'o_account_reports_level3',

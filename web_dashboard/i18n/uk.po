@@ -213,7 +213,7 @@ msgstr "Перегляд"
 #: model:ir.model.fields,field_description:web_dashboard.field_ir_actions_act_window_view__view_mode
 #: model:ir.model.fields,field_description:web_dashboard.field_ir_ui_view__type
 msgid "View Type"
-msgstr "Тип виду"
+msgstr "Тип перегляду"
 
 #. module: web_dashboard
 #. openerp-web

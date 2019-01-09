@@ -246,7 +246,7 @@ class SaleSubscription(models.Model):
 
     @api.onchange('date_start', 'template_id')
     def onchange_date_start(self):
-        if self.recurring_rule_boundary == 'limited':
+        if self.date_start and self.recurring_rule_boundary == 'limited':
             periods = {'daily': 'days', 'weekly': 'weeks', 'monthly': 'months', 'yearly': 'years'}
             self.date = fields.Date.from_string(self.date_start) + relativedelta(**{
                 periods[self.recurring_rule_type]: self.template_id.recurring_rule_count * self.template_id.recurring_interval})
@@ -285,6 +285,13 @@ class SaleSubscription(models.Model):
         if vals.get('stage_id'):
             self._send_subscription_rating_mail(force_send=True)
         return result
+
+    @api.multi
+    def unlink(self):
+        self.wipe()
+        self.env['sale.subscription.snapshot'].sudo().search([
+            ('subscription_id', 'in', self.ids)]).unlink()
+        return super(SaleSubscription, self).unlink()
 
     @api.model_cr_context
     def _init_column(self, column_name):

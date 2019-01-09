@@ -11,6 +11,7 @@ class WorkflowActionRule(models.Model):
     domain_folder_id = fields.Many2one('documents.folder', string="Folder", required=True, ondelete='cascade')
     name = fields.Char(required=True, string="Rule name", translate=True)
     note = fields.Char(string="Tooltip")
+    sequence = fields.Integer('Sequence', default=10)
 
     # Conditions
     condition_type = fields.Selection([

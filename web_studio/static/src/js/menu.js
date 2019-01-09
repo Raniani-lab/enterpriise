@@ -274,7 +274,7 @@ Menu.include({
                         context: session.user_context,
                     },
                 }).then(function () {
-                    self.do_action('reload');
+                    window.location.reload();
                 }).fail(function () {
                     framework.unblockUI();
                 });

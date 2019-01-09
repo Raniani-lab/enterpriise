@@ -191,7 +191,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_share__activity_type_id
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_type_id
 msgid "Activity type"
-msgstr ""
+msgstr "Typ aktivity"
 
 #. module: documents
 #: selection:documents.workflow.action,action:0
@@ -273,7 +273,7 @@ msgstr "Připojený k"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_attachment_count
 msgid "Attachment Count"
-msgstr ""
+msgstr "Počet příloh"
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.document_debug_action

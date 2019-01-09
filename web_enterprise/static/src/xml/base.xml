@@ -47,7 +47,7 @@
     <t t-if="widget._state.apps.length + widget._state.menuItems.length === 0">
         <div class="o_no_result" role="alert">No result</div>
     </t>
-    <div class="o_home_menu_footer">
+    <div class="o_home_menu_footer" aria-hidden="true">
         <img src="/web/static/src/img/logo_inverse_white_206px.png" alt="Logo"/>
     </div>
 </t>

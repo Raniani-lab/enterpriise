@@ -82,6 +82,9 @@ def _load_locality_sat_catalog(cr, registry):
     cr.copy_from(
         csv_file, 'res_city', sep='|', columns=('l10n_mx_edi_code', 'name'))
 
+    cr.execute(
+        """delete from res_city where l10n_mx_edi_code is null and name in (select name from res_city where l10n_mx_edi_code is not null)""")
+
     # Remove triggers
     cr.execute(
         """DROP TRIGGER IF EXISTS l10n_mx_edi_locality
@@ -96,7 +99,8 @@ def _load_locality_sat_catalog(cr, registry):
                ('res_locality_mx_' || lower(state.code) || '_' || loc.code),
                     loc.id, 'l10n_mx_edi', 'l10n_mx_edi.res.locality'
                FROM l10n_mx_edi_res_locality AS loc, res_country_state AS state
-               WHERE state.id = loc.state_id""")
+               WHERE state.id = loc.state_id
+               AND (('res_locality_mx_' || lower(state.code) || '_' || loc.code), 'l10n_mx_edi') not in (select name, module from ir_model_data)""")
     # City or Municipality
     cr.execute("""
                INSERT INTO ir_model_data (name, res_id, module, model)
@@ -105,8 +109,9 @@ def _load_locality_sat_catalog(cr, registry):
                 city.id, 'l10n_mx_edi', 'res.city'
                FROM  res_city AS city, res_country_state AS state
                WHERE state.id = city.state_id AND city.country_id = (
-                SELECT id FROM res_country WHERE code = 'MX')""")
-
+                SELECT id FROM res_country WHERE code = 'MX')
+                AND (('res_city_mx_' || lower(state.code)|| '_' || city.l10n_mx_edi_code), 'l10n_mx_edi') not in (select name,  module from ir_model_data)
+                """)
 
 def _load_xsd_files(cr, registry, url):
     # TODO: Remove method after merge this PR

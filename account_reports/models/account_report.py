@@ -880,6 +880,10 @@ class AccountReport(models.AbstractModel):
         else:
             dt_from = fields.Date.from_string(options[dt_filter]['date_from'])
             dt_to = fields.Date.from_string(options[dt_filter]['date_to'])
+            if not dt_to:
+                raise UserError(_('Please specify an end date.'))
+        if not dt_from or not dt_to:
+            raise UserError(_('Please specify a start and end date.'))
 
         return self._get_dates_period(options, dt_from, dt_to)['string']
 
@@ -899,7 +903,8 @@ class AccountReport(models.AbstractModel):
         options_filter = options['date']['filter']
 
         date_from = None
-        date_to = datetime.date.today()
+        date_to = fields.Date.today()
+        period_type = None
         if options_filter == 'custom':
             if self.has_single_date_filter(options):
                 date_from = None
@@ -911,8 +916,10 @@ class AccountReport(models.AbstractModel):
             if not self.has_single_date_filter(options):
                 date_from = self.env.user.company_id.compute_fiscalyear_dates(date_to)['date_from']
         elif 'month' in options_filter:
+            period_type = 'month'
             date_from, date_to = date_utils.get_month(date_to)
         elif 'quarter' in options_filter:
+            period_type = 'quarter'
             date_from, date_to = date_utils.get_quarter(date_to)
         elif 'year' in options_filter:
             company_fiscalyear_dates = self.env.user.company_id.compute_fiscalyear_dates(date_to)
@@ -921,7 +928,7 @@ class AccountReport(models.AbstractModel):
         else:
             raise UserError('Programmation Error: Unrecognized parameter %s in date filter!' % str(options_filter))
 
-        period_vals = self._get_dates_period(options, date_from, date_to)
+        period_vals = self._get_dates_period(options, date_from, date_to, period_type)
         if 'last' in options_filter:
             period_vals = self._get_dates_previous_period(options, period_vals)
 

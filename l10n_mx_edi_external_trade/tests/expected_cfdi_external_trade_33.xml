@@ -113,7 +113,7 @@
                     CantidadAduana="1.000"
                     UnidadAduana="06"
                     ValorUnitarioAduana="450.00"
-                    ValorDolares="450.0"/>
+                    ValorDolares="450.00"/>
             </cce11:Mercancias>
         </cce11:ComercioExterior>
         <tfd:TimbreFiscalDigital

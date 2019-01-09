@@ -170,7 +170,7 @@ var GridController = AbstractController.extend({
         e.stopPropagation();
         // TODO: maybe allow opting out of getting ids?
         var button = this.navigationButtons[$(e.target).attr('data-index')];
-        var actionData = _.extend(button, {
+        var actionData = _.extend({}, button, {
             context: this.model.getContext(button.context),
         });
         this.model.getIds().then(function (ids) {

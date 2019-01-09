@@ -1,12 +1,51 @@
 odoo.define('web_enterprise.mobile_menu_tests', function (require) {
 "use strict";
 
-// Temporarily disable these tests, until we add a specific test suite for mobile
-return;
-
-var ActionManager = require('web.ActionManager');
 var Menu = require('web_enterprise.Menu');
 var testUtils = require('web.test_utils');
+var SystrayMenu = require('web.SystrayMenu');
+var UserMenu = require('web.UserMenu');
+
+/**
+ * create a menu from given parameters.
+ *
+ * @param {Object} params This object will be given to addMockEnvironment, so
+ *   any parameters from that method applies
+ * @param {Object} params.menuData This object will define the menu's data
+ *   structure to render
+ * @param {Widget[]} [params.systrayMenuItems=[]] This array will define the systray
+ *  items to use. Will at least contain and default to UserMenu
+ * @returns {Menu}
+ */
+function createMenu(params) {
+    var parent = testUtils.createParent({});
+
+    var systrayMenuItems = params.systrayMenuItems || [];
+    if (params.systrayMenuItems) {
+        delete params.systrayMenuItems;
+    }
+
+    var initialSystrayMenuItems = _.clone(SystrayMenu.Items);
+    SystrayMenu.Items = _.union([UserMenu], systrayMenuItems);
+
+    var menuData = params.menuData || {};
+    if (params.menuData) {
+        delete params.menuData;
+    }
+
+    var menu = new Menu(parent, menuData);
+    testUtils.mock.addMockEnvironment(menu, params);
+    menu.appendTo($('#qunit-fixture'));
+
+    var menuDestroy = menu.destroy;
+    menu.destroy = function () {
+        SystrayMenu.Items = initialSystrayMenuItems;
+        menuDestroy.call(this);
+        parent.destroy();
+    };
+
+    return menu;
+}
 
 QUnit.module('web_enterprise mobile_menu_tests', {
     beforeEach: function () {
@@ -63,59 +102,29 @@ QUnit.module('web_enterprise mobile_menu_tests', {
     QUnit.test('Burger Menu on home menu', function (assert) {
         assert.expect(1);
 
-        function createParent (params) {
-            var actionManager = new ActionManager();
-            testUtils.mock.addMockEnvironment(actionManager, params);
-            return actionManager;
-        }
-
-        var parent = createParent({
-            data: {},
-            config: {device: {isMobile: true}},
-        });
-
-        var mobileMenu = new Menu(parent, this.data);
-        testUtils.mock.addMockEnvironment(mobileMenu, {
-            mockRPC: function () {
-                return $.when([]);
-            },
-        });
-        mobileMenu.appendTo($('#qunit-fixture'));
+        var mobileMenu = createMenu({ menuData: this.data });
 
         testUtils.dom.click(mobileMenu.$('.o_mobile_menu_toggle'));
         assert.isVisible($(".o_burger_menu"),
             "Burger menu should be opened on button click");
-        testUtils.dom.click(mobileMenu.$('.o_burger_menu_close'));
+        testUtils.dom.click($('.o_burger_menu_close'));
 
-        parent.destroy();
+        mobileMenu.destroy();
     });
 
     QUnit.test('Burger Menu on an App', function (assert) {
-        assert.expect(3);
-        function createParent (params) {
-            var actionManager = new ActionManager();
-            testUtils.mock.addMockEnvironment(actionManager, params);
-            return actionManager;
-        }
+        assert.expect(4);
 
-        var parent = createParent({
-            data: {},
-            config: {device: {isMobile: true}},
-        });
+        var mobileMenu = createMenu({ menuData: this.data });
 
-        var mobileMenu = new Menu(parent, this.data);
-        testUtils.mock.addMockEnvironment(mobileMenu, {
-            mockRPC: function () {
-                return $.when([]);
-            },
-        });
-        mobileMenu.appendTo($('#qunit-fixture'));
         mobileMenu.change_menu_section(3);
         mobileMenu.toggle_mode(false);
 
         testUtils.dom.click(mobileMenu.$('.o_mobile_menu_toggle'));
         assert.isVisible($(".o_burger_menu"),
             "Burger menu should be opened on button click");
+        assert.strictEqual($('.o_burger_menu .o_burger_menu_app .o_menu_sections > *').length, 2,
+            "Burger menu should contains top levels menu entries");
         testUtils.dom.click($('.o_burger_menu_topbar'));
         assert.doesNotHaveClass($(".o_burger_menu_content"), 'o_burger_menu_dark',
             "Toggle to usermenu on header click");
@@ -123,7 +132,7 @@ QUnit.module('web_enterprise mobile_menu_tests', {
         assert.hasClass($(".o_burger_menu_content"),'o_burger_menu_dark',
             "Toggle back to main sales menu on header click");
 
-        parent.destroy();
+        mobileMenu.destroy();
     });
 });
 });

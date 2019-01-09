@@ -21,11 +21,12 @@ class TestL10nMxEdiPayment(common.InvoiceTransactionCase):
             'l10n_mx_edi.prod_code_sat_01010101')
         self.payment_method_manual_out = self.env.ref(
             "account.account_payment_method_manual_out")
-        self.bank = self.env.ref('base.bank_cbc')
+        self.bank = self.env.ref('base.bank_ing')
         self.bank.l10n_mx_edi_vat = 'BBA830831LJ2'
         self.company_bank = self.env['res.partner.bank'].create({
             'acc_number': '1234567890',
             'bank_id': self.bank.id,
+            'partner_id': self.company.id,
         })
         self.account_payment.bank_id = self.bank.id
         self.account_payment.acc_number = '0123456789'
@@ -43,6 +44,7 @@ class TestL10nMxEdiPayment(common.InvoiceTransactionCase):
         invoice = self.create_invoice()
         invoice.move_name = 'INV/2017/999'
         invoice.action_invoice_open()
+        invoice.refresh()
         self.assertEqual(invoice.l10n_mx_edi_pac_status, "signed",
                          invoice.message_ids.mapped("body"))
         ctx = {'active_model': 'account.invoice', 'active_ids': [invoice.id]}

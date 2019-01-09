@@ -11,6 +11,7 @@
                    <cce11:ComercioExterior
                        xmlns:cce11="http://www.sat.gob.mx/ComercioExterior11"
                        Version="1.1"
+                       t-att-MotivoTraslado="reason_transfer"
                        TipoOperacion="2"
                        ClaveDePedimento="A1"
                        t-att-CertificadoOrigen="'1' if record.l10n_mx_edi_cer_source else '0'"
@@ -39,9 +40,9 @@
                                t-att-Calle="record._get_string_cfdi(customer.street_name or '') or None"
                                t-att-NumeroExterior="record._get_string_cfdi(customer.street_number or '') or None"
                                t-att-NumeroInterior="record._get_string_cfdi(customer.street_number2 or '') or None"
-                               t-att-Colonia="record._get_string_cfdi(customer.l10n_mx_edi_colony or '') or None"
-                               t-att-Localidad="customer.l10n_mx_edi_locality"
-                               t-att-Municipio="customer.city"
+                               t-att-Colonia="customer.l10n_mx_edi_colony_code if customer.country_id.l10n_mx_edi_code == 'MEX' else record._get_string_cfdi(customer.l10n_mx_edi_colony or '') or None"
+                               t-att-Localidad="customer.l10n_mx_edi_locality_id.code if customer.country_id.l10n_mx_edi_code == 'MEX' else customer.l10n_mx_edi_locality"
+                               t-att-Municipio="customer.city_id.l10n_mx_edi_code if customer.country_id.l10n_mx_edi_code == 'MEX' else customer.city"
                                t-att-Estado="customer.state_id.code if customer.country_id.l10n_mx_edi_code in ('MEX', 'USA', 'CAN') or customer.state_id.code else 'NA'"
                                t-att-Pais="customer.country_id.l10n_mx_edi_code"
                                t-att-CodigoPostal="customer.zip"/>
@@ -49,7 +50,7 @@
                        <t t-set="dest" t-value="record.env['res.partner'].browse(record.get_delivery_partner_id())"/>
                        <t t-if="dest and dest != record.partner_id">
                             <cce11:Destinatario
-                                t-att-NumRegIdTrib="dest.vat"
+                                t-att-NumRegIdTrib="dest.vat if dest.country_id == dest.commercial_partner_id.country_id else None"
                                 t-att-Nombre="dest.name">
                                 <cce11:Domicilio
                                     t-att-Calle="record._get_string_cfdi(dest.street_name or '') or None"
@@ -73,7 +74,7 @@
                                        t-att-CantidadAduana="'%.3f' % quantity_aduana(line.product_id, record)"
                                        t-att-UnidadAduana="line.l10n_mx_edi_umt_aduana_id.l10n_mx_edi_code_aduana"
                                        t-att-ValorUnitarioAduana="'%.2f' % unit_value_usd(line, record.currency_id, usd)"
-                                       t-att-ValorDolares="round(quantity_aduana(line.product_id, record) * unit_value_usd(line, record.currency_id, usd), 2)">
+                                       t-att-ValorDolares="'%.2f' % round(quantity_aduana(line.product_id, record) * unit_value_usd(line, record.currency_id, usd), 2)">
                                    </cce11:Mercancia>
                                    <t t-set="products" t-value="products + [line.product_id.id]"/>
                                </t>

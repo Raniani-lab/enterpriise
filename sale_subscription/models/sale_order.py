@@ -81,8 +81,7 @@ class SaleOrder(models.Model):
             if order.subscription_management == 'renew':
                 subscriptions.wipe()
                 subscriptions.increment_period()
-                subscriptions.unset_to_renew()
-                subscriptions.clear_date()
+                subscriptions.set_open()
             for subscription in subscriptions:
                 subscription_lines = order.order_line.filtered(lambda l: l.subscription_id == subscription and l.product_id.recurring_invoice)
                 line_values = subscription_lines._update_subscription_line_data(subscription)
@@ -162,6 +161,10 @@ class SaleOrderLine(models.Model):
                 previous_date = next_date - relativedelta(**{periods[self.subscription_id.recurring_rule_type]: self.subscription_id.recurring_interval})
                 lang = self.order_id.partner_invoice_id.lang
                 format_date = self.env['ir.qweb.field.date'].with_context(lang=lang).value_to_html
+
+                # Ugly workaround to display the description in the correct language
+                if lang:
+                    self = self.with_context(lang=lang)
                 period_msg = _("Invoicing period: %s - %s") % (format_date(fields.Date.to_string(previous_date), {}), format_date(fields.Date.to_string(next_date - relativedelta(days=1)), {}))
                 res.update(name=res['name'] + '\n' + period_msg)
             if self.subscription_id.analytic_account_id:

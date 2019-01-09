@@ -509,8 +509,17 @@ $o-dms-inspector-bg-darker: #1A1A1A;
         .o_chatter_topbar {
 
             .o_topbar_right_area {
-                right: 40px; // prevent the 'close' button from overlapping
+                right: 60px; // at least 40px to prevent overlapping with 'close' button (see .o_document_close_chatter)
+                display: flex;
+
+                .o_chatter_button_attachment {
+                    margin-right: 0px; // overrides the margin to prevent overlap.
+                }
             }
+        }
+
+        .o_attachments_previews {
+            margin: 0px; // overrides the margin to prevent negative value.
         }
     }
 

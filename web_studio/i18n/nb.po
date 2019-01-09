@@ -5,13 +5,15 @@
 # Translators:
 # Martin Trigaux, 2018
 # Jorunn D. Newth, 2018
+# Marius Stedjan <marius@stedjan.com>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-02 10:32+0000\n"
-"PO-Revision-Date: 2018-10-02 10:32+0000\n"
-"Last-Translator: Jorunn D. Newth, 2018\n"
+"PO-Revision-Date: 2018-08-24 11:49+0000\n"
+"Last-Translator: Marius Stedjan <marius@stedjan.com>, 2018\n"
 "Language-Team: Norwegian Bokmål (https://www.transifex.com/odoo/teams/41243/nb/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -344,7 +346,7 @@ msgstr "Halvfet"
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:262
 #, python-format
 msgid "Bordered"
-msgstr ""
+msgstr "Rammet"
 
 #. module: web_studio
 #. openerp-web
@@ -505,7 +507,7 @@ msgstr "Farge"
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:221
 #, python-format
 msgid "Colors"
-msgstr ""
+msgstr "Farger"
 
 #. module: web_studio
 #. openerp-web
@@ -807,7 +809,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:web_studio.act_report_xml_view_kanban
 #, python-format
 msgid "Dropdown menu"
-msgstr ""
+msgstr "Nedtrekksmeny"
 
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.act_report_xml_view_kanban
@@ -869,7 +871,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/edit_menu.xml:26
 #, python-format
 msgid "Edit menu"
-msgstr ""
+msgstr "Rediger meny"
 
 #. module: web_studio
 #. openerp-web
@@ -1198,7 +1200,7 @@ msgstr "Grupper etter"
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_http
 msgid "HTTP Routing"
-msgstr ""
+msgstr "HTTP-ruting"
 
 #. module: web_studio
 #. openerp-web
@@ -1880,7 +1882,7 @@ msgstr ""
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_qweb
 msgid "Qweb"
-msgstr ""
+msgstr "Qweb"
 
 #. module: web_studio
 #. openerp-web
@@ -2454,7 +2456,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:275
 #, python-format
 msgid "Timeline"
-msgstr ""
+msgstr "Tidslinje"
 
 #. module: web_studio
 #. openerp-web
@@ -2802,7 +2804,7 @@ msgstr "eller"
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:210
 #, python-format
 msgid "px"
-msgstr ""
+msgstr "px"
 
 #. module: web_studio
 #. openerp-web

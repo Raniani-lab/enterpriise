@@ -68,6 +68,7 @@ class StockInventory(models.Model):
                 line_id['location_id'] = self.env['stock.location'].browse(line_id.pop('location_id')[0]).read([
                     'id',
                     'display_name',
+                    'parent_path'
                 ])[0]
             inventory['location_id'] = self.env['stock.location'].browse(inventory.pop('location_id')[0]).read([
                 'id',

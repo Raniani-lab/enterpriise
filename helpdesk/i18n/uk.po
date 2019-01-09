@@ -800,7 +800,7 @@ msgstr "Опис політики..."
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_form
 msgid "Description of the ticket..."
-msgstr "Опис квитка..."
+msgstr "Опис заявки..."
 
 #. module: helpdesk
 #: model:ir.model,name:helpdesk.model_digest_digest

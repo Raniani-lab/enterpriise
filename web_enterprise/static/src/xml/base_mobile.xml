@@ -52,6 +52,7 @@
 
 <t t-name="Menu.sections.mobile">
     <t t-set="mobile" t-value="true"/>
+    <t t-set="inNavbar" t-value="true"/>
     <t t-foreach="menu_data.children" t-as="primary_menu">
         <section t-att-class="primary_menu.id">
             <t t-if="primary_menu.children.length">

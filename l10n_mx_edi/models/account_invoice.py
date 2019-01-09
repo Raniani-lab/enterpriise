@@ -669,12 +669,13 @@ class AccountInvoice(models.Model):
                 tax_dict = tax_line.get(tax.id, {})
                 amount = round(abs(tax_dict.get(
                     'amount', tax.amount / 100 * float("%.2f" % line.price_subtotal))), 2)
+                rate = round(abs(tax.amount), 2)
                 if tax.amount not in taxes:
                     taxes.update({tax.amount: {
                         'name': (tax.tag_ids[0].name
                                  if tax.tag_ids else tax.name).upper(),
                         'amount': amount,
-                        'rate': round(abs(tax.amount), 2),
+                        'rate': rate if tax.amount_type == 'fixed' else rate / 100.0,
                         'type': tax.l10n_mx_cfdi_tax_type,
                         'tax_amount': tax_dict.get('amount', tax.amount),
                     }})
@@ -701,8 +702,6 @@ class AccountInvoice(models.Model):
             values['folio'] = last_number_match.group().lstrip('0') or None
         return values
 
-    __check_cfdi_re = re.compile(u'''([A-Z]|[a-z]|[0-9]| |Ñ|ñ|!|"|%|&|'|´|-|:|;|>|=|<|@|_|,|\{|\}|`|~|á|é|í|ó|ú|Á|É|Í|Ó|Ú|ü|Ü)''')
-
     @staticmethod
     def _get_string_cfdi(text, size=100):
         """Replace from text received the characters that are not found in the
@@ -713,8 +712,7 @@ class AccountInvoice(models.Model):
         Ex. 'Product ABC (small size)' - 'Product ABC small size'"""
         if not text:
             return None
-        for char in AccountInvoice.__check_cfdi_re.sub('', text):
-            text = text.replace(char, ' ')
+        text = text.replace('|', ' ')
         return text.strip()[:size]
 
     @api.multi

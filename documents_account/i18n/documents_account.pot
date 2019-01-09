@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-02 10:31+0000\n"
-"PO-Revision-Date: 2018-10-02 10:31+0000\n"
+"POT-Creation-Date: 2018-12-24 11:16+0000\n"
+"PO-Revision-Date: 2018-12-24 11:16+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -22,7 +22,7 @@ msgstr ""
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_res_company__account_folder
-#: model:ir.model.fields,field_description:documents_account.field_res_config_settings__dms_account_settings
+#: model:ir.model.fields,field_description:documents_account.field_res_config_settings__documents_account_settings
 msgid "Account Folder"
 msgstr ""
 
@@ -30,6 +30,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents_account.field_res_company__account_tags
 #: model:ir.model.fields,field_description:documents_account.field_res_config_settings__account_tags
 msgid "Account Tags"
+msgstr ""
+
+#. module: documents_account
+#: model:ir.model,name:documents_account.model_ir_attachment
+msgid "Attachment"
 msgstr ""
 
 #. module: documents_account
@@ -48,9 +53,13 @@ msgid "Create"
 msgstr ""
 
 #. module: documents_account
-#: code:addons/documents_account/models/account_invoice.py:13
-#, python-format
-msgid "Created by: "
+#: model:documents.workflow.rule,name:documents_account.vendor_bill_rule
+msgid "Create Vendor Bill"
+msgstr ""
+
+#. module: documents_account
+#: model:documents.workflow.rule,name:documents_account.credit_note_rule
+msgid "Create Vendor Refund"
 msgstr ""
 
 #. module: documents_account
@@ -59,13 +68,8 @@ msgid "Credit note"
 msgstr ""
 
 #. module: documents_account
-#: model:ir.model.fields,field_description:documents_account.field_res_company__dms_account_settings
-msgid "Dms Account Settings"
-msgstr ""
-
-#. module: documents_account
-#: model:ir.model,name:documents_account.model_ir_attachment
-msgid "Document"
+#: model:ir.model.fields,field_description:documents_account.field_res_company__documents_account_settings
+msgid "Documents Account Settings"
 msgstr ""
 
 #. module: documents_account
@@ -79,18 +83,14 @@ msgid "Has Business Option"
 msgstr ""
 
 #. module: documents_account
-#: model:ir.model,name:documents_account.model_account_invoice
-msgid "Invoice"
-msgstr ""
-
-#. module: documents_account
 #: selection:documents.workflow.rule,create_model:0
 msgid "Product template"
 msgstr ""
 
 #. module: documents_account
 #: model_terms:ir.ui.view,arch_db:documents_account.res_config_settings_view_form
-msgid "Select the folder to be used for accounting's documents."
+msgid "Select the folder to be used for accounting's documents for the invoices\n"
+"                                    of your company."
 msgstr ""
 
 #. module: documents_account

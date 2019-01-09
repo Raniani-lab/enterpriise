@@ -40,8 +40,8 @@ msgid ""
 " If you want to set quantity to 0, the Out Of Stock option should be enabled"
 " and the listing duration should set to Good 'Til Canceled"
 msgstr ""
-"Якщо ви хочете встановити кількість до 0, параметр Out Of Stock має бути "
-"включений, а тривалість запису має бути встановлено на Good 'Til Canceled"
+"Якщо ви хочете встановити кількість до 0, параметр Немає на складі має бути "
+"включений, а тривалість запису має бути встановлена на Добре до скасування"
 
 #. module: sale_ebay
 #: code:addons/sale_ebay/models/product.py:386
@@ -51,7 +51,7 @@ msgid ""
 " Or if you try to delete a variation, you cannot do it by unselecting it. Setting the quantity to 0 is the safest method to make a variation unavailable."
 msgstr ""
 "Вам потрібно вибрати принаймні 2 варіанти для переліку варіантів.\n"
-"  Або якщо ви намагаєтесь видалити варіант, ви не можете це зробити, скасувавши його. Встановлення кількості до 0 - найбезпечніший спосіб зробити варіант недоступним."
+"Або якщо ви намагаєтеся видалити варіант, ви не можете це зробити, скасувавши їх. Встановлення кількості до 0 - найбезпечніший спосіб зробити варіант недоступним."
 
 #. module: sale_ebay
 #: selection:product.template,ebay_listing_duration:0
@@ -71,7 +71,7 @@ msgstr "30 днів (лише для фіксованої ціни)"
 #. module: sale_ebay
 #: selection:product.template,ebay_listing_duration:0
 msgid "5 Days"
-msgstr "5 Днів"
+msgstr "5 днів"
 
 #. module: sale_ebay
 #: selection:product.template,ebay_listing_duration:0
@@ -81,27 +81,27 @@ msgstr "7 днів"
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "<span class=\"o_form_label\">Sales Channel</span>"
-msgstr ""
+msgstr "<span class=\"o_form_label\">Канал продажу</span>"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "<span class=\"o_form_label\">Storage</span>"
-msgstr ""
+msgstr "<span class=\"o_form_label\">Зберігання</span>"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "<span class=\"o_form_label\">Synchronization</span>"
-msgstr ""
+msgstr "<span class=\"o_form_label\">Синхронізація</span>"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "<span class=\"o_form_label\">eBay Account</span>"
-msgstr ""
+msgstr "<span class=\"o_form_label\">Обліковий запис eBay</span>"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "<span class=\"o_form_label\">eBay Options</span>"
-msgstr ""
+msgstr "<span class=\"o_form_label\">Функції eBay</span>"
 
 #. module: sale_ebay
 #: code:addons/sale_ebay/models/product.py:259
@@ -192,7 +192,7 @@ msgstr "Контакт"
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Countries & Currencies"
-msgstr "Країни та Валюти"
+msgstr "Країни та валюти"
 
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_res_country
@@ -263,7 +263,7 @@ msgstr "Тривалість"
 #. module: sale_ebay
 #: model:ir.actions.server,name:sale_ebay.action_end_items_listings
 msgid "Ebay: End Product Templates Listings on eBay"
-msgstr "Ebay: Кінцеві шаблони товарів на eBay"
+msgstr "Ebay: кінцеві шаблони товарів на eBay"
 
 #. module: sale_ebay
 #: model:ir.actions.server,name:sale_ebay.action_list_items
@@ -278,12 +278,12 @@ msgstr "Ebay: повторно вивести список шаблонів то
 #. module: sale_ebay
 #: model:ir.actions.server,name:sale_ebay.action_revise_items
 msgid "Ebay: Revise Product Templates on eBay"
-msgstr "Ebay: Переглянути шаблони твоару на eBay"
+msgstr "Ebay: переглянути шаблони твоару на eBay"
 
 #. module: sale_ebay
 #: model:ir.actions.server,name:sale_ebay.action_unlink_items_listings
 msgid "Ebay: Unlink eBay Product Templates Listings"
-msgstr "Ebay: Від'єднати списки шаблонів товару eBay"
+msgstr "Ebay: від'єднати списки шаблонів товару eBay"
 
 #. module: sale_ebay
 #: model:ir.actions.server,name:sale_ebay.ir_cron_sale_ebay_categories_ir_actions_server
@@ -418,7 +418,7 @@ msgstr "Останні оновлення"
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_category__leaf_category
 msgid "Leaf Category"
-msgstr "Гілка категорії"
+msgstr "Категорія гілки"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.ebay_link_listing_view
@@ -500,7 +500,7 @@ msgstr "Або умова не сумісна з категорією."
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_out_of_stock
 msgid "Out Of Stock"
-msgstr "Не на складі"
+msgstr "Немає на складі"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_seller_payment_policy_id
@@ -552,12 +552,12 @@ msgstr "Виробництво"
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_prod_app_id
 msgid "Production App Key"
-msgstr "Ключ додатку Виробництва"
+msgstr "Ключ додатку виробництва"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_prod_cert_id
 msgid "Production Cert Key"
-msgstr "Замкнений ключ виробництва "
+msgstr "Сертифікат ключа виробництва "
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_prod_token
@@ -578,7 +578,7 @@ msgstr "Опублікувати на eBay"
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_quantity
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_quantity
 msgid "Quantity On eBay"
-msgstr ""
+msgstr "Кількість на eBay"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_quantity_sold
@@ -645,7 +645,7 @@ msgstr "Токен пісочниці"
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
 msgid "Sell on eBay"
-msgstr ""
+msgstr "Продаж на eBay"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_seller_shipping_policy_id
@@ -812,7 +812,7 @@ msgstr "eBay"
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_ebay_category
 msgid "eBay Category"
-msgstr ""
+msgstr "Категорія eBay"
 
 #. module: sale_ebay
 #: model:product.category,name:sale_ebay.product_category_ebay
@@ -828,13 +828,13 @@ msgstr "Опис eBay "
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_domain
 msgid "eBay Environment"
-msgstr ""
+msgstr "Середовище eBay"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_fixed_price
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_fixed_price
 msgid "eBay Fixed Price"
-msgstr ""
+msgstr "Фіксована ціна eBay"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_site__ebay_id
@@ -846,12 +846,12 @@ msgstr "eBay ID"
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_ebay_item_condition
 msgid "eBay Item Condition"
-msgstr ""
+msgstr "Стан елемента eBay"
 
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_ebay_link_listing
 msgid "eBay Link Listing"
-msgstr ""
+msgstr "Список посилань eBay"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_link_listing__ebay_id
@@ -861,7 +861,7 @@ msgstr "ID списку eBay "
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_ebay_policy
 msgid "eBay Policy"
-msgstr ""
+msgstr "Політика eBay"
 
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_ebay_site
@@ -883,7 +883,7 @@ msgstr "ID користувача eBay "
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_variant_url
 msgid "eBay Variant URL"
-msgstr "варіант URL-адреси eBay"
+msgstr "URL-адреса варіанта eBay"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_site
@@ -931,9 +931,9 @@ msgstr "eBay url"
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_currency
 msgid "ebay Currency"
-msgstr ""
+msgstr "Валюта ebay"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_sales_team
 msgid "ebay Sales Channel"
-msgstr ""
+msgstr "Канал продажу ebay"

@@ -363,27 +363,53 @@ var PhonecallDetails = Widget.extend({
      */
     _onToPartnerClick: function (ev) {
         ev.preventDefault();
+        var res_id;
+        var def = $.Deferred();
         if (this.partner_id) {
-            this.do_action({
-                type: 'ir.actions.act_window',
-                res_model: "res.partner",
-                res_id: this.partner_id,
-                views: [[false, 'form']],
-                target: 'current',
-            });
+            res_id = this.partner_id;
+            def.resolve();
         } else {
-            this.do_action({
-                type: 'ir.actions.act_window',
-                res_model: "res.partner",
-                views: [[false, 'form']],
-                target: 'current',
-                context: {
-                    default_email: this.email,
-                    default_phone: this.phone,
-                    default_mobile: this.mobile,
-                },
-            });
+            var domain = ['|',
+                          ['phone', '=', this.phone],
+                          ['mobile', '=', this.phone]];
+            this._rpc({
+                method: 'search_read',
+                model: "res.partner",
+                kwargs: {
+                    domain: domain,
+                    fields: ['id'],
+                    limit: 1
+                }
+            }).then(function(ids) {
+                if (ids.length)
+                    res_id = ids[0].id;
+            }).always(function(){
+                def.resolve();
+            })
         }
+        $.when(def).then((function() {
+            if (res_id !== undefined) {
+                this.do_action({
+                    type: 'ir.actions.act_window',
+                    res_model: "res.partner",
+                    res_id: res_id,
+                    views: [[false, 'form']],
+                    target: 'current',
+                });
+            } else {
+                this.do_action({
+                    type: 'ir.actions.act_window',
+                    res_model: "res.partner",
+                    views: [[false, 'form']],
+                    target: 'current',
+                    context: {
+                        default_email: this.email,
+                        default_phone: this.phone,
+                        default_mobile: this.mobile,
+                    },
+                });
+            }
+        }).bind(this));
     },
     /**
      * @private

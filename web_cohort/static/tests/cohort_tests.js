@@ -259,8 +259,8 @@ QUnit.module('Views', {
             },
         });
 
-        assert.strictEqual(cohort.$('td .o_cohort_value:first').text().trim(), '0.0%', 'first col should display 0 percent');
-        assert.strictEqual(cohort.$('td .o_cohort_value:nth(4)').text().trim(), '100.0%', 'col 5 should display 100 percent');
+        assert.strictEqual(cohort.$('td .o_cohort_value:first').text().trim(), '0%', 'first col should display 0 percent');
+        assert.strictEqual(cohort.$('td .o_cohort_value:nth(4)').text().trim(), '100%', 'col 5 should display 100 percent');
 
         cohort.destroy();
     });
@@ -278,15 +278,14 @@ QUnit.module('Views', {
                 return this._super(route, args);
             },
         });
-
         assert.ok(cohort.$('.table thead tr:nth-child(2) th:first:contains(-15)').length,
             'interval should start with -15');
         assert.ok(cohort.$('.table thead tr:nth-child(2) th:nth-child(16):contains(0)').length,
             'interval should end with 0');
-        assert.strictEqual(cohort.$('td .o_cohort_value:first').text().trim(), '20.0%', 'first col should display 20 percent');
-        assert.strictEqual(cohort.$('td .o_cohort_value:nth(5)').text().trim(), '40.0%', 'col 6 should display 40 percent');
-        assert.strictEqual(cohort.$('td .o_cohort_value:nth(7)').text().trim(), '80.0%', 'col 8 should display 80 percent');
-        assert.strictEqual(cohort.$('td .o_cohort_value:nth(14)').text().trim(), '100.0%', 'col 15 should display 100 percent');
+        assert.strictEqual(cohort.$('td .o_cohort_value:first').text().trim(), '20%', 'first col should display 20 percent');
+        assert.strictEqual(cohort.$('td .o_cohort_value:nth(5)').text().trim(), '40%', 'col 6 should display 40 percent');
+        assert.strictEqual(cohort.$('td .o_cohort_value:nth(7)').text().trim(), '80%', 'col 8 should display 80 percent');
+        assert.strictEqual(cohort.$('td .o_cohort_value:nth(14)').text().trim(), '100%', 'col 15 should display 100 percent');
 
         cohort.destroy();
     });
@@ -467,6 +466,25 @@ QUnit.module('Views', {
 
         unpatchDate();
         actionManager.destroy();
+    });
+
+    QUnit.test('verify context', function (assert) {
+        assert.expect(1);
+
+        var cohort = createView({
+            View: CohortView,
+            model: 'subscription',
+            data: this.data,
+            arch: '<cohort string="Subscription" date_start="start" date_stop="stop" />',
+            mockRPC: function (route, args) {
+                if (args.method === 'get_cohort_data') {
+                    assert.step(args.kwargs.context);
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        cohort.destroy();
     });
 
 });

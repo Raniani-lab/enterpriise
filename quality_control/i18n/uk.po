@@ -64,7 +64,7 @@ msgstr ""
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.stock_picking_view_form_inherit_quality
 msgid "<span class=\"o_stat_text\">Quality Alert</span>"
-msgstr "<span class=\"o_stat_text\">Якість попередження</span>"
+msgstr "<span class=\"o_stat_text\">Сповіщення якості</span>"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_form
@@ -109,7 +109,7 @@ msgstr "Сповіщення"
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_stock_picking__quality_alert_ids
 msgid "Alerts"
-msgstr "Застереження"
+msgstr "Сповіщення"
 
 #. module: quality_control
 #: selection:quality.point,measure_frequency_type:0
@@ -159,7 +159,7 @@ msgstr "Налаштування"
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_form_failure
 msgid "Confirm Measure"
-msgstr "Підтвердити міру"
+msgstr "Підтвердити вимірювання"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_form_inherit_quality_control
@@ -185,7 +185,7 @@ msgstr "Тип контролю"
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_form_failure
 msgid "Correct Measure"
-msgstr "Редагувати міру"
+msgstr "Редагувати вимірювання"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_form
@@ -241,7 +241,7 @@ msgstr "Опис"
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_form
 msgid "Description of the issue..."
-msgstr "Опис випуску..."
+msgstr "Опис проблеми..."
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_search
@@ -302,7 +302,7 @@ msgstr "В процесі"
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_form
 msgid "Make Alert"
-msgstr "Зробіть сповіщення"
+msgstr "Зробити сповіщення"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check__tolerance_max
@@ -313,12 +313,12 @@ msgstr "Максимальна толерантність"
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check__measure
 msgid "Measure"
-msgstr "Міра"
+msgstr "Вимірювання"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_point__measure_frequency_unit
 msgid "Measure Frequency Unit"
-msgstr "Вимірювати частотний блок"
+msgstr "Виміряти одиницю частоти"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check__measure_success
@@ -365,7 +365,7 @@ msgstr "Новий"
 #. module: quality_control
 #: selection:quality.check,measure_success:0
 msgid "No measure"
-msgstr "Ніяких заходів"
+msgstr "Немає вимірювань"
 
 #. module: quality_control
 #: model_terms:ir.actions.act_window,help:quality_control.quality_alert_action_report
@@ -386,7 +386,7 @@ msgstr "Нормально"
 #: model:ir.model.fields,field_description:quality_control.field_quality_check__norm_unit
 #: model:ir.model.fields,field_description:quality_control.field_quality_point__norm_unit
 msgid "Norm Unit"
-msgstr "Стандартний блок"
+msgstr "Нормальна одиниця"
 
 #. module: quality_control
 #: model_terms:ir.actions.act_window,help:quality_control.quality_check_action_main
@@ -438,7 +438,7 @@ msgstr "Очікування перевірок"
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_point__measure_frequency_value
 msgid "Percentage"
-msgstr "Процент"
+msgstr "Відсоток"
 
 #. module: quality_control
 #: selection:quality.point,measure_frequency_type:0
@@ -479,29 +479,29 @@ msgstr "Якість"
 #: model_terms:ir.ui.view,arch_db:quality_control.stock_picking_view_form_inherit_quality
 #, python-format
 msgid "Quality Alert"
-msgstr "Якісне сповіщення "
+msgstr "Сповіщення якості"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_graph
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_pivot
 msgid "Quality Alert Analysis"
-msgstr "Аналіз якісного сповіщення"
+msgstr "Аналіз сповіщення якості"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_stock_picking__quality_alert_count
 msgid "Quality Alert Count"
-msgstr "Якість попередження кількості"
+msgstr "Підрахунок сповіщення якості"
 
 #. module: quality_control
 #: model:ir.actions.act_window,name:quality_control.quality_alert_stage_action
 #: model:ir.ui.menu,name:quality_control.menu_quality_config_alert_stage
 msgid "Quality Alert Stages"
-msgstr "Етапи якісного сповіщення"
+msgstr "Етапи сповіщення якості"
 
 #. module: quality_control
 #: model:ir.model,name:quality_control.model_quality_alert_team
 msgid "Quality Alert Team"
-msgstr "Команда якісного сповіщення"
+msgstr "Команда сповіщення якості"
 
 #. module: quality_control
 #: model_terms:ir.actions.act_window,help:quality_control.quality_alert_stage_action
@@ -509,8 +509,8 @@ msgid ""
 "Quality Alert stages define the different steps a quality alert should go "
 "through."
 msgstr ""
-"Етапи якісного сповіщення визначають різні етапи, за якими слід пройти "
-"попередження про якість."
+"Етапи сповіщення якості визначають різні етапи, за якими слід пройти "
+"сповіщення якості."
 
 #. module: quality_control
 #: model:ir.actions.act_window,name:quality_control.quality_alert_action_check
@@ -520,7 +520,7 @@ msgstr ""
 #: model:ir.ui.menu,name:quality_control.menu_quality_alert_report
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_team_dashboard_view_kanban
 msgid "Quality Alerts"
-msgstr "Попередження якості"
+msgstr "Сповіщення якості"
 
 #. module: quality_control
 #: code:addons/quality_control/models/quality.py:251
@@ -706,7 +706,7 @@ msgstr "Тип частоти"
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_form_small
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_form_inherit_quality_control
 msgid "Unit of Measure"
-msgstr "Одиниця виміру"
+msgstr "Одиниця вимірювання"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_form_small

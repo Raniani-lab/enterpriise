@@ -3,6 +3,7 @@ odoo.define('web_cohort.CohortRenderer', function (require) {
 
 var AbstractRenderer = require('web.AbstractRenderer');
 var core = require('web.core');
+var field_utils = require('web.field_utils');
 
 var qweb = core.qweb;
 
@@ -74,6 +75,8 @@ var CohortRenderer = AbstractRenderer.extend({
             comparisonTimeRangeDescription: this.comparisonTimeRangeDescription,
             mode: this.mode,
             timeline: this.timeline,
+            format_float: this._format_float,
+            format_percentage: this._format_percentage,
         }));
         this.$('.o_cohort_highlight.o_cohort_value').tooltip({
             title: function () {
@@ -86,6 +89,26 @@ var CohortRenderer = AbstractRenderer.extend({
             },
         });
         return this._super.apply(this, arguments);
+    },
+    /**
+     * @private
+     * @param {float} value
+     * @returns {string} formatted value with 1 digit
+     */
+    _format_float: function (value) {
+        return field_utils.format.float(value, null, {
+            digits: [42, 1],
+        })
+    },
+    /**
+     * @private
+     * @param {float} value
+     * @returns {string} formatted value with 1 digit
+     */
+    _format_percentage: function (value) {
+        return field_utils.format.percentage(value, null, {
+            digits: [42, 1],
+        })
     },
 
     //--------------------------------------------------------------------------

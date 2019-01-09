@@ -347,7 +347,7 @@
             <field name="code">LE</field>
             <field name="financial_report_id" ref="account_financial_report_balancesheet0"/>
             <field name="groupby">account_id</field>
-            <field name="formulas">balance = CL.balance + EQ.balance</field>
+            <field name="formulas">balance = L.balance + EQ.balance</field>
             <field name="sequence" eval="4"/>
             <field name="green_on_positive" eval="False"/>
             <field name="level" eval="0" />

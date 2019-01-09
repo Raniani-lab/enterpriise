@@ -4,7 +4,6 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
-# Bohdan Lisnenko, 2018
 # Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018
 # 
 msgid ""
@@ -60,7 +59,7 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot___barcode_scanned
 msgid "Barcode Scanned"
-msgstr "Штрихкод проскановано"
+msgstr "Штрих-код проскановано"
 
 #. module: stock_barcode
 #. openerp-web
@@ -113,7 +112,7 @@ msgstr "Створено"
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot__default_move_id
 msgid "Default Move"
-msgstr "Переміщення за замовленням"
+msgstr "Переміщення за замовчуванням"
 
 #. module: stock_barcode
 #. openerp-web
@@ -209,7 +208,7 @@ msgstr "Склад"
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_inventory_barcode2
 #, python-format
 msgid "Inventory Adjustments"
-msgstr "Корегування залишків"
+msgstr "Коригування залишків"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_inventory_barcode2
@@ -224,7 +223,7 @@ msgstr "Рядок інвентаризації"
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_location
 msgid "Inventory Locations"
-msgstr "Розташування складів"
+msgstr "Розташування складу"
 
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_barcode_lot_line
@@ -355,7 +354,7 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_picking_type
 msgid "Picking Type"
-msgstr "Тип відбору"
+msgstr "Тип комплектування"
 
 #. module: stock_barcode
 #. openerp-web
@@ -549,7 +548,7 @@ msgid ""
 "or location."
 msgstr ""
 "Штрих-код \"%(barcode)s\" не відповідає відповідному товару, упаковці або "
-"місцю розташування."
+"місцезнаходженню."
 
 #. module: stock_barcode
 #. openerp-web
@@ -661,7 +660,7 @@ msgstr "Переміщення"
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode_kanban
 msgid "Unit of Measure"
-msgstr "Одиниця виміру"
+msgstr "Одиниця вимірювання"
 
 #. module: stock_barcode
 #. openerp-web
@@ -679,7 +678,7 @@ msgstr "Підтвердити партію"
 #. module: stock_barcode
 #: model:ir.model.fields,help:stock_barcode.field_stock_barcode_lot___barcode_scanned
 msgid "Value of the last barcode scanned."
-msgstr "Значення останнього відсканованого штрихкоду."
+msgstr "Значення останнього відсканованого штрих-коду."
 
 #. module: stock_barcode
 #. openerp-web
@@ -697,8 +696,8 @@ msgid ""
 "We have created a few demo data with barcodes for you to explore the "
 "features. Print the"
 msgstr ""
-"Ми створили декілька демонстраційних даних зі штрих-кодами, щоб ви могли "
-"вивчити їх. Надрукувати"
+"Ми створили кілька демонстраційних даних зі штрих-кодами, щоб ви могли "
+"вивчити їх. Надрукуйте"
 
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_barcode_lot

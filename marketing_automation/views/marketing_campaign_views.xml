@@ -174,22 +174,27 @@
                                                         </div>
                                                     </div>
                                                     <div t-if="record.activity_type.raw_value == 'email'" class="row o_ma_email_details text-center">
-                                                        <div class="col-3 text-uppercase">
-                                                            <i class="fa fa-pie-chart" /> Email Details
+                                                        <div class="col text-uppercase">
+                                                            <i class="fa fa-pie-chart" /> Details
                                                         </div>
-                                                        <div class="col-3" title="Mails sent and not bounced">
+                                                        <div class="col" title="Mails sent and not bounced">
                                                             <a name="action_view_sent" type="object">
                                                                 <strong><t t-esc="record.total_sent.raw_value or 0"></t></strong> Sent
                                                             </a>
                                                         </div>
-                                                        <div class="col-3">
+                                                        <div class="col">
                                                             <a name="action_view_clicked" type="object">
                                                                 <strong><t t-esc="Math.round((record.total_click.raw_value/(record.total_sent.raw_value or 1)) * 100) or 0" />%</strong> Clicked
                                                             </a>
                                                         </div>
-                                                        <div class="col-3">
+                                                        <div class="col">
                                                             <a name="action_view_replied" type="object">
                                                                 <strong><t t-esc="Math.round((record.total_reply.raw_value/(record.total_sent.raw_value or 1)) * 100) or 0" />%</strong> Replied
+                                                            </a>
+                                                        </div>
+                                                        <div class="col">
+                                                            <a name="action_view_bounced" type="object">
+                                                                <strong><t t-esc="Math.round((record.total_bounce.raw_value/(record.total_sent.raw_value or 1)) * 100) or 0" />%</strong> Bounced
                                                             </a>
                                                         </div>
                                                     </div>

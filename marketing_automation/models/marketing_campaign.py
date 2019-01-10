@@ -651,6 +651,9 @@ class MarketingActivity(models.Model):
     def action_view_clicked(self):
         return self._action_view_documents_filtered('clicked')
 
+    def action_view_bounced(self):
+        return self._action_view_documents_filtered('bounced')
+
     def _action_view_documents_filtered(self, view_filter):
         if not self.mass_mailing_id:
             return False

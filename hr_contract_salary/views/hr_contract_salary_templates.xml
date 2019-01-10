@@ -432,7 +432,7 @@
                                             </div>
                                             <div class="col-md-2">
                                                 <div class="input-group">
-                                                    <input class="form-control text-right" type="text" t-att-value="contract.thirteen_month" disabled="disabled" name="thirteen_month"/>
+                                                    <input class="form-control text-right" type="text" t-att-value="contract.wage_with_holidays" disabled="disabled" name="thirteen_month"/>
                                                     <div class="input-group-append">
                                                         <div class="input-group-text">€</div>
                                                     </div>
@@ -452,7 +452,7 @@
                                             </div>
                                             <div class="col-md-2">
                                                 <div class="input-group">
-                                                    <input class="form-control" type="text" t-att-value="contract.double_holidays" disabled="disabled" name="double_holidays"/>
+                                                    <input class="form-control" type="text" t-att-value="contract.wage_with_holidays * 0.92" disabled="disabled" name="double_holidays"/>
                                                     <div class="input-group-append">
                                                         <div class="input-group-text">€</div>
                                                     </div>

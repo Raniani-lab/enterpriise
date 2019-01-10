@@ -72,7 +72,9 @@
                         <button name="action_view_mailings" type="object" icon="fa-envelope-open-o" class="oe_stat_button">
                             <field name="mass_mailing_count" widget="statinfo" string="Mailings"/>
                         </button>
-
+                        <button name="action_view_tracker_statistics" type="object" icon="fa-link" class="oe_stat_button">
+                            <field name="link_tracker_click_count" widget="statinfo" string="Clicks"/>
+                        </button>
                         <button name="%(marketing_participant_action_campaign_test)d" type="action"
                             icon="fa-flask" class="oe_stat_button">
                             <field name="test_participant_count" widget="statinfo" string="Tests" />

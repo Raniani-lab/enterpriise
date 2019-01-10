@@ -14,6 +14,7 @@
         'views/ir_model_views.xml',
         'views/marketing_automation_menus.xml',
         'wizard/marketing_campaign_test_views.xml',
+        'views/link_tracker_views.xml',
         'views/mail_mass_mailing_views.xml',
         'views/mail_mail_statistics_views.xml',
         'views/marketing_participant_views.xml',

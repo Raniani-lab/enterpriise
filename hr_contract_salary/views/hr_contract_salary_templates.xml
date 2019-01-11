@@ -871,6 +871,85 @@
                                         </div>
                                     </div>
 
+                                    <!-- Personal Documents -->
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h2>Personal Documents</h2>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="form-group col-md-6">
+                                                    <label class="col-form-label" for="id_card">ID card copy (Both Sides)</label>
+                                                    <input type="file" name="id_card" class="form-control document"/>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <img id="id_card_img" t-att-src="id_card" alt="ID Card Copy" width="256" t-att-class="'d-none' if not id_card or id_card[:28] == 'data:application/pdf;base64,' else ''"/>
+                                                    <iframe id="id_card_pdf" t-att-src="id_card" height="256" width="256" t-att-class="'d-none' if not id_card or id_card[:28] != 'data:application/pdf;base64,' else ''"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="form-group col-md-6">
+                                                    <label class="col-form-label" for="image">Employee Photo</label>
+                                                    <input type="file" name="image" class="form-control document"/>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <img id="image_img" t-att-src="image" alt="Employee Photo" width="256" t-att-class="'d-none' if not image or image[:28] == 'data:application/pdf;base64,' else ''"/>
+                                                    <iframe id="image_pdf" t-att-src="image" height="256" width="256" t-att-class="'d-none' if not image or image[:28] != 'data:application/pdf;base64,' else ''"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12" name="driving_license">
+                                            <div class="row">
+                                                <div class="form-group col-md-6">
+                                                    <label class="col-form-label" for="driving_license">Driving License</label>
+                                                    <input type="file" name="driving_license" class="form-control document"/>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <img id="driving_license_img" t-att-src="driving_license" alt="Driving License" width="256" t-att-class="'d-none' if not driving_license or driving_license[:28] == 'data:application/pdf;base64,' else ''"/>
+                                                    <iframe id="driving_license_pdf" t-att-src="driving_license" height="256" width="256" t-att-class="'d-none' if not driving_license or driving_license[:28] != 'data:application/pdf;base64,' else ''"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12" name="mobile_invoice">
+                                            <div class="row">
+                                                <div class="form-group col-md-6">
+                                                    <label class="col-form-label" for="mobile_invoice">Mobile Subscription Invoice</label>
+                                                    <input type="file" name="mobile_invoice" class="form-control document"/>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <img id="mobile_invoice_img" t-att-src="mobile_invoice" alt="Mobile Subscription Invoice" width="256" t-att-class="'d-none' if not mobile_invoice or mobile_invoice[:28] == 'data:application/pdf;base64,' else ''"/>
+                                                    <iframe id="mobile_invoice_pdf" t-att-src="mobile_invoice" height="256" width="256" t-att-class="'d-none' if not mobile_invoice or mobile_invoice[:28] != 'data:application/pdf;base64,' else ''"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12" name="sim_card">
+                                            <div class="row">
+                                                <div class="form-group col-md-6">
+                                                    <label class="col-form-label" for="sim_card">Sim Card Copy</label>
+                                                    <input type="file" name="sim_card" class="form-control document"/>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <img id="sim_card_img" t-att-src="sim_card" alt="Sim Card Copy" width="256" t-att-class="'d-none' if not sim_card or sim_card[:28] == 'data:application/pdf;base64,' else ''"/>
+                                                    <iframe id="sim_card_pdf" t-att-src="sim_card" height="256" width="256" t-att-class="'d-none' if not sim_card or sim_card[:28] != 'data:application/pdf;base64,' else ''"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12" name="internet_invoice">
+                                            <div class="row">
+                                                <div class="form-group col-md-6">
+                                                    <label class="col-form-label" for="internet_invoice">Internet Subscription Invoice</label>
+                                                    <input type="file" name="internet_invoice" class="form-control document"/>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <img id="internet_invoice_img" t-att-src="internet_invoice" alt="Internet Subscription Invoice" width="256" t-att-class="'d-none' if not internet_invoice or internet_invoice[:28] == 'data:application/pdf;base64,' else ''"/>
+                                                    <iframe id="internet_invoice_pdf" t-att-src="internet_invoice" height="256" width="256" t-att-class="'d-none' if not internet_invoice or internet_invoice[:28] != 'data:application/pdf;base64,' else ''"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
 
                                 <div t-att-class="'col-lg-3' + (' offset-xl-1' if need_personal_information else '')" name="personal_info_withholding_taxes">

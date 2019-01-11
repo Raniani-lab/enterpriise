@@ -46,6 +46,18 @@
                 <field name="contract_type"/>
                 <field name="signatures_count" invisible="1"/>
             </field>
+            <page name="information" position="after">
+                <page string="Personal Documents" name="personal_documents" groups="hr.group_hr_manager" attrs="{'invisible': [('employee_id', '=', False)]}">
+                    <group>
+                        <field name="id_card"/>
+                        <field name="image"/>
+                        <field name="driving_license" attrs="{'invisible': [('transport_mode_car', '=', False)]}"/>
+                        <field name="mobile_invoice" attrs="{'invisible': [('mobile', '=', 0)]}"/>
+                        <field name="sim_card" attrs="{'invisible': [('mobile', '=', 0)]}"/>
+                        <field name="internet_invoice" attrs="{'invisible': [('internet', '=', 0)]}"/>
+                    </group>
+                </page>
+            </page>
         </field>
     </record>
 

@@ -7,6 +7,7 @@ from odoo.addons.sign.controllers.main import Sign
 from odoo.exceptions import AccessError
 from odoo.http import request
 from odoo.tools import consteq
+from odoo.tools.image import image_data_uri
 
 from werkzeug.wsgi import get_current_url
 
@@ -209,10 +210,26 @@ class website_hr_contract_salary(http.Controller):
             'freeze': freeze,
             'original_link': get_current_url(request.httprequest.environ)})
 
+        values.update(self._get_documents_src(contract.employee_id))
+
         response = request.render("hr_contract_salary.salary_package", values)
         response.flatten()
         request.env.cr.execute('ROLLBACK TO SAVEPOINT salary')
         return response
+
+    def _get_documents_src(self, employee):
+        res = {}
+        for field in ['id_card', 'image', 'driving_license', 'mobile_invoice', 'sim_card', 'internet_invoice']:
+            if employee[field]:
+                if employee[field][:7] == b'JVBERi0':
+                    img_src = "data:application/pdf;base64,%s" % (employee[field].decode())
+                else:
+                    img_src = image_data_uri(employee[field])
+                res[field] = img_src
+            else:
+                res[field] = False
+        return res
+
 
     @http.route(['/salary_package/thank_you/<int:contract_id>'], type='http', auth="public", website=True)
     def salary_package_thank_you(self, contract_id=None, **kw):
@@ -245,7 +262,8 @@ class website_hr_contract_salary(http.Controller):
         else:
             employee = request.env['hr.employee'].sudo().create({
                 'name': 'Simulation Employee',
-                'active': False
+                'active': False,
+                'company_id': contract.company_id.id,
             })
         if personal_info:
             employee.with_context(lang=None).update_personal_info(personal_info, no_name_write=bool(kw.get('employee')))

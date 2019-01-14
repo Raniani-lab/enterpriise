@@ -148,7 +148,7 @@
         <div class="btn-group">
             <button class="btn fa fa-download o_inspector_button o_inspector_download" title="Download"/>
             <t t-if="widget.records[0].data.active">
-                <button t-if="widget.currentFolder" class="btn fa fa-share-alt o_inspector_button o_inspector_share" title="Share" groups="documents.group_documents_user"/>
+                <button t-if="widget.currentFolder" class="btn fa fa-share-alt o_inspector_button o_inspector_share" title="Share this selection" groups="documents.group_documents_user"/>
                 <t t-if="nbPreviews === 1">
                     <button t-if="widget.records[0].data.type !== 'url'" class="btn fa fa-retweet o_inspector_button o_inspector_replace" title="Replace"/>
                     <button t-att-class="'btn fa o_inspector_button o_inspector_lock' + (widget.records[0].data.lock_uid ? ' o_locked fa-lock' : ' fa-unlock-alt')" title="Lock"/>

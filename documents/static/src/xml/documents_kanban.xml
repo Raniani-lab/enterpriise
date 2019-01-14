@@ -11,7 +11,7 @@
     <button type="button" t-attf-class="btn btn-primary o_documents_kanban_request" disabled="true">
         Request Document
     </button>
-    <button type="button" t-attf-class="btn btn-secondary o_documents_kanban_share" disabled="true" groups="documents.group_documents_user">
+    <button type="button" t-attf-class="btn btn-secondary o_documents_kanban_share" title="Share this domain" disabled="true" groups="documents.group_documents_user">
         Share
     </button>
 </div>

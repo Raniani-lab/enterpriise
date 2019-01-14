@@ -130,7 +130,7 @@ class DocumentShare(models.Model):
             'context': self._context,
             'res_model': 'documents.share',
             'target': 'new',
-            'name': _('Share'),
+            'name': _('Share selected records') if vals.get('type') == 'ids' else _('Share domain'),
             'res_id': share.id,
             'type': 'ir.actions.act_window',
             'views': [[view_id, 'form']],

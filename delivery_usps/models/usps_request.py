@@ -165,7 +165,7 @@ class USPSRequest():
             'Value': price,
             'NetPounds': weight['pound'],
             'NetOunces': round(weight['ounce'], 0),
-            'CountryOfOrigin': line.partner_id.country_id.name
+            'CountryOfOrigin': line.warehouse_id.partner_id.country_id.name or ''
         }
 
     def _usps_shipping_data(self, picking):

@@ -73,6 +73,11 @@ msgid "Sales Analysis Report"
 msgstr ""
 
 #. module: sale_enterprise
+#: model_terms:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard
+msgid "Sales Teams"
+msgstr ""
+
+#. module: sale_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_enterprise.view_order_product_search_inherit
 #: selection:sale.report,invoice_status:0
 msgid "To Invoice"

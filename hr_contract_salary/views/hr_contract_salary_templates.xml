@@ -661,7 +661,7 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="col-form-label" for="name">Name</label>
+                                                <label class="col-form-label" for="name">Name</label><span class="text-muted"> (LASTNAME FIRSTNAME)</span>
                                                 <input type="text" name="name" class="form-control" required="required" t-att-value="contract.employee_id.name if contract.employee_id.name != 'Simulation Employee' else ''"/>
                                             </div>
                                         </div>

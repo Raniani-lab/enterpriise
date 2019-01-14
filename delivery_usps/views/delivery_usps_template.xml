@@ -135,7 +135,7 @@
             </t>
             <!-- Both addresses must be filled in -->
             <ToAddress1 t-esc="picking_partner.street or '-'"/>
-            <ToAddress1 t-esc="picking_partner.street2 or '-'"/>
+            <ToAddress2 t-esc="picking_partner.street2 or '-'"/>
             <ToCity t-esc="picking_partner.city"/>
             <ToProvince t-esc="picking_partner.state_id.code or ''"/>
             <ToCountry t-esc="picking_partner.country_id.name"/>

@@ -18,14 +18,29 @@ class TestDeliveryEasypost(TransactionCase):
                                  'phone': "+1 (929) 352-6366"})
 
         self.jackson = self.env.ref('base.res_partner_10')
+        self.jackson.write({'street': "1515 Main Street",
+                             'street2': "",
+                             'city': "Columbia",
+                             'zip': 29201,
+                             'state_id': self.env.ref('base.state_us_41').id,
+                             'country_id': self.env.ref('base.us').id})
         self.agrolait = self.env.ref('base.res_partner_2')
-        self.server = self.env.ref('product.consu_delivery_01')
-        self.miniServer = self.env.ref('product.consu_delivery_02')
-
-        self.server['weight'] = 3.0
-        self.server['volume'] = 0.4
-        self.miniServer['weight'] = 2.0
-        self.miniServer['volume'] = 0.35
+        self.agrolait.write({'country_id': self.env.ref('base.be').id,
+                             'city': 'Auderghem-Ouderghem',
+                             'street': 'Avenue Edmond Van Nieuwenhuyse',
+                             'zip': '1160'})
+        self.server = self.env['product.product'].create({
+            'name': 'server',
+            'type': 'consu',
+            'weight': 3.0,
+            'volume': 4.0,
+        })
+        self.miniServer = self.env['product.product'].create({
+            'name': 'mini server',
+            'type': 'consu',
+            'weight': 2.0,
+            'volume': 0.35,
+        })
 
         self.easypost_fedex_carrier_product = self.env['product.product'].create({
             'name': 'Fedex Easypost',

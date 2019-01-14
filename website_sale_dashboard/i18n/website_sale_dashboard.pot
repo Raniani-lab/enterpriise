@@ -67,7 +67,7 @@ msgstr ""
 
 #. module: website_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.sale_dashboard_view
-msgid "Days to Confirm"
+msgid "Conversion Rate"
 msgstr ""
 
 #. module: website_sale_dashboard

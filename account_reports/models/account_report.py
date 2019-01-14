@@ -877,13 +877,13 @@ class AccountReport(models.AbstractModel):
         if self.has_single_date_filter(options):
             dt_from = None
             dt_to = fields.Date.from_string(options[dt_filter]['date'])
+            if not dt_to:
+                raise UserError(_('Please specify an end date.'))
         else:
             dt_from = fields.Date.from_string(options[dt_filter]['date_from'])
             dt_to = fields.Date.from_string(options[dt_filter]['date_to'])
-            if not dt_to:
-                raise UserError(_('Please specify an end date.'))
-        if not dt_from or not dt_to:
-            raise UserError(_('Please specify a start and end date.'))
+            if not dt_from or not dt_to:
+                raise UserError(_('Please specify a start and end date.'))
 
         return self._get_dates_period(options, dt_from, dt_to)['string']
 

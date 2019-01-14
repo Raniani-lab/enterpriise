@@ -119,7 +119,7 @@ class MarketingCampaign(models.Model):
                 elif trigger_type in ['act', 'mail_not_open', 'mail_not_click', 'mail_not_reply'] and trace.parent_id:
                     trace.schedule_date = Datetime.from_string(trace.parent_id.schedule_date) + trace_offset
                 elif trace.parent_id:
-                    process_dt = trace.parent_id.statistics_ids.state_update
+                    process_dt = trace.parent_id.mail_statistics_ids.state_update
                     trace.schedule_date = Datetime.from_string(process_dt) + trace_offset
 
             # Action 2: On activity creation

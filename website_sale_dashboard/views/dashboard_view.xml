@@ -43,7 +43,7 @@
                              <aggregate name="lines" string="# Lines" field="nbr"/>
                         </group>
                         <group col="1">
-                            <widget name="pie_chart" attrs="{'title': 'Conversion Rate', 'groupby': 'is_abandoned_cart', 'labels': 'Sold,Abandonned'}"/>
+                            <widget name="pie_chart" title="Conversion Rate" attrs="{'groupby': 'is_abandoned_cart', 'labels': 'Sold,Abandonned'}"/>
                         </group>
                     </group>
                     <view type="pivot" ref="website_sale_dashboard.view_online_sales_pivot"/>

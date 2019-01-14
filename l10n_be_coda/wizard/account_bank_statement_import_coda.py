@@ -49,6 +49,7 @@ class AccountBankStatementImport(models.TransientModel):
                 elif statement['version'] == '2':
                     if line[1] == '0':  # Belgian bank account BBAN structure
                         statement['acc_number'] = rmspaces(line[5:17])
+                        statement['acc_number'] = 'BE%s%s' % (int(statement['acc_number']) % 97, statement['acc_number'])
                         statement['currency'] = rmspaces(line[18:21])
                     elif line[1] == '1':  # foreign bank account BBAN structure
                         raise UserError(_('Error') + ' R1001: ' + _('Foreign bank accounts with BBAN structure are not supported '))

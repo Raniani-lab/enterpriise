@@ -68,6 +68,7 @@
     <define name="widget">
         <element name="widget">
             <attribute name="name"/>
+            <optional><attribute name="title"/></optional>
             <optional><attribute name="col"/></optional>
             <optional><attribute name="attrs"/></optional>
             <optional><attribute name="modifiers"/></optional>

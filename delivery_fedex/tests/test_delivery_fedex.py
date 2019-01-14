@@ -33,8 +33,19 @@ class TestDeliveryFedex(TransactionCase):
                                  'phone': 9874582356})
 
         self.agrolait = self.env.ref('base.res_partner_2')
-        self.agrolait.write({'country_id': self.env.ref('base.be').id})
+        self.agrolait.write({'street': "rue des Bourlottes, 9",
+                             'street2': "",
+                             'city': "Ramillies",
+                             'zip': 1367,
+                             'state_id': False,
+                             'country_id': self.env.ref('base.be').id})
         self.delta_pc = self.env.ref('base.res_partner_4')
+        self.delta_pc.write({'street': "1515 Main Street",
+                             'street2': "",
+                             'city': "Columbia",
+                             'zip': 29201,
+                             'state_id': self.env.ref('base.state_us_41').id,
+                             'country_id': self.env.ref('base.us').id})
         self.stock_location = self.env.ref('stock.stock_location_stock')
         self.customer_location = self.env.ref('stock.stock_location_customers')
 
@@ -72,7 +83,6 @@ class TestDeliveryFedex(TransactionCase):
             self.assertGreater(picking.shipping_weight, 0.0, "Picking weight should be positive.")
 
             picking.action_done()
-            picking.send_to_shipper()
             self.assertIsNot(picking.carrier_tracking_ref, False, "FedEx did not return any tracking number")
             self.assertGreater(picking.carrier_price, 0.0, "FedEx carrying price is probably incorrect")
 
@@ -120,7 +130,6 @@ class TestDeliveryFedex(TransactionCase):
             self.assertGreater(picking.shipping_weight, 0.0, "Picking weight should be positive.")
 
             picking.action_done()
-            picking.send_to_shipper()
             self.assertIsNot(picking.carrier_tracking_ref, False, "FedEx did not return any tracking number")
             self.assertGreater(picking.carrier_price, 0.0, "FedEx carrying price is probably incorrect")
 
@@ -181,7 +190,6 @@ class TestDeliveryFedex(TransactionCase):
             self.assertGreater(picking.shipping_weight, 0.0, "Picking weight should be positive.")
 
             picking.action_done()
-            picking.send_to_shipper()
             self.assertIsNot(picking.carrier_tracking_ref, False, "FedEx did not return any tracking number")
             self.assertGreater(picking.carrier_price, 0.0, "FedEx carrying price is probably incorrect")
 

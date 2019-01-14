@@ -147,6 +147,8 @@ msgid "Lost Reason"
 msgstr ""
 
 #. module: crm_enterprise
+#: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
+#: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_dashboard
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Medium"
 msgstr ""
@@ -192,6 +194,11 @@ msgid "Sales Channel"
 msgstr ""
 
 #. module: crm_enterprise
+#: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
+msgid "Sales Teams"
+msgstr ""
+
+#. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Salesperson"
 msgstr ""
@@ -214,6 +221,11 @@ msgstr ""
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Stage"
+msgstr ""
+
+#. module: crm_enterprise
+#: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_dashboard
+msgid "Win/Loss Ratio"
 msgstr ""
 
 #. module: crm_enterprise

@@ -537,7 +537,7 @@ odoo.define('sign.document_signing', function (require) {
     var core = require('web.core');
     var Dialog = require('web.Dialog');
     var Document = require('sign.Document');
-    var NameAndSignature = require('portal.name_and_signature').NameAndSignature;
+    var NameAndSignature = require('web.name_and_signature').NameAndSignature;
     var PDFIframe = require('sign.PDFIframe');
     var session = require('web.session');
     var Widget = require('web.Widget');
@@ -660,8 +660,11 @@ odoo.define('sign.document_signing', function (require) {
          * @override
          */
         start: function () {
+            var self = this;
             this.$primaryButton = this.$footer.find('.btn-primary');
-            this.nameAndSignature.replace(this.$('.o_portal_sign_name_and_signature'));
+            this.opened().then(function () {
+                self.nameAndSignature.replace(self.$('.o_web_sign_name_and_signature'));
+            });
             return this._super.apply(this, arguments);
         },
 
@@ -1184,7 +1187,7 @@ odoo.define('sign.document_signing', function (require) {
                             var nameAndSignatureOptions = {
                                 defaultName: self.getParent().signerName || "",
                                 signatureType: type['item_type'],
-                                signatureRatio: parseFloat($signatureItem.css('width')) / parseFloat($signatureItem.css('height')),
+                                displaySignatureRatio: parseFloat($signatureItem.css('width')) / parseFloat($signatureItem.css('height')),
                             };
                             var signDialog = new SignatureDialog(self, {nameAndSignatureOptions: nameAndSignatureOptions}, self.getParent().requestID, self.getParent().accessToken);
 

@@ -30,20 +30,20 @@ class HrAppraisal(models.Model):
     state = fields.Selection(APPRAISAL_STATES, string='Status', tracking=True, required=True, copy=False, default='new', index=True)
     manager_appraisal = fields.Boolean(string='Appraisal by Manager', help="This employee will be appraised by his managers")
     manager_ids = fields.Many2many('hr.employee', 'appraisal_manager_rel', 'hr_appraisal_id')
-    manager_survey_id = fields.Many2one('survey.survey', string="Manager's Appraisal")
+    manager_survey_id = fields.Many2one('survey.survey', domain=[('category', '=', 'hr_appraisal')], string="Manager's Appraisal")
     collaborators_appraisal = fields.Boolean(string='Collaborator', help="This employee will be appraised by his collaborators")
     collaborators_ids = fields.Many2many('hr.employee', 'appraisal_subordinates_rel', 'hr_appraisal_id')
-    collaborators_survey_id = fields.Many2one('survey.survey', string="Collaborator's Appraisal")
+    collaborators_survey_id = fields.Many2one('survey.survey', domain=[('category', '=', 'hr_appraisal')], string="Collaborator's Appraisal")
     colleagues_appraisal = fields.Boolean(string='Colleagues Appraisal', help="This employee will be appraised by his colleagues")
     colleagues_ids = fields.Many2many('hr.employee', 'appraisal_colleagues_rel', 'hr_appraisal_id', string="Colleagues")
-    colleagues_survey_id = fields.Many2one('survey.survey', string="Colleague's Appraisal")
+    colleagues_survey_id = fields.Many2one('survey.survey', domain=[('category', '=', 'hr_appraisal')], string="Colleague's Appraisal")
     employee_appraisal = fields.Boolean(help="This employee will do a self-appraisal")
-    employee_survey_id = fields.Many2one('survey.survey', string='Self Appraisal')
+    employee_survey_id = fields.Many2one('survey.survey', domain=[('category', '=', 'hr_appraisal')], string='Self Appraisal')
     survey_sent_ids = fields.One2many('survey.user_input', 'appraisal_id', string='Sent Forms')
     count_sent_survey = fields.Integer(string="Number of Sent Forms", compute='_compute_sent_survey')
     survey_completed_ids = fields.One2many('survey.user_input', 'appraisal_id', string='Answers', domain=lambda self: [('state', '=', 'done')])
     count_completed_survey = fields.Integer(string="Number of Answers", compute='_compute_completed_survey')
-    mail_template_id = fields.Many2one('mail.template', string="Email Template for Appraisal", default=lambda self: self.env.ref('hr_appraisal.send_appraisal_template'))
+    survey_template_id = fields.Many2one('mail.template', string="Appraisal Survey Invite Email", default=lambda self: self.env.ref('hr_appraisal.mail_template_user_input_appraisal'))
     meeting_id = fields.Many2one('calendar.event', string='Meeting')
     date_final_interview = fields.Date(string="Final Interview", index=True, tracking=True)
 
@@ -149,26 +149,35 @@ class HrAppraisal(models.Model):
 
     @api.multi
     def send_appraisal(self):
-        ComposeMessage = self.env['survey.invite']
         for appraisal in self:
-            appraisal_receiver = appraisal._prepare_user_input_receivers()
-            for survey, receivers in appraisal_receiver:
-                for employee in receivers:
-                    email = employee.related_partner_id.email or employee.work_email
-                    if not email:
+            survey_data = appraisal._prepare_user_input_receivers()
+            for survey, employees in survey_data:
+                for employee in employees:
+                    if employee.related_partner_id.email:
+                        partner_ids = [(4, employee.related_partner_id.id)]
+                        emails = False
+                    elif employee.work_email:
+                        partner_ids = False
+                        emails = employee.work_email
+                    else:
                         continue
-                    render_template = appraisal.mail_template_id.with_context(email=email, survey=survey, employee=employee).generate_email([appraisal.id])
+
                     values = {
                         'survey_id': survey.id,
-                        'public': 'email_private',
-                        'partner_ids': employee.related_partner_id and [(4, employee.related_partner_id.id)] or False,
-                        'multi_email': email,
-                        'subject': '%s appraisal: %s' % (appraisal.employee_id.name, survey.title),
-                        'body': render_template[appraisal.id]['body'],
-                        'date_deadline': appraisal.date_close,
+                        'template_id': appraisal.survey_template_id.id,
+                        'partner_ids': partner_ids,
+                        'emails': emails,
+                        'deadline': appraisal.date_close,
+                        'appraisal_id': appraisal.id,
                     }
-                    compose_message_wizard = ComposeMessage.with_context(active_id=appraisal.id, active_model=appraisal._name, notif_layout="mail.mail_notification_light").create(values)
-                    compose_message_wizard.send_mail()  # Sends a mail and creates a survey.user_input
+                    compose_message_wizard = self.env['survey.invite'].with_context(
+                        default_subject=_('%s appraisal: %s') % (appraisal.employee_id.name, survey.title),
+                        default_body=_('Please fill out appraisal survey.'),
+                        active_id=appraisal.id,
+                        active_model=appraisal._name,
+                        notif_layout="mail.mail_notification_light"
+                    ).create(values)
+                    compose_message_wizard.action_invite()
                     if employee.user_id:
                         user_input = survey.user_input_ids.filtered(lambda user_input: user_input.partner_id == employee.user_id.partner_id and user_input.state != 'done')
                         if user_input:
@@ -259,14 +268,17 @@ class HrAppraisal(models.Model):
 
     @api.multi
     def action_get_users_input(self):
-        """ Link to open sent appraisal"""
-        self.ensure_one()
+        """ Link to sent invites """
         action = self.env.ref('survey.action_survey_user_input').read()[0]
-        if self.env.context.get('answers'):
-            users_input = self.survey_completed_ids
-        else:
-            users_input = self.survey_sent_ids
-        action['domain'] = str([('id', 'in', users_input.ids)])
+        action['domain'] = [('appraisal_id', 'in', self.ids)]
+        action['context'] = {}  # Remove default group_by for surveys
+        return action
+
+    @api.multi
+    def action_get_completed_users_input(self):
+        """ Link to done surveys """
+        action = self.env.ref('survey.action_survey_user_input').read()[0]
+        action['domain'] = ['&', ('appraisal_id', 'in', self.ids), ('state', '=', 'done')]
         action['context'] = {}  # Remove default group_by for surveys.
         return action
 

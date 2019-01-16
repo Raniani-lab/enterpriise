@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:07+0000\n"
-"PO-Revision-Date: 2018-09-21 14:07+0000\n"
+"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"PO-Revision-Date: 2019-01-16 08:13+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -18,6 +18,11 @@ msgstr ""
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__pageviews_count
 msgid "# Page Views"
+msgstr ""
+
+#. module: website_crm_score
+#: model_terms:ir.ui.view,arch_db:website_crm_score.website_crm_score_view_kanban
+msgid "<i class=\"fa fa-fw fa-tags\" aria-label=\"Number of leads\" title=\"Number of leads\" role=\"img\"/>"
 msgstr ""
 
 #. module: website_crm_score
@@ -438,7 +443,6 @@ msgid "Sales Channels"
 msgstr ""
 
 #. module: website_crm_score
-#: model:ir.actions.act_window,name:website_crm_score.team_user_action
 #: model_terms:ir.ui.view,arch_db:website_crm_score.view_crm_team_user_form
 #: model_terms:ir.ui.view,arch_db:website_crm_score.view_crm_team_user_tree
 msgid "Sales Men"
@@ -465,8 +469,14 @@ msgid "Salesperson (Team Member)"
 msgstr ""
 
 #. module: website_crm_score
+#: model:ir.actions.act_window,name:website_crm_score.team_user_action
+msgid "Salespersons"
+msgstr ""
+
+#. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__score
 #: model_terms:ir.ui.view,arch_db:website_crm_score.crm_lead_view_dashboard
+#: model_terms:ir.ui.view,arch_db:website_crm_score.crm_opportunity_view_dashboard
 msgid "Score"
 msgstr ""
 
@@ -603,18 +613,6 @@ msgstr ""
 #. module: website_crm_score
 #: model:ir.model.fields,help:website_crm_score.field_website_crm_score__event_based
 msgid "When checked, the rule will be re-evaluated every time, even for leads that have already been checked previously. This option incurs a large performance penalty, so it should be checked only for rules that depend on dynamic events"
-msgstr ""
-
-#. module: website_crm_score
-#: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
-#: model_terms:ir.ui.view,arch_db:website_crm_score.team_user_kanban
-msgid "fa-check"
-msgstr ""
-
-#. module: website_crm_score
-#: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
-#: model_terms:ir.ui.view,arch_db:website_crm_score.team_user_kanban
-msgid "fa-times"
 msgstr ""
 
 #. module: website_crm_score

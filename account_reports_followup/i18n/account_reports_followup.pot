@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 12.0+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-08 07:14+0000\n"
-"PO-Revision-Date: 2018-10-08 07:14+0000\n"
+"POT-Creation-Date: 2019-01-16 08:12+0000\n"
+"PO-Revision-Date: 2019-01-16 08:12+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -83,6 +83,11 @@ msgstr ""
 #. module: account_reports_followup
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
 msgid ": User's Company Name"
+msgstr ""
+
+#. module: account_reports_followup
+#: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_kanban
+msgid "<i class=\"fa fa-building\" role=\"img\" aria-label=\"Enterprise\"/>"
 msgstr ""
 
 #. module: account_reports_followup
@@ -210,6 +215,7 @@ msgstr ""
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_res_partner__payment_responsible_id
+#: model:ir.model.fields,field_description:account_reports_followup.field_res_users__payment_responsible_id
 msgid "Follow-up Responsible"
 msgstr ""
 
@@ -299,6 +305,7 @@ msgstr ""
 
 #. module: account_reports_followup
 #: model:ir.model.fields,help:account_reports_followup.field_res_partner__payment_responsible_id
+#: model:ir.model.fields,help:account_reports_followup.field_res_users__payment_responsible_id
 msgid "Optionally you can assign a user to this field, which will make him responsible for the action."
 msgstr ""
 

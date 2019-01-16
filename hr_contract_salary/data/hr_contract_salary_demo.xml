@@ -203,6 +203,7 @@
         <field name="hr_responsible_id" ref="base.user_demo"/>
         <field name="sign_template_id" ref="sign_template_cdi_developer"/>
         <field name="contract_update_template_id" ref="sign_template_cdi_developer"/>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
     </record>
 
     <record id="hr_contract_cdi_laurie_poiret" model="hr.contract">

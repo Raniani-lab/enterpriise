@@ -15,15 +15,70 @@ Tour.register('hr_contract_salary_tour', {
                 window.location.href = window.location.origin + '/web';
             },
         },
-
+        {
+            content: "Settings",
+            trigger: 'a[data-menu-xmlid="base.menu_administration"]',
+            run: 'click',
+        },
+        {
+            content: "Users",
+            trigger: 'div.o_web_settings_dashboard_invitations i.o_web_settings_dashboard_access_rights',
+            run: 'click',
+        },
+        {
+            content: "Mitchel",
+            trigger: 'table.o_list_view td.o_data_cell:contains(Admin)',
+            run: 'click',
+        },
+        {
+            content: "Edit Mitchell",
+            trigger: 'div.o_cp_buttons .o_form_button_edit',
+            run: 'click',
+        },
+        {
+            content: "Change company",
+            trigger: '.o_field_widget.o_field_many2one[name=company_id]',
+            run: function (actions) {
+                actions.text("Belgian", this.$anchor.find("input"));
+            },
+        },
+        {
+            trigger: ".ui-autocomplete > li > a:contains(Belgian)",
+            auto: true,
+        },
+        {
+            content: "Save Mitchell",
+            trigger: 'div.o_cp_buttons .o_form_button_save',
+            run: 'click',
+        },
+        {
+            content: "Go to app switcher",
+            trigger: 'nav.o_main_navbar a.o_menu_toggle',
+            run: 'click',
+        },
         {
             content: "Recruitment",
             trigger: 'a[data-menu-xmlid="hr_recruitment.menu_hr_recruitment_root"]',
             run: 'click',
         },
         {
+            content: "Create Job Position",
+            trigger: 'div.o_cp_buttons .o-kanban-button-new',
+            run: 'click',
+        },
+        {
+            content: "Job\'s Name",
+            trigger: "div.modal-dialog input[name='name']",
+            run: 'text Experienced Developer (BE)',
+        },
+        {
+            content: "Job\'s Name",
+            trigger: "div.modal-dialog button[name='close_dialog']",
+            run: 'click',
+        },
+        {
             content: "Select Experienced Developer",
-            trigger: ".o_kanban_record:eq(3) .oe_kanban_action_button",
+            trigger: ".o_kanban_record:eq(0) .oe_kanban_action_button",
             run: 'click',
         },
         {
@@ -62,7 +117,7 @@ Tour.register('hr_contract_salary_tour', {
         {
             content: "Save",
             trigger: '.o_form_buttons_edit .o_form_button_save',
-            extra_trigger: '.oe_button_box .o_button_icon.fa-archive',
+            extra_trigger: '.oe_button_box .o_button_icon.fa-money',
             run: 'click',
         },
         {
@@ -332,6 +387,49 @@ Tour.register('hr_contract_salary_tour', {
         {
             content: "Validate and Sign",
             trigger: ".o_sign_validate_banner button",
+            run: 'click',
+        },
+        {
+            content: "Go on configurator",
+            trigger: 'nav.o_main_navbar',
+            run: function () {
+                window.location.href = window.location.origin + '/web';
+            },
+        },
+        {
+            content: "Settings",
+            trigger: 'a[data-menu-xmlid="base.menu_administration"]',
+            run: 'click',
+        },
+        {
+            content: "Users",
+            trigger: 'div.o_web_settings_dashboard_invitations i.o_web_settings_dashboard_access_rights',
+            run: 'click',
+        },
+        {
+            content: "Mitchel",
+            trigger: 'table.o_list_view td.o_data_cell:contains(Admin)',
+            run: 'click',
+        },
+        {
+            content: "Edit Mitchell",
+            trigger: 'div.o_cp_buttons .o_form_button_edit',
+            run: 'click',
+        },
+        {
+            content: "Change company",
+            trigger: '.o_field_widget.o_field_many2one[name=company_id]',
+            run: function (actions) {
+                actions.text("My Company", this.$anchor.find("input"));
+            },
+        },
+        {
+            trigger: ".ui-autocomplete > li > a:contains(My Company)",
+            auto: true,
+        },
+        {
+            content: "Save Mitchell",
+            trigger: 'div.o_cp_buttons .o_form_button_save',
             run: 'click',
         },
     ]

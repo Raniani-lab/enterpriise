@@ -283,7 +283,7 @@
         <!-- TEAM -->
         <!-- Team Action - form - tree - kanban -->
         <record model="ir.actions.act_window" id="team_action">
-            <field name="name">Sales Channels</field>
+            <field name="name">Teams Assignation</field>
             <field name="res_model">crm.team</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,kanban,form</field>
@@ -293,10 +293,10 @@
             (0, 0, {'view_mode': 'form', 'view_id': ref('sales_team.crm_team_view_form')})]"/>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
-                    Define a new sales channel
+                    Define a new sales team
                 </p><p>
-                    Use sales channels to organize your sales departments.
-                    Each channel will work with a separate pipeline.
+                    Use sales teams to organize your sales departments.
+                    Each team will work with a separate pipeline.
                 </p>
             </field>
         </record>

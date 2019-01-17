@@ -31,9 +31,9 @@ class Users(models.Model):
     # redefinition of the field defined in sales_team. The field is now computed
     # based on the new modeling introduced in this module. It is stored to avoid
     # breaking the member_ids inverse field. As the relationship between users
-    # and sales channel is a one2many / many2one relationship we take the first of
-    # the team.user record to find the user's sales channel.
+    # and sales team is a one2many / many2one relationship we take the first of
+    # the team.user record to find the user's sales team.
     sale_team_id = fields.Many2one(
-        'crm.team', 'User Sales Channel',
+        'crm.team', 'User Sales Team',
         related='team_user_ids.team_id', readonly=False,
         store=True)

@@ -131,13 +131,13 @@
                     </div>
                     <div class="col-12 col-lg-6 o_setting_box">
                         <div class="o_setting_right_pane">
-                            <span class="o_form_label">Sales Channel</span>
+                            <span class="o_form_label">Sales Team</span>
                             <div class="text-muted">
-                                Sales channel to manage eBay sales
+                                Sales Team to manage eBay sales
                             </div>
                             <div class="content-group">
                                 <div class="row mt16">
-                                    <label for="ebay_sales_team" string="Sales Channel" class="col-lg-4 o_light_label"/>
+                                    <label for="ebay_sales_team" string="Sales Team" class="col-lg-4 o_light_label"/>
                                     <field name="ebay_sales_team" class="col-lg-8 oe_inline" />
                                 </div>
                             </div>

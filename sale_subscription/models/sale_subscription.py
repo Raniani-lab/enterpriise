@@ -1091,7 +1091,7 @@ class SaleSubscriptionAlert(models.Model):
     stage_id = fields.Many2one('sale.subscription.stage', string='Stage')
     activity_user = fields.Selection([
         ('contract', 'Responsible of Contract'),
-        ('channel_leader', 'Sales Channel Leader'),
+        ('channel_leader', 'Sales Team Leader'),
         ('users', 'Specific Users'),
     ], string='Assign To')
     activity_user_ids = fields.Many2many('res.users', string='Specific Users')

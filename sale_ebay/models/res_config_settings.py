@@ -35,7 +35,7 @@ class ResConfigSettings(models.TransientModel):
     ebay_zip_code = fields.Char(string="Zip", default='', config_parameter='ebay_zip_code')
     ebay_location = fields.Char(string="Location", default='', config_parameter='')
     ebay_out_of_stock = fields.Boolean("Out Of Stock", default=False)
-    ebay_sales_team = fields.Many2one("crm.team", string="ebay Sales Channel",
+    ebay_sales_team = fields.Many2one("crm.team", string="ebay Sales Team",
                                       config_parameter='ebay_sales_team')
     ebay_gallery_plus = fields.Boolean("Gallery Plus", default='', config_parameter='ebay_gallery_plus')
 

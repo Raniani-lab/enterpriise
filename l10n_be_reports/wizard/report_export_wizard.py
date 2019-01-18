@@ -12,7 +12,7 @@ class ReportExportWizard(models.TransientModel):
     def export_report(self):
         self.ensure_one()
         report = self._get_report_obj()
-        if report == self.env.ref('l10n_be_reports.account_financial_report_l10n_be_tva0') and any([format.name == 'XML' for format in self.export_format_ids]) and not self.l10n_be_reports_periodic_vat_wizard_id:
+        if report._name == 'account.generic.tax.report' and any([format.name == 'XML' for format in self.export_format_ids]) and not self.l10n_be_reports_periodic_vat_wizard_id:
             manual_action = report.print_xml(self.env.context.get('account_report_generation_options'))
             manual_wizard = self.env[manual_action['res_model']].browse(manual_action['res_id'])
             manual_wizard.calling_export_wizard_id = self
@@ -26,6 +26,6 @@ class ReportExportWizardOption(models.TransientModel):
     def apply_export(self, report_options):
         self.ensure_one()
         report = self.export_wizard_id._get_report_obj()
-        if self.name == 'XML' and report == self.env.ref('l10n_be_reports.account_financial_report_l10n_be_tva0') and self.export_wizard_id.l10n_be_reports_periodic_vat_wizard_id:
+        if self.name == 'XML' and report._name == 'account.generic.tax.report' and self.export_wizard_id.l10n_be_reports_periodic_vat_wizard_id:
             return self.export_wizard_id.l10n_be_reports_periodic_vat_wizard_id.print_xml()
         return super(ReportExportWizardOption, self).apply_export(report_options)

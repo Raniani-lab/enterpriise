@@ -26,6 +26,9 @@
     <li t-if="line['caret_options'] == 'account.tax'">
       <a role="menuitem" tabindex="-1" t-att-data-id="line['id']" action="open_tax" class="dropdown-item">Audit</a>
     </li>
+    <li t-if="line['caret_options'] == 'account.tax.report.line'">
+      <a role="menuitem" tabindex="-1" t-att-data-id="line['id']" action="tax_tag_template_open_aml" class="dropdown-item">Audit</a>
+    </li>
     <li t-if="line['caret_options'] == 'tax.report.line'">
       <a role="menuitem" tabindex="-1" t-att-data-id="line['id']" action="open_tax_report_line" class="dropdown-item">Audit</a>
     </li>

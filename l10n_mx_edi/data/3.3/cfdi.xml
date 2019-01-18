@@ -59,7 +59,7 @@
                             <t t-set="taxes_line" t-value="taxes_line.filtered(lambda tax: tax.amount_type != 'group') + taxes_line.filtered(lambda tax: tax.amount_type == 'group').mapped('children_tax_ids')"/>
                             <t t-if="taxes_line">
                                 <t t-set="price" t-value="line.price_unit * (1.0 - (line.discount or 0.0) / 100.0)"/>
-                                <t t-set="tax_line" t-value="{tax['id']: tax for tax in taxes_line.compute_all(price, line.currency_id, line.quantity, line.product_id, line.partner_id)['taxes']}"/>
+                                <t t-set="tax_line" t-value="{tax['id']: tax for tax in taxes_line.compute_all(price, line.currency_id, line.quantity, line.product_id, line.partner_id, record.type in ('in_refund, 'out_refund'))['taxes']}"/>
                                 <t t-set="transferred" t-value="taxes_line.filtered(lambda r: r.amount &gt;= 0)"/>
                                 <t t-set="withholding" t-value="taxes_line.filtered(lambda r: r.amount &lt; 0)"/>
                                 <cfdi:Impuestos>

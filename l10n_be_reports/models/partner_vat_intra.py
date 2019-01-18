@@ -21,15 +21,17 @@ class ReportL10nBePartnerVatIntra(models.AbstractModel):
         if not context.get('company_ids'):
             return lines
         seq = amount_sum = 0
-        tag_ids = [self.env['ir.model.data'].xmlid_to_res_id(k) for k in ['l10n_be.tax_tag_44', 'l10n_be.tax_tag_46L', 'l10n_be.tax_tag_46T']]
+        tag_ids = [self.env['ir.model.data'].xmlid_to_res_id(k) for k in ['l10n_be.tax_report_line_44', 'l10n_be.tax_report_line_46L', 'l10n_be.tax_report_line_46T']]
         query = """
             SELECT p.name As partner_name, l.partner_id AS partner_id, p.vat AS vat,
-                      tt.account_account_tag_id AS intra_code, SUM(-l.balance) AS amount
+                      account_tax_report_line_tags_rel.account_tax_report_line_id AS intra_code,
+                      SUM(-l.balance) AS amount
                       FROM account_move_line l
                       LEFT JOIN res_partner p ON l.partner_id = p.id
-                      LEFT JOIN account_move_line_account_tax_rel amlt ON l.id = amlt.account_move_line_id
-                      LEFT JOIN account_tax_account_tag tt on amlt.account_tax_id = tt.account_tax_id
-                      WHERE tt.account_account_tag_id IN %s
+                      JOIN account_account_tag_account_move_line_rel aml_tag ON l.id = aml_tag.account_move_line_id
+                      JOIN account_account_tag tag ON tag.id = aml_tag.account_account_tag_id
+                      JOIN account_tax_report_line_tags_rel ON account_tax_report_line_tags_rel.account_account_tag_id = tag.id
+                      WHERE account_tax_report_line_tags_rel.account_tax_report_line_id IN %s
                        AND l.date >= %s
                        AND l.date <= %s
                        AND l.company_id IN %s

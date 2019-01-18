@@ -870,6 +870,12 @@ class AccountReport(models.AbstractModel):
             domain += [('tax_exigible', '=', True)]
         return self.open_action(options, domain)
 
+    def tax_tag_template_open_aml(self, options, params=None):
+        active_id = int(str(params.get('id')).split('_')[0])
+        tag_template = self.env['account.tax.report.line'].browse(active_id)
+        domain = [('tag_ids', 'in', tag_template.tag_ids.ids), ('tax_exigible', '=', True)]
+        return self.open_action(options, domain)
+
     def open_tax_report_line(self, options, params=None):
         active_id = int(str(params.get('id')).split('_')[0])
         line = self.env['account.financial.html.report.line'].browse(active_id)

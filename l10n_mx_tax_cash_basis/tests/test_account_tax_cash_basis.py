@@ -65,10 +65,33 @@ class TestL10nMxTaxCashBasis(InvoiceTransactionCase):
         self.tax_positive.write({
             'l10n_mx_cfdi_tax_type': 'Tasa',
             'tax_exigibility': 'on_payment',
-            'account_id': self.tax_account.id,
-            'refund_account_id': self.tax_account.id,
-            'cash_basis_account_id': self.cash_tax_account.id,
-            'cash_basis_base_account_id': self.account_tax_cash_basis.id})
+            'cash_basis_transition_account_id': self.cash_tax_account.id,
+            'cash_basis_base_account_id': self.account_tax_cash_basis.id},
+            'invoice_repartition_line_ids': [
+                (0,0, {
+                    'factor_percent': 100,
+                    'repartition_type': 'base',
+                }),
+
+                (0,0, {
+                    'factor_percent': 100,
+                    'repartition_type': 'tax',
+                    'account_id': self.tax_account.id,
+                }),
+            ],
+            'tax_repartition_line_ids': [
+                (0,0, {
+                    'factor_percent': 100,
+                    'repartition_type': 'base',
+                }),
+
+                (0,0, {
+                    'factor_percent': 100,
+                    'repartition_type': 'tax',
+                    'account_id': self.tax_account.id,
+                }),
+            ],
+        )
 
     def delete_journal_data(self):
         """Delete journal data

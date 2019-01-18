@@ -201,6 +201,18 @@
     .o_account_reports_domain_line_9 {
         margin-left: 100px;
     }
+    .o_account_reports_domain_line_10 {
+        margin-left: 110px;
+    }
+    .o_account_reports_domain_line_11 {
+        margin-left: 120px;
+    }
+    .o_account_reports_domain_line_12 {
+        margin-left: 130px;
+    }
+    .o_account_reports_domain_line_13 {
+        margin-left: 140px;
+    }
     tr.o_account_reports_domain_total {
         font-weight: bold;
     }
@@ -334,6 +346,30 @@
         border-bottom: 1px solid #eee;
         > td.o_account_report_line_indent > span:last-child {
             margin-left: 90px;
+        }
+    }
+    .o_account_reports_level10 {
+        border-bottom: 1px solid #eee;
+        > td.o_account_report_line_indent > span:last-child {
+            margin-left: 100px;
+        }
+    }
+    .o_account_reports_level11 {
+        border-bottom: 1px solid #eee;
+        > td.o_account_report_line_indent > span:last-child {
+            margin-left: 110px;
+        }
+    }
+    .o_account_reports_level12 {
+        border-bottom: 1px solid #eee;
+        > td.o_account_report_line_indent > span:last-child {
+            margin-left: 120px;
+        }
+    }
+    .o_account_reports_level13 {
+        border-bottom: 1px solid #eee;
+        > td.o_account_report_line_indent > span:last-child {
+            margin-left: 130px;
         }
     }
     .o_account_reports_default_style {

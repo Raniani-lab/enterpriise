@@ -2375,3 +2375,224 @@ class TestAccountReports(SavepointCase):
             # We still need to pay 135 to the VAT
             self.assertEquals(credit_line_total.credit, 135)
             self.assertEquals(credit_line_total.account_id.id, self.tax_pay_account.id)
+
+
+    # -------------------------------------------------------------------------
+    # TESTS: GENERIC TAX REPORT
+    # -------------------------------------------------------------------------
+
+
+    def _create_tax_report_line(self, name, country, tag_name=None, parent_line=None, sequence=None, code=None, formula=None):
+        """ Creates a tax report line
+        """
+        create_vals = {
+            'name': name,
+            'country_id': country.id,
+        }
+        if tag_name:
+            create_vals['tag_name'] = tag_name
+        if parent_line:
+            create_vals['parent_id'] = parent_line.id
+        if sequence != None:
+            create_vals['sequence'] = sequence
+        if code:
+            create_vals['code'] = code
+        if formula:
+            create_vals['formula'] = formula
+
+        return self.env['account.tax.report.line'].create(create_vals)
+
+    def test_tax_report_grid(self):
+        test_country = self.env['res.country'].create({
+            'name': "L'Île de la Mouche",
+            'code': 'YY',
+        })
+
+        company = self.env.user.company_id
+        company.country_id = test_country
+        partner = self.env['res.partner'].create({'name': 'Provençal le Gaulois'})
+
+        # We generate a tax report with the following layout
+        #/Base
+        #   - Base 42%
+        #   - Base 11%
+        #/Tax
+        #   - Tax 42%
+        #       - 10.5%
+        #       - 31.5%
+        #   - Tax 11%
+        #/Tax difference (42% - 11%)
+
+        # We create the lines in a different order from the one they have in report,
+        # so that we ensure sequence is taken into account properly when rendering the report
+        tax_section =  self._create_tax_report_line('Tax', test_country, sequence=2)
+        base_section =  self._create_tax_report_line('Base', test_country, sequence=1)
+        base_11_line = self._create_tax_report_line('Base 11%', test_country, sequence=2, parent_line=base_section, tag_name='base_11')
+        base_42_line = self._create_tax_report_line('Base 42%', test_country, sequence=1, parent_line=base_section, tag_name='base_42')
+        tax_42_section = self._create_tax_report_line('Tax 42%', test_country, sequence=1, parent_line=tax_section, code='tax_42')
+        tax_31_5_line = self._create_tax_report_line('Tax 31.5%', test_country, sequence=2, parent_line=tax_42_section, tag_name='tax_31_5')
+        tax_10_5_line = self._create_tax_report_line('Tax 10.5%', test_country, sequence=1, parent_line=tax_42_section, tag_name='tax_10_5')
+        tax_11_line = self._create_tax_report_line('Tax 10.5%', test_country, sequence=2, parent_line=tax_section, tag_name='tax_11', code='tax_11')
+        tax_difference_line = self._create_tax_report_line('Tax difference (42%-11%)', test_country, sequence=3, formula='tax_42 - tax_11')
+
+        # Create two taxes linked to report lines
+        tax_template_11 = self.env['account.tax.template'].create({
+            'name': 'Impôt sur les revenus',
+            'amount': '11',
+            'amount_type': 'percent',
+            'type_tax_use': 'sale',
+            'chart_template_id': company.chart_template_id.id,
+            'invoice_repartition_line_ids': [
+                (0,0, {
+                    'factor_percent': 100,
+                    'repartition_type': 'base',
+                    'plus_report_line_ids': [base_11_line.id],
+                }),
+
+                (0,0, {
+                    'factor_percent': 100,
+                    'repartition_type': 'tax',
+                    'plus_report_line_ids': [tax_11_line.id],
+                }),
+            ],
+            'refund_repartition_line_ids': [
+                (0,0, {
+                    'factor_percent': 100,
+                    'repartition_type': 'base',
+                    'minus_report_line_ids': [base_11_line.id],
+                }),
+
+                (0,0, {
+                    'factor_percent': 100,
+                    'repartition_type': 'tax',
+                    'minus_report_line_ids': [tax_11_line.id],
+                }),
+            ],
+        })
+
+        tax_template_42 = self.env['account.tax.template'].create({
+            'name': 'Impôt sur les revenants',
+            'amount': '42',
+            'amount_type': 'percent',
+            'type_tax_use': 'sale',
+            'chart_template_id': company.chart_template_id.id,
+            'invoice_repartition_line_ids': [
+                (0,0, {
+                    'factor_percent': 100,
+                    'repartition_type': 'base',
+                    'plus_report_line_ids': [base_42_line.id],
+                }),
+
+                (0,0, {
+                    'factor_percent': 25,
+                    'repartition_type': 'tax',
+                    'plus_report_line_ids': [tax_10_5_line.id],
+                }),
+
+                (0,0, {
+                    'factor_percent': 75,
+                    'repartition_type': 'tax',
+                    'plus_report_line_ids': [tax_31_5_line.id],
+                }),
+            ],
+            'refund_repartition_line_ids': [
+                (0,0, {
+                    'factor_percent': 100,
+                    'repartition_type': 'base',
+                    'minus_report_line_ids': [base_42_line.id],
+                }),
+
+                (0,0, {
+                    'factor_percent': 25,
+                    'repartition_type': 'tax',
+                    'minus_report_line_ids': [tax_10_5_line.id],
+                }),
+
+                (0,0, {
+                    'factor_percent': 75,
+                    'repartition_type': 'tax',
+                    'minus_report_line_ids': [tax_31_5_line.id],
+                }),
+            ],
+        })
+        # The templates needs an xmlid in order so that we can call _generate_tax
+        self.env['ir.model.data'].create({
+            'name': 'account_reports.test_tax_report_tax_11',
+            'module': 'account_reports',
+            'res_id': tax_template_11.id,
+            'model': 'account.tax.template',
+        })
+        tax_11_id = tax_template_11._generate_tax(self.env.user.company_id)['tax_template_to_tax'][tax_template_11.id]
+        tax_11 = self.env['account.tax'].browse(tax_11_id)
+
+        self.env['ir.model.data'].create({
+            'name': 'account_reports.test_tax_report_tax_42',
+            'module': 'account_reports',
+            'res_id': tax_template_42.id,
+            'model': 'account.tax.template',
+        })
+        tax_42_id = tax_template_42._generate_tax(self.env.user.company_id)['tax_template_to_tax'][tax_template_42.id]
+        tax_42 = self.env['account.tax'].browse(tax_42_id)
+
+        # Create an invoice using the tax we just made
+        with Form(self.env['account.invoice'].with_context(type='out_invoice'), view='account.invoice_form') as invoice_form:
+            invoice_form.partner_id = partner
+            with invoice_form.invoice_line_ids.new() as invoice_line_form:
+                invoice_line_form.name = 'Turlututu'
+                invoice_line_form.quantity = 1
+                invoice_line_form.price_unit = 100
+                invoice_line_form.invoice_line_tax_ids.clear()
+                invoice_line_form.invoice_line_tax_ids.add(tax_11)
+                invoice_line_form.invoice_line_tax_ids.add(tax_42)
+        invoice = invoice_form.save()
+        invoice.action_invoice_open()
+
+        # Generate the report and check the results
+        report = self.env['account.generic.tax.report']
+        report_opt = report._get_options({'date': {'period_type': 'custom', 'filter': 'custom', 'date_to': invoice.date, 'mode': 'range', 'date_from': invoice.date}})
+        new_context = report._set_context(report_opt)
+
+        # We check the taxes on invoice have impacted the report properly
+        inv_report_lines = report.with_context(new_context)._get_lines(report_opt)
+        self.assertLinesValues(
+            inv_report_lines,
+            #   Name                      Balance
+            [   0,                        1],
+            [
+                (base_section.name,                 200),
+                (base_42_line.name,                 100),
+                (base_11_line.name,                 100),
+                (tax_section.name,                  53),
+                (tax_42_section.name,               42),
+                (tax_10_5_line.name,                10.5),
+                (tax_31_5_line.name,                31.5),
+                (tax_11_line.name,                  11),
+                (tax_difference_line.name,          31),
+            ],
+        )
+
+        # We refund the invoice
+        refund_wizard = self.env['account.invoice.refund'].with_context(active_ids=[invoice.id]).create({
+            'description': 'Test refund tax repartition',
+            'filter_refund': 'cancel',
+        })
+        refund_wizard.invoice_refund()
+
+        # We check the taxes on refund have impacted the report properly (everything should be 0)
+        ref_report_lines = report.with_context(new_context)._get_lines(report_opt)
+        self.assertLinesValues(
+            ref_report_lines,
+            #   Name                      Balance
+            [   0,                        1],
+            [
+                (base_section.name,                 0),
+                (base_42_line.name,                 0),
+                (base_11_line.name,                 0),
+                (tax_section.name,                  0),
+                (tax_42_section.name,               0),
+                (tax_10_5_line.name,                0),
+                (tax_31_5_line.name,                0),
+                (tax_11_line.name,                  0),
+                (tax_difference_line.name,          0),
+            ],
+        )

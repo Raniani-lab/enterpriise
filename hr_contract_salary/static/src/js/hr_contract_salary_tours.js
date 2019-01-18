@@ -78,7 +78,7 @@ Tour.register('hr_contract_salary_tour', {
         },
         {
             content: "Select Experienced Developer",
-            trigger: ".o_kanban_record:eq(0) .oe_kanban_action_button",
+            trigger: ".o_kanban_record:contains('Experienced Developer')",
             run: 'click',
         },
         {

@@ -8,5 +8,5 @@ from odoo import fields, models
 class HrJob(models.Model):
     _inherit = 'hr.job'
 
-    default_contract_id = fields.Many2one('hr.contract', string="Default Contract for New Employees",
+    default_contract_id = fields.Many2one('hr.contract', string="Contract Template",
         help="Default contract used when making an offer to an applicant.")

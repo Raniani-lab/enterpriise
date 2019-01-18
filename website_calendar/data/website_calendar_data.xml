@@ -6,7 +6,7 @@
         </record>
 
         <record id="calendar_alarm_data_1h_sms" model="calendar.alarm">
-            <field name="name">1 Hour SMS text</field>
+            <field name="name">SMS Text Message - 1 Hour(s)</field>
             <field name="interval">hours</field>
             <field name="duration">1</field>
             <field name="alarm_type">sms</field>

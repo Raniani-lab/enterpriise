@@ -650,8 +650,9 @@ var Image = AbstractNewBuildingBlock.extend({
         return this._super.apply(this, arguments).then(function () {
             var def = $.Deferred();
             var $image = $("<img/>");
-            var dialog = new weWidgets.MediaDialog(self, { onlyImages: true },
-                $image, $image[0]);
+            var dialog = new weWidgets.MediaDialog(self, {
+                onlyImages: true,
+            }, $image[0]);
             var value;
             dialog.on("save", self, function (event) {
                 value = event.src;

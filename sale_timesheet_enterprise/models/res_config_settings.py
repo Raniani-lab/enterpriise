@@ -3,7 +3,7 @@
 
 from odoo import models, fields
 
-from odoo.addons.timesheet_grid_sale.models.sale import DEFAULT_INVOICED_TIMESHEET
+from odoo.addons.sale_timesheet_enterprise.models.sale import DEFAULT_INVOICED_TIMESHEET
 
 
 class ResConfigSettings(models.TransientModel):

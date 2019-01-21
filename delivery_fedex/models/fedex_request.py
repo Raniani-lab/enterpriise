@@ -5,7 +5,7 @@ import logging
 import os
 import re
 
-from datetime import datetime
+from datetime import datetime, date
 from zeep import Client, Plugin, Settings
 from zeep.exceptions import Fault
 
@@ -353,12 +353,30 @@ class FedexRequest():
 
         self.listCommodities.append(commodity)
 
+    def return_label(self, tracking_number, origin_date):
+        shipment_special_services = self.factory.ShipmentSpecialServicesRequested()
+        shipment_special_services.SpecialServiceTypes = ["RETURN_SHIPMENT"]
+        return_details = self.factory.ReturnShipmentDetail()
+        return_details.ReturnType = "PRINT_RETURN_LABEL"
+        if tracking_number and origin_date:
+            return_association = self.factory.ReturnAssociationDetail()
+            return_association.TrackingNumber = tracking_number
+            return_association.ShipDate = origin_date
+            return_details.ReturnAssociation = return_association
+        shipment_special_services.ReturnShipmentDetail = return_details
+        self.RequestedShipment.SpecialServicesRequested = shipment_special_services
+        if self.hasCommodities:
+            bla = self.factory.CustomsOptionDetail()
+            bla.Type = "FAULTY_ITEM"
+            self.RequestedShipment.CustomsClearanceDetail.CustomsOptions = bla
+
     def process_shipment(self):
         if self.hasCommodities:
             self.RequestedShipment.CustomsClearanceDetail.Commodities = self.listCommodities
         formatted_response = {'tracking_number': 0.0,
                               'price': {},
-                              'master_tracking_id': None}
+                              'master_tracking_id': None,
+                              'date': None}
 
         try:
             self.response = self.client.service.processShipment(WebAuthenticationDetail=self.WebAuthenticationDetail,
@@ -369,6 +387,10 @@ class FedexRequest():
 
             if (self.response.HighestSeverity != 'ERROR' and self.response.HighestSeverity != 'FAILURE'):
                 formatted_response['tracking_number'] = self.response.CompletedShipmentDetail.CompletedPackageDetails[0].TrackingIds[0].TrackingNumber
+                if 'CommitDate' in self.response.CompletedShipmentDetail.OperationalDetail:
+                    formatted_response['date'] = self.response.CompletedShipmentDetail.OperationalDetail.CommitDate
+                else:
+                    formatted_response['date'] = date.today()
 
                 if (self.RequestedShipment.RequestedPackageLineItems.SequenceNumber == self.RequestedShipment.PackageCount) or self.hasOnePackage:
                     if 'ShipmentRating' in self.response.CompletedShipmentDetail and self.response.CompletedShipmentDetail.ShipmentRating:

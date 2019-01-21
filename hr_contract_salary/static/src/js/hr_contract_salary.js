@@ -2,13 +2,8 @@ odoo.define('hr_contract_salary', function (require) {
 "use strict";
 
 var ajax = require('web.ajax');
-var base = require('web_editor.base');
 var concurrency = require('web.concurrency');
 var Widget = require('web.Widget');
-var core = require('web.core');
-var Tour = require('web_tour.tour');
-
-var _t = core._t;
 
 var SalaryPackageWidget = Widget.extend({
     events: {
@@ -547,7 +542,7 @@ var SalaryPackageWidget = Widget.extend({
 
 });
 
-base.ready().done(function() {
+$(function () {
     if ($('#hr_cs_form').length > 0) {
         var salary_package_widget = new SalaryPackageWidget();
         salary_package_widget.attachTo($('#hr_cs_form').first());

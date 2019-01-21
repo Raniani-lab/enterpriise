@@ -1,0 +1,22 @@
+<odoo>
+    <record id="project_task_view_form" model="ir.ui.view">
+        <field name="name">project.task.view.form.inherit.sale.timesheet.enterprise</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="sale_timesheet.project_task_view_form_inherit_sale_timesheet"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position='inside'>
+                <field name="use_timesheet_timer" invisible="True"/>
+                <field name="allow_timesheets" invisible="True"/>
+                <field name="analytic_account_active" invisible="True"/>
+                <button class="btn-primary" name="action_timer_start" type="object" string="Start"
+                    attrs="{'invisible': ['|', '|', '|', ('timesheet_timer_start', '!=', False), ('allow_timesheets', '=', False), ('use_timesheet_timer', '=', False), ('analytic_account_active', '=', False)]}"/>
+                <button class="btn-danger o_fsm_stop" name="action_timer_stop" type="object" string="STOP"
+                    attrs="{'invisible': ['|', '|', '|', ('timesheet_timer_start', '=', False), ('allow_timesheets', '=', False), ('use_timesheet_timer', '=', False), ('analytic_account_active', '=', False)]}"/>
+            </xpath>
+            <xpath expr="//field[@name='stage_id']" position="before">
+                <field name="timesheet_timer_start" widget="timesheet_timer" class="text-danger pull-right h2 mt-2 font-weight-bold"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

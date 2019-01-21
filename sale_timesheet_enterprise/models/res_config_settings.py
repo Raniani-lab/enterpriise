@@ -13,3 +13,6 @@ class ResConfigSettings(models.TransientModel):
         ('all', "All recorded timesheets"),
         ('approved', "Approved timesheets only"),
     ], default=DEFAULT_INVOICED_TIMESHEET, string="Timesheets Invoicing", config_parameter='sale.invoiced_timesheet')
+    use_timesheet_timer = fields.Boolean(string="Use Start and Stop", readonly=False, related='company_id.use_timesheet_timer')
+    timesheet_min_duration = fields.Integer('Minimal duration', default=15, config_parameter='sale_timesheet_enterprise.timesheet_min_duration')
+    timesheet_rounding = fields.Integer('Rounding up', default=15, config_parameter='sale_timesheet_enterprise.timesheet_rounding')

@@ -277,7 +277,8 @@ class ProviderFedex(models.Model):
             package_count = len(picking.package_ids) or 1
 
             # For india picking courier is not accepted without this details in label.
-            po_number = dept_number = False
+            po_number = order.display_name or False
+            dept_number = False
             if picking.partner_id.country_id.code == 'IN' and picking.picking_type_id.warehouse_id.partner_id.country_id.code == 'IN':
                 po_number = 'B2B' if picking.partner_id.commercial_partner_id.is_company else 'B2C'
                 dept_number = 'BILL D/T: SENDER'
@@ -315,6 +316,7 @@ class ProviderFedex(models.Model):
                         sequence_number=sequence,
                         po_number=po_number,
                         dept_number=dept_number,
+                        reference=picking.display_name,
                     )
                     srm.set_master_package(net_weight, package_count, master_tracking_id=master_tracking_id)
                     request = srm.process_shipment()
@@ -392,6 +394,7 @@ class ProviderFedex(models.Model):
                     package_length=packaging.length,
                     po_number=po_number,
                     dept_number=dept_number,
+                    reference=picking.display_name,
                 )
                 srm.set_master_package(net_weight, 1)
 

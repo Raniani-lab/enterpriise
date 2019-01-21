@@ -163,7 +163,7 @@ class FedexRequest():
         return self._add_package(weight_value=weight_value, package_code=package_code, package_height=package_height, package_width=package_width,
                                  package_length=package_length, sequence_number=sequence_number, mode=mode, po_number=False, dept_number=False)
 
-    def _add_package(self, weight_value, package_code=False, package_height=0, package_width=0, package_length=0, sequence_number=False, mode='shipping', po_number=False, dept_number=False):
+    def _add_package(self, weight_value, package_code=False, package_height=0, package_width=0, package_length=0, sequence_number=False, mode='shipping', po_number=False, dept_number=False, reference=False):
         package = self.factory.RequestedPackageLineItem()
         package_weight = self.factory.Weight()
         package_weight.Value = weight_value
@@ -187,6 +187,11 @@ class FedexRequest():
             dept_reference.CustomerReferenceType = 'DEPARTMENT_NUMBER'
             dept_reference.Value = dept_number
             package.CustomerReferences.append(dept_reference)
+        if reference:
+            customer_reference = self.factory.CustomerReference()
+            customer_reference.CustomerReferenceType = 'CUSTOMER_REFERENCE'
+            customer_reference.Value = reference
+            package.CustomerReferences.append(customer_reference)
 
         package.Weight = package_weight
         if mode == 'rating':

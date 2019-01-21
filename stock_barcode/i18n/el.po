@@ -3,9 +3,10 @@
 # * stock_barcode
 # 
 # Translators:
+# Giota Dandidou <giotadandidou@gmail.com>, 2019
 # Martin Trigaux, 2019
 # Kostas Goutoudis <goutoudis@gmail.com>, 2019
-# Giota Dandidou <giotadandidou@gmail.com>, 2019
+# Stefanos Nikou <stefanos.nikou@gmail.com>, 2019
 # George Tarasidis <george_tarasidis@yahoo.com>, 2019
 # 
 msgid ""
@@ -66,7 +67,7 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot___barcode_scanned
 msgid "Barcode Scanned"
-msgstr ""
+msgstr "Barcode Σαρώθηκε"
 
 #. module: stock_barcode
 #. openerp-web
@@ -100,7 +101,7 @@ msgstr ""
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.res_config_settings_view_form
 msgid "Configure Product Barcodes"
-msgstr ""
+msgstr "Διαμόρφωση των Barcodes του Είδους"
 
 #. module: stock_barcode
 #. openerp-web
@@ -153,7 +154,7 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/js/stock_barcode.js:63
 #, python-format
 msgid "Don't show this message again"
-msgstr ""
+msgstr "Να μην εμφανιστεί ξανά αυτό το μήνυμα"
 
 #. module: stock_barcode
 #. openerp-web
@@ -205,6 +206,7 @@ msgstr ""
 #: model:ir.model.fields,help:stock_barcode.field_stock_scrap__product_barcode
 msgid "International Article Number used for product identification."
 msgstr ""
+"Διεθνής Αριθμός Είδους που χρησιμοποιείται για την αναγνώριση προϊόντος"
 
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_inventory
@@ -222,17 +224,17 @@ msgstr "Τροποποιήσεις Αποθεμάτων"
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_inventory_barcode2
 msgid "Inventory Details"
-msgstr ""
+msgstr "Λεπτομέρειες Αποθέματος"
 
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_inventory_line
 msgid "Inventory Line"
-msgstr ""
+msgstr "Γραμή Αποθέματος"
 
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_location
 msgid "Inventory Locations"
-msgstr ""
+msgstr "Τοποθεσίες Αποθέματος"
 
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_barcode_lot_line
@@ -262,7 +264,7 @@ msgstr "Τελευταία Ενημέρωση στις"
 #: code:addons/stock_barcode/static/src/js/stock_barcode.js:69
 #, python-format
 msgid "Leave it"
-msgstr ""
+msgstr "Αφήστε το"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_move_line__location_processed
@@ -272,7 +274,7 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot_line__lot_name
 msgid "Lot"
-msgstr ""
+msgstr "Παρτίδα"
 
 #. module: stock_barcode
 #: code:addons/stock_barcode/models/stock_picking.py:109
@@ -283,19 +285,19 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot_line__move_line_id
 msgid "Move Line"
-msgstr ""
+msgstr "Μετακίνηση Γραμμής"
 
 #. module: stock_barcode
 #: model:ir.actions.act_window,name:stock_barcode.stock_inventory_action_new_inventory
 msgid "New Inventory"
-msgstr ""
+msgstr "Νέα Απογραφή"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:53
 #, python-format
 msgid "Next"
-msgstr ""
+msgstr "Επόμενο"
 
 #. module: stock_barcode
 #: code:addons/stock_barcode/controllers/main.py:93
@@ -341,20 +343,20 @@ msgstr ""
 #: model:ir.actions.act_window,name:stock_barcode.stock_picking_type_action_kanban
 #, python-format
 msgid "Operations"
-msgstr ""
+msgstr "Λειτουργίες"
 
 #. module: stock_barcode
 #: model:ir.actions.act_window,name:stock_barcode.stock_picking_action_form
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot__picking_id
 msgid "Picking"
-msgstr ""
+msgstr "Συλλογή"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/js/forms/picking_barcode_handler.js:86
 #, python-format
 msgid "Picking %s"
-msgstr ""
+msgstr "Συλλογή%s"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_picking_barcode
@@ -371,7 +373,7 @@ msgstr "Τύπος Διαλογής"
 #: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:52
 #, python-format
 msgid "Previous"
-msgstr ""
+msgstr "Προηγούμενο"
 
 #. module: stock_barcode
 #. openerp-web
@@ -398,13 +400,13 @@ msgstr ""
 #: model:ir.model,name:stock_barcode.model_product_product
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot__product_id
 msgid "Product"
-msgstr ""
+msgstr "Είδος"
 
 #. module: stock_barcode
 #: model:ir.actions.act_window,name:stock_barcode.product_action_barcodes
 #: model_terms:ir.ui.view,arch_db:stock_barcode.product_view_list_barcodes
 msgid "Product Barcodes"
-msgstr ""
+msgstr "Barcodes Είδους"
 
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_move_line
@@ -421,41 +423,41 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot__qty_done
 msgid "Qty Done"
-msgstr ""
+msgstr "Ολοκληρωμένη Ποσότητα"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot__qty_reserved
 msgid "Qty Reserved"
-msgstr ""
+msgstr "Κρατημένη Ποσότητα"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
 msgid "Quantity"
-msgstr ""
+msgstr "Ποσότητα"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot_line__qty_done
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode_kanban
 #: model_terms:ir.ui.view,arch_db:stock_barcode.view_barcode_lot_form
 msgid "Quantity Done"
-msgstr ""
+msgstr "Ολοκληρωμένη Ποσότητα"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot_line__qty_reserved
 msgid "Quantity Reserved"
-msgstr ""
+msgstr "Δεσμευμένη Ποσότητα"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_inventory_line_barcode
 msgid "Real Quantity"
-msgstr ""
+msgstr "Πραγματική Ποσότητα"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/js/stock_barcode.js:66
 #, python-format
 msgid "Remove it"
-msgstr ""
+msgstr "Αφαιρέστε το"
 
 #. module: stock_barcode
 #. openerp-web
@@ -525,7 +527,7 @@ msgstr ""
 #: model:ir.model,name:stock_barcode.model_stock_scrap
 #, python-format
 msgid "Scrap"
-msgstr ""
+msgstr "Άχρηστα"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
@@ -663,7 +665,7 @@ msgstr "Προς:"
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_picking
 msgid "Transfer"
-msgstr ""
+msgstr "Μεταφορά"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode_kanban
@@ -676,7 +678,7 @@ msgstr "Μονάδα Μέτρησης"
 #: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:54
 #, python-format
 msgid "Validate"
-msgstr ""
+msgstr "Επικύρωση"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.view_barcode_lot_form
@@ -686,7 +688,7 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.model.fields,help:stock_barcode.field_stock_barcode_lot___barcode_scanned
 msgid "Value of the last barcode scanned."
-msgstr ""
+msgstr "Τιμή του τελευταίου barcode που σαρώθηκε."
 
 #. module: stock_barcode
 #. openerp-web
@@ -714,7 +716,7 @@ msgstr ""
 #: code:addons/stock_barcode/models/stock_picking.py:302
 #, python-format
 msgid "Wrong barcode"
-msgstr ""
+msgstr "Λάθος barcode"
 
 #. module: stock_barcode
 #. openerp-web

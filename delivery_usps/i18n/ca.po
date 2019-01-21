@@ -4,6 +4,8 @@
 # 
 # Translators:
 # Martin Trigaux, 2019
+# Marc Tormo i Bochaca <mtbochaca@gmail.com>, 2019
+# RGB Consulting <odoo@rgbconsulting.com>, 2019
 # Quim - eccit <quim@eccit.com>, 2019
 # 
 msgid ""
@@ -33,7 +35,7 @@ msgstr ""
 #. module: delivery_usps
 #: selection:delivery.carrier,delivery_type:0
 msgid "Based on Rules"
-msgstr ""
+msgstr "En base a regles"
 
 #. module: delivery_usps
 #: model:ir.model.fields,help:delivery_usps.field_delivery_carrier__usps_account_validated
@@ -49,7 +51,7 @@ msgstr ""
 #. module: delivery_usps
 #: model:ir.model.fields,field_description:delivery_usps.field_delivery_carrier__usps_content_type
 msgid "Content Type"
-msgstr ""
+msgstr "Tipus de contingut"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,delivery_type:0
@@ -69,7 +71,7 @@ msgstr ""
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_content_type:0
 msgid "Documents"
-msgstr ""
+msgstr "Documents"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_delivery_nature:0
@@ -107,7 +109,7 @@ msgstr ""
 #. module: delivery_usps
 #: selection:delivery.carrier,delivery_type:0
 msgid "Fixed Price"
-msgstr ""
+msgstr "Preu fix"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_first_class_mail_type:0
@@ -135,7 +137,7 @@ msgstr ""
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_content_type:0
 msgid "Gift"
-msgstr ""
+msgstr "Regal "
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_delivery_nature:0
@@ -145,7 +147,7 @@ msgstr ""
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_size_container:0
 msgid "Large"
-msgstr ""
+msgstr "Gran"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_mail_type:0
@@ -202,7 +204,7 @@ msgstr "PDF"
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_mail_type:0
 msgid "Package"
-msgstr ""
+msgstr "Paquet"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_first_class_mail_type:0
@@ -292,7 +294,7 @@ msgstr "Prioritat"
 #. module: delivery_usps
 #: model:ir.model.fields,field_description:delivery_usps.field_delivery_carrier__delivery_type
 msgid "Provider"
-msgstr ""
+msgstr "Proveïdor"
 
 #. module: delivery_usps
 #: code:addons/delivery_usps/models/usps_request.py:372
@@ -318,7 +320,7 @@ msgstr ""
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_size_container:0
 msgid "Regular"
-msgstr ""
+msgstr "Regular"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_container:0
@@ -329,7 +331,7 @@ msgstr ""
 #: selection:delivery.carrier,usps_content_type:0
 #: selection:delivery.carrier,usps_intl_non_delivery_option:0
 msgid "Return"
-msgstr ""
+msgstr "Retorna"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_content_type:0
@@ -411,12 +413,12 @@ msgstr ""
 #. module: delivery_usps
 #: selection:delivery.carrier,delivery_type:0
 msgid "UPS"
-msgstr ""
+msgstr "UPS"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,delivery_type:0
 msgid "USPS"
-msgstr ""
+msgstr "USPS"
 
 #. module: delivery_usps
 #: model_terms:ir.ui.view,arch_db:delivery_usps.view_delivery_carrier_form_with_provider_usps
@@ -506,7 +508,7 @@ msgstr ""
 #. module: delivery_usps
 #: selection:delivery.carrier,delivery_type:0
 msgid "bpost"
-msgstr ""
+msgstr "bpost"
 
 #. module: delivery_usps
 #: model_terms:ir.ui.view,arch_db:delivery_usps.usps_shipping_request

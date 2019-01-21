@@ -22,7 +22,7 @@ msgstr ""
 #. module: sale_account_taxcloud
 #: model:ir.model,name:sale_account_taxcloud.model_account_invoice
 msgid "Invoice"
-msgstr ""
+msgstr "Τιμολόγιο"
 
 #. module: sale_account_taxcloud
 #: model:ir.model,name:sale_account_taxcloud.model_sale_order

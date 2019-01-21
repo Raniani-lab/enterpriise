@@ -31,7 +31,7 @@ msgstr ""
 #: code:addons/website_studio/static/src/js/form_manager.js:107
 #, python-format
 msgid "Error"
-msgstr ""
+msgstr "Σφάλμα"
 
 #. module: website_studio
 #. openerp-web

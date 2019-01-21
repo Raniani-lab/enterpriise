@@ -3,6 +3,7 @@
 # * timesheet_grid_sale
 # 
 # Translators:
+# Martin Trigaux, 2019
 # Kostas Goutoudis <goutoudis@gmail.com>, 2019
 # 
 msgid ""
@@ -32,7 +33,7 @@ msgstr ""
 #. module: timesheet_grid_sale
 #: model:ir.model,name:timesheet_grid_sale.model_account_analytic_line
 msgid "Analytic Line"
-msgstr ""
+msgstr "Γραμμή Αναλυτικής"
 
 #. module: timesheet_grid_sale
 #: selection:res.config.settings,invoiced_timesheet:0
@@ -57,7 +58,7 @@ msgstr ""
 #. module: timesheet_grid_sale
 #: model:ir.model,name:timesheet_grid_sale.model_sale_order_line
 msgid "Sales Order Line"
-msgstr ""
+msgstr "Γραμμή Παραγγελίας"
 
 #. module: timesheet_grid_sale
 #: model:ir.model.fields,field_description:timesheet_grid_sale.field_res_config_settings__invoiced_timesheet

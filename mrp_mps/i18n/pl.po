@@ -6,6 +6,14 @@
 # Paweł Wodyński <pw@myodoo.pl>, 2018
 # Maksym <ms@myodoo.pl>, 2019
 # Piotr Cierkosz <piotr.w.cierkosz@gmail.com>, 2019
+# Martin Trigaux, 2019
+# zbik2607 <darek@krokus.com.pl>, 2019
+# Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2019
+# Judyta Kaźmierczak <judyta.kazmierczak@openglobe.pl>, 2019
+# Tomasz Leppich <t.leppich@gmail.com>, 2019
+# Piotr Szlązak <szlazakpiotr@gmail.com>, 2019
+# Marcin Młynarczyk <mlynarczyk@gmail.com>, 2019
+# Andrzej Donczew <a.donczew@hadron.eu.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -13,7 +21,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-01-16 08:12+0000\n"
 "PO-Revision-Date: 2016-08-05 13:29+0000\n"
-"Last-Translator: Piotr Cierkosz <piotr.w.cierkosz@gmail.com>, 2019\n"
+"Last-Translator: Andrzej Donczew <a.donczew@hadron.eu.com>, 2019\n"
 "Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -29,12 +37,12 @@ msgstr ""
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
 msgid "<span class=\"fa fa-fw\">-</span> Demand Forecast"
-msgstr ""
+msgstr "<span class=\"fa fa-fw\">-</span> Prognoza Popytu"
 
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
 msgid "<span class=\"fa fa-fw\">-</span> Indirect Demand"
-msgstr ""
+msgstr "<span class=\"fa fa-fw\">-</span> Pośrednie zapotrzebowanie"
 
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
@@ -42,6 +50,8 @@ msgid ""
 "<span class=\"fa fa-fw\">=</span> \n"
 "                                    Forecasted Inventory"
 msgstr ""
+"<span class=\"fa fa-fw\">=</span> \n"
+"                                    Prognozowane zapasy"
 
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
@@ -63,7 +73,7 @@ msgstr ""
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.mrp_mps_report_view_form
 msgid "Add Product"
-msgstr ""
+msgstr "Dodaj Produkt"
 
 #. module: mrp_mps
 #. openerp-web
@@ -71,12 +81,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
 #, python-format
 msgid "Add a Product"
-msgstr ""
+msgstr "Dodaj Produkt"
 
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
 msgid "Apply"
-msgstr ""
+msgstr "Zastosuj"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_product_product__apply_active
@@ -86,7 +96,7 @@ msgstr ""
 #. module: mrp_mps
 #: selection:sale.forecast,mode:0
 msgid "Automatic"
-msgstr ""
+msgstr "Automatycznie"
 
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.mrp_mps_report_view_form
@@ -97,12 +107,12 @@ msgstr "Anuluj"
 #. module: mrp_mps
 #: model:ir.model,name:mrp_mps.model_res_company
 msgid "Companies"
-msgstr ""
+msgstr "Firmy"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_mps_report__company_id
 msgid "Company"
-msgstr ""
+msgstr "Firma"
 
 #. module: mrp_mps
 #: model:ir.model,name:mrp_mps.model_res_config_settings
@@ -114,14 +124,14 @@ msgstr "Ustawienia konfiguracji"
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast__create_uid
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast_indirect__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Utworzona przez"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_mps_report__create_date
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast__create_date
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast_indirect__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Data utworzenia"
 
 #. module: mrp_mps
 #. openerp-web
@@ -131,13 +141,13 @@ msgstr ""
 #: selection:res.company,manufacturing_period:0
 #, python-format
 msgid "Daily"
-msgstr ""
+msgstr "Codziennie"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast__date
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast_indirect__date
 msgid "Date"
-msgstr ""
+msgstr "Data"
 
 #. module: mrp_mps
 #: model:ir.model.fields,help:mrp_mps.field_sale_forecast__product_uom_id
@@ -164,17 +174,17 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast__display_name
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast_indirect__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Nazwa wyświetlana"
 
 #. module: mrp_mps
 #: selection:sale.forecast,state:0
 msgid "Done"
-msgstr ""
+msgstr "Wykonano"
 
 #. module: mrp_mps
 #: selection:sale.forecast,state:0
 msgid "Forecast"
-msgstr ""
+msgstr "Prognoza"
 
 #. module: mrp_mps
 #. openerp-web
@@ -201,7 +211,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast__id
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast_indirect__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: mrp_mps
 #: model:ir.model.fields,help:mrp_mps.field_sale_forecast__to_supply
@@ -230,21 +240,21 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast____last_update
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast_indirect____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Data ostatniej modyfikacji"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_mps_report__write_uid
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast__write_uid
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast_indirect__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Ostatnio aktualizowane przez"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_mps_report__write_date
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast__write_date
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast_indirect__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Data ostatniej aktualizacji"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_product_product__mps_apply
@@ -281,7 +291,7 @@ msgstr ""
 #. module: mrp_mps
 #: selection:sale.forecast,mode:0
 msgid "Manual"
-msgstr ""
+msgstr "Ręcznie"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_res_company__manufacturing_period
@@ -308,7 +318,7 @@ msgstr ""
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast__mode
 msgid "Mode"
-msgstr ""
+msgstr "Tryb"
 
 #. module: mrp_mps
 #. openerp-web
@@ -318,7 +328,7 @@ msgstr ""
 #: selection:res.company,manufacturing_period:0
 #, python-format
 msgid "Monthly"
-msgstr ""
+msgstr "Miesięcznie"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast_indirect__product_origin_id
@@ -328,19 +338,19 @@ msgstr ""
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_mps_report__period
 msgid "Period"
-msgstr ""
+msgstr "Okres"
 
 #. module: mrp_mps
 #. openerp-web
 #: code:addons/mrp_mps/static/src/xml/mps_backend.xml:11
 #, python-format
 msgid "Period:"
-msgstr ""
+msgstr "Okres:"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast__group_id
 msgid "Procurement Group"
-msgstr ""
+msgstr "Grupa zapotrzebowań"
 
 #. module: mrp_mps
 #: model:ir.model,name:mrp_mps.model_product_product
@@ -349,25 +359,25 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast_indirect__product_id
 #: model_terms:ir.ui.view,arch_db:mrp_mps.product_product_view_form_mps
 msgid "Product"
-msgstr ""
+msgstr "Produkt"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast__product_uom_id
 msgid "Product UoM"
-msgstr ""
+msgstr "JM produktu"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast__warehouse_id
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast_indirect__warehouse_id
 msgid "Production Location"
-msgstr ""
+msgstr "Strefa dla produkcji"
 
 #. module: mrp_mps
 #. openerp-web
 #: code:addons/mrp_mps/static/src/xml/mps_backend.xml:24
 #, python-format
 msgid "Rows"
-msgstr ""
+msgstr "Wiersze"
 
 #. module: mrp_mps
 #: model:ir.model,name:mrp_mps.model_sale_forecast
@@ -377,7 +387,7 @@ msgstr ""
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.product_product_view_form_mps
 msgid "Save"
-msgstr ""
+msgstr "Zapisz"
 
 #. module: mrp_mps
 #. openerp-web
@@ -390,7 +400,7 @@ msgstr ""
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast__state
 msgid "State"
-msgstr ""
+msgstr "Stan"
 
 #. module: mrp_mps
 #: model:ir.model,name:mrp_mps.model_stock_rule
@@ -407,7 +417,7 @@ msgstr ""
 #: code:addons/mrp_mps/static/src/xml/mps_backend.xml:45
 #, python-format
 msgid "To Produce"
-msgstr ""
+msgstr "Do wyprodukowania"
 
 #. module: mrp_mps
 #: code:addons/mrp_mps/models/mrp_mps_report.py:129
@@ -434,7 +444,7 @@ msgstr ""
 #: selection:res.company,manufacturing_period:0
 #, python-format
 msgid "Weekly"
-msgstr ""
+msgstr "Tygodniowo"
 
 #. module: mrp_mps
 #. openerp-web
@@ -442,7 +452,7 @@ msgstr ""
 #: code:addons/mrp_mps/static/src/js/mrp_mps_report_widget.js:228
 #, python-format
 msgid "Wrong value entered!"
-msgstr ""
+msgstr "Wpisano nieprawidłową wartość!"
 
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory

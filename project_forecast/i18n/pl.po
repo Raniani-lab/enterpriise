@@ -4,9 +4,15 @@
 # 
 # Translators:
 # Paweł Wodyński <pw@myodoo.pl>, 2018
-# Martin Trigaux, 2019
-# Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2019
 # Maksym <ms@myodoo.pl>, 2019
+# Martin Trigaux, 2019
+# zbik2607 <darek@krokus.com.pl>, 2019
+# Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2019
+# Judyta Kaźmierczak <judyta.kazmierczak@openglobe.pl>, 2019
+# Tomasz Leppich <t.leppich@gmail.com>, 2019
+# Piotr Szlązak <szlazakpiotr@gmail.com>, 2019
+# Marcin Młynarczyk <mlynarczyk@gmail.com>, 2019
+# Andrzej Donczew <a.donczew@hadron.eu.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -14,7 +20,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-01-16 08:13+0000\n"
 "PO-Revision-Date: 2016-08-05 13:31+0000\n"
-"Last-Translator: Maksym <ms@myodoo.pl>, 2019\n"
+"Last-Translator: Andrzej Donczew <a.donczew@hadron.eu.com>, 2019\n"
 "Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -36,17 +42,17 @@ msgstr ""
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_view_kanban_inherit_project_forecast
 msgid "<span class=\"o_label\">Forecast</span>"
-msgstr ""
+msgstr "<span class=\"o_label\">Prognoza</span>"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_view_form_inherit_project_forecast
 msgid "<span>Forecast</span>"
-msgstr ""
+msgstr "<span>Prognoza</span>"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__active
 msgid "Active"
-msgstr ""
+msgstr "Aktywne"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__resource_time
@@ -62,7 +68,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:project_forecast.field_project_task__allow_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_view_form_inherit_project_forecast
 msgid "Allow Forecast"
-msgstr ""
+msgstr "Pozwalaj na prognozy"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_project__allow_forecast
@@ -72,27 +78,27 @@ msgstr "Dopuść prognozę"
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
 msgid "Archived"
-msgstr ""
+msgstr "Archiwalne"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_form
 msgid "Assign To"
-msgstr ""
+msgstr "Przypisz do"
 
 #. module: project_forecast
 #: model:ir.ui.menu,name:project_forecast.project_forecast_group_by_user
 msgid "By Employee"
-msgstr ""
+msgstr "Wg pracowników"
 
 #. module: project_forecast
 #: model:ir.ui.menu,name:project_forecast.project_forecast_group_by_project
 msgid "By Project"
-msgstr ""
+msgstr "Wg projektu"
 
 #. module: project_forecast
 #: selection:res.company,forecast_span:0
 msgid "By day"
-msgstr ""
+msgstr "Co dzień"
 
 #. module: project_forecast
 #: selection:res.company,forecast_span:0
@@ -107,17 +113,17 @@ msgstr ""
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__color
 msgid "Color"
-msgstr ""
+msgstr "Kolor"
 
 #. module: project_forecast
 #: model:ir.model,name:project_forecast.model_res_company
 msgid "Companies"
-msgstr ""
+msgstr "Firmy"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__company_id
 msgid "Company"
-msgstr ""
+msgstr "Firma"
 
 #. module: project_forecast
 #: model:ir.model,name:project_forecast.model_res_config_settings
@@ -127,28 +133,28 @@ msgstr "Ustawienia konfiguracji"
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Utworzona przez"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Data utworzenia"
 
 #. module: project_forecast
 #: selection:res.company,forecast_uom:0
 msgid "Days"
-msgstr ""
+msgstr "Dni"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Nazwa wyświetlana"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__employee_id
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
 msgid "Employee"
-msgstr ""
+msgstr "Pracownik"
 
 #. module: project_forecast
 #: model:ir.model.fields,help:project_forecast.field_project_project__allow_forecast
@@ -173,12 +179,12 @@ msgstr ""
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__end_date
 msgid "End Date"
-msgstr ""
+msgstr "Data końcowa"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__exclude
 msgid "Exclude"
-msgstr ""
+msgstr "Wyłączone"
 
 #. module: project_forecast
 #: model:ir.model.fields,help:project_forecast.field_project_forecast__resource_time
@@ -189,7 +195,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:project_forecast.project_forecast_action_from_project
 #: model:ir.ui.menu,name:project_forecast.project_forecast_menu
 msgid "Forecast"
-msgstr ""
+msgstr "Prognoza"
 
 #. module: project_forecast
 #: code:addons/project_forecast/models/project_forecast.py:274
@@ -208,12 +214,12 @@ msgstr "Analiza prognozy"
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_form
 msgid "Forecast Form"
-msgstr ""
+msgstr "Formularz prognozy"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_tree
 msgid "Forecast List"
-msgstr ""
+msgstr "Lista prognozy"
 
 #. module: project_forecast
 #: model:ir.actions.act_window,name:project_forecast.project_forecast_action_by_user
@@ -264,7 +270,7 @@ msgstr "Prognozowany czas musi być dodatni"
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
 msgid "Future"
-msgstr ""
+msgstr "Przyszłość"
 
 #. module: project_forecast
 #: code:addons/project_forecast/models/project_forecast.py:296
@@ -278,39 +284,39 @@ msgstr ""
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
 msgid "Group By"
-msgstr ""
+msgstr "Grupuj wg"
 
 #. module: project_forecast
 #: selection:res.company,forecast_uom:0
 msgid "Hours"
-msgstr ""
+msgstr "Godziny"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Data ostatniej modyfikacji"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Ostatnio aktualizowane przez"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Data ostatniej aktualizacji"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_grid_by_task
 #: model_terms:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_project
 #: model_terms:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_user
 msgid "Month"
-msgstr ""
+msgstr "Miesiąc"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
@@ -325,12 +331,12 @@ msgstr "Moje projekty"
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__name
 msgid "Name"
-msgstr ""
+msgstr "Nazwa"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
 msgid "Past"
-msgstr ""
+msgstr "Przeszłość"
 
 #. module: project_forecast
 #: model:ir.model.fields,help:project_forecast.field_project_forecast__time
@@ -340,37 +346,37 @@ msgstr "Procent czasu pracy"
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__resource_hours
 msgid "Planned hours"
-msgstr ""
+msgstr "Zaplanowane godziny"
 
 #. module: project_forecast
 #: model:ir.model,name:project_forecast.model_project_project
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__project_id
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
 msgid "Project"
-msgstr ""
+msgstr "Projekt"
 
 #. module: project_forecast
 #: model:ir.model,name:project_forecast.model_project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_form
 msgid "Project Forecast"
-msgstr ""
+msgstr "Prognoza projektu"
 
 #. module: project_forecast
 #: model:ir.model.fields,help:project_forecast.field_project_forecast__user_id
 msgid "Related user name for the resource to manage its access."
-msgstr ""
+msgstr "Użytkownik powiązany z zasobem do zarządzania jego dostępnością"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__start_date
 msgid "Start Date"
-msgstr ""
+msgstr "Data Początkowa"
 
 #. module: project_forecast
 #: model:ir.model,name:project_forecast.model_project_task
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__task_id
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
 msgid "Task"
-msgstr ""
+msgstr "Zadanie"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__stage_id
@@ -411,21 +417,21 @@ msgstr ""
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__user_id
 msgid "User"
-msgstr ""
+msgstr "Użytkownik"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_grid_by_task
 #: model_terms:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_project
 #: model_terms:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_user
 msgid "Week"
-msgstr ""
+msgstr "Tydzień"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_grid_by_task
 #: model_terms:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_project
 #: model_terms:ir.ui.view,arch_db:project_forecast.view_project_forecast_grid_by_user
 msgid "Year"
-msgstr ""
+msgstr "Rok"
 
 #. module: project_forecast
 #: code:addons/project_forecast/models/project.py:21
@@ -453,7 +459,7 @@ msgstr "Twoje zadanie nie znajduje się w wybranym projekcie."
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_form
 msgid "day(s)"
-msgstr ""
+msgstr "dzień(dni)"
 
 #. module: project_forecast
 #: code:addons/project_forecast/models/project_forecast.py:109

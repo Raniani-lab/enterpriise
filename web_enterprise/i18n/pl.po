@@ -5,6 +5,11 @@
 # Translators:
 # Maja Stawicka <mjstwck@wp.pl>, 2018
 # Martin Trigaux, 2019
+# zbik2607 <darek@krokus.com.pl>, 2019
+# Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2019
+# Tomasz Leppich <t.leppich@gmail.com>, 2019
+# Mariusz, 2019
+# Zdzisław Krajewski <zdzichucb@gmail.com>, 2019
 # Piotr Szlązak <szlazakpiotr@gmail.com>, 2019
 # 
 msgid ""
@@ -33,14 +38,14 @@ msgstr "(Edycja przedsiębiorstwa)"
 #: code:addons/web_enterprise/static/src/xml/base.xml:67
 #, python-format
 msgid "1 month"
-msgstr ""
+msgstr "1 miesiąc"
 
 #. module: web_enterprise
 #. openerp-web
 #: code:addons/web_enterprise/static/src/xml/base_mobile.xml:8
 #, python-format
 msgid "Action"
-msgstr ""
+msgstr "Akcja"
 
 #. module: web_enterprise
 #. openerp-web
@@ -78,7 +83,7 @@ msgstr "Aplikacje"
 #: code:addons/web_enterprise/static/src/xml/base_mobile.xml:39
 #, python-format
 msgid "COMPANIES"
-msgstr ""
+msgstr "FIRMY"
 
 #. module: web_enterprise
 #. openerp-web
@@ -107,42 +112,42 @@ msgstr ""
 #: code:addons/web_enterprise/static/src/xml/base.xml:327
 #, python-format
 msgid "Control"
-msgstr ""
+msgstr "Kontrola"
 
 #. module: web_enterprise
 #. openerp-web
 #: code:addons/web_enterprise/static/src/xml/base.xml:277
 #, python-format
 msgid "Create a new record"
-msgstr ""
+msgstr "Utwórz nowy rekord"
 
 #. module: web_enterprise
 #. openerp-web
 #: code:addons/web_enterprise/static/src/xml/base.xml:225
 #, python-format
 msgid "Database expiration:"
-msgstr ""
+msgstr "Data wygaśnięcia bazy danych:"
 
 #. module: web_enterprise
 #. openerp-web
 #: code:addons/web_enterprise/static/src/xml/base.xml:243
 #, python-format
 msgid "Description"
-msgstr ""
+msgstr "Opis"
 
 #. module: web_enterprise
 #. openerp-web
 #: code:addons/web_enterprise/static/src/xml/base.xml:268
 #, python-format
 msgid "Discard a record modification"
-msgstr ""
+msgstr "Odrzuć zmiany"
 
 #. module: web_enterprise
 #. openerp-web
 #: code:addons/web_enterprise/static/src/xml/base.xml:259
 #, python-format
 msgid "Edit a record"
-msgstr ""
+msgstr "Edytuj rekord"
 
 #. module: web_enterprise
 #: model:ir.model,name:web_enterprise.model_ir_http
@@ -154,14 +159,14 @@ msgstr ""
 #: code:addons/web_enterprise/static/src/js/widgets/user_menu.js:57
 #, python-format
 msgid "Keyboard Shortcuts"
-msgstr ""
+msgstr "Skróty klawiszowe "
 
 #. module: web_enterprise
 #. openerp-web
 #: code:addons/web_enterprise/static/src/xml/base.xml:98
 #, python-format
 msgid "Log in as an administrator to correct the issue."
-msgstr ""
+msgstr "Zaloguj się jako administrator aby poprawić ten błąd"
 
 #. module: web_enterprise
 #. openerp-web
@@ -189,21 +194,21 @@ msgstr "Menu"
 #: code:addons/web_enterprise/static/src/xml/base.xml:48
 #, python-format
 msgid "No result"
-msgstr ""
+msgstr "Brak wyników"
 
 #. module: web_enterprise
 #. openerp-web
 #: code:addons/web_enterprise/static/src/xml/base.xml:218
 #, python-format
 msgid "Odoo"
-msgstr ""
+msgstr "Odoo"
 
 #. module: web_enterprise
 #. openerp-web
 #: code:addons/web_enterprise/static/src/xml/base.xml:111
 #, python-format
 msgid "Odoo Help"
-msgstr ""
+msgstr "Pomoc Odoo"
 
 #. module: web_enterprise
 #. openerp-web
@@ -238,7 +243,7 @@ msgstr "Otwórz w widoku listy"
 #: code:addons/web_enterprise/static/src/xml/base.xml:119
 #, python-format
 msgid "Paste code here"
-msgstr ""
+msgstr "Wklej kod tutaj"
 
 #. module: web_enterprise
 #. openerp-web
@@ -253,7 +258,7 @@ msgstr "Odśwież status subskrybcji"
 #: code:addons/web_enterprise/static/src/xml/base.xml:121
 #, python-format
 msgid "Register"
-msgstr ""
+msgstr "Zarejestruj"
 
 #. module: web_enterprise
 #. openerp-web
@@ -288,14 +293,14 @@ msgstr "Szukaj"
 #: code:addons/web_enterprise/static/src/xml/base.xml:7
 #, python-format
 msgid "Search..."
-msgstr ""
+msgstr "Szukaj..."
 
 #. module: web_enterprise
 #. openerp-web
 #: code:addons/web_enterprise/static/src/xml/base.xml:232
 #, python-format
 msgid "Shortcuts"
-msgstr ""
+msgstr "Skróty"
 
 #. module: web_enterprise
 #. openerp-web
@@ -313,7 +318,7 @@ msgstr ""
 #: code:addons/web_enterprise/static/src/xml/base.xml:116
 #, python-format
 msgid "Subscription Code:"
-msgstr ""
+msgstr "Kod subskrypcji:"
 
 #. module: web_enterprise
 #. openerp-web
@@ -419,11 +424,11 @@ msgstr "kup subskrypcje"
 #: code:addons/web_enterprise/static/src/xml/base.xml:70
 #, python-format
 msgid "days"
-msgstr ""
+msgstr "dni"
 
 #. module: web_enterprise
 #. openerp-web
 #: code:addons/web_enterprise/static/src/xml/base.xml:86
 #, python-format
 msgid "or"
-msgstr ""
+msgstr "lub"

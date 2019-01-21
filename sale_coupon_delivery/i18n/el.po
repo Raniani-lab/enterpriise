@@ -22,7 +22,7 @@ msgstr ""
 #. module: sale_coupon_delivery
 #: selection:sale.coupon.reward,reward_type:0
 msgid "Discount"
-msgstr ""
+msgstr "Έκπτωση"
 
 #. module: sale_coupon_delivery
 #: model:ir.model.fields,help:sale_coupon_delivery.field_sale_coupon_program__reward_type
@@ -75,7 +75,7 @@ msgstr "Παραγγελία"
 #. module: sale_coupon_delivery
 #: model:ir.model,name:sale_coupon_delivery.model_sale_order_line
 msgid "Sales Order Line"
-msgstr ""
+msgstr "Γραμμή Παραγγελίας"
 
 #. module: sale_coupon_delivery
 #: code:addons/sale_coupon_delivery/models/sale_coupon.py:13

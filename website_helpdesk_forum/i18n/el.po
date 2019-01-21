@@ -4,6 +4,8 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# Kostas Goutoudis <goutoudis@gmail.com>, 2019
+# Fotios Tragopoulos <tragopoulos@icloud.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -11,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-01-16 08:12+0000\n"
 "PO-Revision-Date: 2017-02-15 11:47+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"Last-Translator: Fotios Tragopoulos <tragopoulos@icloud.com>, 2019\n"
 "Language-Team: Greek (https://www.transifex.com/odoo/teams/41243/el/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -36,17 +38,17 @@ msgstr ""
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
 msgid "<span>By </span>"
-msgstr ""
+msgstr "<span>Από </span>"
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
 msgid "Click here to view more result..."
-msgstr ""
+msgstr "Κάντε κλικ για να δείτε περισσότερα αποτελέσματα..."
 
 #. module: website_helpdesk_forum
 #: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_ticket__forum_post_id
 msgid "Forum Post"
-msgstr ""
+msgstr "Ανάρτηση Φόρουμ"
 
 #. module: website_helpdesk_forum
 #: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_ticket__use_website_helpdesk_forum
@@ -56,7 +58,7 @@ msgstr ""
 #. module: website_helpdesk_forum
 #: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_team__forum_id
 msgid "Help Center Forum"
-msgstr ""
+msgstr "Φόρουμ Κέντρου Βοήθειας"
 
 #. module: website_helpdesk_forum
 #: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_team__forum_url
@@ -89,27 +91,27 @@ msgstr ""
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.website_helpdesk_forum_team_page
 msgid "No question yet."
-msgstr ""
+msgstr "Δεν υπάρχουν ερωτήσεις ακόμη."
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.helpdesk_ticket_view_form_inherit_website_helpdesk_forum
 msgid "Open Post"
-msgstr ""
+msgstr "Ανοιχτή Ανάρτηση"
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.website_helpdesk_forum_team_page
 msgid "Popular Questions"
-msgstr ""
+msgstr "Δημοφιλείς ερωτήσεις"
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
 msgid "Question has accepted answer"
-msgstr ""
+msgstr "Η ερώτηση έχει αποδεκτή απάντηση"
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
 msgid "Redirect to external link"
-msgstr ""
+msgstr "Ανακατεύθυνση σε εξωτερικό σύνδεσμο"
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.helpdesk_ticket_view_form_inherit_website_helpdesk_forum

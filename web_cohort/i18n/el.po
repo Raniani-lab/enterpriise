@@ -89,20 +89,20 @@ msgstr ""
 #: code:addons/web_cohort/static/src/xml/web_cohort.xml:17
 #, python-format
 msgid "Count"
-msgstr ""
+msgstr "Πλήθος"
 
 #. module: web_cohort
 #: selection:ir.actions.act_window.view,view_mode:0
 #: selection:ir.ui.view,type:0
 msgid "Dashboard"
-msgstr ""
+msgstr "Ταμπλό"
 
 #. module: web_cohort
 #. openerp-web
 #: code:addons/web_cohort/static/src/js/cohort_view.js:15
 #, python-format
 msgid "Day"
-msgstr ""
+msgstr "Ημέρα"
 
 #. module: web_cohort
 #: selection:ir.ui.view,type:0
@@ -151,14 +151,14 @@ msgstr "Kanban"
 #: code:addons/web_cohort/static/src/xml/web_cohort.xml:6
 #, python-format
 msgid "Measures"
-msgstr ""
+msgstr "Μετρήσεις"
 
 #. module: web_cohort
 #. openerp-web
 #: code:addons/web_cohort/static/src/js/cohort_view.js:17
 #, python-format
 msgid "Month"
-msgstr ""
+msgstr "Μήνας"
 
 #. module: web_cohort
 #. openerp-web
@@ -227,11 +227,11 @@ msgstr "Τύπος Προβολής"
 #: code:addons/web_cohort/static/src/js/cohort_view.js:16
 #, python-format
 msgid "Week"
-msgstr ""
+msgstr "Εβδομάδα"
 
 #. module: web_cohort
 #. openerp-web
 #: code:addons/web_cohort/static/src/js/cohort_view.js:18
 #, python-format
 msgid "Year"
-msgstr ""
+msgstr "Έτος"

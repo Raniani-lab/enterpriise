@@ -5,6 +5,8 @@
 # Translators:
 # Martin Trigaux, 2018
 # Manel Fernandez <manelfera@outlook.com>, 2018
+# Carles Antoli <carlesantoli@hotmail.com>, 2019
+# RGB Consulting <odoo@rgbconsulting.com>, 2019
 # Quim - eccit <quim@eccit.com>, 2019
 # 
 msgid ""
@@ -26,7 +28,7 @@ msgstr ""
 #: code:addons/website_form_editor/static/src/xml/website_form_editor.xml:12
 #, python-format
 msgid "&times;"
-msgstr ""
+msgstr "&vegades;"
 
 #. module: website_form_editor
 #: model_terms:ir.ui.view,arch_db:website_form_editor.snippet_options
@@ -100,12 +102,12 @@ msgstr ""
 #. module: website_form_editor
 #: model_terms:ir.ui.view,arch_db:website_form_editor.snippet_options
 msgid "Number"
-msgstr ""
+msgstr "Número"
 
 #. module: website_form_editor
 #: model_terms:ir.ui.view,arch_db:website_form_editor.snippet_options
 msgid "Radio Buttons"
-msgstr ""
+msgstr "Botons d'opció"
 
 #. module: website_form_editor
 #: model_terms:ir.ui.view,arch_db:website_form_editor.snippet_options

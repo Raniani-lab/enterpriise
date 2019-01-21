@@ -32,7 +32,7 @@ msgstr "Προσθήκη"
 #: code:addons/web_mobile/static/src/xml/contact_sync.xml:9
 #, python-format
 msgid "Add to"
-msgstr ""
+msgstr "Προσθήκη στο"
 
 #. module: web_mobile
 #. openerp-web
@@ -74,4 +74,4 @@ msgstr ""
 #: code:addons/web_mobile/static/src/xml/user_menu.xml:7
 #, python-format
 msgid "Switch/Add Account"
-msgstr ""
+msgstr "Εναλλαγή/Προσθήκη Λογαριασμού"

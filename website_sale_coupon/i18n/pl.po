@@ -30,12 +30,12 @@ msgstr ""
 #: model:ir.ui.menu,name:website_sale_coupon.menu_coupon_type_config
 #: model_terms:ir.ui.view,arch_db:website_sale_coupon.res_config_settings_view_form
 msgid "Coupon Programs"
-msgstr ""
+msgstr "Programy kuponowe"
 
 #. module: website_sale_coupon
 #: model_terms:ir.ui.view,arch_db:website_sale_coupon.cart_discount
 msgid "Discount:"
-msgstr ""
+msgstr "Upust:"
 
 #. module: website_sale_coupon
 #: model_terms:ir.ui.view,arch_db:website_sale_coupon.cart_discount
@@ -46,7 +46,7 @@ msgstr ""
 #: model:ir.ui.menu,name:website_sale_coupon.menu_promotion_type_config
 #: model_terms:ir.ui.view,arch_db:website_sale_coupon.res_config_settings_view_form
 msgid "Promotion Programs"
-msgstr ""
+msgstr "Programy Promocyjne"
 
 #. module: website_sale_coupon
 #: model:ir.model,name:website_sale_coupon.model_sale_coupon_program
@@ -72,9 +72,9 @@ msgstr "Pomyślnie zastosowałeś następujący kod promocyjny:"
 #. module: website_sale_coupon
 #: model_terms:ir.ui.view,arch_db:website_sale_coupon.sale_coupon_result
 msgid "Your reward"
-msgstr ""
+msgstr "Twoja nagroda"
 
 #. module: website_sale_coupon
 #: model_terms:ir.ui.view,arch_db:website_sale_coupon.sale_coupon_result
 msgid "is available on a next order with this promo code:"
-msgstr ""
+msgstr "jest dostępny w następnym zamówieniu z tym kodem promocyjnym:"

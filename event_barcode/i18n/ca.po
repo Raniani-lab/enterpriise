@@ -6,6 +6,7 @@
 # Martin Trigaux, 2018
 # Manel Fernandez <manelfera@outlook.com>, 2018
 # Marc Tormo i Bochaca <mtbochaca@gmail.com>, 2019
+# RGB Consulting <odoo@rgbconsulting.com>, 2019
 # Quim - eccit <quim@eccit.com>, 2019
 # 
 msgid ""
@@ -37,7 +38,7 @@ msgstr ""
 #. module: event_barcode
 #: model_terms:ir.ui.view,arch_db:event_barcode.report_registration_badge
 msgid "&amp;nbsp;"
-msgstr ""
+msgstr "&amp;nbsp;"
 
 #. module: event_barcode
 #: model_terms:ir.ui.view,arch_db:event_barcode.report_event_template_badge
@@ -50,7 +51,7 @@ msgstr ""
 #: code:addons/event_barcode/controllers/main.py:18
 #, python-format
 msgid "Attendee"
-msgstr ""
+msgstr "Assistent"
 
 #. module: event_barcode
 #. openerp-web
@@ -65,7 +66,7 @@ msgstr "Codi de barres"
 #: model:ir.actions.client,name:event_barcode.event_barcode_action_main_view
 #: model_terms:ir.ui.view,arch_db:event_barcode.event_event_view_form_inherit_barcode
 msgid "Barcode Interface"
-msgstr ""
+msgstr "Interfície de codi de barres"
 
 #. module: event_barcode
 #: model_terms:ir.ui.view,arch_db:event_barcode.res_config_settings_view_form

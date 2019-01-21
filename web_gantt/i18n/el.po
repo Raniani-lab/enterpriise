@@ -26,7 +26,7 @@ msgstr ""
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:31
 #, python-format
 msgid "Day"
-msgstr ""
+msgstr "Ημέρα"
 
 #. module: web_gantt
 #. openerp-web
@@ -48,7 +48,7 @@ msgstr "Gantt"
 #: code:addons/web_gantt/static/src/js/gantt_renderer.js:74
 #, python-format
 msgid "Gantt View"
-msgstr ""
+msgstr "Προβολή Gantt"
 
 #. module: web_gantt
 #. openerp-web
@@ -57,7 +57,7 @@ msgstr ""
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:33
 #, python-format
 msgid "Month"
-msgstr ""
+msgstr "Μήνας"
 
 #. module: web_gantt
 #. openerp-web
@@ -78,7 +78,7 @@ msgstr "Προηγούμενο"
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:14
 #, python-format
 msgid "Today"
-msgstr ""
+msgstr "Σήμερα"
 
 #. module: web_gantt
 #. openerp-web
@@ -86,7 +86,7 @@ msgstr ""
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:32
 #, python-format
 msgid "Week"
-msgstr ""
+msgstr "Εβδομάδα"
 
 #. module: web_gantt
 #. openerp-web
@@ -94,18 +94,18 @@ msgstr ""
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:34
 #, python-format
 msgid "Year"
-msgstr ""
+msgstr "Έτος"
 
 #. module: web_gantt
 #. openerp-web
 #: code:addons/web_gantt/static/src/js/gantt_controller.js:208
 #, python-format
 msgid "You are trying to write on a read-only field!"
-msgstr ""
+msgstr "Προσπαθείτε να γράψετε σε ένα πεδίο το οποίο είναι μόνο για ανάγνωση!"
 
 #. module: web_gantt
 #. openerp-web
 #: code:addons/web_gantt/static/src/js/gantt_controller.js:203
 #, python-format
 msgid "You have no date_stop field defined!"
-msgstr ""
+msgstr "Δεν έχετε ορίσει ένα πεδίο τύπου date_stop!"

@@ -5,6 +5,7 @@
 # Translators:
 # Martin Trigaux, 2019
 # Kostas Goutoudis <goutoudis@gmail.com>, 2019
+# Stefanos Nikou <stefanos.nikou@gmail.com>, 2019
 # George Tarasidis <george_tarasidis@yahoo.com>, 2019
 # 
 msgid ""
@@ -55,7 +56,7 @@ msgstr "Ενέργεια"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:236
 #, python-format
 msgid "Activity created"
-msgstr ""
+msgstr "Δημιουργήθηκε δραστηριότητα"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -67,7 +68,7 @@ msgstr "Προσθήκη"
 #. module: project_timesheet_synchro
 #: model:ir.model,name:project_timesheet_synchro.model_account_analytic_line
 msgid "Analytic Line"
-msgstr ""
+msgstr "Γραμμή Αναλυτικής"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -149,7 +150,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:420
 #, python-format
 msgid "Delete"
-msgstr ""
+msgstr "Διαγραφή"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -247,14 +248,14 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:505
 #, python-format
 msgid "Login with Odoo"
-msgstr ""
+msgstr "Σύνδεση μέσω Odoo"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:439
 #, python-format
 msgid "Logout"
-msgstr ""
+msgstr "Αποσύνδεση"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -296,7 +297,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:535
 #, python-format
 msgid "Next"
-msgstr ""
+msgstr "Επόμενο"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -433,7 +434,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:499
 #, python-format
 msgid "Reset"
-msgstr ""
+msgstr "Επαναφορά"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -475,14 +476,14 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:465
 #, python-format
 msgid "Sign In"
-msgstr ""
+msgstr "Σύνδεση"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:466
 #, python-format
 msgid "Sign Up"
-msgstr ""
+msgstr "Εγγραφή"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -490,7 +491,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/timesheet_app_backend_template.xml:34
 #, python-format
 msgid "Statistics"
-msgstr ""
+msgstr "Στατιστικά"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -532,7 +533,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:351
 #, python-format
 msgid "Task"
-msgstr ""
+msgstr "Εργασία"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -550,7 +551,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:24
 #, python-format
 msgid "This Week"
-msgstr ""
+msgstr "Της Εβδομάδας"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -585,7 +586,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:233
 #, python-format
 msgid "Today"
-msgstr ""
+msgstr "Σήμερα"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -606,7 +607,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:320
 #, python-format
 msgid "Total :"
-msgstr ""
+msgstr "Σύνολο :"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -636,7 +637,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:295
 #, python-format
 msgid "Week"
-msgstr ""
+msgstr "Εβδομάδα"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -724,7 +725,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:552
 #, python-format
 msgid "ex: admin@example.com"
-msgstr ""
+msgstr "π.χ.: admin@example.com"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -747,7 +748,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:269
 #, python-format
 msgid "minutes"
-msgstr ""
+msgstr "λεπτά"
 
 #. module: project_timesheet_synchro
 #. openerp-web

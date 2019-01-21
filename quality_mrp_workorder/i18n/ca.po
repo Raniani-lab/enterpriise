@@ -5,6 +5,8 @@
 # Translators:
 # Martin Trigaux, 2018
 # Manel Fernandez <manelfera@outlook.com>, 2018
+# Marc Tormo i Bochaca <mtbochaca@gmail.com>, 2019
+# RGB Consulting <odoo@rgbconsulting.com>, 2019
 # Quim - eccit <quim@eccit.com>, 2019
 # 
 msgid ""
@@ -46,7 +48,7 @@ msgstr ""
 #. module: quality_mrp_workorder
 #: model:ir.model.fields,field_description:quality_mrp_workorder.field_mrp_workorder__measure
 msgid "Measure"
-msgstr ""
+msgstr "Mida"
 
 #. module: quality_mrp_workorder
 #: model:ir.model.fields,field_description:quality_mrp_workorder.field_mrp_workorder__measure_success
@@ -97,7 +99,7 @@ msgstr "Desar"
 #: code:addons/quality_mrp_workorder/models/quality.py:12
 #, python-format
 msgid "Success"
-msgstr ""
+msgstr "Èxit"
 
 #. module: quality_mrp_workorder
 #: model_terms:ir.ui.view,arch_db:quality_mrp_workorder.mrp_workorder_view_form_tablet_inherit_quality
@@ -107,4 +109,4 @@ msgstr "Validar"
 #. module: quality_mrp_workorder
 #: model:ir.model,name:quality_mrp_workorder.model_mrp_workorder
 msgid "Work Order"
-msgstr ""
+msgstr "Ordre de treball"

@@ -3,7 +3,9 @@
 # * mrp_account
 # 
 # Translators:
-# Martin Trigaux, 2018
+# Martin Trigaux, 2019
+# Gemma Bochaca <gemma.bochaca@gmail.com>, 2019
+# RGB Consulting <odoo@rgbconsulting.com>, 2019
 # Quim - eccit <quim@eccit.com>, 2019
 # 
 msgid ""
@@ -23,7 +25,7 @@ msgstr ""
 #. module: mrp_account
 #: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid ", from"
-msgstr ""
+msgstr ", des de"
 
 #. module: mrp_account
 #: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
@@ -78,27 +80,27 @@ msgstr ""
 #. module: mrp_account
 #: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "<strong>Total Cost of Operations</strong>"
-msgstr ""
+msgstr "<strong>Cost total de les operacions</strong>"
 
 #. module: mrp_account
 #: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "<strong>Total Cost of Raw Materials</strong>"
-msgstr ""
+msgstr "<strong>Cost total de les matèries primes</strong>"
 
 #. module: mrp_account
 #: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "<strong>Total Cost of Scraps</strong>"
-msgstr ""
+msgstr "<strong>Cost total dels residus</strong>"
 
 #. module: mrp_account
 #: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "<strong>Unit Cost</strong>"
-msgstr ""
+msgstr "<strong>Cost unitari</strong>"
 
 #. module: mrp_account
 #: model:ir.model.fields,field_description:mrp_account.field_mrp_workcenter__costs_hour_account_id
 msgid "Analytic Account"
-msgstr ""
+msgstr "Compte analític"
 
 #. module: mrp_account
 #: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
@@ -110,37 +112,37 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:mrp_account.mrp_production_form_inherit_view6
 #: model_terms:ir.ui.view,arch_db:mrp_account.product_product_inherit_form_view_cost_structure
 msgid "Cost Analysis"
-msgstr ""
+msgstr "Anàlisis de cost"
 
 #. module: mrp_account
 #: model:ir.model.fields,field_description:mrp_account.field_mrp_workcenter_productivity__cost_already_recorded
 msgid "Cost Recorded"
-msgstr ""
+msgstr "Cost registrat"
 
 #. module: mrp_account
 #: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "Cost Structure"
-msgstr ""
+msgstr "Estructura de costos"
 
 #. module: mrp_account
 #: model:ir.actions.report,name:mrp_account.action_cost_struct_product_template
 msgid "Cost Structure Analysis"
-msgstr ""
+msgstr "Anàlisis d'estructura de costos"
 
 #. module: mrp_account
 #: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "Cost for"
-msgstr ""
+msgstr "Cost per"
 
 #. module: mrp_account
 #: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "Cost of Operations"
-msgstr ""
+msgstr "Cost de les operacions"
 
 #. module: mrp_account
 #: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "Cost of Scraps"
-msgstr ""
+msgstr "Cost dels residus"
 
 #. module: mrp_account
 #: model:ir.model.fields,field_description:mrp_account.field_report_mrp_account_mrp_cost_structure__display_name
@@ -154,6 +156,8 @@ msgid ""
 "Fill this only if you want automatic analytic accounting entries on "
 "production orders."
 msgstr ""
+"Omplir només si es volen entrades de comptabilitat analítica automàtiques en"
+" les ordres de producció. "
 
 #. module: mrp_account
 #: model:ir.model.fields,field_description:mrp_account.field_report_mrp_account_mrp_cost_structure__id
@@ -175,12 +179,12 @@ msgstr ""
 #. module: mrp_account
 #: model:ir.model,name:mrp_account.model_product_product
 msgid "Product"
-msgstr ""
+msgstr "Producte"
 
 #. module: mrp_account
 #: model:ir.model,name:mrp_account.model_product_template
 msgid "Product Template"
-msgstr ""
+msgstr "Plantilla de producte"
 
 #. module: mrp_account
 #: model:ir.model,name:mrp_account.model_report_mrp_account_product_template_cost_structure
@@ -195,7 +199,7 @@ msgstr "Ordre de producció"
 #. module: mrp_account
 #: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "Some of the Manufacturing Order(s) selected are not done yet"
-msgstr ""
+msgstr "Algunes de les ordres de fabricació seleccionades no estan fetes"
 
 #. module: mrp_account
 #: model:ir.model.fields,help:mrp_account.field_mrp_workcenter_productivity__cost_already_recorded
@@ -205,23 +209,27 @@ msgid ""
 " multiple times and only consider new entries in the work centers time "
 "lines."
 msgstr ""
+"Camp tècnic que comprova automàticament quan una producció en curs té "
+"entrades de diari pels seus costos. D'aquesta forma podem registrar els "
+"costos d'una producció diversos cops i només considerar noves entrades en "
+"les línies de temps dels centres de treball."
 
 #. module: mrp_account
 #: model:ir.model,name:mrp_account.model_mrp_workcenter
 msgid "Work Center"
-msgstr ""
+msgstr "Centre de treball"
 
 #. module: mrp_account
 #: model:ir.model,name:mrp_account.model_mrp_workcenter_productivity
 msgid "Workcenter Productivity Log"
-msgstr ""
+msgstr "Registre de productivitat del centre de treball"
 
 #. module: mrp_account
 #: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "hours"
-msgstr ""
+msgstr "hores"
 
 #. module: mrp_account
 #: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "manufacturing order(s)."
-msgstr ""
+msgstr "ordres de producció"

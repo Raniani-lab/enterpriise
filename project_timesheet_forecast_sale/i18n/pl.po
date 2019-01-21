@@ -4,6 +4,9 @@
 # 
 # Translators:
 # Paweł Wodyński <pw@myodoo.pl>, 2018
+# Martin Trigaux, 2019
+# zbik2607 <darek@krokus.com.pl>, 2019
+# Tomasz Leppich <t.leppich@gmail.com>, 2019
 # Piotr Szlązak <szlazakpiotr@gmail.com>, 2019
 # 
 msgid ""
@@ -24,31 +27,31 @@ msgstr ""
 #: code:addons/project_timesheet_forecast_sale/models/project.py:26
 #, python-format
 msgid "%s (%s remaining hours)"
-msgstr ""
+msgstr "%s (%s pozostało godzin)"
 
 #. module: project_timesheet_forecast_sale
 #: code:addons/project_timesheet_forecast_sale/controllers/project.py:47
 #, python-format
 msgid "After"
-msgstr ""
+msgstr "Po"
 
 #. module: project_timesheet_forecast_sale
 #: code:addons/project_timesheet_forecast_sale/controllers/project.py:47
 #, python-format
 msgid "Forecasted"
-msgstr ""
+msgstr "Przewidywane"
 
 #. module: project_timesheet_forecast_sale
 #: code:addons/project_timesheet_forecast_sale/controllers/project.py:163
 #: code:addons/project_timesheet_forecast_sale/controllers/project.py:182
 #, python-format
 msgid "Forecasts"
-msgstr ""
+msgstr "Prognozy"
 
 #. module: project_timesheet_forecast_sale
 #: model:ir.model,name:project_timesheet_forecast_sale.model_project_project
 msgid "Project"
-msgstr ""
+msgstr "Projekt"
 
 #. module: project_timesheet_forecast_sale
 #: model:ir.model,name:project_timesheet_forecast_sale.model_project_forecast
@@ -81,7 +84,7 @@ msgstr ""
 #. module: project_timesheet_forecast_sale
 #: model:ir.model,name:project_timesheet_forecast_sale.model_project_task
 msgid "Task"
-msgstr ""
+msgstr "Zadanie"
 
 #. module: project_timesheet_forecast_sale
 #: model_terms:ir.ui.view,arch_db:project_timesheet_forecast_sale.timesheet_plan

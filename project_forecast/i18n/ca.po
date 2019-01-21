@@ -76,7 +76,7 @@ msgstr "Arxivat"
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_form
 msgid "Assign To"
-msgstr ""
+msgstr "Assigna a"
 
 #. module: project_forecast
 #: model:ir.ui.menu,name:project_forecast.project_forecast_group_by_user
@@ -86,12 +86,12 @@ msgstr "Per empleat"
 #. module: project_forecast
 #: model:ir.ui.menu,name:project_forecast.project_forecast_group_by_project
 msgid "By Project"
-msgstr ""
+msgstr "Per Projecte"
 
 #. module: project_forecast
 #: selection:res.company,forecast_span:0
 msgid "By day"
-msgstr ""
+msgstr "Per dia"
 
 #. module: project_forecast
 #: selection:res.company,forecast_span:0
@@ -188,7 +188,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:project_forecast.project_forecast_action_from_project
 #: model:ir.ui.menu,name:project_forecast.project_forecast_menu
 msgid "Forecast"
-msgstr ""
+msgstr "Previsió"
 
 #. module: project_forecast
 #: code:addons/project_forecast/models/project_forecast.py:274
@@ -263,7 +263,7 @@ msgstr ""
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
 msgid "Future"
-msgstr ""
+msgstr "Futur"
 
 #. module: project_forecast
 #: code:addons/project_forecast/models/project_forecast.py:296
@@ -329,7 +329,7 @@ msgstr "Nom"
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
 msgid "Past"
-msgstr ""
+msgstr "Anterior"
 
 #. module: project_forecast
 #: model:ir.model.fields,help:project_forecast.field_project_forecast__time

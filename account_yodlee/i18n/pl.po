@@ -4,6 +4,11 @@
 # 
 # Translators:
 # Maksym <ms@myodoo.pl>, 2018
+# Martin Trigaux, 2019
+# zbik2607 <darek@krokus.com.pl>, 2019
+# Piotr Szlązak <szlazakpiotr@gmail.com>, 2019
+# Paweł Michoń <michon.pawel@wp.pl>, 2019
+# Patryk Openglobe <patryk.walentowicz@openglobe.pl>, 2019
 # 
 msgid ""
 msgstr ""
@@ -11,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-01-16 08:13+0000\n"
 "PO-Revision-Date: 2016-08-05 13:28+0000\n"
-"Last-Translator: Maksym <ms@myodoo.pl>, 2018\n"
+"Last-Translator: Patryk Openglobe <patryk.walentowicz@openglobe.pl>, 2019\n"
 "Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -30,7 +35,7 @@ msgstr "(Diagnostyka: %r dla URL %s)"
 #: code:addons/account_yodlee/models/yodlee.py:242
 #, python-format
 msgid "Account"
-msgstr ""
+msgstr "Konto"
 
 #. module: account_yodlee
 #: code:addons/account_yodlee/models/yodlee.py:335
@@ -108,12 +113,12 @@ msgstr "Aktywny / Nieaktywny w systemie Yodlee"
 #: code:addons/account_yodlee/models/yodlee.py:357
 #, python-format
 msgid "An Error has occurred (code %s)"
-msgstr ""
+msgstr "Wystąpił błąd (kod %s)"
 
 #. module: account_yodlee
 #: model:ir.model,name:account_yodlee.model_res_company
 msgid "Companies"
-msgstr ""
+msgstr "Firmy"
 
 #. module: account_yodlee
 #: code:addons/account_yodlee/models/yodlee.py:199
@@ -155,7 +160,7 @@ msgstr ""
 #: code:addons/account_yodlee/models/yodlee.py:102
 #, python-format
 msgid "Error %s, message: %s, reference code: %s"
-msgstr ""
+msgstr "Błąd %s, wiadomość: %s, kod referencyjny: %s"
 
 #. module: account_yodlee
 #: code:addons/account_yodlee/models/yodlee.py:318
@@ -363,13 +368,13 @@ msgstr ""
 #. module: account_yodlee
 #: selection:account.online.provider,provider_type:0
 msgid "Plaid"
-msgstr ""
+msgstr "Zapłacony"
 
 #. module: account_yodlee
 #: code:addons/account_yodlee/models/yodlee.py:48
 #, python-format
 msgid "Please configure an email in the company settings."
-msgstr ""
+msgstr "Proszę skonfigurować wiadomość e-mail w ustawieniach firmy."
 
 #. module: account_yodlee
 #: code:addons/account_yodlee/models/yodlee.py:321
@@ -518,12 +523,12 @@ msgstr ""
 #. module: account_yodlee
 #: model:ir.model.fields,field_description:account_yodlee.field_account_online_provider__provider_type
 msgid "Provider Type"
-msgstr ""
+msgstr "Typ dostawcy"
 
 #. module: account_yodlee
 #: model:ir.model,name:account_yodlee.model_account_online_provider
 msgid "Provider for online account synchronization"
-msgstr ""
+msgstr "Dostawca do synchronizacji konta online"
 
 #. module: account_yodlee
 #: code:addons/account_yodlee/models/yodlee.py:330
@@ -645,7 +650,7 @@ msgstr ""
 #: code:addons/account_yodlee/models/yodlee.py:135
 #, python-format
 msgid "Timeout: the server did not reply within 30s"
-msgstr ""
+msgstr "Upłynął limit czasu: serwer nie odpowiedział przez 30s"
 
 #. module: account_yodlee
 #: code:addons/account_yodlee/models/yodlee.py:320
@@ -658,7 +663,7 @@ msgstr ""
 #. module: account_yodlee
 #: selection:account.online.provider,provider_type:0
 msgid "Yodlee"
-msgstr ""
+msgstr "Yodlee"
 
 #. module: account_yodlee
 #: model:ir.model.fields,field_description:account_yodlee.field_account_online_journal__yodlee_account_status
@@ -673,22 +678,22 @@ msgstr ""
 #. module: account_yodlee
 #: model:ir.model.fields,field_description:account_yodlee.field_res_company__yodlee_user_access_token
 msgid "Yodlee access token"
-msgstr ""
+msgstr "Token dostępu Yodlee"
 
 #. module: account_yodlee
 #: model:ir.model.fields,field_description:account_yodlee.field_res_company__yodlee_user_login
 msgid "Yodlee login"
-msgstr ""
+msgstr "Login Yodlee"
 
 #. module: account_yodlee
 #: model:ir.model.fields,field_description:account_yodlee.field_res_company__yodlee_user_password
 msgid "Yodlee password"
-msgstr ""
+msgstr "Hasło Yodlee"
 
 #. module: account_yodlee
 #: model:ir.model.fields,field_description:account_yodlee.field_res_company__yodlee_access_token
 msgid "access_token"
-msgstr ""
+msgstr "access_token"
 
 #. module: account_yodlee
 #: code:addons/account_yodlee/models/yodlee.py:297

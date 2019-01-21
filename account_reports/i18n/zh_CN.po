@@ -3,24 +3,37 @@
 # * account_reports
 # 
 # Translators:
-# fausthuang, 2018
-# ChinaMaker <liuct@chinamaker.net>, 2018
-# 广州救火 <7017511@qq.com>, 2018
-# Martin Trigaux, 2018
-# liAnGjiA <liangjia@qq.com>, 2018
-# snow wang <147156565@qq.com>, 2018
-# inspur qiuguodong <qiuguodong@inspur.com>, 2018
-# diaojiaolou <124412206@qq.com>, 2018
-# xu xiaohu <xu.xiaohu@gmail.com>, 2018
-# Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
+# Ted Wang <feiyuwang2012@gmail.com>, 2016
+# mrshelly <mrshelly@hotmail.com>, 2017
+# zpq001 <zpq001@live.com>, 2017
+# hman tsao <herman.tsao@gmail.com>, 2017
+# waveyeung <waveyeung@qq.com>, 2017
+# Rangy Chen <rangychen@163.com>, 2017
+# Wei "oldrev" Li <liwei@sandwych.com>, 2017
+# Connie Xiao <connie.xiao@elico-corp.com>, 2017
+# e2f <projects@e2f.com>, 2018
+# Yuan Xulei <hi@yxl.name>, 2018
+# 老窦 北京 <2662059195@qq.com>, 2018
+# Gary Wei <Gary.wei@elico-corp.com>, 2018
+# neter ji <jifuyi@qq.com>, 2018
+# Martin Trigaux, 2019
+# Jeffery CHEN Fan <jeffery9@gmail.com>, 2019
+# liAnGjiA <liangjia@qq.com>, 2019
+# fausthuang, 2019
+# diaojiaolou <124412206@qq.com>, 2019
+# keecome <7017511@qq.com>, 2019
+# ChinaMaker <liuct@chinamaker.net>, 2019
+# snow wang <147156565@qq.com>, 2019
+# xu xiaohu <xu.xiaohu@gmail.com>, 2019
+# inspur qiuguodong <qiuguodong@inspur.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-02 10:31+0000\n"
-"PO-Revision-Date: 2018-08-24 11:36+0000\n"
-"Last-Translator: Jeffery CHEN Fan <jeffery9@gmail.com>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:12+0000\n"
+"PO-Revision-Date: 2016-08-05 13:28+0000\n"
+"Last-Translator: inspur qiuguodong <qiuguodong@inspur.com>, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -57,7 +70,7 @@ msgstr "(没有群组)"
 #: code:addons/account_reports/models/account_financial_report.py:357
 #, python-format
 msgid "(copy)"
-msgstr " (副本)"
+msgstr "(复制)"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_aged_partner_balance.py:22
@@ -94,13 +107,7 @@ msgid "<b>Next Reminder Date:</b>"
 msgstr "<b>下个提醒日:</b>"
 
 #. module: account_reports
-#: model_terms:ir.ui.view,arch_db:account_reports.search_template_partner
-msgid "<b>Partners</b><br/>"
-msgstr "<b>合作伙伴</b><br/>"
-
-#. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_analytic
-#: model_terms:ir.ui.view,arch_db:account_reports.search_template_partner
 msgid "<b>Tags</b><br/>"
 msgstr "<b>标签</b><br/>"
 
@@ -140,7 +147,29 @@ msgstr "<i class=\"fa fa-circle\" style=\"color: grey;\"/> 一般债务人"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.template_followup_report
 msgid "<i class=\"fa fa-circle\" style=\"color: red;\"/> Bad Debtor"
-msgstr "<i class=\"fa fa-circle\" style=\"color: red;\"/> 劣质债务人"
+msgstr "<i class=\"fa fa-circle\" style=\"color: red;\"/>　劣质债务人"
+
+#. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.template_followup_report
+msgid "<i class=\"fa fa-envelope\" role=\"img\" aria-label=\"Email\"/>"
+msgstr ""
+
+#. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.main_template
+msgid ""
+"<i class=\"fa fa-fw fa-pencil o_account_reports_edit_summary_pencil\" "
+"role=\"img\" aria-label=\"Edit Summary\" title=\"Edit Summary\"/>"
+msgstr ""
+
+#. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.template_followup_report
+msgid "<i class=\"fa fa-mobile fa-fw\" role=\"img\" aria-label=\"Mobile\" title=\"Mobile\"/>"
+msgstr ""
+
+#. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.template_followup_report
+msgid "<i class=\"fa fa-phone fa-fw\" role=\"img\" aria-label=\"Phone\" title=\"Phone\"/>"
+msgstr ""
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_comparison
@@ -154,7 +183,54 @@ msgid ""
 "            Journals:"
 msgstr ""
 "<span class=\"fa fa-book\"/>\n"
-"            日记帐:"
+"            帐:"
+
+#. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.search_template_date_filter
+msgid "<span class=\"fa fa-calendar\" title=\"Dates\" role=\"img\" aria-label=\"Dates\"/>"
+msgstr ""
+
+#. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.template_aged_partner_balance_line_report
+msgid ""
+"<span class=\"fa fa-circle color-green trust-partner\" role=\"img\" aria-"
+"label=\"Balance is good\" title=\"Balance is good\"/>"
+msgstr ""
+
+#. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.line_template_partner_ledger_report
+msgid ""
+"<span class=\"fa fa-circle color-green trust-partner\" role=\"img\" aria-"
+"label=\"Partner ledger is good\" title=\"Partner ledger is good\"/>"
+msgstr ""
+
+#. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.template_aged_partner_balance_line_report
+msgid ""
+"<span class=\"fa fa-circle color-red trust-partner\" role=\"img\" aria-"
+"label=\"Balance is bad\" title=\"Balance is bad\"/>"
+msgstr ""
+
+#. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.line_template_partner_ledger_report
+msgid ""
+"<span class=\"fa fa-circle color-red trust-partner\" role=\"img\" aria-"
+"label=\"Partner ledger is bad\" title=\"Partner ledger is bad\"/>"
+msgstr ""
+
+#. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.template_aged_partner_balance_line_report
+msgid ""
+"<span class=\"fa fa-circle color-transparent trust-partner\" role=\"img\" "
+"aria-label=\"Balance is normal\" title=\"Balance is normal\"/>"
+msgstr ""
+
+#. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.line_template_partner_ledger_report
+msgid ""
+"<span class=\"fa fa-circle color-transparent trust-partner\" role=\"img\" "
+"aria-label=\"Partner ledger is normal\" title=\"Partner ledger is normal\"/>"
+msgstr ""
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_multi_company
@@ -172,7 +248,7 @@ msgid ""
 "            Filters:"
 msgstr ""
 "<span class=\"fa fa-filter\"/>\n"
-"            筛选:"
+"            过滤:"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
@@ -195,6 +271,13 @@ msgid "<span class=\"fa fa-folder-open\"/> Partners"
 msgstr "<span class=\"fa fa-filter\"/> 业务伙伴"
 
 #. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
+msgid ""
+"<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-"
+"specific.\" groups=\"base.group_multi_company\"/>"
+msgstr ""
+
+#. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_account_type
 msgid ""
 "<span class=\"fa fa-user\"/>\n"
@@ -202,6 +285,13 @@ msgid ""
 msgstr ""
 "<span class=\"fa fa-user\"/>\n"
 "            科目:"
+
+#. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.footnotes_template
+msgid ""
+"<span class=\"o_account_reports_footnote_icons\"><i class=\"fa fa-fw fa-"
+"trash-o\" role=\"img\" aria-label=\"Delete\" title=\"Delete\"/></span>"
+msgstr ""
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
@@ -216,6 +306,13 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_reports.res_partner_view_form
 msgid "<span class=\"o_stat_text\">Due</span>"
 msgstr "<span class=\"o_stat_text\">到期</span>"
+
+#. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.main_template
+msgid ""
+"<span class=\"searchIcon\"><i class=\"fa fa-search\" role=\"img\" aria-"
+"label=\"Search\" title=\"Search\"/></span>"
+msgstr ""
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.account_reports_journal_dashboard_kanban_view_account_manager
@@ -260,7 +357,7 @@ msgstr "科目表模版"
 #: model_terms:ir.ui.view,arch_db:account_reports.view_account_financial_report_form
 #: model_terms:ir.ui.view,arch_db:account_reports.view_account_financial_report_tree
 msgid "Account Report"
-msgstr "财务报告"
+msgstr "会计报告"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_financial_html_report_line
@@ -282,6 +379,11 @@ msgstr "财务报告页脚"
 #, python-format
 msgid "Accounts without a group"
 msgstr "未分组科目"
+
+#. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
+msgid "Accrual Basis"
+msgstr "权责发生制"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
@@ -310,12 +412,12 @@ msgstr "部分下增加合计"
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_cashsummary_prepayments_received0
 msgid "Advance Payments received from customers"
-msgstr "从客户收到的预付款"
+msgstr "从客户处收到的预付款"
 
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_cashsummary_cash_paid0
 msgid "Advance payments made to suppliers"
-msgstr "支付给供应商的预付款"
+msgstr "给供应商的预付款"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_aged_partner
@@ -354,12 +456,12 @@ msgstr "到期的应收"
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_journals
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_multi_company
 msgid "All"
-msgstr "所有"
+msgstr "全部"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_financial_html_report__analytic
 msgid "Allow analytic filters"
-msgstr "允许分析筛选"
+msgstr "允许分析过滤"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_financial_html_report__cash_basis
@@ -374,7 +476,7 @@ msgstr "允许比较"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_financial_html_report__show_journal_filter
 msgid "Allow filtering by journals"
-msgstr "允许日记账筛选"
+msgstr "允许用帐过滤"
 
 #. module: account_reports
 #: selection:account.financial.html.report.line,show_domain:0
@@ -396,12 +498,12 @@ msgstr "货币总额"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
 msgid "Analytic Accounts:"
-msgstr "分析账户:"
+msgstr "辅助核算账户"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.line_caret_options
 msgid "Analytic Entries"
-msgstr "分析分录"
+msgstr "辅助核算分录"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_analytic_report.py:29
@@ -409,12 +511,12 @@ msgstr "分析分录"
 #: model:ir.ui.menu,name:account_reports.menu_action_report_account_analytic
 #, python-format
 msgid "Analytic Report"
-msgstr "分析报告"
+msgstr "辅助核算报表"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
 msgid "Analytic Tags:"
-msgstr "分析标签"
+msgstr "辅助核算标签"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.line_template
@@ -424,7 +526,7 @@ msgstr "注释"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_financial_html_report__applicable_filters_ids
 msgid "Applicable Filters"
-msgstr "可应用的筛选"
+msgstr "过滤适用范围"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_comparison
@@ -533,6 +635,7 @@ msgstr "现金"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
+#: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
 msgid "Cash Basis"
 msgstr "现金收付制"
 
@@ -552,7 +655,7 @@ msgstr "现金流量表"
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_cashsummary_opening_balance0
 msgid "Cash and cash equivalents, beginning of period"
-msgstr "现金及现金等价物，期初"
+msgstr "现金及现金等价物，期间开始"
 
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_cashsummary_closing_balance0
@@ -567,17 +670,17 @@ msgstr "筹资活动现金流量"
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_cashsummary_investing0
 msgid "Cash flows from investing & extraordinary activities"
-msgstr "投资和非营利性活动的现金流"
+msgstr "投资以及超凡活动现金流量"
 
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_cashsummary_operating0
 msgid "Cash flows from operating activities"
-msgstr "经营活动现金流"
+msgstr "经营活动现金流量"
 
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_cashsummary_unclassified0
 msgid "Cash flows from unclassified activities"
-msgstr "未分类活动现金流量"
+msgstr "非保密活动现金流量"
 
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_cashsummary_financing_in0
@@ -631,12 +734,12 @@ msgstr "科目表报告"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_financial_html_report_line__children_ids
 msgid "Children"
-msgstr "子级"
+msgstr "下级"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.view_account_financial_report_line_form
 msgid "Children Lines"
-msgstr "子级的明细行"
+msgstr "下级的行"
 
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_executivesummary_closing_bank_balance0
@@ -685,7 +788,7 @@ msgstr "计算错误：未知差异"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_res_config_settings
 msgid "Config Settings"
-msgstr "配置设定"
+msgstr "配置设置"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_consolidated_journals.py:26
@@ -693,7 +796,7 @@ msgstr "配置设定"
 #: model:ir.ui.menu,name:account_reports.menu_action_account_report_cj
 #, python-format
 msgid "Consolidated Journals"
-msgstr "合并日记账"
+msgstr "综合帐"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_consolidated_journal
@@ -714,7 +817,7 @@ msgstr "装饰"
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_cost_sales0
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_executivesummary_direct_costs0
 msgid "Cost of Revenue"
-msgstr "收入成本"
+msgstr "主营业务成本"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_followup_report.py:248
@@ -741,17 +844,23 @@ msgid "Created on"
 msgstr "创建时间"
 
 #. module: account_reports
-#: code:addons/account_reports/models/account_consolidated_journals.py:29
-#: code:addons/account_reports/models/account_financial_report.py:134
+#: code:addons/account_reports/models/account_financial_report.py:92
+#, python-format
+msgid "Crebit"
+msgstr ""
+
+#. module: account_reports
+#: code:addons/account_reports/models/account_consolidated_journals.py:50
+#: code:addons/account_reports/models/account_financial_report.py:141
 #: code:addons/account_reports/models/account_general_ledger.py:34
-#: code:addons/account_reports/models/account_partner_ledger.py:37
-#: code:addons/account_reports/models/account_report_coa.py:32
-#: code:addons/account_reports/models/account_report_coa.py:37
+#: code:addons/account_reports/models/account_partner_ledger.py:38
+#: code:addons/account_reports/models/account_report_coa.py:30
+#: code:addons/account_reports/models/account_report_coa.py:35
+#: code:addons/account_reports/models/account_report_coa.py:39
 #: code:addons/account_reports/models/account_report_coa.py:41
-#: code:addons/account_reports/models/account_report_coa.py:43
 #, python-format
 msgid "Credit"
-msgstr "信用"
+msgstr "Credit"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_general_ledger.py:32
@@ -779,7 +888,7 @@ msgstr "本年度收益分配"
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_current_year_earnings_line_1
 msgid "Current Year Earnings"
-msgstr "本年度收入"
+msgstr "当本年度收入"
 
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_current_year_earnings0
@@ -859,7 +968,7 @@ msgstr "日期不能为空"
 msgid ""
 "Date where the next action should be taken for a receivable item. Usually, "
 "automatically set when sending reminders through the customer statement."
-msgstr "应收款项的下一个动作的日期。一般在通过客户对账单发送提醒的时候会被自动设置"
+msgstr "应收项目的动作的日期。通常在通过客户对账单发送提醒的时候会被自动设置"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.followup_filter_info_template
@@ -871,7 +980,7 @@ msgstr "日期:"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_res_config_settings__days_between_two_followups
 msgid "Days between two follow-ups"
-msgstr "两次催款之间的天数"
+msgstr "在两次催款之间的天数"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_consolidated_journals.py:29
@@ -884,7 +993,7 @@ msgstr "两次催款之间的天数"
 #: code:addons/account_reports/models/account_report_coa.py:42
 #, python-format
 msgid "Debit"
-msgstr "借方"
+msgstr "Debit"
 
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_depreciation0
@@ -1042,7 +1151,7 @@ msgid ""
 "Expected payment date as manually set through the customer statement (e.g: "
 "if you had the customer on the phone and want to remember the date he "
 "promised he would pay)"
-msgstr "通过客户对账单手动设置期望付款日期（例如：恰巧在你的手机上有客户的信息并且想起他承诺的付款日期）"
+msgstr "通过客户对账单手动设置期望付款日期（例如：恰巧在你的手机上有客户的信息并且想记起他承诺的付款日期）"
 
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_executivesummary_expenses0
@@ -1060,7 +1169,7 @@ msgstr "导出 (XLSX)"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
 msgid "Filter:"
-msgstr "筛选:"
+msgstr "过滤器:"
 
 #. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_account_financial_html_report__applicable_filters_ids
@@ -1092,7 +1201,7 @@ msgstr "可折叠的"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.line_template
 msgid "Folded"
-msgstr "收拢的"
+msgstr "收起"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_followup_report
@@ -1103,12 +1212,12 @@ msgstr "催款报告"
 #: model:ir.actions.act_window,name:account_reports.action_view_list_customer_statements
 #: model:ir.ui.menu,name:account_reports.customer_statements_menu
 msgid "Follow-up Reports"
-msgstr "催款报告"
+msgstr "催款报表"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.customer_statements_tree_view
 msgid "Follow-up Reports Tree View"
-msgstr "跟踪报告树视图"
+msgstr "查看树形催款报表"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_followup_report.py:235
@@ -1120,12 +1229,12 @@ msgstr "催款邮件发送至%s"
 #: code:addons/account_reports/models/account_followup_report.py:257
 #, python-format
 msgid "Follow-up letter printed"
-msgstr "催款信件已打印"
+msgstr "打印催款信件"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.account_reports_journal_dashboard_kanban_view
 msgid "Follow-up reports"
-msgstr "催款报告"
+msgstr "催款报表"
 
 #. module: account_reports
 #. openerp-web
@@ -1135,13 +1244,14 @@ msgid "Follow-ups Done / Total Follow-ups"
 msgstr "跟进完成/跟进总计"
 
 #. module: account_reports
-#: code:addons/account_reports/models/account_followup_report.py:180
+#: code:addons/account_reports/models/account_followup_report.py:189
 #, python-format
 msgid "Followup Report"
-msgstr "催款报告"
+msgstr "催款报表"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_res_partner__followup_status
+#: model:ir.model.fields,field_description:account_reports.field_res_users__followup_status
 msgid "Followup status"
 msgstr "催款状态"
 
@@ -1167,7 +1277,7 @@ msgid ""
 "From %s \n"
 " to  %s"
 msgstr ""
-"从%s \n"
+"来自 %s \n"
 " 到  %s"
 
 #. module: account_reports
@@ -1178,7 +1288,7 @@ msgstr "从头"
 #. module: account_reports
 #: selection:account.financial.html.report.line,special_date_changer:0
 msgid "From the beginning of the fiscal year"
-msgstr "财年期初"
+msgstr "从财政年度开始"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_date_filter
@@ -1248,7 +1358,7 @@ msgstr "Groupby应该是一个来自account . move.line的字段"
 #: code:addons/account_reports/models/account_financial_report.py:831
 #, python-format
 msgid "Groupby should be a journal item field"
-msgstr "Groupby应该是一个日记账的字段"
+msgstr "Groupby应该是一个日志项目字段"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_financial_html_report_line__hide_if_zero
@@ -1294,7 +1404,7 @@ msgstr "需要动作"
 #: model_terms:ir.ui.view,arch_db:account_reports.customer_statements_search_view
 #: selection:res.partner,followup_status:0
 msgid "In need of action"
-msgstr "需要动作"
+msgstr "需要介入"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
@@ -1319,7 +1429,7 @@ msgstr "收入"
 #: model_terms:ir.ui.view,arch_db:account_reports.template_coa_table_header
 #, python-format
 msgid "Initial Balance"
-msgstr "期初余额"
+msgstr "初始余额"
 
 #. module: account_reports
 #. openerp-web
@@ -1402,7 +1512,7 @@ msgstr "银行对账单期末余额"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_date_filter
 msgid "Last Financial Year"
-msgstr "上一会计年度"
+msgstr "上会计年度"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_aged_partner____last_update
@@ -1561,6 +1671,7 @@ msgstr "从不"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_move_line__next_action_date
 #: model:ir.model.fields,field_description:account_reports.field_res_partner__payment_next_action_date
+#: model:ir.model.fields,field_description:account_reports.field_res_users__payment_next_action_date
 msgid "Next Action Date"
 msgstr "下一行动日期"
 
@@ -1578,7 +1689,7 @@ msgstr "没有比较"
 #. module: account_reports
 #: selection:account.financial.html.report.line,figure_type:0
 msgid "No Unit"
-msgstr "无单位"
+msgstr "没有单位"
 
 #. module: account_reports
 #: selection:res.partner,followup_status:0
@@ -1594,7 +1705,7 @@ msgstr "没有比较"
 #. module: account_reports
 #: model_terms:ir.actions.act_window,help:account_reports.action_view_list_customer_statements
 msgid "No follow-up to send!"
-msgstr "没有要发送的催款!"
+msgstr "没有要发送的催款"
 
 #. module: account_reports
 #. openerp-web
@@ -1612,19 +1723,19 @@ msgstr "普通 债务人"
 #: code:addons/account_reports/models/account_aged_partner_balance.py:21
 #, python-format
 msgid "Not due on: %s"
-msgstr "不是到期: %s"
+msgstr "不是期间: %s"
 
 #. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_account_move_line__internal_note
 msgid ""
 "Note you can set through the customer statement about a receivable journal "
 "item"
-msgstr "注意你可以通过关于应收日记账明细的客户对账单来设置"
+msgstr "注意你通过关于应收日记账明细的客户对账单来设置"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_res_company__days_between_two_followups
 msgid "Number of days between two follow-ups"
-msgstr "两次催款之间的天数"
+msgstr "在两次催款之间的天数"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_comparison
@@ -1638,7 +1749,7 @@ msgstr "期间数量"
 msgid ""
 "Odoo will remind you to take care of this follow-up on the next reminder "
 "date."
-msgstr "系统将会在下一个提醒日期提醒你关注一下这个催款"
+msgstr "系统还会在下一个提醒日期提醒你关注一下这个催款"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_aged_partner_balance.py:22
@@ -1704,7 +1815,7 @@ msgstr "业务伙伴"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
 msgid "Partner Categories:"
-msgstr "合作伙伴分类："
+msgstr "合合作伙伴分类:"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_partner_ledger.py:228
@@ -1719,6 +1830,7 @@ msgstr "业务伙伴分类账"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_res_partner__partner_ledger_label
+#: model:ir.model.fields,field_description:account_reports.field_res_users__partner_ledger_label
 msgid "Partner Ledger Label"
 msgstr "合作伙伴分类标签"
 
@@ -1728,12 +1840,19 @@ msgid "Partner Reports"
 msgstr "合作伙伴的报告"
 
 #. module: account_reports
+#. openerp-web
+#: code:addons/account_reports/static/src/js/account_reports.js:415
+#, python-format
+msgid "Partners"
+msgstr "合作伙伴"
+
+#. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
 msgid "Partners:"
 msgstr "业务伙伴"
 
 #. module: account_reports
-#: code:addons/account_reports/models/account_partner_ledger.py:18
+#: code:addons/account_reports/models/account_partner_ledger.py:19
 #, python-format
 msgid "Payable"
 msgstr "应付"
@@ -1755,6 +1874,18 @@ msgid "Performance"
 msgstr "效能"
 
 #. module: account_reports
+#: code:addons/account_reports/models/account_report.py:886
+#, python-format
+msgid "Please specify a start and end date."
+msgstr ""
+
+#. module: account_reports
+#: code:addons/account_reports/models/account_report.py:881
+#, python-format
+msgid "Please specify an end date."
+msgstr ""
+
+#. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_fixed_assets_view0
 msgid "Plus Fixed Assets"
 msgstr "加  固定资产"
@@ -1772,17 +1903,18 @@ msgstr "加 非流动负债"
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_executivesummary_position0
 msgid "Position"
-msgstr "位置"
+msgstr "岗位"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
+#: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
 msgid "Posted Entries Only"
 msgstr "仅已过账分录"
 
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_prepayements0
 msgid "Prepayments"
-msgstr "预付账"
+msgstr "预付账款"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_comparison
@@ -1815,7 +1947,7 @@ msgstr "打印预览"
 #: code:addons/account_reports/static/src/xml/account_report_template.xml:7
 #, python-format
 msgid "Print letter"
-msgstr "打印信"
+msgstr "打印信纸"
 
 #. module: account_reports
 #: model:ir.actions.server,name:account_reports.action_account_reports_customer_statements_do_followup
@@ -1825,7 +1957,7 @@ msgstr "处理催款"
 #. module: account_reports
 #: model:ir.actions.client,name:account_reports.action_account_report_pnl
 msgid "Profit And Loss"
-msgstr "损益表"
+msgstr "利润表"
 
 #. module: account_reports
 #: model:account.financial.html.report,name:account_reports.account_financial_report_profitandloss0
@@ -1943,7 +2075,7 @@ msgstr "勾选此项来自定义下一个提醒日期。"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.template_followup_report
 msgid "Send an email"
-msgstr "发送电子邮件"
+msgstr "发送EMail"
 
 #. module: account_reports
 #. openerp-web
@@ -1982,7 +2114,7 @@ msgstr "显示域"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_financial_html_report__unfold_all_filter
 msgid "Show unfold all filter"
-msgstr "显示展开的所有筛选"
+msgstr "显示所有滤波器展开"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_followup_report.py:31
@@ -2007,26 +2139,33 @@ msgid "Summary"
 msgstr "摘要"
 
 #. module: account_reports
-#: code:addons/account_reports/models/account_generic_tax_report.py:19
-#: code:addons/account_reports/models/account_generic_tax_report.py:22
+#: code:addons/account_reports/models/account_generic_tax_report.py:20
+#: code:addons/account_reports/models/account_generic_tax_report.py:23
 #, python-format
 msgid "TAX"
 msgstr "税"
 
 #. module: account_reports
-#: code:addons/account_reports/models/account_general_ledger.py:432
+#. openerp-web
+#: code:addons/account_reports/static/src/js/account_reports.js:422
+#, python-format
+msgid "Tags"
+msgstr "标签"
+
+#. module: account_reports
+#: code:addons/account_reports/models/account_general_ledger.py:453
 #, python-format
 msgid "Tax Amount"
 msgstr "税金总额"
 
 #. module: account_reports
-#: code:addons/account_reports/models/account_general_ledger.py:423
+#: code:addons/account_reports/models/account_general_ledger.py:444
 #, python-format
 msgid "Tax Declaration"
-msgstr "纳税申报"
+msgstr "税金声明"
 
 #. module: account_reports
-#: code:addons/account_reports/models/account_generic_tax_report.py:152
+#: code:addons/account_reports/models/account_generic_tax_report.py:153
 #: model:ir.model.fields,field_description:account_reports.field_account_financial_html_report__tax_report
 #: model:ir.ui.menu,name:account_reports.menu_action_account_report_gt
 #, python-format
@@ -2040,6 +2179,7 @@ msgstr "文本"
 
 #. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_res_partner__payment_next_action_date
+#: model:ir.model.fields,help:account_reports.field_res_users__payment_next_action_date
 msgid "The date before which no action should be taken."
 msgstr "没有采取动作之前的日期"
 
@@ -2070,7 +2210,7 @@ msgstr "这儿"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_date_filter
 msgid "This Financial Year"
-msgstr "本财年"
+msgstr "这个财政年度"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_date_filter
@@ -2112,34 +2252,36 @@ msgid "Total"
 msgstr "总计"
 
 #. module: account_reports
-#: code:addons/account_reports/models/account_general_ledger.py:394
+#: code:addons/account_reports/models/account_general_ledger.py:421
 #, python-format
 msgid "Total "
 msgstr "总计"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_followup_report.py:35
-#: code:addons/account_reports/models/account_followup_report.py:108
+#: code:addons/account_reports/models/account_followup_report.py:117
 #: model:ir.model.fields,field_description:account_reports.field_res_partner__total_due
+#: model:ir.model.fields,field_description:account_reports.field_res_users__total_due
 #, python-format
 msgid "Total Due"
 msgstr "截止合计"
 
 #. module: account_reports
-#: code:addons/account_reports/models/account_followup_report.py:119
+#: code:addons/account_reports/models/account_followup_report.py:128
 #: model:ir.model.fields,field_description:account_reports.field_res_partner__total_overdue
+#: model:ir.model.fields,field_description:account_reports.field_res_users__total_overdue
 #, python-format
 msgid "Total Overdue"
 msgstr "逾期 总计"
 
 #. module: account_reports
-#: code:addons/account_reports/models/account_bank_reconciliation_report.py:42
+#: code:addons/account_reports/models/account_bank_reconciliation_report.py:45
 #, python-format
 msgid "Total Virtual GL Balance"
 msgstr "总计虚拟余额"
 
 #. module: account_reports
-#: code:addons/account_reports/models/account_report_coa.py:149
+#: code:addons/account_reports/models/account_report_coa.py:147
 #: model:ir.actions.client,name:account_reports.action_account_report_coa
 #: model:ir.ui.menu,name:account_reports.menu_action_account_report_coa
 #, python-format
@@ -2187,18 +2329,19 @@ msgstr "展开"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
 msgid "Unreconciled"
-msgstr "未调节"
+msgstr "取消核销"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_res_partner__unreconciled_aml_ids
+#: model:ir.model.fields,field_description:account_reports.field_res_users__unreconciled_aml_ids
 msgid "Unreconciled Aml"
-msgstr "未调节Aml"
+msgstr "未核销的Aml"
 
 #. module: account_reports
-#: code:addons/account_reports/models/account_bank_reconciliation_report.py:166
+#: code:addons/account_reports/models/account_bank_reconciliation_report.py:181
 #, python-format
 msgid "Unreconciled Bank Statement Lines"
-msgstr "未调节的明细行"
+msgstr "未核销的明细行"
 
 #. module: account_reports
 #: selection:account.financial.html.report.line,special_date_changer:0
@@ -2275,6 +2418,7 @@ msgstr "勾选后，总计和小计会显示在报表部分的下面。"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
+#: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
 msgid "With Draft Entries"
 msgstr "带有草稿分录"
 
@@ -2309,17 +2453,17 @@ msgstr "提醒之间的间隔"
 #. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_account_financial_html_report__analytic
 msgid "display the analytic filters"
-msgstr "显示分析筛选"
+msgstr "显示分析过滤"
 
 #. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_account_financial_html_report__comparison
 msgid "display the comparison filter"
-msgstr "显示比较筛选"
+msgstr "显示比较的过滤器"
 
 #. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_account_financial_html_report__show_journal_filter
 msgid "display the journal filter in the report"
-msgstr "在报表中显示日记账筛选"
+msgstr "在报表中显示日志过滤器"
 
 #. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_account_financial_html_report__cash_basis

@@ -4,13 +4,16 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# Jorunn D. Newth, 2018
+# Jan Pedro Tumusok <jpt@eyenetworks.no>, 2018
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"PO-Revision-Date: 2016-08-05 13:28+0000\n"
+"Last-Translator: Jan Pedro Tumusok <jpt@eyenetworks.no>, 2018\n"
 "Language-Team: Norwegian Bokmål (https://www.transifex.com/odoo/teams/41243/nb/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -96,13 +99,13 @@ msgid "Companies"
 msgstr "Firmaer"
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:187
+#: code:addons/account_yodlee/models/yodlee.py:199
 #, python-format
 msgid "Could not make sense of parameters: %s"
 msgstr ""
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:319
+#: code:addons/account_yodlee/models/yodlee.py:339
 #, python-format
 msgid ""
 "Credential Re-Verification Required (402): We could not update your account "
@@ -111,11 +114,17 @@ msgid ""
 msgstr ""
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:325
+#: code:addons/account_yodlee/models/yodlee.py:345
 #, python-format
 msgid ""
 "Credential Re-Verification Required (420):The site has merged with another. "
 "Please re-verify your credentials at the site and update the same."
+msgstr ""
+
+#. module: account_yodlee
+#: code:addons/account_yodlee/models/yodlee.py:228
+#, python-format
+msgid "Error %s, message: %s"
 msgstr ""
 
 #. module: account_yodlee
@@ -590,3 +599,9 @@ msgstr "Yodlee-passord"
 #: model:ir.model.fields,field_description:account_yodlee.field_res_company__yodlee_access_token
 msgid "access_token"
 msgstr "access_token"
+
+#. module: account_yodlee
+#: code:addons/account_yodlee/models/yodlee.py:297
+#, python-format
+msgid "message: %s"
+msgstr ""

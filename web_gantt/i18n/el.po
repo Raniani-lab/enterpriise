@@ -3,15 +3,16 @@
 # * web_gantt
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Kostas Goutoudis <goutoudis@gmail.com>, 2018
+# Martin Trigaux, 2019
+# Kostas Goutoudis <goutoudis@gmail.com>, 2019
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-18 10:05+0000\n"
-"PO-Revision-Date: 2018-09-18 10:05+0000\n"
-"Last-Translator: Kostas Goutoudis <goutoudis@gmail.com>, 2018\n"
+"PO-Revision-Date: 2016-08-05 13:32+0000\n"
+"Last-Translator: Kostas Goutoudis <goutoudis@gmail.com>, 2019\n"
 "Language-Team: Greek (https://www.transifex.com/odoo/teams/41243/el/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -25,7 +26,7 @@ msgstr ""
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:31
 #, python-format
 msgid "Day"
-msgstr "Ημέρα"
+msgstr ""
 
 #. module: web_gantt
 #. openerp-web
@@ -47,7 +48,7 @@ msgstr "Gantt"
 #: code:addons/web_gantt/static/src/js/gantt_renderer.js:74
 #, python-format
 msgid "Gantt View"
-msgstr "Προβολή Gantt"
+msgstr ""
 
 #. module: web_gantt
 #. openerp-web
@@ -56,7 +57,7 @@ msgstr "Προβολή Gantt"
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:33
 #, python-format
 msgid "Month"
-msgstr "Μήνας"
+msgstr ""
 
 #. module: web_gantt
 #. openerp-web
@@ -77,7 +78,7 @@ msgstr "Προηγούμενο"
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:14
 #, python-format
 msgid "Today"
-msgstr "Σήμερα"
+msgstr ""
 
 #. module: web_gantt
 #. openerp-web
@@ -85,7 +86,7 @@ msgstr "Σήμερα"
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:32
 #, python-format
 msgid "Week"
-msgstr "Εβδομάδα"
+msgstr ""
 
 #. module: web_gantt
 #. openerp-web
@@ -93,18 +94,18 @@ msgstr "Εβδομάδα"
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:34
 #, python-format
 msgid "Year"
-msgstr "Έτος"
+msgstr ""
 
 #. module: web_gantt
 #. openerp-web
 #: code:addons/web_gantt/static/src/js/gantt_controller.js:208
 #, python-format
 msgid "You are trying to write on a read-only field!"
-msgstr "Προσπαθείτε να γράψετε σε ένα πεδίο το οποίο είναι μόνο για ανάγνωση!"
+msgstr ""
 
 #. module: web_gantt
 #. openerp-web
 #: code:addons/web_gantt/static/src/js/gantt_controller.js:203
 #, python-format
 msgid "You have no date_stop field defined!"
-msgstr "Δεν έχετε ορίσει ένα πεδίο τύπου date_stop!"
+msgstr ""

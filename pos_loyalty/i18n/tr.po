@@ -3,20 +3,22 @@
 # * pos_loyalty
 # 
 # Translators:
-# Ediz Duman <neps1192@gmail.com>, 2018
-# Ayhan KIZILTAN <akiziltan76@hotmail.com>, 2018
-# Martin Trigaux, 2018
-# Levent Karakaş <levent@mektup.at>, 2018
-# Murat Kaplan <muratk@projetgrup.com>, 2018
-# Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2018
+# Fırat Kaya <firat.kaya@mechsoft.com.tr>, 2017
+# Ediz Duman <neps1192@gmail.com>, 2017
+# Ayhan KIZILTAN <akiziltan76@hotmail.com>, 2017
+# Gökhan Erdoğdu <gokhan.erdogdu@mechsoft.com.tr>, 2017
+# gezgin biri <gezginbiri@hotmail.com>, 2017
+# Murat Kaplan <muratk@projetgrup.com>, 2017
 # Umur Akın <umura@projetgrup.com>, 2018
+# Martin Trigaux, 2019
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Umur Akın <umura@projetgrup.com>, 2018\n"
+"PO-Revision-Date: 2016-08-05 13:31+0000\n"
+"Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -57,12 +59,12 @@ msgstr "Bu sadakat program ödülü için dahili bir kimlik"
 #. module: pos_loyalty
 #: selection:loyalty.rule,rule_type:0
 msgid "Category"
-msgstr "Kategori"
+msgstr "Kategorisi"
 
 #. module: pos_loyalty
 #: model:ir.model,name:pos_loyalty.model_res_partner
 msgid "Contact"
-msgstr "İletişim"
+msgstr "Kontak"
 
 #. module: pos_loyalty
 #: model_terms:ir.actions.act_window,help:pos_loyalty.action_loyalty_program_form
@@ -109,7 +111,7 @@ msgstr "Görünüm Adı"
 #. module: pos_loyalty
 #: model:ir.model.fields,help:pos_loyalty.field_loyalty_rule__rule_type
 msgid "Does this rule affects products, or a category of products ?"
-msgstr "Bu kural, ürünlerinizi ya da ürün kategorilerinizi etkiler mi?"
+msgstr "Bu kural ürünlerinizi ya da ürün kategorilerinizi etkiler mi?"
 
 #. module: pos_loyalty
 #: selection:loyalty.reward,reward_type:0
@@ -124,7 +126,7 @@ msgstr "Hediye Ürün"
 #. module: pos_loyalty
 #: model:ir.model.fields,help:pos_loyalty.field_loyalty_program__pp_product
 msgid "How many loyalty points are given to the customer by product sold"
-msgstr "Satılan ürüne göre müşteriye kaç sadakat puanı verilsin?"
+msgstr "Satılan ürün adına müşteriye kaç sadakat puanı verilsin?"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,help:pos_loyalty.field_loyalty_program__pp_currency
@@ -140,7 +142,7 @@ msgstr "Her sipariş ve satış için müşteriye kaç sadakat puanı verilsin?"
 #. module: pos_loyalty
 #: model:ir.model.fields,help:pos_loyalty.field_loyalty_rule__pp_product
 msgid "How many points the product will earn per product ordered"
-msgstr "Satılan ürün başına ürün kaç puan kazanacak?"
+msgstr "Ürün siparişi başına kaç puan kazanacak?"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,help:pos_loyalty.field_loyalty_rule__pp_currency
@@ -253,12 +255,12 @@ msgstr "Lütfen bir ödül seçin"
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_reward__point_cost
 msgid "Point Cost"
-msgstr "Maliyet Puanı"
+msgstr "Nokta Maliyeti"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_reward__point_product_id
 msgid "Point Product"
-msgstr "Ürün Puanı"
+msgstr "Nokta Ürün"
 
 #. module: pos_loyalty
 #: model:ir.model,name:pos_loyalty.model_pos_config
@@ -277,26 +279,26 @@ msgstr "Satış Noktası Siparişi"
 #: code:addons/pos_loyalty/static/src/xml/loyalty.xml:81
 #, python-format
 msgid "Points"
-msgstr "Puanlar"
+msgstr "Noktalar"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_program__rounding
 msgid "Points Rounding"
-msgstr "Puanları Yuvarlama"
+msgstr "Yuvarlama Noktası"
 
 #. module: pos_loyalty
 #. openerp-web
 #: code:addons/pos_loyalty/static/src/xml/loyalty.xml:57
 #, python-format
 msgid "Points Spent"
-msgstr "Harcanan Puanlar"
+msgstr "Harcama Noktası"
 
 #. module: pos_loyalty
 #. openerp-web
 #: code:addons/pos_loyalty/static/src/xml/loyalty.xml:111
 #, python-format
 msgid "Points Spent:"
-msgstr "Harcanan Puanlar"
+msgstr "Harcama Noktası"
 
 #. module: pos_loyalty
 #. openerp-web
@@ -310,13 +312,13 @@ msgstr "Kazanılan Puanlar"
 #: code:addons/pos_loyalty/static/src/xml/loyalty.xml:100
 #, python-format
 msgid "Points Won:"
-msgstr "Kazanılan Puanlar"
+msgstr "Kazanma Noktası"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_program__pp_currency
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_rule__pp_currency
 msgid "Points per currency"
-msgstr "Para birimi başına puan"
+msgstr "Döviz başına puan"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_program__pp_order
@@ -347,7 +349,7 @@ msgstr "Yeniden Satış"
 #. module: pos_loyalty
 #: model_terms:ir.ui.view,arch_db:pos_loyalty.view_loyalty_reward_form
 msgid "Reward Name"
-msgstr "Ödül Adı"
+msgstr "Ödül ADı"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_reward__reward_type

@@ -3,16 +3,19 @@
 # * inter_company_rules
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
-# Thomas Pot <thomas@open2bizz.nl>, 2018
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2016
+# Cas Vissers <casvissers@brahoo.nl>, 2018
+# Yenthe Van Ginneken <yenthespam@gmail.com>, 2018
+# Martin Trigaux, 2019
+# Thomas Pot <thomas@open2bizz.nl>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Thomas Pot <thomas@open2bizz.nl>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"PO-Revision-Date: 2016-08-05 13:29+0000\n"
+"Last-Translator: Thomas Pot <thomas@open2bizz.nl>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -193,7 +196,6 @@ msgid "Rule Type"
 msgstr "Regelsoort"
 
 #. module: inter_company_rules
-#: model:ir.model,name:inter_company_rules.model_sale_order
 #: selection:res.company,applicable_on:0
 #: selection:res.config.settings,applicable_on:0
 msgid "Sale Order"
@@ -204,6 +206,11 @@ msgstr "Verkooporder"
 #: selection:res.config.settings,applicable_on:0
 msgid "Sale and Purchase Order"
 msgstr "Verkoop en inkooporder"
+
+#. module: inter_company_rules
+#: model:ir.model,name:inter_company_rules.model_sale_order
+msgid "Sales Order"
+msgstr "Verkooporder"
 
 #. module: inter_company_rules
 #: model:ir.model.fields,field_description:inter_company_rules.field_res_config_settings__rules_company_id
@@ -311,4 +318,4 @@ msgstr "naar dit bedrijf,"
 #: selection:res.company,auto_validation:0
 #: selection:res.config.settings,auto_validation:0
 msgid "validated"
-msgstr "bevestigd"
+msgstr "gevalideerd"

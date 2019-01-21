@@ -4,21 +4,34 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
-# Quim - eccit <quim@eccit.com>, 2018
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-08-24 11:49+0000\n"
-"Last-Translator: Quim - eccit <quim@eccit.com>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:12+0000\n"
+"PO-Revision-Date: 2017-02-15 11:47+0000\n"
+"Last-Translator: Martin Trigaux, 2018\n"
 "Language-Team: Catalan (https://www.transifex.com/odoo/teams/41243/ca/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Language: ca\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: website_helpdesk_forum
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
+msgid ""
+"<i class=\"fa fa-check-circle oe_answer_true\" role=\"img\" aria-"
+"label=\"Question has accepted answer\"/>"
+msgstr ""
+
+#. module: website_helpdesk_forum
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
+msgid ""
+"<i class=\"fa fa-external-link forum_link\" role=\"img\" aria-"
+"label=\"Redirect to external link\"/>"
+msgstr ""
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
@@ -33,7 +46,7 @@ msgstr ""
 #. module: website_helpdesk_forum
 #: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_ticket__forum_post_id
 msgid "Forum Post"
-msgstr "Missatge fòrum"
+msgstr ""
 
 #. module: website_helpdesk_forum
 #: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_ticket__use_website_helpdesk_forum

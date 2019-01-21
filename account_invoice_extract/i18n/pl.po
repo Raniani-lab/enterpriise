@@ -3,20 +3,21 @@
 # * account_invoice_extract
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Judyta Kaźmierczak <judyta.kazmierczak@openglobe.pl>, 2018
-# Marcin Młynarczyk <mlynarczyk@gmail.com>, 2018
-# Andrzej Donczew <a.donczew@hadron.eu.com>, 2018
-# Piotr Szlązak <szlazakpiotr@gmail.com>, 2018
-# Maksym <ms@myodoo.pl>, 2018
+# Martin Trigaux, 2019
+# Judyta Kaźmierczak <judyta.kazmierczak@openglobe.pl>, 2019
+# Piotr Szlązak <szlazakpiotr@gmail.com>, 2019
+# Marcin Młynarczyk <mlynarczyk@gmail.com>, 2019
+# Andrzej Donczew <a.donczew@hadron.eu.com>, 2019
+# Maksym <ms@myodoo.pl>, 2019
+# Piotr Cierkosz <piotr.w.cierkosz@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-25 12:42+0000\n"
-"PO-Revision-Date: 2018-08-24 11:36+0000\n"
-"Last-Translator: Maksym <ms@myodoo.pl>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:12+0000\n"
+"PO-Revision-Date: 2019-01-16 08:36+0000\n"
+"Last-Translator: Piotr Cierkosz <piotr.w.cierkosz@gmail.com>, 2019\n"
 "Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,23 +28,18 @@ msgstr ""
 #. module: account_invoice_extract
 #: model:ir.model.fields,help:account_invoice_extract.field_account_invoice_extract_words__selected_status
 msgid ""
-"0 for 'not selected', 1 for ocr choosed and 2 for ocr selected but not "
-"choosed by user"
+"0 for 'not selected', 1 for 'ocr selected with no user selection' and 2 for "
+"'ocr selected with user selection (user may have selected the same box)"
 msgstr ""
 
 #. module: account_invoice_extract
 #: selection:account.invoice,extract_state:0
 msgid "An error occured"
-msgstr ""
+msgstr "Wystąpił błąd"
 
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.invoice_supplier_form_inherit_ocr
 msgid "An error occured during the ocr process."
-msgstr ""
-
-#. module: account_invoice_extract
-#: model_terms:ir.ui.view,arch_db:account_invoice_extract.res_config_settings_view_form
-msgid "Autocomplete Vendor Bills (OCR + AI)"
 msgstr ""
 
 #. module: account_invoice_extract
@@ -54,7 +50,7 @@ msgstr ""
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.invoice_supplier_form_inherit_ocr
 msgid "Buy credits"
-msgstr ""
+msgstr "Zakup kredyty"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice__extract_can_show_resend_button
@@ -74,7 +70,7 @@ msgstr "Firmy"
 #. module: account_invoice_extract
 #: selection:account.invoice,extract_state:0
 msgid "Completed flow"
-msgstr ""
+msgstr "Zakończony proces"
 
 #. module: account_invoice_extract
 #: model:ir.model,name:account_invoice_extract.model_res_config_settings
@@ -99,7 +95,7 @@ msgstr "Nazwa wyświetlana"
 #. module: account_invoice_extract
 #: selection:res.company,extract_show_ocr_option_selection:0
 msgid "Do not process bills"
-msgstr ""
+msgstr "Nie przetwarzaj rachunków"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice__extract_word_ids
@@ -218,12 +214,12 @@ msgstr ""
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.invoice_supplier_form_inherit_ocr
 msgid "Update status"
-msgstr ""
+msgstr "Zaktualizuj status"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words__user_selected
 msgid "User Selected"
-msgstr ""
+msgstr "Użytkownik wybrany"
 
 #. module: account_invoice_extract
 #: selection:account.invoice,extract_state:0
@@ -233,13 +229,6 @@ msgstr ""
 #. module: account_invoice_extract
 #: selection:account.invoice,extract_state:0
 msgid "Waiting validation"
-msgstr ""
-
-#. module: account_invoice_extract
-#: model_terms:ir.ui.view,arch_db:account_invoice_extract.res_config_settings_view_form
-msgid ""
-"When receiving an email with a bill, or uploading scanned bills, Odoo will "
-"parse them (OCR) and auto-complete (AI) Draft Bills to validate."
 msgstr ""
 
 #. module: account_invoice_extract

@@ -3,16 +3,18 @@
 # * inter_company_rules
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018
+# Yaroslav Molochko <onorua@gmail.com>, 2018
+# Bohdan Lisnenko, 2018
+# Martin Trigaux, 2019
+# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-08-24 11:38+0000\n"
-"Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"PO-Revision-Date: 2016-08-05 13:29+0000\n"
+"Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -29,7 +31,7 @@ msgstr "Рахунок:"
 #. module: inter_company_rules
 #: model_terms:ir.ui.view,arch_db:inter_company_rules.res_config_settings_view_form
 msgid ", generate a"
-msgstr ""
+msgstr ", створити"
 
 #. module: inter_company_rules
 #: model_terms:ir.ui.view,arch_db:inter_company_rules.view_company_inter_change_inherit_form
@@ -40,6 +42,11 @@ msgid ""
 "                                    <span attrs=\"{'invisible':[('applicable_on','!=', 'sale_purchase')]}\" class=\"ml4\"> Sale and Purchase Order</span>\n"
 "                                </strong> using"
 msgstr ""
+"<strong>\n"
+"                                    <span attrs=\"{'invisible': [('applicable_on','!=', 'purchase')]}\" class=\"ml4\">Замовлення на продаж</span>\n"
+"                                    <span attrs=\"{'invisible': [('applicable_on','!=', 'sale')]}\" class=\"ml4\">Замовлення на купівлю</span>\n"
+"                                    <span attrs=\"{'invisible':[('applicable_on','!=', 'sale_purchase')]}\" class=\"ml4\"> Замовлення на продаж та купівлю</span>\n"
+"                                </strong> використовуючи"
 
 #. module: inter_company_rules
 #: model_terms:ir.ui.view,arch_db:inter_company_rules.res_config_settings_view_form
@@ -51,6 +58,12 @@ msgid ""
 "                            </strong>\n"
 "                            using"
 msgstr ""
+"<strong>\n"
+"                                <span attrs=\"{'invisible': [('applicable_on','!=', 'purchase')]}\" class=\"ml8\">Замовлення на продаж </span>\n"
+"                                <span attrs=\"{'invisible': [('applicable_on','!=', 'sale')]}\" class=\"ml8\">Замовлення а купівлю </span>\n"
+"                                <span attrs=\"{'invisible': [('applicable_on','!=', 'sale_purchase')]}\" class=\"ml8\"> Замовлення на продаж та купівлю </span>\n"
+"                            </strong>\n"
+"                            використовуючи"
 
 #. module: inter_company_rules
 #: model:ir.model.fields,field_description:inter_company_rules.field_res_company__applicable_on
@@ -77,7 +90,7 @@ msgstr "Автогенероване замовлення на продаж"
 #: model:ir.model.fields,field_description:inter_company_rules.field_res_company__auto_validation
 #: model:ir.model.fields,field_description:inter_company_rules.field_res_config_settings__auto_validation
 msgid "Auto Validation"
-msgstr ""
+msgstr "Автоматичне підтвердження"
 
 #. module: inter_company_rules
 #: model:ir.model,name:inter_company_rules.model_res_company
@@ -122,14 +135,15 @@ msgstr ""
 #. module: inter_company_rules
 #: model:ir.model.fields,field_description:inter_company_rules.field_res_company__intercompany_user_id
 msgid "Inter Company User"
-msgstr "Внутрішній користувач компанії"
+msgstr "Користувач внутрішня компанія"
 
 #. module: inter_company_rules
 #: code:addons/inter_company_rules/models/purchase_order.py:42
 #: code:addons/inter_company_rules/models/sale_order.py:46
 #, python-format
 msgid "Inter company user of company %s doesn't have enough access rights"
-msgstr "Внутрішній користувач компанії %s немає достатніх прав доступу"
+msgstr ""
+"Внутрішня компанія користувач компанії %s немає достатніх прав доступу"
 
 #. module: inter_company_rules
 #: model_terms:ir.ui.view,arch_db:inter_company_rules.view_company_inter_change_inherit_form
@@ -159,7 +173,7 @@ msgstr ""
 #: code:addons/inter_company_rules/models/sale_order.py:43
 #, python-format
 msgid "Provide one user for intercompany relation for % "
-msgstr "Надайте одного користувача для зв'язку між компаніями для %"
+msgstr "Надайте одного користувача для співвідношення між компаніями для %"
 
 #. module: inter_company_rules
 #: model:ir.model,name:inter_company_rules.model_purchase_order
@@ -183,17 +197,21 @@ msgid "Rule Type"
 msgstr "Тип правила"
 
 #. module: inter_company_rules
-#: model:ir.model,name:inter_company_rules.model_sale_order
 #: selection:res.company,applicable_on:0
 #: selection:res.config.settings,applicable_on:0
 msgid "Sale Order"
-msgstr "Замовлення на продаж"
+msgstr "Замовлення"
 
 #. module: inter_company_rules
 #: selection:res.company,applicable_on:0
 #: selection:res.config.settings,applicable_on:0
 msgid "Sale and Purchase Order"
-msgstr ""
+msgstr "Замовлення на продаж та купівлю"
+
+#. module: inter_company_rules
+#: model:ir.model,name:inter_company_rules.model_sale_order
+msgid "Sales Order"
+msgstr "Замовлення на продаж"
 
 #. module: inter_company_rules
 #: model:ir.model.fields,field_description:inter_company_rules.field_res_config_settings__rules_company_id
@@ -225,17 +243,17 @@ msgstr "Початкове замовлення на купівлю"
 #. module: inter_company_rules
 #: model:ir.model.fields,field_description:inter_company_rules.field_purchase_order__auto_sale_order_id
 msgid "Source Sales Order"
-msgstr "Джерело замовлення на продаж"
+msgstr "Джерело продажів замовлення"
 
 #. module: inter_company_rules
 #: selection:res.company,rule_type:0 selection:res.config.settings,rule_type:0
 msgid "Synchronize Invoices & Bills"
-msgstr ""
+msgstr "Синхронізувати рахунки"
 
 #. module: inter_company_rules
 #: selection:res.company,rule_type:0 selection:res.config.settings,rule_type:0
 msgid "Synchronize Sales & Purchase Orders"
-msgstr ""
+msgstr "Синхронізувати замовлення на продаж та купівлю"
 
 #. module: inter_company_rules
 #: model:ir.model.fields,field_description:inter_company_rules.field_res_company__warehouse_id
@@ -251,7 +269,7 @@ msgstr "Склад для замовлень на купівлю"
 #: model_terms:ir.ui.view,arch_db:inter_company_rules.res_config_settings_view_form
 #: model_terms:ir.ui.view,arch_db:inter_company_rules.view_company_inter_change_inherit_form
 msgid "When a company validates a"
-msgstr ""
+msgstr "Коли компанія підтверджує"
 
 #. module: inter_company_rules
 #: code:addons/inter_company_rules/models/purchase_order.py:47
@@ -279,12 +297,12 @@ msgstr ""
 #: selection:res.company,auto_validation:0
 #: selection:res.config.settings,auto_validation:0
 msgid "draft"
-msgstr ""
+msgstr "чернетка"
 
 #. module: inter_company_rules
 #: model_terms:ir.ui.view,arch_db:inter_company_rules.view_company_inter_change_inherit_form
 msgid "generate a"
-msgstr ""
+msgstr "створити"
 
 #. module: inter_company_rules
 #: model_terms:ir.ui.view,arch_db:inter_company_rules.res_config_settings_view_form
@@ -294,10 +312,10 @@ msgstr "по"
 #. module: inter_company_rules
 #: model_terms:ir.ui.view,arch_db:inter_company_rules.view_company_inter_change_inherit_form
 msgid "to this company,"
-msgstr ""
+msgstr "цій компанії,"
 
 #. module: inter_company_rules
 #: selection:res.company,auto_validation:0
 #: selection:res.config.settings,auto_validation:0
 msgid "validated"
-msgstr ""
+msgstr "підтверджено"

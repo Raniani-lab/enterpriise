@@ -3,24 +3,16 @@
 # * website_helpdesk_slides
 # 
 # Translators:
-# Martin Trigaux, 2018
-# zbik2607 <darek@krokus.com.pl>, 2018
-# Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2018
-# Judyta Kaźmierczak <judyta.kazmierczak@openglobe.pl>, 2018
-# Tomasz Leppich <t.leppich@gmail.com>, 2018
-# Zdzisław Krajewski <zdzichucb@gmail.com>, 2018
-# Piotr Szlązak <szlazakpiotr@gmail.com>, 2018
-# Marcin Młynarczyk <mlynarczyk@gmail.com>, 2018
-# Andrzej Donczew <a.donczew@hadron.eu.com>, 2018
 # Paweł Wodyński <pw@myodoo.pl>, 2018
-# Wiktor Kaźmierczak <wik92tor@wp.pl>, 2018
+# Piotr Cierkosz <piotr.w.cierkosz@gmail.com>, 2019
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Wiktor Kaźmierczak <wik92tor@wp.pl>, 2018\n"
+"PO-Revision-Date: 2017-02-15 11:47+0000\n"
+"Last-Translator: Piotr Cierkosz <piotr.w.cierkosz@gmail.com>, 2019\n"
 "Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -42,22 +34,22 @@ msgstr "Anuluj"
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__category_id
 msgid "Category"
-msgstr "Kategoria"
+msgstr ""
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__channel_id
 msgid "Channel"
-msgstr "Kanał"
+msgstr ""
 
 #. module: website_helpdesk_slides
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.slides_page
 msgid "Click here to view more result..."
-msgstr "Kliknij tutaj aby zobaczyć więcej rezultatów...."
+msgstr ""
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__datas
 msgid "Content"
-msgstr "Zawartość"
+msgstr ""
 
 #. module: website_helpdesk_slides
 #: code:addons/website_helpdesk_slides/wizard/slide_slide.py:38
@@ -72,62 +64,62 @@ msgstr ""
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__create_uid
 msgid "Created by"
-msgstr "Utworzona przez"
+msgstr ""
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__create_date
 msgid "Created on"
-msgstr "Data utworzenia"
+msgstr ""
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__description
 msgid "Description"
-msgstr "Opis"
+msgstr ""
 
 #. module: website_helpdesk_slides
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.slide_upload_wizard_view_form
 msgid "Description..."
-msgstr "Opis..."
+msgstr ""
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__display_name
 msgid "Display Name"
-msgstr "Nazwa wyświetlana"
+msgstr ""
 
 #. module: website_helpdesk_slides
 #: selection:slide.upload.wizard,slide_type:0
 msgid "Document"
-msgstr "Dokument"
+msgstr ""
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__document_id
 msgid "Document ID"
-msgstr "ID dokumentu"
+msgstr ""
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__url
 msgid "Document URL"
-msgstr "URL dokumentu"
+msgstr ""
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__file_name
 msgid "Filename"
-msgstr "Nazwa pliku"
+msgstr ""
 
 #. module: website_helpdesk_slides
 #: model:ir.model,name:website_helpdesk_slides.model_helpdesk_team
 msgid "Helpdesk Team"
-msgstr "Zespół pomocy"
+msgstr ""
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__id
 msgid "ID"
-msgstr "ID"
+msgstr ""
 
 #. module: website_helpdesk_slides
 #: selection:slide.upload.wizard,slide_type:0
 msgid "Infographic"
-msgstr "Infografika"
+msgstr ""
 
 #. module: website_helpdesk_slides
 #: code:addons/website_helpdesk_slides/wizard/slide_slide.py:53
@@ -144,27 +136,27 @@ msgstr "Nieprawidłowy typ slajdu. Wybierz dokument lub typ prezentacji."
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard____last_update
 msgid "Last Modified on"
-msgstr "Data ostatniej modyfikacji"
+msgstr ""
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__write_uid
 msgid "Last Updated by"
-msgstr "Ostatnio aktualizowane przez"
+msgstr ""
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__write_date
 msgid "Last Updated on"
-msgstr "Data ostatniej aktualizacji"
+msgstr ""
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__mime_type
 msgid "Mime-type"
-msgstr "Typ-mime"
+msgstr ""
 
 #. module: website_helpdesk_slides
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.slide_upload_wizard_view_form
 msgid "Name"
-msgstr "Nazwa"
+msgstr ""
 
 #. module: website_helpdesk_slides
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.website_helpdesk_slides_team_page
@@ -185,7 +177,7 @@ msgstr "Popularne prezentacje"
 #. module: website_helpdesk_slides
 #: selection:slide.upload.wizard,slide_type:0
 msgid "Presentation"
-msgstr "Prezentacja"
+msgstr ""
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_helpdesk_team__elearning_url
@@ -195,17 +187,17 @@ msgstr "Adres URL prezentacji"
 #. module: website_helpdesk_slides
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.slide_upload_wizard_view_form
 msgid "Save"
-msgstr "Zapisz"
+msgstr ""
 
 #. module: website_helpdesk_slides
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.slide_upload_wizard_view_form
 msgid "Slide"
-msgstr "Slajd"
+msgstr ""
 
 #. module: website_helpdesk_slides
 #: model:ir.actions.act_window,name:website_helpdesk_slides.slide_upload_action
 msgid "Slide Upload"
-msgstr "Prześlij slajd"
+msgstr "Prześlij prezentację"
 
 #. module: website_helpdesk_slides
 #: model:ir.model,name:website_helpdesk_slides.model_slide_upload_wizard
@@ -220,12 +212,12 @@ msgstr ""
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__tag_ids
 msgid "Tags"
-msgstr "Tagi"
+msgstr "Znaczniki"
 
 #. module: website_helpdesk_slides
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.slide_upload_wizard_view_form
 msgid "Tags..."
-msgstr "Znaczniki..."
+msgstr ""
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,help:website_helpdesk_slides.field_slide_upload_wizard__slide_type
@@ -233,14 +225,11 @@ msgid ""
 "The document type will be set automatically based on the document URL and "
 "properties (e.g. height and width for presentation and document)."
 msgstr ""
-"Typ dokumentu zostanie ustawiony automatycznie na podstawie adresu URL "
-"dokumentu i właściwości (na przykład wysokości i szerokości dla prezentacji "
-"i dokumentu)."
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,help:website_helpdesk_slides.field_helpdesk_team__elearning_url
 msgid "The full URL to access the document through the website."
-msgstr "Pełny adres URL dostępu do dokumentu przez stronę."
+msgstr ""
 
 #. module: website_helpdesk_slides
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.helpdesk_team_view_form_inherit_website_helpdesk_slides
@@ -250,12 +239,12 @@ msgstr "Pokrewny kanał to:<br/>"
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__name
 msgid "Title"
-msgstr "Tytuł"
+msgstr ""
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__slide_type
 msgid "Type"
-msgstr "Typ"
+msgstr ""
 
 #. module: website_helpdesk_slides
 #: code:addons/website_helpdesk_slides/wizard/slide_slide.py:87
@@ -267,7 +256,7 @@ msgstr ""
 #. module: website_helpdesk_slides
 #: selection:slide.upload.wizard,slide_type:0
 msgid "Video"
-msgstr "Wideo"
+msgstr ""
 
 #. module: website_helpdesk_slides
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.helpdesk_team_view_form_inherit_website_helpdesk_slides
@@ -277,20 +266,20 @@ msgstr "Zobacz prezentacje:<br/>"
 #. module: website_helpdesk_slides
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.slides_page
 msgid "Views ."
-msgstr "Widoki ."
+msgstr ""
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,help:website_helpdesk_slides.field_slide_upload_wizard__document_id
 msgid "Youtube or Google Document ID"
-msgstr "Youtube lub Google Document ID"
+msgstr ""
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,help:website_helpdesk_slides.field_slide_upload_wizard__url
 msgid "Youtube or Google Document URL"
-msgstr "Youtube lub Google Document URL"
+msgstr ""
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_helpdesk_team__elearning_id
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.helpdesk_team_view_form_inherit_website_helpdesk_slides
 msgid "eLearning"
-msgstr "eNauka"
+msgstr ""

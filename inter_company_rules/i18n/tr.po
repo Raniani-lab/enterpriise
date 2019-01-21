@@ -3,21 +3,23 @@
 # * inter_company_rules
 # 
 # Translators:
-# Ayhan KIZILTAN <akiziltan76@hotmail.com>, 2018
-# Martin Trigaux, 2018
-# Levent Karakaş <levent@mektup.at>, 2018
-# Murat Kaplan <muratk@projetgrup.com>, 2018
+# Ayhan KIZILTAN <akiziltan76@hotmail.com>, 2017
+# Cem Uygur <cemuygur.beb@gmail.com>, 2017
+# Ediz Duman <neps1192@gmail.com>, 2017
+# Murat Kaplan <muratk@projetgrup.com>, 2017
 # Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2018
-# Cem Uygur <cemuygur.beb@gmail.com>, 2018
 # Umur Akın <umura@projetgrup.com>, 2018
-# Buket Şeker <buket_skr@hotmail.com>, 2018
+# Levent Karakaş <levent@mektup.at>, 2018
+# Martin Trigaux, 2019
+# Buket Şeker <buket_skr@hotmail.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Buket Şeker <buket_skr@hotmail.com>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"PO-Revision-Date: 2016-08-05 13:29+0000\n"
+"Last-Translator: Buket Şeker <buket_skr@hotmail.com>, 2019\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -87,7 +89,7 @@ msgstr ""
 #. module: inter_company_rules
 #: model:ir.model,name:inter_company_rules.model_res_company
 msgid "Companies"
-msgstr "Şirketler"
+msgstr "Firmalar"
 
 #. module: inter_company_rules
 #: model:ir.model,name:inter_company_rules.model_res_config_settings
@@ -118,8 +120,8 @@ msgid ""
 "Default value to set on Purchase(Sales) Orders that will be created based on"
 " Sale(Purchase) Orders made to this company"
 msgstr ""
-"Bu şirkete yapılan Satış (Satın Alma) Siparişlerine dayalı olarak "
-"oluşturulacak Satın Alma (Satış) Siparişleri için varsayılan değer."
+"Şirket için yapılan Satış Siparişi baz alınarak yapılacak Satın Alma Talebi "
+"için varsayılan değer."
 
 #. module: inter_company_rules
 #: model:ir.model.fields,field_description:inter_company_rules.field_res_company__intercompany_user_id
@@ -132,7 +134,7 @@ msgstr "Grup Şirket Transfer Kullanıcısı"
 #, python-format
 msgid "Inter company user of company %s doesn't have enough access rights"
 msgstr ""
-"%s şirketinin grup şirket kullanıcısı yeterli erişim haklarına sahip değil"
+"%s firmasının grup şirket kullanıcısı yeterli erişim haklarına sahip değil"
 
 #. module: inter_company_rules
 #: model_terms:ir.ui.view,arch_db:inter_company_rules.view_company_inter_change_inherit_form
@@ -185,7 +187,6 @@ msgid "Rule Type"
 msgstr "Kural Türü"
 
 #. module: inter_company_rules
-#: model:ir.model,name:inter_company_rules.model_sale_order
 #: selection:res.company,applicable_on:0
 #: selection:res.config.settings,applicable_on:0
 msgid "Sale Order"
@@ -198,6 +199,11 @@ msgid "Sale and Purchase Order"
 msgstr ""
 
 #. module: inter_company_rules
+#: model:ir.model,name:inter_company_rules.model_sale_order
+msgid "Sales Order"
+msgstr "Satış Siparişi"
+
+#. module: inter_company_rules
 #: model:ir.model.fields,field_description:inter_company_rules.field_res_config_settings__rules_company_id
 msgid "Select Company"
 msgstr "Şirket Seç"
@@ -205,7 +211,7 @@ msgstr "Şirket Seç"
 #. module: inter_company_rules
 #: model:ir.model.fields,help:inter_company_rules.field_res_config_settings__rules_company_id
 msgid "Select company to setup Inter company rules."
-msgstr "Grup şirket kurallarını ayarlamak için şirket seçin."
+msgstr "Grup şirket kurallarına göre ayarlamak için şirket seçin."
 
 #. module: inter_company_rules
 #: model:ir.model.fields,help:inter_company_rules.field_res_company__rule_type

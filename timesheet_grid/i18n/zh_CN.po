@@ -3,18 +3,25 @@
 # * timesheet_grid
 # 
 # Translators:
+# Liping Wang <lynn.config@gmail.com>, 2016
+# Xu Lei <xulei8@qq.com>, 2016
+# Maie <m@maie.name>, 2016
+# Yaorong Li <55yaorong.li@gmail.com>, 2017
 # Martin Trigaux, 2018
-# 珠海-杜哥 <liangjia@qq.com>, 2018
+# e2f <projects@e2f.com>, 2018
 # snow wang <147156565@qq.com>, 2018
-# Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
 # keecome <7017511@qq.com>, 2018
+# Jeffery CHEN Fan <jeffery9@gmail.com>, 2019
+# liAnGjiA <liangjia@qq.com>, 2019
+# inspur qiuguodong <qiuguodong@inspur.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: keecome <7017511@qq.com>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"PO-Revision-Date: 2016-08-05 13:32+0000\n"
+"Last-Translator: inspur qiuguodong <qiuguodong@inspur.com>, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -398,7 +405,7 @@ msgstr "取消"
 #: code:addons/timesheet_grid/static/src/js/tour.js:21
 #, python-format
 msgid "Choose a <b>project name</b>. (e.g. name of a customer, or product)"
-msgstr "选择 <b>项目名称</b>. (例如客户名称或产品)"
+msgstr "<b/>"
 
 #. module: timesheet_grid
 #: model:ir.model,name:timesheet_grid.model_res_company
@@ -408,7 +415,7 @@ msgstr "公司"
 #. module: timesheet_grid
 #: model:ir.model,name:timesheet_grid.model_res_config_settings
 msgid "Config Settings"
-msgstr "配置设定"
+msgstr "配置设置"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_timesheet_validation__create_uid
@@ -435,7 +442,7 @@ msgstr "提醒经理 天数"
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_config_settings__reminder_user_delay
 msgid "Days to Remind User"
-msgstr "提醒用户天数"
+msgstr "提醒用户日"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_timesheet_validation__display_name
@@ -576,6 +583,18 @@ msgid ""
 msgstr "只允许时间表管理员创建早于验证限制的条目。"
 
 #. module: timesheet_grid
+#: code:addons/timesheet_grid/models/analytic.py:121
+#, python-format
+msgid "Only a Timesheets Manager is allowed to delete a validated entry."
+msgstr ""
+
+#. module: timesheet_grid
+#: code:addons/timesheet_grid/models/analytic.py:115
+#, python-format
+msgid "Only a Timesheets Manager is allowed to modify a validated entry."
+msgstr ""
+
+#. module: timesheet_grid
 #: model:mail.template,subject:timesheet_grid.mail_template_timesheet_reminder_user
 msgid "Reminder to log your timesheets"
 msgstr "记录工时表的提醒"
@@ -616,8 +635,8 @@ msgid "Time Spent"
 msgstr "花费的时间"
 
 #. module: timesheet_grid
-#: code:addons/timesheet_grid/models/analytic.py:142
-#: code:addons/timesheet_grid/models/analytic.py:152
+#: code:addons/timesheet_grid/models/analytic.py:157
+#: code:addons/timesheet_grid/models/analytic.py:167
 #, python-format
 msgid "Timesheet Adjustment"
 msgstr "工时表调整"

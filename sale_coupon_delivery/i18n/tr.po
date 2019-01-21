@@ -3,17 +3,17 @@
 # * sale_coupon_delivery
 # 
 # Translators:
-# Ediz Duman <neps1192@gmail.com>, 2018
-# Martin Trigaux, 2018
-# Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2018
+# Ediz Duman <neps1192@gmail.com>, 2017
 # Umur Akın <umura@projetgrup.com>, 2018
+# Martin Trigaux, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Umur Akın <umura@projetgrup.com>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"PO-Revision-Date: 2017-02-15 11:46+0000\n"
+"Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,6 +27,7 @@ msgid "Discount"
 msgstr "İndirim"
 
 #. module: sale_coupon_delivery
+#: model:ir.model.fields,help:sale_coupon_delivery.field_sale_coupon_program__reward_type
 #: model:ir.model.fields,help:sale_coupon_delivery.field_sale_coupon_reward__reward_type
 msgid ""
 "Discount - Reward will be provided as discount.\n"
@@ -56,14 +57,10 @@ msgid "Free Shipping"
 msgstr "Ücretsiz Sevkiyat"
 
 #. module: sale_coupon_delivery
+#: model:ir.model.fields,field_description:sale_coupon_delivery.field_sale_coupon_program__reward_type
 #: model:ir.model.fields,field_description:sale_coupon_delivery.field_sale_coupon_reward__reward_type
 msgid "Reward Type"
 msgstr "Ödül Türü"
-
-#. module: sale_coupon_delivery
-#: model:ir.model,name:sale_coupon_delivery.model_sale_order
-msgid "Sale Order"
-msgstr "Satış Siparişi"
 
 #. module: sale_coupon_delivery
 #: model:ir.model,name:sale_coupon_delivery.model_sale_coupon_program
@@ -73,7 +70,12 @@ msgstr "Satış Kuponu Programı"
 #. module: sale_coupon_delivery
 #: model:ir.model,name:sale_coupon_delivery.model_sale_coupon_reward
 msgid "Sales Coupon Reward"
-msgstr "Satış Kuponu Ödülü"
+msgstr "Satış Kupon Ödülü"
+
+#. module: sale_coupon_delivery
+#: model:ir.model,name:sale_coupon_delivery.model_sale_order
+msgid "Sales Order"
+msgstr "Satış Siparişi"
 
 #. module: sale_coupon_delivery
 #: model:ir.model,name:sale_coupon_delivery.model_sale_order_line
@@ -85,4 +87,4 @@ msgstr "Satış Sipariş Satırı"
 #: code:addons/sale_coupon_delivery/models/sale_coupon_program.py:23
 #, python-format
 msgid "The shipping costs are not in the order lines."
-msgstr "Sevkiyat maliyetleri sipariş satırlarında değildir."
+msgstr "Sevkiyat maliyeti sipariş satırlarında değildir."

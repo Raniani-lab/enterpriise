@@ -3,16 +3,19 @@
 # * account_online_sync
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018
+# Zoriana Zaiats, 2018
+# ТАрас <tratatuta@i.ua>, 2018
+# Bohdan Lisnenko, 2018
+# Martin Trigaux, 2019
+# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-08-24 11:36+0000\n"
-"Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018\n"
+"PO-Revision-Date: 2016-08-05 13:28+0000\n"
+"Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,39 +26,39 @@ msgstr ""
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "\" bank accounts have been retrieved."
-msgstr ""
+msgstr "\"отримані банківські рахунки."
 
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "<strong>Ooops</strong> It would seems that the process to"
-msgstr ""
+msgstr "<strong>От халепа!</strong> Здається, що процес "
 
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "<strong>Ooops</strong> We could not"
-msgstr ""
+msgstr "<strong>От халепа!</strong> Ми не можемо"
 
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "<strong>Success!</strong> Your account has been succesfully refreshed."
-msgstr ""
+msgstr "<strong>Вітаємо!</strong> Ваш рахунок успішно оновлено."
 
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "<strong>Success!</strong> Your account has been succesfully updated."
-msgstr ""
+msgstr "<strong>Вітаємо!</strong> Ваш рахунок успішно оновлено."
 
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid ""
 "<strong>Well done!</strong> Your banking institution is now connected to "
 "Odoo."
-msgstr ""
+msgstr "<strong>Гарна робота!</strong> Ваш банк з'єднано з Odoo."
 
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "A total of \""
-msgstr ""
+msgstr "Сума \""
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_journal__account_number
@@ -66,30 +69,30 @@ msgstr "Номер рахунку"
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__account_online_journal_ids
 msgid "Account Online Journal"
-msgstr "Журнал рахунку онлайн"
+msgstr "Бухгалтерський онлайн-журнал"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_journal__account_online_provider_id
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_journal__account_online_provider_id
 msgid "Account Online Provider"
-msgstr "Провайдер рахунку онлайн"
+msgstr "Бухгалтерський онлайн-провайдер"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_link_wizard__account_online_wizard_id
 msgid "Account Online Wizard"
-msgstr ""
+msgstr "Помічник онлайн рахунку"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_link_wizard__name
 msgid "Account name"
-msgstr ""
+msgstr "Назва рахунку"
 
 #. module: account_online_sync
 #: model:ir.actions.server,name:account_online_sync.online_sync_cron_ir_actions_server
 #: model:ir.cron,cron_name:account_online_sync.online_sync_cron
 #: model:ir.cron,name:account_online_sync.online_sync_cron
 msgid "Account: Journal online sync"
-msgstr "Рахунок: онлайн-синхронізація журналу"
+msgstr "Обліковий запис: онлайн-синхронізація журналу"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_link_wizard__action
@@ -99,7 +102,7 @@ msgstr "Дія"
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message_needaction
 msgid "Action Needed"
-msgstr "Необхідна дія"
+msgstr "Дія необхідна"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__action_required
@@ -110,7 +113,7 @@ msgstr "Потрібна дія"
 #: code:addons/account_online_sync/models/online_sync.py:360
 #, python-format
 msgid "Add a Bank Account"
-msgstr ""
+msgstr "Додати банківський рахунок"
 
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.online_provider_account_form_view
@@ -132,7 +135,7 @@ msgstr "Підрахунок прикріплення"
 #: code:addons/account_online_sync/models/online_sync.py:317
 #, python-format
 msgid "Automated Bank Synchronization"
-msgstr ""
+msgstr "Автоматизована банківська синхронізація"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_journal__balance
@@ -184,7 +187,7 @@ msgstr "Компанія"
 #: model_terms:ir.ui.view,arch_db:account_online_sync.account_bank_journal_form_inherit_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.account_journal_form_inherit_online_sync
 msgid "Configure"
-msgstr "Налаштувати"
+msgstr "Налаштування"
 
 #. module: account_online_sync
 #: model:ir.model,name:account_online_sync.model_res_partner
@@ -195,12 +198,12 @@ msgstr "Контакт"
 #: code:addons/account_online_sync/models/online_sync.py:161
 #, python-format
 msgid "Create a Bank Account"
-msgstr ""
+msgstr "Створити банківський рахунок"
 
 #. module: account_online_sync
 #: selection:account.online.link.wizard,action:0
 msgid "Create new journal"
-msgstr ""
+msgstr "Створити новий журнал"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_journal__create_uid
@@ -230,6 +233,9 @@ msgid ""
 "                                               will be created when fetching new transactions\n"
 "                                               from your bank account."
 msgstr ""
+"Визначте, коли буде створено\n"
+"                                             банківську виписку під час отримання нових транзакцій\n"
+"                                               з вашого банківського рахунку."
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_journal__display_name
@@ -242,7 +248,7 @@ msgstr "Назва для відображення"
 #. module: account_online_sync
 #: selection:account.online.link.wizard,action:0
 msgid "Do not link"
-msgstr ""
+msgstr "Не пов'язуйте"
 
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
@@ -277,7 +283,7 @@ msgstr "Підписники (Партнери)"
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_wizard__hide_table
 msgid "Hide Table"
-msgstr ""
+msgstr "Сховати таблицю"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_journal__id
@@ -306,7 +312,7 @@ msgstr ""
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_provider__message_unread
 msgid "If checked new messages require your attention."
-msgstr "Якщо позначено, то повідомленя потребує вашої уваги."
+msgstr "Якщо позначено, то повідомленя потребує вашої уваги"
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_provider__message_needaction
@@ -350,7 +356,7 @@ msgstr "Назва журналу"
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_link_wizard__journal_statements_creation
 msgid "Journal Statements Creation"
-msgstr ""
+msgstr "Створення журналу виписок"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_journal____last_update
@@ -389,17 +395,17 @@ msgstr "Остання синхронізація"
 #. module: account_online_sync
 #: model:ir.model,name:account_online_sync.model_account_online_link_wizard
 msgid "Link synchronized account to a journal"
-msgstr ""
+msgstr "Зв'язок синхронізованого облікового запису з журналом"
 
 #. module: account_online_sync
 #: selection:account.online.link.wizard,action:0
 msgid "Link to existing journal"
-msgstr ""
+msgstr "Прив’язати до існуючого журналу"
 
 #. module: account_online_sync
 #: model_terms:ir.actions.act_window,help:account_online_sync.action_online_provider_account
 msgid "List of bank(s) providing online synchronization"
-msgstr ""
+msgstr "Список банків, які забезпечують синхронізацію в режимі онлайн"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message_main_attachment_id
@@ -450,12 +456,14 @@ msgid ""
 "No bank journal could be found! Please install a chart of accounts first, in"
 " order to create one."
 msgstr ""
+"Банківський журнал не знайдено! Спочатку встановіть план рахунків, щоб "
+"створити його."
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:109
 #, python-format
 msgid "No new transactions have been loaded in the system."
-msgstr ""
+msgstr "У системі не було завантажено нових транзакцій."
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_wizard__number_added
@@ -502,21 +510,21 @@ msgstr "Онлайн ідентифікатор"
 #. module: account_online_sync
 #: model:ir.actions.act_window,name:account_online_sync.action_online_provider_account
 msgid "Online Institution Accounts"
-msgstr ""
+msgstr "Облікові записи державної установи онлайн"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_bank_statement_line__online_partner_bank_account
 #: model:ir.model.fields,field_description:account_online_sync.field_res_partner__online_partner_bank_account
 #: model:ir.model.fields,field_description:account_online_sync.field_res_users__online_partner_bank_account
 msgid "Online Partner Bank Account"
-msgstr ""
+msgstr "Банківський рахунок партнера онлайн"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_bank_statement_line__online_partner_vendor_name
 #: model:ir.model.fields,field_description:account_online_sync.field_res_partner__online_partner_vendor_name
 #: model:ir.model.fields,field_description:account_online_sync.field_res_users__online_partner_vendor_name
 msgid "Online Partner Vendor Name"
-msgstr ""
+msgstr "Ім'я онлайн партнера постачальника"
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:375
@@ -543,7 +551,7 @@ msgstr "Plaid"
 #: code:addons/account_online_sync/models/online_sync.py:82
 #, python-format
 msgid "Please enter at least a character for the search"
-msgstr ""
+msgstr "Введіть принаймні символ для пошуку"
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:285
@@ -552,6 +560,8 @@ msgid ""
 "Please link your accounts to a journal or select \"do not link\" as action "
 "to do"
 msgstr ""
+"Зв’яжіть ваш обліковий запис із журналом або виберіть \"не зв’язувати\" як "
+"дію"
 
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.account_journal_dashboard_inherit_online_sync
@@ -588,7 +598,7 @@ msgstr "Провайдер для синхронізації онлайн рах
 #: code:addons/account_online_sync/models/online_sync.py:90
 #, python-format
 msgid "Server not reachable, please try again later"
-msgstr ""
+msgstr "Сервер недоступний. Повторіть спробу пізніше"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_wizard__status
@@ -608,7 +618,7 @@ msgstr "Успіх"
 #. module: account_online_sync
 #: model:ir.actions.act_window,name:account_online_sync.action_account_online_wizard_form
 msgid "Synchronization result"
-msgstr ""
+msgstr "Результат синхронізації"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_journal__synchronization_status
@@ -625,7 +635,7 @@ msgstr "Синхронізувати зараз"
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_wizard__account_ids
 msgid "Synchronized accounts"
-msgstr ""
+msgstr "Синхронізовані рахунки"
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_provider__message
@@ -637,7 +647,7 @@ msgstr ""
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_wizard__hide_table
 msgid "Technical field to hide table in view"
-msgstr ""
+msgstr "Технічне поле, щоби приховати таблицю у перегляді"
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_bank_statement_line__online_partner_bank_account
@@ -646,6 +656,8 @@ msgstr ""
 msgid ""
 "Technical field used to store information from plaid/yodlee to match partner"
 msgstr ""
+"Технічне поле, що використовується для зберігання інформації з plaid/yodlee "
+"для партнера"
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_bank_statement_line__online_partner_vendor_name
@@ -655,11 +667,13 @@ msgid ""
 "Technical field used to store information from plaid/yodlee to match partner"
 " (used when a purchase is made)"
 msgstr ""
+"Технічне поле, яке використовується для зберігання інформації з plaid/yodlee"
+" до відповідного партнера (використовується при здійсненні покупки)"
 
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
 msgid "The account has been linked to your bank journal."
-msgstr ""
+msgstr "Обліковий запис пов'язано з вашим банківським журналом."
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:63
@@ -671,7 +685,7 @@ msgstr "Така помилка виникла під час синхроніз�
 #: code:addons/account_online_sync/models/online_sync.py:105
 #, python-format
 msgid "The following transactions have been loaded in the system."
-msgstr ""
+msgstr "У системі завантажено наступні операції."
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:74
@@ -701,7 +715,7 @@ msgstr "Нереалізовано"
 #: code:addons/account_online_sync/models/online_sync.py:117
 #, python-format
 msgid "Unknown reason"
-msgstr ""
+msgstr "Невідома причина"
 
 #. module: account_online_sync
 #: model:ir.model.fields,field_description:account_online_sync.field_account_online_provider__message_unread
@@ -742,7 +756,7 @@ msgstr "Історія бесіди на сайті"
 #. module: account_online_sync
 #: model:ir.model,name:account_online_sync.model_account_online_wizard
 msgid "Wizard to link synchronized accounts to journal"
-msgstr ""
+msgstr "Помічник для з'єднання синхронізованого облікового запису із журналом"
 
 #. module: account_online_sync
 #: selection:account.online.provider,provider_type:0
@@ -755,17 +769,19 @@ msgid ""
 "You can associate those bank accounts to a journal in order to automatically"
 " retrieve the latest statements from your bank."
 msgstr ""
+"Ви можете пов’язати ці банківські рахунки з журналом, щоб автоматично "
+"отримувати останні виписки з банку."
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:287
 #, python-format
 msgid "You can not link two accounts to the same journal"
-msgstr ""
+msgstr "Не можна пов’язати два облікові записи в одному журналі"
 
 #. module: account_online_sync
 #: selection:account.online.wizard,method:0
 msgid "add"
-msgstr ""
+msgstr "додати"
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_journal__balance
@@ -776,7 +792,7 @@ msgstr "залишок рахунку, відправлений сторонні
 #. module: account_online_sync
 #: selection:account.online.wizard,method:0
 msgid "edit"
-msgstr ""
+msgstr "редагувати"
 
 #. module: account_online_sync
 #: model:ir.model.fields,help:account_online_sync.field_account_online_journal__online_identifier
@@ -806,7 +822,7 @@ msgstr "оновити"
 #: code:addons/account_online_sync/models/online_sync.py:107
 #, python-format
 msgid "transactions loaded"
-msgstr ""
+msgstr "транзакції завантажено"
 
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
@@ -814,6 +830,8 @@ msgid ""
 "your account because of the following\n"
 "                    error during the process:"
 msgstr ""
+"вашого облікового запису через таку\n"
+"                    помилку під час процесу:"
 
 #. module: account_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_sync.view_account_online_wizard_form
@@ -822,3 +840,6 @@ msgid ""
 "                    thoroughly completed. You can try to manually update your account by clicking the refresh button on the dashboard\n"
 "                    or in the online synchronization menu."
 msgstr ""
+"вашого облікового запису не було\n"
+"                     ретельно завершено. Можна спробувати оновити обліковий запис вручну, натиснувши кнопку \"Оновити\" на інформаційній панелі\n"
+"                     або в меню онлайн-синхронізації."

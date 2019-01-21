@@ -3,14 +3,15 @@
 # * mass_mailing_themes
 # 
 # Translators:
-# Martin Trigaux, 2018
+# Cozmin Candea <office@terrabit.ro>, 2018
 # Dorin Hongu <dhongu@gmail.com>, 2018
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-18 10:05+0000\n"
-"PO-Revision-Date: 2018-09-18 10:05+0000\n"
+"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"PO-Revision-Date: 2016-08-05 13:29+0000\n"
 "Last-Translator: Dorin Hongu <dhongu@gmail.com>, 2018\n"
 "Language-Team: Romanian (https://www.transifex.com/odoo/teams/41243/ro/)\n"
 "MIME-Version: 1.0\n"
@@ -69,6 +70,27 @@ msgstr "<small>Pas 2:</small>"
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template
 msgid "<small>Step 3:</small>"
 msgstr "<small>Pasul 3:</small>"
+
+#. module: mass_mailing_themes
+#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template
+msgid ""
+"<span class=\"fa fa-compass fa-2x text-delta\" aria-label=\"Choose\" "
+"title=\"Choose\"/>"
+msgstr ""
+
+#. module: mass_mailing_themes
+#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template
+msgid ""
+"<span class=\"fa fa-credit-card fa-2x text-delta\" aria-label=\"Order\" "
+"title=\"Order\"/>"
+msgstr ""
+
+#. module: mass_mailing_themes
+#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template
+msgid ""
+"<span class=\"fa fa-smile-o fa-2x text-delta\" aria-label=\"Enjoy!\" "
+"title=\"Enjoy!\"/>"
+msgstr ""
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template

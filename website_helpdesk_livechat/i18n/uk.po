@@ -3,16 +3,16 @@
 # * website_helpdesk_livechat
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018
+# Bohdan Lisnenko, 2018
+# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-18 10:05+0000\n"
-"PO-Revision-Date: 2018-08-24 11:49+0000\n"
-"Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:12+0000\n"
+"PO-Revision-Date: 2017-02-15 11:47+0000\n"
+"Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -38,9 +38,14 @@ msgid ""
 "                    "
 msgstr ""
 "<br><br>\n"
-"                    Ви можете створити нову заявку, натиснувши <b>/helpdesk \"заголовок заявки\"</b>.<br>\n"
-"                    Ви можете знайти заявку, натиснувши <b>/helpdesk_search \"Keywords1 Keywords2 etc\"</b><br>\n"
+"                    Ви можете створити новий квиток, натиснувши <b>/helpdesk \"заголовок квитка\"</b>.<br>\n"
+"                    Ви можете знайти квиток, натиснувши <b>/helpdesk_search \"Keywords1 Keywords2 etc\"</b><br>\n"
 "                    "
+
+#. module: website_helpdesk_livechat
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
+msgid "<i class=\"fa fa-fw fa-arrow-right\" aria-label=\"Go to\" title=\"Go to\"/>"
+msgstr "<i class=\"fa fa-fw fa-arrow-right\" aria-label=\"Go to\" title=\"Go to\"/>"
 
 #. module: website_helpdesk_livechat
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
@@ -56,13 +61,13 @@ msgstr "Налаштуйте запитувані відповіді"
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:37
 #, python-format
 msgid "Create a new helpdesk ticket"
-msgstr "Створити нову заявку довідки"
+msgstr "Створити нову заявку служби підтримки"
 
 #. module: website_helpdesk_livechat
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:72
 #, python-format
 msgid "Created a new ticket and request: %s"
-msgstr "Створено нову заявку та запит: %s"
+msgstr "Створений новий квиток та запит: %s"
 
 #. module: website_helpdesk_livechat
 #: model:ir.model,name:website_helpdesk_livechat.model_mail_channel
@@ -77,7 +82,7 @@ msgstr "Команда служби підтримки"
 #. module: website_helpdesk_livechat
 #: model:ir.model.fields,field_description:website_helpdesk_livechat.field_helpdesk_team__is_canned_response
 msgid "Is Canned Response"
-msgstr "Закріплений відгук"
+msgstr "Консервативний відгук"
 
 #. module: website_helpdesk_livechat
 #: model:ir.model.fields,field_description:website_helpdesk_livechat.field_helpdesk_team__feature_livechat_channel_id
@@ -96,9 +101,9 @@ msgid ""
 "No tickets found related to the search query. <br> make sure to use the "
 "right format: (/helpdesk_search Keyword1 Keyword2 etc...)"
 msgstr ""
-"Не знайдено жодної заявки, пов'язаної з пошуковим запитом. <br> обов'язково "
-"використовуйте правильний формат: (/helpdesk_search Keyword1 Keyword2 "
-"etc...)"
+"Не знайдено жодного квитка, пов'язаного з пошуковим запитом. <br> "
+"обов'язково використовуйте правильний формат: (/helpdesk_search Keyword1 "
+"Keyword2 etc...)"
 
 #. module: website_helpdesk_livechat
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:76
@@ -115,7 +120,7 @@ msgid ""
 msgstr ""
 "Встановіть ярлики заздалегідь заданих відповідей. Це працює як у поштовому "
 "композері, так і в реальному чаті. Просто натисніть клавішу \":\", за якою "
-"слідує ярлик, щоб вибрати закріплені відповіді.."
+"слідує ярлик, щоб вибрати консервативні повернення."
 
 #. module: website_helpdesk_livechat
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
@@ -152,7 +157,7 @@ msgstr "Використовуйте попередньо визначені в�
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:99
 #, python-format
 msgid "We found some matched ticket(s) related to the search query: %s"
-msgstr "Ми знайшли відповідні заявки, пов'язані з пошуковим запитом: %s"
+msgstr "Ми знайшли відповідні квитки, пов'язані з пошуковим запитом: %s"
 
 #. module: website_helpdesk_livechat
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:51
@@ -173,7 +178,7 @@ msgid ""
 "You can search ticket by typing <b>/helpdesk_search \"Keywords1 Keywords2 "
 "etc\"</b><br>"
 msgstr ""
-"Ви можете знайти заявку, натиснувши <b>/helpdesk_search \"Keywords1 "
+"Ви можете знайти квиток, натиснувши <b>/helpdesk_search \"Keywords1 "
 "Keywords2 etc\"</b><br>"
 
 #. module: website_helpdesk_livechat

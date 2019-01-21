@@ -3,19 +3,17 @@
 # * account_sepa
 # 
 # Translators:
-# Ediz Duman <neps1192@gmail.com>, 2018
-# Martin Trigaux, 2018
-# Murat Kaplan <muratk@projetgrup.com>, 2018
-# Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2018
 # Umur Akın <umura@projetgrup.com>, 2018
-# Buket Şeker <buket_skr@hotmail.com>, 2018
+# Murat Kaplan <muratk@projetgrup.com>, 2019
+# Buket Şeker <buket_skr@hotmail.com>, 2019
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Buket Şeker <buket_skr@hotmail.com>, 2018\n"
+"PO-Revision-Date: 2016-08-05 13:28+0000\n"
+"Last-Translator: Buket Şeker <buket_skr@hotmail.com>, 2019\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -31,7 +29,7 @@ msgstr ""
 #. module: account_sepa
 #: model:ir.model,name:account_sepa.model_res_company
 msgid "Companies"
-msgstr "Şirketler"
+msgstr "Firmalar"
 
 #. module: account_sepa
 #: model:ir.model,name:account_sepa.model_res_config_settings
@@ -210,7 +208,7 @@ msgid ""
 "The account %s, linked to partner '%s', is not of type IBAN.\n"
 "A valid IBAN account is required to use SEPA features."
 msgstr ""
-"İş ortağı '%s' ile bağlantılı hesap %s, IBAN cinsinden değil.\n"
+"İş ortağı '% s' ile bağlantılı hesap% s, IBAN cinsinden değil.\n"
 "SEPA özelliklerini kullanmak için geçerli bir IBAN hesabı gereklidir."
 
 #. module: account_sepa
@@ -220,7 +218,7 @@ msgid ""
 "The account %s, of journal '%s', is not of type IBAN.\n"
 "A valid IBAN account is required to use SEPA features."
 msgstr ""
-"Yevmiye '%s' hesabının %s, türü IBAN değil.\n"
+"Yevmiye '% s' hesabının% s, türü IBAN değil.\n"
 "SEPA özelliklerini kullanmak için geçerli bir IBAN hesabı gereklidir"
 
 #. module: account_sepa
@@ -283,7 +281,7 @@ msgid ""
 "The partner account '%s' requires a Bank Identification Code (BIC) to pay "
 "via SEPA. Please configure it first."
 msgstr ""
-"İş ortağı hesabının '%s', SEPA yoluyla ödeme yapmak için bir Banka Kimlik "
+"İş ortağı hesabının '% s', SEPA yoluyla ödeme yapmak için bir Banka Kimlik "
 "Kodu (BIC) gerektiriyor. Lütfen önce yapılandırın."
 
 #. module: account_sepa
@@ -345,7 +343,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_sepa.field_res_company__sepa_initiating_party_name
 #: model:ir.model.fields,field_description:account_sepa.field_res_config_settings__sepa_initiating_party_name
 msgid "Your Company Name"
-msgstr "Şirketinizin Adı"
+msgstr "Firmanızın Adı"
 
 #. module: account_sepa
 #: code:addons/account_sepa/models/account_batch_payment.py:84

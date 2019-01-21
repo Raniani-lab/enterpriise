@@ -3,24 +3,42 @@
 # * account_accountant
 # 
 # Translators:
-# Martin Trigaux, 2018
+# Raul Tlaxcala Trujillo <rtlaxcala@gmail.com>, 2016
+# José Vicente <txusev@gmail.com>, 2017
+# Daniel Blanco <daniel@blancomartin.com.ar>, 2017
+# e2f_es_ t6 <e2f_es_t6@outlook.com>, 2017
+# José Matias Zuazo <jose.zuazo@tpsistemas.com.ar>, 2017
+# Pedro M. Baeza <pedro.baeza@gmail.com>, 2017
+# Christopher Ormaza <chris.ormaza@gmail.com>, 2017
+# Raquel Iciarte <ric@odoo.com>, 2017
+# Martin Trigaux, 2017
 # Cristóbal Martí Oliver <info@moblesmarti.com>, 2018
-# Cristopher Cravioto <ccr@odoo.com>, 2018
-# Emilio Silva <efsilvay@gmail.com>, 2018
+# Cristian Salamea <ovnicraft@gmail.com>, 2019
+# Gabriel Umaña <gabriel.umana@delfixcr.com>, 2019
+# Cristopher Cravioto <ccr@odoo.com>, 2019
+# Emilio Silva <efsilvay@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-08-24 11:36+0000\n"
-"Last-Translator: Emilio Silva <efsilvay@gmail.com>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:12+0000\n"
+"PO-Revision-Date: 2016-08-05 12:55+0000\n"
+"Last-Translator: Emilio Silva <efsilvay@gmail.com>, 2019\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Language: es\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: account_accountant
+#: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
+msgid ""
+"<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-"
+"specific.\" role=\"img\" aria-label=\"Values set here are company-"
+"specific.\" groups=\"base.group_multi_company\"/>"
+msgstr ""
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
@@ -31,6 +49,11 @@ msgstr "<span class=\"o_form_label\">Año Fiscal</span>"
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid "<span class=\"o_form_label\">Inter-Banks Transfers</span>"
 msgstr "<span class=\"o_form_label\">Transferencias Interbancarias</span>"
+
+#. module: account_accountant
+#: model:ir.model,name:account_accountant.model_account_chart_template
+msgid "Account Chart Template"
+msgstr "Plantilla de Plan de Cuentas"
 
 #. module: account_accountant
 #: model:ir.ui.menu,name:account_accountant.menu_account_group
@@ -53,6 +76,7 @@ msgid "Account used when transferring between banks"
 msgstr "Cuenta usada cuando se transfiere entre bancos"
 
 #. module: account_accountant
+#: model:ir.ui.menu,name:account_accountant.menu_accounting
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_partner_view_form
 msgid "Accounting"
@@ -96,12 +120,12 @@ msgstr "Creado el"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid "Define fiscal years of more or less than a year"
-msgstr ""
+msgstr "Permite definir años fiscales para más o menos de 1 año"
 
 #. module: account_accountant
 #: model:ir.model,name:account_accountant.model_digest_digest
 msgid "Digest"
-msgstr "Digerir"
+msgstr "Resumen"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__display_name
@@ -138,6 +162,14 @@ msgid "ID"
 msgstr "ID (identificación)"
 
 #. module: account_accountant
+#: code:addons/account_accountant/models/res_config_settings.py:49
+#, python-format
+msgid ""
+"Incorrect fiscal year date: day is out of range for month. Month: %s; Day: "
+"%s"
+msgstr ""
+
+#. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_res_config_settings__transfer_account_id
 msgid ""
 "Intermediary account used when moving money from a liquidity account to "
@@ -149,7 +181,7 @@ msgstr ""
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_digest_digest__kpi_account_bank_cash_value
 msgid "Kpi Account Bank Cash Value"
-msgstr ""
+msgstr "KPI del valor de la cuenta de efectivo y banco "
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form

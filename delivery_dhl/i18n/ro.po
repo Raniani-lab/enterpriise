@@ -3,16 +3,17 @@
 # * delivery_dhl
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Cozmin Candea <office@terrabit.ro>, 2018
 # Dorin Hongu <dhongu@gmail.com>, 2018
+# Martin Trigaux, 2019
+# Cozmin Candea <office@terrabit.ro>, 2019
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Dorin Hongu <dhongu@gmail.com>, 2018\n"
+"PO-Revision-Date: 2016-08-05 13:28+0000\n"
+"Last-Translator: Cozmin Candea <office@terrabit.ro>, 2019\n"
 "Language-Team: Romanian (https://www.transifex.com/odoo/teams/41243/ro/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -274,7 +275,7 @@ msgstr ""
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_region_code:0
 msgid "Europe"
-msgstr ""
+msgstr "Europa"
 
 #. module: delivery_dhl
 #: selection:delivery.carrier,dhl_product_code:0

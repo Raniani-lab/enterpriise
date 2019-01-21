@@ -3,27 +3,38 @@
 # * website_crm_score
 # 
 # Translators:
-# 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2018
-# v2exerer <9010446@qq.com>, 2018
-# Jackie Zhang <jzh@odoo.com>, 2018
-# Martin Trigaux, 2018
-# bower Guo <124358678@qq.com>, 2018
-# roye w <159820@qq.com>, 2018
-# ChinaMaker <liuct@chinamaker.net>, 2018
-# liAnGjiA <liangjia@qq.com>, 2018
-# snow wang <147156565@qq.com>, 2018
-# inspur qiuguodong <qiuguodong@inspur.com>, 2018
-# 广州救火 <7017511@qq.com>, 2018
-# Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
-# niulin lnc. <admin@niulin.net>, 2018
+# Zamba Lee <zambalee@gmail.com>, 2016
+# Michael Chong <michaelchong2005@gmail.com>, 2016
+# mrshelly <mrshelly@hotmail.com>, 2016
+# waveyeung <waveyeung@qq.com>, 2016
+# Xu Lei <xulei8@qq.com>, 2016
+# xiaobin wu <bd5dml@gmail.com>, 2016
+# Eddie Lim <bhweelim@yahoo.com>, 2016
+# fausthuang, 2016
+# 苏州远鼎 <tiexinliu@126.com>, 2017
+# Maie <m@maie.name>, 2017
+# liulixia <liu.lixia@elico-corp.com>, 2018
+# e2f_cn c7 <e2f_cn_c7@outlook.com>, 2018
+# e2f <projects@e2f.com>, 2018
+# JZH-Odoo <jzh@odoo.com>, 2018
+# Martin Trigaux, 2019
+# Jeffery CHEN Fan <jeffery9@gmail.com>, 2019
+# niulin lnc. <admin@niulin.net>, 2019
+# liAnGjiA <liangjia@qq.com>, 2019
+# v2exerer <9010446@qq.com>, 2019
+# ChinaMaker <liuct@chinamaker.net>, 2019
+# bower Guo <124358678@qq.com>, 2019
+# roye w <159820@qq.com>, 2019
+# snow wang <147156565@qq.com>, 2019
+# inspur qiuguodong <qiuguodong@inspur.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:07+0000\n"
-"PO-Revision-Date: 2018-08-24 11:49+0000\n"
-"Last-Translator: niulin lnc. <admin@niulin.net>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"PO-Revision-Date: 2016-08-05 13:32+0000\n"
+"Last-Translator: inspur qiuguodong <qiuguodong@inspur.com>, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -35,6 +46,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__pageviews_count
 msgid "# Page Views"
 msgstr "# 页面查看"
+
+#. module: website_crm_score
+#: model_terms:ir.ui.view,arch_db:website_crm_score.website_crm_score_view_kanban
+msgid ""
+"<i class=\"fa fa-fw fa-tags\" aria-label=\"Number of leads\" title=\"Number "
+"of leads\" role=\"img\"/>"
+msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_needaction
@@ -56,7 +74,7 @@ msgstr "允许指定在网站中的一个页面可否被追踪"
 #. module: website_crm_score
 #: selection:website.crm.score,rule_type:0
 msgid "Archive"
-msgstr "存档"
+msgstr "归档"
 
 #. module: website_crm_score
 #: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
@@ -457,7 +475,6 @@ msgid "Sales Channels"
 msgstr "销售渠道"
 
 #. module: website_crm_score
-#: model:ir.actions.act_window,name:website_crm_score.team_user_action
 #: model_terms:ir.ui.view,arch_db:website_crm_score.view_crm_team_user_form
 #: model_terms:ir.ui.view,arch_db:website_crm_score.view_crm_team_user_tree
 msgid "Sales Men"
@@ -486,8 +503,14 @@ msgid "Salesperson (Team Member)"
 msgstr "销售员(团队成员)"
 
 #. module: website_crm_score
+#: model:ir.actions.act_window,name:website_crm_score.team_user_action
+msgid "Salespersons"
+msgstr ""
+
+#. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__score
 #: model_terms:ir.ui.view,arch_db:website_crm_score.crm_lead_view_dashboard
+#: model_terms:ir.ui.view,arch_db:website_crm_score.crm_opportunity_view_dashboard
 msgid "Score"
 msgstr "得分"
 
@@ -520,11 +543,8 @@ msgid ""
 "\n"
 "Actions are done in sql and bypass the access rights and orm mechanism (create `score`, write `active`, unlink `crm_lead`)"
 msgstr ""
-"评分将为此线索添加分数“值”。\n"
-" 归档将设置为激活 = 假（针对已归档线索）\n"
-"删除将明确删除线索\n"
-"\n"
-"在 SQL 中完成操作并绕过访问权限和 ORM 机制（创建“分数”、写“激活”、取消链接“crm_lead”）"
+"评分将为此字段添加“值”分数。\n"
+" 档案设置为激活="
 
 #. module: website_crm_score
 #: model_terms:ir.ui.view,arch_db:website_crm_score.crm_score_pageview_filter
@@ -638,18 +658,6 @@ msgid ""
 " penalty, so it should be checked only for rules that depend on dynamic "
 "events"
 msgstr "每次检查时,规则将被重新评估,甚至已经检查过的线索。这个选项中会产生很大的性能损耗,因此只应该依据动态事件来检查规则。"
-
-#. module: website_crm_score
-#: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
-#: model_terms:ir.ui.view,arch_db:website_crm_score.team_user_kanban
-msgid "fa-check"
-msgstr "fa-check"
-
-#. module: website_crm_score
-#: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
-#: model_terms:ir.ui.view,arch_db:website_crm_score.team_user_kanban
-msgid "fa-times"
-msgstr "fa-times"
 
 #. module: website_crm_score
 #: model_terms:ir.ui.view,arch_db:website_crm_score.website_crm_score_view_kanban

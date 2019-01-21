@@ -3,17 +3,19 @@
 # * sale_subscription_dashboard
 # 
 # Translators:
+# Yaroslav Molochko <onorua@gmail.com>, 2018
 # Martin Trigaux, 2018
-# ТАрас <tratatuta@i.ua>, 2018
-# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018
+# Bohdan Lisnenko, 2018
+# ТАрас <tratatuta@i.ua>, 2019
+# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-28 12:16+0000\n"
-"PO-Revision-Date: 2018-08-24 11:48+0000\n"
-"Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018\n"
+"PO-Revision-Date: 2017-12-13 15:26+0000\n"
+"Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -26,7 +28,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:292
 #, python-format
 msgid "# of Subscriptions"
-msgstr "# підписок"
+msgstr "кількість підписок"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -322,14 +324,14 @@ msgstr "Місяці"
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:426
 #, python-format
 msgid "NRR"
-msgstr "Неповторюваний дохід"
+msgstr "NRR"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:384
 #, python-format
 msgid "NRR :"
-msgstr "Неповторюваний дохід :"
+msgstr "NRR :"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -337,7 +339,7 @@ msgstr "Неповторюваний дохід :"
 #: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:1118
 #, python-format
 msgid "Net New MRR"
-msgstr "Нові чисті щомісячні періодичні доходи"
+msgstr "Новий MRR"
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:355
@@ -351,7 +353,7 @@ msgstr "Чистий прибуток"
 #: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:1102
 #, python-format
 msgid "New MRR"
-msgstr "Нові щомісячні періодичні доходи"
+msgstr "Новий MRR"
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/revenue_kpis_dashboard.py:61
@@ -397,7 +399,7 @@ msgstr "План"
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:400
 #, python-format
 msgid "Previous MRR"
-msgstr "Попередні щомісячні періодичні доходи"
+msgstr "Попередній MRR"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -472,7 +474,7 @@ msgstr "Виберіть хоча б одну компанію."
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:63
 #, python-format
 msgid "Starting MRR:"
-msgstr "Початковий щомісячні періодичні доходи:"
+msgstr "Початковий MRR:"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -487,7 +489,7 @@ msgstr "Розпочати підписку:"
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:424
 #, python-format
 msgid "Subscription"
-msgstr "Підписка"
+msgstr "Передплата"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -503,14 +505,14 @@ msgstr "Підписки"
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:158
 #, python-format
 msgid "Subscriptions Churn:"
-msgstr "Канал підписок:"
+msgstr "Підписки Churn:"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:141
 #, python-format
 msgid "Subscriptions Growth:"
-msgstr "Зростання підписок:"
+msgstr "Підписки зростання:"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -525,14 +527,14 @@ msgstr "Шаблон "
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:417
 #, python-format
 msgid "There is no NRR invoice during this period."
-msgstr "За цей період немає рахунка-фактури неповторюваних доходів."
+msgstr "За цей період немає рахунку-фактури NRR."
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:390
 #, python-format
 msgid "There is no subscription modification during this period."
-msgstr "У цей період немає зміни підписки."
+msgstr "У цей період немає підписки на модифікацію."
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/revenue_kpis_dashboard.py:65
@@ -561,7 +563,7 @@ msgstr "Попередження"
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:191
 #, python-format
 msgid "churn, your MRR will be"
-msgstr "канал, ваші щомісячні періодичні доходи будуть"
+msgstr "втрати, ваш MRR буде"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -605,4 +607,4 @@ msgstr "зростання підписки та"
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:242
 #, python-format
 msgid "to"
-msgstr "до"
+msgstr "по"

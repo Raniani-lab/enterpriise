@@ -3,18 +3,18 @@
 # * iot
 # 
 # Translators:
-# Bohdan Lisnenko, 2018
-# ТАрас <tratatuta@i.ua>, 2018
-# Martin Trigaux, 2018
-# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018
+# Martin Trigaux, 2019
+# Bohdan Lisnenko, 2019
+# ТАрас <tratatuta@i.ua>, 2019
+# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 12.0+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-08 07:14+0000\n"
-"PO-Revision-Date: 2018-08-24 09:20+0000\n"
-"Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018\n"
+"POT-Creation-Date: 2018-12-24 11:16+0000\n"
+"PO-Revision-Date: 2019-01-16 08:39+0000\n"
+"Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -37,6 +37,17 @@ msgid ""
 "                            4. You will be redirected to the IoT Box Homepage<br/>\n"
 "                            5. Paste the token in token field and follow the steps described on the IoT Box Homepage<br/>"
 msgstr ""
+"0. Живлення на IoT Box<br/><br/>\n"
+"\n"
+"                            <strong>A. Підключення Ethernet</strong><br/>\n"
+"                            1. Натисніть на кнопку \"Сканувати\" нижче<br/><br/>\n"
+"\n"
+"                            <strong>B. Підключення WiFi (або підключення Ethernet не працює)</strong><br/>\n"
+"                            1. Переконайтеся, що кабель ethernet не підключений до IoT Box<br/>\n"
+"                            2. Скопіюйте токен нижче<br/>\n"
+"                            3. Підключіть до IoT Box мережу WiFi (ви побачите її у доступних мережах WiFi)<br/>\n"
+"                            4. Вас буде перенаправлено на домашню сторінку IoT Box<br/>\n"
+"                            5. Вставте токен у поле токену і продовжіть кроки, описані на головній сторінці IoT Box<br/>"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_trigger__action
@@ -46,7 +57,7 @@ msgstr "Дія"
 #. module: iot
 #: model:ir.model,name:iot.model_add_iot_box
 msgid "Add IoT Box wizard"
-msgstr ""
+msgstr "Додати помічника IoT Box"
 
 #. module: iot
 #: selection:iot.device,connection:0
@@ -56,7 +67,7 @@ msgstr "Блютуз"
 #. module: iot
 #: selection:iot.device,type:0
 msgid "Camera"
-msgstr ""
+msgstr "Камера"
 
 #. module: iot
 #: selection:iot.trigger,action:0
@@ -66,42 +77,42 @@ msgstr "Скасувати"
 #. module: iot
 #: model_terms:ir.actions.act_window,help:iot.iot_box_action
 msgid "Click on the"
-msgstr ""
+msgstr "Натисніть на"
 
 #. module: iot
 #: selection:iot.trigger,action:0
 msgid "Close MO"
-msgstr ""
+msgstr "Закрити ЗНВ"
 
 #. module: iot
 #: selection:iot.trigger,action:0
 msgid "Close WO"
-msgstr ""
+msgstr "Закрити РЗ"
 
 #. module: iot
 #: model:ir.actions.act_window,name:iot.action_add_iot_box
 #: model_terms:ir.ui.view,arch_db:iot.view_add_iot_box
 msgid "Connect an IoT Box"
-msgstr ""
+msgstr "Підключити IoT Box"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_device__connection
 msgid "Connection"
-msgstr ""
+msgstr "З'єднання"
 
 #. module: iot
 #. openerp-web
 #: code:addons/iot/static/src/js/iot.js:291
 #, python-format
 msgid "Connection failed"
-msgstr ""
+msgstr "Підключення не вдалося"
 
 #. module: iot
 #. openerp-web
 #: code:addons/iot/static/src/js/iot.js:94
 #, python-format
 msgid "Connection with the IoT Box failed!"
-msgstr ""
+msgstr "З'єднання з IoT Box не вдалося!"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_add_iot_box__create_uid
@@ -109,7 +120,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:iot.field_iot_device__create_uid
 #: model:ir.model.fields,field_description:iot.field_iot_trigger__create_uid
 msgid "Created by"
-msgstr "Створив"
+msgstr "Створено"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_add_iot_box__create_date
@@ -122,7 +133,7 @@ msgstr "Створено"
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.view_add_iot_box
 msgid "Detect and Add IoT devices in the network"
-msgstr ""
+msgstr "Виявлення та додавання пристроїв IoT в мережі"
 
 #. module: iot
 #: selection:iot.device,type:0
@@ -133,7 +144,7 @@ msgstr "Пристрій"
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_search
 msgid "Device type"
-msgstr ""
+msgstr "Тип пристрою"
 
 #. module: iot
 #: model:ir.actions.act_window,name:iot.iot_device_action
@@ -159,12 +170,12 @@ msgstr "Невдалий"
 #. module: iot
 #: selection:iot.trigger,action:0
 msgid "Finish"
-msgstr ""
+msgstr "Завершити"
 
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.view_add_iot_box
 msgid "Found IoT Box(s)"
-msgstr ""
+msgstr "Знайдено IoT Box"
 
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_search
@@ -202,12 +213,12 @@ msgstr "Ідентифікатор"
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_box__identifier
 msgid "Identifier (Mac Address)"
-msgstr ""
+msgstr "Ідентифікатор (Mac адреса)"
 
 #. module: iot
 #: model:ir.ui.menu,name:iot.iot_menu_root
 msgid "IoT"
-msgstr ""
+msgstr "IoT"
 
 #. module: iot
 #: model:ir.model,name:iot.model_iot_box
@@ -225,13 +236,13 @@ msgstr "Домашня сторінка IoT Box "
 #: model:ir.actions.act_window,name:iot.iot_box_action
 #: model:ir.ui.menu,name:iot.iot_box_menu_action
 msgid "IoT Boxes"
-msgstr ""
+msgstr "IoT Box"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_ir_actions_report__device_id
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_search
 msgid "IoT Device"
-msgstr ""
+msgstr "Пристрій IoT"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_trigger__key
@@ -244,7 +255,7 @@ msgstr "Ключ"
 #: model:ir.model.fields,field_description:iot.field_iot_device____last_update
 #: model:ir.model.fields,field_description:iot.field_iot_trigger____last_update
 msgid "Last Modified on"
-msgstr "Остання модифікація"
+msgstr "Останні зміни на"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_add_iot_box__write_uid
@@ -281,7 +292,7 @@ msgstr "Наступний"
 #. module: iot
 #: model_terms:ir.actions.act_window,help:iot.iot_box_action
 msgid "No IoT Box found !"
-msgstr ""
+msgstr "Не знайдено IoT Box!"
 
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.view_add_iot_box
@@ -311,7 +322,7 @@ msgstr "Попередній"
 #. module: iot
 #: selection:iot.trigger,action:0
 msgid "Print Delivery Slip"
-msgstr ""
+msgstr "Друк транспортної накладної"
 
 #. module: iot
 #: selection:iot.trigger,action:0
@@ -321,7 +332,7 @@ msgstr "Друк етикеток"
 #. module: iot
 #: selection:iot.trigger,action:0
 msgid "Print Operation"
-msgstr ""
+msgstr "Друк операції"
 
 #. module: iot
 #: selection:iot.device,type:0
@@ -331,7 +342,12 @@ msgstr "Принтер"
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_view_form
 msgid "Printer Reports"
-msgstr ""
+msgstr "Звіти принтера"
+
+#. module: iot
+#: model:ir.model,name:iot.model_publisher_warranty_contract
+msgid "Publisher Warranty Contract For IoT Box"
+msgstr "Контракт на гарантію видавця для IoT Box"
 
 #. module: iot
 #: selection:iot.trigger,action:0
@@ -341,7 +357,7 @@ msgstr "Запис виробництва"
 #. module: iot
 #: model:ir.model,name:iot.model_ir_actions_report
 msgid "Report Action"
-msgstr ""
+msgstr "Дія звіту"
 
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.act_report_xml_view_tree_iot
@@ -358,12 +374,12 @@ msgstr "Звіти"
 #: code:addons/iot/static/src/js/iot.js:120
 #, python-format
 msgid "SCAN"
-msgstr ""
+msgstr "СКАН"
 
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.view_add_iot_box
 msgid "Scanning range(s)"
-msgstr ""
+msgstr "Діапазон(и) сканування"
 
 #. module: iot
 #: selection:iot.trigger,action:0
@@ -373,7 +389,7 @@ msgstr "Брак"
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_box__screen_url
 msgid "Screen URL"
-msgstr ""
+msgstr "URL екрану"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_trigger__sequence
@@ -390,29 +406,29 @@ msgstr "Пропустити"
 #: code:addons/iot/static/src/js/iot.js:89
 #, python-format
 msgid "Successfully sent to printer!"
-msgstr ""
+msgstr "Успішно надіслано принтеру!"
 
 #. module: iot
 #. openerp-web
 #: code:addons/iot/static/src/js/iot.js:325 selection:iot.trigger,action:0
 #, python-format
 msgid "Take Measure"
-msgstr ""
+msgstr "Зняти вимірювання"
 
 #. module: iot
 #: selection:iot.trigger,action:0
 msgid "Take Picture"
-msgstr ""
+msgstr "Зробити знімок"
 
 #. module: iot
 #: model_terms:ir.actions.act_window,help:iot.iot_device_action
 msgid "There is no device connected to your IoT Boxes"
-msgstr ""
+msgstr "Не підключено жодних пристроїв до вашого IoT Boxes"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_add_iot_box__token
 msgid "Token"
-msgstr ""
+msgstr "Токен"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_device__type
@@ -422,22 +438,22 @@ msgstr "Тип"
 #. module: iot
 #: model:ir.model.fields,help:iot.field_iot_device__connection
 msgid "Type of connection."
-msgstr ""
+msgstr "Тип підключення."
 
 #. module: iot
 #: model:ir.model.fields,help:iot.field_iot_device__type
 msgid "Type of device."
-msgstr ""
+msgstr "Тип пристрою."
 
 #. module: iot
 #: selection:iot.device,connection:0
 msgid "USB"
-msgstr ""
+msgstr "USB"
 
 #. module: iot
 #: model:ir.model.fields,help:iot.field_iot_box__screen_url
 msgid "Url of the page that will be displayed by hdmi port of the box."
-msgstr ""
+msgstr "Url сторінки, яка відображатиметься через порт hdmi у полі."
 
 #. module: iot
 #: selection:iot.trigger,action:0
@@ -450,13 +466,15 @@ msgid ""
 "When setting a device here, the report will be printed through this device "
 "on the IoT Box"
 msgstr ""
+"При налаштуванні пристрою тут, звіт буде надруковано через цей пристрій на "
+"IoT Box"
 
 #. module: iot
 #: model_terms:ir.actions.act_window,help:iot.iot_box_action
 msgid "connect"
-msgstr ""
+msgstr "підключити"
 
 #. module: iot
 #: model_terms:ir.actions.act_window,help:iot.iot_box_action
 msgid "to add an IoT Box."
-msgstr ""
+msgstr "щоб додати IoT Box."

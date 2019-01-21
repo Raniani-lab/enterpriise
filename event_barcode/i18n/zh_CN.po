@@ -3,16 +3,21 @@
 # * event_barcode
 # 
 # Translators:
-# inspur qiuguodong <qiuguodong@inspur.com>, 2018
-# Martin Trigaux, 2018
+# 苏州远鼎 <tiexinliu@126.com>, 2016
+# liAnGjiA <liangjia@qq.com>, 2016
+# 老窦 北京 <2662059195@qq.com>, 2018
+# Martin Trigaux, 2019
+# Jeffery CHEN Fan <jeffery9@gmail.com>, 2019
+# snow wang <147156565@qq.com>, 2019
+# inspur qiuguodong <qiuguodong@inspur.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-08-24 11:37+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"PO-Revision-Date: 2016-08-05 13:29+0000\n"
+"Last-Translator: inspur qiuguodong <qiuguodong@inspur.com>, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,7 +29,7 @@ msgstr ""
 #: code:addons/event_barcode/controllers/main.py:26
 #, python-format
 msgid "%s is already registered"
-msgstr "%s 已被注册"
+msgstr "%s 已经注册"
 
 #. module: event_barcode
 #: code:addons/event_barcode/controllers/main.py:24
@@ -36,6 +41,13 @@ msgstr "%s 已经成功注册"
 #: model_terms:ir.ui.view,arch_db:event_barcode.report_registration_badge
 msgid "&amp;nbsp;"
 msgstr "&amp;nbsp;"
+
+#. module: event_barcode
+#: model_terms:ir.ui.view,arch_db:event_barcode.report_event_template_badge
+msgid ""
+"<i class=\"fa-2x fa fa-barcode\" title=\"Barcode\" role=\"img\" aria-"
+"label=\"Barcode\"/>"
+msgstr ""
 
 #. module: event_barcode
 #: code:addons/event_barcode/controllers/main.py:18
@@ -57,6 +69,11 @@ msgstr "条码"
 #: model_terms:ir.ui.view,arch_db:event_barcode.event_event_view_form_inherit_barcode
 msgid "Barcode Interface"
 msgstr "条码接口"
+
+#. module: event_barcode
+#: model_terms:ir.ui.view,arch_db:event_barcode.res_config_settings_view_form
+msgid "Barcode Nomenclature"
+msgstr "条码命名规则"
 
 #. module: event_barcode
 #. openerp-web
@@ -84,6 +101,11 @@ msgid "Close"
 msgstr "关闭"
 
 #. module: event_barcode
+#: model:ir.model,name:event_barcode.model_res_config_settings
+msgid "Config Settings"
+msgstr "配置设置"
+
+#. module: event_barcode
 #. openerp-web
 #: code:addons/event_barcode/static/src/js/event_barcode.js:66
 #, python-format
@@ -101,6 +123,11 @@ msgstr "活动登记"
 #, python-format
 msgid "Invalid user input"
 msgstr "非法用户输入"
+
+#. module: event_barcode
+#: model:ir.model.fields,field_description:event_barcode.field_res_config_settings__barcode_nomenclature_id
+msgid "Nomenclature"
+msgstr "命名规则"
 
 #. module: event_barcode
 #. openerp-web

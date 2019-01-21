@@ -3,24 +3,18 @@
 # * delivery_ups
 # 
 # Translators:
-# Martin Trigaux, 2018
-# zbik2607 <darek@krokus.com.pl>, 2018
-# Wiktor Kaźmierczak <wik92tor@wp.pl>, 2018
-# Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2018
-# Tomasz Leppich <t.leppich@gmail.com>, 2018
-# Arek Smagacz <arek.smagacz@gmail.com>, 2018
-# Piotr Szlązak <szlazakpiotr@gmail.com>, 2018
-# Monika Grzelak <m.e.grzelak@gmail.com>, 2018
-# Piotr Cierkosz <piotr.w.cierkosz@gmail.com>, 2018
-# Radosław Biegalski <radoslaw.biegalski@openglobe.pl>, 2018
 # Paweł Wodyński <pw@myodoo.pl>, 2018
+# Martin Trigaux, 2019
+# Wiktor Kaźmierczak <wik92tor@wp.pl>, 2019
+# Piotr Cierkosz <piotr.w.cierkosz@gmail.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Paweł Wodyński <pw@myodoo.pl>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"PO-Revision-Date: 2016-08-05 13:28+0000\n"
+"Last-Translator: Piotr Cierkosz <piotr.w.cierkosz@gmail.com>, 2019\n"
 "Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -31,7 +25,7 @@ msgstr ""
 #. module: delivery_ups
 #: selection:delivery.carrier,delivery_type:0
 msgid "Based on Rules"
-msgstr "Na podstawie Reguł"
+msgstr ""
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_bill_my_account
@@ -47,7 +41,7 @@ msgstr ""
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_product_packaging__package_carrier_type
 msgid "Carrier"
-msgstr "Przewoźnik"
+msgstr ""
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_sale_order__ups_carrier_account
@@ -63,7 +57,7 @@ msgstr ""
 #. module: delivery_ups
 #: selection:delivery.carrier,ups_package_dimension_unit:0
 msgid "Centimeters"
-msgstr "Centymetry"
+msgstr ""
 
 #. module: delivery_ups
 #: selection:delivery.carrier,ups_cod_funds_code:0
@@ -79,7 +73,7 @@ msgstr ""
 #: selection:delivery.carrier,delivery_type:0
 #: selection:product.packaging,package_carrier_type:0
 msgid "DHL"
-msgstr "DHL"
+msgstr ""
 
 #. module: delivery_ups
 #: model:ir.model,name:delivery_ups.model_delivery_carrier
@@ -104,19 +98,17 @@ msgid ""
 "Error:\n"
 "%s"
 msgstr ""
-"Błąd:\n"
-"%s"
 
 #. module: delivery_ups
 #: selection:delivery.carrier,delivery_type:0
 #: selection:product.packaging,package_carrier_type:0
 msgid "FedEx"
-msgstr "FedEx"
+msgstr ""
 
 #. module: delivery_ups
 #: selection:delivery.carrier,delivery_type:0
 msgid "Fixed Price"
-msgstr "Cena stała"
+msgstr ""
 
 #. module: delivery_ups
 #: model:ir.model.fields,help:delivery_ups.field_delivery_carrier__ups_bill_my_account
@@ -129,22 +121,22 @@ msgstr ""
 #. module: delivery_ups
 #: selection:delivery.carrier,ups_package_dimension_unit:0
 msgid "Inches"
-msgstr "Cale"
+msgstr ""
 
 #. module: delivery_ups
 #: selection:delivery.carrier,ups_package_weight_unit:0
 msgid "Kilograms"
-msgstr "Kilogramy"
+msgstr ""
 
 #. module: delivery_ups
 #: selection:product.packaging,package_carrier_type:0
 msgid "No carrier integration"
-msgstr ""
+msgstr "Brak integracji z przewoźnikiem"
 
 #. module: delivery_ups
 #: selection:delivery.carrier,ups_label_file_type:0
 msgid "PDF"
-msgstr "PDF"
+msgstr ""
 
 #. module: delivery_ups
 #: code:addons/delivery_ups/models/ups_request.py:209
@@ -155,7 +147,7 @@ msgstr ""
 #. module: delivery_ups
 #: selection:delivery.carrier,ups_package_weight_unit:0
 msgid "Pounds"
-msgstr "Pounds"
+msgstr ""
 
 #. module: delivery_ups
 #: model:ir.model,name:delivery_ups.model_product_packaging
@@ -165,7 +157,7 @@ msgstr "Opakowanie produktu"
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__delivery_type
 msgid "Provider"
-msgstr "Dostawca"
+msgstr ""
 
 #. module: delivery_ups
 #: selection:delivery.carrier,ups_label_file_type:0
@@ -174,7 +166,7 @@ msgstr ""
 
 #. module: delivery_ups
 #: model:ir.model,name:delivery_ups.model_sale_order
-msgid "Sale Order"
+msgid "Sales Order"
 msgstr "Zamówienie sprzedaży"
 
 #. module: delivery_ups
@@ -203,8 +195,6 @@ msgid ""
 "The address of your company is missing or wrong.\n"
 "(Missing field(s) : %s)"
 msgstr ""
-"Adres Twojej firmy zniknął lub jest zły.\n"
-"(Brakujące pole(a) : %s)"
 
 #. module: delivery_ups
 #: code:addons/delivery_ups/models/ups_request.py:197
@@ -228,8 +218,6 @@ msgid ""
 "The estimated price cannot be computed because the weight of your product is"
 " missing."
 msgstr ""
-"Szacowany koszt nie może zostać obliczony gdyż waga produktu nie została "
-"wprowadzona."
 
 #. module: delivery_ups
 #: code:addons/delivery_ups/models/ups_request.py:219
@@ -256,13 +244,13 @@ msgstr ""
 #. module: delivery_ups
 #: model:ir.model,name:delivery_ups.model_stock_picking
 msgid "Transfer"
-msgstr "Pobierz"
+msgstr ""
 
 #. module: delivery_ups
 #: selection:delivery.carrier,delivery_type:0
 #: selection:product.packaging,package_carrier_type:0
 msgid "UPS"
-msgstr "UPS"
+msgstr ""
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_access_number
@@ -274,12 +262,12 @@ msgstr ""
 #: model:product.product,name:delivery_ups.product_product_delivery_ups_be
 #: model:product.template,name:delivery_ups.product_product_delivery_ups_be_product_template
 msgid "UPS BE"
-msgstr "UPS BE"
+msgstr ""
 
 #. module: delivery_ups
 #: model_terms:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form_with_provider_ups
 msgid "UPS Configuration"
-msgstr "Konfiguracja UPS"
+msgstr ""
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_default_packaging_id
@@ -300,7 +288,7 @@ msgstr ""
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_passwd
 msgid "UPS Password"
-msgstr "Hasło UPS"
+msgstr ""
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_saturday_delivery
@@ -312,12 +300,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:delivery_ups.field_sale_order__ups_service_type
 #: model:ir.model.fields,field_description:delivery_ups.field_stock_picking__ups_service_type
 msgid "UPS Service Type"
-msgstr "Typ serwisu UPS"
+msgstr ""
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_shipper_number
 msgid "UPS Shipper Number"
-msgstr "numer spedytora UPS"
+msgstr ""
 
 #. module: delivery_ups
 #: model:delivery.carrier,name:delivery_ups.delivery_carrier_ups_us
@@ -334,7 +322,7 @@ msgstr ""
 #. module: delivery_ups
 #: selection:delivery.carrier,delivery_type:0
 msgid "USPS"
-msgstr "USPS"
+msgstr ""
 
 #. module: delivery_ups
 #: model:product.product,uom_name:delivery_ups.product_product_delivery_ups_be
@@ -368,12 +356,4 @@ msgstr ""
 #: selection:delivery.carrier,delivery_type:0
 #: selection:product.packaging,package_carrier_type:0
 msgid "bpost"
-msgstr "bpost"
-
-#. module: delivery_ups
-#: model:product.product,weight_uom_name:delivery_ups.product_product_delivery_ups_be
-#: model:product.product,weight_uom_name:delivery_ups.product_product_delivery_ups_us
-#: model:product.template,weight_uom_name:delivery_ups.product_product_delivery_ups_be_product_template
-#: model:product.template,weight_uom_name:delivery_ups.product_product_delivery_ups_us_product_template
-msgid "kg"
-msgstr "kg"
+msgstr ""

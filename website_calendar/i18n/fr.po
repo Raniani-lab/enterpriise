@@ -3,19 +3,37 @@
 # * website_calendar
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Eloïse Stilmant <est@odoo.com>, 2018
-# Laura Piraux <lap@odoo.com>, 2018
-# Fred Gilson <fgi@odoo.com>, 2018
-# Nathan Grognet <ngr@odoo.com>, 2018
-# fr rev <e2ffr02@hotmail.com>, 2018
+# Clo <clo@odoo.com>, 2017
+# Nicolas JEUDY <njeudy@panda-chi.io>, 2017
+# Denis Leemann <denis.leemann@camptocamp.com>, 2017
+# Saad Thaifa <saad.thaifa@gmail.com>, 2017
+# Jérémy Donas <LeDistordu@users.noreply.github.com>, 2017
+# Lucas Deliege <lud@odoo.com>, 2017
+# Florian Hatat, 2017
+# Bertrand LATOUR <divoir@gmail.com>, 2017
+# Richard Mathot <rim@odoo.com>, 2017
+# Kévin R., 2017
+# Xavier Belmere <Info@cartmeleon.com>, 2017
+# Henri Cornuau <hcornuau@gmail.com>, 2017
+# Olivier Dony <odo@odoo.com>, 2018
+# Maxime Chambreuil <mchambreuil@ursainfosystems.com>, 2018
+# Olivier Lenoir <olivier.lenoir@free.fr>, 2018
+# Nancy Bolognesi <nb@microcom.ca>, 2018
+# Micky Jault <micky037@hotmail.fr>, 2018
+# f5f0a0dac17dde787a1d812a6989680e, 2018
+# fr rev <e2ffr02@hotmail.com>, 2019
+# Martin Trigaux, 2019
+# Fred Gilson <fgi@odoo.com>, 2019
+# Eloïse Stilmant <est@odoo.com>, 2019
+# Laura Piraux <lap@odoo.com>, 2019
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-08 07:15+0000\n"
-"PO-Revision-Date: 2018-10-08 07:15+0000\n"
-"Last-Translator: fr rev <e2ffr02@hotmail.com>, 2018\n"
+"PO-Revision-Date: 2017-12-13 15:26+0000\n"
+"Last-Translator: Laura Piraux <lap@odoo.com>, 2019\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -267,7 +285,7 @@ msgstr "Méthode d'affectation"
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_attachment_count
 msgid "Attachment Count"
-msgstr "Nombre de pièces jointes"
+msgstr "Compte des pièces jointes"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_validated
@@ -724,7 +742,7 @@ msgstr "Rappels"
 #. module: website_calendar
 #: model:ir.ui.menu,name:website_calendar.menu_schedule_report
 msgid "Reporting"
-msgstr "Analyse"
+msgstr "Rapport"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_question__question_required

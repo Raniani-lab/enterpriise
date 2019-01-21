@@ -3,17 +3,15 @@
 # * account_bank_statement_import_csv
 # 
 # Translators:
-# zbik2607 <darek@krokus.com.pl>, 2018
-# Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2018
-# Judyta Kaźmierczak <judyta.kazmierczak@openglobe.pl>, 2018
-# Piotr Szlązak <szlazakpiotr@gmail.com>, 2018
+# Piotr Cierkosz <piotr.w.cierkosz@gmail.com>, 2019
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Piotr Szlązak <szlazakpiotr@gmail.com>, 2018\n"
+"PO-Revision-Date: 2016-08-05 13:28+0000\n"
+"Last-Translator: Piotr Cierkosz <piotr.w.cierkosz@gmail.com>, 2019\n"
 "Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -34,7 +32,7 @@ msgstr ""
 #. module: account_bank_statement_import_csv
 #: model_terms:ir.ui.view,arch_db:account_bank_statement_import_csv.account_bank_statement_import_csv
 msgid "Comma Separated values (.CSV)"
-msgstr "Wartości oddzielane przecinkami (.CSV)"
+msgstr ""
 
 #. module: account_bank_statement_import_csv
 #. openerp-web
@@ -42,16 +40,16 @@ msgstr "Wartości oddzielane przecinkami (.CSV)"
 #: model:ir.model,name:account_bank_statement_import_csv.model_account_bank_statement_import
 #, python-format
 msgid "Import Bank Statement"
-msgstr "Importuj wyciąg bankowy"
+msgstr "Pobierz Wyciąg Bankowy"
 
 #. module: account_bank_statement_import_csv
 #: model:ir.model,name:account_bank_statement_import_csv.model_account_journal
 msgid "Journal"
-msgstr "Dziennik"
+msgstr ""
 
 #. module: account_bank_statement_import_csv
 #. openerp-web
 #: code:addons/account_bank_statement_import_csv/static/src/js/import_bank_stmt.js:57
 #, python-format
 msgid "Reconciliation on Bank Statements"
-msgstr "Uzgadnianie wyciągu bankowego"
+msgstr ""

@@ -3,24 +3,16 @@
 # * sale_subscription_dashboard
 # 
 # Translators:
-# Martin Trigaux, 2018
-# zbik2607 <darek@krokus.com.pl>, 2018
-# Judyta Kaźmierczak <judyta.kazmierczak@openglobe.pl>, 2018
-# Tomasz Leppich <t.leppich@gmail.com>, 2018
-# Mariusz, 2018
-# Bartosz Wapniewski <bartosz.wapniewski@gmail.com>, 2018
-# Jakobus Buntownikus <buntownix@gmail.com>, 2018
-# Piotr Szlązak <szlazakpiotr@gmail.com>, 2018
-# Paweł Michoń <michon.pawel@wp.pl>, 2018
-# Piotr Cierkosz <piotr.w.cierkosz@gmail.com>, 2018
-# Paweł Wodyński <pw@myodoo.pl>, 2018
+# Martin Trigaux, 2019
+# Piotr Cierkosz <piotr.w.cierkosz@gmail.com>, 2019
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-28 12:16+0000\n"
-"PO-Revision-Date: 2018-09-28 12:16+0000\n"
-"Last-Translator: Paweł Wodyński <pw@myodoo.pl>, 2018\n"
+"PO-Revision-Date: 2017-12-13 15:26+0000\n"
+"Last-Translator: Piotr Cierkosz <piotr.w.cierkosz@gmail.com>, 2019\n"
 "Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -33,21 +25,21 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:292
 #, python-format
 msgid "# of Subscriptions"
-msgstr "# Subskrypcji"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:303
 #, python-format
 msgid "% Complete (success)"
-msgstr "% Kompletny (sukces)"
+msgstr "% Zakończone (sukcesem)"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:318
 #, python-format
 msgid "1 month ago"
-msgstr "1 miesiąc temu"
+msgstr "Miesąc temu"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -73,23 +65,23 @@ msgstr "30 dni temu"
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.invoice_line_entries_report_search
 msgid "Active invoices"
-msgstr "Aktywne faktury"
+msgstr "Aktywne Faktury"
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:382
 #, python-format
 msgid "Annual Run-Rate"
-msgstr "roczny uruchomiony kurs"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.invoice_line_entries_report_search
 msgid "Asset End Date"
-msgstr "Data końcowa środka trwałego"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.invoice_line_entries_report_search
 msgid "Asset Start Date"
-msgstr "Data początkowa środka trwałego"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -97,21 +89,21 @@ msgstr "Data początkowa środka trwałego"
 #: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:1106
 #, python-format
 msgid "Churned MRR"
-msgstr "Zburzone MRR"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:313
 #, python-format
 msgid "Current"
-msgstr "Bieżące"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:401
 #, python-format
 msgid "Current MRR"
-msgstr "Bieżący MRR"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -119,19 +111,19 @@ msgstr "Bieżący MRR"
 #: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:962
 #, python-format
 msgid "Current Value: "
-msgstr "Bieżąca wartość:"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:29
 #, python-format
 msgid "Detailed Analysis"
-msgstr "Szczegółowe analizy"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #: model:ir.actions.client,name:sale_subscription_dashboard.action_subscription_dashboard_report_detailed
 msgid "Detailed KPI"
-msgstr "Szczegół KPI"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -139,7 +131,7 @@ msgstr "Szczegół KPI"
 #: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:1114
 #, python-format
 msgid "Down MRR"
-msgstr "dolne MRR"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -147,7 +139,7 @@ msgstr "dolne MRR"
 #: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:1110
 #, python-format
 msgid "Expansion MRR"
-msgstr "ekspansja MRR"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -155,7 +147,7 @@ msgstr "ekspansja MRR"
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:127
 #, python-format
 msgid "Exponential"
-msgstr "Wykładniczy"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -169,7 +161,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:267
 #, python-format
 msgid "Filter on companies"
-msgstr "Filtr na firmy"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -183,35 +175,35 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:247
 #, python-format
 msgid "Filter on subscriptions"
-msgstr "Filtruj subskrypcje"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:430
 #, python-format
 msgid "Forecasted Annual MRR Growth"
-msgstr "Prognozowany roczny wzrost MRR"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:436
 #, python-format
 msgid "Forecasted Annual Subscriptions Growth"
-msgstr "Prognozowany roczny wzrost liczby subskrypcji"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #: model:ir.actions.client,name:sale_subscription_dashboard.action_subscription_dashboard_report_forecast
 msgid "Forecasted KPIs"
-msgstr "Prognozowane wskaźniki KPI"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #: model_terms:ir.actions.act_window,help:sale_subscription_dashboard.action_invoice_line_entries_report
 msgid ""
 "From this view, have an analysis of your different invoice line entries."
-msgstr "Z tego widoku należy przeanalizować różne pozycje wiersza faktury."
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.invoice_line_entries_report_search
 msgid "Group By"
-msgstr "Grupuj wg"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -219,7 +211,7 @@ msgstr "Grupuj wg"
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:123
 #, python-format
 msgid "Growth Type:"
-msgstr "Typ wzrostu:"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -227,14 +219,14 @@ msgstr "Typ wzrostu:"
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:196
 #, python-format
 msgid "In"
-msgstr "W"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #: model:ir.actions.act_window,name:sale_subscription_dashboard.action_invoice_line_entries_report
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.invoice_line_entries_report_pivot
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.invoice_line_entries_report_search
 msgid "Invoice Line Entries Analysis"
-msgstr "Analiza wpisów linii faktur"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/revenue_kpis_dashboard.py:63
@@ -243,13 +235,12 @@ msgid ""
 "It makes no sense to sum MRR of different currencies. Please select "
 "companies with the same currency."
 msgstr ""
-"Nie ma sensu sumowanie MRR różnych walut. Wybierz firmy z tą samą walutą."
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:391
 #, python-format
 msgid "Lifetime Value"
-msgstr "Dożywotnia wartość"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -257,21 +248,21 @@ msgstr "Dożywotnia wartość"
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:125
 #, python-format
 msgid "Linear"
-msgstr "Liniowo"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:222
 #, python-format
 msgid "List of NRR invoices"
-msgstr "Lista faktur NRR"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:218
 #, python-format
 msgid "List of subscription modifications"
-msgstr "Lista modyfikacji subskrypcji"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -285,34 +276,34 @@ msgstr "Pobieranie..."
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:400
 #, python-format
 msgid "Logo Churn"
-msgstr "Logo Churn"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:380
 #, python-format
 msgid "MRR :"
-msgstr "MRR :"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:1099
 #, python-format
 msgid "MRR Growth"
-msgstr "Wzrost MRR"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:346
 #, python-format
 msgid "Monthly Recurring Revenue"
-msgstr "Miesięczny przychód"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:42
 #, python-format
 msgid "Monthly Recurring Revenue Growth"
-msgstr "Wzrost miesięcznego przychodu"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -328,14 +319,14 @@ msgstr "Miesiące"
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:426
 #, python-format
 msgid "NRR"
-msgstr "NRR"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:384
 #, python-format
 msgid "NRR :"
-msgstr "NRR :"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -343,13 +334,13 @@ msgstr "NRR :"
 #: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:1118
 #, python-format
 msgid "Net New MRR"
-msgstr "Nowa sieć MRR"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:355
 #, python-format
 msgid "Net Revenue"
-msgstr "Przychód netto"
+msgstr "Przychód Netto"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -357,7 +348,7 @@ msgstr "Przychód netto"
 #: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:1102
 #, python-format
 msgid "New MRR"
-msgstr "Nowe MRR"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/revenue_kpis_dashboard.py:61
@@ -369,12 +360,12 @@ msgstr "Nie wybrano firmy."
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:364
 #, python-format
 msgid "Non-Recurring Revenue"
-msgstr "Dochody jednorazowe"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.invoice_line_entries_report_search
 msgid "OUT invoices"
-msgstr "Faktury wychodzące"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -382,7 +373,7 @@ msgstr "Faktury wychodzące"
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:423
 #, python-format
 msgid "Partner"
-msgstr "Partner"
+msgstr "Kontrahent"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -396,14 +387,14 @@ msgstr "Wybierz sprzedawcę i okres"
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:291
 #, python-format
 msgid "Plan"
-msgstr "Plan"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:400
 #, python-format
 msgid "Previous MRR"
-msgstr "Poprzedni MRR"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -411,52 +402,52 @@ msgstr "Poprzedni MRR"
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:169
 #, python-format
 msgid "Projection Time:"
-msgstr "Czas projekcji:"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:211
 #, python-format
 msgid "Recurring Revenue Dashboard for"
-msgstr "Powtarzalna konsola przychodów dla"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:409
 #, python-format
 msgid "Revenue Churn"
-msgstr "Utracony Churn"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:91
 #, python-format
 msgid "Revenue Churn:"
-msgstr "Utracony Churn:"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:74
 #, python-format
 msgid "Revenue Growth:"
-msgstr "Wzrost dochodów:"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #: model:ir.actions.client,name:sale_subscription_dashboard.action_subscription_dashboard_report_main
 #: model:ir.ui.menu,name:sale_subscription_dashboard.menu_action_subscription_dashboard_report_main
 msgid "Revenue KPIs"
-msgstr "Wskaźniki KPI przychodów"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:373
 #, python-format
 msgid "Revenue per Subscription"
-msgstr "Przychody z subskrypcji"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #: model:ir.actions.client,name:sale_subscription_dashboard.action_subscription_dashboard_report_salesman
 #: model:ir.ui.menu,name:sale_subscription_dashboard.menu_action_subscription_dashboard_report_salesman
 msgid "Salesperson Dashboard"
-msgstr "Konsola sprzedawcy"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -464,28 +455,28 @@ msgstr "Konsola sprzedawcy"
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:374
 #, python-format
 msgid "Sample data"
-msgstr "Przykładowe dane"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:87
 #, python-format
 msgid "Select at least one company."
-msgstr "Wybierz przynajmniej jedną firmę."
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:63
 #, python-format
 msgid "Starting MRR:"
-msgstr "Rozpoczynające MRR:"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:130
 #, python-format
 msgid "Starting Subscription:"
-msgstr "Subskrypcja początkowa:"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -493,7 +484,7 @@ msgstr "Subskrypcja początkowa:"
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:424
 #, python-format
 msgid "Subscription"
-msgstr "Subskrypcja"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -502,21 +493,21 @@ msgstr "Subskrypcja"
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:146
 #, python-format
 msgid "Subscriptions"
-msgstr "Subskrypcje"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:158
 #, python-format
 msgid "Subscriptions Churn:"
-msgstr "Subskrypcje Churn:"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:141
 #, python-format
 msgid "Subscriptions Growth:"
-msgstr "Wzrost subskrypcji:"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -524,27 +515,27 @@ msgstr "Wzrost subskrypcji:"
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:425
 #, python-format
 msgid "Template"
-msgstr "Szablon"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:417
 #, python-format
 msgid "There is no NRR invoice during this period."
-msgstr "Nie ma faktur NRR dla tego okresu."
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:390
 #, python-format
 msgid "There is no subscription modification during this period."
-msgstr "W tym okresie nie ma modyfikacji subskrypcji."
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/revenue_kpis_dashboard.py:65
 #, python-format
 msgid "Unknown error"
-msgstr "Nieznany błąd"
+msgstr "Nieokreślony błąd"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -552,7 +543,7 @@ msgstr "Nieznany błąd"
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:242
 #, python-format
 msgid "Update"
-msgstr "Aktualizuj"
+msgstr "Aktualizacja"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -560,28 +551,28 @@ msgstr "Aktualizuj"
 #: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:107
 #, python-format
 msgid "Warning"
-msgstr "Ostrzeżenie"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:191
 #, python-format
 msgid "churn, your MRR will be"
-msgstr "odchodzi, twój MRR będzie"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:202
 #, python-format
 msgid "churn, your subscription base will be"
-msgstr "odchodzi, twoja podstawa subskrypcji będzie"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:189
 #, python-format
 msgid "growth and"
-msgstr "wzrost i"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -589,21 +580,21 @@ msgstr "wzrost i"
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:198
 #, python-format
 msgid "months with"
-msgstr "miesiące z"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/revenue_kpis_dashboard.py:23
 #: code:addons/sale_subscription_dashboard/controllers/revenue_kpis_dashboard.py:33
 #, python-format
 msgid "name"
-msgstr "nazwa"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:200
 #, python-format
 msgid "subscription growth and"
-msgstr "wzrost subskrypcji i"
+msgstr ""
 
 #. module: sale_subscription_dashboard
 #. openerp-web

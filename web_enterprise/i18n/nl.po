@@ -3,16 +3,18 @@
 # * web_enterprise
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
-# Yenthe Van Ginneken <yenthespam@gmail.com>, 2018
+# Volluta <volluta@tutanota.com>, 2016
+# Martin Trigaux, 2019
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
+# Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2018\n"
+"PO-Revision-Date: 2016-08-05 13:32+0000\n"
+"Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -70,7 +72,7 @@ msgstr "Alt"
 #: code:addons/web_enterprise/static/src/xml/base.xml:129
 #, python-format
 msgid "Applications"
-msgstr "Sollicitaties"
+msgstr "Applicaties"
 
 #. module: web_enterprise
 #. openerp-web
@@ -209,14 +211,14 @@ msgstr "Odoo Help"
 #: code:addons/web_enterprise/static/src/xml/base.xml:313
 #, python-format
 msgid "Open the next record"
-msgstr "Open het volgende record"
+msgstr "Open de volgende record"
 
 #. module: web_enterprise
 #. openerp-web
 #: code:addons/web_enterprise/static/src/xml/base.xml:304
 #, python-format
 msgid "Open the previous record"
-msgstr "Open het vorige record"
+msgstr "Open de vorige record"
 
 #. module: web_enterprise
 #. openerp-web
@@ -266,7 +268,7 @@ msgstr "Registreer uw inschrijving"
 #: code:addons/web_enterprise/static/src/xml/base.xml:89
 #, python-format
 msgid "Renew your subscription"
-msgstr "Vernieuw uw inschrijving"
+msgstr "Hernieuw uw inschrijving"
 
 #. module: web_enterprise
 #. openerp-web
@@ -312,7 +314,7 @@ msgstr ""
 #: code:addons/web_enterprise/static/src/xml/base.xml:116
 #, python-format
 msgid "Subscription Code:"
-msgstr "Abonnementscode:"
+msgstr "Abonnement code:"
 
 #. module: web_enterprise
 #. openerp-web
@@ -320,7 +322,7 @@ msgstr "Abonnementscode:"
 #, python-format
 msgid ""
 "Thank you, your registration was successful! Your database is valid until"
-msgstr "Dankcu, uw registratie was succesvol! Uw database is geldig tot"
+msgstr "Danku, uw registratie was succesvol! Uw database is geldig tot"
 
 #. module: web_enterprise
 #. openerp-web
@@ -386,7 +388,7 @@ msgid ""
 "You will be able to register your database once you have installed your "
 "first app."
 msgstr ""
-"U kunt uw database registreren vanaf dat u uw eerste module heeft "
+"U kan uw database registreren vanaf dat u uw eerste module heeft "
 "geïnstalleerd."
 
 #. module: web_enterprise

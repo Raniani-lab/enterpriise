@@ -3,20 +3,23 @@
 # * mass_mailing_themes
 # 
 # Translators:
-# liAnGjiA <liangjia@qq.com>, 2018
-# Martin Trigaux, 2018
-# e2f_cn c7 <e2f_cn_c7@outlook.com>, 2018
-# Lisa Zhang <lzh@odoo.com>, 2018
-# inspur qiuguodong <qiuguodong@inspur.com>, 2018
-# 广州救火 <7017511@qq.com>, 2018
+# Bo Cao, 2017
+# Gary Wei <Gary.wei@elico-corp.com>, 2017
+# Connie Xiao <connie.xiao@elico-corp.com>, 2017
+# kevinlee <kevin80828@gmail.com>, 2017
+# e2f <projects@e2f.com>, 2018
+# Martin Trigaux, 2019
+# Jeffery CHEN Fan <jeffery9@gmail.com>, 2019
+# liAnGjiA <liangjia@qq.com>, 2019
+# inspur qiuguodong <qiuguodong@inspur.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-18 10:05+0000\n"
-"PO-Revision-Date: 2018-08-24 11:38+0000\n"
-"Last-Translator: 广州救火 <7017511@qq.com>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"PO-Revision-Date: 2016-08-05 13:29+0000\n"
+"Last-Translator: inspur qiuguodong <qiuguodong@inspur.com>, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -32,7 +35,7 @@ msgstr "$20"
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_airmail_template
 msgid "1958 Royal"
-msgstr "1958年皇室"
+msgstr "1958 Royal"
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_airmail_template
@@ -53,27 +56,48 @@ msgstr "<i/>"
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_expo_template
 msgid "<i>DOE Studio, USA</i>"
-msgstr "<i>美国能源部工作室</i>"
+msgstr "<i/>"
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_expo_template
 msgid "<i>Web Designer, ES</i>"
-msgstr "<i>网络营销</i>"
+msgstr "<i/>"
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template
 msgid "<small>Step 1:</small>"
-msgstr "<small>第 1 步:</small>"
+msgstr "<small>第一步：</small>"
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template
 msgid "<small>Step 2:</small>"
-msgstr "<small>第 2 步:</small>"
+msgstr "<small/>"
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template
 msgid "<small>Step 3:</small>"
-msgstr "<small>第 3 步:</small>"
+msgstr "<small>步骤3:</small>"
+
+#. module: mass_mailing_themes
+#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template
+msgid ""
+"<span class=\"fa fa-compass fa-2x text-delta\" aria-label=\"Choose\" "
+"title=\"Choose\"/>"
+msgstr ""
+
+#. module: mass_mailing_themes
+#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template
+msgid ""
+"<span class=\"fa fa-credit-card fa-2x text-delta\" aria-label=\"Order\" "
+"title=\"Order\"/>"
+msgstr ""
+
+#. module: mass_mailing_themes
+#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template
+msgid ""
+"<span class=\"fa fa-smile-o fa-2x text-delta\" aria-label=\"Enjoy!\" "
+"title=\"Enjoy!\"/>"
+msgstr ""
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
@@ -87,27 +111,27 @@ msgstr ""
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_bold_template
 msgid "<strong>2017</strong>"
-msgstr "<strong>2017</strong>"
+msgstr "<strong/>"
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_expo_template
 msgid "<strong>Anna Smith</strong>"
-msgstr "<strong>Anna Smith</strong>"
+msgstr "<strong/>"
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_expo_template
 msgid "<strong>Clark Hans</strong>"
-msgstr "<strong>Clark Hans</strong>"
+msgstr "<strong/>"
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_expo_template
 msgid "<strong>John Doe</strong>"
-msgstr "<strong>John Doe</strong>"
+msgstr "<strong/>"
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_bold_template
 msgid "<strong>N°258</strong>"
-msgstr "<strong>N°258</strong>"
+msgstr "<strong/>"
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template
@@ -140,7 +164,7 @@ msgstr "横幅图片"
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_newsletter_template
 msgid "Call for Speakers"
-msgstr "联络演讲人"
+msgstr "号召演讲人"
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template
@@ -167,9 +191,7 @@ msgstr "Classic D8 Skate"
 msgid ""
 "Cyber-threats continue to increase.<br/>\n"
 "                                    The discussion will examine how to develop new norms and integrate them into EU"
-msgstr ""
-"网络威胁不断增加。<br/>\n"
-"                                本次讨论将探讨如何制定新的规范，并将这些规范纳入到欧盟"
+msgstr "<br/>"
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_expo_template
@@ -210,7 +232,7 @@ msgstr "从您的下一个订单开始！"
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_tech_template
 msgid "Facebook"
-msgstr "脸书"
+msgstr "Facebook"
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_airmail_template
@@ -223,7 +245,7 @@ msgstr "Gibson Les Paul Junior"
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_tech_template
 msgid "Google Plus"
-msgstr "谷歌 Plus"
+msgstr "Google Plus"
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
@@ -252,7 +274,7 @@ msgstr "主题演讲人"
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_tech_template
 msgid "LinkedIn"
-msgstr "LinkedIn"
+msgstr "领英"
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_airmail_template
@@ -280,7 +302,7 @@ msgstr ""
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template
 msgid "Mains"
-msgstr "主要"
+msgstr "主"
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_resto_template
@@ -479,9 +501,7 @@ msgid ""
 "increased store hours and have lot's of new brands available.<br/>To welcome"
 " you back please accept this 20% discount on you next purchase by clicking "
 "the button."
-msgstr ""
-"我们在不断成长，迫切地想看到您成为 Odoo "
-"的一员！我们已延长商店营业时间，并提供大量新品牌。<br/>为了欢迎您的归来，单击此按钮即可在下次购买时享受 20% 的折扣。"
+msgstr "<br/>"
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template

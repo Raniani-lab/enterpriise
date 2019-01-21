@@ -3,17 +3,17 @@
 # * hr_appraisal
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Kostas Goutoudis <goutoudis@gmail.com>, 2018
-# Giota Dandidou <giotadandidou@gmail.com>, 2018
-# George Tarasidis <george_tarasidis@yahoo.com>, 2018
+# Martin Trigaux, 2019
+# Kostas Goutoudis <goutoudis@gmail.com>, 2019
+# George Tarasidis <george_tarasidis@yahoo.com>, 2019
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-08 07:14+0000\n"
-"PO-Revision-Date: 2018-10-08 07:14+0000\n"
-"Last-Translator: George Tarasidis <george_tarasidis@yahoo.com>, 2018\n"
+"PO-Revision-Date: 2016-08-05 13:29+0000\n"
+"Last-Translator: George Tarasidis <george_tarasidis@yahoo.com>, 2019\n"
 "Language-Team: Greek (https://www.transifex.com/odoo/teams/41243/el/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -85,7 +85,7 @@ msgstr ""
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_needaction
 msgid "Action Needed"
-msgstr "Απαιτείται ενέργεια"
+msgstr ""
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__action_plan
@@ -107,18 +107,18 @@ msgstr "Σε Ισχύ"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__activity_ids
 msgid "Activities"
-msgstr "Δραστηριότητες"
+msgstr ""
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__activity_state
 msgid "Activity State"
-msgstr "Κατάσταση Δραστηριότητας"
+msgstr ""
 
 #. module: hr_appraisal
 #: model:ir.actions.act_window,name:hr_appraisal.mail_activity_type_action_config_hr_appraisal
 #: model:ir.ui.menu,name:hr_appraisal.hr_appraisal_menu_config_activity_type
 msgid "Activity Types"
-msgstr "Τύποι Δραστηριότητας"
+msgstr ""
 
 #. module: hr_appraisal
 #: model:survey.label,value:hr_appraisal.arow_3_1_13
@@ -146,7 +146,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__survey_completed_ids
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 msgid "Answers"
-msgstr "Απαντήσεις"
+msgstr ""
 
 #. module: hr_appraisal
 #: model:ir.actions.act_window,name:hr_appraisal.open_view_hr_appraisal_tree
@@ -322,7 +322,7 @@ msgstr "Ακύρωση"
 #: selection:hr.appraisal,state:0 selection:hr.appraisal.report,state:0
 #, python-format
 msgid "Cancelled"
-msgstr "Ακυρώθηκε"
+msgstr ""
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__collaborators_appraisal
@@ -419,7 +419,7 @@ msgstr "Δημιουργήθηκε στις"
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
 msgid "Creation Date"
-msgstr "Ημερομηνία Δημιουργίας"
+msgstr ""
 
 #. module: hr_appraisal
 #: model:survey.label,value:hr_appraisal.arow_3_1_14
@@ -452,12 +452,12 @@ msgstr "Ημερομηνία της Αναθεώρησης"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_report__deadline
 msgid "Deadline"
-msgstr "Προθεσμία"
+msgstr ""
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
 msgid "Deadline:"
-msgstr "Προθεσμία:"
+msgstr ""
 
 #. module: hr_appraisal
 #: model:survey.label,value:hr_appraisal.arow_3_1_7
@@ -472,7 +472,7 @@ msgstr ""
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
 msgid "Delete"
-msgstr "Διαγραφή"
+msgstr ""
 
 #. module: hr_appraisal
 #: model:survey.label,value:hr_appraisal.oprow_2_2_1
@@ -483,7 +483,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__department_id
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_report__department_id
 msgid "Department"
-msgstr "Τμήμα"
+msgstr ""
 
 #. module: hr_appraisal
 #: model_terms:survey.page,description:hr_appraisal.appraisal_3
@@ -514,7 +514,7 @@ msgstr ""
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
 msgid "Edit"
-msgstr "Επεξεργασία"
+msgstr ""
 
 #. module: hr_appraisal
 #: model:survey.question,question:hr_appraisal.opinion_2_3
@@ -577,7 +577,7 @@ msgstr ""
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 msgid "Employee's Name"
-msgstr "Όνομα Εργαζόμενου"
+msgstr ""
 
 #. module: hr_appraisal
 #: model:survey.question,question:hr_appraisal.opinion_2_1
@@ -597,7 +597,7 @@ msgstr ""
 #. module: hr_appraisal
 #: model:ir.model,name:hr_appraisal.model_calendar_event
 msgid "Event"
-msgstr "Συμβάν"
+msgstr ""
 
 #. module: hr_appraisal
 #: model_terms:survey.page,description:hr_appraisal.appraisal_3
@@ -608,7 +608,7 @@ msgstr ""
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
 msgid "Extended Filters..."
-msgstr "Εκτεταμένα Φίλτρα..."
+msgstr ""
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/hr_appraisal.py:182
@@ -636,22 +636,22 @@ msgstr ""
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_follower_ids
 msgid "Followers"
-msgstr "Ακόλουθοι"
+msgstr ""
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_channel_ids
 msgid "Followers (Channels)"
-msgstr "Ακόλουθοι (Κανάλια)"
+msgstr ""
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_partner_ids
 msgid "Followers (Partners)"
-msgstr "Ακόλουθοι (Συνεργάτες)"
+msgstr ""
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
 msgid "Future Activities"
-msgstr "Μελλοντικές Δραστηριότητες"
+msgstr ""
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
@@ -661,7 +661,7 @@ msgstr "Ομαδοποίηση κατά"
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
 msgid "Group by..."
-msgstr "Ομαδοποίηση κατά..."
+msgstr ""
 
 #. module: hr_appraisal
 #: model:ir.model,name:hr_appraisal.model_hr_department
@@ -760,12 +760,12 @@ msgstr ""
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__message_unread
 msgid "If checked new messages require your attention."
-msgstr "Εάν επιλεγεί τα νέα μηνύματα χρειάζονται την προσοχή σας"
+msgstr ""
 
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr "Εάν επιλεγεί τα νέα μηνύματα χρειάζονται την προσοχή σας."
+msgstr ""
 
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__message_has_error
@@ -829,7 +829,7 @@ msgstr ""
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_is_follower
 msgid "Is Follower"
-msgstr "Είναι Ακόλουθος"
+msgstr ""
 
 #. module: hr_appraisal
 #: model_terms:survey.page,description:hr_appraisal.appraisal_1
@@ -866,7 +866,7 @@ msgstr "Τελευταία Ενημέρωση στις"
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
 msgid "Late Activities"
-msgstr "Καθυστερημένες Δραστηριότητες"
+msgstr ""
 
 #. module: hr_appraisal
 #: model:survey.question,question:hr_appraisal.opinion_2_2
@@ -902,7 +902,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 #: model:res.groups,name:hr_appraisal.group_hr_appraisal_manager
 msgid "Manager"
-msgstr "Διευθυντής"
+msgstr ""
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__manager_survey_id
@@ -924,7 +924,7 @@ msgstr ""
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__meeting_id
 msgid "Meeting"
-msgstr "Συνάντηση"
+msgstr ""
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_has_error
@@ -934,7 +934,7 @@ msgstr ""
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_ids
 msgid "Messages"
-msgstr "Μηνύματα"
+msgstr ""
 
 #. module: hr_appraisal
 #: model:survey.question,question:hr_appraisal.opinion_2_6
@@ -944,12 +944,12 @@ msgstr "Διάφορα"
 #. module: hr_appraisal
 #: selection:hr.employee,appraisal_frequency_unit:0
 msgid "Month"
-msgstr "Μήνας"
+msgstr ""
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
 msgid "My Activities"
-msgstr "Οι Δραστηριότητες μου"
+msgstr ""
 
 #. module: hr_appraisal
 #: model:survey.label,value:hr_appraisal.oprow_2_5_2
@@ -984,17 +984,17 @@ msgstr ""
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__activity_date_deadline
 msgid "Next Activity Deadline"
-msgstr "Επόμενη Προθεσμία Δραστηριότητας"
+msgstr ""
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__activity_summary
 msgid "Next Activity Summary"
-msgstr "Σύνοψη Επόμενης Δραστηριότητας"
+msgstr ""
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__activity_type_id
 msgid "Next Activity Type"
-msgstr "Επόμενος Τύπος Δραστηριότητας"
+msgstr ""
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_date
@@ -1004,7 +1004,7 @@ msgstr ""
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_needaction_counter
 msgid "Number of Actions"
-msgstr "Πλήθος ενεργειών"
+msgstr ""
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__count_completed_survey
@@ -1024,7 +1024,7 @@ msgstr ""
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__message_needaction_counter
 msgid "Number of messages which requires an action"
-msgstr "Πλήθος μηνυμάτων που απαιτούν ενέργεια"
+msgstr ""
 
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__message_has_error_counter
@@ -1034,7 +1034,7 @@ msgstr ""
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__message_unread_counter
 msgid "Number of unread messages"
-msgstr "Πλήθος μη αναγνωσμένων μηνυμάτων"
+msgstr ""
 
 #. module: hr_appraisal
 #: model:survey.question,question:hr_appraisal.appraisal_2_1
@@ -1044,7 +1044,7 @@ msgstr "Στόχοι"
 #. module: hr_appraisal
 #: model:res.groups,name:hr_appraisal.group_hr_appraisal_user
 msgid "Officer"
-msgstr "Προιστάμενος"
+msgstr ""
 
 #. module: hr_appraisal
 #: model:survey.question,question:hr_appraisal.opinion_2_5
@@ -1073,7 +1073,7 @@ msgstr ""
 #. module: hr_appraisal
 #: selection:hr.appraisal,activity_state:0
 msgid "Overdue"
-msgstr "Εκπρόθεσμο"
+msgstr ""
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__periodic_appraisal
@@ -1088,7 +1088,7 @@ msgstr ""
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_employee_view_form
 msgid "Periodicity"
-msgstr "Περιοδικότητα"
+msgstr ""
 
 #. module: hr_appraisal
 #: model:survey.question,question:hr_appraisal.appraisal_4_2
@@ -1098,12 +1098,12 @@ msgstr ""
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 msgid "Plan"
-msgstr "Σχεδίασε"
+msgstr ""
 
 #. module: hr_appraisal
 #: selection:hr.appraisal,activity_state:0
 msgid "Planned"
-msgstr "Προγραμματισμένη"
+msgstr ""
 
 #. module: hr_appraisal
 #: model:survey.question,question:hr_appraisal.appraisal_1_2
@@ -1138,7 +1138,7 @@ msgstr "Σχετικός Συνεργάτης"
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_employee_view_form
 msgid "Repeat Every"
-msgstr "Επανάληψη Κάθε"
+msgstr ""
 
 #. module: hr_appraisal
 #: model:ir.ui.menu,name:hr_appraisal.menu_hr_appraisal_report
@@ -1148,7 +1148,7 @@ msgstr "Αναφορές"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__activity_user_id
 msgid "Responsible User"
-msgstr "Υπεύθυνος Χρήστης"
+msgstr ""
 
 #. module: hr_appraisal
 #: model:survey.question,question:hr_appraisal.appraisal_2_2
@@ -1170,7 +1170,7 @@ msgstr ""
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
 msgid "Search Appraisal"
-msgstr "Αναζήτηση Βαθμολόγησης"
+msgstr ""
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_employee_view_form
@@ -1198,8 +1198,6 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
 msgid "Show all records which has next action date is before today"
 msgstr ""
-"Εμφάνιση όλων των εγγραφών όπου η ημερομηνία επόμενης δράσης είναι πριν από "
-"σήμερα"
 
 #. module: hr_appraisal
 #: model_terms:survey.page,description:hr_appraisal.appraisal_3
@@ -1234,10 +1232,6 @@ msgid ""
 "Today: Activity date is today\n"
 "Planned: Future activities."
 msgstr ""
-"Κατάσταση βασισμένη σε δραστηριότητες\n"
-"Καθυστερημένη: Η ημερομηνία λήξης έχει ήδη περάσει\n"
-"Σήμερα: Η ημερομηνία δραστηριότητας είναι σήμερα\n"
-"Προγραμματισμένες: Μελλοντικές δραστηριότητες."
 
 #. module: hr_appraisal
 #: model:survey.question,question:hr_appraisal.appraisal_3_1
@@ -1442,22 +1436,22 @@ msgstr ""
 #. module: hr_appraisal
 #: selection:hr.appraisal,activity_state:0
 msgid "Today"
-msgstr "Σήμερα"
+msgstr ""
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
 msgid "Today Activities"
-msgstr "Σημερινές Δραστηριότητες"
+msgstr ""
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_unread
 msgid "Unread Messages"
-msgstr "Μη αναγνωσμένα μηνύματα"
+msgstr ""
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_unread_counter
 msgid "Unread Messages Counter"
-msgstr "Μετρητής μη αναγνωσμένων μηνυμάτων"
+msgstr ""
 
 #. module: hr_appraisal
 #: model:survey.question,question:hr_appraisal.appraisal_5_1
@@ -1469,12 +1463,12 @@ msgstr ""
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__website_message_ids
 msgid "Website Messages"
-msgstr "Μηνύματα Ιστότοπου"
+msgstr ""
 
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__website_message_ids
 msgid "Website communication history"
-msgstr "Ιστορικό επικοινωνίας ιστότοπου"
+msgstr ""
 
 #. module: hr_appraisal
 #: model:survey.label,value:hr_appraisal.oprow_2_4_2
@@ -1491,7 +1485,7 @@ msgstr ""
 #. module: hr_appraisal
 #: selection:hr.employee,appraisal_frequency_unit:0
 msgid "Year"
-msgstr "Έτος"
+msgstr ""
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/hr_appraisal.py:232
@@ -1515,4 +1509,4 @@ msgstr ""
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
 msgid "oe_kanban_text_red"
-msgstr "oe_kanban_text_red"
+msgstr ""

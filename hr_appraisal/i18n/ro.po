@@ -3,15 +3,18 @@
 # * hr_appraisal
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Dorin Hongu <dhongu@gmail.com>, 2018
+# Iulian Cutui <iulian.cutui@gmail.com>, 2018
+# Cozmin Candea <office@terrabit.ro>, 2018
+# Martin Trigaux, 2019
+# Dorin Hongu <dhongu@gmail.com>, 2019
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-08 07:14+0000\n"
-"PO-Revision-Date: 2018-10-08 07:14+0000\n"
-"Last-Translator: Dorin Hongu <dhongu@gmail.com>, 2018\n"
+"PO-Revision-Date: 2016-08-05 13:29+0000\n"
+"Last-Translator: Dorin Hongu <dhongu@gmail.com>, 2019\n"
 "Language-Team: Romanian (https://www.transifex.com/odoo/teams/41243/ro/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -200,7 +203,7 @@ msgstr ""
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_manager_ids
 msgid "Appraisal Manager"
-msgstr ""
+msgstr "Evaluare "
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/hr_appraisal.py:118
@@ -234,7 +237,7 @@ msgstr ""
 #. module: hr_appraisal
 #: model:ir.model,name:hr_appraisal.model_hr_appraisal_report
 msgid "Appraisal Statistics"
-msgstr ""
+msgstr "Statistici evaluări"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__manager_appraisal
@@ -664,7 +667,7 @@ msgstr "Grupează după..."
 #. module: hr_appraisal
 #: model:ir.model,name:hr_appraisal.model_hr_department
 msgid "HR Department"
-msgstr ""
+msgstr "Departament"
 
 #. module: hr_appraisal
 #: model_terms:survey.page,description:hr_appraisal.opinion_1
@@ -1005,7 +1008,7 @@ msgstr "Număr de acțiuni"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__count_completed_survey
 msgid "Number of Answers"
-msgstr ""
+msgstr "Număr de răspunsuri"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__count_sent_survey
@@ -1178,7 +1181,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__employee_survey_id
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_self_survey_id
 msgid "Self Appraisal"
-msgstr ""
+msgstr "Autoevaluare"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_employee_view_form

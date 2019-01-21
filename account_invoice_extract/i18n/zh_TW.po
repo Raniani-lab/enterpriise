@@ -3,15 +3,17 @@
 # * account_invoice_extract
 # 
 # Translators:
-# Martin Trigaux, 2018
-# 敬雲 林 <chingyun@yuanchih-consult.com>, 2018
+# Martin Trigaux, 2019
+# Andy Cheng <andy.cheng@richsoda.com>, 2019
+# 敬雲 林 <chingyun@yuanchih-consult.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-25 12:42+0000\n"
-"PO-Revision-Date: 2018-09-25 12:42+0000\n"
-"Last-Translator: 敬雲 林 <chingyun@yuanchih-consult.com>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:12+0000\n"
+"PO-Revision-Date: 2019-01-16 08:36+0000\n"
+"Last-Translator: 敬雲 林 <chingyun@yuanchih-consult.com>, 2019\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/odoo/teams/41243/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,9 +24,9 @@ msgstr ""
 #. module: account_invoice_extract
 #: model:ir.model.fields,help:account_invoice_extract.field_account_invoice_extract_words__selected_status
 msgid ""
-"0 for 'not selected', 1 for ocr choosed and 2 for ocr selected but not "
-"choosed by user"
-msgstr "0表示'未選中'，1表示選擇ocr，2表示選擇ocr 但未被使用者選擇"
+"0 for 'not selected', 1 for 'ocr selected with no user selection' and 2 for "
+"'ocr selected with user selection (user may have selected the same box)"
+msgstr ""
 
 #. module: account_invoice_extract
 #: selection:account.invoice,extract_state:0
@@ -35,11 +37,6 @@ msgstr "出現錯誤"
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.invoice_supplier_form_inherit_ocr
 msgid "An error occured during the ocr process."
 msgstr "在OCR過程中出現了一個錯誤。"
-
-#. module: account_invoice_extract
-#: model_terms:ir.ui.view,arch_db:account_invoice_extract.res_config_settings_view_form
-msgid "Autocomplete Vendor Bills (OCR + AI)"
-msgstr "自動完成供應商帳單（OCR + AI）"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_res_config_settings__extract_show_ocr_option_selection
@@ -79,12 +76,12 @@ msgstr "配置設定"
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words__create_uid
 msgid "Created by"
-msgstr "創建人"
+msgstr "創立者"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words__create_date
 msgid "Created on"
-msgstr "創建時間"
+msgstr "建立於"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words__display_name
@@ -130,7 +127,7 @@ msgstr "IAP-OCR請求的ID"
 #: model:ir.model,name:account_invoice_extract.model_account_invoice
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words__invoice_id
 msgid "Invoice"
-msgstr "發票"
+msgstr "應收憑單"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,help:account_invoice_extract.field_account_invoice__extract_remoteid
@@ -150,7 +147,7 @@ msgstr "發票id"
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words____last_update
 msgid "Last Modified on"
-msgstr "最後修改日"
+msgstr "最後修改於"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words__write_uid
@@ -160,7 +157,7 @@ msgstr "最後更新者"
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words__write_date
 msgid "Last Updated on"
-msgstr "最後更新時間"
+msgstr "最後更新於"
 
 #. module: account_invoice_extract
 #: selection:account.invoice,extract_state:0
@@ -229,13 +226,6 @@ msgstr "等待導出"
 #: selection:account.invoice,extract_state:0
 msgid "Waiting validation"
 msgstr "等待驗證"
-
-#. module: account_invoice_extract
-#: model_terms:ir.ui.view,arch_db:account_invoice_extract.res_config_settings_view_form
-msgid ""
-"When receiving an email with a bill, or uploading scanned bills, Odoo will "
-"parse them (OCR) and auto-complete (AI) Draft Bills to validate."
-msgstr "當收到帶有帳單的電子信件或上傳掃瞄帳單時，Odoo將解析它們（OCR）並自動完成（AI）草案帳單以進行驗證。"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words__word_box_angle

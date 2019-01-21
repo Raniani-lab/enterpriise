@@ -3,15 +3,22 @@
 # * website_helpdesk_livechat
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Eloïse Stilmant <est@odoo.com>, 2018
+# Francis Ndong <francissimel@hotmail.com>, 2017
+# Quentin THEURET <odoo@kerpeo.com>, 2017
+# Jérémy Donas <LeDistordu@users.noreply.github.com>, 2017
+# Jeanjean Noname <monsieur.spock@gmail.com>, 2017
+# Maxime Chambreuil <mchambreuil@ursainfosystems.com>, 2017
+# Richard Mathot <rim@odoo.com>, 2017
+# Eloïse Stilmant <est@odoo.com>, 2017
+# e2f <projects@e2f.com>, 2018
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-18 10:05+0000\n"
-"PO-Revision-Date: 2018-09-18 10:05+0000\n"
-"Last-Translator: Eloïse Stilmant <est@odoo.com>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:12+0000\n"
+"PO-Revision-Date: 2017-02-15 11:47+0000\n"
+"Last-Translator: e2f <projects@e2f.com>, 2018\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -37,6 +44,11 @@ msgstr ""
 "<br><br>\n"
 "Vous pouvez créer un nouveau ticket en écrivant : <b>/helpdesk \"titre du ticket\"</b>.<br>\n"
 "Vous pouvez chercher un ticket en écrivant : <b>/helpdesk_search \"motclé1 motclé2 etc\"</b><br>"
+
+#. module: website_helpdesk_livechat
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
+msgid "<i class=\"fa fa-fw fa-arrow-right\" aria-label=\"Go to\" title=\"Go to\"/>"
+msgstr ""
 
 #. module: website_helpdesk_livechat
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
@@ -78,7 +90,7 @@ msgstr "Est une réponse standardisée"
 #. module: website_helpdesk_livechat
 #: model:ir.model.fields,field_description:website_helpdesk_livechat.field_helpdesk_team__feature_livechat_channel_id
 msgid "Live Chat Channel"
-msgstr "Canal de Live Chat"
+msgstr "Canal de discussion instantanée"
 
 #. module: website_helpdesk_livechat
 #: model:ir.model.fields,field_description:website_helpdesk_livechat.field_helpdesk_team__feature_livechat_web_page
@@ -128,7 +140,7 @@ msgstr "Commande incorrecte ou incomplète"
 #. module: website_helpdesk_livechat
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
 msgid "Test the livechat widget from this page:<br/>"
-msgstr "Testez le widget de Live Chat de cette page:<br/>"
+msgstr "Testez le widget de livechat de cette page:<br/>"
 
 #. module: website_helpdesk_livechat
 #: model:ir.model.fields,help:website_helpdesk_livechat.field_helpdesk_team__feature_livechat_web_page

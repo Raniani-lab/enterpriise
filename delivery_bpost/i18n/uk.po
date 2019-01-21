@@ -3,16 +3,18 @@
 # * delivery_bpost
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018
+# Bohdan Lisnenko, 2018
+# ТАрас <tratatuta@i.ua>, 2018
+# Martin Trigaux, 2019
+# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-08-24 11:37+0000\n"
-"Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018\n"
+"PO-Revision-Date: 2017-12-13 15:20+0000\n"
+"Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -42,7 +44,7 @@ msgid ""
 "Authentication error -- wrong credentials\n"
 "(Detailed error: %s)"
 msgstr ""
-"Помилка аутентифікації - помилкові облікові дані\n"
+"Помилка автентифікації - помилкові облікові дані\n"
 "(Детальна помилка: %s)"
 
 #. module: delivery_bpost
@@ -196,7 +198,7 @@ msgstr "PNG"
 #: code:addons/delivery_bpost/models/bpost_request.py:134
 #, python-format
 msgid "Packages over 30 Kg are not accepted by bpost."
-msgstr "Упаковка більше 30 кг bpost не приймає."
+msgstr "Упаковка більше 30 кг не приймаються bpost."
 
 #. module: delivery_bpost
 #: model:ir.model.fields,field_description:delivery_bpost.field_delivery_carrier__bpost_developer_password
@@ -392,7 +394,7 @@ msgid ""
 "delivery method into bpost Domestic."
 msgstr ""
 "Міжнародний bpost використовується лише для доставки за межами Бельгії. Будь"
-" ласка, змініть метод доставки на адресу Вітчизняного bpost."
+" ласка, змініть метод доставки на адресу Вітчизняний bpost."
 
 #. module: delivery_bpost
 #: code:addons/delivery_bpost/models/bpost_request.py:112

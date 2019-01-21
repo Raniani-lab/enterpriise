@@ -4,17 +4,15 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
-# Marc Tormo i Bochaca <mtbochaca@gmail.com>, 2018
-# Bàrbara Partegàs <barbararof@gmail.com>, 2018
-# Quim - eccit <quim@eccit.com>, 2018
+# Quim - eccit <quim@eccit.com>, 2019
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-08-24 11:47+0000\n"
-"Last-Translator: Quim - eccit <quim@eccit.com>, 2018\n"
+"PO-Revision-Date: 2016-08-05 13:31+0000\n"
+"Last-Translator: Quim - eccit <quim@eccit.com>, 2019\n"
 "Language-Team: Catalan (https://www.transifex.com/odoo/teams/41243/ca/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -84,18 +82,18 @@ msgstr "Creat el"
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_rule__cumulative
 msgid "Cumulative"
-msgstr "Acumulatiu "
+msgstr ""
 
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_reward__discount
 #: selection:loyalty.reward,reward_type:0
 msgid "Discount"
-msgstr "Descompte"
+msgstr ""
 
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_reward__discount_product_id
 msgid "Discount Product"
-msgstr "Producte en descompte"
+msgstr ""
 
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_program__display_name
@@ -112,12 +110,12 @@ msgstr ""
 #. module: pos_loyalty
 #: selection:loyalty.reward,reward_type:0
 msgid "Gift"
-msgstr "Regal "
+msgstr ""
 
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_reward__gift_product_id
 msgid "Gift Product"
-msgstr "Producte de regal "
+msgstr ""
 
 #. module: pos_loyalty
 #: model:ir.model.fields,help:pos_loyalty.field_loyalty_program__pp_product
@@ -178,7 +176,7 @@ msgstr "Última actualització el"
 #: model:ir.model.fields,field_description:pos_loyalty.field_res_partner__loyalty_points
 #: model:ir.model.fields,field_description:pos_loyalty.field_res_users__loyalty_points
 msgid "Loyalty Points"
-msgstr "Punts de fidelitat "
+msgstr ""
 
 #. module: pos_loyalty
 #: model:ir.model,name:pos_loyalty.model_loyalty_program
@@ -193,14 +191,14 @@ msgstr "Programa de fidelitat "
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_program__name
 #: model_terms:ir.ui.view,arch_db:pos_loyalty.view_loyalty_program_form
 msgid "Loyalty Program Name"
-msgstr "Nom del programa de fidelitat "
+msgstr ""
 
 #. module: pos_loyalty
 #: model:ir.actions.act_window,name:pos_loyalty.action_loyalty_program_form
 #: model_terms:ir.ui.view,arch_db:pos_loyalty.view_loyalty_program_tree
 #: model_terms:ir.ui.view,arch_db:pos_loyalty.view_pos_pos_form
 msgid "Loyalty Programs"
-msgstr "Programes de fidelitat "
+msgstr ""
 
 #. module: pos_loyalty
 #: model_terms:ir.actions.act_window,help:pos_loyalty.action_loyalty_program_form
@@ -219,12 +217,12 @@ msgstr ""
 #: model:ir.model,name:pos_loyalty.model_loyalty_rule
 #: model_terms:ir.ui.view,arch_db:pos_loyalty.view_loyalty_rule_form
 msgid "Loyalty Rule"
-msgstr "Regles de fidelitat "
+msgstr ""
 
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_reward__minimum_points
 msgid "Minimum Points"
-msgstr "Mínim de punts "
+msgstr ""
 
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_reward__name
@@ -264,7 +262,7 @@ msgstr "Configuració del Punt de Venda"
 #. module: pos_loyalty
 #: model:ir.model,name:pos_loyalty.model_pos_order
 msgid "Point of Sale Orders"
-msgstr "Comandes del Punt de Venda"
+msgstr ""
 
 #. module: pos_loyalty
 #. openerp-web
@@ -273,7 +271,7 @@ msgstr "Comandes del Punt de Venda"
 #: code:addons/pos_loyalty/static/src/xml/loyalty.xml:81
 #, python-format
 msgid "Points"
-msgstr "Punts "
+msgstr ""
 
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_program__rounding
@@ -299,7 +297,7 @@ msgstr ""
 #: code:addons/pos_loyalty/static/src/xml/loyalty.xml:54
 #, python-format
 msgid "Points Won"
-msgstr "Punts guanyats "
+msgstr ""
 
 #. module: pos_loyalty
 #. openerp-web
@@ -333,7 +331,7 @@ msgstr ""
 #. module: pos_loyalty
 #: selection:loyalty.rule,rule_type:0
 msgid "Product"
-msgstr "Producte"
+msgstr ""
 
 #. module: pos_loyalty
 #: selection:loyalty.reward,reward_type:0
@@ -362,12 +360,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:pos_loyalty.view_loyalty_program_form
 #, python-format
 msgid "Rewards"
-msgstr "Recompenses "
+msgstr ""
 
 #. module: pos_loyalty
 #: model_terms:ir.ui.view,arch_db:pos_loyalty.view_loyalty_rule_form
 msgid "Rule Name"
-msgstr "Nom de regla"
+msgstr ""
 
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_rule__rule_type
@@ -425,7 +423,7 @@ msgstr ""
 #. module: pos_loyalty
 #: model:ir.model.fields,help:pos_loyalty.field_loyalty_reward__discount
 msgid "The discount percentage"
-msgstr "El % de descompte"
+msgstr ""
 
 #. module: pos_loyalty
 #: code:addons/pos_loyalty/models/pos_loyalty.py:59
@@ -512,7 +510,7 @@ msgstr ""
 #: code:addons/pos_loyalty/static/src/xml/loyalty.xml:60
 #, python-format
 msgid "Total Points"
-msgstr "Punts Total "
+msgstr ""
 
 #. module: pos_loyalty
 #. openerp-web

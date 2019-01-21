@@ -3,19 +3,20 @@
 # * project_timesheet_synchro
 # 
 # Translators:
-# liAnGjiA <liangjia@qq.com>, 2018
-# Martin Trigaux, 2018
-# Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
-# Allen Xie <xfz@forisen.com>, 2018
-# inspur qiuguodong <qiuguodong@inspur.com>, 2018
+# e2f <projects@e2f.com>, 2018
+# e2f_cn c5 <jarvisn@ecinnovations.com>, 2018
+# Martin Trigaux, 2019
+# Jeffery CHEN Fan <jeffery9@gmail.com>, 2019
+# Allen Xie <xfz@forisen.com>, 2019
+# inspur qiuguodong <qiuguodong@inspur.com>, 2019
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-18 10:05+0000\n"
-"PO-Revision-Date: 2018-08-24 11:47+0000\n"
-"Last-Translator: inspur qiuguodong <qiuguodong@inspur.com>, 2018\n"
+"PO-Revision-Date: 2016-08-05 13:31+0000\n"
+"Last-Translator: inspur qiuguodong <qiuguodong@inspur.com>, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -83,14 +84,14 @@ msgstr "苹果应用商店"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:415
 #, python-format
 msgid "Are you sure that you want to delete this activity?"
-msgstr "确定要删除这项活动？"
+msgstr "你确定要删除这项活动？"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:473
 #, python-format
 msgid "Are you sure that you want to reset the app?"
-msgstr "确定要移除此过滤器吗？"
+msgstr "你确定要移除此过滤器吗？"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -122,7 +123,7 @@ msgstr "取消"
 msgid ""
 "Connect Timesheets to Odoo to synchronize your activities across all "
 "devices."
-msgstr "在不同的设备之间输入活动的报工单然后同步到Odoo中"
+msgstr "在不同的设备之间输入活动的记工单然后同步到Odoo中"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -159,14 +160,14 @@ msgstr "刪除"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:409
 #, python-format
 msgid "Discard"
-msgstr "取消"
+msgstr "舍弃"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:490
 #, python-format
 msgid "Discard data"
-msgstr "丢弃数据"
+msgstr "无用数据"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -224,7 +225,7 @@ msgstr "已锁定"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:437
 #, python-format
 msgid "Logged in as"
-msgstr "以······身份登录"
+msgstr "以。。身份登录"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -291,7 +292,7 @@ msgstr "加倍持续时间"
 #: code:addons/project_timesheet_synchro/static/src/xml/timesheet_app_backend_template.xml:35
 #, python-format
 msgid "Never lose track of what you need to do."
-msgstr "永远不要偏离方向"
+msgstr "永远不要偏离你所需要去做的"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -350,7 +351,7 @@ msgstr "在服务器上"
 msgid ""
 "Once you have created or synchronized projects and tasks, they will appear "
 "here. This will allow you to plan your day in advance."
-msgstr "创建/同步项目与任务后会在这里显示。将允许提前制定计划"
+msgstr "一旦创建/同步项目与任务，它们会在这里显示。它将允许你提前制定计划"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -372,7 +373,7 @@ msgstr "密码"
 #: code:addons/project_timesheet_synchro/static/src/xml/timesheet_app_backend_template.xml:43
 #, python-format
 msgid "Plan your day. Focus on important tasks."
-msgstr "做计划时集中精力在重要的任务上"
+msgstr "做计划，集中精力在重要的任务上"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -456,7 +457,7 @@ msgstr "保存"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:575
 #, python-format
 msgid "Select your Odoo instance from the list below :"
-msgstr "从下列菜单里选择Odoo示例"
+msgstr "从下列菜单里选择你的Odoo用例"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -545,7 +546,7 @@ msgid ""
 "should contact your administrator in order to install the module "
 "''Synchronization with the external timesheet application'' (available in "
 "Odoo Enterprise Edition)."
-msgstr "您连接的服务器无法支持时间表同步。联系管理员以便安装模块“外部时间表应用程序同步”（可使用 Odoo 企业版）。"
+msgstr "您连接的服务器无法支持时间表同步。您应该联系管理员以便安装模块“外部时间表应用程序同步”（可使用 Odoo 企业版）。"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -559,14 +560,14 @@ msgstr "本周"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:384
 #, python-format
 msgid "Time spent (hh:mm)"
-msgstr "耗时 (hh:mm)"
+msgstr "时间花费 (hh:mm)"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:361
 #, python-format
 msgid "Time spent (hhmm)"
-msgstr "耗时 (格式hhmm)"
+msgstr "花费时间 （ (hhmm)）"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -594,7 +595,7 @@ msgstr "今日"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:28
 #, python-format
 msgid "Today's Plan"
-msgstr "今日计划"
+msgstr "今天的计划"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -659,7 +660,7 @@ msgstr "在任何地点，任何时间工作"
 #: code:addons/project_timesheet_synchro/static/src/xml/timesheet_app_backend_template.xml:31
 #, python-format
 msgid "Work in disconnected mode and sync in the background."
-msgstr "在断开模式下工作，并在后台同步。"
+msgstr "在非连接状态下工作，同步背景"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -668,7 +669,7 @@ msgstr "在断开模式下工作，并在后台同步。"
 msgid ""
 "Would you like the activities, projects and tasks that you created as a "
 "guest user to be synchronized as well?"
-msgstr "您希望作为访客用户创建的活动、项目和任务也同步吗？"
+msgstr "你希望你作为一个客户用户创建的活动，项目和任务也被同步吗？"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -682,14 +683,14 @@ msgstr "你想要删除这些活动吗"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:584
 #, python-format
 msgid "You are logged in !"
-msgstr "您已登录"
+msgstr "你已经登录"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/timesheet_app_backend_template.xml:15
 #, python-format
 msgid "You can try the app in a new tab:"
-msgstr "您可以在新窗口下尝试执行这个程序"
+msgstr "你可以在新窗口下尝试这个程序"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -698,28 +699,28 @@ msgstr "您可以在新窗口下尝试执行这个程序"
 msgid ""
 "You should have received an email with a link to activate your account. Once"
 " it is activated, you'll be able to"
-msgstr "您会收到带有链接的电子邮件，以便激活您的账户。如果已经激活，即可使用。"
+msgstr "您应该收到带有链接的电子邮件，以便激活您的账户。如果已经激活，您就可以使用了。"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:521
 #, python-format
 msgid "Your Odoo Server Address"
-msgstr "您的Odoo服务器地址"
+msgstr "你的Odoo服务器地址"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:570
 #, python-format
 msgid "Your database and account have been created !"
-msgstr "您的数据库及账号已被建立！"
+msgstr "你的数据库及账号已被建立！"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/timesheet_app_backend_template.xml:21
 #, python-format
 msgid "Your personal timesheets"
-msgstr "您的个人工单"
+msgstr "你的个人工单"
 
 #. module: project_timesheet_synchro
 #. openerp-web

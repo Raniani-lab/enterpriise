@@ -4,16 +4,15 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
-# Kostas Goutoudis <goutoudis@gmail.com>, 2018
-# Stefanos Nikou <stefanos.nikou@gmail.com>, 2018
-# George Tarasidis <george_tarasidis@yahoo.com>, 2018
+# George Tarasidis <george_tarasidis@yahoo.com>, 2019
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: George Tarasidis <george_tarasidis@yahoo.com>, 2018\n"
+"PO-Revision-Date: 2016-08-05 13:28+0000\n"
+"Last-Translator: George Tarasidis <george_tarasidis@yahoo.com>, 2019\n"
 "Language-Team: Greek (https://www.transifex.com/odoo/teams/41243/el/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -59,13 +58,13 @@ msgstr "Γενική"
 #. module: account_sepa
 #: selection:res.company,sepa_pain_version:0
 msgid "German Version"
-msgstr "Γερμανική Έκδοση"
+msgstr ""
 
 #. module: account_sepa
 #: model:ir.model.fields,field_description:account_sepa.field_res_company__sepa_orgid_id
 #: model:ir.model.fields,field_description:account_sepa.field_res_config_settings__sepa_orgid_id
 msgid "Identification"
-msgstr "Αναγνώριση"
+msgstr ""
 
 #. module: account_sepa
 #: model:ir.model.fields,help:account_sepa.field_res_company__sepa_orgid_id
@@ -86,12 +85,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_sepa.field_res_company__sepa_orgid_issr
 #: model:ir.model.fields,field_description:account_sepa.field_res_config_settings__sepa_orgid_issr
 msgid "Issuer"
-msgstr "Εκδότης"
+msgstr ""
 
 #. module: account_sepa
 #: model:ir.model,name:account_sepa.model_account_journal
 msgid "Journal"
-msgstr "Ημερολόγιο"
+msgstr ""
 
 #. module: account_sepa
 #: model:ir.model.fields,help:account_sepa.field_res_config_settings__sepa_initiating_party_name
@@ -103,17 +102,17 @@ msgstr ""
 #. module: account_sepa
 #: model_terms:ir.ui.view,arch_db:account_sepa.account_journal_dashboard_kanban_view_inherited
 msgid "Payment to send via SEPA"
-msgstr "Πληρωμή για αποστολή μέσω SEPA"
+msgstr ""
 
 #. module: account_sepa
 #: model:ir.model,name:account_sepa.model_account_payment
 msgid "Payments"
-msgstr "Συναλλαγές"
+msgstr ""
 
 #. module: account_sepa
 #: model_terms:ir.ui.view,arch_db:account_sepa.account_journal_dashboard_kanban_view_inherited
 msgid "Payments to send via SEPA"
-msgstr "Συναλλαγές για αποστολή μέσω SEPA"
+msgstr ""
 
 #. module: account_sepa
 #: code:addons/account_sepa/models/account_batch_payment.py:42
@@ -131,7 +130,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_sepa.field_account_payment__partner_bank_account_id
 #: model:ir.model.fields,field_description:account_sepa.field_account_register_payments__partner_bank_account_id
 msgid "Recipient Bank Account"
-msgstr "Τραπεζικός Λογαριασμός Παραλήπτη"
+msgstr ""
 
 #. module: account_sepa
 #: model:ir.model,name:account_sepa.model_account_register_payments
@@ -182,7 +181,7 @@ msgstr ""
 #. module: account_sepa
 #: selection:res.company,sepa_pain_version:0
 msgid "Swiss Version"
-msgstr "Ελβετική Έκδοση"
+msgstr ""
 
 #. module: account_sepa
 #: model:ir.model.fields,help:account_sepa.field_account_batch_payment__sct_generic
@@ -298,7 +297,7 @@ msgstr ""
 #: code:addons/account_sepa/models/account_batch_payment.py:189
 #, python-format
 msgid "Too many transactions for a single file."
-msgstr "Πάρα πολλές συναλλαγές για ένα ενιαίο αρχείο."
+msgstr ""
 
 #. module: account_sepa
 #: model:ir.model.fields,help:account_sepa.field_res_company__sepa_initiating_party_name
@@ -307,17 +306,15 @@ msgid ""
 "Will appear in SEPA payments as the name of the party initiating the "
 "payment. Limited to 70 characters."
 msgstr ""
-"Θα εμφανίζονται στις συναλλαγές SEPA καθώς το όνομα του μέρους ορίζει την "
-"έναρξη της πληρωμής. Περιορίζεται σε 70 χαρακτήρες."
 
 #. module: account_sepa
 #: model:ir.model.fields,field_description:account_sepa.field_res_company__sepa_initiating_party_name
 #: model:ir.model.fields,field_description:account_sepa.field_res_config_settings__sepa_initiating_party_name
 msgid "Your Company Name"
-msgstr "Επωνυμία της Εταιρίας σας"
+msgstr ""
 
 #. module: account_sepa
 #: code:addons/account_sepa/models/account_batch_payment.py:84
 #, python-format
 msgid "Your bank account is not labelled in EUR"
-msgstr "Ο τραπεζικός σας λογαριασμός δε φέρει σήμανση σε ευρώ"
+msgstr ""

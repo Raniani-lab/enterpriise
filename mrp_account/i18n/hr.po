@@ -3,17 +3,17 @@
 # * mrp_account
 # 
 # Translators:
-# Bole <bole@dajmi5.com>, 2017
-# Vladimir Olujić <olujic.vladimir@storm.hr>, 2017
 # Martin Trigaux, 2017
 # Đurđica Žarković <durdica.zarkovic@storm.hr>, 2017
+# Bole <bole@dajmi5.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.3+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 08:34+0000\n"
-"PO-Revision-Date: 2018-06-25 08:34+0000\n"
-"Last-Translator: Đurđica Žarković <durdica.zarkovic@storm.hr>, 2017\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2016-08-05 13:29+0000\n"
+"Last-Translator: Bole <bole@dajmi5.com>, 2019\n"
 "Language-Team: Croatian (https://www.transifex.com/odoo/teams/41243/hr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,27 +22,77 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid ", from"
 msgstr ", od"
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+msgid "<span>Code</span>"
+msgstr ""
+
+#. module: mrp_account
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+msgid "<span>Cost/hour</span>"
+msgstr ""
+
+#. module: mrp_account
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+msgid "<span>Operation</span>"
+msgstr ""
+
+#. module: mrp_account
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+msgid "<span>Operator</span>"
+msgstr ""
+
+#. module: mrp_account
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+msgid "<span>Quantity</span>"
+msgstr ""
+
+#. module: mrp_account
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+msgid "<span>Raw Materials</span>"
+msgstr ""
+
+#. module: mrp_account
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+msgid "<span>Scraps</span>"
+msgstr ""
+
+#. module: mrp_account
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+msgid "<span>Total Cost</span>"
+msgstr ""
+
+#. module: mrp_account
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+msgid "<span>Unit Cost</span>"
+msgstr ""
+
+#. module: mrp_account
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+msgid "<span>Working Time</span>"
+msgstr ""
+
+#. module: mrp_account
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "<strong>Total Cost of Operations</strong>"
 msgstr "<strong>Ukupni trošak operacija</strong>"
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "<strong>Total Cost of Raw Materials</strong>"
 msgstr "<strong>Ukupni trošak sirovina</strong>"
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "<strong>Total Cost of Scraps</strong>"
 msgstr "<strong>Ukupni trošak otpada</strong>"
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "<strong>Unit Cost</strong>"
 msgstr "<strong>Jedinična cijena</strong>"
 
@@ -52,14 +102,14 @@ msgid "Analytic Account"
 msgstr "Analitički konto"
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
-msgid "Code"
-msgstr "Šifra"
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+msgid "By product(s)"
+msgstr ""
 
 #. module: mrp_account
 #: model:ir.actions.report,name:mrp_account.action_cost_struct_mrp_production
-#: model:ir.ui.view,arch_db:mrp_account.mrp_production_form_inherit_view6
-#: model:ir.ui.view,arch_db:mrp_account.product_product_inherit_form_view_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_production_form_inherit_view6
+#: model_terms:ir.ui.view,arch_db:mrp_account.product_product_inherit_form_view_cost_structure
 msgid "Cost Analysis"
 msgstr "Analiza troškova"
 
@@ -69,7 +119,7 @@ msgid "Cost Recorded"
 msgstr "Trošak ubilježen"
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "Cost Structure"
 msgstr "Cost Structure"
 
@@ -79,24 +129,19 @@ msgid "Cost Structure Analysis"
 msgstr "Analiza strukture troškova"
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "Cost for"
 msgstr "Trošak za"
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "Cost of Operations"
 msgstr "Trošak operacija"
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "Cost of Scraps"
 msgstr "Trošak otpada"
-
-#. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
-msgid "Cost/hour"
-msgstr "Trošak/sat"
 
 #. module: mrp_account
 #: model:ir.model.fields,field_description:mrp_account.field_report_mrp_account_mrp_cost_structure__display_name
@@ -126,19 +171,9 @@ msgid "Last Modified on"
 msgstr "Zadnja promjena"
 
 #. module: mrp_account
-#: model:ir.model,name:mrp_account.model_mrp_production
-msgid "Manufacturing Order"
-msgstr "Nalog za proizvodnju"
-
-#. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
-msgid "Operation"
-msgstr "Operacija"
-
-#. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
-msgid "Operator"
-msgstr "Operator"
+#: model:ir.model,name:mrp_account.model_report_mrp_account_mrp_cost_structure
+msgid "MRP Cost Structure Report"
+msgstr ""
 
 #. module: mrp_account
 #: model:ir.model,name:mrp_account.model_product_product
@@ -151,22 +186,17 @@ msgid "Product Template"
 msgstr "Predložak proizvoda"
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
-msgid "Quantity"
-msgstr "Količina"
+#: model:ir.model,name:mrp_account.model_report_mrp_account_product_template_cost_structure
+msgid "Product Template Cost Structure Report"
+msgstr ""
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
-msgid "Raw Materials"
-msgstr "Sirovine"
+#: model:ir.model,name:mrp_account.model_mrp_production
+msgid "Production Order"
+msgstr "Proizvodni nalog"
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
-msgid "Scraps"
-msgstr "Otpisi"
-
-#. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "Some of the Manufacturing Order(s) selected are not done yet"
 msgstr "Neki od odabranih proizvodnog(ih) naloga nisu još gotovi."
 
@@ -184,16 +214,6 @@ msgstr ""
 "radnog centra."
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
-msgid "Total Cost"
-msgstr "Ukupni trošak"
-
-#. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
-msgid "Unit Cost"
-msgstr "Jedinični trošak"
-
-#. module: mrp_account
 #: model:ir.model,name:mrp_account.model_mrp_workcenter
 msgid "Work Center"
 msgstr "Radni centar"
@@ -204,26 +224,11 @@ msgid "Workcenter Productivity Log"
 msgstr "Log produktivnosti radnog centra"
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
-msgid "Working Time"
-msgstr "Radno vrijeme"
-
-#. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "hours"
 msgstr "sati"
 
 #. module: mrp_account
-#: model:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
+#: model_terms:ir.ui.view,arch_db:mrp_account.mrp_cost_structure
 msgid "manufacturing order(s)."
 msgstr "proizvodni nalog(zi)."
-
-#. module: mrp_account
-#: model:ir.model,name:mrp_account.model_report_mrp_account_mrp_cost_structure
-msgid "report.mrp_account.mrp_cost_structure"
-msgstr "report.mrp_account.mrp_cost_structure"
-
-#. module: mrp_account
-#: model:ir.model,name:mrp_account.model_report_mrp_account_product_template_cost_structure
-msgid "report.mrp_account.product_template_cost_structure"
-msgstr "report.mrp_account.product_template_cost_structure"

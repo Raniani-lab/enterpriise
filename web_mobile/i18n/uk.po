@@ -3,14 +3,17 @@
 # * web_mobile
 # 
 # Translators:
-# Martin Trigaux, 2018
+# Bohdan Lisnenko, 2018
+# Martin Trigaux, 2019
+# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-18 10:05+0000\n"
-"PO-Revision-Date: 2018-09-18 10:05+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"PO-Revision-Date: 2017-02-15 11:46+0000\n"
+"Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -51,21 +54,21 @@ msgstr "Мобільний"
 #: code:addons/web_mobile/static/src/js/user_menu.js:58
 #, python-format
 msgid "No shortcut for Home Menu"
-msgstr ""
+msgstr "Немає ярликів для Домашнього Меню"
 
 #. module: web_mobile
 #. openerp-web
 #: code:addons/web_mobile/static/src/xml/settings_dashboard.xml:14
 #, python-format
 msgid "On Apple Store"
-msgstr ""
+msgstr "На Apple Store"
 
 #. module: web_mobile
 #. openerp-web
 #: code:addons/web_mobile/static/src/xml/settings_dashboard.xml:9
 #, python-format
 msgid "On Google Play"
-msgstr ""
+msgstr "На Google Play"
 
 #. module: web_mobile
 #. openerp-web

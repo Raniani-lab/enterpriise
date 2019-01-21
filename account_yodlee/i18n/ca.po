@@ -4,15 +4,14 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
-# RGB Consulting <odoo@rgbconsulting.com>, 2018
 # Manel Fernandez <manelfera@outlook.com>, 2018
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-08-24 11:37+0000\n"
+"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"PO-Revision-Date: 2016-08-05 13:28+0000\n"
 "Last-Translator: Manel Fernandez <manelfera@outlook.com>, 2018\n"
 "Language-Team: Catalan (https://www.transifex.com/odoo/teams/41243/ca/)\n"
 "MIME-Version: 1.0\n"
@@ -26,7 +25,7 @@ msgstr ""
 #: code:addons/account_yodlee/models/yodlee.py:110
 #, python-format
 msgid "(Diagnostic: %r for URL %s)"
-msgstr "(Diagnòstic: %r per URL %s)"
+msgstr ""
 
 #. module: account_yodlee
 #: code:addons/account_yodlee/models/yodlee.py:242
@@ -43,10 +42,6 @@ msgid ""
 "  Please log in to the site to confirm and then complete the site addition "
 "process with the correct login information."
 msgstr ""
-"Compte ja registrat (436): No s'ha pogut completar el seu registre automàtic"
-" perquè el portal informa que el seu compte ja es troba registrada. Inici "
-"sessió al portal per confirmar i llavors completar el procés d'addició al "
-"portal amb la informació de l'inici de sessió correcte."
 
 #. module: account_yodlee
 #: code:addons/account_yodlee/models/yodlee.py:322
@@ -103,13 +98,13 @@ msgid "Companies"
 msgstr "Empreses"
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:187
+#: code:addons/account_yodlee/models/yodlee.py:199
 #, python-format
 msgid "Could not make sense of parameters: %s"
 msgstr ""
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:319
+#: code:addons/account_yodlee/models/yodlee.py:339
 #, python-format
 msgid ""
 "Credential Re-Verification Required (402): We could not update your account "
@@ -118,11 +113,17 @@ msgid ""
 msgstr ""
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:325
+#: code:addons/account_yodlee/models/yodlee.py:345
 #, python-format
 msgid ""
 "Credential Re-Verification Required (420):The site has merged with another. "
 "Please re-verify your credentials at the site and update the same."
+msgstr ""
+
+#. module: account_yodlee
+#: code:addons/account_yodlee/models/yodlee.py:228
+#, python-format
+msgid "Error %s, message: %s"
 msgstr ""
 
 #. module: account_yodlee
@@ -287,7 +288,7 @@ msgstr ""
 #. module: account_yodlee
 #: selection:account.online.provider,provider_type:0
 msgid "Plaid"
-msgstr "Plaid"
+msgstr ""
 
 #. module: account_yodlee
 #: code:addons/account_yodlee/models/yodlee.py:48
@@ -431,7 +432,7 @@ msgstr ""
 #. module: account_yodlee
 #: model:ir.model,name:account_yodlee.model_account_online_provider
 msgid "Provider for online account synchronization"
-msgstr "Proveïdor de sincronització de compte en línia"
+msgstr ""
 
 #. module: account_yodlee
 #: code:addons/account_yodlee/models/yodlee.py:330
@@ -553,7 +554,7 @@ msgstr ""
 #: code:addons/account_yodlee/models/yodlee.py:135
 #, python-format
 msgid "Timeout: the server did not reply within 30s"
-msgstr "Temps d'espera esgotat: el servidor no ha respost en 30s"
+msgstr ""
 
 #. module: account_yodlee
 #: code:addons/account_yodlee/models/yodlee.py:320
@@ -596,4 +597,10 @@ msgstr ""
 #. module: account_yodlee
 #: model:ir.model.fields,field_description:account_yodlee.field_res_company__yodlee_access_token
 msgid "access_token"
+msgstr ""
+
+#. module: account_yodlee
+#: code:addons/account_yodlee/models/yodlee.py:297
+#, python-format
+msgid "message: %s"
 msgstr ""

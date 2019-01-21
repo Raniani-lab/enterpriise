@@ -3,17 +3,18 @@
 # * project_forecast
 # 
 # Translators:
+# Viktor Basso <viktor@voit.no>, 2018
 # Jorunn D. Newth, 2018
-# Martin Trigaux, 2018
-# Marius Stedjan <marius@stedjan.com>, 2018
+# Martin Trigaux, 2019
+# Marius Stedjan <marius@stedjan.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-08-24 11:47+0000\n"
-"Last-Translator: Marius Stedjan <marius@stedjan.com>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"PO-Revision-Date: 2016-08-05 13:31+0000\n"
+"Last-Translator: Marius Stedjan <marius@stedjan.com>, 2019\n"
 "Language-Team: Norwegian Bokmål (https://www.transifex.com/odoo/teams/41243/nb/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -148,6 +149,12 @@ msgstr "Visningsnavn"
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
 msgid "Employee"
 msgstr "Ansatt"
+
+#. module: project_forecast
+#: model:ir.model.fields,help:project_forecast.field_project_project__allow_forecast
+#: model:ir.model.fields,help:project_forecast.field_project_task__allow_forecast
+msgid "Enable forecasting on the project."
+msgstr ""
 
 #. module: project_forecast
 #: model:ir.model.fields,help:project_forecast.field_res_company__forecast_span
@@ -376,18 +383,12 @@ msgid "Task tags"
 msgstr "Oppgavetagger"
 
 #. module: project_forecast
-#: code:addons/project_forecast/models/project_forecast.py:132
+#: code:addons/project_forecast/models/project_forecast.py:134
 #, python-format
 msgid ""
 "The employee (%s) doesn't have a timezone, this might cause errors in the "
 "time computation. It is configurable on the user linked to the employee"
 msgstr ""
-
-#. module: project_forecast
-#: model:ir.model.fields,help:project_forecast.field_project_project__allow_forecast
-#: model:ir.model.fields,help:project_forecast.field_project_task__allow_forecast
-msgid "This feature shows the Forecast link in the kanban view"
-msgstr "Denne funksjonen viser linken Prognose i Kanban-visningen"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_res_company__forecast_span

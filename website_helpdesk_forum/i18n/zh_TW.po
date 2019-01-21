@@ -3,20 +3,35 @@
 # * website_helpdesk_forum
 # 
 # Translators:
-# Martin Trigaux, 2018
+# 敬雲 林 <chingyun@yuanchih-consult.com>, 2018
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:12+0000\n"
+"PO-Revision-Date: 2017-02-15 11:47+0000\n"
+"Last-Translator: 敬雲 林 <chingyun@yuanchih-consult.com>, 2018\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/odoo/teams/41243/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Language: zh_TW\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: website_helpdesk_forum
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
+msgid ""
+"<i class=\"fa fa-check-circle oe_answer_true\" role=\"img\" aria-"
+"label=\"Question has accepted answer\"/>"
+msgstr ""
+
+#. module: website_helpdesk_forum
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
+msgid ""
+"<i class=\"fa fa-external-link forum_link\" role=\"img\" aria-"
+"label=\"Redirect to external link\"/>"
+msgstr ""
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page

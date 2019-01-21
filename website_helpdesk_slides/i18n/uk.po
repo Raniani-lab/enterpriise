@@ -4,15 +4,19 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
-# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018
+# Bohdan Lisnenko, 2018
+# Taras Kovaliuk <tratatuta123@gmail.com>, 2018
+# ТАрас <tratatuta@i.ua>, 2018
+# Роман Яхненко <bsap132@gmail.com>, 2018
+# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-08-24 11:49+0000\n"
-"Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018\n"
+"PO-Revision-Date: 2017-02-15 11:47+0000\n"
+"Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,7 +28,7 @@ msgstr ""
 #: code:addons/website_helpdesk_slides/wizard/slide_slide.py:72
 #, python-format
 msgid "Already exists in %s : <a href=\"%s\">click here to view it.</a>"
-msgstr "Вже існує в %s : <a href=\"%s\">натисніть тут, щоби переглянути.</a>"
+msgstr "Вже існує в %s : <a href=\"%s\">натисніть тут, щоб переглянути.</a>"
 
 #. module: website_helpdesk_slides
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.slide_upload_wizard_view_form
@@ -233,12 +237,12 @@ msgstr ""
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,help:website_helpdesk_slides.field_helpdesk_team__elearning_url
 msgid "The full URL to access the document through the website."
-msgstr "Повна URL-адреса для доступу до документації через сайт"
+msgstr "URL-адреса повністю, для доступу до документації через сайт"
 
 #. module: website_helpdesk_slides
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.helpdesk_team_view_form_inherit_website_helpdesk_slides
 msgid "The related channel is:<br/>"
-msgstr "Пов'язаний канал є:<br/>"
+msgstr "Пов'язаний канал - це:<br/>"
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__name
@@ -287,4 +291,4 @@ msgstr "Youtube або Google Document URL"
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_helpdesk_team__elearning_id
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.helpdesk_team_view_form_inherit_website_helpdesk_slides
 msgid "eLearning"
-msgstr "Електронне навчання"
+msgstr "eLearning"

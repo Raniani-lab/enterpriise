@@ -3,21 +3,21 @@
 # * delivery_ups
 # 
 # Translators:
+# Thermo Dynamic <emirhanayar2004@gmail.com>, 2017
+# Alexander B. <road2monstercat@gmail.com>, 2017
 # Ayhan KIZILTAN <akiziltan76@hotmail.com>, 2018
-# Martin Trigaux, 2018
 # Murat Kaplan <muratk@projetgrup.com>, 2018
 # Güven YILMAZ <guvenyilmaz@outlook.com.tr>, 2018
-# Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2018
-# Thermo Dynamic <emirhanayar2004@gmail.com>, 2018
-# Alexander B. <road2monstercat@gmail.com>, 2018
-# Umur Akın <umura@projetgrup.com>, 2018
+# Martin Trigaux, 2019
+# Umur Akın <umura@projetgrup.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Umur Akın <umura@projetgrup.com>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"PO-Revision-Date: 2016-08-05 13:28+0000\n"
+"Last-Translator: Umur Akın <umura@projetgrup.com>, 2019\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -50,7 +50,7 @@ msgstr "Nakliyeci"
 #: model:ir.model.fields,field_description:delivery_ups.field_sale_order__ups_carrier_account
 #: model:ir.model.fields,field_description:delivery_ups.field_stock_picking__ups_carrier_account
 msgid "Carrier Account"
-msgstr "Nakliyeci Hesabı"
+msgstr "Kariyer Hesabı"
 
 #. module: delivery_ups
 #: selection:delivery.carrier,ups_cod_funds_code:0
@@ -70,7 +70,7 @@ msgstr ""
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_cod
 msgid "Collect on Delivery"
-msgstr "Teslimde Topla"
+msgstr "Teslimatı Toparla"
 
 #. module: delivery_ups
 #: selection:delivery.carrier,delivery_type:0
@@ -152,7 +152,7 @@ msgstr "En az bir adet kargolanacak ürün sağlayın."
 #. module: delivery_ups
 #: selection:delivery.carrier,ups_package_weight_unit:0
 msgid "Pounds"
-msgstr "Pound"
+msgstr "Sterlin"
 
 #. module: delivery_ups
 #: model:ir.model,name:delivery_ups.model_product_packaging
@@ -171,7 +171,7 @@ msgstr "SPL"
 
 #. module: delivery_ups
 #: model:ir.model,name:delivery_ups.model_sale_order
-msgid "Sale Order"
+msgid "Sales Order"
 msgstr "Satış Siparişi"
 
 #. module: delivery_ups
@@ -370,11 +370,3 @@ msgstr "ZPL"
 #: selection:product.packaging,package_carrier_type:0
 msgid "bpost"
 msgstr "bpost"
-
-#. module: delivery_ups
-#: model:product.product,weight_uom_name:delivery_ups.product_product_delivery_ups_be
-#: model:product.product,weight_uom_name:delivery_ups.product_product_delivery_ups_us
-#: model:product.template,weight_uom_name:delivery_ups.product_product_delivery_ups_be_product_template
-#: model:product.template,weight_uom_name:delivery_ups.product_product_delivery_ups_us_product_template
-msgid "kg"
-msgstr "kg"

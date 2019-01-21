@@ -3,19 +3,21 @@
 # * website_helpdesk_slides
 # 
 # Translators:
-# Ediz Duman <neps1192@gmail.com>, 2018
-# Martin Trigaux, 2018
-# Levent Karakaş <levent@mektup.at>, 2018
-# Murat Kaplan <muratk@projetgrup.com>, 2018
-# Ahmet Altinisik <aaltinisik@altinkaya.com.tr>, 2018
-# Gökhan Erdoğdu <gokhan.erdogdu@mechsoft.com.tr>, 2018
+# Esin Kandemir <esaykandemir@gmail.com>, 2017
+# Ediz Duman <neps1192@gmail.com>, 2017
+# gezgin biri <gezginbiri@hotmail.com>, 2017
+# Martin Trigaux, 2017
+# Ahmet Altinisik <aaltinisik@altinkaya.com.tr>, 2017
+# Gökhan Erdoğdu <gokhan.erdogdu@mechsoft.com.tr>, 2017
+# Murat Kaplan <muratk@projetgrup.com>, 2017
 # Umur Akın <umura@projetgrup.com>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2017-02-15 11:47+0000\n"
 "Last-Translator: Umur Akın <umura@projetgrup.com>, 2018\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
@@ -38,7 +40,7 @@ msgstr "İptal"
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__category_id
 msgid "Category"
-msgstr "Kategori"
+msgstr "Kategorisi"
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__channel_id
@@ -76,7 +78,7 @@ msgstr "Oluşturulma"
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__description
 msgid "Description"
-msgstr "Açıklama"
+msgstr "Tanım"
 
 #. module: website_helpdesk_slides
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.slide_upload_wizard_view_form
@@ -91,7 +93,7 @@ msgstr "Görünüm Adı"
 #. module: website_helpdesk_slides
 #: selection:slide.upload.wizard,slide_type:0
 msgid "Document"
-msgstr "Doküman"
+msgstr "Belge"
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__document_id
@@ -111,7 +113,7 @@ msgstr "Dosya Adı"
 #. module: website_helpdesk_slides
 #: model:ir.model,name:website_helpdesk_slides.model_helpdesk_team
 msgid "Helpdesk Team"
-msgstr "Destek Ekibi"
+msgstr "Yardım Masası Ekibi"
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_slide_upload_wizard__id
@@ -163,7 +165,7 @@ msgstr "İsim"
 #. module: website_helpdesk_slides
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.website_helpdesk_slides_team_page
 msgid "No presentations yet."
-msgstr "Henüz yayınlanan bir sunum yok."
+msgstr "Henüz sunum yok."
 
 #. module: website_helpdesk_slides
 #: code:addons/website_helpdesk_slides/wizard/slide_slide.py:41

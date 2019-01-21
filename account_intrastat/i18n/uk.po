@@ -3,17 +3,17 @@
 # * account_intrastat
 # 
 # Translators:
-# Bohdan Lisnenko, 2018
-# Martin Trigaux, 2018
-# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018
+# Martin Trigaux, 2019
+# Bohdan Lisnenko, 2019
+# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-08-24 11:36+0000\n"
-"Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:12+0000\n"
+"PO-Revision-Date: 2019-01-16 08:36+0000\n"
+"Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,6 +27,8 @@ msgid ""
 "<span class=\"fa fa-filter\"/>\n"
 "                Types:"
 msgstr ""
+"<span class=\"fa fa-filter\"/>\n"
+"                Типи:"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_intrastat_extended
@@ -37,27 +39,27 @@ msgstr "<span class=\"fa fa-filter\"/> Опції:"
 #: code:addons/account_intrastat/models/account_intrastat_report.py:16
 #, python-format
 msgid "Arrival"
-msgstr ""
+msgstr "Отримання"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.invoice_form_inherit_account_intrastat
 msgid "Arrival country"
-msgstr ""
+msgstr "Країна отримання"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
 msgid "By country"
-msgstr ""
+msgstr "За країною"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
 msgid "By type"
-msgstr ""
+msgstr "За типом"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
 msgid "Commodity"
-msgstr ""
+msgstr "Товар"
 
 #. module: account_intrastat
 #: code:addons/account_intrastat/models/account_intrastat_report.py:33
@@ -66,7 +68,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_intrastat.field_product_template__intrastat_id
 #, python-format
 msgid "Commodity Code"
-msgstr ""
+msgstr "Код товару"
 
 #. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_res_company
@@ -76,7 +78,7 @@ msgstr "Компанії"
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_res_config_settings__company_country_id
 msgid "Company country"
-msgstr ""
+msgstr "Країна компанії"
 
 #. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_res_config_settings
@@ -104,7 +106,7 @@ msgstr "Дата"
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_res_company__intrastat_transport_mode_id
 msgid "Default Transport Mode"
-msgstr ""
+msgstr "Режим транспортування за замовчуванням"
 
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_res_company__incoterm_id
@@ -116,12 +118,12 @@ msgstr "Інкотерм за замовчуванням для Intrastat"
 #: code:addons/account_intrastat/models/account_intrastat_report.py:17
 #, python-format
 msgid "Dispatch"
-msgstr ""
+msgstr "Відправлення"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.invoice_supplier_form_inherit_account_intrastat
 msgid "Dispatch country"
-msgstr ""
+msgstr "Країна відправлення"
 
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_account_intrastat_report__display_name
@@ -136,7 +138,7 @@ msgstr "Назва для відображення"
 #: model:ir.ui.menu,name:account_intrastat.menu_action_account_report_sales
 #, python-format
 msgid "EC Sales List"
-msgstr ""
+msgstr "Список продажів EC "
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_intrastat_extended
@@ -146,12 +148,7 @@ msgstr "Розширений"
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_intrastat_extended
 msgid "Extended Mode"
-msgstr ""
-
-#. module: account_intrastat
-#: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_intrastat_extended
-msgid "Extended,"
-msgstr ""
+msgstr "Розширений режим"
 
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_account_intrastat_report__id
@@ -163,7 +160,7 @@ msgstr "ID"
 #: code:addons/account_intrastat/models/account_intrastat_report.py:39
 #, python-format
 msgid "Incoterm Code"
-msgstr ""
+msgstr "Код інкотерм"
 
 #. module: account_intrastat
 #: model:ir.model.fields,help:account_intrastat.field_res_company__incoterm_id
@@ -173,7 +170,7 @@ msgid ""
 "used in international transactions."
 msgstr ""
 "Міжнародні комерційні умови, комплект міжнародних правил з тлумачення "
-"найбільш широко використовуваних торгівельних термінів в галузі міжнародної "
+"найбільш широко використовуваних торговельних термінів в галузі міжнародної "
 "торгівлі."
 
 #. module: account_intrastat
@@ -186,6 +183,7 @@ msgstr "Intrastat"
 
 #. module: account_intrastat
 #: model:ir.actions.act_window,name:account_intrastat.action_report_intrastat_code_tree
+#: model:ir.model,name:account_intrastat.model_account_intrastat_code
 #: model:ir.ui.menu,name:account_intrastat.menu_report_intrastat_code
 #: model_terms:ir.ui.view,arch_db:account_intrastat.view_report_intrastat_code_form
 msgid "Intrastat Code"
@@ -218,7 +216,7 @@ msgstr "Код Intrastat"
 #. module: account_intrastat
 #: model:ir.model.fields,help:account_intrastat.field_account_invoice__intrastat_country_id
 msgid "Intrastat country, arrival for sales, dispatch for purchases"
-msgstr ""
+msgstr "Країна Intrastat, потримання для продажу, відправка для купівель"
 
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_res_country__intrastat
@@ -244,7 +242,7 @@ msgstr "Рядок рахунку"
 #: model:ir.model.fields,field_description:account_intrastat.field_account_intrastat_report____last_update
 #: model:ir.model.fields,field_description:account_intrastat.field_account_sales_report____last_update
 msgid "Last Modified on"
-msgstr "Остання модифікація"
+msgstr "Останні зміни на"
 
 #. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_product_category
@@ -271,18 +269,18 @@ msgstr "Регіон"
 #: code:addons/account_intrastat/models/account_intrastat_report.py:32
 #, python-format
 msgid "Region Code"
-msgstr ""
+msgstr "Код регіону"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_intrastat_extended
-msgid "Standard,"
-msgstr ""
+msgid "Standard"
+msgstr "Стандартний"
 
 #. module: account_intrastat
 #: code:addons/account_intrastat/models/account_intrastat_report.py:29
 #, python-format
 msgid "System"
-msgstr ""
+msgstr "Система"
 
 #. module: account_intrastat
 #: code:addons/account_intrastat/models/account_intrastat_report.py:224
@@ -300,23 +298,23 @@ msgstr "Операція"
 #: code:addons/account_intrastat/models/account_intrastat_report.py:31
 #, python-format
 msgid "Transaction Code"
-msgstr ""
+msgstr "Код транзакції"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
 msgid "Transport"
-msgstr ""
+msgstr "Транспорт"
 
 #. module: account_intrastat
 #: code:addons/account_intrastat/models/account_intrastat_report.py:38
 #, python-format
 msgid "Transport Code"
-msgstr ""
+msgstr "Код транспорту"
 
 #. module: account_intrastat
 #: sql_constraint:account.intrastat.code:0
 msgid "Triplet code/type/country_id must be unique."
-msgstr ""
+msgstr "Триплет code/type/country_id повинен бути унікальним."
 
 #. module: account_intrastat
 #: code:addons/account_intrastat/models/account_intrastat_report.py:34
@@ -342,8 +340,3 @@ msgstr "Значення"
 #, python-format
 msgid "Weight"
 msgstr "Вага"
-
-#. module: account_intrastat
-#: model:ir.model,name:account_intrastat.model_account_intrastat_code
-msgid "account.intrastat.code"
-msgstr ""

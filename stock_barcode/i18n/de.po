@@ -3,18 +3,29 @@
 # * stock_barcode
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Thorsten Vocks <thorsten.vocks@openbig.org>, 2018
-# darenkster <inactive+darenkster@transifex.com>, 2018
-# Johannes Croe <jcr@odoo.com>, 2018
-# Wolfgang Taferner, 2018
+# Niki Waibel, 2017
+# brokemeister <work@maltejansen.de>, 2017
+# Henry Mineehen <info@mineehen.de>, 2017
+# Ermin Trevisan <trevi@twanda.com>, 2017
+# Bülent Tiknas <btiknas@googlemail.com>, 2017
+# e2f <projects@e2f.com>, 2018
+# Katharina Moritz <kmo@e2f.com>, 2018
+# Rudolf Schnapka <rs@techno-flex.de>, 2018
+# Anja Funk <anja.funk@afimage.de>, 2018
+# Tina Rittmüller <tr@ife.de>, 2018
+# Martin Trigaux, 2019
+# Wolfgang Taferner, 2019
+# Thorsten Vocks <thorsten.vocks@openbig.org>, 2019
+# darenkster <inactive+darenkster@transifex.com>, 2019
+# Johannes Croe <jcr@odoo.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-02 10:32+0000\n"
-"PO-Revision-Date: 2018-10-02 10:32+0000\n"
-"Last-Translator: Wolfgang Taferner, 2018\n"
+"POT-Creation-Date: 2018-12-24 11:16+0000\n"
+"PO-Revision-Date: 2016-08-05 13:32+0000\n"
+"Last-Translator: Johannes Croe <jcr@odoo.com>, 2019\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -29,7 +40,7 @@ msgstr "<i class=\"fa fa-print\"/> Drucken Sie die Barcode-Befehle."
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:44
+#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:48
 #, python-format
 msgid "Add product"
 msgstr ""
@@ -52,6 +63,11 @@ msgstr "Strichcode"
 #: model:ir.actions.client,name:stock_barcode.stock_barcode_inventory_client_action
 msgid "Barcode Inventory Adjustment Client Action"
 msgstr ""
+
+#. module: stock_barcode
+#: model_terms:ir.ui.view,arch_db:stock_barcode.res_config_settings_view_form
+msgid "Barcode Nomenclature"
+msgstr "Barcode Nomenklatur"
 
 #. module: stock_barcode
 #: model:ir.actions.client,name:stock_barcode.stock_barcode_picking_client_action
@@ -88,13 +104,18 @@ msgid "Close"
 msgstr "Schließen"
 
 #. module: stock_barcode
+#: model:ir.model,name:stock_barcode.model_res_config_settings
+msgid "Config Settings"
+msgstr "Konfiguration "
+
+#. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.res_config_settings_view_form
 msgid "Configure Product Barcodes"
 msgstr "Konfigurieren der Produkt-Barcodes"
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:158
+#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:162
 #, python-format
 msgid "Confirm"
 msgstr "Bestätigen"
@@ -118,7 +139,7 @@ msgstr "Standard-Buchung"
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:157
+#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:161
 #, python-format
 msgid "Discard"
 msgstr "Verwerfen"
@@ -131,7 +152,7 @@ msgstr "Anzeigename"
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/js/stock_barcode.js:61
+#: code:addons/stock_barcode/static/src/js/stock_barcode.js:60
 #, python-format
 msgid ""
 "Do you want to permanently remove this message ?\n"
@@ -142,7 +163,7 @@ msgstr ""
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/js/stock_barcode.js:64
+#: code:addons/stock_barcode/static/src/js/stock_barcode.js:63
 #, python-format
 msgid "Don't show this message again"
 msgstr "Diese Meldung nicht mehr anzeigen"
@@ -162,8 +183,8 @@ msgstr "Dummy"
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:100
-#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:123
+#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:104
+#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:127
 #, python-format
 msgid "Edit"
 msgstr "Bearbeiten"
@@ -175,7 +196,7 @@ msgstr "Von"
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:59
+#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:63
 #, python-format
 msgid "From:"
 msgstr "Von:"
@@ -251,7 +272,7 @@ msgstr "Zuletzt aktualisiert am"
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/js/stock_barcode.js:70
+#: code:addons/stock_barcode/static/src/js/stock_barcode.js:69
 #, python-format
 msgid "Leave it"
 msgstr "Lass es"
@@ -284,7 +305,7 @@ msgstr "Neues Inventar"
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:49
+#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:53
 #, python-format
 msgid "Next"
 msgstr "Weiter"
@@ -311,6 +332,11 @@ msgid "No picking or location corresponding to barcode %(barcode)s"
 msgstr ""
 "Keine Kommissionierung oder Lagerplatz die diesem Barcode %(barcode)s "
 "entspricht."
+
+#. module: stock_barcode
+#: model:ir.model.fields,field_description:stock_barcode.field_res_config_settings__barcode_nomenclature_id
+msgid "Nomenclature"
+msgstr ""
 
 #. module: stock_barcode
 #: model:ir.actions.act_window,name:stock_barcode.open_picking
@@ -359,7 +385,7 @@ msgstr "Vorgangstyp"
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:48
+#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:52
 #, python-format
 msgid "Previous"
 msgstr "Vorherige"
@@ -404,7 +430,7 @@ msgstr ""
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:45
+#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:49
 #, python-format
 msgid "Put In Pack"
 msgstr ""
@@ -443,7 +469,7 @@ msgstr "Tatsächlicher Bestand"
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/js/stock_barcode.js:67
+#: code:addons/stock_barcode/static/src/js/stock_barcode.js:66
 #, python-format
 msgid "Remove it"
 msgstr "Entfernen Sie es"
@@ -465,35 +491,35 @@ msgstr ""
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:33
+#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:37
 #, python-format
 msgid "Scan more products, or scan a new source location"
 msgstr ""
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:32
+#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:36
 #, python-format
 msgid "Scan more products, or scan the destination location"
 msgstr ""
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:31
+#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:35
 #, python-format
 msgid "Scan products"
 msgstr ""
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:34
+#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:38
 #, python-format
 msgid "Scan the serial or lot number of the product"
 msgstr ""
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:35
+#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:39
 #, python-format
 msgid "Scan the source location"
 msgstr ""
@@ -505,7 +531,7 @@ msgstr "Gescannter Ort"
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:1327
+#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:1343
 #, python-format
 msgid "Scanning is disabled in this state."
 msgstr ""
@@ -574,14 +600,14 @@ msgstr "Die Kommissionierung ist %s und kann nicht bearbeitet werden."
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:1113
+#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:1129
 #, python-format
 msgid "The scanned lot does not match an existing one."
 msgstr ""
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:1160
+#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:1176
 #, python-format
 msgid "The scanned serial number is already used."
 msgstr ""
@@ -602,36 +628,36 @@ msgstr ""
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:38
+#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:42
 #, python-format
 msgid "This inventory adjustment is already done"
 msgstr ""
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:782
-#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:1198
+#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:783
+#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:1214
 #, python-format
 msgid "This location is not a child of the main location."
 msgstr ""
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:964
+#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:965
 #, python-format
 msgid "This package is already scanned."
 msgstr ""
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:37
+#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:41
 #, python-format
 msgid "This picking is already cancelled"
 msgstr ""
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:36
+#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:40
 #, python-format
 msgid "This picking is already done"
 msgstr ""
@@ -648,7 +674,7 @@ msgstr "Zu verarbeiten"
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:60
+#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:64
 #, python-format
 msgid "To:"
 msgstr "An"
@@ -666,7 +692,7 @@ msgstr "Mengeneinheit"
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:24
-#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:50
+#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:54
 #, python-format
 msgid "Validate"
 msgstr "Bestätigen"
@@ -683,8 +709,8 @@ msgstr "Wert des zuletzt gelesenen Barcodes."
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:594
-#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:1327
+#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:593
+#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:1343
 #, python-format
 msgid "Warning"
 msgstr "Warnung"
@@ -713,22 +739,22 @@ msgstr "Falscher Barcode"
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:819
+#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:820
 #, python-format
 msgid "You are expected to scan a source location."
 msgstr ""
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:892
+#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:893
 #, python-format
 msgid "You are expected to scan more products or a destination location."
 msgstr ""
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:881
-#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:1203
+#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:882
+#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:1219
 #, python-format
 msgid ""
 "You are expected to scan one or more products or a package available at the "
@@ -737,8 +763,8 @@ msgstr ""
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:883
-#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:1205
+#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:884
+#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:1221
 #, python-format
 msgid "You are expected to scan one or more products."
 msgstr ""

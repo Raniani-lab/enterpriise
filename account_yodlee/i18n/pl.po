@@ -3,18 +3,14 @@
 # * account_yodlee
 # 
 # Translators:
-# Martin Trigaux, 2018
-# zbik2607 <darek@krokus.com.pl>, 2018
-# Piotr Szlązak <szlazakpiotr@gmail.com>, 2018
-# Paweł Michoń <michon.pawel@wp.pl>, 2018
-# Patryk Openglobe <patryk.walentowicz@openglobe.pl>, 2018
 # Maksym <ms@myodoo.pl>, 2018
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"PO-Revision-Date: 2016-08-05 13:28+0000\n"
 "Last-Translator: Maksym <ms@myodoo.pl>, 2018\n"
 "Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
@@ -34,7 +30,7 @@ msgstr "(Diagnostyka: %r dla URL %s)"
 #: code:addons/account_yodlee/models/yodlee.py:242
 #, python-format
 msgid "Account"
-msgstr "Konto"
+msgstr ""
 
 #. module: account_yodlee
 #: code:addons/account_yodlee/models/yodlee.py:335
@@ -112,21 +108,21 @@ msgstr "Aktywny / Nieaktywny w systemie Yodlee"
 #: code:addons/account_yodlee/models/yodlee.py:357
 #, python-format
 msgid "An Error has occurred (code %s)"
-msgstr "Wystąpił błąd (kod %s)"
+msgstr ""
 
 #. module: account_yodlee
 #: model:ir.model,name:account_yodlee.model_res_company
 msgid "Companies"
-msgstr "Firmy"
+msgstr ""
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:187
+#: code:addons/account_yodlee/models/yodlee.py:199
 #, python-format
 msgid "Could not make sense of parameters: %s"
 msgstr ""
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:319
+#: code:addons/account_yodlee/models/yodlee.py:339
 #, python-format
 msgid ""
 "Credential Re-Verification Required (402): We could not update your account "
@@ -139,7 +135,7 @@ msgstr ""
 "użytkownika i hasło."
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:325
+#: code:addons/account_yodlee/models/yodlee.py:345
 #, python-format
 msgid ""
 "Credential Re-Verification Required (420):The site has merged with another. "
@@ -150,10 +146,16 @@ msgstr ""
 "zaktualizuj to samo."
 
 #. module: account_yodlee
+#: code:addons/account_yodlee/models/yodlee.py:228
+#, python-format
+msgid "Error %s, message: %s"
+msgstr ""
+
+#. module: account_yodlee
 #: code:addons/account_yodlee/models/yodlee.py:102
 #, python-format
 msgid "Error %s, message: %s, reference code: %s"
-msgstr "Błąd %s, wiadomość: %s, kod referencyjny: %s"
+msgstr ""
 
 #. module: account_yodlee
 #: code:addons/account_yodlee/models/yodlee.py:318
@@ -361,13 +363,13 @@ msgstr ""
 #. module: account_yodlee
 #: selection:account.online.provider,provider_type:0
 msgid "Plaid"
-msgstr "Zapłacony"
+msgstr ""
 
 #. module: account_yodlee
 #: code:addons/account_yodlee/models/yodlee.py:48
 #, python-format
 msgid "Please configure an email in the company settings."
-msgstr "Proszę skonfigurować wiadomość e-mail w ustawieniach firmy."
+msgstr ""
 
 #. module: account_yodlee
 #: code:addons/account_yodlee/models/yodlee.py:321
@@ -516,12 +518,12 @@ msgstr ""
 #. module: account_yodlee
 #: model:ir.model.fields,field_description:account_yodlee.field_account_online_provider__provider_type
 msgid "Provider Type"
-msgstr "Typ dostawcy"
+msgstr ""
 
 #. module: account_yodlee
 #: model:ir.model,name:account_yodlee.model_account_online_provider
 msgid "Provider for online account synchronization"
-msgstr "Dostawca do synchronizacji konta online"
+msgstr ""
 
 #. module: account_yodlee
 #: code:addons/account_yodlee/models/yodlee.py:330
@@ -643,7 +645,7 @@ msgstr ""
 #: code:addons/account_yodlee/models/yodlee.py:135
 #, python-format
 msgid "Timeout: the server did not reply within 30s"
-msgstr "Upłynął limit czasu: serwer nie odpowiedział przez 30s"
+msgstr ""
 
 #. module: account_yodlee
 #: code:addons/account_yodlee/models/yodlee.py:320
@@ -656,7 +658,7 @@ msgstr ""
 #. module: account_yodlee
 #: selection:account.online.provider,provider_type:0
 msgid "Yodlee"
-msgstr "Yodlee"
+msgstr ""
 
 #. module: account_yodlee
 #: model:ir.model.fields,field_description:account_yodlee.field_account_online_journal__yodlee_account_status
@@ -671,19 +673,25 @@ msgstr ""
 #. module: account_yodlee
 #: model:ir.model.fields,field_description:account_yodlee.field_res_company__yodlee_user_access_token
 msgid "Yodlee access token"
-msgstr "Token dostępu Yodlee"
+msgstr ""
 
 #. module: account_yodlee
 #: model:ir.model.fields,field_description:account_yodlee.field_res_company__yodlee_user_login
 msgid "Yodlee login"
-msgstr "Login Yodlee"
+msgstr ""
 
 #. module: account_yodlee
 #: model:ir.model.fields,field_description:account_yodlee.field_res_company__yodlee_user_password
 msgid "Yodlee password"
-msgstr "Hasło Yodlee"
+msgstr ""
 
 #. module: account_yodlee
 #: model:ir.model.fields,field_description:account_yodlee.field_res_company__yodlee_access_token
 msgid "access_token"
-msgstr "access_token"
+msgstr ""
+
+#. module: account_yodlee
+#: code:addons/account_yodlee/models/yodlee.py:297
+#, python-format
+msgid "message: %s"
+msgstr ""

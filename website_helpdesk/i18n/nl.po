@@ -3,17 +3,18 @@
 # * website_helpdesk
 # 
 # Translators:
-# Martin Trigaux, 2018
+# Eric Geens <ericgeens@yahoo.com>, 2017
+# Martin Trigaux, 2017
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
-# Yenthe Van Ginneken <yenthespam@gmail.com>, 2018
+# Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-18 10:05+0000\n"
-"PO-Revision-Date: 2018-08-24 11:49+0000\n"
-"Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2018\n"
+"PO-Revision-Date: 2017-02-15 11:47+0000\n"
+"Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -50,7 +51,7 @@ msgstr "Helpdesk klanttevredenheid"
 #: model:ir.model,name:website_helpdesk.model_helpdesk_team
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.team
 msgid "Helpdesk Team"
-msgstr "Helpdeskteam"
+msgstr "Helpdesk team"
 
 #. module: website_helpdesk
 #: model:ir.model.fields,field_description:website_helpdesk.field_helpdesk_team__is_published
@@ -65,7 +66,7 @@ msgstr "Er zijn geen teams gepubliceerd."
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.team
 msgid "Submit a Ticket"
-msgstr "Ticket indienen"
+msgstr "Ticket insturen"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.team

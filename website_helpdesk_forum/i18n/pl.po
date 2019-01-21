@@ -3,19 +3,16 @@
 # * website_helpdesk_forum
 # 
 # Translators:
-# Tomasz Leppich <t.leppich@gmail.com>, 2018
-# Martin Trigaux, 2018
-# Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2018
-# Judyta Kaźmierczak <judyta.kazmierczak@openglobe.pl>, 2018
-# Piotr Szlązak <szlazakpiotr@gmail.com>, 2018
 # Paweł Wodyński <pw@myodoo.pl>, 2018
+# Tomasz Leppich <t.leppich@gmail.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Paweł Wodyński <pw@myodoo.pl>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:12+0000\n"
+"PO-Revision-Date: 2017-02-15 11:47+0000\n"
+"Last-Translator: Tomasz Leppich <t.leppich@gmail.com>, 2019\n"
 "Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -25,33 +22,47 @@ msgstr ""
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
+msgid ""
+"<i class=\"fa fa-check-circle oe_answer_true\" role=\"img\" aria-"
+"label=\"Question has accepted answer\"/>"
+msgstr ""
+
+#. module: website_helpdesk_forum
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
+msgid ""
+"<i class=\"fa fa-external-link forum_link\" role=\"img\" aria-"
+"label=\"Redirect to external link\"/>"
+msgstr ""
+
+#. module: website_helpdesk_forum
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
 msgid "<span>By </span>"
-msgstr "<span>przez </span>"
+msgstr ""
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
 msgid "Click here to view more result..."
-msgstr "Kliknij tutaj aby zobaczyć więcej rezultatów...."
+msgstr ""
 
 #. module: website_helpdesk_forum
 #: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_ticket__forum_post_id
 msgid "Forum Post"
-msgstr "Post na forum"
+msgstr ""
 
 #. module: website_helpdesk_forum
 #: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_ticket__use_website_helpdesk_forum
 msgid "Help Center Active"
-msgstr "Centrum Pomocy Aktywne"
+msgstr ""
 
 #. module: website_helpdesk_forum
 #: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_team__forum_id
 msgid "Help Center Forum"
-msgstr "Forum Centrum Pomocy"
+msgstr ""
 
 #. module: website_helpdesk_forum
 #: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_team__forum_url
 msgid "Help Center Forum URL"
-msgstr "URL do Forum Centrum pomocy"
+msgstr ""
 
 #. module: website_helpdesk_forum
 #: code:addons/website_helpdesk_forum/models/helpdesk.py:63
@@ -63,7 +74,7 @@ msgstr "Centrum pomocy nie jest aktywne dla tego zespołu."
 #. module: website_helpdesk_forum
 #: model:ir.model,name:website_helpdesk_forum.model_helpdesk_team
 msgid "Helpdesk Team"
-msgstr "Zespół pomocy"
+msgstr ""
 
 #. module: website_helpdesk_forum
 #: model:ir.model,name:website_helpdesk_forum.model_helpdesk_ticket
@@ -79,7 +90,7 @@ msgstr "Brak posta powiązanego z tym zgłoszeniem."
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.website_helpdesk_forum_team_page
 msgid "No question yet."
-msgstr "Jeszcze brak pytań"
+msgstr ""
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.helpdesk_ticket_view_form_inherit_website_helpdesk_forum
@@ -120,7 +131,7 @@ msgstr "Zgłoszenie zostało udostępnione na forum %s."
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
 msgid "View"
-msgstr "Widok"
+msgstr ""
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.helpdesk_team_view_form_inherit_website_helpdesk_forum

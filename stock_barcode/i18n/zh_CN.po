@@ -3,23 +3,28 @@
 # * stock_barcode
 # 
 # Translators:
-# Shane Tsoi <sso@odoo.com>, 2018
-# Martin Trigaux, 2018
-# v2exerer <9010446@qq.com>, 2018
+# 苏州远鼎 <tiexinliu@126.com>, 2017
+# Gary Wei <Gary.wei@elico-corp.com>, 2018
+# 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2018
+# 老窦 北京 <2662059195@qq.com>, 2018
+# e2f_cn c7 <e2f_cn_c7@outlook.com>, 2018
 # niulin lnc. <admin@niulin.net>, 2018
-# liAnGjiA <liangjia@qq.com>, 2018
-# inspur qiuguodong <qiuguodong@inspur.com>, 2018
-# snow wang <147156565@qq.com>, 2018
-# 广州救火 <7017511@qq.com>, 2018
-# Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
+# Martin Trigaux, 2019
+# Jeffery CHEN Fan <jeffery9@gmail.com>, 2019
+# liAnGjiA <liangjia@qq.com>, 2019
+# v2exerer <9010446@qq.com>, 2019
+# keecome <7017511@qq.com>, 2019
+# Shane Tsoi <sso@odoo.com>, 2019
+# snow wang <147156565@qq.com>, 2019
+# inspur qiuguodong <qiuguodong@inspur.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-02 10:32+0000\n"
-"PO-Revision-Date: 2018-08-24 11:48+0000\n"
-"Last-Translator: Jeffery CHEN Fan <jeffery9@gmail.com>, 2018\n"
+"POT-Creation-Date: 2018-12-24 11:16+0000\n"
+"PO-Revision-Date: 2016-08-05 13:32+0000\n"
+"Last-Translator: inspur qiuguodong <qiuguodong@inspur.com>, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -34,7 +39,7 @@ msgstr "<i class=\"fa fa-print\"/>打印条码命令"
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:44
+#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:48
 #, python-format
 msgid "Add product"
 msgstr "添加产品"
@@ -56,7 +61,12 @@ msgstr "条码"
 #. module: stock_barcode
 #: model:ir.actions.client,name:stock_barcode.stock_barcode_inventory_client_action
 msgid "Barcode Inventory Adjustment Client Action"
-msgstr "通过条码设备进行库存调整"
+msgstr "条码库存调整客户端动作"
+
+#. module: stock_barcode
+#: model_terms:ir.ui.view,arch_db:stock_barcode.res_config_settings_view_form
+msgid "Barcode Nomenclature"
+msgstr "条码命名规则"
 
 #. module: stock_barcode
 #: model:ir.actions.client,name:stock_barcode.stock_barcode_picking_client_action
@@ -93,13 +103,18 @@ msgid "Close"
 msgstr "关闭"
 
 #. module: stock_barcode
+#: model:ir.model,name:stock_barcode.model_res_config_settings
+msgid "Config Settings"
+msgstr "配置设置"
+
+#. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.res_config_settings_view_form
 msgid "Configure Product Barcodes"
 msgstr "配置产品的条码"
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:158
+#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:162
 #, python-format
 msgid "Confirm"
 msgstr "确认"
@@ -123,10 +138,10 @@ msgstr "默认移动"
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:157
+#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:161
 #, python-format
 msgid "Discard"
-msgstr "取消"
+msgstr "摒弃"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot__display_name
@@ -136,7 +151,7 @@ msgstr "显示名称"
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/js/stock_barcode.js:61
+#: code:addons/stock_barcode/static/src/js/stock_barcode.js:60
 #, python-format
 msgid ""
 "Do you want to permanently remove this message ?\n"
@@ -147,7 +162,7 @@ msgstr ""
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/js/stock_barcode.js:64
+#: code:addons/stock_barcode/static/src/js/stock_barcode.js:63
 #, python-format
 msgid "Don't show this message again"
 msgstr "不再显示此消息"
@@ -167,8 +182,8 @@ msgstr "模拟"
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:100
-#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:123
+#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:104
+#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:127
 #, python-format
 msgid "Edit"
 msgstr "编辑"
@@ -176,14 +191,14 @@ msgstr "编辑"
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_inventory_barcode2
 msgid "From"
-msgstr "来自"
+msgstr "从"
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:59
+#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:63
 #, python-format
 msgid "From:"
-msgstr "从:"
+msgstr "来自:"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot__id
@@ -206,7 +221,7 @@ msgstr "国际物品编码用于产品标识"
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_inventory
 msgid "Inventory"
-msgstr "库存"
+msgstr "盘点"
 
 #. module: stock_barcode
 #. openerp-web
@@ -219,7 +234,7 @@ msgstr "库存调整"
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_inventory_barcode2
 msgid "Inventory Details"
-msgstr "库存细节"
+msgstr "盘点细节"
 
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_inventory_line
@@ -229,7 +244,7 @@ msgstr "盘点明细"
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_location
 msgid "Inventory Locations"
-msgstr "库存位置"
+msgstr "盘点位置"
 
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_barcode_lot_line
@@ -256,7 +271,7 @@ msgstr "最后更新时间"
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/js/stock_barcode.js:70
+#: code:addons/stock_barcode/static/src/js/stock_barcode.js:69
 #, python-format
 msgid "Leave it"
 msgstr "离开它"
@@ -285,11 +300,11 @@ msgstr "凭证明细"
 #. module: stock_barcode
 #: model:ir.actions.act_window,name:stock_barcode.stock_inventory_action_new_inventory
 msgid "New Inventory"
-msgstr "新库存"
+msgstr "新盘点"
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:49
+#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:53
 #, python-format
 msgid "Next"
 msgstr "下一个"
@@ -314,6 +329,11 @@ msgid "No picking or location corresponding to barcode %(barcode)s"
 msgstr "没有拣货或者库位和这个条码%(barcode)s一致"
 
 #. module: stock_barcode
+#: model:ir.model.fields,field_description:stock_barcode.field_res_config_settings__barcode_nomenclature_id
+msgid "Nomenclature"
+msgstr "命名规则"
+
+#. module: stock_barcode
 #: model:ir.actions.act_window,name:stock_barcode.open_picking
 msgid "Open a picking"
 msgstr "打开拣货"
@@ -324,7 +344,7 @@ msgstr "打开拣货"
 #: code:addons/stock_barcode/models/stock_picking.py:331
 #, python-format
 msgid "Open picking form"
-msgstr "打开拣货表单"
+msgstr "打开拣货单"
 
 #. module: stock_barcode
 #. openerp-web
@@ -360,7 +380,7 @@ msgstr "拣货类型"
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:48
+#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:52
 #, python-format
 msgid "Previous"
 msgstr "以前"
@@ -405,7 +425,7 @@ msgstr "产品移动(移库明细)"
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:45
+#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:49
 #, python-format
 msgid "Put In Pack"
 msgstr "放入包裹"
@@ -444,7 +464,7 @@ msgstr "实际数量"
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/js/stock_barcode.js:67
+#: code:addons/stock_barcode/static/src/js/stock_barcode.js:66
 #, python-format
 msgid "Remove it"
 msgstr "移除它"
@@ -466,35 +486,35 @@ msgstr "扫描"
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:33
+#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:37
 #, python-format
 msgid "Scan more products, or scan a new source location"
 msgstr "扫描更多产品，或扫描新的发出库位"
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:32
+#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:36
 #, python-format
 msgid "Scan more products, or scan the destination location"
 msgstr "扫描更多产品或者扫描目标库位"
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:31
+#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:35
 #, python-format
 msgid "Scan products"
 msgstr "扫描产品"
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:34
+#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:38
 #, python-format
 msgid "Scan the serial or lot number of the product"
 msgstr "扫描产品的序列号或批次号"
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:35
+#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:39
 #, python-format
 msgid "Scan the source location"
 msgstr "扫描发出库位"
@@ -506,7 +526,7 @@ msgstr "被扫描的位置"
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:1327
+#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:1343
 #, python-format
 msgid "Scanning is disabled in this state."
 msgstr "在此状态下扫描被禁用。"
@@ -573,14 +593,14 @@ msgstr "拣货是 %s并且不能被编辑"
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:1113
+#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:1129
 #, python-format
 msgid "The scanned lot does not match an existing one."
-msgstr "扫描的批次与现有的不匹配。"
+msgstr "扫描的批次好与现有的不匹配。"
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:1160
+#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:1176
 #, python-format
 msgid "The scanned serial number is already used."
 msgstr "扫描的序列号已被使用。"
@@ -601,36 +621,36 @@ msgstr "转移已确认"
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:38
+#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:42
 #, python-format
 msgid "This inventory adjustment is already done"
 msgstr "库存调整已完成"
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:782
-#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:1198
+#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:783
+#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:1214
 #, python-format
 msgid "This location is not a child of the main location."
 msgstr "这个库位不是主库位的子库位。"
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:964
+#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:965
 #, python-format
 msgid "This package is already scanned."
 msgstr "这个包裹已被扫描。"
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:37
+#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:41
 #, python-format
 msgid "This picking is already cancelled"
 msgstr "分拣已被取消"
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:36
+#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:40
 #, python-format
 msgid "This picking is already done"
 msgstr "分拣已完成"
@@ -647,7 +667,7 @@ msgstr "待处理"
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:60
+#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:64
 #, python-format
 msgid "To:"
 msgstr "至:"
@@ -665,10 +685,10 @@ msgstr "单位"
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:24
-#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:50
+#: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:54
 #, python-format
 msgid "Validate"
-msgstr "验证"
+msgstr "审核"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.view_barcode_lot_form
@@ -682,8 +702,8 @@ msgstr "上次扫描到的条码的值"
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:594
-#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:1327
+#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:593
+#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:1343
 #, python-format
 msgid "Warning"
 msgstr "警告"
@@ -710,32 +730,32 @@ msgstr "错误的条码"
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:819
+#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:820
 #, python-format
 msgid "You are expected to scan a source location."
-msgstr "期望扫描发出库位。"
+msgstr "期望扫描发出库位"
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:892
+#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:893
 #, python-format
 msgid "You are expected to scan more products or a destination location."
 msgstr "期望扫描更多产品或目标库位。"
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:881
-#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:1203
+#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:882
+#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:1219
 #, python-format
 msgid ""
 "You are expected to scan one or more products or a package available at the "
 "picking's location"
-msgstr "您期望扫描一个或多个产品或在拣货库位的包装。"
+msgstr "您期望扫描一个或多个产品或在拣货位置的包装。"
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:883
-#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:1205
+#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:884
+#: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:1221
 #, python-format
 msgid "You are expected to scan one or more products."
 msgstr "你需要扫描一个或多个产品。"

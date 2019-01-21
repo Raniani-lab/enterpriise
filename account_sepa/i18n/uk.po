@@ -3,16 +3,17 @@
 # * account_sepa
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018
-# Bohdan Lisnenko, 2018
+# Martin Trigaux, 2019
+# Bohdan Lisnenko, 2019
+# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Bohdan Lisnenko, 2018\n"
+"PO-Revision-Date: 2016-08-05 13:28+0000\n"
+"Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -81,6 +82,8 @@ msgid ""
 "In result, the file might not be accepted by all bank as a valid SEPA Credit"
 " Transfer file"
 msgstr ""
+"У результаті, файл може бути неприйнятним усім банком як дійсний файл "
+"передачі кредитів SEPA"
 
 #. module: account_sepa
 #: model:ir.model.fields,field_description:account_sepa.field_res_company__sepa_orgid_issr
@@ -121,13 +124,13 @@ msgstr "Платежі для відправлення через SEPA"
 #: code:addons/account_sepa/models/account_batch_payment.py:42
 #, python-format
 msgid "Please note that the following warning has been raised:"
-msgstr ""
+msgstr "Зверніть увагу, що було висунуто таке попередження:"
 
 #. module: account_sepa
 #: code:addons/account_sepa/models/account_batch_payment.py:46
 #, python-format
 msgid "Please note that the following warnings have been raised:"
-msgstr ""
+msgstr "Зверніть увагу на те, що виникли такі попередження:"
 
 #. module: account_sepa
 #: model:ir.model.fields,field_description:account_sepa.field_account_payment__partner_bank_account_id
@@ -160,7 +163,7 @@ msgstr "Кредитні перекази SEPA для відправлення"
 #: model:ir.model.fields,field_description:account_sepa.field_res_company__sepa_pain_version
 #: model:ir.model.fields,field_description:account_sepa.field_res_config_settings__sepa_pain_version
 msgid "SEPA Pain Version"
-msgstr "Проблемна версія SEPA"
+msgstr "Больова версія SEPA"
 
 #. module: account_sepa
 #: model:ir.model.fields,help:account_sepa.field_res_company__sepa_pain_version
@@ -177,12 +180,12 @@ msgstr ""
 #. module: account_sepa
 #: model:ir.model.fields,field_description:account_sepa.field_account_batch_payment__sct_generic
 msgid "Sct Generic"
-msgstr ""
+msgstr "Загальний Sct"
 
 #. module: account_sepa
 #: model:ir.model.fields,field_description:account_sepa.field_account_batch_payment__sct_warning
 msgid "Sct Warning"
-msgstr ""
+msgstr "Попередження Sct "
 
 #. module: account_sepa
 #: selection:res.company,sepa_pain_version:0
@@ -211,7 +214,7 @@ msgid ""
 "A valid IBAN account is required to use SEPA features."
 msgstr ""
 "Рахунок %s, пов'язаний з партнером '%s', нетиповий для IBAN.\n"
-"Для використання функцій SEPA потрібен дійсний рахунок IBAN."
+"Для використання функцій SEPA потрібен дійсний обліковий запис IBAN."
 
 #. module: account_sepa
 #: code:addons/account_sepa/models/account_batch_payment.py:103
@@ -221,7 +224,7 @@ msgid ""
 "A valid IBAN account is required to use SEPA features."
 msgstr ""
 "Рахунок %s, журналу '%s', нетиповий для IBAN.\n"
-"Для використання функцій SEPA потрібен дійсний рахунок IBAN."
+"Для використання функцій SEPA потрібен дійсний обліковий запис IBAN."
 
 #. module: account_sepa
 #: code:addons/account_sepa/models/account_payment.py:47
@@ -265,6 +268,8 @@ msgid ""
 "The following payments have no recipient bank account set: %s. \n"
 "\n"
 msgstr ""
+"Наступні платежі не мають банківського рахунку одержувача: %s. \n"
+"\n"
 
 #. module: account_sepa
 #: code:addons/account_sepa/models/account_payment.py:45
@@ -283,8 +288,9 @@ msgid ""
 "The partner account '%s' requires a Bank Identification Code (BIC) to pay "
 "via SEPA. Please configure it first."
 msgstr ""
-"Рахунок патнера '%s' потребує Код Ідентифікації Банку (BIC) для сплати через"
-" єдину европейську мережу розрахунків (SEPA). Налаштуйте його спочатку."
+"Обліковий запис патнера '%s' потребує Код Ідентифікації Банку (BIC) для "
+"сплати через єдину европейську мережу розрахунків (SEPA). Налаштуйте його "
+"спочатку."
 
 #. module: account_sepa
 #: code:addons/account_sepa/models/account_batch_payment.py:18

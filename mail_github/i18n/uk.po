@@ -3,16 +3,18 @@
 # * mail_github
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018
+# Yaroslav Molochko <onorua@gmail.com>, 2018
+# Bohdan Lisnenko, 2018
+# ТАрас <tratatuta@i.ua>, 2018
+# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-08-24 11:38+0000\n"
-"Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018\n"
+"PO-Revision-Date: 2017-02-15 11:45+0000\n"
+"Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -59,9 +61,9 @@ msgid ""
 "<i>Push</i> events are supported."
 msgstr ""
 "Після цього ви можете вибрати події, які потрібно відслідковувати за "
-"каналами. Будьте обережні, тільки <i>Commit comment, Issues, Issue comment, "
-"Gollum, Pull request, Pull request review, Pull request review comment</i> "
-"та <i>Перетягнути</i> підтримуються події."
+"каналами. Будьте обережні, тільки <i>Комментуйте коментар, Проблеми, "
+"Коментар про помилку, Голлум, Потягніть запит, Перегляньте запит, Зніміть "
+"запит на перевірку огляду</i> та <i>Перетягнути</i> події підтримуються."
 
 #. module: mail_github
 #: model:ir.model.fields,field_description:mail_github.field_mail_channel_github__message_attachment_count
@@ -242,7 +244,8 @@ msgid ""
 "'Payload URL' and 'Secret' in Github interface."
 msgstr ""
 "Коли репозиторій буде створено в Odoo, створіть його на Github. Потім "
-"скопіюйте \"Payload URL\" та \"Secret\" в інтерфейсі Github."
+"скопіюйте \"URL-адресу корисного навантаження\" та \"Секрет\" в інтерфейсі "
+"Github."
 
 #. module: mail_github
 #: model_terms:ir.ui.view,arch_db:mail_github.message_github_notification
@@ -366,7 +369,7 @@ msgstr "в сховищі"
 #: code:addons/mail_github/controllers/main.py:218
 #, python-format
 msgid "pull request"
-msgstr "pull request"
+msgstr "тягнути запит"
 
 #. module: mail_github
 #: model_terms:ir.ui.view,arch_db:mail_github.message_github_notification

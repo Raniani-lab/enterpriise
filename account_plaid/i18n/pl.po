@@ -2,17 +2,12 @@
 # This file contains the translation of the following modules:
 # * account_plaid
 # 
-# Translators:
-# Piotr Szlązak <szlazakpiotr@gmail.com>, 2018
-# Paweł Michoń <michon.pawel@wp.pl>, 2018
-# Patryk Openglobe <patryk.walentowicz@openglobe.pl>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Patryk Openglobe <patryk.walentowicz@openglobe.pl>, 2018\n"
+"PO-Revision-Date: 2016-08-05 13:28+0000\n"
 "Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -29,7 +24,7 @@ msgstr ""
 #: code:addons/account_plaid/models/plaid.py:55
 #, python-format
 msgid "Get %s status code for call to %s. Content message: %s"
-msgstr "Pobierz %s kod statusu aby poinformować %s. Treść wiadomości: %s"
+msgstr ""
 
 #. module: account_plaid
 #: model:ir.model,name:account_plaid.model_account_online_journal
@@ -45,7 +40,7 @@ msgstr ""
 #. module: account_plaid
 #: selection:account.online.provider,provider_type:0
 msgid "Plaid"
-msgstr "Zapłacony"
+msgstr ""
 
 #. module: account_plaid
 #: model:ir.model.fields,field_description:account_plaid.field_account_online_provider__plaid_error_type
@@ -60,12 +55,12 @@ msgstr ""
 #. module: account_plaid
 #: model:ir.model.fields,field_description:account_plaid.field_account_online_provider__provider_type
 msgid "Provider Type"
-msgstr "Typ dostawcy"
+msgstr ""
 
 #. module: account_plaid
 #: model:ir.model,name:account_plaid.model_account_online_provider
 msgid "Provider for online account synchronization"
-msgstr "Dostawca do synchronizacji konta online"
+msgstr ""
 
 #. module: account_plaid
 #: code:addons/account_plaid/models/plaid.py:41
@@ -87,7 +82,7 @@ msgstr ""
 #. module: account_plaid
 #: selection:account.online.provider,provider_type:0
 msgid "Yodlee"
-msgstr "Yodlee"
+msgstr ""
 
 #. module: account_plaid
 #: model:ir.model.fields,help:account_plaid.field_account_online_provider__plaid_item_id

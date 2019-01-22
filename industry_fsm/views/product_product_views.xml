@@ -1,0 +1,44 @@
+<odoo>
+
+<!-- Material kanban -->
+<record id="view_product_product_kanban_material" model="ir.ui.view">
+    <field name="name">view.product.template.kanban.material</field>
+    <field name="model">product.product</field>
+    <field name="priority">999</field>
+    <field name="arch" type="xml">
+        <kanban create="0" edit="0" class="o_kanban_mobile">
+            <field name="id"/>
+            <field name="name"/>
+            <templates>
+                <t t-name="kanban-box">
+                    <div class="o_kanban_record_has_image_fill o_kanban_record">
+                        <div class="o_kanban_image_fill_left d-none d-md-block"
+                            t-attf-style="background-image:url('#{kanban_image('product.product', 'image_medium', record.id.raw_value)}')"/>
+                        <div class="oe_kanban_details">
+                            <div class="o_kanban_record_top">
+                                <div class="o_kanban_record_headings">
+                                    <strong class="o_kanban_record_title">
+                                        <div>
+                                            <strong><span t-esc="record.name.value"/></strong>
+                                        </div>
+                                    </strong>
+                                    <ul>
+                                        <li><strong>Price: <field name="lst_price" widget="monetary" options="{'currency_field': 'currency_id'}"></field></strong></li>
+                                        <field name="currency_id" invisible="True" />
+                                        <li>
+                                            <button class="btn btn-primary pt-0 pb-0" type="object" name="fsm_add_quantity"><span style="font-size:2rem;;">+</span></button>
+                                            <span  class="align-middle pr-2 pl-2" style="font-size:3rem;"><field name="fsm_quantity" attrs="{'invisible': [('fsm_quantity', '=', 0)]}"/></span>
+                                            <button class="btn btn-primary pt-0 pb-0" type="object" name="fsm_remove_quantity" attrs="{'invisible': [('fsm_quantity', '=', 0)]}"><span style="font-size:2rem;">-</span></button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </templates>
+        </kanban>
+    </field>
+</record>
+
+</odoo>

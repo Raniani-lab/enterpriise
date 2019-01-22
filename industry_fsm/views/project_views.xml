@@ -1,0 +1,308 @@
+<odoo>
+
+    <!-- allow billable and default product on new project form -->
+    <record id="project_view_form_simplified_inherit" model="ir.ui.view">
+        <field name="name">project.view.form.simplified.inherit</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="hr_timesheet.project_project_view_form_simplified_inherit_timesheet"/>
+        <field name="arch" type="xml">
+            <field name="allow_planning" position="after">
+                <field name="allow_billable"/>
+                <field name="timesheet_product_id" attrs="{'invisible': [('allow_billable', '=', False)]}"/>
+            </field>
+        </field>
+    </record>
+
+
+    <!-- Make quotations on tasks and tasks overlap warning in Project-->
+    <record id="view_task_form2_inherit" model="ir.ui.view">
+        <field name="name">view.task.form2.inherit</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_form2"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position='inside'>
+                <field name="allow_billable" invisible="True"/>
+            </xpath>
+            <xpath expr="//header" position="after">
+                <div role="alert" class="alert-warning p-3 text-center"
+                    attrs="{'invisible': ['|', ('allow_planning', '=', False), ('planning_overlap', '=', 0)]}">
+                    <field name="planning_overlap"/> other task(s) for this employee at the same time.
+                </div>
+            </xpath>
+            <xpath expr="//field[@name='user_id']" position="after">
+                <xpath expr="//field[@name='partner_id']" position="move"/>
+                <xpath expr="//field[@name='sale_line_id']" position="move"/>
+            </xpath>
+            <xpath expr="//field[@name='sale_line_id']" position="attributes">
+                <attribute name="attrs">
+                    {'invisible': ['|', ('allow_billable', '=', False), ('partner_id', '=', False)]}
+                </attribute>
+            </xpath>
+            <xpath expr="//button[@name='toggle_active']" position="before">
+                <button class="oe_stat_button" name="action_view_material"
+                    type="object" icon="fa-cart-plus" help="Add materials" attrs="{'invisible': ['|', '|', ('allow_billable', '=', False), ('billable_type', '!=', 'no'), ('sale_order_id', '!=', False)]}">
+                    <div class="o_stat_info">
+                        <span class="o_stat_value">
+                            <field name="material_line_product_count" widget="statinfo" string="Products" class="mr-1"/>
+                        </span>
+                        <field name="material_line_total_price" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                        <field name="currency_id" invisible="True"/>
+                    </div>
+                </button>
+                <button class="oe_stat_button" name="create_or_view_created_quotations"
+                    type="object" icon="fa-pencil-square-o" groups="sales_team.group_sale_salesman" help="Quotations created from this task" attrs="{'invisible': [('allow_billable', '=', False)]}">
+                    <field name="quotation_count" widget="statinfo" string="Quotation(s)" class="mr-1"/>
+                </button>
+            </xpath>
+            <xpath expr="//page[@name='extra_info']" position="attributes">
+                <attribute name="groups">base.group_no_one</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- domain on project -->
+    <record id="project_view_form_inherit" model="ir.ui.view">
+        <field name="name">project.view.form.inherit</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="priority">32</field>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='allow_timesheets']/.." position="after">
+                <div>
+                    <field name="allow_planning"/>
+                    <label for="allow_planning"/>
+                </div>
+                <div>
+                    <field name="allow_billable"/>
+                    <label for="allow_billable"/>
+                </div>
+                <div attrs="{'invisible': [('allow_billable', '=', False)]}">
+                    <div>
+                        <label for="timesheet_product_id"/>
+                        <field name="timesheet_product_id"/>
+                    </div>
+                    <div>
+                        <label for="product_template_ids"/>
+                        <field name="product_template_ids" widget="many2many_tags"/>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- fsm timesheet form view -->
+    <record id="timesheet_view_form" model="ir.ui.view">
+        <field name="name">account.analytic.line.form</field>
+        <field name="model">account.analytic.line</field>
+        <field name="priority">5000</field>
+        <field name="arch" type="xml">
+            <form string="Timesheet">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="project_id" required="1"/>
+                            <field name="task_id" context="{'default_project_id': project_id}"/>
+                            <field name="user_id" invisible="1" groups="hr_timesheet.group_timesheet_manager"/>
+                            <field name="employee_id" groups="hr_timesheet.group_timesheet_manager"/>
+                        </group>
+                        <group>
+                            <field name="date"/>
+                            <field name="unit_amount" string="Time Spent" widget="timesheet_uom"/>
+                            <field name="name" widget="text"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- fsm task form view -->
+    <record id="project_task_view_form_fsm" model="ir.ui.view">
+        <field name="name">project.task.view.form.fsm</field>
+        <field name="model">project.task</field>
+        <field name="priority">100</field>
+        <field name="arch" type="xml">
+            <form>
+                <div style="background-color: white; border-bottom: 1px solid lightgrey">
+                    <field name="use_timesheet_timer" invisible="True"/>
+                    <field name="allow_timesheets" invisible="True"/>
+                    <field name="allow_billable" invisible="True"/>
+                    <field name="timesheet_ids" invisible="True"/>
+                    <field name="fsm_is_done" invisible="True"/>
+                    <field name="analytic_account_active" invisible="True"/>
+                    <button class="btn-primary" name="action_timer_start" type="object" string="Start"
+                        attrs="{'invisible': ['|', '|', '|', ('timesheet_timer_start', '!=', False), ('allow_timesheets', '=', False), ('use_timesheet_timer', '=', False), ('analytic_account_active', '=', False)]}" style="margin-left: 16px;"/>
+                    <button class="btn-danger o_fsm_stop" name="action_timer_stop" type="object" string="Pause"
+                        attrs="{'invisible': ['|', '|', '|', ('timesheet_timer_start', '=', False), ('allow_timesheets', '=', False), ('use_timesheet_timer', '=', False), ('analytic_account_active', '=', False)]}" style="margin-left: 16px;"/>
+                    <button class="btn-primary" name="action_set_done" type="object" string="Done"
+                        attrs="{'invisible': [('fsm_is_done', '=', True)]}" style="margin-left: 16px;"/>
+                    <field name="timesheet_timer_start" widget="timesheet_timer" class="text-danger pull-right h2 mr-4 mt-2 font-weight-bold"/>
+                </div>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" name="action_view_material"
+                            type="object" icon="fa-cart-plus" help="Add materials" attrs="{'invisible': ['|', '|', ('fsm_is_done', '=', True), ('allow_billable', '=', False), ('sale_order_id', '!=', False)]}">
+                            <div class="o_stat_info">
+                                <span class="o_stat_value">
+                                    <field name="material_line_product_count" widget="statinfo" string="Products" class="mr-1"/>
+                                </span>
+                                <field name="material_line_total_price" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                <field name="currency_id" invisible="True"/>
+                            </div>
+                        </button>
+                        <button class="oe_stat_button" name="create_or_view_created_quotations"
+                            type="object" icon="fa-pencil-square-o" groups="sales_team.group_sale_salesman" help="Quotations created from this task" attrs="{'invisible': [('allow_billable', '=', False)]}">
+                            <field name="quotation_count" widget="statinfo" string="Quotation(s)" class="mr-1"/>
+                        </button>
+                        <button class="oe_stat_button" name="action_view_timesheets"
+                            type="object" icon="fa-clock-o" help="Time recorded on this task" attrs="{'invisible': [('timesheet_ids', '=', [])]}">
+                            <div class="o_stat_info">
+                                <div>Time</div>
+                                <span class="o_stat_value">
+                                    <field name="total_hours_spent" widget="float_time" nolabel="1" class="mr-1" />
+                                </span>
+                            </div>
+                        </button>
+                        <button type="object" name="action_view_so" class="oe_stat_button" icon="fa-dollar" attrs="{'invisible': [('sale_order_id', '=', False)]}" string="Sales Order"/>
+                        <field name="sale_order_id" invisible="1"/>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name" invisible="1"/>
+                            <field name="partner_id"
+                                context="{'search_default_customer':1, 'show_address': 1, 'default_is_company': True, 'show_vat': True}"
+                                options='{"always_reload": True, "no_quick_create": True}'
+                                widget="res_partner_many2one"/>
+                            <field name="partner_phone" widget="phone" attrs="{'invisible': [('partner_id', '=', False)]}"/>
+                            <field name="partner_mobile" widget="phone" attrs="{'invisible': [('partner_id', '=', False)]}"/>
+                            <field name="partner_email" widget="email"  attrs="{'invisible': [('partner_id', '=', False)]}"/>
+                        </group>
+                        <group>
+                            <label for="planned_date_begin" string="Date"/>
+                            <div class="o_row">
+                                <field name="planned_date_begin"/>
+                                <span attrs="{'invisible': [('planned_date_end', '=', False)]}"> to </span>
+                                <field name="planned_date_end"/>
+                            </div>
+                        </group>
+                        <field name="description" colspan="2"/>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Improve the task kanban in Project -->
+    <record id="view_task_kanban_inherit" model="ir.ui.view">
+        <field name="name">view.task.kanban.inherit</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('oe_kanban_bottom_left')]" position="inside">
+                <field name="timesheet_timer_start" invisible="True" />
+                <field name="planned_date_begin" invisible="True"/>
+                <field name="planned_date_end" invisible="True"/>
+                <t t-if="record.planned_date_begin.raw_value and record.planned_date_end.raw_value">
+                    <div t-if="moment(record.planned_date_begin.raw_value.toISOString()).isAfter(moment().add(-1, 'days').endOf('day')) and moment().endOf('day').isAfter(moment(record.planned_date_begin.raw_value.toISOString()))"
+                        role="status" class="alert-warning" t-esc="moment(record.planned_date_begin.raw_value.toISOString()).format('LT')"/>
+                    <div t-else="" role="status" t-attf-class="#{moment().startOf('day').isAfter(moment(record.planned_date_begin.raw_value.toISOString())) ? 'alert-danger' : ''}"
+                        t-esc="moment(record.planned_date_begin.raw_value.toISOString()).format('ll')"/>
+                </t>
+                <t t-if="record.timesheet_timer_start.raw_value">
+                    <i class="fa fa-play" style="color: green; font-size: 20px;"></i>
+                </t>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="project_task_view_search" model="ir.ui.view">
+        <field name="name">project.task.view.search</field>
+        <field name="model">project.task</field>
+        <field name="arch" type="xml">
+            <search string="Search planning">
+                <filter string="My Tasks" name="my_tasks"
+                    domain="[('user_id', '=', uid)]"/>
+                <separator />
+                <filter name="planned_today" string="Planned for Today" domain="[
+                    ('planned_date_begin','&lt;=', datetime.datetime.combine(context_today(), datetime.time(23,59,59))),
+                    ('planned_date_begin','&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]"/>
+                <filter name="planned_future" string="Future" domain="[('planned_date_begin', '>=', datetime.datetime.today().strftime('%Y-%m-%d'))]"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Kanban for the app -->
+    <record id="project_task_view_kanban" model="ir.ui.view">
+        <field name="name">project.task.view.kanban</field>
+        <field name="model">project.task</field>
+        <field name="priority">100</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="planned_date_begin:day" default_order="planned_date_begin">
+                <field name="user_id"/>
+                <field name="planned_date_begin"/>
+                <field name="partner_id" widget="res_partner_many2one"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                            <div class="oe_kanban_content row">
+                                <div class="col">
+                                    <strong><field name="name" string="Task name"/></strong>
+                                    <div>
+                                        <field name="partner_id"/>
+                                    </div>
+                                    <div class="o_kanban_record_bottom">
+                                        <div class="oe_kanban_bottom_left">
+                                            <strong><t t-if="record.planned_date_begin.raw_value" t-esc="moment(record.planned_date_begin.raw_value.toISOString()).format('HH:mm')"/></strong>
+                                            <field name="activity_ids" widget="kanban_activity"/>
+                                        </div>
+                                        <div class="oe_kanban_bottom_right">
+                                            <div class="badge badge-primary" t-if="widget.getParent().getParent().columnOptions.groupedBy != 'stage_id'">
+                                                <field name="stage_id"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Main action for the app -->
+    <record id="project_task_action_worker_tasks" model="ir.actions.act_window">
+        <field name="name">My Tasks</field>
+        <field name="res_model">project.task</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">kanban,form</field>
+        <field name="domain">[('allow_planning', '=', True)]</field>
+        <field name="search_view_id" ref="project_task_view_search"/>
+        <field name="view_ids" eval="[
+            (5, 0, 0),
+            (0, 0, {'view_mode': 'kanban', 'view_id': ref('project_task_view_kanban')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('project_task_view_form_fsm')})]"/>
+        <field name="context">{'search_default_my_tasks': True, 'search_default_planned_future': True}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No more Tasks
+            </p>
+        </field>
+    </record>
+
+
+    <menuitem id="menu_fsm_root" name="Field Service"
+        sequence="25"
+        web_icon="industry_fsm,static/description/icon.png"
+        groups="project.group_project_user"/>
+
+    <menuitem id="fsm_tasks_menu" name="My Tasks" action="project_task_action_worker_tasks"
+        sequence="10" parent="industry_fsm.menu_fsm_root"
+        groups="project.group_project_user"/>
+
+</odoo>

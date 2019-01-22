@@ -13,6 +13,6 @@
     """,
     'data': [],
     'qweb': [],
-    'demo': [],
+    'demo': ['data/test_l10n_be_hr_payroll_account_demo.xml'],
     'auto_install': True,
 }

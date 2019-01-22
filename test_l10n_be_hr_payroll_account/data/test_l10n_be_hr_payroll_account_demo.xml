@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="res.config.settings" id="res_config_settings_set_coa">
+        <field name="chart_template_id" ref="l10n_be.l10nbe_chart_template"/>
+    </record>
+    <function model="res.config.settings" name="create">
+        <value model="res.config.settings" eval="dict(
+            obj().default_get(list(obj().fields_get())),
+            **{
+                'chart_template_id': obj().env.ref('l10n_be.l10nbe_chart_template').id,
+                'company_id': obj().env.ref('l10n_be_hr_payroll.res_company_be').id,
+            }
+        )"/>
+    </function>
+
+    <function model="res.users" name="write">
+        <value eval="1"/>
+        <value eval="{'company_id': ref('l10n_be_hr_payroll.res_company_be')}"/>
+    </function>
+
+    <function model="res.config.settings" name="execute">
+        <value model="res.config.settings" eval="obj().search([('chart_template_id', '=', obj().env.ref('l10n_be.l10nbe_chart_template').id)], order='create_date desc', limit=1).id"/>
+    </function>
+
+    <function model="res.users" name="write">
+        <value eval="1"/>
+        <value eval="{'company_id': ref('base.main_company')}"/>
+    </function>
+</odoo>

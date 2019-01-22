@@ -800,8 +800,10 @@ class View(models.Model):
                 callview.copy_qweb_template()
             node.set('t-call', cloned_templates[tcall])
 
-        arch_tree = arch_tree.find(".//*[@t-name]")
-        arch_tree.set('t-name', new_key)
+        subtree = arch_tree.find(".//*[@t-name]")
+        if subtree is not None:
+            subtree.set('t-name', new_key)
+            arch_tree = subtree
 
         new.write({
             'name': '%s copy(%s)' % (new.name, copy_no),

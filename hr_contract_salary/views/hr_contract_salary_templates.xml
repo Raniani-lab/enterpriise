@@ -224,42 +224,28 @@
                                     <div class="form-group">
                                         <div class="row">
                                             <label class="col-md-3 col-form-label" for="holidays_slider">
-                                                <i class="fa fa-1x fa-suitcase fa-fw"/> Legal Leaves
+                                                <i class="fa fa-1x fa-suitcase fa-fw"/> Extra Time Off
                                             </label>
                                             <div class="col-md-7">
-                                                <div t-att-class="'d-none' if not contract.holidays_editable else ''">
+                                                <div>
                                                     <span class="badge badge-secondary">0</span>
-                                                    <input type="range" t-att-value="contract.holidays" min="0" max="35" step="1" list="holidays-range" name="holidays_slider" class="advantage_input hr_cs_control_range" t-att-disabled="not contract.holidays_editable"/>
-                                                    <span class="badge badge-secondary">35</span>
+                                                    <input type="range" t-att-value="contract.holidays" min="0" max="15" step="1" list="holidays-range" name="holidays_slider" class="advantage_input hr_cs_control_range"/>
+                                                    <span class="badge badge-secondary">15</span>
                                                     <datalist id="holidays-range">
-                                                        <t t-set="step" t-value="35.0 / 10.0"/>
+                                                        <t t-set="step" t-value="15.0 / 10.0"/>
                                                         <t t-foreach="range(1, 10)" t-as="i">
                                                             <option><t t-esc="step * i"/></option>
                                                         </t>
                                                     </datalist>
                                                 </div>
-                                                <span t-att-class="'form-text mt8' if contract.holidays_editable else 'form-text'">The number of days you get depends on your working schedule, the number of days used in your previous job and the number of months worked previously.</span>
-                                                <div t-att-class="'d-none' if not contract.holidays_editable else ''">
-                                                    <div name="holidays_20_days" class="mt8">
-                                                        <span class="form-text mt8" name="holidays_20_days" style="display: inline;"> You will receive 20 days of paid leaves. However, if you only use </span>
-                                                        <span class="form-text" style="display: inline;" name="holidays_amount">X</span>
-                                                        <span class="form-text" style="display: inline;"> days by the end of the year, you will receive a compensation of approximately </span>
-                                                        <span class="form-text" style="display: inline;" name="compensation_amount">x</span>
-                                                        <span class="form-text" style="display: inline;"> €.</span><br/>
-                                                    </div>
-                                                </div>
+                                                <span class="form-text mt8">In addition to your legal leaves, you can choose any number of extra time off you want.</span>
+                                                <span class="form-text mt8">The amount of annual time off (legal leaves) you get depends on your work schedule in the previous year. A full-time work schedule through the 12 months of the last year will grant you 20 annual time off (legal leaves).</span>
                                             </div>
                                             <div class="col-md-2">
                                                 <div class="input-group">
                                                     <input class="form-control" name="holidays_input" type="text" t-att-value="contract.holidays" disabled="disabled"/>
                                                     <div class="input-group-append">
                                                         <div class="input-group-text">day(s)</div>
-                                                    </div>
-                                                </div>
-                                                <div class="input-group d-none" name="holidays_compensation">
-                                                    <input class="form-control" name="holidays_compensation_input" type="text" t-att-value="contract.holidays_compensation" disabled="disabled"/>
-                                                    <div class="input-group-append">
-                                                        <div class="input-group-text">€</div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -577,7 +563,21 @@
 
                                     <div class="form-group">
                                         <div class="row">
-                                            <label class="col-md-6 col-form-label" for="holidays_input">Legal Leaves</label>
+                                            <label class="col-md-6 col-form-label" for="holidays_legal">Annual Time Off</label>
+                                            <div class="col-md-6">
+                                                <div class="input-group">
+                                                    <input type="text" disabled="disabled" name="holidays_legal" class="form-control" value="20"/>
+                                                    <div class="input-group-append">
+                                                        <div class="input-group-text">day(s)</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label class="col-md-6 col-form-label" for="holidays_input">Extra Time Off</label>
                                             <div class="col-md-6">
                                                 <div class="input-group">
                                                     <input type="text" disabled="disabled" name="holidays_input" class="form-control" t-att-value="contract.holidays"/>

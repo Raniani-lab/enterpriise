@@ -43,6 +43,10 @@ var SalaryPackageWidget = Widget.extend({
         $("div#company_car select").val() === 'new' ? $("div#new_company_car").removeClass('d-none') : $("div#new_company_car").addClass('d-none')
         this.onchange_mobile();
         this.onchange_internet();
+        if (!$("input[name='holidays_input']").val()) {
+            $("input[name='holidays_slider']").val(0);
+            $("input[name='holidays_input']").val(0);
+        }
         this.onchange_holidays();
         this.onchange_disabled_children();
         this.onchange_marital();
@@ -212,8 +216,6 @@ var SalaryPackageWidget = Widget.extend({
         $("input[name='yearly_cash']").val(data['yearly_cash']);
         $("input[name='monthly_total']").val(data['monthly_total']);
         $("input[name='employee_total_cost']").val(data['employee_total_cost']);
-        $("input[name='holidays_compensation_input']").val(data['holidays_compensation']);
-        $("span[name='compensation_amount']").html(data['holidays_compensation']);
         $("input[name='car_employee_deduction']").val(data['company_car_total_depreciated_cost']);
         var mobile_atn_div = $("div[name='mobile_atn']");
         var internet_atn_div = $("div[name='internet_atn']");
@@ -310,12 +312,6 @@ var SalaryPackageWidget = Widget.extend({
     onchange_holidays: function(event) {
         var amount_days = $("input[name='holidays_slider']").val();
         $("input[name='holidays_input']").val(amount_days);
-        $("span[name='holidays_amount']").html(amount_days);
-        if ($("input[name='holidays_slider']").val() < 20.0) {
-            $("div[name='holidays_20_days']").removeClass('d-none');
-        } else {
-            $("div[name='holidays_20_days']").addClass('d-none');
-        }
     },
 
     // TODO Restring to useful arguments

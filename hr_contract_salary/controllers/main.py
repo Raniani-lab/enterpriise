@@ -413,7 +413,6 @@ class website_hr_contract_salary(http.Controller):
             'ATN.INT.2': round(payslip.get_salary_line_total('ATN.INT.2'), 2),
             'ATN.MOB.2': round(payslip.get_salary_line_total('ATN.MOB.2'), 2),
             'NET': round(payslip.get_salary_line_total('NET'), 2),
-            'holidays_compensation': round(new_contract.holidays_compensation, 2),
             'wage_with_holidays': round(new_contract.wage_with_holidays, 2),
             'company_car_total_depreciated_cost': round(new_contract.company_car_total_depreciated_cost, 2),
             'thirteen_month': round(new_contract.thirteen_month, 2),
@@ -611,8 +610,6 @@ class website_hr_contract_salary(http.Controller):
                     new_value = new_value[elem]
                 else:
                     new_value = ''
-                if elem == 'holidays':
-                    new_value = new_value - 20.0
                 if elem == 'car' and new_contract.transport_mode_car:
                     if not new_contract.new_car and new_contract.car_id:
                         new_value = new_contract.car_id.model_id.name

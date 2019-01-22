@@ -123,11 +123,14 @@
                                             <t t-if="record.res_name.raw_value">
                                                 <span t-att-title="record.res_name.raw_value">: <field name="res_name"/></span>
                                             </t>
+                                            <t t-elif="fileRequest">
+                                                 <span><b> Request</b></span>
+                                            </t>
                                         </t>
-                                        <t t-if="record.type.raw_value == 'url'">
+                                        <t t-elif="record.type.raw_value == 'url'">
                                             <span class="o_document_url"><i class="fa fa-globe"/> <field name="url" widget="url"/></span>
                                         </t>
-                                        <t t-if="fileRequest">
+                                        <t t-elif="fileRequest">
                                             <span><b>Requested Document</b></span>
                                         </t>
                                         <samp t-else="" class="text-muted"> </samp>

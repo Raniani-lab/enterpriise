@@ -26,6 +26,7 @@
         'data/files_data.xml',
         'views/documents_views.xml',
         'views/templates.xml',
+        'views/activity_views.xml',
         'wizard/request_activity_views.xml',
     ],
 

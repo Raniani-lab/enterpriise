@@ -104,3 +104,30 @@ class TestCaseDocumentsBridgeAccount(TransactionCase):
         txt_doc = self.env['documents.document'].search([('attachment_id', '=', document_txt_test.id)])
 
         self.assertEqual(txt_doc.folder_id, folder_test, 'the text test document have a folder')
+
+    def test_reconciliation_request(self):
+        account_type_test = self.env['account.account.type'].create({'name': 'account type test', 'type': 'other'})
+        account_test = self.env['account.account'].create(
+            {'name': 'Receivable', 'code': '0000222', 'user_type_id': account_type_test.id, 'reconcile': True})
+        journal_test = self.env['account.journal'].create({'name': 'journal test', 'type': 'bank', 'code': 'BNK67'})
+        account_move_test = self.env['account.move'].create(
+            {'name': 'account move test', 'state': 'posted', 'journal_id': journal_test.id})
+        account_move_line_test = self.env['account.move.line'].create({
+            'name': 'account move line test',
+            'move_id': account_move_test.id,
+            'account_id': account_test.id,
+        })
+
+        document_test = self.env['documents.document'].create({
+            'name': 'test reconciliation workflow',
+            'folder_id': self.folder_a.id,
+            'res_model': 'account.move.line',
+            'res_id': account_move_line_test.id,
+            'datas': TEXT,
+        })
+
+        action = self.workflow_rule_vendor_bill.apply_actions([document_test.id])
+        self.assertEqual(action['res_model'], 'account.invoice', 'a new invoice should be generated')
+        invoice = self.env['account.invoice'].browse(action['res_id'])
+        self.assertEqual(invoice.reconciliation_move_line_id.id, account_move_line_test.id,
+                         'the new invoice should store the ID of the move line on which its document was attached')

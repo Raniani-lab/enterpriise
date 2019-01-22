@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api, exceptions, SUPERUSER_ID, modules
+from odoo import models, fields, api, exceptions, SUPERUSER_ID, modules, _
 from odoo.osv import expression
 from odoo.tools import crop_image, image_resize_image
 from ast import literal_eval
@@ -22,8 +22,8 @@ class Document(models.Model):
     file_size = fields.Integer(related='attachment_id.file_size', store=True)
     checksum = fields.Char(related='attachment_id.checksum')
     mimetype = fields.Char(related='attachment_id.mimetype', default='application/octet-stream')
-    res_model = fields.Char('Resource Model', related='attachment_id.res_model', store=True, readonly=False)
-    res_id = fields.Integer('Resource ID', related='attachment_id.res_id', readonly=False)
+    res_model = fields.Char('Resource Model', compute="_compute_res_record", inverse="_inverse_res_model", store=True)
+    res_id = fields.Integer('Resource ID', compute="_compute_res_record", inverse="_inverse_res_id", store=True)
     res_name = fields.Char('Resource Name', related='attachment_id.res_name')
     index_content = fields.Text(related='attachment_id.index_content')
 
@@ -45,6 +45,7 @@ class Document(models.Model):
                                           string='Available Rules')
     lock_uid = fields.Many2one('res.users', string="Locked by")
     create_share_id = fields.Many2one('documents.share', help='Share used to create this document')
+    request_activity_id = fields.Many2one('mail.activity')
 
     # Folder
     folder_id = fields.Many2one('documents.folder',
@@ -57,6 +58,10 @@ class Document(models.Model):
     group_ids = fields.Many2many('res.groups', string="Access Groups", readonly=True,
                                  help="This attachment will only be available for the selected user groups",
                                  related='folder_id.group_ids')
+
+    _sql_constraints = [
+        ('attachment_unique', 'unique (attachment_id)', "This attachment is already a document"),
+    ]
 
     @api.depends('attachment_id.name', 'attachment_id.datas_fname')
     def _compute_name(self):
@@ -73,12 +78,34 @@ class Document(models.Model):
                 record.datas_fname = record.name
                 record.attachment_name = record.name
 
+    @api.depends('attachment_id', 'attachment_id.res_model', 'attachment_id.res_id')
+    def _compute_res_record(self):
+        for record in self:
+            attachment = record.attachment_id
+            if attachment:
+                record.res_model = attachment.res_model
+                record.res_id = attachment.res_id
+
+    @api.multi
+    def _inverse_res_id(self):
+        for record in self:
+            attachment = record.attachment_id.with_context(no_document=True)
+            if attachment:
+                attachment.res_id = record.res_id
+
+    @api.multi
+    def _inverse_res_model(self):
+        for record in self:
+            attachment = record.attachment_id.with_context(no_document=True)
+            if attachment:
+                attachment.res_model = record.res_model
+
     @api.onchange('url')
     def _onchange_url(self):
         if self.url and not self.name:
             self.name = self.url.rsplit('/')[-1]
 
-    @api.depends('datas')
+    @api.depends('checksum')
     def _compute_thumbnail(self):
         for record in self:
             if record.mimetype and re.match('image.*(gif|jpeg|jpg|png)', record.mimetype):
@@ -269,23 +296,40 @@ class Document(models.Model):
             attachment = self.env['ir.attachment'].create(attachment_dict)
             vals['attachment_id'] = attachment.id
         new_record = super(Document, self).create(vals)
-        if attachment:
+        if attachment and not vals.get('res_model'):
             attachment.write({'res_model': 'documents.document', 'res_id': new_record.id})
         return new_record
 
     @api.multi
     def write(self, vals):
+        attachment_id = vals.get('attachment_id')
+        if attachment_id:
+            self.ensure_one()
         for record in self:
+
             if record.type == 'empty' and ('datas' in vals or 'url' in vals):
-                record.activity_ids.action_feedback()
+                body = _("Document Request: %s Uploaded by: %s") % (record.name, self.env.user.name)
+                record.message_post(body=body)
+
             if vals.get('datas') and not vals.get('attachment_id') and not record.attachment_id:
+                res_model = vals.get('res_model', record.res_model or 'documents.document')
+                res_id = vals.get('res_id') if vals.get('res_model') else record.res_id if record.res_model else record.id
                 attachment = self.env['ir.attachment'].create({
                     'name': vals.get('datas_fname', record.name),
-                    'res_model': 'documents.document',
-                    'res_id': record.id
+                    'res_model': res_model,
+                    'res_id': res_id
                 })
                 record.attachment_id = attachment.id
+                self._process_activities(attachment.id)
+
         return super(Document, self).write(vals)
+
+    @api.multi
+    def _process_activities(self, attachment_id):
+        self.ensure_one()
+        if attachment_id and self.request_activity_id:
+            feedback = _("Document Request: %s Uploaded by: %s") % (self.name, self.env.user.name)
+            self.request_activity_id.action_feedback(feedback=feedback, attachment_ids=[attachment_id])
 
     def split_pdf(self, indices=None, remainder=False):
         self.ensure_one()

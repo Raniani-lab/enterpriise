@@ -120,7 +120,7 @@
     </td>
     <td class="o_inspector_value w-100">
         <div class="o_inspector_model">
-            <span class="o_inspector_object_name" t-att-title="res_name"><t t-esc="res_name"/></span>
+            <span class="o_inspector_object_name" t-att-title="res_name"><t t-esc="res_name || res_model"/></span>
         </div>
     </td>
 </t>

@@ -11,7 +11,15 @@ Add the ability to create invoices from the document module.
 """,
     'website': ' ',
     'depends': ['documents', 'account'],
-    'data': ['data/data.xml', 'views/documents_views.xml'],
+    'data': [
+        'assets.xml',
+        'data/data.xml',
+        'views/documents_views.xml',
+        'views/account_views.xml',
+    ],
+    'demo': [
+        'demo/demo.xml',
+    ],
     'installable': True,
     'auto_install': True,
 }

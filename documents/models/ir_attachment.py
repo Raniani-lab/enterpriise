@@ -99,6 +99,10 @@ class IrAttachment(models.Model):
         :param vals: the create/write dictionary of ir attachment
         :return True if new documents are created
         """
+        if vals.get('res_model') == 'documents.document' and vals.get('res_id'):
+            document = self.env['documents.document'].browse(vals['res_id'])
+            if document.exists() and not document.attachment_id:
+                document.attachment_id = self[0].id
         return False
 
     @api.model

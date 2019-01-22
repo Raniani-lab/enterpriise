@@ -16,6 +16,7 @@
 
         <record id="mail_documents_activity_data_md" model="mail.activity.type">
             <field name="name">Requested Document</field>
+            <field name="category">upload_file</field>
             <field name="res_model_id" ref="documents.model_documents_document"/>
         </record>
 

@@ -108,15 +108,15 @@ class CalendarAppointmentType(models.Model):
         requested_tz = pytz.timezone(timezone)
 
         slots = []
-        for slot in self.slot_ids.filtered(lambda x: x.weekday == first_day.isoweekday()):
+        for slot in self.slot_ids.filtered(lambda x: int(x.weekday) == first_day.isoweekday()):
             if slot.hour > first_day.hour + first_day.minute / 60.0:
                 append_slot(first_day.date(), slot)
-        slot_weekday = [weekday - 1 for weekday in self.slot_ids.mapped('weekday')]
+        slot_weekday = [int(weekday) - 1 for weekday in self.slot_ids.mapped('weekday')]
         for day in rrule.rrule(rrule.DAILY,
                                dtstart=first_day.date() + timedelta(days=1),
                                until=last_day.date(),
                                byweekday=slot_weekday):
-            for slot in self.slot_ids.filtered(lambda x: x.weekday == day.isoweekday()):
+            for slot in self.slot_ids.filtered(lambda x: int(x.weekday) == day.isoweekday()):
                 append_slot(day, slot)
         return slots
 
@@ -286,13 +286,13 @@ class CalendarAppointmentSlot(models.Model):
 
     appointment_type_id = fields.Many2one('calendar.appointment.type', 'Appointment Type', ondelete='cascade')
     weekday = fields.Selection([
-        (1, 'Monday'),
-        (2, 'Tuesday'),
-        (3, 'Wednesday'),
-        (4, 'Thursday'),
-        (5, 'Friday'),
-        (6, 'Saturday'),
-        (7, 'Sunday'),
+        ('1', 'Monday'),
+        ('2', 'Tuesday'),
+        ('3', 'Wednesday'),
+        ('4', 'Thursday'),
+        ('5', 'Friday'),
+        ('6', 'Saturday'),
+        ('7', 'Sunday'),
     ], string='Week Day', required=True)
     hour = fields.Float('Starting Hour', required=True, default=8.0)
 

@@ -768,7 +768,7 @@ class AccountReport(models.AbstractModel):
 
         if not string:
             fy_day = self.env.user.company_id.fiscalyear_last_day
-            fy_month = self.env.user.company_id.fiscalyear_last_month
+            fy_month = int(self.env.user.company_id.fiscalyear_last_month)
             if self.has_single_date_filter(options):
                 string = _('As of %s') % (format_date(self.env, date_to.strftime(DEFAULT_SERVER_DATE_FORMAT)))
             elif period_type == 'year' or (period_type == 'fiscalyear' and (date_from, date_to) == date_utils.get_fiscal_year(date_to)):

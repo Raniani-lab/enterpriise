@@ -120,20 +120,6 @@ class HrContract(models.Model):
         validity = self.env['ir.config_parameter'].sudo().get_param('hr_contract_salary.access_token_validity', default=30)
         return fields.Date.to_string(fields.Date.from_string(today) + timedelta(days=int(validity)))
 
-    def action_accept_package(self):
-        if self.origin_contract_id.employee_id:
-            self.origin_contract_id.state = 'close'
-        self.state = 'open'
-        self.access_token_consumed = True
-        self.employee_id.active = True
-        if not self.new_car and self.car_id:
-            if self.origin_contract_id and self.origin_contract_id.car_id \
-                    and self.origin_contract_id.car_id != self.car_id:
-                self.origin_contract_id.car_id.driver_id = False
-
-    def action_refuse_package(self):
-        self.state = 'close'
-
     def open_sign_requests(self):
         self.ensure_one()
         if len(self.sign_request_ids.ids) == 1:

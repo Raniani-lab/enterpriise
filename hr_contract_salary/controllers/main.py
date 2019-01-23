@@ -38,11 +38,6 @@ class SignContract(Sign):
         # Only the applicant/employee has signed
         if request_item.sign_request_id.nb_closed == 1:
             contract.active = True
-            if contract.car_id:
-                if contract.origin_contract_id and contract.origin_contract_id.car_id \
-                        and contract.origin_contract_id.car_id != contract.car_id:
-                    contract.origin_contract_id.car_id.driver_id = False
-                contract.car_id.driver_id = contract.employee_id.address_home_id
             contract.access_token_consumed = True
             if contract.applicant_id:
                 contract.applicant_id.access_token = False
@@ -52,10 +47,24 @@ class SignContract(Sign):
                 contract.employee_id.active = True
             if contract.employee_id.address_home_id:
                 contract.employee_id.address_home_id.active = True
-            if contract.car_id:
-                contract.car_id.active = True
-            if contract.car_id.log_contracts:
-                contract.car_id.log_contracts.write({'active': True})
+            if contract.new_car:
+                model = contract.new_car_model_id.sudo()
+                contract.car_id = request.env['fleet.vehicle'].sudo().create({
+                    'model_id': model.id,
+                    'state_id': request.env.ref('fleet.fleet_vehicle_state_new_request').id,
+                    'future_driver_id': contract.employee_id.address_home_id.id,
+                    'car_value': model.default_car_value,
+                    'co2': model.default_co2,
+                    'fuel_type': model.default_fuel_type,
+                })
+                vehicle_contract = contract.car_id.log_contracts[0]
+                vehicle_contract.recurring_cost_amount_depreciated = model.default_recurring_cost_amount_depreciated
+                vehicle_contract.cost_generated = model.default_recurring_cost_amount_depreciated
+                vehicle_contract.cost_frequency = 'no'
+                vehicle_contract.purchaser_id = contract.employee_id.address_home_id.id
+                contract.new_car = False
+                contract.new_car_model_id = False
+
 
 class website_hr_contract_salary(http.Controller):
 
@@ -246,7 +255,7 @@ class website_hr_contract_salary(http.Controller):
         return {
             'contract': contract,
             'available_cars': request.env['fleet.vehicle'].sudo().search(
-                contract._get_available_cars_domain()).sorted(key=lambda car: car.total_depreciated_cost),
+                contract._get_available_cars_domain(contract.employee_id.address_home_id)).sorted(key=lambda car: car.total_depreciated_cost),
             'can_be_requested_models': request.env['fleet.vehicle.model'].sudo().search(
                 contract._get_possible_model_domain()).sorted(key=lambda model: model.default_total_depreciated_cost),
             'states': request.env['res.country.state'].search([]),
@@ -339,6 +348,9 @@ class website_hr_contract_salary(http.Controller):
         else:
             contract = request.env['hr.contract'].sudo().create(vals)
 
+        if kw.get('no_car_creation', False):
+            return contract
+
         # Create the car after the contract to avoid losing the cache
         if advantages['transport_mode_car'] and advantages['new_car']:
             Fleet = request.env['fleet.vehicle']
@@ -350,14 +362,13 @@ class website_hr_contract_salary(http.Controller):
                 'car_value': model.default_car_value,
                 'co2': model.default_co2,
                 'fuel_type': model.default_fuel_type,
-                'active': False,
             })
             vehicle_contract = contract.car_id.log_contracts[0]
             vehicle_contract.recurring_cost_amount_depreciated = model.default_recurring_cost_amount_depreciated
             vehicle_contract.cost_generated = model.default_recurring_cost_amount_depreciated
             vehicle_contract.cost_frequency = 'no'
             vehicle_contract.purchaser_id = employee.address_home_id.id
-            vehicle_contract.active = False
+
         return contract
 
     @http.route(['/salary_package/update_gross/'], type="json", auth="public")
@@ -569,6 +580,7 @@ class website_hr_contract_salary(http.Controller):
             if contract.employee_id.user_id == request.env.user:
                 kw['employee'] = contract.employee_id
 
+        kw['no_car_creation'] = True
         new_contract = self.create_new_contract(contract, advantages, no_write=True, **kw)
 
         # Create new car in waiting list if more than max_unused_cars available cars
@@ -577,12 +589,12 @@ class website_hr_contract_salary(http.Controller):
             car = request.env['fleet.vehicle'].sudo().create({
                 'model_id': advantages['waiting_list_model'],
                 'state_id': request.env.ref('hr_contract_salary.fleet_vehicle_state_waiting_list').id,
-                'driver_id': new_contract.employee_id.address_home_id.id,
                 'car_value': model.default_car_value,
                 'co2': model.default_co2,
                 'fuel_type': model.default_fuel_type,
                 'acquisition_date': new_contract.car_id.acquisition_date or fields.Date.today()
             })
+
             vehicle_contract = car.log_contracts[0]
             vehicle_contract.recurring_cost_amount_depreciated = model.default_recurring_cost_amount_depreciated
             vehicle_contract.cost_generated = model.default_recurring_cost_amount_depreciated

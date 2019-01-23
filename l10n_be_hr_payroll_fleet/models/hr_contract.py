@@ -2,21 +2,42 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models
+from odoo.osv import expression
 
 
 class HrContract(models.Model):
     _inherit = 'hr.contract'
 
+    @api.model
+    def default_get(self, field_list):
+        res = super(HrContract, self).default_get(field_list)
+        driver_id = self.env['hr.employee'].search([('user_id', '=', self.env.uid)])
+        domain = self._get_available_cars_domain(driver_id)
+        res['car_id'] = res.get('car_id', self.env['fleet.vehicle'].sudo().search(domain, limit=1).id)
+        return res
+
+    @api.model
+    def _get_available_cars_domain(self, driver_id=None):
+        return expression.AND([
+            [('future_driver_id', '=', False)],
+            expression.OR([
+                [('driver_id', '=', False)],
+                [('driver_id', '=', driver_id.id if driver_id else False)],
+                [('plan_to_change_car', '=', True)]
+            ])
+        ])
+
+    def _get_possible_model_domain(self):
+        return [('can_be_requested', '=', True)]
+
     car_id = fields.Many2one('fleet.vehicle', string='Company Car',
-        default=lambda self: self.env['fleet.vehicle'].sudo().search([('driver_id', '=', self.employee_id.address_home_id.id)], limit=1),
         tracking=True,
-        groups="fleet.fleet_group_manager",
-        help="Employee's company car.")
+        help="Employee's company car.",
+        groups='fleet.fleet_group_manager')
     car_atn = fields.Float(compute='_compute_car_atn_and_costs', string='ATN Company Car', store=True, compute_sudo=True)
     company_car_total_depreciated_cost = fields.Float(compute='_compute_car_atn_and_costs', store=True, compute_sudo=True)
     available_cars_amount = fields.Integer(compute='_compute_available_cars_amount', string='Number of available cars')
     new_car = fields.Boolean('Request a new car')
-    # YTI: Check if could be removed
     new_car_model_id = fields.Many2one('fleet.vehicle.model', string="Model", domain=lambda self: self._get_possible_model_domain())
     max_unused_cars = fields.Integer(compute='_compute_max_unused_cars')
     acquisition_date = fields.Date(related='car_id.acquisition_date', readonly=False, groups="fleet.fleet_group_manager")
@@ -67,7 +88,7 @@ class HrContract(models.Model):
     @api.depends('name')
     def _compute_available_cars_amount(self):
         for contract in self:
-            contract.available_cars_amount = self.env['fleet.vehicle'].sudo().search_count([('driver_id', '=', False)])
+            contract.available_cars_amount = self.env['fleet.vehicle'].sudo().search_count(contract._get_available_cars_domain(contract.employee_id.address_home_id))
 
     @api.depends('name')
     def _compute_max_unused_cars(self):
@@ -82,9 +103,3 @@ class HrContract(models.Model):
         if not self.transport_mode_car:
             self.car_id = False
             self.new_car_model_id = False
-
-    def _get_available_cars_domain(self):
-        return ['|', ('driver_id', '=', False), ('driver_id', '=', self.employee_id.address_home_id.id)]
-
-    def _get_possible_model_domain(self):
-        return [('can_be_requested', '=', True)]

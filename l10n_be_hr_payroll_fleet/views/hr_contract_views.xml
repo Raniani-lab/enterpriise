@@ -12,6 +12,8 @@
                     <field name="available_cars_amount" invisible="1"/>
                 </div>
                 <field name="max_unused_cars" invisible="1"/>
+                <field name="new_car"/>
+                <field name="new_car_model_id" attrs="{'invisible': [('new_car', '=', False)]}"/>
             </xpath>
             <xpath expr="//field[@name='car_atn']" position="after">
                 <field name="company_car_total_depreciated_cost" invisible="1"/>

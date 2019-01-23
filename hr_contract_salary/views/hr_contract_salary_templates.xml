@@ -74,7 +74,11 @@
                                                     <t t-set='max_unused_cars' t-value="contract.max_unused_cars"/>
                                                     <select name="select_car" class="form-control form-control-primary mt16 mb8 advantage_input">
                                                         <t t-foreach="available_cars" t-as="car">
-                                                            <option t-att-value="'old-'+str(car.id)" t-att-selected="not contract.new_car and contract.car_id.id == car.id"><t t-esc="car.model_id.brand_id.name + '/' + car.model_id.name + u' \u2022 ' + str(round(car.total_depreciated_cost, 2)) + u' € \u2022 ' + car._get_acquisition_date()"/></option>
+                                                            <option t-att-value="'old-'+str(car.id)" t-att-selected="not contract.new_car and contract.car_id.id == car.id">
+                                                                <t t-esc="car.model_id.brand_id.name + '/' + car.model_id.name + u' \u2022 '
+                                                                    + str(round(car.total_depreciated_cost, 2)) + u' € \u2022 '
+                                                                    + car._get_acquisition_date()
+                                                                    + ((u' \u2022 Available in %s' % car.next_assignation_date.strftime('%B %Y')) if car.next_assignation_date else u'')"/></option>
                                                         </t>
                                                         <t t-if="new_car or contract.available_cars_amount &lt; max_unused_cars">
                                                             <t t-foreach="can_be_requested_models" t-as="model">

@@ -13,6 +13,6 @@ Bridge module for mail and enterprise
     'data': [
         'views/res_config_settings_views.xml',
     ],
-    'auto_intall': True,
+    'auto_install': True,
     'license': 'OEEL-1',
 }

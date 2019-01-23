@@ -1,0 +1,14 @@
+<odoo>
+
+    <record id="project_view_form_simplified_inherit" model="ir.ui.view">
+        <field name="name">project.view.form.simplified.inherit</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.project_project_view_form_simplified"/>
+        <field name="arch" type="xml">
+            <field name="user_id" position="after">
+                <field name="allow_planning"/>
+            </field>
+        </field>
+    </record>
+
+</odoo>

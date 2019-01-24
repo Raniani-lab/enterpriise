@@ -3,3 +3,8 @@
         background-color:#FFF;
     }
 }
+
+.o_mobile_sticky {
+    @include o-position-sticky();
+    z-index: 2;
+}

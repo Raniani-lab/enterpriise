@@ -273,5 +273,85 @@ QUnit.module('web_mobile', {
 
         form.destroy();
     });
+
+    QUnit.test("control panel appears at top on scroll event", function (assert) {
+        assert.expect(11);
+
+        var Q_UNIT_FIXTURE_SELECTOR = '#qunit-fixture';
+        var MOBILE_STICK_CLASS = 'o_mobile_sticky';
+        var MAX_HEIGHT = 400;
+        var MIDLE_HEIGHT = 200;
+        var DELTA_TEST = 20;
+
+        function scrollAtHeight(height) {
+            window.scrollTo(0, height);
+            document.dispatchEvent(scrollEvent);
+        }
+
+        var form = createView({
+            View: FormView,
+            arch:
+                '<form>' +
+                    '<sheet>' +
+                        '<div style="height: 1000px"></div>' +
+                    '</sheet>' +
+                '</form>',
+            data: this.data,
+            model: 'partner',
+            res_id: 11,
+        });
+
+        var controlPanelElement = document.querySelector('.o_cp_controller');
+        var controlPanelHeight = controlPanelElement.clientHeight;
+        var scrollEvent = new UIEvent('scroll');
+
+        // Force viewport to have a scrollbar
+        document.querySelector(Q_UNIT_FIXTURE_SELECTOR).style.position = 'initial';
+
+        assert.strictEqual(controlPanelElement.style.top, '0px',
+            'Top must be 0px (start position)');
+        assert.notOk(controlPanelElement.classList.contains(MOBILE_STICK_CLASS),
+            'Must not have class o_mobile_sticky (start position)');
+
+        scrollAtHeight(MAX_HEIGHT);
+
+        var valueExpected = -controlPanelHeight;
+        assert.strictEqual(controlPanelElement.style.top, valueExpected + 'px',
+            'Top must be ' + valueExpected + 'px (after scroll to MAX_HEIGHT)');
+        assert.ok(controlPanelElement.classList.contains(MOBILE_STICK_CLASS),
+            'Must have class o_mobile_sticky (after scroll to MAX_HEIGHT)');
+
+        scrollAtHeight(MAX_HEIGHT - DELTA_TEST);
+
+        var valueExpectedWithDelta = -(controlPanelHeight - DELTA_TEST);
+        assert.strictEqual(controlPanelElement.style.top, valueExpectedWithDelta + 'px',
+            'Top must be ' + valueExpectedWithDelta + 'px (after scroll to MAX_HEIGHT - DELTA_TEST)');
+        assert.ok(controlPanelElement.classList.contains(MOBILE_STICK_CLASS),
+            'Must have class o_mobile_sticky (after scroll to MAX_HEIGHT - DELTA_TEST)');
+
+        scrollAtHeight(MIDLE_HEIGHT);
+
+        assert.strictEqual(controlPanelElement.style.top, '0px',
+            'Top must be 0px (after scroll to MIDLE_HEIGHT)');
+        assert.ok(controlPanelElement.classList.contains(MOBILE_STICK_CLASS),
+            'Must have class o_mobile_sticky (after scroll to MIDLE_HEIGHT)');
+
+        scrollAtHeight(MAX_HEIGHT);
+
+        assert.strictEqual(controlPanelElement.style.top, (-controlPanelHeight) + 'px',
+            'Top must be ' + (-controlPanelHeight) + 'px (after scroll to MAX_HEIGHT again)');
+        assert.ok(controlPanelElement.classList.contains(MOBILE_STICK_CLASS),
+            'Must have class o_mobile_sticky (after scroll to MAX_HEIGHT again)');
+
+        scrollAtHeight(0);
+
+        assert.notOk(controlPanelElement.classList.contains(MOBILE_STICK_CLASS),
+            'Must not have class o_mobile_sticky (after return to start position)');
+
+        form.destroy();
+
+        // Reset viewport position attribute
+        document.querySelector(Q_UNIT_FIXTURE_SELECTOR).style.position = '';
+    });
 });
 });

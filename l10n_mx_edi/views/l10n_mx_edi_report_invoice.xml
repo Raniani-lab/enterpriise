@@ -29,7 +29,7 @@
                 <span t-if="o.company_id.vat != o.l10n_mx_edi_cfdi_supplier_rfc">XML VAT: <span t-esc="o.l10n_mx_edi_cfdi_supplier_rfc"></span></span>
             </t>
         </xpath>
-        <xpath expr="//div[@name='reference']" position="after">
+        <xpath expr="//div[@name='customer_code']" position="after">
             <t t-if="o.l10n_mx_edi_cfdi_uuid">
                 <t t-if="xml.Receptor.get('UsoCFDI', False)">
                     <t t-set="usage" t-value="xml.Receptor.get('UsoCFDI')"/>

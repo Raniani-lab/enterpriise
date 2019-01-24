@@ -481,7 +481,9 @@
                         <group>
                             <field name="team_id"/>
                             <field name="user_id" class="field_user_id"/>
+                            <field name="ticket_type_id"/>
                             <field name="priority" widget="priority"/>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                             <field name="company_id" groups="base.group_multi_company"/>
                             <field name="deadline" readonly="1" attrs="{'invisible': [('deadline', '=', False)]}"/>
                             <field name="sla_id" invisible="1"/>
@@ -490,8 +492,6 @@
                             <field name="partner_id" class="field_partner_id"/>
                             <field name="partner_name" attrs="{'invisible': [('partner_id', '!=', False)]}"/>
                             <field name="partner_email"/>
-                            <field name="ticket_type_id"/>
-                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                         </group>
                     </group>
                     <field name="description" class="field_description" placeholder="Description of the ticket..."/>

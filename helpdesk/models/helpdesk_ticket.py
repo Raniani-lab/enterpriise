@@ -123,6 +123,11 @@ class HelpdeskTicket(models.Model):
     sla_active = fields.Boolean(string='SLA active', compute='_compute_sla_fail', store=True)
     sla_fail = fields.Boolean(string='Failed SLA Policy', compute='_compute_sla_fail', store=True)
 
+    use_credit_notes = fields.Boolean(related='team_id.use_credit_notes', string='Use Credit Notes')
+    use_coupons = fields.Boolean(related='team_id.use_coupons', string='Use Coupons')
+    use_product_returns = fields.Boolean(related='team_id.use_product_returns', string='Use Returns')
+    use_product_repairs = fields.Boolean(related='team_id.use_product_repairs', string='Use Repairs')
+
     # customer portal: include comment and incoming emails in communication history
     website_message_ids = fields.One2many(domain=lambda self: [('model', '=', self._name), ('message_type', 'in', ['email', 'comment'])])
 

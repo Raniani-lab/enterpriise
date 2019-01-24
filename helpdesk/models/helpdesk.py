@@ -50,6 +50,10 @@ class HelpdeskTeam(models.Model):
     use_website_helpdesk_forum = fields.Boolean('Help Center')
     use_website_helpdesk_slides = fields.Boolean('Enable eLearning')
     use_helpdesk_timesheet = fields.Boolean('Timesheet on Ticket', help="This required to have project module installed.")
+    use_credit_notes = fields.Boolean('Refunds')
+    use_coupons = fields.Boolean('Coupons')
+    use_product_returns = fields.Boolean('Returns')
+    use_product_repairs = fields.Boolean('Repairs')
     use_twitter = fields.Boolean('Twitter')
     use_api = fields.Boolean('API')
     use_rating = fields.Boolean('Ratings on tickets')
@@ -170,6 +174,26 @@ class HelpdeskTeam(models.Model):
             helpdesk_timesheet_module = self.env['ir.module.module'].search([('name', '=', 'helpdesk_timesheet')])
             if team.use_helpdesk_timesheet and helpdesk_timesheet_module.state not in ('installed', 'to install', 'to upgrade'):
                 helpdesk_timesheet_module.button_immediate_install()
+                module_installed = True
+
+            account_module = self.env['ir.module.module'].search([('name', '=', 'helpdesk_account')])
+            if team.use_credit_notes and account_module.state not in ('installed', 'to install', 'to upgrade'):
+                account_module.button_immediate_install()
+                module_installed = True
+
+            stock_module = self.env['ir.module.module'].search([('name', '=', 'helpdesk_stock')])
+            if team.use_product_returns and stock_module.state not in ('installed', 'to install', 'to upgrade'):
+                stock_module.button_immediate_install()
+                module_installed = True
+
+            repair_module = self.env['ir.module.module'].search([('name', '=', 'helpdesk_repair')])
+            if team.use_product_repairs and repair_module.state not in ('installed', 'to install', 'to upgrade'):
+                repair_module.button_immediate_install()
+                module_installed = True
+
+            sale_coupon_module = self.env['ir.module.module'].search([('name', '=', 'helpdesk_sale_coupon')])
+            if team.use_coupons and sale_coupon_module.state not in ('installed', 'to install', 'to upgrade'):
+                sale_coupon_module.button_immediate_install()
                 module_installed = True
 
             if team.use_rating:

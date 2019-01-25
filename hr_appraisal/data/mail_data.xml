@@ -27,7 +27,9 @@
                 Start Survey
             </a>
         </div>
-        Please answer the appraisal for ${format_date(object.deadline)}.<br/><br/>
+        % if object.deadline
+            Please answer the appraisal for ${format_date(object.deadline)}.<br/><br/>
+        % endif
         Thank you for your participation.
     </p>
 </div></field>

@@ -29,8 +29,16 @@
         <field name="inherit_id" ref="quality.quality_point_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='test_type']" position="after">
-                <field name="device_id"/>
+                <field name="device_id" attrs="{'invisible': [('test_type', 'in', ['text', 'passfail', 'register_consumed_materials'])]}" />
             </xpath>
         </field>
     </record>
+
+    <!-- js stuff -->
+    <template id="assets_backend" inherit_id="web.assets_backend" name="Quality IoT assets">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/quality_iot/static/src/js/iot_picture.js"></script>
+        </xpath>
+    </template>
+
 </odoo>

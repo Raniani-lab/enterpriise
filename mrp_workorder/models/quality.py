@@ -37,6 +37,7 @@ class QualityPoint(models.Model):
     operation_id = fields.Many2one('mrp.routing.workcenter', 'Step')
     routing_id = fields.Many2one(related='operation_id.routing_id', readonly=False)
     test_type_id = fields.Many2one(domain="[('allow_registration', '=', operation_id and code == 'mrp_operation')]")
+    test_report_type = fields.Selection([('pdf', 'PDF'), ('zpl', 'ZPL')], string="Report Type", default="pdf", required=True)
     worksheet = fields.Selection([
         ('noupdate', 'Do not update page'),
         ('scroll', 'Scroll to specific page')], string="Worksheet",

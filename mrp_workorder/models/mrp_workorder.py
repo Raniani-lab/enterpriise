@@ -91,6 +91,38 @@ class MrpProductionWorkcenterLine(models.Model):
             'product_id': self.product_id.id
         })
 
+    def action_print(self):
+        if self.product_id.uom_id.category_id.measure_type == 'unit':
+            qty = int(self.qty_producing)
+        else:
+            qty = 1
+
+        quality_point_id = self.current_quality_check_id.point_id
+        report_type = quality_point_id.test_report_type
+
+        if self.product_id.tracking == 'none':
+            if report_type == 'zpl':
+                xml_id = 'stock.label_barcode_product_product'
+            else:
+                xml_id = 'product.report_product_product_barcode'
+            res = self.env.ref(xml_id).report_action([self.product_id.id] * qty)
+        else:
+            if self.final_lot_id:
+                if report_type == 'zpl':
+                    xml_id = 'stock.label_lot_template'
+                else:
+                    xml_id = 'stock.action_report_lot_label'
+                res = self.env.ref(xml_id).report_action([self.final_lot_id.id] * qty)
+            else:
+                raise UserError(_('You did not set a lot/serial number for '
+                                'the final product'))
+
+        res['id'] = self.env.ref(xml_id).id
+
+        # The button goes immediately to the next step
+        self._next()
+        return res
+
     def _create_subsequent_checks(self):
         """ When processing a step with regiter a consumed material
         that's a lot we will some times need to create a new

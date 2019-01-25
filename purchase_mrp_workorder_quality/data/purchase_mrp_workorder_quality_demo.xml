@@ -153,6 +153,10 @@
             <value model="mrp.production" eval="obj().env.ref('purchase_mrp_workorder_quality.mrp_production').workorder_ids.check_ids[6].id"/>
         </function>
 
+        <function model="quality.check" name="do_pass">
+            <value model="mrp.production" eval="obj().env.ref('purchase_mrp_workorder_quality.mrp_production').workorder_ids.check_ids[7].id"/>
+        </function>
+
         <function model="mrp.workorder" name="record_production">
             <value model="mrp.production" eval="obj().env.ref('purchase_mrp_workorder_quality.mrp_production').workorder_ids.filtered(lambda workorder: workorder.state != 'done').ids"/>
         </function>

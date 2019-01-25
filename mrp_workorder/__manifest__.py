@@ -22,7 +22,6 @@
         'views/res_config_settings_view.xml'
     ],
     'qweb': [
-        'static/src/xml/widget_template.xml',
         'static/src/xml/mrp_workorder_barcode.xml',
     ],
     'demo': [

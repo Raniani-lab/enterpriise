@@ -530,257 +530,186 @@ odoo.define('sign.utils', function (require) {
 });
 
 // Signing part
-odoo.define('sign.document_signing', function(require) {
+odoo.define('sign.document_signing', function (require) {
     'use strict';
 
     var ajax = require('web.ajax');
     var core = require('web.core');
     var Dialog = require('web.Dialog');
-    var Widget = require('web.Widget');
     var Document = require('sign.Document');
+    var NameAndSignature = require('portal.name_and_signature').NameAndSignature;
     var PDFIframe = require('sign.PDFIframe');
-    var rpc = require('web.rpc');
     var session = require('web.session');
-    var Tour = require('web_tour.tour');
+    var Widget = require('web.Widget');
 
     var _t = core._t;
 
+    // The goal of this override is to fetch a default signature if one was
+    // already set by the user for this request.
+    var SignNameAndSignature = NameAndSignature.extend({
+
+        //----------------------------------------------------------------------
+        // Public
+        //----------------------------------------------------------------------
+
+        /**
+         * Adds requestID and accessToken.
+         *
+         * @constructor
+         * @param {Widget} parent
+         * @param {Object} options
+         * @param {number} requestID
+         * @param {string} accessToken
+         */
+        init: function (parent, options, requestID, accessToken) {
+            this._super.apply(this, arguments);
+
+            this.requestID = requestID;
+            this.accessToken = accessToken;
+
+            this.defaultSignature = '';
+        },
+        /**
+         * Fetches the existing signature.
+         *
+         * @override
+         */
+        willStart: function () {
+            var self = this;
+            return $.when(
+                this._super.apply(this, arguments),
+                self._rpc({
+                    route: '/sign/get_signature/' + self.requestID + '/' + self.accessToken,
+                    params: {
+                        signature_type: self.signatureType,
+                    },
+                }).then(function (signature) {
+                    if (signature) {
+                        signature = 'data:image/png;base64,' + signature;
+                        self.defaultSignature = signature;
+                    }
+                })
+            );
+        },
+        /**
+         * Sets the existing signature.
+         *
+         * @override
+         */
+        resetSignature: function () {
+            var self = this;
+            return this._super.apply(this, arguments).then(function () {
+                if (self.defaultSignature) {
+                    self.$signatureField.jSignature("importData", self.defaultSignature);
+                }
+            });
+        },
+    });
+
+    // The goal of this dialog is to ask the user a signature request.
+    // It uses @see SignNameAndSignature for the name and signature fields.
     var SignatureDialog = Dialog.extend({
         template: 'sign.signature_dialog',
 
-        events: {
-            'click a.o_sign_mode': function(e) {
-                e.preventDefault();
+        //----------------------------------------------------------------------
+        // Public
+        //----------------------------------------------------------------------
 
-                this.$modeButtons.removeClass('active');
-                $(e.target).addClass('active');
-                this.$signatureField.jSignature('reset');
-
-                this.mode = $(e.target).data('mode');
-
-                this.$selectStyleButton.toggle(this.mode === 'auto');
-                this.$clearButton.toggle(this.mode === 'draw');
-                this.$loadButton.toggle(this.mode === 'load');
-
-                if(this.mode === 'load') {
-                    this.$loadButton.click();
-                }
-                this.$signatureField.jSignature((this.mode === 'draw')? "enable" : "disable");
-
-                this.$fontDialog.hide().css('width', 0);
-                this.$signerNameInput.trigger('input');
-            },
-
-            'input .o_sign_signer_name': function(e) {
-                if(this.mode !== 'auto') {
-                    return true;
-                }
-                this.signerName = this.$signerNameInput.val();
-                this.printText(SignatureDialog.fonts[this.currentFont], this.getSignatureText());
-            },
-
-            'click .o_sign_select_style': function(e) {
-                var self = this;
-                var width = Math.min(
-                    self.$fontDialog.find('a').first().height() * self.signatureRatio * 1.25,
-                    this.$signerNameInput.width()
-                );
-
-                e.preventDefault();
-                this.$fontDialog.find('a').empty().append($('<div/>').addClass("o_sign_loading"));
-                this.$fontDialog.show().animate({'width': width}, 500, function() {
-                    self.buildPreviewButtons();
-                });
-            },
-
-            'mouseover .o_sign_font_dialog a': function(e) {
-                this.currentFont = $(e.currentTarget).data('font-nb');
-                this.$signerNameInput.trigger('input');
-            },
-
-            'click .o_sign_font_dialog a, .o_sign_signature': function(e) {
-                this.$fontDialog.hide().css('width', 0);
-            },
-
-            'click .o_sign_clean': function (e) {
-                e.preventDefault();
-
-                this.$signatureField.jSignature('reset');
-            },
-
-            'change .o_sign_load': function(e) {
-                var f = e.target.files[0];
-                if(f.type.substr(0, 5) !== "image") {
-                    return false;
-                }
-
-                var self = this, reader = new FileReader();
-                reader.onload = function(e) {
-                    self.printImage(this.result);
-                };
-                reader.readAsDataURL(f);
-            },
-        },
-
-        init: function(parent, signerName, options) {
-            options = (options || {});
+        /**
+         * Allows options.
+         *
+         * @constructor
+         * @param {Widget} parent
+         * @param {Object} options
+         * @param {string} [options.title='Adopt Your Signature'] - modal title
+         * @param {string} [options.size='medium'] - modal size
+         * @param {Object} [options.nameAndSignatureOptions={}] - options for
+         *  @see NameAndSignature.init()
+         * @param {number} requestID
+         * @param {string} accessToken
+         */
+        init: function (parent, options, requestID, accessToken) {
+            options = options || {};
 
             options.title = options.title || _t("Adopt Your Signature");
             options.size = options.size || 'medium';
             options.technical = false;
 
-            if(!options.buttons) {
+            if (!options.buttons) {
                 options.buttons = [];
-                options.buttons.push({text: _t("Adopt and Sign"), classes: "btn-primary", click: function(e) {
-                    this.confirmFunction(this.$signerNameInput.val(), this.$signatureField.jSignature("getData"));
+                options.buttons.push({text: _t("Adopt and Sign"), classes: "btn-primary", click: function (e) {
+                    this.confirmFunction();
                 }});
                 options.buttons.push({text: _t("Cancel"), close: true});
             }
 
             this._super(parent, options);
-            this.options = options || {};
 
-            this.signerName = signerName;
+            this.confirmFunction = function () {};
 
-            this.signatureRatio = 3.0;
-            this.signatureType = 'signature';
-            this.currentFont = 0;
-            this.mode = 'draw';
-
-            this.confirmFunction = function() {};
+            this.nameAndSignature = new SignNameAndSignature(this, options.nameAndSignatureOptions, requestID, accessToken);
         },
-
-        start: function() {
-            this.$modeButtons = this.$('a.o_sign_mode');
-            this.$signatureField = this.$(".o_sign_signature").first();
-            this.$fontDialog = this.$(".o_sign_font_dialog").first();
-            this.$fontSelection = this.$(".o_sign_font_selection").first();
-            for(var i = 0 ; i < SignatureDialog.fonts.length ; i++) {
-                this.$fontSelection.append($("<a/>").data('fontNb', i).addClass('btn btn-block'));
-            }
-            this.$clearButton = this.$('.o_sign_clean').first();
-            this.$selectStyleButton = this.$('.o_sign_select_style').first();
-            this.$loadButton = this.$('.o_sign_load').first();
-            this.$signerNameInput = this.$(".o_sign_signer_name").first();
-
+        /**
+         * Inserts the name and signature.
+         *
+         * @override
+         */
+        start: function () {
+            this.nameAndSignature.replace(this.$('.o_portal_sign_name_and_signature'));
             return this._super.apply(this, arguments);
         },
 
-        open: function() {
-            var self = this;
-            this.opened(function(e) {
-                var width = self.$signatureField.width();
-                var height = width / self.signatureRatio;
-
-                // necessary because the lib is adding invisible div with margin
-                // signature field too tall without this code
-                self.$signatureField.css({
-                    width: width,
-                    height: height,
-                });
-                self.$signatureField.empty().jSignature({
-                    'decor-color': 'transparent',
-                    'background-color': '#FFF',
-                    'color': '#000',
-                    'lineWidth': 2,
-                    'width': width,
-                    'height': height
-                });
-
-                // TDE FIXME: ugly FP-request RPC to dynamically fetch signature instead of
-                // pre-filled sign.request.item
-                if (self.options.signatureType !== undefined) {
-                    rpc.query({
-                        route: '/sign/get_signature/' + self.getParent().getParent().requestID + '/' + self.getParent().getParent().accessToken,
-                        params: {
-                            signature_type: self.options.signatureType,
-                        }
-                    }).then(function (signature) {
-                        if (signature) {
-                            signature = 'data:image/png;base64,' + signature;
-                            self.$signatureField.jSignature("importData", signature);
-                        }
-                    });
-                }
-                self.emptySignature = self.$signatureField.jSignature("getData");
-
-                self.$modeButtons.filter('.btn.active').click();
-                self.$signerNameInput.focus();
-            });
-
-            return this._super.apply(this, arguments);
-        },
-
-        getSignatureText: function() {
-            var text = this.$signerNameInput.val().replace(/[^[\w\u00E0-\u00FC]-'" ]/g, '');
-            if(this.signatureType === 'initial') {
-                return (text.split(' ').map(function(w) { return w[0]; }).join('.') + '.');
-            }
-            return text;
-        },
-
-        getSVGText: function(font, text) {
-            var canvas = this.$signatureField.find('canvas')[0];
-
-            var $svg = $(core.qweb.render('sign.svg_text', {
-                width: canvas.width,
-                height: canvas.height,
-                font: font,
-                text: text,
-                type: this.signatureType,
-            }));
-            $svg.attr({
-                "xmlns": "http://www.w3.org/2000/svg",
-                "xmlns:xlink": "http://www.w3.org/1999/xlink",
-            });
-
-            return ("data:image/svg+xml," + encodeURI($svg[0].outerHTML));
-        },
-
-        printText: function(font, text) {
-            return this.printImage(this.getSVGText(font, text));
-        },
-
-        printImage: function(imgSrc) {
-            var self = this;
-
-            var image = new Image;
-            image.onload = function() {
-                var width = 0, height = 0;
-                var ratio = image.width/image.height;
-
-                self.$signatureField.jSignature('reset');
-                var $canvas = self.$signatureField.find('canvas'), context = $canvas[0].getContext("2d");
-
-                if(image.width / $canvas[0].width > image.height / $canvas[0].height) {
-                    width = $canvas[0].width;
-                    height = width / ratio;
-                } else {
-                    height = $canvas[0].height;
-                    width = height * ratio;
-                }
-
-                setTimeout(function() {
-                    var ignoredContext = _.pick(context, ['shadowOffsetX', 'shadowOffsetY']);
-                    _.extend(context, {shadowOffsetX: 0, shadowOffsetY: 0});
-                    context.drawImage(image, 0, 0, image.width, image.height, ($canvas[0].width - width)/2, ($canvas[0].height - height)/2, width, height);
-                    _.extend(context, ignoredContext);
-                }, 0);
-            };
-            image.src = imgSrc;
-        },
-
-        buildPreviewButtons: function() {
-            var self = this;
-            this.$fontDialog.find('a').each(function(i, el) {
-                var $img = $('<img/>', {src: self.getSVGText(SignatureDialog.fonts[$(el).data('fontNb')], self.getSignatureText())});
-                $img.addClass('img-fluid');
-                $(el).empty().append($img);
-            });
-        },
-
-        onConfirm: function(fct) {
+        onConfirm: function (fct) {
             this.confirmFunction = fct;
+        },
+        /**
+         * Gets the name currently given by the user.
+         *
+         * @see NameAndSignature.getName()
+         * @returns {string} name
+         */
+        getName: function () {
+            return this.nameAndSignature.getName();
+        },
+        /**
+         * Gets the signature currently drawn.
+         *
+         * @see NameAndSignature.getSignatureImage()
+         * @returns {string[]} Array that contains the signature as a bitmap.
+         *  The first element is the mimetype, the second element is the data.
+         */
+        getSignatureImage: function () {
+            return this.nameAndSignature.getSignatureImage();
+        },
+        /**
+         * Gets the signature currently drawn, in a format ready to be used in
+         * an <img/> src attribute.
+         *
+         * @see NameAndSignature.getSignatureImageSrc()
+         * @returns {string} the signature currently drawn, src ready
+         */
+        getSignatureImageSrc: function () {
+            return this.nameAndSignature.getSignatureImageSrc();
+        },
+        /**
+         * Returns whether the drawing area is currently empty.
+         *
+         * @see NameAndSignature.isSignatureEmpty()
+         * @returns {boolean} Whether the drawing area is currently empty.
+         */
+        isSignatureEmpty: function () {
+            return this.nameAndSignature.isSignatureEmpty();
+        },
+        /**
+         * Gets the current name and signature, validates them, and
+         * returns the result. If they are invalid, it also displays the
+         * errors to the user.
+         *
+         * @see NameAndSignature.validateSignature()
+         * @returns {boolean} whether the current name and signature are valid
+         */
+        validateSignature: function () {
+            return this.nameAndSignature.validateSignature();
         },
     });
 
@@ -801,7 +730,7 @@ odoo.define('sign.document_signing', function(require) {
 
         start: function() {
             this.$signatureItemNavLine = $('<div/>').addClass("o_sign_sign_item_navline").insertBefore(this.$el);
-            this.setTip(_t('Click to start'));
+            this.setTip(_t("Click to start"));
             this.$el.focus();
 
             return this._super();
@@ -1088,7 +1017,7 @@ odoo.define('sign.document_signing', function(require) {
             this.on('closed', this, this.on_closed);
 
             var self = this;
-            rpc.query({
+            this._rpc({
                 route: '/sign/encrypted/' + requestID
             }).then(function (response) {
                 if (response === true) {
@@ -1157,7 +1086,7 @@ odoo.define('sign.document_signing', function(require) {
             self.do_action({
                 type: "ir.actions.client",
                 tag: 'sign.SignableDocument',
-                name: _t('Sign'),
+                name: _t("Sign"),
             }, {
                 additional_context: {
                     id: this.requestID,
@@ -1232,15 +1161,18 @@ odoo.define('sign.document_signing', function(require) {
                             $signatureItem.html('<span class="o_sign_helper"/><img src="' + $signatureItem.data('signature') + '"/>');
                             $signatureItem.trigger('input');
                         } else {
-                            var signDialog = new SignatureDialog(self, self.getParent().signerName || "", {
+                            var nameAndSignatureOptions = {
+                                defaultName: self.getParent().signerName || "",
                                 signatureType: type['item_type'],
-                            });
-                            signDialog.signatureType = type['item_type'];
-                            signDialog.signatureRatio = parseFloat($signatureItem.css('width'))/parseFloat($signatureItem.css('height'));
+                                signatureRatio: parseFloat($signatureItem.css('width')) / parseFloat($signatureItem.css('height')),
+                            };
+                            var signDialog = new SignatureDialog(self, {nameAndSignatureOptions: nameAndSignatureOptions}, self.getParent().requestID, self.getParent().accessToken);
 
-                            signDialog.open().onConfirm(function(name, signature) {
-                                if(signature !== signDialog.emptySignature) {
-                                    self.getParent().signerName = signDialog.signerName;
+                            signDialog.open().onConfirm(function () {
+                                if (!signDialog.isSignatureEmpty()) {
+                                    var name = signDialog.getName();
+                                    var signature = signDialog.getSignatureImageSrc();
+                                    self.getParent().signerName = name;
                                     $signatureItem.data('signature', signature)
                                                   .empty()
                                                   .append($('<span/>').addClass("o_sign_helper"), $('<img/>', {src: $signatureItem.data('signature')}));
@@ -1311,13 +1243,13 @@ odoo.define('sign.document_signing', function(require) {
         },
 
         custom_events: { // do_notify is not supported in backend so it is simulated with a bootstrap alert inserted in a frontend-only DOM element
-            'notification': function(e) {
+            'notification': function (e) {
                 $('<div/>', {html: e.data.message}).addClass('alert alert-success').insertAfter(self.$('.o_sign_request_reference_title'));
             },
         },
 
         init: function (parent, options) {
-            this._super(parent,options);
+            this._super(parent, options);
             if (parent) {
                 this.token_list = (parent.token_list || {});
                 this.name_list = (parent.name_list || {});
@@ -1332,13 +1264,6 @@ odoo.define('sign.document_signing', function(require) {
                 parent.$('div.container-fluid .col-lg-3').first().after('<div class="col-lg-4"><H2>'+this.current_name+'</H2></div>')
             }
         },
-
-        start: function() {
-            return $.when(this._super.apply(this, arguments), ajax.jsonRpc('/sign/get_fonts', 'call', {}).then(function(data) {
-                SignatureDialog.fonts = data;
-            }));
-        },
-
         get_pdfiframe_class: function () {
             return SignablePDFIframe;
         },
@@ -1451,23 +1376,25 @@ odoo.define('sign.document_signing', function(require) {
             }
         },
 
-        signDocument: function(e) {
+        signDocument: function (e) {
             var self = this;
 
-            var signDialog = (new SignatureDialog(this, this.signerName));
-            signDialog.open().onConfirm(function(name, signature) {
-                var isEmpty = ((signature)? (signDialog.emptySignature === signature) : true);
+            var nameAndSignatureOptions = {defaultName: this.signerName};
+            var options = {nameAndSignatureOptions: nameAndSignatureOptions};
+            var signDialog = new SignatureDialog(this, options, self.requestID, self.accessToken);
 
-                signDialog.$('.o_sign_signer_info').toggleClass('o_has_error', !name).find('.form-control, .custom-select').toggleClass('is-invalid', !name);
-                signDialog.$('.o_sign_signature_draw').toggleClass('bg-danger text-white', isEmpty);
-                if(isEmpty || !name) {
+            signDialog.open().onConfirm(function () {
+                if (!signDialog.validateSignature()) {
                     return false;
                 }
+
+                var name = signDialog.getName();
+                var signature = signDialog.getSignatureImage()[1];
 
                 signDialog.$('.modal-footer .btn-primary').prop('disabled', true);
                 signDialog.close();
 
-                if(self.$('#o_sign_is_public_user').length > 0) {
+                if (self.$('#o_sign_is_public_user').length > 0) {
                     (new PublicSignerDialog(self, self.requestID, self.requestToken, this.RedirectURL))
                         .open(name, "").sent.then(_sign);
                 } else {
@@ -1476,7 +1403,7 @@ odoo.define('sign.document_signing', function(require) {
 
                 function _sign() {
                     ajax.jsonRpc('/sign/sign/' + self.requestID + '/' + self.accessToken, 'call', {
-                        signature: ((signature)? signature.substr(signature.indexOf(",")+1) : false)
+                        signature: signature,
                     }).then(function(success) {
                         if(!success) {
                             setTimeout(function() { // To be sure this dialog opens after the thank you dialog below
@@ -1495,13 +1422,13 @@ odoo.define('sign.document_signing', function(require) {
         },
     });
 
-    function initDocumentToSign() {
+    function initDocumentToSign(parent) {
         return session.session_bind(session.origin).then(function () {
             // Manually add 'sign' to module list and load the
             // translations.
             session.module_list.push('sign');
             return session.load_translations().then(function () {
-                var documentPage = new SignableDocument(null);
+                var documentPage = new SignableDocument(parent);
                 return documentPage.attachTo($('body')).then(function() {
                     // Geolocation
                     var askLocation = ($('#o_sign_ask_location_input').length > 0);
@@ -1521,6 +1448,7 @@ odoo.define('sign.document_signing', function(require) {
         ThankYouDialog: ThankYouDialog,
         initDocumentToSign: initDocumentToSign,
         SignableDocument: SignableDocument,
-        SMSSignerDialog: SMSSignerDialog
+        SignNameAndSignature: SignNameAndSignature,
+        SMSSignerDialog: SMSSignerDialog,
     };
 });

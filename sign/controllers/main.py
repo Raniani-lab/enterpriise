@@ -5,7 +5,6 @@ import base64
 import io
 import logging
 import mimetypes
-import os
 import re
 
 from PyPDF2 import PdfFileReader
@@ -162,18 +161,6 @@ class Sign(http.Controller):
     @http.route(["/sign/get_document/<int:id>/<token>"], type='json', auth='user')
     def get_document(self, id, token):
         return http.Response(template='sign._doc_sign', qcontext=self.get_document_qweb_context(id, token)).render()
-
-    @http.route(['/sign/get_fonts'], type='json', auth='public')
-    def get_fonts(self):
-        fonts_directory = os.path.dirname(os.path.abspath(__file__)) + '/../static/font'
-        font_filenames = sorted(os.listdir(fonts_directory))
-
-        fonts = []
-        for filename in font_filenames:
-            font_file = open(fonts_directory + '/' + filename, 'rb')
-            font = base64.b64encode(font_file.read())
-            fonts.append(font)
-        return fonts
 
     @http.route(['/sign/new_partners'], type='json', auth='user')
     def new_partners(self, partners=[]):

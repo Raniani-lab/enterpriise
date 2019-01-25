@@ -34,47 +34,10 @@
 
     <!-- Signing part -->
     <div t-name="sign.signature_dialog">
-        <div class="o_sign_signer_info form-group row">
-            <label class="col-lg-2 col-form-label" for="name">Full Name</label>
-            <div class="col-lg-10">
-                <input class="o_sign_signer_name form-control" name="signer" t-att-value="widget.signerName" type="text"/>
-            </div>
-        </div>
-        <div class="o_sign_signature_draw card mt-3">
-            <div class="card-header">
-                <a role="button" class="o_sign_select_style float-right btn btn-link" href="#">Select Signature Style</a>
-                <a role="button" class="o_sign_clean float-right btn btn-link" href="#">Clear Signature</a>
-                <a data-mode="draw" class="o_sign_mode btn btn-light active" role="button" href="#">Draw</a>
-                <a data-mode="auto" class="o_sign_mode btn btn-light" role="button" href="#">Auto</a>
-                <a data-mode="load" class="o_sign_mode btn btn-light" role="button" href="#">Load</a>
-                <input type="file" name="files[]" class="o_sign_load btn btn-link py-0" role="button"/>
-            </div>
-            <div class="o_sign_signature card-body p-0"/>
-        </div>
+        <div class="o_portal_sign_name_and_signature"/>
+
         <div class="mt16 small">By clicking Adopt and Sign, I agree that the chosen signature/initials will be a valid electronic representation of my hand-written signature/initials for all purposes when it is used on documents, including legally binding contracts.</div>
-
-        <div class="o_sign_font_dialog card">
-            <div class="card-header">Styles</div>
-            <div class="o_sign_font_selection card-body"/>
-        </div>
     </div>
-
-    <t t-name="sign.svg_text" name="SVG Signature Text">
-        <svg t-att-width="width" t-att-height="height">
-            <defs>
-                <style type="text/css">
-                    @font-face {
-                        font-family: "font";
-                        src: url(data:font/ttf;base64,<t t-esc="font"/>) format("woff");
-                        font-weight: normal;
-                        font-style: normal;
-                    }
-                </style>
-            </defs>
-            <!-- adapt textLength to prevent distortion and left overflow with small words -->
-            <text x="50%" t-att-y="height*4/5" t-att-font-size="height*4/5" t-att-textLength="width * 4 / 5 * (type === 'signature' ? Math.min(1, text.length / 7) : 1)" t-att-lengthAdjust="'spacing' + ((type == 'signature')? 'AndGlyphs' : '')" style="font-family:'font'" fill="black" text-anchor="middle"><t t-esc="text"/></text>
-        </svg>
-    </t>
 
     <div t-name="sign.public_signer_dialog">
         <div class="form-group row">

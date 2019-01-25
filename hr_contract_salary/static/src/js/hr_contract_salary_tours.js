@@ -373,10 +373,15 @@ Tour.register('hr_contract_salary_tour', {
             trigger: 'footer.modal-footer button.btn-primary',
             run: 'click',
         },
+        {
+            content: "Wait modal closed",
+            trigger: 'iframe body:not(:has(footer.modal-footer button.btn-primary))',
+            run: function () {},
+        },
         // fill date
         {
             content: "Next",
-            trigger: 'iframe .o_sign_sign_item_navigator',
+            trigger: 'iframe .o_sign_sign_item_navigator:contains("next")',
             run: 'click',
         },
         {

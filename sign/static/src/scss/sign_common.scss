@@ -63,48 +63,6 @@
     }
 }
 
-/* Signature Dialog */
-// The .card selector is important to make sure the position absolute will take
-// priority over the position relative of the card.
-.card.o_sign_font_dialog {
-    @include o-position-absolute(0, 0);
-    display: none;
-    height: 100%;
-
-    .o_sign_font_selection {
-        overflow: auto;
-        height: 90%;
-        padding: 0;
-
-        > a {
-            height: 100px;
-            padding: 0;
-
-            > img {
-                height: 100%;
-            }
-        }
-    }
-
-    .o_sign_loading {
-        background-image: url(../../img/loading.gif);
-        width: 31px;
-        height: 31px;
-        margin: 35px auto 0;
-    }
-
-    .o_sign_load {
-        visibility: hidden;
-    }
-}
-
-.o_sign_signature_draw .o_sign_signature {
-    padding: 0;
-    > canvas.jSignature {
-        outline: #ced4da 1px solid;
-    }
-}
-
 .o_sign_validate_banner {
     display: none;
     opacity: 0;

@@ -34,6 +34,10 @@ msgid ""
 "            </p>\n"
 "            "
 msgstr ""
+" <p class=\"o_view_nocontent_empty_report\">\n"
+"                Додати новий звіт\n"
+"            </p>\n"
+"            "
 
 #. module: web_studio
 #: code:addons/web_studio/controllers/main.py:78
@@ -44,6 +48,10 @@ msgid ""
 "            </p>\n"
 "            "
 msgstr ""
+" <p class=\"o_view_nocontent_smiling_face\">\n"
+"                Додайте нову автоматизовану дію\n"
+"            </p>\n"
+"            "
 
 #. module: web_studio
 #: code:addons/web_studio/controllers/main.py:96
@@ -54,6 +62,10 @@ msgid ""
 "            </p>\n"
 "            "
 msgstr ""
+" <p class=\"o_view_nocontent_smiling_face\">\n"
+"                Додати новий фільтр\n"
+"            </p>\n"
+"            "
 
 #. module: web_studio
 #: code:addons/web_studio/controllers/report.py:54
@@ -88,6 +100,10 @@ msgid ""
 "            </p>\n"
 "            "
 msgstr ""
+"<p class=\"o_view_nocontent_smiling_face\">\n"
+"                Додати новий список контролю доступу\n"
+"            </p>\n"
+"            "
 
 #. module: web_studio
 #. openerp-web
@@ -122,7 +138,7 @@ msgstr "Групи доступу"
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_actions_act_window
 msgid "Action Window"
-msgstr ""
+msgstr "Вікно дії"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_actions_act_window_view
@@ -274,7 +290,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/app_creator.xml:59
 #, python-format
 msgid "App Icon"
-msgstr ""
+msgstr "Іконка додатку"
 
 #. module: web_studio
 #. openerp-web
@@ -339,7 +355,7 @@ msgstr "База"
 #: code:addons/web_studio/static/src/js/reports/report_kanban_view.js:135
 #, python-format
 msgid "Blank"
-msgstr ""
+msgstr "Бланк"
 
 #. module: web_studio
 #. openerp-web
@@ -529,7 +545,7 @@ msgstr "Колір"
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:258
 #, python-format
 msgid "Colors"
-msgstr ""
+msgstr "Кольори"
 
 #. module: web_studio
 #. openerp-web
@@ -707,7 +723,7 @@ msgstr "Налаштування"
 #: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:750
 #, python-format
 msgid "Data table"
-msgstr ""
+msgstr "Панель даних"
 
 #. module: web_studio
 #. openerp-web
@@ -780,7 +796,7 @@ msgstr "Значення за замовчуванням"
 #: code:addons/web_studio/static/src/xml/action_editor.xml:32
 #, python-format
 msgid "Default view"
-msgstr ""
+msgstr "Перегляд за замовчуванням"
 
 #. module: web_studio
 #. openerp-web

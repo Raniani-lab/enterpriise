@@ -267,7 +267,7 @@ msgstr "Після семи днів"
 #: model:marketing.activity,name:marketing_automation.marketing_activity_2
 #: model:utm.source,name:marketing_automation.marketing_activity_2_utm_source
 msgid "After 7 days (if not yet customers)"
-msgstr ""
+msgstr "Після 7 днів (якщо досі не клієнти)"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_search
@@ -347,7 +347,7 @@ msgstr "Натиснутий"
 #: model:marketing.campaign,name:marketing_automation.marketing_campaign_1
 #: model:utm.campaign,name:marketing_automation.marketing_campaign_1_utm_campaign
 msgid "Commercial prospection"
-msgstr ""
+msgstr "Комерційна розвідка"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_search
@@ -370,7 +370,7 @@ msgstr "Продовжити"
 #: model_terms:ir.actions.act_window,help:marketing_automation.marketing_campaign_action
 #: model_terms:ir.actions.act_window,help:marketing_automation.marketing_campaign_action_archived
 msgid "Create a new campaign"
-msgstr ""
+msgstr "Створити нову кампанію"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__create_uid
@@ -537,6 +537,8 @@ msgid ""
 "Error! You can't define a child activity with a trigger of type \"beginning "
 "of campaign\"."
 msgstr ""
+"Помилка! Ви не можете визначити дочірню дію за допомогою запуску типу "
+"\"початок кампанії\"."
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__exception
@@ -864,7 +866,7 @@ msgstr "Не додано жодної дії"
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
 msgid "Non email activity"
-msgstr ""
+msgstr "Відсутня діяльність електронної пошти"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
@@ -893,7 +895,7 @@ msgstr "Об'єкт"
 #: model:utm.source,name:marketing_automation.marketing_activity_1_utm_source
 #: model:utm.source,name:marketing_automation.mass_mailing_offer_free_trial_utm_source
 msgid "Offer free catalog"
-msgstr ""
+msgstr "Запропонувати безкоштовний каталог"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__opened
@@ -1167,7 +1169,7 @@ msgstr "Область"
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
 msgid "State: #{record.state.raw_value}"
-msgstr ""
+msgstr "Стан: #{record.state.raw_value}"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__statistics_graph_data
@@ -1252,6 +1254,8 @@ msgid ""
 "To use this feature you should be an administrator or belong to the "
 "marketing automation group."
 msgstr ""
+"Для використання цієї функції ви повинні бути адміністратором або належати "
+"до групи автоматизації маркетингу."
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__total_bounce

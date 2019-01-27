@@ -3270,6 +3270,8 @@ msgid ""
 "You must define a product for everything you purchase,\n"
 "            whether it's a physical product, a consumable or services."
 msgstr ""
+"Ви повинні визначити товар для всього, що ви купуєте,\n"
+"             будь то фізичний товар, витратні матеріали або послуги."
 
 #. module: sale_subscription
 #: code:addons/sale_subscription/models/sale_subscription.py:429

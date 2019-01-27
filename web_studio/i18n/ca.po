@@ -5,9 +5,10 @@
 # Translators:
 # Eric Antones <eantones@users.noreply.github.com>, 2019
 # Manel Fernandez <manelfera@outlook.com>, 2019
-# Josep Sànchez <papapep@gmx.com>, 2019
 # Lluís Dalmau <lluis.dalmau@guifi.net>, 2019
 # Martin Trigaux, 2019
+# Josep Sànchez <papapep@gmx.com>, 2019
+# Carles Antoli <carlesantoli@hotmail.com>, 2019
 # RGB Consulting <odoo@rgbconsulting.com>, 2019
 # Quim - eccit <quim@eccit.com>, 2019
 # 
@@ -539,7 +540,7 @@ msgstr "Columna"
 #: code:addons/web_studio/static/src/js/views/view_components.js:51
 #, python-format
 msgid "Columns"
-msgstr ""
+msgstr "Columnes"
 
 #. module: web_studio
 #. openerp-web
@@ -558,7 +559,7 @@ msgstr "Empreses"
 #: code:addons/web_studio/static/src/js/views/view_editor_sidebar.js:332
 #, python-format
 msgid "Components"
-msgstr ""
+msgstr "Components"
 
 #. module: web_studio
 #. openerp-web
@@ -1065,7 +1066,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:622
 #, python-format
 msgid "Fast"
-msgstr ""
+msgstr "Ràpid"
 
 #. module: web_studio
 #. openerp-web
@@ -1457,7 +1458,7 @@ msgstr "Intern"
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:259
 #, python-format
 msgid "Interval"
-msgstr ""
+msgstr "Interval"
 
 #. module: web_studio
 #. openerp-web
@@ -1518,7 +1519,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/js/views/view_editor_sidebar.js:40
 #, python-format
 msgid "Large"
-msgstr ""
+msgstr "Gran"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_mixin____last_update
@@ -1596,7 +1597,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:623
 #, python-format
 msgid "Medium"
-msgstr ""
+msgstr "Mitja"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_ui_menu
@@ -1681,7 +1682,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/js/views/view_components.js:109
 #, python-format
 msgid "Monetary"
-msgstr ""
+msgstr "Monetari"
 
 #. module: web_studio
 #. openerp-web
@@ -2205,7 +2206,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/js/views/view_components.js:63
 #, python-format
 msgid "Separator"
-msgstr ""
+msgstr "Separador"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_actions_server
@@ -2262,7 +2263,7 @@ msgstr "Mida"
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:624
 #, python-format
 msgid "Slow"
-msgstr ""
+msgstr "Lent"
 
 #. module: web_studio
 #. openerp-web
@@ -2270,7 +2271,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:232
 #, python-format
 msgid "Small"
-msgstr ""
+msgstr "Petit"
 
 #. module: web_studio
 #. openerp-web
@@ -2291,7 +2292,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/js/views/view_editor_manager.js:702
 #, python-format
 msgid "Stage"
-msgstr ""
+msgstr "Etapa"
 
 #. module: web_studio
 #. openerp-web

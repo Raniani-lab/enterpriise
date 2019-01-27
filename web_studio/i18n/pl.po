@@ -3,22 +3,22 @@
 # * web_studio
 # 
 # Translators:
-# zbik2607 <darek@krokus.com.pl>, 2019
 # Grażyna Grzelak <grazyna.grzelak@openglobe.pl>, 2019
 # Monika Motyczyńska <m.monia@op.pl>, 2019
 # Maksym <ms@myodoo.pl>, 2019
 # Piotr Cierkosz <piotr.w.cierkosz@gmail.com>, 2019
+# Tomasz Leppich <t.leppich@gmail.com>, 2019
+# Mariusz, 2019
+# Paweł Michoń <michon.pawel@wp.pl>, 2019
+# Paweł Wodyński <pw@myodoo.pl>, 2019
 # Martin Trigaux, 2019
+# zbik2607 <darek@krokus.com.pl>, 2019
 # Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2019
 # Judyta Kaźmierczak <judyta.kazmierczak@openglobe.pl>, 2019
 # Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2019
-# Tomasz Leppich <t.leppich@gmail.com>, 2019
-# Mariusz, 2019
 # Piotr Szlązak <szlazakpiotr@gmail.com>, 2019
 # Marcin Młynarczyk <mlynarczyk@gmail.com>, 2019
-# Paweł Michoń <michon.pawel@wp.pl>, 2019
 # Radosław Biegalski <radoslaw.biegalski@openglobe.pl>, 2019
-# Paweł Wodyński <pw@myodoo.pl>, 2019
 # 
 msgid ""
 msgstr ""
@@ -26,7 +26,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-12-24 11:16+0000\n"
 "PO-Revision-Date: 2017-02-15 11:46+0000\n"
-"Last-Translator: Paweł Wodyński <pw@myodoo.pl>, 2019\n"
+"Last-Translator: Radosław Biegalski <radoslaw.biegalski@openglobe.pl>, 2019\n"
 "Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -227,7 +227,7 @@ msgstr "Dodaj w menu drukowania"
 #: code:addons/web_studio/static/src/xml/new_field_dialog.xml:39
 #, python-format
 msgid "Add new value"
-msgstr ""
+msgstr "Dodaj nową wartość"
 
 #. module: web_studio
 #. openerp-web
@@ -447,7 +447,7 @@ msgstr "Zmień tło"
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:635
 #, python-format
 msgid "Change Image"
-msgstr ""
+msgstr "Zmień Obraz"
 
 #. module: web_studio
 #. openerp-web
@@ -552,7 +552,7 @@ msgstr "Kolumna"
 #: code:addons/web_studio/static/src/js/views/view_components.js:51
 #, python-format
 msgid "Columns"
-msgstr ""
+msgstr "Kolumny"
 
 #. module: web_studio
 #. openerp-web
@@ -571,7 +571,7 @@ msgstr "Firmy"
 #: code:addons/web_studio/static/src/js/views/view_editor_sidebar.js:332
 #, python-format
 msgid "Components"
-msgstr ""
+msgstr "Komponenty"
 
 #. module: web_studio
 #. openerp-web
@@ -1051,7 +1051,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/js/views/view_editor_sidebar.js:367
 #, python-format
 msgid "Existing Fields"
-msgstr ""
+msgstr "Istniejące pola"
 
 #. module: web_studio
 #. openerp-web
@@ -1079,14 +1079,14 @@ msgstr "Zmniejsz prędkość"
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:622
 #, python-format
 msgid "Fast"
-msgstr ""
+msgstr "Szybkie"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/search_renderer.xml:53
 #, python-format
 msgid "Favourites"
-msgstr ""
+msgstr "Ulubione"
 
 #. module: web_studio
 #. openerp-web
@@ -1156,7 +1156,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/js/views/view_components.js:57
 #, python-format
 msgid "Filter"
-msgstr ""
+msgstr "Filtr"
 
 #. module: web_studio
 #. openerp-web
@@ -1399,7 +1399,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/js/views/view_components.js:104
 #, python-format
 msgid "Html"
-msgstr ""
+msgstr "Html"
 
 #. module: web_studio
 #. openerp-web
@@ -1475,7 +1475,7 @@ msgstr "Wewnętrzne"
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:259
 #, python-format
 msgid "Interval"
-msgstr ""
+msgstr "Interwał"
 
 #. module: web_studio
 #. openerp-web
@@ -1536,7 +1536,7 @@ msgstr "Tekst etykiety"
 #: code:addons/web_studio/static/src/js/views/view_editor_sidebar.js:40
 #, python-format
 msgid "Large"
-msgstr ""
+msgstr "Duży"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_mixin____last_update
@@ -1616,7 +1616,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:623
 #, python-format
 msgid "Medium"
-msgstr ""
+msgstr "Medium"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_ui_menu
@@ -1628,7 +1628,7 @@ msgstr "Menu"
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:616
 #, python-format
 msgid "Message"
-msgstr ""
+msgstr "Wiadomość"
 
 #. module: web_studio
 #. openerp-web
@@ -1701,7 +1701,7 @@ msgstr "Plik modułu (.zip)"
 #: code:addons/web_studio/static/src/js/views/view_components.js:109
 #, python-format
 msgid "Monetary"
-msgstr ""
+msgstr "Pieniężny"
 
 #. module: web_studio
 #. openerp-web
@@ -1774,7 +1774,7 @@ msgstr "Nowe pole"
 #: code:addons/web_studio/static/src/js/views/view_editor_sidebar.js:345
 #, python-format
 msgid "New Fields"
-msgstr ""
+msgstr "Nowe pola"
 
 #. module: web_studio
 #. openerp-web
@@ -1808,7 +1808,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:625
 #, python-format
 msgid "No"
-msgstr ""
+msgstr "Nie"
 
 #. module: web_studio
 #. openerp-web
@@ -2035,7 +2035,7 @@ msgstr "Ponów"
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:419
 #, python-format
 msgid "Related Field"
-msgstr ""
+msgstr "Pola relacyjne"
 
 #. module: web_studio
 #. openerp-web
@@ -2125,7 +2125,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:636
 #, python-format
 msgid "Reset Image"
-msgstr ""
+msgstr "Zresetuj Obraz"
 
 #. module: web_studio
 #. openerp-web
@@ -2157,7 +2157,7 @@ msgstr "Zapisz."
 #: code:addons/web_studio/static/src/js/common/abstract_editor_manager.js:166
 #, python-format
 msgid "Saved"
-msgstr ""
+msgstr "Zapisane"
 
 #. module: web_studio
 #. openerp-web
@@ -2213,7 +2213,7 @@ msgstr "Wybierz widok"
 #: code:addons/web_studio/static/src/js/views/view_components.js:129
 #, python-format
 msgid "Selection"
-msgstr ""
+msgstr "Wybór"
 
 #. module: web_studio
 #. openerp-web
@@ -2227,7 +2227,7 @@ msgstr "Wyślij"
 #: code:addons/web_studio/static/src/js/views/view_components.js:63
 #, python-format
 msgid "Separator"
-msgstr ""
+msgstr "Separator"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_actions_server
@@ -2286,7 +2286,7 @@ msgstr "Rozmiar"
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:624
 #, python-format
 msgid "Slow"
-msgstr ""
+msgstr "Powolne"
 
 #. module: web_studio
 #. openerp-web
@@ -2294,7 +2294,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:232
 #, python-format
 msgid "Small"
-msgstr ""
+msgstr "Mały"
 
 #. module: web_studio
 #. openerp-web
@@ -2315,7 +2315,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/js/views/view_editor_manager.js:702
 #, python-format
 msgid "Stage"
-msgstr ""
+msgstr "Etap"
 
 #. module: web_studio
 #. openerp-web
@@ -2438,7 +2438,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:431
 #, python-format
 msgid "Technical Name"
-msgstr ""
+msgstr "Nazwa techniczna"
 
 #. module: web_studio
 #: code:addons/web_studio/models/ir_ui_view.py:799
@@ -2680,7 +2680,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/new_field_dialog.xml:54
 #, python-format
 msgid "Value"
-msgstr ""
+msgstr "Wartość"
 
 #. module: web_studio
 #. openerp-web
@@ -2738,7 +2738,7 @@ msgstr "Chcesz dostosować tło? Aktywujmy <b>Studio Odoo</b>."
 #: code:addons/web_studio/static/src/js/common/new_field_dialog.js:221
 #, python-format
 msgid "Warning"
-msgstr ""
+msgstr "Ostrzeżenie"
 
 #. module: web_studio
 #. openerp-web
@@ -2874,7 +2874,7 @@ msgstr "Musisz wybrać powiązane pole"
 #: code:addons/web_studio/static/src/js/common/new_field_dialog.js:246
 #, python-format
 msgid "You must select a relation"
-msgstr ""
+msgstr "Musisz wybrać relację"
 
 #. module: web_studio
 #. openerp-web
@@ -2882,7 +2882,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:5
 #, python-format
 msgid "You need to be part of these groups to see this field:"
-msgstr ""
+msgstr "Musisz być członkiem tych grup by zobaczyć to pole:"
 
 #. module: web_studio
 #. openerp-web
@@ -2977,7 +2977,7 @@ msgstr "etapy"
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:590
 #, python-format
 msgid "test email"
-msgstr ""
+msgstr "test email"
 
 #. module: web_studio
 #. openerp-web

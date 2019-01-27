@@ -25,14 +25,14 @@ msgstr ""
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.res_config_settings_view_form
 msgid "<i class=\"fa fa-print\"/> Print barcode commands"
-msgstr ""
+msgstr "<i class=\"fa fa-print\"/> Друк команд штрих-коду"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:48
 #, python-format
 msgid "Add product"
-msgstr ""
+msgstr "Додати товар"
 
 #. module: stock_barcode
 #. openerp-web
@@ -51,7 +51,7 @@ msgstr "Штрих-код"
 #. module: stock_barcode
 #: model:ir.actions.client,name:stock_barcode.stock_barcode_inventory_client_action
 msgid "Barcode Inventory Adjustment Client Action"
-msgstr ""
+msgstr "Дія клієнта на коригування складського штрих-коду"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.res_config_settings_view_form
@@ -61,7 +61,7 @@ msgstr "Номенклатура штрих-кодів"
 #. module: stock_barcode
 #: model:ir.actions.client,name:stock_barcode.stock_barcode_picking_client_action
 msgid "Barcode Picking Client Action"
-msgstr ""
+msgstr "Дія клієнта штрих-коду комплектування"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot___barcode_scanned
@@ -240,7 +240,7 @@ msgstr "Розташування складів"
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_barcode_lot_line
 msgid "LN/SN Product Lines"
-msgstr ""
+msgstr "Рядки товару LN/SN"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot____last_update
@@ -331,7 +331,7 @@ msgstr "Номенклатура"
 #. module: stock_barcode
 #: model:ir.actions.act_window,name:stock_barcode.open_picking
 msgid "Open a picking"
-msgstr ""
+msgstr "Відкрити комплектування"
 
 #. module: stock_barcode
 #: code:addons/stock_barcode/controllers/main.py:106
@@ -339,7 +339,7 @@ msgstr ""
 #: code:addons/stock_barcode/models/stock_picking.py:331
 #, python-format
 msgid "Open picking form"
-msgstr ""
+msgstr "Відкрити форму комплектування"
 
 #. module: stock_barcode
 #. openerp-web
@@ -366,7 +366,7 @@ msgstr "Комплектування%s"
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_picking_barcode
 msgid "Picking Details"
-msgstr ""
+msgstr "Деталі комплектування"
 
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_picking_type
@@ -392,14 +392,14 @@ msgstr "Друк транспортної накладної"
 #: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:23
 #, python-format
 msgid "Print Inventory"
-msgstr ""
+msgstr "Друк інвентаризації"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:20
 #, python-format
 msgid "Print Picking Operations"
-msgstr ""
+msgstr "Друкувати операції комплектування"
 
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_product_product
@@ -423,7 +423,7 @@ msgstr "Переміщення товару (Рядок складського �
 #: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:49
 #, python-format
 msgid "Put In Pack"
-msgstr ""
+msgstr "Запакувати"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot__qty_done
@@ -470,14 +470,14 @@ msgstr "Вилучити це"
 #: code:addons/stock_barcode/static/src/xml/stock_barcode.xml:27
 #, python-format
 msgid "Scan a"
-msgstr ""
+msgstr "Сканувати"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/xml/stock_barcode.xml:25
 #, python-format
 msgid "Scan an"
-msgstr ""
+msgstr "Сканувати"
 
 #. module: stock_barcode
 #. openerp-web
@@ -485,6 +485,8 @@ msgstr ""
 #, python-format
 msgid "Scan more products, or scan a new source location"
 msgstr ""
+"Сканувати більшу кількості товарів або сканувати нове джерело "
+"місцезнаходження"
 
 #. module: stock_barcode
 #. openerp-web
@@ -492,27 +494,29 @@ msgstr ""
 #, python-format
 msgid "Scan more products, or scan the destination location"
 msgstr ""
+"Сканувати більшу кількості товарів або сканувати місцезнаходження "
+"призначення"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:35
 #, python-format
 msgid "Scan products"
-msgstr ""
+msgstr "Сканувати товари"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:38
 #, python-format
 msgid "Scan the serial or lot number of the product"
-msgstr ""
+msgstr "Сканувати серійний або партійний номер товару"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:39
 #, python-format
 msgid "Scan the source location"
-msgstr ""
+msgstr "Сканувати джерело місцезнаходження"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_inventory__scan_location_id
@@ -524,7 +528,7 @@ msgstr "Відскановане місцезнаходження"
 #: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:1343
 #, python-format
 msgid "Scanning is disabled in this state."
-msgstr ""
+msgstr "Сканування в цьому стані вимкнено."
 
 #. module: stock_barcode
 #. openerp-web
@@ -537,7 +541,7 @@ msgstr "Брак"
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
 msgid "Select a Product"
-msgstr ""
+msgstr "Виберіть товар"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot_line__stock_barcode_lot_id
@@ -572,14 +576,14 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/js/client_action/inventory_client_action.js:226
 #, python-format
 msgid "The inventory adjustment has been cancelled"
-msgstr ""
+msgstr "Інвентаризація була скасована"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/js/client_action/inventory_client_action.js:205
 #, python-format
 msgid "The inventory adjustment has been validated"
-msgstr ""
+msgstr "Налаштування інвентаризації підтверджено"
 
 #. module: stock_barcode
 #. openerp-web
@@ -593,35 +597,35 @@ msgstr "Комплектування є %s і не може бути редаг�
 #: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:1129
 #, python-format
 msgid "The scanned lot does not match an existing one."
-msgstr ""
+msgstr "Відсканована партія не збігається з існуючою."
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:1176
 #, python-format
 msgid "The scanned serial number is already used."
-msgstr ""
+msgstr "Відсканований серійний номер вже використовується."
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/js/client_action/picking_client_action.js:202
 #, python-format
 msgid "The transfer has been cancelled"
-msgstr ""
+msgstr "Переміщення скасоване"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/js/client_action/picking_client_action.js:165
 #, python-format
 msgid "The transfer has been validated"
-msgstr ""
+msgstr "Переміщення підтверджене"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:42
 #, python-format
 msgid "This inventory adjustment is already done"
-msgstr ""
+msgstr "Налаштування інвентаризації виконано"
 
 #. module: stock_barcode
 #. openerp-web
@@ -629,28 +633,28 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:1214
 #, python-format
 msgid "This location is not a child of the main location."
-msgstr ""
+msgstr "Це місцезнаходження не є дочірнім головного."
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:965
 #, python-format
 msgid "This package is already scanned."
-msgstr ""
+msgstr "Цей пакунок вже відскановано."
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:41
 #, python-format
 msgid "This picking is already cancelled"
-msgstr ""
+msgstr "Це комплектування скасовано"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:40
 #, python-format
 msgid "This picking is already done"
-msgstr ""
+msgstr "Це комплектування виконано"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_inventory_barcode2
@@ -660,7 +664,7 @@ msgstr "По"
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_picking_type_kanban
 msgid "To Process"
-msgstr ""
+msgstr "В процесі"
 
 #. module: stock_barcode
 #. openerp-web
@@ -732,7 +736,7 @@ msgstr "Помилковий штрих-код"
 #: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:820
 #, python-format
 msgid "You are expected to scan a source location."
-msgstr ""
+msgstr "Ви очікуєте сканування джерела розташування."
 
 #. module: stock_barcode
 #. openerp-web
@@ -740,6 +744,8 @@ msgstr ""
 #, python-format
 msgid "You are expected to scan more products or a destination location."
 msgstr ""
+"Від вас очікується сканування більшої кількості товарів або місцезнаходження"
+" призначення."
 
 #. module: stock_barcode
 #. openerp-web
@@ -750,6 +756,8 @@ msgid ""
 "You are expected to scan one or more products or a package available at the "
 "picking's location"
 msgstr ""
+"Від вас очікується сканування одного або кількох товарів або пакунка, "
+"доступного в місцезнаходженні комплектування"
 
 #. module: stock_barcode
 #. openerp-web
@@ -757,7 +765,7 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:1221
 #, python-format
 msgid "You are expected to scan one or more products."
-msgstr ""
+msgstr "Від вас очікується сканування одного або кількох товарів."
 
 #. module: stock_barcode
 #: code:addons/stock_barcode/wizard/stock_barcode_lot.py:58
@@ -771,7 +779,7 @@ msgstr "Ви не можете сканувати двічі один і той 
 #: code:addons/stock_barcode/static/src/xml/stock_barcode.xml:16
 #, python-format
 msgid "commands for Inventory"
-msgstr ""
+msgstr "команди для інвентаризації"
 
 #. module: stock_barcode
 #. openerp-web
@@ -792,7 +800,7 @@ msgstr "місцезнаходження"
 #: code:addons/stock_barcode/static/src/xml/stock_barcode.xml:25
 #, python-format
 msgid "operation type"
-msgstr ""
+msgstr "тип операції"
 
 #. module: stock_barcode
 #. openerp-web
@@ -807,24 +815,25 @@ msgstr "звіт складських штрих-кодів"
 #, python-format
 msgid "to check out what this module can do! You can also print the barcode"
 msgstr ""
+"перевірити, що може робити цей модуль! Можна також надрукувати штрих-код"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/xml/stock_barcode.xml:26
 #, python-format
 msgid "to create a new transfer from this location."
-msgstr ""
+msgstr "щоб створити нове переміщення з цього місцезнаходження."
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/xml/stock_barcode.xml:25
 #, python-format
 msgid "to create a new transfer."
-msgstr ""
+msgstr "щоб створити нове переміщення."
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/xml/stock_barcode.xml:27
 #, python-format
 msgid "to open it."
-msgstr ""
+msgstr "щоби відкрити це."

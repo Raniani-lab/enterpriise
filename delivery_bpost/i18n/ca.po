@@ -24,7 +24,7 @@ msgstr ""
 #. module: delivery_bpost
 #: selection:delivery.carrier,bpost_label_stock_type:0
 msgid "A4"
-msgstr ""
+msgstr "A4"
 
 #. module: delivery_bpost
 #: selection:delivery.carrier,bpost_label_stock_type:0
@@ -47,7 +47,7 @@ msgstr ""
 #. module: delivery_bpost
 #: selection:delivery.carrier,delivery_type:0
 msgid "Based on Rules"
-msgstr ""
+msgstr "En base a regles"
 
 #. module: delivery_bpost
 #: model:ir.model.fields,field_description:delivery_bpost.field_delivery_carrier__bpost_account_number
@@ -106,7 +106,7 @@ msgstr ""
 #. module: delivery_bpost
 #: model:ir.model.fields,field_description:delivery_bpost.field_product_packaging__package_carrier_type
 msgid "Carrier"
-msgstr ""
+msgstr "Transportista"
 
 #. module: delivery_bpost
 #: selection:delivery.carrier,delivery_type:0
@@ -154,7 +154,7 @@ msgstr ""
 #. module: delivery_bpost
 #: selection:delivery.carrier,delivery_type:0
 msgid "Fixed Price"
-msgstr ""
+msgstr "Preu fix"
 
 #. module: delivery_bpost
 #: selection:delivery.carrier,bpost_shipment_type:0
@@ -174,7 +174,7 @@ msgstr ""
 #. module: delivery_bpost
 #: selection:product.packaging,package_carrier_type:0
 msgid "No carrier integration"
-msgstr ""
+msgstr "Sense integració de transportista"
 
 #. module: delivery_bpost
 #: selection:delivery.carrier,bpost_shipment_type:0
@@ -216,7 +216,7 @@ msgstr "Embalatge de productes"
 #. module: delivery_bpost
 #: model:ir.model.fields,field_description:delivery_bpost.field_delivery_carrier__delivery_type
 msgid "Provider"
-msgstr ""
+msgstr "Proveïdor"
 
 #. module: delivery_bpost
 #: selection:delivery.carrier,bpost_parcel_return_instructions:0
@@ -275,12 +275,12 @@ msgstr ""
 #: selection:delivery.carrier,delivery_type:0
 #: selection:product.packaging,package_carrier_type:0
 msgid "UPS"
-msgstr ""
+msgstr "UPS"
 
 #. module: delivery_bpost
 #: selection:delivery.carrier,delivery_type:0
 msgid "USPS"
-msgstr ""
+msgstr "USPS"
 
 #. module: delivery_bpost
 #: model:product.product,uom_name:delivery_bpost.product_product_delivery_bpost_domestic
@@ -344,7 +344,7 @@ msgstr ""
 #: selection:delivery.carrier,delivery_type:0
 #: selection:product.packaging,package_carrier_type:0
 msgid "bpost"
-msgstr ""
+msgstr "bpost"
 
 #. module: delivery_bpost
 #: model_terms:ir.ui.view,arch_db:delivery_bpost.view_delivery_carrier_form_with_provider_bpost
@@ -390,4 +390,4 @@ msgstr ""
 #: model:product.template,weight_uom_name:delivery_bpost.product_product_delivery_bpost_domestic_product_template
 #: model:product.template,weight_uom_name:delivery_bpost.product_product_delivery_bpost_world_product_template
 msgid "kg"
-msgstr ""
+msgstr "kg"

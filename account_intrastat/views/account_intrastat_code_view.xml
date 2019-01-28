@@ -50,13 +50,15 @@
             <field name="model">account.intrastat.code</field>
             <field name="arch" type="xml">
                 <form string="Intrastat Code">
-                    <group>
-                        <field name="name"/>
-                        <field name="code"/>
-                        <field name="type"/>
-                        <field name="country_id" attrs="{'invisible': [('type', '!=', 'region')], 'required': [('type', '=', 'region')]}" options="{'no_create': True}"/>
-                        <field name="description"/>
-                    </group>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="type"/>
+                            <field name="country_id" attrs="{'invisible': [('type', '!=', 'region')], 'required': [('type', '=', 'region')]}" options="{'no_create': True}"/>
+                            <field name="description"/>
+                        </group>
+                    </sheet>
                 </form>
             </field>
         </record>

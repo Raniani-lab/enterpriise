@@ -1007,7 +1007,7 @@ odoo.define('sign.document_edition', function(require) {
             this.is_author = (this.create_uid === session.uid);
             this.is_sent = (this.state === 'sent');
 
-            if (options && options.context && options.context.sign_token) {
+            if (action && action.context && action.context.sign_token) {
                 var $signButton = $('<button/>', {html: _t("Sign Document"), type: "button", 'class': 'btn btn-primary'});
                 $signButton.on('click', function () {
                     self.do_action({
@@ -1015,8 +1015,8 @@ odoo.define('sign.document_edition', function(require) {
                         tag: 'sign.SignableDocument',
                         name: _t('Sign'),
                     }, {
-                        additional_context: _.extend({}, options.context, {
-                            token: options.context.sign_token,
+                        additional_context: _.extend({}, action.context, {
+                            token: action.context.sign_token,
                         }),
                     });
                 });

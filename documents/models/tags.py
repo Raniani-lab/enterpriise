@@ -8,7 +8,7 @@ class TagsCategories(models.Model):
     _description = "Facet"
     _order = "sequence, name"
 
-    folder_id = fields.Many2one('documents.folder', ondelete="cascade")
+    folder_id = fields.Many2one('documents.folder', string="Workspace", ondelete="cascade")
     name = fields.Char(required=True)
     tag_ids = fields.One2many('documents.tag', 'facet_id')
     tooltip = fields.Char(help="hover text description", string="Tooltip")

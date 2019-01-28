@@ -11,5 +11,5 @@ class ResCompany(models.Model):
         return self.env.ref('documents_product_folder', raise_if_not_found=False)
 
     documents_product_settings = fields.Boolean()
-    product_folder = fields.Many2one('documents.folder', default=_get_default_product_folder)
+    product_folder = fields.Many2one('documents.folder', string="Product Workspace", default=_get_default_product_folder)
     product_tags = fields.Many2many('documents.tag', 'product_tags_table')

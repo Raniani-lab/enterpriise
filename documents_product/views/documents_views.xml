@@ -19,7 +19,7 @@
                             <label for="documents_product_settings"/>
                             <div class="row">
                                 <div class="text-muted col-md-12">
-                                    Select the folder to be used for product's documents for the products of
+                                    Select the workspace to be used for product's documents for the products of
                                     your company.
                                 </div>
                             </div>

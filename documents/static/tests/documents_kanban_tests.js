@@ -2159,7 +2159,7 @@ QUnit.module('DocumentsKanbanView', {
 
         testUtils.dom.click(kanban.$('.o_documents_selector_folder header:eq(1)'));
         assert.strictEqual(kanban.$('.o_documents_selector .o_documents_selector_folders .o_documents_selector_header').text().trim(),
-            'Folders', "should have a 'folders' section");
+            'Workspace', "should have a 'workspace' section");
         assert.containsN(kanban, '.o_documents_selector .o_documents_selector_folder', 4,
             "should have 4 folders");
         assert.containsN(kanban, '.o_documents_selector .o_documents_selector_folder:visible', 3,

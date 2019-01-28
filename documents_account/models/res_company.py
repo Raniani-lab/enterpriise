@@ -8,7 +8,7 @@ class ResCompany(models.Model):
     _inherit = "res.company"
 
     documents_account_settings = fields.Boolean()
-    account_folder = fields.Many2one('documents.folder',
+    account_folder = fields.Many2one('documents.folder', string="Accounting Workspace",
                                      default=lambda self: self.env.ref('documents.documents_finance_folder',
                                                                        raise_if_not_found=False))
     account_tags = fields.Many2many('documents.tag', 'account_tags_table')

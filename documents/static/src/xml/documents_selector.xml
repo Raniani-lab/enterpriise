@@ -6,7 +6,7 @@
         <section class="o_documents_selector_section mb-3 o_documents_selector_folders">
             <header class="o_documents_selector_header text-uppercase">
                 <i class="o_documents_folder_color fa fa-folder mr-1"/>
-                <b>Folders</b>
+                <b>Workspace</b>
             </header>
             <div class="o_documents_selector_folders_container"/>
         </section>

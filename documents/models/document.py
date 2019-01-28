@@ -48,6 +48,7 @@ class Document(models.Model):
 
     # Folder
     folder_id = fields.Many2one('documents.folder',
+                                string="Workspace",
                                 ondelete="restrict",
                                 tracking=True,
                                 required=True,

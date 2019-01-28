@@ -239,7 +239,7 @@
     <!-- folders -->
 
     <record id="folder_view_search" model="ir.ui.view">
-        <field name="name">folder search</field>
+        <field name="name">Workspace search</field>
         <field name="model">documents.folder</field>
         <field name="arch" type="xml">
         <search>
@@ -251,7 +251,7 @@
     </record>
 
     <record id="folder_view_tree" model="ir.ui.view">
-        <field name="name">folder tree</field>
+        <field name="name">Workspace tree</field>
         <field name="model">documents.folder</field>
         <field name="arch" type="xml">
             <tree>
@@ -265,7 +265,7 @@
     </record>
 
     <record id="folder_view_form" model="ir.ui.view">
-        <field name="name">Folder form</field>
+        <field name="name">Workspace form</field>
         <field name="model">documents.folder</field>
         <field name="arch" type="xml">
             <form>
@@ -732,7 +732,7 @@
                      data-key="documents"
                      groups="documents.group_documents_manager"
                      invisible="1">
-                    <h2>Default Folders</h2>
+                    <h2>Default Workspaces</h2>
                     <div class="row mt16 o_settings_container o_documents_settings">
                     </div>
                 </div>
@@ -764,6 +764,7 @@
       <field name="res_model">documents.document</field>
       <field name="view_mode">kanban</field>
       <field name="view_id" ref="documents.document_view_kanban"/>
+      <field name="context">{"saved_folder" : True}</field>
       <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">Upload <span class="font-weight-normal">a file or</span> drag <span class="font-weight-normal">it here.</span></p>
         </field>
@@ -795,7 +796,7 @@
     </record>
 
     <record id="folder_action" model="ir.actions.act_window">
-      <field name="name">Folders</field>
+      <field name="name">Workspaces</field>
       <field name="res_model">documents.folder</field>
       <field name="view_mode">tree,form</field>
     </record>
@@ -831,7 +832,7 @@
         <menuitem name="Configuration" id="documents.Config" parent="documents.menu_root" sequence="1"/>
 
             <menuitem name="Settings" id="documents.settings_menu" parent="documents.Config" action="configuration_action" groups="base.group_system" sequence="0"/>
-            <menuitem name="Folders" id="documents.folder_menu" parent="documents.Config" action="folder_action" groups="documents.group_documents_manager" sequence="1"/>
+            <menuitem name="Workspace" id="documents.folder_menu" parent="documents.Config" action="folder_action" groups="documents.group_documents_manager" sequence="1"/>
             <menuitem name="Tags" id="documents.category_menu" parent="documents.Config" action="facet_action" groups="documents.group_documents_manager" sequence="2"/>
             <menuitem name="Actions" id="documents.workflow_rules_menu" parent="documents.Config" groups="base.group_no_one" action="workflow_rule_action" sequence="3"/>
             <menuitem name="Shared Links" id="documents.share_menu" parent="documents.Config" action="share_action" sequence="4"/>

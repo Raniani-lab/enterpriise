@@ -18,7 +18,7 @@
                             <label for="documents_account_settings"/>
                             <div class="row">
                                 <div class="text-muted col-md-12">
-                                    Select the folder to be used for accounting's documents for the invoices
+                                    Select the workspace to be used for accounting's documents for the invoices
                                     of your company.
                                 </div>
                             </div>

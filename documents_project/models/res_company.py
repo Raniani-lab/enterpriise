@@ -8,7 +8,7 @@ class ResCompany(models.Model):
     _inherit = "res.company"
 
     documents_project_settings = fields.Boolean()
-    project_folder = fields.Many2one('documents.folder',
+    project_folder = fields.Many2one('documents.folder', string="Project Workspace",
                                      default=lambda self: self.env.ref('documents.documents_internal_folder',
                                                                        raise_if_not_found=False))
     project_tags = fields.Many2many('documents.tag', 'project_tags_table')

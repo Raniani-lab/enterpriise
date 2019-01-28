@@ -27,14 +27,14 @@ class DocumentFolder(models.Model):
         return name_array
 
     company_id = fields.Many2one('res.company', 'Company',
-                                 help="This folder will only be available for the selected company")
+                                 help="This workspace will only be available for the selected company")
     parent_folder_id = fields.Many2one('documents.folder',
-                                       string="Parent Folder",
+                                       string="Parent Workspace",
                                        ondelete="cascade",
-                                       help="Tag categories from parent folders will be shared to their sub folders")
+                                       help="Tag categories from parent workspaces will be shared to their sub workspaces")
     name = fields.Char(required=True, translate=True)
     description = fields.Html(string="Description")
-    children_folder_ids = fields.One2many('documents.folder', 'parent_folder_id', string="Sub folders")
+    children_folder_ids = fields.One2many('documents.folder', 'parent_folder_id', string="Sub workspaces")
     document_ids = fields.One2many('documents.document', 'folder_id', string="Documents")
     sequence = fields.Integer('Sequence', default=10)
     share_link_ids = fields.One2many('documents.share', 'folder_id', string="Share Links")

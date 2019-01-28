@@ -624,35 +624,29 @@
                     <group name="apply_on_panel" string="Apply on">
                         <group name="subscription_details">
                             <field name="subscription_template_ids" widget="many2many_tags"/>
+                            <field name="product_ids" string="Products" widget="many2many_tags"/>
                             <field name="customer_ids" widget="many2many_tags"/>
                             <field name="company_id" groups="base.group_multi_company"/>
                         </group>
-                        <group name="mrr_between_details">
+                        <group name="mrr_details">
                             <label for="mrr_min" string="MRR Between"/>
                             <div class="o_row">
                                 <field name="mrr_min"/>
                                 <strong> and </strong>
                                 <field name="mrr_max"/>
                             </div>
-                            <field name="product_ids" widget="many2many_tags"/>
-                        </group>
-                        <group name="mrr_details">
                             <label for="mrr_change_amount" string="MRR Change More"/>
                             <div class="o_row">
                                 <field name="mrr_change_amount"/>
                                 <field name="mrr_change_unit"/>
                             </div>
                             <field name="mrr_change_period" string="Over"/>
-                        </group>
-                        <group name="rating_details">
                             <label for="rating_percentage" string="Rating Satisfaction"/>
                             <div class="o_row">
                                 <field name="rating_operator"/>
                                 <field name="rating_percentage"/>
                                 <strong>%</strong>
                             </div>
-                        </group>
-                        <group name="stage_details">
                             <label for="stage_from_id" string="Stage"/>
                             <div class="o_row">
                                 <field name="stage_from_id"/>
@@ -665,7 +659,7 @@
                         <group name="action_content">
                             <field name="model_id" invisible="1"/>
                             <field name="model_name" invisible="1"/>
-                            <field name="trigger_condition"/>
+                            <field name="action"/>
 
                             <field name="filter_pre_domain" widget="domain" options="{'model': 'model_name', 'in_dialog': True}" readonly="1" groups="base.group_no_one" attrs="{'invisible': [('trigger_condition', 'not in', ['on_write','on_create_or_write'])]}"/>
                             <field name="filter_domain" widget="domain" options="{'model': 'model_name', 'in_dialog': True}" readonly="1" groups="base.group_no_one"/>
@@ -682,7 +676,7 @@
                                 attrs="{'invisible': ['|', ('trg_date_id','=',False), ('trg_date_range_type', '!=', 'day')]}"/>
                         </group>
                         <group name="action_details">
-                            <field name="action"/>
+                            <field name="trigger_condition"/>
                             <field name="tag_id"
                                 attrs="{'invisible': [('action', '!=', 'set_tag')],
                                         'required': [('action', '=', 'set_tag')]}"/>

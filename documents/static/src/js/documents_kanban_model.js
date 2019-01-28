@@ -8,6 +8,7 @@ odoo.define('documents.DocumentsKanbanModel', function (require) {
 
 var KanbanModel = require('web.KanbanModel');
 var core = require('web.core');
+var utils = require('web.utils');
 
 var _t = core._t;
 
@@ -62,15 +63,16 @@ var DocumentsKanbanModel = KanbanModel.extend({
         return this._fetchFolders().then(function (folders) {
             var availableFolderIDs = _.pluck(folders, 'id');
             var folderTree = self._buildFolderTree(folders, false);
+            var folderID = params.context.saved_folder ? Number(utils.get_cookie('documents_last_folder_id')) : false;
             params = _.extend({}, params, {
                 availableFolderIDs: availableFolderIDs,
-                folderID: false,
+                folderID: folderID,
                 folders: folderTree,
             });
 
             params.domain = params.domain || [];
             params.searchDomain = params.domain;
-            params.domain = params.domain.concat([['folder_id', 'in', params.availableFolderIDs]]);
+            params.domain = self._extendDomainWithFolder(params.domain, folderID, availableFolderIDs);
 
             var def = _super(params);
             return self._fetchAdditionalData(def, params).then(function (dataPointID) {

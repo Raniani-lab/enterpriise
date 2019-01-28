@@ -14,6 +14,7 @@ var Chatter = require('mail.Chatter');
 var core = require('web.core');
 var KanbanController = require('web.KanbanController');
 var session = require('web.session');
+var utils = require('web.utils');
 
 var qweb = core.qweb;
 var _t = core._t;
@@ -60,7 +61,7 @@ var DocumentsKanbanController = KanbanController.extend({
         this.anchorID = null; // used to select records with ctrl/shift keys
 
         var state = this.model.get(this.handle);
-        this.selectedFolderID = false;
+        this.selectedFolderID = state.folderID;
         this.availableFolderIDs = state.availableFolderIDs;
 
         // store in memory the folded state of folders and facets, to keep it
@@ -101,6 +102,9 @@ var DocumentsKanbanController = KanbanController.extend({
     update: function (params, options) {
         params = params || {};
         params.folderID = this.selectedFolderID;
+        if (this.selectedFolderID) {
+            utils.set_cookie('documents_last_folder_id', this.selectedFolderID);
+        }
         params.availableFolderIDs = this.availableFolderIDs;
         params.selectorDomain = this._buildSelectorDomain();
         return this._super(params, options);

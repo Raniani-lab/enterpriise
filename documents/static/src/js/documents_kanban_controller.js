@@ -58,6 +58,8 @@ var DocumentsKanbanController = KanbanController.extend({
         this.chatter = null;
         this.documentsInspector = null;
         this.anchorID = null; // used to select records with ctrl/shift keys
+        this.fileUploadID = _.uniqueId('documents_file_upload');
+        this._uploadedFileCount = 0;
 
         var state = this.model.get(this.handle);
         this.selectedFolderID = state.folderID;
@@ -72,6 +74,7 @@ var DocumentsKanbanController = KanbanController.extend({
      */
     start: function () {
         this.$('.o_content').addClass('o_documents_kanban d-flex');
+        $(window).on(this.fileUploadID, this._onFileUploaded.bind(this));
         return this._super.apply(this, arguments);
     },
 
@@ -246,44 +249,48 @@ var DocumentsKanbanController = KanbanController.extend({
         });
     },
     /**
-     * Processes the files and send them to the backend then, if the upload happened inside a share,
-     * calls a new view with the domain updated for the newly uploaded files
+     * Prepares and upload files.
      *
      * @private
+     * @param {Object[]} files
+     * @returns {Deferred}
      */
     _processFiles: function (files) {
         var self = this;
-        var defs = [];
-        var tagIDs = _.flatten(_.values(this.selectedFilterTagIDs));
-        _.each(files, function (f) {
-            var def = $.Deferred();
-            defs.push(def);
-            var reader = new FileReader();
-            reader.onload = function (ev) {
-                def.resolve({
-                    name: f.name,
-                    datas_fname: f.name,
-                    datas: ev.target.result,
-                });
-            };
-            reader.readAsDataURL(f);
+        this._uploadedFileCount = files.length;
+        var $formContainer = this.$('.o_content').find('.o_documents_hidden_input_file_container');
+        if (!$formContainer.length) {
+            $formContainer = $(qweb.render('documents.HiddenInputFile', {
+                widget: this,
+                csrf_token: core.csrf_token,
+            }));
+            $formContainer.appendTo(this.$('.o_content'));
+        }
+        var data = new FormData($formContainer.find('.o_form_binary_form')[0]);
+
+        data.delete('ufile');
+        _.each(files, function (file) {
+            data.append('ufile', file);
         });
-        return $.when.apply($, defs).then(function () {
-            var l = Array.prototype.slice.call(arguments);
-            for (var i=0; i<l.length; i++) {
-                // convert data from "data:application/zip;base64,R0lGODdhAQBADs=" to "R0lGODdhAQBADs="
-                l[i].datas = l[i].datas.split(',',2)[1];
-                l[i].folder_id = self.selectedFolderID;
-                if (tagIDs) {
-                    l[i].tag_ids = [[6, 0, tagIDs]];
-                }
-            }
-            return self._rpc({
-                model: 'documents.document',
-                method: 'create',
-                args: [l],
-            });
+        var def = $.Deferred();
+        $.ajax({
+            url: '/web/binary/upload_attachment',
+            processData: false,
+            contentType: false,
+            type: "POST",
+            enctype: 'multipart/form-data',
+            data: data,
+            success: function (result) {
+                def.resolve();
+                var $el = $(result);
+                $.globalEval($el.contents().text());
+            },
+            error: function (error) {
+                self.do_notify(_t("Error"), _t("An error occurred during the upload"));
+                return $.when();
+            },
         });
+        return def;
     },
     /**
      * Generic method to remove a filter from selector panel
@@ -675,7 +682,40 @@ var DocumentsKanbanController = KanbanController.extend({
         this._processFiles(ev.originalEvent.dataTransfer.files).always(function () {
             self.$('.o_documents_kanban_view').removeClass('o_drop_over');
             self.$('.o_upload_text').remove();
-            self.reload();
+        });
+    },
+    /**
+     * creates new documents when attachments are uploaded.
+     * arguments are each uploaded files. A slice is called on arguments to extract those values.
+     *
+     * @private
+     */
+    _onFileUploaded: function () {
+        var self = this;
+        var tagIDs = _.flatten(_.values(this.selectedFilterTagIDs));
+        var attachments = Array.prototype.slice.call(arguments, 1);
+        var createDict = _.map(attachments, function (attachment) {
+            var doc = {
+                name: attachment.filename,
+                attachment_id: attachment.id,
+                folder_id: self.selectedFolderID,
+            };
+            if (tagIDs) {
+                doc.tag_ids = [[6, 0, tagIDs]];
+            }
+            return doc;
+        });
+        return this._rpc({
+            model: 'documents.document',
+            method: 'create',
+            args: [createDict],
+        }).then(function (result) {
+            if (result.length) {
+                if (result.length < self._uploadedFileCount) {
+                    self.do_notify(_t("Error"), _t("One or more files failed to upload"));
+                }
+                self.reload();
+            }
         });
     },
     /**
@@ -1034,7 +1074,6 @@ var DocumentsKanbanController = KanbanController.extend({
         var $uploadInput = $('<input>', {type: 'file', name: 'files[]', multiple: 'multiple'});
         $uploadInput.on('change', function (ev) {
             self._processFiles(ev.target.files).always(function () {
-                self.reload();
                 $uploadInput.remove();
             });
         });

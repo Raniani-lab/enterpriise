@@ -12,6 +12,7 @@ class Document(models.Model):
     _name = 'documents.document'
     _description = 'Document'
     _inherit = ['mail.thread', 'mail.activity.mixin']
+    _order = 'id desc'
 
     # Attachment
     attachment_id = fields.Many2one('ir.attachment', auto_join=True)
@@ -263,14 +264,19 @@ class Document(models.Model):
         keys = [key for key in vals if
                 self._fields[key].related and self._fields[key].related[0] == 'attachment_id']
         attachment_dict = {key: vals.pop(key) for key in keys if key in vals}
-        attachment = None
-        if len(attachment_dict):
+        attachment = self.env['ir.attachment'].browse(vals.get('attachment_id'))
+
+        if attachment and attachment_dict:
+            attachment.write(attachment_dict)
+        elif attachment_dict:
             attachment_dict.setdefault('name', vals.get('name', 'unnamed'))
             attachment = self.env['ir.attachment'].create(attachment_dict)
             vals['attachment_id'] = attachment.id
         new_record = super(Document, self).create(vals)
-        if attachment:
-            attachment.write({'res_model': 'documents.document', 'res_id': new_record.id})
+
+        # this condition takes precedence during forward-port.
+        if (attachment and not attachment.res_id and (not attachment.res_model or attachment.res_model == 'documents.document')):
+            attachment.with_context(no_document=True).write({'res_model': 'documents.document', 'res_id': new_record.id})
         return new_record
 
     @api.multi

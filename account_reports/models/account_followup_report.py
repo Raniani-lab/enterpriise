@@ -253,19 +253,13 @@ class AccountFollowupReport(models.AbstractModel):
             if end_index > -1:
                 replaced_msg = body_html[start_index:end_index].replace(b'\n', b'<br />')
                 body_html = body_html[:start_index] + replaced_msg + body_html[end_index:]
-            msg = _('Follow-up email sent to %s') % email
-            msg += '<br>' + body_html.decode('utf-8')
-            msg_id = partner.message_post(body=msg)
-            email = self.env['mail.mail'].create({
-                'mail_message_id': msg_id.id,
-                'subject': _('%s Payment Reminder') % (self.env.user.company_id.name) + ' - ' + partner.name,
-                'body_html': append_content_to_html(body_html, self.env.user.signature or '', plaintext=False),
-                'author_id': self.env.user.partner_id.id,
-                'email_from': self.env.user.email_formatted,
-                'email_to': email,
-                'body': msg,
-            })
-            partner.message_subscribe([partner.id])
+            partner.with_context(mail_post_autofollow=True).message_post(
+                partner_ids=[partner.id],
+                body=body_html,
+                subject=_('%s Payment Reminder') % (self.env.user.company_id.name) + ' - ' + partner.name,
+                subtype_id=self.env.ref('mail.mt_note').id,
+                model_description=_('payment reminder'),
+                notif_layout='mail.mail_notification_light')
             return True
         raise UserError(_('Could not send mail to partner because it does not have any email address defined'))
 

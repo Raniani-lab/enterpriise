@@ -48,20 +48,20 @@ class TestBillsPrediction(AccountingTestCase):
 
     def test_account_prediction_flow(self):
         vendors = self._create_test_partners(7)
-        accounts = self._create_test_accounts([('test1', 'Entretien et réparation'),
-                                               ('test2', 'Achats de services, travaux et études'),
-                                               ('test3', 'Loyers divers'),
-                                               ('test4', 'Charges locatives'),
-                                               ('test5', 'Achats de marchandises')])
+        accounts = self._create_test_accounts([('test1', 'Test Maintenance and Repair'),
+                                               ('test2', 'Test Purchase of services, studies and preparatory work'),
+                                               ('test3', 'Test Various Rents'),
+                                               ('test4', 'Test Rental Charges'),
+                                               ('test5', 'Test Purchase of commodity')])
         default_account = self.env['account.journal'].search([('type', '=', 'purchase')], limit=1).default_debit_account_id
-        self._create_one_line_bill(vendors[0], "Entretien et réparation", accounts[0])
-        self._create_one_line_bill(vendors[5], "Subsides obtenus", default_account, account_to_set=accounts[1])
-        self._create_one_line_bill(vendors[6], "Préparation dossier subsides", accounts[1])
-        self._create_one_line_bill(vendors[1], "Loyers Janvier", accounts[2])
+        self._create_one_line_bill(vendors[0], "Maintenance and repair", accounts[0])
+        self._create_one_line_bill(vendors[5], "Subsidies obtained", default_account, account_to_set=accounts[1])
+        self._create_one_line_bill(vendors[6], "Prepare subsidies file", accounts[1])
+        self._create_one_line_bill(vendors[1], "Rents January", accounts[2])
         self._create_one_line_bill(vendors[2], "Coca-cola", default_account, account_to_set=accounts[4])
-        self._create_one_line_bill(vendors[1], "Loyer Février", accounts[2])
-        self._create_one_line_bill(vendors[3], "Electricité Bruxelles", default_account, account_to_set=accounts[3])
-        self._create_one_line_bill(vendors[3], "Electricité Grand-Rosière", accounts[3])
-        self._create_one_line_bill(vendors[2], "Achat de coca-cola", accounts[4])
-        self._create_one_line_bill(vendors[4], "Casiers de Cocal-cola", accounts[4])
-        self._create_one_line_bill(vendors[1], "Mars: bureau", accounts[2])
+        self._create_one_line_bill(vendors[1], "Rent February", accounts[2])
+        self._create_one_line_bill(vendors[3], "Electricity Bruxelles", default_account, account_to_set=accounts[3])
+        self._create_one_line_bill(vendors[3], "Electricity Grand-Rosière", accounts[3])
+        self._create_one_line_bill(vendors[2], "Purchase of coca-cola", accounts[4])
+        self._create_one_line_bill(vendors[4], "Crate of coca-cola", accounts[4])
+        self._create_one_line_bill(vendors[1], "March: office", accounts[2])

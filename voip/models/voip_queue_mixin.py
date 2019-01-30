@@ -32,10 +32,14 @@ class VoipQueueMixin(models.AbstractModel):
     def create_call_in_queue(self):
         # creating an activity of type phonecall will automaticaly create a voip.phonecall
         # will only work if _compute_phonenumbers gives a resul
+        phonecall_activity_type = self.env.ref('mail.mail_activity_data_call')
+        if phonecall_activity_type.category != 'phonecall':
+            raise UserError(_('Call activity type is not of category "phonecall"'))
+
         values_list = [{
             'res_id': record.id,
             'res_model_id': self.env['ir.model']._get(record._name).id,
-            'activity_type_id': self.env.ref('mail.mail_activity_data_call').id,
+            'activity_type_id': phonecall_activity_type.id,
             'user_id': self.env.user.id,
             'date_deadline': fields.Date.today(self),
         } for record in self]
@@ -43,7 +47,7 @@ class VoipQueueMixin(models.AbstractModel):
         for activity in activities:
             if not activity.voip_phonecall_id:
                 record = self.env[activity.res_model_id.model].browse(activity.res_id)
-                raise UserError(_('Phone call cannot be created. It is any phone number linked to record %s ?' % record.name))
+                raise UserError(_('Phone call cannot be created. Is it any phone number linked to record %s?' % record.name))
 
     @api.multi
     def delete_call_in_queue(self):

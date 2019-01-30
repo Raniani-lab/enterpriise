@@ -17,10 +17,11 @@ var Many2one = relational_fields.FieldMany2One;
 var NewFieldDialog = Dialog.extend(StandaloneFieldManagerMixin, {
     template: 'web_studio.NewFieldDialog',
     events: {
-        'click .o_web_studio_selection_new_value button': '_onAddSelectionValue',
         'keyup .o_web_studio_selection_new_value > input': '_onAddSelectionValue',
         'click .o_web_studio_edit_selection_value': '_onEditSelectionValue',
         'click .o_web_studio_remove_selection_value': '_onRemoveSelectionValue',
+        'click .o_web_studio_add_selection_value': '_onAddSelectionValue',
+        'click .o_web_studio_clear_selection_value': '_onClearSelectionValue',
     },
     /**
      * @constructor
@@ -88,7 +89,12 @@ var NewFieldDialog = Dialog.extend(StandaloneFieldManagerMixin, {
 
         this.$modal.addClass('o_web_studio_field_modal');
 
-        if (this.type === 'one2many') {
+        if (this.type === 'selection') {
+            // Focus on the input responsible for adding new selection value
+            this.opened().then(function () {
+                self.$('.o_web_studio_selection_input').focus();
+            });
+        } else if (this.type === 'one2many') {
             defs.push(this.model.makeRecord('ir.model.fields', [{
                 name: 'field',
                 relation: 'ir.model.fields',
@@ -232,6 +238,12 @@ var NewFieldDialog = Dialog.extend(StandaloneFieldManagerMixin, {
     /**
      * @private
      */
+    _onClearSelectionValue: function () {
+        this.$('.o_web_studio_selection_input').val("").focus();
+    },
+    /**
+     * @private
+     */
     _onSave: function () {
         var values = {};
         if (this.type === 'one2many') {
@@ -248,6 +260,10 @@ var NewFieldDialog = Dialog.extend(StandaloneFieldManagerMixin, {
             values.relation_id = this.many2one_model.value.res_id;
             values.field_description = this.many2one_model.m2o_value;
         } else if (this.type === 'selection') {
+            var newSelection = this.$('.o_web_studio_selection_input').val();
+            if (newSelection) {
+                this.selection.push([newSelection, newSelection]);
+            }
             values.selection = JSON.stringify(this.selection);
         } else if (this.type === 'related') {
             var selectedField = this.fieldSelector.getSelectedField();

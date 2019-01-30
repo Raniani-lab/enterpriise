@@ -83,12 +83,12 @@ tour.register('web_studio_new_app_tour', {
     position: 'bottom',
     run: 'drag_and_drop .o_web_studio_form_view_editor .o_inner_group',
 }, {
-    trigger: '.o_web_studio_field_dialog_form > .o_web_studio_selection_new_value > input',
+    trigger: '.o_web_studio_field_dialog_form > .o_web_studio_add_selection input',
     content: _t("Create your <b>selection values</b> (e.g.: Romance, Polar, Fantasy, etc.)"),
     position: 'top',
     run: 'text ' + utils.randomString(6),
 }, {
-    trigger: '.o_web_studio_field_dialog_form > .o_web_studio_selection_new_value button',
+    trigger: '.o_web_studio_field_dialog_form > .o_web_studio_add_selection .o_web_studio_add_selection_value',
     auto: true,
 }, {
     trigger: '.modal-footer > button:eq(0)',

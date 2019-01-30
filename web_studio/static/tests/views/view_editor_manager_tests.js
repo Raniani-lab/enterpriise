@@ -3063,7 +3063,7 @@ QUnit.module('ViewEditorManager', {
             mockRPC: function (route, args) {
                 if (route === '/web_studio/edit_view') {
                     assert.strictEqual(args.operations[0].node.field_description.selection,
-                        "[[\"Value 2\",\"Value 2\"],[\"Value 1\",\"My Value\"]]",
+                        "[[\"Value 2\",\"Value 2\"],[\"Value 1\",\"My Value\"],[\"Sulochan\",\"Sulochan\"]]",
                         "the selection should be set");
                     assert.ok(true, "should have refreshed the view");
                     fieldsView.arch = arch;
@@ -3093,9 +3093,9 @@ QUnit.module('ViewEditorManager', {
         assert.strictEqual($('.modal .o_web_studio_selection_editor > li').length, 1, "there should be 1 selection value");
         assert.strictEqual($('.modal .o_web_studio_selection_editor > li span:contains(Value 1)').length, 1, "the value should be correctly set");
 
-        // add a new value (with button +)
+        // add a new value (with button 'fa-check' )
         $('.modal .o_web_studio_selection_new_value input').val('Value 2');
-        await testUtils.dom.click($('.modal .o_web_studio_selection_new_value button'));
+        await testUtils.dom.click($('.modal .o_web_studio_add_selection_value'));
         assert.strictEqual($('.modal .o_web_studio_selection_editor > li').length, 2, "there should be 2 selection values");
 
         // edit the first value
@@ -3110,7 +3110,7 @@ QUnit.module('ViewEditorManager', {
 
         // add a value and delete it
         $('.modal .o_web_studio_selection_new_value input').val('Value 3');
-        await testUtils.dom.click($('.modal .o_web_studio_selection_new_value button'));
+        await testUtils.dom.click($('.modal .o_web_studio_add_selection_value'));
         assert.strictEqual($('.modal .o_web_studio_selection_editor > li').length, 3, "there should be 3 selection values");
 
         await testUtils.dom.click($('.modal .o_web_studio_selection_editor > li:eq(2) .o_web_studio_remove_selection_value'));
@@ -3126,6 +3126,9 @@ QUnit.module('ViewEditorManager', {
             {position: 'top'});
         assert.strictEqual($('.modal .o_web_studio_selection_editor > li:first span:contains(Value 2)').length, 1, "the values should have been reordered");
 
+        // Verify that on confirm, new value is added without button 'fa-check' or 'ENTER'
+        $('.modal .o_web_studio_selection_new_value input')
+            .val('Sulochan');
         await testUtils.dom.click($('.modal button:contains(Confirm)'));
         vem.destroy();
     });

@@ -407,7 +407,7 @@ var AbstractEditorManager = Widget.extend({
         this.XMLEditor = new XMLEditor(this, this.view_id, {
             position: 'left',
             doNotLoadSCSS: true,
-
+            doNotLoadJS: true,
         });
 
         this.XMLEditor.prependTo(this.$el).then(function () {

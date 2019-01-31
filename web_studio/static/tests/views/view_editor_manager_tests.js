@@ -2315,6 +2315,7 @@ QUnit.module('ViewEditorManager', {
                             inherit_id: false,
                         }],
                         scss: [],
+                        js: [],
                     });
                 }
                 return this._super.apply(this, arguments);
@@ -2406,7 +2407,8 @@ QUnit.module('ViewEditorManager', {
                             inherit_id: 1,
                             name: "studio view",
                         }],
-                        less: [],
+                        scss: [],
+                        js: [],
                     });
                 }
                 return this._super.apply(this, arguments);

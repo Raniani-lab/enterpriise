@@ -1802,6 +1802,7 @@ QUnit.module('ReportEditorManager', {
                             inherit_id: false,
                         }],
                         scss: [],
+                        js: [],
                     });
                 }
                 return this._super.apply(this, arguments);

@@ -105,7 +105,7 @@ class website_hr_contract_salary(http.Controller):
                         'website.http_error',
                         {'status_code': 'Oops',
                          'status_message': 'This link is invalid. Please contact the HR Responsible to get a new one...'})
-            if not contract.employee_id.user_id and not kw.get('applicant_id'):
+            if contract.employee_id and not contract.employee_id.user_id and not kw.get('applicant_id'):
                 return request.render(
                     'website.http_error',
                     {'status_code': 'Oops',

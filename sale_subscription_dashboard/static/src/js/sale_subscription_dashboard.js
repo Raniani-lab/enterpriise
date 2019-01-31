@@ -40,15 +40,6 @@ var sale_subscription_dashboard_abstract = AbstractAction.extend({
     ],
     hasControlPanel: true,
 
-    /**
-     * Loads the libraries listed in this.jsLibs and this.cssLibs
-     *
-     * @override
-     */
-    willStart: function () {
-        return $.when(ajax.loadLibs(this), this._super.apply(this, arguments));
-    },
-
     start: function() {
         var self = this;
         return this._super().then(function() {

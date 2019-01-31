@@ -1,6 +1,7 @@
 odoo.define('web_studio.WebClient', function (require) {
 "use strict";
 
+var ajax = require('web.ajax');
 var core = require('web.core');
 var session = require('web.session');
 var WebClient = require('web.WebClient');
@@ -258,18 +259,19 @@ WebClient.include({
      * @private
      * @returns {Deferred}
      */
+     _studioAssets: ['web_editor.compiled_assets_wysiwyg', 'web_studio.compiled_assets_studio'],
     _openStudio: function () {
         var self = this;
-        var def;
+        var def = ajax.loadLibs({assetLibs: this._studioAssets});
 
         if (this.studioMode === 'main') {
             var action = this.action_manager.getCurrentAction();
             var controller = this.action_manager.getCurrentController();
-            def = this._openStudioMain({
+            def = def.then(this._openStudioMain.bind(this, {
                 action: action,
                 controllerState: controller.widget.exportState(),
                 viewType: controller.viewType,
-            });
+            }));
         } else {
             // the app creator is not opened here, it's opened by clicking on
             // the "New App" icon, when the HomeMenu is in `studio` mode.

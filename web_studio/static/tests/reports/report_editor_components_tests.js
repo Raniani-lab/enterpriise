@@ -2,6 +2,7 @@ odoo.define('web_studio.ReportEditorComponents_tests', function (require) {
 "use strict";
 
 var testUtils = require('web.test_utils');
+var studioTestUtils = require('web_studio.testUtils');
 var Widget = require('web.Widget');
 
 var editComponentsRegistry = require('web_studio.reportEditComponentsRegistry');
@@ -11,6 +12,14 @@ var reportNewComponentsRegistry = require('web_studio.reportNewComponentsRegistr
 QUnit.module('Studio', {}, function () {
 
 QUnit.module('ReportComponents', {
+    before: function() {
+        return new Promise(function (resolve, reject) {
+            studioTestUtils.createSidebar({}).then(function (sidebar) {
+                sidebar.destroy();
+                resolve();
+            });
+        });
+    },
     beforeEach: function () {
         this.widgetsOptions = {
             monetary: {
@@ -543,6 +552,8 @@ QUnit.module('ReportComponents', {
         assert.expect(11);
         var parent = new Widget();
 
+        $('ul.ui-autocomplete').remove(); // clean the body to avoid errors due to another test
+
         var optionsFields;
         testUtils.mock.addMockEnvironment(parent, {
             intercepts: {
@@ -605,6 +616,9 @@ QUnit.module('ReportComponents', {
     QUnit.test('no search more in many2many_select', function (assert) {
         assert.expect(3);
         var parent = new Widget();
+
+        $('ul.ui-autocomplete').remove(); // clean the body to avoid errors due to another test
+
         parent.appendTo($('#qunit-fixture'));
 
         // to display more options in the many2many_select

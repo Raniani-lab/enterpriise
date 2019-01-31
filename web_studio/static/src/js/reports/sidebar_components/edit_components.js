@@ -340,6 +340,8 @@ var AbstractEditComponent = Abstract.extend(StandaloneFieldManagerMixin, {
     },
 });
 
+
+var assetsLoaded = false;
 var LayoutEditable = AbstractEditComponent.extend({
     name: 'layout',
     template : 'web_studio.ReportLayoutEditable',
@@ -419,7 +421,21 @@ var LayoutEditable = AbstractEditComponent.extend({
      * @override
      */
     willStart: function () {
-        return $.when(this._super(), Wysiwyg.prepare(this));
+        var self = this;
+        return this._super().then(function () {
+            if (assetsLoaded) {
+                return assetsLoaded;
+            }
+            assetsLoaded = $.Deferred();
+            var wysiwyg = new Wysiwyg(self, {});
+            wysiwyg.attachTo($('<textarea>')).then(function () {
+                wysiwyg.destroy();
+                var def = assetsLoaded;
+                assetsLoaded = true;
+                def.resolve();
+            });
+            return assetsLoaded;
+        });
     },
     /**
      * Override to re-render the color picker on each component rendering.

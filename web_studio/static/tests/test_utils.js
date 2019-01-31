@@ -12,7 +12,32 @@ var ReportEditorManager = require('web_studio.ReportEditorManager');
 var ReportEditorSidebar = require('web_studio.ReportEditorSidebar');
 var ViewEditorManager = require('web_studio.ViewEditorManager');
 
-var Wysiwyg = require('web_editor.wysiwyg');
+var Wysiwyg = require('web_editor.wysiwyg.root');
+
+/**
+ * Test Utils
+ *
+ * In this module, we define some utility functions to create Studio objects.
+ */
+
+var assetsLoaded = false;
+function loadAssetLib(parent) {
+    if (!assetsLoaded) { // avoid flickering when begin to edit
+        assetsLoaded = $.Deferred();
+        var wysiwyg = new Wysiwyg(parent, {
+            recordInfo: {
+                context: {},
+            }
+        });
+        wysiwyg.attachTo($('<textarea>')).then(function () {
+            wysiwyg.destroy();
+            var def = assetsLoaded;
+            assetsLoaded = true;
+            def.resolve();
+        });
+    }
+    return $.when(assetsLoaded);
+}
 
 function colorPicker (params) {
     if (!params.data) {
@@ -50,11 +75,6 @@ function colorPicker (params) {
         },
     };
 }
-/**
- * Test Utils
- *
- * In this module, we define some utility functions to create Studio objects.
- */
 
 /**
  * Create a ReportEditorManager widget.
@@ -108,20 +128,21 @@ function createReportEditorManager (params) {
     colorPicker(params);
     testUtils.mock.addMockEnvironment(parent, params);
 
-    var rem = new ReportEditorManager(parent, params);
-    // also destroy to parent widget to avoid memory leak
-    rem.destroy = function () {
-        delete rem.destroy;
-        parent.destroy();
-    };
+    return loadAssetLib(parent).then(function () {
+        var rem = new ReportEditorManager(parent, params);
+        // also destroy to parent widget to avoid memory leak
+        rem.destroy = function () {
+            delete rem.destroy;
+            parent.destroy();
+        };
 
-    var fragment = document.createDocumentFragment();
-    var selector = params.debug ? 'body' : '#qunit-fixture';
-    if (params.debug) {
-        $('body').addClass('debug');
-    }
-    parent.prependTo(selector);
-    return Wysiwyg.prepare(parent).then(function () {
+        var fragment = document.createDocumentFragment();
+        var selector = params.debug ? 'body' : '#qunit-fixture';
+        if (params.debug) {
+            $('body').addClass('debug');
+        }
+        parent.prependTo(selector);
+
         return rem.appendTo(fragment).then(function () {
             // use dom.append to call on_attach_callback
             dom.append(parent.$('.o_web_studio_client_action'), fragment, {
@@ -159,22 +180,23 @@ function createSidebar (params) {
     colorPicker(params);
     testUtils.mock.addMockEnvironment(parent, params);
 
-    var sidebar = new ReportEditorSidebar(parent, params);
-    sidebar.destroy = function () {
-        // remove the override to properly destroy sidebar and its children
-        // when it will be called the second time (by its parent)
-        delete sidebar.destroy;
-        parent.destroy();
-    };
+    return loadAssetLib(parent).then(function () {
 
-    var selector = params.debug ? 'body' : '#qunit-fixture';
-    if (params.debug) {
-        $('body').addClass('debug');
-    }
-    parent.appendTo(selector);
+        var sidebar = new ReportEditorSidebar(parent, params);
+        sidebar.destroy = function () {
+            // remove the override to properly destroy sidebar and its children
+            // when it will be called the second time (by its parent)
+            delete sidebar.destroy;
+            parent.destroy();
+        };
 
-    var fragment = document.createDocumentFragment();
-    return Wysiwyg.prepare(parent).then(function () {
+        var selector = params.debug ? 'body' : '#qunit-fixture';
+        if (params.debug) {
+            $('body').addClass('debug');
+        }
+        parent.appendTo(selector);
+
+        var fragment = document.createDocumentFragment();
         sidebar.appendTo(fragment).then(function () {
             sidebar.$el.appendTo(parent.$('.o_web_studio_editor_manager'));
         });

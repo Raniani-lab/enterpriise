@@ -5,6 +5,7 @@
             <field name="name">Appraisal Form to Fill</field>
             <field name="icon">fa-star</field>
             <field name="res_model_id" ref="hr_appraisal.model_hr_appraisal"/>
+            <field name="is_master_data">True</field>
         </record>
 
         <record id="mail_template_user_input_appraisal" model="mail.template">

@@ -6,6 +6,7 @@
         <field name="name">Handle Ticket</field>
         <field name="icon">fa-ticket</field>
         <field name="res_model_id" ref="helpdesk.model_helpdesk_ticket"/>
+        <field name="is_master_data">True</field>
     </record>
 
     <!-- Ticket related subtypes for messaging / Chatter -->

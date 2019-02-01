@@ -599,8 +599,9 @@ odoo.define('sign.document_signing', function (require) {
         resetSignature: function () {
             var self = this;
             return this._super.apply(this, arguments).then(function () {
-                if (self.defaultSignature) {
+                if (self.defaultSignature && self.defaultSignature !== self.emptySignature) {
                     self.$signatureField.jSignature("importData", self.defaultSignature);
+                    return self._waitForSignatureNotEmpty();
                 }
             });
         },
@@ -610,6 +611,10 @@ odoo.define('sign.document_signing', function (require) {
     // It uses @see SignNameAndSignature for the name and signature fields.
     var SignatureDialog = Dialog.extend({
         template: 'sign.signature_dialog',
+
+        custom_events: {
+            'signature_changed': '_onChangeSignature',
+        },
 
         //----------------------------------------------------------------------
         // Public
@@ -637,7 +642,7 @@ odoo.define('sign.document_signing', function (require) {
 
             if (!options.buttons) {
                 options.buttons = [];
-                options.buttons.push({text: _t("Adopt and Sign"), classes: "btn-primary", click: function (e) {
+                options.buttons.push({text: _t("Adopt and Sign"), classes: "btn-primary", disabled: true, click: function (e) {
                     this.confirmFunction();
                 }});
                 options.buttons.push({text: _t("Cancel"), close: true});
@@ -655,6 +660,7 @@ odoo.define('sign.document_signing', function (require) {
          * @override
          */
         start: function () {
+            this.$primaryButton = this.$footer.find('.btn-primary');
             this.nameAndSignature.replace(this.$('.o_portal_sign_name_and_signature'));
             return this._super.apply(this, arguments);
         },
@@ -710,6 +716,20 @@ odoo.define('sign.document_signing', function (require) {
          */
         validateSignature: function () {
             return this.nameAndSignature.validateSignature();
+        },
+
+        //----------------------------------------------------------------------
+        // Handlers
+        //----------------------------------------------------------------------
+
+        /**
+         * Toggles the submit button depending on the signature state.
+         *
+         * @private
+         */
+        _onChangeSignature: function () {
+            var isEmpty = this.nameAndSignature.isSignatureEmpty();
+            this.$primaryButton.prop('disabled', isEmpty);
         },
     });
 

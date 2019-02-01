@@ -370,7 +370,7 @@ Tour.register('hr_contract_salary_tour', {
         },
         {
             content: "Adopt and Sign",
-            trigger: 'footer.modal-footer button.btn-primary',
+            trigger: 'footer.modal-footer button.btn-primary:enabled',
             run: 'click',
         },
         {

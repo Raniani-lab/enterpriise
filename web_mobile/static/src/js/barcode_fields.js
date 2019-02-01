@@ -92,7 +92,7 @@ var FieldMany2OneBarcode = relational_fields.FieldMany2One.extend({
      * @private
      */
     _onBarcodeScanned: function (barcode) {
-        this._invokeMobileDialog(barcode);
+        this._search(barcode);
     },
 });
 

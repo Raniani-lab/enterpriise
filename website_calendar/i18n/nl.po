@@ -39,7 +39,7 @@ msgstr "# Afspraken"
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_calendar
 msgid "#{day['today_cls'] and 'Today' or ''}"
-msgstr "#{day['today_cls'] and 'Vandag' or ''}"
+msgstr "#{day['today_cls'] and 'Vandaag' or ''}"
 
 #. module: website_calendar
 #: code:addons/website_calendar/controllers/main.py:142

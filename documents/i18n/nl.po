@@ -145,7 +145,7 @@ msgstr "<i class=\"fa fa-upload\"/>  Opladen"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_form
 msgid "<span class=\"o_stat_text\">Action(s)</span>"
-msgstr ""
+msgstr "<span class=\"o_stat_text\">Actie(s)</span>"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
@@ -156,6 +156,8 @@ msgstr "<span style=\"color:white;\">&amp;nbsp;Documenten.</span>"
 #: model_terms:ir.ui.view,arch_db:documents.share_page
 msgid "<span title=\"Requested Document\">Requested Document</span>"
 msgstr ""
+"<span title=\"Gevraagde document\">Gevraagde document<span title=\"Requested"
+" Document\">"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_kanban
@@ -204,7 +206,7 @@ msgstr "Actie"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__action_count
 msgid "Action Count"
-msgstr ""
+msgstr "Actie teller"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__message_needaction
@@ -347,7 +349,7 @@ msgstr "Gearchiveerd"
 #: model:documents.workflow.rule,name:documents.documents_rule_finance_afv
 #: model:documents.workflow.rule,name:documents.documents_rule_internal_afv
 msgid "Ask For Validation"
-msgstr ""
+msgstr "Vraag om validatie"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
@@ -381,7 +383,7 @@ msgstr "Naam bijlage"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__attachment_type
 msgid "Attachment Type"
-msgstr ""
+msgstr "Soort bijlage"
 
 #. module: documents
 #. openerp-web
@@ -496,7 +498,7 @@ msgstr "Aanmaken"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__create_share_id
 msgid "Create Share"
-msgstr ""
+msgstr "Maak share"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__activity_option
@@ -584,7 +586,7 @@ msgstr "Verwijder"
 #. module: documents
 #: model:documents.workflow.rule,name:documents.documents_rule_internal_deprecate
 msgid "Deprecate"
-msgstr ""
+msgstr "Stel in als verouderd"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_internal_status_deprecated
@@ -650,7 +652,7 @@ msgstr "Documentlijst"
 #: code:addons/documents/static/src/xml/documents_thread.xml:6
 #, python-format
 msgid "DocumentViewer.ContentWithPdfSplit"
-msgstr ""
+msgstr "DocumentViewer.ContentWithPdfSplit"
 
 #. module: documents
 #. openerp-web
@@ -850,12 +852,12 @@ msgstr "Boekhouding"
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_documents_financial
 msgid "Financial"
-msgstr ""
+msgstr "Financieel"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_documents_fiscal
 msgid "Fiscal"
-msgstr ""
+msgstr "Fiscaal"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__folder_id
@@ -1104,7 +1106,7 @@ msgstr "Hoofd bijlage"
 #. module: documents
 #: model:ir.actions.act_window,name:documents.facet_action
 msgid "Manage Tag Categories"
-msgstr ""
+msgstr "Beheer label categorieën"
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.tag_action
@@ -1120,7 +1122,7 @@ msgstr "Manager"
 #. module: documents
 #: model:documents.workflow.rule,name:documents.documents_rule_internal_mad
 msgid "Mark As Draft"
-msgstr ""
+msgstr "Markeer als concept"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__remove_activities
@@ -1164,7 +1166,7 @@ msgstr "Maanden"
 #. module: documents
 #: model:documents.workflow.rule,name:documents.documents_rule_finance_mti
 msgid "Move To Inbox"
-msgstr ""
+msgstr "Naar inbox verplaatsen"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__folder_id
@@ -1235,14 +1237,14 @@ msgstr "Volgende activiteit type"
 #: code:addons/documents/static/src/js/documents_kanban_model.js:224
 #, python-format
 msgid "Not a file"
-msgstr ""
+msgstr "Geen bestand"
 
 #. module: documents
 #. openerp-web
 #: code:addons/documents/static/src/js/documents_kanban_model.js:227
 #, python-format
 msgid "Not attached"
-msgstr ""
+msgstr "Niet gekoppeld"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__activity_note
@@ -1328,7 +1330,7 @@ msgstr "Eigenaar"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_page
 msgid "Owner: #{document.create_uid.name}"
-msgstr ""
+msgstr "Eigenaar: #{document.create_uid.name}"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
@@ -1448,7 +1450,7 @@ msgstr "Bestand aanvragen"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_single
 msgid "Requested"
-msgstr ""
+msgstr "Aangevraagd"
 
 #. module: documents
 #: model:mail.activity.type,name:documents.mail_documents_activity_data_md
@@ -1524,7 +1526,7 @@ msgstr "Volgorde"
 #. module: documents
 #: model:documents.workflow.rule,name:documents.documents_rule_finance_2018contracts
 msgid "Set As 2019 Contracts"
-msgstr ""
+msgstr "Stel in als 2019 contracten"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__partner_id
@@ -1575,12 +1577,12 @@ msgstr "Delen type"
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__create_share_id
 msgid "Share used to create this document"
-msgstr ""
+msgstr "Share die gebruikt is om dit document aan te maken"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__document_ids
 msgid "Shared Documents"
-msgstr ""
+msgstr "Gedeelde documenten"
 
 #. module: documents
 #: model:ir.ui.menu,name:documents.share_menu
@@ -1756,6 +1758,7 @@ msgstr "Deze toegangstoken bestaat reeds"
 #: model:ir.model.fields,help:documents.field_documents_document__group_ids
 msgid "This attachment will only be available for the selected user groups"
 msgstr ""
+"Deze bijlage is alleen zichtbaar voor de geselecteerde gebruikersgroepen"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_single
@@ -1763,6 +1766,8 @@ msgid ""
 "This file has been requested.\n"
 "                <b onclick=\"$('.o_request_upload').trigger('click')\" style=\"cursor:pointer;\">Upload it</b>."
 msgstr ""
+"Dit bestand is aangevraagd.\n"
+"<b onclick=\"$('.o_request_upload').trigger('click')\" style=\"cursor:pointer;\">upload het</b>."
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__company_id

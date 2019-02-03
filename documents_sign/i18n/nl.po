@@ -89,12 +89,12 @@ msgstr "Handtekening sjabloon"
 #. module: documents_sign
 #: model:ir.model.fields,field_description:documents_sign.field_sign_template__folder_id
 msgid "Signed Folder"
-msgstr ""
+msgstr "Getekende mappen"
 
 #. module: documents_sign
 #: model:ir.model.fields,field_description:documents_sign.field_sign_template__documents_tag_ids
 msgid "Signed Tags"
-msgstr ""
+msgstr "Getekende labels"
 
 #. module: documents_sign
 #: selection:documents.workflow.rule,create_model:0

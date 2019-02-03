@@ -395,7 +395,7 @@ msgstr "Alacsony"
 #: model:ir.model.fields,field_description:quality.field_quality_check__message_main_attachment_id
 #: model:ir.model.fields,field_description:quality.field_quality_point__message_main_attachment_id
 msgid "Main Attachment"
-msgstr ""
+msgstr "Fő melléklet"
 
 #. module: quality
 #: model:res.groups,name:quality.group_quality_manager

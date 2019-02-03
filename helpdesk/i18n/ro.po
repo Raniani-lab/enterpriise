@@ -339,6 +339,8 @@ msgid ""
 "Add columns to configure <b>stages for your tickets</b>.<br/><i>e.g. "
 "Awaiting Customer Feedback, Customer Followup, ...</i>"
 msgstr ""
+"Adăugați coloane pentru a configura <b>etapele unui tichet</b>. <br/>În "
+"așteptarea feedback-ului clientului, urmărirea clienților, ... <i>"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__alias_id

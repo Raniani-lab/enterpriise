@@ -185,7 +185,7 @@ msgstr "Fedex configuratie"
 #. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_document_stock_type
 msgid "Fedex Document Stock Type"
-msgstr ""
+msgstr "Fedex label voorraadsoort"
 
 #. module: delivery_fedex
 #: model:delivery.carrier,name:delivery_fedex.delivery_carrier_fedex_inter

@@ -7,8 +7,8 @@
 # Eric Geens <ericgeens@yahoo.com>, 2018
 # Martin Trigaux, 2019
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
-# Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
 # Gunther Clauwaert <gclauwae@hotmail.com>, 2019
+# Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -16,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-01-16 08:13+0000\n"
 "PO-Revision-Date: 2016-08-05 13:32+0000\n"
-"Last-Translator: Gunther Clauwaert <gclauwae@hotmail.com>, 2019\n"
+"Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -35,6 +35,8 @@ msgid ""
 "<i class=\"fa fa-fw fa-tags\" aria-label=\"Number of leads\" title=\"Number "
 "of leads\" role=\"img\"/>"
 msgstr ""
+"<i class=\"fa fa-fw fa-tags\" aria-label=\"Aantal leads\" title=\"Aantal "
+"leads\" role=\"img\"/>"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_needaction
@@ -494,7 +496,7 @@ msgstr "Verkoper (Teamlid)"
 #. module: website_crm_score
 #: model:ir.actions.act_window,name:website_crm_score.team_user_action
 msgid "Salespersons"
-msgstr ""
+msgstr "Verkopers"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__score

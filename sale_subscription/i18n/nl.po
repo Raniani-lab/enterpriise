@@ -1512,7 +1512,7 @@ msgid ""
 "                be time-bounded or not. In case of a limited period, they are flagged as to be renewed\n"
 "                one month from the end date."
 msgstr ""
-"Abonnementen maken om terugkerende facturen te beheren &amp; betalingen. Abonnementen kunnen\n"
+"Abonnementen maken om terugkerende facturen &amp; betalingen te beheren. Abonnementen kunnen\n"
 "tijdgebonden zijn of niet. In het geval van een beperkte periode, worden ze gemarkeerd als te worden verlengd\n"
 "één maand na de einddatum."
 
@@ -1921,7 +1921,7 @@ msgid ""
 "If present, this condition must be satisfied before executing the action "
 "rule."
 msgstr ""
-"Indien aanwezig, moet deze conditie zijn voldaan voordat de actie regel "
+"Indien aanwezig, moet deze conditie voldaan zijn voordat de actie regel "
 "wordt uitgevoerd."
 
 #. module: sale_subscription
@@ -2474,7 +2474,7 @@ msgstr "Kantoorschoonmaak-abonnement (jaarlijks)"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__on_change_fields
 msgid "On Change Fields Trigger"
-msgstr "On change veld trigger"
+msgstr "Bij wijziging veld trigger"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_form

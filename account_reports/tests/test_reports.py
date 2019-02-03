@@ -2,6 +2,8 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from datetime import date
 import calendar
+import time
+
 from unittest.mock import patch
 
 from odoo.tests import common

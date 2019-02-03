@@ -139,9 +139,10 @@ def generate_module(module, data):
         record_deps = OrderedDict.fromkeys(records, records.browse())
         for record in records:
             xmlid = get_xmlid(record)
-            if xmlid.split('.')[0] != module.name:
+            module_name = xmlid.split('.', 1)[0]
+            if module_name != module.name and module_name != '__export__':
                 # data depends on a record from another module
-                depends.add(xmlid.split('.')[0])
+                depends.add(module_name)
             for field in fields:
                 rel_records = get_relations(record, field)
                 if not rel_records:
@@ -161,9 +162,11 @@ def generate_module(module, data):
         # create the XML containing the generated record nodes
         nodes = []
         for record in records:
-            record_node, record_skipped = generate_record(record, get_xmlid)
-            nodes.append(record_node)
-            skipped.extend(record_skipped)
+            xmlid = get_xmlid(record)
+            if xmlid.split('.', 1)[0] != '__export__':
+                record_node, record_skipped = generate_record(record, get_xmlid)
+                nodes.append(record_node)
+                skipped.extend(record_skipped)
         root = E.odoo(*nodes)
         xml = etree.tostring(root, pretty_print=True, encoding='UTF-8', xml_declaration=True)
 

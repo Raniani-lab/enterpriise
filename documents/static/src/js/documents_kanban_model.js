@@ -52,7 +52,7 @@ var DocumentsKanbanModel = KanbanModel.extend({
     load: function (params) {
         var self = this;
         var _super = this._super.bind(this);
-        return this._fetchFolders().then(function (folders) {
+        return this._fetchFolders(params.context).then(function (folders) {
             var defaultFolderID = folders.length ? folders[0].id : false;
             params = _.extend({}, params, {
                 folderID: defaultFolderID,
@@ -190,16 +190,18 @@ var DocumentsKanbanModel = KanbanModel.extend({
     },
     /**
      * Fetch all folders, and convert them into a tree structure
+     * @param {Object} context
      *
      * @private
      * @returns {Deferred<array>}
      */
-    _fetchFolders: function () {
+    _fetchFolders: function (context) {
         var self = this;
         return this._rpc({
             model: 'documents.folder',
             method: 'search_read',
             fields: ['parent_folder_id', 'name', 'id', 'description'],
+            context: context,
         }).then(function (folders) {
             return self._buildFoldersTree(folders, false);
         });

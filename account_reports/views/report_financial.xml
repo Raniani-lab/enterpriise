@@ -13,7 +13,7 @@
 
 <template id="line_caret_options">
     <li t-if="line['caret_options'] == 'account.account'"><a role="menuitem" tabindex="-1" t-att-data-id="line['id']" action="open_general_ledger" class="dropdown-item">General Ledger</a></li>
-    <li t-if="line['caret_options'] == 'account.account'"><a role="menuitem" tabindex="-1" t-att-data-id="line['id']" action="open_journal_items" class="dropdown-item">Journal Items</a></li>
+    <li t-if="line['caret_options'] == 'account.account'"><a role="menuitem" tabindex="-1" t-att-data-id="line['id']" t-att-data-financial_group_line_id="line.get('parent_id')" action="open_journal_items" class="dropdown-item">Journal Items</a></li>
     <li t-if="line['caret_options'] == 'account.invoice.out'">
       <a role="menuitem" tabindex="-1" t-att-data-id="line['id']" t-att-data-model="line.get('model', 'account.move.line')" t-att-data-action-context="line.get('action_context')" data-object="account.invoice" action="open_document" class="dropdown-item">View Invoice</a>
     </li>

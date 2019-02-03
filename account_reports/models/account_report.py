@@ -370,8 +370,15 @@ class AccountReport(models.AbstractModel):
             ctx.update({
                     'search_default_account_id': [active_id],
             })
-            action['context'] = ctx
+
         if options:
+            if options.get('journals'):
+                selected_journals = [journal['id'] for journal in options['journals'] if journal.get('selected')]
+                if selected_journals: # Otherwise, nothing is selected, so we want to display everything
+                    ctx.update({
+                        'search_default_journal_id': selected_journals,
+                    })
+
             domain = expression.normalize_domain(ast.literal_eval(action.get('domain', '[]')))
             if options.get('analytic_accounts'):
                 analytic_ids = [int(r) for r in options['analytic_accounts']]
@@ -382,7 +389,12 @@ class AccountReport(models.AbstractModel):
                     domain = expression.AND([domain, [('date', '>=', opt_date['date_from'])]])
                 if opt_date.get('date_to'):
                     domain = expression.AND([domain, [('date', '<=', opt_date['date_to'])]])
+            # In case the line has been generated for a "group by" financial line, append the parent line's domain to the one we created
+            if params.get('financial_group_line_id'):
+                parent_financial_report_line = self.env['account.financial.html.report.line'].browse(params['financial_group_line_id'])
+                domain = expression.AND([domain, safe_eval(parent_financial_report_line.domain)])
             action['domain'] = domain
+        action['context'] = ctx
         return action
 
     def reverse(self, values):
@@ -1141,7 +1153,8 @@ class AccountReport(models.AbstractModel):
                 x += colspan
             y_offset += 1
         ctx = self._set_context(options)
-        ctx.update({'no_format':True, 'print_mode':True})
+        ctx.update({'no_format':True, 'print_mode':True, 'prefetch_fields': False})
+        # deactivating the prefetching saves ~35% on get_lines running time
         lines = self.with_context(ctx)._get_lines(options)
 
         if options.get('hierarchy'):

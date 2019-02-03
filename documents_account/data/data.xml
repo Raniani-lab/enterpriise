@@ -41,7 +41,7 @@
             <field name="sequence">11</field>
             <field name="name">Create Vendor Refund</field>
             <field name="remove_activities">True</field>
-            <field name="create_model">account.invoice.out_refund</field>
+            <field name="create_model">account.invoice.in_refund</field>
             <field name="domain_folder_id" ref="documents.documents_finance_folder"/>
         </record>
 

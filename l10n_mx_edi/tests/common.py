@@ -96,6 +96,7 @@ class InvoiceTransactionCase(AccountingTestCase):
     def create_invoice(self, inv_type='out_invoice', currency_id=None):
         if currency_id is None:
             currency_id = self.usd.id
+        self.partner_agrolait.lang = None
         invoice = self.invoice_model.with_env(self.env(user=self.user_billing)).create({
             'partner_id': self.partner_agrolait.id,
             'type': inv_type,

@@ -20,6 +20,15 @@ class AccountFollowupReport(models.AbstractModel):
 
     filter_partner_id = False
 
+    def _get_options(self, previous_options=None):
+        options = super()._get_options(previous_options)
+        # It doesn't make sense to allow multicompany for these kind of reports
+        # 1. Followup mails need to have the right headers from the right company
+        # 2. Separation of business seems natural: a customer wouldn't know or care that the two companies are related
+        if 'multi_company' in options:
+            del options['multi_company']
+        return options
+
     def _get_columns_name(self, options):
         """
         Override
@@ -53,7 +62,7 @@ class AccountFollowupReport(models.AbstractModel):
         res = {}
         today = fields.Date.today()
         line_num = 0
-        for l in partner.unreconciled_aml_ids:
+        for l in partner.unreconciled_aml_ids.filtered(lambda l: l.company_id == self.env.user.company_id):
             if l.company_id == self.env.user.company_id:
                 if self.env.context.get('print_mode') and l.blocked:
                     continue

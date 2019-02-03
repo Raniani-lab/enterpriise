@@ -110,7 +110,7 @@ class AccountBankStatementImport(models.TransientModel):
                                           """, namespaces=ns)
                     entry_vals['ref'] = ref and ref[0] or False
                     unique_import_ref = entry_details.xpath('ns:AcctSvcrRef/text()', namespaces=ns)
-                    if unique_import_ref and not is_full_of_zeros(unique_import_ref[0]):
+                    if unique_import_ref and not is_full_of_zeros(unique_import_ref[0]) and unique_import_ref[0] != 'NOTPROVIDED':
                         entry_ref = entry_details.xpath('ns:NtryRef/text()', namespaces=ns)
                         if entry_ref:
                             entry_vals['unique_import_id'] = '{}-{}'.format(unique_import_ref[0], entry_ref[0])
@@ -119,7 +119,7 @@ class AccountBankStatementImport(models.TransientModel):
                         else:
                             entry_vals['unique_import_id'] = '{}-{}'.format(unique_import_ref[0], sequence)
                     else:
-                        entry_vals['unique_import_id'] = '{}-{}'.format(statement_vals['name'], sequence)
+                        entry_vals['unique_import_id'] = '{}-{}-{}'.format(statement_vals['name'], entry_vals['date'], sequence)
 
                     unique_import_set.add(entry_vals['unique_import_id'])
                     transactions.append(entry_vals)

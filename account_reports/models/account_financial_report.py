@@ -1192,6 +1192,7 @@ class AccountFinancialReportLine(models.Model):
                         'parent_id': line.id,
                         'columns': [{'name': l} for l in res[domain_id]],
                         'caret_options': groupby == 'account_id' and 'account.account' or groupby,
+                        'financial_group_line_id': line.id,
                     }
                     if line.financial_report_id.name == 'Aged Receivable':
                         vals['trust'] = self.env['res.partner'].browse([domain_id]).trust

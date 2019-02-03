@@ -132,7 +132,9 @@ class AccountBatchPayment(models.Model):
     def export_batch_payment(self):
         export_file_data = {}
         #export and save the file for each batch payment
-        for record in self:
+        self.check_access_rights('write')
+        self.check_access_rule('write')
+        for record in self.sudo():
             export_file_data = record._generate_export_file()
             record.export_file = export_file_data['file']
             record.export_filename = export_file_data['filename']

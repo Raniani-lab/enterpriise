@@ -26,7 +26,10 @@
                     <div class="o_row" attrs="{'invisible': [('payment_type', '!=', 'inbound')]}">
                         <field name="l10n_mx_edi_pac_status" states="posted,sent,reconciled,cancelled"/>
                         <button name="l10n_mx_edi_update_pac_status" string="Retry" class="oe_link" type="object" groups="account.group_account_invoice"
-                            attrs="{'invisible':[('l10n_mx_edi_pac_status', 'in', ['signed', 'cancelled', False])]}"/>
+                            attrs="{'invisible':[('l10n_mx_edi_pac_status', 'in', ['none', 'signed', 'cancelled', False])]}"/>
+                        <button name="l10n_mx_edi_force_payment_complement" string="Force REP" class="oe_link" type="object" groups="account.group_account_invoice"
+                            help="It is not necessary generate the Electronic Payment Receipt (REP) for this payment, but It can be forced by pressing this button."
+                            attrs="{'invisible':['|', ('l10n_mx_edi_pac_status', 'in', ['retry', 'to_sign', 'signed', 'to_cancel', 'cancelled', False]), ('state', 'in', ['draft', 'cancelled'])]}"/>
                     </div>
                     <label for="l10n_mx_edi_sat_status" states="posted,sent,reconciled,cancelled" attrs="{'invisible': [('payment_type', '!=', 'inbound')]}"/>
                     <div class="o_row" attrs="{'invisible': [('payment_type', '!=', 'inbound')]}">

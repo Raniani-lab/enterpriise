@@ -80,6 +80,7 @@ var DialingPanel = Widget.extend({
         this.$el.css("bottom", 0);
         this.$tabsPanel = this.$('.o_dial_panel');
         this.$tabs = this.$('.o_dial_tabs');
+        this.$mainButtons = this.$('.o_dial_main_buttons');
         this.$callButton = this.$('.o_dial_call_button');
         this.$postponeButton = this.$('.o_dial_postpone_button');
         this.$searchBar = this.$('.o_dial_searchbar');
@@ -121,7 +122,14 @@ var DialingPanel = Widget.extend({
     // Private
     //--------------------------------------------------------------------------
 
-
+    /**
+     * Block the VOIP widget
+     * @private
+     */
+    _blockOverlay: function (message) {
+        this.$tabsPanel.block({message: message});
+        this.$mainButtons.block();
+    },
     /**
      * @private
      */
@@ -246,6 +254,14 @@ var DialingPanel = Widget.extend({
             this.$keypadInputDiv.show();
             this.$keypadInput.focus();
         }
+    },
+    /**
+     * Unblock the VOIP widget
+     * @private
+     */
+    _unblockOverlay: function () {
+        this.$tabsPanel.unblock();
+        this.$mainButtons.unblock();
     },
 
     //--------------------------------------------------------------------------
@@ -467,12 +483,15 @@ var DialingPanel = Widget.extend({
         this._hidePostponeButton();
         this._showCallButton();
 
-        if (ev.data.temporary) {
-            this.$().block({message: message});
+        if (ev.data.connecting){
+            this._blockOverlay(message);
+        } else if (ev.data.temporary) {
+            this._blockOverlay(message);
             this.$('.blockOverlay').on("click", function () {self._onSipErrorResolved();});
             this.$('.blockOverlay').attr('title', _t('Click to unblock'));
         } else {
-            this.$().block({message: message + '<br/><button type="button" class="btn btn-danger btn-configuration">Configuration</button>'});
+            this._blockOverlay(message + '<br/><button type="button" class="btn btn-danger btn-configuration">Configuration</button>');
+
             this.$('.btn-configuration').on("click", function () {
                 //Call in order to get the id of the user's preference view instead of the user's form view
                 self._rpc({
@@ -498,7 +517,7 @@ var DialingPanel = Widget.extend({
      * @private
      */
     _onSipErrorResolved: function () {
-        this.$().unblock();
+        this._unblockOverlay();
     },
     /**
      * @private

@@ -607,6 +607,9 @@ var sale_subscription_dashboard_detailed = sale_subscription_dashboard_abstract.
     },
 
     load_chart_mrr_growth_stat: function(div_to_display, result) {
+        if (!result.new_mrr) {
+            return;  // no data, no graph, no crash
+        }
         var data_chart = [
             {
                 values: result.new_mrr,

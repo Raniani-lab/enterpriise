@@ -107,6 +107,7 @@ class SaleOrder(models.Model):
                 values = self._prepare_subscription_data(template)
                 values['recurring_invoice_line_ids'] = to_create[template]._prepare_subscription_line_data()
                 subscription = self.env['sale.subscription'].sudo().create(values)
+                subscription.onchange_date_start()
                 res.append(subscription.id)
                 to_create[template].write({'subscription_id': subscription.id})
                 subscription.message_post_with_view(

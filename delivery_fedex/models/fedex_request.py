@@ -4,6 +4,7 @@ import binascii
 import logging
 import os
 import suds  # should work with suds or its fork suds-jurko
+import re
 
 from datetime import datetime
 from suds.client import Client
@@ -168,7 +169,8 @@ class FedexRequest():
             package.Dimensions.Height = package_height
             package.Dimensions.Width = package_width
             package.Dimensions.Length = package_length
-            package.Dimensions.Units = "IN"
+            # TODO in master, add unit in product packaging and perform unit conversion
+            package.Dimensions.Units = "IN" if self.RequestedShipment.TotalWeight.Units == 'LB' else 'CM'
         if po_number:
             po_reference = self.client.factory.create('CustomerReference')
             po_reference.CustomerReferenceType = 'P_O_NUMBER'
@@ -299,6 +301,13 @@ class FedexRequest():
     def commodities(self, commodity_currency, commodity_amount, commodity_number_of_piece, commodity_weight_units,
                     commodity_weight_value, commodity_description, commodity_country_of_manufacture, commodity_quantity,
                     commodity_quantity_units, commodity_harmonized_code):
+        return self._commodities(commodity_currency, commodity_amount, commodity_number_of_piece, commodity_weight_units,
+                        commodity_weight_value, commodity_description, commodity_country_of_manufacture, commodity_quantity,
+                        commodity_quantity_units, '')
+
+    def _commodities(self, commodity_currency, commodity_amount, commodity_number_of_piece, commodity_weight_units,
+                    commodity_weight_value, commodity_description, commodity_country_of_manufacture, commodity_quantity,
+                    commodity_quantity_units, commodity_harmonized_code):
         self.hasCommodities = True
         commodity = self.client.factory.create('Commodity')
         commodity.UnitPrice.Currency = commodity_currency
@@ -311,9 +320,12 @@ class FedexRequest():
         commodity_weight.Units = commodity_weight_units
 
         commodity.Weight = commodity_weight
-        commodity.Description = commodity_description
+        commodity.Description = re.sub(r'[\[\]<>;={}"|]', '', commodity_description)
         commodity.Quantity = commodity_quantity
         commodity.QuantityUnits = commodity_quantity_units
+        commodity.CustomsValue.Currency = commodity_currency
+        commodity.CustomsValue.Amount = commodity_quantity * commodity_amount
+
         commodity.HarmonizedCode = commodity_harmonized_code
 
         self.listCommodities.append(commodity)

@@ -224,6 +224,8 @@ class AccountPayment(models.Model):
             not self.invoice_ids.filtered(lambda i: i.type != 'out_invoice'))
         if not required:
             return required
+        if self.l10n_mx_edi_pac_status != 'none':
+            return True
         if self.invoice_ids and False in self.invoice_ids.mapped('l10n_mx_edi_cfdi_uuid'):
             raise UserError(_(
                 'Some of the invoices that will be paid with this record '
@@ -249,8 +251,11 @@ class AccountPayment(models.Model):
                 'paid amount is bellow the sum of invoices the payment '
                 'will be automatically signed'
                 '</p>'))
+        categ_force = self._l10n_mx_edi_get_force_rep_category()
+        force = self._context.get('force_ref') or (
+            categ_force and categ_force in self.partner_id.category_id)
         if self.invoice_ids and not self.invoice_ids.filtered(
-                lambda i: i._l10n_mx_edi_get_payment_policy() == 'PPD'):
+                lambda i: i.l10n_mx_edi_get_payment_method_cfdi() == 'PPD') and not force:
             messages.append(_(
                 '<b>The invoices related with this payment have the payment '
                 'method as <b>PUE</b>.'
@@ -266,8 +271,13 @@ class AccountPayment(models.Model):
                 ))
         if messages:
             self.message_post(body=account_invoice.create_list_html(messages))
-            return False
+            return force or False
         return required
+
+    @api.model
+    def _l10n_mx_edi_get_force_rep_category(self):
+        return self.env.ref(
+            'l10n_mx_edi.res_partner_category_force_rep', False)
 
     @api.multi
     def l10n_mx_edi_log_error(self, message):
@@ -302,7 +312,8 @@ class AccountPayment(models.Model):
 
     @api.multi
     def _l10n_mx_edi_retry(self):
-        for rec in self.filtered(lambda r: r.l10n_mx_edi_is_required()):
+        rep_is_required = self.filtered(lambda r: r.l10n_mx_edi_is_required())
+        for rec in rep_is_required:
             cfdi_values = rec._l10n_mx_edi_create_cfdi_payment()
             error = cfdi_values.pop('error', None)
             cfdi = cfdi_values.pop('cfdi', None)
@@ -330,6 +341,9 @@ class AccountPayment(models.Model):
                 body=_('CFDI document generated (may be not signed)'),
                 attachment_ids=[attachment_id.id])
             rec._l10n_mx_edi_sign()
+        (self - rep_is_required).write({
+            'l10n_mx_edi_pac_status': 'none',
+        })
 
     @api.multi
     def _l10n_mx_edi_create_cfdi_payment(self):
@@ -405,7 +419,8 @@ class AccountPayment(models.Model):
         payments."""
         self.ensure_one()
         invoice_obj = self.env['account.invoice']
-        precision_digits = self.currency_id.decimal_places
+        precision_digits = self.env['decimal.precision'].precision_get(
+            self.currency_id.name)
         values = {
             'record': self,
             'supplier': self.company_id.partner_id.commercial_partner_id,
@@ -452,7 +467,9 @@ class AccountPayment(models.Model):
             amount_payment = sum([data.get('amount', 0.0) for data in amount])
             total_paid += amount_payment
             total_curr += invoice.currency_id.with_context(
-                date=self.payment_date).compute(amount_payment, self.currency_id)
+                date=self.payment_date)._convert(
+                    amount_payment, self.currency_id, self.company_id,
+                    self.payment_date)
         precision = self.env['decimal.precision'].precision_get('Account')
         if not self.move_reconciled and float_compare(
                 self.amount, total_curr, precision_digits=precision) > 0:
@@ -769,6 +786,12 @@ class AccountPayment(models.Model):
                 status[0] if status else '', 'none')
 
     @api.multi
+    def l10n_mx_edi_force_payment_complement(self):
+        '''Allow force the CFDI generation when the complement is not required
+        '''
+        self.with_context(force_ref=True)._l10n_mx_edi_retry()
+
+    @api.multi
     def _set_cfdi_origin(self, uuid):
         """Try to write the origin in of the CFDI, it is important in order
         to have a centralized way to manage this elements due to the fact
@@ -787,6 +810,7 @@ class AccountPayment(models.Model):
         for record in self.filtered('l10n_mx_edi_cfdi_uuid'):
             record.write({
                 'l10n_mx_edi_expedition_date': False,
+                'l10n_mx_edi_pac_status': 'none',
                 'l10n_mx_edi_time_payment': False,
                 'l10n_mx_edi_origin': record._set_cfdi_origin(
                     record.l10n_mx_edi_cfdi_uuid),

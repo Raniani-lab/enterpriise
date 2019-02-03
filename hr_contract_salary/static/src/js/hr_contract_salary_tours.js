@@ -314,9 +314,19 @@ Tour.register('hr_contract_salary_tour', {
             run: 'click',
         },
         {
+            content: "Select automatic signature",
+            trigger: '.o_sign_mode[data-mode=auto]',
+            run: 'click',
+        },
+        {
             content: "Adopt and Sign",
             trigger: 'footer.modal-footer button.btn-primary',
-            run: 'click',
+            run: function (actions) {
+                // the jsSignature library draws the signature in a setTimeout,
+                // and we have to wait for it to be drawn before validating,
+                // otherwise it would consider that the signature is still empty
+                setTimeout(actions.auto.bind(actions), 10);
+            },
         },
         // fill date
         {

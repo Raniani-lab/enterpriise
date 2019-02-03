@@ -442,8 +442,9 @@ class WebStudioController(http.Controller):
             node = op.get('node')
             if node and node.get('tag') == 'field' and node.get('field_description'):
                 ttype = node['field_description'].get('type')
+                is_related = node['field_description'].get("related")
                 is_image = node['attrs'].get('widget') == 'image'
-                return ttype == 'binary' and not is_image
+                return ttype == 'binary' and not is_image and not is_related
             return False
 
         # Every time the creation of a binary field is requested,

@@ -100,6 +100,7 @@
 
     <template id="usps_shipping_request" name="USPS">
         <!-- International -->
+        <t t-translation="off">
         <t t-if="api in ['eVSPriorityMailIntlCertify', 'eVSPriorityMailIntl','eVSExpressMailIntlCertify', 'eVSExpressMailIntl','eVSFirstClassMailIntlCertify', 'eVSFirstClassMailIntl']">
             <Option />
             <Revision t-esc="revision"/>
@@ -251,6 +252,7 @@
             </t>
             <Machinable t-esc='Machinable'/>
             <ImageType t-esc="ImageType"/>
+        </t>
         </t>
     </template>
 

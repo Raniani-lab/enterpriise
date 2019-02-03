@@ -8,7 +8,7 @@ class KeyboardUSBDriver(USBDriver):
             for itf in cfg:
                 if itf.bInterfaceClass == 3 and itf.bInterfaceProtocol == 1:
                     return True
-        return (getattr(self.dev, 'idVendor') == 0x046d and getattr(self.dev, 'idProduct') == 0xc31c) or (getattr(self.dev, 'idVendor') == 0x413d and getattr(self.dev, 'idProduct') == 0x2107)
+        return False
 
     def value(self):
         return self.value

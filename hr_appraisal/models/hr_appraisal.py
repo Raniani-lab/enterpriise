@@ -170,7 +170,9 @@ class HrAppraisal(models.Model):
                     compose_message_wizard = ComposeMessage.with_context(active_id=appraisal.id, active_model=appraisal._name, notif_layout="mail.mail_notification_light").create(values)
                     compose_message_wizard.send_mail()  # Sends a mail and creates a survey.user_input
                     if employee.user_id:
-                        user_input = survey.user_input_ids.filtered(lambda user_input: user_input.partner_id == employee.user_id.partner_id and user_input.state != 'done')
+                        user_input = survey.user_input_ids.filtered(
+                            lambda user_input: user_input.partner_id == employee.user_id.partner_id and user_input.appraisal_id == appraisal and user_input.state != 'done'
+                        )
                         if user_input:
                             form_url = survey.public_url + '/' + user_input[0].token
                         else:

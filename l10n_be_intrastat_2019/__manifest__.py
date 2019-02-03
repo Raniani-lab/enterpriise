@@ -12,5 +12,5 @@ Adds the possibility to specify the origin country of goods and the partner VAT 
         'views/account_invoice_line_view.xml',
         'data/intrastat_export.xml',
     ],
-    'auto_install': False,  # This should be changed to True in January 2019
+    'auto_install': True,
 }

@@ -43,6 +43,7 @@
             padding-right: 45px;
             table {
                 padding: 0 45px 0 0;
+                border-collapse: separate;
             }
             thead {
                 display: none;
@@ -73,9 +74,6 @@
                     border-right-style: none;
                     border-left-style: none;
                 }
-            }
-            tbody > tr:last-child, tfoot {
-                display: none;
             }
         }
     }

@@ -127,7 +127,7 @@
             <field name="code">aeat_mod_303_11</field>
             <field name="parent_id" ref="mod_303_title_2"/>
             <field name="domain" eval="[('tax_line_id.tag_ids','=',ref('l10n_es.mod_303_10_11')), ('invoice_id.type','not in',['out_refund','in_refund'])]"/>
-            <field name="formulas">balance = sum.balance</field>
+            <field name="formulas">balance = -sum.balance</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="11"/>
             <field name="level" eval="5"/>
@@ -158,8 +158,8 @@
             <field name="name">[13] Cuota</field>
             <field name="code">aeat_mod_303_13</field>
             <field name="parent_id" ref="mod_303_title_4"/>
-            <field name="domain" eval="[('tax_ids.tag_ids','=',ref('l10n_es.mod_303_12_13')), ('invoice_id.type','not in',['out_refund','in_refund'])]"/>
-            <field name="formulas">balance = sum.balance</field>
+            <field name="domain" eval="[('tax_line_id.tag_ids','=',ref('l10n_es.mod_303_12_13')), ('invoice_id.type','not in',['out_refund','in_refund'])]"/>
+            <field name="formulas">balance = -sum.balance</field>
             <field name="groupby">account_id</field>
             <field name="sequence" eval="14"/>
             <field name="level" eval="5"/>

@@ -7,7 +7,8 @@ class WorkflowActionRuleAccount(models.Model):
 
     has_business_option = fields.Boolean(default=True, compute='_get_business')
     create_model = fields.Selection(selection_add=[('account.invoice.in_invoice', "Vendor bill"),
-                                                   ('account.invoice.out_refund', "Credit note")])
+                                                   ('account.invoice.out_refund', "Credit note"),
+                                                   ('account.invoice.in_refund', 'Vendor Credit Note')])
 
     def create_record(self, documents=None):
         rv = super(WorkflowActionRuleAccount, self).create_record(documents=documents)

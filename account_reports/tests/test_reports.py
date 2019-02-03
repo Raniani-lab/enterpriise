@@ -13,6 +13,53 @@ from odoo import fields
 
 class TestAccountReports(common.TransactionCase):
 
+    def setUp(self):
+        super().setUp()
+        self.company = self.env.user.company_id
+        self.partner_timmy_thomas = self.env['res.partner'].create({
+            'name': 'Timmy Thomas',
+        })
+        self.account_type_other = self.env['account.account.type'].create({
+            'name': 'other',
+            'type': 'other',
+        })
+        #  Account types
+        self.account_type_rcv = self.env['account.account.type'].create({
+            'name': 'receivable',
+            'type': 'receivable',
+        })
+        # Accounts
+        self.account_rcv = self.env['account.account'].create({
+            'name': 'RCV',
+            'code': '001',
+            'user_type_id': self.account_type_rcv.id,
+            'reconcile': True,
+            'company_id': self.company.id,
+        })
+        self.account_sale = self.env['account.account'].create({
+            'name': 'SALE',
+            'code': '002',
+            'user_type_id': self.account_type_other.id,
+            'reconcile': False,
+            'company_id': self.company.id,
+        })
+        self.sale_journal = self.env['account.journal'].create({
+            'name': 'sale',
+            'code': 'SALE',
+            'type': 'sale',
+            'company_id': self.company.id,
+            'default_debit_account_id': self.account_sale.id,
+            'default_credit_account_id': self.account_sale.id,
+        })
+        mock_date = time.strftime('%Y') + '-06-26'
+        self.minimal_options = {
+            'date': {
+                'date_from': mock_date,
+                'date_to': mock_date,
+            },
+            'ir_filters': [],
+        }
+
     def test_05_apply_date_filter(self):
         # Greatly dependent on: account_reports.py:902 in _apply_date_filter
         def patched_today():

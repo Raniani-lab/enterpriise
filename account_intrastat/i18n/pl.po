@@ -3,23 +3,23 @@
 # * account_intrastat
 # 
 # Translators:
-# Martin Trigaux, 2018
-# zbik2607 <darek@krokus.com.pl>, 2018
-# Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2018
-# Judyta Kaźmierczak <judyta.kazmierczak@openglobe.pl>, 2018
-# Piotr Szlązak <szlazakpiotr@gmail.com>, 2018
-# Marcin Młynarczyk <mlynarczyk@gmail.com>, 2018
-# Monika Grzelak <m.e.grzelak@gmail.com>, 2018
-# Andrzej Donczew <a.donczew@hadron.eu.com>, 2018
-# Maksym <ms@myodoo.pl>, 2018
+# Martin Trigaux, 2019
+# zbik2607 <darek@krokus.com.pl>, 2019
+# Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2019
+# Judyta Kaźmierczak <judyta.kazmierczak@openglobe.pl>, 2019
+# Piotr Szlązak <szlazakpiotr@gmail.com>, 2019
+# Marcin Młynarczyk <mlynarczyk@gmail.com>, 2019
+# Monika Grzelak <m.e.grzelak@gmail.com>, 2019
+# Paweł Wodyński <pw@myodoo.pl>, 2019
+# Maksym <ms@myodoo.pl>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-08-24 11:36+0000\n"
-"Last-Translator: Maksym <ms@myodoo.pl>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:12+0000\n"
+"PO-Revision-Date: 2019-01-16 08:36+0000\n"
+"Last-Translator: Maksym <ms@myodoo.pl>, 2019\n"
 "Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -155,11 +155,6 @@ msgid "Extended Mode"
 msgstr ""
 
 #. module: account_intrastat
-#: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_intrastat_extended
-msgid "Extended,"
-msgstr ""
-
-#. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_account_intrastat_report__id
 #: model:ir.model.fields,field_description:account_intrastat.field_account_sales_report__id
 msgid "ID"
@@ -190,6 +185,7 @@ msgstr "Intrastat"
 
 #. module: account_intrastat
 #: model:ir.actions.act_window,name:account_intrastat.action_report_intrastat_code_tree
+#: model:ir.model,name:account_intrastat.model_account_intrastat_code
 #: model:ir.ui.menu,name:account_intrastat.menu_report_intrastat_code
 #: model_terms:ir.ui.view,arch_db:account_intrastat.view_report_intrastat_code_form
 msgid "Intrastat Code"
@@ -242,7 +238,7 @@ msgstr "Faktura"
 #. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_account_invoice_line
 msgid "Invoice Line"
-msgstr "linia faktury"
+msgstr "Pozycja faktury"
 
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_account_intrastat_report____last_update
@@ -279,8 +275,8 @@ msgstr ""
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_intrastat_extended
-msgid "Standard,"
-msgstr ""
+msgid "Standard"
+msgstr "Standard"
 
 #. module: account_intrastat
 #: code:addons/account_intrastat/models/account_intrastat_report.py:29
@@ -346,8 +342,3 @@ msgstr "Wartość"
 #, python-format
 msgid "Weight"
 msgstr "Waga"
-
-#. module: account_intrastat
-#: model:ir.model,name:account_intrastat.model_account_intrastat_code
-msgid "account.intrastat.code"
-msgstr ""

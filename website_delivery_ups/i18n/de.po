@@ -3,14 +3,21 @@
 # * website_delivery_ups
 # 
 # Translators:
-# Martin Trigaux, 2018
+# Ermin Trevisan <trevi@twanda.com>, 2017
+# Ralf Hilgenstock <rh@dialoge.info>, 2017
+# AppleMentalist <felix.schnatbaum@gmail.com>, 2017
+# Tina Rittmüller <tr@ife.de>, 2017
+# Fabian Liesch <fabian.liesch@gmail.com>, 2017
+# e2f <projects@e2f.com>, 2018
+# Martin Trigaux, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:07+0000\n"
-"PO-Revision-Date: 2018-09-21 14:07+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"PO-Revision-Date: 2017-12-13 15:27+0000\n"
+"Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,6 +29,11 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website_delivery_ups.payment_delivery_methods_inherit_website_sale_delivery
 msgid "(Bill My Account)"
 msgstr "(Mein Konto abrechnen)"
+
+#. module: website_delivery_ups
+#: model_terms:ir.ui.view,arch_db:website_delivery_ups.payment_delivery_methods_inherit_website_sale_delivery
+msgid "<i class=\"fa fa-trash-o\" role=\"img\" aria-label=\"Delete\" title=\"Delete\"/>"
+msgstr ""
 
 #. module: website_delivery_ups
 #: model_terms:payment.acquirer,pending_msg:website_delivery_ups.payment_acquirer_ups_cod
@@ -104,7 +116,7 @@ msgstr ""
 
 #. module: website_delivery_ups
 #: model:ir.model,name:website_delivery_ups.model_sale_order
-msgid "Sale Order"
+msgid "Sales Order"
 msgstr "Verkaufsauftrag"
 
 #. module: website_delivery_ups

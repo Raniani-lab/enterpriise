@@ -3,15 +3,17 @@
 # * sale_enterprise
 # 
 # Translators:
-# Martin Trigaux, 2018
-# 敬雲 林 <chingyun@yuanchih-consult.com>, 2018
+# Martin Trigaux, 2019
+# amos lin <seeing@edirect168.com>, 2019
+# 敬雲 林 <chingyun@yuanchih-consult.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-02 10:32+0000\n"
-"PO-Revision-Date: 2018-10-02 10:32+0000\n"
-"Last-Translator: 敬雲 林 <chingyun@yuanchih-consult.com>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"PO-Revision-Date: 2019-01-16 08:40+0000\n"
+"Last-Translator: 敬雲 林 <chingyun@yuanchih-consult.com>, 2019\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/odoo/teams/41243/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -48,22 +50,22 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_enterprise.view_order_product_search_inherit
 #: selection:sale.report,invoice_status:0
 msgid "Fully Invoiced"
-msgstr "已開具全額發票"
+msgstr "已開具全額應收憑單"
 
 #. module: sale_enterprise
 #: model:ir.model.fields,field_description:sale_enterprise.field_sale_report__invoice_status
 msgid "Invoice Status"
-msgstr "發票狀態"
+msgstr "應收憑單狀態"
 
 #. module: sale_enterprise
 #: selection:sale.report,invoice_status:0
 msgid "Nothing to Invoice"
-msgstr "沒有要開立發票的"
+msgstr "沒有要開立應收憑單的"
 
 #. module: sale_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard
 msgid "Orders"
-msgstr "訂單"
+msgstr "銷售訂單"
 
 #. module: sale_enterprise
 #: model:ir.actions.act_window,name:sale_enterprise.sale_report_action_dashboard
@@ -77,10 +79,15 @@ msgid "Sales Analysis Report"
 msgstr "銷售分析報告"
 
 #. module: sale_enterprise
+#: model_terms:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard
+msgid "Sales Teams"
+msgstr "銷售團隊"
+
+#. module: sale_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_enterprise.view_order_product_search_inherit
 #: selection:sale.report,invoice_status:0
 msgid "To Invoice"
-msgstr "待開立發票"
+msgstr "待開立應收憑單"
 
 #. module: sale_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard
@@ -101,3 +108,8 @@ msgstr "不含稅總計"
 #: selection:sale.report,invoice_status:0
 msgid "Upselling Opportunity"
 msgstr "超售商機"
+
+#. module: sale_enterprise
+#: model_terms:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard
+msgid "day(s)"
+msgstr "天"

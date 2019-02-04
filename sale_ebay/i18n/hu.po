@@ -3,20 +3,19 @@
 # * sale_ebay
 # 
 # Translators:
-# Martin Trigaux, 2018
-# krnkris, 2018
+# Zsofia Biro <zsbiro1205@gmail.com>, 2017
+# Martin Trigaux, 2017
 # gezza <geza.nagy@oregional.hu>, 2018
-# Ákos Nagy <akos.nagy@oregional.hu>, 2018
-# Zsofia Biro <zsbiro1205@gmail.com>, 2018
-# Tibor Kőnig <konig.tibor@evitalit.hu>, 2018
+# krnkris, 2019
+# Tibor Kőnig <konig.tibor@evitalit.hu>, 2019
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-08-24 11:48+0000\n"
-"Last-Translator: Tibor Kőnig <konig.tibor@evitalit.hu>, 2018\n"
+"PO-Revision-Date: 2016-08-05 13:31+0000\n"
+"Last-Translator: Tibor Kőnig <konig.tibor@evitalit.hu>, 2019\n"
 "Language-Team: Hungarian (https://www.transifex.com/odoo/teams/41243/hu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -145,7 +144,7 @@ msgstr "Azonnali vételi ár"
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.ebay_link_listing_view
 msgid "Cancel"
-msgstr "Mégsem"
+msgstr "Mégse"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_category_id
@@ -193,7 +192,7 @@ msgstr "Most Állítsa be az eBay beépülőt"
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_res_partner
 msgid "Contact"
-msgstr "Kapcsolattartó"
+msgstr "Kapcsolat"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
@@ -213,7 +212,7 @@ msgstr "Ország"
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_policy__create_uid
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_site__create_uid
 msgid "Created by"
-msgstr "Létrehozta"
+msgstr "Készítette"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_category__create_date
@@ -222,7 +221,7 @@ msgstr "Létrehozta"
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_policy__create_date
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_site__create_date
 msgid "Created on"
-msgstr "Létrehozva"
+msgstr "Létrehozás dátuma"
 
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_res_currency
@@ -365,7 +364,7 @@ msgstr "Érvényes amíg nem kerül érvénytelenítésre (kizárólag fix árra
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_policy__id
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_site__id
 msgid "ID"
-msgstr "Azonosító"
+msgstr "Azonosító ID"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
@@ -395,7 +394,7 @@ msgstr "Tétel kondíciói"
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_policy____last_update
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_site____last_update
 msgid "Last Modified on"
-msgstr "Legutóbb frissítve"
+msgstr "Utoljára frissítve ekkor"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_category__write_uid
@@ -404,7 +403,7 @@ msgstr "Legutóbb frissítve"
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_policy__write_uid
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_site__write_uid
 msgid "Last Updated by"
-msgstr "Legutóbb frissítette"
+msgstr "Utoljára frissítette"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_category__write_date
@@ -413,7 +412,7 @@ msgstr "Legutóbb frissítette"
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_policy__write_date
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_site__write_date
 msgid "Last Updated on"
-msgstr "Legutóbb frissítve "
+msgstr "Utoljára frissítve "
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_last_sync

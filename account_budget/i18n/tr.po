@@ -3,23 +3,30 @@
 # * account_budget
 # 
 # Translators:
+# Güven YILMAZ <guvenyilmaz@outlook.com.tr>, 2017
+# Gökhan Erdoğdu <gokhan.erdogdu@mechsoft.com.tr>, 2017
+# gezgin biri <gezginbiri@hotmail.com>, 2017
+# Esin Kandemir <esaykandemir@gmail.com>, 2017
+# Umur Akın <umura@projetgrup.com>, 2018
 # Ayhan KIZILTAN <akiziltan76@hotmail.com>, 2018
-# Martin Trigaux, 2018
-# Levent Karakaş <levent@mektup.at>, 2018
-# Murat Kaplan <muratk@projetgrup.com>, 2018
 # Ahmet Altinisik <aaltinisik@altinkaya.com.tr>, 2018
 # Mehmet Demirel <mdemirell@gmail.com>, 2018
 # Ramiz Deniz Öner <deniz@denizoner.com>, 2018
 # Alexander B. <road2monstercat@gmail.com>, 2018
-# Umur Akın <umura@projetgrup.com>, 2018
-# Buket Şeker <buket_skr@hotmail.com>, 2018
+# Ediz Duman <neps1192@gmail.com>, 2019
+# Martin Trigaux, 2019
+# Levent Karakaş <levent@mektup.at>, 2019
+# Murat Kaplan <muratk@projetgrup.com>, 2019
+# UNIBRAVO SOFTWARE <unibravo@gmail.com>, 2019
+# Buket Şeker <buket_skr@hotmail.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-18 09:49+0000\n"
-"PO-Revision-Date: 2018-09-18 09:49+0000\n"
-"Last-Translator: Buket Şeker <buket_skr@hotmail.com>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:12+0000\n"
+"PO-Revision-Date: 2016-08-05 12:55+0000\n"
+"Last-Translator: Buket Şeker <buket_skr@hotmail.com>, 2019\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -28,7 +35,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #. module: account_budget
-#: code:addons/account_budget/models/account_budget.py:277
+#: code:addons/account_budget/models/account_budget.py:279
 #, python-format
 msgid ""
 "\"End Date\" of the budget line should be included in the Period of the "
@@ -36,11 +43,16 @@ msgid ""
 msgstr ""
 
 #. module: account_budget
-#: code:addons/account_budget/models/account_budget.py:272
+#: code:addons/account_budget/models/account_budget.py:274
 #, python-format
 msgid ""
 "\"Start Date\" of the budget line should be included in the Period of the "
 "budget"
+msgstr ""
+
+#. module: account_budget
+#: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_kanban
+msgid "<i class=\"fa fa-clock-o\" role=\"img\" aria-label=\"Period\" title=\"Period\"/>"
 msgstr ""
 
 #. module: account_budget
@@ -58,6 +70,16 @@ msgstr "Başarı"
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__message_needaction
 msgid "Action Needed"
 msgstr "Eylem Gerekiyor"
+
+#. module: account_budget
+#: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__activity_ids
+msgid "Activities"
+msgstr "Aktiviteler"
+
+#. module: account_budget
+#: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__activity_state
+msgid "Activity State"
+msgstr "Aktivite Durumu"
 
 #. module: account_budget
 #: model:ir.model.fields,help:account_budget.field_crossovered_budget_lines__practical_amount
@@ -189,7 +211,7 @@ msgstr "Yeni bir bütçe oluşturmak için tiklayın."
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__company_id
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__company_id
 msgid "Company"
-msgstr "Şirket"
+msgstr "Firma"
 
 #. module: account_budget
 #: model:ir.model.fields,help:account_budget.field_crossovered_budget_lines__percentage
@@ -201,12 +223,12 @@ msgstr ""
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
 msgid "Confirm"
-msgstr "Doğrula"
+msgstr "Onayla"
 
 #. module: account_budget
 #: selection:crossovered.budget,state:0
 msgid "Confirmed"
-msgstr "Doğrulanmış"
+msgstr "Onayda"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_account_budget_post__create_uid
@@ -220,7 +242,7 @@ msgstr "Oluşturan"
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__create_date
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__create_date
 msgid "Created on"
-msgstr "Oluşturulma"
+msgstr "Oluşturulma zamanı"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__currency_id
@@ -238,7 +260,7 @@ msgstr "Görünüm Adı"
 #: selection:crossovered.budget,state:0
 #: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
 msgid "Done"
-msgstr "Tamamlandı"
+msgstr "Biten"
 
 #. module: account_budget
 #: selection:crossovered.budget,state:0
@@ -276,6 +298,11 @@ msgstr "Takipçiler (Kanallar)"
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__message_partner_ids
 msgid "Followers (Partners)"
 msgstr "Tekipçiler (İş ortakları)"
+
+#. module: account_budget
+#: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_search
+msgid "Future Activities"
+msgstr "Yapılacaklar"
 
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_search
@@ -336,6 +363,11 @@ msgid "Last Updated on"
 msgstr "Son Güncelleme"
 
 #. module: account_budget
+#: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_search
+msgid "Late Activities"
+msgstr "Geciken Aktiviteler"
+
+#. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__message_main_attachment_id
 msgid "Main Attachment"
 msgstr "Ana Ek"
@@ -355,6 +387,21 @@ msgstr "Mesajlar"
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__name
 msgid "Name"
 msgstr "İsim"
+
+#. module: account_budget
+#: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__activity_date_deadline
+msgid "Next Activity Deadline"
+msgstr "Sonraki Faaliyet Zaman Sınırı"
+
+#. module: account_budget
+#: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__activity_summary
+msgid "Next Activity Summary"
+msgstr "Sonraki Faaliyet Özeti"
+
+#. module: account_budget
+#: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__activity_type_id
+msgid "Next Activity Type"
+msgstr "Sonraki Faaliyet Türü"
 
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_search
@@ -387,6 +434,11 @@ msgid "Number of unread messages"
 msgstr "Okunmamış mesaj sayısı"
 
 #. module: account_budget
+#: selection:crossovered.budget,activity_state:0
+msgid "Overdue"
+msgstr "Geciken"
+
+#. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__paid_date
 msgid "Paid Date"
 msgstr "Ödeme Tarihi"
@@ -395,6 +447,11 @@ msgstr "Ödeme Tarihi"
 #: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
 msgid "Period"
 msgstr "Dönem"
+
+#. module: account_budget
+#: selection:crossovered.budget,activity_state:0
+msgid "Planned"
+msgstr "Planlanan"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__planned_amount
@@ -432,15 +489,34 @@ msgid "Responsible"
 msgstr "Sorumlu"
 
 #. module: account_budget
+#: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__activity_user_id
+msgid "Responsible User"
+msgstr "Sorumlu Kullanıcı"
+
+#. module: account_budget
+#: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_search
+msgid "Show all records which has next action date is before today"
+msgstr "Bir sonraki eylem tarihi bugünden önce olan tüm kayıtları göster"
+
+#. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__date_from
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__date_from
 msgid "Start Date"
-msgstr "Başlangıç Tarihi"
+msgstr "Başlama Tarih"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__state
 msgid "Status"
-msgstr "Durumu"
+msgstr "Durum"
+
+#. module: account_budget
+#: model:ir.model.fields,help:account_budget.field_crossovered_budget__activity_state
+msgid ""
+"Status based on activities\n"
+"Overdue: Due date is already passed\n"
+"Today: Activity date is today\n"
+"Planned: Future activities."
+msgstr ""
 
 #. module: account_budget
 #: code:addons/account_budget/models/account_budget.py:29
@@ -476,6 +552,16 @@ msgid "To Approve Budgets"
 msgstr "Bütçeleri Onaylama"
 
 #. module: account_budget
+#: selection:crossovered.budget,activity_state:0
+msgid "Today"
+msgstr "Bugün"
+
+#. module: account_budget
+#: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_search
+msgid "Today Activities"
+msgstr "Bugünkü Aktiviteler"
+
+#. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__message_unread
 msgid "Unread Messages"
 msgstr "Okunmamış Mesajlar"
@@ -506,7 +592,7 @@ msgid "Website communication history"
 msgstr "Web Sitesi iletişim geçmişi"
 
 #. module: account_budget
-#: code:addons/account_budget/models/account_budget.py:241
+#: code:addons/account_budget/models/account_budget.py:242
 #, python-format
 msgid ""
 "You have to enter at least a budgetary position or analytic account on a "

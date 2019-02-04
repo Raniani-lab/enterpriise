@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"PO-Revision-Date: 2019-01-16 08:13+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -61,6 +61,11 @@ msgstr ""
 #: model:ir.model,name:project_timesheet_forecast_sale.model_sale_order_line
 #: model:ir.model.fields,field_description:project_timesheet_forecast_sale.field_project_forecast__order_line_id
 msgid "Sales Order Line"
+msgstr ""
+
+#. module: project_timesheet_forecast_sale
+#: model:ir.model.fields,help:project_timesheet_forecast_sale.field_project_forecast__order_line_id
+msgid "Sales order item to which the task is linked. If an employee timesheets on a this task, and if this employee is not in the 'Employee/Sales Order Item Mapping' of the project, the timesheet entry will be linked to this sales order item."
 msgstr ""
 
 #. module: project_timesheet_forecast_sale

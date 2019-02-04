@@ -3,32 +3,34 @@
 # * sale_subscription
 # 
 # Translators:
-# Judyta Kaźmierczak <judyta.kazmierczak@openglobe.pl>, 2018
-# Martin Trigaux, 2018
-# zbik2607 <darek@krokus.com.pl>, 2018
-# Tomasz Leppich <t.leppich@gmail.com>, 2018
-# Piotr Szlązak <szlazakpiotr@gmail.com>, 2018
-# Marcin Młynarczyk <mlynarczyk@gmail.com>, 2018
-# Paweł Wodyński <pw@myodoo.pl>, 2018
-# Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2018
-# Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2018
-# Mariusz, 2018
-# Jakobus Buntownikus <buntownix@gmail.com>, 2018
-# Maciej Wichowski <maciej.wichowski@openglobe.pl>, 2018
-# Andrzej Donczew <a.donczew@hadron.eu.com>, 2018
 # Maja Stawicka <mjstwck@wp.pl>, 2018
-# zieloo <zieloo@gmail.com>, 2018
-# Paweł Michoń <michon.pawel@wp.pl>, 2018
-# Radosław Biegalski <radoslaw.biegalski@openglobe.pl>, 2018
-# Wiktor Kaźmierczak <wik92tor@wp.pl>, 2018
-# Zdzisław Krajewski <zdzichucb@gmail.com>, 2018
+# Radosław Biegalski <radoslaw.biegalski@openglobe.pl>, 2019
+# Wiktor Kaźmierczak <wik92tor@wp.pl>, 2019
+# Paweł Wodyński <pw@myodoo.pl>, 2019
+# Piotr Cierkosz <piotr.w.cierkosz@gmail.com>, 2019
+# Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2019
+# Tomasz Leppich <t.leppich@gmail.com>, 2019
+# Mariusz, 2019
+# Jakobus Buntownikus <buntownix@gmail.com>, 2019
+# Zdzisław Krajewski <zdzichucb@gmail.com>, 2019
+# Piotr Szlązak <szlazakpiotr@gmail.com>, 2019
+# Paweł Michoń <michon.pawel@wp.pl>, 2019
+# Andrzej Donczew <a.donczew@hadron.eu.com>, 2019
+# Martin Trigaux, 2019
+# zbik2607 <darek@krokus.com.pl>, 2019
+# Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2019
+# Judyta Kaźmierczak <judyta.kazmierczak@openglobe.pl>, 2019
+# zieloo <zieloo@gmail.com>, 2019
+# Marcin Młynarczyk <mlynarczyk@gmail.com>, 2019
+# Maciej Wichowski <maciej.wichowski@openglobe.pl>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 12.0+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-08 07:14+0000\n"
-"PO-Revision-Date: 2018-10-08 07:14+0000\n"
-"Last-Translator: Zdzisław Krajewski <zdzichucb@gmail.com>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"PO-Revision-Date: 2017-12-13 15:26+0000\n"
+"Last-Translator: Maciej Wichowski <maciej.wichowski@openglobe.pl>, 2019\n"
 "Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -268,6 +270,11 @@ msgid "<i class=\"fa fa-check\"/> Closable by customer"
 msgstr "<i class=\"fa fa-check\"/> Zamykane przez klienta"
 
 #. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_kanban
+msgid "<i class=\"fa fa-ellipsis-v\" role=\"img\" aria-label=\"Manage\" title=\"Manage\"/>"
+msgstr ""
+
+#. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "<i class=\"fa fa-envelope\"/> Send email"
 msgstr ""
@@ -311,14 +318,6 @@ msgstr ""
 msgid ""
 "<span class=\"badge badge-pill badge-warning\"><i class=\"fa fa-fw fa-"
 "refresh\"/> To Renew</span>"
-msgstr ""
-
-#. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_form
-msgid ""
-"<span class=\"badge badge-warning border-0\" attrs=\"{'invisible': [('to_renew', '=', False)]}\">\n"
-"                                To Renew\n"
-"                            </span>"
 msgstr ""
 
 #. module: sale_subscription
@@ -805,7 +804,7 @@ msgstr "Przypisz do"
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__message_attachment_count
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__message_attachment_count
 msgid "Attachment Count"
-msgstr ""
+msgstr "Ilość Załączników"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__automation_id
@@ -1141,7 +1140,7 @@ msgstr "Data utworzenia"
 #. module: sale_subscription
 #: selection:sale.order,subscription_management:0
 msgid "Creation"
-msgstr "Data utworzenia"
+msgstr "Utworzono"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order__subscription_management
@@ -1477,6 +1476,7 @@ msgstr "Jeśli zaznaczone, to nowa wiadomość wymaga twojej uwagi."
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_template__message_has_error
 msgid "If checked, some messages have a delivery error."
 msgstr ""
+"Jesli zaznaczone, część wiadomości napotkało na błąd przy próbie doręczenia."
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_template__user_closable
@@ -1521,6 +1521,7 @@ msgstr ""
 "miesiąc przed datą i zostanie zamknięta w dniu ustawionym w tym polu."
 
 #. module: sale_subscription
+#: model:ir.model.fields,help:sale_subscription.field_product_product__recurring_invoice
 #: model:ir.model.fields,help:sale_subscription.field_product_template__recurring_invoice
 msgid ""
 "If set, confirming a sale order with this product will create a subscription"
@@ -1615,7 +1616,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_account_invoice_line
 msgid "Invoice Line"
-msgstr "linia faktury"
+msgstr "Pozycja faktury"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__recurring_invoice_line_ids
@@ -1831,7 +1832,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__message_main_attachment_id
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__message_main_attachment_id
 msgid "Main Attachment"
-msgstr ""
+msgstr "Główny Załącznik"
 
 #. module: sale_subscription
 #: model:res.groups,name:sale_subscription.group_sale_subscription_manager
@@ -1862,7 +1863,7 @@ msgstr "Członkowie"
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__message_has_error
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__message_has_error
 msgid "Message Delivery error"
-msgstr ""
+msgstr "Błąd Doręczenia wiadomosci"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__message_ids
@@ -1999,7 +2000,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__message_has_error_counter
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__message_has_error_counter
 msgid "Number of error"
-msgstr ""
+msgstr "Numer błedu"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription__message_needaction_counter
@@ -2011,7 +2012,7 @@ msgstr "Liczba wiadomości wymagających akcji"
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription__message_has_error_counter
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_template__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr ""
+msgstr "Ilośc wiadomości z błedami przy doręczeniu"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription__message_unread_counter
@@ -2173,6 +2174,7 @@ msgid "Product Template"
 msgstr "Szablon produktu"
 
 #. module: sale_subscription
+#: model:ir.model.fields,help:sale_subscription.field_product_product__subscription_template_id
 #: model:ir.model.fields,help:sale_subscription.field_product_template__subscription_template_id
 msgid "Product will be included in a selected template"
 msgstr "Produkt zostanie dołączony do wybranego szablonu"
@@ -2373,11 +2375,6 @@ msgid "Sad face"
 msgstr ""
 
 #. module: sale_subscription
-#: model:ir.model,name:sale_subscription.model_sale_order
-msgid "Sale Order"
-msgstr "Zamówienie sprzedaży"
-
-#. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__sale_order_count
 msgid "Sale Order Count"
 msgstr "Liczba zamówień sprzedaży"
@@ -2420,9 +2417,14 @@ msgid "Sales Channel Leader"
 msgstr ""
 
 #. module: sale_subscription
+#: model:ir.model,name:sale_subscription.model_sale_order
+msgid "Sales Order"
+msgstr "Zamówienie sprzedaży"
+
+#. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_order_line
 msgid "Sales Order Line"
-msgstr "Pozycja zlecenia sprzedaży"
+msgstr "Pozycja zamówienia sprzedaży"
 
 #. module: sale_subscription
 #: code:addons/sale_subscription/models/sale_subscription.py:149
@@ -2466,7 +2468,7 @@ msgstr "Zapisz ten szablon i modyfikacje, które do niego wprowadziłeś."
 #. module: sale_subscription
 #: model:res.groups,name:sale_subscription.group_sale_subscription_view
 msgid "See Subscriptions"
-msgstr "Zobacz subskrypcje"
+msgstr "Zobacz Subskrypcje"
 
 #. module: sale_subscription
 #. openerp-web
@@ -2608,6 +2610,10 @@ msgid ""
 "Today: Activity date is today\n"
 "Planned: Future activities."
 msgstr ""
+"Status bazuje na aktywnościach\n"
+"Opóźnione: Data \"do\" minęła\n"
+"Dziś: Aktywnośc przewidziana na dziś\n"
+"Zaplanowane: Przyszłe aktywności."
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_line__price_subtotal
@@ -2679,6 +2685,7 @@ msgid "Subscription Management"
 msgstr "Zarządzanie subskrypcją"
 
 #. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_product_product__recurring_invoice
 #: model:ir.model.fields,field_description:sale_subscription.field_product_template__recurring_invoice
 msgid "Subscription Product"
 msgstr "Produkt subskrypcyjny"
@@ -2708,6 +2715,7 @@ msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_subscription_template
+#: model:ir.model.fields,field_description:sale_subscription.field_product_product__subscription_template_id
 #: model:ir.model.fields,field_description:sale_subscription.field_product_template__subscription_template_id
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__template_id
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__template_id
@@ -2759,6 +2767,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_action_res_partner
 #: model:ir.model.fields,field_description:sale_subscription.field_account_analytic_account__subscription_ids
 #: model:ir.model.fields,field_description:sale_subscription.field_res_partner__subscription_count
+#: model:ir.model.fields,field_description:sale_subscription.field_res_users__subscription_count
 #: model:ir.module.category,name:sale_subscription.module_category_subscription_management
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_action
@@ -2827,7 +2836,7 @@ msgstr "Znacznik"
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__tag_ids
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__tag_ids
 msgid "Tags"
-msgstr "Tagi"
+msgstr "Znaczniki"
 
 #. module: sale_subscription
 #: model:base.automation,name:sale_subscription.subscription_alert_percent_revenue_base_automation
@@ -2970,6 +2979,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__to_renew
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__to_renew
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_form
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_kanban
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 #, python-format
@@ -3335,15 +3345,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid "e.g. Update order quantity"
-msgstr "np. Aktualizuj ilość"
-
-#. module: sale_subscription
-#: model:product.product,weight_uom_name:sale_subscription.product_office_cleaning
-#: model:product.product,weight_uom_name:sale_subscription.product_office_cleaning_yearly
-#: model:product.template,weight_uom_name:sale_subscription.product_office_cleaning_product_template
-#: model:product.template,weight_uom_name:sale_subscription.product_office_cleaning_yearly_product_template
-msgid "kg"
-msgstr "kg"
+msgstr "np. Aktualizuj ilość zamówienia"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription

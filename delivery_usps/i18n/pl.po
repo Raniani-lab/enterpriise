@@ -3,24 +3,25 @@
 # * delivery_usps
 # 
 # Translators:
-# Martin Trigaux, 2018
-# zbik2607 <darek@krokus.com.pl>, 2018
-# Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2018
-# Judyta Kaźmierczak <judyta.kazmierczak@openglobe.pl>, 2018
-# Tomasz Leppich <t.leppich@gmail.com>, 2018
-# Arek Smagacz <arek.smagacz@gmail.com>, 2018
-# Piotr Szlązak <szlazakpiotr@gmail.com>, 2018
-# Monika Grzelak <m.e.grzelak@gmail.com>, 2018
-# Piotr Cierkosz <piotr.w.cierkosz@gmail.com>, 2018
-# Radosław Biegalski <radoslaw.biegalski@openglobe.pl>, 2018
-# Paweł Wodyński <pw@myodoo.pl>, 2018
+# Martin Trigaux, 2019
+# zbik2607 <darek@krokus.com.pl>, 2019
+# Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2019
+# Judyta Kaźmierczak <judyta.kazmierczak@openglobe.pl>, 2019
+# Tomasz Leppich <t.leppich@gmail.com>, 2019
+# Arek Smagacz <arek.smagacz@gmail.com>, 2019
+# Piotr Szlązak <szlazakpiotr@gmail.com>, 2019
+# Monika Grzelak <m.e.grzelak@gmail.com>, 2019
+# Piotr Cierkosz <piotr.w.cierkosz@gmail.com>, 2019
+# Radosław Biegalski <radoslaw.biegalski@openglobe.pl>, 2019
+# Paweł Wodyński <pw@myodoo.pl>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Paweł Wodyński <pw@myodoo.pl>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"PO-Revision-Date: 2016-08-05 13:28+0000\n"
+"Last-Translator: Paweł Wodyński <pw@myodoo.pl>, 2019\n"
 "Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -141,11 +142,6 @@ msgstr "Flat Rate Box"
 #: selection:delivery.carrier,usps_international_regular_container:0
 msgid "Flat Rate Envelope"
 msgstr "Flat Rate Envelope"
-
-#. module: delivery_usps
-#: model_terms:ir.ui.view,arch_db:delivery_usps.usps_shipping_request
-msgid "From Company"
-msgstr "Od firmy"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_content_type:0
@@ -379,7 +375,7 @@ msgid "TIF"
 msgstr ""
 
 #. module: delivery_usps
-#: code:addons/delivery_usps/models/usps_request.py:58
+#: code:addons/delivery_usps/models/usps_request.py:46
 #, python-format
 msgid ""
 "The address of your company is missing or wrong (Missing field(s) :  \n"
@@ -387,7 +383,7 @@ msgid ""
 msgstr ""
 
 #. module: delivery_usps
-#: code:addons/delivery_usps/models/usps_request.py:78
+#: code:addons/delivery_usps/models/usps_request.py:66
 #, python-format
 msgid ""
 "The estimated price cannot be computed because the weight of your product is"
@@ -397,7 +393,7 @@ msgstr ""
 "wprowadzona."
 
 #. module: delivery_usps
-#: code:addons/delivery_usps/models/usps_request.py:67
+#: code:addons/delivery_usps/models/usps_request.py:55
 #, python-format
 msgid ""
 "The recipient address is missing or wrong (Missing field(s) :  \n"
@@ -405,15 +401,10 @@ msgid ""
 msgstr ""
 
 #. module: delivery_usps
-#: code:addons/delivery_usps/models/usps_request.py:167
+#: code:addons/delivery_usps/models/usps_request.py:155
 #, python-format
 msgid "The selected USPS service (%s) cannot be used to deliver this package."
 msgstr ""
-
-#. module: delivery_usps
-#: model_terms:ir.ui.view,arch_db:delivery_usps.usps_shipping_request
-msgid "To Company"
-msgstr "Do firmy"
 
 #. module: delivery_usps
 #: model:ir.model.fields,field_description:delivery_usps.field_delivery_carrier__usps_international_regular_container
@@ -531,9 +522,6 @@ msgid "bpost"
 msgstr "bpost"
 
 #. module: delivery_usps
-#: model:product.product,weight_uom_name:delivery_usps.product_product_delivery_usps_domestic
-#: model:product.product,weight_uom_name:delivery_usps.product_product_delivery_usps_international
-#: model:product.template,weight_uom_name:delivery_usps.product_product_delivery_usps_domestic_product_template
-#: model:product.template,weight_uom_name:delivery_usps.product_product_delivery_usps_international_product_template
-msgid "kg"
-msgstr "kg"
+#: model_terms:ir.ui.view,arch_db:delivery_usps.usps_shipping_request
+msgid "true"
+msgstr "true"

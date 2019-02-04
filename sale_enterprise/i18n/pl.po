@@ -3,19 +3,22 @@
 # * sale_enterprise
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Monika Grzelak <m.e.grzelak@gmail.com>, 2018
-# Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2018
-# Judyta Kaźmierczak <judyta.kazmierczak@openglobe.pl>, 2018
-# Maciej Wichowski <maciej.wichowski@openglobe.pl>, 2018
-# Andrzej Donczew <a.donczew@hadron.eu.com>, 2018
+# Martin Trigaux, 2019
+# zbik2607 <darek@krokus.com.pl>, 2019
+# Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2019
+# Judyta Kaźmierczak <judyta.kazmierczak@openglobe.pl>, 2019
+# Piotr Szlązak <szlazakpiotr@gmail.com>, 2019
+# Maciej Wichowski <maciej.wichowski@openglobe.pl>, 2019
+# Monika Grzelak <m.e.grzelak@gmail.com>, 2019
+# Andrzej Donczew <a.donczew@hadron.eu.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-02 10:32+0000\n"
-"PO-Revision-Date: 2018-10-02 10:32+0000\n"
-"Last-Translator: Andrzej Donczew <a.donczew@hadron.eu.com>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"PO-Revision-Date: 2019-01-16 08:40+0000\n"
+"Last-Translator: Andrzej Donczew <a.donczew@hadron.eu.com>, 2019\n"
 "Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -81,6 +84,11 @@ msgid "Sales Analysis Report"
 msgstr ""
 
 #. module: sale_enterprise
+#: model_terms:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard
+msgid "Sales Teams"
+msgstr "Zespoły sprzedaży"
+
+#. module: sale_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_enterprise.view_order_product_search_inherit
 #: selection:sale.report,invoice_status:0
 msgid "To Invoice"
@@ -105,3 +113,8 @@ msgstr "Untaxed Total"
 #: selection:sale.report,invoice_status:0
 msgid "Upselling Opportunity"
 msgstr "Upselling Opportunity"
+
+#. module: sale_enterprise
+#: model_terms:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard
+msgid "day(s)"
+msgstr "dzień(dni)"

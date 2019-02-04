@@ -3,17 +3,18 @@
 # * website_crm_score
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Kostas Goutoudis <goutoudis@gmail.com>, 2018
-# Stefanos Nikou <stefanos.nikou@gmail.com>, 2018
-# George Tarasidis <george_tarasidis@yahoo.com>, 2018
+# Martin Trigaux, 2019
+# Kostas Goutoudis <goutoudis@gmail.com>, 2019
+# Stefanos Nikou <stefanos.nikou@gmail.com>, 2019
+# George Tarasidis <george_tarasidis@yahoo.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:07+0000\n"
-"PO-Revision-Date: 2018-09-21 14:07+0000\n"
-"Last-Translator: George Tarasidis <george_tarasidis@yahoo.com>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"PO-Revision-Date: 2016-08-05 13:32+0000\n"
+"Last-Translator: George Tarasidis <george_tarasidis@yahoo.com>, 2019\n"
 "Language-Team: Greek (https://www.transifex.com/odoo/teams/41243/el/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -25,6 +26,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__pageviews_count
 msgid "# Page Views"
 msgstr "# Προβολές Σελίδας"
+
+#. module: website_crm_score
+#: model_terms:ir.ui.view,arch_db:website_crm_score.website_crm_score_view_kanban
+msgid ""
+"<i class=\"fa fa-fw fa-tags\" aria-label=\"Number of leads\" title=\"Number "
+"of leads\" role=\"img\"/>"
+msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_needaction
@@ -447,7 +455,6 @@ msgid "Sales Channels"
 msgstr "Κανάλια Πωλήσεων"
 
 #. module: website_crm_score
-#: model:ir.actions.act_window,name:website_crm_score.team_user_action
 #: model_terms:ir.ui.view,arch_db:website_crm_score.view_crm_team_user_form
 #: model_terms:ir.ui.view,arch_db:website_crm_score.view_crm_team_user_tree
 msgid "Sales Men"
@@ -476,8 +483,14 @@ msgid "Salesperson (Team Member)"
 msgstr ""
 
 #. module: website_crm_score
+#: model:ir.actions.act_window,name:website_crm_score.team_user_action
+msgid "Salespersons"
+msgstr ""
+
+#. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__score
 #: model_terms:ir.ui.view,arch_db:website_crm_score.crm_lead_view_dashboard
+#: model_terms:ir.ui.view,arch_db:website_crm_score.crm_opportunity_view_dashboard
 msgid "Score"
 msgstr ""
 
@@ -622,18 +635,6 @@ msgid ""
 "have already been checked previously. This option incurs a large performance"
 " penalty, so it should be checked only for rules that depend on dynamic "
 "events"
-msgstr ""
-
-#. module: website_crm_score
-#: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
-#: model_terms:ir.ui.view,arch_db:website_crm_score.team_user_kanban
-msgid "fa-check"
-msgstr ""
-
-#. module: website_crm_score
-#: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
-#: model_terms:ir.ui.view,arch_db:website_crm_score.team_user_kanban
-msgid "fa-times"
 msgstr ""
 
 #. module: website_crm_score

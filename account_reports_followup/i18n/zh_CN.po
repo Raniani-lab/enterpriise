@@ -3,19 +3,21 @@
 # * account_reports_followup
 # 
 # Translators:
-# Martin Trigaux, 2018
+# hman tsao <herman.tsao@gmail.com>, 2017
+# 老窦 北京 <2662059195@qq.com>, 2018
+# e2f <projects@e2f.com>, 2018
 # liAnGjiA <liangjia@qq.com>, 2018
-# Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
 # neter ji <jifuyi@qq.com>, 2018
-# inspur qiuguodong <qiuguodong@inspur.com>, 2018
+# Jeffery CHEN Fan <jeffery9@gmail.com>, 2019
+# inspur qiuguodong <qiuguodong@inspur.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 12.0+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-08 07:14+0000\n"
-"PO-Revision-Date: 2018-08-24 11:36+0000\n"
-"Last-Translator: inspur qiuguodong <qiuguodong@inspur.com>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:12+0000\n"
+"PO-Revision-Date: 2016-08-05 13:28+0000\n"
+"Last-Translator: inspur qiuguodong <qiuguodong@inspur.com>, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -44,11 +46,11 @@ msgstr ""
 "\n"
 "亲爱的 %(partner_name)s：\n"
 "\n"
-"不知道您是否已收到我公司的多次对账提醒？贵公司仍有超期余款未付，请贵司于8日内将附件清单所示余款项结清。如超期仍未结清， 我公司不排除付诸法律流程。我相\n"
+"不知道您是否有收到我公司的多次对账提醒？贵公司任有超期余款未付，请贵司于8日内将附件清单所示余款项结清。如超期仍未结清， 我公司不排除付诸法律流程。我相\n"
 "信这些都不是大家所希望的。相关未结款清单附于邮件附件。如有任何疑问，请立即\n"
 "联系我公司会计部门。\n"
 "\n"
-"致以诚挚的问候\n"
+"致\n"
 
 #. module: account_reports_followup
 #: model:account_followup.followup.line,description:account_reports_followup.demo_followup_line1
@@ -66,9 +68,9 @@ msgstr ""
 "亲爱的 %(partner_name)s,\n"
 "\n"
 "如果这不是一个误会的话,看来您的应付款依然没有支付。\n"
-"请在8天内完成付款。\n"
+"请在8天内采取有效的措施来完成付款。\n"
 "\n"
-"如果您已经在收到邮件前付款，请忽略这个信息。如有疑问请联系我们的会计部门。\n"
+"如果您已经在收到邮件前付款，请忽略这个信息。请不要犹豫联系我们的会计部门。\n"
 "\n"
 "致以诚挚的问候,\n"
 
@@ -92,13 +94,13 @@ msgstr ""
 "\n"
 "亲爱的 %(partner_name)s,\n"
 "\n"
-"我们失望的发现尽管我们发了提醒给您,不过您的应付款依然未付清。\n"
+"我们失望的发现尽管我们发了提醒给您,不过您的应付款依然超过了额度。\n"
 "\n"
-"请立即付款, 不然我们会考虑停止与您的业务往来,这意味着贵公司将不再得到我们良好的技术支持。\n"
+"请立即付款, 不然我们会考虑停止与您的账目往来,这意味着贵公司将不再得到我们的良好的技术支持。\n"
 "\n"
-"在接下来的8天里，请落实这笔应付款。\n"
+"在接下来的8天里，请采取适当的措施来落实这次付款。\n"
 "\n"
-"如果是因为我们未注意到的发票问题影响支付, 请尽快联系我们的会计部门, 我们会快速解决这个问题。\n"
+"如果是因为我们未注意到的发票问题影响支付, 请毫不犹豫的联系我们的会计部门, 我们会快速解决这个问题。\n"
 "\n"
 "下面是超期超额的应付款。\n"
 "\n"
@@ -123,6 +125,11 @@ msgstr "：用户名"
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
 msgid ": User's Company Name"
 msgstr "：用户的公司名称"
+
+#. module: account_reports_followup
+#: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_kanban
+msgid "<i class=\"fa fa-building\" role=\"img\" aria-label=\"Enterprise\"/>"
+msgstr ""
 
 #. module: account_reports_followup
 #: model:ir.model,name:account_reports_followup.model_account_followup_followup
@@ -157,7 +164,7 @@ msgstr "公司名称"
 #. module: account_reports_followup
 #: model:ir.model,name:account_reports_followup.model_res_config_settings
 msgid "Config Settings"
-msgstr "配置设定"
+msgstr "配置设置"
 
 #. module: account_reports_followup
 #: model:ir.model,name:account_reports_followup.model_res_partner
@@ -249,6 +256,7 @@ msgstr "催款报告"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_res_partner__payment_responsible_id
+#: model:ir.model.fields,field_description:account_reports_followup.field_res_users__payment_responsible_id
 msgid "Follow-up Responsible"
 msgstr "催款责任人"
 
@@ -341,6 +349,7 @@ msgstr "每个公司只允许一个催款"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,help:account_reports_followup.field_res_partner__payment_responsible_id
+#: model:ir.model.fields,help:account_reports_followup.field_res_users__payment_responsible_id
 msgid ""
 "Optionally you can assign a user to this field, which will make him "
 "responsible for the action."
@@ -366,7 +375,7 @@ msgstr "打印信"
 #: code:addons/account_reports_followup/static/src/xml/account_reports_followup_template.xml:7
 #, python-format
 msgid "Print letter"
-msgstr "打印信"
+msgstr "打印信纸"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__description
@@ -418,7 +427,7 @@ msgid ""
 "The number of days after the due date of the invoice to wait before sending "
 "the reminder.  Could be negative if you want to send a polite alert "
 "beforehand."
-msgstr "依据欠款的天数，决定是否发出提醒。在实际操做时，要确认发出的是一个有礼貌的提醒，不然会产生负面作用。"
+msgstr "依据欠款的天数，决定是否发出提醒。在实际操做时，要确认发出的是一个有礼貌的警告，不然会产生负面作用。"
 
 #. module: account_reports_followup
 #: model:account_followup.followup.line,name:account_reports_followup.demo_followup_line3
@@ -438,9 +447,9 @@ msgid ""
 "                        overdue invoice will be executed."
 msgstr ""
 "提醒客户支付他们的发票,\n"
-"                        您可以根据客户逾期的严重程度定义不同的操作。\n"
-"                         发票超期一定天数后，\n"
-"                         就会触发绑定的催款等级定义的动作。\n"
+"                        您可以根客户据逾期的严重程度定义不同的操作。\n"
+"                         到期发票超期一定天数后，\n"
+"                         就会触发由绑定的催款等级定义的动作。\n"
 "                        如果同一客户有多张逾期发票,\n"
 "                        将按逾期天数最多的发票被执行相应动作。"
 
@@ -472,14 +481,14 @@ msgstr "正在处理，将会打印一个PDF文件"
 #. module: account_reports_followup
 #: model:ir.model.fields,help:account_reports_followup.field_account_followup_followup_line__send_email
 msgid "When processing, it will send an email"
-msgstr "正在处理，将发出一个email"
+msgstr "处理时，将发出一个email"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,help:account_reports_followup.field_account_followup_followup_line__manual_action
 msgid ""
 "When processing, it will set the manual action to be taken for that "
 "customer. "
-msgstr "处理中，会将此客户设为手动操作。 "
+msgstr "当进行时，会将此客户设为手动操作。 "
 
 #. module: account_reports_followup
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
@@ -490,7 +499,7 @@ msgid ""
 "                            forget to translate in all languages you installed\n"
 "                            using to top right icon."
 msgstr ""
-"这里写一封介绍信\n"
+"这里写下介绍,\n"
 "                            根据催款的等级，您可以  \n"
 "                            使用下列关键字，不要\n"
 "                            忘记使用右上方的图标\n"
@@ -502,7 +511,7 @@ msgstr ""
 msgid ""
 "Your description is invalid, use the right legend or %% if you want to use "
 "the percent character."
-msgstr "您的描述无效，如果您想使用百分比字符使用正确的图例，或者%%"
+msgstr "说明有误，请使用正确的标识或百分数。"
 
 #. module: account_reports_followup
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form

@@ -3,9 +3,11 @@
 # * account_3way_match
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
-# inspur qiuguodong <qiuguodong@inspur.com>, 2018
+# 苏州远鼎 <tiexinliu@126.com>, 2017
+# 老窦 北京 <2662059195@qq.com>, 2017
+# Martin Trigaux, 2017
+# Jeffery CHEN Fan <jeffery9@gmail.com>, 2017
+# e2f <projects@e2f.com>, 2018
 # ChinaMaker <liuct@chinamaker.net>, 2018
 # 
 msgid ""
@@ -13,7 +15,7 @@ msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-18 10:05+0000\n"
-"PO-Revision-Date: 2018-08-24 11:36+0000\n"
+"PO-Revision-Date: 2017-12-13 15:19+0000\n"
 "Last-Translator: ChinaMaker <liuct@chinamaker.net>, 2018\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -29,9 +31,9 @@ msgid ""
 "  * No, you should not pay the bill, you have not received the products\n"
 "  * Exception, there is a difference between received and billed quantities."
 msgstr ""
-"* 是：您应该支付账单，您已收到产品了 \n"
-" * 否，您不应该支付账单，您还没收到产品 \n"
-" * 例外情况，已收到产品与账单上产品数量有差别。"
+"* 是：您应该支付账单，在您收到产品后 \n"
+" * 否，您不应该支付账单，在您没收到产品时 \n"
+" * 例外情况，已收到和账单上产品的数量有差别。"
 
 #. module: account_3way_match
 #: model_terms:ir.ui.view,arch_db:account_3way_match.account_invoice_filter_inherit_account_3way_match
@@ -41,7 +43,7 @@ msgstr "异常账单"
 #. module: account_3way_match
 #: model_terms:ir.ui.view,arch_db:account_3way_match.account_invoice_filter_inherit_account_3way_match
 msgid "Bills to Pay"
-msgstr "待付账单"
+msgstr "应付账单"
 
 #. module: account_3way_match
 #: selection:account.invoice,release_to_pay:0
@@ -87,12 +89,12 @@ msgstr "否"
 #. module: account_3way_match
 #: model:ir.model.fields,field_description:account_3way_match.field_account_invoice_line__can_be_paid
 msgid "Release to Pay"
-msgstr "释放待支付"
+msgstr "发布支付"
 
 #. module: account_3way_match
 #: model:ir.model.fields,field_description:account_3way_match.field_account_invoice__release_to_pay
 msgid "Should be paid"
-msgstr "将被支付"
+msgstr "应付"
 
 #. module: account_3way_match
 #: model:ir.model.fields,field_description:account_3way_match.field_account_invoice__release_to_pay_manual
@@ -110,9 +112,9 @@ msgid ""
 msgstr ""
 "该字段可采取下列值：\n"
 " * 是：您应该支付账单，在您收到产品后 \n"
-" * 否，您不应该支付账单，您还没收到产品\n"
-" * 例外情况，已收到产品和账单上产品数量有差别 \n"
-" 该状态是自动定义的，但是您可以通过单击“强制状态”选项强制更改。"
+" * 否，您不应该支付账单，在您没收到产品时 \n"
+" * 例外情况，已收到和账单上产品的数量有差别 \n"
+" 该状态是自动定义的，但是您可以通过单击“强制状态”复选框强制更改。"
 
 #. module: account_3way_match
 #: selection:account.invoice,release_to_pay:0

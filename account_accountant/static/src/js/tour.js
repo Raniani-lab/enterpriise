@@ -82,26 +82,6 @@ tour.register('account_reports_widgets', {
             trigger:    "th + th + th + th"
         },
         {
-            content:      "click summary",
-            trigger: '.o_account_reports_summary',
-            run: 'click'
-        },
-        {
-            content:      "edit summary",
-            trigger:    'textarea[name="summary"]',
-            run: 'text v9 accounting reports are fabulous !'
-        },
-        {
-            content:      "save summary",
-            trigger:    '.js_account_report_save_summary',
-            run: 'click'
-        },
-        {
-            content:      "wait refresh and check that summary has been saved",
-            trigger:    ".o_account_reports_summary:visible:contains(v9 accounting reports are fabulous !)",
-            run: function(){}
-        },
-        {
             content:      "change boolean filter",
             trigger:    ".o_account_reports_filter_bool > a",
         },

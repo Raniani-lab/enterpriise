@@ -3,20 +3,22 @@
 # * event_barcode
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Levent Karakaş <levent@mektup.at>, 2018
+# Güven YILMAZ <guvenyilmaz@outlook.com.tr>, 2017
+# Ediz Duman <neps1192@gmail.com>, 2017
+# Emre Akayoğlu <emre.akayoglu@mechsoft.com.tr>, 2017
 # Murat Kaplan <muratk@projetgrup.com>, 2018
-# Ahmet Altinisik <aaltinisik@altinkaya.com.tr>, 2018
-# Güven YILMAZ <guvenyilmaz@outlook.com.tr>, 2018
-# Emre Akayoğlu <emre.akayoglu@mechsoft.com.tr>, 2018
 # Umur Akın <umura@projetgrup.com>, 2018
+# Martin Trigaux, 2019
+# Ahmet Altinisik <aaltinisik@altinkaya.com.tr>, 2019
+# Buket Şeker <buket_skr@hotmail.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Umur Akın <umura@projetgrup.com>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"PO-Revision-Date: 2016-08-05 13:29+0000\n"
+"Last-Translator: Buket Şeker <buket_skr@hotmail.com>, 2019\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -42,6 +44,13 @@ msgid "&amp;nbsp;"
 msgstr "&amp;nbsp;"
 
 #. module: event_barcode
+#: model_terms:ir.ui.view,arch_db:event_barcode.report_event_template_badge
+msgid ""
+"<i class=\"fa-2x fa fa-barcode\" title=\"Barcode\" role=\"img\" aria-"
+"label=\"Barcode\"/>"
+msgstr ""
+
+#. module: event_barcode
 #: code:addons/event_barcode/controllers/main.py:18
 #, python-format
 msgid "Attendee"
@@ -63,6 +72,11 @@ msgid "Barcode Interface"
 msgstr "Barkod Arayüzü"
 
 #. module: event_barcode
+#: model_terms:ir.ui.view,arch_db:event_barcode.res_config_settings_view_form
+msgid "Barcode Nomenclature"
+msgstr "Barkod Kural Seti"
+
+#. module: event_barcode
 #. openerp-web
 #: code:addons/event_barcode/static/src/xml/event_barcode.xml:32
 #, python-format
@@ -72,13 +86,13 @@ msgstr "Barkod Taranıyor"
 #. module: event_barcode
 #: sql_constraint:event.registration:0
 msgid "Barcode should be unique per event"
-msgstr "Her etkinlik için barkod eşsiz olmalıdır"
+msgstr "Her olay için barkod eşsiz olmalıdır"
 
 #. module: event_barcode
 #: code:addons/event_barcode/controllers/main.py:20
 #, python-format
 msgid "Canceled registration"
-msgstr "İptal edilmiş kayıt"
+msgstr "Kayıt İptali"
 
 #. module: event_barcode
 #. openerp-web
@@ -86,6 +100,11 @@ msgstr "İptal edilmiş kayıt"
 #, python-format
 msgid "Close"
 msgstr "Kapat"
+
+#. module: event_barcode
+#: model:ir.model,name:event_barcode.model_res_config_settings
+msgid "Config Settings"
+msgstr "Konfigürasyon Ayarları"
 
 #. module: event_barcode
 #. openerp-web
@@ -105,6 +124,11 @@ msgstr "Etkinlik Kaydı"
 #, python-format
 msgid "Invalid user input"
 msgstr "Geçersiz kullanıcı girişi"
+
+#. module: event_barcode
+#: model:ir.model.fields,field_description:event_barcode.field_res_config_settings__barcode_nomenclature_id
+msgid "Nomenclature"
+msgstr ""
 
 #. module: event_barcode
 #. openerp-web
@@ -131,14 +155,14 @@ msgstr "Kayıt Özeti"
 #: code:addons/event_barcode/controllers/main.py:13
 #, python-format
 msgid "This ticket is not valid for this event"
-msgstr "Bu bilet bu etkinlikte geçerli değildir"
+msgstr "Bu olay için bu ticket geçerli değildir"
 
 #. module: event_barcode
 #. openerp-web
 #: code:addons/event_barcode/static/src/js/event_barcode.js:104
 #, python-format
 msgid "View"
-msgstr "Görüntüle"
+msgstr "Görünüm"
 
 #. module: event_barcode
 #. openerp-web

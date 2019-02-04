@@ -3,18 +3,19 @@
 # * website_helpdesk_livechat
 # 
 # Translators:
-# Collex100, 2017
 # Martin Trigaux, 2017
-# Viktor Pogrebniak <vp@aifil.ru>, 2017
 # Максим Дронь <dronmax@gmail.com>, 2017
+# Viktor Pogrebniak <vp@aifil.ru>, 2017
+# Collex100, 2017
 # Masha Koc <mariya.kos.ua@gmail.com>, 2017
 # sergeiruzkiicode <sergei.ruzki@icode.by>, 2018
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.3+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 08:34+0000\n"
-"PO-Revision-Date: 2018-06-25 08:34+0000\n"
+"POT-Creation-Date: 2019-01-16 08:12+0000\n"
+"PO-Revision-Date: 2017-02-15 11:47+0000\n"
 "Last-Translator: sergeiruzkiicode <sergei.ruzki@icode.by>, 2018\n"
 "Language-Team: Russian (https://www.transifex.com/odoo/teams/41243/ru/)\n"
 "MIME-Version: 1.0\n"
@@ -44,12 +45,17 @@ msgstr ""
 "                    "
 
 #. module: website_helpdesk_livechat
-#: model:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
+msgid "<i class=\"fa fa-fw fa-arrow-right\" aria-label=\"Go to\" title=\"Go to\"/>"
+msgstr ""
+
+#. module: website_helpdesk_livechat
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
 msgid "Canned Responses"
 msgstr "Подготовленные ответы"
 
 #. module: website_helpdesk_livechat
-#: model:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
 msgid "Configure Canned Responses"
 msgstr "Настройка шаблона ответов"
 
@@ -107,7 +113,7 @@ msgid "Search for a helpdesk ticket"
 msgstr "Поиск билета для технической поддержки"
 
 #. module: website_helpdesk_livechat
-#: model:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
 msgid ""
 "Set shortcuts predefined answers. This works in both the mail composer and "
 "the live website chatter. Simply ype ':' followed by the shortcut label to "
@@ -115,7 +121,7 @@ msgid ""
 msgstr ""
 
 #. module: website_helpdesk_livechat
-#: model:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
 msgid "Setup the"
 msgstr "Установка"
 
@@ -127,7 +133,7 @@ msgid "Something is missing or wrong in command"
 msgstr "Что-то отсутствует или неправильно в команде"
 
 #. module: website_helpdesk_livechat
-#: model:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
 msgid "Test the livechat widget from this page:<br/>"
 msgstr ""
 
@@ -141,7 +147,7 @@ msgstr ""
 "канала."
 
 #. module: website_helpdesk_livechat
-#: model:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
 msgid "Use predefined answers in the mail composer"
 msgstr "Использовать предопределенные ответы в редакторе почты"
 
@@ -176,6 +182,6 @@ msgstr ""
 "др\"</b><br>"
 
 #. module: website_helpdesk_livechat
-#: model:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
 msgid "channel to define auto-popup rules and geolocation filters"
 msgstr ""

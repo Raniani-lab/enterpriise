@@ -3,18 +3,20 @@
 # * website_crm_score
 # 
 # Translators:
-# Gunther Clauwaert <gclauwae@hotmail.com>, 2018
-# Martin Trigaux, 2018
-# Yenthe Van Ginneken <yenthespam@gmail.com>, 2018
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
+# Cas Vissers <casvissers@brahoo.nl>, 2017
+# Eric Geens <ericgeens@yahoo.com>, 2018
+# Martin Trigaux, 2019
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
+# Gunther Clauwaert <gclauwae@hotmail.com>, 2019
+# Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:07+0000\n"
-"PO-Revision-Date: 2018-08-24 11:49+0000\n"
-"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"PO-Revision-Date: 2016-08-05 13:32+0000\n"
+"Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -26,6 +28,15 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__pageviews_count
 msgid "# Page Views"
 msgstr "# Paginaweergaven"
+
+#. module: website_crm_score
+#: model_terms:ir.ui.view,arch_db:website_crm_score.website_crm_score_view_kanban
+msgid ""
+"<i class=\"fa fa-fw fa-tags\" aria-label=\"Number of leads\" title=\"Number "
+"of leads\" role=\"img\"/>"
+msgstr ""
+"<i class=\"fa fa-fw fa-tags\" aria-label=\"Aantal leads\" title=\"Aantal "
+"leads\" role=\"img\"/>"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_needaction
@@ -336,7 +347,7 @@ msgstr "Maximaal aantal leads / 30 dagen"
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_has_error
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__message_has_error
 msgid "Message Delivery error"
-msgstr "Bericht afleverfout"
+msgstr "Bericht aflever fout"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_ids
@@ -397,7 +408,7 @@ msgstr "Aantal ongelezen berichten"
 #: model_terms:ir.ui.view,arch_db:website_crm_score.crm_case_table_view_leads_sales
 #: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
 msgid "Opportunities"
-msgstr "Prospects"
+msgstr "prospects"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__score_pageview_ids
@@ -453,7 +464,6 @@ msgid "Sales Channels"
 msgstr "Verkoopkanalen"
 
 #. module: website_crm_score
-#: model:ir.actions.act_window,name:website_crm_score.team_user_action
 #: model_terms:ir.ui.view,arch_db:website_crm_score.view_crm_team_user_form
 #: model_terms:ir.ui.view,arch_db:website_crm_score.view_crm_team_user_tree
 msgid "Sales Men"
@@ -484,8 +494,14 @@ msgid "Salesperson (Team Member)"
 msgstr "Verkoper (Teamlid)"
 
 #. module: website_crm_score
+#: model:ir.actions.act_window,name:website_crm_score.team_user_action
+msgid "Salespersons"
+msgstr "Verkopers"
+
+#. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__score
 #: model_terms:ir.ui.view,arch_db:website_crm_score.crm_lead_view_dashboard
+#: model_terms:ir.ui.view,arch_db:website_crm_score.crm_opportunity_view_dashboard
 msgid "Score"
 msgstr "Score"
 
@@ -538,7 +554,7 @@ msgstr "Toewijzing teams"
 #: model:ir.model.fields,field_description:website_crm_score.field_ir_ui_view__track
 #: model:ir.model.fields,field_description:website_crm_score.field_website_page__track
 msgid "Track"
-msgstr "Volg"
+msgstr "Parallelsessie"
 
 #. module: website_crm_score
 #: model:ir.actions.act_window,name:website_crm_score.crm_score_views_action_graph
@@ -640,18 +656,6 @@ msgstr ""
 "leads die ooit al gecontroleerd zijn. Deze optie heeft een grote "
 "prestatieboete, dus moet enkel aangevinkt worden voor regels die afhankelijk"
 " zijn van dynamische actie"
-
-#. module: website_crm_score
-#: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
-#: model_terms:ir.ui.view,arch_db:website_crm_score.team_user_kanban
-msgid "fa-check"
-msgstr "fa-check"
-
-#. module: website_crm_score
-#: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
-#: model_terms:ir.ui.view,arch_db:website_crm_score.team_user_kanban
-msgid "fa-times"
-msgstr "fa-times"
 
 #. module: website_crm_score
 #: model_terms:ir.ui.view,arch_db:website_crm_score.website_crm_score_view_kanban

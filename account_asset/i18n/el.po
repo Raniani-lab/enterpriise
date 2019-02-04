@@ -3,17 +3,18 @@
 # * account_asset
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Kostas Goutoudis <goutoudis@gmail.com>, 2018
-# Stefanos Nikou <stefanos.nikou@gmail.com>, 2018
-# George Tarasidis <george_tarasidis@yahoo.com>, 2018
+# Martin Trigaux, 2019
+# Kostas Goutoudis <goutoudis@gmail.com>, 2019
+# Stefanos Nikou <stefanos.nikou@gmail.com>, 2019
+# George Tarasidis <george_tarasidis@yahoo.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 13:17+0000\n"
-"PO-Revision-Date: 2018-09-21 13:17+0000\n"
-"Last-Translator: George Tarasidis <george_tarasidis@yahoo.com>, 2018\n"
+"POT-Creation-Date: 2018-12-24 11:16+0000\n"
+"PO-Revision-Date: 2016-08-05 12:55+0000\n"
+"Last-Translator: George Tarasidis <george_tarasidis@yahoo.com>, 2019\n"
 "Language-Team: Greek (https://www.transifex.com/odoo/teams/41243/el/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -85,6 +86,16 @@ msgstr "Απαιτείται ενέργεια"
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_category__active
 msgid "Active"
 msgstr "Σε Ισχύ"
+
+#. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__activity_ids
+msgid "Activities"
+msgstr "Δραστηριότητες"
+
+#. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__activity_state
+msgid "Activity State"
+msgstr "Κατάσταση Δραστηριότητας"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
@@ -177,7 +188,6 @@ msgstr ""
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_category__name
-#: model:ir.model.fields,field_description:account_asset.field_product_product__asset_category_id
 #: model:ir.model.fields,field_description:account_asset.field_product_template__asset_category_id
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
 msgid "Asset Type"
@@ -463,7 +473,6 @@ msgid "Deferred Revenue Account"
 msgstr ""
 
 #. module: account_asset
-#: model:ir.model.fields,field_description:account_asset.field_product_product__deferred_revenue_category_id
 #: model:ir.model.fields,field_description:account_asset.field_product_template__deferred_revenue_category_id
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
 msgid "Deferred Revenue Type"
@@ -646,6 +655,11 @@ msgid ""
 msgstr ""
 
 #. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
+msgid "Future Activities"
+msgstr "Μελλοντικές Δραστηριότητες"
+
+#. module: account_asset
 #: model:ir.ui.menu,name:account_asset.menu_asset_depreciation_confirmation_wizard
 msgid "Generate Assets Entries"
 msgstr "Δημιουργία Αποσβέσεων Παγίων"
@@ -801,6 +815,11 @@ msgid "Last Updated on"
 msgstr "Τελευταία Ενημέρωση στις"
 
 #. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
+msgid "Late Activities"
+msgstr "Καθυστερημένες Δραστηριότητες"
+
+#. module: account_asset
 #: selection:account.asset.asset,method:0
 #: selection:account.asset.category,method:0
 msgid "Linear"
@@ -857,6 +876,21 @@ msgstr "Μεταβολή Απόσβεσης"
 #: model:ir.model.fields,field_description:account_asset.field_account_invoice_line__asset_mrr
 msgid "Monthly Recurring Revenue"
 msgstr ""
+
+#. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__activity_date_deadline
+msgid "Next Activity Deadline"
+msgstr "Επόμενη Προθεσμία Δραστηριότητας"
+
+#. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__activity_summary
+msgid "Next Activity Summary"
+msgstr "Σύνοψη Επόμενης Δραστηριότητας"
+
+#. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__activity_type_id
+msgid "Next Activity Type"
+msgstr "Επόμενος Τύπος Δραστηριότητας"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_depreciation_line__remaining_value
@@ -931,6 +965,11 @@ msgid "One Entry Every"
 msgstr "Μία Καταχώρηση Κάθε"
 
 #. module: account_asset
+#: selection:account.asset.asset,activity_state:0
+msgid "Overdue"
+msgstr "Εκπρόθεσμο"
+
+#. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:641
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__partner_id
 #: model:ir.model.fields,field_description:account_asset.field_asset_asset_report__partner_id
@@ -948,6 +987,11 @@ msgstr "Μήκος Περιόδου"
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
 msgid "Periodicity"
 msgstr "Περιοδικότητα"
+
+#. module: account_asset
+#: selection:account.asset.asset,activity_state:0
+msgid "Planned"
+msgstr "Προγραμματισμένη"
 
 #. module: account_asset
 #: model:ir.actions.act_window,name:account_asset.action_asset_depreciation_confirmation_wizard
@@ -1039,6 +1083,11 @@ msgid "Residual Value"
 msgstr "Εναπομένουσα Αξία"
 
 #. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__activity_user_id
+msgid "Responsible User"
+msgstr "Υπεύθυνος Χρήστης"
+
+#. module: account_asset
 #: selection:account.asset.asset,state:0 selection:asset.asset.report,state:0
 #: model_terms:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
 msgid "Running"
@@ -1080,6 +1129,13 @@ msgid "Set to Draft"
 msgstr "Ορισμός σε Πρόχειρη"
 
 #. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
+msgid "Show all records which has next action date is before today"
+msgstr ""
+"Εμφάνιση όλων των εγγραφών όπου η ημερομηνία επόμενης δράσης είναι πριν από "
+"σήμερα"
+
+#. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset_category__method_period
 msgid "State here the time between 2 depreciations, in months"
 msgstr "Ορίστε εδώ το χρονικό διάστημα μεταξύ 2 αποσβέσεων, σε μήνες"
@@ -1094,6 +1150,19 @@ msgstr "Κατάσταση Παγίου"
 #: model:ir.model.fields,field_description:account_asset.field_asset_asset_report__state
 msgid "Status"
 msgstr "Κατάσταση"
+
+#. module: account_asset
+#: model:ir.model.fields,help:account_asset.field_account_asset_asset__activity_state
+msgid ""
+"Status based on activities\n"
+"Overdue: Due date is already passed\n"
+"Today: Activity date is today\n"
+"Planned: Future activities."
+msgstr ""
+"Κατάσταση βασισμένη σε δραστηριότητες\n"
+"Καθυστερημένη: Η ημερομηνία λήξης έχει ήδη περάσει\n"
+"Σήμερα: Η ημερομηνία δραστηριότητας είναι σήμερα\n"
+"Προγραμματισμένες: Μελλοντικές δραστηριότητες."
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset_asset__method_period
@@ -1159,6 +1228,16 @@ msgstr "Μέθοδος Χρόνου"
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
 msgid "Time Method Based On"
 msgstr "Η μέθοδος με βάση το χρόνο βασίζεται σε"
+
+#. module: account_asset
+#: selection:account.asset.asset,activity_state:0
+msgid "Today"
+msgstr "Σήμερα"
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
+msgid "Today Activities"
+msgstr "Σημερινές Δραστηριότητες"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__type

@@ -3,19 +3,24 @@
 # * hr_contract_salary
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Gunther Clauwaert <gclauwae@hotmail.com>, 2018
-# Thomas Pot <thomas@open2bizz.nl>, 2018
-# Yenthe Van Ginneken <yenthespam@gmail.com>, 2018
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
+# Eric Geens <ericgeens@yahoo.com>, 2017
+# Melroy van den Berg <webmaster1989@gmail.com>, 2018
+# e2f_nl_c4 <e2f_nl_c4@hotmail.com>, 2018
+# Cas Vissers <casvissers@brahoo.nl>, 2018
+# Pol Van Dingenen <pol.vandingenen@vanroey.be>, 2018
+# Martin Trigaux, 2019
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
+# Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
+# Thomas Pot <thomas@open2bizz.nl>, 2019
+# Gunther Clauwaert <gclauwae@hotmail.com>, 2019
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-08-24 11:38+0000\n"
-"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2018\n"
+"PO-Revision-Date: 2017-12-13 15:21+0000\n"
+"Last-Translator: Gunther Clauwaert <gclauwae@hotmail.com>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -119,7 +124,7 @@ msgstr "<i class=\"fa fa-1x fa-crosshairs fa-fw fa-lg\"/> Commissies"
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "<i class=\"fa fa-1x fa-cutlery fa-fw\"/> Meal Vouchers"
-msgstr "<i class=\"fa fa-1x fa-cutlery fa-fw\"/> Maaltijdcheques"
+msgstr "<i class=\"fa fa-1x fa-cutlery fa-fw\"/>Maaltijdcheques"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -129,7 +134,7 @@ msgstr "<i class=\"fa fa-1x fa-gift fa-fw fa-lg\"/> 13<sup>de</sup> maand"
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "<i class=\"fa fa-1x fa-globe fa-fw fa-lg\"/> Internet Subscription"
-msgstr "<i class=\"fa fa-1x fa-globe fa-fw fa-lg\"/> Intern abonnement"
+msgstr "<i class=\"fa fa-1x fa-globe fa-fw fa-lg\"/>Interne abonnering"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -139,25 +144,25 @@ msgstr "<i class=\"fa fa-1x fa-leaf fa-fw\"/> Eco Vouchers"
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "<i class=\"fa fa-1x fa-minus fa-fw\"/> Benefit in Kind (Company Car)"
-msgstr "<i class=\"fa fa-1x fa-minus fa-fw\"/> Voordeel alle aard (bedrijfsauto)"
+msgstr "<i class=\"fa fa-1x fa-minus fa-fw\"/>Voordeel alle aard (bedrijfsauto)"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "<i class=\"fa fa-1x fa-minus fa-fw\"/> Benefit in Kind (Internet)"
-msgstr "<i class=\"fa fa-1x fa-minus fa-fw\"/> Voordeel alle aard (Internet)"
+msgstr "<i class=\"fa fa-1x fa-minus fa-fw\"/>Voordeel alle aard (Internet)"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid ""
 "<i class=\"fa fa-1x fa-minus fa-fw\"/> Benefit in Kind (Phone Subscription)"
 msgstr ""
-"<i class=\"fa fa-1x fa-minus fa-fw\"/> Voordeel alle aard (telefoon "
+"<i class=\"fa fa-1x fa-minus fa-fw\"/>Voordeel alle aard (telefoon "
 "abonnement)"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "<i class=\"fa fa-1x fa-minus fa-fw\"/> Intellectual Property"
-msgstr "<i class=\"fa fa-1x fa-minus fa-fw\"/> Intellectuele eigendom"
+msgstr "<i class=\"fa fa-1x fa-minus fa-fw\"/>Intellectuele eigendom"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -165,8 +170,8 @@ msgid ""
 "<i class=\"fa fa-1x fa-minus fa-fw\"/> Intellectual Property Income "
 "Deduction"
 msgstr ""
-"<i class=\"fa fa-1x fa-minus fa-fw\"/> Intellectuele eigendom "
-"inkomstenaftrek"
+"<i class=\"fa fa-1x fa-minus fa-fw\"/>Intellectuele eigendom inkomsten "
+"aftrek"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -176,27 +181,27 @@ msgstr "<i class=\"fa fa-1x fa-minus fa-fw\"/> Maaltijdcheques"
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "<i class=\"fa fa-1x fa-minus fa-fw\"/> Social contribution"
-msgstr "<i class=\"fa fa-1x fa-minus fa-fw\"/> Sociale bijdrage"
+msgstr "<i class=\"fa fa-1x fa-minus fa-fw\"/>Sociale bijdrage"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "<i class=\"fa fa-1x fa-minus fa-fw\"/> Special social contribution"
-msgstr "<i class=\"fa fa-1x fa-minus fa-fw\"/> Speciale sociale bijdrage"
+msgstr "<i class=\"fa fa-1x fa-minus fa-fw\"/>Speciale sociale bijdrage"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "<i class=\"fa fa-1x fa-minus fa-fw\"/> Withholding Tax"
-msgstr "<i class=\"fa fa-1x fa-minus fa-fw\"/> Uitgesloten van BTW"
+msgstr "<i class=\"fa fa-1x fa-minus fa-fw\"/>Weerhouden van belasting"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "<i class=\"fa fa-1x fa-plus fa-fw\"/> Benefit in Kind (Company Car)"
-msgstr "<i class=\"fa fa-1x fa-plus fa-fw\"/> Voordeel alle aard (bedrijfsauto)"
+msgstr "<i class=\"fa fa-1x fa-plus fa-fw\"/>Voordeel alle aard (bedrijfauto)"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "<i class=\"fa fa-1x fa-plus fa-fw\"/> Benefit in Kind (Internet)"
-msgstr "<i class=\"fa fa-1x fa-plus fa-fw\"/> Voordeel alle aard (internet)"
+msgstr "<i class=\"fa fa-1x fa-plus fa-fw\"/>Voordeel alle aard (internet)"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -221,12 +226,12 @@ msgstr "<i class=\"fa fa-1x fa-plus fa-fw\"/> Representatie kosten"
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "<i class=\"fa fa-1x fa-plus fa-fw\"/> Withholding Tax Reductions"
-msgstr "<i class=\"fa fa-1x fa-plus fa-fw\"/> Uitgesloten van BTW aftrekken"
+msgstr "<i class=\"fa fa-1x fa-plus fa-fw\"/>Weerhouden van belasting aftrekken"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "<i class=\"fa fa-1x fa-suitcase fa-fw\"/> Holiday Bonus"
-msgstr "<i class=\"fa fa-1x fa-suitcase fa-fw\"/> Vakantiebonus"
+msgstr "<i class=\"fa fa-1x fa-suitcase fa-fw\"/>Vakantie bonus"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -241,7 +246,7 @@ msgstr "<i class=\"fa fa-1x fa-tint fa-fw\"/> Tankkaart"
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package_thank_you
 msgid "<i class=\"fa fa-check-circle-o mr8\"/>Congratulations"
-msgstr "<i class=\"fa fa-check-circle-o mr8\"/> Gefeliciteerd"
+msgstr "<i class=\"fa fa-check-circle-o mr8\"/>Gefeliciteerd"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -808,7 +813,7 @@ msgstr "Gescheiden"
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Doors Number: <span name=\"door_number\"/>"
-msgstr "Toevoeging: <span name=\"door_number\"/>"
+msgstr "Deurnummer: <span name=\"door_number\"/>"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -1491,12 +1496,12 @@ msgstr "Naam en voornaam partner:"
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Spouse Net Revenue"
-msgstr "Partner netto inkomen"
+msgstr "Echtgenoot netto inkomen"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Spouse Other Net Revenue"
-msgstr "Partner overig netto inkomen"
+msgstr "Echtgenoot overig netto inkomen"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -1576,7 +1581,7 @@ msgstr "BELASTE LOON"
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Tax status for spouse"
-msgstr "BTW status voor partner"
+msgstr "BTW status voor echtgenoot"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract__origin_contract_id

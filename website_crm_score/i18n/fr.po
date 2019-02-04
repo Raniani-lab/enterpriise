@@ -3,18 +3,37 @@
 # * website_crm_score
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Fabien Bourgeois <fabien@yaltik.com>, 2018
-# Eloïse Stilmant <est@odoo.com>, 2018
-# Laura Piraux <lap@odoo.com>, 2018
-# Nathan Grognet <ngr@odoo.com>, 2018
+# Xavier Symons <xsy@openerp.com>, 2016
+# Shark McGnark <peculiarcheese@gmail.com>, 2016
+# Adriana Ierfino <adriana.ierfino@savoirfairelinux.com>, 2016
+# Florian Hatat, 2016
+# Lucas Deliege <lud@odoo.com>, 2016
+# Lionel Sausin <ls@numerigraphe.com>, 2016
+# Clo <clo@odoo.com>, 2016
+# Lucas Deliege <lud@openerp.com>, 2017
+# Richard Mathot <rim@odoo.com>, 2017
+# Félix Desjardins <felixinx@gmail.com>, 2017
+# Olivier Dony <odo@odoo.com>, 2018
+# Maxime Chambreuil <mchambreuil@ursainfosystems.com>, 2018
+# Olivier Lenoir <olivier.lenoir@free.fr>, 2018
+# Nancy Bolognesi <nb@microcom.ca>, 2018
+# Micky Jault <micky037@hotmail.fr>, 2018
+# Xavier Belmere <Info@cartmeleon.com>, 2018
+# fr trans <e2ftrans1@yahoo.com>, 2018
+# Martin Trigaux, 2019
+# Fabien Bourgeois <fabien@yaltik.com>, 2019
+# Eloïse Stilmant <est@odoo.com>, 2019
+# Laura Piraux <lap@odoo.com>, 2019
+# Nathan Grognet <ngr@odoo.com>, 2019
+# William Olhasque <william.olhasque@scopea.fr>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:07+0000\n"
-"PO-Revision-Date: 2018-09-21 14:07+0000\n"
-"Last-Translator: Nathan Grognet <ngr@odoo.com>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"PO-Revision-Date: 2016-08-05 13:32+0000\n"
+"Last-Translator: William Olhasque <william.olhasque@scopea.fr>, 2019\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -26,6 +45,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__pageviews_count
 msgid "# Page Views"
 msgstr "nb. de pages vues"
+
+#. module: website_crm_score
+#: model_terms:ir.ui.view,arch_db:website_crm_score.website_crm_score_view_kanban
+msgid ""
+"<i class=\"fa fa-fw fa-tags\" aria-label=\"Number of leads\" title=\"Number "
+"of leads\" role=\"img\"/>"
+msgstr ""
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_needaction
@@ -73,7 +99,7 @@ msgstr "Pistes attribuées le mois dernier"
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__message_attachment_count
 #: model:ir.model.fields,field_description:website_crm_score.field_website_crm_score__message_attachment_count
 msgid "Attachment Count"
-msgstr "Nombre de pièces jointes"
+msgstr "Compte des pièces jointes"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__assign_date
@@ -191,7 +217,7 @@ msgstr "Abonnés (Partenaires)"
 #. module: website_crm_score
 #: model:ir.model,name:website_crm_score.model_ir_http
 msgid "HTTP Routing"
-msgstr ""
+msgstr "Routage HTTP"
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_team_user__id
@@ -451,7 +477,6 @@ msgid "Sales Channels"
 msgstr "Equipes de vente"
 
 #. module: website_crm_score
-#: model:ir.actions.act_window,name:website_crm_score.team_user_action
 #: model_terms:ir.ui.view,arch_db:website_crm_score.view_crm_team_user_form
 #: model_terms:ir.ui.view,arch_db:website_crm_score.view_crm_team_user_tree
 msgid "Sales Men"
@@ -482,8 +507,14 @@ msgid "Salesperson (Team Member)"
 msgstr ""
 
 #. module: website_crm_score
+#: model:ir.actions.act_window,name:website_crm_score.team_user_action
+msgid "Salespersons"
+msgstr ""
+
+#. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_lead__score
 #: model_terms:ir.ui.view,arch_db:website_crm_score.crm_lead_view_dashboard
+#: model_terms:ir.ui.view,arch_db:website_crm_score.crm_opportunity_view_dashboard
 msgid "Score"
 msgstr "Score"
 
@@ -638,18 +669,6 @@ msgstr ""
 "ont déjà été qualifiées précédemment. Cette option a un gros impact sur les "
 "performances, donc elle devrait être cochée uniquement pour les règles qui "
 "dépendent d'événements dynamiques"
-
-#. module: website_crm_score
-#: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
-#: model_terms:ir.ui.view,arch_db:website_crm_score.team_user_kanban
-msgid "fa-check"
-msgstr "fa-check"
-
-#. module: website_crm_score
-#: model_terms:ir.ui.view,arch_db:website_crm_score.sales_team_form_view_assign
-#: model_terms:ir.ui.view,arch_db:website_crm_score.team_user_kanban
-msgid "fa-times"
-msgstr "fa-times"
 
 #. module: website_crm_score
 #: model_terms:ir.ui.view,arch_db:website_crm_score.website_crm_score_view_kanban

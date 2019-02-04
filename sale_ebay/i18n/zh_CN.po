@@ -3,19 +3,27 @@
 # * sale_ebay
 # 
 # Translators:
-# inspur qiuguodong <qiuguodong@inspur.com>, 2018
-# 老窦 北京 <2662059195@qq.com>, 2018
-# Martin Trigaux, 2018
-# Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
-# liAnGjiA <liangjia@qq.com>, 2018
+# Gary Wei <Gary.wei@elico-corp.com>, 2016
+# 钟小华 <mackz@sina.com>, 2016
+# v2exerer <9010446@qq.com>, 2016
+# Joray <13637815@qq.com>, 2016
+# Martin Trigaux, 2017
+# Jeff Yu - Elico Corp <jeff.yu@elico-corp.com>, 2017
+# fausthuang, 2017
+# waveyeung <waveyeung@qq.com>, 2018
+# 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2018
+# Jeffery CHEN Fan <jeffery9@gmail.com>, 2019
+# liAnGjiA <liangjia@qq.com>, 2019
+# 老窦 北京 <2662059195@qq.com>, 2019
+# inspur qiuguodong <qiuguodong@inspur.com>, 2019
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-08-24 11:48+0000\n"
-"Last-Translator: liAnGjiA <liangjia@qq.com>, 2018\n"
+"PO-Revision-Date: 2016-08-05 13:31+0000\n"
+"Last-Translator: inspur qiuguodong <qiuguodong@inspur.com>, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -44,9 +52,7 @@ msgstr ""
 msgid ""
 " If you want to set quantity to 0, the Out Of Stock option should be enabled"
 " and the listing duration should set to Good 'Til Canceled"
-msgstr ""
-"如果你设置数量为0,需启用缺货选项，清单时间应该被设为货物直到取消\n"
-"如果要将数量设置为0，则应启用缺货选项，并且设置列表持续时间直到取消"
+msgstr "如果你设置数量为0,缺货选项应该被启用，清单时间应该被设为货物直到取消"
 
 #. module: sale_ebay
 #: code:addons/sale_ebay/models/product.py:386
@@ -55,7 +61,7 @@ msgid ""
 " You need to have at least 2 variations selected for a multi-variations listing.\n"
 " Or if you try to delete a variation, you cannot do it by unselecting it. Setting the quantity to 0 is the safest method to make a variation unavailable."
 msgstr ""
-"你必须至少选择2个变体。对于多变体清单.否则如果你尝试删除一个变体，你将不能选择它。\n"
+"你必须至少选择2个变体对于多变体清单.否则如果你尝试删除一个变体，你将不能选择它。\n"
 "设置数量为0，是使一个变体无效的安全方法。"
 
 #. module: sale_ebay
@@ -114,7 +120,7 @@ msgstr "<span class=\"o_form_label\">eBay 选项</span>"
 msgid ""
 "All the quantities must be greater than 0 or you need to enable the Out Of "
 "Stock option."
-msgstr "所有的数量必须大于0或激活缺货选项"
+msgstr "所有的数量必须大于0或者你必须激活缺货选项"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_best_offer
@@ -179,7 +185,7 @@ msgstr "代号"
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_res_config_settings
 msgid "Config Settings"
-msgstr "配置设定"
+msgstr "配置设置"
 
 #. module: sale_ebay
 #: code:addons/sale_ebay/models/product.py:352
@@ -426,7 +432,7 @@ msgstr "叶类"
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.ebay_link_listing_view
 msgid "Link Existing Listing"
-msgstr "链接已发布产品"
+msgstr "链接现有的上市"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
@@ -467,7 +473,7 @@ msgstr "模式"
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Mode and credentials"
-msgstr "模式和证明"
+msgstr "模式凭证"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_category__name
@@ -618,7 +624,7 @@ msgstr "销售渠道"
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_crm_team
 msgid "Sales Channels"
-msgstr "销售渠道"
+msgstr "销售渠道列表"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
@@ -919,7 +925,7 @@ msgstr "eBay 无法访问. 请再试."
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "eBay parameters"
-msgstr "eBay 参数"
+msgstr "易趣网的参数"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_url

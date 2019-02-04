@@ -20,6 +20,12 @@ class TestDeliveryUSPS(TransactionCase):
                                  'zip': '94107',
                                  'phone': 9874582356})
         self.agrolait = self.env.ref('base.res_partner_2')
+        self.agrolait.write({'street': "rue des Bourlottes, 9",
+                             'street2': "",
+                             'city': "Ramillies",
+                             'zip': 1367,
+                             'state_id': False,
+                             'country_id': self.env.ref('base.be').id})
         self.think_big_system = self.env.ref('base.res_partner_18')
         self.think_big_system.write({'phone': 3132223456,
                                      'street': '1 Infinite Loop',
@@ -69,7 +75,6 @@ class TestDeliveryUSPS(TransactionCase):
         self.assertGreater(picking.shipping_weight, 0.0, "Picking weight should be positive.")
 
         picking.action_done()
-        picking.send_to_shipper()
         self.assertIsNot(picking.carrier_tracking_ref, False, "USPS did not return any tracking number")
         self.assertGreater(picking.carrier_price, 0.0, "USPS carrying price is probably incorrect")
 
@@ -107,7 +112,6 @@ class TestDeliveryUSPS(TransactionCase):
         self.assertGreater(picking.shipping_weight, 0.0, "Picking weight should be positive.")
 
         picking.action_done()
-        picking.send_to_shipper()
         self.assertIsNot(picking.carrier_tracking_ref, False, "USPS did not return any tracking number")
         self.assertGreater(picking.carrier_price, 0.0, "USPS carrying price is probably incorrect")
 
@@ -144,7 +148,6 @@ class TestDeliveryUSPS(TransactionCase):
         self.assertGreater(picking.shipping_weight, 0.0, "Picking weight should be positive.")
 
         picking.action_done()
-        picking.send_to_shipper()
         self.assertIsNot(picking.carrier_tracking_ref, False, "USPS did not return any tracking number")
         self.assertGreater(picking.carrier_price, 0.0, "USPS carrying price is probably incorrect")
 

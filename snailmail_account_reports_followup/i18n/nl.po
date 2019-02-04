@@ -3,24 +3,39 @@
 # * snailmail_account_reports_followup
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Yenthe Van Ginneken <yenthespam@gmail.com>, 2018
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
-# Thomas Pot <thomas@open2bizz.nl>, 2018
-# Cas Vissers <casvissers@brahoo.nl>, 2018
+# Martin Trigaux, 2019
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
+# Cas Vissers <casvissers@brahoo.nl>, 2019
+# Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Cas Vissers <casvissers@brahoo.nl>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"PO-Revision-Date: 2019-01-16 08:41+0000\n"
+"Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Language: nl\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: snailmail_account_reports_followup
+#: model_terms:ir.ui.view,arch_db:snailmail_account_reports_followup.followup_send_wizard_form
+msgid ""
+"<i class=\"fa fa-info-circle\" role=\"img\" aria-label=\"Warning\" title=\""
+"                         The letter will be sent using the IAP service from "
+"Odoo.&#10;Make sure you have enough credits on your account or proceed to a "
+"recharge.&#10;In case of multiple sending, the price is estimated based on 1"
+" page per document.                         \"/>"
+msgstr ""
+"<i class=\"fa fa-info-circle\" role=\"img\" aria-label=\"Waarschuwing\" "
+"title=\"De brief wordt verzonden met de API dienst van "
+"Odoo.&amp;#10;Verzeker u ervan dat u genoeg credits heeft op uw account of "
+"koop credits bij.&amp;#10;Indien u er meerdere verzend is de prijs gebaseerd"
+" op 1 pagina per document.\"/>"
 
 #. module: snailmail_account_reports_followup
 #: model_terms:ir.ui.view,arch_db:snailmail_account_reports_followup.followup_send_wizard_form
@@ -47,11 +62,6 @@ msgid "Created on"
 msgstr "Aangemaakt op"
 
 #. module: snailmail_account_reports_followup
-#: model:ir.model.fields,field_description:snailmail_account_reports_followup.field_followup_send__snailmail_cost
-msgid "Credits"
-msgstr "Krediet"
-
-#. module: snailmail_account_reports_followup
 #: model:ir.model.fields,field_description:snailmail_account_reports_followup.field_followup_send__currency_id
 msgid "Currency"
 msgstr "Valuta"
@@ -64,12 +74,12 @@ msgstr "Weergave naam"
 #. module: snailmail_account_reports_followup
 #: model:ir.model,name:snailmail_account_reports_followup.model_account_followup_followup_line
 msgid "Follow-up Criteria"
-msgstr "Betalingsherinneringen creteria"
+msgstr "Betalingsherinneringen criteria"
 
 #. module: snailmail_account_reports_followup
 #: model:ir.model,name:snailmail_account_reports_followup.model_account_followup_report
 msgid "Follow-up Report"
-msgstr "Follow-up rapport"
+msgstr "Herinnering rapport"
 
 #. module: snailmail_account_reports_followup
 #: model:ir.model,name:snailmail_account_reports_followup.model_followup_send
@@ -131,11 +141,16 @@ msgid "Sending these"
 msgstr "Deze aan het versturen"
 
 #. module: snailmail_account_reports_followup
+#: model:ir.model.fields,field_description:snailmail_account_reports_followup.field_followup_send__snailmail_cost
+msgid "Stamp(s)"
+msgstr "Postzegel(s)"
+
+#. module: snailmail_account_reports_followup
 #: model:ir.model.fields,help:snailmail_account_reports_followup.field_account_followup_followup_line__send_letter
 msgid "When processing, it will send a letter by Post"
 msgstr "Bij verwerken wordt een brief verstuurt per post"
 
 #. module: snailmail_account_reports_followup
 #: model_terms:ir.ui.view,arch_db:snailmail_account_reports_followup.followup_send_wizard_form
-msgid "documents will cost approximatively"
-msgstr "documenten kosten ongeveer"
+msgid "documents will cost"
+msgstr "documenten kosten"

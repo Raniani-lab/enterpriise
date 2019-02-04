@@ -3,17 +3,19 @@
 # * documents_account
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Silmar <pinheirosilmar@gmail.com>, 2018
-# Rodrigo de Almeida Sottomaior Macedo <rmsolucoeseminformatic4@gmail.com>, 2018
-# Yannick Belot <yannickbh@gmail.com>, 2018
+# Rodrigo de Almeida Sottomaior Macedo <rmsolucoeseminformatic4@gmail.com>, 2019
+# Martin Trigaux, 2019
+# Emanuel Martins <emanuel.breno@gmail.com>, 2019
+# Yannick Belot <yannickbh@gmail.com>, 2019
+# Silmar <pinheirosilmar@gmail.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-02 10:31+0000\n"
-"PO-Revision-Date: 2018-10-02 10:31+0000\n"
-"Last-Translator: Yannick Belot <yannickbh@gmail.com>, 2018\n"
+"POT-Creation-Date: 2018-12-24 11:16+0000\n"
+"PO-Revision-Date: 2019-01-16 08:38+0000\n"
+"Last-Translator: Silmar <pinheirosilmar@gmail.com>, 2019\n"
 "Language-Team: Portuguese (Brazil) (https://www.transifex.com/odoo/teams/41243/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -32,7 +34,7 @@ msgstr ""
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_res_company__account_folder
-#: model:ir.model.fields,field_description:documents_account.field_res_config_settings__dms_account_settings
+#: model:ir.model.fields,field_description:documents_account.field_res_config_settings__documents_account_settings
 msgid "Account Folder"
 msgstr "Arquivo de Contabilidade"
 
@@ -40,7 +42,12 @@ msgstr "Arquivo de Contabilidade"
 #: model:ir.model.fields,field_description:documents_account.field_res_company__account_tags
 #: model:ir.model.fields,field_description:documents_account.field_res_config_settings__account_tags
 msgid "Account Tags"
-msgstr "Tags de Conta"
+msgstr "Marcadores de conta"
+
+#. module: documents_account
+#: model:ir.model,name:documents_account.model_ir_attachment
+msgid "Attachment"
+msgstr "Anexo"
 
 #. module: documents_account
 #: model:ir.model,name:documents_account.model_res_company
@@ -58,10 +65,14 @@ msgid "Create"
 msgstr "Criar"
 
 #. module: documents_account
-#: code:addons/documents_account/models/account_invoice.py:13
-#, python-format
-msgid "Created by: "
-msgstr "Criado por:"
+#: model:documents.workflow.rule,name:documents_account.vendor_bill_rule
+msgid "Create Vendor Bill"
+msgstr ""
+
+#. module: documents_account
+#: model:documents.workflow.rule,name:documents_account.credit_note_rule
+msgid "Create Vendor Refund"
+msgstr ""
 
 #. module: documents_account
 #: selection:documents.workflow.rule,create_model:0
@@ -69,14 +80,9 @@ msgid "Credit note"
 msgstr "Nota de crédito"
 
 #. module: documents_account
-#: model:ir.model.fields,field_description:documents_account.field_res_company__dms_account_settings
-msgid "Dms Account Settings"
-msgstr "Configurações de DMS da Contabilidade"
-
-#. module: documents_account
-#: model:ir.model,name:documents_account.model_ir_attachment
-msgid "Document"
-msgstr "Documento"
+#: model:ir.model.fields,field_description:documents_account.field_res_company__documents_account_settings
+msgid "Documents Account Settings"
+msgstr ""
 
 #. module: documents_account
 #: model:mail.activity.type,name:documents_account.mail_documents_activity_data_fs
@@ -89,20 +95,16 @@ msgid "Has Business Option"
 msgstr "Tem Opção de Negócio"
 
 #. module: documents_account
-#: model:ir.model,name:documents_account.model_account_invoice
-msgid "Invoice"
-msgstr "Fatura"
-
-#. module: documents_account
 #: selection:documents.workflow.rule,create_model:0
 msgid "Product template"
 msgstr "Template de produto"
 
 #. module: documents_account
 #: model_terms:ir.ui.view,arch_db:documents_account.res_config_settings_view_form
-msgid "Select the folder to be used for accounting's documents."
+msgid ""
+"Select the folder to be used for accounting's documents for the invoices\n"
+"                                    of your company."
 msgstr ""
-"Selecione uma pasta para ser utilizada para documentos da contabilidade"
 
 #. module: documents_account
 #: model_terms:ir.ui.view,arch_db:documents_account.res_config_settings_view_form

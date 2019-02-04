@@ -3,23 +3,25 @@
 # * delivery_fedex
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Wiktor Kaźmierczak <wik92tor@wp.pl>, 2018
-# zbik2607 <darek@krokus.com.pl>, 2018
-# Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2018
-# Tomasz Leppich <t.leppich@gmail.com>, 2018
-# Arek Smagacz <arek.smagacz@gmail.com>, 2018
-# Piotr Szlązak <szlazakpiotr@gmail.com>, 2018
-# Monika Grzelak <m.e.grzelak@gmail.com>, 2018
-# Radosław Biegalski <radoslaw.biegalski@openglobe.pl>, 2018
-# Paweł Wodyński <pw@myodoo.pl>, 2018
+# Wiktor Kaźmierczak <wik92tor@wp.pl>, 2019
+# Piotr Cierkosz <piotr.w.cierkosz@gmail.com>, 2019
+# Martin Trigaux, 2019
+# zbik2607 <darek@krokus.com.pl>, 2019
+# Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2019
+# Tomasz Leppich <t.leppich@gmail.com>, 2019
+# Arek Smagacz <arek.smagacz@gmail.com>, 2019
+# Piotr Szlązak <szlazakpiotr@gmail.com>, 2019
+# Monika Grzelak <m.e.grzelak@gmail.com>, 2019
+# Radosław Biegalski <radoslaw.biegalski@openglobe.pl>, 2019
+# Paweł Wodyński <pw@myodoo.pl>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Paweł Wodyński <pw@myodoo.pl>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"PO-Revision-Date: 2016-08-05 13:28+0000\n"
+"Last-Translator: Paweł Wodyński <pw@myodoo.pl>, 2019\n"
 "Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -140,6 +142,11 @@ msgstr "FEDEX_2_DAY_AM"
 
 #. module: delivery_fedex
 #: selection:delivery.carrier,fedex_service_type:0
+msgid "FEDEX_3_DAY_FREIGHT"
+msgstr ""
+
+#. module: delivery_fedex
+#: selection:delivery.carrier,fedex_service_type:0
 msgid "FEDEX_GROUND"
 msgstr "FEDEX_GROUND"
 
@@ -178,6 +185,11 @@ msgstr ""
 #. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
 msgid "Fedex Configuration"
+msgstr ""
+
+#. module: delivery_fedex
+#: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_document_stock_type
+msgid "Fedex Document Stock Type"
 msgstr ""
 
 #. module: delivery_fedex
@@ -262,7 +274,7 @@ msgstr ""
 #. module: delivery_fedex
 #: selection:product.packaging,package_carrier_type:0
 msgid "No carrier integration"
-msgstr ""
+msgstr "Brak integracji z przewoźnikiem"
 
 #. module: delivery_fedex
 #: code:addons/delivery_fedex/models/delivery_fedex.py:440
@@ -276,36 +288,43 @@ msgid "Once your account is created, go to"
 msgstr ""
 
 #. module: delivery_fedex
+#: selection:delivery.carrier,fedex_document_stock_type:0
 #: selection:delivery.carrier,fedex_label_stock_type:0
 msgid "PAPER_4X6"
 msgstr "PAPER_4X6"
 
 #. module: delivery_fedex
+#: selection:delivery.carrier,fedex_document_stock_type:0
 #: selection:delivery.carrier,fedex_label_stock_type:0
 msgid "PAPER_4X8"
 msgstr "PAPER_4X8"
 
 #. module: delivery_fedex
+#: selection:delivery.carrier,fedex_document_stock_type:0
 #: selection:delivery.carrier,fedex_label_stock_type:0
 msgid "PAPER_4X9"
 msgstr "PAPER_4X9"
 
 #. module: delivery_fedex
+#: selection:delivery.carrier,fedex_document_stock_type:0
 #: selection:delivery.carrier,fedex_label_stock_type:0
 msgid "PAPER_7X4.75"
 msgstr "PAPER_7X4.75"
 
 #. module: delivery_fedex
+#: selection:delivery.carrier,fedex_document_stock_type:0
 #: selection:delivery.carrier,fedex_label_stock_type:0
 msgid "PAPER_8.5X11_BOTTOM_HALF_LABEL"
 msgstr "PAPER_8.5X11_BOTTOM_HALF_LABEL"
 
 #. module: delivery_fedex
+#: selection:delivery.carrier,fedex_document_stock_type:0
 #: selection:delivery.carrier,fedex_label_stock_type:0
 msgid "PAPER_8.5X11_TOP_HALF_LABEL"
 msgstr "PAPER_8.5X11_TOP_HALF_LABEL"
 
 #. module: delivery_fedex
+#: selection:delivery.carrier,fedex_document_stock_type:0
 #: selection:delivery.carrier,fedex_label_stock_type:0
 msgid "PAPER_LETTER"
 msgstr "PAPIEROWY_LIST"
@@ -361,31 +380,37 @@ msgid "STATION"
 msgstr ""
 
 #. module: delivery_fedex
+#: selection:delivery.carrier,fedex_document_stock_type:0
 #: selection:delivery.carrier,fedex_label_stock_type:0
 msgid "STOCK_4X6"
 msgstr ""
 
 #. module: delivery_fedex
+#: selection:delivery.carrier,fedex_document_stock_type:0
 #: selection:delivery.carrier,fedex_label_stock_type:0
 msgid "STOCK_4X6.75_LEADING_DOC_TAB"
 msgstr ""
 
 #. module: delivery_fedex
+#: selection:delivery.carrier,fedex_document_stock_type:0
 #: selection:delivery.carrier,fedex_label_stock_type:0
 msgid "STOCK_4X6.75_TRAILING_DOC_TAB"
 msgstr ""
 
 #. module: delivery_fedex
+#: selection:delivery.carrier,fedex_document_stock_type:0
 #: selection:delivery.carrier,fedex_label_stock_type:0
 msgid "STOCK_4X8"
 msgstr ""
 
 #. module: delivery_fedex
+#: selection:delivery.carrier,fedex_document_stock_type:0
 #: selection:delivery.carrier,fedex_label_stock_type:0
 msgid "STOCK_4X9_LEADING_DOC_TAB"
 msgstr ""
 
 #. module: delivery_fedex
+#: selection:delivery.carrier,fedex_document_stock_type:0
 #: selection:delivery.carrier,fedex_label_stock_type:0
 msgid "STOCK_4X9_TRAILING_DOC_TAB"
 msgstr ""
@@ -487,14 +512,6 @@ msgstr ""
 #: selection:product.packaging,package_carrier_type:0
 msgid "bpost"
 msgstr "bpost"
-
-#. module: delivery_fedex
-#: model:product.product,weight_uom_name:delivery_fedex.product_product_delivery_fedex_inter
-#: model:product.product,weight_uom_name:delivery_fedex.product_product_delivery_fedex_us
-#: model:product.template,weight_uom_name:delivery_fedex.product_product_delivery_fedex_inter_product_template
-#: model:product.template,weight_uom_name:delivery_fedex.product_product_delivery_fedex_us_product_template
-msgid "kg"
-msgstr "kg"
 
 #. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex

@@ -3,17 +3,18 @@
 # * quality
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Kostas Goutoudis <goutoudis@gmail.com>, 2018
-# Stefanos Nikou <stefanos.nikou@gmail.com>, 2018
-# George Tarasidis <george_tarasidis@yahoo.com>, 2018
+# Martin Trigaux, 2019
+# Kostas Goutoudis <goutoudis@gmail.com>, 2019
+# Stefanos Nikou <stefanos.nikou@gmail.com>, 2019
+# George Tarasidis <george_tarasidis@yahoo.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: George Tarasidis <george_tarasidis@yahoo.com>, 2018\n"
+"POT-Creation-Date: 2018-12-24 11:16+0000\n"
+"PO-Revision-Date: 2016-08-05 13:31+0000\n"
+"Last-Translator: George Tarasidis <george_tarasidis@yahoo.com>, 2019\n"
 "Language-Team: Greek (https://www.transifex.com/odoo/teams/41243/el/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -58,6 +59,16 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_point__active
 msgid "Active"
 msgstr "Σε Ισχύ"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__activity_ids
+msgid "Activities"
+msgstr "Δραστηριότητες"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__activity_state
+msgid "Activity State"
+msgstr "Κατάσταση Δραστηριότητας"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_stage__done
@@ -432,6 +443,21 @@ msgid "New"
 msgstr "Νέα"
 
 #. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__activity_date_deadline
+msgid "Next Activity Deadline"
+msgstr "Επόμενη Προθεσμία Δραστηριότητας"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__activity_summary
+msgid "Next Activity Summary"
+msgstr "Σύνοψη Επόμενης Δραστηριότητας"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__activity_type_id
+msgid "Next Activity Type"
+msgstr "Επόμενος Τύπος Δραστηριότητας"
+
+#. module: quality
 #: selection:quality.alert,priority:0
 msgid "Normal"
 msgstr "Κανονική"
@@ -515,6 +541,11 @@ msgid "Others"
 msgstr ""
 
 #. module: quality
+#: selection:quality.alert,activity_state:0
+msgid "Overdue"
+msgstr "Εκπρόθεσμο"
+
+#. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_user_id
 msgid "Owner"
 msgstr "Ιδιοκτήτης"
@@ -560,6 +591,11 @@ msgstr "Συλλογή"
 #: model:ir.model.fields,field_description:quality.field_quality_check__picture
 msgid "Picture"
 msgstr "Εικόνα"
+
+#. module: quality
+#: selection:quality.alert,activity_state:0
+msgid "Planned"
+msgstr "Προγραμματισμένη"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert_team__alias_contact
@@ -655,6 +691,11 @@ msgid "Responsible"
 msgstr "Υπεύθυνοι"
 
 #. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__activity_user_id
+msgid "Responsible User"
+msgstr "Υπεύθυνος Χρήστης"
+
+#. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__reason_id
 msgid "Root Cause"
 msgstr "Βασική Αιτία"
@@ -685,6 +726,19 @@ msgstr "Στάδιο"
 #: model:ir.model.fields,field_description:quality.field_quality_check__quality_state
 msgid "Status"
 msgstr "Κατάσταση"
+
+#. module: quality
+#: model:ir.model.fields,help:quality.field_quality_alert__activity_state
+msgid ""
+"Status based on activities\n"
+"Overdue: Due date is already passed\n"
+"Today: Activity date is today\n"
+"Planned: Future activities."
+msgstr ""
+"Κατάσταση βασισμένη σε δραστηριότητες\n"
+"Καθυστερημένη: Η ημερομηνία λήξης έχει ήδη περάσει\n"
+"Σήμερα: Η ημερομηνία δραστηριότητας είναι σήμερα\n"
+"Προγραμματισμένες: Μελλοντικές δραστηριότητες."
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__tag_ids
@@ -761,6 +815,11 @@ msgstr "Τίτλος"
 #: selection:quality.check,quality_state:0
 msgid "To do"
 msgstr "Να κάνω"
+
+#. module: quality
+#: selection:quality.alert,activity_state:0
+msgid "Today"
+msgstr "Σήμερα"
 
 #. module: quality
 #: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form

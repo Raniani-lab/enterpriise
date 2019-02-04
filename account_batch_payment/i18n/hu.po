@@ -3,19 +3,20 @@
 # * account_batch_payment
 # 
 # Translators:
-# Martin Trigaux, 2018
-# krnkris, 2018
-# gezza <geza.nagy@oregional.hu>, 2018
-# Kovács Tibor <kovika@gmail.com>, 2018
-# Ákos Nagy <akos.nagy@oregional.hu>, 2018
+# Martin Trigaux, 2019
+# krnkris, 2019
+# gezza <geza.nagy@oregional.hu>, 2019
+# Kovács Tibor <kovika@gmail.com>, 2019
+# Ákos Nagy <akos.nagy@oregional.hu>, 2019
+# Tibor Kőnig <konig.tibor@evitalit.hu>, 2019
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-08-24 11:36+0000\n"
-"Last-Translator: Ákos Nagy <akos.nagy@oregional.hu>, 2018\n"
+"PO-Revision-Date: 2019-01-16 08:32+0000\n"
+"Last-Translator: Tibor Kőnig <konig.tibor@evitalit.hu>, 2019\n"
 "Language-Team: Hungarian (https://www.transifex.com/odoo/teams/41243/hu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -43,12 +44,6 @@ msgstr ""
 #: code:addons/account_batch_payment/models/account_batch_payment.py:86
 #, python-format
 msgid "All payments in the batch must share the same payment method."
-msgstr ""
-
-#. module: account_batch_payment
-#: code:addons/account_batch_payment/models/account_batch_payment.py:81
-#, python-format
-msgid "All payments in the batch must share the same type."
 msgstr ""
 
 #. module: account_batch_payment
@@ -181,7 +176,7 @@ msgstr "Pénznem"
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.print_batch_payment
 msgid "Customer"
-msgstr "Vevő"
+msgstr "Ügyfél"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__date

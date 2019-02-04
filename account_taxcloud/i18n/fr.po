@@ -3,16 +3,22 @@
 # * account_taxcloud
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Eloïse Stilmant <est@odoo.com>, 2018
-# Marie Willemyns <mwi@odoo.com>, 2018
+# Xavier Belmere <Info@cartmeleon.com>, 2016
+# Nancy Bolognesi <nb@microcom.ca>, 2016
+# Martin Trigaux, 2017
+# Olivier Lenoir <olivier.lenoir@free.fr>, 2017
+# e2f <projects@e2f.com>, 2018
+# Maxime Chambreuil <mchambreuil@ursainfosystems.com>, 2018
+# Eloïse Stilmant <est@odoo.com>, 2019
+# Marie Willemyns <mwi@odoo.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-02 10:31+0000\n"
-"PO-Revision-Date: 2018-10-02 10:31+0000\n"
-"Last-Translator: Marie Willemyns <mwi@odoo.com>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"PO-Revision-Date: 2016-08-05 13:28+0000\n"
+"Last-Translator: Marie Willemyns <mwi@odoo.com>, 2019\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,6 +30,13 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_taxcloud.res_config_settings_view_form
 msgid "<i class=\"fa fa-fw fa-arrow-right\"/>How to Get Credentials"
 msgstr "<i class=\"fa fa-fw fa-arrow-right\"/>Comment obtenir des identifiants"
+
+#. module: account_taxcloud
+#: model_terms:ir.ui.view,arch_db:account_taxcloud.res_config_settings_view_form
+msgid ""
+"<i title=\"Import/update TICs from TaxCloud\" role=\"img\" aria-"
+"label=\"Import/update TICs from TaxCloud\" class=\"fa fa-refresh fa-fw\"/>"
+msgstr ""
 
 #. module: account_taxcloud
 #: model_terms:ir.ui.view,arch_db:account_taxcloud.res_config_settings_view_form
@@ -82,6 +95,7 @@ msgid "Display Name"
 msgstr "Nom affiché"
 
 #. module: account_taxcloud
+#: model:ir.model.fields,help:account_taxcloud.field_product_product__tic_category_id
 #: model:ir.model.fields,help:account_taxcloud.field_product_template__tic_category_id
 msgid ""
 "Each product falls into a category which has specific taxes predermined by "
@@ -183,6 +197,7 @@ msgid "TaxCloud Categories"
 msgstr "Catégories TaxCloud"
 
 #. module: account_taxcloud
+#: model:ir.model.fields,field_description:account_taxcloud.field_product_product__tic_category_id
 #: model:ir.model.fields,field_description:account_taxcloud.field_product_template__tic_category_id
 #: model_terms:ir.ui.view,arch_db:account_taxcloud.product_category_view_form_inherit_account_taxcloud
 #: model_terms:ir.ui.view,arch_db:account_taxcloud.product_template_taxcloud_inherit_form

@@ -3,17 +3,18 @@
 # * documents_sign
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Rodrigo de Almeida Sottomaior Macedo <rmsolucoeseminformatic4@gmail.com>, 2018
-# Silmar <pinheirosilmar@gmail.com>, 2018
-# Yannick Belot <yannickbh@gmail.com>, 2018
+# Rodrigo de Almeida Sottomaior Macedo <rmsolucoeseminformatic4@gmail.com>, 2019
+# Martin Trigaux, 2019
+# Yannick Belot <yannickbh@gmail.com>, 2019
+# Silmar <pinheirosilmar@gmail.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-02 10:31+0000\n"
-"PO-Revision-Date: 2018-10-02 10:31+0000\n"
-"Last-Translator: Yannick Belot <yannickbh@gmail.com>, 2018\n"
+"POT-Creation-Date: 2018-12-24 11:16+0000\n"
+"PO-Revision-Date: 2019-01-16 08:38+0000\n"
+"Last-Translator: Silmar <pinheirosilmar@gmail.com>, 2019\n"
 "Language-Team: Portuguese (Brazil) (https://www.transifex.com/odoo/teams/41243/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -31,14 +32,17 @@ msgstr ""
 "anexos que correspondem às condições."
 
 #. module: documents_sign
+#: model:ir.model,name:documents_sign.model_ir_attachment
+msgid "Attachment"
+msgstr "Anexo"
+
+#. module: documents_sign
 #: model:ir.model.fields,field_description:documents_sign.field_sign_request__folder_id
-#: model:ir.model.fields,field_description:documents_sign.field_sign_template__folder_id
 msgid "Attachment Folder"
 msgstr "Anexar Pasta"
 
 #. module: documents_sign
 #: model:ir.model.fields,field_description:documents_sign.field_sign_request__documents_tag_ids
-#: model:ir.model.fields,field_description:documents_sign.field_sign_template__documents_tag_ids
 msgid "Attachment Tags"
 msgstr "Etiquetas de anexo"
 
@@ -53,11 +57,6 @@ msgid "Credit note"
 msgstr "Nota de crédito"
 
 #. module: documents_sign
-#: model:ir.model,name:documents_sign.model_ir_attachment
-msgid "Document"
-msgstr "Documento"
-
-#. module: documents_sign
 #: model:ir.model.fields,field_description:documents_sign.field_documents_workflow_rule__has_business_option
 msgid "Has Business Option"
 msgstr "Tem Opção de Negócio"
@@ -66,6 +65,12 @@ msgstr "Tem Opção de Negócio"
 #: selection:documents.workflow.rule,create_model:0
 msgid "Product template"
 msgstr "Template de produto"
+
+#. module: documents_sign
+#: model:documents.workflow.rule,name:documents_sign.documents_sign_rule_sign_request
+#: model:documents.workflow.rule,name:documents_sign.documents_sign_rule_sign_request_finance
+msgid "Request a Signature"
+msgstr ""
 
 #. module: documents_sign
 #: model:ir.model,name:documents_sign.model_sign_request
@@ -81,6 +86,16 @@ msgstr "Template de assinatura"
 #: selection:documents.workflow.rule,create_model:0
 msgid "Signature template"
 msgstr "Template de assinatura"
+
+#. module: documents_sign
+#: model:ir.model.fields,field_description:documents_sign.field_sign_template__folder_id
+msgid "Signed Folder"
+msgstr ""
+
+#. module: documents_sign
+#: model:ir.model.fields,field_description:documents_sign.field_sign_template__documents_tag_ids
+msgid "Signed Tags"
+msgstr ""
 
 #. module: documents_sign
 #: selection:documents.workflow.rule,create_model:0

@@ -105,8 +105,8 @@
                             <aggregate name="days_exceeding_closing" string="Exceeding Close Days" field="days_exceeding_closing" group_operator="avg"/>
                         </group>
                         <group col="1">
-                            <widget name="pie_chart" attrs="{'title': 'Win/Loss Ratio', 'groupby': 'won_status', 'domain': '[\'|\', (\'active\', \'=\', False), (\'active\', \'=\', True), (\'won_status\', \'!=\', \'pending\')]'}"/>
-                            <widget name="pie_chart" attrs="{'title': 'Medium', 'groupby': 'medium_id'}"/>
+                            <widget name="pie_chart" title="Win/Loss Ratio" attrs="{'groupby': 'won_status', 'domain': '[\'|\', (\'active\', \'=\', False), (\'active\', \'=\', True), (\'won_status\', \'!=\', \'pending\')]'}"/>
+                            <widget name="pie_chart" title="Medium" attrs="{'groupby': 'medium_id'}"/>
                         </group>
                     </group>
                     <view type="pivot" ref="crm.crm_lead_view_pivot"/>
@@ -135,8 +135,8 @@
                                 <aggregate name="opportunities" string="Opportunities" field="id" domain="[('type','=','opportunity')]" group_operator="count" invisible="1"/>
                         </group>
                         <group>
-                            <widget name="pie_chart" attrs="{'title': 'Sales Teams', 'groupby': 'team_id'}"/>
-                            <widget name="pie_chart" attrs="{'title': 'Medium', 'groupby': 'medium_id'}"/>
+                            <widget name="pie_chart" title="Sales Teams" attrs="{'groupby': 'team_id'}"/>
+                            <widget name="pie_chart" title="Medium" attrs="{'groupby': 'medium_id'}"/>
                         </group>
                     </group>
                     <view type="pivot" ref="crm_enterprise.crm_lead_view_pivot"/>

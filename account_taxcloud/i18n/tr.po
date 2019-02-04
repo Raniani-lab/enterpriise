@@ -3,18 +3,18 @@
 # * account_taxcloud
 # 
 # Translators:
-# Levent Karakaş <levent@mektup.at>, 2018
 # Murat Kaplan <muratk@projetgrup.com>, 2018
 # Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2018
 # Umur Akın <umura@projetgrup.com>, 2018
-# Buket Şeker <buket_skr@hotmail.com>, 2018
+# Buket Şeker <buket_skr@hotmail.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-02 10:31+0000\n"
-"PO-Revision-Date: 2018-10-02 10:31+0000\n"
-"Last-Translator: Buket Şeker <buket_skr@hotmail.com>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"PO-Revision-Date: 2016-08-05 13:28+0000\n"
+"Last-Translator: Buket Şeker <buket_skr@hotmail.com>, 2019\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -25,6 +25,13 @@ msgstr ""
 #. module: account_taxcloud
 #: model_terms:ir.ui.view,arch_db:account_taxcloud.res_config_settings_view_form
 msgid "<i class=\"fa fa-fw fa-arrow-right\"/>How to Get Credentials"
+msgstr ""
+
+#. module: account_taxcloud
+#: model_terms:ir.ui.view,arch_db:account_taxcloud.res_config_settings_view_form
+msgid ""
+"<i title=\"Import/update TICs from TaxCloud\" role=\"img\" aria-"
+"label=\"Import/update TICs from TaxCloud\" class=\"fa fa-refresh fa-fw\"/>"
 msgstr ""
 
 #. module: account_taxcloud
@@ -40,7 +47,7 @@ msgstr "API Anahtarı (KEY)"
 #. module: account_taxcloud
 #: model:ir.model,name:account_taxcloud.model_res_company
 msgid "Companies"
-msgstr "Şirketler"
+msgstr "Firmalar"
 
 #. module: account_taxcloud
 #: model:ir.model,name:account_taxcloud.model_res_config_settings
@@ -55,7 +62,7 @@ msgstr "Oluşturan"
 #. module: account_taxcloud
 #: model:ir.model.fields,field_description:account_taxcloud.field_product_tic_category__create_date
 msgid "Created on"
-msgstr "Oluşturulma"
+msgstr "Oluşturulma zamanı"
 
 #. module: account_taxcloud
 #: model_terms:ir.ui.view,arch_db:account_taxcloud.res_config_settings_view_form
@@ -84,6 +91,7 @@ msgid "Display Name"
 msgstr "Görünüm Adı"
 
 #. module: account_taxcloud
+#: model:ir.model.fields,help:account_taxcloud.field_product_product__tic_category_id
 #: model:ir.model.fields,help:account_taxcloud.field_product_template__tic_category_id
 msgid ""
 "Each product falls into a category which has specific taxes predermined by "
@@ -185,6 +193,7 @@ msgid "TaxCloud Categories"
 msgstr "TaxCloud Kategorileri"
 
 #. module: account_taxcloud
+#: model:ir.model.fields,field_description:account_taxcloud.field_product_product__tic_category_id
 #: model:ir.model.fields,field_description:account_taxcloud.field_product_template__tic_category_id
 #: model_terms:ir.ui.view,arch_db:account_taxcloud.product_category_view_form_inherit_account_taxcloud
 #: model_terms:ir.ui.view,arch_db:account_taxcloud.product_template_taxcloud_inherit_form
@@ -223,7 +232,7 @@ msgstr "Mali Koşul Şablonu"
 #, python-format
 msgid "The configuration of TaxCloud is in the Accounting app, Settings menu."
 msgstr ""
-"TaxCloud konfigürasyonu Muhasebe uygulamasının içinde, Ayarlar menüsünde."
+"TaxCloud konfigürasyonu Ayarlar menüsü, Muhasebe uygulamasının içinde."
 
 #. module: account_taxcloud
 #: code:addons/account_taxcloud/models/account_invoice.py:115

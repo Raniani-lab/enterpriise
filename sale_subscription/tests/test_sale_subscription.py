@@ -191,6 +191,9 @@ class TestSubscription(TestSubscriptionCommon):
         self.assertEqual(len(self.sale_order_4.order_line.mapped('subscription_id')), 1, 'sale_subscription: One subscription should be created on SO confirmation')
         self.assertEqual(self.sale_order_4.subscription_management, 'create', 'sale_subscription: subscription creation should set the SO to "create"')
 
+        self.sale_order_5.action_confirm()
+        self.assertEqual(self.sale_order_5.order_line.subscription_id.date, fields.Date.today() + relativedelta(months=+1),'sale_subscription: subscription creation should set the end date to : today + 1 month')
+
     def test_renewal(self):
         """ Test subscription renewal """
         res = self.subscription.prepare_renewal_order()

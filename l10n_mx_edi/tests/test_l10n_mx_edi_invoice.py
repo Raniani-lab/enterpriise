@@ -147,14 +147,10 @@ class TestL10nMxEdiInvoice(common.InvoiceTransactionCase):
         # -----------------------
         invoice.sudo().journal_id.update_posted = True
         invoice.action_invoice_cancel()
-        for _x in range(10):
-            if invoice.l10n_mx_edi_pac_status == 'cancelled':
-                break
-            time.sleep(2)
-            invoice._l10n_mx_edi_cancel()
         self.assertEqual(invoice.state, "cancel")
-        self.assertEqual(invoice.l10n_mx_edi_pac_status, 'cancelled',
-                         invoice.message_ids.mapped('body'))
+        self.assertTrue(
+            invoice.l10n_mx_edi_pac_status in ['cancelled', 'to_cancel'],
+            invoice.message_ids.mapped('body'))
         invoice.l10n_mx_edi_pac_status = "signed"
 
         # -----------------------

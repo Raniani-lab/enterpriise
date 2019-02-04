@@ -3,27 +3,30 @@
 # * hr_appraisal
 # 
 # Translators:
+# Fırat Kaya <firat.kaya@mechsoft.com.tr>, 2017
+# gezgin biri <gezginbiri@hotmail.com>, 2017
+# Gökhan Erdoğdu <gokhan.erdogdu@mechsoft.com.tr>, 2017
+# Güven YILMAZ <guvenyilmaz@outlook.com.tr>, 2017
 # Ediz Duman <neps1192@gmail.com>, 2018
 # Ayhan KIZILTAN <akiziltan76@hotmail.com>, 2018
 # Martin Trigaux, 2018
-# Levent Karakaş <levent@mektup.at>, 2018
-# Murat Kaplan <muratk@projetgrup.com>, 2018
 # Ahmet Altinisik <aaltinisik@altinkaya.com.tr>, 2018
-# Güven YILMAZ <guvenyilmaz@outlook.com.tr>, 2018
-# Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2018
 # Mehmet Demirel <mdemirell@gmail.com>, 2018
 # Ramiz Deniz Öner <deniz@denizoner.com>, 2018
 # UNIBRAVO SOFTWARE <unibravo@gmail.com>, 2018
-# Fırat Kaya <firat.kaya@mechsoft.com.tr>, 2018
-# Umur Akın <umura@projetgrup.com>, 2018
-# Buket Şeker <buket_skr@hotmail.com>, 2018
+# Levent Karakaş <levent@mektup.at>, 2019
+# Murat Kaplan <muratk@projetgrup.com>, 2019
+# Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2019
+# Umur Akın <umura@projetgrup.com>, 2019
+# Buket Şeker <buket_skr@hotmail.com>, 2019
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-08 07:14+0000\n"
-"PO-Revision-Date: 2018-10-08 07:14+0000\n"
-"Last-Translator: Buket Şeker <buket_skr@hotmail.com>, 2018\n"
+"PO-Revision-Date: 2016-08-05 13:29+0000\n"
+"Last-Translator: Buket Şeker <buket_skr@hotmail.com>, 2019\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -116,7 +119,7 @@ msgstr ""
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__active
 msgid "Active"
-msgstr "Etkin"
+msgstr "Aktif"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__activity_ids
@@ -187,7 +190,7 @@ msgstr "Değerlendirme Analizi"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_collaborators_ids
 msgid "Appraisal Collaborators"
-msgstr "Değerlendirme İşbirlikçileri"
+msgstr "Değerlendirme Ortakları"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_colleagues_ids
@@ -218,7 +221,7 @@ msgstr "Değerlendirme Sıklığı"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_manager_ids
 msgid "Appraisal Manager"
-msgstr "Değerlendirme Yöneticisi"
+msgstr "Değerlendirme Yönetimi"
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/hr_appraisal.py:118
@@ -239,7 +242,7 @@ msgstr "Değerlendirmeye İlişkin"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_frequency
 msgid "Appraisal Repeat Every"
-msgstr "Değerleme Tekrar Her"
+msgstr "Değerlendirme Her ... Tekrar Et"
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/hr_appraisal.py:239
@@ -247,7 +250,7 @@ msgstr "Değerleme Tekrar Her"
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
 #, python-format
 msgid "Appraisal Sent"
-msgstr "Değerlendirme Gönder"
+msgstr "Değerlendirme Gönderildi"
 
 #. module: hr_appraisal
 #: model:ir.model,name:hr_appraisal.model_hr_appraisal_report
@@ -273,12 +276,12 @@ msgstr ""
 #. module: hr_appraisal
 #: model:ir.actions.act_window,name:hr_appraisal.hr_appraisal_action_from_department
 msgid "Appraisal to start"
-msgstr "Başlangıç Değerlendirmesi"
+msgstr "Başlangıç Değerlendirme"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_department_view_kanban
 msgid "Appraisal(s)"
-msgstr "Değerlendirme(s)"
+msgstr "Değrlendirmeler"
 
 #. module: hr_appraisal
 #: model:ir.actions.server,name:hr_appraisal.ir_cron_scheduler_appraisal_ir_actions_server
@@ -306,7 +309,7 @@ msgstr "Değer biçen kimse"
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
 msgid "Archived"
-msgstr "Arşivlendi"
+msgstr "Arşivlenmiş"
 
 #. module: hr_appraisal
 #: model_terms:survey.page,description:hr_appraisal.appraisal_1
@@ -343,12 +346,12 @@ msgstr "İptal Edildi"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__collaborators_appraisal
 msgid "Collaborator"
-msgstr "İşbirlikçiler"
+msgstr "Çalışanlar"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__collaborators_survey_id
 msgid "Collaborator's Appraisal"
-msgstr "İşbirlikçi Değerlendirme"
+msgstr "Çalışanların Yaptığı Değerlendirme"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__collaborators_ids
@@ -366,7 +369,7 @@ msgstr "Çalışma Arkadaşı Değerlendirmesi"
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_by_colleagues
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 msgid "Colleagues"
-msgstr "Meslektaşlar"
+msgstr "Çalışma Arkadaşları"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__colleagues_appraisal
@@ -376,7 +379,7 @@ msgstr ""
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__color
 msgid "Color Index"
-msgstr "Renk"
+msgstr "Renk İndeksi"
 
 #. module: hr_appraisal
 #: model:survey.label,value:hr_appraisal.arow_3_1_9
@@ -387,7 +390,7 @@ msgstr "İletişim becerileri (yazılı & sözlü): netlik, anlatıyor, exactitu
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__company_id
 msgid "Company"
-msgstr "Şirket"
+msgstr "Firma"
 
 #. module: hr_appraisal
 #: model:survey.label,value:hr_appraisal.oprow_2_6_3
@@ -471,7 +474,7 @@ msgstr "İnceleme tarihi"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_report__deadline
 msgid "Deadline"
-msgstr "Zaman Sınırı"
+msgstr "Son Tarih"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
@@ -523,7 +526,7 @@ msgstr "Görünüm Adı"
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 #, python-format
 msgid "Done"
-msgstr "Tamamlandı"
+msgstr "Biten"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
@@ -670,7 +673,7 @@ msgstr "Tekipçiler (İş ortakları)"
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
 msgid "Future Activities"
-msgstr "Yapılacaklar"
+msgstr "Sonraki Aktiviteler"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
@@ -685,7 +688,7 @@ msgstr "Grupla ..."
 #. module: hr_appraisal
 #: model:ir.model,name:hr_appraisal.model_hr_department
 msgid "HR Department"
-msgstr "İK Departmanı"
+msgstr "İK Bölümü"
 
 #. module: hr_appraisal
 #: model_terms:survey.page,description:hr_appraisal.opinion_1
@@ -1091,7 +1094,7 @@ msgstr "Amaçlar"
 #. module: hr_appraisal
 #: model:res.groups,name:hr_appraisal.group_hr_appraisal_user
 msgid "Officer"
-msgstr "Yetkili"
+msgstr "Memur"
 
 #. module: hr_appraisal
 #: model:survey.question,question:hr_appraisal.opinion_2_5
@@ -1139,7 +1142,7 @@ msgstr "Dönemsel Değerlendirme oluşturuldu"
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_employee_view_form
 msgid "Periodicity"
-msgstr "Dönemsellik"
+msgstr "Periyodik Tekrarlanma"
 
 #. module: hr_appraisal
 #: model:survey.question,question:hr_appraisal.appraisal_4_2
@@ -1149,7 +1152,7 @@ msgstr "Kişisel performans hedefleri"
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 msgid "Plan"
-msgstr "Plan"
+msgstr "Planı"
 
 #. module: hr_appraisal
 #: selection:hr.appraisal,activity_state:0
@@ -1229,7 +1232,7 @@ msgstr "Değerlendirme Arama"
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_employee_view_form
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 msgid "Select Appraisal Reviewer..."
-msgstr "Değerlendirmeleri Yapacak Kişiyi Seçin"
+msgstr "Değerlendirmeleri Yapanı Seçin"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__employee_survey_id
@@ -1277,7 +1280,7 @@ msgstr "Değerlendirmeye Başla ve Form Gönder"
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_report__state
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
 msgid "Status"
-msgstr "Durumu"
+msgstr "Durum"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__activity_state
@@ -1442,7 +1445,7 @@ msgstr "Bu renk Kanban görünümü için kullanılacaktır."
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__collaborators_appraisal
 msgid "This employee will be appraised by his collaborators"
-msgstr "Bu personel ortak iş arkadaşları tarafından değerlendirilecektir."
+msgstr "Bu personel iş arkadaşları tarafından değerlendirilecektir."
 
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__colleagues_appraisal

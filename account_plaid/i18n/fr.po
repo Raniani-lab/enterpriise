@@ -3,14 +3,19 @@
 # * account_plaid
 # 
 # Translators:
-# Martin Trigaux, 2018
+# Martin Trigaux, 2017
+# Richard Mathot <rim@odoo.com>, 2017
+# e2f_fr_t5 <e2f_fr_t5@outlook.com>, 2018
+# Olivier Lenoir <olivier.lenoir@free.fr>, 2018
+# Clo <clo@odoo.com>, 2018
 # Eloïse Stilmant <est@odoo.com>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2016-08-05 13:28+0000\n"
 "Last-Translator: Eloïse Stilmant <est@odoo.com>, 2018\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -22,7 +27,7 @@ msgstr ""
 #. module: account_plaid
 #: model:ir.model.fields,help:account_plaid.field_account_online_provider__plaid_error_type
 msgid "Additional information on error"
-msgstr "Informations additionnelles sur l'erreur "
+msgstr "Information additionnelle sur l'erreur "
 
 #. module: account_plaid
 #: code:addons/account_plaid/models/plaid.py:55
@@ -54,7 +59,7 @@ msgstr "Type d'erreur Plaid"
 #. module: account_plaid
 #: model:ir.model.fields,field_description:account_plaid.field_account_online_provider__plaid_item_id
 msgid "Plaid Item"
-msgstr "Article Plaid"
+msgstr "Objet Plaid"
 
 #. module: account_plaid
 #: model:ir.model.fields,field_description:account_plaid.field_account_online_provider__provider_type

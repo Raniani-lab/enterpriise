@@ -3,22 +3,44 @@
 # * account_accountant
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Mathias Markl <mathias.markl@mukit.at>, 2018
-# Johannes Croe <jcr@odoo.com>, 2018
+# 0x 2a <github@acc.c0mm.it>, 2017
+# Wolfgang Taferner, 2017
+# Rudolf Schnapka <rs@techno-flex.de>, 2017
+# Bülent Tiknas <btiknas@googlemail.com>, 2017
+# Niki Waibel, 2017
+# AppleMentalist <felix.schnatbaum@gmail.com>, 2017
+# Henry Mineehen <info@mineehen.de>, 2017
+# Ermin Trevisan <trevi@twanda.com>, 2017
+# darenkster <inactive+darenkster@transifex.com>, 2017
+# Thorsten Vocks <thorsten.vocks@openbig.org>, 2017
+# Tina Rittmüller <tr@ife.de>, 2017
+# Mark Lorenz <bandworm@gmail.com>, 2017
+# Martin Trigaux, 2017
+# e2f <projects@e2f.com>, 2018
+# Mathias Markl <mathias.markl@mukit.at>, 2019
+# Johannes Croe <jcr@odoo.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Johannes Croe <jcr@odoo.com>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:12+0000\n"
+"PO-Revision-Date: 2016-08-05 12:55+0000\n"
+"Last-Translator: Johannes Croe <jcr@odoo.com>, 2019\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: account_accountant
+#: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
+msgid ""
+"<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-"
+"specific.\" role=\"img\" aria-label=\"Values set here are company-"
+"specific.\" groups=\"base.group_multi_company\"/>"
+msgstr ""
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
@@ -29,6 +51,11 @@ msgstr "<span class=\"o_form_label\">Steuerjahr</span>"
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid "<span class=\"o_form_label\">Inter-Banks Transfers</span>"
 msgstr "<span class=\"o_form_label\">Zwischenbank Buchungen</span>"
+
+#. module: account_accountant
+#: model:ir.model,name:account_accountant.model_account_chart_template
+msgid "Account Chart Template"
+msgstr ""
 
 #. module: account_accountant
 #: model:ir.ui.menu,name:account_accountant.menu_account_group
@@ -51,6 +78,7 @@ msgid "Account used when transferring between banks"
 msgstr "Konto bei Überweisungen zwischen Banken verwendet"
 
 #. module: account_accountant
+#: model:ir.ui.menu,name:account_accountant.menu_accounting
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_partner_view_form
 msgid "Accounting"
@@ -132,6 +160,14 @@ msgstr "Geschäftsjahr letzter Monat"
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__id
 msgid "ID"
 msgstr "ID"
+
+#. module: account_accountant
+#: code:addons/account_accountant/models/res_config_settings.py:49
+#, python-format
+msgid ""
+"Incorrect fiscal year date: day is out of range for month. Month: %s; Day: "
+"%s"
+msgstr ""
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_res_config_settings__transfer_account_id

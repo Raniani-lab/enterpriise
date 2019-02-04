@@ -3,18 +3,18 @@
 # * pos_loyalty
 # 
 # Translators:
-# Martin Trigaux, 2018
-# krnkris, 2018
-# Kovács Tibor <kovika@gmail.com>, 2018
-# Ákos Nagy <akos.nagy@oregional.hu>, 2018
+# gezza <geza.nagy@oregional.hu>, 2016
+# Kovács Tibor <kovika@gmail.com>, 2016
+# krnkris, 2017
+# Martin Trigaux, 2019
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-08-24 11:47+0000\n"
-"Last-Translator: Ákos Nagy <akos.nagy@oregional.hu>, 2018\n"
+"PO-Revision-Date: 2016-08-05 13:31+0000\n"
+"Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: Hungarian (https://www.transifex.com/odoo/teams/41243/hu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -60,7 +60,7 @@ msgstr "Kategória"
 #. module: pos_loyalty
 #: model:ir.model,name:pos_loyalty.model_res_partner
 msgid "Contact"
-msgstr "Kapcsolattartó"
+msgstr "Kapcsolat"
 
 #. module: pos_loyalty
 #: model_terms:ir.actions.act_window,help:pos_loyalty.action_loyalty_program_form
@@ -72,14 +72,14 @@ msgstr ""
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_reward__create_uid
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_rule__create_uid
 msgid "Created by"
-msgstr "Létrehozta"
+msgstr "Készítette"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_program__create_date
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_reward__create_date
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_rule__create_date
 msgid "Created on"
-msgstr "Létrehozva"
+msgstr "Létrehozás dátuma"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_rule__cumulative
@@ -151,28 +151,28 @@ msgstr "Hány ponttal növekszik a termék az eladott értékek után"
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_reward__id
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_rule__id
 msgid "ID"
-msgstr "Azonosító"
+msgstr "Azonosító ID"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_program____last_update
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_reward____last_update
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_rule____last_update
 msgid "Last Modified on"
-msgstr "Legutóbb frissítve"
+msgstr "Utoljára frissítve ekkor"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_program__write_uid
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_reward__write_uid
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_rule__write_uid
 msgid "Last Updated by"
-msgstr "Legutóbb frissítette"
+msgstr "Utoljára frissítette"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_program__write_date
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_reward__write_date
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_rule__write_date
 msgid "Last Updated on"
-msgstr "Legutóbb frissítve "
+msgstr "Utoljára frissítve "
 
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_pos_order__loyalty_points

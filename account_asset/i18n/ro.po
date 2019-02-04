@@ -3,14 +3,20 @@
 # * account_asset
 # 
 # Translators:
-# Martin Trigaux, 2018
+# Fekete Mihai <mihai.fekete@forestandbiomass.ro>, 2018
+# Dorin Hongu <dhongu@gmail.com>, 2018
+# Sergiu Baltariu <s_baltariu@yahoo.com>, 2018
+# Iulian Cutui <iulian.cutui@gmail.com>, 2018
+# Cozmin Candea <office@terrabit.ro>, 2018
+# Martin Trigaux, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 13:17+0000\n"
-"PO-Revision-Date: 2018-09-21 13:17+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"POT-Creation-Date: 2018-12-24 11:16+0000\n"
+"PO-Revision-Date: 2016-08-05 12:55+0000\n"
+"Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: Romanian (https://www.transifex.com/odoo/teams/41243/ro/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -82,6 +88,16 @@ msgstr "Intervenție necesară"
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_category__active
 msgid "Active"
 msgstr "Activ(a)"
+
+#. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__activity_ids
+msgid "Activities"
+msgstr "Activități"
+
+#. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__activity_state
+msgid "Activity State"
+msgstr "Stare activitate"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
@@ -174,7 +190,6 @@ msgstr "Data de început Activ"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_category__name
-#: model:ir.model.fields,field_description:account_asset.field_product_product__asset_category_id
 #: model:ir.model.fields,field_description:account_asset.field_product_template__asset_category_id
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
 msgid "Asset Type"
@@ -460,7 +475,6 @@ msgid "Deferred Revenue Account"
 msgstr ""
 
 #. module: account_asset
-#: model:ir.model.fields,field_description:account_asset.field_product_product__deferred_revenue_category_id
 #: model:ir.model.fields,field_description:account_asset.field_product_template__deferred_revenue_category_id
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
 msgid "Deferred Revenue Type"
@@ -643,6 +657,11 @@ msgid ""
 msgstr ""
 
 #. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
+msgid "Future Activities"
+msgstr "Activități viitoare"
+
+#. module: account_asset
 #: model:ir.ui.menu,name:account_asset.menu_asset_depreciation_confirmation_wizard
 msgid "Generate Assets Entries"
 msgstr ""
@@ -797,6 +816,11 @@ msgid "Last Updated on"
 msgstr "Ultima actualizare pe"
 
 #. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
+msgid "Late Activities"
+msgstr "Activități întârziate"
+
+#. module: account_asset
 #: selection:account.asset.asset,method:0
 #: selection:account.asset.category,method:0
 msgid "Linear"
@@ -853,6 +877,21 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_asset.field_account_invoice_line__asset_mrr
 msgid "Monthly Recurring Revenue"
 msgstr ""
+
+#. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__activity_date_deadline
+msgid "Next Activity Deadline"
+msgstr ""
+
+#. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__activity_summary
+msgid "Next Activity Summary"
+msgstr "Sumarul următoarei activități"
+
+#. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__activity_type_id
+msgid "Next Activity Type"
+msgstr "Tip de activitate urmatoare"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_depreciation_line__remaining_value
@@ -927,6 +966,11 @@ msgid "One Entry Every"
 msgstr ""
 
 #. module: account_asset
+#: selection:account.asset.asset,activity_state:0
+msgid "Overdue"
+msgstr "Restanță"
+
+#. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:641
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__partner_id
 #: model:ir.model.fields,field_description:account_asset.field_asset_asset_report__partner_id
@@ -944,6 +988,11 @@ msgstr "Durata Perioadei"
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
 msgid "Periodicity"
 msgstr "Periodicitate"
+
+#. module: account_asset
+#: selection:account.asset.asset,activity_state:0
+msgid "Planned"
+msgstr "Planificată"
 
 #. module: account_asset
 #: model:ir.actions.act_window,name:account_asset.action_asset_depreciation_confirmation_wizard
@@ -1035,6 +1084,11 @@ msgid "Residual Value"
 msgstr "Valoare reziduală"
 
 #. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__activity_user_id
+msgid "Responsible User"
+msgstr "Utilizator responsabil"
+
+#. module: account_asset
 #: selection:account.asset.asset,state:0 selection:asset.asset.report,state:0
 #: model_terms:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
 msgid "Running"
@@ -1076,6 +1130,12 @@ msgid "Set to Draft"
 msgstr "Setează ca ciornă"
 
 #. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
+msgid "Show all records which has next action date is before today"
+msgstr ""
+"Afișați toate înregistrările care au data următoarei acțiuni în trecut"
+
+#. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset_category__method_period
 msgid "State here the time between 2 depreciations, in months"
 msgstr "Aici introduceti perioada dintre 2 devalorizari, in luni"
@@ -1090,6 +1150,15 @@ msgstr "Starea Activelor"
 #: model:ir.model.fields,field_description:account_asset.field_asset_asset_report__state
 msgid "Status"
 msgstr "Stare"
+
+#. module: account_asset
+#: model:ir.model.fields,help:account_asset.field_account_asset_asset__activity_state
+msgid ""
+"Status based on activities\n"
+"Overdue: Due date is already passed\n"
+"Today: Activity date is today\n"
+"Planned: Future activities."
+msgstr ""
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset_asset__method_period
@@ -1152,6 +1221,16 @@ msgstr "Metoda Timp"
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
 msgid "Time Method Based On"
 msgstr ""
+
+#. module: account_asset
+#: selection:account.asset.asset,activity_state:0
+msgid "Today"
+msgstr "Astăzi"
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
+msgid "Today Activities"
+msgstr "Activitățile de astăzi"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__type

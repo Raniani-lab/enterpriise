@@ -5,9 +5,13 @@ var core = require('web.core');
 var Widget = require('web.Widget');
 var widget_registry = require('web.widget_registry');
 var py_eval = require('web.py_utils').py_eval;
+
+var IoTCoreMixin = require('iot.widgets').IoTCoreMixin;
+
 var _t = core._t;
 
-var IotTakeMeasureButton = Widget.extend({
+
+var IotTakeMeasureButton = Widget.extend(IoTCoreMixin, {
     tagName: 'button',
     className: 'btn btn-primary',
     events: {
@@ -37,16 +41,14 @@ var IotTakeMeasureButton = Widget.extend({
 
     /**
      * @private
-     * @param {MouseEvent} ev
      */
-    _onButtonClick: function (ev) {
+    _onButtonClick: function () {
         var self = this;
-        var ip = this.record.data[this.options.ip_field];
         var identifier = this.record.data[this.options.identifier_field];
-        var composite_url = ip + "/hw_drivers/driverdetails/" + identifier;
+        var composite_url = this._url() + "/hw_drivers/driverdetails/" + identifier;
         var measure_field = this.options.measure_field;
 
-        $.get(composite_url, function (measure) {
+        return this._callIotDevice(composite_url, null, this._url()).done(function (measure) {
             var changes = {};
             changes[measure_field] = parseFloat(measure);
             self.trigger_up('field_changed', {
@@ -58,4 +60,9 @@ var IotTakeMeasureButton = Widget.extend({
 });
 
 widget_registry.add('iot_take_measure_button', IotTakeMeasureButton);
-})
+
+return {
+    IotTakeMeasureButton: IotTakeMeasureButton,
+};
+
+});

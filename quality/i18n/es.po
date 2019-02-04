@@ -3,17 +3,35 @@
 # * quality
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Katerina Katapodi <katerinakatapodi@gmail.com>, 2018
-# Cristopher Cravioto <ccr@odoo.com>, 2018
+# Leonardo Chianea <noamixcontenidos@gmail.com>, 2016
+# Carles Antoli <carlesantoli@hotmail.com>, 2016
+# Luis M. Triana <luis.triana@jarsa.com.mx>, 2016
+# Alejandro Die Sanchis <marketing@domatix.com>, 2016
+# Antonio Trueba, 2016
+# Ivan Nieto <ivan.n.s@tuta.io>, 2016
+# Mateo Tibaquirá Palacios <nestormateo@gmail.com>, 2016
+# Miguel Orueta <mo@landoo.es>, 2016
+# Christopher Ormaza <chris.ormaza@gmail.com>, 2017
+# e2f <projects@e2f.com>, 2018
+# Pedro M. Baeza <pedro.baeza@gmail.com>, 2018
+# Ana Juaristi <ajuaristio@gmail.com>, 2018
+# oihane <oihanecruce@gmail.com>, 2018
+# Javier Ramirez <elbomba887@gmail.com>, 2018
+# José Vicente <txusev@gmail.com>, 2018
+# RGB Consulting <odoo@rgbconsulting.com>, 2018
+# Nicolás Broggi <rnbroggi@gmail.com>, 2018
 # Miquel Torner <miq@odoo.com>, 2018
+# Martin Trigaux, 2019
+# Katerina Katapodi <katerinakatapodi@gmail.com>, 2019
+# Cristopher Cravioto <ccr@odoo.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Miquel Torner <miq@odoo.com>, 2018\n"
+"POT-Creation-Date: 2018-12-24 11:16+0000\n"
+"PO-Revision-Date: 2016-08-05 13:31+0000\n"
+"Last-Translator: Cristopher Cravioto <ccr@odoo.com>, 2019\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -58,6 +76,16 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_point__active
 msgid "Active"
 msgstr "Activo"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__activity_ids
+msgid "Activities"
+msgstr "Actividades"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__activity_state
+msgid "Activity State"
+msgstr "Estado de la actividad"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_stage__done
@@ -433,6 +461,21 @@ msgid "New"
 msgstr "Nuevo"
 
 #. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__activity_date_deadline
+msgid "Next Activity Deadline"
+msgstr "Siguiente plazo de actividad"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__activity_summary
+msgid "Next Activity Summary"
+msgstr "Resumen de la siguiente actividad"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__activity_type_id
+msgid "Next Activity Type"
+msgstr "Siguiente tipo de actividad"
+
+#. module: quality
 #: selection:quality.alert,priority:0
 msgid "Normal"
 msgstr "Normal"
@@ -521,6 +564,11 @@ msgstr ""
 "Auditor "
 
 #. module: quality
+#: selection:quality.alert,activity_state:0
+msgid "Overdue"
+msgstr "Vencidas"
+
+#. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_user_id
 msgid "Owner"
 msgstr "Propietario"
@@ -566,6 +614,11 @@ msgstr "Recolección"
 #: model:ir.model.fields,field_description:quality.field_quality_check__picture
 msgid "Picture"
 msgstr "Foto"
+
+#. module: quality
+#: selection:quality.alert,activity_state:0
+msgid "Planned"
+msgstr "Planificado"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert_team__alias_contact
@@ -661,6 +714,11 @@ msgid "Responsible"
 msgstr "Responsable"
 
 #. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__activity_user_id
+msgid "Responsible User"
+msgstr "Usuario responsable"
+
+#. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__reason_id
 msgid "Root Cause"
 msgstr "Causa principal"
@@ -691,6 +749,19 @@ msgstr "Etapa"
 #: model:ir.model.fields,field_description:quality.field_quality_check__quality_state
 msgid "Status"
 msgstr "Estado"
+
+#. module: quality
+#: model:ir.model.fields,help:quality.field_quality_alert__activity_state
+msgid ""
+"Status based on activities\n"
+"Overdue: Due date is already passed\n"
+"Today: Activity date is today\n"
+"Planned: Future activities."
+msgstr ""
+"Estado basado en actividades\n"
+"Vencida: la fecha tope ya ha pasado\n"
+"Hoy: La fecha tope es hoy\n"
+"Planificada: futuras actividades."
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__tag_ids
@@ -771,6 +842,11 @@ msgstr "Título"
 #: selection:quality.check,quality_state:0
 msgid "To do"
 msgstr "Por realizar"
+
+#. module: quality
+#: selection:quality.alert,activity_state:0
+msgid "Today"
+msgstr "Hoy"
 
 #. module: quality
 #: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form

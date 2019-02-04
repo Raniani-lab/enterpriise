@@ -3,17 +3,29 @@
 # * delivery_bpost
 # 
 # Translators:
-# nle_odoo, 2018
-# Martin Trigaux, 2018
+# darenkster <inactive+darenkster@transifex.com>, 2017
+# Tina Rittmüller <tr@ife.de>, 2017
+# Ermin Trevisan <trevi@twanda.com>, 2017
+# aNj <anj2j@yahoo.de>, 2017
+# e2f_de_t6 <e2f_de_t6@outlook.com>, 2017
+# DE T2 <e2f48d4s5vd1s2@outlook.com>, 2017
+# DE R1 <e2fes1@hotmail.com>, 2017
+# e2f <projects@e2f.com>, 2018
+# Thorsten Vocks <thorsten.vocks@openbig.org>, 2018
+# Renzo Meister, 2018
+# Katharina Moritz <kmo@e2f.com>, 2018
+# brokemeister <work@maltejansen.de>, 2018
+# Jan Meyer, 2018
 # Johannes Croe <jcr@odoo.com>, 2018
+# Martin Trigaux, 2019
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-08-24 11:37+0000\n"
-"Last-Translator: Johannes Croe <jcr@odoo.com>, 2018\n"
+"PO-Revision-Date: 2017-12-13 15:20+0000\n"
+"Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -44,7 +56,7 @@ msgid ""
 "(Detailed error: %s)"
 msgstr ""
 "Authentifizierungsfehler -- falsche Zugangsdaten\n"
-"(Detaillierter Fehler: %s)"
+"(Detaillierter Fehler: )"
 
 #. module: delivery_bpost
 #: selection:delivery.carrier,delivery_type:0

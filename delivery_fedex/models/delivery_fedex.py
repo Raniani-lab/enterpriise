@@ -190,7 +190,8 @@ class ProviderFedex(models.Model):
                 commodity_weight_value = self._fedex_convert_weight(line.product_id.weight * line.product_uom_qty, self.fedex_weight_unit)
                 commodity_quantity = line.product_uom_qty
                 commodity_quantity_units = 'EA'
-                srm.commodities(_convert_curr_iso_fdx(order_currency.name), commodity_amount, commodity_number_of_piece, commodity_weight_units, commodity_weight_value, commodity_description, commodity_country_of_manufacture, commodity_quantity, commodity_quantity_units)
+                commodity_harmonized_code = line.product_id.hs_code or ''
+                srm.commodities(_convert_curr_iso_fdx(order_currency.name), commodity_amount, commodity_number_of_piece, commodity_weight_units, commodity_weight_value, commodity_description, commodity_country_of_manufacture, commodity_quantity, commodity_quantity_units, commodity_harmonized_code)
             srm.customs_value(_convert_curr_iso_fdx(order_currency.name), total_commodities_amount, "NON_DOCUMENTS")
             srm.duties_payment(order.warehouse_id.partner_id.country_id.code, superself.fedex_account_number)
 

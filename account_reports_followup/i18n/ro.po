@@ -4,13 +4,16 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# Cozmin Candea <office@terrabit.ro>, 2018
+# Dorin Hongu <dhongu@gmail.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 12.0+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-08 07:14+0000\n"
-"PO-Revision-Date: 2018-10-08 07:14+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:12+0000\n"
+"PO-Revision-Date: 2016-08-05 13:28+0000\n"
+"Last-Translator: Dorin Hongu <dhongu@gmail.com>, 2019\n"
 "Language-Team: Romanian (https://www.transifex.com/odoo/teams/41243/ro/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -104,12 +107,12 @@ msgstr ""
 #. module: account_reports_followup
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
 msgid ": Current Date"
-msgstr ""
+msgstr ": Dată curentă"
 
 #. module: account_reports_followup
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
 msgid ": Partner Name"
-msgstr ""
+msgstr ": Nume partener"
 
 #. module: account_reports_followup
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
@@ -119,6 +122,11 @@ msgstr ": Nume utilizator"
 #. module: account_reports_followup
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
 msgid ": User's Company Name"
+msgstr ": Numele Companiei Utilizatorului"
+
+#. module: account_reports_followup
+#: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_kanban
+msgid "<i class=\"fa fa-building\" role=\"img\" aria-label=\"Enterprise\"/>"
 msgstr ""
 
 #. module: account_reports_followup
@@ -204,7 +212,7 @@ msgstr "Zile Scadente"
 #. module: account_reports_followup
 #: model:account_followup.followup.line,name:account_reports_followup.demo_followup_line1
 msgid "First reminder email"
-msgstr ""
+msgstr "Primul e-mail de memento"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__followup_id
@@ -246,6 +254,7 @@ msgstr ""
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_res_partner__payment_responsible_id
+#: model:ir.model.fields,field_description:account_reports_followup.field_res_users__payment_responsible_id
 msgid "Follow-up Responsible"
 msgstr "Responsabil cu urmarirea"
 
@@ -262,6 +271,9 @@ msgid ""
 "                possible to use print and e-mail templates to send specific messages to\n"
 "                the customer."
 msgstr ""
+"Pentru fiecare pas, specificați acțiunile care trebuie întreprinse și "
+"întârzierea zilelor. Este posibil să utilizați șabloane de tipărire și "
+"e-mail pentru a trimite mesaje specifice clientului."
 
 #. module: account_reports_followup
 #: model:ir.model.fields,help:account_reports_followup.field_account_followup_followup_line__sequence
@@ -321,7 +333,7 @@ msgstr ""
 #: code:addons/account_reports_followup/models/account_followup_report.py:86
 #, python-format
 msgid "Manual action done"
-msgstr ""
+msgstr "Acțiunea manuală a fost făcută"
 
 #. module: account_reports_followup
 #. openerp-web
@@ -339,6 +351,7 @@ msgstr "Este permisa o singura urmarire pentru fiecare companie"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,help:account_reports_followup.field_res_partner__payment_responsible_id
+#: model:ir.model.fields,help:account_reports_followup.field_res_users__payment_responsible_id
 msgid ""
 "Optionally you can assign a user to this field, which will make him "
 "responsible for the action."
@@ -388,12 +401,12 @@ msgstr "Cauta Urmarirea"
 #. module: account_reports_followup
 #: model:account_followup.followup.line,name:account_reports_followup.demo_followup_line2
 msgid "Second reminder letter and email"
-msgstr ""
+msgstr "A doua scrisoare de reamintire și e-mail"
 
 #. module: account_reports_followup
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_line_form
 msgid "Send a Letter or Email"
-msgstr ""
+msgstr "Trimiteți o scrisoare sau un e-mail"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__send_email
@@ -426,7 +439,7 @@ msgstr ""
 #. module: account_reports_followup
 #: model:account_followup.followup.line,name:account_reports_followup.demo_followup_line3
 msgid "Third reminder: phone the customer"
-msgstr ""
+msgstr "Al treilea memento: telefonați-l pe client"
 
 #. module: account_reports_followup
 #: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_form
@@ -462,12 +475,12 @@ msgstr "Debit total"
 #. module: account_reports_followup
 #: model:account_followup.followup.line,name:account_reports_followup.demo_followup_line4
 msgid "Urging reminder email"
-msgstr ""
+msgstr "Apelează e-mailul de reamintire"
 
 #. module: account_reports_followup
 #: model:account_followup.followup.line,name:account_reports_followup.demo_followup_line5
 msgid "Urging reminder letter"
-msgstr ""
+msgstr "Solicită scrisoare de reamintire"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,help:account_reports_followup.field_account_followup_followup_line__print_letter

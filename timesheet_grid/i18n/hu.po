@@ -3,20 +3,19 @@
 # * timesheet_grid
 # 
 # Translators:
-# Tamás Dombos, 2018
+# gezza <geza.nagy@oregional.hu>, 2017
+# krnkris, 2017
 # Martin Trigaux, 2018
-# krnkris, 2018
-# gezza <geza.nagy@oregional.hu>, 2018
 # Ákos Nagy <akos.nagy@oregional.hu>, 2018
-# Tibor Kőnig <konig.tibor@evitalit.hu>, 2018
+# Tibor Kőnig <konig.tibor@evitalit.hu>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-08-24 11:48+0000\n"
-"Last-Translator: Tibor Kőnig <konig.tibor@evitalit.hu>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"PO-Revision-Date: 2016-08-05 13:32+0000\n"
+"Last-Translator: Tibor Kőnig <konig.tibor@evitalit.hu>, 2019\n"
 "Language-Team: Hungarian (https://www.transifex.com/odoo/teams/41243/hu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -225,12 +224,12 @@ msgstr "Összeg"
 #. module: timesheet_grid
 #: model:ir.model,name:timesheet_grid.model_account_analytic_line
 msgid "Analytic Line"
-msgstr "Analitikus tétel"
+msgstr "Analitikus/elemző tétel"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_validation_view_form
 msgid "Cancel"
-msgstr "Mégsem"
+msgstr "Mégse"
 
 #. module: timesheet_grid
 #. openerp-web
@@ -253,13 +252,13 @@ msgstr "Konfigurációs beállítások"
 #: model:ir.model.fields,field_description:timesheet_grid.field_timesheet_validation__create_uid
 #: model:ir.model.fields,field_description:timesheet_grid.field_timesheet_validation_line__create_uid
 msgid "Created by"
-msgstr "Létrehozta"
+msgstr "Készítette"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_timesheet_validation__create_date
 #: model:ir.model.fields,field_description:timesheet_grid.field_timesheet_validation_line__create_date
 msgid "Created on"
-msgstr "Létrehozva"
+msgstr "Létrehozás dátuma"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,help:timesheet_grid.field_hr_employee__timesheet_validated
@@ -313,7 +312,7 @@ msgstr "Frekvencia"
 #: model:ir.model.fields,field_description:timesheet_grid.field_timesheet_validation__id
 #: model:ir.model.fields,field_description:timesheet_grid.field_timesheet_validation_line__id
 msgid "ID"
-msgstr "Azonosító"
+msgstr "Azonosító ID"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,help:timesheet_grid.field_res_config_settings__reminder_manager_allow
@@ -338,29 +337,29 @@ msgstr ""
 #: model:ir.model.fields,field_description:timesheet_grid.field_timesheet_validation____last_update
 #: model:ir.model.fields,field_description:timesheet_grid.field_timesheet_validation_line____last_update
 msgid "Last Modified on"
-msgstr "Legutóbb frissítve"
+msgstr "Utoljára frissítve ekkor"
 
 #. module: timesheet_grid
 #: model:ir.ui.menu,name:timesheet_grid.menu_timesheet_grid_validate_previous_month
 msgid "Last Month"
-msgstr "Előző hónap"
+msgstr "Utolsó hónap"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_timesheet_validation__write_uid
 #: model:ir.model.fields,field_description:timesheet_grid.field_timesheet_validation_line__write_uid
 msgid "Last Updated by"
-msgstr "Legutóbb frissítette"
+msgstr "Utoljára frissítette"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_timesheet_validation__write_date
 #: model:ir.model.fields,field_description:timesheet_grid.field_timesheet_validation_line__write_date
 msgid "Last Updated on"
-msgstr "Legutóbb frissítve "
+msgstr "Utoljára frissítve "
 
 #. module: timesheet_grid
 #: model:ir.ui.menu,name:timesheet_grid.menu_timesheet_grid_validate_previous_week
 msgid "Last Week"
-msgstr "Előző hét"
+msgstr "Utolsó hét"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_company__timesheet_mail_manager_allow
@@ -415,6 +414,18 @@ msgid ""
 msgstr ""
 
 #. module: timesheet_grid
+#: code:addons/timesheet_grid/models/analytic.py:121
+#, python-format
+msgid "Only a Timesheets Manager is allowed to delete a validated entry."
+msgstr ""
+
+#. module: timesheet_grid
+#: code:addons/timesheet_grid/models/analytic.py:115
+#, python-format
+msgid "Only a Timesheets Manager is allowed to modify a validated entry."
+msgstr ""
+
+#. module: timesheet_grid
 #: model:mail.template,subject:timesheet_grid.mail_template_timesheet_reminder_user
 msgid "Reminder to log your timesheets"
 msgstr ""
@@ -455,8 +466,8 @@ msgid "Time Spent"
 msgstr "Eltöltött idő"
 
 #. module: timesheet_grid
-#: code:addons/timesheet_grid/models/analytic.py:142
-#: code:addons/timesheet_grid/models/analytic.py:152
+#: code:addons/timesheet_grid/models/analytic.py:157
+#: code:addons/timesheet_grid/models/analytic.py:167
 #, python-format
 msgid "Timesheet Adjustment"
 msgstr ""
@@ -505,7 +516,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_project
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_task_readonly
 msgid "Timesheets"
-msgstr "Munkaidő-kimutatás"
+msgstr "Munkaidő-beosztás"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_hr_employee__timesheet_validated
@@ -555,7 +566,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_validation_view_form
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_employee_validation
 msgid "Validate"
-msgstr "Jóváhagyás"
+msgstr "Jóváhagyott"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_validation_view_form
@@ -596,7 +607,7 @@ msgstr ""
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_timesheet_validation_line__validation_id
 msgid "Validation"
-msgstr "Jóváhagyás"
+msgstr "Érvényesítés"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_timesheet_validation__validation_line_ids

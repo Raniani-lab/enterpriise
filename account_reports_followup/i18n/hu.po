@@ -3,19 +3,19 @@
 # * account_reports_followup
 # 
 # Translators:
-# Martin Trigaux, 2018
-# krnkris, 2018
-# Kovács Tibor <kovika@gmail.com>, 2018
-# Ákos Nagy <akos.nagy@oregional.hu>, 2018
-# Tibor Kőnig <konig.tibor@evitalit.hu>, 2018
+# gezza <geza.nagy@oregional.hu>, 2016
+# Kovács Tibor <kovika@gmail.com>, 2016
+# Martin Trigaux, 2016
+# krnkris, 2019
+# Tibor Kőnig <konig.tibor@evitalit.hu>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 12.0+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-08 07:14+0000\n"
-"PO-Revision-Date: 2018-08-24 11:36+0000\n"
-"Last-Translator: Tibor Kőnig <konig.tibor@evitalit.hu>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:12+0000\n"
+"PO-Revision-Date: 2016-08-05 13:28+0000\n"
+"Last-Translator: Tibor Kőnig <konig.tibor@evitalit.hu>, 2019\n"
 "Language-Team: Hungarian (https://www.transifex.com/odoo/teams/41243/hu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -126,6 +126,11 @@ msgid ": User's Company Name"
 msgstr ""
 
 #. module: account_reports_followup
+#: model_terms:ir.ui.view,arch_db:account_reports_followup.view_account_followup_followup_kanban
+msgid "<i class=\"fa fa-building\" role=\"img\" aria-label=\"Enterprise\"/>"
+msgstr ""
+
+#. module: account_reports_followup
 #: model:ir.model,name:account_reports_followup.model_account_followup_followup
 msgid "Account Follow-up"
 msgstr "Fizetési-emlékeztető könyvelés"
@@ -163,19 +168,19 @@ msgstr "Konfigurációs beállítások"
 #. module: account_reports_followup
 #: model:ir.model,name:account_reports_followup.model_res_partner
 msgid "Contact"
-msgstr "Kapcsolattartó"
+msgstr "Kapcsolat"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup__create_uid
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__create_uid
 msgid "Created by"
-msgstr "Létrehozta"
+msgstr "Készítette"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup__create_date
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__create_date
 msgid "Created on"
-msgstr "Létrehozva"
+msgstr "Létrehozás dátuma"
 
 #. module: account_reports_followup
 #: sql_constraint:account_followup.followup.line:0
@@ -198,7 +203,7 @@ msgstr "Megjelenített név"
 #: code:addons/account_reports_followup/static/src/xml/account_reports_followup_template.xml:19
 #, python-format
 msgid "Done"
-msgstr "Kész"
+msgstr "Elvégezve"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__delay
@@ -250,6 +255,7 @@ msgstr ""
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_res_partner__payment_responsible_id
+#: model:ir.model.fields,field_description:account_reports_followup.field_res_users__payment_responsible_id
 msgid "Follow-up Responsible"
 msgstr "Fizetési-emlékeztető felelőse"
 
@@ -279,30 +285,30 @@ msgstr "Megadja a fizetési-emlékeztető sorok listázási sorrendjét."
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup__id
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__id
 msgid "ID"
-msgstr "Azonosító"
+msgstr "Azonosító ID"
 
 #. module: account_reports_followup
 #: model:ir.model,name:account_reports_followup.model_account_move_line
 msgid "Journal Item"
-msgstr "Könyvelési napló tételsor"
+msgstr "Könyvelési tételsor"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup____last_update
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line____last_update
 msgid "Last Modified on"
-msgstr "Legutóbb frissítve"
+msgstr "Utoljára frissítve ekkor"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup__write_uid
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__write_uid
 msgid "Last Updated by"
-msgstr "Legutóbb frissítette"
+msgstr "Utoljára frissítette"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup__write_date
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_followup_followup_line__write_date
 msgid "Last Updated on"
-msgstr "Legutóbb frissítve "
+msgstr "Utoljára frissítve "
 
 #. module: account_reports_followup
 #: model:ir.model.fields,field_description:account_reports_followup.field_account_move_line__followup_date
@@ -345,6 +351,7 @@ msgstr "Vállalatonként csak egy fizetési-emlékeztető engedélyezett"
 
 #. module: account_reports_followup
 #: model:ir.model.fields,help:account_reports_followup.field_res_partner__payment_responsible_id
+#: model:ir.model.fields,help:account_reports_followup.field_res_users__payment_responsible_id
 msgid ""
 "Optionally you can assign a user to this field, which will make him "
 "responsible for the action."

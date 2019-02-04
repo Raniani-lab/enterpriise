@@ -3,19 +3,20 @@
 # * account_sepa_direct_debit
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Thomas Pot <thomas@open2bizz.nl>, 2018
-# Cas Vissers <casvissers@brahoo.nl>, 2018
-# Yenthe Van Ginneken <yenthespam@gmail.com>, 2018
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
+# e2f_nl_c4 <e2f_nl_c4@hotmail.com>, 2017
+# Pol Van Dingenen <pol.vandingenen@vanroey.be>, 2017
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
+# Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
+# Thomas Pot <thomas@open2bizz.nl>, 2019
+# Cas Vissers <casvissers@brahoo.nl>, 2019
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-08-24 11:37+0000\n"
-"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2018\n"
+"PO-Revision-Date: 2017-12-13 15:20+0000\n"
+"Last-Translator: Cas Vissers <casvissers@brahoo.nl>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -245,7 +246,7 @@ msgstr "Crediteur identificatie van u bedrijf voor het SEPA schema."
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form_document
 msgid "Creditor information"
-msgstr "Crediteur informatie"
+msgstr "Creditor informatie"
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.account_sepa_direct_debit_mandate_form
@@ -431,7 +432,7 @@ msgstr "Dagboek"
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__payment_journal_id
 msgid "Journal for Direct Debit Payments"
-msgstr "Dagboek voor automatische incasso's"
+msgstr "Dagboek voor automatische incassos"
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,help:account_sepa_direct_debit.field_sdd_mandate__payment_journal_id
@@ -949,8 +950,8 @@ msgstr ""
 msgid ""
 "You must register this mandate's original document before validating it."
 msgstr ""
-"Uw moet het originele document van het mandaat vastleggen voordat u deze ka "
-"bevestigen"
+"Uw moet het originele document van het mandaat vastleggen voordat u het kan "
+"valideren."
 
 #. module: account_sepa_direct_debit
 #: code:addons/account_sepa_direct_debit/models/account_batch_payment.py:28

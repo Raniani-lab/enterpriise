@@ -3,21 +3,20 @@
 # * mrp_mps
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
-# liAnGjiA <liangjia@qq.com>, 2018
-# roye w <159820@qq.com>, 2018
-# inspur qiuguodong <qiuguodong@inspur.com>, 2018
-# ChinaMaker <liuct@chinamaker.net>, 2018
+# 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2018
 # xu xiaohu <xu.xiaohu@gmail.com>, 2018
+# Jeffery CHEN Fan <jeffery9@gmail.com>, 2019
+# ChinaMaker <liuct@chinamaker.net>, 2019
+# roye w <159820@qq.com>, 2019
+# inspur qiuguodong <qiuguodong@inspur.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-08-24 11:38+0000\n"
-"Last-Translator: xu xiaohu <xu.xiaohu@gmail.com>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:12+0000\n"
+"PO-Revision-Date: 2016-08-05 13:29+0000\n"
+"Last-Translator: inspur qiuguodong <qiuguodong@inspur.com>, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -47,12 +46,19 @@ msgid ""
 "                                    Forecasted Inventory"
 msgstr ""
 "<span class=\"fa fa-fw\">=</span> \n"
-"                                    预测库存"
+"                                    预测的库存"
+
+#. module: mrp_mps
+#: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
+msgid ""
+"<span class=\"fa fa-map-marker text-muted fa-fw\" role=\"img\" aria-"
+"label=\"Forecasted\" title=\"Forecasted\"/>"
+msgstr ""
 
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
 msgid "<span class=\"text-muted\"> by</span>"
-msgstr "<span class=\"text-muted\"> 单位</span>"
+msgstr "<span class=\"text-muted\"> 于</span>"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_product_product__mps_active
@@ -106,7 +112,7 @@ msgstr "公司"
 #. module: mrp_mps
 #: model:ir.model,name:mrp_mps.model_res_config_settings
 msgid "Config Settings"
-msgstr "配置设定"
+msgstr "配置设置"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_mps_report__create_uid
@@ -384,7 +390,7 @@ msgstr "保存"
 #: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
 #, python-format
 msgid "Starting Inventory"
-msgstr "开始库存"
+msgstr "开始盘点"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast__state
@@ -423,7 +429,7 @@ msgstr "待供应"
 #: code:addons/mrp_mps/models/mrp_mps_report.py:156
 #, python-format
 msgid "Week %s"
-msgstr "周 %s "
+msgstr "%s 周"
 
 #. module: mrp_mps
 #. openerp-web
@@ -441,7 +447,7 @@ msgstr "每周"
 #: code:addons/mrp_mps/static/src/js/mrp_mps_report_widget.js:228
 #, python-format
 msgid "Wrong value entered!"
-msgstr "输入值错误!"
+msgstr "错误值输入!"
 
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory

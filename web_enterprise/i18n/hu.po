@@ -3,17 +3,17 @@
 # * web_enterprise
 # 
 # Translators:
-# Martin Trigaux, 2018
-# krnkris, 2018
-# gezza <geza.nagy@oregional.hu>, 2018
+# Martin Trigaux, 2016
+# gezza <geza.nagy@oregional.hu>, 2017
+# krnkris, 2019
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-08-24 11:49+0000\n"
-"Last-Translator: gezza <geza.nagy@oregional.hu>, 2018\n"
+"PO-Revision-Date: 2016-08-05 13:32+0000\n"
+"Last-Translator: krnkris, 2019\n"
 "Language-Team: Hungarian (https://www.transifex.com/odoo/teams/41243/hu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -40,7 +40,7 @@ msgstr "1 hónap"
 #: code:addons/web_enterprise/static/src/xml/base_mobile.xml:8
 #, python-format
 msgid "Action"
-msgstr "Akció"
+msgstr "Művelet"
 
 #. module: web_enterprise
 #. openerp-web
@@ -238,7 +238,7 @@ msgstr ""
 #: code:addons/web_enterprise/static/src/xml/base.xml:119
 #, python-format
 msgid "Paste code here"
-msgstr "Kód beillesztése ide"
+msgstr "A kódot ide illessze be"
 
 #. module: web_enterprise
 #. openerp-web
@@ -260,14 +260,14 @@ msgstr "Regisztráció"
 #: code:addons/web_enterprise/static/src/xml/base.xml:86
 #, python-format
 msgid "Register your subscription"
-msgstr "Feliratkozás regisztrálása"
+msgstr "Feliratkozását regisztrálja"
 
 #. module: web_enterprise
 #. openerp-web
 #: code:addons/web_enterprise/static/src/xml/base.xml:89
 #, python-format
 msgid "Renew your subscription"
-msgstr "Feliratkozás megújítása"
+msgstr "Feliratkozását újítsa meg"
 
 #. module: web_enterprise
 #. openerp-web
@@ -295,7 +295,7 @@ msgstr "Keresés..."
 #: code:addons/web_enterprise/static/src/xml/base.xml:232
 #, python-format
 msgid "Shortcuts"
-msgstr "Gyorsbillentyűk"
+msgstr "Gyorsbillentyű"
 
 #. module: web_enterprise
 #. openerp-web
@@ -416,7 +416,7 @@ msgstr "vásároljon előfizetést"
 #: code:addons/web_enterprise/static/src/xml/base.xml:70
 #, python-format
 msgid "days"
-msgstr "nap"
+msgstr "napok"
 
 #. module: web_enterprise
 #. openerp-web

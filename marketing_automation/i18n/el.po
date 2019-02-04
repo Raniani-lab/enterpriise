@@ -3,23 +3,30 @@
 # * marketing_automation
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Kostas Goutoudis <goutoudis@gmail.com>, 2018
-# Nikos Gkountras <nick@ngsol.net>, 2018
-# George Tarasidis <george_tarasidis@yahoo.com>, 2018
+# Stefanos Nikou <stefanos.nikou@gmail.com>, 2019
+# Martin Trigaux, 2019
+# Kostas Goutoudis <goutoudis@gmail.com>, 2019
+# Nikos Gkountras <nick@ngsol.net>, 2019
+# George Tarasidis <george_tarasidis@yahoo.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 12.0+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-08 07:14+0000\n"
-"PO-Revision-Date: 2018-10-08 07:14+0000\n"
-"Last-Translator: George Tarasidis <george_tarasidis@yahoo.com>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"PO-Revision-Date: 2017-12-13 15:21+0000\n"
+"Last-Translator: George Tarasidis <george_tarasidis@yahoo.com>, 2019\n"
 "Language-Team: Greek (https://www.transifex.com/odoo/teams/41243/el/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Language: el\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: marketing_automation
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__mass_mailing_count
+msgid "# Mailings"
+msgstr ""
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__total_participant_count
@@ -34,6 +41,11 @@ msgstr ""
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__completed_participant_count
 msgid "# of completed participants"
+msgstr ""
+
+#. module: marketing_automation
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__test_participant_count
+msgid "# of test participants"
 msgstr ""
 
 #. module: marketing_automation
@@ -54,6 +66,13 @@ msgstr ""
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
 msgid "<i class=\"fa fa-check-circle\"/> Replied"
+msgstr ""
+
+#. module: marketing_automation
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+msgid ""
+"<i class=\"fa fa-clock-o\" role=\"img\" aria-label=\"Select time\" "
+"title=\"Select time\"/>"
 msgstr ""
 
 #. module: marketing_automation
@@ -104,6 +123,26 @@ msgstr ""
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid ""
+"<i data-type=\"act\" class=\"fa fa-code-fork fa-rotate-180 fa-flip-vertical "
+"o_ma_text_processed o_add_child\" title=\"Add Another Activity\" "
+"role=\"img\" aria-label=\"Add Another Activity\"/>"
+msgstr ""
+
+#. module: marketing_automation
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+msgid ""
+"<i data-type=\"mail_open\" class=\"fa fa-envelope-open-o o_ma_text_processed o_add_child\" title=\"Mail Opened\" role=\"img\" aria-label=\"Mail Opened\"/>\n"
+"                                                            <i data-type=\"mail_not_open\" class=\"fa fa-envelope-open-o o_ma_text_rejected o_add_child\" title=\"Mail not Opened\" role=\"img\" aria-label=\"Mail not Opened\"/>\n"
+"                                                            <i data-type=\"mail_reply\" class=\"fa fa-reply o_ma_text_processed o_add_child\" title=\"Mail Replied\" role=\"img\" aria-label=\"Mail Replied\"/>\n"
+"                                                            <i data-type=\"mail_not_reply\" class=\"fa fa-reply o_ma_text_rejected o_add_child\" title=\"Mail not Replied\" role=\"img\" aria-label=\"Mail not Replied\"/>\n"
+"                                                            <i data-type=\"mail_click\" class=\"fa fa-hand-pointer-o o_ma_text_processed o_add_child\" title=\"Mail Clicked\" role=\"img\" aria-label=\"Mail Clicked\"/>\n"
+"                                                            <i data-type=\"mail_not_click\" class=\"fa fa-hand-pointer-o o_ma_text_rejected o_add_child\" title=\"Mail not Clicked\" role=\"img\" aria-label=\"Mail not Clicked\"/>\n"
+"                                                            <i data-type=\"mail_bounce\" class=\"fa fa fa-exclamation-circle o_ma_text_rejected o_add_child\" title=\"Mail Bounced\" role=\"img\" aria-label=\"Mail Bounced\"/>"
+msgstr ""
+
+#. module: marketing_automation
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+msgid ""
 "<small class=\"oe_edit_only text-muted\" attrs=\"{'invisible': "
 "[('trigger_type', '=', 'begin')]}\">(save the campaign to make its "
 "activities selectable)</small>"
@@ -111,12 +150,14 @@ msgstr ""
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
-msgid "<span class=\"ml8\">after</span>"
+msgid "<span class=\"o_form_label\" invisible=\"1\">Warning</span>"
 msgstr ""
 
 #. module: marketing_automation
-#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
-msgid "<span class=\"o_form_label\" invisible=\"1\">Warning</span>"
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_test_view_form
+msgid ""
+"<span class=\"o_form_label\">Choose an existing record or create a new one "
+"to test</span>"
 msgstr ""
 
 #. module: marketing_automation
@@ -127,6 +168,20 @@ msgstr ""
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "<span class=\"oe_edit_only\">Name</span>"
+msgstr ""
+
+#. module: marketing_automation
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+msgid "<span class=\"oe_inline\">after</span>"
+msgstr ""
+
+#. module: marketing_automation
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+msgid ""
+"<span data-mode=\"graph\" class=\"active\" role=\"img\" title=\"Graph\" "
+"aria-label=\"Graph\"><i class=\"fa fa-pie-chart\"/></span><span data-"
+"mode=\"filter\" title=\"Filter\" role=\"img\" aria-label=\"Filter\"><i "
+"class=\"fa fa-filter\"/></span>"
 msgstr ""
 
 #. module: marketing_automation
@@ -177,11 +232,6 @@ msgid "Activity Type"
 msgstr "Τύπος Δραστηριότητας"
 
 #. module: marketing_automation
-#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
-msgid "Activity will allow to send mail or perform actions."
-msgstr ""
-
-#. module: marketing_automation
 #: model:ir.model.fields,help:marketing_automation.field_marketing_activity__domain
 msgid "Activity will only be performed if record satisfies this domain"
 msgstr ""
@@ -222,6 +272,7 @@ msgstr "Προωθήθηκε"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__campaign_id
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign_test__campaign_id
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant__campaign_id
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_tree
@@ -236,11 +287,13 @@ msgstr "Όνομα Εκστρατείας"
 
 #. module: marketing_automation
 #: model:ir.actions.act_window,name:marketing_automation.marketing_campaign_action
+#: model:ir.actions.act_window,name:marketing_automation.marketing_campaign_action_archived
 #: model:ir.ui.menu,name:marketing_automation.marketing_campaign_menu
 msgid "Campaigns"
 msgstr "Εκστρατείες"
 
 #. module: marketing_automation
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_test_view_form
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
 msgid "Cancel"
 msgstr "Ακύρωση"
@@ -253,11 +306,6 @@ msgstr "Ακυρώθηκε"
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__child_ids
 msgid "Child Activities"
-msgstr ""
-
-#. module: marketing_automation
-#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
-msgid "Click here to add new activity"
 msgstr ""
 
 #. module: marketing_automation
@@ -279,6 +327,7 @@ msgstr ""
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_search
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_trace_view_search
 #: selection:marketing.participant,state:0
 msgid "Completed"
 msgstr ""
@@ -289,13 +338,20 @@ msgid "Configuration"
 msgstr "Διαμόρφωση"
 
 #. module: marketing_automation
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_test_view_form
+msgid "Continue"
+msgstr "Συνέχεια"
+
+#. module: marketing_automation
 #: model_terms:ir.actions.act_window,help:marketing_automation.marketing_campaign_action
+#: model_terms:ir.actions.act_window,help:marketing_automation.marketing_campaign_action_archived
 msgid "Create a new campaign"
 msgstr ""
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__create_uid
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__create_uid
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign_test__create_uid
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant__create_uid
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__create_uid
 msgid "Created by"
@@ -304,6 +360,7 @@ msgstr "Δημιουργήθηκε από"
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__create_date
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__create_date
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign_test__create_date
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant__create_date
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__create_date
 msgid "Created on"
@@ -384,6 +441,7 @@ msgstr "Απόρριψη"
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__display_name
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__display_name
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign_test__display_name
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant__display_name
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__display_name
 msgid "Display Name"
@@ -442,13 +500,13 @@ msgid "Error message"
 msgstr ""
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:324
+#: code:addons/marketing_automation/models/marketing_campaign.py:355
 #, python-format
 msgid "Error! You can't create recursive hierarchy of Activity."
 msgstr ""
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:330
+#: code:addons/marketing_automation/models/marketing_campaign.py:361
 #, python-format
 msgid ""
 "Error! You can't define a child activity with a trigger of type \"beginning "
@@ -461,15 +519,21 @@ msgid "Exception"
 msgstr "Εξαίρεση"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:541
+#: code:addons/marketing_automation/models/marketing_campaign.py:576
 #, python-format
 msgid "Exception in mass mailing: %s"
 msgstr ""
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:511
+#: code:addons/marketing_automation/models/marketing_campaign.py:546
 #, python-format
 msgid "Exception in server action: %s"
+msgstr ""
+
+#. module: marketing_automation
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_search
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_trace_view_search
+msgid "Exclude Test"
 msgstr ""
 
 #. module: marketing_automation
@@ -497,6 +561,7 @@ msgstr "Ώρες"
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__id
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__id
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign_test__id
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant__id
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__id
 msgid "ID"
@@ -515,6 +580,7 @@ msgstr ""
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity____last_update
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign____last_update
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign_test____last_update
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant____last_update
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace____last_update
 msgid "Last Modified on"
@@ -523,6 +589,7 @@ msgstr "Τελευταία τροποποίηση στις"
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__write_uid
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__write_uid
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign_test__write_uid
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant__write_uid
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__write_uid
 msgid "Last Updated by"
@@ -531,6 +598,7 @@ msgstr "Τελευταία Ενημέρωση από"
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__write_date
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__write_date
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign_test__write_date
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant__write_date
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__write_date
 msgid "Last Updated on"
@@ -542,12 +610,15 @@ msgid "Last activities synchronization"
 msgstr ""
 
 #. module: marketing_automation
+#: code:addons/marketing_automation/wizard/marketing_campaign_test.py:56
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#, python-format
 msgid "Launch a Test"
 msgstr ""
 
 #. module: marketing_automation
-#: model:ir.actions.act_window,name:marketing_automation.marketing_participant_action_launch_test
+#: model:ir.actions.act_window,name:marketing_automation.marketing_campaign_test_action
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_test_view_form
 msgid "Launch a test"
 msgstr ""
 
@@ -603,11 +674,16 @@ msgstr "Αλληλογραφία"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+msgid "Mailings"
+msgstr "Αλληλογραφία"
+
+#. module: marketing_automation
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Mails sent and not bounced"
 msgstr ""
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_participant.py:149
+#: code:addons/marketing_automation/models/marketing_participant.py:153
 #, python-format
 msgid "Manually"
 msgstr "Χειροκίνητα"
@@ -618,15 +694,15 @@ msgid "Mark as completed"
 msgstr "Σήμανση ως Ολοκληρωμένο"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_participant.py:93
+#: code:addons/marketing_automation/models/marketing_participant.py:96
 #, python-format
 msgid "Marked as completed"
 msgstr "Με Σήμανση Ολοκληρωμένου"
 
 #. module: marketing_automation
 #: model:ir.model,name:marketing_automation.model_marketing_activity
+#: model:ir.model.fields,field_description:marketing_automation.field_account_invoice_send__marketing_activity_id
 #: model:ir.model.fields,field_description:marketing_automation.field_mail_compose_message__marketing_activity_id
-#: model:ir.model.fields,field_description:marketing_automation.field_survey_mail_compose_message__marketing_activity_id
 msgid "Marketing Activity"
 msgstr "Δραστηριότητα Marketing"
 
@@ -637,13 +713,18 @@ msgid "Marketing Automation"
 msgstr "Αυτοματισμός Marketing"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:537
+#: model:ir.actions.act_window,name:marketing_automation.mail_mass_mailing_action_marketing_automation
+msgid "Marketing Automation Mailings"
+msgstr ""
+
+#. module: marketing_automation
+#: code:addons/marketing_automation/models/marketing_campaign.py:572
 #, python-format
 msgid "Marketing Automation: activity <%s> encountered mass mailing issue %s"
 msgstr ""
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:507
+#: code:addons/marketing_automation/models/marketing_campaign.py:542
 #, python-format
 msgid "Marketing Automation: activity <%s> encountered server action issue %s"
 msgstr ""
@@ -666,6 +747,11 @@ msgstr "Αυτοματισμός Marketing: συγχρονισμός συμμε�
 #: model:ir.model,name:marketing_automation.model_marketing_campaign
 msgid "Marketing Campaign"
 msgstr "Εκστρατεία Marketing"
+
+#. module: marketing_automation
+#: model:ir.model,name:marketing_automation.model_marketing_campaign_test
+msgid "Marketing Campaign: Launch a Test"
+msgstr ""
 
 #. module: marketing_automation
 #: model:ir.model,name:marketing_automation.model_marketing_participant
@@ -707,6 +793,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__model_id
 msgid "Model"
 msgstr "Μοντέλο"
+
+#. module: marketing_automation
+#: model_terms:ir.ui.view,arch_db:marketing_automation.ir_model_view_tree_marketing
+msgid "Model Description"
+msgstr "Περιγραφή Μοντέλου"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__model_name
@@ -763,6 +854,7 @@ msgid "Not replied yet"
 msgstr ""
 
 #. module: marketing_automation
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign_test__model_id
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant__model_id
 msgid "Object"
 msgstr "Αντικείμενο"
@@ -786,30 +878,35 @@ msgid "Options"
 msgstr "Επιλογές"
 
 #. module: marketing_automation
+#: model_terms:ir.actions.act_window,help:marketing_automation.marketing_campaign_action
+msgid "Or"
+msgstr "Or"
+
+#. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__parent_id
 msgid "Parent"
 msgstr "Μητρικός"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_participant.py:179
+#: code:addons/marketing_automation/models/marketing_participant.py:183
 #, python-format
 msgid "Parent activity mail bounced"
 msgstr ""
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_participant.py:177
+#: code:addons/marketing_automation/models/marketing_participant.py:181
 #, python-format
 msgid "Parent activity mail clicked"
 msgstr ""
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_participant.py:178
+#: code:addons/marketing_automation/models/marketing_participant.py:182
 #, python-format
 msgid "Parent activity mail opened"
 msgstr ""
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_participant.py:176
+#: code:addons/marketing_automation/models/marketing_participant.py:180
 #, python-format
 msgid "Parent activity mail replied"
 msgstr ""
@@ -823,6 +920,13 @@ msgid "Participant"
 msgstr "Συμμετέχων"
 
 #. module: marketing_automation
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_tree
+msgid "Participant Name"
+msgstr ""
+
+#. module: marketing_automation
+#: model:ir.actions.act_window,name:marketing_automation.marketing_participant_action_campaign
+#: model:ir.actions.act_window,name:marketing_automation.marketing_participant_action_campaign_test
 #: model:ir.actions.act_window,name:marketing_automation.marketing_participants_action
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__participant_ids
 #: model:ir.ui.menu,name:marketing_automation.marketing_participants_menu
@@ -864,34 +968,32 @@ msgid "Recipients"
 msgstr "Αποδέκτες"
 
 #. module: marketing_automation
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign_test__resource_ref
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant__resource_ref
 msgid "Record"
 msgstr "Εγγραφή"
 
 #. module: marketing_automation
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign_test__res_id
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant__res_id
 msgid "Record ID"
 msgstr "ID Εγγραφής"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_participant.py:106
+#: code:addons/marketing_automation/models/marketing_participant.py:109
 #, python-format
 msgid "Record deleted"
 msgstr ""
 
 #. module: marketing_automation
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign_test__model_name
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant__model_name
 msgid "Record model"
 msgstr ""
 
 #. module: marketing_automation
-#: model:ir.actions.act_window,name:marketing_automation.marketing_participant_action
-msgid "Records"
-msgstr ""
-
-#. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:313
-#: code:addons/marketing_automation/models/marketing_campaign.py:413
+#: code:addons/marketing_automation/models/marketing_campaign.py:344
+#: code:addons/marketing_automation/models/marketing_campaign.py:448
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__rejected
 #: selection:marketing.trace,state:0
 #, python-format
@@ -899,7 +1001,7 @@ msgid "Rejected"
 msgstr "Απορίφθηκε"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:486
+#: code:addons/marketing_automation/models/marketing_campaign.py:521
 #, python-format
 msgid "Rejected by activity filter or record deleted / archived"
 msgstr ""
@@ -931,12 +1033,6 @@ msgid "Resource ID"
 msgstr "Αριθμός Πόρου"
 
 #. module: marketing_automation
-#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_search
-#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_tree
-msgid "Resource Name"
-msgstr "Όνομα Πόρου"
-
-#. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
 msgid "Run"
 msgstr "Εκτέλεση"
@@ -944,6 +1040,7 @@ msgstr "Εκτέλεση"
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_search
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_search
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_trace_view_search
 #: selection:marketing.campaign,state:0
 #: selection:marketing.participant,state:0
 msgid "Running"
@@ -973,6 +1070,11 @@ msgstr "Αναζήτηση Εκστρατείας"
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_search
 msgid "Search Participants"
 msgstr "Αναζήτηση Συμμετεχόντων"
+
+#. module: marketing_automation
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_trace_view_search
+msgid "Search Traces"
+msgstr ""
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__interval_number
@@ -1027,7 +1129,6 @@ msgstr "Έναρξη"
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__state
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant__state
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__state
-#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_search
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_search
 msgid "State"
 msgstr "Νομός/Πολιτεία"
@@ -1044,6 +1145,7 @@ msgstr ""
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
 msgid "Stop"
 msgstr "Διακοπή"
 
@@ -1059,8 +1161,8 @@ msgid "Subject"
 msgstr "Θέμα"
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:312
-#: code:addons/marketing_automation/models/marketing_campaign.py:412
+#: code:addons/marketing_automation/models/marketing_campaign.py:343
+#: code:addons/marketing_automation/models/marketing_campaign.py:447
 #, python-format
 msgid "Success"
 msgstr "Επιτυχία"
@@ -1071,9 +1173,36 @@ msgid "Sync of participants is required"
 msgstr ""
 
 #. module: marketing_automation
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
+msgid "TEST"
+msgstr ""
+
+#. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_search
+msgid "Target"
+msgstr "Στόχος"
+
+#. module: marketing_automation
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_search
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_tree
 msgid "Target Model"
 msgstr "Υπόδειγμα Στόχος"
+
+#. module: marketing_automation
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant__is_test
+msgid "Test Record"
+msgstr ""
+
+#. module: marketing_automation
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__is_test
+msgid "Test Trace"
+msgstr ""
+
+#. module: marketing_automation
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+msgid "Tests"
+msgstr "Δοκιμές"
 
 #. module: marketing_automation
 #. openerp-web
@@ -1085,7 +1214,7 @@ msgid ""
 msgstr ""
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:533
+#: code:addons/marketing_automation/models/marketing_campaign.py:568
 #, python-format
 msgid ""
 "To use this feature you should be an administrator or belong to the "
@@ -1132,6 +1261,7 @@ msgid "Trigger Type"
 msgstr ""
 
 #. module: marketing_automation
+#: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__utm_campaign_id
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__utm_campaign_id
 msgid "UTM Campaign"
 msgstr ""
@@ -1145,6 +1275,11 @@ msgstr "Μοναδικό Πεδίο"
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Update"
 msgstr "Ενημέρωση"
+
+#. module: marketing_automation
+#: model_terms:ir.ui.view,arch_db:marketing_automation.mail_mass_mailing_view_search
+msgid "Used in Marketing Automation"
+msgstr ""
 
 #. module: marketing_automation
 #: model:ir.model.fields,help:marketing_automation.field_marketing_campaign__unique_field_id
@@ -1194,7 +1329,7 @@ msgid "Workflow Started On"
 msgstr ""
 
 #. module: marketing_automation
-#: code:addons/marketing_automation/models/marketing_campaign.py:156
+#: code:addons/marketing_automation/models/marketing_campaign.py:173
 #, python-format
 msgid "You must set up at least one activity to start this campaign."
 msgstr ""
@@ -1212,4 +1347,14 @@ msgstr ""
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "e.g. eCommerce Offers"
+msgstr ""
+
+#. module: marketing_automation
+#: model_terms:ir.actions.act_window,help:marketing_automation.marketing_campaign_action
+msgid "load our campaign templates"
+msgstr ""
+
+#. module: marketing_automation
+#: model_terms:ir.actions.act_window,help:marketing_automation.marketing_campaign_action
+msgid "to get some ideas."
 msgstr ""

@@ -3,24 +3,35 @@
 # * snailmail_account_reports_followup
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
-# LINYUN TONG <tong.linyun@elico-corp.com>, 2018
-# e2f_cn c7 <e2f_cn_c7@outlook.com>, 2018
-# liAnGjiA <liangjia@qq.com>, 2018
+# Martin Trigaux, 2019
+# Jeffery CHEN Fan <jeffery9@gmail.com>, 2019
+# liAnGjiA <liangjia@qq.com>, 2019
+# e2f_cn c7 <e2f_cn_c7@outlook.com>, 2019
+# inspur qiuguodong <qiuguodong@inspur.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: liAnGjiA <liangjia@qq.com>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"PO-Revision-Date: 2019-01-16 08:41+0000\n"
+"Last-Translator: inspur qiuguodong <qiuguodong@inspur.com>, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: snailmail_account_reports_followup
+#: model_terms:ir.ui.view,arch_db:snailmail_account_reports_followup.followup_send_wizard_form
+msgid ""
+"<i class=\"fa fa-info-circle\" role=\"img\" aria-label=\"Warning\" title=\""
+"                         The letter will be sent using the IAP service from "
+"Odoo.&#10;Make sure you have enough credits on your account or proceed to a "
+"recharge.&#10;In case of multiple sending, the price is estimated based on 1"
+" page per document.                         \"/>"
+msgstr ""
 
 #. module: snailmail_account_reports_followup
 #: model_terms:ir.ui.view,arch_db:snailmail_account_reports_followup.followup_send_wizard_form
@@ -34,22 +45,17 @@ msgstr ""
 #. module: snailmail_account_reports_followup
 #: model_terms:ir.ui.view,arch_db:snailmail_account_reports_followup.followup_send_wizard_form
 msgid "Cancel"
-msgstr "取消"
+msgstr "取消日期"
 
 #. module: snailmail_account_reports_followup
 #: model:ir.model.fields,field_description:snailmail_account_reports_followup.field_followup_send__create_uid
 msgid "Created by"
-msgstr "创建人"
+msgstr "创建者"
 
 #. module: snailmail_account_reports_followup
 #: model:ir.model.fields,field_description:snailmail_account_reports_followup.field_followup_send__create_date
 msgid "Created on"
 msgstr "创建时间"
-
-#. module: snailmail_account_reports_followup
-#: model:ir.model.fields,field_description:snailmail_account_reports_followup.field_followup_send__snailmail_cost
-msgid "Credits"
-msgstr "信用"
 
 #. module: snailmail_account_reports_followup
 #: model:ir.model.fields,field_description:snailmail_account_reports_followup.field_followup_send__currency_id
@@ -84,7 +90,7 @@ msgstr "ID"
 #. module: snailmail_account_reports_followup
 #: model:ir.model.fields,field_description:snailmail_account_reports_followup.field_followup_send____last_update
 msgid "Last Modified on"
-msgstr "最后修改日"
+msgstr "最后更改日"
 
 #. module: snailmail_account_reports_followup
 #: model:ir.model.fields,field_description:snailmail_account_reports_followup.field_followup_send__write_uid
@@ -94,7 +100,7 @@ msgstr "最后更新者"
 #. module: snailmail_account_reports_followup
 #: model:ir.model.fields,field_description:snailmail_account_reports_followup.field_followup_send__write_date
 msgid "Last Updated on"
-msgstr "最后更新时间"
+msgstr "更新时间"
 
 #. module: snailmail_account_reports_followup
 #: model:ir.model.fields,field_description:snailmail_account_reports_followup.field_followup_send__letter_ids
@@ -131,11 +137,16 @@ msgid "Sending these"
 msgstr "发送中"
 
 #. module: snailmail_account_reports_followup
+#: model:ir.model.fields,field_description:snailmail_account_reports_followup.field_followup_send__snailmail_cost
+msgid "Stamp(s)"
+msgstr "邮戳(s)"
+
+#. module: snailmail_account_reports_followup
 #: model:ir.model.fields,help:snailmail_account_reports_followup.field_account_followup_followup_line__send_letter
 msgid "When processing, it will send a letter by Post"
 msgstr "处理时，通过邮政发送信件"
 
 #. module: snailmail_account_reports_followup
 #: model_terms:ir.ui.view,arch_db:snailmail_account_reports_followup.followup_send_wizard_form
-msgid "documents will cost approximatively"
-msgstr "文件的费用大约"
+msgid "documents will cost"
+msgstr ""

@@ -188,4 +188,11 @@
             </field>
         </record>
 
+        <menuitem
+            parent="point_of_sale.pos_config_menu_catalog"
+            action="action_loyalty_program_form"
+            id="menu_loyalty_program"
+            sequence="30"
+            groups="point_of_sale.group_pos_manager" />
+
 </odoo>

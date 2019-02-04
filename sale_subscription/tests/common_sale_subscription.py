@@ -23,6 +23,11 @@ class TestSubscriptionCommon(AccountingTestCase):
             'name': 'TestSubscriptionTemplate2',
             'description': 'Test Subscription Template 2',
         })
+        self.subscription_tmpl_3 = SubTemplate.create({
+            'name': 'TestSubscriptionTemplate3',
+            'description': 'Test Subscription Template 3',
+            'recurring_rule_boundary':'limited'
+        })
 
         # Test taxes
         self.percent_tax = Tax.create({
@@ -67,6 +72,19 @@ class TestSubscriptionCommon(AccountingTestCase):
         })
         self.product3 = Product.create({
             'product_tmpl_id': self.product_tmpl_3.id,
+            'price': 15.0,
+            'taxes_id': [(6, 0, [self.percent_tax.id])],
+        })
+
+        self.product_tmpl_4 = ProductTmpl.create({
+            'name': 'TestProduct4',
+            'type': 'service',
+            'recurring_invoice': True,
+            'subscription_template_id': self.subscription_tmpl_3.id,
+            'uom_id': self.ref('uom.product_uom_unit'),
+        })
+        self.product4 = Product.create({
+            'product_tmpl_id': self.product_tmpl_4.id,
             'price': 15.0,
             'taxes_id': [(6, 0, [self.percent_tax.id])],
         })
@@ -120,4 +138,9 @@ class TestSubscriptionCommon(AccountingTestCase):
             'name': 'TestSO4',
             'partner_id': self.user_portal.partner_id.id,
             'order_line': [(0, 0, {'name': self.product2.name, 'product_id': self.product2.id, 'product_uom_qty': 1.0, 'product_uom': self.product2.uom_id.id, 'price_unit': self.product2.list_price}), (0, 0, {'name': self.product3.name, 'product_id': self.product3.id, 'product_uom_qty': 1.0, 'product_uom': self.product3.uom_id.id, 'price_unit': self.product3.list_price})],
+        })
+        self.sale_order_5 = SaleOrder.create({
+            'name': 'TestSO5',
+            'partner_id': self.user_portal.partner_id.id,
+            'order_line': [(0, 0, {'name': self.product4.name, 'product_id': self.product4.id, 'product_uom_qty': 1.0, 'product_uom': self.product4.uom_id.id, 'price_unit': self.product4.list_price})]
         })

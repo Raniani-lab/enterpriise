@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-24 11:16+0000\n"
-"PO-Revision-Date: 2018-12-24 11:16+0000\n"
+"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"PO-Revision-Date: 2019-01-16 08:13+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -29,12 +29,12 @@ msgstr ""
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_fiscal_year_2017
-msgid "2017"
+msgid "2018"
 msgstr ""
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_fiscal_year_2018
-msgid "2018"
+msgid "2019"
 msgstr ""
 
 #. module: documents
@@ -81,6 +81,11 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
 msgid "<br/>Powered by"
+msgstr ""
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.share_single
+msgid "<i class=\"fa fa-circle-o-notch fa-spin text-white fa-3x mb8\" role=\"img\" aria-label=\"Loading\" title=\"Loading\"/>"
 msgstr ""
 
 #. module: documents
@@ -576,7 +581,6 @@ msgstr ""
 #. module: documents
 #: model:ir.model,name:documents.model_documents_document
 #: model_terms:ir.ui.view,arch_db:documents.document_view_kanban
-#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Document"
 msgstr ""
 
@@ -1156,6 +1160,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__name
 #: model:ir.model.fields,field_description:documents.field_documents_share__name
 #: model:ir.model.fields,field_description:documents.field_documents_tag__name
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Name"
 msgstr ""
 
@@ -1458,7 +1463,7 @@ msgstr ""
 
 #. module: documents
 #: model:documents.workflow.rule,name:documents.documents_rule_finance_2018contracts
-msgid "Set As 2018 Contracts"
+msgid "Set As 2019 Contracts"
 msgstr ""
 
 #. module: documents

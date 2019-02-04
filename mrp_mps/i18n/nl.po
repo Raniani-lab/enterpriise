@@ -3,19 +3,20 @@
 # * mrp_mps
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Yenthe Van Ginneken <yenthespam@gmail.com>, 2018
-# Thomas Pot <thomas@open2bizz.nl>, 2018
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
-# Cas Vissers <casvissers@brahoo.nl>, 2018
+# Eric Geens <ericgeens@yahoo.com>, 2016
+# Martin Trigaux, 2017
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
+# Thomas Pot <thomas@open2bizz.nl>, 2019
+# Cas Vissers <casvissers@brahoo.nl>, 2019
+# Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-08-24 11:38+0000\n"
-"Last-Translator: Cas Vissers <casvissers@brahoo.nl>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:12+0000\n"
+"PO-Revision-Date: 2016-08-05 13:29+0000\n"
+"Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -46,6 +47,15 @@ msgid ""
 msgstr ""
 "<span class=\"fa fa-fw\">=</span>\n"
 "Voorspelde voorraad"
+
+#. module: mrp_mps
+#: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
+msgid ""
+"<span class=\"fa fa-map-marker text-muted fa-fw\" role=\"img\" aria-"
+"label=\"Forecasted\" title=\"Forecasted\"/>"
+msgstr ""
+"<span class=\"fa fa-map-marker text-muted fa-fw\" role=\"img\" aria-"
+"label=\"Voorspeld\" title=\"Voorspeld\"/>"
 
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.report_inventory
@@ -155,7 +165,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_mps.field_sale_forecast__forecast_qty
 #, python-format
 msgid "Demand Forecast"
-msgstr "Vraagvoorspelling"
+msgstr "Vraag voorspelling"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_mps_report__display_name
@@ -179,7 +189,7 @@ msgstr "Prognose"
 #: code:addons/mrp_mps/static/src/xml/mps_backend.xml:50
 #, python-format
 msgid "Forecast Inventory"
-msgstr "Verwachte Voorraad"
+msgstr "Voorraad forecast"
 
 #. module: mrp_mps
 #. openerp-web
@@ -187,7 +197,7 @@ msgstr "Verwachte Voorraad"
 #: model_terms:ir.ui.view,arch_db:mrp_mps.product_product_view_form_mps
 #, python-format
 msgid "Forecast Product"
-msgstr "Prognose product"
+msgstr "Forecast product"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_product_product__mps_forecasted

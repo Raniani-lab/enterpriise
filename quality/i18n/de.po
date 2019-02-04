@@ -3,16 +3,32 @@
 # * quality
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Jan Meyer, 2018
-# Johannes Croe <jcr@odoo.com>, 2018
+# Rudolf Schnapka <rs@techno-flex.de>, 2017
+# dd5cd5bab88c61e9dedf84f5ea59b147, 2017
+# Renzo Meister, 2017
+# Stefan Hartenfels <stefan.hartenfels@camptocamp.com>, 2017
+# Niki Waibel, 2017
+# Tina Rittmüller <tr@ife.de>, 2017
+# Henry Mineehen <info@mineehen.de>, 2017
+# darenkster <inactive+darenkster@transifex.com>, 2017
+# Thorsten Vocks <thorsten.vocks@openbig.org>, 2017
+# Constantin Ehrenstein <transifex@skiller.eu>, 2017
+# DE T1 <e2f8846@yahoo.com>, 2017
+# JackTheHunter <Maximilian.N98@gmail.com>, 2017
+# Katharina Moritz <kmo@e2f.com>, 2017
+# Wolfgang Taferner, 2018
+# Ermin Trevisan <trevi@twanda.com>, 2018
+# Martin Trigaux, 2019
+# Jan Meyer, 2019
+# Johannes Croe <jcr@odoo.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Johannes Croe <jcr@odoo.com>, 2018\n"
+"POT-Creation-Date: 2018-12-24 11:16+0000\n"
+"PO-Revision-Date: 2016-08-05 13:31+0000\n"
+"Last-Translator: Johannes Croe <jcr@odoo.com>, 2019\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -57,6 +73,16 @@ msgstr "vorgeschlagene Aktion"
 #: model:ir.model.fields,field_description:quality.field_quality_point__active
 msgid "Active"
 msgstr "Aktiv"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__activity_ids
+msgid "Activities"
+msgstr "Aktivitäten"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__activity_state
+msgid "Activity State"
+msgstr "Status der Aktivität"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_stage__done
@@ -433,6 +459,21 @@ msgid "New"
 msgstr "Neu"
 
 #. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__activity_date_deadline
+msgid "Next Activity Deadline"
+msgstr "Nächste Aktivitätsfrist"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__activity_summary
+msgid "Next Activity Summary"
+msgstr "Zusammenfassung nächste Aktion"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__activity_type_id
+msgid "Next Activity Type"
+msgstr "Nächster Aktivitätstyp"
+
+#. module: quality
 #: selection:quality.alert,priority:0
 msgid "Normal"
 msgstr "Normal"
@@ -516,6 +557,11 @@ msgid "Others"
 msgstr "Andere"
 
 #. module: quality
+#: selection:quality.alert,activity_state:0
+msgid "Overdue"
+msgstr "Überfällig"
+
+#. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_user_id
 msgid "Owner"
 msgstr "Besitzer"
@@ -561,6 +607,11 @@ msgstr "Liefervorgang"
 #: model:ir.model.fields,field_description:quality.field_quality_check__picture
 msgid "Picture"
 msgstr "Bild"
+
+#. module: quality
+#: selection:quality.alert,activity_state:0
+msgid "Planned"
+msgstr "Geplant"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert_team__alias_contact
@@ -656,6 +707,11 @@ msgid "Responsible"
 msgstr "Verantwortlich"
 
 #. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__activity_user_id
+msgid "Responsible User"
+msgstr "Manager Veranstaltung"
+
+#. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__reason_id
 msgid "Root Cause"
 msgstr "Hauptursache"
@@ -686,6 +742,19 @@ msgstr "Stufe"
 #: model:ir.model.fields,field_description:quality.field_quality_check__quality_state
 msgid "Status"
 msgstr "Status"
+
+#. module: quality
+#: model:ir.model.fields,help:quality.field_quality_alert__activity_state
+msgid ""
+"Status based on activities\n"
+"Overdue: Due date is already passed\n"
+"Today: Activity date is today\n"
+"Planned: Future activities."
+msgstr ""
+"Status basierend auf Aktivitäten\n"
+"Überfällig: Fälligkeitsdatum bereits überschritten\n"
+"Heute: Aktivität besitzt heutiges Datum\n"
+"Geplant: anstehende Aktivitäten."
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__tag_ids
@@ -764,6 +833,11 @@ msgstr "Titel"
 #: selection:quality.check,quality_state:0
 msgid "To do"
 msgstr "Zu Erledigen"
+
+#. module: quality
+#: selection:quality.alert,activity_state:0
+msgid "Today"
+msgstr "Heute"
 
 #. module: quality
 #: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form

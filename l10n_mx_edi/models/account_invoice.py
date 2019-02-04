@@ -205,6 +205,12 @@ class AccountInvoice(models.Model):
         return fromstring(cfdi) if cfdi else None
 
     @api.model
+    def l10n_mx_edi_get_payment_method_cfdi(self):
+        self.ensure_one()
+        cfdi = self.l10n_mx_edi_get_xml_etree()
+        return cfdi.get('MetodoPago') if cfdi is not None else None
+
+    @api.model
     def l10n_mx_edi_get_tfd_etree(self, cfdi):
         '''Get the TimbreFiscalDigital node from the cfdi.
 
@@ -1030,9 +1036,7 @@ class AccountInvoice(models.Model):
    </ns1:Body>
 </SOAP-ENV:Envelope>"""
         namespace = {'a': 'http://schemas.datacontract.org/2004/07/Sat.Cfdi.Negocio.ConsultaCfdi.Servicio'}
-        for inv in self.filtered(lambda r: r.l10n_mx_edi_is_required()):
-            if inv.l10n_mx_edi_pac_status not in ['signed', 'cancelled']:
-                continue
+        for inv in self.filtered('l10n_mx_edi_cfdi'):
             supplier_rfc = inv.l10n_mx_edi_cfdi_supplier_rfc
             customer_rfc = inv.l10n_mx_edi_cfdi_customer_rfc
             total = float_repr(inv.l10n_mx_edi_cfdi_amount,

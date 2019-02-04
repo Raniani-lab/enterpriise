@@ -3,14 +3,18 @@
 # * project_forecast
 # 
 # Translators:
-# Martin Trigaux, 2018
+# Khishigbat Ganbold <khishigbat@asterisk-tech.mn>, 2018
+# Ganbold BATKHUYAG <gbatkhuyag@gmail.com>, 2018
+# Onii Onii <onii0223@yahoo.com>, 2018
+# Martin Trigaux, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"PO-Revision-Date: 2016-08-05 13:31+0000\n"
+"Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: Mongolian (https://www.transifex.com/odoo/teams/41243/mn/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -145,6 +149,12 @@ msgstr "Дэлгэцийн Нэр"
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
 msgid "Employee"
 msgstr "Ажилтан"
+
+#. module: project_forecast
+#: model:ir.model.fields,help:project_forecast.field_project_project__allow_forecast
+#: model:ir.model.fields,help:project_forecast.field_project_task__allow_forecast
+msgid "Enable forecasting on the project."
+msgstr ""
 
 #. module: project_forecast
 #: model:ir.model.fields,help:project_forecast.field_res_company__forecast_span
@@ -373,19 +383,12 @@ msgid "Task tags"
 msgstr "Даалгаврын пайзууд"
 
 #. module: project_forecast
-#: code:addons/project_forecast/models/project_forecast.py:132
+#: code:addons/project_forecast/models/project_forecast.py:134
 #, python-format
 msgid ""
 "The employee (%s) doesn't have a timezone, this might cause errors in the "
 "time computation. It is configurable on the user linked to the employee"
 msgstr ""
-
-#. module: project_forecast
-#: model:ir.model.fields,help:project_forecast.field_project_project__allow_forecast
-#: model:ir.model.fields,help:project_forecast.field_project_task__allow_forecast
-msgid "This feature shows the Forecast link in the kanban view"
-msgstr ""
-"Энэ боломж нь канбан харагдац дээр Урьдчилсан таамгын холбоосыг харуулдаг"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_res_company__forecast_span

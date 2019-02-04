@@ -3,20 +3,24 @@
 # * account_budget
 # 
 # Translators:
-# Vladimir Olujić <olujic.vladimir@storm.hr>, 2017
-# Martin Trigaux, 2017
-# Bole <bole@dajmi5.com>, 2017
 # Karolina Tonković <karolina.tonkovic@storm.hr>, 2017
-# Đurđica Žarković <durdica.zarkovic@storm.hr>, 2017
 # Marijan Rajic <mr.rajic@gmail.com>, 2017
+# Vladimir Olujić <olujic.vladimir@storm.hr>, 2018
 # Tina Milas, 2018
+# Ivan Marijanović <ivanm101@yahoo.com>, 2019
+# Martin Trigaux, 2019
+# Bole <bole@dajmi5.com>, 2019
+# Đurđica Žarković <durdica.zarkovic@storm.hr>, 2019
+# Marko Carević <marko.carevic@live.com>, 2019
+# Stjepan Lovasić <stjepan.lovasic@gmail.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.4\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-02 09:12+0000\n"
-"PO-Revision-Date: 2018-08-02 09:12+0000\n"
-"Last-Translator: Tina Milas, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:12+0000\n"
+"PO-Revision-Date: 2016-08-05 12:55+0000\n"
+"Last-Translator: Stjepan Lovasić <stjepan.lovasic@gmail.com>, 2019\n"
 "Language-Team: Croatian (https://www.transifex.com/odoo/teams/41243/hr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -25,7 +29,7 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 
 #. module: account_budget
-#: code:addons/account_budget/models/account_budget.py:278
+#: code:addons/account_budget/models/account_budget.py:279
 #, python-format
 msgid ""
 "\"End Date\" of the budget line should be included in the Period of the "
@@ -33,7 +37,7 @@ msgid ""
 msgstr ""
 
 #. module: account_budget
-#: code:addons/account_budget/models/account_budget.py:273
+#: code:addons/account_budget/models/account_budget.py:274
 #, python-format
 msgid ""
 "\"Start Date\" of the budget line should be included in the Period of the "
@@ -41,8 +45,13 @@ msgid ""
 msgstr ""
 
 #. module: account_budget
+#: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_kanban
+msgid "<i class=\"fa fa-clock-o\" role=\"img\" aria-label=\"Period\" title=\"Period\"/>"
+msgstr ""
+
+#. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_account_budget_post__account_ids
-#: model:ir.ui.view,arch_db:account_budget.view_budget_post_form
+#: model_terms:ir.ui.view,arch_db:account_budget.view_budget_post_form
 msgid "Accounts"
 msgstr "Konta"
 
@@ -55,6 +64,16 @@ msgstr "Dostignuće"
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__message_needaction
 msgid "Action Needed"
 msgstr "Potrebna dodatna radnja"
+
+#. module: account_budget
+#: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__activity_ids
+msgid "Activities"
+msgstr "Aktivnosti"
+
+#. module: account_budget
+#: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__activity_state
+msgid "Activity State"
+msgstr "Status aktivnosti"
 
 #. module: account_budget
 #: model:ir.model.fields,help:account_budget.field_crossovered_budget_lines__practical_amount
@@ -85,22 +104,27 @@ msgid "Analytic Group"
 msgstr ""
 
 #. module: account_budget
-#: model:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
+#: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
 msgid "Approve"
 msgstr "Odobri"
 
 #. module: account_budget
+#: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__message_attachment_count
+msgid "Attachment Count"
+msgstr ""
+
+#. module: account_budget
 #: model:ir.model,name:account_budget.model_crossovered_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__crossovered_budget_id
-#: model:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
-#: model:ir.ui.view,arch_db:account_budget.crossovered_budget_view_tree
-#: model:ir.ui.view,arch_db:account_budget.view_crossovered_budget_search
+#: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
+#: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_tree
+#: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_search
 msgid "Budget"
 msgstr "Proračun"
 
 #. module: account_budget
 #: model:ir.actions.act_window,name:account_budget.act_account_analytic_account_cb_lines
-#: model:ir.ui.view,arch_db:account_budget.view_account_analytic_account_form_inherit_budget
+#: model_terms:ir.ui.view,arch_db:account_budget.view_account_analytic_account_form_inherit_budget
 msgid "Budget Items"
 msgstr "Stavke budžeta"
 
@@ -112,18 +136,18 @@ msgstr "Redak proračuna"
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_account_analytic_account__crossovered_budget_line
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__crossovered_budget_line
-#: model:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
-#: model:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_form
-#: model:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_graph
-#: model:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_pivot
-#: model:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_search
-#: model:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_tree
+#: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
+#: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_form
+#: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_graph
+#: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_pivot
+#: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_search
+#: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_tree
 msgid "Budget Lines"
 msgstr "Stavke proračuna"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__name
-#: model:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
+#: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
 msgid "Budget Name"
 msgstr "Naziv budžeta"
 
@@ -135,23 +159,23 @@ msgstr ""
 #. module: account_budget
 #: model:ir.model,name:account_budget.model_account_budget_post
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__general_budget_id
-#: model:ir.ui.view,arch_db:account_budget.view_budget_post_form
-#: model:ir.ui.view,arch_db:account_budget.view_budget_post_search
-#: model:ir.ui.view,arch_db:account_budget.view_budget_post_tree
+#: model_terms:ir.ui.view,arch_db:account_budget.view_budget_post_form
+#: model_terms:ir.ui.view,arch_db:account_budget.view_budget_post_search
+#: model_terms:ir.ui.view,arch_db:account_budget.view_budget_post_tree
 msgid "Budgetary Position"
 msgstr "Proračunska pozicija"
 
 #. module: account_budget
 #: model:ir.actions.act_window,name:account_budget.open_budget_post_form
 #: model:ir.ui.menu,name:account_budget.menu_budget_post_form
-#: model:ir.ui.view,arch_db:account_budget.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:account_budget.res_config_settings_view_form
 msgid "Budgetary Positions"
 msgstr "Proračunska pozicija"
 
 #. module: account_budget
 #: model:ir.actions.act_window,name:account_budget.act_crossovered_budget_view
 #: model:ir.ui.menu,name:account_budget.menu_act_crossovered_budget_view
-#: model:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_search
+#: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_search
 msgid "Budgets"
 msgstr "Proračuni"
 
@@ -162,7 +186,7 @@ msgid "Budgets Analysis"
 msgstr ""
 
 #. module: account_budget
-#: model:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
+#: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
 msgid "Cancel Budget"
 msgstr "Poništi proračun"
 
@@ -172,7 +196,7 @@ msgid "Cancelled"
 msgstr "Otkazano"
 
 #. module: account_budget
-#: model:ir.actions.act_window,help:account_budget.act_crossovered_budget_view
+#: model_terms:ir.actions.act_window,help:account_budget.act_crossovered_budget_view
 msgid "Click to create a new budget."
 msgstr "Kliknite za kreiranje novog budžeta."
 
@@ -191,7 +215,7 @@ msgid ""
 msgstr ""
 
 #. module: account_budget
-#: model:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
+#: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
 msgid "Confirm"
 msgstr "Potvrdi"
 
@@ -228,18 +252,18 @@ msgstr "Naziv za prikaz"
 
 #. module: account_budget
 #: selection:crossovered.budget,state:0
-#: model:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
+#: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
 msgid "Done"
 msgstr "Riješeno"
 
 #. module: account_budget
 #: selection:crossovered.budget,state:0
-#: model:ir.ui.view,arch_db:account_budget.view_crossovered_budget_search
+#: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_search
 msgid "Draft"
 msgstr "Nacrt"
 
 #. module: account_budget
-#: model:ir.ui.view,arch_db:account_budget.view_crossovered_budget_search
+#: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_search
 msgid "Draft Budgets"
 msgstr "Nacrti proračuna"
 
@@ -250,7 +274,7 @@ msgid "End Date"
 msgstr "Završni datum"
 
 #. module: account_budget
-#: model:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
+#: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
 msgid "Entries..."
 msgstr ""
 
@@ -270,7 +294,12 @@ msgid "Followers (Partners)"
 msgstr "Pratitelji (Partneri)"
 
 #. module: account_budget
-#: model:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_search
+#: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_search
+msgid "Future Activities"
+msgstr "Buduće aktivnosti"
+
+#. module: account_budget
+#: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_search
 msgid "Group By"
 msgstr "Grupiraj po"
 
@@ -328,6 +357,16 @@ msgid "Last Updated on"
 msgstr "Vrijeme promjene"
 
 #. module: account_budget
+#: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_search
+msgid "Late Activities"
+msgstr ""
+
+#. module: account_budget
+#: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__message_main_attachment_id
+msgid "Main Attachment"
+msgstr ""
+
+#. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__message_has_error
 msgid "Message Delivery error"
 msgstr ""
@@ -344,7 +383,22 @@ msgid "Name"
 msgstr "Naziv"
 
 #. module: account_budget
-#: model:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_search
+#: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__activity_date_deadline
+msgid "Next Activity Deadline"
+msgstr ""
+
+#. module: account_budget
+#: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__activity_summary
+msgid "Next Activity Summary"
+msgstr "Sažetak sljedeće aktivnosti"
+
+#. module: account_budget
+#: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__activity_type_id
+msgid "Next Activity Type"
+msgstr ""
+
+#. module: account_budget
+#: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_search
 msgid "Not Cancelled"
 msgstr ""
 
@@ -374,42 +428,52 @@ msgid "Number of unread messages"
 msgstr "Broj nepročitanih poruka"
 
 #. module: account_budget
+#: selection:crossovered.budget,activity_state:0
+msgid "Overdue"
+msgstr "Dospjelo"
+
+#. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__paid_date
 msgid "Paid Date"
 msgstr "Datum plaćanja"
 
 #. module: account_budget
-#: model:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
+#: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
 msgid "Period"
 msgstr "Period"
 
 #. module: account_budget
+#: selection:crossovered.budget,activity_state:0
+msgid "Planned"
+msgstr "Planirano"
+
+#. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__planned_amount
-#: model:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
+#: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
 msgid "Planned Amount"
 msgstr "Planirani iznos"
 
 #. module: account_budget
-#: model:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_graph
-#: model:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_pivot
+#: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_graph
+#: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_pivot
 msgid "Planned amount"
 msgstr ""
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__practical_amount
-#: model:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
-#: model:ir.ui.view,arch_db:account_budget.view_account_analytic_account_form_inherit_budget
+#: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
+#: model_terms:ir.ui.view,arch_db:account_budget.view_account_analytic_account_form_inherit_budget
 msgid "Practical Amount"
 msgstr "Stvarni iznos"
 
 #. module: account_budget
-#: model:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_graph
-#: model:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_pivot
+#: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_graph
+#: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_pivot
 msgid "Practical amount"
 msgstr ""
 
 #. module: account_budget
-#: model:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
+#: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
 msgid "Reset to Draft"
 msgstr "Vrati u nacrt"
 
@@ -417,6 +481,16 @@ msgstr "Vrati u nacrt"
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__user_id
 msgid "Responsible"
 msgstr "Odgovoran"
+
+#. module: account_budget
+#: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__activity_user_id
+msgid "Responsible User"
+msgstr "Odgovorna osoba"
+
+#. module: account_budget
+#: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_search
+msgid "Show all records which has next action date is before today"
+msgstr ""
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__date_from
@@ -430,6 +504,15 @@ msgid "Status"
 msgstr "Status"
 
 #. module: account_budget
+#: model:ir.model.fields,help:account_budget.field_crossovered_budget__activity_state
+msgid ""
+"Status based on activities\n"
+"Overdue: Due date is already passed\n"
+"Today: Activity date is today\n"
+"Planned: Future activities."
+msgstr ""
+
+#. module: account_budget
 #: code:addons/account_budget/models/account_budget.py:29
 #, python-format
 msgid "The budget must have at least one account."
@@ -437,30 +520,40 @@ msgstr ""
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__theoritical_amount
-#: model:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
+#: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
 msgid "Theoretical Amount"
 msgstr "Teoretski iznos"
 
 #. module: account_budget
-#: model:ir.ui.view,arch_db:account_budget.view_account_analytic_account_form_inherit_budget
+#: model_terms:ir.ui.view,arch_db:account_budget.view_account_analytic_account_form_inherit_budget
 msgid "Theoritical Amount"
 msgstr "Teoretski iznos"
 
 #. module: account_budget
-#: model:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_graph
-#: model:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_pivot
+#: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_graph
+#: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_pivot
 msgid "Theoritical amount"
 msgstr ""
 
 #. module: account_budget
-#: model:ir.ui.view,arch_db:account_budget.view_crossovered_budget_search
+#: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_search
 msgid "To Approve"
 msgstr "Za odobriti"
 
 #. module: account_budget
-#: model:ir.ui.view,arch_db:account_budget.view_crossovered_budget_search
+#: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_search
 msgid "To Approve Budgets"
 msgstr "Nepotvrđeni proračuni"
+
+#. module: account_budget
+#: selection:crossovered.budget,activity_state:0
+msgid "Today"
+msgstr "Danas"
+
+#. module: account_budget
+#: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_search
+msgid "Today Activities"
+msgstr "Današnje aktivnosti"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__message_unread
@@ -473,7 +566,7 @@ msgid "Unread Messages Counter"
 msgstr "Brojač nepročitanih poruka"
 
 #. module: account_budget
-#: model:ir.actions.act_window,help:account_budget.act_crossovered_budget_view
+#: model_terms:ir.actions.act_window,help:account_budget.act_crossovered_budget_view
 msgid "Use budgets to compare actual with expected revenues and costs"
 msgstr ""
 

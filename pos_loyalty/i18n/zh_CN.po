@@ -3,17 +3,22 @@
 # * pos_loyalty
 # 
 # Translators:
-# inspur qiuguodong <qiuguodong@inspur.com>, 2018
-# Martin Trigaux, 2018
-# Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
+# fausthuang, 2017
+# Joray <13637815@qq.com>, 2017
+# Jeffery CHEN Fan <jeffery9@gmail.com>, 2017
+# 苏州远鼎 <tiexinliu@126.com>, 2017
+# 老窦 北京 <2662059195@qq.com>, 2018
+# e2f <projects@e2f.com>, 2018
+# keecome <7017511@qq.com>, 2018
+# Martin Trigaux, 2019
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-08-24 11:47+0000\n"
-"Last-Translator: Jeffery CHEN Fan <jeffery9@gmail.com>, 2018\n"
+"PO-Revision-Date: 2016-08-05 13:31+0000\n"
+"Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -29,7 +34,7 @@ msgstr "<span>每元积分：</span>"
 #. module: pos_loyalty
 #: model_terms:ir.ui.view,arch_db:pos_loyalty.view_loyalty_program_kanban
 msgid "<strong>Points per order :</strong>"
-msgstr "<strong>按订单积分:</strong>"
+msgstr "<strong>每订单积分：</strong>"
 
 #. module: pos_loyalty
 #: model_terms:ir.ui.view,arch_db:pos_loyalty.view_loyalty_program_kanban
@@ -39,12 +44,12 @@ msgstr "<strong>每个产品的积分：</strong>"
 #. module: pos_loyalty
 #: model:ir.model.fields,help:pos_loyalty.field_loyalty_program__name
 msgid "An internal identification for the loyalty program configuration"
-msgstr "忠诚度方案配置的内部标识"
+msgstr "忠诚计划配置的内部标识"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,help:pos_loyalty.field_loyalty_rule__name
 msgid "An internal identification for this loyalty program rule"
-msgstr "忠诚度方案规则的内部标识"
+msgstr "忠诚计划规则的内部标识"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,help:pos_loyalty.field_loyalty_reward__name
@@ -64,7 +69,7 @@ msgstr "联系人"
 #. module: pos_loyalty
 #: model_terms:ir.actions.act_window,help:pos_loyalty.action_loyalty_program_form
 msgid "Create a new loyalty program"
-msgstr "创建忠诚度方案"
+msgstr "创建信用计划"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_program__create_uid
@@ -121,12 +126,12 @@ msgstr "礼品产品"
 #. module: pos_loyalty
 #: model:ir.model.fields,help:pos_loyalty.field_loyalty_program__pp_product
 msgid "How many loyalty points are given to the customer by product sold"
-msgstr "按产品销售量给客户多少积分"
+msgstr "按产品卖出给客户多少积分"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,help:pos_loyalty.field_loyalty_program__pp_currency
 msgid "How many loyalty points are given to the customer by sold currency"
-msgstr "按销售额给客户多少积分"
+msgstr "按销售金钱给客户多少积分"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,help:pos_loyalty.field_loyalty_program__pp_order
@@ -186,27 +191,27 @@ msgstr "忠诚积分"
 #: model_terms:ir.ui.view,arch_db:pos_loyalty.pos_config_view_form_inherit_pos_loyalty
 #: model_terms:ir.ui.view,arch_db:pos_loyalty.view_loyalty_program_form
 msgid "Loyalty Program"
-msgstr "忠诚度方案"
+msgstr "忠诚计划"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_loyalty_program__name
 #: model_terms:ir.ui.view,arch_db:pos_loyalty.view_loyalty_program_form
 msgid "Loyalty Program Name"
-msgstr "忠诚度方案名称"
+msgstr "忠诚计划名称"
 
 #. module: pos_loyalty
 #: model:ir.actions.act_window,name:pos_loyalty.action_loyalty_program_form
 #: model_terms:ir.ui.view,arch_db:pos_loyalty.view_loyalty_program_tree
 #: model_terms:ir.ui.view,arch_db:pos_loyalty.view_pos_pos_form
 msgid "Loyalty Programs"
-msgstr "忠诚度方案"
+msgstr "忠诚计划"
 
 #. module: pos_loyalty
 #: model_terms:ir.actions.act_window,help:pos_loyalty.action_loyalty_program_form
 msgid ""
 "Loyalty Programs allows you customer to earn points\n"
 "                    and rewards when doing business at your shops."
-msgstr "忠诚度方案可以让客户到店做生意赚取积分和奖励"
+msgstr "忠诚计划可以让你的客户到你的店做生意赚取积分和奖励"
 
 #. module: pos_loyalty
 #: model:ir.model,name:pos_loyalty.model_loyalty_reward
@@ -327,7 +332,7 @@ msgstr "每个产品的积分"
 #. module: pos_loyalty
 #: model:ir.model.fields,field_description:pos_loyalty.field_pos_config__loyalty_id
 msgid "Pos Loyalty Program"
-msgstr "忠诚度方案"
+msgstr "忠诚度计划"
 
 #. module: pos_loyalty
 #: selection:loyalty.rule,rule_type:0
@@ -399,12 +404,12 @@ msgstr "目标产品"
 #. module: pos_loyalty
 #: model:ir.model.fields,help:pos_loyalty.field_loyalty_rule__loyalty_program_id
 msgid "The Loyalty Program this exception belongs to"
-msgstr "此异常所属的忠诚度方案"
+msgstr "此异常所属的忠诚计划"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,help:pos_loyalty.field_loyalty_reward__loyalty_program_id
 msgid "The Loyalty Program this reward belongs to"
-msgstr "此奖励所属的忠诚度方案"
+msgstr "此奖励所属的忠诚计划"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,help:pos_loyalty.field_pos_order__loyalty_points
@@ -447,30 +452,30 @@ msgstr "对这个值积分积分被四舍五入计入"
 #: model:ir.model.fields,help:pos_loyalty.field_res_partner__loyalty_points
 #: model:ir.model.fields,help:pos_loyalty.field_res_users__loyalty_points
 msgid "The loyalty points the user won as part of a Loyalty Program"
-msgstr "用户或得的积分点是忠诚度方案的一部分"
+msgstr "用户或得的积分点是积分制度的一部分"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,help:pos_loyalty.field_pos_config__loyalty_id
 msgid "The loyalty program used by this point of sale."
-msgstr "由此销售点使用的忠诚度方案。"
+msgstr "由此销售点使用的忠诚度计划。"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,help:pos_loyalty.field_loyalty_reward__minimum_points
 msgid ""
 "The minimum amount of points the customer must have to qualify for this "
 "reward"
-msgstr "客户必须拥有此奖励的最低积分点"
+msgstr "客户必须具备最低积分点为这个奖励"
 
 #. module: pos_loyalty
 #: code:addons/pos_loyalty/models/pos_loyalty.py:65
 #, python-format
 msgid "The point product field is mandatory for point resale rewards"
-msgstr "积分点产品字段对积分销售奖励是必须的 "
+msgstr "积分点产品字段对积分销售奖励是必须的"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,help:pos_loyalty.field_loyalty_rule__cumulative
 msgid "The points won from this rule will be won in addition to other rules"
-msgstr "积分可以从多个规则中赢取"
+msgstr "积分点从这个规则赢取也会从另外的规则赢取"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,help:pos_loyalty.field_loyalty_rule__product_id
@@ -490,7 +495,7 @@ msgstr "产品表示一个积分点被客户使用"
 #. module: pos_loyalty
 #: model:ir.model.fields,help:pos_loyalty.field_loyalty_reward__discount_product_id
 msgid "The product used to apply discounts"
-msgstr "此产品可以申请折扣"
+msgstr "这个产品可以申请折扣"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,help:pos_loyalty.field_loyalty_reward__reward_type
@@ -504,7 +509,7 @@ msgstr "奖励类型"
 msgid ""
 "There are no rewards available for this customer as part of the loyalty "
 "program"
-msgstr "当前忠诚度方案的客户没有可用奖励"
+msgstr "没有可用于此客户的作为忠诚度计划一部分的奖励"
 
 #. module: pos_loyalty
 #. openerp-web

@@ -3,17 +3,18 @@
 # * documents
 # 
 # Translators:
-# George Tarasidis <george_tarasidis@yahoo.com>, 2018
-# Martin Trigaux, 2018
-# Kostas Goutoudis <goutoudis@gmail.com>, 2018
+# Stefanos Nikou <stefanos.nikou@gmail.com>, 2019
+# Martin Trigaux, 2019
+# Kostas Goutoudis <goutoudis@gmail.com>, 2019
+# George Tarasidis <george_tarasidis@yahoo.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 12.0+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-12 14:54+0000\n"
-"PO-Revision-Date: 2018-08-24 11:37+0000\n"
-"Last-Translator: Kostas Goutoudis <goutoudis@gmail.com>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"PO-Revision-Date: 2019-01-16 08:38+0000\n"
+"Last-Translator: George Tarasidis <george_tarasidis@yahoo.com>, 2019\n"
 "Language-Team: Greek (https://www.transifex.com/odoo/teams/41243/el/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,7 +24,7 @@ msgstr ""
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/js/documents_inspector.js:271
+#: code:addons/documents/static/src/js/documents_inspector.js:270
 #, python-format
 msgid "+ Add a tag "
 msgstr ""
@@ -31,6 +32,16 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
 msgid ", expired on"
+msgstr ""
+
+#. module: documents
+#: model:documents.tag,name:documents.documents_finance_fiscal_year_2017
+msgid "2018"
+msgstr ""
+
+#. module: documents
+#: model:documents.tag,name:documents.documents_finance_fiscal_year_2018
+msgid "2019"
 msgstr ""
 
 #. module: documents
@@ -85,6 +96,13 @@ msgid "<br/>Powered by"
 msgstr ""
 
 #. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.share_single
+msgid ""
+"<i class=\"fa fa-circle-o-notch fa-spin text-white fa-3x mb8\" role=\"img\" "
+"aria-label=\"Loading\" title=\"Loading\"/>"
+msgstr ""
+
+#. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_page
 msgid "<i class=\"fa fa-download fa-fw\"/>  Download All"
 msgstr ""
@@ -112,13 +130,22 @@ msgid "<i class=\"fa fa-upload\"/>  Upload"
 msgstr ""
 
 #. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.folder_view_form
+msgid "<span class=\"o_stat_text\">Action(s)</span>"
+msgstr ""
+
+#. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
 msgid "<span style=\"color:white;\">&amp;nbsp;Documents.</span>"
 msgstr ""
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.documents_view_kanban
-#: model_terms:ir.ui.view,arch_db:documents.inherit_mail_attachment_view_kanban
+#: model_terms:ir.ui.view,arch_db:documents.share_page
+msgid "<span title=\"Requested Document\">Requested Document</span>"
+msgstr ""
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.document_view_kanban
 msgid "<span><b>Requested Document</b></span>"
 msgstr ""
 
@@ -139,6 +166,12 @@ msgid ""
 msgstr ""
 
 #. module: documents
+#: model:documents.tag,name:documents.documents_hr_documents_absences
+msgid "Absences"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__group_ids
 #: model:ir.model.fields,field_description:documents.field_documents_folder__group_ids
 msgid "Access Groups"
 msgstr "Ομάδες Πρόσβασης"
@@ -154,18 +187,35 @@ msgid "Action"
 msgstr "Ενέργεια"
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_folder__action_count
+msgid "Action Count"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__message_needaction
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_needaction
 msgid "Action Needed"
 msgstr "Απαιτείται ενέργεια"
 
 #. module: documents
 #. openerp-web
+#: code:addons/documents/models/folder.py:63
 #: code:addons/documents/static/src/xml/documents_inspector.xml:103
-#: model:ir.ui.menu,name:documents.WorkflowRules_menu
+#: model:ir.ui.menu,name:documents.workflow_rules_menu
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
 #, python-format
 msgid "Actions"
 msgstr "Ενέργειες"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__active
+msgid "Active"
+msgstr "Σε Ισχύ"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__activity_ids
+msgid "Activities"
+msgstr "Δραστηριότητες"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form
@@ -178,6 +228,11 @@ msgstr "Δραστηριότητα"
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_note
 msgid "Activity Note"
 msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__activity_state
+msgid "Activity State"
+msgstr "Κατάσταση Δραστηριότητας"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__activity_type_id
@@ -202,6 +257,11 @@ msgstr ""
 #. module: documents
 #: model:ir.actions.act_window,name:documents.action_url_form
 msgid "Add Url"
+msgstr ""
+
+#. module: documents
+#: model:documents.tag,name:documents.documents_marketing_assets_ads
+msgid "Ads"
 msgstr ""
 
 #. module: documents
@@ -230,8 +290,15 @@ msgid "Aliased Model"
 msgstr "Μοντέλο Ψευδωνύμου"
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "All locked files"
+msgstr ""
+
+#. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/xml/documents_thread.xml:15
+#, python-format
+msgid "All pages:&nbsp;"
 msgstr ""
 
 #. module: documents
@@ -245,6 +312,11 @@ msgid "Allows you to manage your documents."
 msgstr ""
 
 #. module: documents
+#: model:documents.tag,name:documents.documents_hr_documents_appraisal
+msgid "Appraisal"
+msgstr ""
+
+#. module: documents
 #. openerp-web
 #: code:addons/documents/static/src/xml/documents_inspector.xml:159
 #, python-format
@@ -252,9 +324,20 @@ msgid "Archive"
 msgstr "Αρχειοθετήθηκαν"
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Archived"
 msgstr "Αρχειοθετημένα"
+
+#. module: documents
+#: model:documents.workflow.rule,name:documents.documents_rule_finance_afv
+#: model:documents.workflow.rule,name:documents.documents_rule_internal_afv
+msgid "Ask For Validation"
+msgstr ""
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
+msgid "Attached Document Name"
+msgstr ""
 
 #. module: documents
 #. openerp-web
@@ -264,15 +347,26 @@ msgid "Attached To"
 msgstr "Συνημμένο με"
 
 #. module: documents
+#: model:ir.model,name:documents.model_ir_attachment
+#: model:ir.model.fields,field_description:documents.field_documents_document__attachment_id
+msgid "Attachment"
+msgstr "Συνημμένο"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__message_attachment_count
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_attachment_count
 msgid "Attachment Count"
 msgstr ""
 
 #. module: documents
-#: model:ir.actions.act_window,name:documents.document_debug_action
-#: model:ir.ui.menu,name:documents.attachment_list_view_temp
-msgid "Attachments"
-msgstr "Συνημμένα"
+#: model:ir.model.fields,field_description:documents.field_documents_document__attachment_name
+msgid "Attachment Name"
+msgstr "Όνομα Συνημμένου"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__attachment_type
+msgid "Attachment Type"
+msgstr ""
 
 #. module: documents
 #. openerp-web
@@ -282,8 +376,28 @@ msgid "Attachments Kanban"
 msgstr ""
 
 #. module: documents
-#: model:ir.model.fields,field_description:documents.field_ir_attachment__available_rule_ids
+#: model:ir.model.fields,field_description:documents.field_documents_document__available_rule_ids
 msgid "Available Rules"
+msgstr ""
+
+#. module: documents
+#: model:documents.tag,name:documents.documents_finance_documents_bill
+msgid "Bill"
+msgstr "Χρέωση"
+
+#. module: documents
+#: model:documents.folder,name:documents.documents_marketing_brand1_folder
+msgid "Brand 1"
+msgstr ""
+
+#. module: documents
+#: model:documents.folder,name:documents.documents_marketing_brand2_folder
+msgid "Brand 2"
+msgstr ""
+
+#. module: documents
+#: model:documents.tag,name:documents.documents_marketing_assets_brochures
+msgid "Brochures"
 msgstr ""
 
 #. module: documents
@@ -297,6 +411,11 @@ msgstr "Ακύρωση"
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__facet_id
 msgid "Category"
 msgstr "Κατηγορία"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__checksum
+msgid "Checksum/SHA1"
+msgstr ""
 
 #. module: documents
 #. openerp-web
@@ -313,7 +432,9 @@ msgid "Click on a card to <b>view the document</b>."
 msgstr ""
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__company_id
 #: model:ir.model.fields,field_description:documents.field_documents_folder__company_id
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Company"
 msgstr "Εταιρία"
 
@@ -333,10 +454,10 @@ msgid "Configuration"
 msgstr "Διαμόρφωση"
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__partner_id
 #: model:ir.model.fields,field_description:documents.field_documents_share__partner_id
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__criteria_partner_id
-#: model:ir.model.fields,field_description:documents.field_ir_attachment__partner_id
-#: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Contact"
 msgstr "Επαφή"
 
@@ -346,9 +467,21 @@ msgid "Contains"
 msgstr "Περιέχει"
 
 #. module: documents
+#: model:documents.tag,name:documents.documents_finance_documents_Contracts
+#: model:documents.tag,name:documents.documents_hr_documents_contracts
+#: model:documents.tag,name:documents.documents_internal_template_contracts
+msgid "Contracts"
+msgstr "Συμβάσεις"
+
+#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__create_model
 msgid "Create"
 msgstr "Δημιουργία"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__create_share_id
+msgid "Create Share"
+msgstr ""
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__activity_option
@@ -362,6 +495,7 @@ msgid "Create a tag"
 msgstr ""
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__create_uid
 #: model:ir.model.fields,field_description:documents.field_documents_facet__create_uid
 #: model:ir.model.fields,field_description:documents.field_documents_folder__create_uid
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__create_uid
@@ -370,10 +504,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_action__create_uid
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__create_uid
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__create_uid
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Created by"
 msgstr "Δημιουργήθηκε από"
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__create_date
 #: model:ir.model.fields,field_description:documents.field_documents_facet__create_date
 #: model:ir.model.fields,field_description:documents.field_documents_folder__create_date
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__create_date
@@ -384,6 +520,11 @@ msgstr "Δημιουργήθηκε από"
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__create_date
 msgid "Created on"
 msgstr "Δημιουργήθηκε στις"
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
+msgid "Creation Date"
+msgstr "Ημερομηνία Δημιουργίας"
 
 #. module: documents
 #: selection:documents.workflow.rule,create_model:0
@@ -426,11 +567,22 @@ msgid "Delete"
 msgstr "Διαγραφή"
 
 #. module: documents
+#: model:documents.workflow.rule,name:documents.documents_rule_internal_deprecate
+msgid "Deprecate"
+msgstr ""
+
+#. module: documents
+#: model:documents.tag,name:documents.documents_internal_status_deprecated
+msgid "Deprecated"
+msgstr "Ακυρωμένος"
+
+#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__description
 msgid "Description"
 msgstr "Περιγραφή"
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__display_name
 #: model:ir.model.fields,field_description:documents.field_documents_facet__display_name
 #: model:ir.model.fields,field_description:documents.field_documents_folder__display_name
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__display_name
@@ -443,14 +595,13 @@ msgid "Display Name"
 msgstr "Εμφάνιση Ονόματος"
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Doc"
 msgstr ""
 
 #. module: documents
-#: model:ir.model,name:documents.model_ir_attachment
-#: model_terms:ir.ui.view,arch_db:documents.documents_view_kanban
-#: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
+#: model:ir.model,name:documents.model_documents_document
+#: model_terms:ir.ui.view,arch_db:documents.document_view_kanban
 msgid "Document"
 msgstr "Έγγραφο"
 
@@ -481,11 +632,21 @@ msgstr ""
 
 #. module: documents
 #. openerp-web
+#: code:addons/documents/static/src/xml/documents_thread.xml:6
+#, python-format
+msgid "DocumentViewer.ContentWithPdfSplit"
+msgstr ""
+
+#. module: documents
+#. openerp-web
 #: code:addons/documents/static/src/xml/documents_inspector.xml:64
 #: model:ir.actions.act_window,name:documents.document_action
-#: model:ir.model.fields,field_description:documents.field_documents_folder__attachment_ids
+#: model:ir.actions.act_window,name:documents.document_debug_action
+#: model:ir.model.fields,field_description:documents.field_documents_folder__document_ids
+#: model:ir.ui.menu,name:documents.attachment_list_view_temp
 #: model:ir.ui.menu,name:documents.dashboard
 #: model:ir.ui.menu,name:documents.menu_root
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 #: model_terms:ir.ui.view,arch_db:documents.res_config_settings_view_form
 #, python-format
 msgid "Documents"
@@ -544,8 +705,13 @@ msgid "Download and Upload"
 msgstr ""
 
 #. module: documents
+#: model:documents.tag,name:documents.documents_internal_status_draft
+msgid "Draft"
+msgstr "Προσχέδιο"
+
+#. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/js/documents_kanban_controller.js:718
+#: code:addons/documents/static/src/js/documents_kanban_controller.js:691
 #, python-format
 msgid "Drop files here to upload"
 msgstr ""
@@ -585,13 +751,43 @@ msgid "E.g. Validate document"
 msgstr ""
 
 #. module: documents
-#: selection:ir.attachment,type:0
+#: code:addons/documents/models/ir_attachment.py:43
+#, python-format
+msgid "ERROR: Invalid PDF file!"
+msgstr ""
+
+#. module: documents
+#: code:addons/documents/models/ir_attachment.py:90
+#, python-format
+msgid "ERROR: Invalid list of pages to split. Example: 1,5-9,10"
+msgstr ""
+
+#. module: documents
+#: code:addons/documents/models/ir_attachment.py:85
+#, python-format
+msgid "ERROR: the file must be a PDF"
+msgstr ""
+
+#. module: documents
+#: selection:documents.document,type:0
 msgid "Empty"
 msgstr ""
 
 #. module: documents
+#: model:documents.tag,name:documents.documents_finance_documents_expense
+msgid "Expense"
+msgstr "Έξοδα"
+
+#. module: documents
 #: selection:documents.share,state:0
 msgid "Expired"
+msgstr ""
+
+#. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/xml/documents_thread.xml:14
+#, python-format
+msgid "Extract pages:&nbsp;"
 msgstr ""
 
 #. module: documents
@@ -606,22 +802,52 @@ msgid "Facet already exists in this folder"
 msgstr ""
 
 #. module: documents
-#: model:ir.model.fields,field_description:documents.field_ir_attachment__favorited_ids
+#: model:ir.model.fields,field_description:documents.field_documents_document__favorited_ids
 msgid "Favorite of"
 msgstr ""
 
 #. module: documents
-#: selection:ir.attachment,type:0
+#: selection:documents.document,type:0
 msgid "File"
 msgstr "Αρχείο"
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__datas
+msgid "File Content"
+msgstr "Περιεχόμενα Φακέλου"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__datas_fname
+msgid "File Name"
+msgstr "Όνομα Αρχείου"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__file_size
+msgid "File Size"
+msgstr "Μέγεθος Αρχείου"
+
+#. module: documents
+#: model:documents.folder,name:documents.documents_finance_folder
+msgid "Finance"
+msgstr ""
+
+#. module: documents
+#: model:documents.tag,name:documents.documents_finance_documents_financial
+msgid "Financial"
+msgstr ""
+
+#. module: documents
+#: model:documents.tag,name:documents.documents_finance_documents_fiscal
+msgid "Fiscal"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__folder_id
 #: model:ir.model.fields,field_description:documents.field_documents_facet__folder_id
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__folder_id
 #: model:ir.model.fields,field_description:documents.field_documents_share__folder_id
 #: model:ir.model.fields,field_description:documents.field_documents_tag__folder_id
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__domain_folder_id
-#: model:ir.model.fields,field_description:documents.field_ir_attachment__folder_id
 msgid "Folder"
 msgstr ""
 
@@ -635,22 +861,25 @@ msgid "Folders"
 msgstr ""
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__message_follower_ids
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_follower_ids
 msgid "Followers"
 msgstr "Ακόλουθοι"
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__message_channel_ids
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_channel_ids
 msgid "Followers (Channels)"
 msgstr "Ακόλουθοι (Κανάλια)"
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__message_partner_ids
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_partner_ids
 msgid "Followers (Partners)"
 msgstr "Ακόλουθοι (Συνεργάτες)"
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Future Activities"
 msgstr "Μελλοντικές Δραστηριότητες"
 
@@ -664,8 +893,14 @@ msgid ""
 msgstr ""
 
 #. module: documents
-#: model:ir.model,name:documents.model_ir_http
-msgid "HTTP Routing"
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
+msgid "Group By"
+msgstr "Ομαδοποίηση κατά"
+
+#. module: documents
+#: model:documents.folder,name:documents.documents_hr_folder
+#: model:documents.tag,name:documents.documents_internal_knowledge_hr
+msgid "HR"
 msgstr ""
 
 #. module: documents
@@ -674,6 +909,7 @@ msgid "Has Business Option"
 msgstr ""
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__id
 #: model:ir.model.fields,field_description:documents.field_documents_facet__id
 #: model:ir.model.fields,field_description:documents.field_documents_folder__id
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__id
@@ -695,31 +931,51 @@ msgstr ""
 " που κατέχει το ψευδώνυμο της δημιουργίας εργασίας)"
 
 #. module: documents
+#: model:ir.model.fields,help:documents.field_documents_document__message_unread
 #: model:ir.model.fields,help:documents.field_documents_share__message_unread
 msgid "If checked new messages require your attention."
 msgstr "Εάν επιλεγεί τα νέα μηνύματα χρειάζονται την προσοχή σας"
 
 #. module: documents
+#: model:ir.model.fields,help:documents.field_documents_document__message_needaction
 #: model:ir.model.fields,help:documents.field_documents_share__message_needaction
 msgid "If checked, new messages require your attention."
 msgstr "Εάν επιλεγεί τα νέα μηνύματα χρειάζονται την προσοχή σας."
 
 #. module: documents
+#: model:ir.model.fields,help:documents.field_documents_document__message_has_error
 #: model:ir.model.fields,help:documents.field_documents_share__message_has_error
 msgid "If checked, some messages have a delivery error."
 msgstr ""
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Image"
 msgstr "Εικόνα"
 
 #. module: documents
+#: model:documents.tag,name:documents.documents_marketing_assets_images
+msgid "Images"
+msgstr "Εικόνες"
+
+#. module: documents
+#: model:documents.tag,name:documents.documents_finance_status_inbox
 #: model:mail.activity.type,name:documents.mail_documents_activity_data_Inbox
 msgid "Inbox"
 msgstr "Εισερχόμενα"
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__index_content
+msgid "Indexed Content"
+msgstr "Αρχειοθετημένα Περιεχόμενα"
+
+#. module: documents
+#: model:documents.folder,name:documents.documents_internal_folder
+msgid "Internal"
+msgstr "Εσωτερικές"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__message_is_follower
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_is_follower
 msgid "Is Follower"
 msgstr "Είναι Ακόλουθος"
@@ -732,6 +988,7 @@ msgid "It will be sent to the followers of this document"
 msgstr ""
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document____last_update
 #: model:ir.model.fields,field_description:documents.field_documents_facet____last_update
 #: model:ir.model.fields,field_description:documents.field_documents_folder____last_update
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard____last_update
@@ -744,6 +1001,7 @@ msgid "Last Modified on"
 msgstr "Τελευταία τροποποίηση στις"
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__write_uid
 #: model:ir.model.fields,field_description:documents.field_documents_facet__write_uid
 #: model:ir.model.fields,field_description:documents.field_documents_folder__write_uid
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__write_uid
@@ -756,6 +1014,7 @@ msgid "Last Updated by"
 msgstr "Τελευταία Ενημέρωση από"
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__write_date
 #: model:ir.model.fields,field_description:documents.field_documents_facet__write_date
 #: model:ir.model.fields,field_description:documents.field_documents_folder__write_date
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__write_date
@@ -768,7 +1027,7 @@ msgid "Last Updated on"
 msgstr "Τελευταία Ενημέρωση στις"
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Late Activities"
 msgstr "Καθυστερημένες Δραστηριότητες"
 
@@ -790,7 +1049,7 @@ msgid "Lock"
 msgstr "Κλείδωμα"
 
 #. module: documents
-#: model:ir.model.fields,field_description:documents.field_ir_attachment__lock_uid
+#: model:ir.model.fields,field_description:documents.field_documents_document__lock_uid
 msgid "Locked by"
 msgstr ""
 
@@ -819,8 +1078,14 @@ msgid "MB"
 msgstr ""
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__message_main_attachment_id
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_main_attachment_id
 msgid "Main Attachment"
+msgstr ""
+
+#. module: documents
+#: model:ir.actions.act_window,name:documents.facet_action
+msgid "Manage Tag Categories"
 msgstr ""
 
 #. module: documents
@@ -830,14 +1095,14 @@ msgid "Manage document tags"
 msgstr ""
 
 #. module: documents
-#: model:ir.actions.act_window,name:documents.facet_action
-msgid "Manage tag categories"
-msgstr ""
-
-#. module: documents
 #: model:res.groups,name:documents.group_documents_manager
 msgid "Manager"
 msgstr "Διευθυντής"
+
+#. module: documents
+#: model:documents.workflow.rule,name:documents.documents_rule_internal_mad
+msgid "Mark As Draft"
+msgstr ""
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__remove_activities
@@ -845,17 +1110,29 @@ msgid "Mark all Activities as done"
 msgstr ""
 
 #. module: documents
+#: model:documents.folder,name:documents.documents_marketing_folder
+msgid "Marketing"
+msgstr "Marketing"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__message_has_error
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_has_error
 msgid "Message Delivery error"
 msgstr ""
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__message_ids
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_ids
 msgid "Messages"
 msgstr "Μηνύματα"
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
+#: model:ir.model.fields,field_description:documents.field_documents_document__mimetype
+msgid "Mime Type"
+msgstr "Τύπος MIME"
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Model"
 msgstr "Μοντέλο"
 
@@ -867,48 +1144,50 @@ msgid "Months"
 msgstr "Μήνες"
 
 #. module: documents
+#: model:documents.workflow.rule,name:documents.documents_rule_finance_mti
+msgid "Move To Inbox"
+msgstr ""
+
+#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__folder_id
 msgid "Move to Folder"
 msgstr ""
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/js/documents_inspector.js:143
+#: code:addons/documents/static/src/js/documents_inspector.js:141
 #, python-format
 msgid "Multiple values"
 msgstr ""
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "My Activities"
 msgstr "Οι Δραστηριότητες μου"
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "My Documents"
 msgstr ""
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "My Favorites"
 msgstr "Τα Αγαπημένα μου"
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "My locked files"
 msgstr ""
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.documents_view_form
-msgid "NName"
-msgstr ""
-
-#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__name
 #: model:ir.model.fields,field_description:documents.field_documents_facet__name
 #: model:ir.model.fields,field_description:documents.field_documents_folder__name
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__name
 #: model:ir.model.fields,field_description:documents.field_documents_share__name
 #: model:ir.model.fields,field_description:documents.field_documents_tag__name
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Name"
 msgstr "Περιγραφή"
 
@@ -919,10 +1198,32 @@ msgid "Name of the share link"
 msgstr ""
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__activity_date_deadline
+msgid "Next Activity Deadline"
+msgstr "Επόμενη Προθεσμία Δραστηριότητας"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__activity_summary
+msgid "Next Activity Summary"
+msgstr "Σύνοψη Επόμενης Δραστηριότητας"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__activity_type_id
+msgid "Next Activity Type"
+msgstr "Επόμενος Τύπος Δραστηριότητας"
+
+#. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/js/documents_kanban_model.js:224
+#, python-format
+msgid "Not a file"
+msgstr ""
+
+#. module: documents
 #. openerp-web
 #: code:addons/documents/static/src/js/documents_kanban_model.js:227
 #, python-format
-msgid "No Source"
+msgid "Not attached"
 msgstr ""
 
 #. module: documents
@@ -932,26 +1233,31 @@ msgid "Note"
 msgstr "Σημείωση"
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__message_needaction_counter
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_needaction_counter
 msgid "Number of Actions"
 msgstr "Πλήθος ενεργειών"
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__message_has_error_counter
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_has_error_counter
 msgid "Number of error"
 msgstr ""
 
 #. module: documents
+#: model:ir.model.fields,help:documents.field_documents_document__message_needaction_counter
 #: model:ir.model.fields,help:documents.field_documents_share__message_needaction_counter
 msgid "Number of messages which requires an action"
 msgstr "Πλήθος μηνυμάτων που απαιτούν ενέργεια"
 
 #. module: documents
+#: model:ir.model.fields,help:documents.field_documents_document__message_has_error_counter
 #: model:ir.model.fields,help:documents.field_documents_share__message_has_error_counter
 msgid "Number of messages with delivery error"
 msgstr ""
 
 #. module: documents
+#: model:ir.model.fields,help:documents.field_documents_document__message_unread_counter
 #: model:ir.model.fields,help:documents.field_documents_share__message_unread_counter
 msgid "Number of unread messages"
 msgstr "Πλήθος μη αναγνωσμένων μηνυμάτων"
@@ -983,20 +1289,31 @@ msgstr ""
 "Εάν οριστεί, αυτό θα απενεργοποιήσει εντελώς τη δημιουργία νέων αρχείων."
 
 #. module: documents
+#: model:documents.tag,name:documents.documents_internal_knowledge_other
+msgid "Other"
+msgstr "Άλλο"
+
+#. module: documents
+#: selection:documents.document,activity_state:0
+msgid "Overdue"
+msgstr "Εκπρόθεσμο"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__owner_id
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__owner_id
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_user_id
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__criteria_owner_id
-#: model:ir.model.fields,field_description:documents.field_ir_attachment__owner_id
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Owner"
 msgstr "Ιδιοκτήτης"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_page
-msgid "Owner: #{attachment.create_uid.name}"
+msgid "Owner: #{document.create_uid.name}"
 msgstr ""
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "PDF"
 msgstr "PDF"
 
@@ -1028,6 +1345,11 @@ msgstr ""
 "(παράδειγμα: Έργο (parent_model) και Εργασία (μοντέλο))"
 
 #. module: documents
+#: selection:documents.document,activity_state:0
+msgid "Planned"
+msgstr "Προγραμματισμένη"
+
+#. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_contact
 msgid ""
 "Policy to post a message on the document using the mailgateway.\n"
@@ -1041,9 +1363,24 @@ msgstr ""
 "- ακόλουθοι: μόνο οι ακόλουθοι του σχετικού εγγράφου ή μέλη των παρακάτω καναλιών\n"
 
 #. module: documents
+#: model:documents.tag,name:documents.documents_internal_template_presentations
+msgid "Presentations"
+msgstr "Παρουσιάσεις"
+
+#. module: documents
 #: selection:documents.workflow.rule,create_model:0
 msgid "Product template"
 msgstr ""
+
+#. module: documents
+#: model:documents.tag,name:documents.documents_internal_template_project
+msgid "Project"
+msgstr "Έργο"
+
+#. module: documents
+#: model:documents.tag,name:documents.documents_internal_knowledge_quality
+msgid "Quality"
+msgstr "Ποιότητα"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_force_thread_id
@@ -1092,20 +1429,50 @@ msgid "Request a file"
 msgstr ""
 
 #. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.share_single
+msgid "Requested"
+msgstr ""
+
+#. module: documents
 #: model:mail.activity.type,name:documents.mail_documents_activity_data_md
 msgid "Requested Document"
 msgstr ""
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Requested files"
 msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__res_model_name
+msgid "Res Model Name"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__res_id
+msgid "Resource ID"
+msgstr "Αριθμός Πόρου"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__res_model
+msgid "Resource Model"
+msgstr "Μοντέλο πόρων"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__res_name
+msgid "Resource Name"
+msgstr "Όνομα Πόρου"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__activity_user_id
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_user_id
 msgid "Responsible"
 msgstr "Υπεύθυνοι"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__activity_user_id
+msgid "Responsible User"
+msgstr "Υπεύθυνος Χρήστης"
 
 #. module: documents
 #. openerp-web
@@ -1120,6 +1487,11 @@ msgid "Rule name"
 msgstr ""
 
 #. module: documents
+#: model:documents.tag,name:documents.documents_internal_knowledge_sales
+msgid "Sales"
+msgstr "Πωλήσεις"
+
+#. module: documents
 #: model:ir.model.fields,help:documents.field_documents_folder__facet_ids
 msgid "Select the tag categories to be used"
 msgstr ""
@@ -1128,8 +1500,14 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_facet__sequence
 #: model:ir.model.fields,field_description:documents.field_documents_folder__sequence
 #: model:ir.model.fields,field_description:documents.field_documents_tag__sequence
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__sequence
 msgid "Sequence"
 msgstr "Ακολουθία"
+
+#. module: documents
+#: model:documents.workflow.rule,name:documents.documents_rule_finance_2018contracts
+msgid "Set As 2019 Contracts"
+msgstr ""
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__partner_id
@@ -1147,15 +1525,15 @@ msgid "Set Tags"
 msgstr ""
 
 #. module: documents
-#: model:ir.actions.act_window,name:documents.configuration
-#: model:ir.actions.act_window,name:documents.documents_settings_action
-#: model:ir.ui.menu,name:documents.Settings_menu
+#: model:ir.actions.act_window,name:documents.configuration_action
+#: model:ir.actions.act_window,name:documents.settings_action
+#: model:ir.ui.menu,name:documents.settings_menu
 msgid "Settings"
 msgstr "Ρυθμίσεις"
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/models/share.py:132
+#: code:addons/documents/models/share.py:133
 #: code:addons/documents/static/src/xml/documents_inspector.xml:151
 #: code:addons/documents/static/src/xml/documents_kanban.xml:14
 #, python-format
@@ -1178,6 +1556,16 @@ msgid "Share type"
 msgstr ""
 
 #. module: documents
+#: model:ir.model.fields,help:documents.field_documents_document__create_share_id
+msgid "Share used to create this document"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_share__document_ids
+msgid "Shared Documents"
+msgstr ""
+
+#. module: documents
 #: model:ir.ui.menu,name:documents.share_menu
 msgid "Shared Links"
 msgstr ""
@@ -1188,12 +1576,7 @@ msgid "Shared Tags"
 msgstr ""
 
 #. module: documents
-#: model:ir.model.fields,field_description:documents.field_documents_share__attachment_ids
-msgid "Shared attachments"
-msgstr ""
-
-#. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Show all records which has next action date is before today"
 msgstr ""
 "Εμφάνιση όλων των εγγραφών όπου η ημερομηνία επόμενης δράσης είναι πριν από "
@@ -1212,9 +1595,34 @@ msgid "Size"
 msgstr "Μέγεθος"
 
 #. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/xml/documents_thread.xml:16
+#, python-format
+msgid "Split"
+msgstr "Διαχωρισμός"
+
+#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__state
 msgid "Status"
 msgstr "Κατάσταση"
+
+#. module: documents
+#: model:ir.model.fields,help:documents.field_documents_document__activity_state
+msgid ""
+"Status based on activities\n"
+"Overdue: Due date is already passed\n"
+"Today: Activity date is today\n"
+"Planned: Future activities."
+msgstr ""
+"Κατάσταση βασισμένη σε δραστηριότητες\n"
+"Καθυστερημένη: Η ημερομηνία λήξης έχει ήδη περάσει\n"
+"Σήμερα: Η ημερομηνία δραστηριότητας είναι σήμερα\n"
+"Προγραμματισμένες: Μελλοντικές δραστηριότητες."
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
+msgid "Stored"
+msgstr "Αποθηκευμένο"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__children_folder_ids
@@ -1242,6 +1650,11 @@ msgid "Tag Categories"
 msgstr ""
 
 #. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.facet_view_form
+msgid "Tag Category"
+msgstr ""
+
+#. module: documents
 #: sql_constraint:documents.tag:0
 msgid "Tag already exists for this facet"
 msgstr ""
@@ -1255,10 +1668,11 @@ msgstr ""
 #. openerp-web
 #: code:addons/documents/static/src/xml/documents_inspector.xml:93
 #: code:addons/documents/static/src/xml/documents_selector.xml:16
+#: model:ir.model.fields,field_description:documents.field_documents_document__tag_ids
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__tag_ids
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__criteria_tag_ids
-#: model:ir.model.fields,field_description:documents.field_ir_attachment__tag_ids
-#: model:ir.ui.menu,name:documents.Category_menu
+#: model:ir.ui.menu,name:documents.category_menu
+#: model_terms:ir.ui.view,arch_db:documents.tag_view_tree
 #, python-format
 msgid "Tags"
 msgstr "Ετικέτες"
@@ -1267,6 +1681,16 @@ msgstr "Ετικέτες"
 #: selection:documents.workflow.rule,create_model:0
 msgid "Task"
 msgstr "Εργασία"
+
+#. module: documents
+#: model:documents.tag,name:documents.documents_internal_template_text
+msgid "Text"
+msgstr "Κείμενο"
+
+#. module: documents
+#: model:ir.model.fields,help:documents.field_documents_document__res_model
+msgid "The database object this attachment will be attached to."
+msgstr ""
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_model_id
@@ -1301,11 +1725,29 @@ msgstr ""
 "Διαφορετικά, θα χρησιμοποιήσει το λογαριασμό διαχειριστή, αν ο χρήστης δεν έχει βρεθεί στο σύστημα για τη συγκεκριμένη διεύθυνση."
 
 #. module: documents
+#: model:ir.model.fields,help:documents.field_documents_document__res_id
+msgid "The record id this is attached to."
+msgstr ""
+
+#. module: documents
 #: sql_constraint:documents.share:0
 msgid "This access token already exists"
 msgstr ""
 
 #. module: documents
+#: model:ir.model.fields,help:documents.field_documents_document__group_ids
+msgid "This attachment will only be available for the selected user groups"
+msgstr ""
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.share_single
+msgid ""
+"This file has been requested.\n"
+"                <b onclick=\"$('.o_request_upload').trigger('click')\" style=\"cursor:pointer;\">Upload it</b>."
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,help:documents.field_documents_document__company_id
 #: model:ir.model.fields,help:documents.field_documents_folder__company_id
 msgid "This folder will only be available for the selected company"
 msgstr ""
@@ -1330,6 +1772,17 @@ msgid "This link has expired"
 msgstr ""
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__thumbnail
+msgid "Thumbnail"
+msgstr "Μικρογραφία"
+
+#. module: documents
+#: model:documents.tag,name:documents.documents_finance_status_tc
+#: model:documents.tag,name:documents.documents_internal_status_tc
+msgid "To Validate"
+msgstr ""
+
+#. module: documents
 #. openerp-web
 #: code:addons/documents/static/src/js/tour.js:69
 #, python-format
@@ -1344,7 +1797,12 @@ msgid "To validate"
 msgstr ""
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
+#: selection:documents.document,activity_state:0
+msgid "Today"
+msgstr "Σήμερα"
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Today Activities"
 msgstr "Σημερινές Δραστηριότητες"
 
@@ -1362,13 +1820,15 @@ msgid "Try to <b>post a message</b>"
 msgstr ""
 
 #. module: documents
-#: model:ir.model.fields,field_description:documents.field_ir_attachment__type
+#: model:ir.model.fields,field_description:documents.field_documents_document__type
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Type"
 msgstr "Τύπος"
 
 #. module: documents
-#: selection:ir.attachment,type:0
+#: selection:documents.document,type:0
 #: model:ir.model.fields,field_description:documents.field_documents_share__full_url
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 #: model_terms:ir.ui.view,arch_db:documents.documents_upload_url_view
 #: model_terms:ir.ui.view,arch_db:documents.share_page
 #: model_terms:ir.ui.view,arch_db:documents.share_single
@@ -1383,11 +1843,13 @@ msgid "Un-archive"
 msgstr ""
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__message_unread
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_unread
 msgid "Unread Messages"
 msgstr "Μη αναγνωσμένα μηνύματα"
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__message_unread_counter
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_unread_counter
 msgid "Unread Messages Counter"
 msgstr "Μετρητής μη αναγνωσμένων μηνυμάτων"
@@ -1413,6 +1875,11 @@ msgid "Upload by Email"
 msgstr ""
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__url
+msgid "Url"
+msgstr "Διεύθυνση (Url)"
+
+#. module: documents
 #. openerp-web
 #: code:addons/documents/static/src/js/tour.js:55
 #, python-format
@@ -1432,9 +1899,26 @@ msgid "Users"
 msgstr "Χρήστες"
 
 #. module: documents
+#: model:documents.tag,name:documents.documents_finance_documents_vat
+msgid "VAT"
+msgstr "ΦΠΑ"
+
+#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__date_deadline
 msgid "Valid Until"
 msgstr "Ισχύει Ως"
+
+#. module: documents
+#: model:documents.workflow.rule,name:documents.documents_rule_finance_validate
+#: model:documents.workflow.rule,name:documents.documents_rule_internal_validate
+msgid "Validate"
+msgstr "Επικύρωση"
+
+#. module: documents
+#: model:documents.tag,name:documents.documents_finance_status_validated
+#: model:documents.tag,name:documents.documents_internal_status_validated
+msgid "Validated"
+msgstr "Επικυρωμένο"
 
 #. module: documents
 #: selection:documents.workflow.rule,create_model:0
@@ -1442,9 +1926,14 @@ msgid "Vendor bill"
 msgstr ""
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Video"
 msgstr "Βίντεο"
+
+#. module: documents
+#: model:documents.tag,name:documents.documents_marketing_assets_Videos
+msgid "Videos"
+msgstr "Βίντεος"
 
 #. module: documents
 #. openerp-web
@@ -1454,11 +1943,13 @@ msgid "Want to become a <b>paperless company</b>? Let's discover Odoo DMS."
 msgstr ""
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__website_message_ids
 #: model:ir.model.fields,field_description:documents.field_documents_share__website_message_ids
 msgid "Website Messages"
 msgstr "Μηνύματα Ιστότοπου"
 
 #. module: documents
+#: model:ir.model.fields,help:documents.field_documents_document__website_message_ids
 #: model:ir.model.fields,help:documents.field_documents_share__website_message_ids
 msgid "Website communication history"
 msgstr "Ιστορικό επικοινωνίας ιστότοπου"
@@ -1496,7 +1987,7 @@ msgid "Write a tooltip for the action here"
 msgstr ""
 
 #. module: documents
-#: model:ir.model.fields,help:documents.field_ir_attachment__type
+#: model:ir.model.fields,help:documents.field_documents_document__attachment_type
 msgid ""
 "You can either upload a file from your computer or copy/paste an internet "
 "link to your file."
@@ -1512,6 +2003,13 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_page
 msgid "documents shared by"
+msgstr ""
+
+#. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/xml/documents_thread.xml:14
+#, python-format
+msgid "e.g. 1-5, 7, 8-9"
 msgstr ""
 
 #. module: documents

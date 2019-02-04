@@ -3,33 +3,48 @@
 # * web_studio
 # 
 # Translators:
-# e2f <projects@e2f.com>, 2018
-# Xia Fajin <xia.fajin@elico-corp.com>, 2018
-# Gary Wei <Gary.wei@elico-corp.com>, 2018
-# Xu Lei <xulei8@qq.com>, 2018
-# fausthuang, 2018
-# 老窦 北京 <2662059195@qq.com>, 2018
-# Lisa Zhang <lzh@odoo.com>, 2018
-# Emily JIA <eji@odoo.com>, 2018
-# Martin Trigaux, 2018
-# e2f_cn c7 <e2f_cn_c7@outlook.com>, 2018
-# ChinaMaker <liuct@chinamaker.net>, 2018
-# niulin lnc. <admin@niulin.net>, 2018
-# diaojiaolou <124412206@qq.com>, 2018
-# liAnGjiA <liangjia@qq.com>, 2018
-# snow wang <147156565@qq.com>, 2018
-# inspur qiuguodong <qiuguodong@inspur.com>, 2018
-# 广州救火 <7017511@qq.com>, 2018
-# Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
-# 湘子 南 <1360857908@qq.com>, 2018
+# 卓忆科技 <zhanghao@jointd.com>, 2017
+# Luke <cialuo@qq.com>, 2017
+# mrshelly <mrshelly@hotmail.com>, 2017
+# Bo Cao, 2017
+# 菜小蛇 <lttlsnk@gmail.com>, 2017
+# 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2017
+# Yaorong Li <55yaorong.li@gmail.com>, 2017
+# Gary Wei <Gary.wei@elico-corp.com>, 2017
+# Eddie Lim <bhweelim@yahoo.com>, 2017
+# xiaobin wu <bd5dml@gmail.com>, 2017
+# 苏州远鼎 <tiexinliu@126.com>, 2017
+# waveyeung <waveyeung@qq.com>, 2018
+# e2f_cn c5 <jarvisn@ecinnovations.com>, 2018
+# v2exerer <9010446@qq.com>, 2018
+# Siyuan Gu <siyuancn@hotmail.com>, 2018
+# KWOKYUK CHEUNG <cheungkwokyuk@gmail.com>, 2018
+# e2f <projects@e2f.com>, 2019
+# Martin Trigaux, 2019
+# Jeffery CHEN Fan <jeffery9@gmail.com>, 2019
+# niulin lnc. <admin@niulin.net>, 2019
+# liAnGjiA <liangjia@qq.com>, 2019
+# Xia Fajin <xia.fajin@elico-corp.com>, 2019
+# Xu Lei <xulei8@qq.com>, 2019
+# fausthuang, 2019
+# 老窦 北京 <2662059195@qq.com>, 2019
+# 湘子 南 <1360857908@qq.com>, 2019
+# e2f_cn c7 <e2f_cn_c7@outlook.com>, 2019
+# diaojiaolou <124412206@qq.com>, 2019
+# keecome <7017511@qq.com>, 2019
+# ChinaMaker <liuct@chinamaker.net>, 2019
+# Lisa Zhang <lzh@odoo.com>, 2019
+# Emily JIA <eji@odoo.com>, 2019
+# snow wang <147156565@qq.com>, 2019
+# inspur qiuguodong <qiuguodong@inspur.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-02 10:32+0000\n"
-"PO-Revision-Date: 2018-08-24 11:49+0000\n"
-"Last-Translator: 湘子 南 <1360857908@qq.com>, 2018\n"
+"POT-Creation-Date: 2018-12-24 11:16+0000\n"
+"PO-Revision-Date: 2017-02-15 11:46+0000\n"
+"Last-Translator: inspur qiuguodong <qiuguodong@inspur.com>, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -38,21 +53,17 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: web_studio
-#: code:addons/web_studio/controllers/main.py:104
+#: code:addons/web_studio/controllers/main.py:114
 #, python-format
 msgid ""
 " <p class=\"o_view_nocontent_empty_report\">\n"
 "                Add a new report\n"
 "            </p>\n"
 "            "
-msgstr ""
-" <p class=\"o_view_nocontent_empty_report\">\n"
-"                添加新报告\n"
-"            </p>\n"
-"            "
+msgstr "增加一个新的报告"
 
 #. module: web_studio
-#: code:addons/web_studio/controllers/main.py:68
+#: code:addons/web_studio/controllers/main.py:78
 #, python-format
 msgid ""
 " <p class=\"o_view_nocontent_smiling_face\">\n"
@@ -66,7 +77,7 @@ msgstr ""
 "            "
 
 #. module: web_studio
-#: code:addons/web_studio/controllers/main.py:86
+#: code:addons/web_studio/controllers/main.py:96
 #, python-format
 msgid ""
 " <p class=\"o_view_nocontent_smiling_face\">\n"
@@ -75,7 +86,7 @@ msgid ""
 "            "
 msgstr ""
 " <p class=\"o_view_nocontent_smiling_face\">\n"
-"                添加新筛选\n"
+"                添加新的过滤器\n"
 "            </p>\n"
 "            "
 
@@ -87,14 +98,14 @@ msgstr "%s 报告"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:110
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:107
 #, python-format
 msgid "(t-if=\""
 msgstr "(t-if=\""
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/views/view_editor_sidebar.js:414
+#: code:addons/web_studio/static/src/js/views/view_editor_sidebar.js:474
 #, python-format
 msgid ""
 "<div><p>The <strong>%s</strong> property is only applied to records matching"
@@ -102,7 +113,7 @@ msgid ""
 msgstr "<div><p>此 <strong>%s</strong> 属性仅适用于匹配此过滤器的记录.</p></div>"
 
 #. module: web_studio
-#: code:addons/web_studio/controllers/main.py:50
+#: code:addons/web_studio/controllers/main.py:60
 #, python-format
 msgid ""
 "<p class=\"o_view_nocontent_smiling_face\">\n"
@@ -117,7 +128,7 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/views/view_editor_sidebar.js:573
+#: code:addons/web_studio/static/src/js/views/view_editor_sidebar.js:629
 #, python-format
 msgid "A field with the same name already exists."
 msgstr "一个同名的字段已经存在。"
@@ -128,7 +139,7 @@ msgid "Abstract"
 msgstr "提要"
 
 #. module: web_studio
-#: code:addons/web_studio/controllers/main.py:40
+#: code:addons/web_studio/controllers/main.py:50
 #, python-format
 msgid "Access Control Lists"
 msgstr "访问控制列表"
@@ -143,7 +154,7 @@ msgstr "访问控制"
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_res_groups
 msgid "Access Groups"
-msgstr "访问组"
+msgstr "访问群"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_actions_act_window
@@ -172,6 +183,13 @@ msgstr "激活视图"
 
 #. module: web_studio
 #. openerp-web
+#: code:addons/web_studio/static/src/xml/submenu.xml:71
+#, python-format
+msgid "Activity View"
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
 #: code:addons/web_studio/static/src/xml/new_field_dialog.xml:41
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:8
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:27
@@ -181,7 +199,7 @@ msgstr "添加"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/views/view_editors/form_editor.js:229
+#: code:addons/web_studio/static/src/js/views/view_editors/form_editor.js:232
 #, python-format
 msgid "Add Chatter Widget"
 msgstr "添加Chatter挂件"
@@ -193,7 +211,7 @@ msgstr "添加Chatter挂件"
 msgid ""
 "Add a <b>chatter widget</b> to allow discussions on your document: by email "
 "or inline."
-msgstr "添加 <b>chatter widget</b> 聊天挂件通过电子邮件或内置聊天工具方便在线沟通。"
+msgstr "<b/>"
 
 #. module: web_studio
 #. openerp-web
@@ -204,21 +222,21 @@ msgstr "添加按钮"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/views/view_editors/form_editor.js:266
+#: code:addons/web_studio/static/src/js/views/view_editors/form_editor.js:269
 #, python-format
 msgid "Add a pipeline status bar"
-msgstr "添加 管道状态条"
+msgstr "添加 pipeline status 控件"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/views/view_editors/kanban_record_editor.js:201
+#: code:addons/web_studio/static/src/js/views/view_editors/kanban_record_editor.js:206
 #, python-format
 msgid "Add a priority"
 msgstr "添加优先级"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/views/view_editors/kanban_record_editor.js:223
+#: code:addons/web_studio/static/src/js/views/view_editors/kanban_record_editor.js:228
 #, python-format
 msgid "Add an image"
 msgstr "添加图片"
@@ -228,28 +246,35 @@ msgstr "添加图片"
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:39
 #, python-format
 msgid "Add in the print menu"
-msgstr "添加打印菜单"
+msgstr "在打印菜单中添加"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/new_field_dialog.xml:39
 #, python-format
 msgid "Add new value"
-msgstr "添加新值"
+msgstr "添加新的值"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/views/view_editors/kanban_record_editor.js:132
+#: code:addons/web_studio/static/src/js/views/view_editors/kanban_record_editor.js:136
 #, python-format
 msgid "Add tags"
 msgstr "添加标签"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:695
+#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:699
 #, python-format
 msgid "Address Block"
 msgstr "地址块"
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:218
+#, python-format
+msgid "Alignment"
+msgstr ""
 
 #. module: web_studio
 #. openerp-web
@@ -267,14 +292,14 @@ msgstr "允许创建列表视图链接"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:151
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:148
 #, python-format
 msgid "Amount total"
 msgstr "合计金额"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:149
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:146
 #, python-format
 msgid "Amount untaxed"
 msgstr "未税金额"
@@ -288,21 +313,21 @@ msgstr "APP图标"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/views/view_editor_sidebar.js:520
+#: code:addons/web_studio/static/src/js/views/view_editor_sidebar.js:576
 #, python-format
 msgid "Are you sure you want to remove this %s from the view?"
 msgstr "是否确定从视图中移除此 %s？"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/menu.js:253
+#: code:addons/web_studio/static/src/js/menu.js:266
 #, python-format
 msgid "Are you sure you want to reset the background image?"
-msgstr "您确定要重置背景图片吗？"
+msgstr "兄dei您确定要重置背景图片么?"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:128
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:125
 #, python-format
 msgid "As expression"
 msgstr "As表达式"
@@ -320,10 +345,10 @@ msgid "Automated Action"
 msgstr "自动动作"
 
 #. module: web_studio
-#: code:addons/web_studio/controllers/main.py:58
+#: code:addons/web_studio/controllers/main.py:68
 #, python-format
 msgid "Automated Actions"
-msgstr "自动动作"
+msgstr "自动的动作"
 
 #. module: web_studio
 #. openerp-web
@@ -331,13 +356,6 @@ msgstr "自动动作"
 #, python-format
 msgid "Automations"
 msgstr "自动化"
-
-#. module: web_studio
-#. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:232
-#, python-format
-msgid "Background"
-msgstr "背景"
 
 #. module: web_studio
 #. openerp-web
@@ -353,7 +371,7 @@ msgstr "基础"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/reports/report_kanban_view.js:152
+#: code:addons/web_studio/static/src/js/reports/report_kanban_view.js:135
 #, python-format
 msgid "Blank"
 msgstr "空白"
@@ -367,7 +385,7 @@ msgstr "阻塞"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:216
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:213
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:396
 #, python-format
 msgid "Bold"
@@ -375,24 +393,31 @@ msgstr "加粗"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:262
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:284
 #, python-format
 msgid "Bordered"
 msgstr "有边框"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:263
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:285
 #, python-format
 msgid "Borderless"
 msgstr "无边框"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/reports/report_kanban_view.js:145
+#: code:addons/web_studio/static/src/js/reports/report_kanban_view.js:128
 #, python-format
 msgid "Business header/footer"
 msgstr "商业页眉/页脚"
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/js/reports/report_editor_sidebar.js:475
+#, python-format
+msgid "By default: "
+msgstr ""
 
 #. module: web_studio
 #. openerp-web
@@ -420,16 +445,16 @@ msgstr "能删除"
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:51
 #, python-format
 msgid "Can Edit"
-msgstr "能编辑"
+msgstr "可编辑的"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/js/common/new_field_dialog.js:53
 #: code:addons/web_studio/static/src/js/edit_menu.js:82
-#: code:addons/web_studio/static/src/js/edit_menu.js:297
+#: code:addons/web_studio/static/src/js/edit_menu.js:296
 #: code:addons/web_studio/static/src/js/home_menu.js:130
 #: code:addons/web_studio/static/src/js/views/new_view_dialog.js:36
-#: code:addons/web_studio/static/src/js/views/view_editors/kanban_record_editor.js:383
+#: code:addons/web_studio/static/src/js/views/view_editors/kanban_record_editor.js:407
 #: code:addons/web_studio/static/src/js/views/view_editors/new_buttonbox_dialog.js:34
 #: model_terms:ir.ui.view,arch_db:web_studio.simplified_form_view_import_module
 #, python-format
@@ -445,7 +470,7 @@ msgstr "更改背景"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:620
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:635
 #, python-format
 msgid "Change Image"
 msgstr "修改图片"
@@ -455,7 +480,7 @@ msgstr "修改图片"
 #: code:addons/web_studio/static/src/js/tour.js:24
 #, python-format
 msgid "Change the <b>background</b>, make it yours."
-msgstr "变更 <b>背景</b>, 变成你想要的."
+msgstr "<b/>"
 
 #. module: web_studio
 #. openerp-web
@@ -492,7 +517,7 @@ msgstr "搅动"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:269
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:291
 #, python-format
 msgid "Class"
 msgstr "类"
@@ -513,8 +538,8 @@ msgstr "点击进行编辑。"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/common/new_field_dialog.js:205
-#: code:addons/web_studio/static/src/js/menu.js:98
+#: code:addons/web_studio/static/src/js/common/new_field_dialog.js:206
+#: code:addons/web_studio/static/src/js/menu.js:111
 #: model_terms:ir.ui.view,arch_db:web_studio.simplified_form_view_import_module
 #, python-format
 msgid "Close"
@@ -536,7 +561,7 @@ msgstr "颜色"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:221
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:258
 #, python-format
 msgid "Colors"
 msgstr "颜色"
@@ -557,10 +582,10 @@ msgstr "列"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:260
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:282
 #, python-format
 msgid "Compact"
-msgstr "紧凑"
+msgstr "条约"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_res_company
@@ -569,16 +594,16 @@ msgstr "公司"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/views/view_editor_sidebar.js:273
+#: code:addons/web_studio/static/src/js/views/view_editor_sidebar.js:332
 #, python-format
 msgid "Components"
 msgstr "部件"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:368
-#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:380
-#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:389
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:367
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:379
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:388
 #, python-format
 msgid "Conditional"
 msgstr "条件"
@@ -586,11 +611,11 @@ msgstr "条件"
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/js/common/new_field_dialog.js:49
-#: code:addons/web_studio/static/src/js/common/new_field_dialog.js:194
+#: code:addons/web_studio/static/src/js/common/new_field_dialog.js:195
 #: code:addons/web_studio/static/src/js/edit_menu.js:78
-#: code:addons/web_studio/static/src/js/edit_menu.js:293
+#: code:addons/web_studio/static/src/js/edit_menu.js:292
 #: code:addons/web_studio/static/src/js/home_menu.js:126
-#: code:addons/web_studio/static/src/js/views/view_editors/kanban_record_editor.js:379
+#: code:addons/web_studio/static/src/js/views/view_editors/kanban_record_editor.js:403
 #: code:addons/web_studio/static/src/js/views/view_editors/new_buttonbox_dialog.js:30
 #, python-format
 msgid "Confirm"
@@ -601,18 +626,18 @@ msgstr "确认"
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:225
 #, python-format
 msgid "Consolidate"
-msgstr "合并"
+msgstr "统一"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:483
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:499
 #, python-format
 msgid "Context"
 msgstr "上下文"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/edit_menu.js:290
+#: code:addons/web_studio/static/src/js/edit_menu.js:289
 #, python-format
 msgid "Create a new Menu"
 msgstr "创建新菜单"
@@ -648,10 +673,62 @@ msgstr "创建您的首个菜单"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:147
+#: code:addons/web_studio/static/src/js/views/action_editor_action.js:153
+#, python-format
+msgid "Creating this type of view is not currently supported in Studio."
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:144
 #, python-format
 msgid "Currency"
 msgstr "币种"
+
+#. module: web_studio
+#: model:ir.model.fields,field_description:web_studio.field_base_module_uninstall__custom_fields
+msgid "Custom Fields"
+msgstr ""
+
+#. module: web_studio
+#: model:ir.model.fields,field_description:web_studio.field_base_module_uninstall__custom_models
+msgid "Custom Models"
+msgstr ""
+
+#. module: web_studio
+#: model:ir.model.fields,field_description:web_studio.field_base_module_uninstall__custom_reports
+msgid "Custom Reports"
+msgstr ""
+
+#. module: web_studio
+#: model:ir.model.fields,field_description:web_studio.field_base_module_uninstall__custom_views
+msgid "Custom Views"
+msgstr ""
+
+#. module: web_studio
+#: model_terms:ir.ui.view,arch_db:web_studio.view_base_module_uninstall_studio
+msgid "Custom fields:"
+msgstr ""
+
+#. module: web_studio
+#: model_terms:ir.ui.view,arch_db:web_studio.view_base_module_uninstall_studio
+msgid "Custom models:"
+msgstr ""
+
+#. module: web_studio
+#: model_terms:ir.ui.view,arch_db:web_studio.view_base_module_uninstall_studio
+msgid "Custom reports:"
+msgstr ""
+
+#. module: web_studio
+#: model_terms:ir.ui.view,arch_db:web_studio.view_base_module_uninstall_studio
+msgid "Custom views:"
+msgstr ""
+
+#. module: web_studio
+#: model_terms:ir.ui.view,arch_db:web_studio.view_base_module_uninstall_studio
+msgid "Customization made with Studio will be permanently lost"
+msgstr ""
 
 #. module: web_studio
 #. openerp-web
@@ -662,7 +739,7 @@ msgstr "定制"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:745
+#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:750
 #, python-format
 msgid "Data table"
 msgstr "数据表"
@@ -720,7 +797,7 @@ msgstr "默认分组方式"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/views/view_editor_manager.js:1330
+#: code:addons/web_studio/static/src/js/views/view_editor_manager.js:1340
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:309
 #, python-format
 msgid "Default Values"
@@ -728,7 +805,7 @@ msgstr "默认值"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:460
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:476
 #, python-format
 msgid "Default value"
 msgstr "默认值"
@@ -746,7 +823,7 @@ msgstr "默认视图"
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:191
 #, python-format
 msgid "Delay Field"
-msgstr "延迟字段"
+msgstr "时长字段"
 
 #. module: web_studio
 #. openerp-web
@@ -773,6 +850,20 @@ msgstr "禁用"
 
 #. module: web_studio
 #. openerp-web
+#: code:addons/web_studio/static/src/js/views/view_editor_sidebar.js:44
+#, python-format
+msgid "Disable creation"
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/js/views/view_editor_sidebar.js:45
+#, python-format
+msgid "Disable opening"
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:400
 #, python-format
 msgid "Display"
@@ -792,7 +883,14 @@ msgstr "显示名称"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/common/new_field_dialog.js:215
+#: code:addons/web_studio/static/src/js/views/view_editor_sidebar.js:51
+#, python-format
+msgid "Display horizontally"
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/js/common/new_field_dialog.js:216
 #, python-format
 msgid ""
 "Do you really want to remove this value? All the records with this value "
@@ -801,14 +899,14 @@ msgstr "你真的想删除这个值吗？所有具有此值的记录将相应更
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/views/view_editors/kanban_record_editor.js:185
+#: code:addons/web_studio/static/src/js/views/view_editors/kanban_record_editor.js:190
 #, python-format
 msgid "Do you want to add a dropdown with colors?"
 msgstr "是否要添加一个带颜色的下拉列表？"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:478
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:494
 #, python-format
 msgid "Domain"
 msgstr "域"
@@ -819,7 +917,7 @@ msgstr "域"
 #, python-format
 msgid ""
 "Drag & drop <b>another field</b>. Let’s try with a <i>selection field</i>."
-msgstr "拖 & 放 <b>其他字段</b>. 试试 <i>选择字段</i>."
+msgstr "<b/><i/>"
 
 #. module: web_studio
 #. openerp-web
@@ -830,7 +928,7 @@ msgstr "向右拖动菜单创建子菜单"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/reports/report_editor.js:664
+#: code:addons/web_studio/static/src/js/reports/report_editor.js:668
 #, python-format
 msgid "Drag building block here"
 msgstr "拖动构建块到这"
@@ -860,7 +958,7 @@ msgstr "持续时间单位"
 #: code:addons/web_studio/static/src/js/home_menu.js:123
 #, python-format
 msgid "Edit Application Icon"
-msgstr "编辑应用图标"
+msgstr "编辑应用ICON图标"
 
 #. module: web_studio
 #. openerp-web
@@ -886,14 +984,14 @@ msgstr "编辑菜单"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:494
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:507
 #, python-format
 msgid "Edit Possible Values"
 msgstr "编辑可能的值"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/common/new_field_dialog.js:187
+#: code:addons/web_studio/static/src/js/common/new_field_dialog.js:188
 #, python-format
 msgid "Edit Value"
 msgstr "编辑值"
@@ -921,17 +1019,17 @@ msgstr "可编辑"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:110
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:107
 #, python-format
 msgid "Else"
 msgstr "Else"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:566
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:581
 #, python-format
 msgid "Email Alias"
-msgstr "电子邮件别名"
+msgstr "Email别名"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_mail_template
@@ -943,7 +1041,7 @@ msgstr "电子邮件模板"
 #: code:addons/web_studio/static/src/xml/action_editor_sidebar.xml:15
 #, python-format
 msgid "Empty List Message"
-msgstr "清空列表消息"
+msgstr "列表消息为空"
 
 #. module: web_studio
 #. openerp-web
@@ -954,7 +1052,7 @@ msgstr "启用阶段"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/common/abstract_editor_manager.js:453
+#: code:addons/web_studio/static/src/js/common/abstract_editor_manager.js:447
 #, python-format
 msgid "Error"
 msgstr "错误"
@@ -968,14 +1066,14 @@ msgstr "错误: 预览不可用，因为没有现有记录。"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:114
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:111
 #, python-format
 msgid "Esc expression"
 msgstr "Esc表达式"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/views/view_editor_sidebar.js:308
+#: code:addons/web_studio/static/src/js/views/view_editor_sidebar.js:367
 #, python-format
 msgid "Existing Fields"
 msgstr "现有字段"
@@ -989,21 +1087,21 @@ msgstr "导出"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/reports/report_kanban_view.js:144
+#: code:addons/web_studio/static/src/js/reports/report_kanban_view.js:127
 #, python-format
 msgid "External"
 msgstr "外部"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:605
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:620
 #, python-format
 msgid "Fadeout Speed"
 msgstr "渐隐速度"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:607
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:622
 #, python-format
 msgid "Fast"
 msgstr "快速"
@@ -1017,8 +1115,8 @@ msgstr "收藏"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:484
-#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:502
+#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:488
+#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:506
 #: code:addons/web_studio/static/src/xml/kanban_editor.xml:5
 #, python-format
 msgid "Field"
@@ -1026,14 +1124,14 @@ msgstr "字段"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:614
+#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:618
 #, python-format
 msgid "Field & Label"
 msgstr "字段 & 标签"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:540
+#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:544
 #, python-format
 msgid "Field Column"
 msgstr "列字段"
@@ -1047,14 +1145,14 @@ msgstr "字段权限"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:94
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:91
 #, python-format
 msgid "Field expression"
 msgstr "Field表达式"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:577
+#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:581
 #, python-format
 msgid "Field in Cell"
 msgstr "域字段"
@@ -1073,10 +1171,10 @@ msgid "File"
 msgstr "文件"
 
 #. module: web_studio
-#: code:addons/web_studio/controllers/main.py:444
+#: code:addons/web_studio/controllers/main.py:461
 #, python-format
 msgid "Filename for %s"
-msgstr "%s文件名  "
+msgstr "文件名 %s"
 
 #. module: web_studio
 #. openerp-web
@@ -1087,14 +1185,14 @@ msgstr "筛选"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:554
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:569
 #, python-format
 msgid "Filter Domain"
 msgstr "筛选域"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/controllers/main.py:76
+#: code:addons/web_studio/controllers/main.py:86
 #: code:addons/web_studio/static/src/xml/submenu.xml:37
 #, python-format
 msgid "Filter Rules"
@@ -1110,28 +1208,21 @@ msgstr "筛选"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/views/view_editors/form_editor.js:277
+#: code:addons/web_studio/static/src/js/views/view_editors/form_editor.js:280
 #, python-format
 msgid "First Status"
 msgstr "第一状态"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:223
-#, python-format
-msgid "Font"
-msgstr "字体"
-
-#. module: web_studio
-#. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:244
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:226
 #, python-format
 msgid "Font style"
 msgstr "字体样式"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:126
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:123
 #, python-format
 msgid "Foreach expression"
 msgstr "Foreach表达式"
@@ -1197,7 +1288,7 @@ msgstr "继续，就快完成了！"
 #: code:addons/web_studio/static/src/js/tour.js:78
 #, python-format
 msgid "Good job! To add more <b>fields</b>, come back to the <i>Add tab</i>."
-msgstr "做得好！ 要添加更多字段，返回“添加”选项卡。"
+msgstr "<b/><i/>"
 
 #. module: web_studio
 #. openerp-web
@@ -1209,7 +1300,7 @@ msgstr "图表视图"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:616
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:631
 #, python-format
 msgid "Great !"
 msgstr "太好了！"
@@ -1236,45 +1327,45 @@ msgstr "HTTP 路由"
 
 #. module: web_studio
 #. openerp-web
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:235
+#, python-format
+msgid "Heading1"
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:238
+#, python-format
+msgid "Heading2"
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:241
+#, python-format
+msgid "Heading3"
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:244
+#, python-format
+msgid "Heading4"
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:247
 #, python-format
-msgid "Heading 1"
-msgstr "标题1"
-
-#. module: web_studio
-#. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:248
-#, python-format
-msgid "Heading 2"
-msgstr "标题2"
-
-#. module: web_studio
-#. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:249
-#, python-format
-msgid "Heading 3"
-msgstr "标题3"
+msgid "Heading5"
+msgstr ""
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:250
 #, python-format
-msgid "Heading 4"
-msgstr "标题4"
-
-#. module: web_studio
-#. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:251
-#, python-format
-msgid "Heading 5"
-msgstr "标题5"
-
-#. module: web_studio
-#. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:252
-#, python-format
-msgid "Heading 6"
-msgstr "标题6"
+msgid "Heading6"
+msgstr ""
 
 #. module: web_studio
 #. openerp-web
@@ -1290,7 +1381,7 @@ msgstr "帮助提示"
 msgid ""
 "Here, you can <b>name</b> your field (e.g. Book reference, ISBN, Internal "
 "Note, etc.)."
-msgstr "在这里，您可以为您的字段命名（例如图书参考，ISBN，内部注释等）。"
+msgstr "<b/>"
 
 #. module: web_studio
 #. openerp-web
@@ -1316,14 +1407,14 @@ msgstr "小时"
 #: code:addons/web_studio/static/src/js/tour.js:40
 #, python-format
 msgid "How do you want to <b>name</b> your app? Library, Academy, …?"
-msgstr "您想怎么 <b>命名</b> 您的app应用咧? 图书馆，学院, …?"
+msgstr "<b/>"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/js/tour.js:53
 #, python-format
 msgid "How do you want to name your first <b>menu</b>? My books, My courses?"
-msgstr "您想如何命名您的首个 <b>菜单</b>咧? 我的书籍, 我的课程?"
+msgstr "<b/>"
 
 #. module: web_studio
 #. openerp-web
@@ -1338,7 +1429,7 @@ msgstr "HTML"
 #, python-format
 msgid ""
 "I bet you can <b>build an app</b> in 5 minutes. Ready for the challenge?"
-msgstr "我确定你可以在5分钟<b>内建立一个app</b>。准备迎接挑战了吗？"
+msgstr "<b/>"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_mixin__id
@@ -1348,25 +1439,18 @@ msgstr "ID"
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/new_buttonbox_dialog.xml:10
-#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:586
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:601
 #, python-format
 msgid "Icon"
 msgstr "图标"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:640
+#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:644
 #: code:addons/web_studio/static/src/js/views/view_components.js:195
 #, python-format
 msgid "Image"
 msgstr "图像"
-
-#. module: web_studio
-#. openerp-web
-#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:450
-#, python-format
-msgid "Image Size"
-msgstr "图片大小"
 
 #. module: web_studio
 #. openerp-web
@@ -1378,7 +1462,7 @@ msgstr "导入"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/views/view_editor_manager.js:253
+#: code:addons/web_studio/static/src/js/views/view_editor_manager.js:256
 #, python-format
 msgid ""
 "In order to use a monetary field, you need a currency field on the model. Do"
@@ -1402,7 +1486,7 @@ msgstr "整数"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/reports/report_kanban_view.js:148
+#: code:addons/web_studio/static/src/js/reports/report_kanban_view.js:131
 #, python-format
 msgid "Internal"
 msgstr "内部"
@@ -1422,6 +1506,11 @@ msgid "Invisible"
 msgstr "不可见的"
 
 #. module: web_studio
+#: model:ir.model.fields,field_description:web_studio.field_base_module_uninstall__is_studio
+msgid "Is Studio"
+msgstr ""
+
+#. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/action_editor.xml:43
 #, python-format
@@ -1430,7 +1519,7 @@ msgstr "默认视图"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:217
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:214
 #, python-format
 msgid "Italic"
 msgstr "斜体"
@@ -1447,25 +1536,25 @@ msgstr "看板视图"
 #: code:addons/web_studio/static/src/xml/new_buttonbox_dialog.xml:6
 #: code:addons/web_studio/static/src/xml/new_field_dialog.xml:48
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:408
-#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:509
-#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:519
-#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:642
-#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:661
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:522
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:532
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:657
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:676
 #, python-format
 msgid "Label"
 msgstr "标签"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:535
-#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:551
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:549
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:566
 #, python-format
 msgid "Label Text"
 msgstr "标签文字"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:455
+#: code:addons/web_studio/static/src/js/views/view_editor_sidebar.js:40
 #, python-format
 msgid "Large"
 msgstr "大的"
@@ -1476,7 +1565,7 @@ msgid "Last Modified on"
 msgstr "最后修改日"
 
 #. module: web_studio
-#: code:addons/web_studio/controllers/main.py:708
+#: code:addons/web_studio/controllers/main.py:725
 #, python-format
 msgid "Left Title"
 msgstr "左侧标题"
@@ -1488,13 +1577,11 @@ msgstr "左侧标题"
 msgid ""
 "Let’s check the result. Close Odoo Studio to get an <b>overview of your "
 "app</b>."
-msgstr "让我们核对一下结果。关闭Odoo Studio以获得<b>app的概览</b>。"
+msgstr "<b/>"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/action_editor_sidebar.xml:19
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:50
-#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:490
+#: code:addons/web_studio/static/src/xml/sidebar_common.xml:37
 #, python-format
 msgid "Limit visibility to groups"
 msgstr "限制群组的可见性"
@@ -1512,7 +1599,7 @@ msgstr "列表视图"
 #: code:addons/web_studio/static/src/xml/report_editor.xml:5
 #, python-format
 msgid "Loading..."
-msgstr "加载..."
+msgstr "正在加载..."
 
 #. module: web_studio
 #. openerp-web
@@ -1530,7 +1617,7 @@ msgstr "多对一"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:196
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:193
 #, python-format
 msgid "Margins"
 msgstr "毛利"
@@ -1544,8 +1631,8 @@ msgstr "测量字段"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:454
-#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:608
+#: code:addons/web_studio/static/src/js/views/view_editor_sidebar.js:40
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:623
 #, python-format
 msgid "Medium"
 msgstr "媒体"
@@ -1557,14 +1644,14 @@ msgstr "菜单"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:601
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:616
 #, python-format
 msgid "Message"
 msgstr "消息"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/reports/report_kanban_view.js:149
+#: code:addons/web_studio/static/src/js/reports/report_kanban_view.js:132
 #, python-format
 msgid "Minimal header/footer"
 msgstr "最小页眉/页脚"
@@ -1617,6 +1704,11 @@ msgstr "型号"
 #: model:ir.model,name:web_studio.model_ir_module_module
 msgid "Module"
 msgstr "模块"
+
+#. module: web_studio
+#: model:ir.model,name:web_studio.model_base_module_uninstall
+msgid "Module Uninstall"
+msgstr "模块卸载"
 
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.simplified_form_view_import_module
@@ -1677,7 +1769,7 @@ msgstr "我的菜单"
 #. openerp-web
 #: code:addons/web_studio/static/src/xml/edit_menu.xml:59
 #: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:22
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:65
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:62
 #, python-format
 msgid "Name"
 msgstr "名称"
@@ -1698,7 +1790,7 @@ msgstr "新字段"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/views/view_editor_sidebar.js:286
+#: code:addons/web_studio/static/src/js/views/view_editor_sidebar.js:345
 #, python-format
 msgid "New Fields"
 msgstr "新字段"
@@ -1726,25 +1818,32 @@ msgstr "下一个"
 msgid ""
 "Nicely done! Let’s build your screen now; <b>drag</b> a <i>text field</i> "
 "and <b>drop</b> it in your view, on the right."
-msgstr "做得很好！ 我们现在建立你的屏幕<b>拖拽</b><i>一个文本字段</i>，并将其<b/>放到视图右侧。"
+msgstr "<b/><i/><b/>"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:610
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:625
 #, python-format
 msgid "No"
 msgstr "否"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/reports/report_kanban_view.js:153
+#: code:addons/web_studio/static/src/js/reports/report_kanban_view.js:136
 #, python-format
 msgid "No header/footer"
 msgstr "无页眉/页脚"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/menu.js:115
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:230
+#, python-format
+msgid "Normal"
+msgstr "一般"
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/js/menu.js:128
 #, python-format
 msgid "Notes"
 msgstr "备注"
@@ -1754,7 +1853,7 @@ msgstr "备注"
 #: code:addons/web_studio/static/src/js/tour.js:135
 #, python-format
 msgid "Now you’re on your own. Enjoy your <b>super power</b>."
-msgstr "现在就只你一个人了。 尽情享受 <b>super power</b>吧."
+msgstr "<b/>"
 
 #. module: web_studio
 #. openerp-web
@@ -1779,7 +1878,7 @@ msgstr "Odoo Studio 图标"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:166
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:163
 #, python-format
 msgid "Offset"
 msgstr "偏移量"
@@ -1792,7 +1891,7 @@ msgid "One2many"
 msgstr "一对多"
 
 #. module: web_studio
-#: code:addons/web_studio/controllers/main.py:821
+#: code:addons/web_studio/controllers/main.py:838
 #, python-format
 msgid ""
 "Only groups with an external ID can be used here. Please choose another "
@@ -1810,6 +1909,11 @@ msgstr "选项"
 #: model_terms:ir.ui.view,arch_db:web_studio.act_report_xml_view_kanban
 msgid "PDF file"
 msgstr "PDF文件"
+
+#. module: web_studio
+#: model:ir.model,name:web_studio.model_report_paperformat
+msgid "Paper Format Config"
+msgstr "纸张格式配置"
 
 #. module: web_studio
 #. openerp-web
@@ -1848,13 +1952,13 @@ msgstr "规划"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:721
+#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:726
 #, python-format
 msgid "Please specify a field name for the selected model."
 msgstr "请为选定的模型指定字段名。"
 
 #. module: web_studio
-#: code:addons/web_studio/controllers/main.py:979
+#: code:addons/web_studio/controllers/main.py:1025
 #, python-format
 msgid "Please specify a field."
 msgstr "请指定一个字段。"
@@ -1864,7 +1968,7 @@ msgstr "请指定一个字段。"
 #: code:addons/web_studio/static/src/xml/app_creator.xml:10
 #, python-format
 msgid "Previous"
-msgstr "以前"
+msgstr "上一页"
 
 #. module: web_studio
 #. openerp-web
@@ -1916,14 +2020,14 @@ msgstr "Qweb"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:596
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:611
 #, python-format
 msgid "Rainbow Effect"
 msgstr "彩虹效应"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:591
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:606
 #, python-format
 msgid "Rainbow Man"
 msgstr "彩虹人"
@@ -1937,7 +2041,7 @@ msgstr "只读"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/submenu.xml:74
+#: code:addons/web_studio/static/src/xml/submenu.xml:77
 #, python-format
 msgid "Redo"
 msgstr "重做"
@@ -1952,7 +2056,7 @@ msgstr "关联字段"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:121
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:118
 #, python-format
 msgid "Related expression"
 msgstr "Related表达式"
@@ -1999,7 +2103,7 @@ msgstr "报告动作"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/reports/report_editor_action.js:28
+#: code:addons/web_studio/static/src/js/reports/report_editor_action.js:27
 #, python-format
 msgid "Report Editor"
 msgstr "报表编辑"
@@ -2013,7 +2117,7 @@ msgstr "报告并展示视图"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/controllers/main.py:94
+#: code:addons/web_studio/controllers/main.py:104
 #: code:addons/web_studio/static/src/xml/submenu.xml:31
 #, python-format
 msgid "Reports"
@@ -2035,7 +2139,7 @@ msgstr "重置默认背景"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:621
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:636
 #, python-format
 msgid "Reset Image"
 msgstr "重置图像"
@@ -2048,7 +2152,7 @@ msgid "Retention"
 msgstr "保留"
 
 #. module: web_studio
-#: code:addons/web_studio/controllers/main.py:709
+#: code:addons/web_studio/controllers/main.py:726
 #, python-format
 msgid "Right Title"
 msgstr "右侧标题"
@@ -2067,28 +2171,28 @@ msgstr "保存。"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/common/abstract_editor_manager.js:172
+#: code:addons/web_studio/static/src/js/common/abstract_editor_manager.js:166
 #, python-format
 msgid "Saved"
 msgstr "已保存"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/common/abstract_editor_manager.js:127
+#: code:addons/web_studio/static/src/js/common/abstract_editor_manager.js:121
 #, python-format
 msgid "Saving..."
 msgstr "保存中..."
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/views/view_editors/form_editor.js:278
+#: code:addons/web_studio/static/src/js/views/view_editors/form_editor.js:281
 #, python-format
 msgid "Second Status"
 msgstr "第二状态"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/views/view_editors/kanban_record_editor.js:377
+#: code:addons/web_studio/static/src/js/views/view_editors/kanban_record_editor.js:401
 #, python-format
 msgid "Select a Field"
 msgstr "选择字段"
@@ -2116,7 +2220,7 @@ msgstr "选择相关字段："
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/views/action_editor_action.js:422
+#: code:addons/web_studio/static/src/js/views/action_editor_action.js:487
 #, python-format
 msgid "Select a view"
 msgstr "选择视图"
@@ -2130,7 +2234,7 @@ msgstr "选中内容"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:574
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:589
 #, python-format
 msgid "Send a"
 msgstr "发送"
@@ -2154,7 +2258,7 @@ msgstr "服务器动作"
 msgid ""
 "Set an <b>email alias</b>. Then, try to send an email to this address; it "
 "will create a document automatically for you. Pretty cool, huh?"
-msgstr "设置一个<b>邮件别名</b>。然后尝试发送电子邮件到这个地址；它将自动为您创建文档。很酷，是吧？"
+msgstr "<b/>"
 
 #. module: web_studio
 #. openerp-web
@@ -2172,7 +2276,7 @@ msgstr "设为默认"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:119
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:116
 #, python-format
 msgid "Set expression"
 msgstr "Set表达式"
@@ -2186,29 +2290,30 @@ msgstr "显示不可见元素"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:160
+#: code:addons/web_studio/static/src/js/views/view_editor_sidebar.js:39
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:157
 #, python-format
 msgid "Size"
-msgstr "尺寸"
+msgstr "大小"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:609
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:624
 #, python-format
 msgid "Slow"
 msgstr "慢"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:253
-#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:453
+#: code:addons/web_studio/static/src/js/views/view_editor_sidebar.js:40
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:232
 #, python-format
 msgid "Small"
 msgstr "小"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:175
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:172
 #, python-format
 msgid "Source"
 msgstr "来源"
@@ -2222,7 +2327,7 @@ msgstr "查看所有的可能值。"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/views/view_editor_manager.js:699
+#: code:addons/web_studio/static/src/js/views/view_editor_manager.js:702
 #, python-format
 msgid "Stage"
 msgstr "阶段"
@@ -2249,14 +2354,14 @@ msgstr "停止日期字段"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:261
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:283
 #, python-format
 msgid "Striped"
 msgstr "条纹"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/views/action_editor_action.js:64
+#: code:addons/web_studio/static/src/js/views/action_editor_action.js:40
 #: model:ir.model.fields,field_description:web_studio.field_ir_model_data__studio
 #, python-format
 msgid "Studio"
@@ -2296,14 +2401,14 @@ msgstr "子菜单标签"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:808
+#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:813
 #, python-format
 msgid "Subtotal & Total"
 msgstr "小计 & 总计"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/submenu.js:332
+#: code:addons/web_studio/static/src/js/submenu.js:334
 #, python-format
 msgid "Subview "
 msgstr "子视图"
@@ -2317,7 +2422,7 @@ msgstr "桌台"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:257
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:279
 #, python-format
 msgid "Table style"
 msgstr "表格样式"
@@ -2338,7 +2443,7 @@ msgstr "摘要"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:153
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:150
 #, python-format
 msgid "Taxes amount by groups"
 msgstr "按组分配税额"
@@ -2351,15 +2456,15 @@ msgid "Technical Name"
 msgstr "技术名称"
 
 #. module: web_studio
-#: code:addons/web_studio/models/ir_ui_view.py:800
+#: code:addons/web_studio/models/ir_ui_view.py:799
 #, python-format
 msgid "Template '%s' not found"
 msgstr "模板 '%s' 未找到"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:336
-#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:354
+#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:340
+#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:358
 #: code:addons/web_studio/static/src/js/views/view_components.js:84
 #, python-format
 msgid "Text"
@@ -2367,17 +2472,24 @@ msgstr "文本"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:215
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:212
 #, python-format
 msgid "Text decoration"
 msgstr "文本装饰"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:421
+#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:425
 #, python-format
 msgid "Text in Cell"
 msgstr "单元格中的文本"
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/js/views/action_editor_action.js:462
+#, python-format
+msgid "The activity view is not available on this model."
+msgstr ""
 
 #. module: web_studio
 #. openerp-web
@@ -2387,34 +2499,34 @@ msgid "The fastest way to create a web application."
 msgstr "创建 Web 应用程序的最快方式。"
 
 #. module: web_studio
-#: code:addons/web_studio/controllers/main.py:986
-#: code:addons/web_studio/controllers/main.py:1027
+#: code:addons/web_studio/controllers/main.py:1032
+#: code:addons/web_studio/controllers/main.py:1073
 #, python-format
 msgid "The field %s does not exist."
 msgstr "字段 %s 不存在。"
 
 #. module: web_studio
-#: code:addons/web_studio/controllers/main.py:248
+#: code:addons/web_studio/controllers/main.py:258
 #, python-format
 msgid "The icon has not a correct format"
 msgstr "图标格式不正确"
 
 #. module: web_studio
-#: code:addons/web_studio/controllers/main.py:243
+#: code:addons/web_studio/controllers/main.py:253
 #, python-format
 msgid "The icon is not linked to an attachment"
 msgstr "图标未链接到附件"
 
 #. module: web_studio
-#: code:addons/web_studio/controllers/main.py:976
-#: code:addons/web_studio/controllers/main.py:1019
+#: code:addons/web_studio/controllers/main.py:1022
+#: code:addons/web_studio/controllers/main.py:1065
 #, python-format
 msgid "The model %s does not exist."
 msgstr "模型 %s 不存在。"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/views/view_editor_sidebar.js:567
+#: code:addons/web_studio/static/src/js/views/view_editor_sidebar.js:623
 #, python-format
 msgid ""
 "The new name can contain only a to z lower letters, numbers and _, with a "
@@ -2423,13 +2535,13 @@ msgstr "新的名字只能包含a到z的小写字母、数字、和下划线，�
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:467
+#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:471
 #, python-format
 msgid "The record field name is missing"
 msgstr "记录字段名称丢失"
 
 #. module: web_studio
-#: code:addons/web_studio/controllers/main.py:752
+#: code:addons/web_studio/controllers/main.py:769
 #, python-format
 msgid "The related field of a button has to be a many2one to %s."
 msgstr "%s 的相关按钮字段必须为 many2one。"
@@ -2445,14 +2557,14 @@ msgstr "请求的更改在视图中产生错误。可能原因是字段已删除
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/views/view_editors/form_editor.js:279
+#: code:addons/web_studio/static/src/js/views/view_editors/form_editor.js:282
 #, python-format
 msgid "Third Status"
 msgstr "第三状态"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/web_client.js:231
+#: code:addons/web_studio/static/src/js/web_client.js:245
 #, python-format
 msgid "This action is not editable by Studio"
 msgstr "此操作不可通过 Studio 编辑"
@@ -2476,7 +2588,7 @@ msgstr "此操作引发了错误，可能因为 xpath 损坏"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:398
+#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:402
 #, python-format
 msgid "Three Columns"
 msgstr "三列"
@@ -2497,7 +2609,7 @@ msgstr "时间表视图"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:674
+#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:678
 #, python-format
 msgid "Title Block"
 msgstr "标题"
@@ -2507,7 +2619,7 @@ msgstr "标题"
 #: code:addons/web_studio/static/src/js/tour.js:67
 #, python-format
 msgid "To <b>customize a field</b>, click on its <i>label</i>."
-msgstr "要 <b>自定义字段</b>, 请点击字段 <i>label</i>标签."
+msgstr "<b/><i/>"
 
 #. module: web_studio
 #. openerp-web
@@ -2518,7 +2630,7 @@ msgid "Toggle Studio"
 msgstr "切换 Studio"
 
 #. module: web_studio
-#: code:addons/web_studio/controllers/main.py:152
+#: code:addons/web_studio/controllers/main.py:162
 #, python-format
 msgid "Translate view"
 msgstr "翻译视图"
@@ -2532,7 +2644,7 @@ msgstr "翻译"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:375
+#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:379
 #, python-format
 msgid "Two Columns"
 msgstr "两列"
@@ -2546,14 +2658,14 @@ msgstr "类型"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:218
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:215
 #, python-format
 msgid "Underline"
 msgstr "下划线"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/submenu.xml:75
+#: code:addons/web_studio/static/src/xml/submenu.xml:78
 #, python-format
 msgid "Undo"
 msgstr "取消"
@@ -2564,6 +2676,13 @@ msgstr "取消"
 #, python-format
 msgid "Use an existing Model"
 msgstr "使用现有模型"
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/js/views/view_editor_sidebar.js:48
+#, python-format
+msgid "Use colors"
+msgstr ""
 
 #. module: web_studio
 #. openerp-web
@@ -2597,14 +2716,14 @@ msgstr "视图"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:182
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:179
 #, python-format
 msgid "Visible for"
 msgstr "可见于"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:100
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:97
 #, python-format
 msgid "Visible if"
 msgstr "可见如果"
@@ -2614,18 +2733,18 @@ msgstr "可见如果"
 #: code:addons/web_studio/static/src/js/tour.js:127
 #, python-format
 msgid "Want more fun? Let’s create more <b>views</b>."
-msgstr "想获得更多的乐趣吗？快 <b>去创建更多视图</b>吧."
+msgstr "<b/>"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/js/tour.js:15
 #, python-format
 msgid "Want to customize the background? Let’s activate <b>Odoo Studio</b>."
-msgstr "想自定义背景吗? 让我们激活<b>Odoo Studio</b>吧."
+msgstr "<b/>"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/common/new_field_dialog.js:220
+#: code:addons/web_studio/static/src/js/common/new_field_dialog.js:221
 #, python-format
 msgid "Warning"
 msgstr "警告"
@@ -2650,7 +2769,7 @@ msgstr "欢迎"
 #: code:addons/web_studio/static/src/js/tour.js:131
 #, python-format
 msgid "What about a <b>Kanban view</b>?"
-msgstr "您觉得 <b>看板视图</b>怎么样?"
+msgstr "<b/>"
 
 #. module: web_studio
 #: model:ir.model.fields,help:web_studio.field_ir_model__abstract
@@ -2659,29 +2778,29 @@ msgstr "此模型是否是抽象模型"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/reports/report_kanban_view.js:137
+#: code:addons/web_studio/static/src/js/reports/report_kanban_view.js:120
 #, python-format
 msgid "Which type of report do you want to create?"
 msgstr "您想创建哪种类型的报表？"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:133
-#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:441
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:130
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:442
 #, python-format
 msgid "Widget"
 msgstr "小工具"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:208
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:205
 #, python-format
 msgid "Width"
 msgstr "宽度"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/web_client.js:54
+#: code:addons/web_studio/static/src/js/web_client.js:69
 #, python-format
 msgid "Wizards are not editable with Studio."
 msgstr "向导不能通过 Studio 进行编辑。"
@@ -2693,7 +2812,7 @@ msgstr "向导不能通过 Studio 进行编辑。"
 msgid ""
 "Wow, nice! And I’m sure you can make it even better! Use this icon to open "
 "<b>Odoo Studio</b> and customize any screen."
-msgstr "喔，不错！ 而且我相信你可以让它变得更好！使用打开<b>Odoo Studio</b> 图标来自定义让页面变的更好。"
+msgstr "<b/>"
 
 #. module: web_studio
 #. openerp-web
@@ -2715,11 +2834,11 @@ msgstr "年"
 #: code:addons/web_studio/static/src/js/tour.js:58
 #, python-format
 msgid "You are just one click away from <b>generating your first app</b>."
-msgstr "你只需点击一下你的 <b>第一个应用程序</b>就可以了."
+msgstr "<b/>"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:732
+#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:737
 #, python-format
 msgid "You can only display a user or a partner"
 msgstr "只能显示用户或合作伙伴。"
@@ -2732,14 +2851,14 @@ msgstr "你不能修改这个视图，它是通用布局的一部分"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/views/view_editors/kanban_record_editor.js:140
+#: code:addons/web_studio/static/src/js/views/view_editors/kanban_record_editor.js:144
 #, python-format
 msgid "You first need to create a many2many field in the form view."
 msgstr "您首先需要在表单视图中创建 many2many 字段。"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/views/view_editors/kanban_record_editor.js:231
+#: code:addons/web_studio/static/src/js/views/view_editors/kanban_record_editor.js:236
 #, python-format
 msgid ""
 "You first need to create a many2one field to Partner or User in the form "
@@ -2748,15 +2867,15 @@ msgstr "您首先需要在表单视图中为合作伙伴或用户创建 many2one
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/common/new_field_dialog.js:239
-#: code:addons/web_studio/static/src/js/common/new_field_dialog.js:255
+#: code:addons/web_studio/static/src/js/common/new_field_dialog.js:240
+#: code:addons/web_studio/static/src/js/common/new_field_dialog.js:256
 #, python-format
 msgid "You must select a related field"
 msgstr "你必须选择一个关联字段"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/common/new_field_dialog.js:245
+#: code:addons/web_studio/static/src/js/common/new_field_dialog.js:246
 #, python-format
 msgid "You must select a relation"
 msgstr "你必须选择一个关联"
@@ -2771,7 +2890,7 @@ msgstr "您需要加入这些群组才能查看此字段："
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:774
+#: code:addons/web_studio/static/src/js/reports/sidebar_components/report_building_blocks.js:779
 #, python-format
 msgid ""
 "You need to use a many2many or one2many field to display a list of items"
@@ -2779,11 +2898,11 @@ msgstr "您首先需要在列表视图中创建 many2many 或 one2many 字段。
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:202
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:199
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:77
 #, python-format
 msgid "bottom"
-msgstr "下边"
+msgstr "bottom"
 
 #. module: web_studio
 #. openerp-web
@@ -2808,7 +2927,7 @@ msgstr "例如，房地产"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:204
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:201
 #, python-format
 msgid "left"
 msgstr "左"
@@ -2830,47 +2949,47 @@ msgstr "或"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:205
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:210
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:202
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:207
 #, python-format
 msgid "px"
 msgstr "px "
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:226
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:235
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:263
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:272
 #, python-format
 msgid "reset color"
 msgstr "重置颜色"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:200
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:197
 #, python-format
 msgid "right"
 msgstr "右"
 
 #. module: web_studio
-#: code:addons/web_studio/controllers/main.py:1124
+#: code:addons/web_studio/controllers/main.py:1170
 #, python-format
 msgid "stages"
 msgstr "阶段"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:575
+#: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:590
 #, python-format
 msgid "test email"
 msgstr "测试电子邮件"
 
 #. module: web_studio
 #. openerp-web
-#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:198
+#: code:addons/web_studio/static/src/xml/report_editor_sidebar.xml:195
 #: code:addons/web_studio/static/src/xml/view_editor_sidebar.xml:76
 #, python-format
 msgid "top"
-msgstr "上"
+msgstr "top"
 
 #. module: web_studio
 #. openerp-web

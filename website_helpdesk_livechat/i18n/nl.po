@@ -3,16 +3,18 @@
 # * website_helpdesk_livechat
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
+# Martin Trigaux, 2017
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2017
+# Cas Vissers <casvissers@brahoo.nl>, 2017
+# Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-18 10:05+0000\n"
-"PO-Revision-Date: 2018-08-24 11:49+0000\n"
-"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:12+0000\n"
+"PO-Revision-Date: 2017-02-15 11:47+0000\n"
+"Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -38,6 +40,11 @@ msgstr ""
 "<br><br>\n"
 "U kunt een nieuw ticket maken door te typen <b>/helpdesk \"ticket titel\"</b>.<br>\n"
 "U kunt tickets zoeken door te typen <b>/helpdesk_search \"Trefwoord1Trefwoord2 etc.\"</b><br>"
+
+#. module: website_helpdesk_livechat
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
+msgid "<i class=\"fa fa-fw fa-arrow-right\" aria-label=\"Go to\" title=\"Go to\"/>"
+msgstr "<i class=\"fa fa-fw fa-arrow-right\" aria-label=\"Ga naar\" title=\"Ga naar\"/>"
 
 #. module: website_helpdesk_livechat
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
@@ -69,12 +76,12 @@ msgstr "Discussiekanaal"
 #. module: website_helpdesk_livechat
 #: model:ir.model,name:website_helpdesk_livechat.model_helpdesk_team
 msgid "Helpdesk Team"
-msgstr "Helpdeskteam"
+msgstr "Helpdesk team"
 
 #. module: website_helpdesk_livechat
 #: model:ir.model.fields,field_description:website_helpdesk_livechat.field_helpdesk_team__is_canned_response
 msgid "Is Canned Response"
-msgstr "Is standard antwoord"
+msgstr "Is ingeblikte reactie"
 
 #. module: website_helpdesk_livechat
 #: model:ir.model.fields,field_description:website_helpdesk_livechat.field_helpdesk_team__feature_livechat_channel_id

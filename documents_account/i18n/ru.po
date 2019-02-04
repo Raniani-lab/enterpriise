@@ -3,14 +3,16 @@
 # * documents_account
 # 
 # Translators:
-# Martin Trigaux, 2018
+# Martin Trigaux, 2019
+# Vitalius Sharkhun <al070572sva@gmail.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-02 10:31+0000\n"
-"PO-Revision-Date: 2018-10-02 10:31+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"POT-Creation-Date: 2018-12-24 11:16+0000\n"
+"PO-Revision-Date: 2019-01-16 08:38+0000\n"
+"Last-Translator: Vitalius Sharkhun <al070572sva@gmail.com>, 2019\n"
 "Language-Team: Russian (https://www.transifex.com/odoo/teams/41243/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,7 +29,7 @@ msgstr ""
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_res_company__account_folder
-#: model:ir.model.fields,field_description:documents_account.field_res_config_settings__dms_account_settings
+#: model:ir.model.fields,field_description:documents_account.field_res_config_settings__documents_account_settings
 msgid "Account Folder"
 msgstr ""
 
@@ -35,7 +37,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents_account.field_res_company__account_tags
 #: model:ir.model.fields,field_description:documents_account.field_res_config_settings__account_tags
 msgid "Account Tags"
-msgstr "Тэги Счетов"
+msgstr "Теги счетов"
+
+#. module: documents_account
+#: model:ir.model,name:documents_account.model_ir_attachment
+msgid "Attachment"
+msgstr "Приложение"
 
 #. module: documents_account
 #: model:ir.model,name:documents_account.model_res_company
@@ -53,9 +60,13 @@ msgid "Create"
 msgstr "Создать"
 
 #. module: documents_account
-#: code:addons/documents_account/models/account_invoice.py:13
-#, python-format
-msgid "Created by: "
+#: model:documents.workflow.rule,name:documents_account.vendor_bill_rule
+msgid "Create Vendor Bill"
+msgstr ""
+
+#. module: documents_account
+#: model:documents.workflow.rule,name:documents_account.credit_note_rule
+msgid "Create Vendor Refund"
 msgstr ""
 
 #. module: documents_account
@@ -64,14 +75,9 @@ msgid "Credit note"
 msgstr ""
 
 #. module: documents_account
-#: model:ir.model.fields,field_description:documents_account.field_res_company__dms_account_settings
-msgid "Dms Account Settings"
+#: model:ir.model.fields,field_description:documents_account.field_res_company__documents_account_settings
+msgid "Documents Account Settings"
 msgstr ""
-
-#. module: documents_account
-#: model:ir.model,name:documents_account.model_ir_attachment
-msgid "Document"
-msgstr "Документ"
 
 #. module: documents_account
 #: model:mail.activity.type,name:documents_account.mail_documents_activity_data_fs
@@ -84,18 +90,15 @@ msgid "Has Business Option"
 msgstr ""
 
 #. module: documents_account
-#: model:ir.model,name:documents_account.model_account_invoice
-msgid "Invoice"
-msgstr "Счёт"
-
-#. module: documents_account
 #: selection:documents.workflow.rule,create_model:0
 msgid "Product template"
 msgstr ""
 
 #. module: documents_account
 #: model_terms:ir.ui.view,arch_db:documents_account.res_config_settings_view_form
-msgid "Select the folder to be used for accounting's documents."
+msgid ""
+"Select the folder to be used for accounting's documents for the invoices\n"
+"                                    of your company."
 msgstr ""
 
 #. module: documents_account

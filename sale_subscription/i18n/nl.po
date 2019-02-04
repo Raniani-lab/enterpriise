@@ -3,20 +3,24 @@
 # * sale_subscription
 # 
 # Translators:
-# Gunther Clauwaert <gclauwae@hotmail.com>, 2018
-# Cas Vissers <c.vissers@brahoo.nl>, 2018
-# Martin Trigaux, 2018
-# Cas Vissers <casvissers@brahoo.nl>, 2018
-# Yenthe Van Ginneken <yenthespam@gmail.com>, 2018
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
+# e2f_nl_c4 <e2f_nl_c4@hotmail.com>, 2017
+# Pol Van Dingenen <pol.vandingenen@vanroey.be>, 2017
+# Eric Geens <ericgeens@yahoo.com>, 2018
+# Cas Vissers <casvissers@brahoo.nl>, 2019
+# Gunther Clauwaert <gclauwae@hotmail.com>, 2019
+# Cas Vissers <c.vissers@brahoo.nl>, 2019
+# dpms <pieter.van.de.wygaert@telenet.be>, 2019
+# Martin Trigaux, 2019
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
+# Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 12.0+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-08 07:14+0000\n"
-"PO-Revision-Date: 2018-08-24 11:48+0000\n"
-"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"PO-Revision-Date: 2017-12-13 15:26+0000\n"
+"Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -64,7 +68,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:mail.template,subject:sale_subscription.mail_template_subscription_invoice
 msgid "${object.company_id.name} Invoice (Ref ${object.number or 'n/a'})"
-msgstr "${object.company_id.name} Factuur (Ref ${object.number or 'n/a'})"
+msgstr "${object.company_id.name} Factuur (Ref ${object.number or 'nvt'})"
 
 #. module: sale_subscription
 #: model:mail.template,subject:sale_subscription.mail_template_subscription_alert
@@ -408,6 +412,11 @@ msgid "<i class=\"fa fa-check\"/> Closable by customer"
 msgstr "<i class=\"fa fa-check\"/> Afsluitbaar door klant"
 
 #. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_kanban
+msgid "<i class=\"fa fa-ellipsis-v\" role=\"img\" aria-label=\"Manage\" title=\"Manage\"/>"
+msgstr "<i class=\"fa fa-ellipsis-v\" role=\"img\" aria-label=\"Beheren\" title=\"Beheren\"/>"
+
+#. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "<i class=\"fa fa-envelope\"/> Send email"
 msgstr "<i class=\"fa fa-envelope\"/>Verzend e-mail"
@@ -458,17 +467,6 @@ msgid ""
 msgstr ""
 "<span class=\"badge badge-pill badge-warning\"><i class=\"fa fa-fw fa-"
 "refresh\"/> Te vernieuwen</span>"
-
-#. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_form
-msgid ""
-"<span class=\"badge badge-warning border-0\" attrs=\"{'invisible': [('to_renew', '=', False)]}\">\n"
-"                                To Renew\n"
-"                            </span>"
-msgstr ""
-"<span class=\"badge badge-warning border-0\" attrs=\"{'invisible': [('to_renew', '=', False)]}\">\n"
-"                                Te vernieuwen\n"
-"                            </span>"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
@@ -1514,7 +1512,7 @@ msgid ""
 "                be time-bounded or not. In case of a limited period, they are flagged as to be renewed\n"
 "                one month from the end date."
 msgstr ""
-"Abonnementen maken om terugkerende facturen te beheren &amp; betalingen. Abonnementen kunnen\n"
+"Abonnementen maken om terugkerende facturen &amp; betalingen te beheren. Abonnementen kunnen\n"
 "tijdgebonden zijn of niet. In het geval van een beperkte periode, worden ze gemarkeerd als te worden verlengd\n"
 "één maand na de einddatum."
 
@@ -1923,7 +1921,7 @@ msgid ""
 "If present, this condition must be satisfied before executing the action "
 "rule."
 msgstr ""
-"Indien aanwezig, moet deze conditie zijn voldaan voordat de actie regel "
+"Indien aanwezig, moet deze conditie voldaan zijn voordat de actie regel "
 "wordt uitgevoerd."
 
 #. module: sale_subscription
@@ -1946,6 +1944,7 @@ msgstr ""
 "veld."
 
 #. module: sale_subscription
+#: model:ir.model.fields,help:sale_subscription.field_product_product__recurring_invoice
 #: model:ir.model.fields,help:sale_subscription.field_product_template__recurring_invoice
 msgid ""
 "If set, confirming a sale order with this product will create a subscription"
@@ -2087,7 +2086,7 @@ msgstr "Facturen"
 #: code:addons/sale_subscription/models/sale_order.py:162
 #, python-format
 msgid "Invoicing period: %s - %s"
-msgstr "Factuurperiode: %s - %s"
+msgstr "Factuur periode: %s - %s"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__message_is_follower
@@ -2290,7 +2289,7 @@ msgstr "Leden"
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__message_has_error
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__message_has_error
 msgid "Message Delivery error"
-msgstr "Bericht afleverfout"
+msgstr "Bericht aflever fout"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__message_ids
@@ -2306,7 +2305,7 @@ msgstr "Model"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__crud_model_name
 msgid "Model Description"
-msgstr "Omschrijving model"
+msgstr "Modelomschrijving"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__model_name
@@ -2345,7 +2344,7 @@ msgstr "Maand(en)"
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__recurring_monthly
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_snapshot__recurring_monthly
 msgid "Monthly Recurring Revenue"
-msgstr "Maandelijkse herhalende omzet"
+msgstr "Maandelijkse herhalende inkomsten"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
@@ -2475,7 +2474,7 @@ msgstr "Kantoorschoonmaak-abonnement (jaarlijks)"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__on_change_fields
 msgid "On Change Fields Trigger"
-msgstr "On change veld trigger"
+msgstr "Bij wijziging veld trigger"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_form
@@ -2500,7 +2499,7 @@ msgstr "Opties"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_view_tree_subscription
 msgid "Order Number"
-msgstr "Ordernummer"
+msgstr "Order Nummer"
 
 #. module: sale_subscription
 #: model:sale.subscription.close.reason,name:sale_subscription.close_reason_5
@@ -2603,6 +2602,7 @@ msgid "Product Template"
 msgstr "Productsjabloon"
 
 #. module: sale_subscription
+#: model:ir.model.fields,help:sale_subscription.field_product_product__subscription_template_id
 #: model:ir.model.fields,help:sale_subscription.field_product_template__subscription_template_id
 msgid "Product will be included in a selected template"
 msgstr "Product wordt toegevoegd in het geselecteerde sjabloon"
@@ -2803,11 +2803,6 @@ msgid "Sad face"
 msgstr "Ongelukkig gezicht"
 
 #. module: sale_subscription
-#: model:ir.model,name:sale_subscription.model_sale_order
-msgid "Sale Order"
-msgstr "Verkooporder"
-
-#. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__sale_order_count
 msgid "Sale Order Count"
 msgstr "Totaal verkooporders"
@@ -2847,6 +2842,11 @@ msgstr "Verkoop"
 #: selection:sale.subscription.alert,activity_user:0
 msgid "Sales Channel Leader"
 msgstr "Verkoopteamleider"
+
+#. module: sale_subscription
+#: model:ir.model,name:sale_subscription.model_sale_order
+msgid "Sales Order"
+msgstr "Verkooporder"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_order_line
@@ -3081,7 +3081,7 @@ msgstr "Abonnement analyse"
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_subscription_close_reason
 msgid "Subscription Close Reason"
-msgstr "Abonnement afsluitreden:"
+msgstr "Abonnement sluit reden:"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_subscription_close_reason_wizard
@@ -3112,6 +3112,7 @@ msgid "Subscription Management"
 msgstr "Beheer abonnementen"
 
 #. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_product_product__recurring_invoice
 #: model:ir.model.fields,field_description:sale_subscription.field_product_template__recurring_invoice
 msgid "Subscription Product"
 msgstr "Abonnement product"
@@ -3141,6 +3142,7 @@ msgstr "Abonnementsfases"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_subscription_template
+#: model:ir.model.fields,field_description:sale_subscription.field_product_product__subscription_template_id
 #: model:ir.model.fields,field_description:sale_subscription.field_product_template__subscription_template_id
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__template_id
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__template_id
@@ -3192,6 +3194,7 @@ msgstr "Abonnement fase is gewijzigd"
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_action_res_partner
 #: model:ir.model.fields,field_description:sale_subscription.field_account_analytic_account__subscription_ids
 #: model:ir.model.fields,field_description:sale_subscription.field_res_partner__subscription_count
+#: model:ir.model.fields,field_description:sale_subscription.field_res_users__subscription_count
 #: model:ir.module.category,name:sale_subscription.module_category_subscription_management
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_action
@@ -3306,7 +3309,7 @@ msgid ""
 "                terms and conditions of the subscription."
 msgstr ""
 "Sjablonen worden gebruikt om abonnementen te voor-configureren. Ze kunnen worden geselecteerd door verkoopmedewerkers\n"
-"om snel de algemene verkoopvoorwaarden van het abonnement in te stellen."
+"om snel de voorwaarden en condities van het abonnement te configureren."
 
 #. module: sale_subscription
 #: model:mail.template,subject:sale_subscription.email_payment_close
@@ -3323,7 +3326,7 @@ msgstr "Algemene verkoopvoorwaarden"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "Terms and conditions"
-msgstr "Algemene verkoopvoorwaarden"
+msgstr "Voorwaarden"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_wizard__date_from
@@ -3376,7 +3379,7 @@ msgstr "De gebruiker heeft schrijfrechten op abonnementen."
 msgid ""
 "This bar allows to filter the opportunities based on scheduled activities."
 msgstr ""
-"Deze bar staat u toe om prospects te filteren gebaseerd op geplande "
+"Deze balk staat u toe om prospects te filteren gebaseerd op geplande "
 "activiteiten."
 
 #. module: sale_subscription
@@ -3409,6 +3412,7 @@ msgstr "Tijd conditie"
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__to_renew
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__to_renew
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_form
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_kanban
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 #, python-format
@@ -3791,14 +3795,6 @@ msgstr "bijv. Maandelijks abonnement"
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid "e.g. Update order quantity"
 msgstr "bijv. Bijwerken orderhoeveelheid"
-
-#. module: sale_subscription
-#: model:product.product,weight_uom_name:sale_subscription.product_office_cleaning
-#: model:product.product,weight_uom_name:sale_subscription.product_office_cleaning_yearly
-#: model:product.template,weight_uom_name:sale_subscription.product_office_cleaning_product_template
-#: model:product.template,weight_uom_name:sale_subscription.product_office_cleaning_yearly_product_template
-msgid "kg"
-msgstr "kg"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription

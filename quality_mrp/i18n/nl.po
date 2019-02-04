@@ -3,14 +3,16 @@
 # * quality_mrp
 # 
 # Translators:
+# Yenthe Van Ginneken <yenthespam@gmail.com>, 2017
 # Martin Trigaux, 2018
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-18 10:04+0000\n"
-"PO-Revision-Date: 2018-09-18 10:04+0000\n"
+"PO-Revision-Date: 2016-08-05 13:31+0000\n"
 "Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2018\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -31,7 +33,7 @@ msgstr ""
 #. module: quality_mrp
 #: model_terms:ir.ui.view,arch_db:quality_mrp.mrp_production_view_form_inherit_quality
 msgid "<span class=\"o_stat_text\">Quality Alert</span>"
-msgstr "<span class=\"o_stat_text\">Kwaliteitsmelding</span>"
+msgstr "<span class=\"o_stat_text\">Kwaliteit melding</span>"
 
 #. module: quality_mrp
 #: model:ir.model.fields,field_description:quality_mrp.field_mrp_production__quality_alert_ids
@@ -41,7 +43,7 @@ msgstr "Waarschuwingen"
 #. module: quality_mrp
 #: model:ir.model.fields,field_description:quality_mrp.field_mrp_production__check_ids
 msgid "Checks"
-msgstr "Controles"
+msgstr "Cheques"
 
 #. module: quality_mrp
 #: model:ir.model,name:quality_mrp.model_mrp_production
@@ -73,7 +75,7 @@ msgstr "Kwaliteitscontrole"
 #. module: quality_mrp
 #: model:ir.model.fields,field_description:quality_mrp.field_mrp_production__quality_check_fail
 msgid "Quality Check Fail"
-msgstr "Kwaliteitscontrole mislukt"
+msgstr "Kwaliteitscontrole gefaald"
 
 #. module: quality_mrp
 #: model:ir.model.fields,field_description:quality_mrp.field_mrp_production__quality_check_todo

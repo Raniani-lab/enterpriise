@@ -3,16 +3,17 @@
 # * delivery_ups
 # 
 # Translators:
-# Martin Trigaux, 2018
-# 敬雲 林 <chingyun@yuanchih-consult.com>, 2018
 # sejun huang <sejun.huang@gmail.com>, 2018
+# Martin Trigaux, 2019
+# 敬雲 林 <chingyun@yuanchih-consult.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: sejun huang <sejun.huang@gmail.com>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"PO-Revision-Date: 2016-08-05 13:28+0000\n"
+"Last-Translator: 敬雲 林 <chingyun@yuanchih-consult.com>, 2019\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/odoo/teams/41243/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -50,7 +51,7 @@ msgstr "運營商帳戶"
 #. module: delivery_ups
 #: selection:delivery.carrier,ups_cod_funds_code:0
 msgid "Cashier's Check or MoneyOrder"
-msgstr "收銀員支票或匯票"
+msgstr "出納員的支票或匯票"
 
 #. module: delivery_ups
 #: selection:delivery.carrier,ups_package_dimension_unit:0
@@ -166,7 +167,7 @@ msgstr ""
 
 #. module: delivery_ups
 #: model:ir.model,name:delivery_ups.model_sale_order
-msgid "Sale Order"
+msgid "Sales Order"
 msgstr "銷售訂單"
 
 #. module: delivery_ups
@@ -196,7 +197,7 @@ msgid ""
 "(Missing field(s) : %s)"
 msgstr ""
 "貴公司的地址遺失或錯誤。\n"
-"（缺少字段：%s）"
+"(遺失的領域:%s)"
 
 #. module: delivery_ups
 #: code:addons/delivery_ups/models/ups_request.py:197
@@ -206,7 +207,7 @@ msgid ""
 "(Missing field(s) : %s)"
 msgstr ""
 "倉庫的地址丟失或錯誤。\n"
-"（缺少字段：%s）"
+"(遺失的領域 :%s)"
 
 #. module: delivery_ups
 #: code:addons/delivery_ups/models/ups_request.py:215
@@ -363,11 +364,3 @@ msgstr ""
 #: selection:product.packaging,package_carrier_type:0
 msgid "bpost"
 msgstr "bpost"
-
-#. module: delivery_ups
-#: model:product.product,weight_uom_name:delivery_ups.product_product_delivery_ups_be
-#: model:product.product,weight_uom_name:delivery_ups.product_product_delivery_ups_us
-#: model:product.template,weight_uom_name:delivery_ups.product_product_delivery_ups_be_product_template
-#: model:product.template,weight_uom_name:delivery_ups.product_product_delivery_ups_us_product_template
-msgid "kg"
-msgstr "kg"

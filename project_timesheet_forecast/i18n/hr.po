@@ -8,14 +8,15 @@
 # Vladimir Olujić <olujic.vladimir@storm.hr>, 2018
 # Đurđica Žarković <durdica.zarkovic@storm.hr>, 2018
 # Ivica Dimjašević <ivica.dimjasevic@storm.hr>, 2018
-# Karolina Tonković <karolina.tonkovic@storm.hr>, 2018
+# Karolina Tonković <karolina.tonkovic@storm.hr>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.3+e\n"
+"Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 08:34+0000\n"
-"PO-Revision-Date: 2018-06-25 08:34+0000\n"
-"Last-Translator: Karolina Tonković <karolina.tonkovic@storm.hr>, 2018\n"
+"POT-Creation-Date: 2018-09-21 14:06+0000\n"
+"PO-Revision-Date: 2018-06-25 08:40+0000\n"
+"Last-Translator: Karolina Tonković <karolina.tonkovic@storm.hr>, 2019\n"
 "Language-Team: Croatian (https://www.transifex.com/odoo/teams/41243/hr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,37 +25,8 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 
 #. module: project_timesheet_forecast
-#: model:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search
-msgid "By day"
-msgstr "Po danu"
-
-#. module: project_timesheet_forecast
-#: model:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search
-msgid "By month"
-msgstr ""
-
-#. module: project_timesheet_forecast
-#: model:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search
-msgid "By person, by task"
-msgstr ""
-
-#. module: project_timesheet_forecast
-#: model:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search
-msgid "By project, by person"
-msgstr ""
-
-#. module: project_timesheet_forecast
-#: model:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search
-msgid "By week"
-msgstr ""
-
-#. module: project_timesheet_forecast
-#: model:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search
-msgid "By year"
-msgstr ""
-
-#. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_timesheet_forecast_report_analysis__date
+#: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search
 msgid "Date"
 msgstr "Datum"
 
@@ -70,6 +42,7 @@ msgstr "Efektivni sati"
 
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_timesheet_forecast_report_analysis__employee_id
+#: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search
 msgid "Employee"
 msgstr "Zaposlenik"
 
@@ -79,7 +52,7 @@ msgid "Forecast"
 msgstr "Predviđanje"
 
 #. module: project_timesheet_forecast
-#: model:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search
+#: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search
 msgid "Group By"
 msgstr "Grupiraj po"
 
@@ -110,26 +83,23 @@ msgstr "Napredak"
 
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_timesheet_forecast_report_analysis__project_id
+#: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search
 msgid "Project"
 msgstr "Projekt"
 
 #. module: project_timesheet_forecast
+#: model:ir.model,name:project_timesheet_forecast.model_project_forecast
+msgid "Project Forecast"
+msgstr "Prognoza projekta"
+
+#. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_timesheet_forecast_report_analysis__task_id
+#: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search
 msgid "Task"
 msgstr "Zadatak"
 
 #. module: project_timesheet_forecast
-#: model:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search
-msgid "This Month"
-msgstr "Ovaj mjesec"
-
-#. module: project_timesheet_forecast
-#: model:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search
-msgid "This Year"
-msgstr "Ova godina"
-
-#. module: project_timesheet_forecast
-#: model:ir.actions.act_window,help:project_timesheet_forecast.project_timesheet_forecast_report_action
+#: model_terms:ir.actions.act_window,help:project_timesheet_forecast.project_timesheet_forecast_report_action
 msgid ""
 "This report performs analysis on your timesheet and forecast. This allow to "
 "have a global view of past forecast and what was really done. Comparing old "
@@ -143,21 +113,21 @@ msgid "Timesheet"
 msgstr "Evidencija rada"
 
 #. module: project_timesheet_forecast
+#: model:ir.model,name:project_timesheet_forecast.model_project_timesheet_forecast_report_analysis
+msgid "Timesheet & Forecast Statistics"
+msgstr ""
+
+#. module: project_timesheet_forecast
 #: model:ir.actions.act_window,name:project_timesheet_forecast.project_timesheet_forecast_report_action
-#: model:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_graph
-#: model:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_pivot
-#: model:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search
+#: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_graph
+#: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_pivot
+#: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search
 msgid "Timesheet Forecast Analysis"
 msgstr ""
 
 #. module: project_timesheet_forecast
 #: model:ir.ui.menu,name:project_timesheet_forecast.menu_project_timesheet_forecast_report_analysis
 msgid "Timesheet and Forecast Analysis"
-msgstr ""
-
-#. module: project_timesheet_forecast
-#: model:ir.model,name:project_timesheet_forecast.model_project_timesheet_forecast_report_analysis
-msgid "Timesheet and Forecast Statistics"
 msgstr ""
 
 #. module: project_timesheet_forecast
@@ -169,8 +139,3 @@ msgstr ""
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_timesheet_forecast_report_analysis__type
 msgid "Type"
 msgstr "Vrsta"
-
-#. module: project_timesheet_forecast
-#: model:ir.model,name:project_timesheet_forecast.model_project_forecast
-msgid "project.forecast"
-msgstr "project.forecast"

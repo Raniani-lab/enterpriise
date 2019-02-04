@@ -3,26 +3,34 @@
 # * website_calendar
 # 
 # Translators:
-# Martin Trigaux, 2018
-# liAnGjiA <liangjia@qq.com>, 2018
+# fausthuang, 2017
+# Rona Lin <ssauapw@qq.com>, 2017
+# Siyuan Gu <siyuancn@hotmail.com>, 2017
+# v2exerer <9010446@qq.com>, 2017
+# 老窦 北京 <2662059195@qq.com>, 2017
+# Eddie Lim <bhweelim@yahoo.com>, 2017
+# liulixia <liu.lixia@elico-corp.com>, 2018
+# e2f_cn c7 <e2f_cn_c7@outlook.com>, 2018
 # ChinaMaker <liuct@chinamaker.net>, 2018
-# Fisher <fisher@kdomi.com>, 2018
-# Jackie Zhang <jzh@odoo.com>, 2018
-# Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
-# Lisa Zhang <lzh@odoo.com>, 2018
-# bower Guo <124358678@qq.com>, 2018
-# roye w <159820@qq.com>, 2018
-# Youfu Sheng <wdmsyf@sina.com>, 2018
-# diaojiaolou <124412206@qq.com>, 2018
-# niulin lnc. <admin@niulin.net>, 2018
-# e2f <projects@e2f.com>, 2018
+# JZH-Odoo <jzh@odoo.com>, 2018
+# e2f <projects@e2f.com>, 2019
+# Martin Trigaux, 2019
+# Jeffery CHEN Fan <jeffery9@gmail.com>, 2019
+# niulin lnc. <admin@niulin.net>, 2019
+# liAnGjiA <liangjia@qq.com>, 2019
+# Fisher <fisher@kdomi.com>, 2019
+# Lisa Zhang <lzh@odoo.com>, 2019
+# bower Guo <124358678@qq.com>, 2019
+# roye w <159820@qq.com>, 2019
+# Youfu Sheng <wdmsyf@sina.com>, 2019
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-08 07:15+0000\n"
-"PO-Revision-Date: 2018-10-08 07:15+0000\n"
-"Last-Translator: e2f <projects@e2f.com>, 2018\n"
+"PO-Revision-Date: 2017-12-13 15:26+0000\n"
+"Last-Translator: Youfu Sheng <wdmsyf@sina.com>, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -83,34 +91,32 @@ msgstr "1 小时 SMS 文本"
 msgid ""
 "<br/>\n"
 "                            It's too late to cancel online, please contact the attendees another way if you really can't make it."
-msgstr ""
-"<br/>\n"
-"                            在线取消已经太迟，如果您不能如期赴约，请采用其他方式联系出席者."
+msgstr "<br/>"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_validated
 msgid "<i class=\"fa fa-fw fa-arrow-right\"/>Add to Google Calendar"
-msgstr "<i class=\"fa fa-fw fa-arrow-right\"/>添加到 Google 日历"
+msgstr "<i class=\"fa fa-fw fa-arrow-right\"/>"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_validated
 msgid "<i class=\"fa fa-fw fa-arrow-right\"/>Add to iCal/Outlook"
-msgstr "<i class=\"fa fa-fw fa-arrow-right\"/>添加到 iCal/Outlook"
+msgstr "<i class=\"fa fa-fw fa-arrow-right\"/>"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_validated
 msgid "<i class=\"fa fa-fw fa-times\"/>Cancel / Reschedule"
-msgstr "<i class=\"fa fa-fw fa-times\"/>取消/重新安排"
+msgstr "<i class=\"fa fa-fw fa-times\"/>"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 msgid "<span> days</span>"
-msgstr "<span> 天</span>"
+msgstr "<span/>"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 msgid "<span> hours before</span>"
-msgstr "<span> 小时，早于</span>"
+msgstr "<span/>"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
@@ -120,26 +126,24 @@ msgstr "<span> 小时</span>"
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 msgid "<span>and not after </span>"
-msgstr "<span>且不晚于 </span>"
+msgstr "<span/>"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 msgid "<span>at least </span>"
-msgstr "<span>至少 </span>"
+msgstr "<span/>"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.calendar_appointment_type_view_form
 msgid "<span>until </span>"
-msgstr "<span>直到 </span>"
+msgstr "<span/>"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.index
 msgid ""
 "<strong>Appointment canceled!</strong>\n"
 "                            You can schedule another appointment from here."
-msgstr ""
-"<strong>约会取消成功!</strong>\n"
-"                            您可在此处安排下次约会."
+msgstr "<strong/>"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment
@@ -148,11 +152,7 @@ msgid ""
 "                            The selected timeslot is not available anymore.\n"
 "                            Someone has booked the same time slot a few\n"
 "                            seconds before you."
-msgstr ""
-"<strong>约会失败!</strong>\n"
-"                            所选时间段不可用.\n"
-"                            短短数秒之前\n"
-"                            有人抢先预定了相同的时间段."
+msgstr "<strong/>"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment
@@ -160,15 +160,12 @@ msgid ""
 "<strong>Appointment failed!</strong>\n"
 "                            The selected timeslot is not available.\n"
 "                            It appears you already have another meeting with us at that date."
-msgstr ""
-"<strong>约会失败!</strong>\n"
-"                            所选时间段不可用.\n"
-"                            似乎您已经与我们在这一天安排了会面."
+msgstr "<strong/>"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_validated
 msgid "<strong>Your appointment has been successfully booked!</strong>"
-msgstr "<strong>你的约会已经被成功预订了!</strong>"
+msgstr "<strong/>"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_form
@@ -256,7 +253,7 @@ msgstr "约会："
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.index
 msgid "Appointment<span class=\"chevron\"/>"
-msgstr "约会<span class=\"chevron\"/>"
+msgstr "<span class=\"chevron\"/>"
 
 #. module: website_calendar
 #: model:ir.module.category,name:website_calendar.module_category_calendar
@@ -319,7 +316,7 @@ msgstr "客户选择"
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_form
 msgid "Confirm Appointment <span class=\"fa fa-arrow-right\"/>"
-msgstr "确认约会 <span class=\"fa fa-arrow-right\"/>"
+msgstr "<span class=\"fa fa-arrow-right\"/>"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_form
@@ -601,7 +598,7 @@ msgstr "名称"
 #: code:addons/website_calendar/static/src/js/website_calendar.editor.js:29
 #, python-format
 msgid "New Appointment Type"
-msgstr "新的合约类型"
+msgstr "新约会类型"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.setup
@@ -852,7 +849,7 @@ msgstr "时区："
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment
 #: model_terms:ir.ui.view,arch_db:website_calendar.index
 msgid "Time<span class=\"chevron\"/>"
-msgstr "时间<span class=\"chevron\"/>"
+msgstr "<span class=\"chevron\"/>"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__appointment_tz
@@ -887,7 +884,7 @@ msgstr "未读消息计数器"
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.index
 msgid "View Availabilities <span class=\"fa fa-arrow-right\"/>"
-msgstr "查看可用性 <span class=\"fa fa-arrow-right\"/>"
+msgstr "<span class=\"fa fa-arrow-right\"/>"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__website_published

@@ -3,15 +3,18 @@
 # * account_yodlee
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018
+# Zoriana Zaiats, 2018
+# Bohdan Lisnenko, 2018
+# Даниил Бойко <5n00p4eg@gmail.com>, 2018
+# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"PO-Revision-Date: 2016-08-05 13:28+0000\n"
+"Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -41,10 +44,10 @@ msgid ""
 "  Please log in to the site to confirm and then complete the site addition "
 "process with the correct login information."
 msgstr ""
-"Обліковий запис вже зареєстровано (436): Ваша автоматична реєстрація не може"
-" бути завершена, оскільки на сайті повідомляється, що ваш обліковий запис "
-"вже зареєстрований. Будь ласка, увійдіть на сайт, щоб підтвердити та "
-"завершити процес додавання сайту з правильною реєстраційною інформацією. "
+"Обліковий запис вже зареєстрований (436): Ваша автоматична реєстрація не "
+"може бути завершена, оскільки на сайті повідомляється, що ваш обліковий "
+"запис вже зареєстрований. Будь ласка, увійдіть на сайт, аби підтвердити та "
+"завершити процес додавання сайту з правильною реєстраційною інформацією."
 
 #. module: account_yodlee
 #: code:addons/account_yodlee/models/yodlee.py:322
@@ -84,10 +87,10 @@ msgid ""
 "been closed.  Please deactivate or delete the relevant account and try "
 "again."
 msgstr ""
-"Звіт облікового запису закритий (422): нам не вдалося оновити дані вашого "
-"облікового запису, оскільки з'являється, що один або кілька ваших пов'язаних"
-" облікових записів закриті. Вимкніть або видаліть відповідний обліковий "
-"запис і повторіть спробу."
+"Звіт рахунку закритий (422): нам не вдалося оновити дані вашого облікового "
+"запису, оскільки з'являється, що один або кілька ваших пов'язаних облікових "
+"записів закриті. Вимкніть або видаліть відповідний обліковий запис і "
+"повторіть спробу."
 
 #. module: account_yodlee
 #: code:addons/account_yodlee/models/yodlee.py:324
@@ -117,13 +120,13 @@ msgid "Companies"
 msgstr "Компанії"
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:187
+#: code:addons/account_yodlee/models/yodlee.py:199
 #, python-format
 msgid "Could not make sense of parameters: %s"
 msgstr "Не можливо зрозуміти параметри: %s"
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:319
+#: code:addons/account_yodlee/models/yodlee.py:339
 #, python-format
 msgid ""
 "Credential Re-Verification Required (402): We could not update your account "
@@ -136,7 +139,7 @@ msgstr ""
 "пароль."
 
 #. module: account_yodlee
-#: code:addons/account_yodlee/models/yodlee.py:325
+#: code:addons/account_yodlee/models/yodlee.py:345
 #, python-format
 msgid ""
 "Credential Re-Verification Required (420):The site has merged with another. "
@@ -145,6 +148,12 @@ msgstr ""
 "Обов'язкове повторне підтвердження облікових записів (420): сайт залито з "
 "іншим. Будь ласка, повторно підтвердіть свої облікові дані на сайті та "
 "оновіть їх."
+
+#. module: account_yodlee
+#: code:addons/account_yodlee/models/yodlee.py:228
+#, python-format
+msgid "Error %s, message: %s"
+msgstr "Помилка %s, повідомлення: %s"
 
 #. module: account_yodlee
 #: code:addons/account_yodlee/models/yodlee.py:102
@@ -652,10 +661,10 @@ msgid ""
 "inconvenience.  This problem is typically resolved in a few hours. Please "
 "try later."
 msgstr ""
-"Сайт впав для обслуговування (424): ми не змогли оновити ваш обліковий "
-"запис, оскільки сайт тимчасово не працює для обслуговування. Ми просимо "
-"вибачення за незручності. Ця проблема зазвичай вирішується через кілька "
-"годин. Будь ласка, спробуйте пізніше."
+"Site Down for Maintenance (424): ми не змогли оновити ваш обліковий запис, "
+"оскільки сайт тимчасово не працює для обслуговування. Ми просимо вибачення "
+"за незручності. Ця проблема зазвичай вирішується через кілька годин. Будь "
+"ласка, спробуйте пізніше."
 
 #. module: account_yodlee
 #: code:addons/account_yodlee/models/yodlee.py:307
@@ -749,3 +758,9 @@ msgstr "Пароль Yodlee"
 #: model:ir.model.fields,field_description:account_yodlee.field_res_company__yodlee_access_token
 msgid "access_token"
 msgstr "access_token"
+
+#. module: account_yodlee
+#: code:addons/account_yodlee/models/yodlee.py:297
+#, python-format
+msgid "message: %s"
+msgstr "повідомлення: %s"

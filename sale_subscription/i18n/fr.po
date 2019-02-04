@@ -3,23 +3,53 @@
 # * sale_subscription
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Eloïse Stilmant <est@odoo.com>, 2018
-# Olivier Lenoir <olivier.lenoir@free.fr>, 2018
-# Laura Piraux <lap@odoo.com>, 2018
-# Léonie Bouchat <lbo@odoo.com>, 2018
-# Nathan Grognet <ngr@odoo.com>, 2018
-# Christophe CHAUVET <christophe.chauvet@gmail.com>, 2018
-# e2f <projects@e2f.com>, 2018
-# Lucas Deliege <lud@odoo.com>, 2018
-# Xavier Symons <xsy@openerp.com>, 2018
+# Daniel & Delphine <dd2013@leschoupinous.net>, 2017
+# Shark McGnark <peculiarcheese@gmail.com>, 2017
+# Denis Leemann <denis.leemann@camptocamp.com>, 2017
+# Natys <support@natys.fr>, 2017
+# fr rev <e2ffr04@hotmail.com>, 2017
+# fr trans <e2ffr05@hotmail.com>, 2017
+# Tony Galmiche <tony.galmiche@infosaone.com>, 2017
+# fr rev <e2ffr02@hotmail.com>, 2017
+# f5f0a0dac17dde787a1d812a6989680e, 2017
+# Manu1400 <ehaguet@teclib.com>, 2017
+# Lionel Sausin <ls@numerigraphe.com>, 2017
+# Melanie Bernard <mbe@odoo.com>, 2017
+# Fabien Pinckaers <fp@openerp.com>, 2017
+# Lucas Deliege <lud@openerp.com>, 2017
+# Clo <clo@odoo.com>, 2017
+# Bertrand LATOUR <divoir@gmail.com>, 2017
+# Damien Bouvy <dbo@odoo.com>, 2017
+# Florian Hatat, 2017
+# Adriana Ierfino <adriana.ierfino@savoirfairelinux.com>, 2017
+# e2f Production <e2f_prod@outlook.com>, 2018
+# fr trans <e2ftrans1@yahoo.com>, 2018
+# Olivier Dony <odo@odoo.com>, 2018
+# Maxime Chambreuil <mchambreuil@ursainfosystems.com>, 2018
+# Hubert TETARD <htetard@apik-conseils.com>, 2018
+# Nancy Bolognesi <nb@microcom.ca>, 2018
+# Micky Jault <micky037@hotmail.fr>, 2018
+# Jérémy Donas <LeDistordu@users.noreply.github.com>, 2018
+# Xavier Belmere <Info@cartmeleon.com>, 2018
+# Christophe CHAUVET <christophe.chauvet@gmail.com>, 2019
+# e2f <projects@e2f.com>, 2019
+# Olivier Lenoir <olivier.lenoir@free.fr>, 2019
+# Xavier Symons <xsy@openerp.com>, 2019
+# Lucas Deliege <lud@odoo.com>, 2019
+# Laura Piraux <lap@odoo.com>, 2019
+# Olivier ANDRE <frsw194@gmail.com>, 2019
+# Martin Trigaux, 2019
+# Eloïse Stilmant <est@odoo.com>, 2019
+# Léonie Bouchat <lbo@odoo.com>, 2019
+# Nathan Grognet <ngr@odoo.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 12.0+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-08 07:14+0000\n"
-"PO-Revision-Date: 2018-10-08 07:14+0000\n"
-"Last-Translator: Xavier Symons <xsy@openerp.com>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"PO-Revision-Date: 2017-12-13 15:26+0000\n"
+"Last-Translator: Nathan Grognet <ngr@odoo.com>, 2019\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -395,6 +425,11 @@ msgid "<i class=\"fa fa-check\"/> Closable by customer"
 msgstr "<i class=\"fa fa-check\"/>"
 
 #. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_kanban
+msgid "<i class=\"fa fa-ellipsis-v\" role=\"img\" aria-label=\"Manage\" title=\"Manage\"/>"
+msgstr ""
+
+#. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "<i class=\"fa fa-envelope\"/> Send email"
 msgstr ""
@@ -438,14 +473,6 @@ msgstr ""
 msgid ""
 "<span class=\"badge badge-pill badge-warning\"><i class=\"fa fa-fw fa-"
 "refresh\"/> To Renew</span>"
-msgstr ""
-
-#. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_form
-msgid ""
-"<span class=\"badge badge-warning border-0\" attrs=\"{'invisible': [('to_renew', '=', False)]}\">\n"
-"                                To Renew\n"
-"                            </span>"
 msgstr ""
 
 #. module: sale_subscription
@@ -1007,13 +1034,13 @@ msgstr "Archivé"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__activity_user
 msgid "Assign To"
-msgstr "Attribué à"
+msgstr "Assignée à"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__message_attachment_count
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_template__message_attachment_count
 msgid "Attachment Count"
-msgstr "Nombre de pièces jointes"
+msgstr "Compte des pièces jointes"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__automation_id
@@ -1402,7 +1429,7 @@ msgstr "Clients"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_snapshot__date
 msgid "Date"
-msgstr "Date "
+msgstr "Date"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__recurring_next_date
@@ -1553,12 +1580,12 @@ msgstr "ID Externe"
 #. module: sale_subscription
 #: selection:sale.subscription.template,recurring_rule_boundary:0
 msgid "Fixed"
-msgstr "Fixé"
+msgstr "Fixe"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_stage__fold
 msgid "Folded in Kanban"
-msgstr "Replié dans la vue Kanban"
+msgstr "Repliée dans la vue Kanban"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__message_follower_ids
@@ -1732,6 +1759,7 @@ msgstr ""
 "date sélectionnée et sera fermé à cette date."
 
 #. module: sale_subscription
+#: model:ir.model.fields,help:sale_subscription.field_product_product__recurring_invoice
 #: model:ir.model.fields,help:sale_subscription.field_product_template__recurring_invoice
 msgid ""
 "If set, confirming a sale order with this product will create a subscription"
@@ -2385,6 +2413,7 @@ msgid "Product Template"
 msgstr "Modèle d'article"
 
 #. module: sale_subscription
+#: model:ir.model.fields,help:sale_subscription.field_product_product__subscription_template_id
 #: model:ir.model.fields,help:sale_subscription.field_product_template__subscription_template_id
 msgid "Product will be included in a selected template"
 msgstr "Le produit sera inclus dans un modèle sélectionné"
@@ -2532,7 +2561,7 @@ msgstr "Répéter chaque (Jour/Semaine/Mois/Année)"
 #. module: sale_subscription
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_report
 msgid "Reporting"
-msgstr "Analyse"
+msgstr "Rapport"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_alert__activity_user_id
@@ -2583,11 +2612,6 @@ msgid "Sad face"
 msgstr "Tête triste"
 
 #. module: sale_subscription
-#: model:ir.model,name:sale_subscription.model_sale_order
-msgid "Sale Order"
-msgstr "Bon de commande"
-
-#. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__sale_order_count
 msgid "Sale Order Count"
 msgstr "Nombre de commandes"
@@ -2628,6 +2652,11 @@ msgstr "Vente"
 #: selection:sale.subscription.alert,activity_user:0
 msgid "Sales Channel Leader"
 msgstr ""
+
+#. module: sale_subscription
+#: model:ir.model,name:sale_subscription.model_sale_order
+msgid "Sales Order"
+msgstr "Bon de commande"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_order_line
@@ -2790,7 +2819,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_stage_action
 msgid "Stages"
-msgstr "Etapes"
+msgstr "Étapes"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__date_start
@@ -2893,6 +2922,7 @@ msgid "Subscription Management"
 msgstr "Gestion des Abonnements"
 
 #. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_product_product__recurring_invoice
 #: model:ir.model.fields,field_description:sale_subscription.field_product_template__recurring_invoice
 msgid "Subscription Product"
 msgstr "Produit d'abonnement"
@@ -2922,6 +2952,7 @@ msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_subscription_template
+#: model:ir.model.fields,field_description:sale_subscription.field_product_product__subscription_template_id
 #: model:ir.model.fields,field_description:sale_subscription.field_product_template__subscription_template_id
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__template_id
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__template_id
@@ -2973,6 +3004,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_action_res_partner
 #: model:ir.model.fields,field_description:sale_subscription.field_account_analytic_account__subscription_ids
 #: model:ir.model.fields,field_description:sale_subscription.field_res_partner__subscription_count
+#: model:ir.model.fields,field_description:sale_subscription.field_res_users__subscription_count
 #: model:ir.module.category,name:sale_subscription.module_category_subscription_management
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_action
@@ -3067,7 +3099,7 @@ msgstr "Chef d'équipe"
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_subscription_alert__activity_user_field_name
 msgid "Technical name of the user on the record"
-msgstr "Nom technique de l'utilisateur "
+msgstr "Nom technique de l'utilisateur sur l'enregistrement"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
@@ -3187,6 +3219,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription__to_renew
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__to_renew
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_form
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_kanban
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 #, python-format
@@ -3560,14 +3593,6 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid "e.g. Update order quantity"
 msgstr "Ex. : Mettre à jour la quantité"
-
-#. module: sale_subscription
-#: model:product.product,weight_uom_name:sale_subscription.product_office_cleaning
-#: model:product.product,weight_uom_name:sale_subscription.product_office_cleaning_yearly
-#: model:product.template,weight_uom_name:sale_subscription.product_office_cleaning_product_template
-#: model:product.template,weight_uom_name:sale_subscription.product_office_cleaning_yearly_product_template
-msgid "kg"
-msgstr "kg"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription

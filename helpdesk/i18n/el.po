@@ -3,17 +3,18 @@
 # * helpdesk
 # 
 # Translators:
-# Martin Trigaux, 2018
-# George Tarasidis <george_tarasidis@yahoo.com>, 2018
-# Kostas Goutoudis <goutoudis@gmail.com>, 2018
-# Stefanos Nikou <stefanos.nikou@gmail.com>, 2018
+# Martin Trigaux, 2019
+# Kostas Goutoudis <goutoudis@gmail.com>, 2019
+# Stefanos Nikou <stefanos.nikou@gmail.com>, 2019
+# George Tarasidis <george_tarasidis@yahoo.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-02 10:31+0000\n"
-"PO-Revision-Date: 2018-10-02 10:31+0000\n"
-"Last-Translator: Stefanos Nikou <stefanos.nikou@gmail.com>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:12+0000\n"
+"PO-Revision-Date: 2017-02-15 11:45+0000\n"
+"Last-Translator: George Tarasidis <george_tarasidis@yahoo.com>, 2019\n"
 "Language-Team: Greek (https://www.transifex.com/odoo/teams/41243/el/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -33,11 +34,6 @@ msgstr ""
 #: model:mail.template,subject:helpdesk.solved_ticket_request_email_template
 msgid "${object.display_name}"
 msgstr "${object.display_name}"
-
-#. module: helpdesk
-#: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__percentage_satisfaction
-msgid "% Happy"
-msgstr "% Ευχαριστημένοι"
 
 #. module: helpdesk
 #: model_terms:digest.tip,tip_description:helpdesk.digest_tip_helpdesk_0
@@ -153,7 +149,7 @@ msgstr ""
 
 #. module: helpdesk
 #. openerp-web
-#: code:addons/helpdesk/static/src/js/tour.js:58
+#: code:addons/helpdesk/static/src/js/tour.js:59
 #, python-format
 msgid ""
 "<b>Stars</b> mark the <b>ticket priority</b>. You can change it directly "
@@ -181,6 +177,16 @@ msgid "<i class=\"fa fa-arrow-right\"/> View documentation"
 msgstr "<i class=\"fa fa-arrow-right\"/> Προβολή Τεκμηρίωσης"
 
 #. module: helpdesk
+#: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_kanban
+msgid "<i class=\"fa fa-comments\" role=\"img\" aria-label=\"Messages\"/>"
+msgstr ""
+
+#. module: helpdesk
+#: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_kanban
+msgid "<i class=\"fa fa-ellipsis-v\" role=\"img\" aria-label=\"Manage\" title=\"Manage\"/>"
+msgstr ""
+
+#. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.index
 msgid "<i class=\"fa fa-envelope\"/> Email :"
 msgstr ""
@@ -190,6 +196,13 @@ msgstr ""
 msgid ""
 "<i class=\"fa fa-envelope-o\" title=\"Domain alias\" role=\"img\" aria-"
 "label=\"Domain alias\"/>&amp;nbsp;"
+msgstr ""
+
+#. module: helpdesk
+#: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
+msgid ""
+"<i class=\"fa fa-fw fa-arrow-right\" role=\"img\" aria-label=\"Rating URL\" "
+"title=\"Rating URL\"/>"
 msgstr ""
 
 #. module: helpdesk
@@ -205,6 +218,13 @@ msgstr ""
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.tickets_followup
 msgid "<small class=\"text-right\">Status:</small>"
+msgstr ""
+
+#. module: helpdesk
+#: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_kanban
+msgid ""
+"<span class=\"fa fa-clock-o\" title=\"Deadline\" role=\"img\" aria-"
+"label=\"Deadline\"/>"
 msgstr ""
 
 #. module: helpdesk
@@ -310,7 +330,7 @@ msgstr "Τύποι Δραστηριότητας"
 
 #. module: helpdesk
 #. openerp-web
-#: code:addons/helpdesk/static/src/js/tour.js:63
+#: code:addons/helpdesk/static/src/js/tour.js:64
 #, python-format
 msgid ""
 "Add columns to configure <b>stages for your tickets</b>.<br/><i>e.g. "
@@ -386,13 +406,13 @@ msgstr ""
 
 #. module: helpdesk
 #. openerp-web
-#: code:addons/helpdesk/static/src/js/tour.js:39
+#: code:addons/helpdesk/static/src/js/tour.js:40
 #, python-format
 msgid "Assign the ticket to someone."
 msgstr ""
 
 #. module: helpdesk
-#: code:addons/helpdesk/models/helpdesk_ticket.py:421
+#: code:addons/helpdesk/models/helpdesk_ticket.py:423
 #, python-format
 msgid "Assign to me"
 msgstr ""
@@ -497,7 +517,7 @@ msgstr ""
 
 #. module: helpdesk
 #. openerp-web
-#: code:addons/helpdesk/static/src/js/tour.js:67
+#: code:addons/helpdesk/static/src/js/tour.js:68
 #, python-format
 msgid "Click here and select \"Helpdesk Teams\" for further configuration."
 msgstr ""
@@ -511,7 +531,7 @@ msgstr ""
 
 #. module: helpdesk
 #. openerp-web
-#: code:addons/helpdesk/static/src/js/tour.js:52
+#: code:addons/helpdesk/static/src/js/tour.js:53
 #, python-format
 msgid ""
 "Click these cards to open their form view, or <b>drag &amp; drop</b> them "
@@ -667,7 +687,7 @@ msgid "Current stage of this ticket"
 msgstr ""
 
 #. module: helpdesk
-#: code:addons/helpdesk/models/helpdesk_ticket.py:332
+#: code:addons/helpdesk/models/helpdesk_ticket.py:334
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__partner_id
 #, python-format
 msgid "Customer"
@@ -679,7 +699,7 @@ msgid "Customer Care"
 msgstr ""
 
 #. module: helpdesk
-#: code:addons/helpdesk/models/helpdesk_ticket.py:334
+#: code:addons/helpdesk/models/helpdesk_ticket.py:336
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__partner_email
 #, python-format
 msgid "Customer Email"
@@ -708,7 +728,7 @@ msgid "Customer Satisfaction"
 msgstr ""
 
 #. module: helpdesk
-#: code:addons/helpdesk/models/helpdesk_ticket.py:319
+#: code:addons/helpdesk/models/helpdesk_ticket.py:321
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_form
 #, python-format
 msgid "Customer Tickets"
@@ -730,7 +750,7 @@ msgstr ""
 
 #. module: helpdesk
 #. openerp-web
-#: code:addons/helpdesk/static/src/js/helpdesk_dashboard.js:224
+#: code:addons/helpdesk/static/src/js/helpdesk_dashboard.js:227
 #, python-format
 msgid "Dashboard"
 msgstr "Ταμπλό"
@@ -846,7 +866,7 @@ msgstr ""
 
 #. module: helpdesk
 #. openerp-web
-#: code:addons/helpdesk/static/src/js/tour.js:29
+#: code:addons/helpdesk/static/src/js/tour.js:30
 #, python-format
 msgid ""
 "Enter a subject or title for this ticket.<br/><i>(e.g. Problem with "
@@ -855,7 +875,7 @@ msgstr ""
 
 #. module: helpdesk
 #. openerp-web
-#: code:addons/helpdesk/static/src/js/tour.js:34
+#: code:addons/helpdesk/static/src/js/tour.js:35
 #, python-format
 msgid "Enter the customer. Feel free to create it on the fly."
 msgstr ""
@@ -1206,7 +1226,7 @@ msgstr ""
 
 #. module: helpdesk
 #. openerp-web
-#: code:addons/helpdesk/static/src/js/tour.js:23
+#: code:addons/helpdesk/static/src/js/tour.js:24
 #, python-format
 msgid "Let's create your first ticket."
 msgstr ""
@@ -1401,7 +1421,7 @@ msgstr "Πλήθος μη αναγνωσμένων μηνυμάτων"
 
 #. module: helpdesk
 #. openerp-web
-#: code:addons/helpdesk/static/src/js/helpdesk_dashboard.js:189
+#: code:addons/helpdesk/static/src/js/helpdesk_dashboard.js:190
 #, python-format
 msgid "Only Integer Value should be valid."
 msgstr "Μόνο ακέραιη τιμή θα πρέπει να είναι έγκυρη."
@@ -1470,6 +1490,11 @@ msgstr ""
 "Γονικό μοντέλο κρατώντας το ψευδώνυμο. Το μοντέλο που κρατά το ψευδώνυμο "
 "αναφοράς δεν είναι απαραίτητο το μοντέλο να δίνεται από alias_model_id "
 "(παράδειγμα: Έργο (parent_model) και Εργασία (μοντέλο))"
+
+#. module: helpdesk
+#: model:ir.model.fields,help:helpdesk.field_helpdesk_team__rating_percentage_satisfaction
+msgid "Percentage of happy ratings"
+msgstr ""
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
@@ -1564,13 +1589,23 @@ msgid "Rating Last Value"
 msgstr "Τελευταία Τιμή Βαθμολογίας"
 
 #. module: helpdesk
+#: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__rating_percentage_satisfaction
+msgid "Rating Satisfaction"
+msgstr ""
+
+#. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__rating_count
 msgid "Rating count"
 msgstr "Πλήθος Βαθμολογιών"
 
 #. module: helpdesk
-#: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__use_rating
+#: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__rating_ids
 msgid "Ratings"
+msgstr ""
+
+#. module: helpdesk
+#: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__use_rating
+msgid "Ratings on tickets"
 msgstr ""
 
 #. module: helpdesk
@@ -1700,7 +1735,7 @@ msgstr ""
 
 #. module: helpdesk
 #. openerp-web
-#: code:addons/helpdesk/static/src/js/tour.js:43
+#: code:addons/helpdesk/static/src/js/tour.js:44
 #, python-format
 msgid "Save this ticket and the modifications you've made to it."
 msgstr ""
@@ -2084,12 +2119,6 @@ msgid "This required to have project module installed."
 msgstr ""
 
 #. module: helpdesk
-#: code:addons/helpdesk/models/helpdesk.py:340
-#, python-format
-msgid "This target does not exist."
-msgstr "Ο στόχος αυτός δεν υπάρχει."
-
-#. module: helpdesk
 #. openerp-web
 #: code:addons/helpdesk/static/src/xml/helpdesk_team_templates.xml:30
 #, python-format
@@ -2168,6 +2197,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:helpdesk.helpdesk_ticket_action_urgent
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__ticket_ids
 #: model:ir.model.fields,field_description:helpdesk.field_res_partner__ticket_count
+#: model:ir.model.fields,field_description:helpdesk.field_res_users__ticket_count
 #: model:ir.ui.menu,name:helpdesk.helpdesk_ticket_report_menu
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_kanban
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_tree
@@ -2313,7 +2343,7 @@ msgstr ""
 
 #. module: helpdesk
 #. openerp-web
-#: code:addons/helpdesk/static/src/js/tour.js:48
+#: code:addons/helpdesk/static/src/js/tour.js:49
 #, python-format
 msgid "Use the breadcrumbs to go back to the Kanban view."
 msgstr ""
@@ -2403,13 +2433,13 @@ msgstr "Ώρες Εργασίας"
 
 #. module: helpdesk
 #. openerp-web
-#: code:addons/helpdesk/static/src/js/helpdesk_dashboard.js:189
+#: code:addons/helpdesk/static/src/js/helpdesk_dashboard.js:190
 #, python-format
 msgid "Wrong value entered!"
 msgstr "Έχει εισαχθεί λάθος τιμή!"
 
 #. module: helpdesk
-#: code:addons/helpdesk/models/helpdesk.py:108
+#: code:addons/helpdesk/models/helpdesk.py:100
 #, python-format
 msgid "You must have team members assigned to change the assignation method."
 msgstr ""

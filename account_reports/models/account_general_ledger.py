@@ -236,7 +236,8 @@ class report_account_general_ledger(models.AbstractModel):
                 stop = offset + self.MAX_LINES
             else:
                 stop = None
-            aml_ids = aml_ids[offset:stop]
+            if not context.get('print_mode'):
+                aml_ids = aml_ids[offset:stop]
 
             accounts[account]['lines'] = self.env['account.move.line'].browse(aml_ids)
 

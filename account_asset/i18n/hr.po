@@ -3,23 +3,26 @@
 # * account_asset
 # 
 # Translators:
-# Bole <bole@dajmi5.com>, 2017
-# Jasmina Otročak <jasmina@uvid.hr>, 2017
-# Vladimir Olujić <olujic.vladimir@storm.hr>, 2017
-# Martin Trigaux, 2017
 # Filip Cuk <filipcuk2@gmail.com>, 2017
-# Đurđica Žarković <durdica.zarkovic@storm.hr>, 2017
-# Ivica Dimjašević <ivica.dimjasevic@storm.hr>, 2017
 # Karolina Tonković <karolina.tonkovic@storm.hr>, 2017
-# Stjepan Lovasić <stjepan.lovasic@gmail.com>, 2017
+# Ivica Dimjašević <ivica.dimjasevic@storm.hr>, 2017
+# Jasmina Otročak <jasmina@uvid.hr>, 2017
+# Vladimir Olujić <olujic.vladimir@storm.hr>, 2018
 # Tina Milas, 2018
+# Ivan Marijanović <ivanm101@yahoo.com>, 2019
+# Martin Trigaux, 2019
+# Bole <bole@dajmi5.com>, 2019
+# Đurđica Žarković <durdica.zarkovic@storm.hr>, 2019
+# Marko Carević <marko.carevic@live.com>, 2019
+# Stjepan Lovasić <stjepan.lovasic@gmail.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.4\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-02 09:12+0000\n"
-"PO-Revision-Date: 2018-08-02 09:12+0000\n"
-"Last-Translator: Tina Milas, 2018\n"
+"POT-Creation-Date: 2018-12-24 11:16+0000\n"
+"PO-Revision-Date: 2016-08-05 12:55+0000\n"
+"Last-Translator: Stjepan Lovasić <stjepan.lovasic@gmail.com>, 2019\n"
 "Language-Team: Croatian (https://www.transifex.com/odoo/teams/41243/hr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -28,13 +31,13 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 
 #. module: account_asset
-#: code:addons/account_asset/models/account_asset.py:426
+#: code:addons/account_asset/models/account_asset.py:429
 #, python-format
 msgid " (copy)"
 msgstr " (kopija)"
 
 #. module: account_asset
-#: code:addons/account_asset/models/account_asset.py:561
+#: code:addons/account_asset/models/account_asset.py:571
 #, python-format
 msgid " (grouped)"
 msgstr "(grupirano)"
@@ -55,11 +58,6 @@ msgstr "Osnovna sredstva : Kreiraj knjiženja sredstva"
 #: model:ir.model.fields,field_description:account_asset.field_asset_depreciation_confirmation_wizard__date
 msgid "Account Date"
 msgstr "Datum konta"
-
-#. module: account_asset
-#: model:ir.model,name:account_asset.model_account_move
-msgid "Account Entry"
-msgstr "Temeljnica"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset_category__account_depreciation_id
@@ -103,12 +101,22 @@ msgid "Active"
 msgstr "Aktivan"
 
 #. module: account_asset
-#: model:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
+#: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__activity_ids
+msgid "Activities"
+msgstr "Aktivnosti"
+
+#. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__activity_state
+msgid "Activity State"
+msgstr "Status aktivnosti"
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
 msgid "Additional Options"
 msgstr "Dodatne opcije"
 
 #. module: account_asset
-#: code:addons/account_asset/models/account_asset.py:627
+#: code:addons/account_asset/models/account_asset.py:639
 #, python-format
 msgid "Amount"
 msgstr "Iznos"
@@ -124,37 +132,50 @@ msgid "Amount of Installment Lines"
 msgstr "Vrijednost stavaka amortizacije"
 
 #. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__account_analytic_id
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_category__account_analytic_id
 msgid "Analytic Account"
 msgstr "Analitički konto"
 
 #. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__analytic_tag_ids
+#: model:ir.model.fields,field_description:account_asset.field_account_asset_category__analytic_tag_ids
+msgid "Analytic Tag"
+msgstr "Oznaka analitike"
+
+#. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_depreciation_line__asset_id
 #: model:ir.model.fields,field_description:account_asset.field_asset_asset_report__asset_id
-#: model:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
-#: model:ir.ui.view,arch_db:account_asset.view_account_asset_search
-#: model:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
+#: model_terms:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
 msgid "Asset"
 msgstr "Sredstvo"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_category__account_asset_id
-#: model:ir.ui.view,arch_db:account_asset.view_account_asset_search
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 msgid "Asset Account"
 msgstr "Konto sredstva"
 
 #. module: account_asset
+#: model:ir.model,name:account_asset.model_account_asset_category
 #: model:ir.model.fields,field_description:account_asset.field_account_invoice_line__asset_category_id
-#: model:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
-#: model:ir.ui.view,arch_db:account_asset.view_account_asset_asset_purchase_tree
-#: model:ir.ui.view,arch_db:account_asset.view_account_asset_search
-#: model:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
-#: model:ir.ui.view,arch_db:account_asset.view_invoice_asset_category
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_purchase_tree
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
+#: model_terms:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
+#: model_terms:ir.ui.view,arch_db:account_asset.view_invoice_asset_category
 msgid "Asset Category"
 msgstr "Kategorija DI"
 
 #. module: account_asset
-#: model:ir.ui.view,arch_db:account_asset.asset_modify_form
+#: model:ir.model,name:account_asset.model_account_asset_depreciation_line
+msgid "Asset Depreciation Line"
+msgstr ""
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
 msgid "Asset Durations to Modify"
 msgstr "Prilagodba vijeka trajanja imovine"
 
@@ -180,40 +201,33 @@ msgstr "Početni datum amortizacije"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_category__name
-#: model:ir.model.fields,field_description:account_asset.field_product_product__asset_category_id
 #: model:ir.model.fields,field_description:account_asset.field_product_template__asset_category_id
-#: model:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
 msgid "Asset Type"
 msgstr "Vrsta sredstva"
 
 #. module: account_asset
 #: model:ir.actions.act_window,name:account_asset.action_account_asset_asset_list_normal_purchase
 #: model:ir.ui.menu,name:account_asset.menu_action_account_asset_asset_list_normal_purchase
-#: model:ir.ui.view,arch_db:account_asset.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:account_asset.res_config_settings_view_form
 msgid "Asset Types"
 msgstr "Vrste sredstava"
 
 #. module: account_asset
-#: model:ir.model,name:account_asset.model_account_asset_category
 #: model:ir.model.fields,field_description:account_asset.field_asset_asset_report__asset_category_id
-#: model:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
-#: model:ir.ui.view,arch_db:account_asset.view_account_asset_category_tree
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_tree
 msgid "Asset category"
 msgstr "Kategorija DI"
 
 #. module: account_asset
-#: code:addons/account_asset/models/account_asset.py:297
+#: code:addons/account_asset/models/account_asset.py:296
 #, python-format
 msgid "Asset created"
 msgstr "Sredstvo kreirano"
 
 #. module: account_asset
-#: model:ir.model,name:account_asset.model_account_asset_depreciation_line
-msgid "Asset depreciation line"
-msgstr "Stavka amortizacije imovine"
-
-#. module: account_asset
-#: code:addons/account_asset/models/account_asset.py:345
+#: code:addons/account_asset/models/account_asset.py:344
 #, python-format
 msgid "Asset sold or disposed. Accounting entry awaiting for validation."
 msgstr "Imovina prodana ili raspoloživa. Temeljnice čekaju knjiženje."
@@ -227,19 +241,24 @@ msgstr "Imovina/Priznavanje prihoda"
 #: model:ir.actions.act_window,name:account_asset.action_account_asset_asset_form
 #: model:ir.ui.menu,name:account_asset.menu_action_account_asset_asset_form
 #: model:ir.ui.menu,name:account_asset.menu_action_asset_asset_report
-#: model:ir.ui.view,arch_db:account_asset.view_account_asset_asset_purchase_tree
-#: model:ir.ui.view,arch_db:account_asset.view_account_asset_category_search
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_purchase_tree
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_search
 msgid "Assets"
 msgstr "Dugotrajna imovina"
 
 #. module: account_asset
 #: model:ir.actions.act_window,name:account_asset.action_asset_asset_report
 #: model:ir.model,name:account_asset.model_asset_asset_report
-#: model:ir.ui.view,arch_db:account_asset.action_account_asset_report_graph
-#: model:ir.ui.view,arch_db:account_asset.action_account_asset_report_pivot
-#: model:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
+#: model_terms:ir.ui.view,arch_db:account_asset.action_account_asset_report_graph
+#: model_terms:ir.ui.view,arch_db:account_asset.action_account_asset_report_pivot
+#: model_terms:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
 msgid "Assets Analysis"
 msgstr "Analiza Imovine"
+
+#. module: account_asset
+#: model:ir.model,name:account_asset.model_asset_depreciation_confirmation_wizard
+msgid "Assets Depreciation Confirmation wizard"
+msgstr ""
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_move__asset_depreciation_ids
@@ -252,24 +271,29 @@ msgid "Assets and Revenues"
 msgstr "Imovine i prihodi"
 
 #. module: account_asset
-#: model:ir.ui.view,arch_db:account_asset.view_account_asset_search
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 msgid "Assets in closed state"
 msgstr "Imovina sa statusom 'zatvoreno'"
 
 #. module: account_asset
-#: model:ir.ui.view,arch_db:account_asset.view_account_asset_search
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 msgid "Assets in draft and open states"
 msgstr "Imovina u stanju 'nacrt' ili 'otvoreno'"
 
 #. module: account_asset
-#: model:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
+#: model_terms:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
 msgid "Assets in draft state"
 msgstr "Imovina u stavnu nacrta"
 
 #. module: account_asset
-#: model:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
+#: model_terms:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
 msgid "Assets in running state"
 msgstr "Aktivna osnovna sredstva"
+
+#. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__message_attachment_count
+msgid "Attachment Count"
+msgstr ""
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_category__open_asset
@@ -283,19 +307,19 @@ msgid "Based on Last Day of Purchase Period"
 msgstr ""
 
 #. module: account_asset
-#: model:ir.ui.view,arch_db:account_asset.asset_modify_form
-#: model:ir.ui.view,arch_db:account_asset.view_asset_depreciation_confirmation_wizard
+#: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
+#: model_terms:ir.ui.view,arch_db:account_asset.view_asset_depreciation_confirmation_wizard
 msgid "Cancel"
 msgstr "Odustani"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__category_id
-#: model:ir.ui.view,arch_db:account_asset.view_account_asset_category_search
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_search
 msgid "Category"
 msgstr "Kategorija"
 
 #. module: account_asset
-#: model:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
 msgid "Category of asset"
 msgstr "Kategorija imovine"
 
@@ -352,7 +376,7 @@ msgid "Close"
 msgstr "Zatvori"
 
 #. module: account_asset
-#: model:ir.ui.view,arch_db:account_asset.view_account_asset_search
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 msgid "Closed"
 msgstr "Zatvoren"
 
@@ -360,7 +384,7 @@ msgstr "Zatvoren"
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__company_id
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_category__company_id
 #: model:ir.model.fields,field_description:account_asset.field_asset_asset_report__company_id
-#: model:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
+#: model_terms:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
 msgid "Company"
 msgstr "Tvrtka"
 
@@ -371,17 +395,17 @@ msgid "Computation Method"
 msgstr "Computation Method"
 
 #. module: account_asset
-#: model:ir.ui.view,arch_db:account_asset.view_asset_depreciation_confirmation_wizard
+#: model_terms:ir.ui.view,arch_db:account_asset.view_asset_depreciation_confirmation_wizard
 msgid "Compute Asset"
 msgstr "Izračunaj imovinu"
 
 #. module: account_asset
-#: model:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
 msgid "Compute Depreciation"
 msgstr "Izračun amortizacije"
 
 #. module: account_asset
-#: model:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
 msgid "Confirm"
 msgstr "Potvrdi"
 
@@ -421,14 +445,14 @@ msgid "Cumulative Depreciation"
 msgstr "Ukupna amortizacija"
 
 #. module: account_asset
-#: code:addons/account_asset/models/account_asset.py:627
+#: code:addons/account_asset/models/account_asset.py:639
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__currency_id
 #, python-format
 msgid "Currency"
 msgstr "Valuta"
 
 #. module: account_asset
-#: model:ir.ui.view,arch_db:account_asset.view_account_asset_search
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 msgid "Current"
 msgstr "Trenutno"
 
@@ -440,39 +464,38 @@ msgstr "Trenutna amortizacija"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__date
 #: model:ir.model.fields,field_description:account_asset.field_asset_asset_report__date
-#: model:ir.ui.view,arch_db:account_asset.view_account_asset_search
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 msgid "Date"
 msgstr "Datum"
 
 #. module: account_asset
-#: model:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
 msgid "Date of asset"
 msgstr "Datum imovine"
 
 #. module: account_asset
-#: model:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
+#: model_terms:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
 msgid "Date of asset purchase"
 msgstr "Datum nabave imovine"
 
 #. module: account_asset
-#: model:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
+#: model_terms:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
 msgid "Date of depreciation"
 msgstr "Datum amortizacije"
 
 #. module: account_asset
-#: model:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
 msgid "Deferred Revenue Account"
 msgstr "Konto odgođenog prihoda"
 
 #. module: account_asset
-#: model:ir.model.fields,field_description:account_asset.field_product_product__deferred_revenue_category_id
 #: model:ir.model.fields,field_description:account_asset.field_product_template__deferred_revenue_category_id
-#: model:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
 msgid "Deferred Revenue Type"
 msgstr "Vrsta odgođenog prihoda"
 
 #. module: account_asset
-#: model:ir.ui.view,arch_db:account_asset.view_account_asset_category_search
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_search
 msgid "Deferred Revenues"
 msgstr "Odgođeni prihodi"
 
@@ -489,12 +512,12 @@ msgid "Degressive Factor"
 msgstr "Degresivni faktor"
 
 #. module: account_asset
-#: model:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
 msgid "Depreciation"
 msgstr "Amortizacija"
 
 #. module: account_asset
-#: model:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
 msgid "Depreciation Board"
 msgstr "Tabla Amortizacija"
 
@@ -531,23 +554,23 @@ msgid "Depreciation Entry"
 msgstr "Unos amortizacije"
 
 #. module: account_asset
-#: model:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
 msgid "Depreciation Information"
 msgstr "Informacije amortizacje"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__depreciation_line_ids
-#: model:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
 msgid "Depreciation Lines"
 msgstr "Stavke amortizacije"
 
 #. module: account_asset
-#: model:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
 msgid "Depreciation Method"
 msgstr "Metoda amortizacije"
 
 #. module: account_asset
-#: model:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
+#: model_terms:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
 msgid "Depreciation Month"
 msgstr "Mjesec amortizacije"
 
@@ -563,7 +586,7 @@ msgid "Depreciation board modified"
 msgstr "Tabela amortizacije je promijenjena"
 
 #. module: account_asset
-#: code:addons/account_asset/models/account_asset.py:630
+#: code:addons/account_asset/models/account_asset.py:642
 #, python-format
 msgid "Depreciation line posted."
 msgstr "Stavka amortizacije je knjižena."
@@ -579,26 +602,26 @@ msgid "Display Name"
 msgstr "Naziv za prikaz"
 
 #. module: account_asset
-#: code:addons/account_asset/models/account_asset.py:300
+#: code:addons/account_asset/models/account_asset.py:299
 #, python-format
 msgid "Disposal Move"
 msgstr "Stavka otpisa"
 
 #. module: account_asset
-#: code:addons/account_asset/models/account_asset.py:303
+#: code:addons/account_asset/models/account_asset.py:302
 #, python-format
 msgid "Disposal Moves"
 msgstr "Stavke otpisa"
 
 #. module: account_asset
-#: code:addons/account_asset/models/account_asset.py:609
+#: code:addons/account_asset/models/account_asset.py:621
 #, python-format
 msgid "Document closed."
 msgstr "Dokument zatvoren."
 
 #. module: account_asset
 #: selection:account.asset.asset,state:0 selection:asset.asset.report,state:0
-#: model:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
+#: model_terms:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
 msgid "Draft"
 msgstr "Nacrt"
 
@@ -616,7 +639,7 @@ msgid "Ending date"
 msgstr "Završni datum"
 
 #. module: account_asset
-#: model:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
+#: model_terms:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
 msgid "Extended Filters..."
 msgstr "Prošireni filtri..."
 
@@ -641,7 +664,7 @@ msgid "Followers (Partners)"
 msgstr "Pratitelji (Partneri)"
 
 #. module: account_asset
-#: model:ir.actions.act_window,help:account_asset.action_asset_asset_report
+#: model_terms:ir.actions.act_window,help:account_asset.action_asset_asset_report
 msgid ""
 "From this report, you can have an overview on all depreciations. The\n"
 "            search bar can also be used to personalize your assets depreciation reporting."
@@ -650,12 +673,17 @@ msgstr ""
 "Tražilicu možete koristiti za vlastitu prilagodbu izvještaja dugotrajne imovine."
 
 #. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
+msgid "Future Activities"
+msgstr "Buduće aktivnosti"
+
+#. module: account_asset
 #: model:ir.ui.menu,name:account_asset.menu_asset_depreciation_confirmation_wizard
 msgid "Generate Assets Entries"
 msgstr "Kreiraj knjiženja sredstva"
 
 #. module: account_asset
-#: model:ir.ui.view,arch_db:account_asset.view_asset_depreciation_confirmation_wizard
+#: model_terms:ir.ui.view,arch_db:account_asset.view_asset_depreciation_confirmation_wizard
 msgid "Generate Entries"
 msgstr "Kreiraj stavke"
 
@@ -670,18 +698,18 @@ msgid "Gross Value"
 msgstr "Bruto vrijednost"
 
 #. module: account_asset
-#: model:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
 msgid "Gross value of asset"
 msgstr "Bruto vrijednost imovine"
 
 #. module: account_asset
-#: model:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
+#: model_terms:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
 msgid "Group By"
 msgstr "Grupiraj po"
 
 #. module: account_asset
-#: model:ir.ui.view,arch_db:account_asset.view_account_asset_category_search
-#: model:ir.ui.view,arch_db:account_asset.view_account_asset_search
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_search
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 msgid "Group By..."
 msgstr "Grupiraj po..."
 
@@ -740,7 +768,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_invoice
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__invoice_id
-#: model:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
 msgid "Invoice"
 msgstr "Račun"
 
@@ -760,7 +788,7 @@ msgid "It is the amount you plan to have that you cannot depreciate."
 msgstr "Iznos je koji planirate imati a ne možete amortizirati"
 
 #. module: account_asset
-#: model:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
 msgid "Items"
 msgstr "Stavke"
 
@@ -770,8 +798,9 @@ msgid "Journal"
 msgstr "Dnevnik"
 
 #. module: account_asset
-#: code:addons/account_asset/models/account_asset.py:460
-#: model:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
+#: code:addons/account_asset/models/account_asset.py:463
+#: model:ir.model,name:account_asset.model_account_move
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
 #, python-format
 msgid "Journal Entries"
 msgstr "Temeljnice"
@@ -805,6 +834,11 @@ msgid "Last Updated on"
 msgstr "Vrijeme promjene"
 
 #. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
+msgid "Late Activities"
+msgstr ""
+
+#. module: account_asset
 #: selection:account.asset.asset,method:0
 #: selection:account.asset.category,method:0
 msgid "Linear"
@@ -814,6 +848,11 @@ msgstr "Linearno"
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_depreciation_line__move_check
 msgid "Linked"
 msgstr "Povezano"
+
+#. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__message_main_attachment_id
+msgid "Main Attachment"
+msgstr ""
 
 #. module: account_asset
 #: selection:account.asset.asset,date_first_depreciation:0
@@ -836,19 +875,19 @@ msgid "Messages"
 msgstr "Poruke"
 
 #. module: account_asset
-#: model:ir.ui.view,arch_db:account_asset.asset_modify_form
+#: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
 msgid "Modify"
 msgstr "Promijeni"
 
 #. module: account_asset
 #: model:ir.actions.act_window,name:account_asset.action_asset_modify
 #: model:ir.model,name:account_asset.model_asset_modify
-#: model:ir.ui.view,arch_db:account_asset.asset_modify_form
+#: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
 msgid "Modify Asset"
 msgstr "Uredi imovinu"
 
 #. module: account_asset
-#: model:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
 msgid "Modify Depreciation"
 msgstr "Uredi amortizaciju"
 
@@ -858,12 +897,27 @@ msgid "Monthly Recurring Revenue"
 msgstr "Mjesečni ponavljajući prihod"
 
 #. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__activity_date_deadline
+msgid "Next Activity Deadline"
+msgstr ""
+
+#. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__activity_summary
+msgid "Next Activity Summary"
+msgstr "Sažetak sljedeće aktivnosti"
+
+#. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__activity_type_id
+msgid "Next Activity Type"
+msgstr ""
+
+#. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_depreciation_line__remaining_value
 msgid "Next Period Depreciation"
 msgstr "Sljedeći period amortizacije"
 
 #. module: account_asset
-#: model:ir.actions.act_window,help:account_asset.action_asset_asset_report
+#: model_terms:ir.actions.act_window,help:account_asset.action_asset_asset_report
 msgid "No content"
 msgstr ""
 
@@ -895,7 +949,7 @@ msgstr "Broj amortizacija"
 #. module: account_asset
 #: selection:account.asset.asset,method_time:0
 #: selection:account.asset.category,method_time:0
-#: model:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
 msgid "Number of Entries"
 msgstr "Broj stavaka"
 
@@ -925,12 +979,17 @@ msgid "Number of unread messages"
 msgstr "Broj nepročitanih poruka"
 
 #. module: account_asset
-#: model:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
 msgid "One Entry Every"
 msgstr "Jedna temeljnica svakih"
 
 #. module: account_asset
-#: code:addons/account_asset/models/account_asset.py:629
+#: selection:account.asset.asset,activity_state:0
+msgid "Overdue"
+msgstr "Dospjelo"
+
+#. module: account_asset
+#: code:addons/account_asset/models/account_asset.py:641
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__partner_id
 #: model:ir.model.fields,field_description:account_asset.field_asset_asset_report__partner_id
 #, python-format
@@ -944,9 +1003,14 @@ msgid "Period Length"
 msgstr "Trajanje perioda"
 
 #. module: account_asset
-#: model:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
 msgid "Periodicity"
 msgstr "Periodičnost"
+
+#. module: account_asset
+#: selection:account.asset.asset,activity_state:0
+msgid "Planned"
+msgstr "Planirano"
 
 #. module: account_asset
 #: model:ir.actions.act_window,name:account_asset.action_asset_depreciation_confirmation_wizard
@@ -958,7 +1022,7 @@ msgstr "Knjiži stavke amortizacije"
 #: code:addons/account_asset/static/src/js/account_asset.js:49
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_depreciation_line__move_posted_check
 #: model:ir.model.fields,field_description:account_asset.field_asset_asset_report__move_check
-#: model:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
+#: model_terms:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
 #, python-format
 msgid "Posted"
 msgstr "Proknjiženo"
@@ -969,7 +1033,7 @@ msgid "Posted Amount"
 msgstr "Proknjiženi iznos"
 
 #. module: account_asset
-#: model:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
+#: model_terms:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
 msgid "Posted depreciation lines"
 msgstr "Proknjižene stavke amortizacije"
 
@@ -985,7 +1049,7 @@ msgid "Prorata Temporis"
 msgstr "Prorata Temporis"
 
 #. module: account_asset
-#: code:addons/account_asset/models/account_asset.py:391
+#: code:addons/account_asset/models/account_asset.py:392
 #, python-format
 msgid ""
 "Prorata temporis can be applied only for the \"number of depreciations\" "
@@ -993,12 +1057,12 @@ msgid ""
 msgstr ""
 
 #. module: account_asset
-#: model:ir.ui.view,arch_db:account_asset.view_account_asset_category_search
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_search
 msgid "Purchase"
 msgstr "Nabava"
 
 #. module: account_asset
-#: model:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
+#: model_terms:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
 msgid "Purchase Month"
 msgstr "Mjesec nabavke"
 
@@ -1013,12 +1077,12 @@ msgid "Reason"
 msgstr "Razlog"
 
 #. module: account_asset
-#: model:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
 msgid "Recognition Account"
 msgstr "Konto prihoda"
 
 #. module: account_asset
-#: model:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
 msgid "Recognition Income Account"
 msgstr "Konto prihoda"
 
@@ -1028,7 +1092,7 @@ msgid "Reference"
 msgstr "Vezna oznaka"
 
 #. module: account_asset
-#: model:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
 msgid "Residual"
 msgstr "Ostatak"
 
@@ -1038,8 +1102,13 @@ msgid "Residual Value"
 msgstr "Residual Value"
 
 #. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__activity_user_id
+msgid "Responsible User"
+msgstr "Odgovorna osoba"
+
+#. module: account_asset
 #: selection:account.asset.asset,state:0 selection:asset.asset.report,state:0
-#: model:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
+#: model_terms:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
 msgid "Running"
 msgstr "U tijeku"
 
@@ -1049,7 +1118,7 @@ msgid "Sale: Revenue Recognition"
 msgstr "Prodaja: Priznavanje prihoda"
 
 #. module: account_asset
-#: model:ir.ui.view,arch_db:account_asset.view_account_asset_category_search
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_search
 msgid "Sales"
 msgstr "Prodaja"
 
@@ -1059,12 +1128,12 @@ msgid "Salvage Value"
 msgstr "Salvage Value"
 
 #. module: account_asset
-#: model:ir.ui.view,arch_db:account_asset.view_account_asset_category_search
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_search
 msgid "Search Asset Category"
 msgstr "Pretraži kategoriju imovine"
 
 #. module: account_asset
-#: model:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
 msgid "Sell or Dispose"
 msgstr "Prodaj ili deponiraj"
 
@@ -1074,9 +1143,14 @@ msgid "Sequence"
 msgstr "Sekvenca"
 
 #. module: account_asset
-#: model:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
 msgid "Set to Draft"
 msgstr "Postavi na nacrt"
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
+msgid "Show all records which has next action date is before today"
+msgstr ""
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset_category__method_period
@@ -1095,6 +1169,15 @@ msgid "Status"
 msgstr "Status"
 
 #. module: account_asset
+#: model:ir.model.fields,help:account_asset.field_account_asset_asset__activity_state
+msgid ""
+"Status based on activities\n"
+"Overdue: Due date is already passed\n"
+"Today: Activity date is today\n"
+"Planned: Future activities."
+msgstr ""
+
+#. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset_asset__method_period
 msgid "The amount of time between two depreciations, in months"
 msgstr "Vremenski period između dvije amortizacije , u mjesecima"
@@ -1106,7 +1189,7 @@ msgid "The number of depreciations needed to depreciate your asset"
 msgstr "Broj amortizacija koji je potreban za otpisivanje imovine"
 
 #. module: account_asset
-#: code:addons/account_asset/models/account_invoice.py:63
+#: code:addons/account_asset/models/account_invoice.py:62
 #, python-format
 msgid ""
 "The number of depreciations or the period length of your asset category "
@@ -1130,7 +1213,7 @@ msgid ""
 msgstr ""
 
 #. module: account_asset
-#: code:addons/account_asset/models/account_asset.py:503
+#: code:addons/account_asset/models/account_asset.py:506
 #, python-format
 msgid ""
 "This depreciation is already linked to a journal entry. Please post or "
@@ -1138,7 +1221,7 @@ msgid ""
 msgstr ""
 
 #. module: account_asset
-#: model:ir.ui.view,arch_db:account_asset.view_asset_depreciation_confirmation_wizard
+#: model_terms:ir.ui.view,arch_db:account_asset.view_asset_depreciation_confirmation_wizard
 msgid ""
 "This wizard will post installment/depreciation lines for the selected month.<br/>\n"
 "                        This will generate journal entries for all related installment lines on this period of asset/revenue recognition as well."
@@ -1153,15 +1236,25 @@ msgid "Time Method"
 msgstr "Vremenska metoda"
 
 #. module: account_asset
-#: model:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
-#: model:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
 msgid "Time Method Based On"
 msgstr "Vremenska metoda bazirana na"
 
 #. module: account_asset
+#: selection:account.asset.asset,activity_state:0
+msgid "Today"
+msgstr "Danas"
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
+msgid "Today Activities"
+msgstr "Današnje aktivnosti"
+
+#. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__type
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_category__type
-#: model:ir.ui.view,arch_db:account_asset.view_account_asset_category_search
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_search
 msgid "Type"
 msgstr "Vrsta"
 
@@ -1188,8 +1281,8 @@ msgid "Unread Messages Counter"
 msgstr "Brojač nepročitanih poruka"
 
 #. module: account_asset
-#: model:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
-#: model:ir.ui.view,arch_db:account_asset.view_account_asset_asset_purchase_tree
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_purchase_tree
 msgid "Vendor"
 msgstr "Dobavljač"
 
@@ -1221,46 +1314,41 @@ msgid "Year"
 msgstr "Godina"
 
 #. module: account_asset
-#: code:addons/account_asset/models/account_asset.py:134
+#: code:addons/account_asset/models/account_asset.py:136
 #, python-format
 msgid "You cannot delete a document that contains posted entries."
 msgstr "Ne možete obrisati dokument koji sadrži proknjižene stavke."
 
 #. module: account_asset
-#: code:addons/account_asset/models/account_asset.py:131
+#: code:addons/account_asset/models/account_asset.py:133
 #, python-format
 msgid "You cannot delete a document that is in %s state."
 msgstr ""
 
 #. module: account_asset
-#: code:addons/account_asset/models/account_asset.py:638
+#: code:addons/account_asset/models/account_asset.py:650
 #, python-format
 msgid "You cannot delete posted depreciation lines."
 msgstr "Nije moguće brisati knjižene stavke amortizacije."
 
 #. module: account_asset
-#: code:addons/account_asset/models/account_asset.py:640
+#: code:addons/account_asset/models/account_asset.py:652
 #, python-format
 msgid "You cannot delete posted installment lines."
 msgstr "Ne možete obrisati proknjižene stavke."
 
 #. module: account_asset
-#: model:ir.model,name:account_asset.model_asset_depreciation_confirmation_wizard
-msgid "asset.depreciation.confirmation.wizard"
-msgstr "asset.depreciation.confirmation.wizard"
-
-#. module: account_asset
-#: model:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
 msgid "e.g. Computers"
 msgstr "npr. računala"
 
 #. module: account_asset
-#: model:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_asset_form
 msgid "e.g. Laptop iBook"
 msgstr "npr. Laptop iBook"
 
 #. module: account_asset
-#: model:ir.ui.view,arch_db:account_asset.asset_modify_form
-#: model:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
+#: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
 msgid "months"
 msgstr "mjeseci"

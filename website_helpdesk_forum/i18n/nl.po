@@ -3,22 +3,41 @@
 # * website_helpdesk_forum
 # 
 # Translators:
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
-# Martin Trigaux, 2018
+# Yenthe Van Ginneken <yenthespam@gmail.com>, 2017
+# Martin Trigaux, 2019
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-08-24 11:49+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:12+0000\n"
+"PO-Revision-Date: 2017-02-15 11:47+0000\n"
+"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Language: nl\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: website_helpdesk_forum
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
+msgid ""
+"<i class=\"fa fa-check-circle oe_answer_true\" role=\"img\" aria-"
+"label=\"Question has accepted answer\"/>"
+msgstr ""
+"<i class=\"fa fa-check-circle oe_answer_true\" role=\"img\" aria-"
+"label=\"Bijwerken kenmerk\"/>"
+
+#. module: website_helpdesk_forum
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
+msgid ""
+"<i class=\"fa fa-external-link forum_link\" role=\"img\" aria-"
+"label=\"Redirect to external link\"/>"
+msgstr ""
+"<i class=\"fa fa-external-link forum_link\" role=\"img\" aria-"
+"label=\"Doorverwijzing naar externe link\"/>"
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
@@ -33,7 +52,7 @@ msgstr "Klik hier om de resultaten te bekijken..."
 #. module: website_helpdesk_forum
 #: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_ticket__forum_post_id
 msgid "Forum Post"
-msgstr "Forumbericht"
+msgstr "Forum bericht"
 
 #. module: website_helpdesk_forum
 #: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_ticket__use_website_helpdesk_forum
@@ -60,7 +79,7 @@ msgstr "Help centrum niet actief voor dit team."
 #. module: website_helpdesk_forum
 #: model:ir.model,name:website_helpdesk_forum.model_helpdesk_team
 msgid "Helpdesk Team"
-msgstr "Helpdeskteam"
+msgstr "Helpdesk team"
 
 #. module: website_helpdesk_forum
 #: model:ir.model,name:website_helpdesk_forum.model_helpdesk_ticket

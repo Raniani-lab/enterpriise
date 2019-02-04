@@ -3,27 +3,27 @@
 # * quality_control
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Paweł Wodyński <pw@myodoo.pl>, 2018
-# zbik2607 <darek@krokus.com.pl>, 2018
-# Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2018
-# Judyta Kaźmierczak <judyta.kazmierczak@openglobe.pl>, 2018
-# Tomasz Leppich <t.leppich@gmail.com>, 2018
-# Mariusz, 2018
-# Zdzisław Krajewski <zdzichucb@gmail.com>, 2018
-# Piotr Szlązak <szlazakpiotr@gmail.com>, 2018
-# Marcin Młynarczyk <mlynarczyk@gmail.com>, 2018
-# Andrzej Donczew <a.donczew@hadron.eu.com>, 2018
-# Piotr Cierkosz <piotr.w.cierkosz@gmail.com>, 2018
-# Radosław Biegalski <radoslaw.biegalski@openglobe.pl>, 2018
-# Maja Stawicka <mjstwck@wp.pl>, 2018
+# Paweł Wodyński <pw@myodoo.pl>, 2019
+# Martin Trigaux, 2019
+# zbik2607 <darek@krokus.com.pl>, 2019
+# Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2019
+# Judyta Kaźmierczak <judyta.kazmierczak@openglobe.pl>, 2019
+# Tomasz Leppich <t.leppich@gmail.com>, 2019
+# Mariusz, 2019
+# Zdzisław Krajewski <zdzichucb@gmail.com>, 2019
+# Piotr Szlązak <szlazakpiotr@gmail.com>, 2019
+# Marcin Młynarczyk <mlynarczyk@gmail.com>, 2019
+# Andrzej Donczew <a.donczew@hadron.eu.com>, 2019
+# Piotr Cierkosz <piotr.w.cierkosz@gmail.com>, 2019
+# Radosław Biegalski <radoslaw.biegalski@openglobe.pl>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Maja Stawicka <mjstwck@wp.pl>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:12+0000\n"
+"PO-Revision-Date: 2017-12-13 15:26+0000\n"
+"Last-Translator: Radosław Biegalski <radoslaw.biegalski@openglobe.pl>, 2019\n"
 "Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -34,6 +34,11 @@ msgstr ""
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_form_inherit_quality_control
 msgid "% of the operation"
+msgstr ""
+
+#. module: quality_control
+#: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_team_dashboard_view_kanban
+msgid "<i class=\"fa fa-ellipsis-v\" role=\"img\" aria-label=\"Manage\" title=\"Manage\"/>"
 msgstr ""
 
 #. module: quality_control
@@ -51,6 +56,13 @@ msgid ""
 msgstr ""
 "<span attrs=\"{'invisible': [('measure_frequency_type', '=', 'all')]}\"> "
 "Każdy </span>"
+
+#. module: quality_control
+#: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_form_inherit_quality_control
+msgid ""
+"<span class=\"fa fa-2x\" data-icon=\"∑\" style=\"padding-left: 10px;\" "
+"role=\"img\" aria-label=\"Statistics\" title=\"Statistics\"/>"
+msgstr ""
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.stock_picking_view_form_inherit_quality
@@ -288,6 +300,11 @@ msgstr ""
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_search
+msgid "Future Activities"
+msgstr "Przyszłe czynności"
+
+#. module: quality_control
+#: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_search
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_search
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_search
 msgid "Group By"
@@ -303,6 +320,11 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_search
 msgid "In Progress"
 msgstr "W toku"
+
+#. module: quality_control
+#: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_search
+msgid "Late Activities"
+msgstr "Spóźnione czynności"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_form
@@ -408,6 +430,7 @@ msgstr "Notatki"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_failure_message
+#: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_form_failure
 msgid "OK"
 msgstr "Ok"
 
@@ -642,6 +665,11 @@ msgstr "Ustawienia"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_search
+msgid "Show all records which has next action date is before today"
+msgstr "Pokaż wszystkie rekordy, które mają następną akcję przed dzisiaj"
+
+#. module: quality_control
+#: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_search
 msgid "Stage"
 msgstr "Etap"
 
@@ -658,13 +686,13 @@ msgstr "Stan"
 #. module: quality_control
 #: model:ir.model,name:quality_control.model_stock_move
 msgid "Stock Move"
-msgstr "Przemieszczenie magazynowe"
+msgstr "Przesunięcia"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_tag_view_search
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_tag_view_tree
 msgid "Tags"
-msgstr "Tagi"
+msgstr "Znaczniki"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_search
@@ -685,6 +713,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality_control.field_quality_alert__title
 msgid "Title"
 msgstr "Tytuł"
+
+#. module: quality_control
+#: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_search
+msgid "Today Activities"
+msgstr "Dzisiejsze czynności"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_form_inherit_quality_control

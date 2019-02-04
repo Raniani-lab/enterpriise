@@ -3,16 +3,19 @@
 # * website_calendar
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018
+# Zoriana Zaiats, 2018
+# Bohdan Lisnenko, 2018
+# ТАрас <tratatuta@i.ua>, 2018
+# Martin Trigaux, 2019
+# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-08 07:15+0000\n"
-"PO-Revision-Date: 2018-08-24 11:49+0000\n"
-"Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018\n"
+"PO-Revision-Date: 2017-12-13 15:26+0000\n"
+"Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -34,7 +37,7 @@ msgstr "# Призначення"
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_calendar
 msgid "#{day['today_cls'] and 'Today' or ''}"
-msgstr ""
+msgstr "#{day['today_cls'] та 'Today' or ''}"
 
 #. module: website_calendar
 #: code:addons/website_calendar/controllers/main.py:142
@@ -349,7 +352,7 @@ msgstr "Скопійовано!"
 #. module: website_calendar
 #: model_terms:ir.actions.act_window,help:website_calendar.calendar_appointment_type_action
 msgid "Create a new appointment type"
-msgstr ""
+msgstr "Створіть новий тип призначення"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_answer__create_uid
@@ -598,7 +601,7 @@ msgstr "Назва"
 #: code:addons/website_calendar/static/src/js/website_calendar.editor.js:29
 #, python-format
 msgid "New Appointment Type"
-msgstr ""
+msgstr "Новий тип призначень"
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.setup
@@ -609,7 +612,7 @@ msgstr "Немає доступних зустрічей!"
 #: model_terms:ir.actions.act_window,help:website_calendar.calendar_event_action_reporting
 #: model_terms:ir.actions.act_window,help:website_calendar.website_calendar_report
 msgid "No data found"
-msgstr ""
+msgstr "Не знайдено даних"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__message_needaction_counter
@@ -644,22 +647,22 @@ msgstr "Онлайн-зустріч"
 #. module: website_calendar
 #: model:ir.model,name:website_calendar.model_calendar_appointment_answer
 msgid "Online Appointment : Answers"
-msgstr ""
+msgstr "Онлайн-призначення : Відповіді"
 
 #. module: website_calendar
 #: model:ir.model,name:website_calendar.model_calendar_appointment_question
 msgid "Online Appointment : Questions"
-msgstr ""
+msgstr "Онлайн-призначення : Запитання"
 
 #. module: website_calendar
 #: model:ir.model,name:website_calendar.model_calendar_appointment_slot
 msgid "Online Appointment : Time Slot"
-msgstr ""
+msgstr "Онлайн-призначення : Часовий інтервал"
 
 #. module: website_calendar
 #: model:ir.model,name:website_calendar.model_calendar_appointment_type
 msgid "Online Appointment Type"
-msgstr ""
+msgstr "Тип онлайн-призначення"
 
 #. module: website_calendar
 #: model:ir.actions.act_window,name:website_calendar.calendar_appointment_type_action
@@ -918,17 +921,17 @@ msgstr "Історія бесіди на сайті"
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__website_meta_description
 msgid "Website meta description"
-msgstr "Опис мети веб-сайту"
+msgstr "Мета-опис сайту"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__website_meta_keywords
 msgid "Website meta keywords"
-msgstr "Мета-ключі сайту"
+msgstr "Ключові слова веб-сайту"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__website_meta_title
 msgid "Website meta title"
-msgstr "Заголовок мети веб-сайту"
+msgstr "Мета-заголовок сайту"
 
 #. module: website_calendar
 #: model:ir.model.fields,field_description:website_calendar.field_calendar_appointment_type__website_meta_og_img
@@ -964,7 +967,7 @@ msgstr "З:"
 #: model_terms:ir.actions.act_window,help:website_calendar.calendar_event_action_reporting
 #: model_terms:ir.actions.act_window,help:website_calendar.website_calendar_report
 msgid "You should schedule appointments to get statistics."
-msgstr ""
+msgstr "Ви повинні призначити зустрічі для отримання статистики."
 
 #. module: website_calendar
 #: model_terms:ir.ui.view,arch_db:website_calendar.appointment_form

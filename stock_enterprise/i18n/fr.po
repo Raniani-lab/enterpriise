@@ -3,19 +3,21 @@
 # * stock_enterprise
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Melanie Bernard <mbe@odoo.com>, 2018
-# Eloïse Stilmant <est@odoo.com>, 2018
-# Marie Willemyns <mwi@odoo.com>, 2018
-# Thomas Dobbelsteyn <tdo@odoo.com>, 2018
-# Nathan Grognet <ngr@odoo.com>, 2018
+# Martin Trigaux, 2019
+# Melanie Bernard <mbe@odoo.com>, 2019
+# Eloïse Stilmant <est@odoo.com>, 2019
+# Nathan Grognet <ngr@odoo.com>, 2019
+# Thomas Dobbelsteyn <tdo@odoo.com>, 2019
+# Marie Willemyns <mwi@odoo.com>, 2019
+# William Henrotin <whe@odoo.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-02 10:32+0000\n"
-"PO-Revision-Date: 2018-10-02 10:32+0000\n"
-"Last-Translator: Nathan Grognet <ngr@odoo.com>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"PO-Revision-Date: 2019-01-16 08:41+0000\n"
+"Last-Translator: William Henrotin <whe@odoo.com>, 2019\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -94,12 +96,12 @@ msgstr ""
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view
 msgid "Deliveries Cycle Time"
-msgstr ""
+msgstr "Temps de Cycle de Livraisons"
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view
 msgid "Deliveries Delay"
-msgstr ""
+msgstr "Retard de livraisons"
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__display_name
@@ -164,7 +166,7 @@ msgstr "Dernière modification le"
 #. module: stock_enterprise
 #: selection:stock.report,state:0
 msgid "New"
-msgstr "Nouvelle"
+msgstr "Nouveau"
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__operation_type
@@ -204,12 +206,12 @@ msgstr "Quantité d'articles"
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view
 msgid "Receipts Cycle Time"
-msgstr ""
+msgstr "Temps de Cycle de Réceptions"
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view
 msgid "Receipts Delay"
-msgstr ""
+msgstr "Retard des Réceptions"
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__reference
@@ -290,3 +292,8 @@ msgstr "Attente de disponibilité"
 #: model:ir.ui.menu,name:stock_enterprise.stock_dashboard_menuitem
 msgid "Warehouse Dashboard"
 msgstr "Vue d'ensemble d'entrepôt"
+
+#. module: stock_enterprise
+#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view
+msgid "day(s)"
+msgstr "jour(s)"

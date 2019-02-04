@@ -60,7 +60,7 @@ var DocumentsKanbanModel = KanbanModel.extend({
     load: function (params) {
         var self = this;
         var _super = this._super.bind(this);
-        return this._fetchFolders().then(function (folders) {
+        return this._fetchFolders(params.context).then(function (folders) {
             var availableFolderIDs = _.pluck(folders, 'id');
             var folderTree = self._buildFolderTree(folders, false);
             var folderID = params.context.saved_folder ? Number(utils.get_cookie('documents_last_folder_id')) : false;
@@ -208,15 +208,17 @@ var DocumentsKanbanModel = KanbanModel.extend({
     },
     /**
      * Fetch all folders
+     * @param {Object} context
      *
      * @private
      * @returns {Deferred<array>}
      */
-    _fetchFolders: function () {
+    _fetchFolders: function (context) {
         return this._rpc({
             model: 'documents.folder',
             method: 'search_read',
             fields: ['parent_folder_id', 'name', 'id', 'description'],
+            context: context,
         });
     },
     /**

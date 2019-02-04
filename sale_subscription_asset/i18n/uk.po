@@ -3,16 +3,17 @@
 # * sale_subscription_asset
 # 
 # Translators:
-# Martin Trigaux, 2018
+# Bohdan Lisnenko, 2018
 # Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018
+# Martin Trigaux, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-02 10:32+0000\n"
-"PO-Revision-Date: 2018-08-24 11:48+0000\n"
-"Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"PO-Revision-Date: 2017-12-13 15:26+0000\n"
+"Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -34,18 +35,18 @@ msgstr "Тип доходу майбутніх періодів"
 
 #. module: sale_subscription_asset
 #: model:ir.model,name:sale_subscription_asset.model_sale_order
-msgid "Sale Order"
+msgid "Sales Order"
 msgstr "Замовлення на продаж"
 
 #. module: sale_subscription_asset
 #: model:ir.model,name:sale_subscription_asset.model_sale_order_line
 msgid "Sales Order Line"
-msgstr "Рядок замовлення на продаж"
+msgstr "Рядок замовлення"
 
 #. module: sale_subscription_asset
 #: model:ir.model,name:sale_subscription_asset.model_sale_subscription
 msgid "Subscription"
-msgstr "Підписка"
+msgstr "Передплата"
 
 #. module: sale_subscription_asset
 #: model:ir.model,name:sale_subscription_asset.model_sale_subscription_template
@@ -58,7 +59,8 @@ msgid ""
 "This asset category will be applied to the lines of the subscription's "
 "invoices."
 msgstr ""
-"Ця категорія активів буде застосовуватися до рядків рахунків підписки."
+"Ця категорія активів буде застосовуватися до рядків рахунків-фактур "
+"передплати."
 
 #. module: sale_subscription_asset
 #: model:ir.model.fields,help:sale_subscription_asset.field_sale_subscription_template__template_asset_category_id

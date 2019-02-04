@@ -3,17 +3,20 @@
 # * account_batch_payment
 # 
 # Translators:
-# Ediz Duman <neps1192@gmail.com>, 2018
-# Levent Karakaş <levent@mektup.at>, 2018
-# Murat Kaplan <muratk@projetgrup.com>, 2018
-# Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2018
+# Ediz Duman <neps1192@gmail.com>, 2019
+# Levent Karakaş <levent@mektup.at>, 2019
+# Murat Kaplan <muratk@projetgrup.com>, 2019
+# Ahmet Altinisik <aaltinisik@altinkaya.com.tr>, 2019
+# Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2019
+# Umur Akın <umura@projetgrup.com>, 2019
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2018\n"
+"PO-Revision-Date: 2019-01-16 08:32+0000\n"
+"Last-Translator: Umur Akın <umura@projetgrup.com>, 2019\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -41,12 +44,6 @@ msgstr ""
 #: code:addons/account_batch_payment/models/account_batch_payment.py:86
 #, python-format
 msgid "All payments in the batch must share the same payment method."
-msgstr ""
-
-#. module: account_batch_payment
-#: code:addons/account_batch_payment/models/account_batch_payment.py:81
-#, python-format
-msgid "All payments in the batch must share the same type."
 msgstr ""
 
 #. module: account_batch_payment
@@ -185,7 +182,7 @@ msgstr "Kayıtlı Müşteri"
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__date
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.print_batch_payment
 msgid "Date"
-msgstr "Tarih"
+msgstr "Mail"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_download_wizard__display_name
@@ -392,7 +389,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__state
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_search
 msgid "State"
-msgstr "Durum"
+msgstr "Eyalet/İl"
 
 #. module: account_batch_payment
 #: code:addons/account_batch_payment/models/account_batch_payment.py:88

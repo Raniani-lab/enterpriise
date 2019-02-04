@@ -55,7 +55,11 @@ var UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         }
         if (this.callState !== CALL_STATE.NO_CALL) {
             if (this.callState === CALL_STATE.RINGING_CALL) {
-                this.sipSession.cancel();
+                try {
+                    this.sipSession.cancel();
+                } catch (err) {
+                    console.error('Cancel failed:', err);
+                }
             } else {
                 this.sipSession.bye();
             }
@@ -212,7 +216,6 @@ var UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
             this._triggerError(_t('One or more parameter is missing. Please check your configuration.'));
             return false;
         }
-        params.debug = true;
         if (params.debug) {
             params.traceSip = true;
             params.log = {
@@ -280,6 +283,7 @@ var UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
     _initUa: function (result) {
         this.mode = result.mode;
         if (this.mode === "prod") {
+            this.trigger_up('sip_error', {msg: _t("Connecting..."), connecting: true});
             if (!window.RTCPeerConnection) {
                 //TODO: In master, change the error message (Your browser does not support WebRTC. You will not be able to make or receive calls.)
                 this._triggerError(_t('Your browser could not support WebRTC. Please check your configuration.'));
@@ -300,6 +304,7 @@ var UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
                 self._triggerError(_t('The websocket uri could be wrong.') +
                     _t(' Please check your configuration.'));
             };
+            this.userAgent.on('registered', _.bind(this._onRegistered,this));
             this.userAgent.on('invite', _.bind(this._onInvite,this));
         }
         this._configureDomElements()
@@ -518,12 +523,26 @@ var UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
                 self.dialog = Dialog.confirm(self, content, options);
                 self.dialog.on('closed', self, function () {
                     if (inviteSession && self.callState !== CALL_STATE.ONGOING_CALL) {
-                        inviteSession.reject();
+                        try {
+                            inviteSession.reject();
+                        } catch (err) {
+                            console.error('Reject failed:', err);
+                        }
                     }
                     self.incomingtone.pause();
                 });
             }
         });
+    },
+    /**
+     * Triggered when the user agent is connected.
+     * This function will trigger the event 'sip_error_resolved' to unblock the
+     * overlay
+     *
+     *  @private
+     */
+    _onRegistered: function (){
+        this.trigger_up('sip_error_resolved');
     },
     /**
      * Handles the sip session rejection.

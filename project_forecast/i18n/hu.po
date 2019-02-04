@@ -3,19 +3,18 @@
 # * project_forecast
 # 
 # Translators:
-# Tamás Dombos, 2018
+# gezza <geza.nagy@oregional.hu>, 2016
 # Martin Trigaux, 2018
-# krnkris, 2018
-# Ákos Nagy <akos.nagy@oregional.hu>, 2018
-# Tibor Kőnig <konig.tibor@evitalit.hu>, 2018
+# krnkris, 2019
+# Tibor Kőnig <konig.tibor@evitalit.hu>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-08-24 11:47+0000\n"
-"Last-Translator: Tibor Kőnig <konig.tibor@evitalit.hu>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"PO-Revision-Date: 2016-08-05 13:31+0000\n"
+"Last-Translator: Tibor Kőnig <konig.tibor@evitalit.hu>, 2019\n"
 "Language-Team: Hungarian (https://www.transifex.com/odoo/teams/41243/hu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -128,12 +127,12 @@ msgstr "Konfigurációs beállítások"
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__create_uid
 msgid "Created by"
-msgstr "Létrehozta"
+msgstr "Készítette"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__create_date
 msgid "Created on"
-msgstr "Létrehozva"
+msgstr "Létrehozás dátuma"
 
 #. module: project_forecast
 #: selection:res.company,forecast_uom:0
@@ -150,6 +149,12 @@ msgstr "Megjelenített név"
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
 msgid "Employee"
 msgstr "Alkalmazott"
+
+#. module: project_forecast
+#: model:ir.model.fields,help:project_forecast.field_project_project__allow_forecast
+#: model:ir.model.fields,help:project_forecast.field_project_task__allow_forecast
+msgid "Enable forecasting on the project."
+msgstr ""
 
 #. module: project_forecast
 #: model:ir.model.fields,help:project_forecast.field_res_company__forecast_span
@@ -273,7 +278,7 @@ msgstr ""
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
 msgid "Group By"
-msgstr "Csoportosítás ezzel"
+msgstr "Csoportosítás"
 
 #. module: project_forecast
 #: selection:res.company,forecast_uom:0
@@ -283,22 +288,22 @@ msgstr "Órák"
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__id
 msgid "ID"
-msgstr "Azonosító"
+msgstr "Azonosító ID"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast____last_update
 msgid "Last Modified on"
-msgstr "Legutóbb frissítve"
+msgstr "Utoljára frissítve ekkor"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__write_uid
 msgid "Last Updated by"
-msgstr "Legutóbb frissítette"
+msgstr "Utoljára frissítette"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__write_date
 msgid "Last Updated on"
-msgstr "Legutóbb frissítve "
+msgstr "Utoljára frissítve "
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_grid_by_task
@@ -342,7 +347,7 @@ msgstr "Tervezett órák"
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__project_id
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
 msgid "Project"
-msgstr "Projekt"
+msgstr "Projekt téma"
 
 #. module: project_forecast
 #: model:ir.model,name:project_forecast.model_project_forecast
@@ -367,12 +372,12 @@ msgstr "Kezdő dátum"
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__task_id
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_forecast_view_search
 msgid "Task"
-msgstr "Feladat"
+msgstr "Fladat"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__stage_id
 msgid "Task stage"
-msgstr "Feladat szakasz"
+msgstr "Feladat szakasza"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_forecast__tag_ids
@@ -380,19 +385,12 @@ msgid "Task tags"
 msgstr "Feladat címkék"
 
 #. module: project_forecast
-#: code:addons/project_forecast/models/project_forecast.py:132
+#: code:addons/project_forecast/models/project_forecast.py:134
 #, python-format
 msgid ""
 "The employee (%s) doesn't have a timezone, this might cause errors in the "
 "time computation. It is configurable on the user linked to the employee"
 msgstr ""
-
-#. module: project_forecast
-#: model:ir.model.fields,help:project_forecast.field_project_project__allow_forecast
-#: model:ir.model.fields,help:project_forecast.field_project_task__allow_forecast
-msgid "This feature shows the Forecast link in the kanban view"
-msgstr ""
-"Ez a jellemző mutatja meg a kanban nézetben az Előrejelzés hivatkozó linkjét"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_res_company__forecast_span

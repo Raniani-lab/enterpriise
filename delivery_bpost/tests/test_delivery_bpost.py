@@ -85,7 +85,6 @@ class TestDeliveryBpost(TransactionCase):
         self.assertGreater(picking.shipping_weight, 0.0, "Picking weight should be positive.")
 
         picking.action_done()
-        picking.send_to_shipper()
         self.assertIsNot(picking.carrier_tracking_ref, False, "bpost did not return any tracking number")
         self.assertGreater(picking.carrier_price, 0.0, "bpost carrying price is probably incorrect")
 
@@ -118,7 +117,6 @@ class TestDeliveryBpost(TransactionCase):
         self.assertGreater(picking.shipping_weight, 0.0, "Picking weight should be positive.")
 
         picking.action_done()
-        picking.send_to_shipper()
         self.assertIsNot(picking.carrier_tracking_ref, False, "bpost did not return any tracking number")
         self.assertGreater(picking.carrier_price, 0.0, "bpost carrying price is probably incorrect")
 

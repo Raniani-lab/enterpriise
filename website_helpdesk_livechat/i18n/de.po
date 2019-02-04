@@ -3,18 +3,19 @@
 # * website_helpdesk_livechat
 # 
 # Translators:
-# key six <mobile.umts@gmail.com>, 2017
 # Martin Trigaux, 2017
 # n3niu, 2017
 # Niki Waibel, 2017
+# key six <mobile.umts@gmail.com>, 2017
 # Ralf Hilgenstock <rh@dialoge.info>, 2017
 # e2f <projects@e2f.com>, 2018
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.3+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 08:34+0000\n"
-"PO-Revision-Date: 2018-06-25 08:34+0000\n"
+"POT-Creation-Date: 2019-01-16 08:12+0000\n"
+"PO-Revision-Date: 2017-02-15 11:47+0000\n"
 "Last-Translator: e2f <projects@e2f.com>, 2018\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
@@ -44,12 +45,17 @@ msgstr ""
 "                    "
 
 #. module: website_helpdesk_livechat
-#: model:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
+msgid "<i class=\"fa fa-fw fa-arrow-right\" aria-label=\"Go to\" title=\"Go to\"/>"
+msgstr ""
+
+#. module: website_helpdesk_livechat
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
 msgid "Canned Responses"
 msgstr "Vorgefertigte Antworten"
 
 #. module: website_helpdesk_livechat
-#: model:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
 msgid "Configure Canned Responses"
 msgstr "Einstellungen der Vorgefertigten Antworten"
 
@@ -107,7 +113,7 @@ msgid "Search for a helpdesk ticket"
 msgstr "Suchen nach Helpdesk-Ticket"
 
 #. module: website_helpdesk_livechat
-#: model:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
 msgid ""
 "Set shortcuts predefined answers. This works in both the mail composer and "
 "the live website chatter. Simply ype ':' followed by the shortcut label to "
@@ -118,7 +124,7 @@ msgstr ""
 "und anschließend den Kurzbefehl für die Auswahl vorformulierter Antworten."
 
 #. module: website_helpdesk_livechat
-#: model:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
 msgid "Setup the"
 msgstr "Einrichten der"
 
@@ -130,7 +136,7 @@ msgid "Something is missing or wrong in command"
 msgstr "Etwas fehlt oder ist falsch im Befehl"
 
 #. module: website_helpdesk_livechat
-#: model:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
 msgid "Test the livechat widget from this page:<br/>"
 msgstr "Testen Sie das Livechat-Widget auf dieser Seite:<br/>"
 
@@ -144,7 +150,7 @@ msgstr ""
 "in die Diskussion gehen kann"
 
 #. module: website_helpdesk_livechat
-#: model:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
 msgid "Use predefined answers in the mail composer"
 msgstr "Vorformulierte Antworten im E-Mail-Composer verwenden"
 
@@ -179,7 +185,7 @@ msgstr ""
 " etc\" </b> <br> "
 
 #. module: website_helpdesk_livechat
-#: model:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
 msgid "channel to define auto-popup rules and geolocation filters"
 msgstr ""
 "Kanal zum Definieren automatischer Pop-up-Regeln und Filter zur Geolokation"

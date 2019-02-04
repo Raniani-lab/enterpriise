@@ -3,17 +3,18 @@
 # * documents_product
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
-# Yenthe Van Ginneken <yenthespam@gmail.com>, 2018
-# Thomas Pot <thomas@open2bizz.nl>, 2018
+# Martin Trigaux, 2019
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
+# Thomas Pot <thomas@open2bizz.nl>, 2019
+# Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-02 10:31+0000\n"
-"PO-Revision-Date: 2018-10-02 10:31+0000\n"
-"Last-Translator: Thomas Pot <thomas@open2bizz.nl>, 2018\n"
+"POT-Creation-Date: 2018-12-24 11:16+0000\n"
+"PO-Revision-Date: 2019-01-16 08:38+0000\n"
+"Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -29,6 +30,11 @@ msgid ""
 msgstr ""
 "Een set van condities en acties welke beschikbaar is voor alle bijlages die "
 "aan deze condities voldoen"
+
+#. module: documents_product
+#: model:ir.model,name:documents_product.model_ir_attachment
+msgid "Attachment"
+msgstr "Bijlage"
 
 #. module: documents_product
 #: model:ir.model,name:documents_product.model_res_company
@@ -51,14 +57,14 @@ msgid "Credit note"
 msgstr "Creditfactuur"
 
 #. module: documents_product
-#: model:ir.model.fields,field_description:documents_product.field_res_company__dms_product_settings
-msgid "Dms Product Settings"
-msgstr "DMS Product Instellingen"
+#: model:documents.tag,name:documents_product.documents_product_sheet_tag
+msgid "DataSheets"
+msgstr "DataSheets"
 
 #. module: documents_product
-#: model:ir.model,name:documents_product.model_ir_attachment
-msgid "Document"
-msgstr "Document"
+#: model:ir.model.fields,field_description:documents_product.field_res_company__documents_product_settings
+msgid "Documents Product Settings"
+msgstr "Product documenten instellingen"
 
 #. module: documents_product
 #: model:ir.model.fields,field_description:documents_product.field_documents_workflow_rule__has_business_option
@@ -66,8 +72,23 @@ msgid "Has Business Option"
 msgstr "Heeft business optie"
 
 #. module: documents_product
+#: model:documents.tag,name:documents_product.documents_product_msds_tag
+msgid "MSDS"
+msgstr "MSDS"
+
+#. module: documents_product
+#: model:documents.tag,name:documents_product.documents_product_new_tag
+msgid "New"
+msgstr "Nieuw"
+
+#. module: documents_product
+#: model:documents.tag,name:documents_product.documents_product_plans_tag
+msgid "Plans"
+msgstr "Plannen"
+
+#. module: documents_product
 #: model:ir.model.fields,field_description:documents_product.field_res_company__product_folder
-#: model:ir.model.fields,field_description:documents_product.field_res_config_settings__dms_product_settings
+#: model:ir.model.fields,field_description:documents_product.field_res_config_settings__documents_product_settings
 msgid "Product Folder"
 msgstr "Productmap"
 
@@ -83,10 +104,18 @@ msgid "Product template"
 msgstr "Productsjabloon"
 
 #. module: documents_product
+#: model:documents.folder,name:documents_product.documents_product_folder
+msgid "Products"
+msgstr "Producten"
+
+#. module: documents_product
 #: model_terms:ir.ui.view,arch_db:documents_product.res_config_settings_view_form
-msgid "Select the folder to be used for product's documents"
+msgid ""
+"Select the folder to be used for product's documents for the products of\n"
+"                                    your company."
 msgstr ""
-"Selecteer de map die moet worden gebruikt voor documenten bij producten"
+"Selecteer de map die moet gebruikt worden voor product documenten voor de producten van\n"
+"uw bedrijf"
 
 #. module: documents_product
 #: model_terms:ir.ui.view,arch_db:documents_product.res_config_settings_view_form
@@ -97,6 +126,11 @@ msgstr "Selecteer de labels voor nieuwe productdocumenten"
 #: selection:documents.workflow.rule,create_model:0
 msgid "Signature template"
 msgstr "Handtekening sjabloon"
+
+#. module: documents_product
+#: model:documents.tag,name:documents_product.documents_product_specs_tag
+msgid "Specs"
+msgstr "Specificaties"
 
 #. module: documents_product
 #: selection:documents.workflow.rule,create_model:0

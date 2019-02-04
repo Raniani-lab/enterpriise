@@ -3,20 +3,20 @@
 # * account_asset
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Marc Tormo i Bochaca <mtbochaca@gmail.com>, 2018
-# Eric Antones <eantones@users.noreply.github.com>, 2018
-# RGB Consulting <odoo@rgbconsulting.com>, 2018
-# Quim - eccit <quim@eccit.com>, 2018
-# Manel Fernandez <manelfera@outlook.com>, 2018
+# Manel Fernandez <manelfera@outlook.com>, 2019
+# Martin Trigaux, 2019
+# Marc Tormo i Bochaca <mtbochaca@gmail.com>, 2019
+# Eric Antones <eantones@users.noreply.github.com>, 2019
+# RGB Consulting <odoo@rgbconsulting.com>, 2019
+# Quim - eccit <quim@eccit.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 13:17+0000\n"
-"PO-Revision-Date: 2018-08-24 09:15+0000\n"
-"Last-Translator: Manel Fernandez <manelfera@outlook.com>, 2018\n"
+"POT-Creation-Date: 2018-12-24 11:16+0000\n"
+"PO-Revision-Date: 2016-08-05 12:55+0000\n"
+"Last-Translator: Quim - eccit <quim@eccit.com>, 2019\n"
 "Language-Team: Catalan (https://www.transifex.com/odoo/teams/41243/ca/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -92,6 +92,16 @@ msgstr "Cal fer alguna acció"
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_category__active
 msgid "Active"
 msgstr "Actiu"
+
+#. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__activity_ids
+msgid "Activities"
+msgstr "Activitats"
+
+#. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__activity_state
+msgid "Activity State"
+msgstr "Estat de l'activitat"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
@@ -184,7 +194,6 @@ msgstr "Data d'inici de l'aciut"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_category__name
-#: model:ir.model.fields,field_description:account_asset.field_product_product__asset_category_id
 #: model:ir.model.fields,field_description:account_asset.field_product_template__asset_category_id
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
 msgid "Asset Type"
@@ -471,7 +480,6 @@ msgid "Deferred Revenue Account"
 msgstr "Compte d'ingressos a terminis"
 
 #. module: account_asset
-#: model:ir.model.fields,field_description:account_asset.field_product_product__deferred_revenue_category_id
 #: model:ir.model.fields,field_description:account_asset.field_product_template__deferred_revenue_category_id
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
 msgid "Deferred Revenue Type"
@@ -657,6 +665,11 @@ msgstr ""
 "teus informes d'amortització."
 
 #. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
+msgid "Future Activities"
+msgstr "Activitats Futures"
+
+#. module: account_asset
 #: model:ir.ui.menu,name:account_asset.menu_asset_depreciation_confirmation_wizard
 msgid "Generate Assets Entries"
 msgstr "Genera assentaments d'actius"
@@ -710,12 +723,12 @@ msgstr "ID"
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset_asset__message_unread
 msgid "If checked new messages require your attention."
-msgstr "Si està marcat, els nous missatges requereixen la vostra atenció."
+msgstr "Si està marcat, els nous missatges requereixen la vostra atenció"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset_asset__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr "Si està marcat, els nous missatges requereixen la vostra atenció."
+msgstr "Si està marcat, els nous missatges requereixen la vostra atenció"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset_asset__message_has_error
@@ -813,6 +826,11 @@ msgid "Last Updated on"
 msgstr "Última actualització el"
 
 #. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
+msgid "Late Activities"
+msgstr "Darreres Activitats"
+
+#. module: account_asset
 #: selection:account.asset.asset,method:0
 #: selection:account.asset.category,method:0
 msgid "Linear"
@@ -869,6 +887,21 @@ msgstr "Modificar depreciació"
 #: model:ir.model.fields,field_description:account_asset.field_account_invoice_line__asset_mrr
 msgid "Monthly Recurring Revenue"
 msgstr "Ingrés mensual recurrent"
+
+#. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__activity_date_deadline
+msgid "Next Activity Deadline"
+msgstr "Data límit de la següent activitat"
+
+#. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__activity_summary
+msgid "Next Activity Summary"
+msgstr "Resum de la següent activitat"
+
+#. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__activity_type_id
+msgid "Next Activity Type"
+msgstr "Tipus de la següent activitat"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_depreciation_line__remaining_value
@@ -943,6 +976,11 @@ msgid "One Entry Every"
 msgstr "Una entrada cada"
 
 #. module: account_asset
+#: selection:account.asset.asset,activity_state:0
+msgid "Overdue"
+msgstr "Fora de termini"
+
+#. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:641
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__partner_id
 #: model:ir.model.fields,field_description:account_asset.field_asset_asset_report__partner_id
@@ -960,6 +998,11 @@ msgstr "Longitud del període"
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_form
 msgid "Periodicity"
 msgstr "Periodicitat"
+
+#. module: account_asset
+#: selection:account.asset.asset,activity_state:0
+msgid "Planned"
+msgstr "Planificat"
 
 #. module: account_asset
 #: model:ir.actions.act_window,name:account_asset.action_asset_depreciation_confirmation_wizard
@@ -1051,6 +1094,11 @@ msgid "Residual Value"
 msgstr "Valor comptable"
 
 #. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__activity_user_id
+msgid "Responsible User"
+msgstr "Usuari responsable"
+
+#. module: account_asset
 #: selection:account.asset.asset,state:0 selection:asset.asset.report,state:0
 #: model_terms:ir.ui.view,arch_db:account_asset.view_asset_asset_report_search
 msgid "Running"
@@ -1092,6 +1140,12 @@ msgid "Set to Draft"
 msgstr "Canvia a esborrany"
 
 #. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
+msgid "Show all records which has next action date is before today"
+msgstr ""
+"Mostra tots els registres en que la data de següent acció és abans d'avui"
+
+#. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset_category__method_period
 msgid "State here the time between 2 depreciations, in months"
 msgstr "Estableixi aquí el temps entre 2 depreciacions, en mesos"
@@ -1106,6 +1160,19 @@ msgstr "Estat de l'actiu"
 #: model:ir.model.fields,field_description:account_asset.field_asset_asset_report__state
 msgid "Status"
 msgstr "Estat"
+
+#. module: account_asset
+#: model:ir.model.fields,help:account_asset.field_account_asset_asset__activity_state
+msgid ""
+"Status based on activities\n"
+"Overdue: Due date is already passed\n"
+"Today: Activity date is today\n"
+"Planned: Future activities."
+msgstr ""
+"Estat basat en activitats\n"
+"Sobrepassat: La data de venciment ja s'ha passat\n"
+"Avui: La data de l'activitat és avui\n"
+"Planificat: Activitats futures."
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset_asset__method_period
@@ -1172,6 +1239,16 @@ msgid "Time Method Based On"
 msgstr "Mètode de temps basat en"
 
 #. module: account_asset
+#: selection:account.asset.asset,activity_state:0
+msgid "Today"
+msgstr "Avui"
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
+msgid "Today Activities"
+msgstr "Activitats d'avui"
+
+#. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__type
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_category__type
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_category_search
@@ -1209,7 +1286,7 @@ msgstr "Proveïdor "
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__website_message_ids
 msgid "Website Messages"
-msgstr "Missatges del lloc web"
+msgstr "Missatges de la pàgina web"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset_asset__website_message_ids

@@ -139,7 +139,7 @@ QUnit.module('Views', {
             model: 'test_report',
             data: this.data,
             arch: '<dashboard>' +
-                      '<widget name="pie_chart" attrs="{\'title\': \'Products sold\', \'measure\': \'sold\', \'groupby\': \'categ_id\'}"/>' +
+                      '<widget name="pie_chart" title="Products sold" attrs="{\'measure\': \'sold\', \'groupby\': \'categ_id\'}"/>' +
                   '</dashboard>',
             mockRPC: function (route, args){
                 if (route == '/web/dataset/call_kw/test_report/read_group') {
@@ -237,7 +237,7 @@ QUnit.module('Views', {
                 },
             },
             arch: '<dashboard>' +
-                      '<widget name="pie_chart" attrs="{\'title\': \'Products sold\', \'measure\': \'sold\', \'groupby\': \'categ_id\'}"/>' +
+                      '<widget name="pie_chart" title="Products sold" attrs="{\'measure\': \'sold\', \'groupby\': \'categ_id\'}"/>' +
                   '</dashboard>',
         })
         .then(function (dashboard) {

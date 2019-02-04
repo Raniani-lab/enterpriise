@@ -3,22 +3,32 @@
 # * snailmail_account_reports_followup
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018
+# Martin Trigaux, 2019
+# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-08-24 11:48+0000\n"
-"Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"PO-Revision-Date: 2019-01-16 08:41+0000\n"
+"Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Language: uk\n"
 "Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
+
+#. module: snailmail_account_reports_followup
+#: model_terms:ir.ui.view,arch_db:snailmail_account_reports_followup.followup_send_wizard_form
+msgid ""
+"<i class=\"fa fa-info-circle\" role=\"img\" aria-label=\"Warning\" title=\""
+"                         The letter will be sent using the IAP service from "
+"Odoo.&#10;Make sure you have enough credits on your account or proceed to a "
+"recharge.&#10;In case of multiple sending, the price is estimated based on 1"
+" page per document.                         \"/>"
+msgstr ""
 
 #. module: snailmail_account_reports_followup
 #: model_terms:ir.ui.view,arch_db:snailmail_account_reports_followup.followup_send_wizard_form
@@ -37,17 +47,12 @@ msgstr "Скасувати"
 #. module: snailmail_account_reports_followup
 #: model:ir.model.fields,field_description:snailmail_account_reports_followup.field_followup_send__create_uid
 msgid "Created by"
-msgstr "Створив"
+msgstr "Створено"
 
 #. module: snailmail_account_reports_followup
 #: model:ir.model.fields,field_description:snailmail_account_reports_followup.field_followup_send__create_date
 msgid "Created on"
 msgstr "Створено"
-
-#. module: snailmail_account_reports_followup
-#: model:ir.model.fields,field_description:snailmail_account_reports_followup.field_followup_send__snailmail_cost
-msgid "Credits"
-msgstr "Кредити"
 
 #. module: snailmail_account_reports_followup
 #: model:ir.model.fields,field_description:snailmail_account_reports_followup.field_followup_send__currency_id
@@ -82,7 +87,7 @@ msgstr "ID"
 #. module: snailmail_account_reports_followup
 #: model:ir.model.fields,field_description:snailmail_account_reports_followup.field_followup_send____last_update
 msgid "Last Modified on"
-msgstr "Остання модифікація"
+msgstr "Останні зміни на"
 
 #. module: snailmail_account_reports_followup
 #: model:ir.model.fields,field_description:snailmail_account_reports_followup.field_followup_send__write_uid
@@ -129,11 +134,16 @@ msgid "Sending these"
 msgstr "Надсилання цього"
 
 #. module: snailmail_account_reports_followup
+#: model:ir.model.fields,field_description:snailmail_account_reports_followup.field_followup_send__snailmail_cost
+msgid "Stamp(s)"
+msgstr "Штамп(и)"
+
+#. module: snailmail_account_reports_followup
 #: model:ir.model.fields,help:snailmail_account_reports_followup.field_account_followup_followup_line__send_letter
 msgid "When processing, it will send a letter by Post"
 msgstr "Під час обробки буде надіслано листа поштою"
 
 #. module: snailmail_account_reports_followup
 #: model_terms:ir.ui.view,arch_db:snailmail_account_reports_followup.followup_send_wizard_form
-msgid "documents will cost approximatively"
-msgstr "документи будуть коштувати приблизно"
+msgid "documents will cost"
+msgstr "вартість документів"

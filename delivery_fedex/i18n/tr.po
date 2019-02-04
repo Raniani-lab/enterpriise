@@ -3,21 +3,22 @@
 # * delivery_fedex
 # 
 # Translators:
+# eren b <inactive+erenbn@transifex.com>, 2017
+# Ediz Duman <neps1192@gmail.com>, 2017
+# Alexander B. <road2monstercat@gmail.com>, 2017
 # Ayhan KIZILTAN <akiziltan76@hotmail.com>, 2018
-# Martin Trigaux, 2018
 # Murat Kaplan <muratk@projetgrup.com>, 2018
 # Güven YILMAZ <guvenyilmaz@outlook.com.tr>, 2018
-# Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2018
-# eren b <inactive+erenbn@transifex.com>, 2018
-# Alexander B. <road2monstercat@gmail.com>, 2018
-# Umur Akın <umura@projetgrup.com>, 2018
+# Martin Trigaux, 2019
+# Umur Akın <umura@projetgrup.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Umur Akın <umura@projetgrup.com>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"PO-Revision-Date: 2016-08-05 13:28+0000\n"
+"Last-Translator: Umur Akın <umura@projetgrup.com>, 2019\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -135,6 +136,11 @@ msgstr "FEDEX_2GÜN_ÖÖ"
 
 #. module: delivery_fedex
 #: selection:delivery.carrier,fedex_service_type:0
+msgid "FEDEX_3_DAY_FREIGHT"
+msgstr ""
+
+#. module: delivery_fedex
+#: selection:delivery.carrier,fedex_service_type:0
 msgid "FEDEX_GROUND"
 msgstr "FEDEX_MESAFE"
 
@@ -174,6 +180,11 @@ msgstr "FedEx Web Servisleri \"Üretime Taşı\""
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
 msgid "Fedex Configuration"
 msgstr "Fedex Yapılandırma"
+
+#. module: delivery_fedex
+#: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_document_stock_type
+msgid "Fedex Document Stock Type"
+msgstr ""
 
 #. module: delivery_fedex
 #: model:delivery.carrier,name:delivery_fedex.delivery_carrier_fedex_inter
@@ -271,36 +282,43 @@ msgid "Once your account is created, go to"
 msgstr "Bir kerelik hesabınız oluşturuldu,buraya git"
 
 #. module: delivery_fedex
+#: selection:delivery.carrier,fedex_document_stock_type:0
 #: selection:delivery.carrier,fedex_label_stock_type:0
 msgid "PAPER_4X6"
 msgstr "KAĞIT_4X6"
 
 #. module: delivery_fedex
+#: selection:delivery.carrier,fedex_document_stock_type:0
 #: selection:delivery.carrier,fedex_label_stock_type:0
 msgid "PAPER_4X8"
 msgstr "KAĞIT_4X8"
 
 #. module: delivery_fedex
+#: selection:delivery.carrier,fedex_document_stock_type:0
 #: selection:delivery.carrier,fedex_label_stock_type:0
 msgid "PAPER_4X9"
 msgstr "KAĞIT_4X9"
 
 #. module: delivery_fedex
+#: selection:delivery.carrier,fedex_document_stock_type:0
 #: selection:delivery.carrier,fedex_label_stock_type:0
 msgid "PAPER_7X4.75"
 msgstr "KAĞIT_7X4.75"
 
 #. module: delivery_fedex
+#: selection:delivery.carrier,fedex_document_stock_type:0
 #: selection:delivery.carrier,fedex_label_stock_type:0
 msgid "PAPER_8.5X11_BOTTOM_HALF_LABEL"
 msgstr "KAĞIT_8.5X11_ALT_YARIM_ETİKET"
 
 #. module: delivery_fedex
+#: selection:delivery.carrier,fedex_document_stock_type:0
 #: selection:delivery.carrier,fedex_label_stock_type:0
 msgid "PAPER_8.5X11_TOP_HALF_LABEL"
 msgstr "KAĞIT_8.5X11_ÜST_YARIM_ETİKET"
 
 #. module: delivery_fedex
+#: selection:delivery.carrier,fedex_document_stock_type:0
 #: selection:delivery.carrier,fedex_label_stock_type:0
 msgid "PAPER_LETTER"
 msgstr "KAĞIT_HARF"
@@ -323,7 +341,7 @@ msgstr "ÖNCELİKLİ_BİRGECELİK"
 #. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_developer_password
 msgid "Password"
-msgstr "Parola "
+msgstr "Parola"
 
 #. module: delivery_fedex
 #: model:ir.model,name:delivery_fedex.model_product_packaging
@@ -356,31 +374,37 @@ msgid "STATION"
 msgstr "DURAK"
 
 #. module: delivery_fedex
+#: selection:delivery.carrier,fedex_document_stock_type:0
 #: selection:delivery.carrier,fedex_label_stock_type:0
 msgid "STOCK_4X6"
 msgstr "STOCK_4X6"
 
 #. module: delivery_fedex
+#: selection:delivery.carrier,fedex_document_stock_type:0
 #: selection:delivery.carrier,fedex_label_stock_type:0
 msgid "STOCK_4X6.75_LEADING_DOC_TAB"
 msgstr "STOCK_4X6.75_LEADING_DOC_TAB"
 
 #. module: delivery_fedex
+#: selection:delivery.carrier,fedex_document_stock_type:0
 #: selection:delivery.carrier,fedex_label_stock_type:0
 msgid "STOCK_4X6.75_TRAILING_DOC_TAB"
 msgstr "STOCK_4X6.75_TRAILING_DOC_TAB"
 
 #. module: delivery_fedex
+#: selection:delivery.carrier,fedex_document_stock_type:0
 #: selection:delivery.carrier,fedex_label_stock_type:0
 msgid "STOCK_4X8"
 msgstr ""
 
 #. module: delivery_fedex
+#: selection:delivery.carrier,fedex_document_stock_type:0
 #: selection:delivery.carrier,fedex_label_stock_type:0
 msgid "STOCK_4X9_LEADING_DOC_TAB"
 msgstr "STOCK_4X9_LEADING_DOC_TAB"
 
 #. module: delivery_fedex
+#: selection:delivery.carrier,fedex_document_stock_type:0
 #: selection:delivery.carrier,fedex_label_stock_type:0
 msgid "STOCK_4X9_TRAILING_DOC_TAB"
 msgstr "STOCK_4X9_TRAILING_DOC_TAB"
@@ -493,14 +517,6 @@ msgstr "ZPLII"
 #: selection:product.packaging,package_carrier_type:0
 msgid "bpost"
 msgstr "bpost"
-
-#. module: delivery_fedex
-#: model:product.product,weight_uom_name:delivery_fedex.product_product_delivery_fedex_inter
-#: model:product.product,weight_uom_name:delivery_fedex.product_product_delivery_fedex_us
-#: model:product.template,weight_uom_name:delivery_fedex.product_product_delivery_fedex_inter_product_template
-#: model:product.template,weight_uom_name:delivery_fedex.product_product_delivery_fedex_us_product_template
-msgid "kg"
-msgstr "kg"
 
 #. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex

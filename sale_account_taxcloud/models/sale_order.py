@@ -17,9 +17,10 @@ class SaleOrder(models.Model):
 
     @api.multi
     def validate_taxes_on_sales_order(self):
+        company = self.company_id
         Param = self.env['ir.config_parameter']
-        api_id = Param.sudo().get_param('account_taxcloud.taxcloud_api_id')
-        api_key = Param.sudo().get_param('account_taxcloud.taxcloud_api_key')
+        api_id = Param.sudo().get_param('account_taxcloud.taxcloud_api_id_{}'.format(company.id)) or Param.sudo().get_param('account_taxcloud.taxcloud_api_id')
+        api_key = Param.sudo().get_param('account_taxcloud.taxcloud_api_key_{}'.format(company.id)) or Param.sudo().get_param('account_taxcloud.taxcloud_api_key')
         request = TaxCloudRequest(api_id, api_key)
 
         shipper = self.company_id or self.env.user.company_id
@@ -42,7 +43,7 @@ class SaleOrder(models.Model):
                     tax_rate = 0.0
                 else:
                     tax_rate = tax_values[index] / price * 100
-                if len(line.tax_id.ids) > 1 or float_compare(line.tax_id.amount, tax_rate, precision_digits=3):
+                if len(line.tax_id) != 1 or float_compare(line.tax_id.amount, tax_rate, precision_digits=3):
                     tax_rate = float_round(tax_rate, precision_digits=3)
                     tax = self.env['account.tax'].sudo().search([
                         ('amount', '=', tax_rate),

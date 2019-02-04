@@ -3,14 +3,20 @@
 # * quality
 # 
 # Translators:
-# Martin Trigaux, 2018
+# Otgonbayar.A <gobi.mn@gmail.com>, 2018
+# nasaaskii <nasaaskii@gmail.com>, 2018
+# Batzul B <batzul.active@gmail.com>, 2018
+# Khishigbat Ganbold <khishigbat@asterisk-tech.mn>, 2018
+# Onii Onii <onii0223@yahoo.com>, 2018
+# Martin Trigaux, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"POT-Creation-Date: 2018-12-24 11:16+0000\n"
+"PO-Revision-Date: 2016-08-05 13:31+0000\n"
+"Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: Mongolian (https://www.transifex.com/odoo/teams/41243/mn/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -55,6 +61,16 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_point__active
 msgid "Active"
 msgstr "Идэвхитэй"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__activity_ids
+msgid "Activities"
+msgstr "Ажилбар"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__activity_state
+msgid "Activity State"
+msgstr "Ажилбарын Төлөв"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_stage__done
@@ -431,6 +447,21 @@ msgid "New"
 msgstr "Шинэ"
 
 #. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__activity_date_deadline
+msgid "Next Activity Deadline"
+msgstr ""
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__activity_summary
+msgid "Next Activity Summary"
+msgstr "Дараагийн Ажилбарын Хураангуй"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__activity_type_id
+msgid "Next Activity Type"
+msgstr ""
+
+#. module: quality
 #: selection:quality.alert,priority:0
 msgid "Normal"
 msgstr "Хэвийн"
@@ -514,6 +545,11 @@ msgid "Others"
 msgstr ""
 
 #. module: quality
+#: selection:quality.alert,activity_state:0
+msgid "Overdue"
+msgstr "Хугацаа хэтэрсэн"
+
+#. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_user_id
 msgid "Owner"
 msgstr "Эзэмшигч"
@@ -559,6 +595,11 @@ msgstr "Бэлтгэх"
 #: model:ir.model.fields,field_description:quality.field_quality_check__picture
 msgid "Picture"
 msgstr "Зураг"
+
+#. module: quality
+#: selection:quality.alert,activity_state:0
+msgid "Planned"
+msgstr "Төлөвлөсөн"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert_team__alias_contact
@@ -654,6 +695,11 @@ msgid "Responsible"
 msgstr "Хариуцагч"
 
 #. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__activity_user_id
+msgid "Responsible User"
+msgstr "Хариуцагч хэрэглэгч"
+
+#. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__reason_id
 msgid "Root Cause"
 msgstr "Учир шалтгаан"
@@ -684,6 +730,15 @@ msgstr "Үе шат"
 #: model:ir.model.fields,field_description:quality.field_quality_check__quality_state
 msgid "Status"
 msgstr "Төлөв"
+
+#. module: quality
+#: model:ir.model.fields,help:quality.field_quality_alert__activity_state
+msgid ""
+"Status based on activities\n"
+"Overdue: Due date is already passed\n"
+"Today: Activity date is today\n"
+"Planned: Future activities."
+msgstr ""
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__tag_ids
@@ -761,6 +816,11 @@ msgstr "Гарчиг"
 #: selection:quality.check,quality_state:0
 msgid "To do"
 msgstr "Хийх"
+
+#. module: quality
+#: selection:quality.alert,activity_state:0
+msgid "Today"
+msgstr "Өнөөдөр"
 
 #. module: quality
 #: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form

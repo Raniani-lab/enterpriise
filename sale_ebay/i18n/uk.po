@@ -3,16 +3,19 @@
 # * sale_ebay
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018
+# Yaroslav Molochko <onorua@gmail.com>, 2018
+# Bohdan Lisnenko, 2018
+# ТАрас <tratatuta@i.ua>, 2018
+# Martin Trigaux, 2019
+# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-08-24 11:48+0000\n"
-"Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018\n"
+"PO-Revision-Date: 2016-08-05 13:31+0000\n"
+"Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -40,8 +43,8 @@ msgid ""
 " If you want to set quantity to 0, the Out Of Stock option should be enabled"
 " and the listing duration should set to Good 'Til Canceled"
 msgstr ""
-"Якщо ви хочете встановити кількість до 0, параметр Немає на складі має бути "
-"включений, а тривалість запису має бути встановлена на Добре до скасування"
+"Якщо ви хочете встановити кількість до 0, параметр Out Of Stock має бути "
+"включений, а тривалість запису має бути встановлено на Good 'Til Canceled"
 
 #. module: sale_ebay
 #: code:addons/sale_ebay/models/product.py:386
@@ -51,7 +54,7 @@ msgid ""
 " Or if you try to delete a variation, you cannot do it by unselecting it. Setting the quantity to 0 is the safest method to make a variation unavailable."
 msgstr ""
 "Вам потрібно вибрати принаймні 2 варіанти для переліку варіантів.\n"
-"Або якщо ви намагаєтеся видалити варіант, ви не можете це зробити, скасувавши їх. Встановлення кількості до 0 - найбезпечніший спосіб зробити варіант недоступним."
+"  Або якщо ви намагаєтесь видалити варіант, ви не можете це зробити, скасувавши його. Встановлення кількості до 0 - найбезпечніший спосіб зробити варіант недоступним."
 
 #. module: sale_ebay
 #: selection:product.template,ebay_listing_duration:0
@@ -71,7 +74,7 @@ msgstr "30 днів (лише для фіксованої ціни)"
 #. module: sale_ebay
 #: selection:product.template,ebay_listing_duration:0
 msgid "5 Days"
-msgstr "5 днів"
+msgstr "5 Днів"
 
 #. module: sale_ebay
 #: selection:product.template,ebay_listing_duration:0
@@ -192,7 +195,7 @@ msgstr "Контакт"
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Countries & Currencies"
-msgstr "Країни та валюти"
+msgstr "Країни та Валюти"
 
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_res_country
@@ -263,7 +266,7 @@ msgstr "Тривалість"
 #. module: sale_ebay
 #: model:ir.actions.server,name:sale_ebay.action_end_items_listings
 msgid "Ebay: End Product Templates Listings on eBay"
-msgstr "Ebay: кінцеві шаблони товарів на eBay"
+msgstr "Ebay: Кінцеві шаблони товарів на eBay"
 
 #. module: sale_ebay
 #: model:ir.actions.server,name:sale_ebay.action_list_items
@@ -278,12 +281,12 @@ msgstr "Ebay: повторно вивести список шаблонів то
 #. module: sale_ebay
 #: model:ir.actions.server,name:sale_ebay.action_revise_items
 msgid "Ebay: Revise Product Templates on eBay"
-msgstr "Ebay: переглянути шаблони твоару на eBay"
+msgstr "Ebay: Переглянути шаблони твоару на eBay"
 
 #. module: sale_ebay
 #: model:ir.actions.server,name:sale_ebay.action_unlink_items_listings
 msgid "Ebay: Unlink eBay Product Templates Listings"
-msgstr "Ebay: від'єднати списки шаблонів товару eBay"
+msgstr "Ebay: Від'єднати списки шаблонів товару eBay"
 
 #. module: sale_ebay
 #: model:ir.actions.server,name:sale_ebay.ir_cron_sale_ebay_categories_ir_actions_server
@@ -418,7 +421,7 @@ msgstr "Останні оновлення"
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_category__leaf_category
 msgid "Leaf Category"
-msgstr "Категорія гілки"
+msgstr "Гілка категорії"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.ebay_link_listing_view
@@ -500,7 +503,7 @@ msgstr "Або умова не сумісна з категорією."
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_out_of_stock
 msgid "Out Of Stock"
-msgstr "Немає на складі"
+msgstr "Не на складі"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_seller_payment_policy_id
@@ -552,12 +555,12 @@ msgstr "Виробництво"
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_prod_app_id
 msgid "Production App Key"
-msgstr "Ключ додатку виробництва"
+msgstr "Ключ додатку Виробництва"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_prod_cert_id
 msgid "Production Cert Key"
-msgstr "Сертифікат ключа виробництва "
+msgstr "Замкнений ключ виробництва "
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_prod_token
@@ -883,7 +886,7 @@ msgstr "ID користувача eBay "
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_variant_url
 msgid "eBay Variant URL"
-msgstr "URL-адреса варіанта eBay"
+msgstr "варіант URL-адреси eBay"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_site

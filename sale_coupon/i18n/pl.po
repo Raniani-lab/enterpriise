@@ -3,25 +3,26 @@
 # * sale_coupon
 # 
 # Translators:
-# zbik2607 <darek@krokus.com.pl>, 2018
-# Paweł Wodyński <pw@myodoo.pl>, 2018
-# Martin Trigaux, 2018
-# Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2018
-# Judyta Kaźmierczak <judyta.kazmierczak@openglobe.pl>, 2018
-# Tomasz Leppich <t.leppich@gmail.com>, 2018
-# Piotr Szlązak <szlazakpiotr@gmail.com>, 2018
-# Marcin Młynarczyk <mlynarczyk@gmail.com>, 2018
-# Andrzej Donczew <a.donczew@hadron.eu.com>, 2018
-# Piotr Cierkosz <piotr.w.cierkosz@gmail.com>, 2018
-# Radosław Biegalski <radoslaw.biegalski@openglobe.pl>, 2018
-# Wiktor Kaźmierczak <wik92tor@wp.pl>, 2018
+# Martin Trigaux, 2019
+# zbik2607 <darek@krokus.com.pl>, 2019
+# Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2019
+# Judyta Kaźmierczak <judyta.kazmierczak@openglobe.pl>, 2019
+# Tomasz Leppich <t.leppich@gmail.com>, 2019
+# Piotr Szlązak <szlazakpiotr@gmail.com>, 2019
+# Marcin Młynarczyk <mlynarczyk@gmail.com>, 2019
+# Andrzej Donczew <a.donczew@hadron.eu.com>, 2019
+# Piotr Cierkosz <piotr.w.cierkosz@gmail.com>, 2019
+# Radosław Biegalski <radoslaw.biegalski@openglobe.pl>, 2019
+# Paweł Wodyński <pw@myodoo.pl>, 2019
+# Wiktor Kaźmierczak <wik92tor@wp.pl>, 2019
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-08 07:14+0000\n"
-"PO-Revision-Date: 2018-10-08 07:14+0000\n"
-"Last-Translator: Wiktor Kaźmierczak <wik92tor@wp.pl>, 2018\n"
+"PO-Revision-Date: 2017-02-15 11:46+0000\n"
+"Last-Translator: Wiktor Kaźmierczak <wik92tor@wp.pl>, 2019\n"
 "Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1078,7 +1079,7 @@ msgstr "Produkt linii nagród"
 #: model:ir.model.fields,help:sale_coupon.field_sale_coupon_program__reward_product_id
 #: model:ir.model.fields,help:sale_coupon.field_sale_coupon_reward__reward_product_id
 msgid "Reward Product"
-msgstr "Nagroda Produkt"
+msgstr "Nagroda produktu"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_program__reward_type
@@ -1162,7 +1163,7 @@ msgstr "Zamówienie sprzedaży"
 #. module: sale_coupon
 #: model:ir.model,name:sale_coupon.model_sale_order_line
 msgid "Sales Order Line"
-msgstr "Pozycja zlecenia sprzedaży"
+msgstr "Pozycja zamówienia sprzedaży"
 
 #. module: sale_coupon
 #: code:addons/sale_coupon/models/sale_coupon_program.py:135
@@ -1395,8 +1396,8 @@ msgid ""
 "recorded on the sales order (Example: You need to have 3 T-shirts on your "
 "sales order if the promotion is 'Buy 2, Get 1 Free'."
 msgstr ""
-"Nie masz wymaganych ilości produktów w zamówieniu sprzedaży. Jeśli nagrodą "
-"jest ilość tego samego produktu, upewnij się, że wszystkie produkty są "
+"Nie masz wymaganych ilości produktów w zamówieniu sprzedaży. Jeśli nagroda "
+"jest taka sama jak ilość produktu, upewnij się, że wszystkie produkty są "
 "zapisane w zleceniu sprzedaży (Przykład: Musisz mieć 3 koszulki w zamówieniu"
 " sprzedaży, jeśli promocja jest \"Kup 2, Zdobądź 1 za darmo\"."
 

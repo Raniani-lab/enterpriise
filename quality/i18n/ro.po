@@ -3,14 +3,17 @@
 # * quality
 # 
 # Translators:
-# Martin Trigaux, 2018
+# Cozmin Candea <office@terrabit.ro>, 2018
+# Martin Trigaux, 2019
+# Dorin Hongu <dhongu@gmail.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"POT-Creation-Date: 2018-12-24 11:16+0000\n"
+"PO-Revision-Date: 2016-08-05 13:31+0000\n"
+"Last-Translator: Dorin Hongu <dhongu@gmail.com>, 2019\n"
 "Language-Team: Romanian (https://www.transifex.com/odoo/teams/41243/ro/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -55,6 +58,16 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_point__active
 msgid "Active"
 msgstr "Activ(a)"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__activity_ids
+msgid "Activities"
+msgstr "Activități"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__activity_state
+msgid "Activity State"
+msgstr "Stare activitate"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_stage__done
@@ -427,6 +440,21 @@ msgid "New"
 msgstr "Nou(ă)"
 
 #. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__activity_date_deadline
+msgid "Next Activity Deadline"
+msgstr ""
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__activity_summary
+msgid "Next Activity Summary"
+msgstr "Sumarul următoarei activități"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__activity_type_id
+msgid "Next Activity Type"
+msgstr "Tip de activitate urmatoare"
+
+#. module: quality
 #: selection:quality.alert,priority:0
 msgid "Normal"
 msgstr "Normal"
@@ -507,7 +535,12 @@ msgstr ""
 #. module: quality
 #: model:quality.reason,name:quality.reason_other
 msgid "Others"
-msgstr ""
+msgstr "Altele"
+
+#. module: quality
+#: selection:quality.alert,activity_state:0
+msgid "Overdue"
+msgstr "Restanță"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_user_id
@@ -552,6 +585,11 @@ msgstr "Ridicare"
 #: model:ir.model.fields,field_description:quality.field_quality_check__picture
 msgid "Picture"
 msgstr ""
+
+#. module: quality
+#: selection:quality.alert,activity_state:0
+msgid "Planned"
+msgstr "Planificată"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert_team__alias_contact
@@ -643,6 +681,11 @@ msgid "Responsible"
 msgstr "Responsabil"
 
 #. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__activity_user_id
+msgid "Responsible User"
+msgstr "Utilizator responsabil"
+
+#. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__reason_id
 msgid "Root Cause"
 msgstr "Cauza"
@@ -662,7 +705,7 @@ msgstr "Secvență"
 #. module: quality
 #: model:quality.alert.stage,name:quality.quality_alert_stage_3
 msgid "Solved"
-msgstr ""
+msgstr "Rezolvat"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__stage_id
@@ -673,6 +716,15 @@ msgstr "Etapă"
 #: model:ir.model.fields,field_description:quality.field_quality_check__quality_state
 msgid "Status"
 msgstr "Stare"
+
+#. module: quality
+#: model:ir.model.fields,help:quality.field_quality_alert__activity_state
+msgid ""
+"Status based on activities\n"
+"Overdue: Due date is already passed\n"
+"Today: Activity date is today\n"
+"Planned: Future activities."
+msgstr ""
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__tag_ids
@@ -748,6 +800,11 @@ msgid "To do"
 msgstr "De făcut"
 
 #. module: quality
+#: selection:quality.alert,activity_state:0
+msgid "Today"
+msgstr "Astăzi"
+
+#. module: quality
 #: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
 msgid "Type"
 msgstr "Tip"
@@ -807,7 +864,7 @@ msgstr "Istoric comunicare website"
 #. module: quality
 #: model:quality.reason,name:quality.reason_wo
 msgid "Work Operation"
-msgstr ""
+msgstr "Operație de lucru"
 
 #. module: quality
 #: model:quality.reason,name:quality.reason_workcenter

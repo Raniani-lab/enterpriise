@@ -3,16 +3,17 @@
 # * website_helpdesk_form
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Mateus Lopes <mateus1@gmail.com>, 2018
-# grazziano <gra.negocia@gmail.com>, 2018
+# Mateus Lopes <mateus1@gmail.com>, 2017
+# grazziano <gra.negocia@gmail.com>, 2017
+# Martin Trigaux, 2017
 # Diego Bittencourt <diegomb86@gmail.com>, 2018
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.3+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 08:34+0000\n"
-"PO-Revision-Date: 2018-06-25 08:34+0000\n"
+"POT-Creation-Date: 2019-01-16 08:12+0000\n"
+"PO-Revision-Date: 2017-02-15 11:47+0000\n"
 "Last-Translator: Diego Bittencourt <diegomb86@gmail.com>, 2018\n"
 "Language-Team: Portuguese (Brazil) (https://www.transifex.com/odoo/teams/41243/pt_BR/)\n"
 "MIME-Version: 1.0\n"
@@ -22,12 +23,25 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #. module: website_helpdesk_form
-#: model:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_form.aboutus_page_ir_ui_view
+#: model_terms:website.page,arch_db:website_helpdesk_form.aboutus_page
+msgid ""
+"<i class=\"fa fa-check-circle fa-2x text-success\" role=\"img\" aria-"
+"label=\"Success\" title=\"Success\"/>"
+msgstr ""
+
+#. module: website_helpdesk_form
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_form.helpdesk_team_view_form_inherit_website_helpdesk_form
+msgid "<i class=\"fa fa-fw fa-arrow-right\" aria-label=\"Go to\" title=\"Go to\"/>"
+msgstr ""
+
+#. module: website_helpdesk_form
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
 msgid "Attachment(s)"
 msgstr "Anexo(s)"
 
 #. module: website_helpdesk_form
-#: model:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
 msgid "Description"
 msgstr "Descrição"
 
@@ -37,29 +51,28 @@ msgid "Helpdesk Team"
 msgstr ""
 
 #. module: website_helpdesk_form
-#: model:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
 msgid "Send"
 msgstr "Enviar"
 
 #. module: website_helpdesk_form
-#: model:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
 msgid "Subject"
 msgstr "Assunto"
 
 #. module: website_helpdesk_form
-#: model:ir.ui.view,arch_db:website_helpdesk_form.helpdesk_team_view_form_inherit_website_helpdesk_form
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_form.helpdesk_team_view_form_inherit_website_helpdesk_form
 msgid "Submit an issue using this page:<br/>"
 msgstr ""
 
 #. module: website_helpdesk_form
-#: model:ir.ui.view,arch_db:website_helpdesk_form.aboutus_page_ir_ui_view
-#: model:ir.ui.view,arch_db:website_helpdesk_form.ticket_submited
-#: model:website.page,arch_db:website_helpdesk_form.aboutus_page
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_form.aboutus_page_ir_ui_view
+#: model_terms:website.page,arch_db:website_helpdesk_form.aboutus_page
 msgid "Thank you for submitting your issue, our team will get right on it!"
 msgstr ""
 
 #. module: website_helpdesk_form
-#: model:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
 msgid "Ticket"
 msgstr "Ticket"
 
@@ -69,18 +82,17 @@ msgid "URL to Submit Issue"
 msgstr ""
 
 #. module: website_helpdesk_form
-#: model:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
 msgid "Your Email"
 msgstr "Seu E-mail"
 
 #. module: website_helpdesk_form
-#: model:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_form.ticket_submit
 msgid "Your Name"
 msgstr "Seu Nome"
 
 #. module: website_helpdesk_form
-#: model:ir.ui.view,arch_db:website_helpdesk_form.aboutus_page_ir_ui_view
-#: model:ir.ui.view,arch_db:website_helpdesk_form.ticket_submited
-#: model:website.page,arch_db:website_helpdesk_form.aboutus_page
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_form.aboutus_page_ir_ui_view
+#: model_terms:website.page,arch_db:website_helpdesk_form.aboutus_page
 msgid "Your Ticket Number is"
 msgstr ""

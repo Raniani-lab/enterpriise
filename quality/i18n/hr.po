@@ -3,22 +3,25 @@
 # * quality
 # 
 # Translators:
-# Bole <bole@dajmi5.com>, 2017
-# Ivica Dimjašević <ivica.dimjasevic@storm.hr>, 2017
-# Martin Trigaux, 2017
-# Vladimir Olujić <olujic.vladimir@storm.hr>, 2017
-# Tina Milas, 2017
-# KRISTINA PALAŠ <kristina.palas@storm.hr>, 2017
-# Đurđica Žarković <durdica.zarkovic@storm.hr>, 2017
-# Karolina Tonković <karolina.tonkovic@storm.hr>, 2017
 # Mario Jureša <mario.juresa@uvid.hr>, 2017
+# KRISTINA PALAŠ <kristina.palas@storm.hr>, 2017
+# Ivica Dimjašević <ivica.dimjasevic@storm.hr>, 2017
+# Vladimir Olujić <olujic.vladimir@storm.hr>, 2018
+# Đurđica Žarković <durdica.zarkovic@storm.hr>, 2018
+# Tina Milas, 2018
+# Martin Trigaux, 2019
+# Bole <bole@dajmi5.com>, 2019
+# Karolina Tonković <karolina.tonkovic@storm.hr>, 2019
+# Marko Carević <marko.carevic@live.com>, 2019
+# Stjepan Lovasić <stjepan.lovasic@gmail.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.4+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-02 11:20+0000\n"
-"PO-Revision-Date: 2018-08-02 11:20+0000\n"
-"Last-Translator: Mario Jureša <mario.juresa@uvid.hr>, 2017\n"
+"POT-Creation-Date: 2018-12-24 11:16+0000\n"
+"PO-Revision-Date: 2016-08-05 13:31+0000\n"
+"Last-Translator: Stjepan Lovasić <stjepan.lovasic@gmail.com>, 2019\n"
 "Language-Team: Croatian (https://www.transifex.com/odoo/teams/41243/hr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -55,9 +58,24 @@ msgid "Action Needed"
 msgstr "Potrebna dodatna radnja"
 
 #. module: quality
+#: model:quality.alert.stage,name:quality.quality_alert_stage_2
+msgid "Action Proposed"
+msgstr ""
+
+#. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_point__active
 msgid "Active"
 msgstr "Aktivan"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__activity_ids
+msgid "Activities"
+msgstr "Aktivnosti"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__activity_state
+msgid "Activity State"
+msgstr "Status aktivnosti"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_stage__done
@@ -95,6 +113,14 @@ msgid "Aliased Model"
 msgstr "Zamjenski model"
 
 #. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__message_attachment_count
+#: model:ir.model.fields,field_description:quality.field_quality_alert_team__message_attachment_count
+#: model:ir.model.fields,field_description:quality.field_quality_check__message_attachment_count
+#: model:ir.model.fields,field_description:quality.field_quality_point__message_attachment_count
+msgid "Attachment Count"
+msgstr ""
+
+#. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_point__reason
 msgid "Cause"
 msgstr ""
@@ -127,6 +153,11 @@ msgstr "Indeks boje"
 #: model:ir.model.fields,field_description:quality.field_quality_point__company_id
 msgid "Company"
 msgstr "Tvrtka"
+
+#. module: quality
+#: model:quality.alert.stage,name:quality.quality_alert_stage_1
+msgid "Confirmed"
+msgstr "Potvrđeno"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_check__control_date
@@ -188,12 +219,12 @@ msgid "Defines the type of the quality control point."
 msgstr ""
 
 #. module: quality
-#: model:ir.ui.view,arch_db:quality.quality_point_view_form
+#: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
 msgid "Describe the quality check to do..."
 msgstr "Opišite kontrolu kvalitete za napraviti..."
 
 #. module: quality
-#: model:ir.ui.view,arch_db:quality.quality_point_view_form
+#: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
 msgid "Describe why you need to perform this quality check..."
 msgstr "Opišite zašto je potrebna ova kontrola kvaitete..."
 
@@ -304,7 +335,7 @@ msgid "If checked, some messages have a delivery error."
 msgstr ""
 
 #. module: quality
-#: model:ir.ui.view,arch_db:quality.quality_point_view_form
+#: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
 msgid "Instructions"
 msgstr ""
 
@@ -364,6 +395,14 @@ msgid "Low"
 msgstr "Nizak"
 
 #. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__message_main_attachment_id
+#: model:ir.model.fields,field_description:quality.field_quality_alert_team__message_main_attachment_id
+#: model:ir.model.fields,field_description:quality.field_quality_check__message_main_attachment_id
+#: model:ir.model.fields,field_description:quality.field_quality_point__message_main_attachment_id
+msgid "Main Attachment"
+msgstr ""
+
+#. module: quality
 #: model:res.groups,name:quality.group_quality_manager
 msgid "Manager"
 msgstr "Voditelj"
@@ -400,14 +439,30 @@ msgstr "Naziv"
 #: code:addons/quality/models/quality.py:69
 #: code:addons/quality/models/quality.py:70
 #: code:addons/quality/models/quality.py:144
-#: code:addons/quality/models/quality.py:180
 #: code:addons/quality/models/quality.py:181
-#: code:addons/quality/models/quality.py:208
-#: code:addons/quality/models/quality.py:243
+#: code:addons/quality/models/quality.py:182
+#: code:addons/quality/models/quality.py:209
 #: code:addons/quality/models/quality.py:244
+#: code:addons/quality/models/quality.py:245
+#: model:quality.alert.stage,name:quality.quality_alert_stage_0
 #, python-format
 msgid "New"
 msgstr "Novi"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__activity_date_deadline
+msgid "Next Activity Deadline"
+msgstr ""
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__activity_summary
+msgid "Next Activity Summary"
+msgstr "Sažetak sljedeće aktivnosti"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__activity_type_id
+msgid "Next Activity Type"
+msgstr ""
 
 #. module: quality
 #: selection:quality.alert,priority:0
@@ -417,12 +472,12 @@ msgstr "Normalan"
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_check__note
 #: model:ir.model.fields,field_description:quality.field_quality_point__note
-#: model:ir.ui.view,arch_db:quality.quality_point_view_form
+#: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
 msgid "Note"
 msgstr "Bilješka"
 
 #. module: quality
-#: model:ir.ui.view,arch_db:quality.quality_point_view_form
+#: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
 msgid "Notes"
 msgstr "Bilješke"
 
@@ -467,14 +522,7 @@ msgid "Number of unread messages"
 msgstr "Broj nepročitanih poruka"
 
 #. module: quality
-#: model:ir.model.fields,help:quality.field_res_users__group_quality_user
-msgid ""
-"Officer: The quality user uses the quality process\n"
-"Manager: The quality manager manages the quality process"
-msgstr ""
-
-#. module: quality
-#: model:ir.ui.view,arch_db:quality.quality_point_view_form
+#: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
 msgid "Operation"
 msgstr "Operacija"
 
@@ -493,6 +541,16 @@ msgstr ""
 "Opcionalni ID zapisa na kojeg će biti povezane sve dolazne poruke, čak i ako"
 " oni nisu odgovorili na njega. Ako je postavljeno, to će onemogućiti "
 "stvaranje novih zapisa u potpunosti."
+
+#. module: quality
+#: model:quality.reason,name:quality.reason_other
+msgid "Others"
+msgstr ""
+
+#. module: quality
+#: selection:quality.alert,activity_state:0
+msgid "Overdue"
+msgstr "Dospjelo"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_user_id
@@ -521,6 +579,11 @@ msgstr ""
 "zadatka (model))"
 
 #. module: quality
+#: model:quality.reason,name:quality.reason_parts
+msgid "Parts Quality"
+msgstr ""
+
+#. module: quality
 #: selection:quality.check,quality_state:0
 msgid "Passed"
 msgstr "Prošao"
@@ -530,6 +593,16 @@ msgstr "Prošao"
 #: model:ir.model.fields,field_description:quality.field_quality_check__picking_id
 msgid "Picking"
 msgstr "Skladišnice"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_check__picture
+msgid "Picture"
+msgstr "Slika"
+
+#. module: quality
+#: selection:quality.alert,activity_state:0
+msgid "Planned"
+msgstr "Planirano"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert_team__alias_contact
@@ -568,7 +641,6 @@ msgid "Product Variant"
 msgstr "Varijanta proizvoda"
 
 #. module: quality
-#: model:ir.model.fields,field_description:quality.field_res_users__group_quality_user
 #: model:ir.module.category,name:quality.module_category_quality
 msgid "Quality"
 msgstr "Kvaliteta"
@@ -595,13 +667,13 @@ msgstr "Test kvalitete"
 
 #. module: quality
 #: model:ir.model,name:quality.model_quality_point
-msgid "Quality Point"
-msgstr "Točka kvalitete"
+msgid "Quality Control Point"
+msgstr ""
 
 #. module: quality
-#: model:ir.model,name:quality.model_quality_reason
-msgid "Quality Reason"
-msgstr "Razlog kvalitete"
+#: model:ir.model,name:quality.model_quality_point_test_type
+msgid "Quality Control Test Type"
+msgstr ""
 
 #. module: quality
 #: model:ir.model,name:quality.model_quality_tag
@@ -626,9 +698,19 @@ msgid "Responsible"
 msgstr "Odgovoran"
 
 #. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__activity_user_id
+msgid "Responsible User"
+msgstr "Odgovorna osoba"
+
+#. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__reason_id
 msgid "Root Cause"
 msgstr "Glavni uzrok"
+
+#. module: quality
+#: model:ir.model,name:quality.model_quality_reason
+msgid "Root Cause for Quality Failure"
+msgstr ""
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_stage__sequence
@@ -636,6 +718,11 @@ msgstr "Glavni uzrok"
 #: model:ir.model.fields,field_description:quality.field_quality_point__sequence
 msgid "Sequence"
 msgstr "Sekvenca"
+
+#. module: quality
+#: model:quality.alert.stage,name:quality.quality_alert_stage_3
+msgid "Solved"
+msgstr ""
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__stage_id
@@ -646,6 +733,15 @@ msgstr "Faza"
 #: model:ir.model.fields,field_description:quality.field_quality_check__quality_state
 msgid "Status"
 msgstr "Status"
+
+#. module: quality
+#: model:ir.model.fields,help:quality.field_quality_alert__activity_state
+msgid ""
+"Status based on activities\n"
+"Overdue: Due date is already passed\n"
+"Today: Activity date is today\n"
+"Planned: Future activities."
+msgstr ""
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__tag_ids
@@ -667,7 +763,6 @@ msgid "Technical name"
 msgstr ""
 
 #. module: quality
-#: model:ir.model,name:quality.model_quality_point_test_type
 #: model:ir.model.fields,field_description:quality.field_quality_point__test_type_id
 msgid "Test Type"
 msgstr "Tip testa"
@@ -726,7 +821,12 @@ msgid "To do"
 msgstr "Za napraviti"
 
 #. module: quality
-#: model:ir.ui.view,arch_db:quality.quality_point_view_form
+#: selection:quality.alert,activity_state:0
+msgid "Today"
+msgstr "Danas"
+
+#. module: quality
+#: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
 msgid "Type"
 msgstr "Vrsta"
 
@@ -757,11 +857,6 @@ msgid "User"
 msgstr "Korisnik"
 
 #. module: quality
-#: model:ir.model,name:quality.model_res_users
-msgid "Users"
-msgstr "Korisnici"
-
-#. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__partner_id
 msgid "Vendor"
 msgstr "Dobavljač"
@@ -786,3 +881,13 @@ msgstr "Poruke webstranica"
 #: model:ir.model.fields,help:quality.field_quality_point__website_message_ids
 msgid "Website communication history"
 msgstr "Povijest komunikacije Web stranice"
+
+#. module: quality
+#: model:quality.reason,name:quality.reason_wo
+msgid "Work Operation"
+msgstr ""
+
+#. module: quality
+#: model:quality.reason,name:quality.reason_workcenter
+msgid "Workcenter Failure"
+msgstr ""

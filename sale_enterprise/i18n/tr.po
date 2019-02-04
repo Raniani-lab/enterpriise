@@ -3,18 +3,19 @@
 # * sale_enterprise
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Murat Kaplan <muratk@projetgrup.com>, 2018
-# cagri erarslan <cagri.erarslan@mechsoft.com.tr>, 2018
-# Umur Akın <umura@projetgrup.com>, 2018
-# Ediz Duman <neps1192@gmail.com>, 2018
+# Ediz Duman <neps1192@gmail.com>, 2019
+# Martin Trigaux, 2019
+# Murat Kaplan <muratk@projetgrup.com>, 2019
+# cagri erarslan <cagri.erarslan@mechsoft.com.tr>, 2019
+# Umur Akın <umura@projetgrup.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-02 10:32+0000\n"
-"PO-Revision-Date: 2018-10-02 10:32+0000\n"
-"Last-Translator: Ediz Duman <neps1192@gmail.com>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"PO-Revision-Date: 2019-01-16 08:40+0000\n"
+"Last-Translator: Umur Akın <umura@projetgrup.com>, 2019\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -80,6 +81,11 @@ msgid "Sales Analysis Report"
 msgstr "Satış Analizi Raporu"
 
 #. module: sale_enterprise
+#: model_terms:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard
+msgid "Sales Teams"
+msgstr "Satış Ekipleri"
+
+#. module: sale_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_enterprise.view_order_product_search_inherit
 #: selection:sale.report,invoice_status:0
 msgid "To Invoice"
@@ -104,3 +110,8 @@ msgstr "Vergi Hariç Toplam"
 #: selection:sale.report,invoice_status:0
 msgid "Upselling Opportunity"
 msgstr "Arttırılmış Satış Fırsatı"
+
+#. module: sale_enterprise
+#: model_terms:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard
+msgid "day(s)"
+msgstr "Günler"

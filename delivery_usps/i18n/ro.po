@@ -3,15 +3,17 @@
 # * delivery_usps
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Cozmin Candea <office@terrabit.ro>, 2018
+# Dorin Hongu <dhongu@gmail.com>, 2019
+# Martin Trigaux, 2019
+# Cozmin Candea <office@terrabit.ro>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Cozmin Candea <office@terrabit.ro>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"PO-Revision-Date: 2016-08-05 13:28+0000\n"
+"Last-Translator: Cozmin Candea <office@terrabit.ro>, 2019\n"
 "Language-Team: Romanian (https://www.transifex.com/odoo/teams/41243/ro/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -87,6 +89,8 @@ msgid ""
 "Error:\n"
 "%s"
 msgstr ""
+"Eroare:\n"
+"%s"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_service:0
@@ -129,11 +133,6 @@ msgstr ""
 #: selection:delivery.carrier,usps_domestic_regular_container:0
 #: selection:delivery.carrier,usps_international_regular_container:0
 msgid "Flat Rate Envelope"
-msgstr ""
-
-#. module: delivery_usps
-#: model_terms:ir.ui.view,arch_db:delivery_usps.usps_shipping_request
-msgid "From Company"
 msgstr ""
 
 #. module: delivery_usps
@@ -307,7 +306,7 @@ msgstr ""
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_container:0
 msgid "Rectangular"
-msgstr ""
+msgstr "Dreptunghiular"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_intl_non_delivery_option:0
@@ -365,10 +364,10 @@ msgstr ""
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_label_file_type:0
 msgid "TIF"
-msgstr ""
+msgstr "TIF"
 
 #. module: delivery_usps
-#: code:addons/delivery_usps/models/usps_request.py:58
+#: code:addons/delivery_usps/models/usps_request.py:46
 #, python-format
 msgid ""
 "The address of your company is missing or wrong (Missing field(s) :  \n"
@@ -376,7 +375,7 @@ msgid ""
 msgstr ""
 
 #. module: delivery_usps
-#: code:addons/delivery_usps/models/usps_request.py:78
+#: code:addons/delivery_usps/models/usps_request.py:66
 #, python-format
 msgid ""
 "The estimated price cannot be computed because the weight of your product is"
@@ -384,7 +383,7 @@ msgid ""
 msgstr ""
 
 #. module: delivery_usps
-#: code:addons/delivery_usps/models/usps_request.py:67
+#: code:addons/delivery_usps/models/usps_request.py:55
 #, python-format
 msgid ""
 "The recipient address is missing or wrong (Missing field(s) :  \n"
@@ -392,14 +391,9 @@ msgid ""
 msgstr ""
 
 #. module: delivery_usps
-#: code:addons/delivery_usps/models/usps_request.py:167
+#: code:addons/delivery_usps/models/usps_request.py:155
 #, python-format
 msgid "The selected USPS service (%s) cannot be used to deliver this package."
-msgstr ""
-
-#. module: delivery_usps
-#: model_terms:ir.ui.view,arch_db:delivery_usps.usps_shipping_request
-msgid "To Company"
 msgstr ""
 
 #. module: delivery_usps
@@ -518,9 +512,6 @@ msgid "bpost"
 msgstr ""
 
 #. module: delivery_usps
-#: model:product.product,weight_uom_name:delivery_usps.product_product_delivery_usps_domestic
-#: model:product.product,weight_uom_name:delivery_usps.product_product_delivery_usps_international
-#: model:product.template,weight_uom_name:delivery_usps.product_product_delivery_usps_domestic_product_template
-#: model:product.template,weight_uom_name:delivery_usps.product_product_delivery_usps_international_product_template
-msgid "kg"
-msgstr "kg"
+#: model_terms:ir.ui.view,arch_db:delivery_usps.usps_shipping_request
+msgid "true"
+msgstr "adevărat"

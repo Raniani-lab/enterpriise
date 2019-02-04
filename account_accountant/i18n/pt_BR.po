@@ -3,27 +3,37 @@
 # * account_accountant
 # 
 # Translators:
-# Rodrigo de Almeida Sottomaior Macedo <rmsolucoeseminformatic4@gmail.com>, 2018
-# danimaribeiro <danimaribeiro@gmail.com>, 2018
-# Martin Trigaux, 2018
-# Brenno Martins <emanuel.breno@gmail.com>, 2018
-# Mateus Lopes <mateus1@gmail.com>, 2018
-# grazziano <gra.negocia@gmail.com>, 2018
-# André Augusto Firmino Cordeiro <a.cordeito@gmail.com>, 2018
-# Silmar <pinheirosilmar@gmail.com>, 2018
+# danimaribeiro <danimaribeiro@gmail.com>, 2016
+# grazziano <gra.negocia@gmail.com>, 2017
+# André Augusto Firmino Cordeiro <a.cordeito@gmail.com>, 2017
+# Rodrigo de Almeida Sottomaior Macedo <rmsolucoeseminformatic4@gmail.com>, 2017
+# Mateus Lopes <mateus1@gmail.com>, 2017
+# Martin Trigaux, 2017
+# Thiago Alves Cavalcante <thiagoalcav@gmail.com>, 2019
+# Emanuel Martins <emanuel.breno@gmail.com>, 2019
+# Silmar <pinheirosilmar@gmail.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Silmar <pinheirosilmar@gmail.com>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:12+0000\n"
+"PO-Revision-Date: 2016-08-05 12:55+0000\n"
+"Last-Translator: Silmar <pinheirosilmar@gmail.com>, 2019\n"
 "Language-Team: Portuguese (Brazil) (https://www.transifex.com/odoo/teams/41243/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Language: pt_BR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#. module: account_accountant
+#: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
+msgid ""
+"<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-"
+"specific.\" role=\"img\" aria-label=\"Values set here are company-"
+"specific.\" groups=\"base.group_multi_company\"/>"
+msgstr ""
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
@@ -36,9 +46,14 @@ msgid "<span class=\"o_form_label\">Inter-Banks Transfers</span>"
 msgstr "<span class=\"o_form_label\">Transferência entre bancos</span>"
 
 #. module: account_accountant
+#: model:ir.model,name:account_accountant.model_account_chart_template
+msgid "Account Chart Template"
+msgstr "Modelo de Gráfico da Conta"
+
+#. module: account_accountant
 #: model:ir.ui.menu,name:account_accountant.menu_account_group
 msgid "Account Groups"
-msgstr "Grupos de contas"
+msgstr "Grupos de Contas"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__module_account_predictive_bills
@@ -48,7 +63,7 @@ msgstr ""
 #. module: account_accountant
 #: model:ir.ui.menu,name:account_accountant.account_tag_menu
 msgid "Account Tags"
-msgstr "Marcadores de conta"
+msgstr "Tags de Conta"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
@@ -56,6 +71,7 @@ msgid "Account used when transferring between banks"
 msgstr "Conta usada quando transferindo entre bancos"
 
 #. module: account_accountant
+#: model:ir.ui.menu,name:account_accountant.menu_accounting
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_partner_view_form
 msgid "Accounting"
@@ -64,7 +80,7 @@ msgstr "Contabilidade"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__use_anglo_saxon
 msgid "Anglo-Saxon Accounting"
-msgstr "Contabilidade anglo-saxã"
+msgstr "Contabilidade Anglo-Saxã"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_digest_digest__kpi_account_bank_cash
@@ -126,12 +142,12 @@ msgstr "Anos fiscais"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__fiscalyear_last_day
 msgid "Fiscalyear Last Day"
-msgstr "Último dia do ano fiscal"
+msgstr "Último Dia do Ano Fiscal"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__fiscalyear_last_month
 msgid "Fiscalyear Last Month"
-msgstr "Último mês do ano fiscal"
+msgstr "Último Mês do Ano Fiscal"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__id
@@ -139,12 +155,20 @@ msgid "ID"
 msgstr "ID"
 
 #. module: account_accountant
+#: code:addons/account_accountant/models/res_config_settings.py:49
+#, python-format
+msgid ""
+"Incorrect fiscal year date: day is out of range for month. Month: %s; Day: "
+"%s"
+msgstr ""
+
+#. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_res_config_settings__transfer_account_id
 msgid ""
 "Intermediary account used when moving money from a liquidity account to "
 "another"
 msgstr ""
-"Conta intermediária usado ao mover o dinheiro de uma conta de liquidez para "
+"Conta intermediário usado ao mover o dinheiro de uma conta de liquidez para "
 "outra"
 
 #. module: account_accountant
@@ -155,7 +179,7 @@ msgstr ""
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid "Last Day"
-msgstr "Último dia"
+msgstr "Último Dia"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date____last_update
@@ -188,23 +212,23 @@ msgstr "Vamos iniciar com uma fatura de cliente"
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__fiscalyear_lock_date
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__fiscalyear_lock_date
 msgid "Lock Date for All Users"
-msgstr "Bloquear a data para todos os usuários"
+msgstr "Travar a Data para Todos os Usuários"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__period_lock_date
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__period_lock_date
 msgid "Lock Date for Non-Advisers"
-msgstr "Bloquear a data para não conselheiros "
+msgstr "Bloqueio Data para não Conselheiros"
 
 #. module: account_accountant
 #: model:ir.ui.menu,name:account_accountant.menu_action_change_lock_date
 msgid "Lock Dates"
-msgstr "Bloquear datas"
+msgstr "Travar Datas"
 
 #. module: account_accountant
 #: model:ir.actions.act_window,name:account_accountant.action_view_account_change_lock_date
 msgid "Lock your Fiscal Period"
-msgstr "Bloquear o seu período fiscal"
+msgstr "Travar seu Período Fiscal"
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_account_change_lock_date__fiscalyear_lock_date
@@ -213,8 +237,8 @@ msgid ""
 "No users, including Advisers, can edit accounts prior to and inclusive of "
 "this date. Use it for fiscal year locking for example."
 msgstr ""
-"Nenhum usuário, incluindo conselheiros, pode editar contas anteriores, "
-"inclusive desta data. Use-o para bloqueio ano fiscal, por exemplo."
+"Sem usuários, incluindo Conselheiros, pode editar contas anteriores e "
+"inclusivas desta data. Use-o para bloqueio ano fiscal, por exemplo."
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_res_config_settings__period_lock_date
@@ -279,7 +303,7 @@ msgstr ""
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__transfer_account_id
 msgid "Transfer Account"
-msgstr "Transferir conta"
+msgstr "Transferir Conta"
 
 #. module: account_accountant
 #. openerp-web

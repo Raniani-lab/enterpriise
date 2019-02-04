@@ -3,24 +3,25 @@
 # * delivery_ups
 # 
 # Translators:
-# Martin Trigaux, 2018
-# zbik2607 <darek@krokus.com.pl>, 2018
-# Wiktor Kaźmierczak <wik92tor@wp.pl>, 2018
-# Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2018
-# Tomasz Leppich <t.leppich@gmail.com>, 2018
-# Arek Smagacz <arek.smagacz@gmail.com>, 2018
-# Piotr Szlązak <szlazakpiotr@gmail.com>, 2018
-# Monika Grzelak <m.e.grzelak@gmail.com>, 2018
-# Piotr Cierkosz <piotr.w.cierkosz@gmail.com>, 2018
-# Radosław Biegalski <radoslaw.biegalski@openglobe.pl>, 2018
-# Paweł Wodyński <pw@myodoo.pl>, 2018
+# Wiktor Kaźmierczak <wik92tor@wp.pl>, 2019
+# Martin Trigaux, 2019
+# zbik2607 <darek@krokus.com.pl>, 2019
+# Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2019
+# Tomasz Leppich <t.leppich@gmail.com>, 2019
+# Arek Smagacz <arek.smagacz@gmail.com>, 2019
+# Piotr Szlązak <szlazakpiotr@gmail.com>, 2019
+# Monika Grzelak <m.e.grzelak@gmail.com>, 2019
+# Piotr Cierkosz <piotr.w.cierkosz@gmail.com>, 2019
+# Radosław Biegalski <radoslaw.biegalski@openglobe.pl>, 2019
+# Paweł Wodyński <pw@myodoo.pl>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Paweł Wodyński <pw@myodoo.pl>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"PO-Revision-Date: 2016-08-05 13:28+0000\n"
+"Last-Translator: Paweł Wodyński <pw@myodoo.pl>, 2019\n"
 "Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -139,7 +140,7 @@ msgstr "Kilogramy"
 #. module: delivery_ups
 #: selection:product.packaging,package_carrier_type:0
 msgid "No carrier integration"
-msgstr ""
+msgstr "Brak integracji z przewoźnikiem"
 
 #. module: delivery_ups
 #: selection:delivery.carrier,ups_label_file_type:0
@@ -174,7 +175,7 @@ msgstr ""
 
 #. module: delivery_ups
 #: model:ir.model,name:delivery_ups.model_sale_order
-msgid "Sale Order"
+msgid "Sales Order"
 msgstr "Zamówienie sprzedaży"
 
 #. module: delivery_ups
@@ -369,11 +370,3 @@ msgstr ""
 #: selection:product.packaging,package_carrier_type:0
 msgid "bpost"
 msgstr "bpost"
-
-#. module: delivery_ups
-#: model:product.product,weight_uom_name:delivery_ups.product_product_delivery_ups_be
-#: model:product.product,weight_uom_name:delivery_ups.product_product_delivery_ups_us
-#: model:product.template,weight_uom_name:delivery_ups.product_product_delivery_ups_be_product_template
-#: model:product.template,weight_uom_name:delivery_ups.product_product_delivery_ups_us_product_template
-msgid "kg"
-msgstr "kg"

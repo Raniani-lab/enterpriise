@@ -21,7 +21,7 @@ class SaleSubscriptionWizard(models.TransientModel):
         fpos_id = self.env['account.fiscal.position'].get_fiscal_position(self.subscription_id.partner_id.id)
         sale_order_obj = self.env['sale.order']
         team = self.env['crm.team']._get_default_team_id(user_id=self.subscription_id.user_id.id)
-        order = sale_order_obj.create({
+        new_order_vals = {
             'partner_id': self.subscription_id.partner_id.id,
             'analytic_account_id': self.subscription_id.analytic_account_id.id,
             'team_id': team and team.id,
@@ -29,7 +29,11 @@ class SaleSubscriptionWizard(models.TransientModel):
             'fiscal_position_id': fpos_id,
             'subscription_management': 'upsell',
             'origin': self.subscription_id.code,
-        })
+        }
+        # we don't override the default if no payment terms has been set on the customer
+        if self.subscription_id.partner_id.property_payment_term_id:
+            new_order_vals['payment_term_id'] = self.subscription_id.partner_id.property_payment_term_id.id
+        order = sale_order_obj.create(new_order_vals)
         for line in self.option_lines:
             self.subscription_id.partial_invoice_line(order, line, date_from=self.date_from)
         order.order_line._compute_tax_id()

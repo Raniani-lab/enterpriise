@@ -3,17 +3,18 @@
 # * documents
 # 
 # Translators:
-# Martin Trigaux, 2018
-# sejun huang <sejun.huang@gmail.com>, 2018
-# 敬雲 林 <chingyun@yuanchih-consult.com>, 2018
+# Martin Trigaux, 2019
+# Andy Cheng <andy.cheng@richsoda.com>, 2019
+# sejun huang <sejun.huang@gmail.com>, 2019
+# 敬雲 林 <chingyun@yuanchih-consult.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 12.0+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-12 14:54+0000\n"
-"PO-Revision-Date: 2018-08-24 11:37+0000\n"
-"Last-Translator: 敬雲 林 <chingyun@yuanchih-consult.com>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"PO-Revision-Date: 2019-01-16 08:38+0000\n"
+"Last-Translator: 敬雲 林 <chingyun@yuanchih-consult.com>, 2019\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/odoo/teams/41243/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,7 +24,7 @@ msgstr ""
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/js/documents_inspector.js:271
+#: code:addons/documents/static/src/js/documents_inspector.js:270
 #, python-format
 msgid "+ Add a tag "
 msgstr ""
@@ -31,6 +32,16 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
 msgid ", expired on"
+msgstr ""
+
+#. module: documents
+#: model:documents.tag,name:documents.documents_finance_fiscal_year_2017
+msgid "2018"
+msgstr ""
+
+#. module: documents
+#: model:documents.tag,name:documents.documents_finance_fiscal_year_2018
+msgid "2019"
 msgstr ""
 
 #. module: documents
@@ -85,6 +96,13 @@ msgid "<br/>Powered by"
 msgstr ""
 
 #. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.share_single
+msgid ""
+"<i class=\"fa fa-circle-o-notch fa-spin text-white fa-3x mb8\" role=\"img\" "
+"aria-label=\"Loading\" title=\"Loading\"/>"
+msgstr ""
+
+#. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_page
 msgid "<i class=\"fa fa-download fa-fw\"/>  Download All"
 msgstr ""
@@ -99,7 +117,7 @@ msgstr "<i class=\"fa fa-download fa-fw\"/>下載"
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
 msgid ""
 "<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/> Configure Email Servers"
-msgstr "<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/>配置電郵服務器"
+msgstr "<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/> 配置信件伺服器"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_single
@@ -112,13 +130,22 @@ msgid "<i class=\"fa fa-upload\"/>  Upload"
 msgstr "<i class=\"fa fa-upload\"/>上傳"
 
 #. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.folder_view_form
+msgid "<span class=\"o_stat_text\">Action(s)</span>"
+msgstr ""
+
+#. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
 msgid "<span style=\"color:white;\">&amp;nbsp;Documents.</span>"
 msgstr ""
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.documents_view_kanban
-#: model_terms:ir.ui.view,arch_db:documents.inherit_mail_attachment_view_kanban
+#: model_terms:ir.ui.view,arch_db:documents.share_page
+msgid "<span title=\"Requested Document\">Requested Document</span>"
+msgstr ""
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.document_view_kanban
 msgid "<span><b>Requested Document</b></span>"
 msgstr ""
 
@@ -127,7 +154,7 @@ msgstr ""
 msgid ""
 "A Python dictionary that will be evaluated to provide default values when "
 "creating new records for this alias."
-msgstr "當創建別名的新記錄時，一個Python字典被提供作為預設值。"
+msgstr "當創建別名的新記錄時，一個Python字典被提供作為預設值"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_workflow_rule
@@ -137,6 +164,12 @@ msgid ""
 msgstr "一組條件和操作，可用於與條件匹配的所有附件"
 
 #. module: documents
+#: model:documents.tag,name:documents.documents_hr_documents_absences
+msgid "Absences"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__group_ids
 #: model:ir.model.fields,field_description:documents.field_documents_folder__group_ids
 msgid "Access Groups"
 msgstr "訪問組"
@@ -152,18 +185,35 @@ msgid "Action"
 msgstr "動作"
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_folder__action_count
+msgid "Action Count"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__message_needaction
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_needaction
 msgid "Action Needed"
-msgstr "需要採取行動"
+msgstr "需採取行動"
 
 #. module: documents
 #. openerp-web
+#: code:addons/documents/models/folder.py:63
 #: code:addons/documents/static/src/xml/documents_inspector.xml:103
-#: model:ir.ui.menu,name:documents.WorkflowRules_menu
+#: model:ir.ui.menu,name:documents.workflow_rules_menu
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
 #, python-format
 msgid "Actions"
 msgstr "動作"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__active
+msgid "Active"
+msgstr "啟用"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__activity_ids
+msgid "Activities"
+msgstr "活動"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form
@@ -178,6 +228,11 @@ msgid "Activity Note"
 msgstr "活動說明"
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__activity_state
+msgid "Activity State"
+msgstr "活動狀態"
+
+#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__activity_type_id
 #: model:ir.model.fields,field_description:documents.field_documents_share__activity_type_id
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_type_id
@@ -188,7 +243,7 @@ msgstr "活動類型"
 #: selection:documents.workflow.action,action:0
 #: model_terms:ir.ui.view,arch_db:documents.documents_upload_url_view
 msgid "Add"
-msgstr "添加"
+msgstr "增加"
 
 #. module: documents
 #. openerp-web
@@ -203,6 +258,11 @@ msgid "Add Url"
 msgstr ""
 
 #. module: documents
+#: model:documents.tag,name:documents.documents_marketing_assets_ads
+msgid "Ads"
+msgstr ""
+
+#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_id
 msgid "Alias"
 msgstr "別名"
@@ -210,7 +270,7 @@ msgstr "別名"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_contact
 msgid "Alias Contact Security"
-msgstr "別名聯絡人安全"
+msgstr "別名聯繫人安全"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_name
@@ -220,17 +280,24 @@ msgstr "別名"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_domain
 msgid "Alias domain"
-msgstr "別名域名"
+msgstr "別名網域"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_model_id
 msgid "Aliased Model"
-msgstr "別名模型"
+msgstr "別名的模型"
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "All locked files"
 msgstr "所有鎖定的文件"
+
+#. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/xml/documents_thread.xml:15
+#, python-format
+msgid "All pages:&nbsp;"
+msgstr "所有頁面:&nbsp;"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__action
@@ -243,6 +310,11 @@ msgid "Allows you to manage your documents."
 msgstr ""
 
 #. module: documents
+#: model:documents.tag,name:documents.documents_hr_documents_appraisal
+msgid "Appraisal"
+msgstr "評價"
+
+#. module: documents
 #. openerp-web
 #: code:addons/documents/static/src/xml/documents_inspector.xml:159
 #, python-format
@@ -250,9 +322,20 @@ msgid "Archive"
 msgstr "歸檔"
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Archived"
-msgstr "歸檔"
+msgstr "封存"
+
+#. module: documents
+#: model:documents.workflow.rule,name:documents.documents_rule_finance_afv
+#: model:documents.workflow.rule,name:documents.documents_rule_internal_afv
+msgid "Ask For Validation"
+msgstr ""
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
+msgid "Attached Document Name"
+msgstr "附件名稱"
 
 #. module: documents
 #. openerp-web
@@ -262,15 +345,26 @@ msgid "Attached To"
 msgstr "附加於"
 
 #. module: documents
-#: model:ir.model.fields,field_description:documents.field_documents_share__message_attachment_count
-msgid "Attachment Count"
-msgstr "附件計數"
+#: model:ir.model,name:documents.model_ir_attachment
+#: model:ir.model.fields,field_description:documents.field_documents_document__attachment_id
+msgid "Attachment"
+msgstr "附件"
 
 #. module: documents
-#: model:ir.actions.act_window,name:documents.document_debug_action
-#: model:ir.ui.menu,name:documents.attachment_list_view_temp
-msgid "Attachments"
-msgstr "附件"
+#: model:ir.model.fields,field_description:documents.field_documents_document__message_attachment_count
+#: model:ir.model.fields,field_description:documents.field_documents_share__message_attachment_count
+msgid "Attachment Count"
+msgstr "附件數"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__attachment_name
+msgid "Attachment Name"
+msgstr "附件名稱"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__attachment_type
+msgid "Attachment Type"
+msgstr ""
 
 #. module: documents
 #. openerp-web
@@ -280,8 +374,28 @@ msgid "Attachments Kanban"
 msgstr ""
 
 #. module: documents
-#: model:ir.model.fields,field_description:documents.field_ir_attachment__available_rule_ids
+#: model:ir.model.fields,field_description:documents.field_documents_document__available_rule_ids
 msgid "Available Rules"
+msgstr ""
+
+#. module: documents
+#: model:documents.tag,name:documents.documents_finance_documents_bill
+msgid "Bill"
+msgstr "帳單"
+
+#. module: documents
+#: model:documents.folder,name:documents.documents_marketing_brand1_folder
+msgid "Brand 1"
+msgstr ""
+
+#. module: documents
+#: model:documents.folder,name:documents.documents_marketing_brand2_folder
+msgid "Brand 2"
+msgstr ""
+
+#. module: documents
+#: model:documents.tag,name:documents.documents_marketing_assets_brochures
+msgid "Brochures"
 msgstr ""
 
 #. module: documents
@@ -295,6 +409,11 @@ msgstr "取消"
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__facet_id
 msgid "Category"
 msgstr "類別"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__checksum
+msgid "Checksum/SHA1"
+msgstr "Checksum/SHA1"
 
 #. module: documents
 #. openerp-web
@@ -311,7 +430,9 @@ msgid "Click on a card to <b>view the document</b>."
 msgstr ""
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__company_id
 #: model:ir.model.fields,field_description:documents.field_documents_folder__company_id
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Company"
 msgstr "公司"
 
@@ -331,12 +452,12 @@ msgid "Configuration"
 msgstr "配置"
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__partner_id
 #: model:ir.model.fields,field_description:documents.field_documents_share__partner_id
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__criteria_partner_id
-#: model:ir.model.fields,field_description:documents.field_ir_attachment__partner_id
-#: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Contact"
-msgstr "聯絡人"
+msgstr "聯繫人"
 
 #. module: documents
 #: selection:documents.workflow.tag.criteria,operator:0
@@ -344,9 +465,21 @@ msgid "Contains"
 msgstr "包含"
 
 #. module: documents
+#: model:documents.tag,name:documents.documents_finance_documents_Contracts
+#: model:documents.tag,name:documents.documents_hr_documents_contracts
+#: model:documents.tag,name:documents.documents_internal_template_contracts
+msgid "Contracts"
+msgstr "合同"
+
+#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__create_model
 msgid "Create"
 msgstr "創建"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__create_share_id
+msgid "Create Share"
+msgstr ""
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__activity_option
@@ -360,6 +493,7 @@ msgid "Create a tag"
 msgstr ""
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__create_uid
 #: model:ir.model.fields,field_description:documents.field_documents_facet__create_uid
 #: model:ir.model.fields,field_description:documents.field_documents_folder__create_uid
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__create_uid
@@ -368,10 +502,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_action__create_uid
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__create_uid
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__create_uid
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Created by"
-msgstr "創建者"
+msgstr "創立者"
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__create_date
 #: model:ir.model.fields,field_description:documents.field_documents_facet__create_date
 #: model:ir.model.fields,field_description:documents.field_documents_folder__create_date
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__create_date
@@ -381,7 +517,12 @@ msgstr "創建者"
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__create_date
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__create_date
 msgid "Created on"
-msgstr "創建時間"
+msgstr "建立於"
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
+msgid "Creation Date"
+msgstr "創建日期"
 
 #. module: documents
 #: selection:documents.workflow.rule,create_model:0
@@ -398,7 +539,7 @@ msgstr ""
 #: selection:documents.share,activity_date_deadline_range_type:0
 #: selection:documents.workflow.rule,activity_date_deadline_range_type:0
 msgid "Days"
-msgstr "天"
+msgstr "天數"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.res_config_settings_view_form
@@ -424,11 +565,22 @@ msgid "Delete"
 msgstr "刪除"
 
 #. module: documents
-#: model:ir.model.fields,field_description:documents.field_documents_folder__description
-msgid "Description"
-msgstr "描述"
+#: model:documents.workflow.rule,name:documents.documents_rule_internal_deprecate
+msgid "Deprecate"
+msgstr ""
 
 #. module: documents
+#: model:documents.tag,name:documents.documents_internal_status_deprecated
+msgid "Deprecated"
+msgstr "棄用"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_folder__description
+msgid "Description"
+msgstr "說明"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__display_name
 #: model:ir.model.fields,field_description:documents.field_documents_facet__display_name
 #: model:ir.model.fields,field_description:documents.field_documents_folder__display_name
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__display_name
@@ -441,14 +593,13 @@ msgid "Display Name"
 msgstr "顯示名稱"
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Doc"
 msgstr ""
 
 #. module: documents
-#: model:ir.model,name:documents.model_ir_attachment
-#: model_terms:ir.ui.view,arch_db:documents.documents_view_kanban
-#: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
+#: model:ir.model,name:documents.model_documents_document
+#: model_terms:ir.ui.view,arch_db:documents.document_view_kanban
 msgid "Document"
 msgstr "文件"
 
@@ -479,15 +630,25 @@ msgstr ""
 
 #. module: documents
 #. openerp-web
+#: code:addons/documents/static/src/xml/documents_thread.xml:6
+#, python-format
+msgid "DocumentViewer.ContentWithPdfSplit"
+msgstr ""
+
+#. module: documents
+#. openerp-web
 #: code:addons/documents/static/src/xml/documents_inspector.xml:64
 #: model:ir.actions.act_window,name:documents.document_action
-#: model:ir.model.fields,field_description:documents.field_documents_folder__attachment_ids
+#: model:ir.actions.act_window,name:documents.document_debug_action
+#: model:ir.model.fields,field_description:documents.field_documents_folder__document_ids
+#: model:ir.ui.menu,name:documents.attachment_list_view_temp
 #: model:ir.ui.menu,name:documents.dashboard
 #: model:ir.ui.menu,name:documents.menu_root
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 #: model_terms:ir.ui.view,arch_db:documents.res_config_settings_view_form
 #, python-format
 msgid "Documents"
-msgstr "文檔"
+msgstr "文件"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_folder
@@ -516,7 +677,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__domain
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
 msgid "Domain"
-msgstr "域名"
+msgstr "域"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
@@ -542,8 +703,13 @@ msgid "Download and Upload"
 msgstr "下載和上傳"
 
 #. module: documents
+#: model:documents.tag,name:documents.documents_internal_status_draft
+msgid "Draft"
+msgstr "草稿"
+
+#. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/js/documents_kanban_controller.js:718
+#: code:addons/documents/static/src/js/documents_kanban_controller.js:691
 #, python-format
 msgid "Drop files here to upload"
 msgstr ""
@@ -583,14 +749,44 @@ msgid "E.g. Validate document"
 msgstr ""
 
 #. module: documents
-#: selection:ir.attachment,type:0
+#: code:addons/documents/models/ir_attachment.py:43
+#, python-format
+msgid "ERROR: Invalid PDF file!"
+msgstr "錯誤：無效的PDF文件！"
+
+#. module: documents
+#: code:addons/documents/models/ir_attachment.py:90
+#, python-format
+msgid "ERROR: Invalid list of pages to split. Example: 1,5-9,10"
+msgstr "錯誤: 要拆分的頁面列表無效。示例: 1,5-9,10"
+
+#. module: documents
+#: code:addons/documents/models/ir_attachment.py:85
+#, python-format
+msgid "ERROR: the file must be a PDF"
+msgstr "錯誤：必須是PDF文件"
+
+#. module: documents
+#: selection:documents.document,type:0
 msgid "Empty"
 msgstr ""
 
 #. module: documents
+#: model:documents.tag,name:documents.documents_finance_documents_expense
+msgid "Expense"
+msgstr "費用"
+
+#. module: documents
 #: selection:documents.share,state:0
 msgid "Expired"
-msgstr "到期"
+msgstr "過期"
+
+#. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/xml/documents_thread.xml:14
+#, python-format
+msgid "Extract pages:&nbsp;"
+msgstr "摘取頁面:&nbsp;"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_facet
@@ -604,22 +800,52 @@ msgid "Facet already exists in this folder"
 msgstr ""
 
 #. module: documents
-#: model:ir.model.fields,field_description:documents.field_ir_attachment__favorited_ids
+#: model:ir.model.fields,field_description:documents.field_documents_document__favorited_ids
 msgid "Favorite of"
 msgstr ""
 
 #. module: documents
-#: selection:ir.attachment,type:0
+#: selection:documents.document,type:0
 msgid "File"
 msgstr "文件"
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__datas
+msgid "File Content"
+msgstr "文件內容"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__datas_fname
+msgid "File Name"
+msgstr "文件名稱"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__file_size
+msgid "File Size"
+msgstr "文件大小"
+
+#. module: documents
+#: model:documents.folder,name:documents.documents_finance_folder
+msgid "Finance"
+msgstr ""
+
+#. module: documents
+#: model:documents.tag,name:documents.documents_finance_documents_financial
+msgid "Financial"
+msgstr ""
+
+#. module: documents
+#: model:documents.tag,name:documents.documents_finance_documents_fiscal
+msgid "Fiscal"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__folder_id
 #: model:ir.model.fields,field_description:documents.field_documents_facet__folder_id
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__folder_id
 #: model:ir.model.fields,field_description:documents.field_documents_share__folder_id
 #: model:ir.model.fields,field_description:documents.field_documents_tag__folder_id
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__domain_folder_id
-#: model:ir.model.fields,field_description:documents.field_ir_attachment__folder_id
 msgid "Folder"
 msgstr ""
 
@@ -633,24 +859,27 @@ msgid "Folders"
 msgstr ""
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__message_follower_ids
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_follower_ids
 msgid "Followers"
-msgstr "訂閱者"
+msgstr "關注人"
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__message_channel_ids
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_channel_ids
 msgid "Followers (Channels)"
-msgstr "關注者(渠道)"
+msgstr "關注人（頻道）"
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__message_partner_ids
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_partner_ids
 msgid "Followers (Partners)"
-msgstr "關注者(業務夥伴)"
+msgstr "關注人（業務夥伴）"
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Future Activities"
-msgstr "未來的活動"
+msgstr "未來活動"
 
 #. module: documents
 #. openerp-web
@@ -662,9 +891,15 @@ msgid ""
 msgstr ""
 
 #. module: documents
-#: model:ir.model,name:documents.model_ir_http
-msgid "HTTP Routing"
-msgstr "HTTP 路由"
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
+msgid "Group By"
+msgstr "分組按"
+
+#. module: documents
+#: model:documents.folder,name:documents.documents_hr_folder
+#: model:documents.tag,name:documents.documents_internal_knowledge_hr
+msgid "HR"
+msgstr ""
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__has_business_option
@@ -672,6 +907,7 @@ msgid "Has Business Option"
 msgstr ""
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__id
 #: model:ir.model.fields,field_description:documents.field_documents_facet__id
 #: model:ir.model.fields,field_description:documents.field_documents_folder__id
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__id
@@ -688,37 +924,57 @@ msgstr "ID"
 msgid ""
 "ID of the parent record holding the alias (example: project holding the task"
 " creation alias)"
-msgstr "上級記錄ID支援別名(例如:專案支援的任務創建別名)"
+msgstr "上級記錄ID支援別名(例如:專案支援任務創建別名)"
 
 #. module: documents
+#: model:ir.model.fields,help:documents.field_documents_document__message_unread
 #: model:ir.model.fields,help:documents.field_documents_share__message_unread
 msgid "If checked new messages require your attention."
-msgstr "查看是否有需要您留意的新信息。"
+msgstr "勾選代表有新訊息需要您留意。"
 
 #. module: documents
+#: model:ir.model.fields,help:documents.field_documents_document__message_needaction
 #: model:ir.model.fields,help:documents.field_documents_share__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr "如果勾選此項，有新消息會提醒您。"
+msgstr "勾選代表有新訊息需要您留意。"
 
 #. module: documents
+#: model:ir.model.fields,help:documents.field_documents_document__message_has_error
 #: model:ir.model.fields,help:documents.field_documents_share__message_has_error
 msgid "If checked, some messages have a delivery error."
-msgstr "如果勾選此項， 某些信息將會產生傳遞錯誤。"
+msgstr "勾選代表有訊息發生傳送錯誤。"
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Image"
 msgstr "圖像"
 
 #. module: documents
+#: model:documents.tag,name:documents.documents_marketing_assets_images
+msgid "Images"
+msgstr "圖片"
+
+#. module: documents
+#: model:documents.tag,name:documents.documents_finance_status_inbox
 #: model:mail.activity.type,name:documents.mail_documents_activity_data_Inbox
 msgid "Inbox"
 msgstr "收件箱"
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__index_content
+msgid "Indexed Content"
+msgstr "索引的內容"
+
+#. module: documents
+#: model:documents.folder,name:documents.documents_internal_folder
+msgid "Internal"
+msgstr "內部"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__message_is_follower
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_is_follower
 msgid "Is Follower"
-msgstr "是訂閱者"
+msgstr "是關注人"
 
 #. module: documents
 #. openerp-web
@@ -728,6 +984,7 @@ msgid "It will be sent to the followers of this document"
 msgstr ""
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document____last_update
 #: model:ir.model.fields,field_description:documents.field_documents_facet____last_update
 #: model:ir.model.fields,field_description:documents.field_documents_folder____last_update
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard____last_update
@@ -737,9 +994,10 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule____last_update
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria____last_update
 msgid "Last Modified on"
-msgstr "最後修改時間"
+msgstr "最後修改於"
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__write_uid
 #: model:ir.model.fields,field_description:documents.field_documents_facet__write_uid
 #: model:ir.model.fields,field_description:documents.field_documents_folder__write_uid
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__write_uid
@@ -749,9 +1007,10 @@ msgstr "最後修改時間"
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__write_uid
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__write_uid
 msgid "Last Updated by"
-msgstr "最後更新人"
+msgstr "最後更新者"
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__write_date
 #: model:ir.model.fields,field_description:documents.field_documents_facet__write_date
 #: model:ir.model.fields,field_description:documents.field_documents_folder__write_date
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__write_date
@@ -761,12 +1020,12 @@ msgstr "最後更新人"
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__write_date
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__write_date
 msgid "Last Updated on"
-msgstr "最後更新時間"
+msgstr "最後更新於"
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Late Activities"
-msgstr "晚活動"
+msgstr "逾期活動"
 
 #. module: documents
 #: selection:documents.share,state:0
@@ -786,7 +1045,7 @@ msgid "Lock"
 msgstr "鎖定"
 
 #. module: documents
-#: model:ir.model.fields,field_description:documents.field_ir_attachment__lock_uid
+#: model:ir.model.fields,field_description:documents.field_documents_document__lock_uid
 msgid "Locked by"
 msgstr ""
 
@@ -815,9 +1074,15 @@ msgid "MB"
 msgstr ""
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__message_main_attachment_id
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_main_attachment_id
 msgid "Main Attachment"
 msgstr "主要附件"
+
+#. module: documents
+#: model:ir.actions.act_window,name:documents.facet_action
+msgid "Manage Tag Categories"
+msgstr ""
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.tag_action
@@ -826,14 +1091,14 @@ msgid "Manage document tags"
 msgstr ""
 
 #. module: documents
-#: model:ir.actions.act_window,name:documents.facet_action
-msgid "Manage tag categories"
-msgstr ""
-
-#. module: documents
 #: model:res.groups,name:documents.group_documents_manager
 msgid "Manager"
-msgstr "經理"
+msgstr "管理員"
+
+#. module: documents
+#: model:documents.workflow.rule,name:documents.documents_rule_internal_mad
+msgid "Mark As Draft"
+msgstr ""
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__remove_activities
@@ -841,19 +1106,31 @@ msgid "Mark all Activities as done"
 msgstr ""
 
 #. module: documents
+#: model:documents.folder,name:documents.documents_marketing_folder
+msgid "Marketing"
+msgstr "市場行銷"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__message_has_error
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_has_error
 msgid "Message Delivery error"
-msgstr "郵件傳遞錯誤"
+msgstr "訊息遞送錯誤"
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__message_ids
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_ids
 msgid "Messages"
-msgstr "消息"
+msgstr "訊息"
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
+#: model:ir.model.fields,field_description:documents.field_documents_document__mimetype
+msgid "Mime Type"
+msgstr "MIME 類型"
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Model"
-msgstr "模型"
+msgstr "型號"
 
 #. module: documents
 #: selection:documents.request_wizard,activity_date_deadline_range_type:0
@@ -863,50 +1140,52 @@ msgid "Months"
 msgstr "月"
 
 #. module: documents
+#: model:documents.workflow.rule,name:documents.documents_rule_finance_mti
+msgid "Move To Inbox"
+msgstr ""
+
+#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__folder_id
 msgid "Move to Folder"
 msgstr ""
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/js/documents_inspector.js:143
+#: code:addons/documents/static/src/js/documents_inspector.js:141
 #, python-format
 msgid "Multiple values"
 msgstr ""
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "My Activities"
 msgstr "我的活動"
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "My Documents"
 msgstr "我的文件"
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "My Favorites"
 msgstr "我的收藏夾"
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "My locked files"
 msgstr "我鎖定的文件"
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.documents_view_form
-msgid "NName"
-msgstr ""
-
-#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__name
 #: model:ir.model.fields,field_description:documents.field_documents_facet__name
 #: model:ir.model.fields,field_description:documents.field_documents_folder__name
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__name
 #: model:ir.model.fields,field_description:documents.field_documents_share__name
 #: model:ir.model.fields,field_description:documents.field_documents_tag__name
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Name"
-msgstr "名稱"
+msgstr "名称"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form
@@ -915,42 +1194,69 @@ msgid "Name of the share link"
 msgstr ""
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__activity_date_deadline
+msgid "Next Activity Deadline"
+msgstr "下一活動截止日期"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__activity_summary
+msgid "Next Activity Summary"
+msgstr "下一活動摘要"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__activity_type_id
+msgid "Next Activity Type"
+msgstr "下一活動類型"
+
+#. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/js/documents_kanban_model.js:224
+#, python-format
+msgid "Not a file"
+msgstr ""
+
+#. module: documents
 #. openerp-web
 #: code:addons/documents/static/src/js/documents_kanban_model.js:227
 #, python-format
-msgid "No Source"
-msgstr "沒有來源"
+msgid "Not attached"
+msgstr ""
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__activity_note
 #: model:ir.model.fields,field_description:documents.field_documents_share__activity_note
 msgid "Note"
-msgstr "便箋"
+msgstr "備註"
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__message_needaction_counter
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_needaction_counter
 msgid "Number of Actions"
-msgstr "行動數量"
+msgstr "動作數量"
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__message_has_error_counter
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_has_error_counter
 msgid "Number of error"
 msgstr "錯誤數量"
 
 #. module: documents
+#: model:ir.model.fields,help:documents.field_documents_document__message_needaction_counter
 #: model:ir.model.fields,help:documents.field_documents_share__message_needaction_counter
 msgid "Number of messages which requires an action"
-msgstr "需要行動消息的數量"
+msgstr "需要處理的消息數量"
 
 #. module: documents
+#: model:ir.model.fields,help:documents.field_documents_document__message_has_error_counter
 #: model:ir.model.fields,help:documents.field_documents_share__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr "發送錯誤的郵件數"
+msgstr "有發送錯誤的郵件數量"
 
 #. module: documents
+#: model:ir.model.fields,help:documents.field_documents_document__message_unread_counter
 #: model:ir.model.fields,help:documents.field_documents_share__message_unread_counter
 msgid "Number of unread messages"
-msgstr "未讀消息的數量"
+msgstr "未讀訊息的數量"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
@@ -965,7 +1271,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_tag_criteria__operator
 msgid "Operator"
-msgstr "操作員"
+msgstr "客服人員"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_force_thread_id
@@ -973,23 +1279,34 @@ msgid ""
 "Optional ID of a thread (record) to which all incoming messages will be "
 "attached, even if they did not reply to it. If set, this will disable the "
 "creation of new records completely."
-msgstr "所有收件都將附上一條線程（記錄）選配的ID，即使它們不曾回覆過它。如果設定了，這個將完全阻止新記錄的創建。"
+msgstr "所有的進來的信件都將附上一條線索（記錄）選配的ID，即使它們不曾回覆過它。如果設定了，這個將完全阻止新記錄的創建。"
 
 #. module: documents
+#: model:documents.tag,name:documents.documents_internal_knowledge_other
+msgid "Other"
+msgstr "其他"
+
+#. module: documents
+#: selection:documents.document,activity_state:0
+msgid "Overdue"
+msgstr "逾期"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__owner_id
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__owner_id
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_user_id
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__criteria_owner_id
-#: model:ir.model.fields,field_description:documents.field_ir_attachment__owner_id
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Owner"
 msgstr "所有者"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_page
-msgid "Owner: #{attachment.create_uid.name}"
+msgid "Owner: #{document.create_uid.name}"
 msgstr ""
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "PDF"
 msgstr "PDF"
 
@@ -1016,8 +1333,13 @@ msgid ""
 " necessarily the model given by alias_model_id (example: project "
 "(parent_model) and task (model))"
 msgstr ""
-"上級模型擁有別名。擁有別名參照的模型不必是alias_model_id給出的模型 (example: 專案(parent_model) 和任務 "
-"(model))"
+"上級模型擁有別名。擁有別名參照的模型不必是alias_model_id給出的模型 (example: project(parent_model) and"
+" task (model))"
+
+#. module: documents
+#: selection:documents.document,activity_state:0
+msgid "Planned"
+msgstr "已安排"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_contact
@@ -1027,10 +1349,15 @@ msgid ""
 "- partners: only authenticated partners\n"
 "- followers: only followers of the related document or members of following channels\n"
 msgstr ""
-"通過信件網關在文檔上提交一個消息政策。\n"
+"通過信件網關在文件上提交一個消息政策。\n"
 "- 任何人：任何人都可以提交\n"
 "- 合作夥伴：只有認證過的合作夥伴\n"
 "- 跟隨者：只有相關文件或下列頻道成員的跟隨者\n"
+
+#. module: documents
+#: model:documents.tag,name:documents.documents_internal_template_presentations
+msgid "Presentations"
+msgstr "展示"
 
 #. module: documents
 #: selection:documents.workflow.rule,create_model:0
@@ -1038,9 +1365,19 @@ msgid "Product template"
 msgstr ""
 
 #. module: documents
+#: model:documents.tag,name:documents.documents_internal_template_project
+msgid "Project"
+msgstr "專案"
+
+#. module: documents
+#: model:documents.tag,name:documents.documents_internal_knowledge_quality
+msgid "Quality"
+msgstr "品質"
+
+#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_force_thread_id
 msgid "Record Thread ID"
-msgstr "記錄線程ID"
+msgstr "記錄線索ID"
 
 #. module: documents
 #: selection:documents.workflow.action,action:0
@@ -1084,20 +1421,50 @@ msgid "Request a file"
 msgstr ""
 
 #. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.share_single
+msgid "Requested"
+msgstr ""
+
+#. module: documents
 #: model:mail.activity.type,name:documents.mail_documents_activity_data_md
 msgid "Requested Document"
 msgstr ""
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Requested files"
 msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__res_model_name
+msgid "Res Model Name"
+msgstr "資源模型名稱"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__res_id
+msgid "Resource ID"
+msgstr "資源ID"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__res_model
+msgid "Resource Model"
+msgstr "資源模型"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__res_name
+msgid "Resource Name"
+msgstr "資源名稱"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__activity_user_id
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_user_id
 msgid "Responsible"
-msgstr "負責"
+msgstr "負責人"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__activity_user_id
+msgid "Responsible User"
+msgstr "責任使用者"
 
 #. module: documents
 #. openerp-web
@@ -1112,6 +1479,11 @@ msgid "Rule name"
 msgstr ""
 
 #. module: documents
+#: model:documents.tag,name:documents.documents_internal_knowledge_sales
+msgid "Sales"
+msgstr "銷售"
+
+#. module: documents
 #: model:ir.model.fields,help:documents.field_documents_folder__facet_ids
 msgid "Select the tag categories to be used"
 msgstr ""
@@ -1120,8 +1492,14 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_facet__sequence
 #: model:ir.model.fields,field_description:documents.field_documents_folder__sequence
 #: model:ir.model.fields,field_description:documents.field_documents_tag__sequence
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__sequence
 msgid "Sequence"
-msgstr "序列"
+msgstr "序號"
+
+#. module: documents
+#: model:documents.workflow.rule,name:documents.documents_rule_finance_2018contracts
+msgid "Set As 2019 Contracts"
+msgstr ""
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__partner_id
@@ -1139,20 +1517,20 @@ msgid "Set Tags"
 msgstr ""
 
 #. module: documents
-#: model:ir.actions.act_window,name:documents.configuration
-#: model:ir.actions.act_window,name:documents.documents_settings_action
-#: model:ir.ui.menu,name:documents.Settings_menu
+#: model:ir.actions.act_window,name:documents.configuration_action
+#: model:ir.actions.act_window,name:documents.settings_action
+#: model:ir.ui.menu,name:documents.settings_menu
 msgid "Settings"
 msgstr "設定"
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/models/share.py:132
+#: code:addons/documents/models/share.py:133
 #: code:addons/documents/static/src/xml/documents_inspector.xml:151
 #: code:addons/documents/static/src/xml/documents_kanban.xml:14
 #, python-format
 msgid "Share"
-msgstr "共享"
+msgstr "分享"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__share_link_ids
@@ -1170,6 +1548,16 @@ msgid "Share type"
 msgstr ""
 
 #. module: documents
+#: model:ir.model.fields,help:documents.field_documents_document__create_share_id
+msgid "Share used to create this document"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_share__document_ids
+msgid "Shared Documents"
+msgstr ""
+
+#. module: documents
 #: model:ir.ui.menu,name:documents.share_menu
 msgid "Shared Links"
 msgstr ""
@@ -1180,14 +1568,9 @@ msgid "Shared Tags"
 msgstr ""
 
 #. module: documents
-#: model:ir.model.fields,field_description:documents.field_documents_share__attachment_ids
-msgid "Shared attachments"
-msgstr ""
-
-#. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Show all records which has next action date is before today"
-msgstr "顯示所有下一個活動日期在今天之前的記錄"
+msgstr "顯示在今天之前的下一個行動日期的所有記錄"
 
 #. module: documents
 #: selection:documents.workflow.rule,create_model:0
@@ -1199,12 +1582,37 @@ msgstr ""
 #: code:addons/documents/static/src/xml/documents_inspector.xml:68
 #, python-format
 msgid "Size"
-msgstr "尺寸："
+msgstr "尺寸"
+
+#. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/xml/documents_thread.xml:16
+#, python-format
+msgid "Split"
+msgstr "拆分"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__state
 msgid "Status"
 msgstr "狀態"
+
+#. module: documents
+#: model:ir.model.fields,help:documents.field_documents_document__activity_state
+msgid ""
+"Status based on activities\n"
+"Overdue: Due date is already passed\n"
+"Today: Activity date is today\n"
+"Planned: Future activities."
+msgstr ""
+"根據活動的狀態 \n"
+" 逾期：已經超過截止日期 \n"
+" 現今：活動日期是當天 \n"
+" 計劃：未來活動。"
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
+msgid "Stored"
+msgstr "存儲"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__children_folder_ids
@@ -1232,6 +1640,11 @@ msgid "Tag Categories"
 msgstr ""
 
 #. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.facet_view_form
+msgid "Tag Category"
+msgstr ""
+
+#. module: documents
 #: sql_constraint:documents.tag:0
 msgid "Tag already exists for this facet"
 msgstr ""
@@ -1245,13 +1658,14 @@ msgstr ""
 #. openerp-web
 #: code:addons/documents/static/src/xml/documents_inspector.xml:93
 #: code:addons/documents/static/src/xml/documents_selector.xml:16
+#: model:ir.model.fields,field_description:documents.field_documents_document__tag_ids
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__tag_ids
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__criteria_tag_ids
-#: model:ir.model.fields,field_description:documents.field_ir_attachment__tag_ids
-#: model:ir.ui.menu,name:documents.Category_menu
+#: model:ir.ui.menu,name:documents.category_menu
+#: model_terms:ir.ui.view,arch_db:documents.tag_view_tree
 #, python-format
 msgid "Tags"
-msgstr "摘要"
+msgstr "標籤"
 
 #. module: documents
 #: selection:documents.workflow.rule,create_model:0
@@ -1259,19 +1673,30 @@ msgid "Task"
 msgstr "任務"
 
 #. module: documents
+#: model:documents.tag,name:documents.documents_internal_template_text
+msgid "Text"
+msgstr "文本"
+
+#. module: documents
+#: model:ir.model.fields,help:documents.field_documents_document__res_model
+msgid "The database object this attachment will be attached to."
+msgstr "該附件將附加到資料庫對象。"
+
+#. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_model_id
 msgid ""
 "The model (Odoo Document Kind) to which this alias corresponds. Any incoming"
 " email that does not reply to an existing record will cause the creation of "
 "a new record of this model (e.g. a Project Task)"
-msgstr "與此別名對應的模型(Odoo單據種類)。任何一封沒有回覆已存在記錄的來郵，將導致此模組創建新記錄(例如：一個新專案任務)。"
+msgstr ""
+"相應於這個別名對應的模型(Odoo單據種類)。任何一封不屬於對某個已存在的記錄的到來信件，將導致此模組中新記錄的創建(例如，一個新的專案任務)。"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_name
 msgid ""
 "The name of the email alias, e.g. 'jobs' if you want to catch emails for "
 "<jobs@example.odoo.com>"
-msgstr "信件別名的名稱，例如，如果您要收取 <jobs@example.odoo.com> 的電子信件，別名就要被設為：\"jobs\""
+msgstr "信件別名的名稱，例如，如果您要收取 <jobs@example.odoo.com> 的電子信件,別名就要被設為：\"jobs\""
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_user_id
@@ -1281,7 +1706,12 @@ msgid ""
 "the sender (From) address, or will use the Administrator account if no "
 "system user is found for that address."
 msgstr ""
-"在收到此別名的電子信件時創建記錄的所有者。如果此字段未設定，系統將嘗試根據發件人(發件人)地址查找正確的所有者，或者如果沒有找到該地址的系統使用者，將使用管理員帳戶。"
+"根據此別名接收到的信件，創建記錄的所有人。若此字段沒有設定，系統將試圖根據發送者(From)地址來查找正確的所有者，如果對於那個地址沒有系統使用者被發現，將使用系統管理員帳戶。"
+
+#. module: documents
+#: model:ir.model.fields,help:documents.field_documents_document__res_id
+msgid "The record id this is attached to."
+msgstr "這是附加的記錄ID。"
 
 #. module: documents
 #: sql_constraint:documents.share:0
@@ -1289,6 +1719,19 @@ msgid "This access token already exists"
 msgstr ""
 
 #. module: documents
+#: model:ir.model.fields,help:documents.field_documents_document__group_ids
+msgid "This attachment will only be available for the selected user groups"
+msgstr ""
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.share_single
+msgid ""
+"This file has been requested.\n"
+"                <b onclick=\"$('.o_request_upload').trigger('click')\" style=\"cursor:pointer;\">Upload it</b>."
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,help:documents.field_documents_document__company_id
 #: model:ir.model.fields,help:documents.field_documents_folder__company_id
 msgid "This folder will only be available for the selected company"
 msgstr ""
@@ -1313,6 +1756,17 @@ msgid "This link has expired"
 msgstr ""
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__thumbnail
+msgid "Thumbnail"
+msgstr "縮圖"
+
+#. module: documents
+#: model:documents.tag,name:documents.documents_finance_status_tc
+#: model:documents.tag,name:documents.documents_internal_status_tc
+msgid "To Validate"
+msgstr ""
+
+#. module: documents
 #. openerp-web
 #: code:addons/documents/static/src/js/tour.js:69
 #, python-format
@@ -1327,7 +1781,12 @@ msgid "To validate"
 msgstr ""
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
+#: selection:documents.document,activity_state:0
+msgid "Today"
+msgstr "今天"
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Today Activities"
 msgstr "今天的活動"
 
@@ -1345,13 +1804,15 @@ msgid "Try to <b>post a message</b>"
 msgstr ""
 
 #. module: documents
-#: model:ir.model.fields,field_description:documents.field_ir_attachment__type
+#: model:ir.model.fields,field_description:documents.field_documents_document__type
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Type"
 msgstr "類型"
 
 #. module: documents
-#: selection:ir.attachment,type:0
+#: selection:documents.document,type:0
 #: model:ir.model.fields,field_description:documents.field_documents_share__full_url
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 #: model_terms:ir.ui.view,arch_db:documents.documents_upload_url_view
 #: model_terms:ir.ui.view,arch_db:documents.share_page
 #: model_terms:ir.ui.view,arch_db:documents.share_single
@@ -1366,11 +1827,13 @@ msgid "Un-archive"
 msgstr ""
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__message_unread
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_unread
 msgid "Unread Messages"
 msgstr "未讀消息"
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__message_unread_counter
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_unread_counter
 msgid "Unread Messages Counter"
 msgstr "未讀消息計數器"
@@ -1396,6 +1859,11 @@ msgid "Upload by Email"
 msgstr ""
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__url
+msgid "Url"
+msgstr "網址"
+
+#. module: documents
 #. openerp-web
 #: code:addons/documents/static/src/js/tour.js:55
 #, python-format
@@ -1415,9 +1883,26 @@ msgid "Users"
 msgstr "使用者"
 
 #. module: documents
+#: model:documents.tag,name:documents.documents_finance_documents_vat
+msgid "VAT"
+msgstr "增值稅"
+
+#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__date_deadline
 msgid "Valid Until"
 msgstr "有效期至"
+
+#. module: documents
+#: model:documents.workflow.rule,name:documents.documents_rule_finance_validate
+#: model:documents.workflow.rule,name:documents.documents_rule_internal_validate
+msgid "Validate"
+msgstr "驗證"
+
+#. module: documents
+#: model:documents.tag,name:documents.documents_finance_status_validated
+#: model:documents.tag,name:documents.documents_internal_status_validated
+msgid "Validated"
+msgstr "已驗證"
 
 #. module: documents
 #: selection:documents.workflow.rule,create_model:0
@@ -1425,9 +1910,14 @@ msgid "Vendor bill"
 msgstr ""
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.documents_view_search_inherit
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Video"
 msgstr "影片"
+
+#. module: documents
+#: model:documents.tag,name:documents.documents_marketing_assets_Videos
+msgid "Videos"
+msgstr "視頻"
 
 #. module: documents
 #. openerp-web
@@ -1437,11 +1927,13 @@ msgid "Want to become a <b>paperless company</b>? Let's discover Odoo DMS."
 msgstr ""
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__website_message_ids
 #: model:ir.model.fields,field_description:documents.field_documents_share__website_message_ids
 msgid "Website Messages"
 msgstr "網站信息"
 
 #. module: documents
+#: model:ir.model.fields,help:documents.field_documents_document__website_message_ids
 #: model:ir.model.fields,help:documents.field_documents_share__website_message_ids
 msgid "Website communication history"
 msgstr "網站溝通記錄"
@@ -1479,7 +1971,7 @@ msgid "Write a tooltip for the action here"
 msgstr ""
 
 #. module: documents
-#: model:ir.model.fields,help:documents.field_ir_attachment__type
+#: model:ir.model.fields,help:documents.field_documents_document__attachment_type
 msgid ""
 "You can either upload a file from your computer or copy/paste an internet "
 "link to your file."
@@ -1498,11 +1990,18 @@ msgid "documents shared by"
 msgstr ""
 
 #. module: documents
+#. openerp-web
+#: code:addons/documents/static/src/xml/documents_thread.xml:14
+#, python-format
+msgid "e.g. 1-5, 7, 8-9"
+msgstr ""
+
+#. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
 msgid "e.g. Discuss proposal"
-msgstr "例如：討論提案"
+msgstr "例如.討論提案"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_facet__tooltip

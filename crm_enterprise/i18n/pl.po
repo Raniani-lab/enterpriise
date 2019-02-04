@@ -3,21 +3,22 @@
 # * crm_enterprise
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Maciej Wichowski <maciej.wichowski@openglobe.pl>, 2018
-# zbik2607 <darek@krokus.com.pl>, 2018
-# Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2018
-# Judyta Kaźmierczak <judyta.kazmierczak@openglobe.pl>, 2018
-# Tomasz Leppich <t.leppich@gmail.com>, 2018
-# Piotr Szlązak <szlazakpiotr@gmail.com>, 2018
-# Marcin Młynarczyk <mlynarczyk@gmail.com>, 2018
+# Martin Trigaux, 2019
+# zbik2607 <darek@krokus.com.pl>, 2019
+# Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2019
+# Judyta Kaźmierczak <judyta.kazmierczak@openglobe.pl>, 2019
+# Tomasz Leppich <t.leppich@gmail.com>, 2019
+# Piotr Szlązak <szlazakpiotr@gmail.com>, 2019
+# Marcin Młynarczyk <mlynarczyk@gmail.com>, 2019
+# Maciej Wichowski <maciej.wichowski@openglobe.pl>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-02 10:31+0000\n"
-"PO-Revision-Date: 2018-10-02 10:31+0000\n"
-"Last-Translator: Marcin Młynarczyk <mlynarczyk@gmail.com>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"PO-Revision-Date: 2019-01-16 08:37+0000\n"
+"Last-Translator: Maciej Wichowski <maciej.wichowski@openglobe.pl>, 2019\n"
 "Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -157,6 +158,8 @@ msgid "Lost Reason"
 msgstr "Powód utraty"
 
 #. module: crm_enterprise
+#: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
+#: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_dashboard
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Medium"
 msgstr "Medium"
@@ -202,6 +205,11 @@ msgid "Sales Channel"
 msgstr "Kanał sprzedaży"
 
 #. module: crm_enterprise
+#: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
+msgid "Sales Teams"
+msgstr "Zespoły sprzedaży"
+
+#. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Salesperson"
 msgstr "Sprzedawca"
@@ -227,10 +235,21 @@ msgid "Stage"
 msgstr "Etap"
 
 #. module: crm_enterprise
+#: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_dashboard
+msgid "Win/Loss Ratio"
+msgstr ""
+
+#. module: crm_enterprise
 #: selection:crm.lead,won_status:0
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_search
 msgid "Won"
 msgstr "Sukces"
+
+#. module: crm_enterprise
+#: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
+#: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_dashboard
+msgid "day(s)"
+msgstr "dzień(dni)"
 
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_graph

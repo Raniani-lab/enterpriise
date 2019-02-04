@@ -3,22 +3,36 @@
 # * website_helpdesk_forum
 # 
 # Translators:
-# Levent Karakaş <levent@mektup.at>, 2018
-# Murat Kaplan <muratk@projetgrup.com>, 2018
-# Gökhan Erdoğdu <gokhan.erdogdu@mechsoft.com.tr>, 2018
+# Murat Kaplan <muratk@projetgrup.com>, 2017
+# Gökhan Erdoğdu <gokhan.erdogdu@mechsoft.com.tr>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Gökhan Erdoğdu <gokhan.erdogdu@mechsoft.com.tr>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:12+0000\n"
+"PO-Revision-Date: 2017-02-15 11:47+0000\n"
+"Last-Translator: Gökhan Erdoğdu <gokhan.erdogdu@mechsoft.com.tr>, 2019\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Language: tr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#. module: website_helpdesk_forum
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
+msgid ""
+"<i class=\"fa fa-check-circle oe_answer_true\" role=\"img\" aria-"
+"label=\"Question has accepted answer\"/>"
+msgstr ""
+
+#. module: website_helpdesk_forum
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
+msgid ""
+"<i class=\"fa fa-external-link forum_link\" role=\"img\" aria-"
+"label=\"Redirect to external link\"/>"
+msgstr ""
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
@@ -60,7 +74,7 @@ msgstr "Yardım Merkezi bu ekip için aktif değil."
 #. module: website_helpdesk_forum
 #: model:ir.model,name:website_helpdesk_forum.model_helpdesk_team
 msgid "Helpdesk Team"
-msgstr "Destek Ekibi"
+msgstr "Yardım Masası Ekibi"
 
 #. module: website_helpdesk_forum
 #: model:ir.model,name:website_helpdesk_forum.model_helpdesk_ticket
@@ -117,7 +131,7 @@ msgstr "Talep %s formunda paylaşıldı."
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.forum_posts_page
 msgid "View"
-msgstr "Görüntüle"
+msgstr "Göster"
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.helpdesk_team_view_form_inherit_website_helpdesk_forum

@@ -3,14 +3,15 @@
 # * website_helpdesk_livechat
 # 
 # Translators:
-# Kostas Goutoudis <goutoudis@gmail.com>, 2018
+# Kostas Goutoudis <goutoudis@gmail.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-18 10:05+0000\n"
-"PO-Revision-Date: 2018-09-18 10:05+0000\n"
-"Last-Translator: Kostas Goutoudis <goutoudis@gmail.com>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:12+0000\n"
+"PO-Revision-Date: 2017-02-15 11:47+0000\n"
+"Last-Translator: Kostas Goutoudis <goutoudis@gmail.com>, 2019\n"
 "Language-Team: Greek (https://www.transifex.com/odoo/teams/41243/el/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -34,6 +35,11 @@ msgid ""
 "                    You can create a new ticket by typing <b>/helpdesk \"ticket title\"</b>.<br>\n"
 "                    You can search ticket by typing <b>/helpdesk_search \"Keywords1 Keywords2 etc\"</b><br>\n"
 "                    "
+msgstr ""
+
+#. module: website_helpdesk_livechat
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
+msgid "<i class=\"fa fa-fw fa-arrow-right\" aria-label=\"Go to\" title=\"Go to\"/>"
 msgstr ""
 
 #. module: website_helpdesk_livechat

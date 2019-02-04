@@ -3,24 +3,25 @@
 # * sale_ebay
 # 
 # Translators:
-# Martin Trigaux, 2018
-# zbik2607 <darek@krokus.com.pl>, 2018
-# Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2018
-# Judyta Kaźmierczak <judyta.kazmierczak@openglobe.pl>, 2018
-# Tomasz Leppich <t.leppich@gmail.com>, 2018
-# Piotr Szlązak <szlazakpiotr@gmail.com>, 2018
-# Marcin Młynarczyk <mlynarczyk@gmail.com>, 2018
-# Andrzej Donczew <a.donczew@hadron.eu.com>, 2018
-# Paweł Wodyński <pw@myodoo.pl>, 2018
-# Maksym <ms@myodoo.pl>, 2018
+# Maksym <ms@myodoo.pl>, 2019
+# Piotr Cierkosz <piotr.w.cierkosz@gmail.com>, 2019
+# Martin Trigaux, 2019
+# zbik2607 <darek@krokus.com.pl>, 2019
+# Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2019
+# Judyta Kaźmierczak <judyta.kazmierczak@openglobe.pl>, 2019
+# Tomasz Leppich <t.leppich@gmail.com>, 2019
+# Piotr Szlązak <szlazakpiotr@gmail.com>, 2019
+# Marcin Młynarczyk <mlynarczyk@gmail.com>, 2019
+# Andrzej Donczew <a.donczew@hadron.eu.com>, 2019
+# Paweł Wodyński <pw@myodoo.pl>, 2019
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-08-24 11:48+0000\n"
-"Last-Translator: Maksym <ms@myodoo.pl>, 2018\n"
+"PO-Revision-Date: 2016-08-05 13:31+0000\n"
+"Last-Translator: Paweł Wodyński <pw@myodoo.pl>, 2019\n"
 "Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -51,8 +52,8 @@ msgid ""
 " and the listing duration should set to Good 'Til Canceled"
 msgstr ""
 "Jeśli chcesz ustawić wartość na 0, opcja \"Brak w magazynie\" powinna być "
-"włączona, a czas aukcji powinien być ustawiony na \"Dobry, do czasu "
-"anulowania\""
+"włączona, a czas trwania aukcji powinien być ustawiony na \"Całkowicie "
+"anulowany\""
 
 #. module: sale_ebay
 #: code:addons/sale_ebay/models/product.py:386
@@ -249,7 +250,7 @@ msgstr "Opisz cechy produktu..."
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_template_id
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_template_id
 msgid "Description Template"
-msgstr "Szablon opisu"
+msgstr "Opis szablonu"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_dev_id
@@ -274,7 +275,7 @@ msgstr "Czas trwania"
 #. module: sale_ebay
 #: model:ir.actions.server,name:sale_ebay.action_end_items_listings
 msgid "Ebay: End Product Templates Listings on eBay"
-msgstr "eBay: wyświetlanie szablonów produktów końcowych w serwisie eBay"
+msgstr "Ebay: wyświetlanie szablonów produktów końcowych w serwisie eBay"
 
 #. module: sale_ebay
 #: model:ir.actions.server,name:sale_ebay.action_list_items
@@ -725,7 +726,7 @@ msgstr "Kupujący wybrał następującą metodę dostawy:\n"
 #: code:addons/sale_ebay/models/product.py:716
 #, python-format
 msgid "The Buyer Posted :\n"
-msgstr "Kupujący wysłał:\n"
+msgstr "Kupujący wysłał :\n"
 
 #. module: sale_ebay
 #: model:ir.model.fields,help:sale_ebay.field_product_product__ebay_subtitle

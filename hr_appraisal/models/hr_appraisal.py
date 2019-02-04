@@ -179,7 +179,9 @@ class HrAppraisal(models.Model):
                     ).create(values)
                     compose_message_wizard.action_invite()
                     if employee.user_id:
-                        user_input = survey.user_input_ids.filtered(lambda user_input: user_input.partner_id == employee.user_id.partner_id and user_input.state != 'done')
+                        user_input = survey.user_input_ids.filtered(
+                            lambda user_input: user_input.partner_id == employee.user_id.partner_id and user_input.appraisal_id == appraisal and user_input.state != 'done'
+                        )
                         if user_input:
                             form_url = survey.public_url + '/' + user_input[0].token
                         else:

@@ -3,22 +3,33 @@
 # * snailmail_account_reports_followup
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Melanie Bernard <mbe@odoo.com>, 2018
-# Eloïse Stilmant <est@odoo.com>, 2018
+# Martin Trigaux, 2019
+# Melanie Bernard <mbe@odoo.com>, 2019
+# Eloïse Stilmant <est@odoo.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Eloïse Stilmant <est@odoo.com>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"PO-Revision-Date: 2019-01-16 08:41+0000\n"
+"Last-Translator: Eloïse Stilmant <est@odoo.com>, 2019\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Language: fr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#. module: snailmail_account_reports_followup
+#: model_terms:ir.ui.view,arch_db:snailmail_account_reports_followup.followup_send_wizard_form
+msgid ""
+"<i class=\"fa fa-info-circle\" role=\"img\" aria-label=\"Warning\" title=\""
+"                         The letter will be sent using the IAP service from "
+"Odoo.&#10;Make sure you have enough credits on your account or proceed to a "
+"recharge.&#10;In case of multiple sending, the price is estimated based on 1"
+" page per document.                         \"/>"
+msgstr ""
 
 #. module: snailmail_account_reports_followup
 #: model_terms:ir.ui.view,arch_db:snailmail_account_reports_followup.followup_send_wizard_form
@@ -43,11 +54,6 @@ msgstr "Créé par"
 #: model:ir.model.fields,field_description:snailmail_account_reports_followup.field_followup_send__create_date
 msgid "Created on"
 msgstr "Créé le"
-
-#. module: snailmail_account_reports_followup
-#: model:ir.model.fields,field_description:snailmail_account_reports_followup.field_followup_send__snailmail_cost
-msgid "Credits"
-msgstr "Crédits"
 
 #. module: snailmail_account_reports_followup
 #: model:ir.model.fields,field_description:snailmail_account_reports_followup.field_followup_send__currency_id
@@ -129,11 +135,16 @@ msgid "Sending these"
 msgstr ""
 
 #. module: snailmail_account_reports_followup
+#: model:ir.model.fields,field_description:snailmail_account_reports_followup.field_followup_send__snailmail_cost
+msgid "Stamp(s)"
+msgstr ""
+
+#. module: snailmail_account_reports_followup
 #: model:ir.model.fields,help:snailmail_account_reports_followup.field_account_followup_followup_line__send_letter
 msgid "When processing, it will send a letter by Post"
 msgstr "Lors du traitement, il enverra une lettre par la poste"
 
 #. module: snailmail_account_reports_followup
 #: model_terms:ir.ui.view,arch_db:snailmail_account_reports_followup.followup_send_wizard_form
-msgid "documents will cost approximatively"
-msgstr "documents coutera approximativement"
+msgid "documents will cost"
+msgstr ""

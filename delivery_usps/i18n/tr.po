@@ -3,19 +3,18 @@
 # * delivery_usps
 # 
 # Translators:
-# Ayhan KIZILTAN <akiziltan76@hotmail.com>, 2018
-# Martin Trigaux, 2018
 # Murat Kaplan <muratk@projetgrup.com>, 2018
-# Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2018
-# Alexander B. <road2monstercat@gmail.com>, 2018
 # Umur Akın <umura@projetgrup.com>, 2018
+# Ayhan KIZILTAN <akiziltan76@hotmail.com>, 2019
+# Martin Trigaux, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Umur Akın <umura@projetgrup.com>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"PO-Revision-Date: 2016-08-05 13:28+0000\n"
+"Last-Translator: Martin Trigaux, 2019\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -73,7 +72,7 @@ msgstr "Teslimat Niteliği"
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_content_type:0
 msgid "Documents"
-msgstr "Belgeler"
+msgstr "Belge"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_delivery_nature:0
@@ -135,11 +134,6 @@ msgstr "Sabit Fiyat Kutusu"
 #: selection:delivery.carrier,usps_international_regular_container:0
 msgid "Flat Rate Envelope"
 msgstr "Düz Oran Zarfı"
-
-#. module: delivery_usps
-#: model_terms:ir.ui.view,arch_db:delivery_usps.usps_shipping_request
-msgid "From Company"
-msgstr "Şirketten"
 
 #. module: delivery_usps
 #: selection:delivery.carrier,usps_content_type:0
@@ -378,17 +372,17 @@ msgid "TIF"
 msgstr "TIF"
 
 #. module: delivery_usps
-#: code:addons/delivery_usps/models/usps_request.py:58
+#: code:addons/delivery_usps/models/usps_request.py:46
 #, python-format
 msgid ""
 "The address of your company is missing or wrong (Missing field(s) :  \n"
 " %s)"
 msgstr ""
-"Şirket adresiniz eksik veya yanlış (Kalan alan (lar): \n"
+"Firma adresiniz eksik veya yanlış (Kalan alan (lar): \n"
 "%s )"
 
 #. module: delivery_usps
-#: code:addons/delivery_usps/models/usps_request.py:78
+#: code:addons/delivery_usps/models/usps_request.py:66
 #, python-format
 msgid ""
 "The estimated price cannot be computed because the weight of your product is"
@@ -396,7 +390,7 @@ msgid ""
 msgstr "Ürününüzün ağırlığı olmadığı için tahmini fiyat hesaplanamadı."
 
 #. module: delivery_usps
-#: code:addons/delivery_usps/models/usps_request.py:67
+#: code:addons/delivery_usps/models/usps_request.py:55
 #, python-format
 msgid ""
 "The recipient address is missing or wrong (Missing field(s) :  \n"
@@ -404,15 +398,10 @@ msgid ""
 msgstr "Alıcı adresi eksik veya yanlış (Kayıp alan (lar): \\ n %s )"
 
 #. module: delivery_usps
-#: code:addons/delivery_usps/models/usps_request.py:167
+#: code:addons/delivery_usps/models/usps_request.py:155
 #, python-format
 msgid "The selected USPS service (%s) cannot be used to deliver this package."
 msgstr ""
-
-#. module: delivery_usps
-#: model_terms:ir.ui.view,arch_db:delivery_usps.usps_shipping_request
-msgid "To Company"
-msgstr "Şirkete"
 
 #. module: delivery_usps
 #: model:ir.model.fields,field_description:delivery_usps.field_delivery_carrier__usps_international_regular_container
@@ -442,7 +431,7 @@ msgstr "USPS"
 #. module: delivery_usps
 #: model_terms:ir.ui.view,arch_db:delivery_usps.view_delivery_carrier_form_with_provider_usps
 msgid "USPS Configuration"
-msgstr "USPS Konfigürasyonu"
+msgstr "USPS Konfigirasyonu"
 
 #. module: delivery_usps
 #: model_terms:ir.ui.view,arch_db:delivery_usps.res_config_settings_view_form_sale
@@ -534,9 +523,6 @@ msgid "bpost"
 msgstr "bpost"
 
 #. module: delivery_usps
-#: model:product.product,weight_uom_name:delivery_usps.product_product_delivery_usps_domestic
-#: model:product.product,weight_uom_name:delivery_usps.product_product_delivery_usps_international
-#: model:product.template,weight_uom_name:delivery_usps.product_product_delivery_usps_domestic_product_template
-#: model:product.template,weight_uom_name:delivery_usps.product_product_delivery_usps_international_product_template
-msgid "kg"
-msgstr "kg"
+#: model_terms:ir.ui.view,arch_db:delivery_usps.usps_shipping_request
+msgid "true"
+msgstr "doğru"

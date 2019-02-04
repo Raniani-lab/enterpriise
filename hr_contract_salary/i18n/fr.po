@@ -3,17 +3,42 @@
 # * hr_contract_salary
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Eloïse Stilmant <est@odoo.com>, 2018
-# Elise Carton <eca@odoo.com>, 2018
-# Marie Willemyns <mwi@odoo.com>, 2018
+# Clo <clo@odoo.com>, 2017
+# Manu1400 <ehaguet@teclib.com>, 2017
+# Daniel & Delphine <dd2013@leschoupinous.net>, 2017
+# Quentin THEURET <odoo@kerpeo.com>, 2017
+# fr trans <e2ftrans1@yahoo.com>, 2017
+# Fabri Yohann <psn@fabri.pw>, 2017
+# Xavier Symons <xsy@openerp.com>, 2017
+# Maxime Chambreuil <mchambreuil@ursainfosystems.com>, 2017
+# Micky Jault <micky037@hotmail.fr>, 2017
+# fr trans <e2ffr05@hotmail.com>, 2017
+# Fabien Pinckaers <fp@openerp.com>, 2017
+# e2f_fr_t5 <e2f_fr_t5@outlook.com>, 2017
+# fr trans <e2ffr01@hotmail.com>, 2017
+# Xavier Belmere <Info@cartmeleon.com>, 2017
+# Nathan Noël <nathan070@me.com>, 2017
+# Cécile Collart <cco@odoo.com>, 2018
+# Richard Mathot <rim@odoo.com>, 2018
+# fr rev <e2ffr02@hotmail.com>, 2018
+# Olivier Lenoir <olivier.lenoir@free.fr>, 2018
+# Adriana Ierfino <adriana.ierfino@savoirfairelinux.com>, 2018
+# Florian Hatat, 2018
+# Alexandre Fayolle <alexandre.fayolle@camptocamp.com>, 2018
+# Bertrand LATOUR <divoir@gmail.com>, 2018
+# Martin Trigaux, 2019
+# Eloïse Stilmant <est@odoo.com>, 2019
+# Marie Willemyns <mwi@odoo.com>, 2019
+# Elise Carton <eca@odoo.com>, 2019
+# Olivier ANDRE <frsw194@gmail.com>, 2019
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Marie Willemyns <mwi@odoo.com>, 2018\n"
+"PO-Revision-Date: 2017-12-13 15:21+0000\n"
+"Last-Translator: Olivier ANDRE <frsw194@gmail.com>, 2019\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -450,7 +475,7 @@ msgstr "<span class=\"o_stat_text\">Contrats</span>"
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_view_form
 msgid "<span class=\"o_stat_text\">Reviews</span>"
-msgstr "<span class=\"o_stat_text\">Révisions</span>"
+msgstr "<span class=\"o_stat_text\">Commentaires</span>"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_view_form
@@ -488,7 +513,7 @@ msgstr "Candidat"
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Apply Now"
-msgstr "Postulez maintenant"
+msgstr "Postulez maintenant!"
 
 #. module: hr_contract_salary
 #: model:ir.actions.server,name:hr_contract_salary.ir_cron_clean_redundant_salary_data_ir_actions_server
@@ -836,7 +861,7 @@ msgstr "Email"
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__email_to
 msgid "Email To"
-msgstr "Envoyer par email à"
+msgstr "Email à"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -862,7 +887,7 @@ msgstr "Employé"
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__final_yearly_costs
 msgid "Employee Budget"
-msgstr "Budget de l'employé"
+msgstr "Budget de l'employée"
 
 #. module: hr_contract_salary
 #: model:ir.model,name:hr_contract_salary.model_hr_contract
@@ -961,7 +986,7 @@ msgstr "Bénéficie d'un Autre Moyen de Transport: Oui"
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
 msgid "Has Company Car: Yes"
-msgstr "A une Voiture de Société: Oui"
+msgstr "A une voiture de société: Oui"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -1039,7 +1064,7 @@ msgstr "En relation avec les clients"
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
 msgid "International Communication: No"
-msgstr "Communication Interne: Non"
+msgstr "Communication interne: Non"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -1074,7 +1099,7 @@ msgstr "Titre du poste"
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
 msgid "Job Title:"
-msgstr "Titre du poste: "
+msgstr "Titre du job: "
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -1144,7 +1169,7 @@ msgstr "Maître"
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
 msgid "Meal Vouchers:"
-msgstr "Chèques-repas:"
+msgstr "Chèques-repas="
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
@@ -1533,7 +1558,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_email_template
 msgid "Spouse Professional Situation: Without Income"
-msgstr "Situation Professionnelle de l'Epouse: Sans Revenus"
+msgstr "Situation Professionnelle de l'Epouse: Sans Revenu"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -1677,7 +1702,7 @@ msgstr "Avec Revenu &lt; 225 €/month"
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "With Pensions &gt;= 450 €/month"
-msgstr "Avec Pensions &gt;= 450 €/month"
+msgstr "Avec Pensiosn &gt;= 450 €/month"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
@@ -1742,7 +1767,7 @@ msgstr "Ajoutez-moi à la liste d'attente pour une nouvelle voiture"
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "close"
-msgstr "Fermer"
+msgstr "fermer"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package

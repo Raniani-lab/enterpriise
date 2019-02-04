@@ -3,21 +3,22 @@
 # * helpdesk
 # 
 # Translators:
-# Cas Vissers <c.vissers@brahoo.nl>, 2018
-# Martin Trigaux, 2018
-# Wynand Tastenhoye <wta@odoo.com>, 2018
-# Gunther Clauwaert <gclauwae@hotmail.com>, 2018
-# Yenthe Van Ginneken <yenthespam@gmail.com>, 2018
-# Cas Vissers <casvissers@brahoo.nl>, 2018
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2018
+# Eric Geens <ericgeens@yahoo.com>, 2018
+# Martin Trigaux, 2019
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
+# Cas Vissers <casvissers@brahoo.nl>, 2019
+# Gunther Clauwaert <gclauwae@hotmail.com>, 2019
+# Cas Vissers <c.vissers@brahoo.nl>, 2019
+# Wynand Tastenhoye <wta@odoo.com>, 2019
+# Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-02 10:31+0000\n"
-"PO-Revision-Date: 2018-08-24 11:38+0000\n"
-"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:12+0000\n"
+"PO-Revision-Date: 2017-02-15 11:45+0000\n"
+"Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -41,11 +42,6 @@ msgid "${object.display_name}"
 msgstr "${object.display_name}"
 
 #. module: helpdesk
-#: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__percentage_satisfaction
-msgid "% Happy"
-msgstr "% Blij"
-
-#. module: helpdesk
 #: model_terms:digest.tip,tip_description:helpdesk.digest_tip_helpdesk_0
 msgid "% endif"
 msgstr "% endif"
@@ -67,7 +63,7 @@ msgid ""
 "(Un)archiving a helpdesk team automatically (un)archives its tickets. Do you"
 " want to proceed?"
 msgstr ""
-"Een helpdeskteam (on)archiveren zal de tickets automatisch mee "
+"Een helpdesk team (on)archiveren zal de tickets automatisch mee "
 "(on)archiveren. Wilt u verder gaan?"
 
 #. module: helpdesk
@@ -241,7 +237,7 @@ msgstr ""
 
 #. module: helpdesk
 #. openerp-web
-#: code:addons/helpdesk/static/src/js/tour.js:58
+#: code:addons/helpdesk/static/src/js/tour.js:59
 #, python-format
 msgid ""
 "<b>Stars</b> mark the <b>ticket priority</b>. You can change it directly "
@@ -271,6 +267,16 @@ msgid "<i class=\"fa fa-arrow-right\"/> View documentation"
 msgstr "<i class=\"fa fa-arrow-right\"/> Bekijk documentatie"
 
 #. module: helpdesk
+#: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_kanban
+msgid "<i class=\"fa fa-comments\" role=\"img\" aria-label=\"Messages\"/>"
+msgstr "<i class=\"fa fa-comments\" role=\"img\" aria-label=\"Berichten\"/>"
+
+#. module: helpdesk
+#: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_kanban
+msgid "<i class=\"fa fa-ellipsis-v\" role=\"img\" aria-label=\"Manage\" title=\"Manage\"/>"
+msgstr "<i class=\"fa fa-ellipsis-v\" role=\"img\" aria-label=\"Beheren\" title=\"Beheren\"/>"
+
+#. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.index
 msgid "<i class=\"fa fa-envelope\"/> Email :"
 msgstr "<i class=\"fa fa-envelope\"/> E-mail:"
@@ -283,6 +289,15 @@ msgid ""
 msgstr ""
 "<i class=\"fa fa-envelope-o\" title=\"Domain alias\" role=\"img\" aria-"
 "label=\"Domain alias\"/>&amp;nbsp;"
+
+#. module: helpdesk
+#: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
+msgid ""
+"<i class=\"fa fa-fw fa-arrow-right\" role=\"img\" aria-label=\"Rating URL\" "
+"title=\"Rating URL\"/>"
+msgstr ""
+"<i class=\"fa fa-fw fa-arrow-right\" role=\"img\" aria-label=\"URL "
+"beoordeling\" title=\"URL beoordeling\"/>"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.index
@@ -298,6 +313,15 @@ msgstr "<i>Nog geen klant beoordelingen.</i>"
 #: model_terms:ir.ui.view,arch_db:helpdesk.tickets_followup
 msgid "<small class=\"text-right\">Status:</small>"
 msgstr "<small class=\"text-right\">Status:</small>"
+
+#. module: helpdesk
+#: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_kanban
+msgid ""
+"<span class=\"fa fa-clock-o\" title=\"Deadline\" role=\"img\" aria-"
+"label=\"Deadline\"/>"
+msgstr ""
+"<span class=\"fa fa-clock-o\" title=\"Deadline\" role=\"img\" aria-"
+"label=\"deadline\"/>"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.view_partner_form_inherit_helpdesk
@@ -404,11 +428,11 @@ msgstr "Activiteitsfase"
 #: model:ir.actions.act_window,name:helpdesk.mail_activity_type_action_config_helpdesk
 #: model:ir.ui.menu,name:helpdesk.helpdesk_menu_config_activity_type
 msgid "Activity Types"
-msgstr "Activeiteitssoorten"
+msgstr "Soorten activiteiten"
 
 #. module: helpdesk
 #. openerp-web
-#: code:addons/helpdesk/static/src/js/tour.js:63
+#: code:addons/helpdesk/static/src/js/tour.js:64
 #, python-format
 msgid ""
 "Add columns to configure <b>stages for your tickets</b>.<br/><i>e.g. "
@@ -441,7 +465,7 @@ msgstr "Aliasdomein"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__alias_model_id
 msgid "Aliased Model"
-msgstr "Aliased model"
+msgstr "Aliased Model"
 
 #. module: helpdesk
 #: selection:helpdesk.sla,priority:0 selection:helpdesk.ticket,priority:0
@@ -490,13 +514,13 @@ msgstr "Aan mij toewijzen"
 
 #. module: helpdesk
 #. openerp-web
-#: code:addons/helpdesk/static/src/js/tour.js:39
+#: code:addons/helpdesk/static/src/js/tour.js:40
 #, python-format
 msgid "Assign the ticket to someone."
 msgstr "Wijs het ticket toe aan iemand."
 
 #. module: helpdesk
-#: code:addons/helpdesk/models/helpdesk_ticket.py:421
+#: code:addons/helpdesk/models/helpdesk_ticket.py:423
 #, python-format
 msgid "Assign to me"
 msgstr "Aan mij toewijzen"
@@ -607,10 +631,10 @@ msgstr "Kies een e-mail:"
 
 #. module: helpdesk
 #. openerp-web
-#: code:addons/helpdesk/static/src/js/tour.js:67
+#: code:addons/helpdesk/static/src/js/tour.js:68
 #, python-format
 msgid "Click here and select \"Helpdesk Teams\" for further configuration."
-msgstr "Klik hier en selecteer \"Helpdeskteams\" voor verdere configuratie."
+msgstr "Klik hier en selecteer \"Helpdesk teams\" voor verdere configuratie."
 
 #. module: helpdesk
 #. openerp-web
@@ -621,7 +645,7 @@ msgstr "Klik hier om dit team hun tickets te zien."
 
 #. module: helpdesk
 #. openerp-web
-#: code:addons/helpdesk/static/src/js/tour.js:52
+#: code:addons/helpdesk/static/src/js/tour.js:53
 #, python-format
 msgid ""
 "Click these cards to open their form view, or <b>drag &amp; drop</b> them "
@@ -676,7 +700,7 @@ msgstr "Kleur"
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__color
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__color
 msgid "Color Index"
-msgstr "Kleurindex"
+msgstr "Kleur index"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla__company_id
@@ -710,7 +734,7 @@ msgstr "Contact"
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_sla_action
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_sla_action_main
 msgid "Create a new Service Level Agreement (SLA) policy"
-msgstr "Maak een nieuw Service Level Agreement (SLA) beleid"
+msgstr "Maak een nieuwe Service Level Agreement (SLA) policy"
 
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_stage_action
@@ -735,7 +759,7 @@ msgstr "Maak een nieuw ticket"
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_tag_action
 msgid "Create a new ticket tag"
-msgstr "Maak een nieuw ticketlabel aan"
+msgstr "Maak een nieuw ticket label aan"
 
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_team_action
@@ -779,7 +803,7 @@ msgid "Current stage of this ticket"
 msgstr "Huidige fase van het ticket"
 
 #. module: helpdesk
-#: code:addons/helpdesk/models/helpdesk_ticket.py:332
+#: code:addons/helpdesk/models/helpdesk_ticket.py:334
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__partner_id
 #, python-format
 msgid "Customer"
@@ -791,11 +815,11 @@ msgid "Customer Care"
 msgstr "Klantenservice"
 
 #. module: helpdesk
-#: code:addons/helpdesk/models/helpdesk_ticket.py:334
+#: code:addons/helpdesk/models/helpdesk_ticket.py:336
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__partner_email
 #, python-format
 msgid "Customer Email"
-msgstr "Klant e-mail"
+msgstr "Klant email"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__partner_name
@@ -820,7 +844,7 @@ msgid "Customer Satisfaction"
 msgstr "Klanttevredenheid"
 
 #. module: helpdesk
-#: code:addons/helpdesk/models/helpdesk_ticket.py:319
+#: code:addons/helpdesk/models/helpdesk_ticket.py:321
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_form
 #, python-format
 msgid "Customer Tickets"
@@ -842,7 +866,7 @@ msgstr "Dagelijks doel"
 
 #. module: helpdesk
 #. openerp-web
-#: code:addons/helpdesk/static/src/js/helpdesk_dashboard.js:224
+#: code:addons/helpdesk/static/src/js/helpdesk_dashboard.js:227
 #, python-format
 msgid "Dashboard"
 msgstr "Dashboard"
@@ -961,7 +985,7 @@ msgstr "E-learning inschakelen"
 
 #. module: helpdesk
 #. openerp-web
-#: code:addons/helpdesk/static/src/js/tour.js:29
+#: code:addons/helpdesk/static/src/js/tour.js:30
 #, python-format
 msgid ""
 "Enter a subject or title for this ticket.<br/><i>(e.g. Problem with "
@@ -972,7 +996,7 @@ msgstr ""
 
 #. module: helpdesk
 #. openerp-web
-#: code:addons/helpdesk/static/src/js/tour.js:34
+#: code:addons/helpdesk/static/src/js/tour.js:35
 #, python-format
 msgid "Enter the customer. Feel free to create it on the fly."
 msgstr "Geef de klant in. U kan deze direct aanmaken."
@@ -980,7 +1004,7 @@ msgstr "Geef de klant in. U kan deze direct aanmaken."
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__sla_fail
 msgid "Failed SLA Policy"
-msgstr "Niet gehaalde SLA afspraak"
+msgstr "Gefaalde SLA afspraak"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_kanban
@@ -1103,23 +1127,23 @@ msgstr "Helpdesklabels"
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__team_id
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_tree
 msgid "Helpdesk Team"
-msgstr "Helpdeskteam"
+msgstr "Helpdesk team"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.index
 msgid "Helpdesk Team Satisfaction"
-msgstr "Helpdeskteam tevredenheid"
+msgstr "Helpdesk team tevredenheid"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "Helpdesk Team..."
-msgstr "Helpdeskteam..."
+msgstr "Helpdesk team..."
 
 #. module: helpdesk
 #: model:ir.actions.act_window,name:helpdesk.helpdesk_team_action
 #: model:ir.ui.menu,name:helpdesk.helpdesk_team_menu
 msgid "Helpdesk Teams"
-msgstr "Helpdeskteams"
+msgstr "Helpdesk teams"
 
 #. module: helpdesk
 #: model:ir.model,name:helpdesk.model_helpdesk_ticket
@@ -1330,7 +1354,7 @@ msgstr "Laatste feedback"
 
 #. module: helpdesk
 #. openerp-web
-#: code:addons/helpdesk/static/src/js/tour.js:23
+#: code:addons/helpdesk/static/src/js/tour.js:24
 #, python-format
 msgid "Let's create your first ticket."
 msgstr "Laten we uw eerste ticket aanmaken."
@@ -1364,13 +1388,13 @@ msgstr "Handmatig"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__medium_id
 msgid "Medium"
-msgstr "Gemiddeld"
+msgstr "Medium"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__message_has_error
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__message_has_error
 msgid "Message Delivery error"
-msgstr "Bericht afleverfout"
+msgstr "Bericht aflever fout"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.tickets_followup
@@ -1525,7 +1549,7 @@ msgstr "Aantal ongelezen berichten"
 
 #. module: helpdesk
 #. openerp-web
-#: code:addons/helpdesk/static/src/js/helpdesk_dashboard.js:189
+#: code:addons/helpdesk/static/src/js/helpdesk_dashboard.js:190
 #, python-format
 msgid "Only Integer Value should be valid."
 msgstr "Alleen gehele getallen zijn geldig."
@@ -1595,6 +1619,11 @@ msgid ""
 msgstr ""
 "Bovenliggend model welke de alias bezit. Het model dat de alias referentie bezit\n"
 "is niet noodzakelijk het model wat wordt gegeven door alias_model_id (bijvoorbeeld: project (parent_model) en taak (model))"
+
+#. module: helpdesk
+#: model:ir.model.fields,help:helpdesk.field_helpdesk_team__rating_percentage_satisfaction
+msgid "Percentage of happy ratings"
+msgstr "Percentage tevreden beoordelingen"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
@@ -1689,14 +1718,24 @@ msgid "Rating Last Value"
 msgstr "Beoordeling laatste waarde"
 
 #. module: helpdesk
+#: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__rating_percentage_satisfaction
+msgid "Rating Satisfaction"
+msgstr "Beoordelingstevredenheid"
+
+#. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__rating_count
 msgid "Rating count"
 msgstr "Aantal beoordelingen"
 
 #. module: helpdesk
-#: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__use_rating
+#: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__rating_ids
 msgid "Ratings"
 msgstr "Beoordelingen"
+
+#. module: helpdesk
+#: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__use_rating
+msgid "Ratings on tickets"
+msgstr "Beoordeling op tickets"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_sla_view_form
@@ -1706,7 +1745,7 @@ msgstr "Behalen in"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_sla_view_form
 msgid "Reach Stage"
-msgstr "Behaal fase"
+msgstr "Behalen Fase"
 
 #. module: helpdesk
 #: selection:helpdesk.ticket,kanban_state:0
@@ -1767,12 +1806,12 @@ msgstr "Terugzetten"
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_search
 #, python-format
 msgid "SLA Failed"
-msgstr "SLA niet gehaald"
+msgstr "SLA gefaald"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_search_analysis
 msgid "SLA Not Failed"
-msgstr "SLA wel gehaald"
+msgstr "SLA niet gefaald"
 
 #. module: helpdesk
 #: model:ir.actions.act_window,name:helpdesk.helpdesk_sla_action
@@ -1827,7 +1866,7 @@ msgstr "Bewaar deze pagina en vernieuw om deze functionaliteit te activeren."
 
 #. module: helpdesk
 #. openerp-web
-#: code:addons/helpdesk/static/src/js/tour.js:43
+#: code:addons/helpdesk/static/src/js/tour.js:44
 #, python-format
 msgid "Save this ticket and the modifications you've made to it."
 msgstr "Bewaar dit ticket en de wijzigingen die je hierop hebt gemaakt."
@@ -2223,12 +2262,6 @@ msgid "This required to have project module installed."
 msgstr "Het is vereist om de project module geïnstalleerd te hebben."
 
 #. module: helpdesk
-#: code:addons/helpdesk/models/helpdesk.py:340
-#, python-format
-msgid "This target does not exist."
-msgstr "Dit doel bestaat niet."
-
-#. module: helpdesk
 #. openerp-web
 #: code:addons/helpdesk/static/src/xml/helpdesk_team_templates.xml:30
 #, python-format
@@ -2269,7 +2302,7 @@ msgstr "Ticket fase veranderd"
 #: model:ir.actions.act_window,name:helpdesk.helpdesk_tag_action
 #: model:ir.ui.menu,name:helpdesk.helpdesk_tag_menu
 msgid "Ticket Tags"
-msgstr "Ticketlabels"
+msgstr "Ticket labels"
 
 #. module: helpdesk
 #: model:ir.actions.act_window,name:helpdesk.helpdesk_ticket_type_action
@@ -2279,7 +2312,7 @@ msgstr "Ticketlabels"
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_search_analysis
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_search
 msgid "Ticket Type"
-msgstr "Ticketsoort"
+msgstr "Soort ticket"
 
 #. module: helpdesk
 #: model:mail.message.subtype,description:helpdesk.mt_ticket_new
@@ -2307,6 +2340,7 @@ msgstr "Ticket beoordeeld"
 #: model:ir.actions.act_window,name:helpdesk.helpdesk_ticket_action_urgent
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__ticket_ids
 #: model:ir.model.fields,field_description:helpdesk.field_res_partner__ticket_count
+#: model:ir.model.fields,field_description:helpdesk.field_res_users__ticket_count
 #: model:ir.ui.menu,name:helpdesk.helpdesk_ticket_report_menu
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_kanban
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_tree
@@ -2433,12 +2467,12 @@ msgstr "Aantal ongelezen berichten"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_search
 msgid "Upcoming SLA Fail"
-msgstr "Aankomende SLA niet gehaald"
+msgstr "Aankomende SLA falingen"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__upcoming_sla_fail_tickets
 msgid "Upcoming SLA Fail Tickets"
-msgstr "Aankomende tickets SLA niet gehaald"
+msgstr "Aankomende SLA ticket falingen"
 
 #. module: helpdesk
 #: selection:helpdesk.sla,priority:0 selection:helpdesk.ticket,priority:0
@@ -2454,7 +2488,7 @@ msgstr "Urgent ("
 
 #. module: helpdesk
 #. openerp-web
-#: code:addons/helpdesk/static/src/js/tour.js:48
+#: code:addons/helpdesk/static/src/js/tour.js:49
 #, python-format
 msgid "Use the breadcrumbs to go back to the Kanban view."
 msgstr "Gebruik het kruimelpad om terug te gaan naar de Kanban weergave."
@@ -2474,14 +2508,14 @@ msgstr "Gebruikers"
 #: code:addons/helpdesk/static/src/xml/helpdesk_team_templates.xml:52
 #, python-format
 msgid "View failed tickets"
-msgstr "Zie niet gehaalde tickets"
+msgstr "Zie gefaalde tickets"
 
 #. module: helpdesk
 #. openerp-web
 #: code:addons/helpdesk/static/src/xml/helpdesk_team_templates.xml:57
 #, python-format
 msgid "View high priority failed tickets"
-msgstr "Bekijk hoge prioriteit niet gehaalde tickets"
+msgstr "Zie hoge prioriteit gefaalde tickets"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
@@ -2493,7 +2527,7 @@ msgstr "Bekijk dit team hun beoordelingen op deze pagina: <br/>"
 #: code:addons/helpdesk/static/src/xml/helpdesk_team_templates.xml:62
 #, python-format
 msgid "View urgent failed tickets"
-msgstr "Bekijk urgente niet gehaalde tickets"
+msgstr "Weergave urgente gefaalde tickets"
 
 #. module: helpdesk
 #. openerp-web
@@ -2548,13 +2582,13 @@ msgstr "Werkuren"
 
 #. module: helpdesk
 #. openerp-web
-#: code:addons/helpdesk/static/src/js/helpdesk_dashboard.js:189
+#: code:addons/helpdesk/static/src/js/helpdesk_dashboard.js:190
 #, python-format
 msgid "Wrong value entered!"
 msgstr "Verkeerde waarde ingevoerd!"
 
 #. module: helpdesk
-#: code:addons/helpdesk/models/helpdesk.py:108
+#: code:addons/helpdesk/models/helpdesk.py:100
 #, python-format
 msgid "You must have team members assigned to change the assignation method."
 msgstr ""

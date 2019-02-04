@@ -3,9 +3,9 @@
 
 {
     'name': "Project Enterprise",
-    'summary': """Bridge module for mail and enterprise""",
+    'summary': """Bridge module for project and enterprise""",
     'description': """
-Bridge module for mail and enterprise
+Bridge module for project and enterprise
     """,
     'category': 'Project',
     'version': '1.0',

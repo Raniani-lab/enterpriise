@@ -4,6 +4,8 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
+# Bohdan Lisnenko, 2018
+# ТАрас <tratatuta@i.ua>, 2018
 # Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018
 # 
 msgid ""
@@ -11,7 +13,7 @@ msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-18 10:04+0000\n"
-"PO-Revision-Date: 2018-08-24 11:47+0000\n"
+"PO-Revision-Date: 2016-08-05 13:31+0000\n"
 "Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2018\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
@@ -32,17 +34,17 @@ msgstr ""
 #. module: quality_mrp
 #: model_terms:ir.ui.view,arch_db:quality_mrp.mrp_production_view_form_inherit_quality
 msgid "<span class=\"o_stat_text\">Quality Alert</span>"
-msgstr "<span class=\"o_stat_text\">Сповіщення якості</span>"
+msgstr "<span class=\"o_stat_text\">Якість попередження</span>"
 
 #. module: quality_mrp
 #: model:ir.model.fields,field_description:quality_mrp.field_mrp_production__quality_alert_ids
 msgid "Alerts"
-msgstr "Сповіщення"
+msgstr "Застереження"
 
 #. module: quality_mrp
 #: model:ir.model.fields,field_description:quality_mrp.field_mrp_production__check_ids
 msgid "Checks"
-msgstr "Перевірки"
+msgstr "Чеки"
 
 #. module: quality_mrp
 #: model:ir.model,name:quality_mrp.model_mrp_production
@@ -59,12 +61,12 @@ msgstr "Заявка на виробництво"
 #: model:ir.model,name:quality_mrp.model_quality_alert
 #: model_terms:ir.ui.view,arch_db:quality_mrp.mrp_production_view_form_inherit_quality
 msgid "Quality Alert"
-msgstr "Сповіщення якості"
+msgstr "Якісне сповіщення "
 
 #. module: quality_mrp
 #: model:ir.model.fields,field_description:quality_mrp.field_mrp_production__quality_alert_count
 msgid "Quality Alert Count"
-msgstr "Підрахунок сповіщень якості"
+msgstr "Якість попередження кількості"
 
 #. module: quality_mrp
 #: model:ir.model,name:quality_mrp.model_quality_check

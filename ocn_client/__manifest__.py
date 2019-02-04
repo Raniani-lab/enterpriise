@@ -13,7 +13,11 @@ Odoo Cloud Notifications (OCN)
 This module enables push notifications to registered devices for direct messages,
 chatter messages and channel.
     """,
-    'depends': ['iap', 'mail'],
+    'depends': [
+        'iap',
+        'mail',
+        'web_mobile',
+    ],
     'data': [
         'views/res_config_settings_views.xml',
         'views/ocn_assets.xml'

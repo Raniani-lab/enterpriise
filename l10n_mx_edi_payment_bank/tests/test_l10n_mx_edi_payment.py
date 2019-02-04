@@ -35,6 +35,7 @@ class TestL10nMxEdiPayment(common.InvoiceTransactionCase):
             'l10n_mx_edi_payment_bank', 'tests',
             'expected_payment.xml')).read().encode('UTF-8')
         self.xml_expected = objectify.fromstring(self.xml_expected_str)
+        self.set_currency_rates(mxn_rate=12.21, usd_rate=1)
 
     def test_l10n_mx_edi_payment_bank(self):
         journal = self.env['account.journal'].search(

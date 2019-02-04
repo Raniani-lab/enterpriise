@@ -3,29 +3,35 @@
 # * hr_appraisal
 # 
 # Translators:
+# xiaobin wu <bd5dml@gmail.com>, 2017
+# 卓忆科技 <zhanghao@jointd.com>, 2017
+# 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2018
+# e2f <projects@e2f.com>, 2018
+# waveyeung <waveyeung@qq.com>, 2018
+# liulixia <liu.lixia@elico-corp.com>, 2018
 # ChinaMaker <liuct@chinamaker.net>, 2018
-# 老窦 北京 <2662059195@qq.com>, 2018
-# Jackie Zhang <jzh@odoo.com>, 2018
-# bower Guo <124358678@qq.com>, 2018
-# roye w <159820@qq.com>, 2018
-# liAnGjiA <liangjia@qq.com>, 2018
-# 广州救火 <7017511@qq.com>, 2018
-# Martin Trigaux, 2018
-# Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
-# v2exerer <9010446@qq.com>, 2018
-# Gary Wei <Gary.wei@elico-corp.com>, 2018
-# fausthuang, 2018
-# e2f_cn c5 <jarvisn@ecinnovations.com>, 2018
-# e2f_cn c7 <e2f_cn_c7@outlook.com>, 2018
-# inspur qiuguodong <qiuguodong@inspur.com>, 2018
+# JZH-Odoo <jzh@odoo.com>, 2018
+# Martin Trigaux, 2019
+# Jeffery CHEN Fan <jeffery9@gmail.com>, 2019
+# liAnGjiA <liangjia@qq.com>, 2019
+# v2exerer <9010446@qq.com>, 2019
+# Gary Wei <Gary.wei@elico-corp.com>, 2019
+# fausthuang, 2019
+# e2f_cn c5 <jarvisn@ecinnovations.com>, 2019
+# 老窦 北京 <2662059195@qq.com>, 2019
+# e2f_cn c7 <e2f_cn_c7@outlook.com>, 2019
+# keecome <7017511@qq.com>, 2019
+# bower Guo <124358678@qq.com>, 2019
+# roye w <159820@qq.com>, 2019
+# inspur qiuguodong <qiuguodong@inspur.com>, 2019
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-08 07:14+0000\n"
-"PO-Revision-Date: 2018-08-24 11:38+0000\n"
-"Last-Translator: inspur qiuguodong <qiuguodong@inspur.com>, 2018\n"
+"PO-Revision-Date: 2016-08-05 13:29+0000\n"
+"Last-Translator: inspur qiuguodong <qiuguodong@inspur.com>, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -117,7 +123,7 @@ msgstr "能够管理规划资源、风险、预算和截止期限"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_needaction
 msgid "Action Needed"
-msgstr "需要激活"
+msgstr "需要采取行动"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__action_plan
@@ -240,7 +246,7 @@ msgstr "评价经历"
 #: code:addons/hr_appraisal/models/hr_appraisal.py:118
 #, python-format
 msgid "Appraisal Meeting For %s"
-msgstr "%s的评估会议"
+msgstr "%s的评价会议"
 
 #. module: hr_appraisal
 #: model:survey.page,title:hr_appraisal.opinion_1
@@ -301,7 +307,7 @@ msgstr "评价"
 #: model:ir.cron,cron_name:hr_appraisal.ir_cron_scheduler_appraisal
 #: model:ir.cron,name:hr_appraisal.ir_cron_scheduler_appraisal
 msgid "Appraisal: run employee appraisal"
-msgstr "评估：进行员工考评"
+msgstr "评估：运行员工评估"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_count
@@ -839,7 +845,7 @@ msgstr "如果有其它，请指定"
 msgid ""
 "If the evaluation does not meet the expectations, you can propose an action "
 "plan"
-msgstr "如果考评不符合期望，您可以提出复议。"
+msgstr "如果考评不符合期望，您可以提出行动计划。"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
@@ -1237,7 +1243,7 @@ msgstr "发送表单"
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
 msgid "Show all records which has next action date is before today"
-msgstr "显示所有的在今天之前的下一个行动日期的记录"
+msgstr "显示在今天之前的下一个行动日期的所有记录"
 
 #. module: hr_appraisal
 #: model_terms:survey.page,description:hr_appraisal.appraisal_3
@@ -1407,7 +1413,7 @@ msgstr "管理者将所有的信息整合到完成的评估中。评估的动机
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__color
 msgid "This color will be used in the kanban view."
-msgstr "当前颜色将被用于看板视图"
+msgstr "颜色将被用于看板视图"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__collaborators_appraisal
@@ -1548,8 +1554,8 @@ msgid ""
 "            to whom and the evaluation deadline. Once you have defined it,\n"
 "            change the stage to send it and view the results."
 msgstr ""
-"你将能够选择以哪一种形式将被发送(员工、管理员、合作者或同事)，\n"
-"发给谁以及评估的最后期限。一旦你定义了，请改变阶段发送它并查看结果。"
+"你将能够选择哪一种形式将被发送(员工、管理员、合作者或同事)，\n"
+"发给谁以及评估的最后期限。一旦你定义了，改变阶段发送它并查看结果。"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_collaborators_survey_id

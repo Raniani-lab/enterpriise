@@ -3,18 +3,19 @@
 # * project_timesheet_forecast_sale
 # 
 # Translators:
-# Piotr Szlązak <szlazakpiotr@gmail.com>, 2018
-# Martin Trigaux, 2018
-# zbik2607 <darek@krokus.com.pl>, 2018
-# Tomasz Leppich <t.leppich@gmail.com>, 2018
-# Andrzej Donczew <a.donczew@hadron.eu.com>, 2018
+# Paweł Wodyński <pw@myodoo.pl>, 2018
+# Martin Trigaux, 2019
+# zbik2607 <darek@krokus.com.pl>, 2019
+# Tomasz Leppich <t.leppich@gmail.com>, 2019
+# Piotr Szlązak <szlazakpiotr@gmail.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server saas~12.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Andrzej Donczew <a.donczew@hadron.eu.com>, 2018\n"
+"POT-Creation-Date: 2019-01-16 08:13+0000\n"
+"PO-Revision-Date: 2017-12-13 15:25+0000\n"
+"Last-Translator: Piotr Szlązak <szlazakpiotr@gmail.com>, 2019\n"
 "Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -69,7 +70,16 @@ msgstr ""
 #: model:ir.model,name:project_timesheet_forecast_sale.model_sale_order_line
 #: model:ir.model.fields,field_description:project_timesheet_forecast_sale.field_project_forecast__order_line_id
 msgid "Sales Order Line"
-msgstr "Pozycja zlecenia sprzedaży"
+msgstr "Pozycja zamówienia sprzedaży"
+
+#. module: project_timesheet_forecast_sale
+#: model:ir.model.fields,help:project_timesheet_forecast_sale.field_project_forecast__order_line_id
+msgid ""
+"Sales order item to which the task is linked. If an employee timesheets on a"
+" this task, and if this employee is not in the 'Employee/Sales Order Item "
+"Mapping' of the project, the timesheet entry will be linked to this sales "
+"order item."
+msgstr ""
 
 #. module: project_timesheet_forecast_sale
 #: model:ir.model,name:project_timesheet_forecast_sale.model_project_task

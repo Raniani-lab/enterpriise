@@ -3,17 +3,17 @@
 # * sale_coupon
 # 
 # Translators:
-# Martin Trigaux, 2018
-# nle_odoo, 2018
-# 敬雲 林 <chingyun@yuanchih-consult.com>, 2018
+# Michael Yeung, 2018
+# Martin Trigaux, 2019
+# 敬雲 林 <chingyun@yuanchih-consult.com>, 2019
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-08 07:14+0000\n"
-"PO-Revision-Date: 2018-08-24 11:48+0000\n"
-"Last-Translator: 敬雲 林 <chingyun@yuanchih-consult.com>, 2018\n"
+"PO-Revision-Date: 2017-02-15 11:46+0000\n"
+"Last-Translator: 敬雲 林 <chingyun@yuanchih-consult.com>, 2019\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/odoo/teams/41243/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -25,7 +25,7 @@ msgstr ""
 #: code:addons/sale_coupon/models/sale_coupon_reward.py:75
 #, python-format
 msgid "%s %s discount on total amount"
-msgstr "%s%s總價上打折"
+msgstr "於總額中之%s %s 折扣"
 
 #. module: sale_coupon
 #: code:addons/sale_coupon/models/sale_coupon_reward.py:70
@@ -463,7 +463,7 @@ msgstr "公司"
 #: code:addons/sale_coupon/models/sale_coupon.py:101
 #, python-format
 msgid "Compose Email"
-msgstr "撰寫信件"
+msgstr "撰寫電子信件"
 
 #. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_form_common
@@ -478,7 +478,7 @@ msgstr "恭喜"
 #. module: sale_coupon
 #: selection:sale.coupon,state:0
 msgid "Consumed"
-msgstr "已投料"
+msgstr "已消耗"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_apply_code__coupon_code
@@ -570,7 +570,7 @@ msgstr "創建一個新的促銷計劃。"
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_reward__create_uid
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_rule__create_uid
 msgid "Created by"
-msgstr "創建人"
+msgstr "創建者"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon__create_date
@@ -585,7 +585,7 @@ msgstr "創建時間"
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_program__currency_id
 msgid "Currency"
-msgstr "幣別"
+msgstr "貨幣"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_generate__partners_domain
@@ -666,7 +666,7 @@ msgstr "顯示名稱"
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_program__rule_date_to
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_rule__rule_date_to
 msgid "End Date"
-msgstr "結束日期"
+msgstr "終止日期"
 
 #. module: sale_coupon
 #: model:ir.actions.act_window,name:sale_coupon.sale_coupon_apply_code_action
@@ -682,7 +682,7 @@ msgstr "到期日期"
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_search
 #: selection:sale.coupon,state:0
 msgid "Expired"
-msgstr "過期"
+msgstr "到期"
 
 #. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_program_view_search
@@ -803,7 +803,7 @@ msgstr "是一個節目獎勵線"
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_reward____last_update
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_rule____last_update
 msgid "Last Modified on"
-msgstr "最後修改日"
+msgstr "最後修改時間"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon__write_uid
@@ -813,7 +813,7 @@ msgstr "最後修改日"
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_reward__write_uid
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_rule__write_uid
 msgid "Last Updated by"
-msgstr "最後更新者"
+msgstr "最後更新人"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon__write_date
@@ -988,7 +988,7 @@ msgstr "訂單行"
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon__order_id
 msgid "Order Reference"
-msgstr "訂單關聯"
+msgstr "訂單參照"
 
 #. module: sale_coupon
 #: selection:sale.coupon.reward,discount_type:0
@@ -1114,7 +1114,7 @@ msgstr "數量"
 #. module: sale_coupon
 #: selection:sale.coupon,state:0
 msgid "Reserved"
-msgstr "已保留"
+msgstr "已預留"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_program__reward_id
@@ -1259,7 +1259,7 @@ msgstr "選擇獎勵產品"
 #. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_view_form
 msgid "Send by Email"
-msgstr "通過信件發送"
+msgstr "通過電子信件發送"
 
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon_program__sequence
@@ -1275,14 +1275,12 @@ msgstr "開始日期"
 #. module: sale_coupon
 #: model:ir.model.fields,field_description:sale_coupon.field_sale_coupon__state
 msgid "State"
-msgstr "狀態"
+msgstr "州/省"
 
 #. module: sale_coupon
 #: selection:sale.coupon.rule,rule_minimum_amount_tax_inclusion:0
 msgid "Tax Excluded"
-msgstr ""
-" \n"
-"外稅"
+msgstr "不含稅"
 
 #. module: sale_coupon
 #: selection:sale.coupon.rule,rule_minimum_amount_tax_inclusion:0
@@ -1304,7 +1302,7 @@ msgstr "優惠券代碼必須是唯一的！"
 #: code:addons/sale_coupon/models/sale_coupon.py:65
 #, python-format
 msgid "The coupon program for %s is in draft or closed state"
-msgstr "%s 優惠券計劃草案或是關閉狀態"
+msgstr "優惠券計劃草案或是關閉狀態"
 
 #. module: sale_coupon
 #: code:addons/sale_coupon/models/sale_coupon.py:75

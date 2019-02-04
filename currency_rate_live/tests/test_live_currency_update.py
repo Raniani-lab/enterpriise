@@ -6,9 +6,12 @@ class CurrencyTestCase(TransactionCase):
 
     def setUp(self):
         super(CurrencyTestCase, self).setUp()
-        self.test_company = self.env['res.company'].create({'name': 'Test Company'})
         # Each test will check the number of rates for USD
         self.currency_usd = self.env.ref('base.USD')
+        self.test_company = self.env['res.company'].create({
+            'name': 'Test Company',
+            'currency_id': self.currency_usd.id,
+        })
 
     def test_live_currency_update_ecb(self):
         self.test_company.currency_provider = 'ecb'

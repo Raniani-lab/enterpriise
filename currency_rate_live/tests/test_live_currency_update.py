@@ -20,7 +20,6 @@ class CurrencyTestCase(TransactionCase):
         self.assertTrue(res)
         self.assertEqual(len(self.currency_usd.rate_ids), rates_count + 1)
 
-
     def test_live_currency_update_fta(self):
         self.test_company.currency_provider = 'fta'
         # testing Swiss Federal Tax Administration requires that Franc Suisse can be found

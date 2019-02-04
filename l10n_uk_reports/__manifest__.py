@@ -9,6 +9,9 @@
     'category': 'Accounting',
     'description': """
         Accounting reports for UK
+        
+        Allows to send the tax report via the 
+        MTD-VAT API to HMRC.   
     """,
     'author': 'SmartMode LTD',
     'website': 'http://www.smartmode.co.uk',
@@ -17,6 +20,10 @@
     ],
     'data': [
         'data/account_financial_html_report_data.xml',
+        'views/views.xml',
+        'security/ir.model.access.csv',
+        'security/hmrc_security.xml',
+        'wizard/hmrc_send_wizard.xml',
     ],
     'installable': True,
     'auto_install': True,

@@ -11,6 +11,7 @@ class TestDeliveryBpost(TransactionCase):
 
         self.your_company = self.env.ref('base.main_partner')
         self.your_company.write({'name': 'Odoo SA',
+                                 'country_id': self.env.ref('base.be').id,
                                  'street': 'Chaussée de Namur 40',
                                  'street2': False,
                                  'state_id': False,

@@ -41,7 +41,7 @@ class LoyaltyReward(models.Model):
     minimum_points = fields.Float(help='The minimum amount of points the customer must have to qualify for this reward')
     reward_type = fields.Selection((('gift', 'Gift'), ('discount', 'Discount'), ('resale', 'Resale')), old_name='type', required=True, help='The type of the reward')
     gift_product_id = fields.Many2one('product.product', string='Gift Product', help='The product given as a reward')
-    point_cost = fields.Float(help='The cost of the reward')
+    point_cost = fields.Float(string='Points per Currency', help='The cost of the reward')
     discount_product_id = fields.Many2one('product.product', string='Discount Product', help='The product used to apply discounts')
     discount = fields.Float(help='The discount percentage')
     point_product_id = fields.Many2one('product.product', string='Point Product', help='The product that represents a point that is sold by the customer')

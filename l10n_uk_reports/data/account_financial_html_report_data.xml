@@ -1,106 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
     <record id="financial_report_l10n_uk" model="account.financial.html.report">
-        <field name="name">UK HMRC VAT</field>
+        <field name="name">VAT Return</field>
         <field name='parent_id' ref='l10n_uk.account_reports_uk_statements_menu'/>
         <field name="tax_report" eval="1"/>
     </record>
     <record id="financial_report_line_uk_01" model="account.financial.html.report.line">
-        <field name="name">Net VAT to be paid/reclaimed</field>
-        <field name="code">UKTAX_01</field>
-        <field name="code">UKTAX_5</field>
+        <field name="name">VAT calculations</field>
+        <field name="code" eval="False"/>
         <field name="sequence" eval="1"/>
         <field name="level" eval="1"/>
-        <field name="formulas">balance = UKTAX_1.balance + UKTAX_2.balance - UKTAX_4.balance</field>
+        <field name="formulas" eval="False"/>
         <field name="financial_report_id" ref="financial_report_l10n_uk"/>
         <field name="special_date_changer">strict_range</field>
     </record>
     <record id="financial_report_line_uk_0101" model="account.financial.html.report.line">
-        <field name="name">VAT on Sales and other outputs</field>
+        <field name="name">[BOX 1] VAT due on sales and other outputs</field>
         <field name="code">UKTAX_1</field>
         <field name="sequence" eval="1"/>
         <field name="level" eval="2"/>
-        <field name="domain" eval="[('tax_line_id.tag_ids', 'in', [ref('l10n_uk.tag_st0'), ref('l10n_uk.tag_st1'), ref('l10n_uk.tag_st2'), ref('l10n_uk.tag_st11')])]"/>
+        <field name="domain" eval="[('tax_line_id.tag_ids', 'in', [ref('l10n_uk.vat_tag_box1')])]"/>
         <field name="formulas">balance = - sum.balance</field>
         <field name="parent_id" ref="financial_report_line_uk_01"/>
         <field name="show_domain">never</field>
         <field name="special_date_changer">strict_range</field>
     </record>
     <record id="financial_report_line_uk_0102" model="account.financial.html.report.line">
-        <field name="name">VAT on acquisitions from other EC Member states</field>
+        <field name="name">[BOX 2] VAT due on acquisitions from EC</field>
         <field name="code">UKTAX_2</field>
         <field name="sequence" eval="2"/>
         <field name="level" eval="2"/>
-        <field name="domain" eval="[('tax_line_id.tag_ids', 'in', [ref('l10n_uk.tag_pt8m')])]"/>
+        <field name="domain" eval="[('tax_line_id.tag_ids', 'in', [ref('l10n_uk.vat_tag_box2')])]"/>
         <field name="formulas">balance = sum.balance</field>
         <field name="parent_id" ref="financial_report_line_uk_01"/>
         <field name="show_domain">never</field>
         <field name="special_date_changer">strict_range</field>
     </record>
     <record id="financial_report_line_uk_0103" model="account.financial.html.report.line">
-        <field name="name">VAT reclaimed on purchases (EC included)</field>
-        <field name="code">UKTAX_4</field>
+        <field name="name">[BOX 3] Total VAT due (box 1 + box 2)</field>
+        <field name="code">UKTAX_3</field>
         <field name="sequence" eval="3"/>
         <field name="level" eval="2"/>
-        <field name="domain" eval="[('tax_line_id.tag_ids', 'in', [ref('l10n_uk.tag_pt11'), ref('l10n_uk.tag_pt5'), ref('l10n_uk.tag_pt2'), ref('l10n_uk.tag_pt1'), ref('l10n_uk.tag_pt0')])]"/>
-        <field name="formulas">balance = sum.balance + UKTAX_4B.balance</field>
+        <field name="formulas">balance = UKTAX_1.balance + UKTAX_2.balance</field>
         <field name="parent_id" ref="financial_report_line_uk_01"/>
         <field name="show_domain">never</field>
         <field name="special_date_changer">strict_range</field>
     </record>
-    <record id="financial_report_line_uk_0103b" model="account.financial.html.report.line">
-        <field name="name">VAT reclaimed on purchases (EC included) bis</field>
-        <field name="code">UKTAX_4B</field>
-        <field name="sequence" eval="3"/>
+    <record id="financial_report_line_uk_0104" model="account.financial.html.report.line">
+        <field name="name">[BOX 4] VAT reclaimed on purchases and other inputs (including acquisitions from EC)</field>
+        <field name="code">UKTAX_4</field>
+        <field name="sequence" eval="4"/>
         <field name="level" eval="2"/>
-        <field name="domain" eval="[('tax_line_id.tag_ids', 'in', [ref('l10n_uk.tag_pt8r')])]"/>
-        <field name="formulas">balance = sum.credit + sum.debit</field>
+        <field name="domain" eval="[('tax_line_id.tag_ids', 'in', [ref('l10n_uk.vat_tag_box4')])]"/>
+        <field name="formulas">balance = sum.balance</field>
+        <field name="parent_id" ref="financial_report_line_uk_01"/>
         <field name="show_domain">never</field>
         <field name="special_date_changer">strict_range</field>
     </record>
+    <record id="financial_report_line_uk_0105" model="account.financial.html.report.line">
+        <field name="name">[BOX 5] VAT to pay/reclaim</field>
+        <field name="code">UKTAX_5</field>
+        <field name="sequence" eval="5"/>
+        <field name="level" eval="2"/>
+        <field name="formulas">balance = UKTAX_1.balance + UKTAX_2.balance - UKTAX_4.balance</field>
+        <field name="parent_id" ref="financial_report_line_uk_01"/>
+    </record>
     <record id="financial_report_line_uk_02" model="account.financial.html.report.line">
-        <field name="name">Total value of sales ex VAT (box 8 included)</field>
-        <field name="code">UKTAX_6</field>
+        <field name="name">Sales and Purchases Excluding VAT</field>
+        <field name="code" eval="False"/>
         <field name="sequence" eval="2"/>
         <field name="level" eval="1"/>
-        <field name="domain" eval="[('tax_ids.tag_ids', 'in', [ref('l10n_uk.tag_st0'), ref('l10n_uk.tag_st1'), ref('l10n_uk.tag_st2'), ref('l10n_uk.tag_st11')])]"/>
-        <field name="formulas">balance = - sum.balance + UKTAX_8.balance</field>
+        <field name="domain" eval="False"/>
+        <field name="formulas" eval="False"/>
         <field name="financial_report_id" ref="financial_report_l10n_uk"/>
         <field name="special_date_changer">strict_range</field>
     </record>
     <record id="financial_report_line_uk_0201" model="account.financial.html.report.line">
-        <field name="name">Total value of EC sales, ex VAT</field>
-        <field name="code">UKTAX_8</field>
+        <field name="name">[BOX 6] Total value of sales and other outputs excluding VAT (including EC supplies)</field>
+        <field name="code">UKTAX_6</field>
         <field name="sequence" eval="1"/>
         <field name="level" eval="2"/>
-        <field name="domain" eval="[('tax_ids.tag_ids', 'in', [ref('l10n_uk.tag_st4')])]"/>
-        <field name="formulas">balance = - sum.balance</field>
+        <field name="domain" eval="[('tax_ids.tag_ids', 'in', [ref('l10n_uk.vat_tag_box6')])]"/>
+        <field name="formulas">balance = - sum.balance + UKTAX_8.balance</field>
+        <field name="parent_id" ref="financial_report_line_uk_02"/>
+        <field name="show_domain">foldable</field>
+        <field name="special_date_changer">strict_range</field>
+    </record>
+    <record id="financial_report_line_uk_03" model="account.financial.html.report.line">
+        <field name="name">EC Sales and Purchases excluding VAT</field>
+        <field name="code" eval="False"/>
+        <field name="sequence" eval="3"/>
+        <field name="level" eval="1"/>
+        <field name="domain" eval="False"/>
+        <field name="formulas" eval="False"/>
+        <field name="financial_report_id" ref="financial_report_l10n_uk"/>
+        <field name="show_domain">never</field>
+        <field name="special_date_changer">strict_range</field>
+    </record>
+    <record id="financial_report_line_uk_0202" model="account.financial.html.report.line">
+        <field name="name">[BOX 7] Total value of purchases and inputs excluding VAT (including EC acquisitions)</field>
+        <field name="code">UKTAX_7</field>
+        <field name="sequence" eval="2"/>
+        <field name="level" eval="2"/>
+        <field name="domain" eval="[('tax_ids.tag_ids', 'in', [ref('l10n_uk.vat_tag_box7')])]"/>
+        <field name="formulas">balance = sum.balance + UKTAX_9.balance</field>
         <field name="parent_id" ref="financial_report_line_uk_02"/>
         <field name="show_domain">never</field>
         <field name="special_date_changer">strict_range</field>
     </record>
-    <record id="financial_report_line_uk_03" model="account.financial.html.report.line">
-        <field name="name">Total value of purchases ex VAT</field>
-        <field name="code">UKTAX_7</field>
-        <field name="sequence" eval="3"/>
-        <field name="level" eval="1"/>
-        <field name="domain" eval="[('tax_ids.tag_ids', 'in', [ref('l10n_uk.tag_pt11'), ref('l10n_uk.tag_pt5'), ref('l10n_uk.tag_pt2'), ref('l10n_uk.tag_pt1'), ref('l10n_uk.tag_pt0')])]"/>
-        <field name="formulas">balance = sum.balance + UKTAX_9.balance</field>
-        <field name="financial_report_id" ref="financial_report_l10n_uk"/>
+    <record id="financial_report_line_uk_0301" model="account.financial.html.report.line">
+        <field name="name">[BOX 8] Total value of EC sales excluding VAT</field>
+        <field name="code">UKTAX_8</field>
+        <field name="sequence" eval="1"/>
+        <field name="level" eval="2"/>
+        <field name="domain" eval="[('tax_ids.tag_ids', 'in', [ref('l10n_uk.vat_tag_box8')])]"/>
+        <field name="formulas">balance = - sum.balance</field>
+        <field name="parent_id" ref="financial_report_line_uk_03"/>
         <field name="show_domain">never</field>
         <field name="special_date_changer">strict_range</field>
     </record>
     <record id="financial_report_line_uk_04" model="account.financial.html.report.line">
-        <field name="name">Total value of EC purchases, ex VAT</field>
+        <field name="name">[BOX 9] Total value of EC purchases excluding VAT</field>
         <field name="code">UKTAX_9</field>
-        <field name="sequence" eval="4"/>
-        <field name="level" eval="1"/>
-        <field name="domain" eval="[('tax_ids.tag_ids', 'in', [ref('l10n_uk.tag_pt7'), ref('l10n_uk.tag_pt8')])]"/>
+        <field name="sequence" eval="2"/>
+        <field name="level" eval="2"/>
+        <field name="domain" eval="[('tax_ids.tag_ids', 'in', [ref('l10n_uk.vat_tag_box9')])]"/>
         <field name="formulas">balance = sum.balance</field>
-        <field name="financial_report_id" ref="financial_report_l10n_uk"/>
+        <field name="parent_id" ref="financial_report_line_uk_03"/>
+        <field name="financial_report_id" eval="False"/>
         <field name="show_domain">never</field>
         <field name="special_date_changer">strict_range</field>
     </record>
-
 </odoo>

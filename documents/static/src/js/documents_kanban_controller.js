@@ -14,7 +14,6 @@ var Chatter = require('mail.Chatter');
 var core = require('web.core');
 var KanbanController = require('web.KanbanController');
 var session = require('web.session');
-var utils = require('web.utils');
 
 var qweb = core.qweb;
 var _t = core._t;
@@ -22,11 +21,6 @@ var _t = core._t;
 var DocumentsKanbanController = KanbanController.extend({
     events: _.extend({}, KanbanController.prototype.events, {
         'click .o_document_close_chatter': '_onCloseChatter',
-        'change .o_documents_selector_model input': '_onCheckSelectorModel',
-        'change .o_documents_selector_tag input': '_onCheckSelectorTag',
-        'change .o_documents_selector_facet > header input': '_onCheckSelectorFacet',
-        'click .o_foldable .o_toggle_fold': '_onToggleFold',
-        'click .o_documents_selector_folder header': '_onSelectFolder',
         'drop .o_documents_kanban_view': '_onDrop',
         'dragover .o_documents_kanban_view': '_onHoverDrop',
         'dragleave .o_documents_kanban_view': '_onHoverLeave',
@@ -54,26 +48,15 @@ var DocumentsKanbanController = KanbanController.extend({
     init: function () {
         this._super.apply(this, arguments);
         this.selectedRecordIDs = [];
-        this.selectedFilterModelIDs = [];
-        this.selectedFilterTagIDs = {};
         this.chatter = null;
         this.documentsInspector = null;
         this.anchorID = null; // used to select records with ctrl/shift keys
-
-        var state = this.model.get(this.handle);
-        this.selectedFolderID = state.folderID;
-        this.availableFolderIDs = state.availableFolderIDs;
-
-        // store in memory the folded state of folders and facets, to keep it
-        // at each reload
-        this.openedFolders = {};
-        this.foldedFacets = {};
     },
     /**
      * @override
      */
     start: function () {
-        this.$('.o_content').addClass('o_documents_kanban d-flex');
+        this.$('.o_content').addClass('o_documents_kanban');
         return this._super.apply(this, arguments);
     },
 
@@ -95,79 +78,24 @@ var DocumentsKanbanController = KanbanController.extend({
         this._updateButtons();
     },
     /**
+     * Override to update the records selection.
+     *
      * @override
-     * @param {object} params
-     * @param {object} options
      */
-    update: function (params, options) {
-        params = params || {};
-        params.folderID = this.selectedFolderID;
-        if (this.selectedFolderID) {
-            utils.set_cookie('documents_last_folder_id', this.selectedFolderID);
-        }
-        params.availableFolderIDs = this.availableFolderIDs;
-        params.selectorDomain = this._buildSelectorDomain();
-        return this._super(params, options);
+    update: function () {
+        var self = this;
+        return this._super.apply(this, arguments).then(function () {
+            var state = self.model.get(self.handle, {raw: true});
+            var recordIDs = _.pluck(state.data, 'res_id');
+            self.selectedRecordIDs = _.intersection(self.selectedRecordIDs, recordIDs);
+            self.renderer.updateSelection(self.selectedRecordIDs);
+        });
     },
 
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------
 
-    /**
-     * Generic method to add a filter from selector panel
-     *
-     * @private
-     * @param {String} selectionProp - instance property's name used to store filter
-     * @param {Integer} id
-     */
-    _addSelectorFilter: function (selectionProp, id) {
-        this[selectionProp] = _.uniq(this[selectionProp].concat(id));
-    },
-    /**
-     * Add a Tag filter from selector panel
-     *
-     * @private
-     * @param {Integer} facetID
-     * @param {Integer} tagID
-     */
-    _addSelectorTagFilter: function (facetID, tagID) {
-        this.selectedFilterTagIDs[facetID] = this.selectedFilterTagIDs[facetID] || [];
-        this.selectedFilterTagIDs[facetID] = _.uniq(this.selectedFilterTagIDs[facetID].concat(tagID));
-    },
-    /**
-     * Reload the controller and reset pagination offset
-     * Typically used when updating a selector's filter
-     *
-     * @private
-     * @returns {Deferred}
-     */
-    _applySelectors: function () {
-        return this.reload({offset: 0});
-    },
-    /**
-     * Construct the extra domain based on selector's filters
-     *
-     * @private
-     * @returns {Array[]}
-     */
-    _buildSelectorDomain: function () {
-        var domain = [];
-        if (this.selectedFolderID) {
-            domain.push(['folder_id', '=', this.selectedFolderID]);
-        } else {
-            domain.push(['folder_id', 'in', this.availableFolderIDs || []]);
-        }
-        _.each(this.selectedFilterTagIDs, function (facetTagIDs) {
-            if (facetTagIDs.length) {
-                domain.push(['tag_ids', 'in', facetTagIDs]);
-            }
-        });
-        if (this.selectedFilterModelIDs.length) {
-            domain.push(['res_model', 'in', this.selectedFilterModelIDs]);
-        }
-        return domain;
-    },
     /**
      * @private
      */
@@ -178,52 +106,6 @@ var DocumentsKanbanController = KanbanController.extend({
             this.chatter.destroy();
             this.chatter = null;
         }
-    },
-    /**
-     * Group tags by facets.
-     *
-     * @private
-     * @param {Object[]} tags - raw list of tags
-     * @returns {Object[]}
-     */
-    _groupTagsByFacets: function (tags) {
-        var groupedFacets = _.reduce(tags, function (memo, tag) {
-            var facetKey = tag.facet_sequence + '-' + tag.facet_name;
-            if (!_.has(memo, facetKey)) {
-                memo[facetKey] = {
-                    id: tag.facet_id,
-                    name: tag.facet_name,
-                    tooltip: tag.facet_tooltip,
-                    tags: [],
-                };
-            }
-            memo[facetKey].tags.push({
-                id: tag.tag_id,
-                name: tag.tag_name,
-                __count: tag.__count
-            });
-            return memo;
-        }, {});
-        return _.values(groupedFacets);
-    },
-    /**
-     * Set indeterminate state for partially selected facets' checkboxes
-     * Note: cannot be done through HTML attributes
-     *
-     * @private
-     */
-    _markPartiallySelectedFacet: function () {
-        this.$('.o_documents_selector_facet').each(function (idx, el) {
-            var $el = $(el);
-            var $input = $el.find('> header input');
-            if (!$input.get(0)) {
-                return;
-            }
-            var $allTags = $el.find('.o_documents_selector_tag input');
-            var $selectedTags = $allTags.filter(':checked');
-            var nbSelectedTags = $selectedTags.length;
-            $input.get(0).indeterminate = nbSelectedTags > 0 && nbSelectedTags < $allTags.length;
-        });
     },
     /**
      * Opens the chatter of the given record.
@@ -263,7 +145,7 @@ var DocumentsKanbanController = KanbanController.extend({
     _processFiles: function (files) {
         var self = this;
         var defs = [];
-        var tagIDs = _.flatten(_.values(this.selectedFilterTagIDs));
+        var tagIDs = this._searchPanel.getSelectedTagIds();
         _.each(files, function (f) {
             var def = $.Deferred();
             defs.push(def);
@@ -282,7 +164,7 @@ var DocumentsKanbanController = KanbanController.extend({
             for (var i=0; i<l.length; i++) {
                 // convert data from "data:application/zip;base64,R0lGODdhAQBADs=" to "R0lGODdhAQBADs="
                 l[i].datas = l[i].datas.split(',',2)[1];
-                l[i].folder_id = self.selectedFolderID;
+                l[i].folder_id = self._searchPanel.getSelectedFolderId();
                 if (tagIDs) {
                     l[i].tag_ids = [[6, 0, tagIDs]];
                 }
@@ -293,26 +175,6 @@ var DocumentsKanbanController = KanbanController.extend({
                 args: [l],
             });
         });
-    },
-    /**
-     * Generic method to remove a filter from selector panel
-     *
-     * @private
-     * @param {string} selectionProp the name of the class attribute which contains the selection
-     * @param {string} id the filter element's identifier
-     */
-    _removeSelectorFilter: function (selectionProp, id) {
-        this[selectionProp] = _.without(this[selectionProp], id);
-    },
-    /**
-     * Remove a Tag filter from selector panel
-     *
-     * @private
-     * @param {integer} facetID
-     * @param {integer} tagID
-     */
-    _removeSelectorTagFilter: function (facetID, tagID) {
-        this.selectedFilterTagIDs[facetID] = _.without(this.selectedFilterTagIDs[facetID], tagID);
     },
     /**
      * Renders and appends the documents inspector sidebar.
@@ -329,92 +191,15 @@ var DocumentsKanbanController = KanbanController.extend({
         var params = {
             recordIDs: this.selectedRecordIDs,
             state: state,
+            folders: this._searchPanel.getFolders(),
+            tags: this._searchPanel.getTags(),
+            folderId: this._searchPanel.getSelectedFolderId(),
         };
         this.documentsInspector = new DocumentsInspector(this, params);
         this.documentsInspector.insertAfter(this.$('.o_kanban_view'));
         if (localState) {
             this.documentsInspector.setLocalState(localState);
         }
-    },
-    /**
-     * Render and append the documents selector sidebar.
-     *
-     * @private
-     * @param {Object} state
-     */
-    _renderDocumentsSelector: function (state) {
-        var self = this;
-        var scrollTop = this.$('.o_documents_selector').scrollTop();
-        this.$('.o_documents_selector').remove();
-
-        var relatedTagsByFacet = this._groupTagsByFacets(state.tags);
-        var params = {
-            facets: _.map(relatedTagsByFacet, function (facet) {
-                facet.tags = _.map(facet.tags, function (tag) {
-                    tag.selected = _.contains(self.selectedFilterTagIDs[facet.id], tag.id);
-                    return tag;
-                });
-                var selectedTags = _.filter(facet.tags, function (tag) {
-                    return tag.selected;
-                });
-                facet.selected = selectedTags.length === facet.tags.length;
-                return facet;
-            }),
-            relatedModels: _.map(state.relatedModels, function (model) {
-                model.selected = _.contains(self.selectedFilterModelIDs, model.res_model);
-                return model;
-            }),
-        };
-        var $documentSelector = $(qweb.render('documents.DocumentsSelector', params));
-        var $folders = $documentSelector.find('.o_documents_selector_folders_container');
-        $folders.append(this._renderFolders(state.folders));
-
-        this.$('.o_content').prepend($documentSelector);
-        if (this.selectedFolderID) {
-            this._markPartiallySelectedFacet();
-        }
-        this._updateFoldableElements();
-
-        this.$('.o_documents_selector').scrollTop(scrollTop || 0);
-    },
-    /**
-     * Render a folder tree, recursively
-     * does not render the "all" folder selector.
-     *
-     * @private
-     * @param {Object[]} folders - the subtree of folders to render
-     * @returns {jQuery}
-     */
-    _renderFolderList: function (folders) {
-        var self = this;
-        var $folders = $('<ul>', {class: 'list-group d-block'});
-        _.each(folders, function (folder) {
-            var $folder = $(qweb.render('documents.DocumentsSelectorFolder', {
-                activeFolderID: self.selectedFolderID,
-                folder: folder,
-            }));
-            if (folder.children.length) {
-                var $children =  self._renderFolderList(folder.children);
-                $children.appendTo($folder);
-            }
-            $folder.appendTo($folders);
-        });
-        return $folders;
-    },
-    /**
-     * Render the folder selector, including the "All" folder selection
-     *
-     * @private
-     * @param {Object[]} folders
-     * @returns {jQuery}
-     */
-    _renderFolders: function (folders) {
-        var $folders = this._renderFolderList(folders);
-        var $allFolder = $(qweb.render('documents.AllFolderSelection', {
-            activeFolderID: this.selectedFolderID
-        }))
-        $allFolder.prependTo($folders);
-        return $folders;
     },
     /**
      * Open the share wizard with the given context, containing either the
@@ -440,38 +225,6 @@ var DocumentsKanbanController = KanbanController.extend({
         }).then(function (result) {
             self.do_action(result);
         });
-    },
-    /**
-     * Toggle the selected attached model
-     *
-     * @private
-     * @param {any} model
-     */
-    _toggleSelectorModel: function (model) {
-        if (_.contains(this.selectedFilterModelIDs, model)) {
-            this._removeSelectorFilter('selectedFilterModelIDs', model);
-        } else {
-            this._addSelectorFilter('selectedFilterModelIDs', model);
-        }
-    },
-    /**
-     * Toggle the selected facet/tag
-     *
-     * @private
-     * @param {string|integer} facet
-     * @param {string|integer} tag
-     */
-    _toggleSelectorTag: function (facet, tag) {
-        var facetID = parseInt(facet, 10);
-        var tagID = parseInt(tag, 10);
-        if (_.isNaN(tagID) && _.isNaN(facetID)) {
-            return;
-        }
-        if (_.contains(this.selectedFilterTagIDs[facetID], tagID)) {
-            this._removeSelectorTagFilter(facetID, tagID);
-        } else {
-            this._addSelectorTagFilter(facetID, tagID);
-        }
     },
     /*
      * Apply rule's actions for the specified attachments.
@@ -507,13 +260,9 @@ var DocumentsKanbanController = KanbanController.extend({
         var self = this;
         return this._super.apply(this, arguments).then(function () {
             var state = self.model.get(self.handle);
-            var recordIDs = _.pluck(state.data, 'res_id');
-            self.selectedRecordIDs = _.intersection(self.selectedRecordIDs, recordIDs);
             return self._updateChatter(state).then(function () {
                 self._renderDocumentsInspector(state);
-                self._renderDocumentsSelector(state);
                 self.anchorID = null;
-                self.renderer.updateSelection(self.selectedRecordIDs);
             });
         });
     },
@@ -525,10 +274,11 @@ var DocumentsKanbanController = KanbanController.extend({
      */
     _updateButtons: function () {
         this._super.apply(this, arguments);
-        this.$buttons.find('.o_documents_kanban_upload').prop('disabled', !this.selectedFolderID);
-        this.$buttons.find('.o_documents_kanban_url').prop('disabled', !this.selectedFolderID);
-        this.$buttons.find('.o_documents_kanban_request').prop('disabled', !this.selectedFolderID);
-        this.$buttons.find('.o_documents_kanban_share').prop('disabled', !this.selectedFolderID);
+        var selectedFolderId = this._searchPanel.getSelectedFolderId();
+        this.$buttons.find('.o_documents_kanban_upload').prop('disabled', !selectedFolderId);
+        this.$buttons.find('.o_documents_kanban_url').prop('disabled', !selectedFolderId);
+        this.$buttons.find('.o_documents_kanban_request').prop('disabled', !selectedFolderId);
+        this.$buttons.find('.o_documents_kanban_share').prop('disabled', !selectedFolderId);
     },
     /**
      * If a chatter is currently open, close it and re-open it with the
@@ -550,29 +300,6 @@ var DocumentsKanbanController = KanbanController.extend({
             this._closeChatter();
         }
         return $.when();
-    },
-    /**
-     * Iterate of o_foldable elements (folders and facets) and set their fold
-     * status (in the UI) according to the internal state
-     *
-     * @private
-     */
-    _updateFoldableElements: function () {
-        var self = this;
-        this.$('.o_foldable').each(function (index, item) {
-            var $item = $(item);
-            var id = $item.data('id');
-            var folded;
-            if ($item.hasClass('o_documents_selector_folder')) {
-                folded = !self.openedFolders[id];
-            } else if ($item.hasClass('o_documents_selector_facet')) {
-                folded = !!self.foldedFacets[id];
-            }
-            var $caret = $item.find('.o_toggle_fold');
-            $caret.toggleClass('fa-caret-down', !folded);
-            $caret.toggleClass('fa-caret-left', folded);
-            $item.find('.list-group:first').toggleClass('o_folded', folded);
-        });
     },
 
     //--------------------------------------------------------------------------
@@ -600,61 +327,6 @@ var DocumentsKanbanController = KanbanController.extend({
         this.model.toggleActive(recordIDs, active, this.handle).then(function () {
             self.update({}, {reload: false}); // the reload is done by toggleActive
         });
-    },
-    /**
-     * React to facets selector to toggle child-tags filters.
-     *
-     * @private
-     * @param {MouseEvent} ev
-     */
-    _onCheckSelectorFacet: function (ev) {
-        ev.preventDefault();
-        var $facet = $(ev.target).closest('.o_documents_selector_facet');
-        var facetID = $facet.data().id;
-        var $tags = $facet.find('.o_documents_selector_tag');
-        var tagIDs = _.compact(_.map($tags, function (tag) {
-            return parseInt($(tag).data().id, 10);
-        }));
-        if (tagIDs.length) {
-            if (ev.target.checked) {
-                _.each(tagIDs, _.partial(this._addSelectorTagFilter, facetID).bind(this));
-            } else {
-                _.each(tagIDs, _.partial(this._removeSelectorTagFilter, facetID).bind(this));
-            }
-            this._applySelectors();
-        }
-    },
-    /**
-     * React to attached model selector to filter the records.
-     *
-     * @private
-     * @param {MouseEvent} ev
-     */
-    _onCheckSelectorModel: function (ev) {
-        ev.preventDefault();
-        var $item = $(ev.target).closest('.o_documents_selector_model');
-        var data = $item.data();
-        if (_.has(data, 'id')) {
-            this._toggleSelectorModel(data.id);
-            this._applySelectors();
-        }
-    },
-    /**
-     * React to tags selector to filter the records.
-     *
-     * @private
-     * @param {MouseEvent} ev
-     */
-    _onCheckSelectorTag: function (ev) {
-        ev.preventDefault();
-        var $tag = $(ev.target).closest('.o_documents_selector_tag');
-        var $facet = $tag.closest('.o_documents_selector_facet');
-        var data = $tag.data();
-        if (_.has(data, 'id')) {
-            this._toggleSelectorTag($facet.data().id, data.id);
-            this._markPartiallySelectedFacet();
-            this._applySelectors();
-        }
     },
     /**
      * @private
@@ -931,11 +603,10 @@ var DocumentsKanbanController = KanbanController.extend({
     _onRequestFile: function (ev) {
         ev.preventDefault();
         var self = this;
-        var tagIDs = _.flatten(_.values(this.selectedFilterTagIDs));
         this.do_action('documents.action_request_form', {
             additional_context: {
-                default_folder_id: this.selectedFolderID,
-                default_tag_ids: [[6, 0, tagIDs]],
+                default_folder_id: this._searchPanel.getSelectedFolderId(),
+                default_tag_ids: [[6, 0, this._searchPanel.getSelectedTagIds()]],
             },
             on_close: function () {
                 self.reload();
@@ -953,20 +624,6 @@ var DocumentsKanbanController = KanbanController.extend({
         this.model
             .saveMulti(ev.data.dataPointIDs, ev.data.changes, this.handle)
             .then(this.update.bind(this, {}, {}));
-    },
-    /**
-     * React to folder selector to filter the records.
-     *
-     * @private
-     * @param {MouseEvent} ev
-     */
-    _onSelectFolder: function (ev) {
-        ev.preventDefault();
-        var $item = $(ev.currentTarget).closest('.o_documents_selector_folder');
-        var data = $item.data();
-        this.selectedFilterTagIDs = {}; // reset the tags as they depend on the current folder
-        this.selectedFolderID = 'id' in data ? data.id : false;
-        this._applySelectors();
     },
     /**
      * React to records selection changes to update the DocumentInspector with
@@ -992,11 +649,10 @@ var DocumentsKanbanController = KanbanController.extend({
      */
     _onShareDomain: function () {
         var state = this.model.get(this.handle, {raw: true});
-        var tagIDs = _.flatten(_.values(this.selectedFilterTagIDs));
         this._share({
             domain: state.domain,
-            folder_id: this.selectedFolderID,
-            tag_ids: [[6, 0, tagIDs]],
+            folder_id: this._searchPanel.getSelectedFolderId(),
+            tag_ids: [[6, 0, this._searchPanel.getSelectedTagIds()]],
             type: 'domain',
         });
     },
@@ -1010,7 +666,7 @@ var DocumentsKanbanController = KanbanController.extend({
         ev.stopPropagation();
         this._share({
             document_ids: [[6, 0, ev.data.resIDs]],
-            folder_id: this.selectedFolderID,
+            folder_id: this._searchPanel.getSelectedFolderId(),
             type: 'ids',
         });
     },
@@ -1028,28 +684,6 @@ var DocumentsKanbanController = KanbanController.extend({
         .then(function () {
             self.reload();
         });
-    },
-    /**
-     * Toggle subtree's visibility
-     *
-     * @private
-     * @param {MouseEvent} ev
-     */
-    _onToggleFold: function (ev) {
-        ev.preventDefault();
-        ev.stopPropagation();
-        var $target = $(ev.currentTarget);
-        if (!$target.hasClass('o_foldable')) {
-            $target = $target.closest('.o_foldable');
-        }
-        var folded = !$target.find('.list-group:first').hasClass('o_folded');
-        var id = $target.data('id');
-        if ($target.hasClass('o_documents_selector_folder')) {
-            this.openedFolders[id] = !folded;
-        } else if ($target.hasClass('o_documents_selector_facet')) {
-            this.foldedFacets[id] = folded;
-        }
-        this._updateFoldableElements();
     },
     /**
      * Apply rule's actions for the given records in a mutex, and reload
@@ -1083,11 +717,10 @@ var DocumentsKanbanController = KanbanController.extend({
     _onUploadFromUrl: function (ev) {
         ev.preventDefault();
         var self = this;
-        var tagIDs = _.flatten(_.values(this.selectedFilterTagIDs));
         this.do_action('documents.action_url_form', {
             additional_context: {
-                default_folder_id: this.selectedFolderID,
-                default_tag_ids: [[6, 0, tagIDs]],
+                default_folder_id: this._searchPanel.getSelectedFolderId(),
+                default_tag_ids: [[6, 0, this._searchPanel.getSelectedTagIds()]],
             },
             on_close: function () {
                 self.reload();

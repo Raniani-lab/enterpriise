@@ -41,24 +41,21 @@ class Tags(models.Model):
     ]
 
     @api.model
-    def group_by_documents(self, folder_id, domain=None):
+    def _get_tags(self, domain, folder_id):
         """
         fetches the tag and facet ids for the document selector (custom left sidebar of the kanban view)
         """
-        if not domain:
-            domain = []
-
-        documents = self.env['documents.document'].search(expression.AND([domain, [('folder_id', '=', folder_id)]]))
+        documents = self.env['documents.document'].search(domain)
         folders = self.env['documents.folder'].search([('parent_folder_id', 'parent_of', folder_id)])
         query = """
-            SELECT  facet.sequence AS facet_sequence,
-                    facet.name AS facet_name,
-                    facet.id AS facet_id,
-                    facet.tooltip AS facet_tooltip,
-                    documents_tag.sequence AS tag_sequence,
-                    documents_tag.name AS tag_name,
-                    documents_tag.id AS tag_id,
-                    COUNT(rel.documents_document_id) AS __count
+            SELECT  facet.sequence AS group_sequence,
+                    facet.name AS group_name,
+                    facet.id AS group_id,
+                    facet.tooltip AS group_tooltip,
+                    documents_tag.sequence AS sequence,
+                    documents_tag.name AS name,
+                    documents_tag.id AS id,
+                    COUNT(rel.documents_document_id) AS count
             FROM documents_tag
                 JOIN documents_facet facet ON documents_tag.facet_id = facet.id
                     AND facet.folder_id IN %s

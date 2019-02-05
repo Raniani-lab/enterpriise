@@ -125,20 +125,41 @@ class Document(models.Model):
             elif record.url:
                 record.type = 'url'
 
-    def get_model_names(self, domain):
+    def _get_models(self, domain):
         """
-        Called by the front-end to get the names of the models on which the attachments are attached.
+        Return the names of the models to which the attachments are attached.
 
         :param domain: the domain of the read_group on documents.
-        :return: the read_group result with an additional res_model_name key.
+        :return: a list of model data, the latter being a dict with the keys
+            'id' (technical name),
+            'name' (display name) and
+            'count' (how many attachments with that domain).
         """
-        results = self.read_group(domain, ['res_model'], ['res_model'], lazy=True)
-        for result in results:
-            if result.get('res_model'):
-                model = self.env['ir.model'].name_search(result['res_model'], limit=1)
-                if model:
-                    result['res_model_name'] = model[0][1]
-        return results
+        not_a_file = []
+        not_attached = []
+        models = []
+        groups = self.read_group(domain, ['res_model'], ['res_model'], lazy=True)
+        for group in groups:
+            res_model = group['res_model']
+            if not res_model:
+                not_a_file.append({
+                    'id': res_model,
+                    'name': _('Not a file'),
+                    'count': group['res_model_count'],
+                })
+            elif res_model == 'documents.document':
+                not_attached.append({
+                    'id': res_model,
+                    'name': _('Not attached'),
+                    'count': group['res_model_count'],
+                })
+            else:
+                models.append({
+                    'id': res_model,
+                    'name': self.env['ir.model']._get(res_model).display_name,
+                    'count': group['res_model_count'],
+                })
+        return sorted(models, key=lambda m: m['name']) + not_attached + not_a_file
 
     @api.depends('res_model')
     def _compute_res_model_name(self):
@@ -338,3 +359,49 @@ class Document(models.Model):
             for attachment in attachment_ids:
                 document = self.copy()
                 document.write({'attachment_id': attachment.id})
+
+    @api.model
+    def search_panel_select_range(self, field_name):
+        if field_name == 'folder_id':
+            fields = ['display_name', 'description', 'parent_folder_id']
+            return {
+                'parent_field': 'parent_folder_id',
+                'values': self.env['documents.folder'].search_read([], fields),
+            }
+        return super(Document, self).search_panel_select_range(field_name)
+
+    @api.model
+    def search_panel_select_multi_range(self, field_name, **kwargs):
+        search_domain = kwargs.get('search_domain', [])
+        category_domain = kwargs.get('category_domain', [])
+        filter_domain = kwargs.get('filter_domain', [])
+
+        if field_name == 'tag_ids':
+            folder_id = category_domain[0][2] if len(category_domain) else []
+            if folder_id:
+                domain = expression.AND([
+                    search_domain, category_domain, filter_domain,
+                    [(field_name, '!=', False)],
+                ])
+                return self.env['documents.tag']._get_tags(domain, folder_id)
+            else:
+                return []
+
+        elif field_name == 'res_model':
+            domain = expression.AND([search_domain, category_domain])
+            model_values = self._get_models(domain)
+
+            if filter_domain:
+                # fetch new counters
+                domain = expression.AND([search_domain, category_domain, filter_domain])
+                model_count = {
+                    model['id']: model['count']
+                    for model in self._get_models(domain)
+                }
+                # update result with new counters
+                for model in model_values:
+                    model['count'] = model_count.get(model['id'], 0)
+
+            return model_values
+
+        return super(Document, self).search_panel_select_multi_range(field_name, **kwargs)

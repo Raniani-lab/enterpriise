@@ -1,4 +1,3 @@
-$o-dms-selector-width: 220px;
 $o-dms-inspector-width: 320px;
 $o-dms-chatter-width: 450px;
 
@@ -52,91 +51,9 @@ $o-dms-inspector-bg-darker: #1A1A1A;
         color: $o-dms-color-action;
     }
 
-    .o_documents_selector label, .o_kanban_record, .o_inspector_tag_remove, .o_inspector_model, .o_inspector_open_chatter, .o_document_close_chatter {
+    .o_kanban_record, .o_inspector_tag_remove, .o_inspector_model, .o_inspector_open_chatter, .o_document_close_chatter {
         cursor: pointer;
         user-select: none;
-    }
-
-    .o_documents_selector {
-        flex: 0 0 $o-dms-selector-width;
-        padding: $o-dms-p-small $o-dms-p-small $o-dms-p*2 $o-dms-p;
-
-        .o_foldable {
-            .o_toggle_fold {
-                padding: $o-dms-p-tiny;
-                @include o-hover-text-color($o-main-text-color, $headings-color);
-            }
-            .o_folded {
-                display: none !important;
-            }
-        }
-
-        .o_documents_selector_header {
-            padding: $o-dms-p-small 0;
-        }
-
-        .list-group-item {
-            padding: 0 0 $o-dms-p-small 0;
-
-            .list-group-item {
-                padding: 0 0 0 $custom-control-gutter;
-                margin-bottom: $o-dms-p-tiny*0.5;
-
-                &:first-child {
-                    margin-top: $o-dms-p-tiny*0.5;
-                }
-            }
-
-            span.o_docs_label_title {
-                color: $headings-color;
-                @include o-text-overflow(inline-block, calc(100% - 22px));
-            }
-
-            header.active {
-                background-color: $list-group-action-active-bg;
-            }
-        }
-
-        .o_documents_selector_folders {
-            .o_documents_selector_folder header {
-                margin-left: -$o-dms-p-tiny;
-                padding-left: $o-dms-p-tiny;
-            }
-
-            .o_documents_selector_folder .o_documents_selector_folder {
-                position: relative;
-                padding-left: $o-dms-p;
-                padding-bottom: $o-dms-p-tiny;
-                margin-bottom: 0;
-
-
-                &:before, &:after {
-                    @include o-position-absolute(0, $left: $o-dms-p-tiny )
-                    @include size(1px, 100%);
-                    background: $gray-500;
-                    content: '';
-                }
-
-                &:after {
-                    top: 10px;
-                    @include size(8px, 1px);
-                }
-
-                &:last-child {
-                    &:before {
-                        height: 11px;
-                    }
-
-                    &:after {
-                        top: 11px;
-                    }
-                }
-            }
-        }
-
-        .o_documents_selector_count {
-            font-size: 12px;
-        }
     }
 
     .o_documents_kanban_view.o_kanban_view {

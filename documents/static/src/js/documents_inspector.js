@@ -51,7 +51,7 @@ var DocumentsInspector = Widget.extend({
 
         this.nbDocuments = params.state.count;
         this.size = params.state.size;
-        this.currentFolder = _.findWhere(params.state.folders, {id: params.state.folderID});
+        this.currentFolder = _.findWhere(params.folders, {id: params.folderId});
 
         this.records = [];
         _.each(params.recordIDs, function (resID) {
@@ -62,8 +62,7 @@ var DocumentsInspector = Widget.extend({
                 }));
             }
         });
-
-        this.tags = params.state.tags;
+        this.tags = params.tags;
         var tagIDsByRecord = _.map(this.records, function (record) {
             return record.data.tag_ids.res_ids;
         });
@@ -72,7 +71,7 @@ var DocumentsInspector = Widget.extend({
         var ruleIDsByRecord = _.map(this.records, function (record) {
             return record.data.available_rule_ids.res_ids;
         });
-        var commonRuleIDs =_.intersection.apply(_, ruleIDsByRecord);
+        var commonRuleIDs = _.intersection.apply(_, ruleIDsByRecord);
         var record = this.records[0];
         this.rules = _.map(commonRuleIDs, function (ruleID) {
             var rule = _.findWhere(record.data.available_rule_ids.data, {
@@ -255,7 +254,7 @@ var DocumentsInspector = Widget.extend({
 
         // render common tags
         _.each(this.commonTagIDs, function (tagID) {
-            var tag = _.findWhere(self.tags, {tag_id: tagID});
+            var tag = _.findWhere(self.tags, {id: tagID});
             if (tag) {
                 // hide unknown tags (this may happen if a document with tags
                 // is moved to another folder, but we keep those tags in case
@@ -324,10 +323,10 @@ var DocumentsInspector = Widget.extend({
         var tags = [];
         _.each(this.tags, function (tag) {
             // don't search amongst already linked tags
-            if (!_.contains(self.commonTagIDs, tag.tag_id)) {
+            if (!_.contains(self.commonTagIDs, tag.id)) {
                 tags.push({
-                    id: tag.tag_id,
-                    label: tag.facet_name + ' > ' + tag.tag_name,
+                    id: tag.id,
+                    label: tag.group_name + ' > ' + tag.name,
                 });
             }
         });

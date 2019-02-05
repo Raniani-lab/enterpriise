@@ -4,6 +4,7 @@ odoo.define('documents.DocumentsKanbanView', function (require) {
 var DocumentsKanbanController = require('documents.DocumentsKanbanController');
 var DocumentsKanbanModel = require('documents.DocumentsKanbanModel');
 var DocumentsKanbanRenderer = require('documents.DocumentsKanbanRenderer');
+var DocumentsSearchPanel = require('documents.DocumentsSearchPanel');
 
 var config = require('web.config');
 var core = require('web.core');
@@ -23,6 +24,7 @@ var DocumentsKanbanView = KanbanView.extend({
         Controller: DocumentsKanbanController,
         Model: DocumentsKanbanModel,
         Renderer: DocumentsKanbanRenderer,
+        SearchPanel: DocumentsSearchPanel,
     }),
     display_name: _lt('Attachments Kanban'),
     searchMenuTypes: ['filter', 'favorite'],

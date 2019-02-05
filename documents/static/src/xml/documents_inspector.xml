@@ -127,9 +127,9 @@
 
 <!-- Document tags template -->
 <t t-name="documents.DocumentsInspector.tag">
-    <div class="o_inspector_tag o_inspector_trigger_hover_target" t-att-data-id="tag_id">
-        <span class="o_tag_prefix"><t t-esc="facet_name"/> &gt;</span>
-        <t t-esc="tag_name"/>
+    <div class="o_inspector_tag o_inspector_trigger_hover_target" t-att-data-id="id">
+        <span class="o_tag_prefix"><t t-esc="group_name"/> &gt;</span>
+        <t t-esc="name"/>
         <span class="o_inspector_tag_remove pull-right o_inspector_trigger_hover fa-fw">&#215;</span>
     </div>
 </t>

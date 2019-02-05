@@ -123,7 +123,12 @@ class serviceClientMock2(serviceClientMock):
 class BanxicoTest(TransactionCase):
     def setUp(self):
         super(BanxicoTest, self).setUp()
-        self.company = self.env.user.company_id
+        self.company = self.env['res.company'].create({
+            'name': 'Banxico Test Company',
+            'country_id': self.env.ref('base.us').id,
+            'currency_id': self.env.ref('base.USD').id,
+        })
+        self.env.user.company_id = self.company
         self.company.currency_provider = 'banxico'
         self.user_root = self.env.ref('base.user_root')
         self.mxn = self.env.ref('base.MXN')

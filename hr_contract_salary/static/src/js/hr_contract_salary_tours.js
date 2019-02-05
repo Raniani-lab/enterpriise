@@ -238,7 +238,7 @@ Tour.register('hr_contract_salary_tour', {
             run: function () {
                 var simulation_link = $(".o_mail_thread .o_thread_message:eq(0) a")[0].href;
                 // Retrieve the link without the origin to avoid
-                // mismatch between localhost:8069 and 127.0.0.1:8069 
+                // mismatch between localhost:8069 and 127.0.0.1:8069
                 // when running the tour with chrome headless
                 var regex = '/salary_package/simulation/.*';
                 var url = simulation_link.match(regex)[0];
@@ -369,19 +369,9 @@ Tour.register('hr_contract_salary_tour', {
             run: 'click',
         },
         {
-            content: "Select automatic signature",
-            trigger: '.o_portal_sign_auto_button',
-            run: 'click',
-        },
-        {
             content: "Adopt and Sign",
             trigger: 'footer.modal-footer button.btn-primary:enabled',
-            run: function (actions) {
-                // the jsSignature library draws the signature in a setTimeout,
-                // and we have to wait for it to be drawn before validating,
-                // otherwise it would consider that the signature is still empty
-                setTimeout(actions.auto.bind(actions), 10);
-            },
+            run: 'click',
         },
         {
             content: "Wait modal closed",

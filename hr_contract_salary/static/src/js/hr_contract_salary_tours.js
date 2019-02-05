@@ -370,7 +370,7 @@ Tour.register('hr_contract_salary_tour', {
         },
         {
             content: "Select automatic signature",
-            trigger: '.o_sign_mode[data-mode=auto]',
+            trigger: '.o_portal_sign_auto_button',
             run: 'click',
         },
         {

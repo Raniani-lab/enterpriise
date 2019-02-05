@@ -57,8 +57,8 @@ class AccountReconciliation(models.AbstractModel):
         return batch_payments
 
     @api.model
-    def get_bank_statement_data(self, bank_statement_ids):
+    def get_bank_statement_data(self, bank_statement_line_ids, search_str=False):
         """ Add batch payments data to the dict returned """
-        res = super(AccountReconciliation, self).get_bank_statement_data(bank_statement_ids)
-        res.update({'batch_payments': self.get_batch_payments_data(bank_statement_ids)})
+        res = super(AccountReconciliation, self).get_bank_statement_data(bank_statement_line_ids, search_str)
+        res.update({'batch_payments': self.get_batch_payments_data(bank_statement_line_ids)})
         return res

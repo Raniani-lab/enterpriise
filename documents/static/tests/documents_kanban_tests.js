@@ -1818,6 +1818,7 @@ QUnit.module('DocumentsKanbanView', {
                             default_res_id: 1,
                             default_res_model: 'documents.document'
                         },
+                        name: "Schedule Activity",
                         res_id: false,
                         res_model: 'mail.activity',
                         target: 'new',
@@ -1846,7 +1847,7 @@ QUnit.module('DocumentsKanbanView', {
         kanban.destroy();
     });
 
-    QUnit.test('document chatter: render the activity button', function (assert) {
+    QUnit.test('document chatter: render the activity button 2', function (assert) {
         assert.expect(8);
 
         this.data['mail.activity'].records = [{

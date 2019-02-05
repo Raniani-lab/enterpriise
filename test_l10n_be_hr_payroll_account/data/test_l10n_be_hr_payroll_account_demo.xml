@@ -26,4 +26,316 @@
         <value eval="1"/>
         <value eval="{'company_id': ref('base.main_company')}"/>
     </function>
+    
+    <!-- Individual account demo -->
+
+    <record id="hr_payslip_demo_lap_january" model="hr.payslip">
+        <field name="name" eval="'Laurie Poiret (lap) ' + (DateTime.today() + relativedelta(years=-1, month=1)).strftime('%B %Y')"/>
+        <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
+        <field name="date_from" eval="(DateTime.today() + relativedelta(years=-1, month=1, day=1))"/>
+        <field name="date_to" eval="(DateTime.today() + relativedelta(years=-1, month=2, day=1, days=-1))"/>
+        <field name="employee_id" ref="hr_contract_salary.hr_employee_laurie_poiret"/>
+        <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_salary_structure_employee"/>
+        <field name="number">SLIP661</field>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
+    </record>
+
+    <record id="hr_line_lap_january_demo1" model="hr.payslip.worked_days">
+        <field name="name">Normal working days</field>
+        <field name="code">WORK100</field>
+        <field name="number_of_days">18</field>
+        <field name="number_of_hours">144</field>
+        <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
+        <field name="payslip_id" ref="hr_payslip_demo_lap_january"/>
+    </record>
+
+    <record id="hr_line_lap_january_demo2" model="hr.payslip.worked_days">
+        <field name="name">Legal leave</field>
+        <field name="code">LEAVE100</field>
+        <field name="number_of_days">4</field>
+        <field name="number_of_hours">32</field>
+        <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
+        <field name="payslip_id" ref="hr_payslip_demo_lap_january"/>
+    </record>
+
+    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_lap_january')]]"/>
+
+    <record id="hr_payslip_demo_lap_february" model="hr.payslip">
+        <field name="name" eval="'Laurie Poiret (lap) ' + (DateTime.today() + relativedelta(years=-1, month=2)).strftime('%B %Y')"/>
+        <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
+        <field name="date_from" eval="(DateTime.today() + relativedelta(years=-1, month=2, day=1))"/>
+        <field name="date_to" eval="(DateTime.today() + relativedelta(years=-1, month=3, day=1, days=-1))"/>
+        <field name="employee_id" ref="hr_contract_salary.hr_employee_laurie_poiret"/>
+        <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_salary_structure_employee"/>
+        <field name="number">SLIP662</field>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
+    </record>
+
+    <record id="hr_line_lap_february_demo1" model="hr.payslip.worked_days">
+        <field name="name">Normal working days</field>
+        <field name="code">WORK100</field>
+        <field name="number_of_days">22</field>
+        <field name="number_of_hours">176</field>
+        <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
+        <field name="payslip_id" ref="hr_payslip_demo_lap_february"/>
+    </record>
+
+    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_lap_february')]]"/>
+
+    <record id="hr_payslip_demo_lap_march" model="hr.payslip">
+        <field name="name" eval="'Laurie Poiret (lap) ' + (DateTime.today() + relativedelta(years=-1, month=3)).strftime('%B %Y')"/>
+        <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
+        <field name="date_from" eval="(DateTime.today() + relativedelta(years=-1, month=3, day=1))"/>
+        <field name="date_to" eval="(DateTime.today() + relativedelta(years=-1, month=4, day=1, days=-1))"/>
+        <field name="employee_id" ref="hr_contract_salary.hr_employee_laurie_poiret"/>
+        <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_salary_structure_employee"/>
+        <field name="number">SLIP663</field>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
+    </record>
+
+    <record id="hr_line_lap_march_demo1" model="hr.payslip.worked_days">
+        <field name="name">Normal working days</field>
+        <field name="code">WORK100</field>
+        <field name="number_of_days">22</field>
+        <field name="number_of_hours">176</field>
+        <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
+        <field name="payslip_id" ref="hr_payslip_demo_lap_march"/>
+    </record>
+
+    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_lap_march')]]"/>
+
+    <record id="hr_payslip_demo_lap_april" model="hr.payslip">
+        <field name="name" eval="'Laurie Poiret (lap) ' + (DateTime.today() + relativedelta(years=-1, month=4)).strftime('%B %Y')"/>
+        <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
+        <field name="date_from" eval="(DateTime.today() + relativedelta(years=-1, month=4, day=1))"/>
+        <field name="date_to" eval="(DateTime.today() + relativedelta(years=-1, month=5, day=1, days=-1))"/>
+        <field name="employee_id" ref="hr_contract_salary.hr_employee_laurie_poiret"/>
+        <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_salary_structure_employee"/>
+        <field name="number">SLIP664</field>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
+    </record>
+
+    <record id="hr_line_lap_april_demo1" model="hr.payslip.worked_days">
+        <field name="name">Normal working days</field>
+        <field name="code">WORK100</field>
+        <field name="number_of_days">22</field>
+        <field name="number_of_hours">176</field>
+        <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
+        <field name="payslip_id" ref="hr_payslip_demo_lap_april"/>
+    </record>
+
+    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_lap_april')]]"/>
+
+    <record id="hr_payslip_demo_lap_may" model="hr.payslip">
+        <field name="name" eval="'Laurie Poiret (lap) ' + (DateTime.today() + relativedelta(years=-1, month=5)).strftime('%B %Y')"/>
+        <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
+        <field name="date_from" eval="(DateTime.today() + relativedelta(years=-1, month=5, day=1))"/>
+        <field name="date_to" eval="(DateTime.today() + relativedelta(years=-1, month=6, day=1, days=-1))"/>
+        <field name="employee_id" ref="hr_contract_salary.hr_employee_laurie_poiret"/>
+        <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_salary_structure_employee"/>
+        <field name="number">SLIP665</field>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
+    </record>
+
+    <record id="hr_line_lap_may_demo1" model="hr.payslip.worked_days">
+        <field name="name">Normal working days</field>
+        <field name="code">WORK100</field>
+        <field name="number_of_days">22</field>
+        <field name="number_of_hours">176</field>
+        <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
+        <field name="payslip_id" ref="hr_payslip_demo_lap_may"/>
+    </record>
+
+    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_lap_may')]]"/>
+
+    <record id="hr_payslip_demo_lap_june" model="hr.payslip">
+        <field name="name" eval="'Laurie Poiret (lap) ' + (DateTime.today() + relativedelta(years=-1, month=6)).strftime('%B %Y')"/>
+        <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
+        <field name="date_from" eval="(DateTime.today() + relativedelta(years=-1, month=6, day=1))"/>
+        <field name="date_to" eval="(DateTime.today() + relativedelta(years=-1, month=7, day=1, days=-1))"/>
+        <field name="employee_id" ref="hr_contract_salary.hr_employee_laurie_poiret"/>
+        <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_salary_structure_employee"/>
+        <field name="number">SLIP666</field>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
+    </record>
+
+    <record id="hr_line_lap_june_demo1" model="hr.payslip.worked_days">
+        <field name="name">Normal working days</field>
+        <field name="code">WORK100</field>
+        <field name="number_of_days">22</field>
+        <field name="number_of_hours">176</field>
+        <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
+        <field name="payslip_id" ref="hr_payslip_demo_lap_june"/>
+    </record>
+
+    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_lap_june')]]"/>
+
+    <record id="hr_payslip_demo_lap_july" model="hr.payslip">
+        <field name="name" eval="'Laurie Poiret (lap) ' + (DateTime.today() + relativedelta(years=-1, month=7)).strftime('%B %Y')"/>
+        <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
+        <field name="date_from" eval="(DateTime.today() + relativedelta(years=-1, month=7, day=1))"/>
+        <field name="date_to" eval="(DateTime.today() + relativedelta(years=-1, month=8, day=1, days=-1))"/>
+        <field name="employee_id" ref="hr_contract_salary.hr_employee_laurie_poiret"/>
+        <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_salary_structure_employee"/>
+        <field name="number">SLIP667</field>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
+    </record>
+
+    <record id="hr_line_lap_july_demo1" model="hr.payslip.worked_days">
+        <field name="name">Normal working days</field>
+        <field name="code">WORK100</field>
+        <field name="number_of_days">22</field>
+        <field name="number_of_hours">176</field>
+        <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
+        <field name="payslip_id" ref="hr_payslip_demo_lap_july"/>
+    </record>
+
+    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_lap_july')]]"/>
+
+    <record id="hr_payslip_demo_lap_august" model="hr.payslip">
+        <field name="name" eval="'Laurie Poiret (lap) ' + (DateTime.today() + relativedelta(years=-1, month=8)).strftime('%B %Y')"/>
+        <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
+        <field name="date_from" eval="(DateTime.today() + relativedelta(years=-1, month=8, day=1))"/>
+        <field name="date_to" eval="(DateTime.today() + relativedelta(years=-1, month=9, day=1, days=-1))"/>
+        <field name="employee_id" ref="hr_contract_salary.hr_employee_laurie_poiret"/>
+        <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_salary_structure_employee"/>
+        <field name="number">SLIP668</field>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
+    </record>
+
+    <record id="hr_line_lap_august_demo1" model="hr.payslip.worked_days">
+        <field name="name">Normal working days</field>
+        <field name="code">WORK100</field>
+        <field name="number_of_days">0</field>
+        <field name="number_of_hours">0</field>
+        <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
+        <field name="payslip_id" ref="hr_payslip_demo_lap_august"/>
+    </record>
+
+    <record id="hr_line_lap_august_demo2" model="hr.payslip.worked_days">
+        <field name="name">Legal leave</field>
+        <field name="code">LEAVE100</field>
+        <field name="number_of_days">22</field>
+        <field name="number_of_hours">176</field>
+        <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
+        <field name="payslip_id" ref="hr_payslip_demo_lap_august"/>
+    </record>
+
+    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_lap_august')]]"/>
+
+    <record id="hr_payslip_demo_lap_september" model="hr.payslip">
+        <field name="name" eval="'Laurie Poiret (lap) ' + (DateTime.today() + relativedelta(years=-1, month=9)).strftime('%B %Y')"/>
+        <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
+        <field name="date_from" eval="(DateTime.today() + relativedelta(years=-1, month=9, day=1))"/>
+        <field name="date_to" eval="(DateTime.today() + relativedelta(years=-1, month=10, day=1, days=-1))"/>
+        <field name="employee_id" ref="hr_contract_salary.hr_employee_laurie_poiret"/>
+        <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_salary_structure_employee"/>
+        <field name="number">SLIP669</field>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
+    </record>
+
+    <record id="hr_line_lap_september_demo1" model="hr.payslip.worked_days">
+        <field name="name">Normal working days</field>
+        <field name="code">WORK100</field>
+        <field name="number_of_days">22</field>
+        <field name="number_of_hours">176</field>
+        <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
+        <field name="payslip_id" ref="hr_payslip_demo_lap_september"/>
+    </record>
+
+    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_lap_september')]]"/>
+
+    <record id="hr_payslip_demo_lap_october" model="hr.payslip">
+        <field name="name" eval="'Laurie Poiret (lap) ' + (DateTime.today() + relativedelta(years=-1, month=10)).strftime('%B %Y')"/>
+        <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
+        <field name="date_from" eval="(DateTime.today() + relativedelta(years=-1, month=10, day=1))"/>
+        <field name="date_to" eval="(DateTime.today() + relativedelta(years=-1, month=11, day=1, days=-1))"/>
+        <field name="employee_id" ref="hr_contract_salary.hr_employee_laurie_poiret"/>
+        <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_salary_structure_employee"/>
+        <field name="number">SLIP670</field>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
+    </record>
+
+    <record id="hr_line_lap_october_demo1" model="hr.payslip.worked_days">
+        <field name="name">Normal working days</field>
+        <field name="code">WORK100</field>
+        <field name="number_of_days">22</field>
+        <field name="number_of_hours">176</field>
+        <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
+        <field name="payslip_id" ref="hr_payslip_demo_lap_october"/>
+    </record>
+
+    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_lap_october')]]"/>
+
+    <record id="hr_payslip_demo_lap_november" model="hr.payslip">
+        <field name="name" eval="'Laurie Poiret (lap) ' + (DateTime.today() + relativedelta(years=-1, month=11)).strftime('%B %Y')"/>
+        <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
+        <field name="date_from" eval="(DateTime.today() + relativedelta(years=-1, month=11, day=1))"/>
+        <field name="date_to" eval="(DateTime.today() + relativedelta(years=-1, month=12, day=1, days=-1))"/>
+        <field name="employee_id" ref="hr_contract_salary.hr_employee_laurie_poiret"/>
+        <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_salary_structure_employee"/>
+        <field name="number">SLIP671</field>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
+    </record>
+
+    <record id="hr_line_lap_november_demo1" model="hr.payslip.worked_days">
+        <field name="name">Normal working days</field>
+        <field name="code">WORK100</field>
+        <field name="number_of_days">22</field>
+        <field name="number_of_hours">176</field>
+        <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
+        <field name="payslip_id" ref="hr_payslip_demo_lap_november"/>
+    </record>
+
+    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_lap_november')]]"/>
+
+    <record id="hr_payslip_demo_lap_december" model="hr.payslip">
+        <field name="name" eval="'Laurie Poiret (lap) ' + (DateTime.today() + relativedelta(years=-1, month=12)).strftime('%B %Y')"/>
+        <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
+        <field name="date_from" eval="(DateTime.today() + relativedelta(years=-1, month=12, day=1))"/>
+        <field name="date_to" eval="(DateTime.today() + relativedelta(years=0, month=1, day=1, days=-1))"/>
+        <field name="employee_id" ref="hr_contract_salary.hr_employee_laurie_poiret"/>
+        <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_salary_structure_employee"/>
+        <field name="number">SLIP672</field>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
+    </record>
+
+    <record id="hr_line_lap_december_demo1" model="hr.payslip.worked_days">
+        <field name="name">Normal working days</field>
+        <field name="code">WORK100</field>
+        <field name="number_of_days">22</field>
+        <field name="number_of_hours">176</field>
+        <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
+        <field name="payslip_id" ref="hr_payslip_demo_lap_december"/>
+    </record>
+
+    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_lap_december')]]"/>
+
+    <record id="hr_payslip_demo_lap_13th_month" model="hr.payslip">
+        <field name="name" eval="'Laurie Poiret (lap) - 13th Month - ' + (DateTime.today() + relativedelta(years=-1, month=12)).strftime('%B %Y')"/>
+        <field name="contract_id" ref="hr_contract_salary.hr_contract_cdi_laurie_poiret"/>
+        <field name="date_from" eval="(DateTime.today() + relativedelta(years=-1, month=12, day=1))"/>
+        <field name="date_to" eval="(DateTime.today() + relativedelta(years=0, month=1, day=1, days=-1))"/>
+        <field name="employee_id" ref="hr_contract_salary.hr_employee_laurie_poiret"/>
+        <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_salary_structure_end_of_year_bonus"/>
+        <field name="number">SLIP674</field>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="journal_id" model="account.journal" search="[('type', '=', 'general')]"/>
+    </record>
+
+    <function model="hr.payslip" name="action_payslip_done" eval="[[ref('hr_payslip_demo_lap_13th_month')]]"/>
+
+
 </odoo>

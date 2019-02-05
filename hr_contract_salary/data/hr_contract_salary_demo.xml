@@ -230,9 +230,11 @@
         <field name="sign_template_id" ref="sign_template_cdi_developer"/>
         <field name="contract_update_template_id" ref="sign_template_cdi_developer"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="date_start" eval="(DateTime.today() + relativedelta(years=-1, month=1, day=1, days=-1))"/>
     </record>
 
     <record id="base.partner_demo" model="res.partner">
         <field name="phone">+0032 81 00 10</field>
     </record>
+
 </odoo>

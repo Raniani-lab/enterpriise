@@ -5,7 +5,7 @@ var sAnimations = require('website.content.snippets.animation');
 
 sAnimations.registry.websiteCalendarSelect = sAnimations.Class.extend({
     selector: '.o_website_calendar_appointment',
-    read_events: {
+    events: {
         'change .o_website_appoinment_form select[id="calendarType"]': '_onAppointmentTypeChange'
     },
 
@@ -75,7 +75,7 @@ var sAnimations = require('website.content.snippets.animation');
 
 sAnimations.registry.websiteCalendarForm = sAnimations.Class.extend({
     selector: '.o_website_calendar_form',
-    read_events: {
+    events: {
         'change .appointment_submit_form select[name="country_id"]': '_onCountryChange',
     },
 

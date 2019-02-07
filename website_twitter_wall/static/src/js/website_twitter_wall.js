@@ -145,7 +145,7 @@ var TweetWall = Widget.extend({
 sAnimations.registry.websiteTwitterWall = sAnimations.Class.extend({
     selector: '.o-tw-walls',
     xmlDependencies: ['/website_twitter_wall/static/src/xml/website_twitter_wall_tweet.xml'],
-    read_events: {
+    events: {
         'click .o-tw-tweet-delete': '_onDeleteTweet',
         'click .o-tw-live-btn': '_onLiveButton',
         'click .o-tw-option': '_onOption',

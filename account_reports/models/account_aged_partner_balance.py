@@ -52,6 +52,7 @@ class report_account_aged_partner(models.AbstractModel):
                 'trust': values['trust'],
                 'unfoldable': True,
                 'unfolded': 'partner_%s' % (values['partner_id'],) in options.get('unfolded_lines'),
+                'partner_id': values['partner_id'],
             }
             lines.append(vals)
             if 'partner_%s' % (values['partner_id'],) in options.get('unfolded_lines'):

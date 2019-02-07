@@ -178,6 +178,7 @@ class ReportPartnerLedger(models.AbstractModel):
             if offset == 0:
                 lines.append({
                     'id': 'partner_' + str(partner.id),
+                    'partner_id': partner.id,
                     'name': partner.name,
                     'columns': [{'name': v} for v in columns],
                     'level': 2,

@@ -397,6 +397,17 @@ class AccountReport(models.AbstractModel):
         action['context'] = ctx
         return action
 
+    def action_partner_reconcile(self, options, params):
+        form = self.env.ref('account.action_manual_reconciliation', False)
+        ctx = self.env.context.copy()
+        ctx['partner_ids'] = [params.get('partner_id')]
+        return {
+            'type': 'ir.actions.client',
+            'view_id': form.id,
+            'tag': form.tag,
+            'context': ctx,
+        }
+
     def reverse(self, values):
         """Utility method used to reverse a list, this method is used during template generation in order to reverse periods for example"""
         if type(values) != list:

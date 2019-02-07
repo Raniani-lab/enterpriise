@@ -114,8 +114,15 @@
             }
         }
     }
+    .oe_link_reports {
+        @extend .btn;
+        @extend .btn-outline-secondary;
+        @extend .btn-sm;
+        line-height: 0.8;
+        vertical-align: initial;
+    }
     .folded {
-        .o_journal_entries {
+        .oe_link_reports {
             display: none;
         }
     }

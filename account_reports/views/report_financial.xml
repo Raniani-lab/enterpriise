@@ -311,12 +311,18 @@
      <xpath expr="//div[hasclass('o_account_reports_domain_dropdown')]/*[last()]" position="before">
         <a role="menuitem" tabindex="-1" t-att-data-id="line['id']" action="open_document" groups="account.group_account_user" class="dropdown-item">View Journal Entry</a>
      </xpath>
+     <xpath expr="//span[hasclass('account_report_line_name')]" position="inside">
+        &amp;nbsp;<a t-if="'partner_id' in line and line.get('unfolded')" t-att-data-partner_id="line.get('partner_id')" action="action_partner_reconcile" class="no_print oe_link_reports">Reconcile</a>
+     </xpath>
  </template>
 
  <!-- Business Statements Aged Payable templates -->
  <template id="line_template_aged_payable_report" inherit_id="account_reports.template_aged_partner_balance_line_report" primary="True">
      <xpath expr="//div[hasclass('o_account_reports_domain_dropdown')]/*[last()]" position="before">
         <a role="menuitem" tabindex="-1" t-att-data-id="line['id']" action="open_document" groups="account.group_account_user" class="dropdown-item">View Journal Entry</a>
+     </xpath>
+     <xpath expr="//span[hasclass('account_report_line_name')]" position="inside">
+        &amp;nbsp;<a t-if="'partner_id' in line and line.get('unfolded')" t-att-data-partner_id="line.get('partner_id')" action="action_partner_reconcile" class="no_print oe_link_reports">Reconcile</a>
      </xpath>
  </template>
 
@@ -336,10 +342,13 @@
     <xpath expr="//div[hasclass('o_account_reports_domain_dropdown')]/*[last()]" position="before">
         <t t-if="line['caret_options'] != 'account.tax'" groups="account.group_account_user"><a role="menuitem" tabindex="-1" t-att-data-id="line['id']" action="open_document" class="dropdown-item">View Journal Entry</a></t>
     </xpath>
+    <xpath expr="//span[hasclass('account_report_line_name')]" position="inside">
+       &amp;nbsp;<a t-if="'partner_id' in line and line.get('unfolded')" t-att-data-partner_id="line.get('partner_id')" action="action_partner_reconcile" class="no_print oe_link_reports">Reconcile</a>
+    </xpath>
 </template>
 <template id="line_template_general_ledger_report" inherit_id="account_reports.line_template" primary="True">
     <xpath expr="//span[hasclass('account_report_line_name')]" position="inside">
-        &amp;nbsp;<a t-if="line.get('id') != 'hierarchy' and line.get('unfolded')" t-att-data-id="line.get('id')" action="view_all_journal_items" class="no_print o_journal_entries"> ⇒ journal items</a>
+        &amp;nbsp;<a t-if="line.get('id') != 'hierarchy' and line.get('unfolded')" t-att-data-id="line.get('id')" action="view_all_journal_items" class="no_print oe_link_reports"> ⇒ journal items</a>
     </xpath>
     <xpath expr="//div[hasclass('o_account_reports_domain_dropdown')]/*[last()]" position="before">
         <t t-if="line['caret_options'] != 'account.tax'"><a role="menuitem" tabindex="-1" t-att-data-id="line['id']" action="open_document" class="dropdown-item">View Journal Entry</a></t>

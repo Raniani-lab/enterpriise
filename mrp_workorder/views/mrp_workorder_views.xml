@@ -17,7 +17,7 @@
                     <field name="state" widget="statusbar" statusbar_visible="pending,ready,progress,done"/>
                 </header>
             </xpath>
-            <notebook position="inside">
+            <page name='workorder_page_misc' position="before">
                 <page string="Finished Steps">
                     <field name="check_ids" domain="[('quality_state', '!=', 'none')]" readonly="1">
                         <tree>
@@ -25,12 +25,13 @@
                             <field name="test_type" invisible="1"/>
                             <field name="control_date" string="Date"/>
                             <field name="user_id" string="Operator"/>
+                            <field name="final_lot_id" string="Finished Lot/Serial Number" attrs="{'column_invisible': [('parent.product_tracking', '=', 'none')]}"/>
                             <field name="title"/>
                             <field name="result"/>
                         </tree>
                     </field>
                 </page>
-            </notebook>
+            </page>
         </field>
     </record>
 

@@ -477,9 +477,7 @@ class MrpProductionWorkcenterLine(models.Model):
         if self.check_ids:
             # Check if you can attribute the lot to the checks
             if (self.production_id.product_id.tracking != 'none') and self.final_lot_id:
-                checks_to_assign = self.check_ids.filtered(lambda x: not x.lot_id)
-                if checks_to_assign:
-                    checks_to_assign.write({'lot_id': self.final_lot_id.id})
+                self.check_ids.write({'final_lot_id': self.final_lot_id.id})
         res = super(MrpProductionWorkcenterLine, self).record_production()
         if self.qty_producing > 0:
             self._create_checks()

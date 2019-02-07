@@ -94,7 +94,6 @@ class QualityCheck(models.Model):
     component_uom_id = fields.Many2one(related='move_line_id.product_uom_id', readonly=True)
     move_line_id = fields.Many2one('mrp.workorder.line', 'Workorder Line')
     qty_done = fields.Float('Done', default=1.0, digits=dp.get_precision('Product Unit of Measure'))
-    lot_id = fields.Many2one('stock.production.lot', 'Lot')
     component_is_byproduct = fields.Boolean('Register a by product', default=False)
 
     # Computed fields

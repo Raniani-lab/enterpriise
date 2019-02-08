@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from odoo.tests import TransactionCase, tagged
+from odoo.tests import TransactionCase, tagged, Form
 
 
 @tagged('-standard', 'external')
@@ -67,14 +67,18 @@ class TestDeliveryBpost(TransactionCase):
                     'price_unit': self.iPadMini.lst_price}
 
         so_vals = {'partner_id': self.agrolait.id,
-                   'carrier_id': self.env.ref('delivery_bpost.delivery_carrier_bpost_domestic').id,
                    'order_line': [(0, None, sol_vals)]}
 
         sale_order = SaleOrder.create(so_vals)
-        sale_order.get_delivery_price()
-        self.assertTrue(sale_order.delivery_rating_success, "bpost has not been able to rate this order (%s)" % sale_order.delivery_message)
-        self.assertGreater(sale_order.delivery_price, 0.0, "bpost delivery cost for this SO has not been correctly estimated.")
-        sale_order.set_delivery_line()
+        # I add delivery cost in Sales order
+        delivery_wizard = Form(self.env['choose.delivery.carrier'].with_context({
+            'default_order_id': sale_order.id,
+            'default_carrier_id': self.env.ref('delivery_bpost.delivery_carrier_bpost_domestic').id
+        }))
+        choose_delivery_carrier = delivery_wizard.save()
+        choose_delivery_carrier.update_price()
+        self.assertGreater(choose_delivery_carrier.delivery_price, 0.0, "bpost delivery cost for this SO has not been correctly estimated.")
+        choose_delivery_carrier.button_confirm()
 
         sale_order.action_confirm()
         self.assertEquals(len(sale_order.picking_ids), 1, "The Sales Order did not generate a picking.")
@@ -99,14 +103,18 @@ class TestDeliveryBpost(TransactionCase):
                     'price_unit': self.iPadMini.lst_price}
 
         so_vals = {'partner_id': self.think_big_system.id,
-                   'carrier_id': self.env.ref('delivery_bpost.delivery_carrier_bpost_inter').id,
                    'order_line': [(0, None, sol_vals)]}
 
         sale_order = SaleOrder.create(so_vals)
-        sale_order.get_delivery_price()
-        self.assertTrue(sale_order.delivery_rating_success, "bpost has not been able to rate this order (%s)" % sale_order.delivery_message)
-        self.assertGreater(sale_order.delivery_price, 0.0, "bpost delivery cost for this SO has not been correctly estimated.")
-        sale_order.set_delivery_line()
+        # I add delivery cost in Sales order
+        delivery_wizard = Form(self.env['choose.delivery.carrier'].with_context({
+            'default_order_id': sale_order.id,
+            'default_carrier_id': self.env.ref('delivery_bpost.delivery_carrier_bpost_inter').id
+        }))
+        choose_delivery_carrier = delivery_wizard.save()
+        choose_delivery_carrier.update_price()
+        self.assertGreater(choose_delivery_carrier.delivery_price, 0.0, "bpost delivery cost for this SO has not been correctly estimated.")
+        choose_delivery_carrier.button_confirm()
 
         sale_order.action_confirm()
         self.assertEquals(len(sale_order.picking_ids), 1, "The Sales Order did not generate a picking.")

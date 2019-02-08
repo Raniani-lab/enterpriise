@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from odoo.tests.common import TransactionCase, tagged
+from odoo.tests.common import TransactionCase, tagged, Form
 
 
 @tagged('-standard', 'external')
@@ -47,15 +47,19 @@ class TestDeliveryDHL(TransactionCase):
                     'price_unit': self.iPadMini.lst_price}
 
         so_vals = {'partner_id': self.delta_pc.id,
-                   'carrier_id': self.env.ref('delivery_dhl.delivery_carrier_dhl_dom').id,
                    'order_line': [(0, None, sol_vals)]}
 
         sale_order = SaleOrder.create(so_vals)
-        sale_order.get_delivery_price()
-        self.assertTrue(sale_order.delivery_rating_success, "DHL has not been able to rate this order (%s)" % sale_order.delivery_message)
+        # I add free delivery cost in Sales order
+        delivery_wizard = Form(self.env['choose.delivery.carrier'].with_context({
+            'default_order_id': sale_order.id,
+            'default_carrier_id': self.env.ref('delivery_dhl.delivery_carrier_dhl_dom').id
+        }))
+        choose_delivery_carrier = delivery_wizard.save()
+        choose_delivery_carrier.update_price()
         # DHL test server will return 0.0...
         # self.assertGreater(sale_order.delivery_price, 0.0, "DHL delivery cost for this SO has not been correctly estimated.")
-        sale_order.set_delivery_line()
+        choose_delivery_carrier.button_confirm()
 
         sale_order.action_confirm()
         self.assertEquals(len(sale_order.picking_ids), 1, "The Sales Order did not generate a picking.")
@@ -88,11 +92,16 @@ class TestDeliveryDHL(TransactionCase):
                    'order_line': [(0, None, sol_vals)]}
 
         sale_order = SaleOrder.create(so_vals)
-        sale_order.get_delivery_price()
-        self.assertTrue(sale_order.delivery_rating_success, "DHL has not been able to rate this order (%s)" % sale_order.delivery_message)
+        # I add free delivery cost in Sales order
+        delivery_wizard = Form(self.env['choose.delivery.carrier'].with_context({
+            'default_order_id': sale_order.id,
+            'default_carrier_id': self.env.ref('delivery_dhl.delivery_carrier_dhl_intl').id
+        }))
+        choose_delivery_carrier = delivery_wizard.save()
+        choose_delivery_carrier.update_price()
         # DHL test server will return 0.0...
         # self.assertGreater(sale_order.delivery_price, 0.0, "DHL delivery cost for this SO has not been correctly estimated.")
-        sale_order.set_delivery_line()
+        choose_delivery_carrier.button_confirm()
 
         sale_order.action_confirm()
         self.assertEquals(len(sale_order.picking_ids), 1, "The Sales Order did not generate a picking.")
@@ -130,11 +139,16 @@ class TestDeliveryDHL(TransactionCase):
                    'order_line': [(0, None, sol_1_vals), (0, None, sol_2_vals)]}
 
         sale_order = SaleOrder.create(so_vals)
-        sale_order.get_delivery_price()
-        self.assertTrue(sale_order.delivery_rating_success, "DHL has not been able to rate this order (%s)" % sale_order.delivery_message)
+        # I add free delivery cost in Sales order
+        delivery_wizard = Form(self.env['choose.delivery.carrier'].with_context({
+            'default_order_id': sale_order.id,
+            'default_carrier_id': self.env.ref('delivery_dhl.delivery_carrier_dhl_intl').id
+        }))
+        choose_delivery_carrier = delivery_wizard.save()
+        choose_delivery_carrier.update_price()
         # DHL test server will return 0.0...
         # self.assertGreater(sale_order.delivery_price, 0.0, "DHL delivery cost for this SO has not been correctly estimated.")
-        sale_order.set_delivery_line()
+        choose_delivery_carrier.button_confirm()
 
         sale_order.action_confirm()
         self.assertEquals(len(sale_order.picking_ids), 1, "The Sales Order did not generate a picking.")

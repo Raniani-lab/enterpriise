@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo.tests import TransactionCase, tagged
+from odoo.tests import TransactionCase, tagged, Form
 
 @tagged('-standard', 'external')
 class TestDeliveryEasypost(TransactionCase):
@@ -78,19 +78,23 @@ class TestDeliveryEasypost(TransactionCase):
         sol_1_vals = {'product_id': self.server.id}
         sol_2_vals = {'product_id': self.miniServer.id}
         so_vals_fedex = {'partner_id': self.jackson.id,
-                   'carrier_id': self.easypost_fedex_carrier.id,
                    'order_line': [(0, None, sol_1_vals), (0, None, sol_2_vals)]}
 
         sale_order_fedex = SaleOrder.create(so_vals_fedex)
-        sale_order_fedex.get_delivery_price()
+        # I add delivery cost in Sales order
+        delivery_wizard = Form(self.env['choose.delivery.carrier'].with_context({
+            'default_order_id': sale_order_fedex.id,
+            'default_carrier_id': self.easypost_fedex_carrier.id
+        }))
+        choose_delivery_carrier = delivery_wizard.save()
+        choose_delivery_carrier.update_price()
 
-        self.assertGreater(sale_order_fedex.delivery_price, 0.00, "Could't get rate for this order from easypost fedex")
+        self.assertGreater(choose_delivery_carrier.delivery_price, 0.00, "Could't get rate for this order from easypost fedex")
+        choose_delivery_carrier.button_confirm()
         sale_order_fedex.action_confirm()
 
         self.assertEquals(len(sale_order_fedex.picking_ids), 1, "The Sales Order did not generate a picking for ep-fedex.")
         picking_fedex = sale_order_fedex.picking_ids[0]
-        self.assertEquals(picking_fedex.carrier_id.id, sale_order_fedex.carrier_id.id,
-                          "Carrier is not the same on Picking and on SO(easypost-fedex).")
 
         picking_fedex.action_assign()
         picking_fedex.move_line_ids.write({'qty_done': 1})
@@ -110,13 +114,18 @@ class TestDeliveryEasypost(TransactionCase):
         sol_1_vals = {'product_id': self.server.id}
         sol_2_vals = {'product_id': self.miniServer.id}
         so_vals_fedex = {'partner_id': self.jackson.id,
-                   'carrier_id': self.easypost_fedex_carrier.id,
                    'order_line': [(0, None, sol_1_vals), (0, None, sol_2_vals)]}
 
         sale_order_fedex = SaleOrder.create(so_vals_fedex)
-        sale_order_fedex.get_delivery_price()
-
-        self.assertGreater(sale_order_fedex.delivery_price, 0.00, "Could't get rate for this order from easypost fedex")
+        # I add delivery cost in Sales order
+        delivery_wizard = Form(self.env['choose.delivery.carrier'].with_context({
+            'default_order_id': sale_order_fedex.id,
+            'default_carrier_id': self.easypost_fedex_carrier.id
+        }))
+        choose_delivery_carrier = delivery_wizard.save()
+        choose_delivery_carrier.update_price()
+        self.assertGreater(choose_delivery_carrier.delivery_price, 0.00, "Could't get rate for this order from easypost fedex")
+        choose_delivery_carrier.button_confirm()
         sale_order_fedex.action_confirm()
 
         self.assertEquals(len(sale_order_fedex.picking_ids), 1, "The Sales Order did not generate a picking for ep-fedex.")
@@ -145,7 +154,6 @@ class TestDeliveryEasypost(TransactionCase):
         sol_1_vals = {'product_id': self.server.id}
         sol_2_vals = {'product_id': self.miniServer.id}
         so_vals_fedex = {'partner_id': self.agrolait.id,
-                   'carrier_id': self.easypost_fedex_carrier.id,
                    'order_line': [(0, None, sol_1_vals), (0, None, sol_2_vals)]}
 
         # Modify price due to US customs info. If you a value greater than
@@ -154,9 +162,16 @@ class TestDeliveryEasypost(TransactionCase):
         self.miniServer['list_price'] = 10.0
 
         sale_order_fedex = SaleOrder.create(so_vals_fedex)
-        sale_order_fedex.get_delivery_price()
+        # I add delivery cost in Sales order
+        delivery_wizard = Form(self.env['choose.delivery.carrier'].with_context({
+            'default_order_id': sale_order_fedex.id,
+            'default_carrier_id': self.easypost_fedex_carrier.id
+        }))
+        choose_delivery_carrier = delivery_wizard.save()
+        choose_delivery_carrier.update_price()
 
-        self.assertGreater(sale_order_fedex.delivery_price, 0.00, "Could't get rate for this order from easypost fedex")
+        self.assertGreater(choose_delivery_carrier.delivery_price, 0.00, "Could't get rate for this order from easypost fedex")
+        choose_delivery_carrier.button_confirm()
         sale_order_fedex.action_confirm()
 
         self.assertEquals(len(sale_order_fedex.picking_ids), 1, "The Sales Order did not generate a picking for ep-fedex.")

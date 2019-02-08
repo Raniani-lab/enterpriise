@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 import unittest
-from odoo.tests.common import TransactionCase, tagged
+from odoo.tests.common import TransactionCase, tagged, Form
 from odoo.exceptions import UserError
 
 
@@ -61,17 +61,18 @@ class TestDeliveryFedex(TransactionCase):
                         'price_unit': self.iPadMini.lst_price}
 
             so_vals = {'partner_id': self.delta_pc.id,
-                       'carrier_id': self.env.ref('delivery_fedex.delivery_carrier_fedex_us').id,
                        'order_line': [(0, None, sol_vals)]}
 
             sale_order = SaleOrder.create(so_vals)
-            sale_order.get_delivery_price()
-            if not sale_order.delivery_rating_success and sale_order.delivery_message.replace('Error:\n', '').strip() in SKIPPABLE_ERRORS:
-                raise unittest.SkipTest(SKIP_MSG)
-            else:
-                self.assertTrue(sale_order.delivery_rating_success, "FedEx has not been able to rate this order (%s)" % sale_order.delivery_message)
-            self.assertGreater(sale_order.delivery_price, 0.0, "FedEx delivery cost for this SO has not been correctly estimated.")
-            sale_order.set_delivery_line()
+            # I add delivery cost in Sales order
+            delivery_wizard = Form(self.env['choose.delivery.carrier'].with_context({
+                'default_order_id': sale_order.id,
+                'default_carrier_id': self.env.ref('delivery_fedex.delivery_carrier_fedex_us').id
+            }))
+            choose_delivery_carrier = delivery_wizard.save()
+            choose_delivery_carrier.update_price()
+            self.assertGreater(choose_delivery_carrier.delivery_price, 0.0, "FedEx delivery cost for this SO has not been correctly estimated.")
+            choose_delivery_carrier.button_confirm()
 
             sale_order.action_confirm()
             self.assertEquals(len(sale_order.picking_ids), 1, "The Sales Order did not generate a picking.")
@@ -108,17 +109,18 @@ class TestDeliveryFedex(TransactionCase):
                         'price_unit': self.iPadMini.lst_price}
 
             so_vals = {'partner_id': self.agrolait.id,
-                       'carrier_id': self.env.ref('delivery_fedex.delivery_carrier_fedex_inter').id,
                        'order_line': [(0, None, sol_vals)]}
 
             sale_order = SaleOrder.create(so_vals)
-            sale_order.get_delivery_price()
-            if not sale_order.delivery_rating_success and sale_order.delivery_message.replace('Error:\n', '').strip() in SKIPPABLE_ERRORS:
-                raise unittest.SkipTest(SKIP_MSG)
-            else:
-                self.assertTrue(sale_order.delivery_rating_success, "FedEx has not been able to rate this order (%s)" % sale_order.delivery_message)
-            self.assertGreater(sale_order.delivery_price, 0.0, "FedEx delivery cost for this SO has not been correctly estimated.")
-            sale_order.set_delivery_line()
+            # I add delivery cost in Sales order
+            delivery_wizard = Form(self.env['choose.delivery.carrier'].with_context({
+                'default_order_id': sale_order.id,
+                'default_carrier_id': self.env.ref('delivery_fedex.delivery_carrier_fedex_inter').id,
+            }))
+            choose_delivery_carrier = delivery_wizard.save()
+            choose_delivery_carrier.update_price()
+            self.assertGreater(choose_delivery_carrier.delivery_price, 0.0, "FedEx delivery cost for this SO has not been correctly estimated.")
+            choose_delivery_carrier.button_confirm()
 
             sale_order.action_confirm()
             self.assertEquals(len(sale_order.picking_ids), 1, "The Sales Order did not generate a picking.")
@@ -160,17 +162,18 @@ class TestDeliveryFedex(TransactionCase):
                           'price_unit': self.large_desk.lst_price}
 
             so_vals = {'partner_id': self.agrolait.id,
-                       'carrier_id': self.env.ref('delivery_fedex.delivery_carrier_fedex_inter').id,
                        'order_line': [(0, None, sol_1_vals), (0, None, sol_2_vals)]}
 
             sale_order = SaleOrder.create(so_vals)
-            sale_order.get_delivery_price()
-            if not sale_order.delivery_rating_success and sale_order.delivery_message.replace('Error:\n', '').strip() in SKIPPABLE_ERRORS:
-                raise unittest.SkipTest(SKIP_MSG)
-            else:
-                self.assertTrue(sale_order.delivery_rating_success, "FedEx has not been able to rate this order (%s)" % sale_order.delivery_message)
-            self.assertGreater(sale_order.delivery_price, 0.0, "FedEx delivery cost for this SO has not been correctly estimated.")
-            sale_order.set_delivery_line()
+            # I add delivery cost in Sales order
+            delivery_wizard = Form(self.env['choose.delivery.carrier'].with_context({
+                'default_order_id': sale_order.id,
+                'default_carrier_id': self.env.ref('delivery_fedex.delivery_carrier_fedex_inter').id
+            }))
+            choose_delivery_carrier = delivery_wizard.save()
+            choose_delivery_carrier.update_price()
+            self.assertGreater(choose_delivery_carrier.delivery_price, 0.0, "FedEx delivery cost for this SO has not been correctly estimated.")
+            choose_delivery_carrier.button_confirm()
 
             sale_order.action_confirm()
             self.assertEquals(len(sale_order.picking_ids), 1, "The Sales Order did not generate a picking.")

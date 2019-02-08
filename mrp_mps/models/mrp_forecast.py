@@ -83,7 +83,6 @@ class SaleForecast(models.Model):
         warehouse = self.env['stock.warehouse'].search([], limit=1)
         return {
             'date_planned': date.strftime(DEFAULT_SERVER_DATETIME_FORMAT),
-            'company_id': self.env.user.company_id,
             'warehouse_id': warehouse[0] if warehouse else False,
             'add_date_in_domain': True,
         }
@@ -94,7 +93,9 @@ class SaleForecast(models.Model):
             vals = self._prepare_procurement(product, date)
             warehouse = self.env['stock.warehouse'].search([], limit=1)
             location = warehouse[0].lot_stock_id if warehouse else False
-            self.env['procurement.group'].run(product, to_supply, product.uom_id, location, product.name, 'MPS', vals)
+            self.env['procurement.group'].run([self.env['procurement.group'].Procurement(
+                product, to_supply, product.uom_id, location, product.name,
+                'MPS', self.env.user.company_id, vals)])
         return False
 
     @api.model
@@ -153,8 +154,8 @@ class SaleForecastIndirect(models.Model):
 class StockRule(models.Model):
     _inherit = 'stock.rule'
 
-    def _make_po_get_domain(self, values, partner):
-        domain = super(StockRule, self)._make_po_get_domain(values, partner)
+    def _make_po_get_domain(self, company_id, values, partner):
+        domain = super(StockRule, self)._make_po_get_domain(company_id, values, partner)
         if values.get('add_date_in_domain', False) and values.get('date_planned', False):
             domain += (('date_planned', '=', values['date_planned']),)
         return domain

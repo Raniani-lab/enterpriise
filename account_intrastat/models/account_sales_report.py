@@ -29,28 +29,32 @@ class IntrastatReport(models.AbstractModel):
     def _prepare_query(self, options):
         query = """
             SELECT
-                cpartner.id AS partner_id,
-                cpartner.name AS partner_name,
-                cpartner.vat AS partner_vat,
+                line.move_id AS move_id,
+                line.partner_id AS partner_id,
+                partner.name AS partner_name,
+                partner.vat AS partner_vat,
                 country.code AS country_code,
-                inv.currency_id AS currency_id,
-                inv.date AS date,
-                inv.amount_total_signed AS value
-            FROM account_invoice inv
-                LEFT JOIN res_partner partner ON inv.partner_id = partner.id
-                LEFT JOIN res_company company ON inv.company_id = company.id
+                move.currency_id AS currency_id,
+                move.date AS date,
+                SUM(line.balance) AS total_balance,
+                SUM(line.amount_currency) AS total_amount_currency
+            FROM account_move_line line
+                LEFT JOIN account_move move ON line.move_id = move.id
+                LEFT JOIN res_partner partner ON line.partner_id = partner.id
+                LEFT JOIN res_company company ON line.company_id = company.id
                 LEFT JOIN res_partner company_partner ON company_partner.id = company.partner_id
-                LEFT JOIN res_partner cpartner ON partner.commercial_partner_id = cpartner.id
-                LEFT JOIN res_country country ON cpartner.country_id = country.id
-            WHERE inv.state in ('open', 'in_payment', 'paid')
+                LEFT JOIN res_country country ON partner.country_id = country.id
+            WHERE move.state = 'posted'
+                AND line.display_type IS NULL
                 AND country.intrastat = TRUE
                 AND company_partner.country_id != country.id
-                AND company.id = %s
-                AND coalesce(inv.date, inv.date_invoice) >= %s
-                AND coalesce(inv.date, inv.date_invoice) <= %s
-                AND inv.type in ('out_invoice', 'out_refund')
+                AND line.company_id = %s
+                AND COALESCE(move.date, move.invoice_date) BETWEEN %s AND %s
+                AND move.type IN ('out_invoice', 'out_refund')
                 AND partner.vat IS NOT NULL
-                AND inv.journal_id IN %s
+                AND line.journal_id IN %s
+            GROUP BY
+                line.move_id, line.partner_id, partner.name, partner.vat, country.code, move.currency_id, move.date
         """
         # Date range
         params = [self.env.company.id, options['date']['date_from'], options['date']['date_to']]
@@ -78,33 +82,38 @@ class IntrastatReport(models.AbstractModel):
 
     @api.model
     def _get_lines(self, options, line_id=None):
-        self.env['account.invoice.line'].check_access_rights('read')
+        self.env['account.move.line'].check_access_rights('read')
         query, params = self._prepare_query(options)
 
         self._cr.execute(query, params)
         query_res = self._cr.dictfetchall()
 
         company_currency = self.env.company.currency_id
-        currency_cache = dict((r.id, r) for r in self.env['res.currency'].search([('active', '=', True)]))
         partners_values = {}
         total_value = 0
 
         # Aggregate total amount for each partner.
         # Take care of the multi-currencies.
         for vals in query_res:
-            if vals['currency_id'] in currency_cache:
-                currency = currency_cache[vals['currency_id']]
+            if vals['currency_id'] == company_currency.id:
+                total_amount = vals['total_amount_currency']
+            elif vals['currency_id'] != company_currency.id:
+                currency = self.env['res.currency'].browse(vals['currency_id'])
+                total_amount = currency._convert(vals['total_balance'], company_currency, self.env.user.company_id, vals['date'])
             else:
-                currency = currency_cache[vals['currency_id']] = self.env['res.currency'].browse(vals['currency_id'])
-
-            if currency != company_currency:
-                vals['value'] = currency._convert(vals['value'], company_currency, self.env.company, vals['date'])
+                total_amount = vals['total_balance']
 
             if vals['partner_name'] not in partners_values:
-                partners_values[vals['partner_name']] = vals
+                partners_values[vals['partner_name']] = {
+                    'value': total_amount,
+                    'partner_id': vals['partner_id'],
+                    'partner_name': vals['partner_name'],
+                    'partner_vat': vals['partner_vat'],
+                    'country_code': vals['country_code'],
+                }
             else:
-                partners_values[vals['partner_name']]['value'] += vals['value']
-            total_value += vals['value']
+                partners_values[vals['partner_name']]['value'] += total_amount
+            total_value += total_amount
 
         lines = [self._create_sales_report_line(options, partners_values[partner_name]) for partner_name in sorted(partners_values)]
 

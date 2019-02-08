@@ -134,7 +134,7 @@ class ResPartner(models.Model):
             aml = self.env['account.move.line'].search([('id', '=', int(options['move_line_id']))], limit=1)
             old_date = aml.expected_pay_date
             aml.write({'expected_pay_date': options['expected_pay_date']})
-            msg = _('Expected pay date has been changed from %s to %s for invoice %s') % (old_date or _('any'), aml.expected_pay_date, aml.invoice_id.number)
+            msg = _('Expected pay date has been changed from %s to %s for invoice %s') % (old_date or _('any'), aml.expected_pay_date, aml.move_id.number)
             record.message_post(body=msg)
         return True
 

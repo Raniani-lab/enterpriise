@@ -38,7 +38,7 @@ var AccountAssetReversedWidget = AbstractField.extend({
      * @private
      */
     _render: function () {
-        if (this.recordData.reverse_entry_id != false) {
+        if (this.recordData.reversed_entry_id != false) {
             var $icon = $('<i/>', {
                 title: _t('This move has been reversed')
             }).addClass('fa fa-exclamation-circle')

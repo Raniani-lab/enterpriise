@@ -29,7 +29,7 @@ class TestL10nMxInvoiceCustoms(InvoiceTransactionCase):
                "number is incorrect.*For example: 15  48  3009  0001234") % (
                    invoice.invoice_line_ids.product_id.name)
         with self.assertRaisesRegexp(ValidationError, msg):
-            invoice.action_invoice_open()
+            invoice.post()
 
         node_expected = '''
         <cfdi:InformacionAduanera xmlns:cfdi="http://www.sat.gob.mx/cfd/3"
@@ -40,7 +40,7 @@ class TestL10nMxInvoiceCustoms(InvoiceTransactionCase):
         invoice.move_name = 'INV/2017/998'
         customs_number = '15  48  3009  0001234'
         invoice.invoice_line_ids.l10n_mx_edi_customs_number = customs_number
-        invoice.action_invoice_open()
+        invoice.post()
         self.assertEqual(invoice.l10n_mx_edi_pac_status, "signed",
                          invoice.message_ids.mapped('body'))
         xml = invoice.l10n_mx_edi_get_xml_etree()
@@ -57,7 +57,7 @@ class TestL10nMxInvoiceCustoms(InvoiceTransactionCase):
         invoice.move_name = 'INV/2017/999'
         customs_number = '15  48  3009  0001234,15  48  3009  0001235'
         invoice.invoice_line_ids.l10n_mx_edi_customs_number = customs_number
-        invoice.action_invoice_open()
+        invoice.post()
         self.assertEqual(invoice.l10n_mx_edi_pac_status, "signed",
                          invoice.message_ids.mapped('body'))
         xml = invoice.l10n_mx_edi_get_xml_etree()

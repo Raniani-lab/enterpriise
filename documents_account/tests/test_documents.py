@@ -35,7 +35,7 @@ class TestCaseDocumentsBridgeAccount(TransactionCase):
         self.workflow_rule_vendor_bill = self.env['documents.workflow.rule'].create({
             'domain_folder_id': self.folder_a.id,
             'name': 'workflow rule create vendor bill on f_a',
-            'create_model': 'account.invoice.in_invoice',
+            'create_model': 'account.move.in_invoice',
         })
 
     def test_bridge_folder_workflow(self):
@@ -47,27 +47,27 @@ class TestCaseDocumentsBridgeAccount(TransactionCase):
         multi_return = self.workflow_rule_vendor_bill.apply_actions([self.document_txt.id, self.document_gif.id])
         self.assertEqual(multi_return.get('type'), 'ir.actions.act_window',
                          'failed at invoice workflow return value type')
-        self.assertEqual(multi_return.get('res_model'), 'account.invoice',
+        self.assertEqual(multi_return.get('res_model'), 'account.move',
                          'failed at invoice workflow return value res model')
         self.assertEqual(multi_return.get('view_type'), 'list',
                          'failed at invoice workflow return value view type')
 
-        self.assertEqual(self.document_txt.res_model, 'account.invoice', "failed at workflow_bridge_dms_account"
+        self.assertEqual(self.document_txt.res_model, 'account.move', "failed at workflow_bridge_dms_account"
                                                                            " new res_model")
-        vendor_bill_txt = self.env['account.invoice'].search([('id', '=', self.document_txt.res_id)])
+        vendor_bill_txt = self.env['account.move'].search([('id', '=', self.document_txt.res_id)])
         self.assertTrue(vendor_bill_txt.exists(), 'failed at workflow_bridge_dms_account vendor_bill')
         self.assertEqual(self.document_txt.res_id, vendor_bill_txt.id, "failed at workflow_bridge_dms_account res_id")
         self.assertEqual(vendor_bill_txt.type, 'in_invoice', "failed at workflow_bridge_dms_account vendor_bill type")
-        vendor_bill_gif = self.env['account.invoice'].search([('id', '=', self.document_gif.res_id)])
+        vendor_bill_gif = self.env['account.move'].search([('id', '=', self.document_gif.res_id)])
         self.assertEqual(self.document_gif.res_id, vendor_bill_gif.id, "failed at workflow_bridge_dms_account res_id")
 
         single_return = self.workflow_rule_vendor_bill.apply_actions([self.document_txt.id])
         self.assertEqual(single_return.get('view_type'), 'form',
                          'failed at invoice workflow return value view type for single file')
-        self.assertEqual(single_return.get('res_model'), 'account.invoice',
+        self.assertEqual(single_return.get('res_model'), 'account.move',
                          'failed at invoice res_model action from workflow create model')
         invoice = self.env[single_return['res_model']].browse(single_return.get('res_id'))
-        attachments = self.env['ir.attachment'].search([('res_model', '=', 'account.invoice'), ('res_id', '=', invoice.id)])
+        attachments = self.env['ir.attachment'].search([('res_model', '=', 'account.move'), ('res_id', '=', invoice.id)])
         self.assertEqual(len(attachments), 1, 'there should only be one ir attachment matching')
 
     def test_bridge_account_account_settings_on_write(self):
@@ -77,19 +77,14 @@ class TestCaseDocumentsBridgeAccount(TransactionCase):
         """
         folder_test = self.env['documents.folder'].create({'name': 'folder_test'})
         
-        company_test = self.env['res.company'].create({
-            'name': 'test bridge accounts',
-            'documents_account_settings': True
-        })
-        invoice_test = self.env['account.invoice'].create({
+        self.env.user.company_id.documents_account_settings = True
+        invoice_test = self.env['account.move'].with_context(default_type='in_invoice').create({
             'name': 'invoice_test',
             'type': 'in_invoice',
-            'company_id': company_test.id
         })
 
         self.env['documents.account.folder.setting'].create({
             'folder_id': folder_test.id,
-            'company_id': company_test.id,
             'journal_id': invoice_test.journal_id.id,
         })
 
@@ -97,7 +92,7 @@ class TestCaseDocumentsBridgeAccount(TransactionCase):
             'datas': TEXT,
             'name': 'fileText_test.txt',
             'mimetype': 'text/plain',
-            'res_model': 'account.invoice',
+            'res_model': 'account.move',
             'res_id': invoice_test.id
         })
 
@@ -105,7 +100,7 @@ class TestCaseDocumentsBridgeAccount(TransactionCase):
             'datas': TEXT,
             'name': 'fileText_test_alternative.txt',
             'mimetype': 'text/plain',
-            'res_model': 'account.invoice',
+            'res_model': 'account.move',
             'res_id': invoice_test.id
         })
 
@@ -142,7 +137,7 @@ class TestCaseDocumentsBridgeAccount(TransactionCase):
         })
 
         action = self.workflow_rule_vendor_bill.apply_actions([document_test.id])
-        self.assertEqual(action['res_model'], 'account.invoice', 'a new invoice should be generated')
-        invoice = self.env['account.invoice'].browse(action['res_id'])
-        self.assertEqual(invoice.reconciliation_move_line_id.id, account_move_line_test.id,
+        self.assertEqual(action['res_model'], 'account.move', 'a new invoice should be generated')
+        invoice = self.env['account.move'].browse(action['res_id'])
+        self.assertEqual(invoice.document_request_line_id.id, account_move_line_test.id,
                          'the new invoice should store the ID of the move line on which its document was attached')

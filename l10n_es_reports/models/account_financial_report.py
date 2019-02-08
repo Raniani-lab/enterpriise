@@ -48,11 +48,13 @@ This feature is only supported/useful in spanish MOD347 report.""")
                     sql_with = """WITH account_move_line
                                   AS (SELECT *
                                       FROM account_move_line where partner_id
-                                      IN (SELECT partner_id
+                                      IN (SELECT account_move_line.partner_id
                                           FROM account_move_line
-                                          WHERE date >= %s AND date <= %s
-                                          AND invoice_id IS NOT NULL
-                                          GROUP BY partner_id
+                                          JOIN account_move
+                                          ON account_move_line.move_id = account_move.id
+                                          WHERE account_move_line.date >= %s AND account_move_line.date <= %s
+                                          AND account_move.type IN ('in_invoice', 'out_invoice', 'in_refund', 'out_refund')
+                                          GROUP BY account_move_line.partner_id
                                           HAVING sum(debit) > %s
                                           )
                                       )

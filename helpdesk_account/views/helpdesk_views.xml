@@ -7,7 +7,7 @@
         <field name="arch" type="xml">
             <field name="stage_id" position="before">
                 <field name="use_credit_notes" invisible="1"/>
-                <button name="%(account.action_account_invoice_refund)d" type="action" string="Refund" 
+                <button name="%(account.action_view_account_move_reversal)d" type="action" string="Refund"
                     groups="helpdesk.group_helpdesk_user" attrs="{'invisible': [('use_credit_notes', '=', False)]}"
                     context="{'default_ticket_id': id}"/>
             </field>

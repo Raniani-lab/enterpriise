@@ -211,27 +211,23 @@ class TestAccountReports(SavepointCase):
 
     @staticmethod
     def _create_invoice(env, amount, partner, invoice_type, date):
-        ''' Helper to create an account.invoice on the fly with only one line.
+        ''' Helper to create an account.move on the fly with only one line.
         N.B: The taxes are also applied.
-        :param amount:          The amount of the unique account.invoice.line.
+        :param amount:          The amount of the unique account.move.line.
         :param partner:         The partner.
         :param invoice_type:    The invoice type.
         :param date:            The invoice date as a datetime object.
-        :return:                An account.invoice record.
+        :return:                An account.move record.
         '''
-        self_ctx = env['account.invoice'].with_context(type=invoice_type)
-        journal_id = self_ctx._default_journal().id
-        self_ctx = self_ctx.with_context(journal_id=journal_id)
-        view = 'account.invoice_form' if 'out' in invoice_type else 'account.invoice_supplier_form'
-
-        invoice_form = Form(self_ctx, view=view)
+        invoice_form = Form(env['account.move'].with_context(default_type=invoice_type))
         invoice_form.partner_id = partner
-        invoice_form.date_invoice = date
+        invoice_form.date = date
+        invoice_form.invoice_date = date
         with invoice_form.invoice_line_ids.new() as invoice_line_form:
             invoice_line_form.name = 'test'
             invoice_line_form.price_unit = amount
         invoice = invoice_form.save()
-        invoice.action_invoice_open()
+        invoice.post()
         return invoice
 
     @staticmethod
@@ -242,13 +238,13 @@ class TestAccountReports(SavepointCase):
         :param amount:      The payment amount.
         :return:            An account.payment record.
         '''
-        self_ctx = env['account.payment'].with_context(active_model='account.invoice', active_ids=invoices.ids)
+        self_ctx = env['account.payment'].with_context(active_model='account.move', active_ids=invoices.ids)
         payment_form = Form(self_ctx)
         payment_form.payment_date = date
-        if amount:
-            payment_form.amount = amount
         if journal:
             payment_form.journal_id = journal
+        if amount:
+            payment_form.amount = amount
         register_payment = payment_form.save()
         register_payment.post()
         return register_payment
@@ -604,7 +600,6 @@ class TestAccountReports(SavepointCase):
                 ('Tax 15.00% (15.0)',                   600.00,         375.00,         ''),
             ],
         )
-
     # -------------------------------------------------------------------------
     # TESTS: Partner Ledger
     # -------------------------------------------------------------------------
@@ -2120,10 +2115,10 @@ class TestAccountReports(SavepointCase):
             #   Name                                    Date,           Due Date,       Doc.    Comm.   Exp. Date   Blocked             Total Due
             [   0,                                      1,              2,              3,      4,      5,          6,                  7],
             [
-                ('INV/2017/0001',                       '01/01/2017',   '01/01/2017',   '',     '',     '',         '',                 115.00),
-                ('INV/2016/0001',                       '12/01/2016',   '12/01/2016',   '',     '',     '',         '',                 780.00),
-                ('',                                    '',             '',             '',     '',     '',         'Total Due',        895.00),
-                ('',                                    '',             '',             '',     '',     '',         'Total Overdue',    895.00),
+                ('INV/2017/0001',                       '01/01/2017',   '01/01/2017',   '',     'INV/2017/0001',    '',         '',                 115.00),
+                ('INV/2016/0001',                       '12/01/2016',   '12/01/2016',   '',     'INV/2016/0001',    '',         '',                 780.00),
+                ('',                                    '',             '',             '',     '',                 '',         'Total Due',        895.00),
+                ('',                                    '',             '',             '',     '',                 '',         'Total Overdue',    895.00),
             ],
         )
 
@@ -2384,17 +2379,17 @@ class TestAccountReports(SavepointCase):
         tax_42 = self.env['account.tax'].browse(tax_42_id)
 
         # Create an invoice using the tax we just made
-        with Form(self.env['account.invoice'].with_context(type='out_invoice'), view='account.invoice_form') as invoice_form:
+        with Form(self.env['account.move'].with_context(default_type='out_invoice')) as invoice_form:
             invoice_form.partner_id = partner
             with invoice_form.invoice_line_ids.new() as invoice_line_form:
                 invoice_line_form.name = 'Turlututu'
                 invoice_line_form.quantity = 1
                 invoice_line_form.price_unit = 100
-                invoice_line_form.invoice_line_tax_ids.clear()
-                invoice_line_form.invoice_line_tax_ids.add(tax_11)
-                invoice_line_form.invoice_line_tax_ids.add(tax_42)
+                invoice_line_form.tax_ids.clear()
+                invoice_line_form.tax_ids.add(tax_11)
+                invoice_line_form.tax_ids.add(tax_42)
         invoice = invoice_form.save()
-        invoice.action_invoice_open()
+        invoice.post()
 
         # Generate the report and check the results
         report = self.env['account.generic.tax.report']
@@ -2405,8 +2400,8 @@ class TestAccountReports(SavepointCase):
         inv_report_lines = report.with_context(new_context)._get_lines(report_opt)
         self.assertLinesValues(
             inv_report_lines,
-            #   Name                      Balance
-            [   0,                        1],
+            #   Name                                Balance
+            [   0,                                  1],
             [
                 (base_section.name,                 200),
                 (base_42_line.name,                 100),
@@ -2421,18 +2416,18 @@ class TestAccountReports(SavepointCase):
         )
 
         # We refund the invoice
-        refund_wizard = self.env['account.invoice.refund'].with_context(active_ids=[invoice.id]).create({
-            'description': 'Test refund tax repartition',
-            'filter_refund': 'cancel',
+        refund_wizard = self.env['account.move.reversal'].with_context(active_ids=invoice.ids).create({
+            'reason': 'Test refund tax repartition',
+            'refund_method': 'cancel',
         })
-        refund_wizard.invoice_refund()
+        refund_wizard.reverse_moves()
 
         # We check the taxes on refund have impacted the report properly (everything should be 0)
         ref_report_lines = report.with_context(new_context)._get_lines(report_opt)
         self.assertLinesValues(
             ref_report_lines,
-            #   Name                      Balance
-            [   0,                        1],
+            #   Name                                Balance
+            [   0,                                  1],
             [
                 (base_section.name,                 0),
                 (base_42_line.name,                 0),

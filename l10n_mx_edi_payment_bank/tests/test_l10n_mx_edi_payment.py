@@ -45,11 +45,11 @@ class TestL10nMxEdiPayment(common.InvoiceTransactionCase):
         self.company.partner_id.property_account_position_id = self.fiscal_position.id # noqa
         invoice = self.create_invoice()
         invoice.move_name = 'INV/2017/999'
-        invoice.action_invoice_open()
+        invoice.post()
         invoice.refresh()
         self.assertEqual(invoice.l10n_mx_edi_pac_status, "signed",
                          invoice.message_ids.mapped("body"))
-        payment_register = Form(self.env['account.payment'].with_context(active_model='account.invoice', active_ids=invoice.ids))
+        payment_register = Form(self.env['account.payment'].with_context(active_model='account.move', active_ids=invoice.ids))
         payment_register.payment_date = invoice.date
         payment_register.l10n_mx_edi_payment_method_id = self.transfer
         payment_register.payment_method_id = self.payment_method_manual_out

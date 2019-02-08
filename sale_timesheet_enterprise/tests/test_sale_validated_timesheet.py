@@ -117,8 +117,7 @@ class TestSaleValidatedTimesheet(TestCommonSaleTimesheetNoChart):
         self.assertEqual(self.delivered_so_line.qty_delivered, 6, 'Delivered quantity should be 6 as some timesheet is validated')
 
         # invoice SO
-        invoice_id1 = self.sale_order._create_invoices()
-        invoice1 = self.env['account.invoice'].browse(invoice_id1)
+        invoice1 = self.sale_order._create_invoices()
         # check invoiced amount
         self.assertEqual(invoice1.amount_total, self.ordered_so_line.price_unit * 10 + self.delivered_so_line.price_unit * 6, 'Invoiced amount should be equal to Ordered SOL + Delivered SOL unit price * 6')
         # check timesheet is linked to invoice
@@ -126,9 +125,9 @@ class TestSaleValidatedTimesheet(TestCommonSaleTimesheetNoChart):
         self.assertFalse(ordered_timesheet1.timesheet_invoice_id, "The ordered timesheet should not be linked to the invoice, since we are in ordered quantity")
 
         # check invoiced quantity on sale order and on invoice
-        ordered_invoice_line = self.ordered_so_line.invoice_lines.filtered(lambda line: line.invoice_id == invoice1)
+        ordered_invoice_line = self.ordered_so_line.invoice_lines.filtered(lambda line: line.move_id == invoice1)
         self.assertEqual(self.ordered_so_line.qty_invoiced, ordered_invoice_line.quantity, "The invoiced quantity should be same on sales order line and invoice line")
-        delivered_invoice_line = self.delivered_so_line.invoice_lines.filtered(lambda line: line.invoice_id == invoice1)
+        delivered_invoice_line = self.delivered_so_line.invoice_lines.filtered(lambda line: line.move_id == invoice1)
         self.assertEqual(self.delivered_so_line.qty_invoiced, delivered_invoice_line.quantity, "The invoiced quantity should be same on sales order line and invoice line")
 
         # Validate remaining Timesheet
@@ -146,16 +145,15 @@ class TestSaleValidatedTimesheet(TestCommonSaleTimesheetNoChart):
         self.assertEqual(self.delivered_so_line.qty_delivered, 10, 'All quantity should be delivered')
 
         # invoice remaining SO
-        invoice_id2 = self.sale_order._create_invoices()
-        invoice2 = self.env['account.invoice'].browse(invoice_id2)
+        invoice2 = self.sale_order._create_invoices()
 
         # check invoiced amount
         self.assertEqual(invoice2.amount_total, self.delivered_so_line.price_unit * 4, 'Invoiced amount should be equal to Delivered SOL unit price * 4')
         self.assertEqual(invoice1.amount_total+invoice2.amount_total, self.ordered_so_line.price_unit * 10 + self.delivered_so_line.price_unit * 10, 'Invoiced amount should be equal to Ordered SOL + Delivered SOL')
         # check invoiced quantity on sale order and on invoice
-        ordered_invoice_line2 = self.ordered_so_line.invoice_lines.filtered(lambda line: line.invoice_id == invoice2)
+        ordered_invoice_line2 = self.ordered_so_line.invoice_lines.filtered(lambda line: line.move_id == invoice2)
         self.assertFalse(ordered_invoice_line2, "For ordered quantity so line we already invoiced full quantity on previous invoice so it should not be invoied now")
-        delivered_invoice_line2 = self.delivered_so_line.invoice_lines.filtered(lambda line: line.invoice_id == invoice2)
+        delivered_invoice_line2 = self.delivered_so_line.invoice_lines.filtered(lambda line: line.move_id == invoice2)
         self.assertEqual(self.delivered_so_line.qty_invoiced, delivered_invoice_line.quantity + delivered_invoice_line2.quantity, "The invoiced quantity should be same on sales order line and invoice line")
         # order should be fully invoiced
         self.assertEqual(self.sale_order.invoice_status, 'invoiced', "The SO invoice status should be fully invoiced")

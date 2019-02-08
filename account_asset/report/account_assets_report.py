@@ -67,7 +67,7 @@ class assets_report(models.AbstractModel):
         """
         account_code_short = int(str(account_code)[:2])
         group_dict = group_dict or self.env['account.report']._get_account_groups_for_asset_report()
-        account_id = self.env['account.account'].search([('company_id', '=', self.env.user.company_id.id), ('code', '=', account_code)])
+        account_id = self.env['account.account'].search([('company_id', '=', self.env.company.id), ('code', '=', account_code)])
         account_string = "{code} {name}".format(code=account_id.code, name=account_id.name)
         for k, v in group_dict.items():
             try:
@@ -185,7 +185,7 @@ class assets_report(models.AbstractModel):
                        COALESCE(first_move.asset_remaining_value, move_before.asset_remaining_value, 0.0) as remaining_start,
                        COALESCE(last_move.asset_depreciated_value, move_before.asset_depreciated_value, 0.0) as depreciated_end,
                        COALESCE(last_move.asset_remaining_value, move_before.asset_remaining_value, 0.0) as remaining_end,
-                       COALESCE(first_move.amount, 0.0) as depreciation
+                       COALESCE(first_move.amount_total, 0.0) as depreciation
                 FROM account_asset as asset
                 JOIN account_account as account ON asset.account_asset_id = account.id
                 LEFT OUTER JOIN (SELECT MIN(date) as date, asset_id FROM account_move WHERE date >= %(date_from)s AND date <= %(date_to)s {where_account_move} GROUP BY asset_id) min_date_in ON min_date_in.asset_id = asset.id

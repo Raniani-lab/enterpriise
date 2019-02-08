@@ -198,7 +198,7 @@ class SaleSubscription(models.Model):
         return super(SaleSubscription, self)._track_subtype(init_values)
 
     def _compute_invoice_count(self):
-        Invoice = self.env['account.invoice']
+        Invoice = self.env['account.move']
         can_read = Invoice.check_access_rights('read', raise_exception=False)
         for subscription in self:
             subscription.invoice_count = can_read and Invoice.search_count([('invoice_line_ids.subscription_id', '=', subscription.id)]) or 0
@@ -332,13 +332,13 @@ class SaleSubscription(models.Model):
 
     def action_subscription_invoice(self):
         self.ensure_one()
-        invoices = self.env['account.invoice'].search([('invoice_line_ids.subscription_id', 'in', self.ids)])
-        action = self.env.ref('account.action_invoice_tree1').read()[0]
+        invoices = self.env['account.move'].search([('invoice_line_ids.subscription_id', 'in', self.ids)])
+        action = self.env.ref('account.action_move_out_invoice_type').read()[0]
         action["context"] = {"create": False}
         if len(invoices) > 1:
             action['domain'] = [('id', 'in', invoices.ids)]
         elif len(invoices) == 1:
-            action['views'] = [(self.env.ref('account.invoice_form').id, 'form')]
+            action['views'] = [(self.env.ref('account.view_move_form').id, 'form')]
             action['res_id'] = invoices.ids[0]
         else:
             action = {'type': 'ir.actions.act_window_close'}
@@ -479,18 +479,16 @@ class SaleSubscription(models.Model):
 
         sale_order = self.env['sale.order'].search([('order_line.subscription_id', 'in', self.ids)], order="id desc", limit=1)
         return {
-            'account_id': self.partner_id.property_account_receivable_id.id,
             'type': 'out_invoice',
             'partner_id': addr['invoice'],
             'partner_shipping_id': addr['delivery'],
             'currency_id': self.pricelist_id.currency_id.id,
             'journal_id': journal.id,
-            'origin': self.code,
+            'invoice_origin': self.code,
             'fiscal_position_id': fpos_id,
-            'payment_term_id': sale_order.payment_term_id.id if sale_order else self.partner_id.property_payment_term_id.id,
-            'company_id': company.id,  # VFE FIXME one day, should be self.company_id.id
-            'comment': _("This invoice covers the following period: %s - %s") % (format_date(self.env, next_date), format_date(self.env, end_date)),
-            'user_id': self.user_id.id,
+            'invoice_payment_term_id': sale_order.payment_term_id.id if sale_order else self.partner_id.property_payment_term_id.id,
+            'narration': _("This invoice covers the following period: %s - %s") % (format_date(self.env, next_date), format_date(self.env, end_date)),
+            'invoice_user_id': self.user_id.id,
         }
 
     @api.model
@@ -519,37 +517,22 @@ class SaleSubscription(models.Model):
         return recurring_next_date
 
     def _prepare_invoice_line(self, line, fiscal_position):
-        if 'force_company' in self.env.context:
-            company = self.env['res.company'].browse(self.env.context['force_company'])
-        else:
-            company = line.analytic_account_id.company_id
-            line = line.with_context(force_company=company.id, company_id=company.id)
-
-        account = line.product_id.property_account_income_id
-        if not account:
-            account = line.product_id.categ_id.property_account_income_categ_id
-        account_id = fiscal_position.map_account(account).id
-
-        tax = line.product_id.taxes_id.filtered(lambda r: r.company_id == company)
-        tax = fiscal_position.map_tax(tax, product=line.product_id, partner=self.partner_id)
         return {
             'name': line.name,
-            'account_id': account_id,
-            'account_analytic_id': line.analytic_account_id.analytic_account_id.id,
             'subscription_id': line.analytic_account_id.id,
             'price_unit': line.price_unit or 0.0,
             'discount': line.discount,
             'quantity': line.quantity,
-            'uom_id': line.uom_id.id,
+            'product_uom_id': line.uom_id.id,
             'product_id': line.product_id.id,
-            'invoice_line_tax_ids': [(6, 0, tax.ids)],
+            'tax_ids': [(6, 0, line.product_id.taxes_id.filtered(lambda t: t.company_id == line.analytic_account_id.company_id).ids)],
+            'analytic_account_id': line.analytic_account_id.analytic_account_id.id,
             'analytic_tag_ids': [(6, 0, line.analytic_account_id.tag_ids.ids)]
         }
 
     def _prepare_invoice_lines(self, fiscal_position):
         self.ensure_one()
-        fiscal_position = self.env['account.fiscal.position'].browse(fiscal_position)
-        return [(0, 0, self._prepare_invoice_line(line, fiscal_position)) for line in self.recurring_invoice_line_ids]
+        return [(0, 0, self._prepare_invoice_line(line, None)) for line in self.recurring_invoice_line_ids]
 
     def _prepare_invoice(self):
         invoice = self._prepare_invoice_data()
@@ -697,7 +680,7 @@ class SaleSubscription(models.Model):
     def _recurring_create_invoice(self, automatic=False):
         auto_commit = self.env.context.get('auto_commit', True)
         cr = self.env.cr
-        invoices = self.env['account.invoice']
+        invoices = self.env['account.move']
         current_date = datetime.date.today()
         imd_res = self.env['ir.model.data']
         template_res = self.env['mail.template']
@@ -712,7 +695,7 @@ class SaleSubscription(models.Model):
             for company_id in set(data['company_id'][0] for data in sub_data):
                 sub_ids = [s['id'] for s in sub_data if s['company_id'][0] == company_id]
                 subs = self.with_context(company_id=company_id, force_company=company_id).browse(sub_ids)
-                context_company = dict(self.env.context, company_id=company_id, force_company=company_id)
+                context_invoice = dict(self.env.context, type='out_invoice', company_id=company_id, force_company=company_id)
                 for subscription in subs:
                     subscription = subscription[0]  # Trick to not prefetch other subscriptions, as the cache is currently invalidated at each iteration
                     if automatic and auto_commit:
@@ -724,7 +707,7 @@ class SaleSubscription(models.Model):
                             tx = None
                             if payment_token:
                                 invoice_values = subscription.with_context(lang=subscription.partner_id.lang)._prepare_invoice()
-                                new_invoice = self.env['account.invoice'].with_context(context_company).create(invoice_values)
+                                new_invoice = self.env['account.move'].with_context(context_invoice).create(invoice_values)
                                 new_invoice.message_post_with_view(
                                     'mail.message_origin_link',
                                     values={'self': new_invoice, 'origin': subscription},
@@ -735,7 +718,7 @@ class SaleSubscription(models.Model):
                                     cr.commit()
                                 if tx.state in ['done', 'authorized']:
                                     subscription.send_success_mail(tx, new_invoice)
-                                    msg_body = _('Automatic payment succeeded. Payment reference: <a href=# data-oe-model=payment.transaction data-oe-id=%d>%s</a>; Amount: %s. Invoice <a href=# data-oe-model=account.invoice data-oe-id=%d>View Invoice</a>.') % (tx.id, tx.reference, tx.amount, new_invoice.id)
+                                    msg_body = _('Automatic payment succeeded. Payment reference: <a href=# data-oe-model=payment.transaction data-oe-id=%d>%s</a>; Amount: %s. Invoice <a href=# data-oe-model=account.move data-oe-id=%d>View Invoice</a>.') % (tx.id, tx.reference, tx.amount, new_invoice.id)
                                     subscription.message_post(body=msg_body)
                                     if subscription.template_id.payment_mode == 'validate_send_payment':
                                         subscription.validate_and_send_invoice(new_invoice)
@@ -799,12 +782,11 @@ class SaleSubscription(models.Model):
                     elif subscription.template_id.payment_mode in ['draft_invoice', 'manual', 'validate_send']:
                         try:
                             invoice_values = subscription.with_context(lang=subscription.partner_id.lang)._prepare_invoice()
-                            new_invoice = self.env['account.invoice'].with_context(context_company).create(invoice_values)
+                            new_invoice = self.env['account.move'].with_context(context_invoice).create(invoice_values)
                             new_invoice.message_post_with_view(
                                 'mail.message_origin_link',
                                 values={'self': new_invoice, 'origin': subscription},
                                 subtype_id=self.env.ref('mail.mt_note').id)
-                            new_invoice.with_context(context_company).compute_taxes()
                             invoices += new_invoice
                             next_date = subscription.recurring_next_date or current_date
                             rule, interval = subscription.recurring_rule_type, subscription.recurring_interval
@@ -853,7 +835,7 @@ class SaleSubscription(models.Model):
 
     def validate_and_send_invoice(self, invoice):
         self.ensure_one()
-        invoice.action_invoice_open()
+        invoice.post()
         email_context = self.env.context.copy()
         email_context.update({
             'total_amount': invoice.amount_total,
@@ -1025,7 +1007,7 @@ class SaleSubscriptionTemplate(models.Model):
                                      help="Domain used to change subscription's Kanban state with a 'Good' rating")
     bad_health_domain = fields.Char(string='Bad Health', default='[]',
                                     help="Domain used to change subscription's Kanban state with a 'Bad' rating")
-    invoice_mail_template_id = fields.Many2one('mail.template', string='Invoice Email Template', domain=[('model', '=', 'account.invoice')])
+    invoice_mail_template_id = fields.Many2one('mail.template', string='Invoice Email Template', domain=[('model', '=', 'account.move')])
 
     @api.constrains('recurring_interval')
     def _check_recurring_interval(self):

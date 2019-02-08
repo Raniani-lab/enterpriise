@@ -153,7 +153,7 @@ class sale_subscription(http.Controller):
                  '/my/subscription/payment/<int:account_id>/<string:uuid>'], type='http', auth="public", methods=['POST'], website=True)
     def payment(self, account_id, uuid=None, **kw):
         account_res = request.env['sale.subscription']
-        invoice_res = request.env['account.invoice']
+        invoice_res = request.env['account.move']
         get_param = ''
         if uuid:
             account = account_res.sudo().browse(account_id)
@@ -183,7 +183,7 @@ class sale_subscription(http.Controller):
             get_param = self.payment_succes_msg if tx.state in ['done', 'authorized'] else self.payment_fail_msg
             if tx.state in ['done', 'authorized']:
                 account.send_success_mail(tx, new_invoice)
-                msg_body = 'Manual payment succeeded. Payment reference: <a href=# data-oe-model=payment.transaction data-oe-id=%d>%s</a>; Amount: %s. Invoice <a href=# data-oe-model=account.invoice data-oe-id=%d>View Invoice</a>.' % (tx.id, tx.reference, tx.amount, new_invoice.id)
+                msg_body = 'Manual payment succeeded. Payment reference: <a href=# data-oe-model=payment.transaction data-oe-id=%d>%s</a>; Amount: %s. Invoice <a href=# data-oe-model=account.move data-oe-id=%d>View Invoice</a>.' % (tx.id, tx.reference, tx.amount, new_invoice.id)
                 account.message_post(body=msg_body)
             else:
                 new_invoice.unlink()

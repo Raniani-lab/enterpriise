@@ -92,7 +92,7 @@ class AccountPayment(models.Model):
         """ Returns the sdd mandate that can be used to generate this payment, or
         None if there is none.
         """
-        return self.env['sdd.mandate']._get_usable_mandate(
+        return self.env['sdd.mandate']._sdd_get_usable_mandate(
             self.company_id.id or self.env.company.id,
             self.partner_id.commercial_partner_id.id,
             self.payment_date)
@@ -206,10 +206,10 @@ class AccountPayment(models.Model):
         if self.payment_method_code == 'sdd':
             rslt = self.env['account.payment']
             for invoice in self.invoice_ids:
-                mandate = invoice._get_usable_mandate()
+                mandate = invoice._sdd_get_usable_mandate()
                 if not mandate:
                     raise UserError(_("This invoice cannot be paid via SEPA Direct Debit, as there is no valid mandate available for its customer at its creation date."))
-                rslt += invoice.pay_with_mandate(mandate)
+                rslt += invoice._sdd_pay_with_mandate(mandate)
             return rslt
 
         return super(AccountPayment, self).create_payments()

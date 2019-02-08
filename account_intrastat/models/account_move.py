@@ -4,8 +4,8 @@
 from odoo import api, fields, models
 
 
-class AccountInvoice(models.Model):
-    _inherit = 'account.invoice'
+class AccountMove(models.Model):
+    _inherit = 'account.move'
 
     intrastat_transport_mode_id = fields.Many2one('account.intrastat.code', string='Intrastat Transport Mode',
         readonly=True, states={'draft': [('readonly', False)]}, domain="[('type', '=', 'transport')]")
@@ -13,17 +13,18 @@ class AccountInvoice(models.Model):
         help='Intrastat country, arrival for sales, dispatch for purchases',
         readonly=True, states={'draft': [('readonly', False)]}, domain=[('intrastat', '=', True)])
 
-    @api.onchange('partner_id', 'company_id')
+    @api.onchange('partner_id')
     def _onchange_partner_id(self):
-        res = super(AccountInvoice, self)._onchange_partner_id()
+        # OVERRIDE to set 'intrastat_country_id' depending of the partner's country.
+        res = super(AccountMove, self)._onchange_partner_id()
         if self.partner_id.country_id.intrastat:
-            self.intrastat_country_id = self._get_intrastat_country_id()
+            self.intrastat_country_id = self._get_invoice_intrastat_country_id()
         else:
             self.intrastat_country_id = False
         return res
 
 
-class AccountInvoiceLine(models.Model):
-    _inherit = 'account.invoice.line'
+class AccountMoveLine(models.Model):
+    _inherit = 'account.move.line'
 
     intrastat_transaction_id = fields.Many2one('account.intrastat.code', string='Intrastat', domain="[('type', '=', 'transaction')]")

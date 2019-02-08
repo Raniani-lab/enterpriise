@@ -8,7 +8,7 @@
             <field name="inherit_id" ref="account.view_account_journal_form"/>
             <field name="arch" type="xml">
             <data>
-                <xpath expr="//field[@name='group_invoice_lines']" position="after">
+                <xpath expr="//field[@name='loss_account_id']" position="after">
                     <field name="l10n_mx_address_issued_id" attrs="{'invisible':  [('type', '!=', 'sale')]}" context="{'default_type': 'invoice'}"/>
                     <field name="l10n_mx_edi_payment_method_id" attrs="{'invisible':  [('type', '!=', 'bank')]}"/>
                 </xpath>

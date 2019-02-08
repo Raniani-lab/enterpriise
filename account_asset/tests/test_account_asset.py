@@ -86,21 +86,20 @@ class TestAccountAsset(common.TransactionCase):
         self.browse_ref("account_asset.xfa").create_asset = 'validate'
         self.browse_ref("account_asset.xfa").asset_model = self.ref("account_asset.account_asset_model_sale_test0")
 
-        invoice = self.env['account.invoice'].with_context(asset_type='in_invoice').create({
+        invoice = self.env['account.move'].with_context(asset_type='purchase').create({
+            'type': 'in_invoice',
             'partner_id': self.ref("base.res_partner_12"),
-            'account_id': self.ref("account_asset.a_recv"),
+            'invoice_line_ids': [(0, 0, {
+                'name': 'Insurance claim',
+                'account_id': self.ref("account_asset.xfa"),
+                'price_unit': 450,
+                'quantity': 1,
+            })],
         })
-        self.env['account.invoice.line'].create({
-            'invoice_id': invoice.id,
-            'account_id': self.ref("account_asset.xfa"),
-            'name': 'Insurance claim',
-            'price_unit': 450,
-            'quantity': 1,
-        })
-        invoice.action_invoice_open()
+        invoice.post()
 
-        recognition = self.env['account.asset'].search([('original_move_line_ids.invoice_id', '=', invoice.id)])
-        self.assertTrue(len(recognition) == 1, 'One and only one recognition sould have been created from invoice.')
+        recognition = invoice.asset_ids
+        self.assertEqual(len(recognition), 1, 'One and only one recognition sould have been created from invoice.')
 
         # I confirm revenue recognition.
         recognition.validate()
@@ -115,9 +114,9 @@ class TestAccountAsset(common.TransactionCase):
 
         # I check data in move line and installment line.
         first_installment_line = recognition.depreciation_move_ids.sorted(lambda r: r.id)[0]
-        self.assertAlmostEqual(first_installment_line.asset_remaining_value, recognition.value - first_installment_line.amount,
+        self.assertAlmostEqual(first_installment_line.asset_remaining_value, recognition.value - first_installment_line.amount_total,
                                msg='Remaining value is incorrect.')
-        self.assertAlmostEqual(first_installment_line.asset_depreciated_value, first_installment_line.amount,
+        self.assertAlmostEqual(first_installment_line.asset_depreciated_value, first_installment_line.amount_total,
                                msg='Depreciated value is incorrect.')
 
         # I check next installment date.
@@ -141,22 +140,22 @@ class TestAccountAsset(common.TransactionCase):
         # Test that the depreciations are created upon validation of the asset according to the default values
         self.assertEqual(len(asset.depreciation_move_ids), 5)
         for move in asset.depreciation_move_ids:
-            self.assertEqual(move.amount, 2000)
+            self.assertEqual(move.amount_total, 2000)
 
         # Test that we cannot validate an asset with non zero remaining value of the last depreciation line
         asset_form = Form(asset)
         with self.assertRaises(ValidationError):
             with self.cr.savepoint():
                 with asset_form.depreciation_move_ids.edit(4) as line_edit:
-                    line_edit.amount = 1000.0
+                    line_edit.amount_total = 1000.0
                 asset_form.save()
 
         # ... but we can with a zero remaining value on the last line.
         asset_form = Form(asset)
         with asset_form.depreciation_move_ids.edit(4) as line_edit:
-            line_edit.amount = 1000.0
+            line_edit.amount_total = 1000.0
         with asset_form.depreciation_move_ids.edit(3) as line_edit:
-            line_edit.amount = 3000.0
+            line_edit.amount_total = 3000.0
         self.update_form_values(asset_form)
         asset_form.save()
 

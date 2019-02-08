@@ -14,8 +14,8 @@ class IntrastatReport(models.AbstractModel):
         invoice_ids = [row['invoice_id'] for row in vals]
         if cache is None:
             cache = {}
-        for index, invoice in enumerate(self.env['account.invoice'].browse(invoice_ids)):
-            stock_moves = invoice._get_last_step_stock_moves()
+        for index, invoice in enumerate(self.env['account.move'].browse(invoice_ids)):
+            stock_moves = invoice._stock_account_get_last_step_stock_moves()
             if stock_moves:
                 warehouse = stock_moves[0].warehouse_id or stock_moves[0].picking_id.picking_type_id.warehouse_id
                 cache_key = 'warehouse_region_%d' % warehouse.id

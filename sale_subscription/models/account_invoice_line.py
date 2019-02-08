@@ -4,8 +4,8 @@ from odoo import fields, models, api
 from odoo.addons import decimal_precision as dp
 
 
-class AccountInvoiceLine(models.Model):
-    _inherit = "account.invoice.line"
+class AccountMoveLine(models.Model):
+    _inherit = "account.move.line"
 
     subscription_id = fields.Many2one('sale.subscription')
     subscription_start_date = fields.Date(string='Subscription Start Date', related='subscription_id.date_start', readonly=True, store=True)

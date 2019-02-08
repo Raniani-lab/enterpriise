@@ -9,24 +9,27 @@ from odoo.tests.common import Form
 class TestBillsPrediction(AccountingTestCase):
 
     def _create_one_line_bill(self, vendor, description, expected_account, account_to_set=None):
-        with Form(self.env['account.invoice'].with_context(type='in_invoice'), view='account.invoice_supplier_form') as invoice_form:
-            invoice_form.partner_id = vendor
+        default_journal = self.env['account.move'].with_context(default_type='in_invoice')._get_default_journal()
+        invoice_form = Form(self.env['account.move'].with_context(default_type='in_invoice', default_journal_id=default_journal.id))
+        invoice_form.partner_id = vendor
+        with invoice_form.invoice_line_ids.new() as invoice_line_form:
+            invoice_line_form.quantity = 1
+            invoice_line_form.price_unit = 42
+            invoice_line_form.name = description
+        move = invoice_form.save()
 
-            with invoice_form.invoice_line_ids.new() as invoice_line_form:
-                invoice_line_form.quantity = 1
-                invoice_line_form.price_unit = 42
-                invoice_line_form.name = description
+        self.assertEquals(move.invoice_line_ids.account_id, expected_account, "Account %s should have been predicted instead of %s" % (expected_account.code, move.invoice_line_ids.account_id.code))
 
-                self.assertEquals(invoice_line_form.account_id, expected_account, "Account %s should have been predicted instead of %s" % (expected_account.code, invoice_line_form.account_id.code))
+        if account_to_set:
+            invoice_form = Form(move)
+            with invoice_form.invoice_line_ids.edit(0) as invoice_line_form:
+                invoice_line_form.account_id = account_to_set
+                # We check that the account doesn't get another value due to onchange calling itself
+                self.assertEquals(invoice_line_form.account_id, account_to_set, "Account %s has been assigned manually, but has been changed to account %s" % (account_to_set.code, invoice_line_form.account_id.code))
+            move = invoice_form.save()
+        move.post()
 
-                if account_to_set:
-                    invoice_line_form.account_id = account_to_set
-                    # We check that the account doesn't get another value due to onchange calling itself
-                    self.assertEquals(invoice_line_form.account_id, account_to_set, "Account %s has been assigned manually, but has been changed to account %s" % (account_to_set.code, invoice_line_form.account_id.code))
-
-            rslt = invoice_form.save()
-            rslt.action_invoice_open()
-            return rslt
+        return move
 
     def _create_test_partners(self, nber):
         rslt = self.env['res.partner']
@@ -47,6 +50,11 @@ class TestBillsPrediction(AccountingTestCase):
         return rslt
 
     def test_account_prediction_flow(self):
+        self.env.cr.execute('''
+            DELETE FROM account_move_line;
+            DELETE FROM account_move;
+        ''')
+
         vendors = self._create_test_partners(7)
         accounts = self._create_test_accounts([('test1', 'Test Maintenance and Repair'),
                                                ('test2', 'Test Purchase of services, studies and preparatory work'),

@@ -4,8 +4,9 @@
 from odoo import fields, models, api, _
 from odoo.exceptions import UserError
 
-class AccountInvoice(models.Model):
-    _inherit = 'account.invoice'
+
+class AccountMove(models.Model):
+    _inherit = 'account.move'
 
     def _default_mod_349_invoice_type(self):
         invoice_type = self.env.context.get('type', False)
@@ -17,9 +18,9 @@ class AccountInvoice(models.Model):
 
     def _mod_349_selection_values(self):
         context = self.env.context
-        if context.get('type') in ('out_invoice', 'out_refund'):
+        if context.get('type') in self.get_sale_types():
             return[('E', _("E - Supply")), ('T', _("T - Triangular Operation")), ('S', _("S - Services sale")), ('M', _("M - Supply without taxes")), ('H', _("H - Supply without taxes delivered by a legal representative"))]
-        if context.get('type') in ('in_invoice', 'in_refund'):
+        if context.get('type') in self.get_purchase_types():
             return [('A', _("A - Acquisition")), ('T', _("T - Triangular Operation")), ('I', _("I - Services acquisition"))]
         # If no type is given in context, we give access to every possible value for the field
         return [('A', _("A - Acquisition")), ('E', _("E - Supply")), ('T', _("T - Triangular Operation")), ('S', _("S - Services sale")), ('I', _("I - Services acquisition")), ('M', _("M - Supply without taxes")), ('H', _("H - Supply without taxes delivered by a legal representative"))]
@@ -35,18 +36,15 @@ class AccountInvoice(models.Model):
         for record in self:
             record.l10n_es_reports_mod349_available = record.partner_id.country_id in mod349_countries
 
-    def _get_refund_copy_fields(self):
-        rslt = super(AccountInvoice, self)._get_refund_copy_fields()
-        return rslt + ['l10n_es_reports_mod347_invoice_type', 'l10n_es_reports_mod349_invoice_type']
-
-    def invoice_validate(self):
+    @api.multi
+    def post(self):
         """ Overridden to require Spanish invoice type to be set if the company
         of the invoice uses a Spanish COA (so other companies using other COA
         on the same DB won't be force to use them).
         """
-        rslt = super(AccountInvoice, self).invoice_validate()
+        rslt = super(AccountMove, self).post()
         spanish_coa_list = [self.env.ref('l10n_es.account_chart_template_pymes'), self.env.ref('l10n_es.account_chart_template_assoc'), self.env.ref('l10n_es.account_chart_template_full')]
-        for record in self:
+        for record in self.filtered(lambda move: move.is_invoice()):
             if record.company_id.chart_template_id in spanish_coa_list and \
             record.partner_id.country_id == self.env.ref('base.es', False) and \
             (not record.l10n_es_reports_mod347_invoice_type or (record.l10n_es_reports_mod349_available and not record.l10n_es_reports_mod349_invoice_type)):

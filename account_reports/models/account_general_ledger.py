@@ -356,11 +356,11 @@ class AccountGeneralLedgerReport(models.AbstractModel):
             params += where_params
             queries.append('''
                 SELECT
-                    account_move_line.account_id                AS groupby,
-                    'sum'                                       AS key,
-                    MAX(account_move_line.date)                 AS max_date,
-                    %s                                          AS period_number,
-                    SUM(account_move_line.amount_currency)      AS amount_currency,
+                    account_move_line.account_id                            AS groupby,
+                    'sum'                                                   AS key,
+                    MAX(account_move_line.date)                             AS max_date,
+                    %s                                                      AS period_number,
+                    COALESCE(SUM(account_move_line.amount_currency), 0.0)   AS amount_currency,
                     SUM(ROUND(account_move_line.debit * currency_table.rate, currency_table.precision))   AS debit,
                     SUM(ROUND(account_move_line.credit * currency_table.rate, currency_table.precision))  AS credit,
                     SUM(ROUND(account_move_line.balance * currency_table.rate, currency_table.precision)) AS balance
@@ -391,11 +391,11 @@ class AccountGeneralLedgerReport(models.AbstractModel):
             params += where_params
             queries.append('''
                 SELECT
-                    account_move_line.company_id                AS groupby,
-                    'unaffected_earnings'                       AS key,
-                    NULL                                        AS max_date,
-                    %s                                          AS period_number,
-                    SUM(account_move_line.amount_currency)      AS amount_currency,
+                    account_move_line.company_id                            AS groupby,
+                    'unaffected_earnings'                                   AS key,
+                    NULL                                                    AS max_date,
+                    %s                                                      AS period_number,
+                    COALESCE(SUM(account_move_line.amount_currency), 0.0)   AS amount_currency,
                     SUM(ROUND(account_move_line.debit * currency_table.rate, currency_table.precision))   AS debit,
                     SUM(ROUND(account_move_line.credit * currency_table.rate, currency_table.precision))  AS credit,
                     SUM(ROUND(account_move_line.balance * currency_table.rate, currency_table.precision)) AS balance
@@ -522,7 +522,6 @@ class AccountGeneralLedgerReport(models.AbstractModel):
                 account_move_line.ref,
                 account_move_line.company_id,
                 account_move_line.account_id,
-                account_move_line.invoice_id,
                 account_move_line.payment_id,
                 account_move_line.partner_id,
                 account_move_line.currency_id,
@@ -533,7 +532,7 @@ class AccountGeneralLedgerReport(models.AbstractModel):
                 account_move_line__move_id.name         AS move_name,
                 company.currency_id                     AS company_currency_id,
                 partner.name                            AS partner_name,
-                invoice.type                            AS invoice_type,
+                account_move_line__move_id.type         AS move_type,
                 account.code                            AS account_code,
                 account.name                            AS account_name,
                 journal.code                            AS journal_code,
@@ -544,7 +543,6 @@ class AccountGeneralLedgerReport(models.AbstractModel):
             LEFT JOIN %s ON currency_table.company_id = account_move_line.company_id
             LEFT JOIN res_company company               ON company.id = account_move_line.company_id
             LEFT JOIN res_partner partner               ON partner.id = account_move_line.partner_id
-            LEFT JOIN account_invoice invoice           ON invoice.id = account_move_line.invoice_id
             LEFT JOIN account_account account           ON account.id = account_move_line.account_id
             LEFT JOIN account_journal journal           ON journal.id = account_move_line.journal_id
             LEFT JOIN account_full_reconcile full_rec   ON full_rec.id = account_move_line.full_reconcile_id
@@ -715,14 +713,14 @@ class AccountGeneralLedgerReport(models.AbstractModel):
 
     @api.model
     def _get_aml_line(self, options, account, aml, cumulated_balance):
-        caret_type = 'account.move'
-        if aml['invoice_id']:
-            if aml['invoice_type'] in ('in_refund', 'in_invoice'):
-                caret_type = 'account.invoice.in'
-            else:
-                caret_type = 'account.invoice.out'
-        elif aml['payment_id']:
+        if aml['payment_id']:
             caret_type = 'account.payment'
+        elif aml['move_type'] in ('in_refund', 'in_invoice', 'in_receipt'):
+            caret_type = 'account.invoice.in'
+        elif aml['move_type'] in ('out_refund', 'out_invoice', 'out_receipt'):
+            caret_type = 'account.invoice.out'
+        else:
+            caret_type = 'account.move'
 
         if aml['ref'] and aml['name']:
             title = '%s - %s' % (aml['name'], aml['ref'])

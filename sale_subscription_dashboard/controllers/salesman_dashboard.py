@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from itertools import groupby
 
@@ -19,10 +18,10 @@ class SalemanDashboard(http.Controller):
             FROM res_users
             WHERE EXISTS (
                 SELECT 1
-                FROM account_invoice
-                WHERE user_id = res_users.id
+                FROM account_move
+                WHERE invoice_user_id = res_users.id
             )
-        """)  # we could also use distinct(user_id) on account_invoice, but distinct is slower
+        """)  # we could also use distinct(invoice_user_id) on account_move, but distinct is slower
         sql_results = request.cr.dictfetchall()
 
         salesman_ids = request.env['res.users'].search_read([('id', 'in', [x['id'] for x in sql_results])], ['id', 'name'], order='name')
@@ -45,16 +44,16 @@ class SalemanDashboard(http.Controller):
         new_mrr, churned_mrr, expansion_mrr, down_mrr, net_new_mrr = 0, 0, 0, 0, 0
 
         domain = [
-            ('invoice_id.type', 'in', ('out_invoice', 'out_refund')),
-            ('invoice_id.state', 'not in', ('draft', 'cancel')),
-            ('invoice_id.user_id', '=', salesman_id),
+            ('move_id.type', 'in', ('out_invoice', 'out_refund')),
+            ('move_id.state', 'not in', ('draft', 'cancel')),
+            ('move_id.invoice_user_id', '=', salesman_id),
         ]
 
-        starting_invoice_line_ids = request.env['account.invoice.line'].search(domain + [
+        starting_invoice_line_ids = request.env['account.move.line'].search(domain + [
             ('subscription_start_date', '>=', start_date),
             ('subscription_start_date', '<=', end_date),
         ], order='subscription_id')
-        stopping_invoice_lines_ids = request.env['account.invoice.line'].search(domain + [
+        stopping_invoice_lines_ids = request.env['account.move.line'].search(domain + [
             ('subscription_end_date', '>=', start_date),
             ('subscription_end_date', '<=', end_date),
         ], order='subscription_id')
@@ -65,7 +64,7 @@ class SalemanDashboard(http.Controller):
             previous_mrr = sum([x['subscription_mrr'] for x in previous_il_ids])
             previous_il_id = previous_il_ids[0]
 
-            next_il_ids = request.env['account.invoice.line'].search([
+            next_il_ids = request.env['account.move.line'].search([
                 ('subscription_start_date', '>=', previous_il_id.subscription_end_date),
                 ('subscription_start_date', '<', previous_il_id.subscription_end_date + relativedelta(months=+1)),
                 ('subscription_id', '=', previous_il_id.subscription_id.id)
@@ -96,7 +95,7 @@ class SalemanDashboard(http.Controller):
             }
 
             # Was there any invoice_line in the last 30 days for this subscription ?
-            previous_il_ids = request.env['account.invoice.line'].search([
+            previous_il_ids = request.env['account.move.line'].search([
                 ('subscription_end_date', '<=', next_il_id.subscription_start_date),
                 ('subscription_end_date', '>', next_il_id.subscription_start_date - relativedelta(months=+1)),
                 ('subscription_id', '=', next_il_id.subscription_id.id)]
@@ -125,7 +124,7 @@ class SalemanDashboard(http.Controller):
                 new_contract_modification['current_mrr'] = str(next_mrr)
                 new_contract_modification['diff'] = next_mrr
 
-                active_invoice_line_ids = request.env['account.invoice.line'].search([
+                active_invoice_line_ids = request.env['account.move.line'].search([
                     ('subscription_start_date', '<', next_il_id.subscription_start_date),
                     ('subscription_end_date', '>', next_il_id.subscription_start_date),
                     ('subscription_id', '=', next_il_id.subscription_id.id)]
@@ -147,12 +146,12 @@ class SalemanDashboard(http.Controller):
 
         nrr_invoice_ids = []
         total_nrr = 0
-        current_invoice_ids = request.env['account.invoice'].search([
+        current_invoice_ids = request.env['account.move'].search([
             ('type', 'in', ('out_invoice', 'out_refund')),
             ('state', 'not in', ('draft', 'cancel')),
-            ('user_id', '=', salesman_id),
-            ('date_invoice', '>=', start_date),
-            ('date_invoice', '<=', end_date),
+            ('invoice_user_id', '=', salesman_id),
+            ('invoice_date', '>=', start_date),
+            ('invoice_date', '<=', end_date),
         ])
 
         for invoice_id in current_invoice_ids:

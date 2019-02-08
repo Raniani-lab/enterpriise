@@ -47,7 +47,7 @@
                                t-att-Pais="customer.country_id.l10n_mx_edi_code"
                                t-att-CodigoPostal="customer.zip"/>
                        </cce11:Receptor>
-                       <t t-set="dest" t-value="record.env['res.partner'].browse(record.get_delivery_partner_id())"/>
+                       <t t-set="dest" t-value="record.env['res.partner'].browse(record._get_invoice_delivery_partner_id())"/>
                        <t t-if="dest and dest != record.partner_id">
                             <cce11:Destinatario
                                 t-att-NumRegIdTrib="dest.vat if dest.country_id == dest.commercial_partner_id.country_id else None"

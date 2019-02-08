@@ -29,9 +29,11 @@ class AccountMoveL10NDe(models.Model):
         for move in self:
             value = False
             # If move has an invoice, return invoice's account_id
-            invoice = self.env['account.invoice'].search([('move_id', '=', move.id)])
-            if len(invoice):
-                move.l10n_de_datev_main_account_id = invoice[0].account_id
+            if move.is_invoice(include_receipts=True):
+                payment_term_lines = move.line_ids.filtered(
+                    lambda line: line.account_id.user_type_id.type in ('receivable', 'payable'))
+                if payment_term_lines:
+                    move.l10n_de_datev_main_account_id = payment_term_lines[0].account_id
                 continue
             # If move belongs to a bank journal, return the journal's account (debit/credit should normally be the same)
             if move.journal_id.type == 'bank' and move.journal_id.default_debit_account_id:

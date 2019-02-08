@@ -67,7 +67,7 @@ class IntrastatReport(models.AbstractModel):
         return {
             'id': vals['id'],
             'caret_options': caret_options,
-            'model': 'account.invoice.line',
+            'model': 'account.move.line',
             'name': vals['invoice_number'],
             'columns': columns,
             'level': 2,
@@ -113,8 +113,8 @@ class IntrastatReport(models.AbstractModel):
                 prodt.id AS template_id,
                 inv.id AS invoice_id,
                 inv.currency_id AS invoice_currency_id,
-                inv.number AS invoice_number,
-                coalesce(inv.date, inv.date_invoice) AS invoice_date,
+                inv.name AS invoice_number,
+                coalesce(inv.date, inv.invoice_date) AS invoice_date,
                 inv.type AS invoice_type,
                 inv_incoterm.code AS invoice_incoterm,
                 comp_incoterm.code AS company_incoterm,
@@ -133,8 +133,8 @@ class IntrastatReport(models.AbstractModel):
                 inv_line.price_subtotal AS value
                 '''
         from_ = '''
-                account_invoice_line inv_line
-                LEFT JOIN account_invoice inv ON inv_line.invoice_id = inv.id
+                account_move_line inv_line
+                LEFT JOIN account_move inv ON inv_line.move_id = inv.id
                 LEFT JOIN account_intrastat_code transaction ON inv_line.intrastat_transaction_id = transaction.id
                 LEFT JOIN res_company company ON inv.company_id = company.id
                 LEFT JOIN account_intrastat_code company_region ON company.intrastat_region_id = company_region.id
@@ -145,24 +145,26 @@ class IntrastatReport(models.AbstractModel):
                 INNER JOIN product_product prod ON inv_line.product_id = prod.id
                 LEFT JOIN product_template prodt ON prod.product_tmpl_id = prodt.id
                 LEFT JOIN account_intrastat_code code ON prodt.intrastat_id = code.id
-                LEFT JOIN uom_uom inv_line_uom ON inv_line.uom_id = inv_line_uom.id
+                LEFT JOIN uom_uom inv_line_uom ON inv_line.product_uom_id = inv_line_uom.id
                 LEFT JOIN uom_uom prod_uom ON prodt.uom_id = prod_uom.id
-                LEFT JOIN account_incoterms inv_incoterm ON inv.incoterm_id = inv_incoterm.id
+                LEFT JOIN account_incoterms inv_incoterm ON inv.invoice_incoterm_id = inv_incoterm.id
                 LEFT JOIN account_incoterms comp_incoterm ON company.incoterm_id = comp_incoterm.id
                 LEFT JOIN account_intrastat_code inv_transport ON inv.intrastat_transport_mode_id = inv_transport.id
                 LEFT JOIN account_intrastat_code comp_transport ON company.intrastat_transport_mode_id = comp_transport.id
                 '''
         where = '''
-                inv.state in ('open', 'in_payment', 'paid')
+                inv.state = 'posted'
+                AND inv_line.display_type IS NULL
                 AND inv.company_id = %(company_id)s
                 AND company_country.id != country.id
                 AND country.intrastat = TRUE
-                AND coalesce(inv.date, inv.date_invoice) >= %(date_from)s
-                AND coalesce(inv.date, inv.date_invoice) <= %(date_to)s
+                AND coalesce(inv.date, inv.invoice_date) >= %(date_from)s
+                AND coalesce(inv.date, inv.invoice_date) <= %(date_to)s
                 AND prodt.type != 'service'
                 AND inv.journal_id IN %(journal_ids)s
+                AND inv.type IN %(invoice_types)s
                 '''
-        order = 'inv.date_invoice DESC'
+        order = 'inv.invoice_date DESC'
         params = {
             'company_id': self.env.company.id,
             'date_from': date_from,
@@ -172,8 +174,9 @@ class IntrastatReport(models.AbstractModel):
         if with_vat:
             where += ' AND partner.vat IS NOT NULL '
         if invoice_types:
-            where += ' AND inv.type IN %(invoice_types)s'
             params['invoice_types'] = tuple(invoice_types)
+        else:
+            params['invoice_types'] = ('out_invoice', 'out_refund', 'in_invoice', 'in_refund')
         query = {
             'select': select,
             'from': from_,
@@ -215,7 +218,7 @@ class IntrastatReport(models.AbstractModel):
 
     @api.model
     def _get_lines(self, options, line_id=None):
-        self.env['account.invoice.line'].check_access_rights('read')
+        self.env['account.move.line'].check_access_rights('read')
 
         date_from, date_to, journal_ids, incl_arrivals, incl_dispatches, extended, with_vat = self._decode_options(options)
 

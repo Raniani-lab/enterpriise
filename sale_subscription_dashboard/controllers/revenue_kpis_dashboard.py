@@ -41,7 +41,8 @@ class RevenueKPIsDashboard(http.Controller):
             'tags': request.env['account.analytic.tag'].search_read([], fields=['name']),
             'companies': request.env['res.company'].search_read([], fields=['name']),
             'has_template': bool(request.env['sale.subscription.template'].search_count([])),
-            'has_mrr': bool(request.env['account.invoice.line'].search_count([('subscription_start_date', '!=', False)])),
+            'has_def_revenues': bool(request.env['sale.subscription.template'].search([]).mapped('template_asset_category_id')),
+            'has_mrr': bool(request.env['account.move.line'].search_count([('asset_start_date', '!=', False)])),
             'sales_team': request.env['crm.team'].search_read([], fields=['name'])
         }
 
@@ -130,7 +131,7 @@ class RevenueKPIsDashboard(http.Controller):
             ]
             if filters.get('company_ids'):
                 lines_domain.append(('company_id', 'in', filters.get('company_ids')))
-            recurring_invoice_line_ids = request.env['account.invoice.line'].search(lines_domain)
+            recurring_invoice_line_ids = request.env['account.move.line'].search(lines_domain)
             specific_filters = dict(filters)  # create a copy to modify it
             specific_filters.update({'template_ids': [template.id]})
             value = self.compute_stat(stat_type, start_date, end_date, specific_filters)

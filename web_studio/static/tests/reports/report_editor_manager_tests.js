@@ -1470,15 +1470,15 @@ QUnit.module('ReportEditorManager', {
                     '</t>' +
                 '</kikou>',
         });
-        this.models['account.invoice'] = 'Invoice';
-        this.data['account.invoice'] = {
+        this.models['account.move'] = 'Invoice';
+        this.data['account.move'] = {
             fields: {
                 name: { string: "Name", type: "char"},
             },
             records: [],
         };
         var templateData = {
-            dataOeContext: '{"o": "account.invoice"}'
+            dataOeContext: '{"o": "account.move"}'
         };
         var rem = await studioTestUtils.createReportEditorManager({
             data: this.data,

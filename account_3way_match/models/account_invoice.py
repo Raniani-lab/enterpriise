@@ -7,8 +7,8 @@ from odoo.tools.float_utils import float_compare
 # Available values for the release_to_pay field.
 _release_to_pay_status_list = [('yes', 'Yes'), ('no', 'No'), ('exception', 'Exception')]
 
-class AccountInvoice(models.Model):
-    _inherit = 'account.invoice'
+class AccountMove(models.Model):
+    _inherit = 'account.move'
 
     release_to_pay = fields.Selection(
         _release_to_pay_status_list,
@@ -59,8 +59,8 @@ class AccountInvoice(models.Model):
                 invoice.release_to_pay = result or 'no'
 
 
-class AccountInvoiceLine(models.Model):
-    _inherit = 'account.invoice.line'
+class AccountMoveLine(models.Model):
+    _inherit = 'account.move.line'
 
     @api.depends('purchase_line_id.qty_received', 'purchase_line_id.qty_invoiced', 'purchase_line_id.product_qty')
     def _can_be_paid(self):
@@ -112,7 +112,6 @@ class AccountInvoiceLine(models.Model):
             self.can_be_paid = 'yes'
         else:
             self.can_be_paid = 'exception'
-
 
     def _can_be_paid_received_qty(self, invoiced_qty, received_qty, ordered_qty, precision):
         """

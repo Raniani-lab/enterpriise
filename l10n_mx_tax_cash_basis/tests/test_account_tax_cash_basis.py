@@ -39,7 +39,6 @@ class TestL10nMxTaxCashBasis(InvoiceTransactionCase):
         self.account_move_model = self.env['account.move']
         self.account_move_line_model = self.env['account.move.line']
         self.journal_model = self.env['account.journal']
-        self.refund_model = self.env['account.invoice.refund']
         self.payment_model = self.env['account.payment']
         self.precision = self.env.company.currency_id.decimal_places
         self.payment_method_manual_out = self.env.ref(
@@ -108,7 +107,7 @@ class TestL10nMxTaxCashBasis(InvoiceTransactionCase):
 
         # 2. Delete related records
         models_to_clear = [
-            'account.move.line', 'account.invoice', 'account.payment',
+            'account.move.line', 'account.move', 'account.payment',
             'account.bank.statement']
         for model in models_to_clear:
             records = self.env[model].search([('company_id', '=', company.id)])
@@ -131,7 +130,7 @@ class TestL10nMxTaxCashBasis(InvoiceTransactionCase):
         if invoice.type == 'in_invoice':
             payment_method_id = self.payment_method_manual_in.id
 
-        default_dict = self.payment_model.with_context(active_model='account.invoice', active_ids=invoice.id).default_get(self.payment_model.fields_get_keys())
+        default_dict = self.payment_model.with_context(active_model='account.move', active_ids=invoice.id).default_get(self.payment_model.fields_get_keys())
         payments = self.payment_model.new({**default_dict, **{
                 'payment_date': date,
                 'l10n_mx_edi_payment_method_id': self.payment_method_cash.id,
@@ -156,7 +155,7 @@ class TestL10nMxTaxCashBasis(InvoiceTransactionCase):
         return account_ter
 
     def create_invoice(
-            self, amount, date_invoice, inv_type='out_invoice',
+            self, amount, invoice_date, inv_type='out_invoice',
             currency_id=None):
         if currency_id is None:
             currency_id = self.usd.id
@@ -167,7 +166,7 @@ class TestL10nMxTaxCashBasis(InvoiceTransactionCase):
                 'currency_id': currency_id,
                 'l10n_mx_edi_payment_method_id': self.payment_method_cash.id,
                 'l10n_mx_edi_partner_bank_id': self.account_payment.id,
-                'date_invoice': date_invoice,
+                'date_invoice': invoice_date,
             })
 
         self.create_invoice_line(invoice, 1000)
@@ -178,7 +177,7 @@ class TestL10nMxTaxCashBasis(InvoiceTransactionCase):
 
         # validate invoice
         invoice.compute_taxes()
-        invoice.action_invoice_open()
+        invoice.post()
 
         return invoice
 
@@ -1120,19 +1119,18 @@ class TestL10nMxTaxCashBasis(InvoiceTransactionCase):
             invoice_date,
             currency_id=self.usd.id)
 
-        self.assertEqual(invoice_id.state, "open")
+        self.assertEqual(invoice_id.state, "posted")
 
-        refund = self.refund_model.with_context(
-            active_ids=invoice_id.ids).create({
-                'filter_refund': 'refund',
-                'description': 'Refund Test',
+        refund = self.env['account.move.reversal'].with_context(active_ids=invoice_id.ids).create({
+                'refund_method': 'refund',
+                'reason': 'Refund Test',
                 'date': self.today,
             })
-        result = refund.invoice_refund()
+        result = refund.reverse_moves()
         refund_id = result.get('domain')[1][2]
         refund = self.invoice_model.browse(refund_id)
         refund.refresh()
-        refund.action_invoice_open()
+        refund.post()
         self.assertEqual(refund.state, "open")
 
         ((invoice_id | refund)

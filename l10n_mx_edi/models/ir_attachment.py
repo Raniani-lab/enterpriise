@@ -25,7 +25,7 @@ class IrAttachment(models.Model):
         invoice related to the attachment
         """
         self.filtered(
-            lambda r: r.datas and r.res_model == 'account.invoice' and
+            lambda r: r.datas and r.res_model == 'account.move' and
             splitext(r.name)[1].lower() == '.xml').check_valid_uuid()
         return super(IrAttachment, self).unlink()
 
@@ -39,7 +39,7 @@ class IrAttachment(models.Model):
             except (SyntaxError, ValueError) as err:
                 _logger.error(str(err))
                 continue
-            invoice = self.env['account.invoice'].browse(attach.res_id)
+            invoice = self.env['account.move'].browse(attach.res_id)
             tree = invoice.l10n_mx_edi_get_tfd_etree(xml)
             if tree is None:
                 continue

@@ -32,7 +32,7 @@ class TestHelpdeskStock(common.HelpdeskTransactionCase):
         so.action_confirm()
         so._create_invoices()
         invoice = so.invoice_ids
-        invoice.invoice_validate()
+        invoice.post()
         so.picking_ids[0].move_lines[0].quantity_done = 1
         so.picking_ids[0].action_done()
         ticket = self.env['helpdesk.ticket'].create({

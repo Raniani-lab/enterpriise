@@ -26,7 +26,7 @@
             <field name="name">Número total de personas y entitades</field>
             <field name="code">aeat_mod_347_statistics_operations_count</field>
             <field name="parent_id" ref="mod_347_summary_title"/>
-            <field name="domain" eval="[('invoice_id', '!=', None)]"/>
+            <field name="domain" eval="[('move_id.type', 'in', ('in_invoice', 'out_invoice', 'in_refund', 'out_refund'))]"/>
             <field name="formulas">balance = count_rows</field>
             <field name="groupby">partner_id</field>
             <field name="l10n_es_mod347_threshold">3005.06</field>
@@ -59,7 +59,7 @@
             <field name="name">B - Entregas de bienes y prestaciones de servicios superiores a 3.005,06 €</field>
             <field name="code">aeat_mod_347_operations_insurance_bought</field>
             <field name="parent_id" ref="mod_347_operations_insurance_title"/>
-            <field name="domain" eval="[('invoice_id.l10n_es_reports_mod347_invoice_type','=','insurance'),('invoice_id.type','in',['in_invoice','in_refund'])]"/>
+            <field name="domain" eval="[('move_id.l10n_es_reports_mod347_invoice_type','=','insurance'),('move_id.type','in',['in_invoice','in_refund'])]"/>
             <field name="show_domain">always</field>
             <field name="formulas">balance = sum.debit</field>
             <field name="groupby">partner_id</field>
@@ -83,7 +83,7 @@
             <field name="name">A - Adquisiciones de bienes y servicios superiores a 3.005,06 €</field>
             <field name="code">mod_347_temp</field>
             <field name="parent_id" ref="mod_347_operations_regular_title"/>
-            <field name="domain" eval="[('invoice_id.l10n_es_reports_mod347_invoice_type','=','regular'), ('invoice_id.type','in',['in_invoice','in_refund'])]"/>
+            <field name="domain" eval="[('move_id.l10n_es_reports_mod347_invoice_type','=','regular'), ('move_id.type','in',['in_invoice','in_refund'])]"/>
             <field name="show_domain">always</field>
             <field name="formulas">balance = sum.debit</field>
             <field name="groupby">partner_id</field>
@@ -99,7 +99,7 @@
             <field name="name">B - Entregas de bienes y prestaciones de servicios superiores a 3.005,06 €</field>
             <field name="code">aeat_mod_347_operations_regular_sold</field>
             <field name="parent_id" ref="mod_347_operations_regular_title"/>
-            <field name="domain" eval="[('invoice_id.l10n_es_reports_mod347_invoice_type','=','regular'), ('invoice_id.type','in',['out_invoice','out_refund'])]"/>
+            <field name="domain" eval="[('move_id.l10n_es_reports_mod347_invoice_type','=','regular'), ('move_id.type','in',['out_invoice','out_refund'])]"/>
             <field name="show_domain">always</field>
             <field name="formulas">balance = sum.debit</field>
             <field name="groupby">partner_id</field>

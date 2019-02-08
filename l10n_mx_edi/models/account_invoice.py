@@ -55,9 +55,8 @@ def create_list_html(array):
     return '<ul>' + msg + '</ul>'
 
 
-class AccountInvoice(models.Model):
-    _name = 'account.invoice'
-    _inherit = 'account.invoice'
+class AccountMove(models.Model):
+    _inherit = 'account.move'
 
     l10n_mx_edi_pac_status = fields.Selection(
         selection=[
@@ -303,8 +302,7 @@ class AccountInvoice(models.Model):
     @api.multi
     def l10n_mx_edi_is_required(self):
         self.ensure_one()
-        return (self.type in ('out_invoice', 'out_refund') and
-                self.company_id.country_id == self.env.ref('base.mx'))
+        return (self.is_sale_document() and self.company_id.country_id == self.env.ref('base.mx'))
 
     @api.multi
     def l10n_mx_edi_log_error(self, message):
@@ -498,7 +496,7 @@ class AccountInvoice(models.Model):
             multi = pac_info.pop('multi', False)
             if multi:
                 # rebuild the recordset
-                records = self.env['account.invoice'].search(
+                records = self.env['account.move'].search(
                     [('id', 'in', self.ids), ('company_id', '=', company_id.id)])
                 getattr(records, service_func)(pac_info)
             else:
@@ -595,46 +593,50 @@ class AccountInvoice(models.Model):
     # Account invoice methods
     # -------------------------------------------------------------------------
 
-    @api.onchange('partner_id', 'company_id')
+    @api.onchange('partner_id')
     def _onchange_partner_id(self):
         '''Set the payment bank account on the invoice as the first of the selected partner.
         '''
-        res = super(AccountInvoice, self)._onchange_partner_id()
+        # OVERRIDE
+        res = super(AccountMove, self)._onchange_partner_id()
         if self.commercial_partner_id.bank_ids:
             self.l10n_mx_edi_partner_bank_id = self.commercial_partner_id.bank_ids[0].id
         return res
 
     @api.multi
-    def action_invoice_draft(self):
+    def button_draft(self):
         """Reset l10n_mx_edi_time_invoice when invoice state set to draft"""
+        # OVERRIDE
+        if self.is_invoice():
+            signed = self.filtered(lambda r: r.l10n_mx_edi_is_required() and
+                                   not r.company_id.l10n_mx_edi_pac_test_env and
+                                   r.l10n_mx_edi_cfdi_uuid)
+            signed.l10n_mx_edi_update_sat_status()
+            not_allow = signed.filtered(lambda r: r.l10n_mx_edi_sat_status != 'cancelled' or r.l10n_mx_edi_pac_status == 'to_cancel')
+            if not_allow:
+                not_allow.message_post(
+                    subject=_('An error occurred while setting to draft.'),
+                    message_type='comment',
+                    body=_('This invoice does not have a properly cancelled XML and '
+                           'it was signed at least once, please cancel properly with '
+                           'the SAT.'))
+            allow = self - not_allow
+            allow.write({'l10n_mx_edi_time_invoice': False})
+            for record in allow.filtered('l10n_mx_edi_cfdi_uuid'):
+                record.l10n_mx_edi_origin = record._set_cfdi_origin('04', [record.l10n_mx_edi_cfdi_uuid])
+            return super(AccountMove, self - not_allow).button_draft()
+        else:
+            return super(AccountMove, self).button_draft()
 
-        signed = self.filtered(lambda r: r.l10n_mx_edi_is_required() and
-                               not r.company_id.l10n_mx_edi_pac_test_env and
-                               r.l10n_mx_edi_cfdi_uuid)
-        signed.l10n_mx_edi_update_sat_status()
-        not_allow = signed.filtered(lambda r: r.l10n_mx_edi_sat_status != 'cancelled' or r.l10n_mx_edi_pac_status == 'to_cancel')
-        not_allow.message_post(
-            subject=_('An error occurred while setting to draft.'),
-            body=_('This invoice does not have a properly cancelled XML and '
-                   'it was signed at least once, please cancel properly with '
-                   'the SAT.'))
-        allow = self - not_allow
-        allow.write({'l10n_mx_edi_time_invoice': False})
-        for record in allow.filtered('l10n_mx_edi_cfdi_uuid'):
-            record.l10n_mx_edi_origin = record._set_cfdi_origin('04', [record.l10n_mx_edi_cfdi_uuid])
-        return super(AccountInvoice, self - not_allow).action_invoice_draft()
-
-    @api.model
-    def _prepare_refund(self, invoice, date_invoice=None, date=None,
-                        description=None, journal_id=None):
+    @api.multi
+    def _reverse_moves(self, default_values_list, cancel=False):
         """When is created the invoice refund is assigned the reference to
         the invoice that was generate it"""
-        values = super(AccountInvoice, self)._prepare_refund(
-            invoice, date_invoice=date_invoice, date=date,
-            description=description, journal_id=journal_id)
-        if invoice.l10n_mx_edi_cfdi_uuid:
-            values['l10n_mx_edi_origin'] = '%s|%s' % ('01', invoice.l10n_mx_edi_cfdi_uuid)
-        return values
+        # OVERRIDE
+        for i, move in enumerate(self):
+            if move.is_invoice() and move.l10n_mx_edi_cfdi_uuid:
+                default_values_list[i]['l10n_mx_edi_origin'] = '%s|%s' % ('01', move.l10n_mx_edi_cfdi_uuid)
+        return super(AccountMove, self)._reverse_moves(default_values_list, cancel=cancel)
 
     @api.multi
     @api.depends('l10n_mx_edi_cfdi_name')
@@ -680,9 +682,9 @@ class AccountInvoice(models.Model):
         taxes = {}
         for line in self.invoice_line_ids.filtered('price_subtotal'):
             price = line.price_unit * (1.0 - (line.discount or 0.0) / 100.0)
-            tax_line = {tax['id']: tax for tax in line.invoice_line_tax_ids.compute_all(
+            tax_line = {tax['id']: tax for tax in line.tax_ids.compute_all(
                 price, line.currency_id, line.quantity, line.product_id, line.partner_id, self.type in ('in_refund', 'out_refund'))['taxes']}
-            for tax in line.invoice_line_tax_ids.filtered(lambda r: r.l10n_mx_cfdi_tax_type != 'Exento'):
+            for tax in line.tax_ids.filtered(lambda r: r.l10n_mx_cfdi_tax_type != 'Exento'):
                 tax_dict = tax_line.get(tax.id, {})
                 amount = round(abs(tax_dict.get(
                     'amount', tax.amount / 100 * float("%.2f" % line.price_subtotal))), 2)
@@ -736,20 +738,20 @@ class AccountInvoice(models.Model):
     def _l10n_mx_edi_get_payment_policy(self):
         self.ensure_one()
         version = self.l10n_mx_edi_get_pac_version()
-        term_ids = self.payment_term_id.line_ids
+        term_ids = self.invoice_payment_term_id.line_ids
         if version == '3.2':
             if len(term_ids.ids) > 1:
                 return 'Pago en parcialidades'
             else:
                 return 'Pago en una sola exhibición'
-        elif version == '3.3' and self.date_due and self.date_invoice:
+        elif version == '3.3' and self.invoice_date_due and self.invoice_date:
             # In CFDI 3.3 - SAT 2018 rule 2.7.1.44, the payment policy is PUE
             # if the invoice will be paid before 17th of the following month,
             # PPD otherwise
-            date_pue = (fields.Date.from_string(self.date_invoice) +
+            date_pue = (fields.Date.from_string(self.invoice_date) +
                         relativedelta(day=17, months=1))
-            date_due = fields.Date.from_string(self.date_due)
-            if (date_due > date_pue or len(term_ids) > 1):
+            invoice_date_due = fields.Date.from_string(self.invoice_date_due)
+            if (invoice_date_due > date_pue or len(term_ids) > 1):
                 return 'PPD'
             return 'PUE'
         return ''
@@ -778,15 +780,15 @@ class AccountInvoice(models.Model):
             'payment_method': self.l10n_mx_edi_payment_method_id.code,
             'use_cfdi': self.l10n_mx_edi_usage,
             'conditions': self._get_string_cfdi(
-                self.payment_term_id.name, 1000) if self.payment_term_id else False,
+                self.invoice_payment_term_id.name, 1000) if self.invoice_payment_term_id else False,
         }
 
-        values.update(self._l10n_mx_get_serie_and_folio(self.number))
-        ctx = dict(company_id=self.company_id.id, date=self.date_invoice)
+        values.update(self._l10n_mx_get_serie_and_folio(self.name))
+        ctx = dict(company_id=self.company_id.id, date=self.invoice_date)
         mxn = self.env.ref('base.MXN').with_context(ctx)
         invoice_currency = self.currency_id.with_context(ctx)
         values['rate'] = ('%.6f' % (
-            invoice_currency._convert(1, mxn, self.company_id, self.date_invoice or fields.Date.today(), round=False))) if self.currency_id.name != 'MXN' else False
+            invoice_currency._convert(1, mxn, self.company_id, self.invoice_date or fields.Date.today(), round=False))) if self.currency_id.name != 'MXN' else False
 
         values['document_type'] = 'ingreso' if self.type == 'out_invoice' else 'egreso'
         values['payment_policy'] = self._l10n_mx_edi_get_payment_policy()
@@ -915,7 +917,7 @@ class AccountInvoice(models.Model):
 
         # -Compute certificate data
         values['date'] = datetime.combine(
-            fields.Datetime.from_string(self.date_invoice), time_invoice).strftime('%Y-%m-%dT%H:%M:%S')
+            fields.Datetime.from_string(self.invoice_date), time_invoice).strftime('%Y-%m-%dT%H:%M:%S')
         values['certificate_number'] = certificate_id.serial_number
         values['certificate'] = certificate_id.sudo().get_data()[0]
 
@@ -979,50 +981,53 @@ class AccountInvoice(models.Model):
             inv._l10n_mx_edi_sign()
 
     @api.multi
-    def invoice_validate(self):
-        '''Generates the cfdi attachments for mexican companies when validated.'''
-        result = super(AccountInvoice, self).invoice_validate()
-        version = self.l10n_mx_edi_get_pac_version()
+    def post(self):
+        # OVERRIDE
+        # Assign time and date coming from a certificate.
+        for move in self.filtered(lambda move: move.is_invoice()):
+
+            # Line having a negative amount is not allowed.
+            for line in move.invoice_line_ids:
+                if line.price_subtotal < 0:
+                    raise UserError(_("Invoice lines having a negative amount are not allowed to generate the CFDI. Please create a credit note instead."))
+
+            date_mx = self.env['l10n_mx_edi.certificate'].sudo().get_mx_current_datetime()
+            if not move.invoice_date:
+                move.invoice_date = date_mx.date()
+            if not move.l10n_mx_edi_time_invoice:
+                move.l10n_mx_edi_time_invoice = date_mx
+            move._l10n_mx_edi_update_hour_timezone()
+
+        result = super(AccountMove, self).post()
+
+        # Generates the cfdi attachments for mexican companies when validated.
+        version = self.l10n_mx_edi_get_pac_version().replace('.', '-')
         trans_field = 'transaction_ids' in self._fields
-        for record in self.filtered(lambda r: r.l10n_mx_edi_is_required()):
-            if record.type == 'out_refund' and (
-                record.refund_invoice_id and not record.refund_invoice_id.l10n_mx_edi_cfdi_uuid):
-                record.message_post(
+        for move in self.filtered(lambda move: move.is_invoice()):
+            if move.type == 'out_refund' and move.reversed_entry_id and not move.reversed_entry_id.l10n_mx_edi_cfdi_uuid:
+                move.message_post(
                     body='<p style="color:red">' + _(
                         'The invoice related has no valid fiscal folio. For this '
                         'reason, this refund didn\'t generate a fiscal document.') + '</p>',
                     subtype='account.mt_invoice_validated')
                 continue
-            record.l10n_mx_edi_cfdi_name = ('%s-%s-MX-Invoice-%s.xml' % (
-                record.journal_id.code, record.number, version.replace('.', '-'))).replace('/', '')
-            subscription = 'subscription_id' in record.invoice_line_ids._fields and record.invoice_line_ids.filtered(
-                'subscription_id')
-            ctx = {}
-            if subscription or (trans_field and record.mapped('transaction_ids.payment_id')):
-                ctx = {'disable_after_commit': True}
-            record.with_context(**ctx)._l10n_mx_edi_retry()
+
+            move.l10n_mx_edi_cfdi_name = ('%s-%s-MX-Invoice-%s.xml' % (move.journal_id.code, move.invoice_payment_ref, version)).replace('/', '')
+            subscription = 'subscription_id' in move.invoice_line_ids._fields and move.invoice_line_ids.filtered('subscription_id')
+            if subscription or (trans_field and move.mapped('transaction_ids.payment_id')):
+                move = move.with_context(disable_after_commit=True)
+            move._l10n_mx_edi_retry()
         return result
 
     @api.multi
-    def action_date_assign(self):
-        """Assign invoice time and date"""
-        for record in self.filtered(lambda r: r.l10n_mx_edi_is_required()):
-            date_mx = self.env['l10n_mx_edi.certificate'].sudo().get_mx_current_datetime()
-            if not record.date_invoice:
-                record.date_invoice = date_mx.date()
-            if not record.l10n_mx_edi_time_invoice:
-                record.l10n_mx_edi_time_invoice = date_mx.strftime(
-                    DEFAULT_SERVER_TIME_FORMAT)
-                record._l10n_mx_edi_update_hour_timezone()
-        return super(AccountInvoice, self).action_date_assign()
+    def button_cancel(self):
+        # OVERRIDE
+        result = super(AccountMove, self).button_cancel()
 
-    @api.multi
-    def action_invoice_cancel(self):
-        '''Cancel the cfdi attachments for mexican companies when cancelled.
-        '''
-        result = super(AccountInvoice, self).action_invoice_cancel()
-        for record in self.filtered(lambda r: r.l10n_mx_edi_is_required()):
-            record._l10n_mx_edi_cancel()
+        # Cancel the cfdi attachments for mexican companies when cancelled.
+        for move in self.filtered(lambda move: move.is_invoice()):
+            if move.l10n_mx_edi_is_required():
+                move._l10n_mx_edi_cancel()
         return result
 
     @api.multi

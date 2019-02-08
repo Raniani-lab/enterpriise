@@ -85,7 +85,7 @@ class AccountFollowupReport(models.AbstractModel):
                     date_due = {'name': date_due, 'class': 'color-red date', 'style': 'white-space:nowrap;text-align:center;color: red;'}
                 if is_payment:
                     date_due = ''
-                move_line_name = aml.invoice_id.name or aml.name
+                move_line_name = aml.move_id.name or aml.name
                 if self.env.context.get('print_mode'):
                     move_line_name = {'name': move_line_name, 'style': 'text-align:right; white-space:normal;'}
                 amount = formatLang(self.env, amount, currency_obj=currency)
@@ -94,7 +94,7 @@ class AccountFollowupReport(models.AbstractModel):
                 columns = [
                     format_date(self.env, aml.date, lang_code=lang_code),
                     date_due,
-                    aml.invoice_id.origin or '',
+                    aml.move_id.invoice_origin or '',
                     move_line_name,
                     (expected_pay_date and expected_pay_date + ' ') + (aml.internal_note or ''),
                     {'name': '', 'blocked': aml.blocked},
@@ -104,15 +104,15 @@ class AccountFollowupReport(models.AbstractModel):
                     columns = columns[:4] + columns[6:]
                 lines.append({
                     'id': aml.id,
-                    'invoice_id': aml.invoice_id.id,
-                    'view_invoice_id': self.env['ir.model.data'].get_object_reference('account', 'invoice_form')[1],
+                    'invoice_id': aml.move_id.id,
+                    'view_invoice_id': self.env['ir.model.data'].get_object_reference('account', 'view_move_form')[1],
                     'account_move': aml.move_id,
                     'name': aml.move_id.name,
                     'caret_options': 'followup',
                     'move_id': aml.move_id.id,
                     'type': is_payment and 'payment' or 'unreconciled_aml',
                     'unfoldable': False,
-                    'has_invoice': bool(aml.invoice_id),
+                    'has_invoice': bool(aml.move_id),
                     'columns': [type(v) == dict and v or {'name': v} for v in columns],
                 })
             total_due = formatLang(self.env, total, currency_obj=currency)

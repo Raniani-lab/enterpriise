@@ -14,13 +14,13 @@ QUnit.module('account_invoice_extract', {}, function () {
 QUnit.module('FormView', {
     beforeEach: function () {
         this.data = {
-            'account.invoice': {
+            'account.move': {
                 fields: {
                     amount_total: { string: 'Amount Total', type: 'integer' },
                     currency_id: { string: 'Currency', type: 'many2one', relation: 'res.currency' },
                     date: { string: 'Date', type: 'date' },
                     date_due: { string: 'Due Date', type: 'date' },
-                    date_invoice: { string: 'Invoice Date', type: 'date' },
+                    invoice_date: { string: 'Invoice Date', type: 'date' },
                     display_name: { string: 'Name', type: 'string' },
                     invoice_id: { string: 'InvoiceId', type: 'string' },
                     message_attachment_count: { string: 'Attachment count', type: 'integer' },
@@ -36,7 +36,7 @@ QUnit.module('FormView', {
                     currency_id: [2, 'USD'],
                     date: '1984-12-15',
                     date_due: '1984-12-20',
-                    date_invoice: '1984-12-15',
+                    invoice_date: '1984-12-15',
                     display_name: 'MyInvoice',
                     invoice_id: 'INV_15/26/34',
                     id: 2,
@@ -73,7 +73,7 @@ QUnit.module('FormView', {
                     is_note: false,
                     is_discussion: true,
                     is_starred: false,
-                    model: 'account.invoice',
+                    model: 'account.move',
                     res_id: 2,
                 }],
             }
@@ -102,7 +102,7 @@ QUnit.module('FormView', {
 
         var form = await testUtils.createView({
             View: FormView,
-            model: 'account.invoice',
+            model: 'account.move',
             data: this.data,
             arch: '<form string="Account Invoice">' +
                     '<div class="o_success_ocr"/>' +
@@ -218,7 +218,7 @@ QUnit.module('FormView', {
 
         var form = await testUtils.createView({
             View: FormView,
-            model: 'account.invoice',
+            model: 'account.move',
             data: this.data,
             arch: '<form string="Account Invoice">' +
                     '<div class="o_success_ocr"/>' +
@@ -296,7 +296,7 @@ QUnit.module('FormView', {
 
         var form = await testUtils.createView({
             View: FormView,
-            model: 'account.invoice',
+            model: 'account.move',
             data: this.data,
             arch: '<form string="Account Invoice">' +
                     '<div class="o_success_ocr"/>' +

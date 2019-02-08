@@ -114,7 +114,7 @@
             <xpath expr="//field[@name='depreciation_move_ids']//field[@name='asset_depreciated_value']" position="attributes">
                 <attribute name="string">Cumulative Revenue</attribute>
             </xpath>
-            <xpath expr="//field[@name='depreciation_move_ids']//field[@name='amount']" position="attributes">
+            <xpath expr="//field[@name='depreciation_move_ids']//field[@name='amount_total']" position="attributes">
                 <attribute name="string">Revenue</attribute>
             </xpath>
             <xpath expr="//field[@name='depreciation_move_ids']//field[@name='asset_remaining_value']" position="attributes">

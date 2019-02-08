@@ -110,7 +110,7 @@ var InvoiceExtractFormRenderer = FormRenderer.extend({
         this._$invoiceExtractButtons = $('<div class="o_invoice_extract_buttons"/>');
         $page.before(this._$invoiceExtractButtons);
         this._rpc({
-            model: 'account.invoice',
+            model: 'account.move',
             method: 'get_boxes',
             args: [this.state.res_id],
         }).then(function (boxesData) {
@@ -312,7 +312,7 @@ var InvoiceExtractFormRenderer = FormRenderer.extend({
         var box = ev.data.box;
         var field = this._invoiceExtractFields.getActiveField();
         this._rpc({
-            model: 'account.invoice',
+            model: 'account.move',
             method: 'set_user_selected_box',
             args: [[this.state.res_id], box.getID()],
         }).then(function (fieldChangedInfo) {
@@ -339,7 +339,7 @@ var InvoiceExtractFormRenderer = FormRenderer.extend({
         }
         field.unselectBox();
         this._rpc({
-            model: 'account.invoice',
+            model: 'account.move',
             method: 'remove_user_selected_box',
             args: [
                 [this.state.res_id],

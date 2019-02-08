@@ -501,7 +501,8 @@ class AccountReport(models.AbstractModel):
     def _get_options_all_entries_domain(self, options):
         if options.get('all_entries') is False:
             return [('move_id.state', '=', 'posted')]
-        return []
+        else:
+            return [('move_id.state', '!=', 'cancel')]
 
     ####################################################
     # OPTIONS: hierarchy
@@ -702,7 +703,10 @@ class AccountReport(models.AbstractModel):
 
     @api.model
     def _get_options_domain(self, options):
-        domain = []
+        domain = [
+            ('display_type', 'not in', ('line_section', 'line_note')),
+            ('move_id.state', '!=', 'cancel'),
+        ]
         domain += self._get_options_companies_domain(options)
         domain += self._get_options_journals_domain(options)
         domain += self._get_options_date_domain(options)
@@ -829,24 +833,15 @@ class AccountReport(models.AbstractModel):
         :param document:    The target model of the redirection.
         :return: The target record.
         '''
-        if model == 'account.invoice':
-            if document == 'account.move':
-                return self.env[model].browse(res_id).move_id
+        if model == 'account.move':
             if document == 'res.partner':
                 return self.env[model].browse(res_id).partner_id.commercial_partner_id
-        if model == 'account.invoice.line':
-            if document == 'account.move':
-                return self.env[model].browse(res_id).invoice_id.move_id
-            if document == 'account.invoice':
-                return self.env[model].browse(res_id).invoice_id
         if model == 'account.bank.statement.line' and document == 'account.bank.statement':
             return self.env[model].browse(res_id).statement_id
 
         # model == 'account.move.line' by default.
         if document == 'account.move':
             return self.env[model].browse(res_id).move_id
-        if document == 'account.invoice':
-            return self.env[model].browse(res_id).invoice_id
         if document == 'account.payment':
             return self.env[model].browse(res_id).payment_id
 
@@ -859,11 +854,6 @@ class AccountReport(models.AbstractModel):
         :param target:  The target record of the redirection.
         :return: The target view name as a string.
         '''
-        if target._name == 'account.invoice':
-            if target.type in ('in_refund', 'in_invoice'):
-                return 'account.invoice_supplier_form'
-            if target.type in ('out_refund', 'out_invoice'):
-                return 'account.invoice_form'
         if target._name == 'account.payment':
             return 'account.view_account_payment_form'
         if target._name == 'res.partner':

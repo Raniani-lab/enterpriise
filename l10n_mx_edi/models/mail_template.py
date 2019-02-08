@@ -16,7 +16,7 @@ class MailTemplate(models.Model):
             res_ids = [res_ids]
             multi_mode = False
 
-        if self.model not in ['account.invoice', 'account.payment']:
+        if self.model not in ['account.move', 'account.payment']:
             return res
         for record in self.env[self.model].browse(res_ids):
             if record.company_id.country_id != self.env.ref('base.mx'):

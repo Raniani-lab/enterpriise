@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_account_move_reversal_inherit_helpdesk_account" model="ir.ui.view">
+            <field name="name">account.move.reversal.inherit.helpdesk.account</field>
+            <field name="model">account.move.reversal</field>
+            <field name="inherit_id" ref="account.view_account_move_reversal"/>
+            <field name="arch" type="xml">
+                <group position="before">
+                    <field name="helpdesk_ticket_id" invisible="1"/>
+                    <group col="2" attrs="{'invisible': [('helpdesk_ticket_id', '=', False)]}">
+                        <group>
+                            <field name="helpdesk_ticket_id" invisible="1"/>
+                            <field name="helpdesk_sale_order_id" readonly="1" attrs="{'invisible': [('helpdesk_sale_order_id', '=', False)]}"/>
+                        </group>
+                    </group>
+                </group>
+            </field>
+        </record>
+    </data>
+</odoo>

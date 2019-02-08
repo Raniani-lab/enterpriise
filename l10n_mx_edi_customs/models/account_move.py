@@ -6,8 +6,8 @@ from odoo import _, api, models, fields
 from odoo.exceptions import ValidationError
 
 
-class AccountInvoiceLine(models.Model):
-    _inherit = 'account.invoice.line'
+class AccountMoveLine(models.Model):
+    _inherit = 'account.move.line'
 
     l10n_mx_edi_customs_number = fields.Char(
         help='Optional field for entering the customs information in the case '
@@ -24,26 +24,16 @@ class AccountInvoiceLine(models.Model):
         string='Customs number',
         copy=False)
 
-
-class AccountInvoice(models.Model):
-    _inherit = 'account.invoice'
-
-    @api.multi
-    def action_invoice_open(self):
-        products = []
+    @api.constrains('l10n_mx_edi_customs_number')
+    def _check_l10n_mx_edi_customs_number(self):
+        ''' Check the validity of the 'l10n_mx_edi_customs_number' field. '''
         pattern = re.compile(r'[0-9]{2}  [0-9]{2}  [0-9]{4}  [0-9]{7}')
-        for rec in self.mapped('invoice_line_ids').filtered(
-                'l10n_mx_edi_customs_number'):
-            for ped in rec.l10n_mx_edi_customs_number.split(','):
+        invalid_product_names = []
+        for line in self.filtered(lambda line: line.l10n_mx_edi_customs_number):
+            for ped in line.l10n_mx_edi_customs_number.split(','):
                 if not pattern.match(ped.strip()):
-                    products.append(rec.product_id.name)
-        if not products:
-            return super(AccountInvoice, self).action_invoice_open()
-        products_wrong = '\n'.join(products)
-        help_message = self.invoice_line_ids.fields_get().get(
-            "l10n_mx_edi_customs_number").get("help").split('\n', 1)[1]
-        raise ValidationError(_(
-            'Error in the products:\n '
-            '%s\n\n The format of the customs number is incorrect. %s \n'
-            'For example: 15  48  3009  0001234') % (
-                products_wrong, help_message))
+                    invalid_product_names.append(line.product_id.name)
+        if invalid_product_names:
+            help_message = self.filtered(lambda line: not line.exclude_from_invoice_tab).fields_get().get('l10n_mx_edi_customs_number').get('help').split('\n', 1)[1]
+            raise ValidationError(_('Error in the products:\n%s\n\n The format of the customs number is incorrect. %s\n '
+                                    'For example: 15  48  3009  0001234') % ('\n'.join(invalid_product_names), help_message))

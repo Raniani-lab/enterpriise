@@ -190,8 +190,7 @@ class ReportPartnerLedger(models.AbstractModel):
                 account_move_line.name,
                 account_move_line.ref,
                 account_move_line.company_id,
-                account_move_line.account_id,
-                account_move_line.invoice_id,
+                account_move_line.account_id,             
                 account_move_line.payment_id,
                 account_move_line.partner_id,
                 account_move_line.currency_id,
@@ -202,7 +201,7 @@ class ReportPartnerLedger(models.AbstractModel):
                 account_move_line__move_id.name         AS move_name,
                 company.currency_id                     AS company_currency_id,
                 partner.name                            AS partner_name,
-                invoice.type                            AS invoice_type,
+                account_move_line__move_id.type         AS move_type,
                 account.code                            AS account_code,
                 account.name                            AS account_name,
                 journal.code                            AS journal_code,
@@ -213,7 +212,6 @@ class ReportPartnerLedger(models.AbstractModel):
             LEFT JOIN %s ON currency_table.company_id = account_move_line.company_id
             LEFT JOIN res_company company               ON company.id = account_move_line.company_id
             LEFT JOIN res_partner partner               ON partner.id = account_move_line.partner_id
-            LEFT JOIN account_invoice invoice           ON invoice.id = account_move_line.invoice_id
             LEFT JOIN account_account account           ON account.id = account_move_line.account_id
             LEFT JOIN account_journal journal           ON journal.id = account_move_line.journal_id
             LEFT JOIN account_full_reconcile full_rec   ON full_rec.id = account_move_line.full_reconcile_id
@@ -319,14 +317,14 @@ class ReportPartnerLedger(models.AbstractModel):
 
     @api.model
     def _get_report_line_move_line(self, options, partner, aml, cumulated_init_balance, cumulated_balance):
-        caret_type = 'account.move'
-        if aml['invoice_id']:
-            if aml['invoice_type'] in ('in_refund', 'in_invoice'):
-                caret_type = 'account.invoice.in'
-            else:
-                caret_type = 'account.invoice.out'
-        elif aml['payment_id']:
+        if aml['payment_id']:
             caret_type = 'account.payment'
+        elif aml['move_type'] in ('in_refund', 'in_invoice', 'in_receipt'):
+            caret_type = 'account.invoice.in'
+        elif aml['move_type'] in ('out_refund', 'out_invoice', 'out_receipt'):
+            caret_type = 'account.invoice.out'
+        else:
+            caret_type = 'account.move'
 
         date_maturity = aml['date_maturity'] and format_date(self.env, fields.Date.from_string(aml['date_maturity']))
         columns = [

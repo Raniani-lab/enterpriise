@@ -181,7 +181,7 @@ class Certificate(models.Model):
 
     @api.multi
     def unlink(self):
-        if self.env['account.invoice'].search(
+        if self.env['account.move'].search(
                 [('l10n_mx_edi_cfdi_certificate_id', 'in', self.ids)]):
             raise UserError(_(
                 'You cannot remove a certificate that has already been used '

@@ -85,9 +85,9 @@
                                 <tree string="Depreciation Lines" decoration-info="state == 'draft'" create="0"  default_order="date asc, id asc" editable="top">
                                     <field name="currency_id" invisible="1"/>
                                     <field name="ref" invisible=""/>
-                                    <field name="reverse_entry_id" widget="deprec_lines_reversed"/>
+                                    <field name="reversed_entry_id" widget="deprec_lines_reversed"/>
                                     <field name="date" string="Depreciation Date"/>
-                                    <field name="amount" widget="monetary" string="Depreciation" options="{'currency_field': 'currency_id'}" attrs="{'readonly': [('state', '=', 'posted')]}"/>
+                                    <field name="amount_total" widget="monetary" string="Depreciation" options="{'currency_field': 'currency_id'}" attrs="{'readonly': [('state', '=', 'posted')]}"/>
                                     <field name="asset_depreciated_value" readonly="1" force_save="1" options="{'currency_field': 'currency_id'}"/>
                                     <field name="asset_remaining_value" readonly="1" widget="monetary" string="Residual" force_save="1" options="{'currency_field': 'currency_id'}"/>
                                     <field name="name" readonly="1" string="Journal Entry"/>

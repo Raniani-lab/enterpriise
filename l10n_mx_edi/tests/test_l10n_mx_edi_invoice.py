@@ -5,7 +5,7 @@ from datetime import timedelta
 import os
 import time
 
-from lxml import etree, objectify
+from lxml import objectify
 
 from odoo.exceptions import ValidationError
 from odoo.tools import misc
@@ -17,8 +17,6 @@ from . import common
 class TestL10nMxEdiInvoice(common.InvoiceTransactionCase):
     def setUp(self):
         super(TestL10nMxEdiInvoice, self).setUp()
-        self.refund_model = self.env['account.invoice.refund']
-
         self.cert = misc.file_open(os.path.join(
             'l10n_mx_edi', 'demo', 'pac_credentials', 'certificate.cer'), 'rb').read()
         self.cert_key = misc.file_open(os.path.join(
@@ -67,7 +65,7 @@ class TestL10nMxEdiInvoice(common.InvoiceTransactionCase):
         invoice = self.create_invoice()
         invoice.sudo().journal_id.l10n_mx_address_issued_id = self.company_partner.id
         invoice.move_name = 'INV/2017/999'
-        invoice.action_invoice_open()
+        invoice.post()
         self.assertEqual(invoice.state, "open")
         self.assertEqual(invoice.l10n_mx_edi_pac_status, "signed",
                          invoice.message_ids.mapped('body'))
@@ -77,7 +75,7 @@ class TestL10nMxEdiInvoice(common.InvoiceTransactionCase):
         # -------------------------------------------------------
         xml_attachment = self.env['ir.attachment'].search([
             ('res_id', '=', invoice.id),
-            ('res_model', '=', 'account.invoice'),
+            ('res_model', '=', 'account.move'),
             ('name', '=', invoice.l10n_mx_edi_cfdi_name)])
         error_msg = 'You cannot delete a set of documents which has a legal'
         with self.assertRaisesRegexp(ValidationError, error_msg):
@@ -87,7 +85,7 @@ class TestL10nMxEdiInvoice(common.InvoiceTransactionCase):
         pdf_attachment = self.env['ir.attachment'].with_context({}).create({
             'name': pdf_filename,
             'res_id': invoice.id,
-            'res_model': 'account.invoice',
+            'res_model': 'account.move',
             'datas': base64.encodestring(b'%PDF-1.3'),
         })
         with self.assertRaisesRegexp(ValidationError, error_msg):
@@ -101,7 +99,7 @@ class TestL10nMxEdiInvoice(common.InvoiceTransactionCase):
             line.discount = 10
             line.price_unit = 500
         invoice_disc.compute_taxes()
-        invoice_disc.action_invoice_open()
+        invoice_disc.post()
         self.assertEqual(invoice_disc.state, "open")
         self.assertEqual(invoice_disc.l10n_mx_edi_pac_status, "signed",
                          invoice.message_ids.mapped('body'))
@@ -189,9 +187,9 @@ class TestL10nMxEdiInvoice(common.InvoiceTransactionCase):
         invoice = self.create_invoice()
         addenda_autozone = self.ref('l10n_mx_edi.l10n_mx_edi_addenda_autozone')
         invoice.sudo().partner_id.l10n_mx_edi_addenda = addenda_autozone
-        invoice.sudo().user_id.partner_id.ref = '8765'
+        invoice.sudo().invoice_user_id.partner_id.ref = '8765'
         invoice.message_ids.unlink()
-        invoice.action_invoice_open()
+        invoice.post()
         self.assertEqual(invoice.state, "open")
         self.assertEqual(invoice.l10n_mx_edi_pac_status, "signed",
                          invoice.message_ids.mapped('body'))
@@ -217,18 +215,18 @@ class TestL10nMxEdiInvoice(common.InvoiceTransactionCase):
         # Testing invoice refund to verify CFDI related section
         # -----------------------
         invoice = self.create_invoice()
-        invoice.action_invoice_open()
-        refund = self.refund_model.with_context(
+        invoice.post()
+        refund = self.env['account.move.reversal'].with_context(
             active_ids=invoice.ids).create({
-                'filter_refund': 'refund',
-                'description': 'Refund Test',
-                'date': invoice.date_invoice,
+                'refund_method': 'refund',
+                'reason': 'Refund Test',
+                'date': invoice.invoice_date,
             })
-        result = refund.invoice_refund()
+        result = refund.reverse_moves()
         refund_id = result.get('domain')[1][2]
         refund = self.invoice_model.browse(refund_id)
         refund.refresh()
-        refund.action_invoice_open()
+        refund.post()
         xml = refund.l10n_mx_edi_get_xml_etree()
         self.assertEquals(xml.CfdiRelacionados.CfdiRelacionado.get('UUID'),
                           invoice.l10n_mx_edi_cfdi_uuid,
@@ -240,7 +238,7 @@ class TestL10nMxEdiInvoice(common.InvoiceTransactionCase):
         invoice = self.create_invoice()
         invoice.invoice_line_ids[0].product_id = False
         invoice.compute_taxes()
-        invoice.action_invoice_open()
+        invoice.post()
         self.assertEqual(invoice.state, "open")
 
         # -----------------------
@@ -256,7 +254,7 @@ class TestL10nMxEdiInvoice(common.InvoiceTransactionCase):
         for line in invoice.invoice_line_ids:
             line.invoice_line_tax_id = [self.tax_positive.id, tax_ieps.id]
         invoice.compute_taxes()
-        invoice.action_invoice_open()
+        invoice.post()
         self.assertEqual(invoice.l10n_mx_edi_pac_status, "signed",
                          invoice.message_ids.mapped('body'))
         xml_total = invoice.l10n_mx_edi_get_xml_etree().get('Total')
@@ -267,10 +265,10 @@ class TestL10nMxEdiInvoice(common.InvoiceTransactionCase):
         # Testing send payment by email
         # -----------------------
         invoice = self.create_invoice()
-        invoice.action_invoice_open()
+        invoice.post()
         bank_journal = self.env['account.journal'].search([
             ('type', '=', 'bank')], limit=1)
-        payment_register = Form(self.env['account.payment'].with_context(active_model='account.invoice', active_ids=invoice.ids))
+        payment_register = Form(self.env['account.payment'].with_context(active_model='account.move', active_ids=invoice.ids))
         payment_register.payment_date = invoice.date
         payment_register.l10n_mx_edi_payment_method_id = self.env.ref(
                 'l10n_mx_edi.payment_method_efectivo')
@@ -306,10 +304,10 @@ class TestL10nMxEdiInvoice(common.InvoiceTransactionCase):
         invoice = self.create_invoice()
         invoice.move_name = 'INV/2017/999'
         today = self.env['l10n_mx_edi.certificate'].sudo().get_mx_current_datetime()
-        invoice.action_invoice_open()
+        invoice.post()
         self.assertEqual(invoice.l10n_mx_edi_pac_status, "signed",
                          invoice.message_ids.mapped("body"))
-        payment_register = Form(self.env['account.payment'].with_context(active_model='account.invoice', active_ids=invoice.ids))
+        payment_register = Form(self.env['account.payment'].with_context(active_model='account.move', active_ids=invoice.ids))
         payment_register.payment_date = today.date() - timedelta(days=5)
         payment_register.l10n_mx_edi_payment_method_id = self.payment_method_cash
         payment_register.payment_method_id = self.payment_method_manual_out

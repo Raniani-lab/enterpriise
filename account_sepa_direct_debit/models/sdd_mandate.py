@@ -38,7 +38,7 @@ class SDDMandate(models.Model):
     partner_id = fields.Many2one(comodel_name='res.partner', string='Debtor', required=True, readonly=True, states={'draft':[('readonly',False)]}, help="Customer whose payments are to be managed by this mandate.")
     company_id = fields.Many2one(comodel_name='res.company', default=lambda self: self.env.company, help="Company for whose invoices the mandate can be used.")
     partner_bank_id = fields.Many2one(string='Debtor Account', readonly=True, states={'draft':[('readonly',False)]}, comodel_name='res.partner.bank', help="Account of the customer to collect payments from.")
-    paid_invoice_ids = fields.One2many(string='Invoices Paid', comodel_name='account.invoice', readonly=True, inverse_name='sdd_paying_mandate_id', help="Invoices paid using this mandate.")
+    paid_invoice_ids = fields.One2many(string='Invoices Paid', comodel_name='account.move', readonly=True, inverse_name='sdd_paying_mandate_id', help="Invoices paid using this mandate.")
     start_date = fields.Date(string="Start Date", required=True, readonly=True, states={'draft':[('readonly',False)]}, help="Date from which the mandate can be used (inclusive).")
     end_date = fields.Date(string="End Date", states={'closed':[('readonly',True)]}, help="Date until which the mandate can be used. It will automatically be closed after this date.")
     original_doc = fields.Binary(string="Original Document", readonly=True, states={'draft':[('readonly',False)]}, help="Original document into which the customer authorises the use of Direct Debit for his invoices.", attachment=False) # TODO: check — should probably remain in DB for confidence purposes?
@@ -49,7 +49,7 @@ class SDDMandate(models.Model):
     paid_invoices_nber = fields.Integer(string='Paid Invoices Number', compute='_compute_paid_invoices_nber', help="Number of invoices paid with thid mandate.")
 
     @api.model
-    def _get_usable_mandate(self, company_id, partner_id, date):
+    def _sdd_get_usable_mandate(self, company_id, partner_id, date):
         """ returns the first mandate found that can be used, accordingly to given parameters
         or none if there is no such mandate.
         """
@@ -114,7 +114,7 @@ class SDDMandate(models.Model):
         return {
             'type': 'ir.actions.act_window',
             'name': _('Paid Invoices'),
-            'res_model': 'account.invoice',
+            'res_model': 'account.move',
             'view_mode': 'tree,form',
             'domain': [('id', 'in', self.mapped('paid_invoice_ids').ids)],
         }

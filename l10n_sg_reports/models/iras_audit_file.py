@@ -70,10 +70,10 @@ class IrasAuditFile(models.AbstractModel):
         gst_total_sgd = 0.0
         transaction_count_total = 0
 
-        invoice_ids = self.env['account.invoice'].search([
+        invoice_ids = self.env['account.move'].search([
             ('company_id', '=', self.env.company.id),
             ('type', 'in', ['in_invoice', 'in_refund']),
-            ('state', 'in', ['open', 'in_payment', 'paid']),
+            ('state', '=', 'posted'),
             ('date', '>=', date_from),
             ('date', '<=', date_to)
             ])
@@ -82,26 +82,29 @@ class IrasAuditFile(models.AbstractModel):
             lines_number = 0
             for lines in invoice.invoice_line_ids:
                 lines_number += 1
+                sign = -1 if invoice.type == 'in_refund' else 1
+                tax_amount = lines.price_total - lines.price_subtotal
+                tax_amount_company = invoice.currency_id._convert(tax_amount, invoice.company_id.currency_id, invoice.company_id, invoice.invoice_date or invoice.date)
                 transaction_count_total += 1
-                purchase_total_sgd += lines.price_subtotal_signed
-                gst_total_sgd += lines.l10n_sg_reports_amount_tax
+                purchase_total_sgd += lines.balance
+                gst_total_sgd += tax_amount
 
                 if not invoice.partner_id.l10n_sg_unique_entity_number:
                     raise UserError(_('Your partner (%s) must have a UEN.') % invoice.partner_id.name)
                 purchases_lines.append({
                     'SupplierName': (invoice.partner_id.name or '')[:100],
                     'SupplierUEN': (invoice.partner_id.l10n_sg_unique_entity_number or '')[:16],
-                    'InvoiceDate': invoice.l10n_sg_permit_number_date if invoice.l10n_sg_permit_number and invoice.l10n_sg_permit_number_date else invoice.date_invoice,
-                    'InvoiceNo': (invoice.number or '')[:50],
+                    'InvoiceDate': invoice.l10n_sg_permit_number_date if invoice.l10n_sg_permit_number and invoice.l10n_sg_permit_number_date else invoice.invoice_date,
+                    'InvoiceNo': (invoice.name or '')[:50],
                     'PermitNo': invoice.l10n_sg_permit_number[:20] if invoice.l10n_sg_permit_number else False,
                     'LineNo': str(lines_number),
                     'ProductDescription': ('[' + lines.product_id.default_code + '] ' + lines.product_id.name if lines.product_id.default_code else lines.product_id.name or '')[:250],
-                    'PurchaseValueSGD': float_repr(lines.price_subtotal_signed, IRAS_DIGITS),
-                    'GSTValueSGD': float_repr(lines.l10n_sg_reports_amount_tax, IRAS_DIGITS),
-                    'TaxCode': (lines.l10n_sg_reports_tax.name if lines.l10n_sg_reports_tax else ' ')[:20],
+                    'PurchaseValueSGD': float_repr(lines.balance, IRAS_DIGITS),
+                    'GSTValueSGD': float_repr((lines.price_total - lines.price_subtotal) / (lines.quantity or 1), IRAS_DIGITS),
+                    'TaxCode': (lines.tax_ids and lines.tax_ids[0].name or ' ')[:20],
                     'FCYCode': (lines.currency_id.name if lines.currency_id.name != 'SGD' else 'XXX')[:3],
                     'PurchaseFCY': float_repr(lines.price_subtotal, IRAS_DIGITS) if lines.currency_id.name != 'SGD' else '0',
-                    'GSTFCY': float_repr(lines.l10n_sg_reports_amount_tax_no_change, IRAS_DIGITS) if lines.currency_id.name != 'SGD' else '0'
+                    'GSTFCY': float_repr(sign * tax_amount_company, IRAS_DIGITS) if lines.currency_id.name != 'SGD' else '0'
                 })
 
         return {
@@ -120,10 +123,10 @@ class IrasAuditFile(models.AbstractModel):
         gst_total_sgd = 0.0
         transaction_count_total = 0
 
-        invoice_ids = self.env['account.invoice'].search([
+        invoice_ids = self.env['account.move'].search([
             ('company_id', '=', self.env.company.id),
             ('type', 'in', ['out_invoice', 'out_refund']),
-            ('state', 'in', ['open', 'in_payment', 'paid']),
+            ('state', '=', 'posted'),
             ('date', '>=', date_from),
             ('date', '<=', date_to)
             ])
@@ -132,26 +135,29 @@ class IrasAuditFile(models.AbstractModel):
             lines_number = 0
             for lines in invoice.invoice_line_ids:
                 lines_number += 1
+                sign = -1 if invoice.type == 'out_refund' else 1
+                tax_amount = lines.price_total - lines.price_subtotal
+                tax_amount_company = invoice.currency_id._convert(tax_amount, invoice.company_id.currency_id, invoice.company_id, invoice.invoice_date or invoice.date)
                 transaction_count_total += 1
-                supply_total_sgd += lines.price_subtotal_signed
-                gst_total_sgd += lines.l10n_sg_reports_amount_tax
+                supply_total_sgd -= lines.balance
+                gst_total_sgd += tax_amount
 
                 if not invoice.partner_id.l10n_sg_unique_entity_number:
                     raise UserError(_('Your partner (%s) must have a UEN.') % invoice.partner_id.name)
                 supply_lines.append({
                     'CustomerName': (invoice.partner_id.name or '')[:100],
                     'CustomerUEN': (invoice.partner_id.l10n_sg_unique_entity_number or '')[:16],
-                    'InvoiceDate': invoice.date_invoice,
-                    'InvoiceNo': (invoice.number or '')[:50],
+                    'InvoiceDate': invoice.invoice_date,
+                    'InvoiceNo': (invoice.name or '')[:50],
                     'LineNo': str(lines_number),
                     'ProductDescription': ('[' + lines.product_id.default_code + '] ' + lines.product_id.name if lines.product_id.default_code else lines.product_id.name or '')[:250],
-                    'SupplyValueSGD': float_repr(lines.price_subtotal_signed, IRAS_DIGITS),
-                    'GSTValueSGD': float_repr(lines.l10n_sg_reports_amount_tax, IRAS_DIGITS),
-                    'TaxCode': (lines.l10n_sg_reports_tax.name if lines.l10n_sg_reports_tax else ' ')[:20],
+                    'PurchaseValueSGD': float_repr(-lines.balance, IRAS_DIGITS),
+                    'GSTValueSGD': float_repr((lines.price_total - lines.price_subtotal) / (lines.quantity or 1), IRAS_DIGITS),
+                    'TaxCode': (lines.tax_ids and lines.tax_ids[0].name or ' ')[:20],
                     'Country': invoice.partner_id.commercial_partner_id.country_id.code if invoice.origin and invoice.partner_id.commercial_partner_id.country_id.code != 'SG' else False,
                     'FCYCode': (lines.currency_id.name if lines.currency_id.name != 'SGD' else 'XXX')[:3],
                     'SupplyFCY': float_repr(lines.price_subtotal, IRAS_DIGITS) if lines.currency_id.name != 'SGD' else '0',
-                    'GSTFCY': float_repr(lines.l10n_sg_reports_amount_tax_no_change, IRAS_DIGITS) if lines.currency_id.name != 'SGD' else '0'
+                    'GSTFCY': float_repr(sign * tax_amount_company, IRAS_DIGITS) if lines.currency_id.name != 'SGD' else '0'
                 })
         return {
             'lines': supply_lines,

@@ -3,6 +3,7 @@
 from odoo.addons.iap import jsonrpc
 from odoo import api, exceptions, fields, models, _
 from odoo.exceptions import AccessError
+from odoo.tests.common import Form
 import logging
 import re
 
@@ -37,7 +38,7 @@ class AccountInvoiceExtractionWords(models.Model):
     _name = "account.invoice_extract.words"
     _description = "Extracted words from invoice scan"
 
-    invoice_id = fields.Many2one("account.invoice", help="Invoice id")
+    invoice_id = fields.Many2one("account.move", help="Invoice id")
     field = fields.Char()
     selected_status = fields.Integer("Invoice extract selected status.",
         help="0 for 'not selected', 1 for 'ocr selected with no user selection' and 2 for 'ocr selected with user selection (user may have selected the same box)")
@@ -51,10 +52,8 @@ class AccountInvoiceExtractionWords(models.Model):
     word_box_angle = fields.Float()
 
 
-class AccountInvoice(models.Model):
-
-    _name = "account.invoice"
-    _inherit = ['account.invoice']
+class AccountMove(models.Model):
+    _inherit = ['account.move']
 
     @api.depends('extract_status_code')
     def _compute_error_message(self):
@@ -66,7 +65,7 @@ class AccountInvoice(models.Model):
         can_show = True
         if self.env.company.extract_show_ocr_option_selection == 'no_send':
             can_show = False
-        if record.state not in 'draft':
+        if record.state != 'draft':
             can_show = False
         if record.message_main_attachment_id is None or len(record.message_main_attachment_id) == 0:
             can_show = False
@@ -105,13 +104,13 @@ class AccountInvoice(models.Model):
     @api.multi
     @api.returns('mail.message', lambda value: value.id)
     def message_post(self, **kwargs):
-        """When a message is posted on an account.invoice, send the attachment to iap-ocr if
+        """When a message is posted on an account.move, send the attachment to iap-ocr if
         the res_config is on "auto_send" and if this is the first attachment."""
-        message = super(AccountInvoice, self).message_post(**kwargs)
+        message = super(AccountMove, self).message_post(**kwargs)
         if self.env.company.extract_show_ocr_option_selection == 'auto_send':
             account_token = self.env['iap.account'].get('invoice_ocr')
             for record in self:
-                if record.type in ["out_invoice", "out_refund"]:
+                if not record.is_invoice():
                     return message
                 if record.extract_state == "no_extract_requested":
                     attachments = message.attachment_ids  # should be in post_after_hook (or message_create) to have values without reading message?
@@ -218,11 +217,11 @@ class AccountInvoice(models.Model):
                 'tax_amount_type': tax.tax_id.amount_type,
                 'tax_price_include': tax.tax_id.price_include} for tax in self.tax_line_ids]
         elif field == "date":
-            text_to_send["content"] = str(self.date_invoice)
+            text_to_send["content"] = str(self.invoice_date)
         elif field == "due_date":
-            text_to_send["content"] = str(self.date_due)
+            text_to_send["content"] = str(self.invoice_date_due)
         elif field == "invoice_id":
-            text_to_send["content"] = self.reference
+            text_to_send["content"] = self.ref
         elif field == "supplier":
             text_to_send["content"] = self.partner_id.name
         elif field == "VAT_Number":
@@ -253,11 +252,11 @@ class AccountInvoice(models.Model):
         return return_box
 
     @api.multi
-    def invoice_validate(self):
-        """On the validation of an invoice, send the differents corrected fields to iap to improve
-        the ocr algorithm"""
-        res = super(AccountInvoice, self).invoice_validate()
-        for record in self:
+    def post(self):
+        # OVERRIDE
+        # On the validation of an invoice, send the different corrected fields to iap to improve the ocr algorithm.
+        res = super(AccountMove, self).post()
+        for record in self.filtered(lambda move: move.is_invoice()):
             if record.extract_state == 'waiting_validation':
                 endpoint = self.env['ir.config_parameter'].sudo().get_param(
                     'account_invoice_extract_endpoint', 'https://iap-extract.odoo.com') + '/iap/invoice_extract/validate'
@@ -450,18 +449,10 @@ class AccountInvoice(models.Model):
         return 0
 
     @api.multi
-    def _set_supplier(self, supplier_ocr, vat_number_ocr):
-        self.ensure_one()
-        if not self.partner_id:
-            partner_id =  self.env["res.partner"].search([("vat", "=", vat_number_ocr)], limit=1).id
-            if not partner_id:
-                partner_id = self.find_partner_id_with_name(supplier_ocr)
-                if partner_id:
-                    self.write({'partner_bank_id': False, 'partner_id': partner_id})
-                    self._onchange_partner_id()
-
-    @api.multi
-    def _set_invoice_lines(self, invoice_lines, subtotal_ocr):
+    def _get_invoice_lines(self, invoice_lines, subtotal_ocr):
+        """
+        Get write values for invoice lines.
+        """
         self.ensure_one()
         invoice_lines_to_create = []
         taxes_found = {}
@@ -497,7 +488,6 @@ class AccountInvoice(models.Model):
             for taxes_ids, il in aggregated_lines.items():
                 vals = {
                     'name': " + ".join(il['description']) if len(il['description']) > 0 else "/",
-                    'invoice_id': self.id,
                     'price_unit': il['total'],
                     'quantity': 1.0,
                 }
@@ -505,7 +495,7 @@ class AccountInvoice(models.Model):
                 for tax in taxes_ids:
                     tax_ids.append((4, tax))
                 if tax_ids:
-                    vals['invoice_line_tax_ids'] = tax_ids
+                    vals['tax_ids'] = tax_ids
 
                 invoice_lines_to_create.append(vals)
         else:
@@ -519,38 +509,22 @@ class AccountInvoice(models.Model):
 
                 vals = {
                     'name': description,
-                    'invoice_id': self.id,
                     'price_unit': unit_price,
                     'quantity': quantity,
+                    'tax_ids': []
                 }
                 for (taxe, taxe_type) in zip(taxes, taxes_type_ocr):
                     if (taxe, taxe_type) in taxes_found:
-                        if 'invoice_line_tax_ids' not in vals:
-                            vals['invoice_line_tax_ids'] = [(4, taxes_found[(taxe, taxe_type)])]
-                        else:
-                            vals['invoice_line_tax_ids'].append((4, taxes_found[(taxe, taxe_type)]))
+                        vals['tax_ids'].append(taxes_found[(taxe, taxe_type)])
                     else:
                         taxes_record = self.env['account.tax'].search([('amount', '=', taxe), ('amount_type', '=', taxe_type), ('type_tax_use', '=', 'purchase')], limit=1)
                         if taxes_record:
-                            taxes_found[(taxe, taxe_type)] = taxes_record.id
-                            if 'invoice_line_tax_ids' not in vals:
-                                vals['invoice_line_tax_ids'] = [(4, taxes_record.id)]
-                            else:
-                                vals['invoice_line_tax_ids'].append((4, taxes_record.id))
+                            taxes_found[(taxe, taxe_type)] = taxes_record
+                            vals['tax_ids'].append(taxes_record)
 
                 invoice_lines_to_create.append(vals)
 
-        invoice_lines = self.invoice_line_ids.with_context(set_default_account=True, journal_id=self.journal_id.id).create(invoice_lines_to_create)
-
-        for invoice_line in invoice_lines:
-            # try to predict the account
-            if getattr(invoice_line, '_predict_account', False):
-                predicted_account_id = invoice_line._predict_account(invoice_line.name, invoice_line.partner_id)
-                # we only change the account if we manage to predict its value
-                if predicted_account_id:
-                    invoice_line.account_id = predicted_account_id
-
-        self.compute_taxes()
+        return invoice_lines_to_create
 
     @api.multi
     def _set_currency(self, currency_ocr):
@@ -563,11 +537,11 @@ class AccountInvoice(models.Model):
     @api.multi
     def check_status(self):
         """contact iap to get the actual status of the ocr request"""
+        endpoint = self.env['ir.config_parameter'].sudo().get_param(
+            'account_invoice_extract_endpoint', 'https://iap-extract.odoo.com')  + '/iap/invoice_extract/get_result'
         for record in self:
             if record.extract_state not in ["waiting_extraction", "extract_not_ready"]:
                 continue
-            endpoint = self.env['ir.config_parameter'].sudo().get_param(
-                'account_invoice_extract_endpoint', 'https://iap-extract.odoo.com')  + '/iap/invoice_extract/get_result'
             params = {
                 'version': CLIENT_OCR_VERSION,
                 'document_id': record.extract_remoteid
@@ -592,30 +566,49 @@ class AccountInvoice(models.Model):
                 invoice_lines = ocr_results['invoice_lines'] if 'invoice_lines' in ocr_results else []
 
                 if invoice_lines:
-                    record._set_invoice_lines(invoice_lines, subtotal_ocr)
+                    vals_invoice_lines = self._get_invoice_lines(invoice_lines, subtotal_ocr)
                 elif total_ocr:
                     vals_invoice_line = {
                         'name': "/",
-                        'invoice_id': self.id,
                         'price_unit': total_ocr,
                         'quantity': 1.0,
+                        'tax_ids': []
                     }
                     for taxe, taxe_type in zip(taxes_ocr, taxes_type_ocr):
                         taxes_record = self.env['account.tax'].search([('amount', '=', taxe), ('amount_type', '=', taxe_type), ('type_tax_use', '=', 'purchase')], limit=1)
                         if taxes_record and subtotal_ocr:
-                            if 'invoice_line_tax_ids' not in vals_invoice_line:
-                                vals_invoice_line['invoice_line_tax_ids'] = [(4, taxes_record.id)]
-                            else:
-                                vals_invoice_line['invoice_line_tax_ids'].append((4, taxes_record.id))
+                            vals_invoice_line['tax_ids'].append(taxes_record)
                             vals_invoice_line['price_unit'] = subtotal_ocr
-                    record.invoice_line_ids.with_context(set_default_account=True, journal_id=self.journal_id.id).create(vals_invoice_line)
+                    vals_invoice_lines = [vals_invoice_line]
 
-                record._set_supplier(supplier_ocr, vat_number_ocr)
-                record.date_invoice = date_ocr
-                record.date_due = due_date_ocr
-                record.reference = invoice_id_ocr
-                if self.user_has_groups('base.group_multi_currency'):
-                    record._set_currency(currency_ocr)
+
+                with Form(record) as move_form:
+                    partner_id = self.find_partner_id_with_name(supplier_ocr)
+                    if partner_id != 0:
+                        move_form.partner_id = partner_id
+                    else:
+                        partner_vat = self.env["res.partner"].search([("vat", "=", vat_number_ocr)], limit=1)
+                        if partner_vat.exists():
+                            move_form.partner_id = partner_vat
+
+                    move_form.invoice_date = date_ocr
+                    if due_date_ocr:
+                        move_form.invoice_date_due = due_date_ocr
+                    move_form.ref = invoice_id_ocr
+
+                    if self.user_has_groups('base.group_multi_currency'):
+                        move_form.currency_id = self.env["res.currency"].search([
+                                '|', '|', ('currency_unit_label', 'ilike', currency_ocr),
+                                ('name', 'ilike', currency_ocr), ('symbol', 'ilike', currency_ocr)], limit=1)
+
+                    for line_val in vals_invoice_lines:
+                        with move_form.invoice_line_ids.new() as line:
+                            line.name = line_val['name']
+                            line.price_unit = line_val['price_unit']
+                            line.quantity = line_val['quantity']
+                            line.tax_ids.clear()
+                            for tax_id in line_val['tax_ids']:
+                                line.tax_ids.add(tax_id)
 
                 fields_with_boxes = ['supplier', 'date', 'due_date', 'invoice_id', 'currency', 'VAT_Number']
                 for field in fields_with_boxes:

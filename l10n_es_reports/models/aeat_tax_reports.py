@@ -708,7 +708,7 @@ class AEATAccountFinancialReport(models.Model):
             cash_payments_aml = self.env['account.partial.reconcile'].search([('credit_move_id.date', '<=' ,date_to),
                                                                               ('credit_move_id.date', '>=', date_from),
                                                                               ('credit_move_id.journal_id.type', '=', 'cash'),
-                                                                              ('debit_move_id.invoice_id.l10n_es_reports_mod347_invoice_type', '=', mod_invoice_type),
+                                                                              ('debit_move_id.move_id.l10n_es_reports_mod347_invoice_type', '=', mod_invoice_type),
                                                                               ('credit_move_id.account_id.user_type_id', '=', self.env.ref('account.data_account_type_receivable').id),
                                                                             ])
             all_partners += cash_payments_aml.mapped('credit_move_id.partner_id')
@@ -794,7 +794,7 @@ class AEATAccountFinancialReport(models.Model):
         # We search for current invoice type in the parent line's domain
         current_invoice_type = None
         for domain_tuple in evaluated_domain:
-            if domain_tuple[0] == 'invoice_id.l10n_es_reports_mod347_invoice_type' and domain_tuple[1] == '=':
+            if domain_tuple[0] == 'move_id.l10n_es_reports_mod347_invoice_type' and domain_tuple[1] == '=':
                 current_invoice_type = domain_tuple[2]
                 break
 
@@ -804,7 +804,7 @@ class AEATAccountFinancialReport(models.Model):
         metalico_amount = 0
         for cash_payment_aml in cash_payments_lines_in_period:
                 partial_reconcile_ids = getattr(cash_payment_aml, 'matched_' + matching_field + '_ids')
-                partial_rec_on_inv_type = partial_reconcile_ids.filtered(lambda x: getattr(x, matching_field + '_move_id').invoice_id.l10n_es_reports_mod347_invoice_type == current_invoice_type)
+                partial_rec_on_inv_type = partial_reconcile_ids.filtered(lambda x: getattr(x, matching_field + '_move_id').move_id.l10n_es_reports_mod347_invoice_type == current_invoice_type)
                 for partial_rec in partial_rec_on_inv_type:
                     metalico_amount += partial_rec.amount
 
@@ -947,14 +947,14 @@ class AEATAccountFinancialReport(models.Model):
         report_period, report_year = self._get_mod_period_and_year(options)
 
         rslt = self._boe_format_string('')
-        for refund_invoice in self.env['account.invoice'].search([('date', '<=', report_date_to), ('date', '>=', report_date_from), ('type', 'in', ['in_refund', 'out_refund']), ('l10n_es_reports_mod349_invoice_type', '=', mod_349_type), ('partner_id', '=', line_partner.id)]):
-            original_invoice = refund_invoice.refund_invoice_id
+        for refund_invoice in self.env['account.move'].search([('date', '<=', report_date_to), ('date', '>=', report_date_from), ('type', 'in', ['in_refund', 'out_refund']), ('l10n_es_reports_mod349_invoice_type', '=', mod_349_type), ('partner_id', '=', line_partner.id)]):
+            original_invoice = refund_invoice.reversed_entry_id
             original_date = datetime.strptime(original_invoice.date, '%Y-%m-%d')
             invoice_period, invoice_year = self._retrieve_period_and_year(original_date, trimester=report_period[-1] == 'T')
             group_key = (invoice_period, invoice_year, refund_invoice.l10n_es_reports_mod349_invoice_type)
 
             # We compute the total refund for this invoice until the current period
-            all_previous_refunds = self.env['account.invoice'].search([('id', 'in', original_invoice.refund_invoice_ids.ids), ('date', '<=', report_date_to)])
+            all_previous_refunds = self.env['account.move'].search([('reversed_entry_id', '=', original_invoice.id), ('date', '<=', report_date_to)])
             total_refund = sum(all_previous_refunds.mapped('amount_total'))
 
             # Compute invoice report line at the time of the original invoice

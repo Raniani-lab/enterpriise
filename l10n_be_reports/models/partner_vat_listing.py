@@ -33,44 +33,44 @@ class ReportL10nBePartnerVatListing(models.AbstractModel):
                   LEFT JOIN res_partner p ON l.partner_id = p.id AND p.customer = true
                   JOIN account_account_tag_account_move_line_rel aml_tag ON l.id = aml_tag.account_move_line_id
                   JOIN account_tax_report_line_tags_rel tag_rep_ln ON tag_rep_ln.account_account_tag_id = aml_tag.account_account_tag_id
-                  LEFT JOIN account_invoice inv ON l.invoice_id = inv.id
+                  LEFT JOIN account_move inv ON l.move_id = inv.id
                   WHERE p.vat IS NOT NULL
 				  AND tag_rep_ln.account_tax_report_line_id IN %(tags)s
                   AND l.partner_id IN %(partner_ids)s
                   AND l.date >= %(date_from)s
                   AND l.date <= %(date_to)s
                   AND l.company_id IN %(company_ids)s
-                  AND ((l.invoice_id IS NULL AND l.credit > 0)
-                    OR (inv.type IN ('out_refund', 'out_invoice') AND inv.state IN ('open', 'in_payment', 'paid')))
+                  AND ((l.move_id IS NULL AND l.credit > 0)
+                    OR (inv.type IN ('out_refund', 'out_invoice') AND inv.state = 'posted'))
                   GROUP BY l.partner_id, p.name, p.vat) AS turnover_sub
                     FULL JOIN (SELECT l.partner_id, SUM(l.debit-l.credit) AS refund_base
                         FROM account_move_line l
                         JOIN res_partner p ON l.partner_id = p.id AND p.customer = true
                         JOIN account_account_tag_account_move_line_rel aml_tag ON l.id = aml_tag.account_move_line_id
                         JOIN account_tax_report_line_tags_rel tag_rep_ln ON tag_rep_ln.account_account_tag_id = aml_tag.account_account_tag_id
-                        LEFT JOIN account_invoice inv ON l.invoice_id = inv.id
+                        LEFT JOIN account_move inv ON l.move_id = inv.id
                         WHERE p.vat IS NOT NULL
                         AND tag_rep_ln.account_tax_report_line_id IN %(tags)s
                         AND l.partner_id IN %(partner_ids)s
                         AND l.date >= %(date_from)s
                         AND l.date <= %(date_to)s
                         AND l.company_id IN %(company_ids)s
-                        AND ((l.invoice_id IS NULL AND l.credit > 0)
-                          OR (inv.type = 'out_refund' AND inv.state IN ('open', 'in_payment', 'paid')))
+                        AND ((l.move_id IS NULL AND l.credit > 0)
+                          OR (inv.type = 'out_refund' AND inv.state = 'posted'))
                         GROUP BY l.partner_id, p.name, p.vat) AS refund_vat_sub
                     ON turnover_sub.partner_id = refund_vat_sub.partner_id
             LEFT JOIN (SELECT l2.partner_id, SUM(l2.credit - l2.debit) as vat_amount, SUM(l2.debit) AS refund_vat_amount
                   FROM account_move_line l2
                   JOIN account_account_tag_account_move_line_rel aml_tag2 ON l2.id = aml_tag2.account_move_line_id
                   JOIN account_tax_report_line_tags_rel tag_rep_ln_2 ON tag_rep_ln_2.account_account_tag_id = aml_tag2.account_account_tag_id
-                  LEFT JOIN account_invoice inv ON l2.invoice_id = inv.id
+                  LEFT JOIN account_move inv ON l2.move_id = inv.id
                   WHERE tag_rep_ln_2.account_tax_report_line_id IN %(tags2)s
                   AND l2.partner_id IN %(partner_ids)s
                   AND l2.date >= %(date_from)s
                   AND l2.date <= %(date_to)s
                   AND l2.company_id IN %(company_ids)s
-                  AND ((l2.invoice_id IS NULL AND l2.credit > 0)
-                   OR (inv.type IN ('out_refund', 'out_invoice') AND inv.state IN ('open', 'in_payment', 'paid')))
+                  AND ((l2.move_id IS NULL AND l2.credit > 0)
+                   OR (inv.type IN ('out_refund', 'out_invoice') AND inv.state = 'posted'))
                 GROUP BY l2.partner_id) AS refund_base_sub
               ON turnover_sub.partner_id = refund_base_sub.partner_id
            WHERE turnover > 250 OR refund_base > 0 OR refund_vat_amount > 0

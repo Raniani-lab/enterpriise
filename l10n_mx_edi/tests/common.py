@@ -22,8 +22,6 @@ class InvoiceTransactionCase(AccountingTestCase):
         })
 
         self.uid = self.manager_billing
-        self.invoice_model = self.env['account.invoice']
-        self.invoice_line_model = self.env['account.invoice.line']
         self.tax_model = self.env['account.tax']
         self.partner_agrolait = self.env.ref("base.res_partner_address_4")
         self.partner_agrolait.type = 'invoice'
@@ -92,36 +90,26 @@ class InvoiceTransactionCase(AccountingTestCase):
         if currency_id is None:
             currency_id = self.usd.id
         self.partner_agrolait.lang = None
-        invoice = self.invoice_model.with_env(self.env(user=self.user_billing)).create({
+        return self.env['account.move'].with_env(self.env(user=self.user_billing)).with_context(default_type=inv_type).create({
             'partner_id': self.partner_agrolait.id,
             'type': inv_type,
             'currency_id': currency_id,
             'l10n_mx_edi_payment_method_id': self.payment_method_cash.id,
             'l10n_mx_edi_partner_bank_id': self.account_payment.id,
+            'invoice_line_ids': [(0, 0, {
+                'product_id': self.product.id,
+                'quantity': 1,
+                'price_unit': 450.0,
+            })],
         })
-        self.create_invoice_line(invoice)
-        invoice.compute_taxes()
-        # I manually assign a tax on invoice
-        self.env['account.invoice.tax'].create({
-            'name': 'Test Tax for Customer Invoice',
-            'manual': 1,
-            'amount': 0,
-            'account_id': self.ova.id,
-            'invoice_id': invoice.id,
-        })
-        return invoice
-
-    def create_invoice_line(self, invoice_id):
-        invoice_line = self.invoice_line_model.new({
-            'product_id': self.product.id,
-            'invoice_id': invoice_id,
-            'quantity': 1,
-        })
-        invoice_line._onchange_product_id()
-        invoice_line_dict = invoice_line._convert_to_write({
-            name: invoice_line[name] for name in invoice_line._cache})
-        invoice_line_dict['price_unit'] = 450
-        self.invoice_line_model.create(invoice_line_dict)
+        # TODO: fix that...
+        # self.env['account.move.line'].create({
+        #     'name': 'Test Tax for Customer Invoice',
+        #     'debit': 0.0,
+        #     'credit': 0.0,
+        #     'account_id': self.ova.id,
+        #     'invoice_id': invoice.id,
+        # })
 
     def xml_merge_dynamic_items(self, xml, xml_expected):
         xml_expected.attrib['Fecha'] = xml.attrib['Fecha']

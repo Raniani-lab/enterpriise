@@ -76,15 +76,13 @@ class TestSubscription(TestSubscriptionCommon):
     # Avoid account_id is False when creating the invoice
     def _mock_prepare_invoice_data(self):
         invoice = self.original_prepare_invoice_data()
-        invoice['account_id'] = self.account_receivable.id
-        invoice['partner_bank_id'] = False
+        invoice['invoice_partner_bank_id'] = False
         return invoice
 
     # Mocking for 'test_auto_payment_with_token'
     # Avoid account_id is False when creating the invoice
     def _mock_prepare_invoice_line(self, line, fiscal_position):
         line_values = self.original_prepare_invoice_line(line, fiscal_position)
-        line_values['account_id'] = self.account_receivable.id
         return line_values
 
     def test_04_auto_payment_with_token(self):
@@ -102,6 +100,17 @@ class TestSubscription(TestSubscriptionCommon):
              'user_type_id': self.account_type_receivable.id,
              'company_id': self.company.id,
              'reconcile': True})
+
+        self.account_type_sale = self.env['account.account.type'].create({
+            'name': 'income',
+            'type': 'other',
+        })
+        self.account_sale = self.env['account.account'].create(
+            {'name': 'Product Sales ',
+             'code': 'S200000',
+             'user_type_id': self.account_type_sale.id,
+             'company_id': self.company.id,
+             'reconcile': False})
 
         self.sale_journal = self.env['account.journal'].create(
             {'name': 'reflets.info',
@@ -163,11 +172,11 @@ class TestSubscription(TestSubscriptionCommon):
         self.assertEqual(self.subscription.in_progress, True, 'subscription with online payment and a payment method set should stay opened when transaction succeeds')
 
         invoice_id = self.subscription.action_subscription_invoice()['res_id']
-        invoice = self.env['account.invoice'].browse(invoice_id)
+        invoice = self.env['account.move'].browse(invoice_id)
         recurring_total_with_taxes = self.subscription.recurring_total + (self.subscription.recurring_total * (self.tax_10.amount / 100.0))
         self.assertEqual(invoice.amount_total, recurring_total_with_taxes, 'website_subscription: the total of the recurring invoice created should be the subscription recurring total + the products taxes')
-        self.assertTrue(all(line.invoice_line_tax_ids.ids == self.tax_10.ids for line in invoice.invoice_line_ids), 'website_subscription: All lines of the recurring invoice created should have the percent tax set on the subscription products')
-        self.assertTrue(all(tax_line.tax_id == self.tax_10 for tax_line in invoice.tax_line_ids), 'The invoice tax lines should be set and should all use the tax set on the subscription products')
+        self.assertTrue(all(line.tax_ids.ids == self.tax_10.ids for line in invoice.invoice_line_ids), 'website_subscription: All lines of the recurring invoice created should have the percent tax set on the subscription products')
+        self.assertTrue(all(tax_line.tax_line_id == self.tax_10 for tax_line in invoice.line_ids.filtered('tax_line_id')), 'The invoice tax lines should be set and should all use the tax set on the subscription products')
 
         for patcher in patchers:
             patcher.stop()
@@ -266,11 +275,11 @@ class TestSubscription(TestSubscriptionCommon):
             self.assertEqual(self.sale_order_3.analytic_account_id, subscription.analytic_account_id)
             inv = subscription._recurring_create_invoice()
             # invoice lines have the correct analytic account
-            self.assertEqual(inv.invoice_line_ids[0].account_analytic_id, subscription.analytic_account_id)
+            self.assertEqual(inv.invoice_line_ids[0].analytic_account_id, subscription.analytic_account_id)
             subscription.analytic_account_id = self.account_2
             # even if changed after the fact
             inv = subscription._recurring_create_invoice()
-            self.assertEqual(inv.invoice_line_ids[0].account_analytic_id, subscription.analytic_account_id)
+            self.assertEqual(inv.invoice_line_ids[0].analytic_account_id, subscription.analytic_account_id)
 
     def test_10_take_snapshot(self):
         Snapshot = self.env['sale.subscription.snapshot']

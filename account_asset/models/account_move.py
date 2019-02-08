@@ -16,12 +16,20 @@ class AccountMove(models.Model):
     asset_depreciated_value = fields.Monetary(string='Cumulative Depreciation', copy=False)
     asset_manually_modified = fields.Boolean(help='This is a technical field stating that a depreciation line has been manually modified. It is used to recompute the depreciation table of an asset/deferred revenue.', copy=False)
 
-    @api.onchange('amount')
+    asset_ids = fields.One2many('account.asset', string='Assets', compute="_compute_asset_ids")
+    deferred_revenue_ids = fields.One2many('account.asset', compute="_compute_asset_ids")
+    number_asset_ids = fields.Integer(compute="_compute_asset_ids")
+    number_deferred_revenue_ids = fields.Integer(compute="_compute_asset_ids")
+    draft_asset_ids = fields.Boolean(compute="_compute_asset_ids")
+    draft_deferred_revenue_ids = fields.Boolean(compute="_compute_asset_ids")
+
+    @api.onchange('amount_total')
     def _onchange_amount(self):
         self.asset_manually_modified = True
 
     @api.multi
     def post(self):
+        # OVERRIDE
         res = super(AccountMove, self).post()
 
         # log the post of a depreciation
@@ -33,10 +41,19 @@ class AccountMove(models.Model):
         return res
 
     @api.multi
+    def button_cancel(self):
+        # OVERRIDE
+        res = super(AccountMove, self).button_cancel()
+
+        self.env['account.asset'].sudo().search([('original_move_line_ids.move_id', 'in', self.ids)]).write({'active': False})
+
+        return res
+
+    @api.multi
     def _log_depreciation_asset(self):
         for move in self.filtered(lambda m: m.asset_id):
             asset = move.asset_id
-            msg = _('Depreciation entry %s posted (%s)') % (move.name, formatLang(self.env, move.amount, currency_obj=move.company_id.currency_id))
+            msg = _('Depreciation entry %s posted (%s)') % (move.name, formatLang(self.env, move.amount_total, currency_obj=move.company_id.currency_id))
             asset.message_post(body=msg)
 
     @api.multi
@@ -45,8 +62,11 @@ class AccountMove(models.Model):
         invoice_list = []
         auto_validate = []
         for move in self:
+            if not move.is_invoice():
+                continue
+
             for move_line in move.line_ids:
-                if move_line.invoice_id and (move_line.account_id.can_create_asset or move_line.account_id.can_create_deferred_revenue) and move_line.account_id.create_asset != 'no':
+                if (move_line.account_id.can_create_asset or move_line.account_id.can_create_deferred_revenue) and move_line.account_id.create_asset != 'no':
                     vals = {
                         'name': move_line.name,
                         'company_id': move_line.company_id.id,
@@ -60,7 +80,7 @@ class AccountMove(models.Model):
                             'model_id': model_id.id,
                         })
                     auto_validate.append(move_line.account_id.create_asset == 'validate')
-                    invoice_list.append(move_line.invoice_id)
+                    invoice_list.append(move)
                     create_list.append(vals)
 
         assets = self.env['account.asset'].create(create_list)
@@ -71,7 +91,7 @@ class AccountMove(models.Model):
                 if validate:
                     asset.validate()
             if invoice:
-                msg = _('Asset created from invoice: <a href="/web#id={id}&model=account.invoice">{name}</a>').format(id=invoice.id, name=invoice.number)
+                msg = _('Asset created from invoice: <a href=# data-oe-model=account.move data-oe-id=%d>%s</a>') % (invoice.id, invoice.name)
                 asset.message_post(body=msg)
         return assets
 
@@ -96,7 +116,7 @@ class AccountMove(models.Model):
             'analytic_account_id': account_analytic_id.id if asset.asset_type == 'sale' else False,
             'analytic_tag_ids': [(6, 0, analytic_tag_ids.ids)] if asset.asset_type == 'sale' else False,
             'currency_id': company_currency != current_currency and current_currency.id or False,
-            'amount_currency': company_currency != current_currency and - 1.0 * vals['amount'] or 0.0,
+            'amount_currency': company_currency != current_currency and - 1.0 * vals['amount_total'] or 0.0,
         }
         move_line_2 = {
             'name': asset.name,
@@ -106,7 +126,7 @@ class AccountMove(models.Model):
             'analytic_account_id': account_analytic_id.id if asset.asset_type == 'purchase' else False,
             'analytic_tag_ids': [(6, 0, analytic_tag_ids.ids)] if asset.asset_type == 'purchase' else False,
             'currency_id': company_currency != current_currency and current_currency.id or False,
-            'amount_currency': company_currency != current_currency and vals['amount'] or 0.0,
+            'amount_currency': company_currency != current_currency and vals['amount_total'] or 0.0,
         }
         move_vals = {
             'ref': vals['move_ref'],
@@ -117,10 +137,21 @@ class AccountMove(models.Model):
             'asset_id': asset.id,
             'asset_remaining_value': vals['asset_remaining_value'],
             'asset_depreciated_value': vals['asset_depreciated_value'],
-            'amount': amount,
+            'amount_total': amount,
             'name': '/'
         }
         return move_vals
+
+    @api.depends('line_ids.asset_id')
+    def _compute_asset_ids(self):
+        for record in self:
+            assets = record.mapped('line_ids.asset_id')
+            record.asset_ids = assets.filtered(lambda x: x.asset_type == 'purchase')
+            record.deferred_revenue_ids = assets.filtered(lambda x: x.asset_type == 'sale')
+            record.number_asset_ids = len(record.asset_ids)
+            record.number_deferred_revenue_ids = len(record.deferred_revenue_ids)
+            record.draft_asset_ids = bool(record.asset_ids.filtered(lambda x: x.state == "draft"))
+            record.draft_deferred_revenue_ids = bool(record.deferred_revenue_ids.filtered(lambda x: x.state == "draft"))
 
     @api.model
     def create_asset_move(self, vals):
@@ -136,6 +167,29 @@ class AccountMove(models.Model):
             'view_id': False,
             'type': 'ir.actions.act_window',
             'res_id': self.asset_id.id,
+        }
+
+    @api.multi
+    def action_open_asset_ids(self):
+        return {
+            'name': _('Assets'),
+            'view_type': 'form',
+            'view_mode': 'tree,form',
+            'res_model': 'account.asset',
+            'view_id': False,
+            'type': 'ir.actions.act_window',
+            'domain': [('id', 'in', self.asset_ids.ids)],
+        }
+
+    @api.multi
+    def action_open_deferred_revenue_ids(self):
+        form_view = self.env.ref('account_deferred_revenue.view_account_asset_revenue_form', False) or self.env.ref('account_asset.view_account_asset_form')
+        return {
+            'name': _('Deferred Revenues'),
+            'res_model': 'account.asset',
+            'views': [[False, "tree"], [form_view.id, "form"]],
+            'type': 'ir.actions.act_window',
+            'domain': [('id', 'in', self.deferred_revenue_ids.ids)],
         }
 
 

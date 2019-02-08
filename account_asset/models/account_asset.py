@@ -2,9 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import calendar
-from datetime import date, datetime
 from dateutil.relativedelta import relativedelta
-from lxml import etree
 
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
@@ -131,16 +129,16 @@ class AccountAsset(models.Model):
         cumulated_depreciation = 0
         for m in self.depreciation_move_ids.sorted(lambda x: x.date):
             seq += 1
-            asset_remaining_value -= m.amount
-            cumulated_depreciation += m.amount
+            asset_remaining_value -= m.amount_total
+            cumulated_depreciation += m.amount_total
             if not m.asset_manually_modified:
                 continue
             m.asset_manually_modified = False
             m.asset_remaining_value = asset_remaining_value
             m.asset_depreciated_value = cumulated_depreciation
             for older_move in self.depreciation_move_ids.sorted(lambda x: x.date)[seq:]:
-                asset_remaining_value -= older_move.amount
-                cumulated_depreciation += older_move.amount
+                asset_remaining_value -= older_move.amount_total
+                cumulated_depreciation += older_move.amount_total
                 older_move.asset_remaining_value = asset_remaining_value
                 older_move.asset_depreciated_value = cumulated_depreciation
 
@@ -239,11 +237,14 @@ class AccountAsset(models.Model):
                 depreciation_date = last_depreciation_date + relativedelta(months=+int(self.method_period))
         commands = [(2, line_id.id, False) for line_id in self.depreciation_move_ids.filtered(lambda x: x.state == 'draft')]
         newlines = self._recompute_board(depreciation_number, starting_sequence, amount_to_depreciate, depreciation_date, already_depreciated_amount)
+        newline_vals_list = []
         for newline_vals in newlines:
             # no need of amount field, as it is computed and we don't want to trigger its inverse function
-            del(newline_vals['amount'])
-            newLine = self.env['account.move'].create(newline_vals)
-            commands.append((4, newLine.id, False))
+            del(newline_vals['amount_total'])
+            newline_vals_list.append(newline_vals)
+        new_moves = self.env['account.move'].create(newline_vals_list)
+        for move in new_moves:
+            commands.append((4, move.id))
         return self.write({'depreciation_move_ids': commands})
 
     def _recompute_board(self, depreciation_number, starting_sequence, amount_to_depreciate, depreciation_date, already_depreciated_amount):
@@ -535,10 +536,10 @@ class AccountAsset(models.Model):
         }))
         return new_line
 
-    @api.depends('value', 'salvage_value', 'depreciation_move_ids.state', 'depreciation_move_ids.amount')
+    @api.depends('value', 'salvage_value', 'depreciation_move_ids.state', 'depreciation_move_ids.amount_total')
     def _amount_residual(self):
         for asset in self:
-            total_amount = sum(asset.depreciation_move_ids.filtered(lambda x: x.state == 'posted').mapped('amount'))
+            total_amount = sum(asset.depreciation_move_ids.filtered(lambda x: x.state == 'posted').mapped('amount_total'))
             asset.value_residual = asset.value - total_amount - asset.salvage_value
 
     @api.onchange('company_id')

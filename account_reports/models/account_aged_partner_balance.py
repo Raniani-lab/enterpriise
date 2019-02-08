@@ -58,11 +58,14 @@ class report_account_aged_partner(models.AbstractModel):
             if 'partner_%s' % (values['partner_id'],) in options.get('unfolded_lines'):
                 for line in amls[values['partner_id']]:
                     aml = line['line']
-                    caret_type = 'account.move'
-                    if aml.invoice_id:
-                        caret_type = 'account.invoice.in' if aml.invoice_id.type in ('in_refund', 'in_invoice') else 'account.invoice.out'
+                    if aml.move_id.is_purchase_document():
+                        caret_type = 'account.invoice.in'
+                    elif aml.move_id.is_sale_document():
+                        caret_type = 'account.invoice.out'
                     elif aml.payment_id:
                         caret_type = 'account.payment'
+                    else:
+                        caret_type = 'account.move'
                     vals = {
                         'id': aml.id,
                         'name': format_date(self.env, aml.date_maturity or aml.date),
@@ -72,7 +75,10 @@ class report_account_aged_partner(models.AbstractModel):
                         'parent_id': 'partner_%s' % (values['partner_id'],),
                         'columns': [{'name': v} for v in [aml.journal_id.code, aml.account_id.code, self._format_aml_name(aml.name, aml.ref, aml.move_id.name)]] +\
                                    [{'name': v} for v in [line['period'] == 6-i and self.format_value(sign * line['amount']) or '' for i in range(7)]],
-                        'action_context': aml.get_action_context(),
+                        'action_context': {
+                            'default_type': aml.move_id.type,
+                            'default_journal_id': aml.move_id.journal_id.id,
+                        },
                     }
                     lines.append(vals)
         if total and not line_id:

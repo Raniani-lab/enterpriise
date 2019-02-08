@@ -49,13 +49,13 @@
                             t-att-ClaveProdServ="line.product_id.l10n_mx_edi_code_sat_id.code"
                             t-att-NoIdentificacion="record._get_string_cfdi(line.product_id.default_code or '')"
                             t-att-Cantidad="'%.6f' % line.quantity"
-                            t-att-ClaveUnidad="line.uom_id.l10n_mx_edi_code_sat_id.code"
-                            t-att-Unidad="record._get_string_cfdi(line.uom_id.name, 20)"
+                            t-att-ClaveUnidad="line.product_uom_id.l10n_mx_edi_code_sat_id.code"
+                            t-att-Unidad="record._get_string_cfdi(line.product_uom_id.name, 20)"
                             t-att-Descripcion="record._get_string_cfdi(line.name, 1000)"
                             t-att-ValorUnitario="'%.*f' % (decimal_precision, subtotal_wo_discount(line)/line.quantity) if line.quantity else 0.0"
                             t-att-Importe="'%.*f' % (decimal_precision, subtotal_wo_discount(line))"
                             t-att-Descuento="total_discount(line, decimal_precision)">
-                            <t t-set="taxes_line" t-value="line.filtered('price_subtotal').invoice_line_tax_ids"/>
+                            <t t-set="taxes_line" t-value="line.filtered('price_subtotal').tax_ids"/>
                             <t t-set="taxes_line" t-value="taxes_line.filtered(lambda tax: tax.amount_type != 'group') + taxes_line.filtered(lambda tax: tax.amount_type == 'group').mapped('children_tax_ids')"/>
                             <t t-if="taxes_line">
                                 <t t-set="price" t-value="line.price_unit * (1.0 - (line.discount or 0.0) / 100.0)"/>

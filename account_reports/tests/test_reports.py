@@ -19,27 +19,11 @@ class TestAccountReports(common.TransactionCase):
         self.partner_timmy_thomas = self.env['res.partner'].create({
             'name': 'Timmy Thomas',
         })
-        self.account_type_other = self.env['account.account.type'].create({
-            'name': 'other',
-            'type': 'other',
-        })
-        #  Account types
-        self.account_type_rcv = self.env['account.account.type'].create({
-            'name': 'receivable',
-            'type': 'receivable',
-        })
         # Accounts
-        self.account_rcv = self.env['account.account'].create({
-            'name': 'RCV',
-            'code': '001',
-            'user_type_id': self.account_type_rcv.id,
-            'reconcile': True,
-            'company_id': self.company.id,
-        })
         self.account_sale = self.env['account.account'].create({
             'name': 'SALE',
             'code': '002',
-            'user_type_id': self.account_type_other.id,
+            'user_type_id': self.env.ref('account.data_account_type_revenue').id,
             'reconcile': False,
             'company_id': self.company.id,
         })
@@ -108,27 +92,13 @@ class TestAccountReports(common.TransactionCase):
         date_sale = fields.Date.today()
 
         # Company 0
-        invoice_move = self.env['account.move'].create({
-            'name': 'Invoice Move',
+        invoice_move = self.env['account.move'].with_context(default_type='out_invoice').create({
+            'partner_id': self.partner_timmy_thomas.id,
             'date': date_sale,
             'journal_id': self.sale_journal.id,
-            'company_id': self.company.id,
-        })
-
-        sale_move_lines = self.env['account.move.line'].with_context(check_move_validity=False)
-        sale_move_lines |= sale_move_lines.create({
-            'name': 'receivable line',
-            'account_id': self.account_rcv.id,
-            'debit': 30.0,
-            'move_id': invoice_move.id,
-            'partner_id': self.partner_timmy_thomas.id,
-        })
-        sale_move_lines |= sale_move_lines.create({
-            'name': 'product line',
-            'account_id': self.account_sale.id,
-            'credit': 30.0,
-            'move_id': invoice_move.id,
-            'partner_id': self.partner_timmy_thomas.id,
+            'invoice_line_ids': [
+                (0, 0, {'quantity': 1, 'price_unit': 30}),
+            ],
         })
 
         # Company 1
@@ -143,28 +113,14 @@ class TestAccountReports(common.TransactionCase):
             'default_debit_account_id': account_sale1.id,
             'default_credit_account_id': account_sale1.id,
         })
-        account_rcv1 = self.account_rcv.copy({'company_id': company1.id})
 
-        invoice_move1 = self.env['account.move'].create({
-            'name': 'Invoice Move',
+        invoice_move1 = self.env['account.move'].with_context(default_type='out_invoice').create({
+            'partner_id': self.partner_timmy_thomas.id,
             'date': date_sale,
             'journal_id': sale_journal1.id,
-            'company_id': company1.id,
-        })
-
-        sale_move_lines.create({
-            'name': 'receivable line',
-            'account_id': account_rcv1.id,
-            'debit': 60.0,
-            'move_id': invoice_move1.id,
-            'partner_id': self.partner_timmy_thomas.id,
-        })
-        sale_move_lines.create({
-            'name': 'product line',
-            'account_id': account_sale1.id,
-            'credit': 60.0,
-            'move_id': invoice_move1.id,
-            'partner_id': self.partner_timmy_thomas.id,
+            'invoice_line_ids': [
+                (0, 0, {'quantity': 1, 'price_unit': 60}),
+            ],
         })
 
         invoice_move.post()

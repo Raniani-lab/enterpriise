@@ -77,7 +77,7 @@
             <td class="text-right" t-if="o.l10n_mx_edi_cfdi_uuid and xml.get('Version')"><span t-field="line.uom_id.l10n_mx_edi_code_sat_id.code"/></td>
         </xpath>
 
-        <xpath expr="//p[@t-if='o.comment']" position="before">
+        <xpath expr="//p[@t-if='o.narration']" position="before">
             <t t-if="o.l10n_mx_edi_cfdi_uuid">
                 <p>
                     <span t-esc="o.l10n_mx_edi_amount_to_text()"/>

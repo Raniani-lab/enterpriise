@@ -15,10 +15,10 @@
     <li t-if="line['caret_options'] == 'account.account'"><a role="menuitem" tabindex="-1" t-att-data-id="line['id']" action="open_general_ledger" class="dropdown-item">General Ledger</a></li>
     <li t-if="line['caret_options'] == 'account.account'"><a role="menuitem" tabindex="-1" t-att-data-id="line['id']" t-att-data-financial_group_line_id="line.get('parent_id')" action="open_journal_items" class="dropdown-item">Journal Items</a></li>
     <li t-if="line['caret_options'] == 'account.invoice.out'">
-      <a role="menuitem" tabindex="-1" t-att-data-id="line['id']" t-att-data-model="line.get('model', 'account.move.line')" t-att-data-action-context="line.get('action_context')" data-object="account.invoice" action="open_document" class="dropdown-item">View Invoice</a>
+      <a role="menuitem" tabindex="-1" t-att-data-id="line['id']" t-att-data-model="line.get('model', 'account.move.line')" t-att-data-action-context="line.get('action_context')" data-object="account.move" action="open_document" class="dropdown-item">View Invoice</a>
     </li>
     <li t-if="line['caret_options'] == 'account.invoice.in'">
-      <a role="menuitem" tabindex="-1" t-att-data-id="line['id']" t-att-data-model="line.get('model', 'account.move.line')" t-att-data-action-context="line.get('action_context')" data-object="account.invoice" action="open_document" class="dropdown-item" >View Bill</a>
+      <a role="menuitem" tabindex="-1" t-att-data-id="line['id']" t-att-data-model="line.get('model', 'account.move.line')" t-att-data-action-context="line.get('action_context')" data-object="account.move" action="open_document" class="dropdown-item" >View Bill</a>
     </li>
     <li t-if="line['caret_options'] == 'account.payment'">
       <a role="menuitem" tabindex="-1" t-att-data-id="line['id']" t-att-data-model="line.get('model', 'account.move.line')" t-att-data-action-context="line.get('action_context')" data-object="account.payment" action="open_document" class="dropdown-item">View Payment</a>
@@ -308,9 +308,6 @@
 
 <!-- Business Statements Aged receivable templates  -->
  <template id="line_template_aged_receivable_report" inherit_id="account_reports.template_aged_partner_balance_line_report" primary="True">
-     <xpath expr="//div[hasclass('o_account_reports_domain_dropdown')]/*[last()]" position="before">
-        <a role="menuitem" tabindex="-1" t-att-data-id="line['id']" action="open_document" groups="account.group_account_user" class="dropdown-item">View Journal Entry</a>
-     </xpath>
      <xpath expr="//span[hasclass('account_report_line_name')]" position="inside">
         &amp;nbsp;<a t-if="'partner_id' in line and line.get('unfolded')" t-att-data-partner_id="line.get('partner_id')" action="action_partner_reconcile" class="no_print oe_link_reports">Reconcile</a>
      </xpath>
@@ -318,9 +315,6 @@
 
  <!-- Business Statements Aged Payable templates -->
  <template id="line_template_aged_payable_report" inherit_id="account_reports.template_aged_partner_balance_line_report" primary="True">
-     <xpath expr="//div[hasclass('o_account_reports_domain_dropdown')]/*[last()]" position="before">
-        <a role="menuitem" tabindex="-1" t-att-data-id="line['id']" action="open_document" groups="account.group_account_user" class="dropdown-item">View Journal Entry</a>
-     </xpath>
      <xpath expr="//span[hasclass('account_report_line_name')]" position="inside">
         &amp;nbsp;<a t-if="'partner_id' in line and line.get('unfolded')" t-att-data-partner_id="line.get('partner_id')" action="action_partner_reconcile" class="no_print oe_link_reports">Reconcile</a>
      </xpath>
@@ -338,9 +332,6 @@
         <t t-if="line.get('trust') == 'normal'">
             <span class="fa fa-circle color-transparent trust-partner" role="img" aria-label="Partner ledger is normal" title="Partner ledger is normal"></span>
         </t>
-    </xpath>
-    <xpath expr="//div[hasclass('o_account_reports_domain_dropdown')]/*[last()]" position="before">
-        <t t-if="line['caret_options'] != 'account.tax'" groups="account.group_account_user"><a role="menuitem" tabindex="-1" t-att-data-id="line['id']" action="open_document" class="dropdown-item">View Journal Entry</a></t>
     </xpath>
     <xpath expr="//span[hasclass('account_report_line_name')]" position="inside">
        &amp;nbsp;<a t-if="'partner_id' in line and line.get('unfolded')" t-att-data-partner_id="line.get('partner_id')" action="action_partner_reconcile" class="no_print oe_link_reports">Reconcile</a>

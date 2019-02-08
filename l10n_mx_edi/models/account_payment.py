@@ -218,7 +218,7 @@ class AccountPayment(models.Model):
         cfdi = self.l10n_mx_edi_get_xml_etree(cfdi)
         cfdi = self.l10n_mx_edi_get_tfd_etree(cfdi)
         #return the cadena
-        return self.env['account.invoice'].l10n_mx_edi_generate_cadena(xslt_path, cfdi)
+        return self.env['account.move'].l10n_mx_edi_generate_cadena(xslt_path, cfdi)
 
     @api.multi
     def l10n_mx_edi_is_required(self):
@@ -408,7 +408,7 @@ class AccountPayment(models.Model):
 
         # -Compute cadena
         tree = self.l10n_mx_edi_get_xml_etree(cfdi)
-        cadena = self.env['account.invoice'].l10n_mx_edi_generate_cadena(
+        cadena = self.env['account.move'].l10n_mx_edi_generate_cadena(
             CFDI_XSLT_CADENA, tree)
 
         # Post append cadena
@@ -422,7 +422,7 @@ class AccountPayment(models.Model):
         """Create the values to fill the CFDI template with complement to
         payments."""
         self.ensure_one()
-        invoice_obj = self.env['account.invoice']
+        invoice_obj = self.env['account.move']
         precision_digits = self.env['decimal.precision'].precision_get(
             self.currency_id.name)
         values = {
@@ -564,7 +564,7 @@ class AccountPayment(models.Model):
         by the '_l10n_mx_edi_%s_info' % pac_name'
         method and the service_type passed as parameter.
         :param service_type: sign or cancel"""
-        invoice_obj = self.env['account.invoice']
+        invoice_obj = self.env['account.move']
         # Regroup the invoices by company (= by pac)
         comp_x_records = groupby(self, lambda r: r.company_id)
         for company_id, records in comp_x_records:

@@ -52,9 +52,9 @@ class AccountPayment(models.Model):
     @api.onchange('payment_method_id')
     def _onchange_payment_method_id(self):
         if self.payment_method_id == self.env.ref('account_sepa.account_payment_method_sepa_ct'):
-            if self._context.get('active_model') == 'account.invoice':
+            if self._context.get('active_model') == 'account.move':
                 invoice_ids = self._context.get('active_ids', [])
-                partners = self.env['account.invoice'].browse(invoice_ids).mapped('partner_id')
+                partners = self.env['account.move'].browse(invoice_ids).mapped('partner_id')
 
                 return {'domain':
                         {'partner_bank_account_id': [('partner_id', 'in', partners.ids + partners.mapped('commercial_partner_id').ids)]}

@@ -156,14 +156,14 @@ class SaleOrderLine(models.Model):
                 msg += "\n - %s" % (line.name)
             raise ValidationError(msg)
 
-    def _prepare_invoice_line(self, qty):
+    def _prepare_invoice_line(self):
         """
         Override to add subscription-specific behaviours.
 
         Display the invoicing period in the invoice line description, link the invoice line to the
         correct subscription and to the subscription's analytic account if present.
         """
-        res = super(SaleOrderLine, self)._prepare_invoice_line(qty)
+        res = super(SaleOrderLine, self)._prepare_invoice_line()
         if self.subscription_id:
             res.update(subscription_id=self.subscription_id.id)
             if self.order_id.subscription_management != 'upsell':

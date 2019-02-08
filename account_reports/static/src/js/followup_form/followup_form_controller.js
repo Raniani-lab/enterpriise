@@ -350,13 +350,6 @@ var FollowupFormController = FormController.extend({
                     res_id: this.model.localData[this.handle].res_id,
                 });
                 break;
-            case "open_invoice":
-                _.extend(action, {
-                    res_model: 'account.invoice',
-                    res_id: event.data.resId,
-                    views: [[event.data.view, 'form']],
-                });
-                break;
             case "open_move":
                 _.extend(action, {
                     res_model: 'account.move',

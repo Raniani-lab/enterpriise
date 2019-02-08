@@ -8,7 +8,7 @@ class HelpdeskTicket(models.Model):
     _inherit = 'helpdesk.ticket'
 
     invoices_count = fields.Integer('Credit Notes Count', compute='_compute_credit_notes_count')
-    invoice_ids = fields.Many2many('account.invoice', string='Credit Notes')
+    invoice_ids = fields.Many2many('account.move', string='Credit Notes')
 
     @api.depends('invoice_ids')
     def _compute_credit_notes_count(self):
@@ -20,7 +20,7 @@ class HelpdeskTicket(models.Model):
         return {
             'type': 'ir.actions.act_window',
             'name': _('Credit Notes'),
-            'res_model': 'account.invoice',
+            'res_model': 'account.move',
             'view_mode': 'tree,form',
             'domain': [('id', 'in', self.invoice_ids.ids)],
         }

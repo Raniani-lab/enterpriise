@@ -3,7 +3,8 @@
 
 from odoo import api, fields, models
 
-class AccountInvoiceLine(models.Model):
-    _inherit = 'account.invoice.line'
+
+class AccountMoveLine(models.Model):
+    _inherit = 'account.move.line'
 
     intrastat_product_origin_country_id = fields.Many2one('res.country', string='Origin Country of Product')

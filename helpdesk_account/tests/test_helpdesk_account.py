@@ -18,7 +18,7 @@ class TestHelpdeskAccount(common.HelpdeskTransactionCase):
         })
         product = self.env['product.product'].create({
             'name': 'product 1',
-            'type': 'product',
+            'type': 'consu',
         })
         so = self.env['sale.order'].create({
             'partner_id': partner.id,
@@ -32,7 +32,7 @@ class TestHelpdeskAccount(common.HelpdeskTransactionCase):
         so.action_confirm()
         so._create_invoices()
         invoice = so.invoice_ids
-        invoice.invoice_validate()
+        invoice.post()
         # helpdesk.ticket access rights
         ticket = self.env['helpdesk.ticket'].create({
             'name': 'test',
@@ -41,22 +41,20 @@ class TestHelpdeskAccount(common.HelpdeskTransactionCase):
             'sale_order_id': so.id,
         })
 
-        credit_note_form = Form(self.env['account.invoice.refund'].with_context({
-            'active_model': 'helpdesk.ticket',
-            'default_ticket_id': ticket.id,
+        credit_note_form = Form(self.env['account.move.reversal'].with_context({
+            'default_helpdesk_ticket_id': ticket.id,
         }))
-        credit_note_form.invoice_id = so.invoice_ids
-        credit_note_form.description = 'test'
+        credit_note_form.move_id = so.invoice_ids
+        credit_note_form.reason = 'test'
         credit_note = credit_note_form.save()
-        credit_note.invoice_refund()
-        refund = self.env['account.invoice'].search([
-            ('type', '=', 'out_refund'),
-            ('refund_invoice_id', '=', invoice.id)
-        ])
+        res = credit_note.reverse_moves()
+        refund = self.env['account.move'].browse(res['res_id'])
 
         self.assertEqual(len(refund), 1, "No refund created")
         self.assertEqual(refund.state, 'draft', "Wrong status of the refund")
-        self.assertEqual(refund.name, 'test', "The reference is wrong")
+        self.assertEqual(refund.invoice_payment_ref, 'test', "The reference is wrong")
+        self.assertEqual(len(ticket.invoice_ids), 1,
+            "The ticket should be linked to a credit note")
         self.assertEqual(ticket.invoices_count, 1,
             "The ticket should be linked to a credit note")
         self.assertEqual(refund[0].id, ticket.invoice_ids[0].id,

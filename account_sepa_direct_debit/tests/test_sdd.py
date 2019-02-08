@@ -45,29 +45,19 @@ class SDDTest(AccountingTestCase):
         })
 
     def create_invoice(self, partner, current_uid, currency):
-        account_receivable = self.env['account.account'].search([('user_type_id', '=', self.env.ref('account.data_account_type_receivable').id)], limit=1)
-        product = self.env.ref("product.product_product_4")
-        account_revenue = self.env['account.account'].search([('user_type_id', '=', self.env.ref('account.data_account_type_revenue').id)], limit=1)
-
-        invoice = self.env['account.invoice'].with_context({'uid': current_uid}).create({
+        invoice = self.env['account.move'].with_context(default_type='out_invoice', uid=current_uid).create({
             'partner_id': partner.id,
             'currency_id': currency.id,
-            'name': 'invoice to client',
-            'account_id': account_receivable.id,
+            'invoice_payment_ref': 'invoice to client',
             'type': 'out_invoice',
+            'invoice_line_ids': [(0, 0, {
+                'product_id': self.env.ref("product.product_product_4").id,
+                'quantity': 1,
+                'price_unit': 42,
+                'name': 'something',
+            })],
         })
-
-        self.env['account.invoice.line'].create({
-            'product_id': product.id,
-            'quantity': 1,
-            'price_unit': 42,
-            'invoice_id': invoice.id,
-            'name': 'something',
-            'account_id': account_revenue.id,
-        })
-
-        invoice.action_invoice_open()
-
+        invoice.post()
         return invoice
 
     def test_sdd(self):
@@ -97,15 +87,16 @@ class SDDTest(AccountingTestCase):
         invoice_china_export = self.create_invoice(partner_china_export, user.id, company.currency_id)
 
         #These invoice should have been paid automatically thanks to the mandate
-        self.assertEqual(invoice_agrolait.state, 'paid', 'This invoice should have been paid thanks to the mandate')
-        self.assertEqual(invoice_china_export.state, 'paid', 'This invoice should have been paid thanks to the mandate')
+        self.assertEqual(invoice_agrolait.invoice_payment_state, 'paid', 'This invoice should have been paid thanks to the mandate')
+        self.assertEqual(invoice_china_export.invoice_payment_state, 'paid', 'This invoice should have been paid thanks to the mandate')
 
         #The 'one-off' mandate should now be closed
         self.assertEqual(mandate_agrolait.state, 'active', 'A recurrent mandate should stay confirmed after accepting a payment')
         self.assertEqual(mandate_china_export.state, 'closed', 'A one-off mandate should be closed after accepting a payment')
 
         #Let us check the conformity of XML generation :
-        xml_file = etree.fromstring(invoice_agrolait.payment_ids.generate_xml(company, fields.Date.today(), True))
+        payment = invoice_agrolait.line_ids.mapped('matched_credit_ids.credit_move_id.payment_id')
+        xml_file = etree.fromstring(payment.generate_xml(company, fields.Date.today(), True))
 
         schema_file_path = get_module_resource('account_sepa_direct_debit', 'schemas', 'pain.008.001.02.xsd')
         xml_schema = etree.XMLSchema(etree.parse(open(schema_file_path)))

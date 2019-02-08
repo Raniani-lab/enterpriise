@@ -123,7 +123,7 @@ class LandingCost(InvoiceTransactionCase):
         invoice.write({
             'journal_id': self.journal_mx.id,
         })
-        invoice.action_invoice_open()
+        invoice.post()
         customs = invoice.invoice_line_ids[0].l10n_mx_edi_customs_number
         self.assertEqual(customs, landing.l10n_mx_edi_customs_number)
         xml = invoice.l10n_mx_edi_get_xml_etree()

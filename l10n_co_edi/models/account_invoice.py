@@ -12,8 +12,8 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
-class AccountInvoice(models.Model):
-    _inherit = 'account.invoice'
+class AccountMove(models.Model):
+    _inherit = 'account.move'
 
     l10n_co_edi_datetime_invoice = fields.Datetime(help='Technical field used to store the time of invoice validation.', copy=False)
     l10n_co_edi_type = fields.Selection([
@@ -40,7 +40,7 @@ class AccountInvoice(models.Model):
     @api.multi
     def l10n_co_edi_generate_electronic_invoice_xml(self):
         self.ensure_one()
-        if self.state not in ('open', 'paid'):
+        if self.state != 'posted':
             raise UserError(_('Can not generate electronic invoice for %s (id: %s) because it is not validated.') % (self.partner_id.display_name, self.id))
         return self._l10n_co_edi_generate_xml()
 
@@ -201,31 +201,31 @@ class AccountInvoice(models.Model):
 
     def _l10n_co_edi_get_total_units(self):
         '''Units have to be reported as units (not e.g. boxes of 12).'''
-        lines = self.invoice_line_ids.filtered(lambda line: line.uom_id.category_id == self.env.ref('uom.product_uom_categ_unit'))
+        lines = self.invoice_line_ids.filtered(lambda line: line.product_uom_id.category_id == self.env.ref('uom.product_uom_categ_unit'))
         units = 0
 
         for line in lines:
-            units += line.uom_id._compute_quantity(line.quantity, self.env.ref('uom.product_uom_unit'))
+            units += line.product_uom_id._compute_quantity(line.quantity, self.env.ref('uom.product_uom_unit'))
 
         return int(units)
 
     def _l10n_co_edi_get_total_weight(self):
         '''Weight has to be reported in kg (not e.g. g).'''
-        lines = self.invoice_line_ids.filtered(lambda line: line.uom_id.category_id == self.env.ref('uom.product_uom_categ_kgm'))
+        lines = self.invoice_line_ids.filtered(lambda line: line.product_uom_id.category_id == self.env.ref('uom.product_uom_categ_kgm'))
         kg = 0
 
         for line in lines:
-            kg += line.uom_id._compute_quantity(line.quantity, self.env.ref('uom.product_uom_kgm'))
+            kg += line.product_uom_id._compute_quantity(line.quantity, self.env.ref('uom.product_uom_kgm'))
 
         return int(kg)
 
     def _l10n_co_edi_get_total_volume(self):
         '''Volume has to be reported in l (not e.g. ml).'''
-        lines = self.invoice_line_ids.filtered(lambda line: line.uom_id.category_id == self.env.ref('uom.product_uom_categ_vol'))
+        lines = self.invoice_line_ids.filtered(lambda line: line.product_uom_id.category_id == self.env.ref('uom.product_uom_categ_vol'))
         l = 0
 
         for line in lines:
-            l += line.uom_id._compute_quantity(line.quantity, self.env.ref('uom.product_uom_litre'))
+            l += line.product_uom_id._compute_quantity(line.quantity, self.env.ref('uom.product_uom_litre'))
 
         return int(l)
 
@@ -242,7 +242,7 @@ class AccountInvoice(models.Model):
         left to philosophers, not dumb developers like myself.
         '''
         amount_in_words = self.currency_id.with_context(lang=self.partner_id.lang or 'es_ES').amount_to_text(self.amount_total)
-        shipping_partner = self.env['res.partner'].browse(self.get_delivery_partner_id())
+        shipping_partner = self.env['res.partner'].browse(self._get_invoice_delivery_partner_id())
         notas = [
             '1.-%s|%s|%s|%s|%s|%s' % (self.company_id.l10n_co_edi_header_gran_contribuyente or '',
                                       self.company_id.l10n_co_edi_header_tipo_de_regimen or '',
@@ -251,11 +251,11 @@ class AccountInvoice(models.Model):
                                       self.company_id.l10n_co_edi_header_resolucion_aplicable or '',
                                       self.company_id.l10n_co_edi_header_actividad_economica or ''),
             '2.-%s' % (self.company_id.l10n_co_edi_header_bank_information or '').replace('\n', '|'),
-            '3.-"%s"' % (self.comment or 'N/A'),
-            '6.- %s|%s' % (self.payment_term_id.note, amount_in_words),
+            '3.-"%s"' % (self.narration or 'N/A'),
+            '6.- %s|%s' % (self.invoice_payment_term_id.note, amount_in_words),
             '7.- "%s" "- "%s"' % (self.company_id.website, self.company_id.phone),
-            '8.-%s|%s|%s' % (self.partner_id.commercial_partner_id._get_vat_without_verification_code() or '', shipping_partner.phone or '', self.origin or ''),
-            '10.- | | | |%s' % (self.origin or 'N/A'),
+            '8.-%s|%s|%s' % (self.partner_id.commercial_partner_id._get_vat_without_verification_code() or '', shipping_partner.phone or '', self.invoice_origin or ''),
+            '10.- | | | |%s' % (self.invoice_origin or 'N/A'),
             '11.- |%s| |%s|%s' % (self._l10n_co_edi_get_total_units(), self._l10n_co_edi_get_total_weight(), self._l10n_co_edi_get_total_volume())
         ]
 
@@ -278,6 +278,7 @@ class AccountInvoice(models.Model):
             'national_citizen_id': '13',
             'id_document': '12',
             'passport': '41',
+
             'external_id': '21',
             'foreign_id_card': '22',
             'diplomatic_card': 'O-99',
@@ -298,11 +299,11 @@ class AccountInvoice(models.Model):
             self.env.ref('l10n_co_edi.tax_type_2') |\
             self.env.ref('l10n_co_edi.tax_type_3') |\
             self.env.ref('l10n_co_edi.tax_type_4')
-        tax_lines_with_type = self.tax_line_ids.filtered(lambda tax: tax.tax_id.l10n_co_edi_type in imp_taxes)
-        retention_taxes = tax_lines_with_type.filtered(lambda tax: tax.tax_id.l10n_co_edi_type.retention)
+        tax_lines_with_type = self.line_ids.filtered(lambda line: line.tax_line_id).filtered(lambda tax: tax.tax_line_id.l10n_co_edi_type in imp_taxes)
+        retention_taxes = tax_lines_with_type.filtered(lambda tax: tax.tax_line_id.l10n_co_edi_type.retention)
         regular_taxes = tax_lines_with_type - retention_taxes
         ovt_tax_codes = ('01C', '02C', '03C')
-        ovt_taxes = self.tax_line_ids.filtered(lambda tax: tax.tax_id.l10n_co_edi_type.code in ovt_tax_codes)
+        ovt_taxes = self.line_ids.filtered(lambda line: line.tax_line_id).filtered(lambda tax: tax.tax_line_id.l10n_co_edi_type.code in ovt_tax_codes)
         invoice_type_to_ref_1 = {
             'out_invoice': 'IV',
             'in_invoice': 'IV',
@@ -313,11 +314,11 @@ class AccountInvoice(models.Model):
         return self.env.ref('l10n_co_edi.electronic_invoice_xml').render({
             'invoice': self,
             'company_partner': self.company_id.partner_id,
-            'sales_partner': self.user_id,
+            'sales_partner': self.invoice_user_id,
             'invoice_partner': self.partner_id.commercial_partner_id,
             'retention_taxes': retention_taxes,
             'regular_taxes': regular_taxes,
-            'shipping_partner': self.env['res.partner'].browse(self.get_delivery_partner_id()),
+            'shipping_partner': self.env['res.partner'].browse(self._get_invoice_delivery_partner_id()),
             'invoice_type_to_ref_1': invoice_type_to_ref_1,
             'ovt_taxes': ovt_taxes,
             'float_compare': float_compare,
@@ -329,8 +330,12 @@ class AccountInvoice(models.Model):
         return self.type in ('out_invoice', 'out_refund', 'in_refund') and self.company_id.country_id == self.env.ref('base.co')
 
     @api.multi
-    def action_invoice_open(self):
-        res = super(AccountInvoice, self).action_invoice_open()
-        self.write({'l10n_co_edi_datetime_invoice': fields.Datetime.now()})
-        self.filtered(lambda inv: inv._l10n_co_edi_is_l10n_co_edi_required()).l10n_co_edi_upload_electronic_invoice()
+    def post(self):
+        # OVERRIDE to generate the e-invoice for the Colombian Localization.
+        res = super(AccountMove, self).post()
+
+        to_process = self.filtered(lambda move: move._l10n_co_edi_is_l10n_co_edi_required())
+        if to_process:
+            to_process.write({'l10n_co_edi_datetime_invoice': fields.Datetime.now()})
+            to_process.l10n_co_edi_upload_electronic_invoice()
         return res

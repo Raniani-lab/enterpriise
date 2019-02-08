@@ -35,7 +35,7 @@ class IntrastatReport(models.AbstractModel):
         :return:        The content of the file as str.
         '''
         # Fetch data.
-        self.env['account.invoice.line'].check_access_rights('read')
+        self.env['account.move.line'].check_access_rights('read')
 
         company = self.env.company
         date_from, date_to, journal_ids, incl_arrivals, incl_dispatches, extended = self._decode_options(options)
@@ -50,7 +50,7 @@ class IntrastatReport(models.AbstractModel):
 
         self._cr.execute(query, params)
         query_res = self._cr.dictfetchall()
-        line_map = dict((l.id, l) for l in self.env['account.invoice.line'].browse(res['id'] for res in query_res))
+        line_map = dict((l.id, l) for l in self.env['account.move.line'].browse(res['id'] for res in query_res))
 
         # Create csv file content.
         vat = company.vat
@@ -80,7 +80,7 @@ class IntrastatReport(models.AbstractModel):
         i = 1
         for res in query_res:
             line = line_map[res['id']]
-            inv = line.invoice_id
+            inv = line.move_id
             country_dest_code = inv.partner_id.country_id and inv.partner_id.country_id.code or ''
             country_origin_code = inv.intrastat_country_id and inv.intrastat_country_id.code or ''
             country = country_origin_code if res['type'] == 'Arrival' else country_dest_code

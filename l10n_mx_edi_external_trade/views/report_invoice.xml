@@ -15,7 +15,7 @@
             <td t-if="o.l10n_mx_edi_cfdi_uuid and external != None" class="text-right"><span t-field="line.l10n_mx_edi_qty_umt"/></td>
             <td t-if="o.l10n_mx_edi_cfdi_uuid and external != None"><span t-field="line.product_id.l10n_mx_edi_umt_aduana_id.name"/></td>
         </xpath>
-        <xpath expr="//p[@t-if='o.comment']" position="before">
+        <xpath expr="//p[@t-if='o.narration']" position="before">
             <div class="row" id="external_trade">
                 <t t-if="o.l10n_mx_edi_cfdi_uuid and external != None">
                     <div align="center">

@@ -51,7 +51,7 @@ class SignRequest(models.Model):
         return [key for key, val in type(self).state.selection]
 
     template_id = fields.Many2one('sign.template', string="Template", required=True)
-    reference = fields.Char(required=True, string="Filename")
+    reference = fields.Char(required=True, string="Document Name", help="This is how the document will be named in the mail")
 
     access_token = fields.Char('Security Token', required=True, default=_default_access_token, readonly=True)
 
@@ -173,7 +173,7 @@ class SignRequest(models.Model):
         for sign_request in self:
             for sign_request_item in sign_request.request_item_ids:
                 sign_request_item.write({'state':'sent'})
-        
+
     @api.multi
     def action_sent(self, subject=None, message=None):
         # Send accesses by email

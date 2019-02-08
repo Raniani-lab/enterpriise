@@ -46,9 +46,9 @@
     </t>
 
     <t t-name="sign.template">
-        <div t-if="widget.has_sign_requests &amp;&amp; widget.isPDF" class="text-center text-muted">
+        <div t-if="widget.has_sign_requests &amp;&amp; widget.isPDF" class="alert alert-info">
             <span class="fa fa-exclamation-triangle"/> Used by a signature request.
-            <button type="button" class="o_sign_duplicate_sign_template btn btn-link">Duplicate</button>
+            <button type="button" class="o_sign_duplicate_sign_template btn btn-link">Duplicate</button> to modify it.
         </div>
 
         <div t-att-class="!(widget.has_sign_requests &amp;&amp; widget.isPDF) ? 'text-center' : 'd-none text-center'">

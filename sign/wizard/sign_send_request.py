@@ -21,6 +21,8 @@ class SignSendRequest(models.TransientModel):
             'role_id': role.id,
             'partner_id': False,
         }) for role in roles]
+        if self.env.context.get('sign_directly_without_mail'):
+            res['signer_id'] = self.env.user.partner_id.id
         return res
 
     template_id = fields.Many2one('sign.template', required=True, ondelete='cascade')
@@ -66,13 +68,8 @@ class SignSendRequest(models.TransientModel):
 
     def send_request(self):
         res = self.create_request()
-        return {
-            'type': 'ir.actions.act_window',
-            'name': _('Signature(s)'),
-            'view_mode': 'form',
-            'res_model': 'sign.request',
-            'res_id': res['id']
-        }
+        request = self.env['sign.request'].browse(res['id'])
+        return request.go_to_document()
 
     def sign_directly(self):
         res = self.create_request()

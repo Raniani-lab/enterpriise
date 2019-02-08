@@ -22,7 +22,7 @@
                                     <span class="fa fa-bars fa-lg"/>
                                 </a>
                                 <div class="dropdown-menu" role="menu">
-                                    <t t-if="widget.editable"><a role="menuitem" type="edit" class="dropdown-item">Edit</a></t>
+                                    <t t-if="widget.editable" groups="base.group_no_one"><a role="menuitem" type="edit" class="dropdown-item">Properties</a></t>
                                     <a role="menuitem" type="object" name="go_to_custom_template" class="dropdown-item">Edit Fields</a>
                                     <a role="menuitem" type="object" name="toggle_active" class="dropdown-item">
                                         <t t-if="!record.active.raw_value">Restore</t>

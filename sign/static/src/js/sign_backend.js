@@ -38,8 +38,12 @@ odoo.define('sign.views_custo', function(require) {
         _openRecord: function () {
             var self = this;
             if (this.modelName === 'sign.template') {
-                this.do_action("sign.action_sign_send_request", {
-                    additional_context: {active_id: self.recordData.id}
+                self._rpc({
+                    model: 'sign.template',
+                    method: 'go_to_custom_template',
+                    args: [self.recordData.id],
+                }).then(function(action) {
+                    self.do_action(action);
                 });
             } else if (this.modelName === 'sign.request') {
                 this._rpc({
@@ -341,7 +345,6 @@ odoo.define('sign.template', function(require) {
             this.fullyLoaded.then(function() {
                 if(self.editMode) {
                     if(self.$iframe.prop('disabled')) {
-                        self.$('#viewer').fadeTo('slow', 0.75);
                         var $div = $('<div/>').css({
                             position: "absolute",
                             top: 0,

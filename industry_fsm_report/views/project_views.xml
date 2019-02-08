@@ -1,0 +1,130 @@
+<odoo>
+
+    <record id="project_report_template_view_form" model="ir.ui.view">
+        <field name="name">project.report.template.view.form</field>
+        <field name="model">project.report.template</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="model_id" invisible="True"/>
+                    <widget name="open_studio_button" attrs="{'invisible': [('model_id', '=', False)]}" />
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_reports" type="object" class="oe_stat_button" icon="fa-archive"
+                            attrs="{'invisible': [('report_count', '=', 0)]}">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_value"><field name="report_count"/></span>
+                                <span class="o_stat_text"> Report(s)</span>
+                            </div>
+                        </button>
+                        <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive" >
+                            <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                                <field name="name"/>
+                        </group>
+                        <group>
+                            <field name="model_id" invisible="True"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_fsm_reports" model="ir.actions.act_window">
+        <field name="name">Report Templates</field>
+        <field name="res_model">project.report.template</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="project_report_template_menu" name="Report template" action="action_fsm_reports"
+        sequence="10" parent="project.menu_project_config"
+        groups="project.group_project_user"/>
+
+    <record id="project_project_view_form_simplified_inherit" model="ir.ui.view">
+        <field name="name">project.project.view.form.simplified.inherit.industry.fsm.report</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="industry_fsm.project_view_form_simplified_inherit"/>
+        <field name="arch" type="xml">
+            <field name="allow_planning" position="after">
+                <field name="allow_reports"/>
+                <field name="report_template_id"  attrs="{'invisible': [('allow_reports', '=', False)]}"/>
+            </field>
+        </field>
+    </record>
+
+
+    <record id="project_project_form_inherit_industry_fsm_report" model="ir.ui.view">
+        <field name="name">project.project.form.inherit.industry.fsm.report</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="industry_fsm.project_view_form_inherit"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='allow_billable']/.." position="before">
+                <div>
+                    <field name="allow_reports"/>
+                    <label for="allow_reports"/>
+                </div>
+                <div attrs="{'invisible': [('allow_reports', '=', False)]}">
+                    <label for="report_template_id"/>
+                    <field name="report_template_id"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_task_form2_inherit" model="ir.ui.view">
+        <field name="name">task.form.inherit</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_form2"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_view_material']" position="before">
+                <field name="allow_reports" invisible="True" />
+                <field name="report_count" invisible="True" />
+                <button class="oe_stat_button" name="create_or_view_report"
+                    type="object" groups="project.group_project_user" help="Report from this task"
+                    attrs="{'invisible': ['|', ('allow_reports', '=', False), ('report_template_id', '=', False)]}">
+                    <div class="row">
+                        <div class="col-4 align-self-center ml-3" style="font-size:2rem;">
+                            <i class="fa fa-check text-success" aria-label="Edit" title="Edit report" attrs="{'invisible': [('report_count', '=', 0)]}" />
+                            <i class="fa fa-circle text-danger" aria-label="Create" title="Create report" attrs="{'invisible': [('report_count', '!=', 0)]}" />
+                        </div>
+                        <span class="o_stat_info align-self-center">Report</span>
+                    </div>
+                </button>
+            </xpath>
+            <field name="sale_line_id" position="after">
+                <field name="report_template_id" attrs="{'invisible': [('allow_reports', '=', False)]}"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="project_task_view_form_fsm_inherit" model="ir.ui.view">
+        <field name="name">task.form.inherit</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="industry_fsm.project_task_view_form_fsm"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_view_material']" position="before">
+                <field name="allow_reports" invisible="True" />
+                <field name="report_count" invisible="True" />
+                <field name="report_template_id" invisible="True"/>
+                <button class="oe_stat_button" name="create_or_view_report"
+                    type="object" groups="project.group_project_user" help="Report from this task"
+                    attrs="{'invisible': ['|', ('allow_reports', '=', False), ('report_template_id', '=', False)]}">
+                    <div class="row">
+                        <div class="col-4 align-self-center ml-3" style="font-size:2rem;">
+                            <i class="fa fa-check text-success" aria-label="Edit" title="Edit report" attrs="{'invisible': [('report_count', '=', 0)]}" />
+                            <i class="fa fa-circle text-danger" aria-label="Create" title="Create report" attrs="{'invisible': [('report_count', '!=', 0)]}" />
+                        </div>
+                        <span class="o_stat_info align-self-center">Report</span>
+                    </div>
+                </button>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

@@ -321,6 +321,23 @@
         </field>
     </record>
 
+    <record id="sale_subscription_view_activity" model="ir.ui.view">
+        <field name="name">sale.subscription.activity</field>
+        <field name="model">sale.subscription</field>
+        <field name="arch" type="xml">
+            <activity string="Subscriptions">
+                <templates>
+                    <div t-name="activity-box">
+                        <div>
+                            <field name="code" display="full"/>
+                            <field name="partner_id" muted="1" display="full"/>
+                        </div>
+                    </div>
+                </templates>
+            </activity>
+        </field>
+    </record>
+
     <record id="sale_subscription_template_view_kanban" model="ir.ui.view">
         <field name="name">sale.subscription.template.kanban</field>
         <field name="model">sale.subscription.template</field>

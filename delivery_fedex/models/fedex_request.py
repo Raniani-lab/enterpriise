@@ -178,12 +178,12 @@ class FedexRequest():
             # TODO in master, add unit in product packaging and perform unit conversion
             package.Dimensions.Units = "IN" if self.RequestedShipment.TotalWeight.Units == 'LB' else 'CM'
         if po_number:
-            po_reference = self.client.factory.create('CustomerReference')
+            po_reference = self.factory.CustomerReference()
             po_reference.CustomerReferenceType = 'P_O_NUMBER'
             po_reference.Value = po_number
             package.CustomerReferences.append(po_reference)
         if dept_number:
-            dept_reference = self.client.factory.create('CustomerReference')
+            dept_reference = self.factory.CustomerReference()
             dept_reference.CustomerReferenceType = 'DEPARTMENT_NUMBER'
             dept_reference.Value = dept_number
             package.CustomerReferences.append(dept_reference)
@@ -271,10 +271,10 @@ class FedexRequest():
         self.RequestedShipment.LabelSpecification = LabelSpecification
 
     def commercial_invoice(self, document_stock_type):
-        shipping_document = self.client.factory.create('ShippingDocumentSpecification')
+        shipping_document = self.factory.ShippingDocumentSpecification()
         shipping_document.ShippingDocumentTypes = "COMMERCIAL_INVOICE"
-        commercial_invoice_detail = self.client.factory.create('CommercialInvoiceDetail')
-        commercial_invoice_detail.Format = self.client.factory.create('ShippingDocumentFormat')
+        commercial_invoice_detail = self.factory.CommercialInvoiceDetail()
+        commercial_invoice_detail.Format = self.factory.ShippingDocumentFormat()
         commercial_invoice_detail.Format.ImageType = "PDF"
         commercial_invoice_detail.Format.StockType = document_stock_type
         shipping_document.CommercialInvoiceDetail = commercial_invoice_detail
@@ -339,8 +339,10 @@ class FedexRequest():
         commodity.Description = re.sub(r'[\[\]<>;={}"|]', '', commodity_description)
         commodity.Quantity = commodity_quantity
         commodity.QuantityUnits = commodity_quantity_units
-        commodity.CustomsValue.Currency = commodity_currency
-        commodity.CustomsValue.Amount = commodity_quantity * commodity_amount
+        customs_value = self.factory.Money()
+        customs_value.Currency = commodity_currency
+        customs_value.Amount = commodity_quantity * commodity_amount
+        commodity.CustomsValue = customs_value
 
         commodity.HarmonizedCode = commodity_harmonized_code
 
@@ -366,9 +368,9 @@ class FedexRequest():
                 if (self.RequestedShipment.RequestedPackageLineItems.SequenceNumber == self.RequestedShipment.PackageCount) or self.hasOnePackage:
                     if 'ShipmentRating' in self.response.CompletedShipmentDetail and self.response.CompletedShipmentDetail.ShipmentRating:
                         for rating in self.response.CompletedShipmentDetail.ShipmentRating.ShipmentRateDetails:
-                            formatted_response['price'][rating.TotalNetFedExCharge.Currency] = rating.TotalNetFedExCharge.Amount
+                            formatted_response['price'][rating.TotalNetFedExCharge.Currency] = float(rating.TotalNetFedExCharge.Amount)
                             if 'CurrencyExchangeRate' in rating and rating.CurrencyExchangeRate:
-                                formatted_response['price'][rating.CurrencyExchangeRate.FromCurrency] = rating.TotalNetFedExCharge.Amount / rating.CurrencyExchangeRate.Rate
+                                formatted_response['price'][rating.CurrencyExchangeRate.FromCurrency] = float(rating.TotalNetFedExCharge.Amount / rating.CurrencyExchangeRate.Rate)
                     else:
                         formatted_response['price']['USD'] = 0.0
                 if 'MasterTrackingId' in self.response.CompletedShipmentDetail:
@@ -401,7 +403,7 @@ class FedexRequest():
         return self.response.CompletedShipmentDetail.CompletedPackageDetails[0].Label.Parts[0].Image
 
     def get_document(self):
-        if 'ShipmentDocuments' in self.response.CompletedShipmentDetail:
+        if self.response.CompletedShipmentDetail.ShipmentDocuments:
             return binascii.a2b_base64(self.response.CompletedShipmentDetail.ShipmentDocuments[0].Parts[0].Image)
         else:
             return False

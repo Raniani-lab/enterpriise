@@ -5,10 +5,10 @@
 # Translators:
 # Martin Trigaux, 2019
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
-# Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
 # Thomas Pot <thomas@open2bizz.nl>, 2019
 # Cas Vissers <casvissers@brahoo.nl>, 2019
 # dpms <pieter.van.de.wygaert@telenet.be>, 2019
+# Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -16,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-01-16 08:12+0000\n"
 "PO-Revision-Date: 2019-01-16 08:36+0000\n"
-"Last-Translator: dpms <pieter.van.de.wygaert@telenet.be>, 2019\n"
+"Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2019\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -30,6 +30,9 @@ msgid ""
 "0 for 'not selected', 1 for 'ocr selected with no user selection' and 2 for "
 "'ocr selected with user selection (user may have selected the same box)"
 msgstr ""
+"0 voor 'niet geselecteerd', 1 voor 'ocr geselecteer zonder gebruiker "
+"selectie' en 2 voor 'ocr geselecteerd met gebruiker selectie' (gebruiker "
+"heeft mogelijk dezelfde optie aangevinkt)"
 
 #. module: account_invoice_extract
 #: selection:account.invoice,extract_state:0
@@ -104,7 +107,7 @@ msgstr "Vind woord"
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice__extract_state
 msgid "Extract state"
-msgstr "VInd status"
+msgstr "Vind status"
 
 #. module: account_invoice_extract
 #: model:ir.model,name:account_invoice_extract.model_account_invoice_extract_words
@@ -190,7 +193,7 @@ msgstr "Verstuur opnieuw met OCR"
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.invoice_supplier_form_inherit_ocr
 msgid "Send File through OCR"
-msgstr "Verstuur bestajnd met OCR"
+msgstr "Verstuur bestand met OCR"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_res_company__extract_show_ocr_option_selection
@@ -204,7 +207,7 @@ msgid ""
 "between 5 and 60 seconds."
 msgstr ""
 "De gegevensextractie is nog niet voltooid. De extractie duurt meestal tussen"
-" 5 en 60 seconden."
+" de 5 en 60 seconden."
 
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.invoice_supplier_form_inherit_ocr

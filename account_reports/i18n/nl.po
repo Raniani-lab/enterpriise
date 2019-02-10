@@ -1534,7 +1534,7 @@ msgstr "PASSIVA + EIGEN VERMOGEN"
 #: code:addons/account_reports/models/account_bank_reconciliation_report.py:188
 #, python-format
 msgid "Last Bank Statement Ending Balance"
-msgstr "Laatste Bankafschrift eindsaldo"
+msgstr "Laatste bankafschrift eindsaldo"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_date_filter
@@ -1607,7 +1607,7 @@ msgstr "Lijnen"
 #: code:addons/account_reports/models/account_partner_ledger.py:206
 #, python-format
 msgid "Load more... (%s remaining)"
-msgstr "Laad meer... (%s remaining)"
+msgstr "Laad meer... (%s resterend)"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.view_account_financial_report_line_form

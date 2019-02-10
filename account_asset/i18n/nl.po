@@ -355,7 +355,7 @@ msgid ""
 "  * Ending Date: Choose the time between 2 depreciations and the date the depreciations won't go beyond."
 msgstr ""
 "Kies de methode welke gebruikt kan worden om de datums en het aantal afschrijvingsregels te berekenen:\n"
-"   * Aantal Afschrijvingen: Bevestig het aantal afschrijvingsregels en de tijd tussen twee afschrijvingen.\n"
+"   * Aantal afschrijvingen: Bevestig het aantal afschrijvingsregels en de tijd tussen twee afschrijvingen.\n"
 "   * Einddatum: Kies de tijd tussen twee afschrijvingen en de datum waarop de afschrijvingen niet verder zal gaan."
 
 #. module: account_asset

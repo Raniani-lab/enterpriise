@@ -222,7 +222,7 @@ class AccountBatchPayment(models.Model):
             DbtrAgt = etree.SubElement(PmtInf, "DbtrAgt")
             FinInstnId = etree.SubElement(DbtrAgt, "FinInstnId")
             BIC = etree.SubElement(FinInstnId, "BIC")
-            BIC.text = self.journal_id.bank_account_id.bank_bic
+            BIC.text = self.journal_id.bank_account_id.bank_bic.replace(' ', '')
 
             # One CdtTrfTxInf per transaction
             for payment in payments_list:
@@ -342,7 +342,7 @@ class AccountBatchPayment(models.Model):
         val_BIC = bank_account.bank_bic
         if val_BIC:
             BIC = etree.SubElement(FinInstnId, "BIC")
-            BIC.text = val_BIC
+            BIC.text = val_BIC.replace(' ', '')
         elif not self.sct_generic:
             raise UserError(_("There is no Bank Identifier Code recorded for bank account '%s'") % bank_account.acc_number)
 

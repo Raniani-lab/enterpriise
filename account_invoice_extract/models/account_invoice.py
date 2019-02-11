@@ -421,18 +421,18 @@ class AccountInvoice(models.Model):
                 self.invoice_line_ids[0].price_unit = to_float(text)
                 self.invoice_line_ids[0].price_total = to_float(text)
             elif len(self.invoice_line_ids) == 0:
-                self.invoice_line_ids.create({'name': "/",
+                self.invoice_line_ids.with_context(set_default_account=True, journal_id=self.journal_id.id).create({'name': "/",
                     'invoice_id': self.id,
                     'price_unit': to_float(text),
                     'price_total': to_float(text),
                     'quantity': 1,
-                    'account_id': self.env["account.invoice.line"].with_context(set_default_account=True, journal_id=self.journal_id.id)._default_account(),
                     })
                 if getattr(self.invoice_line_ids[0],'_predict_account', False):
                     predicted_account_id = self.invoice_line_ids[0]._predict_account(text, self.invoice_line_ids[0].partner_id)
                     # We only change the account if we manage to predict its value
                     if predicted_account_id:
                         self.invoice_line_ids[0].account_id = predicted_account_id
+                self.invoice_line_ids[0]._set_taxes()
 
         if field == "description":
             if len(self.invoice_line_ids) == 1:
@@ -442,20 +442,21 @@ class AccountInvoice(models.Model):
                     # We only change the account if we manage to predict its value
                     if predicted_account_id:
                         self.invoice_line_ids[0].account_id = predicted_account_id
+                self.invoice_line_ids[0]._set_taxes()
 
             elif len(self.invoice_line_ids) == 0:
-                self.invoice_line_ids.create({'name': text,
+                self.invoice_line_ids.with_context(set_default_account=True, journal_id=self.journal_id.id).create({'name': text,
                     'invoice_id': self.id,
                     'price_unit': 0,
                     'price_total': 0,
                     'quantity': 1,
-                    'account_id': self.env["account.invoice.line"].with_context(set_default_account=True, journal_id=self.journal_id.id)._default_account(),
                     })
                 if getattr(self.invoice_line_ids[0],'_predict_account', False):
                     predicted_account_id = self.invoice_line_ids[0]._predict_account(text, self.invoice_line_ids[0].partner_id)
                     # We only change the account if we manage to predict its value
                     if predicted_account_id:
                         self.invoice_line_ids[0].account_id = predicted_account_id
+                self.invoice_line_ids[0]._set_taxes()
 
         if field == "date":
             self.date_invoice = text

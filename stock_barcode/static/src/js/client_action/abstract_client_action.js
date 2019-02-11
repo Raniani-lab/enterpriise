@@ -98,7 +98,7 @@ var ClientAction = AbstractAction.extend({
         core.bus.on('barcode_scanned', this, this._onBarcodeScannedHandler);
 
         this.headerWidget = new HeaderWidget(this);
-        this.settingsWidget = new SettingsWidget(this, this.actionParams.model, this.mode);
+        this.settingsWidget = new SettingsWidget(this, this.actionParams.model, this.mode, this.allow_scrap);
         return this._super.apply(this, arguments).then(function () {
             self.headerWidget.prependTo(self.$('.o_content'));
             self.settingsWidget.appendTo(self.$('.o_content'));
@@ -686,6 +686,9 @@ var ClientAction = AbstractAction.extend({
                     ) {
                     continue;
                 }
+                if(lineInCurrentPage.product_uom_qty && lineInCurrentPage.qty_done >= lineInCurrentPage.product_uom_qty) {
+                    continue;
+                }
                 res = lineInCurrentPage;
                 break;
             }
@@ -1150,7 +1153,7 @@ var ClientAction = AbstractAction.extend({
             // Do not create lot if product is not set. It could happens by a
             // direct lot scan from product or source location step.
             var product = getProductFromLastScannedLine();
-            if (! product) {
+            if (! product  || product.tracking === "none") {
                 return $.Deferred().reject();
             }
             def = $.when({lot_name: barcode, product: product});
@@ -1162,7 +1165,7 @@ var ClientAction = AbstractAction.extend({
                 return $.when(res);
             }, function (errorMessage) {
                 var product = getProductFromLastScannedLine();
-                if (product) {
+                if (product && product.tracking !== "none") {
                     return create(barcode, product).then(function (lot_id) {
                         return $.when({lot_id: lot_id, lot_name: barcode, product: product});
                     });

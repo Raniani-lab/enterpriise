@@ -524,7 +524,7 @@ msgstr "Online relatie, bankrekening"
 #: model:ir.model.fields,field_description:account_online_sync.field_res_partner__online_partner_vendor_name
 #: model:ir.model.fields,field_description:account_online_sync.field_res_users__online_partner_vendor_name
 msgid "Online Partner Vendor Name"
-msgstr "Online relatie Leveranciersnaam"
+msgstr "Online relatie leveranciersnaam"
 
 #. module: account_online_sync
 #: code:addons/account_online_sync/models/online_sync.py:375

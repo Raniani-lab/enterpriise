@@ -114,7 +114,7 @@
                             </div>
                             <div class="o_kanban_details">
                                 <div class="o_kanban_details_wrapper">
-                                    <div t-att-title="record.datas_fname.raw_value" class="o_kanban_record_title">
+                                    <div t-att-title="record.name.raw_value" class="o_kanban_record_title">
                                         <field name="name" required="True" class="o_text_overflow"/>
                                     </div>
                                     <div class="o_kanban_record_body">
@@ -212,8 +212,6 @@
                         <field name="name" required="True"/>
                         <field name="folder_id" invisible="1"/>
                         <field name="tag_ids" invisible="1"/>
-                        <field name="type" invisible="1"/>
-                        <field name="datas_fname" invisible="1"/>
                     </group>
                 <footer>
                     <button name="write" type="object" string="Add" class="btn btn-primary"/>
@@ -774,7 +772,7 @@
         <field name="name">Add Url</field>
         <field name="res_model">documents.document</field>
         <field name="view_mode">form</field>
-        <field name="context">{'default_type': 'url', 'form_view_ref': 'documents.documents_upload_url_view'}</field>
+        <field name="context">{'form_view_ref': 'documents.documents_upload_url_view'}</field>
         <field name="target">new</field>
     </record>
 

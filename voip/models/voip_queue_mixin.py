@@ -11,16 +11,16 @@ class VoipQueueMixin(models.AbstractModel):
     _description = 'Add voip queue support to a model'
     has_call_in_queue = fields.Boolean("Is in the Call Queue", compute='_compute_has_call_in_queue')
 
-    @api.one
+    @api.multi
     def _compute_has_call_in_queue(self):
         domain = self._linked_phone_call_domain()
-        if self.id == 16:
-            res = self.env['voip.phonecall'].search(domain)
-        self.has_call_in_queue = bool(self.env['voip.phonecall'].search_count(domain))
+        call_per_id = {call.activity_id.res_id: True for call in self.env['voip.phonecall'].search(domain)}
+        for rec in self:
+            rec.has_call_in_queue = call_per_id.get(rec.id, False)
 
     def _linked_phone_call_domain(self):
         return [
-            ('activity_id.res_id', '=', self.id),
+            ('activity_id.res_id', 'in', self.ids),
             ('activity_id.res_model_id', '=', self.env['ir.model']._get(self._name).id),
             ('date_deadline', '<=', fields.Date.today(self)),  # TODO check if correct
             ('in_queue', '=', True),
@@ -51,11 +51,10 @@ class VoipQueueMixin(models.AbstractModel):
 
     @api.multi
     def delete_call_in_queue(self):
-        for elem in self:
-            domain = elem._linked_phone_call_domain()
-            phonecalls = self.env['voip.phonecall'].search(domain)
-            for phonecall in phonecalls:
-                phonecall.remove_from_queue()
+        domain = self._linked_phone_call_domain()
+        phonecalls = self.env['voip.phonecall'].search(domain)
+        for phonecall in phonecalls:
+            phonecall.remove_from_queue()
         self.env['bus.bus'].sendone(
             (self._cr.dbname, 'res.partner', self.env.user.id),
             {'type': 'refresh_voip'}

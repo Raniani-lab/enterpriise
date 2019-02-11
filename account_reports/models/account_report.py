@@ -924,7 +924,7 @@ class AccountReport(models.AbstractModel):
         options_filter = options['date']['filter']
 
         date_from = None
-        date_to = fields.Date.today()
+        date_to = fields.Date.context_today(self)
         period_type = None
         if options_filter == 'custom':
             if self.has_single_date_filter(options):

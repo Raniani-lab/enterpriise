@@ -646,7 +646,9 @@ class AccountInvoice(models.Model):
             # To avoid this problem, we read the 'datas' directly on the disk.
             datas = attachment_id._file_read(attachment_id.store_fname)
             inv.l10n_mx_edi_cfdi = datas
-            tree = inv.l10n_mx_edi_get_xml_etree(base64.decodestring(datas))
+            cfdi = base64.decodestring(datas).replace(
+                b'xmlns:schemaLocation', b'xsi:schemaLocation')
+            tree = inv.l10n_mx_edi_get_xml_etree(cfdi)
             # if already signed, extract uuid
             tfd_node = inv.l10n_mx_edi_get_tfd_etree(tree)
             if tfd_node is not None:

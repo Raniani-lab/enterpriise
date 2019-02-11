@@ -242,7 +242,7 @@ class UPSRequest():
                 package.PackagingType = self.factory_ns2.CodeDescriptionType()
                 package.PackagingType.Code = p.packaging_type or packaging_type or ''
 
-            if p.dimension_unit:
+            if p.dimension_unit and any(p.dimension.values()):
                 package.Dimensions = self.factory_ns2.DimensionsType()
                 package.Dimensions.UnitOfMeasurement = MeasurementType()
                 package.Dimensions.UnitOfMeasurement.Code = p.dimension_unit or ''

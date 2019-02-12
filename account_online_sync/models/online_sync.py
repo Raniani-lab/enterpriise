@@ -454,7 +454,7 @@ class AccountBankStatement(models.Model):
         previous_statement = self.search([('journal_id', '=', journal.id)], order="date desc, id desc", limit=1)
         # For first synchronization, an opening bank statement line is created to fill the missing bank statements
         all_statement = self.search_count([('journal_id', '=', journal.id)])
-        digits_rounding_precision = journal.currency_id.rounding
+        digits_rounding_precision = journal.currency_id.rounding if journal.currency_id else journal.company_id.currency_id.rounding
         if all_statement == 0 and not float_is_zero(end_amount - total, precision_rounding=digits_rounding_precision):
             lines.append((0, 0, {
                 'date': transactions and (transactions[0]['date']) or datetime.now(),
@@ -496,7 +496,7 @@ class AccountBankStatement(models.Model):
                     line[2].update({'statement_id': previous_statement.id})
                     self.env['account.bank.statement.line'].create(line[2])
 
-            if not float_is_zero(previous_amount_to_report, precision_rounding=journal.currency_id.rounding):
+            if not float_is_zero(previous_amount_to_report, precision_rounding=digits_rounding_precision):
                 previous_statement.write({'balance_end_real': previous_statement.balance_end_real + previous_amount_to_report})
 
             if to_create:

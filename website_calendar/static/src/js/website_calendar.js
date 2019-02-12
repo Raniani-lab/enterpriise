@@ -1,9 +1,9 @@
 odoo.define('website_calendar.select_appointment_type', function (require) {
 'use strict';
 
-var sAnimations = require('website.content.snippets.animation');
+var publicWidget = require('web.public.widget');
 
-sAnimations.registry.websiteCalendarSelect = sAnimations.Class.extend({
+publicWidget.registry.websiteCalendarSelect = publicWidget.Widget.extend({
     selector: '.o_website_calendar_appointment',
     events: {
         'change .o_website_appoinment_form select[id="calendarType"]': '_onAppointmentTypeChange'
@@ -71,9 +71,9 @@ sAnimations.registry.websiteCalendarSelect = sAnimations.Class.extend({
 odoo.define('website_calendar.appointment_form', function (require) {
 'use strict';
 
-var sAnimations = require('website.content.snippets.animation');
+var publicWidget = require('web.public.widget');
 
-sAnimations.registry.websiteCalendarForm = sAnimations.Class.extend({
+publicWidget.registry.websiteCalendarForm = publicWidget.Widget.extend({
     selector: '.o_website_calendar_form',
     events: {
         'change .appointment_submit_form select[name="country_id"]': '_onCountryChange',

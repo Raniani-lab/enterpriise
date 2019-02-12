@@ -3,7 +3,7 @@ odoo.define('website_twitter_wall.views', function (require) {
 
 var core = require('web.core');
 var Widget = require('web.Widget');
-var sAnimations = require('website.content.snippets.animation');
+var publicWidget = require('web.public.widget');
 
 var qweb = core.qweb;
 
@@ -142,7 +142,7 @@ var TweetWall = Widget.extend({
     },
 });
 
-sAnimations.registry.websiteTwitterWall = sAnimations.Class.extend({
+publicWidget.registry.websiteTwitterWall = publicWidget.Widget.extend({
     selector: '.o-tw-walls',
     xmlDependencies: ['/website_twitter_wall/static/src/xml/website_twitter_wall_tweet.xml'],
     events: {

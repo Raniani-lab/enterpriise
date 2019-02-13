@@ -5,7 +5,6 @@ from datetime import timedelta
 
 from odoo.fields import Date
 from odoo.tools import float_round
-from odoo.tools.pycompat import izip
 from odoo import api, registry
 from odoo.addons.l10n_mx_edi.tests.common import InvoiceTransactionCase
 
@@ -97,7 +96,7 @@ class TestL10nMxTaxCashBasis(InvoiceTransactionCase):
         self.rate_model.search([]).unlink()
         dates = (self.today, self.yesterday, self.a_week_ago)
         rates = (1.25, 1.00, 1/1.25)
-        for date, rate in izip(dates, rates):
+        for date, rate in zip(dates, rates):
             self.rate_model.create({
                 'currency_id': self.usd.id,
                 'company_id': self.company.id,

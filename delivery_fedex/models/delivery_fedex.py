@@ -86,13 +86,13 @@ class ProviderFedex(models.Model):
     # --> Gross weight of each products are expressed in kilograms.
     # For some services, FedEx requires weights expressed in pounds, so we
     # convert them when necessary.
-    fedex_label_stock_type = fields.Selection(FEDEX_STOCK_TYPE, default='PAPER_LETTER')
+    fedex_label_stock_type = fields.Selection(FEDEX_STOCK_TYPE, string='Label Type', default='PAPER_LETTER')
     fedex_label_file_type = fields.Selection([('PDF', 'PDF'),
                                               ('EPL2', 'EPL2'),
                                               ('PNG', 'PNG'),
                                               ('ZPLII', 'ZPLII')],
                                              default='PDF', string="FEDEX Label File Type", oldname='x_fedex_label_file_type')
-    fedex_document_stock_type = fields.Selection(FEDEX_STOCK_TYPE, default='PAPER_LETTER')
+    fedex_document_stock_type = fields.Selection(FEDEX_STOCK_TYPE, string='Commercial Invoice Type', default='PAPER_LETTER')
     fedex_saturday_delivery = fields.Boolean(string="FedEx Saturday Delivery", help="""Special service:Saturday Delivery, can be requested on following days.
                                                                                  Thursday:\n1.FEDEX_2_DAY.\nFriday:\n1.PRIORITY_OVERNIGHT.\n2.FIRST_OVERNIGHT.
                                                                                  3.INTERNATIONAL_PRIORITY.\n(To Select Countries)""")

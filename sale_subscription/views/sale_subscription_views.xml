@@ -193,15 +193,13 @@
                         <button class="oe_stat_button"
                             icon="fa-book"
                             name="action_subscription_invoice"
-                            type="object"
-                            groups="account.group_account_invoice">
+                            type="object">
                             <field name="invoice_count" widget="statinfo" string="Invoices"/>
                         </button>
                         <button class="oe_stat_button"
                             icon="fa-credit-card"
                             name="action_open_sales"
-                            type="object"
-                            groups="sales_team.group_sale_salesman">
+                            type="object">
                             <field name="sale_order_count" widget="statinfo" string="Sales"/>
                         </button>
                     </div>

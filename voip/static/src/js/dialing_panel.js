@@ -230,7 +230,7 @@ var DialingPanel = Widget.extend({
      * @private
      */
     _toggleDisplay: function () {
-        if (this.shown) {
+        if (this._shown) {
             if (!this._folded) {
                 this.$el.hide();
                 this._shown = false;

@@ -261,6 +261,7 @@
             </div>
 
             <div class="o_account_reports_header">
+                <div class="print_only"><h2><t t-esc="report.get('name')"></t></h2></div>
                 <t t-if="model._name == 'account.general.ledger'">
                     <div class="o_account_reports_filter_input_wrapper no_print">
                         <span class="searchIcon"><i class="fa fa-search" role="img" aria-label="Search" title="Search"></i></span>

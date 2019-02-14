@@ -4,6 +4,7 @@
 
         <record id="base.main_company" model="res.company">
             <field name="vat">TCM970625MB1</field>
+            <field name="country_id" ref="base.mx"/>
         </record>
 
     </data>

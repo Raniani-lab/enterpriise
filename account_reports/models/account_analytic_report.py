@@ -125,7 +125,7 @@ class analytic_report(models.AbstractModel):
             analytic_entries_domain += [('account_id', 'in', analytic_account_ids)]
             analytic_account_domain += [('id', 'in', analytic_account_ids)]
 
-        if options['analytic_tags']:
+        if options.get('analytic_tags'):
             analytic_tag_ids = [int(id) for id in options['analytic_tags']]
             analytic_entries_domain += [('tag_ids', 'in', analytic_tag_ids)]
             AccountAnalyticAccount = AccountAnalyticAccount.with_context(tag_ids=analytic_tag_ids)

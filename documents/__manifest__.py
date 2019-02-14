@@ -24,6 +24,7 @@
         'data/documents_data.xml',
         'data/workflow_data.xml',
         'data/files_data.xml',
+        'data/mail_templates.xml',
         'views/documents_views.xml',
         'views/templates.xml',
         'views/activity_views.xml',

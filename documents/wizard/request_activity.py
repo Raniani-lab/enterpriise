@@ -11,6 +11,7 @@ class RequestWizard(models.TransientModel):
     name = fields.Char(required=True)
     owner_id = fields.Many2one('res.users', required=True, string="Owner",
                                tracking=True)
+    partner_id = fields.Many2one('res.partner', string="Contact")
 
     activity_type_id = fields.Many2one('mail.activity.type',
                                        string="Activity type",
@@ -20,13 +21,13 @@ class RequestWizard(models.TransientModel):
                                        domain="[('category', '=', 'upload_file')]")
 
     tag_ids = fields.Many2many('documents.tag', string="Tags")
-    folder_id = fields.Many2one('documents.folder', required=True)
+    folder_id = fields.Many2one('documents.folder', string="Workspace", required=True)
 
     res_model = fields.Char('Resource Model')
     res_id = fields.Integer('Resource ID')
 
     activity_note = fields.Html(string="Note")
-    activity_date_deadline_range = fields.Integer(string='Due Date In')
+    activity_date_deadline_range = fields.Integer(string='Due Date In', default=30)
     activity_date_deadline_range_type = fields.Selection([
         ('days', 'Days'),
         ('weeks', 'Weeks'),
@@ -50,9 +51,10 @@ class RequestWizard(models.TransientModel):
         document = self.env['documents.document'].create({
             'name': self.name,
             'type': 'empty',
-            'folder_id': self.folder_id.id if self.folder_id else False,
+            'folder_id': self.folder_id.id,
             'tag_ids': [(6, 0, self.tag_ids.ids if self.tag_ids else [])],
             'owner_id': self.owner_id.id if self.owner_id else False,
+            'partner_id': self.partner_id.id if self.partner_id else False,
             'res_model': self.res_model,
             'res_id': self.res_id,
         })
@@ -63,10 +65,26 @@ class RequestWizard(models.TransientModel):
             'activity_type_id': self.activity_type_id.id if self.activity_type_id else False,
         }
 
+        deadline = None
         if self.activity_date_deadline_range > 0:
-            activity_vals['date_deadline'] = fields.Date.context_today(self) + relativedelta(
+            activity_vals['date_deadline'] = deadline = fields.Date.context_today(self) + relativedelta(
                 **{self.activity_date_deadline_range_type: self.activity_date_deadline_range})
 
-        activity = document.activity_schedule(**activity_vals)
-        document.request_activity_id = activity
+        request_by_mail = self.owner_id and self.owner_id.id != self.create_uid.id
+        if request_by_mail:
+            share_vals = {
+                'name': self.name,
+                'type': 'ids',
+                'folder_id': self.folder_id.id,
+                'partner_id': self.partner_id.id if self.partner_id else False,
+                'owner_id': self.owner_id.id,
+                'document_ids': [(4, document.id)],
+                'activity_note': self.activity_note,
+            }
+            if deadline:
+                share_vals['date_deadline'] = deadline
+            share = self.env['documents.share'].create(share_vals)
+            share.send_share_by_mail('documents.mail_template_document_request')
 
+        activity = document.with_context(mail_activity_quick_update=request_by_mail).activity_schedule(**activity_vals)
+        document.request_activity_id = activity

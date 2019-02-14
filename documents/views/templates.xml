@@ -167,7 +167,7 @@
             <t t-set="document_request" t-value="document.type == 'empty'"/>
 
             <h3 t-if="request_upload and document_request" class="text-white text-center mb16">
-                This file has been requested.
+                This document has been requested.
                 <b onclick="$('.o_request_upload').trigger('click')" style="cursor:pointer;">Upload it</b>.
             </h3>
 

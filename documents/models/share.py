@@ -104,6 +104,13 @@ class DocumentShare(models.Model):
             share.alias_id.alias_defaults = values
 
     @api.multi
+    def send_share_by_mail(self, template_xmlid):
+        self.ensure_one()
+        request_template = self.env.ref(template_xmlid, raise_if_not_found=False)
+        if request_template:
+            request_template.send_mail(self.id)
+
+    @api.multi
     def write(self, vals):
         result = super(DocumentShare, self).write(vals)
         self.update_alias_defaults()
@@ -111,7 +118,7 @@ class DocumentShare(models.Model):
 
     @api.model
     def create(self, vals):
-        if 'owner_id' not in vals:
+        if not vals.get('owner_id'):
             vals['owner_id'] = self.env.uid
         share = super(DocumentShare, self).create(vals)
         share.update_alias_defaults()

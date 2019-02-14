@@ -28,7 +28,6 @@ Budgets
     <record id="open_budget_post_form" model="ir.actions.act_window">
         <field name="name">Budgetary Positions</field>
         <field name="res_model">account.budget.post</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,kanban,form</field>
         <field name="view_id" ref="view_budget_post_tree"/>
         <field name="search_view_id" ref="view_budget_post_search"/>
@@ -243,7 +242,6 @@ Budgets
     <record model="ir.actions.act_window" id="act_crossovered_budget_view">
         <field name="name">Budgets</field>
         <field name="res_model">crossovered.budget</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,kanban,form</field>
         <field name="view_id" ref="crossovered_budget_view_tree"/>
         <field name="search_view_id" ref="view_crossovered_budget_search"/>
@@ -353,7 +351,6 @@ Budgets
     <record model="ir.actions.act_window" id="act_crossovered_budget_lines_view">
         <field name="name">Budgets Analysis</field>
         <field name="res_model">crossovered.budget.lines</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,form,pivot,graph</field>
         <field name="view_id" eval="False"/>
         <field name="context">{'search_default_group_crossevered_budgdet_id': True, 'search_default_filter_not_cancelled':True}</field>

@@ -4,14 +4,12 @@
     <record id="hr_work_entry_action" model="ir.actions.act_window">
         <field name="name">Work Entry</field>
         <field name="res_model">hr.work.entry</field>
-        <field name="view_type">form</field>
         <field name="view_mode">gantt,calendar,tree,form,pivot</field>
     </record>
 
     <record id="hr_work_entry_action_conflict" model="ir.actions.act_window">
         <field name="name">Work Entry</field>
         <field name="res_model">hr.work.entry</field>
-        <field name="view_type">form</field>
         <field name="domain">[('display_warning', '=', True)]</field>
         <field name="view_mode">tree,gantt,calendar,form,pivot</field>
     </record>

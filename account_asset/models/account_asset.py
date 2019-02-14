@@ -298,7 +298,6 @@ class AccountAsset(models.Model):
         })
         return {
             'name': _('Modify Asset'),
-            'view_type': 'form',
             'view_mode': 'form',
             'res_model': 'asset.modify',
             'type': 'ir.actions.act_window',
@@ -316,7 +315,6 @@ class AccountAsset(models.Model):
         })
         return {
             'name': _('Pause Asset'),
-            'view_type': 'form',
             'view_mode': 'form',
             'res_model': 'account.asset.pause',
             'type': 'ir.actions.act_window',
@@ -333,7 +331,6 @@ class AccountAsset(models.Model):
         })
         return {
             'name': _('Pause Asset'),
-            'view_type': 'form',
             'view_mode': 'form',
             'res_model': 'account.asset.pause',
             'type': 'ir.actions.act_window',
@@ -370,7 +367,6 @@ class AccountAsset(models.Model):
     def open_entries(self):
         return {
             'name': _('Journal Entries'),
-            'view_type': 'form',
             'view_mode': 'tree,form',
             'res_model': 'account.move',
             'view_id': False,
@@ -382,7 +378,6 @@ class AccountAsset(models.Model):
     def open_related_entries(self):
         return {
             'name': _('Journal Items'),
-            'view_type': 'form',
             'view_mode': 'tree,form',
             'res_model': 'account.move.line',
             'view_id': False,
@@ -425,7 +420,6 @@ class AccountAsset(models.Model):
             view_mode = 'tree,form'
         return {
             'name': name,
-            'view_type': 'form',
             'view_mode': view_mode,
             'res_model': 'account.move',
             'type': 'ir.actions.act_window',

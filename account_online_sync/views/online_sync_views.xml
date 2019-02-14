@@ -77,7 +77,6 @@
     <record id="action_online_provider_account" model="ir.actions.act_window">
         <field name="name">Online Institution Accounts</field>
         <field name="res_model">account.online.provider</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="view_id" ref="online_provider_account_list_view"/>
         <field name="help">List of bank(s) providing online synchronization</field>
@@ -154,7 +153,6 @@
     <record id="action_account_online_wizard_form" model="ir.actions.act_window">
         <field name="name">Synchronization result</field>
         <field name="res_model">account.online.wizard</field>
-        <field name="view_type">form</field>
         <field name="view_mode">form</field>
         <field name="view_id" ref="view_account_online_wizard_form"/>
         <field name="target">new</field>

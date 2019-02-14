@@ -83,7 +83,6 @@ class Task(models.Model):
         template_id = self.env.ref('industry_fsm_report.mail_template_data_send_report').id
         return {
             'type': 'ir.actions.act_window',
-            'view_type': 'form',
             'view_mode': 'form',
             'res_model': 'mail.compose.message',
             'views': [(False, 'form')],

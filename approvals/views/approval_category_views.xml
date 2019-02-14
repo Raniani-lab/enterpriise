@@ -3,21 +3,18 @@
     <record id="approval_category_action_new_request" model="ir.actions.act_window">
         <field name="name">Dashboard</field>
         <field name="res_model">approval.category</field>
-        <field name="view_type">form</field>
         <field name="view_mode">kanban</field>
     </record>
 
     <record id="approval_category_action" model="ir.actions.act_window">
         <field name="name">Category</field>
         <field name="res_model">approval.category</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
     </record>
 
     <record id="approval_request_action_to_review_category" model="ir.actions.act_window">
         <field name="name">Approvals to review</field>
         <field name="res_model">approval.request</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,form,kanban</field>
         <field name="domain">[('approver_ids.user_id', '=', uid), ('request_status', '=', 'pending'), ('category_id', '=', active_id)]</field>
     </record>

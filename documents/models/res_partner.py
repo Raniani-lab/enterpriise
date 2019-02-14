@@ -29,7 +29,6 @@ class Partner(models.Model):
             'type': 'ir.actions.act_window',
             'views': [(False, 'kanban')],
             'view_mode': 'kanban',
-            'view_type': 'kanban',
             'context': {
                 "search_default_partner_id": self.id,
                 "searchpanel_default_folder_id": False

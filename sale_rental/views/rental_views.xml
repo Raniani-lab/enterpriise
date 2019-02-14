@@ -196,7 +196,6 @@
         <field name="name">Rental Orders</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">sale.order</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>
         <field name="search_view_id" ref="rental_order_view_search"/>
         <field name="context">{'default_is_rental_order': 1, 'search_default_my_rental_orders': 1}</field>
@@ -232,7 +231,6 @@
         <field name="name">Rental Orders</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">sale.order</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>
         <field name="search_view_id" ref="rental_order_view_search_without_searchpanel"/>
         <field name="context">{'default_is_rental_order': 1, 'search_default_filter_today': 1, 'search_default_filter_to_pickup': 1}</field>
@@ -270,7 +268,6 @@
         <field name="name">Rental Orders</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">sale.order</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>
         <field name="search_view_id" ref="rental_order_view_search_without_searchpanel"/>
         <field name="context">{'default_is_rental_order': 1, 'search_default_filter_today': 1, 'search_default_filter_to_return': 1}</field>

@@ -34,14 +34,12 @@
     <record id="sale_subscription_report_cohort_action" model="ir.actions.act_window">
         <field name="name">Retention Analysis</field>
         <field name="res_model">sale.subscription.report</field>
-        <field name="view_type">form</field>
         <field name="view_mode">cohort,graph,pivot</field>
     </record>
 
     <record id="sale_subscription_report_pivot_action" model="ir.actions.act_window">
         <field name="name">Subscriptions Analysis</field>
         <field name="res_model">sale.subscription.report</field>
-        <field name="view_type">form</field>
         <field name="view_mode">pivot,graph,cohort</field>
     </record>
 

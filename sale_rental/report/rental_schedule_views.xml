@@ -74,7 +74,6 @@
   <record id="action_rental_order_schedule" model="ir.actions.act_window">
       <field name="name">Scheduled Rentals</field>
       <field name="res_model">sale.rental.schedule</field>
-      <field name="view_type">form</field>
       <field name="view_mode">gantt</field>
       <field name="context">{'search_default_Rentals':1, 'group_by_no_leaf':1,'group_by':[], 'time_ranges': {'field':'confirmation_date', 'range':'last_365_days'}}}</field>
   </record>

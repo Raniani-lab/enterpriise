@@ -85,7 +85,6 @@ class RentalOrder(models.Model):
         return {
             'name': _('Validate a pickup') if status == 'pickup' else _('Validate a return'),
             'view_mode': 'form',
-            'view_type': 'form',
             'res_model': 'rental.order.wizard',
             'type': 'ir.actions.act_window',
             'target': 'new',

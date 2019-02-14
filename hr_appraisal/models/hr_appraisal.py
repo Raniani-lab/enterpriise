@@ -339,7 +339,6 @@ appraisal on %s %s. If you think it's too late, feel free to have a chat with yo
 
     def write_and_open(self):
         return {
-            'view_type': 'form',
             'view_mode': 'form',
             'res_model': 'hr.appraisal',
             'type': 'ir.actions.act_window',

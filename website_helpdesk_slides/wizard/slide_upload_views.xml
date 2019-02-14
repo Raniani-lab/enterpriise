@@ -40,7 +40,6 @@
         <field name="name">Slide Upload</field>
         <field name="res_model">slide.upload.wizard</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="view_type">form</field>
         <field name="view_mode">form</field>
         <field name="view_id" ref="slide_upload_wizard_view_form"/>
         <field name="target">new</field>

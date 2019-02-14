@@ -17,7 +17,6 @@
     <record id="action_hr_contract_repository" model="ir.actions.act_window">
         <field name="name">Contracts</field>
         <field name="res_model">hr.contract</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,kanban,form,activity</field>
         <field name="domain">[('employee_id', '!=', False)]</field>
         <field name="context">{'search_default_running': 1, 'search_default_to_renew': 1}</field>

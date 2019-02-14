@@ -131,7 +131,6 @@ class AccountMove(models.Model):
     def open_asset_view(self):
         return {
             'name': _('Asset'),
-            'view_type': 'form',
             'view_mode': 'form',
             'res_model': 'account.asset',
             'view_id': False,

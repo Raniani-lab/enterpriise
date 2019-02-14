@@ -24,7 +24,6 @@
     <record id="helpdesk_tag_action" model="ir.actions.act_window">
         <field name="name">Ticket Tags</field>
         <field name="res_model">helpdesk.tag</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
           <p class="o_view_nocontent_smiling_face">
@@ -54,7 +53,6 @@
     <record id="helpdesk_ticket_type_action" model="ir.actions.act_window">
         <field name="name">Ticket Type</field>
         <field name="res_model">helpdesk.ticket.type</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
           <p class="o_view_nocontent_smiling_face">
@@ -107,7 +105,6 @@
     <record id="helpdesk_stage_action" model="ir.actions.act_window">
         <field name="name">Stages</field>
         <field name="res_model">helpdesk.stage</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
           <p class="o_view_nocontent_smiling_face">
@@ -188,7 +185,6 @@
     <record id="helpdesk_sla_action_main" model="ir.actions.act_window">
         <field name="name">SLA Policies</field>
         <field name="res_model">helpdesk.sla</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
           <p class="o_view_nocontent_smiling_face">
@@ -528,7 +524,6 @@
     <record id="helpdesk_ticket_action_main" model="ir.actions.act_window">
         <field name="name">All Tickets</field>
         <field name="res_model">helpdesk.ticket</field>
-        <field name="view_type">form</field>
         <field name="view_mode">kanban,tree,form,activity</field>
         <field name="search_view_id" ref="helpdesk_tickets_view_search"/>
         <field name="view_id" ref="helpdesk.helpdesk_ticket_view_kanban_no_create"/>
@@ -543,7 +538,6 @@
     <record id="helpdesk_ticket_action_main_tree" model="ir.actions.act_window">
         <field name="name">All Tickets</field>
         <field name="res_model">helpdesk.ticket</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,kanban,form,activity</field>
         <field name="search_view_id" ref="helpdesk_tickets_view_search"/>
         <field name="context">{'search_default_is_open': True}</field>
@@ -557,7 +551,6 @@
     <record id="action_upcoming_sla_fail_tickets" model="ir.actions.act_window">
         <field name="name">Tickets</field>
         <field name="res_model">helpdesk.ticket</field>
-        <field name="view_type">form</field>
         <field name="view_mode">kanban,tree,form,pivot,graph</field>
         <field name="search_view_id" ref="helpdesk_tickets_view_search"/>
         <field name="context">{'search_default_my_ticket': True, 'search_default_upcoming_sla_fail': True}</field>
@@ -571,7 +564,6 @@
     <record id="action_upcoming_sla_fail_all_tickets" model="ir.actions.act_window">
         <field name="name">Tickets</field>
         <field name="res_model">helpdesk.ticket</field>
-        <field name="view_type">form</field>
         <field name="view_mode">kanban,tree,form,pivot,graph</field>
         <field name="search_view_id" ref="helpdesk_tickets_view_search"/>
         <field name="context">{'search_default_upcoming_sla_fail': True}</field>
@@ -586,7 +578,6 @@
     <record id="helpdesk_ticket_action_high_priorities" model="ir.actions.act_window">
         <field name="name">Tickets</field>
         <field name="res_model">helpdesk.ticket</field>
-        <field name="view_type">form</field>
         <field name="view_mode">kanban,tree,form</field>
         <field name="view_id" ref="helpdesk.helpdesk_ticket_view_kanban_no_create"/>
         <field name="domain">[('priority', '=', '2')]</field>
@@ -602,7 +593,6 @@
     <record id="helpdesk_ticket_action_urgent" model="ir.actions.act_window">
         <field name="name">Tickets</field>
         <field name="res_model">helpdesk.ticket</field>
-        <field name="view_type">form</field>
         <field name="view_mode">kanban,tree,form</field>
         <field name="view_id" ref="helpdesk.helpdesk_ticket_view_kanban_no_create"/>
         <field name="domain">[('priority', '=', '3')]</field>
@@ -618,7 +608,6 @@
     <record id="helpdesk_ticket_action_sla" model="ir.actions.act_window">
         <field name="name">Tickets</field>
         <field name="res_model">helpdesk.ticket</field>
-        <field name="view_type">form</field>
         <field name="view_mode">kanban,tree,form</field>
         <field name="view_id" ref="helpdesk.helpdesk_ticket_view_kanban_no_create"/>
         <field name="domain">[('priority', '!=', False)]</field>
@@ -634,7 +623,6 @@
     <record id="helpdesk_ticket_action_sla_high" model="ir.actions.act_window">
         <field name="name">Tickets</field>
         <field name="res_model">helpdesk.ticket</field>
-        <field name="view_type">form</field>
         <field name="view_mode">kanban,tree,form</field>
         <field name="view_id" ref="helpdesk.helpdesk_ticket_view_kanban_no_create"/>
         <field name="domain">[('priority', '=', '2')]</field>
@@ -650,7 +638,6 @@
     <record id="helpdesk_ticket_action_sla_urgent" model="ir.actions.act_window">
         <field name="name">Tickets</field>
         <field name="res_model">helpdesk.ticket</field>
-        <field name="view_type">form</field>
         <field name="view_mode">kanban,tree,form</field>
         <field name="view_id" ref="helpdesk.helpdesk_ticket_view_kanban_no_create"/>
         <field name="domain">[('priority', '=', '3')]</field>
@@ -667,7 +654,6 @@
     <record id="helpdesk_ticket_action_close_analysis" model="ir.actions.act_window">
         <field name="name">Closed Tickets Analysis</field>
         <field name="res_model">helpdesk.ticket</field>
-        <field name="view_type">form</field>
         <field name="view_mode">pivot,graph</field>
         <field name="search_view_id" ref="helpdesk_ticket_view_search_analysis_closed"/>
         <field name="domain" eval="[('close_date', '>=', (DateTime.today() - relativedelta(hours=12)).strftime('%Y-%m-%d %H:%M:%S'))]"/>
@@ -681,7 +667,6 @@
     <record id="helpdesk_ticket_action_7days_analysis" model="ir.actions.act_window">
         <field name="name">Closed Tickets Analysis</field>
         <field name="res_model">helpdesk.ticket</field>
-        <field name="view_type">form</field>
         <field name="view_mode">pivot,graph</field>
         <field name="search_view_id" ref="helpdesk_ticket_view_search_analysis_closed"/>
         <field name="domain" eval="[('close_date', '>=', (DateTime.today() - relativedelta(days=7)).strftime('%Y-%m-%d %H:%M:%S'))]"/>
@@ -696,7 +681,6 @@
     <record id="helpdesk_ticket_action_team" model="ir.actions.act_window">
         <field name="name">Tickets</field>
         <field name="res_model">helpdesk.ticket</field>
-        <field name="view_type">form</field>
         <field name="view_mode">kanban,tree,form,activity</field>
         <field name="context">{'search_default_team_id': active_id, 'default_team_id': active_id}</field>
         <field name="search_view_id" ref="helpdesk_tickets_view_search"/>
@@ -710,7 +694,6 @@
     <record id="helpdesk_ticket_action_unassigned" model="ir.actions.act_window">
         <field name="name">Tickets</field>
         <field name="res_model">helpdesk.ticket</field>
-        <field name="view_type">form</field>
         <field name="view_mode">kanban,tree,form,activity</field>
         <field name="context">{'search_default_team_id': active_id, 'search_default_unassigned': True}</field>
         <field name="search_view_id" ref="helpdesk_tickets_view_search"/>
@@ -724,7 +707,6 @@
     <record id="helpdesk_ticket_action_Archived" model="ir.actions.act_window">
         <field name="name">Tickets</field>
         <field name="res_model">helpdesk.ticket</field>
-        <field name="view_type">form</field>
         <field name="view_mode">kanban,tree,form,activity</field>
         <field name="context">{'search_default_team_id': active_ids, 'search_default_archive': True}</field>
         <field name="search_view_id" ref="helpdesk_tickets_view_search"/>
@@ -738,7 +720,6 @@
     <record id="helpdesk_ticket_action_slafailed" model="ir.actions.act_window">
         <field name="name">Tickets</field>
         <field name="res_model">helpdesk.ticket</field>
-        <field name="view_type">form</field>
         <field name="view_mode">kanban,tree,form,activity</field>
         <field name="context">{'search_default_team_id': active_id, 'search_default_sla_failed': True}</field>
         <field name="search_view_id" ref="helpdesk_tickets_view_search"/>
@@ -784,7 +765,6 @@
     <record id="helpdesk_ticket_analysis_action" model="ir.actions.act_window">
        <field name="name">Helpdesk Ticket Analysis</field>
        <field name="res_model">helpdesk.ticket</field>
-       <field name="view_type">form</field>
        <field name="view_mode">pivot,graph</field>
         <field name="view_ids"
                eval="[(5, 0, 0),
@@ -799,7 +779,6 @@
     <record id="helpdesk_ticket_team_analysis_action" model="ir.actions.act_window">
         <field name="name">Ticket Analysis</field>
         <field name="res_model">helpdesk.ticket</field>
-        <field name="view_type">form</field>
         <field name="view_mode">pivot,graph</field>
         <field name="view_ids"
                eval="[(5, 0, 0),
@@ -837,7 +816,6 @@
     <record id="helpdesk_ticket_action_team_performance" model="ir.actions.act_window">
         <field name="name">Performance Analysis</field>
         <field name="res_model">helpdesk.ticket</field>
-        <field name="view_type">form</field>
         <field name="view_mode">pivot,graph</field>
         <field name="search_view_id" ref="helpdesk_ticket_view_search_analysis"/>
         <field name="view_ids"
@@ -851,7 +829,6 @@
     <record id="helpdesk_ticket_action_success" model="ir.actions.act_window">
         <field name="name">Success Rate Analysis</field>
         <field name="res_model">helpdesk.ticket</field>
-        <field name="view_type">form</field>
         <field name="view_mode">pivot,graph</field>
         <field name="view_ids"
                eval="[(5, 0, 0),
@@ -865,7 +842,6 @@
     <record id="helpdesk_ticket_action_7dayssuccess" model="ir.actions.act_window">
         <field name="name">Success Rate Analysis</field>
         <field name="res_model">helpdesk.ticket</field>
-        <field name="view_type">form</field>
         <field name="view_mode">pivot,graph</field>
         <field name="view_ids"
                eval="[(5, 0, 0),
@@ -879,7 +855,6 @@
     <record id="helpdesk_ticket_action_dashboard" model="ir.actions.act_window">
         <field name="name">Ticket Analysis</field>
         <field name="res_model">helpdesk.ticket</field>
-        <field name="view_type">form</field>
         <field name="view_mode">pivot,graph</field>
         <field name="search_view_id" ref="helpdesk_ticket_view_search_analysis"/>
         <field name="domain">[('stage_id.is_close', '=', False)]</field>
@@ -893,7 +868,6 @@
     <record id="helpdesk_ticket_action_dashboard_high_priority" model="ir.actions.act_window">
         <field name="name">Ticket Analysis</field>
         <field name="res_model">helpdesk.ticket</field>
-        <field name="view_type">form</field>
         <field name="view_mode">pivot,graph</field>
         <field name="search_view_id" ref="helpdesk_ticket_view_search_analysis"/>
         <field name="domain">[('stage_id.is_close', '=', False), ('priority', '=', '2')]</field>
@@ -907,7 +881,6 @@
     <record id="helpdesk_ticket_action_dashboard_urgent" model="ir.actions.act_window">
         <field name="name">Ticket Analysis</field>
         <field name="res_model">helpdesk.ticket</field>
-        <field name="view_type">form</field>
         <field name="view_mode">pivot,graph</field>
         <field name="search_view_id" ref="helpdesk_ticket_view_search_analysis"/>
         <field name="domain">[('stage_id.is_close', '=', False), ('priority', '=', '3')]</field>

@@ -174,7 +174,6 @@ class HrWorkEnrty(models.Model):
         leave = self.leave_id
         return {
             'type': 'ir.actions.act_window',
-            'view_type': 'form',
             'view_mode': 'form',
             'res_id': leave.id,
             'res_model': 'hr.leave',

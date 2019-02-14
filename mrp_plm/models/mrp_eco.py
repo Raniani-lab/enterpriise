@@ -631,7 +631,6 @@ class MrpEco(models.Model):
             'view_id': attachment_view.id,
             'views': [(attachment_view.id, 'kanban'), (False, 'form')],
             'view_mode': 'kanban,tree,form',
-            'view_type': 'form',
             'help': _('''<p class="o_view_nocontent_smiling_face">
                         Upload files to your ECO, that will be applied to the product later
                     </p><p>
@@ -647,7 +646,6 @@ class MrpEco(models.Model):
         return {
             'name': _('Eco BoM'),
             'type': 'ir.actions.act_window',
-            'view_type': 'form',
             'view_mode': 'form',
             'res_model': 'mrp.bom',
             'target': 'current',
@@ -659,7 +657,6 @@ class MrpEco(models.Model):
         return {
             'name': _('Eco Routing'),
             'type': 'ir.actions.act_window',
-            'view_type': 'form',
             'view_mode': 'form',
             'res_model': 'mrp.routing',
             'target': 'current',

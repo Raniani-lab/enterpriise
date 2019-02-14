@@ -38,7 +38,6 @@ class TaxFinancialReport(models.Model):
                 'res_model': 'l10n_uk.hmrc.send.wizard',
                 'target': 'new',
                 'view_mode': 'form',
-                'view_type': 'form',
                 'views': [[view_id, 'form']],
                 'context': context,
         }

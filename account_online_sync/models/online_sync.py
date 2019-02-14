@@ -168,7 +168,6 @@ class ProviderAccount(models.Model):
                 'res_model': 'account.setup.bank.manual.config',
                 'target': 'new',
                 'view_mode': 'form',
-                'view_type': 'form',
                 'context': ctx,
                 'views': [[view_id, 'form']],
         }
@@ -381,7 +380,6 @@ class AccountJournal(models.Model):
                 'type': 'ir.actions.act_window',
                 'name': _('Online Synchronization'),
                 'res_model': 'account.online.wizard',
-                'view_type': 'form',
                 'view_mode': 'form',
                 'view_id': self.env.ref("view_account_online_wizard_form").id,
                 'target': 'new',

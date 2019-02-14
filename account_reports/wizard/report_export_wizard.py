@@ -48,7 +48,6 @@ class ReportExportWizard(models.TransientModel):
             'type': 'ir.actions.act_window',
             'name': _('Generated Documents'),
             'view_mode': 'kanban,form',
-            'view_type': 'form',
             'res_model': 'ir.attachment',
             'domain': [('id', 'in', created_attachments.ids)],
         }

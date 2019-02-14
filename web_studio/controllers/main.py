@@ -821,7 +821,6 @@ class WebStudioController(http.Controller):
                 'name': button_name,
                 'res_model': field.model,
                 'view_mode': 'tree,form',
-                'view_type': 'form',
                 'domain': button_action_domain,
                 'context': button_action_context,
             })

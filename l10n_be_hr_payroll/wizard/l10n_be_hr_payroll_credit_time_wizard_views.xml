@@ -56,7 +56,6 @@
     <record id="credit_time_wizard_action" model="ir.actions.act_window">
         <field name="name">Contract Credit Time</field>
         <field name="res_model">l10n_be.hr.payroll.credit.time.wizard</field>
-        <field name="view_type">form</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>
     </record>
@@ -64,7 +63,6 @@
     <record id="exit_credit_time_wizard_action" model="ir.actions.act_window">
         <field name="name">Contract Full Time</field>
         <field name="res_model">l10n_be.hr.payroll.exit.credit.time.wizard</field>
-        <field name="view_type">form</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>
     </record>

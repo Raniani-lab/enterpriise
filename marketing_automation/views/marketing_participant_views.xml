@@ -172,14 +172,12 @@
     <record id="marketing_participants_action" model="ir.actions.act_window">
         <field name="name">Participants</field>
         <field name="res_model">marketing.participant</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
     </record>
 
     <record id="marketing_participant_action_campaign" model="ir.actions.act_window">
         <field name="name">Participants</field>
         <field name="res_model">marketing.participant</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="context">{
             'search_default_campaign_id': active_id,
@@ -191,7 +189,6 @@
     <record id="marketing_participant_action_campaign_test" model="ir.actions.act_window">
         <field name="name">Participants</field>
         <field name="res_model">marketing.participant</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="context">{
             'search_default_campaign_id': active_id,
@@ -261,7 +258,6 @@
     <record id="marketing_trace_action" model="ir.actions.act_window">
         <field name="name">Traces</field>
         <field name="res_model">marketing.trace</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
     </record>
 

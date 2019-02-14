@@ -6,7 +6,6 @@
     <record id="approval_request_action" model="ir.actions.act_window">
         <field name="name">My Requests</field>
         <field name="res_model">approval.request</field>
-        <field name="view_type">form</field>
         <field name="view_mode">kanban,tree,form</field>
         <field name="domain">[('request_owner_id','=',uid)]</field>
     </record>
@@ -14,7 +13,6 @@
     <record id="approval_request_action_to_review" model="ir.actions.act_window">
         <field name="name">Approvals to review</field>
         <field name="res_model">approval.request</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,form,kanban</field>
         <field name="domain">['&amp;',('approver_ids.user_id','=',uid),('request_status','=','pending')]</field>
     </record>
@@ -22,7 +20,6 @@
     <record id="approval_request_action_all" model="ir.actions.act_window">
         <field name="name">All Approvals</field>
         <field name="res_model">approval.request</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,form,kanban</field>
     </record>
 

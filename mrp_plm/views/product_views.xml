@@ -3,7 +3,6 @@
     <record id="mrp_eco_action_product_tmpl" model="ir.actions.act_window">
         <field name="name">Engineering Change Orders</field>
         <field name="res_model">mrp.eco</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="domain">[('product_tmpl_id', '=', active_id)]</field>
         <field name="help" type="html">

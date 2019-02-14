@@ -55,7 +55,6 @@ class MarketingCampaignTest(models.TransientModel):
         return {
             'name': _('Launch a Test'),
             'type': 'ir.actions.act_window',
-            'view_type': 'form',
             'view_mode': 'form',
             'res_model': 'marketing.participant',
             'res_id': participant.id,

@@ -47,7 +47,6 @@
         <record model="ir.actions.act_window" id="score_leads">
             <field name="name">Leads</field>
             <field name="res_model">crm.lead</field>
-            <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
             <field name="domain">[('score_ids', 'in', active_id)]</field>
         </record>
@@ -152,7 +151,6 @@
         <record model="ir.actions.act_window" id="score_action">
             <field name="name">Scores</field>
             <field name="res_model">website.crm.score</field>
-            <field name="view_type">form</field>
             <field name="view_mode">tree,kanban,form</field>
         </record>
 
@@ -266,7 +264,6 @@
         <record model="ir.actions.act_window" id="team_user_action">
             <field name="name">Salespersons</field>
             <field name="res_model">team.user</field>
-            <field name="view_type">form</field>
             <field name="view_mode">kanban,tree,form</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
@@ -285,7 +282,6 @@
         <record model="ir.actions.act_window" id="team_action">
             <field name="name">Teams Assignation</field>
             <field name="res_model">crm.team</field>
-            <field name="view_type">form</field>
             <field name="view_mode">tree,kanban,form</field>
             <field name="view_ids" eval="[(5, 0, 0),
             (0, 0, {'view_mode': 'tree', 'view_id': ref('sales_team.crm_team_view_tree')}),

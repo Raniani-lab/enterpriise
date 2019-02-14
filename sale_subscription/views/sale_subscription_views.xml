@@ -77,7 +77,6 @@
     <record id="sale_subscription_action" model="ir.actions.act_window">
         <field name="name">Subscriptions</field>
         <field name="res_model">sale.subscription</field>
-        <field name="view_type">form</field>
         <field name="view_mode">kanban,tree,form,pivot,graph,cohort,activity</field>
         <field name="context">{
             "search_default_stage":1,
@@ -102,7 +101,6 @@
     <record id="sale_subscription_action_filtered" model="ir.actions.act_window">
         <field name="name">Subscriptions</field>
         <field name="res_model">sale.subscription</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,form,kanban,pivot,graph,activity</field>
         <field name="context">{
             'search_default_template_id': [active_id],
@@ -123,7 +121,6 @@
     <record id="sale_subscription_action_pending" model="ir.actions.act_window">
         <field name="name">Subscriptions to Renew</field>
         <field name="res_model">sale.subscription</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,form,pivot,graph,kanban,cohort,activity</field>
         <field name="context">{
             'search_default_stage':1,
@@ -565,7 +562,6 @@
         <field name="name">Subscription Templates</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">sale.subscription.template</field>
-        <field name="view_type">form</field>
         <field name="view_mode">kanban,tree,form</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
@@ -593,7 +589,6 @@
         <field name="name">Close Reasons</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">sale.subscription.close.reason</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree</field>
     </record>
 
@@ -728,7 +723,6 @@
         <field name="name">Alerts</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">sale.subscription.alert</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
@@ -746,7 +740,6 @@
         <field name="name">Stages</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">sale.subscription.stage</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">

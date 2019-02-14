@@ -99,7 +99,6 @@ class HelpdeskTicket(models.Model):
     def action_view_ticket_task(self):
         self.ensure_one()
         return {
-            'view_type': 'form',
             'view_mode': 'form',
             'res_model': 'project.task',
             'type': 'ir.actions.act_window',

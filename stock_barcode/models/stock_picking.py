@@ -122,7 +122,6 @@ class StockPicking(models.Model):
         return {
             'name': _('Lot/Serial Number Details'),
             'type': 'ir.actions.act_window',
-            'view_type': 'form',
             'view_mode': 'form',
             'res_model': 'stock_barcode.lot',
             'views': [(view_id, 'form')],
@@ -326,7 +325,6 @@ class StockPicking(models.Model):
         return {
             'name': _('Open picking form'),
             'res_model': 'stock.picking',
-            'view_type': 'form',
             'view_mode': 'form',
             'view_id': view_id,
             'type': 'ir.actions.act_window',
@@ -344,7 +342,6 @@ class StockPicking(models.Model):
             return {
                 'name': _('Open picking form'),
                 'res_model': 'stock.picking',
-                'view_type': 'form',
                 'view_mode': 'form',
                 'view_id': view_id,
                 'type': 'ir.actions.act_window',

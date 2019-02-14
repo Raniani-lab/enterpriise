@@ -108,7 +108,6 @@ class RequestAppraisal(models.TransientModel):
         return {
             'name': _('Appraisal Request'),
             'type': 'ir.actions.act_window',
-            'view_type': 'form',
             'view_mode': 'form',
             'res_model': 'hr.appraisal',
             'res_id': appraisal.id,

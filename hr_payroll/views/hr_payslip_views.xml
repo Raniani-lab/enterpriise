@@ -346,7 +346,6 @@
     <record id="hr_payslip_action_view_to_pay" model="ir.actions.act_window">
         <field name="name">Payslips To Pay</field>
         <field name="res_model">hr.payslip</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,kanban,form,pivot</field>
         <field name="search_view_id" ref="view_hr_payslip_filter"/>
         <field name="domain">[('state', 'in', ['draft', 'verify'])]</field>
@@ -354,7 +353,6 @@
     <record id="action_view_hr_payslip_form" model="ir.actions.act_window">
         <field name="name">Employee Payslips</field>
         <field name="res_model">hr.payslip</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,kanban,form,pivot</field>
         <field name="search_view_id" ref="view_hr_payslip_filter"/>
         <field name="context">{'search_default_group_by_batch': 1}</field>
@@ -362,7 +360,6 @@
     <record id="action_view_hr_payslip_month_form" model="ir.actions.act_window">
         <field name="name">Employee Payslips</field>
         <field name="res_model">hr.payslip</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,kanban,form</field>
         <field name="search_view_id" ref="view_hr_payslip_filter"/>
         <field name="context">{"search_default_group_by_batch":1}</field>
@@ -371,7 +368,6 @@
     <record id="act_hr_employee_payslip_list" model="ir.actions.act_window">
         <field name="res_model">hr.payslip</field>
         <field name="name">Payslips</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="context">{'search_default_employee_id': [active_id], 'default_employee_id': active_id}</field>
     </record>
@@ -478,7 +474,6 @@
     <record id="action_hr_payslip_run_tree" model="ir.actions.act_window">
         <field name="name">Payslips Batches</field>
         <field name="res_model">hr.payslip.run</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,kanban,form</field>
         <field name="search_view_id" ref="hr_payslip_run_filter"/>
     </record>

@@ -70,7 +70,6 @@
     <record id="website_twitter_wall_action" model="ir.actions.act_window">
         <field name="name">Walls</field>
         <field name="res_model">website.twitter.wall</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
     </record>
     <menuitem id="twitter_wall_menu" action="website_twitter_wall_action" parent="menu_website_twitter_wall_root" sequence="1" />
@@ -102,7 +101,6 @@
     <record id="website_twitter_tweet_action" model="ir.actions.act_window">
         <field name="name">Tweets</field>
         <field name="res_model">website.twitter.tweet</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
     </record>
     <menuitem id="website_twitter_tweet_menu"

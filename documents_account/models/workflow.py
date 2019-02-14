@@ -53,7 +53,6 @@ class WorkflowActionRuleAccount(models.Model):
                 'res_model': 'account.invoice',
                 'name': "Invoices",
                 'view_id': False,
-                'view_type': 'list',
                 'view_mode': 'tree',
                 'views': [(False, "list"), (False, "form")],
                 'domain': [('id', 'in', invoice_ids)],
@@ -63,7 +62,6 @@ class WorkflowActionRuleAccount(models.Model):
                 record = new_obj or self.env['account.invoice'].browse(invoice_ids[0])
                 view_id = record.get_formview_id() if record else False
                 action.update({
-                    'view_type': 'form',
                     'view_mode': 'form',
                     'views': [(view_id, "form")],
                     'res_id': invoice_ids[0],

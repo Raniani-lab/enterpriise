@@ -67,7 +67,6 @@
     <record id="mail_mass_mailing_action_marketing_automation" model="ir.actions.act_window">
         <field name="name">Marketing Automation Mailings</field>
         <field name="res_model">mail.mass_mailing</field>
-        <field name="view_type">form</field>
         <field name="view_mode">kanban,tree,form,graph</field>
         <field name="context">{
             'search_default_assigned_to_me': 1,

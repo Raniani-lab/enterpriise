@@ -56,7 +56,6 @@
             binding_views="list"
             view_mode="form"
             target="new"
-            view_type="form"
             groups="account.group_account_invoice"
             />
 

@@ -250,7 +250,6 @@ var PhonecallDetails = Widget.extend({
             type: 'ir.actions.act_window',
             res_model: 'mail.activity',
             view_mode: 'form',
-            view_type: 'form',
             views: [[false, 'form']],
             target: 'new',
             context: {
@@ -305,7 +304,6 @@ var PhonecallDetails = Widget.extend({
             type: 'ir.actions.act_window',
             res_model: 'mail.activity',
             view_mode: 'form',
-            view_type: 'form',
             views: [[false, 'form']],
             target: 'new',
             context: {
@@ -451,7 +449,6 @@ var PhonecallDetails = Widget.extend({
         }).then(function (viewId) {
             self.do_action({
                 type:'ir.actions.act_window',
-                view_type: 'form',
                 view_mode: 'form',
                 res_model: resModel,
                 views: [[viewId || false, 'form']],

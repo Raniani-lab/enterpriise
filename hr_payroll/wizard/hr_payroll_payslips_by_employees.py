@@ -62,7 +62,6 @@ class HrPayslipEmployees(models.TransientModel):
         return {
             'type': 'ir.actions.act_window',
             'res_model': 'hr.payslip.run',
-            'view_type': 'form',
             'views': [[False, 'form']],
             'res_id': payslip_run.id,
         }

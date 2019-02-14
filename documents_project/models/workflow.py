@@ -17,7 +17,6 @@ class WorkflowActionRuleTask(models.Model):
                 'res_model': self.create_model,
                 'res_id': new_obj.id,
                 'name': "new %s from %s" % (self.create_model, new_obj.name),
-                'view_type': 'form',
                 'view_mode': 'form',
                 'views': [(False, "form")],
                 'context': self._context,

@@ -107,7 +107,6 @@ class StockBarcodeController(http.Controller):
                 'action': {
                     'name': _('Open picking form'),
                     'res_model': 'stock.picking',
-                    'view_type': 'form',
                     'view_mode': 'form',
                     'view_id': view_id,
                     'views': [(view_id, 'form')],

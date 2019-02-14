@@ -40,7 +40,6 @@ class AccountInvoice(models.Model):
     def action_open_asset_ids(self):
         return {
             'name': _('Assets'),
-            'view_type': 'form',
             'view_mode': 'tree,form',
             'res_model': 'account.asset',
             'view_id': False,

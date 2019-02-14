@@ -115,7 +115,6 @@ class SDDMandate(models.Model):
             'type': 'ir.actions.act_window',
             'name': _('Paid Invoices'),
             'res_model': 'account.invoice',
-            'view_type': 'form',
             'view_mode': 'tree,form',
             'domain': [('id', 'in', self.mapped('paid_invoice_ids').ids)],
         }
@@ -125,7 +124,6 @@ class SDDMandate(models.Model):
             'type': 'ir.actions.act_window',
             'name': _('Payments to Collect'),
             'res_model': 'account.payment',
-            'view_type': 'form',
             'view_mode': 'tree,form',
             'domain': [('id', 'in', self.mapped('payment_ids').ids), ('state', '=', 'posted')],
         }

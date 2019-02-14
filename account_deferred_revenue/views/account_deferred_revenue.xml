@@ -159,7 +159,6 @@
     <record model="ir.actions.act_window" id="action_account_revenue_form">
         <field name="name">Deferred Revenues</field>
         <field name="res_model">account.asset</field>
-        <field name="view_type">form</field>
         <field name="domain">[('asset_type', '=', 'sale'), ('state', '!=', 'model')]</field>
         <field name="context">{'asset_type': 'sale', 'default_asset_type': 'sale'}</field>
         <field name="view_ids" eval="[(5, 0, 0),
@@ -171,7 +170,6 @@
     <record model="ir.actions.act_window" id="action_account_revenue_model_form">
         <field name="name">Deferred Revenue Models</field>
         <field name="res_model">account.asset</field>
-        <field name="view_type">form</field>
         <field name="domain">[('asset_type', '=', 'sale'), ('state', '=', 'model')]</field>
         <field name="context">{'asset_type': 'sale', 'default_asset_type': 'sale', 'default_state': 'model'}</field>
         <field name="search_view_id" ref="view_account_revenue_model_search"/>

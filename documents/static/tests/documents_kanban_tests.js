@@ -1948,7 +1948,6 @@ QUnit.module('DocumentsKanbanView', {
                         target: 'new',
                         type: 'ir.actions.act_window',
                         view_mode: 'form',
-                        view_type: 'form',
                         views: [[false, 'form']]
                         },
                         "the activity button should trigger do_action with the correct args"

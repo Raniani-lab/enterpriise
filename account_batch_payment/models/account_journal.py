@@ -60,7 +60,6 @@ class AccountJournal(models.Model):
         return {
             'name': _('Create Batch Payment'),
             'type': 'ir.actions.act_window',
-            'view_type': 'form',
             'view_mode': 'form',
             'res_model': 'account.batch.payment',
             'context': ctx,

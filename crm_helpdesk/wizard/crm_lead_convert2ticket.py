@@ -51,7 +51,6 @@ class CrmLeadConvert2Ticket(models.TransientModel):
         view = self.env.ref('helpdesk.helpdesk_ticket_view_form')
         return {
             'name': _('Ticket created'),
-            'view_type': 'form',
             'view_mode': 'form',
             'view_id': view.id,
             'res_model': 'helpdesk.ticket',

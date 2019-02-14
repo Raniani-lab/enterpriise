@@ -39,7 +39,6 @@ class ResCompany(models.Model):
 
         return {
                 'name': _('AEAT Tax Report'),
-                'view_type': 'form',
                 'view_mode': 'form',
                 'view_id': self.env.ref('l10n_es_reports.mod' + modelo + '_report_wizard').id,
                 'res_model': 'l10n_es_reports.mod' + modelo + '.wizard',

@@ -161,7 +161,6 @@ class HrPayslipEmployeeDepartureNotice(models.TransientModel):
         self._create_input(payslip_id, 19, 'other', 0, contract_id)
         return {
             'name': _('Termination'),
-            'view_type': 'form',
             'view_mode': 'form',
             'res_model': 'hr.payslip',
             'type': 'ir.actions.act_window',

@@ -48,7 +48,6 @@
     <record id="action_fsm_worksheets" model="ir.actions.act_window">
         <field name="name">Worksheet Templates</field>
         <field name="res_model">project.worksheet.template</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,form,graph,pivot</field>
     </record>
 

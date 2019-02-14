@@ -30,7 +30,6 @@ class ReportExportWizard(models.TransientModel):
             'type': 'ir.actions.act_window',
             'name': _('Generated Documents'),
             'view_mode': 'kanban',
-            'view_type': 'form',
             'res_model': 'documents.document',
             'domain': [],
             'context': {'searchpanel_default_folder_id': self.folder_id.id, 'searchpanel_default_tag_ids': self.tag_ids.ids},

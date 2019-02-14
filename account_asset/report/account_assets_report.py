@@ -217,7 +217,6 @@ class assets_report(models.AbstractModel):
             'name': line.name,
             'type': 'ir.actions.act_window',
             'res_model': 'account.asset',
-            'view_type': 'form',
             'view_mode': 'form',
             'view_id': False,
             'views': [(False, 'form')],

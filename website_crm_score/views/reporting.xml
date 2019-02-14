@@ -65,7 +65,6 @@
         <record model="ir.actions.act_window" id="website_crm_score_pageviews">
             <field name="name">Lead Page Views</field>
             <field name="res_model">website.crm.pageview</field>
-            <field name="view_type">form</field>
             <field name="view_mode">pivot,form,graph</field>
             <field name="search_view_id" ref="crm_score_pageview_filter"/>
             <field name="context">{'time_ranges': {'field':'view_date', 'range':'last_365_days'}}</field>

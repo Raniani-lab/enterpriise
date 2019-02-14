@@ -49,8 +49,6 @@ class TestCaseDocumentsBridgeAccount(TransactionCase):
                          'failed at invoice workflow return value type')
         self.assertEqual(multi_return.get('res_model'), 'account.invoice',
                          'failed at invoice workflow return value res model')
-        self.assertEqual(multi_return.get('view_type'), 'list',
-                         'failed at invoice workflow return value view type')
 
         self.assertEqual(self.document_txt.res_model, 'account.invoice', "failed at workflow_bridge_dms_account"
                                                                            " new res_model")
@@ -62,8 +60,6 @@ class TestCaseDocumentsBridgeAccount(TransactionCase):
         self.assertEqual(self.document_gif.res_id, vendor_bill_gif.id, "failed at workflow_bridge_dms_account res_id")
 
         single_return = self.workflow_rule_vendor_bill.apply_actions([self.document_txt.id])
-        self.assertEqual(single_return.get('view_type'), 'form',
-                         'failed at invoice workflow return value view type for single file')
         self.assertEqual(single_return.get('res_model'), 'account.invoice',
                          'failed at invoice res_model action from workflow create model')
         invoice = self.env[single_return['res_model']].browse(single_return.get('res_id'))

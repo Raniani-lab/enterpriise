@@ -898,7 +898,6 @@ class AccountReport(models.AbstractModel):
         view_id = self.env['ir.model.data'].get_object_reference(module, view_name)[1]
         return {
             'type': 'ir.actions.act_window',
-            'view_type': 'tree',
             'view_mode': 'form',
             'views': [(view_id, 'form')],
             'res_model': document,
@@ -1248,7 +1247,6 @@ class AccountReport(models.AbstractModel):
             'type': 'ir.actions.act_window',
             'name': _('Export'),
             'view_mode': 'form',
-            'view_type': 'form',
             'res_model': 'account_reports.export.wizard',
             'target': 'new',
             'res_id': new_wizard.id,

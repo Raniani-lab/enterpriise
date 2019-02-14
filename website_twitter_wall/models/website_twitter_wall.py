@@ -132,7 +132,6 @@ class WebsiteTwitterWall(models.Model):
         self.ensure_one()
         return {
             'name': _('Tweets'),
-            'view_type': 'form',
             'view_mode': 'tree,form',
             'res_model': 'website.twitter.tweet',
             'view_id': False,

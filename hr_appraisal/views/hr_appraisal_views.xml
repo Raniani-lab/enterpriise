@@ -202,7 +202,6 @@
     <record model="ir.actions.act_window" id="open_view_hr_appraisal_tree">
         <field name="name">Appraisal</field>
         <field name="res_model">hr.appraisal</field>
-        <field name="view_type">form</field>
         <field name="view_mode">kanban,tree,form,activity</field>
         <field name="context">{"search_default_next_month":1}</field>
         <field name="help" type="html">
@@ -226,7 +225,6 @@
     <record model="ir.actions.act_window" id="open_view_hr_appraisal_tree2">
         <field name="name">Appraisal</field>
         <field name="res_model">hr.appraisal</field>
-        <field name="view_type">form</field>
         <field name="view_mode">kanban,tree,form,activity</field>
         <field name="context">{"search_default_employee_id": [active_id]}</field>
     </record>
@@ -234,14 +232,12 @@
     <record model="ir.actions.act_window" id="hr_appraisal_action">
         <field name="name">Appraisal</field>
         <field name="res_model">hr.appraisal</field>
-        <field name="view_type">form</field>
         <field name="view_mode">kanban,tree,form,activity</field>
     </record>
 
     <record model="ir.actions.act_window" id="hr_appraisal_action_my">
         <field name="name">My Appraisals</field>
         <field name="res_model">hr.appraisal</field>
-        <field name="view_type">form</field>
         <field name="view_mode">kanban,tree,form,activity</field>
         <field name="context">{'search_default_my_appraisals': 1}</field>
     </record>
@@ -249,7 +245,6 @@
     <record id="hr_appraisal_action_from_department" model="ir.actions.act_window">
             <field name="name">Appraisal to start</field>
             <field name="res_model">hr.appraisal</field>
-            <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
             <field name="search_view_id" ref="hr_appraisal_search"/>
             <field name="domain">[('department_id', '=', active_id), ('state', 'in', ['new', 'pending'])]</field>

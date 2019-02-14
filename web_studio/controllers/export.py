@@ -41,7 +41,7 @@ FIELDS_TO_EXPORT = {
         'binding_model_id', 'binding_type', 'binding_view_types',
         'context', 'domain', 'filter',
         'groups_id', 'help', 'limit', 'name', 'res_model', 'search_view_id',
-        'target', 'type', 'usage', 'view_id', 'view_mode', 'view_type'
+        'target', 'type', 'usage', 'view_id', 'view_mode'
     ],
     'ir.actions.act_window.view': ['act_window_id', 'multi', 'sequence', 'view_id', 'view_mode'],
     'ir.actions.report': [

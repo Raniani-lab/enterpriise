@@ -68,7 +68,6 @@
       <record id="action_rental_report" model="ir.actions.act_window">
           <field name="name">Rental Analysis</field>
           <field name="res_model">sale.rental.report</field>
-          <field name="view_type">form</field>
           <field name="view_mode">graph,pivot</field>
           <field name="search_view_id" ref="view_rental_order_product_search"/>
           <field name="context">{'search_default_Rentals':1, 'group_by_no_leaf':1,'group_by':[], 'time_ranges': {'field':'confirmation_date', 'range':'last_365_days'}}}</field>

@@ -154,7 +154,6 @@ class HrPayslipEmployeeDepartureHoliday(models.TransientModel):
         return {
             'name': _('Termination'),
             'domain': [('id', 'in', [termination_payslip_n.id, termination_payslip_n1.id])],
-            'view_type': 'form',
             'res_model': 'hr.payslip',
             'view_id': False,
             'view_mode': 'tree,form',

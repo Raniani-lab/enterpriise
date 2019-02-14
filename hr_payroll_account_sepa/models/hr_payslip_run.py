@@ -19,7 +19,6 @@ class HrPayslipRun(models.Model):
             'name' : 'Select a bank journal.',
             'res_model': 'hr.payslip.run.sepa.wizard',
             'view_mode': 'form',
-            'view_type': 'form',
             'view_id' : 'hr_payslip_run_sepa_xml_form',
             'views': [(False, 'form')],
             'target': 'new',

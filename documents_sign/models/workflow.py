@@ -52,7 +52,6 @@ class WorkflowActionRuleSign(models.Model):
                 'res_model': 'sign.template',
                 'name': _("New templates"),
                 'view_id': False,
-                'view_type': 'list',
                 'view_mode': 'kanban',
                 'views': [(False, "kanban"), (False, "form")],
                 'domain': [('id', 'in', template_ids)],

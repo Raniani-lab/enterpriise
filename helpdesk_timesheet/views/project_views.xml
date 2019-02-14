@@ -15,7 +15,6 @@
     <record id="project_project_action_view_helpdesk_tickets" model="ir.actions.act_window">
         <field name="name">Project Tickets</field>
         <field name="res_model">helpdesk.ticket</field>
-        <field name="view_type">form</field>
         <field name="view_mode">kanban,tree,form,pivot,graph</field>
         <field name="search_view_id" ref="helpdesk_ticket_view_search_inherit_helpdesk_timesheet"/>
         <field name="context">{'search_default_project_id': active_id, default_project_id': active_id}</field>

@@ -34,7 +34,6 @@ class WorkflowActionRuleProduct(models.Model):
                 'res_model': 'product.template',
                 'name': "New product template",
                 'context': self._context,
-                'view_type': 'form',
                 'view_mode': 'form',
                 'views': [(view_id, "form")],
                 'res_id': product.id if product else False,

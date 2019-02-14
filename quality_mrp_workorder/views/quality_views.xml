@@ -21,7 +21,6 @@
     <record id="quality_check_action_wo" model="ir.actions.act_window">
         <field name="name">Quality Checks</field>
         <field name="res_model">quality.check</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="domain">[('workorder_id', '=', active_id)]</field>
         <field name="target">main</field>

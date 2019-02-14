@@ -264,7 +264,6 @@ class QualityAlert(models.Model):
         return {
             'name': _('Quality Check'),
             'type': 'ir.actions.act_window',
-            'view_type': 'form',
             'view_mode': 'form',
             'res_model': 'quality.check',
             'target': 'current',

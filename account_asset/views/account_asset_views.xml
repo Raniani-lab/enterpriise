@@ -258,7 +258,6 @@
     <record model="ir.actions.act_window" id="action_account_asset_form">
         <field name="name">Assets</field>
         <field name="res_model">account.asset</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,kanban,form</field>
         <field name="view_id" ref="view_account_asset_purchase_tree"/>
         <field name="domain">[('asset_type', '=', 'purchase'), ('state', '!=', 'model')]</field>
@@ -268,7 +267,6 @@
     <record model="ir.actions.act_window" id="action_account_asset_model_form">
         <field name="name">Asset Models</field>
         <field name="res_model">account.asset</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,kanban,form</field>
         <field name="view_id" ref="view_account_asset_model_purchase_tree"/>
         <field name="search_view_id" ref="view_account_asset_model_search"/>

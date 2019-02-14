@@ -55,7 +55,6 @@ class L10nBeHrPayrollCreditTime(models.TransientModel):
         return {
             'name': _('Credit time contract'),
             'domain': [('id', 'in', [credit_time_contract.id, self.contract_id.id])],
-            'view_type': 'form',
             'res_model': 'hr.contract',
             'view_id': False,
             'view_mode': 'tree,form',
@@ -108,7 +107,6 @@ class L10nBeHrPayrollExitCreditTime(models.TransientModel):
         return {
             'name': _('Full time contract'),
             'res_id': full_time_contract.id,
-            'view_type': 'tree',
             'res_model': 'hr.contract',
             'view_id': False,
             'view_mode': 'form',

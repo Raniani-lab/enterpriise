@@ -51,7 +51,6 @@
     <record id="action_invoice_line_entries_report" model="ir.actions.act_window">
         <field name="name">Invoice Line Entries Analysis</field>
         <field name="res_model">account.invoice.line</field>
-        <field name="view_type">form</field>
         <field name="view_mode">pivot</field>
         <field name="search_view_id" ref="invoice_line_entries_report_search"/>
         <field name="context">{'search_default_OUT':1, 'search_default_ACTIVE':1,}</field>

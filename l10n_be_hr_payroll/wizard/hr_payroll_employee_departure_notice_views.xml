@@ -47,7 +47,6 @@
     <record id="departure_notice_wizard_action" model="ir.actions.act_window">
         <field name="name">Employee Departure - Notice Duration</field>
         <field name="res_model">hr.payslip.employee.depature.notice</field>
-        <field name="view_type">form</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>
         <field name="binding_model_id" ref="hr.model_hr_employee"/>

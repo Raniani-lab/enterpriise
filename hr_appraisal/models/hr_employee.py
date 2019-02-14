@@ -136,7 +136,6 @@ class HrEmployee(models.Model):
     def action_send_appraisal_request(self):
         return {
             'type': 'ir.actions.act_window',
-            'view_type': 'form',
             'view_mode': 'form',
             'res_model': 'request.appraisal',
             'target': 'new',

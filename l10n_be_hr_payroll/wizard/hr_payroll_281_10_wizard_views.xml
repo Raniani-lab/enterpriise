@@ -27,7 +27,6 @@
         <field name="name">Create 281.10 Form</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">hr.payroll.281.10.wizard</field>
-        <field name="view_type">form</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>
         <field name="binding_model_id" ref="hr.model_hr_employee"/>

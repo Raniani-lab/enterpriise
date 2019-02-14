@@ -87,7 +87,6 @@ class MrpProductionSchedule(models.Model):
         return {
             'type': 'ir.actions.act_window',
             'name': name,
-            'view_type': 'form',
             'view_mode': 'form',
             'res_model': 'mrp.mps.forecast.details',
             'views': [(False, 'form')],

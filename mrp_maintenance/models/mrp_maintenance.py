@@ -45,7 +45,6 @@ class MaintenanceEquipment(models.Model):
         self.ensure_one()
         return {
             'name': _('work centers'),
-            'view_type': 'form',
             'view_mode': 'form',
             'res_model': 'mrp.workcenter',
             'view_id': self.env.ref('mrp.mrp_workcenter_view').id,
@@ -78,7 +77,6 @@ class MrpProduction(models.Model):
         self.ensure_one()
         return {
             'name': _('New Maintenance Request'),
-            'view_type': 'form',
             'view_mode': 'form',
             'res_model': 'maintenance.request',
             'type': 'ir.actions.act_window',
@@ -91,7 +89,6 @@ class MrpProduction(models.Model):
         self.ensure_one()
         action = {
             'name': _('Maintenance Requests'),
-            'view_type': 'form',
             'view_mode': 'kanban,tree,form,pivot,graph,calendar',
             'res_model': 'maintenance.request',
             'type': 'ir.actions.act_window',
@@ -113,7 +110,6 @@ class MrpProductionWorkcenterLine(models.Model):
         self.ensure_one()
         return {
             'name': _('New Maintenance Request'),
-            'view_type': 'form',
             'view_mode': 'form',
             'res_model': 'maintenance.request',
             'type': 'ir.actions.act_window',

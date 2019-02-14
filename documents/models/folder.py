@@ -70,7 +70,6 @@ class DocumentFolder(models.Model):
             'type': 'ir.actions.act_window',
             'views': [(False, 'list'), (False, 'form')],
             'view_mode': 'tree,form',
-            'view_type': 'list',
             'context': "{'default_domain_folder_id': %s}" % self.id
         }
 
@@ -95,6 +94,5 @@ class DocumentFolder(models.Model):
             'type': 'ir.actions.act_window',
             'views': [(False, 'list'), (False, 'form')],
             'view_mode': 'tree,form',
-            'view_type': 'list',
             'context': "{'default_folder_id': %s}" % self.id
         }

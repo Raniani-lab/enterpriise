@@ -47,7 +47,6 @@
             <field name="name">Log book</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">pos_blackbox_be.log</field>
-            <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
             <field name="view_id" eval="False"/>
             <field name="domain">[]</field>
@@ -74,7 +73,6 @@
             <field name="name">Orders Pro Forma (PS)</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">pos.order_pro_forma</field>
-            <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
             <field name="view_id" eval="False"/>
             <field name="domain">[]</field>

@@ -160,7 +160,6 @@ class ReportCertificationReport(models.AbstractModel):
 
         return {
             'type': 'ir.actions.act_window',
-            'view_type': 'form',
             'view_mode': 'form',
             'res_model': 'l10n_co_reports.retention_report.wizard',
             'views': [(self.env.ref('l10n_co_reports.retention_report_wizard_form').id, 'form')],

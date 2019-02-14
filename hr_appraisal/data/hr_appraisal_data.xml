@@ -12,5 +12,13 @@
             <field name="interval_type">days</field>
             <field name="numbercall">-1</field>
         </record>
+        <record forcecreate="True" id="config_appraisal_min_period" model="ir.config_parameter">
+            <field name="key">hr_appraisal.appraisal_min_period</field>
+            <field name="value">6</field>
+        </record>
+        <record forcecreate="True" id="config_appraisal_max_period" model="ir.config_parameter">
+            <field name="key">hr_appraisal.appraisal_max_period</field>
+            <field name="value">12</field>
+        </record>
     </data>
 </odoo>

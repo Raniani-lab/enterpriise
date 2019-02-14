@@ -290,10 +290,23 @@
             <field name="arch" type="xml">
                 <xpath expr="//group[@name='timesheet']" position="inside">
                     <field name="timesheet_validated" groups="base.group_no_one"/>
-                    <field name="timesheet_manager_id"/>
                 </xpath>
                 <xpath expr="//group[@name='timesheet']" position="attributes">
                     <attribute name="invisible">0</attribute>
+                </xpath>
+                <xpath expr="//group[@name='managers']" position="inside">
+                    <field name="timesheet_manager_id"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="res_users_view_form" model="ir.ui.view">
+            <field name="name">hr.user.preferences.form.inherit.timesheet.grid</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="hr.res_users_view_form_profile" />
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='managers']" position="inside">
+                    <field name="timesheet_manager_id"/>
                 </xpath>
             </field>
         </record>

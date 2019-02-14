@@ -117,7 +117,7 @@ Tour.register('hr_contract_salary_tour', {
         {
             content: "Save",
             trigger: '.o_form_buttons_edit .o_form_button_save',
-            extra_trigger: '.oe_button_box .o_button_icon.fa-money',
+            extra_trigger: '.o_form_statusbar .o_statusbar_buttons:contains("Launch Plan")',
             run: 'click',
         },
         {

@@ -88,6 +88,37 @@
         </field>
     </record>
 
+    <record model="ir.ui.view" id="hr_appraisal_view_form_request">
+        <field name="name">hr.appraisal.request.form</field>
+        <field name="model">hr.appraisal</field>
+        <field name="arch" type="xml">
+            <form string="Appraisal">
+                <field name="state" invisible="1"/>
+                <!-- These values are passed through the context -->
+                <field name="manager_survey_id" invisible="1"/>
+                <field name="employee_survey_id" invisible="1"/>
+                <field name="collaborators_survey_id" invisible="1"/>
+                <field name="colleagues_survey_id" invisible="1"/>
+                <field name="manager_appraisal" invisible="1"/>
+                <field name="collaborators_appraisal" invisible="1"/>
+                <field name="colleagues_appraisal" invisible="1"/>
+                <field name="employee_appraisal" invisible="1"/>
+                <sheet>
+                    <h2>Send Appraisal to</h2>
+                    <group col="4">
+                        <field name="manager_ids" string="Manager" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                        <field name="employee_id" string="Employee" attrs="{'invisible':[('employee_appraisal','=',False)]}" readonly="1"/>
+                        <field name="collaborators_ids" string="Collaborators" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                        <field name="colleagues_ids" string="Colleagues" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                    </group>
+                    <group>
+                        <field name="date_close" attrs="{'readonly':[('state','in', ('pending','done'))]}"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
     <record model="ir.ui.view" id="view_hr_appraisal_tree">
         <field name="name">hr.appraisal.tree</field>
         <field name="model">hr.appraisal</field>
@@ -219,20 +250,109 @@
         <field name="context">{"search_default_employee_id": [active_id]}</field>
     </record>
 
+    <record model="ir.actions.act_window" id="hr_appraisal_action">
+        <field name="name">Appraisal</field>
+        <field name="res_model">hr.appraisal</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">kanban,tree,form,activity</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="hr_appraisal_action_request">
+        <field name="name">Appraisal Request by Employee</field>
+        <field name="res_model">hr.appraisal</field>
+        <field name="view_type">form</field>
+        <field name="target">new</field>
+        <field name="view_id" ref="hr_appraisal_view_form_request"/>
+    </record>
+
     <record id="hr_employee_view_form" model="ir.ui.view">
         <field name="name">hr.employee.view.form.inherit.appraisal</field>
         <field name="model">hr.employee</field>
         <field name="inherit_id" ref="hr.view_employee_form"/>
         <field name="arch" type="xml">
-        <xpath expr="//button[@name='toggle_active']" position="before">
+        <xpath expr="//div[@name='button_box']" position="inside">
             <button name="%(open_view_hr_appraisal_tree2)d"
                 class="oe_stat_button"
                 icon="fa-sitemap"
-                type="action">
-                <field name="appraisal_count" widget="statinfo"/>
+                type="action"
+                >
+                <div class="o_field_widget o_stat_info">
+                    <span class="o_stat_value">
+                        <field name="appraisal_date" readonly="1"/>
+                    </span>
+                    <span class="o_stat_text">
+                        Appraisal
+                    </span>
+                </div>
             </button>
         </xpath>
-        <xpath expr="//page[@name='public']" position="after">
+        <xpath expr="//page[@name='hr_settings']" position="inside">
+            <group string="Send Appraisals Form To" col="4">
+                <field name="appraisal_by_manager"/>
+                <field name="appraisal_manager_ids" nolabel="1" placeholder="Select Appraisal Reviewer..." widget="many2many_tags" options="{'color_field': 'color'}" attrs="{'invisible':[('appraisal_by_manager','=',False)]}" readonly="0"/>
+                <field name="appraisal_manager_survey_id" nolabel="1" placeholder="Appraisal Form..." attrs="{'invisible':[('appraisal_by_manager','=',False)]}"/>
+
+                <field name="appraisal_self"/>
+                <field name="appraisal_employee" nolabel="1" attrs="{'invisible':[('appraisal_self','=',False)]}"/>
+                <field name="appraisal_self_survey_id" nolabel="1" placeholder="Appraisal Form..." attrs="{'invisible':[('appraisal_self','=',False)]}"/>
+
+                <field name="appraisal_by_collaborators"/>
+                <field name="appraisal_collaborators_ids" nolabel="1" placeholder="Select Appraisal Reviewer..." widget="many2many_tags" options="{'color_field': 'color'}" attrs="{'invisible':[('appraisal_by_collaborators','=',False)]}"/>
+                <field name="appraisal_collaborators_survey_id" nolabel="1" placeholder="Appraisal Form..." attrs="{'invisible':[('appraisal_by_collaborators','=',False)]}"/>
+                <field name="appraisal_by_colleagues"/>
+                <field name="appraisal_colleagues_ids" nolabel="1" placeholder="Select Appraisal Reviewer..." widget="many2many_tags" options="{'color_field': 'color'}" attrs="{'invisible':[('appraisal_by_colleagues','=',False)]}" readonly="0"/>
+                <field name="appraisal_colleagues_survey_id" placeholder="Appraisal Form..." nolabel="1" attrs="{'invisible':[('appraisal_by_colleagues','=',False)]}"/>
+            </group>
+        </xpath>
+        </field>
+    </record>
+
+<!-- User preferences -->
+    <record id="res_users_view_form" model="ir.ui.view">
+        <field name="name">res.users.preferences.view.form.inherit.appraisal</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="hr.res_users_view_form_profile"/>
+        <field name="arch" type="xml">
+       <xpath expr="//div[@name='button_box']" position="inside">
+            <button name="%(hr_appraisal_action)d"
+                class="oe_stat_button"
+                icon="fa-sitemap"
+                type="action"
+                >
+                <div class="o_field_widget o_stat_info">
+                    <span class="o_stat_value">
+                        <field name="appraisal_date" readonly="1"/>
+                    </span>
+                    <span class="o_stat_text">
+                        Appraisal
+                    </span>
+                </div>
+            </button>
+        </xpath>
+        <xpath expr="//header" position="inside">
+            <field name="employee_ids" invisible="1"/>
+            <button name="%(hr_appraisal_action_request)d"
+                string="Request Appraisal"
+                type="action"
+                context="{
+                    'search_default_employee_id': employee_ids[0],
+                    'default_employee_id': employee_ids[0],
+                    'default_manager_appraisal': appraisal_by_manager,
+                    'default_manager_ids': appraisal_manager_ids,
+                    'default_manager_survey_id': appraisal_manager_survey_id,
+                    'default_colleagues_appraisal': appraisal_by_colleagues,
+                    'default_colleagues_ids': appraisal_colleagues_ids,
+                    'default_colleagues_survey_id': appraisal_colleagues_survey_id,
+                    'default_employee_appraisal': appraisal_self,
+                    'default_employee_survey_id': appraisal_self_survey_id,
+                    'default_collaborators_appraisal': appraisal_by_collaborators,
+                    'default_collaborators_ids': appraisal_collaborators_ids,
+                    'default_collaborators_survey_id': appraisal_collaborators_survey_id
+                    }"
+                class="btn btn-primary"/>
+
+        </xpath>
+        <xpath expr="//page[@name='hr_settings']" position="inside">
             <page string="Appraisal">
                 <group string="Send Appraisal Form To" col="4">
                     <field name="appraisal_by_manager"/>
@@ -249,20 +369,6 @@
                     <field name="appraisal_by_colleagues"/>
                     <field name="appraisal_colleagues_ids" nolabel="1" placeholder="Select Appraisal Reviewer..." widget="many2many_tags" options="{'color_field': 'color'}" attrs="{'invisible':[('appraisal_by_colleagues','=',False)]}" readonly="0"/>
                     <field name="appraisal_colleagues_survey_id" placeholder="Appraisal Form..." nolabel="1" attrs="{'invisible':[('appraisal_by_colleagues','=',False)]}"/>
-                    <field name="child_ids" invisible="1"/>
-                </group>
-                <group string="Periodicity" col="2">
-                    <group>
-                        <field name="periodic_appraisal"/>
-                    </group>
-                    <group attrs="{'invisible':[('periodic_appraisal','=',False)]}">
-                        <field name="appraisal_date" attrs="{'required':[('periodic_appraisal','=',True)]}"/>
-                        <label for="appraisal_frequency" string="Repeat Every"/>
-                        <div class="o_row">
-                            <field name="appraisal_frequency" attrs="{'required':[('periodic_appraisal','=',True)]}" class="oe_inline"/>
-                            <field name="appraisal_frequency_unit" attrs="{'required':[('periodic_appraisal','=',True)]}" class="oe_inline"/>
-                        </div>
-                    </group>
                 </group>
             </page>
         </xpath>

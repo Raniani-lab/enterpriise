@@ -35,6 +35,7 @@ Key Features
         'views/mail_activity_views.xml',
         'views/survey_survey_views.xml',
         'views/survey_user_views.xml',
+        'views/res_config_settings_view.xml',
         'data/hr_appraisal_data.xml',
         'data/mail_data.xml',
         'wizard/survey_invite_views.xml',

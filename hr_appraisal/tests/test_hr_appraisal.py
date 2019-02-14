@@ -5,6 +5,7 @@ from datetime import date
 from dateutil.relativedelta import relativedelta
 
 from odoo import fields
+from odoo.exceptions import ValidationError
 from odoo.tests.common import TransactionCase
 
 
@@ -17,8 +18,6 @@ class TestHrAppraisal(TransactionCase):
         self.HrAppraisal = self.env['hr.appraisal']
         self.main_company = self.env.ref('base.main_company')
 
-    def test_hr_appraisal(self):
-        # I create a new Employee with appraisal configuration.
         self.hr_employee = self.HrEmployee.create(dict(
             name="Michael Hawkins",
             department_id=self.env.ref('hr.dep_rd').id,
@@ -35,11 +34,13 @@ class TestHrAppraisal(TransactionCase):
             appraisal_colleagues_survey_id=self.env.ref('hr_appraisal.opinion_form').id,
             appraisal_self=True,
             appraisal_self_survey_id=self.env.ref('hr_appraisal.appraisal_form').id,
-            periodic_appraisal=True,
-            appraisal_frequency=1,
-            appraisal_frequency_unit='year',
             appraisal_date=date.today() + relativedelta(days=5)
         ))
+        self.env['ir.config_parameter'].sudo().set_param("hr_appraisal.appraisal_min_period", 6)
+        self.env['ir.config_parameter'].sudo().set_param("hr_appraisal.appraisal_max_period", 12)
+
+    def test_hr_appraisal(self):
+        # I create a new Employee with appraisal configuration.
 
         # I run the scheduler
         self.HrEmployee.run_employee_appraisal()  # cronjob
@@ -63,3 +64,29 @@ class TestHrAppraisal(TransactionCase):
         appraisals.write({'state': 'done'})
         # I check that state of Appraisal is done.
         self.assertEqual(appraisals.state, 'done', "Appraisal should be in done state")
+
+    def test_request_appraisal_too_early(self):
+        self.HrAppraisal.create({
+            'employee_id': self.hr_employee.id,
+            'date_close': date.today() + relativedelta(months=1),
+        })
+
+        with self.assertRaises(ValidationError):
+            self.HrAppraisal.create({
+                'employee_id': self.hr_employee.id,
+                'date_close': date.today() + relativedelta(months=2),
+            })
+
+    def test_request_appraisal_too_early(self):
+        # force date in the past
+        query = """
+            UPDATE hr_employee
+            SET appraisal_date=%s
+            WHERE id=%s;
+        """
+        self.env.cr.execute(query, (date.today() - relativedelta(months=1), self.hr_employee.id))
+
+        self.HrEmployee.run_employee_appraisal()  # cronjob
+        self.assertEqual(self.hr_employee.appraisal_date, date.today() + relativedelta(months=12))
+
+

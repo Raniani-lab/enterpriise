@@ -162,6 +162,11 @@ return Widget.extend(StandaloneFieldManagerMixin, {
                 $(window).on(this.fileupload_id, this._onUploadRainbowImageDone.bind(this));
             }
         }
+        if (this.state.mode === 'view' && this.view_type === 'gantt') {
+            // precision attribute in gantt is complicated to write so we split it
+            // {'day': 'hour:half', 'week': 'day:half', 'month': 'day', 'year': 'month:quarter'}
+            this.state.attrs.ganttPrecision = JSON.parse(this.state.attrs.precision || '{}');
+        }
     },
     /**
      * @override
@@ -759,6 +764,19 @@ return Widget.extend(StandaloneFieldManagerMixin, {
                     },
                 });
             }
+        } else if (this.view_type === 'gantt' && _.str.include(attribute, 'precision_')) {
+            // precision attribute in gantt is complicated to write so we split it
+            var newPrecision = this.state.attrs.ganttPrecision;
+            newPrecision[attribute.split('precision_')[1]] = $input.val();
+
+            this.trigger_up('view_change', {
+                type: 'attributes',
+                structure: 'view_attribute',
+                new_attrs: {
+                    precision: JSON.stringify(newPrecision),
+                },
+            });
+
         } else if (attribute) {
             var new_attrs = {};
             if ($input.attr('type') === 'checkbox') {

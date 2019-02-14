@@ -3,31 +3,49 @@ odoo.define('web_gantt.GanttController', function (require) {
 
 var AbstractController = require('web.AbstractController');
 var core = require('web.core');
-var config = require('web.config');
-var Dialog = require('web.Dialog');
 var dialogs = require('web.view_dialogs');
-var time = require('web.time');
 
+var QWeb = core.qweb;
 var _t = core._t;
-var qweb = core.qweb;
-
 
 var GanttController = AbstractController.extend({
-    events: {
-        'click .gantt_task_row .gantt_task_cell': '_onCreateClick',
-    },
-    custom_events: _.extend({}, AbstractController.prototype.custom_events, {
-        task_changed: '_onTaskChanged',
-        task_display: '_onTaskDisplay',
-        task_create: '_onTaskCreate',
+    events: _.extend({}, AbstractController.prototype.events, {
+        'click .o_gantt_button_add': '_onAddClicked',
+        'click .o_gantt_button_scale': '_onScaleClicked',
+        'click .o_gantt_button_prev': '_onPrevPeriodClicked',
+        'click .o_gantt_button_next': '_onNextPeriodClicked',
+        'click .o_gantt_button_today': '_onTodayClicked',
+        'click .o_gantt_button_expand_rows': '_onExpandClicked',
+        'click .o_gantt_button_collapse_rows': '_onCollapseClicked',
     }),
-
+    custom_events: _.extend({}, AbstractController.prototype.custom_events, {
+        add_button_clicked: '_onCellAddClicked',
+        plan_button_clicked: '_onCellPlanClicked',
+        collapse_row: '_onCollapseRow',
+        expand_row: '_onExpandRow',
+        pill_clicked: '_onPillClicked',
+        pill_resized: '_onPillResized',
+        pill_dropped: '_onPillDropped',
+        updating_pill_started: '_onPillUpdatingStarted',
+        updating_pill_stopped: '_onPillUpdatingStopped',
+    }),
+    /**
+     * @override
+     * @param {Widget} parent
+     * @param {GanttModel} model
+     * @param {GanttRenderer} renderer
+     * @param {Object} params
+     * @param {Object} params.context
+     * @param {Array[]} params.dialogViews
+     * @param {Object} params.SCALES
+     * @param {boolean} params.collapseFirstLevel
+     */
     init: function (parent, model, renderer, params) {
         this._super.apply(this, arguments);
-        this._initialTitle = this._title;
         this.context = params.context;
-
-        this._displayTask = _.debounce(this._displayTask, 500, true);
+        this.dialogViews = params.dialogViews;
+        this.SCALES = params.SCALES;
+        this.collapseFirstLevel = params.collapseFirstLevel;
     },
 
     //--------------------------------------------------------------------------
@@ -36,42 +54,18 @@ var GanttController = AbstractController.extend({
 
     /**
      * @override
-     * @returns {string}
-     */
-    getTitle: function () {
-        return this._title;
-    },
-    /**
-     * Render the buttons according to the GanttView.buttons template and add
-     * listeners on it. Set this.$buttons with the produced jQuery element
-     *
-     * @param {jQuery} [$node] a jQuery node where the rendered buttons should
-     *   be inserted $node may be undefined, in which case they are inserted
-     *   into this.options.$buttons
+     * @param {jQueryElement} $node to which the buttons will be appended
      */
     renderButtons: function ($node) {
-        var self = this;
         if ($node) {
-            this.$buttons = $(qweb.render("GanttView.buttons", {'isMobile': config.device.isMobile}));
+            var state = this.model.get();
+            this.$buttons = $(QWeb.render('GanttView.buttons', {
+                groupedBy: state.groupedBy,
+                widget: this,
+                SCALES: this.SCALES,
+                activateScale: state.scale,
+            }));
             this.$buttons.appendTo($node);
-            this.$buttons.find('.o_gantt_button_scale').bind('click', function (event) {
-                self.$buttons.find('.dropdown_gantt_content').text($(this).text());
-                self.$buttons.find('.o_gantt_button_scale').removeClass('active');
-                self.$buttons.find(this).addClass('active');
-                return self._setScale($(event.target).data('value'));
-            });
-            this.$buttons.find('.o_gantt_button_left').bind('click', function () {
-                var state = self.model.get();
-                self._focusDate(state.focus_date.subtract(1, state.scale));
-            });
-            this.$buttons.find('.o_gantt_button_right').bind('click', function () {
-                var state = self.model.get();
-                self._focusDate(state.focus_date.add(1, state.scale));
-            });
-            this.$buttons.find('.o_gantt_button_today').bind('click', function () {
-                self.model.setFocusDate(moment(new Date()));
-                return self.reload();
-            });
         }
     },
 
@@ -81,90 +75,126 @@ var GanttController = AbstractController.extend({
 
     /**
      * @private
-     * @param {string} id
-     * @param {Moment} startDate
+     * @param {OdooEvent} event
      */
-    _createTask: function (id, startDate) {
-        var task = gantt.getTask(id);
+    _getDialogContext: function (date, groupId) {
+        var state = this.model.get();
+        var context = {};
+        context[state.dateStartField] = date.clone();
+        context[state.dateStopField] = date.clone().endOf(this.SCALES[state.scale].interval);
 
-        var endDate;
-        switch (this.model.get().scale) {
-            case "day":
-                endDate = startDate.clone().add(4, "hour");
-                break;
-            case "week":
-                endDate = startDate.clone().add(2, "day");
-                break;
-            case "month":
-                endDate = startDate.clone().add(4, "day");
-                break;
-            case "year":
-                endDate = startDate.clone().add(2, "month");
-                break;
+        if (groupId) {
+            // Default values of the group this cell belongs in
+            // We can read them from any pill in this group row
+            _.each(state.groupedBy, function (fieldName) {
+                var groupValue = _.find(state.groups, function (group) {
+                    return group.id === groupId;
+                });
+                var value = groupValue[fieldName];
+                // If many2one field then extract id from array
+                if (_.isArray(value)) {
+                    value = value[0];
+                }
+                context[fieldName] = value;
+            });
         }
 
-        var context = _.clone(this.context);
-        var get_create = function (item) {
-            if (item.create) {
-                context["default_"+item.create[0]] = item.create[1][0];
+        // moment context dates needs to be converted in server time in view
+        // dialog (for default values)
+        for (var k in context) {
+            var type = state.fields[k].type;
+            if (context[k] && (type === 'datetime' || type === 'date')) {
+                context[k] = this.model.convertToServerTime(context[k]);
             }
-            if (item.parent) {
-                var parent = gantt.getTask(item.parent);
-                get_create(parent);
-            }
-        };
-        get_create(task);
-
-        context["default_"+this.model.mapping.date_start] = startDate.format("YYYY-MM-DD HH:mm:ss");
-        if (this.model.mapping.date_stop) {
-            context["default_"+this.model.mapping.date_stop] = endDate.format("YYYY-MM-DD HH:mm:ss");
-        } else { // We assume date_delay is given
-            context["default_"+this.model.mapping.date_delay] = gantt.calculateDuration(startDate, endDate);
         }
 
-        context.id = 0;
-
-        this._displayTask(context);
+        return context;
     },
     /**
-     * Dialog to edit/display a task.
+     * Opens dialog to add/edit/view a record
      *
      * @private
-     * @param {Object}  task
-     * @param {boolean} [readonly=false]
+     * @param {integer|undefined} resID
+     * @param {Object|undefined} context
      */
-    _displayTask: function (task, readonly) {
-        var taskId = _.isString(task.id) ? parseInt(_.last(task.id.split("_")), 10) : task.id;
-        readonly = readonly ? readonly : false;
+    _openDialog: function (resID, context) {
+        var title = resID ? _t("Open") : _t("Create");
 
-        new dialogs.FormViewDialog(this, {
+        return new dialogs.FormViewDialog(this, {
+            title: _.str.sprintf(title),
             res_model: this.modelName,
-            res_id: taskId,
-            context: task,
-            on_saved: this.reload.bind(this),
-            readonly: readonly
+            views: this.dialogViews,
+            res_id: resID,
+            readonly: !this.is_action_enabled('edit'),
+            context: _.extend({}, this.context, context),
+            on_saved: this.reload.bind(this, {}),
         }).open();
     },
     /**
+     * Opens dialog to plan records.
+     *
      * @private
-     * @param {Moment} focusDate
+     * @param {Object} context
      */
-    _focusDate: function (focusDate) {
+    _openPlanDialog: function (context) {
         var self = this;
-        this.model.setFocusDate(focusDate);
-        this.reload().then(function () {
-            self._setTitle(self._initialTitle + ' (' + self.model.get().date_display + ')');
-        });
+        var state = this.model.get();
+        var domain = [
+            '|',
+            [state.dateStartField, '=', false],
+            [state.dateStopField, '=', false],
+        ];
+        new dialogs.SelectCreateDialog(this, {
+            title: _t("Plan"),
+            res_model: this.modelName,
+            domain: this.model.domain.concat(domain),
+            views: this.dialogViews,
+            context: _.extend({}, this.context, context),
+            on_selected: function (records) {
+                var ids = _.pluck(records, 'id');
+                if (ids.length) {
+                    // Here, the dates are already in server time so we set the
+                    // isUTC parameter of reschedule to true to avoid conversion
+                    self._reschedule(ids, context, true);
+                }
+            },
+        }).open();
     },
     /**
+     * Reschedule records and reload.
+     *
+     * Use a DropPrevious to prevent unnecessary reload and rendering.
+     *
+     * Note that when the rpc fails, we have to reload and re-render as some
+     * records might be outdated, causing the rpc failure).
+     *
      * @private
-     * @param {any} scale
+     * @param {integer} id
+     * @param {Object} schedule
+     * @param {boolean} isUTC
+     * @returns {$.Promise} resolved when the record has been reloaded, rejected
+     *   if the request has been dropped by DropPrevious
      */
-    _setScale: function (scale) {
+    _reschedule: function (ids, schedule, isUTC) {
+        var def = $.Deferred();
+        var rpcDef = this.model.reschedule(ids, schedule, isUTC).always(def.resolve.bind(def));
+        this.dp.add(rpcDef).fail(def.reject.bind(def));
+        return def.then(this.reload.bind(this, {}));
+    },
+    /**
+     * Overriden to hide expand/collapse buttons when they have no effect.
+     *
+     * @override
+     * @private
+     */
+    _update: function () {
         var self = this;
-        this.model.setScale(scale);
-        this.reload().then(function () {
-            self._setTitle(self._initialTitle + ' (' + self.model.get().date_display + ')');
+        return this._super.apply(this, arguments).then(function () {
+            var nbGroups = self.model.get().groupedBy.length;
+            var minNbGroups = self.collapseFirstLevel ? 0 : 1;
+            var displayButtons = nbGroups > minNbGroups;
+            self.$buttons.find('.o_gantt_button_expand_rows').toggle(displayButtons);
+            self.$buttons.find('.o_gantt_button_collapse_rows').toggle(displayButtons);
         });
     },
 
@@ -173,97 +203,215 @@ var GanttController = AbstractController.extend({
     //--------------------------------------------------------------------------
 
     /**
-     * Handler used when clicking on an empty cell. The behaviour is to create a
-     * new task and apply some default values.
+     * Opens a dialog to create a new record.
      *
      * @private
-     * @param {MouseEvent} event
+     * @param {OdooEvent} ev
      */
-    _onCreateClick: function (event) {
-        if (this.activeActions.create) {
-            var id = event.target.parentElement.attributes.task_id.value;
-            var classDate = _.find(event.target.classList, function (e) {
-                return e.indexOf("date_") > -1;
+    _onCellAddClicked: function (ev) {
+        ev.stopPropagation();
+        var context = this._getDialogContext(ev.data.date, ev.data.groupId);
+        for (var k in context) {
+            context[_.str.sprintf('default_%s', k)] = context[k];
+        }
+        this._openDialog(undefined, context);
+    },
+    /**
+     * @private
+     * @param {MouseEvent} ev
+     */
+    _onAddClicked: function (ev) {
+        ev.preventDefault();
+        var context = {};
+        var state = this.model.get();
+        context[state.dateStartField] = this.model.convertToServerTime(state.focusDate.clone().startOf(state.scale));
+        context[state.dateStopField] = this.model.convertToServerTime(state.focusDate.clone().endOf(state.scale));
+        for (var k in context) {
+            context[_.str.sprintf('default_%s', k)] = context[k];
+        }
+        this._openDialog(undefined, context);
+    },
+    /**
+     * @private
+     * @param {MouseEvent} ev
+     */
+    _onCollapseClicked: function (ev) {
+        ev.preventDefault();
+        this.model.collapseRows();
+        this.update({}, {reload: false});
+    },
+    /**
+     * @private
+     * @param {OdooEvent} ev
+     * @param {string} ev.data.rowId
+     */
+    _onCollapseRow: function (ev) {
+        ev.stopPropagation();
+        this.model.collapseRow(ev.data.rowId);
+        this.renderer.updateRow(this.model.get(ev.data.rowId));
+    },
+    /**
+     * @private
+     * @param {MouseEvent} ev
+     */
+    _onExpandClicked: function (ev) {
+        ev.preventDefault();
+        this.model.expandRows();
+        this.update({}, {reload: false});
+    },
+    /**
+     * @private
+     * @param {OdooEvent} ev
+     * @param {string} ev.data.rowId
+     */
+    _onExpandRow: function (ev) {
+        ev.stopPropagation();
+        this.model.expandRow(ev.data.rowId);
+        this.renderer.updateRow(this.model.get(ev.data.rowId));
+    },
+    /**
+     * @private
+     * @param {MouseEvent} ev
+     */
+    _onNextPeriodClicked: function (ev) {
+        ev.preventDefault();
+        var state = this.model.get();
+        this.update({date: state.focusDate.add(1, state.scale)});
+    },
+    /**
+     * Opens dialog when clicked on pill to view record.
+     *
+     * @private
+     * @param {OdooEvent} ev
+     * @param {jQuery} ev.data.target
+     * @param {MouseEvent} ev.data.originalEvent
+     */
+    _onPillClicked: function (ev) {
+        if (!this._updating) {
+            ev.data.originalEvent.stopPropagation();
+            ev.data.target.addClass('o_gantt_pill_editing');
+            var dialog = this._openDialog(ev.data.target.data('id'));
+            dialog.on('closed', this, function () {
+                ev.data.target.removeClass('o_gantt_pill_editing');
             });
-            var startDate = moment(new Date(parseInt(classDate.split("_")[1], 10))).utc();
-
-            this._createTask(id, startDate);
         }
     },
     /**
-     * @private
-     * @param {OdooEvent} event
-     */
-    _onTaskChanged: function (event) {
-        var taskObj = event.data.task;
-        var success = event.data.success;
-        var fail = event.data.fail;
-        var fields = this.model.fields;
-        // TODO: modify date_delay instead of date_stop
-        if (fields[this.model.mapping.date_stop] === undefined) {
-            // Using a duration field instead of date_stop
-            Dialog.alert(this, _t('You have no date_stop field defined!'));
-            return fail();
-        }
-        // We first check that the fields aren't defined as readonly.
-        if (fields[this.model.mapping.date_start].readonly || fields[this.model.mapping.date_stop].readonly) {
-            Dialog.alert(this, _t('You are trying to write on a read-only field!'));
-            return fail();
-        }
-
-        // Now we try to write the new values in the dataset. Note that it may fail
-        // if the constraints defined on the model aren't met.
-        var start = taskObj.start_date;
-        var end = taskObj.end_date;
-        var data = {};
-        data[this.model.mapping.date_start] = time.auto_date_to_str(start, fields[this.model.mapping.date_start].type);
-        if (this.model.mapping.date_stop) {
-            // If date_stop is a date, we should write the previous day since it is considered as
-            // included.
-            var field_type = fields[this.model.mapping.date_stop].type;
-            if (field_type === 'date') {
-                end.setTime(end.getTime() - 86400000);
-                data[this.model.mapping.date_stop] = time.auto_date_to_str(end, field_type);
-                end.setTime(end.getTime() + 86400000);
-            } else {
-                data[this.model.mapping.date_stop] = time.auto_date_to_str(end, field_type);
-            }
-        } else { // we assume date_duration is defined
-            var duration = gantt.calculateDuration(start, end);
-            data[this.model.mapping.date_delay] = duration;
-        }
-        var taskId = parseInt(taskObj.id.split("gantt_task_").slice(1)[0], 10);
-
-        this._rpc({
-                model: this.model.modelName,
-                method: 'write',
-                args: [taskId, data],
-            })
-            .then(success, fail);
-    },
-    /**
-     * Dialog to create a task.
+     * Saves pill information when dragged.
      *
      * @private
+     * @param {OdooEvent} ev
+     * @param {Object} ev.data
+     * @param {integer} [ev.data.diff]
+     * @param {integer} [ev.data.groupLevel]
+     * @param {string} [ev.data.pillId]
+     * @param {string} [ev.data.newGroupId]
+     * @param {string} [ev.data.oldGroupId]
      */
-    _onTaskCreate: function () {
-        if (this.activeActions.create) {
-            var startDate = moment(new Date()).utc();
-            this._createTask(0, startDate);
+    _onPillDropped: function (ev) {
+        ev.stopPropagation();
+
+        var state = this.model.get();
+
+        var schedule = _.pick(ev.data, [
+            state.dateStartField,
+            state.dateStopField
+        ]);
+
+        var diff = ev.data.diff;
+        if (diff) {
+            var pill = _.findWhere(state.records, { id: ev.data.pillId });
+            schedule[state.dateStartField] = pill[state.dateStartField].clone().add(diff, this.SCALES[state.scale].time);
+            schedule[state.dateStopField] = pill[state.dateStopField].clone().add(diff, this.SCALES[state.scale].time);
         }
+
+        if (ev.data.newGroupId && ev.data.newGroupId !== ev.data.oldGroupId) {
+            var group = _.findWhere(state.groups, { id: ev.data.newGroupId });
+
+            // if the pill is dragged in a top level group, we only want to
+            // write on fields linked to this top level group
+            var fieldsToWrite = state.groupedBy.slice(0, ev.data.groupLevel + 1);
+            _.each(fieldsToWrite, function (fieldName) {
+                // TODO: maybe not write if the value hasn't changed?
+                schedule[fieldName] = group[fieldName];
+
+                // TODO: maybe check if field.type === 'many2one' instead
+                if (_.isArray(schedule[fieldName])) {
+                    schedule[fieldName] = schedule[fieldName][0];
+                }
+            });
+        }
+
+        this._reschedule(ev.data.pillId, schedule);
     },
     /**
-     * Dialog to edit/display a task.
+     * Save pill information when resized
      *
      * @private
-     * @param {OdooEvent} event
+     * @param {OdooEvent} ev
      */
-    _onTaskDisplay: function (event) {
-        var readonly = !this.activeActions.edit;
-        this._displayTask(event.data, readonly);
+    _onPillResized: function (ev) {
+        ev.stopPropagation();
+        var schedule = {};
+        schedule[ev.data.field] = ev.data.date;
+        this._reschedule(ev.data.id, schedule);
     },
-
-
+    /**
+     * @private
+     * @param {OdooEvent} ev
+     */
+    _onPillUpdatingStarted: function (ev) {
+        ev.stopPropagation();
+        this._updating = true;
+    },
+    /**
+     * @private
+     * @param {OdooEvent} ev
+     */
+    _onPillUpdatingStopped: function (ev) {
+        ev.stopPropagation();
+        this._updating = false;
+    },
+    /**
+     * Opens a dialog to plan records.
+     *
+     * @private
+     * @param {OdooEvent} ev
+     */
+    _onCellPlanClicked: function (ev) {
+        ev.stopPropagation();
+        var context = this._getDialogContext(ev.data.date, ev.data.groupId);
+        this._openPlanDialog(context);
+    },
+    /**
+     * @private
+     * @param {MouseEvent} ev
+     */
+    _onPrevPeriodClicked: function (ev) {
+        ev.preventDefault();
+        var state = this.model.get();
+        this.update({date: state.focusDate.subtract(1, state.scale)});
+    },
+    /**
+     * @private
+     * @param {MouseEvent} ev
+     */
+    _onScaleClicked: function (ev) {
+        ev.preventDefault();
+        var $button = $(ev.currentTarget);
+        this.$buttons.find('.o_gantt_button_scale').removeClass('active');
+        $button.addClass('active');
+        this.$buttons.find('.o_gantt_dropdown_selected_scale').text($button.text());
+        this.update({scale: $button.data('value')});
+    },
+    /**
+     * @private
+     * @param {MouseEvent} ev
+     */
+    _onTodayClicked: function (ev) {
+        ev.preventDefault();
+        this.update({date: moment()});
+    },
 });
 
 return GanttController;

@@ -43,6 +43,14 @@ QUnit.module('ViewEditorManager', {
                         type: "selection",
                         selection: [['1', "Low"], ['2', "Medium"], ['3', "High"]],
                     },
+                    start: {
+                        string: "Start Date",
+                        type: 'datetime',
+                    },
+                    stop: {
+                        string: "Stop Date",
+                        type: 'datetime',
+                    },
                 },
             },
             product: {
@@ -1736,6 +1744,47 @@ QUnit.module('ViewEditorManager', {
             vem.destroy();
             done();
         });
+    });
+
+    QUnit.module('Gantt');
+
+    QUnit.test('empty gantt editor', function(assert) {
+        assert.expect(4);
+
+        this.data.coucou.records = [];
+
+        var vem = studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'coucou',
+            arch: "<gantt date_start='start' date_stop='stop'/>",
+            mockRPC: function (route, args) {
+                if (route === '/web_studio/edit_view') {
+                    assert.strictEqual(args.operations[0].new_attrs.precision, '{"day":"hour:quarter"}',
+                        "should correctly set the precision");
+                        return $.when({
+                            fields: fieldsView.fields,
+                            fields_views: {
+                                gantt: fieldsView,
+                            }
+                        });
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        // used to generate the new fields view in mockRPC
+        var fieldsView = $.extend(true, {}, vem.fields_view);
+
+        assert.strictEqual(vem.view_type, 'gantt',
+            "view type should be gantt");
+        assert.containsOnce(vem, '.o_web_studio_view_renderer .o_gantt_view',
+            "there should be a gantt view");
+        assert.containsOnce(vem, '.o_web_studio_sidebar_content.o_display_view select[name="precision_day"]',
+            "it should be possible to edit the day precision");
+
+        vem.$('.o_web_studio_sidebar_content.o_display_view select[name="precision_day"] option[value="hour:quarter"]').prop('selected', true).trigger('change');
+
+        vem.destroy();
     });
 
     QUnit.module('Others');

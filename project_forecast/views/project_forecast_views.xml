@@ -92,17 +92,12 @@
     <field name="name">project.forecast.gantt</field>
     <field name="model">project.forecast</field>
     <field name="arch" type="xml">
-      <gantt type="consolidate"
+      <gantt
              create="false"
              edit="false"
              date_start="start_date"
              date_stop="end_date"
-             fold_last_level="true"
-             round_dnd_dates="true"
-             consolidation="time"
-             consolidation_max='{"employee_id": 100}'
-             consolidation_exclude="exclude">
-      </gantt>
+      />
     </field>
   </record>
 

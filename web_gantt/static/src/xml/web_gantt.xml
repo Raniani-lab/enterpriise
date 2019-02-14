@@ -1,37 +1,126 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <templates>
-    <t t-name="GanttView">
-        <div t-attf-class="o_gantt_view table-responsive chart_id_{{widget.chart_id}}">
-        </div>
-    </t>
 
-    <t t-name="GanttView.buttons">
-      <div class="o_gantt_button_dates" role="toolbar" aria-label="Main actions">
-	<button class="o_gantt_button_left btn btn-primary" t-if="!isMobile" aria-label="Previous" title="Previous">
-	  <span class="fa fa-arrow-left"/>
-	</button>
-	<button class="o_gantt_button_today btn btn-primary">
-	  Today
-	</button>
-	<button class="o_gantt_button_right btn btn-primary" t-if="!isMobile" aria-label="Next" title="Next">
-	  <span class="fa fa-arrow-right"/>
-	</button>
-      </div>
-        <div class="btn-group" t-if="isMobile">
-            <a role="button" class="btn btn-link dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false"><span class="dropdown_gantt_content mr4">Month</span><i class="fa fa-caret-down" role="img" aria-label="Dropdown menu" title="Dropdown menu"></i></a>
-            <div class="dropdown-menu" role="menu">
-                <a role="menuitem" class="o_gantt_button_scale btn btn-secondary dropdown-item" data-value="day">Day</a>
-                <a role="menuitem" class="o_gantt_button_scale btn btn-secondary dropdown-item" data-value="week">Week</a>
-                <a role="menuitem" class="o_gantt_button_scale btn btn-secondary dropdown-item active" data-value="month">Month</a>
-                <a role="menuitem" class="o_gantt_button_scale btn btn-secondary dropdown-item" data-value="year">Year</a>
+    <div t-name="GanttView.buttons">
+        <button t-if="widget.is_action_enabled('create')" class="o_gantt_button_add btn btn-primary mr-3" title="Add record">
+            Add
+        </button>
+        <div class="d-inline-block mr-3">
+            <button class="o_gantt_button_prev btn btn-primary" title="Previous">
+                <span class="fa fa-arrow-left"/>
+            </button>
+            <button class="o_gantt_button_today btn btn-primary">
+                Today
+            </button>
+            <button class="o_gantt_button_next btn btn-primary" title="Next">
+                <span class="fa fa-arrow-right"/>
+            </button>
+        </div>
+        <button t-foreach="SCALES" t-as="scale" t-attf-class="o_gantt_button_scale btn btn-secondary #{activateScale == scale ? 'active' : ''}" type="button" t-att-data-value="scale">
+            <t t-esc="SCALES[scale].string"/>
+        </button>
+        <div class="btn-group">
+            <button class="o_gantt_button_expand_rows btn btn-secondary" title="Expand rows">
+                <i class="fa fa-expand"/>
+            </button>
+            <button class="o_gantt_button_collapse_rows btn btn-secondary" title="Collapse rows">
+                <i class="fa fa-compress"/>
+            </button>
+        </div>
+    </div>
+
+    <div t-name="GanttView" class="o_gantt_view">
+        <div class="container-fluid p-0">
+            <div class="row no-gutters o_gantt_header_container">
+                <div class="col-2 o_gantt_row_sidebar" t-if="widget.state.groupedBy.length">
+                    <t t-esc="widget.string"/>
+                </div>
+                <div class="col">
+                    <div class="row no-gutters">
+                        <div class="col o_gantt_header_cell">
+                            <t t-esc="widget._getFocusDateFormat()"/>
+                        </div>
+                    </div>
+                    <div class="row no-gutters o_gantt_header_scale">
+                        <t t-set="formats" t-value="{'day': 'LT', 'week': 'dddd, Do', 'month': 'DD', 'year': 'MMMM'}"/>
+                        <div t-attf-class="col o_gantt_header_cell #{slot.isSame(new Date(), 'day') &amp;&amp; widget.state.scale !== 'day' ? 'o_gantt_today' : ''}" t-foreach="widget.viewInfo.slots" t-as="slot">
+                            <t t-esc="slot.format(formats[widget.state.scale])"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row no-gutters">
+                <div class="col o_gantt_row_container">
+                </div>
+            </div>
+            <div class="row no-gutters" t-if="widget.totalRow">
+                <div class="col o_gantt_total_row_container">
+                </div>
             </div>
         </div>
-        <div t-attf-class="btn-group" t-else="" role="toolbar" aria-label="Period">
-            <button class="o_gantt_button_scale btn btn-secondary" type="button" data-value="day">Day</button>
-            <button class="o_gantt_button_scale btn btn-secondary" type="button" data-value="week">Week</button>
-            <button class="o_gantt_button_scale btn btn-secondary" type="button" data-value="month">Month</button>
-            <button class="o_gantt_button_scale btn btn-secondary" type="button" data-value="year">Year</button>
+    </div>
+
+    <div t-name="GanttView.Row" t-attf-class="row no-gutters o_gantt_row #{widget.isTotal ? 'o_gantt_row_total' : ''} #{widget.isGroup ? 'o_gantt_row_group' : ''} #{widget.isOpen ? 'open' : ''}" t-att-data-group-id="widget.groupId">
+        <div t-if="!widget.options.hideSidebar" class="col-2 o_gantt_row_sidebar" t-attf-style="padding-left: #{widget.leftPadding}px;">
+            <div class="o_gantt_row_title text-truncate" t-att-title="widget.name or ''">
+                <t t-esc="widget.name"/>
+            </div>
         </div>
+        <div class="col">
+            <div class="row no-gutters">
+                <div t-foreach="widget.slots" t-as="slot" t-attf-class="col o_gantt_cell #{slot.unavailable ? 'o_gantt_unavailable' : ''} #{slot.isToday ? 'o_gantt_today' : ''}" t-att-data-date="slot.date.format('YYYY-MM-DD HH:mm:ss')" t-attf-style="height: #{widget.cellHeight}px;">
+
+                    <!-- plan and add buttons -->
+                    <div t-if="slot.hasButtons" class="o_gantt_cell_buttons">
+                        <i t-if="widget.options.canCreate" title="Create records" class="o_gantt_cell_add fa fa-plus"/>
+                        <i t-if="widget.options.canEdit" title="Plan existing records" class="o_gantt_cell_plan fa fa-search-plus"/>
+                    </div>
+
+                    <!-- pills -->
+                    <t t-foreach="slot.pills" t-as="pill">
+                        <div
+                            t-attf-class="o_gantt_pill_wrapper #{pill.continuousLeft ? 'o_gantt_pill_wrapper_continuous_left' : ''} #{pill.continuousRight ? 'o_gantt_pill_wrapper_continuous_right' : ''}"
+                            t-attf-style="width: #{pill.width}%; padding-top: #{pill.topPadding}px; left: #{pill.leftMargin}%;"
+                        >
+                            <div
+                                t-att-data-id="pill.id"
+                                t-attf-class="o_gantt_pill #{!widget.options.isGroup ? pill.decorations.join(' ') : ''}  #{'_color' in pill ? 'o_gantt_color_' + pill._color : ''} #{widget.progressField? 'o_gantt_progress': ''} #{pill.continuousLeft ? 'o_gantt_pill_continuous_left' : ''} #{pill.continuousRight ? 'o_gantt_pill_continuous_right' : ''}"
+                                t-attf-style="#{widget.options.isGroup ? pill.style : ''} #{widget.progressField ? 'background-size:' + pill._progress + '%;': ''}"
+                                t-att-title="pill.display_name"
+                                >
+                                <p class="text-truncate" t-esc="pill.display_name"/>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <t t-name="GanttView.ResizeBadge">
+        <span t-if="diff === 0" class="o_gantt_pill_resize_badge badge badge-pill border-0" t-attf-style="#{direction}: 0px;">
+            <t t-esc="_.str.sprintf('%s %s', diff, time)"/>
+        </span>
+        <span t-elif="diff &gt; 0" class="o_gantt_pill_resize_badge badge badge-pill border-0 text-success" t-attf-style="#{direction}: 0px;">
+            <t t-esc="_.str.sprintf('+%s %s', diff, time)"/>
+        </span>
+        <span t-else="diff &lt; 0" class="o_gantt_pill_resize_badge badge badge-pill border-0 text-danger" t-attf-style="#{direction}: 0px;">
+            <t t-esc="_.str.sprintf('%s %s', diff, time)"/>
+        </span>
     </t>
+
+    <!-- Default popver template used if none is defined in the Gantt view arch -->
+    <div t-name="gantt-popover" class="container-fluid">
+        <div class="row no-gutters">
+            <div class="col">
+                <ul class="pl-1 mb-0">
+                    <li><strong>Name:</strong> <t t-esc="display_name"/></li>
+                    <li><strong>Start Date:</strong> <t t-esc="userTimezoneStartDate.format('YYYY-MM-DD hh:mm:ss A')"/></li>
+                    <li><strong>Stop Date:</strong> <t t-esc="userTimezoneStopDate.format('YYYY-MM-DD hh:mm:ss A')"/></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
 </templates>

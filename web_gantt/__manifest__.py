@@ -5,7 +5,7 @@
     'name': 'Web Gantt',
     'category': 'Hidden',
     'description': """
-OpenERP Web Gantt chart view.
+Odoo Web Gantt chart view.
 =============================
 
 """,

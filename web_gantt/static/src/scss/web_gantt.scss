@@ -1,0 +1,240 @@
+$gantt-border-color: darken(theme-color('light'), 8%);
+$gantt-pill-height: 30px;
+$gantt-pill-padding: 3px;
+$gantt-highlight-today: #FFF9C4;
+$gantt-highlight-hover-row: #FFFDE7;
+$gantt-decoration-colors: ('secondary', 'success', 'info', 'warning', 'danger');
+
+// The progress feature is going to set background-size on the element to limit
+// the size of the decoration effects. Since decorations effects are done with
+// linear gradients, and that background-size do not apply to background color,
+// we use this monochrome gradient hack instead of border-color.
+@mixin resizable-background-color($color) {
+    background-image: linear-gradient($color, $color);
+    background-color: lighten($color, 5%);
+}
+
+// Both colors and decorations use linear-gradients so that they can be resized
+// by background-size for the progress feature, so we need to generate the
+// decorations for each color if we want to be able to combine them.
+@mixin gantt-gradient-decorations($color) {
+    &.decoration-info {
+        background-image: repeating-linear-gradient(-45deg, $color 0px 10px, darken($color, 5%) 10px 20px);
+    }
+}
+
+// Small triangle in top left corner
+@mixin gantt-triangle-decorations($color) {
+    @include o-position-absolute($top: 0px, $left: 0px);
+    content: '';
+    border-color: transparent;
+    border-style: solid;
+    border-radius: 4px 0px 0px 0px;
+    border-width: 10px;
+    border-left-color: $color;
+    border-top-color: $color;
+}
+
+.o_gantt_view {
+    // Header
+    .o_gantt_header_container {
+        position: sticky;
+        outline: #e0e5e9 solid 2px;
+        top: 1px; // display the outline
+        z-index: 2;  // header should overlap the pills
+        margin-bottom: 2px;
+        background-color: darken(theme-color('light'), 2%);
+        .o_gantt_row_sidebar {
+            font-weight: bold;
+            line-height: 4.8rem;
+            text-align: center;
+        }
+        .o_gantt_header_scale {
+            border-top: 1px solid $gantt-border-color;
+        }
+        .o_gantt_header_cell {
+            text-align: center;
+            font-weight: bold;
+            padding: 6px;
+            box-shadow: inset 1px 0 $gantt-border-color;
+
+            &.o_gantt_today {
+                background-color: $gantt-highlight-today;
+            }
+        }
+    }
+    .o_gantt_row_sidebar {
+        max-width: 300px;
+        padding: $gantt-pill-padding;
+        .o_gantt_row_title {
+            font-weight: bold;
+            line-height: $gantt-pill-height;
+            margin-left: 25px;
+        }
+    }
+    // generic to both containers
+    .o_gantt_row_container, .o_gantt_total_row_container {
+        overflow: hidden;
+        .o_gantt_row {
+            box-shadow: inset 0 1px $gantt-border-color;
+            border-top-width: 0px;
+            background: #FFFFFF;
+            .o_gantt_cell {
+                min-height: $gantt-pill-height + ($gantt-pill-padding * 2);
+                box-shadow: inset 1px 0 $gantt-border-color;
+
+                &.o_gantt_today {
+                    background-color: $gantt-highlight-today;
+                }
+
+                &.o_gantt_unavailable {
+                    background: repeating-linear-gradient(
+                        45deg,
+                        #606dbc,
+                        #606dbc 10px,
+                        #465298 10px,
+                        #465298 20px
+                    );
+                }
+
+                &.o_hovered {
+                    background: $gantt-highlight-hover-row;
+                    .o_gantt_cell_buttons {
+                        display: block;
+                    }
+                }
+
+                .o_gantt_cell_buttons {
+                    @include o-position-absolute($top: 3px, $left: 0px, $right: 0px);
+                    display: none;
+                    color: darken(gray, 5%);
+                    margin: auto;
+                    width: 36px;
+                    z-index: 3;
+                    > .o_gantt_cell_add, > .o_gantt_cell_plan {
+                        padding: 2px;
+                        &:hover {
+                            cursor: pointer;
+                            color: darken(gray, 20%);
+                        }
+                    }
+                }
+
+                .o_gantt_pill_wrapper {
+                    position: absolute;
+                    margin-top: $gantt-pill-padding;
+                    padding: 0 $gantt-pill-padding;
+
+                    text-align: center;
+                    font-weight: bold;
+                    line-height: $gantt-pill-height;
+
+                    &.o_gantt_pill_wrapper_continuous_left {
+                        padding-left: 0px;
+                        border-left: 0.5px solid #FFFFFF;
+                    }
+                    &.o_gantt_pill_wrapper_continuous_right {
+                        padding-right: 0px;
+                        border-right: 0.5px solid #FFFFFF;
+                    }
+                    .o_gantt_pill_resize_badge {
+                        @include o-position-absolute($bottom: -18px);
+                        background-color: #FFFFFF;
+                        box-shadow: 0 1px 6px 0 rgba(32, 33, 36, 0.28);
+                    }
+                    .o_gantt_pill {
+                        position: relative;
+                        overflow: visible; // show the badge
+                        height: $gantt-pill-height;
+                        z-index: 1;  // pill should overlap the grid
+                        border-radius: 4px;
+                        color: theme-color('light');
+                        background-color: lighten($o-brand-primary, 4%);
+                        cursor: pointer;
+                        &.ui-draggable-dragging {
+                            cursor: move;
+                            z-index: 2;  // other pills show not hide this one
+                        }
+                        &.ui-resizable-resizing {
+                            z-index: 2;  // other pills show not hide this one
+                        }
+
+                        &.o_gantt_progress {
+                            background-repeat: no-repeat;
+                            @include resizable-background-color(lighten($o-brand-primary, 4%));
+                            @include gantt-gradient-decorations(lighten($o-brand-primary, 4%));
+                        }
+
+                        &.o_gantt_pill_continuous_left {
+                            border-radius: 0px 4px 4px 0px;
+                            &.o_gantt_pill_continuous_right {
+                                border-radius: 0px;
+                            }
+                        }
+
+                        &.o_gantt_pill_continuous_right {
+                            border-radius: 4px 0px 0px 4px;
+                            &.o_gantt_pill_continuous_left {
+                                border-radius: 0px;
+                            }
+                        }
+
+                        // TODO: unify color between kanban, calendar & gantt
+                        // used for `color` attribute on <gantt>
+                        @for $index from 1 through $o-nb-calendar-colors {
+                            &.o_gantt_color_#{$index} {
+                                $new-color: adjust-hue(rgb(255, 192, 192), (360/($o-nb-calendar-colors+1) * $index) * 1deg);
+                                color: #0D0D0D;
+                                background-color: $new-color;
+                                border-color: $new-color;
+
+                                &.o_gantt_progress {
+                                    @include resizable-background-color($new-color);
+                                    @include gantt-gradient-decorations($new-color);
+                                }
+                            }
+                        }
+
+                        // used for `decoration-...` attribute on <gantt>
+                        &.decoration-success:before {
+                            @include gantt-triangle-decorations($success);
+                        }
+                        &.decoration-warning:before {
+                            @include gantt-triangle-decorations($warning);
+                        }
+                        &.decoration-danger:before {
+                            @include gantt-triangle-decorations($danger);
+                        }
+                        &.decoration-secondary {
+                            opacity: 0.5;
+                        }
+                        @include gantt-gradient-decorations(transparent);
+                    }
+                }
+            }
+        }
+    }
+    // specific to rows container
+    .o_gantt_row_container .o_gantt_row_group {
+        .o_gantt_row_sidebar:before {
+            font-family: FontAwesome;
+            content: '\F196';
+            @include o-position-absolute();
+            margin-top: 6px;
+            margin-left: 5px;
+            cursor: pointer;
+        }
+        &.open .o_gantt_row_sidebar:before {
+            content: '\F147';
+        }
+        .o_gantt_cell {
+            .o_gantt_pill_wrapper .o_gantt_pill {
+                cursor: initial;
+            }
+        }
+    }
+    // specific to total container
+    .o_gantt_total_row_container {
+        margin-top: 10px;
+    }
+}

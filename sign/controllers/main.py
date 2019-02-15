@@ -258,8 +258,10 @@ class Sign(http.Controller):
             return False
 
         # mark signature as done in next activity
-        user_id = http.request.env['res.users'].search([('partner_id', '=', request_item.partner_id.id)]).id
-        request_item.sign_request_id.activity_feedback(['mail.mail_activity_data_todo'], user_id=user_id)
+        user_ids = http.request.env['res.users'].search([('partner_id', '=', request_item.partner_id.id)])
+        sign_users = user_ids.filtered(lambda u: u.has_group('sign.group_sign_user'))
+        for sign_user in sign_users:
+            request_item.sign_request_id.activity_feedback(['mail.mail_activity_data_todo'], user_id=sign_user.id)
 
         request_item.action_completed()
         return True

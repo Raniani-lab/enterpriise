@@ -169,9 +169,7 @@
     }
     .o_account_reports_caret_icon {
         position: absolute;
-    }
-    tr[data-parent-id] {
-        border-bottom: 1px solid #eee;
+        display: contents;
     }
     .o_account_reports_domain_line_0 {
         margin-left: 0px;

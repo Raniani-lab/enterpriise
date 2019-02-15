@@ -58,6 +58,7 @@ class AccountAsset(models.Model):
         readonly=True, states={'draft': [('readonly', False)]}, required=True,
         help='Note that this date does not alter the computation of the first journal entry in case of prorata temporis assets. It simply changes its accounting date',
     )
+    disposal_date = fields.Date()
 
     account_asset_id = fields.Many2one('account.account', string='Fixed Asset Account', compute='_compute_value', help="Account used to record the purchase of the asset at its original price.", store=True, readonly=False)
     account_depreciation_id = fields.Many2one('account.account', string='Depreciation Account', readonly=True, states={'draft': [('readonly', False)], 'model': [('readonly', False)]}, domain=[('internal_type', '=', 'other'), ('deprecated', '=', False)], help="Account used in the depreciation entries, to decrease the asset value.")
@@ -467,7 +468,7 @@ class AccountAsset(models.Model):
     @api.multi
     def set_to_close(self, disposal_date):
         move_ids = self.with_context(allow_write=True)._get_disposal_moves(disposal_date)
-        self.write({'state': 'close'})
+        self.write({'state': 'close', 'disposal_date': disposal_date})
         if move_ids:
             return self._return_disposal_view(move_ids)
 

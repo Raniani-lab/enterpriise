@@ -228,7 +228,7 @@
             <t t-foreach="lines.get('columns_header')" t-as="header_line">
                 <tr>
                     <t t-foreach="header_line" t-as="header">
-                        <th t-att-colspan="header.get('colspan')">
+                        <th t-att-colspan="header.get('colspan')" t-att-title="header.get('title')" t-att-data-toggle="header.get('data-toggle')">
                             <t t-esc="header.get('name')"/>
                         </th>
                     </t>

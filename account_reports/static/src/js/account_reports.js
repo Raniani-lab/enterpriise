@@ -225,14 +225,21 @@ var accountReportsWidget = AbstractAction.extend({
             });
     },
     render: function() {
+        var self = this;
         this.render_template();
         this.render_footnotes();
         this.render_searchview_buttons();
         this.update_cp();
+        this.$('.js_account_report_foldable').each(function() {
+            if(!$(this).data('unfolded')) {
+                self.fold($(this));
+            }
+        });
     },
     render_template: function() {
         this.$('.o_content').html(this.main_html);
         this.$('.o_content').find('.o_account_reports_summary_edit').hide();
+        this.$('[data-toggle="tooltip"]').tooltip();
         this._add_line_classes();
     },
     _add_line_classes: function() {

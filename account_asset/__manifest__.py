@@ -13,6 +13,7 @@ Keeps track of depreciations, and creates corresponding journal entries.
     """,
     'category': 'Accounting',
     'sequence': 32,
+    'depends': ['account_reports'],
     'data': [
         'security/account_asset_security.xml',
         'security/ir.model.access.csv',
@@ -23,6 +24,7 @@ Keeps track of depreciations, and creates corresponding journal entries.
         'views/account_move_views.xml',
         'views/account_invoice_views.xml',
         'views/account_asset_templates.xml',
+        'report/account_assets_report_views.xml',
     ],
     'qweb': [
         "static/src/xml/account_asset_template.xml",

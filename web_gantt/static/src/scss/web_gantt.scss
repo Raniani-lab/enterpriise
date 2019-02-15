@@ -179,18 +179,13 @@ $gantt-decoration-colors: ('secondary', 'success', 'info', 'warning', 'danger');
                             }
                         }
 
-                        // TODO: unify color between kanban, calendar & gantt
                         // used for `color` attribute on <gantt>
-                        @for $index from 1 through $o-nb-calendar-colors {
-                            &.o_gantt_color_#{$index} {
-                                $new-color: adjust-hue(rgb(255, 192, 192), (360/($o-nb-calendar-colors+1) * $index) * 1deg);
-                                color: #0D0D0D;
-                                background-color: $new-color;
-                                border-color: $new-color;
-
+                        @for $index from 2 through length($o-colors) {
+                            &.o_gantt_color_#{$index - 1} {
+                                $gantt-color: nth($o-colors, $index);
                                 &.o_gantt_progress {
-                                    @include resizable-background-color($new-color);
-                                    @include gantt-gradient-decorations($new-color);
+                                    @include resizable-background-color($gantt-color);
+                                    @include gantt-gradient-decorations($gantt-color);
                                 }
                             }
                         }

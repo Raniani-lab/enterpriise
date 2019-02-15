@@ -18,8 +18,9 @@ var FieldMany2OneBarcode = relational_fields.FieldMany2One.extend({
      * @override
      */
     start: function () {
-        this._super.apply(this, arguments);
+        var result = this._super.apply(this, arguments);
         this._startBarcode();
+        return result;
     },
 
     //--------------------------------------------------------------------------
@@ -42,7 +43,9 @@ var FieldMany2OneBarcode = relational_fields.FieldMany2One.extend({
     _renderEdit: function () {
         this._super.apply(this, arguments);
         // Hide button if a record is set or external button is visible
-        this.$barcode_button && this.$barcode_button.toggle(!this._isExternalButtonVisible());
+        if (this.$barcode_button) {
+            this.$barcode_button.toggle(!this._isExternalButtonVisible());
+        }
     },
     /**
      * Initialisation of barcode button
@@ -70,9 +73,13 @@ var FieldMany2OneBarcode = relational_fields.FieldMany2One.extend({
             var barcode = response.data;
             if (barcode) {
                 self._onBarcodeScanned(barcode);
-                mobile.methods.vibrate({'duration': 100});
+                mobile.methods.vibrate({
+                    duration: 100,
+                });
             } else {
-                mobile.methods.showToast({'message':'Please, Scan again !!'});
+                mobile.methods.showToast({
+                    message: 'Please, scan again !!',
+                });
             }
         });
     },

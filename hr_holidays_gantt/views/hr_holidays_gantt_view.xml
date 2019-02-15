@@ -9,6 +9,8 @@
                 <gantt
                        date_start="date_from"
                        date_stop="date_to"
+                       consolidation="number_of_days"
+                       consolidation_max = '{"employee_id": 100}'
                        string="Day(s)"
                 />
             </field>

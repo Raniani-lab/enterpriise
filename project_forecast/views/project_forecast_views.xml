@@ -97,6 +97,9 @@
              edit="false"
              date_start="start_date"
              date_stop="end_date"
+             consolidation="time"
+             consolidation_max='{"employee_id": 100}'
+             consolidation_exclude="exclude"
       />
     </field>
   </record>

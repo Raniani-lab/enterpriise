@@ -43,6 +43,7 @@ var GanttRenderer = AbstractRenderer.extend({
         this.cellPrecisions = params.cellPrecisions;
         this.colorField = params.colorField;
         this.progressField = params.progressField;
+        this.consolidationParams = params.consolidationParams;
         this.fieldsInfo = params.fieldsInfo;
         this.SCALES = params.SCALES;
         this.string = params.string;
@@ -163,6 +164,7 @@ var GanttRenderer = AbstractRenderer.extend({
         return {
             colorField: this.colorField,
             progressField: this.progressField,
+            consolidationParams: this.consolidationParams,
             state: this.state,
             slots: this._getSlotsDates(),
             pillDecorations: this.pillDecorations,
@@ -246,10 +248,13 @@ var GanttRenderer = AbstractRenderer.extend({
                 pillsInfo.groupName = row.name;
             }
 
+            var consolidate = groupLevel === 0 && self.state.groupedBy[0] === self.consolidationParams.maxField;
+
             var params = {
                 canCreate: self.canCreate,
                 canEdit: self.canEdit,
                 isGroup: row.isGroup,
+                consolidate: consolidate,
                 hideSidebar: hideSidebar,
                 isOpen: row.isOpen,
                 disableResize: disableResize,

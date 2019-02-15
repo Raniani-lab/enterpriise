@@ -112,6 +112,7 @@ var GanttModel = AbstractModel.extend({
         this.decorationFields = params.decorationFields;
         this.colorField = params.colorField;
         this.progressField = params.progressField;
+        this.consolidationParams = params.consolidationParams;
         this.collapseFirstLevel = params.collapseFirstLevel;
 
         this.defaultGroupBy = params.defaultGroupBy ? [params.defaultGroupBy] : [];
@@ -387,9 +388,19 @@ var GanttModel = AbstractModel.extend({
         if (this.progressField) {
             fields.push(this.progressField);
         }
+
         if (this.colorField) {
             fields.push(this.colorField);
         }
+
+        if (this.consolidationParams.field) {
+            fields.push(this.consolidationParams.field);
+        }
+
+        if (this.consolidationParams.excludeField) {
+            fields.push(this.consolidationParams.excludeField);
+        }
+
         return _.uniq(fields);
     },
     /**

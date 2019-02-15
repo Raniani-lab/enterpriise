@@ -32,13 +32,14 @@ QUnit.module('Views', {
                     user_id: {string: 'Assign To', type: 'many2one', relation: 'users'},
                     color: {string: 'Color', type: 'integer'},
                     progress: {string: 'Progress', type: 'integer'},
+                    exclude: {string: 'Excluded from Consolidation', type: 'boolean'},
                 },
                 records: [
                     {id: 1, name: 'Task 1', start: '2018-11-30 18:30:00', stop: '2018-12-31 18:29:59', stage: 'todo', project_id: 1, user_id: 1, color: 0, progress: 0},
                     { id: 2, name: 'Task 2', start: '2018-12-17 11:30:00', stop: '2018-12-22 06:29:59', stage: 'done', project_id: 1, user_id: 2, color: 2, progress: 30},
                     { id: 3, name: 'Task 3', start: '2018-12-27 06:30:00', stop: '2019-01-03 06:29:59', stage: 'cancel', project_id: 1, user_id: 2, color: 10, progress: 60},
-                    { id: 4, name: 'Task 4', start: '2018-12-19 18:30:00', stop: '2018-12-20 06:29:59', stage: 'in_progress', project_id: 1, user_id: 1, color: 1, progress: false},
-                    { id: 5, name: 'Task 5', start: '2018-11-08 01:53:10', stop: '2018-12-04 02:34:34', stage: 'done', project_id: 2, user_id: 1, color: 2, progress: 100},
+                    { id: 4, name: 'Task 4', start: '2018-12-19 18:30:00', stop: '2018-12-20 06:29:59', stage: 'in_progress', project_id: 1, user_id: 1, color: 1, progress: false, exclude: 0},
+                    { id: 5, name: 'Task 5', start: '2018-11-08 01:53:10', stop: '2018-12-04 02:34:34', stage: 'done', project_id: 2, user_id: 1, color: 2, progress: 100, exclude: 1},
                     { id: 6, name: 'Task 6', start: '2018-11-19 23:00:00', stop: '2018-11-20 04:21:01', stage: 'in_progress', project_id: 2, user_id: 1, color: 1, progress: 0},
                     { id: 7, name: 'Task 7', start: '2018-12-20 06:30:12', stop: '2018-12-20 18:29:59', stage: 'cancel', project_id: 2, user_id: 2, color: 10, progress: 80},
                 ],
@@ -1447,7 +1448,7 @@ QUnit.module('Views', {
             assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_pill.o_gantt_progress:contains("Task 5")').css('background-size'), '100%',
                 'fifth pill should have 100% progress');
             assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_pill.o_gantt_progress:contains("Task 7")').css('background-size'), '80%',
-                'seventh task should have 100% progress');
+                'seventh task should have 80% progress');
 
             gantt.destroy();
         });
@@ -1471,6 +1472,86 @@ QUnit.module('Views', {
             'should have a "decoration-info" class on task 1');
         assert.doesNotHaveClass(gantt.$('.o_gantt_pill[data-id=2]'), 'decoration-info',
             'should not have a "decoration-info" class on task 2');
+
+        gantt.destroy();
+    });
+
+    QUnit.test('consolidation feature', function (assert) {
+        assert.expect(25);
+
+        var gantt = createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt string="Tasks" date_start="start" date_stop="stop" consolidation="progress" consolidation_max=\'{"user_id": 100}\' consolidation_exclude="exclude" progress="progress"/>',
+            viewOptions: {
+                initialDate: initialDate,
+            },
+            groupBy: ['user_id', 'project_id', 'stage'],
+        });
+
+        assert.containsN(gantt, '.o_gantt_row_container .o_gantt_row', 18,
+            'should have a 18 rows');
+        assert.containsN(gantt, '.o_gantt_row_container .o_gantt_row_group.open', 12,
+            'should have a 12 opened groups as consolidation implies collapse_first_level');
+        assert.containsN(gantt, '.o_gantt_row_container .o_gantt_row:not(.o_gantt_row_group)', 6,
+            'should have a 6 rows');
+        assert.containsOnce(gantt, '.o_gantt_row_container .o_gantt_row:first .o_gantt_row_sidebar',
+            'should have a sidebar');
+
+        // Check grouped rows
+        assert.hasClass(gantt.$('.o_gantt_row_container .o_gantt_row:first'), 'o_gantt_row_group',
+            '1st row should be a group');
+        assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_row:first .o_gantt_row_title').text().trim(), 'User 1',
+            '1st row title should be "User 1"');
+
+        assert.hasClass(gantt.$('.o_gantt_row_container .o_gantt_row:nth(9)'), 'o_gantt_row_group',
+            '7th row should be a group');
+        assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_row:nth(9) .o_gantt_row_title').text().trim(), 'User 2',
+            '7th row title should be "User 2"');
+
+        // Consolidation
+        // 0 over the size of Task 5 (Task 5 is 100 but is excluded !) then 0 over the rest of Task 1, cut by Task 4 which has progress 0
+        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill').text().replace(/\s+/g, ''), "0000",
+            "the consolidation should be correctly computed");
+
+        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill:eq(0)').css('background-color'), "rgb(0, 160, 74)",
+            "the 1st group pill should have the correct color)");
+        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill:eq(1)').css('background-color'), "rgb(0, 160, 74)",
+            "the 2nd group pill should have the correct color)");
+        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill:eq(2)').css('background-color'), "rgb(0, 160, 74)",
+            "the 3rd group pill should have the correct color");
+
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(0)')), "300%",
+            "the 1st group pill should have the correct width (1 to 3 dec)");
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(1)')), "1600%",
+            "the 2nd group pill should have the correct width (4 to 19 dec)");
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(2)')), "50%",
+            "the 3rd group pill should have the correct width (20 morning dec");
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(0) .o_gantt_pill_wrapper:eq(3)')), "1150%",
+            "the 4th group pill should have the correct width (20 afternoon to 31 dec");
+
+        // 30 over Task 2 until Task 7 then 110 (Task 2 (30) + Task 7 (80)) then 30 again until end of task 2 then 60 over Task 3
+        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_pill').text().replace(/\s+/g, ''), "301103060",
+            "the consolidation should be correctly computed");
+
+        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_pill:eq(0)').css('background-color'), "rgb(0, 160, 74)",
+            "the 1st group pill should have the correct color)");
+        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_pill:eq(1)').css('background-color'), "rgb(220, 105, 101)",
+            "the 2nd group pill should have the correct color)");
+        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_pill:eq(2)').css('background-color'), "rgb(0, 160, 74)",
+            "the 3rd group pill should have the correct color");
+        assert.strictEqual(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_pill:eq(3)').css('background-color'), "rgb(0, 160, 74)",
+            "the 4th group pill should have the correct color");
+
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_pill_wrapper:eq(0)')), "300%",
+            "the 1st group pill should have the correct width (17 afternoon to 20 dec morning)");
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_pill_wrapper:eq(1)')), "50%",
+            "the 2nd group pill should have the correct width (20 dec afternoon)");
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_pill_wrapper:eq(2)')), "150%",
+            "the 3rd group pill should have the correct width (21 to 22 dec morning dec");
+        assert.strictEqual(getPillItemWidth(gantt.$('.o_gantt_row_group:eq(6) .o_gantt_pill_wrapper:eq(3)')), "450%",
+            "the 4th group pill should have the correct width (27 afternoon to 31 dec");
 
         gantt.destroy();
     });

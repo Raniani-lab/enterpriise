@@ -53,6 +53,9 @@ var GanttRow = Widget.extend({
         this.isOpen = options.isOpen;
         this.rowId = options.rowId;
 
+        this.consolidate = options.consolidate;
+        this.consolidationParams = viewInfo.consolidationParams;
+
         // the total row has some special behaviour
         this.isTotal = this.groupId === 'groupTotal';
 
@@ -266,6 +269,22 @@ var GanttRow = Widget.extend({
                         previousPill.continuousRight = true;
                         newPill.continuousLeft = true;
                     }
+
+                    // Enrich the aggregates with consolidation data
+                    if (self.consolidate && self.consolidationParams.field) {
+                        newPill.consolidationValue = pillsInThisSlot.reduce(
+                            function (sum, pill) {
+                                if (!pill[self.consolidationParams.excludeField]) {
+                                    return sum + pill[self.consolidationParams.field];
+                                }
+                                return sum; // Don't sum this pill if it is excluded
+                            },
+                            0
+                        );
+                        newPill.consolidationMaxValue = self.consolidationParams.maxValue;
+                        newPill.consolidationExceeded = newPill.consolidationValue > newPill.consolidationMaxValue;
+                    }
+
                     pills.push(newPill);
                 }
             }
@@ -278,9 +297,14 @@ var GanttRow = Widget.extend({
         var minColor = 215;
         var maxColor = 100;
         this.pills.forEach(function (pill) {
-            var color = minColor - ((pill.count - 1) / maxCount) * (minColor - maxColor);
-            pill.style = _.str.sprintf("background-color: rgba(%s, %s, %s, 0.6)", color, color, color);
-            pill.display_name = pill.count;
+            if (self.consolidate && self.consolidationParams.maxValue) {
+                pill.style = pill.consolidationExceeded ? 'background-color: #DC6965;' : 'background-color: #00A04A;';
+                pill.display_name = pill.consolidationValue;
+            } else {
+                var color = minColor - ((pill.count - 1) / maxCount) * (minColor - maxColor);
+                pill.style = _.str.sprintf("background-color: rgba(%s, %s, %s, 0.6)", color, color, color);
+                pill.display_name = pill.count;
+            }
         });
     },
     /**

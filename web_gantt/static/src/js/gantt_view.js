@@ -69,6 +69,23 @@ var GanttView = AbstractView.extend({
             cellPrecisions[key] = cellPrecisions[key] || vals.defaultPrecision;
         });
 
+        var consolidationMaxField;
+        var consolidationMaxValue;
+        var consolidationMax = arch.attrs.consolidation_max ? pyUtils.py_eval(arch.attrs.consolidation_max) : {};
+        if (Object.keys(consolidationMax).length > 0) {
+            consolidationMaxField = Object.keys(consolidationMax)[0];
+            consolidationMaxValue = consolidationMax[consolidationMaxField];
+            // We need to display the aggregates even if there is only one groupby
+            collapseFirstLevel = !!consolidationMaxField || collapseFirstLevel;
+        }
+
+        var consolidationParams = {
+            field: arch.attrs.consolidation,
+            maxField: consolidationMaxField,
+            maxValue: consolidationMaxValue,
+            excludeField: arch.attrs.consolidation_exclude,
+        };
+
         // form view which is opened by gantt
         var formViewId = false;
         if (params.action) {
@@ -94,6 +111,7 @@ var GanttView = AbstractView.extend({
         this.loadParams.displayUnavailability = displayUnavailability;
         this.loadParams.fields = this.fields;
         this.loadParams.scale = arch.attrs.default_scale || 'month';
+        this.loadParams.consolidationParams = consolidationParams;
 
         this.rendererParams.canCreate = this.controllerParams.activeActions.create;
         this.rendererParams.canEdit = this.controllerParams.activeActions.edit;
@@ -107,6 +125,7 @@ var GanttView = AbstractView.extend({
         this.rendererParams.progressField = arch.attrs.progress;
         this.rendererParams.displayUnavailability = displayUnavailability;
         this.rendererParams.collapseFirstLevel = collapseFirstLevel;
+        this.rendererParams.consolidationParams = consolidationParams;
     },
 });
 

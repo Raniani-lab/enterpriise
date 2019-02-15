@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="project_task_create_sale_order_view_form_inherit" model="ir.ui.view">
+        <field name="name">project.task.create.sale.order.wizard.form.inherit</field>
+        <field name="model">project.task.create.sale.order</field>
+        <field name="inherit_id" ref="sale_project_timesheet_enterprise.project_task_create_sale_order_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_id']/../.." eval="after">
+                <group>
+                <field name="product_template_ids" invisible="True"/>
+                <field name="material_line_ids">
+                    <tree editable="bottom">
+                        <field name="product_id" domain="[('id', 'in', parent.product_template_ids)]"/>
+                        <field name="quantity"/>
+                    </tree>
+                </field>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

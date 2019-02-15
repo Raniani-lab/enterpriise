@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.sale.timesheet.enterprise</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="hr_timesheet.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='timesheet_billing']" position="inside">
+                <div class="col-12 col-lg-6 o_setting_box">
+                    <div class="o_setting_left_pane"/>
+                    <div class="o_setting_right_pane">
+                        <span class="o_form_label">Invoicing Policy</span>
+                        <div class="text-muted">
+                            Record time spent and invoice it based on:
+                        </div>
+                        <field name="invoiced_timesheet" class="o_light_label" widget="radio"/>
+                    </div>
+                </div>
+            </xpath>
+            <xpath expr="//div[@id='timesheets']/div" position="inside">
+                <div class="col-12 col-lg-6 o_setting_box">
+                    <div class="o_setting_left_pane">
+                        <field name="use_timesheet_timer"/>
+                    </div>
+                    <div class="o_setting_right_pane">
+                        <label for="use_timesheet_timer"/>
+                        <div class="text-muted">
+                            Use Start and Stop
+                        </div>
+                    </div>
+                    <div class="o_setting_right_pane" attrs="{'invisible': [('use_timesheet_timer', '=', False)]}">
+                        <h3 class="mt-4">Round timesheets</h3>
+                        <div class="o_row w-30">
+                            <span class="o_light_label"><label for="timesheet_min_duration"/><field name="timesheet_min_duration"/> minutes</span>
+                        </div>
+                        <div class="o_row">
+                            <span class="o_light_label"><label for="timesheet_rounding"/><field name="timesheet_rounding"/> minutes</span>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-12 col-lg-6 o_setting_box">
+
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

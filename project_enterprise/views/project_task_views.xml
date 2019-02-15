@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="project_task_view_form" model="ir.ui.view">
+        <field name="name">project.task.view.form.inherit.project.enterprise</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_form2"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='date_deadline']" position="before">
+                <field name="allow_planning" invisible="True"/>
+                <field name="planned_date_begin" attrs="{'invisible': [('allow_planning', '=', False)]}"/>
+                <field name="planned_date_end" attrs="{'invisible': [('allow_planning', '=', False)]}"/>
+            </xpath>
+        </field>
+    </record>
+
+
+    <!-- Add Gantt view -->
+    <record id="project.act_project_project_2_project_task_all" model="ir.actions.act_window">
+        <field name="view_mode">kanban,tree,form,calendar,pivot,graph,activity,gantt</field>
+    </record>
+
+    <record id="project_task_action_planning_by_project" model="ir.actions.act_window">
+        <field name="type">ir.actions.act_window</field>
+        <field name="name">Planning</field>
+        <field name="res_model">project.task</field>
+        <field name="view_mode">gantt,kanban,tree,form,calendar,pivot,graph,activity</field>
+        <field name="search_view_id" ref="project.view_task_search_form"/>
+        <field name="context">{'default_project_id': active_id, 'search_default_project_id': [active_id], 'search_default_user': 1}</field>
+    </record>
+
+    <record id="project_view_kanban_inherit" model="ir.ui.view">
+        <field name="name">project.kanban.inherit</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.view_project_kanban"/>
+        <field name="priority">32</field>
+        <field name="arch" type="xml">
+            <xpath expr="/kanban" position="inside">
+                <field name="allow_planning"/>
+            </xpath>
+            <xpath expr="//div[hasclass('o_project_kanban_boxes')]" position="inside">
+                <a t-if="record.allow_planning.raw_value" class="o_project_kanban_box" name="%(project_task_action_planning_by_project)d" type="action">
+                    <div>
+                        <span class="o_label">Planning</span>
+                    </div>
+                </a>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Adding manager gantt view to Project -->
+    <record id="project_task_view_gantt" model="ir.ui.view">
+        <field name="name">project.task.view.gantt</field>
+        <field name="model">project.task</field>
+        <field name="priority">10</field>
+        <field name="arch" type="xml">
+            <gantt date_start="planned_date_begin"
+                date_stop="planned_date_end"
+                default_scale="week">
+            </gantt>
+        </field>
+    </record>
+
+    <!-- Planning in Project -->
+    <record id="project_task_view_search_planning" model="ir.ui.view">
+        <field name="name">project.task.view.search.planning</field>
+        <field name="model">project.task</field>
+        <field name="arch" type="xml">
+            <search string="">
+                <field name="project_id"/>
+                <field name="user_id"/>
+                <filter string="My Project" name="my_project" domain="[('user_id','=', uid)]"/>
+                <group expand="1" string="Group By">
+                    <filter string="Assigned To" name="group_by_user_id" context="{'group_by':'user_id'}"/>
+                    <filter string="Project" name="group_by_project" context="{'group_by':'project_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="project_task_action_planning" model="ir.actions.act_window">
+        <field name="name">Planning</field>
+        <field name="res_model">project.task</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">gantt,kanban,tree,form,calendar,pivot,graph,activity</field>
+        <field name="domain">[('allow_planning', '=', True)]</field>
+        <field name="search_view_id" ref="project_task_view_search_planning"/>
+        <field name="context">{'search_default_group_by_user_id': 1, 'search_default_group_by_project': 1}</field>
+    </record>
+
+    <menuitem id="project_task_menu" name="Tasks" sequence="12" parent="project.menu_main_pm"/>
+
+    <menuitem id="project_task_menu_planning" name="Planning" sequence="12" action="project_task_action_planning"
+        parent="project_task_menu"/>
+
+    <record  id="project.menu_project_management" model="ir.ui.menu">
+        <field name="parent_id" ref="project_enterprise.project_task_menu"/>
+    </record>
+
+
+</odoo>

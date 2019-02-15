@@ -14,7 +14,11 @@
 
     'depends': ['sale_timesheet', 'timesheet_grid'],
     'data': [
-        'views/res_config_settings_views.xml'
+        'views/assets.xml',
+        'views/res_config_settings_views.xml',
+        'views/project_task_views.xml',
+        'wizard/project_task_create_timesheet_views.xml',
+        'data/sale_timesheet_enterprise_data.xml',
     ],
 
     'auto_install': True,

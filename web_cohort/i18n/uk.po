@@ -29,7 +29,7 @@ msgstr ""
 #: code:addons/web_cohort/static/src/xml/web_cohort.xml:154
 #, python-format
 msgid "- By"
-msgstr ""
+msgstr "- Від"
 
 #. module: web_cohort
 #: model:ir.model,name:web_cohort.model_ir_actions_act_window_view
@@ -76,14 +76,14 @@ msgstr "Когорта"
 #: code:addons/web_cohort/static/src/js/cohort_view.js:42
 #, python-format
 msgid "Cohort view has not defined \"date_start\" attribute."
-msgstr ""
+msgstr "Перегляд когорти не визначив атрибут \"date_start\"."
 
 #. module: web_cohort
 #. openerp-web
 #: code:addons/web_cohort/static/src/js/cohort_view.js:45
 #, python-format
 msgid "Cohort view has not defined \"date_stop\" attribute."
-msgstr ""
+msgstr "Перегляд когорти не визначив атрибут \"date_stop\"."
 
 #. module: web_cohort
 #. openerp-web
@@ -117,7 +117,7 @@ msgstr "Діаграма"
 #: code:addons/web_cohort/static/src/xml/web_cohort.xml:36
 #, python-format
 msgid "Download in Excel file"
-msgstr ""
+msgstr "Завантажити у Excel"
 
 #. module: web_cohort
 #: selection:ir.actions.act_window.view,view_mode:0
@@ -168,7 +168,7 @@ msgstr "Місяць"
 #: code:addons/web_cohort/static/src/xml/web_cohort.xml:204
 #, python-format
 msgid "No data available for cohort."
-msgstr ""
+msgstr "Немає доступних даних для когорти."
 
 #. module: web_cohort
 #. openerp-web
@@ -176,7 +176,7 @@ msgstr ""
 #: code:addons/web_cohort/static/src/xml/web_cohort.xml:201
 #, python-format
 msgid "No data available."
-msgstr ""
+msgstr "Немає доступних даних."
 
 #. module: web_cohort
 #. openerp-web

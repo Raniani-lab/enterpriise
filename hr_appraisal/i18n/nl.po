@@ -715,8 +715,8 @@ msgid ""
 "engagement and effectiveness, the continuous improvement and openness in "
 "action in thecompany..."
 msgstr ""
-"Zijn directe rapportages worden uitgenodigd via Odoo om feedback te geven op"
-" zijn meerdere zijn leiderschap en om zijn mening te geven over het eigen "
+"Zijn directe worden uitgenodigd via Odoo om feedback te geven op zijn "
+"meerdere zijn leiderschap en om zijn mening te geven over het eigen "
 "engagement en effectiviteit, de continue verbetering en openheid in actie in"
 " het bedrijf..."
 
@@ -748,7 +748,7 @@ msgid ""
 "contact with my supervisor. He helps me growing my compete"
 msgstr ""
 "Ik verwerf constant nieuwe kennis, vaardigheden of begrip door het contact "
-"met mijn begeleider. Hij helpt mijn groeien in mijn functie"
+"met mijn begeleider. Hij helpt mij groeien in mijn functie"
 
 #. module: hr_appraisal
 #: model:survey.label,value:hr_appraisal.oprow_2_3_2
@@ -1142,8 +1142,8 @@ msgid ""
 "Overall, I believe the quality of products and/or services my workgroup "
 "delivers is improving"
 msgstr ""
-"In het algemeen geloof ik dat de qualiteit van de product en/of services "
-"verbetert."
+"In het algemeen geloof ik dat de kwaliteit van het product en/of dienst "
+"verbeterd."
 
 #. module: hr_appraisal
 #: selection:hr.appraisal,activity_state:0
@@ -1512,7 +1512,7 @@ msgstr "Deze werknemer doet een zelfbeoordeling"
 #: model:survey.question,constr_error_msg:hr_appraisal.opinion_2_6
 #: model:survey.question,constr_error_msg:hr_appraisal.opinion_2_7
 msgid "This question requires an answer."
-msgstr "Deze vraagt moet beantwoord worden."
+msgstr "Deze vraag moet beantwoord worden."
 
 #. module: hr_appraisal
 #: model:survey.label,value:hr_appraisal.arow_3_1_15

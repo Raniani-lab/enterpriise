@@ -122,7 +122,7 @@ msgstr "Причина"
 #: model:ir.model.fields,field_description:quality.field_quality_alert__check_id
 #: model:ir.model.fields,field_description:quality.field_quality_point__check_ids
 msgid "Check"
-msgstr "Чек"
+msgstr "Перевірка"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_point__check_count

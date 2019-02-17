@@ -95,7 +95,7 @@ msgstr "Sluit WO"
 #: model:ir.actions.act_window,name:iot.action_add_iot_box
 #: model_terms:ir.ui.view,arch_db:iot.view_add_iot_box
 msgid "Connect an IoT Box"
-msgstr "Verbind een IoT bo"
+msgstr "Verbind een IoT box"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_device__connection
@@ -215,7 +215,7 @@ msgstr "Identificatie "
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_box__identifier
 msgid "Identifier (Mac Address)"
-msgstr "Identificator (Mac Address)"
+msgstr "Identificator (Mac adres)"
 
 #. module: iot
 #: model:ir.ui.menu,name:iot.iot_menu_root
@@ -344,7 +344,7 @@ msgstr "Printer"
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_view_form
 msgid "Printer Reports"
-msgstr "Rapportannprinter"
+msgstr "Rapportenprinter"
 
 #. module: iot
 #: model:ir.model,name:iot.model_publisher_warranty_contract
@@ -469,7 +469,7 @@ msgid ""
 "When setting a device here, the report will be printed through this device "
 "on the IoT Box"
 msgstr ""
-"Wanneer u hier aan apparaat instelt, zal het rapport worden geprint met dit "
+"Wanneer u hier een apparaat instelt, zal het rapport worden geprint met dit "
 "apparaat op de IoT box."
 
 #. module: iot

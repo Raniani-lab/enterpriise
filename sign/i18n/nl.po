@@ -126,7 +126,7 @@ msgid ""
 "            They will be able to access this document and sign it as yourself."
 msgstr ""
 "<strong>Waarschuwing</strong> stuur deze e-mail niet door naar andere mensen!<br/>\n"
-"             Zij kunnen dit document openen en ondertekenen als uzelf."
+"Zij kunnen dit document openen en ondertekenen als uzelf."
 
 #. module: sign
 #. openerp-web

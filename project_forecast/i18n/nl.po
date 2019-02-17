@@ -401,7 +401,7 @@ msgid ""
 "The employee (%s) doesn't have a timezone, this might cause errors in the "
 "time computation. It is configurable on the user linked to the employee"
 msgstr ""
-"Werknemer (%s) heeft geen inegstelde tijdzone. Dit kan fouten veroorzaken in"
+"Werknemer (%s) heeft geen ingestelde tijdzone. Dit kan fouten veroorzaken in"
 " de tijdberekeningen. De tijdzone is instelbaar per gebruiker, welke "
 "gekoppeld is aan de werknemer."
 

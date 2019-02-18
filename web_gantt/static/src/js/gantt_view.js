@@ -6,6 +6,7 @@ var core = require('web.core');
 var GanttModel = require('web_gantt.GanttModel');
 var GanttRenderer = require('web_gantt.GanttRenderer');
 var GanttController = require('web_gantt.GanttController');
+var pyUtils = require('web.py_utils');
 var view_registry = require('web.view_registry');
 
 var _t = core._t;
@@ -54,7 +55,7 @@ var GanttView = AbstractView.extend({
 
         // Cell precision
         // precision = {'day': 'hour:half', 'week': 'day:half', 'month': 'day', 'year': 'month:quarter'}
-        var precisionAttrs = arch.attrs.precision ? JSON.parse(arch.attrs.precision) : {};
+        var precisionAttrs = arch.attrs.precision ? pyUtils.py_eval(arch.attrs.precision) : {};
         var cellPrecisions = {};
         _.each(this.SCALES, function (vals, key) {
             if (precisionAttrs[key]) {

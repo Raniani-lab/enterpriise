@@ -232,4 +232,9 @@ $gantt-decoration-colors: ('secondary', 'success', 'info', 'warning', 'danger');
     .o_gantt_total_row_container {
         margin-top: 10px;
     }
+
+    // Suggest the browsers to print background graphics (IE users will still
+    // need to go to their settings in order to print them)
+    -webkit-print-color-adjust: exact;  /* Chrome, Safari */
+    color-adjust: exact;                /*Firefox*/
 }

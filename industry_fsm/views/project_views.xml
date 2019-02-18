@@ -136,7 +136,7 @@
                     <field name="analytic_account_active" invisible="True"/>
                     <button class="btn-primary" name="action_timer_start" type="object" string="Start"
                         attrs="{'invisible': ['|', '|', '|', ('timesheet_timer_start', '!=', False), ('allow_timesheets', '=', False), ('use_timesheet_timer', '=', False), ('analytic_account_active', '=', False)]}" style="margin-left: 16px;"/>
-                    <button class="btn-danger o_fsm_stop" name="action_timer_stop" type="object" string="Pause"
+                    <button class="btn-danger o_fsm_stop" name="action_timer_stop" type="object" string="Stop"
                         attrs="{'invisible': ['|', '|', '|', ('timesheet_timer_start', '=', False), ('allow_timesheets', '=', False), ('use_timesheet_timer', '=', False), ('analytic_account_active', '=', False)]}" style="margin-left: 16px;"/>
                     <button class="btn-primary" name="action_set_done" type="object" string="Done"
                         attrs="{'invisible': [('fsm_is_done', '=', True)]}" style="margin-left: 16px;"/>
@@ -172,16 +172,17 @@
                     </div>
                     <group>
                         <group>
-                            <field name="name" invisible="1"/>
+                            <field name="name"/>
                             <field name="partner_id"
                                 context="{'search_default_customer':1, 'show_address': 1, 'default_is_company': True, 'show_vat': True}"
                                 options='{"always_reload": True, "no_quick_create": True}'
                                 widget="res_partner_many2one"/>
-                            <field name="partner_phone" widget="phone" attrs="{'invisible': [('partner_id', '=', False)]}"/>
-                            <field name="partner_mobile" widget="phone" attrs="{'invisible': [('partner_id', '=', False)]}"/>
-                            <field name="partner_email" widget="email"  attrs="{'invisible': [('partner_id', '=', False)]}"/>
+                            <field name="partner_phone" widget="phone" attrs="{'invisible': [('partner_phone', '=', False)]}"/>
+                            <field name="partner_mobile" widget="phone" attrs="{'invisible': [('partner_mobile', '=', False)]}"/>
+                            <field name="partner_email" widget="email"  attrs="{'invisible': [('partner_email', '=', False)]}"/>
                         </group>
                         <group>
+                            <field name="project_id" domain="[('allow_planning', '=', True)]"/>
                             <label for="planned_date_begin" string="Date"/>
                             <div class="o_row">
                                 <field name="planned_date_begin"/>
@@ -250,6 +251,7 @@
                 <field name="user_id"/>
                 <field name="planned_date_begin"/>
                 <field name="partner_id" widget="res_partner_many2one"/>
+                <field name="activity_state"/>
                 <templates>
                     <t t-name="kanban-box">
                         <div t-attf-class="oe_kanban_card oe_kanban_global_click">
@@ -291,7 +293,10 @@
             (5, 0, 0),
             (0, 0, {'view_mode': 'kanban', 'view_id': ref('project_task_view_kanban')}),
             (0, 0, {'view_mode': 'form', 'view_id': ref('project_task_view_form_fsm')})]"/>
-        <field name="context">{'search_default_my_tasks': True, 'search_default_planned_future': True}</field>
+        <field name="context">{'search_default_my_tasks': True,
+            'search_default_planned_future': True,
+            'default_planned_date_begin': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+            'default_planned_date_end': (datetime.datetime.now() + datetime.timedelta(hours=2)).strftime('%Y-%m-%d %H:%M:%S')}</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 No more Tasks

@@ -128,7 +128,10 @@ class Task(models.Model):
                 'res_model': 'product.product',
                 'views': [(kanban_view.id, 'kanban')],
                 'domain': domain,
-                'context': {'default_task_id': self.id}
+                'context': {
+                    'default_task_id': self.id,
+                    'pricelist': self.partner_id.property_product_pricelist.id if self.partner_id else False,
+                    'partner': self.partner_id.id if self.partner_id else False}
                 }
 
     def action_make_billable(self):
@@ -144,14 +147,15 @@ class Task(models.Model):
     # "Done" Button logic
     def action_set_done(self):
         """ Moves Task to next stage.
-            If billable and user has privileges, create SO confirmed with time and material.
+            If allow billable on task, timesheet product set on project and user has privileges :
+            Create SO confirmed with time and material.
             TODO: Validate stockmoves.
             TODO: Opens popup with confirmation email for customer.
         """
         for record in self:
             if record.timesheet_timer_start:
                 return record.with_context({'task_done': True}).action_timer_stop()
-            if record.allow_billable:
+            if record.allow_billable and record.project_id.timesheet_product_id:
                 has_access = self.env['sale.order'].check_access_rights('create', raise_exception=False) and self.env['sale.order.line'].check_access_rights('create', raise_exception=False)
                 if has_access:
                     record.create_or_update_sale_order()
@@ -170,11 +174,9 @@ class Task(models.Model):
             sale_order = self.sale_line_id.order_id
             self._add_material_to_sale_order(sale_order)
         elif self.partner_id:
-            client_order_ref = "{}/{}".format(self.project_id.name, self.name)
             sale_order = self.env['sale.order'].create({
                 'partner_id': self.partner_id.id,
                 'analytic_account_id': self.project_id.analytic_account_id.id,
-                'client_order_ref': client_order_ref,
             })
             sale_order_line = self.env['sale.order.line'].create({
                 'order_id': sale_order.id,
@@ -182,6 +184,7 @@ class Task(models.Model):
                 'project_id': self.project_id.id,
                 'task_id': self.id,
                 'product_uom_qty': self.total_hours_spent,
+                'product_uom': self.project_id.timesheet_product_id.uom_id.id,
             })
 
             self.sale_line_id = sale_order_line.id
@@ -206,5 +209,6 @@ class Task(models.Model):
                 self.env['sale.order.line'].create({
                     'order_id': sale_order.id,
                     'product_id': line.product_id.id,
-                    'product_uom_qty': line.quantity
+                    'product_uom_qty': line.quantity,
+                    'product_uom': line.product_id.uom_id.id
                 })

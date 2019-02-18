@@ -11,8 +11,7 @@
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button name="action_view_reports" type="object" class="oe_stat_button" icon="fa-archive"
-                            attrs="{'invisible': [('report_count', '=', 0)]}">
+                        <button name="action_view_reports" type="object" class="oe_stat_button" icon="fa-archive">
                             <div class="o_field_widget o_stat_info">
                                 <span class="o_stat_value"><field name="report_count"/></span>
                                 <span class="o_stat_text"> Report(s)</span>
@@ -24,7 +23,7 @@
                     </div>
                     <group>
                         <group>
-                                <field name="name"/>
+                            <field name="name"/>
                         </group>
                         <group>
                             <field name="model_id" invisible="True"/>
@@ -35,11 +34,22 @@
         </field>
     </record>
 
+    <record id="project_report_template_view_list" model="ir.ui.view">
+        <field name="name">project.report.template.view.form</field>
+        <field name="model">project.report.template</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" string="Template name"/>
+                <field name="report_count" string="Reports"/>
+            </tree>
+        </field>
+    </record>
+
     <record id="action_fsm_reports" model="ir.actions.act_window">
         <field name="name">Report Templates</field>
         <field name="res_model">project.report.template</field>
         <field name="view_type">form</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,form,graph,pivot</field>
     </record>
 
     <menuitem id="project_report_template_menu" name="Report template" action="action_fsm_reports"

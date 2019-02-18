@@ -26,7 +26,7 @@ var OpenStudioButton = Widget.extend({
      */
     start: function () {
         this._super.apply(this, arguments);
-        this.$el.text(_('Edit this template'));
+        this.$el.text(_('Design Report Template'));
     },
 
     /**

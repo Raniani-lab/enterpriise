@@ -103,7 +103,7 @@ class ProjectReportTemplate(models.Model):
                 <sheet>
                     <group>
                         <group>
-                            <field name="x_task_id" invisible="context.get('studio') or context.get('default_x_task_id')" attrs="{'readonly': True}"/>
+                            <field name="x_task_id" invisible="context.get('studio') or context.get('default_x_task_id')" readonly="context.get('default_x_task_id')"/>
                             <field name="x_name" invisible="True"/>
                         </group>
                         <group>

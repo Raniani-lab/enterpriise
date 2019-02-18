@@ -86,7 +86,7 @@
                             <div
                                 t-att-data-id="pill.id"
                                 t-attf-class="o_gantt_pill #{!widget.options.isGroup ? pill.decorations.join(' ') : ''}  #{'_color' in pill ? 'o_gantt_color_' + pill._color : ''} #{widget.progressField? 'o_gantt_progress': ''} #{pill.continuousLeft ? 'o_gantt_pill_continuous_left' : ''} #{pill.continuousRight ? 'o_gantt_pill_continuous_right' : ''}"
-                                t-attf-style="#{widget.options.isGroup ? pill.style : ''} #{widget.progressField ? 'background-size:' + pill._progress + '%;': ''}"
+                                t-attf-style="#{widget.options.isGroup ? pill.style : ''} #{widget.progressField ? 'background-size:' + pill._progress + '% 100%;': ''}"
                                 t-att-title="pill.display_name"
                                 >
                                 <p class="text-truncate" t-esc="pill.display_name"/>

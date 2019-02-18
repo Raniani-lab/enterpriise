@@ -1460,17 +1460,17 @@ QUnit.module('Views', {
             assert.containsN(gantt, '.o_gantt_row_container .o_gantt_pill.o_gantt_progress', 6,
                 'should have 6 rows with o_gantt_progress class');
 
-            assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_pill.o_gantt_progress:contains("Task 1")').css('background-size'), '0%',
+            assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_pill.o_gantt_progress:contains("Task 1")').css('background-size'), '0% 100%',
                 'first pill should have 0% progress');
-            assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_pill.o_gantt_progress:contains("Task 2")').css('background-size'), '30%',
+            assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_pill.o_gantt_progress:contains("Task 2")').css('background-size'), '30% 100%',
                 'second pill should have 30% progress');
-            assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_pill.o_gantt_progress:contains("Task 3")').css('background-size'), '60%',
+            assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_pill.o_gantt_progress:contains("Task 3")').css('background-size'), '60% 100%',
                 'third pill should have 60% progress');
-            assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_pill.o_gantt_progress:contains("Task 4")').css('background-size'), '0%',
+            assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_pill.o_gantt_progress:contains("Task 4")').css('background-size'), '0% 100%',
                 'fourth pill should have 0% progress');
-            assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_pill.o_gantt_progress:contains("Task 5")').css('background-size'), '100%',
+            assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_pill.o_gantt_progress:contains("Task 5")').css('background-size'), '100% 100%',
                 'fifth pill should have 100% progress');
-            assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_pill.o_gantt_progress:contains("Task 7")').css('background-size'), '80%',
+            assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_pill.o_gantt_progress:contains("Task 7")').css('background-size'), '80% 100%',
                 'seventh task should have 80% progress');
 
             gantt.destroy();

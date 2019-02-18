@@ -58,21 +58,14 @@
         </field>
     </record>
 
-
     <record id="project_project_form_inherit_industry_fsm_report" model="ir.ui.view">
         <field name="name">project.project.form.inherit.industry.fsm.report</field>
         <field name="model">project.project</field>
         <field name="inherit_id" ref="industry_fsm.project_view_form_inherit"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='allow_billable']/.." position="before">
-                <div>
-                    <field name="allow_reports"/>
-                    <label for="allow_reports"/>
-                </div>
-                <div attrs="{'invisible': [('allow_reports', '=', False)]}">
-                    <label for="report_template_id"/>
-                    <field name="report_template_id"/>
-                </div>
+            <xpath expr="//group[@name='extra_settings']" position="inside">
+                <field name="allow_reports"/>
+                <field name="report_template_id"  attrs="{'invisible': [('allow_reports', '=', False)]}"/>
             </xpath>
         </field>
     </record>

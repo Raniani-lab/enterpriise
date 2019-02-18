@@ -36,15 +36,9 @@
         <field name="inherit_id" ref="project.edit_project"/>
         <field name="priority">32</field>
         <field name="arch" type="xml">
-            <div name="options_active" position="attributes">
-                <attribute name="class"></attribute>
-            </div>
-            <div name="options_active" position="inside">
-                <div>
-                    <field name="allow_forecast" class="oe_inline" string="Allow Forecast"/>
-                    <label for="allow_forecast"/>
-                </div>
-            </div>
+            <xpath expr="//group[@name='extra_settings']" position="inside">
+                <field name="allow_forecast"/>
+            </xpath>
             <button name="toggle_active" position="before">
                 <button class="oe_stat_button" type="object" attrs="{'invisible':[('allow_forecast', '=', False)]}"
                     name="action_view_project_forecast" icon="fa-tasks">

@@ -60,32 +60,17 @@
         </field>
     </record>
 
-    <!-- domain on project -->
+
     <record id="project_view_form_inherit" model="ir.ui.view">
         <field name="name">project.view.form.inherit</field>
         <field name="model">project.project</field>
         <field name="inherit_id" ref="project.edit_project"/>
-        <field name="priority">32</field>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='allow_timesheets']/.." position="after">
-                <div>
+            <xpath expr="//group[@name='extra_settings']" position="inside">
                     <field name="allow_planning"/>
-                    <label for="allow_planning"/>
-                </div>
-                <div>
                     <field name="allow_billable"/>
-                    <label for="allow_billable"/>
-                </div>
-                <div attrs="{'invisible': [('allow_billable', '=', False)]}">
-                    <div>
-                        <label for="timesheet_product_id"/>
-                        <field name="timesheet_product_id"/>
-                    </div>
-                    <div>
-                        <label for="product_template_ids"/>
-                        <field name="product_template_ids" widget="many2many_tags"/>
-                    </div>
-                </div>
+                    <field name="timesheet_product_id" attrs="{'invisible': [('allow_billable', '=', False)]}"/>
+                    <field name="product_template_ids" widget="many2many_tags" attrs="{'invisible': [('allow_billable', '=', False)]}"/>
             </xpath>
         </field>
     </record>

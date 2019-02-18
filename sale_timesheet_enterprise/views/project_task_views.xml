@@ -14,7 +14,7 @@
                     attrs="{'invisible': ['|', '|', '|', ('timesheet_timer_start', '=', False), ('allow_timesheets', '=', False), ('use_timesheet_timer', '=', False), ('analytic_account_active', '=', False)]}"/>
             </xpath>
             <xpath expr="//field[@name='stage_id']" position="before">
-                <field name="timesheet_timer_start" widget="timesheet_timer" class="text-danger pull-right h2 mt-2 font-weight-bold"/>
+                <field name="timesheet_timer_start" widget="timesheet_timer" class="text-danger pull-right h2 ml-4 mt-2 font-weight-bold"/>
             </xpath>
         </field>
     </record>

@@ -1662,6 +1662,25 @@ QUnit.module('Views', {
         gantt.destroy();
     });
 
+    QUnit.test('offset attribute', function (assert) {
+        assert.expect(1);
+
+        var gantt = createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" offset="-4" default_scale="day"/>',
+            viewOptions: {
+                initialDate: initialDate,
+            },
+        });
+
+        assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child .o_gantt_header_cell').text().trim(), '16 December 2018',
+            'gantt view should be set to 4 days before initial date');
+
+        gantt.destroy();
+    });
+
     QUnit.test('default_group_by attribute', function (assert) {
         assert.expect(2);
 

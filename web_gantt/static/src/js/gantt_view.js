@@ -95,12 +95,19 @@ var GanttView = AbstractView.extend({
         }
         var dialogViews = [[formViewId, 'form']];
 
+        var scale = arch.attrs.default_scale || 'month';
+        var initialDate = moment(params.initialDate || new Date());
+        var offset = arch.attrs.offset;
+        if (offset && scale) {
+            initialDate.add(offset, scale);
+        }
+
         this.controllerParams.context = params.context || {};
         this.controllerParams.dialogViews = dialogViews;
         this.controllerParams.SCALES = this.SCALES;
         this.controllerParams.collapseFirstLevel = collapseFirstLevel;
 
-        this.loadParams.initialDate = moment(params.initialDate || new Date());
+        this.loadParams.initialDate = initialDate;
         this.loadParams.collapseFirstLevel = collapseFirstLevel;
         this.loadParams.colorField = colorField;
         this.loadParams.dateStartField = arch.attrs.date_start;
@@ -110,7 +117,7 @@ var GanttView = AbstractView.extend({
         this.loadParams.defaultGroupBy = this.arch.attrs.default_group_by;
         this.loadParams.displayUnavailability = displayUnavailability;
         this.loadParams.fields = this.fields;
-        this.loadParams.scale = arch.attrs.default_scale || 'month';
+        this.loadParams.scale = scale;
         this.loadParams.consolidationParams = consolidationParams;
 
         this.rendererParams.canCreate = this.controllerParams.activeActions.create;

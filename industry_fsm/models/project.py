@@ -68,13 +68,18 @@ class Task(models.Model):
     def action_view_timesheets(self):
         kanban_view = self.env.ref('hr_timesheet.view_kanban_account_analytic_line')
         form_view = self.env.ref('industry_fsm.timesheet_view_form')
+        tree_view = self.env.ref('industry_fsm.timesheet_view_tree_user_inherit')
         domain = [('task_id', '=', self.id)]
+        context = {'default_project_id': self.project_id.id,
+                   'default_task_id': self.id,
+                   'from_field_service': True}
         return {'type': 'ir.actions.act_window',
                 'name': 'Time',
                 'res_model': 'account.analytic.line',
                 'view_mode': 'list,form,kanban',
-                'views': [(False, 'list'), (kanban_view.id, 'kanban'), (form_view.id, 'form')],
+                'views': [(tree_view.id, 'list'), (kanban_view.id, 'kanban'), (form_view.id, 'form')],
                 'domain': domain,
+                'context': context
                 }
 
     # Quotations

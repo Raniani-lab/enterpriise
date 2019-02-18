@@ -101,6 +101,25 @@
         </field>
     </record>
 
+    <!-- fsm timesheet tree view -->
+    <record id="timesheet_view_tree_user_inherit" model="ir.ui.view">
+        <field name="name">account.analytic.line.view.tree.with.user.inherit.industry.fsm</field>
+        <field name="model">account.analytic.line</field>
+        <field name="inherit_id" ref="hr_timesheet.timesheet_view_tree_user"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='project_id']" position="attributes">
+                <attribute name="invisible">context.get('default_project_id')</attribute>
+            </xpath>
+            <xpath expr="//field[@name='task_id']" position="attributes">
+                <attribute name="invisible">context.get('default_task_id')</attribute>
+            </xpath>
+            <xpath expr="//field[@name='date']" position="attributes">
+                <attribute name="invisible">context.get('from_field_service')</attribute>
+            </xpath>
+        </field>
+    </record>
+
     <!-- fsm task form view -->
     <record id="project_task_view_form_fsm" model="ir.ui.view">
         <field name="name">project.task.view.form.fsm</field>

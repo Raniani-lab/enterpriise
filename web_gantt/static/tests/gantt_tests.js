@@ -1350,7 +1350,7 @@ QUnit.module('Views', {
         gantt.destroy();
     });
 
-    QUnit.test('scale attribute', function (assert) {
+    QUnit.test('default_scale attribute', function (assert) {
         assert.expect(3);
 
         var gantt = createView({
@@ -1369,6 +1369,29 @@ QUnit.module('Views', {
             'should contain "20 December 2018" in header');
         assert.containsN(gantt, '.o_gantt_header_container .o_gantt_header_scale .o_gantt_header_cell', 24,
             'should have a 24 slots for day view');
+
+        gantt.destroy();
+    });
+
+    QUnit.test('scales attribute', function (assert) {
+        assert.expect(3);
+
+        var gantt = createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" scales="month,day,trololo" />',
+            viewOptions: {
+                initialDate: initialDate,
+            },
+        });
+
+        assert.containsN(gantt.$buttons, '.o_gantt_button_scale', 2,
+            'only 2 scales should be available');
+        assert.strictEqual(gantt.$buttons.find('.o_gantt_button_scale').first().text().trim(), 'Month',
+            'Month scale should be the first option');
+        assert.strictEqual(gantt.$buttons.find('.o_gantt_button_scale').last().text().trim(), 'Day',
+            'Day scale should be the second option');
 
         gantt.destroy();
     });

@@ -17,7 +17,7 @@
                 <span class="fa fa-arrow-right"/>
             </button>
         </div>
-        <button t-foreach="SCALES" t-as="scale" t-attf-class="o_gantt_button_scale btn btn-secondary #{activateScale == scale ? 'active' : ''}" type="button" t-att-data-value="scale">
+        <button t-foreach="allowedScales" t-as="scale" t-attf-class="o_gantt_button_scale btn btn-secondary #{activateScale == scale ? 'active' : ''}" type="button" t-att-data-value="scale">
             <t t-esc="SCALES[scale].string"/>
         </button>
         <div class="btn-group">

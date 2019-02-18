@@ -45,6 +45,7 @@ var GanttController = AbstractController.extend({
         this.context = params.context;
         this.dialogViews = params.dialogViews;
         this.SCALES = params.SCALES;
+        this.allowedScales = params.allowedScales;
         this.collapseFirstLevel = params.collapseFirstLevel;
     },
 
@@ -64,6 +65,7 @@ var GanttController = AbstractController.extend({
                 widget: this,
                 SCALES: this.SCALES,
                 activateScale: state.scale,
+                allowedScales: this.allowedScales,
             }));
             this.$buttons.appendTo($node);
         }

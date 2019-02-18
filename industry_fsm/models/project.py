@@ -2,10 +2,10 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from math import ceil
-
-from odoo import fields, models, api
 from datetime import timedelta
 
+from odoo import fields, models, api, _
+from odoo.exceptions import UserError
 
 
 class Project(models.Model):
@@ -106,12 +106,16 @@ class Task(models.Model):
         return action
 
     def create_or_view_created_quotations(self):
+        if not self.timesheet_ids:
+            raise UserError(_("You haven't started this task yet!"))
         if self.quotation_count == 0:
             return self.action_create_quotation()
         else:
             return self.action_view_created_quotations()
 
     def action_view_material(self):
+        if not self.timesheet_ids:
+            raise UserError(_("You haven't started this task yet!"))
         kanban_view = self.env.ref('industry_fsm.view_product_product_kanban_material')
         domain = [('id', 'in', self.product_template_ids.ids)] if self.product_template_ids else False
         return {'type': 'ir.actions.act_window',

@@ -246,8 +246,10 @@ var DocumentsInspector = Widget.extend({
         }
         var self = this;
         _.each(this.rules, function (rule) {
-            var $rule = $(qweb.render('documents.DocumentsInspector.rule', rule));
-            $rule.appendTo(self.$('.o_inspector_rules'));
+            if (self.records.length === 1 || !rule.limited_to_single_record) {
+                var $rule = $(qweb.render('documents.DocumentsInspector.rule', rule));
+                $rule.appendTo(self.$('.o_inspector_rules'));
+            }
         });
     },
     /**

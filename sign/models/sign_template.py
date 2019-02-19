@@ -49,7 +49,7 @@ class SignTemplate(models.Model):
             template.responsible_count = len(template.sign_item_ids.mapped('responsible_id'))
 
     @api.multi
-    def go_to_custom_template(self):
+    def go_to_custom_template(self, sign_directly_without_mail=False):
         self.ensure_one()
         return {
             'name': "Template \"%(name)s\"" % {'name': self.attachment_id.name},
@@ -57,6 +57,7 @@ class SignTemplate(models.Model):
             'tag': 'sign.Template',
             'context': {
                 'id': self.id,
+                'sign_directly_without_mail': sign_directly_without_mail,
             },
         }
 

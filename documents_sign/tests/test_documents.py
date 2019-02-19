@@ -31,7 +31,13 @@ class TestCaseDocumentsBridgeSign(TransactionCase):
         self.workflow_rule_template = self.env['documents.workflow.rule'].create({
             'domain_folder_id': self.folder_a.id,
             'name': 'workflow rule create template on f_a',
-            'create_model': 'sign.template',
+            'create_model': 'sign.template.new',
+        })
+
+        self.workflow_rule_direct_sign = self.env['documents.workflow.rule'].create({
+            'domain_folder_id': self.folder_a.id,
+            'name': 'workflow rule direct sign',
+            'create_model': 'sign.template.direct',
         })
 
     def test_bridge_folder_workflow(self):
@@ -41,6 +47,8 @@ class TestCaseDocumentsBridgeSign(TransactionCase):
         """
         self.assertEqual(self.document_txt.res_model, 'documents.document', "failed at default res model")
         self.workflow_rule_template.apply_actions([self.document_txt.id])
+        self.assertTrue(self.workflow_rule_direct_sign.limited_to_single_record,
+                        "this rule should only be available on single records")
     
         self.assertEqual(self.document_txt.res_model, 'sign.template',
                          "failed at workflow_bridge_dms_sign new res_model")

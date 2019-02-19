@@ -86,13 +86,13 @@ QUnit.module('DocumentsKanbanView', {
                     {id: 1, name: 'yop', file_size: 30000, owner_id: 1, partner_id: 2,
                         public: true, res_id: 1, res_model: 'task', res_model_name: 'Task', activity_ids: [1],
                         activity_state: 'today', res_name: 'Write specs', tag_ids: [1, 2], share_ids: [], folder_id: 1,
-                        available_rule_ids: [1, 2]},
+                        available_rule_ids: [1, 2, 4]},
                     {id: 2, name: 'blip', file_size: 20000, owner_id: 2, partner_id: 2,
                         public: false, res_id: 2, res_model: 'task', res_model_name: 'Task',
                         res_name: 'Write tests', tag_ids: [2], share_ids: [], folder_id: 1, available_rule_ids: [1]},
                     {id: 3, name: 'gnap', file_size: 15000, lock_uid: 3, owner_id: 2, partner_id: 1,
                         public: false, res_id: 2, res_model: 'documents.document', res_model_name: 'Task',
-                        res_name: 'Write doc', tag_ids: [1, 2, 5], share_ids: [], folder_id: 1, available_rule_ids: [1, 2, 3]},
+                        res_name: 'Write doc', tag_ids: [1, 2, 5], share_ids: [], folder_id: 1, available_rule_ids: [1, 2, 3, 4]},
                     {id: 4, name: 'burp', file_size: 10000, mimetype: 'image/png', owner_id: 1, partner_id: 3,
                         public: true, res_id: 1, res_model: 'order', res_model_name: 'Sale Order',
                         res_name: 'SO 0001', tag_ids: [], share_ids: [], folder_id: 1, available_rule_ids: []},
@@ -188,11 +188,13 @@ QUnit.module('DocumentsKanbanView', {
                 fields: {
                     display_name: {string: 'Name', type: 'char'},
                     note: {string: 'Tooltip', type: 'char'},
+                    limited_to_single_record: {string: 'Single Record', type: 'boolean'},
                 },
                 records: [
-                    {id: 1, display_name: 'Convincing AI not to turn evil', note: 'Racing for AI Supremacy'},
-                    {id: 2, display_name: 'Follow the white rabbit'},
-                    {id: 3, display_name: 'Entangling superstrings'},
+                    {id: 1, display_name: 'Convincing AI not to turn evil', note: 'Racing for AI Supremacy', limited_to_single_record: false},
+                    {id: 2, display_name: 'Follow the white rabbit', limited_to_single_record: false},
+                    {id: 3, display_name: 'Entangling superstrings', limited_to_single_record: false},
+                    {id: 4, display_name: 'One record rule', limited_to_single_record: true},
                 ],
             },
             'mail.followers': {
@@ -1655,7 +1657,7 @@ QUnit.module('DocumentsKanbanView', {
         await testUtils.dom.click(kanban.$('.o_search_panel_category_value header:eq(1)'));
         await testUtils.dom.click(kanban.$('.o_kanban_record:first'));
 
-        assert.containsN(kanban, '.o_inspector_rule', 2,
+        assert.containsN(kanban, '.o_inspector_rule', 3,
             "should display the rules of the selected document");
 
         await testUtils.dom.click(kanban.$('.o_kanban_record:nth(1) .o_record_selector'));
@@ -1674,8 +1676,36 @@ QUnit.module('DocumentsKanbanView', {
         kanban.destroy();
     });
 
+    QUnit.test('document inspector: displays the right amount of single record rules', async function (assert) {
+        assert.expect(2);
+
+        var kanban = await createDocumentsKanbanView({
+            View: DocumentsKanbanView,
+            model: 'documents.document',
+            data: this.data,
+            arch: '<kanban><templates><t t-name="kanban-box">' +
+                    '<div>' +
+                        '<field name="name"/>' +
+                    '</div>' +
+                '</t></templates></kanban>',
+        });
+
+        await testUtils.dom.click(kanban.$('.o_search_panel_category_value header:eq(1)'));
+        await testUtils.dom.click(kanban.$('.o_kanban_record:nth(2)'));
+
+        assert.containsN(kanban, '.o_inspector_rule', 4,
+            "should display the rules of the selected document (3 multi record, 1 single record)");
+
+        await testUtils.dom.click(kanban.$('.o_kanban_record:nth(0) .o_record_selector'));
+
+        assert.containsN(kanban, '.o_inspector_rule', 2,
+            "should display the rules in common except the single record rule");
+
+        kanban.destroy();
+    });
+
     QUnit.test('document inspector: display rules of reloaded record', async function (assert) {
-        assert.expect(4);
+        assert.expect(7);
 
         var self = this;
         var kanban = await createDocumentsKanbanView({
@@ -1701,9 +1731,17 @@ QUnit.module('DocumentsKanbanView', {
         await testUtils.dom.click(kanban.$('.o_search_panel_category_value header:eq(1)'));
         await testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop)'));
 
-        assert.strictEqual(kanban.$('.o_inspector_rule span').text(),
-            'Convincing AI not to turn evilFollow the white rabbit',
-            "should correctly display the rules of the selected document");
+        assert.containsN(kanban, '.o_inspector_rule span', 3,
+            "should display the rules of the selected document");
+
+        assert.strictEqual(kanban.$('.o_inspector_rule span:eq(0)').text(), 'Convincing AI not to turn evil',
+            "should display the right rule");
+
+        assert.strictEqual(kanban.$('.o_inspector_rule span:eq(1)').text(), 'Follow the white rabbit',
+            "should display the right rule");
+
+        assert.strictEqual(kanban.$('.o_inspector_rule span:eq(2)').text(), 'One record rule',
+            "should display the right rule");
 
         // click on the button to reload the record
         await testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop) button'));
@@ -1717,7 +1755,7 @@ QUnit.module('DocumentsKanbanView', {
         await testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop changed)'));
 
         assert.strictEqual(kanban.$('.o_inspector_rule span').text(),
-            'Convincing AI not to turn evilFollow the white rabbit',
+            'Convincing AI not to turn evilFollow the white rabbitOne record rule',
             "should correctly display the rules of the selected document");
 
         kanban.destroy();

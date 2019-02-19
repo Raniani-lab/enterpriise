@@ -190,6 +190,10 @@ class TestCaseDocuments(TransactionCase):
             'condition_type': 'criteria',
             'criteria_tag_ids': [(6, 0, [self.tag_criteria_b.id, self.tag_criteria_not_a_a.id])]
         })
+
+        self.assertFalse(self.workflow_rule_criteria.limited_to_single_record,
+                         "this rule should not be limited to a single record")
+
         self.document_txt_criteria_a = self.env['documents.document'].create({
             'name': 'Test criteria a',
             'mimetype': 'text/plain',

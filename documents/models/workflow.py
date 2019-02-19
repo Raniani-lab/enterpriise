@@ -26,6 +26,7 @@ class WorkflowActionRule(models.Model):
     criteria_partner_id = fields.Many2one('res.partner', string="Contact")
     criteria_owner_id = fields.Many2one('res.users', string="Owner")
     criteria_tag_ids = fields.One2many('documents.workflow.tag.criteria', 'workflow_rule_id', string="Tags")
+    limited_to_single_record = fields.Boolean(string="One record limit", compute='_compute_limited_to_single_record')
 
     # Actions
     partner_id = fields.Many2one('res.partner', string="Set Contact")
@@ -53,9 +54,16 @@ class WorkflowActionRule(models.Model):
     def _get_business(self):
         """
         Checks if the workflow rule has available create models to display the option.
+        Implemented by the bridge models if the rule should only be available for a single record.
         """
         for record in self:
             record.has_business_option = len(self._fields['create_model'].selection)
+
+    def _compute_limited_to_single_record(self):
+        """
+        Overwritten by bridge modules to define whether the rule is only available for one record at a time.
+        """
+        self.update({'limited_to_single_record': False})
 
     def create_record(self, documents=None):
         """

@@ -43,9 +43,10 @@ var PhonecallTab = Widget.extend({
     },
     /**
      * When the user clicks on the call button when on a tab, without details open
+     * Forces a switch to the keypad in the parent panel.
      */
     callFromTab: function () {
-        return;
+        this.trigger_up('switch_keypad');
     },
     /**
      * Triggers the hangup process then refreshes the tab.

@@ -39,6 +39,7 @@ var DialingPanel = Widget.extend({
     custom_events:{
         'muteCall': '_onMuteCall',
         'unmuteCall': '_onUnmuteCall',
+        'switch_keypad': '_onSwitchToKeypad',
         'sip_accepted': '_onSipAccepted',
         'sip_cancel': '_onSipRejected',
         'sip_rejected': '_onSipRejected',
@@ -543,6 +544,14 @@ var DialingPanel = Widget.extend({
         this._hidePostponeButton();
         this._showCallButton();
         this.activeTab.rejectPhonecall();
+    },
+    /**
+     * @private
+     */
+    _onSwitchToKeypad: function () {
+        var searchVal = this.$searchInput.val()
+        this.$keypadInput.val(searchVal)
+        this._onToggleKeypad()
     },
     /**
      * @private

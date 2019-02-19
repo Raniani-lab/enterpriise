@@ -190,14 +190,17 @@ class UPSRequest():
             res.append('State')
         if not ship_to.street and not ship_to.street2:
             res.append('Street')
+        if picking and not order:
+            order = picking.sale_id
+        phone = ship_to.mobile or ship_to.phone
+        if order and not phone:
+            phone = order.partner_id.mobile or order.partner_id.phone
         if order:
-            phone = ship_to.mobile or ship_to.phone or order.partner_id.mobile or order.partner_id.phone
             if not order.order_line:
                 return _("Please provide at least one item to ship.")
             for line in order.order_line.filtered(lambda line: not line.product_id.weight and not line.is_delivery and line.product_id.type not in ['service', 'digital']):
                 return _("The estimated price cannot be computed because the weight of your product is missing.")
         if picking:
-            phone = ship_to.mobile or ship_to.phone or picking.sale_id.partner_id.mobile or picking.sale_id.partner_id.phone
             for move in picking.move_lines.filtered(lambda move: not move.product_id.weight):
                 return _("The delivery cannot be done because the weight of your product is missing.")
         if not phone:
@@ -367,7 +370,6 @@ class UPSRequest():
 
     def send_shipping(self, shipment_info, packages, shipper, ship_from, ship_to, packaging_type, service_type, saturday_delivery, cod_info=None, label_file_type='GIF', ups_carrier_account=False):
         client = self._set_client(self.ship_wsdl, 'Ship', 'ShipmentRequest')
-
         request = self.factory_ns3.RequestType()
         request.RequestOption = 'nonvalidate'
 
@@ -466,11 +468,25 @@ class UPSRequest():
             shipment.ShipmentServiceOptions.SaturdayDeliveryIndicator = saturday_delivery
         else:
             shipment.ShipmentServiceOptions = ''
+        self.shipment = shipment
+        self.label = label
+        self.request = request
+        self.label_file_type = label_file_type
 
+    def return_label(self):
+        return_service = self.factory_ns2.ReturnServiceType()
+        return_service.Code = "9"
+        self.shipment.ReturnService = return_service
+        for p in self.shipment.Package:
+            p.Description = "Return of courtesy"
+        
+
+    def process_shipment(self):
+        client = self._set_client(self.ship_wsdl, 'Ship', 'ShipmentRequest')
         try:
             response = client.service.ProcessShipment(
-                Request=request, Shipment=shipment,
-                LabelSpecification=label)
+                Request=self.request, Shipment=self.shipment,
+                LabelSpecification=self.label)
 
             # Check if shipment is not success then return reason for that
             if response.Response.ResponseStatus.Code != "1":
@@ -479,7 +495,7 @@ class UPSRequest():
             result = {}
             result['label_binary_data'] = {}
             for package in response.ShipmentResults.PackageResults:
-                result['label_binary_data'][package.TrackingNumber] = self.save_label(package.ShippingLabel.GraphicImage, label_file_type=label_file_type)
+                result['label_binary_data'][package.TrackingNumber] = self.save_label(package.ShippingLabel.GraphicImage, label_file_type=self.label_file_type)
             result['tracking_ref'] = response.ShipmentResults.ShipmentIdentificationNumber
             result['currency_code'] = response.ShipmentResults.ShipmentCharges.TotalCharges.CurrencyCode
 

@@ -1,6 +1,7 @@
 odoo.define('web_mobile.tests', function (require) {
 "use strict";
 
+const Dialog = require('web.Dialog');
 const dom = require('web.dom');
 const FormView = require('web.FormView');
 const KanbanView = require('web.KanbanView');
@@ -10,7 +11,7 @@ const Widget = require('web.Widget');
 const mobileMixins = require('web_mobile.mixins');
 const mobile = require('web_mobile.rpc');
 
-const createView = testUtils.createView;
+const {createParent, createView} = testUtils;
 
 QUnit.module('web_mobile', {
     beforeEach: function () {
@@ -475,6 +476,62 @@ QUnit.module('web_mobile', {
         dummy1.destroy();
         dummy2.destroy();
         dummy3.destroy();
+        mobile.methods.overrideBackButton = __overrideBackButton;
+    });
+
+    QUnit.module('Dialog');
+
+    QUnit.test('dialog is closable with backbutton event', async function (assert) {
+        assert.expect(5);
+
+        const __overrideBackButton = mobile.methods.overrideBackButton;
+        mobile.methods.overrideBackButton = function () {};
+
+        testUtils.mock.patch(Dialog, {
+            close: function () {
+                assert.step("close");
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        const parent = createParent({
+            data: this.data,
+            archs: {
+                'partner,false,form': `
+                    <form>
+                        <sheet>
+                            <field name="name"/>
+                        </sheet>
+                   </form>
+                `,
+            },
+        });
+
+        const backButtonEvent = new Event('backbutton');
+        const dialog = new Dialog(parent, {
+            res_model: 'partner',
+            res_id: 1,
+        }).open();
+        await dialog.opened().then(() => {
+            assert.step('opened');
+        });
+        assert.containsOnce(document.body, '.modal', "should have a modal");
+
+        // simulate 'backbutton' event triggered by the app waiting
+        document.dispatchEvent(backButtonEvent);
+        // nextTick to match testUtils.dom.triggerEvents() behavior
+        await testUtils.nextTick();
+
+        // The goal of this assert is to check that our event called the
+        // opened/close methods on Dialog.
+        assert.verifySteps([
+            'opened',
+            'close',
+        ], "should have open/close dialog");
+        assert.containsNone(document.body, '.modal', "modal should be closed");
+
+        parent.destroy();
+        testUtils.mock.unpatch(Dialog);
         mobile.methods.overrideBackButton = __overrideBackButton;
     });
 });

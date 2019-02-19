@@ -3,6 +3,7 @@
     <template id="assets_backend" inherit_id="web.assets_backend" name="Mobile Assets" priority="1">
         <xpath expr="." position="inside">
             <script type="text/javascript" src="/web_mobile/static/src/js/core/mixins.js"></script>
+            <script type="text/javascript" src="/web_mobile/static/src/js/core/dialog.js"></script>
             <script type="text/javascript" src="/web_mobile/static/src/js/action_manager.js"></script>
             <script type="text/javascript" src="/web_mobile/static/src/js/barcode_fields.js"></script>
             <script type="text/javascript" src="/web_mobile/static/src/js/contact_sync.js"></script>

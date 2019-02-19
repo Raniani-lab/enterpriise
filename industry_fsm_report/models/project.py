@@ -126,6 +126,14 @@ class ProjectReportTemplate(models.Model):
         })
         return report
 
+    @api.multi
+    def unlink(self):
+        self.env['ir.ui.view'].search([('model', 'in', self.mapped('model_id.model'))]).unlink()
+        self.env['ir.model.access'].search([('model_id', 'in', self.mapped('model_id.id'))]).unlink()
+        self.mapped('action_id').unlink()
+        self.mapped('model_id').unlink()
+        return super(ProjectReportTemplate, self).unlink()
+
     def action_view_reports(self):
         return self.action_id.read()[0]
 

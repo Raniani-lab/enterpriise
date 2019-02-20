@@ -28,7 +28,7 @@ class HrPayslipRunSepaWizard(models.TransientModel):
     journal_id = fields.Many2one(
         string='Bank Journal', comodel_name='account.journal', required=True,
         default=lambda self: self.env['account.journal'].search([('type', '=', 'bank')], limit=1))
-    file_name = fields.Char(String='File name', required=True, default=_get_filename)
+    file_name = fields.Char(string='File name', required=True, default=_get_filename)
 
     def generate_sepa_xml_file(self):
         payslip_run_id = self.env['hr.payslip.run'].browse(self.env.context['active_id'])

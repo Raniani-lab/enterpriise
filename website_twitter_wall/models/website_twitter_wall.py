@@ -30,7 +30,7 @@ class WebsiteTwitterWall(models.Model):
     search_pattern = fields.Char('Search string', help='The search criteria to get the tweets you want. You can use the Twitter query operators.')
     mode = fields.Selection([('recent', 'Recent'), ('popular', 'Popular'), ('mixed', 'Mixed')], default='recent', string='Type of tweets', help="Most recent tweets, most popular tweets, or both")
     image = fields.Binary()
-    tweet_ids = fields.Many2many('website.twitter.tweet', String='Tweets')
+    tweet_ids = fields.Many2many('website.twitter.tweet', string='Tweets')
     total_tweets = fields.Integer(compute='_compute_count_total_tweets')
     api_key = fields.Char('Twitter API Key')
     api_secret = fields.Char('Twitter API Secret')

@@ -69,7 +69,7 @@ class LoyaltyReward(models.Model):
     discount_max_amount = fields.Float(default=0,
                                        help="Maximum amount of discount that can be provided")
     discount_fixed_amount = fields.Float(string="Fixed Amount", help='The discount in fixed amount')
-    minimum_amount = fields.Float(sting="Minimum Order Amount")
+    minimum_amount = fields.Float(string="Minimum Order Amount")
 
     @api.constrains('reward_type', 'gift_product_id')
     def _check_gift_product(self):

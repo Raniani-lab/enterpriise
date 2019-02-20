@@ -3,6 +3,7 @@
 
 from odoo import api, fields, models, _
 from odoo.tools import pycompat
+from odoo.exceptions import UserError
 
 from datetime import datetime
 import json
@@ -16,6 +17,23 @@ class AccountDatevCompany(models.Model):
     # Adding the fields as company_dependent does not break stable policy
     l10n_de_datev_consultant_number = fields.Char(company_dependent=True)
     l10n_de_datev_client_number = fields.Char(company_dependent=True)
+
+class ResPartner(models.Model):
+    _inherit = 'res.partner'
+
+    l10n_de_datev_identifier = fields.Integer(string='Datev Identifier',
+        copy=False, tracking=True,
+        help="The Datev identifier is a unique identifier for exchange with the government. "
+             "If you had previous exports with another identifier, you can put it here. "
+             "If it is 0, then it will take the database id + the value in the system parameter "
+             "l10n_de.datev_start_count. ")
+
+    @api.constrains('l10n_de_datev_identifier')
+    def _check_datev_identifier(self):
+        for partner in self.filtered(lambda p: p.l10n_de_datev_identifier != 0):
+            if self.search([('id', '!=', partner.id),
+                            ('l10n_de_datev_identifier', '=', partner.l10n_de_datev_identifier)], limit=1):
+                raise UserError(_('You have already defined a partner with the same Datev identifier. '))
 
 
 class AccountMoveL10NDe(models.Model):
@@ -190,9 +208,10 @@ class DatevExportCSV(models.AbstractModel):
             # Check if we have a property as receivable/payable on the partner
             # We use the property because in datev and in germany, partner can be of 2 types
             # important partner which have a specific account number or a virtual partner
-            # Which has only a number. To differenciate between the two, if a partner in odoo
-            # explicitely has a receivable/payable account set, we use that account, othewise
-            # We assume it is not an important partner and his datev virtual id will be his odoo id
+            # Which has only a number. To differentiate between the two, if a partner in Odoo
+            # explicitely has a receivable/payable account set, we use that account, otherwise
+            # we assume it is not an important partner and his datev virtual id will be the
+            # l10n_de_datev_identifier set or the id + the start count parameter.
             account = account.internal_type == 'receivable' and partner.property_account_receivable_id or partner.property_account_payable_id
             prop = self.env['ir.property'].search([
                 ('name', '=', account.internal_type == 'receivable' and 'property_account_receivable_id' or 'property_account_payable_id'),
@@ -201,9 +220,10 @@ class DatevExportCSV(models.AbstractModel):
             ])
             if prop:
                 return str(account.code).ljust(8, '0')
-            return str(partner.id).zfill(9)
+            param_start = self.env['ir.config_parameter'].sudo().get_param('l10n_de.datev_start_count')
+            start_count = param_start and param_start.isdigit() and int(param_start) or 100000000
+            return partner.l10n_de_datev_identifier or start_count + partner.id
         return str(account.code).ljust(8, '0')
-
 
     # Source: http://www.datev.de/dnlexom/client/app/index.html#/document/1036228/D103622800029
     def get_csv(self, options):

@@ -16,6 +16,7 @@
     'data': [
         'data/balance_sheet.xml',
         'data/profit_and_loss.xml',
+        'data/ir_config_param.xml',
         'views/l10n_de_report_views.xml',
     ],
     'installable': True,

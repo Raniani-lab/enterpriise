@@ -16,7 +16,7 @@ class SaleOrder(models.Model):
     amazon_order_ref = fields.Char(help="The Amazon-defined order reference")
     amazon_channel = fields.Selection(
         [('fbm', "Fulfillment by Merchant"), ('fba', "Fulfillment by Amazon")],
-        string="Fulfillment Channel", translate=False)
+        string="Fulfillment Channel")
 
     _sql_constraints = [(
         'unique_amazon_order_ref',

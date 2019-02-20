@@ -199,7 +199,9 @@ class MrpProductionWorkcenterLine(models.Model):
             if self.component_tracking == 'none' or self.current_quality_check_id.component_is_byproduct or not lines_without_lots:
                 self.move_line_id = self.env['mrp.workorder.line'].create({
                     'move_id': move.id,
-                    'lot_id': False,
+                    'product_id': self.component_id.id,
+                    'product_uom_id': move.product_uom.id,
+                    'lot_id': self.lot_id.id,
                     'qty_done': float_round(self.qty_done, precision_rounding=move.product_uom.rounding),
                     'workorder_id': self.id,
                 })

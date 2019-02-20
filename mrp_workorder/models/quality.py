@@ -72,15 +72,6 @@ class QualityAlert(models.Model):
     workcenter_id = fields.Many2one('mrp.workcenter', 'Work Center')
     production_id = fields.Many2one('mrp.production', "Production Order")
 
-class MrpWorkorder(models.Model):
-    _inherit = 'mrp.workorder'
-
-    def _link_to_quality_check(self, old_move_line, new_move_line):
-        checks = self.env["quality.check"].search([('move_line_id', '=', old_move_line.id)])
-        checks.write({'move_line_id': new_move_line.id})
-        return True
-
-
 class QualityCheck(models.Model):
     _inherit = "quality.check"
 

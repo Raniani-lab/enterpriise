@@ -51,7 +51,6 @@
                 <field name="is_last_step" invisible="1"/>
                 <field name="is_user_working" invisible="1"/>
                 <field name="is_produced" invisible="1"/>
-                <field name="move_line_id" invisible="1"/>
                 <field name="move_raw_ids" invisible="1"/>
                 <field name="next_work_order_id" invisible="1"/>
                 <field name="quality_state" invisible="1"/>

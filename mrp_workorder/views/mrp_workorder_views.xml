@@ -164,7 +164,7 @@
                     <h3 attrs="{'invisible': ['|', '|', ('current_quality_check_id', '!=', False), ('check_ids', '=', []), ('qty_producing', '=', 0)]}">
                         <field name="product_id" options="{'no_open': True}"/> -
                         <span attrs="{'invisible': ['|', ('product_tracking', '=', 'none'), ('lot_id', '=', False)]}">
-                            <field name="lot_id"/> -
+                            <field name="lot_id" context="{'active_mo_id': production_id}"/> -
                         </span>
                         <label for="product_uom_id" string=" "/>
                         <field name="product_uom_id" options="{'no_open': True}" class="oe_inline"/>
@@ -188,7 +188,7 @@
                         <div class="o_workorder_field text-center">
                             <div class="o_form_label" attrs="{'invisible': [('component_tracking', '!=', 'serial')]}">Serial Number</div>
                             <div class="o_form_label" attrs="{'invisible': [('component_tracking', '!=', 'lot')]}">Lot Number</div>
-                            <field name="lot_id" context="{'default_product_id': component_id}" attrs="{'invisible': [('component_tracking', '=', 'none')]}" domain="[('product_id', '=', component_id)]"/>
+                            <field name="lot_id" context="{'default_product_id': component_id, 'active_mo_id': production_id}" attrs="{'invisible': [('component_tracking', '=', 'none')]}" domain="[('product_id', '=', component_id)]"/>
                         </div>
                         <div class="o_workorder_field text-right">
                             <label for="qty_done" string="Quantity"/>

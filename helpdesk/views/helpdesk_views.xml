@@ -492,6 +492,7 @@
                             <field name="partner_id" class="field_partner_id"/>
                             <field name="partner_name" attrs="{'invisible': [('partner_id', '!=', False)]}"/>
                             <field name="partner_email"/>
+                            <field name="email_cc" groups="base.group_no_one"/>
                         </group>
                     </group>
                     <field name="description" class="field_description" placeholder="Description of the ticket..."/>

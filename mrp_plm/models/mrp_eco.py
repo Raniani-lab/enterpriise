@@ -146,7 +146,7 @@ class MrpEcoStage(models.Model):
 class MrpEco(models.Model):
     _name = 'mrp.eco'
     _description = 'Engineering Change Order (ECO)'
-    _inherit = ['mail.thread', 'mail.activity.mixin']
+    _inherit = ['mail.thread.cc', 'mail.activity.mixin']
 
     @api.model
     def _get_type_selection(self):

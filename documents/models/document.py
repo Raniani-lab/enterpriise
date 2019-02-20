@@ -11,7 +11,7 @@ import re
 class Document(models.Model):
     _name = 'documents.document'
     _description = 'Document'
-    _inherit = ['mail.thread', 'mail.activity.mixin']
+    _inherit = ['mail.thread.cc', 'mail.activity.mixin']
     _order = 'id desc'
 
     # Attachment

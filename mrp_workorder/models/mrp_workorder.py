@@ -74,7 +74,7 @@ class MrpProductionWorkcenterLine(models.Model):
                 lines = wo.workorder_line_ids.filtered(lambda l: l.move_id in moves)
                 completed_lines = lines.filtered(lambda l: l.lot_id) if wo.component_tracking != 'none' else lines
                 wo.component_remaining_qty = move.product_uom._compute_quantity(
-                    self.qty_producing * sum(moves.mapped('unit_factor')),
+                    wo.qty_producing * sum(moves.mapped('unit_factor')),
                     move.product_id.uom_id,
                     round=False
                 ) - sum(completed_lines.mapped('qty_done'))

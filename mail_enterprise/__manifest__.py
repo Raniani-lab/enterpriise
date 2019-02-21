@@ -4,7 +4,7 @@
 {
     'name': 'Mail Enterprise',
     'category': 'Discuss',
-    'depends': ['mail'],
+    'depends': ['mail', 'web_mobile'],
     'description': """
 Bridge module for mail and enterprise
 =====================================

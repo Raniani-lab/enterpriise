@@ -24,7 +24,6 @@
                             <field name="fedex_label_file_type" attrs="{'required': [('delivery_type', '=', 'fedex')]}"/>
                             <field name="fedex_document_stock_type" attrs="{'required': [('delivery_type', '=', 'fedex')]}"/>
                             <field name="fedex_saturday_delivery" string="Saturday Delivery" attrs="{'required': [('delivery_type', '=', 'fedex')], 'invisible': [('fedex_service_type', 'not in', ['INTERNATIONAL_PRIORITY', 'FEDEX_2_DAY', 'FIRST_OVERNIGHT', 'PRIORITY_OVERNIGHT'])]}"/>
-                            <field name="fedex_return_label_on_delivery" attrs="{'required': [('delivery_type', '=', 'fedex')]}"/>
                         </group>
                     </group>
                     <group string='Fedex Tutorial' attrs="{'invisible': [('delivery_type', '!=', 'fedex')]}">

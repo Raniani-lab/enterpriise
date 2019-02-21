@@ -96,7 +96,6 @@ class ProviderFedex(models.Model):
     fedex_saturday_delivery = fields.Boolean(string="FedEx Saturday Delivery", help="""Special service:Saturday Delivery, can be requested on following days.
                                                                                  Thursday:\n1.FEDEX_2_DAY.\nFriday:\n1.PRIORITY_OVERNIGHT.\n2.FIRST_OVERNIGHT.
                                                                                  3.INTERNATIONAL_PRIORITY.\n(To Select Countries)""")
-    fedex_return_label_on_delivery = fields.Boolean(string= "Generate return label", help="The return label is automatically generated at the delivery", default=False)
 
     @api.onchange('fedex_service_type')
     def on_change_fedex_service_type(self):
@@ -439,8 +438,8 @@ class ProviderFedex(models.Model):
             ##############
             else:
                 raise UserError(_('No packages for this picking'))
-            if self.fedex_return_label_on_delivery and request.get('date'):
-                self.fedex_get_return_label(picking, tracking_number=request['tracking_number'], origin_date=request['date'])
+            if self.return_label_on_delivery and request.get('date'):
+                self.get_return_label(picking, tracking_number=request['tracking_number'], origin_date=request['date'])
             commercial_invoice = srm.get_document()
             if commercial_invoice:
                 fedex_documents = [('DocumentFedex.%s' % (self.fedex_label_file_type), commercial_invoice)]
@@ -507,7 +506,7 @@ class ProviderFedex(models.Model):
             srm.duties_payment(picking.picking_type_id.warehouse_id.partner_id.country_id.code, superself.fedex_account_number)
         srm.return_label(tracking_number, origin_date)
         response = srm.process_shipment()
-        fedex_labels = [('ReturnLabelFedex-%s-%s.%s' % (response['tracking_number'], index, self.fedex_label_file_type), label)
+        fedex_labels = [('%s-%s-%s.%s' % (self.get_return_label_prefix(), response['tracking_number'], index, self.fedex_label_file_type), label)
                         for index, label in enumerate(srm._get_labels(self.fedex_label_file_type))]
         picking.message_post(body='Return Label', attachments=fedex_labels)
 

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': "Field Service",
-    'summary': '',
+    'summary': 'Plan your Onsite interventions',
     'description': """
 Field Services Management
 =========================

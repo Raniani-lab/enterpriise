@@ -8,6 +8,9 @@
     'depends': [
         'hr_contract_salary',
         'l10n_be_hr_payroll_account',
+        'l10n_generic_coa',
+        'l10n_be',
+        'account_accountant',
     ],
     'description': """
     """,

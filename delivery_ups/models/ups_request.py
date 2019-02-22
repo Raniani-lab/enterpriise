@@ -482,13 +482,13 @@ class UPSRequest():
 
         request = client.factory.create('ns0:RequestType')
         request.TransactionReference.CustomerContext = "Cancle shipment"
-        voidshipment = client.factory.create('ns2:VoidShipment')
-        voidshipment.ShipmentIdentificationNumber = tracking_number or ''
+        voidshipment = client.factory.create('ns2:VoidShipmentRequest')
+        voidshipment.VoidShipment.ShipmentIdentificationNumber = tracking_number or ''
 
         result = {}
         try:
             response = client.service.ProcessVoid(
-                Request=request, VoidShipment=voidshipment
+                Request=request, VoidShipment=voidshipment.VoidShipment
             )
             if response.Response.ResponseStatus.Code == "1":
                 return result

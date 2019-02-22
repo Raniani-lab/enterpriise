@@ -393,6 +393,10 @@ class AccountReport(models.AbstractModel):
             if params.get('financial_group_line_id'):
                 parent_financial_report_line = self.env['account.financial.html.report.line'].browse(params['financial_group_line_id'])
                 domain = expression.AND([domain, safe_eval(parent_financial_report_line.domain)])
+
+            if not options.get('all_entries'):
+                ctx['search_default_posted'] = True
+
             action['domain'] = domain
         action['context'] = ctx
         return action

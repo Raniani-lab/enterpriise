@@ -44,7 +44,7 @@
                     t-att-NumRegIdTrib="receiver_reg_trib"
                     t-att-UsoCFDI="use_cfdi"/>
                 <cfdi:Conceptos>
-                    <t t-foreach="record.invoice_line_ids" t-as="line">
+                    <t t-foreach="record.invoice_line_ids.filtered(lambda inv: not inv.display_type)" t-as="line">
                         <cfdi:Concepto
                             t-att-ClaveProdServ="line.product_id.l10n_mx_edi_code_sat_id.code"
                             t-att-NoIdentificacion="record._get_string_cfdi(line.product_id.default_code or '')"

@@ -446,7 +446,8 @@ var PhonecallDetails = Widget.extend({
         this._rpc({
             model: resModel,
             method: 'get_formview_id',
-            args: [[resId], session.user_context],
+            args: [[resId]],
+            context: session.user_context,
         }).then(function (viewId) {
             self.do_action({
                 type:'ir.actions.act_window',

@@ -174,7 +174,7 @@ var ClientAction = AbstractAction.extend({
         return this._rpc({
             'model': 'product.product',
             'method': 'get_all_products_by_barcode',
-            'args': [[]],
+            'args': [],
         }).then(function (res) {
             self.productsByBarcode = res;
         });
@@ -213,7 +213,7 @@ var ClientAction = AbstractAction.extend({
         return this._rpc({
             'model': 'stock.location',
             'method': 'get_all_locations_by_barcode',
-            'args': [[]],
+            'args': [],
         }).then(function (res) {
             self.locationsByBarcode = res;
         });

@@ -81,7 +81,8 @@ var PlaidAccountConfigurationWidget = AbstractAction.extend({
         return this._rpc({
                  model: 'account.online.provider',
                  method: 'link_success',
-                 args: [[self.id], public_token, metadata, self.context],
+                 args: [[self.id], public_token, metadata],
+                 context: self.context,
              }).then(function(result) {
                  self.do_action(result);
              });

@@ -64,7 +64,8 @@ var OnlineSyncAccountInstitutionSelector = AbstractAction.extend({
         self._rpc({
             model: 'account.online.provider',
             method: 'get_login_form',
-            args: [[], instId, provider, beta, self.context],
+            args: [[], instId, provider, beta],
+            context: self.context,
         })
         .then(function(result) {
             self.do_action(result);
@@ -100,7 +101,7 @@ var OnlineSyncAccountInstitutionSelector = AbstractAction.extend({
         return self._rpc({
             model: 'account.online.provider',
             method: 'get_manual_configuration_form',
-            args: [self.context]
+            context: self.context,
         })
         .then(function(action) {
             self.do_action(action, {

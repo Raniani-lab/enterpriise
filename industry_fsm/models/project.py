@@ -5,7 +5,7 @@ from math import ceil
 from datetime import timedelta
 
 from odoo import fields, models, api, _
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, AccessError
 
 
 class Project(models.Model):
@@ -81,6 +81,35 @@ class Task(models.Model):
                 'domain': domain,
                 'context': context
                 }
+
+    def action_worker_tasks(self):
+        default_project_id = False
+        fsm_project = self.env.ref('industry_fsm.fsm_project', False)
+
+        # Workaround to avoid a read error on fsm project when we are not in the main company
+        if fsm_project:
+            try:
+                fsm_project.check_access_rule('read')
+                default_project_id = fsm_project.id
+            except AccessError:
+                pass
+
+        return {
+            'name': 'My Tasks',
+            'type': 'ir.actions.act_window',
+            'res_model': 'project.task',
+            'view_mode': 'kanban,form',
+            'domain': [('allow_planning', '=', True)],
+            'search_view_id': [self.env.ref('industry_fsm.project_task_view_search').id, 'search'],
+            'views': [[self.env.ref('industry_fsm.project_task_view_kanban').id, 'kanban'],
+                      [self.env.ref('industry_fsm.project_task_view_form_fsm').id, 'form']],
+            'context': {
+                'fsm_mode': True,
+                'search_default_my_tasks': True,
+                'search_default_planned_future': True,
+                'default_project_id':  default_project_id},
+            'help': _("<p class='o_view_nocontent_smiling_face'>No more Tasks</p>"),
+        }
 
     # Quotations
     def action_create_quotation(self):

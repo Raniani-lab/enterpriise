@@ -74,7 +74,15 @@ class ProjectReportTemplate(models.Model):
     def create(self, vals):
         report = super(ProjectReportTemplate, self).create(vals)
         name = 'x_project_report_template_' + str(report.id)
-        model = self.env['ir.model'].create({'name': vals['name'], 'model': name})
+        model = self.env['ir.model'].create({
+            'name': vals['name'],
+            'model': name,
+            'field_id': [(0, 0, {  # needed for proper model creation from demo data
+                'name': 'x_name',
+                'field_description': 'Name',
+                'ttype': 'char',
+            })]
+        })
         self.env['ir.model.access'].create({
             'name': name + '_access',
             'model_id': model.id,

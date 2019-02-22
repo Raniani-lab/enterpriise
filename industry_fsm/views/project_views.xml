@@ -282,28 +282,12 @@
     </record>
 
     <!-- Main action for the app -->
-    <record id="project_task_action_worker_tasks" model="ir.actions.act_window">
-        <field name="name">My Tasks</field>
-        <field name="res_model">project.task</field>
-        <field name="view_type">form</field>
-        <field name="view_mode">kanban,form</field>
-        <field name="domain">[('allow_planning', '=', True)]</field>
-        <field name="search_view_id" ref="project_task_view_search"/>
-        <field name="view_ids" eval="[
-            (5, 0, 0),
-            (0, 0, {'view_mode': 'kanban', 'view_id': ref('project_task_view_kanban')}),
-            (0, 0, {'view_mode': 'form', 'view_id': ref('project_task_view_form_fsm')})]"/>
-        <field name="context">{'search_default_my_tasks': True,
-            'search_default_planned_future': True,
-            'default_planned_date_begin': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-            'default_planned_date_end': (datetime.datetime.now() + datetime.timedelta(hours=2)).strftime('%Y-%m-%d %H:%M:%S')}</field>
-        <field name="help" type="html">
-            <p class="o_view_nocontent_smiling_face">
-                No more Tasks
-            </p>
-        </field>
+    <record id="project_task_action_worker_tasks" model="ir.actions.server">
+        <field name="name">project.task.action.worker.tasks</field>
+        <field name="model_id" ref="industry_fsm.model_project_task"/>
+        <field name="state">code</field>
+        <field name="code"> action = model.action_worker_tasks()</field>
     </record>
-
 
     <menuitem id="menu_fsm_root" name="Field Service"
         sequence="25"

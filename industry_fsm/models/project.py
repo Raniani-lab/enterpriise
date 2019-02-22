@@ -76,7 +76,7 @@ class Task(models.Model):
                    'default_task_id': self.id,
                    'from_field_service': True}
         return {'type': 'ir.actions.act_window',
-                'name': 'Time',
+                'name': _('Time'),
                 'res_model': 'account.analytic.line',
                 'view_mode': 'list,form,kanban',
                 'views': [(tree_view.id, 'list'), (kanban_view.id, 'kanban'), (form_view.id, 'form')],
@@ -97,7 +97,7 @@ class Task(models.Model):
                 pass
 
         return {
-            'name': 'My Tasks',
+            'name': _('My Tasks'),
             'type': 'ir.actions.act_window',
             'res_model': 'project.task',
             'view_mode': 'kanban,form',
@@ -156,7 +156,7 @@ class Task(models.Model):
         kanban_view = self.env.ref('industry_fsm.view_product_product_kanban_material')
         domain = [('product_tmpl_id', 'in', self.product_template_ids.ids)] if self.product_template_ids else False
         return {'type': 'ir.actions.act_window',
-                'name': 'Time',
+                'name': _('Products'),
                 'res_model': 'product.product',
                 'views': [(kanban_view.id, 'kanban')],
                 'domain': domain,

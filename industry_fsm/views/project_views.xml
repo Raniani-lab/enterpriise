@@ -182,7 +182,7 @@
                             <field name="partner_email" widget="email"  attrs="{'invisible': [('partner_email', '=', False)]}"/>
                         </group>
                         <group>
-                            <field name="project_id" domain="[('allow_planning', '=', True)]"/>
+                            <field name="project_id" domain="[('allow_planning', '=', True)]" required="True"/>
                             <label for="planned_date_begin" string="Date"/>
                             <div class="o_row">
                                 <field name="planned_date_begin"/>
@@ -267,7 +267,7 @@
                                             <field name="activity_ids" widget="kanban_activity"/>
                                         </div>
                                         <div class="oe_kanban_bottom_right">
-                                            <div class="badge badge-primary" t-if="widget.getParent().getParent().columnOptions.groupedBy != 'stage_id'">
+                                            <div class="badge badge-primary" t-if="widget.getParent().getParent().columnOptions and widget.getParent().getParent().columnOptions.groupedBy != 'stage_id'">
                                                 <field name="stage_id"/>
                                             </div>
                                         </div>

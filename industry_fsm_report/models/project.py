@@ -18,21 +18,29 @@ class Task(models.Model):
     @api.model
     def default_get(self, fields):
         result = super(Task, self).default_get(fields)
-        project_id = self.env['project.project'].browse([self._context.get('default_project_id')])
-        if 'report_template_id' in fields and project_id:
-            result['report_template_id'] = project_id.report_template_id.id
+        project = self.env['project.project'].browse([self.env.context.get('default_project_id')])
+        if 'report_template_id' in fields and project:
+            result['report_template_id'] = project.report_template_id.id
         return result
 
     allow_reports = fields.Boolean(related='project_id.allow_reports')
     report_template_id = fields.Many2one('project.report.template', string="Report Template")
     report_count = fields.Integer(compute='_compute_report_count')
 
+    @api.onchange('project_id')
+    def _onchange_project_id(self):
+        if self.project_id.allow_reports:
+            self.report_template_id = self.project_id.report_template_id.id
+        else:
+            self.report_template_id = False
+
+    @api.depends('report_template_id')
     def _compute_report_count(self):
         if self.report_template_id:
             self.report_count = self.env[self.report_template_id.model_id.model].search_count([('x_task_id', '=', self.id)])
 
     def create_or_view_report(self):
-        if (self.allow_timesheets and self.allow_planning) and not self.timesheet_ids:
+        if (self.allow_timesheets and self.allow_planning) and not (self.timesheet_ids or self.timesheet_timer_start):
             raise UserError(_("You haven't started this task yet!"))
         action = self.report_template_id.action_id.read()[0]
         report = self.env[self.report_template_id.model_id.model].search([('x_task_id', '=', self.id)])

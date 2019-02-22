@@ -192,10 +192,22 @@
         <field name="height">0.015</field>
     </record>
 
+    <record id="hr_department_rdbe" model="hr.department">
+        <field name="name">RD BE</field>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+    </record>
+
+    <record id="job_developer_belgium" model="hr.job">
+        <field name="name">Experienced Developer BE</field>
+        <field name="department_id" ref="hr_department_rdbe"/>
+        <field name="no_of_recruitment">5</field>
+        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+    </record>
+
     <record id="hr_contract_cdi_experienced_developer" model="hr.contract">
         <field name="name">CDI - Experienced Developer</field>
         <field name="department_id" ref="hr.dep_rd"/>
-        <field name="job_id" ref="hr.job_developer"/>
+        <field name="job_id" ref="hr_contract_salary.job_developer_belgium"/>
         <field name="type_id" ref="hr_contract.hr_contract_type_emp"/>
         <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_salary_structure_employee"/>
         <field name="wage">2650</field>
@@ -214,7 +226,7 @@
         <field name="name">CDI - Laurie Poiret - Experienced Developer</field>
         <field name="department_id" ref="hr.dep_rd"/>
         <field name="employee_id" ref="hr_employee_laurie_poiret"/>
-        <field name="job_id" ref="hr.job_developer"/>
+        <field name="job_id" ref="hr_contract_salary.job_developer_belgium"/>
         <field name="type_id" ref="hr_contract.hr_contract_type_emp"/>
         <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_salary_structure_employee"/>
         <field name="wage">2650</field>

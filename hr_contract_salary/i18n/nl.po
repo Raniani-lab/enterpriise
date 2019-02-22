@@ -316,7 +316,7 @@ msgstr ""
 "investeert in het ontwikkelen en schrijven van intellectueel eigendom, "
 "profiteren we van een fiscale ruling die ons in staat stelt een deel van het"
 " salaris van de werknemer te betalen als een inkomen uit intellectueel "
-"eigendom in plaats van een regulier salaris. Dit bedrag wordt elke maand "
+"eigendom in plaats van een gewoon salaris. Dit bedrag wordt elke maand "
 "contant uitbetaald en is minder belast.</span>"
 
 #. module: hr_contract_salary
@@ -429,7 +429,7 @@ msgid ""
 "schedule and the number of worked days during the year. </span>"
 msgstr ""
 "<span class=\"form-text\">Je ontvangt dit bedrag in de vorm van Eco Cheques "
-"omstreeks Juni. Dit bedrag kan verschillen op basis van uw werkschema en het"
+"omstreeks juni. Dit bedrag kan verschillen op basis van uw werkschema en het"
 " aantal gewerkte dagen gedurende het jaar. </span>"
 
 #. module: hr_contract_salary

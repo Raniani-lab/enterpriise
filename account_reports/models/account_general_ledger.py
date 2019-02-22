@@ -479,5 +479,5 @@ class report_account_general_ledger(models.AbstractModel):
 
     def view_all_journal_items(self, options, params):
         if params.get('id'):
-            params['id'] = int(params.get('id').split('_')[1])
+            params['id'] = int(params.get('id').split('_')[-1])
         return self.env['account.report'].open_journal_items(options, params)

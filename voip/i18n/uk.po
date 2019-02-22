@@ -136,7 +136,7 @@ msgstr "Дзвінок"
 #. module: voip
 #: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 msgid "Calls Date"
-msgstr ""
+msgstr "Дата дзвінків"
 
 #. module: voip
 #. openerp-web
@@ -384,7 +384,7 @@ msgstr "У черзі дзвінка"
 #: code:addons/voip/static/src/xml/dialing_panel.xml:67
 #, python-format
 msgid "Keypad"
-msgstr ""
+msgstr "Клавіатура"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_configurator____last_update
@@ -438,7 +438,7 @@ msgstr "Примітка"
 #. module: voip
 #: model_terms:ir.actions.act_window,help:voip.voip_phonecall_view
 msgid "Log the summary of a phonecall"
-msgstr ""
+msgstr "Запишіть резюме телефонного дзвінка"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_log_wizard__phonecall_id
@@ -473,7 +473,7 @@ msgstr "Мобільний номер очищений"
 #: code:addons/voip/static/src/xml/voip_phonecall.xml:168
 #, python-format
 msgid "Mute"
-msgstr ""
+msgstr "Вимкнути звук"
 
 #. module: voip
 #: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
@@ -565,14 +565,14 @@ msgstr "Номер телефону очищений"
 #. module: voip
 #: selection:mail.activity.type,category:0
 msgid "Phonecall"
-msgstr ""
+msgstr "Телефонний дзвінок"
 
 #. module: voip
 #. openerp-web
 #: code:addons/voip/static/src/xml/voip_phonecall.xml:66
 #, python-format
 msgid "Phonecall details"
-msgstr ""
+msgstr "Деталі телефонного дзвінка"
 
 #. module: voip
 #: model:ir.actions.act_window,name:voip.voip_phonecall_view
@@ -850,27 +850,27 @@ msgstr "Налаштування IP-телефонії"
 #. module: voip
 #: model:ir.model,name:voip.model_voip_phonecall
 msgid "VOIP Phonecall"
-msgstr ""
+msgstr "Телефонний дзвінок ІР-телефонії"
 
 #. module: voip
 #: model:ir.model,name:voip.model_voip_phonecall_log_wizard
 msgid "VOIP Phonecall log Wizard"
-msgstr ""
+msgstr "Помічник запису дзвінка ІР-телефонії"
 
 #. module: voip
 #: model:ir.model,name:voip.model_voip_phonecall_report
 msgid "VOIP Phonecalls by user report"
-msgstr ""
+msgstr "Дзвінок ІР-телефонії за звітом користувача"
 
 #. module: voip
 #: model:ir.model,name:voip.model_voip_phonecall_transfer_wizard
 msgid "VOIP Transfer Wizard of Phonecalls"
-msgstr ""
+msgstr "Помічник переміщення дзвінків ІР-телефонії"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_config_settings__mode
 msgid "VoIP Environment"
-msgstr ""
+msgstr "Середовище ІР-телефонії"
 
 #. module: voip
 #: code:addons/voip/wizard/voip_phonecall_transfer_wizard.py:35

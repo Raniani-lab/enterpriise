@@ -41,7 +41,6 @@ class Task(models.Model):
             'views': [(False, 'form')],
             'context': {
                 'default_x_task_id': self.id,
-                'default_x_name': self.name,
                 'form_view_initial_mode': 'edit'
             },
         })
@@ -95,16 +94,21 @@ class ProjectReportTemplate(models.Model):
             'model': model.model,
             'ttype': 'many2one',
             })
+        x_name_field = self.env['ir.model.fields'].search([('model_id', '=', model.id), ('name', '=', 'x_name')])
+        x_name_field.write({'related': 'x_task_id.name'})  # possible only after target field have been created
         self.env['ir.ui.view'].create({
             'type': 'form',
             'model': model.model,
             'arch': """
             <form>
                 <sheet>
+                    <group invisible="context.get('studio') or context.get('default_x_task_id')">
+                        <group>
+                            <field name="x_task_id" domain="[('allow_reports', '=', True)]"/>
+                        </group>
+                    </group>
                     <group>
                         <group>
-                            <field name="x_task_id" invisible="context.get('studio') or context.get('default_x_task_id')" readonly="context.get('default_x_task_id')"/>
-                            <field name="x_name" invisible="True"/>
                         </group>
                         <group>
                         </group>
@@ -128,8 +132,11 @@ class ProjectReportTemplate(models.Model):
 
     @api.multi
     def unlink(self):
+        models_ids = self.mapped('model_id.id')
         self.env['ir.ui.view'].search([('model', 'in', self.mapped('model_id.model'))]).unlink()
-        self.env['ir.model.access'].search([('model_id', 'in', self.mapped('model_id.id'))]).unlink()
+        self.env['ir.model.access'].search([('model_id', 'in', models_ids)]).unlink()
+        x_name_fields = self.env['ir.model.fields'].search([('model_id', 'in', models_ids), ('name', '=', 'x_name')])
+        x_name_fields.write({'related': False})  # we need to manually remove relation to allow the deletion of fields
         self.mapped('action_id').unlink()
         self.mapped('model_id').unlink()
         return super(ProjectReportTemplate, self).unlink()
@@ -141,7 +148,7 @@ class ProjectReportTemplate(models.Model):
         action = self.action_id.read()[0]
         action.update({
             'views': [[False, "form"]],
-            'context': {'default_x_task_id': True,
-                        'default_x_name': 'Example report'}
+            'context': {'default_x_task_id': True,  # to hide task_id from view
+                        'form_view_initial_mode': 'readonly'}  # to avoid edit mode at studio exit
         })
         return action

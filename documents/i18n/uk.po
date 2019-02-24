@@ -2042,7 +2042,7 @@ msgstr "документами поділився"
 #: code:addons/documents/static/src/xml/documents_thread.xml:14
 #, python-format
 msgid "e.g. 1-5, 7, 8-9"
-msgstr ""
+msgstr "напр. 1-5, 7, 8-9"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form

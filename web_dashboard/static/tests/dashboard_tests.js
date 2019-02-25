@@ -1234,7 +1234,6 @@ QUnit.module('Views', {
                             graph_groupbys: ['categ_id'],
                             graph_measure: 'untaxed',
                             graph_mode: 'pie',
-                            graph_intervalMapping: {},
                         },
                         domain: [],
                         name: 'Graph Analysis',
@@ -1602,7 +1601,6 @@ QUnit.module('Views', {
             graph_mode: 'bar',
             graph_measure: '__count__',
             graph_groupbys: ['categ_id'],
-            graph_intervalMapping: {},
         }, "context should be correct");
 
         await testUtils.dom.click(dashboard.$('.dropdown-toggle:contains(Measures)'));
@@ -1613,7 +1611,6 @@ QUnit.module('Views', {
             graph_mode: 'line',
             graph_measure: 'sold',
             graph_groupbys: ['categ_id'],
-            graph_intervalMapping: {},
         }, "context should be correct");
 
         dashboard.destroy();

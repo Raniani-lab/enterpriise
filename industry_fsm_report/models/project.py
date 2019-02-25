@@ -68,8 +68,8 @@ class ProjectReportTemplate(models.Model):
     name = fields.Char(string='Name', required=True)
     sequence = fields.Integer()
     report_count = fields.Integer(compute='_compute_report_count')
-    model_id = fields.Many2one('ir.model', ondelete='cascade')
-    action_id = fields.Many2one('ir.actions.act_window')
+    model_id = fields.Many2one('ir.model', ondelete='cascade', readonly=True, domain=[('state', '=', 'manual')])
+    action_id = fields.Many2one('ir.actions.act_window', readonly=True)
     active = fields.Boolean(default=True)
 
     def _compute_report_count(self):
@@ -85,11 +85,47 @@ class ProjectReportTemplate(models.Model):
         model = self.env['ir.model'].create({
             'name': vals['name'],
             'model': name,
-            'field_id': [(0, 0, {  # needed for proper model creation from demo data
-                'name': 'x_name',
-                'field_description': 'Name',
-                'ttype': 'char',
-            })]
+            'field_id': [
+                (0, 0, {  # needed for proper model creation from demo data
+                    'name': 'x_name',
+                    'field_description': 'Name',
+                    'ttype': 'char',
+                }),
+                (0, 0, {
+                    'name': 'x_task_id',
+                    'field_description': 'Task',
+                    'ttype': 'many2one',
+                    'relation': 'project.task',
+                    'required': True,
+                    'on_delete': 'cascade',
+                }),
+                (0, 0, {
+                    'name': 'x_contact_person',
+                    'ttype': 'char',
+                    'field_description': 'Contact Person',
+                }),
+                (0, 0, {
+                    'name': 'x_intervention_type',
+                    'ttype': 'selection',
+                    'field_description': 'Intervention Type',
+                    'selection': "[('functional','Functional'),('technical','Technical')]"
+                }),
+                (0, 0, {
+                    'name': 'x_comments',
+                    'ttype': 'text',
+                    'field_description': 'Comments',
+                }),
+                (0, 0, {
+                    'name': 'x_customer_signature',
+                    'ttype': 'binary',
+                    'field_description': 'Customer Signature',
+                }),
+                (0, 0, {
+                    'name': 'x_worker_signature',
+                    'ttype': 'binary',
+                    'field_description': 'Worker Signature',
+                }),
+            ]
         })
         self.env['ir.model.access'].create({
             'name': name + '_access',
@@ -100,16 +136,6 @@ class ProjectReportTemplate(models.Model):
             'perm_read': True,
             'perm_unlink': True,
         })
-        self.env['ir.model.fields'].create({
-            'model_id': model.id,
-            'field_description': 'Task',
-            'name': 'x_task_id',
-            'relation': 'project.task',
-            'required': True,
-            'on_delete': 'cascade',
-            'model': model.model,
-            'ttype': 'many2one',
-            })
         x_name_field = self.env['ir.model.fields'].search([('model_id', '=', model.id), ('name', '=', 'x_name')])
         x_name_field.write({'related': 'x_task_id.name'})  # possible only after target field have been created
         self.env['ir.ui.view'].create({
@@ -125,6 +151,11 @@ class ProjectReportTemplate(models.Model):
                     </group>
                     <group>
                         <group>
+                            <field name="x_contact_person" placeholder="Employee of the Customer"/>
+                            <field name="x_intervention_type"/>
+                            <field name="x_comments"/>
+                            <field name="x_worker_signature" widget="signature"/>
+                            <field name="x_customer_signature" widget="signature"/>
                         </group>
                         <group>
                         </group>

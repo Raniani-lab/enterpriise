@@ -167,7 +167,7 @@
         <field name="type_id" ref="sign.sign_item_type_signature"/>
         <field name="name"></field>
         <field name="required" eval="True"/>
-        <field name="responsible_id" ref="hr_contract_salary.sign_item_role_job_responsible"/>
+        <field name="responsible_id" ref="hr_contract_sign.sign_item_role_job_responsible"/>
         <field name="page">2</field>
         <field name="posX">0.333</field>
         <field name="posY">0.575</field>

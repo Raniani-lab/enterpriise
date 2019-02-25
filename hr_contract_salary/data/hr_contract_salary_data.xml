@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
   <data>
-    <record model="sign.item.role" id="sign_item_role_job_responsible">
-        <field name="name">HR Responsible</field>
-    </record>
-
     <record id="mail_template_send_offer" model="mail.template">
         <field name="name">Contract: Your Salary Package</field>
         <field name="model_id" ref="hr_contract.model_hr_contract"/>

@@ -21,8 +21,6 @@ class HrContract(models.Model):
     access_token = fields.Char('Security Token', copy=False)
     access_token_consumed = fields.Boolean('Consumed Access Token')
     access_token_end_date = fields.Date('Access Token Validity Date', copy=False)
-    sign_request_ids = fields.Many2many('sign.request', string="Requested Signatures")
-    sign_request_count = fields.Integer(compute='_compute_sign_request_count')
     applicant_id = fields.Many2one('hr.applicant')
     contract_reviews_count = fields.Integer(compute="_compute_contract_reviews_count", string="Proposed Contracts Count")
     contract_type = fields.Selection([
@@ -47,15 +45,8 @@ class HrContract(models.Model):
     @api.depends('sign_request_ids.nb_closed')
     def _compute_signatures_count(self):
         for contract in self:
-            if not contract.sign_request_ids:
-                contract.sign_request_count = 0.0
-            else:
+            if contract.sign_request_ids:
                 contract.signatures_count = max(contract.sign_request_ids.mapped('nb_closed'))
-
-    @api.depends('sign_request_ids')
-    def _compute_sign_request_count(self):
-        for contract in self:
-            contract.sign_request_count = len(contract.sign_request_ids)
 
     @api.depends('origin_contract_id')
     def _compute_contract_reviews_count(self):
@@ -119,19 +110,6 @@ class HrContract(models.Model):
         today = fields.Date.today()
         validity = self.env['ir.config_parameter'].sudo().get_param('hr_contract_salary.access_token_validity', default=30)
         return fields.Date.to_string(fields.Date.from_string(today) + timedelta(days=int(validity)))
-
-    def open_sign_requests(self):
-        self.ensure_one()
-        if len(self.sign_request_ids.ids) == 1:
-            return self.sign_request_ids.go_to_document()
-        else:
-            return {
-                'type': 'ir.actions.act_window',
-                'name': 'Signature Requests',
-                'view_mode': 'tree,form',
-                'res_model': 'sign.request',
-                'domain': [('id', 'in', self.sign_request_ids.ids)]
-            }
 
     def action_show_contract_reviews(self):
         return {

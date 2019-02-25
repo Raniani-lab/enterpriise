@@ -613,7 +613,7 @@ class website_hr_contract_salary(http.Controller):
             sign_template.id,
             [
                 {'role': request.env.ref('sign.sign_item_role_employee').id, 'partner_id': new_contract.employee_id.address_home_id.id},
-                {'role': request.env.ref('hr_contract_salary.sign_item_role_job_responsible').id, 'partner_id': new_contract.hr_responsible_id.partner_id.id}
+                {'role': request.env.ref('hr_contract_sign.sign_item_role_job_responsible').id, 'partner_id': new_contract.hr_responsible_id.partner_id.id}
             ],
             [new_contract.hr_responsible_id.partner_id.id],
             'Signature Request - ' + new_contract.name,

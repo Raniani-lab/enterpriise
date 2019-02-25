@@ -223,7 +223,7 @@ class Document(models.Model):
         return super(Document, self).message_new(msg_dict, defaults)
 
     @api.model
-    def _message_post_after_hook(self, message, msg_vals, model_description=False, mail_auto_delete=True):
+    def _message_post_after_hook(self, message, msg_vals):
         """
         If the res model was an attachment and a mail, adds all the custom values of the share link
             settings to the attachments of the mail.
@@ -250,8 +250,7 @@ class Document(models.Model):
                 if share.activity_option:
                     document.documents_set_activity(settings_record=share)
 
-        return super(Document, self)._message_post_after_hook(
-            message, msg_vals, model_description=model_description, mail_auto_delete=mail_auto_delete)
+        return super(Document, self)._message_post_after_hook(message, msg_vals)
 
     @api.multi
     def documents_set_activity(self, settings_record=None):

@@ -547,7 +547,7 @@ class AccountPayment(models.Model):
                 amount of one peso.</p>
                 <p><a href="http://www.sat.gob.mx/informacion_fiscal/factura_electronica/Documents/Complementoscfdi/Guia_comple_pagos.pdf">
                 For more information here (Pag. 5)</a></p>''')
-            self.message_post(body=legal, message_type='notification')
+            self.message_post(body=legal)
         else:
             body_msg = _('The cancel service requested failed')
         post_msg = []

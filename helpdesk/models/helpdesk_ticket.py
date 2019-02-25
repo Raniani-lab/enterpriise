@@ -375,7 +375,7 @@ class HelpdeskTicket(models.Model):
             self.message_subscribe(partner_ids)
         return super(HelpdeskTicket, self).message_update(msg, update_vals=update_vals)
 
-    def _message_post_after_hook(self, message, *args, **kwargs):
+    def _message_post_after_hook(self, message, msg_vals):
         if self.partner_email and self.partner_id and not self.partner_id.email:
             self.partner_id.email = self.partner_email
 
@@ -389,7 +389,7 @@ class HelpdeskTicket(models.Model):
                     ('partner_id', '=', False),
                     ('partner_email', '=', new_partner.email),
                     ('stage_id.fold', '=', False)]).write({'partner_id': new_partner.id})
-        return super(HelpdeskTicket, self)._message_post_after_hook(message, *args, **kwargs)
+        return super(HelpdeskTicket, self)._message_post_after_hook(message, msg_vals)
 
     @api.multi
     def _track_template(self, changes):
@@ -399,7 +399,7 @@ class HelpdeskTicket(models.Model):
             res['stage_id'] = (ticket.stage_id.template_id, {
                 'auto_delete_message': True,
                 'subtype_id': self.env['ir.model.data'].xmlid_to_res_id('mail.mt_note'),
-                'notif_layout': 'mail.mail_notification_light'
+                'email_layout_xmlid': 'mail.mail_notification_light'
             }
         )
         return res
@@ -416,18 +416,17 @@ class HelpdeskTicket(models.Model):
         return super(HelpdeskTicket, self)._track_subtype(init_values)
 
     @api.multi
-    def _notify_get_groups(self, message, groups):
+    def _notify_get_groups(self):
         """ Handle helpdesk users and managers recipients that can assign
         tickets directly from notification emails. Also give access button
         to portal and portal customers. If they are notified they should
         probably have access to the document. """
-        groups = super(HelpdeskTicket, self)._notify_get_groups(message, groups)
+        groups = super(HelpdeskTicket, self)._notify_get_groups()
 
         self.ensure_one()
         for group_name, group_method, group_data in groups:
-            if group_name in ('customer'):
-                continue
-            group_data['has_button_access'] = True
+            if group_name != 'customer':
+                group_data['has_button_access'] = True
 
         if self.user_id:
             return groups
@@ -435,10 +434,12 @@ class HelpdeskTicket(models.Model):
         take_action = self._notify_get_action_link('assign')
         helpdesk_actions = [{'url': take_action, 'title': _('Assign to me')}]
         helpdesk_user_group_id = self.env.ref('helpdesk.group_helpdesk_user').id
-        return [(
-            'group_helpdesk_user', lambda pdata: pdata['type'] == 'user' and helpdesk_user_group_id in pdata['groups'], {
-                'actions': helpdesk_actions,
-            })] + groups
+        new_groups = [(
+            'group_helpdesk_user',
+            lambda pdata: pdata['type'] == 'user' and helpdesk_user_group_id in pdata['groups'],
+            {'actions': helpdesk_actions}
+        )]
+        return new_groups + groups
 
     @api.multi
     def _notify_get_reply_to(self, default=None, records=None, company=None, doc_names=None):

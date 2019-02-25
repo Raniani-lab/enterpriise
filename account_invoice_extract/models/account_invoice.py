@@ -107,12 +107,14 @@ class AccountInvoice(models.Model):
     def message_post(self, **kwargs):
         """When a message is posted on an account.invoice, send the attachment to iap-ocr if
         the res_config is on "auto_send" and if this is the first attachment."""
-        res = super(AccountInvoice, self).message_post(**kwargs)
+        message = super(AccountInvoice, self).message_post(**kwargs)
         if self.env.company.extract_show_ocr_option_selection == 'auto_send':
             account_token = self.env['iap.account'].get('invoice_ocr')
             for record in self:
+                if record.type in ["out_invoice", "out_refund"]:
+                    return message
                 if record.extract_state == "no_extract_requested":
-                    attachments = res.attachment_ids
+                    attachments = message.attachment_ids  # should be in post_after_hook (or message_create) to have values without reading message?
                     if attachments:
                         endpoint = self.env['ir.config_parameter'].sudo().get_param(
                             'account_invoice_extract_endpoint', 'https://iap-extract.odoo.com') + '/iap/invoice_extract/parse'
@@ -144,7 +146,7 @@ class AccountInvoice(models.Model):
                         except AccessError:
                             record.extract_state = 'error_status'
                             record.extract_status_code = ERROR_NO_CONNECTION
-        return res
+        return message
 
     def retry_ocr(self):
         """Retry to contact iap to submit the first attachment in the chatter"""

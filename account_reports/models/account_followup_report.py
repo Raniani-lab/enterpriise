@@ -259,7 +259,7 @@ class AccountFollowupReport(models.AbstractModel):
                 subject=_('%s Payment Reminder') % (self.env.company.name) + ' - ' + partner.name,
                 subtype_id=self.env.ref('mail.mt_note').id,
                 model_description=_('payment reminder'),
-                notif_layout='mail.mail_notification_light')
+                email_layout_xmlid='mail.mail_notification_light')
             return True
         raise UserError(_('Could not send mail to partner because it does not have any email address defined'))
 

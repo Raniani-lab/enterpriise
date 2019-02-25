@@ -410,7 +410,8 @@ class AccountAsset(models.Model):
             dummy, tracking_value_ids = asset._message_track(tracked_fields, dict.fromkeys(fields))
             asset.message_post(subject=_('Asset created'), tracking_value_ids=tracking_value_ids)
             msg = _('An asset has been created for this move: <a href="/web#id={id}&model=account.asset">{name}</a>').format(id=asset.id, name=asset.name)
-            asset.original_move_line_ids.mapped('move_id').message_post(body=msg)
+            for move_id in asset.original_move_line_ids.mapped('move_id'):
+                move_id.message_post(body=msg)
             if not asset.depreciation_move_ids:
                 asset.compute_depreciation_board()
             asset._check_depreciations()

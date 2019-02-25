@@ -615,7 +615,6 @@ class AccountInvoice(models.Model):
         not_allow = signed.filtered(lambda r: r.l10n_mx_edi_sat_status != 'cancelled' or r.l10n_mx_edi_pac_status == 'to_cancel')
         not_allow.message_post(
             subject=_('An error occurred while setting to draft.'),
-            message_type='comment',
             body=_('This invoice does not have a properly cancelled XML and '
                    'it was signed at least once, please cancel properly with '
                    'the SAT.'))

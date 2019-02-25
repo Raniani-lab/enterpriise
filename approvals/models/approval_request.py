@@ -177,17 +177,18 @@ class ApprovalRequest(models.Model):
                 old_value = mapped_data.get(request.id)
                 if old_value != values['request_status']:
                     selection_description_values = {elem[0]: elem[1] for elem in self._fields['request_status']._description_selection(self.env)}
-                    request._message_log(_('State change.'), tracking_value_ids=[(0, 0, {
+                    request._message_log(body=_('State change.'), tracking_value_ids=[(0, 0, {
                         'field': 'request_status',
                         'field_desc': 'Request Status',
                         'field_type': 'selection',
                         'old_value_char': selection_description_values.get(old_value),
                         'new_value_char': selection_description_values.get(values['request_status']),
                     })])
-                    request.message_notify(
-                        partner_ids=request.request_owner_id.partner_id.ids,
-                        body="Your request %s is now in state %s" % (request.name, selection_description_values.get(values['request_status'])),
-                        subject=request.name)
+                    if request.request_owner_id:
+                        request.message_notify(
+                            partner_ids=request.request_owner_id.partner_id.ids,
+                            body="Your request %s is now in state %s" % (request.name, selection_description_values.get(values['request_status'])),
+                            subject=request.name)
         return super(ApprovalRequest, self)._write(values)
 
 class ApprovalApprover(models.Model):

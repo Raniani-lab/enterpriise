@@ -495,7 +495,7 @@ class MrpEco(models.Model):
     @api.returns('mail.message', lambda value: value.id)
     def message_post(self, **kwargs):
         message = super(MrpEco, self).message_post(**kwargs)
-        if message.message_type == 'comment' and message.author_id == self.env.user.partner_id:
+        if message.message_type == 'comment' and message.author_id == self.env.user.partner_id:  # should use message_values to avoid a read
             for eco in self:
                 for approval in eco.approval_ids.filtered(lambda app: app.template_stage_id == self.stage_id and app.status == 'none' and app.approval_template_id.approval_type == 'comment'):
                     if self.env.user in approval.approval_template_id.user_ids:

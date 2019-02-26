@@ -374,7 +374,7 @@ var ActivitiesTab = PhonecallTab.extend({
      */
     searchPhonecall: function (search) {
         // regular expression used to do a case insensitive search
-        var escSearch = this.escapeRegExp(search)
+        var escSearch = this.escapeRegExp(search);
         var expr = new RegExp(escSearch, 'i');
         // for each phonecall, check if the search is in phonecall name or the partner name
         _.each(this.phonecalls, function (phonecall) {
@@ -395,7 +395,7 @@ var ActivitiesTab = PhonecallTab.extend({
      */
     escapeRegExp: function (string) {
         return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
-      }
+    },
 
     //--------------------------------------------------------------------------
     // Private

@@ -1474,10 +1474,10 @@ msgid ""
 "recorded on the sales order (Example: You need to have 3 T-shirts on your "
 "sales order if the promotion is 'Buy 2, Get 1 Free'."
 msgstr ""
-"U heft niet de vereiste producthoeveelheden op uw verkooporder. Als het "
-"beloningsproduct dezelfde producthoevoelheid heeft, zorg er dan voor dat "
+"U heeft niet de vereiste producthoeveelheden op uw verkooporder. Als het "
+"beloningsproduct dezelfde producthoeveelheid heeft, zorg er dan voor dat "
 "alle producten zijn ingevoerd op de verkooporder (Bijvoorbeeld: U heeft 3 "
-"T-shirts nodig op uw verkooporder als de actie is '3 halen, 2 betaken'."
+"T-shirts nodig op uw verkooporder als de actie is '3 halen, 2 betalen'."
 
 #. module: sale_coupon
 #: model:mail.template,report_name:sale_coupon.mail_template_sale_coupon

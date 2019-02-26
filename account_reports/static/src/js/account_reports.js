@@ -326,10 +326,23 @@ var accountReportsWidget = AbstractAction.extend({
         _.each(this.$searchview_buttons.find('.js_account_report_choice_filter'), function(k) {
             $(k).toggleClass('selected', (_.filter(self.report_options[$(k).data('filter')], function(el){return ''+el.id == ''+$(k).data('id') && el.selected === true;})).length > 0);
         });
+        $('.js_account_report_group_choice_filter', this.$searchview_buttons).each(function (i, el) {
+            var $el = $(el);
+            var ids = $el.data('member-ids');
+            $el.toggleClass('selected', _.every(self.report_options[$el.data('filter')], function (member) {
+                // only look for actual ids, discard separators and section titles
+                if(typeof member.id == 'number'){
+                  // true if selected and member or non member and non selected
+                  return member.selected === (ids.indexOf(member.id) > -1);
+                } else {
+                  return true;
+                }
+            }));
+        });
         _.each(this.$searchview_buttons.find('.js_account_reports_one_choice_filter'), function(k) {
             $(k).toggleClass('selected', ''+self.report_options[$(k).data('filter')] === ''+$(k).data('id'));
         });
-        // click event
+        // click events
         this.$searchview_buttons.find('.js_account_report_date_filter').click(function (event) {
             self.report_options.date.filter = $(this).data('filter');
             var error = false;
@@ -358,6 +371,16 @@ var accountReportsWidget = AbstractAction.extend({
             if (option_value === 'unfold_all') {
                 self.unfold_all(self.report_options[option_value]);
             }
+            self.reload();
+        });
+        $('.js_account_report_group_choice_filter', this.$searchview_buttons).click(function () {
+            var option_value = $(this).data('filter');
+            var option_member_ids = $(this).data('member-ids') || [];
+            var is_selected = $(this).hasClass('selected');
+            _.each(self.report_options[option_value], function (el) {
+                // if group was selected, we want to uncheck all
+                el.selected = !is_selected && (option_member_ids.indexOf(Number(el.id)) > -1);
+            });
             self.reload();
         });
         this.$searchview_buttons.find('.js_account_report_choice_filter').click(function (event) {

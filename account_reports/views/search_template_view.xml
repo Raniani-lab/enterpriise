@@ -151,7 +151,7 @@
         <a type="button" class="dropdown-toggle" data-toggle="dropdown">
             <span class="fa fa-book"/>
             Journals:
-            <t t-set="selected_journals" t-value="', '.join(journal.get('code') for journal in options['journals'] if journal.get('selected'))"/>
+            <t t-set="selected_journals" t-value="options.get('name_journal_group') or ', '.join(journal.get('code') for journal in options['journals'] if journal.get('selected'))"/>
             <t t-if="selected_journals">
                 <t t-esc="selected_journals"/>
             </t>
@@ -167,7 +167,16 @@
                     <div role="separator" class="dropdown-divider"/>
                 </t>
                 <t t-if="j.get('id') != 'divider'">
-                    <a role="menuitem" class="dropdown-item js_account_report_choice_filter" t-att-title="j.get('name')+ '-' + j.get('code')" t-att-data-id="j.get('id')" data-filter="journals"><t t-esc="j.get('name')"/></a>
+                    <t t-if="j.get('id') == 'group'">
+                        <a role="menuitem" class="dropdown-item js_account_report_group_choice_filter" data-filter="journals" t-att-data-id="j.get('id')" t-att-data-member-ids="j.get('ids')">
+                            <t t-esc="j.get('name')"/>
+                        </a>
+                    </t>
+                    <t t-else="">
+                        <a role="menuitem" class="dropdown-item js_account_report_choice_filter" t-att-title="j.get('name')+ '-' + j.get('code')" t-att-data-id="j.get('id')" data-filter="journals">
+                            <t t-esc="j.get('name')"/>
+                        </a>
+                    </t>
                 </t>
             </t>
         </div>

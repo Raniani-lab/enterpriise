@@ -112,16 +112,39 @@ class AccountReport(models.AbstractModel):
         ], order="company_id, name")
 
     @api.model
+    def _get_filter_journal_groups(self):
+        journals = self._get_filter_journals().ids
+        groups = self.env['account.journal.group'].search([], order='sequence')
+        ret = self.env['account.journal.group']
+        for journal_group in groups:
+            # Only display the group if all journals are visible
+            if set(journal_group.account_journal_ids.ids).issubset(journals):
+                ret += journal_group
+        return ret
+
+    @api.model
     def _init_filter_journals(self, options, previous_options=None):
         if self.filter_journals is None:
             return
 
         previous_company = False
         if previous_options and previous_options.get('journals'):
-            journal_map = dict((opt['id'], opt['selected']) for opt in previous_options['journals'] if opt['id'] != 'divider')
+            journal_map = dict((opt['id'], opt['selected']) for opt in previous_options['journals'] if opt['id'] != 'divider' and 'selected' in opt)
         else:
             journal_map = {}
         options['journals'] = []
+
+        group_header_displayed = False
+        default_group_ids = []
+        for group in self._get_filter_journal_groups():
+            journal_ids = [journal.id for journal in group.account_journal_ids]
+            if len(journal_ids):
+                if not group_header_displayed:
+                    group_header_displayed = True
+                    options['journals'].append({'id': 'divider', 'name': _('Journal Groups')})
+                    default_group_ids = journal_ids
+                options['journals'].append({'id': 'group', 'name': group.name, 'ids': journal_ids})
+
         for j in self._get_filter_journals():
             if j.company_id != previous_company:
                 options['journals'].append({'id': 'divider', 'name': j.company_id.name})
@@ -131,7 +154,7 @@ class AccountReport(models.AbstractModel):
                 'name': j.name,
                 'code': j.code,
                 'type': j.type,
-                'selected': journal_map.get(j.id, False),
+                'selected': journal_map.get(j.id, j.id in default_group_ids),
             })
 
     @api.model
@@ -165,7 +188,7 @@ class AccountReport(models.AbstractModel):
         :param date_to:     The ending date of the period.
         :param period_type: The type of the interval date_from -> date_to.
         :return:            A dictionary containing:
-            * date_from * date_to * string * period_type *
+            * date_from * date_to * string * period_type * mode *
         '''
         def match(dt_from, dt_to):
             return (dt_from, dt_to) == (date_from, date_to)
@@ -1006,6 +1029,13 @@ class AccountReport(models.AbstractModel):
             date_to = options['date'].get('date_to') or options['date'].get('date') or fields.Date.today()
             period_domain = [('state', '=', 'draft'), ('date', '<=', date_to)]
             options['unposted_in_period'] = bool(self.env['account.move'].search_count(period_domain))
+
+        if options.get('journals'):
+            journals_selected = set(journal['id'] for journal in options['journals'] if journal.get('selected'))
+            for journal_group in self.env['account.journal.group'].search([('company_id', '=', self.env.user.company_id.id)]):
+                if journals_selected == set(journal_group.account_journal_ids.ids):
+                    options['name_journal_group'] = journal_group.name
+                    break
 
         report_manager = self._get_report_manager(options)
         info = {'options': options,

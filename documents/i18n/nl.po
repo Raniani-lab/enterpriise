@@ -97,7 +97,7 @@ msgid ""
 "the folder."
 msgstr ""
 "<b>Gebruik labels</b> om documenten eenvoudig te filteren. Labels kunnen per"
-" Map gedefinieerd worden."
+" map gedefinieerd worden."
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
@@ -563,7 +563,7 @@ msgstr "Dagen"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.res_config_settings_view_form
 msgid "Default Folders"
-msgstr "Standaard Mappen"
+msgstr "Standaard mappen"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_defaults
@@ -1305,8 +1305,8 @@ msgid ""
 "creation of new records completely."
 msgstr ""
 "Optionele ID van een thread (record) waaraan alle inkomende berichten worden"
-" gekoppeld, zelfs als hierop niet geantwoord hebben. Indien ingesteld, zal "
-"dit het aanmaken van nieuwe records uitzetten."
+" gekoppeld, zelfs als ze hierop niet geantwoord hebben. Indien ingesteld, "
+"zal dit het aanmaken van nieuwe records uitzetten."
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_internal_knowledge_other
@@ -1738,7 +1738,7 @@ msgid ""
 "the sender (From) address, or will use the Administrator account if no "
 "system user is found for that address."
 msgstr ""
-"De eigenaar van de regels welker zijn aangemaakt bij het ontvangen van de "
+"De eigenaar van de regels welke zijn aangemaakt bij het ontvangen van de "
 "e-mails op deze alias. Indien dit veld niet is ingesteld zal het systeem "
 "proberen om de juiste eigenaar te vinden op basis van het verzend (van) "
 "adres. Indien geen gebruiker wordt gevonden, wordt de Administrator "

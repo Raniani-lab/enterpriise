@@ -422,7 +422,7 @@ msgid ""
 "                You can share promotion codes or grant the promotions automatically if some conditions are met."
 msgstr ""
 "Stel promotieprogramma's op om meer klanten aan te trekken met kortingen, gratis producten, gratis bezorging, enz.\n"
-"                 U kunt promotiecodes delen of de promoties automatisch toestaan als aan een aantal voorwaarden is voldaan."
+"U kunt promotiecodes delen of de promoties automatisch toestaan als aan een aantal voorwaarden is voldaan."
 
 #. module: sale_coupon
 #: model:sale.coupon.program,name:sale_coupon.3_ipad_plus_1_free

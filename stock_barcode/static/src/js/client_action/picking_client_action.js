@@ -58,11 +58,11 @@ var PickingClientAction = ClientAction.extend({
             } else if (picking_state === 'cancel') {
                 self.mode = 'cancel';
             }
-            self.allow_scrap = (!(
-                ((picking_type_code !== 'incoming') && (['draft', 'cancel', 'waiting'].indexOf(picking_state) !== -1))
-                || ((picking_type_code === 'incoming') && (picking_state !== 'done'))
-            ))
-
+            self.allow_scrap = (
+                (picking_type_code === 'incoming') && (picking_state === 'done') ||
+                (picking_type_code === 'outgoing') && (picking_state !== 'done') ||
+                (picking_type_code === 'internal')
+            )
         });
         return res;
     },

@@ -683,8 +683,8 @@ class AccountInvoice(models.Model):
                 amount = round(abs(tax_dict.get(
                     'amount', tax.amount / 100 * float("%.2f" % line.price_subtotal))), 2)
                 rate = round(abs(tax.amount), 2)
-                if tax.amount not in taxes:
-                    taxes.update({tax.amount: {
+                if tax.id not in taxes:
+                    taxes.update({tax.id: {
                         'name': (tax.tag_ids[0].name
                                  if tax.tag_ids else tax.name).upper(),
                         'amount': amount,
@@ -693,8 +693,8 @@ class AccountInvoice(models.Model):
                         'tax_amount': tax_dict.get('amount', tax.amount),
                     }})
                 else:
-                    taxes[tax.amount].update({
-                        'amount': taxes[tax.amount]['amount'] + amount
+                    taxes[tax.id].update({
+                        'amount': taxes[tax.id]['amount'] + amount
                     })
                 if tax.amount >= 0:
                     values['total_transferred'] += amount
@@ -1004,7 +1004,7 @@ class AccountInvoice(models.Model):
             if not record.l10n_mx_edi_time_invoice:
                 record.l10n_mx_edi_time_invoice = date_mx.strftime(
                     DEFAULT_SERVER_TIME_FORMAT)
-        self._l10n_mx_edi_update_hour_timezone()
+                record._l10n_mx_edi_update_hour_timezone()
         return super(AccountInvoice, self).action_date_assign()
 
     @api.multi

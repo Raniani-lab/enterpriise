@@ -1725,7 +1725,7 @@ msgstr "Оцінювання останнього значення"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__rating_percentage_satisfaction
 msgid "Rating Satisfaction"
-msgstr ""
+msgstr "Рейтинг вдоволеності"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__rating_count

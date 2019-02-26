@@ -6,6 +6,7 @@ var mailTestUtils = require('mail.testUtils');
 var ace = require('web_editor.ace');
 var concurrency = require('web.concurrency');
 var config = require('web.config');
+var fieldRegistry = require('web.field_registry');
 var framework = require('web.framework');
 var ListRenderer = require('web.ListRenderer');
 var testUtils = require('web.test_utils');
@@ -1170,6 +1171,48 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
+    QUnit.test('kanban editor with async widget', function (assert) {
+        assert.expect(7);
+
+        var fieldDef = $.Deferred();
+        var FieldChar = fieldRegistry.get('char');
+        fieldRegistry.add('asyncwidget', FieldChar.extend({
+            willStart: function () {
+                return fieldDef;
+            },
+        }));
+
+        var vem = studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'coucou',
+            arch: "<kanban>" +
+                    "<templates>" +
+                        "<t t-name='kanban-box'>" +
+                            "<div><field name='display_name' widget='asyncwidget'/></div>" +
+                        "</t>" +
+                    "</templates>" +
+                "</kanban>",
+        });
+
+        assert.containsNone(document.body, '.o_web_studio_kanban_view_editor');
+
+        fieldDef.resolve();
+
+        assert.containsOnce(document.body, '.o_web_studio_kanban_view_editor');
+
+        assert.containsOnce(vem, '.o_web_studio_kanban_view_editor [data-node-id]');
+        assert.containsOnce(vem, '.o_web_studio_kanban_view_editor .o_web_studio_hook');
+
+        vem.$('.o_web_studio_kanban_view_editor [data-node-id]').click();
+
+        assert.hasClass(vem.$('.o_web_studio_sidebar .o_web_studio_properties'), 'active');
+        assert.containsOnce(vem, '.o_web_studio_sidebar_content.o_display_field',
+            "the sidebar should now display the field properties");
+        assert.hasClass(vem.$('.o_web_studio_kanban_view_editor [data-node-id]'), 'o_web_studio_clicked');
+
+        vem.destroy();
+    });
+
     QUnit.test('kanban editor add priority', function (assert) {
         assert.expect(3);
         var arch = "<kanban>" +
@@ -1463,6 +1506,88 @@ QUnit.module('ViewEditorManager', {
         assert.hasAttrValue(vem.$('.o_web_studio_sidebar input[name="enable_stage"]'), 'checked', 'checked',
             "the stages should be enabled");
         assert.strictEqual(vem.$('.o_web_studio_sidebar select[name="default_group_by"]').val(), "x_stage_id",
+            "the kanban should be grouped by stage");
+
+        vem.destroy();
+    });
+
+
+    QUnit.test('enable stages in kanban editor, existing field stage_id', function (assert) {
+        assert.expect(7);
+
+        this.data.x_coucou_stage = {
+            fields: {},
+        };
+        this.data.coucou.fields.stage_id = {type: 'many2one', relation: 'x_coucou_stage', string: 'Stage', store: true};
+
+        var fieldsView;
+        var nbEditView = 0;
+        var arch =
+            "<kanban>" +
+                "<templates>" +
+                    "<t t-name='kanban-box'>" +
+                        "<div class='o_kanban_record'>" +
+                            "<field name='display_name'/>" +
+                        "</div>" +
+                    "</t>" +
+                "</templates>" +
+            "</kanban>";
+        var vem = studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'coucou',
+            arch: arch,
+            session: {
+                user_context: {studio: 1},
+            },
+            mockRPC: function (route, args) {
+                if (route === '/web_studio/create_stages_model') {
+                    assert.strictEqual(args.model_name, 'coucou',
+                        "should create the stages model for the current model");
+                    assert.strictEqual(args.context.studio, 1,
+                        "studio should be correctly set in the context");
+                    return $.when();
+                }
+                if (route === '/web_studio/edit_view') {
+                    nbEditView++;
+                    // the server sends the arch in string but it's post-processed
+                    // by the ViewEditorManager
+                    fieldsView.arch = "<kanban default_group_by='stage_id'>" +
+                            "<templates>" +
+                                "<field name='stage_id'/>" +
+                                "<t t-name='kanban-box'>" +
+                                    "<div class='o_kanban_record'>" +
+                                        "<field name='display_name'/>" +
+                                    "</div>" +
+                                "</t>" +
+                            "</templates>" +
+                        "</kanban>";
+                    return $.when({
+                        fields: fieldsView.fields,
+                        fields_views: {
+                            kanban: fieldsView,
+                        }
+                    });
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        // used to generate the new fields view in mockRPC
+        fieldsView = $.extend(true, {}, vem.fields_view);
+
+        assert.strictEqual(vem.$('.o_web_studio_sidebar input[name="enable_stage"]').attr('checked'), undefined,
+            "the stages shouldn't be enabled");
+        assert.strictEqual(vem.$('.o_web_studio_sidebar select[name="default_group_by"]').val(), "",
+            "the kanban should not be grouped");
+
+        vem.$('.o_web_studio_sidebar input[name="enable_stage"]').click();
+
+        assert.strictEqual(nbEditView, 2,
+            "should edit the view twice: add field in view & set the default_group_by");
+
+        assert.strictEqual(vem.$('.o_web_studio_sidebar input[name="enable_stage"]').attr('checked'), 'checked',
+            "the stages should be enabled");
+        assert.strictEqual(vem.$('.o_web_studio_sidebar select[name="default_group_by"]').val(), "stage_id",
             "the kanban should be grouped by stage");
 
         vem.destroy();

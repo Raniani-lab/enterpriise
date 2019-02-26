@@ -19,7 +19,7 @@ _logger = logging.getLogger()
 class Sign(http.Controller):
 
     def get_document_qweb_context(self, id, token):
-        sign_request = http.request.env['sign.request'].sudo().search([('id', '=', id)])
+        sign_request = http.request.env['sign.request'].sudo().browse(id)
         if not sign_request:
             if token:
                 return http.request.render('sign.deleted_sign_request')
@@ -86,8 +86,8 @@ class Sign(http.Controller):
 
     @http.route(['/sign/download/<int:id>/<token>/<download_type>'], type='http', auth='public')
     def download_document(self, id, token, download_type, **post):
-        sign_request = http.request.env['sign.request'].sudo().search([('id', '=', id), ('access_token', '=', token)])
-        if not sign_request:
+        sign_request = http.request.env['sign.request'].sudo().browse(id)
+        if sign_request.access_token != token or not sign_request:
             return http.request.not_found()
 
         document = None
@@ -245,8 +245,10 @@ class Sign(http.Controller):
             return False
 
         # mark signature as done in next activity
-        user_id = http.request.env['res.users'].search([('partner_id', '=', request_item.partner_id.id)]).id
-        request_item.sign_request_id.activity_feedback(['mail.mail_activity_data_todo'], user_id=user_id)
+        user_ids = http.request.env['res.users'].search([('partner_id', '=', request_item.partner_id.id)])
+        sign_users = user_ids.filtered(lambda u: u.has_group('sign.group_sign_user'))
+        for sign_user in sign_users:
+            request_item.sign_request_id.activity_feedback(['mail.mail_activity_data_todo'], user_id=sign_user.id)
 
         request_item.action_completed()
         return True

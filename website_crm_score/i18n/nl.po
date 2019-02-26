@@ -480,8 +480,8 @@ msgid ""
 "Sales Team the user is member of. Used to compute the members of a Sales "
 "Team through the inverse one2many"
 msgstr ""
-"Verkoop teams waar van de gebruiker lid is. Gebruikt om de hoeveelheid leden"
-" van een verkoopteam mee te berekenen door een omgekeerde one2many."
+"Verkoopteams waarvan de gebruiker lid is. Gebruikt om de hoeveelheid leden "
+"van een verkoopteam mee te berekenen door een omgekeerde one2many."
 
 #. module: website_crm_score
 #: model:ir.model.fields,field_description:website_crm_score.field_crm_team__team_user_ids

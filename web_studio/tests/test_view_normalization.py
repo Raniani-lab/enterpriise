@@ -1127,7 +1127,7 @@ class TestViewNormalization(TransactionCase):
             ''',
             '''
                <data>
-                <xpath expr="//form[1]/sheet[1]/div[1]" position="before">
+                <xpath expr="//form[1]/sheet[1]/div[not(@name)][1]" position="before">
                   <div class="oe_button_box" name="button_box">
                   </div>
                 </xpath>
@@ -1164,7 +1164,7 @@ class TestViewNormalization(TransactionCase):
             ''',
             '''
                <data>
-                <xpath expr="//form[1]/sheet[1]/div[1]" position="before">
+                <xpath expr="//form[1]/sheet[1]/div[not(@name)][1]" position="before">
                   <div name="x_path_2"/>
                   <div name="x_path_1"/>
                 </xpath>
@@ -1211,14 +1211,14 @@ class TestViewNormalization(TransactionCase):
             ''',
             '''
                <data>
-                <xpath expr="//form[1]/sheet[1]/div[1]" position="before">
+                <xpath expr="//form[1]/sheet[1]/div[not(@name)][1]" position="before">
                   <div name="x_path_1"/>
                   <div name="x_path_2"/>
                 </xpath>
-                <xpath expr="//form[1]/sheet[1]/div[1]" position="after">
+                <xpath expr="//form[1]/sheet[1]/div[not(@name)][1]" position="after">
                   <div name="x_path_3"/>
                 </xpath>
-                <xpath expr="//form[1]/sheet[1]/div[2]" position="after">
+                <xpath expr="//form[1]/sheet[1]/div[not(@name)][2]" position="after">
                   <div name="x_path_4"/>
                 </xpath>
               </data>

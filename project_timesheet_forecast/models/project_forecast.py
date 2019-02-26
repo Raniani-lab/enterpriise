@@ -14,7 +14,7 @@ class Forecast(models.Model):
     percentage_hours = fields.Float("Progress", compute='_compute_percentage_hours', compute_sudo=True, store=True)
 
     # this field should be in project_forecast directly, since it does not depends on timesheet, and its computation method can be
-    # merge with _compute_time. (to avoid calling twice get_work_days_data)
+    # merge with _compute_time. (to avoid calling twice _get_work_days_data)
     # TODO JEM: should be moved to project_forecast and mixed with compute_time (see master-forecast-poc2-jem)
     working_days_count = fields.Integer("Number of working days", compute='_compute_working_days_count', store=True)
 
@@ -23,7 +23,7 @@ class Forecast(models.Model):
         for forecast in self:
             start_dt = datetime.datetime.combine(forecast.start_date, datetime.time.min)
             stop_dt = datetime.datetime.combine(forecast.end_date, datetime.time.max)
-            forecast.working_days_count = forecast.employee_id.get_work_days_data(start_dt, stop_dt)['days']
+            forecast.working_days_count = forecast.employee_id._get_work_days_data(start_dt, stop_dt)['days']
 
     @api.depends('resource_hours', 'effective_hours')
     def _compute_percentage_hours(self):

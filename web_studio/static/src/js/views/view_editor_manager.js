@@ -688,6 +688,9 @@ var ViewEditorManager = AbstractEditorManager.extend({
             },
         }).then(function (relationID) {
             var fieldName = 'x_stage_id';
+            if (self.fields && self.fields.stage_id) {
+                fieldName = 'stage_id';
+            }
             self._do({
                 type: 'add',
                 target: {

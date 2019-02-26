@@ -1236,7 +1236,7 @@ msgstr "Doelmodel"
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant__is_test
 msgid "Test Record"
-msgstr "Test recor"
+msgstr "Test record"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__is_test

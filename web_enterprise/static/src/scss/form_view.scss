@@ -122,6 +122,7 @@
             height: $o-statbutton-height;
             padding: 0 $o-statbutton-spacing 0 0; // padding-left will be achieved through margin-left of content
             text-align: left;
+            white-space: nowrap;
             background-color: transparent;
             opacity: 0.8;
 

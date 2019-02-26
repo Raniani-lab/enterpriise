@@ -18,7 +18,9 @@
                                 <div><strong>Next invoice: <span t-field="account.recurring_next_date"/></strong></div>
                                 <a t-if="account.in_progress and not account.to_renew and account.template_id and display_change_plan" role="button" class="mt8 btn btn-primary" t-att-href="'/my/subscription/'+str(account.id)+'/change'+'?uuid='+str(account.uuid)">Change plan</a>
                                 <div>Payment method: <t t-esc="account.payment_token_id.short_name"/></div>
-                                <a role="button" class="mt8 btn btn-secondary" href="?change_pm">Change Payment Method</a>
+                                <a t-if="account.in_progress and not account.to_renew" role="button" class="mt8 btn btn-secondary" data-toggle="modal" data-target="#payment_managing" href="#">
+                                    Change Payment Method
+                                </a>
                             </li>
 
                             <li t-if="account.user_id" class="list-group-item flex-grow-1">
@@ -187,21 +189,33 @@
                             </div>
 
                             <!-- ======  Change Payment Method ====== -->
-                            <div t-if="account.in_progress and not account.to_renew and change_pm" class="clearfix" id="payment_managing">
-                                <h5 t-if="part_pms" class="mb-1">Change payment method</h5>
-                                <h5 t-else="" class="mb-1">Register a payment method with</h5>
-                                <hr class="my-0"/>
-                                <t t-call="payment.payment_tokens_list">
-                                    <t t-set="form_action" t-value="'/my/subscription/' + str(account.id) + '/' + str(account.uuid) + '/set_pm'"/>
-                                    <t t-set="return_url" t-value="'/my/subscription/' + str(account.id) + '/' + str(account.uuid)"/>
-                                    <t t-set="pms" t-value="part_pms"/>
-                                    <t t-set="icon_class" t-value="'fa-lock'"/>
-                                    <t t-set="submit_txt" t-value="'Change'"/>
-                                    <t t-set="checked_pm_id" t-value="account.payment_token_id.id"/>
-                                    <t t-set="mode" t-value="'payment'"/>
-                                    <t t-set="s2s_acquirers" t-value="acquirers"/>
-                                    <t t-set="verify_validity" t-value="True"/>
-                                </t>
+                            <div t-if="account.in_progress and not account.to_renew" role="dialog" class="modal fade" id="payment_managing">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <header class="modal-header">
+                                            <h4 t-if="part_pms" class="modal-title">Change payment method</h4>
+                                            <h4 t-else="" class="modal-title">Register a payment method with</h4>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">&amp;times;</button>
+                                        </header>
+                                        <main class="modal-body">
+                                            <!-- ======  Manage Payment methods ====== -->
+                                            <div id="payment_method" class="text-left">
+                                                <t t-call="payment.payment_tokens_list">
+                                                    <t t-set="form_action" t-value="'/my/subscription/' + str(account.id) + '/' + str(account.uuid) + '/set_pm'"/>
+                                                    <t t-set="return_url" t-value="'/my/subscription/' + str(account.id) + '/' + str(account.uuid)"/>
+                                                    <t t-set="pms" t-value="part_pms"/>
+                                                    <t t-set="icon_class" t-value="'fa-lock'"/>
+                                                    <t t-set="submit_txt" t-value="'Change'"/>
+                                                    <t t-set="checked_pm_id" t-value="account.payment_token_id.id"/>
+                                                    <t t-set="mode" t-value="'payment'"/>
+                                                    <t t-set="s2s_acquirers" t-value="acquirers"/>
+                                                    <t t-set="verify_validity" t-value="True"/>
+                                                    <t t-set="show_manage_btn" t-value="request.env['payment.acquirer'].search([('website_published', '=', True), ('registration_view_template_id', '!=', False)])"/>
+                                                </t>
+                                            </div>
+                                        </main>
+                                    </div>
+                                </div>
                             </div>
 
                             <!-- ======  Terms and conditions ====== -->
@@ -209,11 +223,6 @@
                                 <h4 class="mb-1">Terms and conditions</h4>
                                 <hr class="my-0"/>
                                 <div t-field="account.description"/>
-                            </t>
-
-                            <!-- ======  Manage Payment methods ====== -->
-                            <t t-if="request.env['payment.acquirer'].search([('website_published', '=', True), ('registration_view_template_id', '!=', False)])">
-                                <div class='manage_payment_method mt16'><a href="/my/payment_method">Manage payment methods</a></div>
                             </t>
                         </div>
                     </div>

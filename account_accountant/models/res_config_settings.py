@@ -16,6 +16,7 @@ class ResConfigSettings(models.TransientModel):
                                    related='company_id.period_lock_date', readonly=False)
     fiscalyear_lock_date = fields.Date(string='Lock Date for All Users',
                                        related='company_id.fiscalyear_lock_date', readonly=False)
+    tax_lock_date = fields.Date("Tax Lock Date", related='company_id.tax_lock_date', readonly=False)
     use_anglo_saxon = fields.Boolean(string='Anglo-Saxon Accounting', related='company_id.anglo_saxon_accounting', readonly=False)
     module_account_predictive_bills = fields.Boolean(string="Account Predictive Bills")
     transfer_account_id = fields.Many2one('account.account', string="Transfer Account",

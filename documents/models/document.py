@@ -365,9 +365,10 @@ class Document(models.Model):
     def search_panel_select_range(self, field_name):
         if field_name == 'folder_id':
             fields = ['display_name', 'description', 'parent_folder_id']
+            DocumentFolder = self.env['documents.folder'].with_context(hierarchical_naming=False)
             return {
                 'parent_field': 'parent_folder_id',
-                'values': self.env['documents.folder'].search_read([], fields),
+                'values': DocumentFolder.search_read([], fields),
             }
         return super(Document, self).search_panel_select_range(field_name)
 

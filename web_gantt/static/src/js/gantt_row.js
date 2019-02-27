@@ -136,6 +136,7 @@ var GanttRow = Widget.extend({
     _bindPopover: function () {
         var self = this;
         this.$('.o_gantt_pill').popover({
+            container: this.$el,
             trigger: 'hover',
             delay: {show: this.POPOVER_DELAY},
             html: true,

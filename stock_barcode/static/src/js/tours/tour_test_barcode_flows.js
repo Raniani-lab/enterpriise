@@ -51,25 +51,25 @@ function assertPageSummary (expected) {
 
 function assertPreviousVisible (expected) {
     var $previousButton = $('.o_previous_page');
-    var current = $previousButton.hasClass('o_hidden');
+    var current = (!$previousButton.length && !expected) || $previousButton.hasClass('o_hidden');
     assert(!current, expected, 'Previous visible');
 }
 
 function assertPreviousEnabled (expected) {
     var $previousButton = $('.o_previous_page');
-    var current = $previousButton.prop('disabled');
+    var current = (!$previousButton.length && !expected) || $previousButton.prop('disabled');
     assert(!current, expected, 'Previous button enabled');
 }
 
 function assertNextVisible (expected) {
     var $nextButton = $('.o_next_page');
-    var current = $nextButton.hasClass('o_hidden');
+    var current = (!$nextButton.length && !expected) || $nextButton.hasClass('o_hidden');
     assert(!current, expected, 'Next visible');
 }
 
 function assertNextEnabled (expected) {
     var $nextButton = $('.o_next_page');
-    var current = $nextButton.prop('disabled');
+    var current = (!$nextButton.length && !expected) || $nextButton.prop('disabled');
     assert(!current, expected, 'Next button enabled');
 }
 
@@ -81,13 +81,13 @@ function assertNextIsHighlighted (expected) {
 
 function assertValidateVisible (expected) {
     var $validate = $('.o_validate_page');
-    var current = $validate.hasClass('o_hidden');
+    var current = (!$validate.length && !expected) || $validate.hasClass('o_hidden');
     assert(!current, expected, 'Validate visible');
 }
 
 function assertValidateEnabled (expected) {
     var $validate = $('.o_validate_page');
-    var current = $validate.prop('disabled');
+    var current = (!$validate.length && !expected) || $validate.prop('disabled');
     assert(!current, expected, 'Validate enabled');
 }
 
@@ -1202,18 +1202,17 @@ tour.register('test_delivery_reserved_2', {test: true}, [
     {
         trigger: '.o_barcode_client_action',
         run: function() {
-            assertPageSummary(false);
+            assertPageSummary('');
             assertPreviousVisible(true);
             assertPreviousEnabled(false);
             assertNextVisible(false);
             assertNextEnabled(false);
             assertNextIsHighlighted(false);
             assertLinesCount(2);
-            assertScanMessage('scan_src');
+            assertScanMessage('scan_products');
             assertLocationHighlight(false);
             // not relevant in delivery mode
             // assertDestinationLocationHighlight(false);
-            assertPager('1/1');
             assertValidateVisible(true);
             assertValidateIsHighlighted(false);
             assertValidateEnabled(true);
@@ -1238,7 +1237,7 @@ tour.register('test_delivery_reserved_2', {test: true}, [
     {
         trigger: '.o_barcode_line_title:contains("product2")',
         run: function() {
-            assertPageSummary(false);
+            assertPageSummary('');
             assertPreviousVisible(true);
             assertPreviousEnabled(true);
             assertNextVisible(false);
@@ -1246,13 +1245,11 @@ tour.register('test_delivery_reserved_2', {test: true}, [
             assertNextIsHighlighted(false);
             assertLinesCount(3);
             assertScanMessage('scan_products');
-            assertLocationHighlight(true);
             // not relevant in delivery mode
             // assertDestinationLocationHighlight(false);
-            assertPager('1/1');
             assertValidateVisible(true);
             assertValidateIsHighlighted(false);
-            assertValidateEnabled(false);
+            assertValidateEnabled(true);
         }
     },
 
@@ -1269,7 +1266,7 @@ tour.register('test_delivery_reserved_2', {test: true}, [
     {
         trigger: '.o_barcode_line_title:contains("product2")',
         run: function() {
-            assertPageSummary(false);
+            assertPageSummary('');
             assertPreviousVisible(true);
             assertPreviousEnabled(true);
             assertNextVisible(false);
@@ -1277,17 +1274,15 @@ tour.register('test_delivery_reserved_2', {test: true}, [
             assertNextIsHighlighted(false);
             assertLinesCount(3);
             assertScanMessage('scan_products');
-            assertLocationHighlight(true);
             // not relevant in delivery mode
             // assertDestinationLocationHighlight(false);
-            assertPager('1/1');
             assertValidateVisible(true);
-            assertValidateIsHighlighted(false);
-            assertValidateEnabled(false);
-             var $lines = getLine({barcode: 'product1'});
-             for (i = 0; i < $lines.length; i++) {
-                 assertLineQty($lines[i], "2");
-             }
+            assertValidateIsHighlighted(true);
+            assertValidateEnabled(true);
+            var $lines = getLine({barcode: 'product1'});
+            for (var i = 0; i < $lines.length; i++) {
+                assertLineQty($($lines[i]), "2");
+            }
 
         }
     },
@@ -1300,7 +1295,7 @@ tour.register('test_delivery_reserved_2', {test: true}, [
     {
         trigger: '.o_barcode_client_action',
         run: function () {
-            assertPageSummary(false);
+            assertPageSummary('');
             assertPreviousVisible(true);
             assertPreviousEnabled(true);
             assertNextVisible(false);
@@ -1308,13 +1303,11 @@ tour.register('test_delivery_reserved_2', {test: true}, [
             assertNextIsHighlighted(false);
             assertLinesCount(4);
             assertScanMessage('scan_products');
-            assertLocationHighlight(true);
             // not relevant in delivery mode
             // assertDestinationLocationHighlight(false);
-            assertPager('1/1');
             assertValidateVisible(true);
-            assertValidateIsHighlighted(false);
-            assertValidateEnabled(false);
+            assertValidateIsHighlighted(true);
+            assertValidateEnabled(true);
         }
     },
 ]);
@@ -1324,18 +1317,17 @@ tour.register('test_delivery_reserved_3', {test: true}, [
     {
         trigger: '.o_barcode_client_action',
         run: function() {
-            assertPageSummary(false);
+            assertPageSummary('');
             assertPreviousVisible(true);
             assertPreviousEnabled(false);
             assertNextVisible(false);
             assertNextEnabled(false);
             assertNextIsHighlighted(false);
             assertLinesCount(1);
-            assertScanMessage('scan_src');
+            assertScanMessage('scan_products');
             assertLocationHighlight(false);
             // not relevant in delivery mode
             // assertDestinationLocationHighlight(false);
-            assertPager('1/1');
             assertValidateVisible(true);
             assertValidateIsHighlighted(false);
             assertValidateEnabled(true);
@@ -1355,7 +1347,7 @@ tour.register('test_delivery_reserved_3', {test: true}, [
     {
         trigger: '.o_barcode_client_action',
         run: function() {
-            assertPageSummary(false);
+            assertPageSummary('');
             assertPreviousVisible(true);
             assertPreviousEnabled(true);
             assertNextVisible(false);
@@ -1363,14 +1355,12 @@ tour.register('test_delivery_reserved_3', {test: true}, [
             assertNextIsHighlighted(false);
             assertLinesCount(1);
             assertScanMessage('scan_products');
-            assertLocationHighlight(true);
             // not relevant in delivery mode
             // assertDestinationLocationHighlight(false);
-            assertPager('1/1');
             assertValidateVisible(true);
-            assertValidateIsHighlighted(false);
-            assertValidateEnabled(false);
-             var $line = getLine({barcode: 'product1'});
+            assertValidateIsHighlighted(true);
+            assertValidateEnabled(true);
+            var $line = getLine({barcode: 'product1'});
             assertLineIsHighlighted($line, true);
             assertLineQty($line, "1");
         }

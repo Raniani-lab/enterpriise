@@ -174,11 +174,10 @@ QUnit.module('Views', {
             // assert.strictEqual($('div.popover li:contains(Stop Date)').text(), 'Stop Date: 2018-12-22 07:29:59 AM',
             //     'popover should display start date of task 2 in local time');
 
-            gantt.$('.o_gantt_pill:contains("Task 2")').trigger('mouseleave');
+            gantt.destroy();
             assert.containsNone(gantt, 'div.popover', 'should not have a popover anymore');
 
             GanttRow.prototype.POPOVER_DELAY = POPOVER_DELAY;
-            gantt.destroy();
             done();
         });
     });

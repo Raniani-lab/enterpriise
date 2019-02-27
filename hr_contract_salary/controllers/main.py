@@ -279,6 +279,7 @@ class website_hr_contract_salary(http.Controller):
             'ip_wage_rate': advantages['ip_wage_rate'],
             'contract_type': advantages['contract_type'],
             'internet': advantages['internet'],
+            'date_start': fields.Date.today().replace(day=1),
         })
 
         if advantages['has_mobile']:

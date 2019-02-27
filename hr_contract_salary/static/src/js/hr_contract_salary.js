@@ -1,11 +1,12 @@
 odoo.define('hr_contract_salary', function (require) {
 "use strict";
 
-var ajax = require('web.ajax');
 var concurrency = require('web.concurrency');
-var Widget = require('web.Widget');
+var publicWidget = require('web.public.widget');
 
-var SalaryPackageWidget = Widget.extend({
+publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
+    selector: '#hr_cs_form',
+
     events: {
         "change .advantage_input": "onchange_advantage",
         "change input[name='mobility']": "onchange_mobility",
@@ -104,8 +105,8 @@ var SalaryPackageWidget = Widget.extend({
             'other_juniors_dependent': parseInt($("input[name='other_juniors_dependent']").val()) || 0,
             'other_disabled_juniors_dependent': parseInt($("input[name='other_disabled_juniors_dependent']").val()) || 0,
             'birthdate': $("input[name='birthdate']").val(),
-            'street': $("input[name='street']").val(), 
-            'street2': $("input[name='street2']").val(), 
+            'street': $("input[name='street']").val(),
+            'street2': $("input[name='street2']").val(),
             'city': $("input[name='city']").val(),
             'zip': $("input[name='zip']").val(),
             'state': $("input[name='state']").val(),
@@ -145,7 +146,7 @@ var SalaryPackageWidget = Widget.extend({
                 new_car = true;
             } else {
                 new_car = false;
-            }            
+            }
         }
         var personal_info = {};
         if ($("input[name='gender']").length) {
@@ -183,10 +184,13 @@ var SalaryPackageWidget = Widget.extend({
 
     update_gross_to_net_computation: function () {
         var self = this;
-        return ajax.jsonRpc('/salary_package/compute_net/', 'call', {
-            'contract_id': parseInt($("input[name='contract']")[0].id),
-            'token': $("input[name='token']").val(),
-            'advantages': this.get_advantages(),
+        return this._rpc({
+            route: '/salary_package/compute_net/',
+            params: {
+                'contract_id': parseInt($("input[name='contract']")[0].id),
+                'token': $("input[name='token']").val(),
+                'advantages': this.get_advantages(),
+            },
         }).then(function(data) {
             self.update_gross_to_net_modal(data);
         });
@@ -253,11 +257,14 @@ var SalaryPackageWidget = Widget.extend({
 
     update_gross: function() {
         var self = this;
-        return this.dp.add(ajax.jsonRpc('/salary_package/update_gross/', 'call', {
-            'contract_id': parseInt($("input[name='contract']")[0].id),
-            'token': $("input[name='token']").val(),
-            'advantages': this.get_advantages(),
-        })).then(function(data) {
+        return this.dp.add(this._rpc({
+            route: '/salary_package/update_gross/',
+            params: {
+                'contract_id': parseInt($("input[name='contract']")[0].id),
+                'token': $("input[name='token']").val(),
+                'advantages': this.get_advantages(),
+            },
+        })).then(function (data) {
             $("input[name='wage']").val(data['new_gross']);
             return self.dp.add(self.compute_net());
         });
@@ -321,9 +328,12 @@ var SalaryPackageWidget = Widget.extend({
         has_mobile ? tooltip.removeClass('d-none') : tooltip.addClass('d-none');
         var label = $("label[name='international_communication']");
         $("input[name='mobile']")[0].checked ? label.removeClass('invisible') : label.addClass('invisible');
-        ajax.jsonRpc('/salary_package/onchange_mobile/', 'call', {
-            'contract_id': parseInt($("input[name='contract']")[0].id),
-            'advantages': this.get_advantages(),
+        this._rpc({
+            route: '/salary_package/onchange_mobile/',
+            params: {
+                'contract_id': parseInt($("input[name='contract']")[0].id),
+                'advantages': this.get_advantages(),
+            },
         }).then(function(data) {
             $("input[name='mobile_amount']").val(data['mobile']);
         });
@@ -340,9 +350,12 @@ var SalaryPackageWidget = Widget.extend({
         var car_value = $("select[name='select_car']").val();
         var car_option = car_value ? (car_value).split('-')[0] : '';
         var vehicle_id = car_value ? parseInt((car_value).split('-')[1]) : '';
-        ajax.jsonRpc('/salary_package/onchange_car', 'call', {
-            'car_option': car_option,
-            'vehicle_id': vehicle_id,
+        this._rpc({
+            route: '/salary_package/onchange_car',
+            params: {
+                'car_option': car_option,
+                'vehicle_id': vehicle_id,
+            },
         }).then(function(data) {
             for(var key in data) {
                 if (data[key]) {
@@ -363,9 +376,12 @@ var SalaryPackageWidget = Widget.extend({
     },
 
     onchange_public_transport: function(event) {
-        ajax.jsonRpc('/salary_package/onchange_public_transport/', 'call', {
-            'contract_id': parseInt($("input[name='contract']")[0].id),
-            'advantages': this.get_advantages(),
+        this._rpc({
+            route: '/salary_package/onchange_public_transport/',
+            params: {
+                'contract_id': parseInt($("input[name='contract']")[0].id),
+                'advantages': this.get_advantages(),
+            },
         }).then(function(data) {
             $("input[name='public_transport_reimbursed_amount']").val(data['amount']);
         });
@@ -502,14 +518,17 @@ var SalaryPackageWidget = Widget.extend({
 
     send_offer_to_responsible: function(event) {
         if (this.check_form_validity()) {
-            ajax.jsonRpc('/salary_package/send_email/', 'call', {
-                'contract_id': parseInt($("input[name='contract']")[0].id),
-                'token': $("input[name='token']").val(),
-                'advantages': this.get_advantages(),
-                'applicant_id': parseInt($("input[name='applicant_id']").val()) || false,
-                'original_link': $("input[name='original_link']").val(),
-                'contract_type': $("input[name='contract_type']").val(),
-                'job_title': $("input[name='job_title']").val(),
+            this._rpc({
+                route: '/salary_package/send_email/',
+                params: {
+                    'contract_id': parseInt($("input[name='contract']")[0].id),
+                    'token': $("input[name='token']").val(),
+                    'advantages': this.get_advantages(),
+                    'applicant_id': parseInt($("input[name='applicant_id']").val()) || false,
+                    'original_link': $("input[name='original_link']").val(),
+                    'contract_type': $("input[name='contract_type']").val(),
+                    'job_title': $("input[name='job_title']").val(),
+                },
             }).then(function (data) {
                 document.location.pathname = '/salary_package/thank_you/' + data;
             });
@@ -518,9 +537,10 @@ var SalaryPackageWidget = Widget.extend({
 
     submit_salary_package: function(event) {
         if (this.check_form_validity()) {
-            ajax.jsonRpc('/salary_package/submit/', 'call',
-                this.get_form_info()
-            ).then(function (data) {
+            this._rpc({
+                route: '/salary_package/submit/',
+                params: this.get_form_info(),
+            }).then(function (data) {
                 if (data['error']) {
                     $("button#hr_cs_submit").parent().append("<div class='alert alert-danger alert-dismissable fade show'>" + data['error_msg'] + "</div>");
                 } else {
@@ -534,16 +554,8 @@ var SalaryPackageWidget = Widget.extend({
         $("button[name='toggle_personal_information']").toggleClass('d-none');
         $("div[name='personal_info']").toggle(500);
         $("div[name='personal_info_withholding_taxes']").toggle(500);
-    }
-
+    },
 });
 
-$(function () {
-    if ($('#hr_cs_form').length > 0) {
-        var salary_package_widget = new SalaryPackageWidget();
-        salary_package_widget.attachTo($('#hr_cs_form').first());
-    }
-});
-
-return SalaryPackageWidget;
+return publicWidget.registry.SalaryPackageWidget;
 });

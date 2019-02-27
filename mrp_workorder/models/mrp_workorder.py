@@ -222,12 +222,12 @@ class MrpProductionWorkcenterLine(models.Model):
         lines = super(MrpProductionWorkcenterLine, self)._generate_lines_values(move, qty_to_consume)
         step = self.env['quality.point'].search([
             ('test_type', '=', 'register_consumed_materials'),
-            ('component_id', '=', self.product_id.id),
-            ('product_id', '=', self.production_id.product_id.id),
+            ('component_id', 'in', [line['product_id'] for line in lines]),
+            ('product_id', '=', self.product_id.id),
             ('operation_id', 'in', self.production_id.routing_id.operation_ids.ids)
         ])
         for line in lines:
-            if move.product_id.tracking == 'none' and step:
+            if step:
                 line['qty_done'] = 0
         return lines
 

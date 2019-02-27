@@ -815,7 +815,7 @@ msgid ""
 "                    you will have to contact us to stop its use."
 msgstr ""
 "Het mandaat zal alleen gebruikt worden om facturen te betalen in\n"
-"                    de gespecificeerd tijdsbestek. Wanneer geen einddatum is ingesteld,\n"
+"                    het gespecificeerd tijdsbestek. Wanneer geen einddatum is ingesteld,\n"
 "                    moet u contact met ons opnemen om het te stoppen."
 
 #. module: account_sepa_direct_debit
@@ -873,9 +873,9 @@ msgid ""
 "will automatically go from 'active' to 'closed' after its first use in "
 "payment if this option is set.\n"
 msgstr ""
-"Aangevinkt als alleen dit mandaat alleen kan worden gebruikt voor één "
-"transactie. Het mandaat zal automatisch van 'actief' naar 'gesloten' worden "
-"gezet na de eerste betaling.\n"
+"Aangevinkt als alleen dit mandaat kan worden gebruikt voor één transactie. "
+"Het mandaat zal automatisch van 'actief' naar 'gesloten' worden gezet na de "
+"eerste betaling.\n"
 
 #. module: account_sepa_direct_debit
 #: code:addons/account_sepa_direct_debit/models/account_payment.py:150

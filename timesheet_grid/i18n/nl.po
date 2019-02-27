@@ -622,8 +622,8 @@ msgid ""
 "Set the number of hours done on this task, for every day of the week. (e.g. "
 "1.5 or 1:30)"
 msgstr ""
-"Set the number of hours done on this task, for every day of the week. (e.g. "
-"1.5 or 1:30)"
+"Stel het aantal gepresteerde uren voor deze taak in, voor elke dag van de "
+"weeb (bijvoorbeeld 1.5 of 1:30)"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__task_id

@@ -8,7 +8,7 @@
         <field name="arch" type="xml">
             <div id="msg_invoice_extract" position="replace"/>
 
-            <div id="account_ocr_settings" position="inside">
+            <div id="account_ocr_settings" position="after">
                 <div class="col-12 col-lg-6 o_setting_box" attrs="{'invisible': [('module_account_invoice_extract', '=', False)]}">
                     <div class="o_setting_left_pane">
                     </div>

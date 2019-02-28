@@ -24,7 +24,7 @@
                     </div>
                 </div>
             </div>
-            <div id="recommended_apps" position="after">
+            <div id="analytic" position="after">
                 <h2 groups="account.group_account_user" attrs="{'invisible': [('module_account_reports', '=', False)]}">Reporting</h2>
                 <div class="row mt16 o_settings_container" id="account_reports_settings"
                      groups="account.group_account_user" attrs="{'invisible': [('module_account_reports', '=', False)]}">

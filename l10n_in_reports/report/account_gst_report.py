@@ -21,13 +21,19 @@ class L10nInReportAccount(models.AbstractModel):
         templates['line_template'] = 'l10n_in_reports.l10n_in_template_line_report'
         return templates
 
-    def _build_options(self, previous_options=None):
-        options = super(L10nInReportAccount, self)._build_options(previous_options)
-        if not previous_options:
-            previous_options = {}
+    def _get_options(self, previous_options=None):
+        options = super(L10nInReportAccount, self)._get_options(previous_options)
         options['gst_return_type'] = 'gstr1'
         options['gst_section'] = self.env.context.get('gst_section')
         return options
+
+    def _set_context(self, options):
+        ctx = super(L10nInReportAccount, self)._set_context(options)
+        if options.get('gst_return_type'):
+            ctx['gst_return_type'] = options['gst_return_type']
+        if options.get('gst_section'):
+            ctx['gst_section'] = options['gst_section']
+        return ctx
 
     def _get_reports_buttons(self):
         return [

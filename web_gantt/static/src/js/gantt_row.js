@@ -433,7 +433,7 @@ var GanttRow = Widget.extend({
         return _.extend(
             pillData,
             session.user_context,
-            {current_date: moment().format('YYYY-MM-DD')},
+            {current_date: moment().format('YYYY-MM-DD')}
         );
     },
     /**

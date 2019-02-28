@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import datetime
 from odoo.tests import tagged
 from odoo import fields
 from odoo.addons.account.tests.account_test_classes import AccountingTestCase
@@ -733,7 +734,7 @@ class TestAccountReportsFilters(AccountingTestCase):
         def get_month_string(date):
             return 'As of %s' % (format_date(self.env, fields.Date.to_string(date)))
 
-        frozen_today = fields.Date.today()
+        frozen_today = datetime.date(2019, 2, 22)
         with patch.object(fields.Date, 'today', lambda *args, **kwargs: frozen_today), patch.object(fields.Date, 'context_today', lambda *args, **kwargs: frozen_today):
 
             today = fields.Date.today()

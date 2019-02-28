@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from math import ceil
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 from odoo import fields, models, api, _
 from odoo.exceptions import UserError, AccessError
@@ -19,6 +19,14 @@ class Project(models.Model):
 class Task(models.Model):
     _inherit = "project.task"
 
+    def _default_planned_date_begin(self):
+        if self.env.context.get('fsm_mode'):
+            return datetime.now()
+
+    def _default_planned_date_end(self):
+        if self.env.context.get('fsm_mode'):
+            return datetime.now() + timedelta(hours=2)
+
     allow_billable = fields.Boolean(related='project_id.allow_billable')
     planning_overlap = fields.Integer(compute='_compute_planning_overlap')
     quotation_count = fields.Integer(compute='_compute_quotation_count')
@@ -31,6 +39,8 @@ class Task(models.Model):
     partner_email = fields.Char(related='partner_id.email', string='Email ')
     partner_phone = fields.Char(related='partner_id.phone')
     partner_mobile = fields.Char(related='partner_id.mobile')
+    planned_date_begin = fields.Datetime(default=_default_planned_date_begin)
+    planned_date_end = fields.Datetime(default=_default_planned_date_end)
 
     @api.depends('planned_date_begin', 'planned_date_end', 'user_id')
     def _compute_planning_overlap(self):

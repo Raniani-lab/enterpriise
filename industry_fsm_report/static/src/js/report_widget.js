@@ -33,12 +33,19 @@ var OpenStudioButton = Widget.extend({
      * @override
      * @private
      */
-    _onButtonClick: function(event){
-        var action = this._rpc({'model': 'project.report.template',
-                                'method': 'get_x_model_form_action',
-                                'args': [this.record.res_id]});
-        action.then(act => this.do_action(act))
-            .then(() => this.trigger_up('studio_icon_clicked'));
+    _onButtonClick: function (event) {
+        var self = this;
+        this._rpc({
+            'model': 'project.report.template',
+            'method': 'get_x_model_form_action',
+            'args': [this.record.res_id]
+        })
+        .then(function (act) {
+            return self.do_action(act);
+        })
+        .then(function () {
+            self.trigger_up('studio_icon_clicked');
+        });
     }
 });
 

@@ -13,7 +13,7 @@
 
         <!-- Resource: mrp.workcenter -->
 
-        <record id="mrp.mrp_workcenter_0" model="mrp.workcenter">
+        <record id="mrp.mrp_workcenter_3" model="mrp.workcenter">
             <field name="costs_hour">85.25</field>
         </record>
 

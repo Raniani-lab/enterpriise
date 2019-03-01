@@ -354,6 +354,16 @@ tour.register('web_studio_tests_tour', {
     // add an activity view
     trigger: '.o_web_studio_view_category .o_web_studio_view_type.o_web_studio_inactive[data-type="activity"] .o_web_studio_thumbnail',
 }, {
+    extra_trigger: '.o_activity_view',
+    // edit action
+    trigger: '.o_web_studio_menu .o_menu_sections a[data-name="views"]',
+}, {
+    // add a graph view
+    trigger: '.o_web_studio_view_category .o_web_studio_view_type.o_web_studio_inactive[data-type="graph"] .o_web_studio_thumbnail',
+}, {
+    extra_trigger: '.o_graph_renderer',
+    trigger: '.o_web_studio_menu .o_menu_sections a[data-name="views"]',
+}, {
     trigger: '.o_menu_toggle',
 }, {
     trigger: '.o_web_studio_home_studio_menu .dropdown-toggle',

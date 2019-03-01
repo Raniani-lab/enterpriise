@@ -118,6 +118,14 @@ var FormEditor =  FormRenderer.extend(EditorMixin, {
         }
         this.silent = false;
     },
+    /**
+     * Selects the field on view
+     *
+     * @param {string} fieldName
+     */
+    selectField: function (fieldName) {
+        this.$('[name=' + fieldName + ']').click();
+    },
 
     //--------------------------------------------------------------------------
     // Private

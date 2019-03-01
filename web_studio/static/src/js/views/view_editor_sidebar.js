@@ -232,6 +232,16 @@ return Widget.extend(StandaloneFieldManagerMixin, {
         return this._super.apply(this, arguments).then(this._render.bind(this));
     },
     /**
+     * Called each time the view editor sidebar is attached into the DOM.
+    */
+    on_attach_callback: function () {
+        // focus only works on the elements attached on DOM, so we focus
+        // and select the label once the sidebar is attached to DOM
+        if (this.state.mode === 'properties') {
+            this.$('input[name=string]').focus().select();
+        }
+    },
+    /**
      * @override
      */
     destroy: function () {

@@ -123,6 +123,11 @@ class IrModelField(models.Model):
     _name = 'ir.model.fields'
     _inherit = ['studio.mixin', 'ir.model.fields']
 
+    def name_get(self):
+        if self.env.context.get('studio'):
+            return [(field.id, "%s (%s)" % (field.field_description, field.model_id.name)) for field in self]
+        return super(IrModelField, self).name_get()
+
 
 class IrModelAccess(models.Model):
     _name = 'ir.model.access'

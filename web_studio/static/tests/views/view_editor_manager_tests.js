@@ -99,6 +99,31 @@ QUnit.module('ViewEditorManager', {
                     },
                 ]
             },
+            'ir.model.fields': {
+                fields: {
+                    name: {string: "Field Name", type: "char"},
+                    relation: {string: "Object Relation", type: "char"},
+                    model: {string: "Object Name", type: "char"},
+                    ttype: {
+                        string: "Field Type",
+                        type: "selection",
+                        selection: [['many2one', "many2one"]],
+                    },
+                },
+                records: [{
+                        id: 1,
+                        name: "abc",
+                        ttype: "many2one",
+                        relation: "coucou",
+                    },
+                    {
+                        id: 2,
+                        name: "def",
+                        ttype: "many2one",
+                        relation: "coucou",
+                    },
+                ]
+            },
         };
     },
 }, function () {
@@ -426,7 +451,7 @@ QUnit.module('ViewEditorManager', {
             },
         });
 
-        // used to generate the new fields view in mockRPC
+        // used to generate fields view in mockRPC
         fieldsView = $.extend(true, {}, vem.fields_view);
         await testUtils.dom.click(vem.$(".o_kanban_record .o_dropdown_kanban"));
         await testUtils.dom.click(vem.$(".o_display_div .o_web_studio_sidebar_checkbox input"));
@@ -2719,7 +2744,7 @@ QUnit.module('ViewEditorManager', {
     });
 
     QUnit.test('add a one2many field', async function (assert) {
-        assert.expect(7);
+        assert.expect(8);
 
         var arch = '<form><group>' +
                         '<field name="display_name"/>' +
@@ -2734,6 +2759,10 @@ QUnit.module('ViewEditorManager', {
                         [1, 'Field 1'],
                         [2, 'Field 2'],
                     ]);
+                }
+                if (args.method === 'search_count' && args.model === 'ir.model.fields') {
+                    assert.deepEqual(args.args, [[['relation', '=', 'coucou'], ['ttype', '=', 'many2one']]],
+                        "the domain should be correctly set when checking if the m2o for o2m exists or not");
                 }
                 if (route === '/web_studio/edit_view') {
                     assert.step('edit');
@@ -2774,7 +2803,34 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
-    QUnit.test('add a many2many field', async function (assert) {
+    QUnit.test('add a one2many field without many2one', async function (assert) {
+        assert.expect(3);
+
+        var arch = '<form><group>' +
+                        '<field name="display_name"/>' +
+                    '</group></form>';
+        var vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'partner',
+            arch: arch,
+            mockRPC: function (route, args) {
+                if (args.method === 'search_count' && args.model === 'ir.model.fields') {
+                    assert.deepEqual(args.args, [[['relation', '=', 'partner'], ['ttype', '=', 'many2one']]],
+                        "the domain should be correctly set when checking if the m2o for o2m exists or not");
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        await testUtils.dom.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_one2many'), $('.o_web_studio_hook'));
+        assert.containsOnce($, '.modal main[role=alert]', "an alert modal should be displayed");
+        await testUtils.dom.click($('.modal button:contains("Ok")'));
+        assert.containsNone($, '.modal', "the modal should be closed");
+
+        vem.destroy();
+    });
+
+    QUnit.test('add a many2many field', async function(assert) {
         assert.expect(7);
 
         var arch = '<form><group>' +
@@ -3597,7 +3653,6 @@ QUnit.module('ViewEditorManager', {
         assert.strictEqual(vem.$('thead th[data-node-id]').length, 2, "there should be two fields");
 
         // rename the field
-        await testUtils.dom.click(vem.$('thead th[data-node-id=1]'));
         await testUtils.fields.editAndTrigger(vem.$('.o_web_studio_sidebar input[name="name"]'), 'new', ['change']);
 
         assert.verifySteps([

@@ -327,6 +327,9 @@ var AbstractEditorManager = Widget.extend({
                 oldSidebar.destroy();
                 if (!self.sidebar.isDestroyed()) {
                     self.sidebar.$el.prependTo(self.$el);
+                    if (self.sidebar.on_attach_callback) {
+                        self.sidebar.on_attach_callback();
+                    }
                     self.sidebar.$el.scrollTop(self.sidebarScrollTop);
                     // the XML editor replaces the sidebar in this case
                     if (self.mode === 'rendering') {

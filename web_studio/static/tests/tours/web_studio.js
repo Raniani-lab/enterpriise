@@ -101,9 +101,6 @@ tour.register('web_studio_tests_tour', {
     trigger: '.o_web_studio_sidebar .o_web_studio_field_type_container:eq(1) .o_web_studio_field_char',
     run: 'drag_and_drop .o_web_studio_form_view_editor .o_inner_group',
 }, {
-    // click on the new field
-    trigger: '.o_web_studio_form_view_editor td.o_td_label:eq(1)',
-}, {
     // rename the field with the same name
     trigger: 'input[data-type="field_name"]',
     run: 'text coucou',
@@ -138,6 +135,9 @@ tour.register('web_studio_tests_tour', {
     // switch the two first fields
     trigger: '.o_web_studio_form_view_editor .o_inner_group:first .ui-draggable:eq(1)',
     run: 'drag_and_drop .o_inner_group:first .o_web_studio_hook:first',
+}, {
+    // click on "Add" tab
+    trigger: '.o_web_studio_sidebar .o_web_studio_new',
 }, {
     // verify that the fields have been switched
     extra_trigger: '.o_web_studio_form_view_editor td.o_td_label:eq(0):contains("New Monetary")',

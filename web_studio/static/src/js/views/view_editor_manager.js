@@ -293,28 +293,57 @@ var ViewEditorManager = AbstractEditorManager.extend({
                 ];
             } else if (_.contains(['selection', 'one2many', 'many2one', 'many2many', 'related'], field_description.type)) {
                 def_field_values = new Promise(function (resolve, reject) {
-                    // open dialog to precise the required fields for this field
-                    dialog = new NewFieldDialog(self, modelName, field_description, self.fields).open();
-                    dialog.on('field_default_values_saved', self, function (values) {
-                        if (values.related && values.type === 'monetary') {
-                            if (self._hasCurrencyField()) {
-                                resolve(values);
-                                dialog.close();
-                            } else {
-                                var relatedCurrency = values._currency;
-                                delete values._currency;
-                                var currencyDialog = openCurrencyCreationDialog(relatedCurrency, resolve);
-                                currencyDialog.on('closed', self, function () {
-                                    dialog.close();
-                                });
-                            }
+                    var prom;
+                    if (field_description.type === 'one2many') {
+                        // check for existing m2o fields for current model
+                        var modelName = self.x2mModel ? self.x2mModel : self.model_name;
+                        prom = self._rpc({
+                            model:"ir.model.fields",
+                            method: "search_count",
+                            args: [[['relation', '=', modelName], ['ttype', '=', 'many2one']]],
+                        });
+                    } else {
+                        prom = Promise.resolve(true);
+                    }
+                    prom.then(function (openFieldDialog) {
+                        if (!openFieldDialog) {
+                            // In case of o2m fields, if there's no m2o field available, display a warning instead
+                            var $message = $(QWeb.render('web_studio.FieldOne2manyWarning'));
+                            dialog = Dialog.alert(self, '', {
+                                $content: $('<main/>', {
+                                    role: 'alert',
+                                    html: $message,
+                                }),
+                                title: _t("No related many2one fields found"),
+                            });
+                            dialog.on('closed', self, function () {
+                                reject();
+                            });
                         } else {
-                            resolve(values);
-                            dialog.close();
+                            // open dialog to precise the required fields for this field
+                            dialog = new NewFieldDialog(self, modelName, field_description, self.fields).open();
+                            dialog.on('field_default_values_saved', self, function (values) {
+                                if (values.related && values.type === 'monetary') {
+                                    if (self._hasCurrencyField()) {
+                                        resolve(values);
+                                        dialog.close();
+                                    } else {
+                                        var relatedCurrency = values._currency;
+                                        delete values._currency;
+                                        var currencyDialog = openCurrencyCreationDialog(relatedCurrency, resolve);
+                                        currencyDialog.on('closed', self, function () {
+                                            dialog.close();
+                                        });
+                                    }
+                                } else {
+                                    resolve(values);
+                                    dialog.close();
+                                }
+                            });
+                            dialog.on('closed', self, function () {
+                                reject();
+                            });
                         }
-                    });
-                    dialog.on('closed', self, function () {
-                        reject();
                     });
                 });
             } else if (field_description.type === 'monetary') {
@@ -352,6 +381,10 @@ var ViewEditorManager = AbstractEditorManager.extend({
                     attrs: new_attrs,
                     field_description: _.extend(field_description, values),
                 },
+            }).then(function () {
+                if (self.editor.selectField && field_description) {
+                    self.editor.selectField(field_description.name);
+                }
             });
         }).guardedCatch(function () {
             self.updateEditor();

@@ -107,6 +107,14 @@ return ListRenderer.extend(EditorMixin, {
             self.$('.o_web_studio_hovered').removeClass('o_web_studio_hovered');
         });
     },
+    /**
+     * Selects the field on view
+     *
+     * @param {string} fieldName
+     */
+    selectField: function (fieldName) {
+        this.$('th[data-name=' + fieldName + ']').click();
+    },
 
     //--------------------------------------------------------------------------
     // Private

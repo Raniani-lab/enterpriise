@@ -98,10 +98,10 @@ class sale_subscription(http.Controller):
         else:
             account = account_res.browse(account_id)
 
-        acquirers = list(request.env['payment.acquirer'].search([
+        acquirers = request.env['payment.acquirer'].search([
             ('website_published', '=', True),
             ('registration_view_template_id', '!=', False),
-            ('token_implemented', '=', True)]))
+            ('token_implemented', '=', True)])
         acc_pm = account.payment_token_id
         part_pms = account.partner_id.payment_token_ids
         display_close = account.template_id.sudo().user_closable and account.in_progress
@@ -124,7 +124,7 @@ class sale_subscription(http.Controller):
             'missing_periods': missing_periods,
             'payment_mode': active_plan.payment_mode,
             'user': request.env.user,
-            'acquirers': acquirers,
+            'acquirers': list(acquirers),
             'acc_pm': acc_pm,
             'part_pms': part_pms,
             'is_salesman': request.env['res.users'].sudo(request.uid).has_group('sales_team.group_sale_salesman'),
@@ -141,6 +141,8 @@ class sale_subscription(http.Controller):
 
         history = request.session.get('my_subscriptions_history', [])
         values.update(get_records_pager(history, account))
+        values['acq_extra_fees'] = acquirers.get_acquirer_extra_fees(account.recurring_amount_total, account.currency_id, account.partner_id.country_id)
+
         return request.render("sale_subscription.subscription", values)
 
     payment_succes_msg = 'message=Thank you, your payment has been validated.&message_class=alert-success'

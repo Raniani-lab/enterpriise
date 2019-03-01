@@ -13,13 +13,13 @@ class Providerdhl(models.Model):
     dhl_SiteID = fields.Char(string="DHL SiteID", groups="base.group_system")
     dhl_password = fields.Char(string="DHL Password", groups="base.group_system")
     dhl_account_number = fields.Char(string="DHL Account Number", groups="base.group_system")
-    dhl_package_dimension_unit = fields.Selection([('IN', 'Inches'),
-                                                   ('CM', 'Centimeters')],
-                                                  default='CM',
+    dhl_package_dimension_unit = fields.Selection([('I', 'Inches'),
+                                                   ('C', 'Centimeters')],
+                                                  default='C',
                                                   string='Package Dimension Unit')
-    dhl_package_weight_unit = fields.Selection([('LB', 'Pounds'),
-                                                ('KG', 'Kilograms')],
-                                               default='KG',
+    dhl_package_weight_unit = fields.Selection([('L', 'Pounds'),
+                                                ('K', 'Kilograms')],
+                                               default='K',
                                                string="Package Weight Unit")
     dhl_default_packaging_id = fields.Many2one('product.packaging', string='DHL Default Packaging Type')
     dhl_region_code = fields.Selection([('AP', 'Asia Pacific'),
@@ -87,56 +87,151 @@ class Providerdhl(models.Model):
     ], string="Label Template", default='8X4_A4_PDF')
 
     def dhl_rate_shipment(self, order):
-        srm = DHLProvider(self.prod_environment, self.log_xml)
-        check_value = srm.check_required_value(self, order.partner_shipping_id, order.warehouse_id.partner_id, order=order)
+        res = self._rate_shipment_vals(order=order)
+        return res
+
+    def _rate_shipment_vals(self, order=False, picking=False):
+        if picking:
+            order = picking.sale_id
+            warehouse_partner_id = picking.picking_type_id.warehouse_id.partner_id
+            currency_id = order.currency_id.name or picking.company_id.currency_id
+            destination_partner_id = picking.partner_id
+            if order:
+                total_value = sum([line.product_id.lst_price * line.product_qty for line in order.order_line])
+            else:
+                total_value = sum([line.product_id.lst_price * line.product_qty for line in picking.move_lines])
+        else:
+            warehouse_partner_id = order.warehouse_id.partner_id
+            currency_id = order.currency_id.name or order.company_id.currency_id
+            total_value = sum([line.product_id.lst_price * line.product_qty for line in order.order_line])
+            destination_partner_id = order.partner_id
+
+        rating_request = {}
+        srm = DHLProvider(self.log_xml, request_type="rate", prod_environment=self.prod_environment)
+        check_value = srm.check_required_value(self, destination_partner_id, warehouse_partner_id, order=order, picking=picking)
         if check_value:
             return {'success': False,
                     'price': 0.0,
                     'error_message': check_value,
                     'warning_message': False}
+        site_id = self.sudo().dhl_SiteID
+        password = self.sudo().dhl_password
+        rating_request['Request'] = srm._set_request(site_id, password)
+        rating_request['From'] = srm._set_dct_from(warehouse_partner_id)
+        if picking:
+            rating_request['BkgDetails'] = srm._set_dct_bkg_details_from_picking(picking)
+        else:
+            total_weight = sum([line.product_qty * line.product_id.weight for line in order.order_line])
+            rating_request['BkgDetails'] = srm._set_dct_bkg_details(total_weight, self, order.company_id.partner_id)
+        rating_request['To'] = srm._set_dct_to(destination_partner_id)
+        if self.dhl_dutiable:
+            rating_request['Dutiable'] = srm._set_dct_dutiable(total_value, currency_id.name)
+        real_rating_request = {}
+        real_rating_request['GetQuote'] = rating_request
+        real_rating_request['schemaVersion'] = 2.0
+        response = srm._process_rating(real_rating_request)
 
-        result = srm.rate_request(order, self)
-        if result['error_found']:
-            return {'success': False,
-                    'price': 0.0,
-                    'error_message': result['error_found'],
+        available_product_code = []
+        shipping_charge = False
+        for q in response.GetQuoteResponse.BkgDetails.QtdShp:
+            if q.GlobalProductCode == self.dhl_product_code and q.ShippingCharge:
+                shipping_charge = q.ShippingCharge
+                shipping_currency = q.CurrencyCode
+                break;
+            else:
+                available_product_code.append(q.GlobalProductCode)
+        if shipping_charge:
+            if order:
+                order_currency = order.currency_id
+            else:
+                order_currency = picking.sale_id.currency_id or picking.company_id.currency_id
+            if order_currency.name == shipping_currency:
+                price = float(shipping_charge)
+            else:
+                quote_currency = self.env['res.currency'].search([('name', '=', shipping_currency)], limit=1)
+                price = quote_currency._convert(float(shipping_charge), order_currency, order.company_id or picking.company_id, order.date_order or fields.Date.today())
+            return {'success': True,
+                    'price': price,
+                    'error_message': False,
                     'warning_message': False}
 
-        if order.currency_id.name == result['currency']:
-            price = float(result['price'])
-        else:
-            quote_currency = self.env['res.currency'].search([('name', '=', result['currency'])], limit=1)
-            price = quote_currency._convert(float(result['price']), order.currency_id, order.company_id, order.date_order or fields.Date.today())
-
-        return {'success': True,
-                'price': price,
-                'error_message': False,
-                'warning_message': False}
+        if available_product_code:
+            return {'success': False,
+                    'price': 0.0,
+                    'error_message': (_("There is no price available for this shipping, you should rather try with the DHL product %s") % available_product_code[0]),
+                    'warning_message': False}
 
     def dhl_send_shipping(self, pickings):
         res = []
-
-        srm = DHLProvider(self.prod_environment, self.log_xml)
         for picking in pickings:
-            shipping = srm.send_shipping(picking, self)
-            order = picking.sale_id
-            company = order.company_id or picking.company_id or self.env.user.company_id
-            order_currency = picking.sale_id.currency_id or picking.company_id.currency_id
-            if order_currency.name == shipping['currency']:
-                carrier_price = float(shipping['price'])
-            else:
-                quote_currency = self.env['res.currency'].search([('name', '=', shipping['currency'])], limit=1)
-                carrier_price = quote_currency._convert(float(shipping['price']), order_currency, company, order.date_order or fields.Date.today())
-            carrier_tracking_ref = shipping['tracking_number']
-            logmessage = (_("Shipment created into DHL <br/> <b>Tracking Number : </b>%s") % (carrier_tracking_ref))
-            picking.message_post(body=logmessage, attachments=[('LabelDHL-%s.%s' % (carrier_tracking_ref, self.dhl_label_image_format), srm.save_label())])
+            shipment_request = {}
+            srm = DHLProvider(self.log_xml, request_type="ship", prod_environment=self.prod_environment)
+            site_id = self.sudo().dhl_SiteID
+            password = self.sudo().dhl_password
+            shipment_request['Request'] = srm._set_request(site_id, password)
+            shipment_request['RegionCode'] = srm._set_region_code(self.dhl_region_code)
+            shipment_request['PiecesEnabled'] = srm._set_pieces_enabled(True)
+            shipment_request['RequestedPickupTime'] = srm._set_requested_pickup_time(True)
+            shipment_request['Billing'] = srm._set_billing(self.dhl_account_number, "S", self.dhl_dutiable)
+            shipment_request['Consignee'] = srm._set_consignee(picking.partner_id)
+            shipment_request['Shipper'] = srm._set_shipper(self.dhl_account_number, picking.company_id.partner_id, picking.picking_type_id.warehouse_id.partner_id)
+            total_value = sum([line.product_id.lst_price * line.product_uom_qty for line in picking.move_lines])
+            currency_name = picking.sale_id.currency_id.name or picking.company_id.currency_id.name
+            if self.dhl_dutiable:
+                shipment_request['Dutiable'] = srm._set_dutiable(total_value, currency_name)
+            shipment_request['ShipmentDetails'] = srm._set_shipment_details(picking)
+            shipment_request['LabelImageFormat'] = srm._set_label_image_format(self.dhl_label_image_format)
+            shipment_request['Label'] = srm._set_label(self.dhl_label_template)
+            shipment_request['schemaVersion'] = 6.2
+            shipment_request['LanguageCode'] = 'en'
+            dhl_response = srm._process_shipment(shipment_request)
+            traking_number = dhl_response.AirwayBillNumber
+            logmessage = (_("Shipment created into DHL <br/> <b>Tracking Number : </b>%s") % (traking_number))
+            picking.message_post(body=logmessage, attachments=[('LabelDHL-%s.%s' % (traking_number, self.dhl_label_image_format), dhl_response.LabelImage[0].OutputImage)])
             shipping_data = {
-                'exact_price': carrier_price,
-                'tracking_number': carrier_tracking_ref
+                'exact_price': 0,
+                'tracking_number': traking_number,
             }
+            rate = self._rate_shipment_vals(picking=picking)
+            shipping_data['exact_price'] = rate['price']
+            if self.return_label_on_delivery:
+                self.get_return_label(picking)
             res = res + [shipping_data]
 
         return res
+
+    def dhl_get_return_label(self, picking, tracking_number=None, origin_date=None):
+        shipment_request = {}
+        srm = DHLProvider(self.log_xml, request_type="ship", prod_environment=self.prod_environment)
+        site_id = self.sudo().dhl_SiteID
+        password = self.sudo().dhl_password
+        shipment_request['Request'] = srm._set_request(site_id, password)
+        shipment_request['RegionCode'] = srm._set_region_code(self.dhl_region_code)
+        shipment_request['PiecesEnabled'] = srm._set_pieces_enabled(True)
+        shipment_request['RequestedPickupTime'] = srm._set_requested_pickup_time(True)
+        shipment_request['Billing'] = srm._set_billing(self.dhl_account_number, "S", self.dhl_dutiable)
+        shipment_request['Consignee'] = srm._set_consignee(picking.picking_type_id.warehouse_id.partner_id)
+        shipment_request['Shipper'] = srm._set_shipper(self.dhl_account_number, picking.partner_id, picking.partner_id)
+        total_value = sum([line.product_id.lst_price * line.product_uom_qty for line in picking.move_lines])
+        currency_name = picking.sale_id.currency_id.name or picking.company_id.currency_id.name
+        if self.dhl_dutiable:
+            shipment_request['Dutiable'] = srm._set_dutiable(total_value, currency_name)
+        shipment_request['ShipmentDetails'] = srm._set_shipment_details(picking)
+        shipment_request['LabelImageFormat'] = srm._set_label_image_format(self.dhl_label_image_format)
+        shipment_request['Label'] = srm._set_label(self.dhl_label_template)
+        shipment_request['SpecialService'] = []
+        shipment_request['SpecialService'].append(srm._set_return())
+        shipment_request['schemaVersion'] = 6.2
+        shipment_request['LanguageCode'] = 'en'
+        dhl_response = srm._process_shipment(shipment_request)
+        traking_number = dhl_response.AirwayBillNumber
+        logmessage = (_("Shipment created into DHL <br/> <b>Tracking Number : </b>%s") % (traking_number))
+        picking.message_post(body=logmessage, attachments=[('%s-%s-%s.%s' % (self.get_return_label_prefix(), traking_number, 1, self.dhl_label_image_format), dhl_response.LabelImage[0].OutputImage)])
+        shipping_data = {
+            'exact_price': 0,
+            'tracking_number': traking_number,
+        }
+        return shipping_data
 
     def dhl_get_tracking_link(self, picking):
         return 'http://www.dhl.com/en/express/tracking.html?AWB=%s' % picking.carrier_tracking_ref
@@ -149,7 +244,7 @@ class Providerdhl(models.Model):
 
     def _dhl_convert_weight(self, weight, unit):
         weight_uom_id = self.env['product.template']._get_weight_uom_id_from_ir_config_parameter()
-        if unit == 'LB':
+        if unit == 'L':
             return weight_uom_id._compute_quantity(weight, self.env.ref('uom.product_uom_lb'), round=False)
         else:
             return weight_uom_id._compute_quantity(weight, self.env.ref('uom.product_uom_kgm'), round=False)

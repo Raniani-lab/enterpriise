@@ -207,10 +207,10 @@ var AbstractEditorManager = Widget.extend({
      *
      * @private
      * @param {String} [mode]
-     * @param {Object} [node]
+     * @param {Object} [params]
      * @returns {Promise<Object>}
      */
-    _getSidebarState: function (mode, node) {
+    _getSidebarState: function (mode, params) {
         var newState = mode ? {mode: mode} : this.sidebar.state;
         return Promise.resolve(newState);
     },
@@ -303,10 +303,10 @@ var AbstractEditorManager = Widget.extend({
      *
      * @private
      * @param {String} [mode]
-     * @param {Object} [node]
+     * @param {Object} [params]
      * @returns {Promise}
      */
-    _updateSidebar: function (mode, node) {
+    _updateSidebar: function (mode, params) {
         var self = this;
 
         if  (this.sidebar.$el) {
@@ -317,7 +317,7 @@ var AbstractEditorManager = Widget.extend({
             this.sidebarScrollTop = this.sidebar.$el.scrollTop();
         }
 
-        return this._getSidebarState(mode, node).then(function (newState) {
+        return this._getSidebarState(mode, params).then(function (newState) {
             var oldSidebar = self.sidebar;
             var previousState = oldSidebar.getLocalState ? oldSidebar.getLocalState() : undefined;
             self.sidebar = self._instantiateSidebar(newState, previousState);

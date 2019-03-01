@@ -430,7 +430,7 @@
                 <label for="bold" class="custom-control-label">Bold</label>
             </div>
         </div>
-        <div t-if="widget.view_type === 'kanban'" class="o_web_studio_sidebar_select">
+        <div t-if="widget.view_type === 'kanban' and widget.showDisplay" class="o_web_studio_sidebar_select">
             <label for="display">Display</label>
             <select id="display" name="display" data-type="attributes">
                 <option t-att-selected="!widget.state.attrs.display ? 'selected' : undefined" value="false">Default</option>

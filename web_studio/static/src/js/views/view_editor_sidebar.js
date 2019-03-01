@@ -155,6 +155,16 @@ return Widget.extend(StandaloneFieldManagerMixin, {
             // aggregate makes no sense with some widgets
             this.hasAggregate = _.contains(['integer', 'float', 'monetary'], field.type) &&
                 !_.contains(['progressbar', 'handle'], this.state.attrs.widget);
+
+            if (this.view_type === 'kanban') {
+                this.showDisplay = this.state.$node && !this.state.$node
+                    .parentsUntil('.o_kanban_record')
+                    .filter(function () {
+                        // if any parent is display flex, display options (float
+                        // right, etc.) won't work
+                        return $(this).css('display') === 'flex';
+                    }).length;
+            }
         }
         // Upload image related stuff
         if (this.state.node && this.state.node.tag === 'button') {

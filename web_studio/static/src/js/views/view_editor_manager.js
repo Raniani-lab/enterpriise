@@ -754,16 +754,18 @@ var ViewEditorManager = AbstractEditorManager.extend({
     },
     /**
      * @override
+     * @param {Object} [params]
+     * @param {Object} [params.node] mandatory if mode "properties"
      */
-    _getSidebarState: function (mode, node) {
+    _getSidebarState: function (mode, params) {
         var newState;
         var def = Promise.resolve();
         if (mode) {
-            newState = {
+            newState = _.extend({}, params, {
                 renamingAllowedFields: this.renamingAllowedFields,
                 mode: mode,
                 show_invisible: this.sidebar.state && this.sidebar.state.show_invisible || false,
-            };
+            });
         } else {
             newState = this.sidebar.state;
         }
@@ -777,6 +779,7 @@ var ViewEditorManager = AbstractEditorManager.extend({
                 break;
             case 'properties':
                 var attrs;
+                var node = params.node;
                 if (node.tag === 'field' && this.view_type !== 'search') {
                     var viewType = this.editor.state.viewType;
                     attrs = this.editor.state.fieldsInfo[viewType][node.attrs.name];
@@ -784,7 +787,6 @@ var ViewEditorManager = AbstractEditorManager.extend({
                     attrs = node.attrs;
                 }
                 newState = _.extend(newState, {
-                    node: node,
                     attrs: attrs,
                 });
 
@@ -1285,7 +1287,10 @@ var ViewEditorManager = AbstractEditorManager.extend({
     /**
      * Toggle editor sidebar.
      *
+     * @param {Object} ev.data.node
+     * @param {jQueryElement} [ev.data.$node]
      * @override
+     *
      */
     _onNodeClicked: function (ev) {
         var self = this;
@@ -1326,7 +1331,7 @@ var ViewEditorManager = AbstractEditorManager.extend({
                 });
             }
         }
-        this._updateSidebar('properties', node);
+        this._updateSidebar('properties', ev.data);
     },
     /**
      * @private

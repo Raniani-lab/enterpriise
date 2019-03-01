@@ -251,6 +251,39 @@ var KanbanRecordEditor = KanbanRecord.extend(EditorMixin, {
     },
     /**
      * @private
+     * @param {jQueryElement} $node
+     * @param {String} fieldName
+     */
+    _bindHandler: function ($node, fieldName) {
+        var self = this;
+
+        var node = {
+            tag: 'field',
+            attrs: { name: fieldName }
+        };
+
+        this.setSelectable($node);
+        $node.click(function (ev) {
+            ev.preventDefault();
+            ev.stopPropagation();
+            self.selected_node_id = $node.data('node-id');
+            self.trigger_up('node_clicked', {
+                node: node,
+                $node: $node,
+            });
+        });
+
+        // insert a hook to add new fields
+        var $hook = this._renderHook(node);
+        $hook.insertAfter($node);
+
+        var invisibleModifier = this.fieldsInfo[fieldName].modifiers.invisible;
+        if (invisibleModifier && this._computeDomain(invisibleModifier)) {
+            $node.addClass('o_web_studio_show_invisible');
+        }
+    },
+    /**
+     * @private
      * @param {string} [attrs.tag] - node tag
      * @param {string} [attrs.class] - node class
      * @returns {Object|undefined} found node in the arch
@@ -295,7 +328,6 @@ var KanbanRecordEditor = KanbanRecord.extend(EditorMixin, {
      * @override
      */
     _processField: function ($field, field_name) {
-        var self = this;
         $field = this._super.apply(this, arguments);
 
         var field = this.record[field_name];
@@ -307,21 +339,7 @@ var KanbanRecordEditor = KanbanRecord.extend(EditorMixin, {
         $field.attr('data-node-id', this.node_id++);
 
         // bind handler on field clicked to edit field's attributes
-        var node = {
-            tag: 'field',
-            attrs: {name: field_name}
-        };
-        this.setSelectable($field);
-        $field.click(function (event) {
-            event.preventDefault();
-            event.stopPropagation();
-            self.selected_node_id = $field.data('node-id');
-            self.trigger_up('node_clicked', {node: node});
-        });
-
-        // insert a hook to add new fields
-        var $hook = this._renderHook(node);
-        $hook.insertAfter($field);
+        this._bindHandler($field, field_name);
 
         var invisibleModifier = this.fieldsInfo[field_name].modifiers.invisible;
         if (invisibleModifier && this._computeDomain(invisibleModifier)) {
@@ -355,26 +373,7 @@ var KanbanRecordEditor = KanbanRecord.extend(EditorMixin, {
             widget.$el.attr('data-node-id', self.node_id++);
 
             // bind handler on field clicked to edit field's attributes
-            var node = {
-                tag: 'field',
-                attrs: {name: field_name}
-            };
-            self.setSelectable(widget.$el);
-            widget.$el.click(function (event) {
-                event.preventDefault();
-                event.stopPropagation();
-                self.selected_node_id = widget.$el.data('node-id');
-                self.trigger_up('node_clicked', {node: node});
-            });
-
-            // insert a hook to add new fields
-            var $hook = self._renderHook(node);
-            $hook.insertAfter(widget.$el);
-
-            var invisibleModifier = self.fieldsInfo[field_name].modifiers.invisible;
-            if (invisibleModifier && self._computeDomain(invisibleModifier)) {
-                widget.$el.addClass('o_web_studio_show_invisible');
-            }
+            self._bindHandler(widget.$el, field_name);
         });
 
         return widget;

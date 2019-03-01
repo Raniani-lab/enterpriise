@@ -68,6 +68,7 @@ return Widget.extend(StandaloneFieldManagerMixin, {
         'click .o_web_studio_edit_selection_values':         '_onSelectionValues',
         'change .o_display_field [data-type="attributes"]':  '_onElementChanged',
         'change .o_display_field [data-type="options"]':     '_onOptionsChanged',
+        'change .o_display_div input[name="set_cover"]':     '_onSetCover',
         'change .o_display_field input[data-type="field_name"]': '_onFieldNameChanged',
         'focus .o_display_field input[data-type="attributes"][name="domain"]': '_onDomainEditor',
         'change .o_display_field [data-type="default_value"]': '_onDefaultValueChanged',
@@ -732,6 +733,22 @@ return Widget.extend(StandaloneFieldManagerMixin, {
         this.trigger_up('field_edition', {
             node: this.state.node,
         });
+    },
+    /**
+     * @private
+     * @param {Event} ev
+     */
+    _onSetCover: function (ev) {
+        var $input = $(ev.currentTarget);
+        this.trigger_up('view_change', {
+            node: this.state.node,
+            structure: 'kanban_cover',
+            type: $input.is(':checked') ? 'kanban_set_cover' : 'remove',
+        });
+        // If user closes the field selector pop up, check-box should remain unchecked.
+        // Updated sidebar property will set this box to checked if the cover image
+        // is enabled successfully.
+        $input.prop("checked", false);
     },
     /**
      * @private

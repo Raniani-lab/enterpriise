@@ -33,6 +33,7 @@
         <script type="text/javascript" src="/web_studio/static/src/js/py.js"></script>
 
         <script type="text/javascript" src="/web_studio/static/src/js/common/abstract_editor_manager.js"></script>
+        <script type="text/javascript" src="/web_studio/static/src/js/common/field_selector_dialog.js"></script>
         <script type="text/javascript" src="/web_studio/static/src/js/common/new_field_dialog.js"></script>
         <script type="text/javascript" src="/web_studio/static/src/js/common/xml_editor.js"></script>
 

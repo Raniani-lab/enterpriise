@@ -76,6 +76,7 @@ QUnit.module('ViewEditorManager', {
                 fields: {
                     display_name: {string: "Display Name", type: "char"},
                     image: {string: "Image", type: "binary"},
+                    displayed_image_id: {string: "cover", type: "many2one", relation: "ir.attachment"},
                 },
                 records: [{
                     id: 4,
@@ -86,8 +87,18 @@ QUnit.module('ViewEditorManager', {
                 }],
             },
             'ir.attachment': {
-                fields: {},
-                records: [],
+                fields: {
+                    name: {string: "Name", type: "char"},
+                },
+                records: [{
+                        id: 1,
+                        name: "1.png"
+                    },
+                    {
+                        id: 2,
+                        name: "2.png"
+                    },
+                ]
             },
         };
     },
@@ -326,6 +337,121 @@ QUnit.module('ViewEditorManager', {
             "the label in sidebar should be Display Name");
         assert.strictEqual(vem.$('.o_web_studio_sidebar').find('select[name="widget"]').val(), "char",
             "the widget in sidebar should be set by default");
+
+        vem.destroy();
+    });
+    QUnit.test('kanban editor remove "Set Cover Image" from dropdown menu', async function (assert) {
+        assert.expect(1);
+        var arch = "<kanban>" +
+                    "<templates>" +
+                        "<t t-name='kanban-box'>" +
+                            "<div class='o_kanban_record'>" +
+                                '<div class="o_dropdown_kanban dropdown">' +
+                                    '<a>' +
+                                        '<span class="fa fa-ellipsis-v"/>' +
+                                    '</a>' +
+                                    '<div class="dropdown-menu" role="menu">' +
+                                        '<a data-type="set_cover">Set Cover Image</a>' +
+                                    "</div>" +
+                                "</div>" +
+                                "<field name='displayed_image_id' widget='attachment_image'/>" +
+                            "</div>" +
+                        "</t>" +
+                    "</templates>" +
+                "</kanban>";
+        var fieldsView;
+
+        var vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'partner',
+            arch: arch,
+            mockRPC: function (route, args) {
+                if (route === '/web_studio/edit_view' && args.operations[0].type === "remove") {
+                    assert.deepEqual(args.operations[0], {
+                        target: {
+                            attrs: {name: 'displayed_image_id'},
+                            tag: "field",
+                            extra_nodes: [{
+                                tag: "a",
+                                attrs: {
+                                    type: 'set_cover',
+                                },
+                            }],
+                        },
+                        type: 'remove',
+                    }, "Proper field name and operation type should be passed");
+                    fieldsView.arch = arch;
+                    return Promise.resolve({
+                        fields: fieldsView.fields,
+                        fields_views: {
+                            kanban: fieldsView,
+                        }
+                    });
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        // used to generate the new fields view in mockRPC
+        fieldsView = $.extend(true, {}, vem.fields_view);
+        await testUtils.dom.click(vem.$(".o_kanban_record .o_dropdown_kanban"));
+        await testUtils.dom.click(vem.$(".o_display_div .o_web_studio_sidebar_checkbox input"));
+        vem.destroy();
+    });
+
+    QUnit.test('kanban editor add "Set Cover Image" option in dropdown menu', async function (assert) {
+        assert.expect(3);
+        var arch = "<kanban>" +
+                    "<templates>" +
+                        "<t t-name='kanban-box'>" +
+                            "<div class='o_kanban_record'>" +
+                                '<div class="o_dropdown_kanban dropdown">' +
+                                    '<a>' +
+                                        '<span class="fa fa-ellipsis-v"/>' +
+                                    '</a>' +
+                                    '<div class="dropdown-menu" role="menu">' +
+                                    "</div>" +
+                                "</div>" +
+                            "</div>" +
+                        "</t>" +
+                    "</templates>" +
+                "</kanban>";
+        var fieldsView;
+        var vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'partner',
+            debug: true,
+            arch: arch,
+            mockRPC: function (route, args) {
+                if (route === '/web_studio/edit_view') {
+                    assert.deepEqual(args.operations[0], {field: 'displayed_image_id', type: 'kanban_set_cover'},
+                        "Proper field name and operation type should be passed");
+                    fieldsView.arch = arch;
+                    return Promise.resolve({
+                        fields: fieldsView.fields,
+                        fields_views: {
+                            kanban: fieldsView,
+                        }
+                    });
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        // used to generate the new fields view in mockRPC
+        fieldsView = $.extend(true, {}, vem.fields_view);
+
+        await testUtils.dom.click(vem.$(".o_kanban_record .o_dropdown_kanban"));
+        assert.hasAttrValue(vem.$('.o_web_studio_sidebar input[name="set_cover"]'), 'checked', undefined,
+            "Option to set cover should not be enabled");
+        await testUtils.dom.click(vem.$('.o_web_studio_sidebar input[name="set_cover"]'));
+
+        assert.strictEqual($('.modal .modal-body select option[value="displayed_image_id"]').length, 1,
+            "there should be option having compatible field (displayed_image_id) Field selection drop-down ");
+        // Select the field for cover image
+        $('.modal .modal-body select option[value="displayed_image_id"]').prop('selected', true);
+        // Click the confirm button
+        await testUtils.dom.click($('.modal .modal-footer .btn-primary'));
 
         vem.destroy();
     });

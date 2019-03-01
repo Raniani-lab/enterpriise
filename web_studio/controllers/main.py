@@ -499,6 +499,9 @@ class WebStudioController(http.Controller):
             if view.type == 'kanban':
                 if op.get('target') and op['target'].get('tag') == 'field':
                     op['target']['tag'] = 'templates//field'
+                    if op['target'].get('extra_nodes'):
+                        for target in op['target']['extra_nodes']:
+                            target['tag'] = 'templates//' + target['tag']
 
             # call the right operation handler
             getattr(self, '_operation_%s' % (op['type']))(arch, op, model)
@@ -699,12 +702,20 @@ class WebStudioController(http.Controller):
     def _operation_remove(self, arch, operation, model=None):
         expr = self._node_to_expr(operation['target'])
 
-        # We have to create a brand new xpath to remove this field from the view.
-        # TODO: Sometimes, we have to delete more stuff than just a single tag !
+        # We have to create a brand new xpath to remove this node from the view.
         etree.SubElement(arch, 'xpath', {
             'expr': expr,
             'position': 'replace'
         })
+        # Sometimes, we have to delete more stuff than just a single tag. Those nodes
+        # should be passed as a list in 'extra_nodes' key within the target node.
+        if operation['target'].get('extra_nodes'):
+            for target in operation['target']['extra_nodes']:
+                expr = self._node_to_expr(target)
+                etree.SubElement(arch, 'xpath', {
+                    'expr': expr,
+                    'position': 'replace'
+                })
 
     def _operation_add(self, arch, operation, model):
         node = operation['node']
@@ -1056,6 +1067,75 @@ class WebStudioController(http.Controller):
                 </div>
             """ % {'model': field_id.relation, 'field': field_id.name})
         )
+
+    def _operation_kanban_set_cover(self, arch, operation, model):
+        """ Insert a menu in dropdown to set cover image in a kanban view.
+            Implied modifications:
+                - adds the given m2o field in the view (may create new field
+                  'x_studio_cover_image_id' if there's no compatible field)
+                - adds an option inside dropdown section in the view
+                - adds an field having widget `attachment_image` in the view
+        """
+        model_id = request.env['ir.model'].search([('model', '=', model)])
+        if not model_id:
+            raise UserError(_('The model %s does not exist.') % model)
+        if operation.get('field'):
+            field_id = request.env['ir.model.fields'].search([
+                ('model', '=', model),
+                ('name', '=', operation['field'])
+            ])
+            if not field_id:
+                raise UserError(_('The field %s does not exist.') % operation['field'])
+        else:
+            att_model = request.env['ir.model'].search([('model', '=', 'ir.attachment')])
+            field_id = request.env['ir.model.fields'].search([
+                ('model', '=', model_id.model),
+                ('name', '=', 'x_studio_cover_image_id'),
+                ('ttype', '=', 'many2one')
+            ])
+            # create a field many2one x_studio_cover_image_id if it doesn't exist in the model
+            if not field_id:
+                field_id = request.env['ir.model.fields'].create({
+                    'model': model_id.model,
+                    'model_id': model_id.id,
+                    'relation': att_model.model,
+                    'name': 'x_studio_cover_image_id',
+                    'field_description': 'Cover Image',
+                    'ttype': 'many2one',
+                    'domain': '[("res_model", "=", "%s"), ("res_id", "=", "%s"), ("mimetype", "ilike", "image")]' % (model_id.model, model_id.id)
+                })
+
+        # add link inside the dropdown
+        etree.SubElement(arch, 'xpath', {
+            'expr': '//div[hasclass("dropdown-menu")]//a',
+            'position': 'before',
+        }).append(
+            etree.fromstring("""
+                <a data-type="set_cover" href="#" data-field="%s" class="dropdown-item oe_kanban_action oe_kanban_action_a" >
+                    Set Cover Image
+                </a>
+            """ % (field_id.name))
+        )
+        studio_view_arch = arch
+        arch = request.env[model]._fields_view_get(view_type='kanban')['arch']
+        parser = etree.XMLParser(remove_blank_text=True)
+        arch = etree.fromstring(arch, parser=parser)
+
+        # try to find the best place to put the cover
+        possible_hooks = [
+            {'expr': '//div[hasclass("o_kanban_record_body")]', 'position' : 'inside'},
+            {'expr': '//div[hasclass("o_kanban_record_bottom")]', 'position' : 'before'},
+            {'expr': '//div[hasclass("oe_kanban_details")]', 'position' : 'inside'},
+            {'expr': '//div', 'position': 'inside'},
+        ]
+        for hook in possible_hooks:
+            if len(arch.xpath(hook['expr'])):
+                break
+
+        xpath_node = etree.SubElement(studio_view_arch, 'xpath', hook)
+        xpath_node.append(etree.fromstring("""
+                <field t-if="record.%s.value" name="%s" widget="attachment_image"/>
+            """ % (field_id.name, field_id.name)))
 
     def _operation_kanban_priority(self, arch, operation, model):
         """ Insert a priority and its corresponding needs in an kanban view arch

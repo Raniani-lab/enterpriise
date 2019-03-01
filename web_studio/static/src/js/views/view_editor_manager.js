@@ -22,6 +22,7 @@ var PivotEditor = require('web_studio.PivotEditor');
 var SearchEditor = require('web_studio.SearchEditor');
 var SearchRenderer = require('web_studio.SearchRenderer');
 
+var FieldSelectorDialog = require('web_studio.FieldSelectorDialog');
 var NewButtonBoxDialog = require('web_studio.NewButtonBoxDialog');
 var NewFieldDialog = require('web_studio.NewFieldDialog');
 var utils = require('web_studio.utils');
@@ -386,6 +387,43 @@ var ViewEditorManager = AbstractEditorManager.extend({
         this._do({
             type: 'kanban_dropdown',
         });
+    },
+    /**
+     * @private
+     * @param {string} type
+     */
+    _editKanbanCover: function (type) {
+        if (type === 'kanban_set_cover') {
+            var compatibleFields = _.pick(this.fields, function (field) {
+               return field.type === "many2one" && field.relation === "ir.attachment";
+            });
+            var dialog = new FieldSelectorDialog(this, compatibleFields, true).open();
+            dialog.on('confirm', this, function (field) {
+                this._do({
+                    type: type,
+                    field: field,
+                });
+            });
+        }
+        if (type === 'remove') {
+            var fieldToRemove = _.pick(this.view.fieldsInfo[this.view_type], function (field) {
+                return field.widget === "attachment_image";
+            });
+
+            this._do({
+                type: type,
+                target: {
+                    tag: 'field',
+                    attrs: {name: _.keys(fieldToRemove)[0]},
+                    extra_nodes: [{
+                        tag: "a",
+                        attrs: {
+                            type: 'set_cover',
+                        },
+                    }],
+                },
+            });
+        }
     },
     /**
      * @private
@@ -1440,6 +1478,9 @@ var ViewEditorManager = AbstractEditorManager.extend({
                 break;
             case 'chatter':
                 this._addChatter(event.data);
+                break;
+            case 'kanban_cover':
+                this._editKanbanCover(type);
                 break;
             case 'kanban_dropdown':
                 this._addKanbanDropdown();

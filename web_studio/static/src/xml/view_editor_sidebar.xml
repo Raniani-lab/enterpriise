@@ -708,6 +708,12 @@
 
 <!-- DivEditor -->
 <t t-name="web_studio.ViewEditorSidebar.div">
+    <div t-if="widget.view_type === 'kanban' and widget.state.$node and widget.state.$node.hasClass('o_dropdown_kanban')" class="o_web_studio_sidebar_checkbox">
+        <div class="custom-control custom-checkbox">
+            <input type="checkbox" id="set_cover" name="set_cover" class="custom-control-input" t-att-checked="widget.state.$node.find('a[data-type=set_cover]').length ? 'checked' : undefined"/>
+            <label for="set_cover" class="custom-control-label">Set Cover Image</label>
+        </div>
+    </div>
     <t t-call="web_studio.Sidebar.Toolbox">
         <t t-call="web_studio.Sidebar.Remove"/>
     </t>

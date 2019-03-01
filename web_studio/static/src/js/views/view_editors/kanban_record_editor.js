@@ -8,6 +8,7 @@ var KanbanRecord = require('web.KanbanRecord');
 var utils = require('web.utils');
 
 var EditorMixin = require('web_studio.EditorMixin');
+var FieldSelectorDialog = require('web_studio.FieldSelectorDialog');
 
 var _t = core._t;
 
@@ -147,7 +148,7 @@ var KanbanRecordEditor = KanbanRecord.extend(EditorMixin, {
                     Dialog.alert(self, _t('You first need to create a many2many field in the form view.'));
                     return;
                 }
-                var dialog = new NewKanbanHelperDialog(self, compatible_fields, false);
+                var dialog = new FieldSelectorDialog(self, compatible_fields, false);
                 dialog.open();
                 dialog.on('confirm', self, function (field_name) {
                     self.trigger_up('view_change', {
@@ -176,7 +177,10 @@ var KanbanRecordEditor = KanbanRecord.extend(EditorMixin, {
             this.setSelectable($dropdown);
             $dropdown.click(function () {
                 self.selected_node_id = $dropdown.data('node-id');
-                self.trigger_up('node_clicked', {node: node});
+                self.trigger_up('node_clicked', {
+                    node: node,
+                    $node: $dropdown,
+                });
             });
         } else {
             var $top_left_hook = $('<div>')
@@ -213,7 +217,7 @@ var KanbanRecordEditor = KanbanRecord.extend(EditorMixin, {
                 var compatible_fields = _.pick(self.state.fields, function (e) {
                     return e.type === 'selection';
                 });
-                var dialog = new NewKanbanHelperDialog(self, compatible_fields, true).open();
+                var dialog = new FieldSelectorDialog(self, compatible_fields, true).open();
                 dialog.on('confirm', self, function (field) {
                     self.trigger_up('view_change', {
                         structure: 'kanban_priority',
@@ -239,7 +243,7 @@ var KanbanRecordEditor = KanbanRecord.extend(EditorMixin, {
                     Dialog.alert(self, _t('You first need to create a many2one field to Partner or User in the form view.'));
                     return;
                 }
-                var dialog = new NewKanbanHelperDialog(self, compatible_fields, false).open();
+                var dialog = new FieldSelectorDialog(self, compatible_fields, false).open();
                 dialog.on('confirm', self, function (field) {
                     self.trigger_up('view_change', {
                         structure: 'kanban_image',
@@ -409,53 +413,6 @@ var KanbanRecordEditor = KanbanRecord.extend(EditorMixin, {
                 return false;
             };
         }
-    },
-});
-
-var NewKanbanHelperDialog = Dialog.extend({
-    template: 'web_studio.NewKanbanHelperDialog',
-    /**
-     * @constructor
-     * @param {Widget} parent
-     * @param {Object} fields
-     * @param {Boolean} show_new
-     */
-    init: function (parent, fields, show_new) {
-        // set the field name because they key will be lost when sorting dict
-        this.orderered_fields = _.sortBy(
-            _.mapObject(fields, function (attrs, fieldName) {
-                return {
-                    name: fieldName,
-                    string: attrs.string
-                };
-            }), 'string');
-        this.show_new = show_new;
-        this.debug = config.debug;
-
-        var options = {
-            title: _t('Select a Field'),
-            buttons: [{
-                text: _t("Confirm"),
-                classes: 'btn-primary',
-                click: this._onConfirm.bind(this)
-            }, {
-                text: _t("Cancel"), close: true
-            }],
-        };
-        this._super(parent, options);
-    },
-
-    //--------------------------------------------------------------------------
-    // Handlers
-    //--------------------------------------------------------------------------
-
-    /**
-     * @
-     * @returns {[type]} [description]
-     */
-    _onConfirm: function () {
-        var selected_field = this.$('select[name="field"]').val();
-        this.trigger('confirm', selected_field);
     },
 });
 

@@ -346,6 +346,20 @@ tour.register('web_studio_tests_tour', {
     // enable stages
     trigger: '.o_web_studio_sidebar input[name=enable_stage]',
 }, {
+    extra_trigger: '.o_kanban_grouped',
+    // add a dropdown
+    trigger: '.o_dropdown_kanban.o_web_studio_add_dropdown',
+}, {
+    trigger: '.modal-footer .btn.btn-primary',
+}, {
+    // select the dropdown for edition
+    trigger: '.o_dropdown_kanban:not(.o_web_studio_add_dropdown)',
+}, {
+    // enable "Set Cover" feature
+    trigger: '.o_web_studio_sidebar input[name=set_cover]',
+}, {
+    trigger: '.modal-footer .btn.btn-primary',
+}, {
     // edit action
     trigger: '.o_web_studio_menu .o_menu_sections a[data-name="views"]',
 }, {

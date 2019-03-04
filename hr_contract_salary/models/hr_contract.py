@@ -23,7 +23,6 @@ class HrContract(models.Model):
     access_token_end_date = fields.Date('Access Token Validity Date', copy=False)
     sign_request_ids = fields.Many2many('sign.request', string="Requested Signatures")
     sign_request_count = fields.Integer(compute='_compute_sign_request_count')
-    active_employee = fields.Boolean(related='employee_id.active', string="Active Employee", readonly=False)
     applicant_id = fields.Many2one('hr.applicant')
     contract_reviews_count = fields.Integer(compute="_compute_contract_reviews_count", string="Proposed Contracts Count")
     contract_type = fields.Selection([

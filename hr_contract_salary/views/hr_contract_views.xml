@@ -29,7 +29,6 @@
                 <field name="access_token_consumed" invisible="1"/>
                 <field name="access_token_end_date" invisible="1"/>
                 <field name="sign_request_ids" invisible="1"/>
-                <field name="active_employee" invisible="1"/>
             </xpath>
             <xpath expr="//field[@name='state']" position="before">
                 <button name="action_accept_package" type="object" string="Accept Request" class="oe_highlight" groups="hr.group_hr_manager" attrs="{'invisible': ['|', '|', ('origin_contract_id', '=', False), ('state', '!=', 'draft'), ('sign_request_count', '=', 0)]}"/>

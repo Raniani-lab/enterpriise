@@ -49,15 +49,15 @@
     </record>
 
     <!-- Subtypes -->
-    <record id="subtype_stage_change" model="mail.message.subtype">
-        <field name="name">Stage Change</field>
-        <field name="res_model">sale.subscription</field>
-        <field name="default" eval="True"/>
-        <field name="internal" eval="True"/>
-        <field name="description">Subscription stage has changed</field>
-    </record>
-
     <data noupdate="1">
+        <record id="subtype_stage_change" model="mail.message.subtype">
+            <field name="name">Stage Change</field>
+            <field name="res_model">sale.subscription</field>
+            <field name="default" eval="True"/>
+            <field name="internal" eval="True"/>
+            <field name="description">Subscription stage has changed</field>
+        </record>
+
         <record id="seq_sale_subscription" model="ir.sequence">
             <field name="name">Subscriptions</field>
             <field name="code">sale.subscription</field>

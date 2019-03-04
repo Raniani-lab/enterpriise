@@ -30,7 +30,6 @@ class ResCompany(models.Model):
         default='manually', string='Interval Unit')
     currency_next_execution_date = fields.Date(string="Next Execution Date")
     currency_provider = fields.Selection([
-        ('yahoo', 'Yahoo (DISCONTINUED)'),
         ('ecb', 'European Central Bank'),
         ('fta', 'Federal Tax Administration (Switzerland)'),
         ('banxico', 'Mexican Bank'),
@@ -90,18 +89,13 @@ class ResCompany(models.Model):
         active_currencies = self.env['res.currency'].search([])
         for (currency_provider, companies) in self._group_by_provider().items():
             parse_results = None
-            if currency_provider != 'yahoo':
-                parse_function = getattr(companies, '_parse_' + currency_provider + '_data')
-                parse_results = parse_function(active_currencies)
+            parse_function = getattr(companies, '_parse_' + currency_provider + '_data')
+            parse_results = parse_function(active_currencies)
 
             if parse_results == False:
                 # We check == False, and don't use bool conversion, as an empty
                 # dict can be returned, if none of the available currencies is supported by the provider
-                if currency_provider == 'yahoo':
-                    _logger.warning("Call to the discontinued Yahoo currency rate web service.")
-                else:
-                    _logger.warning(_('Unable to connect to the online exchange rate platform %s. The web service may be temporary down.') % currency_provider)
-
+                _logger.warning(_('Unable to connect to the online exchange rate platform %s. The web service may be temporary down.') % currency_provider)
                 rslt = False
             else:
                 companies._generate_currency_rates(parse_results)
@@ -383,8 +377,6 @@ class ResConfigSettings(models.TransientModel):
 
     def update_currency_rates_manually(self):
         self.ensure_one()
-        if self.company_id.currency_provider == 'yahoo':
-            raise UserError(_("The Yahoo currency rate web service has been discontinued. Please select another currency rate provider."))
 
         if not (self.company_id.update_currency_rates()):
             raise UserError(_('Unable to connect to the online exchange rate platform. The web service may be temporary down. Please try again in a moment.'))

@@ -764,7 +764,7 @@ var GanttRow = Widget.extend({
                 hoveredCell = ev.currentTarget;
             }
 
-            if (hoveredCell != this.lastHoveredCell) {
+            if (hoveredCell && hoveredCell != this.lastHoveredCell) {
                 if (this.lastHoveredCell) {
                     this.lastHoveredCell.classList.remove('o_hovered');
                 }

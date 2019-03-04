@@ -2047,7 +2047,7 @@ class TestAccountReports(SavepointCase):
             [
                 ('Virtual GL Balance',                                          '',             ''),
                 ('Current balance of account 101401',                           '03/31/2017',   -950.00),
-                ('Operations to Process',                                       '',             ''),
+                ('Operations to Process',                                       '',             -100),
                 ('Unreconciled Bank Statement Lines',                           '',             ''),
                 ('CUST.IN/2017/0003',                                           '03/01/2017',   100.00),
                 ('Validated Payments not Linked with a Bank Statement Line',    '',             ''),
@@ -2057,7 +2057,7 @@ class TestAccountReports(SavepointCase):
                 ('CUST.IN/2017/0001',                                           '01/01/2017',   -600.00),
                 ('Total Virtual GL Balance',                                    '',             -1050.00),
                 ('Last Bank Statement Ending Balance',                          '03/01/2017',   -1050.00),
-                ('Unexplained Difference',                                      '',             ''),
+                ('Unexplained Difference',                                      '',             0),
             ],
         )
 
@@ -2077,7 +2077,7 @@ class TestAccountReports(SavepointCase):
             [
                 ('Virtual GL Balance',                                          '',             ''),
                 ('Current balance of account 101401',                           '03/31/2017',   -1900.00),
-                ('Operations to Process',                                       '',             ''),
+                ('Operations to Process',                                       '',             -200),
                 ('Unreconciled Bank Statement Lines',                           '',             ''),
                 ('CUST.IN/2017/0007',                                           '03/01/2017',   200.00),
                 ('Validated Payments not Linked with a Bank Statement Line',    '',             ''),
@@ -2087,7 +2087,7 @@ class TestAccountReports(SavepointCase):
                 ('CUST.IN/2017/0005',                                           '01/01/2017',   -1200.00),
                 ('Total Virtual GL Balance',                                    '',             -2100.00),
                 ('Last Bank Statement Ending Balance',                          '03/01/2017',   -2100.00),
-                ('Unexplained Difference',                                      '',             ''),
+                ('Unexplained Difference',                                      '',             0),
             ],
             currency=self.company_child_eur.currency_id,
         )
@@ -2120,14 +2120,14 @@ class TestAccountReports(SavepointCase):
             [
                 ('Virtual GL Balance',                                          '',             ''),
                 ('Current balance of account 101411',                           '03/31/2017',   2300.00),
-                ('Operations to Process',                                       '',             ''),
+                ('Operations to Process',                                       '',             0),
                 ('Unreconciled Bank Statement Lines',                           '',             ''),
                 ('CUST.IN/2017/0009',                                           '03/01/2017',   2300.00),
                 ('Validated Payments not Linked with a Bank Statement Line',    '',             ''),
                 ('CUST.IN/2017/0009',                                           '03/01/2017',   -2300.00),
                 ('Total Virtual GL Balance',                                    '',             2300.00),
                 ('Last Bank Statement Ending Balance',                          '03/01/2017',   2300.00),
-                ('Unexplained Difference',                                      '',             ''),
+                ('Unexplained Difference',                                      '',             0),
             ],
             currency=foreign_currency,
         )

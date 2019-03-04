@@ -37,7 +37,7 @@ odoo.define('sign.views_custo', function(require) {
          */
         _openRecord: function () {
             var self = this;
-            if (this.modelName === 'sign.template') {
+            if (this.modelName === 'sign.template' && this.$el.parents('.o_sign_template_kanban').length) {
                 self._rpc({
                     model: 'sign.template',
                     method: 'go_to_custom_template',
@@ -45,7 +45,7 @@ odoo.define('sign.views_custo', function(require) {
                 }).then(function(action) {
                     self.do_action(action);
                 });
-            } else if (this.modelName === 'sign.request') {
+            } else if (this.modelName === 'sign.request' && this.$el.parents('.o_sign_request_kanban').length) {
                 this._rpc({
                     model: 'sign.request',
                     method: 'go_to_document',

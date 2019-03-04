@@ -13,7 +13,7 @@ KanbanRecord.include({
      * @private
      */
     _openRecord: function () {
-        if (this.modelName === 'stock.picking.type') {
+        if (this.modelName === 'stock.picking.type' && this.$('button').length) {
             this.$('button').first().click();
         } else {
             this._super.apply(this, arguments);

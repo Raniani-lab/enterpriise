@@ -227,7 +227,7 @@
                         <group>
                             <field name="template_id"/>
                             <field name="user_id"/>
-                            <field name="team_id"/>
+                            <field name="team_id" kanban_view_ref="%(sales_team.crm_team_view_kanban)s"/>
                             <field name="company_id" groups="base.group_multi_company"/>
                             <field name="currency_id" invisible="1"/>
                             <label for="recurring_next_date" string="Date of Next Invoice" attrs="{'invisible': [('in_progress', '=', False)]}"/>
@@ -357,7 +357,7 @@
                 <field name="user_closable"/>
                 <templates>
                     <t t-name="kanban-box">
-                        <div t-attf-class="#{kanban_color(record.color.raw_value)} oe_kanban_global_click">
+                        <div t-attf-class="#{!selection_mode ? kanban_color(record.color.raw_value) : ''} oe_kanban_global_click">
                             <span class="oe_kanban_color_help" t-attf-title="In #{kanban_getcolorname(record.color.raw_value)}" role="img" t-attf-aria-label="In #{kanban_getcolorname(record.color.raw_value)}"/>
                             <div class="o_subscription_kanban_main">
                                 <div class="o_kanban_card_content">
@@ -382,11 +382,11 @@
                                         <ul role="menu" class="oe_kanban_colorpicker" data-field="color"/>
                                     </div>
                                 </div>
-                                <div class="o_subscription_kanban_manage">
+                                <div class="o_subscription_kanban_manage" t-if="!selection_mode">
                                     <a class="o_kanban_manage_toggle_button" href="#"><i class="fa fa-ellipsis-v" role="img" aria-label="Manage" title="Manage"/></a>
                                 </div>
                             </div>
-                            <div class="ml16">
+                            <div class="ml16" t-if="!selection_mode">
                                 <a name="%(sale_subscription_action_filtered)d" type="action">
                                     <span><t t-esc="record.subscription_count.value"/></span>
                                     <span>Subscriptions</span>

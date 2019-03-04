@@ -17,7 +17,7 @@
                     <field name="signer_id" attrs="{'invisible': [('signers_count', '!=', 0)], 'required': [('signers_count', '=', 0)]}" context="{'force_email':True}"/>
                     <field name="signers_count" invisible="1"/>
                     <field name="is_user_signer" invisible="1"/>
-                    <field name="template_id" invisible="1"/>
+                    <field name="template_id" invisible="1" kanban_view_ref="%(sign.sign_template_view_kanban_mobile)s"/>
                     <field name="follower_ids" widget="many2many_tags" placeholder="Write email or search contact..."/>
                     <field name="subject" placeholder="Signature Request" invisible="context.get('sign_directly_without_mail',False)"/>
                     <field name="message" placeholder="Optional Message..." invisible="context.get('sign_directly_without_mail',False)"/>

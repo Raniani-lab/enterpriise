@@ -28,7 +28,7 @@
                 <field name="default_contract_id"/>
             </field>
             <group name="duration_group" position="inside">
-                <field name="sign_template_id" options="{'no_create': True}"/>
+                <field name="sign_template_id" options="{'no_create': True}" kanban_view_ref="%(sign.sign_template_view_kanban_mobile)s"/>
                 <field name="contract_update_template_id" options="{'no_create': True}"/>
             </group>
             <field name="job_id" position="before">
@@ -62,7 +62,7 @@
                 <attribute name="invisible">1</attribute>
             </field>
             <field name="job_id" position="after">
-                <field name="sign_template_id"/>
+                <field name="sign_template_id" kanban_view_ref="%(sign.sign_template_view_kanban_mobile)s"/>
                 <field name="contract_update_template_id"/>
             </field>
             <field name="structure_type_id" position="after">

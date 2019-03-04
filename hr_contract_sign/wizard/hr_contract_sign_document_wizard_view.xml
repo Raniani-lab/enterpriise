@@ -7,7 +7,7 @@
             <form string="Signature Request">
                 <group class="o_label_nowrap">
                     <field name="contract_id" invisible="1"/>
-                    <field name="sign_template_id" options="{'no_create': True}"/>
+                    <field name="sign_template_id" options="{'no_create': True}" kanban_view_ref="%(sign.sign_template_view_kanban_mobile)s"/>
                     <field name="responsible_id" options="{'no_create_edit': True}"/>
                 </group>
                 <group>

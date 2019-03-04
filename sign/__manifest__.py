@@ -15,6 +15,8 @@ Let your customers follow the signature process easily.
         'security/security.xml',
         'security/ir.model.access.csv',
 
+        'views/sign_template_views_mobile.xml',
+
         'wizard/sign_send_request_views.xml',
         'wizard/sign_template_share_views.xml',
         'wizard/sign_request_send_copy_views.xml',

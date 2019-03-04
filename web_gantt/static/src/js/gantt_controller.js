@@ -286,11 +286,9 @@ var GanttController = AbstractController.extend({
      * @private
      * @param {OdooEvent} ev
      * @param {jQuery} ev.data.target
-     * @param {MouseEvent} ev.data.originalEvent
      */
     _onPillClicked: function (ev) {
         if (!this._updating) {
-            ev.data.originalEvent.stopPropagation();
             ev.data.target.addClass('o_gantt_pill_editing');
             var dialog = this._openDialog(ev.data.target.data('id'));
             dialog.on('closed', this, function () {

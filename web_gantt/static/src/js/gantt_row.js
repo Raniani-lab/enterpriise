@@ -791,7 +791,6 @@ var GanttRow = Widget.extend({
         if (!this.isGroup) {
             this.trigger_up('pill_clicked', {
                 target: $(ev.currentTarget),
-                originalEvent: ev,
             });
         }
     },

@@ -2,8 +2,19 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from odoo import api, models, fields, _
 from odoo.exceptions import UserError
+from odoo.addons.web.controllers.main import clean_action
 import calendar
 import json
+
+class AccountTaxReportActivity(models.Model):
+    _inherit = "mail.activity"
+
+    @api.multi
+    def _get_vat_report_action_to_open(self, company_id):
+        if company_id.country_id.code == 'BE':
+            return self.env.ref('l10n_be_reports.action_account_report_be_vat').read()[0]
+        else:
+            return super(AccountTaxReportActivity, self)._get_vat_report_action_to_open(company_id)
 
 class AccountFinancialReportXMLReportExport(models.TransientModel):
     _name = "l10n_be_reports.periodic.vat.xml.export"
@@ -17,7 +28,8 @@ class AccountFinancialReportXMLReportExport(models.TransientModel):
         help='La grille 91 ne concerne que les assujettis tenus au dépôt de déclarations mensuelles. Cette grille ne peut être complétée que pour la déclaration relative aux opérations du mois de décembre.')
     calling_export_wizard_id = fields.Many2one(string="Calling Export Wizard", comodel_name="account_reports.export.wizard", help="Optional field containing the report export wizard calling this wizard, if there is one.")
 
-    def print_xml(self):
+
+    def periodic_tva_closing(self):
         if self.calling_export_wizard_id and not self.calling_export_wizard_id.l10n_be_reports_periodic_vat_wizard_id:
             self.calling_export_wizard_id.l10n_be_reports_periodic_vat_wizard_id = self
             return self.calling_export_wizard_id.export_report()
@@ -27,14 +39,8 @@ class AccountFinancialReportXMLReportExport(models.TransientModel):
             options['ask_payment'] = self.ask_payment
             options['client_nihil'] = self.client_nihil
             options['grid91'] = self.grid91
-            return {
-                'type': 'ir_actions_account_report_download',
-                'data': {'model': self.env.context.get('model'),
-                     'options': json.dumps(options),
-                     'output_format': 'xml',
-                     'financial_id': self.env.context.get('id'),
-                     }
-                }
+        # Automatically post tva entries and return action to open form view of newly entry created
+        return self.env['account.financial.html.report'].browse(self.env.context.get('id')).periodic_tva_entries(options)
 
 class AccountFinancialReportXMLExport(models.AbstractModel):
     _inherit = "account.financial.html.report"
@@ -42,10 +48,10 @@ class AccountFinancialReportXMLExport(models.AbstractModel):
     def _get_reports_buttons(self):
         buttons = super(AccountFinancialReportXMLExport, self)._get_reports_buttons()
         if self.id == self.env['ir.model.data'].xmlid_to_res_id('l10n_be_reports.account_financial_report_l10n_be_tva0'):
-            buttons += [{'name': _('Export (XML)'), 'sequence': 3, 'action': 'print_xml', 'file_export_type': _('XML')}]
+            buttons += [{'name': _('Periodic TVA closing'), 'sequence': 3, 'action': 'periodic_tva_entries_wizard'}]
         return buttons
 
-    def print_xml(self, options):
+    def periodic_tva_entries_wizard(self, options):
         # add options to context and return action to open transient model
         ctx = self.env.context.copy()
         ctx['l10n_be_reports_generation_options'] = options
@@ -61,6 +67,13 @@ class AccountFinancialReportXMLExport(models.AbstractModel):
             'target': 'new',
             'context': ctx,
             }
+
+    def _get_vat_report_attachments(self, options):
+        # Fetch xml as well as pdf
+        attachments = super(AccountFinancialReportXMLExport, self)._get_vat_report_attachments(options)
+        xml = self.get_xml(options)
+        attachments.append(('vat_report.xml', xml))
+        return attachments
 
     def get_xml(self, options):
         # Check

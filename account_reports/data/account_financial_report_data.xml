@@ -887,6 +887,7 @@
         <!-- Account Financial Report Assets -->
         <template id="account_reports_backend" inherit_id="web.assets_backend" active="True">
             <xpath expr="." position="inside">
+                <script type="text/javascript" src="/account_reports/static/src/js/mail_activity.js"></script>
                 <script type="text/javascript" src="/account_reports/static/src/js/account_reports.js"></script>
                 <script type="text/javascript" src="/account_reports/static/src/js/followup_form/followup_form_view.js"></script>
                 <script type="text/javascript" src="/account_reports/static/src/js/followup_form/followup_form_model.js"></script>

@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <record id="account_activity_view_form_popup" model="ir.ui.view">
+        <field name="name">mail.activity.form.inherit.account.tax</field>
+        <field name="model">mail.activity</field>
+        <field name="inherit_id" ref="mail.mail_activity_view_form_popup"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_done']" position="attributes">
+                  <attribute name="attrs">{'invisible': ['|', ('activity_category', '=', 'tax_report'), ('force_next', '=', True)]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='note']" position="attributes">
+                  <attribute name="attrs">{'invisible': [('activity_category', '=', 'tax_report')]}</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_close_dialog']" position="before">
+                <button string="View tax report"
+                    attrs="{'invisible': [('activity_category', '!=', 'tax_report')]}"
+                    name="action_open_tax_report"
+                    type="object"
+                    class="btn-primary"/>
+            </xpath>
+        </field>
+    </record>
+
+   <template id="message_activity_done">
+        <div>
+            <div t-if="feedback">
+                <p t-if="feedback.get('date_from')">
+                    <span t-if="activity.summary" t-field="activity.summary"/> done for the period from <t t-esc="feedback.get('date_from')"/> to <t t-esc="feedback.get('date_to')"/>
+                </p>
+                <t t-if="feedback.get('move_id')">
+                    <p>
+                        <a href="#" data-oe-model="account.move" t-att-data-oe-id="feedback.get('move_id')">Move created</a>
+                    </p>
+                </t>
+            </div>
+        </div>
+    </template>
+
+</odoo>

@@ -24,6 +24,35 @@
                     </div>
                 </div>
             </div>
+            <div id="accounting_reports" position="inside">
+                <div class="col-lg-6 o_setting_box" id="tax_periodicity">
+                    <div class="o_setting_left_pane"/>
+                    <div class="o_setting_right_pane">
+                        <span class="o_form_label">Tax Return Periodicity</span>
+                        <span class="fa fa-lg fa-building-o" title="Values set here are company-specific." role="img" aria-label="Values set here are company-specific." groups="base.group_multi_company"/>
+                        <div class="text-muted">
+                            How often do Tax returns have to be made?
+                        </div>
+                        <div class="content-group">
+                            <div class="row mt16">
+                                <label string="Periodicity" for="tax_periodicity" class="col-lg-3 o_light_label"/>
+                                <field name="tax_periodicity"/>
+                            </div>
+                            <div class="row">
+                                <label string="1st Period" for="tax_periodicity_next_deadline" class="col-lg-3 o_light_label"/>
+                                <field name="tax_periodicity_next_deadline"/>
+                            </div>
+                            <div class="row">
+                                <label string="Journal" for="tax_periodicity_journal_id" class="col-lg-3 o_light_label"/>
+                                <field name="tax_periodicity_journal_id"/>
+                            </div>
+                            <div>
+                                <button name="%(account.action_tax_group)d" icon="fa-arrow-right" type="action" string="Configure your tax accounts" class="btn-link"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div id="analytic" position="after">
                 <h2 groups="account.group_account_user" attrs="{'invisible': [('module_account_reports', '=', False)]}">Reporting</h2>
                 <div class="row mt16 o_settings_container" id="account_reports_settings"

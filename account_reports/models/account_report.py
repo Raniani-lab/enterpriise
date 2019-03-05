@@ -301,7 +301,6 @@ class AccountReport(models.AbstractModel):
         options_filter = self.filter_date.get('filter') or ('today' if mode == 'single' else 'fiscalyear')
         date_from = self.filter_date.get('date_from') and fields.Date.from_string(self.filter_date['date_from'])
         date_to = self.filter_date.get('date_to') and fields.Date.from_string(self.filter_date['date_to'])
-
         # Handle previous_options.
         if previous_options and previous_options.get('date') and previous_options['date'].get('filter') \
                 and not (previous_options['date']['filter'] == 'today' and mode == 'range'):
@@ -919,6 +918,26 @@ class AccountReport(models.AbstractModel):
         #overwrite the context to avoid default filtering on 'misc' journals
         action['context'] = {}
         return action
+
+    def periodic_tva_entries(self, options):
+        # Return action to open form view of newly entry created
+        ctx = self._set_context(options)
+        ctx['strict_range'] = True
+        self = self.with_context(ctx)
+        attachments = self._get_vat_report_attachments(options)
+        move = self.env['account.generic.tax.report']._post_tax_entries(options)
+        # Add pdf report as attachment to moves and post the moves
+        move.message_post(body=move.ref, subject=_('Automatic vat closing'), attachments=attachments)
+        action = self.env.ref('account.action_move_journal_line').read()[0]
+        action = clean_action(action)
+        action['views'] = [(self.env.ref('account.view_move_form').id, 'form')]
+        action['res_id'] = move.id
+        return action
+
+    def _get_vat_report_attachments(self, options):
+        # Fetch pdf
+        pdf = self.get_pdf(options)
+        return [('vat_report.pdf', pdf)]
 
     def action_partner_reconcile(self, options, params):
         form = self.env.ref('account.action_manual_reconciliation', False)

@@ -19,7 +19,7 @@
                          </group>
                     </group>
                     <footer>
-                        <button string='Export XML' name="print_xml" type="object" class="btn-primary"/>
+                        <button string='Periodic TVA Closing' name="periodic_tva_closing" type="object" class="btn-primary"/>
                         <button string="Cancel" class="btn-secondary" special="cancel"/>
                     </footer>
                </form>

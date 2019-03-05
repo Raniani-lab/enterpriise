@@ -50,8 +50,15 @@
                     </div>
                 </button>
                 <button class="oe_stat_button" name="create_or_view_created_quotations"
-                    type="object" icon="fa-pencil-square-o" groups="sales_team.group_sale_salesman" help="Quotations created from this task" attrs="{'invisible': [('allow_billable', '=', False)]}">
-                    <field name="quotation_count" widget="statinfo" string="Quotation(s)" class="mr-1"/>
+                    type="object" groups="sales_team.group_sale_salesman" help="Quotations created from this task" attrs="{'invisible': [('allow_billable', '=', False)]}">
+                    <div class="ml-3" attrs="{'invisible': [('quotation_count', '!=', 0)]}">
+                        <i class="fa fa-lg fa-plus-circle mr-2" aria-label="Create new quotation" title="Create new quotation"/>
+                        New Quotation
+                    </div>
+                    <div class="ml-3" attrs="{'invisible': [('quotation_count', '=', 0)]}">
+                        <i class="fa fa-lg fa-pencil-square-o mr-2" aria-label="View quotations" title="View quotations"/>
+                        <field name="quotation_count" widget="statinfo" string="Quotation(s)" class="mr-1"/>
+                    </div>
                 </button>
             </xpath>
             <xpath expr="//page[@name='extra_info']" position="attributes">
@@ -67,10 +74,10 @@
         <field name="inherit_id" ref="project.edit_project"/>
         <field name="arch" type="xml">
             <xpath expr="//group[@name='extra_settings']" position="inside">
-                    <field name="allow_planning"/>
-                    <field name="allow_billable"/>
-                    <field name="timesheet_product_id" attrs="{'invisible': [('allow_billable', '=', False)]}"/>
-                    <field name="product_template_ids" widget="many2many_tags" attrs="{'invisible': [('allow_billable', '=', False)]}"/>
+                <field name="allow_planning"/>
+                <field name="allow_billable"/>
+                <field name="timesheet_product_id" attrs="{'invisible': [('allow_billable', '=', False)]}"/>
+                <field name="product_template_ids" widget="many2many_tags" attrs="{'invisible': [('allow_billable', '=', False)]}"/>
             </xpath>
         </field>
     </record>
@@ -155,8 +162,15 @@
                             </div>
                         </button>
                         <button class="oe_stat_button" name="create_or_view_created_quotations"
-                            type="object" icon="fa-pencil-square-o" groups="sales_team.group_sale_salesman" help="Quotations created from this task" attrs="{'invisible': [('allow_billable', '=', False)]}">
-                            <field name="quotation_count" widget="statinfo" string="Quotation(s)" class="mr-1"/>
+                            type="object" groups="sales_team.group_sale_salesman" help="Quotations created from this task" attrs="{'invisible': [('allow_billable', '=', False)]}">
+                            <div class="ml-3" attrs="{'invisible': [('quotation_count', '!=', 0)]}">
+                                <i class="fa fa-lg fa-plus-circle mr-2" aria-label="Create new quotation" title="Create new quotation"/>
+                                New Quotation
+                            </div>
+                            <div class="ml-3" attrs="{'invisible': [('quotation_count', '=', 0)]}">
+                                <i class="fa fa-lg fa-pencil-square-o mr-2" aria-label="View quotations" title="View quotations" role="img"/>
+                                <field name="quotation_count" widget="statinfo" string="Quotation(s)" class="mr-1"/>
+                            </div>
                         </button>
                         <button class="oe_stat_button" name="action_view_timesheets"
                             type="object" icon="fa-clock-o" help="Time recorded on this task" attrs="{'invisible': [('timesheet_ids', '=', [])]}">
@@ -172,7 +186,8 @@
                     </div>
                     <group>
                         <group>
-                            <field name="name"/>
+                            <label for="name" class="oe_edit_only"/>
+                            <field name="name" nolabel="1" class="oe_edit_only"/>
                             <field name="partner_id"
                                 context="{'search_default_customer':1, 'show_address': 1, 'default_is_company': True, 'show_vat': True}"
                                 options='{"always_reload": True, "no_quick_create": True}'
@@ -182,7 +197,8 @@
                             <field name="partner_email" widget="email"  attrs="{'invisible': [('partner_email', '=', False)]}"/>
                         </group>
                         <group>
-                            <field name="project_id" domain="[('allow_planning', '=', True)]"/>
+                            <label for="project_id" class="oe_edit_only"/>
+                            <field name="project_id" domain="[('allow_planning', '=', True)]" required="True" nolabel="1" class="oe_edit_only"/>
                             <label for="planned_date_begin" string="Date"/>
                             <div class="o_row">
                                 <field name="planned_date_begin"/>
@@ -267,7 +283,7 @@
                                             <field name="activity_ids" widget="kanban_activity"/>
                                         </div>
                                         <div class="oe_kanban_bottom_right">
-                                            <div class="badge badge-primary" t-if="widget.getParent().getParent().columnOptions.groupedBy != 'stage_id'">
+                                            <div class="badge badge-primary" t-if="widget.getParent().getParent().columnOptions and widget.getParent().getParent().columnOptions.groupedBy != 'stage_id'">
                                                 <field name="stage_id"/>
                                             </div>
                                         </div>
@@ -282,28 +298,12 @@
     </record>
 
     <!-- Main action for the app -->
-    <record id="project_task_action_worker_tasks" model="ir.actions.act_window">
-        <field name="name">My Tasks</field>
-        <field name="res_model">project.task</field>
-        <field name="view_type">form</field>
-        <field name="view_mode">kanban,form</field>
-        <field name="domain">[('allow_planning', '=', True)]</field>
-        <field name="search_view_id" ref="project_task_view_search"/>
-        <field name="view_ids" eval="[
-            (5, 0, 0),
-            (0, 0, {'view_mode': 'kanban', 'view_id': ref('project_task_view_kanban')}),
-            (0, 0, {'view_mode': 'form', 'view_id': ref('project_task_view_form_fsm')})]"/>
-        <field name="context">{'search_default_my_tasks': True,
-            'search_default_planned_future': True,
-            'default_planned_date_begin': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-            'default_planned_date_end': (datetime.datetime.now() + datetime.timedelta(hours=2)).strftime('%Y-%m-%d %H:%M:%S')}</field>
-        <field name="help" type="html">
-            <p class="o_view_nocontent_smiling_face">
-                No more Tasks
-            </p>
-        </field>
+    <record id="project_task_action_worker_tasks" model="ir.actions.server">
+        <field name="name">project.task.action.worker.tasks</field>
+        <field name="model_id" ref="industry_fsm.model_project_task"/>
+        <field name="state">code</field>
+        <field name="code"> action = model.action_worker_tasks()</field>
     </record>
-
 
     <menuitem id="menu_fsm_root" name="Field Service"
         sequence="25"

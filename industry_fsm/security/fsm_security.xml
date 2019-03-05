@@ -5,7 +5,6 @@
         <record id="group_product_task_map_user" model="res.groups">
             <field name="name">Fsm User</field>
             <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
-            <field name="category_id" ref="base.module_category_project_management"/>
             <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
         </record>
     </data>

@@ -2,10 +2,10 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from math import ceil
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 from odoo import fields, models, api, _
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, AccessError
 
 
 class Project(models.Model):
@@ -19,6 +19,14 @@ class Project(models.Model):
 class Task(models.Model):
     _inherit = "project.task"
 
+    def _default_planned_date_begin(self):
+        if self.env.context.get('fsm_mode'):
+            return datetime.now()
+
+    def _default_planned_date_end(self):
+        if self.env.context.get('fsm_mode'):
+            return datetime.now() + timedelta(hours=2)
+
     allow_billable = fields.Boolean(related='project_id.allow_billable')
     planning_overlap = fields.Integer(compute='_compute_planning_overlap')
     quotation_count = fields.Integer(compute='_compute_quotation_count')
@@ -31,16 +39,20 @@ class Task(models.Model):
     partner_email = fields.Char(related='partner_id.email', string='Email ')
     partner_phone = fields.Char(related='partner_id.phone')
     partner_mobile = fields.Char(related='partner_id.mobile')
+    planned_date_begin = fields.Datetime(default=_default_planned_date_begin)
+    planned_date_end = fields.Datetime(default=_default_planned_date_end)
 
-    @api.depends('planned_date_begin', 'planned_date_end')
+    @api.depends('planned_date_begin', 'planned_date_end', 'user_id')
     def _compute_planning_overlap(self):
         for task in self:
-            overlap = self.env['project.task'].search_count([('allow_planning', '=', True),
-                                                             ('user_id.id', '=', task.user_id.id),
-                                                             ('planned_date_begin', '<=', task.planned_date_end),
-                                                             ('planned_date_end', '>=', task.planned_date_begin)])
-            if task.id and overlap:
-                overlap -= 1
+            domain = [('allow_planning', '=', True),
+                      ('user_id', '=', task.user_id.id),
+                      ('planned_date_begin', '<', task.planned_date_end),
+                      ('planned_date_end', '>', task.planned_date_begin)]
+            current_id = self._origin.id if self.env.in_onchange else task.id
+            if current_id:
+                domain.append(('id', '!=', current_id))
+            overlap = self.env['project.task'].search_count(domain)
             task.planning_overlap = overlap
 
     def _compute_quotation_count(self):
@@ -74,7 +86,7 @@ class Task(models.Model):
                    'default_task_id': self.id,
                    'from_field_service': True}
         return {'type': 'ir.actions.act_window',
-                'name': 'Time',
+                'name': _('Time'),
                 'res_model': 'account.analytic.line',
                 'view_mode': 'list,form,kanban',
                 'views': [(tree_view.id, 'list'), (kanban_view.id, 'kanban'), (form_view.id, 'form')],
@@ -82,9 +94,38 @@ class Task(models.Model):
                 'context': context
                 }
 
+    def action_worker_tasks(self):
+        default_project_id = False
+        fsm_project = self.env.ref('industry_fsm.fsm_project', False)
+
+        # Workaround to avoid a read error on fsm project when we are not in the main company
+        if fsm_project:
+            try:
+                fsm_project.check_access_rule('read')
+                default_project_id = fsm_project.id
+            except AccessError:
+                pass
+
+        return {
+            'name': _('My Tasks'),
+            'type': 'ir.actions.act_window',
+            'res_model': 'project.task',
+            'view_mode': 'kanban,form',
+            'domain': [('allow_planning', '=', True)],
+            'search_view_id': [self.env.ref('industry_fsm.project_task_view_search').id, 'search'],
+            'views': [[self.env.ref('industry_fsm.project_task_view_kanban').id, 'kanban'],
+                      [self.env.ref('industry_fsm.project_task_view_form_fsm').id, 'form']],
+            'context': {
+                'fsm_mode': True,
+                'search_default_my_tasks': True,
+                'search_default_planned_future': True,
+                'default_project_id':  default_project_id},
+            'help': _("<p class='o_view_nocontent_smiling_face'>No more Tasks</p>"),
+        }
+
     # Quotations
     def action_create_quotation(self):
-        partner_id = self.partner_id.id if self.partner_id else False
+        partner_id = self.partner_id.id
         view_form_id = self.env.ref('sale.view_order_form').id
         action = self.env.ref('sale.action_quotations').read()[0]
         action.update({
@@ -107,24 +148,25 @@ class Task(models.Model):
             'view_id': view_tree_id,
             'name': self.name,
             'domain': [('task_id', '=', self.id)],
+            'context': {
+                'default_task_id': self.id,
+                'default_partner_id': self.partner_id.id},
         })
         return action
 
     def create_or_view_created_quotations(self):
-        if not self.timesheet_ids:
-            raise UserError(_("You haven't started this task yet!"))
         if self.quotation_count == 0:
             return self.action_create_quotation()
         else:
             return self.action_view_created_quotations()
 
     def action_view_material(self):
-        if not self.timesheet_ids:
+        if not self.timesheet_ids and not self.timesheet_timer_start:
             raise UserError(_("You haven't started this task yet!"))
         kanban_view = self.env.ref('industry_fsm.view_product_product_kanban_material')
-        domain = [('id', 'in', self.product_template_ids.ids)] if self.product_template_ids else False
+        domain = [('product_tmpl_id', 'in', self.product_template_ids.ids)] if self.product_template_ids else False
         return {'type': 'ir.actions.act_window',
-                'name': 'Time',
+                'name': _('Products'),
                 'res_model': 'product.product',
                 'views': [(kanban_view.id, 'kanban')],
                 'domain': domain,

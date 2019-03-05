@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="fsm_report_template" model="project.report.template">
+            <field name="name">Intervention Report</field>
+        </record>
+
+        <record id="industry_fsm.fsm_project" model="project.project">
+            <field name="allow_reports">True</field>
+            <field name="report_template_id" ref="fsm_report_template"/>
+        </record>
+
+    </data>
+</odoo>

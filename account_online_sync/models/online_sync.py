@@ -157,12 +157,19 @@ class ProviderAccount(models.Model):
     @api.model
     def get_manual_configuration_form(self):
         view_id = self.env.ref('account.setup_bank_account_wizard').id
+        ctx = self.env.context.copy()
+        # if this was called from kanban box, active_model is in context
+        if self.env.context.get('active_model') == 'account.journal':
+            ctx.update({
+                'default_linked_journal_id': ctx.get('journal_id', False)
+            })
         return {'type': 'ir.actions.act_window',
                 'name': _('Create a Bank Account'),
                 'res_model': 'account.setup.bank.manual.config',
                 'target': 'new',
                 'view_mode': 'form',
                 'view_type': 'form',
+                'context': ctx,
                 'views': [[view_id, 'form']],
         }
 

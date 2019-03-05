@@ -18,7 +18,7 @@ class Base(models.AbstractModel):
     _inherit = 'base'
 
     @api.model
-    def read_grid(self, row_fields, col_field, cell_field, domain=None, range=None):
+    def read_grid(self, row_fields, col_field, cell_field, domain=None, range=None, readonly_field=None):
         """
         Current anchor (if sensible for the col_field) can be provided by the
         ``grid_anchor`` value in the context
@@ -27,6 +27,7 @@ class Base(models.AbstractModel):
         :param str col_field: column field
         :param str cell_field: cell field, summed
         :param range: displayed range for the current page
+        :param readonly_field: make cell readonly based on value of readonly_field given
         :type range: None | {'step': object, 'span': object}
         :type domain: None | list
         :returns: dict of prev context, next context, matrix data, row values
@@ -35,10 +36,18 @@ class Base(models.AbstractModel):
         domain = expression.normalize_domain(domain)
         column_info = self._grid_column_info(col_field, range)
 
+        grid_select = set([col_field, cell_field])
+
+        # readonly field should be in select clause with group_operator, or in group by clause too
+        if readonly_field:
+            grid_select.add(readonly_field)
+            if readonly_field != column_info.grouping and not self._fields[readonly_field].group_operator:
+                raise UserError(_("The field used as readonly type must have a group_operator attribute."))
+
         # [{ __count, __domain, grouping, **row_fields, cell_field }]
         groups = self._read_group_raw(
             expression.AND([domain, column_info.domain]),
-            [col_field, cell_field] + [f.partition(':')[0] for f in row_fields],
+            list(grid_select) + [f.partition(':')[0] for f in row_fields],
             [column_info.grouping] + row_fields,
             lazy=False
         )
@@ -56,7 +65,7 @@ class Base(models.AbstractModel):
         for group in groups:
             row = row_key(group)
             col = column_info.format(group[column_info.grouping])
-            cell_map[row][col] = self._grid_format_cell(group, cell_field)
+            cell_map[row][col] = self._grid_format_cell(group, cell_field, readonly_field)
 
         # pre-build whole grid, row-major, h = len(rows), w = len(cols),
         # each cell is
@@ -94,11 +103,12 @@ class Base(models.AbstractModel):
     def _grid_make_empty_cell(self, cell_domain):
         return {'size': 0, 'domain': cell_domain, 'value': 0}
 
-    def _grid_format_cell(self, group, cell_field):
+    def _grid_format_cell(self, group, cell_field, readonly_field):
         return {
             'size': group['__count'],
             'domain': group['__domain'],
             'value': group[cell_field],
+            'readonly': group.get(readonly_field, False),
         }
 
     def _grid_get_row_headers(self, row_fields, groups, key):

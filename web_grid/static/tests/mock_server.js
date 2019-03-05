@@ -111,19 +111,23 @@ MockServer.include({
             var cells = [];
             _.each(columns, function (col) {
                 var cellDomain = ['&'].concat(row.domain).concat(col.domain);
+                var read_fields = kwargs.readonly_field ? [kwargs.cell_field, kwargs.readonly_field] : [kwargs.cell_field];
                 var records = self._mockSearchReadController({
                     model: model,
                     domain: cellDomain,
-                    fields: [kwargs.cell_field],
+                    fields: read_fields,
                 });
                 var value = 0;
                 _.each(records.records, function (rec) {
                     value += rec[kwargs.cell_field];
                 });
+                var readonly_dict = {};
+                readonly_dict[kwargs.readonly_field] = true;
                 cells.push({
                     size: records.length,
                     value: value,
                     is_current: col.is_current,
+                    readonly: _.isMatch(records.records[0], readonly_dict),
                     domain: cellDomain,
                 });
 

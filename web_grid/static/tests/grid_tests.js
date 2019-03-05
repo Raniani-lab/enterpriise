@@ -785,6 +785,41 @@ QUnit.module('Views', {
         grid.destroy();
     });
 
+    QUnit.test('grid view with type="readonly" field', async function (assert) {
+        assert.expect(4);
+        var done = assert.async();
+        this.data['analytic.line'].fields.validated = {string: "Validation", type: "boolean"};
+        this.data['analytic.line'].records.push({id: 8, project_id: 142, task_id: 54, date: "2017-01-25", unit_amount: 4, employee_id: 101, validated: true});
+        var grid = await createView({
+            View: GridView,
+            model: 'analytic.line',
+            data: this.data,
+            arch: '<grid string="Timesheet" adjustment="object" adjust_name="adjust_grid">' +
+                    '<field name="validated" type="readonly"/>' +
+                    '<field name="project_id" type="row"/>' +
+                    '<field name="task_id" type="row"/>' +
+                    '<field name="date" type="col">' +
+                        '<range name="week" string="Week" span="week" step="day"/>' +
+                        '<range name="month" string="Month" span="month" step="day"/>' +
+                    '</field>'+
+                    '<field name="unit_amount" type="measure" widget="float_time"/>' +
+                '</grid>',
+            currentDate: "2017-01-25",
+        });
+        return concurrency.delay(0).then(function () {
+            assert.strictEqual(grid.$('.o_grid_cell_container:not(.o_grid_cell_empty)').length, 3,
+                "should have 3 columns which has timesheet value");
+            assert.strictEqual(grid.$('.o_grid_cell_container:not(.o_grid_cell_readonly, .o_grid_cell_empty)').length, 2,
+                "should have 2 cells which are not readonly");
+            assert.strictEqual(grid.$('.o_grid_cell_readonly').length, 1,
+                "should have 1 cell which is readonly");
+            assert.doesNotHaveClass(grid.$('.o_grid_cell_readonly div'), 'o_grid_input',
+                "should not have o_grid_input class on readonly cell");
+            grid.destroy();
+            done();
+        });
+    });
+
     QUnit.test('grid_anchor is properly transferred in context', async function (assert) {
         assert.expect(1);
 

@@ -36,7 +36,7 @@ def valid_field_types(arch):
 
     :type arch: etree._Element
     """
-    types = {'col', 'measure'}
+    types = {'col', 'measure', 'readonly'}
     for f in arch.iterdescendants('field'):
         field_type = f.get('type')
         if field_type == 'row':

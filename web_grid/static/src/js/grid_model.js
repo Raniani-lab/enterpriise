@@ -110,6 +110,7 @@ return AbstractModel.extend({
         var groupedBy = (params.groupedBy && params.groupedBy.length) ?
             params.groupedBy : this.rowFields;
         this.groupedBy = Array.isArray(groupedBy) ? groupedBy : [groupedBy];
+        this.readonlyField = params.readonlyField;
         return this._fetch(this.groupedBy);
     },
     /**
@@ -243,6 +244,7 @@ return AbstractModel.extend({
                 cell_field: this.cellField,
                 range: this.currentRange,
                 domain: sectionGroup.__domain,
+                readonly_field: this.readonlyField,
             },
             context: this.getContext(additionalContext),
         })
@@ -267,6 +269,7 @@ return AbstractModel.extend({
                 cell_field: self.cellField,
                 domain: self.domain,
                 range: self.currentRange,
+                readonly_field: this.readonlyField,
             },
             context: self.getContext(),
         })

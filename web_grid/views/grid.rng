@@ -79,6 +79,9 @@
                         <attribute name="string"/>
                     </optional>
                 </group>
+                <group>
+                    <attribute name="type"><value>readonly</value></attribute>
+                </group>
             </choice>
             <!-- other garbage -->
             <optional><attribute name="on_change"/></optional>

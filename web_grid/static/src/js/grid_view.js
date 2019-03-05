@@ -26,7 +26,7 @@ var GridView = AbstractView.extend({
         var arch = this.arch;
         var fields = this.fields;
         var rowFields = [];
-        var sectionField, colField, cellField, ranges, cellWidget, cellWidgetOptions, measureLabel;
+        var sectionField, colField, cellField, ranges, cellWidget, cellWidgetOptions, measureLabel, readonlyField;
         _.each(arch.children, function (child) {
             if (child.tag === 'field') {
                 if (child.attrs.type === 'row') {
@@ -47,6 +47,9 @@ var GridView = AbstractView.extend({
                     }
                     measureLabel = child.attrs.string;
                 }
+                if (child.attrs.type === 'readonly') {
+                    readonlyField = child.attrs.name;
+                }
             }
         });
 
@@ -60,6 +63,7 @@ var GridView = AbstractView.extend({
         this.loadParams.colField = colField;
         this.loadParams.cellField = cellField;
         this.loadParams.groupedBy = params.groupBy;
+        this.loadParams.readonlyField = readonlyField;
 
         // renderer
         this.rendererParams.canCreate = this.controllerParams.activeActions.create;

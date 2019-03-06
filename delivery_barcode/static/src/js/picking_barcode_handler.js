@@ -6,10 +6,9 @@ var StockPickingBarcodeHandler = require('stock_barcode.PickingBarcodeHandler');
 
 StockPickingBarcodeHandler.include({
     pre_onchange_hook: function(barcode) {
-        var deferred = $.Deferred();
         var self = this;
         return this.try_put_in_pack_delivery(barcode).then(function(){
-            return deferred.resolve(false);
+            return Promise.resolve(false);
         },function(){
             return self._super.apply(self, arguments);
         });
@@ -33,10 +32,10 @@ StockPickingBarcodeHandler.include({
                         put_in_pack_action.context || {}
                     );
                     self.open_wizard(put_in_pack_action);
-                    return $.Deferred().resolve();
+                    return Promise.resolve();
                 });
         } else {
-            return $.Deferred().reject();
+            return Promise.reject();
         }
     }
 });

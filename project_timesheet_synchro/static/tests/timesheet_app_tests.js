@@ -100,53 +100,52 @@ odoo.define('project_timesheet_synchro.timesheet_app_tests', function (require) 
 
         QUnit.module('TimeSheetUI');
 
-        QUnit.test('timesheet_app_tests', function (assert) {
-            var done = assert.async();
+        QUnit.test('timesheet_app_tests', async function (assert) {
             assert.expect(6);
-            var self = this;
             var projectTimesheet = new TimeSheetUI();
             projectTimesheet.data = {};
-            projectTimesheet.appendTo($('#qunit-fixture')).then(function () {
-                projectTimesheet.data.projects = self.data.projects.records; //projects
-                projectTimesheet.data.tasks = self.data.tasks.records; // tasks
-                projectTimesheet.data.account_analytic_lines = self.data.account_analytic_lines.records; //time sheets
-                projectTimesheet.activities_screen.make_activities_list();
+            await projectTimesheet.appendTo($('#qunit-fixture'));
 
-                /*Start & Stop Timer*/
-                projectTimesheet.activities_screen.start_timer();
-                concurrency.delay(0).then(function () {
-                    projectTimesheet.activities_screen.stop_timer();
+            projectTimesheet.data.projects = this.data.projects.records; // projects
+            projectTimesheet.data.tasks = this.data.tasks.records; // tasks
+            projectTimesheet.data.account_analytic_lines = this.data.account_analytic_lines.records; // timesheets
+            projectTimesheet.activities_screen.make_activities_list();
+            await testUtils.nextTick();
 
-                    //select project
-                    projectTimesheet.$('.pt_activity_project').select2("open");
-                    $('.select2-results li div').first().trigger('mouseup');
+            /*Start & Stop Timer*/
+            projectTimesheet.activities_screen.start_timer();
+            await concurrency.delay(0);
+            projectTimesheet.activities_screen.stop_timer();
+            await testUtils.nextTick();
 
-                    //select task
-                    projectTimesheet.$('.pt_activity_task').select2("open");
-                    $('.select2-results li div').first().trigger('mouseup');
+            // select project
+            projectTimesheet.$('.pt_activity_project').select2("open");
+            $('.select2-results li div').first().trigger('mouseup');
 
-                    $('.pt_activity_duration').val("0.25"); // set time spent
-                    $('.pt_activity_duration').trigger('change');
+            // select task
+            projectTimesheet.$('.pt_activity_task').select2("open");
+            $('.select2-results li div').first().trigger('mouseup');
 
-                    $('textarea.pt_description').val("Test"); //set description
-                    $('textarea.pt_description').trigger('change');
+            $('.pt_activity_duration').val("0.25"); // set time spent
+            $('.pt_activity_duration').trigger('change');
 
-                    projectTimesheet.edit_activity_screen.save_changes(); //save record
+            $('textarea.pt_description').val("Test"); // set description
+            $('textarea.pt_description').trigger('change');
 
-                    assert.strictEqual($('.pt_project').first().text(), "Project 1", "Should contain project named 'Project 1'");
-                    assert.strictEqual($('.pt_task').first().text().trim(), "task1", "Should contain task named 'task 1'");
-                    assert.strictEqual($('.pt_duration_time').first().text().trim(), "00:15", "time spent should be 00:15");
-                    $('.pt_quick_subtract_time').trigger('click');
-                    assert.strictEqual($('.pt_duration_time').first().text().trim(), "00:00", "time spent should now be 00:00");
-                    $('.pt_quick_subtract_time').trigger('click');
-                    assert.strictEqual($('.pt_deletion_from_list_modal').length, 1, "Should open a modal with delete button");
-                    $('.pt_delete_activity').trigger('click');
-                    assert.strictEqual($('.pt_activities_list tr').length, 0, "Should display 0 timesheet");
-                    projectTimesheet.reset_app();
-                    projectTimesheet.destroy();
-                    done();
-                });
-            });
+            projectTimesheet.edit_activity_screen.save_changes(); // save record
+            await testUtils.nextTick();
+
+            assert.strictEqual($('.pt_project').first().text(), "Project 1", "Should contain project named 'Project 1'");
+            assert.strictEqual($('.pt_task').first().text().trim(), "task1", "Should contain task named 'task 1'");
+            assert.strictEqual($('.pt_duration_time').first().text().trim(), "00:15", "time spent should be 00:15");
+            await testUtils.dom.click($('.pt_quick_subtract_time'));
+            assert.strictEqual($('.pt_duration_time').first().text().trim(), "00:00", "time spent should now be 00:00");
+            await testUtils.dom.click($('.pt_quick_subtract_time'));
+            assert.strictEqual($('.pt_deletion_from_list_modal').length, 1, "Should open a modal with delete button");
+            await testUtils.dom.click($('.pt_delete_activity'));
+            assert.strictEqual($('.pt_activities_list tr').length, 0, "Should display 0 timesheet");
+            projectTimesheet.reset_app();
+            projectTimesheet.destroy();
         });
     });
 });

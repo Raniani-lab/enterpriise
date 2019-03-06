@@ -27,7 +27,7 @@ var TabletImageIot = TabletImage.extend(IoTCoreMixin, {
         var data = {'action': 'camera', 'identifier': this.identifier};
         var self = this;
 
-        return this._callIotDevice(url, data, this._url()).done(function (response){
+        return this._callIotDevice(url, data, this._url()).then(function (response) {
             if (response.result && response.result.image){
                 self._setValue(response['result']['image']);
                 self._render();

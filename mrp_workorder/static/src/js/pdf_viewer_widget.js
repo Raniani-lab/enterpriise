@@ -10,7 +10,7 @@ var FieldPdfViewer = basicFields.FieldPdfViewer;
  * /!\/!\/!\ WARNING /!\/!\/!\
  * Do not use this widget else where
  * Due to limitation of the framework, a lot of hacks have been used
- * 
+ *
  * Override of the default PDF Viewer Widget to prevent reload of the iFrame content
  * on any action (typically, click on a button)
  */
@@ -52,7 +52,7 @@ var FieldPdfViewerNoReload = FieldPdfViewer.extend({
 
         this._fixFormHeight();
 
-        return $.when();
+        return Promise.resolve();
     },
 
     /**

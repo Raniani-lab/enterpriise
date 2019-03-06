@@ -300,21 +300,25 @@ return Widget.extend(StandaloneFieldManagerMixin, {
      * i.e. the new & existing field if 'new', etc.
      *
      * @private
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _render: function () {
         var self = this;
         if (this.state.mode === 'new') {
+            this.defs = [];
             this._renderNewSections();
-            this.$('.o_web_studio_component').on("drag", _.throttle(function (event, ui) {
-                self.trigger_up('drag_component', {position: {pageX: event.pageX, pageY: event.pageY}, $helper: ui.helper});
-            }, 200));
+            var defs = this.defs;
+            delete this.defs;
+            return Promise.all(defs).then(function () {
+                self.$('.o_web_studio_component').on("drag", _.throttle(function (event, ui) {
+                    self.trigger_up('drag_component', {position: {pageX: event.pageX, pageY: event.pageY}, $helper: ui.helper});
+                }, 200));
+            });
         } else if (this.state.mode === 'properties') {
             if (this.$('.o_groups').length) {
                 return this._renderWidgetsM2MGroups();
             }
         }
-        return $.when();
     },
     /**
      * @private
@@ -381,15 +385,16 @@ return Widget.extend(StandaloneFieldManagerMixin, {
      * @returns {JQuery}
      */
     _renderSection: function (form_widgets) {
+        var self = this;
         var $components_container = $('<div>').addClass('o_web_studio_field_type_container');
         form_widgets.forEach(function (form_component) {
-            form_component.appendTo($components_container);
+            self.defs.push(form_component.appendTo($components_container));
         });
         return $components_container;
     },
     /**
      * @private
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _renderWidgetsM2MGroups: function () {
         var self = this;

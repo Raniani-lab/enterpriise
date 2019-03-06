@@ -68,7 +68,7 @@ WebClient.include({
             // Wizards in the app creator can be opened (ex: Import wizard)
             // TODO: what if we modify target = 'curent' to modify it?
             this.do_warn("Studio", _t("Wizards are not editable with Studio."));
-            return $.Deferred().reject();
+            return Promise.reject();
         }
 
         var blockPushState = this.studioMode && !action.studioNavigation;
@@ -78,13 +78,15 @@ WebClient.include({
             options = options || {};
             options.pushState = false;
         }
-        return this._super(action, options).done(function (action) {
+        var prom =  this._super(action, options)
+        prom.then(function (action) {
             if (blockPushState) {
                 // pushState is reset to true in action_manager (see @doAction)
                 // but we never want the state to be updated in Studio
                 action.pushState = false;
             }
         });
+        return prom;
     },
     /**
      * @override
@@ -97,14 +99,14 @@ WebClient.include({
         }
         return this._super.apply(this, arguments).then(function () {
             // this is normally done by _on_app_clicked_done but should also be
-            // done if the deferred is rejected
+            // done if the promise is rejected
             self.openingMenu = false;
         });
     },
     /**
      * Opens the App Creator action.
      *
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     openAppCreator: function () {
         var self = this;
@@ -172,7 +174,7 @@ WebClient.include({
      * Closes Studio.
      *
      * @private
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _closeStudio: function () {
         var self = this;
@@ -193,7 +195,7 @@ WebClient.include({
             def = this.action_manager.restoreStudioAction();
         }
 
-        return $.when(def).then(function () {
+        return Promise.resolve(def).then(function () {
             self._toggleStudioMode();
             self.$el.toggleClass('o_in_studio', !!self.studioMode);
         });
@@ -222,7 +224,7 @@ WebClient.include({
      *
      * @private
      * @param {string} [viewType]
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _navigateInStudio: function (viewType) {
         var self = this;
@@ -244,7 +246,7 @@ WebClient.include({
         if (this.studioMode) {
             if (!this._isStudioEditable(action)) {
                 this.do_warn("Studio", _t("This action is not editable by Studio"));
-                return $.Deferred().reject();
+                return Promise.reject();
             }
             // tag the action for the actionManager
             action.studioNavigation = true;
@@ -257,7 +259,7 @@ WebClient.include({
     },
     /**
      * @private
-     * @returns {Deferred}
+     * @returns {Promise}
      */
      _studioAssets: ['web_editor.compiled_assets_wysiwyg', 'web_studio.compiled_assets_studio'],
     _openStudio: function () {
@@ -278,7 +280,7 @@ WebClient.include({
             this.menu.toggle_mode(true, false);  // hide the back button
         }
 
-        return $.when(def).then(function () {
+        return Promise.resolve(def).then(function () {
             self.$el.toggleClass('o_in_studio', !!self.studioMode);
             self._toggleStudioMode();
         });
@@ -290,7 +292,7 @@ WebClient.include({
      * @param {Object} options
      * @param {Object} options.action
      * @param {string} options.action.res_model
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _openStudioMain: function (options) {
         return this.do_action('action_web_studio_action_editor', options);

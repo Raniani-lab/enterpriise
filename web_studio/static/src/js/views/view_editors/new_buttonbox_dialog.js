@@ -70,7 +70,7 @@ var NewButtonBoxDialog = Dialog.extend(StandaloneFieldManagerMixin, {
             self._registerWidget(recordID, 'field', self.many2one);
             self.many2one.appendTo(self.$('.js_many2one_field'));
         }));
-        return $.when.apply($, defs);
+        return Promise.all(defs);
     },
 
     //--------------------------------------------------------------------------

@@ -85,7 +85,7 @@ var AbstractNewBuildingBlock = Abstract.extend({
      * @param {Object} options
      * @param {Object[]} options.targets
      * @param {Integer} [options.oeIndex]
-     * @returns {Deferred<Object>}
+     * @returns {Promise<Object>}
      */
     add: function (options) {
         this.targets = options.targets;
@@ -93,7 +93,7 @@ var AbstractNewBuildingBlock = Abstract.extend({
         this.index = first.data.oeIndex;
         this.position = first.data.oePosition;
         this.node = first.node;
-        return $.when({
+        return Promise.resolve({
             type: this.type,
             options: {
                 columns: this.dropColumns,
@@ -344,7 +344,7 @@ var BlockText = AbstractNewBuildingBlock.extend({
     add: function () {
         var self = this;
         return this._super.apply(this, arguments).then(function () {
-            return $.when({
+            return Promise.resolve({
                 inheritance: self._createContent({
                     content: '<div class="row"><div class="col"><span>New Text Block</span></div></div>',
                 })
@@ -365,7 +365,7 @@ var InlineText = AbstractNewBuildingBlock.extend({
     add: function () {
         var self = this;
         return this._super.apply(this, arguments).then(function () {
-            return $.when({
+            return Promise.resolve({
                 inheritance: self._createContent({
                     content: '<span>New Text Block</span>',
                 })
@@ -387,7 +387,7 @@ var ColumnHalfText = AbstractNewBuildingBlock.extend({
     add: function () {
         var self = this;
         return this._super.apply(this, arguments).then(function () {
-            return $.when({
+            return Promise.resolve({
                 inheritance: self._createContent({
                     fillStructure: true,
                     contentInStructure: '<span>New Column</span>',
@@ -410,7 +410,7 @@ var ColumnThirdText = AbstractNewBuildingBlock.extend({
     add: function () {
         var self = this;
         return this._super.apply(this, arguments).then(function () {
-            return $.when({
+            return Promise.resolve({
                 inheritance: self._createContent({
                     fillStructure: true,
                     contentInStructure: '<span>New Column</span>',
@@ -431,7 +431,7 @@ var TableCellText = AbstractNewBuildingBlock.extend({
     add: function () {
         var self = this;
         return this._super.apply(this, arguments).then(function () {
-            return $.when({
+            return Promise.resolve({
                 inheritance: self._createContent({
                     content: '<span>New Text Block</span>',
                 })
@@ -451,35 +451,35 @@ var AbstractFieldBlock = AbstractNewBuildingBlock.extend({
     type: 'field',
     add: function () {
         var self = this;
-        return this._super.apply(this, arguments).then(function () {
-            var def = $.Deferred();
-            var field = {
-                order: 'order',
-                type: 'related',
-                filters: { searchable: false },
-            };
+        return self._super.apply(this, arguments).then(function() {
+            return new Promise(function (resolve, reject) {
+                var field = {
+                    order: 'order',
+                    type: 'related',
+                    filters: { searchable: false },
+                };
 
-            var target = self.targets[0];
-            if (self._filterTargets) {
-                target = self._filterTargets() || target;
-            }
-
-            var availableKeys = _.filter(self._getContextKeys(target.node), function (field) { return !!field.relation; });
-            var dialog = new NewFieldDialog(self, 'record_fake_model', field, availableKeys).open();
-            dialog.on('field_default_values_saved', self, function (values) {
-                if (values.related.split('.').length < 2) {
-                    Dialog.alert(self, _t('The record field name is missing'));
-                    return;
+                var target = self.targets[0];
+                if (self._filterTargets) {
+                    target = self._filterTargets() || target;
                 }
-                def.resolve({
-                    inheritance: self._dataInheritance(values),
+
+                var availableKeys = _.filter(self._getContextKeys(target.node), function (field) { return !!field.relation; });
+                var dialog = new NewFieldDialog(self, 'record_fake_model', field, availableKeys).open();
+                dialog.on('field_default_values_saved', self, function (values) {
+                    if (values.related.split('.').length < 2) {
+                        Dialog.alert(self, _t('The record field name is missing'));
+                    } else {
+                        resolve({
+                            inheritance: self._dataInheritance(values),
+                        });
+                        dialog.close();
+                    }
                 });
-                dialog.close();
+                dialog.on('closed', self, function () {
+                    reject();
+                });
             });
-            dialog.on('closed', self, function () {
-                def.reject();
-            });
-            return def;
         });
     },
 });
@@ -648,27 +648,27 @@ var Image = AbstractNewBuildingBlock.extend({
     add: function () {
         var self = this;
         return this._super.apply(this, arguments).then(function () {
-            var def = $.Deferred();
-            var $image = $("<img/>");
-            var dialog = new weWidgets.MediaDialog(self, {
-                onlyImages: true,
-            }, $image[0]);
-            var value;
-            dialog.on("save", self, function (event) {
-                value = event.src;
+            var def = new Promise(function (resolve, reject) {
+                var $image = $("<img/>");
+                var dialog = new weWidgets.MediaDialog(self, {
+                    onlyImages: true,
+                }, $image[0]);
+                var value;
+                dialog.on("save", self, function (event) {
+                    value = event.src;
+                });
+                dialog.on('closed', self, function () {
+                    if (value) {
+                        resolve({
+                            inheritance: self._createContent({
+                                content: '<img class="img-fluid" src="' + value + '"/>',
+                            })
+                        });
+                    } else {
+                        reject();
+                    }
+                });
             });
-            dialog.on('closed', self, function () {
-                if (value) {
-                    def.resolve({
-                        inheritance: self._createContent({
-                            content: '<img class="img-fluid" src="' + value + '"/>',
-                        })
-                    });
-                } else {
-                    return def.reject();
-                }
-            });
-            dialog.open();
             return def;
         });
     },
@@ -683,7 +683,7 @@ var BlockTitle = AbstractNewBuildingBlock.extend({
     add: function () {
         var self = this;
         return this._super.apply(this, arguments).then(function () {
-            return $.when({
+            return Promise.resolve({
                 inheritance: [{
                     content: '<div class="row"><div class="col h2"><span>New Title</span></div></div>',
                     position: self.position,
@@ -706,42 +706,43 @@ var BlockAddress = AbstractNewBuildingBlock.extend({
     dropColumns: [[0, 5], [2, 5]],
     add: function () {
         var self = this;
-        return this._super.apply(this, arguments).then(function () {
-            var def = $.Deferred();
-            var field = {
-                order: 'order',
-                type: 'related',
-                filters: {},
-                filter: function (field) {
-                    return field.type === 'many2one';
-                },
-                followRelations: function (field) {
-                    return field.type === 'many2one' && field.relation !== 'res.partner';
-                },
-            };
-            var availableKeys = self._getContextKeys(self.node);
-            // TODO: maybe filter keys to only get many2one fields to res.partner?
-            var dialog = new NewFieldDialog(self, 'record_fake_model', field, availableKeys).open();
-            dialog.on('field_default_values_saved', self, function (values) {
-                if (!_.contains(values.related, '.')) {
-                    Dialog.alert(self, _t('Please specify a field name for the selected model.'));
-                    return;
-                }
-                if (values.relation === 'res.partner') {
-                    def.resolve({
-                        inheritance: self._createContent({
-                            content: '<div t-field="' + values.related + '" t-options-widget="\'contact\'"/>',
-                        })
-                    });
-                    dialog.close();
-                } else {
-                    Dialog.alert(self, _t('You can only display a user or a partner'));
-                }
+        var callersArguments = arguments;
+        return new Promise(function (resolve, reject) {
+            self._super.apply(self, callersArguments).then(function () {
+                var field = {
+                    order: 'order',
+                    type: 'related',
+                    filters: {},
+                    filter: function (field) {
+                        return field.type === 'many2one';
+                    },
+                    followRelations: function (field) {
+                        return field.type === 'many2one' && field.relation !== 'res.partner';
+                    },
+                };
+                var availableKeys = self._getContextKeys(self.node);
+                // TODO: maybe filter keys to only get many2one fields to res.partner?
+                var dialog = new NewFieldDialog(self, 'record_fake_model', field, availableKeys).open();
+                dialog.on('field_default_values_saved', self, function (values) {
+                    if (!_.contains(values.related, '.')) {
+                        Dialog.alert(self, _t('Please specify a field name for the selected model.'));
+                        return;
+                    }
+                    if (values.relation === 'res.partner') {
+                        resolve({
+                            inheritance: self._createContent({
+                                content: '<div t-field="' + values.related + '" t-options-widget="\'contact\'"/>',
+                            })
+                        });
+                        dialog.close();
+                    } else {
+                        Dialog.alert(self, _t('You can only display a user or a partner'));
+                    }
+                });
+                dialog.on('closed', self, function () {
+                    reject();
+                });
             });
-            dialog.on('closed', self, function () {
-                def.reject();
-            });
-            return def;
         });
     },
 });
@@ -755,35 +756,36 @@ var BlockTable = AbstractNewBuildingBlock.extend({
     dropIn: '.page',
     add: function () {
         var self = this;
-        return this._super.apply(this, arguments).then(function () {
-            var def = $.Deferred();
-            var field = {
-                order: 'order',
-                type: 'related',
-                filters: {},
-                filter: function (field) {
-                    return field.type === 'many2one' || field.type === 'one2many' || field.type === 'many2many';
-                },
-                followRelations: function (field) {
-                    return field.type === 'many2one';
-                },
-            };
-            var availableKeys = self._getContextKeys(self.node);
-            var dialog = new NewFieldDialog(self, 'record_fake_model', field, availableKeys).open();
-            dialog.on('field_default_values_saved', self, function (values) {
-                if (values.type === 'one2many' || values.type === 'many2many') {
-                    def.resolve({
-                        inheritance: self._dataInheritance(values),
-                    });
-                    dialog.close();
-                } else {
-                    Dialog.alert(self, _t('You need to use a many2many or one2many field to display a list of items'));
-                }
+        var callersArguments = arguments;
+        return new Promise(function (resolve, reject) {
+            self._super.apply(self, callersArguments).then(function () {
+                var field = {
+                    order: 'order',
+                    type: 'related',
+                    filters: {},
+                    filter: function (field) {
+                        return field.type === 'many2one' || field.type === 'one2many' || field.type === 'many2many';
+                    },
+                    followRelations: function (field) {
+                        return field.type === 'many2one';
+                    },
+                };
+                var availableKeys = self._getContextKeys(self.node);
+                var dialog = new NewFieldDialog(self, 'record_fake_model', field, availableKeys).open();
+                dialog.on('field_default_values_saved', self, function (values) {
+                    if (values.type === 'one2many' || values.type === 'many2many') {
+                        resolve({
+                            inheritance: self._dataInheritance(values),
+                        });
+                        dialog.close();
+                    } else {
+                        Dialog.alert(self, _t('You need to use a many2many or one2many field to display a list of items'));
+                    }
+                });
+                dialog.on('closed', self, function () {
+                    reject();
+                });
             });
-            dialog.on('closed', self, function () {
-                def.reject();
-            });
-            return def;
         });
     },
     _dataInheritance: function (values) {
@@ -819,32 +821,33 @@ var TableBlockTotal = AbstractNewBuildingBlock.extend({
     dropColumns: [[0, 5], [2, 5]],
     add: function () {
         var self = this;
-        return this._super.apply(this, arguments).then(function () {
-            var def = $.Deferred();
-            var field = {
-                order: 'order',
-                type: 'related',
-                filters: {},
-                filter: function (field) {
-                    return field.type === 'many2one';
-                },
-                followRelations: function (field) {
-                    return field.type === 'many2one' &&
-                        field.relation !== 'account.invoice' && field.relation !== 'sale.order';
-                },
-            };
-            var availableKeys = self._getContextKeys(self.node);
-            var dialog = new NewFieldDialog(self, 'record_fake_model', field, availableKeys).open();
-            dialog.on('field_default_values_saved', self, function (values) {
-                def.resolve({
-                    inheritance: self._dataInheritance(values),
+        var callersArguments = arguments;
+        return new Promise(function (resolve, reject) {
+            self._super.apply(self, callersArguments).then(function () {
+                var field = {
+                    order: 'order',
+                    type: 'related',
+                    filters: {},
+                    filter: function (field) {
+                        return field.type === 'many2one';
+                    },
+                    followRelations: function (field) {
+                        return field.type === 'many2one' &&
+                            field.relation !== 'account.invoice' && field.relation !== 'sale.order';
+                    },
+                };
+                var availableKeys = self._getContextKeys(self.node);
+                var dialog = new NewFieldDialog(self, 'record_fake_model', field, availableKeys).open();
+                dialog.on('field_default_values_saved', self, function (values) {
+                    resolve({
+                        inheritance: self._dataInheritance(values),
+                    });
+                    dialog.close();
                 });
-                dialog.close();
+                dialog.on('closed', self, function () {
+                    reject();
+                });
             });
-            dialog.on('closed', self, function () {
-                def.reject();
-            });
-            return def;
         });
     },
     _dataInheritance: function (values) {

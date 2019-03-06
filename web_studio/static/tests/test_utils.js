@@ -12,6 +12,7 @@ var ReportEditorManager = require('web_studio.ReportEditorManager');
 var ReportEditorSidebar = require('web_studio.ReportEditorSidebar');
 var ViewEditorManager = require('web_studio.ViewEditorManager');
 
+var weTestUtils = require('web_editor.test_utils');
 var Wysiwyg = require('web_editor.wysiwyg.root');
 
 /**
@@ -20,10 +21,12 @@ var Wysiwyg = require('web_editor.wysiwyg.root');
  * In this module, we define some utility functions to create Studio objects.
  */
 
-var assetsLoaded = false;
+var assetsLoaded;
 function loadAssetLib(parent) {
-    if (!assetsLoaded) { // avoid flickering when begin to edit
-        assetsLoaded = $.Deferred();
+    if (assetsLoaded) { // avoid flickering when begin to edit
+        return assetsLoaded;
+    }
+    assetsLoaded = new Promise(function (resolve, reject) {
         var wysiwyg = new Wysiwyg(parent, {
             recordInfo: {
                 context: {},
@@ -31,49 +34,10 @@ function loadAssetLib(parent) {
         });
         wysiwyg.attachTo($('<textarea>')).then(function () {
             wysiwyg.destroy();
-            var def = assetsLoaded;
-            assetsLoaded = true;
-            def.resolve();
+            resolve();
         });
-    }
-    return $.when(assetsLoaded);
-}
-
-function colorPicker (params) {
-    if (!params.data) {
-        params.data = {};
-    }
-    params.data['ir.ui.view'] = {
-        fields: {
-            display_name: { string: "Displayed name", type: "char" },
-        },
-        records: [],
-        read_template: function (args) {
-            if (args[0] === 'web_editor.colorpicker') {
-                return '<templates><t t-name="web_editor.colorpicker">' +
-                    '<colorpicker>' +
-                    '    <div class="o_colorpicker_section" data-name="theme" data-display="Theme Colors" data-icon-class="fa fa-flask">' +
-                    '        <button data-color="alpha"></button>' +
-                    '        <button data-color="beta"></button>' +
-                    '        <button data-color="gamma"></button>' +
-                    '        <button data-color="delta"></button>' +
-                    '        <button data-color="epsilon"></button>' +
-                    '    </div>' +
-                    '    <div class="o_colorpicker_section" data-name="transparent_grayscale" data-display="Transparent Colors" data-icon-class="fa fa-eye-slash">' +
-                    '        <button class="o_btn_transparent"></button>' +
-                    '        <button data-color="black-25"></button>' +
-                    '        <button data-color="black-50"></button>' +
-                    '        <button data-color="black-75"></button>' +
-                    '        <button data-color="white-25"></button>' +
-                    '        <button data-color="white-50"></button>' +
-                    '        <button data-color="white-75"></button>' +
-                    '    </div>' +
-                    '    <div class="o_colorpicker_section" data-name="common" data-display="Common Colors" data-icon-class="fa fa-paint-brush"></div>' +
-                    '</colorpicker>' +
-                '</t></templates>';
-            }
-        },
-    };
+    });
+    return assetsLoaded;
 }
 
 /**
@@ -82,7 +46,7 @@ function colorPicker (params) {
  * @param {Object} params
  * @return {ReportEditorManager}
  */
-function createReportEditor (params) {
+function createReportEditor(params) {
     var Parent = Widget.extend({
         start: function () {
             var self = this;
@@ -97,73 +61,73 @@ function createReportEditor (params) {
         },
     });
     var parent = new Parent();
-    var selector = params.debug ? 'body' : '#qunit-fixture';
-    parent.appendTo(selector);
-    testUtils.mock.addMockEnvironment(parent, _.extend(params, {
-        // TODO
-    }));
+    weTestUtils.patch();
+    params.data = weTestUtils.wysiwygData(params.data);
+    testUtils.mock.addMockEnvironment(parent, params);
 
-    var editor = new ReportEditor(parent, params);
-    // override 'destroy' of editor so that it calls 'destroy' on the parent
-    // instead
-    editor.destroy = function () {
-        // remove the override to properly destroy editor and its children
-        // when it will be called the second time (by its parent)
-        delete editor.destroy;
-        // TODO: call super?
-        parent.destroy();
-    };
-    editor.appendTo(parent.$('.o_web_studio_editor_manager'));
-    return editor;
+    var selector = params.debug ? 'body' : '#qunit-fixture';
+    return parent.appendTo(selector).then(function () {
+        var editor = new ReportEditor(parent, params);
+        // override 'destroy' of editor so that it calls 'destroy' on the parent
+        // instead
+        editor.destroy = function () {
+            // remove the override to properly destroy editor and its children
+            // when it will be called the second time (by its parent)
+            delete editor.destroy;
+            // TODO: call super?
+            parent.destroy();
+            weTestUtils.unpatch();
+        };
+        return editor.appendTo(parent.$('.o_web_studio_editor_manager')).then(function () {
+            return editor;
+        });
+    });
 }
 
 /**
  * Create a ReportEditorManager widget.
  *
  * @param {Object} params
- * @return {ReportEditorManager}
+ * @return {Promise<ReportEditorManager>}
  */
-function createReportEditorManager (params) {
+async function createReportEditorManager(params) {
     var parent = new StudioEnvironment();
-    colorPicker(params);
     testUtils.mock.addMockEnvironment(parent, params);
+    weTestUtils.patch();
+    params.data = weTestUtils.wysiwygData(params.data);
 
-    return loadAssetLib(parent).then(function () {
-        var rem = new ReportEditorManager(parent, params);
-        // also destroy to parent widget to avoid memory leak
-        rem.destroy = function () {
-            delete rem.destroy;
-            parent.destroy();
-        };
+    await loadAssetLib(parent);
+    var rem = new ReportEditorManager(parent, params);
+    // also destroy to parent widget to avoid memory leak
+    rem.destroy = function () {
+        delete rem.destroy;
+        parent.destroy();
+        weTestUtils.unpatch();
+    };
 
-        var fragment = document.createDocumentFragment();
-        var selector = params.debug ? 'body' : '#qunit-fixture';
-        if (params.debug) {
-            $('body').addClass('debug');
-        }
-        parent.prependTo(selector);
-
-        return rem.appendTo(fragment).then(function () {
-            // use dom.append to call on_attach_callback
-            dom.append(parent.$('.o_web_studio_client_action'), fragment, {
-                callbacks: [{widget: rem}],
-                in_DOM: true,
-            });
-        }).then(function () {
-            return rem.editorIframeDef.then(function (){
-                return rem;
-            });
-        });
+    var fragment = document.createDocumentFragment();
+    var selector = params.debug ? 'body' : '#qunit-fixture';
+    if (params.debug) {
+        $('body').addClass('debug');
+    }
+    await parent.prependTo(selector);
+    await rem.appendTo(fragment)
+    // use dom.append to call on_attach_callback
+    dom.append(parent.$('.o_web_studio_client_action'), fragment, {
+        callbacks: [{widget: rem}],
+        in_DOM: true,
     });
+    await rem.editorIframeDef
+    return rem;
 }
 
 /**
  * Create a sidebar widget.
  *
  * @param {Object} params
- * @return {ReportEditorSidebar}
+ * @return {Promise<ReportEditorSidebar>}
  */
-function createSidebar (params) {
+function createSidebar(params) {
     var Parent = Widget.extend({
         start: function () {
             var self = this;
@@ -177,17 +141,18 @@ function createSidebar (params) {
         },
     });
     var parent = new Parent();
-    colorPicker(params);
+    weTestUtils.patch();
+    params.data = weTestUtils.wysiwygData(params.data);
     testUtils.mock.addMockEnvironment(parent, params);
 
     return loadAssetLib(parent).then(function () {
-
         var sidebar = new ReportEditorSidebar(parent, params);
         sidebar.destroy = function () {
             // remove the override to properly destroy sidebar and its children
             // when it will be called the second time (by its parent)
             delete sidebar.destroy;
             parent.destroy();
+            weTestUtils.unpatch();
         };
 
         var selector = params.debug ? 'body' : '#qunit-fixture';
@@ -197,10 +162,10 @@ function createSidebar (params) {
         parent.appendTo(selector);
 
         var fragment = document.createDocumentFragment();
-        sidebar.appendTo(fragment).then(function () {
+        return sidebar.appendTo(fragment).then(function () {
             sidebar.$el.appendTo(parent.$('.o_web_studio_editor_manager'));
+            return sidebar;
         });
-        return sidebar;
     });
 }
 
@@ -208,10 +173,12 @@ function createSidebar (params) {
  * Create a ViewEditorManager widget.
  *
  * @param {Object} params
- * @return {ViewEditorManager}
+ * @return {Promise<ViewEditorManager>}
  */
-function createViewEditorManager (params) {
+function createViewEditorManager(params) {
     var parent = new StudioEnvironment();
+    weTestUtils.patch();
+    params.data = weTestUtils.wysiwygData(params.data);
     var mockServer = testUtils.mock.addMockEnvironment(parent, params);
     var fieldsView = testUtils.mock.fieldsViewGet(mockServer, params);
     if (params.viewID) {
@@ -238,6 +205,7 @@ function createViewEditorManager (params) {
     vem.destroy = function () {
         vem.destroy = originalDestroy;
         parent.destroy();
+        weTestUtils.unpatch();
     };
 
     var fragment = document.createDocumentFragment();
@@ -245,14 +213,15 @@ function createViewEditorManager (params) {
     if (params.debug) {
         $('body').addClass('debug');
     }
-    parent.prependTo(selector);
-    vem.appendTo(fragment).then(function () {
-        dom.append(parent.$('.o_web_studio_client_action'), fragment, {
-            callbacks: [{widget: vem}],
-            in_DOM: true,
+    return parent.prependTo(selector).then(function () {
+        return vem.appendTo(fragment).then(function () {
+            dom.append(parent.$('.o_web_studio_client_action'), fragment, {
+                callbacks: [{widget: vem}],
+                in_DOM: true,
+            });
+            return vem;
         });
     });
-    return vem;
 }
 
 /**
@@ -263,7 +232,7 @@ function createViewEditorManager (params) {
  * @param {String} [data.dataOeContext]
  * @returns {string}
  */
-function getReportHTML (templates, data) {
+function getReportHTML(templates, data) {
     _brandTemplates(templates, data && data.dataOeContext);
 
     var qweb = new QWeb();
@@ -282,7 +251,7 @@ function getReportHTML (templates, data) {
  * @param {String} [data.dataOeContext]
  * @returns {Object}
  */
-function getReportViews (templates, data) {
+function getReportViews(templates, data) {
     _brandTemplates(templates, data && data.dataOeContext);
 
     var reportViews = {};
@@ -305,18 +274,18 @@ function getReportViews (templates, data) {
  * @param {Array<Object>} templates
  * @param {String} [dataOeContext]
  */
-function _brandTemplates (templates, dataOeContext) {
+function _brandTemplates(templates, dataOeContext) {
 
     _.each(templates, function (template) {
         brandTemplate(template);
     });
 
-    function brandTemplate (template) {
+    function brandTemplate(template) {
         var doc = $.parseXML(template.arch).documentElement;
         var rootNode = utils.xml_to_json(doc, true);
         brandNode([rootNode], rootNode, '');
 
-        function brandNode (siblings, node, xpath) {
+        function brandNode(siblings, node, xpath) {
             // do not brand already branded nodes
             if (_.isObject(node) && !node.attrs['data-oe-id']) {
                 if (node.tag !== 'kikou') {
@@ -360,8 +329,11 @@ return {
     createReportEditorManager: createReportEditorManager,
     createSidebar: createSidebar,
     createViewEditorManager: createViewEditorManager,
+    getData: weTestUtils.wysiwygData,
     getReportHTML: getReportHTML,
     getReportViews: getReportViews,
+    patch: weTestUtils.patch,
+    unpatch: weTestUtils.unpatch,
 };
 
 });

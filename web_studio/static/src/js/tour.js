@@ -282,7 +282,7 @@ tour.register('web_studio_tests_tour', {
     trigger: 'button:contains(Confirm)',
 }, {
     // select the m2m to set its properties
-    trigger: '.o_field_many2many',
+    trigger: 'tr:has(.o_field_many2many)',
 }, {
     // change the `widget` attribute
     trigger: '.o_web_studio_sidebar select[name="widget"]',

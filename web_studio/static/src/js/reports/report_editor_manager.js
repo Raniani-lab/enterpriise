@@ -59,7 +59,13 @@ var ReportEditorManager = AbstractEditorManager.extend({
         this.paperFormat = params.paperFormat;
         this.widgetsOptions = params.widgetsOptions;
 
-        this.editorIframeDef = $.Deferred();
+        this.editorIframeResolved = false;
+        var self = this;
+        this.editorIframeDef = new Promise(function (resolve, reject) {
+            self._resolveEditorIframeDef = resolve;
+        }).then(function () {
+            self.editorIframeResolved = true;
+        });
     },
     /**
      * @override
@@ -105,7 +111,7 @@ var ReportEditorManager = AbstractEditorManager.extend({
             var msg = '<pre>' + error + '</pre>';
             this.do_warn(_t("Error when compiling AST"), msg, true);
             return this._undo(opID, true).then(function () {
-                return $.Deferred().reject();
+                return Promise.reject();
             });
         }
 
@@ -178,11 +184,6 @@ var ReportEditorManager = AbstractEditorManager.extend({
                 view_arch: view_arch,
                 context: session.user_context,
             },
-        }).done(function (result) {
-            if (result.report_html.error) {
-                return $.Deferred().reject();
-            }
-            //self._applyChangeHandling(result);
         });
     },
     /**
@@ -204,7 +205,7 @@ var ReportEditorManager = AbstractEditorManager.extend({
     },
     /**
      * @private
-     * @returns {Deferred<Object>}
+     * @returns {Promise<Object>}
      */
     _getReportViews: function () {
         return this._rpc({
@@ -226,7 +227,7 @@ var ReportEditorManager = AbstractEditorManager.extend({
             paperFormat: this.paperFormat,
             reportHTML: this.reportHTML,
         });
-        return $.when(this.view);
+        return Promise.resolve(this.view);
     },
     /**
      * @override
@@ -412,7 +413,7 @@ var ReportEditorManager = AbstractEditorManager.extend({
      * @private
      */
     _onIframeReady: function () {
-        this.editorIframeDef.resolve();
+        this._resolveEditorIframeDef();
     },
     /**
      * @override
@@ -490,9 +491,9 @@ var ReportEditorManager = AbstractEditorManager.extend({
                 console.warn("the key 'node' should be present");
             }
         }
-        $.when(def).then(function () {
+        Promise.resolve(def).then(function () {
             return self._do(operation);
-        }).fail(ev.data.fail);
+        }).guardedCatch(ev.data.fail);
     },
 });
 

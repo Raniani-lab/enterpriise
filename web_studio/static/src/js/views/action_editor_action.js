@@ -55,10 +55,10 @@ var ActionEditorAction = AbstractAction.extend({
      */
     willStart: function () {
         if (!this.action) {
-            return $.Deferred().reject();
+            return Promise.reject();
         }
         var defs = [this._super.apply(this, arguments), this._isActivityAllowed()];
-        return $.when.apply($, defs);
+        return Promise.all(defs);
     },
     /**
      * @override
@@ -75,7 +75,7 @@ var ActionEditorAction = AbstractAction.extend({
             // directly edit the view instead of displaying all views
             def = this._editView(this.viewType);
         }
-        return $.when(def, this._super.apply(this, arguments)).then(function () {
+        return Promise.all([def, this._super.apply(this, arguments)]).then(function () {
             self._pushState();
             bus.trigger('studio_main', self.action);
             if (!self.options.noEdit) {
@@ -114,60 +114,60 @@ var ActionEditorAction = AbstractAction.extend({
      * @param {Object} action
      * @param {String} view_type
      * @param {Object} args
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _addViewType: function (action, view_type, args) {
         var self = this;
-        var def = $.Deferred();
-        core.bus.trigger('clear_cache');
-        this._rpc({
-            route: '/web_studio/add_view_type',
-            params: {
-                action_type: action.type,
-                action_id: action.id,
-                res_model: action.res_model,
-                view_type: view_type,
-                args: args,
-                context: session.user_context,
-            },
-        }).then(function (result) {
-            if (result !== true) {
-                var params = {
-                    action: action,
-                    callback: function () {
-                        self._editAction(action, args).then(function (result) {
-                            def.resolve(result);
-                        });
-                    },
-                };
-                if (view_type === 'gantt' || view_type === 'calendar') {
-                    params.view_type = view_type;
-                    new NewViewDialog(self, params).open();
-                } else if (view_type === 'cohort') {
-                    params.view_type = view_type;
-                    params.mandatory_stop_date = true;
-                    new NewViewDialog(self, params).open();
-                } else {
-                    var message = result;
-                    if (!message) {
-                        message = _lt("Creating this type of view is not currently supported in Studio.");
+        return new Promise(function (resolve, reject) {
+            core.bus.trigger('clear_cache');
+            self._rpc({
+                route: '/web_studio/add_view_type',
+                params: {
+                    action_type: action.type,
+                    action_id: action.id,
+                    res_model: action.res_model,
+                    view_type: view_type,
+                    args: args,
+                    context: session.user_context,
+                },
+            }).then(function (result) {
+                if (result !== true) {
+                    var params = {
+                        action: action,
+                        callback: function () {
+                            self._editAction(action, args).then(function (result) {
+                                resolve(result);
+                            });
+                        },
+                    };
+                    if (view_type === 'gantt' || view_type === 'calendar') {
+                        params.view_type = view_type;
+                        new NewViewDialog(self, params).open();
+                    } else if (view_type === 'cohort') {
+                        params.view_type = view_type;
+                        params.mandatory_stop_date = true;
+                        new NewViewDialog(self, params).open();
+                    } else {
+                        var message = result;
+                        if (!message) {
+                            message = _lt("Creating this type of view is not currently supported in Studio.");
+                        }
+                        Dialog.alert(self, message);
+                        reject();
                     }
-                    Dialog.alert(self, message);
-                    def.reject();
+                } else {
+                    return self._reloadAction(action.id)
+                        .then(resolve)
+                        .guardedCatch(reject);
                 }
-            } else {
-                return self._reloadAction(action.id)
-                    .then(def.resolve.bind(def))
-                    .fail(def.reject.bind(def));
-            }
-        });
-        return def;
+            });
+        })
     },
     /**
      * @private
      * @param {Object} action
      * @param {Object} args
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _editAction: function (action, args) {
         var self = this;
@@ -219,7 +219,7 @@ var ActionEditorAction = AbstractAction.extend({
         if (this.viewType === 'form') {
             defs.push(this._isChatterAllowed());
         }
-        return $.when.apply($, defs).then(function () {
+        return Promise.all(defs).then(function () {
             // add studio in loadViews context to retrieve groups server-side
             var context = _.extend({}, self.action.context, {studio: true});
             var loadViewDef = self.loadViews(self.action.res_model, context, views, options);
@@ -263,7 +263,7 @@ var ActionEditorAction = AbstractAction.extend({
      * @param {String} model
      * @param {String} view_type
      * @param {Integer} view_id
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _getStudioViewArch: function (model, view_type, view_id) {
         var self = this;
@@ -284,7 +284,7 @@ var ActionEditorAction = AbstractAction.extend({
      * Determines whether the model that will be edited supports mail_activity.
      *
      * @private
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _isActivityAllowed: function () {
         var self = this;
@@ -302,7 +302,7 @@ var ActionEditorAction = AbstractAction.extend({
      * @private
      * Determines whether the model
      * that will be edited supports mail_thread
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _isChatterAllowed: function () {
         var self = this;
@@ -348,18 +348,22 @@ var ActionEditorAction = AbstractAction.extend({
     /**
      * @private
      * @param {Integer} actionID
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _reloadAction: function (actionID) {
-        var def = $.Deferred();
-        this.trigger_up('reload_action', {actionID: actionID, def: def});
-        return def;
+        var self = this;
+        return new Promise(function (resolve) {
+            self.trigger_up('reload_action', {
+                actionID: actionID,
+                onSuccess: resolve,
+            });
+        });
     },
     /**
      * @private
      * @param {String} view_mode
      * @param {Integer} view_id
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _setAnotherView: function (view_mode, view_id) {
         var self = this;
@@ -376,7 +380,7 @@ var ActionEditorAction = AbstractAction.extend({
      * @param {Integer} action_id
      * @param {String} view_mode
      * @param {Integer} view_id
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _setAnotherViewRPC: function (action_id, view_mode, view_id) {
         var self = this;
@@ -396,7 +400,7 @@ var ActionEditorAction = AbstractAction.extend({
     /**
      * @private
      * @param {String} view_mode
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _writeViewMode: function (view_mode, initial_view_mode) {
         var self = this;

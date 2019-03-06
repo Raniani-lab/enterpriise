@@ -87,7 +87,7 @@ return KanbanRenderer.extend(EditorMixin, {
 
     /**
      * @private
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _render: function () {
         var self = this;
@@ -96,7 +96,7 @@ return KanbanRenderer.extend(EditorMixin, {
         this._renderUngrouped(fragment);
         var defs = this.defs;
         delete this.defs;
-        return $.when.apply($, defs).then(function () {
+        return Promise.all(defs).then(function () {
             self.$el.empty();
             self.$el.toggleClass('o_kanban_grouped', self.isGrouped);
             self.$el.toggleClass('o_kanban_ungrouped', !self.isGrouped);
@@ -148,6 +148,7 @@ return KanbanRenderer.extend(EditorMixin, {
 
         this._renderDemoDivs(fragment, 6);
         this._renderGhostDivs(fragment, 6);
+
     },
 });
 

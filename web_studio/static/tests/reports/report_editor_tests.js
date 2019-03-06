@@ -9,7 +9,7 @@ QUnit.module('ReportEditor', {
     beforeEach: function () {
     },
 }, function () {
-    QUnit.test('basic report rendering', function (assert) {
+    QUnit.test('basic report rendering', async function (assert) {
         assert.expect(2);
 
         var nodesArchs = {
@@ -27,7 +27,7 @@ QUnit.module('ReportEditor', {
             tag: 't',
         };
         var reportHTML = "<html><body><t/></body></html>";
-        var editor = studioTestUtils.createReportEditor({
+        var editor = await studioTestUtils.createReportEditor({
             nodesArchs: nodesArchs,
             reportHTML: reportHTML,
         });

@@ -11,13 +11,13 @@ QUnit.module('Studio', {}, function () {
 
     QUnit.module('AppCreator');
 
-    QUnit.test('basic stuff', function(assert) {
+    QUnit.test('basic stuff', async function(assert) {
         assert.expect(11);
 
         var $target = $('#qunit-fixture');
         var app_creator = new AppCreator(null, {});
         app_creator.debug = false;
-        app_creator.appendTo($target);
+        await app_creator.appendTo($target);
 
         testUtils.mock.addMockEnvironment(app_creator, {
             session: {},
@@ -58,8 +58,9 @@ QUnit.module('Studio', {}, function () {
             app_creator.currentStep,
             3,
             "currentStep should be 3");
+        await testUtils.nextTick();  // wait for async update of studio
 
-        testUtils.dom.click(app_creator.$('.o_web_studio_app_creator_next'));
+        await testUtils.dom.click(app_creator.$('.o_web_studio_app_creator_next'));
 
         assert.hasClass(app_creator.$('input[name="menu_name"]').parent(),
             'o_web_studio_app_creator_field_warning',
@@ -70,20 +71,22 @@ QUnit.module('Studio', {}, function () {
 
         app_creator.debug = true;
         app_creator.update();
+        await testUtils.nextTick();  // wait for async update of studio
 
         app_creator.$('input[name="menu_name"]').val('Petite Perruche');
 
+        await testUtils.nextTick();
         assert.containsOnce(app_creator, 'input[name="model_choice"]',
             "it should be possible to select a model in debug");
 
         // click to select a model
-        testUtils.dom.click(app_creator.$('input[name="model_choice"]'));
+        await testUtils.dom.click(app_creator.$('input[name="model_choice"]'));
 
         assert.containsOnce(app_creator, '.o_field_many2one',
             "there should be a many2one to select a model");
 
         // unselect the model
-        testUtils.dom.click(app_creator.$('input[name="model_choice"]'));
+        await testUtils.dom.click(app_creator.$('input[name="model_choice"]'));
 
         assert.hasClass(app_creator.$('.o_web_studio_app_creator_next'), 'is_ready',
             "next button should be ready at step 3");
@@ -91,12 +94,12 @@ QUnit.module('Studio', {}, function () {
         app_creator.destroy();
     });
 
-    QUnit.test('use <Enter> in the app creator', function(assert) {
+    QUnit.test('use <Enter> in the app creator', async function(assert) {
         assert.expect(5);
 
         var $target = $('#qunit-fixture');
         var appCreator = new AppCreator(null, {});
-        appCreator.appendTo($target);
+        await appCreator.appendTo($target);
 
         testUtils.mock.addMockEnvironment(appCreator, {
             session: {},
@@ -122,6 +125,7 @@ QUnit.module('Studio', {}, function () {
         assert.strictEqual(appCreator.currentStep, 3,
             "currentStep should be 3");
 
+        await testUtils.nextTick();  // wait for async update of studio
         // try to go to step 4
         triggerKeypressEvent('Enter');
         var $menu = appCreator.$('input[name="menu_name"]').parent();

@@ -230,7 +230,7 @@ var EditMenuDialog = Dialog.extend({
      * Save the current changes (in `to_move` and `to_delete`).
      *
      * @private
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _saveChanges: function () {
         return this._rpc({
@@ -259,7 +259,8 @@ var EditMenuMany2One = Many2One.extend({
     _quickCreate: function () {
         this.trigger_up('edit_menu_disable_save');
         var def = this._super.apply(this, arguments);
-        $.when(def).always(this.trigger_up.bind(this, 'edit_menu_enable_save'));
+        Promise.resolve(def).then(this.trigger_up.bind(this, 'edit_menu_enable_save'),
+                                  this.trigger_up.bind(this, 'edit_menu_enable_save'));
 
     },
 });
@@ -329,7 +330,7 @@ var NewMenuDialog = Dialog.extend(StandaloneFieldManagerMixin, {
             self._registerWidget(recordID, 'model', self.many2one);
             self.many2one.appendTo(self.$('.js_model'));
         }));
-        return $.when.apply($, defs);
+        return Promise.all(defs);
     },
 
     //--------------------------------------------------------------------------
@@ -341,7 +342,7 @@ var NewMenuDialog = Dialog.extend(StandaloneFieldManagerMixin, {
      * @param {String} menu_name
      * @param {Integer} parent_id
      * @param {Integer} model_id
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _createNewMenu: function (menu_name, parent_id, model_id) {
         core.bus.trigger('clear_cache');
@@ -376,7 +377,7 @@ var NewMenuDialog = Dialog.extend(StandaloneFieldManagerMixin, {
         var def = this._createNewMenu(name, this.parent_id, model_id);
         def.then(function () {
             self.on_saved();
-        }).fail(function () {
+        }).guardedCatch(function () {
             self.$footer.find('.confirm_button').removeClass('disabled');
         });
     },

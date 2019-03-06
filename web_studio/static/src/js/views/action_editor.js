@@ -76,10 +76,10 @@ var ActionEditor = Widget.extend({
         });
 
         this.sidebar = new ActionEditorSidebar(this, this.action);
-        return $.when(
+        return Promise.all([
             this._super.apply(this, arguments),
             this.sidebar.prependTo(this.$el)
-        );
+        ]);
     },
 
     //--------------------------------------------------------------------------

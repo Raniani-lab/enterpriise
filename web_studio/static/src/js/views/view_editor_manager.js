@@ -115,7 +115,7 @@ var ViewEditorManager = AbstractEditorManager.extend({
                     currentX2m.x2mViewType, true, fields_view, x2mData);
             }
             // TODO: useless I think
-            return $.when();
+            return Promise.resolve();
         });
     },
 
@@ -125,7 +125,7 @@ var ViewEditorManager = AbstractEditorManager.extend({
 
     /**
      * @param {Object} options
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     updateEditor: function (options) {
         var self = this;
@@ -137,19 +137,11 @@ var ViewEditorManager = AbstractEditorManager.extend({
         var oldEditor = this.editor;
 
         return this._instantiateEditor(options).then(function (editor) {
-            var def = $.Deferred();
             var fragment = document.createDocumentFragment();
-            try {
-                def = editor.appendTo(fragment);
-            } catch (e) {
-                self.trigger_up('studio_error', {error: 'view_rendering'});
-                self._undo(null, true);
-                def.reject();
-            }
-            return $.when(def).then(function () {
+            return editor.appendTo(fragment).then(function () {
                 dom.append(self.$('.o_web_studio_view_renderer'), [fragment], {
                     in_DOM: self.isInDOM,
-                    callbacks: [{widget: editor}],
+                    callbacks: [{ widget: editor }],
                 });
                 self.editor = editor;
                 oldEditor.destroy();
@@ -159,6 +151,9 @@ var ViewEditorManager = AbstractEditorManager.extend({
                 if (localState) {
                     self.editor.setLocalState(localState);
                 }
+            }).guardedCatch(function (e) {
+                self.trigger_up('studio_error', {error: 'view_rendering'});
+                self._undo(null, true);
             });
         });
     },
@@ -252,7 +247,7 @@ var ViewEditorManager = AbstractEditorManager.extend({
         var def_field_values;
         var dialog;
 
-        var openCurrencyCreationDialog = function (relatedCurrency) {
+        var openCurrencyCreationDialog = function (relatedCurrency, resolve) {
             var msg = _t("In order to use a monetary field, you need a currency field on the model. " +
                 "Do you want to create a currency field first? You can make this field invisible afterwards.");
             return Dialog.confirm(this, msg, {
@@ -271,7 +266,7 @@ var ViewEditorManager = AbstractEditorManager.extend({
                     if (relatedCurrency) {
                         field_description.related = relatedCurrency;
                     }
-                    def_field_values.resolve();
+                    resolve();
                 },
             });
         };
@@ -296,44 +291,46 @@ var ViewEditorManager = AbstractEditorManager.extend({
                     ['3', "Very High"],
                 ];
             } else if (_.contains(['selection', 'one2many', 'many2one', 'many2many', 'related'], field_description.type)) {
-                // open dialog to precise the required fields for this field
-                def_field_values = $.Deferred();
-                dialog = new NewFieldDialog(this, modelName, field_description, this.fields).open();
-                dialog.on('field_default_values_saved', this, function (values) {
-                    if (values.related && values.type === 'monetary') {
-                        if (this._hasCurrencyField()) {
-                            def_field_values.resolve(values);
-                            dialog.close();
-                        } else {
-                            var relatedCurrency = values._currency;
-                            delete values._currency;
-                            var currencyDialog = openCurrencyCreationDialog(relatedCurrency);
-                            currencyDialog.on('closed', this, function () {
+                def_field_values = new Promise(function (resolve, reject) {
+                    // open dialog to precise the required fields for this field
+                    dialog = new NewFieldDialog(self, modelName, field_description, self.fields).open();
+                    dialog.on('field_default_values_saved', self, function (values) {
+                        if (values.related && values.type === 'monetary') {
+                            if (self._hasCurrencyField()) {
+                                resolve(values);
                                 dialog.close();
-                            });
+                            } else {
+                                var relatedCurrency = values._currency;
+                                delete values._currency;
+                                var currencyDialog = openCurrencyCreationDialog(relatedCurrency, resolve);
+                                currencyDialog.on('closed', self, function () {
+                                    dialog.close();
+                                });
+                            }
+                        } else {
+                            resolve(values);
+                            dialog.close();
                         }
-                    } else {
-                        def_field_values.resolve(values);
-                        dialog.close();
-                    }
-                });
-                dialog.on('closed', this, function () {
-                    def_field_values.reject();
+                    });
+                    dialog.on('closed', self, function () {
+                        reject();
+                    });
                 });
             } else if (field_description.type === 'monetary') {
-                def_field_values = $.Deferred();
-                if (this._hasCurrencyField()) {
-                    def_field_values.resolve();
-                } else {
-                    dialog = openCurrencyCreationDialog();
-                    dialog.on('closed', this, function () {
-                        def_field_values.reject();
-                    });
-                }
+                def_field_values = new Promise(function (resolve, reject) {
+                    if (self._hasCurrencyField()) {
+                        resolve();
+                    } else {
+                        dialog = openCurrencyCreationDialog(null, resolve);
+                        dialog.on('closed', self, function () {
+                            reject();
+                        });
+                    }
+                });
             }
         }
         // When the field values is selected, close the dialog and update the view
-        $.when(def_field_values).then(function (values) {
+        Promise.resolve(def_field_values).then(function (values) {
             if (field_description) {
                 self.renamingAllowedFields.push(field_description.name);
             }
@@ -355,7 +352,7 @@ var ViewEditorManager = AbstractEditorManager.extend({
                     field_description: _.extend(field_description, values),
                 },
             });
-        }).fail(function () {
+        }).guardedCatch(function () {
             self.updateEditor();
         });
     },
@@ -464,13 +461,13 @@ var ViewEditorManager = AbstractEditorManager.extend({
      */
     _applyChangeHandling: function (result, opID) {
         var self = this;
-        var def;
+        var prom = Promise.resolve();
 
         if (!result.fields_views) {
             // the operation can't be applied
             this.trigger_up('studio_error', {error: 'wrong_xpath'});
             return this._undo(opID, true).then(function () {
-                return $.Deferred().reject();
+                return Promise.reject();
             });
         }
 
@@ -499,9 +496,9 @@ var ViewEditorManager = AbstractEditorManager.extend({
         // fields and fields_view has been updated so let's update everything
         // (i.e. the sidebar which displays the 'Existing Fields', etc.)
         if (this.x2mField) {
-            def = this._setX2mParameters();
+            prom = this._setX2mParameters();
         }
-        return $.when(def).then(self.updateEditor.bind(self));
+        return prom.then(self.updateEditor.bind(self));
     },
     /**
      * Find a currency field on the current model ; a monetary field can not be
@@ -536,14 +533,14 @@ var ViewEditorManager = AbstractEditorManager.extend({
      * @private
      * @param {string} type
      * @param {string} field_name
-     * @return {Deferred}
+     * @return {Promise}
      */
     _createInlineView: function (type, field_name) {
         var self = this;
         var subviewType = type === 'list' ? 'tree' : type;
         // We build the correct xpath if we are editing a 'sub' subview
         var subviewXpath = this._getSubviewXpath(this.x2mEditorPath.slice(0, -1));
-        var def = this._rpc({
+        var prom = this._rpc({
             route: '/web_studio/create_inline_view',
             params: {
                 model: this.x2mModel,
@@ -554,7 +551,7 @@ var ViewEditorManager = AbstractEditorManager.extend({
                 context: session.user_context,
             },
         });
-        return def
+        return prom
             .then(function (studio_view_arch) {
                 // We clean the stack of operations because the edited view will change
                 self.operations = [];
@@ -719,7 +716,7 @@ var ViewEditorManager = AbstractEditorManager.extend({
      * @private
      * @param {String} model_name
      * @param {String} field_name
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _getDefaultValue: function (model_name, field_name) {
         return this._rpc({
@@ -739,8 +736,7 @@ var ViewEditorManager = AbstractEditorManager.extend({
     /**
      * @private
      * @param {String} model_name
-     * @returns {Deferred}
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _getEmailAlias: function (model_name) {
         return this._rpc({
@@ -754,7 +750,8 @@ var ViewEditorManager = AbstractEditorManager.extend({
      * @override
      */
     _getSidebarState: function (mode, node) {
-        var def, newState;
+        var newState;
+        var def = Promise.resolve();
         if (mode) {
             newState = {
                 renamingAllowedFields: this.renamingAllowedFields,
@@ -795,7 +792,7 @@ var ViewEditorManager = AbstractEditorManager.extend({
                 break;
         }
 
-        return $.when(def || $.when()).then(function (result) {
+        return def.then(function (result) {
             return _.extend(newState, result);
         });
     },
@@ -838,7 +835,7 @@ var ViewEditorManager = AbstractEditorManager.extend({
     },
     /**
      * @override
-     * @returns {Deferred<Widget>}
+     * @returns {Promise<Widget>}
      */
     _instantiateEditor: function (params) {
         params = params || {};
@@ -860,7 +857,7 @@ var ViewEditorManager = AbstractEditorManager.extend({
             } else {
                 this.view = new SearchRenderer(this, fields_view);
             }
-            def = $.when(this.view);
+            def = Promise.resolve(this.view);
         } else {
             var View = view_registry.get(this.view_type);
             this.view = new View(fields_view, _.extend({}, viewParams));
@@ -933,7 +930,7 @@ var ViewEditorManager = AbstractEditorManager.extend({
      * with the x2m information.
      *
      * @private
-     * @return {Deferred}
+     * @return {Promise}
      */
     _instantiateX2mEditor: function () {
         var self = this;
@@ -952,7 +949,7 @@ var ViewEditorManager = AbstractEditorManager.extend({
      * @param {boolean} fromBreadcrumb
      * @param {object} fieldsView
      * @param {object} x2mData
-     * @return {Deferred}
+     * @return {Promise}
      */
     _openX2mEditor: function (fieldName, viewType, fromBreadcrumb, fieldsView, x2mData) {
         var self = this;
@@ -1072,7 +1069,7 @@ var ViewEditorManager = AbstractEditorManager.extend({
      * @private
      * @param {string} oldName
      * @param {string} newName
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _renameField: function (oldName, newName) {
         var self = this;
@@ -1097,8 +1094,8 @@ var ViewEditorManager = AbstractEditorManager.extend({
             var oldFieldIndex = self.renamingAllowedFields.indexOf(oldName);
             self.renamingAllowedFields.splice(oldFieldIndex, 1);
             self.renamingAllowedFields.push(newName);
-            return self._applyChanges().then(framework.unblockUI).fail(framework.unblockUI);
-        }).fail(framework.unblockUI);
+            return self._applyChanges().then(framework.unblockUI).guardedCatch(framework.unblockUI);
+        }).guardedCatch(framework.unblockUI);
     },
     /**
      * @private
@@ -1111,23 +1108,21 @@ var ViewEditorManager = AbstractEditorManager.extend({
      * @param {String} model_name
      * @param {String} field_name
      * @param {*} value
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _setDefaultValue: function (model_name, field_name, value) {
-        var def = $.Deferred();
         var params = {
             model_name: model_name,
             field_name: field_name,
             value: value,
         };
-        this._rpc({route: '/web_studio/set_default_value', params: params});
-        return def;
+        return this._rpc({route: '/web_studio/set_default_value', params: params});
     },
     /**
      * @private
      * @param {String} model_name
      * @param {[type]} value
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _setEmailAlias: function (model_name, value) {
         return this._rpc({
@@ -1236,7 +1231,7 @@ var ViewEditorManager = AbstractEditorManager.extend({
         var data = event.data;
         var modelName = this.x2mModel ? this.x2mModel : this.model_name;
         this._setDefaultValue(modelName, data.field_name, data.value)
-            .fail(function () {
+            .guardedCatch(function () {
                 if (data.on_fail) {
                     data.on_fail();
                 }

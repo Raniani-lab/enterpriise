@@ -32,8 +32,7 @@ var SearchRenderer = Widget.extend({
      */
     start: function () {
         this.$el.addClass(this.arch.attrs.class);
-        this._render();
-        return this._super.apply(this, arguments);
+        return this._super.apply(this, arguments).then(this._render.bind(this));
     },
 
     //--------------------------------------------------------------------------
@@ -97,6 +96,7 @@ var SearchRenderer = Widget.extend({
      */
     _render: function () {
         var self = this;
+        this.defs = [];
         this.$el.empty();
         this.$el.html(qweb.render('web_studio.searchRenderer', this.widget));
         this.first_field = undefined;
@@ -131,6 +131,7 @@ var SearchRenderer = Widget.extend({
                 nodesToTreat = nodesToTreat.concat(node.children);
             }
         }
+        return Promise.all(this.defs);
     },
     /**
      * @private

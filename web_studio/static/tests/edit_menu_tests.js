@@ -66,13 +66,13 @@ QUnit.module('Studio', {
 
     QUnit.module('EditMenu');
 
-    QUnit.test('edit menu behavior', function(assert) {
+    QUnit.test('edit menu behavior', async function(assert) {
         assert.expect(3);
 
         var $target = $('#qunit-fixture');
 
         var edit_menu = new EditMenu.MenuItem(null, this.menu_data, 2);
-        edit_menu.appendTo($target);
+        await edit_menu.appendTo($target);
 
         testUtils.mock.addMockEnvironment(edit_menu, {
             data: this.data,
@@ -84,20 +84,20 @@ QUnit.module('Studio', {
             "there should be an edit menu link");
 
         // open the dialog to edit the menu
-        testUtils.dom.click(edit_menu.$('.o_web_edit_menu'));
+        await testUtils.dom.click(edit_menu.$('.o_web_edit_menu'));
         assert.strictEqual($('.o_web_studio_edit_menu_modal').length, 1,
             "there should be a modal in the dom");
 
         edit_menu.destroy();
     });
 
-    QUnit.test('edit menu dialog', function(assert) {
+    QUnit.test('edit menu dialog', async function(assert) {
         assert.expect(17);
 
         var $target = $('#qunit-fixture');
 
         var dialog = new EditMenu.Dialog(null, this.menu_data, 2);
-        dialog.appendTo($target);
+        await dialog.appendTo($target);
 
         var customizeCalls = 0;
 
@@ -107,7 +107,7 @@ QUnit.module('Studio', {
             mockRPC: function (route, args) {
                 if (route === "/web/dataset/call_kw/ir.ui.menu/customize") {
                     customizeCalls++;
-                    return $.Deferred().reject();
+                    return Promise.reject();
                 }
                 return this._super(route, args);
             },
@@ -129,7 +129,7 @@ QUnit.module('Studio', {
             "there should be a link to add new menu");
 
         // open the dialog to create a new menu
-        testUtils.dom.click(dialog.$('.js_add_menu'));
+        await testUtils.dom.click(dialog.$('.js_add_menu'));
         assert.strictEqual($('.o_web_studio_add_menu_modal').length, 1,
             "there should be a modal in the dom");
         assert.strictEqual($('.o_web_studio_add_menu_modal input[name="name"]').length, 1,
@@ -137,26 +137,26 @@ QUnit.module('Studio', {
         assert.strictEqual($('.o_web_studio_add_menu_modal .o_field_many2one').length, 1,
             "there should be a many2one for the model in the dialog");
         // close the modal
-        testUtils.dom.click($('.o_web_studio_add_menu_modal .btn-secondary'));
+        await testUtils.dom.click($('.o_web_studio_add_menu_modal .btn-secondary'));
 
         // move submenu above root menu
-        testUtils.dom.dragAndDrop(dialog.$('li li .input-group:first'), dialog.$('.input-group:first'));
+        await testUtils.dom.dragAndDrop(dialog.$('li li .input-group:first'), dialog.$('.input-group:first'));
         assert.strictEqual(dialog.to_move[2].sequence, dialog.to_move[21].sequence + 1,
             "Root menu is after moved submenu");
 
         // open the dialog to edit the menu
-        testUtils.dom.click(dialog.$('.js_edit_menu:nth(1)'));
+        await testUtils.dom.click(dialog.$('.js_edit_menu:nth(1)'));
         assert.strictEqual($('.o_act_window').length, 1,
             "there should be a act window modal in the dom");
         assert.strictEqual($('.o_act_window input.o_field_widget[name="name"]').val(), "Menu 2",
             "the edited menu should be menu 2");
         // confirm the edition
         assert.strictEqual(customizeCalls, 0, "current changes have not been saved");
-        testUtils.dom.click($('.o_act_window').closest('.modal').find('.btn-primary'));
+        await testUtils.dom.click($('.o_act_window').closest('.modal').find('.btn-primary'));
         assert.strictEqual(customizeCalls, 1, "current changes are saved after editing a menu");
 
         // delete the last menu
-        testUtils.dom.click(dialog.$('.js_delete_menu:nth(2)'));
+        await testUtils.dom.click(dialog.$('.js_delete_menu:nth(2)'));
         assert.containsNone(dialog, 'ul.oe_menu_editor > li > ul > li',
             "there should be no submenu after deletion");
         assert.strictEqual(dialog.to_delete.length, 1,

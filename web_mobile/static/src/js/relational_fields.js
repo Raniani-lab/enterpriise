@@ -33,7 +33,7 @@ relational_fields.FieldMany2One.include({
      */
     _invokeMobileDialog: function (term) {
         var self = this;
-        this._search(term).done(function (result) {
+        this._search(term).then(function (result) {
             self._callback_actions = {};
 
             _.each(result, function (r, i) {

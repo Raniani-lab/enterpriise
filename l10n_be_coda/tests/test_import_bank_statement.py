@@ -27,6 +27,7 @@ class TestCodaFile(AccountingTestCase):
         self.bank_statement_model = self.env['account.bank.statement']
         coda_file_path = get_module_resource('l10n_be_coda', 'test_coda_file', 'Ontvangen_CODA.2013-01-11-18.59.15.txt')
         self.coda_file = base64.b64encode(open(coda_file_path, 'rb').read())
+        self.env['account.journal'].browse(self.ref('account.bank_journal')).currency_id = self.env['res.currency'].search([('name', '=', 'EUR')], limit=1).id
         self.context = {
             'journal_id': self.ref('account.bank_journal')
         }

@@ -154,7 +154,7 @@ var PickingClientAction = ClientAction.extend({
      * event listener.
      *
      * @private
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _validate: function () {
         var self = this;
@@ -165,7 +165,7 @@ var PickingClientAction = ClientAction.extend({
                     'method': 'button_validate',
                     'args': [[self.actionParams.pickingId]],
                 }).then(function (res) {
-                    var def = $.when();
+                    var def = Promise.resolve();
                     var exitCallback = function (infos) {
                         if (infos !== 'special') {
                             self.do_notify(_t("Success"), _t("The transfer has been validated"));
@@ -293,7 +293,7 @@ var PickingClientAction = ClientAction.extend({
                 'params': params,
             });
         } else {
-            return $.Deferred().reject();
+            return Promise.reject();
         }
     },
 
@@ -332,7 +332,7 @@ var PickingClientAction = ClientAction.extend({
                     'args': [[self.actionParams.pickingId]],
                     kwargs: {context: self.context},
                 }).then(function (res) {
-                    var def = $.when()
+                    var def = Promise.resolve();
                     self._endBarcodeFlow();
                     if (res.type && res.type === 'ir.actions.act_window') {
                         var exitCallback = function (infos) {

@@ -42,7 +42,7 @@ FormController.include({
      * @param {Object} record
      * @param {string} barcode
      * @param {Object} activeBarcode
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _barcodeSelectedCandidate: function (candidate, record, barcode, activeBarcode) {
         if (activeBarcode.widget === 'picking_barcode_handler' && candidate.data.lots_visible) {
@@ -50,11 +50,12 @@ FormController.include({
             // the product is tracked by lot -> open the split lot wizard
             // save the record for the server to be aware of the operation
             return this.saveRecord(this.handle, {stayInEdit: true, reload: false}).then(function () {
-                return self._rpc({
+                var rpcProm = self._rpc({
                     model: 'stock.picking',
                     method: 'get_po_to_split_from_barcode',
                     args: [[record.data.id], barcode],
-                }).done(function (action) {
+                });
+                rpcProm.then(function (action) {
                     // the function returns an action (wizard)
                     self._barcodeStopListening();
                     self.do_action(action, {
@@ -64,6 +65,7 @@ FormController.include({
                         }
                     });
                 });
+                return rpcProm;
             });
         }
         return this._super.apply(this, arguments);
@@ -75,17 +77,17 @@ FormController.include({
      * @private
      * @param {string} barcode
      * @param {Object} activeBarcode
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _barcodePickingAddRecordId: function (barcode, activeBarcode) {
         if (!activeBarcode.handle) {
-            return $.Deferred().reject();
+            return Promise.reject();
         }
         var record = this.model.get(activeBarcode.handle);
         if (record.data.state === 'cancel' || record.data.state === 'done') {
             this.do_warn(_.str.sprintf(_t("Picking %s"), record.data.state),
                 _.str.sprintf(_t("The picking is %s and cannot be edited."), record.data.state));
-            return $.Deferred().reject();
+            return Promise.reject();
         }
         return this._barcodeAddX2MQuantity(barcode, activeBarcode);
     }

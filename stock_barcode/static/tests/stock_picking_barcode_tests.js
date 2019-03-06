@@ -31,11 +31,11 @@ QUnit.module('Barcode', {
         };
         this.mockRPC = function (route, args) {
             if (route === '/stock_barcode/get_set_barcode_view_state') {
-                return $.when(self.clientData.currentState);
+                return Promise.resolve(self.clientData.currentState);
             } else if (args.method === "get_all_products_by_barcode") {
-                return $.when({});
+                return Promise.resolve({});
             } else if (args.method === "get_all_locations_by_barcode") {
-                return $.when({});
+                return Promise.resolve({});
             }
         };
         this.data = {
@@ -94,10 +94,10 @@ QUnit.module('Barcode', {
     }
 });
 
-QUnit.test('scan a product (no tracking)', function (assert) {
+QUnit.test('scan a product (no tracking)', async function (assert) {
     assert.expect(5);
 
-    var form = createView({
+    var form = await createView({
         View: FormView,
         model: 'stock_picking',
         data: this.data,
@@ -133,6 +133,7 @@ QUnit.test('scan a product (no tracking)', function (assert) {
         "quantity done should be 0");
 
     _.each(['5','4','3','9','8','2','6','7','1','2','5','2','Enter'], triggerKeypressEvent);
+    await testUtils.nextTick();
     assert.strictEqual(form.$('.o_data_row .o_data_cell:nth(2)').text(), '1.0',
         "quantity done should be 1");
     assert.verifySteps(['read', 'read'], "no RPC should have been done for the barcode scanned");
@@ -140,13 +141,13 @@ QUnit.test('scan a product (no tracking)', function (assert) {
     form.destroy();
 });
 
-QUnit.test('scan a product tracked by lot', function (assert) {
+QUnit.test('scan a product tracked by lot', async function (assert) {
     assert.expect(8);
 
     // simulate a PO for a tracked by lot product
     this.data['stock.move.line'].records[0].lots_visible = true;
 
-    var form = createView({
+    var form = await createView({
         View: FormView,
         model: 'stock_picking',
         data: this.data,
@@ -173,7 +174,7 @@ QUnit.test('scan a product tracked by lot', function (assert) {
         mockRPC: function (route, args) {
             assert.step(args.method);
             if (args.method === 'get_po_to_split_from_barcode') {
-                return $.when({action_id: 1});
+                return Promise.resolve({action_id: 1});
             }
             return this._super.apply(this, arguments);
         },
@@ -192,8 +193,9 @@ QUnit.test('scan a product tracked by lot', function (assert) {
 
     // trigger a change on a field to be able to check that the record is correctly
     // saved before calling get_po_to_split_from_barcode
-    testUtils.fields.editInput(form.$('.o_field_widget[name="display_name"]'), 'new value');
+    await testUtils.fields.editInput(form.$('.o_field_widget[name="display_name"]'), 'new value');
     _.each(['5','4','3','9','8','2','6','7','1','2','5','2','Enter'], triggerKeypressEvent);
+    await testUtils.nextTick();
     assert.strictEqual(form.$('.o_data_row .o_data_cell:nth(2)').text(), '0.0',
         "quantity done should still be 0");
     assert.verifySteps(['read', 'read', 'write', 'get_po_to_split_from_barcode'],
@@ -202,7 +204,7 @@ QUnit.test('scan a product tracked by lot', function (assert) {
     form.destroy();
 });
 
-QUnit.test('scan a product verify onChange', function (assert) {
+QUnit.test('scan a product verify onChange', async function (assert) {
     assert.expect(7);
 
     this.data.stock_picking.onchanges = {
@@ -211,7 +213,7 @@ QUnit.test('scan a product verify onChange', function (assert) {
     this.data['stock.move.line'].onchanges = {
         qty_done: function () {},
     };
-    var form = createView({
+    var form = await createView({
         View: FormView,
         model: 'stock_picking',
         data: this.data,
@@ -251,8 +253,9 @@ QUnit.test('scan a product verify onChange', function (assert) {
 
     // trigger a change on a field to be able to check that the record is correctly
     // saved before calling get_po_to_split_from_barcode
-    testUtils.fields.editInput(form.$('.o_field_widget[name="display_name"]'), 'new value');
+    await testUtils.fields.editInput(form.$('.o_field_widget[name="display_name"]'), 'new value');
     _.each(['5','4','3','9','8','2','6','7','1','2','5','2','Enter'], triggerKeypressEvent);
+    await testUtils.nextTick();
     assert.strictEqual(form.$('.o_data_row .o_data_cell:nth(2)').text(), '1.0',
         "quantity done should be 1");
     // We won't be able to block onchange calls on x2many since the notifyChange
@@ -262,24 +265,24 @@ QUnit.test('scan a product verify onChange', function (assert) {
     form.destroy();
 });
 
-QUnit.test('exclamation-triangle when picking is done', function (assert) {
+QUnit.test('exclamation-triangle when picking is done', async function (assert) {
     assert.expect(1);
     this.clientData.currentState[0].state = 'done';
-    var actionManager = createActionManager({
+    var actionManager = await createActionManager({
         mockRPC: this.mockRPC,
     });
-    actionManager.doAction(this.clientData.action);
+    await actionManager.doAction(this.clientData.action);
     assert.containsOnce(actionManager, '.o_js_has_warning_msg', "Should have warning icon");
     actionManager.destroy();
 });
 
-QUnit.test('barcode pic when picking is not done or cancelled', function (assert) {
+QUnit.test('barcode pic when picking is not done or cancelled', async function (assert) {
     assert.expect(2);
     this.clientData.currentState[0].group_stock_multi_locations = false;
-    var actionManager = createActionManager({
+    var actionManager = await createActionManager({
         mockRPC: this.mockRPC,
     });
-    actionManager.doAction(this.clientData.action);
+    await actionManager.doAction(this.clientData.action);
     assert.containsOnce(actionManager, '.o_barcode_pic', "Should have barcode picture");
     assert.containsNone(actionManager, '.o_js_has_warning_msg', "Should not have warning icon");
     actionManager.destroy();

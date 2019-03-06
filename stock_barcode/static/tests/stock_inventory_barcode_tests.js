@@ -68,15 +68,14 @@ QUnit.module('Barcode', {
     }
 });
 
-QUnit.test('scan a product with qty keypress (no tracking)', function (assert) {
+QUnit.test('scan a product with qty keypress (no tracking)', async function (assert) {
     assert.expect(4);
-    var done = assert.async();
 
     var delay = barcodeEvents.BarcodeEvents.max_time_between_keys_in_ms;
     barcodeEvents.BarcodeEvents.max_time_between_keys_in_ms = 0;
 
 
-    var form = createView({
+    var form = await createView({
         View: FormView,
         model: 'stock_inventory',
         data: this.data,
@@ -106,25 +105,24 @@ QUnit.test('scan a product with qty keypress (no tracking)', function (assert) {
     assert.strictEqual(form.$('.o_data_row .o_data_cell:nth(2)').text(), '0.0',
         "quantity checked should be 0");
 
-    _.each(['5','4','3','9','8','2','6','7','1','2','5','2','Enter'], triggerKeypressEvent);
-    // Quantity listener should open a dialog.
-    triggerKeypressEvent('5');
-
-    setTimeout(function () {
-        var keycode = $.ui.keyCode.ENTER;
-
-        assert.strictEqual($('.modal .modal-body').length, 1, 'should open a modal with a quantity as input');
-        assert.strictEqual($('.modal .modal-body .o_set_qty_input').val(), '5', 'the quantity by default in the modal shoud be 5');
-
-        $('.modal .modal-body .o_set_qty_input').val('7');
-
-        $('.modal .modal-body .o_set_qty_input').trigger($.Event('keypress', {which: keycode, keyCode: keycode}));
-        assert.strictEqual(form.$('.o_data_row .o_data_cell:nth(2)').text(), '7.0',
-            "quantity checked should be 7");
-        form.destroy();
-        barcodeEvents.BarcodeEvents.max_time_between_keys_in_ms = delay;
-        done();
+    var defs = ['5','4','3','9','8','2','6','7','1','2','5','2','Enter'].map(async function(i) {
+        await triggerKeypressEvent(i);
     });
+    await defs;
+    // Quantity listener should open a dialog.
+    await triggerKeypressEvent('5');
+    await testUtils.nextTick();
+
+    assert.strictEqual($('.modal .modal-body').length, 1, 'should open a modal with a quantity as input');
+    assert.strictEqual($('.modal .modal-body .o_set_qty_input').val(), '5', 'the quantity by default in the modal shoud be 5');
+
+    await testUtils.fields.editInput($('.modal .modal-body .o_set_qty_input'), '7');
+
+    await testUtils.fields.triggerKey('press', $('.modal .modal-body .o_set_qty_input'), 'enter');
+    assert.strictEqual(form.$('.o_data_row .o_data_cell:nth(2)').text(), '7.0',
+        "quantity checked should be 7");
+    form.destroy();
+    barcodeEvents.BarcodeEvents.max_time_between_keys_in_ms = delay;
 });
 
 

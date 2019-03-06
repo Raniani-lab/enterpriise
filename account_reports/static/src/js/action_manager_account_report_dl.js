@@ -21,23 +21,23 @@ ActionManager.include({
      *
      * @private
      * @param {Object} action the description of the action to execute
-     * @returns {Deferred} resolved when the report has been downloaded ;
+     * @returns {Promise} resolved when the report has been downloaded ;
      *   rejected if an error occurred during the report generation
      */
     _executeAccountReportDownloadAction: function (action) {
         framework.blockUI();
-        var def = $.Deferred();
-        session.get_file({
-            url: '/account_reports',
-            data: action.data,
-            success: def.resolve.bind(def),
-            error: function () {
-                crash_manager.rpc_error.apply(crash_manager, arguments);
-                def.reject();
-            },
-            complete: framework.unblockUI,
+        return new Promise(function (resolve, reject) {
+            session.get_file({
+                url: '/account_reports',
+                data: action.data,
+                success: resolve,
+                error: function () {
+                    crash_manager.rpc_error.apply(crash_manager, arguments);
+                    reject();
+                },
+                complete: framework.unblockUI,
+            });
         });
-        return def;
     },
     /**
      * Overrides to handle the 'ir_actions_account_report_download' actions.

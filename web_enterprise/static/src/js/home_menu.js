@@ -534,8 +534,8 @@ HomeMenu.include({
             $c.attr('placeholder', $c.attr('title')); // raise attention to input
             return;
         }
-        $.when(
-            this._rpc({
+        Promise.all(
+            [this._rpc({
                     model: 'ir.config_parameter',
                     method: 'get_param',
                     args: ['database.expiration_date']
@@ -544,8 +544,9 @@ HomeMenu.include({
                     model: 'ir.config_parameter',
                     method: 'set_param',
                     args: ['database.enterprise_code', enterpriseCode]
-                })
-        ).then(function (oldDate) {
+                })]
+        ).then(function (results) {
+            var oldDate = results[0];
             utils.set_cookie('oe_instance_hide_panel', '', -1);
             self._rpc({
                     model: 'publisher_warranty.contract',
@@ -554,8 +555,8 @@ HomeMenu.include({
                 })
                 .then(function () {
                     $.unblockUI();
-                    $.when(
-                        self._rpc({
+                    Promise.all(
+                        [self._rpc({
                                 model: 'ir.config_parameter',
                                 method: 'get_param',
                                 args: ['database.expiration_date']
@@ -564,8 +565,9 @@ HomeMenu.include({
                                 model: 'ir.config_parameter',
                                 method: 'get_param',
                                 args: ['database.expiration_reason']
-                            })
-                    ).then(function (dbexpirationDate) {
+                            })]
+                    ).then(function (results) {
+                        var dbexpirationDate = results[0];
                         $('.oe_instance_register').hide();
                         $('.database_expiration_panel .alert')
                                 .removeClass('alert-info alert-warning alert-danger');
@@ -616,8 +618,8 @@ HomeMenu.include({
                         args: [[]],
                     })
                     .then(function () {
-                        $.when(
-                            self._rpc({
+                        Promise.all(
+                            [self._rpc({
                                     model: 'ir.config_parameter',
                                     method: 'get_param',
                                     args: ['database.expiration_date']
@@ -631,8 +633,11 @@ HomeMenu.include({
                                     model: 'ir.config_parameter',
                                     method: 'get_param',
                                     args: ['database.enterprise_code']
-                                })
-                        ).then(function (newDate, dbexpirationReason, enterpriseCode) {
+                                })]
+                        ).then(function (results) {
+                            var newDate = results[0];
+                            var dbexpirationDate = results[1];
+                            var enterpriseCode = results[2];
                             var mtNewDate = new moment(newDate);
                             if (newDate !== oldDate && mtNewDate > new moment()) {
                                 $.unblockUI();

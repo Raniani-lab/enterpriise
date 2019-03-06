@@ -125,7 +125,7 @@ var CohortController = AbstractController.extend({
     /**
      * @override
      * @private
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _update: function () {
       this._updateButtons();

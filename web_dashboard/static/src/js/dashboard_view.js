@@ -75,10 +75,11 @@ var DashboardView = BasicView.extend({
         }
 
         var superDef = this._super.apply(this, arguments);
-        return $.when(superDef, subViewsDef).then(function (dataPointID) {
-            // the parent expects a deferred resolved with a dataPoint id, but
-            // with this override, it becomes a deferred resolved with an Array,
+        return Promise.all([superDef, subViewsDef]).then(function (results) {
+            // the parent expects a promise resolved with a dataPoint id, but
+            // with this override, it becomes a promise resolved with an Array,
             // whose first element is the dataPoint id
+            var dataPointID = results[0];
             return dataPointID;
         });
     },

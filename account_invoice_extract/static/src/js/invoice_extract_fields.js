@@ -74,11 +74,14 @@ var InvoiceExtractFields = Class.extend(Mixins.EventDispatcherMixin, {
      * @param {Object} params
      * @param {$.Element} params.$container jQuery element with a single node
      *   in the DOM, which is the container of the field buttons.
+     * @returns {Promise} resolves when all buttons are rendered
      */
     renderButtons: function (params) {
+        var proms = [];
         _.each(this._fields, function (field) {
-            field.renderButton(params);
+            proms.push(field.renderButton(params));
         });
+        return Promise.all(proms);
     },
     /**
      * Reset the active state of fields, so that the 1st field is active.

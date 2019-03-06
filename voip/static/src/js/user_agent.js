@@ -36,6 +36,7 @@ var UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         this.blocked = false;
         this.timerAccepted = undefined;
         this.sipSession  = undefined;
+        this.playRingbacktonePromise = undefined;
     },
 
     //--------------------------------------------------------------------------
@@ -71,7 +72,7 @@ var UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      * @param {string} number
      */
     makeCall: function (number) {
-        this.ringbacktone.play();
+        this.playRingbacktonePromise = this.ringbacktone.play();
         if (this.mode === "demo") {
             this.timerAccepted = this._demoTimeout(this._onAccepted.bind(this));
             return;
@@ -409,8 +410,14 @@ var UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      */
     _onAccepted: function () {
         this.callState = CALL_STATE.ONGOING_CALL;
+        var self = this;
         var call = this.sipSession;
-        this.ringbacktone.pause();
+        if (this.playRingbacktonePromise)  {
+            this.playRingbacktonePromise.then(function () {
+                self.ringbacktone.pause();
+            });
+            this.playRingbacktonePromise = undefined;
+        }
         if (this.mode === 'prod') {
             this._configureRemoteAudio();
             call.sessionDescriptionHandler.on('addTrack',_.bind(this._configureRemoteAudio,this));

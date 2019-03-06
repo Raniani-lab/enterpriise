@@ -50,7 +50,7 @@ var ActionEditorSidebar = Widget.extend(StandaloneFieldManagerMixin, {
             self.groupsHandle = recordID;
         });
         var def2 = this._super.apply(this, arguments);
-        return $.when(def1, def2);
+        return Promise.all([def1, def2]);
     },
     /**
      * @override
@@ -64,7 +64,7 @@ var ActionEditorSidebar = Widget.extend(StandaloneFieldManagerMixin, {
         var many2many = new Many2ManyTags(this, 'groups_id', record, options);
         this._registerWidget(this.groupsHandle, 'groups_id', many2many);
         var def2 = many2many.appendTo(this.$('.o_groups'));
-        return $.when(def1, def2);
+        return Promise.all([def1, def2]);
     },
 
     //--------------------------------------------------------------------------

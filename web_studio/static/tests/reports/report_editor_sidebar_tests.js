@@ -46,14 +46,14 @@ QUnit.module('Studio', {}, function () {
             };
         },
     }, function () {
-        QUnit.test("basic rendering", function (assert) {
+        QUnit.test("basic rendering", async function (assert) {
             var done = assert.async();
             assert.expect(5);
 
             studioTestUtils.createSidebar({
                 state: { mode: 'report' },
                 report: {},
-            }).then(function (sidebar) {
+            }).then(async function (sidebar) {
 
             assert.hasClass(sidebar.$('.o_web_studio_sidebar_header [name="report"]'),'active',
                 "the report tab should be active");
@@ -66,25 +66,24 @@ QUnit.module('Studio', {}, function () {
             testUtils.dom.click(sidebar.$('.o_web_studio_sidebar_header [name="new"]'));
             assert.verifySteps(['new'], "the sidebar should be updated");
 
-            testUtils.dom.click(sidebar.$('.o_web_studio_sidebar_header [name="options"]'));
-            assert.verifySteps(['new'], "one should not be able to select options");
+            await testUtils.dom.click(sidebar.$('.o_web_studio_sidebar_header [name="options"]'));
+            assert.verifySteps([], "one should not be able to select options");
 
             sidebar.destroy();
             done();
             });
         });
 
-        QUnit.test("'Report' tab behaviour", function (assert) {
-            var done = assert.async();
+        QUnit.test("'Report' tab behaviour", async function (assert) {
             assert.expect(6);
 
-            studioTestUtils.createSidebar({
+            return studioTestUtils.createSidebar({
                 data: this.data,
                 state: { mode: 'report' },
                 report: {
                     name: 'Kikou',
                 },
-            }).then(function (sidebar) {
+            }).then(async function (sidebar) {
 
             assert.hasAttrValue(sidebar.$('.o_web_studio_sidebar_header > .active'), 'name', "report",
                 "the 'Report' tab should be active");
@@ -105,20 +104,20 @@ QUnit.module('Studio', {}, function () {
 
             // edit the report paperformat
             var paperformatValues = [];
-            testUtils.fields.many2one.clickOpenDropdown('paperformat_id');
-            testUtils.fields.many2one.clickHighlightedItem('paperformat_id');
+            await testUtils.fields.many2one.clickOpenDropdown('paperformat_id');
+            await testUtils.fields.many2one.clickHighlightedItem('paperformat_id');
             assert.deepEqual(paperformatValues, [{ paperformat_id: 42 }]);
 
             // remove the report paperformat
             sidebar.$('[name="paperformat_id"] input').val('').trigger('keyup').trigger('focusout');
+            await testUtils.nextTick();
             assert.deepEqual(paperformatValues, [{ paperformat_id: 42 }, { paperformat_id: false }]);
 
             // edit groups
-            testUtils.fields.many2one.clickOpenDropdown('groups_id');
-            testUtils.fields.many2one.clickItem('groups_id', 'Group7');
+            await testUtils.fields.many2one.clickOpenDropdown('groups_id');
+            await testUtils.fields.many2one.clickItem('groups_id', 'Group7');
 
             sidebar.destroy();
-            done();
             });
         });
 
@@ -351,10 +350,9 @@ QUnit.module('Studio', {}, function () {
             });
         });
 
-        QUnit.test("'Options' tab with FieldSelector does not flicker", function (assert) {
-            var done = assert.async();
+        QUnit.test("'Options' tab with FieldSelector does not flicker", async function (assert) {
             assert.expect(3);
-            var def = $.Deferred();
+            var def = testUtils.makeTestPromise();
 
             var node = {
                 context: {
@@ -374,7 +372,7 @@ QUnit.module('Studio', {}, function () {
                     $nodes: $(),
                 },
             };
-            studioTestUtils.createSidebar({
+            var sidebarDef = studioTestUtils.createSidebar({
                 data: this.data,
                 models: {
                     'x_mymodel': 'My Model',
@@ -388,28 +386,26 @@ QUnit.module('Studio', {}, function () {
                     if (args.model === 'x_mymodel' && args.method === 'fields_get') {
                         // Block the 'read' call
                         var result = this._super.apply(this, arguments);
-                        return $.when(def).then(_.constant(result));
+                        return Promise.resolve(def).then(_.constant(result));
                     }
                     return this._super.apply(this, arguments);
                 },
-            }).then(function (sidebar) {
-
+            });
+            await testUtils.nextTick();
             assert.strictEqual($('.o_web_studio_tfield_fieldexpression').length, 0,
                 "the sidebar should wait its components to be rendered before its insertion");
 
             // release the fields_get
             def.resolve();
+            var sidebar = await sidebarDef;
+            await testUtils.nextTick();
+            assert.strictEqual($('.o_web_studio_tfield_fieldexpression').length, 1,
+                "the t-field component should be displayed");
+            assert.strictEqual(sidebar.$('.o_web_studio_tfield_fieldexpression .o_field_selector_value').text().replace(/\s/g, ''),
+                "doc(MyModel)ID",
+                "the field chain should be correctly displayed");
 
-            $.when(def).then(function () {
-                assert.strictEqual($('.o_web_studio_tfield_fieldexpression').length, 1,
-                    "the t-field component should be displayed");
-                assert.strictEqual(sidebar.$('.o_web_studio_tfield_fieldexpression .o_field_selector_value').text().replace(/\s/g, ''), "doc(MyModel)ID",
-                    "the field chain should be correctly displayed");
-
-                sidebar.destroy();
-                done();
-            });
-            });
+            sidebar.destroy();
         });
 
         QUnit.test('Various layout changes', function (assert) {

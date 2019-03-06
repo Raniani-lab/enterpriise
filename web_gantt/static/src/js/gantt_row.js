@@ -524,6 +524,9 @@ var GanttRow = Widget.extend({
      * @param {jQuery} $pill
      */
     _setDraggable: function ($pill) {
+        if ($pill.hasClass('ui-draggable')) {
+            return;
+        }
         var self = this;
         var pill = _.findWhere(this.pills, { id: $pill.data('id') });
 
@@ -560,6 +563,9 @@ var GanttRow = Widget.extend({
      * @param {jQuery} $pill
      */
     _setResizable: function ($pill) {
+        if ($pill.hasClass('ui-resizable')) {
+            return;
+        }
         var self = this;
         var pillHeight = this.$('.o_gantt_pill:first').height();
 
@@ -798,6 +804,9 @@ var GanttRow = Widget.extend({
      * This is only done at this time and not in `on_attach_callback` to
      * optimize the rendering (creating jQuery draggable and resizable for
      * potentially thousands of pills is the heaviest task).
+     *
+     * @private
+     * @param {MouseEvent} ev
      */
     _onPillEntered: function (ev) {
         var $pill = $(ev.currentTarget);

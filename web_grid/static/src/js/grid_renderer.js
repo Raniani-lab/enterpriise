@@ -168,7 +168,7 @@ return AbstractRenderer.extend({
     },
     /**
      * @private
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _render: function () {
         var self = this;
@@ -200,7 +200,7 @@ return AbstractRenderer.extend({
             }
         }, 0);
 
-        return $.when();
+        return Promise.resolve();
     },
     /**
      * @private

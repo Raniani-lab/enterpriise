@@ -46,7 +46,7 @@ AbstractView.include({
         var self = this;
         var model = this.getModel(parent);
 
-        var loadViewDef = this._loadSubviews ? this._loadSubviews(parent) : $.when();
+        var loadViewDef = this._loadSubviews ? this._loadSubviews(parent) : Promise.resolve();
         return loadViewDef.then(function () {
             return self._createControlPanel(parent).then(function (controlPanel) {
                 var searchQuery = controlPanel.getSearchQuery();
@@ -62,9 +62,10 @@ AbstractView.include({
                     self.loadParams.static = true;
                 }
 
-                return $.when(
+                return Promise.all([
                     self._loadData(model, options.x2mField),
-                ).then(function (state) {
+                ]).then(function (results) {
+                    var state = results[0];
                     if (options.x2mField) {
                         self.loadParams.static = false;
                     }

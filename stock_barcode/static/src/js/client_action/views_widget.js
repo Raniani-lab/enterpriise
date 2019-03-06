@@ -35,7 +35,7 @@ var ViewsWidget = Widget.extend({
     start: function () {
         var self = this;
         var def = this.controller.appendTo(this.$el.filter('.o_barcode_generic_view'));
-        return $.when(def, this._super()).then(function () {
+        return Promise.all([def, this._super()]).then(function () {
             self.$el.find('.o_form_view').addClass('o_xxs_form_view');
         });
     },

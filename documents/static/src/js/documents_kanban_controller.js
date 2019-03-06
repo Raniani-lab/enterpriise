@@ -112,7 +112,7 @@ var DocumentsKanbanController = KanbanController.extend({
      *
      * @private
      * @param {Object} record
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _openChatter: function (record) {
         var self = this;
@@ -147,23 +147,24 @@ var DocumentsKanbanController = KanbanController.extend({
         var defs = [];
         var tagIDs = this._searchPanel.getSelectedTagIds();
         _.each(files, function (f) {
-            var def = $.Deferred();
+            var def = new Promise(function (resolve) {
+                var reader = new FileReader();
+                reader.onload = function (ev) {
+                    resolve({
+                        name: f.name,
+                        datas_fname: f.name,
+                        datas: ev.target.result,
+                    });
+                };
+                reader.readAsDataURL(f);
+            });
             defs.push(def);
-            var reader = new FileReader();
-            reader.onload = function (ev) {
-                def.resolve({
-                    name: f.name,
-                    datas_fname: f.name,
-                    datas: ev.target.result,
-                });
-            };
-            reader.readAsDataURL(f);
         });
-        return $.when.apply($, defs).then(function () {
+        return Promise.all(defs).then(function () {
             var l = Array.prototype.slice.call(arguments);
-            for (var i=0; i<l.length; i++) {
+            for (var i = 0; i < l.length; i++) {
                 // convert data from "data:application/zip;base64,R0lGODdhAQBADs=" to "R0lGODdhAQBADs="
-                l[i].datas = l[i].datas.split(',',2)[1];
+                l[i].datas = l[i].datas.split(',', 2)[1];
                 l[i].folder_id = self._searchPanel.getSelectedFolderId();
                 if (tagIDs) {
                     l[i].tag_ids = [[6, 0, tagIDs]];
@@ -183,6 +184,7 @@ var DocumentsKanbanController = KanbanController.extend({
      * @param {Object} state
      */
     _renderDocumentsInspector: function (state) {
+        var self = this;
         var localState;
         if (this.documentsInspector) {
             localState = this.documentsInspector.getLocalState();
@@ -196,10 +198,11 @@ var DocumentsKanbanController = KanbanController.extend({
             folderId: this._searchPanel.getSelectedFolderId(),
         };
         this.documentsInspector = new DocumentsInspector(this, params);
-        this.documentsInspector.insertAfter(this.$('.o_kanban_view'));
-        if (localState) {
-            this.documentsInspector.setLocalState(localState);
-        }
+        this.documentsInspector.insertAfter(this.$('.o_kanban_view')).then(function () {
+            if (localState) {
+                self.documentsInspector.setLocalState(localState);
+            }
+        });
     },
     /**
      * Open the share wizard with the given context, containing either the
@@ -212,18 +215,19 @@ var DocumentsKanbanController = KanbanController.extend({
      * @param {integer|undefined} [vals.folder_id=undefined]
      * @param {Array[]} [vals.tags] M2M commands
      * @param {string} vals.type the type of share (either 'ids' or 'domain')
+     * @returns {Promise}
      */
     _share: function (vals) {
         var self = this;
         if (!vals.folder_id) {
             return;
         }
-        this._rpc({
+        return this._rpc({
             model: 'documents.share',
             method: 'create_share',
             args: [vals],
         }).then(function (result) {
-            self.do_action(result);
+            return self.do_action(result);
         });
     },
     /*
@@ -232,7 +236,7 @@ var DocumentsKanbanController = KanbanController.extend({
      * @private
      * @param {string[]} recordIDs
      * @param {string} ruleID
-     * @returns {Deferred} either returns true or an action to open
+     * @returns {Promise} either returns true or an action to open
      *   a form view on the created business object (if available)
      */
     _triggerRule: function (recordIDs, ruleID) {
@@ -286,7 +290,7 @@ var DocumentsKanbanController = KanbanController.extend({
      *
      * @private
      * @param {Object} state
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _updateChatter: function (state) {
         if (this.chatter) {
@@ -299,7 +303,7 @@ var DocumentsKanbanController = KanbanController.extend({
             }
             this._closeChatter();
         }
-        return $.when();
+        return Promise.resolve();
     },
 
     //--------------------------------------------------------------------------
@@ -386,11 +390,12 @@ var DocumentsKanbanController = KanbanController.extend({
     _onDrop: function (ev) {
         ev.preventDefault();
         var self = this;
-        this._processFiles(ev.originalEvent.dataTransfer.files).always(function () {
+        var always = function () {
             self.$('.o_documents_kanban_view').removeClass('o_drop_over');
             self.$('.o_upload_text').remove();
             self.reload();
-        });
+        }
+        this._processFiles(ev.originalEvent.dataTransfer.files).then(always).guardedCatch(always);
     },
     /**
      * @private
@@ -451,9 +456,7 @@ var DocumentsKanbanController = KanbanController.extend({
             model: 'documents.document',
             method: 'toggle_lock',
             args: [ev.data.resID],
-        }).always(function () {
-            self.reload();
-        });
+        }).then(self.reload.bind(self), self.reload.bind(self));
     },
     /**
      * Open the chatter of the given document.
@@ -480,18 +483,19 @@ var DocumentsKanbanController = KanbanController.extend({
     _onOpenRecord: function (ev) {
         ev.stopPropagation();
         var self = this;
-        this._rpc({
-            model: ev.data.resModel,
-            method: 'get_formview_id',
-            args: [ev.data.resID],
-        }).always(function (result) {
+        var always = function (result) {
             self.do_action({
                 res_id: ev.data.resID,
                 res_model: ev.data.resModel,
                 type: 'ir.actions.act_window',
                 views: [[result, 'form']],
             });
-        });
+        };
+        this._rpc({
+            model: ev.data.resModel,
+            method: 'get_formview_id',
+            args: [ev.data.resID],
+        }).then(always).guardedCatch(always);
     },
     /**
      * React to records selection changes to update the DocumentInspector with
@@ -568,11 +572,14 @@ var DocumentsKanbanController = KanbanController.extend({
         $upload_input.on('change', function (e) {
             var f = e.target.files[0];
             var reader = new FileReader();
-
+            var always = function () {
+                $upload_input.removeAttr('disabled');
+                $upload_input.val("");
+            };
             reader.onload = function (e) {
                  // convert data from "data:application/zip;base64,R0lGODdhAQBADs=" to "R0lGODdhAQBADs="
                 var dataString = e.target.result;
-                var data = dataString.split(',',2)[1];
+                var data = dataString.split(',', 2)[1];
                 var mimetype = dataString.substring(
                                         dataString.indexOf(":") + 1,
                                         dataString.indexOf(";")
@@ -581,17 +588,14 @@ var DocumentsKanbanController = KanbanController.extend({
                     model: 'documents.document',
                     method: 'write',
                     args: [[ev.data.id], {datas: data, mimetype: mimetype, datas_fname: f.name, name: f.name}],
-                }).always(function () {
-                    $upload_input.removeAttr('disabled');
-                    $upload_input.val("");
                 }).then(function () {
-                    self.reload();
-                });
+                    return self.reload();
+                }).then(always).guardedCatch(always);
             };
             try {
                 reader.readAsDataURL(f);
-            } catch (e) {
-                console.warn(e);
+            } catch (err) {
+                console.warn(err);
             }
         });
         $upload_input.click();
@@ -702,11 +706,12 @@ var DocumentsKanbanController = KanbanController.extend({
     _onUpload: function () {
         var self = this;
         var $uploadInput = $('<input>', {type: 'file', name: 'files[]', multiple: 'multiple'});
+        var always = function () {
+            self.reload();
+            $uploadInput.remove();
+        };
         $uploadInput.on('change', function (ev) {
-            self._processFiles(ev.target.files).always(function () {
-                self.reload();
-                $uploadInput.remove();
-            });
+            self._processFiles(ev.target.files).then(always).guardedCatch(always);
         });
         $uploadInput.click();
     },

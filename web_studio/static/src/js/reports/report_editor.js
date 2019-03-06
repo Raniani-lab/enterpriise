@@ -376,7 +376,7 @@ var ReportEditor = Widget.extend(EditorMixin, {
      *
      * @param {Object} nodesArchs
      * @param {String} reportHTML
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     update: function (nodesArchs, reportHTML) {
         var self = this;
@@ -653,7 +653,7 @@ var ReportEditor = Widget.extend(EditorMixin, {
         this.$content.find('html')[0].style.overflow = 'hidden';
 
         // set the size of the iframe
-        $(this.$content).find("img").load(function () {
+        $(this.$content).find("img").on("load", function () {
             self.$iframe[0].style.height = self.$iframe[0].contentWindow.document.body.scrollHeight + 'px';
         });
     },
@@ -674,7 +674,7 @@ var ReportEditor = Widget.extend(EditorMixin, {
      * Update the iframe content.
      *
      * @private
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _updateContent: function () {
         var self = this;
@@ -685,31 +685,30 @@ var ReportEditor = Widget.extend(EditorMixin, {
         if ($main.length) {
             $main.replaceWith($(reportHTML).find('main:first'));
             this._processReportPreviewContent();
-            return $.when();
+            return Promise.resolve();
         }
 
-        var def = $.Deferred();
-        window.top[this._onUpdateContentId] = function () {
-            if (!self.$('iframe')[0].contentWindow) {
-                return def.reject();
-            }
-            self._processReportPreviewContent();
-            self.trigger_up('iframe_ready');
-            def.resolve();
-        };
-        // determine when the body has been inserted
-        reportHTML = reportHTML.replace(
-            '</body>',
-            '<script>window.top.' + this._onUpdateContentId + '()</script></body>'
-        );
+        return new Promise(function (resolve, reject) {
+            window.top[self._onUpdateContentId] = function () {
+                if (!self.$('iframe')[0].contentWindow) {
+                    return reject();
+                }
+                self._processReportPreviewContent();
+                self.trigger_up('iframe_ready');
+                resolve();
+            };
+            // determine when the body has been inserted
+            reportHTML = reportHTML.replace(
+                '</body>',
+                '<script>window.top.' + self._onUpdateContentId + '()</script></body>'
+            );
 
-        // inject HTML
-        var cwindow = this.$iframe[0].contentWindow;
-        cwindow.document
-            .open("text/html", "replace")
-            .write(reportHTML);
-
-        return def;
+            // inject HTML
+            var cwindow = self.$iframe[0].contentWindow;
+            cwindow.document
+                .open("text/html", "replace")
+                .write(reportHTML);
+        });
     },
     //--------------------------------------------------------------------------
     // Handlers

@@ -82,12 +82,12 @@ var ClientAction = AbstractAction.extend({
     willStart: function () {
         var self = this;
         var recordId = this.actionParams.pickingId || this.actionParams.inventoryId;
-        return $.when(
+        return Promise.all([
             self._super.apply(self, arguments),
             self._getState(recordId),
             self._getProductBarcodes(),
             self._getLocationBarcodes()
-        ).then(function () {
+        ]).then(function () {
             self._loadNomenclature();
         });
     },
@@ -100,12 +100,15 @@ var ClientAction = AbstractAction.extend({
         this.headerWidget = new HeaderWidget(this);
         this.settingsWidget = new SettingsWidget(this, this.actionParams.model, this.mode, this.allow_scrap);
         return this._super.apply(this, arguments).then(function () {
-            self.headerWidget.prependTo(self.$('.o_content'));
-            self.settingsWidget.appendTo(self.$('.o_content'));
-            self.settingsWidget.do_hide();
-            return self._save();
-        }).then(function () {
-            self._reloadLineWidget(self.currentPageIndex);
+            return Promise.all([
+                self.headerWidget.prependTo(self.$('.o_content')),
+                self.settingsWidget.appendTo(self.$('.o_content'))
+            ]).then(function () {
+                self.settingsWidget.do_hide();
+                return self._save();
+            }).then(function () {
+                return self._reloadLineWidget(self.currentPageIndex);
+            });
         });
     },
 
@@ -126,13 +129,13 @@ var ClientAction = AbstractAction.extend({
      * @private
      * @param {Object} [recordID] Id of the active picking or inventory adjustment.
      * @param {Object} [state] state
-     * @return {Deferred}
+     * @return {Promise}
      */
     _getState: function (recordId, state) {
         var self = this;
         var def;
         if (state) {
-            def = $.Deferred().resolve(state);
+            def = Promise.resolve(state);
         } else {
             def = this._rpc({
                 'route': '/stock_barcode/get_set_barcode_view_state',
@@ -164,7 +167,7 @@ var ClientAction = AbstractAction.extend({
      * Make an rpc to get the products barcodes and afterwards set `this.productsByBarcode`.
      *
      * @private
-     * @return {Deferred}
+     * @return {Promise}
      */
     _getProductBarcodes: function () {
         var self = this;
@@ -203,7 +206,7 @@ var ClientAction = AbstractAction.extend({
      * Make an rpc to get the locations barcodes and afterwards set `this.locationsByBarcode`.
      *
      * @private
-     * @return {Deferred}
+     * @return {Promise}
      */
     _getLocationBarcodes: function () {
         var self = this;
@@ -304,10 +307,10 @@ var ClientAction = AbstractAction.extend({
     /**
      * Helper used in `this._onShowInformation`. This should be overidden by specialized client
      * actions to display something, usually a form view. What this method does is display
-     * `this.headerWidget` into specialized mode and return the save Deferred.
+     * `this.headerWidget` into specialized mode and return the save promise.
      *
      * @private
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _showInformation: function () {
         var self = this;
@@ -323,10 +326,10 @@ var ClientAction = AbstractAction.extend({
      *
      * @private
      * @param {Array} changes lines in the current record needing to be created or updated
-     * @returns {$.Deferred} resolved when the rpc is done ; failed if nothing has to be updated
+     * @returns {Promise} resolved when the rpc is done ; failed if nothing has to be updated
      */
     _applyChanges: function (changes) {  // jshint ignore:line
-        return $.when();
+        return Promise.resolve();
     },
 
     /**
@@ -433,28 +436,30 @@ var ClientAction = AbstractAction.extend({
      *
      * @private
      * @param {Object} pageIndex page index
+     * @returns {Promise}
      */
      _reloadLineWidget: function (pageIndex) {
+        var self = this
         if (this.linesWidget) {
             this.linesWidget.destroy();
         }
         var nbPages = this.pages.length;
         var preparedPage = $.extend(true, {}, this.pages[pageIndex]);
         this.linesWidget = new LinesWidget(this, preparedPage, pageIndex, nbPages);
-        this.linesWidget.appendTo(this.$('.o_content'));
-        // In some cases, we want to restore the GUI state of the linesWidget
-        // (on a reload not calling _endBarcodeFlow)
-        if (this.linesWidgetState) {
-            this.linesWidget.highlightLocation(this.linesWidgetState.highlightLocationSource);
-            this.linesWidget.highlightDestinationLocation(this.linesWidgetState.highlightLocationDestination);
-            this.linesWidget._toggleScanMessage(this.linesWidgetState.scan_message);
-            delete this.linesWidgetState;
-        }
-        if (this.lastScannedPackage) {
-            this.linesWidget.highlightPackage(this.lastScannedPackage);
-            delete this.lastScannedPackage;
-
-        }
+        return this.linesWidget.appendTo(this.$('.o_content')).then(function() {
+            // In some cases, we want to restore the GUI state of the linesWidget
+            // (on a reload not calling _endBarcodeFlow)
+            if (self.linesWidgetState) {
+                self.linesWidget.highlightLocation(self.linesWidgetState.highlightLocationSource);
+                self.linesWidget.highlightDestinationLocation(self.linesWidgetState.highlightLocationDestination);
+                self.linesWidget._toggleScanMessage(self.linesWidgetState.scan_message);
+                delete self.linesWidgetState;
+            }
+            if (self.lastScannedPackage) {
+                self.linesWidget.highlightPackage(self.lastScannedPackage);
+                delete self.lastScannedPackage;
+            }
+        });
     },
 
     /**
@@ -469,7 +474,7 @@ var ClientAction = AbstractAction.extend({
      *   changes were found.
      * @param {Object} params.new_location_id new source location on the line
      * @param {Object} params.new_location_dest_id new destinationlocation on the line
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _save: function (params) {
         params = params || {};
@@ -503,7 +508,7 @@ var ClientAction = AbstractAction.extend({
             if (params.forceReload) {
                 return self._getState(recordId);
             } else {
-                return $.when();
+                return Promise.resolve();
             }
         });
 
@@ -530,7 +535,7 @@ var ClientAction = AbstractAction.extend({
      *
      * @private
      * @param {String} barcode the scanned barcode
-     * @returns Deferred
+     * @returns {Promise}
      */
     _onBarcodeScanned: function (barcode) {
         var self = this;
@@ -541,7 +546,7 @@ var ClientAction = AbstractAction.extend({
              * destination location ; if the source or destination is different than the current
              * page's one.
              */
-            var def = $.when();
+            var prom = Promise.resolve();
             var currentPage = self.pages[self.currentPageIndex];
             if (
                 (self.scanned_location &&
@@ -571,8 +576,8 @@ var ClientAction = AbstractAction.extend({
                     if (expectedLocationDestId) {
                         params.new_location_dest_id = expectedLocationDestId;
                     }
-                    def = self._save(params).then(function () {
-                        self._reloadLineWidget(self.currentPageIndex);
+                    prom = self._save(params).then(function () {
+                        return self._reloadLineWidget(self.currentPageIndex);
                     });
                 }
             }
@@ -582,13 +587,13 @@ var ClientAction = AbstractAction.extend({
                 self._endBarcodeFlow();
             }
             var linesActions = res.linesActions;
-            def.always(function () {
+            var always = function () {
                 _.each(linesActions, function (action) {
                     action[0].apply(self.linesWidget, action[1]);
                 });
-                return $.when();
-            });
-            return def;
+            };
+            prom.then(always).guardedCatch(always);
+            return prom;
         }, function (errorMessage) {
             self.do_warn(_t('Warning'), errorMessage);
         });
@@ -770,9 +775,10 @@ var ClientAction = AbstractAction.extend({
      *
      * @param {string} barcode scanned barcode
      * @param {Object} linesActions
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _step_source: function (barcode, linesActions) {
+        var self = this;
         this.currentStep = 'source';
         var errorMessage;
 
@@ -784,7 +790,7 @@ var ClientAction = AbstractAction.extend({
         if (sourceLocation  && ! (this.mode === 'receipt' || this.mode === 'no_multi_locations')) {
             if (! isChildOf(this.currentState.location_id, sourceLocation)) {
                 errorMessage = _t('This location is not a child of the main location.');
-                return $.Deferred().reject(errorMessage);
+                return Promise.reject(errorMessage);
             } else {
                 // There's nothing to do on the state here, just mark `this.scanned_location`.
                 linesActions.push([this.linesWidget.highlightLocation, [true]]);
@@ -793,7 +799,7 @@ var ClientAction = AbstractAction.extend({
                 }
                 this.scanned_location = sourceLocation;
                 this.currentStep = 'product';
-                return $.when({linesActions: linesActions});
+                return Promise.resolve({linesActions: linesActions});
             }
         }
         /* Implicitely set the location source in the following cases:
@@ -813,15 +819,15 @@ var ClientAction = AbstractAction.extend({
         }
 
         return this._step_product(barcode, linesActions).then(function (res) {
-            return $.when({linesActions: res.linesActions});
+            return Promise.resolve({linesActions: res.linesActions});
         }, function (specializedErrorMessage) {
-            delete this.scanned_location;
-            this.currentStep = 'source';
+            delete self.scanned_location;
+            self.currentStep = 'source';
             if (specializedErrorMessage){
-                return $.Deferred().reject(specializedErrorMessage);
+                return Promise.reject(specializedErrorMessage);
             }
             var errorMessage = _t('You are expected to scan a source location.');
-            return $.Deferred().reject(errorMessage);
+            return Promise.reject(errorMessage);
         });
     },
 
@@ -830,7 +836,7 @@ var ClientAction = AbstractAction.extend({
      *
      * @param {string} barcode scanned barcode
      * @param {Object} linesActions
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _step_product: function (barcode, linesActions) {
         var self = this;
@@ -857,7 +863,7 @@ var ClientAction = AbstractAction.extend({
                         res.lineDescription.theoretical_qty = theoretical_qty;
                         linesActions.push([self.linesWidget.addProduct, [res.lineDescription, self.actionParams.model]]);
                         self.scannedLines.push(res.id || res.virtualId);
-                        return $.when({linesActions: linesActions});
+                        return Promise.resolve({linesActions: linesActions});
                     });
                 } else {
                     linesActions.push([this.linesWidget.addProduct, [res.lineDescription, this.actionParams.model]]);
@@ -870,15 +876,15 @@ var ClientAction = AbstractAction.extend({
                 }
             }
             this.scannedLines.push(res.id || res.virtualId);
-            return $.when({linesActions: linesActions});
+            return Promise.resolve({linesActions: linesActions});
         } else {
             var success = function (res) {
-                return $.when({linesActions: res.linesActions});
+                return Promise.resolve({linesActions: res.linesActions});
             };
             var fail = function (specializedErrorMessage) {
-                this.currentStep = 'product';
+                self.currentStep = 'product';
                 if (specializedErrorMessage){
-                    return $.Deferred().reject(specializedErrorMessage);
+                    return Promise.reject(specializedErrorMessage);
                 }
                 if (! self.scannedLines.length) {
                     if (self.groups.group_tracking_lot) {
@@ -886,7 +892,7 @@ var ClientAction = AbstractAction.extend({
                     } else {
                         errorMessage = _t('You are expected to scan one or more products.');
                     }
-                    return $.Deferred().reject(errorMessage);
+                    return Promise.reject(errorMessage);
                 }
 
                 var destinationLocation = self.locationsByBarcode[barcode];
@@ -894,7 +900,7 @@ var ClientAction = AbstractAction.extend({
                     return self._step_destination(barcode, linesActions);
                 } else {
                     errorMessage = _t('You are expected to scan more products or a destination location.');
-                    return $.Deferred().reject(errorMessage);
+                    return Promise.reject(errorMessage);
                 }
             };
             return self._step_lot(barcode, linesActions).then(success, function () {
@@ -910,12 +916,12 @@ var ClientAction = AbstractAction.extend({
         // fill linesActions + scannedLines
         // if scannedLines isn't set, the caller will warn
         if (! this.groups.group_tracking_lot) {
-            return $.Deferred().reject();
+            return Promise.reject();
         }
         this.currentStep = 'product';
         var destinationLocation = this.locationsByBarcode[barcode];
         if (destinationLocation) {
-            return $.Deferred().reject();
+            return Promise.reject();
         }
 
         var self = this;
@@ -965,7 +971,7 @@ var ClientAction = AbstractAction.extend({
                 return get_contained_quants(packages[0].id).then(function (quants) {
                     var packageAlreadyScanned = package_already_scanned(packages[0].id, quants);
                     if (packageAlreadyScanned) {
-                        return $.Deferred().reject(_t('This package is already scanned.'));
+                        return Promise.reject(_t('This package is already scanned.'));
                     }
                     var products_without_barcode = _.map(quants, function (quant) {
                         if (! (quant.product_id[0] in self.productsByBarcode)) {
@@ -1004,11 +1010,11 @@ var ClientAction = AbstractAction.extend({
                                 }
                             }
                         });
-                        return $.when({linesActions: linesActions});
+                        return Promise.resolve({linesActions: linesActions});
                     });
                 });
             } else {
-                return $.Deferred().reject();
+                return Promise.reject();
             }
         });
     },
@@ -1018,11 +1024,11 @@ var ClientAction = AbstractAction.extend({
      *
      * @param {string} barcode scanned barcode
      * @param {Object} linesActions
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _step_lot: function (barcode, linesActions) {
         if (! this.groups.group_production_lot) {
-            return $.Deferred().reject();
+            return Promise.reject();
         }
         this.currentStep = 'lot';
         var errorMessage;
@@ -1066,18 +1072,18 @@ var ClientAction = AbstractAction.extend({
             var product_barcode = _.findKey(self.productsByBarcode, function (product) {
                 return product.id === product_id;
             });
-            
+
             if (product_barcode) {
                 var product = self.productsByBarcode[product_barcode];
                 product.barcode = product_barcode;
-                return $.when(product);
+                return Promise.resolve(product);
             } else {
                 return self._rpc({
                     model: 'product.product',
                     method: 'read',
                     args: [product_id],
                 }).then(function (product) {
-                    return $.when(product[0]);
+                    return Promise.resolve(product[0]);
                 });
             }
         };
@@ -1103,7 +1109,7 @@ var ClientAction = AbstractAction.extend({
                 var lot = _.find(lots, function (lot) {
                     return lot.product_id[0] === product.id;
                 });
-                return $.when({lot_id: lot.id, lot_name: lot.display_name, product: product});
+                return Promise.resolve({lot_id: lot.id, lot_name: lot.display_name, product: product});
             });
         };
 
@@ -1114,7 +1120,7 @@ var ClientAction = AbstractAction.extend({
             });
             var def;
             if (line_with_lot) {
-                def = $.when([{
+                def = Promise.resolve([{
                     name: barcode,
                     display_name: barcode,
                     id: line_with_lot.lot_id[0],
@@ -1130,7 +1136,7 @@ var ClientAction = AbstractAction.extend({
             return def.then(function (res) {
                 if (! res.length) {
                     errorMessage = _t('The scanned lot does not match an existing one.');
-                    return $.Deferred().reject(errorMessage);
+                    return Promise.reject(errorMessage);
                 }
                 return getLotInfo(res);
             });
@@ -1154,30 +1160,30 @@ var ClientAction = AbstractAction.extend({
             // direct lot scan from product or source location step.
             var product = getProductFromLastScannedLine();
             if (! product  || product.tracking === "none") {
-                return $.Deferred().reject();
+                return Promise.reject();
             }
-            def = $.when({lot_name: barcode, product: product});
+            def = Promise.resolve({lot_name: barcode, product: product});
         } else if (! this.currentState.use_create_lots &&
                     this.currentState.use_existing_lots) {
             def = searchRead(barcode);
         } else {
             def = searchRead(barcode).then(function (res) {
-                return $.when(res);
+                return Promise.resolve(res);
             }, function (errorMessage) {
                 var product = getProductFromLastScannedLine();
                 if (product && product.tracking !== "none") {
                     return create(barcode, product).then(function (lot_id) {
-                        return $.when({lot_id: lot_id, lot_name: barcode, product: product});
+                        return Promise.resolve({lot_id: lot_id, lot_name: barcode, product: product});
                     });
                 }
-                return $.Deferred().reject(errorMessage);
+                return Promise.reject(errorMessage);
             });
         }
         return def.then(function (lot_info) {
             var product = lot_info.product;
             if (product.tracking === 'serial' && self._lot_name_used(product, barcode)){
                 errorMessage = _t('The scanned serial number is already used.');
-                return $.Deferred().reject(errorMessage);
+                return Promise.reject(errorMessage);
             }
             var res = self._incrementLines({
                 'product': product,
@@ -1192,7 +1198,7 @@ var ClientAction = AbstractAction.extend({
                 linesActions.push([self.linesWidget.incrementProduct, [res.id || res.virtualId, 1, self.actionParams.model]]);
                 linesActions.push([self.linesWidget.setLotName, [res.id || res.virtualId, barcode]]);
             }
-            return $.when({linesActions: linesActions});
+            return Promise.resolve({linesActions: linesActions});
         });
     },
 
@@ -1201,7 +1207,7 @@ var ClientAction = AbstractAction.extend({
      *
      * @param {string} barcode scanned barcode
      * @param {Object} linesActions
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _step_destination: function (barcode, linesActions) {
         var errorMessage;
@@ -1215,7 +1221,7 @@ var ClientAction = AbstractAction.extend({
         var destinationLocation = this.locationsByBarcode[barcode];
         if (! isChildOf(this.currentState.location_dest_id, destinationLocation)) {
             errorMessage = _t('This location is not a child of the main location.');
-            return $.Deferred().reject(errorMessage);
+            return Promise.reject(errorMessage);
         } else {
             if (! this.scannedLines.length || this.mode === 'no_multi_locations') {
                 if (this.groups.group_tracking_lot) {
@@ -1223,7 +1229,7 @@ var ClientAction = AbstractAction.extend({
                 } else {
                     errorMessage = _t('You are expected to scan one or more products.');
                 }
-                return $.Deferred().reject(errorMessage);
+                return Promise.reject(errorMessage);
             }
             var self = this;
             // FIXME: remove .uniq() once the code is adapted.
@@ -1256,14 +1262,14 @@ var ClientAction = AbstractAction.extend({
             linesActions.push([this.linesWidget.highlightLocation, [true]]);
             linesActions.push([this.linesWidget.highlightDestinationLocation, [true]]);
             this.scanned_location_dest = destinationLocation;
-            return $.when({linesActions: linesActions});
+            return Promise.resolve({linesActions: linesActions});
         }
     },
 
     /**
      * Helper used when we want to go the next page. It calls `this._endBarcodeFlow`.
      *
-     * @return {Deferred}
+     * @return {Promise}
      */
     _nextPage: function (){
         var self = this;
@@ -1272,8 +1278,9 @@ var ClientAction = AbstractAction.extend({
                 if (self.currentPageIndex < self.pages.length - 1) {
                     self.currentPageIndex++;
                 }
-                self._reloadLineWidget(self.currentPageIndex);
+                var prom =  self._reloadLineWidget(self.currentPageIndex);
                 self._endBarcodeFlow();
+                return prom;
             });
         });
     },
@@ -1281,7 +1288,7 @@ var ClientAction = AbstractAction.extend({
     /**
      * Helper used when we want to go the previous page. It calls `this._endBarcodeFlow`.
      *
-     * @return {Deferred}
+     * @return {Promise}
      */
     _previousPage: function () {
         var self = this;
@@ -1292,36 +1299,40 @@ var ClientAction = AbstractAction.extend({
                 } else {
                     self.currentPageIndex = self.pages.length - 1;
                 }
-                self._reloadLineWidget(self.currentPageIndex);
+                var prom = self._reloadLineWidget(self.currentPageIndex);
                 self._endBarcodeFlow();
+                return prom;
             });
         });
     },
     /**
      * Helper used when we want to go the first page. It calls `this._endBarcodeFlow`.
      * @private
+     * @returns {Promise}
      */
     _firstPage: function () {
         var self = this;
         return self._save().then(function () {
             if (self.currentPageIndex !== 0) {
                 self.currentPageIndex = 0;
-                self._reloadLineWidget(0);
                 self._endBarcodeFlow();
+                return self._reloadLineWidget(0);
             }
         });
     },
     /**
      * Helper used when we want to go the last page. It calls `this._endBarcodeFlow`.
      * @private
+     * @returns {Promise}
      */
     _lastPage: function () {
         var self = this;
         return self._save().then(function () {
             if (self.currentPageIndex !== self.pages.length - 1) {
                 self.currentPageIndex = self.pages.length - 1;
-                self._reloadLineWidget(self.pages.length - 1);
+                var prom = self._reloadLineWidget(self.pages.length - 1);
                 self._endBarcodeFlow();
+                return prom;
             }
         });
     },
@@ -1337,14 +1348,13 @@ var ClientAction = AbstractAction.extend({
      *
      * @private
      * @param {String} barcode scanned barcode
-     * @return {Deferred}
      */
     _onBarcodeScannedHandler: function (barcode) {
         var self = this;
         this.mutex.exec(function () {
             if (self.mode === 'done' || self.mode === 'cancel') {
                 self.do_warn(_t('Warning'), _t('Scanning is disabled in this state.'));
-                return $.when();
+                return Promise.resolve();
             }
             var commandeHandler = self.commands[barcode];
             if (commandeHandler) {
@@ -1353,7 +1363,7 @@ var ClientAction = AbstractAction.extend({
             return self._onBarcodeScanned(barcode).then(function () {
                 // FIXME sle: not the right place to do that
                 if (self.show_entire_packs && self.lastScannedPackage) {
-                    self._reloadLineWidget(self.currentPageIndex);
+                    return self._reloadLineWidget(self.currentPageIndex);
                 }
             });
         });

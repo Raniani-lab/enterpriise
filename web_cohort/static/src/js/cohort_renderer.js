@@ -60,7 +60,7 @@ var CohortRenderer = AbstractRenderer.extend({
     /**
      * @override
      * @private
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _render: function () {
         var self = this;

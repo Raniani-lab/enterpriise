@@ -133,7 +133,11 @@ odoo.define('sign.views_custo', function(require) {
                             },
                         });
                     })
-                    .always(function() {
+                    .then(function() {
+                        $upload_input.removeAttr('disabled');
+                        $upload_input.val("");
+                    })
+                    .guardedCatch(function() {
                         $upload_input.removeAttr('disabled');
                         $upload_input.val("");
                     });
@@ -667,7 +671,7 @@ odoo.define('sign.template', function(require) {
             if(this.templateID === undefined) {
                 return this._super.apply(this, arguments);
             }
-            return $.when(this._super(), this.perform_rpc());
+            return Promise.all([this._super(), this.perform_rpc()]);
         },
 
         perform_rpc: function() {
@@ -710,7 +714,7 @@ odoo.define('sign.template', function(require) {
                             self.isPDF = (attachment.mimetype.indexOf('pdf') > -1);
                         });
 
-                    return $.when(defSignItems, defIrAttachments);
+                    return Promise.all([defSignItems, defIrAttachments]);
                 });
 
             var defSelectOptions = this._rpc({
@@ -741,7 +745,7 @@ odoo.define('sign.template', function(require) {
                     self.sign_item_types = types;
                 });
 
-            return $.when(defTemplates, defParties, defItemTypes, defSelectOptions);
+            return Promise.all([defTemplates, defParties, defItemTypes, defSelectOptions]);
         },
 
         start: function() {
@@ -960,7 +964,7 @@ odoo.define('sign.DocumentBackend', function (require) {
                 };
                 core.bus.on('DOM_updated', null, init_page);
             });
-            return $.when(this._super(), def);
+            return Promise.all([this._super(), def]);
         },
 
         get_document_class: function () {

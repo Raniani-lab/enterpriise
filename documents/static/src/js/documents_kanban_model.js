@@ -16,7 +16,7 @@ var DocumentsKanbanModel = KanbanModel.extend({
 
     /**
      * @param {Integer} recordID
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     fetchActivities: function (recordID) {
         var record = this.localData[recordID];
@@ -82,7 +82,7 @@ var DocumentsKanbanModel = KanbanModel.extend({
      * @param {string[]} recordIDs
      * @param {Object} values
      * @param {string} parentID
-     * @returns {Deferred<string>} resolves with the parentID
+     * @returns {Promise<string>} resolves with the parentID
      */
     saveMulti: function (recordIDs, values, parentID) {
         return this.mutex.exec(this._saveMulti.bind(this, recordIDs, values, parentID));
@@ -95,16 +95,18 @@ var DocumentsKanbanModel = KanbanModel.extend({
     /**
      * Fetch additional data required by the DocumentsKanban view.
      *
-     * @param {Deferred<string>} def resolves with the id of the dataPoint
+     * @param {Promise<string>} def resolves with the id of the dataPoint
      *   created by the load/reload call
      * @param {Object} params parameters/options passed to the load/reload function
-     * @returns {Deferred<string>} resolves with the dataPointID
+     * @returns {Promise<string>} resolves with the dataPointID
      */
     _fetchAdditionalData: function (def, params) {
         var self = this;
         var defs = [def];
         defs.push(this._fetchSize(params));
-        return $.when.apply($, defs).then(function (dataPointID, size) {
+        return Promise.all(defs).then(function (results) {
+            var dataPointID = results[0];
+            var size = results[1];
             var dataPoint = self.localData[dataPointID];
             dataPoint.size = size;
             return dataPointID;
@@ -115,7 +117,7 @@ var DocumentsKanbanModel = KanbanModel.extend({
      *
      * @private
      * @param {Object} params
-     * @returns {Deferred<integer>} the size, in MB
+     * @returns {Promise<integer>} the size, in MB
      */
     _fetchSize: function (params) {
         params = params || {};
@@ -126,7 +128,7 @@ var DocumentsKanbanModel = KanbanModel.extend({
             fields: ['file_size'],
             groupBy: [],
         }).then(function (result) {
-            var size = result[0].file_size / (1000*1000); // in MB
+            var size = result[0].file_size / (1000 * 1000); // in MB
             return Math.round(size * 100) / 100;
         });
     },
@@ -139,7 +141,7 @@ var DocumentsKanbanModel = KanbanModel.extend({
      * @param {string[]} recordIDs
      * @param {Object} values
      * @param {string} parentID
-     * @returns {Deferred<string>} resolves with the parentID
+     * @returns {Promise<string>} resolves with the parentID
      */
     _saveMulti: function (recordIDs, values, parentID) {
         var self = this;

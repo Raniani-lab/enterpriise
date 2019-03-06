@@ -60,12 +60,12 @@ QUnit.module('web_mobile', {
     },
 }, function () {
 
-    QUnit.test("contact sync in a non-mobile environment", function (assert) {
+    QUnit.test("contact sync in a non-mobile environment", async function (assert) {
         assert.expect(2);
 
         var rpcCount = 0;
 
-        var form = createView({
+        var form = await createView({
             View: FormView,
             arch: '<form>' +
                     '<sheet>' +
@@ -92,7 +92,7 @@ QUnit.module('web_mobile', {
         form.destroy();
     });
 
-    QUnit.test("contact sync in a mobile environment", function (assert) {
+    QUnit.test("contact sync in a mobile environment", async function (assert) {
         assert.expect(5);
 
 
@@ -106,7 +106,7 @@ QUnit.module('web_mobile', {
         var rpcDone;
         var rpcCount = 0;
 
-        var form = createView({
+        var form = await createView({
             View: FormView,
             arch:
                 '<form>' +
@@ -134,7 +134,7 @@ QUnit.module('web_mobile', {
         assert.strictEqual($button.length, 1, "the tag should be visible in a mobile environment");
         assert.strictEqual(rpcCount, 1, "no extra rpc should be done by the widget (only the one from the view)");
 
-        testUtils.dom.click($button);
+        await testUtils.dom.click($button);
 
         assert.strictEqual(rpcCount, 2, "an extra rpc should be done on click");
         assert.ok(rpcDone, "a read rpc should have been done");
@@ -165,7 +165,7 @@ QUnit.module('web_mobile', {
         form.destroy();
     });
 
-    QUnit.test("many2one in a mobile environment [REQUIRE FOCUS]", function (assert) {
+    QUnit.test("many2one in a mobile environment [REQUIRE FOCUS]", async function (assert) {
         assert.expect(4);
 
         var mobileDialogCall = 0;
@@ -177,10 +177,10 @@ QUnit.module('web_mobile', {
         mobile.methods.addContact = true;
         mobile.methods.many2oneDialog = function () {
             mobileDialogCall++;
-            return $.when({data: {}});
+            return Promise.resolve({data: {}});
         };
 
-        var form = createView({
+        var form = await createView({
             View: FormView,
             arch:
                 '<form>' +
@@ -204,7 +204,7 @@ QUnit.module('web_mobile', {
         assert.doesNotHaveClass($input, 'ui-autocomplete-input',
             "autocomplete should not be visible in a mobile environment");
 
-        testUtils.dom.click($input);
+        await testUtils.dom.click($input);
 
         assert.strictEqual(mobileDialogCall, 1,
             "the many2one should call a special dialog in a mobile environment");
@@ -215,7 +215,7 @@ QUnit.module('web_mobile', {
         form.destroy();
     });
 
-    QUnit.test("many2many_tags in a mobile environment", function (assert) {
+    QUnit.test("many2many_tags in a mobile environment", async function (assert) {
         assert.expect(6);
 
         var mobileDialogCall = 0;
@@ -228,15 +228,15 @@ QUnit.module('web_mobile', {
             mobileDialogCall++;
             if (mobileDialogCall === 1) {
                 // mock a search on 'coucou3'
-                return $.when({'data': {'action': 'search', 'term': 'coucou3'}});
+                return Promise.resolve({'data': {'action': 'search', 'term': 'coucou3'}});
             } else if (mobileDialogCall === 2) {
                 // then mock selection of first record found
                 assert.strictEqual(args.records.length, 2, "there should be 1 record and create action");
-                return $.when({'data': {'action': 'select', 'value': {'id': args.records[0].id}}});
+                return Promise.resolve({'data': {'action': 'select', 'value': {'id': args.records[0].id}}});
             }
         };
 
-        var form = createView({
+        var form = await createView({
             View: FormView,
             arch:
                 '<form>' +
@@ -265,7 +265,7 @@ QUnit.module('web_mobile', {
 
         assert.strictEqual(mobileDialogCall, 0, "the many2many_tags should be disabled in a mobile environment");
 
-        testUtils.dom.click($input);
+        await testUtils.dom.click($input);
 
         assert.strictEqual(mobileDialogCall, 2, "the many2many_tags should call mobileDialog with and without search");
         assert.strictEqual(rpcReadCount, 2, "there should be a read for current form record and selected sibling");
@@ -275,10 +275,10 @@ QUnit.module('web_mobile', {
         form.destroy();
     });
 
-    QUnit.test('autofocus quick create form', function (assert) {
+    QUnit.test('autofocus quick create form', async function (assert) {
         assert.expect(2);
 
-        var kanban = createView({
+        var kanban = await createView({
             View: KanbanView,
             model: 'partner',
             data: this.data,
@@ -291,7 +291,7 @@ QUnit.module('web_mobile', {
         });
 
         // quick create in first column
-        kanban.$buttons.find('.o-kanban-button-new').click();
+        await testUtils.dom.click(kanban.$buttons.find('.o-kanban-button-new'));
         assert.ok(kanban.$('.o_kanban_group:nth(0) > div:nth(1)').hasClass('o_kanban_quick_create'),
             "clicking on create should open the quick_create in the first column");
         assert.strictEqual(document.activeElement, kanban.$('.o_kanban_quick_create .o_input:first')[0],
@@ -300,7 +300,7 @@ QUnit.module('web_mobile', {
         kanban.destroy();
     });
 
-    QUnit.test("control panel appears at top on scroll event", function (assert) {
+    QUnit.test("control panel appears at top on scroll event", async function (assert) {
         assert.expect(11);
 
         var Q_UNIT_FIXTURE_SELECTOR = '#qunit-fixture';
@@ -314,7 +314,7 @@ QUnit.module('web_mobile', {
             document.dispatchEvent(scrollEvent);
         }
 
-        var form = createView({
+        var form = await createView({
             View: FormView,
             arch:
                 '<form>' +

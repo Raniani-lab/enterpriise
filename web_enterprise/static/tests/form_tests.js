@@ -33,10 +33,10 @@ QUnit.module('web_enterprise', {
 
     QUnit.module('Mobile FormView');
 
-    QUnit.test('statusbar buttons are correctly rendered in mobile', function (assert) {
+    QUnit.test('statusbar buttons are correctly rendered in mobile', async function (assert) {
         assert.expect(5);
 
-        var form = createView({
+        var form = await createView({
             View: FormView,
             model: 'partner',
             data: this.data,
@@ -62,7 +62,7 @@ QUnit.module('web_enterprise', {
             "dropdown should be hidden");
 
         // open the dropdown
-        testUtils.dom.click(form.$('.o_statusbar_buttons a'));
+        await testUtils.dom.click(form.$('.o_statusbar_buttons a'));
         assert.containsOnce(form, '.o_statusbar_buttons .dropdown-menu:visible',
             "dropdown should be visible");
         assert.containsN(form, '.o_statusbar_buttons .dropdown-menu > button', 2,
@@ -71,10 +71,10 @@ QUnit.module('web_enterprise', {
         form.destroy();
     });
 
-    QUnit.test('statusbar "Action" button not displayed if no buttons', function (assert) {
+    QUnit.test('statusbar "Action" button not displayed if no buttons', async function (assert) {
         assert.expect(1);
 
-        var form = createView({
+        var form = await createView({
             View: FormView,
             model: 'partner',
             data: this.data,

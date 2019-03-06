@@ -50,11 +50,14 @@ var SearchEditor = SearchRenderer.extend(EditorMixin, {
 
         var $nearest_form_hook = this.$('.o_web_studio_hook')
             .touching({
-                x: position.pageX - this.nearest_hook_tolerance,
-                y: position.pageY - this.nearest_hook_tolerance,
-                w: this.nearest_hook_tolerance*2,
-                h: this.nearest_hook_tolerance*2})
-            .nearest({x: position.pageX, y: position.pageY}).eq(0);
+                    x: position.pageX - this.nearest_hook_tolerance,
+                    y: position.pageY - this.nearest_hook_tolerance,
+                    w: this.nearest_hook_tolerance*2,
+                    h: this.nearest_hook_tolerance*2
+                },{
+                    container: document.body
+                }
+            ).nearest({x: position.pageX, y: position.pageY}, {container: document.body}).eq(0);
         if ($nearest_form_hook.length) {
             // We check what is being dropped and in which table
             // since in the autocompletion fields and group_by tables
@@ -69,8 +72,8 @@ var SearchEditor = SearchRenderer.extend(EditorMixin, {
             // We check if the field dropped is a groupabble field
             // if dropped in the group_by table
             if (table_type === 'group_by' && is_field_droppable) {
-                var type = $($helper.context).data('new_attrs').type;
-                var store = $($helper.context).data('new_attrs').store;
+                var type = $helper.data('new_attrs').type;
+                var store = $helper.data('new_attrs').store;
                 is_field_droppable =  _.contains(this.GROUPABLE_TYPES, type) && store === 'true';
             }
             if (is_field_droppable || is_component_droppable){
@@ -114,8 +117,7 @@ var SearchEditor = SearchRenderer.extend(EditorMixin, {
             };
         }
         var formEditorHook = this._renderHook(node, 'inside', 'tr', type);
-        formEditorHook.appendTo($('<div>')); // start the widget
-        $parent.append(formEditorHook.$el);
+        this.defs.push(formEditorHook.appendTo($parent));
     },
     /**
      * Add hook before the first child of a table.
@@ -127,8 +129,7 @@ var SearchEditor = SearchRenderer.extend(EditorMixin, {
      */
     _addHookBeforeFirstChild: function ($result, first_child, type) {
         var formEditorHook = this._renderHook(first_child, 'before', 'tr', type);
-        formEditorHook.appendTo($('<div>')); // start the widget
-        $result.before(formEditorHook.$el);
+        this.defs.push(formEditorHook.insertBefore($result));
     },
     /**
      * Check for each table if it is empty.
@@ -180,8 +181,7 @@ var SearchEditor = SearchRenderer.extend(EditorMixin, {
         });
         // Add hook after this field
         var formEditorHook = this._renderHook(node, 'after', 'tr', type);
-        formEditorHook.appendTo($('<div>')); // start the widget
-        $result.after(formEditorHook.$el);
+        this.defs.push(formEditorHook.insertAfter($result));
         this._renderHookBeforeFirstChild($result, type);
     },
     /**
@@ -189,7 +189,8 @@ var SearchEditor = SearchRenderer.extend(EditorMixin, {
      * @private
      */
     _render: function () {
-        var result = this._super.apply(this, arguments);
+        var prom = this._super.apply(this, arguments);
+
         var self = this;
         this.$('.ui-droppable').droppable({
             accept: ".o_web_studio_component",
@@ -270,7 +271,8 @@ var SearchEditor = SearchRenderer.extend(EditorMixin, {
             },
         });
         this._addHookEmptyTable();
-        return result;
+
+        return prom;
     },
     /**
      * @override

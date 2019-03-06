@@ -25,7 +25,7 @@ var TweetWall = Widget.extend({
         this.num = 1;
         this.timeout = 7000;
         this.last_tweet_id = $('.o-tw-tweet:first').data('tweet-id') || 0;
-        this.fetch_deferred = null;
+        this.fetchPromise = undefined;
         this.prependTweetsTo = $('.o-tw-walls-col:first');
         this.interval = setInterval(function () {
             self._getData();
@@ -79,13 +79,14 @@ var TweetWall = Widget.extend({
      */
     _getData: function () {
         var self = this;
-        if (!this.fetch_deferred || this.fetch_deferred.state() !== 'pending') {
-            self.fetch_deferred = this._rpc({
+        if (!this.fetchPromise) {
+            self.fetchPromise = this._rpc({
                 route: '/twitter_wall/get_tweet/' + self.wall_id,
                 params: {
                     'last_tweet_id': self.last_tweet_id,
                 },
             }).then(function (res) {
+                self.fetchPromise = undefined;
                 if (res.length) {
                     self.last_tweet_id = res[0].id;
                     _.each(res, function (r) {
@@ -99,6 +100,8 @@ var TweetWall = Widget.extend({
                 if (atLeastOneNotSeen || self.repeat) {
                     self.process_tweet();
                 }
+            }).guardedCatch(function () {
+                self.fetchPromise = undefined;
             });
         }
     },

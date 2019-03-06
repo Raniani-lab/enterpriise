@@ -127,23 +127,26 @@ var FollowupFormRenderer = FormRenderer.extend({
      * @returns {jQueryElement} Element rendered
      */
     _renderTagFollowup: function () {
+        var self = this;
         var $element = $('<div>');
         $element.html(this.state.data.followup_html);
         $element.find('.o_account_reports_summary_edit').hide();
         $element.find('.o_account_reports_no_print').removeClass('container');
-        this.nextActionDatePicker.appendTo($element.find('div.o_account_reports_next_action_date_picker'));
-        this.nextActionDatePicker.setValue(moment());
-        if (this.state.data.next_action === 'auto'){
-            $element.find('div.o_account_reports_next_action_date_picker').hide();
-            $element.find('.o_account_reports_followup_manual').addClass('btn-secondary');
-            $element.find('.o_account_reports_followup_auto').addClass('btn-primary');
-            $element.find('.o_account_reports_next_action_date').html(this.state.data.next_action_date_auto);
-        } else {
-            $element.find('.o_account_reports_followup_manual').addClass('btn-primary');
-            $element.find('.o_account_reports_followup_auto').addClass('btn-secondary');
-            $element.find('.o_account_reports_next_action_date').hide();
-            this.nextActionDatePicker.setValue(new moment(this.state.data.next_action_date));
-        }
+        this.nextActionDatePicker.appendTo($element.find('div.o_account_reports_next_action_date_picker')).then(function() {
+            self.nextActionDatePicker.setValue(moment());
+            if (self.state.data.next_action === 'auto'){
+                $element.find('div.o_account_reports_next_action_date_picker').hide();
+                $element.find('.o_account_reports_followup_manual').addClass('btn-secondary');
+                $element.find('.o_account_reports_followup_auto').addClass('btn-primary');
+                $element.find('.o_account_reports_next_action_date').html(self.state.data.next_action_date_auto);
+            } else {
+                $element.find('.o_account_reports_followup_manual').addClass('btn-primary');
+                $element.find('.o_account_reports_followup_auto').addClass('btn-secondary');
+                $element.find('.o_account_reports_next_action_date').hide();
+                self.nextActionDatePicker.setValue(new moment(self.state.data.next_action_date));
+            }
+        });
+
         return $element;
     },
 

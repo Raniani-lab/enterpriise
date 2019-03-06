@@ -96,7 +96,7 @@ var PhonecallTab = Widget.extend({
     /**
      * Performs a rpc to get the phonecalls then call the parsing method.
      *
-     * @return {Deferred}
+     * @return {Promise}
      */
     refreshPhonecallsStatus: function () {
         return this._rpc({model: 'voip.phonecall', method: 'get_next_activities_list'})
@@ -198,7 +198,7 @@ var PhonecallTab = Widget.extend({
      *
      * @private
      * @param {Object} phonecall
-     * @return {Deferred}
+     * @return {Promise}
      */
     _displayInQueue: function (phonecall) {
         var widget = this._createPhonecallWidget(phonecall);
@@ -321,31 +321,31 @@ var ActivitiesTab = PhonecallTab.extend({
     callFromActivityWidget: function (params) {
         var self = this;
         this.autoCallMode = false;
-        var def = new $.Deferred();
-        this.currentPhonecall = _.find(this.phonecalls, function (phonecall) {
-            return phonecall.activity_id === params.activityId;
-        });
-        if (this.currentPhonecall) {
-            this._selectCall(this.currentPhonecall);
-            def.resolve();
-        } else {
-            this._rpc({
-                model: 'voip.phonecall',
-                method: 'get_from_activity_id',
-                args: [params.activityId]
-            }).then(function (phonecall) {
-                self._displayInQueue(phonecall).then(function (phonecallWidget) {
-                    self.currentPhonecall = phonecallWidget;
-                    self._selectCall(phonecallWidget);
-                    def.resolve();
-                });
+        return new Promise(function (resolve, reject) {
+            this.currentPhonecall = _.find(this.phonecalls, function (phonecall) {
+                return phonecall.activity_id === params.activityId;
             });
-        }
-        return def;
+            if (this.currentPhonecall) {
+                this._selectCall(this.currentPhonecall);
+                resolve();
+            } else {
+                this._rpc({
+                    model: 'voip.phonecall',
+                    method: 'get_from_activity_id',
+                    args: [params.activityId]
+                }).then(function (phonecall) {
+                    self._displayInQueue(phonecall).then(function (phonecallWidget) {
+                        self.currentPhonecall = phonecallWidget;
+                        self._selectCall(phonecallWidget);
+                        resolve();
+                    });
+                });
+            }
+        });
     },
     /**
      * @override
-     * @return {Deferred}
+     * @return {Promise}
      */
     hangupPhonecall: function () {
         var self = this;
@@ -474,23 +474,21 @@ var RecentTab = PhonecallTab.extend({
      * Creates a new phonecall in the db and in the tab list based on a number.
      *
      * @param  {String} number
-     * @return {Deferred}
+     * @return {Promise}
      */
     callFromNumber: function (number) {
         var self = this;
-        var def = new $.Deferred();
-        this._rpc({
+        return this._rpc({
             model: 'voip.phonecall',
             method: 'create_from_number',
             args: [number],
         }).then(function (phonecall) {
-            self._displayInQueue(phonecall).then(function (phonecallWidget) {
+            return self._displayInQueue(phonecall).then(function (phonecallWidget) {
                 self.currentPhonecall = phonecallWidget;
                 self._selectCall(phonecallWidget);
-                def.resolve(phonecallWidget);
+                return phonecallWidget;
             });
         });
-        return def;
     },
     /**
      * Function called when widget phone is clicked.
@@ -499,12 +497,11 @@ var RecentTab = PhonecallTab.extend({
      * @param  {String} params.number
      * @param  {String} params.resModel
      * @param  {Integer} params.resId
-     * @return {Deferred}
+     * @return {Promise}
      */
     callFromPhoneWidget: function (params) {
         var self = this;
-        var def = new $.Deferred();
-        this._rpc({
+        return this._rpc({
             model: 'voip.phonecall',
             method: 'create_from_phone_widget',
             args: [
@@ -513,13 +510,12 @@ var RecentTab = PhonecallTab.extend({
                 params.number,
             ],
         }).then(function (phonecall) {
-            self._displayInQueue(phonecall).then(function (phonecallWidget) {
+            return self._displayInQueue(phonecall).then(function (phonecallWidget) {
                 self.currentPhonecall = phonecallWidget;
                 self._selectCall(phonecallWidget);
-                def.resolve(phonecallWidget);
+                 return phonecallWidget;
             });
         });
-        return def;
     },
     /**
      * @override
@@ -602,11 +598,11 @@ var RecentTab = PhonecallTab.extend({
             if (!phonecalls.length) {
                 self.lazyLoadFinished = true;
             }
-            var deferreds = [];
+            var promises = [];
             _.each(phonecalls, function (phonecall) {
-                deferreds.push(self._displayInQueue(phonecall));
+                promises.push(self._displayInQueue(phonecall));
             });
-            $.when.apply($, deferreds).then( function () {
+            Promise.all(promises).then( function () {
                 self._computeScrollLimit();
                 self.isLazyLoading = false;
             });
@@ -750,11 +746,11 @@ var ContactsTab = PhonecallTab.extend({
                 self.lazyLoadFinished = true;
             }
             var phonecalls = self._contactToPhonecall(contacts);
-            var deferreds = [];
+            var promises = [];
             _.each(phonecalls, function (phonecall) {
-                deferreds.push(self._displayInQueue(phonecall));
+                promises.push(self._displayInQueue(phonecall));
             });
-            $.when.apply($, deferreds).then( function () {
+            Promise.all(promises).then( function () {
                 self._computeScrollLimit();
                 self.isLazyLoading = false;
             });

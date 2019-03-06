@@ -162,7 +162,7 @@ var sale_subscription_dashboard_abstract = AbstractAction.extend({
             this.render_filters();
         }
 
-        $.when(def).then(function() {
+        Promise.resolve(def).then(function() {
             self.updateControlPanel({
                 cp_content: {
                     $searchview: self.$searchview,
@@ -181,7 +181,7 @@ var sale_subscription_dashboard_abstract = AbstractAction.extend({
         var def2 = this.end_picker.insertAfter($sep);
 
         var self = this;
-        return $.when(def1, def2).then(function() {
+        return Promise.all([def1, def2]).then(function() {
             self.start_picker.on('datetime_changed', self, function() {
                 if (this.start_picker.getValue()) {
                     this.end_picker.minDate(moment(this.start_picker.getValue()));
@@ -241,7 +241,7 @@ var sale_subscription_dashboard_main = sale_subscription_dashboard_abstract.exte
     willStart: function() {
         var self = this;
         return this._super().then(function() {
-            return $.when(self.fetch_data());
+            return Promise.resolve(self.fetch_data());
         });
     },
 
@@ -428,7 +428,7 @@ var sale_subscription_dashboard_detailed = sale_subscription_dashboard_abstract.
     fetch_computed_stat: function() {
 
         var self = this;
-        return self._rpc({
+        var rpcProm = self._rpc({
                 route: '/sale_subscription_dashboard/compute_stat',
                 params: {
                     stat_type: this.selected_stat,
@@ -436,17 +436,19 @@ var sale_subscription_dashboard_detailed = sale_subscription_dashboard_abstract.
                     end_date: this.end_date.format('YYYY-MM-DD'),
                     filters: this.filters,
                 },
-            }).done(function(result) {
+            })
+        rpcProm.then(function(result) {
                 self.value = result;
         });
+        return rpcProm;
     },
 
     render_dashboard: function() {
 
         var self = this;
-        $.when(
+        Promise.resolve(
             this.fetch_computed_stat()
-        ).done(function(){
+        ).then(function(){
 
             self.$('.o_content').append(QWeb.render("sale_subscription_dashboard.detailed_dashboard", {
                 selected_stat_values: _.findWhere(self.stat_types, {code: self.selected_stat}),
@@ -691,10 +693,10 @@ var sale_subscription_dashboard_forecast = sale_subscription_dashboard_abstract.
     willStart: function() {
         var self = this;
         return this._super().then(function() {
-            return $.when(
+            return Promise.all([
                 self.fetch_default_values_forecast('mrr'),
                 self.fetch_default_values_forecast('contracts')
-            );
+            ]);
         });
     },
 
@@ -872,7 +874,7 @@ var SaleSubscriptionDashboardStatBox = Widget.extend({
     willStart: function() {
         var self = this;
         return this._super().then(function() {
-            return $.when(self.compute_graph());
+            return Promise.resolve(self.compute_graph());
         });
     },
 
@@ -942,7 +944,7 @@ var SaleSubscriptionDashboardForecastBox = Widget.extend({
     willStart: function() {
         var self = this;
         return this._super().then(function() {
-            return $.when(
+            return Promise.resolve(
                 self.compute_numbers()
             );
         });
@@ -999,9 +1001,9 @@ var sale_subscription_dashboard_salesman = sale_subscription_dashboard_abstract.
     },
 
     willStart: function() {
-        return $.when(
-            this._super.apply(this, arguments),
-            this.fetch_salesmen()
+        return Promise.all(
+            [this._super.apply(this, arguments),
+            this.fetch_salesmen()]
         );
     },
 

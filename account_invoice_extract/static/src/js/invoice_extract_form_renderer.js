@@ -110,12 +110,15 @@ var InvoiceExtractFormRenderer = FormRenderer.extend({
             method: 'get_boxes',
             args: [this.state.res_id],
         }).then(function (boxesData) {
-            self._renderInvoiceExtractButtons();
-            self._renderInvoiceExtractBoxLayers({
-                boxesData: boxesData,
-                $page: $page,
+            Promise.all([
+                self._renderInvoiceExtractButtons(),
+                self._renderInvoiceExtractBoxLayers({
+                    boxesData: boxesData,
+                    $page: $page,
+                }),
+            ]).then(function () {
+                self._displayInvoiceExtractBoxes();
             });
-            self._displayInvoiceExtractBoxes();
         });
     },
     /**
@@ -123,9 +126,10 @@ var InvoiceExtractFormRenderer = FormRenderer.extend({
      * the user can select the boxes to show for the given field.
      *
      * @private
+     * @returns {Promise} resolves when all buttons are rendered
      */
     _renderInvoiceExtractButtons: function () {
-        this._invoiceExtractFields.renderButtons({
+        return this._invoiceExtractFields.renderButtons({
             $container: this._$invoiceExtractButtons,
         });
     },
@@ -151,6 +155,7 @@ var InvoiceExtractFormRenderer = FormRenderer.extend({
     _renderInvoiceExtractBoxLayers: function (params) {
         var $page = params.$page;
         var boxLayer;
+        var proms = [];
         //in case of img
         if ($page.hasClass('img-fluid')) {
             boxLayer = new InvoiceExtractBoxLayer(this, {
@@ -158,7 +163,7 @@ var InvoiceExtractFormRenderer = FormRenderer.extend({
                 mode: 'img',
                 $page: $page,
             });
-            boxLayer.insertAfter($page);
+            proms.push(boxLayer.insertAfter($page));
             this._invoiceExtractBoxLayers = [boxLayer];
         }
         //in case of pdf
@@ -178,10 +183,12 @@ var InvoiceExtractFormRenderer = FormRenderer.extend({
                     $page: $page,
                     $textLayer: $textLayer,
                 });
-                boxLayer.insertAfter($textLayer);
+                proms.push(boxLayer.insertAfter($textLayer));
                 this._invoiceExtractBoxLayers.push(boxLayer);
             }
         }
+
+        return Promise.all(proms);
     },
     /**
      * @private
@@ -230,7 +237,7 @@ var InvoiceExtractFormRenderer = FormRenderer.extend({
             return;
         }
         // case pdf (iframe)
-        this.$attachmentPreview.find('iframe').load(function () { // wait for iframe to load
+        this.$attachmentPreview.find('iframe').on("load", function () { // wait for iframe to load
             var $iframe = self.$attachmentPreview.find('iframe');
             var $iframeDoc = self.$attachmentPreview.find('iframe').contents();
             $iframeDoc[0].addEventListener('pagerendered', function () {
@@ -243,7 +250,7 @@ var InvoiceExtractFormRenderer = FormRenderer.extend({
         if ($attachment.length && $attachment[0].complete) {
             this._startInvoiceExtract($documentImg);
         } else {
-            this.$attachmentPreview.find('.img-fluid').load(function () {
+            this.$attachmentPreview.find('.img-fluid').on("load", function () {
                 self._startInvoiceExtract($documentImg);
             });
         }

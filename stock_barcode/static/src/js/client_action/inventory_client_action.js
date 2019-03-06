@@ -159,7 +159,7 @@ var InventoryClientAction = ClientAction.extend({
                 'params': params,
             });
         } else {
-            return $.Deferred().reject();
+            return Promise.reject();
         }
     },
 
@@ -191,7 +191,7 @@ var InventoryClientAction = ClientAction.extend({
      * event listener.
      *
      * @private
-     * @returns {Deferred}
+     * @returns {Promise}
      */
      _validate: function (ev) {
         var self = this;

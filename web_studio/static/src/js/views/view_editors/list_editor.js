@@ -49,11 +49,14 @@ return ListRenderer.extend(EditorMixin, {
 
         var $nearest_list_hook = this.$('.o_web_studio_hook')
             .touching({
-                x: position.pageX - this.nearest_hook_tolerance,
-                y: position.pageY - this.nearest_hook_tolerance,
-                w: this.nearest_hook_tolerance*2,
-                h: this.nearest_hook_tolerance*2})
-            .nearest({x: position.pageX, y: position.pageY}).eq(0);
+                    x: position.pageX - this.nearest_hook_tolerance,
+                    y: position.pageY - this.nearest_hook_tolerance,
+                    w: this.nearest_hook_tolerance*2,
+                    h: this.nearest_hook_tolerance*2
+                },{
+                    container: document.body
+                }
+            ).nearest({x: position.pageX, y: position.pageY}, {container: document.body}).eq(0);
         if ($nearest_list_hook.length) {
             var $elements = this._getColumnElements($nearest_list_hook);
             $elements.addClass('o_web_studio_nearest_hook');
@@ -150,16 +153,17 @@ return ListRenderer.extend(EditorMixin, {
      * @private
      */
     _render: function () {
-        var def = this._super.apply(this, arguments);
+        var self = this;
+        var prom = this._super.apply(this, arguments);
+        prom.then(function () {
+            self.$el.droppable({
+                accept: ".o_web_studio_component",
+                drop: self._handleDrop.bind(self),
+            });
 
-        this.$el.droppable({
-            accept: ".o_web_studio_component",
-            drop: this._handleDrop.bind(this),
+            self.setSelectable(self.$('th, td').not('.o_web_studio_hook'));
         });
-
-        this.setSelectable(this.$('th, td').not('.o_web_studio_hook'));
-
-        return def;
+        return prom;
     },
     /**
      * @override

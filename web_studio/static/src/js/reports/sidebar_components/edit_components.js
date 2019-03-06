@@ -95,7 +95,7 @@ var AbstractEditComponent = Abstract.extend(StandaloneFieldManagerMixin, {
                 });
             });
         var defParent = this._super.apply(this, arguments);
-        return $.when(defDirective, defParent);
+        return Promise.all([defDirective, defParent]);
     },
 
     //--------------------------------------------------------------------------
@@ -304,44 +304,47 @@ var AbstractEditComponent = Abstract.extend(StandaloneFieldManagerMixin, {
         var self = this;
         e.stopPropagation();  // TODO: is it really useful on an OdooEvent
 
-        e.data.dataPointID = self.directiveRecordId;
-        StandaloneFieldManagerMixin._onFieldChanged.call(this, e);
+        e.data.dataPointID = this.directiveRecordId;
 
-        for (var directiveKey in this.fieldSelector) {
-            if (this.fieldSelector[directiveKey] === e.target) {
-                break;
+        var always = function () {
+            for (var directiveKey in self.fieldSelector) {
+                if (self.fieldSelector[directiveKey] === e.target) {
+                    break;
+                }
             }
-        }
 
-        var newAttrs = {};
-        _.each(this.fieldSelector, function (fieldType, directiveKey) {
-            if (!e.data.forceChange && e.target !== self.fieldSelector[directiveKey]) {
-                return;
-            }
-            var data = self.model.get(self.directiveRecordId).data;
-            var fieldValue = data[directiveKey];
-            // TODO: for relation field, maybe set id (or ids) in fieldValue to
-            // avoid overwritting _triggerViewChange in every directive
+            var newAttrs = {};
+            _.each(self.fieldSelector, function (fieldType, directiveKey) {
+                if (!e.data.forceChange && e.target !== self.fieldSelector[directiveKey]) {
+                    return;
+                }
+                var data = self.model.get(self.directiveRecordId).data;
+                var fieldValue = data[directiveKey];
+                // TODO: for relation field, maybe set id (or ids) in fieldValue to
+                // avoid overwritting _triggerViewChange in every directive
+                if (e.data.chain) {
+                    fieldValue = e.data.chain.join('.');
+                }
+                if (fieldValue.res_ids) {
+                    fieldValue = fieldValue.res_ids.slice();
+                }
+                newAttrs[directiveKey] = fieldValue;
+            });
+
             if (e.data.chain) {
-                fieldValue = e.data.chain.join('.');
+                e.data.dataPointID = self.directiveRecordId;
+                e.data.changes = newAttrs;
             }
-            if (fieldValue.res_ids) {
-                fieldValue = fieldValue.res_ids.slice();
-            }
-            newAttrs[directiveKey] = fieldValue;
-        });
 
-        if (e.data.chain) {
-            e.data.dataPointID = this.directiveRecordId;
-            e.data.changes = newAttrs;
-        }
+            self._triggerViewChange(newAttrs);
+        };
 
-        this._triggerViewChange(newAttrs);
+        StandaloneFieldManagerMixin._onFieldChanged.call(this, e).then(always, always);
     },
 });
 
 
-var assetsLoaded = false;
+var assetsLoaded;
 var LayoutEditable = AbstractEditComponent.extend({
     name: 'layout',
     template : 'web_studio.ReportLayoutEditable',
@@ -426,13 +429,12 @@ var LayoutEditable = AbstractEditComponent.extend({
             if (assetsLoaded) {
                 return assetsLoaded;
             }
-            assetsLoaded = $.Deferred();
-            var wysiwyg = new Wysiwyg(self, {});
-            wysiwyg.attachTo($('<textarea>')).then(function () {
-                wysiwyg.destroy();
-                var def = assetsLoaded;
-                assetsLoaded = true;
-                def.resolve();
+            assetsLoaded = new Promise(function (resolve, reject) {
+                var wysiwyg = new Wysiwyg(self, {});
+                wysiwyg.attachTo($('<textarea>')).then(function () {
+                    wysiwyg.destroy();
+                    resolve();
+                });
             });
             return assetsLoaded;
         });
@@ -755,7 +757,7 @@ var TEsc = AbstractEditComponent.extend({
      */
     start: function () {
         var self = this;
-        this._super.apply(this, arguments).then(function () {
+        return this._super.apply(this, arguments).then(function () {
             return self.fieldSelector['t-esc'].appendTo(self.$('.o_web_studio_tesc_escexpression'));
         });
     },
@@ -784,10 +786,11 @@ var TSet = AbstractEditComponent.extend({
      */
     start: function () {
         var self = this;
-        this._super.apply(this, arguments).then(function () {
-            return $.when(
+        return this._super.apply(this, arguments).then(function () {
+            return Promise.all([
                 self.fieldSelector['t-set'].appendTo(self.$('.o_web_studio_tset_setexpression')),
-                self.fieldSelector['t-value'].appendTo(self.$('.o_web_studio_tset_valueexpression')));
+                self.fieldSelector['t-value'].appendTo(self.$('.o_web_studio_tset_valueexpression'))
+            ]);
         });
     },
 });
@@ -816,9 +819,10 @@ var TForeach = AbstractEditComponent.extend({
     start: function () {
         var self = this;
         return this._super.apply(this, arguments).then(function () {
-            return $.when(
+            return Promise.all([
                 self.fieldSelector['t-as'].appendTo(self.$('.o_web_studio_tas_asexpression')),
-                self.fieldSelector['t-foreach'].appendTo(self.$('.o_web_studio_tforeach_foreachexpression')));
+                self.fieldSelector['t-foreach'].appendTo(self.$('.o_web_studio_tforeach_foreachexpression'))
+            ]);
         });
     },
 });
@@ -874,11 +878,12 @@ var BlockTotal = AbstractEditComponent.extend({
     start: function () {
         var self = this;
         return this._super.apply(this, arguments).then(function () {
-            return $.when(
+            return Promise.all([
                 self.fieldSelector.total_currency_id.appendTo(self.$('.o_web_studio_report_currency_id')),
                 self.fieldSelector.total_amount_untaxed.appendTo(self.$('.o_web_studio_report_amount_untaxed')),
                 self.fieldSelector.total_amount_total.appendTo(self.$('.o_web_studio_report_amount_total')),
-                self.fieldSelector.total_amount_by_groups.appendTo(self.$('.o_web_studio_report_amount_by_groups')));
+                self.fieldSelector.total_amount_by_groups.appendTo(self.$('.o_web_studio_report_amount_by_groups'))
+            ]);
         });
     },
     /**
@@ -924,9 +929,10 @@ var Column = AbstractEditComponent.extend({
     start: function () {
         var self = this;
         return this._super.apply(this, arguments).then(function () {
-            return $.when(
+            return Promise.all([
                 self.fieldSelector.size.prependTo(self.$('.o_web_studio_size')),
-                self.fieldSelector.offset.prependTo(self.$('.o_web_studio_offset')));
+                self.fieldSelector.offset.prependTo(self.$('.o_web_studio_offset'))
+            ]);
         });
     },
     /**
@@ -984,7 +990,7 @@ var Text = AbstractEditComponent.extend({
             .then(function () {
                 return self.fieldSelector.text.appendTo(self.$('.o_web_studio_text'));
             }).then(function () {
-                self._startWysiwygEditor();
+                return self._startWysiwygEditor();
             });
     },
 
@@ -994,9 +1000,9 @@ var Text = AbstractEditComponent.extend({
 
     _onBlurWysiwygEditor: function () {
         var self = this;
-        return this.wysiwyg.save().then(function (isDirty, html) {
-            if (isDirty) {
-                self._triggerViewChange({text: html});
+        return this.wysiwyg.save().then(function (result) {
+            if (result.isDirty) {
+                self._triggerViewChange({text: result.html});
             }
         });
     },
@@ -1028,7 +1034,7 @@ var Text = AbstractEditComponent.extend({
             $(this).data('wysiwyg').trigger_up('wysiwyg_blur');
         });
 
-        this.wysiwyg.attachTo(this.$textarea);
+        return this.wysiwyg.attachTo(this.$textarea);
     },
     /**
      * @override
@@ -1249,7 +1255,7 @@ var TOptions = AbstractEditComponent.extend( {
             this.$('.o_web_studio_toption_widget select').val(this.widget.key);
             defs.push(this._updateWidgetOptions());
         }
-        return $.when.apply($, defs);
+        return Promise.all(defs);
     },
 
     //--------------------------------------------------------------------------
@@ -1271,7 +1277,7 @@ var TOptions = AbstractEditComponent.extend( {
     },
     /**
      * @private
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _updateWidgetOptions: function () {
         var self = this;
@@ -1291,7 +1297,7 @@ var TOptions = AbstractEditComponent.extend( {
             }
 
         });
-        return $.when.apply($, defs).then (function () {
+        return Promise.all(defs).then (function () {
             self.$el.find('.o_studio_report_options_container').append($options);
         });
     },

@@ -77,11 +77,10 @@ QUnit.module('Views', {
 }, function () {
     QUnit.module('GridView');
 
-    QUnit.test('basic grid view', function (assert) {
+    QUnit.test('basic grid view', async function (assert) {
         assert.expect(17);
-        var done = assert.async();
 
-        var grid = createView({
+        var grid = await createView({
             View: GridView,
             model: 'analytic.line',
             data: this.data,
@@ -89,67 +88,62 @@ QUnit.module('Views', {
             currentDate: "2017-01-25",
             mockRPC: function (route) {
                 if (route === 'some-image') {
-                    return $.when();
+                    return Promise.resolve();
                 }
                 return this._super.apply(this, arguments);
             },
         });
 
-        return concurrency.delay(0).then(function () {
-            assert.ok(grid.$('table').length, "should have rendered a table");
-            assert.containsN(grid, 'div.o_grid_cell_container', 14,
-                "should have 14 cells");
-            assert.strictEqual(grid.$('div.o_grid_input:contains(02:30)').length, 1,
-                "should have correctly parsed a float_time");
-            assert.strictEqual(grid.$('div.o_grid_input:contains(00:00)').length, 12,
-                "should have correctly parsed another float_time");
+        await testUtils.nextTick();
 
-            assert.ok(grid.$buttons.find('button.grid_arrow_previous').is(':visible'),
-                "previous button should be visible");
-            assert.hasClass(grid.$buttons.find('button.grid_arrow_range[data-name="week"]'),'active',
-                "current range is shown as active");
+        assert.ok(grid.$('table').length, "should have rendered a table");
+        assert.containsN(grid, 'div.o_grid_cell_container', 14,
+            "should have 14 cells");
+        assert.strictEqual(grid.$('div.o_grid_input:contains(02:30)').length, 1,
+            "should have correctly parsed a float_time");
+        assert.strictEqual(grid.$('div.o_grid_input:contains(00:00)').length, 12,
+            "should have correctly parsed another float_time");
 
-            assert.strictEqual(grid.$('tfoot td:contains(02:30)').length, 1, "should display total in a column");
-            assert.strictEqual(grid.$('tfoot td:contains(00:00)').length, 5, "should display totals, even if 0");
+        assert.ok(grid.$buttons.find('button.grid_arrow_previous').is(':visible'),
+            "previous button should be visible");
+        assert.hasClass(grid.$buttons.find('button.grid_arrow_range[data-name="week"]'),'active',
+            "current range is shown as active");
 
-            testUtils.dom.click(grid.$buttons.find('button.grid_arrow_next'));
-            return concurrency.delay(0);
-        }).then(function () {
-            assert.ok(grid.$('div.o_grid_cell_container').length, "should not have any cells");
-            assert.ok(grid.$('th div:contains(P1)').length,
-                "should have rendered a cell with project name");
-            assert.ok(grid.$('th div:contains(BS task)').length,
-                "should have rendered a cell with task name");
-            assert.notOk(grid.$('.o_grid_nocontent_container p:contains(Add projects and tasks)').length,
-                "should not have rendered a no content helper");
+        assert.strictEqual(grid.$('tfoot td:contains(02:30)').length, 1, "should display total in a column");
+        assert.strictEqual(grid.$('tfoot td:contains(00:00)').length, 5, "should display totals, even if 0");
 
-            assert.notOk(grid.$('td.o_grid_current').length, "should not have any cell marked current");
-            testUtils.dom.click(grid.$buttons.find('button.grid_arrow_next'));
+        await testUtils.dom.click(grid.$buttons.find('button.grid_arrow_next'));
+        assert.ok(grid.$('div.o_grid_cell_container').length, "should not have any cells");
+        assert.ok(grid.$('th div:contains(P1)').length,
+            "should have rendered a cell with project name");
+        assert.ok(grid.$('th div:contains(BS task)').length,
+            "should have rendered a cell with task name");
+        assert.notOk(grid.$('.o_grid_nocontent_container p:contains(Add projects and tasks)').length,
+            "should not have rendered a no content helper");
 
-            return concurrency.delay(0);
-        }).then(function () {
-            assert.ok(grid.$('.o_grid_nocontent_container p:contains(Add projects and tasks)').length,
-                "should have rendered a no content helper");
-            assert.containsOnce(grid, '.o_grid_nocontent_container p a img',
-                "should have rendered a no content helper with an image in a link");
+        assert.notOk(grid.$('td.o_grid_current').length, "should not have any cell marked current");
+        await testUtils.dom.click(grid.$buttons.find('button.grid_arrow_next'));
+        // await testUtils.nextTick();
 
-            assert.notOk(grid.$('div.o_grid_cell_container').length, "should not have any cell");
+        assert.ok(grid.$('.o_grid_nocontent_container p:contains(Add projects and tasks)').length,
+            "should have rendered a no content helper");
+        assert.containsOnce(grid, '.o_grid_nocontent_container p a img',
+            "should have rendered a no content helper with an image in a link");
 
-            var emptyTd = 0;
-            grid.$('tfoot td').each(function () {
-                if ($(this).text() === '') {
-                    emptyTd++;
-                }
-            });
-            assert.strictEqual(emptyTd, 8, "8 totals cells should be empty");
-            grid.destroy();
-            done();
+        assert.notOk(grid.$('div.o_grid_cell_container').length, "should not have any cell");
+
+        var emptyTd = 0;
+        grid.$('tfoot td').each(function () {
+            if ($(this).text() === '') {
+                emptyTd++;
+            }
         });
+        assert.strictEqual(emptyTd, 8, "8 totals cells should be empty");
+        grid.destroy();
     });
 
-    QUnit.test('basic grouped grid view', function (assert) {
+    QUnit.test('basic grouped grid view', async function (assert) {
         assert.expect(33);
-        var done = assert.async();
         var nbReadGridDomain = 0;
         var nbReadGroup = 0;
         var nbReadGrid = 0;
@@ -175,7 +169,7 @@ QUnit.module('Views', {
                 '</empty>' +
             '</grid>';
 
-        var grid = createView({
+        var grid = await createView({
             View: GridView,
             model: 'analytic.line',
             data: this.data,
@@ -183,7 +177,7 @@ QUnit.module('Views', {
             currentDate: "2017-01-25",
             mockRPC: function (route, args) {
                 if (route === 'some-image') {
-                    return $.when();
+                    return Promise.resolve();
                 } else if (args.method === 'read_grid_domain') {
                     nbReadGridDomain++;
                 } else if (args.method === 'read_group') {
@@ -198,76 +192,70 @@ QUnit.module('Views', {
                 return this._super.apply(this, arguments);
             },
         });
+        await testUtils.nextTick();
+        assert.ok(grid.$('table').length, "should have rendered a table");
+        assert.strictEqual(nbReadGridDomain, 1, "should have read the grid domain");
+        assert.strictEqual(nbReadGridDomain, 1, "should have read group");
+        assert.strictEqual(nbReadGrid, 2, "should have read one grid by group");
+        assert.containsN(grid, '.o_grid_section', 2, "should have one section by project");
 
-        return concurrency.delay(0).then(function () {
-            assert.ok(grid.$('table').length, "should have rendered a table");
-            assert.strictEqual(nbReadGridDomain, 1, "should have read the grid domain");
-            assert.strictEqual(nbReadGridDomain, 1, "should have read group");
-            assert.strictEqual(nbReadGrid, 2, "should have read one grid by group");
-            assert.containsN(grid, '.o_grid_section', 2, "should have one section by project");
+        // first section
+        assert.strictEqual(grid.$('.o_grid_section:eq(0) th:contains(P1)').length, 1,
+            "first section should be for project P1");
+        assert.strictEqual(grid.$('.o_grid_section:eq(0) div.o_grid_cell_container').length, 14,
+            "first section should have 14 cells");
+        assert.strictEqual(grid.$('.o_grid_section:eq(0) th:contains(Unknown)').length, 1,
+            "first section should have a row without task");
+        assert.strictEqual(grid.$('.o_grid_section:eq(0) th:contains(BS task)').length, 1,
+            "first section should have a row for BS task");
 
-            // first section
-            assert.strictEqual(grid.$('.o_grid_section:eq(0) th:contains(P1)').length, 1,
-                "first section should be for project P1");
-            assert.strictEqual(grid.$('.o_grid_section:eq(0) div.o_grid_cell_container').length, 14,
-                "first section should have 14 cells");
-            assert.strictEqual(grid.$('.o_grid_section:eq(0) th:contains(Unknown)').length, 1,
-                "first section should have a row without task");
-            assert.strictEqual(grid.$('.o_grid_section:eq(0) th:contains(BS task)').length, 1,
-                "first section should have a row for BS task");
+        assert.strictEqual(grid.$('.o_grid_section:eq(0) tr:eq(2) div.o_grid_input:contains(02:30)').length, 1,
+            "should have correctly parsed a float_time for cell without task");
+        assert.strictEqual(grid.$('.o_grid_section:eq(0) div.o_grid_input:contains(00:00)').length, 12,
+            "should have correctly parsed another float_time");
 
-            assert.strictEqual(grid.$('.o_grid_section:eq(0) tr:eq(2) div.o_grid_input:contains(02:30)').length, 1,
-                "should have correctly parsed a float_time for cell without task");
-            assert.strictEqual(grid.$('.o_grid_section:eq(0) div.o_grid_input:contains(00:00)').length, 12,
-                "should have correctly parsed another float_time");
+        // second section
+        assert.strictEqual(grid.$('.o_grid_section:eq(1) th:contains(Webocalypse Now)').length, 1,
+            "second section should be for project Webocalypse Now");
+        assert.strictEqual(grid.$('.o_grid_section:eq(1) th:contains(Another BS task)').length, 0,
+            "first section should be empty");
+        assert.strictEqual(grid.$('.o_grid_section:eq(1) div.o_grid_cell_container').length, 0,
+            "second section should be empty");
 
-            // second section
-            assert.strictEqual(grid.$('.o_grid_section:eq(1) th:contains(Webocalypse Now)').length, 1,
-                "second section should be for project Webocalypse Now");
-            assert.strictEqual(grid.$('.o_grid_section:eq(1) th:contains(Another BS task)').length, 0,
-                "first section should be empty");
-            assert.strictEqual(grid.$('.o_grid_section:eq(1) div.o_grid_cell_container').length, 0,
-                "second section should be empty");
+        assert.ok(grid.$buttons.find('button.grid_arrow_previous').is(':visible'),
+            "previous button should be visible");
+        assert.hasClass(grid.$buttons.find('button.grid_arrow_range[data-name="week"]'),'active',
+            "current range is shown as active");
 
-            assert.ok(grid.$buttons.find('button.grid_arrow_previous').is(':visible'),
-                "previous button should be visible");
-            assert.hasClass(grid.$buttons.find('button.grid_arrow_range[data-name="week"]'),'active',
-                "current range is shown as active");
+        assert.strictEqual(grid.$('tfoot td:contains(02:30)').length, 1, "should display total in a column");
+        assert.strictEqual(grid.$('tfoot td:contains(00:00)').length, 5, "should display totals, even if 0");
 
-            assert.strictEqual(grid.$('tfoot td:contains(02:30)').length, 1, "should display total in a column");
-            assert.strictEqual(grid.$('tfoot td:contains(00:00)').length, 5, "should display totals, even if 0");
+        await testUtils.dom.click(grid.$buttons.find('button.grid_arrow_next'));
 
-            testUtils.dom.click(grid.$buttons.find('button.grid_arrow_next'));
-            return concurrency.delay(0);
-        }).then(function () {
-            assert.strictEqual(nbReadGridDomain, 2, "should have read the grid domain again");
-            assert.strictEqual(nbReadGridDomain, 2, "should have read group again");
-            assert.strictEqual(nbReadGrid, 4, "should have read one grid by group again");
+        assert.strictEqual(nbReadGridDomain, 2, "should have read the grid domain again");
+        assert.strictEqual(nbReadGridDomain, 2, "should have read group again");
+        assert.strictEqual(nbReadGrid, 4, "should have read one grid by group again");
 
-            assert.ok(grid.$('div.o_grid_cell_container').length, "should not have any cells");
-            assert.ok(grid.$('th:contains(P1)').length,
-                "should have rendered a cell with project name");
-            assert.ok(grid.$('th div:contains(BS task)').length,
-                "should have rendered a cell with task name");
-            assert.strictEqual(grid.$('.o_grid_section:eq(1) th:contains(Another BS task)').length, 1,
-                "first section should have a row for Another BS task");
-            assert.strictEqual(grid.$('.o_grid_section:eq(1) div.o_grid_cell_container').length, 7,
-                "second section should have 7 cells");
-            testUtils.dom.click(grid.$buttons.find('button.grid_arrow_next'));
+        assert.ok(grid.$('div.o_grid_cell_container').length, "should not have any cells");
+        assert.ok(grid.$('th:contains(P1)').length,
+            "should have rendered a cell with project name");
+        assert.ok(grid.$('th div:contains(BS task)').length,
+            "should have rendered a cell with task name");
+        assert.strictEqual(grid.$('.o_grid_section:eq(1) th:contains(Another BS task)').length, 1,
+            "first section should have a row for Another BS task");
+        assert.strictEqual(grid.$('.o_grid_section:eq(1) div.o_grid_cell_container').length, 7,
+            "second section should have 7 cells");
+        await testUtils.dom.click(grid.$buttons.find('button.grid_arrow_next'));
 
-            return concurrency.delay(0);
-        }).then(function () {
-            assert.containsNone(grid, '.o_grid_nocontent_container',
-                "should not have rendered a no content helper in grouped");
-            grid.destroy();
-            done();
-        });
+        assert.containsNone(grid, '.o_grid_nocontent_container',
+            "should not have rendered a no content helper in grouped");
+        grid.destroy();
     });
 
-    QUnit.test('load and reload a grid view with favorite search', function (assert) {
+    QUnit.test('load and reload a grid view with favorite search', async function (assert) {
         assert.expect(4);
 
-        var grid = createView({
+        var grid = await createView({
             View: GridView,
             model: 'analytic.line',
             data: this.data,
@@ -290,7 +278,7 @@ QUnit.module('Views', {
             "GroupBy should have been taken into account when loading the view."
         );
 
-        testUtils.dom.click(grid.$buttons.find('.grid_arrow_next'));
+        await testUtils.dom.click(grid.$buttons.find('.grid_arrow_next'));
 
         assert.strictEqual(grid.$('tr:eq(2) th').text(), 'Another BS taskWebocalypse Now',
             "GroupBy should have been kept when clicking the pager."
@@ -302,11 +290,11 @@ QUnit.module('Views', {
         grid.destroy();
     });
 
-    QUnit.test('groupBy a string is supported', function (assert) {
+    QUnit.test('groupBy a string is supported', async function (assert) {
         // groupBy could be a single "field" instead of an Array of strings
         assert.expect(4);
 
-        var grid = createView({
+        var grid = await createView({
             View: GridView,
             model: 'analytic.line',
             data: this.data,
@@ -329,7 +317,7 @@ QUnit.module('Views', {
             "GroupBy should have been taken into account when loading the view."
         );
 
-        testUtils.dom.click(grid.$buttons.find('.grid_arrow_next'));
+        await testUtils.dom.click(grid.$buttons.find('.grid_arrow_next'));
 
         assert.strictEqual(grid.$('tr:eq(2) th').text(), 'Another BS task',
             "GroupBy should have been kept when clicking the pager."
@@ -341,10 +329,10 @@ QUnit.module('Views', {
         grid.destroy();
     });
 
-    QUnit.test('groupBy a date with groupby function', function (assert) {
+    QUnit.test('groupBy a date with groupby function', async function (assert) {
         assert.expect(1);
 
-        var grid = createView({
+        var grid = await createView({
             View: GridView,
             model: 'analytic.line',
             data: this.data,
@@ -367,10 +355,10 @@ QUnit.module('Views', {
         grid.destroy();
     });
 
-    QUnit.test('Removing groupBy defaults to initial groupings', function (assert) {
+    QUnit.test('Removing groupBy defaults to initial groupings', async function (assert) {
         assert.expect(6);
 
-        var grid = createView({
+        var grid = await createView({
             View: GridView,
             model: 'analytic.line',
             data: this.data,
@@ -393,7 +381,7 @@ QUnit.module('Views', {
             "GroupBy should have been taken into account when loading the view."
         );
 
-        grid.update({groupBy: []});
+        await grid.update({groupBy: []});
 
         assert.strictEqual(grid.$('tr:eq(2) th').text(), 'P1',
             "Should be grouped by default (Project > Task)."
@@ -411,7 +399,7 @@ QUnit.module('Views', {
         grid.destroy();
     });
 
-    QUnit.test('DOM keys are unique', function (assert) {
+    QUnit.test('DOM keys are unique', async function (assert) {
         /*Snabbdom, the virtual dom libraries, use keys to distinguish similar
         elements (typically grid rows).
         If these keys are not unique, and there are rows that are repeated,
@@ -419,7 +407,6 @@ QUnit.module('Views', {
         */
 
         assert.expect(8);
-        var done = assert.async();
 
         var line_records = [
                 {id: 12, project_id: 142, date: "2017-01-17", unit_amount: 0},
@@ -442,38 +429,32 @@ QUnit.module('Views', {
         this.data.project.records = project_records;
         this.data['analytic.line'].records = line_records;
 
-        var grid = createView({
+        var grid = await createView({
             View: GridView,
             model: 'analytic.line',
             data: this.data,
             arch: this.arch,
             currentDate: "2017-01-25",
         });
+        await testUtils.nextTick();
+        assert.strictEqual(grid.$('tbody th:first').text(), "RerUnknown", "Should be equal.");
+        assert.strictEqual(grid.$('tbody th:eq(1)').text(), "SassyUnknown", "Should be equal.");
+        assert.strictEqual(grid.$('tbody th:eq(2)').text(), "RemUnknown", "Should be equal.");
 
-        return concurrency.delay(0).then(function () {
-            assert.strictEqual(grid.$('tbody th:first').text(), "RerUnknown", "Should be equal.");
-            assert.strictEqual(grid.$('tbody th:eq(1)').text(), "SassyUnknown", "Should be equal.");
-            assert.strictEqual(grid.$('tbody th:eq(2)').text(), "RemUnknown", "Should be equal.");
+        await testUtils.dom.click(grid.$buttons.find('button.grid_arrow_previous'));
+        assert.strictEqual(grid.$('tbody th:first').text(), "SarUnknown", "Should be equal.");
+        assert.strictEqual(grid.$('tbody th:eq(1)').text(), "RerUnknown", "Should be equal.");
+        assert.strictEqual(grid.$('tbody th:eq(2)').text(), "RemUnknown", "Should be equal.");
+        assert.strictEqual(grid.$('tbody th:eq(3)').text(), "SassyUnknown", "Should be equal.");
+        assert.strictEqual(grid.$('tbody th:eq(4)').text(), "SasUnknown", "Should be equal.");
 
-            testUtils.dom.click(grid.$buttons.find('button.grid_arrow_previous'));
-            return concurrency.delay(0);
-        }).then(function () {
-            assert.strictEqual(grid.$('tbody th:first').text(), "SarUnknown", "Should be equal.");
-            assert.strictEqual(grid.$('tbody th:eq(1)').text(), "RerUnknown", "Should be equal.");
-            assert.strictEqual(grid.$('tbody th:eq(2)').text(), "RemUnknown", "Should be equal.");
-            assert.strictEqual(grid.$('tbody th:eq(3)').text(), "SassyUnknown", "Should be equal.");
-            assert.strictEqual(grid.$('tbody th:eq(4)').text(), "SasUnknown", "Should be equal.");
-
-            grid.destroy();
-            done();
-        });
+        grid.destroy();
     });
 
-    QUnit.test('group by non-relational field', function (assert) {
+    QUnit.test('group by non-relational field', async function (assert) {
         assert.expect(1);
-        var done = assert.async();
 
-        var grid = createView({
+        var grid = await createView({
             View: GridView,
             model: 'analytic.line',
             data: this.data,
@@ -481,24 +462,18 @@ QUnit.module('Views', {
             currentDate: "2017-01-25",
         });
 
-        return concurrency.delay(0).then(function () {
-            grid.update({groupBy: ["date"]});
-            assert.strictEqual(grid.$('tbody th:first').text(),
-                               "January 2017",
-                               "Should be equal.");
-            return concurrency.delay(0);
-        }).then(function () {
-            grid.destroy();
-            done();
-        });
+        await grid.update({groupBy: ["date"]});
+        assert.strictEqual(grid.$('tbody th:first').text(),
+                           "January 2017",
+                           "Should be equal.");
+        grid.destroy();
     });
 
-    QUnit.test('create analytic lines', function (assert) {
+    QUnit.test('create analytic lines', async function (assert) {
         assert.expect(7);
-        var done = assert.async();
         this.data['analytic.line'].fields.date.default = "2017-02-25";
 
-        var grid = createView({
+        var grid = await createView({
             View: GridView,
             model: 'analytic.line',
             data: this.data,
@@ -527,46 +502,41 @@ QUnit.module('Views', {
             },
         });
 
-        return concurrency.delay(0).then(function () {
-            assert.containsNone(grid, '.o_grid_nocontent_container',
-                "should not have rendered a no content helper");
+        assert.containsNone(grid, '.o_grid_nocontent_container',
+            "should not have rendered a no content helper");
 
-            assert.containsNone(grid, 'div.o_grid_cell_container', "should not have any cells");
-            assert.notOk($('.modal').length, "should not have any modal open");
-            testUtils.dom.click(grid.$buttons.find('.o_grid_button_add'));
+        assert.containsNone(grid, 'div.o_grid_cell_container', "should not have any cells");
+        assert.notOk($('.modal').length, "should not have any modal open");
+        await testUtils.dom.click(grid.$buttons.find('.o_grid_button_add'));
 
-            assert.ok($('.modal').length, "should have opened a modal");
+        assert.ok($('.modal').length, "should have opened a modal");
 
-            // input a project and a task
-            testUtils.fields.many2one.clickOpenDropdown('project_id');
-            testUtils.fields.many2one.clickHighlightedItem('project_id');
-            testUtils.fields.many2one.clickOpenDropdown('task_id');
-            testUtils.fields.many2one.clickHighlightedItem('task_id');
+        // input a project and a task
+        await testUtils.fields.many2one.clickOpenDropdown('project_id');
+        await testUtils.fields.many2one.clickHighlightedItem('project_id');
+        await testUtils.fields.many2one.clickOpenDropdown('task_id');
+        await testUtils.fields.many2one.clickHighlightedItem('task_id');
 
-            // input unit_amount
-            testUtils.fields.editInput($('.modal input').eq(3), "4");
+        // input unit_amount
+        await testUtils.fields.editInput($('.modal input').eq(3), "4");
 
-            // save
-            testUtils.dom.click($('.modal .modal-footer button.btn-primary'));
-            return concurrency.delay(0);
-        }).then(function () {
-            assert.containsN(grid, 'div.o_grid_cell_container', 7,
-                "should have 7 cell containers (1 for each day)");
+        // save
+        await testUtils.dom.click($('.modal .modal-footer button.btn-primary'));
 
-            assert.strictEqual(grid.$('td.o_grid_total:contains(4:00)').length, 1,
-                "should have a total of 4:00");
+        assert.containsN(grid, 'div.o_grid_cell_container', 7,
+            "should have 7 cell containers (1 for each day)");
 
-            grid.destroy();
-            done();
-        });
+        assert.strictEqual(grid.$('td.o_grid_total:contains(4:00)').length, 1,
+            "should have a total of 4:00");
+
+        grid.destroy();
     });
 
-    QUnit.test('create analytic lines on grouped grid view', function (assert) {
+    QUnit.test('create analytic lines on grouped grid view', async function (assert) {
         assert.expect(4);
-        var done = assert.async();
         this.data['analytic.line'].fields.date.default = "2017-02-25";
 
-        var grid = createView({
+        var grid = await createView({
             View: GridView,
             model: 'analytic.line',
             data: this.data,
@@ -600,30 +570,27 @@ QUnit.module('Views', {
             },
         });
 
-        return concurrency.delay(0).then(function () {
-            testUtils.dom.click(grid.$buttons.find('.o_grid_button_add'));
-            assert.ok($('.modal').length, "should have opened a modal");
-            // input a project and a task
-            testUtils.fields.many2one.clickOpenDropdown('project_id');
-            testUtils.fields.many2one.clickHighlightedItem('project_id');
-            testUtils.fields.many2one.clickOpenDropdown('task_id');
-            testUtils.fields.many2one.clickHighlightedItem('task_id');
-            // input unit_amount
-            testUtils.fields.editInput($('.modal input').eq(3), "4");
-            // save
-            testUtils.dom.click($('.modal .modal-footer button.btn-primary'));
+        await testUtils.dom.click(grid.$buttons.find('.o_grid_button_add'));
+        assert.ok($('.modal').length, "should have opened a modal");
+        // input a project and a task
+        await testUtils.fields.many2one.clickOpenDropdown('project_id');
+        await testUtils.fields.many2one.clickHighlightedItem('project_id');
+        await testUtils.fields.many2one.clickOpenDropdown('task_id');
+        await testUtils.fields.many2one.clickHighlightedItem('task_id');
+        // input unit_amount
+        await testUtils.fields.editInput($('.modal input').eq(3), "4");
+        // save
+        await testUtils.dom.click($('.modal .modal-footer button.btn-primary'));
 
-            grid.destroy();
-            done();
-        });
+        grid.destroy();
     });
 
-    QUnit.test('switching active range', function (assert) {
+    QUnit.test('switching active range',async  function (assert) {
         assert.expect(6);
         var done = assert.async();
         this.data['analytic.line'].fields.date.default = "2017-02-25";
 
-        var grid = createView({
+        var grid = await createView({
             View: GridView,
             model: 'analytic.line',
             data: this.data,
@@ -664,13 +631,12 @@ QUnit.module('Views', {
         });
     });
 
-    QUnit.test('clicking on the info icon on a cell triggers a do_action', function (assert) {
+    QUnit.test('clicking on the info icon on a cell triggers a do_action', async function (assert) {
         assert.expect(5);
-        var done = assert.async();
 
         var domain;
 
-        var grid = createView({
+        var grid = await createView({
             View: GridView,
             model: 'analytic.line',
             data: this.data,
@@ -684,31 +650,27 @@ QUnit.module('Views', {
             }
         });
 
-        return concurrency.delay(0).then(function () {
-            assert.containsN(grid, 'i.o_grid_cell_information', 14,
-                "should have 14 icons to open cell info");
+        assert.containsN(grid, 'i.o_grid_cell_information', 14,
+            "should have 14 icons to open cell info");
 
-            testUtils.mock.intercept(grid, 'do_action', function (event) {
-                var action = event.data.action;
+        testUtils.mock.intercept(grid, 'do_action', function (event) {
+            var action = event.data.action;
 
-                assert.deepEqual(action.domain, domain, "should trigger a do_action with correct values");
-                assert.strictEqual(action.name, "P1: BS task",
-                    "should have correct action name");
-                assert.strictEqual(action.context.default_project_id, 31, "should pass project_id in context when click on info icon on cell");
-                assert.strictEqual(action.context.default_task_id, 1 , "should pass task_id in context when click on info icon on cell");
-            });
-            testUtils.dom.click(grid.$('i.o_grid_cell_information').eq(2));
-
-            grid.destroy();
-            done();
+            assert.deepEqual(action.domain, domain, "should trigger a do_action with correct values");
+            assert.strictEqual(action.name, "P1: BS task",
+                "should have correct action name");
+            assert.strictEqual(action.context.default_project_id, 31, "should pass project_id in context when click on info icon on cell");
+            assert.strictEqual(action.context.default_task_id, 1 , "should pass task_id in context when click on info icon on cell");
         });
+        await testUtils.dom.click(grid.$('i.o_grid_cell_information').eq(2));
+
+        grid.destroy();
     });
 
-    QUnit.test('editing a value', function (assert) {
+    QUnit.test('editing a value', async function (assert) {
         assert.expect(13);
-        var done = assert.async();
 
-        var grid = createView({
+        var grid = await createView({
             View: GridView,
             model: 'analytic.line',
             data: this.data,
@@ -719,7 +681,7 @@ QUnit.module('Views', {
             },
             mockRPC: function (route, args) {
                 if (args.method === 'search') {
-                    return $.when([1, 2, 3, 4, 5]);
+                    return Promise.resolve([1, 2, 3, 4, 5]);
                 }
                 if (args.method === 'adjust_grid') {
                     assert.strictEqual(args.model, 'analytic.line',
@@ -744,66 +706,64 @@ QUnit.module('Views', {
             },
         });
 
-        return concurrency.delay(0).then(function () {
-            var $input = grid.$('.o_grid_cell_container:eq(0) div.o_grid_input');
+        var $input = grid.$('.o_grid_cell_container:eq(0) div.o_grid_input');
 
-            assert.doesNotHaveClass($input, 'o_has_error',
-                "input should not show any error at start");
-            testUtils.dom.click($input);
-            $input.focus();
-            var selection = window.getSelection();
-            assert.strictEqual($(selection.focusNode).closest(".o_grid_input")[0], $input[0],
-                "the text in the cell is focused");
-            assert.strictEqual(selection.anchorOffset, 0,
-                "selection starts at index 0");
-            /**
-             * The next assertion is browser dependent. Indeed Firefox and
-             * Chrome implement two working `window.getSelection` but with
-             * different return results.
-             *
-             * On Chrome, selecting the whole content of a node with an unique
-             * text node thanks to the `Range.selectNodeContents` function
-             * creates a Range element whose reference is the text node and the
-             * selection end value is the text node length.
-             * On Firefox, doing the same operation creates a Range element
-             * whose reference is the parent node and the selection end value
-             * is 1 (saying that one whole text node is selected).
-             *
-             * Note that the test could just check that the selection end is
-             * greater than 1 (checking that something is selected), but this
-             * problem was worth mentioning and the test is maybe more correct
-             * and explicit this way.
-             *
-             * TODO(?) use mock getSelection (there are some support code somewhere)
-             */
-            assert.strictEqual(selection.focusOffset, selection.focusNode === $input[0] ? 1 : 5,
-                "selection ends at the text end (so the 00:00 text is selected)");
+        assert.doesNotHaveClass($input, 'o_has_error',
+            "input should not show any error at start");
+        await testUtils.dom.click($input);
+        $input.focus();
+        var selection = window.getSelection();
+        assert.strictEqual($(selection.focusNode).closest(".o_grid_input")[0], $input[0],
+            "the text in the cell is focused");
+        assert.strictEqual(selection.anchorOffset, 0,
+            "selection starts at index 0");
+        /**
+         * The next assertion is browser dependent. Indeed Firefox and
+         * Chrome implement two working `window.getSelection` but with
+         * different return results.
+         *
+         * On Chrome, selecting the whole content of a node with an unique
+         * text node thanks to the `Range.selectNodeContents` function
+         * creates a Range element whose reference is the text node and the
+         * selection end value is the text node length.
+         * On Firefox, doing the same operation creates a Range element
+         * whose reference is the parent node and the selection end value
+         * is 1 (saying that one whole text node is selected).
+         *
+         * Note that the test could just check that the selection end is
+         * greater than 1 (checking that something is selected), but this
+         * problem was worth mentioning and the test is maybe more correct
+         * and explicit this way.
+         *
+         * TODO(?) use mock getSelection (there are some support code somewhere)
+         */
+        assert.strictEqual(selection.focusOffset, selection.focusNode === $input[0] ? 1 : 5,
+            "selection ends at the text end (so the 00:00 text is selected)");
 
-            $input.text('abc');
-            $input.focusout();
+        $input.text('abc');
+        $input.focusout();
+        await testUtils.nextTick();
+        assert.hasClass($input,'o_has_error',
+            "input should be formatted to show that there was an error");
 
-            assert.hasClass($input,'o_has_error',
-                "input should be formatted to show that there was an error");
+        $input.text('8.5');
+        $input.focusout();
+        await testUtils.nextTick();
 
-            $input.text('8.5');
-            $input.focusout();
+        assert.doesNotHaveClass($input, 'o_has_error',
+            "input should not be formatted like there is an error");
 
-            assert.doesNotHaveClass($input, 'o_has_error',
-                "input should not be formatted like there is an error");
+        assert.strictEqual($input.text(), "08:30",
+            "text should have been properly parsed/formatted");
 
-            assert.strictEqual($input.text(), "08:30",
-                "text should have been properly parsed/formatted");
+        await testUtils.dom.click(grid.$buttons.find('button:contains("Action")'));
 
-            testUtils.dom.click(grid.$buttons.find('button:contains("Action")'));
-
-            grid.destroy();
-            done();
-        });
+        grid.destroy();
     });
 
-    QUnit.test('basic grid view, hide range button', function (assert) {
+    QUnit.test('basic grid view, hide range button', async function (assert) {
         assert.expect(3);
-        var grid = createView({
+        var grid = await createView({
             View: GridView,
             model: 'analytic.line',
             data: this.data,
@@ -818,20 +778,17 @@ QUnit.module('Views', {
             context: {'hide_second_button': true}
         });
 
-        return concurrency.delay(0).then(function () {
-            assert.strictEqual(grid.$buttons.find('button.grid_arrow_range').length, 2, "should have only one range button displayed");
-            assert.strictEqual(grid.$buttons.find("button[data-name='week']").length, 1, "should have week button displayed");
-            assert.strictEqual(grid.$buttons.find("button[data-name='year']").length, 1, "should have year button displayed");
-            return concurrency.delay(0);
-        });
+        assert.containsN(grid.$buttons, 'button.grid_arrow_range', 2, "should have only one range button displayed");
+        assert.containsOnce(grid.$buttons, "button[data-name='week']", "should have week button displayed");
+        assert.containsOnce(grid.$buttons, "button[data-name='year']", "should have year button displayed");
 
+        grid.destroy();
     });
 
-    QUnit.test('grid_anchor is properly transferred in context', function (assert) {
+    QUnit.test('grid_anchor is properly transferred in context', async function (assert) {
         assert.expect(1);
-        var done = assert.async();
 
-        var grid = createView({
+        var grid = await createView({
             View: GridView,
             model: 'analytic.line',
             data: this.data,
@@ -855,22 +812,20 @@ QUnit.module('Views', {
             },
         });
 
-        return concurrency.delay(0).then(function () {
-            // go back to previous week, to be able to check if grid_anchor is
-            // properly updated and sent to the server
-            testUtils.dom.click(grid.$buttons.find('.grid_arrow_previous'));
-            grid.$('.o_grid_input').first().text('2').focusout();
+        // go back to previous week, to be able to check if grid_anchor is
+        // properly updated and sent to the server
+        await testUtils.dom.click(grid.$buttons.find('.grid_arrow_previous'));
+        grid.$('.o_grid_input').first().text('2').focusout();
+        await testUtils.nextTick();
 
-            grid.destroy();
-            done();
-        });
+        grid.destroy();
     });
 
-    QUnit.test('grid_anchor stays when navigating', function (assert) {
+    QUnit.test('grid_anchor stays when navigating', async function (assert) {
         assert.expect(3);
 
         // create an action manager to test the interactions with the search view
-        var actionManager = createActionManager({
+        var actionManager = await createActionManager({
             data: this.data,
             archs: {
                 'analytic.line,false,grid': '<grid string="Timesheet" adjustment="object" adjust_name="adjust_grid">' +
@@ -889,7 +844,7 @@ QUnit.module('Views', {
             },
         });
 
-        actionManager.doAction({
+        await actionManager.doAction({
             res_model: 'analytic.line',
             type: 'ir.actions.act_window',
             views: [[false, 'grid']],
@@ -903,11 +858,11 @@ QUnit.module('Views', {
         assert.strictEqual(actionManager.$('.o_view_grid th:eq(2)').text(), "Tue,Jan 31", "The first day of the span should be the 31st of January");
 
         // move to previous week, and check first column header
-        testUtils.dom.click(actionManager.$('.o_control_panel .grid_arrow_previous'));
+        await testUtils.dom.click(actionManager.$('.o_control_panel .grid_arrow_previous'));
         assert.strictEqual(actionManager.$('.o_view_grid th:eq(2)').text(), "Tue,Jan 24", "The first day of the span should be the 24st of January, as we check the previous week");
 
         // remove the filter in the searchview
-        testUtils.dom.click($('.o_control_panel .o_searchview .o_facet_remove'));
+        await testUtils.dom.click($('.o_control_panel .o_searchview .o_facet_remove'));
 
         // recheck first column header
         assert.strictEqual(actionManager.$('.o_view_grid th:eq(2)').text(), "Tue,Jan 24", "The first day of the span should STILL be the 24st of January, even we resetting search");
@@ -917,11 +872,10 @@ QUnit.module('Views', {
 
     QUnit.module('GridViewWidgets');
 
-    QUnit.test('float_toggle widget', function (assert) {
+    QUnit.test('float_toggle widget', async function (assert) {
         assert.expect(13);
-        var done = assert.async();
 
-        var grid = createView({
+        var grid = await createView({
             View: GridView,
             model: 'analytic.line',
             data: this.data,
@@ -948,61 +902,60 @@ QUnit.module('Views', {
             },
         });
 
-        return concurrency.delay(0).then(function () {
-            // first section
-            assert.strictEqual(grid.$('.o_grid_section:eq(0) button.o_grid_float_toggle').length, 7,
-                "first section should be for project P1");
-            assert.strictEqual(grid.$('.o_grid_section:eq(0) button.o_grid_float_toggle:contains(1.25)').length, 1,
-                "one button contains the value 1.25 (timesheet line #4)");
-            assert.strictEqual(grid.$('.o_grid_section:eq(0) button.o_grid_float_toggle:contains(0.00)').length, 6,
-                "Other button are filled with 0.00");
-            assert.strictEqual(grid.$('.o_grid_section:eq(0) .o_grid_cell_container[data-path="0.grid.0.0"] button').text(), '1.25',
-                "the second cell of the second section is the timesheet #4");
+        // first section
+        assert.strictEqual(grid.$('.o_grid_section:eq(0) button.o_grid_float_toggle').length, 7,
+            "first section should be for project P1");
+        assert.strictEqual(grid.$('.o_grid_section:eq(0) button.o_grid_float_toggle:contains(1.25)').length, 1,
+            "one button contains the value 1.25 (timesheet line #4)");
+        assert.strictEqual(grid.$('.o_grid_section:eq(0) button.o_grid_float_toggle:contains(0.00)').length, 6,
+            "Other button are filled with 0.00");
+        assert.strictEqual(grid.$('.o_grid_section:eq(0) .o_grid_cell_container[data-path="0.grid.0.0"] button').text(), '1.25',
+            "the second cell of the second section is the timesheet #4");
 
-            // second section
-            assert.strictEqual(grid.$('.o_grid_section:eq(1) button.o_grid_float_toggle').length, 7,
-                "first section should be for project Webocalypse Now");
-            assert.strictEqual(grid.$('.o_grid_section:eq(1) button.o_grid_float_toggle:contains(0.44)').length, 1,
-                "one button contains the value 1.25 (timesheet line #5)");
-            assert.strictEqual(grid.$('.o_grid_section:eq(1) button.o_grid_float_toggle:contains(0.00)').length, 6,
-                "Other button are filled with 0.00");
-            assert.strictEqual(grid.$('.o_grid_section:eq(1) .o_grid_cell_container[data-path="1.grid.0.1"] button').text(), '0.44',
-                "the second cell of the second section is the timesheet #5");
+        // second section
+        assert.strictEqual(grid.$('.o_grid_section:eq(1) button.o_grid_float_toggle').length, 7,
+            "first section should be for project Webocalypse Now");
+        assert.strictEqual(grid.$('.o_grid_section:eq(1) button.o_grid_float_toggle:contains(0.44)').length, 1,
+            "one button contains the value 1.25 (timesheet line #5)");
+        assert.strictEqual(grid.$('.o_grid_section:eq(1) button.o_grid_float_toggle:contains(0.00)').length, 6,
+            "Other button are filled with 0.00");
+        assert.strictEqual(grid.$('.o_grid_section:eq(1) .o_grid_cell_container[data-path="1.grid.0.1"] button').text(), '0.44',
+            "the second cell of the second section is the timesheet #5");
 
-            // clicking on empty cell button
-            var $button = grid.$('.o_grid_section:eq(1) .o_grid_cell_container[data-path="1.grid.0.2"] button');
-            $button.focus();
+        // clicking on empty cell button
+        var $button = grid.$('.o_grid_section:eq(1) .o_grid_cell_container[data-path="1.grid.0.2"] button');
+        $button.focus();
+        await testUtils.nextTick();
 
-            testUtils.dom.click($button);
-            assert.strictEqual(grid.$('.o_grid_section:eq(1) .o_grid_cell_container[data-path="1.grid.0.2"] button').text(), '0.50',
-                "0.5 is the next value since 0.0 was the closest value in the range");
+        await testUtils.dom.click($button);
+        assert.strictEqual(grid.$('.o_grid_section:eq(1) .o_grid_cell_container[data-path="1.grid.0.2"] button').text(), '0.50',
+            "0.5 is the next value since 0.0 was the closest value in the range");
 
-            testUtils.dom.click($button);
-            assert.strictEqual(grid.$('.o_grid_section:eq(1) .o_grid_cell_container[data-path="1.grid.0.2"] button').text(), '1.00',
-                "0.5 becomes 1.0 as it is the next value in the range");
+        await testUtils.dom.click($button);
+        assert.strictEqual(grid.$('.o_grid_section:eq(1) .o_grid_cell_container[data-path="1.grid.0.2"] button').text(), '1.00',
+            "0.5 becomes 1.0 as it is the next value in the range");
 
-            $button.blur(); // will trigger the adjustment RPC call
+        $button.blur(); // will trigger the adjustment RPC call
+        await testUtils.nextTick();
 
-            // clicking on non empty cell button (1.25)
-            var $button = grid.$('.o_grid_section:eq(0) .o_grid_cell_container[data-path="0.grid.0.0"] button');
-            $button.focus();
+        // clicking on non empty cell button (1.25)
+        var $button = grid.$('.o_grid_section:eq(0) .o_grid_cell_container[data-path="0.grid.0.0"] button');
+        $button.focus();
+        await testUtils.nextTick();
 
-            testUtils.dom.click($button);
-            assert.strictEqual(grid.$('.o_grid_section:eq(0) .o_grid_cell_container[data-path="0.grid.0.0"] button').text(), '0.00',
-                "1.25 is starting value, the closest in the range is 1.00, so the next will be 0.00");
+        await testUtils.dom.click($button);
+        assert.strictEqual(grid.$('.o_grid_section:eq(0) .o_grid_cell_container[data-path="0.grid.0.0"] button').text(), '0.00',
+            "1.25 is starting value, the closest in the range is 1.00, so the next will be 0.00");
 
-            $button.blur(); // will trigger the adjustment RPC call
-
-            grid.destroy();
-            done();
-        });
+        $button.blur(); // will trigger the adjustment RPC call
+        await testUtils.nextTick();
+        grid.destroy();
     });
 
-    QUnit.test('button context not polluted by previous click', function (assert) {
+    QUnit.test('button context not polluted by previous click', async function (assert) {
         assert.expect(4);
-        var done = assert.async();
 
-        var grid = createView({
+        var grid = await createView({
             View: GridView,
             model: 'analytic.line',
             data: this.data,
@@ -1010,10 +963,10 @@ QUnit.module('Views', {
             currentDate: "2017-01-31",
             mockRPC: function (route, args) {
                 if (route === 'some-image') {
-                    return $.when();
+                    return Promise.resolve();
                 }
                 if (args.method === 'search') {
-                    return $.when([1, 2, 3, 4, 5]);
+                    return Promise.resolve([1, 2, 3, 4, 5]);
                 }
                 return this._super.apply(this, arguments);
             },
@@ -1025,23 +978,20 @@ QUnit.module('Views', {
                 },
             },
         });
+        await testUtils.nextTick();
+        testUtils.dom.click(grid.$buttons.find('.grid_arrow_previous'));
 
-        return concurrency.delay(0).then(function () {
-            grid.$buttons.find('.grid_arrow_previous').click();
+        // check that first button click does not affect that button
+        // context for subsequent clicks on it
+        await testUtils.dom.click(grid.$buttons.find('button:contains("Action")'));
+        assert.verifySteps(['2017-01-24'],
+            'first button click get current grid anchor date');
+        testUtils.dom.click(grid.$buttons.find('.grid_arrow_previous'));
+        await testUtils.dom.click(grid.$buttons.find('button:contains("Action")'));
+        assert.verifySteps(['2017-01-17'],
+            'second button click get current grid anchor date');
 
-            // check that first button click does not affect that button
-            // context for subsequent clicks on it
-            grid.$buttons.find('button:contains("Action")').click();
-            assert.verifySteps(['2017-01-24'],
-                'first button click get current grid anchor date');
-            grid.$buttons.find('.grid_arrow_previous').click();
-            grid.$buttons.find('button:contains("Action")').click();
-            assert.verifySteps(['2017-01-24', '2017-01-17'],
-                'second button click get current grid anchor date');
-
-            grid.destroy();
-            done();
-        });
+        grid.destroy();
     });
 
 });

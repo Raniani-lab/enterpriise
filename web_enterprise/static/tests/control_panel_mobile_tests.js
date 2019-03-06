@@ -35,16 +35,16 @@ QUnit.module('Control Panel', {
         };
     },
 }, function () {
-    QUnit.test('searchview should be hidden by default', function (assert) {
+    QUnit.test('searchview should be hidden by default', async function (assert) {
         assert.expect(4);
 
-        var actionManager = createActionManager({
+        var actionManager = await createActionManager({
             actions: this.actions,
             archs: this.archs,
             data: this.data,
         });
 
-        actionManager.doAction(1);
+        await actionManager.doAction(1);
 
         assert.hasClass($('.o_control_panel'),'o_breadcrumb_full',
             "should use full width to display the breadcrumbs by default");
@@ -54,7 +54,7 @@ QUnit.module('Control Panel', {
             "should display a button to toggle the searchview");
 
         // toggle the searchview
-        testUtils.dom.click($('.o_control_panel .o_enable_searchview'));
+        await testUtils.dom.click($('.o_control_panel .o_enable_searchview'));
 
         assert.ok($('.o_control_panel .o_mobile_search').is(':visible'),
             "search options should now be visible");

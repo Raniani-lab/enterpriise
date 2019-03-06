@@ -33,10 +33,10 @@ odoo.define('mrp_pdf_viewer_widget_no_reload.tests', function (require) {
         },
     });
 
-    QUnit.test("Pdf Viewer Widget No Reload : Visible PDF", function (assert) {
+    QUnit.test("Pdf Viewer Widget No Reload : Visible PDF", async function (assert) {
         assert.expect(4);
 
-        var form = createView({
+        var form = await createView({
             View: FormView,
             model: 'mrp.workorder',
             data: this.data,
@@ -55,10 +55,10 @@ odoo.define('mrp_pdf_viewer_widget_no_reload.tests', function (require) {
         form.destroy();
     });
 
-    QUnit.test("Pdf Viewer Widget No Reload : Invisible PDF", function (assert) {
+    QUnit.test("Pdf Viewer Widget No Reload : Invisible PDF", async function (assert) {
         assert.expect(4);
 
-        var form = createView({
+        var form = await createView({
             View: FormView,
             model: 'mrp.workorder',
             data: this.data,

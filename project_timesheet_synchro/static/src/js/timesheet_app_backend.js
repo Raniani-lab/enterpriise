@@ -14,7 +14,7 @@ odoo.define('projcet_timesheet_synchro.app', function (require) {
                 var app = new project_timesheet_synchro_app();
                 def = app.appendTo(this.$('.o_project_timesheet_app'));
             }
-            return $.when(def, this._super.apply(this, arguments));
+            return Promise.all([def, this._super.apply(this, arguments)]);
         },
     });
 

@@ -46,7 +46,7 @@ odoo.define('web_mobile.barcode.tests', function (require) {
         },
     }, function () {
 
-        QUnit.test("web_mobile: barcode button in a mobile environment", function (assert) {
+        QUnit.test("web_mobile: barcode button in a mobile environment", async function (assert) {
             var self = this;
 
             assert.expect(2);
@@ -61,14 +61,14 @@ odoo.define('web_mobile.barcode.tests', function (require) {
             mobile.methods.many2oneDialog = function (args) {
                 // Check if we have one result minimum (1 result + create + create and edit)
                 if (args.records.length >= 3) {
-                    return $.when({'data': {'action': 'select', 'value': {'id': args.records[0].id}}});
+                    return Promise.resolve({'data': {'action': 'select', 'value': {'id': args.records[0].id}}});
                 } else {
-                    return $.when({'data': {'action': 'cancel'}});
+                    return Promise.resolve({'data': {'action': 'cancel'}});
                 }
             };
 
             mobile.methods.scanBarcode = function () {
-                return $.when({
+                return Promise.resolve({
                     'data': self
                         .data[PRODUCT_PRODUCT]
                         .records[0]
@@ -80,7 +80,7 @@ odoo.define('web_mobile.barcode.tests', function (require) {
 
             mobile.methods.vibrate = function () {};
 
-            var form = createView({
+            var form = await createView({
                 View: FormView,
                 arch:
                     '<form>' +
@@ -114,7 +114,7 @@ odoo.define('web_mobile.barcode.tests', function (require) {
 
             assert.equal($scanButton.length, 1, "has scanner button");
 
-            testUtils.dom.click($scanButton);
+            await testUtils.dom.click($scanButton);
 
             var selectedId = form.renderer.state.data[PRODUCT_FIELD_NAME].res_id;
             assert.equal(selectedId, self.data[PRODUCT_PRODUCT].records[0].id,

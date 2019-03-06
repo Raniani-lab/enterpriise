@@ -39,7 +39,7 @@ var ReportEditorAction = AbstractAction.extend({
         defs.push(this._readReport().then(this._loadEnvironment.bind(this)));
         defs.push(this._readModels());
         defs.push(this._readWidgetsOptions());
-        return $.when.apply($, defs);
+        return Promise.all(defs);
     },
     /**
      * @override
@@ -54,25 +54,25 @@ var ReportEditorAction = AbstractAction.extend({
             this.do_warn(_t('Error: Preview not available because there is no existing record.'));
             this.trigger_up('studio_history_back');
         }
-        return $.when.apply($, defs);
+        return Promise.all(defs);
     },
     /**
      * We need to use on_attach_callback because we need to the iframe to be
      * in the DOM to update it. Using on_reverse_breacrumb would have make more
      * sense but it's called too soon.
      *
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     on_attach_callback: function () {
         if (!this.reportEditorManager) {
             // the preview was not availble (see @start) so the manager hasn't
             // been instantiated
-            return $.when();
+            return Promise.resolve();
         }
-        if (this.reportEditorManager.editorIframeDef.state() === 'pending') {
+        if (this.reportEditorManager.editorIframeResolved === false) {
             // this is the first rendering of the editor but we only want to
             // update the editor when going back with the breadcrumb
-            return $.when();
+            return Promise.resolve();
         }
         return this.reportEditorManager.updateEditor();
     },
@@ -84,7 +84,7 @@ var ReportEditorAction = AbstractAction.extend({
     /**
      * @private
      * @param {Object} values
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _editReport: function (values) {
         return this._rpc({
@@ -98,7 +98,7 @@ var ReportEditorAction = AbstractAction.extend({
     },
     /**
      * @private
-     * @returns {Deferred<Object>}
+     * @returns {Promise<Object>}
      */
     _getReportViews: function () {
         var self = this;
@@ -121,7 +121,7 @@ var ReportEditorAction = AbstractAction.extend({
      * performed.
      *
      * @private
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _loadEnvironment: function () {
         var self = this;
@@ -142,7 +142,7 @@ var ReportEditorAction = AbstractAction.extend({
      * user-friendly way in the sidebar (see AbstractReportComponent).
      *
      * @private
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _readModels: function () {
         var self = this;
@@ -161,7 +161,7 @@ var ReportEditorAction = AbstractAction.extend({
     },
     /**
      * @private
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _readReport: function () {
         var self = this;
@@ -176,7 +176,7 @@ var ReportEditorAction = AbstractAction.extend({
     },
     /**
      * @private
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _readPaperFormat: function () {
         var self = this;
@@ -194,7 +194,7 @@ var ReportEditorAction = AbstractAction.extend({
      * Load the widgets options for t-options directive in sidebar.
      *
      * @private
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _readWidgetsOptions: function () {
         var self = this;
@@ -211,12 +211,12 @@ var ReportEditorAction = AbstractAction.extend({
      * @private
      * @param {Object} [state]
      * @param {string} [state.sidebarMode] among ['add', 'report']
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _renderEditor: function (state) {
         var self = this;
         var defs = [this._getReportViews(), this._readPaperFormat()];
-        return $.when.apply($, defs).then(function () {
+        return Promise.all(defs).then(function () {
             var params = {
                 env: self.env,
                 initialState: state,

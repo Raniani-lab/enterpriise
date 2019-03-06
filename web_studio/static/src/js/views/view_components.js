@@ -16,6 +16,7 @@ var AbstractComponent = Widget.extend({
      * @override
      */
     start: function () {
+        var self = this;
         this.$el.addClass('o_web_studio_component');
         this.$el.data('structure', this.structure);
         this.$el.text(this.label);
@@ -34,7 +35,8 @@ var AbstractComponent = Widget.extend({
             revertDuration: 200,
             refreshPositions: true,
             start: function (e, ui) {
-                $(ui.helper).addClass("ui-draggable-helper");
+                ui.helper.data(self.$el.data());
+                ui.helper.addClass("ui-draggable-helper");
             }
         });
         return this._super.apply(this, arguments);
@@ -76,7 +78,7 @@ var AbstractNewFieldComponent = AbstractComponent.extend({
             type: this.type,
             field_description: 'New ' + this.label,
         });
-        return this._super();
+        return this._super.apply(this, arguments);
     },
 });
 var CharFieldComponent = AbstractNewFieldComponent.extend({

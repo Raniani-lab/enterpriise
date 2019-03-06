@@ -174,14 +174,20 @@ var GanttController = AbstractController.extend({
      * @param {integer} id
      * @param {Object} schedule
      * @param {boolean} isUTC
-     * @returns {$.Promise} resolved when the record has been reloaded, rejected
+     * @returns {Promise} resolved when the record has been reloaded, rejected
      *   if the request has been dropped by DropPrevious
      */
     _reschedule: function (ids, schedule, isUTC) {
-        var def = $.Deferred();
-        var rpcDef = this.model.reschedule(ids, schedule, isUTC).always(def.resolve.bind(def));
-        this.dp.add(rpcDef).fail(def.reject.bind(def));
-        return def.then(this.reload.bind(this, {}));
+        var resolveProm;
+        var rejectProm;
+        var prom = new Promise(function (resolve, reject) {
+            resolveProm = resolve;
+            rejectProm = reject;
+        });
+        var rpcProm = this.model.reschedule(ids, schedule, isUTC);
+        rpcProm.then(resolveProm).guardedCatch(resolveProm);
+        this.dp.add(rpcProm).guardedCatch(rejectProm);
+        return prom.then(this.reload.bind(this, {}));
     },
     /**
      * Overriden to hide expand/collapse buttons when they have no effect.

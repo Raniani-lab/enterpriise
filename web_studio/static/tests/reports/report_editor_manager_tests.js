@@ -117,8 +117,7 @@ QUnit.module('ReportEditorManager', {
     }
 }, function () {
 
-    QUnit.test('empty editor rendering', function (assert) {
-        var done = assert.async();
+    QUnit.test('empty editor rendering', async function (assert) {
         assert.expect(5);
 
         this.templates.push({
@@ -131,7 +130,7 @@ QUnit.module('ReportEditorManager', {
                 '</kikou>',
         });
 
-        var def = studioTestUtils.createReportEditorManager({
+        var rem = await studioTestUtils.createReportEditorManager({
             env: {
                 modelName: 'kikou',
                 ids: [42, 43],
@@ -148,13 +147,13 @@ QUnit.module('ReportEditorManager', {
                         "the correct report should be printed");
                     assert.strictEqual(args.record_id, 42,
                         "the report should be printed with the correct record");
-                    return $.when();
+                    return Promise.resolve();
                 }
                 return this._super.apply(this, arguments);
             },
         });
 
-        def.then(function (rem) {
+        await rem.editorIframeDef.then(async function () {
             assert.containsOnce(rem, '.o_web_studio_sidebar',
                 "a sidebar should be rendered");
 
@@ -164,20 +163,18 @@ QUnit.module('ReportEditorManager', {
             testUtils.mock.intercept(rem, 'node_clicked', function () {
                 throw new Error("The no content helper shouldn't be clickable.");
             });
-            testUtils.dom.click(rem.$('iframe').contents().find('.page .o_no_content_helper'));
+            await testUtils.dom.click(rem.$('iframe').contents().find('.page .o_no_content_helper'));
 
             // printing the report
             assert.containsOnce(rem, '.o_web_studio_report_print',
                 "it should be possible to print the report");
-            testUtils.dom.click(rem.$('.o_web_studio_report_print'));
+            await testUtils.dom.click(rem.$('.o_web_studio_report_print'));
 
             rem.destroy();
-            done();
         });
     });
 
-    QUnit.test('basic editor rendering', function (assert) {
-        var done = assert.async();
+    QUnit.test('basic editor rendering', async function (assert) {
         assert.expect(8);
 
         this.templates.push({
@@ -204,7 +201,7 @@ QUnit.module('ReportEditorManager', {
                 '</kikou>'
         });
 
-        var def = studioTestUtils.createReportEditorManager({
+        var rem = await studioTestUtils.createReportEditorManager({
             data: this.data,
             models: this.models,
             env: {
@@ -220,7 +217,7 @@ QUnit.module('ReportEditorManager', {
             reportMainViewID: 42,
         });
 
-        def.then(function (rem) {
+        await rem.editorIframeDef.then(async function () {
             assert.containsOnce(rem, '.o_web_studio_sidebar',
                 "a sidebar should be rendered");
             assert.strictEqual(rem.$('iframe').contents().find('.page').text(),"First spanSecond span",
@@ -234,7 +231,7 @@ QUnit.module('ReportEditorManager', {
             assert.ok( heightDifference <= 1, "the default height should be A4 (1122.52px = 297mm) at +/- 1 px because of decimals");
 
             // click to edit a span
-            testUtils.dom.click(rem.$('iframe').contents().find('span:contains(Second)'));
+            await testUtils.dom.click(rem.$('iframe').contents().find('span:contains(Second)'));
 
             assert.hasClass(rem.$('iframe').contents().find('span:contains(Second)'),'o_web_studio_report_selected',
                 "the corresponding nodes should be selected");
@@ -244,16 +241,15 @@ QUnit.module('ReportEditorManager', {
                 "there should be 2 cards in the sidebar");
 
             // click on "Options" (shouldn't do anything)
-            testUtils.dom.click(rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="options"]'));
+            await testUtils.dom.click(rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="options"]'));
             assert.containsN(rem, '.o_web_studio_sidebar .o_web_studio_sidebar_content .card', 2,
                 "there should still be 2 cards in the sidebar");
 
             rem.destroy();
-            done();
         });
     });
 
-    QUnit.test('editor rendering with paperformat', function (assert) {
+    QUnit.test('editor rendering with paperformat', async function (assert) {
         var done = assert.async();
         assert.expect(2);
 
@@ -270,7 +266,7 @@ QUnit.module('ReportEditorManager', {
                 '</kikou>',
         });
 
-        var def = studioTestUtils.createReportEditorManager({
+        var rem = await studioTestUtils.createReportEditorManager({
             data: this.data,
             models: this.models,
             env: {
@@ -290,7 +286,7 @@ QUnit.module('ReportEditorManager', {
             reportMainViewID: 42,
         });
 
-        def.then(function (rem) {
+        await rem.editorIframeDef.then(async function () {
             var iframeWidth = getFloatSizeFromPropertyInPixels(rem.$('.o_web_studio_report_iframe_container'),'width');
             assert.ok(Math.abs(iframeWidth-756) <= 1,"the width should be taken from the paperFormat +/- 1px");
 
@@ -303,8 +299,7 @@ QUnit.module('ReportEditorManager', {
         });
     });
 
-    QUnit.test('use pager', function (assert) {
-        var done = assert.async();
+    QUnit.test('use pager', async function (assert) {
         assert.expect(6);
         var self = this;
 
@@ -321,7 +316,7 @@ QUnit.module('ReportEditorManager', {
                 '</kikou>',
         });
 
-        var def = studioTestUtils.createReportEditorManager({
+        var rem = await studioTestUtils.createReportEditorManager({
             data: this.data,
             models: this.models,
             env: {
@@ -348,7 +343,7 @@ QUnit.module('ReportEditorManager', {
                             '</div>' +
                         '</t>' +
                     '</kikou>';
-                    return $.when({
+                    return Promise.resolve({
                         report_html: studioTestUtils.getReportHTML(self.templates),
                         views: studioTestUtils.getReportViews(self.templates),
                     });
@@ -357,7 +352,7 @@ QUnit.module('ReportEditorManager', {
             },
         });
 
-        def.then(function (rem) {
+        await rem.editorIframeDef.then(async function () {
             assert.strictEqual(rem.$('iframe').contents().find('.page').text(), "First span",
                 "the iframe should be rendered");
             assert.containsOnce(rem, '.o_web_studio_report_pager',
@@ -366,7 +361,7 @@ QUnit.module('ReportEditorManager', {
                 "the pager should be correctly rendered");
 
             // click to switch between records
-            testUtils.dom.click(rem.$('.o_web_studio_report_pager .o_pager_next'));
+            await testUtils.dom.click(rem.$('.o_web_studio_report_pager .o_pager_next'));
 
             assert.strictEqual(rem.$('iframe').contents().find('.page').text(), "hello",
                 "the iframe should be updated");
@@ -374,12 +369,10 @@ QUnit.module('ReportEditorManager', {
                 "the pager should be correctly updated");
 
             rem.destroy();
-            done();
         });
     });
 
-    QUnit.test('components edition', function (assert) {
-        var done = assert.async();
+    QUnit.test('components edition', async function (assert) {
         assert.expect(7);
 
         var self = this;
@@ -398,7 +391,7 @@ QUnit.module('ReportEditorManager', {
                 '</kikou>',
         });
 
-        var def = studioTestUtils.createReportEditorManager({
+        var rem = await studioTestUtils.createReportEditorManager({
             data: this.data,
             models: this.models,
             env: {
@@ -443,7 +436,7 @@ QUnit.module('ReportEditorManager', {
                         '</t>' +
                     '</kikou>';
 
-                    return $.when({
+                    return Promise.resolve({
                         report_html: studioTestUtils.getReportHTML(self.templates),
                         views: studioTestUtils.getReportViews(self.templates),
                     });
@@ -452,36 +445,34 @@ QUnit.module('ReportEditorManager', {
             },
         });
 
-        def.then(function (rem) {
-            assert.strictEqual(rem.$('iframe').contents().find('.page').text(),"First span",
-                "the iframe should be rendered");
+        await rem.editorIframeDef
+        assert.strictEqual(rem.$('iframe').contents().find('.page').text(),"First span",
+            "the iframe should be rendered");
 
-            // click to edit a span
-            testUtils.dom.click(rem.$('iframe').contents().find('span:contains(First)'));
+        // click to edit a span
+        await testUtils.dom.click(rem.$('iframe').contents().find('span:contains(First)'));
 
-            var $textarea = rem.$('.o_web_studio_sidebar .o_web_studio_active textarea[name="text"]');
-            assert.strictEqual($textarea.length, 1,
-                "there should be a textarea to edit the node text");
-            assert.strictEqual($textarea.val(), "First span",
-                "the Text component should be correctly set");
+        var $textarea = rem.$('.o_web_studio_sidebar .o_web_studio_active textarea[name="text"]');
+        assert.strictEqual($textarea.length, 1,
+            "there should be a textarea to edit the node text");
+        assert.strictEqual($textarea.val(), "First span",
+            "the Text component should be correctly set");
 
-            // change the text (should trigger the report edition)
-            testUtils.fields.editInput($textarea, "hello");
+        // change the text (should trigger the report edition)
+        await testUtils.fields.editInput($textarea, "hello");
 
-            assert.strictEqual(rem.$('iframe').contents().find('.page').text(),"hello",
-                "the iframe should have been updated");
-            var $newTextarea = rem.$('.o_web_studio_sidebar .o_web_studio_active textarea[name="text"]');
-            assert.strictEqual($newTextarea.length, 1,
-                "there should still be a textarea to edit the node text");
-            assert.strictEqual($newTextarea.val(), "hello",
-                "the Text component should have been updated");
+        assert.strictEqual(rem.$('iframe').contents().find('.page').text(),"hello",
+            "the iframe should have been updated");
+        var $newTextarea = rem.$('.o_web_studio_sidebar .o_web_studio_active textarea[name="text"]');
+        assert.strictEqual($newTextarea.length, 1,
+            "there should still be a textarea to edit the node text");
+        assert.strictEqual($newTextarea.val(), "hello",
+            "the Text component should have been updated");
 
-            rem.destroy();
-            done();
-        });
+        rem.destroy();
     });
 
-    QUnit.test('components edition 2', function (assert) {
+    QUnit.test('components edition 2', async function (assert) {
         var done = assert.async();
         assert.expect(6);
 
@@ -500,7 +491,7 @@ QUnit.module('ReportEditorManager', {
                 '</kikou>',
         });
 
-        var def = studioTestUtils.createReportEditorManager({
+        var rem = await studioTestUtils.createReportEditorManager({
             data: this.data,
             models: this.models,
             env: {
@@ -516,21 +507,21 @@ QUnit.module('ReportEditorManager', {
             reportMainViewID: 42,
         });
 
-        def.then(function (rem) {
+        await rem.editorIframeDef.then(async function () {
             assert.hasAttrValue(rem.$('.o_web_studio_sidebar_header .active'), 'name', 'new',
                 "the 'Add' tab should be active");
             assert.strictEqual(rem.$('iframe').contents().find('.o_web_studio_report_selected').length, 0,
                 "there should be no selected node");
 
             // click to edit a span
-            testUtils.dom.click(rem.$('iframe').contents().find('span:contains(First)'));
+            await testUtils.dom.click(rem.$('iframe').contents().find('span:contains(First)'));
             assert.hasAttrValue(rem.$('.o_web_studio_sidebar_header .active'), 'name', 'options',
                 "the 'Options' tab should be active");
             assert.strictEqual(rem.$('iframe').contents().find('.o_web_studio_report_selected').length, 1,
                 "the span should be selected");
 
             // switch tab
-            testUtils.dom.click(rem.$('.o_web_studio_sidebar_header [name="report"]'));
+            await testUtils.dom.click(rem.$('.o_web_studio_sidebar_header [name="report"]'));
             assert.hasAttrValue(rem.$('.o_web_studio_sidebar_header .active'), 'name', 'report',
                 "the 'Report' tab should be active");
             assert.strictEqual(rem.$('iframe').contents().find('.o_web_studio_report_selected').length, 0,
@@ -541,9 +532,8 @@ QUnit.module('ReportEditorManager', {
         });
     });
 
-    QUnit.test('remove components - when no node is available to select, the add tab is activated', function (assert) {
+    QUnit.test('remove components - when no node is available to select, the add tab is activated', async function (assert) {
         var self = this;
-        var done = assert.async();
         assert.expect(1);
 
         this.templates.push({
@@ -561,7 +551,7 @@ QUnit.module('ReportEditorManager', {
                 '</kikou>',
         });
 
-        var def = studioTestUtils.createReportEditorManager({
+        var rem = await studioTestUtils.createReportEditorManager({
             env: {
                 modelName: 'kikou',
                 ids: [42, 43],
@@ -577,7 +567,7 @@ QUnit.module('ReportEditorManager', {
                         '<t t-name="template1">' +
                         '</t>' +
                     '</kikou>';
-                    return $.when({
+                    return Promise.resolve({
                         report_html: studioTestUtils.getReportHTML(self.templates),
                         views: studioTestUtils.getReportViews(self.templates),
                     });
@@ -586,23 +576,21 @@ QUnit.module('ReportEditorManager', {
             },
         });
 
-        def.then(function (rem) {
+        await rem.editorIframeDef.then(async function () {
             // click to edit a span
-            testUtils.dom.click(rem.$('iframe').contents().find('span:contains(First)'));
+            await testUtils.dom.click(rem.$('iframe').contents().find('span:contains(First)'));
 
             // remove the span from the dom
-            testUtils.dom.click(rem.$('.o_web_studio_active .o_web_studio_remove'));
-            testUtils.dom.click($('.modal-content .btn-primary'));
+            await testUtils.dom.click(rem.$('.o_web_studio_active .o_web_studio_remove'));
+            await testUtils.dom.click($('.modal-content .btn-primary'));
             assert.hasAttrValue(rem.$('.o_web_studio_sidebar_header .active'), 'name', 'new',
                 "after the remove, 'Add' tab should be active");
 
             rem.destroy();
-            done();
         });
     });
 
-    QUnit.test('drag & drop text component', function (assert) {
-        var done = assert.async();
+    QUnit.test('drag & drop text component', async function (assert) {
         assert.expect(1);
 
         var self = this;
@@ -621,7 +609,7 @@ QUnit.module('ReportEditorManager', {
                 '</kikou>',
         });
 
-        var def = studioTestUtils.createReportEditorManager({
+        var rem = await studioTestUtils.createReportEditorManager({
             data: this.data,
             models: this.models,
             env: {
@@ -657,7 +645,7 @@ QUnit.module('ReportEditorManager', {
                         report_views: studioTestUtils.getReportViews(self.templates),
                     });
 
-                    return $.when({
+                    return Promise.resolve({
                         report_html: studioTestUtils.getReportHTML(self.templates),
                         views: studioTestUtils.getReportViews(self.templates),
                     });
@@ -666,19 +654,18 @@ QUnit.module('ReportEditorManager', {
             },
         });
 
-        def.then(function (rem) {
-            testUtils.dom.click(rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]'));
+        await rem.editorIframeDef.then(async function () {
+            await testUtils.dom.click(rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]'));
 
             // drag and drop a Text component, which should trigger a view edition
             var $text = rem.$('.o_web_studio_sidebar .o_web_studio_field_type_container:eq(1) .o_web_studio_component:contains(Text)');
-            testUtils.dom.dragAndDrop($text, rem.$('iframe').contents().find('span:contains(First span)'));
+            await testUtils.dom.dragAndDrop($text, rem.$('iframe').contents().find('span:contains(First span)'));
 
             rem.destroy();
-            done();
         });
     });
 
-    QUnit.test('drag & drop text component in existing col', loadIframeCss(function (assert, done) {
+    QUnit.test('drag & drop text component in existing col', loadIframeCss(async function (assert, done) {
         assert.expect(1);
 
         var self = this;
@@ -696,7 +683,7 @@ QUnit.module('ReportEditorManager', {
                 '</kikou>',
         });
 
-        var def = studioTestUtils.createReportEditorManager({
+        var rem = await studioTestUtils.createReportEditorManager({
             env: {
                 modelName: 'kikou',
                 ids: [42, 43],
@@ -722,7 +709,7 @@ QUnit.module('ReportEditorManager', {
                         xpath: "/t/div/div[1]"
                     }]);
 
-                    return $.when({
+                    return Promise.resolve({
                         report_html: studioTestUtils.getReportHTML(self.templates),
                         views: studioTestUtils.getReportViews(self.templates),
                     });
@@ -731,19 +718,19 @@ QUnit.module('ReportEditorManager', {
             },
         });
 
-        def.then(function (rem) {
-            testUtils.dom.click(rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]'));
+        await rem.editorIframeDef.then(async function () {
+            await testUtils.dom.click(rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]'));
 
             // drag and drop a Text component, which should trigger a view edition
             var $text = rem.$('.o_web_studio_sidebar .o_web_studio_component:contains(Text):eq(1)');
-            testUtils.dom.dragAndDrop($text, rem.$('iframe').contents().find('.col-6:eq(1)'));
+            await testUtils.dom.dragAndDrop($text, rem.$('iframe').contents().find('.col-6:eq(1)'));
 
             rem.destroy();
             done();
         });
     }));
 
-    QUnit.test('drag & drop components and cancel', function (assert) {
+    QUnit.test('drag & drop components and cancel', async function (assert) {
         var done = assert.async();
         assert.expect(4);
 
@@ -764,7 +751,7 @@ QUnit.module('ReportEditorManager', {
                 '</kikou>',
         });
 
-        var def = studioTestUtils.createReportEditorManager({
+        var rem = await studioTestUtils.createReportEditorManager({
             data: this.data,
             models: this.models,
             env: {
@@ -780,25 +767,25 @@ QUnit.module('ReportEditorManager', {
             reportMainViewID: 42,
         });
 
-        def.then(function (rem) {
-            testUtils.dom.click(rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]'));
+        await rem.editorIframeDef.then(async function () {
+            await testUtils.dom.click(rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]'));
 
             // drag and drop a Text component
             var $text = rem.$('.o_web_studio_sidebar .o_web_studio_component:contains(Field):eq(1)');
-            testUtils.dom.dragAndDrop($text, rem.$('iframe').contents().find('.col-3:last'));
+            await testUtils.dom.dragAndDrop($text, rem.$('iframe').contents().find('.col-3:last'));
             assert.strictEqual($('.o_web_studio_field_modal').length, 1, "a field modal should be opened");
 
             // cancel the field selection
-            testUtils.dom.click($('.o_web_studio_field_modal .btn-secondary'));
+            await testUtils.dom.click($('.o_web_studio_field_modal .btn-secondary'));
             assert.strictEqual(rem.$('iframe').contents().find('.o_web_studio_hook').length, 0, "Must cancel the dragAndDrop");
 
             // drag and drop an Address component
             var $address = rem.$('.o_web_studio_sidebar .o_web_studio_component:contains(Address)');
-            testUtils.dom.dragAndDrop($address, rem.$('iframe').contents().find('.col-3:last'));
+            await testUtils.dom.dragAndDrop($address, rem.$('iframe').contents().find('.col-3:last'));
             assert.strictEqual($('.o_web_studio_field_modal').length, 1, "a field modal should be opened");
 
             // cancel the field selection
-            testUtils.dom.click($('.o_web_studio_field_modal .btn-secondary'));
+            await testUtils.dom.click($('.o_web_studio_field_modal .btn-secondary'));
             assert.strictEqual(rem.$('iframe').contents().find('.o_web_studio_hook').length, 0, "Must cancel the dragAndDrop");
 
             rem.destroy();
@@ -806,7 +793,7 @@ QUnit.module('ReportEditorManager', {
         });
     });
 
-    QUnit.test('drag & drop field block', function (assert) {
+    QUnit.test('drag & drop field block', async function (assert) {
         assert.expect(1);
         var done = assert.async();
 
@@ -824,7 +811,7 @@ QUnit.module('ReportEditorManager', {
             dataOeContext: '{"o": "model.test"}'
         };
 
-        var def = studioTestUtils.createReportEditorManager({
+        var rem = await studioTestUtils.createReportEditorManager({
             data: this.data,
             models: this.models,
             env: {
@@ -843,38 +830,39 @@ QUnit.module('ReportEditorManager', {
                     var operation = _.last(args.operations);
                     if (!operation) {
                         // this is to deal with undo operation (which is
-                        // triggered after the first deferred reject)
-                        return $.Deferred().reject();
+                        // triggered after the first promise reject)
+                        return Promise.reject();
                     }
                     assert.deepEqual(operation.inheritance[0].content, "<div class='row'><div class='col'><span t-field=\"o.child.name\"></span></div></div>",
                         "the block should be correctly added");
-                    return $.Deferred().reject();
+                    return Promise.reject();
                 }
                 return this._super.apply(this, arguments);
             },
         });
 
-        def.then(function (rem) {
-            testUtils.dom.click(rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]'));
+        await rem.editorIframeDef.then(async function () {
+            await testUtils.dom.click(rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]'));
 
             var $field = rem.$('.o_web_studio_sidebar .o_web_studio_field_type_container:eq(0) .o_web_studio_component:contains(Field):eq(0)');
             var $target = rem.$('iframe').contents().find('.page');
 
             // drag and drop a Field component, which should trigger a view edition
-            testUtils.dom.dragAndDrop($field, $target, {position: 'inside'});
+            await testUtils.dom.dragAndDrop($field, $target, {position: 'inside'});
 
             $('.o_web_studio_field_modal .o_field_selector').trigger('focusin');
-            $('.o_web_studio_field_modal .o_field_selector_item[data-name="o"]').trigger('click');
-            $('.o_web_studio_field_modal .o_field_selector_item[data-name="child"]').trigger('click');
-            $('.o_web_studio_field_modal .o_field_selector_item[data-name="name"]').trigger('click');
-            $('.o_web_studio_field_modal .btn-primary').trigger('click');
+            await testUtils.nextTick();
+            await testUtils.dom.click($('.o_web_studio_field_modal .o_field_selector_item[data-name="o"]'));
+            await testUtils.dom.click($('.o_web_studio_field_modal .o_field_selector_item[data-name="child"]'));
+            await testUtils.dom.click($('.o_web_studio_field_modal .o_field_selector_item[data-name="name"]'));
+            await testUtils.dom.click($('.o_web_studio_field_modal .btn-primary'));
 
             rem.destroy();
             done();
         });
     });
 
-    QUnit.test('drag & drop field in row', loadIframeCss(function (assert, done) {
+    QUnit.test('drag & drop field in row', loadIframeCss(async function (assert, done) {
         assert.expect(4); // 2 asserts by test
 
         this.templates.push({
@@ -908,7 +896,7 @@ QUnit.module('ReportEditorManager', {
         };
         templateData.docs.mapped = function (fieldName) {return _.pluck(this, fieldName);};
 
-        var def = studioTestUtils.createReportEditorManager({
+        var rem = await studioTestUtils.createReportEditorManager({
             data: this.data,
             models: this.models,
             env: {
@@ -927,11 +915,11 @@ QUnit.module('ReportEditorManager', {
                     var operation = _.last(args.operations);
                     if (!operation) {
                         // this is to deal with undo operation (which is
-                        // triggered after the first deferred reject)
-                        return $.Deferred().reject();
+                        // triggered after the first promise reject)
+                        return Promise.reject();
                     }
                     assert.deepEqual(operation.inheritance, tests[testIndex].inheritance, tests[testIndex].text);
-                    return $.Deferred().reject();
+                    return Promise.reject();
                 }
                 return this._super.apply(this, arguments);
             },
@@ -965,8 +953,8 @@ QUnit.module('ReportEditorManager', {
         ];
         var testIndex = 0;
 
-        def.then(function (rem) {
-            testUtils.dom.click(rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]'));
+        await rem.editorIframeDef.then(async function () {
+            await testUtils.dom.click(rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]'));
 
             var $field = rem.$('.o_web_studio_sidebar .o_web_studio_field_type_container:eq(1) .o_web_studio_component:contains(Field)');
 
@@ -974,15 +962,16 @@ QUnit.module('ReportEditorManager', {
                 var test = tests[testIndex];
                 var $target = rem.$('iframe').contents().find(test.selector);
                 // drag and drop a Field component, which should trigger a view edition
-                testUtils.dom.dragAndDrop($field, $target, {position: test.position});
+                await testUtils.dom.dragAndDrop($field, $target, {position: test.position});
                 var $nearestHook = rem.$('iframe').contents().find('.o_web_studio_nearest_hook');
                 assert.strictEqual($nearestHook.length, test.nearestHookNumber, test.text + ' (nearestHook number)');
 
                 $('.o_web_studio_field_modal .o_field_selector').trigger('focusin');
-                $('.o_web_studio_field_modal .o_field_selector_item[data-name="o"]').trigger('click');
-                $('.o_web_studio_field_modal .o_field_selector_item[data-name="child"]').trigger('click');
-                $('.o_web_studio_field_modal .o_field_selector_item[data-name="name"]').trigger('click');
-                $('.o_web_studio_field_modal .btn-primary').trigger('click');
+                await testUtils.nextTick();
+                await testUtils.dom.click($('.o_web_studio_field_modal .o_field_selector_item[data-name="o"]'));
+                await testUtils.dom.click($('.o_web_studio_field_modal .o_field_selector_item[data-name="child"]'));
+                await testUtils.dom.click($('.o_web_studio_field_modal .o_field_selector_item[data-name="name"]'));
+                await testUtils.dom.click($('.o_web_studio_field_modal .btn-primary'));
             }
 
             rem.destroy();
@@ -990,7 +979,7 @@ QUnit.module('ReportEditorManager', {
         });
     }));
 
-    QUnit.test('drag & drop field in table', loadIframeCss(function (assert, done) {
+    QUnit.test('drag & drop field in table', loadIframeCss(async function (assert, done) {
         assert.expect(20);
 
         this.templates.push({
@@ -1044,7 +1033,7 @@ QUnit.module('ReportEditorManager', {
         };
         templateData.docs.mapped = function (fieldName) {return _.pluck(this, fieldName);};
 
-        var def = studioTestUtils.createReportEditorManager({
+        var rem = await studioTestUtils.createReportEditorManager({
             data: this.data,
             models: this.models,
             env: {
@@ -1062,10 +1051,10 @@ QUnit.module('ReportEditorManager', {
                 if (route === '/web_studio/edit_report_view') {
                     var operation = _.last(args.operations);
                     if (!operation) {
-                        return $.Deferred().reject();
+                        return Promise.reject();
                     }
                     assert.deepEqual(operation.inheritance, tests[testIndex].inheritance, tests[testIndex].text);
-                    return $.Deferred().reject();
+                    return Promise.reject();
                 }
                 return this._super.apply(this, arguments);
             },
@@ -1271,8 +1260,8 @@ QUnit.module('ReportEditorManager', {
         ];
 
 
-        def.then(function (rem) {
-            testUtils.dom.click(rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]'));
+        await rem.editorIframeDef.then(async function () {
+            await testUtils.dom.click(rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]'));
 
             // drag and drop a Text component, which should trigger a view edition
             var $table = rem.$('iframe').contents().find('table');
@@ -1282,24 +1271,25 @@ QUnit.module('ReportEditorManager', {
                 var $buildingBlock = rem.$(test.buildingBlockSelector);
                 var $target = $table.find(test.selector);
                 $target.css('border','1px solid black'); // makes debugging easier
-                testUtils.dom.dragAndDrop($buildingBlock, $target, {position: test.position});
+                await testUtils.dom.dragAndDrop($buildingBlock, $target, {position: test.position});
                 var $nearestHook = $table.find('.o_web_studio_nearest_hook');
                 assert.strictEqual($nearestHook.length, test.nearestHookNumber, test.text + ' (nearestHook number)');
                 if (test.onDragAndDrop) {
                     test.onDragAndDrop($table);
                 }
                 $('.o_web_studio_field_modal .o_field_selector').trigger('focusin');
-                $('.o_web_studio_field_modal .o_field_selector_item[data-name="o"]').trigger('click');
-                $('.o_web_studio_field_modal .o_field_selector_item[data-name="child"]').trigger('click');
-                $('.o_web_studio_field_modal .o_field_selector_item[data-name="name"]').trigger('click');
-                $('.o_web_studio_field_modal .btn-primary').trigger('click');
+                await testUtils.nextTick();
+                await testUtils.dom.click($('.o_web_studio_field_modal .o_field_selector_item[data-name="o"]'));
+                await testUtils.dom.click($('.o_web_studio_field_modal .o_field_selector_item[data-name="child"]'));
+                await testUtils.dom.click($('.o_web_studio_field_modal .o_field_selector_item[data-name="name"]'));
+                await testUtils.dom.click($('.o_web_studio_field_modal .btn-primary'));
             }
             rem.destroy();
             done();
         });
     }));
 
-    QUnit.test('drag & drop block "Accounting Total"', loadIframeCss(function (assert, done) {
+    QUnit.test('drag & drop block "Accounting Total"', loadIframeCss(async function (assert, done) {
         assert.expect(1);
 
         this.templates.push({
@@ -1326,7 +1316,7 @@ QUnit.module('ReportEditorManager', {
         var templateData = {
             dataOeContext: '{"o": "account.invoice"}'
         };
-        var def = studioTestUtils.createReportEditorManager({
+        var rem = await studioTestUtils.createReportEditorManager({
             data: this.data,
             models: this.models,
             env: {
@@ -1344,7 +1334,7 @@ QUnit.module('ReportEditorManager', {
                 if (route === '/web_studio/edit_report_view') {
                     var operation = _.last(args.operations);
                     if (!operation) {
-                        return $.Deferred().reject();
+                        return Promise.reject();
                     }
                     assert.deepEqual(operation.inheritance, [{
                         content:
@@ -1393,28 +1383,29 @@ QUnit.module('ReportEditorManager', {
                         view_id: 55,
                         xpath: "/t/div"
                     }], 'Should send the xpath node with the content');
-                    return $.Deferred().reject();
+                    return Promise.reject();
                 }
                 return this._super.apply(this, arguments);
             },
         });
 
-        def.then(function (rem) {
-            testUtils.dom.click(rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]'));
+        await rem.editorIframeDef.then(async function () {
+            await testUtils.dom.click(rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]'));
             var $main = rem.$('iframe').contents().find('main');
 
             var $text = rem.$('.o_web_studio_sidebar .o_web_studio_field_type_container:eq(2) .o_web_studio_component:contains(Subtotal & Total)');
-            testUtils.dom.dragAndDrop($text, $main, {position: {top: 50, left: 100}});
+            await testUtils.dom.dragAndDrop($text, $main, {position: {top: 50, left: 100}});
             $('.o_web_studio_field_modal .o_field_selector').trigger('focusin');
-            $('.o_web_studio_field_modal .o_field_selector_item[data-name="o"]').trigger('click');
-            $('.o_web_studio_field_modal .btn-primary').trigger('click');
+            await testUtils.nextTick();
+            await testUtils.dom.click($('.o_web_studio_field_modal .o_field_selector_item[data-name="o"]'));
+            await testUtils.dom.click($('.o_web_studio_field_modal .btn-primary'));
 
             rem.destroy();
             done();
         });
     }));
 
-    QUnit.test('edit block "Accounting Total"', loadIframeCss(function (assert, done) {
+    QUnit.test('edit block "Accounting Total"', loadIframeCss(async function (assert, done) {
         assert.expect(2);
 
         var initialDebugMode = config.debug;
@@ -1454,7 +1445,7 @@ QUnit.module('ReportEditorManager', {
                 amount_by_group: null,
             }
         };
-        var def = studioTestUtils.createReportEditorManager({
+        var rem = await studioTestUtils.createReportEditorManager({
             data: this.data,
             models: this.models,
             env: {
@@ -1472,7 +1463,7 @@ QUnit.module('ReportEditorManager', {
                 if (route === '/web_studio/edit_report_view') {
                     var operation = _.last(args.operations);
                     if (!operation) {
-                        return $.Deferred().reject();
+                        return Promise.reject();
                     }
                     assert.deepEqual(operation.inheritance, [{
                         content: '<attribute name="t-value">o.child_bis</attribute>',
@@ -1480,23 +1471,24 @@ QUnit.module('ReportEditorManager', {
                         view_id: 55,
                         xpath: "/t/div/div/table//t[@t-set='total_currency_id']"
                     }], 'Should send the xpath node with the content');
-                    return $.Deferred().reject();
+                    return Promise.reject();
                 }
                 return this._super.apply(this, arguments);
             },
         });
 
-        def.then(function (rem) {
-            testUtils.dom.click(rem.$('iframe').contents().find('main th'));
+        await rem.editorIframeDef.then(async function () {
+            await testUtils.dom.click(rem.$('iframe').contents().find('main th'));
             var $card = rem.$('.o_web_studio_sidebar .card:has(.o_text:contains(table))');
-            testUtils.dom.click($card.find('[data-toggle="collapse"]'));
+            await testUtils.dom.click($card.find('[data-toggle="collapse"]'));
 
             assert.strictEqual($card.find('.o_web_studio_report_currency_id .o_field_selector_chain_part').text().replace(/\s+/g, ' '),
                 ' o (Model Test) Child ', 'Should display the t-foreach value');
 
             rem.$('.o_web_studio_report_currency_id .o_field_selector').trigger('focusin');
-            rem.$('.o_web_studio_report_currency_id .o_field_selector_item[data-name="child_bis"]').trigger('click');
-            rem.$('.o_web_studio_report_currency_id .o_field_selector_close').trigger('click');
+            await testUtils.nextTick();
+            await testUtils.dom.click(rem.$('.o_web_studio_report_currency_id .o_field_selector_item[data-name="child_bis"]'));
+            await testUtils.dom.click(rem.$('.o_web_studio_report_currency_id .o_field_selector_close'));
 
             rem.destroy();
             config.debug = initialDebugMode;
@@ -1504,7 +1496,7 @@ QUnit.module('ReportEditorManager', {
         });
     }));
 
-    QUnit.test('drag & drop block "Data table"', loadIframeCss(function (assert, done) {
+    QUnit.test('drag & drop block "Data table"', loadIframeCss(async function (assert, done) {
         assert.expect(2);
 
         this.templates.push({
@@ -1524,7 +1516,7 @@ QUnit.module('ReportEditorManager', {
         var templateData = {
             dataOeContext: '{"o": "model.test"}'
         };
-        var def = studioTestUtils.createReportEditorManager({
+        var rem = await studioTestUtils.createReportEditorManager({
             data: this.data,
             models: this.models,
             env: {
@@ -1542,7 +1534,7 @@ QUnit.module('ReportEditorManager', {
                 if (route === '/web_studio/edit_report_view') {
                     var operation = _.last(args.operations);
                     if (!operation) {
-                        return $.Deferred().reject();
+                        return Promise.reject();
                     }
                     assert.deepEqual(operation.inheritance, [{
                         content:
@@ -1562,34 +1554,34 @@ QUnit.module('ReportEditorManager', {
                         view_id: 55,
                         xpath: "/t/div"
                     }], 'Should send the xpath node with the content');
-                    return $.Deferred().reject();
+                    return Promise.reject();
                 }
                 return this._super.apply(this, arguments);
             },
         });
 
-        def.then(function (rem) {
-            testUtils.dom.click(rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]'));
+        await rem.editorIframeDef.then(async function () {
+            await testUtils.dom.click(rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]'));
             var $main = rem.$('iframe').contents().find('main');
 
             var $text = rem.$('.o_web_studio_sidebar .o_web_studio_component:contains(Data table)');
-            testUtils.dom.dragAndDrop($text, $main, {position: {top: 50, left: 300}});
+            await testUtils.dom.dragAndDrop($text, $main, {position: {top: 50, left: 300}});
             $('.o_web_studio_field_modal .o_field_selector').trigger('focusin');
-            $('.o_web_studio_field_modal .o_field_selector_item[data-name="o"]').trigger('click');
-            $('.o_web_studio_field_modal .btn-primary').trigger('click');
+            await testUtils.dom.click($('.o_web_studio_field_modal .o_field_selector_item[data-name="o"]'));
+            await testUtils.dom.click($('.o_web_studio_field_modal .btn-primary'));
 
             assert.strictEqual($('.o_technical_modal h4:contains(Alert)').length, 1, "Should display an alert because the selected field is wrong");
 
-            $('.o_technical_modal:contains(Alert) .btn-primary').trigger('click');
-            $('.o_web_studio_field_modal .o_field_selector_item[data-name="children"]').trigger('click');
-            $('.o_web_studio_field_modal .btn-primary').trigger('click');
+            await testUtils.dom.click($('.o_technical_modal:contains(Alert) .btn-primary'));
+            await testUtils.dom.click($('.o_web_studio_field_modal .o_field_selector_item[data-name="children"]'));
+            await testUtils.dom.click($('.o_web_studio_field_modal .btn-primary'));
 
             rem.destroy();
             done();
         });
     }));
 
-    QUnit.test('drag & drop block "Address"', function (assert) {
+    QUnit.test('drag & drop block "Address"', async function (assert) {
         assert.expect(1);
         var done = assert.async();
 
@@ -1608,7 +1600,7 @@ QUnit.module('ReportEditorManager', {
             string: "Partner", type: 'many2one', relation: 'res.partner', 'searchable': true,
         };
 
-        var def = studioTestUtils.createReportEditorManager({
+        var rem = await studioTestUtils.createReportEditorManager({
             data: this.data,
             models: this.models,
             env: {
@@ -1624,7 +1616,7 @@ QUnit.module('ReportEditorManager', {
                 if (route === '/web_studio/edit_report_view') {
                     var operation = _.last(args.operations);
                     if (!operation) {
-                        return $.Deferred().reject();
+                        return Promise.reject();
                     }
                     assert.deepEqual(operation.inheritance, [{
                         content:
@@ -1638,30 +1630,29 @@ QUnit.module('ReportEditorManager', {
                         view_id: 42,
                         xpath: "/t/html/body/div/main/div",
                     }], 'Should send the xpath node with the content');
-                    return $.Deferred().reject();
+                    return Promise.reject();
                 }
                 return this._super.apply(this, arguments);
             },
         });
 
-        def.then(function (rem) {
-            testUtils.dom.click(rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]'));
+        await rem.editorIframeDef.then(async function () {
+            await testUtils.dom.click(rem.$('.o_web_studio_sidebar .o_web_studio_sidebar_header div[name="new"]'));
             var $page = rem.$('iframe').contents().find('.page');
 
             var $text = rem.$('.o_web_studio_sidebar .o_web_studio_component:contains(Address)');
-            testUtils.dom.dragAndDrop($text, $page, {position: 'inside'});
+            await testUtils.dom.dragAndDrop($text, $page, {position: 'inside'});
             $('.o_web_studio_field_modal .o_field_selector').trigger('focusin');
-            $('.o_web_studio_field_modal .o_field_selector_item[data-name="o"]').trigger('click');
-            $('.o_web_studio_field_modal .o_field_selector_item[data-name="partner"]').trigger('click');
-            $('.o_web_studio_field_modal .btn-primary').trigger('click');
+            await testUtils.dom.click($('.o_web_studio_field_modal .o_field_selector_item[data-name="o"]'));
+            await testUtils.dom.click($('.o_web_studio_field_modal .o_field_selector_item[data-name="partner"]'));
+            await testUtils.dom.click($('.o_web_studio_field_modal .btn-primary'));
 
             rem.destroy();
             done();
         });
     });
 
-    QUnit.test('edit text', function (assert) {
-        var done = assert.async();
+    QUnit.test('edit text', async function (assert) {
         assert.expect(2);
 
         this.templates.push({
@@ -1674,7 +1665,7 @@ QUnit.module('ReportEditorManager', {
                     '</t>' +
                 '</kikou>',
         });
-        var def = studioTestUtils.createReportEditorManager({
+        var rem = await studioTestUtils.createReportEditorManager({
             data: this.data,
             models: this.models,
             env: {
@@ -1692,7 +1683,7 @@ QUnit.module('ReportEditorManager', {
                 if (route === '/web_studio/edit_report_view') {
                     var operation = _.last(args.operations);
                     if (!operation) {
-                        return $.Deferred().reject();
+                        return Promise.reject();
                     }
                     assert.deepEqual(operation.inheritance, [{
                         content: '<span>toto <small>titi</small></span>',
@@ -1700,44 +1691,43 @@ QUnit.module('ReportEditorManager', {
                         view_id: 55,
                         xpath: "/t/span"
                     }], 'Should replace the title content');
-                    return $.Deferred().reject();
+                    return Promise.reject();
                 }
                 return this._super.apply(this, arguments);
             },
         });
 
-        def.then(function (rem) {
-            testUtils.dom.click(rem.$('iframe').contents().find('span'));
+        await rem.editorIframeDef.then(async function () {
+            await testUtils.dom.click(rem.$('iframe').contents().find('span'));
 
             var $editable = rem.$('.o_web_studio_sidebar .card.o_web_studio_active .note-editable');
 
             assert.strictEqual($editable.html(), 'taratata <strong>bo</strong>', 'Should display the text content');
 
             $editable.mousedown();
+            await testUtils.nextTick();
             $editable.html('toto <small>titi</small>');
             $editable.find('span').mousedown();
+            await testUtils.nextTick();
             $editable.keydown();
+            await testUtils.nextTick();
+            $editable.blur();
+            await testUtils.nextTick();
 
-            setTimeout(function () {
-                // blur the editor
-                rem.$('.o_web_studio_sidebar').mousedown();
-                rem.destroy();
-                done();
-            });
+            rem.destroy();
         });
     });
 
-    QUnit.test('open XML editor after modification', function (assert) {
-        var done = assert.async();
+    QUnit.test('open XML editor after modification', async function (assert) {
         assert.expect(7);
 
         // the XML editor lazy loads its libs and its templates so its start
         // method is monkey-patched to know when the widget has started
-        var XMLEditorDef = $.Deferred();
+        var XMLEditorProm = testUtils.makeTestPromise();
         testUtils.mock.patch(ace, {
             start: function () {
                 return this._super.apply(this, arguments).then(function () {
-                    XMLEditorDef.resolve();
+                    XMLEditorProm.resolve();
                 });
             },
         });
@@ -1761,7 +1751,7 @@ QUnit.module('ReportEditorManager', {
                 '</kikou>',
         });
 
-        var def = studioTestUtils.createReportEditorManager({
+        var rem = await studioTestUtils.createReportEditorManager({
             data: this.data,
             models: this.models,
             env: {
@@ -1788,13 +1778,13 @@ QUnit.module('ReportEditorManager', {
                         '</t>' +
                     '</kikou>';
 
-                    return $.when({
+                    return Promise.resolve({
                         report_html: studioTestUtils.getReportHTML(self.templates),
                         views: studioTestUtils.getReportViews(self.templates),
                     });
                 } else if (route === '/web_editor/get_assets_editor_resources') {
                     assert.strictEqual(args.key, self.templates[0].view_id, "the correct view should be fetched");
-                    return $.when({
+                    return Promise.resolve({
                         views: [{
                             active: true,
                             arch: self.templates[0].arch,
@@ -1809,12 +1799,13 @@ QUnit.module('ReportEditorManager', {
             },
         });
 
-        def.then(function (rem) {
+        await rem.editorIframeDef.then(async function () {
             assert.strictEqual(rem.$('iframe').contents().find('.page').text(),"First span",
                 "the iframe should be rendered");
 
             // click to edit a span and change the text (should trigger the report edition)
-            testUtils.dom.click(rem.$('iframe').contents().find('span:contains(First)'));
+            await testUtils.dom.click(rem.$('iframe').contents().find('span:contains(First)'));
+            await testUtils.fields.editInput(rem.$('.o_web_studio_sidebar .o_web_studio_active textarea[name="text"]'), "hello");
 
             var $textarea = rem.$('.o_web_studio_sidebar .o_web_studio_active textarea[name="text"]');
             testUtils.fields.editInput($textarea, "hello");
@@ -1830,23 +1821,22 @@ QUnit.module('ReportEditorManager', {
                 "the iframe should be re-rendered");
 
             // switch tab
-            testUtils.dom.click(rem.$('.o_web_studio_sidebar_header [name="report"]'));
+            await testUtils.dom.click(rem.$('.o_web_studio_sidebar_header [name="report"]'));
             // open the XML editor
-            testUtils.dom.click(rem.$('.o_web_studio_sidebar .o_web_studio_xml_editor'));
+            await testUtils.dom.click(rem.$('.o_web_studio_sidebar .o_web_studio_xml_editor'));
 
-            XMLEditorDef.then(function () {
+            await XMLEditorProm.then(function () {
                 assert.strictEqual(rem.$('iframe').contents().find('.page').text(),"hello",
                     "the iframe should be re-rendered");
 
                 config.debug = initialDebugMode;
                 testUtils.mock.unpatch(ace);
                 rem.destroy();
-                done();
             });
         });
     });
 
-    QUnit.test('automatic undo of correct operation', function (assert) {
+    QUnit.test('automatic undo of correct operation', async function (assert) {
         var self = this;
         var done = assert.async();
         assert.expect(5);
@@ -1860,7 +1850,7 @@ QUnit.module('ReportEditorManager', {
                 '</kikou>',
         });
 
-        var def = studioTestUtils.createReportEditorManager({
+        var rem = await studioTestUtils.createReportEditorManager({
             env: {
                 modelName: 'kikou',
                 ids: [42, 43],
@@ -1902,7 +1892,7 @@ QUnit.module('ReportEditorManager', {
                                 xpath: '/t/div',
                             }]);
                             // second rpc that succeeds
-                            return $.when({
+                            return Promise.resolve({
                                 report_html: studioTestUtils.getReportHTML(self.templates),
                                 views: studioTestUtils.getReportViews(self.templates),
                             });
@@ -1916,28 +1906,29 @@ QUnit.module('ReportEditorManager', {
         });
 
         var nbEdit = 0;
-        var firstDef = $.Deferred();
-        def.then(function (rem) {
-            testUtils.dom.click(rem.$('iframe').contents().find('div:contains(First):last'));
+        var firstDef = testUtils.makeTestPromise();
+        rem.editorIframeDef.then(async function () {
+            await testUtils.dom.click(rem.$('iframe').contents().find('div:contains(First):last'));
 
             // trigger a modification
-            testUtils.dom.click(rem.$('.o_web_studio_sidebar .card:eq(1) .o_web_studio_text_decoration button[data-property="bold"]'));
+            await testUtils.dom.click(rem.$('.o_web_studio_sidebar .card:eq(1) .o_web_studio_text_decoration button[data-property="bold"]'));
 
             // trigger a second modification before the first one has finished
-            testUtils.dom.click(rem.$('.o_web_studio_sidebar .card:eq(1) .o_web_studio_text_decoration button[data-property="italic"]'));
+            await testUtils.dom.click(rem.$('.o_web_studio_sidebar .card:eq(1) .o_web_studio_text_decoration button[data-property="italic"]'));
 
             // trigger a third modification before the first one has finished
-            testUtils.dom.click(rem.$('.o_web_studio_sidebar .card:eq(1) .o_web_studio_text_decoration button[data-property="underline"]'));
+            await testUtils.dom.click(rem.$('.o_web_studio_sidebar .card:eq(1) .o_web_studio_text_decoration button[data-property="underline"]'));
 
             // make the first op fail (will release the MutexedDropPrevious)
             firstDef.reject();
+            await testUtils.nextTick();
 
             rem.destroy();
             done();
         });
     });
 
-    QUnit.test('automatic undo on AST error', function (assert) {
+    QUnit.test('automatic undo on AST error', async function (assert) {
         var self = this;
         var done = assert.async();
         assert.expect(4);
@@ -1953,7 +1944,7 @@ QUnit.module('ReportEditorManager', {
                 '</kikou>',
         });
         var nbEdit = 0;
-        var def = studioTestUtils.createReportEditorManager({
+        var rem = await studioTestUtils.createReportEditorManager({
             env: {
                 modelName: 'kikou',
                 ids: [42, 43],
@@ -1969,7 +1960,7 @@ QUnit.module('ReportEditorManager', {
                     if (nbEdit === 1) {
                         assert.strictEqual(args.operations.length, 1, "the operation is correctly applied");
                         // simulate an AST error
-                        return $.when({
+                        return Promise.resolve({
                             report_html: {
                                 error: 'AST error',
                                 message: 'You have probably done something wrong',
@@ -1978,7 +1969,7 @@ QUnit.module('ReportEditorManager', {
                     }
                     if (nbEdit === 2) {
                         assert.strictEqual(args.operations.length, 0, "the operation should be undone");
-                        return $.when({
+                        return Promise.resolve({
                             report_html: studioTestUtils.getReportHTML(self.templates),
                             views: studioTestUtils.getReportViews(self.templates),
                         });
@@ -1995,11 +1986,11 @@ QUnit.module('ReportEditorManager', {
             },
         });
 
-        def.then(function (rem) {
-            testUtils.dom.click(rem.$('iframe').contents().find('div:contains(Kikou):last'));
+        await rem.editorIframeDef.then(async function () {
+            await testUtils.dom.click(rem.$('iframe').contents().find('div:contains(Kikou):last'));
 
             // trigger a modification that will fail
-            testUtils.dom.click(rem.$('.o_web_studio_sidebar .card:eq(1) .o_web_studio_text_decoration button[data-property="bold"]'));
+            await testUtils.dom.click(rem.$('.o_web_studio_sidebar .card:eq(1) .o_web_studio_text_decoration button[data-property="bold"]'));
 
             assert.verifySteps(['warning'], "should have undone the operation");
 

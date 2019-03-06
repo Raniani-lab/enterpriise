@@ -46,7 +46,7 @@ var StudioReportKanbanController = KanbanController.extend({
                 fieldNames: ['report_name'],
             });
         }
-        $.when(def).then(function (result) {
+        Promise.resolve(def).then(function (result) {
             var id = data.id || result;
             var report = self.model.get(id, {raw: true});
             self.do_action('web_studio.action_edit_report', {
@@ -147,7 +147,7 @@ var NewReportDialog = Dialog.extend({
      * @private
      * @param {String} modelName
      * @param {String} layout
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _createNewReport: function (modelName, layout) {
         return this._rpc({

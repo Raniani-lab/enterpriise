@@ -575,7 +575,7 @@ can no longer be modified. Please create a new line with eg. a negative quantity
 
         close: function () {
             // send a PS when closing the POS
-            this.pos._push_pro_forma().always(this._super.bind(this));
+            this.pos._push_pro_forma().then(this._super.bind(this), this._super.bind(this));
         }
     });
 
@@ -875,15 +875,13 @@ can no longer be modified. Please create a new line with eg. a negative quantity
                 self._show_could_not_connect_error();
             }
 
-            var delayed_request_hash_and_sign = new $.Deferred();
-
-            // rate limit the retries to 1 every 2 sec
-            // because the blackbox freaks out if we send messages too fast
-            setTimeout(function () {
-                delayed_request_hash_and_sign.resolve();
-            }, 5000);
-
-            return delayed_request_hash_and_sign.then(function () {
+            return new Promise(function (resolve, reject) {
+                // rate limit the retries to 1 every 2 sec
+                // because the blackbox freaks out if we send messages too fast
+                setTimeout(function () {
+                    resolve();
+                }, 5000);
+            }).then(function () {
                 return self.request_fdm_hash_and_sign(packet, "hide error");
             });
         },
@@ -1090,7 +1088,7 @@ can no longer be modified. Please create a new line with eg. a negative quantity
             var self = this;
 
             if (! this._check_validation_constraints()) {
-                return new $.Deferred().reject();
+                return Promise.reject();
             }
 
             order.set_validation_time();
@@ -1098,40 +1096,40 @@ can no longer be modified. Please create a new line with eg. a negative quantity
             order.blackbox_base_price_in_euro_per_tax_letter = order.get_base_price_in_euro_per_tax_letter_list();
 
             var packet = this.proxy._build_fdm_hash_and_sign_request(order);
-            var def = this.proxy.request_fdm_hash_and_sign(packet).then(function (parsed_response) {
-                var def = new $.Deferred();
-
-                if (parsed_response) {
-                    // put fields that we need on tickets on order
-                    order.blackbox_order_name = self.config.name + "/" + self.config.backend_sequence_number;
-                    order.blackbox_date = self._prepare_date_for_ticket(parsed_response.date);
-                    order.blackbox_time = self._prepare_time_for_ticket(parsed_response.time);
-                    order.blackbox_ticket_counters =
+            var prom = this.proxy.request_fdm_hash_and_sign(packet).then(function (parsed_response) {
+                return new Promise(function (resolve, reject) {
+                    if (parsed_response) {
+                        // put fields that we need on tickets on order
+                        order.blackbox_order_name = self.config.name + "/" + self.config.backend_sequence_number;
+                        order.blackbox_date = self._prepare_date_for_ticket(parsed_response.date);
+                        order.blackbox_time = self._prepare_time_for_ticket(parsed_response.time);
+                        order.blackbox_ticket_counters =
                         self._prepare_ticket_counter_for_ticket(parsed_response.vsc_ticket_counter,
                                                                 parsed_response.vsc_total_ticket_counter,
                                                                 parsed_response.event_label);
-                    order.blackbox_signature = parsed_response.signature;
-                    order.blackbox_vsc_identification_number = parsed_response.vsc_identification_number;
-                    order.blackbox_unique_fdm_production_number = parsed_response.fdm_unique_production_number;
-                    order.blackbox_plu_hash = self._prepare_hash_for_ticket(packet.fields[packet.fields.length - 1].content);
-                    order.blackbox_pos_version = "Odoo " + self.version.server_version + "1807BE_FDM";
-                    order.blackbox_pos_production_id = self.config.blackbox_pos_production_id;
-                    order.blackbox_terminal_id = self.blackbox_terminal_id;
+                        order.blackbox_signature = parsed_response.signature;
+                        order.blackbox_vsc_identification_number = parsed_response.vsc_identification_number;
+                        order.blackbox_unique_fdm_production_number = parsed_response.fdm_unique_production_number;
+                        order.blackbox_plu_hash = self._prepare_hash_for_ticket(packet.fields[packet.fields.length - 1].content);
+                        order.blackbox_pos_version = "Odoo " + self.version.server_version + "1807BE_FDM";
+                        order.blackbox_pos_production_id = self.config.blackbox_pos_production_id;
+                        order.blackbox_terminal_id = self.blackbox_terminal_id;
 
-                    self.config.blackbox_most_recent_hash = self._prepare_hash_for_ticket(Sha1.hash(self.config.blackbox_most_recent_hash + order.blackbox_plu_hash));
-                    order.blackbox_hash_chain = self.config.blackbox_most_recent_hash;
+                        self.config.blackbox_most_recent_hash = self._prepare_hash_for_ticket(Sha1.hash(self.config.blackbox_most_recent_hash + order.blackbox_plu_hash));
+                        order.blackbox_hash_chain = self.config.blackbox_most_recent_hash;
 
-                    if (! order.blackbox_pro_forma) {
-                        self.gui.show_screen('receipt');
+                        if (! order.blackbox_pro_forma) {
+                            self.gui.show_screen('receipt');
+                        }
+
+                        resolve();
+                    } else {
+                        reject();
                     }
-
-                    return def.resolve();
-                } else {
-                    return def.reject();
-                }
+                });
             });
 
-            return def;
+            return prom;
         },
 
         // after_blackbox: function that will be executed when we have
@@ -1152,7 +1150,7 @@ can no longer be modified. Please create a new line with eg. a negative quantity
 
                     return posmodel_super.push_order.apply(self, [order, opts]);
                 }, function () {
-                    return new $.Deferred().reject();
+                    return Promise.reject();
                 });
             } else {
                 return posmodel_super.push_order.apply(self, arguments);
@@ -1161,7 +1159,6 @@ can no longer be modified. Please create a new line with eg. a negative quantity
 
         push_and_invoice_order: function (order) {
             var self = this;
-            var invoiced = new $.Deferred();
 
             // these will never be sent as pro_forma
             order.blackbox_pro_forma = false;
@@ -1170,8 +1167,7 @@ can no longer be modified. Please create a new line with eg. a negative quantity
             // because we do not want to send orders to the blackbox
             // which will not be sent to the backend
             if(! order.get_client()) {
-                invoiced.reject({code:400, message:'Missing Customer', data:{}});
-                return invoiced;
+                return Promise.reject({code:400, message:'Missing Customer', data:{}});
             }
 
             return this.push_order_to_blackbox(order).then(function () {
@@ -1198,7 +1194,7 @@ can no longer be modified. Please create a new line with eg. a negative quantity
                     });
                 });
             } else {
-                return new $.Deferred().reject();
+                return Promise.reject();
             }
         },
 

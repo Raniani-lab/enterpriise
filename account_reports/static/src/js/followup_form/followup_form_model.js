@@ -30,7 +30,7 @@ var FollowupFormModel = BasicModel.extend({
      * @param {Integer} moveLineID id of the account.move.line
      * @param {boolean} blocked true if the account.move.line is blocked,
      *                          false otherwise
-     * @return {Deferred}
+     * @return {Promise}
      */
     changeBlockedMoveLine: function (moveLineID, blocked) {
         return this._rpc({
@@ -45,7 +45,7 @@ var FollowupFormModel = BasicModel.extend({
      * @param {string} handle Local resource id of a record
      * @param {Integer} moveLineID id of the account.move.line
      * @param {Moment} date Expected date
-     * @return {Deferred}
+     * @return {Promise}
      */
     changeExpectedDate: function (handle, moveLineID, date) {
         return this._rpc({
@@ -62,7 +62,7 @@ var FollowupFormModel = BasicModel.extend({
      *
      * @param {string} handle Local resource id of a record
      * @param {string} newTrust new trust for the partner (good, normal or bad)
-     * @return {Deferred}
+     * @return {Promise}
      */
     changeTrust: function (handle, newTrust) {
         return this._rpc({
@@ -160,7 +160,7 @@ var FollowupFormModel = BasicModel.extend({
      *
      * @param {string} handle Local resource id of a record
      * @param {string} text new summary
-     * @return {Deferred}
+     * @return {Promise}
      */
     saveSummary: function (handle, text) {
         return this._rpc({
@@ -201,7 +201,7 @@ var FollowupFormModel = BasicModel.extend({
      * Update the date of next action.
      *
      * @param {string} handle Local resource id of a record
-     * @return {Deferred}
+     * @return {Promise}
      */
     updateNextAction: function (handle) {
         var record = this.localData[handle];
@@ -238,7 +238,7 @@ var FollowupFormModel = BasicModel.extend({
      *
      * @private
      * @param {string} id id for the local resource
-     * @returns {Deferred<string>} local id of the record
+     * @returns {Promise<string>} local id of the record
      */
     _fetch: function (id) {
         var self = this;

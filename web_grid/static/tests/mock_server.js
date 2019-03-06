@@ -27,7 +27,7 @@ MockServer.include({
             var newRecord = _.findWhere(this.data[args.model].records, {id: newID});
             newRecord[cellField] = change;
             newRecord[columnField] = columnValue.split('/')[0];
-            return $.when({});
+            return Promise.resolve({});
         } else {
             return this._super(route, args);
         }
@@ -36,7 +36,7 @@ MockServer.include({
      * @private
      * @param {string} model
      * @param {Object} kwargs
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _mockReadGrid: function (model, kwargs) {
         var self = this;
@@ -131,7 +131,7 @@ MockServer.include({
             grid.push(cells);
         });
 
-        return $.when({
+        return Promise.resolve({
             cols: columns,
             rows: rows,
             grid: grid,
@@ -148,10 +148,10 @@ MockServer.include({
     /**
      * @TODO: this is not very generic but it works for the tests
      * @private
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _mockReadGridDomain: function () {
-        return $.when([
+        return Promise.resolve([
             '&',
             ['date', '>=', '2017-01-01'],
             ['date', '<=', '2017-01-31'],

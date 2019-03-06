@@ -69,7 +69,7 @@ var OnlineSyncAccountInstitutionSelector = AbstractAction.extend({
         .then(function(result) {
             self.do_action(result);
         })
-        .fail(function () {
+        .guardedCatch(function () {
             self.willDisappear = false;
         });
     },
@@ -204,7 +204,7 @@ var OnlineSyncAccountInstitutionSelector = AbstractAction.extend({
                     self.results = results.match || [];
                     self.displayState();
                     self.search_allowed = true;
-                }).fail(function(){
+                }).guardedCatch(function(){
                     framework.unblockUI();
                     // If RPC call failed (might be due to error because search string is less than 3 char), unblock search
                     self.search_allowed = true;

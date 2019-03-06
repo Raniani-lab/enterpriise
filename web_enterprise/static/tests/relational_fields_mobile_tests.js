@@ -35,10 +35,10 @@ QUnit.module('relational_fields', {
 
     QUnit.module('FieldStatus');
 
-    QUnit.test('statusbar is rendered correclty on small devices', function (assert) {
+    QUnit.test('statusbar is rendered correclty on small devices', async function (assert) {
         assert.expect(7);
 
-        var form = createView({
+        var form = await createView({
             View: FormView,
             model: 'partner',
             data: this.data,
@@ -71,10 +71,10 @@ QUnit.module('relational_fields', {
         form.destroy();
     });
 
-    QUnit.test('statusbar with no status on extra small screens', function (assert) {
+    QUnit.test('statusbar with no status on extra small screens', async function (assert) {
         assert.expect(9);
 
-        var form = createView({
+        var form = await createView({
             View: FormView,
             model: 'partner',
             data: this.data,
@@ -105,10 +105,10 @@ QUnit.module('relational_fields', {
         form.destroy();
     });
 
-    QUnit.test('clickable statusbar widget on mobile view', function (assert) {
+    QUnit.test('clickable statusbar widget on mobile view', async function (assert) {
         assert.expect(5);
 
-        var form = createView({
+        var form = await createView({
             View: FormView,
             model: 'partner',
             data: this.data,
@@ -124,8 +124,8 @@ QUnit.module('relational_fields', {
         var selector = '.o_statusbar_status button.btn-secondary:not(.dropdown-toggle):not(:disabled)';
         assert.containsN(form, selector, 2, "other status should be btn-secondary and not disabled");
 
-        testUtils.dom.click(form.$('.o_statusbar_status .dropdown-toggle'));
-        testUtils.dom.clickFirst(form.$(selector));
+        await testUtils.dom.click(form.$('.o_statusbar_status .dropdown-toggle'));
+        await testUtils.dom.clickFirst(form.$(selector));
 
         var $status = form.$('.o_statusbar_status button[data-value="1"]');
         assert.hasClass($status, 'btn-primary');

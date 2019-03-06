@@ -134,7 +134,7 @@ var NewFieldDialog = Dialog.extend(StandaloneFieldManagerMixin, {
         }
 
         defs.push(this._super.apply(this, arguments));
-        return $.when.apply($, defs);
+        return Promise.all(defs);
     },
 
     /**

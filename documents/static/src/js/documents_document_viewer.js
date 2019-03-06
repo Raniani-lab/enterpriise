@@ -36,14 +36,15 @@ var DocumentsDocumentViewer = DocumentViewer.extend({
         var self = this;
         var indices = this.$(".o_documents_page_number_input").val();
         var remainder = this.$(".o_documents_remainder_input").is(":checked");
+        var always = function () {
+            self.trigger_up('document_viewer_attachment_changed');
+            self.destroy();
+        };
         this._rpc({
             model: 'documents.document',
             method: 'split_pdf',
             args: [this.activeAttachment.id, indices, remainder],
-        }).always(function () {
-            self.trigger_up('document_viewer_attachment_changed');
-            self.destroy();
-        });
+        }).then(always).guardedCatch(always);
     },
 
 });

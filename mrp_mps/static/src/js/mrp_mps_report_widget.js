@@ -53,7 +53,7 @@ var mrp_mps_report = AbstractAction.extend({
             self.controlPanelParams.viewId = viewId[1];
         });
         var def2 = this.get_html();
-        return $.when(def1, def2).then(function () {
+        return Promise.all([def1, def2]).then(function () {
             return _super.apply(self, args);
         });
     },
@@ -149,18 +149,19 @@ var mrp_mps_report = AbstractAction.extend({
                 kwargs: {context: session.user_context},
             })
             .then(function(res){
-                return self._rpc({
+                var rpcPromise = self._rpc({
                         model: 'mrp.mps.report',
                         method: 'write',
                         args: [res, {'period': self.period}],
                         kwargs: {context: session.user_context},
-                    })
-                    .done(function () {
+                    });
+                rpcPromise.then(function () {
                         self.get_html().then(function() {
                             self.update_cp();
                             self.re_renderElement();
                         });
                     });
+                return rpcPromise;
         });
     },
     add_product_wizard: function () {
@@ -218,17 +219,18 @@ var mrp_mps_report = AbstractAction.extend({
         } catch(err) {
             return this.do_warn(_t("Wrong value entered!"), err);
         }
-        return this._rpc({
+        var rpcPromise = this._rpc({
             model: 'sale.forecast',
             method: 'save_forecast_data',
             args: [parseInt($input.data('product')), target_value, $input.data('date'), $input.data('date_to'), $input.data('name')],
             kwargs: {context: session.user_context},
-        })
-        .done(function () {
+        });
+        rpcPromise.then(function () {
             self.get_html().then(function() {
                 self.re_renderElement();
             });
         });
+        return rpcPromise;
     },
     mps_apply: function(e){
         var self = this;

@@ -95,11 +95,14 @@ var KanbanRecordEditor = KanbanRecord.extend(EditorMixin, {
 
         var $nearest_form_hook = this.$('.o_web_studio_hook')
             .touching({
-                x: position.pageX - this.nearest_hook_tolerance,
-                y: position.pageY - this.nearest_hook_tolerance,
-                w: this.nearest_hook_tolerance*2,
-                h: this.nearest_hook_tolerance*2})
-            .nearest({x: position.pageX, y: position.pageY}).eq(0);
+                    x: position.pageX - this.nearest_hook_tolerance,
+                    y: position.pageY - this.nearest_hook_tolerance,
+                    w: this.nearest_hook_tolerance*2,
+                    h: this.nearest_hook_tolerance*2
+                },{
+                    container: document.body
+                }
+            ).nearest({x: position.pageX, y: position.pageY}, {container: document.body}).eq(0);
         if ($nearest_form_hook.length) {
             $nearest_form_hook.addClass('o_web_studio_nearest_hook');
             return true;
@@ -327,16 +330,16 @@ var KanbanRecordEditor = KanbanRecord.extend(EditorMixin, {
      */
     _processWidget: function ($field, field_name) {
         var self = this;
-        // '_processWidget' in KanbanRecord adds a deferred to this.defs only if
+        // '_processWidget' in KanbanRecord adds a promise to this.defs only if
         // the widget is async. Here, we need to hook on this def to access the
         // widget's $el (it doesn't exist until the def is resolved). As calling
-        // '_super' may or may not push a deferred in this.defs, we store the
+        // '_super' may or may not push a promise in this.defs, we store the
         // length of this.defs as index before calling '_super'. Note that if
-        // it doesn't push a deferred, this.defs[currentDefIndex] is undefined.
+        // it doesn't push a promise, this.defs[currentDefIndex] is undefined.
         // FIXME: get rid of this hack in master with a small refactoring
         var currentDefIndex = this.defs.length;
         var widget = this._super.apply(this, arguments);
-        $.when(this.defs[currentDefIndex]).then(function () {
+        Promise.resolve(this.defs[currentDefIndex]).then(function () {
             widget.$el.off();
 
             // make empty widgets appear

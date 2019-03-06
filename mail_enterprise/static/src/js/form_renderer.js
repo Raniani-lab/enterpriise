@@ -153,16 +153,17 @@ FormRenderer.include({
             } else {
                 this.attachmentPreviewResID = this.state.res_id;
                 this.attachmentViewer = new AttachmentViewer(this, attachments);
-                this.attachmentViewer.appendTo(this.$attachmentPreview);
-                this.$attachmentPreview.resizable({
-                    handles: 'w',
-                    minWidth: 400,
-                    maxWidth: 900,
-                    resize: function (event, ui) {
-                        self.attachmentPreviewWidth = ui.size.width;
-                    },
+                this.attachmentViewer.appendTo(this.$attachmentPreview).then(function() {
+                    self.$attachmentPreview.resizable({
+                        handles: 'w',
+                        minWidth: 400,
+                        maxWidth: 900,
+                        resize: function (event, ui) {
+                            self.attachmentPreviewWidth = ui.size.width;
+                        },
+                    });
+                    self._interchangeChatter(!self.$attachmentPreview.hasClass('o_invisible_modifier'));
                 });
-                this._interchangeChatter(!this.$attachmentPreview.hasClass('o_invisible_modifier'));
             }
         }
     },

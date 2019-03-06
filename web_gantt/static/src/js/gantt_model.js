@@ -102,7 +102,7 @@ var GanttModel = AbstractModel.extend({
      * @param {Moment} params.initialDate
      * @param {string} params.modelName
      * @param {string} params.scale
-     * @returns {Deferred}
+     * @returns {Promise<any>}
      */
     load: function (params) {
         this.modelName = params.modelName;
@@ -127,11 +127,16 @@ var GanttModel = AbstractModel.extend({
             fields: params.fields,
         };
         this._setRange(params.initialDate, params.scale);
-        var defs = [this._fetchData()];
+        var proms = [this._fetchData()];
         if (params.displayUnavailability) {
-            defs.push(this._fetchUnavailability());
+            proms.push(this._fetchUnavailability());
         }
-        return $.when.apply($, defs);
+        return Promise.all(proms).then(function () {
+            // The 'load' function returns a promise which resolves with the
+            // handle to pass to the 'get' function to access the data. In this
+            // case, we don't want to pass any argument to 'get' (see its API).
+            return Promise.resolve();
+        });
     },
     /**
      * @param {any} handle
@@ -140,7 +145,7 @@ var GanttModel = AbstractModel.extend({
      * @param {string[]} params.groupBy
      * @param {string} params.scale
      * @param {Moment} params.date
-     * @returns {Deferred}
+     * @returns {Promise<any>}
      */
     reload: function (handle, params) {
         if ('scale' in params) {
@@ -167,7 +172,7 @@ var GanttModel = AbstractModel.extend({
      * @param {integer} id
      * @param {Object} schedule
      * @param {boolean} isUTC
-     * @returns {$.Promise}
+     * @returns {Promise}
      */
     reschedule: function (ids, schedule, isUTC) {
         if (!_.isArray(ids)) {
@@ -228,7 +233,9 @@ var GanttModel = AbstractModel.extend({
             domain: domain,
         });
 
-        return this.dp.add($.when(groupsDef, dataDef)).then(function (groups, result) {
+        return this.dp.add(Promise.all([groupsDef, dataDef])).then(function (results) {
+            var groups = results[0];
+            var searchReadResult = results[1];
             if (groups) {
                 _.each(groups, function (group) {
                     group.id = _.uniqueId('group');
@@ -237,7 +244,7 @@ var GanttModel = AbstractModel.extend({
             var oldRows = self.allRows;
             self.allRows = {};
             self.ganttData.groups = groups;
-            self.ganttData.records = self._parseServerData(result.records);
+            self.ganttData.records = self._parseServerData(searchReadResult.records);
             self.ganttData.rows = self._generateRows({
                 groupedBy: self.ganttData.groupedBy,
                 groups: groups,
@@ -425,6 +432,7 @@ var GanttModel = AbstractModel.extend({
      *
      * @private
      * @param {Object} data the server data to parse
+     * @returns {Promise<any>}
      */
     _parseServerData: function (data) {
         var self = this;

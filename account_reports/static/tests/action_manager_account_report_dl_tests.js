@@ -21,10 +21,10 @@ QUnit.module('Account Reports', {
     },
 }, function () {
 
-    QUnit.test('can execute account report download actions', function (assert) {
-        assert.expect(5);
+    QUnit.test('can execute account report download actions', async function (assert) {
+        assert.expect(4);
 
-        var actionManager = createActionManager({
+        var actionManager = await createActionManager({
             actions: this.actions,
             mockRPC: function (route, args) {
                 assert.step(args.method || route);
@@ -40,25 +40,25 @@ QUnit.module('Account Reports', {
                         },
                         output_format: 'pdf',
                     }, "should give the correct data");
+                    params.success();
                     params.complete();
                 },
             },
         });
-        actionManager.doAction(1);
+        await actionManager.doAction(1);
 
         assert.verifySteps([
             '/web/action/load',
-            '/web/static/src/img/spin.png', // block UI image
             '/account_reports',
         ]);
 
         actionManager.destroy();
     });
 
-    QUnit.test('Account report m2m filters', function (assert) {
+    QUnit.test('Account report m2m filters', async function (assert) {
         assert.expect(4);
         var count = 0;
-        var actionManager = createActionManager({
+        var actionManager = await createActionManager({
             actions: [{
                 id: 9,
                 tag: 'account_report',
@@ -112,30 +112,30 @@ QUnit.module('Account Reports', {
                         vals.options.partner_categories = reportOptions.partner_categories;
                     }
                     count++;
-                    return $.when(vals);
+                    return Promise.resolve(vals);
                 }
                 if (route === '/web/dataset/call_kw/account.report/get_html_footnotes') {
-                    return $.when("");
+                    return Promise.resolve("");
                 }
                 return this._super.apply(this, arguments);
             },
         });
 
-        actionManager.doAction(9);
+        await actionManager.doAction(9);
         assert.containsOnce(actionManager, '.o_control_panel .o_field_many2manytags[name="partner_ids"]',
             "partner_ids m2m field added to filter");
         assert.containsOnce(actionManager, '.o_control_panel .o_field_many2manytags[name="partner_categories"]',
             "partner_categories m2m field added to filter");
 
         // search on partners m2m
-        testUtils.dom.click(actionManager.$('.o_control_panel .o_search_options a.dropdown-toggle'));
-        testUtils.dom.click(actionManager.$('.o_control_panel .o_field_many2one[name="partner_ids"] input'));
-        testUtils.dom.click($('.ui-autocomplete .ui-menu-item a:contains(Genda Swami)'));
+        await testUtils.dom.click(actionManager.$('.o_control_panel .o_search_options a.dropdown-toggle'));
+        await testUtils.dom.click(actionManager.$('.o_control_panel .o_field_many2one[name="partner_ids"] input'));
+        await testUtils.dom.click($('.ui-autocomplete .ui-menu-item a:contains(Genda Swami)'));
 
         // search on partner categories m2m
-        testUtils.dom.click(actionManager.$('.o_control_panel .o_search_options a.dropdown-toggle'));
-        testUtils.dom.click(actionManager.$('.o_control_panel .o_field_many2one[name="partner_categories"] input'));
-        testUtils.dom.click($('.ui-autocomplete .ui-menu-item a:contains(Brigadier suryadev singh)'));
+        await testUtils.dom.click(actionManager.$('.o_control_panel .o_search_options a.dropdown-toggle'));
+        await testUtils.dom.click(actionManager.$('.o_control_panel .o_field_many2one[name="partner_categories"] input'));
+        await testUtils.dom.click($('.ui-autocomplete .ui-menu-item a:contains(Brigadier suryadev singh)'));
 
         actionManager.destroy();
     });

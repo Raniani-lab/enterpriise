@@ -27,7 +27,7 @@ var TrackPage = Widget.extend({
     _is_tracked: function (val) {
         var viewid = $('html').data('viewid');
         if (!viewid) {
-            return $.Deferred().reject();
+            return Promise.reject();
         } else {
             return rpc.query({
                 model: 'ir.ui.view',
@@ -46,7 +46,7 @@ var TrackPage = Widget.extend({
     _trackPage: function (val) {
         var viewid = $('html').data('viewid');
         if (!viewid) {
-            return $.Deferred().reject();
+            return Promise.reject();
         } else {
             return rpc.query({
                 model: 'ir.ui.view',

@@ -80,7 +80,7 @@ var PedalController = FormController.extend({
         var self = this;
         return this._super.apply(this, arguments).then(function () {
             var state = self.model.get(self.handle);
-            self.triggers = $.parseJSON(state.data.boxes); //or JSON.parse?
+            self.triggers = JSON.parse(state.data.boxes);
             var data = self.triggers;
             // Check Tab id
             self.tabID = sessionStorage.tabID ? sessionStorage.tabID : sessionStorage.tabID = Math.random().toString();
@@ -110,7 +110,7 @@ var PedalController = FormController.extend({
                     }));
             }
             if (promises.length) {
-                $.when.apply($, promises).then(function () {
+                Promise.all(promises).then(function () {
                     self.can_check = true;
                     for (var arg in arguments) { //TODO: need to see difference between one or two returns
                         if (arguments[arg].result === 'no') {

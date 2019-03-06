@@ -40,7 +40,7 @@ ActionManager.include({
             // (see @_executeWindowAction) before doAction on the Studio action
             // but @_executeAction will call this function so no need to do
             // anything in this case
-            return $.when();
+            return Promise.resolve();
         }
         return this._super.apply(this, arguments);
     },
@@ -76,7 +76,7 @@ ActionManager.include({
     /**
      * Restores the action currently edited by Studio.
      *
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     restoreStudioAction: function () {
         var self = this;
@@ -161,7 +161,7 @@ ActionManager.include({
             this.studioControllerIndex = 0;
             this.navigatingInStudio = true;
 
-            return $.when(action);
+            return Promise.resolve(action);
         }
         return this._super.apply(this, arguments);
     },
@@ -271,8 +271,8 @@ ActionManager.include({
             self._preprocessAction(result, {additional_context: action.context});
             self._processStudioAction(result, {});
             bus.trigger('action_changed', result);
-            if (ev.data.def) {
-                ev.data.def.resolve(result);
+            if (ev.data.onSuccess) {
+                ev.data.onSuccess(result);
             }
         });
     },

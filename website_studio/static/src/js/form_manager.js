@@ -44,12 +44,12 @@ var FormManager = AbstractAction.extend({
      * before the widget rendering. This method will make a rpc call to
      * gather the website forms information.
      *
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     willStart: function () {
         var self = this;
         if (!this.action) {
-            return $.Deferred().reject();
+            return Promise.reject();
         }
         this.res_model = this.action.res_model;
         return this._super.apply(this, arguments).then(function () {

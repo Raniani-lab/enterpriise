@@ -24,7 +24,7 @@ QUnit.module('FormManager', {
     }
 }, function () {
 
-    QUnit.test('Simple Form Manager rendering', function(assert) {
+    QUnit.test('Simple Form Manager rendering', async function (assert) {
         assert.expect(4);
         var clientAction = new FormManager(null, {}, this.options);
         testUtils.mock.addMockEnvironment(clientAction, {
@@ -32,12 +32,12 @@ QUnit.module('FormManager', {
             mockRPC: function (route, args) {
                 if (route === '/website_studio/get_forms') {
                     assert.ok(true, "should call /website_studio/get_forms");
-                    return $.when([{id:1, name:'partner', url:'/partner'}]);
+                    return Promise.resolve([{id: 1, name: 'partner', url: '/partner'}]);
                 }
                 return this._super(route, args);
             },
         });
-        clientAction.appendTo($('#qunit-fixture'));
+        await clientAction.appendTo($('#qunit-fixture'));
         var $thumbnails = clientAction.$('.o_web_studio_thumbnail');
         assert.strictEqual($thumbnails.length, 2,
             "should be 2 thumbnails");

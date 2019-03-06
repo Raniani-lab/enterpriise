@@ -39,11 +39,11 @@ QUnit.module('Helpdesk Dashboard', {
     }
 });
 
-QUnit.test('dashboard basic rendering', function(assert) {
+QUnit.test('dashboard basic rendering', async function(assert) {
     assert.expect(4);
 
     var dashboard_data = this.dashboard_data;
-    var kanban = createView({
+    var kanban = await createView({
         View: view_registry.get('helpdesk_dashboard'),
         model: 'partner',
         data: this.data,
@@ -55,7 +55,7 @@ QUnit.test('dashboard basic rendering', function(assert) {
         mockRPC: function(route, args) {
             if (args.method === 'retrieve_dashboard') {
                 assert.ok(true, "should call /retrieve_dashboard");
-                return $.when(dashboard_data);
+                return Promise.resolve(dashboard_data);
             }
             return this._super(route, args);
         },
@@ -70,12 +70,12 @@ QUnit.test('dashboard basic rendering', function(assert) {
     kanban.destroy();
 });
 
-QUnit.test('edit the target', function(assert) {
+QUnit.test('edit the target', async function(assert) {
     assert.expect(6);
 
     var dashboard_data = this.dashboard_data;
     dashboard_data.helpdesk_target_closed = 0;
-    var kanban = createView({
+    var kanban = await createView({
         View: view_registry.get('helpdesk_dashboard'),
         model: 'partner',
         data: this.data,
@@ -88,12 +88,12 @@ QUnit.test('edit the target', function(assert) {
             if (args.method === 'retrieve_dashboard') {
                 // should be called twice: for the first rendering, and after the target update
                 assert.ok(true, "should call /retrieve_dashboard");
-                return $.when(dashboard_data);
+                return Promise.resolve(dashboard_data);
             }
             if (args.model === 'res.users' && args.method === 'write') {
                 assert.ok(true, "should modify helpdesk_target_closed");
                 dashboard_data.helpdesk_target_closed = args.args[1]['helpdesk_target_closed'];
-                return $.when();
+                return Promise.resolve();
             }
             return this._super(route, args);
         },
@@ -104,17 +104,16 @@ QUnit.test('edit the target', function(assert) {
     assert.ok(!kanban.$('.o_target_to_set').attr('value'), "should have no target");
 
     // edit the target
-    testUtils.dom.click(kanban.$('.o_target_to_set'));
-    kanban.$('.o_helpdesk_dashboard input')
-        .val(1200)
-        .trigger($.Event('keyup', {which: $.ui.keyCode.ENTER})); // set the target
+    await testUtils.dom.click(kanban.$('.o_target_to_set'));
+    await testUtils.fields.editAndTrigger(kanban.$('.o_helpdesk_dashboard input'), 
+        1200, [$.Event('keyup', {which: $.ui.keyCode.ENTER})]); // set the target
 
     assert.strictEqual(kanban.$('.o_target_to_set').text().trim(), "1200",
         "should have correct target");
     kanban.destroy();
 });
 
-QUnit.test('dashboard rendering with empty many2one', function(assert) {
+QUnit.test('dashboard rendering with empty many2one', async function(assert) {
     assert.expect(2);
 
     // add an empty many2one
@@ -122,7 +121,7 @@ QUnit.test('dashboard rendering with empty many2one', function(assert) {
     this.data.partner.records[0].partner_id = false;
 
     var dashboard_data = this.dashboard_data;
-    var kanban = createView({
+    var kanban = await createView({
         View: view_registry.get('helpdesk_dashboard'),
         model: 'partner',
         data: this.data,
@@ -135,7 +134,7 @@ QUnit.test('dashboard rendering with empty many2one', function(assert) {
         mockRPC: function(route, args) {
             if (args.method === 'retrieve_dashboard') {
                 assert.ok(true, "should call /retrieve_dashboard");
-                return $.when(dashboard_data);
+                return Promise.resolve(dashboard_data);
             }
             return this._super(route, args);
         },

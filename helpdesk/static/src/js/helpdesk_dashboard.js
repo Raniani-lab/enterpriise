@@ -49,7 +49,7 @@ var HelpdeskDashboardRenderer = KanbanRenderer.extend({
     /**
      * @override
      * @private
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _render: function () {
         var self = this;
@@ -134,14 +134,14 @@ var HelpdeskDashboardModel = KanbanModel.extend({
     },
     /**
      * @œverride
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     load: function () {
         return this._loadDashboard(this._super.apply(this, arguments));
     },
     /**
      * @œverride
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     reload: function () {
         return this._loadDashboard(this._super.apply(this, arguments));
@@ -153,8 +153,8 @@ var HelpdeskDashboardModel = KanbanModel.extend({
 
     /**
      * @private
-     * @param {Deferred} super_def a deferred that resolves with a dataPoint id
-     * @returns {Deferred -> string} resolves to the dataPoint id
+     * @param {Promise} super_def a promise that resolves with a dataPoint id
+     * @returns {Promise -> string} resolves to the dataPoint id
      */
     _loadDashboard: function (super_def) {
         var self = this;
@@ -162,7 +162,9 @@ var HelpdeskDashboardModel = KanbanModel.extend({
             model: 'helpdesk.team',
             method: 'retrieve_dashboard',
         });
-        return $.when(super_def, dashboard_def).then(function(id, dashboardValues) {
+        return Promise.all([super_def, dashboard_def]).then(function(results) {
+            var id = results[0];
+            var dashboardValues = results[1];
             self.dashboardValues[id] = dashboardValues;
             return id;
         });

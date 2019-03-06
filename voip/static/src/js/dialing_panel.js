@@ -282,7 +282,7 @@ var DialingPanel = Widget.extend({
             this.$('.o_dial_tabs > li.active, .tab-pane.active').removeClass('active');
             this.$('li.o_dial_activities_tab, .tab-pane.o_dial_next_activities').addClass('active');
             this.activeTab = this.tabs.nextActivities;
-            this.activeTab.callFromActivityWidget(params).done(function () {
+            this.activeTab.callFromActivityWidget(params).then(function () {
                 self._makeCall(params.number);
             });
         } else {
@@ -303,7 +303,7 @@ var DialingPanel = Widget.extend({
             this.$('.o_dial_tabs > li.active, .tab-pane.active').removeClass('active');
             this.$('li.o_dial_recent_tab, .tab-pane.o_dial_recent').addClass('active');
             this.activeTab = this.tabs.recent;
-            this.activeTab.callFromPhoneWidget(params).done(function (phonecall) {
+            this.activeTab.callFromPhoneWidget(params).then(function (phonecall) {
                 self._makeCall(params.number, phonecall);
             });
         } else {
@@ -632,10 +632,10 @@ var VoipTopButton = Widget.extend({
         var ready = this.getSession().user_has_group('base.group_user').then(
             function (is_employee) {
                 if (!is_employee) {
-                    return $.Deferred().reject();
+                    return Promise.reject();
                 }
             });
-        return $.when(this._super.apply(this, arguments), ready);
+        return Promise.all([this._super.apply(this, arguments), ready]);
     },
 
     //--------------------------------------------------------------------------

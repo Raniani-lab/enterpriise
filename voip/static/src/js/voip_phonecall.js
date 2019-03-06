@@ -54,7 +54,7 @@ var PhonecallWidget = Widget.extend({
      * Makes rpc to log the hangup call.
      *
      * @param {boolean} done should mark activity as done
-     * @return {Deferred}
+     * @return {Promise}
      */
     hangUp: function (done) {
         var self = this;
@@ -70,7 +70,7 @@ var PhonecallWidget = Widget.extend({
     /**
      * Makes rpc to set the call as rejected.
      *
-     * @return {Deferred}
+     * @return {Promise}
      */
     rejectPhonecall: function () {
         return this._rpc({
@@ -364,30 +364,32 @@ var PhonecallDetails = Widget.extend({
     _onToPartnerClick: function (ev) {
         ev.preventDefault();
         var res_id;
-        var def = $.Deferred();
-        if (this.partner_id) {
-            res_id = this.partner_id;
-            def.resolve();
-        } else {
-            var domain = ['|',
-                          ['phone', '=', this.phone],
-                          ['mobile', '=', this.phone]];
-            this._rpc({
-                method: 'search_read',
-                model: "res.partner",
-                kwargs: {
-                    domain: domain,
-                    fields: ['id'],
-                    limit: 1
-                }
-            }).then(function(ids) {
-                if (ids.length)
-                    res_id = ids[0].id;
-            }).always(function(){
-                def.resolve();
-            })
-        }
-        $.when(def).then((function() {
+        var def = new Promise(function (resolve) {
+            if (this.partner_id) {
+                res_id = this.partner_id;
+                resolve();
+            } else {
+                var domain = ['|',
+                            ['phone', '=', this.phone],
+                            ['mobile', '=', this.phone]];
+                this._rpc({
+                    method: 'search_read',
+                    model: "res.partner",
+                    kwargs: {
+                        domain: domain,
+                        fields: ['id'],
+                        limit: 1
+                    }
+                }).then(function(ids) {
+                    if (ids.length)
+                        res_id = ids[0].id;
+                }).always(function(){
+                    resolve();
+                })
+            }
+        });
+
+        Promise.resolve(def).then((function() {
             if (res_id !== undefined) {
                 this.do_action({
                     type: 'ir.actions.act_window',

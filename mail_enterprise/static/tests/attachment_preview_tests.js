@@ -44,7 +44,7 @@ QUnit.module('MailAttachmentOnSide', {
 
 }, function () {
 
-    QUnit.test('Attachment on side', function (assert) {
+    QUnit.test('Attachment on side', async function (assert) {
         assert.expect(11);
 
         var count = 0;
@@ -69,7 +69,7 @@ QUnit.module('MailAttachmentOnSide', {
             res_id: 2,
         }];
 
-        var form = createView({
+        var form = await createView({
             View: FormView,
             model: 'partner',
             data: this.data,
@@ -93,14 +93,14 @@ QUnit.module('MailAttachmentOnSide', {
                     var requestedMessages = _.filter(messages, function (message) {
                         return _.contains(args.args[0], message.id);
                     });
-                    return $.when(requestedMessages);
+                    return Promise.resolve(requestedMessages);
                 }
                 if (args.method === 'message_get_suggested_recipients') {
-                    return $.when({2: []});
+                    return Promise.resolve({2: []});
                 }
                 if (_.str.contains(route, '/web/static/lib/pdfjs/web/viewer.html')){
                     var canvas = document.createElement('canvas');
-                    return $.when(canvas.toDataURL());
+                    return Promise.resolve(canvas.toDataURL());
                 }
                 if (args.method === 'message_post') {
                     messages.push({
@@ -122,10 +122,10 @@ QUnit.module('MailAttachmentOnSide', {
                         model: 'partner',
                         res_id: 2,
                     });
-                    return $.when(5);
+                    return Promise.resolve(5);
                 }
                 if (args.method === 'register_as_main_attachment') {
-                    return $.when(true);
+                    return Promise.resolve(true);
                 }
                 return this._super.apply(this, arguments);
             },
@@ -156,9 +156,9 @@ QUnit.module('MailAttachmentOnSide', {
             "Don't display arrow if there is no previous/next attachment");
 
         // send a message with attached PDF file
-        testUtils.dom.click(form.$('.o_chatter_button_new_message'));
+        await testUtils.dom.click(form.$('.o_chatter_button_new_message'));
         form.$('.oe_chatter .o_composer_text_field:first()').val("Attached the pdf file");
-        testUtils.dom.click(form.$('.oe_chatter .o_composer_button_send'));
+        await testUtils.dom.click(form.$('.oe_chatter .o_composer_button_send'));
 
         assert.containsN(form, '.arrow', 2,
             "Display arrows if there multiple attachments");
@@ -166,22 +166,19 @@ QUnit.module('MailAttachmentOnSide', {
             "Preview image should be removed");
         assert.containsOnce(form, '.o_attachment_preview_container > iframe',
             "There should be iframe for pdf viewer");
-        // we don't use dom.click() for .o_move_next and .o_move_previous because
-        // those elements are only visible on XXL screens, but the test suite is
-        // executed on an XL device
-        form.$('.o_move_next').click();
+        await testUtils.dom.click(form.$('.o_move_next'), {allowInvisible:true});
         assert.containsOnce(form, '.o_attachment_preview_img > img',
             "Display next attachment");
-        form.$('.o_move_previous').click();
+        await testUtils.dom.click(form.$('.o_move_previous'), {allowInvisible:true});
         assert.containsOnce(form, '.o_attachment_preview_container > iframe',
             "Display preview attachment");
         form.destroy();
     });
 
-    QUnit.test('Attachment on side on new record', function (assert) {
+    QUnit.test('Attachment on side on new record', async function (assert) {
         assert.expect(3);
 
-        var form = createView({
+        var form = await createView({
             View: FormView,
             model: 'partner',
             data: this.data,
@@ -212,7 +209,7 @@ QUnit.module('MailAttachmentOnSide', {
         form.destroy();
     });
 
-    QUnit.test('Attachment on side not displayed on smaller screens', function (assert) {
+    QUnit.test('Attachment on side not displayed on smaller screens', async function (assert) {
         assert.expect(2);
 
         this.data.partner.records[0].message_ids = [1];
@@ -236,7 +233,7 @@ QUnit.module('MailAttachmentOnSide', {
             res_id: 2,
         }];
 
-        var form = createView({
+        var form = await createView({
             View: FormView,
             model: 'partner',
             data: this.data,
@@ -260,7 +257,7 @@ QUnit.module('MailAttachmentOnSide', {
                     var requestedMessages = _.filter(messages, function (message) {
                         return _.contains(args.args[0], message.id);
                     });
-                    return $.when(requestedMessages);
+                    return Promise.resolve(requestedMessages);
                 }
                 return this._super.apply(this, arguments);
             },

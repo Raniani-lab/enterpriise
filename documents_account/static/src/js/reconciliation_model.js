@@ -19,7 +19,7 @@ reconciliationModel.StatementModel.include({
     _executeActionList: function(list) {
         var self = this;
         if (list.length === 0) {
-           return $.when();
+           return Promise.resolve();
         }
         var action = list.pop();
         return this.do_action(action, {

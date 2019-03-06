@@ -103,7 +103,7 @@ var FloatToggleWidget = BaseGridWidget.extend({
         var current = formattedValue;
 
         // handlers
-        function onClick () {
+        function onClick () {
             var closest = utils.closestNumber(current, range);
             var closest_index = _.indexOf(range, closest);
             var next_index = closest_index+1 < range.length ? closest_index+1 : 0;
@@ -116,9 +116,9 @@ var FloatToggleWidget = BaseGridWidget.extend({
                 formattedValue: current.toString(),
                 path: path,
             });
-        }
+        }
         function triggerSaveChange () {
-            self.trigger_up('grid_cell_edited', {
+            self.trigger_up('grid_cell_edited', {
                 formattedValue: current.toString(),
                 path: path,
             });

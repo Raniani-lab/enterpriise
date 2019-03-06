@@ -103,7 +103,7 @@ var GridController = AbstractController.extend({
     /**
      * @override
      * @private
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _update: function () {
         return this._super.apply(this, arguments)

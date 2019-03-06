@@ -24,7 +24,7 @@ var DataImportStmt = BaseImport.DataImport.extend({
         });
     },
     create_model: function() {
-        return new $.Deferred().resolve();
+        return Promise().resolve();
     },
     import_options: function () {
         var options = this._super();
@@ -46,11 +46,13 @@ var DataImportStmt = BaseImport.DataImport.extend({
     },
     call_import: function(kwargs) {
         var self = this;
-        return self._super.apply(this, arguments).done(function (message) {
+        var superProm = self._super.apply(this, arguments);
+        superProm.then(function (message) {
             if(message.length && message[0].type === 'bank_statement'){
                 self.statement_id = message[0].statement_id;
             }
         });
+        return superProm;
     },
     exit: function () {
         this.do_action({
@@ -62,7 +64,7 @@ var DataImportStmt = BaseImport.DataImport.extend({
             tag: 'bank_statement_reconciliation_view'
         });
     },
-    
+
 });
 core.action_registry.add('import_bank_stmt', DataImportStmt);
 

@@ -88,7 +88,7 @@ var GanttRenderer = AbstractRenderer.extend({
      * is collapsed/expanded, to prevent from re-rendering the whole view.
      *
      * @param {Object} rowState part of the state concerning the row to update
-     * @returns {$.Promise}
+     * @returns {Promise}
      */
     updateRow: function (rowState) {
         var self = this;
@@ -100,7 +100,11 @@ var GanttRenderer = AbstractRenderer.extend({
                 delete self.rowWidgets[rowId];
             }
         });
-        return this._renderRows([rowState], rowState.groupedBy).then(function (rows) {
+        this.proms = [];
+        var rows = this._renderRows([rowState], rowState.groupedBy);
+        var proms = this.proms;
+        delete this.proms;
+        return Promise.all(proms).then(function () {
             var $previousRow = oldRows[0].$el;
             rows.forEach(function (row) {
                 row.$el.insertAfter($previousRow);
@@ -191,14 +195,16 @@ var GanttRenderer = AbstractRenderer.extend({
         this.rowWidgets = {};
         this.viewInfo = this._prepareViewInfo();
 
-        var defs = [];
-        defs.push(this._renderRows(this.state.rows, this.state.groupedBy));
+        this.proms = [];
+        var rows = this._renderRows(this.state.rows, this.state.groupedBy);
+        var totalRow;
         if (this.totalRow) {
-            defs.push(this._renderTotalRow());
+            totalRow = this._renderTotalRow();
         }
-        defs.push(this._super.apply(this, arguments));
-
-        return $.when.apply($, defs).then(function (rows, totalRow) {
+        this.proms.push(this._super.apply(this, arguments));
+        var proms = this.proms;
+        delete this.proms;
+        return Promise.all(proms).then(function () {
             self.$el.empty();
             _.invoke(oldRowWidgets, 'destroy');
 
@@ -223,11 +229,10 @@ var GanttRenderer = AbstractRenderer.extend({
      * @param {Object[]} rows recursive structure of records according to
      *   groupBys
      * @param {string[]} groupedBy
-     * @returns {$.Promise<GanttRow[]>} resolved with the row widgets
+     * @returns {Promise<GanttRow[]>} resolved with the row widgets
      */
     _renderRows: function (rows, groupedBy) {
         var self = this;
-        var defs = [];
         var rowWidgets = [];
         var disableResize = this.state.scale === 'year';
 
@@ -247,34 +252,24 @@ var GanttRenderer = AbstractRenderer.extend({
             if (groupedBy.length) {
                 pillsInfo.groupName = row.name;
             }
-
-            var consolidate = groupLevel === 0 && self.state.groupedBy[0] === self.consolidationParams.maxField;
-
             var params = {
                 canCreate: self.canCreate,
                 canEdit: self.canEdit,
                 isGroup: row.isGroup,
-                consolidate: consolidate,
+                consolidate: (groupLevel === 0) && (self.state.groupedBy[0] === self.consolidationParams.maxField),
                 hideSidebar: hideSidebar,
                 isOpen: row.isOpen,
                 disableResize: disableResize,
                 rowId: row.id,
                 scales: self.SCALES,
             };
-            var rowDef = self._renderRow(pillsInfo, params).then(function (row) {
-                rowWidgets.push(row);
-            });
-            defs.push(rowDef);
+            rowWidgets.push(self._renderRow(pillsInfo, params));
             if (row.isGroup && row.isOpen) {
-                var subRowsDef = self._renderRows(row.rows, groupedBy.slice(1)).then(function (subRowWidgets) {
-                    rowWidgets = rowWidgets.concat(subRowWidgets);
-                });
-                defs.push(subRowsDef);
+                var subRowWidgets = self._renderRows(row.rows, groupedBy.slice(1));
+                rowWidgets = rowWidgets.concat(subRowWidgets);
             }
         });
-        return $.when.apply($, defs).then(function () {
-            return rowWidgets;
-        });
+        return rowWidgets;
     },
     /**
      * Render a row outside the DOM.
@@ -284,22 +279,22 @@ var GanttRenderer = AbstractRenderer.extend({
      * render. The Widget API should offer a proper way to start a widget
      * without inserting it anywhere.
      *
+     * @private
      * @param {Object} pillsInfo
      * @param {Object} params
-     * @returns {$.Promise<GanttRow>} resolved when the row is ready
+     * @returns {Promise<GanttRow>} resolved when the row is ready
      */
     _renderRow: function (pillsInfo, params) {
         var ganttRow = new GanttRow(this, pillsInfo, this.viewInfo, params);
         this.rowWidgets[ganttRow.rowId] = ganttRow;
-        return ganttRow._widgetRenderAndInsert(function () {}).then(function () {
-            return ganttRow;
-        });
+        this.proms.push(ganttRow._widgetRenderAndInsert(function () {}));
+        return ganttRow;
     },
     /**
      * Renders the total row outside the DOM, so that we can insert it to the
      * DOM once all rows are ready.
      *
-     * @returns {$.Promise<GanttRow} resolved with the row widget
+     * @returns {Promise<GanttRow} resolved with the row widget
      */
     _renderTotalRow: function () {
         var pillsInfo = {

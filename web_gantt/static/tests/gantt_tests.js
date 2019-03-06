@@ -71,10 +71,10 @@ QUnit.module('Views', {
 
     // BASIC TESTS
 
-    QUnit.test('empty ungrouped gantt rendering', function (assert) {
+    QUnit.test('empty ungrouped gantt rendering', async function (assert) {
         assert.expect(3);
 
-        var gantt = createView({
+        var gantt = await createView({
             View: GanttView,
             model: 'tasks',
             data: this.data,
@@ -95,14 +95,13 @@ QUnit.module('Views', {
         gantt.destroy();
     });
 
-    QUnit.test('ungrouped gantt rendering', function (assert) {
-        var done = assert.async();
+    QUnit.test('ungrouped gantt rendering', async function (assert) {
         assert.expect(18);
 
         var POPOVER_DELAY = GanttRow.prototype.POPOVER_DELAY;
         GanttRow.prototype.POPOVER_DELAY = 0;
 
-        var gantt = createView({
+        var gantt = await createView({
             View: GanttView,
             model: 'tasks',
             data: this.data,
@@ -124,6 +123,7 @@ QUnit.module('Views', {
                     return 60;
                 },
             },
+            debug:1
         });
 
         assert.containsOnce(gantt, '.o_gantt_header_container',
@@ -160,32 +160,28 @@ QUnit.module('Views', {
         // test popover and local timezone
         assert.containsNone(gantt, 'div.popover', 'should not have a popover');
         gantt.$('.o_gantt_pill:contains("Task 2")').trigger('mouseenter');
+        await testUtils.nextTick();
+        assert.containsOnce($, 'div.popover', 'should have a popover');
 
-        concurrency.delay(0).then(function () {
-            assert.containsOnce($, 'div.popover', 'should have a popover');
+        // TODO: these two assertions will fail with a different timezone
+        // (hence, on runbot) because of momentJS `local()` function that
+        // doesn't use the session.getTZOffset mocked in this test but we
+        // haven't f another way to achieve the same behaviour without it
 
-            // TODO: these two assertions will fail with a different timezone
-            // (hence, on runbot) because of momentJS `local()` function that
-            // doesn't use the session.getTZOffset mocked in this test but we
-            // haven't f another way to achieve the same behaviour without it
+        // assert.strictEqual($('div.popover li:contains(Start Date)').text(), 'Start Date: 2018-12-17 12:30:00 PM',
+        //     'popover should display start date of task 2 in local time');
+        // assert.strictEqual($('div.popover li:contains(Stop Date)').text(), 'Stop Date: 2018-12-22 07:29:59 AM',
+        //     'popover should display start date of task 2 in local time');
 
-            // assert.strictEqual($('div.popover li:contains(Start Date)').text(), 'Start Date: 2018-12-17 12:30:00 PM',
-            //     'popover should display start date of task 2 in local time');
-            // assert.strictEqual($('div.popover li:contains(Stop Date)').text(), 'Stop Date: 2018-12-22 07:29:59 AM',
-            //     'popover should display start date of task 2 in local time');
-
-            gantt.destroy();
-            assert.containsNone(gantt, 'div.popover', 'should not have a popover anymore');
-
-            GanttRow.prototype.POPOVER_DELAY = POPOVER_DELAY;
-            done();
-        });
+        gantt.destroy();
+        assert.containsNone(gantt, 'div.popover', 'should not have a popover anymore');
+        GanttRow.prototype.POPOVER_DELAY = POPOVER_DELAY;
     });
 
-    QUnit.test('empty single-level grouped gantt rendering', function (assert) {
+    QUnit.test('empty single-level grouped gantt rendering', async function (assert) {
         assert.expect(3);
 
-        var gantt = createView({
+        var gantt = await createView({
             View: GanttView,
             model: 'tasks',
             data: this.data,
@@ -207,10 +203,10 @@ QUnit.module('Views', {
         gantt.destroy();
     });
 
-    QUnit.test('single-level grouped gantt rendering', function (assert) {
+    QUnit.test('single-level grouped gantt rendering', async function (assert) {
         assert.expect(12);
 
-        var gantt = createView({
+        var gantt = await createView({
             View: GanttView,
             model: 'tasks',
             data: this.data,
@@ -249,10 +245,10 @@ QUnit.module('Views', {
         gantt.destroy();
     });
 
-    QUnit.test('single-level grouped gantt rendering with group_expand', function (assert) {
+    QUnit.test('single-level grouped gantt rendering with group_expand', async function (assert) {
         assert.expect(12);
 
-        var gantt = createView({
+        var gantt = await createView({
             View: GanttView,
             model: 'tasks',
             data: this.data,
@@ -263,7 +259,7 @@ QUnit.module('Views', {
             groupBy: ['project_id'],
             mockRPC: function (route) {
                 if (route === '/web/dataset/call_kw/tasks/read_group') {
-                    return $.when([
+                    return Promise.resolve([
                         { project_id: [20, "Unused Project 1"], project_id_count: 0 },
                         { project_id: [50, "Unused Project 2"], project_id_count: 0 },
                         { project_id: [2, "Project 2"], project_id_count: 2 },
@@ -303,10 +299,10 @@ QUnit.module('Views', {
         gantt.destroy();
     });
 
-    QUnit.test('multi-level grouped gantt rendering', function (assert) {
+    QUnit.test('multi-level grouped gantt rendering', async function (assert) {
         assert.expect(31);
 
-        var gantt = createView({
+        var gantt = await createView({
             View: GanttView,
             model: 'tasks',
             data: this.data,
@@ -394,10 +390,10 @@ QUnit.module('Views', {
         gantt.destroy();
     });
 
-    QUnit.test('scale switching', function (assert) {
+    QUnit.test('scale switching', async function (assert) {
         assert.expect(17);
 
-        var gantt = createView({
+        var gantt = await createView({
             View: GanttView,
             model: 'tasks',
             data: this.data,
@@ -412,7 +408,7 @@ QUnit.module('Views', {
             'month view should be activated by default');
 
         // switch to day view
-        testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_scale[data-value=day]'));
+        await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_scale[data-value=day]'));
         assert.hasClass(gantt.$buttons.find('.o_gantt_button_scale[data-value=day]'), 'active',
             'day view should be activated');
         assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child .o_gantt_header_cell').text().trim(), '20 December 2018',
@@ -423,7 +419,7 @@ QUnit.module('Views', {
             'should have a 4 pills');
 
         // switch to week view
-        testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_scale[data-value=week]'));
+        await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_scale[data-value=week]'));
         assert.hasClass(gantt.$buttons.find('.o_gantt_button_scale[data-value=week]'), 'active',
             'week view should be activated');
         assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child .o_gantt_header_cell').text().trim(), '16 December 2018 - 22 December 2018',
@@ -434,7 +430,7 @@ QUnit.module('Views', {
             'should have a 4 pills');
 
         // switch to month view
-        testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_scale[data-value=month]'));
+        await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_scale[data-value=month]'));
         assert.hasClass(gantt.$buttons.find('.o_gantt_button_scale[data-value=month]'), 'active',
             'month view should be activated');
         assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child .o_gantt_header_cell').text().trim(), 'December 2018',
@@ -445,7 +441,7 @@ QUnit.module('Views', {
             'should have a 6 pills');
 
         // switch to year view
-        testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_scale[data-value=year]'));
+        await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_scale[data-value=year]'));
         assert.hasClass(gantt.$buttons.find('.o_gantt_button_scale[data-value=year]'), 'active',
             'year view should be activated');
         assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child .o_gantt_header_cell').text().trim(), '2018',
@@ -458,10 +454,10 @@ QUnit.module('Views', {
         gantt.destroy();
     });
 
-    QUnit.test('today is highlighted', function (assert) {
+    QUnit.test('today is highlighted', async function (assert) {
         assert.expect(2);
 
-        var gantt = createView({
+        var gantt = await createView({
             View: GanttView,
             model: 'tasks',
             data: this.data,
@@ -479,10 +475,10 @@ QUnit.module('Views', {
 
     // BEHAVIORAL TESTS
 
-    QUnit.test('date navigation with timezone (1h)', function (assert) {
+    QUnit.test('date navigation with timezone (1h)', async function (assert) {
         assert.expect(32);
 
-        var gantt = createView({
+        var gantt = await createView({
             View: GanttView,
             model: 'tasks',
             data: this.data,
@@ -502,81 +498,68 @@ QUnit.module('Views', {
                 },
             },
         });
-        var searchReads = [];
-        searchReads.push("start,<=,2018-12-31 22:59:59,stop,>=,2018-11-30 23:00:00");
-        assert.verifySteps(searchReads);
+        assert.verifySteps(["start,<=,2018-12-31 22:59:59,stop,>=,2018-11-30 23:00:00"]);
 
         // month navigation
-        testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_prev'));
+        await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_prev'));
         assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child .o_gantt_header_cell').text().trim(), 'November 2018',
             'should contain "November 2018" in header');
-        searchReads.push("start,<=,2018-11-30 22:59:59,stop,>=,2018-10-31 23:00:00");
-        assert.verifySteps(searchReads);
+        assert.verifySteps(["start,<=,2018-11-30 22:59:59,stop,>=,2018-10-31 23:00:00"]);
 
-        testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_next'));
+        await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_next'));
         assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child .o_gantt_header_cell').text().trim(), 'December 2018',
             'should contain "December 2018" in header');
-        searchReads.push("start,<=,2018-12-31 22:59:59,stop,>=,2018-11-30 23:00:00");
-        assert.verifySteps(searchReads);
+        assert.verifySteps(["start,<=,2018-12-31 22:59:59,stop,>=,2018-11-30 23:00:00"]);
 
         // switch to day view and check day navigation
-        testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_scale[data-value=day]'));
-        searchReads.push("start,<=,2018-12-20 22:59:59,stop,>=,2018-12-19 23:00:00");
-        assert.verifySteps(searchReads);
+        await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_scale[data-value=day]'));
+        assert.verifySteps(["start,<=,2018-12-20 22:59:59,stop,>=,2018-12-19 23:00:00"]);
 
-        testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_prev'));
+        await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_prev'));
         assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child .o_gantt_header_cell').text().trim(), '19 December 2018',
             'should contain "19 December 2018" in header');
-        searchReads.push("start,<=,2018-12-19 22:59:59,stop,>=,2018-12-18 23:00:00");
-        assert.verifySteps(searchReads);
+        assert.verifySteps(["start,<=,2018-12-19 22:59:59,stop,>=,2018-12-18 23:00:00"]);
 
-        testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_next'));
+        await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_next'));
         assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child .o_gantt_header_cell').text().trim(), '20 December 2018',
             'should contain "20 December 2018" in header');
-        searchReads.push("start,<=,2018-12-20 22:59:59,stop,>=,2018-12-19 23:00:00");
-        assert.verifySteps(searchReads);
+        assert.verifySteps(["start,<=,2018-12-20 22:59:59,stop,>=,2018-12-19 23:00:00"]);
 
         // switch to week view and check week navigation
-        testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_scale[data-value=week]'));
-        searchReads.push("start,<=,2018-12-22 22:59:59,stop,>=,2018-12-15 23:00:00");
-        assert.verifySteps(searchReads);
+        await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_scale[data-value=week]'));
+        assert.verifySteps(["start,<=,2018-12-22 22:59:59,stop,>=,2018-12-15 23:00:00"]);
 
-        testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_prev'));
+        await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_prev'));
         assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child .o_gantt_header_cell').text().trim(), '09 December 2018 - 15 December 2018',
             'should contain "09 December 2018 - 15 December 2018" in header');
-        searchReads.push("start,<=,2018-12-15 22:59:59,stop,>=,2018-12-08 23:00:00");
-        assert.verifySteps(searchReads);
+        assert.verifySteps(["start,<=,2018-12-15 22:59:59,stop,>=,2018-12-08 23:00:00"]);
 
-        testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_next'));
+        await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_next'));
         assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child .o_gantt_header_cell').text().trim(), '16 December 2018 - 22 December 2018',
             'should contain "16 December 2018 - 22 December 2018" in header');
-        searchReads.push("start,<=,2018-12-22 22:59:59,stop,>=,2018-12-15 23:00:00");
-        assert.verifySteps(searchReads);
+        assert.verifySteps(["start,<=,2018-12-22 22:59:59,stop,>=,2018-12-15 23:00:00"]);
 
         // switch to year view and check year navigation
-        testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_scale[data-value=year]'));
-        searchReads.push("start,<=,2018-12-31 22:59:59,stop,>=,2017-12-31 23:00:00");
-        assert.verifySteps(searchReads);
+        await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_scale[data-value=year]'));
+        assert.verifySteps(["start,<=,2018-12-31 22:59:59,stop,>=,2017-12-31 23:00:00"]);
 
-        testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_prev'));
+        await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_prev'));
         assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child .o_gantt_header_cell').text().trim(), '2017',
             'should contain "2017" in header');
-        searchReads.push("start,<=,2017-12-31 22:59:59,stop,>=,2016-12-31 23:00:00");
-        assert.verifySteps(searchReads);
+        assert.verifySteps(["start,<=,2017-12-31 22:59:59,stop,>=,2016-12-31 23:00:00"]);
 
-        testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_next'));
+        await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_next'));
         assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child .o_gantt_header_cell').text().trim(), '2018',
             'should contain "2018" in header');
-        searchReads.push("start,<=,2018-12-31 22:59:59,stop,>=,2017-12-31 23:00:00");
-        assert.verifySteps(searchReads);
+        assert.verifySteps(["start,<=,2018-12-31 22:59:59,stop,>=,2017-12-31 23:00:00"]);
 
         gantt.destroy();
     });
 
-    QUnit.test('open a dialog to add a new task', function (assert) {
+    QUnit.test('open a dialog to add a new task', async function (assert) {
         assert.expect(3);
 
-        var gantt = createView({
+        var gantt = await createView({
             View: GanttView,
             model: 'tasks',
             data: this.data,
@@ -593,7 +576,7 @@ QUnit.module('Views', {
             },
         });
 
-        testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_add'));
+        await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_add'));
 
         // check that the dialog is opened with prefilled fields
         var $modal = $('.modal');
@@ -606,10 +589,10 @@ QUnit.module('Views', {
         gantt.destroy();
     });
 
-    QUnit.test('open a dialog to create/edit a task', function (assert) {
+    QUnit.test('open a dialog to create/edit a task', async function (assert) {
         assert.expect(12);
 
-        var gantt = createView({
+        var gantt = await createView({
             View: GanttView,
             model: 'tasks',
             data: this.data,
@@ -631,13 +614,13 @@ QUnit.module('Views', {
         });
 
         // open dialog to create a task
-        testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_row_container .o_gantt_row:nth(3) .o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_cell_add'), "mouseup");
-
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_row_container .o_gantt_row:nth(3) .o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_cell_add'), "mouseup");
+        await testUtils.nextTick();
         // check that the dialog is opened with prefilled fields
         var $modal = $('.modal-lg');
         assert.strictEqual($modal.length, 1, 'There should be one modal opened');
         assert.strictEqual($modal.find('.modal-title').text(), "Create");
-        testUtils.fields.editInput($modal.find('input[name=name]'), 'Task 8');
+        await testUtils.fields.editInput($modal.find('input[name=name]'), 'Task 8');
         var $modalFieldStart = $modal.find('.o_field_widget[name=start]');
         assert.strictEqual($modalFieldStart.find('.o_input').val(), '12/10/2018 00:00:00',
             'The start field should have a value "12/10/2018 00:00:00"');
@@ -655,13 +638,15 @@ QUnit.module('Views', {
             'The stage field should have a value "In Progress"');
 
         // create the task
-        testUtils.modal.clickButton('Save & Close');
+        await testUtils.modal.clickButton('Save & Close');
         assert.strictEqual($('.modal-lg').length, 0, 'Modal should be closed');
         assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_row:nth(3) .o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_pill').text().trim(), 'Task 8',
             'Task should be created with name "Task 8"');
 
         // open dialog to view a task
-        testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_row_container .o_gantt_row:nth(3) .o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_pill'), "mouseup");
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_row_container .o_gantt_row:nth(3) .o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_pill'), "mouseup");
+        await testUtils.nextTick();
+
         $modal = $('.modal-lg');
         assert.strictEqual($modal.find('.modal-title').text(), "Open");
         assert.strictEqual($modal.length, 1, 'There should be one modal opened');
@@ -671,10 +656,10 @@ QUnit.module('Views', {
         gantt.destroy();
     });
 
-    QUnit.test('create dialog with timezone', function (assert) {
+    QUnit.test('create dialog with timezone', async function (assert) {
         assert.expect(4);
 
-        var gantt = createView({
+        var gantt = await createView({
             View: GanttView,
             model: 'tasks',
             data: this.data,
@@ -713,7 +698,8 @@ QUnit.module('Views', {
         });
 
         // open dialog to create a task
-        testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_cell_add'), "mouseup");
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_cell_add'), "mouseup");
+        await testUtils.nextTick();
 
         assert.strictEqual($('.modal').length, 1, 'There should be one modal opened');
         assert.strictEqual($('.modal .o_field_widget[name=start] .o_input').val(), '12/10/2018 00:00:00',
@@ -722,19 +708,19 @@ QUnit.module('Views', {
             'The stop field should have a value "12/10/2018 23:59:59"');
 
         // create the task
-        testUtils.modal.clickButton('Save & Close');
+        await testUtils.modal.clickButton('Save & Close');
 
         gantt.destroy();
     });
 
-    QUnit.test('open a dialog to plan a task', function (assert) {
+    QUnit.test('open a dialog to plan a task', async function (assert) {
         assert.expect(5);
 
         this.data.tasks.records.push({ id: 41, name: 'Task 41' });
         this.data.tasks.records.push({ id: 42, name: 'Task 42', stop: '2018-12-31 18:29:59' });
         this.data.tasks.records.push({ id: 43, name: 'Task 43', start: '2018-11-30 18:30:00' });
 
-        var gantt = createView({
+        var gantt = await createView({
             View: GanttView,
             model: 'tasks',
             data: this.data,
@@ -758,26 +744,27 @@ QUnit.module('Views', {
         });
 
         // click on the plan button
-        testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_cell_plan'), "mouseup");
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_cell_plan'), "mouseup");
+        await testUtils.nextTick();
 
         assert.strictEqual($('.modal .o_list_view').length, 1,
             "a list view dialog should be opened");
         assert.strictEqual($('.modal .o_list_view tbody .o_data_cell').text().replace(/\s+/g, ''), "Task41Task42Task43",
             "the 3 records without date set should be displayed");
 
-        testUtils.dom.click($('.modal .o_list_view tbody tr:eq(0) input'));
-        testUtils.dom.click($('.modal .o_list_view tbody tr:eq(1) input'));
-        testUtils.dom.click($('.modal .o_select_button:contains(Select)'));
+        await testUtils.dom.click($('.modal .o_list_view tbody tr:eq(0) input'));
+        await testUtils.dom.click($('.modal .o_list_view tbody tr:eq(1) input'));
+        await testUtils.dom.click($('.modal .o_select_button:contains(Select)'));
 
         gantt.destroy();
     });
 
-    QUnit.test('open a dialog to plan a task (with timezone)', function (assert) {
+    QUnit.test('open a dialog to plan a task (with timezone)', async function (assert) {
         assert.expect(2);
 
         this.data.tasks.records.push({ id: 41, name: 'Task 41' });
 
-        var gantt = createView({
+        var gantt = await createView({
             View: GanttView,
             model: 'tasks',
             data: this.data,
@@ -805,20 +792,21 @@ QUnit.module('Views', {
         });
 
         // click on the plan button
-        testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_cell_plan'), "mouseup");
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_cell_plan'), "mouseup");
+        await testUtils.nextTick();
 
-        testUtils.dom.click($('.modal .o_list_view tbody tr:eq(0) input'));
-        testUtils.dom.click($('.modal .o_select_button:contains(Select)'));
+        await testUtils.dom.click($('.modal .o_list_view tbody tr:eq(0) input'));
+        await testUtils.dom.click($('.modal .o_select_button:contains(Select)'));
 
         gantt.destroy();
     });
 
-    QUnit.test('open a dialog to plan a task (multi-level)', function (assert) {
+    QUnit.test('open a dialog to plan a task (multi-level)', async function (assert) {
         assert.expect(2);
 
         this.data.tasks.records.push({ id: 41, name: 'Task 41' });
 
-        var gantt = createView({
+        var gantt = await createView({
             View: GanttView,
             model: 'tasks',
             data: this.data,
@@ -847,18 +835,19 @@ QUnit.module('Views', {
         });
 
         // click on the plan button
-        testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_row:not(.o_gantt_row_group):first .o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_cell_plan'), "mouseup");
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_row:not(.o_gantt_row_group):first .o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_cell_plan'), "mouseup");
+        await testUtils.nextTick();
 
-        testUtils.dom.click($('.modal .o_list_view tbody tr:eq(0) input'));
-        testUtils.dom.click($('.modal .o_select_button:contains(Select)'));
+        await testUtils.dom.click($('.modal .o_list_view tbody tr:eq(0) input'));
+        await testUtils.dom.click($('.modal .o_select_button:contains(Select)'));
 
         gantt.destroy();
     });
 
-    QUnit.test('expand/collapse rows', function (assert) {
+    QUnit.test('expand/collapse rows', async function (assert) {
         assert.expect(8);
 
-        var gantt = createView({
+        var gantt = await createView({
             View: GanttView,
             model: 'tasks',
             data: this.data,
@@ -875,21 +864,21 @@ QUnit.module('Views', {
             "all groups should be opened");
 
         // collapse all groups
-        testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_collapse_rows'));
+        await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_collapse_rows'));
         assert.containsN(gantt, '.o_gantt_row_group:not(.open)', 2,
             "there should be 2 closed groups");
         assert.containsN(gantt, '.o_gantt_row_group.open', 0,
             "all groups should now be closed");
 
         // expand all groups
-        testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_expand_rows'));
+        await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_expand_rows'));
         assert.containsN(gantt, '.o_gantt_row_group.open', 6,
             "there should be 6 opened grouped");
         assert.containsN(gantt, '.o_gantt_row_group:not(.open)', 0,
             "all groups should be opened again");
 
         // collapse the first group
-        testUtils.dom.click(gantt.$('.o_gantt_row_group:first .o_gantt_row_sidebar'));
+        await testUtils.dom.click(gantt.$('.o_gantt_row_group:first .o_gantt_row_sidebar'));
         assert.containsN(gantt, '.o_gantt_row_group.open', 3,
             "there should be three open groups");
         assert.containsN(gantt, '.o_gantt_row_group:not(.open)', 1,
@@ -898,10 +887,10 @@ QUnit.module('Views', {
         gantt.destroy();
     });
 
-    QUnit.test('collapsed rows remain collapsed at reload', function (assert) {
+    QUnit.test('collapsed rows remain collapsed at reload', async function (assert) {
         assert.expect(6);
 
-        var gantt = createView({
+        var gantt = await createView({
             View: GanttView,
             model: 'tasks',
             data: this.data,
@@ -918,7 +907,7 @@ QUnit.module('Views', {
             "all groups should be opened");
 
         // collapse the first group
-        testUtils.dom.click(gantt.$('.o_gantt_row_group:first .o_gantt_row_sidebar'));
+        await testUtils.dom.click(gantt.$('.o_gantt_row_group:first .o_gantt_row_sidebar'));
         assert.containsN(gantt, '.o_gantt_row_group.open', 3,
             "there should be three open groups");
         assert.containsN(gantt, '.o_gantt_row_group:not(.open)', 1,
@@ -935,11 +924,11 @@ QUnit.module('Views', {
         gantt.destroy();
     });
 
-    QUnit.test('resize a pill', function (assert) {
+    QUnit.test('resize a pill', async function (assert) {
         assert.expect(13);
 
         var nbWrite = 0;
-        var gantt = createView({
+        var gantt = await createView({
             View: GanttView,
             model: 'tasks',
             data: this.data,
@@ -968,7 +957,7 @@ QUnit.module('Views', {
         assert.containsNone(gantt, '.o_gantt_pill.ui-resizable',
             "the pill should not be resizable after initial rendering");
 
-        testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_pill'), 'mouseenter');
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_pill'), 'mouseenter');
 
         assert.containsOnce(gantt, '.o_gantt_pill.ui-resizable',
             "the pill should be resizable after mouse enter");
@@ -980,15 +969,15 @@ QUnit.module('Views', {
 
         // resize to one cell smaller (-1 day)
         var cellWidth = gantt.$('.o_gantt_cell:first').width();
-        testUtils.dom.dragAndDrop(
+        await testUtils.dom.dragAndDrop(
             gantt.$('.ui-resizable-e'),
             gantt.$('.ui-resizable-e'),
             { position: { left: -cellWidth, top: 0 } }
         );
 
         // go to previous month (november)
-        testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_prev'));
-        testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_pill'), 'mouseenter');
+        await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_prev'));
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_pill'), 'mouseenter');
 
         assert.containsOnce(gantt, '.o_gantt_pill',
             "there should still be one pill (Task 1)");
@@ -998,7 +987,7 @@ QUnit.module('Views', {
             "there should be one left resizer for task 1");
 
         // resize to one cell smaller (-1 day)
-        testUtils.dom.dragAndDrop(
+        await testUtils.dom.dragAndDrop(
             gantt.$('.ui-resizable-w'),
             gantt.$('.ui-resizable-w'),
             { position: { left: -cellWidth, top: 0 } }
@@ -1009,11 +998,11 @@ QUnit.module('Views', {
         gantt.destroy();
     });
 
-    QUnit.test('pill is updated after failed resized', function (assert) {
+    QUnit.test('pill is updated after failed resized', async function (assert) {
         assert.expect(3);
 
         var nbRead = 0;
-        var gantt = createView({
+        var gantt = await createView({
             View: GanttView,
             model: 'tasks',
             data: this.data,
@@ -1025,7 +1014,7 @@ QUnit.module('Views', {
             mockRPC: function (route, args) {
                 if (args.method === 'write') {
                     assert.strictEqual(true, true, "should perform a write");
-                    return $.Deferred().reject();
+                    return Promise.reject();
                 }
                 if (route === '/web/dataset/search_read') {
                     nbRead++;
@@ -1035,11 +1024,11 @@ QUnit.module('Views', {
         });
 
         var pillWidth = gantt.$('.o_gantt_pill').width();
-        testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_pill'), 'mouseenter');
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_pill'), 'mouseenter');
 
         // resize to one cell larger (1 day)
         var cellWidth = gantt.$('.o_gantt_cell:first').width();
-        testUtils.dom.dragAndDrop(
+        await testUtils.dom.dragAndDrop(
             gantt.$('.ui-resizable-e'),
             gantt.$('.ui-resizable-e'),
             { position: { left: cellWidth, top: 0 } }
@@ -1053,10 +1042,10 @@ QUnit.module('Views', {
         gantt.destroy();
     });
 
-    QUnit.test('move a pill in the same row', function (assert) {
+    QUnit.test('move a pill in the same row', async function (assert) {
         assert.expect(5);
 
-        var gantt = createView({
+        var gantt = await createView({
             View: GanttView,
             model: 'tasks',
             data: this.data,
@@ -1077,20 +1066,19 @@ QUnit.module('Views', {
                 return this._super.apply(this, arguments);
             },
         });
-
         assert.containsOnce(gantt, '.o_gantt_pill',
             "there should be one pill (Task 1)");
         assert.doesNotHaveClass(gantt.$('.o_gantt_pill'), 'ui-draggable',
             "the pill should not be draggable after initial rendering");
 
-        testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_pill'), 'mouseenter');
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_pill'), 'mouseenter');
 
         assert.hasClass(gantt.$('.o_gantt_pill'), 'ui-draggable',
             "the pill should be draggable after mouse enter");
 
         // move a pill in the next cell (+1 day)
         var cellWidth = gantt.$('.o_gantt_cell:first').width();
-        testUtils.dom.dragAndDrop(
+        await testUtils.dom.dragAndDrop(
             gantt.$('.o_gantt_pill'),
             gantt.$('.o_gantt_pill'),
             { position: { left: cellWidth, top: 0 } },
@@ -1099,10 +1087,10 @@ QUnit.module('Views', {
         gantt.destroy();
     });
 
-    QUnit.test('move a pill in the same row (with timezone)', function (assert) {
+    QUnit.test('move a pill in the same row (with timezone)', async function (assert) {
         assert.expect(2);
 
-        var gantt = createView({
+        var gantt = await createView({
             View: GanttView,
             model: 'tasks',
             data: this.data,
@@ -1131,7 +1119,7 @@ QUnit.module('Views', {
 
         // move a pill in the next cell (+1 day)
         var cellWidth = gantt.$('.o_gantt_cell:first').width();
-        testUtils.dom.dragAndDrop(
+        await testUtils.dom.dragAndDrop(
             gantt.$('.o_gantt_pill'),
             gantt.$('.o_gantt_pill'),
             { position: { left: cellWidth, top: 0 } },
@@ -1140,10 +1128,10 @@ QUnit.module('Views', {
         gantt.destroy();
     });
 
-    QUnit.test('move a pill in another row', function (assert) {
+    QUnit.test('move a pill in another row', async function (assert) {
         assert.expect(4);
 
-        var gantt = createView({
+        var gantt = await createView({
             View: GanttView,
             model: 'tasks',
             data: this.data,
@@ -1175,7 +1163,7 @@ QUnit.module('Views', {
         // move a pill (task 7) in the other row and in the the next cell (+1 day)
         var cellWidth = gantt.$('.o_gantt_cell:first').width();
         var cellHeight = gantt.$('.o_gantt_cell:first').height();
-        testUtils.dom.dragAndDrop(
+        await testUtils.dom.dragAndDrop(
             gantt.$('.o_gantt_pill[data-id=7]'),
             gantt.$('.o_gantt_pill[data-id=7]'),
             { position: { left: cellWidth, top: -cellHeight } },
@@ -1184,10 +1172,10 @@ QUnit.module('Views', {
         gantt.destroy();
     });
 
-    QUnit.test('move a pill in another row in multi-level grouped', function (assert) {
+    QUnit.test('move a pill in another row in multi-level grouped', async function (assert) {
         assert.expect(3);
 
-        var gantt = createView({
+        var gantt = await createView({
             View: GanttView,
             model: 'tasks',
             data: this.data,
@@ -1212,13 +1200,14 @@ QUnit.module('Views', {
         gantt.$('.o_gantt_pill').each(function () {
             testUtils.dom.triggerMouseEvent($(this), 'mouseenter');
         });
+        await testUtils.nextTick();
 
         assert.containsN(gantt, '.o_gantt_pill.ui-draggable', 1,
             "there should be only one draggable pill (Task 7)");
 
         // move a pill (task 7) in the top-level group (User 2)
         var cellHeight = gantt.$('.o_gantt_cell:first').height();
-        testUtils.dom.dragAndDrop(
+        await testUtils.dom.dragAndDrop(
             gantt.$('.o_gantt_pill.ui-draggable'),
             gantt.$('.o_gantt_pill.ui-draggable'),
             { position: { left: 0, top: -4 * cellHeight } },
@@ -1227,10 +1216,10 @@ QUnit.module('Views', {
         gantt.destroy();
     });
 
-    QUnit.test('grey pills should not be resizable nor draggable', function (assert) {
+    QUnit.test('grey pills should not be resizable nor draggable', async function (assert) {
         assert.expect(4);
 
-        var gantt = createView({
+        var gantt = await createView({
             View: GanttView,
             model: 'tasks',
             data: this.data,
@@ -1246,6 +1235,7 @@ QUnit.module('Views', {
         gantt.$('.o_gantt_pill').each(function () {
             testUtils.dom.triggerMouseEvent($(this), 'mouseenter');
         });
+        await testUtils.nextTick();
 
         assert.doesNotHaveClass(gantt.$('.o_gantt_row_group .o_gantt_pill'), 'ui-resizable',
             'the group row pill should not be resizable');
@@ -1261,10 +1251,10 @@ QUnit.module('Views', {
 
     // ATTRIBUTES TESTS
 
-    QUnit.test('create attribute', function (assert) {
+    QUnit.test('create attribute', async function (assert) {
         assert.expect(2);
 
-        var gantt = createView({
+        var gantt = await createView({
             View: GanttView,
             model: 'tasks',
             data: this.data,
@@ -1278,7 +1268,7 @@ QUnit.module('Views', {
         assert.containsNone(gantt.$buttons.find('.o_gantt_button_add'),
         "there should be no 'Add' button");
 
-        testUtils.dom.click(gantt.$('.o_gantt_cell:first'));
+        await testUtils.dom.click(gantt.$('.o_gantt_cell:first'));
 
         assert.strictEqual($('.modal').length, 0,
             "there should be no opened modal");
@@ -1286,10 +1276,10 @@ QUnit.module('Views', {
         gantt.destroy();
     });
 
-    QUnit.test('edit attribute', function (assert) {
+    QUnit.test('edit attribute', async function (assert) {
         assert.expect(4);
 
-        var gantt = createView({
+        var gantt = await createView({
             View: GanttView,
             model: 'tasks',
             data: this.data,
@@ -1310,7 +1300,8 @@ QUnit.module('Views', {
         assert.containsNone(gantt, '.o_gantt_pill.ui-draggable',
             "the pills should not be draggable");
 
-        testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_pill:first'), 'mouseup');
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_pill:first'), 'mouseup');
+        await testUtils.nextTick();
 
         assert.strictEqual($('.modal').length, 1,
             "there should be a opened modal");
@@ -1320,10 +1311,10 @@ QUnit.module('Views', {
         gantt.destroy();
     });
 
-    QUnit.test('total_row attribute', function (assert) {
+    QUnit.test('total_row attribute', async function (assert) {
         assert.expect(6);
 
-        var gantt = createView({
+        var gantt = await createView({
             View: GanttView,
             model: 'tasks',
             data: this.data,
@@ -1349,10 +1340,10 @@ QUnit.module('Views', {
         gantt.destroy();
     });
 
-    QUnit.test('default_scale attribute', function (assert) {
+    QUnit.test('default_scale attribute', async function (assert) {
         assert.expect(3);
 
-        var gantt = createView({
+        var gantt = await createView({
             View: GanttView,
             model: 'tasks',
             data: this.data,
@@ -1372,10 +1363,10 @@ QUnit.module('Views', {
         gantt.destroy();
     });
 
-    QUnit.test('scales attribute', function (assert) {
+    QUnit.test('scales attribute', async function (assert) {
         assert.expect(3);
 
-        var gantt = createView({
+        var gantt = await createView({
             View: GanttView,
             model: 'tasks',
             data: this.data,
@@ -1395,10 +1386,10 @@ QUnit.module('Views', {
         gantt.destroy();
     });
 
-    QUnit.test('precision attribute', function (assert) {
+    QUnit.test('precision attribute', async function (assert) {
         assert.expect(3);
 
-        var gantt = createView({
+        var gantt = await createView({
             View: GanttView,
             model: 'tasks',
             data: this.data,
@@ -1416,10 +1407,10 @@ QUnit.module('Views', {
         });
 
         var cellWidth = gantt.$('.o_gantt_cell:first').width();
-        testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_pill'), 'mouseenter');
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_pill'), 'mouseenter');
 
         // resize of a quarter
-        testUtils.dom.dragAndDrop(
+        await testUtils.dom.dragAndDrop(
             gantt.$('.ui-resizable-e'),
             gantt.$('.ui-resizable-e'),
             { disableDrop: true, position: { left: cellWidth / 4, top: 0 } }
@@ -1430,11 +1421,12 @@ QUnit.module('Views', {
 
         // manually trigger the drop to trigger a write
         var toOffset = gantt.$('.ui-resizable-e').offset();
-        gantt.$('.ui-resizable-e').trigger($.Event("mouseup", {
+        await gantt.$('.ui-resizable-e').trigger($.Event("mouseup", {
             which: 1,
             pageX: toOffset.left + cellWidth / 4,
             pageY: toOffset.top
         }));
+        await testUtils.nextTick();
 
         assert.containsNone(gantt, '.o_gantt_pill_resize_badge',
             "the badge should disappear after drop");
@@ -1442,43 +1434,43 @@ QUnit.module('Views', {
         gantt.destroy();
     });
 
-        QUnit.test('progress attribute', function (assert) {
-            assert.expect(7);
+    QUnit.test('progress attribute', async function (assert) {
+        assert.expect(7);
 
-            var gantt = createView({
-                View: GanttView,
-                model: 'tasks',
-                data: this.data,
-                arch: '<gantt string="Tasks" date_start="start" date_stop="stop" progress="progress" />',
-                viewOptions: {
-                    initialDate: initialDate,
-                },
-                groupBy: ['project_id'],
-            });
-
-            assert.containsN(gantt, '.o_gantt_row_container .o_gantt_pill.o_gantt_progress', 6,
-                'should have 6 rows with o_gantt_progress class');
-
-            assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_pill.o_gantt_progress:contains("Task 1")').css('background-size'), '0% 100%',
-                'first pill should have 0% progress');
-            assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_pill.o_gantt_progress:contains("Task 2")').css('background-size'), '30% 100%',
-                'second pill should have 30% progress');
-            assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_pill.o_gantt_progress:contains("Task 3")').css('background-size'), '60% 100%',
-                'third pill should have 60% progress');
-            assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_pill.o_gantt_progress:contains("Task 4")').css('background-size'), '0% 100%',
-                'fourth pill should have 0% progress');
-            assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_pill.o_gantt_progress:contains("Task 5")').css('background-size'), '100% 100%',
-                'fifth pill should have 100% progress');
-            assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_pill.o_gantt_progress:contains("Task 7")').css('background-size'), '80% 100%',
-                'seventh task should have 80% progress');
-
-            gantt.destroy();
+        var gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt string="Tasks" date_start="start" date_stop="stop" progress="progress" />',
+            viewOptions: {
+                initialDate: initialDate,
+            },
+            groupBy: ['project_id'],
         });
 
-    QUnit.test('decoration attribute', function (assert) {
+        assert.containsN(gantt, '.o_gantt_row_container .o_gantt_pill.o_gantt_progress', 6,
+            'should have 6 rows with o_gantt_progress class');
+
+        assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_pill.o_gantt_progress:contains("Task 1")').css('background-size'), '0% 100%',
+            'first pill should have 0% progress');
+        assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_pill.o_gantt_progress:contains("Task 2")').css('background-size'), '30% 100%',
+            'second pill should have 30% progress');
+        assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_pill.o_gantt_progress:contains("Task 3")').css('background-size'), '60% 100%',
+            'third pill should have 60% progress');
+        assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_pill.o_gantt_progress:contains("Task 4")').css('background-size'), '0% 100%',
+            'fourth pill should have 0% progress');
+        assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_pill.o_gantt_progress:contains("Task 5")').css('background-size'), '100% 100%',
+            'fifth pill should have 100% progress');
+        assert.strictEqual(gantt.$('.o_gantt_row_container .o_gantt_pill.o_gantt_progress:contains("Task 7")').css('background-size'), '80% 100%',
+            'seventh task should have 80% progress');
+
+        gantt.destroy();
+    });
+
+    QUnit.test('decoration attribute', async function (assert) {
         assert.expect(2);
 
-        var gantt = createView({
+        var gantt = await createView({
             View: GanttView,
             model: 'tasks',
             data: this.data,
@@ -1498,10 +1490,10 @@ QUnit.module('Views', {
         gantt.destroy();
     });
 
-    QUnit.test('consolidation feature', function (assert) {
+    QUnit.test('consolidation feature', async function (assert) {
         assert.expect(25);
 
-        var gantt = createView({
+        var gantt = await createView({
             View: GanttView,
             model: 'tasks',
             data: this.data,
@@ -1578,10 +1570,10 @@ QUnit.module('Views', {
         gantt.destroy();
     });
 
-    QUnit.test('color attribute', function (assert) {
+    QUnit.test('color attribute', async function (assert) {
         assert.expect(2);
 
-        var gantt = createView({
+        var gantt = await createView({
             View: GanttView,
             model: 'tasks',
             data: this.data,
@@ -1599,10 +1591,10 @@ QUnit.module('Views', {
         gantt.destroy();
     });
 
-    QUnit.test('color attribute in multi-level grouped', function (assert) {
+    QUnit.test('color attribute in multi-level grouped', async function (assert) {
         assert.expect(2);
 
-        var gantt = createView({
+        var gantt = await createView({
             View: GanttView,
             model: 'tasks',
             data: this.data,
@@ -1622,10 +1614,10 @@ QUnit.module('Views', {
         gantt.destroy();
     });
 
-    QUnit.test('color attribute on a many2one', function (assert) {
+    QUnit.test('color attribute on a many2one', async function (assert) {
         assert.expect(3);
 
-        var gantt = createView({
+        var gantt = await createView({
             View: GanttView,
             model: 'tasks',
             data: this.data,
@@ -1645,10 +1637,10 @@ QUnit.module('Views', {
         gantt.destroy();
     });
 
-    QUnit.test('display_unavailability attribute', function (assert) {
+    QUnit.test('display_unavailability attribute', async function (assert) {
         assert.expect(3);
 
-        var gantt = createView({
+        var gantt = await createView({
             View: GanttView,
             model: 'tasks',
             data: this.data,
@@ -1670,7 +1662,7 @@ QUnit.module('Views', {
                             // result[i] = 0;
                         }
                     }
-                    return $.when(result);
+                    return Promise.resolve(result);
                 }
                 return this._super.apply(this, arguments);
             },
@@ -1684,10 +1676,10 @@ QUnit.module('Views', {
         gantt.destroy();
     });
 
-    QUnit.test('offset attribute', function (assert) {
+    QUnit.test('offset attribute', async function (assert) {
         assert.expect(1);
 
-        var gantt = createView({
+        var gantt = await createView({
             View: GanttView,
             model: 'tasks',
             data: this.data,
@@ -1703,10 +1695,10 @@ QUnit.module('Views', {
         gantt.destroy();
     });
 
-    QUnit.test('default_group_by attribute', function (assert) {
+    QUnit.test('default_group_by attribute', async function (assert) {
         assert.expect(2);
 
-        var gantt = createView({
+        var gantt = await createView({
             View: GanttView,
             model: 'tasks',
             data: this.data,
@@ -1724,10 +1716,10 @@ QUnit.module('Views', {
         gantt.destroy();
     });
 
-    QUnit.test('collapse_first_level attribute with single-level grouped', function (assert) {
+    QUnit.test('collapse_first_level attribute with single-level grouped', async function (assert) {
         assert.expect(13);
 
-        var gantt = createView({
+        var gantt = await createView({
             View: GanttView,
             model: 'tasks',
             data: this.data,
@@ -1765,7 +1757,8 @@ QUnit.module('Views', {
 
 
         // open dialog to create a task
-        testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_row:nth(3) .o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_cell_add'), "mouseup");
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_row:nth(3) .o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_cell_add'), "mouseup");
+        await testUtils.nextTick();
 
         assert.strictEqual($('.modal').length, 1, 'There should be one modal opened');
         assert.strictEqual($('.modal .modal-title').text(), "Create");
@@ -1776,12 +1769,11 @@ QUnit.module('Views', {
         assert.strictEqual($('.modal .o_field_widget[name = stop] .o_input').val(), '12/10/2018 23:59:59',
             'stop should be set');
 
-
         gantt.destroy();
     });
 
     // CONCURRENCY TESTS
-    QUnit.test('concurrent scale switches return in inverse order', function (assert) {
+    QUnit.test('concurrent scale switches return in inverse order', async function (assert) {
         assert.expect(11);
 
         testUtils.patch(GanttRenderer, {
@@ -1793,7 +1785,7 @@ QUnit.module('Views', {
 
         var firstReloadProm = null;
         var reloadProm = firstReloadProm;
-        var gantt = createView({
+        var gantt = await createView({
             View: GanttView,
             model: 'tasks',
             data: this.data,
@@ -1804,7 +1796,7 @@ QUnit.module('Views', {
             mockRPC: function (route) {
                 var result = this._super.apply(this, arguments);
                 if (route === '/web/dataset/search_read') {
-                    return $.when(reloadProm).then(_.constant(result));
+                    return Promise.resolve(reloadProm).then(_.constant(result));
                 }
                 return result;
             },
@@ -1816,9 +1808,9 @@ QUnit.module('Views', {
             "should have 6 records in the state");
 
         // switch to 'week' scale (this rpc will be delayed)
-        firstReloadProm = $.Deferred();
+        firstReloadProm = testUtils.makeTestPromise();
         reloadProm = firstReloadProm;
-        testUtils.dom.click(gantt.$('.o_gantt_button_scale[data-value=week]'));
+        await testUtils.dom.click(gantt.$('.o_gantt_button_scale[data-value=week]'));
 
         assert.strictEqual(gantt.$('.o_gantt_header_cell:first').text().trim(), 'December 2018',
             "should still be in 'month' scale");
@@ -1827,7 +1819,7 @@ QUnit.module('Views', {
 
         // switch to 'year' scale
         reloadProm = null;
-        testUtils.dom.click(gantt.$('.o_gantt_button_scale[data-value=year]'));
+        await testUtils.dom.click(gantt.$('.o_gantt_button_scale[data-value=year]'));
 
         assert.strictEqual(gantt.$('.o_gantt_header_cell:first').text().trim(), '2018',
             "should be in 'year' scale");
@@ -1847,7 +1839,7 @@ QUnit.module('Views', {
         testUtils.unpatch(GanttRenderer);
     });
 
-    QUnit.test('concurrent pill resizes return in inverse order', function (assert) {
+    QUnit.test('concurrent pill resizes return in inverse order', async function (assert) {
         assert.expect(7);
 
         testUtils.patch(GanttRenderer, {
@@ -1857,9 +1849,9 @@ QUnit.module('Views', {
             },
         });
 
-        var writeProm = $.Deferred();
+        var writeProm = testUtils.makeTestPromise();
         var firstWriteProm = writeProm;
-        var gantt = createView({
+        var gantt = await createView({
             View: GanttView,
             model: 'tasks',
             data: this.data,
@@ -1872,7 +1864,7 @@ QUnit.module('Views', {
                 var result = this._super.apply(this, arguments);
                 assert.step(args.method || route);
                 if (args.method === 'write') {
-                    return $.when(writeProm).then(_.constant(result));
+                    return Promise.resolve(writeProm).then(_.constant(result));
                 }
                 return result;
             },
@@ -1880,10 +1872,10 @@ QUnit.module('Views', {
 
         var cellWidth = gantt.$('.o_gantt_cell:first').width();
 
-        testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_pill'), 'mouseenter');
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_pill'), 'mouseenter');
 
         // resize to 1 cell smaller (-1 day) ; this RPC will be delayed
-        testUtils.dom.dragAndDrop(
+        await testUtils.dom.dragAndDrop(
             gantt.$('.ui-resizable-e'),
             gantt.$('.ui-resizable-e'),
             { position: { left: -cellWidth, top: 0 } }
@@ -1891,7 +1883,7 @@ QUnit.module('Views', {
 
         // resize to two cells larger (+2 days)
         writeProm = null;
-        testUtils.dom.dragAndDrop(
+        await testUtils.dom.dragAndDrop(
             gantt.$('.ui-resizable-e'),
             gantt.$('.ui-resizable-e'),
             { position: { left: 2 * cellWidth, top: 0 } }
@@ -1914,7 +1906,7 @@ QUnit.module('Views', {
 
     // OTHER TESTS
 
-    QUnit.skip('[for manual testing] scripting time of large amount of records (ungrouped)', function (assert) {
+    QUnit.skip('[for manual testing] scripting time of large amount of records (ungrouped)', async function (assert) {
         assert.expect(1);
 
         this.data.tasks.records = [];
@@ -1935,11 +1927,10 @@ QUnit.module('Views', {
             viewOptions: {
                 initialDate: initialDate,
             },
-            debug: 1,
         });
     });
 
-    QUnit.skip('[for manual testing] scripting time of large amount of records (one level grouped)', function (assert) {
+    QUnit.skip('[for manual testing] scripting time of large amount of records (one level grouped)', async function (assert) {
         assert.expect(1);
 
         this.data.tasks.records = [];
@@ -1980,11 +1971,10 @@ QUnit.module('Views', {
                 initialDate: initialDate,
             },
             groupBy: ['user_id'],
-            debug: 1,
         });
     });
 
-    QUnit.skip('[for manual testing] scripting time of large amount of records (two level grouped)', function (assert) {
+    QUnit.skip('[for manual testing] scripting time of large amount of records (two level grouped)', async function (assert) {
         assert.expect(1);
 
         this.data.tasks.records = [];
@@ -2019,7 +2009,6 @@ QUnit.module('Views', {
                 initialDate: initialDate,
             },
             groupBy: ['user_id', 'stage'],
-            debug: 1,
         });
     });
 });

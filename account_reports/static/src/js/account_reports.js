@@ -36,7 +36,7 @@ var M2MFilters = Widget.extend(StandaloneFieldManagerMixin, {
         _.each(this.fields, function (field, fieldName) {
             defs.push(self._makeM2MWidget(field, fieldName));
         });
-        return $.when.apply($, defs);
+        return Promise.all(defs);
     },
     /**
      * @override
@@ -60,7 +60,7 @@ var M2MFilters = Widget.extend(StandaloneFieldManagerMixin, {
      *
      * @private
      * @override
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _confirmChange: function () {
         var self = this;
@@ -78,7 +78,7 @@ var M2MFilters = Widget.extend(StandaloneFieldManagerMixin, {
      * @private
      * @param {Object} fieldInfo
      * @param {string} fieldName
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _makeM2MWidget: function (fieldInfo, fieldName) {
         var self = this;
@@ -170,7 +170,7 @@ var accountReportsWidget = AbstractAction.extend({
             .then(function(result){
                 return self.parse_reports_informations(result);
             });
-        return $.when(extra_info, this._super.apply(this, arguments)).then(function() {
+        return Promise.all([extra_info, this._super.apply(this, arguments)]).then(function() {
             self.render();
         });
     },
@@ -293,13 +293,16 @@ var accountReportsWidget = AbstractAction.extend({
         };
         // attach datepicker
         $datetimepickers.each(function () {
+            var name = $(this).find('input').attr('name');
+            var defaultValue = $(this).data('default-value');
             $(this).datetimepicker(options);
             var dt = new datepicker.DateWidget(options);
-            dt.replace($(this));
-            dt.$el.find('input').attr('name', $(this).find('input').attr('name'));
-            if($(this).data('default-value')) { // Set its default value if there is one
-                dt.setValue(moment($(this).data('default-value')));
-            }
+            dt.replace($(this)).then(function () {
+                dt.$el.find('input').attr('name', name);
+                if (defaultValue) { // Set its default value if there is one
+                    dt.setValue(moment(defaultValue));
+                }
+            });
         });
         // format date that needs to be show in user lang
         _.each(this.$searchview_buttons.find('.js_format_date'), function(dt) {
@@ -472,9 +475,11 @@ var accountReportsWidget = AbstractAction.extend({
                         context: self.odoo_context,
                     })
                     .then(function(result){
-                        return self.do_action(result);
+                        var doActionProm = self.do_action(result);
+                        self.$buttons.attr('disabled', false);
+                        return doActionProm;
                     })
-                    .always(function() {
+                    .guardedCatch(function() {
                         self.$buttons.attr('disabled', false);
                     });
             });
@@ -623,7 +628,7 @@ var accountReportsWidget = AbstractAction.extend({
         var line = $(e.target).parents('td');
         if (line.length === 0) {line = $(e.target);}
         var method = line.data('unfolded') === 'True' ? this.fold(line) : this.unfold(line);
-        $.when(method).then(function() {
+        Promise.resolve(method).then(function() {
             self.render_footnotes();
             self.persist_options();
         });

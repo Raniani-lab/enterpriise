@@ -55,10 +55,10 @@ QUnit.module('account_asset', {
     }
 });
 
-QUnit.test('basic rendering', function (assert) {
+QUnit.test('basic rendering', async function (assert) {
     assert.expect(18);
 
-    var form = createView({
+    var form = await createView({
         View: FormView,
         model: 'asset',
         data: this.data,
@@ -128,10 +128,10 @@ QUnit.test('basic rendering', function (assert) {
     form.destroy();
 });
 
-QUnit.test('click events are correctly triggered', function (assert) {
+QUnit.test('click events are correctly triggered', async function (assert) {
     assert.expect(2);
 
-    var form = createView({
+    var form = await createView({
         View: FormView,
         model: 'asset',
         data: this.data,
@@ -158,7 +158,7 @@ QUnit.test('click events are correctly triggered', function (assert) {
     });
 
     // click on last row toggler
-    testUtils.dom.click(form.$('.o_deprec_lines_toggler_cell:nth(3) button'));
+    await testUtils.dom.click(form.$('.o_deprec_lines_toggler_cell:nth(3) button'));
 
     form.destroy();
 });

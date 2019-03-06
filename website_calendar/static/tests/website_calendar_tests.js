@@ -39,10 +39,10 @@ QUnit.module('website_calendar', {
     },
 }, function () {
 
-    QUnit.test("empty previous_order widget", function (assert) {
+    QUnit.test("empty previous_order widget", async function (assert) {
         assert.expect(2);
 
-        var form = createView({
+        var form = await createView({
             View: FormView,
             arch: '<form>' +
                     '<field name="website_url" invisible="1"/>' +
@@ -72,18 +72,20 @@ QUnit.module('website_calendar', {
             'http://amazing.odoo.com/website/calendar/schedule-a-demo-1?employee_id=214',
             'Wrong employee url copied.');
 
-        testUtils.dom.click(form.$('.o_website_calendar_copy_icon'));
+        await testUtils.dom.click(form.$('.o_website_calendar_copy_icon'));
         // ensure we didn't open the form view
         assert.ok($('.avoid_me').length === 0);
 
+        // we click on the dom to trigger the handler whom delete the clipboard's textarea
+        await testUtils.dom.click($('body'));
         form.destroy();
     }),
 
-    QUnit.test("new record appointment_employee_url widget", function (assert) {
+    QUnit.test("new record appointment_employee_url widget", async function (assert) {
         assert.expect(3);
         this.data['calendar.appointment.type'].fields.employee_ids.default = [[6, 0, [214,216]]];
 
-        var form = createView({
+        var form = await createView({
             View: FormView,
             arch: '<form>' +
                     '<sheet>' +
@@ -104,13 +106,13 @@ QUnit.module('website_calendar', {
             model: 'calendar.appointment.type'
         });
 
-        testUtils.form.clickCreate(form);
+        await testUtils.form.clickCreate(form);
 
         assert.strictEqual(form.$('.o_appointment_employee_url_cell').val(), '',
             'No Value should display while creating new record');
 
-        testUtils.fields.editInput(form.$("[name='website_url']"), '/aaa/aaa/');
-        testUtils.form.clickSave(form);
+        await testUtils.fields.editInput(form.$("[name='website_url']"), '/aaa/aaa/');
+        await testUtils.form.clickSave(form);
 
         form.$('.o_form_uri').each(function (i,r) {
             var link = "";

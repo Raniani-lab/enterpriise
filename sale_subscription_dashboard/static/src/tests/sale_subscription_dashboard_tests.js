@@ -177,36 +177,35 @@ odoo.define('sale_subscription_dashboard.sale_subscription_tests', function (req
         }
     }, function () {
 
-        QUnit.test('sale_subscription_test', function (assert) {
-            var done = assert.async();
+        QUnit.test('sale_subscription_test', async function (assert) {
             var self = this;
             assert.expect(2);
             var subscription_dashboard = new SubscriptionDashBoard.sale_subscription_dashboard_main(null, {
                 id: 1
             });
+            await testUtils.nextTick();
             testUtils.mock.addMockEnvironment(subscription_dashboard, {
                 mockRPC: function (route, args) {
                     if (route === '/sale_subscription_dashboard/fetch_data') {
-                        return $.when(self.data.fetch_data);
+                        return Promise.resolve(self.data.fetch_data);
                     }
                     if (route === '/sale_subscription_dashboard/compute_graph_and_stats') {
-                        return $.when(self.data.compute_stats_graph);
+                        return Promise.resolve(self.data.compute_stats_graph);
                     }
                     if (route === '/sale_subscription_dashboard/get_default_values_forecast') {
-                        return $.when(self.data.forecast_values);
+                        return Promise.resolve(self.data.forecast_values);
                     }
-                    return $.when();
+                    return Promise.resolve();
                 },
             });
             subscription_dashboard.appendTo($('#qunit-fixture'));
+            await testUtils.nextTick();
             assert.strictEqual(subscription_dashboard.$('.on_stat_box .o_stat_box_card_amount').text().trim(), "280", "Should contain net revenue amount '280'");
             assert.strictEqual(subscription_dashboard.$('.on_forecast_box .o_stat_box_card_amount').text().trim(), "1k", "Should contain forecasted annual amount '1k'");
             subscription_dashboard.destroy();
-            done();
         });
 
-        QUnit.test('sale_subscription_forecast', function (assert) {
-            var done = assert.async();
+        QUnit.test('sale_subscription_forecast', async function (assert) {
             var self = this;
             assert.expect(10);
             var dashboard = new SubscriptionDashBoard.sale_subscription_dashboard_forecast(null, {}, {
@@ -223,9 +222,9 @@ odoo.define('sale_subscription_dashboard.sale_subscription_tests', function (req
                 mockRPC: function (route, args) {
                     if (route === '/sale_subscription_dashboard/get_default_values_forecast') {
                         assert.deepEqual(_.keys(args).sort(), ['end_date', 'filters', 'forecast_type'], "should be requested only with defined parameters");
-                        return $.when(self.data.forecast_values);
+                        return Promise.resolve(self.data.forecast_values);
                     }
-                    return $.when();
+                    return Promise.resolve();
                 },
                 session: {
                     currencies: {
@@ -238,6 +237,7 @@ odoo.define('sale_subscription_dashboard.sale_subscription_tests', function (req
                 },
             });
             dashboard.appendTo($('#qunit-fixture'));
+            await testUtils.nextTick();
             assert.containsOnce(dashboard, '.o_account_contract_dashboard', "should have a dashboard");
             assert.containsN(dashboard, '.o_account_contract_dashboard .box', 2, "should have a dashboard with 2 forecasts");
 
@@ -249,11 +249,9 @@ odoo.define('sale_subscription_dashboard.sale_subscription_tests', function (req
             assert.containsOnce(dashboard, '.o_account_contract_dashboard .box:last .o_forecast_options', "last forecast should have options");
             assert.containsOnce(dashboard, '.o_account_contract_dashboard .box:last #forecast_chart_div_contracts', "last forecast should have chart");
             dashboard.destroy();
-            done();
         });
 
-        QUnit.test('sale_subscription_detailed', function (assert) {
-            var done = assert.async();
+        QUnit.test('sale_subscription_detailed', async function (assert) {
             var self = this;
             assert.expect(8);
             var dashboard = new SubscriptionDashBoard.sale_subscription_dashboard_detailed(null, {}, {
@@ -271,18 +269,18 @@ odoo.define('sale_subscription_dashboard.sale_subscription_tests', function (req
             testUtils.mock.addMockEnvironment(dashboard, {
                 mockRPC: function (route, args) {
                     if (route === '/sale_subscription_dashboard/compute_stat') {
-                        return $.when(self.data.compute_stat);
+                        return Promise.resolve(self.data.compute_stat);
                     }
                     if (route === '/sale_subscription_dashboard/get_stats_history') {
-                        return $.when(self.data.get_stats_history);
+                        return Promise.resolve(self.data.get_stats_history);
                     }
                     if (route === '/sale_subscription_dashboard/compute_graph') {
-                        return $.when(self.data.compute_stats_graph.graph);
+                        return Promise.resolve(self.data.compute_stats_graph.graph);
                     }
                     if (route === '/sale_subscription_dashboard/get_stats_by_plan') {
-                        return $.when(self.data.get_stats_by_plan);
+                        return Promise.resolve(self.data.get_stats_by_plan);
                     }
-                    return $.when();
+                    return Promise.resolve();
                 },
                 session: {
                     currencies: {
@@ -295,6 +293,7 @@ odoo.define('sale_subscription_dashboard.sale_subscription_tests', function (req
                 },
             });
             dashboard.appendTo($('#qunit-fixture'));
+            await testUtils.nextTick();
             assert.containsOnce(dashboard, '.o_account_contract_dashboard', "should have a dashboard");
             assert.containsN(dashboard, '.o_account_contract_dashboard .box', 3, "should have a dashboard with 3 boxes");
 
@@ -307,26 +306,25 @@ odoo.define('sale_subscription_dashboard.sale_subscription_tests', function (req
             assert.containsOnce(dashboard, '.o_account_contract_dashboard .box table', "should have in third a table box");
 
             dashboard.destroy();
-            done();
         });
 
-        QUnit.test('sale_subscription_salesman', function (assert) {
-            var done = assert.async();
+        QUnit.test('sale_subscription_salesman', async function (assert) {
             var self = this;
             assert.expect(9);
             var salesman_dashboard = new SubscriptionDashBoard.sale_subscription_dashboard_salesman(null, {});
             testUtils.mock.addMockEnvironment(salesman_dashboard, {
                 mockRPC: function (route, args) {
                     if (route === '/sale_subscription_dashboard/fetch_salesmen') {
-                        return $.when(self.data.fetch_salesman);
+                        return Promise.resolve(self.data.fetch_salesman);
                     }
                     if (route === '/sale_subscription_dashboard/get_values_salesman') {
-                        return $.when(self.data.salesman_values);
+                        return Promise.resolve(self.data.salesman_values);
                     }
-                    return $.when();
+                    return Promise.resolve();
                 },
             });
             salesman_dashboard.appendTo($('#qunit-fixture'));
+            await testUtils.nextTick();
             assert.containsOnce(salesman_dashboard, '#mrr_growth_salesman', "should display the salesman graph");
             assert.strictEqual(salesman_dashboard.$('h3').first().text(), "MRR : 600", "should contain the MRR Amount '600'");
             assert.strictEqual(salesman_dashboard.$('h3').last().text(), "NRR : 1k", "should contain the NRR Amount '1k'");
@@ -337,7 +335,6 @@ odoo.define('sale_subscription_dashboard.sale_subscription_tests', function (req
             assert.strictEqual(salesman_dashboard.$('#NRR_invoices .table-responsive tr:eq(2) td:first').text(), "Agrolait", "should contain NRR Invoices partner 'Agrolait'");
             assert.strictEqual(salesman_dashboard.$('#NRR_invoices .table-responsive tr:eq(2) td:last').text(), "525", "should contain NRR Invoices Amount '525'");
             salesman_dashboard.destroy();
-            done();
         });
     });
 });

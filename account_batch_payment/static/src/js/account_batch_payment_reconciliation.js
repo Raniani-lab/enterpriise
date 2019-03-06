@@ -40,7 +40,7 @@ var Model = {
      *
      * @param {Object} context
      * @param {number[]} context.statement_ids
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     load: function (context) {
         var self = this;
@@ -52,7 +52,7 @@ var Model = {
      *
      * @param {string} handle
      * @param {number} batchId
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     selectBatch: function(handle, batchId) {
         return this._rpc({
@@ -67,7 +67,7 @@ var Model = {
      * @override
      *
      * @param {(string|string[])} handle
-     * @returns {Deferred<Object>} resolved with an object who contains
+     * @returns {Promise<Object>} resolved with an object who contains
      *   'handles' key
      */
     validate: function (handle) {
@@ -93,7 +93,7 @@ var Model = {
      *
      * @private
      * @param {Object}
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _computeLine: function (line) {
         if (line.st_line.partner_id) {
@@ -109,7 +109,7 @@ var Model = {
      * @private
      * @param {string} handle
      * @param {number} batchId
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _addSelectedBatchLines: function (handle, batchId, batchLines) {
         var line = this.getLine(handle);
@@ -151,14 +151,14 @@ var Model = {
             this._addProposition(line, batchLines[k]);
         }
         line.batch_payment_id = batchId;
-        return $.when(this._computeLine(line), this._performMoveLine(handle));
+        return Promise.all([this._computeLine(line), this._performMoveLine(handle)]);
     },
     /**
      * load data from
      * - 'account.bank.statement' fetch the batch payments data
      *
      * @param {number[]} statement_ids
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _updateBatchPayments: function(statement_ids) {
         var self = this;

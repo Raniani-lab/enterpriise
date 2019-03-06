@@ -25,11 +25,13 @@ var HierarchyKanban = FieldOne2Many.extend({
     /**
      * @private
      * @override
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _render: function () {
         var self = this;
         this._setHierarchyData();
+        var _super = this._super.bind(this);
+        var rendererProm;
         if (!this.renderer) {
             this.renderer = new HierarchyKanbanRenderer(this, this.value, {
                 arch: this.view.arch,
@@ -40,13 +42,14 @@ var HierarchyKanban = FieldOne2Many.extend({
                     read_only_mode: this.isReadonly,
                 },
             });
-            this.renderer.appendTo(this.$el);
+            rendererProm = this.renderer.appendTo(this.$el);
         }
-        return this._super.apply(this, arguments).then(function () {
+        return Promise.resolve(rendererProm).then(function () {
             // Move control_panel at bottom
             if (self.control_panel) {
-                return self.control_panel.$el.appendTo(self.$el);
+                self.control_panel.$el.appendTo(self.$el);
             }
+            return _super();
         });
     },
     /**
@@ -122,11 +125,12 @@ var HierarchyKanbanRenderer = KanbanRenderer.extend({
         _.each(records || this.state.data, function (record) {
             var kanbanRecord = new HierarchyKanbanRecord(self, record, self.recordOptions);
             self.widgets.push(kanbanRecord);
-            kanbanRecord.appendTo(fragment);
-            if (record.children.length) {
-                var newFragment = kanbanRecord.$('.o_hierarchy_children');
-                self._renderUngrouped(newFragment, record.children);
-            }
+            kanbanRecord.appendTo(fragment).then(function() {
+                if (record.children.length) {
+                    var newFragment = kanbanRecord.$('.o_hierarchy_children');
+                    self._renderUngrouped(newFragment, record.children);
+                }
+            });
         });
     }
 });
@@ -145,7 +149,7 @@ var HierarchyKanbanRecord = KanbanRecord.extend({
      * Renders DomainSelector.
      *
      * @private
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _renderDomainSelector: function () {
         if (!this.domainSelector) {
@@ -157,7 +161,7 @@ var HierarchyKanbanRecord = KanbanRecord.extend({
             });
             return this.domainSelector.prependTo(this.$('.o_ma_card:first > .o_pane_filter'));
         }
-        return $.when();
+        return Promise.resolve();
     },
 
     //--------------------------------------------------------------------------

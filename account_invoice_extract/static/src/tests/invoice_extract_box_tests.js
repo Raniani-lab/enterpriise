@@ -53,20 +53,25 @@ function createBox(params) {
     var $container = params.debug ? $('body') : $('#qunit-fixture');
 
     $boxLayer.appendTo($container);
-    box.appendTo($boxLayer);
+    return  box.appendTo($boxLayer).then(function () {
+        return {
+            box: box,
+            parent: params.parent,
+        };
+    });
 
-    return {
-        box: box,
-        parent: params.parent,
-    };
 }
 
 QUnit.module('account_invoice_extract', {}, function () {
-QUnit.module('Box', {}, function () {
+QUnit.module('Box', {
+    afterEach: function () {
+        $('.boxLayer').remove();
+    },
+}, function () {
 
-    QUnit.test('modeling: basic', function (assert) {
+    QUnit.test('modeling: basic', async function (assert) {
         assert.expect(4);
-        var res = createBox();
+        var res = await createBox();
         var box = res.box;
         var parent = res.parent;
 
@@ -78,14 +83,14 @@ QUnit.module('Box', {}, function () {
         parent.destroy();
     });
 
-    QUnit.test('rendering: basic', function (assert) {
+    QUnit.test('rendering: basic', async function (assert) {
         assert.expect(10);
-        var res = createBox();
+        var res = await createBox();
         var parent = res.parent;
 
         assert.strictEqual($('.boxLayer').length, 1,
             "should display a box layer");
-        assert.strictEqual($('.boxLayer').find('.o_invoice_extract_box').length, 1,
+        assert.containsOnce($('.boxLayer'), '.o_invoice_extract_box',
             "should display a box inside the box layer");
         assert.doesNotHaveClass($('.o_invoice_extract_box'), 'ocr_chosen',
             "box should not be OCR chosen by default");
@@ -117,13 +122,13 @@ QUnit.module('Box', {}, function () {
         parent.destroy();
     });
 
-    QUnit.test('initially OCR chosen', function (assert) {
+    QUnit.test('initially OCR chosen', async function (assert) {
         // Note that this box is not selected, because it needs synchronization
         // with account_invoice_extract.Field: if no box is user selected and
         // there is an OCR chosen box, it becomes selected.
         // Since the synchronization is missing, The box is not selected.
         assert.expect(8);
-        var res = createBox({
+        var res = await createBox({
             intercepts: {
                 /**
                  * Triggered by the OCR chosen box, when instantiated
@@ -158,9 +163,9 @@ QUnit.module('Box', {}, function () {
         parent.destroy();
     });
 
-    QUnit.test('unset OCR chosen', function (assert) {
+    QUnit.test('unset OCR chosen', async function (assert) {
         assert.expect(5);
-        var res = createBox({
+        var res = await createBox({
             selected_status: 1, // OCR chosen if value !== 0
         });
         var box = res.box;
@@ -181,9 +186,9 @@ QUnit.module('Box', {}, function () {
         parent.destroy();
     });
 
-    QUnit.test('initially user selected', function (assert) {
+    QUnit.test('initially user selected', async function (assert) {
         assert.expect(6);
-        var res = createBox({
+        var res = await createBox({
             intercepts: {
                 /**
                  * Triggered by the user selected box, when instantiated
@@ -215,9 +220,9 @@ QUnit.module('Box', {}, function () {
         parent.destroy();
     });
 
-    QUnit.test('(un)set selected', function (assert) {
+    QUnit.test('(un)set selected', async function (assert) {
         assert.expect(7);
-        var res = createBox();
+        var res = await createBox();
         var box = res.box;
         var parent = res.parent;
 
@@ -243,9 +248,9 @@ QUnit.module('Box', {}, function () {
         parent.destroy();
     });
 
-    QUnit.test('click', function (assert) {
+    QUnit.test('click', async function (assert) {
         assert.expect(4);
-        var res = createBox({
+        var res = await createBox({
             intercepts: {
                 /**
                  * Triggered by clicked box
@@ -267,16 +272,16 @@ QUnit.module('Box', {}, function () {
         assert.strictEqual($('.o_invoice_extract_box').length, 1,
             "should display a box");
 
-        testUtils.dom.click($('.o_invoice_extract_box'));
+        await testUtils.dom.click($('.o_invoice_extract_box'));
         assert.verifySteps(['warn_box_clicked']);
 
         parent.destroy();
     });
 
-    QUnit.test('destroy', function (assert) {
+    QUnit.test('destroy', async function (assert) {
         assert.expect(5);
         var boxID;
-        var res = createBox({
+        var res = await createBox({
             intercepts: {
                 /**
                  * Triggered by destroyed box

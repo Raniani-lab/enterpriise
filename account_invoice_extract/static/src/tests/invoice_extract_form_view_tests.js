@@ -95,11 +95,10 @@ QUnit.module('FormView', {
     },
 }, function () {
 
-    QUnit.test('basic', function (assert) {
+    QUnit.test('basic', async function (assert) {
         assert.expect(27);
 
-        // testUtils.createAsyncView({
-        var form = testUtils.createView({
+        var form = await testUtils.createView({
             View: FormView,
             model: 'account.invoice',
             data: this.data,
@@ -119,7 +118,7 @@ QUnit.module('FormView', {
             },
             mockRPC: function (route, args) {
                 if (args.method === 'get_boxes') {
-                    return $.when(invoiceExtractTestUtils.createBoxesData());
+                    return Promise.resolve(invoiceExtractTestUtils.createBoxesData());
                 }
                 return this._super.apply(this, arguments);
             },
@@ -127,14 +126,14 @@ QUnit.module('FormView', {
 
         // Need to load form view before going to edit mode, otherwise
         // 'o_success_ocr' is not loaded.
-        testUtils.dom.click($('.o_form_button_edit'));
+        await testUtils.dom.click($('.o_form_button_edit'));
 
         var $attachmentPreview = form.$('.o_attachment_preview_img');
 
         // check presence of attachment, buttons, box layer, boxes
         assert.strictEqual($attachmentPreview.length, 1,
             "should display attachment preview");
-        assert.strictEqual($attachmentPreview.find('.o_invoice_extract_buttons').length, 1,
+        assert.containsOnce($attachmentPreview, '.o_invoice_extract_buttons',
             "should display the field extract buttons on attachment preview");
         assert.strictEqual($('.o_invoice_extract_button').length, 7,
             "should display 7 invoice extract buttons");
@@ -145,7 +144,7 @@ QUnit.module('FormView', {
             "should have 'VAT_Number' as the active field");
         assert.strictEqual($attachmentPreview.find('.boxLayer').length, 1,
             "should contain a box layer on attachment");
-        assert.strictEqual($attachmentPreview.find('.o_invoice_extract_box').length, 5,
+        assert.containsN($attachmentPreview, '.o_invoice_extract_box', 5,
             "should contain all boxes");
 
         // check field name of boxes
@@ -208,11 +207,10 @@ QUnit.module('FormView', {
         form.destroy();
     });
 
-    QUnit.test('no box and button in readonly mode', function (assert) {
+    QUnit.test('no box and button in readonly mode', async function (assert) {
         assert.expect(15);
 
-        // testUtils.createAsyncView({
-        var form = testUtils.createView({
+        var form = await testUtils.createView({
             View: FormView,
             model: 'account.invoice',
             data: this.data,
@@ -232,7 +230,7 @@ QUnit.module('FormView', {
             },
             mockRPC: function (route, args) {
                 if (args.method === 'get_boxes') {
-                    return $.when(invoiceExtractTestUtils.createBoxesData());
+                    return Promise.resolve(invoiceExtractTestUtils.createBoxesData());
                 }
                 return this._super.apply(this, arguments);
             },
@@ -252,7 +250,7 @@ QUnit.module('FormView', {
 
         // Need to load form view before going to edit mode, otherwise
         // 'o_success_ocr' is not loaded.
-        testUtils.dom.click($('.o_form_button_edit'));
+        await testUtils.dom.click($('.o_form_button_edit'));
 
         $attachmentPreview = form.$('.o_attachment_preview_img');
         assert.strictEqual($attachmentPreview.length, 1,
@@ -266,7 +264,7 @@ QUnit.module('FormView', {
         assert.strictEqual($('.o_invoice_extract_box').length, 5,
             "should now display boxes in edit mode");
 
-        testUtils.dom.click($('.o_form_button_save'));
+        await testUtils.dom.click($('.o_form_button_save'));
 
         $attachmentPreview = form.$('.o_attachment_preview_img');
         assert.strictEqual($attachmentPreview.length, 1,
@@ -283,11 +281,10 @@ QUnit.module('FormView', {
         form.destroy();
     });
 
-    QUnit.test('change active field', function (assert) {
+    QUnit.test('change active field', async function (assert) {
         assert.expect(12);
 
-        // testUtils.createAsyncView({
-        var form = testUtils.createView({
+        var form = await testUtils.createView({
             View: FormView,
             model: 'account.invoice',
             data: this.data,
@@ -307,7 +304,7 @@ QUnit.module('FormView', {
             },
             mockRPC: function (route, args) {
                 if (args.method === 'get_boxes') {
-                    return $.when(invoiceExtractTestUtils.createBoxesData());
+                    return Promise.resolve(invoiceExtractTestUtils.createBoxesData());
                 }
                 return this._super.apply(this, arguments);
             },
@@ -315,7 +312,7 @@ QUnit.module('FormView', {
 
         // Need to load form view before going to edit mode, otherwise
         // 'o_success_ocr' is not loaded.
-        testUtils.form.clickEdit(form);
+        await testUtils.form.clickEdit(form);
 
         assert.strictEqual($('.o_invoice_extract_button.active').data('field-name'),
             'VAT_Number', "should have 'VAT_Number' as the active field");
@@ -337,7 +334,7 @@ QUnit.module('FormView', {
             "box with ID 5 should be invisible");
 
         assert.containsOnce($('body'), '.o_invoice_extract_button[data-field-name="total"]');
-        $('.o_invoice_extract_button[data-field-name="total"]').click();
+        await testUtils.dom.click($('.o_invoice_extract_button[data-field-name="total"]'), {'allowInvisible': true});
 
         assert.ok(form.$('.o_invoice_extract_box[data-id=1]').hasClass('o_hidden'),
             "box with ID 1 should become invisible");

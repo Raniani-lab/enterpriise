@@ -82,9 +82,9 @@ function createBoxesData() {
  * @param {integer} [params.pageNum=0]
  * @returns {Object}
  */
-function createBoxLayer(params) {
+async function createBoxLayer(params) {
     params = params || {};
-    var $page = $('<div>');
+    var $page = $('<div>', { class: 'page' });
     $page.css('height', 100);
     $page.css('width', 200);
 
@@ -108,12 +108,13 @@ function createBoxLayer(params) {
 
     var $target = params.debug ? $('body') : $('#qunit-fixture');
     $page.appendTo($target);
-    boxLayer.appendTo($target);
+    return boxLayer.appendTo($target).then(function () {
+        return {
+            boxLayer: boxLayer,
+            parent: params.parent,
+        };
+    });
 
-    return {
-        boxLayer: boxLayer,
-        parent: params.parent,
-    };
 }
 
 return {

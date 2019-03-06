@@ -121,6 +121,7 @@ var InvoiceExtractField = Class.extend(Mixins.EventDispatcherMixin, {
      * @param {Object} params
      * @param {$.Element} params.$container jQuery element which contains a
      *   single node in the DOM. This node is the container of the buttons.
+     * @returns {Promise}
      */
     renderButton: function (params) {
         this._button =  new InvoiceExtractFieldButton(this, {
@@ -128,7 +129,7 @@ var InvoiceExtractField = Class.extend(Mixins.EventDispatcherMixin, {
             isActive: this._isActive,
             text: this._text,
         });
-        this._button.appendTo(params.$container);
+        return this._button.appendTo(params.$container);
     },
     /**
      * Set this field as active.

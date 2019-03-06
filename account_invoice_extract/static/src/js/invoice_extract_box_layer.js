@@ -52,6 +52,7 @@ var InvoiceExtractBoxLayer = Widget.extend({
      * @override
      */
     start: function () {
+        var self = this;
         // adapt box layer size
         if (this._isOnPDF()) {
             this.el.style.width = this._$textLayer[0].style.width;
@@ -66,15 +67,15 @@ var InvoiceExtractBoxLayer = Widget.extend({
 
         // make boxes (hidden by default)
         this._boxes = [];
-        for (var index in this._boxesData) {
-            var boxData = this._boxesData[index];
-            var box = new InvoiceExtractBox(this, _.extend({}, boxData, {
-                $boxLayer: this.$el,
+        _.forEach(this._boxesData, function (boxData) {
+            var box = new InvoiceExtractBox(self, _.extend({}, boxData, {
+                $boxLayer: self.$el,
             }));
-            box.appendTo(this.$el);
-            box.do_hide();
-            this._boxes.push(box);
-        }
+            box.appendTo(self.$el).then(function () {
+                box.do_hide();
+                self._boxes.push(box);
+            });
+        });
 
         return this._super.apply(this, arguments);
     },

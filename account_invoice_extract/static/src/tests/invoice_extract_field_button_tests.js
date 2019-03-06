@@ -59,7 +59,7 @@ QUnit.module('FieldButton', {}, function () {
         parent.destroy();
     });
 
-    QUnit.test('rendering: basic', function (assert) {
+    QUnit.test('rendering: basic', async function (assert) {
         assert.expect(5);
         var parent = testUtils.createParent({});
         var fieldButton = new InvoiceExtractFieldButton(parent, {
@@ -67,6 +67,7 @@ QUnit.module('FieldButton', {}, function () {
             text: 'myField'
         });
         fieldButton.appendTo($('#qunit-fixture'));
+        await testUtils.nextTick();
 
         assert.strictEqual($('.o_invoice_extract_button').length, 1,
             "should display the invoice extract field button");
@@ -82,7 +83,7 @@ QUnit.module('FieldButton', {}, function () {
         parent.destroy();
     });
 
-    QUnit.test('click', function (assert) {
+    QUnit.test('click', async function (assert) {
         assert.expect(2);
         var parent = testUtils.createParent({
             intercepts: {
@@ -100,6 +101,7 @@ QUnit.module('FieldButton', {}, function () {
             text: 'myField'
         });
         fieldButton.appendTo($('#qunit-fixture'));
+        await testUtils.nextTick();
 
         testUtils.dom.click(fieldButton.$el);
         assert.verifySteps(['button clicked']);

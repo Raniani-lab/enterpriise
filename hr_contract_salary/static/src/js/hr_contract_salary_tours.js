@@ -6,7 +6,7 @@ var Tour = require('web_tour.tour');
 Tour.register('hr_contract_salary_tour', {
         test: true,
         url: '/',
-        wait_for: $.when(odoo.__TipTemplateDef)
+        wait_for: Promise.resolve(odoo.__TipTemplateDef)
     },[
         {
             content: "Go on configurator",
@@ -319,18 +319,27 @@ Tour.register('hr_contract_salary_tour', {
         },
         {
             content: "Nationality",
-            trigger: 'select[name="nationality"]',
-            run: 'text Belgium',
+            trigger: 'label[for=nationality]',
+            run: function () {
+                $('select[name=nationality] option:contains(Belgium)').prop('selected', true);
+                $('select[name=nationality]').trigger('change');
+            },
         },
         {
             content: "Country of Birth",
-            trigger: 'select[name="country_of_birth"]',
-            run: 'text Belgium',
+            trigger: 'label[for=country_of_birth]',
+            run: function () {
+                $('select[name=country_of_birth] option:contains(Belgium)').prop('selected', true);
+                $('select[name=country_of_birth]').trigger('change');
+            },
         },
         {
             content: "Country",
-            trigger: 'select[name="country"]',
-            run: 'text Belgium',
+            trigger: 'label[for=country]',
+            run: function () {
+                $('select[name=country] option:contains(Belgium)').prop('selected', true);
+                $('select[name=country]').trigger('change');
+            },
         },
         {
             content: "submit",

@@ -81,7 +81,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
     willStart: function() {
         var def1 = this._super();
         var def2 = this.update_gross_to_net_computation();
-        return $.when(def1, def2);
+        return Promise.all([def1, def2]);
     },
 
     get_personal_info: function() {

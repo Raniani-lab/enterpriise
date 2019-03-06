@@ -29,24 +29,24 @@ QUnit.module('Barcode', {
         };
         this.mockRPC = function (route, args) {
             if (route === '/stock_barcode/get_set_barcode_view_state') {
-                return $.when(self.clientData.currentState);
+                return Promise.resolve(self.clientData.currentState);
             } else if (args.method === "get_all_products_by_barcode") {
-                return $.when({});
+                return Promise.resolve({});
             } else if (args.method === "get_all_locations_by_barcode") {
-                return $.when({});
+                return Promise.resolve({});
             }
         };
     }
 });
 
-QUnit.test('scan barcode button in mobile device', function (assert) {
+QUnit.test('scan barcode button in mobile device', async function (assert) {
     assert.expect(1);
     this.clientData.currentState[0].group_stock_multi_locations = false;
     mobile.methods.scanBarcode = function () {};
-    var actionManager = createActionManager({
+    var actionManager = await createActionManager({
         mockRPC: this.mockRPC,
     });
-    actionManager.doAction(this.clientData.action);
+    await actionManager.doAction(this.clientData.action);
     assert.containsOnce(actionManager, '.o_stock_mobile_barcode');
     actionManager.destroy();
 });

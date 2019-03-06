@@ -50,7 +50,7 @@ odoo.define('sign.PDFIframe', function (require) {
             });
             this.$iframe.attr('src', viewerURL);
 
-            return $.when(this._super(), this.fullyLoaded);
+            return Promise.all([this._super(), this.fullyLoaded]);
         },
 
         waitForPDF: function() {
@@ -136,7 +136,7 @@ odoo.define('sign.PDFIframe', function (require) {
                     self.configuration[parseInt(el.page)].push($signatureItem);
                 });
 
-            $.when.apply($, waitFor).then(function() {
+            Promise.all(waitFor).then(function() {
                 refresh_interval();
 
                 self.$('.o_sign_sign_item').each(function(i, el) {
@@ -320,7 +320,7 @@ odoo.define('sign.Document', function (require) {
 
             this.$validateBanner = this.$('.o_sign_validate_banner').first();
 
-            return $.when(this._super.apply(this, arguments), this.initialize_iframe());
+            return Promise.all([this._super.apply(this, arguments), this.initialize_iframe()]);
         },
 
         get_pdfiframe_class: function () {
@@ -341,7 +341,7 @@ odoo.define('sign.Document', function (require) {
                                                                      parseInt(this.$('#o_sign_input_current_role').val()));
                 return this.iframeWidget.attachTo(this.$iframe);
             }
-            return $.when();
+            return Promise.resolve();
         },
     });
 
@@ -576,7 +576,7 @@ odoo.define('sign.document_signing', function (require) {
          */
         willStart: function () {
             var self = this;
-            return $.when(
+            return Promise.all([
                 this._super.apply(this, arguments),
                 self._rpc({
                     route: '/sign/get_signature/' + self.requestID + '/' + self.accessToken,
@@ -589,7 +589,7 @@ odoo.define('sign.document_signing', function (require) {
                         self.defaultSignature = signature;
                     }
                 })
-            );
+            ]);
         },
         /**
          * Sets the existing signature.
@@ -791,6 +791,7 @@ odoo.define('sign.document_signing', function (require) {
         },
 
         scrollToSignItem: function($item) {
+            var self = this;
             if(!this.started) {
                 return;
             }
@@ -817,14 +818,17 @@ odoo.define('sign.document_signing', function (require) {
 
             var self = this;
             this.isScrolling = true;
-            var def1 = $.Deferred(), def2 = $.Deferred();
-            $container.animate({'scrollTop': scrollTop}, duration, function() {
-                def1.resolve();
+            var def1 = new Promise(function (resolve, reject) {
+                $container.animate({'scrollTop': scrollTop}, duration, function() {
+                    resolve();
+                });
             });
-            this.$el.add(this.$signatureItemNavLine).animate({'top': scrollOffset}, duration, function() {
-                def2.resolve();
+            var def2 = new Promise(function (resolve, reject) {
+                self.$el.add(self.$signatureItemNavLine).animate({'top': scrollOffset}, duration, function() {
+                    resolve();
+                });
             });
-            $.when(def1, def2).then(function() {
+            Promise.all([def1, def2]).then(function() {
                 if($item.val() === "" && !$item.data('signature')) {
                     self.setTip(self.types[$item.data('type')].tip);
                 }
@@ -876,7 +880,7 @@ odoo.define('sign.document_signing', function (require) {
 
             this.requestID = requestID;
             this.requestToken = requestToken;
-            this.sent = $.Deferred();
+            this.sent = new Promise(function() { });
         },
 
         open: function(name, mail) {
@@ -896,7 +900,7 @@ odoo.define('sign.document_signing', function (require) {
         events: {
             'click button.o_sign_resend_sms': function(e) {
                 var route = '/sign/send-sms/' + this.requestID + '/' + this.requestToken + '/' + this.$('#o_sign_phone_number_input').val();
-                session.rpc(route, {}).then(function(success) {
+                session.rpc(route, {}).then(function(success) {
                     if (!success) {
                         Dialog.alert(self, _t("Unable to send the SMS, please contact the sender of the document."), {
                             title: _t("Error"),

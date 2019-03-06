@@ -27,10 +27,10 @@ QUnit.module('upgrade_fields', {
 
     QUnit.module('FieldUpgrade');
 
-    QUnit.test('widget upgrade_boolean in a form view (enterprise version)', function (assert) {
+    QUnit.test('widget upgrade_boolean in a form view (enterprise version)', async function (assert) {
         assert.expect(2);
 
-        var form = createView({
+        var form = await createView({
             View: FormView,
             model: 'partner',
             data: this.data,

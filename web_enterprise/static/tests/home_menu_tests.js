@@ -67,7 +67,7 @@ QUnit.module('web_enterprise', {
 
     QUnit.module('HomeMenu');
 
-    QUnit.test('ESC Support', function (assert) {
+    QUnit.test('ESC Support', async function (assert) {
         assert.expect(7);
 
         var homeMenuHidden = false;
@@ -82,16 +82,16 @@ QUnit.module('web_enterprise', {
 
         var homeMenu = new HomeMenu(parent, this.data);
 
-        homeMenu.appendTo($('#qunit-fixture'));
+        await homeMenu.appendTo($('#qunit-fixture'));
         homeMenu.on_attach_callback(); // simulate action manager attached to dom
-        testUtils.dom.click(homeMenu.$('input.o_menu_search_input').focus());
+        await testUtils.dom.click(homeMenu.$('input.o_menu_search_input').focus());
 
         // 1. search must be hidden by default
         assert.hasClass(
             homeMenu.$('div.o_menu_search'),'o_bar_hidden',
             "search must be hidden by default");
 
-        testUtils.fields.editInput(homeMenu.$('input.o_menu_search_input'), "dis");
+        await testUtils.fields.editInput(homeMenu.$('input.o_menu_search_input'), "dis");
 
         // 2. search must be visible after some input
         assert.doesNotHaveClass(homeMenu.$('div.o_menu_search'), 'o_bar_hidden',

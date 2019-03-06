@@ -140,7 +140,7 @@ return AbstractWebClient.extend({
 
             defs.push(self.home_menu.appendTo(document.createDocumentFragment()));
             defs.push(self.menu.prependTo(self.$el));
-            return $.when.apply($, defs);
+            return Promise.all(defs);
         });
     },
 
@@ -152,11 +152,12 @@ return AbstractWebClient.extend({
      */
     do_action: function () {
         var self = this;
-        return this._super.apply(this, arguments).done(function(action) {
+        return this._super.apply(this, arguments).then(function (action) {
             if (self.menu.home_menu_displayed && action.target !== 'new' &&
                 action.type !== 'ir.actions.act_window_close') {
                     self.toggle_home_menu(false);
                 }
+            return action;
         });
     },
     // --------------------------------------------------------------
@@ -165,7 +166,7 @@ return AbstractWebClient.extend({
     on_hashchange: function(event) {
         if (this._ignore_hashchange) {
             this._ignore_hashchange = false;
-            return $.when();
+            return Promise.resolve();
         }
 
         var self = this;
@@ -187,7 +188,7 @@ return AbstractWebClient.extend({
                             }
                         }
                         self.toggle_home_menu(false);
-                    }).fail(self.toggle_home_menu.bind(self, true));
+                    }).guardedCatch(self.toggle_home_menu.bind(self, true));
                 } else if (state.menu_id) {
                     var action_id = self.menu.menu_id_to_action_id(state.menu_id);
                     return self.do_action(action_id, {clear_breadcrumbs: true}).then(function () {
@@ -214,42 +215,36 @@ return AbstractWebClient.extend({
         return this.menu_dm.add(data_manager.load_action(ev.data.action_id))
             .then(function (result) {
                 return self.action_mutex.exec(function () {
-                    var completed = $.Deferred();
-                    var options = _.extend({}, ev.data.options, {
-                        clear_breadcrumbs: true,
-                        action_menu_id: ev.data.menu_id,
+                    return new Promise(function (resolve, reject) {
+                        var options = _.extend({}, ev.data.options, {
+                            clear_breadcrumbs: true,
+                            action_menu_id: ev.data.menu_id,
+                        });
+                        Promise.resolve(self._openMenu(result, options)).guardedCatch(function () {
+                            self.toggle_home_menu(true);
+                            resolve();
+                        }).then(function () {
+                            self._on_app_clicked_done(ev)
+                                .then(resolve)
+                                .guardedCatch(reject);
+                        });
                     });
-                    $.when(self._openMenu(result, options)).fail(function () {
-                        self.toggle_home_menu(true);
-                        completed.resolve();
-                    }).done(function () {
-                        self._on_app_clicked_done(ev)
-                            .then(completed.resolve.bind(completed))
-                            .fail(completed.reject.bind(completed));
-                    });
-                    return completed;
                 });
             });
     },
     _on_app_clicked_done: function(ev) {
         core.bus.trigger('change_menu_section', ev.data.menu_id);
         this.toggle_home_menu(false);
-        return $.Deferred().resolve();
+        return Promise.resolve();
     },
     on_menu_clicked: function (ev) {
         var self = this;
         return this.menu_dm.add(data_manager.load_action(ev.data.action_id))
             .then(function (result) {
                 return self.action_mutex.exec(function () {
-                    var completed = $.Deferred();
-                    $.when(self._openMenu(result, {
-                        clear_breadcrumbs: true,
-                    })).always(function () {
-                        completed.resolve();
-                    });
-                    return completed;
+                    return self._openMenu(result, {clear_breadcrumbs: true});
                 });
-            }).always(function () {
+            }).then(function () {
                 self.$el.removeClass('o_mobile_menu_opened');
             });
     },
@@ -260,7 +255,7 @@ return AbstractWebClient.extend({
      * @private
      * @param {Object} action
      * @param {Object} options
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _openMenu: function (action, options) {
         return this.do_action(action, options);

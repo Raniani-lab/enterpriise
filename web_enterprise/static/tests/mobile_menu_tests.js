@@ -17,7 +17,7 @@ var UserMenu = require('web.UserMenu');
  *  items to use. Will at least contain and default to UserMenu
  * @returns {Menu}
  */
-function createMenu(params) {
+async function createMenu(params) {
     var parent = testUtils.createParent({});
 
     var systrayMenuItems = params.systrayMenuItems || [];
@@ -35,16 +35,16 @@ function createMenu(params) {
 
     var menu = new Menu(parent, menuData);
     testUtils.mock.addMockEnvironment(menu, params);
-    menu.appendTo($('#qunit-fixture'));
+    return menu.appendTo($('#qunit-fixture')).then(function(){
+        var menuDestroy = menu.destroy;
+        menu.destroy = function () {
+            SystrayMenu.Items = initialSystrayMenuItems;
+            menuDestroy.call(this);
+            parent.destroy();
+        };
 
-    var menuDestroy = menu.destroy;
-    menu.destroy = function () {
-        SystrayMenu.Items = initialSystrayMenuItems;
-        menuDestroy.call(this);
-        parent.destroy();
-    };
-
-    return menu;
+        return menu;
+    });
 }
 
 QUnit.module('web_enterprise mobile_menu_tests', {
@@ -99,10 +99,10 @@ QUnit.module('web_enterprise mobile_menu_tests', {
 
     QUnit.module('Burger Menu');
 
-    QUnit.test('Burger Menu on home menu', function (assert) {
+    QUnit.test('Burger Menu on home menu', async function (assert) {
         assert.expect(1);
 
-        var mobileMenu = createMenu({ menuData: this.data });
+        var mobileMenu = await createMenu({ menuData: this.data });
 
         testUtils.dom.click(mobileMenu.$('.o_mobile_menu_toggle'));
         assert.isVisible($(".o_burger_menu"),
@@ -112,10 +112,10 @@ QUnit.module('web_enterprise mobile_menu_tests', {
         mobileMenu.destroy();
     });
 
-    QUnit.test('Burger Menu on an App', function (assert) {
+    QUnit.test('Burger Menu on an App', async function (assert) {
         assert.expect(4);
 
-        var mobileMenu = createMenu({ menuData: this.data });
+        var mobileMenu = await createMenu({ menuData: this.data });
 
         mobileMenu.change_menu_section(3);
         mobileMenu.toggle_mode(false);

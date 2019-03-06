@@ -66,14 +66,14 @@ QUnit.module('Views', {
 }, function () {
     QUnit.module('CohortView');
 
-    QUnit.test('simple cohort rendering', function (assert) {
+    QUnit.test('simple cohort rendering', async function (assert) {
         assert.expect(7);
 
-        var cohort = createView({
+        var cohort = await createView({
             View: CohortView,
             model: 'subscription',
             data: this.data,
-            arch: '<cohort string="Subscription" date_start="start" date_stop="stop" />'
+            arch: '<cohort string="Subscription" date_start="start" date_stop="stop" />',
         });
 
         assert.containsOnce(cohort, '.table',
@@ -95,10 +95,10 @@ QUnit.module('Views', {
         cohort.destroy();
     });
 
-    QUnit.test('correctly set by default measure and interval', function (assert) {
+    QUnit.test('correctly set by default measure and interval', async function (assert) {
         assert.expect(4);
 
-        var cohort = createView({
+        var cohort = await createView({
             View: CohortView,
             model: 'subscription',
             data: this.data,
@@ -118,7 +118,7 @@ QUnit.module('Views', {
         cohort.destroy();
     });
 
-    QUnit.test('correctly sort measure items', function (assert) {
+    QUnit.test('correctly sort measure items', async function (assert) {
         assert.expect(3);
 
         var data = this.data;
@@ -128,7 +128,7 @@ QUnit.module('Views', {
         data.subscription.fields.add = {string: 'add', type: 'integer', store: true};
         data.subscription.fields.zoo = {string: 'Zoo', type: 'integer', store: true};
 
-        var cohort = createView({
+        var cohort = await createView({
             View: CohortView,
             model: 'subscription',
             data: this.data,
@@ -142,10 +142,10 @@ QUnit.module('Views', {
         cohort.destroy();
     });
 
-    QUnit.test('correctly set measure and interval after changed', function (assert) {
+    QUnit.test('correctly set measure and interval after changed', async function (assert) {
         assert.expect(8);
 
-        var cohort = createView({
+        var cohort = await createView({
             View: CohortView,
             model: 'subscription',
             data: this.data,
@@ -162,14 +162,14 @@ QUnit.module('Views', {
         assert.ok(cohort.$('.table thead tr:first th:nth-child(3):contains(Stop - By Week)').length,
             'should contain "Stop - By Week" in title');
 
-        testUtils.dom.click(cohort.$buttons.find('.dropdown-toggle:contains(Measures)'));
-        testUtils.dom.click(cohort.$buttons.find('.o_cohort_measures_list [data-field=__count__]'));
+        await testUtils.dom.click(cohort.$buttons.find('.dropdown-toggle:contains(Measures)'));
+        await testUtils.dom.click(cohort.$buttons.find('.o_cohort_measures_list [data-field=__count__]'));
         assert.hasClass(cohort.$buttons.find('.o_cohort_measures_list [data-field=__count__]'),'selected',
                 'should active count for measure');
         assert.ok(cohort.$('.table thead tr:first th:nth-child(2):contains(Count)').length,
             'should contain "Count" in header of second column');
 
-        testUtils.dom.click(cohort.$buttons.find('.o_cohort_interval_button[data-interval=month]'));
+        await testUtils.dom.click(cohort.$buttons.find('.o_cohort_interval_button[data-interval=month]'));
         assert.hasClass(cohort.$buttons.find('.o_cohort_interval_button[data-interval=month]'),'active',
                 'should active month for interval');
         assert.ok(cohort.$('.table thead tr:first th:nth-child(3):contains(Stop - By Month)').length,
@@ -178,10 +178,10 @@ QUnit.module('Views', {
         cohort.destroy();
     });
 
-    QUnit.test('when clicked on cell redirects to the correct list/form view ', function(assert) {
+    QUnit.test('when clicked on cell redirects to the correct list/form view ', async function(assert) {
         assert.expect(6);
 
-        var actionManager = createActionManager({
+        var actionManager = await createActionManager({
             data: this.data,
             archs: {
                 'subscription,false,cohort': '<cohort string="Subscriptions" date_start="start" date_stop="stop" measure="__count__" interval="week" />',
@@ -210,7 +210,7 @@ QUnit.module('Views', {
             },
         });
 
-        actionManager.doAction({
+        await actionManager.doAction({
             name: 'Subscriptions',
             res_model: 'subscription',
             type: 'ir.actions.act_window',
@@ -218,24 +218,24 @@ QUnit.module('Views', {
         });
 
         // Going to the list view, while clicking Period / Count cell
-        testUtils.dom.click(actionManager.$('td.o_cohort_value:first'));
+        await testUtils.dom.click(actionManager.$('td.o_cohort_value:first'));
         assert.strictEqual(actionManager.$('.o_list_view th:nth(1)').text(), 'Start',
                 "First field in the list view should be start");
         assert.strictEqual(actionManager.$('.o_list_view th:nth(2)').text(), 'Stop',
                 "Second field in the list view should be stop");
 
         // Going back to cohort view
-        testUtils.dom.click(actionManager.$('.o_back_button'));
+        await testUtils.dom.click(actionManager.$('.o_back_button'));
 
         // Going to the list view
-        testUtils.dom.click(actionManager.$('td div.o_cohort_value:first'));
+        await testUtils.dom.click(actionManager.$('td div.o_cohort_value:first'));
         assert.strictEqual(actionManager.$('.o_list_view th:nth(1)').text(), 'Start',
                 "First field in the list view should be start");
         assert.strictEqual(actionManager.$('.o_list_view th:nth(2)').text(), 'Stop',
                 "Second field in the list view should be stop");
 
         // Going to the form view
-        testUtils.dom.click(actionManager.$('.o_list_view .o_data_row'));
+        await testUtils.dom.click(actionManager.$('.o_list_view .o_data_row'));
 
         assert.hasAttrValue(actionManager.$('.o_form_view span:first'), 'name', 'start',
                 "First field in the form view should be start");
@@ -245,10 +245,10 @@ QUnit.module('Views', {
         actionManager.destroy();
     });
 
-    QUnit.test('test mode churn', function(assert) {
+    QUnit.test('test mode churn', async function(assert) {
         assert.expect(3);
 
-        var cohort = createView({
+        var cohort = await createView({
             View: CohortView,
             model: 'lead',
             data: this.data,
@@ -265,10 +265,10 @@ QUnit.module('Views', {
         cohort.destroy();
     });
 
-    QUnit.test('test backward timeline', function (assert) {
+    QUnit.test('test backward timeline', async function (assert) {
         assert.expect(7);
 
-        var cohort = createView({
+        var cohort = await createView({
             View: CohortView,
             model: 'attendee',
             data: this.data,
@@ -290,10 +290,10 @@ QUnit.module('Views', {
         cohort.destroy();
     });
 
-    QUnit.test('when clicked on cell redirects to the action list/form view passed in context', function(assert) {
+    QUnit.test('when clicked on cell redirects to the action list/form view passed in context', async function(assert) {
         assert.expect(6);
 
-        var actionManager = createActionManager({
+        var actionManager = await createActionManager({
             data: this.data,
             archs: {
                 'subscription,false,cohort': '<cohort string="Subscriptions" date_start="start" date_stop="stop" measure="__count__" interval="week" />',
@@ -322,7 +322,7 @@ QUnit.module('Views', {
             },
         });
 
-        actionManager.doAction({
+        await actionManager.doAction({
             name: 'Subscriptions',
             res_model: 'subscription',
             type: 'ir.actions.act_window',
@@ -331,24 +331,24 @@ QUnit.module('Views', {
         });
 
         // Going to the list view, while clicking Period / Count cell
-        testUtils.dom.click(actionManager.$('td.o_cohort_value:first'));
+        await testUtils.dom.click(actionManager.$('td.o_cohort_value:first'));
         assert.strictEqual(actionManager.$('.o_list_view th:nth(1)').text(), 'Start',
                 "First field in the list view should be start");
         assert.strictEqual(actionManager.$('.o_list_view th:nth(2)').text(), 'Stop',
                 "Second field in the list view should be stop");
 
         // Going back to cohort view
-        testUtils.dom.click($('.o_back_button'));
+        await testUtils.dom.click($('.o_back_button'));
 
         // Going to the list view
-        testUtils.dom.click(actionManager.$('td div.o_cohort_value:first'));
+        await testUtils.dom.click(actionManager.$('td div.o_cohort_value:first'));
         assert.strictEqual(actionManager.$('.o_list_view th:nth(1)').text(), 'Start',
                 "First field in the list view should be start");
         assert.strictEqual(actionManager.$('.o_list_view th:nth(2)').text(), 'Stop',
                 "Second field in the list view should be stop");
 
         // Going to the form view
-        testUtils.dom.click(actionManager.$('.o_list_view .o_data_row'));
+        await testUtils.dom.click(actionManager.$('.o_list_view .o_data_row'));
 
         assert.hasAttrValue(actionManager.$('.o_form_view span:first'), 'name', 'start',
                 "First field in the form view should be start");
@@ -358,12 +358,12 @@ QUnit.module('Views', {
         actionManager.destroy();
     });
 
-    QUnit.test('rendering of a cohort view with comparison', function (assert) {
+    QUnit.test('rendering of a cohort view with comparison', async function (assert) {
         assert.expect(27);
 
         var unpatchDate = patchDate(2017, 7, 25, 1, 0, 0);
 
-        var actionManager = createActionManager({
+        var actionManager = await createActionManager({
             data: this.data,
             archs: {
                 'subscription,false,cohort': '<cohort string="Subscriptions" date_start="start" date_stop="stop" measure="__count__" interval="week" />',
@@ -376,7 +376,7 @@ QUnit.module('Views', {
             },
         });
 
-        actionManager.doAction({
+        await actionManager.doAction({
             name: 'Subscriptions',
             res_model: 'subscription',
             type: 'ir.actions.act_window',
@@ -419,19 +419,19 @@ QUnit.module('Views', {
 
         // with no comparison with no data (filter on 'last_year')
 
-        testUtils.dom.click($('.o_time_range_menu_button'));
+        await testUtils.dom.click($('.o_time_range_menu_button'));
         $('.o_time_range_selector').val('last_year');
-        testUtils.dom.click($('.o_time_range_menu .o_apply_range'));
+        await testUtils.dom.click($('.o_time_range_menu .o_apply_range'));
 
         verifyContents([]);
         verifyNoContentHelper("No data available for cohort.");
 
 
         // with comparison active, data and comparisonData (filter on 'this_month' + 'previous_period')
-        testUtils.dom.click($('.o_time_range_menu_button'));
-        testUtils.dom.click($('.o_time_range_menu .o_comparison_checkbox'));
+        await testUtils.dom.click($('.o_time_range_menu_button'));
+        await testUtils.dom.click($('.o_time_range_menu .o_comparison_checkbox'));
         $('.o_time_range_selector').val('this_month');
-        testUtils.dom.click($('.o_time_range_menu .o_apply_range'));
+        await testUtils.dom.click($('.o_time_range_menu .o_apply_range'));
 
         verifyContents(['This Month', 2, 'Previous Period', 1]);
         verifyNoContentHelper();
@@ -439,27 +439,27 @@ QUnit.module('Views', {
 
         // with comparison active, data, no comparisonData (filter on 'this_year' + 'previous_period')
 
-        testUtils.dom.click($('.o_time_range_menu_button'));
+        await testUtils.dom.click($('.o_time_range_menu_button'));
         $('.o_time_range_selector').val('this_year');
-        testUtils.dom.click($('.o_time_range_menu .o_apply_range'));
+        await testUtils.dom.click($('.o_time_range_menu .o_apply_range'));
 
         verifyContents(['This Year', 3, 'Previous Period']);
         verifyNoContentHelper("No data available.");
 
         // with comparison active, no data, comparisonData (filter on 'today' + 'previous_period')
 
-        testUtils.dom.click($('.o_time_range_menu_button'));
+        await testUtils.dom.click($('.o_time_range_menu_button'));
         $('.o_time_range_selector').val('today');
-        testUtils.dom.click($('.o_time_range_menu .o_apply_range'));
+        await testUtils.dom.click($('.o_time_range_menu .o_apply_range'));
 
         verifyContents(['Today', 'Previous Period', 1]);
         verifyNoContentHelper("No data available.");
 
         // with comparison active, no data, no comparisonData (filter on 'last_year' + 'previous_period')
 
-        testUtils.dom.click($('.o_time_range_menu_button'));
+        await testUtils.dom.click($('.o_time_range_menu_button'));
         $('.o_time_range_selector').val('last_year');
-        testUtils.dom.click($('.o_time_range_menu .o_apply_range'));
+        await testUtils.dom.click($('.o_time_range_menu .o_apply_range'));
 
         verifyContents([]);
         verifyNoContentHelper("No data available for cohort.");
@@ -468,17 +468,17 @@ QUnit.module('Views', {
         actionManager.destroy();
     });
 
-    QUnit.test('verify context', function (assert) {
+    QUnit.test('verify context', async function (assert) {
         assert.expect(1);
 
-        var cohort = createView({
+        var cohort = await createView({
             View: CohortView,
             model: 'subscription',
             data: this.data,
             arch: '<cohort string="Subscription" date_start="start" date_stop="stop" />',
             mockRPC: function (route, args) {
                 if (args.method === 'get_cohort_data') {
-                    assert.step(args.kwargs.context);
+                    assert.ok(args.kwargs.context);
                 }
                 return this._super.apply(this, arguments);
             },

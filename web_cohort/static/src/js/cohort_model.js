@@ -26,7 +26,7 @@ var CohortModel = AbstractModel.extend({
      * @param {Array[]} params.domain
      * @param {string} params.mode
      * @param {string} params.timeline
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     load: function (params) {
         this.modelName = params.modelName;
@@ -56,7 +56,7 @@ var CohortModel = AbstractModel.extend({
      * @param {string} params.interval
      * @param {Array[]} params.domain
      * @param {Object} params.timeRangeMenuData
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     reload: function (handle, params) {
         if (params.context !== undefined) {
@@ -91,7 +91,7 @@ var CohortModel = AbstractModel.extend({
      * Fetch cohort data.
      *
      * @private
-     * @returns {Deferred}
+     * @returns {Promise}
      */
     _fetchData: function () {
         var self = this;
@@ -126,8 +126,8 @@ var CohortModel = AbstractModel.extend({
                 })
             );
         }
-        return $.when.apply($, defs).then(function () {
-            var results = Array.prototype.slice.call(arguments);
+        return Promise.all(defs).then(function () {
+            var results = Array.prototype.slice.call(arguments[0]);
             self.data.report = results[0];
             if (self.compare) {
                 self.data.comparisonReport = results[1];

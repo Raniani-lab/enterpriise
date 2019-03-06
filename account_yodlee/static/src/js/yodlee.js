@@ -17,7 +17,7 @@ var YodleeAccountConfigurationWidget = AbstractAction.extend({
         this.accessTokens = context.accessTokens;
         this.beta = context.beta;
         this.state = context.state;
-        this.callbackUrl = context.paramsUrl + 
+        this.callbackUrl = context.paramsUrl +
             document.location.protocol + '//' + document.location.host + context.callbackUrl;
     },
 
@@ -51,7 +51,7 @@ var YodleeCallbackWidget = AbstractAction.extend({
             self.do_action(result);
             // self.result = result;
         });
-        return $.when(this._super.apply(this, arguments), def);
+        return Promise.all([this._super.apply(this, arguments), def]);
     },
 
 });

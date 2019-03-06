@@ -185,11 +185,12 @@ var DocumentsInspector = Widget.extend({
             viewType: 'kanban',
         });
         var fieldWidget = new FieldWidget(this, fieldName, record, options);
-        fieldWidget.appendTo($row.find('.o_inspector_value'));
-        fieldWidget.getFocusableElement().attr('id', fieldName);
-        if (type === 'many2one' && values.length > 1) {
-            fieldWidget.$el.addClass('o_multiple_values');
-        }
+        fieldWidget.appendTo($row.find('.o_inspector_value')).then(function() {
+            fieldWidget.getFocusableElement().attr('id', fieldName);
+            if (type === 'many2one' && values.length > 1) {
+                fieldWidget.$el.addClass('o_multiple_values');
+            }
+        });
 
         $row.insertBefore(this.$('.o_inspector_fields tbody tr.o_inspector_divider'));
     },

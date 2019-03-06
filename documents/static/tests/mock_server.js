@@ -15,7 +15,7 @@ MockServer.include({
     _performRpc: function (route) {
         if (route.indexOf('/documents/image') >= 0 ||
             _.contains(['.png', '.jpg'], route.substr(route.length - 4))) {
-            return $.when();
+            return Promise.resolve();
         }
         return this._super.apply(this, arguments);
     },

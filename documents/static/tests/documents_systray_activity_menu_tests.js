@@ -14,7 +14,7 @@ QUnit.module('mail', {}, function () {
         },
     });
 
-    QUnit.test('activity menu widget: documents request button', function (assert) {
+    QUnit.test('activity menu widget: documents request button', async function (assert) {
         assert.expect(2);
 
         var activityMenu = new ActivityMenu();
@@ -22,7 +22,7 @@ QUnit.module('mail', {}, function () {
             services: this.services,
             mockRPC: function (route, args) {
                 if (args.method === 'systray_get_activities') {
-                    return $.when([]);
+                    return Promise.resolve([]);
                 }
                 return this._super.apply(this, arguments);
             },
@@ -33,11 +33,11 @@ QUnit.module('mail', {}, function () {
                 },
             },
         });
-        activityMenu.appendTo($('#qunit-fixture'));
+        await activityMenu.appendTo($('#qunit-fixture'));
 
-        testUtils.dom.click(activityMenu.$('> .dropdown-toggle'));
+        await testUtils.dom.click(activityMenu.$('> .dropdown-toggle'));
         assert.containsOnce(activityMenu, '.o_sys_documents_request');
-        testUtils.dom.click(activityMenu.$('.o_sys_documents_request'));
+        await testUtils.dom.click(activityMenu.$('.o_sys_documents_request'));
 
         activityMenu.destroy();
     });

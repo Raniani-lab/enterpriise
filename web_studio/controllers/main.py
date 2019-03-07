@@ -541,6 +541,14 @@ class WebStudioController(http.Controller):
         field_id = request.env['ir.model.fields']._get(model, old_name)
         field_id.write({'name': new_name})
 
+        if field_id.ttype == 'binary' and not field_id.related:
+            # during the binary field creation, another char field containing
+            # the filename has been created (see @edit_view). To avoid creating
+            # the field twice, it is also renamed
+            filename_field_id = request.env['ir.model.fields']._get(model, old_name + '_filename')
+            if filename_field_id:
+                filename_field_id.write({'name': new_name + '_filename'})
+
     def _create_studio_view(self, view, arch):
         # We have to play with priorities. Consider the following:
         # View Base: <field name="x"/><field name="y"/>

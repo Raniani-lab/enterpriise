@@ -3,6 +3,7 @@ odoo.define('pos_iot.models', function (require) {
 
 var models = require('point_of_sale.models');
 var DeviceProxy = require('iot.widgets').DeviceProxy;
+var PrinterProxy = require('pos_iot.Printer');
 
 models.load_models([{
     model: 'iot.device',
@@ -19,6 +20,8 @@ models.load_models([{
             // If there are more the, last device on the list will be used.
             if(used_devices[iot_device.type]) {
                 iot_device_proxies[iot_device.type] = new DeviceProxy({ iot_ip: iot_device.iot_ip, identifier: iot_device.identifier });
+            } else if (self.config.iface_print_via_proxy && iot_device.id === self.config.iface_printer_id[0]) {
+                iot_device_proxies[iot_device.type] = new PrinterProxy({ iot_ip: iot_device.iot_ip, identifier: iot_device.identifier });
             }
         });
         self.iot_device_proxies = iot_device_proxies;

@@ -2,11 +2,14 @@
 <odoo>
     <template id="assets" inherit_id="point_of_sale.assets">
         <xpath expr="." position="inside">
+            <script type="text/javascript" src="/pos_iot/static/src/js/chrome.js"></script>
+            <script type="text/javascript" src="/pos_iot/static/src/js/devices.js"></script>
             <script type="text/javascript" src="/pos_iot/static/src/js/iot.js"></script>
             <script type="text/javascript" src="/pos_iot/static/src/js/models.js"></script>
             <script type="text/javascript" src="/pos_iot/static/src/js/payment.js"></script>
             <script type="text/javascript" src="/pos_iot/static/src/js/popups.js"></script>
             <script type="text/javascript" src="/pos_iot/static/src/js/scale.js"></script>
+            <script type="text/javascript" src="/pos_iot/static/src/js/printers.js"></script>
             <link rel="stylesheet" href="/pos_iot/static/src/css/pos.css"/>
         </xpath>
     </template>
@@ -21,6 +24,12 @@
             </xpath>
             <field name="proxy_ip" position="replace">
                 <field name="iotbox_id" string="IoT Box"/>
+            </field>
+            <field name="iface_print_via_proxy" position="after">
+                <field name="iface_printer_id"/>
+            </field>
+            <field name="iface_print_via_proxy" position="attributes">
+                <attribute name="invisible">1</attribute>
             </field>
             <!-- add this button before iface_* options -->
             <xpath expr="//field[@name='iotbox_id']/../.." position="after">

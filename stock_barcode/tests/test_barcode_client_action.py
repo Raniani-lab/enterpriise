@@ -27,10 +27,19 @@ class TestBarcodeClientAction(HttpCase):
         CALL_COUNT = 0
         self.supplier_location = self.env.ref('stock.stock_location_suppliers')
         self.stock_location = self.env.ref('stock.stock_location_stock')
+        self.stock_location.write({
+            'barcode': 'LOC-01-00-00',
+            })
         self.customer_location = self.env.ref('stock.stock_location_customers')
         self.pack_location = self.env.ref('stock.location_pack_zone')
         self.shelf1 = self.env.ref('stock.stock_location_components')
+        self.shelf1.write({
+            'barcode': 'LOC-01-01-00',
+            })
         self.shelf2 = self.env.ref('stock.stock_location_14')
+        self.shelf2.write({
+            'barcode': 'LOC-01-02-00',
+            })
         self.shelf3 = self.env['stock.location'].create({
             'name': 'Shelf 3',
             'location_id': self.stock_location.id,

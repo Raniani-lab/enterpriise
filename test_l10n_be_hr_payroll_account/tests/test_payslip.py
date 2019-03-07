@@ -2,12 +2,13 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import datetime
-from odoo import tests
+from odoo.tests import common 
 
 
-class TestUi(tests.HttpCase):
+class TestPayslip(common.TransactionCase):
 
     def test_payslip(self):
+        print('ZBOOOOOBS')
         contract = self.env.ref('hr_contract_salary.hr_contract_cdi_laurie_poiret')
         # Set the start date to January 2018 to take into account on payslip
         contract.date_start = contract.date_start.replace(year=2018, month=1, day=1)

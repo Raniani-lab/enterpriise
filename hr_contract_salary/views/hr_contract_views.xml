@@ -23,7 +23,7 @@
             <xpath expr="//field[@name='state']" position="before">
                 <button name="%(generate_simulation_link_action)d" type="action" string="Generate Simulation Link" class="oe_highlight" attrs="{'invisible': [('employee_id', '=', False)]}"/>
             </xpath>
-            <xpath expr="//field[@name='type_id']" position="after">
+            <xpath expr="//field[@name='reported_to_secretariat']" position="before">
                 <field name="origin_contract_id" attrs="{'invisible': [('origin_contract_id', '=', False)]}"/>
                 <field name="access_token" invisible="1"/>
                 <field name="access_token_consumed" invisible="1"/>
@@ -43,7 +43,7 @@
                 <field name="sign_template_id" options="{'no_create': True}"/>
                 <field name="contract_update_template_id" options="{'no_create': True}"/>
             </group>
-            <field name="type_id" position="before">
+            <field name="reported_to_secretariat" position="before">
                 <field name="contract_type"/>
                 <field name="signatures_count" invisible="1"/>
             </field>

@@ -7,9 +7,9 @@
         <field name="inherit_id" ref="account.invoice_supplier_form"/>
         <field name="arch" type="xml">
             <xpath expr="//header" position="inside">
-                <button name="retry_ocr" class="oe_highlight" string="Resend For Digitalization" type="object" 
+                <button name="retry_ocr" class="oe_highlight" string="Resend For Digitalization" type="object"
                 attrs="{'invisible': [('extract_can_show_resend_button', '=', False)]}"/>
-                <button name="retry_ocr" class="oe_highlight" string="Send For Digitalization" type="object" 
+                <button name="retry_ocr" class="oe_highlight" string="Send For Digitalization" type="object"
                 attrs="{'invisible': [('extract_can_show_send_button', '=', False)]}"/>
             </xpath>
             <xpath expr="//header" position='after'>
@@ -21,7 +21,7 @@
                     <!-- Extraction processed with success. Don't forget to validate the different fields. -->
                 </div>
                 <div role="status" class="alert alert-danger mb8" attrs="{'invisible':['|', ('state', 'not in', ['draft']), ('extract_state', 'not in', ['not_enough_credit'])]}">
-                    You don't have enough credit to extract datas from your invoice. You can buy new credits here: 
+                    You don't have enough credit to extract datas from your invoice. You can buy new credits here:
                     <!--TODO: change because popup blocked-->
                     <button string="Buy credits" type="object" name="buy_credits" class="btn btn-sm btn-primary pull-right mb0"/>
                 </div>
@@ -46,7 +46,7 @@
                 <attribute name="js_class">account_invoice_extract_preview</attribute>
             </xpath>
             <xpath expr="//div[hasclass('o_attachment_preview')]" position="replace">
-                <div class="o_attachment_preview" attrs="{'invisible': [('type', 'not in', ['in_invoice', 'in_refund'])]}" options="{'preview_priority_type': 'pdf'}"/>
+                <div class="o_attachment_preview" options="{'preview_priority_type': 'pdf'}"/>
             </xpath>
         </field>
     </record>

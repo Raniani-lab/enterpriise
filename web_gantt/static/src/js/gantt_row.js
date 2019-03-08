@@ -18,7 +18,7 @@ var GanttRow = Widget.extend({
         'mouseup .o_gantt_cell_buttons > .o_gantt_cell_add': '_onButtonAddClicked', // jQuery UI uses mouseup
         'mouseup .o_gantt_cell_buttons > .o_gantt_cell_plan': '_onButtonPlanClicked', // jQuery UI uses mouseup
     },
-    NB_GANTT_RECORD_COLORS: 10,
+    NB_GANTT_RECORD_COLORS: 12,
     LEVEL_LEFT_OFFSET: 15, // 15 px per level
     LEVEL_TOP_OFFSET: 36, // 36 px per level
     POPOVER_DELAY: 500,

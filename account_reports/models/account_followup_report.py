@@ -144,7 +144,7 @@ class AccountFollowupReport(models.AbstractModel):
                 'class': '',
                 'unfoldable': False,
                 'level': 0,
-                'columns': [],
+                'columns': [{} for col in columns],
             })
         return lines
 

@@ -334,7 +334,7 @@ class View(models.Model):
                     if xpath.get('expr'):
                         # Maybe we are already removing the parent of this
                         # node so this one will be removed automatically
-                        current_xpath_target = old_view_tree.find('.' + xpath.get('expr'))
+                        current_xpath_target = next(iter(old_view_tree.xpath('.' + xpath.get('expr'))), None)
                         if xpath.get('position') == 'replace' and \
                                 current_xpath_target in node.iterancestors():
                             continue

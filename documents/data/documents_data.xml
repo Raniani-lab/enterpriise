@@ -33,7 +33,7 @@
             <field name="name">Finance</field>
             <field name="description" type="html">
                 <center>
-                    <p>Automate your inbox using scanned documents or emails sent to <strong>inbox-financial@yourcompany.com</strong></p>
+                    <p>Automate your inbox using scanned documents or emails sent to <strong>inbox-financial</strong> email alias.</p>
                 </center>
             </field>
             <field name="sequence">11</field>

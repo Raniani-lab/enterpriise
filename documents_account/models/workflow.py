@@ -22,7 +22,7 @@ class WorkflowActionRuleAccount(models.Model):
                     'type': invoice_type,
                     'journal_id': journal.id,
                 }
-                if invoice_type != 'out_refound':
+                if invoice_type != 'out_refund':
                     create_values['comment'] = False
 
                 if self.partner_id:

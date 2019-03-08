@@ -137,7 +137,11 @@ var mrp_mps_report = AbstractAction.extend({
         }
     },
     re_renderElement: function() {
+        var self = this;
         this.$('.o_content').html(this.html);
+        this.$searchview_buttons.find('.o_mps_mps_show_line').each(function () {
+            self.mps_show_line({target: this});
+        });
     },
     option_mps_period: function(e){
         var self = this;

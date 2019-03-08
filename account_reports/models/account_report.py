@@ -399,6 +399,8 @@ class AccountReport(models.AbstractModel):
         if not self.filter_analytic:
             return
 
+        options['analytic'] = self.filter_analytic
+
         if self.user_has_groups('analytic.group_analytic_accounting'):
             options['analytic_accounts'] = previous_options and previous_options.get('analytic_accounts') or []
             analytic_account_ids = [int(acc) for acc in options['analytic_accounts']]

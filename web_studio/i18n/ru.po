@@ -910,7 +910,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:web_studio.act_report_xml_view_kanban
 #, python-format
 msgid "Dropdown menu"
-msgstr ""
+msgstr "Выпадающее меню"
 
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.act_report_xml_view_kanban
@@ -1939,7 +1939,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/app_creator.xml:10
 #, python-format
 msgid "Previous"
-msgstr ""
+msgstr "Предыдущий"
 
 #. module: web_studio
 #. openerp-web
@@ -2058,7 +2058,7 @@ msgstr "Удалить из вида"
 #: code:addons/web_studio/static/src/xml/new_field_dialog.xml:33
 #, python-format
 msgid "Remove selection"
-msgstr ""
+msgstr "Удалить выделение"
 
 #. module: web_studio
 #. openerp-web

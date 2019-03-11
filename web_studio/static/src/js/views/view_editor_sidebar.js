@@ -50,6 +50,10 @@ var OPTIONS_BY_WIDGET = {
     radio: [
         {name: 'horizontal', type: 'boolean', string: _lt("Display horizontally")},
     ],
+    signature: [
+        {name: 'full_name', type: 'selection', string: _lt('Auto-complete with'), selection: [[]]},
+        // 'selection' will be computed later on for the attribute to be dynamic (based on model fields)
+    ],
 };
 
 return Widget.extend(StandaloneFieldManagerMixin, {
@@ -150,6 +154,19 @@ return Widget.extend(StandaloneFieldManagerMixin, {
             var Widget = this.state.attrs.Widget;
             this.widgetKey = this._getWidgetKey(Widget);
 
+            // Get dynamic selection for 'full_name' node option of signature widget
+            if (this.widgetKey === 'signature') {
+                var selection = [[]]; // By default, selection should be empty
+                var signFields = _.chain(_.sortBy(_.values(this.fields_in_view), 'string'))
+                    .filter(function (field) {
+                        return _.contains(['char', 'many2one'], field.type);
+                    })
+                    .map(function (val, key) {
+                        return [val.name, session.debug ? _.str.sprintf('%s (%s)', val.string, val.name) : val.string];
+                    })
+                    .value();
+                _.findWhere(OPTIONS_BY_WIDGET[this.widgetKey], {name: 'full_name'}).selection = selection.concat(signFields);
+            }
             this.OPTIONS_BY_WIDGET = OPTIONS_BY_WIDGET;
 
             this.has_placeholder = Widget && Widget.prototype.has_placeholder || false;

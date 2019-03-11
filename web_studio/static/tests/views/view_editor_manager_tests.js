@@ -843,6 +843,116 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
+    QUnit.test('signature field edition (change full_name)', async function (assert) {
+        assert.expect(8);
+
+        this.data.coucou.fields.sign = {string: "Signature", type: "binary"};
+        this.data.coucou.records = [{id: 1, display_name:'Jughead', m2o: 37}];
+        var editViewCount = 0;
+
+        var arch = "<form>" +
+            "<group>" +
+                "<field name='display_name'/>" +
+                "<field name='m2o'/>" +
+            "</group>" +
+        "</form>";
+        var fieldsView;
+        var newFieldName;
+
+        var vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'coucou',
+            arch: arch,
+            res_id: 1,
+            mockRPC: function (route, args) {
+                if (route === '/web_studio/edit_view') {
+                    editViewCount++;
+                    if (editViewCount === 1) {
+                        assert.strictEqual(args.operations[0].node.attrs.widget, "signature",
+                            "'signature' widget should be there on field being dropped");
+                        newFieldName = args.operations[0].node.field_description.name;
+                        // the server sends the arch in string but it's post-processed
+                        // by the ViewEditorManager
+                        fieldsView.arch = "<form>" +
+                            "<group>" +
+                                "<field name='display_name'/>" +
+                                "<field name='m2o'/>" +
+                                "<field name='" + newFieldName + "' widget='signature'/>" +
+                            "</group>" +
+                        "</form>";
+                        fieldsView.fields[newFieldName] = {
+                            string: "Signature",
+                            type: "binary"
+                        };
+                    } else if (editViewCount === 2) {
+                        assert.strictEqual(args.operations[1].new_attrs.options, "{\"full_name\":\"display_name\"}",
+                            "correct options for 'signature' widget should be passed");
+                        // the server sends the arch in string but it's post-processed
+                        // by the ViewEditorManager
+                        fieldsView.arch = "<form>" +
+                            "<group>" +
+                                "<field name='display_name'/>" +
+                                "<field name='m2o'/>" +
+                                "<field name='" + newFieldName + "' widget='signature' options='{\"full_name\": \"display_name\"}'/>" +
+                            "</group>" +
+                        "</form>";
+                    } else if (editViewCount === 3) {
+                        assert.strictEqual(args.operations[2].new_attrs.options, "{\"full_name\":\"m2o\"}",
+                            "correct options for 'signature' widget should be passed");
+                        // the server sends the arch in string but it's post-processed
+                        // by the ViewEditorManager
+                        fieldsView.arch = "<form>" +
+                            "<group>" +
+                                "<field name='display_name'/>" +
+                                "<field name='m2o'/>" +
+                                "<field name='" + newFieldName + "' widget='signature' options='{\"full_name\": \"m2o\"}'/>" +
+                            "</group>" +
+                        "</form>";
+                    }
+                    return Promise.resolve({
+                        fields: fieldsView.fields,
+                        fields_views: {
+                            form: fieldsView,
+                        }
+                    });
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        // used to generate the new fields view in mockRPC
+        fieldsView = $.extend(true, {}, vem.fields_view);
+
+        // drag and drop the new signature field
+        await testUtils.dom.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_signature'), vem.$('.o_group .o_web_studio_hook:first'));
+
+        assert.containsOnce(vem, '.o_web_studio_form_view_editor .o_signature',
+            "there should be one signature field");
+
+        // edit the signature
+        await testUtils.dom.click(vem.$('.o_web_studio_form_view_editor .o_signature'));
+
+        assert.containsOnce(vem, '.o_web_studio_sidebar_content.o_display_field select#option_full_name',
+            "the sidebar should display dropdown to change 'Auto-complete with' field");
+
+        assert.strictEqual(vem.$('.o_web_studio_sidebar_content.o_display_field select#option_full_name option:selected').val(), "",
+            "the auto complete field should be empty by default");
+
+
+        // change auto complete field to 'display_name'
+        await testUtils.fields.editSelect(vem.$('.o_web_studio_sidebar_content.o_display_field select#option_full_name'), "display_name");
+
+        assert.strictEqual(vem.$('.o_web_studio_sidebar_content.o_display_field select#option_full_name option:selected').val(), "display_name",
+            "the auto complete field should be correctly selected");
+
+        // change auto complete field to 'm2o'
+        await testUtils.fields.editSelect(vem.$('.o_web_studio_sidebar_content.o_display_field select#option_full_name'), "m2o");
+
+        assert.strictEqual(vem.$('.o_web_studio_sidebar_content.o_display_field select#option_full_name option:selected').val(), "m2o",
+            "the auto complete field should be correctly selected");
+        vem.destroy();
+    });
+
     QUnit.test('change widget binary to image (check default size)', async function (assert) {
         assert.expect(4);
 

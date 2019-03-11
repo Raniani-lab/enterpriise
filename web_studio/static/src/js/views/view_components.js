@@ -211,6 +211,12 @@ var PriorityWidgetComponent = AbstractNewWidgetComponent.extend({
     className: 'o_web_studio_field_priority',
     attrs: {widget: 'priority'},
 });
+var SignatureWidgetComponent = AbstractNewWidgetComponent.extend({
+    type: 'binary',
+    label: _lt('Signature'),
+    className: 'o_web_studio_field_signature',
+    attrs: {widget: 'signature'},
+});
 var RelatedFieldComponent = AbstractNewFieldComponent.extend({
     type: 'related',
     label: _lt('Related Field'),
@@ -244,6 +250,7 @@ form_component_widget_registry
         ImageWidgetComponent,
         TagWidgetComponent,
         PriorityWidgetComponent,
+        SignatureWidgetComponent,
         RelatedFieldComponent,
     ])
     .add('existing_field', ExistingFieldComponent);

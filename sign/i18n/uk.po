@@ -1244,7 +1244,7 @@ msgstr "Переслати"
 #: code:addons/sign/static/src/js/sign_backend.js:1034
 #, python-format
 msgid "Resend the invitation"
-msgstr "Повторно надіслати запрошення"
+msgstr "Переслати запрошення"
 
 #. module: sign
 #. openerp-web

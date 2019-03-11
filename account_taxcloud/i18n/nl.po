@@ -104,7 +104,7 @@ msgid ""
 msgstr ""
 "Elk product behoort tot een specifieke BTW categorie vooraf bepaald door de "
 "overheid. Het systeem zal gebruik maken van Tax Cloud categorie geplaatst op"
-" de interne category van het product. Als er geen is dan zal de categorie "
+" de interne categorie van het product. Als er geen is dan zal de categorie "
 "van het product zelf gebruikt worden. Enkel in gebruik in de Verenigde "
 "Staten."
 

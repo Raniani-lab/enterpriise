@@ -130,7 +130,7 @@ class AccountBankStatementImport(models.TransientModel):
             #   OPBD : Opening Balance
             #   PRCD : Previous Closing Balance
             #   ITBD : Interim Balance (in the case of preceeding pagination)
-            start_amount = float(statement.xpath("ns:Bal/ns:Tp/ns:CdOrPrtry[ns:Cd='OPBD' or ns:Cd='PRCD' or ns:Cd='ITBD']/../../ns:Amt/text()",
+            start_amount = float(statement.xpath("ns:Bal/ns:Tp/ns:CdOrPrtry[ns:Cd='OPBD' or ns:Cd='PRCD' or ns:Cd='ITBD' or ns:Cd='OPAV']/../../ns:Amt/text()",
                                                               namespaces=ns)[0])
             # Credit Or Debit Indicator 1..1
             sign = statement.xpath('ns:Bal/ns:CdtDbtInd/text()', namespaces=ns)[0]

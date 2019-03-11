@@ -22,7 +22,7 @@ class WorkflowActionRuleAccount(models.Model):
                     'type': invoice_type,
                     'journal_id': journal.id,
                 }
-                if invoice_type != 'out_refound':
+                if invoice_type != 'out_refund':
                     create_values['comment'] = False
                 if document.res_model == 'account.move.line' and document.res_id:
                     create_values.update(reconciliation_move_line_id=document.res_id)

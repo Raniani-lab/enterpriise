@@ -312,7 +312,7 @@ msgstr "Усі заблоковані файли"
 #: code:addons/documents/static/src/xml/documents_thread.xml:15
 #, python-format
 msgid "All pages:&nbsp;"
-msgstr ""
+msgstr "Усі сторінки:&nbsp;"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__action
@@ -801,7 +801,7 @@ msgstr "Протерміновано"
 #: code:addons/documents/static/src/xml/documents_thread.xml:14
 #, python-format
 msgid "Extract pages:&nbsp;"
-msgstr ""
+msgstr "Витяг сторінок:&nbsp;"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_facet

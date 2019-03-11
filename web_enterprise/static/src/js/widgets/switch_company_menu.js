@@ -14,7 +14,9 @@ var SystrayMenu = require('web.SystrayMenu');
 
 if (config.device.isMobile) {
     var index = SystrayMenu.Items.indexOf(SwitchCompanyMenu);
-    SystrayMenu.Items.splice(index, 1);
+    if (index >= 0) {
+        SystrayMenu.Items.splice(index, 1);
+    }
 }
 
 });

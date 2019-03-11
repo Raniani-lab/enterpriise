@@ -23,8 +23,8 @@ function native_invoke(name, args) {
     if(_.isUndefined(args)){
         args = {};
     }
+    var id = _.uniqueId();
     var def = new Promise(function (resolve, reject) {
-        var id = _.uniqueId();
         deferreds[id] = {
             successCallback: function (success) {
                 resolve(success);

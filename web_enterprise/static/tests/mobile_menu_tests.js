@@ -100,14 +100,23 @@ QUnit.module('web_enterprise mobile_menu_tests', {
     QUnit.module('Burger Menu');
 
     QUnit.test('Burger Menu on home menu', async function (assert) {
-        assert.expect(1);
+        assert.expect(3);
 
         var mobileMenu = await createMenu({ menuData: this.data });
 
-        testUtils.dom.click(mobileMenu.$('.o_mobile_menu_toggle'));
+        if (mobileMenu.$burgerMenu.length) {
+            var menuInMobileMenu = mobileMenu.$burgerMenu[0].querySelector('.o_burger_menu_user');
+            assert.ok(menuInMobileMenu !== null, 'node with class o_burger_menu_user must be in Burger menu');
+            if (menuInMobileMenu) {
+                var subMenuInMobileMenu = menuInMobileMenu.querySelector('.o_user_menu_mobile');
+                assert.ok(subMenuInMobileMenu !== null, 'sub menu (.o_user_menu_mobile) must be in Burger menu');
+            }
+        }
+
+        await testUtils.dom.click(mobileMenu.$('.o_mobile_menu_toggle'));
         assert.isVisible($(".o_burger_menu"),
             "Burger menu should be opened on button click");
-        testUtils.dom.click($('.o_burger_menu_close'));
+        await testUtils.dom.click($('.o_burger_menu_close'));
 
         mobileMenu.destroy();
     });
@@ -120,15 +129,15 @@ QUnit.module('web_enterprise mobile_menu_tests', {
         mobileMenu.change_menu_section(3);
         mobileMenu.toggle_mode(false);
 
-        testUtils.dom.click(mobileMenu.$('.o_mobile_menu_toggle'));
+        await testUtils.dom.click(mobileMenu.$('.o_mobile_menu_toggle'));
         assert.isVisible($(".o_burger_menu"),
             "Burger menu should be opened on button click");
         assert.strictEqual($('.o_burger_menu .o_burger_menu_app .o_menu_sections > *').length, 2,
             "Burger menu should contains top levels menu entries");
-        testUtils.dom.click($('.o_burger_menu_topbar'));
+        await testUtils.dom.click($('.o_burger_menu_topbar'));
         assert.doesNotHaveClass($(".o_burger_menu_content"), 'o_burger_menu_dark',
             "Toggle to usermenu on header click");
-        testUtils.dom.click($('.o_burger_menu_topbar'));
+        await testUtils.dom.click($('.o_burger_menu_topbar'));
         assert.hasClass($(".o_burger_menu_content"),'o_burger_menu_dark',
             "Toggle back to main sales menu on header click");
 

@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
+    <record id="action_folder_settings_installer" model="ir.actions.act_window">
+         <field name="name">Journals to synchronize</field>
+         <field name="type">ir.actions.act_window</field>
+         <field name="res_model">documents.account.folder.setting</field>
+         <field name="view_type">form</field>
+         <field name="view_mode">tree,form</field>
+    </record>
+
     <record id="res_config_settings_view_form" model="ir.ui.view">
             <field name="name">res.config.settings.view.form.inherit.documents</field>
             <field name="model">res.config.settings</field>
@@ -18,8 +27,7 @@
                             <label for="documents_account_settings"/>
                             <div class="row">
                                 <div class="text-muted col-md-12">
-                                    Select the workspace to be used for accounting's documents for the invoices
-                                    of your company.
+                                    Select the workspace to be used for accounting documents
                                 </div>
                             </div>
                             <div class="content-group" attrs="{'invisible' : [('documents_account_settings', '=', False)]}">
@@ -27,20 +35,47 @@
                                    <field name="account_folder" attrs="{'required' : [('documents_account_settings', '=', True)]}"/>
                                 </div>
                             </div>
-                            <label for="account_tags" attrs="{'invisible' : [('documents_account_settings', '=', False)]}"/>
                             <div class="row" attrs="{'invisible' : [('documents_account_settings', '=', False)]}">
                                 <div class="text-muted col-md-12">
-                                    Select the tags to be applied to the accounting's new documents
+                                    Select the journals to be synchronized
                                 </div>
                             </div>
-                            <div class="content-group" attrs="{'invisible' : [('documents_account_settings', '=', False)]}">
-                                <div class="mt16">
-                                   <field name="account_tags" widget="many2many_tags" domain="[('folder_id','=', account_folder)]"/>
-                                </div>
+                            <div attrs="{'invisible': [('documents_account_settings','=',False)]}">
+                               <button type="action" name="%(documents_account.action_folder_settings_installer)d" string="Journals" icon="fa-arrow-right" class="btn-link"/>
                             </div>
                         </div>
                     </div>
                 </xpath>
             </field>
+    </record>
+
+    <record id="documents_folder_setting_view_list" model="ir.ui.view">
+        <field name="name">documents folder setting list view</field>
+        <field name="model">documents.account.folder.setting</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="company_id" invisible="1"/>
+                <field name="journal_id" domain="[('company_id', '=', company_id)]"/>
+                <field name="folder_id" domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]"/>
+                <field name="tag_ids" widget="many2many_tags" domain="[('folder_id', 'child_of', folder_id)]"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="documents_folder_setting_view_form" model="ir.ui.view">
+        <field name="name">documents folder setting form view</field>
+        <field name="model">documents.account.folder.setting</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="company_id" readonly="1"/>
+                        <field name="journal_id" domain="[('company_id', '=', company_id)]"/>
+                        <field name="folder_id" domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]"/>
+                        <field name="tag_ids" widget="many2many_tags" domain="[('folder_id', 'child_of', folder_id)]"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
     </record>
 </odoo>

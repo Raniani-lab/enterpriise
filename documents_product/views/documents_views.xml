@@ -19,8 +19,7 @@
                             <label for="documents_product_settings"/>
                             <div class="row">
                                 <div class="text-muted col-md-12">
-                                    Select the workspace to be used for product's documents for the products of
-                                    your company.
+                                    Select the workspace to be used for product's documents
                                 </div>
                             </div>
                             <div class="content-group" attrs="{'invisible' : [('documents_product_settings', '=', False)]}">

@@ -15,7 +15,7 @@ class ResConfigSettings(models.TransientModel):
 
     documents_project_settings = fields.Boolean(related='company_id.documents_project_settings', readonly=False,
                                                 default=lambda self: self.env.user.company_id.documents_project_settings,
-                                                string="Project Workspace")
+                                                string="Project")
     project_folder = fields.Many2one('documents.folder', related='company_id.project_folder', readonly=False,
                                      default=_get_default_project_folder,
                                      string="project default workspace")

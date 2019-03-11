@@ -738,7 +738,7 @@
                      data-key="documents"
                      groups="documents.group_documents_manager"
                      invisible="1">
-                    <h2>Default Workspaces</h2>
+                    <h2>Apps and workspaces to be synchronized</h2>
                     <div class="row mt16 o_settings_container o_documents_settings">
                     </div>
                 </div>

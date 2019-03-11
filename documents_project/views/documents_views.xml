@@ -18,8 +18,7 @@
                         <label for="documents_project_settings"/>
                         <div class="row">
                             <div class="text-muted col-md-12">
-                                Select the new workspace to be used for project's documents for the projects and tasks
-                                of your company.
+                                Select the new workspace to be used for project's documents
                             </div>
                         </div>
                         <div class="content-group" attrs="{'invisible' : [('documents_project_settings', '=', False)]}">

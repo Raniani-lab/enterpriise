@@ -15,16 +15,7 @@ class ResConfigSettings(models.TransientModel):
 
     documents_account_settings = fields.Boolean(related='company_id.documents_account_settings', readonly=False,
                                                 default=lambda self: self.env.user.company_id.documents_account_settings,
-                                                string="Accounting Workspace")
-    account_folder = fields.Many2one('documents.folder', related='company_id.account_folder', readonly=False,
+                                                string="Accounting ")
+    account_folder = fields.Many2one(related='company_id.account_folder', readonly=False,
                                      default=_get_default_account_folder,
                                      string="account default folder")
-    account_tags = fields.Many2many('documents.tag', 'account_tags_table',
-                                    related='company_id.account_tags',
-                                    readonly=False,
-                                    default=lambda self: self.env.user.company_id.account_tags.ids,
-                                    string="Account Tags")
-
-    @api.onchange('account_folder')
-    def on_account_folder_change(self):
-        self.account_tags = False

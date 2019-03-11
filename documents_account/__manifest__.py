@@ -16,6 +16,8 @@
     'depends': ['documents', 'account_reports'],
     'data': [
         'assets.xml',
+        'security/ir.model.access.csv',
+        'security/security.xml',
         'data/data.xml',
         'views/documents_views.xml',
         'views/account_views.xml',

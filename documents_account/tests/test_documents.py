@@ -74,36 +74,55 @@ class TestCaseDocumentsBridgeAccount(TransactionCase):
 
     def test_bridge_account_account_settings_on_write(self):
         """
-        Makes sure the settings apply their values when an document is assigned a res_model, res_id
+        Makes sure the settings apply their values when an ir_attachment is set as message_main_attachment_id
+        on invoices.
         """
         folder_test = self.env['documents.folder'].create({'name': 'folder_test'})
         
         company_test = self.env['res.company'].create({
             'name': 'test bridge accounts',
-            'account_folder': folder_test.id,
-            'documents_account_settings': False
+            'documents_account_settings': True
         })
         invoice_test = self.env['account.invoice'].create({
             'name': 'invoice_test',
+            'type': 'in_invoice',
             'company_id': company_test.id
         })
-        document_txt_test = self.env['ir.attachment'].create({
+
+        self.env['documents.account.folder.setting'].create({
+            'folder_id': folder_test.id,
+            'company_id': company_test.id,
+            'journal_id': invoice_test.journal_id.id,
+        })
+
+        attachment_txt_test = self.env['ir.attachment'].create({
             'datas': TEXT,
             'name': 'Test test txt',
             'datas_fname': 'fileText_test.txt',
             'mimetype': 'text/plain',
-        })
-        
-        company_test.write({'documents_account_settings': True})
-
-        document_txt_test.write({
             'res_model': 'account.invoice',
             'res_id': invoice_test.id
         })
 
-        txt_doc = self.env['documents.document'].search([('attachment_id', '=', document_txt_test.id)])
+        attachment_txt_alternative_test = self.env['ir.attachment'].create({
+            'datas': TEXT,
+            'name': 'Test alternative txt',
+            'datas_fname': 'fileText_test_alternative.txt',
+            'mimetype': 'text/plain',
+            'res_model': 'account.invoice',
+            'res_id': invoice_test.id
+        })
+
+        invoice_test.write({'message_main_attachment_id': attachment_txt_test.id})
+
+        txt_doc = self.env['documents.document'].search([('attachment_id', '=', attachment_txt_test.id)])
 
         self.assertEqual(txt_doc.folder_id, folder_test, 'the text test document have a folder')
+
+        invoice_test.write({'message_main_attachment_id': attachment_txt_alternative_test.id})
+        self.assertEqual(txt_doc.attachment_id.id, attachment_txt_alternative_test.id,
+                         "the attachment of the document should have swapped")
+
 
     def test_reconciliation_request(self):
         account_type_test = self.env['account.account.type'].create({'name': 'account type test', 'type': 'other'})

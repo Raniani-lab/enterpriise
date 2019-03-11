@@ -14,8 +14,8 @@ class ResConfigSettings(models.TransientModel):
         return False
 
     documents_product_settings = fields.Boolean(related='company_id.documents_product_settings', readonly=False,
-                                          default=lambda self: self.env.user.company_id.documents_product_settings,
-                                          string="Product Workspace")
+                                                default=lambda self: self.env.user.company_id.documents_product_settings,
+                                                string="Product")
     product_folder = fields.Many2one('documents.folder', related='company_id.product_folder', readonly=False,
                                      default=_get_default_product_folder,
                                      string="product default workspace")

@@ -37,11 +37,11 @@ class WorkflowActionRuleAccount(models.Model):
                     invoice_ids.append(document.res_id)
                 else:
                     new_obj = self.env['account.invoice'].create(create_values)
-                    body = "<p>created with Documents</p>"
-                    new_obj.message_post(body=body, attachment_ids=[document.attachment_id.id])
-
+                    body = "<p>created from Documents app</p>"
                     # the 'no_document' key in the context indicates that this ir_attachment has already a
                     # documents.document and a new document shouldn't be automatically generated.
+                    new_obj.with_context(no_document=True).message_post(body=body, attachment_ids=[document.attachment_id.id])
+
                     document.attachment_id.with_context(no_document=True).write({
                         'res_model': 'account.invoice',
                         'res_id': new_obj.id,

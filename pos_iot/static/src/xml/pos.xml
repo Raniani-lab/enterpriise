@@ -77,25 +77,12 @@
         </t>
     </t>
 
-    <t t-extend="XmlReceipt">
+    <t t-extend="OrderReceipt">
         <t t-jquery='.after-footer' t-operation='append'>
             <t t-foreach='paymentlines' t-as='line'>
                 <t t-if='line.ticket'>
                     <br />
-                    <div font='b'>
-                        <t t-raw='line.ticket'/>
-                    </div>
-                </t>
-            </t>
-        </t>
-    </t>
-
-    <t t-extend="PosTicket">
-        <t t-jquery='.pos-sale-ticket' t-operation='append'>
-            <t t-foreach='paymentlines' t-as='line'>
-                <t t-if='line.ticket'>
-                    <br /> <hr class='ticket_cut'/> <br />
-                    <div class='terminal_ticket'>
+                    <div class="pos-payment-terminal-receipt">
                         <t t-raw='line.ticket'/>
                     </div>
                 </t>

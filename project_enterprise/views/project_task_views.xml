@@ -133,8 +133,8 @@
         <field name="view_type">form</field>
         <field name="view_mode">kanban,tree,calendar,pivot,graph,activity</field>
         <field name="domain">[('allow_planning', '=', True)]</field>
-        <field name="search_view_id" ref="project_task_view_search_planning"/>
-        <field name="context">{'search_default_group_by_user_id': 1, 'search_default_group_by_project': 1}</field>
+        <field name="search_view_id" ref="project_enterprise.project_task_view_search_planning"/>
+        <field name="context" eval="{'search_default_group_by_user_id': 1}"/>
     </record>
 
     <record id="project_task_action_planning_groupby_user_form" model="ir.actions.act_window.view">

@@ -50,6 +50,14 @@ class Task(models.Model):
     partner_mobile = fields.Char(related='partner_id.mobile')
     planned_date_begin = fields.Datetime(default=_default_planned_date_begin)
     planned_date_end = fields.Datetime(default=_default_planned_date_end)
+    user_id = fields.Many2one(group_expand='_read_group_user_ids')
+
+    @api.model
+    def _read_group_user_ids(self, users, domain, order):
+        search_domain = [('id', 'in', users.ids)]
+        if self.env.context.get('fsm_mode'):
+            search_domain = ['|', ('groups_id', 'in', self.env.ref('industry_fsm.group_fsm_user').id)] + search_domain
+        return users.search(search_domain, order=order)
 
     @api.depends('planned_date_begin', 'planned_date_end', 'user_id')
     def _compute_planning_overlap(self):
@@ -65,7 +73,7 @@ class Task(models.Model):
             task.planning_overlap = overlap
 
     def _compute_quotation_count(self):
-        quotation_data = self.env['sale.order'].read_group([('state', '<>', 'cancel'), ('task_id', 'in', self.ids)], ['task_id'], ['task_id'])
+        quotation_data = self.env['sale.order'].read_group([('state', '!=', 'cancel'), ('task_id', 'in', self.ids)], ['task_id'], ['task_id'])
         mapped_data = dict([(q['task_id'][0], q['task_id_count']) for q in quotation_data])
         for task in self:
             task.quotation_count = mapped_data.get(task.id, 0)

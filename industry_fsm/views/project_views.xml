@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
+    <record id="project_enterprise.project_task_action_planning_groupby_user" model="ir.actions.act_window">
+        <field name="context" eval="{'search_default_group_by_user_id': 1, 'fsm_mode': True}"/>
+    </record>
+
     <!-- allow billable and default product on new project form -->
     <record id="project_view_form_simplified_inherit" model="ir.ui.view">
         <field name="name">project.view.form.simplified.inherit</field>
@@ -48,17 +52,6 @@
                         </span>
                         <field name="material_line_total_price" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                         <field name="currency_id" invisible="True"/>
-                    </div>
-                </button>
-                <button class="oe_stat_button" name="create_or_view_created_quotations"
-                    type="object" groups="sales_team.group_sale_salesman" help="Quotations created from this task" attrs="{'invisible': [('allow_billable', '=', False)]}">
-                    <div class="ml-3" attrs="{'invisible': [('quotation_count', '!=', 0)]}">
-                        <i class="fa fa-lg fa-plus-circle mr-2" aria-label="Create new quotation" title="Create new quotation"/>
-                        New Quotation
-                    </div>
-                    <div class="ml-3" attrs="{'invisible': [('quotation_count', '=', 0)]}">
-                        <i class="fa fa-lg fa-pencil-square-o mr-2" aria-label="View quotations" title="View quotations"/>
-                        <field name="quotation_count" widget="statinfo" string="Quotation(s)" class="mr-1"/>
                     </div>
                 </button>
             </xpath>
@@ -165,17 +158,6 @@
                                 <field name="currency_id" invisible="True"/>
                             </div>
                         </button>
-                        <button class="oe_stat_button" name="create_or_view_created_quotations"
-                            type="object" groups="sales_team.group_sale_salesman" help="Quotations created from this task" attrs="{'invisible': [('allow_billable', '=', False)]}">
-                            <div class="ml-3" attrs="{'invisible': [('quotation_count', '!=', 0)]}">
-                                <i class="fa fa-lg fa-plus-circle mr-2" aria-label="Create new quotation" title="Create new quotation"/>
-                                New Quotation
-                            </div>
-                            <div class="ml-3" attrs="{'invisible': [('quotation_count', '=', 0)]}">
-                                <i class="fa fa-lg fa-pencil-square-o mr-2" aria-label="View quotations" title="View quotations" role="img"/>
-                                <field name="quotation_count" widget="statinfo" string="Quotation(s)" class="mr-1"/>
-                            </div>
-                        </button>
                         <button class="oe_stat_button" name="action_view_timesheets"
                             type="object" icon="fa-clock-o" help="Time recorded on this task" attrs="{'invisible': [('timesheet_ids', '=', [])]}">
                             <div class="o_stat_info">
@@ -185,7 +167,6 @@
                                 </span>
                             </div>
                         </button>
-                        <button type="object" name="action_view_so" class="oe_stat_button" icon="fa-dollar" attrs="{'invisible': [('sale_order_id', '=', False)]}" string="Sales Order"/>
                         <field name="sale_order_id" invisible="1"/>
                     </div>
                     <group>
@@ -221,6 +202,54 @@
                 </div>
             </form>
         </field>
+    </record>
+
+    <!-- Quotation button in Project task form -->
+    <record id="project_task_view_form_quotation" model="ir.ui.view">
+        <field name="name">view.form.fsm.inherit.quotation</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="view_task_form2_inherit"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_view_material']" position="after">
+                <button class="oe_stat_button mr-3" name="create_or_view_created_quotations"
+                    type="object" help="Quotations created from this task" attrs="{'invisible': [('allow_billable', '=', False)]}">
+                    <div class="ml-3" attrs="{'invisible': [('quotation_count', '!=', 0)]}">
+                        <i class="fa fa-lg fa-plus-circle mr-2" aria-label="Create new quotation" title="Create new quotation"/>
+                        New Quotation
+                    </div>
+                    <div class="ml-3" attrs="{'invisible': [('quotation_count', '=', 0)]}">
+                        <i class="fa fa-lg fa-pencil-square-o mr-2" aria-label="View quotations" title="View quotations" role="img"/>
+                        <field name="quotation_count" widget="statinfo" string="Quotation(s)" class="mr-1"/>
+                    </div>
+                </button>
+            </xpath>
+        </field>
+        <field name="groups_id" eval="[(4, ref('sales_team.group_sale_salesman'))]"/>
+    </record>
+
+    <!-- Quotation and sales order button in Fsm task form -->
+    <record id="project_task_view_form_fsm_quotation" model="ir.ui.view">
+        <field name="name">view.form.fsm.inherit.quotation</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project_task_view_form_fsm"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_view_material']" position="after">
+                <button class="oe_stat_button mr-3" name="create_or_view_created_quotations"
+                    type="object" help="Quotations created from this task" attrs="{'invisible': [('allow_billable', '=', False)]}">
+                    <div class="ml-3" attrs="{'invisible': [('quotation_count', '!=', 0)]}">
+                        <i class="fa fa-lg fa-plus-circle mr-2" aria-label="Create new quotation" title="Create new quotation"/>
+                        New Quotation
+                    </div>
+                    <div class="ml-3" attrs="{'invisible': [('quotation_count', '=', 0)]}">
+                        <i class="fa fa-lg fa-pencil-square-o mr-2" aria-label="View quotations" title="View quotations" role="img"/>
+                        <field name="quotation_count" widget="statinfo" string="Quotation(s)" class="mr-1"/>
+                    </div>
+                </button>
+                <button type="object" name="action_view_so" class="oe_stat_button" icon="fa-dollar"
+                    attrs="{'invisible': [('sale_order_id', '=', False)]}" string="Sales Order"/>
+            </xpath>
+        </field>
+        <field name="groups_id" eval="[(4, ref('sales_team.group_sale_salesman'))]"/>
     </record>
 
     <!-- Improve the task kanban in Project -->
@@ -310,13 +339,35 @@
         <field name="code"> action = model.action_worker_tasks()</field>
     </record>
 
-    <menuitem id="menu_fsm_root" name="Field Service"
+    <menuitem id="menu_fsm_root"
+        name="Field Service"
         sequence="25"
         web_icon="industry_fsm,static/description/icon.png"
-        groups="project.group_project_user"/>
+        groups="industry_fsm.group_fsm_user"/>
 
-    <menuitem id="fsm_tasks_menu" name="My Tasks" action="project_task_action_worker_tasks"
-        sequence="10" parent="industry_fsm.menu_fsm_root"
-        groups="project.group_project_user"/>
+    <menuitem id="fsm_tasks_menu"
+        name="My Tasks"
+        action="project_task_action_worker_tasks"
+        sequence="10"
+        parent="industry_fsm.menu_fsm_root"
+        groups="industry_fsm.group_fsm_user"/>
+
+    <menuitem id="fsm_planning_menu"
+        name="Planning"
+        sequence="15"
+        parent="industry_fsm.menu_fsm_root"
+        groups="industry_fsm.group_fsm_manager"/>
+
+    <menuitem id="project_task_menu_planning_by_user_fsm"
+        name="By User"
+        sequence="10"
+        action="project_enterprise.project_task_action_planning_groupby_user"
+        parent="fsm_planning_menu"/>
+
+    <menuitem id="project_task_menu_planning_by_project_fsm"
+        name="By Project"
+        sequence="15"
+        action="project_enterprise.project_task_action_planning_groupby_project"
+        parent="fsm_planning_menu"/>
 
 </odoo>

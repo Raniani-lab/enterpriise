@@ -4,13 +4,14 @@
 from odoo import api, fields, models
 
 
+
 class ProjectWorksheetTemplate(models.Model):
     _name = 'project.worksheet.template'
     _description = 'Project Worksheet Template'
 
     name = fields.Char(string='Name', required=True)
     sequence = fields.Integer()
-    worksheet_count = fields.Integer(compute='_compute_worksheet_count', oldname="report_count")
+    worksheet_count = fields.Integer(compute='_compute_worksheet_count')
     model_id = fields.Many2one('ir.model', ondelete='cascade', readonly=True, domain=[('state', '=', 'manual')])
     action_id = fields.Many2one('ir.actions.act_window', readonly=True)
     active = fields.Boolean(default=True)
@@ -24,7 +25,7 @@ class ProjectWorksheetTemplate(models.Model):
     def create(self, vals):
         template = super(ProjectWorksheetTemplate, self).create(vals)
         name = 'x_project_worksheet_template_' + str(template.id)
-        model = self.env['ir.model'].create({
+        model = self.env['ir.model'].sudo().create({
             'name': vals['name'],
             'model': name,
             'field_id': [
@@ -69,7 +70,16 @@ class ProjectWorksheetTemplate(models.Model):
                 }),
             ]
         })
-        self.env['ir.model.access'].create({
+        self.env['ir.model.access'].sudo().create({
+            'name': name + '_access',
+            'model_id': model.id,
+            'group_id': self.env.ref('project.group_project_manager').id,
+            'perm_create': True,
+            'perm_write': True,
+            'perm_read': True,
+            'perm_unlink': True,
+        })
+        self.env['ir.model.access'].sudo().create({
             'name': name + '_access',
             'model_id': model.id,
             'group_id': self.env.ref('project.group_project_user').id,
@@ -78,9 +88,21 @@ class ProjectWorksheetTemplate(models.Model):
             'perm_read': True,
             'perm_unlink': True,
         })
+        self.env['ir.rule'].sudo().create({
+            'name': name + '_own',
+            'model_id': model.id,
+            'domain_force': "[('create_uid', '=', user.id)]",
+            'groups': [(6, 0, [self.env.ref('project.group_project_user').id])]
+            })
+        self.env['ir.rule'].sudo().create({
+            'name': name + '_all',
+            'model_id': model.id,
+            'domain_force': [(1, '=', 1)],
+            'groups': [(6, 0, [self.env.ref('project.group_project_manager').id])]
+            })
         x_name_field = self.env['ir.model.fields'].search([('model_id', '=', model.id), ('name', '=', 'x_name')])
-        x_name_field.write({'related': 'x_task_id.name'})  # possible only after target field have been created
-        self.env['ir.ui.view'].create({
+        x_name_field.sudo().write({'related': 'x_task_id.name'})  # possible only after target field have been created
+        self.env['ir.ui.view'].sudo().create({
             'type': 'form',
             'model': model.model,
             'arch': """
@@ -106,7 +128,7 @@ class ProjectWorksheetTemplate(models.Model):
             </form>
             """
         })
-        action = self.env['ir.actions.act_window'].create({
+        action = self.env['ir.actions.act_window'].sudo().create({
             'name': 'Project Template : ' + template.name,
             'res_model': model.model,
             'view_type': 'form',
@@ -127,6 +149,7 @@ class ProjectWorksheetTemplate(models.Model):
         self.env['ir.model.access'].search([('model_id', 'in', models_ids)]).unlink()
         x_name_fields = self.env['ir.model.fields'].search([('model_id', 'in', models_ids), ('name', '=', 'x_name')])
         x_name_fields.write({'related': False})  # we need to manually remove relation to allow the deletion of fields
+        self.env['ir.rule'].search([('model_id', 'in', models_ids)]).unlink()
         self.mapped('action_id').unlink()
         self.mapped('model_id').unlink()
         return super(ProjectWorksheetTemplate, self).unlink()

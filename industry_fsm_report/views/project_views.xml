@@ -7,7 +7,7 @@
             <form>
                 <header>
                     <field name="model_id" invisible="True"/>
-                    <widget name="open_studio_button" attrs="{'invisible': [('model_id', '=', False)]}" />
+                    <widget name="open_studio_button" attrs="{'invisible': [('model_id', '=', False)]}" groups="base.group_system"/>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">

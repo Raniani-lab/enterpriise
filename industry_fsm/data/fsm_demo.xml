@@ -81,5 +81,10 @@
             <field name="planned_date_end" eval="(DateTime.today() + relativedelta(days=2)).strftime('%Y-%m-%d  16:30:00')"/>
         </record>
 
+        <!-- Set the demo user as a fsm user -->
+        <record id="group_fsm_user" model="res.groups">
+            <field name="users" eval="[(4,ref('base.user_demo'))]"/>
+        </record>
+
     </data>
 </odoo>

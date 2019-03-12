@@ -18,7 +18,7 @@ Adds the following options:
 - create Sales order with timesheets and products from tasks
 
     """,
-    'category': 'Industry',
+    'category': 'Industry/Field Service',
     'version': '1.0',
     'depends': ['project_enterprise', 'sale_project_timesheet_enterprise'],
     'data': [

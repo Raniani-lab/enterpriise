@@ -99,7 +99,7 @@ class TestPayslipContractBase(TestPayslipBase):
         self.calendar_40h = self.env['resource.calendar'].create({'name': 'Default calendar'})
         self.calendar_35h = self.env['resource.calendar'].create({
             'name': '35h calendar',
-            'attendance_ids': [
+            'normal_attendance_ids': [
                 (0, 0, {'name': 'Monday Morning', 'dayofweek': '0', 'hour_from': 8, 'hour_to': 12, 'day_period': 'morning'}),
                 (0, 0, {'name': 'Monday Evening', 'dayofweek': '0', 'hour_from': 13, 'hour_to': 16, 'day_period': 'afternoon'}),
                 (0, 0, {'name': 'Tuesday Morning', 'dayofweek': '1', 'hour_from': 8, 'hour_to': 12, 'day_period': 'morning'}),

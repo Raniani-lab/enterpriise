@@ -17,6 +17,11 @@
                         <field name="full_time_required_hours" nolabel="1"/>
                         <span> hours/week</span>
                     </div>
+                    <label for="work_time_rate" string="Work Time Rate"/>
+                    <div class="o_row">
+                        <field name="work_time_rate" nolabel="1"/>
+                        <span> %</span>
+                    </div>
                     <field name="is_fulltime" invisible="1"/>
                 </group>
             </xpath>

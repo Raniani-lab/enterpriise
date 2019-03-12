@@ -5,6 +5,15 @@
         <field name="model">hr.contract</field>
         <field name="inherit_id" ref="hr_payroll.hr_contract_form_inherit"/>
         <field name="arch" type="xml">
+            <xpath expr="//field[@name='schedule_pay']" position="after">
+                <field name="time_credit" attrs="{'invisible': [('time_credit', '=', False)]}"/>
+                <field name="work_time_rate" attrs="{'invisible': [('time_credit', '=', False)]}"/>
+            </xpath>
+            <xpath expr="//header" position="inside">
+                <field name="time_credit" invisible="1"/>
+                <button name="%(credit_time_wizard_action)d" string="Credit Time" attrs="{'invisible': ['|', ('employee_id', '=', False), ('time_credit', '=', True)]}" type="action" groups="hr_contract.group_hr_contract_manager"/>
+                <button name="%(exit_credit_time_wizard_action)d" string="Full Time" attrs="{'invisible': ['|', ('employee_id', '=', False), ('time_credit', '=', False)]}" type="action" groups="hr_contract.group_hr_contract_manager"/>
+            </xpath>
             <xpath expr="//div[@name='wage']" position="after">
                 <label for="wage_with_holidays" attrs="{'invisible': [('holidays', '=', 0.0)]}"/>
                 <div class="o_row" attrs="{'invisible': [('holidays', '=', 0.0)]}">

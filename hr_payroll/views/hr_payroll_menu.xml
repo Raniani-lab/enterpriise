@@ -11,14 +11,14 @@
         name="Salary Computation"
         parent="menu_hr_payroll_root"
         sequence="50"
-        groups="hr_payroll.group_hr_payroll_manager"/>
+        groups="hr_payroll.group_hr_payroll_user"/>
 
     <menuitem
         id="menu_hr_payroll_payslips"
         name="Employee Payslips"
         parent="menu_hr_payroll_root"
         sequence="60"
-        groups="hr_payroll.group_hr_payroll_manager"/>
+        groups="hr_payroll.group_hr_payroll_user"/>
 
     <menuitem
         id="menu_hr_payroll_report"
@@ -41,7 +41,7 @@
         parent="menu_hr_payroll_salary_computation"
         sequence="60"
         action="action_view_hr_payslip_month_form"
-        groups="hr_payroll.group_hr_payroll_manager"/>
+        groups="hr_payroll.group_hr_payroll_user"/>
         <!-- TODO add filter-->
 
     <menuitem
@@ -64,7 +64,7 @@
         parent="menu_hr_payroll_payslips"
         sequence="60"
         action="action_view_hr_payslip_form"
-        groups="hr_payroll.group_hr_payroll_manager"/>
+        groups="hr_payroll.group_hr_payroll_user"/>
 
     <!-- **** Configuration **** -->
     <menuitem

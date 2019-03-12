@@ -10,9 +10,16 @@ from odoo.addons.resource.models.resource_mixin import timezone_datetime
 class ResourceCalendar(models.Model):
     _inherit = 'resource.calendar'
 
+    @api.model
+    def default_get(self, fields):
+        res = super(ResourceCalendar, self).default_get(fields)
+        res['normal_attendance_ids'] = res.pop('attendance_ids', None)
+        return res
+
     hours_per_week = fields.Float(compute="_compute_hours_per_week", string="Hours per Week")
     full_time_required_hours = fields.Float(string="Fulltime Hours", help="Number of hours to work to be considered as fulltime.")
     is_fulltime = fields.Boolean(compute='_compute_is_fulltime', string="Is Full Time")
+    work_time_rate = fields.Float(string='Work time rate', compute='_compute_work_time_rate', help='Work time rate versus full time working schedule, should be between 0 and 100 %.')
 
     # UI fields
     normal_attendance_ids = fields.One2many(
@@ -32,10 +39,17 @@ class ResourceCalendar(models.Model):
         for calendar in self:
             calendar.is_fulltime = not float_compare(calendar.full_time_required_hours, calendar.hours_per_week, 3)
 
+    @api.depends('hours_per_week', 'full_time_required_hours')
+    def _compute_work_time_rate(self):
+        for calendar in self:
+            if calendar.full_time_required_hours:
+                calendar.work_time_rate = calendar.hours_per_week / calendar.full_time_required_hours * 100
+            else:
+                calendar.work_time_rate = 100
+
+
     def _get_global_attendances(self):
-        res = super(ResourceCalendar, self)._get_global_attendances()
-        res |= self.normal_attendance_ids.filtered(lambda attendance: not attendance.date_from and not attendance.date_to)
-        return res
+        return self.normal_attendance_ids.filtered(lambda attendance: not attendance.date_from and not attendance.date_to)
 
     # Add a key on the api.onchange decorator
     @api.onchange('attendance_ids', 'normal_attendance_ids')

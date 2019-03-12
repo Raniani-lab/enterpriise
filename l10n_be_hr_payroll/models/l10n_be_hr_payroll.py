@@ -1,6 +1,8 @@
 # -*- coding:utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from dateutil.relativedelta import relativedelta
+
 from odoo import api, fields, models, _
 
 from odoo.exceptions import ValidationError
@@ -72,6 +74,9 @@ class HrContract(models.Model):
         help="Yearly amount the employee receives in the form of eco vouchers.")
     ip = fields.Boolean(default=False, tracking=True)
     ip_wage_rate = fields.Float(string="IP percentage", help="Should be between 0 and 100 %")
+    time_credit = fields.Boolean('Credit time', readonly=True, help='This is a credit time contract.')
+    work_time_rate = fields.Selection([('0.5', '1/2'), ('0.8', '4/5'), ('0.9', '9/10')], string='Work time rate',
+        readonly=True, help='Work time rate versus full time working schedule.')
     fiscal_voluntarism = fields.Boolean(
         string="Fiscal Voluntarism", default=False, tracking=True,
         help="Voluntarily increase withholding tax rate.")
@@ -81,6 +86,7 @@ class HrContract(models.Model):
         ('check_percentage_ip_rate', 'CHECK(ip_wage_rate >= 0 AND ip_wage_rate <= 100)', 'The IP rate on wage should be between 0 and 100.'),
         ('check_percentage_fiscal_voluntary_rate', 'CHECK(fiscal_voluntary_rate >= 0 AND fiscal_voluntary_rate <= 100)', 'The Fiscal Voluntary rate on wage should be between 0 and 100.')
     ]
+
 
     @api.depends('holidays', 'wage', 'final_yearly_costs')
     def _compute_wage_with_holidays(self):
@@ -249,6 +255,22 @@ class HrContract(models.Model):
             if distance <= distance_boundary:
                 return amount / 2
         return 313.0 / 2
+
+    @api.model
+    def update_state(self):
+        # Called by a cron
+        # It schedules an activity before the expiration of a credit time contract
+        date_today = fields.Date.from_string(fields.Date.today())
+        outdated_days = fields.Date.to_string(date_today + relativedelta(days=+14))
+        nearly_expired_contracts = self.search([('state', '=', 'open'), ('time_credit', '=', True), ('date_end', '<', outdated_days)])
+        nearly_expired_contracts.write({'state': 'pending'})
+
+        for contract in nearly_expired_contracts.filtered(lambda contract: contract.hr_responsible_id):
+            contract.activity_schedule(
+                'mail.mail_activity_data_todo', contract.date_end,
+                user_id=contract.hr_responsible_id.id)
+
+        return super(HrContract, self).update_state()
 
 
 class HrEmployee(models.Model):

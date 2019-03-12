@@ -7,9 +7,9 @@ from odoo import fields, models, api
 class ProductTemplate(models.Model):
     _inherit = "product.template"
 
-    report_template_id = fields.Many2one('project.report.template', string="Report Template")
+    worksheet_template_id = fields.Many2one('project.worksheet.template', string="Worksheet Template", oldname="report_template_id")
 
     @api.onchange('service_tracking')
     def _onchange_service_tracking(self):
         if self.service_tracking not in ['task_global_project', 'task_new_project']:
-            self.report_template_id = False
+            self.worksheet_template_id = False

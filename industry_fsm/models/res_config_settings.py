@@ -7,4 +7,4 @@ from odoo import api, fields, models
 class ResConfigSettings(models.TransientModel):
     _inherit = 'res.config.settings'
 
-    module_industry_fsm_report = fields.Boolean(string="Use Intervention Reports", default=False)
+    module_industry_fsm_report = fields.Boolean(string="Use Worksheets", default=True)

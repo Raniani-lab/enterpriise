@@ -130,7 +130,7 @@ QUnit.module('Views', {
         // concurrency.delay is a fragile way that we use to wait until the
         // graph is rendered.
         // Roughly: 2 concurrency.delay = 2 levels of inner async calls.
-        assert.expect(8);
+        assert.expect(7);
 
         var dashboard = await createView({
             View: DashboardView,
@@ -156,21 +156,18 @@ QUnit.module('Views', {
             },
         });
 
-        await testUtils.nextTick();
-        await testUtils.nextTick();
+        assert.strictEqual($('.o_widget').length, 1,
+            "there should be a node with o_widget class");
+        var chartTitle = $('.o_graph_canvas_container label').text();
+        assert.strictEqual(chartTitle, "Products sold",
+            "the title of the graph should be displayed");
+        var chart = dashboard.renderer.widgets[0].controller.renderer.chart;
+        var legendText = $(chart.generateLegend()).text().trim();
+        assert.strictEqual(legendText, "FirstSecond",
+            "there should be two legend items");
 
-            assert.strictEqual($('.o_widget').length, 1,
-                "there should be a node with o_widget class");
-
-            var texts = $('svg text');
-            assert.deepEqual(texts.length, 4,
-                "texts must contain exactly 4 elements");
-            assert.strictEqual(texts.text(), "63%38%FirstSecond",
-                "there should be 4 texts visible");
-            assert.strictEqual($('.o_widget label').text(), "Products sold",
-                "the title of the graph should be displayed");
-            dashboard.destroy();
-            delete widgetRegistry.map.test;
+        dashboard.destroy();
+        delete widgetRegistry.map.test;
     });
 
     QUnit.test('basic rendering of empty pie chart widget', async function (assert) {
@@ -190,10 +187,10 @@ QUnit.module('Views', {
                       '<widget name="pie_chart" attrs="{\'measure\': \'sold\', \'groupby\': \'categ_id\'}"/>' +
                   '</dashboard>',
         });
-        await testUtils.nextTick();
-        await testUtils.nextTick();
-        assert.strictEqual(dashboard.$('.o_graph_svg_container .nvd3-svg > text').text(),
-            "No data to display", "the error should be embedded in the pie chart");
+        var chart = dashboard.renderer.widgets[0].controller.renderer.chart;
+        var legendText = $(chart.generateLegend()).text().trim();
+        assert.strictEqual(legendText, "No data",
+            "the legend should contain the item 'No data'");
         dashboard.destroy();
     });
 
@@ -202,12 +199,13 @@ QUnit.module('Views', {
         // concurrency.delay is a fragile way that we use to wait until the
         // graph is rendered.
         // Roughly: 2 concurrency.delay = 2 levels of inner async calls.
-        assert.expect(3);
+        assert.expect(2);
 
         var dashboard = await createView({
             View: DashboardView,
             model: 'test_time_range',
             data: this.data,
+            // debug: 1,
             context: {
                 timeRangeMenuData: {
                     //Q3 2018
@@ -221,15 +219,13 @@ QUnit.module('Views', {
             arch: '<dashboard>' +
                       '<widget name="pie_chart" title="Products sold" attrs="{\'measure\': \'sold\', \'groupby\': \'categ_id\'}"/>' +
                   '</dashboard>',
-        })
-        await testUtils.nextTick();
-        await testUtils.nextTick();
-        assert.deepEqual($('.o_graph_svg_container').length, 2,
-            "two pie charts should be displayed");
-        assert.strictEqual($('.o_widget label:eq(0)').text(), "Products sold (This Quarter)",
+        });
+
+        assert.strictEqual($('.o_widget').length, 1,
+            "there should be a node with o_widget class");
+        var chartTitle = $('.o_graph_canvas_container label').text();
+        assert.strictEqual(chartTitle, "Products sold",
             "the title of the graph should be displayed");
-        assert.strictEqual($('.o_widget label:eq(1)').text(), "Products sold (Previous Period)",
-            "the title of the comparison graph should be displayed");
         dashboard.destroy();
         delete widgetRegistry.map.test;
     });
@@ -1247,12 +1243,12 @@ QUnit.module('Views', {
             },
         });
 
+        var chart = dashboard.renderer.subControllers.graph.renderer.chart;
+        assert.strictEqual(chart.config.type, 'bar', 'should have rendered the graph in "bar" mode')
         // switch to pie mode
-        assert.containsOnce(dashboard, '.nv-multiBarWithLegend',
-            "should have rendered the graph in bar mode");
         await testUtils.dom.click(dashboard.$('.o_graph_buttons button[data-mode=pie]'));
-        assert.containsOnce(dashboard, '.nv-pieChart',
-            "should have switched to pie mode");
+        var chart = dashboard.renderer.subControllers.graph.renderer.chart;
+        assert.strictEqual(chart.config.type, 'pie', 'should have rendered the graph in "pie" mode')
 
         // select 'untaxed' as measure
         activeMeasure = 'untaxed';

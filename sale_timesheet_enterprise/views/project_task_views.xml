@@ -5,6 +5,7 @@
         <field name="inherit_id" ref="sale_timesheet.project_task_view_form_inherit_sale_timesheet"/>
         <field name="arch" type="xml">
             <xpath expr="//header" position='inside'>
+                <field name="company_id" invisible="1"/>
                 <field name="use_timesheet_timer" invisible="True"/>
                 <field name="allow_timesheets" invisible="True"/>
                 <field name="analytic_account_active" invisible="True"/>

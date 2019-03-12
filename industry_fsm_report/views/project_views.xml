@@ -127,6 +127,18 @@
                     </div>
                 </button>
             </xpath>
+            <field name="project_id" position="after">
+                <label class="oe_edit_only" for="worksheet_template_id"/>
+                <field class="oe_edit_only" name="worksheet_template_id" nolabel="1"/>
+            </field>
+            <xpath expr="//field[@name='project_id']" position="attributes">
+                <attribute name="context">{
+                    'default_allow_planning': True,
+                    'default_allow_billable': True,
+                    'default_allow_worksheets': True
+                    }
+                </attribute>
+            </xpath>
         </field>
     </record>
 

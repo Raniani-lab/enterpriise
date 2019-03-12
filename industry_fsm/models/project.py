@@ -11,9 +11,18 @@ from odoo.exceptions import UserError, AccessError
 class Project(models.Model):
     _inherit = "project.project"
 
-    product_template_ids = fields.Many2many('product.template', help="Products allowed to be added on this Task's Material", string="Allowed Products")
-    allow_billable = fields.Boolean('Allow to bill Tasks')
-    timesheet_product_id = fields.Many2one('product.product', string='Timesheet Product', domain=[('type', '=', 'service'), ('invoice_policy', '=', 'delivery'), ('service_type', '=', 'timesheet')], help="Product of the sales order item. Must be a service invoiced based on timesheets on tasks.")
+    def default_get(self, fields):
+        """ Pre-fill timesheet product as "Time" data product when creating new project allowing billable tasks by default. """
+        result = super(Project, self).default_get(fields)
+        if 'timesheet_product_id' in fields and result.get('allow_billable') and not result.get('timesheet_product_id'):
+            default_product = self.env.ref('industry_fsm.fsm_time_product', False)
+            if default_product:
+                result['timesheet_product_id'] = default_product.id
+        return result
+
+    product_template_ids = fields.Many2many('product.template', string="Allowed Products", help="Products allowed to be added on this Task's Material.")
+    allow_billable = fields.Boolean('Allow to bill Tasks', help='Enables the creation of unrelated Quotations from tasks, the addition of products on tasks and the billing of the task.')
+    timesheet_product_id = fields.Many2one('product.product', string='Timesheet Product', domain=[('type', '=', 'service'), ('invoice_policy', '=', 'delivery'), ('service_type', '=', 'timesheet')], help='Select a Service product with which you would like to bill your time spent on tasks.')
 
 
 class Task(models.Model):
@@ -35,7 +44,7 @@ class Task(models.Model):
     material_line_product_count = fields.Integer(compute='_compute_material_line_product_count')
     material_line_total_price = fields.Integer(compute='_compute_material_line_total_price')
     currency_id = fields.Many2one('res.currency', related='company_id.currency_id', readonly=True)
-    fsm_is_done = fields.Boolean('Task Done', default=False, tracking=True)
+    fsm_is_done = fields.Boolean('Task Done', default=False)
     partner_email = fields.Char(related='partner_id.email', string='Email ')
     partner_phone = fields.Char(related='partner_id.phone')
     partner_mobile = fields.Char(related='partner_id.mobile')
@@ -72,11 +81,6 @@ class Task(models.Model):
             total_price = sum(task.material_line_ids.mapped(lambda line: line.quantity * line.product_id.lst_price))
             task.material_line_total_price = total_price
 
-    @api.onchange('planned_hours')
-    def _onchange_planned_hours(self):
-        if self.planned_date_begin and self.planned_hours:
-            self.planned_date_end = self.planned_date_begin + timedelta(days=ceil(self.planned_hours / 8))
-
     def action_view_timesheets(self):
         kanban_view = self.env.ref('hr_timesheet.view_kanban_account_analytic_line')
         form_view = self.env.ref('industry_fsm.timesheet_view_form')
@@ -105,7 +109,18 @@ class Task(models.Model):
                 default_project_id = fsm_project.id
             except AccessError:
                 pass
-
+        if self.env.user.has_group('industry_fsm.group_fsm_manager'):
+            help = _(
+                """<p class='o_view_nocontent_smiling_face'>No future Tasks planned</p>
+                <p>You can go to the <a class="btn btn-link pr-0 pl-0" type="action" name="%s">Planning</a>
+                Menu and create Tasks for your Workers or create one for yourself by clicking on Create.</p>
+                """) % (self.env.ref('project_enterprise.project_task_action_planning_groupby_user').id)
+        else:
+            help = _(
+                """ <p class='o_view_nocontent_smiling_face'>No future Tasks planned</p>
+                <p>You can create one for yourself by clicking on Create.</p>
+                """
+            )
         return {
             'name': _('My Tasks'),
             'type': 'ir.actions.act_window',
@@ -120,7 +135,7 @@ class Task(models.Model):
                 'search_default_my_tasks': True,
                 'search_default_planned_future': True,
                 'default_project_id':  default_project_id},
-            'help': _("<p class='o_view_nocontent_smiling_face'>No more Tasks</p>"),
+            'help': help,
         }
 
     # Quotations
@@ -142,16 +157,17 @@ class Task(models.Model):
         return action
 
     def action_view_created_quotations(self):
-        view_tree_id = self.env.ref('sale.view_order_tree').id
         action = self.env.ref('sale.action_quotations').read()[0]
         action.update({
-            'view_id': view_tree_id,
             'name': self.name,
             'domain': [('task_id', '=', self.id)],
             'context': {
                 'default_task_id': self.id,
                 'default_partner_id': self.partner_id.id},
         })
+        if self.quotation_count == 1:
+            action['res_id'] = self.env['sale.order'].search([('task_id', '=', self.id)]).id
+            action['views'] = [(self.env.ref('sale.view_order_form').id, 'form')]
         return action
 
     def create_or_view_created_quotations(self):
@@ -161,8 +177,9 @@ class Task(models.Model):
             return self.action_view_created_quotations()
 
     def action_view_material(self):
-        if not self.timesheet_ids and not self.timesheet_timer_start:
-            raise UserError(_("You haven't started this task yet!"))
+        timesheet_access = self.env['account.analytic.line'].check_access_rights('create', raise_exception=False)
+        if timesheet_access and self.use_timesheet_timer and self.allow_timesheets and not self.timesheet_ids and not self.timesheet_timer_start:
+            raise UserError(_("You haven't started this task yet."))
         kanban_view = self.env.ref('industry_fsm.view_product_product_kanban_material')
         domain = [('product_tmpl_id', 'in', self.product_template_ids.ids)] if self.product_template_ids else False
         return {'type': 'ir.actions.act_window',
@@ -186,7 +203,7 @@ class Task(models.Model):
             action['context']['default_product_id'] = product.id
         return action
 
-    # "Done" Button logic
+    # "Validate" Button logic
     def action_set_done(self):
         """ Moves Task to next stage.
             If allow billable on task, timesheet product set on project and user has privileges :
@@ -197,10 +214,6 @@ class Task(models.Model):
         for record in self:
             if record.timesheet_timer_start:
                 return record.with_context({'task_done': True}).action_timer_stop()
-            if record.allow_billable and record.project_id.timesheet_product_id:
-                has_access = self.env['sale.order'].check_access_rights('create', raise_exception=False) and self.env['sale.order.line'].check_access_rights('create', raise_exception=False)
-                if has_access:
-                    record.create_or_update_sale_order()
             current = None
             for stage in record.project_id.type_ids:   #it's ok to iterate as it does not return a lot of record, and it allows us to keep the right order
                 if not current:
@@ -210,6 +223,10 @@ class Task(models.Model):
                     record.stage_id = stage.id
                     break
             record.fsm_is_done = True
+            if record.allow_billable and record.project_id.timesheet_product_id:
+                has_access = self.env['sale.order'].check_access_rights('create', raise_exception=False) and self.env['sale.order.line'].check_access_rights('create', raise_exception=False)
+                if has_access:
+                    record.create_or_update_sale_order()
 
     def create_or_update_sale_order(self):
         if self.sale_line_id:

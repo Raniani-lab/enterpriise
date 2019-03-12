@@ -7,7 +7,7 @@ from odoo import fields, models
 class Project(models.Model):
     _inherit = "project.project"
 
-    allow_planning = fields.Boolean('Allow Planning', default=False)
+    allow_planning = fields.Boolean('Allow Planning', default=False, help='Enables planning of Task with a Start and End date.')
 
 
 class Task(models.Model):

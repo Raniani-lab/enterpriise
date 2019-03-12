@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import fields, models, _
 from datetime import datetime
 from math import ceil
 from odoo.tools import float_round
@@ -31,7 +31,7 @@ class ProjectTask(models.Model):
 
     def _timesheet_wizard(self, time_spent):
         return {
-            "name": "Finished time recording!",
+            "name": _("Finished time recording"),
             "type": 'ir.actions.act_window',
             "res_model": 'project.task.create.timesheet',
             "views": [[False, "form"]],

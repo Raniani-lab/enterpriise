@@ -72,6 +72,17 @@ class TestDeliveryEasypost(TransactionCase):
         })
         self.easypost_fedex_carrier.easypost_default_packaging_id = self.fedex_default_packaging
 
+    def wiz_put_in_pack(self, picking):
+        """ Helper to use the 'choose.delivery.package' wizard
+        in order to call the '_put_in_pack' method.
+        """
+        wiz_action = picking.put_in_pack()
+        self.assertEquals(wiz_action['res_model'], 'choose.delivery.package', 'Wrong wizard returned')
+        wiz = self.env[wiz_action['res_model']].with_context(wiz_action['context']).create({
+            'delivery_packaging_id': picking.carrier_id.easypost_default_packaging_id.id
+        })
+        wiz.put_in_pack()
+
     def test_easypost_one_package_shipping(self):
         """ Try to rate and ship an order from
         New York to Miami. It will not use a specific
@@ -146,10 +157,10 @@ class TestDeliveryEasypost(TransactionCase):
 
         picking_fedex.action_assign()
         picking_fedex.move_lines[0].write({'quantity_done': 2})
-        picking_fedex._put_in_pack()
+        self.wiz_put_in_pack(picking_fedex)
         picking_fedex.move_lines[0].move_line_ids.result_package_id.packaging_id = self.fedex_default_packaging.id
         picking_fedex.move_lines[1].write({'quantity_done': 3})
-        picking_fedex._put_in_pack()
+        self.wiz_put_in_pack(picking_fedex)
         picking_fedex.move_lines[1].move_line_ids.result_package_id.packaging_id = self.fedex_default_packaging.id
         self.assertGreater(picking_fedex.weight, 0.0, "Picking weight should be positive.(ep-fedex)")
         picking_fedex.action_done()

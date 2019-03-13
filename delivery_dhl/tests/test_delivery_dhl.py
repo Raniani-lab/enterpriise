@@ -37,6 +37,17 @@ class TestDeliveryDHL(TransactionCase):
         self.stock_location = self.env.ref('stock.stock_location_stock')
         self.customer_location = self.env.ref('stock.stock_location_customers')
 
+    def wiz_put_in_pack(self, picking):
+        """ Helper to use the 'choose.delivery.package' wizard
+        in order to call the '_put_in_pack' method.
+        """
+        wiz_action = picking.put_in_pack()
+        self.assertEquals(wiz_action['res_model'], 'choose.delivery.package', 'Wrong wizard returned')
+        wiz = self.env[wiz_action['res_model']].with_context(wiz_action['context']).create({
+            'delivery_packaging_id': picking.carrier_id.dhl_default_packaging_id.id
+        })
+        wiz.put_in_pack()
+
     def test_01_dhl_basic_us_domestic_flow(self):
         SaleOrder = self.env['sale.order']
 
@@ -158,13 +169,11 @@ class TestDeliveryDHL(TransactionCase):
 
         move0 = picking.move_lines[0]
         move0.quantity_done = 1.0
-        picking._put_in_pack()
+        self.wiz_put_in_pack(picking)
         move1 = picking.move_lines[1]
         move1.quantity_done = 1.0
-        picking._put_in_pack()
-        self.assertTrue(all([po.result_package_id is not False for po in picking.move_line_ids]), "Some products have not been put in packages")
-        for package in picking.move_line_ids.mapped('result_package_id'):
-            package.shipping_weight = package.with_context({'picking_id': picking.id}).weight  # we mock choose.delivery.package wizard
+        self.wiz_put_in_pack(picking)
+        self.assertEquals(len(picking.move_line_ids.mapped('result_package_id')), 2, "2 Packages should have been created at this point")
         self.assertGreater(picking.shipping_weight, 0.0, "Picking weight should be positive.")
 
         picking.action_done()

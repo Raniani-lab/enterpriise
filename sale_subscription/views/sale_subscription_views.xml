@@ -368,7 +368,7 @@
         <field name="name">sale.subscription.template.list</field>
         <field name="model">sale.subscription.template</field>
         <field name="arch" type="xml">
-            <tree toolbar="1" string="Subscription Templates">
+            <tree string="Subscription Templates">
                 <field name="code"/>
                 <field name="name"/>
                 <field name="recurring_rule_type"/>

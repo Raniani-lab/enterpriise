@@ -221,7 +221,7 @@ class HrAppraisal(models.Model):
 appraisal on %s. If you think it's too late, feel free to have a chat with your manager.") %
                     (fields.Datetime.to_string(last_appraisal_date), fields.Datetime.to_string(next_authorized_appraisal)))
 
-        result = super(HrAppraisal, self.with_context(mail_create_nolog=True)).create(vals)
+        result = super(HrAppraisal, self).create(vals)
         if vals.get('state') and vals['state'] == 'pending':
                 self.send_appraisal()
 

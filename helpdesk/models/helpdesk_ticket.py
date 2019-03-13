@@ -261,7 +261,7 @@ class HelpdeskTicket(models.Model):
             vals.update(item for item in self._onchange_team_get_values(self.env['helpdesk.team'].browse(vals['team_id'])).items() if item[0] not in vals)
 
         # context: no_log, because subtype already handle this
-        ticket = super(HelpdeskTicket, self.with_context(mail_create_nolog=True)).create(vals)
+        ticket = super(HelpdeskTicket, self).create(vals)
         if ticket.partner_id:
             ticket.message_subscribe(partner_ids=ticket.partner_id.ids)
             ticket._onchange_partner_id()
@@ -356,11 +356,9 @@ class HelpdeskTicket(models.Model):
     def message_new(self, msg, custom_values=None):
         values = dict(custom_values or {}, partner_email=msg.get('from'), partner_id=msg.get('author_id'))
         ticket = super(HelpdeskTicket, self).message_new(msg, custom_values=values)
-
         partner_ids = [x for x in ticket._find_partner_from_emails(self._ticket_email_split(msg)) if x]
         customer_ids = ticket._find_partner_from_emails(tools.email_split(values['partner_email']))
         partner_ids += customer_ids
-
         if customer_ids and not values.get('partner_id'):
             ticket.partner_id = customer_ids[0]
         if partner_ids:
@@ -391,10 +389,9 @@ class HelpdeskTicket(models.Model):
         return super(HelpdeskTicket, self)._message_post_after_hook(message, *args, **kwargs)
 
     @api.multi
-    def _track_template(self, tracking):
-        res = super(HelpdeskTicket, self)._track_template(tracking)
+    def _track_template(self, changes):
+        res = super(HelpdeskTicket, self)._track_template(changes)
         ticket = self[0]
-        changes, tracking_value_ids = tracking[ticket.id]
         if 'stage_id' in changes and ticket.stage_id.template_id:
             res['stage_id'] = (ticket.stage_id.template_id, {
                 'auto_delete_message': True,
@@ -405,11 +402,13 @@ class HelpdeskTicket(models.Model):
         return res
 
     @api.multi
+    def _creation_subtype(self):
+        return self.env.ref('helpdesk.mt_ticket_new')
+
+    @api.multi
     def _track_subtype(self, init_values):
         self.ensure_one()
-        if 'stage_id' in init_values and self.stage_id.sequence < 1:
-            return self.env.ref('helpdesk.mt_ticket_new')
-        elif 'stage_id' in init_values and self.stage_id.sequence >= 1:
+        if 'stage_id' in init_values:
             return self.env.ref('helpdesk.mt_ticket_stage')
         return super(HelpdeskTicket, self)._track_subtype(init_values)
 

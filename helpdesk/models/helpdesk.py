@@ -112,7 +112,7 @@ class HelpdeskTeam(models.Model):
 
     @api.model
     def create(self, vals):
-        team = super(HelpdeskTeam, self.with_context(mail_create_nolog=True, mail_create_nosubscribe=True)).create(vals)
+        team = super(HelpdeskTeam, self.with_context(mail_create_nosubscribe=True)).create(vals)
         team.sudo()._check_sla_group()
         team.sudo()._check_modules_to_install()
         # If you plan to add something after this, use a new environment. The one above is no longer valid after the modules install.

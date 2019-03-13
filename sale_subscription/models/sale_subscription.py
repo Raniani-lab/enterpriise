@@ -759,7 +759,7 @@ class SaleSubscription(models.Model):
                             _logger.error(error_message)
 
                     # invoice only
-                    elif subscription.template_id.payment_mode in ['draft_invoice', 'validate_send']:
+                    elif subscription.template_id.payment_mode in ['draft_invoice', 'manual', 'validate_send']:
                         try:
                             invoice_values = subscription.with_context(lang=subscription.partner_id.lang)._prepare_invoice()
                             new_invoice = self.env['account.invoice'].with_context(context_company).create(invoice_values)

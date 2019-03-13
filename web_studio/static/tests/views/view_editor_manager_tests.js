@@ -190,6 +190,28 @@ QUnit.module('ViewEditorManager', {
         vem.destroy();
     });
 
+    QUnit.test('list editor with control node tag', async function(assert) {
+        assert.expect(2);
+
+        var vem = await studioTestUtils.createViewEditorManager({
+            data: this.data,
+            model: 'coucou',
+            arch: "<tree><control><create string='Add a line'/></control></tree>",
+        });
+
+        assert.containsNone(vem, '.o_web_studio_list_view_editor [data-node-id]',
+            "there should be no node");
+
+        // click on show invisible
+        await testUtils.dom.click(vem.$('.o_web_studio_sidebar').find('.o_web_studio_view'));
+        await testUtils.dom.click(vem.$('.o_web_studio_sidebar').find('input#show_invisible'));
+
+        assert.containsNone(vem, '.o_web_studio_list_view_editor [data-node-id]',
+            "there should be no nodes (the control is filtered)");
+
+        vem.destroy();
+    });
+
     QUnit.test('list editor invisible to visible on field', async function (assert) {
         assert.expect(1);
 

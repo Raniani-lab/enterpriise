@@ -214,7 +214,7 @@ class Document(models.Model):
         if custom_values is None:
             custom_values = {}
         defaults = {
-            'name': "Mail: " % subject,
+            'name': "Mail: %s" % subject,
             'active': False,
         }
         defaults.update(custom_values)

@@ -171,6 +171,11 @@ tour.register('web_studio_tests_tour', {
     trigger: '.o_app[data-menu-xmlid*="studio"]:last .o_web_studio_edit_icon',
 }, {
     // design the icon
+    // TODO: we initially tested this (change an app icon) at the end but a
+    // long-standing bug (KeyError: ir.ui.menu.display_name, caused by a registry
+    // issue with multiple workers) on runbot prevent us from doing it. It thus have
+    // been moved at the beginning of this test to avoid the registry to be reloaded
+    // before the write on ir.ui.menu.
     trigger: '.o_web_studio_selector[data-type="background_color"]',
 }, {
     trigger: '.o_web_studio_palette > .o_web_studio_selector:first',
@@ -340,21 +345,27 @@ tour.register('web_studio_tests_tour', {
 }, {
     // enable stages
     trigger: '.o_web_studio_sidebar input[name=enable_stage]',
-
-// TODO: we would like to test this (change an app icon) here but a
-// long-standing bug (KeyError: ir.ui.menu.display_name, caused by a registry
-// issue with multiple workers) on runbot prevent us from doing it. It thus have
-// been moved at the beginning of this test to avoid the registry to be reloaded
-// before the write on ir.ui.menu.
-
 }, {
     // edit action
     trigger: '.o_web_studio_menu .o_menu_sections a[data-name="views"]',
 }, {
+    // check that the kanban view is now active
+    extra_trigger: '.o_web_studio_view_category .o_web_studio_view_type:not(.o_web_studio_inactive)[data-type="kanban"]',
     // add an activity view
     trigger: '.o_web_studio_view_category .o_web_studio_view_type.o_web_studio_inactive[data-type="activity"] .o_web_studio_thumbnail',
 }, {
-    trigger: '.o_menu_toggle',
+    extra_trigger: '.o_activity_view',
+    // edit action
+    trigger: '.o_web_studio_menu .o_menu_sections a[data-name="views"]',
+}, {
+    // add a graph view
+    trigger: '.o_web_studio_view_category .o_web_studio_view_type.o_web_studio_inactive[data-type="graph"] .o_web_studio_thumbnail',
+}, {
+    extra_trigger: '.o_graph_renderer',
+    trigger: '.o_web_studio_menu .o_menu_sections a[data-name="views"]',
+}, {
+    extra_trigger: '.o_web_studio_views',
+    trigger: '.o_menu_toggle.fa-th',
 }, {
     trigger: '.o_web_studio_home_studio_menu .dropdown-toggle',
 }, {

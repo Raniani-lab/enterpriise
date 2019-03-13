@@ -89,6 +89,7 @@
                                 t-attf-style="#{widget.options.isGroup ? pill.style : ''} #{widget.progressField ? 'background-size:' + pill._progress + '% 100%;': ''}"
                                 t-att-title="pill.display_name"
                                 >
+                                <!-- README: be careful when modifying the DOM inside the pill ; @_onMouseMove is strongly dependant of it -->
                                 <p class="text-truncate" t-esc="pill.display_name"/>
                             </div>
                         </div>

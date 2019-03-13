@@ -32,6 +32,7 @@ class MarketingCampaignTest(MarketingCampaignTestBase):
         # Create first activity flow
         mass_mailing = MassMail.create({
             'name': 'Hello',
+            'subject': 'Hello',
             'body_html': '<div>My Email Body</div>',
             'mailing_model_id': self.test_model.id,
             'use_in_marketing_automation': True,
@@ -147,6 +148,7 @@ for record in records:
 
         mass_mailing = MassMail.create({
             'name': 'Hello',
+            'subject': 'Hello',
             'body_html': '<div>My Email Body</div>',
             'mailing_model_id': self.test_model.id,
             'use_in_marketing_automation': True,
@@ -198,6 +200,7 @@ for record in records:
 
         mass_mailing = MassMail.create({
             'name': 'Hello',
+            'subject': 'Hello',
             'body_html': '<div>My Email Body</div>',
             'mailing_model_id': self.test_model.id,
             'use_in_marketing_automation': True,

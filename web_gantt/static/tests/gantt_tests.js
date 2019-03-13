@@ -656,6 +656,47 @@ QUnit.module('Views', {
         gantt.destroy();
     });
 
+    QUnit.test('open a dialog stops the resize/drag', async function (assert) {
+        assert.expect(3);
+
+        var gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: '<gantt date_start="start" date_stop="stop" />',
+            archs: {
+                'tasks,false,form': '<form><field name="name"/></form>',
+            },
+            viewOptions: {
+                initialDate: initialDate,
+            },
+            domain: [['id', '=', 2]],
+        });
+
+        // open dialog to create a task
+        // note that these 3 events need to be triggered for jQuery draggable
+        // to be activated
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_pill'), "mouseenter");
+        await testUtils.nextTick();
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_pill'), "mousedown");
+        await testUtils.nextTick();
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_pill'), "mouseup");
+        await testUtils.nextTick();
+
+        assert.containsOnce($, '.modal', 'There should be one modal opened');
+
+        // close the modal without moving the mouse by pressing ESC
+        $('.modal').trigger({type: 'keydown', which: $.ui.keyCode.ESCAPE});
+        await testUtils.nextTick();
+        assert.containsNone($, '.modal', 'There should be no modal opened');
+
+        await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_cell:first'), "mousemove");
+        await testUtils.nextTick();
+        assert.containsNone(gantt, '.o_gantt_dragging', "the pill should not be dragging");
+
+        gantt.destroy();
+    });
+
     QUnit.test('create dialog with timezone', async function (assert) {
         assert.expect(4);
 

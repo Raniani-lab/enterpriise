@@ -282,4 +282,4 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_helpdesk_team__elearning_id
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.helpdesk_team_view_form_inherit_website_helpdesk_slides
 msgid "eLearning"
-msgstr ""
+msgstr "eTanulás"

@@ -399,6 +399,8 @@ class AccountReport(models.AbstractModel):
         if not self.filter_analytic:
             return
 
+        options['analytic'] = self.filter_analytic
+
         if self.user_has_groups('analytic.group_analytic_accounting'):
             options['analytic_accounts'] = previous_options and previous_options.get('analytic_accounts') or []
             analytic_account_ids = [int(acc) for acc in options['analytic_accounts']]
@@ -1249,6 +1251,9 @@ class AccountReport(models.AbstractModel):
             header = self.env['ir.actions.report'].render_template("web.external_layout", values=rcontext)
             header = header.decode('utf-8') # Ensure that headers and footer are correctly encoded
             spec_paperformat_args = {}
+            # Default header and footer in case the user customized web.external_layout and removed the header/footer
+            headers = header.encode()
+            footer = b''
             # parse header as new header contains header, body and footer
             try:
                 root = lxml.html.fromstring(header)
@@ -1263,8 +1268,8 @@ class AccountReport(models.AbstractModel):
                     footer = self.env['ir.actions.report'].render_template("web.minimal_layout", values=dict(rcontext, subst=True, body=footer))
 
             except lxml.etree.XMLSyntaxError:
-                headers = header
-                footer = ''
+                headers = header.encode()
+                footer = b''
             header = headers
 
         landscape = False

@@ -103,8 +103,9 @@ odoo.define('sign.views_custo', function(require) {
         };
     }
 
-    function _sign_upload_file(inactive, sign_directly_without_mail=false) {
+    function _sign_upload_file(inactive, sign_directly_without_mail) {
         var self = this;
+        var sign_directly_without_mail =  sign_directly_without_mail || false;
         var $upload_input = $('<input type="file" name="files[]"/>');
         $upload_input.on('change', function (e) {
             var f = e.target.files[0];

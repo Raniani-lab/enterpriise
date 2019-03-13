@@ -11,6 +11,7 @@ from odoo.exceptions import UserError
 
 from odoo.tools.float_utils import float_repr
 from odoo.tools.xml_utils import create_xml_node, create_xml_node_chain
+from odoo.tools.misc import remove_accents
 
 from lxml import etree
 
@@ -53,7 +54,7 @@ class AccountPayment(models.Model):
             communication = communication[1:]
         if communication.endswith('/'):
             communication = communication[:-1]
-        communication = re.sub('[^-A-Za-z0-9/?:().,\'+ ]', '', communication)
+        communication = re.sub('[^-A-Za-z0-9/?:().,\'+ ]', '', remove_accents(communication))
         return communication
 
     def post(self):

@@ -38,7 +38,10 @@ class SignTemplate(models.Model):
     @api.depends('attachment_id.datas_fname')
     def _compute_extension(self):
         for template in self:
-            template.extension = '.' + template.attachment_id.datas_fname.split('.')[-1]
+            if template.attachment_id.datas_fname:
+                template.extension = '.' + template.attachment_id.datas_fname.split('.')[-1]
+            else:
+                template.extension = ''
 
     @api.depends('sign_item_ids.responsible_id')
     def _compute_responsible_count(self):

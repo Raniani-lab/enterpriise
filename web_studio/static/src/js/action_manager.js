@@ -270,6 +270,11 @@ ActionManager.include({
         this._loadAction(action.id).then(function (result) {
             self._preprocessAction(result, {additional_context: action.context});
             self._processStudioAction(result, {});
+
+            result.jsID = action.jsID; // used in @restoreStudioAction
+            // update internal reference to the old action
+            self.actions[action.jsID] = result;
+
             bus.trigger('action_changed', result);
             if (ev.data.onSuccess) {
                 ev.data.onSuccess(result);

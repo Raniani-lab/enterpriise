@@ -6,6 +6,7 @@ from odoo import api, models, fields, _
 from odoo.exceptions import UserError, ValidationError
 
 from odoo.tools import float_round, float_repr, DEFAULT_SERVER_DATE_FORMAT
+from odoo.tools.misc import remove_accents
 
 import base64
 import random
@@ -68,7 +69,7 @@ class AccountBatchPayment(models.Model):
             communication = communication[1:]
         if communication.endswith('/'):
             communication = communication[:-1]
-        communication = re.sub('[^-A-Za-z0-9/?:().,\'+ ]', '', communication)
+        communication = re.sub('[^-A-Za-z0-9/?:().,\'+ ]', '', remove_accents(communication))
         return communication
 
     def _get_genericity_info(self):

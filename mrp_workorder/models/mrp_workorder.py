@@ -74,7 +74,7 @@ class MrpProductionWorkcenterLine(models.Model):
                 lines = wo.workorder_line_ids.filtered(lambda l: l.move_id in moves)
                 completed_lines = lines.filtered(lambda l: l.lot_id) if wo.component_tracking != 'none' else lines
                 wo.component_remaining_qty = move.product_uom._compute_quantity(
-                    self.qty_producing * sum(moves.mapped('unit_factor')),
+                    wo.qty_producing * sum(moves.mapped('unit_factor')),
                     move.product_id.uom_id,
                     round=False
                 ) - sum(completed_lines.mapped('qty_done'))
@@ -199,7 +199,9 @@ class MrpProductionWorkcenterLine(models.Model):
             if self.component_tracking == 'none' or self.current_quality_check_id.component_is_byproduct or not lines_without_lots:
                 self.move_line_id = self.env['mrp.workorder.line'].create({
                     'move_id': move.id,
-                    'lot_id': False,
+                    'product_id': self.component_id.id,
+                    'product_uom_id': move.product_uom.id,
+                    'lot_id': self.lot_id.id,
                     'qty_done': float_round(self.qty_done, precision_rounding=move.product_uom.rounding),
                     'workorder_id': self.id,
                 })
@@ -220,12 +222,12 @@ class MrpProductionWorkcenterLine(models.Model):
         lines = super(MrpProductionWorkcenterLine, self)._generate_lines_values(move, qty_to_consume)
         step = self.env['quality.point'].search([
             ('test_type', '=', 'register_consumed_materials'),
-            ('component_id', '=', self.product_id.id),
-            ('product_id', '=', self.production_id.product_id.id),
+            ('component_id', 'in', [line['product_id'] for line in lines]),
+            ('product_id', '=', self.product_id.id),
             ('operation_id', 'in', self.production_id.routing_id.operation_ids.ids)
         ])
         for line in lines:
-            if move.product_id.tracking == 'none' and step:
+            if step:
                 line['qty_done'] = 0
         return lines
 
@@ -477,7 +479,9 @@ class MrpProductionWorkcenterLine(models.Model):
         if self.check_ids:
             # Check if you can attribute the lot to the checks
             if (self.production_id.product_id.tracking != 'none') and self.final_lot_id:
-                self.check_ids.write({'final_lot_id': self.final_lot_id.id})
+                self.check_ids.filtered(lambda check: not check.final_lot_id).write({
+                    'final_lot_id': self.final_lot_id.id
+                })
         res = super(MrpProductionWorkcenterLine, self).record_production()
         if self.qty_producing > 0:
             self._create_checks()

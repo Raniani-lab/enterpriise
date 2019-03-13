@@ -64,6 +64,7 @@ AbstractView.include({
 
                 return Promise.all([
                     self._loadData(model, options.x2mField),
+                    ajax.loadLibs(self)
                 ]).then(function (results) {
                     var state = results[0];
                     if (options.x2mField) {

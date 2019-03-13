@@ -433,7 +433,7 @@ var GanttRow = Widget.extend({
         return _.extend(
             pillData,
             session.user_context,
-            {current_date: moment().format('YYYY-MM-DD')},
+            {current_date: moment().format('YYYY-MM-DD')}
         );
     },
     /**
@@ -744,6 +744,10 @@ var GanttRow = Widget.extend({
      * Note that we cannot do that on the cell mouseenter because we don't enter
      * the cell we moving the mouse on a pill that spans on multiple cells.
      *
+     * Also note that we try to *avoid using jQuery* here to reduce the time
+     * spent in this function so the whole view doesn't feel sluggish when there
+     * are a lot of records.
+     *
      * @private
      * @param {MouseEvent} ev
      */
@@ -758,7 +762,7 @@ var GanttRow = Widget.extend({
             // hovering is calling the costly elementsFromPoint function.
             // Besides, this function will not work in the test environment.
             var hoveredCell;
-            if (ev.target.classList.contains('o_gantt_pill')) {
+            if (ev.target.classList.contains('o_gantt_pill') || ev.target.parentNode.classList.contains('o_gantt_pill')) {
                 document.elementsFromPoint(ev.pageX, ev.pageY).some(function (element) {
                     return element.classList.contains('o_gantt_cell') ? ((hoveredCell = element), true) : false;
                 });
@@ -766,7 +770,7 @@ var GanttRow = Widget.extend({
                 hoveredCell = ev.currentTarget;
             }
 
-            if (hoveredCell != this.lastHoveredCell) {
+            if (hoveredCell && hoveredCell != this.lastHoveredCell) {
                 if (this.lastHoveredCell) {
                     this.lastHoveredCell.classList.remove('o_hovered');
                 }
@@ -793,7 +797,6 @@ var GanttRow = Widget.extend({
         if (!this.isGroup) {
             this.trigger_up('pill_clicked', {
                 target: $(ev.currentTarget),
-                originalEvent: ev,
             });
         }
     },

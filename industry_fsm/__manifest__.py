@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': "Field Service",
-    'summary': '',
+    'summary': 'Plan your Onsite interventions',
     'description': """
 Field Services Management
 =========================
@@ -22,6 +22,7 @@ Adds the following options:
     'version': '1.0',
     'depends': ['project_enterprise', 'sale_project_timesheet_enterprise'],
     'data': [
+        'data/fsm_data.xml',
         'security/fsm_security.xml',
         'security/ir.model.access.csv',
         'views/res_config_settings_views.xml',
@@ -30,5 +31,6 @@ Adds the following options:
         'wizard/project_task_create_sale_order_views.xml',
     ],
     'application': True,
+    'demo': ['data/fsm_demo.xml'],
     'post_init_hook': 'post_install_hook_force_timer',
 }

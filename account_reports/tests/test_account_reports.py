@@ -2244,7 +2244,7 @@ class TestAccountReports(SavepointCase):
         report = report.with_context(report._set_context(options))
 
         self.assertLinesValues(
-            report._get_lines(options)[:-1],
+            report._get_lines(options),
             #   Name                                    Date,           Due Date,       Doc.    Comm.   Exp. Date   Blocked             Total Due
             [   0,                                      1,              2,              3,      4,      5,          6,                  7],
             [

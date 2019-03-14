@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from math import ceil
 from datetime import timedelta, datetime
 
 from odoo import fields, models, api, _
@@ -54,10 +53,10 @@ class Task(models.Model):
 
     @api.model
     def _read_group_user_ids(self, users, domain, order):
-        search_domain = [('id', 'in', users.ids)]
         if self.env.context.get('fsm_mode'):
-            search_domain = ['|', ('groups_id', 'in', self.env.ref('industry_fsm.group_fsm_user').id)] + search_domain
-        return users.search(search_domain, order=order)
+            search_domain = ['|', ('id', 'in', users.ids), ('groups_id', 'in', self.env.ref('industry_fsm.group_fsm_user').id)]
+            return users.search(search_domain, order=order)
+        return users
 
     @api.depends('planned_date_begin', 'planned_date_end', 'user_id')
     def _compute_planning_overlap(self):
@@ -89,24 +88,30 @@ class Task(models.Model):
             total_price = sum(task.material_line_ids.mapped(lambda line: line.quantity * line.product_id.lst_price))
             task.material_line_total_price = total_price
 
+    # ---------------------------------------------------------
+    # Actions
+    # ---------------------------------------------------------
+
     def action_view_timesheets(self):
         kanban_view = self.env.ref('hr_timesheet.view_kanban_account_analytic_line')
         form_view = self.env.ref('industry_fsm.timesheet_view_form')
         tree_view = self.env.ref('industry_fsm.timesheet_view_tree_user_inherit')
-        domain = [('task_id', '=', self.id)]
-        context = {'default_project_id': self.project_id.id,
-                   'default_task_id': self.id,
-                   'from_field_service': True}
-        return {'type': 'ir.actions.act_window',
-                'name': _('Time'),
-                'res_model': 'account.analytic.line',
-                'view_mode': 'list,form,kanban',
-                'views': [(tree_view.id, 'list'), (kanban_view.id, 'kanban'), (form_view.id, 'form')],
-                'domain': domain,
-                'context': context
-                }
 
-    def action_worker_tasks(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Time'),
+            'res_model': 'account.analytic.line',
+            'view_mode': 'list,form,kanban',
+            'views': [(tree_view.id, 'list'), (kanban_view.id, 'kanban'), (form_view.id, 'form')],
+            'domain': [('task_id', '=', self.id)],
+            'context': {
+                'fsm_mode': True,
+                'default_project_id': self.project_id.id,
+                'default_task_id': self.id,
+            }
+        }
+
+    def action_fsm_tasks(self):
         default_project_id = False
         fsm_project = self.env.ref('industry_fsm.fsm_project', False)
 
@@ -118,13 +123,13 @@ class Task(models.Model):
             except AccessError:
                 pass
         if self.env.user.has_group('industry_fsm.group_fsm_manager'):
-            help = _(
+            help_msg = _(
                 """<p class='o_view_nocontent_smiling_face'>No future Tasks planned</p>
                 <p>You can go to the <a class="btn btn-link pr-0 pl-0" type="action" name="%s">Planning</a>
                 Menu and create Tasks for your Workers or create one for yourself by clicking on Create.</p>
                 """) % (self.env.ref('project_enterprise.project_task_action_planning_groupby_user').id)
         else:
-            help = _(
+            help_msg = _(
                 """ <p class='o_view_nocontent_smiling_face'>No future Tasks planned</p>
                 <p>You can create one for yourself by clicking on Create.</p>
                 """
@@ -142,49 +147,18 @@ class Task(models.Model):
                 'fsm_mode': True,
                 'search_default_my_tasks': True,
                 'search_default_planned_future': True,
-                'default_project_id':  default_project_id},
-            'help': help,
+                'default_project_id': default_project_id
+            },
+            'help': help_msg,
         }
 
-    # Quotations
-    def action_create_quotation(self):
-        partner_id = self.partner_id.id
-        view_form_id = self.env.ref('sale.view_order_form').id
-        action = self.env.ref('sale.action_quotations').read()[0]
-        action.update({
-            'views': [(view_form_id, 'form')],
-            'view_mode': 'form',
-            'name': self.name,
-            'context': {
-                'form_view_initial_mode': 'edit',
-                'default_partner_id': partner_id,
-                'default_state': 'draft',
-                'default_task_id': self.id
-            },
-        })
-        return action
-
-    def action_view_created_quotations(self):
-        action = self.env.ref('sale.action_quotations').read()[0]
-        action.update({
-            'name': self.name,
-            'domain': [('task_id', '=', self.id)],
-            'context': {
-                'default_task_id': self.id,
-                'default_partner_id': self.partner_id.id},
-        })
-        if self.quotation_count == 1:
-            action['res_id'] = self.env['sale.order'].search([('task_id', '=', self.id)]).id
-            action['views'] = [(self.env.ref('sale.view_order_form').id, 'form')]
-        return action
-
-    def create_or_view_created_quotations(self):
+    def action_fsm_create_or_view_quotation(self):
         if self.quotation_count == 0:
-            return self.action_create_quotation()
+            return self._action_fsm_create_quotation()
         else:
-            return self.action_view_created_quotations()
+            return self._action_fsm_view_quotations()
 
-    def action_view_material(self):
+    def action_fsm_view_material(self):
         timesheet_access = self.env['account.analytic.line'].check_access_rights('create', raise_exception=False)
         if timesheet_access and self.use_timesheet_timer and self.allow_timesheets and not self.timesheet_ids and not self.timesheet_timer_start:
             raise UserError(_("You haven't started this task yet."))
@@ -196,6 +170,7 @@ class Task(models.Model):
                 'views': [(kanban_view.id, 'kanban')],
                 'domain': domain,
                 'context': {
+                    'fsm_mode': True,
                     'default_task_id': self.id,
                     'pricelist': self.partner_id.property_product_pricelist.id if self.partner_id else False,
                     'partner': self.partner_id.id if self.partner_id else False}
@@ -234,12 +209,47 @@ class Task(models.Model):
             if record.allow_billable and record.project_id.timesheet_product_id:
                 has_access = self.env['sale.order'].check_access_rights('create', raise_exception=False) and self.env['sale.order.line'].check_access_rights('create', raise_exception=False)
                 if has_access:
-                    record.create_or_update_sale_order()
+                    record._fsm_create_or_update_sale_order()
 
-    def create_or_update_sale_order(self):
+    # ---------------------------------------------------------
+    # Business Methods
+    # ---------------------------------------------------------
+
+    def _action_fsm_create_quotation(self):
+        view_form_id = self.env.ref('sale.view_order_form').id
+        action = self.env.ref('sale.action_quotations').read()[0]
+        action.update({
+            'views': [(view_form_id, 'form')],
+            'view_mode': 'form',
+            'name': self.name,
+            'context': {
+                'fsm_mode': True,
+                'form_view_initial_mode': 'edit',
+                'default_partner_id': self.partner_id.id,
+                'default_state': 'draft',
+                'default_task_id': self.id
+            },
+        })
+        return action
+
+    def _action_fsm_view_quotations(self):
+        action = self.env.ref('sale.action_quotations').read()[0]
+        action.update({
+            'name': self.name,
+            'domain': [('task_id', '=', self.id)],
+            'context': {
+                'fsm_mode': True,
+                'default_task_id': self.id,
+                'default_partner_id': self.partner_id.id},
+        })
+        if self.quotation_count == 1:
+            action['res_id'] = self.env['sale.order'].search([('task_id', '=', self.id)]).id
+            action['views'] = [(self.env.ref('sale.view_order_form').id, 'form')]
+        return action
+
+    def _fsm_create_or_update_sale_order(self):
         if self.sale_line_id:
-            sale_order = self.sale_line_id.order_id
-            self._add_material_to_sale_order(sale_order)
+            self._fsm_add_material_to_sale_order()
         elif self.partner_id:
             sale_order = self.env['sale.order'].create({
                 'partner_id': self.partner_id.id,
@@ -254,28 +264,31 @@ class Task(models.Model):
                 'product_uom': self.project_id.timesheet_product_id.uom_id.id,
             })
 
-            self.sale_line_id = sale_order_line.id
+            self.write({'sale_line_id': sale_order_line.id})
 
             # assign SOL to timesheets
             self.env['account.analytic.line'].search([
                 ('task_id', '=', self.id),
                 ('so_line', '=', False),
-                ('project_id', '!=', False)]).write({
-                    'so_line': sale_order_line.id
-                })
+                ('project_id', '!=', False)
+            ]).write({
+                'so_line': sale_order_line.id
+            })
 
-            self._add_material_to_sale_order(sale_order)
+            self._fsm_add_material_to_sale_order()
             sale_order.action_confirm()
 
-    def _add_material_to_sale_order(self, sale_order):
-        for line in self.material_line_ids:
-            existing_line = self.env['sale.order.line'].search([('order_id', '=', sale_order.id), ('product_id', '=', line.product_id.id)], limit=1)
-            if existing_line:
-                existing_line.product_uom_qty += line.quantity
-            else:
-                self.env['sale.order.line'].create({
-                    'order_id': sale_order.id,
-                    'product_id': line.product_id.id,
-                    'product_uom_qty': line.quantity,
-                    'product_uom': line.product_id.uom_id.id
-                })
+    def _fsm_add_material_to_sale_order(self):
+        sale_order = self.sale_order_id
+        if sale_order:
+            for line in self.material_line_ids:
+                existing_line = self.env['sale.order.line'].search([('order_id', '=', sale_order.id), ('product_id', '=', line.product_id.id)], limit=1)
+                if existing_line:
+                    existing_line.write({'product_uom_qty': line.existing_line + line.quantity})
+                else:
+                    self.env['sale.order.line'].create({
+                        'order_id': sale_order.id,
+                        'product_id': line.product_id.id,
+                        'product_uom_qty': line.quantity,
+                        'product_uom': line.product_id.uom_id.id
+                    })

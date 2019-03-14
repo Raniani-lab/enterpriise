@@ -29,7 +29,6 @@ Adds the following options:
         'views/product_product_views.xml',
         'views/project_views.xml',
         'views/assets.xml',
-        'wizard/project_task_create_sale_order_views.xml',
     ],
     'application': True,
     'demo': ['data/fsm_demo.xml'],

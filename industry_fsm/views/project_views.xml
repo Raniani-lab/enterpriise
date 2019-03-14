@@ -44,7 +44,7 @@
                 </attribute>
             </xpath>
             <xpath expr="//button[@name='toggle_active']" position="before">
-                <button class="oe_stat_button" name="action_view_material"
+                <button class="oe_stat_button" name="action_fsm_view_material"
                     type="object" icon="fa-cart-plus" help="Add materials" attrs="{'invisible': ['|', '|', ('allow_billable', '=', False), ('billable_type', '!=', 'no'), ('sale_order_id', '!=', False)]}">
                     <div class="o_stat_info">
                         <span class="o_stat_value">
@@ -118,7 +118,7 @@
                 <attribute name="invisible">context.get('default_task_id')</attribute>
             </xpath>
             <xpath expr="//field[@name='date']" position="attributes">
-                <attribute name="invisible">context.get('from_field_service')</attribute>
+                <attribute name="invisible">context.get('fsm_mode')</attribute>
             </xpath>
         </field>
     </record>
@@ -148,7 +148,7 @@
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button class="oe_stat_button" name="action_view_material"
+                        <button class="oe_stat_button" name="action_fsm_view_material"
                             type="object" icon="fa-cart-plus" help="Add materials" attrs="{'invisible': ['|', '|', ('fsm_is_done', '=', True), ('allow_billable', '=', False), ('sale_order_id', '!=', False)]}">
                             <div class="o_stat_info">
                                 <span class="o_stat_value">
@@ -210,8 +210,8 @@
         <field name="model">project.task</field>
         <field name="inherit_id" ref="view_task_form2_inherit"/>
         <field name="arch" type="xml">
-            <xpath expr="//button[@name='action_view_material']" position="after">
-                <button class="oe_stat_button mr-3" name="create_or_view_created_quotations"
+            <xpath expr="//button[@name='action_fsm_view_material']" position="after">
+                <button class="oe_stat_button mr-3" name="action_fsm_create_or_view_quotation"
                     type="object" help="Quotations created from this task" attrs="{'invisible': [('allow_billable', '=', False)]}">
                     <div class="ml-3" attrs="{'invisible': [('quotation_count', '!=', 0)]}">
                         <i class="fa fa-lg fa-plus-circle mr-2" aria-label="Create new quotation" title="Create new quotation"/>
@@ -233,8 +233,8 @@
         <field name="model">project.task</field>
         <field name="inherit_id" ref="project_task_view_form_fsm"/>
         <field name="arch" type="xml">
-            <xpath expr="//button[@name='action_view_material']" position="after">
-                <button class="oe_stat_button mr-3" name="create_or_view_created_quotations"
+            <xpath expr="//button[@name='action_fsm_view_material']" position="after">
+                <button class="oe_stat_button mr-3" name="action_fsm_create_or_view_quotation"
                     type="object" help="Quotations created from this task" attrs="{'invisible': [('allow_billable', '=', False)]}">
                     <div class="ml-3" attrs="{'invisible': [('quotation_count', '!=', 0)]}">
                         <i class="fa fa-lg fa-plus-circle mr-2" aria-label="Create new quotation" title="Create new quotation"/>
@@ -336,7 +336,7 @@
         <field name="name">project.task.action.worker.tasks</field>
         <field name="model_id" ref="industry_fsm.model_project_task"/>
         <field name="state">code</field>
-        <field name="code"> action = model.action_worker_tasks()</field>
+        <field name="code">action = model.action_fsm_tasks()</field>
     </record>
 
     <menuitem id="menu_fsm_root"

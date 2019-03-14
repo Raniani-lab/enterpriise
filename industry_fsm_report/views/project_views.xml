@@ -85,7 +85,7 @@
         <field name="model">project.task</field>
         <field name="inherit_id" ref="project.view_task_form2"/>
         <field name="arch" type="xml">
-            <xpath expr="//button[@name='action_view_material']" position="before">
+            <xpath expr="//button[@name='action_fsm_view_material']" position="before">
                 <field name="allow_worksheets" invisible="1"/>
                 <field name="worksheet_count" invisible="1"/>
                 <button class="oe_stat_button" name="action_fsm_worksheet"
@@ -111,7 +111,7 @@
         <field name="model">project.task</field>
         <field name="inherit_id" ref="industry_fsm.project_task_view_form_fsm"/>
         <field name="arch" type="xml">
-            <xpath expr="//button[@name='action_view_material']" position="before">
+            <xpath expr="//button[@name='action_fsm_view_material']" position="before">
                 <field name="allow_worksheets" invisible="1"/>
                 <field name="worksheet_count" invisible="1"/>
                 <field name="worksheet_template_id" invisible="1"/>

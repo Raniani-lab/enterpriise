@@ -48,6 +48,8 @@
                 <filter invisible="1" string="Future Activities" name="activities_upcoming_all"
                         domain="[('activity_ids.date_deadline', '&gt;', context_today().strftime('%Y-%m-%d'))
                         ]"/>
+                <filter string="Exception Activities" name="activities_exception"
+                        domain="[('activity_exception_decoration', '!=', False)]"/>
                 <separator/>
                 <group expand="0" string="Group By">
                     <filter string="Stage" name="stage" domain="[]" context="{'group_by':'stage_id'}"/>
@@ -318,6 +320,7 @@
                 <field name="stage_id"/>
                 <field name="to_renew" invisible="1"/>
                 <field name="in_progress" invisible="1"/>
+                <field name="activity_exception_decoration" widget="activity_exception"/>
             </tree>
         </field>
     </record>

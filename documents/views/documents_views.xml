@@ -33,6 +33,8 @@
                 <filter invisible="1" string="Future Activities" name="activities_upcoming_all"
                     domain="[('activity_ids.date_deadline', '&gt;', context_today().strftime('%Y-%m-%d'))
                     ]"/>
+                <filter string="Exception Activities" name="activities_exception"
+                        domain="[('activity_exception_decoration', '!=', False)]"/>
                 <separator/>
                 <filter string="PDF" name="pdf" domain="[('mimetype', 'ilike', 'pdf')]"/>
                 <filter string="Image" name="img" domain="[('mimetype', 'ilike', 'image')]"/>
@@ -263,6 +265,7 @@
                 <field name="owner_id"/>
                 <field name="type"/>
                 <field name="create_date" widget="date"/>
+                <field name="activity_exception_decoration" widget="activity_exception"/>
             </tree>
         </field>
     </record>

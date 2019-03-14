@@ -342,7 +342,7 @@ class Document(models.Model):
                     'res_id': res_id
                 })
                 record.attachment_id = attachment.id
-                self._process_activities(attachment.id)
+                record._process_activities(attachment.id)
 
         return super(Document, self).write(vals)
 

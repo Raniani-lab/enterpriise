@@ -21,7 +21,7 @@ class IrActionsReport(models.Model):
             ('key', '=', new.report_name),
         ])
         view.ensure_one()
-        new_view = view.copy_qweb_template()
+        new_view = view.with_context(lang=None).copy_qweb_template()
         copy_no = int(new_view.key.split('_copy_').pop())
 
         new.write({

@@ -653,6 +653,47 @@ QUnit.module('DocumentsKanbanView', {
         kanban.destroy();
     });
 
+    QUnit.test('can upload files', async function (assert) {
+        assert.expect(1);
+
+        const prom = testUtils.makeTestPromise();
+
+        var kanban = await createDocumentsKanbanView({
+            View: DocumentsKanbanView,
+            model: 'documents.document',
+            data: this.data,
+            arch: '<kanban><templates><t t-name="kanban-box">' +
+                    '<div>' +
+                        '<field name="name"/>' +
+                    '</div>' +
+                '</t></templates></kanban>',
+            mockRPC: function (route, args) {
+                if (args.method === 'create') {
+                    assert.deepEqual(args.args[0], [{
+                        datas: 'dGVzdA==',
+                        datas_fname: 'file.txt',
+                        folder_id: false,
+                        name: 'file.txt',
+                        tag_ids: [[6, 0, []]]
+                    }],
+                        "should create a new document");
+                    prom.resolve();
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        const file = await testUtils.file.createFile({
+            name: 'file.txt',
+            content: 'test',
+            contentType: 'plain/text',
+        });
+        testUtils.file.dropFile(kanban.$('.o_documents_kanban_view'), file);
+        await prom;
+        kanban.destroy();
+
+    });
+
     QUnit.test('can Request a file', async function (assert) {
         assert.expect(1);
 

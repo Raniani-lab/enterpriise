@@ -160,20 +160,19 @@ var DocumentsKanbanController = KanbanController.extend({
             });
             defs.push(def);
         });
-        return Promise.all(defs).then(function () {
-            var l = Array.prototype.slice.call(arguments);
-            for (var i = 0; i < l.length; i++) {
+        return Promise.all(defs).then(function (fileList) {
+            for (var i = 0; i < fileList.length; i++) {
                 // convert data from "data:application/zip;base64,R0lGODdhAQBADs=" to "R0lGODdhAQBADs="
-                l[i].datas = l[i].datas.split(',', 2)[1];
-                l[i].folder_id = self._searchPanel.getSelectedFolderId();
+                fileList[i].datas = fileList[i].datas.split(',', 2)[1];
+                fileList[i].folder_id = self._searchPanel.getSelectedFolderId();
                 if (tagIDs) {
-                    l[i].tag_ids = [[6, 0, tagIDs]];
+                    fileList[i].tag_ids = [[6, 0, tagIDs]];
                 }
             }
             return self._rpc({
                 model: 'documents.document',
                 method: 'create',
-                args: [l],
+                args: [fileList],
             });
         });
     },

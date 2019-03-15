@@ -65,7 +65,7 @@
                 <field name="sign_template_id"/>
                 <field name="contract_update_template_id"/>
             </field>
-            <field name="struct_id" position="after">
+            <field name="structure_type_id" position="after">
                 <field name="resource_calendar_id"/>
             </field>
             <field name="employee_id" position="attributes">

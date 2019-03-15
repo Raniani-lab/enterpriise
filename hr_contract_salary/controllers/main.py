@@ -256,7 +256,7 @@ class website_hr_contract_salary(http.Controller):
             'company_id': contract.company_id.id,
             'currency_id': contract.company_id.currency_id.id,
             'employee_id': employee.id,
-            'struct_id': contract.struct_id.id,
+            'structure_type_id': contract.structure_type_id.id,
             'company_car_total_depreciated_cost': contract.company_car_total_depreciated_cost,
             'wage': advantages['wage'],
             'resource_calendar_id': contract.resource_calendar_id.id,
@@ -380,7 +380,7 @@ class website_hr_contract_salary(http.Controller):
         payslip = request.env['hr.payslip'].sudo().create({
             'employee_id': new_contract.employee_id.id,
             'contract_id': new_contract.id,
-            'struct_id': new_contract.struct_id.id,
+            'struct_id': new_contract.structure_type_id.default_struct_id.id,
             'company_id': new_contract.employee_id.company_id.id,
             'name': 'Payslip Simulation',
             'date_from': request.env['hr.payslip'].default_get(['date_from'])['date_from'],

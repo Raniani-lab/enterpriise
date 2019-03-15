@@ -106,7 +106,7 @@ class TestHR(common.TransactionCase):
         # --------------------------------------------------
         # Holiday user: Allocation
         # --------------------------------------------------
-
+        self.user.employee_id.parent_id = self.hr_holidays_user.employee_id
         allocation_no_validation = self.create_allocation(
             user=self.hr_holidays_user,
             employee=self.user.employee_id,
@@ -191,17 +191,24 @@ class TestHR(common.TransactionCase):
         self.assertEqual(leave.state, 'validate')
         self.assertEqual(leave.second_approver_id, self.hr_holidays_manager.employee_id)
 
+    def create_salary_structure_type(self, user):
+        structure_type_form = Form(self.env['hr.payroll.structure.type'].sudo(user))
+        structure_type_form.name = 'Structure Type - Test'
+        return structure_type_form.save()
+
     def create_salary_structure(self, user, name, code):
+        structure_type = self.create_salary_structure_type(user)
+
         struct_form = Form(self.env['hr.payroll.structure'].sudo(user))
         struct_form.name = name
-        struct_form.code = code
+        struct_form.type_id = structure_type
         return struct_form.save()
 
     def create_contract(self, user, name, structure, wage, employee, state, start, end=None, car=None):
         contract_form = Form(self.env['hr.contract'].sudo(user))
         contract_form.name = name
         contract_form.employee_id = employee
-        contract_form.struct_id = structure
+        contract_form.structure_type_id = structure.type_id
         contract_form.date_start = start
         contract_form.date_end = end
         if car:  # only for fleet manager
@@ -240,7 +247,6 @@ class TestHR(common.TransactionCase):
     def create_structure(self, user, name, code):
         struct_form = Form(self.env['hr.payroll.structure'].sudo(user))
         struct_form.name = name
-        struct_form.code = name
         return struct_form.save()
 
     def _test_contract(self):

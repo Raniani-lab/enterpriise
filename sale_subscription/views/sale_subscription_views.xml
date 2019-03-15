@@ -248,9 +248,9 @@
                                             <field name="product_id" domain="[('recurring_invoice', '=', True)]" context="{'default_recurring_invoice': True}"/>
                                             <field name="name"/>
                                             <field name="quantity"/>
-                                            <field name="uom_id" groups="uom.group_uom"/>
+                                            <field name="uom_id" string="UoM" groups="uom.group_uom"/>
                                             <field name="price_unit"/>
-                                            <field name="discount" groups="sale.group_discount_per_so_line"/>
+                                            <field name="discount" string="Disc.%" groups="sale.group_discount_per_so_line"/>
                                             <field name="price_subtotal"/>
                                         </tree>
                                     </field>

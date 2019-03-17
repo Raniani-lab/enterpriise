@@ -3,15 +3,18 @@
 # * sale_coupon
 # 
 # Translators:
-# Martin Trigaux, 2018
-# Cozmin Candea <office@terrabit.ro>, 2018
+# Iulian Cutui <iulian.cutui@gmail.com>, 2018
+# Martin Trigaux, 2019
+# Cozmin Candea <office@terrabit.ro>, 2019
+# Dorin Hongu <dhongu@gmail.com>, 2019
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-08 07:14+0000\n"
-"PO-Revision-Date: 2018-10-08 07:14+0000\n"
-"Last-Translator: Cozmin Candea <office@terrabit.ro>, 2018\n"
+"PO-Revision-Date: 2017-02-15 11:46+0000\n"
+"Last-Translator: Dorin Hongu <dhongu@gmail.com>, 2019\n"
 "Language-Team: Romanian (https://www.transifex.com/odoo/teams/41243/ro/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -624,7 +627,7 @@ msgstr ""
 #. module: sale_coupon
 #: selection:sale.coupon.reward,reward_type:0
 msgid "Free Shipping"
-msgstr ""
+msgstr "Livrare gratuită"
 
 #. module: sale_coupon
 #: model_terms:ir.ui.view,arch_db:sale_coupon.sale_coupon_generate_view_form

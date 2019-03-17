@@ -1217,7 +1217,7 @@ msgid ""
 "  * Based on purchase date: The depreciation dates will be based on the purchase date."
 msgstr ""
 "De datum berekeningswijze van de eerste afschrijving.\n"
-" * Gebaseerd op de laatste dag van de aankoop periode: De afschrijvingsdatum zal gebaseerd zijn op de laatste dag van de maand van aankoop of het aankoop jaar (afhankelijke van de periodiciteit van de afschrijvingen).\n"
+"* Gebaseerd op de laatste dag van de aankoop periode: De afschrijvingsdatum zal gebaseerd zijn op de laatste dag van de maand van aankoop of het aankoop jaar (afhankelijk van de periodiciteit van de afschrijvingen).\n"
 " * Gebaseerd op aankoop datum: De afschrijving datum zal gebaseerd worden op de aankoop datum."
 
 #. module: account_asset

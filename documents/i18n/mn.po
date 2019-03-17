@@ -118,6 +118,7 @@ msgstr ""
 msgid ""
 "<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/> Configure Email Servers"
 msgstr ""
+"<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/> Имэйл сервер тохируулах"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_single
@@ -1861,7 +1862,7 @@ msgstr "Уншаагүй зурвасын тоолуур"
 #: model_terms:ir.ui.view,arch_db:documents.share_page
 #, python-format
 msgid "Upload"
-msgstr ""
+msgstr "Оруулах"
 
 #. module: documents
 #: model_terms:ir.actions.act_window,help:documents.document_action

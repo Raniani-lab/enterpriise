@@ -206,7 +206,6 @@ class MrpProductionWorkcenterLine(models.Model):
                     'qty_done': float_round(self.qty_done, precision_rounding=move.product_uom.rounding),
                     'workorder_id': self.id,
                 })
-                self.workorder_line_ids += self.move_line_id
             else:
                 self.move_line_id = lines_without_lots[0]
             # If tracked by lot, put the remaining quantity in (only) one move line

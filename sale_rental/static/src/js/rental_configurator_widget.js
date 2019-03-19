@@ -1,0 +1,158 @@
+odoo.define('sale_rental.rental_configurator', function (require) {
+var ProductConfiguratorWidget = require('sale.product_configurator');
+
+/**
+ * Extension of the ProductConfiguratorWidget to support rental product configuration.
+ * It opens when a rentable product_product is set.
+ *
+ * The product customization information includes :
+ * - is_rental
+ * - pickup_date
+ * - return_date
+ * - reserved_lot_ids (if sale_stock_rental installed)
+ *
+ */
+ProductConfiguratorWidget.include({
+    /**
+     * Override of sale.product_configurator Hook
+     *
+     * @override
+    */
+    _isConfigurableLine: function () {
+        return this.recordData.is_rental || this._super.apply(this, arguments);
+    },
+
+
+    _onProductChange: function (productId, dataPointID) {
+      var self = this;
+      return this._super.apply(this, arguments).then(function (stopPropagation) {
+          if (stopPropagation) {
+              return Promise.resolve(true);
+          } else {
+              return self._checkIfRentable(productId, dataPointID);
+          }
+      });
+    },
+
+    /**
+     * This method will check if the productId needs configuration or not:
+     *
+     * @param {integer} productId
+     * @param {string} dataPointID
+     */
+    _checkIfRentable: function (productId, dataPointID) {
+        var self = this;
+        if (productId && this.nodeOptions.rent) {
+          return this._rpc({
+            model: 'product.product',
+            method: 'read',
+            args: [productId, ['rent_ok']],
+          }).then(function (r) {
+              if (r && r[0].rent_ok) {
+                  self._openRentalConfigurator({
+                          default_product_id: productId
+                      },
+                      dataPointID
+                  );
+                  return Promise.resolve(true);
+              }
+              return Promise.resolve(false);
+          });
+        }
+        return Promise.resolve(false);
+    },
+
+    _defaultRentalData: function (data) {
+        var self = this;
+        data = data ? data : {};
+        if (self.recordData.pickup_date) {
+            data.default_pickup_date = this.recordData.pickup_date;
+        }
+        if (self.recordData.return_date) {
+            data.default_return_date = this.recordData.return_date;
+        }
+        if (!data.default_product_id) {
+            data.default_product_id = self.recordData.product_id.data.id;
+        }
+        if (self.recordData.id) {
+            // when editing a rental order line, we need its id for some availability computations.
+            data.default_rental_order_line_id = self.recordData.id;
+        }
+
+        data.default_quantity = self.recordData.product_uom_qty;
+
+        /** Default pickup/return dates are based on previous lines dates if some exists */
+
+        if (!data.default_pickup_date && !data.default_return_date) {
+            var parent = self.getParent();
+            var defaultPickupDate, defaultReturnDate;
+            if (parent.state.data.length > 1) {
+                parent.state.data.forEach(function (item) {
+                  if (item.data.is_rental) {
+                    defaultPickupDate = item.data.pickup_date;
+                    defaultReturnDate = item.data.return_date;
+                  }
+                });
+                if (defaultPickupDate) {
+                  data.default_pickup_date = defaultPickupDate;
+                }
+                if (defaultReturnDate) {
+                  data.default_return_date = defaultReturnDate;
+                }
+            }
+        }
+
+        /** Sale_stock_rental defaults (to avoid having a very little bit of js in sale_stock_rental) */
+
+        if (self.recordData.warehouse_id) {
+           data.default_warehouse_id = self.recordData.warehouse_id.data.id;
+        }
+        if (self.recordData.reserved_lot_ids) {
+          data.default_lot_ids = this._convertFromMany2Many(
+              this.recordData.reserved_lot_ids
+          );
+        }
+
+        return data;
+    },
+
+    /**
+     * Opens the rental configurator in 'edit' mode.
+     *
+     * @override
+     * @private
+     */
+    _onEditProductConfiguration: function () {
+        if (this.recordData.is_rental) {// and in rental app ? (this.nodeOptions.rent)
+            this._openRentalConfigurator({}, this.dataPointID);
+        } else {
+            this._super.apply(this, arguments);
+        }
+    },
+
+    _openRentalConfigurator: function (data, dataPointId) {
+      var self = this;
+      this.do_action('sale_rental.rental_configurator_action', {
+          additional_context: self._defaultRentalData(data),
+          on_close: function (result) {
+              if (result && result !== 'special') {
+                  self.trigger_up('field_changed', {
+                      dataPointID: dataPointId,
+                      changes: result.rentalConfiguration,
+                  });
+              } else {
+                  if (!self.recordData.pickup_date || !self.recordData.return_date) {
+                      self.trigger_up('field_changed', {
+                          dataPointID: dataPointId,
+                          changes: {product_id: {operation: 'DELETE_ALL'}},
+                      });
+                  }
+              }
+          }
+      });
+    },
+});
+
+return ProductConfiguratorWidget;
+
+});

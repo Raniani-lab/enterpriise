@@ -2,10 +2,10 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import datetime
-from odoo import tests
+from odoo.tests import common 
 
 
-class TestUi(tests.HttpCase):
+class TestPayslip(common.TransactionCase):
 
     def test_payslip(self):
         contract = self.env.ref('hr_contract_salary.hr_contract_cdi_laurie_poiret')

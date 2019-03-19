@@ -3,3 +3,4 @@
 
 from . import test_double_pecule
 from . import test_payslip
+from . import test_main_flow

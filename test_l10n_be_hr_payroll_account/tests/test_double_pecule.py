@@ -28,7 +28,7 @@ class TestDoublePecule(common.TransactionCase):
             self.assertEqual(payslip.line_ids.filtered(lambda line: line.code == code).total, value, '%s for %s should be of %.2f' % (code, name, value))
 
     def test_double_holiday_pay(self):
-        structure = self.env.ref('l10n_be_hr_payroll.hr_payroll_salary_structure_double_holiday_pay')
+        structure = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday')
 
         payslip = self.env['hr.payslip'].create({
             'struct_id': structure.id,
@@ -51,7 +51,7 @@ class TestDoublePecule(common.TransactionCase):
         })
 
     def test_end_of_year_bonus(self):
-        structure = self.env.ref('l10n_be_hr_payroll.hr_payroll_salary_structure_end_of_year_bonus')
+        structure = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_thirteen_month')
 
         payslip = self.env['hr.payslip'].create({
             'struct_id': structure.id,

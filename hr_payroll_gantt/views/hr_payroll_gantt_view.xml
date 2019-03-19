@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="hr_work_entry_gantt" model="ir.ui.view">
+        <field name="name">hr.work.entry.gantt</field>
+        <field name="model">hr.work.entry</field>
+        <field name="arch" type="xml">
+            <gantt js_class="work_entries_gantt"
+                   string="Work Entries"
+                   date_start="date_start"
+                   date_stop="date_stop"
+                   color="color"
+                   default_group_by='employee_id'
+                   decoration-secondary="state == 'validated'"
+                   decoration-warning="display_warning"
+                   progress="name"
+                   scales="day,week,month"
+                   create="0">
+                <field name="color" invisible="1"/>
+                <field name="state"/>
+                <field name="employee_id"/>
+                <field name="display_warning"/>
+                <field name="name"/>
+            </gantt>
+        </field>
+    </record>
+
+    <record id="hr_payroll.hr_work_entry_action" model="ir.actions.act_window">
+        <field name="view_mode">gantt,calendar,tree,form,pivot</field>
+    </record>
+
+</odoo>

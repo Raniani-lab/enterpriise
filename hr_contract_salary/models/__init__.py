@@ -5,4 +5,5 @@ from . import hr_applicant
 from . import hr_contract
 from . import hr_employee
 from . import hr_job
+from . import ir_attachment
 from . import res_config_settings

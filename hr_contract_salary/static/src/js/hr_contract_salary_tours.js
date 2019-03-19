@@ -138,10 +138,10 @@ Tour.register('hr_contract_salary_tour', {
             run: 'text Mitchell Admin PFI Contract',
         },
         {
-            content: "Salary Structure",
-            trigger: '.o_field_widget.o_field_many2one[name=struct_id]',
+            content: "Salary Structure Type",
+            trigger: '.o_field_widget.o_field_many2one[name=structure_type_id]',
             run: function (actions) {
-                actions.text("Belgian Employee", this.$anchor.find("input"));
+                actions.text("CP200", this.$anchor.find("input"));
             },
         },
         {

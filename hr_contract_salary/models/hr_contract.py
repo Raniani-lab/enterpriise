@@ -23,7 +23,6 @@ class HrContract(models.Model):
     access_token_end_date = fields.Date('Access Token Validity Date', copy=False)
     sign_request_ids = fields.Many2many('sign.request', string="Requested Signatures")
     sign_request_count = fields.Integer(compute='_compute_sign_request_count')
-    active_employee = fields.Boolean(related='employee_id.active', string="Active Employee", readonly=False)
     applicant_id = fields.Many2one('hr.applicant')
     contract_reviews_count = fields.Integer(compute="_compute_contract_reviews_count", string="Proposed Contracts Count")
     contract_type = fields.Selection([
@@ -40,6 +39,12 @@ class HrContract(models.Model):
         help="Default document that the employee will have to sign to update his contract.")
     signatures_count = fields.Integer(compute='_compute_signatures_count', string='# Signatures',
         help="The number of signatures on the pdf contract with the most signatures.")
+    id_card = fields.Binary(related='employee_id.id_card', groups="hr_contract.group_hr_contract_manager")
+    image = fields.Binary(related='employee_id.image', groups="hr_contract.group_hr_contract_manager")
+    driving_license = fields.Binary(related='employee_id.driving_license', groups="hr_contract.group_hr_contract_manager")
+    mobile_invoice = fields.Binary(related='employee_id.mobile_invoice', groups="hr_contract.group_hr_contract_manager")
+    sim_card = fields.Binary(related='employee_id.sim_card', groups="hr_contract.group_hr_contract_manager")
+    internet_invoice = fields.Binary(related="employee_id.internet_invoice", groups="hr_contract.group_hr_contract_manager")
 
     @api.depends('sign_request_ids.nb_closed')
     def _compute_signatures_count(self):

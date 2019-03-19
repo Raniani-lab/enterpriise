@@ -23,13 +23,12 @@
             <xpath expr="//field[@name='state']" position="before">
                 <button name="%(generate_simulation_link_action)d" type="action" string="Generate Simulation Link" class="oe_highlight" attrs="{'invisible': [('employee_id', '=', False)]}"/>
             </xpath>
-            <xpath expr="//field[@name='type_id']" position="after">
+            <xpath expr="//field[@name='reported_to_secretariat']" position="before">
                 <field name="origin_contract_id" attrs="{'invisible': [('origin_contract_id', '=', False)]}"/>
                 <field name="access_token" invisible="1"/>
                 <field name="access_token_consumed" invisible="1"/>
                 <field name="access_token_end_date" invisible="1"/>
                 <field name="sign_request_ids" invisible="1"/>
-                <field name="active_employee" invisible="1"/>
             </xpath>
             <xpath expr="//field[@name='state']" position="before">
                 <button name="action_accept_package" type="object" string="Accept Request" class="oe_highlight" groups="hr.group_hr_manager" attrs="{'invisible': ['|', '|', ('origin_contract_id', '=', False), ('state', '!=', 'draft'), ('sign_request_count', '=', 0)]}"/>
@@ -43,10 +42,22 @@
                 <field name="sign_template_id" options="{'no_create': True}"/>
                 <field name="contract_update_template_id" options="{'no_create': True}"/>
             </group>
-            <field name="type_id" position="before">
+            <field name="reported_to_secretariat" position="before">
                 <field name="contract_type"/>
                 <field name="signatures_count" invisible="1"/>
             </field>
+            <page name="information" position="after">
+                <page string="Personal Documents" name="personal_documents" groups="hr.group_hr_manager" attrs="{'invisible': [('employee_id', '=', False)]}">
+                    <group>
+                        <field name="id_card"/>
+                        <field name="image"/>
+                        <field name="driving_license" attrs="{'invisible': [('transport_mode_car', '=', False)]}"/>
+                        <field name="mobile_invoice" attrs="{'invisible': [('mobile', '=', 0)]}"/>
+                        <field name="sim_card" attrs="{'invisible': [('mobile', '=', 0)]}"/>
+                        <field name="internet_invoice" attrs="{'invisible': [('internet', '=', 0)]}"/>
+                    </group>
+                </page>
+            </page>
         </field>
     </record>
 
@@ -66,7 +77,7 @@
                 <field name="sign_template_id"/>
                 <field name="contract_update_template_id"/>
             </field>
-            <field name="struct_id" position="after">
+            <field name="structure_type_id" position="after">
                 <field name="resource_calendar_id"/>
             </field>
             <field name="employee_id" position="attributes">

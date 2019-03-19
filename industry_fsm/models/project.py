@@ -191,8 +191,6 @@ class Task(models.Model):
         """ Moves Task to next stage.
             If allow billable on task, timesheet product set on project and user has privileges :
             Create SO confirmed with time and material.
-            TODO: Validate stockmoves.
-            TODO: Opens popup with confirmation email for customer.
         """
         for record in self:
             if record.timesheet_timer_start:

@@ -28,13 +28,10 @@ class TestHrAppraisal(TransactionCase):
             work_email='michael@odoo.com',
             appraisal_by_manager=True,
             appraisal_manager_ids=[self.env.ref('hr.employee_al').id],
-            appraisal_manager_survey_id=self.env.ref('survey.survey_feedback').id,
             appraisal_by_colleagues=True,
             appraisal_colleagues_ids=[self.env.ref('hr.employee_stw')],
-            appraisal_colleagues_survey_id=self.env.ref('hr_appraisal.opinion_form').id,
             appraisal_self=True,
-            appraisal_self_survey_id=self.env.ref('hr_appraisal.appraisal_form').id,
-            appraisal_date=date.today() + relativedelta(days=5)
+            appraisal_date=date.today() + relativedelta(months=-12, days=5)
         ))
         self.env['ir.config_parameter'].sudo().set_param("hr_appraisal.appraisal_min_period", 6)
         self.env['ir.config_parameter'].sudo().set_param("hr_appraisal.appraisal_max_period", 12)
@@ -84,9 +81,10 @@ class TestHrAppraisal(TransactionCase):
             SET appraisal_date=%s
             WHERE id=%s;
         """
-        self.env.cr.execute(query, (date.today() - relativedelta(months=1), self.hr_employee.id))
+        self.env.cr.execute(query, (date.today() + relativedelta(months=11), self.hr_employee.id))
+
+        self.hr_employee.periodic_appraisal_created = True
 
         self.HrEmployee.run_employee_appraisal()  # cronjob
-        self.assertEqual(self.hr_employee.appraisal_date, date.today() + relativedelta(months=12))
-
-
+        self.assertTrue(self.hr_employee.periodic_appraisal_created, False)
+        self.assertEqual(self.hr_employee.appraisal_date, date.today() + relativedelta(months=11))

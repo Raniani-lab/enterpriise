@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import datetime
+
+from email.utils import formataddr
+from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
-import datetime
-from dateutil.relativedelta import relativedelta
+
 
 class HrAppraisal(models.Model):
     _name = "hr.appraisal"
@@ -14,69 +17,67 @@ class HrAppraisal(models.Model):
     _order = 'date_close, date_final_interview'
     _rec_name = 'employee_id'
 
-    APPRAISAL_STATES = [
-        ('new', 'To Start'),
-        ('pending', 'Appraisal Sent'),
-        ('done', 'Done'),
-        ('cancel', "Cancelled"),
-    ]
-
     active = fields.Boolean(default=True)
     action_plan = fields.Text(string="Action Plan", help="If the evaluation does not meet the expectations, you can propose an action plan")
     company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.company_id)
     color = fields.Integer(string='Color Index', help='This color will be used in the kanban view.')
     employee_id = fields.Many2one('hr.employee', required=True, string='Employee', index=True)
     department_id = fields.Many2one('hr.department', related='employee_id.department_id', string='Department', store=True, readonly=True)
-    date_close = fields.Date(string='Appraisal Deadline', required=True)
-    state = fields.Selection(APPRAISAL_STATES, string='Status', tracking=True, required=True, copy=False, default='new', index=True)
+    date_close = fields.Date(string='Appraisal Deadline', required=True, default=lambda self: datetime.date.today().replace(day=1)+relativedelta(months=+1, days=-1))
+    state = fields.Selection([
+        ('new', 'To Start'),
+        ('pending', 'Appraisal Sent'),
+        ('done', 'Done'),
+        ('cancel', "Cancelled"),
+    ], string='Status', tracking=True, required=True, copy=False, default='new', index=True)
     manager_appraisal = fields.Boolean(string='Appraisal by Manager', help="This employee will be appraised by his managers")
     manager_ids = fields.Many2many('hr.employee', 'appraisal_manager_rel', 'hr_appraisal_id')
-    manager_survey_id = fields.Many2one('survey.survey', domain=[('category', '=', 'hr_appraisal')], string="Manager's Appraisal")
-    collaborators_appraisal = fields.Boolean(string='Collaborator', help="This employee will be appraised by his collaborators")
+    manager_body_html = fields.Html(string="Manager's Appraisal Invite Body Email")
+    collaborators_appraisal = fields.Boolean(string='Collaborator Appraisal', help="This employee will be appraised by his collaborators")
     collaborators_ids = fields.Many2many('hr.employee', 'appraisal_subordinates_rel', 'hr_appraisal_id')
-    collaborators_survey_id = fields.Many2one('survey.survey', domain=[('category', '=', 'hr_appraisal')], string="Collaborator's Appraisal")
+    collaborators_body_html = fields.Html(string="Collaborator's Appraisal Invite Body Email")
     colleagues_appraisal = fields.Boolean(string='Colleagues Appraisal', help="This employee will be appraised by his colleagues")
     colleagues_ids = fields.Many2many('hr.employee', 'appraisal_colleagues_rel', 'hr_appraisal_id', string="Colleagues")
-    colleagues_survey_id = fields.Many2one('survey.survey', domain=[('category', '=', 'hr_appraisal')], string="Colleague's Appraisal")
+    colleagues_body_html = fields.Html(string="Colleague's Appraisal Invite Body Email")
     employee_appraisal = fields.Boolean(help="This employee will do a self-appraisal")
-    employee_survey_id = fields.Many2one('survey.survey', domain=[('category', '=', 'hr_appraisal')], string='Self Appraisal')
-    survey_sent_ids = fields.One2many('survey.user_input', 'appraisal_id', string='Sent Forms')
-    count_sent_survey = fields.Integer(string="Number of Sent Forms", compute='_compute_sent_survey')
-    survey_completed_ids = fields.One2many('survey.user_input', 'appraisal_id', string='Answers', domain=lambda self: [('state', '=', 'done')])
-    count_completed_survey = fields.Integer(string="Number of Answers", compute='_compute_completed_survey')
-    survey_template_id = fields.Many2one('mail.template', string="Appraisal Survey Invite Email", default=lambda self: self.env.ref('hr_appraisal.mail_template_user_input_appraisal'))
+    employee_body_html = fields.Html(string="Employee's Appraisal Invite Body Email")
     meeting_id = fields.Many2one('calendar.event', string='Meeting')
     date_final_interview = fields.Date(string="Final Interview", index=True, tracking=True)
+    is_autorized_to_send = fields.Boolean('Autorized Employee to Start Appraisal', compute='_compute_authorization')
 
     @api.multi
-    def _compute_sent_survey(self):
-        survey_sent = self.env['survey.user_input'].read_group([('appraisal_id', 'in', self.ids)], ['appraisal_id'], ['appraisal_id'])
-        result = dict((data['appraisal_id'][0], data['appraisal_id_count']) for data in survey_sent)
+    def _compute_authorization(self):
+        user = self.env.user
+        appraisal_user = user.has_group('hr_appraisal.group_hr_appraisal_user')
         for appraisal in self:
-            appraisal.count_sent_survey = result.get(appraisal.id, 0)
-
-    @api.multi
-    def _compute_completed_survey(self):
-        completed_survey = self.env['survey.user_input'].read_group([('appraisal_id', 'in', self.ids), ('state', '=', 'done')], ['appraisal_id'], ['appraisal_id'])
-        result = dict((data['appraisal_id'][0], data['appraisal_id_count']) for data in completed_survey)
-        for appraisal in self:
-            appraisal.count_completed_survey = result.get(appraisal.id, 0)
+            appraisal.is_autorized_to_send = appraisal_user or \
+                user.employee_id == appraisal.employee_id and user != appraisal.create_uid
 
     @api.onchange('employee_id')
-    def onchange_employee_id(self):
-        if self.employee_id:
-            self.department_id = self.employee_id.department_id
-            self.manager_appraisal = self.employee_id.appraisal_by_manager
-            self.manager_ids = self.employee_id.appraisal_manager_ids
-            self.manager_survey_id = self.employee_id.appraisal_manager_survey_id
-            self.colleagues_appraisal = self.employee_id.appraisal_by_colleagues
-            self.colleagues_ids = self.employee_id.appraisal_colleagues_ids
-            self.colleagues_survey_id = self.employee_id.appraisal_colleagues_survey_id
-            self.employee_appraisal = self.employee_id.appraisal_self
-            self.employee_survey_id = self.employee_id.appraisal_self_survey_id
-            self.collaborators_appraisal = self.employee_id.appraisal_by_collaborators
-            self.collaborators_ids = self.employee_id.appraisal_collaborators_ids
-            self.collaborators_survey_id = self.employee_id.appraisal_collaborators_survey_id
+    def _onchange_employee_id(self):
+        self.manager_appraisal = self.employee_id.appraisal_by_manager
+        self.manager_ids = self.employee_id.appraisal_manager_ids
+        self.colleagues_appraisal = self.employee_id.appraisal_by_colleagues
+        self.colleagues_ids = self.employee_id.appraisal_colleagues_ids
+        self.employee_appraisal = self.employee_id.appraisal_self
+        self.collaborators_appraisal = self.employee_id.appraisal_by_collaborators
+        self.collaborators_ids = self.employee_id.appraisal_collaborators_ids
+
+    @api.onchange('company_id')
+    def _onchange_company_id(self):
+        self.manager_body_html = self.company_id.appraisal_by_manager_body_html
+        self.colleagues_body_html = self.company_id.appraisal_by_colleagues_body_html
+        self.employee_body_html = self.company_id.appraisal_by_employee_body_html
+        self.collaborators_body_html = self.company_id.appraisal_by_collaborators_body_html
+
+    @api.onchange('manager_appraisal', 'colleagues_appraisal', 'collaborators_appraisal')
+    def _onchange_manager_appraisal(self):
+        if not self.manager_appraisal:
+            self.manager_ids = False
+        if not self.colleagues_appraisal:
+            self.colleagues_ids = False
+        if not self.collaborators_appraisal:
+            self.collaborators_ids = False
 
     @api.multi
     def subscribe_employees(self):
@@ -135,62 +136,74 @@ class HrAppraisal(models.Model):
 
     def _prepare_user_input_receivers(self):
         """
-        @return: returns a list of tuple (survey, list of employees).
+        @return: returns a list of tuple (body in html for mail, list of employees).
         """
         appraisal_receiver = []
-        if self.manager_appraisal and self.manager_ids and self.manager_survey_id:
-            appraisal_receiver.append((self.manager_survey_id, self.manager_ids))
-        if self.colleagues_appraisal and self.colleagues_ids and self.colleagues_survey_id:
-            appraisal_receiver.append((self.colleagues_survey_id, self.colleagues_ids))
-        if self.collaborators_appraisal and self.collaborators_ids and self.collaborators_survey_id:
-            appraisal_receiver.append((self.collaborators_survey_id, self.collaborators_ids))
-        if self.employee_appraisal and self.employee_survey_id:
-            appraisal_receiver.append((self.employee_survey_id, self.employee_id))
+        if self.manager_appraisal and self.manager_ids:
+            appraisal_receiver.append((self.manager_body_html, self.manager_ids))
+        if self.colleagues_appraisal and self.colleagues_ids:
+            appraisal_receiver.append((self.colleagues_body_html, self.colleagues_ids))
+        if self.collaborators_appraisal and self.collaborators_ids:
+            appraisal_receiver.append((self.collaborators_body_html, self.collaborators_ids))
+        if self.employee_appraisal:
+            appraisal_receiver.append((self.employee_body_html, self.employee_id))
         return appraisal_receiver
+
+    def _send_mail(self, recipient, company_id, header_text, subject, body):
+        """ Send the email reminder to specified employee (in recipient)
+            :param recipient: employee identifier to send the reminder
+            :param company_id: company object
+            :param header_text: text for header
+            :param subject: subject
+            :param body: body
+        """
+
+        msg = self.env['mail.message'].sudo().new(dict(body=body))
+
+        notif_layout = self.env.ref('mail.mail_notification_light')
+        notif_values = {'model_description': header_text, 'company': company_id}
+        body_html = notif_layout.render(dict(message=msg, **notif_values), engine='ir.qweb', minimal_qcontext=True)
+        body_html = self.env['mail.thread']._replace_local_links(body_html)
+        email = self.env.user.work_email or self.env.user.email
+
+        if not email:
+            raise ValidationError(_("You must configure your mail address."))
+
+        mail_values = {
+            'email_from': formataddr((self.env.user.name, email)),
+            'email_to': formataddr((recipient.name, recipient.work_email)),
+            'subject': subject
+            }
+        self.env['mail.mail'].create(dict(body_html=body_html, state='outgoing', **mail_values))
 
     @api.multi
     def send_appraisal(self):
         for appraisal in self:
-            survey_data = appraisal._prepare_user_input_receivers()
-            for survey, employees in survey_data:
+            appraisal_data = appraisal._prepare_user_input_receivers()
+            for body_html, employees in appraisal_data:
                 for employee in employees:
-                    if employee.related_partner_id.email:
-                        partner_ids = [(4, employee.related_partner_id.id)]
-                        emails = False
-                    elif employee.work_email:
-                        partner_ids = False
-                        emails = employee.work_email
-                    else:
+                    if not employee.work_email:
                         continue
 
-                    values = {
-                        'survey_id': survey.id,
-                        'template_id': appraisal.survey_template_id.id,
-                        'partner_ids': partner_ids,
-                        'emails': emails,
+                    subject = _('%s appraisal') % (appraisal.employee_id.name)
+                    template_data = {
+                        'record': employee,
+                        'body': body_html if body_html != '<p><br></p>' else False,
                         'deadline': appraisal.date_close,
-                        'appraisal_id': appraisal.id,
                     }
-                    compose_message_wizard = self.env['survey.invite'].with_context(
-                        default_subject=_('%s appraisal: %s') % (appraisal.employee_id.name, survey.title),
-                        default_body=_('Please fill out appraisal survey.'),
-                        active_id=appraisal.id,
-                        active_model=appraisal._name,
-                        notif_layout="mail.mail_notification_light"
-                    ).create(values)
-                    compose_message_wizard.action_invite()
+                    if employee != appraisal.employee_id:
+                        template_data.update({'employee_name': appraisal.employee_id.display_name})
+                        header_text = _('appraisal about %s') % (appraisal.employee_id.name)
+                    else:
+                        header_text = _('appraisal')
+                    tpl = self.env.ref('hr_appraisal.mail_template_appraisal_reminder')
+                    body = tpl.render(template_data, engine='ir.qweb', minimal_qcontext=True)
+                    self._send_mail(employee, appraisal.company_id, header_text, subject, body)
+
                     if employee.user_id:
-                        user_input = survey.user_input_ids.filtered(
-                            lambda user_input: user_input.partner_id == employee.user_id.partner_id and user_input.appraisal_id == appraisal and user_input.state != 'done'
-                        )
-                        if user_input:
-                            form_url = survey.public_url + '/' + user_input[0].token
-                        else:
-                            form_url = survey.public_url
                         appraisal.activity_schedule(
                             'hr_appraisal.mail_act_appraisal_form', appraisal.date_close,
-                            note=_('Fill form <a href="%s">%s</a> for <a href="#" data-oe-model="%s" data-oe-id="%s">%s\'s</a> appraisal') % (
-                                form_url, survey.display_name,
+                            note=_('Fill appraisal for <a href="#" data-oe-model="%s" data-oe-id="%s">%s</a>') % (
                                 appraisal.employee_id._name, appraisal.employee_id.id, appraisal.employee_id.display_name),
                             user_id=employee.user_id.id)
             appraisal.message_post(body=_("Appraisal form(s) have been sent"))
@@ -204,7 +217,6 @@ class HrAppraisal(models.Model):
             if appraisal.meeting_id:
                 appraisal.meeting_id.unlink()
 
-            appraisal.survey_sent_ids.unlink()
             appraisal.date_final_interview = False
         self.activity_unlink(['mail.mail_activity_data_meeting', 'hr_appraisal.mail_act_appraisal_form'])
 
@@ -217,9 +229,23 @@ class HrAppraisal(models.Model):
             appraisal_min_period = int(self.env['ir.config_parameter'].sudo().get_param('hr_appraisal.appraisal_min_period'))
             next_authorized_appraisal = last_appraisal_date + relativedelta(months=appraisal_min_period)
             if datetime.date.today() < next_authorized_appraisal:
-                raise ValidationError(_("Your last appraisal was on %s. You will be able to request a new \
-appraisal on %s. If you think it's too late, feel free to have a chat with your manager.") %
-                    (fields.Datetime.to_string(last_appraisal_date), fields.Datetime.to_string(next_authorized_appraisal)))
+                raise ValidationError(_("Your last appraisal was on %s %s. You will be able to request a new \
+appraisal on %s %s. If you think it's too late, feel free to have a chat with your manager.") %
+                    (last_appraisal_date.strftime("%B"), last_appraisal_date.strftime("%Y"),
+                    next_authorized_appraisal.strftime("%B"), next_authorized_appraisal.strftime("%Y")))
+
+        if vals.get('manager_ids') != [[6, 0, []]]:
+            vals.update({'manager_appraisal': True})
+        else:
+            vals.update({'manager_appraisal': False})
+        if vals.get('collaborators_ids') != [[6, 0, []]]:
+            vals.update({'collaborators_appraisal': True})
+        else:
+            vals.update({'collaborators_appraisal': False})
+        if vals.get('colleagues_ids') != [[6, 0, []]]:
+            vals.update({'colleagues_appraisal': True})
+        else:
+            vals.update({'colleagues_appraisal': False})
 
         result = super(HrAppraisal, self).create(vals)
         if vals.get('state') and vals['state'] == 'pending':
@@ -243,7 +269,7 @@ appraisal on %s. If you think it's too late, feel free to have a chat with your 
         result = super(HrAppraisal, self).write(vals)
         date_final_interview = vals.get('date_final_interview')
         if vals.get('date_close'):
-            self.mapped('employee_id').write({'appraisal_date': vals.get('date_close')})
+            self.mapped('employee_id').write({'appraisal_date': vals.get('date_close'), 'last_duration_reminder_send': 0})
             self.activity_reschedule(['hr_appraisal.mail_act_appraisal_form'], date_deadline=vals['date_close'])
         if date_final_interview:
             # creating employee meeting and interview date
@@ -252,10 +278,8 @@ appraisal on %s. If you think it's too late, feel free to have a chat with your 
 
     @api.multi
     def unlink(self):
-        for appraisal in self:
-            if appraisal.state != 'new' and appraisal.state != 'cancel':
-                appraisal_state = dict(self.APPRAISAL_STATES)
-                raise UserError(_("You cannot delete appraisal which is in %s state") % (appraisal_state[appraisal.state]))
+        if any(appraisal.state not in ['new', 'cancel'] for appraisal in self):
+            raise UserError(_("You cannot delete appraisal which is not in draft or canceled state"))
         return super(HrAppraisal, self).unlink()
 
     @api.model
@@ -286,22 +310,6 @@ appraisal on %s. If you think it's too late, feel free to have a chat with your 
             return super(HrAppraisal, self).read_group(domain, fields, groupby, offset=offset, limit=limit, orderby=orderby)
 
     @api.multi
-    def action_get_users_input(self):
-        """ Link to sent invites """
-        action = self.env.ref('survey.action_survey_user_input').read()[0]
-        action['domain'] = [('appraisal_id', 'in', self.ids)]
-        action['context'] = {}  # Remove default group_by for surveys
-        return action
-
-    @api.multi
-    def action_get_completed_users_input(self):
-        """ Link to done surveys """
-        action = self.env.ref('survey.action_survey_user_input').read()[0]
-        action['domain'] = ['&', ('appraisal_id', 'in', self.ids), ('state', '=', 'done')]
-        action['context'] = {}  # Remove default group_by for surveys.
-        return action
-
-    @api.multi
     def action_calendar_event(self):
         """ Link to open calendar view for creating employee interview/meeting"""
         self.ensure_one()
@@ -328,3 +336,13 @@ appraisal on %s. If you think it's too late, feel free to have a chat with your 
     @api.multi
     def button_cancel_appraisal(self):
         self.write({'state': 'cancel'})
+
+    def write_and_open(self):
+        return {
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'hr.appraisal',
+            'type': 'ir.actions.act_window',
+            'target': 'current',
+            'res_id': self.id,
+        }

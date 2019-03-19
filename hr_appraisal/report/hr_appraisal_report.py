@@ -16,7 +16,12 @@ class HrAppraisalReport(models.Model):
     deadline = fields.Date(string="Deadline", readonly=True)
     final_interview = fields.Date(string="Interview", readonly=True)
     employee_id = fields.Many2one('hr.employee', string="Employee", readonly=True)
-    state = fields.Selection(HrAppraisal.APPRAISAL_STATES, 'Status', readonly=True)
+    state = fields.Selection([
+        ('new', 'To Start'),
+        ('pending', 'Appraisal Sent'),
+        ('done', 'Done'),
+        ('cancel', "Cancelled"),
+    ], 'Status', readonly=True)
 
     _order = 'create_date desc'
 

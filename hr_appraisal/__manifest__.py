@@ -8,7 +8,7 @@
     'sequence': 31,
     'summary': 'Assess your employees',
     'website': 'https://www.odoo.com/page/appraisal',
-    'depends': ['hr', 'calendar', 'survey'],
+    'depends': ['hr', 'calendar'],
     'description': """
 Periodical Employees appraisal
 ==============================
@@ -29,19 +29,19 @@ Key Features
     "data": [
         'security/hr_appraisal_security.xml',
         'security/ir.model.access.csv',
+        'wizard/request_appraisal_views.xml',
         'views/hr_appraisal_views.xml',
+        'views/hr_appraisal_reminder_views.xml',
         'report/hr_appraisal_report_views.xml',
         'views/hr_department_views.xml',
         'views/mail_activity_views.xml',
-        'views/survey_survey_views.xml',
-        'views/survey_user_views.xml',
         'views/res_config_settings_view.xml',
+        'views/res_users_views.xml',
+        'views/hr_employee_views.xml',
         'data/hr_appraisal_data.xml',
         'data/mail_data.xml',
-        'wizard/survey_invite_views.xml',
     ],
     "demo": [
-        "data/survey_demo_data.xml",
         "data/hr_appraisal_demo.xml",
     ],
     'installable': True,

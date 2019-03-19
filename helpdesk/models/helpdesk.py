@@ -356,7 +356,7 @@ class HelpdeskTeam(models.Model):
         if member_ids:
             if self.assign_method == 'randomly':
                 # randomly means new ticketss get uniformly distributed
-                previous_assigned_user = self.env['helpdesk.ticket'].search([('team_id', '=', self.id)], order='create_date desc', limit=1).user_id
+                previous_assigned_user = self.env['helpdesk.ticket'].search([('team_id', '=', self.id)], order='create_date desc, id desc', limit=1).user_id
                 # handle the case where the previous_assigned_user has left the team (or there is none).
                 if previous_assigned_user and previous_assigned_user.id in member_ids:
                     previous_index = member_ids.index(previous_assigned_user.id)

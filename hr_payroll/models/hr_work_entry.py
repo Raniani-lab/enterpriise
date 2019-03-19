@@ -160,7 +160,9 @@ class HrWorkEnrty(models.Model):
             r['employee_id'][0],
             r['work_entry_type_id'][0] if r['work_entry_type_id'] else False,
         ) for r in month_recs}
-        new_vals = [v for v in vals_list if (v['date_start'].replace(tzinfo=None), v['date_stop'].replace(tzinfo=None), v['employee_id'], v['work_entry_type_id']) not in existing_entries]
+        assert all(v['date_start'].tzinfo is None for v in vals_list)
+        assert all(v['date_stop'].tzinfo is None for v in vals_list)
+        new_vals = [v for v in vals_list if (v['date_start'], v['date_stop'], v['employee_id'], v['work_entry_type_id']) not in existing_entries]
         # Remove duplicates from vals_list, shouldn't be necessary from saas-12.2
         unique_new_vals = set()
         for values in new_vals:
@@ -205,8 +207,6 @@ class HrWorkEnrty(models.Model):
             if work_entry.date_start.date() == work_entry.date_stop.date():
                 new_work_entries |= work_entry
             else:
-                tz = pytz.timezone(work_entry.employee_id.tz)
-                work_entry_start, work_entry_stop = tz.localize(work_entry.date_start), tz.localize(work_entry.date_stop)
                 values = {
                     'name': work_entry.name,
                     'employee_id': work_entry.employee_id.id,
@@ -215,9 +215,9 @@ class HrWorkEnrty(models.Model):
                 }
                 work_entry_state = work_entry.state
                 work_entries_to_unlink |= work_entry
-                for start, stop in _split_range_by_day(work_entry_start, work_entry_stop):
-                    values['date_start'] = start.astimezone(pytz.utc)
-                    values['date_stop'] = stop.astimezone(pytz.utc)
+                for start, stop in _split_range_by_day(work_entry.date_start, work_entry.date_stop):
+                    values['date_start'] = start
+                    values['date_stop'] = stop
                     new_work_entry = self.create(values)
                     # Write the state after the creation due to the ir.rule on work_entry state
                     new_work_entry.state = work_entry_state
@@ -266,8 +266,8 @@ class HrWorkEnrty(models.Model):
     def _duplicate_to_calendar_attendance(self):
         mapped_data = {
             work_entry: [
-                pytz.utc.localize(work_entry.date_start).astimezone(pytz.timezone(work_entry.employee_id.tz)), # Start date
-                pytz.utc.localize(work_entry.date_stop).astimezone(pytz.timezone(work_entry.employee_id.tz)) # End date
+                work_entry.date_start,
+                work_entry.date_stop,
             ] for work_entry in self
         }
 

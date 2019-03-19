@@ -1,8 +1,10 @@
 # # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import pytz
+from datetime import datetime
 from dateutil.relativedelta import relativedelta
+import pytz
+
 from odoo.fields import Datetime, Date
 from odoo.tests.common import tagged
 from odoo.addons.hr_payroll.tests.common import TestPayslipBase
@@ -10,15 +12,14 @@ from odoo.addons.hr_payroll.tests.common import TestPayslipBase
 
 @tagged('work_entry')
 class TestWorkEntry(TestPayslipBase):
-
     def setUp(self):
         super(TestWorkEntry, self).setUp()
         self.tz = pytz.timezone(self.richard_emp.tz)
-        self.start = self.to_datetime_tz('2015-11-01 01:00:00')
-        self.end = self.to_datetime_tz('2015-11-30 23:59:59')
+        self.start = datetime(2015, 11, 1, 1, 0, 0)
+        self.end = datetime(2015, 11, 30, 23, 59, 59)
         self.resource_calendar_id = self.env['resource.calendar'].create({'name': 'Zboub'})
         contract = self.env['hr.contract'].create({
-            'date_start': self.start - relativedelta(days=5),
+            'date_start': self.start.date() - relativedelta(days=5),
             'name': 'dodo',
             'resource_calendar_id': self.resource_calendar_id.id,
             'wage': 1000,
@@ -34,24 +35,6 @@ class TestWorkEntry(TestPayslipBase):
             'code': 'WORK200'
         })
 
-    def to_datetime_tz(self, datetime_str, tz=None):
-        tz = tz or self.tz
-        return tz.localize(Datetime.to_datetime(datetime_str))
-
-    def assertDatetimeTzEqual(self, value, target, tz=None):
-        """
-        Assert equality between two dates.
-        :param value: timezone naive datetime
-        :param target: datetime string
-        :param tz: timezone to interpret the tartget string
-        :raises AssertionError: raises exception if the two dates are not equal
-        """
-        tz = tz or self.tz
-        self.assertEqual(
-            pytz.utc.localize(value).astimezone(tz),
-            self.to_datetime_tz(target, tz=tz)
-        )
-
     def test_no_duplicate(self):
         self.richard_emp.generate_work_entry(self.start, self.end)
         pou1 = self.env['hr.work.entry'].search_count([])
@@ -60,16 +43,14 @@ class TestWorkEntry(TestPayslipBase):
         self.assertEqual(pou1, pou2, "Work entries should not be duplicated")
 
     def test_work_entry(self):
-
         self.richard_emp.generate_work_entry(self.start, self.end)
-
-        attendance_nb = len(self.resource_calendar_id._attendance_intervals(self.start, self.end))
+        attendance_nb = len(self.resource_calendar_id._attendance_intervals(self.start.replace(tzinfo=pytz.utc), self.end.replace(tzinfo=pytz.utc)))
         work_entry_nb = self.env['hr.work.entry'].search_count([('employee_id', '=', self.richard_emp.id)])
         self.assertEqual(attendance_nb, work_entry_nb, "One work_entry should be generated for each calendar attendance")
 
     def test_split_work_entry_by_day(self):
-        start = self.to_datetime_tz('2015-11-01 09:00:00')
-        end = self.to_datetime_tz('2015-11-03 18:00:00')
+        start = datetime(2015, 11, 1, 9, 0, 0)
+        end = datetime(2015, 11, 3, 18, 0, 0)
 
         # Work entry of type attendance should be split in three
         work_entry = self.env['hr.work.entry'].create({
@@ -83,18 +64,18 @@ class TestWorkEntry(TestPayslipBase):
         work_entries = work_entry._split_by_day()
         self.assertEqual(len(work_entries), 3, "Work entry should be split in three")
 
-        self.assertDatetimeTzEqual(work_entries[0].date_start, '2015-11-01 09:00:00')
-        self.assertDatetimeTzEqual(work_entries[0].date_stop, '2015-11-01 23:59:59')
+        self.assertEqual(work_entries[0].date_start, datetime(2015, 11, 1, 9, 0, 0))
+        self.assertEqual(work_entries[0].date_stop, datetime(2015, 11, 1, 23, 59, 59))
 
-        self.assertDatetimeTzEqual(work_entries[1].date_start, '2015-11-02 00:00:00')
-        self.assertDatetimeTzEqual(work_entries[1].date_stop, '2015-11-02 23:59:59')
+        self.assertEqual(work_entries[1].date_start, datetime(2015, 11, 2, 0, 0, 0))
+        self.assertEqual(work_entries[1].date_stop, datetime(2015, 11, 2, 23, 59, 59))
 
-        self.assertDatetimeTzEqual(work_entries[2].date_start, '2015-11-03 00:00:00')
-        self.assertDatetimeTzEqual(work_entries[2].date_stop, '2015-11-03 18:00:00')
+        self.assertEqual(work_entries[2].date_start, datetime(2015, 11, 3, 0, 0, 0))
+        self.assertEqual(work_entries[2].date_stop, datetime(2015, 11, 3, 18, 0, 0))
 
         # Test with end at mid-night -> should not create work_entry starting and ending at the same time (at 00:00)
-        start = self.to_datetime_tz('2013-11-01 00:00:00')
-        end = self.to_datetime_tz('2013-11-04 00:00:00')
+        start = datetime(2013, 11, 1, 0, 0, 0)
+        end = datetime(2013, 11, 4, 0, 0, 0)
 
         work_entry = self.env['hr.work.entry'].create({
             'name': '1',
@@ -105,19 +86,18 @@ class TestWorkEntry(TestPayslipBase):
         })
         work_entries = work_entry._split_by_day()
         self.assertEqual(len(work_entries), 3, "Work entry should be split in three")
-        self.assertDatetimeTzEqual(work_entries[0].date_start, '2013-11-01 00:00:00')
-        self.assertDatetimeTzEqual(work_entries[0].date_stop, '2013-11-01 23:59:59')
+        self.assertEqual(work_entries[0].date_start, datetime(2013, 11, 1, 0, 0, 0))
+        self.assertEqual(work_entries[0].date_stop, datetime(2013, 11, 1, 23, 59, 59))
 
-        self.assertDatetimeTzEqual(work_entries[1].date_start, '2013-11-02 00:00:00')
-        self.assertDatetimeTzEqual(work_entries[1].date_stop, '2013-11-02 23:59:59')
+        self.assertEqual(work_entries[1].date_start, datetime(2013, 11, 2, 0, 0, 0))
+        self.assertEqual(work_entries[1].date_stop, datetime(2013, 11, 2, 23, 59, 59))
 
-        self.assertDatetimeTzEqual(work_entries[2].date_start, '2013-11-03 00:00:00')
-        self.assertDatetimeTzEqual(work_entries[2].date_stop, '2013-11-03 23:59:59')
+        self.assertEqual(work_entries[2].date_start, datetime(2013, 11, 3, 0, 0, 0))
+        self.assertEqual(work_entries[2].date_stop, datetime(2013, 11, 3, 23, 59, 59))
 
     def test_approve_multiple_day_work_entry(self):
-
-        start = self.to_datetime_tz('2015-11-01 09:00:00')
-        end = self.to_datetime_tz('2015-11-03 18:00:00')
+        start = datetime(2015, 11, 1, 9, 0, 0)
+        end = datetime(2015, 11, 3, 18, 0, 0)
 
         # Work entry of type attendance should be split in three
         work_entry = self.env['hr.work.entry'].create({
@@ -134,8 +114,8 @@ class TestWorkEntry(TestPayslipBase):
         self.assertEqual(len(work_entries), 3, "Work entry should be split in three")
 
     def test_duplicate_global_work_entry_to_attendance(self):
-        start = self.to_datetime_tz('2015-11-01 09:00:00')
-        end = self.to_datetime_tz('2015-11-03 18:00:00')
+        start = datetime(2015, 11, 1, 9, 0, 0)
+        end = datetime(2015, 11, 3, 18, 0, 0)
 
         work_entry = self.env['hr.work.entry'].create({
             'name': '1',
@@ -153,8 +133,8 @@ class TestWorkEntry(TestPayslipBase):
         self.assertEqual(attendance_nb, 0, "It should not duplicate the 'normal/global' work_entry type")
 
     def test_duplicate_work_entry_to_attendance(self):
-        start = self.to_datetime_tz('2015-11-01 09:00:00')
-        end = self.to_datetime_tz('2015-11-03 18:00:00')
+        start = datetime(2015, 11, 1, 9, 0, 0)
+        end = datetime(2015, 11, 3, 18, 0, 0)
 
         # Work entry (not leave) should be split in three attendance
         work_entry = self.env['hr.work.entry'].create({
@@ -191,8 +171,8 @@ class TestWorkEntry(TestPayslipBase):
         ]))
 
     def test_create_work_entry_leave(self):
-        start = self.to_datetime_tz('2015-11-01 09:00:00')
-        end = self.to_datetime_tz('2015-11-03 18:00:00')
+        start = datetime(2015, 11, 1, 9, 0, 0)
+        end = datetime(2015, 11, 3, 18, 0, 0)
 
         work_entry = self.env['hr.work.entry'].create({
             'name': 'Richard leave from work_entry',
@@ -208,8 +188,8 @@ class TestWorkEntry(TestPayslipBase):
         self.assertEqual(calendar_leave.work_entry_type_id, work_entry.work_entry_type_id, "It should have the same work_entry type")
 
     def test_validate_conflict_work_entry(self):
-        start = self.to_datetime_tz('2015-11-01 09:00:00')
-        end = self.to_datetime_tz('2015-11-01 13:00:00')
+        start = datetime(2015, 11, 1, 9, 0, 0)
+        end = datetime(2015, 11, 1, 13, 0, 0)
         work_entry1 = self.env['hr.work.entry'].create({
             'name': '1',
             'employee_id': self.richard_emp.id,
@@ -261,8 +241,8 @@ class TestWorkEntry(TestPayslipBase):
         self.assertFalse(work_entry1.action_validate(),"It should not validate work_entries without a type")
 
     def test_approve_leave_work_entry(self):
-        start = self.to_datetime_tz('2015-11-01 09:00:00')
-        end = self.to_datetime_tz('2015-11-03 13:00:00')
+        start = datetime(2015, 11, 1, 9, 0, 0)
+        end = datetime(2015, 11, 3, 13, 0, 0)
         leave = self.env['hr.leave'].create({
             'name': 'Doctor Appointment',
             'employee_id': self.richard_emp.id,
@@ -283,13 +263,13 @@ class TestWorkEntry(TestPayslipBase):
         leave.action_approve()
 
         new_leave_work_entries = self.env['hr.work.entry'].search([
-            ('date_start', '=', Datetime.to_datetime('2015-11-01 09:00:00')),
-            ('date_stop', '=', Datetime.to_datetime('2015-11-02 09:00:00')),
+            ('date_start', '=', Datetime.to_datetime(datetime(2015, 11, 1, 9, 0, 0))),
+            ('date_stop', '=', Datetime.to_datetime(datetime(2015, 11, 2, 9, 0, 0))),
             ('work_entry_type_id.is_leave', '=', True)
         ])
 
         new_work_entries = self.env['hr.work.entry'].search([
-            ('date_start', '=', Datetime.to_datetime('2015-11-02 09:00:01')),
+            ('date_start', '=', Datetime.to_datetime(datetime(2015, 11, 2, 9, 0, 1))),
             ('date_stop', '=', end),
             ('work_entry_type_id.is_leave', '=', False)
         ])
@@ -300,8 +280,8 @@ class TestWorkEntry(TestPayslipBase):
         self.assertTrue((new_work_entries | new_leave_work_entries).action_validate(), "It should be able to validate the work_entries")
 
     def test_refuse_leave_work_entry(self):
-        start = self.to_datetime_tz('2015-11-01 09:00:00')
-        end = self.to_datetime_tz('2015-11-03 13:00:00')
+        start = datetime(2015, 11, 1, 9, 0, 0)
+        end = datetime(2015, 11, 3, 13, 0, 0)
         leave = self.env['hr.leave'].create({
             'name': 'Doctor Appointment',
             'employee_id': self.richard_emp.id,
@@ -330,8 +310,8 @@ class TestWorkEntry(TestPayslipBase):
         self.assertEqual(data['hours'], 168.0)
 
     def test_time_extra_work_entry(self):
-        start = self.to_datetime_tz('2015-11-01 10:00:00')
-        end = self.to_datetime_tz('2015-11-01 17:00:00')
+        start = datetime(2015, 11, 1, 10, 0, 0)
+        end = datetime(2015, 11, 1, 17, 0, 0)
         work_entry = self.env['hr.work.entry'].create({
             'name': '1',
             'employee_id': self.richard_emp.id,
@@ -346,8 +326,8 @@ class TestWorkEntry(TestPayslipBase):
 
     def test_time_week_leave_work_entry(self):
         # /!\ this is a week day => it exists an calendar attendance at this time
-        start = self.to_datetime_tz('2015-11-02 10:00:00', tz=pytz.utc)
-        end = self.to_datetime_tz('2015-11-02 17:00:00', tz=pytz.utc)
+        start = datetime(2015, 11, 2, 10, 0, 0)
+        end = datetime(2015, 11, 2, 17, 0, 0)
         leave_work_entry = self.env['hr.work.entry'].create({
             'name': '1leave',
             'employee_id': self.richard_emp.id,
@@ -362,8 +342,8 @@ class TestWorkEntry(TestPayslipBase):
 
     def test_time_weekend_leave_work_entry(self):
         # /!\ this is in the weekend => no calendar attendance at this time
-        start = self.to_datetime_tz('2015-11-01 10:00:00', tz=pytz.utc)
-        end = self.to_datetime_tz('2015-11-01 17:00:00', tz=pytz.utc)
+        start = datetime(2015, 11, 1, 10, 0, 0)
+        end = datetime(2015, 11, 1, 17, 0, 0)
         leave_work_entry = self.env['hr.work.entry'].create({
             'name': '1leave',
             'employee_id': self.richard_emp.id,
@@ -378,8 +358,8 @@ class TestWorkEntry(TestPayslipBase):
 
     def test_payslip_generation_with_leave(self):
         # /!\ this is a week day => it exists an calendar attendance at this time
-        start = self.to_datetime_tz('2015-11-02 10:00:00', tz=pytz.utc)
-        end = self.to_datetime_tz('2015-11-02 17:00:00', tz=pytz.utc)
+        start = datetime(2015, 11, 2, 10, 0, 0)
+        end = datetime(2015, 11, 2, 17, 0, 0)
         leave_work_entry = self.env['hr.work.entry'].create({
             'name': '1leave',
             'employee_id': self.richard_emp.id,
@@ -402,8 +382,8 @@ class TestWorkEntry(TestPayslipBase):
 
     def test_payslip_generation_with_extra_work(self):
         # /!\ this is in the weekend (Sunday) => no calendar attendance at this time
-        start = self.to_datetime_tz('2015-11-01 10:00:00', tz=pytz.utc)
-        end = self.to_datetime_tz('2015-11-01 17:00:00', tz=pytz.utc)
+        start = datetime(2015, 11, 1, 10, 0, 0)
+        end = datetime(2015, 11, 1, 17, 0, 0)
         work_entry = self.env['hr.work.entry'].create({
             'name': 'Extra',
             'employee_id': self.richard_emp.id,

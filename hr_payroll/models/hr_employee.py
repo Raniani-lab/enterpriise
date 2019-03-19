@@ -41,16 +41,11 @@ class HrEmployee(models.Model):
 
     @api.model
     def generate_work_entry(self, date_start, date_stop):
-        def _format_datetime(date):
-            fmt = '%Y-%m-%d %H:%M:%S'
-            date = datetime.strptime(date, fmt) if isinstance(date, str) else date
-            return date.replace(tzinfo=pytz.utc) if not date.tzinfo else date
-
         attendance_type = self.env.ref('hr_payroll.work_entry_type_attendance')
         vals_list = []
 
-        date_start = _format_datetime(date_start)
-        date_stop = _format_datetime(date_stop)
+        date_start = fields.Datetime.to_datetime(date_start)
+        date_stop = fields.Datetime.to_datetime(date_stop)
 
         current_contracts = self.env['hr.employee']._get_all_contracts(date_start, date_stop, states=['open', 'pending', 'close'])
         current_employees = current_contracts.mapped('employee_id')
@@ -60,13 +55,12 @@ class HrEmployee(models.Model):
             mapped_data[contract.employee_id] |= contract
 
         for employee, contracts in mapped_data.items():
-
             # Approved leaves
             emp_leaves = employee.resource_calendar_id.leave_ids.filtered(
                 lambda r:
                     r.resource_id == employee.resource_id and
-                    r.date_from.replace(tzinfo=pytz.utc) <= date_stop and
-                    r.date_to.replace(tzinfo=pytz.utc) >= date_start
+                    r.date_from <= date_stop and
+                    r.date_to >= date_start
                 )
             global_leaves = employee.resource_calendar_id.global_leave_ids
 
@@ -74,9 +68,8 @@ class HrEmployee(models.Model):
             vals_list.extend(employee_leaves._get_work_entries_values())
 
             for contract in contracts:
-
-                date_start_work_entries = max(date_start, datetime.combine(contract.date_start, datetime.min.time()).replace(tzinfo=pytz.utc))
-                date_stop_work_entries = min(date_stop, datetime.combine(contract.date_end or datetime.max.date(), datetime.max.time()).replace(tzinfo=pytz.utc))
+                date_start_work_entries = max(date_start, fields.Datetime.to_datetime(contract.date_start)).replace(tzinfo=pytz.utc)
+                date_stop_work_entries = min(date_stop, datetime.combine(contract.date_end or datetime.max.date(), datetime.max.time())).replace(tzinfo=pytz.utc)
 
                 calendar = contract.resource_calendar_id
                 resource = employee.resource_id
@@ -84,10 +77,11 @@ class HrEmployee(models.Model):
                 # Attendances
                 for interval in attendances:
                     work_entry_type_id = interval[2].mapped('work_entry_type_id')[:1] or attendance_type
+                    # All benefits generated here are using datetimes converted from the employee's timezone
                     vals_list += [{
                         'name': "%s: %s" % (work_entry_type_id.name, employee.name),
-                        'date_start': interval[0].astimezone(pytz.utc),
-                        'date_stop': interval[1].astimezone(pytz.utc),
+                        'date_start': interval[0].astimezone(pytz.utc).replace(tzinfo=None),
+                        'date_stop': interval[1].astimezone(pytz.utc).replace(tzinfo=None),
                         'work_entry_type_id': work_entry_type_id.id,
                         'employee_id': employee.id,
                         'contract_id': contract.id,

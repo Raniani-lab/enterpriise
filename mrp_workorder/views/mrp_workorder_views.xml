@@ -42,7 +42,17 @@
         <field name="arch" type="xml">
             <form string="Production Workcenter" delete="0" create="0" class="o_workorder_tablet">
                 <field name="allow_producing_quantity_change" invisible="1"/>
-                <field name="workorder_line_ids" invisible="1"/>
+                <field name="workorder_line_ids" invisible="1">
+                    <!-- to save those values updated in _onchange_qty_producing -->
+                    <tree>
+                        <field name="qty_done"/>
+                        <field name="qty_reserved"/>
+                        <field name="qty_to_consume"/>
+                        <field name="product_id"/>
+                        <field name="product_uom_id"/>
+                        <field name="move_id"/>
+                    </tree>
+                </field>
                 <field name="current_quality_check_id" invisible="1"/>
                 <field name="check_ids" invisible="1"/>
                 <field name="component_tracking" invisible="1"/>

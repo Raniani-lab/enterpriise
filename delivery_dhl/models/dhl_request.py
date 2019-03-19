@@ -301,9 +301,9 @@ class DHLProvider():
 
         consignee_node = etree.SubElement(root, "Consignee")
         if param["recipient_partner"].parent_id:
-            etree.SubElement(consignee_node, "CompanyName").text = self._remove_accents(param["recipient_partner"].parent_id.name)
+            etree.SubElement(consignee_node, "CompanyName").text = param["recipient_partner"].parent_id.name
         else:
-            etree.SubElement(consignee_node, "CompanyName").text = self._remove_accents(param["recipient_partner"].name)
+            etree.SubElement(consignee_node, "CompanyName").text = param["recipient_partner"].name
         etree.SubElement(consignee_node, "AddressLine").text = param["recipient_streetLines"]
         etree.SubElement(consignee_node, "City").text = param["recipient_partner"].city
 

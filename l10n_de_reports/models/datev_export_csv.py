@@ -274,7 +274,7 @@ class DatevExportCSV(models.AbstractModel):
                     for tax in aml.tax_ids:
                         # Find tax line in the move and get it's tax_base_amount
                         tax_line = m.line_ids.filtered(lambda l: l.tax_line_id == tax and l.partner_id == aml.partner_id)
-                        amount += abs(tax_line.balance) + abs(tax_line.tax_base_amount)
+                        amount += abs(sum(tax_line.mapped('balance'))) + abs(sum(tax_line.mapped('tax_base_amount')))
 
                 # account and counterpart account
                 to_account_code = self._find_partner_account(aml.move_id.l10n_de_datev_main_account_id, aml.partner_id)

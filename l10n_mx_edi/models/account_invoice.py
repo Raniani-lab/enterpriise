@@ -671,9 +671,14 @@ class AccountInvoice(models.Model):
         taxes = {}
         for line in self.invoice_line_ids.filtered('price_subtotal'):
             price = line.price_unit * (1.0 - (line.discount or 0.0) / 100.0)
-            tax_line = {tax['id']: tax for tax in line.invoice_line_tax_ids.compute_all(
+            taxes_line = line.invoice_line_tax_ids
+            taxes_line = taxes_line.filtered(
+                lambda tax: tax.amount_type != 'group') + taxes_line.filtered(
+                    lambda tax: tax.amount_type == 'group').mapped(
+                        'children_tax_ids')
+            tax_line = {tax['id']: tax for tax in taxes_line.compute_all(
                 price, line.currency_id, line.quantity, line.product_id, line.partner_id)['taxes']}
-            for tax in line.invoice_line_tax_ids.filtered(lambda r: r.l10n_mx_cfdi_tax_type != 'Exento'):
+            for tax in taxes_line.filtered(lambda r: r.l10n_mx_cfdi_tax_type != 'Exento'):
                 tax_dict = tax_line.get(tax.id, {})
                 amount = round(abs(tax_dict.get(
                     'amount', tax.amount / 100 * float("%.2f" % line.price_subtotal))), 2)

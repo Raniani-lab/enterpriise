@@ -78,6 +78,7 @@ class MrpProductionWorkcenterLine(models.Model):
                     move.product_id.uom_id,
                     round=False
                 ) - sum(completed_lines.mapped('qty_done'))
+                wo.qty_done = min(wo.qty_done, wo.component_remaining_qty)
                 wo.component_uom_id = lines[0].product_uom_id
 
     def action_back(self):
@@ -355,9 +356,13 @@ class MrpProductionWorkcenterLine(models.Model):
             })
             # Update the default quantities in component registration steps
             if old_allow_producing_quantity_change and not self.allow_producing_quantity_change:
-                for check in self.check_ids.filtered(lambda c: c.test_type == 'register_consumed_materials' and c.point_id and c.point_id.component_id.tracking != 'serial' and c.quality_state == 'none'):
-                    moves = self.move_raw_ids.filtered(lambda m: m.state not in ('done', 'cancel') and m.product_id == check.point_id.component_id)
-                    check.qty_done = float_round(check.qty_done * self.qty_producing, precision_rounding=moves[0].product_uom.rounding)
+                for check in self.check_ids.filtered(lambda c: c.test_type == 'register_consumed_materials' and c.component_id.tracking != 'serial' and c.quality_state == 'none'):
+                    moves = self.move_raw_ids.filtered(lambda m: m.state not in ('done', 'cancel') and m.product_id == check.component_id)
+                    check.qty_done = moves[0].product_uom._compute_quantity(
+                        self.qty_producing * sum(moves.mapped('unit_factor')),
+                        moves[0].product_id.uom_id,
+                        round=False
+                    )
 
     def action_menu(self):
         return {

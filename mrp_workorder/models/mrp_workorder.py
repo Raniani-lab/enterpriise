@@ -220,16 +220,29 @@ class MrpProductionWorkcenterLine(models.Model):
         """ In case of non tracked component without 'register component' step,
         we need to fill the qty_done at this step"""
         lines = super(MrpProductionWorkcenterLine, self)._generate_lines_values(move, qty_to_consume)
-        step = self.env['quality.point'].search([
+        steps = self._get_quality_points(lines)
+        for line in lines:
+            if line['product_id'] in steps.mapped('component_id.id') or move.has_tracking != 'none':
+                line['qty_done'] = 0
+        return lines
+
+    def _update_workorder_lines(self):
+        res = super(MrpProductionWorkcenterLine, self)._update_workorder_lines()
+        if res['to_update']:
+            steps = self._get_quality_points(res['to_update'].values())
+            for line, values in res['to_update'].items():
+                if line['product_id'] in steps.mapped('component_id.id') or line.move_id.has_tracking != 'none':
+                    values['qty_done'] = 0
+        return res
+
+    def _get_quality_points(self, iterator):
+        steps = self.env['quality.point'].search([
             ('test_type', '=', 'register_consumed_materials'),
-            ('component_id', 'in', [line['product_id'] for line in lines]),
+            ('component_id', 'in', [values.get('product_id', False) for values in iterator]),
             ('product_id', '=', self.product_id.id),
             ('operation_id', 'in', self.production_id.routing_id.operation_ids.ids)
         ])
-        for line in lines:
-            if step:
-                line['qty_done'] = 0
-        return lines
+        return steps
 
     def _next(self):
         """ This function:

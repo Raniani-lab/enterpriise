@@ -466,7 +466,7 @@ var DocumentsInspector = Widget.extend({
             $.when(this.savingDef).then(function () {
                 var records = _.pluck(self.records, 'data');
                 self.trigger_up('kanban_image_clicked', {
-                    recordID: activeID,                
+                    recordID: activeID,
                     recordList: records
                 });
             });

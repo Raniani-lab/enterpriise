@@ -103,16 +103,44 @@ class DeliverCarrier(models.Model):
                 label = requests.get(label_url)
                 labels.append(('LabelEasypost-%s.%s' % (track_number, self.easypost_label_file_type), label.content))
 
-            logmessage = (_("Shipping label for packages"))
-            picking.message_post(body=logmessage, attachments=labels)
-            picking.message_post(body=carrier_tracking_link)
+            logmessage = _("Shipment created into Easypost<br/>"
+                           "<b>Tracking Numbers:</b> %s<br/>") % (carrier_tracking_link)
+            pickings.message_post(body=logmessage, attachments=labels)
 
             shipping_data = {'exact_price': price,
                              'tracking_number': carrier_tracking_ref}
             res = res + [shipping_data]
             # store order reference on picking
             picking.ep_order_ref = result.get('id')
+            if picking.carrier_id.return_label_on_delivery:
+                self.get_return_label(picking)
         return res
+
+    def easypost_get_return_label(self, pickings, tracking_number=None, origin_date=None):
+        ep = EasypostRequest(self.easypost_production_api_key if self.prod_environment else self.easypost_test_api_key, self.log_xml)
+        result = ep.send_shipping(self, pickings.partner_id, pickings.picking_type_id.warehouse_id.partner_id, picking=pickings, is_return=True)
+        if result.get('error_message'):
+            raise UserError(_(result['error_message']))
+        rate = result.get('rate')
+        if rate['currency'] == pickings.company_id.currency_id.name:
+            price = rate['rate']
+        else:
+            quote_currency = self.env['res.currency'].search([('name', '=', rate['currency'])], limit=1)
+            price = quote_currency._convert(float(rate['rate']), pickings.company_id.currency_id, self.env['res.users']._get_company(), fields.Date.today())
+
+        # return tracking information
+        carrier_tracking_link = ""
+        for track_number, tracker_url in result.get('track_shipments_url').items():
+            carrier_tracking_link += '<a href=' + tracker_url + '>' + track_number + '</a><br/>'
+
+        carrier_tracking_ref = ' + '.join(result.get('track_shipments_url').keys())
+
+        labels = []
+        for track_number, label_url in result.get('track_label_data').items():
+            label = requests.get(label_url)
+            labels.append(('%s-%s-%s.%s' % (self.get_return_label_prefix(), 'blablabla', track_number, self.easypost_label_file_type), label.content))
+        pickings.message_post(body='Return Label', attachments=labels)
+
 
     def easypost_get_tracking_link(self, picking):
         """ Returns the tracking links from a picking. Easypost reutrn one

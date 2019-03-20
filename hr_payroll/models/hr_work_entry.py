@@ -37,7 +37,7 @@ class HrWorkEnrty(models.Model):
         default=lambda self: self.env['res.company']._company_default_get())
 
     _sql_constraints = [
-        ('_unique', 'unique (date_start, date_stop, employee_id, work_entry_type_id)', "Work entry already exists for this attendance"),
+        ('_unique', 'unique (date_start, date_stop, employee_id, work_entry_type_id, active)', "Work entry already exists for this attendance"),
         ('_work_entry_has_end', 'check (date_stop IS NOT NULL OR duration <> 0)', 'Work entry must end. Please define an end date or a duration.'),
         ('_work_entry_start_before_end', 'check (date_stop is null OR (date_stop > date_start))', 'Starting time should be before end time.')
     ]
@@ -99,12 +99,14 @@ class HrWorkEnrty(models.Model):
             WHERE
             b1.date_start <= %s
             AND b1.date_stop >= %s
+            AND active = TRUE
             AND EXISTS (
                 SELECT 1
                 FROM hr_work_entry b2
                 WHERE
                     b2.date_start <= %s
                     AND b2.date_stop >= %s
+                    AND active = TRUE
                     AND tsrange(b1.date_start, b1.date_stop, '()') && tsrange(b2.date_start, b2.date_stop, '()')
                     AND b1.id <> b2.id
                     AND b1.employee_id = b2.employee_id

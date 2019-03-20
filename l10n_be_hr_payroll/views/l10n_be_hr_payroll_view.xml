@@ -183,4 +183,42 @@
                 </xpath>
         </field>
     </record>
+
+    <record id="l10n_be_meal_voucher_report_view_search" model="ir.ui.view">
+        <field name="name">l10n_be.meal.voucher.report.search</field>
+        <field name="model">l10n_be.meal.voucher.report</field>
+        <field name="arch" type="xml">
+            <search string="Search Meal Voucher Report">
+                <filter name="date_filter" string="Months" date="day" default_period="this_year"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="hr_payslip_report_action" model="ir.actions.act_window">
+        <field name="name">Meal Vouchers</field>
+        <field name="res_model">l10n_be.meal.voucher.report</field>
+        <field name="view_mode">pivot</field>
+        <field name="context">
+            {'search_default_date_filter': 1}
+        </field>
+    </record>
+
+     <record id="l10n_be_meal_voucher_report_view_pivot" model="ir.ui.view">
+        <field name="name">l10n_be.meal.voucher.report</field>
+        <field name="model">l10n_be.meal.voucher.report</field>
+        <field name="arch" type="xml">
+            <pivot string="Meal Vouchers" disable_linking="True">
+                <field name="employee_id" type="row"/>
+                <field name="day"  type="col"/>
+            </pivot>
+        </field>
+    </record>
+
+    <menuitem
+        id="menu_hr_payroll_meal_voucher"
+        action="hr_payslip_report_action"
+        parent="hr_payroll.menu_hr_payroll_report"
+        sequence="20"
+    />
+
 </odoo>

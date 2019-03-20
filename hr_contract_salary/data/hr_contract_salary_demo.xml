@@ -33,6 +33,7 @@
         <field name="study_school">Université Catholique de Louvain-la-Neuve</field>
         <field name="country_id" ref="base.be"/>
         <field name="country_id" ref="base.be"/>
+        <field name="resource_calendar_id" ref="resource.resource_calendar_std_38h"/>
         <field name="identification_id">91-07-28-458-83</field>
         <field name="bank_account_id" ref="hr_contract_salary.res_partner_bank_account_laurie_poiret"/>
         <field name="image" type="base64" file="hr_contract_salary/static/img/hr_employe_laurie_poiret.jpg"/>
@@ -241,6 +242,7 @@
         <field name="contract_update_template_id" ref="sign_template_cdi_developer"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="date_start" eval="(DateTime.today() + relativedelta(years=-1, month=1, day=1, days=-1))"/>
+        <field name="resource_calendar_id" ref="resource.resource_calendar_std_38h"/>
     </record>
 
     <record id="base.partner_demo" model="res.partner">

@@ -21,12 +21,14 @@ Belgian Payroll Rules.
     """,
 
     'data': [
+        'security/ir.model.access.csv',
         'data/report_paperformat.xml',
         'views/report_payslip_template.xml',
         'views/reports.xml',
         'wizard/hr_payroll_employee_departure_notice_views.xml',
         'wizard/hr_payroll_employee_departure_holiday_attest_views.xml',
         'views/l10n_be_hr_payroll_view.xml',
+        'views/hr_work_entry_views.xml',
         'views/report_termination_fees.xml',
         'views/report_termination_holidays.xml',
         'data/l10n_be_hr_payroll_data.xml',

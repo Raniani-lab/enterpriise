@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import datetime
+from datetime import date, datetime, time
 from odoo.tests import common 
 
 
@@ -15,8 +15,8 @@ class TestPayslip(common.TransactionCase):
         # Create a payslip for Laurie Poiret from the 1rst to the 28th of February 2018
         Payslip = self.env['hr.payslip']
         payslip = Payslip.new(Payslip.default_get(Payslip.fields_get()))
-        payslip.date_from = datetime.date.today().replace(year=2018, month=2, day=1)
-        payslip.date_to = datetime.date.today().replace(year=2018, month=2, day=28)
+        payslip.date_from = date.today().replace(year=2018, month=2, day=1)
+        payslip.date_to = date.today().replace(year=2018, month=2, day=28)
         payslip.employee_id = self.env.ref('hr_contract_salary.hr_employee_laurie_poiret').id
         payslip.onchange_employee()
         payslip._onchange_struct_id()
@@ -27,6 +27,11 @@ class TestPayslip(common.TransactionCase):
         # Check that there is one worked days line of 20 days
         self.assertEqual(len(payslip.worked_days_line_ids), 1)
         self.assertEqual(payslip.worked_days_line_ids.number_of_days, 20)
+
+        start = datetime.combine(payslip.date_from, time.min)
+        end = datetime.combine(payslip.date_to, time.max)
+        payslip.employee_id.generate_work_entry(start, end)
+        self.env['hr.work.entry'].search([('employee_id', '=', payslip.employee_id.id)]).action_validate()
 
         # Compute the payslip lines
         payslip.compute_sheet()

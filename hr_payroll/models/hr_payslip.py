@@ -147,17 +147,17 @@ class HrPayslip(models.Model):
             payslip.write({'line_ids': lines, 'number': number, 'state': 'verify', 'compute_date': fields.Date.today()})
         return True
 
-    @api.model
-    def get_worked_day_lines(self, contract, date_from, date_to):
+    def get_worked_day_lines(self):
         """
-        @param contract: Browse record of contracts
-        @return: returns a list of dict containing the worked days that should be applied for the given contract between date_from and date_to
+        :returns: a list of dict containing the worked days values that should be applied for the given payslip
         """
         res = []
         # fill only if the contract as a working schedule linked
+        self.ensure_one()
+        contract = self.contract_id
         if contract.resource_calendar_id:
-            day_from = datetime.combine(max(fields.Date.from_string(date_from), contract.date_start), time.min)
-            day_to = datetime.combine(min(fields.Date.from_string(date_to), contract.date_end or date.max), time.max)
+            day_from = datetime.combine(max(self.date_from, contract.date_start), time.min)
+            day_to = datetime.combine(min(self.date_to, contract.date_end or date.max), time.max)
 
             calendar = contract.resource_calendar_id
 
@@ -181,7 +181,6 @@ class HrPayslip(models.Model):
             'float_round': float_round
         }
 
-    @api.model
     def _get_payslip_lines(self):
         def _sum_salary_rule_category(localdict, category, amount):
             if category.parent_id:
@@ -261,7 +260,7 @@ class HrPayslip(models.Model):
 
 
         #computation of the salary worked days
-        worked_days_line_ids = self.get_worked_day_lines(self.contract_id, date_from, date_to)
+        worked_days_line_ids = self.get_worked_day_lines()
         worked_days_lines = self.worked_days_line_ids.browse([])
         for r in worked_days_line_ids:
             worked_days_lines += worked_days_lines.new(r)

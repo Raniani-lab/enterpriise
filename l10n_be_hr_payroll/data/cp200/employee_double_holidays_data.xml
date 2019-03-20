@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- YTI TODO set 1 -->
-    <data noupdate="0">
+    <data>
 
         <!-- Salary Structure -->
         <record id="hr_payroll_structure_cp200_double_holiday" model="hr.payroll.structure">

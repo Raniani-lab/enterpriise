@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.1+e\n"
+"Project-Id-Version: Odoo Server saas~12.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-16 08:13+0000\n"
-"PO-Revision-Date: 2019-01-16 08:13+0000\n"
+"POT-Creation-Date: 2019-03-20 14:08+0000\n"
+"PO-Revision-Date: 2019-03-20 14:08+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -21,7 +21,7 @@ msgid "% Time"
 msgstr ""
 
 #. module: project_forecast
-#: code:addons/project_forecast/models/project_forecast.py:200
+#: code:addons/project_forecast/models/project_forecast.py:202
 #, python-format
 msgid "%s Task(s): %s"
 msgstr ""
@@ -53,7 +53,6 @@ msgstr ""
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_task__allow_forecast
-#: model_terms:ir.ui.view,arch_db:project_forecast.project_view_form_inherit_project_forecast
 msgid "Allow Forecast"
 msgstr ""
 
@@ -184,7 +183,7 @@ msgid "Forecast"
 msgstr ""
 
 #. module: project_forecast
-#: code:addons/project_forecast/models/project_forecast.py:274
+#: code:addons/project_forecast/models/project_forecast.py:276
 #, python-format
 msgid "Forecast (in %s)"
 msgstr ""
@@ -230,7 +229,7 @@ msgid "Forecast end date should be greater or equal to its start date"
 msgstr ""
 
 #. module: project_forecast
-#: code:addons/project_forecast/models/project_forecast.py:198
+#: code:addons/project_forecast/models/project_forecast.py:200
 #, python-format
 msgid "Forecast should not overlap existing forecasts. To solve this, check the project(s): %s."
 msgstr ""
@@ -246,7 +245,7 @@ msgid "Forecast: view by project"
 msgstr ""
 
 #. module: project_forecast
-#: code:addons/project_forecast/models/project_forecast.py:164
+#: code:addons/project_forecast/models/project_forecast.py:166
 #, python-format
 msgid "Forecasted time must be positive"
 msgstr ""
@@ -257,7 +256,7 @@ msgid "Future"
 msgstr ""
 
 #. module: project_forecast
-#: code:addons/project_forecast/models/project_forecast.py:296
+#: code:addons/project_forecast/models/project_forecast.py:298
 #, python-format
 msgid "Grid adjustment for project forecasts only supports the 'start_date' columns field and the 'resource_time' cell field, got respectively %(column_field)r and %(cell_field)r"
 msgstr ""
@@ -425,7 +424,7 @@ msgid "You cannot delete a task containing forecasts. You can either delete all 
 msgstr ""
 
 #. module: project_forecast
-#: code:addons/project_forecast/models/project_forecast.py:170
+#: code:addons/project_forecast/models/project_forecast.py:172
 #, python-format
 msgid "Your task is not in the selected project."
 msgstr ""
@@ -436,7 +435,7 @@ msgid "day(s)"
 msgstr ""
 
 #. module: project_forecast
-#: code:addons/project_forecast/models/project_forecast.py:109
+#: code:addons/project_forecast/models/project_forecast.py:108
 #, python-format
 msgid "undefined"
 msgstr ""

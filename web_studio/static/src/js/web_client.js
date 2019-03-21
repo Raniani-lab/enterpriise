@@ -275,9 +275,11 @@ WebClient.include({
                 viewType: controller.viewType,
             }));
         } else {
-            // the app creator is not opened here, it's opened by clicking on
-            // the "New App" icon, when the HomeMenu is in `studio` mode.
-            this.menu.toggle_mode(true, false);  // hide the back button
+            def.then(function() {
+                // the app creator is not opened here, it's opened by clicking on
+                // the "New App" icon, when the HomeMenu is in `studio` mode.
+                self.menu.toggle_mode(true, false);  // hide the back button
+            });
         }
 
         return Promise.resolve(def).then(function () {

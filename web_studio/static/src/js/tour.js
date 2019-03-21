@@ -487,6 +487,7 @@ tour.register('web_studio_new_report_tour', {
     trigger: 'ul.o_field_selector_page li:contains(ID)'
 }, {
     // update the title of the column
+    extra_trigger: '.o_web_studio_report_editor iframe span[t-field="table_line.id"]',
     trigger: '.o_web_studio_report_editor iframe table thead span:contains(Name) ', // the name title
     //extra_trigger: '.o_web_studio_report_editor iframe span[t-field="table_line.display_name"]:not(:contains(YourCompany, Administrator))', // the id has been updated in the iframe
 }, {

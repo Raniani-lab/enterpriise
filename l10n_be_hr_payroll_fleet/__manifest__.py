@@ -11,6 +11,7 @@
         'views/fleet_views.xml',
         'views/res_config_settings_views.xml',
         'views/hr_contract_views.xml',
+        'views/report_payslip_templates.xml',
     ],
     'auto_install': True,
 }

@@ -198,7 +198,8 @@ return Widget.extend(StandaloneFieldManagerMixin, {
         if (this.state.mode === 'view' && this.view_type === 'gantt') {
             // precision attribute in gantt is complicated to write so we split it
             // {'day': 'hour:half', 'week': 'day:half', 'month': 'day', 'year': 'month:quarter'}
-            this.state.attrs.ganttPrecision = JSON.parse(this.state.attrs.precision || '{}');
+            this.state.attrs.ganttPrecision = this.state.attrs.precision ? pyUtils.py_eval(this.state.attrs.precision) : {};
+
         }
     },
     /**

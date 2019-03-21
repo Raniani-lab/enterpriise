@@ -14,12 +14,13 @@ It gives the Administrator user access to all accounting features such as journa
 It assigns manager and user access rights to the Administrator for the accounting application and only user rights to the Demo user.
 """,
     'website': 'https://www.odoo.com/page/accounting',
-    'depends': ['account', 'web_tour'],
+    'depends': ['account', 'mail_enterprise', 'web_tour'],
     'data': [
         'data/account_accountant_data.xml',
         'data/digest_data.xml',
         'security/account_accountant_security.xml',
         'views/account_accountant_templates.xml',
+        'views/account_move_views.xml',
         'views/digest_views.xml',
         'views/res_config_settings_views.xml',
         'views/product_views.xml',

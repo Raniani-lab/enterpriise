@@ -1,4 +1,4 @@
-.o_form_view {
+
     @include media-breakpoint-up(xxl, $o-extra-grid-breakpoints) {
         .o_attachment_preview {
             display: block;
@@ -73,4 +73,3 @@
             display: none;
         }
     }
-}

@@ -1,0 +1,17 @@
+.o_move_line_list_view {
+    display: flex;
+
+    > .o_move_line_list_view_wrapper {
+        flex: 1 1 auto;
+        overflow: auto;
+        height: 100%;
+    }
+    .o_attachment_preview {
+        overflow: auto;
+        height: 100%;
+
+        .o_move_line_empty, .o_move_line_without_attachment {
+            text-align: center;
+        }
+    }
+}

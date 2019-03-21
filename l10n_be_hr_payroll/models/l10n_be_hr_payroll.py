@@ -71,15 +71,10 @@ class HrContract(models.Model):
         help="Voluntarily increase withholding tax rate.")
     fiscal_voluntary_rate = fields.Float(string="Fiscal Voluntary Rate", help="Should be between 0 and 100 %")
 
-    @api.constrains('ip_wage_rate')
-    def _check_ip_wage_rate(self):
-        if self.filtered(lambda contract: contract.ip_wage_rate < 0 or contract.ip_wage_rate > 100):
-            raise ValidationError(_('The IP rate on wage should be between 0 and 100'))
-
-    @api.constrains('fiscal_voluntary_rate')
-    def _check_fiscal_voluntary_rate(self):
-        if self.filtered(lambda contract: contract.fiscal_voluntary_rate < 0 or contract.fiscal_voluntary_rate > 100):
-            raise ValidationError(_('The Fiscal Voluntary rate on wage should be between 0 and 100'))
+    _sql_constraints = [
+        ('check_percentage_ip_rate', 'CHECK(ip_wage_rate >= 0 AND ip_wage_rate <= 100)', 'The IP rate on wage should be between 0 and 100.'),
+        ('check_percentage_fiscal_voluntary_rate', 'CHECK(fiscal_voluntary_rate >= 0 AND fiscal_voluntary_rate <= 100)', 'The Fiscal Voluntary rate on wage should be between 0 and 100.')
+    ]
 
     @api.depends('holidays', 'wage', 'final_yearly_costs')
     def _compute_wage_with_holidays(self):

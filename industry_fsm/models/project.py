@@ -160,7 +160,7 @@ class Task(models.Model):
 
     def action_fsm_view_material(self):
         timesheet_access = self.env['account.analytic.line'].check_access_rights('create', raise_exception=False)
-        if timesheet_access and self.use_timesheet_timer and self.allow_timesheets and not self.timesheet_ids and not self.timesheet_timer_start:
+        if timesheet_access and self.company_id.use_timesheet_timer and self.allow_timesheets and not self.timesheet_ids and not self.timesheet_timer_start:
             raise UserError(_("You haven't started this task yet."))
         kanban_view = self.env.ref('industry_fsm.view_product_product_kanban_material')
         domain = [('product_tmpl_id', 'in', self.product_template_ids.ids)] if self.product_template_ids else False

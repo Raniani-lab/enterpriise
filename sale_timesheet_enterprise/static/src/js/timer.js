@@ -16,7 +16,10 @@ var TimerFieldWidget = AbstractField.extend({
     /**
      * @private
      */
-    _getDuration: function (dateStart) {
+    _getDuration: function (dateStart, datePause) {
+        if (datePause && dateStart) {
+            return moment(datePause).diff(moment(dateStart));
+        }
         if (dateStart) {
             return moment().diff(moment(dateStart));
         }
@@ -47,8 +50,8 @@ var TimerFieldWidget = AbstractField.extend({
             this.timer = setTimeout(function () {
                 self._startTimeCounter();
             }, 1000);
-            this.$el.text(moment.utc(self._getDuration(self.record.data.timesheet_timer_start)).format("HH:mm:ss"));
-        } else {
+            this.$el.text(moment.utc(self._getDuration(self.record.data.timesheet_timer_start, self.record.data.timesheet_timer_pause)).format("HH:mm:ss"));
+        } else if (!self.record.data.timesheet_timer_pause){
             clearTimeout(this.timer);
         }
     },

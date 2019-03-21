@@ -746,7 +746,8 @@ var GanttRow = Widget.extend({
      * @param {MouseEvent} ev
      */
     _onMouseMove: function (ev) {
-        if (this.options.canCreate && !this.$el[0].classList.contains('o_gantt_dragging')) {
+        if ((this.options.canCreate || this.options.canEdit) &&
+            !this.$el[0].classList.contains('o_gantt_dragging')) {
             // Pills are part of the cell in which they start. If a pill is
             // longer than one cell, and the user is hovering on the right
             // side of the pill, the browser will say that the left cell is

@@ -41,13 +41,6 @@
             }
         }
     }
-
-    // ------- Editable -------
-    .o_data_row.o_selected_row > .o_data_cell:not(.o_readonly_modifier) {
-        .o_input {
-            padding: $body-padding ($body-padding - 1) $body-padding $body-padding;
-        }
-    }
 }
 
 // Common style for list views (also inside form views)
@@ -151,10 +144,18 @@
     //--------------------------------------------------------------------------
     // Editable
     //--------------------------------------------------------------------------
-    .o_data_row.o_selected_row > .o_data_cell:not(.o_readonly_modifier) {
-        border-right: 1px solid $table-border-color;
-        .o_input {
-            padding-right: ($table-cell-padding-sm * 0.9);
+    &.o_editable_list {
+        .o_data_row.o_selected_row > .o_data_cell {
+            border-bottom: 1px solid $table-border-color;
+            &.o_required_modifier:not(.o_readonly_modifier) {
+                border-bottom: 1px solid black;
+                &.o_invalid_cell {
+                    border-bottom: 1px solid red;
+                }
+            }
+            &:not(.o_readonly_modifier) {
+                border-right: 1px solid $table-border-color;
+            }
         }
     }
 }

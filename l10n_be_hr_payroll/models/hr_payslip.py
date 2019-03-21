@@ -113,6 +113,11 @@ def compute_withholding_taxes(payslip, categories, worked_days, inputs):
         if employee.dependent_children >= 8:
             withholding_tax_amount -= 1428.0 + (employee.dependent_children - 8) * 256.0
 
+    if payslip.contract_id.fiscal_voluntarism:
+        voluntary_amount = categories.GROSS * payslip.contract_id.fiscal_voluntary_rate / 100
+        if voluntary_amount > withholding_tax_amount:
+            withholding_tax_amount = voluntary_amount
+
     return - max(withholding_tax_amount, 0.0)
 
 def compute_special_social_cotisations(payslip, categories, worked_days, inputs):

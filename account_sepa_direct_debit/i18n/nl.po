@@ -826,11 +826,11 @@ msgid ""
 "- 'active' means that this mandate can be used to pay invoices. \n"
 "- 'closed' designates a mandate that has been marked as not to use anymore without invalidating the previous transactions done with it.- 'revoked' means the mandate has been signaled as fraudulent by the customer. It cannot be used anymore, and should not ever have been. You will probably need to refund the related invoices, if any.\n"
 msgstr ""
-"De status van het mandaat is in. \n"
+"De status waarin het mandaat zich bevind. \n"
 "- 'concept' betekend dat het mandaat nog bevestigd moet worden voor het gebruikt kan worden,\n"
 "- 'actief' betekend dat het mandaat kan worden gebruikt om facturen te betalen.\n"
 "- 'gesloten' betekend dat het mandaat gemarkeerd is als niet meer te gebruiken.\n"
-"- 'ingetrokken' betekend dat het mandaat is gesignaleerd als fraudeleus door de klant. Het kan niet meer gebruikt worden, en zou nooit gebruikt moeten zijn. U zult waarschijnlijk de gerelateerde facturen crediteren, wanneer deze bestaan.\n"
+"- 'ingetrokken' betekend dat het mandaat is gesignaleerd als fraudeleus door de klant. Het kan niet meer gebruikt worden, en zou nooit gebruikt moeten zijn. U zult waarschijnlijk de gerelateerde facturen moeten crediteren, indien er bestaan.\n"
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,help:account_sepa_direct_debit.field_sdd_mandate__name

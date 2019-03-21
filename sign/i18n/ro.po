@@ -101,6 +101,10 @@ msgid ""
 "who clicks on the link. The link is private, only those that receive the "
 "link will be able to sign it.</span>"
 msgstr ""
+"<span class=\"text-muted\" attrs=\"{'invisible': [('url', '=', "
+"False)]}\">Distribuiți acest link și Odoo va crea un document nou pentru o "
+"persoană care dă clic pe link. Linkul este privat, numai cei care primesc "
+"linkul vor putea să-l semneze.</span>"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_item_type_view_form

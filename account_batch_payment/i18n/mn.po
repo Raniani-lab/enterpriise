@@ -3,14 +3,17 @@
 # * account_batch_payment
 # 
 # Translators:
-# Martin Trigaux, 2018
+# Martin Trigaux, 2019
+# Khishigbat Ganbold <khishigbat@asterisk-tech.mn>, 2019
+# Baskhuu Lodoikhuu <baskhuujacara@gmail.com>, 2019
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~11.5+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: Martin Trigaux, 2018\n"
+"PO-Revision-Date: 2019-01-16 08:32+0000\n"
+"Last-Translator: Baskhuu Lodoikhuu <baskhuujacara@gmail.com>, 2019\n"
 "Language-Team: Mongolian (https://www.transifex.com/odoo/teams/41243/mn/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -26,7 +29,7 @@ msgstr ""
 #. module: account_batch_payment
 #: model:ir.model,name:account_batch_payment.model_account_reconciliation_widget
 msgid "Account Reconciliation widget"
-msgstr ""
+msgstr "Дансны тулгалтын модел"
 
 #. module: account_batch_payment
 #: code:addons/account_batch_payment/models/account_batch_payment.py:75
@@ -38,12 +41,6 @@ msgstr ""
 #: code:addons/account_batch_payment/models/account_batch_payment.py:86
 #, python-format
 msgid "All payments in the batch must share the same payment method."
-msgstr ""
-
-#. module: account_batch_payment
-#: code:addons/account_batch_payment/models/account_batch_payment.py:81
-#, python-format
-msgid "All payments in the batch must share the same type."
 msgstr ""
 
 #. module: account_batch_payment
@@ -98,7 +95,7 @@ msgstr ""
 #: model:ir.ui.menu,name:account_batch_payment.menu_batch_payment_purchases
 #: model:ir.ui.menu,name:account_batch_payment.menu_batch_payment_sales
 msgid "Batch Payments"
-msgstr ""
+msgstr "Багц төлөлт"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__batch_type

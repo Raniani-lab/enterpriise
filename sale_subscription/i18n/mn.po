@@ -1627,6 +1627,8 @@ msgid ""
 "Invoice_${(object.number or '').replace('/','_')}${object.state == 'draft' "
 "and '_draft' or ''}"
 msgstr ""
+"Нэхэмжлэл_${(object.number or '').replace('/','_')}${object.state == 'draft'"
+" and '_draft' or ''}"
 
 #. module: sale_subscription
 #: model:mail.template,report_name:sale_subscription.email_payment_success

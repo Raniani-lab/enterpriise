@@ -571,6 +571,8 @@ msgstr "Уншаагүй зурвасын тоолуур"
 #: model_terms:ir.actions.act_window,help:account_budget.act_crossovered_budget_view
 msgid "Use budgets to compare actual with expected revenues and costs"
 msgstr ""
+"Төсвийн бүртгэл хийж төлөвлөсөн зардал болон урьдчилсан орлогыг гүйцэтгэлтэй"
+" нь харьцуулах"
 
 #. module: account_budget
 #: selection:crossovered.budget,state:0

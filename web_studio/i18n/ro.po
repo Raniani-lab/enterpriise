@@ -1190,7 +1190,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/submenu.xml:41
 #, python-format
 msgid "Form View"
-msgstr ""
+msgstr "Vizualizare formular"
 
 #. module: web_studio
 #. openerp-web
@@ -1254,7 +1254,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/xml/submenu.xml:53
 #, python-format
 msgid "Graph View"
-msgstr ""
+msgstr "Vizualizare grafică"
 
 #. module: web_studio
 #. openerp-web
@@ -1487,7 +1487,7 @@ msgstr "Înclinat"
 #: code:addons/web_studio/static/src/xml/submenu.xml:47
 #, python-format
 msgid "Kanban View"
-msgstr ""
+msgstr "Vizualizare Kanban"
 
 #. module: web_studio
 #. openerp-web
@@ -1885,7 +1885,7 @@ msgstr "Format hârtie"
 #: code:addons/web_studio/static/src/xml/submenu.xml:56
 #, python-format
 msgid "Pivot View"
-msgstr ""
+msgstr "Vizualizare pivot"
 
 #. module: web_studio
 #. openerp-web

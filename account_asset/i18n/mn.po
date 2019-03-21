@@ -8,6 +8,7 @@
 # Khishigbat Ganbold <khishigbat@asterisk-tech.mn>, 2018
 # Tsogjav <Tsogjav2007@yahoo.com>, 2018
 # Ganbold BATKHUYAG <gbatkhuyag@gmail.com>, 2018
+# Chuluuntulga Sosorburam <chuluntulga@gmail.com>, 2018
 # Otgonbayar.A <gobi.mn@gmail.com>, 2018
 # Onii Onii <onii0223@yahoo.com>, 2018
 # Martin Trigaux, 2019
@@ -454,7 +455,7 @@ msgstr "Одоогийн"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_depreciation_line__amount
 msgid "Current Depreciation"
-msgstr "Одоогийн элэгдэл"
+msgstr "Элэгдлийн зардал"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_asset__date
@@ -911,7 +912,7 @@ msgstr "Дараагийн ажилбарын төрөл"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset_depreciation_line__remaining_value
 msgid "Next Period Depreciation"
-msgstr "Элэгдүүлэлтийн дараагийн мөчлөг"
+msgstr "Дансны үнэ"
 
 #. module: account_asset
 #: model_terms:ir.actions.act_window,help:account_asset.action_asset_asset_report

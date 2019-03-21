@@ -1915,7 +1915,7 @@ msgstr "PDF-файл"
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_report_paperformat
 msgid "Paper Format Config"
-msgstr ""
+msgstr "Налаштування паперового формату"
 
 #. module: web_studio
 #. openerp-web

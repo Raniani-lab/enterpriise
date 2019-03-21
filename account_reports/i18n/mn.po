@@ -1461,7 +1461,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:account_reports.action_account_print_journal_menu
 #: model:ir.ui.menu,name:account_reports.menu_print_journal
 msgid "Journals Audit"
-msgstr ""
+msgstr "Журналын аудит"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
@@ -1779,7 +1779,7 @@ msgstr "Толгой цэс"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_financial_html_report_line__parent_path
 msgid "Parent Path"
-msgstr ""
+msgstr "Эцэг зам"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_analytic_report.py:24

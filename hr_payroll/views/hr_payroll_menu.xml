@@ -22,7 +22,7 @@
 
     <menuitem
         id="menu_hr_payroll_report"
-        name="Report"
+        name="Reporting"
         parent="menu_hr_payroll_root"
         sequence="70"
         groups="hr_payroll.group_hr_payroll_manager"/>

@@ -17,3 +17,4 @@ access_hr_work_entry_employee,hr.work.entry.employee,model_hr_user_work_entry_em
 access_hr_work_entry_type_manager,access_hr_work_entry_type_manager,model_hr_work_entry_type,group_hr_payroll_manager,1,1,1,1
 access_hr_payroll_structure_type,hr.payroll.structure.type,model_hr_payroll_structure_type,hr_payroll.group_hr_payroll_user,1,1,1,1
 access_hr_payroll_structure_type_hr_contract_manager,hr.payroll.structure.type.contract.manager,model_hr_payroll_structure_type,hr_contract.group_hr_contract_manager,1,0,0,0
+access_hr_payroll_report_manager,hr.payroll.report,model_hr_payroll_report,hr_payroll.group_hr_payroll_manager,1,1,1,1

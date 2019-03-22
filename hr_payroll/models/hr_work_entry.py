@@ -317,10 +317,12 @@ class HrWorkEntryType(models.Model):
         'Active', default=True,
         help="If the active field is set to false, it will allow you to hide the work entry type without removing it.")
     is_leave = fields.Boolean(default=False, string="Leave")
+    is_unforeseen = fields.Boolean(default=False, string="Unforeseen Absence")
     leave_type_ids = fields.One2many('hr.leave.type', 'work_entry_type_id', string='Leave Type')
 
     _sql_constraints = [
-        ('unique_work_entry_code', 'UNIQUE(code)', 'The same code cannot be associated to multiple work entry types.')
+        ('unique_work_entry_code', 'UNIQUE(code)', 'The same code cannot be associated to multiple work entry types.'),
+        ('is_unforeseen_is_leave', 'check (is_unforeseen = FALSE OR (is_leave = TRUE and is_unforeseen = TRUE))', 'A unforeseen absence must be a leave.')
     ]
 
 

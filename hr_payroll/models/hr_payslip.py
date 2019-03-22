@@ -380,7 +380,7 @@ class HrPayslipWorkedDays(models.Model):
     work_entry_type_id = fields.Many2one('hr.work.entry.type', string='Type', required=True, help="The code that can be used in the salary rules")
     number_of_days = fields.Float(string='Number of Days')
     number_of_hours = fields.Float(string='Number of Hours')
-    amount = fields.Monetary(string='Amount', digits=dp.get_precision('Payroll'))
+    amount = fields.Monetary(string='Amount', digits=dp.get_precision('Payroll'), default=0.0)
     contract_id = fields.Many2one(related='payslip_id.contract_id', string='Contract', required=True,
         help="The contract for which applied this worked days")
     currency_id = fields.Many2one('res.currency', related='payslip_id.currency_id')

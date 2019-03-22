@@ -97,11 +97,11 @@ class HrLeave(models.Model):
         Create a leave work_entry for each leave in self.
         Return True if one or more work_entries are unlinked.
         e.g.:
-            |---------------- work_entry ----------------|
-                    |------ leave ------|
-                            ||
-                            vv
-            |-benef-|---work_entry leave---|----work_entry---|
+            |-------------------- work entry ------------------------|
+                            |------- leave --------|
+                                    ||
+                                    vv
+            |-- work entry--|---work entry leave---|----work entry---|
         """
         work_entries = self.env['hr.work.entry'].search([('leave_id', 'in', self.ids)])
         if work_entries:

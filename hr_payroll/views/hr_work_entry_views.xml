@@ -68,8 +68,8 @@
                                 This work entry cannot be validated.  There is a leave to approve (or refuse) at the same time.
                             </div>
                             <div class="alert alert-warning" role="alert" attrs="{'invisible': ['!', ('leave_id', '=', False)]}">
-                                This work entry cannot be validated. It is conflicting with at least one work_entry. <br/>
-                                Two work_entries of the same employee cannot overlap at the same time.
+                                This work entry cannot be validated. It is conflicting with at least one work entry. <br/>
+                                Two work entries of the same employee cannot overlap at the same time.
                             </div>
                         </div>
                     </div>

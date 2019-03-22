@@ -12,12 +12,6 @@
         </record>
 
         <!-- Salary Rules -->
-        <function model="hr.salary.rule" name="write">
-            <value model="hr.salary.rule" search="[
-                ('struct_id', '=', ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday')),
-                ('code', '=', 'BASIC')]"/>
-            <value eval="{'amount_python_compute': 'result = contract.wage_with_holidays'}"/>
-        </function>
 
         <!-- 92% of monthly gross salary -->
         <record id="cp200_employees_double_holiday_pay_basic" model="hr.salary.rule">

@@ -11,13 +11,6 @@
         </record>
 
         <!-- Salary Rules -->
-        <function model="hr.salary.rule" name="write">
-            <value model="hr.salary.rule" search="[
-                ('struct_id', '=', ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_thirteen_month')),
-                ('code', '=', 'BASIC')]"/>
-            <value eval="{'amount_python_compute': 'result = contract.wage_with_holidays'}"/>
-        </function>
-
         <record id="cp200_employees_thirteen_month_gross_salary" model="hr.salary.rule">
             <field name="category_id" ref="hr_payroll_head_salary"/>
             <field name="name">Gross Salary</field>

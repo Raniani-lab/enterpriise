@@ -66,7 +66,7 @@ class HrPayslip(models.Model):
     payslip_run_id = fields.Many2one('hr.payslip.run', string='Batche Name', readonly=True,
         copy=False, states={'draft': [('readonly', False)], 'verify': [('readonly', False)]}, ondelete='cascade')
     compute_date = fields.Date('Computed On')
-
+    unpaid_amount = fields.Float(compute='_compute_unpaid_amount', digits=dp.get_precision('Payroll'))
     basic_wage = fields.Monetary(compute='_compute_basic_net')
     net_wage = fields.Monetary(compute='_compute_basic_net')
     currency_id = fields.Many2one(related='contract_id.currency_id')
@@ -288,6 +288,22 @@ class HrPayslip(models.Model):
             'type': 'ir.actions.act_url',
             'url': '/print/payslips?list_ids=%(list_ids)s' % {'list_ids': ','.join(str(x) for x in self.ids)},
         }
+
+    def _get_paid_amount(self):
+        self.ensure_one()
+        return self.contract_id.wage - self.unpaid_amount
+
+    def _get_unpaid_amount(self):
+        self.ensure_one()
+        unpaid_days = self.contract_id._get_work_data(self.struct_id.unpaid_work_entry_type_ids, self.date_from, self.date_to)['days']
+        return unpaid_days * self.contract_id._get_average_wage_per_day()
+
+
+    @api.depends('contract_id.wage', 'contract_id.resource_calendar_id', 'contract_id.resource_calendar_id.attendance_ids',
+        'contract_id.resource_calendar_id.leave_ids', 'date_from', 'date_to')
+    def _compute_unpaid_amount(self):
+        for payslip in self:
+            payslip.unpaid_amount = payslip._get_unpaid_amount()
 
 
 class HrPayslipLine(models.Model):

@@ -25,7 +25,7 @@ class HrPayrollStructure(models.Model):
                 'category_id': self.env.ref('hr_payroll.BASIC').id,
                 'condition_select': 'none',
                 'amount_select': 'code',
-                'amount_python_compute': 'result = contract.wage',
+                'amount_python_compute': 'result = payslip.get_paid_amount()',
             }),
             (0, 0, {
                 'name': 'Gross',
@@ -61,6 +61,7 @@ class HrPayrollStructure(models.Model):
     payslip_name = fields.Char(string="Payslip Name", translate=True,
         help="Name to be set on a payslip. Example: 'End of the year bonus'. If not set, the default value is 'Salary Slip'")
     regular_pay = fields.Boolean("Regular Pay", help="Check this option if this structure is the common one")
+    unpaid_work_entry_type_ids = fields.Many2many('hr.work.entry.type')
 
 
 class HrPayrollStructureType(models.Model):

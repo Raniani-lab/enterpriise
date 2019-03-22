@@ -31,6 +31,12 @@ class Payslip(models.Model):
         })
         return res
 
+    def _get_paid_amount(self):
+        amount = super(Payslip, self)._get_paid_amount()
+        if self.struct_id.country_id == self.env.ref('base.be'):
+            return self.contract_id.wage_with_holidays - self.unpaid_amount
+        return amount
+
 
 def compute_withholding_taxes(payslip, categories, worked_days, inputs):
 

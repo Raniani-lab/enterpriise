@@ -32,16 +32,6 @@ class TestPayslipBase(TransactionCase):
             'name': 'Test - Developer',
         })
 
-        # I create a salary structure for "Software Developer"
-        self.developer_pay_structure = self.env['hr.payroll.structure'].create({
-            'name': 'Salary Structure for Software Developer',
-            'rule_ids': [(4, self.hra_rule_id), (4, self.conv_rule_id),
-                         (4, self.prof_tax_rule_id), (4, self.pf_rule_id),
-                         (4, self.mv_rule_id)],
-            'type_id': self.structure_type.id,
-            'regular_pay': True, 
-        })
-
         # I create a contract for "Richard"
         self.env['hr.contract'].create({
             'date_end': Date.to_string((datetime.now() + timedelta(days=365))),
@@ -52,10 +42,22 @@ class TestPayslipBase(TransactionCase):
             'structure_type_id': self.structure_type.id,
         })
 
+        self.work_entry_type = self.env['hr.work.entry.type'].create({
+            'name': 'Extra attendance',
+            'is_leave': False,
+            'code': 'WORKTEST200',
+        })
+
+        self.work_entry_type_unpaid = self.env['hr.work.entry.type'].create({
+            'name': 'Unpaid Leave',
+            'is_leave': True,
+            'code': 'LEAVETEST300',
+        })
+
         self.work_entry_type_leave = self.env['hr.work.entry.type'].create({
             'name': 'Leave',
             'is_leave': True,
-            'code': 'LEAVE100'
+            'code': 'LEAVETEST100'
         })
         self.leave_type = self.env['hr.leave.type'].create({
             'name': 'Legal Leaves',
@@ -63,6 +65,31 @@ class TestPayslipBase(TransactionCase):
             'allocation_type': 'no',
             'work_entry_type_id': self.work_entry_type_leave.id
         })
+
+        # I create a salary structure for "Software Developer"
+        self.developer_pay_structure = self.env['hr.payroll.structure'].create({
+            'name': 'Salary Structure for Software Developer',
+            'type_id': self.structure_type.id,
+            'regular_pay': True,
+            'rule_ids': [
+                (4, self.hra_rule_id), (4, self.conv_rule_id),
+                (4, self.prof_tax_rule_id), (4, self.pf_rule_id),
+                (4, self.mv_rule_id),
+            ],
+            'unpaid_work_entry_type_ids': [(4, self.work_entry_type_unpaid.id, False)]
+        })
+
+    def create_calendar_leave(self, date_from, date_to, work_entry_type, calendar=None):
+        return self.env['resource.calendar.leaves'].create({
+            'name': 'leave name',
+            'date_from': date_from,
+            'date_to': date_to,
+            'resource_id': self.richard_emp.resource_id.id,
+            'calendar_id': calendar and calendar.id or self.richard_emp.resource_calendar_id.id,
+            'work_entry_type_id': work_entry_type.id,  # Unpaid leave
+            'time_type': 'leave',
+        })
+
 
 class TestPayslipContractBase(TestPayslipBase):
 
@@ -101,7 +128,7 @@ class TestPayslipContractBase(TestPayslipBase):
         })
 
         # This contract starts the next day
-        self.contract_cdi = self.env['hr.contract'].create({ # Fixed term contract
+        self.contract_cdi = self.env['hr.contract'].create({
             'date_start': datetime.strptime('2015-11-16', '%Y-%m-%d'),
             'name': 'Contract for Richard',
             'resource_calendar_id': self.calendar_35h.id,

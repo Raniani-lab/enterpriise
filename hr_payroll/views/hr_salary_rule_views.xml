@@ -74,6 +74,9 @@
                          </tree>
                       </field>
                      </page>
+                     <page string="Unpaid Work Entry Types">
+                       <field name="unpaid_work_entry_type_ids"/>
+                     </page>
                 </notebook>
             </sheet>
             </form>

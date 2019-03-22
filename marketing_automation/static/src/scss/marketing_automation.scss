@@ -209,20 +209,12 @@ $o-ma-border-color: gray($o-ma-border-color-gray-value);
             .o_ma_graph {
                 padding: 0px;
                 .o_ma_activity_graph {
-                    width: 100%;
                     height: 110px;
-                    .nvd3.nv-line .nvd3.nv-scatter .nv-groups .nv-point {
-                        stroke-opacity: 1 !important;
-                        fill: $o-ma-color-white !important;
-                        fill-opacity: 1 !important;
-                        &.hover {
-                            stroke-width: 1px !important;
-                            fill: inherit !important;
-                        }
-                    }
-                    // removed cropped circler
-                    clipPath{
-                        display: none;
+                    width: 100%;
+                    .o_graph_canvas_container {
+                        position: relative;
+                        top: 0px;
+                        left: 0px;
                     }
                 }
                 .o_ma_chart_time {

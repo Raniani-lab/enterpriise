@@ -1,10 +1,13 @@
 odoo.define('web_mobile.tests', function (require) {
 "use strict";
 
+const dom = require('web.dom');
 const FormView = require('web.FormView');
 const KanbanView = require('web.KanbanView');
 const testUtils = require('web.test_utils');
+const Widget = require('web.Widget');
 
+const mobileMixins = require('web_mobile.mixins');
 const mobile = require('web_mobile.rpc');
 
 const createView = testUtils.createView;
@@ -378,6 +381,101 @@ QUnit.module('web_mobile', {
 
         // Reset viewport position attribute
         document.querySelector(Q_UNIT_FIXTURE_SELECTOR).style.position = '';
+    });
+
+    QUnit.module('BackButtonEventMixin');
+
+    QUnit.test('widget should receive a backbutton event', async function (assert) {
+        assert.expect(5);
+
+        const __overrideBackButton = mobile.methods.overrideBackButton;
+        mobile.methods.overrideBackButton = function ({enabled}) {
+            assert.step(`overrideBackButton: ${enabled}`);
+        };
+
+        const DummyWidget = Widget.extend(mobileMixins.BackButtonEventMixin, {
+            _onBackButton(ev) {
+                assert.step(`${ev.type} event`);
+            },
+        });
+        const backButtonEvent = new Event('backbutton');
+        const dummy = new DummyWidget();
+        dummy.appendTo($('<div>'));
+
+        // simulate 'backbutton' event triggered by the app
+        document.dispatchEvent(backButtonEvent);
+        // waiting nextTick to match testUtils.dom.triggerEvents() behavior
+        await testUtils.nextTick();
+
+        assert.verifySteps([], "shouldn't have register handle before attached to the DOM");
+
+        dom.append($('qunit-fixtures'), dummy.$el, {in_DOM: true, callbacks: [{widget: dummy}]});
+
+        // simulate 'backbutton' event triggered by the app
+        document.dispatchEvent(backButtonEvent);
+        await testUtils.nextTick();
+
+        dom.detach([{widget: dummy}]);
+
+        assert.verifySteps([
+            'overrideBackButton: true',
+            'backbutton event',
+            'overrideBackButton: false',
+        ], "should have enabled/disabled the back-button override");
+
+        dummy.destroy();
+        mobile.methods.overrideBackButton = __overrideBackButton;
+    });
+
+    QUnit.test('multiple widgets should receive backbutton events in the right order', async function (assert) {
+        assert.expect(6);
+
+        const __overrideBackButton = mobile.methods.overrideBackButton;
+        mobile.methods.overrideBackButton = function ({enabled}) {
+            assert.step(`overrideBackButton: ${enabled}`);
+        };
+
+        const DummyWidget = Widget.extend(mobileMixins.BackButtonEventMixin, {
+            init(parent, {name}) {
+                this._super.apply(this, arguments);
+                this.name = name;
+            },
+            _onBackButton(ev) {
+                assert.step(`${this.name}: ${ev.type} event`);
+                dom.detach([{widget: this}]);
+            },
+        });
+        const backButtonEvent = new Event('backbutton');
+        const dummy1 = new DummyWidget(null, {name: 'dummy1'});
+        dom.append($('qunit-fixtures'), dummy1.$el, {in_DOM: true, callbacks: [{widget: dummy1}]});
+
+        const dummy2 = new DummyWidget(null, {name: 'dummy2'});
+        dom.append($('qunit-fixtures'), dummy2.$el, {in_DOM: true, callbacks: [{widget: dummy2}]});
+
+        const dummy3 = new DummyWidget(null, {name: 'dummy3'});
+        dom.append($('qunit-fixtures'), dummy3.$el, {in_DOM: true, callbacks: [{widget: dummy3}]});
+
+        // simulate 'backbutton' events triggered by the app
+        document.dispatchEvent(backButtonEvent);
+        // waiting nextTick to match testUtils.dom.triggerEvents() behavior
+        await testUtils.nextTick();
+        document.dispatchEvent(backButtonEvent);
+        await testUtils.nextTick();
+        document.dispatchEvent(backButtonEvent);
+        await testUtils.nextTick();
+
+        assert.verifySteps([
+            'overrideBackButton: true',
+            'dummy3: backbutton event',
+            'dummy2: backbutton event',
+            'dummy1: backbutton event',
+            'overrideBackButton: false',
+        ]);
+
+        dummy1.destroy();
+        dummy2.destroy();
+        dummy3.destroy();
+        mobile.methods.overrideBackButton = __overrideBackButton;
     });
 });
 });
